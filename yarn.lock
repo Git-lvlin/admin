@@ -38,6 +38,16 @@
     classnames "^2.2.6"
     rc-util "^5.9.3"
 
+"@ant-design/pro-card@^1.11.4":
+  version "1.11.4"
+  resolved "https://registry.yarnpkg.com/@ant-design/pro-card/-/pro-card-1.11.4.tgz#274d4ef432378f8e353863b508a81467d6aa8d8f"
+  integrity sha512-RjbxI1cZ9MmwKz0I9RfGTiUCy64oG7q7Kh6MNS/4t0rC0CYqYgFHx1pUgT6B+V1Sd++dwH3GeWWmLrIi8Hlnog==
+  dependencies:
+    "@ant-design/icons" "^4.2.1"
+    "@ant-design/pro-utils" "1.15.0"
+    classnames "^2.2.6"
+    omit.js "^2.0.2"
+
 "@ant-design/pro-cli@^1.0.28":
   version "1.0.28"
   resolved "https://registry.yarnpkg.com/@ant-design/pro-cli/-/pro-cli-1.0.28.tgz#daa4915b15da24c30580376b7454f6483670ab2b"

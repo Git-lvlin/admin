@@ -1,11 +1,13 @@
 import {
   LockOutlined,
   UserOutlined,
+  SafetyCertificateOutlined,
 } from '@ant-design/icons';
 import { Alert } from 'antd';
 import React from 'react';
 import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { connect } from 'umi';
+import { Button } from 'antd';
 import styles from './index.less';
 
 const LoginMessage = ({ content }) => (
@@ -33,18 +35,41 @@ const Login = (props) => {
 
   return (
     <div className={styles.main}>
+      <div className={styles.title_wrap}>
+        <div className={styles.logo}>
+          <img />
+        </div>
+        <div className={styles.title}>
+          约购运营管理平台
+          <div>始终以数据增长为唯一目标</div>
+        </div>
+      </div>
       <ProForm
         initialValues={{
           autoLogin: true,
         }}
         submitter={{
-          render: (_, dom) => dom.pop(),
-          submitButtonProps: {
-            loading: submitting,
-            size: 'large',
+          searchConfig: {
+            resetText: '重置',
+            submitText: '提交',
+          },
+          resetButtonProps: {
             style: {
-              width: '100%',
+              display: 'none',
             },
+          },
+          submitButtonProps: {},
+          render: (props, doms) => {
+            return (
+              <div className={styles.submit_wrap}>
+                <Button size="large" style={{ marginBottom: 10, width: '100%' }} key="1" type="primary" onClick={() => props.form?.submit?.()}>
+                  登录
+                </Button>
+                <ProFormCheckbox noStyle name="autoLogin">
+                  记住账号密码
+                </ProFormCheckbox>
+              </div>
+            )
           },
         }}
         onFinish={(values) => {
@@ -63,60 +88,46 @@ const Login = (props) => {
             size: 'large',
             prefix: <UserOutlined className={styles.prefixIcon} />,
           }}
-          placeholder='请输入用户名!'
+          placeholder='请输入账号'
           rules={[
             {
               required: true,
-              message: "请输入用户名!",
+              message: "请输入账号",
             },
           ]}
         />
-        <div style={{ display: 'flex' }}>
-          <ProFormText
-            name="userName"
-            fieldProps={{
-              size: 'large',
-              prefix: <UserOutlined className={styles.prefixIcon} />,
-            }}
-            placeholder='请输入用户名!'
-            rules={[
-              {
-                required: true,
-                message: "请输入用户名!",
-              },
-            ]}
-          />
-          <img />
-        </div>
+
         <ProFormText.Password
           name="password"
           fieldProps={{
             size: 'large',
             prefix: <LockOutlined className={styles.prefixIcon} />,
           }}
-          placeholder='请输入密码！'
+          placeholder='请输入密码'
           rules={[
             {
               required: true,
-              message: '请输入密码！'
+              message: '请输入密码'
             },
           ]}
         />
-        <div
-          style={{
-            marginBottom: 24,
-          }}
-        >
-          <ProFormCheckbox noStyle name="autoLogin">
-            自动登录
-          </ProFormCheckbox>
-          <a
-            style={{
-              float: 'right',
+
+        <div style={{ display: 'flex' }}>
+          <ProFormText
+            name="userName"
+            fieldProps={{
+              size: 'large',
+              prefix: <SafetyCertificateOutlined className={styles.prefixIcon} />,
             }}
-          >
-            忘记密码
-          </a>
+            placeholder='请输入图形验证码'
+            rules={[
+              {
+                required: true,
+                message: "请输入图形验证码",
+              },
+            ]}
+          />
+          <img />
         </div>
       </ProForm>
     </div>

@@ -34,7 +34,7 @@ export default defineConfig({
       routes: [
         {
           path: '/user',
-          // component: '../layouts/UserLayout',
+          component: '../layouts/UserLayout',
           routes: [
             {
               path: '/user/login',
@@ -69,6 +69,22 @@ export default defineConfig({
             {
               path: '/',
               redirect: '/dashboard/analysis',
+            },
+            {
+              path: '/workplace',
+              name: 'workplace',
+              component: './workplace',
+            },
+            {
+              path: '/user-management',
+              name: 'user-management',
+              routes: [
+                {
+                  name: 'user-list',
+                  path: '/user-management/user-list',
+                  component: './user-management/user-list',
+                }
+              ]
             },
             {
               path: '/setting',
