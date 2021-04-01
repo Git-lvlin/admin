@@ -68,7 +68,7 @@ export default defineConfig({
           routes: [
             {
               path: '/',
-              redirect: '/dashboard/analysis',
+              redirect: '/workplace',
             },
             {
               path: '/workplace',
@@ -84,6 +84,38 @@ export default defineConfig({
                   path: '/user-management/user-list',
                   component: './user-management/user-list',
                 }
+              ]
+            },
+            {
+              path: '/order-management',
+              name: 'order-management',
+              routes: [
+                {
+                  name: 'pending-orders',
+                  path: '/order-management/pending-orders',
+                  component: './order-management/pending-orders',
+                },
+                {
+                  name: 'retail-list',
+                  path: '/order-management/retail-list',
+                  component: './order-management/retail-list',
+                }
+              ]
+            },
+            {
+              path: '/merchandise-management',
+              name: 'merchandise-management',
+              routes: [
+                {
+                  name: 'product-list',
+                  path: '/merchandise-management/product-list',
+                  component: './merchandise-management/product-list',
+                },
+                {
+                  name: 'brand-list',
+                  path: '/merchandise-management/brand-list',
+                  component: './merchandise-management/brand-list',
+                },
               ]
             },
             {
