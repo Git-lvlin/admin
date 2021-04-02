@@ -116,6 +116,11 @@ export default defineConfig({
                   path: '/merchandise-management/brand-list',
                   component: './merchandise-management/brand-list',
                 },
+                {
+                  name: 'merchandise-log',
+                  path: '/merchandise-management/merchandise-log',
+                  component: './merchandise-management/merchandise-log',
+                },
               ]
             },
             {

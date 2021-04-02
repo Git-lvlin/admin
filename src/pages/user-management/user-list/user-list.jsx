@@ -51,13 +51,13 @@ const TableList = () => {
       title: '积分',
       dataIndex: 'name',
       valueType: 'text',
-      hideInForm: true,
+      hideInSearch: true,
     },
     {
       title: '约卡余额',
       dataIndex: 'name',
       valueType: 'text',
-      hideInForm: true,
+      hideInSearch: true,
     },
     {
       title: '所属会员店',

@@ -3,7 +3,7 @@ import { Button, Card } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined } from '@ant-design/icons';
-import Edit from './edit';
+import Detail from './detail';
 
 const TableList = () => {
   const columns = [
@@ -55,26 +55,6 @@ const TableList = () => {
           text: '批发',
         },
       },
-    },
-    {
-      title: '销售价',
-      dataIndex: 'name',
-      valueType: 'text',
-    },
-    {
-      title: '可用库存',
-      dataIndex: 'name',
-      valueType: 'text',
-    },
-    {
-      title: '活动库存',
-      dataIndex: 'name',
-      valueType: 'text',
-    },
-    {
-      title: '销量',
-      dataIndex: 'name',
-      valueType: 'text',
     },
     {
       title: '审核状态',
@@ -160,7 +140,7 @@ const TableList = () => {
         }}
         columns={columns}
       />
-      {/* <Edit visible /> */}
+      {/* <Detail visible /> */}
     </PageContainer>
 
   );

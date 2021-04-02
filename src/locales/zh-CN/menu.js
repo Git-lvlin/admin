@@ -19,6 +19,7 @@ export default {
   'menu.merchandise-management': '商品管理',
   'menu.merchandise-management.product-list': '商品列表',
   'menu.merchandise-management.brand-list': '品牌列表',
+  'menu.merchandise-management.merchandise-log': '商品日志',
   'menu.setting': '设置',
   'menu.setting.account-management': '子账号管理',
   'menu.setting.role-management': '角色管理',

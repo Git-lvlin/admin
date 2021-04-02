@@ -19,7 +19,7 @@ const TableList = () => {
       title: '品牌logo',
       dataIndex: 'name',
       valueType: 'text',
-      hideInForm: true,
+      hideInSearch: true,
     },
     {
       title: '操作',
