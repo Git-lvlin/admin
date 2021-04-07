@@ -56,7 +56,8 @@ const options = [
 ];
 
 export default (props) => {
-  const { visible } = props;
+  const { onClose, visible } = props;
+
   const formRef = useRef();
 
   const formItemLayout = {
@@ -79,6 +80,8 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
+        width: 1200,
+        onClose,
       }}
       onFinish={async (values) => {
         await waitTime(2000);

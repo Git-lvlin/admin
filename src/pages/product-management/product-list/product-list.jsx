@@ -6,6 +6,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import Edit from './edit';
 
 const TableList = () => {
+  const [formVisible, setFormVisible] = useState(true);
+
   const columns = [
     {
       title: 'SPU',
@@ -160,7 +162,10 @@ const TableList = () => {
         }}
         columns={columns}
       />
-      {/* <Edit visible /> */}
+      <Edit
+        visible={formVisible}
+        onClose={() => { setFormVisible(false)}}
+      />
     </PageContainer>
 
   );
