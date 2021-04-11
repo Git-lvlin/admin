@@ -2,68 +2,87 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Table } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 // import { PlusOutlined } from '@ant-design/icons';
-import Form from './form';
-
-const testData = [
-  {
-    name: '首页',
-    href: '/index',
-    code: '001',
-    type: 'page'
-  },
-  {
-    name: '设置',
-    href: '/setting',
-    code: '002',
-    type: 'menu',
-    childData: [
-      {
-        name: '子账号管理',
-        href: '/setting/account-management',
-        code: '002-001',
-        type: 'page',
-        childData: [
-          {
-            name: '新建',
-            href: '/api/new',
-            code: '002-001-001',
-            type: 'button',
-          }
-        ]
-      }
-    ]
-  }
-]
+import * as api from '@/services/authority-management';
+import NewRule from './new-rule';
+import Edit from './edit';
+import { arrayToTree } from '@/utils/utils'
 
 const TableList = () => {
-  const [formVisible, setFormVisible] = useState(false);
+  const [newRuleVisible, setNewRuleVisible] = useState(false);
+  const [editVisible, setEditVisible] = useState(false);
+  const [selectRule, setSelectRule] = useState({});
+  const [treeData, setTreeData] = useState([])
+  const [menuTree, setMenuTree] = useState([])
+  const [pageTree, setPageTree] = useState([])
+
+  const getPageTree = (data) => {
+    const arr = [];
+    data.forEach(item => {
+      if (item.ruleType !== 3) {
+        arr.push({
+          ...item,
+          selectable: item.ruleType === 2,
+          value: item.id
+        })
+      }
+    })
+    return arrayToTree(arr)
+  }
+
+  const getMenuTree = (data) => {
+    const arr = [];
+    data.forEach(item => {
+      if (item.ruleType === 1) {
+        arr.push({
+          ...item,
+          value: item.id
+        })
+      }
+    })
+    return arrayToTree(arr)
+  }
+
+  const getRuleList = () => {
+    api.adminRule()
+      .then(res => {
+        setTreeData(arrayToTree(res.data))
+        setMenuTree(getMenuTree(res.data))
+        setPageTree(getPageTree(res.data))
+      })
+  }
+
+  const removeRule = (id) => {
+    api.ruleDel({ id }, { showSuccess: true })
+      .then(res => {
+        if (res.code === 0) {
+          getRuleList();
+        }
+      })
+  }
 
   const columns = [
     {
       title: '名称',
-      dataIndex: 'name',
-      width: 200,
-      render: text => <span style={{ whiteSpace: 'noWrap' }}>{text}</span>,
+      dataIndex: 'title',
     },
     {
       title: '路径',
-      dataIndex: 'href',
-      render: text => <span style={{ whiteSpace: 'noWrap' }}>{text}</span>,
+      dataIndex: 'name',
     },
     {
       title: '权限编码',
-      dataIndex: 'code',
+      dataIndex: 'id',
     },
     {
       title: '类型',
-      dataIndex: 'type',
+      dataIndex: 'ruleType',
       render(item) {
         switch (item) {
-          case 'menu':
+          case 1:
             return '菜单';
-          case 'page':
+          case 2:
             return '页面';
-          case 'button':
+          case 3:
             return '按钮';
           default:
             return '菜单';
@@ -75,50 +94,60 @@ const TableList = () => {
       render: (text, record) => {
         return (
           <>
-            <a>
+            <a
+              onClick={() => {
+                setSelectRule(record)
+                setEditVisible(true);
+              }}
+            >
               编辑
             </a>
             &nbsp;&nbsp;
-            <a>删除</a>
+            <a onClick={() => { removeRule(record.id) }}>删除</a>
           </>
         );
       },
     },
   ];
 
-  const handleFormateData = data => {
-    return data.map(item => {
-      return Array.isArray(item.childData)
-        ? {
-          ...item,
-          children: handleFormateData(item.childData),
-        }
-        : item;
-    });
-  };
-
-  const dataSource = handleFormateData(testData);
+  useEffect(() => {
+    getRuleList();
+  }, [])
 
   return (
     <PageContainer>
       <Card>
         <Button
           type="primary"
-          onClick={() => { setFormVisible(true) }}
+          onClick={() => { setNewRuleVisible(true) }}
           style={{ marginBottom: 20 }}
         >
           新建权限
         </Button>
         <Table
-          dataSource={dataSource}
-          rowKey="code"
+          dataSource={treeData}
+          rowKey="id"
           columns={columns}
           bordered={false}
           scroll={{ x: 'max-content' }}
           pagination={false}
         />
       </Card>
-      <Form visible={formVisible} setVisible={setFormVisible} />
+      <NewRule
+        visible={newRuleVisible}
+        setVisible={setNewRuleVisible}
+        callback={() => { getRuleList() }}
+        menuTree={menuTree}
+        pageTree={pageTree}
+      />
+      <Edit
+        visible={editVisible}
+        setVisible={setEditVisible}
+        callback={() => { getRuleList() }}
+        menuTree={menuTree}
+        pageTree={pageTree}
+        data={selectRule}
+      />
     </PageContainer>
 
   );

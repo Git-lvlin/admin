@@ -3,35 +3,91 @@ import {
   UserOutlined,
   SafetyCertificateOutlined,
 } from '@ant-design/icons';
-import { Alert } from 'antd';
-import React from 'react';
+import { message } from 'antd';
+import React, { useState, useEffect } from 'react';
 import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
-import { connect } from 'umi';
 import { Button } from 'antd';
+import { history } from 'umi';
+import * as api from '@/services/login';
+import { getPageQuery } from '@/utils/utils';
 import styles from './index.less';
 
-const LoginMessage = ({ content }) => (
-  <Alert
-    style={{
-      marginBottom: 24,
-    }}
-    message={content}
-    type="error"
-    showIcon
-  />
-);
+const Login = () => {
+  const [randstr, setRandstr] = useState(Math.random());
+  const [isVertyfy, setIsVertyfy] = useState(false);
+  const [account] = useState(JSON.parse(window.localStorage.getItem('account')) || {});
 
-const Login = (props) => {
-  const { userLogin = {}, submitting } = props;
-  const { status } = userLogin;
+  const login = (payload) => {
+    const { autoLogin, name, passwd, vertycode } = payload
+    api.login({
+      name,
+      passwd,
+      vertycode,
+      randstr: `${randstr}`,
+    }, { showError: true, noAuth: true }).then(res => {
+      setIsVertyfy(res?.data?.isVertyfy)
+      if (res.code === 0) {
 
-  const handleSubmit = (values) => {
-    const { dispatch } = props;
-    dispatch({
-      type: 'login/login',
-      payload: { ...values },
-    });
-  };
+        if (autoLogin) {
+          window.localStorage.setItem('account', JSON.stringify({ name, passwd }))
+        } else {
+          window.localStorage.removeItem('account');
+        }
+
+        window.localStorage.setItem('token', res.data.token)
+        const urlParams = new URL(window.location.href);
+        const params = getPageQuery();
+        message.success('登录成功！');
+        let { redirect } = params;
+
+        if (redirect) {
+          const redirectUrlParams = new URL(redirect);
+
+          if (redirectUrlParams.origin === urlParams.origin) {
+            redirect = redirect.substr(urlParams.origin.length);
+
+            if (redirect.match(/^\/.*#/)) {
+              redirect = redirect.substr(redirect.indexOf('#') + 1);
+            }
+          } else {
+            window.location.href = '/';
+            return;
+          }
+        }
+
+        history.replace(redirect || '/');
+      }
+
+    })
+  }
+
+  const getCaptchaUrl = () => {
+    return `http://admin.waiad.icu/auth/vertycode?randstr=${randstr}`
+  }
+
+  const checkIsVertyfy = (value) => {
+    api.login({
+      name: value
+    }, { noAuth: true, showError: false }).then(res => {
+      setIsVertyfy(res?.data?.isVertyfy)
+    })
+  }
+
+  const blur = (e) => {
+    const { value } = e.target;
+
+    if (value.trim()) {
+      checkIsVertyfy(value)
+    }
+  }
+
+  const upDateCaptchaImg = () => { setRandstr(Math.random()) }
+
+  useEffect(() => {
+    if (account.name) {
+      checkIsVertyfy(account.name)
+    }
+  }, [account])
 
   return (
     <div className={styles.main}>
@@ -47,19 +103,11 @@ const Login = (props) => {
       <ProForm
         initialValues={{
           autoLogin: true,
+          name: account.name,
+          passwd: account.passwd,
         }}
         submitter={{
-          searchConfig: {
-            resetText: '重置',
-            submitText: '提交',
-          },
-          resetButtonProps: {
-            style: {
-              display: 'none',
-            },
-          },
-          submitButtonProps: {},
-          render: (props, doms) => {
+          render: (props) => {
             return (
               <div className={styles.submit_wrap}>
                 <Button size="large" style={{ marginBottom: 10, width: '100%' }} key="1" type="primary" onClick={() => props.form?.submit?.()}>
@@ -73,20 +121,16 @@ const Login = (props) => {
           },
         }}
         onFinish={(values) => {
-          handleSubmit(values);
+          login(values);
           return Promise.resolve();
         }}
       >
-        {status === 'error' && !submitting && (
-          <LoginMessage
-            content={'账户或密码错误'}
-          />
-        )}
         <ProFormText
-          name="userName"
+          name="name"
           fieldProps={{
             size: 'large',
             prefix: <UserOutlined className={styles.prefixIcon} />,
+            onBlur: blur
           }}
           placeholder='请输入账号'
           rules={[
@@ -98,10 +142,12 @@ const Login = (props) => {
         />
 
         <ProFormText.Password
-          name="password"
+          name="passwd"
           fieldProps={{
             size: 'large',
             prefix: <LockOutlined className={styles.prefixIcon} />,
+            visibilityToggle: false,
+            allowClear: true,
           }}
           placeholder='请输入密码'
           rules={[
@@ -112,9 +158,9 @@ const Login = (props) => {
           ]}
         />
 
-        <div style={{ display: 'flex' }}>
+        {isVertyfy && <div style={{ display: 'flex' }}>
           <ProFormText
-            name="userName"
+            name="vertycode"
             fieldProps={{
               size: 'large',
               prefix: <SafetyCertificateOutlined className={styles.prefixIcon} />,
@@ -127,14 +173,15 @@ const Login = (props) => {
               },
             ]}
           />
-          <img />
-        </div>
+          <img
+            style={{ cursor: 'pointer', width: 80, height: 40, marginLeft: 10 }}
+            src={getCaptchaUrl()}
+            onClick={upDateCaptchaImg}
+          />
+        </div>}
       </ProForm>
     </div>
   );
 };
 
-export default connect(({ login, loading }) => ({
-  userLogin: login,
-  submitting: loading.effects['login/login'],
-}))(Login);
+export default Login;

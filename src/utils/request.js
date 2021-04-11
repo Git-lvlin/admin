@@ -1,6 +1,8 @@
 /** Request 网络请求工具 更详细的 api 文档: https://github.com/umijs/umi-request */
 import { extend } from 'umi-request';
 import { notification } from 'antd';
+import { stringify } from 'querystring';
+import { history } from 'umi';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -42,9 +44,70 @@ const errorHandler = (error) => {
 };
 /** 配置request请求时的默认参数 */
 
-const request = extend({
+const instance = extend({
   errorHandler,
   // 默认错误处理
-  credentials: 'include', // 默认请求是否带上cookie
+  // credentials: 'include', // 默认请求是否带上cookie
 });
+
+instance.interceptors.response.use(async (response, options) => {
+  const data = await response.clone().json();
+  const { showError = true, showSuccess = false } = options;
+  if (data.code === 10110) {
+    history.replace({
+      pathname: '/user/login',
+      search: stringify({
+        redirect: window.location.href,
+      }),
+    });
+    notification.error({
+      message: data.msg,
+    });
+    return null;
+  }
+
+  if (data.code !== 0 && showError) {
+    notification.error({
+      description: data.msg,
+      message: '请求异常',
+    });
+  }
+
+  if (data.code === 0 && showSuccess) {
+    notification.success({
+      message: '操作成功',
+    });
+  }
+
+  return response;
+});
+
+const request = (url, options = {}) => {
+  const token = window.localStorage.getItem('token');
+  const ops = {};
+
+  if (token) {
+    ops.headers = {
+      'admin-token': token,
+      ...options.headers
+    }
+  }
+
+  if (!token && !options.noAuth) {
+    history.replace({
+      pathname: '/user/login',
+      search: stringify({
+        redirect: window.location.href,
+      }),
+    });
+    return null;
+  }
+
+  return instance(url, {
+    ...options,
+    ...ops,
+  })
+}
+
+
 export default request;

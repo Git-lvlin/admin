@@ -1,11 +1,19 @@
 import request from '@/utils/request';
 
-export async function fakeAccountLogin(params) {
-  return request('/api/login/account', {
+export function login(params, options = {}) {
+  const { randstr, ...rest } = params;
+  const obj = {
+    ...rest
+  };
+  
+  if (rest.vertycode) {
+    obj.randstr = randstr;
+  }
+
+  return request('/auth/login/checkLogin', {
     method: 'POST',
-    data: params,
+    data: obj,
+    ...options
   });
 }
-export async function getFakeCaptcha(mobile) {
-  return request(`/api/login/captcha?mobile=${mobile}`);
-}
+

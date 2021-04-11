@@ -4,7 +4,7 @@ export async function query() {
   return request('/api/users');
 }
 export async function queryCurrent() {
-  return request('/api/currentUser');
+  return request('/api/currentUser', { showError: false });
 }
 export async function queryNotices() {
   return request('/api/notices');

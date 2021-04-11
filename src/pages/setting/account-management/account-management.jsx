@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
-import { Button } from 'antd';
+import { Button, Card } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined } from '@ant-design/icons';
+import * as api from '@/services/account-management';
 import Form from './form';
-
 
 const TableList = () => {
 
   const [formVisible, setFormVisible] = useState(false);
 
+  const newAccount = () => {
+    setFormVisible(true);
+  }
+
   const columns = [
     {
       title: '名称',
-      dataIndex: 'name',
+      dataIndex: 'username',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入名称'
@@ -29,7 +33,7 @@ const TableList = () => {
     },
     {
       title: '角色',
-      dataIndex: 'name',
+      dataIndex: 'title',
       onFilter: true,
       valueType: 'select',
       valueEnum: {
@@ -46,24 +50,29 @@ const TableList = () => {
     },
     {
       title: '状态',
-      dataIndex: 'name',
+      dataIndex: 'status',
       onFilter: true,
       valueType: 'select',
+      hideInTable: true,
       valueEnum: {
         1: {
-          text: 'iOS',
+          text: '开启',
         },
         2: {
-          text: 'Android',
-        },
-        3: {
-          text: 'MiniProgram',
+          text: '禁用',
         },
       },
     },
     {
+      title: '状态',
+      dataIndex: 'status',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (text) => text === 1 ? '开启' : '禁用',
+    },
+    {
       title: '创建时间',
-      dataIndex: 'name',
+      dataIndex: 'createTime',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -71,27 +80,28 @@ const TableList = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: () => (
-        <>
-          <a>编辑</a>
-        </>
-      ),
+      render: (_, record) => {
+        return (
+          <a onClick={newAccount}>编辑</a>
+        )
+      },
     },
   ];
 
-  const newAccount = () => {
-    setFormVisible(true);
-  }
-
   return (
     <PageContainer>
+      <Card>
+        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+          <Button onClick={newAccount} key="out" type="primary" icon={<PlusOutlined />}>新建</Button>
+        </div>
+      </Card>
       <ProTable
         rowKey="id"
         options={false}
+        request={(params) => api.adminList(params)}
         search={{
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [
-            <Button onClick={newAccount} key="out" type="primary" icon={<PlusOutlined />}>新建</Button>,
             <Button
               key="search"
               type="primary"
@@ -112,10 +122,10 @@ const TableList = () => {
           ],
         }}
         columns={columns}
+        pagination={false}
       />
       <Form visible={formVisible} setVisible={setFormVisible} />
     </PageContainer>
-
   );
 };
 

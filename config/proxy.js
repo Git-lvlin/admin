@@ -7,8 +7,8 @@
  */
 export default {
   dev: {
-    '/api/': {
-      target: 'https://preview.pro.ant.design',
+    '/auth/': {
+      target: 'http://admin.waiad.icu',
       changeOrigin: true,
       pathRewrite: {
         '^': '',
