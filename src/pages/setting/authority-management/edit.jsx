@@ -6,7 +6,7 @@ import {
   ProFormRadio,
   ProFormDependency,
 } from '@ant-design/pro-form';
-import * as api from '@/services/authority-management'
+import * as api from '@/services/setting/authority-management'
 
 export default (props) => {
   const { visible, setVisible, callback, menuTree, pageTree, data } = props;

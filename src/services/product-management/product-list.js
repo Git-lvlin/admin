@@ -26,3 +26,11 @@ export const getConfig = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const addGoods = (params = {}, options = {}) => {
+  return request('/auth/goods/product/add', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

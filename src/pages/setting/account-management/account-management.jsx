@@ -3,7 +3,7 @@ import { Button, Card } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined } from '@ant-design/icons';
-import * as api from '@/services/account-management';
+import * as api from '@/services/setting/account-management';
 import Form from './form';
 
 const TableList = () => {

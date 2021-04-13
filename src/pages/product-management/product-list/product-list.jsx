@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Table } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { PlusOutlined } from '@ant-design/icons';
-import * as api from '@/services/product-list';
+import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
+import * as api from '@/services/product-management/product-list';
 import Edit from './edit';
 
 const SubTable = (props) => {
@@ -188,10 +188,10 @@ const TableList = () => {
         }}
         columns={columns}
       />
-      {/* <Edit
+      <Edit
         visible={formVisible}
-        onClose={() => { setFormVisible(false) }}
-      /> */}
+        setVisible={setFormVisible}
+      />
     </PageContainer>
 
   );

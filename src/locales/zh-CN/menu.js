@@ -22,6 +22,7 @@ export default {
   'menu.product-management.product-log': '商品日志',
   'menu.product-management.freight-template': '运费模板',
   'menu.product-management.product-review': '商品审核',
+  'menu.product-management.product-category': '商品分类',
   'menu.setting': '设置',
   'menu.setting.account-management': '子账号管理',
   'menu.setting.role-management': '角色管理',

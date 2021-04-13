@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Table } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 // import { PlusOutlined } from '@ant-design/icons';
-import * as api from '@/services/authority-management';
+import * as api from '@/services/setting/authority-management';
 import NewRule from './new-rule';
 import Edit from './edit';
 import { arrayToTree } from '@/utils/utils'

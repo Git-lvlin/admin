@@ -1,36 +1,97 @@
-import React, { useRef } from 'react';
-import { Button, message, Form, Cascader, Upload as AntUpload } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, message, Form, Cascader, Input } from 'antd';
 import {
   DrawerForm,
   ProFormText,
   ProFormRadio,
   ProFormSelect,
+  ProFormTextArea,
 } from '@ant-design/pro-form';
+import { EditableProTable } from '@ant-design/pro-table';
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
+import Upload from '@/components/upload'
+import { uploadImageFormatConversion } from '@/utils/utils'
+import * as api from '@/services/product-management/product-list';
+import styles from './edit.less'
+import FormModal from './form';
 
-const waitTime = (time = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
+const columns = [
+  {
+    title: '规格图片',
+    dataIndex: 'decs',
+    editable: false,
+  },
+  {
+    title: '活动名称',
+    dataIndex: 'title',
+    width: '30%',
+    formItemProps: {
+      rules: [
+        {
+          required: true,
+          whitespace: true,
+          message: '此项是必填项',
+        },
+        {
+          max: 16,
+          whitespace: true,
+          message: '最长为 16 位',
+        },
+        {
+          min: 6,
+          whitespace: true,
+          message: '最小为 6 位',
+        },
+      ],
+    },
+  },
+  {
+    title: '状态',
+    key: 'state',
+    dataIndex: 'state',
+    valueType: 'select',
+    valueEnum: {
+      all: { text: '全部', status: 'Default' },
+      open: {
+        text: '未解决',
+        status: 'Error',
+      },
+      closed: {
+        text: '已解决',
+        status: 'Success',
+      },
+    },
+  },
+  {
+    title: '描述',
+    dataIndex: 'decs',
+    editable: false,
+  },
+  {
+    title: '操作',
+    valueType: 'option',
+    render: () => {
+      return null;
+    },
+  },
+];
 
-const Upload = (props) => {
-  return (
-    <AntUpload
-      name="avatar"
-      listType="picture-card"
-      showUploadList={false}
-      {...props}
-    >
-      <div>
-        <UploadOutlined />
-        <p>上传</p>
-      </div>
-    </AntUpload>
-  )
-}
+const defaultData = [
+  {
+    id: 1,
+    title: '活动名称一',
+    decs: '这个活动真好玩',
+    state: 'open',
+    created_at: '2020-05-26T09:42:56Z',
+  },
+  {
+    id: 2,
+    title: '活动名称二',
+    decs: '这个活动真好玩',
+    state: 'closed',
+    created_at: '2020-05-26T08:19:22Z',
+  },
+];
 
 const options = [
   {
@@ -56,10 +117,9 @@ const options = [
 ];
 
 export default (props) => {
-  const { onClose, visible } = props;
-
-  const formRef = useRef();
-
+  const { visible, setVisible } = props;
+  const [formModalVisible, setFormModalVisible] = useState(false);
+  const [form] = Form.useForm()
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -73,40 +133,118 @@ export default (props) => {
     }
   };
 
+  const urlsTransform = (urls) => {
+    return urls.map((item, index) => {
+      return {
+        imageUrl: item,
+        imageSort: index,
+      }
+    })
+  }
+
+  const submit = (values) => {
+    const { videoUrl, gcId, primaryImages, detailImages, advImages, isMultiSpec, ...rest } = values;
+    const obj = {
+      isMultiSpec,
+      goods: {
+        ...rest,
+        gcId1: 1,
+        gcId2: 2
+      },
+      primaryImages: urlsTransform(primaryImages),
+      detailImages: urlsTransform(detailImages),
+    };
+    return new Promise((resolve, reject) => {
+      api.addGoods(obj, { showSuccess: true, showError: true }).then(res => {
+        if (res.code === 0) {
+          resolve();
+        } else {
+          reject();
+        }
+      })
+    });
+  }
+
+  const getFormData = (data) => {
+    console.log('data', data)
+  }
+
+  useEffect(() => {
+    console.log('form', form);
+  }, [form])
+
   return (
     <DrawerForm
-      title="新建表单"
-      formRef={formRef}
+      title="新建商品"
+      onVisibleChange={setVisible}
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
         width: 1200,
-        onClose,
+        className: styles.drawer_form,
+        form
       }}
       onFinish={async (values) => {
-        await waitTime(2000);
-        console.log(values.name);
-        message.success('提交成功');
-        // 不返回不会关闭弹框
+        await submit(values);
         return true;
       }}
+
       visible={visible}
+      initialValues={{
+        isMultiSpec: 0,
+        goodsSaleType: 0,
+        isFreeFreight: 1,
+        supportNoReasonReturn: 1,
+        // primaryImages: uploadImageFormatConversion([
+        //   {
+        //     "ImageUrl": "http://img13.360buyimg.com/img/jfs/t1/147953/16/5479/234145/5f37430cE27a9036a/749a70e1d32cbe8b.png",
+        //     "imageSort": 1,
+        //   },
+        //   {
+        //     "ImageUrl": "http://img13.360buyimg.com/img/jfs/t1/147953/16/5479/234145/5f37430cE27a9036a/749a70e1d32cbe8b.png",
+        //     "imageSort": 2,
+        //   }
+        // ], 'ImageUrl','imageSort')
+        sights: [{
+        }]
+      }}
       {...formItemLayout}
     >
+      <div>
+        {formModalVisible &&
+          <FormModal
+            visible={formModalVisible}
+            setVisible={setFormModalVisible}
+            getData={getFormData}
+          />
+        }
+      </div>
       <ProFormText
-        name="name"
+        name="goodsName"
         label="商品名称"
         placeholder="请输入商品名称"
         rules={[{ required: true, message: '请输入商品名称' }]}
       />
       <ProFormText
-        name="name"
+        name="goodsDesc"
+        label="商品副标题"
+        placeholder="请输入商品副标题"
+        rules={[{ required: true, message: '请输入商品副标题' }]}
+      />
+      <ProFormText
+        name="supplierSpuId"
+        label="商品编号"
+        placeholder="请输入商品编号"
+        rules={[{ required: true, message: '请输入商品编号' }]}
+      />
+      <ProFormText
+        name="goodsKeywords"
         label="搜索关键字"
         placeholder="请输入搜索关键字"
       />
       <Form.Item
         label="商品品类"
-        name="parentId"
+        name="gcId"
         rules={[{ required: true, message: '请选择商品品类' }]}
       >
         <Cascader options={options} placeholder="请选择商品品类" />
@@ -118,100 +256,185 @@ export default (props) => {
             label: 'a',
           },
         ]}
-        name="useMode"
+        name="brandId"
         label="商品品牌"
       />
       <ProFormRadio.Group
-        name="radio-group"
+        name="isMultiSpec"
         label="规格属性"
         rules={[{ required: true }]}
-        fieldProps={{
-          defaultValue: 'a'
-        }}
         options={[
           {
             label: '单规格',
-            value: 'a',
+            value: 0,
           },
           {
             label: '多规格',
-            value: 'b',
+            value: 1,
           },
         ]}
       />
       <ProFormText
-        name="name"
+        name="stockNum"
+        label="规格一（可带图）"
+        placeholder="请输入规格名称"
+        rules={[{ required: true, message: '请输入规格名称' }]}
+      />
+      <Form.List name="sights">
+        {(fields, { add, remove }) => (
+          <>
+            {fields.map(({ key, name, fieldKey, ...restField }) => {
+              return (
+                <Form.Item
+                  key={key}
+                  label=" "
+                  name={[name, 'a']}
+                  colon={false}
+                >
+                  <Input placeholder="请输入规格属性" addonAfter={
+                    key === 0 ?
+                      <Button type="primary" style={{ display: 'inline-block' }} onClick={() => { add() }}>添加</Button>
+                      :
+                      <Button type="primary" danger style={{ display: 'inline-block' }} onClick={() => { remove(name) }}>删除</Button>
+                  } />
+
+                </Form.Item>
+              )
+            })}
+          </>
+        )}
+      </Form.List>
+      <ProFormText
+        name="stockNum"
+        label="规格二（无图）"
+        placeholder="请输入规格名称"
+      />
+      <Form.List name="sights">
+        {(fields, { add, remove }) => (
+          <>
+            {fields.map(({ key, name, fieldKey, ...restField }) => {
+              return (
+                <Form.Item
+                  key={key}
+                  label=" "
+                  name={[name, 'a']}
+                  colon={false}
+                >
+                  <Input placeholder="请输入规格属性" addonAfter={
+                    key === 0 ?
+                      <Button type="primary" style={{ display: 'inline-block' }} onClick={() => { add() }}>添加</Button>
+                      :
+                      <Button type="primary" danger style={{ display: 'inline-block' }} onClick={() => { remove(name) }}>删除</Button>
+                  } />
+                </Form.Item>
+              )
+            })}
+          </>
+        )}
+      </Form.List>
+      <Form.Item
+        label=" "
+        colon={false}
+      >
+        <Button type="primary" onClick={() => { setFormModalVisible(true) }}>填写批量规格参数 生成规格配置表</Button>
+      </Form.Item>
+      <EditableProTable
+        columns={columns}
+        rowKey="id"
+        value={defaultData}
+        editable={{
+          editableKeys: [1, 2],
+          actionRender: (row, config, defaultDoms) => {
+            return [defaultDoms.delete];
+          }
+        }}
+        bordered
+        // onChange={setDataSource}
+        recordCreatorProps={false}
+        style={{ marginBottom: 20 }}
+      />
+      <ProFormText
+        name="stockNum"
         label="可用库存"
         placeholder="请输入可用库存"
         rules={[{ required: true, message: '请输入可用库存数量' }]}
       />
       <ProFormText
-        name="name"
+        name="stockAlarmNum"
         label="库存预警值"
         placeholder="请输入数字 可用库存小于等于此值时提醒"
       />
       <ProFormRadio.Group
-        name="radio-group"
+        name="goodsSaleType"
         label="供货类型"
         rules={[{ required: true }]}
-        fieldProps={{
-          defaultValue: 'a'
-        }}
         options={[
           {
             label: '批发+零售',
-            value: 'a',
+            value: 0,
           },
           {
             label: '仅批发',
-            value: 'b',
+            value: 1,
+          },
+          {
+            label: '零售',
+            value: 2,
           },
         ]}
       />
       <ProFormText
-        name="name"
+        name="wholesalePrice"
         label="批发价"
         placeholder="请输入批发价"
         rules={[{ required: true, message: '请输入供货价' }]}
       />
       <ProFormText
-        name="name"
+        name="wholesaleMinNum"
         label="批发起购量"
         placeholder="请输入批发起购量"
         rules={[{ required: true, message: '请输入数字 需大于可用库存' }]}
       />
       <ProFormText
-        name="name"
+        name="retailSupplyPrice"
         label="零售供货价"
         placeholder="请输入零售供货价"
         rules={[{ required: true, message: '请输入供货价' }]}
       />
       <ProFormText
-        name="name"
+        name="suggestedRetailPrice"
         label="建议零售价"
         placeholder="请输入建议零售价"
         rules={[{ required: true, message: '请输入建议零售价' }]}
       />
+      <ProFormText
+        name="buyMinNum"
+        label="起售数量"
+        placeholder="请输入起售数量"
+        rules={[{ required: true, message: '请输入起售数量' }]}
+      />
+      <ProFormText
+        name="buyMaxNum"
+        label="单次最多零售购买数量"
+        placeholder="请输入单次最多零售购买数量"
+      />
       <ProFormRadio.Group
-        name="radio-group"
-        label="运费属性"
+        name="isFreeFreight"
+        label="是否包邮"
         rules={[{ required: true }]}
-        fieldProps={{
-          defaultValue: 'a'
-        }}
         options={[
           {
             label: '包邮',
-            value: 'a',
+            value: 1,
           },
           {
             label: '不包邮',
-            value: 'b',
+            value: 0,
           },
         ]}
       />
       <ProFormRadio.Group
-        name="radio-group"
+        name="supportNoReasonReturn"
         label="七天无理由退货"
         rules={[{ required: true }]}
         fieldProps={{
@@ -220,35 +443,21 @@ export default (props) => {
         options={[
           {
             label: '支持',
-            value: 'a',
+            value: 1,
           },
           {
             label: '不支持',
-            value: 'b',
+            value: 0,
           },
         ]}
       />
-      <ProFormRadio.Group
-        name="radio-group"
+      <ProFormTextArea
+        name="goodsRemark"
         label="特殊说明"
-        rules={[{ required: true }]}
-        fieldProps={{
-          defaultValue: 'a'
-        }}
-        options={[
-          {
-            label: '不需要',
-            value: 'a',
-          },
-          {
-            label: '需要',
-            value: 'b',
-          },
-        ]}
       />
       <Form.Item
         label="商品主图"
-        name="parentId"
+        name="primaryImages"
         rules={[{ required: true, message: '请上传商品主图' }]}
         tooltip={
           <dl>
@@ -260,11 +469,11 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload />
+        <Upload multiple maxCount={10} accept="image/*" />
       </Form.Item>
       <Form.Item
         label="商品详情"
-        name="parentId"
+        name="detailImages"
         rules={[{ required: true, message: '请上传商品详情' }]}
         tooltip={
           <dl>
@@ -274,11 +483,11 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload />
+        <Upload accept="image/*" />
       </Form.Item>
       <Form.Item
         label="商品横幅"
-        name="parentId"
+        name="advImages"
         tooltip={
           <dl>
             <dt>图片要求</dt>
@@ -289,11 +498,11 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload />
+        <Upload accept="image/*" />
       </Form.Item>
       <Form.Item
         label="商品视频"
-        name="parentId"
+        name="videoUrl"
         tooltip={
           <dl>
             <dt>视频要求</dt>
@@ -302,7 +511,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload />
+        <Upload accept="video/mp4" />
       </Form.Item>
     </DrawerForm>
   );

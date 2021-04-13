@@ -4,61 +4,10 @@ import {
   ModalForm,
   ProFormText,
 } from '@ant-design/pro-form';
-
-const treeData = [
-  {
-    title: '0-0',
-    key: '0-0',
-    children: [
-      {
-        title: '0-0-0',
-        key: '0-0-0',
-        children: [
-          { title: '0-0-0-0', key: '0-0-0-0' },
-          { title: '0-0-0-1', key: '0-0-0-1' },
-          { title: '0-0-0-2', key: '0-0-0-2' },
-        ],
-      },
-      {
-        title: '0-0-1',
-        key: '0-0-1',
-        children: [
-          { title: '0-0-1-0', key: '0-0-1-0' },
-          { title: '0-0-1-1', key: '0-0-1-1' },
-          { title: '0-0-1-2', key: '0-0-1-2' },
-        ],
-      },
-      {
-        title: '0-0-2',
-        key: '0-0-2',
-      },
-    ],
-  },
-  {
-    title: '0-1',
-    key: '0-1',
-    children: [
-      { title: '0-1-0-0', key: '0-1-0-0' },
-      { title: '0-1-0-1', key: '0-1-0-1' },
-      { title: '0-1-0-2', key: '0-1-0-2' },
-    ],
-  },
-  {
-    title: '0-2',
-    key: '0-2',
-  },
-];
-
-const waitTime = (time = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
+import * as api from '@/services/setting/role-management'
 
 export default (props) => {
-  const { visible, setVisible } = props;
+  const { visible, setVisible, treeData, data } = props;
   const [selectKeys, setSelectKeys] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const formItemLayout = {
@@ -77,14 +26,14 @@ export default (props) => {
   const onSelectAll = ({ target }) => {
     const { checked } = target;
     if (checked) {
-      setSelectKeys(treeData.map(item => item.key));
+      setSelectKeys(data.map(item => item.id));
     } else {
       setSelectKeys([]);
     }
     setSelectAll(checked);
   }
 
-  const onCheck = (checkedKeys, e) => {
+  const onCheck = (checkedKeys) => {
     console.log("🚀 ~ file: form.jsx ~ line 88 ~ onCheck ~ checkedKeys", checkedKeys)
     setSelectKeys(checkedKeys)
     setSelectAll(!treeData.some(item => {
@@ -97,6 +46,23 @@ export default (props) => {
     setSelectAll(false);
   }
 
+  const submit = (values) => {
+    const { title } = values;
+    return new Promise((resolve, reject) => {
+      api.groupAdd({
+        title,
+        status:1,
+        rules: selectKeys.join(',')
+      }, { showSuccess: true, showError: true }).then(res => {
+        if (res.code === 0) {
+          resolve();
+        } else {
+          reject();
+        }
+      })
+    });
+  }
+
   return (
     <ModalForm
       title="新建角色"
@@ -107,9 +73,7 @@ export default (props) => {
       visible={visible}
       width={550}
       onFinish={async (values) => {
-        await waitTime(2000);
-        console.log(values.name);
-        message.success('提交成功');
+        await submit(values)
         reset();
         return true;
       }}
@@ -117,7 +81,7 @@ export default (props) => {
       {...formItemLayout}
     >
       <ProFormText
-        name="name"
+        name="title"
         label="角色名称"
         placeholder="请输入角色名称"
         width="md"
@@ -126,7 +90,7 @@ export default (props) => {
 
       <div style={{ display: 'flex', paddingLeft: 55 }}>
         <div>角色权限</div>
-        <div>
+        <div style={{ flex: 1 }}>
           <Checkbox
             onChange={onSelectAll}
             checked={selectAll}

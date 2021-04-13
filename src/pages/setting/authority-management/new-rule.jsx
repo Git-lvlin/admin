@@ -7,7 +7,7 @@ import {
   ProFormDependency,
 } from '@ant-design/pro-form';
 import styles from './new-rule.less';
-import * as api from '@/services/authority-management'
+import * as api from '@/services/setting/authority-management'
 
 const placeholderType = {
   1: {

@@ -26,6 +26,7 @@ export default defineConfig({
   targets: {
     ie: 11,
   },
+  fastRefresh: {},
   // umi routes: https://umijs.org/docs/routing
   routes: [
     {
@@ -130,6 +131,11 @@ export default defineConfig({
                   name: 'product-review',
                   path: '/product-management/product-review',
                   component: './product-management/product-review',
+                },
+                {
+                  name: 'product-category',
+                  path: '/product-management/product-category',
+                  component: './product-management/product-category',
                 },
               ]
             },
