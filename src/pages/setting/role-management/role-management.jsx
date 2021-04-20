@@ -61,7 +61,7 @@ const TableList = () => {
       <ProTable
         rowKey="id"
         options={false}
-        request={(params) => api.adminGroup(params)}
+        request={api.adminGroup}
         search={{
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [

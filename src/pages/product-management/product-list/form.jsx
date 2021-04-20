@@ -30,6 +30,16 @@ export default (props) => {
       }}
       onVisibleChange={setVisible}
       visible={visible}
+      initialValues={{
+        retailSupplyPrice: 1,
+        suggestedRetailPrice: 1,
+        wholesalePrice: 1,
+        wholesaleMinNum: 1,
+        stockAlarmNum: 1,
+        stockNum: 1,
+        salePrice: 1,
+        marketPrice: 1,
+      }}
     >
       <p>请输入要批量填写的规格参数。</p>
       <p style={{ color: 'red' }}>若已输入规格参数，重新批量填写会将已有的规格参数全部重置，请确认后操作！</p>

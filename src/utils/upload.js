@@ -2,7 +2,7 @@ import OSS from 'ali-oss';
 import request from '@/utils/request';
 
 const getConfig = (params = {}, options = {}) => {
-  return request('/auth/goods/product/getConfig', {
+  return request('/auth/goods/product/getOssConfig', {
     method: 'POST',
     data: params,
     ...options
@@ -42,7 +42,7 @@ const upload = async (file, dirName) => {
   return client.put(`${dirName}/${file.uid}${file.name}`, file).then(res => {
     if (file.type.indexOf('image') !== -1) {
       return getImageSize(file).then(size => {
-        return `${res.url}?x-oss-process=image/resize,m_lfit,h_${size.height},w_${size.width}`
+        return `${res.url}?x-oss-process=image/resize,h_${size.height},w_${size.width}`
       })
     }
     return res.url;

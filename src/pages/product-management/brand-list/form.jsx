@@ -1,21 +1,15 @@
-import React from 'react';
-import { message, Form, Upload } from 'antd';
+import React, { useEffect } from 'react';
+import { Form } from 'antd';
 import {
   ModalForm,
   ProFormText,
 } from '@ant-design/pro-form';
-import { UploadOutlined } from '@ant-design/icons'
-
-const waitTime = (time = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
+import Upload from '@/components/upload'
+import { brandAdd, brandEdit } from '@/services/product-management/brand-list';
 
 export default (props) => {
-  const { visible, setVisible } = props;
+  const { visible, setVisible, callback, onCancel, data } = props;
+  const [form] = Form.useForm()
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -29,47 +23,71 @@ export default (props) => {
     }
   };
 
-  const getBase64 = (file) => {
+  const submit = (values) => {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
+      const apiMethod = data ? brandEdit : brandAdd;
+      const params = {
+        ...values
+      }
+
+      if (data) {
+        params.brandId = data.brandId
+      }
+
+      apiMethod({
+        ...params,
+      }, { showSuccess: true }).then(res => {
+        if (res.code === 0) {
+          resolve()
+        } else {
+          reject()
+        }
+      }).catch(() => {
+        reject()
+      })
     });
   }
 
-  const uploadChange = (e) => {
-    getBase64(e.file.originFileObj).then(res => {
-      console.log('res', res);
-    })
-  }
+  useEffect(() => {
+    if (data) {
+      form.setFieldsValue({
+        ...data,
+        brandLogo: data.brandLogo
+      })
+    } else {
+      form.resetFields();
+    }
+
+  }, [data, form])
 
   return (
     <ModalForm
-      title="确认发货"
+      title={`${data ? '编辑' : '添加'}品牌`}
       modalProps={{
-        onCancel: () => console.log('run'),
+        onCancel: () => onCancel(),
       }}
       onVisibleChange={setVisible}
       visible={visible}
       width={550}
       onFinish={async (values) => {
-        await waitTime(2000);
-        message.success('提交成功');
+        await submit(values);
+        // eslint-disable-next-line no-unused-expressions
+        callback && callback();
         return true;
       }}
+      form={form}
       labelAlign="right"
       {...formItemLayout}
     >
       <ProFormText
-        name="select"
+        name="brandName"
         label="品牌名称"
         placeholder="请输入品牌名称"
         rules={[{ required: true, message: '请输入品牌名称' }]}
       />
       <Form.Item
         label="品牌logo"
-        name="parentId"
+        name="brandLogo"
         rules={[{ required: true, message: '请上传品牌logo' }]}
         tooltip={
           <dl>
@@ -80,16 +98,10 @@ export default (props) => {
         }
       >
         <Upload
-          name="avatar"
-          listType="picture-card"
-          showUploadList={false}
-          onChange={uploadChange}
-        >
-          <div>
-            <UploadOutlined />
-            <p>上传</p>
-          </div>
-        </Upload>
+          maxCount={1}
+          accept="image/*"
+          dirName="brand"
+        />
       </Form.Item>
     </ModalForm>
   );

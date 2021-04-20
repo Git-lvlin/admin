@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export const productList = async (params, options = {}) => {
+export const checkList = async (params = {}, options = {}) => {
   const { current, pageSize, gcId = [], ...rest } = params;
-  const res = await request('/auth/goods/product/lists', {
+  const res = await request('/auth/goods/product/checkList', {
     method: 'POST',
     data: {
       page: current,
@@ -29,24 +29,24 @@ export const getConfig = (params = {}, options = {}) => {
   });
 }
 
-export const addGoods = (params = {}, options = {}) => {
-  return request('/auth/goods/product/add', {
-    method: 'POST',
-    data: params,
-    ...options
-  });
-}
-
-export const editGoods = (params = {}, options = {}) => {
-  return request('/auth/goods/product/edit', {
-    method: 'POST',
-    data: params,
-    ...options
-  });
-}
-
 export const getDetail = (params = {}, options = {}) => {
   return request('/auth/goods/product/detail', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const check = (params = {}, options = {}) => {
+  return request('/auth/goods/product/check', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const onShelf = (params = {}, options = {}) => {
+  return request('/auth/goods/product/onShelf', {
     method: 'POST',
     data: params,
     ...options

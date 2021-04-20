@@ -1,4 +1,5 @@
 import { parse } from 'querystring';
+import Big from 'big.js';
 
 export const getPageQuery = () => parse(window.location.href.split('?')[1]);
 
@@ -25,4 +26,11 @@ export const uploadImageFormatConversion = (imgArr, urlKey, uidKey) => {
       uid: uidKey ? item[uidKey] : index
     }
   })
+}
+
+export const amountTransform = (amount) => {
+  if (!amount) {
+    return 0;
+  }
+  return +new Big(amount).times(100)
 }

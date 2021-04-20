@@ -1,10 +1,11 @@
 import { Drawer } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import { logDetail } from '@/services/product-management/product-log';
 
 const columns = [
   {
     title: '序号',
-    dataIndex: 'name',
+    dataIndex: 'id',
     valueType: 'text',
     hideInSearch: true,
   },
@@ -43,24 +44,29 @@ const columns = [
   },
   {
     title: '操作时间',
-    dataIndex: 'age',
+    dataIndex: 'updateTime',
     valueType: 'text',
     hideInSearch: true,
   },
 ];
 
-const UserDetail = (onClose) => {
+const UserDetail = (props) => {
+  const { visible, setVisible, spuId } = props;
   return (
     <Drawer
       title="用户详情"
       width={1000}
       placement="right"
-      onClose={onClose}
-      visible
+      onClose={() => { setVisible(false) }}
+      visible={visible}
     >
       <ProTable
         rowKey="id"
         options={false}
+        params={{
+          spuId,
+        }}
+        request={logDetail}
         search={{
           defaultCollapsed: false,
         }}
