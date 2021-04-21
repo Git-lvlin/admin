@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
-import { Form, TreeSelect, message } from 'antd';
+import { Form } from 'antd';
 import {
   ModalForm,
   ProFormText,
-  ProFormRadio,
-  ProFormDependency,
 } from '@ant-design/pro-form';
 import * as api from '@/services/product-management/product-category'
 
 export default (props) => {
-  const { visible, setVisible, callback, data, parentId, type } = props;
+  const { visible, setVisible, callback, gcName, id, type } = props;
   const [form] = Form.useForm();
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -26,10 +24,20 @@ export default (props) => {
 
   const submit = (values) => {
     return new Promise((resolve, reject) => {
-      api.categoryAdd({
+      const apiMethod = type === 'add' ? api.categoryAdd : api.categoryEdit;
+      const params = {
         ...values,
-        gcParentId: parentId,
         gcShow: 1,
+      }
+
+      if (type === 'add') {
+        params.gcParentId = id
+      } else {
+        params.id = id;
+      }
+
+      apiMethod({
+        ...params,
       }, { showSuccess: true, showError: true }).then(res => {
         if (res.code === 0) {
           resolve();
@@ -41,18 +49,14 @@ export default (props) => {
   }
 
   useEffect(() => {
-    // form?.setFieldsValue({
-    //   name: data.name,
-    //   ruleType: data.ruleType,
-    //   title: data.title,
-    //   status: data.status,
-    //   pid: data.pid || '',
-    // })
-  }, [data])
+    form?.setFieldsValue({
+      gcName,
+    })
+  }, [form, gcName])
 
   return (
     <ModalForm
-      title={data ? '编辑分类' : '添加分类'}
+      title={type === 'edit' ? '编辑分类' : `添加${id === 0 ? '一' : '二'}级分类`}
       modalProps={{
         onCancel: () => form.resetFields(),
       }}

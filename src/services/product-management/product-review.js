@@ -37,8 +37,24 @@ export const getDetail = (params = {}, options = {}) => {
   });
 }
 
+export const firstCheck = (params = {}, options = {}) => {
+  return request('/auth/goods/product/firstCheck', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const check = (params = {}, options = {}) => {
   return request('/auth/goods/product/check', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const noFirstCheckList = (params = {}, options = {}) => {
+  return request('/auth/goods/product/noFirstCheckList', {
     method: 'POST',
     data: params,
     ...options

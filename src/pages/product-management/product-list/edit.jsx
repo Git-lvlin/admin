@@ -17,7 +17,7 @@ import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 
 export default (props) => {
-  const { visible, setVisible, detailData } = props;
+  const { visible, setVisible, detailData, callback, onClose } = props;
   const [formModalVisible, setFormModalVisible] = useState(false);
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
@@ -112,6 +112,8 @@ export default (props) => {
       obj.supplierId = detailData.supplierId
       obj.storeNo = detailData.storeNo
       obj.goodsFromType = detailData.goodsFromType
+      obj.spuId = detailData.spuId
+      obj.goods.skuId = detailData.goods.skuId
     }
 
     return new Promise((resolve, reject) => {
@@ -119,6 +121,7 @@ export default (props) => {
       apiMethod(obj, { showSuccess: true, showError: true }).then(res => {
         if (res.code === 0) {
           resolve();
+          callback();
         } else {
           reject();
         }
@@ -206,11 +209,11 @@ export default (props) => {
           const specDataKeys = item[0].substring(1).split('|');
           return {
             ...item[1],
-            retailSupplyPrice: amountTransform(item[1].retailSupplyPrice),
-            suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice),
-            wholesalePrice: amountTransform(item[1].wholesalePrice),
-            salePrice: amountTransform(item[1].salePrice),
-            marketPrice: amountTransform(item[1].marketPrice),
+            retailSupplyPrice: amountTransform(item[1].retailSupplyPrice,'/'),
+            suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
+            wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
+            salePrice: amountTransform(item[1].salePrice, '/'),
+            marketPrice: amountTransform(item[1].marketPrice, '/'),
             key: item[1].skuId,
             imageUrl: [{ url: item[1].imageUrl, uid: 1 }],
             spec1: specValuesMap[specDataKeys[0]],
@@ -219,9 +222,9 @@ export default (props) => {
         }))
       } else {
         form.setFieldsValue({
-          wholesalePrice: amountTransform(goods.wholesalePrice),
-          retailSupplyPrice: amountTransform(goods.retailSupplyPrice),
-          suggestedRetailPrice: amountTransform(goods.suggestedRetailPrice),
+          wholesalePrice: amountTransform(goods.wholesalePrice, '/'),
+          retailSupplyPrice: amountTransform(goods.retailSupplyPrice, '/'),
+          suggestedRetailPrice: amountTransform(goods.suggestedRetailPrice, '/'),
         })
       }
     }
@@ -237,6 +240,9 @@ export default (props) => {
         destroyOnClose: true,
         width: 1200,
         className: styles.drawer_form,
+        onClose:() => {
+          onClose();
+        }
       }}
       form={form}
       onFinish={async (values) => {
@@ -495,7 +501,15 @@ export default (props) => {
       <Form.Item
         label="商品主图"
         name="primaryImages"
-        rules={[{ required: true, message: '请上传商品主图' }]}
+        required
+        rules={[() => ({
+          validator(_, value) {
+            if (value && value.length >= 3) {
+              return Promise.resolve();
+            }
+            return Promise.reject(new Error('至少上传3张商品主图'));
+          },
+        })]}
         tooltip={
           <dl>
             <dt>图片要求</dt>
@@ -511,7 +525,7 @@ export default (props) => {
       <Form.Item
         label="商品详情"
         name="detailImages"
-        rules={[{ required: true, message: '请上传商品详情' }]}
+        rules={[{ required: true, message: '请上传商品详情图片' }]}
         tooltip={
           <dl>
             <dt>图片要求</dt>
@@ -550,6 +564,31 @@ export default (props) => {
       >
         <Upload maxCount={1} accept="video/mp4" />
       </Form.Item>
+      {detailData && <>
+        <Form.Item
+          label="创建时间"
+        >
+          {detailData.goods.createTimeDisplay}
+        </Form.Item>
+
+        <Form.Item
+          label="审核状态"
+        >
+          {detailData.goods.goodsVerifyStateDisplay}
+        </Form.Item>
+
+        <Form.Item
+          label="上架状态"
+        >
+          {detailData.goods.goodsStateDisplay}
+        </Form.Item>
+
+        {detailData.goods.goodsVerifyRemark && <Form.Item
+          label="原因"
+        >
+          <span style={{ color: 'red' }}>{detailData.goods.goodsVerifyRemark}</span>
+        </Form.Item>}
+      </>}
     </DrawerForm>
   );
 };

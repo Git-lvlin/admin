@@ -42,10 +42,22 @@ const errorHandler = (error) => {
 
   return response;
 };
+
+
+const getPrefix = () => {
+  if (process.env.NODE_ENV !== 'development') {
+    return 'http://admin.waiad.icu';
+  }
+
+  return '';
+}
+
+
 /** 配置request请求时的默认参数 */
 
 const instance = extend({
   errorHandler,
+  prefix: getPrefix()
   // 默认错误处理
   // credentials: 'include', // 默认请求是否带上cookie
 });

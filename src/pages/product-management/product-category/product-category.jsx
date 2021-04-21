@@ -13,14 +13,10 @@ const SortableContainer = sortableContainer(({ children }) => {
 });
 
 const List = (props) => {
-  const { parentId = 0, onClick = () => { }, } = props;
-  const [formParams, setFormParams] = useState({})
+  const { parentId = 0, onClick = () => { }, edit, remove } = props;
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [selectId, setSelectId] = useState(null);
-
-
-  // const [visible, setVisible] = useState(false);
 
   const getData = () => {
     setLoading(true);
@@ -35,11 +31,6 @@ const List = (props) => {
       })
   }
 
-  const setFormParamsHandle = (params) => {
-    setFormParams(params)
-    // setVisible(true)
-  }
-
   const onSortEnd = ({ oldIndex, newIndex }) => {
     if (oldIndex === newIndex) {
       return;
@@ -48,7 +39,7 @@ const List = (props) => {
     api.categorySorts({
       moveId: data[oldIndex].id,
       // eslint-disable-next-line no-nested-ternary
-      afterId: newIndex === 0 ? 0 : (newIndex > oldIndex ? data[newIndex].id : data[newIndex-1].id)
+      afterId: newIndex === 0 ? 0 : (newIndex > oldIndex ? data[newIndex].id : data[newIndex - 1].id)
     }).then(res => {
       if (res.code === 0) {
         getData();
@@ -69,7 +60,7 @@ const List = (props) => {
       <div style={{ marginRight: 50 }}>
         <div className={styles.header}>
           <a
-          // onClick={() => { setFormParamsHandle({ parentId: 0, type: 'add', callback: () => { getParentData(); } }); }}
+            onClick={() => { edit({ id:parentId, type: 'add', callback: () => { getData(); } }); }}
           >
             添加{parentId === 0 ? '一' : '二'}级分类
           </a>
@@ -88,7 +79,9 @@ const List = (props) => {
                       {item.gcName}
                       <div className={styles.actions}>
                         <Switch checkedChildren="开" unCheckedChildren="关" style={{ marginRight: 10 }} />
-                        <a>编辑</a> <a>参数</a> <a>删除</a>
+                        <a onClick={(e) => { edit({ id: item.id, type: 'edit', gcName: item.gcName, callback: () => { getData(); } }); e.stopPropagation() }}>编辑</a>
+                        &nbsp;<a>参数</a>
+                        &nbsp;<a onClick={(e) => { remove(item.id, () => { getData() }); e.stopPropagation() }}>删除</a>
                       </div>
                     </li>
                   </SortableItem>
@@ -108,10 +101,21 @@ const ProductCategory = () => {
   const [selectId, setSelectId] = useState(null);
   const [formParams, setFormParams] = useState({})
 
-
-  const setFormParamsHandle = (params) => {
+  const edit = (params) => {
     setFormParams(params)
     setVisible(true)
+  }
+
+  const remove = (id, cb) => {
+    api.categoryDel({
+      id
+    }, { showSuccess: true }).then(res => {
+      if (res.code === 0) {
+        if (cb) {
+          cb();
+        }
+      }
+    })
   }
 
   return (
@@ -122,8 +126,8 @@ const ProductCategory = () => {
         {...formParams}
       />
       <div style={{ display: 'flex' }}>
-        <List onClick={(id) => { setSelectId(id) }} />
-        {selectId && <List parentId={selectId} />}
+        <List onClick={(id) => { setSelectId(id) }} edit={edit} remove={remove} />
+        {selectId && <List parentId={selectId} edit={edit} remove={remove} />}
       </div>
     </PageContainer>
   )

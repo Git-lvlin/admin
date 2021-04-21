@@ -1,12 +1,12 @@
-import { Drawer, Image } from 'antd';
+import React, { useState } from 'react';
+import { Drawer, Button, Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { logDetail } from '@/services/product-management/product-log';
-
-
+import Overrule from './overrule';
 
 
 const UserDetail = (props) => {
-  const { visible, setVisible, spuId, operateRole } = props;
+  const { visible, setVisible, detailData, operateRole, check } = props;
+  const [overruleVisible, setOverruleVisible] = useState(false);
 
   const columns = [
     {
@@ -94,19 +94,41 @@ const UserDetail = (props) => {
       placement="right"
       onClose={() => { setVisible(false) }}
       visible={visible}
+      footer={
+        <div
+          style={{
+            textAlign: 'right',
+          }}
+        >
+          <Button style={{ marginLeft: 10 }} key="1" type="primary" onClick={() => { check(1, 1, detailData.spuId) }}>
+            通过并上架
+          </Button>
+          <Button style={{ marginLeft: 10 }} key="2" onClick={() => { check(2, 1, detailData.spuId) }}>
+            通过但不上架
+          </Button>
+          <Button style={{ marginLeft: 10 }} type="primary" key="3" danger onClick={() => { setOverruleVisible(true) }}>
+            驳回
+          </Button>
+          <Button style={{ marginLeft: 10 }} key="4" onClick={() => { setVisible(false) }}>
+            返回
+          </Button>
+        </div>
+      }
     >
       <ProTable
         rowKey="id"
         options={false}
-        params={{
-          spuId,
-        }}
-        request={logDetail}
+        dataSource={detailData.data}
         search={{
           defaultCollapsed: false,
         }}
         columns={columns}
       />
+      {overruleVisible && <Overrule
+        visible={overruleVisible}
+        setVisible={setOverruleVisible}
+        callback={(text) => { check(3, 2, detailData.spuId, text) }}
+      />}
     </Drawer>
   )
 }

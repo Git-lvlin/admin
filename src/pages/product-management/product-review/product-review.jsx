@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Table } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -6,6 +6,7 @@ import * as api from '@/services/product-management/product-review'
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import FirstReview from './first-review';
+import SecondReview from './second-review';
 
 
 const SubTable = (props) => {
@@ -51,19 +52,96 @@ const typeTransform = (array) => {
 }
 
 const TableList = () => {
-  const [formVisible, setFormVisible] = useState(false);
+  const [firstReviewVisible, setFirstReviewVisible] = useState(false);
+  const [secondReviewVisible, setSecondReviewVisible] = useState(false);
   const [config, setConfig] = useState({});
   const [detailData, setDetailData] = useState(null);
+  const actionRef = useRef();
 
-  const getDetail = (id) => {
-    api.getDetail({
-      spuId: id
-    }).then(res => {
-      if (res.code === 0) {
-        setDetailData(res.data);
-        setFormVisible(true);
-      }
-    })
+  const getDetail = (record) => {
+    if (record.firstAudit===1) {
+      api.getDetail({
+        spuId: record.id
+      }).then(res => {
+        if (res.code === 0) {
+          setDetailData(res.data);
+          setFirstReviewVisible(true);
+        }
+      })
+    } else {
+      api.noFirstCheckList({
+        spuId: record.id
+      }).then(res => {
+        if (res.code === 0) {
+          setDetailData({
+            data:res.data,
+            spuId: record.id
+          });
+          setSecondReviewVisible(true);
+        }
+      })
+    }
+  }
+
+  const onShelf = (spuId, cb) => {
+    api.onShelf({ spuId }, { showSuccess: true })
+      .then(res => {
+        if (res.code === 0) {
+          actionRef.current.reload();
+          
+          if (cb) {
+            cb()
+          }
+        }
+      })
+  }
+
+  /**
+   * 
+   * @param {*} type 1:通过并上架，2:只通过，3:驳回
+   */
+  const firstCheck = (type, checkType, spuId, goodsVerifyRemark) => {
+    api.firstCheck({
+      checkType,
+      spuId,
+      goodsVerifyRemark
+    }, { showSuccess: type !== 1 })
+      .then(res => {
+        if (res.code === 0) {
+          if (type === 1) {
+            onShelf(spuId, () => {
+              setFirstReviewVisible(false)
+            })
+          } else {
+            setFirstReviewVisible(false)
+            actionRef.current.reload();
+          }
+        }
+      })
+  }
+
+  /**
+   * 
+   * @param {*} type 1:通过并上架，2:只通过，3:驳回
+   */
+  const check = (type, checkType, spuId, goodsVerifyRemark) => {
+    api.check({
+      checkType,
+      spuId,
+      goodsVerifyRemark
+    }, { showSuccess: type !== 1 })
+      .then(res => {
+        if (res.code === 0) {
+          if (type === 1) {
+            onShelf(spuId, () => {
+              setSecondReviewVisible(false)
+            })
+          } else {
+            setSecondReviewVisible(false)
+            actionRef.current.reload();
+          }
+        }
+      })
   }
 
   const columns = [
@@ -188,7 +266,7 @@ const TableList = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a onClick={() => { getDetail(record.spuId) }}>审核</a>
+          <a onClick={() => { getDetail(record) }}>审核</a>
         </>
       ),
     },
@@ -211,6 +289,7 @@ const TableList = () => {
       <ProTable
         rowKey="id"
         options={false}
+        actionRef={actionRef}
         params={{
           selectType: 1,
         }}
@@ -221,10 +300,18 @@ const TableList = () => {
         }}
         columns={columns}
       />
-      {formVisible && <FirstReview
-        visible={formVisible}
-        setVisible={setFormVisible}
+      {firstReviewVisible && <FirstReview
+        visible={firstReviewVisible}
+        setVisible={setFirstReviewVisible}
         detailData={detailData}
+        check={firstCheck}
+      />}
+      {secondReviewVisible && <SecondReview
+        visible={secondReviewVisible}
+        setVisible={setSecondReviewVisible}
+        check={check}
+        detailData={detailData}
+        operateRole={typeTransform(config.operateRole)}
       />}
     </PageContainer>
 

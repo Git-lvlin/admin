@@ -23,3 +23,19 @@ export const categorySorts = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const categoryDel = (params = {}, options = {}) => {
+  return request('/auth/goods/product/categoryDel', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const categoryEdit = (params = {}, options = {}) => {
+  return request('/auth/goods/product/categoryEdit', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

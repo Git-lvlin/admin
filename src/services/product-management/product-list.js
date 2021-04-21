@@ -52,3 +52,19 @@ export const getDetail = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const onShelf = (params = {}, options = {}) => {
+  return request('/auth/goods/product/onShelf', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const offShelf = (params = {}, options = {}) => {
+  return request('/auth/goods/product/offShelf', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

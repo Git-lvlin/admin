@@ -27,7 +27,14 @@ export default function EditTable(props) {
         dataIndex: 'imageUrl',
         // editable: false,
         width: 50,
-        renderFormItem: () => <Upload maxCount={1} className={styles.upload} accept="image/*" />
+        renderFormItem: () => <Upload maxCount={1} className={styles.upload} accept="image/*" />,
+        formItemProps: {
+          rule: {
+            required: true,
+            whitespace: true,
+            message: '请上传规格图片',
+          },
+        }
       },
       ...arr,
       {

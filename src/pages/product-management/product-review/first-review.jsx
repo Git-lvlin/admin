@@ -5,11 +5,13 @@ import {
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
 import Table from './table';
+import Overrule from './overrule';
 
 export default (props) => {
-  const { visible, setVisible, detailData } = props;
+  const { visible, setVisible, detailData, check } = props;
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
+  const [overruleVisible, setOverruleVisible] = useState(false);
   const { goods } = detailData;
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -40,11 +42,11 @@ export default (props) => {
           const specDataKeys = item[0].substring(1).split('|');
           return {
             ...item[1],
-            retailSupplyPrice: amountTransform(item[1].retailSupplyPrice),
-            suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice),
-            wholesalePrice: amountTransform(item[1].wholesalePrice),
-            salePrice: amountTransform(item[1].salePrice),
-            marketPrice: amountTransform(item[1].marketPrice),
+            retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
+            suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
+            wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
+            salePrice: amountTransform(item[1].salePrice, '/'),
+            marketPrice: amountTransform(item[1].marketPrice, '/'),
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -68,13 +70,13 @@ export default (props) => {
       submitter={{
         render: () => {
           return [
-            <Button key="1" type="primary">
+            <Button key="1" type="primary" onClick={() => { check(1, 1, detailData.spuId) }}>
               通过并上架
             </Button>,
-            <Button key="2">
+            <Button key="2" onClick={() => { check(2, 1, detailData.spuId) }}>
               通过但不上架
             </Button>,
-            <Button type="primary" key="3" danger>
+            <Button type="primary" key="3" danger onClick={() => { setOverruleVisible(true) }}>
               驳回
             </Button>,
             <Button key="4" onClick={() => { setVisible(false) }}>
@@ -300,6 +302,11 @@ export default (props) => {
       >
         <span style={{ color: 'red' }}>{goods.goodsVerifyRemark}</span>
       </Form.Item>}
+      {overruleVisible && <Overrule
+        visible={overruleVisible}
+        setVisible={setOverruleVisible}
+        callback={(text) => { check(3, 2, detailData.spuId, text) }}
+      />}
     </DrawerForm>
   );
 };

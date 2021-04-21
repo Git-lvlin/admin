@@ -76,11 +76,11 @@ const BasicLayout = (props) => {
   } = props;
   const menuDataRef = useRef([]);
   useEffect(() => {
-    if (dispatch) {
-      dispatch({
-        type: 'user/fetchCurrent',
-      });
-    }
+    // if (dispatch) {
+    //   dispatch({
+    //     type: 'user/fetchCurrent',
+    //   });
+    // }
   }, []);
   /** Init variables */
 

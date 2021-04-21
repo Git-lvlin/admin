@@ -28,9 +28,14 @@ export const uploadImageFormatConversion = (imgArr, urlKey, uidKey) => {
   })
 }
 
-export const amountTransform = (amount) => {
+export const amountTransform = (amount, type = '*') => {
   if (!amount) {
     return 0;
   }
-  return +new Big(amount).times(100)
+
+  if (type === '*') {
+    return +new Big(amount).times(100)
+  }
+
+  return +new Big(amount).div(100)
 }

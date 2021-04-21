@@ -165,11 +165,6 @@ const TableList = () => {
 
   return (
     <PageContainer>
-      <Card>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button key="out" type="primary" icon={<PlusOutlined />} onClick={() => { setFormVisible(true) }}>新建</Button>
-        </div>
-      </Card>
       <ProTable
         rowKey="id"
         options={false}
@@ -187,6 +182,7 @@ const TableList = () => {
         visible={visible}
         setVisible={setVisible}
         spuId={selectId}
+        operateRole={typeTransform(config.operateRole)}
       />
     </PageContainer>
 

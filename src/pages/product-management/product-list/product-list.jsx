@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Card, Table } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -7,6 +7,7 @@ import * as api from '@/services/product-management/product-list';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import Edit from './edit';
+import OffShelf from './off-shelf';
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -54,6 +55,9 @@ const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [config, setConfig] = useState({});
+  const [offShelfVisible, setOffShelfVisible] = useState(false);
+  const [selectItemId, setSelectItemId] = useState(null);
+  const actionRef = useRef();
 
   const getDetail = (id) => {
     api.getDetail({
@@ -62,6 +66,28 @@ const TableList = () => {
       if (res.code === 0) {
         setDetailData(res.data);
         setFormVisible(true);
+      }
+    })
+  }
+
+  const onShelf = (spuId) => {
+    api.onShelf({
+      spuId
+    }, { showSuccess: true }).then(res => {
+      if (res.code === 0) {
+        actionRef.current.reload();
+      }
+    })
+  }
+
+  const offShelf = (spuId, goodsStateRemark) => {
+    api.offShelf({
+      spuId,
+      goodsStateRemark,
+    }, { showSuccess: true }).then(res => {
+      if (res.code === 0) {
+        actionRef.current.reload();
+        setSelectItemId(null);
       }
     })
   }
@@ -185,16 +211,20 @@ const TableList = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => (
-        <>
-          <a onClick={() => { getDetail(record.spuId) }}>编辑</a>
-        </>
-      ),
+      render: (_, record) => {
+        const { goodsVerifyState, goodsState } = record;
+        return (
+          <>
+            {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { setSelectItemId(record.spuId); setOffShelfVisible(true) }}>下架</a>}
+            &nbsp;{(goodsVerifyState === 1 && goodsState === 0) && <a onClick={() => { onShelf(record.spuId) }}>上架</a>}
+            &nbsp;<a onClick={() => { getDetail(record.spuId) }}>编辑</a>
+          </>
+        )
+      },
     },
   ];
 
   useEffect(() => {
-
     api.getConfig()
       .then(res => {
         setConfig(res?.data || [])
@@ -214,6 +244,7 @@ const TableList = () => {
         params={{
           selectType: 1,
         }}
+        actionRef={actionRef}
         request={api.productList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
@@ -245,9 +276,15 @@ const TableList = () => {
         visible={formVisible}
         setVisible={setFormVisible}
         detailData={detailData}
+        callback={() => { actionRef.current.reload(); setDetailData(null) }}
+        onClose={() => { setDetailData(null) }}
+      />}
+      {offShelfVisible && <OffShelf
+        visible={offShelfVisible}
+        setVisible={setOffShelfVisible}
+        callback={(text) => { offShelf(selectItemId, text) }}
       />}
     </PageContainer>
-
   );
 };
 

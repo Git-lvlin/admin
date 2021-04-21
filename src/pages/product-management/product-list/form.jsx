@@ -31,14 +31,14 @@ export default (props) => {
       onVisibleChange={setVisible}
       visible={visible}
       initialValues={{
-        retailSupplyPrice: 1,
-        suggestedRetailPrice: 1,
-        wholesalePrice: 1,
-        wholesaleMinNum: 1,
-        stockAlarmNum: 1,
-        stockNum: 1,
-        salePrice: 1,
-        marketPrice: 1,
+        // retailSupplyPrice: 1,
+        // suggestedRetailPrice: 1,
+        // wholesalePrice: 1,
+        // wholesaleMinNum: 1,
+        // stockAlarmNum: 1,
+        // stockNum: 1,
+        // salePrice: 1,
+        // marketPrice: 1,
       }}
     >
       <p>请输入要批量填写的规格参数。</p>
