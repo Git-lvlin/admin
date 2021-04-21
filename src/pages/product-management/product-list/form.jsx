@@ -1,20 +1,8 @@
 import React from 'react';
-import { Button, message } from 'antd';
 import ProForm, {
   ModalForm,
   ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
 } from '@ant-design/pro-form';
-import { PlusOutlined } from '@ant-design/icons';
-
-const waitTime = (time = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
 
 export default (props) => {
   const { visible, setVisible, getData } = props;
