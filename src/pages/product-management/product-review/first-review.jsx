@@ -8,7 +8,7 @@ import Table from './table';
 import Overrule from './overrule';
 
 export default (props) => {
-  const { visible, setVisible, detailData, check } = props;
+  const { visible, setVisible, detailData, check, overrule } = props;
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [overruleVisible, setOverruleVisible] = useState(false);
@@ -305,7 +305,7 @@ export default (props) => {
       {overruleVisible && <Overrule
         visible={overruleVisible}
         setVisible={setOverruleVisible}
-        callback={(text) => { check(3, 2, detailData.spuId, text) }}
+        callback={(text) => { overrule(3, 2, detailData.spuId, text) }}
       />}
     </DrawerForm>
   );

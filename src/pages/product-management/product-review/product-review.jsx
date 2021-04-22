@@ -88,7 +88,6 @@ const TableList = () => {
       .then(res => {
         if (res.code === 0) {
           actionRef.current.reload();
-          
           if (cb) {
             cb()
           }
@@ -134,10 +133,12 @@ const TableList = () => {
         if (res.code === 0) {
           if (type === 1) {
             onShelf(spuId, () => {
+              setFirstReviewVisible(false)
               setSecondReviewVisible(false)
             })
           } else {
             setSecondReviewVisible(false)
+            setFirstReviewVisible(false)
             actionRef.current.reload();
           }
         }
@@ -305,6 +306,7 @@ const TableList = () => {
         setVisible={setFirstReviewVisible}
         detailData={detailData}
         check={firstCheck}
+        overrule={check}
       />}
       {secondReviewVisible && <SecondReview
         visible={secondReviewVisible}

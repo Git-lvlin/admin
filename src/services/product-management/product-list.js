@@ -68,3 +68,11 @@ export const offShelf = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const listExport = (params = {}, options = {}) => {
+  return request('/auth/goods/product/export', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

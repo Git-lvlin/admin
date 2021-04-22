@@ -115,12 +115,20 @@ const request = (url, options = {}) => {
   }
 
   if (!token && !options.noAuth) {
-    history.replace({
-      pathname: '/user/login',
-      search: stringify({
-        redirect: window.location.href,
-      }),
+    // history.replace({
+    //   pathname: '/user/login',
+    //   search: stringify({
+    //     redirect: window.location.href,
+    //   }),
+    // });
+
+    notification.error({
+      message: '未登录或者token失效',
     });
+
+    setTimeout(() => {
+      window.location.replace(`/user/login?${stringify({ redirect: window.location.href })}`)
+    }, 1000)
     return null;
   }
 
