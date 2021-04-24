@@ -3,14 +3,26 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { postageList, postageDetail } from '@/services/product-management/freight-template';
 import Form from './form';
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
+  const [detailData, setDetailData] = useState(null);
+  const getDetail = (id) => {
+    postageDetail({
+      id,
+    }).then(res => {
+      if (res.code === 0) {
+        setDetailData(res.data);
+        setFormVisible(true);
+      }
+    })
+  }
   const columns = [
     {
       title: '模板名称',
-      dataIndex: 'name',
+      dataIndex: 'expressName',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入模板名称'
@@ -41,8 +53,14 @@ const TableList = () => {
       },
     },
     {
+      title: '是否有指定条件包邮',
+      dataIndex: 'expressFlagStr',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
       title: '应用商品',
-      dataIndex: 'name',
+      dataIndex: 'goodsNum',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -50,9 +68,9 @@ const TableList = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: () => (
+      render: (_, record) => (
         <>
-          <a>编辑</a>
+          <a onClick={() => { getDetail(record.id) }}>编辑</a>
         </>
       ),
     },
@@ -68,13 +86,19 @@ const TableList = () => {
       <ProTable
         rowKey="id"
         options={false}
+        request={postageList}
         search={{
           defaultCollapsed: false,
           labelWidth: 150
         }}
         columns={columns}
       />
-      <Form visible={formVisible} onClose={() => { setFormVisible(false) }} />
+      {formVisible && <Form
+        visible={formVisible}
+        setVisible={setFormVisible}
+        onClose={() => { setFormVisible(false) }}
+        detailData={detailData}
+      />}
     </PageContainer>
   );
 };

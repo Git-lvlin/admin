@@ -2,9 +2,6 @@ import { Drawer, Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { logDetail } from '@/services/product-management/product-log';
 
-
-
-
 const UserDetail = (props) => {
   const { visible, setVisible, spuId, operateRole } = props;
 

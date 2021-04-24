@@ -7,6 +7,8 @@ import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import FirstReview from './first-review';
 import SecondReview from './second-review';
+import { typeTransform } from '@/utils/utils'
+
 
 
 const SubTable = (props) => {
@@ -20,8 +22,8 @@ const SubTable = (props) => {
     { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
     { title: '商品价格', dataIndex: 'salePriceDisplay' },
-    { title: '可用库存', dataIndex: 'stockTotal' },
-    { title: '活动库存', dataIndex: 'activityStockTotal' },
+    { title: '可用库存', dataIndex: 'stockNum' },
+    { title: '活动库存', dataIndex: 'activityStockNum' },
   ];
 
   useEffect(() => {
@@ -37,19 +39,6 @@ const SubTable = (props) => {
     <Table columns={columns} dataSource={data} pagination={false} />
   )
 };
-
-const typeTransform = (array) => {
-  if (!Array.isArray(array)) {
-    return {}
-  }
-  const obj = {};
-  array.forEach(item => {
-    obj[item.code] = {
-      text: item.name,
-    }
-  })
-  return obj;
-}
 
 const TableList = () => {
   const [firstReviewVisible, setFirstReviewVisible] = useState(false);
@@ -206,13 +195,15 @@ const TableList = () => {
     },
     {
       title: '可用库存',
-      dataIndex: 'stockTotal',
+      dataIndex: 'stockNum',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '活动库存',
-      dataIndex: 'activityStockTotal',
+      dataIndex: 'activityStockNum',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '审核状态',

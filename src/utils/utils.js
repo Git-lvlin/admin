@@ -39,3 +39,16 @@ export const amountTransform = (amount, type = '*') => {
 
   return +new Big(amount).div(100)
 }
+
+export const typeTransform = (array) => {
+  if (!Array.isArray(array)) {
+    return {}
+  }
+  const obj = {};
+  array.forEach(item => {
+    obj[item.code] = {
+      text: item.name,
+    }
+  })
+  return obj;
+}

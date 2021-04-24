@@ -3,14 +3,16 @@ import { Button, Card } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined } from '@ant-design/icons';
+import moment from 'moment';
 import UserDetail from './user-detail';
 import DisableModal from './disable-modal';
+import { userList } from '@/services/user-management/user-list';
 
 const TableList = () => {
   const columns = [
     {
       title: '昵称',
-      dataIndex: 'name',
+      dataIndex: 'nickName',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入昵称'
@@ -18,7 +20,7 @@ const TableList = () => {
     },
     {
       title: '手机号',
-      dataIndex: 'name',
+      dataIndex: 'phoneNumber',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入手机号'
@@ -85,7 +87,7 @@ const TableList = () => {
     },
     {
       title: '注册来源',
-      dataIndex: 'name',
+      dataIndex: 'sourceType',
       onFilter: true,
       valueType: 'select',
       valueEnum: {
@@ -96,8 +98,15 @@ const TableList = () => {
     },
     {
       title: '注册时间',
-      dataIndex: 'name',
+      dataIndex: 'createTime',
       valueType: 'dateRange',
+      hideInTable: true,
+      render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+    },
+    {
+      title: '注册时间',
+      dataIndex: 'createTime',
+      valueType: 'text',
       hideInSearch: true,
     },
     {
@@ -140,6 +149,7 @@ const TableList = () => {
       <ProTable
         rowKey="id"
         options={false}
+        request={userList}
         search={{
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [

@@ -7,6 +7,8 @@ import * as api from '@/services/product-management/product-log';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import Detail from './detail';
+import { typeTransform } from '@/utils/utils'
+
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -19,8 +21,8 @@ const SubTable = (props) => {
     { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
     { title: '商品价格', dataIndex: 'salePriceDisplay' },
-    { title: '可用库存', dataIndex: 'stockTotal' },
-    { title: '活动库存', dataIndex: 'activityStockTotal' },
+    { title: '可用库存', dataIndex: 'stockNum' },
+    { title: '活动库存', dataIndex: 'activityStockNum' },
   ];
 
   useEffect(() => {
@@ -36,19 +38,6 @@ const SubTable = (props) => {
     <Table columns={columns} dataSource={data} pagination={false} />
   )
 };
-
-const typeTransform = (array) => {
-  if (!Array.isArray(array)) {
-    return {}
-  }
-  const obj = {};
-  array.forEach(item => {
-    obj[item.code] = {
-      text: item.name,
-    }
-  })
-  return obj;
-}
 
 const TableList = () => {
   const [visible, setVisible] = useState(false);

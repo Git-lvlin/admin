@@ -1,22 +1,18 @@
-import React from 'react';
-import { message } from 'antd';
+import React, { useState, useEffect } from 'react';
 import {
   ModalForm,
   ProFormText,
   ProFormRadio,
   ProFormSelect,
 } from '@ant-design/pro-form';
+import { Form } from 'antd';
 
-const waitTime = (time = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
+import { adminAdd, adminEdit } from '@/services/setting/account-management'
 
 export default (props) => {
-  const { visible, setVisible } = props;
+  const { visible, setVisible, adminGroupList, callback, onClose, data } = props;
+  const [form] = Form.useForm()
+
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -30,26 +26,49 @@ export default (props) => {
     }
   };
 
+  const submit = (values) => {
+    const apiMethod = data ? adminEdit : adminAdd;
+    const obj = { ...values };
+    if (data) {
+      obj.id = data.id;
+    }
+    return apiMethod(obj, { showSuccess: true })
+  }
+
+  useEffect(() => {
+    if (data) {
+      form.setFieldsValue({
+        group_id: data.groupId,
+        username: data.username,
+        nickname: data.nickname,
+        status: data.status
+      });
+    }
+  }, [data, form])
+
   return (
     <ModalForm
       title="新建账号"
       modalProps={{
-        onCancel: () => console.log('run'),
+        onCancel: () => onClose(),
       }}
       onVisibleChange={setVisible}
       visible={visible}
       width={550}
       onFinish={async (values) => {
-        await waitTime(2000);
-        console.log(values.name);
-        message.success('提交成功');
+        await submit(values);
+        callback();
         return true;
       }}
+      form={form}
       labelAlign="right"
       {...formItemLayout}
+      initialValues={{
+        status: 1,
+      }}
     >
       <ProFormText
-        name="name"
+        name="nickname"
         label="名称"
         placeholder="请输入名称"
         width="md"
@@ -57,7 +76,7 @@ export default (props) => {
       />
 
       <ProFormText
-        name="name"
+        name="username"
         label="登录账号"
         placeholder="请输入登录账号"
         width="md"
@@ -65,38 +84,36 @@ export default (props) => {
       />
 
       <ProFormText.Password
-        name="name"
+        name="password"
         label="登录密码"
         placeholder="请输入登录密码"
         width="md"
+        fieldProps={{
+          visibilityToggle: false,
+        }}
         required
       />
 
       <ProFormSelect
-        options={[
-          {
-            value: 'chapter',
-            label: '管理员',
-          },
-        ]}
+        options={adminGroupList}
         width="md"
-        name="useMode"
+        name="group_id"
         label="选择角色"
         required
       />
 
       <ProFormRadio.Group
         required
-        name="radio"
+        name="status"
         label="状态"
         options={[
           {
             label: '启用',
-            value: 'a',
+            value: 1,
           },
           {
             label: '禁用',
-            value: 'b',
+            value: 0,
           },
         ]}
       />
