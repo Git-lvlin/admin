@@ -48,9 +48,12 @@ export default (props) => {
     };
 
     if (values.notConfigure) {
+      const obj = {};
+      // eslint-disable-next-line no-return-assign
+      values.notConfigure?.forEach(item2 => obj[item2] = [])
       notConfigure = {
         aid: 0,
-        area: values.notConfigure.map(item => ({ [item]: [] }))
+        area: obj
       }
       params.notConfigure = notConfigure;
     }
@@ -58,6 +61,9 @@ export default (props) => {
     if (feeOption) {
       configure = feeOption.map(item => {
         const { area, ...rest } = item;
+        const obj = {};
+        // eslint-disable-next-line no-return-assign
+        area?.forEach(item2 => obj[item2] = [])
         return {
           aid: area ? 0 : -1,
           area: area?.map(item2 => ({ [item2]: [] })),
@@ -142,7 +148,8 @@ export default (props) => {
         isHasNotArea: detailData.isHasNotArea,
         isHasFree: detailData.isHasFree,
         maxFee: detailData.maxFee,
-        feeOption
+        feeOption,
+        notConfigure: Object.keys(detailData?.notExpressArea?.citys || {})
       })
     }
   }, [form, detailData])
@@ -184,7 +191,7 @@ export default (props) => {
         placeholder="请输入模板名称"
         rules={[{ required: true, message: '请输入模板名称' }]}
       >
-        <Input style={{ width: 300 }} />
+        <Input maxLength={20} style={{ width: 300 }} />
       </Form.Item>
       <ProFormRadio.Group
         name="isHasNotArea"

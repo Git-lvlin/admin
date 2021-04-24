@@ -106,6 +106,8 @@ export default (props) => {
       obj.goods.wholesalePrice = amountTransform(wholesalePrice);
       obj.goods.retailSupplyPrice = amountTransform(retailSupplyPrice);
       obj.goods.suggestedRetailPrice = amountTransform(suggestedRetailPrice);
+      obj.goods.salePrice = amountTransform(salePrice);
+      obj.goods.marketPrice = amountTransform(marketPrice);
     }
 
     if (detailData) {
@@ -209,7 +211,7 @@ export default (props) => {
           const specDataKeys = item[0].substring(1).split('|');
           return {
             ...item[1],
-            retailSupplyPrice: amountTransform(item[1].retailSupplyPrice,'/'),
+            retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
             suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
             wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
             salePrice: amountTransform(item[1].salePrice, '/'),
@@ -225,6 +227,8 @@ export default (props) => {
           wholesalePrice: amountTransform(goods.wholesalePrice, '/'),
           retailSupplyPrice: amountTransform(goods.retailSupplyPrice, '/'),
           suggestedRetailPrice: amountTransform(goods.suggestedRetailPrice, '/'),
+          salePrice: amountTransform(goods.salePrice, '/'),
+          marketPrice: amountTransform(goods.marketPrice, '/'),
         })
       }
     }
@@ -240,7 +244,7 @@ export default (props) => {
         destroyOnClose: true,
         width: 1200,
         className: styles.drawer_form,
-        onClose:() => {
+        onClose: () => {
           onClose();
         }
       }}
@@ -275,18 +279,26 @@ export default (props) => {
         label="商品名称"
         placeholder="请输入商品名称"
         rules={[{ required: true, message: '请输入商品名称' }]}
+        fieldProps={{
+          maxLength: 50,
+        }}
       />
       <ProFormText
         name="goodsDesc"
         label="商品副标题"
         placeholder="请输入商品副标题"
         rules={[{ required: true, message: '请输入商品副标题' }]}
+        fieldProps={{
+          maxLength: 20,
+        }}
       />
       <ProFormText
         name="supplierSpuId"
         label="商品编号"
         placeholder="请输入商品编号"
-        rules={[{ required: true, message: '请输入商品编号' }]}
+        fieldProps={{
+          maxLength: 32,
+        }}
       />
       <ProFormText
         name="goodsKeywords"
@@ -351,6 +363,9 @@ export default (props) => {
                 label="规格一"
                 placeholder="请输入规格名称"
                 rules={[{ required: true, message: '请输入规格名称' }]}
+                fieldProps={{
+                  maxLength: 18,
+                }}
               />
               <Form.List name="specValues1">
                 {(fields, { add, remove }) => (
@@ -363,7 +378,7 @@ export default (props) => {
                           name={[name, 'name']}
                           colon={false}
                         >
-                          <Input placeholder="请输入规格属性" addonAfter={
+                          <Input placeholder="请输入规格属性" maxLength={18} addonAfter={
                             key === 0 ?
                               <Button type="primary" onClick={() => { add() }}>添加</Button>
                               :
@@ -390,10 +405,13 @@ export default (props) => {
                           label=" "
                           name={[name, 'name']}
                           colon={false}
+                          fieldProps={{
+                            maxLength: 18,
+                          }}
                         >
                           <Input placeholder="请输入规格属性" addonAfter={
                             key === 0 ?
-                              <Button type="primary" onClick={() => { add() }}>添加</Button>
+                              <Button type="primary" maxLength={18} onClick={() => { add() }}>添加</Button>
                               :
                               <Button type="primary" danger onClick={() => { remove(name) }}>删除</Button>
                           } />
@@ -447,6 +465,18 @@ export default (props) => {
                 label="建议零售价"
                 placeholder="请输入建议零售价"
                 rules={[{ required: true, message: '请输入建议零售价' }]}
+              />
+              <ProFormText
+                name="salePrice"
+                label="销售价"
+                placeholder="请输入销售价"
+                rules={[{ required: true, message: '请输入销售价' }]}
+              />
+              <ProFormText
+                name="marketPrice"
+                label="市场价"
+                placeholder="请输入市场价"
+                rules={[{ required: true, message: '请输入市场价' }]}
               />
 
             </>
