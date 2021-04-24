@@ -164,6 +164,9 @@ const TableList = () => {
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
           defaultCollapsed: false,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+          ],
         }}
         columns={columns}
       />

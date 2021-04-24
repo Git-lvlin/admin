@@ -192,6 +192,7 @@ const TableList = () => {
       title: '销售价',
       dataIndex: 'name',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '可用库存',
@@ -289,6 +290,9 @@ const TableList = () => {
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
           defaultCollapsed: false,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+          ],
         }}
         columns={columns}
       />

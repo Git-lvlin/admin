@@ -84,6 +84,9 @@ export default (props) => {
         label="品牌名称"
         placeholder="请输入品牌名称"
         rules={[{ required: true, message: '请输入品牌名称' }]}
+        fieldProps={{
+          maxLength: 12,
+        }}
       />
       <Form.Item
         label="品牌logo"

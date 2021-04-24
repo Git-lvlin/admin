@@ -1,6 +1,6 @@
 /** Request 网络请求工具 更详细的 api 文档: https://github.com/umijs/umi-request */
 import { extend } from 'umi-request';
-import { notification } from 'antd';
+import { notification, message } from 'antd';
 import { stringify } from 'querystring';
 import { history } from 'umi';
 import { paramsEmptyFilter } from '@/utils/utils';
@@ -30,16 +30,19 @@ const errorHandler = (error) => {
 
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
-    notification.error({
-      message: `请求错误 ${status}: ${url}`,
-      description: errorText,
-    });
+    // const { status, url } = response;
+    // notification.error({
+    //   message: `请求错误 ${status}: ${url}`,
+    //   description: errorText,
+    // });
+    message.error(errorText)
   } else if (!response) {
-    notification.error({
-      description: '您的网络发生异常，无法连接服务器',
-      message: '网络异常',
-    });
+    // notification.error({
+    //   description: '您的网络发生异常，无法连接服务器',
+    //   message: '网络异常',
+    // });
+
+    message.error('您的网络发生异常，无法连接服务器')
   }
 
   return response;
@@ -82,24 +85,20 @@ instance.interceptors.response.use(async (response, options) => {
           redirect: window.location.href,
         }),
       });
-      notification.error({
-        message: data.msg,
-      });
+      message.error(data.msg)
     }
     return null;
   }
 
   if (data.code !== 0 && showError) {
-    notification.error({
-      description: data.msg,
-      message: '请求异常',
-    });
+    message.error(data.msg)
   }
 
   if (data.code === 0 && showSuccess) {
-    notification.success({
-      message: '操作成功',
-    });
+    // notification.success({
+    //   message: '操作成功',
+    // });
+    message.success('操作成功')
   }
 
   return response;
@@ -124,9 +123,7 @@ const request = (url, options = {}) => {
     //   }),
     // });
 
-    notification.error({
-      message: '未登录或者token失效',
-    });
+    message.error('未登录');
 
     setTimeout(() => {
       window.location.replace(`/user/login?${stringify({ redirect: window.location.href })}`)

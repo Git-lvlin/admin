@@ -60,7 +60,7 @@ const List = (props) => {
       <div style={{ marginRight: 50 }}>
         <div className={styles.header}>
           <a
-            onClick={() => { edit({ id:parentId, type: 'add', callback: () => { getData(); } }); }}
+            onClick={() => { edit({ id: parentId, type: 'add', callback: () => { getData(); } }); }}
           >
             添加{parentId === 0 ? '一' : '二'}级分类
           </a>
@@ -81,7 +81,7 @@ const List = (props) => {
                         <Switch checkedChildren="开" unCheckedChildren="关" style={{ marginRight: 10 }} />
                         <a onClick={(e) => { edit({ id: item.id, type: 'edit', gcName: item.gcName, callback: () => { getData(); } }); e.stopPropagation() }}>编辑</a>
                         &nbsp;<a>参数</a>
-                        &nbsp;<a onClick={(e) => { remove(item.id, () => { getData() }); e.stopPropagation() }}>删除</a>
+                        &nbsp;<a style={{ color: 'red' }} onClick={(e) => { remove(item.id, () => { getData() }); e.stopPropagation() }}>删除</a>
                       </div>
                     </li>
                   </SortableItem>

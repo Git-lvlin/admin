@@ -45,7 +45,7 @@ const TableList = () => {
         <>
           <a onClick={() => { setSelectItem(data); setFormVisible(true) }}>编辑</a>
           &nbsp;
-          <a onClick={() => { brandDel(data.brandId) }}>删除</a>
+          <a style={{ color: 'red' }} onClick={() => { brandDel(data.brandId) }}>删除</a>
         </>
       ),
     },
@@ -64,7 +64,10 @@ const TableList = () => {
         request={(params) => api.brand(params)}
         search={{
           defaultCollapsed: false,
-          labelWidth: 100
+          labelWidth: 100,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+          ],
         }}
         columns={columns}
         actionRef={actionRef}

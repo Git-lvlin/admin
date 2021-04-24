@@ -10,6 +10,8 @@ const Upload = (props) => {
   const beforeUpload = async (file) => {
     await upload(file, dirName).then(res => {
       // eslint-disable-next-line no-param-reassign
+      file.url = '';
+      // eslint-disable-next-line no-param-reassign
       file.url = res
       return file;
     })

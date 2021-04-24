@@ -75,8 +75,11 @@ export default (props) => {
       <ProFormText
         label="名称"
         width="md"
-        rules={[{ required: true, message: '请输入名称！' }]}
+        rules={[{ type: 'string', required: true, message: '分类名称长度应大于等于2个汉字，小于等于4个汉字', min: 2, max: 4 }]}
         name="gcName"
+        fieldProps={{
+          maxLength: 4,
+        }}
       />
     </ModalForm >
   );

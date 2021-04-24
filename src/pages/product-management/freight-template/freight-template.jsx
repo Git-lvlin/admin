@@ -90,7 +90,10 @@ const TableList = () => {
         request={postageList}
         search={{
           defaultCollapsed: false,
-          labelWidth: 150
+          labelWidth: 150,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+          ],
         }}
         columns={columns}
         actionRef={actionRef}

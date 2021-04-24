@@ -140,6 +140,7 @@ const TableList = () => {
       title: '销售价',
       dataIndex: 'name',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '可用库存',
@@ -157,6 +158,7 @@ const TableList = () => {
       title: '销量',
       dataIndex: 'goodsSaleNum',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '审核状态',
@@ -186,6 +188,12 @@ const TableList = () => {
       dataIndex: 'goodsStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+    },
+    {
+      title: '商品关键字',
+      dataIndex: 'goodsKeywords',
+      valueType: 'text',
+      hideInTable: true,
     },
     {
       title: '商品分类',
