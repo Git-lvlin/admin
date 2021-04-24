@@ -71,7 +71,7 @@ export default (props) => {
       width={550}
       onFinish={async (values) => {
         await submit(values);
-        // eslint-disable-next-line no-unused-expressions
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         callback && callback();
         return true;
       }}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Card } from 'antd';
@@ -9,6 +9,7 @@ import Form from './form';
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
+  const actionRef = useRef();
   const getDetail = (id) => {
     postageDetail({
       id,
@@ -92,12 +93,14 @@ const TableList = () => {
           labelWidth: 150
         }}
         columns={columns}
+        actionRef={actionRef}
       />
       {formVisible && <Form
         visible={formVisible}
         setVisible={setFormVisible}
-        onClose={() => { setFormVisible(false) }}
+        onClose={() => { setFormVisible(false); setDetailData(null) }}
         detailData={detailData}
+        callback={() => { actionRef.current.reload() }}
       />}
     </PageContainer>
   );

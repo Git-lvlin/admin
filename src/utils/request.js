@@ -3,6 +3,8 @@ import { extend } from 'umi-request';
 import { notification } from 'antd';
 import { stringify } from 'querystring';
 import { history } from 'umi';
+import { paramsEmptyFilter } from '@/utils/utils';
+
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -130,6 +132,16 @@ const request = (url, options = {}) => {
       window.location.replace(`/user/login?${stringify({ redirect: window.location.href })}`)
     }, 1000)
     return null;
+  }
+
+  if (options.data) {
+    // eslint-disable-next-line no-param-reassign
+    options.data = paramsEmptyFilter(options.data)
+  }
+
+  if (options.params) {
+    // eslint-disable-next-line no-param-reassign
+    options.params = paramsEmptyFilter(options.params)
   }
 
   return instance(url, {

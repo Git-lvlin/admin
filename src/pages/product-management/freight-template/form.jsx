@@ -25,13 +25,13 @@ const formItemLayout = {
 };
 
 export default (props) => {
-  const { onClose, visible, setVisible, detailData } = props;
+  const { onClose, visible, setVisible, detailData, callback } = props;
   const [originArea, setOriginArea] = useState([]);
+  const [specificArea, setSpecificArea] = useState([]);
+  const [selectSpecificArea, setSelectSpecificArea] = useState([]);
+  const [nonDeliveryArea, setNonDeliveryArea] = useState([]);
+  const [selectNonDeliveryArea, setSelectNonDeliveryArea] = useState([]);
   const [form] = Form.useForm();
-  // const change = (changedValues, allValues) => {
-  //   console.log(changedValues)
-  //   console.log(allValues)
-  // }
 
   const submit = (values) => {
     console.log('values', values);
@@ -39,6 +39,7 @@ export default (props) => {
     let notConfigure;
     let configure;
     const params = {
+      id: detailData ? detailData.id : 0,
       expressName,
       maxFee,
       isHasNotArea,
@@ -58,7 +59,7 @@ export default (props) => {
       configure = feeOption.map(item => {
         const { area, ...rest } = item;
         return {
-          aid: -1,
+          aid: area ? 0 : -1,
           area: area?.map(item2 => ({ [item2]: [] })),
           set: rest,
         }
@@ -66,14 +67,69 @@ export default (props) => {
       params.configure = configure;
     }
 
-    postageSave(params)
+    return new Promise((resolve, reject) => {
+      postageSave(params, { showSuccess: true })
+        .then(res => {
+          if (res.code === 0) {
+            resolve()
+          } else {
+            reject()
+          }
+        })
+        .catch(() => {
+          reject()
+        })
+    });
   }
+
+  const onValuesChange = (changedValues, allValues) => {
+    console.log('object', allValues)
+    if (changedValues.notConfigure) {
+      setSelectNonDeliveryArea(changedValues.notConfigure || [])
+    }
+    if (changedValues.feeOption) {
+      const areaArr = [];
+      allValues.feeOption.forEach(item => {
+        if (item?.area) {
+          areaArr.push(...item.area)
+        }
+      })
+      setSelectSpecificArea(areaArr)
+    }
+  }
+
+  useEffect(() => {
+    setNonDeliveryArea(originArea.map(item => {
+      if (selectSpecificArea.includes(item.value)) {
+        return {
+          ...item,
+          disabled: true,
+        }
+      }
+      return item;
+    }));
+  }, [selectSpecificArea])
+
+  useEffect(() => {
+    setSpecificArea(originArea.map(item => {
+      if (selectNonDeliveryArea.includes(item.value)) {
+        return {
+          ...item,
+          disabled: true,
+        }
+      }
+      return item;
+    }));
+  }, [selectNonDeliveryArea])
 
   useEffect(() => {
     findAllProvinces()
       .then(res => {
         if (res.code === 0) {
-          setOriginArea(res.data.map(item => ({ label: item.name, value: item.id })))
+          const areaArr = res.data.map(item => ({ label: item.name, value: item.id }))
+          setOriginArea(areaArr)
+          setSpecificArea(areaArr)
+          setNonDeliveryArea(areaArr)
         }
       })
   }, [])
@@ -83,7 +139,7 @@ export default (props) => {
       const feeOption = [JSON.parse(detailData.configure)]
       form.setFieldsValue({
         expressName: detailData.expressName,
-        isHasArea: detailData.isHasArea,
+        isHasNotArea: detailData.isHasNotArea,
         isHasFree: detailData.isHasFree,
         maxFee: detailData.maxFee,
         feeOption
@@ -106,7 +162,8 @@ export default (props) => {
       form={form}
       onFinish={async (values) => {
         await submit(values);
-        // return true;
+        callback();
+        return true;
       }}
       visible={visible}
       initialValues={{
@@ -115,9 +172,10 @@ export default (props) => {
 
           },
         ],
-        isHasArea: 1,
+        isHasNotArea: 1,
         isHasFree: 1
       }}
+      onValuesChange={onValuesChange}
       {...formItemLayout}
     >
       <Form.Item
@@ -129,7 +187,7 @@ export default (props) => {
         <Input style={{ width: 300 }} />
       </Form.Item>
       <ProFormRadio.Group
-        name="isHasArea"
+        name="isHasNotArea"
         label="指定地区不配送"
         options={[
           {
@@ -203,7 +261,7 @@ export default (props) => {
                                   allowClear
                                   style={{ width: 150 }}
                                   placeholder="选择指定地区"
-                                  options={originArea}
+                                  options={specificArea}
                                 />
                               </Form.Item>
                           }
@@ -294,9 +352,9 @@ export default (props) => {
 
         </ProCard>
 
-        <ProFormDependency name={['isHasArea']}>
-          {({ isHasArea }) => {
-            return isHasArea === 1 && <ProCard split="vertical" className={styles.normal} style={{ borderBottom: '1px solid #f0f0f0' }}>
+        <ProFormDependency name={['isHasNotArea']}>
+          {({ isHasNotArea }) => {
+            return isHasNotArea === 1 && <ProCard split="vertical" className={styles.normal} style={{ borderBottom: '1px solid #f0f0f0' }}>
               <ProCard colSpan="85px" className={styles.card}>不配送地区</ProCard>
               <ProCard className={styles.card}>
                 <Form.Item
@@ -308,7 +366,7 @@ export default (props) => {
                     allowClear
                     style={{ width: 600 }}
                     placeholder="选择指定不配送地区"
-                    options={originArea}
+                    options={nonDeliveryArea}
                   />
                 </Form.Item>
               </ProCard>

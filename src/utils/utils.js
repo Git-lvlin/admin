@@ -20,7 +20,7 @@ export const arrayToTree = (list, parId = 0) => {
 }
 
 export const uploadImageFormatConversion = (imgArr, urlKey, uidKey) => {
-  return imgArr.map((item, index) =>{
+  return imgArr.map((item, index) => {
     return {
       url: item[urlKey],
       uid: uidKey ? item[uidKey] : index
@@ -50,5 +50,17 @@ export const typeTransform = (array) => {
       text: item.name,
     }
   })
+  return obj;
+}
+
+export const paramsEmptyFilter = (params) => {
+  const obj = {};
+  // eslint-disable-next-line no-restricted-syntax
+  for (const key in params) {
+    if (params[key] !== '') {
+      obj[key] = params[key]
+    }
+  }
+
   return obj;
 }
