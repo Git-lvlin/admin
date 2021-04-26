@@ -125,7 +125,7 @@ const ProductCategory = () => {
         setVisible={setVisible}
         {...formParams}
       />
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
         <List onClick={(id) => { setSelectId(id) }} edit={edit} remove={remove} />
         {selectId && <List parentId={selectId} edit={edit} remove={remove} />}
       </div>

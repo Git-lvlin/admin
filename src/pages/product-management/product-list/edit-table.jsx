@@ -30,13 +30,13 @@ export default function EditTable(props) {
         // editable: false,
         width: 50,
         renderFormItem: () => <Upload maxCount={1} className={styles.upload} accept="image/*" />,
-        formItemProps: {
-          rules: [{
-            required: true,
-            whitespace: true,
-            message: '请上传规格图片',
-          }],
-        }
+        // formItemProps: {
+        //   rules: [{
+        //     required: true,
+        //     whitespace: true,
+        //     message: '请上传规格图片',
+        //   }],
+        // }
       },
       ...arr,
       {
@@ -153,9 +153,9 @@ export default function EditTable(props) {
   useEffect(() => {
     setEditableKeys(tableData.map(item => item.key));
     setDataSource(tableData);
-    setTimeout(() => {
-      form.validateFields();
-    }, 1000);
+    // setTimeout(() => {
+    //   form.validateFields();
+    // }, 1000);
   }, [tableData])
 
   return (

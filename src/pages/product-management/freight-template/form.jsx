@@ -31,10 +31,10 @@ export default (props) => {
   const [selectSpecificArea, setSelectSpecificArea] = useState([]);
   const [nonDeliveryArea, setNonDeliveryArea] = useState([]);
   const [selectNonDeliveryArea, setSelectNonDeliveryArea] = useState([]);
+  const [deleteArr, setDeleteArr] = useState([]);
   const [form] = Form.useForm();
 
   const submit = (values) => {
-    console.log('values', values);
     const { expressName, maxFee, feeOption, isHasNotArea, isHasFree } = values;
     let notConfigure;
     let configure;
@@ -52,26 +52,46 @@ export default (props) => {
       // eslint-disable-next-line no-return-assign
       values.notConfigure?.forEach(item2 => obj[item2] = [])
       notConfigure = {
-        aid: 0,
+        aid: detailData?.notExpressArea?.id ?? 0,
         area: obj
+      }
+      params.notConfigure = notConfigure;
+    }
+
+    if (!isHasNotArea && detailData?.notExpressArea?.id) {
+      notConfigure = {
+        aid: detailData?.notExpressArea?.id,
+        area: {}
       }
       params.notConfigure = notConfigure;
     }
 
     if (feeOption) {
       configure = feeOption.map(item => {
-        const { area, ...rest } = item;
+        const { area, id, ...rest } = item;
         const obj = {};
         // eslint-disable-next-line no-return-assign
         area?.forEach(item2 => obj[item2] = [])
         return {
-          aid: area ? 0 : -1,
-          area: area?.map(item2 => ({ [item2]: [] })),
+          aid: area ? (id ?? 0) : -1,
+          area: obj,
           set: rest,
         }
       })
       params.configure = configure;
     }
+
+    if (detailData) {
+      const removeArr = new Set(deleteArr);
+      const ids = [];
+      removeArr.forEach(item => {
+        if (detailData?.expressArea?.[item]?.id) {
+          ids.push(detailData?.expressArea?.[item]?.id)
+        }
+      })
+      params.remove = ids
+    }
+
 
     return new Promise((resolve, reject) => {
       postageSave(params, { showSuccess: true })
@@ -90,16 +110,17 @@ export default (props) => {
 
   const onValuesChange = (changedValues, allValues) => {
     console.log('object', allValues)
-    if (changedValues.notConfigure) {
-      setSelectNonDeliveryArea(changedValues.notConfigure || [])
+    if (allValues.notConfigure) {
+      setSelectNonDeliveryArea(allValues.notConfigure || [])
     }
-    if (changedValues.feeOption) {
+    if (allValues.feeOption) {
       const areaArr = [];
       allValues.feeOption.forEach(item => {
         if (item?.area) {
           areaArr.push(...item.area)
         }
       })
+      console.log('areaArr');
       setSelectSpecificArea(areaArr)
     }
   }
@@ -132,7 +153,7 @@ export default (props) => {
     findAllProvinces()
       .then(res => {
         if (res.code === 0) {
-          const areaArr = res.data.map(item => ({ label: item.name, value: item.id }))
+          const areaArr = res.data.map(item => ({ label: item.name, value: `${item.id}` }))
           setOriginArea(areaArr)
           setSpecificArea(areaArr)
           setNonDeliveryArea(areaArr)
@@ -143,6 +164,19 @@ export default (props) => {
   useEffect(() => {
     if (detailData) {
       const feeOption = [JSON.parse(detailData.configure)]
+
+      if (detailData.expressArea) {
+        detailData.expressArea.forEach(item => {
+          const { configure, citys, id } = item;
+          feeOption.push({
+            area: Object.keys(citys || {}),
+            ...JSON.parse(configure),
+            id,
+          })
+        })
+        console.log('feeOption', feeOption);
+      }
+
       form.setFieldsValue({
         expressName: detailData.expressName,
         isHasNotArea: detailData.isHasNotArea,
@@ -168,9 +202,14 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        await submit(values);
-        callback();
-        return true;
+        try {
+          await submit(values);
+          callback();
+          return true;
+        } catch (error) {
+          console.log('error', error)
+        }
+
       }}
       visible={visible}
       initialValues={{
@@ -251,6 +290,13 @@ export default (props) => {
                         split="vertical"
                         style={{ flex: 1, borderBottom: key !== fields.length - 1 ? '1px solid #f0f0f0' : '' }}
                       >
+                        <Form.Item
+                          name={[name, 'id']}
+                          fieldKey={[fieldKey, 'id']}
+                          hidden
+                        >
+                          <Input style={{ width: 50 }} />
+                        </Form.Item>
                         <ProCard colSpan="180px" className={styles.card}>
                           {
                             key === 0
@@ -345,7 +391,13 @@ export default (props) => {
 
                         <ProCard colSpan="140px" className={styles.card}>
                           {
-                            key === 0 ? <a onClick={() => { add() }}>为指定地区设置<br />运费和指定包邮条件</a> : <a onClick={() => { remove(name) }}>删除</a>
+                            key === 0 ? <a onClick={() => { add() }}>为指定地区设置<br />运费和指定包邮条件</a> :
+                              <a onClick={() => {
+                                const arr = [...deleteArr];
+                                arr.push(name - 1)
+                                setDeleteArr(arr);
+                                remove(name)
+                              }}>删除</a>
                           }
                         </ProCard>
                       </ProCard>

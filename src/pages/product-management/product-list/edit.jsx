@@ -62,6 +62,7 @@ export default (props) => {
     })
 
     tableData.forEach(item => {
+      console.log('item', item)
       specData[item.code] = {
         ...item,
         imageUrl: item?.imageUrl,
@@ -139,9 +140,10 @@ export default (props) => {
       if (specValues2[0].name) {
         specValues2.forEach((item2, index2) => {
           specArr.push({
+            ...data,
+            skuId: 0,
             spec1: item.name,
             spec2: item2.name,
-            ...data,
             key: `${index}-${index2}`,
             specValue: {
               1: `10${index + 1}`,
@@ -152,8 +154,9 @@ export default (props) => {
         })
       } else {
         specArr.push({
-          spec1: item.name,
           ...data,
+          skuId: 0,
+          spec1: item.name,
           key: index,
           specValue: {
             1: 100 + index + 1,
@@ -189,7 +192,7 @@ export default (props) => {
         primaryImages: uploadImageFormatConversion(detailData.primaryImages, 'imageUrl', 'imageSort'),
         detailImages: uploadImageFormatConversion(detailData.detailImages, 'imageUrl', 'imageSort'),
         advImages: uploadImageFormatConversion(detailData.advImages, 'imageUrl', 'imageSort'),
-        videoUrl: goods.videoUrl,
+        videoUrl: [{ url: goods.videoUrl, uid: 1 }],
         gcId: [goods.gcId1, goods.gcId2],
       })
 
@@ -209,8 +212,15 @@ export default (props) => {
         setTableHead(Object.values(specName))
         setTableData(Object.entries(specData).map(item => {
           const specDataKeys = item[0].substring(1).split('|');
+          const specValue = {};
+          specDataKeys.forEach(it => {
+            const index = it.slice(0, 1)
+            specValue[index] = it
+          })
+          console.log('item', item);
           return {
             ...item[1],
+            code: item[0],
             retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
             suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
             wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
@@ -220,6 +230,7 @@ export default (props) => {
             imageUrl: [{ url: item[1].imageUrl, uid: 1 }],
             spec1: specValuesMap[specDataKeys[0]],
             spec2: specValuesMap[specDataKeys[1]],
+            specValue,
           }
         }))
       } else {
@@ -237,7 +248,7 @@ export default (props) => {
 
   return (
     <DrawerForm
-      title="编辑商品"
+      title={`${detailData ? '编辑' : '新建'}商品`}
       onVisibleChange={setVisible}
       drawerProps={{
         forceRender: true,
