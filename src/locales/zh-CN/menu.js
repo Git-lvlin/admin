@@ -11,11 +11,16 @@ export default {
   'menu.exception.403': '403',
   'menu.exception.404': '404',
   'menu.exception.500': '500',
+
   'menu.user-management': '用户管理',
   'menu.user-management.user-list': '用户列表',
+
   'menu.order-management': '订单管理',
   'menu.order-management.pending-orders': '待发货订单',
   'menu.order-management.retail-list': '零售列表',
+  'menu.order-management.intensive-order': '集约订单',
+  'menu.order-management.intensive-order.shopkeeper-order': '店主订单',
+
   'menu.product-management': '商品管理',
   'menu.product-management.product-list': '商品列表',
   'menu.product-management.brand-list': '品牌列表',
@@ -23,8 +28,18 @@ export default {
   'menu.product-management.freight-template': '运费模板',
   'menu.product-management.product-review': '商品审核',
   'menu.product-management.product-category': '商品分类',
+
   'menu.setting': '设置',
   'menu.setting.account-management': '子账号管理',
   'menu.setting.role-management': '角色管理',
   'menu.setting.authority-management': '权限管理',
+
+  'menu.intensive-activity-management': '集约活动管理',
+  'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
+  'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
+
+  'menu.supplier-management': '供应商管理',
+  'menu.supplier-management.supplier-list': '供应商列表',
+  'menu.supplier-management.consultant-product-list': '供应商顾问商品列表',
+  'menu.supplier-management.consultant-supplier-list': '顾问供应商列表',
 };

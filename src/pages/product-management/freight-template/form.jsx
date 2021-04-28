@@ -109,7 +109,6 @@ export default (props) => {
   }
 
   const onValuesChange = (changedValues, allValues) => {
-    console.log('object', allValues)
     if (allValues.notConfigure) {
       setSelectNonDeliveryArea(allValues.notConfigure || [])
     }
@@ -120,7 +119,6 @@ export default (props) => {
           areaArr.push(...item.area)
         }
       })
-      console.log('areaArr');
       setSelectSpecificArea(areaArr)
     }
   }
@@ -174,7 +172,6 @@ export default (props) => {
             id,
           })
         })
-        console.log('feeOption', feeOption);
       }
 
       form.setFieldsValue({
@@ -202,14 +199,9 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        try {
-          await submit(values);
-          callback();
-          return true;
-        } catch (error) {
-          console.log('error', error)
-        }
-
+        await submit(values);
+        callback();
+        return true;
       }}
       visible={visible}
       initialValues={{

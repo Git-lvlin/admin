@@ -86,7 +86,7 @@ const UserDetail = (props) => {
 
   return (
     <Drawer
-      title="用户详情"
+      title="日志详情"
       width={1200}
       placement="right"
       onClose={() => { setVisible(false) }}

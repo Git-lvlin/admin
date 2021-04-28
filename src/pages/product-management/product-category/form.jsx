@@ -75,10 +75,22 @@ export default (props) => {
       <ProFormText
         label="名称"
         width="md"
-        rules={[{ type: 'string', required: true, message: '分类名称长度应大于等于2个汉字，小于等于4个汉字', min: 2, max: 4 }]}
+        rules={[
+          { type: 'string', required: true, message: '分类名称长度应大于等于2个汉字，小于等于4个汉字', min: 2, max: 4 },
+          () => ({
+            validator(_, value) {
+              if (/^[\u4e00-\u9fa5]{2,4}$/.test(value)) {
+                return Promise.resolve();
+              }
+              return Promise.reject(new Error('分类名称只支持汉字'));
+            },
+          })
+        ]}
+        validateFirst={true}
         name="gcName"
         fieldProps={{
           maxLength: 4,
+          
         }}
       />
     </ModalForm >

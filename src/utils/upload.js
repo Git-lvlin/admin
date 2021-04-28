@@ -1,5 +1,6 @@
 import OSS from 'ali-oss';
 import request from '@/utils/request';
+import { getImageSize } from '@/utils/utils';
 
 const getConfig = (params = {}, options = {}) => {
   return request('/auth/goods/product/getOssConfig', {
@@ -10,22 +11,6 @@ const getConfig = (params = {}, options = {}) => {
 }
 
 let client = null;
-
-const getImageSize = (file) => {
-
-  return new Promise((resolve) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = (theFile) => {
-      const image = new Image()
-      image.src = theFile.target.result
-      image.onload = function () {
-        const { width, height } = this;
-        resolve({ width, height })
-      }
-    }
-  });
-}
 
 const upload = async (file, dirName) => {
   if (!client) {
@@ -39,17 +24,22 @@ const upload = async (file, dirName) => {
       bucket: ossConfig.bucket,
     })
   }
-  return client.put(`${dirName}/${file.uid}${file.name}`, file).then(res => {
-    if (file.type.indexOf('image') !== -1) {
-      return getImageSize(file).then(size => {
-        return `${res.url}?x-oss-process=image/resize,h_${size.height},w_${size.width}`
-      })
-    }
-    return res.url;
-  }).catch(err => {
-    console.log('上传失败：', err)
+  return new Promise((resolve) => {
+    client.put(`${dirName}/${file.uid}${file.name}`, file).then(res => {
+      if (file.type.indexOf('image') !== -1) {
+        getImageSize(file).then(size => {
+          resolve(`${res.url}?x-oss-process=image/resize,h_${size.height},w_${size.width}`)
+        })
+      }
+      resolve(res.url);
+    }).catch(err => {
+      if (err.name.toLowerCase().indexOf('securitytokenexpired') !== -1) {
+        client = null;
+        return upload(file, dirName)
+      }
+      console.log('上传失败：', err)
+    })
   })
-
 }
 
 export default upload;

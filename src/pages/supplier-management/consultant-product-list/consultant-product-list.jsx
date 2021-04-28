@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table } from 'antd';
+import { Button, Card, Table } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import XLSX from 'xlsx'
 import { PageContainer } from '@ant-design/pro-layout';
-import * as api from '@/services/product-management/product-review'
+import { PlusOutlined } from '@ant-design/icons';
+import * as api from '@/services/product-management/product-list';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
-import FirstReview from './first-review';
-import SecondReview from './second-review';
-import { typeTransform } from '@/utils/utils'
-
-
+import { amountTransform, typeTransform } from '@/utils/utils'
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -27,7 +25,7 @@ const SubTable = (props) => {
   ];
 
   useEffect(() => {
-    api.checkList({
+    api.productList({
       selectType: 2,
       spuId: props.data.spuId
     }).then(res => {
@@ -41,97 +39,45 @@ const SubTable = (props) => {
 };
 
 const TableList = () => {
-  const [firstReviewVisible, setFirstReviewVisible] = useState(false);
-  const [secondReviewVisible, setSecondReviewVisible] = useState(false);
-  const [config, setConfig] = useState({});
+  const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
+  const [config, setConfig] = useState({});
+  const [offShelfVisible, setOffShelfVisible] = useState(false);
+  const [selectItemId, setSelectItemId] = useState(null);
   const actionRef = useRef();
+  const formRef = useRef();
 
-  const getDetail = (record) => {
-    if (record.firstAudit===1) {
-      api.getDetail({
-        spuId: record.id
-      }).then(res => {
-        if (res.code === 0) {
-          setDetailData(res.data);
-          setFirstReviewVisible(true);
-        }
-      })
-    } else {
-      api.noFirstCheckList({
-        spuId: record.id
-      }).then(res => {
-        if (res.code === 0) {
-          setDetailData({
-            data:res.data,
-            spuId: record.id
-          });
-          setSecondReviewVisible(true);
-        }
-      })
-    }
+  const getDetail = (id) => {
+    api.getDetail({
+      spuId: id
+    }).then(res => {
+      if (res.code === 0) {
+        setDetailData(res.data);
+        setFormVisible(true);
+      }
+    })
   }
 
-  const onShelf = (spuId, cb) => {
-    api.onShelf({ spuId }, { showSuccess: true })
-      .then(res => {
-        if (res.code === 0) {
-          actionRef.current.reload();
-          if (cb) {
-            cb()
-          }
-        }
-      })
+  const onShelf = (spuId) => {
+    api.onShelf({
+      spuId
+    }, { showSuccess: true }).then(res => {
+      if (res.code === 0) {
+        actionRef.current.reload();
+      }
+    })
   }
 
-  /**
-   * 
-   * @param {*} type 1:通过并上架，2:只通过，3:驳回
-   */
-  const firstCheck = (type, checkType, spuId, goodsVerifyRemark) => {
-    api.firstCheck({
-      checkType,
+  const offShelf = (spuId, goodsStateRemark) => {
+    api.offShelf({
       spuId,
-      goodsVerifyRemark
-    }, { showSuccess: type !== 1 })
-      .then(res => {
-        if (res.code === 0) {
-          if (type === 1) {
-            onShelf(spuId, () => {
-              setFirstReviewVisible(false)
-            })
-          } else {
-            setFirstReviewVisible(false)
-            actionRef.current.reload();
-          }
-        }
-      })
-  }
-
-  /**
-   * 
-   * @param {*} type 1:通过并上架，2:只通过，3:驳回
-   */
-  const check = (type, checkType, spuId, goodsVerifyRemark) => {
-    api.check({
-      checkType,
-      spuId,
-      goodsVerifyRemark
-    }, { showSuccess: type !== 1 })
-      .then(res => {
-        if (res.code === 0) {
-          if (type === 1) {
-            onShelf(spuId, () => {
-              setFirstReviewVisible(false)
-              setSecondReviewVisible(false)
-            })
-          } else {
-            setSecondReviewVisible(false)
-            setFirstReviewVisible(false)
-            actionRef.current.reload();
-          }
-        }
-      })
+      goodsStateRemark,
+    }, { showSuccess: true }).then(res => {
+      if (res.code === 0) {
+        actionRef.current.reload();
+        setSelectItemId(null);
+      }
+    })
   }
 
   const columns = [
@@ -207,6 +153,12 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
+      title: '销量',
+      dataIndex: 'goodsSaleNum',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
       title: '审核状态',
       dataIndex: 'goodsVerifyState',
       onFilter: true,
@@ -230,16 +182,16 @@ const TableList = () => {
       hideInTable: true,
     },
     {
-      title: '审核类型',
-      dataIndex: 'firstAuditDisplay',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
       title: '上架状态',
       dataIndex: 'goodsStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+    },
+    {
+      title: '商品关键字',
+      dataIndex: 'goodsKeywords',
+      valueType: 'text',
+      hideInTable: true,
     },
     {
       title: '商品分类',
@@ -253,17 +205,68 @@ const TableList = () => {
       renderFormItem: () => (<BrandSelect />),
       hideInTable: true,
     },
-    {
-      title: '操作',
-      dataIndex: 'option',
-      valueType: 'option',
-      render: (_, record) => (
-        <>
-          <a onClick={() => { getDetail(record) }}>审核</a>
-        </>
-      ),
-    },
   ];
+
+  const exportExcel = (form) => {
+    api.listExport({
+      ...form.getFieldsValue(),
+    }).then(res => {
+      if (res.code === 0) {
+        const data = res.data.map(item => {
+          const { goodsState, goodsFromType, goodsVerifyState, ...rest } = item;
+          return {
+            ...rest,
+            retailSupplyPrice: amountTransform(rest.retailSupplyPrice, '/'),
+            suggestedRetailPrice: amountTransform(rest.suggestedRetailPrice, '/'),
+            wholesalePrice: amountTransform(rest.wholesalePrice, '/'),
+          }
+        });
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet([
+          {
+            spuId: 'spuId',
+            goodsName: '商品名称',
+            skuId: 'skuId',
+            skuSpec: '规格组合',
+            goodsFromTypeDisplay: '供货类型',
+            retailSupplyPrice: '零售价',
+            suggestedRetailPrice: '建议零售价',
+            wholesalePrice: '批发价',
+            stockNum: '可用库存',
+            activityNum: '活动库存',
+            isFreeFreightDisplay: '是否包邮',
+            supportNoReasonReturn: '七天无理由退货',
+            goodsVerifyStateDisplay: '审核状态',
+            goodsStateDisplay: '上架状态',
+            createTime: '创建时间',
+          },
+          ...data
+        ], {
+          header: [
+            'spuId',
+            'goodsName',
+            'skuId',
+            'skuSpec',
+            'goodsFromTypeDisplay',
+            'retailSupplyPrice',
+            'suggestedRetailPrice',
+            'wholesalePrice',
+            'stockNum',
+            'activityNum',
+            'isFreeFreightDisplay',
+            'supportNoReasonReturn',
+            'goodsVerifyStateDisplay',
+            'goodsStateDisplay',
+            'createTime',
+          ],
+          skipHeader: true
+        });
+        XLSX.utils.book_append_sheet(wb, ws, "file");
+        XLSX.writeFile(wb, `${+new Date()}.xlsx`)
+
+      }
+    })
+  }
 
   useEffect(() => {
     api.getConfig()
@@ -274,44 +277,47 @@ const TableList = () => {
 
   return (
     <PageContainer>
-      {/* <Card>
-        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-          <Button key="out" type="primary" icon={<PlusOutlined />}>新建</Button>
+      <Card>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button key="out" type="primary" icon={<PlusOutlined />} onClick={() => { setFormVisible(true) }}>新建</Button>
         </div>
-      </Card> */}
+      </Card>
       <ProTable
         rowKey="id"
         options={false}
-        actionRef={actionRef}
         params={{
           selectType: 1,
         }}
-        request={api.checkList}
+        actionRef={actionRef}
+        formRef={formRef}
+        request={api.productList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
           defaultCollapsed: false,
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
+          optionRender: ({ searchText, resetText }, { form }) => [
+            <Button
+              key="search"
+              type="primary"
+              onClick={() => {
+                form?.submit();
+              }}
+            >
+              {searchText}
+            </Button>,
+            <Button
+              key="rest"
+              onClick={() => {
+                form?.resetFields();
+              }}
+            >
+              {resetText}
+            </Button>,
+            <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
           ],
         }}
         columns={columns}
       />
-      {firstReviewVisible && <FirstReview
-        visible={firstReviewVisible}
-        setVisible={setFirstReviewVisible}
-        detailData={detailData}
-        check={firstCheck}
-        overrule={check}
-      />}
-      {secondReviewVisible && <SecondReview
-        visible={secondReviewVisible}
-        setVisible={setSecondReviewVisible}
-        check={check}
-        detailData={detailData}
-        operateRole={typeTransform(config.operateRole)}
-      />}
     </PageContainer>
-
   );
 };
 

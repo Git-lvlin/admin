@@ -64,3 +64,18 @@ export const paramsEmptyFilter = (params) => {
 
   return obj;
 }
+
+export const getImageSize = (file) => {
+  return new Promise((resolve) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = (theFile) => {
+      const image = new Image()
+      image.src = theFile.target.result
+      image.onload = function () {
+        const { width, height } = this;
+        resolve({ width, height })
+      }
+    }
+  });
+}

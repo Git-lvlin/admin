@@ -61,7 +61,7 @@ const TableList = () => {
       <ProTable
         rowKey="brandId"
         options={false}
-        request={(params) => api.brand(params)}
+        request={api.brand}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,

@@ -101,6 +101,17 @@ export default defineConfig({
                   name: 'retail-list',
                   path: '/order-management/retail-list',
                   component: './order-management/retail-list',
+                },
+                {
+                  name: 'intensive-order',
+                  path: '/order-management/intensive-order',
+                  routes: [
+                    {
+                      name: 'shopkeeper-order',
+                      path: '/order-management/intensive-order/shopkeeper-order',
+                      component: './order-management/intensive-order/shopkeeper-order',
+                    },
+                  ]
                 }
               ]
             },
@@ -158,6 +169,45 @@ export default defineConfig({
                   name: 'authority-management',
                   path: '/setting/authority-management',
                   component: './setting/authority-management',
+                },
+              ]
+            },
+            {
+              path: '/intensive-activity-management',
+              name: 'intensive-activity-management',
+              routes: [
+                {
+                  name: 'intensive-activity-list',
+                  path: '/intensive-activity-management/intensive-activity-list',
+                  component: './intensive-activity-management/intensive-activity-list',
+                },
+                {
+                  name: 'intensive-activity-create',
+                  path: '/intensive-activity-management/intensive-activity-create',
+                  component: './intensive-activity-management/intensive-activity-create',
+                },
+              ]
+            },
+            {
+              path: '/supplier-management',
+              name: 'supplier-management',
+              routes: [
+                {
+                  name: 'supplier-list',
+                  path: '/supplier-management/supplier-list',
+                  component: './supplier-management/supplier-list',
+                },
+                {
+                  name: 'consultant-product-list',
+                  path: '/supplier-management/consultant-product-list',
+                  component: './supplier-management/consultant-product-list',
+                  hideInMenu: true,
+                },
+                {
+                  name: 'consultant-supplier-list',
+                  path: '/supplier-management/consultant-supplier-list',
+                  component: './supplier-management/consultant-supplier-list',
+                  hideInMenu: true,
                 },
               ]
             },

@@ -62,7 +62,6 @@ export default (props) => {
     })
 
     tableData.forEach(item => {
-      console.log('item', item)
       specData[item.code] = {
         ...item,
         imageUrl: item?.imageUrl,
@@ -86,6 +85,7 @@ export default (props) => {
       salePrice,
       marketPrice,
       ...rest } = values;
+
     const obj = {
       isMultiSpec,
       goods: {
@@ -95,7 +95,7 @@ export default (props) => {
       },
       primaryImages: urlsTransform(primaryImages),
       detailImages: urlsTransform(detailImages),
-      advImages: advImages ? urlsTransform(advImages) : undefined,
+      advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl,
     };
 
@@ -181,6 +181,8 @@ export default (props) => {
         goodsDesc: goods.goodsDesc,
         supplierSpuId: goods.supplierSpuId,
         goodsKeywords: goods.goodsKeywords,
+        goodsSaleType: goods.goodsSaleType,
+        isFreeFreight: goods.isFreeFreight,
         isMultiSpec: detailData.isMultiSpec,
         stockNum: goods.stockNum,
         stockAlarmNum: goods.stockAlarmNum,
@@ -217,7 +219,6 @@ export default (props) => {
             const index = it.slice(0, 1)
             specValue[index] = it
           })
-          console.log('item', item);
           return {
             ...item[1],
             code: item[0],
@@ -264,12 +265,13 @@ export default (props) => {
         await submit(values);
         return true;
       }}
-
       visible={visible}
       initialValues={{
         isMultiSpec: 0,
         goodsSaleType: 0,
         isFreeFreight: 1,
+        buyMinNum: 1,
+        buyMaxNum: 99,
         supportNoReasonReturn: 1,
         specValues1: [{}],
         specValues2: [{}],
@@ -561,7 +563,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload multiple maxCount={10} accept="image/*" />
+        <Upload multiple maxCount={10} accept="image/*" dimension="1:1" size={500} />
       </Form.Item>
       <Form.Item
         label="商品详情"
@@ -575,7 +577,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload multiple maxCount={10} accept="image/*" />
+        <Upload multiple maxCount={10} accept="image/*" size={500 * 4} />
       </Form.Item>
       <Form.Item
         label="商品横幅"
@@ -590,7 +592,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload multiple maxCount={10} accept="image/*" />
+        <Upload multiple maxCount={10} accept="image/*" dimension={{ width: 702, height: 320 }} size={500} />
       </Form.Item>
       <Form.Item
         label="商品视频"
@@ -603,7 +605,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload maxCount={1} accept="video/mp4" />
+        <Upload maxCount={1} accept="video/mp4" size={1024 * 20} />
       </Form.Item>
       {detailData && <>
         <Form.Item

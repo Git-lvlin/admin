@@ -46,7 +46,7 @@ const TableList = () => {
 
   const columns = [
     {
-      title: 'SPU',
+      title: 'spuID',
       dataIndex: 'spuId',
       valueType: 'text',
       fieldProps: {
@@ -54,7 +54,7 @@ const TableList = () => {
       }
     },
     {
-      title: 'SKU',
+      title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'text',
       fieldProps: {
