@@ -111,6 +111,11 @@ export default defineConfig({
                       path: '/order-management/intensive-order/shopkeeper-order',
                       component: './order-management/intensive-order/shopkeeper-order',
                     },
+                    {
+                      name: 'supplier-order',
+                      path: '/order-management/intensive-order/supplier-order',
+                      component: './order-management/intensive-order/supplier-order',
+                    },
                   ]
                 }
               ]
@@ -185,6 +190,7 @@ export default defineConfig({
                   name: 'intensive-activity-create',
                   path: '/intensive-activity-management/intensive-activity-create',
                   component: './intensive-activity-management/intensive-activity-create',
+                  hideInMenu: true,
                 },
               ]
             },
@@ -207,6 +213,12 @@ export default defineConfig({
                   name: 'consultant-supplier-list',
                   path: '/supplier-management/consultant-supplier-list',
                   component: './supplier-management/consultant-supplier-list',
+                  hideInMenu: true,
+                },
+                {
+                  name: 'after-sale-address',
+                  path: '/supplier-management/after-sale-address',
+                  component: './supplier-management/after-sale-address',
                   hideInMenu: true,
                 },
               ]

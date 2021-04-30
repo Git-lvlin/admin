@@ -43,7 +43,7 @@ const labelStyle = {
   display: 'inline-block'
 }
 
-const Detail = ({ onClose, visible }) => {
+const Detail = ({ onClose, visible, detailData }) => {
   return (
     <Drawer
       title="订单详情"
@@ -61,22 +61,22 @@ const Detail = ({ onClose, visible }) => {
           <Button onClick={onClose} style={{ marginRight: 8 }}>
             返回
           </Button>
-          <Button type="primary">
+          {/* <Button type="primary">
             Submit
-          </Button>
+          </Button> */}
         </div>
       }
     >
       <ProCard split="vertical" bordered headerBordered size="small" style={{ marginBottom: 20 }}>
         <ProCard title="订单信息">
           <Descriptions labelStyle={labelStyle}>
-            <Descriptions.Item label="订单状态">待付款</Descriptions.Item>
+            <Descriptions.Item label="订单状态">{detailData.status}</Descriptions.Item>
           </Descriptions>
           <div className="ant-pro-card-title">尾款订单</div>
           <Divider style={{ marginTop: 0 }} />
           <Descriptions labelStyle={labelStyle} column={1}>
-            <Descriptions.Item label="订单号">2021042012345678</Descriptions.Item>
-            <Descriptions.Item label="下单时间">2021-04-20 18:14:25</Descriptions.Item>
+            <Descriptions.Item label="订单号">{detailData.orderId}</Descriptions.Item>
+            <Descriptions.Item label="下单时间">{detailData.createTime}</Descriptions.Item>
             <Descriptions.Item label="支付方式">微信支付</Descriptions.Item>
             <Descriptions.Item label="支付时间">2021-04-20 18:20:30</Descriptions.Item>
             <Descriptions.Item label="支付流水号">11111111111111</Descriptions.Item>
@@ -86,14 +86,14 @@ const Detail = ({ onClose, visible }) => {
         <ProCard split="horizontal">
           <ProCard title="供应商信息" style={{ flex: 1 }}>
             <Descriptions labelStyle={labelStyle} column={1}>
-              <Descriptions.Item label="供应商名称">A供应商</Descriptions.Item>
-              <Descriptions.Item label="供应商手机号">13800138000</Descriptions.Item>
+              <Descriptions.Item label="供应商名称">{detailData.supplier.companyName}</Descriptions.Item>
+              <Descriptions.Item label="供应商手机号">{detailData.supplier.companyUserPhone}</Descriptions.Item>
             </Descriptions>
           </ProCard>
           <ProCard title="店主信息" style={{ flex: 1 }}>
             <Descriptions labelStyle={labelStyle} column={1}>
-              <Descriptions.Item label="店主姓名">永达兴</Descriptions.Item>
-              <Descriptions.Item label="店主手机号">13800138000</Descriptions.Item>
+              <Descriptions.Item label="店主姓名">{detailData.store.linkman}</Descriptions.Item>
+              <Descriptions.Item label="店主手机号">{detailData.store.phone}</Descriptions.Item>
             </Descriptions>
           </ProCard>
         </ProCard>

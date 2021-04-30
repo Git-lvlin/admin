@@ -20,6 +20,7 @@ export default {
   'menu.order-management.retail-list': '零售列表',
   'menu.order-management.intensive-order': '集约订单',
   'menu.order-management.intensive-order.shopkeeper-order': '店主订单',
+  'menu.order-management.intensive-order.supplier-order': '供应商订单',
 
   'menu.product-management': '商品管理',
   'menu.product-management.product-list': '商品列表',
@@ -42,4 +43,5 @@ export default {
   'menu.supplier-management.supplier-list': '供应商列表',
   'menu.supplier-management.consultant-product-list': '供应商顾问商品列表',
   'menu.supplier-management.consultant-supplier-list': '顾问供应商列表',
+  'menu.supplier-management.after-sale-address': '售后地址',
 };

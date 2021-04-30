@@ -54,6 +54,8 @@ const Model = {
           }),
         });
       }
+
+      window.localStorage.removeItem('token')
     },
   },
   reducers: {

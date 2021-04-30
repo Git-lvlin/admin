@@ -1,19 +1,29 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card } from 'antd';
+import { Button, Space } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { getSupplierOrderList, getSupplierOrderDetail } from '@/services/order-management/supplier-order'
 import Detail from './detail';
 
-const TableList = () => {
+const TableList = ({ type }) => {
   const [visible, setVisible] = useState(false);
-  const [selectItem, setSelectItem] = useState(null);
+  const [detailData, setDetailData] = useState(null);
   const actionRef = useRef();
+
+  const getDetail = (orderId) => {
+    getSupplierOrderDetail({ orderId })
+      .then(res => {
+        if (res.code === 0) {
+          setVisible(true);
+          setDetailData(res.data);
+        }
+      })
+  }
 
   const columns = [
     {
       title: '订单号',
-      dataIndex: 'brandName',
+      dataIndex: 'orderId',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入订单号'
@@ -64,37 +74,53 @@ const TableList = () => {
     },
     {
       title: '商品信息',
-      dataIndex: 'brandName',
+      dataIndex: 'sku',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => (
+        <div>
+          <div>供应商名称：{data?.supplier?.companyName}</div>
+          <div>订单号：{_.orderId}&nbsp;&nbsp;{data.createTime}</div>
+          <div style={{ display: 'flex' }}>
+            <img src={_.skuImageUrl} width={50} height={50} />
+            <div style={{ marginLeft: 10 }}>
+              <div>{_.goodsName}</div>
+              <div>店主价：¥{_.price}</div>
+              <div><span>预订量：{_.totalNum}件</span>&nbsp;<span>发货量：{_.advancePaymentNum}件</span></div>
+            </div>
+          </div>
+        </div>
+      )
     },
     {
-      title: '商品总额',
-      dataIndex: 'brandName',
+      title: '订金',
+      dataIndex: 'advancePayment',
       valueType: 'text',
       hideInSearch: true,
+      render: (text) => `¥${text}`
     },
     {
-      title: '实付金额',
-      dataIndex: 'brandName',
+      title: '尾款',
+      dataIndex: 'finalPayment',
       valueType: 'text',
       hideInSearch: true,
+      render: (text) => `¥${text}`
     },
     {
-      title: '店主佣金',
-      dataIndex: 'brandName',
+      title: '店主信息',
+      dataIndex: 'store',
       valueType: 'text',
       hideInSearch: true,
-    },
-    {
-      title: '买家信息',
-      dataIndex: 'brandName',
-      valueType: 'text',
-      hideInSearch: true,
+      render: (_) => (
+        <>
+          <div>{_.linkman}</div>
+          <div>{_.phone}</div>
+        </>
+      )
     },
     {
       title: '订单状态',
-      dataIndex: 'brandName',
+      dataIndex: 'status',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -103,25 +129,24 @@ const TableList = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, data) => (
-        <>
-          <a onClick={() => { setSelectItem(data); setFormVisible(true) }}>详情</a>
-          &nbsp;
-          <a style={{ color: 'red' }} onClick={() => { brandDel(data.brandId) }}>终止</a>
-        </>
+        <Space>
+          <a onClick={() => { getDetail(data.orderId) }}>查看</a>
+          {data.status === '已关闭' && <a onClick={() => { }}>开启</a>}
+        </Space>
       ),
     },
   ];
 
   return (
-    <PageContainer>
-      <Card>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button key="out" type="primary" icon={<PlusOutlined />} onClick={() => { setFormVisible(true) }}>新建</Button>
-        </div>
-      </Card>
+    <>
       <ProTable
-        rowKey="brandId"
+        rowKey="orderId"
         options={false}
+        params={{
+          wholesaleType: 5,
+          status: type
+        }}
+        request={getSupplierOrderList}
         search={{
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [
@@ -148,8 +173,8 @@ const TableList = () => {
         columns={columns}
         actionRef={actionRef}
       />
-      <Detail visible={visible} onClose={() => { setVisible(false) }} />
-    </PageContainer>
+      {detailData && <Detail detailData={detailData} visible={visible} onClose={() => { setVisible(false) }} />}
+    </>
 
   );
 };

@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout';
-import ProForm, {
+import {
   StepsForm,
   ProFormText,
   ProFormCheckbox,
@@ -9,9 +9,13 @@ import ProForm, {
   ProFormDigit,
 } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
-import { Button, Result, Form } from 'antd';
+import { Button, Result, message, Descriptions } from 'antd';
 import EditTable from './edit-table';
 import styles from './index.less';
+import { addWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
+import { numFormat, digitUppercase } from '@/utils/utils'
+import { history } from 'umi';
+
 
 const formItemLayout = {
   labelCol: { span: 10 },
@@ -27,15 +31,41 @@ const formItemLayout = {
 };
 
 const IntensiveActivityCreate = () => {
+  const [selectItem, setSelectItem] = useState(null);
+  const [submitValue, setSubmitValue] = useState(null);
+  const submit = (values) => {
+    const { wholesaleTime, payTimeout, ...rest } = values;
+    return new Promise((resolve, reject) => {
+      const params = {
+        goodsInfos: [{
+          spuId: selectItem.spuId,
+          skuId: selectItem.skuId,
+          totalStockNum: selectItem.totalStockNum,
+          minNum: selectItem.minNum,
+          price: selectItem.price,
+          perStoreMinNum: selectItem.perStoreMinNum,
+        }],
+        storeLevel: 'ALL',
+        memberLevel: 'ALL',
+        wholesaleStartTime: wholesaleTime[0],
+        wholesaleEndTime: wholesaleTime[1],
+        payTimeout: payTimeout * 60 * 60,
+        ...rest,
+      }
+      setSubmitValue(params)
+      addWholesale(params).then(res => {
+        if (res.code === 0) {
+          resolve()
+        }
+      }).finally(() => {
+        reject()
+      })
+    });
+  }
   return (
     <PageContainer className={styles.page}>
       <ProCard>
         <StepsForm
-          onFinish={async (values) => {
-            console.log(values);
-            await waitTime(1000);
-            message.success('提交成功');
-          }}
           formProps={{
             validateMessages: {
               required: '此项为必填项',
@@ -67,63 +97,65 @@ const IntensiveActivityCreate = () => {
           <StepsForm.StepForm
             name="base"
             title="选择活动商品"
-            onFinish={async ({ name }) => {
-              console.log(name);
-              return true;
+            onFinish={() => {
+              if (selectItem) {
+                return true;
+              }
+              message.error('请选择活动商品');
+              return false;
             }}
 
           >
-            <EditTable />
+            <EditTable onSelect={setSelectItem} />
           </StepsForm.StepForm>
           <StepsForm.StepForm
             name="checkbox"
             title="确认活动参数"
+            onFinish={async (values) => {
+              await submit(values);
+              return true;
+            }}
             {...formItemLayout}
+            initialValues={{
+              canRecoverPayTimes: 1,
+              payTimeout: 3
+            }}
           >
-            <ProFormText name="dbname" label="活动名称" width="md" placeholder="请输入活动名称" />
-            <ProFormDateTimeRangePicker label="活动时间" width="md" />
-            <ProFormDateTimePicker label="订金支付截至时间" width="md" />
+            <ProFormText name="name" label="活动名称" width="md" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
+            <ProFormDateTimeRangePicker name="wholesaleTime" label="活动时间" width="md" rules={[{ required: true, message: '请选择活动时间' }]} />
+            <ProFormDateTimePicker name="endTimeAdvancePayment" label="订金支付截至时间" width="md" rules={[{ required: true, message: '请选择订金支付截至时间' }]} />
             <ProFormCheckbox.Group value={'1'} label="可购买的会员店等级" disabled options={[{ label: '全部', value: 1 }]} />
             <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} />
-            <ProFormDigit label="可恢复支付次数" fieldProps={{ value: 1 }} min={0} max={3} placeholder="输入范围0-3" />
-            <ProFormDigit label="每次恢复可支付时长" fieldProps={{ value: 3 }} min={0} max={24} placeholder="输入范围0-24小时" />
+            <ProFormDigit name="canRecoverPayTimes" label="可恢复支付次数" min={0} max={3} placeholder="输入范围0-3" rules={[{ required: true, message: '请输入可恢复支付次数' }]} />
+            <ProFormDigit name="payTimeout" label="每次恢复可支付时长" min={0} max={24} placeholder="输入范围0-24小时" rules={[{ required: true, message: '请输入每次恢复可支付时长' }]} />
           </StepsForm.StepForm>
           <StepsForm.StepForm
             name="time"
             title="完成"
             {...formItemLayout}
+            onFinish={() => {
+              history.push('/intensive-activity-management/intensive-activity-list')
+              return true;
+            }}
           >
             <Result
               status="success"
               title="活动创建成功"
               subTitle="活动将在3天后开始，请留意"
             />
-            <div
+            {submitValue && <div
               style={{
                 margin: '0 auto 30px',
                 backgroundColor: 'rgba(247, 247, 247, 1)',
-                padding: '20px 100px'
+                padding: '20px',
+                maxWidth: 600
               }}
             >
-              <Form.Item
-                label="最多参与会员店"
-              >
-                276 家
-              </Form.Item>
-              <Form.Item
-                label="参与活动商品"
-              >
-                <span style={{ wordBreak: 'break-all', whiteSpace: 'nowrap' }}>洁柔FACE抽纸面巾纸 500抽（skuID：2903）</span>
-                <br />
-                广州市洁柔纸业有限公司
-              </Form.Item>
-              <Form.Item label="当前可购买会员总数">
-                1092378 名
-              </Form.Item>
-              <Form.Item label="所有全款结清可收款">
-                <span style={{ wordBreak: 'break-all', whiteSpace: 'nowrap' }}>275,000.00 元（贰拾柒萬伍仟圆整）</span>
-              </Form.Item>
-            </div>
+              <Descriptions labelStyle={{ textAlign: 'right', width: 150, display: 'inline-block' }} column={1}>
+                <Descriptions.Item label="参与活动商品">{selectItem.goodsName}（skuID：{selectItem.skuId}）</Descriptions.Item>
+                <Descriptions.Item label="所有全款结清可收款">{numFormat(submitValue.goodsInfos[0].perStoreMinNum)} 元（{digitUppercase(submitValue.goodsInfos[0].perStoreMinNum)}）</Descriptions.Item>
+              </Descriptions>
+            </div>}
           </StepsForm.StepForm>
         </StepsForm >
       </ProCard >

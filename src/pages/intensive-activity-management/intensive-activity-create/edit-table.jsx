@@ -3,8 +3,10 @@ import { EditableProTable } from '@ant-design/pro-table';
 import { Form } from 'antd';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
+import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
+import Big from 'big.js';
 
-export default function EditTable(props) {
+export default function EditTable({ onSelect }) {
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
   const [form] = Form.useForm();
@@ -51,7 +53,7 @@ export default function EditTable(props) {
       hideInTable: true
     },
     {
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'spuId',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入商品spuID',
@@ -60,7 +62,7 @@ export default function EditTable(props) {
       hideInTable: true
     },
     {
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'skuId',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入商品skuID',
@@ -80,101 +82,128 @@ export default function EditTable(props) {
     },
     {
       title: 'spuID',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'spuId',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      editable: false,
     },
     {
       title: 'skuID',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'skuId',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      editable: false
     },
     {
       title: '商品分类',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      editable: false
     },
     {
       title: '主图',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      editable: false,
+      render: (text) => <img src={text} width={50} height={50} />
     },
     {
       title: '所属供应商名称',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      editable: false,
     },
     {
       title: '销售价',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'salePriceDisplay',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      editable: false
     },
     {
       title: '市场价',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'marketPriceDisplay',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      editable: false
     },
     {
       title: '总库存',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'stockNum',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      editable: false,
     },
     {
       title: '商品名称',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'goodsName',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      editable: false,
     },
     {
       title: '结算类型',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      editable: false,
     },
     {
       title: '集约总库存',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'totalStockNum',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '限售起售量',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'minNum',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '集约价',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'price',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '单店集约量',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'perStoreMinNum',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '全款金额',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'totalPrice',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      editable: false,
     },
   ]
 
+  const postData = (data) => {
+    setEditableKeys(data.map(item => item.id));
+    const arr = data.map(item => ({
+      ...item,
+      totalStockNum: item.stockNum,
+      minNum: 1,
+      price: +new Big(item.salePrice).div(100),
+      perStoreMinNum: 10,
+      totalPrice: +new Big(item.salePrice).div(100).times(10)
+    }))
+    setDataSource(arr)
+  }
+
   return (
     <EditableProTable
+      postData={postData}
       columns={columns}
-      rowKey="key"
+      rowKey="id"
       value={dataSource}
+      request={productList}
       search={{
         defaultCollapsed: false,
         optionRender: (searchConfig, formProps, dom) => [
@@ -184,20 +213,34 @@ export default function EditTable(props) {
       editable={{
         form,
         editableKeys,
-        // actionRender: (row, config, defaultDoms) => {
-        //   return [defaultDoms.delete];
-        // },
-        // onValuesChange: (record, recordList) => {
-        //   setDataSource(recordList);
-        //   setTableData(recordList)
-        // }
+        onValuesChange: (record, recordList) => {
+          const arr = recordList.map(item => {
+            if (item.id === record.id) {
+              const data = {
+                ...item,
+                totalPrice: +new Big(item.price).times(item.perStoreMinNum)
+              }
+              onSelect(data)
+              return data
+            }
+            return item
+          })
+          setDataSource(arr)
+        }
       }}
-      owSelection={{
+      pagination={{
+        pageSize: 5
+      }}
+      rowSelection={{
         hideSelectAll: true,
-        type: 'radio'
+        type: 'radio',
+        onChange: (_, val) => {
+          onSelect(val[0])
+        }
       }}
       bordered
       recordCreatorProps={false}
+      tableAlertRender={false}
       style={{ marginBottom: 20, width: '100%' }}
     />
   )

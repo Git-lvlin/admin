@@ -1,25 +1,117 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card } from 'antd';
+import { Button, Card, Space, Table } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-// import Form from './form';
+import { getWholesaleList, getWholesaleDetail, getWholesaleSku, updateWholesaleState } from '@/services/intensive-activity-management/intensive-activity-list'
+import { history } from 'umi';
+import Detail from './detail';
+
+const SubTable = (props) => {
+  const [data, setData] = useState([])
+  const columns = [
+    {
+      title: 'spuID',
+      dataIndex: 'spuId',
+    },
+    {
+      title: 'skuID',
+      dataIndex: 'skuId',
+    },
+    {
+      title: '规格',
+      dataIndex: 'skuNameDisplay',
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+    },
+    {
+      title: '结算类型',
+      dataIndex: 'address',
+    },
+    {
+      title: '销售价',
+      dataIndex: 'salePrice',
+    },
+    {
+      title: '市场价',
+      dataIndex: 'salePrice',
+    },
+    {
+      title: '限售起售量',
+      dataIndex: 'salePrice',
+    },
+    {
+      title: '集约库存',
+      dataIndex: 'salePrice',
+    },
+    {
+      title: '集约价',
+      dataIndex: 'salePrice',
+    },
+    {
+      title: '集约量',
+      dataIndex: 'salePrice',
+    },
+    {
+      title: '集约全款金额',
+      dataIndex: 'salePrice',
+    },
+  ];
+
+  useEffect(() => {
+    getWholesaleSku({
+      wholesaleId: props.wholesaleId
+    }).then(res => {
+      if (res.code === 0) {
+        setData(res?.data)
+      }
+    })
+  }, [])
+
+  return (
+    <Table columns={columns} dataSource={data} pagination={false} />
+  )
+};
 
 const TableList = () => {
-  const [formVisible, setFormVisible] = useState(false);
-  const [selectItem, setSelectItem] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [detailData, setDetailData] = useState(null)
+  // const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
+
+  const getDetail = (wholesaleId) => {
+    getWholesaleDetail({
+      wholesaleId
+    }).then(res => {
+      if (res.code === 0) {
+        setVisible(true);
+        setDetailData(res.data);
+      }
+    })
+  }
+
+  const update = (wholesaleId) => {
+    updateWholesaleState({
+      wholesaleId
+    }).then(res => {
+      if (res.code===0) {
+        actionRef.current.reload();
+      }
+    })
+  }
 
   const columns = [
     {
       title: '活动编号',
-      dataIndex: 'brandName',
-      valueType: 'select',
+      dataIndex: 'wholesaleId',
+      valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '活动名称',
-      dataIndex: 'brandName',
+      dataIndex: 'name',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入名称'
@@ -45,43 +137,52 @@ const TableList = () => {
     },
     {
       title: '可购买后销售的会员店等级',
-      dataIndex: 'brandName',
+      dataIndex: 'storeLevel',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '可购买的会员等级',
-      dataIndex: 'brandName',
+      dataIndex: 'memberLevel',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '可恢复支付次数',
-      dataIndex: 'brandName',
+      dataIndex: 'canRecoverPayTimes',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '每次恢复的支付时限(小时)',
-      dataIndex: 'brandName',
+      dataIndex: 'orderPayTimeout',
       valueType: 'text',
       hideInSearch: true,
+      render: (text) => text / 3600
     },
     {
       title: '活动时段',
-      dataIndex: 'brandName',
+      dataIndex: 'wholesaleStartTime',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, records) => {
+        return (
+          <>
+            <div>{records.wholesaleStartTime}</div>
+            <div>{records.wholesaleEndTime}</div>
+          </>
+        )
+      }
     },
     {
       title: '订金支付截止时间',
-      dataIndex: 'brandName',
+      dataIndex: 'endTimeAdvancePayment',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '状态',
-      dataIndex: 'brandName',
+      dataIndex: 'wholesaleStatusDesc',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -90,11 +191,10 @@ const TableList = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, data) => (
-        <>
-          <a onClick={() => { setSelectItem(data); setFormVisible(true) }}>详情</a>
-          &nbsp;
-          <a style={{ color: 'red' }} onClick={() => { brandDel(data.brandId) }}>终止</a>
-        </>
+        <Space>
+          <a onClick={() => { getDetail(data.wholesaleId) }}>详情</a>
+          {data.wholesaleStatusDesc === '待开始' && <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>}
+        </Space>
       ),
     },
   ];
@@ -103,12 +203,14 @@ const TableList = () => {
     <PageContainer>
       <Card>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button key="out" type="primary" icon={<PlusOutlined />} onClick={() => { setFormVisible(true) }}>新建</Button>
+          <Button key="out" type="primary" icon={<PlusOutlined />} onClick={() => { history.push('/intensive-activity-management/intensive-activity-create') }}>新建</Button>
         </div>
       </Card>
       <ProTable
-        rowKey="brandId"
+        rowKey="wholesaleId"
         options={false}
+        request={getWholesaleList}
+        expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} /> }}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -119,6 +221,7 @@ const TableList = () => {
         columns={columns}
         actionRef={actionRef}
       />
+      {detailData && <Detail detailData={detailData} visible={visible} onClose={() => { setVisible(false) }} />}
     </PageContainer>
 
   );
