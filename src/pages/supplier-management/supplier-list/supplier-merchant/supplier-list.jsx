@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Space } from 'antd';
+import { getCommonList } from '@/services/supplier-management/supplier-list'
+import { history } from 'umi';
 import Edit from './edit';
 
 const TableList = () => {
@@ -11,63 +12,51 @@ const TableList = () => {
 
   const columns = [
     {
-      title: '顾问名称',
-      dataIndex: 'brandName',
+      title: '供应商名称',
+      dataIndex: 'companyName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入顾问名称'
+        placeholder: '请输入供应商名称'
       }
     },
     {
       title: '登录账号',
-      dataIndex: 'brandName',
+      dataIndex: 'accountName',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入登录账号'
       }
     },
     {
-      title: '手机号码',
-      dataIndex: 'brandName',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '备注',
-      dataIndex: 'brandName',
+      title: '负责人',
+      dataIndex: 'companyUserName',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '状态',
-      dataIndex: 'brandName',
+      dataIndex: 'status',
       valueType: 'select',
       valueEnum: {
-        0: '禁用',
+        2: '禁用',
         1: '启用'
       }
     },
     {
       title: '创建人',
-      dataIndex: 'brandName',
+      dataIndex: 'operateName',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '创建时间',
-      dataIndex: 'brandName',
+      dataIndex: 'createTime',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '涉及供应商',
-      dataIndex: 'brandName',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '返佣SPU商品',
-      dataIndex: 'brandName',
+      title: '子账号',
+      dataIndex: 'subAccountTotal',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -79,18 +68,20 @@ const TableList = () => {
         <Space>
           <a>禁用</a>
           <a>启用</a>
-          <a>修改密码</a>
+          <a>详情</a>
+          <a>编辑</a>
+          <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`)}}>售后地址</a>
         </Space>
       ),
     },
   ];
 
   return (
-    <PageContainer>
+    <>
       <ProTable
-        rowKey="brandId"
+        rowKey="id"
         options={false}
-        // request={api.brand}
+        request={getCommonList}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -119,7 +110,7 @@ const TableList = () => {
         actionRef={actionRef}
       />
       <Edit visible={formVisible} setVisible={setFormVisible} />
-    </PageContainer>
+    </>
 
   );
 };

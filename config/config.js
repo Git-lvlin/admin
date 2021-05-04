@@ -217,7 +217,7 @@ export default defineConfig({
                 },
                 {
                   name: 'after-sale-address',
-                  path: '/supplier-management/after-sale-address',
+                  path: '/supplier-management/after-sale-address/:id',
                   component: './supplier-management/after-sale-address',
                   hideInMenu: true,
                 },

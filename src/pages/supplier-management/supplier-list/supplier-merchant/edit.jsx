@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Input } from 'antd';
+import { Form } from 'antd';
 import {
   DrawerForm,
   ProFormText,
   ProFormRadio,
-  ProFormTextArea,
-  ProFor
 } from '@ant-design/pro-form';
-import Upload from '@/components/upload'
-import * as api from '@/services/product-management/product-list';
+import Upload from '@/components/upload';
+import { supplierAdd } from '@/services/supplier-management/supplier-list';
+import md5 from 'blueimp-md5';
 
 export default (props) => {
-  const { visible, setVisible, detailData, callback, onClose = () => { } } = props;
+  const { visible, setVisible, detailData, callback = () => {}, onClose = () => { } } = props;
   const [form] = Form.useForm()
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -27,9 +26,9 @@ export default (props) => {
   };
 
   const submit = (values) => {
+    const { password, ...rest } = values;
     return new Promise((resolve, reject) => {
-      const apiMethod = detailData ? api.editGoods : api.addGoods
-      apiMethod(obj, { showSuccess: true, showError: true }).then(res => {
+      supplierAdd({ ...rest, password: md5(password) }, { showSuccess: true, showError: true }).then(res => {
         if (res.code === 0) {
           resolve();
           callback();
@@ -67,12 +66,12 @@ export default (props) => {
       }}
       visible={visible}
       initialValues={{
-
+        status: 1,
       }}
       {...formItemLayout}
     >
       <ProFormText
-        name="goodsName"
+        name="companyName"
         label="供应商名称"
         placeholder="请输入供应商名称"
         rules={[{ required: true, message: '请输入供应商名称' }]}
@@ -81,7 +80,7 @@ export default (props) => {
         }}
       />
       <ProFormText
-        name="goodsDesc"
+        name="accountName"
         label="供应商登录账号"
         placeholder="请输入供应商登录账号"
         rules={[{ required: true, message: '请输入供应商登录账号' }]}
@@ -90,7 +89,7 @@ export default (props) => {
         }}
       />
       <ProFormText.Password
-        name="supplierSpuId"
+        name="password"
         label="供应商登录密码"
         placeholder="请输入供应商登录密码"
         rules={[{ required: true, message: '请输入供应商登录密码' }]}
@@ -101,7 +100,7 @@ export default (props) => {
       />
       <Form.Item
         label="营业执照"
-        name="primaryImages"
+        name="businessLicense"
         tooltip={
           <dl>
             <dt>图片要求</dt>
@@ -113,8 +112,8 @@ export default (props) => {
         <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <Form.Item
-        label="商品详情"
-        name="detailImages"
+        label="相关资质"
+        name="qualification"
         tooltip={
           <dl>
             <dt>图片要求</dt>
@@ -124,10 +123,10 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload multiple maxCount={20} accept="image/*" size={1 * 1024} />
+        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <ProFormText
-        name="goodsDesc"
+        name="companyUserName"
         label="负责人"
         placeholder="请输入负责人"
         rules={[{ required: true, message: '请输入负责人' }]}
@@ -136,7 +135,7 @@ export default (props) => {
         }}
       />
       <ProFormText
-        name="goodsDesc"
+        name="companyUserPhone"
         label="负责人手机号"
         placeholder="请输入负责人手机号"
         rules={[{ required: true, message: '请输入负责人手机号' }]}
@@ -145,18 +144,21 @@ export default (props) => {
         }}
       />
       <ProFormText
-        name="goodsKeywords"
+        name="orderTipphone"
         label="接收订单提醒的手机号"
         placeholder="请输入手机号码 产生待发货订单时自动发送短信"
+        fieldProps={{
+          maxLength: 11,
+        }}
       />
       <ProFormText
-        name="goodsKeywords"
+        name="stockWarn"
         label="库存预警值"
         placeholder="请输入整数字 可用库存小于等于此值时提醒"
       />
 
       <ProFormRadio.Group
-        name="goodsSaleType"
+        name="status"
         label="状态"
         rules={[{ required: true }]}
         options={[

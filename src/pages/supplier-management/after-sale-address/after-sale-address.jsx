@@ -3,11 +3,25 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
+import { addressList, addressDetail } from '@/services/supplier-management/after-sale-address'
+import { useParams } from 'umi';
+import Edit from './edit';
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
-  const [selectItem, setSelectItem] = useState(null);
+  const [detailData, setDetailData] = useState(null);
   const actionRef = useRef();
+
+  const getDetail = (id) => {
+    addressDetail({
+      id
+    }).then(res => {
+      if (res.code === 0) {
+        setDetailData(res?.data?.records);
+        setFormVisible(true);
+      }
+    })
+  }
 
   const columns = [
     {
@@ -17,35 +31,43 @@ const TableList = () => {
     },
     {
       title: '售后联系人',
-      dataIndex: 'brandName',
+      dataIndex: 'contactName',
       valueType: 'text',
     },
     {
       title: '售后联系人手机号码',
-      dataIndex: 'brandName',
+      dataIndex: 'contactPhone',
       valueType: 'text',
     },
     {
       title: '售后地址',
-      dataIndex: 'brandName',
+      dataIndex: 'address',
       valueType: 'text',
     },
     {
       title: '默认售后地址',
-      dataIndex: 'brandName',
+      dataIndex: 'isDefault',
       valueType: 'text',
+      valueEnum: {
+        1: '是',
+        0: '否'
+      }
     },
     {
       title: '启用状态',
-      dataIndex: 'brandName',
+      dataIndex: 'status',
       valueType: 'text',
+      valueEnum: {
+        1: '启用',
+        2: '禁用'
+      }
     },
     {
       title: '操作',
       dataIndex: 'brandName',
       valueType: 'options',
-      render: () => {
-        <a>编辑</a>
+      render: (_, data) => {
+        return <a onClick={() => { getDetail(data.id) }}>编辑</a>
       }
     },
   ];
@@ -58,12 +80,21 @@ const TableList = () => {
         </div>
       </Card>
       <ProTable
-        rowKey="brandId"
         options={false}
-        // request={api.brand}
+        params={{
+          supplierId: useParams()?.id
+        }}
+        request={addressList}
         search={false}
         columns={columns}
         actionRef={actionRef}
+      />
+      <Edit
+        visible={formVisible}
+        setVisible={setFormVisible}
+        supplierId={useParams()?.id}
+        detailData={detailData}
+        callback={() => { actionRef.current.reload()}}
       />
     </PageContainer>
   );
