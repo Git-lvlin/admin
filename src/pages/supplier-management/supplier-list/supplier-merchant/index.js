@@ -1,3 +1,3 @@
-import SupplierList from './supplier-list';
+import SupplierList from './supplier-merchant';
 
 export default SupplierList;

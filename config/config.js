@@ -205,13 +205,13 @@ export default defineConfig({
                 },
                 {
                   name: 'consultant-product-list',
-                  path: '/supplier-management/consultant-product-list',
+                  path: '/supplier-management/consultant-product-list/:id',
                   component: './supplier-management/consultant-product-list',
                   hideInMenu: true,
                 },
                 {
                   name: 'consultant-supplier-list',
-                  path: '/supplier-management/consultant-supplier-list',
+                  path: '/supplier-management/consultant-supplier-list/:id',
                   component: './supplier-management/consultant-supplier-list',
                   hideInMenu: true,
                 },
@@ -220,6 +220,50 @@ export default defineConfig({
                   path: '/supplier-management/after-sale-address/:id',
                   component: './supplier-management/after-sale-address',
                   hideInMenu: true,
+                },
+                {
+                  name: 'supplier-sub-account',
+                  path: '/supplier-management/supplier-sub-account/:id',
+                  component: './supplier-management/supplier-sub-account',
+                  hideInMenu: true,
+                },
+                {
+                  name: 'supplier-detail',
+                  path: '/supplier-management/supplier-detail/:id',
+                  component: './supplier-management/supplier-detail',
+                  hideInMenu: true,
+                },
+              ]
+            },
+            // {
+            //   path: '/asset-management',
+            //   name: 'asset-management',
+            //   routes: [
+            //     {
+            //       name: 'settlement-profit-list',
+            //       path: '/asset-management/settlement-profit-list',
+            //       component: './asset-management/settlement-profit-list',
+            //     },
+            //   ]
+            // },
+            {
+              path: '/intensive-store-management',
+              name: 'intensive-store-management',
+              routes: [
+                {
+                  name: 'store-list',
+                  path: '/intensive-store-management/store-list',
+                  component: './intensive-store-management/store-list',
+                },
+                {
+                  name: 'store-review',
+                  path: '/intensive-store-management/store-review',
+                  component: './intensive-store-management/store-review',
+                },
+                {
+                  name: 'grade-index',
+                  path: '/intensive-store-management/grade-index',
+                  component: './intensive-store-management/grade-index',
                 },
               ]
             },

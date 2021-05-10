@@ -39,3 +39,11 @@ export const categoryEdit = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const categorySwitch = (params = {}, options = {}) => {
+  return request('/auth/goods/product/categorySwitch', {
+    method: 'GET',
+    params,
+    ...options
+  });
+}

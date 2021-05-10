@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Form } from 'antd';
+import { Form, Button } from 'antd';
 import {
   DrawerForm,
   ProFormText,
   ProFormRadio,
 } from '@ant-design/pro-form';
 import md5 from 'blueimp-md5';
-import { helperAdds } from '@/services/supplier-management/supplier-list'
+import FormModal from './form';
+import { helperAdds, helperEdits } from '@/services/supplier-management/supplier-list'
 
 export default (props) => {
   const { visible, setVisible, detailData, callback, onClose = () => { } } = props;
+  const [formVisible, setFormVisible] = useState(false)
+  const [selectData, setSelectData] = useState([]);
+
   const [form] = Form.useForm()
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -27,9 +31,11 @@ export default (props) => {
   const submit = (values) => {
     const { password, ...rest } = values;
     return new Promise((resolve, reject) => {
-      const apiMethod = detailData ? helperAdds : helperAdds
+      const apiMethod = detailData ? helperEdits : helperAdds
       apiMethod({
         password: md5(password),
+        supplierId: detailData?.supplierId,
+        bindSupplierIds: selectData.map(item => item.id).join(','),
         ...rest,
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
@@ -45,9 +51,11 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
-      form.setFieldsValue({})
+      form.setFieldsValue({
+        ...detailData
+      })
+      setSelectData(detailData.supplierIds)
     }
-
   }, [form, detailData]);
 
   return (
@@ -58,7 +66,7 @@ export default (props) => {
         forceRender: true,
         destroyOnClose: true,
         width: 800,
-        onClose: () => {
+        onCancel: () => {
           onClose();
         }
       }}
@@ -102,6 +110,18 @@ export default (props) => {
         }}
       />
 
+      <Form.Item
+        label="可关联供应商"
+      >
+        <Button type="primary" onClick={() => { setFormVisible(true) }}>选择供应商</Button>
+        <div>
+          {!!selectData.length && <div>已选择供应商</div>}
+          {
+            selectData.map(item => (<div key={item.id}>{item.companyName}</div>))
+          }
+        </div>
+      </Form.Item>
+
       <ProFormText
         name="companyUserPhone"
         label="手机号"
@@ -136,6 +156,12 @@ export default (props) => {
           },
         ]}
       />
+      {formVisible && <FormModal
+        visible={formVisible}
+        setVisible={setFormVisible}
+        callback={(v) => { setSelectData(v) }}
+        selectData={selectData}
+      />}
     </DrawerForm>
   );
 };

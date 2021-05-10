@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Card, Table } from 'antd';
+import { Button, Table } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import XLSX from 'xlsx'
 import { PageContainer } from '@ant-design/pro-layout';
-import { PlusOutlined } from '@ant-design/icons';
 import * as api from '@/services/product-management/product-list';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import { amountTransform, typeTransform } from '@/utils/utils'
+import { manageProductSpu } from '@/services/supplier-management/consultant-product-list';
+import { getDetail } from '@/services/product-management/product-review'
+import { useParams } from 'umi';
+import Detail from './detail';
+
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -40,42 +44,18 @@ const SubTable = (props) => {
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
-  const [detailData, setDetailData] = useState(null);
   const [config, setConfig] = useState({});
-  const [offShelfVisible, setOffShelfVisible] = useState(false);
-  const [selectItemId, setSelectItemId] = useState(null);
+  const [detailData, setDetailData] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
 
-  const getDetail = (id) => {
-    api.getDetail({
+  const getDetails = (id) => {
+    getDetail({
       spuId: id
     }).then(res => {
-      if (res.code === 0) {
+      if(res.code ===0) {
         setDetailData(res.data);
         setFormVisible(true);
-      }
-    })
-  }
-
-  const onShelf = (spuId) => {
-    api.onShelf({
-      spuId
-    }, { showSuccess: true }).then(res => {
-      if (res.code === 0) {
-        actionRef.current.reload();
-      }
-    })
-  }
-
-  const offShelf = (spuId, goodsStateRemark) => {
-    api.offShelf({
-      spuId,
-      goodsStateRemark,
-    }, { showSuccess: true }).then(res => {
-      if (res.code === 0) {
-        actionRef.current.reload();
-        setSelectItemId(null);
       }
     })
   }
@@ -110,6 +90,9 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入商品名称'
+      },
+      render: (_, data) => {
+        return (<a onClick={() => { getDetails(data.spuId); }}>{_}</a>)
       }
     },
     {
@@ -277,20 +260,15 @@ const TableList = () => {
 
   return (
     <PageContainer>
-      <Card>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button key="out" type="primary" icon={<PlusOutlined />} onClick={() => { setFormVisible(true) }}>新建</Button>
-        </div>
-      </Card>
       <ProTable
         rowKey="id"
         options={false}
         params={{
-          selectType: 1,
+          supplierHelperId: useParams()?.id,
         }}
         actionRef={actionRef}
         formRef={formRef}
-        request={api.productList}
+        request={manageProductSpu}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
           defaultCollapsed: false,
@@ -317,6 +295,11 @@ const TableList = () => {
         }}
         columns={columns}
       />
+      {formVisible && <Detail
+        detailData={detailData}
+        visible={formVisible}
+        setVisible={setFormVisible}
+      />}
     </PageContainer>
   );
 };

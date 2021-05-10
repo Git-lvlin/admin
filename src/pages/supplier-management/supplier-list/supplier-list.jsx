@@ -5,7 +5,7 @@ import SupplierMerchant from './supplier-merchant';
 import ConsultantList from './consultant-list';
 
 const TableList = () => {
-  const [activeKey, setActiveKey] = useState('2')
+  const [activeKey, setActiveKey] = useState('1')
 
   return (
     <PageContainer>

@@ -44,4 +44,14 @@ export default {
   'menu.supplier-management.consultant-product-list': '供应商顾问商品列表',
   'menu.supplier-management.consultant-supplier-list': '顾问供应商列表',
   'menu.supplier-management.after-sale-address': '售后地址',
+  'menu.supplier-management.supplier-sub-account': '供应商子账号',
+  'menu.supplier-management.supplier-detail': '供应商详情',
+
+  'menu.asset-management': '资产管理',
+  'menu.asset-management.settlement-profit-list': '结算分润列表',
+
+  'menu.intensive-store-management': '集约店铺管理',
+  'menu.intensive-store-management.store-list': '店铺列表',
+  'menu.intensive-store-management.store-review': '店铺审核',
+  'menu.intensive-store-management.grade-index': '等级指标',
 };

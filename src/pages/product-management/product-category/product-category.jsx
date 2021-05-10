@@ -31,6 +31,30 @@ const List = (props) => {
       })
   }
 
+  const toggleShow = (status,id) => {
+    setLoading(true);
+    api.categorySwitch({
+      gcShow: status ? 1 : 0,
+      id,
+    }).then(res => {
+      if (res.code === 0) {
+        setData(data.map(item => {
+          if (item.id === id) {
+            return {
+              ...item,
+              gcShow: status ? 1 : 0,
+            }
+          }
+          return item;
+        }))
+      }
+
+    }).finally(() => {
+      setLoading(false);
+    })
+  }
+
+
   const onSortEnd = ({ oldIndex, newIndex }) => {
     if (oldIndex === newIndex) {
       return;
@@ -77,11 +101,20 @@ const List = (props) => {
                       style={{ backgroundColor: (parentId === 0 && selectId === item.id) ? '#f0f0f0' : '#fff' }}>
                       <img src={item.gcIcon} />
                       {item.gcName}
+                      &nbsp;
+                      &nbsp;
+                      佣金抽成：{item.comPercent ?? 0}%
                       <div className={styles.actions}>
-                        <Switch checkedChildren="开" unCheckedChildren="关" style={{ marginRight: 10 }} />
-                        <a onClick={(e) => { edit({ id: item.id, type: 'edit', gcName: item.gcName, callback: () => { getData(); } }); e.stopPropagation() }}>编辑</a>
-                        &nbsp;<a>参数</a>
-                        &nbsp;<a style={{ color: 'red' }} onClick={(e) => { remove(item.id, () => { getData() }); e.stopPropagation() }}>删除</a>
+                        <Switch
+                          onClick={(checked, e) => { toggleShow(checked, item.id); e.stopPropagation(); }}
+                          checked={item.gcShow === 1}
+                          checkedChildren="开"
+                          unCheckedChildren="关"
+                          style={{ marginRight: 10 }}
+                        />
+                        <a onClick={(e) => { edit({ id: item.id, type: 'edit', data: item, callback: () => { getData(); } }); e.stopPropagation() }}>编辑</a>
+                        {/* &nbsp;<a>参数</a>
+                        &nbsp;<a style={{ color: 'red' }} onClick={(e) => { remove(item.id, () => { getData() }); e.stopPropagation() }}>删除</a> */}
                       </div>
                     </li>
                   </SortableItem>

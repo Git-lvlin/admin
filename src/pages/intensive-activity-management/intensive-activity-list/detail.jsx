@@ -1,6 +1,9 @@
-import { Drawer, Descriptions, Divider, Table, Row, Avatar, Typography } from 'antd';
+import React from 'react';
+import { Drawer, Descriptions, Divider, Table, Row, Typography } from 'antd';
+import { amountTransform } from '@/utils/utils'
 
 const { Title } = Typography;
+
 
 const columns = [
   {
@@ -21,35 +24,42 @@ const columns = [
   },
   {
     title: '结算类型',
-    dataIndex: 'address',
+    dataIndex: 'settleType',
+    render: (_) => {
+      return {
+        0: '全部',
+        1: '佣金模式',
+        2: '底价模式'
+      }[_]
+    }
   },
   {
     title: '销售价',
     dataIndex: 'salePrice',
+    render: (_) => amountTransform(_, '/')
   },
   {
     title: '市场价',
-    dataIndex: 'salePrice',
-  },
-  {
-    title: '限售起售量',
-    dataIndex: 'salePrice',
+    dataIndex: 'marketPrice',
+    render: (_) => amountTransform(_, '/')
   },
   {
     title: '集约库存',
-    dataIndex: 'salePrice',
+    dataIndex: 'totalStockNum',
   },
   {
     title: '集约价',
-    dataIndex: 'salePrice',
+    dataIndex: 'price',
+    render: (_) => amountTransform(_, '/')
   },
   {
     title: '集约量',
-    dataIndex: 'salePrice',
+    dataIndex: 'minNum',
   },
   {
     title: '集约全款金额',
-    dataIndex: 'salePrice',
+    dataIndex: 'totalMoney',
+    render: (_) => amountTransform(_, '/')
   },
 ];
 
@@ -58,7 +68,7 @@ const Detail = ({ onClose, visible, detailData }) => {
   return (
     <Drawer
       title="活动详情"
-      width={1000}
+      width={1400}
       placement="right"
       onClose={onClose}
       visible={visible}
@@ -86,7 +96,7 @@ const Detail = ({ onClose, visible, detailData }) => {
             {wholesale.canRecoverPayTimes}
           </Descriptions.Item>
           <Descriptions.Item label="每次恢复支付时长">
-            {wholesale.orderPayTimeout / 3600}小时
+            {wholesale.recoverPayTimeout / 3600}小时
           </Descriptions.Item>
         </Descriptions>
       </Row>

@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Space } from 'antd';
+import { useParams } from 'umi';
+import { manageSupplierList } from '@/services/supplier-management/consultant-supplier-list';
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
@@ -11,7 +13,7 @@ const TableList = () => {
   const columns = [
     {
       title: '供应商名称',
-      dataIndex: 'brandName',
+      dataIndex: 'companyName',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入供应商名称'
@@ -19,7 +21,7 @@ const TableList = () => {
     },
     {
       title: '登录账号',
-      dataIndex: 'brandName',
+      dataIndex: 'accountName',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入登录账号'
@@ -27,13 +29,13 @@ const TableList = () => {
     },
     {
       title: '负责人',
-      dataIndex: 'brandName',
+      dataIndex: 'companyUserName',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '状态',
-      dataIndex: 'brandName',
+      dataIndex: 'status',
       valueType: 'select',
       valueEnum: {
         0: '禁用',
@@ -47,7 +49,10 @@ const TableList = () => {
       <ProTable
         rowKey="brandId"
         options={false}
-        // request={api.brand}
+        params={{
+          supHelperId: useParams()?.id
+        }}
+        request={manageSupplierList}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,

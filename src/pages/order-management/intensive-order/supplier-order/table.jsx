@@ -3,6 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { getSupplierOrderList, getSupplierOrderDetail } from '@/services/order-management/supplier-order'
+import { amountTransform } from '@/utils/utils'
 import Detail from './detail';
 
 const TableList = ({ type }) => {
@@ -32,7 +33,7 @@ const TableList = ({ type }) => {
     },
     {
       title: '商品名称',
-      dataIndex: 'brandName',
+      dataIndex: '',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入商品名称'
@@ -41,7 +42,7 @@ const TableList = ({ type }) => {
     },
     {
       title: '买家昵称',
-      dataIndex: 'brandName',
+      dataIndex: '',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入买家昵称'
@@ -50,7 +51,7 @@ const TableList = ({ type }) => {
     },
     {
       title: '买家手机号',
-      dataIndex: 'brandName',
+      dataIndex: '',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入买家手机号'
@@ -59,7 +60,7 @@ const TableList = ({ type }) => {
     },
     {
       title: '店主名称',
-      dataIndex: 'brandName',
+      dataIndex: '',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店主名称'
@@ -68,7 +69,7 @@ const TableList = ({ type }) => {
     },
     {
       title: '订单日期',
-      dataIndex: 'brandName',
+      dataIndex: '',
       valueType: 'dateRange',
       hideInTable: true,
     },
@@ -85,7 +86,7 @@ const TableList = ({ type }) => {
             <img src={_.skuImageUrl} width={50} height={50} />
             <div style={{ marginLeft: 10 }}>
               <div>{_.goodsName}</div>
-              <div>店主价：¥{_.price}</div>
+              <div>店主价：¥{amountTransform(_.price, '/')}</div>
               <div><span>预订量：{_.totalNum}件</span>&nbsp;<span>发货量：{_.advancePaymentNum}件</span></div>
             </div>
           </div>
@@ -97,14 +98,14 @@ const TableList = ({ type }) => {
       dataIndex: 'advancePayment',
       valueType: 'text',
       hideInSearch: true,
-      render: (text) => `¥${text}`
+      render: (text) => `¥${amountTransform(text, '/')}`
     },
     {
       title: '尾款',
       dataIndex: 'finalPayment',
       valueType: 'text',
       hideInSearch: true,
-      render: (text) => `¥${text}`
+      render: (text) => `¥${amountTransform(text, '/')}`
     },
     {
       title: '店主信息',

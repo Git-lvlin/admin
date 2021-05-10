@@ -3,8 +3,8 @@ import request from '@/utils/request';
 export const getSupplierOrderList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
   const res = await request('/auth/wholesale/SupplierOrder/getSupplierOrderList', {
-    method: 'POST',
-    data: {
+    method: 'get',
+    params: {
       page: current,
       size: pageSize,
       ...rest
@@ -21,8 +21,8 @@ export const getSupplierOrderList = async (params = {}, options = {}) => {
 
 export const getSupplierOrderDetail = (params = {}, options = {}) => {
   return request('/auth/wholesale/SupplierOrder/getSupplierOrderDetail', {
-    method: 'POST',
-    data: params,
+    method: 'get',
+    params,
     ...options
   });
 }

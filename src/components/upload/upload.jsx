@@ -5,7 +5,7 @@ import { getImageSize } from '@/utils/utils';
 import upload from '@/utils/upload'
 
 const Upload = (props) => {
-  const { value, onChange, dirName = 'goods', maxCount, size, dimension, ...rest } = props;
+  const { value, onChange, dirName = 'goods', maxCount = 1, size, dimension, ...rest } = props;
   const [fileList, setFileList] = useState([])
   const [loading, setLoading] = useState(false)
 
@@ -27,10 +27,6 @@ const Upload = (props) => {
         return false;
       }
     }
-    // return await upload(file, dirName).then(res => {
-    //   // eslint-disable-next-line no-param-reassign
-    //   file.url = res
-    // })
     return true;
   }
 

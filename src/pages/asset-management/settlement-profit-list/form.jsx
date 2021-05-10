@@ -3,14 +3,11 @@ import { Form } from 'antd';
 import {
   ModalForm,
   ProFormText,
-  ProFormSwitch,
-  ProFormDigit
 } from '@ant-design/pro-form';
 import * as api from '@/services/product-management/product-category'
-import Upload from '@/components/upload'
 
 export default (props) => {
-  const { visible, setVisible, callback, data, id, type } = props;
+  const { visible, setVisible, callback, gcName, id, type } = props;
   const [form] = Form.useForm();
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -30,7 +27,7 @@ export default (props) => {
       const apiMethod = type === 'add' ? api.categoryAdd : api.categoryEdit;
       const params = {
         ...values,
-        gcShow: gcShow ? 1 : 0,
+        gcShow: 1,
       }
 
       if (type === 'add') {
@@ -52,18 +49,14 @@ export default (props) => {
   }
 
   useEffect(() => {
-    if (data) {
-      form?.setFieldsValue({
-        ...data,
-        gcShow: data.gcShow ? 1 : 0
-      })
-    }
-    
-  }, [form, data])
+    form?.setFieldsValue({
+      gcName,
+    })
+  }, [form, gcName])
 
   return (
     <ModalForm
-      title={type === 'edit' ? '编辑分类' : `添加${id === 0 ? '一' : '二'}级分类`}
+      title={'结算分润比例设置'}
       modalProps={{
         onCancel: () => form.resetFields(),
       }}
@@ -77,15 +70,11 @@ export default (props) => {
         callback();
         return true;
       }}
-      initialValues={{
-        gcShow: true,
-      }}
       {...formItemLayout}
     >
       <ProFormText
-        label="分类名称"
+        label="名称"
         width="md"
-        placeholder="请输入分类名称"
         rules={[
           { type: 'string', required: true, message: '分类名称长度应大于等于2个汉字，小于等于4个汉字', min: 2, max: 4 },
           () => ({
@@ -101,38 +90,9 @@ export default (props) => {
         name="gcName"
         fieldProps={{
           maxLength: 4,
-
+          
         }}
       />
-      <Form.Item
-        label="分类图片"
-        name="gcIcon"
-        required
-        rules={[{ required: true, message: '请上传分类图片' }]}
-        tooltip={
-          <dl>
-            <dt>图片要求</dt>
-            <dd>1.图片大小100kb以内</dd>
-            <dd>2.图片比例1:1</dd>
-            <dd>3.图片格式png/jpg/gif</dd>
-          </dl>
-        }
-      >
-        <Upload accept="image/*" dimension="1:1" size={100} />
-      </Form.Item>
-      <ProFormDigit
-        placeholder="请输入佣金抽成"
-        label="佣金抽成"
-        name="comPercent"
-        min={1}
-        max={20}
-        rules={[{ required: true, message: '请输入佣金抽成' }]}
-        extra={<><span style={{ color: 'red' }}>录入后固定不可编辑修改，谨慎操作</span><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
-        fieldProps={{
-          maxLength: 2,
-        }}
-      />
-      <ProFormSwitch checkedChildren="开" unCheckedChildren="关" name="gcShow" label="状态" />
     </ModalForm >
   );
 };

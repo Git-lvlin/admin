@@ -1,4 +1,6 @@
+import React, { useEffect } from 'react';
 import { Drawer, Descriptions, Divider, Table, Row, Avatar, Typography } from 'antd';
+import { getMemberDetail } from '@/services/user-management/user-list';
 
 const { Title } = Typography;
 
@@ -33,6 +35,9 @@ const columns = [
 ];
 
 const UserDetail = (onClose) => {
+  useEffect(() => {
+    getMemberDetail()
+  }, [])
   return (
     <Drawer
       title="用户详情"

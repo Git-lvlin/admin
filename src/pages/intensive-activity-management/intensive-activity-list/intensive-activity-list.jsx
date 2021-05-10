@@ -5,6 +5,7 @@ import { Button, Card, Space, Table } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { getWholesaleList, getWholesaleDetail, getWholesaleSku, updateWholesaleState } from '@/services/intensive-activity-management/intensive-activity-list'
 import { history } from 'umi';
+import { amountTransform } from '@/utils/utils'
 import Detail from './detail';
 
 const SubTable = (props) => {
@@ -28,35 +29,42 @@ const SubTable = (props) => {
     },
     {
       title: '结算类型',
-      dataIndex: 'address',
+      dataIndex: 'settleType',
+      render: (_) => {
+        return {
+          0: '全部',
+          1: '佣金模式',
+          2: '底价模式'
+        }[_]
+      }
     },
     {
       title: '销售价',
       dataIndex: 'salePrice',
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '市场价',
-      dataIndex: 'salePrice',
-    },
-    {
-      title: '限售起售量',
-      dataIndex: 'salePrice',
+      dataIndex: 'marketPrice',
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '集约库存',
-      dataIndex: 'salePrice',
+      dataIndex: 'totalStockNum',
     },
     {
       title: '集约价',
-      dataIndex: 'salePrice',
+      dataIndex: 'price',
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '集约量',
-      dataIndex: 'salePrice',
+      dataIndex: 'minNum',
     },
     {
       title: '集约全款金额',
-      dataIndex: 'salePrice',
+      dataIndex: 'totalMoney',
+      render: (_) => amountTransform(_, '/')
     },
   ];
 
@@ -131,7 +139,7 @@ const TableList = () => {
     },
     {
       title: '活动时间',
-      dataIndex: 'brandName',
+      dataIndex: 'wholesaleTime',
       valueType: 'dateRange',
       hideInTable: true,
     },
@@ -155,7 +163,7 @@ const TableList = () => {
     },
     {
       title: '每次恢复的支付时限(小时)',
-      dataIndex: 'orderPayTimeout',
+      dataIndex: 'recoverPayTimeout',
       valueType: 'text',
       hideInSearch: true,
       render: (text) => text / 3600
@@ -203,7 +211,7 @@ const TableList = () => {
     <PageContainer>
       <Card>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button key="out" type="primary" icon={<PlusOutlined />} onClick={() => { history.push('/intensive-activity-management/intensive-activity-create') }}>新建</Button>
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => { history.push('/intensive-activity-management/intensive-activity-create') }}>新建</Button>
         </div>
       </Card>
       <ProTable

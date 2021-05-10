@@ -1,14 +1,25 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
-import { helperList } from '@/services/supplier-management/supplier-list'
-
+import { helperList, statusSwitch } from '@/services/supplier-management/supplier-list'
+import { history } from 'umi';
 import Edit from './edit';
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
+
+  const switchStatus = (id, type) => {
+    statusSwitch({
+      supplierId: id,
+      type
+    }).then(res => {
+      if (res.code === 0) {
+        actionRef.current.reload();
+      }
+    })
+  }
 
   const columns = [
     {
@@ -44,7 +55,7 @@ const TableList = () => {
       dataIndex: 'status',
       valueType: 'select',
       valueEnum: {
-        0: '禁用',
+        3: '禁用',
         1: '启用'
       }
     },
@@ -65,12 +76,24 @@ const TableList = () => {
       dataIndex: 'manageSupplierNum',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => {
+        if (_ === 0) {
+          return _;
+        }
+        return <a onClick={() => { history.push(`/supplier-management/consultant-supplier-list/${data.id}`) }}>{_}</a>
+      }
     },
     {
       title: '返佣SPU商品',
       dataIndex: 'manageGoodsNum',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => {
+        if (_ === 0) {
+          return _;
+        }
+        return <a onClick={() => { history.push(`/supplier-management/consultant-product-list/${data.id}`) }}>{_}</a>
+      }
     },
     {
       title: '操作',
@@ -78,8 +101,8 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          {data.status === 1 && <a>禁用</a>}
-          {data.status === 2 && <a>启用</a>}
+          {data.status === 1 && <a onClick={() => { switchStatus(data.id, 2) }}>禁用</a>}
+          {data.status === 3 && <a onClick={() => { switchStatus(data.id, 1) }}>启用</a>}
           <a>修改密码</a>
         </Space>
       ),

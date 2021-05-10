@@ -15,6 +15,8 @@ import styles from './index.less';
 import { addWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
 import { numFormat, digitUppercase } from '@/utils/utils'
 import { history } from 'umi';
+import moment from 'moment'
+import { amountTransform } from '@/utils/utils'
 
 
 const formItemLayout = {
@@ -30,11 +32,32 @@ const formItemLayout = {
   }
 };
 
+function range(start, end) {
+  const result = [];
+  for (let i = start; i < end; i++) {
+    result.push(i);
+  }
+  return result;
+}
+
+const disabledRangeTime = (_, type) => {
+  if (type === 'start') {
+    return {
+      disabledMinutes: () => range(1, 59),
+      disabledSeconds: () => range(1, 59),
+    };
+  }
+  return {
+    disabledMinutes: () => range(0, 59),
+    disabledSeconds: () => range(0, 59),
+  };
+}
+
 const IntensiveActivityCreate = () => {
   const [selectItem, setSelectItem] = useState(null);
   const [submitValue, setSubmitValue] = useState(null);
   const submit = (values) => {
-    const { wholesaleTime, payTimeout, ...rest } = values;
+    const { wholesaleTime, recoverPayTimeout, ...rest } = values;
     return new Promise((resolve, reject) => {
       const params = {
         goodsInfos: [{
@@ -42,14 +65,15 @@ const IntensiveActivityCreate = () => {
           skuId: selectItem.skuId,
           totalStockNum: selectItem.totalStockNum,
           minNum: selectItem.minNum,
-          price: selectItem.price,
+          price: amountTransform(selectItem.price),
           perStoreMinNum: selectItem.perStoreMinNum,
+          supplierId: selectItem.supplierId,
         }],
         storeLevel: 'ALL',
         memberLevel: 'ALL',
         wholesaleStartTime: wholesaleTime[0],
         wholesaleEndTime: wholesaleTime[1],
-        payTimeout: payTimeout * 60 * 60,
+        recoverPayTimeout: recoverPayTimeout * 60 * 60,
         ...rest,
       }
       setSubmitValue(params)
@@ -118,16 +142,40 @@ const IntensiveActivityCreate = () => {
             {...formItemLayout}
             initialValues={{
               canRecoverPayTimes: 1,
-              payTimeout: 3
+              recoverPayTimeout: 3
             }}
           >
             <ProFormText name="name" label="活动名称" width="md" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
-            <ProFormDateTimeRangePicker name="wholesaleTime" label="活动时间" width="md" rules={[{ required: true, message: '请选择活动时间' }]} />
-            <ProFormDateTimePicker name="endTimeAdvancePayment" label="订金支付截至时间" width="md" rules={[{ required: true, message: '请选择订金支付截至时间' }]} />
+            <ProFormDateTimeRangePicker
+              name="wholesaleTime"
+              label="活动时间"
+              width="md"
+              rules={[{ required: true, message: '请选择活动时间' }]}
+              fieldProps={{
+                disabledDate: (currentDate) => { return +currentDate < +new Date() },
+                disabledTime: disabledRangeTime,
+                showTime: {
+                  defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('00:59:59', 'HH:mm:ss')]
+                }
+              }}
+            />
+            <ProFormDateTimePicker
+              name="endTimeAdvancePayment"
+              label="订金支付截至时间"
+              width="md"
+              rules={[{ required: true, message: '请选择订金支付截至时间' }]}
+              fieldProps={{
+                disabledDate: (currentDate) => { return +currentDate < +new Date() },
+                disabledTime: disabledRangeTime,
+                showTime: {
+                  defaultValue: moment('00:59:59', 'HH:mm:ss')
+                }
+              }}
+            />
             <ProFormCheckbox.Group value={'1'} label="可购买的会员店等级" disabled options={[{ label: '全部', value: 1 }]} />
             <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} />
             <ProFormDigit name="canRecoverPayTimes" label="可恢复支付次数" min={0} max={3} placeholder="输入范围0-3" rules={[{ required: true, message: '请输入可恢复支付次数' }]} />
-            <ProFormDigit name="payTimeout" label="每次恢复可支付时长" min={0} max={24} placeholder="输入范围0-24小时" rules={[{ required: true, message: '请输入每次恢复可支付时长' }]} />
+            <ProFormDigit name="recoverPayTimeout" label="每次恢复可支付时长" min={0} max={24} placeholder="输入范围0-24小时" rules={[{ required: true, message: '请输入每次恢复可支付时长' }]} />
           </StepsForm.StepForm>
           <StepsForm.StepForm
             name="time"
@@ -141,7 +189,7 @@ const IntensiveActivityCreate = () => {
             <Result
               status="success"
               title="活动创建成功"
-              subTitle="活动将在3天后开始，请留意"
+              subTitle={`活动将在${moment(submitValue?.wholesaleStartTime).fromNow(true)}后开始，请留意`}
             />
             {submitValue && <div
               style={{

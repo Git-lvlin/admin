@@ -34,7 +34,6 @@ export default (props) => {
   }
 
   const onCheck = (checkedKeys) => {
-    console.log("🚀 ~ file: form.jsx ~ line 88 ~ onCheck ~ checkedKeys", checkedKeys)
     setSelectKeys(checkedKeys)
     setSelectAll(!treeData.some(item => {
       return !checkedKeys.includes(item.key);
@@ -67,7 +66,7 @@ export default (props) => {
     <ModalForm
       title="新建角色"
       modalProps={{
-        onCancel: () => { console.log('run'); reset() },
+        onCancel: () => { reset() },
       }}
       onVisibleChange={setVisible}
       visible={visible}

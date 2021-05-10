@@ -1,39 +1,54 @@
 import { Drawer, Descriptions, Divider, Table, Collapse, Button } from 'antd';
 import ProCard from '@ant-design/pro-card';
 import styles from './detail.less';
+import { amountTransform } from '@/utils/utils'
 
 const { Panel } = Collapse;
 
 const columns = [
   {
     title: '商品',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'goodsName',
+    render(_, data) {
+      return (
+        <div style={{ display: 'flex' }}>
+          <img src={data.skuImageUrl} width={50} height={50} />
+          <div style={{ marginLeft: 10 }}>
+            <div>{data.goodsName}</div>
+            <div>{data.skuName}</div>
+          </div>
+        </div>
+      );
+    }
   },
   {
-    title: '规格',
-    dataIndex: 'age',
-    key: 'age',
+    title: '店主价',
+    dataIndex: 'price',
+    render: (_) => amountTransform(_, '/')
   },
   {
-    title: '销售价',
-    dataIndex: 'address',
-    key: 'address',
+    title: '预订量',
+    dataIndex: 'advancePaymentNum',
   },
   {
-    title: '购买数量',
-    dataIndex: 'address',
-    key: 'address',
+    title: '待付订金',
+    dataIndex: '',
   },
   {
-    title: '商品总额',
-    dataIndex: 'address',
-    key: 'address',
+    title: '实付订金',
+    dataIndex: '',
   },
   {
-    title: '店主佣金',
-    dataIndex: 'address',
-    key: 'address',
+    title: '实发货量',
+    dataIndex: 'actualSendNum',
+  },
+  {
+    title: '待付尾款',
+    dataIndex: '',
+  },
+  {
+    title: '实付尾款',
+    dataIndex: '',
   },
 ];
 
@@ -52,20 +67,20 @@ const Detail = ({ onClose, visible, detailData }) => {
       onClose={onClose}
       visible={visible}
       className={styles.page}
-      footer={
-        <div
-          style={{
-            textAlign: 'right',
-          }}
-        >
-          <Button onClick={onClose} style={{ marginRight: 8 }}>
-            返回
-          </Button>
-          {/* <Button type="primary">
-            Submit
-          </Button> */}
-        </div>
-      }
+    // footer={
+    //   <div
+    //     style={{
+    //       textAlign: 'right',
+    //     }}
+    //   >
+    //     <Button onClick={onClose} style={{ marginRight: 8 }}>
+    //       返回
+    //     </Button>
+    //     <Button type="primary">
+    //       Submit
+    //     </Button>
+    //   </div>
+    // }
     >
       <ProCard split="vertical" bordered headerBordered size="small" style={{ marginBottom: 20 }}>
         <ProCard title="订单信息">
@@ -77,10 +92,10 @@ const Detail = ({ onClose, visible, detailData }) => {
           <Descriptions labelStyle={labelStyle} column={1}>
             <Descriptions.Item label="订单号">{detailData.orderId}</Descriptions.Item>
             <Descriptions.Item label="下单时间">{detailData.createTime}</Descriptions.Item>
-            <Descriptions.Item label="支付方式">微信支付</Descriptions.Item>
-            <Descriptions.Item label="支付时间">2021-04-20 18:20:30</Descriptions.Item>
-            <Descriptions.Item label="支付流水号">11111111111111</Descriptions.Item>
-            <Descriptions.Item label="尾款类型">拼约尾款/直接尾款</Descriptions.Item>
+            <Descriptions.Item label="支付方式">{{ 0: '模拟支付', 1: '支付宝', 2: '微信', 3: '小程序', 4: '银联', 5: '钱包支付' }[detailData?.payInfo?.advance?.payType]}</Descriptions.Item>
+            <Descriptions.Item label="支付时间"></Descriptions.Item>
+            <Descriptions.Item label="支付流水号">{detailData?.payInfo?.advance?.thirdTransactionId}</Descriptions.Item>
+            <Descriptions.Item label="尾款类型"></Descriptions.Item>
           </Descriptions>
         </ProCard>
         <ProCard split="horizontal">
@@ -99,35 +114,43 @@ const Detail = ({ onClose, visible, detailData }) => {
         </ProCard>
         <ProCard title="收/发货信息">
           <Descriptions labelStyle={labelStyle} column={1}>
-            <Descriptions.Item label="收货人">永先生</Descriptions.Item>
-            <Descriptions.Item label="手机号码">13800138000</Descriptions.Item>
-            <Descriptions.Item label="收货地址">安徽省 合肥市 瑶海区 明光路街道喇叭路</Descriptions.Item>
-            <Descriptions.Item label="发货时间"></Descriptions.Item>
-            <Descriptions.Item label="发货方式"></Descriptions.Item>
-            <Descriptions.Item label="物流公司"></Descriptions.Item>
-            <Descriptions.Item label="物流单号"></Descriptions.Item>
+            <Descriptions.Item label="收货人">{detailData.express.receiptUser}</Descriptions.Item>
+            <Descriptions.Item label="手机号码">{detailData.express.receiptPhone}</Descriptions.Item>
+            <Descriptions.Item label="收货地址">{detailData.express.receiptAddress}</Descriptions.Item>
+            <Descriptions.Item label="发货时间">{detailData.express.deliveryTime}</Descriptions.Item>
+            <Descriptions.Item label="发货方式">{detailData.express.sendTypeName}</Descriptions.Item>
+            <Descriptions.Item label="物流公司">{detailData.express.expressName}</Descriptions.Item>
+            <Descriptions.Item label="物流单号">{detailData.express.expressNo}</Descriptions.Item>
           </Descriptions>
         </ProCard>
       </ProCard>
       <Table
         columns={columns}
+        dataSource={detailData?.sku}
+        pagination={false}
       />
 
       <div className={styles.mark}>
         <div>买家备注:</div>
         <Descriptions labelStyle={labelStyle} column={1}>
-          <Descriptions.Item label="商品总额">￥10000.00</Descriptions.Item>
-          <Descriptions.Item label="优惠券优惠">￥0.00</Descriptions.Item>
-          <Descriptions.Item label="运费">￥0.00</Descriptions.Item>
-          <Descriptions.Item label={<span className={styles.red}>实付金额</span>}><span className={styles.red}>￥0.00</span></Descriptions.Item>
+          <Descriptions.Item label="商品总额"></Descriptions.Item>
+          <Descriptions.Item label="优惠券优惠"></Descriptions.Item>
+          <Descriptions.Item label="运费"></Descriptions.Item>
+          <Descriptions.Item label={<span className={styles.red}>实付金额</span>}><span className={styles.red}></span></Descriptions.Item>
         </Descriptions>
       </div>
 
-      <Collapse defaultActiveKey={['1']}>
+      {detailData.expressDetail && <Collapse defaultActiveKey={['1']}>
         <Panel header="物流详情" key="1">
-          <p>131414</p>
+          {
+            detailData.expressDetail.deliveryList.map(item => (
+              <div>
+                <time>{item.time}</time> {item.content}
+              </div>
+            ))
+          }
         </Panel>
-      </Collapse>
+      </Collapse>}
     </Drawer>
   )
 }

@@ -6,6 +6,7 @@ import BrandSelect from '@/components/brand-select'
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import Big from 'big.js';
 
+
 export default function EditTable({ onSelect }) {
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
@@ -13,7 +14,7 @@ export default function EditTable({ onSelect }) {
 
   const columns = [
     {
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'goodsName',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入商品名称',
@@ -30,21 +31,21 @@ export default function EditTable({ onSelect }) {
       },
       hideInTable: true
     },
+    // {
+    //   dataIndex: 'retailSupplyPrice',
+    //   valueType: 'select',
+    //   fieldProps: {
+    //     placeholder: '请选择商品所属供应商类型'
+    //   },
+    //   valueEnum: {
+    //     0: '全部',
+    //     1: '佣金模式',
+    //     2: '底价模式'
+    //   },
+    //   hideInTable: true
+    // },
     {
-      dataIndex: 'retailSupplyPrice',
-      valueType: 'select',
-      fieldProps: {
-        placeholder: '请选择商品所属供应商类型'
-      },
-      valueEnum: {
-        0: '全部',
-        1: '佣金模式',
-        2: '底价模式'
-      },
-      hideInTable: true
-    },
-    {
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'supplierName',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入供应商名称',
@@ -99,7 +100,8 @@ export default function EditTable({ onSelect }) {
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       hideInSearch: true,
-      editable: false
+      editable: false,
+      render: (_, data) => `${data.gcId1Display}-${data.gcId2Display}`
     },
     {
       title: '主图',
@@ -111,7 +113,7 @@ export default function EditTable({ onSelect }) {
     },
     {
       title: '所属供应商名称',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'supplierName',
       valueType: 'text',
       hideInSearch: true,
       editable: false,
@@ -146,10 +148,14 @@ export default function EditTable({ onSelect }) {
     },
     {
       title: '结算类型',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'settleType',
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      valueEnum: {
+        1: '佣金模式',
+        2: '底价模式'
+      },
     },
     {
       title: '集约总库存',
@@ -168,6 +174,9 @@ export default function EditTable({ onSelect }) {
       dataIndex: 'price',
       valueType: 'text',
       hideInSearch: true,
+      // editable: (_, data) => {
+      //   return data.settleType !== 1
+      // }
     },
     {
       title: '单店集约量',
@@ -181,6 +190,7 @@ export default function EditTable({ onSelect }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      render: (_) => <span style={{ color: 'red' }}>{_}</span>
     },
   ]
 

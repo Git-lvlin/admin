@@ -1,17 +1,75 @@
-import React, { useState, useEffect } from 'react';
-import { Form } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Form, Button, Tree, message, Checkbox } from 'antd';
 import {
   DrawerForm,
   ProFormText,
   ProFormRadio,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { supplierAdd } from '@/services/supplier-management/supplier-list';
+import { supplierAdd, supplierEdit, categoryAll } from '@/services/supplier-management/supplier-list';
 import md5 from 'blueimp-md5';
+import { arrayToTree } from '@/utils/utils'
+import FormModal from './form';
+
+
+const CTree = (props) => {
+  const { value, onChange, treeData, data, keys, ...rest } = props;
+  const [selectKeys, setSelectKeys] = useState(keys);
+  const [selectAll, setSelectAll] = useState(false);
+  const onSelectAll = ({ target }) => {
+    const { checked } = target;
+    if (checked) {
+      setSelectKeys(data.map(item => item.id));
+      onChange(data.map(item => item.id))
+
+    } else {
+      setSelectKeys([]);
+      onChange([])
+    }
+    setSelectAll(checked);
+  }
+
+  const onCheck = (checkedKeys) => {
+    setSelectKeys(checkedKeys)
+    onChange(checkedKeys)
+    setSelectAll(!treeData.some(item => {
+      return !checkedKeys.includes(item.key);
+    }))
+  }
+
+  useEffect(() => {
+    onChange(keys)
+  }, [])
+
+  return (
+    <div style={{ flex: 1 }}>
+      <Checkbox
+        onChange={onSelectAll}
+        checked={selectAll}
+        style={{ marginLeft: 23, marginBottom: 5 }}
+      >
+        全部分类
+      </Checkbox>
+      <Tree
+        {...rest}
+        treeData={treeData}
+        onCheck={onCheck}
+        checkedKeys={selectKeys}
+      />
+    </div>
+
+  )
+}
 
 export default (props) => {
-  const { visible, setVisible, detailData, callback = () => {}, onClose = () => { } } = props;
+  const { visible, setVisible, detailData, callback = () => { }, onClose = () => { } } = props;
   const [form] = Form.useForm()
+  const [formVisible, setFormVisible] = useState(false)
+  const [selectData, setSelectData] = useState([]);
+  const [treeData, setTreeData] = useState([])
+  const [selectKeys, setSelectKeys] = useState([]);
+  const originData = useRef([])
+
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -25,10 +83,81 @@ export default (props) => {
     }
   };
 
+
   const submit = (values) => {
-    const { password, ...rest } = values;
+    const { password, gc, ...rest } = values;
     return new Promise((resolve, reject) => {
-      supplierAdd({ ...rest, password: md5(password) }, { showSuccess: true, showError: true }).then(res => {
+      const apiMethod = detailData ? supplierEdit : supplierAdd;
+
+      const obj = {};
+      let gcArr = []
+      if (gc?.length) {
+        const parentIds = [];
+
+        gc.forEach(element => {
+          originData.current.forEach(it => {
+            if (it.id === element) {
+              parentIds.push(it.gcParentId)
+            }
+          })
+        });
+
+        const gcData = [...new Set([...gc, ...parentIds].filter(item => item !== 0))]
+        gcData.forEach(item => {
+          const findItem = originData.current.find(it => item === it.id);
+          const { gcParentId, id } = findItem;
+          // if (gcParentId == 0) {
+          //   if (!obj[gcParentId]) {
+          //     obj[id] = []
+          //   }
+          // } else if (obj[gcParentId]) {
+          //   obj[gcParentId].push(id)
+          // } else {
+          //   console.log('gcParentId', gcParentId)
+          //   obj[gcParentId] = [id];
+          //   console.log('id', obj)
+          // }
+
+          if (gcParentId !== 0) {
+            if (obj[gcParentId]) {
+              obj[gcParentId].push(id)
+            } else {
+              obj[gcParentId] = [id];
+            }
+          }
+
+        })
+
+        let hasError = false;
+        // eslint-disable-next-line no-restricted-syntax
+        for (const key in obj) {
+          if (Object.hasOwnProperty.call(obj, key)) {
+            const g = { gc1: key };
+            if (obj[key].length) {
+              g.gc2 = obj[key]
+            } else {
+              hasError = true;
+            }
+            gcArr.push(g)
+          }
+        }
+
+        if (hasError) {
+          message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
+          reject()
+          return;
+        }
+
+      } else {
+        gcArr = ''
+      }
+      apiMethod({
+        ...rest,
+        password: password ? md5(password) : '',
+        supplierId: detailData?.supplierId,
+        bindSupplierIds: selectData.map(item => item.id).join(','),
+        gcInfo: gcArr,
+      }, { showSuccess: true, showError: true }).then(res => {
         if (res.code === 0) {
           resolve();
           callback();
@@ -39,12 +168,28 @@ export default (props) => {
     });
   }
 
-
   useEffect(() => {
     if (detailData) {
-      form.setFieldsValue({})
+      form.setFieldsValue({
+        ...detailData
+      })
+      setSelectData(detailData.supplierIds)
+      const ids = [];
+      detailData.gcInfo.forEach(item => {
+        if (item.gcParentId !== 0) {
+          ids.push(item.id)
+        }
+      })
+      setSelectKeys(ids)
     }
-
+    categoryAll()
+      .then(res => {
+        if (res.code === 0) {
+          originData.current = res.data.records;
+          const tree = arrayToTree(res.data.records.map(item => ({ ...item, pid: item.gcParentId, title: item.gcName, key: item.id, value: item.id, selectable: false })))
+          setTreeData(tree)
+        }
+      })
   }, [form, detailData]);
 
   return (
@@ -61,8 +206,12 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        await submit(values);
-        return true;
+        try {
+          await submit(values);
+          return true;
+        } catch (error) {
+          console.log('error', error);
+        }
       }}
       visible={visible}
       initialValues={{
@@ -92,7 +241,7 @@ export default (props) => {
         name="password"
         label="供应商登录密码"
         placeholder="请输入供应商登录密码"
-        rules={[{ required: true, message: '请输入供应商登录密码' }]}
+        rules={[{ required: !detailData, message: '请输入供应商登录密码' }]}
         fieldProps={{
           maxLength: 32,
           visibilityToggle: false,
@@ -125,6 +274,18 @@ export default (props) => {
       >
         <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
+      <Form.Item
+        label="可关联顾问"
+      >
+        <Button type="primary" onClick={() => { setFormVisible(true) }}>选择顾问</Button>
+        <div>
+          {!!selectData.length && <div>已选择顾问</div>}
+          {
+            selectData.map(item => (<div key={item.id}>{item.companyName}</div>))
+          }
+        </div>
+      </Form.Item>
+
       <ProFormText
         name="companyUserName"
         label="负责人"
@@ -157,6 +318,24 @@ export default (props) => {
         placeholder="请输入整数字 可用库存小于等于此值时提醒"
       />
 
+      <Form.Item
+        label="主营商品类型"
+        name="gc"
+      >
+        <CTree
+          checkable
+          style={{
+            width: '100%',
+          }}
+          treeData={treeData}
+          multiple
+          height={200}
+          data={originData.current}
+          virtual={false}
+          keys={selectKeys}
+        />
+      </Form.Item>
+
       <ProFormRadio.Group
         name="status"
         label="状态"
@@ -168,10 +347,16 @@ export default (props) => {
           },
           {
             label: '禁用',
-            value: 2,
+            value: 3,
           },
         ]}
       />
+      {formVisible && <FormModal
+        visible={formVisible}
+        setVisible={setFormVisible}
+        callback={(v) => { setSelectData(v) }}
+        selectData={selectData}
+      />}
     </DrawerForm>
   );
 };

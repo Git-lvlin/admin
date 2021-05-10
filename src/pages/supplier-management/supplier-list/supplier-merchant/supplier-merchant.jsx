@@ -1,14 +1,38 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
-import { getCommonList } from '@/services/supplier-management/supplier-list'
+import { getCommonList, statusSwitch, detailExt } from '@/services/supplier-management/supplier-list'
 import { history } from 'umi';
 import Edit from './edit';
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
-  const [selectItem, setSelectItem] = useState(null);
+  const [detailData, setDetailData] = useState(null);
   const actionRef = useRef();
+
+  const switchStatus = (id, type) => {
+    statusSwitch({
+      supplierId: id,
+      type
+    }).then(res => {
+      if (res.code === 0) {
+        actionRef.current.reload();
+      }
+    })
+  }
+
+  const getDetail = (id) => {
+    detailExt({
+      supplierId: id
+    }).then(res => {
+      if (res.code === 0) {
+        setDetailData({
+          ...res.data.records,
+        })
+        setFormVisible(true)
+      }
+    })
+  }
 
   const columns = [
     {
@@ -38,13 +62,13 @@ const TableList = () => {
       dataIndex: 'status',
       valueType: 'select',
       valueEnum: {
-        2: '禁用',
+        3: '禁用',
         1: '启用'
       }
     },
     {
       title: '创建人',
-      dataIndex: 'operateName',
+      dataIndex: 'createUser',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -59,6 +83,12 @@ const TableList = () => {
       dataIndex: 'subAccountTotal',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => {
+        if (_ === 0) {
+          return _;
+        }
+        return <a onClick={() => { history.push(`/supplier-management/supplier-sub-account/${data.id}`) }}>{_}</a>
+      }
     },
     {
       title: '操作',
@@ -66,11 +96,11 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          <a>禁用</a>
-          <a>启用</a>
-          <a>详情</a>
-          <a>编辑</a>
-          <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`)}}>售后地址</a>
+          {data.status === 1 && <a onClick={() => { switchStatus(data.id, 2) }}>禁用</a>}
+          {data.status === 3 && <a onClick={() => { switchStatus(data.id, 1) }}>启用</a>}
+          <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.id}`) }}>详情</a>
+          <a onClick={() => { getDetail(data.id) }}>编辑</a>
+          <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>售后地址</a>
         </Space>
       ),
     },
@@ -109,7 +139,12 @@ const TableList = () => {
         columns={columns}
         actionRef={actionRef}
       />
-      <Edit visible={formVisible} setVisible={setFormVisible} />
+      {formVisible && <Edit
+        visible={formVisible}
+        setVisible={setFormVisible}
+        detailData={detailData}
+        callback={() => { actionRef.current.reload() }}
+      />}
     </>
 
   );
