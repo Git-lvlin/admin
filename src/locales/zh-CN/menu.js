@@ -14,6 +14,8 @@ export default {
 
   'menu.user-management': '用户管理',
   'menu.user-management.user-list': '用户列表',
+  'menu.user-management.disable-user-list': '禁用列表',
+  'menu.user-management.user-detail': '用户详情',
 
   'menu.order-management': '订单管理',
   'menu.order-management.pending-orders': '待发货订单',

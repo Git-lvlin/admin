@@ -87,6 +87,16 @@ const Detail = ({ onClose, visible, detailData }) => {
           <Descriptions labelStyle={labelStyle}>
             <Descriptions.Item label="订单状态">{detailData.status}</Descriptions.Item>
           </Descriptions>
+          <div className="ant-pro-card-title">订金订单</div>
+          <Divider style={{ marginTop: 0 }} />
+          <Descriptions labelStyle={labelStyle} column={1}>
+            <Descriptions.Item label="订单号">{detailData?.payInfo?.advance?.orderId}</Descriptions.Item>
+            <Descriptions.Item label="下单时间">{detailData?.payInfo?.advance?.payTime}</Descriptions.Item>
+            <Descriptions.Item label="支付方式">{{ 0: '模拟支付', 1: '支付宝', 2: '微信', 3: '小程序', 4: '银联', 5: '钱包支付' }[detailData?.payInfo?.advance?.payType]}</Descriptions.Item>
+            <Descriptions.Item label="支付时间"></Descriptions.Item>
+            <Descriptions.Item label="支付流水号">{detailData?.payInfo?.advance?.thirdTransactionId}</Descriptions.Item>
+            <Descriptions.Item label="尾款类型"></Descriptions.Item>
+          </Descriptions>
           <div className="ant-pro-card-title">尾款订单</div>
           <Divider style={{ marginTop: 0 }} />
           <Descriptions labelStyle={labelStyle} column={1}>

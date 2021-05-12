@@ -62,8 +62,9 @@ export default (props) => {
     })
 
     tableData.forEach(item => {
-      specData[item.code] = {
-        ...item,
+      const { code, key, spec1, spec2, specValue, ...rest } = item;
+      specData[code] = {
+        ...rest,
         imageUrl: item?.imageUrl,
         wholesalePrice: amountTransform(item.wholesalePrice),
         retailSupplyPrice: amountTransform(item.retailSupplyPrice),
@@ -191,10 +192,10 @@ export default (props) => {
         buyMinNum: goods.buyMinNum,
         buyMaxNum: goods.buyMaxNum,
         goodsRemark: goods.goodsRemark,
-        primaryImages: uploadImageFormatConversion(detailData.primaryImages, 'imageUrl', 'imageSort'),
-        detailImages: uploadImageFormatConversion(detailData.detailImages, 'imageUrl', 'imageSort'),
-        advImages: uploadImageFormatConversion(detailData.advImages, 'imageUrl', 'imageSort'),
-        videoUrl: [{ url: goods.videoUrl, uid: 1 }],
+        primaryImages: uploadImageFormatConversion(detailData.primaryImages, 'imageUrl'),
+        detailImages: uploadImageFormatConversion(detailData.detailImages, 'imageUrl'),
+        advImages: uploadImageFormatConversion(detailData.advImages, 'imageUrl'),
+        videoUrl: goods.videoUrl,
         gcId: [goods.gcId1, goods.gcId2],
       })
 
@@ -228,7 +229,7 @@ export default (props) => {
             salePrice: amountTransform(item[1].salePrice, '/'),
             marketPrice: amountTransform(item[1].marketPrice, '/'),
             key: item[1].skuId,
-            imageUrl: [{ url: item[1].imageUrl, uid: 1 }],
+            imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
             spec2: specValuesMap[specDataKeys[1]],
             specValue,
@@ -418,13 +419,10 @@ export default (props) => {
                           label=" "
                           name={[name, 'name']}
                           colon={false}
-                          fieldProps={{
-                            maxLength: 18,
-                          }}
                         >
-                          <Input placeholder="请输入规格属性" addonAfter={
+                          <Input maxLength={18} placeholder="请输入规格属性" addonAfter={
                             key === 0 ?
-                              <Button type="primary" maxLength={18} onClick={() => { add() }}>添加</Button>
+                              <Button type="primary" onClick={() => { add() }}>添加</Button>
                               :
                               <Button type="primary" danger onClick={() => { remove(name) }}>删除</Button>
                           } />

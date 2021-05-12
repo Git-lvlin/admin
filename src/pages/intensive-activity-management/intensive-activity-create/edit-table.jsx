@@ -174,9 +174,9 @@ export default function EditTable({ onSelect }) {
       dataIndex: 'price',
       valueType: 'text',
       hideInSearch: true,
-      // editable: (_, data) => {
-      //   return data.settleType !== 1
-      // }
+      editable: (_, data) => {
+        return data.settleType !== 1
+      }
     },
     {
       title: '单店集约量',
@@ -200,9 +200,9 @@ export default function EditTable({ onSelect }) {
       ...item,
       totalStockNum: item.stockNum,
       minNum: 1,
-      price: +new Big(item.salePrice).div(100),
+      price: item.salePrice > 0 ? + new Big(item.salePrice).div(100) : 0,
       perStoreMinNum: 10,
-      totalPrice: +new Big(item.salePrice).div(100).times(10)
+      totalPrice: item.salePrice > 0 ? +new Big(item.salePrice).div(100).times(10) : 0,
     }))
     setDataSource(arr)
   }
@@ -228,7 +228,7 @@ export default function EditTable({ onSelect }) {
             if (item.id === record.id) {
               const data = {
                 ...item,
-                totalPrice: +new Big(item.price).times(item.perStoreMinNum)
+                totalPrice: (item.price > 0 && item.perStoreMinNum > 0) ? +new Big(item.price).times(item.perStoreMinNum) : 0
               }
               onSelect(data)
               return data

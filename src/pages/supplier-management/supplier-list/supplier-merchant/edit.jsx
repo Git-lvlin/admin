@@ -186,7 +186,14 @@ export default (props) => {
       .then(res => {
         if (res.code === 0) {
           originData.current = res.data.records;
-          const tree = arrayToTree(res.data.records.map(item => ({ ...item, pid: item.gcParentId, title: item.gcName, key: item.id, value: item.id, selectable: false })))
+          const tree = arrayToTree(res.data.records.map(item => ({
+            ...item,
+            pid: item.gcParentId,
+            title: item.gcName,
+            key: item.id,
+            value: item.id,
+            selectable: false
+          })))
           setTreeData(tree)
         }
       })
@@ -206,12 +213,8 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        try {
-          await submit(values);
-          return true;
-        } catch (error) {
-          console.log('error', error);
-        }
+        await submit(values);
+        return true;
       }}
       visible={visible}
       initialValues={{

@@ -53,23 +53,24 @@ const Upload = (props) => {
   }
 
   useEffect(() => {
-    if (Array.isArray(value)) {
-      setFileList(value.map(item => {
-        return {
-          url: item.url,
-          uid: item.uid
-        }
-      }))
-      onChange(maxCount === 1 ? value?.[0]?.url : value.map(item => item.url))
-    } else if (value) {
-      setFileList([{
-        url: value,
-        uid: 0
-      }])
-      onChange(value)
+    if (!fileList.length) {
+      if (Array.isArray(value) && value?.length) {
+        setFileList(value.map((item, index) => {
+          return {
+            url: item,
+            uid: index
+          }
+        }))
+        onChange(maxCount === 1 ? value?.[0]?.url : value.map(item => item))
+      } else if (value && typeof value === 'string') {
+        setFileList([{
+          url: value,
+          uid: 0
+        }])
+        onChange(value)
+      }
     }
-
-  }, [])
+  }, [value])
 
   return (
     <AntUpload

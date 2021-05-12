@@ -129,9 +129,6 @@ export default function EditTable(props) {
   useEffect(() => {
     setEditableKeys(tableData.map(item => item.key));
     setDataSource(tableData);
-    // setTimeout(() => {
-    //   form.validateFields();
-    // }, 1000);
   }, [tableData])
 
   return (

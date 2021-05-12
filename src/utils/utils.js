@@ -22,12 +22,9 @@ export const arrayToTree = (list, parId = 0) => {
   return loop(parId)
 }
 
-export const uploadImageFormatConversion = (imgArr, urlKey, uidKey) => {
-  return imgArr.map((item, index) => {
-    return {
-      url: item[urlKey],
-      uid: uidKey ? item[uidKey] : index
-    }
+export const uploadImageFormatConversion = (imgArr, urlKey) => {
+  return imgArr.map(item => {
+    return item[urlKey]
   })
 }
 

@@ -143,7 +143,8 @@ const TableList = () => {
         visible={formVisible}
         setVisible={setFormVisible}
         detailData={detailData}
-        callback={() => { actionRef.current.reload() }}
+        callback={() => { actionRef.current.reload(); setDetailData(null) }}
+        onClose={() => { setDetailData(null) }}
       />}
     </>
 

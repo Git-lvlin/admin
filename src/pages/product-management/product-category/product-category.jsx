@@ -31,7 +31,7 @@ const List = (props) => {
       })
   }
 
-  const toggleShow = (status,id) => {
+  const toggleShow = (status, id) => {
     setLoading(true);
     api.categorySwitch({
       gcShow: status ? 1 : 0,
@@ -153,11 +153,11 @@ const ProductCategory = () => {
 
   return (
     <PageContainer>
-      <Form
+      {visible && <Form
         visible={visible}
         setVisible={setVisible}
         {...formParams}
-      />
+      />}
       <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
         <List onClick={(id) => { setSelectId(id) }} edit={edit} remove={remove} />
         {selectId && <List parentId={selectId} edit={edit} remove={remove} />}

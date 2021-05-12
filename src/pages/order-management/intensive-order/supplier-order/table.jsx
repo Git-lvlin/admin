@@ -12,7 +12,7 @@ const TableList = ({ type }) => {
   const actionRef = useRef();
 
   const getDetail = (orderId) => {
-    getSupplierOrderDetail({ orderId })
+    getSupplierOrderDetail({ orderId: '4613576591958609610' })
       .then(res => {
         if (res.code === 0) {
           setVisible(true);

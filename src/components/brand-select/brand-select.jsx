@@ -25,6 +25,7 @@ const BrandSelect = ({value, onChange,}) => {
       options={brandData}
       value={value}
       onChange={changeHandle}
+      allowClear
     />
   )
 }

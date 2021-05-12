@@ -174,13 +174,18 @@ const TableList = () => {
       },
     },
     {
+      title: '禁用原因',
+      dataIndex: 'banReason',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          <a onClick={() => { setSelectItem(data); setVisible(true) }}>禁用</a>
-          <a onClick={() => { history.push(`/user-management/user-detail/${data.id}`) }}>详情</a>
+          <a onClick={() => { setSelectItem(data); setVisible(true) }}>恢复</a>
         </Space>
       ),
     },
@@ -192,7 +197,7 @@ const TableList = () => {
         rowKey="id"
         options={false}
         params={{
-          status: 1,
+          status: 0,
         }}
         request={userList}
         actionRef={actionRef}

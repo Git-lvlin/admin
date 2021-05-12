@@ -42,4 +42,3 @@ export const updateWholesaleState = (params = {}, options = {}) => {
     ...options
   });
 }
-

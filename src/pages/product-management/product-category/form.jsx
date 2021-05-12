@@ -58,14 +58,12 @@ export default (props) => {
         gcShow: data.gcShow ? 1 : 0
       })
     }
-    
   }, [form, data])
 
   return (
     <ModalForm
       title={type === 'edit' ? '编辑分类' : `添加${id === 0 ? '一' : '二'}级分类`}
       modalProps={{
-        onCancel: () => form.resetFields(),
       }}
       onVisibleChange={setVisible}
       visible={visible}
@@ -73,7 +71,6 @@ export default (props) => {
       form={form}
       onFinish={async (values) => {
         await submit(values);
-        form.resetFields();
         callback();
         return true;
       }}
@@ -101,13 +98,11 @@ export default (props) => {
         name="gcName"
         fieldProps={{
           maxLength: 4,
-
         }}
       />
       <Form.Item
         label="分类图片"
         name="gcIcon"
-        required
         rules={[{ required: true, message: '请上传分类图片' }]}
         tooltip={
           <dl>
