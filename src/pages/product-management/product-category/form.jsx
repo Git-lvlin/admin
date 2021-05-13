@@ -6,6 +6,7 @@ import {
   ProFormSwitch,
   ProFormDigit
 } from '@ant-design/pro-form';
+import Big from 'big.js';
 import * as api from '@/services/product-management/product-category'
 import Upload from '@/components/upload'
 
@@ -120,12 +121,13 @@ export default (props) => {
         label="佣金抽成"
         name="comPercent"
         min={1}
-        max={20}
+        max={50}
+        fieldProps={{
+          formatter: value => value ? +new Big(value).toFixed(2) : value
+        }}
+        step
         rules={[{ required: true, message: '请输入佣金抽成' }]}
         extra={<><span style={{ color: 'red' }}>录入后固定不可编辑修改，谨慎操作</span><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
-        fieldProps={{
-          maxLength: 2,
-        }}
       />
       <ProFormSwitch checkedChildren="开" unCheckedChildren="关" name="gcShow" label="状态" />
     </ModalForm >

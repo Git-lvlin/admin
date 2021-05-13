@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/Intensive-store-management/store-review';
+import Form from './form';
 
 const StoreReview = () => {
   const [formVisible, setFormVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
 
@@ -20,56 +22,73 @@ const StoreReview = () => {
     },
     {
       title: '店铺图片',
-      dataIndex: 'storeLogo',
+      dataIndex: ['details', 'storeLogo'],
       valueType: 'text',
       hideInSearch: true,
-      render:(_) => <img src={_} width="50" height="50"/> 
+      render: (_) => <img src={_} width="50" height="50" />
     },
     {
       title: '店主手机号',
-      dataIndex: 'id',
+      dataIndex: 'phone',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店主手机号'
-      }
+      },
+      render: (_, { details }) => details?.phone
     },
     {
       title: '店铺名称',
-      dataIndex: 'id',
+      dataIndex: 'storeName',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店铺名称'
-      }
+      },
+      render: (_, { details }) => details?.storeName
     },
     {
       title: '提货点所在地区',
       dataIndex: 'id',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, { details }) => `${details?.provinceName} ${details?.cityName} ${details?.regionName}`
     },
     {
       title: '提货点详细地址',
       dataIndex: 'id',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, { details }) => details?.address
     },
     {
       title: '提货点门牌号',
       dataIndex: 'id',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, { details }) => details?.houseNumber
     },
     {
       title: '提货店授权书',
       dataIndex: 'id',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, { details }) => (
+        <Space>
+          <img src={details.idHandheld} width="50" height="50" />
+        </Space>
+      )
     },
     {
       title: '身份证',
       dataIndex: 'id',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, { details }) => (
+        <Space>
+          <img src={details.idHandheld} width="50" height="50" />
+          <img src={details.idFront} width="50" height="50" />
+          <img src={details.idBack} width="50" height="50" />
+        </Space>
+      )
     },
     {
       title: '所在地区',
@@ -88,14 +107,15 @@ const StoreReview = () => {
     },
     {
       title: '审核状态',
-      dataIndex: 'id',
-      valueType: 'select',
+      dataIndex: ['verifyStatus', 'desc'],
+      valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '操作',
-      dataIndex: 'id',
-      valueType: 'options',
-      render:() => <a>审核</a>
+      dataIndex: ['verifyStatus', 'code'],
+      valueType: 'option',
+      render: (_, data) => _ === 4 && <a onClick={() => { setSelectItem(data); setFormVisible(true) }}>审核</a>
     },
   ];
 
@@ -132,6 +152,12 @@ const StoreReview = () => {
         }}
         columns={columns}
       />
+      {formVisible && <Form
+        visible={formVisible}
+        setVisible={setFormVisible}
+        data={selectItem}
+        callback={() => { actionRef.current.reload() }}
+      />}
     </PageContainer>
   );
 };

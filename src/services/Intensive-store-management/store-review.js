@@ -18,3 +18,19 @@ export const getStoreList = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+export const approve = async (params = {}, options = {}) => {
+  return request('/auth/store/memberShopApply/approve', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const refuse = async (params = {}, options = {}) => {
+  return request('/auth/store/memberShopApply/refuse', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

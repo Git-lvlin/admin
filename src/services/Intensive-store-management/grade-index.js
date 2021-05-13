@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export const gradeList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
-  const res = await request('/auth/store/memberShop/grade', {
+  const res = await request('/auth/store/memberShopGrade/page', {
     method: 'GET',
     params: {
       page: current,
@@ -13,7 +13,7 @@ export const gradeList = async (params = {}, options = {}) => {
   });
 
   return {
-    data: res.data,
+    data: res.data.records,
     success: true,
     total: res.data.total
   }
