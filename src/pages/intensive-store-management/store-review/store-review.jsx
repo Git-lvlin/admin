@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Button, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { getStoreList } from '@/services/Intensive-store-management/store-review';
+import { getStoreList } from '@/services/intensive-store-management/store-review';
 import Form from './form';
 
 const StoreReview = () => {

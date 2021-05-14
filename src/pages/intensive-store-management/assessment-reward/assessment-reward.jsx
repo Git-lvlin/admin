@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 // import { Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { memberShopResults } from '@/services/Intensive-store-management/assessment-reward';
+import { memberShopResults } from '@/services/intensive-store-management/assessment-reward';
 import { amountTransform } from '@/utils/utils'
 
 const GradeIndex = () => {

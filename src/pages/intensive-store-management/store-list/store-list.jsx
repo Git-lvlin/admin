@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { getStoreList } from '@/services/Intensive-store-management/store-list';
+import { getStoreList } from '@/services/intensive-store-management/store-list';
 
 const StoreList = () => {
   const [formVisible, setFormVisible] = useState(false);
