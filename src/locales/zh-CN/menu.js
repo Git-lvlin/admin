@@ -18,6 +18,7 @@ export default {
   'menu.user-management.user-detail': '用户详情',
 
   'menu.order-management': '订单管理',
+  'menu.order-management.order-detail': '订单详情',
   'menu.order-management.pending-orders': '待发货订单',
   'menu.order-management.retail-list': '零售列表',
   'menu.order-management.intensive-order': '集约订单',
@@ -56,4 +57,5 @@ export default {
   'menu.intensive-store-management.store-list': '店铺列表',
   'menu.intensive-store-management.store-review': '店铺审核',
   'menu.intensive-store-management.grade-index': '等级指标',
+  'menu.intensive-store-management.assessment-reward': '考核奖励',
 };

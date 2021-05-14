@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 // import { Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { gradeList } from '@/services/Intensive-store-management/grade-index';
+import { memberShopResults } from '@/services/Intensive-store-management/assessment-reward';
 import { amountTransform } from '@/utils/utils'
 
 const GradeIndex = () => {
@@ -12,36 +12,42 @@ const GradeIndex = () => {
 
   const columns = [
     {
-      title: '等级',
-      dataIndex: 'gradeLevel',
+      title: '考核等级',
+      dataIndex: 'resultsName',
       valueType: 'text',
     },
     {
       title: '等级徽章',
-      dataIndex: 'icon',
+      dataIndex: 'resultsLevel',
       valueType: 'text',
       render: (_) => <img src={_} width="50" height="50" />
     },
     {
-      title: '等级名称',
-      dataIndex: 'gradeName',
+      title: '考核指标',
+      dataIndex: ['upresults', 'evaluation'],
       valueType: 'text',
     },
     {
-      title: '积分门槛',
-      dataIndex: ['upgrade', 'score', 'min'],
+      title: '积分奖励',
+      dataIndex: 'bonusPoints',
       valueType: 'text',
     },
     {
-      title: '月度指标',
-      dataIndex: 'scoreGradeMonthlyIndicator',
+      title: '返佣比例',
+      dataIndex: 'commissionRatio',
       valueType: 'text',
-      render: (_) => amountTransform(_, '/')
+      render: (_) => `${amountTransform(+_)}%`
     },
     {
-      title: '权益可开小区店铺数量',
-      dataIndex: 'equity',
+      title: '未完成指标降级说明',
+      dataIndex: 'demotionInstruction',
       valueType: 'text',
+    },
+    {
+      title: '操作',
+      dataIndex: '',
+      valueType: 'option',
+      render: () => <a>配置</a>
     },
   ];
 
@@ -52,7 +58,7 @@ const GradeIndex = () => {
         options={false}
         actionRef={actionRef}
         formRef={formRef}
-        request={gradeList}
+        request={memberShopResults}
         search={false}
         columns={columns}
       />

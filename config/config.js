@@ -109,6 +109,11 @@ export default defineConfig({
                   component: './order-management/pending-orders',
                 },
                 {
+                  name: 'order-detail',
+                  path: '/order-management/order-detail/:id',
+                  component: './order-management/order-detail',
+                },
+                {
                   name: 'retail-list',
                   path: '/order-management/retail-list',
                   component: './order-management/retail-list',
@@ -275,6 +280,11 @@ export default defineConfig({
                   name: 'grade-index',
                   path: '/intensive-store-management/grade-index',
                   component: './intensive-store-management/grade-index',
+                },
+                {
+                  name: 'assessment-reward',
+                  path: '/intensive-store-management/assessment-reward',
+                  component: './intensive-store-management/assessment-reward',
                 },
               ]
             },
