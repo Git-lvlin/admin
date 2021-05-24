@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Cascader } from 'antd';
-import { category} from '@/services/product-management/product-category';
+import { category } from '@/services/product-management/product-category';
 
 const GcCascader = ({ value, onChange }) => {
   const [gcData, setGcData] = useState([]);

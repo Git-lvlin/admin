@@ -55,7 +55,24 @@ export default {
 
   'menu.intensive-store-management': '集约店铺管理',
   'menu.intensive-store-management.store-list': '店铺列表',
+  'menu.intensive-store-management.store-detail': '店铺详情',
+  'menu.intensive-store-management.intensive-task': '集约任务',
+  'menu.intensive-store-management.shopkeeper-order': '店主订单',
+  'menu.intensive-store-management.product-management': '商品管理',
+  'menu.intensive-store-management.shop-user': '店铺用户',
   'menu.intensive-store-management.store-review': '店铺审核',
   'menu.intensive-store-management.grade-index': '等级指标',
   'menu.intensive-store-management.assessment-reward': '考核奖励',
+
+  'menu.single-contract-activity-management': '单约活动管理',
+  'menu.single-contract-activity-management.activity-list': '活动列表',
+  'menu.single-contract-activity-management.activity-detail': '活动详情',
+  'menu.single-contract-activity-management.activity-product': '活动商品',
+  'menu.single-contract-activity-management.group-detail': '拼约详情',
+
+  'menu.group-contract-activity-management': '团约活动管理',
+  'menu.group-contract-activity-management.activity-list': '活动列表',
+  'menu.group-contract-activity-management.activity-detail': '活动详情',
+  'menu.group-contract-activity-management.activity-product': '活动商品',
+  'menu.group-contract-activity-management.group-detail': '拼约详情',
 };

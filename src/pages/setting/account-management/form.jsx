@@ -41,7 +41,8 @@ export default (props) => {
         group_id: data.groupId,
         username: data.username,
         nickname: data.nickname,
-        status: data.status
+        status: data.status,
+        mobile: data.mobile,
       });
     }
   }, [data, form])
@@ -116,6 +117,15 @@ export default (props) => {
             value: 0,
           },
         ]}
+      />
+      <ProFormText
+        name="mobile"
+        label="手机号码"
+        placeholder="请输入手机号码"
+        width="md"
+        fieldProps={{
+          maxLength: 11
+        }}
       />
     </ModalForm>
   );

@@ -29,13 +29,15 @@ export default (props) => {
   const submit = (values) => {
     return new Promise((resolve, reject) => {
       const apiMethod = type === 'add' ? api.categoryAdd : api.categoryEdit;
+      const { comPercent,...rest } = values;
       const params = {
-        ...values,
+        ...rest,
         gcShow: gcShow ? 1 : 0,
       }
 
       if (type === 'add') {
         params.gcParentId = id
+        params.comPercent = comPercent
       } else {
         params.id = id;
       }
@@ -122,6 +124,7 @@ export default (props) => {
         name="comPercent"
         min={1}
         max={50}
+        disabled={!!data}
         fieldProps={{
           formatter: value => value ? +new Big(value).toFixed(2) : value
         }}

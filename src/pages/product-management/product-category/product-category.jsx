@@ -103,7 +103,7 @@ const List = (props) => {
                       {item.gcName}
                       &nbsp;
                       &nbsp;
-                      佣金抽成：{item.comPercent ?? 0}%
+                      佣金抽成：{item.comPercentDisplay ?? 0}%
                       <div className={styles.actions}>
                         <Switch
                           onClick={(checked, e) => { toggleShow(checked, item.id); e.stopPropagation(); }}

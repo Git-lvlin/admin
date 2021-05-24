@@ -272,6 +272,36 @@ export default defineConfig({
                   component: './intensive-store-management/store-list',
                 },
                 {
+                  name: 'store-detail',
+                  path: '/intensive-store-management/store-detail/:id',
+                  component: './intensive-store-management/store-detail',
+                  hideInMenu: true,
+                },
+                {
+                  name: 'intensive-task',
+                  path: '/intensive-store-management/intensive-task/:id',
+                  component: './intensive-store-management/intensive-task',
+                  hideInMenu: true,
+                },
+                {
+                  name: 'shopkeeper-order',
+                  path: '/intensive-store-management/shopkeeper-order/:id',
+                  component: './intensive-store-management/shopkeeper-order',
+                  hideInMenu: true,
+                },
+                {
+                  name: 'product-management',
+                  path: '/intensive-store-management/product-management/:id',
+                  component: './intensive-store-management/product-management',
+                  hideInMenu: true,
+                },
+                {
+                  name: 'shop-user',
+                  path: '/intensive-store-management/shop-user/:id',
+                  component: './intensive-store-management/shop-user',
+                  hideInMenu: true,
+                },
+                {
                   name: 'store-review',
                   path: '/intensive-store-management/store-review',
                   component: './intensive-store-management/store-review',
@@ -285,6 +315,64 @@ export default defineConfig({
                   name: 'assessment-reward',
                   path: '/intensive-store-management/assessment-reward',
                   component: './intensive-store-management/assessment-reward',
+                },
+              ]
+            },
+            {
+              path: '/single-contract-activity-management',
+              name: 'single-contract-activity-management',
+              routes: [
+                {
+                  name: 'activity-list',
+                  path: '/single-contract-activity-management/activity-list',
+                  component: './single-contract-activity-management/activity-list',
+                },
+                {
+                  name: 'activity-detail',
+                  path: '/single-contract-activity-management/activity-detail/:id',
+                  component: './single-contract-activity-management/activity-detail',
+                  hideInMenu: true,
+                },
+                {
+                  name: 'activity-product',
+                  path: '/single-contract-activity-management/activity-product/:id',
+                  component: './single-contract-activity-management/activity-product',
+                  hideInMenu: true,
+                },
+                {
+                  name: 'group-detail',
+                  path: '/single-contract-activity-management/group-detail/:id',
+                  component: './single-contract-activity-management/group-detail',
+                  hideInMenu: true,
+                },
+              ]
+            },
+            {
+              path: '/group-contract-activity-management',
+              name: 'group-contract-activity-management',
+              routes: [
+                {
+                  name: 'activity-list',
+                  path: '/group-contract-activity-management/activity-list',
+                  component: './group-contract-activity-management/activity-list',
+                },
+                {
+                  name: 'activity-detail',
+                  path: '/group-contract-activity-management/activity-detail/:id',
+                  component: './group-contract-activity-management/activity-detail',
+                  hideInMenu: true,
+                },
+                {
+                  name: 'activity-product',
+                  path: '/group-contract-activity-management/activity-product/:id',
+                  component: './group-contract-activity-management/activity-product',
+                  hideInMenu: true,
+                },
+                {
+                  name: 'group-detail',
+                  path: '/group-contract-activity-management/group-detail/:id',
+                  component: './group-contract-activity-management/group-detail',
+                  hideInMenu: true,
                 },
               ]
             },

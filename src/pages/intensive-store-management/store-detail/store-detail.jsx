@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Descriptions, Divider, Row, Avatar, Typography } from 'antd';
-import { getMemberDetail } from '@/services/user-management/user-list';
+import { getDetail } from '@/services/intensive-store-management/store-detail';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useParams } from 'umi';
 
@@ -9,11 +9,10 @@ const { Title } = Typography;
 const UserDetail = () => {
   const params = useParams();
   const [detailData, setDetailData] = useState({});
-  const { memberInfoToAdminResponse: info } = detailData;
 
   useEffect(() => {
-    getMemberDetail({
-      id: params.id
+    getDetail({
+      storeNo: params.id
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data)
@@ -27,31 +26,18 @@ const UserDetail = () => {
           <Title style={{ marginBottom: -10 }} level={5}>基本信息</Title>
           <Divider />
           <div style={{ textAlign: 'center' }}>
-            <Avatar size={100} src={info?.icon} />
-            <div>{info?.nickName}</div>
+            <Avatar size={100} src={detailData?.storeLogo} />
+            <div style={{marginTop: 10}}>{detailData?.storeName}</div>
           </div>
-          <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 100, display: 'inline-block' }}>
-            <Descriptions.Item label="下单手机号">{info?.phoneNumber}</Descriptions.Item>
-            <Descriptions.Item label="注册来源">{sourceType[info?.sourceType]}</Descriptions.Item>
-            <Descriptions.Item label="邀请码">
-              HG8J2W &nbsp;<a>查看二维码</a>
-            </Descriptions.Item>
-            <Descriptions.Item label="性别">{info?.gender === 1 ? '男' : '女'}</Descriptions.Item>
-            <Descriptions.Item label="会员店主">
-              否
-            </Descriptions.Item>
-            <Descriptions.Item label="注册时间">
-              {info?.createTime}
-            </Descriptions.Item>
-            <Descriptions.Item label="微信账号">
-              {/* 未绑定 */}
-            </Descriptions.Item>
-            <Descriptions.Item label="所属小区">
-              {/* 满京华-艺峦大厦 */}
-            </Descriptions.Item>
-            <Descriptions.Item label="最近登录时间">
-              {info?.loginTime}
-            </Descriptions.Item>
+          <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 120, display: 'inline-block' }}>
+            <Descriptions.Item label="店主昵称手机号">{`${detailData?.linkman}（${detailData.phone}）`}</Descriptions.Item>
+            <Descriptions.Item label="所属地区">{`${detailData?.areaInfo?.[1]}${detailData?.areaInfo?.[2]}${detailData?.areaInfo?.[3]}`}</Descriptions.Item>
+            <Descriptions.Item label="店主性别">{detailData?.member?.gender?.desc}</Descriptions.Item>
+            <Descriptions.Item label="详细地址">{detailData?.address}</Descriptions.Item>
+            <Descriptions.Item label="注册时间">{detailData?.createTime}</Descriptions.Item>
+            <Descriptions.Item label="微信账号">{detailData?.member?.wechatBindState?.desc}</Descriptions.Item>
+            <Descriptions.Item label="押金金额">{`¥${detailData?.deposit?.payAmount}`}</Descriptions.Item>
+            {/* <Descriptions.Item label="最近登录时间">{}</Descriptions.Item> */}
           </Descriptions>
         </Row>
       </div>

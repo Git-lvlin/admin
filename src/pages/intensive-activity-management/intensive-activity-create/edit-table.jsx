@@ -105,7 +105,7 @@ export default function EditTable({ onSelect }) {
     },
     {
       title: '主图',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'imageUrl',
       valueType: 'text',
       hideInSearch: true,
       editable: false,

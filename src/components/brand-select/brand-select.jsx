@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Select } from 'antd';
 import { brand } from '@/services/product-management/brand-list';
 
-const BrandSelect = ({value, onChange,}) => {
+const BrandSelect = ({ value, onChange, }) => {
   const [brandData, setBrandData] = useState([]);
 
   useEffect(() => {
@@ -18,7 +18,6 @@ const BrandSelect = ({value, onChange,}) => {
   const changeHandle = (v) => {
     onChange(v)
   }
-
   return (
     <Select
       placeholder="请选择品牌"

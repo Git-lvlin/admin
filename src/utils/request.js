@@ -67,27 +67,16 @@ const instance = extend({
   // credentials: 'include', // 默认请求是否带上cookie
 });
 
-let replaceFlag = false;
 
 instance.interceptors.response.use(async (response, options) => {
   const data = await response.clone().json();
   const { showError = true, showSuccess = false } = options;
   if (data.code === 10110) {
     setTimeout(() => {
-      replaceFlag = false;
-    }, 2000);
-
-    if (!replaceFlag) {
-      replaceFlag = true;
-      history.replace({
-        pathname: '/user/login',
-        search: stringify({
-          redirect: window.location.href,
-        }),
-      });
-      message.error(data.msg)
-    }
-    return null;
+      window.location.replace(`/user/login?${stringify({ redirect: window.location.href })}`)
+    }, 1000)
+    message.error(data.msg)
+    return data;
   }
 
   if (data.code !== 0 && showError) {

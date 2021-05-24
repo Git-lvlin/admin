@@ -1,28 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/intensive-store-management/store-list';
+import { history } from 'umi';
 
 const StoreList = () => {
-  const [formVisible, setFormVisible] = useState(false);
-  const [detailData, setDetailData] = useState(null);
-  const [config, setConfig] = useState({});
-  const [offShelfVisible, setOffShelfVisible] = useState(false);
-  const [selectItemId, setSelectItemId] = useState(null);
+
   const actionRef = useRef();
   const formRef = useRef();
-
-  const getDetail = (id) => {
-    api.getDetail({
-      spuId: id
-    }).then(res => {
-      if (res.code === 0) {
-        setDetailData(res.data);
-        setFormVisible(true);
-      }
-    })
-  }
 
   const columns = [
     {
@@ -38,11 +24,11 @@ const StoreList = () => {
       dataIndex: 'storeLogo',
       valueType: 'text',
       hideInSearch: true,
-      render:(_) => <img src={_} width="50" height="50"/> 
+      render: (_) => <img src={_} width="50" height="50" />
     },
     {
       title: '店主手机号',
-      dataIndex: 'id',
+      dataIndex: 'phone',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店主手机号'
@@ -50,7 +36,7 @@ const StoreList = () => {
     },
     {
       title: '店铺名称',
-      dataIndex: 'id',
+      dataIndex: 'storeName',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店铺名称'
@@ -58,45 +44,49 @@ const StoreList = () => {
     },
     {
       title: '等级',
-      dataIndex: 'id',
+      dataIndex: ['grade', 'gradeName'],
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '积分',
-      dataIndex: 'id',
+      dataIndex: 'score',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '提货点所在地区',
-      dataIndex: 'id',
+      dataIndex: 'address',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '集约任务',
-      dataIndex: 'id',
+      dataIndex: 'wholeTotal',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => _ > 0 ? <a onClick={() => { history.push(`/intensive-store-management/intensive-task/${data.storeNo}`) }}>{_}</a> : _
     },
     {
       title: '店主订单',
-      dataIndex: 'id',
+      dataIndex: 'saleOrderTotal',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => _ > 0 ? <a onClick={() => { history.push(`/intensive-store-management/shopkeeper-order/${data.storeNo}`) }}>{_}</a> : _
     },
     {
       title: '商品',
-      dataIndex: 'id',
+      dataIndex: 'productTotal',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => _ > 0 ? <a onClick={() => { history.push(`/intensive-store-management/product-management/${data.storeNo}`) }}>{_}</a> : _
     },
     {
       title: '用户',
-      dataIndex: 'id',
+      dataIndex: 'userTotal',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => _ > 0 ? <a onClick={() => { history.push(`/intensive-store-management/shop-user/${data.storeNo}`) }}>{_}</a> : _
     },
     {
       title: '所在地区',
@@ -114,15 +104,20 @@ const StoreList = () => {
       hideInTable: true,
     },
     {
-      title: '审核状态',
-      dataIndex: 'id',
+      title: '营业状态',
+      dataIndex: ['status', 'desc'],
       valueType: 'select',
     },
     {
       title: '操作',
       dataIndex: 'id',
       valueType: 'options',
-      render:() => <a>详情</a>
+      render: (_, data) => (
+        <Space>
+          <a onClick={() => { history.push(`/intensive-store-management/store-detail/${data.storeNo}`) }}>详情</a>
+          <a>关闭</a>
+        </Space>
+      )
     },
   ];
 
