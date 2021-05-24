@@ -75,4 +75,7 @@ export default {
   'menu.group-contract-activity-management.activity-detail': '活动详情',
   'menu.group-contract-activity-management.activity-product': '活动商品',
   'menu.group-contract-activity-management.group-detail': '拼约详情',
+
+  'menu.coupon-management': '优惠券管理',
+  'menu.coupon-management.coupon-list': '优惠券列表',
 };

@@ -25,6 +25,14 @@ export default (props) => {
     setTableData(tableData.filter(item => item.id !== id))
   }
 
+  const batchCancel = () => {
+    selectedRowKeys.forEach(item => {
+      cancel(item)
+    })
+
+    setSelectedRowKeys([])
+  }
+
   const columns = [
     {
       title: 'spuID',
@@ -95,12 +103,18 @@ export default (props) => {
         return data.settleType !== 2
       },
       width: 100,
+      fieldProps: {
+        placeholder: ''
+      },
     },
     {
       title: '单约库存',
       dataIndex: 'activityStockNumEdit',
       valueType: 'text',
       width: 100,
+      fieldProps: {
+        placeholder: ''
+      },
     },
     {
       title: '操作',
@@ -275,8 +289,8 @@ export default (props) => {
       >
         <Space style={{ marginBottom: 10 }}>
           <Button type="primary" onClick={() => { setFormVisible(true) }}>选择活动商品</Button>
-          <Button type="primary" onClick={() => { setFormVisible(true) }}>批量取消</Button>
-          <Button type="primary" onClick={() => { setFormVisible(true) }}>批量导入</Button>
+          <Button type="primary" disabled={selectedRowKeys.length === 0} onClick={() => { batchCancel() }}>批量取消</Button>
+          <Button type="primary" onClick={() => { }}>批量导入</Button>
         </Space>
         {
           !!tableData.length &&
