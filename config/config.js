@@ -2,6 +2,17 @@
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
+import user from './routers/user'
+import userManagement from './routers/user-management'
+import orderManagement from './routers/order-management'
+import productManagement from './routers/product-management'
+import setting from './routers/setting'
+import intensiveActivityManagement from './routers/intensive-activity-management'
+import supplierManagement from './routers/supplier-management'
+import intensiveStoreManagement from './routers/intensive-store-management'
+import singleContractActivityManagement from './routers/single-contract-activity-management'
+import groupContractActivityManagement from './routers/group-contract-activity-management'
+import couponManagement from './routers/coupon-management'
 
 const { REACT_APP_ENV } = process.env;
 export default defineConfig({
@@ -33,37 +44,7 @@ export default defineConfig({
       path: '/',
       component: '../layouts/BlankLayout',
       routes: [
-        {
-          path: '/user',
-          component: '../layouts/UserLayout',
-          name: 'user',
-          routes: [
-            {
-              path: '/user',
-              redirect: '/user/login',
-            },
-            {
-              path: '/user/login',
-              name: '登录',
-              component: './user/login',
-            },
-            {
-              name: 'register-result',
-              icon: 'smile',
-              path: '/user/register-result',
-              component: './user/register-result',
-            },
-            {
-              name: 'register',
-              icon: 'smile',
-              path: '/user/register',
-              component: './user/register',
-            },
-            {
-              component: '404',
-            },
-          ],
-        },
+        user,
         {
           path: '/',
           component: '../layouts/BasicLayout',
@@ -77,305 +58,16 @@ export default defineConfig({
               name: 'workplace',
               component: './workplace',
             },
-            {
-              path: '/user-management',
-              name: 'user-management',
-              routes: [
-                {
-                  name: 'user-list',
-                  path: '/user-management/user-list',
-                  component: './user-management/user-list',
-                },
-                {
-                  name: 'disable-user-list',
-                  path: '/user-management/disable-user-list',
-                  component: './user-management/disable-user-list',
-                },
-                {
-                  name: 'user-detail',
-                  path: '/user-management/user-detail/:id',
-                  component: './user-management/user-detail',
-                  hideInMenu: true,
-                },
-              ]
-            },
-            {
-              path: '/order-management',
-              name: 'order-management',
-              routes: [
-                {
-                  name: 'pending-orders',
-                  path: '/order-management/pending-orders',
-                  component: './order-management/pending-orders',
-                },
-                {
-                  name: 'order-detail',
-                  path: '/order-management/order-detail/:id',
-                  component: './order-management/order-detail',
-                },
-                {
-                  name: 'retail-list',
-                  path: '/order-management/retail-list',
-                  component: './order-management/retail-list',
-                },
-                {
-                  name: 'intensive-order',
-                  path: '/order-management/intensive-order',
-                  routes: [
-                    {
-                      name: 'shopkeeper-order',
-                      path: '/order-management/intensive-order/shopkeeper-order',
-                      component: './order-management/intensive-order/shopkeeper-order',
-                    },
-                    {
-                      name: 'supplier-order',
-                      path: '/order-management/intensive-order/supplier-order',
-                      component: './order-management/intensive-order/supplier-order',
-                    },
-                  ]
-                }
-              ]
-            },
-            {
-              path: '/product-management',
-              name: 'product-management',
-              routes: [
-                {
-                  name: 'product-list',
-                  path: '/product-management/product-list',
-                  component: './product-management/product-list',
-                },
-                {
-                  name: 'brand-list',
-                  path: '/product-management/brand-list',
-                  component: './product-management/brand-list',
-                },
-                {
-                  name: 'product-log',
-                  path: '/product-management/product-log',
-                  component: './product-management/product-log',
-                },
-                {
-                  name: 'freight-template',
-                  path: '/product-management/freight-template',
-                  component: './product-management/freight-template',
-                },
-                {
-                  name: 'product-review',
-                  path: '/product-management/product-review',
-                  component: './product-management/product-review',
-                },
-                {
-                  name: 'product-category',
-                  path: '/product-management/product-category',
-                  component: './product-management/product-category',
-                },
-              ]
-            },
-            {
-              path: '/setting',
-              name: 'setting',
-              routes: [
-                {
-                  name: 'account-management',
-                  path: '/setting/account-management',
-                  component: './setting/account-management',
-                },
-                {
-                  name: 'role-management',
-                  path: '/setting/role-management',
-                  component: './setting/role-management',
-                },
-                {
-                  name: 'authority-management',
-                  path: '/setting/authority-management',
-                  component: './setting/authority-management',
-                },
-              ]
-            },
-            {
-              path: '/intensive-activity-management',
-              name: 'intensive-activity-management',
-              routes: [
-                {
-                  name: 'intensive-activity-list',
-                  path: '/intensive-activity-management/intensive-activity-list',
-                  component: './intensive-activity-management/intensive-activity-list',
-                },
-                {
-                  name: 'intensive-activity-create',
-                  path: '/intensive-activity-management/intensive-activity-create',
-                  component: './intensive-activity-management/intensive-activity-create',
-                  hideInMenu: true,
-                },
-              ]
-            },
-            {
-              path: '/supplier-management',
-              name: 'supplier-management',
-              routes: [
-                {
-                  name: 'supplier-list',
-                  path: '/supplier-management/supplier-list',
-                  component: './supplier-management/supplier-list',
-                },
-                {
-                  name: 'consultant-product-list',
-                  path: '/supplier-management/consultant-product-list/:id',
-                  component: './supplier-management/consultant-product-list',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'consultant-supplier-list',
-                  path: '/supplier-management/consultant-supplier-list/:id',
-                  component: './supplier-management/consultant-supplier-list',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'after-sale-address',
-                  path: '/supplier-management/after-sale-address/:id',
-                  component: './supplier-management/after-sale-address',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'supplier-sub-account',
-                  path: '/supplier-management/supplier-sub-account/:id',
-                  component: './supplier-management/supplier-sub-account',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'supplier-detail',
-                  path: '/supplier-management/supplier-detail/:id',
-                  component: './supplier-management/supplier-detail',
-                  hideInMenu: true,
-                },
-              ]
-            },
-            // {
-            //   path: '/asset-management',
-            //   name: 'asset-management',
-            //   routes: [
-            //     {
-            //       name: 'settlement-profit-list',
-            //       path: '/asset-management/settlement-profit-list',
-            //       component: './asset-management/settlement-profit-list',
-            //     },
-            //   ]
-            // },
-            {
-              path: '/intensive-store-management',
-              name: 'intensive-store-management',
-              routes: [
-                {
-                  name: 'store-list',
-                  path: '/intensive-store-management/store-list',
-                  component: './intensive-store-management/store-list',
-                },
-                {
-                  name: 'store-detail',
-                  path: '/intensive-store-management/store-detail/:id',
-                  component: './intensive-store-management/store-detail',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'intensive-task',
-                  path: '/intensive-store-management/intensive-task/:id',
-                  component: './intensive-store-management/intensive-task',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'shopkeeper-order',
-                  path: '/intensive-store-management/shopkeeper-order/:id',
-                  component: './intensive-store-management/shopkeeper-order',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'product-management',
-                  path: '/intensive-store-management/product-management/:id',
-                  component: './intensive-store-management/product-management',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'shop-user',
-                  path: '/intensive-store-management/shop-user/:id',
-                  component: './intensive-store-management/shop-user',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'store-review',
-                  path: '/intensive-store-management/store-review',
-                  component: './intensive-store-management/store-review',
-                },
-                {
-                  name: 'grade-index',
-                  path: '/intensive-store-management/grade-index',
-                  component: './intensive-store-management/grade-index',
-                },
-                {
-                  name: 'assessment-reward',
-                  path: '/intensive-store-management/assessment-reward',
-                  component: './intensive-store-management/assessment-reward',
-                },
-              ]
-            },
-            {
-              path: '/single-contract-activity-management',
-              name: 'single-contract-activity-management',
-              routes: [
-                {
-                  name: 'activity-list',
-                  path: '/single-contract-activity-management/activity-list',
-                  component: './single-contract-activity-management/activity-list',
-                },
-                {
-                  name: 'activity-detail',
-                  path: '/single-contract-activity-management/activity-detail/:id',
-                  component: './single-contract-activity-management/activity-detail',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'activity-product',
-                  path: '/single-contract-activity-management/activity-product/:id',
-                  component: './single-contract-activity-management/activity-product',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'group-detail',
-                  path: '/single-contract-activity-management/group-detail/:id',
-                  component: './single-contract-activity-management/group-detail',
-                  hideInMenu: true,
-                },
-              ]
-            },
-            {
-              path: '/group-contract-activity-management',
-              name: 'group-contract-activity-management',
-              routes: [
-                {
-                  name: 'activity-list',
-                  path: '/group-contract-activity-management/activity-list',
-                  component: './group-contract-activity-management/activity-list',
-                },
-                {
-                  name: 'activity-detail',
-                  path: '/group-contract-activity-management/activity-detail/:id',
-                  component: './group-contract-activity-management/activity-detail',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'activity-product',
-                  path: '/group-contract-activity-management/activity-product/:id',
-                  component: './group-contract-activity-management/activity-product',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'group-detail',
-                  path: '/group-contract-activity-management/group-detail/:id',
-                  component: './group-contract-activity-management/group-detail',
-                  hideInMenu: true,
-                },
-              ]
-            },
+            userManagement,
+            orderManagement,
+            productManagement,
+            setting,
+            intensiveActivityManagement,
+            supplierManagement,
+            intensiveStoreManagement,
+            singleContractActivityManagement,
+            groupContractActivityManagement,
+            couponManagement,
             {
               component: '404',
             },

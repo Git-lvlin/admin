@@ -3,11 +3,8 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
 import { helperList, statusSwitch } from '@/services/supplier-management/supplier-list'
 import { history } from 'umi';
-import Edit from './edit';
 
 const TableList = () => {
-  const [formVisible, setFormVisible] = useState(false);
-  const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
 
   const switchStatus = (id, type) => {
@@ -141,11 +138,6 @@ const TableList = () => {
         }}
         columns={columns}
         actionRef={actionRef}
-      />
-      <Edit
-        visible={formVisible}
-        setVisible={setFormVisible}
-        callback={() => { actionRef.current.reload() }}
       />
     </>
 

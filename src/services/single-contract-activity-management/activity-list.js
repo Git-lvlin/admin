@@ -50,3 +50,12 @@ export const ruleEnd = async (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const RuleGoodsImport = async (params = {}, options = {}) => {
+  return request('/auth/activityService/admin/RuleGoodsImport', {
+    method: 'POST',
+    data: params,
+    Headers: { 'Content-Type': 'multipart/form-data' },
+    ...options
+  });
+}
