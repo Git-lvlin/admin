@@ -25,6 +25,14 @@ export default (props) => {
     setTableData(tableData.filter(item => item.id !== id))
   }
 
+  const batchCancel = () => {
+    selectedRowKeys.forEach(item => {
+      cancel(item)
+    })
+
+    setSelectedRowKeys([])
+  }
+
   const columns = [
     {
       title: 'spuID',
@@ -88,19 +96,34 @@ export default (props) => {
       width: 80,
     },
     {
-      title: '单约价',
+      title: '团约价',
       dataIndex: 'activityPrice',
       valueType: 'text',
       editable: (_, data) => {
         return data.settleType !== 2
       },
+      fieldProps: {
+        placeholder: ''
+      },
       width: 100,
     },
     {
-      title: '单约库存',
+      title: '团约库存',
       dataIndex: 'activityStockNumEdit',
       valueType: 'text',
+      fieldProps: {
+        placeholder: ''
+      },
       width: 100,
+    },
+    {
+      title: '团约默认开团人数',
+      dataIndex: 'defaultGroupNum',
+      valueType: 'text',
+      width: 100,
+      fieldProps: {
+        placeholder: ''
+      },
     },
     {
       title: '操作',
@@ -133,7 +156,7 @@ export default (props) => {
         id: detailData?.id,
         activityStartTime: moment(activityTime[0]).unix(),
         activityEndTime: moment(activityTime[1]).unix(),
-        activityType: 3,
+        activityType: 4,
         goodsInfo: tableData.map(item => ({
           spuId: item.spuId,
           skuId: item.skuId,
@@ -178,7 +201,7 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        width: 1300,
+        width: 1500,
         onCancel: () => {
           onClose();
         }
@@ -219,7 +242,7 @@ export default (props) => {
 
       <ProFormDigit
         placeholder="请输入参团人数"
-        label="参团(单约)人数"
+        label="参团(团约)人数"
         name="groupNum"
         min={1}
         max={999}
@@ -231,19 +254,19 @@ export default (props) => {
 
       <ProFormDigit
         placeholder="请输入1-96之间的整数"
-        label="单约拼约时长"
+        label="团约拼约时长"
         name="groupTime"
         min={1}
         max={96}
         step
-        rules={[{ required: true, message: '请输入单约拼约时长' }]}
+        rules={[{ required: true, message: '请输入团约拼约时长' }]}
         extra={<><span style={{ position: 'absolute', left: 270, top: 5 }}>小时</span></>}
         width="md"
       />
 
       <ProFormRadio.Group
         name="virtualType"
-        label="单约虚拟成团"
+        label="团约虚拟成团"
         rules={[{ required: true }]}
         options={[
           {
@@ -275,8 +298,8 @@ export default (props) => {
       >
         <Space style={{ marginBottom: 10 }}>
           <Button type="primary" onClick={() => { setFormVisible(true) }}>选择活动商品</Button>
-          <Button type="primary" onClick={() => { setFormVisible(true) }}>批量取消</Button>
-          <Button type="primary" onClick={() => { setFormVisible(true) }}>批量导入</Button>
+          <Button type="primary" disabled={selectedRowKeys.length === 0} onClick={() => { batchCancel() }}>批量取消</Button>
+          <Button type="primary" onClick={() => { }}>批量导入</Button>
         </Space>
         {
           !!tableData.length &&

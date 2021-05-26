@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Upload as AntUpload, message } from 'antd';
 import { UploadOutlined, LoadingOutlined } from '@ant-design/icons';
 import { getImageSize } from '@/utils/utils';
@@ -8,6 +8,7 @@ const Upload = (props) => {
   const { value, onChange, dirName = 'goods', maxCount = 1, size, dimension, ...rest } = props;
   const [fileList, setFileList] = useState([])
   const [loading, setLoading] = useState(false)
+  const fileData = useRef([]);
 
   const beforeUpload = async (file) => {
     if (size && file.size / 1024 > size) {
@@ -31,7 +32,8 @@ const Upload = (props) => {
   }
 
   const onRemove = (file) => {
-    setFileList(fileList.filter(item => item.url !== file.url));
+    fileData.current = fileList.filter(item => item.url !== file.url)
+    setFileList(fileData.current);
     return true;
   }
 
@@ -39,12 +41,13 @@ const Upload = (props) => {
     setLoading(true);
     upload(file, dirName)
       .then(res => {
-        const arr = [...fileList];
+        const arr = [...fileData.current];
         arr.push({
           ...file,
           url: res,
         })
-        setFileList(arr);
+        fileData.current = arr;
+        setFileList(fileData.current);
         onChange(maxCount === 1 ? res : arr.map(item => item.url))
       })
       .finally(() => {
@@ -55,18 +58,20 @@ const Upload = (props) => {
   useEffect(() => {
     if (!fileList.length) {
       if (Array.isArray(value) && value?.length) {
-        setFileList(value.map((item, index) => {
+        fileData.current = value.map((item, index) => {
           return {
             url: item,
             uid: index
           }
-        }))
+        })
+        setFileList(fileData.current)
         onChange(maxCount === 1 ? value?.[0]?.url : value.map(item => item))
       } else if (value && typeof value === 'string') {
-        setFileList([{
+        fileData.current = [{
           url: value,
           uid: 0
-        }])
+        }]
+        setFileList(fileData.current)
         onChange(value)
       }
     }

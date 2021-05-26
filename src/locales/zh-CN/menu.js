@@ -83,4 +83,7 @@ export default {
   'menu.cms.goos-reg.crazy-date': '正在疯约',
   'menu.cms.goos-reg.save-money': '约购更省钱',
   'menu.cms.goos-reg.strategy-today': '约购攻略',
+
+  'menu.coupon-management': '优惠券管理',
+  'menu.coupon-management.coupon-list': '优惠券列表',
 };

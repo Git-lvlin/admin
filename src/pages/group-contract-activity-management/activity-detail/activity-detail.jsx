@@ -74,13 +74,18 @@ const ActivityDetail = () => {
       valueType: 'text',
     },
     {
-      title: '单约价',
+      title: '团约价',
       dataIndex: 'activityPrice',
       valueType: 'text',
     },
     {
-      title: '单约库存',
+      title: '团约库存',
       dataIndex: 'activityStockNum',
+      valueType: 'text',
+    },
+    {
+      title: '团约默认开团人数',
+      dataIndex: 'defaultGroupNum',
       valueType: 'text',
     },
   ];
@@ -113,17 +118,17 @@ const ActivityDetail = () => {
           {moment(detailData.activityEndTime * 1000).format('YYYY-MM-DD HH:mm:ss')}
         </Form.Item>
         <Form.Item
-          label="参团(单约)人数"
+          label="参团(团约)人数"
         >
           {detailData.groupNum}人
         </Form.Item>
         <Form.Item
-          label="单约拼约时长"
+          label="团约拼约时长"
         >
           {detailData.groupTime}小时
         </Form.Item>
         <Form.Item
-          label="单约虚拟成团"
+          label="团约虚拟成团"
         >
           {detailData.virtualType === 2 ? '开启' : '不开启'}
         </Form.Item>
