@@ -377,6 +377,43 @@ export default defineConfig({
               ]
             },
             {
+              path: '/cms',
+              name: 'cms',
+              routes: [
+                {
+                  name: 'goos-reg',
+                  path: '/cms/goos-reg',
+                  routes: [
+                    {
+                      name: 'member',
+                      path: '/cms/goos-reg/member',
+                      component: './cms/goos-reg/member'
+                    },
+                    {
+                      name: 'hot-goos',
+                      path: '/cms/goos-reg/hot-goos',
+                      component: './cms/goos-reg/hot-goos'
+                    },
+                    {
+                      name: 'crazy-date',
+                      path: '/cms/goos-reg/crazy-date',
+                      component: './cms/goos-reg/crazy-date'
+                    },
+                    {
+                      name: 'save-money',
+                      path: '/cms/goos-reg/save-money',
+                      component: './cms/goos-reg/save-money',
+                    },
+                    {
+                      name: 'strategy-today',
+                      path: '/cms/goos-reg/strategy-today',
+                      component: './cms/goos-reg/strategy-today',
+                    }
+                  ]
+                },
+              ]
+            },
+            {
               component: '404',
             },
           ],
