@@ -12,7 +12,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import MemberReg from '@/components/member-reg';
 import Upload from '@/components/upload';
 import { hotGoosAdd } from '@/services/cms/member/member';
-import {spaceInfoList, hotGoosList} from '@/services/cms/member/member';
+import { todayAllGoodsList } from '@/services/cms/member/member';
 
 
 
@@ -82,10 +82,11 @@ export default (props) => {
     const { ...rest } = values
   
     const param = {
-      tagCode: 'hot_sale',
+      tagCode: 'day_yeahgo',
       spuIds: arr,
       ...rest
     }
+    console.log('param', param)
     return new Promise((resolve) => {
       hotGoosAdd(param).then((res) => {
         if (res.code === 0) {
@@ -112,13 +113,13 @@ export default (props) => {
           resetText: '取消',
         },
       }}
-      drawerProps={{
-        forceRender: true,
-        destroyOnClose: true,
-        onClose: () => {
-          onClose();
-        }
-      }}
+      // drawerProps={{
+      //   forceRender: true,
+      //   destroyOnClose: true,
+      //   onClose: () => {
+      //     onClose();
+      //   }
+      // }}
       onFinish={async (values) => {
         await waitTime(values);
         message.success('提交成功');
@@ -130,8 +131,7 @@ export default (props) => {
       rowKey="id"
       options={false}
       columns={columns}
-      params={{tagCode:'day_yeahgo'}}
-      request={hotGoosList}
+      request={todayAllGoodsList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项
@@ -156,8 +156,8 @@ export default (props) => {
       //   </Space>
       // )}
       tableAlertOptionRender={(a) => {
-        console.log('aaaa',a)
-        setArr(a.selectedRowKeys.toString())
+        console.log('a', a)
+        // setArr(a.selectedRowKeys.toString())
       }}
       editable={{
         type: 'multiple',

@@ -112,13 +112,13 @@ export default (props) => {
           resetText: '取消',
         },
       }}
-      drawerProps={{
-        forceRender: true,
-        destroyOnClose: true,
-        onClose: () => {
-          onClose();
-        }
-      }}
+      // drawerProps={{
+      //   forceRender: true,
+      //   destroyOnClose: true,
+      //   onClose: () => {
+      //     onClose();
+      //   }
+      // }}
       onFinish={async (values) => {
         await waitTime(values);
         message.success('提交成功');

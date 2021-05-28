@@ -31,7 +31,47 @@ export const spaceAdd = (params = {}, options = {}) => {
     ...options
   });
 }
+export const spaceEdit = (params = {}, options = {}) => {
+  return request('/auth/activity/Activity/spaceEdit', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
 
+
+export const bannerAdd = (params = {}, options = {}) => {
+  return request('/java-admin/cms/banner/saveOrUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const expressNewsUpdate = (params = {}, options = {}) => {
+  const { id, ...rest } = params
+
+  const param = {
+    ...rest
+  }
+  if (id) {
+    param.id = id
+  }
+  const url = id?'/java-admin/cms/notice/update':'/java-admin/cms/notice/add';
+  return request(url, {
+    method: 'POST',
+    data: param,
+    ...options
+  });
+}
+
+export const homeSuspensionAdd = (params = {}, options = {}) => {
+  return request('/java-admin/cms/bannerFloat/saveOrUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
 
 export const saveMoneyList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;
@@ -124,6 +164,35 @@ export const hotGoosOperation = (params = {}, options = {}) => {
   });
 }
 
+export const homeBannerDel = (params = {}, options = {}) => {
+  return request('/java-admin/cms/banner/delByIds', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+export const homeSuspensionDel = (params = {}, options = {}) => {
+  return request('/java-admin/cms/bannerFloat/delById', {
+    method: 'GET',
+    data: params,
+    ...options
+  });
+}
+export const expressNewsDel = (params = {}, options = {}) => {
+  return request('/java-admin/cms/notice/deleteById', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+export const kongKongDistrictDel = (params = {}, options = {}) => {
+  return request('/java-admin/cms/goodsType/goodsTypeDelById', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 
 export const memberOperation = (params = {}, options = {}) => {
   return request('/auth/activity/Activity/spanceInfoStatusEdit', {
@@ -175,6 +244,127 @@ export const saveMoneyFormList = async (params = {}, options = {}) => {
     data.status = Number(status);
   }
   const res = await request('/auth/activity/Goods/wholesaleTransGoodsList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const homeBannerList = async (params = {}, options = {}) => {
+  const { current, pageSize, status, ...rest } = params;
+
+  const data = {
+    page: current,
+    pageSize: pageSize,
+    ...rest
+  }
+  if (status) {
+    data.status = Number(status);
+  }
+  const res = await request('/java-admin/cms/banner/page', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+
+export const homeSuspensionList = async (params = {}, options = {}) => {
+  const { current, pageSize, status, ...rest } = params;
+
+  const data = {
+    page: current,
+    pageSize: pageSize,
+    ...rest
+  }
+  if (status) {
+    data.status = Number(status);
+  }
+  const res = await request('/java-admin/cms/bannerFloat/page', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+export const expressNewsList = async (params = {}, options = {}) => {
+  const { current, pageSize, state, id, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  if (state) {
+    data.state = Number(state);
+  }
+  
+  const res = await request('/java-admin/cms/notice/selectByWays', {
+    method: 'get',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const kingKongDistrictList = async (params = {}, options = {}) => {
+  const { current, pageSize, status, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  if (status) {
+    data.status = Number(status);
+  }
+  const res = await request('/java-admin/cms/goodsType/goodsTypeByWays', {
+    method: 'get',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const todayAllGoodsList = async (params = {}, options = {}) => {
+  const { current, pageSize, status, ...rest } = params;
+
+  const data = {
+    page: current,
+    pageSize: pageSize,
+    ...rest
+  }
+  if (status) {
+    data.status = Number(status);
+  }
+  const res = await request('/auth/activity/Goods/commonSpuList', {
     method: 'POST',
     data,
     ...options

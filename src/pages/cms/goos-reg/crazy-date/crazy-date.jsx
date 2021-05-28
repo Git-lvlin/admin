@@ -1,13 +1,11 @@
 
-import React, { useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { Button, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
-import {crazyDateList} from '@/services/cms/member/member';
-
-const CrazyDate = (proprs) => {
+import { crazyDateList } from '@/services/cms/member/member';
+import { Button, Badge, Space } from 'antd';
+const CrazyDate = (props) => {
+  const { onChange, detail } = props;
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(true);
@@ -95,21 +93,13 @@ const CrazyDate = (proprs) => {
         <a href={record.url} target="_blank" rel="noopener noreferrer" key="view">
           查看
         </a>,
-        <TableDropdown
-          key="actionGroup"
-          onSelect={() => action?.reload()}
-          menus={[
-            { key: 'copy', name: '复制' },
-            { key: 'delete', name: '删除' },
-          ]}
-        />,
       ],
     },
   ];
 
 
   return (
-    <PageContainer>
+    <>
     <ProTable
       rowKey="id"
       // options={false}
@@ -148,6 +138,16 @@ const CrazyDate = (proprs) => {
       pagination={{
         pageSize: 5,
       }}
+      onRow={(record) => {
+        return {
+          onClick: () => {
+            console.log('左侧栏点击item',record)
+            if (record.title) {
+              onChange(record);
+            }
+          },
+        };
+      }}
       dateFormatter="string"
       headerTitle="正在疯约"
       toolBarRender={() => [
@@ -172,9 +172,88 @@ const CrazyDate = (proprs) => {
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { setDetailData(null) }}
     />}
-    </PageContainer>
+    </>
   );
 };
 
+import React, { useRef, useEffect, useState } from 'react';
 
-export default CrazyDate
+import ProTable from '@ant-design/pro-table';
+import ProCard from '@ant-design/pro-card';
+
+
+
+const DetailList = (props) => {
+  const { detail } = props;
+  const [tableListDataSource, setTableListDataSource] = useState([]);
+
+  const columns = [
+    {
+      title: '时间点',
+      key: 'createdAt',
+      dataIndex: 'createdAt',
+      valueType: 'dateTime',
+    },
+    {
+      title: '代码',
+      key: 'code',
+      width: 80,
+      dataIndex: 'code',
+      valueType: 'code',
+    },
+    {
+      title: '操作',
+      key: 'option',
+      width: 80,
+      valueType: 'option',
+      render: () => [<a key="a">预警</a>],
+    },
+  ];
+
+  useEffect(() => {
+    const source = [];
+    for (let i = 0; i < 15; i += 1) {
+      source.push({
+        createdAt: Date.now() - Math.floor(Math.random() * 10000),
+        code: `const getData = async params => {
+          const data = await getData(params);
+          return { list: data.data, ...data };
+        };`,
+        key: i,
+      });
+    }
+
+    setTableListDataSource(source);
+  }, [detail]);
+
+  return (
+    <ProTable
+      columns={columns}
+      dataSource={tableListDataSource}
+      pagination={{
+        pageSize: 3,
+        showSizeChanger: false,
+      }}
+      rowKey="key"
+      toolBarRender={false}
+      search={false}
+    />
+  );
+};
+
+const Demo = () => {
+  const [detail, setDetail] = useState('无');
+  console.log('detail', detail)
+  return (
+    <ProCard split="vertical">
+      <ProCard colSpan="50%" ghost>
+        <CrazyDate onChange={(cIp) => setDetail(cIp)} detail={detail} />
+      </ProCard>
+      <ProCard title={`当前选中活动=>${detail.title||'-'}, 活动id=>${detail.id||'-'}`}>
+        <DetailList detail={detail} />
+      </ProCard>
+    </ProCard>
+  );
+};
+
+export default Demo;

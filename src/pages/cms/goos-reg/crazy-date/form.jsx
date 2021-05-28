@@ -74,7 +74,6 @@ export default (props) => {
         }
       }}
       onFinish={async (values) => {
-        console.log('vvvvvvvvvvv'.values)
         await waitTime(values);
         console.log(values.name);
         message.success('提交成功');
