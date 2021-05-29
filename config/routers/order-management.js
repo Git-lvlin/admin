@@ -32,6 +32,11 @@ export default {
           component: './order-management/intensive-order/supplier-order',
         },
       ]
+    },
+    {
+      name: 'after-sales-order',
+      path: '/order-management/after-sales-order',
+      component: './order-management/after-sales-order'
     }
   ]
 }
