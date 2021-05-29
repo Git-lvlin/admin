@@ -24,6 +24,14 @@ export const spaceInfoList = async (params = {}, options = {}) => {
   }
 }
 
+export const crazyActivityAdd = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const spaceAdd = (params = {}, options = {}) => {
   return request('/auth/activity/Activity/spaceAdd', {
     method: 'POST',
@@ -140,6 +148,35 @@ export const crazyDateList = async (params = {}, options = {}) => {
   }
 }
 
+export const crazyGoodsList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+
+  const res = await request('/auth/activity/Cms/cmsGoodsList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const crazyActivityGoodsAdd = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsGoodsSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
 
 export const hotGoosAdd = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/goodsTagSub', {
@@ -158,6 +195,14 @@ export const saveMoneyAdd = (params = {}, options = {}) => {
 
 export const hotGoosOperation = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/goodsTagStatusSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const crazyActivityDel = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsStatusSub', {
     method: 'POST',
     data: params,
     ...options
