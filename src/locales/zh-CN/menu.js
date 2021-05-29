@@ -77,6 +77,14 @@ export default {
   'menu.group-contract-activity-management.activity-product': '活动商品',
   'menu.group-contract-activity-management.group-detail': '拼约详情',
 
+  'menu.cms': 'CMS',
+  'menu.cms.goos-reg': '商品区域',
+  'menu.cms.goos-reg.member': '会员约购区',
+  'menu.cms.goos-reg.hot-goos': '热销好货',
+  'menu.cms.goos-reg.crazy-date': '正在疯约',
+  'menu.cms.goos-reg.save-money': '约购更省钱',
+  'menu.cms.goos-reg.strategy-today': '约购攻略',
+
   'menu.coupon-management': '优惠券管理',
   'menu.coupon-management.coupon-list': '优惠券列表',
 };
