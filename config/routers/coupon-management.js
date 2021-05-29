@@ -7,5 +7,10 @@ export default {
       path: '/coupon-management/coupon-list',
       component: './coupon-management/coupon-list',
     },
+    {
+      name: 'construction',
+      path: '/coupon-management/construction',
+      component: './coupon-construction',
+    },
   ],
 }

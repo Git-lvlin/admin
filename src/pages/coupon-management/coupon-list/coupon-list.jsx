@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Button, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { ManOutlined, WomanOutlined } from '@ant-design/icons';
+import { DownOutlined,ManOutlined, WomanOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { couponList } from '@/services/coupon-management/coupon-list';
 import { history } from 'umi';
@@ -16,11 +16,6 @@ const TableList = () => {
   const [selectItem, setSelectItem] = useState(false);
   const actionRef = useRef();
   const columns = [
-    {
-      title: '编号',
-      dataIndex: 'nickName',
-      valueType: 'text',
-    },
     {
       title: '优惠券名称',
       dataIndex: 'couponName',
@@ -37,6 +32,17 @@ const TableList = () => {
         1: '满减券',
         2: '折扣券',
         3: '立减券'
+      }
+    },
+    {
+      title: '状态',
+      dataIndex: 'couponStatus',
+      valueType: 'select',
+      valueEnum: {
+        1: '未开始',
+        2: '进行中',
+        3: '已结束',
+        4: '已终止'
       }
     },
     {
@@ -70,6 +76,23 @@ const TableList = () => {
           ],
         }}
         columns={columns}
+        toolbar={{
+          actions: [
+            <Button
+              key="primary"
+              type="primary"
+              onClick={() => {
+                history.push('/coupon-management/construction')
+              }}
+            >
+              新建优惠券
+            </Button>,
+            <Button key="out">
+              导出数据
+              <DownOutlined />
+            </Button>
+          ]
+        }}
       />
     </PageContainer>
 

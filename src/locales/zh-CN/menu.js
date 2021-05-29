@@ -86,4 +86,5 @@ export default {
 
   'menu.coupon-management': '优惠券管理',
   'menu.coupon-management.coupon-list': '优惠券列表',
+  'menu.coupon-management.construction':'新建优惠劵'
 };
