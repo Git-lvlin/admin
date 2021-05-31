@@ -14,6 +14,13 @@ export default {
         '^': '',
       },
     },
+    '/java-admin/': {
+      target: 'http://192.168.3.2:6664',
+      changeOrigin: true,
+      pathRewrite: {
+        '^': '',
+      }
+    }
   },
   test: {
     '/api/': {

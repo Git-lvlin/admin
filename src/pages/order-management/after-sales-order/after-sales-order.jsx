@@ -2,6 +2,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import React, { useRef } from 'react';
 import { Button } from 'antd';
+import moment from 'moment';
 import './styles.less';
 
 
@@ -40,7 +41,7 @@ const columns = [
   {
     title: '申请时间',
     dataIndex: 'applicationTime',
-    valueType: 'dateTime',
+    valueType: 'datePicker',
     fieldProps: {
       placeholder: '请选择申请时间'
     },
@@ -118,19 +119,13 @@ const columns = [
     valueEnum: sourceType,
     colSize: .8,
     align: 'center',
-    order: 6,
-    render: (_, data)=> (
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div>{_}</div>
-        {/* TODO:判断平台是否介入 */}
-        {  }
-      </div>
-    )
+    order: 6
   },
   {
     title: '操作',
     dataIndex: 'operation',
     valueType: 'option',
+    align: 'center',
     render: (_, record) => {
       // TODO:查看详情
       return (
@@ -141,6 +136,28 @@ const columns = [
     }
   }
 ]
+
+const dataSource = () => {
+  const data = [
+    { 
+      afterSalesNumber: "1",
+      OrderNumber:"3",
+      applicationTime: "66",
+      buyerNickname: "仅退款",
+      buyerPhoneNumber: "100",
+      SellerName: "任性",
+      SellerPhoneNumber: "已退款",
+      afterSalesType: '1',
+      totalRefundAmount: '1',
+      refundStatus: '1'
+    },
+  ]
+  return {
+    success: true,
+    data,
+    total: 10
+  }
+}
 const afterSalesOrder = () => {
   const actionRef = useRef();
   return (
@@ -152,7 +169,7 @@ const afterSalesOrder = () => {
           selectType: 1
         }}
         // TODO:调接口
-        request={()=>{}}
+        request={dataSource}
         actionRef={actionRef}
         search={{
           span: 5,
