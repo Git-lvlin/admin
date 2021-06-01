@@ -1,25 +1,28 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
   DrawerForm,
   ProFormText,
   ProFormRadio,
-  ProFormDateTimePicker ,
+  ProFormDigit,
 } from '@ant-design/pro-form';
-import CrazyAddActivityReg from '@/components/crazy-add-activity-reg';
-import { crazyActivityAdd } from '@/services/cms/member/member';
+import { expressNewsUpdate } from '@/services/cms/member/member';
 
 const waitTime = (values) => {
-  const { ...rest } = values
+  const { id, ...rest } = values
   const param = {
     ...rest
   }
+  if (id) {
+    param.id = id
+  }
   return new Promise((resolve) => {
-    crazyActivityAdd(param).then((res) => {
+    expressNewsUpdate(param).then((res) => {
       if (res.code === 0) {
         resolve(true);
       }
     })
+
   });
 };
 
@@ -29,17 +32,17 @@ export default (props) => {
   const [form] = Form.useForm()
 
   useEffect(() => {
-    if (detailData?.id) {
+    if (detailData) {
       const { ...rest } = detailData;
       form.setFieldsValue({
         ...rest
       })
     }
-  }, [])
+  }, [form, detailData])
 
   return (
     <DrawerForm
-      title={`${detailData ? '编辑活动' : '新增活动'}`}
+      title={`${detailData.title ? '编辑' : '新建'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -53,48 +56,51 @@ export default (props) => {
       }}
       onFinish={async (values) => {
         await waitTime(values);
-        console.log(values.name);
         message.success('提交成功');
         // 不返回不会关闭弹框
         return true;
       }}
     >
-
       <ProForm.Group>
-        <ProFormText
-            name="title"
-            label="活动标题"
-            placeholder="请输入活动标题"
-            rules={[{ required: true, message: '请输入活动标题' }]}
+        <ProFormText 
+          width="sm"
+          name="title"
+          label="消息标题"
+          rules={[{ required: true, message: '请输入消息标题' }]}  
+        />
+      </ProForm.Group>
+      <ProForm.Group>
+        <ProFormText 
+            width="sm"
+            name="actionUrl"
+            label="跳转链接"
+            rules={[{ required: true, message: '请输入跳转链接' }]}  
           />
       </ProForm.Group>
-      <ProFormDateTimePicker name="activityStartTime" required label="开始时间" />
-      <ProFormDateTimePicker name="activityEndTime" required label="结束时间" />
+      <ProForm.Group>
+        <ProFormDigit
+          width="sm"
+          name="sort"
+          label="排序"
+          rules={[{ required: true, message: '请输入排序序号' }]}  
+        />
+      </ProForm.Group>
       <ProFormRadio.Group
-          name="status"
+          name="state"
           label="上线/下架"
           required
           options={[
             {
               label: '上线',
-              value: 2,
+              value: 1,
             },
             {
               label: '下架',
-              value: 1,
+              value: 0,
             },
           ]}
         />
-      <ProForm.Group>
-        <Form.Item
-          name="cmsClassId"
-          label="位置"
-          rules={[{ required: true, message: '请选择位置' }]}
-        >
-          <CrazyAddActivityReg />
-        </Form.Item>
-      </ProForm.Group>
-      <ProFormText
+        <ProFormText
           name="id"
           label="id"
           hidden

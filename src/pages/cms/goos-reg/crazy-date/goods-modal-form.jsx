@@ -11,7 +11,7 @@ import ProForm, {
 import { PlusOutlined } from '@ant-design/icons';
 import MemberReg from '@/components/member-reg';
 import Upload from '@/components/upload';
-import { hotGoosAdd } from '@/services/cms/member/member';
+import { crazyActivityGoodsAdd } from '@/services/cms/member/member';
 import {spaceInfoList, hotGoosList, goosAllList} from '@/services/cms/member/member';
 
 
@@ -22,6 +22,24 @@ export default (props) => {
   const { detailData, setVisible, onClose, visible } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
+
+  const waitTime = () => {
+    const spuids = arr.map(item=>item.spuId)
+    const { id } = detailData
+    const param = {
+      cmsId: id,
+      spuIds: spuids.toString()
+    }
+    return new Promise((resolve) => {
+      crazyActivityGoodsAdd(param).then((res) => {
+        if (res.code === 0) {
+          resolve(true);
+        }
+      })
+  
+    });
+  };
+
   const columns = [
     {
       title: 'SPUID',
@@ -78,23 +96,7 @@ export default (props) => {
     },
   ];
 
-  const waitTime = (values) => {
-    const { ...rest } = values
-  
-    const param = {
-      tagCode: 'hot_sale',
-      spuIds: arr,
-      ...rest
-    }
-    return new Promise((resolve) => {
-      hotGoosAdd(param).then((res) => {
-        if (res.code === 0) {
-          resolve(true);
-        }
-      })
-  
-    });
-  };
+
 
   useEffect(() => {
 
@@ -102,7 +104,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={`${detailData ? '编辑' : '新建'}`}
+      title='添加'
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -119,8 +121,8 @@ export default (props) => {
       //     onClose();
       //   }
       // }}
-      onFinish={async (values) => {
-        await waitTime(values);
+      onFinish={async (values, detailData) => {
+        await waitTime(values, detailData);
         message.success('提交成功');
         // 不返回不会关闭弹框
         return true;
@@ -137,26 +139,26 @@ export default (props) => {
         // 注释该行则默认不显示下拉选项
         // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
       }}
-      // tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
-      //   <Space size={24}>
-      //     <span>
-      //       已选 {selectedRowKeys.length} 项
-      //       <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
-      //         取消选择
-      //       </a>
-      //     </span>
-      //     <span>{`待发布: ${selectedRows.reduce(
-      //       (pre, item) => pre + item.containers,
-      //       0,
-      //     )} 个`}</span>
-      //     <span>{`已发布: ${selectedRows.reduce(
-      //       (pre, item) => pre + item.callNumber,
-      //       0,
-      //     )} 个`}</span>
-      //   </Space>
-      // )}
+      tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
+        <Space size={24}>
+          <span>
+            已选 {selectedRowKeys.length} 项
+            <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
+              取消选择
+            </a>
+          </span>
+          <span>{`待发布: ${selectedRows.reduce(
+            (pre, item) => pre + item.containers,
+            0,
+          )} 个`}</span>
+          <span>{`已发布: ${selectedRows.reduce(
+            (pre, item) => pre + item.callNumber,
+            0,
+          )} 个`}</span>
+        </Space>
+      )}
       tableAlertOptionRender={(a) => {
-        setArr(a.selectedRowKeys.toString())
+        setArr(a.selectedRows)
       }}
       editable={{
         type: 'multiple',
@@ -168,9 +170,7 @@ export default (props) => {
         pageSize: 10,
       }}
       dateFormatter="string"
-      headerTitle="热销好货"
     />
-
 
     </ModalForm>
   );

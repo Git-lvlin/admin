@@ -13,26 +13,20 @@ import MemberReg from '@/components/member-reg';
 import Upload from '@/components/upload';
 import { hotGoosAdd } from '@/services/cms/member/member';
 import {spaceInfoList, hotGoosList, goosAllList} from '@/services/cms/member/member';
-
+import GcCascader from '@/components/gc-cascader'
 
 
 
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { setVisible, onClose, visible } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
   const columns = [
     {
-      title: 'SPUID',
-      dataIndex: 'spuId',
+      title: 'skuid',
+      dataIndex: 'skuId',
       valueType: 'text',
-    },
-    {
-      title: '图片',
-      dataIndex: 'goodsImageUrl',
-      render: (text) => <img src={text} width={50} height={50} />,
-      search: false,
     },
     {
       title: '商品名称',
@@ -47,26 +41,32 @@ export default (props) => {
       search: false,
     },
     {
-      title: '供货类型',
+      title: '商品分类',
+      dataIndex: 'gcId',
+      renderFormItem: () => (<GcCascader />),
+      hideInTable: true,
+    },
+    {
+      title: '结算类型',
       dataIndex: 'goodsSaleTypeDisplay',
       valueType: 'text',
       search: false,
     },
     {
-      title: '销售价',
+      title: '秒约价',
       dataIndex: 'goodsSalePrice',
+      valueType: 'number',
+      search: false,
+    },
+    {
+      title: '市场价',
+      dataIndex: 'price',
       valueType: 'number',
       search: false,
     },
     {
       title: '可用库存',
       dataIndex: 'stockNum',
-      valueType: 'number',
-      search: false,
-    },
-    {
-      title: '活动库存',
-      dataIndex: 'activityStockNum',
       valueType: 'number',
       search: false,
     },
@@ -82,7 +82,6 @@ export default (props) => {
     const { ...rest } = values
   
     const param = {
-      tagCode: 'hot_sale',
       spuIds: arr,
       ...rest
     }
@@ -102,13 +101,13 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={`${detailData ? '编辑' : '新建'}`}
+      title={'新建'}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
       submitter={{
         searchConfig: {
-          submitText: '确认添加',
+          submitText: '添加商品',
           resetText: '取消',
         },
       }}
@@ -168,7 +167,7 @@ export default (props) => {
         pageSize: 10,
       }}
       dateFormatter="string"
-      headerTitle="热销好货"
+      headerTitle="添加比价商品"
     />
 
 

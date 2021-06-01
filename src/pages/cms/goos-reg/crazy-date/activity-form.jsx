@@ -1,30 +1,27 @@
 
-import React, { useRef, useState } from 'react';
-import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
-import Edit from './form';
-import { hotGoosList, hotGoosOperation} from '@/services/cms/member/member';
-import { ACTION_TYPE } from '@/utils/text';
+import React, { useRef, useEffect, useState } from 'react';
+import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
+import { crazyGoodsList } from '@/services/cms/member/member';
+import { Button, Space, message } from 'antd';
+import Edit from './goods-modal-form'
 
-const HotGoos = () => {
+const DetailList = (props) => {
+  const [listData, setListData] = useState(null)
+  const { onChange, id } = props;
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
-  const [detailData, setDetailData] = useState(false);
+  const [detailData, setDetailData] = useState(true);
+  const [acid, setAcId] = useState({cmsId: 0});
 
   const getDetail = (data) => {
-    setDetailData(data);
+    if (!id) {return message.error('请先选择活动')}
+    const param = {
+      data,
+      id
+    }
+    setDetailData(param);
     setFormVisible(true);
-  }
-
-  const formControl = (data,type) => {
-    hotGoosOperation({ids: data,status: type}).then((res) => {
-      if (res.code === 0) {
-        message.success(`${ACTION_TYPE[type]}成功`);
-        actionRef.current.reset();
-      }
-    })
   }
 
   const columns = [
@@ -41,14 +38,12 @@ const HotGoos = () => {
     },
     {
       title: '图片',
-      key: 'goodsImageUrl',
       dataIndex: 'goodsImageUrl',
       render: (text) => <img src={text} width={50} height={50} />,
       search: false,
     },
     {
       title: '商品名称',
-      key: 'goodsName',
       dataIndex: 'goodsName',
       valueType: 'text',
       editable: true,
@@ -56,35 +51,30 @@ const HotGoos = () => {
     },
     {
       title: '商家名称',
-      key: 'supplierName',
       dataIndex: 'supplierName',
       valueType: 'text',
       search: false,
     },
     {
       title: '供货类型',
-      key: 'goodsSaleTypeDisplay',
       dataIndex: 'goodsSaleTypeDisplay',
       valueType: 'text',
       search: false,
     },
     {
       title: '销售价',
-      key: 'goodsSalePrice',
       dataIndex: 'goodsSalePrice',
       valueType: 'number',
       search: false,
     },
     {
       title: '可用库存',
-      key: 'stockNum',
       dataIndex: 'stockNum',
       valueType: 'number',
       search: false,
     },
     {
       title: '活动库存',
-      key: 'activityStockNum',
       dataIndex: 'activityStockNum',
       valueType: 'number',
       search: false,
@@ -141,14 +131,26 @@ const HotGoos = () => {
     },
   ];
 
+
+  useEffect((props) => {
+
+    if (id) {
+      setAcId({cmsId:id})
+      // const res = crazyGoodsList({cmsId:detail.id});
+      // setListData(res)
+      // actionRef.current.reload();
+    }
+  }, [id]);
+
   return (
-    <PageContainer>
+    <>
     <ProTable
-      rowKey="id"
+      rowKey="key"
+      options={false}
       columns={columns}
       actionRef={actionRef}
-      params={{tagCode:'hot_sale'}}
-      request={hotGoosList}
+      params={acid}
+      request={crazyGoodsList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项
@@ -172,26 +174,39 @@ const HotGoos = () => {
           )} 个`}</span>
         </Space>
       )}
+      editable={{
+        type: 'multiple',
+      }}
       search={{
         labelWidth: 'auto',
       }}
       pagination={{
         pageSize: 5,
       }}
+      onRow={(record) => {
+        return {
+          onClick: () => {
+            console.log('左侧栏点击item',record)
+            if (record.title) {
+              onChange(record);
+            }
+          },
+        };
+      }}
       dateFormatter="string"
-      headerTitle="热销好货"
+      // headerTitle="正在疯约"
       toolBarRender={(_,record) => [
-        <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 2) }}>
+        <Button key="button" icon={<PlayCircleOutlined />} type="primary">
           批量发布
         </Button>,
-        <Button key="button" icon={<PauseCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 1) }}>
+        <Button key="button" icon={<PauseCircleOutlined />} type="primary">
           批量下线
         </Button>,
-        <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 4) }}>
+        <Button key="button" icon={<MinusOutlined />} type="primary">
           批量删除
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
-          新建
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail(record) }}>
+          新增
         </Button>,
       ]}
     />
@@ -200,11 +215,10 @@ const HotGoos = () => {
       setVisible={setFormVisible}
       detailData={detailData}
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+      onClose={() => { setDetailData(null) }}
     />}
-    </PageContainer>
+    </>
   );
 };
 
-
-export default HotGoos
+export default DetailList
