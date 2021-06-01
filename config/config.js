@@ -71,6 +71,11 @@ export default defineConfig({
             couponManagement,
             cms,
             {
+              path: '/price-comparsion-management',
+              name: 'price-comparsion-management',
+              component: './price-comparsion-management',
+            },
+            {
               component: '404',
             },
           ],

@@ -54,6 +54,22 @@ export default {
       component: './cms/king-kong-district',
     },
     {
+      name: 'price-comparsion',
+      path: '/cms/price-comparsion',
+      routes: [
+        {
+          name: 'home-list',
+          path: '/cms/price-comparsion/home-list',
+          component: './cms/price-comparsion/home-list',
+        },
+        {
+          name: 'low-goods',
+          path: '/cms/price-comparsion/low-goods',
+          component: './cms/price-comparsion/low-goods',
+        },
+      ],
+    },
+    {
       name: 'route-url-deploy',
       path: '/cms/route-url-deploy',
       component: './cms/route-url-deploy',

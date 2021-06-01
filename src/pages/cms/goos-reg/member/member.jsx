@@ -7,7 +7,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
 import Modaledit from './modal';
 import MemberReg from '@/components/member-reg';
-import { spaceInfoList, memberOperation } from '@/services/cms/member/member';
+import { spaceInfoList, memberOperation, memberSortTop } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
 
 
@@ -29,6 +29,14 @@ const Member = (props) => {
     memberOperation({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);
+        actionRef.current.reset();
+      }
+    })
+  }
+  const sortTop = (data) => {
+    memberSortTop({id:data}).then((res) => {
+      if (res.code === 0) {
+        message.success(`置顶成功`);
         actionRef.current.reset();
       }
     })
@@ -117,6 +125,7 @@ const Member = (props) => {
       render: (text, record, _, action) => {
         return (
           <>
+            &nbsp;&nbsp;{record.status===2&&<a key="top" onClick={() => {sortTop(record.id)}}>置顶</a>}
             &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}

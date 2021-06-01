@@ -87,9 +87,13 @@ export default {
   'menu.cms.home-suspension': '首页悬浮窗',
   'menu.cms.express-news': '约购快报',
   'menu.cms.king-kong-district': '金刚区',
+  'menu.cms.price-comparsion': '首页比价',
+  'menu.cms.price-comparsion.home-list': '比价优选',
+  'menu.cms.price-comparsion.low-goods': '低价爆品',
   'menu.cms.route-url-deploy': '链接路由管理',
-
 
   'menu.coupon-management': '优惠券管理',
   'menu.coupon-management.coupon-list': '优惠券列表',
+
+  'menu.price-comparsion-management': '比价管理',
 };

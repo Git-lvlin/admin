@@ -109,7 +109,7 @@ export const hotGoosList = async (params = {}, options = {}) => {
 
   const data = {
     page: current,
-    size: pageSize,
+    pageSize: pageSize,
     ...rest
   }
   if (status) {
@@ -362,7 +362,7 @@ export const expressNewsList = async (params = {}, options = {}) => {
   }
   
   const res = await request('/java-admin/cms/notice/selectByWays', {
-    method: 'get',
+    method: 'GET',
     data,
     ...options
   });
@@ -421,3 +421,14 @@ export const todayAllGoodsList = async (params = {}, options = {}) => {
     total: res.data.total,
   }
 }
+
+
+export const memberSortTop = (params = {}, options = {}) => {
+  return request('/auth/activity/Activity/spanceInfoSortTop', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+

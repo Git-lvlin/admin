@@ -1,102 +1,112 @@
-
 import React, { useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import Edit from './form';
 import { hotGoosList, hotGoosOperation} from '@/services/cms/member/member';
-import { ACTION_TYPE } from '@/utils/text';
+import Edit from './edit';
 
-const HotGoos = () => {
+const PriceComparsionManagement = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
-  const [detailData, setDetailData] = useState(false);
 
-  const getDetail = (data) => {
-    setDetailData(data);
-    setFormVisible(true);
-  }
 
   const formControl = (data,type) => {
     hotGoosOperation({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
-        message.success(`${ACTION_TYPE[type]}成功`);
+        message.success(`成功`);
         actionRef.current.reset();
       }
     })
   }
 
+
+  const expandedRowRender = () => {
+    const data = [];
+    for (let i = 0; i < 3; i += 1) {
+      data.push({
+        key: i,
+        date: '2014-12-24 23:12:00',
+        name: 'This is production name',
+        upgradeNum: 'Upgraded: 56',
+      });
+    }
+    return (
+      <ProTable
+        columns={[
+          { title: '比价电商平台', dataIndex: 'date', key: 'date' },
+          { title: 'skuid', dataIndex: 'name', key: 'name' },
+  
+          { title: '售卖加个', dataIndex: 'upgradeNum', key: 'upgradeNum' },
+          {
+            title: '链接',
+            dataIndex: 'operation',
+            key: 'operation',
+            valueType: 'option',
+            render: () => [<a key="Pause">Pause</a>, <a key="Stop">Stop</a>],
+          },
+          {
+            title: '动作',
+            valueType: 'option',
+            dataIndex: 'option',
+            render: (text, record, _, action) => {
+              return (
+                <>
+                  &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {}}>抓取</a>}
+                </>
+              )
+            }
+          },
+        ]}
+        headerTitle={false}
+        search={false}
+        options={false}
+        dataSource={data}
+        pagination={false}
+      />
+    );
+  };
+
   const columns = [
     {
-      title: '排序序号',
-      dataIndex: 'sort',
-      valueType: 'text',
-      search: false,
-    },
-    {
-      title: 'SPUID',
-      dataIndex: 'spuId',
-      valueType: 'number',
-    },
-    {
-      title: '图片',
-      key: 'goodsImageUrl',
-      dataIndex: 'goodsImageUrl',
-      render: (text) => <img src={text} width={50} height={50} />,
-      search: false,
+      title: 'skuId',
+      dataIndex: 'skuId',
     },
     {
       title: '商品名称',
-      key: 'goodsName',
       dataIndex: 'goodsName',
-      valueType: 'text',
-      editable: true,
-      search: false,
     },
     {
       title: '商家名称',
-      key: 'supplierName',
-      dataIndex: 'supplierName',
-      valueType: 'text',
+      dataIndex: 'goodsName',
+    },
+    {
+      title: '结算类型',
+      dataIndex: 'type',
       search: false,
     },
     {
-      title: '供货类型',
-      key: 'goodsSaleTypeDisplay',
-      dataIndex: 'goodsSaleTypeDisplay',
-      valueType: 'text',
+      title: '秒约价',
+      dataIndex: 'price',
       search: false,
     },
     {
-      title: '销售价',
-      key: 'goodsSalePrice',
-      dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      title: '市场价',
+      dataIndex: 'price',
       search: false,
     },
     {
       title: '可用库存',
-      key: 'stockNum',
-      dataIndex: 'stockNum',
-      valueType: 'number',
-      search: false,
-    },
-    {
-      title: '活动库存',
-      key: 'activityStockNum',
-      dataIndex: 'activityStockNum',
-      valueType: 'number',
+      dataIndex: 'num',
       search: false,
     },
     {
       title: '销量',
-      dataIndex: 'goodsSaleNum',
-      valueType: 'number',
+      dataIndex: 'num',
       search: false,
     },
     {
-      title: '状态',
+      title: '比价排名',
       dataIndex: 'status',
       filters: true,
       onFilter: true,
@@ -105,23 +115,48 @@ const HotGoos = () => {
       valueEnum: {
         0: { text: '全部', status: 'Default' },
         1: {
-          text: '待发布',
+          text: '价格最低',
           status: '1',
         },
         2: {
-          text: '已发布',
+          text: '第二低价',
+          status: '2',
+        },
+        3: {
+          text: '第三低价',
+          status: '2',
+        },
+        4: {
+          text: '第四低价',
+          status: '2',
+        },
+        5: {
+          text: '第五低价',
+          status: '2',
+        },
+        6: {
+          text: '价格最高',
+          status: '2',
+        },
+        7: {
+          text: '未比价',
           status: '2',
         },
       }
     },
     {
-      title: '状态',
+      title: '比价排名',
       dataIndex: 'status',
       valueType: 'text',
       search: false,
       valueEnum: {
-        1: '未发布',
-        2: '已发布',
+        1: '价格最低',
+        2: '第二低价',
+        3: '第三低价',
+        4: '第四低价',
+        5: '第五低价',
+        6: '价格最高',
+        7: '未比价',
       }
     },
     {
@@ -131,23 +166,21 @@ const HotGoos = () => {
       render: (text, record, _, action) => {
         return (
           <>
-            &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {action?.startEditable?.(record.key);console.log('action',action,record)}}>编辑</a>}
+            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {}}>比价设置</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
           </>
         )
       }
     },
-  ];
+  ]
 
   return (
     <PageContainer>
-    <ProTable
+      <ProTable
       rowKey="id"
       columns={columns}
+      expandable={{ expandedRowRender }}
       actionRef={actionRef}
-      params={{tagCode:'hot_sale'}}
       request={hotGoosList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
@@ -179,32 +212,26 @@ const HotGoos = () => {
         pageSize: 5,
       }}
       dateFormatter="string"
-      headerTitle="热销好货"
+      headerTitle="数据列表"
       toolBarRender={(_,record) => [
-        <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 2) }}>
-          批量发布
-        </Button>,
-        <Button key="button" icon={<PauseCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 1) }}>
-          批量下线
+        <Button key="button" icon={<PauseCircleOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
+          添加比价商品
         </Button>,
         <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 4) }}>
           批量删除
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
-          新建
-        </Button>,
       ]}
-    />
-    {formVisible && <Edit
+      />
+      {formVisible && <Edit
       visible={formVisible}
       setVisible={setFormVisible}
-      detailData={detailData}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+      // detailData={detailData}
+      callback={() => { actionRef.current.reload() }}
+      onClose={() => { actionRef.current.reload() }}
     />}
     </PageContainer>
-  );
-};
+  )
 
+}
 
-export default HotGoos
+export default PriceComparsionManagement
