@@ -8,16 +8,17 @@ import Edit from './goods-modal-form'
 
 const DetailList = (props) => {
   const [listData, setListData] = useState(null)
-  const { onChange, detail } = props;
+  const { onChange, id } = props;
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(true);
+  const [acid, setAcId] = useState({cmsId: 0});
 
   const getDetail = (data) => {
-    if (!detail.id) {return message.error('请先选择活动')}
+    if (!id) {return message.error('请先选择活动')}
     const param = {
       data,
-      ...detail
+      id
     }
     setDetailData(param);
     setFormVisible(true);
@@ -131,13 +132,15 @@ const DetailList = (props) => {
   ];
 
 
-  // useEffect(() => {
-  //   if (detail.id) {
-  //     const res = crazyGoodsList({cmsId:detail.id});
-  //     setListData(res)
-  //     actionRef.current.reload();
-  //   }
-  // }, [detail]);
+  useEffect((props) => {
+
+    if (id) {
+      setAcId({cmsId:id})
+      // const res = crazyGoodsList({cmsId:detail.id});
+      // setListData(res)
+      // actionRef.current.reload();
+    }
+  }, [id]);
 
   return (
     <>
@@ -146,7 +149,8 @@ const DetailList = (props) => {
       options={false}
       columns={columns}
       actionRef={actionRef}
-      request={detail.id&&crazyGoodsList({cmsId:detail.id})}
+      params={acid}
+      request={crazyGoodsList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项

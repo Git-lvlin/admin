@@ -3,7 +3,7 @@ import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } 
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { hotGoosList, hotGoosOperation} from '@/services/cms/member/member';
+import { priceComparsionList, hotGoosOperation} from '@/services/cms/member/member';
 import Edit from './edit';
 
 const PriceComparsionManagement = () => {
@@ -181,7 +181,7 @@ const PriceComparsionManagement = () => {
       columns={columns}
       expandable={{ expandedRowRender }}
       actionRef={actionRef}
-      request={hotGoosList}
+      request={priceComparsionList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项

@@ -200,7 +200,7 @@ const Demo = () => {
         <CrazyDate onChange={(cIp) => setDetail(cIp)} detail={detail} />
       </ProCard>
       <ProCard title={`当前选中活动=>${detail.title||'-'}, 活动id=>${detail.id||'-'}`}>
-        <DetailList detail={detail} />
+        <DetailList id={detail.id} />
       </ProCard>
     </ProCard>
   );

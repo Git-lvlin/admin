@@ -49,7 +49,7 @@ export const spaceEdit = (params = {}, options = {}) => {
 
 
 export const bannerAdd = (params = {}, options = {}) => {
-  return request('/java-admin/cms/banner/saveOrUpdate', {
+  return request('/auth/java-admin/cms/banner/saveOrUpdate', {
     method: 'POST',
     data: params,
     ...options
@@ -65,7 +65,7 @@ export const expressNewsUpdate = (params = {}, options = {}) => {
   if (id) {
     param.id = id
   }
-  const url = id?'/java-admin/cms/notice/update':'/java-admin/cms/notice/add';
+  const url = id?'/auth/java-admin/cms/notice/update':'/auth/java-admin/cms/notice/add';
   return request(url, {
     method: 'POST',
     data: param,
@@ -74,7 +74,7 @@ export const expressNewsUpdate = (params = {}, options = {}) => {
 }
 
 export const homeSuspensionAdd = (params = {}, options = {}) => {
-  return request('/java-admin/cms/bannerFloat/saveOrUpdate', {
+  return request('/auth/java-admin/cms/bannerFloat/saveOrUpdate', {
     method: 'POST',
     data: params,
     ...options
@@ -162,9 +162,11 @@ export const crazyGoodsList = async (params = {}, options = {}) => {
     data,
     ...options
   });
-
+  if (!res.data.length) {
+    res.data = []
+  }
   return {
-    data: res.data.records || [],
+    data: res.data,
     success: true,
     total: res.data.total,
   }
@@ -210,28 +212,37 @@ export const crazyActivityDel = (params = {}, options = {}) => {
 }
 
 export const homeBannerDel = (params = {}, options = {}) => {
-  return request('/java-admin/cms/banner/delByIds', {
+  return request('/auth/java-admin/cms/banner/delByIds', {
     method: 'POST',
     data: params,
     ...options
   });
 }
 export const homeSuspensionDel = (params = {}, options = {}) => {
-  return request('/java-admin/cms/bannerFloat/delById', {
-    method: 'GET',
-    data: params,
-    ...options
-  });
-}
-export const expressNewsDel = (params = {}, options = {}) => {
-  return request('/java-admin/cms/notice/deleteById', {
+  return request('/auth/java-admin/cms/bannerFloat/delById', {
     method: 'POST',
     data: params,
     ...options
   });
 }
+export const expressNewsDel = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/notice/deleteById', {
+    method: 'POST',
+    data: params,
+    ...options,
+  });
+}
+
+export const expressNewsDown = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/notice/updateState',{
+    method: 'POST',
+    data: params,
+    ...options,
+  })
+}
+
 export const kongKongDistrictDel = (params = {}, options = {}) => {
-  return request('/java-admin/cms/goodsType/goodsTypeDelById', {
+  return request('/auth/java-admin/cms/goodsType/goodsTypeDelById', {
     method: 'POST',
     data: params,
     ...options
@@ -312,7 +323,7 @@ export const homeBannerList = async (params = {}, options = {}) => {
   if (status) {
     data.status = Number(status);
   }
-  const res = await request('/java-admin/cms/banner/page', {
+  const res = await request('/auth/java-admin/cms/banner/page', {
     method: 'POST',
     data,
     ...options
@@ -337,7 +348,7 @@ export const homeSuspensionList = async (params = {}, options = {}) => {
   if (status) {
     data.status = Number(status);
   }
-  const res = await request('/java-admin/cms/bannerFloat/page', {
+  const res = await request('/auth/java-admin/cms/bannerFloat/page', {
     method: 'POST',
     data,
     ...options
@@ -361,8 +372,8 @@ export const expressNewsList = async (params = {}, options = {}) => {
     data.state = Number(state);
   }
   
-  const res = await request('/java-admin/cms/notice/selectByWays', {
-    method: 'GET',
+  const res = await request('/auth/java-admin/cms/notice/selectByWays', {
+    method: 'POST',
     data,
     ...options
   });
@@ -385,8 +396,8 @@ export const kingKongDistrictList = async (params = {}, options = {}) => {
   if (status) {
     data.status = Number(status);
   }
-  const res = await request('/java-admin/cms/goodsType/goodsTypeByWays', {
-    method: 'get',
+  const res = await request('/auth/java-admin/cms/goodsType/goodsTypeByWays', {
+    method: 'POST',
     data,
     ...options
   });
@@ -431,4 +442,26 @@ export const memberSortTop = (params = {}, options = {}) => {
   });
 }
 
+export const priceComparsionList = async (params = {}, options = {}) => {
+  const { current, pageSize, status, ...rest } = params;
 
+  const data = {
+    page: current,
+    pageSize: pageSize,
+    ...rest
+  }
+  if (status) {
+    data.status = Number(status);
+  }
+  const res = await request('/auth/contestrice/getPriceList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}

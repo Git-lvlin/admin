@@ -5,7 +5,7 @@ import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
-import { expressNewsList, expressNewsDel } from '@/services/cms/member/member';
+import { expressNewsList, expressNewsDel, expressNewsDown } from '@/services/cms/member/member';
 
 const ExpressNews = () => {
   const actionRef = useRef();
@@ -17,10 +17,26 @@ const ExpressNews = () => {
     setFormVisible(true);
   }
 
-  const formControl = (data) => {
+  const formControl = (record) => {
+    console.log('record....', record)
+    let data = [{'id':record}]
+    if (record.selectedRows) {
+      data = record.selectedRows.map((item) =>{ return {id:item['id']}})
+      console.log('data...', data)
+    }
     expressNewsDel({deleteIdLists: data}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
+        actionRef.current.reset();
+      }
+    })
+  }
+
+  const down = (record) => {
+    record.state = 0
+    expressNewsDown(record).then((res) => {
+      if (res.code === 0) {
+        message.success(`下线成功`);
         actionRef.current.reset();
       }
     })
@@ -31,6 +47,7 @@ const ExpressNews = () => {
       title: '序号',
       dataIndex: 'sort',
       valueType: 'text',
+      search: false
     },
     {
       title: '图片',
@@ -94,8 +111,9 @@ const ExpressNews = () => {
       render: (text, record, _, action) => {
         return (
           <>
-            &nbsp;&nbsp;{<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
-            &nbsp;&nbsp;{record.state===0&&<a key="d" onClick={() => {formControl([record.id])}}>删除</a>}
+            {record.state===1&&<a key="down" onClick={() => {down(record)}}>下线</a>}
+            {record.state===0&&<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
+            &nbsp;&nbsp;{record.state===0&&<a key="d" onClick={() => {formControl(record.id)}}>删除</a>}
           </>
         )
       }
@@ -136,12 +154,12 @@ const ExpressNews = () => {
         labelWidth: 'auto',
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
       dateFormatter="string"
       headerTitle="约购快报"
       toolBarRender={(_,record) => [
-        <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys) }}>
+        <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record) }}>
           批量删除
         </Button>,
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail({_,record}) }}>
@@ -153,6 +171,7 @@ const ExpressNews = () => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
+      getContainer={false}
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { actionRef.current.reload(); setDetailData(null) }}
     />}

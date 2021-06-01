@@ -32,6 +32,7 @@ const KingKongDistrict = (proprs) => {
       title: '排序序号',
       dataIndex: 'sort',
       valueType: 'text',
+      search: false,
     },
     {
       title: '商品分类标题',

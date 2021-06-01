@@ -14,20 +14,20 @@ export default {
         '^': '',
       },
     },
-    '/java-admin/': {
-      target: 'http://admin.waiad.icu',
-      changeOrigin: true,
-      pathRewrite: {
-        '^': '',
-      },
-    },
-    '/goodsService/': {
-      target: 'http://192.168.14.148:50003',
-      changeOrigin: true,
-      pathRewrite: {
-        '^': '',
-      },
-    },
+    // '/java-admin/': {
+    //   target: 'http://admin.waiad.icu/auth',
+    //   changeOrigin: true,
+    //   pathRewrite: {
+    //     '^': '',
+    //   },
+    // },
+    // '/goodsService/': {
+    //   target: 'http://192.168.14.148:50003',
+    //   changeOrigin: true,
+    //   pathRewrite: {
+    //     '^': '',
+    //   },
+    // },
   },
   test: {
     '/api/': {
