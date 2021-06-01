@@ -2,30 +2,30 @@ import React, { useState, useRef } from 'react';
 import { Form, Button,Table } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import '../style.less'
+import { history,connect } from 'umi';
 import { couponWholesaleList } from '@/services/coupon-construction/coupon-wholesaleList';
 
-export default (props)=>{
-    let {onWholesaleIds}=props
+const  useCollect=(props)=>{
+    let {dispatch}=props
     const columns = [
         {
             title: '活动类型',
-            dataIndex: 'useType',
+            dataIndex: 'wholesaleType',
             valueType: 'select',
             valueEnum: {
-                1: '全部',
-                2: '指令集约',
-            },
+                1:'指令集约',
+                2:'主动集约'
+            }
+        },
+        {
+            title: '活动编号',
+            dataIndex: 'recoverPayTimeout',
             hideInSearch: true,
         },
         {
             title: '活动名称',
             dataIndex: 'name',
             valueType: 'text',
-        },
-        {
-            title: '活动编号',
-            dataIndex: 'recoverPayTimeout',
-            hideInSearch: true,
         },
         {
             title: '活动时段',
@@ -41,30 +41,31 @@ export default (props)=>{
             title: '可购买的会员用户',
             dataIndex: 'memberLevel',
             hideInSearch: true,
-        },
-        {
-            title: '操作',
-            render: () => <a>删除</a>,
-        },
+        }
     ];
     const actionRef = useRef();
     const [rowobjs,setRowobjs]=useState([])
     const [loading,setLoading]=useState(true)
+    const [wholesaleIds,setWholesaleIds]=useState('')
+
 
 
     const close = () => {
            setLoading(false)
+           dispatch({
+            type:'UseScopeList/fetchWholesaleIds',
+            payload:{wholesaleIds}
+          })
     };
      //拼接wholesaleIds
     const onIpute=(res)=>{
         setRowobjs(res.selectedRows)
-        console.log('res.selectedRows',res.selectedRows)
         let wholesaleIds=''
         rowobjs.map(ele=>{
             wholesaleIds+=ele.wholesaleId+','
         })
         wholesaleIds=wholesaleIds.substring(0,wholesaleIds.length-1)
-        onWholesaleIds&&onWholesaleIds(wholesaleIds)
+        setWholesaleIds(wholesaleIds)
     }
     return(
         <Form.Item name="collect">
@@ -91,6 +92,7 @@ export default (props)=>{
                         style={{display:loading?'block':'none'}}
                     />
                     <Table
+                        rowKey='wholesaleId'
                         columns={columns}
                         dataSource={rowobjs}
                         style={{display:loading?'none':'block'}}
@@ -103,3 +105,6 @@ export default (props)=>{
         </Form.Item>
     )
 }
+export default connect(({ UseScopeList}) => ({
+    UseScopeList
+  }))(useCollect);

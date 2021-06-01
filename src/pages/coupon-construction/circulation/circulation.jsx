@@ -1,11 +1,13 @@
 import React, { useState} from 'react';
 import {Form,Input,Tabs} from 'antd';
-import {FormattedMessage} from 'umi';
+import {FormattedMessage,connect} from 'umi';
 import styles from '../style.less'
 import ProForm from '@ant-design/pro-form';
 const { TabPane } = Tabs;
 
-export default ()=>{
+const circulation=props=>{
+    const { DetailList}=props
+    let {id}=props
     const [sumcoupon,setSumcoupon] = useState(0);
     const [summoney,setSummoney] = useState(0);
     const sumCoupon=e=>{
@@ -23,7 +25,7 @@ export default ()=>{
                     </Form.Item>
                     <span>元</span>
                 </ProForm.Group>
-                <p>优惠券发行总数量为<span className={styles.compute }>{sumcoupon/10}</span>张</p>
+                <p>优惠券发行总数量为<span className={styles.compute }>{(parseInt(id)==id)&&DetailList.data?.issueQuantity/10||sumcoupon/10}</span>张</p>
             </TabPane>
             <TabPane className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.issued.quantity" />} key="2">
                <ProForm.Group>
@@ -32,8 +34,13 @@ export default ()=>{
                     </Form.Item>
                     <span>张</span>
                 </ProForm.Group>
-                <p>优惠券发行总金额为<span className={styles.compute }>{ summoney*10 }</span>元</p>
+                <p>优惠券发行总金额为<span className={styles.compute }>{(parseInt(id)==id)&&DetailList.data?.issueQuantity*10|| summoney*10 }</span>元</p>
             </TabPane>
         </Tabs>
     )
 }
+
+export default connect(({ DetailList}) => ({
+    DetailList,
+  }))(circulation);
+  

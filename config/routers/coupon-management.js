@@ -12,5 +12,10 @@ export default {
       path: '/coupon-management/construction',
       component: './coupon-construction',
     },
+    {
+      name: 'coupon-codebase',
+      path: '/coupon-management/coupon-codebase',
+      component: './coupon-codebase',
+    },
   ],
 }

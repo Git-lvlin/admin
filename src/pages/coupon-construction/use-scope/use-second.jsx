@@ -6,10 +6,11 @@ import ProTable from '@ant-design/pro-table';
 import styles from '../style.less'
 import {commonSpuList}  from '@/services/coupon-construction/coupon-searchSku';
 import {classList} from '@/services/coupon-construction/coupon-classList'
+import { history,connect } from 'umi';
 const { TabPane } = Tabs;
 
-export default (props)=>{
-    const {onSpuIds,onclassId}=props
+const useSecond=(props)=>{
+    const {dispatch}=props
     const columns = [
         {
             title: 'spuID',
@@ -25,18 +26,17 @@ export default (props)=>{
         },
         {
             title: '商品名称',
-            dataIndex: 'couponName',
+            dataIndex: 'goodsName',
             valueType: 'text',
         },
         {
             title: '供应商名称',
             dataIndex: 'supplierName',
             valueType: 'text',
-            // hideInSearch: true,
         },
         {
             title: '商品分类',
-            dataIndex: 'useType',
+            dataIndex: 'gcId1Display',
             valueType: 'select',
             valueEnum: {
                 1: '秒约商品',
@@ -68,11 +68,7 @@ export default (props)=>{
        {
           title: '分类',
           dataIndex: 'unit',
-       },
-       {
-        title: '操作',
-        render: () => <a>删除</a>,
-      },
+       }
     ]
     const actionRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -82,6 +78,7 @@ export default (props)=>{
     const [cates,setCates]=useState([])
     const [position,setPosition]=useState(1)
     const [onselect,setOnselect]=useState([])
+    const [spuIds,setSpuIds]=useState('')
 
 
     const showModal = () => {
@@ -91,6 +88,12 @@ export default (props)=>{
     const handleOk = () => {
         setIsModalVisible(false);
         setLoading(false)
+        dispatch({
+            type:'UseScopeList/fetchLookSpuIds',
+            payload:{
+                spuIds:spuIds
+            }
+        })
     };
 
     const handleCancel = () => {
@@ -105,8 +108,7 @@ export default (props)=>{
             spuIds+=ele.spuId+','
         })
         spuIds=spuIds.substring(0,spuIds.length-1)
-        console.log('spuIds',spuIds)
-        onSpuIds&&onSpuIds(spuIds)
+       setSpuIds(spuIds)
     }
     const onCate=()=>{
         setFlag(true)
@@ -118,6 +120,7 @@ export default (props)=>{
                 {label:ele.gcName,value:ele.id}
             )))
         })
+        console.log('onselect',onselect)
     },[])
     return(
         <div className={styles.unfold}>
@@ -201,7 +204,12 @@ export default (props)=>{
                             style={{display:flag?'block':'none'}}
                             onFinish={async (values) => {
                             console.log('values',values);
-                            onclassId&&onclassId(values.unit)
+                            dispatch({
+                                type:'UseScopeList/fetchLookUnit',
+                                payload:{
+                                    unit:values.unit
+                                }
+                            })
                             setCates([
                                 {
                                     key: '1',
@@ -249,3 +257,6 @@ export default (props)=>{
         </div>
     )
 }
+export default connect(({ UseScopeList}) => ({
+    UseScopeList
+  }))(useSecond);

@@ -9,7 +9,7 @@ export const classList = async (params, options = {}) => {
     },
     ...options
   });
-  console.log('res',res)
+  // console.log('res',res)
 
   return {
     code: res.code,
