@@ -62,7 +62,7 @@ const Login = () => {
   }
 
   const getCaptchaUrl = () => {
-    return `http://admin.waiad.icu/auth/vertycode?randstr=${randstr}`
+    return `${API_URL}/auth/vertycode?randstr=${randstr}`
   }
 
   const checkIsVertyfy = (value) => {
