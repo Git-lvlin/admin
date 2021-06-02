@@ -23,7 +23,6 @@ export default (props) => {
           resolve(true);
         }
       })
-  
     });
   };
 
@@ -63,13 +62,14 @@ export default (props) => {
           label="上传区域"
           rules={[{ required: true, message: '请选择上传区域' }]}
         >
-          <MemberReg/>
+          <MemberReg disabled/>
         </Form.Item>
       </ProForm.Group>
       <ProForm.Group>
         <ProFormText
             name="subtitle"
             label="商品描述"
+            disabled
             placeholder="请输入商品描述"
             rules={[{ required: true, message: '请输入商品描述' }]}
             fieldProps={{

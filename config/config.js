@@ -14,6 +14,7 @@ import singleContractActivityManagement from './routers/single-contract-activity
 import groupContractActivityManagement from './routers/group-contract-activity-management'
 import couponManagement from './routers/coupon-management'
 import cms from './routers/cms'
+import businessSchool from './routers/business-school'
 
 const { REACT_APP_ENV } = process.env;
 export default defineConfig({
@@ -75,6 +76,7 @@ export default defineConfig({
               name: 'price-comparsion-management',
               component: './price-comparsion-management',
             },
+            businessSchool,
             {
               component: '404',
             },

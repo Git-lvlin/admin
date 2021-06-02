@@ -8,7 +8,7 @@ import Edit from './form';
 import { hotGoosList, hotGoosOperation, tagSortTop } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
 
-const HotGoos = () => {
+const ArticleCategoryList = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(false);
@@ -37,68 +37,41 @@ const HotGoos = () => {
 
   const columns = [
     {
-      title: '排序序号',
+      title: '编号',
       dataIndex: 'sort',
       valueType: 'text',
       search: false,
     },
     {
-      title: 'SPUID',
-      dataIndex: 'spuId',
-      valueType: 'number',
-    },
-    {
-      title: '图片',
-      key: 'goodsImageUrl',
-      dataIndex: 'goodsImageUrl',
-      render: (text) => <img src={text} width={50} height={50} />,
-      search: false,
-    },
-    {
-      title: '商品名称',
-      key: 'goodsName',
-      dataIndex: 'goodsName',
-      valueType: 'text',
-      editable: true,
-      search: false,
-    },
-    {
-      title: '商家名称',
-      key: 'supplierName',
-      dataIndex: 'supplierName',
-      valueType: 'text',
-      search: false,
-    },
-    {
-      title: '供货类型',
+      title: '分类名称',
       key: 'goodsSaleTypeDisplay',
       dataIndex: 'goodsSaleTypeDisplay',
       valueType: 'text',
       search: false,
     },
     {
-      title: '销售价',
+      title: '分类描述',
       key: 'goodsSalePrice',
       dataIndex: 'goodsSalePrice',
       valueType: 'number',
       search: false,
     },
     {
-      title: '可用库存',
+      title: '展示序号',
       key: 'stockNum',
       dataIndex: 'stockNum',
       valueType: 'number',
       search: false,
     },
     {
-      title: '活动库存',
+      title: '创建信息',
       key: 'activityStockNum',
       dataIndex: 'activityStockNum',
       valueType: 'number',
       search: false,
     },
     {
-      title: '销量',
+      title: '文章数量',
       dataIndex: 'goodsSaleNum',
       valueType: 'number',
       search: false,
@@ -109,6 +82,7 @@ const HotGoos = () => {
       filters: true,
       onFilter: true,
       hideInTable: true,
+      search: false,
       valueType: 'select',
       valueEnum: {
         0: { text: '全部', status: 'Default' },
@@ -139,11 +113,8 @@ const HotGoos = () => {
       render: (text, record, _, action) => {
         return (
           <>
-            {record.status===2&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
-            &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {action?.startEditable?.(record.key);console.log('action',action,record)}}>编辑</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
+            &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>关闭</a>}
+            &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>启用</a>}
           </>
         )
       }
@@ -154,33 +125,33 @@ const HotGoos = () => {
     <PageContainer>
     <ProTable
       rowKey="id"
+      options={false}
       columns={columns}
       actionRef={actionRef}
-      params={{tagCode:'hot_sale'}}
       request={hotGoosList}
-      rowSelection={{
-        // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
-        // 注释该行则默认不显示下拉选项
-        // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
-      }}
-      tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
-        <Space size={24}>
-          <span>
-            已选 {selectedRowKeys.length} 项
-            <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
-              取消选择
-            </a>
-          </span>
-          <span>{`待发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.containers,
-            0,
-          )} 个`}</span>
-          <span>{`已发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.callNumber,
-            0,
-          )} 个`}</span>
-        </Space>
-      )}
+      // rowSelection={{
+      //   // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
+      //   // 注释该行则默认不显示下拉选项
+      //   // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
+      // }}
+      // tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
+      //   <Space size={24}>
+      //     <span>
+      //       已选 {selectedRowKeys.length} 项
+      //       <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
+      //         取消选择
+      //       </a>
+      //     </span>
+      //     <span>{`待发布: ${selectedRows.reduce(
+      //       (pre, item) => pre + item.containers,
+      //       0,
+      //     )} 个`}</span>
+      //     <span>{`已发布: ${selectedRows.reduce(
+      //       (pre, item) => pre + item.callNumber,
+      //       0,
+      //     )} 个`}</span>
+      //   </Space>
+      // )}
       search={{
         labelWidth: 'auto',
       }}
@@ -188,18 +159,10 @@ const HotGoos = () => {
         pageSize: 5,
       }}
       dateFormatter="string"
-      headerTitle="热销好货"
+      // headerTitle=""
+      search={false}
       toolBarRender={(_,record) => [
-        <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 2) }}>
-          批量发布
-        </Button>,
-        <Button key="button" icon={<PauseCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 1) }}>
-          批量下线
-        </Button>,
-        <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 4) }}>
-          批量删除
-        </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
+        <Button key="button" type="primary" onClick={() => { setFormVisible(true) }}>
           新建
         </Button>,
       ]}
@@ -216,4 +179,4 @@ const HotGoos = () => {
 };
 
 
-export default HotGoos
+export default ArticleCategoryList

@@ -203,6 +203,29 @@ export const hotGoosOperation = (params = {}, options = {}) => {
   });
 }
 
+export const tagSortTop = (params = {}, options = {}) => {
+  return request('/auth/activity/Goods/goodsTagSortTop', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+export const saveMoneySortTop = (params = {}, options = {}) => {
+  return request('/auth/activity/Goods/wholesaleGoodsSortTop', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const bannerSortTop = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/banner/setTop', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const crazyActivityDel = (params = {}, options = {}) => {
   return request('/auth/activity/Cms/cmsStatusSub', {
     method: 'POST',

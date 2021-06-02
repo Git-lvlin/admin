@@ -96,4 +96,8 @@ export default {
   'menu.coupon-management.coupon-list': '优惠券列表',
 
   'menu.price-comparsion-management': '比价管理',
+
+  'menu.business-school': '商学院',
+  'menu.business-school.article-list': '文章列表',
+  'menu.business-school.article-category-list': '文章分类列表',
 };
