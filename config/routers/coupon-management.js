@@ -11,11 +11,13 @@ export default {
       name: 'construction',
       path: '/coupon-management/construction',
       component: './coupon-construction',
+      hideInMenu: true,
     },
     {
       name: 'coupon-codebase',
       path: '/coupon-management/coupon-codebase',
       component: './coupon-codebase',
+      hideInMenu: true,
     },
   ],
 }

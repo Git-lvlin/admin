@@ -18,8 +18,8 @@ import { history,connect } from 'umi';
 const TableList = (props) => {
   const { dispatch,Detail }=props
   const [discounts,setDiscounts]=useState('');
-  const [flag,setFlag]=useState(true)
-  const [isModalVisible2, setIsModalVisible2] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [visible2, setVisible2] = useState(false);
   const [records,setRecords]=useState(0)
   const onDiscounts=e=>{
     setDiscounts(e.target.value)
@@ -121,6 +121,8 @@ const TableList = (props) => {
       <ModalForm
         title="增发优惠券"
         key="model1"
+        onVisibleChange={setVisible}
+        visible={visible}
         trigger={record.couponStatus==3||record.couponStatus==4?null:<a onClick={()=>Additional(record)}>增发</a>}
         submitter={{
         render: (props, defaultDoms) => {
@@ -134,6 +136,7 @@ const TableList = (props) => {
         couponAddQuantity({id:record.id,issueQuantity:values.issueQuantity}).then(res=>{
             console.log('res',res)
         })
+        setVisible(false)
         message.success('提交成功');
         return true;
         }}
@@ -151,6 +154,8 @@ const TableList = (props) => {
     <ModalForm
         title="操作提示"
         key="model2"
+        onVisibleChange={setVisible2}
+        visible={visible2}
         trigger={record.couponStatus==3||record.couponStatus==4?null:<a onClick={Termination}>终止</a>}
         submitter={{
         render: (props, defaultDoms) => {
@@ -159,14 +164,13 @@ const TableList = (props) => {
             ];
         },
         }}
-         style={{display:flag?'block':'none'}}
         onFinish={async (values) => {
         console.log('values',values);
         couponEnd({id:record.id}).then(res=>{
             console.log('res',res)
         })
+        setVisible2(false)
         message.success('提交成功');
-        setFlag(false)
         return true;
         }}
     >
@@ -193,78 +197,78 @@ const TableList = (props) => {
   }
   //增发
   const Additional=(record)=>{
-      console.log('record',record.issueQuantity)
       setRecords(record.issueQuantity)
+      setVisible(true)
   }
   //终止
   const Termination=()=>{
-    setFlag(true)
+      setVisible2(true)
   }
   // 跳转到码库
   const CodeLibrary=(id)=>{
     history.push(`/coupon-management/coupon-codebase?id=`+id);
   }
 
-//导出
-const exportExcel = (form) => {
-  console.log('form',form)
-  couponList({
-    ...form.getFieldsValue(),
-  }).then(res => {
-    console.log('res',res)
-      const data = res.data.map(item => {
-        const { ...rest } = item;
-        return {
-          ...rest,
-          // couponName: amountTransform(rest.couponName, '/'),
-          // couponType: amountTransform(rest.couponType, '/'),
-          // useType: amountTransform(rest.useType, '/'),
-          // issueQuantity: amountTransform(rest.issueQuantity, '/'),
-          // lqCouponQuantity: amountTransform(rest.lqCouponQuantity, '/'),
-          // activityTimeDisplay: amountTransform(rest.activityTimeDisplay, '/'),
-          // adminName: amountTransform(rest.adminName, '/'),
-          // couponStatus: amountTransform(rest.couponStatus, '/'),
+  //导出
+  const exportExcel = (form) => {
+    console.log('form',form)
+    couponList({
+      ...form.getFieldsValue(),
+    }).then(res => {
+      console.log('res',res)
+        const data = res.data.map(item => {
+          const { ...rest } = item;
+          return {
+            ...rest,
+            // couponName: amountTransform(rest.couponName, '/'),
+            // couponType: amountTransform(rest.couponType, '/'),
+            // useType: amountTransform(rest.useType, '/'),
+            // issueQuantity: amountTransform(rest.issueQuantity, '/'),
+            // lqCouponQuantity: amountTransform(rest.lqCouponQuantity, '/'),
+            // activityTimeDisplay: amountTransform(rest.activityTimeDisplay, '/'),
+            // adminName: amountTransform(rest.adminName, '/'),
+            // couponStatus: amountTransform(rest.couponStatus, '/'),
 
-        }
-      });
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.json_to_sheet([
-        {
-          couponName: '优惠券名称',
-          couponType: '优惠券类型',
-          useType: '使用范围',
-          issueQuantity: '发行总金额（元）',
-          issueQuantity: '发行总数量（张）',
-          lqCouponQuantity: '已被领取',
-          useCouponQuantity: '已被使用',
-          activityTimeDisplay: '有效期',
-          createTime: '创建时间',
-          adminName: '创建人',
-          couponStatus: '状态'
-        },
-        ...data
-      ], {
-        header: [
-          'couponName',
-          'couponType',
-          'useType',
-          'issueQuantity',
-          'issueQuantity',
-          'lqCouponQuantity',
-          'useCouponQuantity',
-          'activityTimeDisplay',
-          'createTime',
-          'adminName',
-          'couponStatus',
-        ],
-        skipHeader: true
-      });
-      XLSX.utils.book_append_sheet(wb, ws, "file");
-      XLSX.writeFile(wb, `${+new Date()}.xlsx`)
+          }
+        });
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet([
+          {
+            couponName: '优惠券名称',
+            couponType: '优惠券类型',
+            useType: '使用范围',
+            issueQuantity: '发行总金额（元）',
+            issueQuantity: '发行总数量（张）',
+            lqCouponQuantity: '已被领取',
+            useCouponQuantity: '已被使用',
+            activityTimeDisplay: '有效期',
+            createTime: '创建时间',
+            adminName: '创建人',
+            couponStatus: '状态'
+          },
+          ...data
+        ], {
+          header: [
+            'couponName',
+            'couponType',
+            'useType',
+            'issueQuantity',
+            'issueQuantity',
+            'lqCouponQuantity',
+            'useCouponQuantity',
+            'activityTimeDisplay',
+            'createTime',
+            'adminName',
+            'couponStatus',
+          ],
+          skipHeader: true
+        });
+        XLSX.utils.book_append_sheet(wb, ws, "file");
+        XLSX.writeFile(wb, `${+new Date()}.xlsx`)
 
-  
-  })
-}
+    
+    })
+  }
 
   return (
     <PageContainer>
