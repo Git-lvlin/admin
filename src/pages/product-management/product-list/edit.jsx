@@ -65,6 +65,7 @@ export default (props) => {
       const { code, key, spec1, spec2, specValue, ...rest } = item;
       specData[code] = {
         ...rest,
+        specValue,
         imageUrl: item?.imageUrl,
         wholesalePrice: amountTransform(item.wholesalePrice),
         retailSupplyPrice: amountTransform(item.retailSupplyPrice),

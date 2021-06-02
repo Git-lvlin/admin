@@ -294,11 +294,11 @@ const TableList = () => {
 
   return (
     <PageContainer>
-      <Card>
+      {/* <Card>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button key="out" type="primary" icon={<PlusOutlined />} onClick={() => { setFormVisible(true) }}>新建</Button>
         </div>
-      </Card>
+      </Card> */}
       <ProTable
         rowKey="id"
         options={false}
