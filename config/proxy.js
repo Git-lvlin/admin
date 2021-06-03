@@ -15,7 +15,7 @@ export default {
       },
     },
     // '/java-admin/': {
-    //   target: 'http://admin.waiad.icu/auth',
+    //   target: 'http://192.168.14.188:50039',
     //   changeOrigin: true,
     //   pathRewrite: {
     //     '^': '',

@@ -20,18 +20,7 @@ export default {
     {
       name: 'intensive-order',
       path: '/order-management/intensive-order',
-      routes: [
-        {
-          name: 'shopkeeper-order',
-          path: '/order-management/intensive-order/shopkeeper-order',
-          component: './order-management/intensive-order/shopkeeper-order',
-        },
-        {
-          name: 'supplier-order',
-          path: '/order-management/intensive-order/supplier-order',
-          component: './order-management/intensive-order/supplier-order',
-        },
-      ]
+      component: './order-management/intensive-order',
     }
   ]
 }

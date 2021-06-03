@@ -15,6 +15,11 @@ import groupContractActivityManagement from './routers/group-contract-activity-m
 import couponManagement from './routers/coupon-management'
 import cms from './routers/cms'
 import businessSchool from './routers/business-school'
+import communityManagement from './routers/community-management'
+
+
+
+
 
 const { REACT_APP_ENV } = process.env;
 export default defineConfig({
@@ -71,6 +76,7 @@ export default defineConfig({
             groupContractActivityManagement,
             couponManagement,
             cms,
+            communityManagement,
             {
               path: '/price-comparsion-management',
               name: 'price-comparsion-management',

@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form, Image } from 'antd';
 import {
   DrawerForm,
+  ProFormText,
+  ProFormRadio,
+  ProFormSelect,
 } from '@ant-design/pro-form';
 import Overrule from './overrule';
-import Table from './table';
+import EditTable from './edit-table';
 import { amountTransform } from '@/utils/utils'
-
 
 export default (props) => {
   const { visible, setVisible, detailData, check, overrule } = props;
@@ -46,10 +48,10 @@ export default (props) => {
           return {
             ...item[1],
             retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
-            suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
-            wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
-            salePrice: amountTransform(item[1].salePrice, '/'),
-            marketPrice: amountTransform(item[1].marketPrice, '/'),
+            // suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
+            // wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
+            salePrice: '',
+            marketPrice: '',
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -70,10 +72,34 @@ export default (props) => {
         destroyOnClose: true,
         width: 1200,
       }}
+      onFinish={(values) => {
+        const { supplierHelperId, settleType, salePrice, marketPrice } = values;
+        let goodsInfo = {
+          salePrice,
+          marketPrice,
+          skuId: detailData.goods.skuId,
+          retailSupplyPrice: detailData.goods.retailSupplyPrice
+        }
+
+        if (detailData.isMultiSpec) {
+          goodsInfo = tableData.map(item => ({
+            salePrice: item.salePrice,
+            marketPrice: item.marketPrice,
+            skuId: item.skuId,
+            retailSupplyPrice: item.retailSupplyPrice
+          }))
+        }
+
+        check(1, 1, detailData.spuId, {
+          supplierHelperId,
+          settleType,
+          goodsInfo
+        });
+      }}
       submitter={{
-        render: () => {
+        render: (props) => {
           return [
-            <Button key="1" type="primary" onClick={() => { check(1, 1, detailData.spuId) }}>
+            <Button key="1" type="primary" onClick={() => { props.submit(); }}>
               通过并上架
             </Button>,
             <Button key="2" onClick={() => { check(2, 1, detailData.spuId) }}>
@@ -89,6 +115,9 @@ export default (props) => {
         },
       }}
       visible={visible}
+      initialValues={{
+        settleType: 1,
+      }}
       {...formItemLayout}
     >
       <Form.Item
@@ -142,55 +171,56 @@ export default (props) => {
         {{ 0: '单规格', 1: '多规格' }[detailData.isMultiSpec]}
       </Form.Item>
 
+      <ProFormRadio.Group
+        name="settleType"
+        label="结算模式"
+        rules={[{ required: true }]}
+        options={[
+          {
+            label: '佣金模式',
+            value: 1,
+          },
+          {
+            label: '底价模式',
+            value: 2,
+          },
+        ]}
+      />
+
+      <ProFormSelect
+        name="supplierHelperId"
+        label="供应商顾问"
+        options={detailData?.supplierHelpList?.map(item => ({ label: item.companyName, value: item.id }))}
+      />
+
       {
         detailData.isMultiSpec === 1
           ?
           <>
-            {!!tableData.length && <Table tableHead={tableHead} tableData={tableData} />}
+            {!!tableData.length && <EditTable tableHead={tableHead} tableData={tableData} setTableData={setTableData} />}
           </>
           :
           <>
             <Form.Item
-              label="可用库存"
-            >
-              {goods.stockNum}
-            </Form.Item>
-            {
-              goods.stockAlarmNum &&
-              <Form.Item
-                label="库存预警值"
-              >
-                {goods.stockAlarmNum}
-              </Form.Item>
-            }
-
-            <Form.Item
-              label="批发价"
-            >
-              {goods.wholesalePrice}
-            </Form.Item>
-
-            <Form.Item
-              label="批发起购量"
-            >
-              {goods.wholesaleMinNum}
-            </Form.Item>
-
-            <Form.Item
-              label="零售供货价"
+              label="供货价"
             >
               {goods.retailSupplyPrice}
             </Form.Item>
-
-            <Form.Item
-              label="建议零售价"
-            >
-              {goods.suggestedRetailPrice}
-            </Form.Item>
-
+            <ProFormText
+              name="marketPrice"
+              label="市场价"
+              placeholder="请输入市场价"
+              rules={[{ required: true, message: '请输入市场价' }]}
+            />
+            <ProFormText
+              name="salePrice"
+              label="秒约价"
+              placeholder="请输入秒约价"
+              rules={[{ required: true, message: '请输入秒约价' }]}
+            />
           </>
       }
-      <Form.Item
+      {/* <Form.Item
         label="起售数量"
       >
         {goods.buyMinNum}
@@ -200,7 +230,7 @@ export default (props) => {
         label="单次最多零售购买数量"
       >
         {goods.buyMaxNum}
-      </Form.Item>
+      </Form.Item> */}
 
       <Form.Item
         label="供货类型"
