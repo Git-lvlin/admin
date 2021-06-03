@@ -5,7 +5,7 @@ import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
-import { kingKongDistrictList, kongKongDistrictDel } from '@/services/cms/member/member';
+import { kingKongDistrictList, kongKongDistrictDel, kingKongTop } from '@/services/cms/member/member';
 
 const KingKongDistrict = (proprs) => {
   const actionRef = useRef();
@@ -22,6 +22,15 @@ const KingKongDistrict = (proprs) => {
     kongKongDistrictDel({ids: data}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
+        actionRef.current.reset();
+      }
+    })
+  }
+
+  const top = (id) => {
+    kingKongTop({id:id}).then((res) => {
+      if (res.code === 0) {
+        message.success(`置顶成功`);
         actionRef.current.reset();
       }
     })
@@ -96,6 +105,7 @@ const KingKongDistrict = (proprs) => {
       render: (text, record, _, action) => {
         return (
           <>
+            {record.state===1&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
             &nbsp;&nbsp;{<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
             &nbsp;&nbsp;{record.state===0&&<a key="d" onClick={() => {formControl([record.id])}}>删除</a>}
           </>

@@ -5,7 +5,7 @@ import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
-import { expressNewsList, expressNewsDel, expressNewsDown } from '@/services/cms/member/member';
+import { expressNewsList, expressNewsDel, expressNewsDown, expressNewsTop } from '@/services/cms/member/member';
 
 const ExpressNews = () => {
   const actionRef = useRef();
@@ -37,6 +37,15 @@ const ExpressNews = () => {
     expressNewsDown(record).then((res) => {
       if (res.code === 0) {
         message.success(`下线成功`);
+        actionRef.current.reset();
+      }
+    })
+  }
+
+  const top = (id) => {
+    expressNewsTop({id:id}).then((res) => {
+      if (res.code === 0) {
+        message.success(`置顶成功`);
         actionRef.current.reset();
       }
     })
@@ -111,6 +120,7 @@ const ExpressNews = () => {
       render: (text, record, _, action) => {
         return (
           <>
+            {record.state===1&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
             {record.state===1&&<a key="down" onClick={() => {down(record)}}>下线</a>}
             {record.state===0&&<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
             &nbsp;&nbsp;{record.state===0&&<a key="d" onClick={() => {formControl(record.id)}}>删除</a>}

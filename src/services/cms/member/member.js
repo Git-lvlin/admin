@@ -264,6 +264,22 @@ export const expressNewsDown = (params = {}, options = {}) => {
   })
 }
 
+export const expressNewsTop = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/notice/updateTop',{
+    method: 'POST',
+    data: params,
+    ...options,
+  })
+}
+
+export const kingKongTop = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/goodsType/updateTop',{
+    method: 'POST',
+    data: params,
+    ...options,
+  })
+}
+
 export const kongKongDistrictDel = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/goodsType/goodsTypeDelById', {
     method: 'POST',
@@ -470,14 +486,14 @@ export const priceComparsionList = async (params = {}, options = {}) => {
 
   const data = {
     page: current,
-    pageSize: pageSize,
+    size: pageSize,
     ...rest
   }
   if (status) {
     data.status = Number(status);
   }
-  const res = await request('/auth/contestrice/getPriceList', {
-    method: 'POST',
+  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetContestGoodsList', {
+    method: 'GET',
     data,
     ...options
   });

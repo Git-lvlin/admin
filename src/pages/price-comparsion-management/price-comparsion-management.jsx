@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable, {EditableProTable} from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { priceComparsionList, hotGoosOperation} from '@/services/cms/member/member';
 import Edit from './edit';
@@ -32,12 +32,12 @@ const PriceComparsionManagement = () => {
       });
     }
     return (
-      <ProTable
+      <EditableProTable
         columns={[
           { title: '比价电商平台', dataIndex: 'date', key: 'date' },
           { title: 'skuid', dataIndex: 'name', key: 'name' },
   
-          { title: '售卖加个', dataIndex: 'upgradeNum', key: 'upgradeNum' },
+          { title: '售卖价格', dataIndex: 'upgradeNum', key: 'upgradeNum' },
           {
             title: '链接',
             dataIndex: 'operation',
@@ -52,7 +52,7 @@ const PriceComparsionManagement = () => {
             render: (text, record, _, action) => {
               return (
                 <>
-                  &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {}}>抓取</a>}
+                  &nbsp;&nbsp;{<a key="editable" onClick={() => {}}>抓取</a>}
                 </>
               )
             }
@@ -70,7 +70,7 @@ const PriceComparsionManagement = () => {
   const columns = [
     {
       title: 'skuId',
-      dataIndex: 'skuId',
+      dataIndex: 'goodsSkuId',
     },
     {
       title: '商品名称',
@@ -87,22 +87,22 @@ const PriceComparsionManagement = () => {
     },
     {
       title: '秒约价',
-      dataIndex: 'price',
+      dataIndex: 'goodsPrice',
       search: false,
     },
     {
       title: '市场价',
-      dataIndex: 'price',
+      dataIndex: 'goodsMarketPrice',
       search: false,
     },
     {
       title: '可用库存',
-      dataIndex: 'num',
+      dataIndex: 'stockNum',
       search: false,
     },
     {
       title: '销量',
-      dataIndex: 'num',
+      dataIndex: 'saleNum',
       search: false,
     },
     {
@@ -166,8 +166,8 @@ const PriceComparsionManagement = () => {
       render: (text, record, _, action) => {
         return (
           <>
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {}}>比价设置</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
+            {<a key="editable" onClick={() => {}}>比价设置</a>}
+            &nbsp;&nbsp;{<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
           </>
         )
       }

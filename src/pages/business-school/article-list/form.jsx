@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
   DrawerForm,
@@ -8,6 +8,10 @@ import ProForm, {
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import { bannerAdd } from '@/services/cms/member/member';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
+
 
 const waitTime = (values) => {
   const { id, ...rest } = values
@@ -33,8 +37,10 @@ export default (props) => {
   const { detailData, setVisible, onClose, visible } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
+  const [value, setValue] = useState('');
 
   useEffect(() => {
+    console.log('value', value)
     if (detailData) {
       const { ...rest } = detailData;
       form.setFieldsValue({
@@ -43,9 +49,11 @@ export default (props) => {
     }
   }, [form, detailData])
 
+  
+
   return (
     <DrawerForm
-      title={`${detailData.state ? '编辑' : '新建'}`}
+      title={`${detailData ? '编辑' : '新建'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -153,7 +161,7 @@ export default (props) => {
 
       </ProForm.Group>
       <ProForm.Group>
-
+        <ReactQuill theme="snow" value={value} onChange={setValue}/>
       </ProForm.Group>
 
         <ProFormText
