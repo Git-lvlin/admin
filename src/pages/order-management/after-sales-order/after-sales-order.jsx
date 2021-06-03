@@ -1,8 +1,11 @@
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import React, { useRef } from 'react';
+import XLSX from 'xlsx'
 import { Button } from 'antd';
 import moment from 'moment';
+import * as api from '@/services/order-management/after-sales-order';
+import { history } from 'umi';
 import './styles.less';
 
 
@@ -41,10 +44,7 @@ const columns = [
   {
     title: '申请时间',
     dataIndex: 'applicationTime',
-    valueType: 'datePicker',
-    fieldProps: {
-      placeholder: '请选择申请时间'
-    },
+    valueType: 'dateRange',
     align: 'center',
     order: 5,
     colSize: .9,
@@ -130,7 +130,7 @@ const columns = [
       // TODO:查看详情
       return (
         <>
-          <a onClick={ () => {history.push('')} }>查看详情</a>
+          <a onClick={ () => {history.push(`/order-management/after-sales-order/detail/${record.afterSalesNumber}`)} }>查看详情</a>
         </>
       )
     }
@@ -151,6 +151,18 @@ const dataSource = () => {
       totalRefundAmount: '1',
       refundStatus: '1'
     },
+    { 
+      afterSalesNumber: "2",
+      OrderNumber:"3",
+      applicationTime: "66",
+      buyerNickname: "退货退款",
+      buyerPhoneNumber: "100",
+      SellerName: "任性",
+      SellerPhoneNumber: "已退款",
+      afterSalesType: '1',
+      totalRefundAmount: '100',
+      refundStatus: '1'
+    },
   ]
   return {
     success: true,
@@ -158,12 +170,17 @@ const dataSource = () => {
     total: 10
   }
 }
+
+// 导出表格
+const exportExcel = (form) => {
+  console.log(form);
+}
 const afterSalesOrder = () => {
   const actionRef = useRef();
   return (
     <PageContainer>
       <ProTable
-        rowKey="id"
+        rowKey="afterSalesNumber"
         options={false}
         params={{
           selectType: 1
@@ -193,7 +210,6 @@ const afterSalesOrder = () => {
             >
               {resetText}
             </Button>,
-            // TODO:导出
             <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>
           ],
         }}

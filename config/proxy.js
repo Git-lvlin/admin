@@ -15,10 +15,11 @@ export default {
       },
     },
     '/java-admin/': {
-      target: 'http://192.168.3.2:6664',
+      // target: 'http://192.168.3.2:6664',
+      target: 'http://admin.waiad.icu',
       changeOrigin: true,
       pathRewrite: {
-        '^': '',
+        '^': ''
       }
     }
   },

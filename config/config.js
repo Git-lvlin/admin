@@ -13,6 +13,7 @@ import intensiveStoreManagement from './routers/intensive-store-management'
 import singleContractActivityManagement from './routers/single-contract-activity-management'
 import groupContractActivityManagement from './routers/group-contract-activity-management'
 import couponManagement from './routers/coupon-management'
+import messageManagement from './routers/message-management';
 
 const { REACT_APP_ENV } = process.env;
 export default defineConfig({
@@ -67,6 +68,7 @@ export default defineConfig({
             intensiveStoreManagement,
             singleContractActivityManagement,
             groupContractActivityManagement,
+            messageManagement,
             couponManagement,
             {
               path: '/cms',
