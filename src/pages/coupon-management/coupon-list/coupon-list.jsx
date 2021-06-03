@@ -283,6 +283,23 @@ const TableList = (props) => {
           defaultCollapsed: false,
           labelWidth: 100,
           optionRender: ({ searchText, resetText },{ form }) => [
+            <Button
+              key="search"
+              type="primary"
+              onClick={() => {
+                form?.submit();
+              }}
+            >
+              {searchText}
+            </Button>,
+            <Button
+              key="rest"
+              onClick={() => {
+                form?.resetFields();
+              }}
+            >
+              {resetText}
+            </Button>,
             <Button onClick={()=>{exportExcel(form)}} key="out">
             导出数据
           </Button>

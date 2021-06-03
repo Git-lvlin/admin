@@ -97,4 +97,26 @@ export default {
   'menu.coupon-management.construction':'新建优惠劵',
   'menu.coupon-management.coupon-codebase':'码库',
   'menu.price-comparsion-management': '比价管理',
+
+
+  'menu.community-management':'社区管理',
+  'menu.community-management.circle-management':'圈子管理',
+  'menu.community-management.add-circle':'新建圈子',
+  'menu.community-management.circleInterior-management':'圈内管理',
+  'menu.community-management.content-management':'内容管理',
+  'menu.community-management.consultation-management':'会话记录管理',
+  'menu.community-management.reporttype-management':'举报类型管理',
+  'menu.community-management.review-report':'评论举报',
+  'menu.community-management.review-report.review-report-untreated':'评论举报(未处理)',
+  'menu.community-management.review-report.review-report-processed':'评论举报(已处理)',
+  'menu.community-management.invitation-report':'帖子举报',
+  'menu.community-management.invitation-report.invitation-report-untreated':'帖子举报(未处理)',
+  'menu.community-management.invitation-report.invitation-report-processed':'帖子举报(已处理)',
+  'menu.community-management.community-advertising':'社区广告管理',
+
+
+
+
+
+
 };

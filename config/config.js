@@ -14,6 +14,7 @@ import singleContractActivityManagement from './routers/single-contract-activity
 import groupContractActivityManagement from './routers/group-contract-activity-management'
 import couponManagement from './routers/coupon-management'
 import cms from './routers/cms'
+import communityManagement from './routers/community-management'
 
 
 
@@ -73,6 +74,7 @@ export default defineConfig({
             groupContractActivityManagement,
             couponManagement,
             cms,
+            communityManagement,
             {
               path: '/price-comparsion-management',
               name: 'price-comparsion-management',
