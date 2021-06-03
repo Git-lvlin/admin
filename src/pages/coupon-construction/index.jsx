@@ -73,7 +73,7 @@ const couponConstruction=(props) => {
               }
             couponSub(values)
             message.success('提交成功');
-            // history.push('/coupon-management/coupon-list') 
+            history.push('/coupon-management/coupon-list') 
             
           } catch (error) {
             console.log('error', error)
@@ -96,7 +96,6 @@ const couponConstruction=(props) => {
         <Form.Item
           label={<FormattedMessage id="formandbasic-form.public.label" />}
           name="couponType"
-          rules={[{ required: true}]}
         >
           <CouponType id={id}/>
         </Form.Item>
