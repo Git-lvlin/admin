@@ -23,15 +23,26 @@ const couponConstruction=(props) => {
       form.setFieldsValue(DetailList.data)
       console.log('UseScopeList',UseScopeList)
     }
-    
     return undefined
   })
+  //优惠劵验证规则
+  const checkConfirm=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value.length > 50) {
+          await reject('优惠券名称不超过50个字符')
+      }else if (/^[a-zA-Z0-9_]+$/.test(value)) {
+          await reject('只能输入汉字')
+      } else {
+          await resolve()
+      }
+    })
+  }
   return (
     <>
       <Divider orientation="left">基本设置</Divider>
       <ProForm
-        form={form}
-        onFinish={async (values) => {
+          form={form}
+          onFinish={async (values) => {
           console.log('values', values)
           try {
               values.couponType = UseScopeList.couponType || 1,//优惠券类型
@@ -67,8 +78,6 @@ const couponConstruction=(props) => {
           } catch (error) {
             console.log('error', error)
           }
-
-
         }}
         style={{ width: '1000px', margin: '0 auto' }}
       >
@@ -77,17 +86,17 @@ const couponConstruction=(props) => {
           width="md"
           name="couponName"
           label={<FormattedMessage id="formandbasic-form.title.label" />}
-          tooltip="最长为 50 位"
-          placeholder="请输入名称"
-        // rules={[{ required: true }]}
+          rules={[
+            { required: true, message: '请输入优惠劵名称' },
+            {validator: checkConfirm}
+          ]}
         />
 
         {/* 优惠券类型 */}
         <Form.Item
           label={<FormattedMessage id="formandbasic-form.public.label" />}
           name="couponType"
-        // rules={[{ required: true }]}
-
+          rules={[{ required: true}]}
         >
           <CouponType id={id}/>
         </Form.Item>
