@@ -8,7 +8,7 @@
 export default {
   dev: {
     '/auth/': {
-      target: 'http://admin.waiad.icu',
+      target: 'https://adminapi-dev.yeahgo.com/',
       changeOrigin: true,
       pathRewrite: {
         '^': '',
@@ -28,23 +28,5 @@ export default {
     //     '^': '',
     //   },
     // },
-  },
-  test: {
-    '/api/': {
-      target: 'https://preview.pro.ant.design',
-      changeOrigin: true,
-      pathRewrite: {
-        '^': '',
-      },
-    },
-  },
-  pre: {
-    '/api/': {
-      target: 'your pre url',
-      changeOrigin: true,
-      pathRewrite: {
-        '^': '',
-      },
-    },
-  },
+  }
 };

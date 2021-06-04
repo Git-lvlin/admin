@@ -23,7 +23,7 @@ const SubTable = (props) => {
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
     { title: '商品价格', dataIndex: 'salePriceDisplay' },
     { title: '可用库存', dataIndex: 'stockNum' },
-    { title: '活动库存', dataIndex: 'activityStockNum' },
+    // { title: '活动库存', dataIndex: 'activityStockNum' },
   ];
 
   useEffect(() => {
@@ -204,12 +204,12 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
     },
-    {
-      title: '活动库存',
-      dataIndex: 'activityStockNum',
-      valueType: 'text',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '活动库存',
+    //   dataIndex: 'activityStockNum',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     {
       title: '审核状态',
       dataIndex: 'goodsVerifyState',
