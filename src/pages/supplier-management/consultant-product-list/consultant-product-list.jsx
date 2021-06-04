@@ -25,7 +25,7 @@ const SubTable = (props) => {
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
     { title: '商品价格', dataIndex: 'salePriceDisplay' },
     { title: '可用库存', dataIndex: 'stockNum' },
-    { title: '活动库存', dataIndex: 'activityStockNum' },
+    // { title: '活动库存', dataIndex: 'activityStockNum' },
   ];
 
   useEffect(() => {
@@ -129,12 +129,12 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
     },
-    {
-      title: '活动库存',
-      dataIndex: 'activityStockNum',
-      valueType: 'text',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '活动库存',
+    //   dataIndex: 'activityStockNum',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
@@ -216,7 +216,7 @@ const TableList = () => {
             suggestedRetailPrice: '建议零售价',
             wholesalePrice: '批发价',
             stockNum: '可用库存',
-            activityNum: '活动库存',
+            // activityNum: '活动库存',
             isFreeFreightDisplay: '是否包邮',
             supportNoReasonReturn: '七天无理由退货',
             goodsVerifyStateDisplay: '审核状态',
@@ -235,7 +235,7 @@ const TableList = () => {
             'suggestedRetailPrice',
             'wholesalePrice',
             'stockNum',
-            'activityNum',
+            // 'activityNum',
             'isFreeFreightDisplay',
             'supportNoReasonReturn',
             'goodsVerifyStateDisplay',

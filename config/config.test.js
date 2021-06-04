@@ -2,6 +2,6 @@ import { defineConfig } from 'umi';
 
 export default defineConfig({
   define: {
-    API_URL: 'http://admin.waiad.icu',
+    API_URL: 'https://adminapi-dev.yeahgo.com/',
   },
 });
