@@ -11,6 +11,7 @@ export default {
       name: 'order-detail',
       path: '/order-management/order-detail/:id',
       component: './order-management/order-detail',
+      hideInMenu: true,
     },
     {
       name: 'retail-list',
@@ -20,7 +21,19 @@ export default {
     {
       name: 'intensive-order',
       path: '/order-management/intensive-order',
-      component: './order-management/intensive-order',
+      routes: [
+        {
+          name: 'supplier-order',
+          path: '/order-management/intensive-order/supplier-order',
+          component: './order-management/intensive-order/supplier-order',
+        },
+        {
+          name: 'supplier-order-detail',
+          path: '/order-management/intensive-order/supplier-order-detail/:id',
+          component: './order-management/intensive-order/supplier-order-detail',
+          hideInMenu: true,
+        },
+      ]
     }
   ]
 }
