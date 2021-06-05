@@ -78,7 +78,7 @@ export default (props) => {
           salePrice: amountTransform(salePrice),
           marketPrice: amountTransform(marketPrice),
           skuId: detailData.goods.skuId,
-          retailSupplyPrice: amountTransform(detailData.goods.retailSupplyPrice)
+          retailSupplyPrice: detailData.goods.retailSupplyPrice
         }
 
         if (detailData.isMultiSpec) {
@@ -86,7 +86,7 @@ export default (props) => {
             salePrice: amountTransform(item.salePrice),
             marketPrice: amountTransform(item.marketPrice),
             skuId: item.skuId,
-            retailSupplyPrice: amountTransform(item.retailSupplyPrice)
+            retailSupplyPrice: item.retailSupplyPrice
           }))
         }
 
