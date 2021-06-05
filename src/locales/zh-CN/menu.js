@@ -24,6 +24,7 @@ export default {
   'menu.order-management.intensive-order': '集约订单',
   'menu.order-management.intensive-order.shopkeeper-order': '店主订单',
   'menu.order-management.intensive-order.supplier-order': '供应商订单',
+  'menu.order-management.intensive-order.supplier-order-detail': '订单详情',
 
   'menu.product-management': '商品管理',
   'menu.product-management.product-list': '商品列表',

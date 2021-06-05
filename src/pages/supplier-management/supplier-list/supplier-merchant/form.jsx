@@ -4,7 +4,7 @@ import {
   ModalForm,
 } from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
-import { addSelectCommonList } from '@/services/supplier-management/supplier-list'
+import { addSelectHelperList } from '@/services/supplier-management/supplier-list'
 
 export default (props) => {
   const { visible, setVisible, callback, id, selectData } = props;
@@ -75,7 +75,7 @@ export default (props) => {
       <ProTable
         rowKey="id"
         options={false}
-        request={addSelectCommonList}
+        request={addSelectHelperList}
         search={{
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [

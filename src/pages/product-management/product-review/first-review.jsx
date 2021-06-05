@@ -75,18 +75,18 @@ export default (props) => {
       onFinish={(values) => {
         const { supplierHelperId, settleType, salePrice, marketPrice } = values;
         let goodsInfo = {
-          salePrice,
-          marketPrice,
+          salePrice: amountTransform(salePrice),
+          marketPrice: amountTransform(marketPrice),
           skuId: detailData.goods.skuId,
-          retailSupplyPrice: detailData.goods.retailSupplyPrice
+          retailSupplyPrice: amountTransform(detailData.goods.retailSupplyPrice)
         }
 
         if (detailData.isMultiSpec) {
           goodsInfo = tableData.map(item => ({
-            salePrice: item.salePrice,
-            marketPrice: item.marketPrice,
+            salePrice: amountTransform(item.salePrice),
+            marketPrice: amountTransform(item.marketPrice),
             skuId: item.skuId,
-            retailSupplyPrice: item.retailSupplyPrice
+            retailSupplyPrice: amountTransform(item.retailSupplyPrice)
           }))
         }
 
@@ -204,7 +204,7 @@ export default (props) => {
             <Form.Item
               label="供货价"
             >
-              {goods.retailSupplyPrice}
+              {amountTransform(goods.retailSupplyPrice, '/')}
             </Form.Item>
             <ProFormText
               name="marketPrice"
