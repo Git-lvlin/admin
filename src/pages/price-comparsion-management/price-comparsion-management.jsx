@@ -1,16 +1,25 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { Button, Space, message } from 'antd';
-import ProTable, {EditableProTable} from '@ant-design/pro-table';
+import { Button, Space, message, Input, Form } from 'antd';
+import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { priceComparsionList, hotGoosOperation} from '@/services/cms/member/member';
+import { priceComparsionList, hotGoosOperation, createTaskSrc, getSpiderGoodsListByDate} from '@/services/cms/member/member';
 import Edit from './edit';
-
+import ProCard from '@ant-design/pro-card';
+import styles from './style.less';
+import ProForm, {
+  ModalForm,
+  ProFormText,
+  ProFormDependency,
+  ProFormList,
+  ProFormSelect,
+} from '@ant-design/pro-form';
+const { Search } = Input;
 const PriceComparsionManagement = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
-
-
+  const [grabList, setGrabList] = useState(false)
+  const [formData,setFormData] = useState(false)
   const formControl = (data,type) => {
     hotGoosOperation({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
@@ -20,57 +29,123 @@ const PriceComparsionManagement = () => {
     })
   }
 
+  const onSearch = (value) => {
+    console.log('formData', formData)
+    const param = {
+      goodsUrl: value,
+      goodsId: formData.id,
+      type: 1
+    }
+    createTaskSrc(param).then((res) => {
+      if (res.code === 0) {
+        timeoutfn(param)
+      }
+    })
+  };
 
-  const expandedRowRender = () => {
-    const data = [];
-    for (let i = 0; i < 3; i += 1) {
-      data.push({
-        key: i,
-        date: '2014-12-24 23:12:00',
-        name: 'This is production name',
-        upgradeNum: 'Upgraded: 56',
-      });
+  let timer = null
+  const timeoutfn = (data) => {
+    getSpiderGoodsListByDate({sourceType:data.type,goodsId:data.goodsId})
+    .then((res) => {
+      if (res.code === 0) {
+        timer = null
+        setGrabList(res.data)
+        return
+      }
+      timer = setTimeout(()=>{
+        timeoutfn()
+      }, 6000)
+    })
+  }
+
+  useEffect(() => {
+
+  }, [])
+
+
+  const expandedRowRender = (a) => {
+    console.log('a',a)
+    if (!formData) {
+      setFormData(a)
     }
     return (
-      <EditableProTable
-        columns={[
-          { title: '比价电商平台', dataIndex: 'date', key: 'date' },
-          { title: 'skuid', dataIndex: 'name', key: 'name' },
-  
-          { title: '售卖价格', dataIndex: 'upgradeNum', key: 'upgradeNum' },
-          {
-            title: '链接',
-            dataIndex: 'operation',
-            key: 'operation',
-            valueType: 'option',
-            render: () => [<a key="Pause">Pause</a>, <a key="Stop">Stop</a>],
-          },
-          {
-            title: '动作',
-            valueType: 'option',
-            dataIndex: 'option',
-            render: (text, record, _, action) => {
-              return (
-                <>
-                  &nbsp;&nbsp;{<a key="editable" onClick={() => {}}>抓取</a>}
-                </>
-              )
-            }
-          },
-        ]}
-        headerTitle={false}
-        search={false}
-        options={false}
-        dataSource={data}
-        pagination={false}
-      />
+      <ProCard split="horizontal" bordered headerBordered style={{ marginBottom: 20 }}>
+        <ProCard split="vertical" className={styles.header}>
+          <ProCard colSpan="120px" className={styles.card}>比价电商平台</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>skuid</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>售卖价格</ProCard>
+          <ProCard className={styles.card}>链接</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>操作</ProCard>
+        </ProCard>
+        <ProCard split="vertical" className={styles.header}>
+          <ProCard colSpan="120px" className={styles.card}>淘宝</ProCard>
+          <ProCard colSpan="120px" className={styles.card}></ProCard>
+          <ProCard colSpan="120px" className={styles.card}></ProCard>
+          <ProCard className={styles.card}>
+            <Search
+              placeholder="input search text"
+              allowClear
+              enterButton="抓取"
+              size="large"
+              onSearch={onSearch}
+            />
+          </ProCard>
+        </ProCard>
+        <ProCard split="vertical" className={styles.header}>
+          <ProCard colSpan="120px" className={styles.card}>京东</ProCard>
+          <ProCard colSpan="120px" className={styles.card}></ProCard>
+          <ProCard colSpan="120px" className={styles.card}></ProCard>
+          <ProCard className={styles.card}>
+            <Search
+              placeholder="input search text"
+              allowClear
+              enterButton="抓取"
+              size="large"
+              onSearch={() => {}}
+            />
+          </ProCard>
+        </ProCard>
+        <ProCard split="vertical" className={styles.header}>
+          <ProCard colSpan="120px" className={styles.card}>拼多多</ProCard>
+          <ProCard colSpan="120px" className={styles.card}></ProCard>
+          <ProCard colSpan="120px" className={styles.card}></ProCard>
+          <ProCard className={styles.card}>
+            <ProFormText fieldProps={{bordered: false}}  width="lg" />
+          </ProCard>
+          <ProCard colSpan="120px" className={styles.card}>
+            <Button>抓取</Button>
+          </ProCard>
+        </ProCard>
+        <ProCard split="vertical" className={styles.header}>
+          <ProCard colSpan="120px" className={styles.card}>天猫</ProCard>
+          <ProCard colSpan="120px" className={styles.card}></ProCard>
+          <ProCard colSpan="120px" className={styles.card}></ProCard>
+          <ProCard className={styles.card}>
+            <ProFormText fieldProps={{bordered: false}}  width="lg" />
+          </ProCard>
+          <ProCard colSpan="120px" className={styles.card}>
+            <Button>抓取</Button>
+          </ProCard>
+        </ProCard>
+        <ProCard split="vertical" className={styles.header}>
+          <ProCard colSpan="120px" className={styles.card}>美团</ProCard>
+          <ProCard colSpan="120px" className={styles.card}></ProCard>
+          <ProCard colSpan="120px" className={styles.card}></ProCard>
+          <ProCard className={styles.card}>
+            <ProFormText fieldProps={{bordered: false}}  width="lg" />
+          </ProCard>
+          <ProCard colSpan="120px" className={styles.card}>
+            <Button>抓取</Button>
+          </ProCard>
+        </ProCard>
+      </ProCard>
     );
   };
 
   const columns = [
     {
       title: 'skuId',
-      dataIndex: 'goodsSkuId',
+      dataIndex: 'skuId',
     },
     {
       title: '商品名称',
@@ -87,22 +162,22 @@ const PriceComparsionManagement = () => {
     },
     {
       title: '秒约价',
-      dataIndex: 'goodsPrice',
+      dataIndex: 'price',
       search: false,
     },
     {
       title: '市场价',
-      dataIndex: 'goodsMarketPrice',
+      dataIndex: 'price',
       search: false,
     },
     {
       title: '可用库存',
-      dataIndex: 'stockNum',
+      dataIndex: 'num',
       search: false,
     },
     {
       title: '销量',
-      dataIndex: 'saleNum',
+      dataIndex: 'num',
       search: false,
     },
     {
@@ -166,8 +241,8 @@ const PriceComparsionManagement = () => {
       render: (text, record, _, action) => {
         return (
           <>
-            {<a key="editable" onClick={() => {}}>比价设置</a>}
-            &nbsp;&nbsp;{<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
+            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {}}>比价设置</a>}
+            &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
           </>
         )
       }

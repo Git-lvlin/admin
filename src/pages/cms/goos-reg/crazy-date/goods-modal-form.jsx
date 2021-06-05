@@ -25,10 +25,13 @@ export default (props) => {
 
   const waitTime = () => {
     const spuids = arr.map(item=>item.spuId)
-    const { id } = detailData
+    const { id, channel } = detailData
     const param = {
       cmsId: id,
-      spuIds: spuids.toString()
+      spuIds: spuids.toString(),
+    }
+    if (channel) {
+      param.goodsType = channel
     }
     return new Promise((resolve) => {
       crazyActivityGoodsAdd(param).then((res) => {

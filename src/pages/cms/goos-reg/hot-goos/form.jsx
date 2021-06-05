@@ -12,7 +12,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import MemberReg from '@/components/member-reg';
 import Upload from '@/components/upload';
 import { hotGoosAdd } from '@/services/cms/member/member';
-import {spaceInfoList, hotGoosList, goosAllList} from '@/services/cms/member/member';
+import {spaceInfoList, hotGoosList, goosAllList, goosReplaceList} from '@/services/cms/member/member';
 
 
 
@@ -21,6 +21,7 @@ import {spaceInfoList, hotGoosList, goosAllList} from '@/services/cms/member/mem
 export default (props) => {
   const { detailData, setVisible, onClose, visible } = props;
   const [arr, setArr] = useState(null)
+  const [channel, setChannel] = useState(null)
   const formRef = useRef();
   const columns = [
     {
@@ -97,12 +98,15 @@ export default (props) => {
   };
 
   useEffect(() => {
-
+    // if (detailData) {
+    //   const {channel} = detailData
+    //   setChannel(channel)
+    // }
   }, [])
 
   return (
     <ModalForm
-      title={`${detailData ? '编辑' : '新建'}`}
+      title={`${detailData ? '编辑' : '新增'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -112,13 +116,13 @@ export default (props) => {
           resetText: '取消',
         },
       }}
-      // drawerProps={{
-      //   forceRender: true,
-      //   destroyOnClose: true,
-      //   onClose: () => {
-      //     onClose();
-      //   }
-      // }}
+      drawerProps={{
+        forceRender: true,
+        destroyOnClose: true,
+        onClose: () => {
+          onClose();
+        }
+      }}
       onFinish={async (values) => {
         await waitTime(values);
         message.success('提交成功');
@@ -130,7 +134,6 @@ export default (props) => {
       rowKey="id"
       options={false}
       columns={columns}
-      // params={}
       request={goosAllList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
@@ -170,8 +173,6 @@ export default (props) => {
       dateFormatter="string"
       headerTitle="热销好货"
     />
-
-
     </ModalForm>
   );
 };
