@@ -7,11 +7,12 @@ const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 
 const validity=(props)=>{
-    let {id,DetailList}=props
+    let {id,DetailList,position}=props
     return (
         <>
-        <ProForm.Group>
-            <FormItem
+         {
+             position==1?
+             <FormItem
                 style={{ display: 'inline-block'}}
                 name="date2"
             >{
@@ -22,13 +23,10 @@ const validity=(props)=>{
                         formatMessage({id: 'formandbasic-form.placeholder.start'}),
                         formatMessage({id: 'formandbasic-form.placeholder.end'}),
                     ]}
-                    style={{marginLeft:'20px'}}
                 />
             }
-
             </FormItem>
-
-            <ProForm.Group>
+            :<ProForm.Group>
                 <ProFormText
                     width={100}
                     name="activityStartDay"
@@ -42,7 +40,7 @@ const validity=(props)=>{
                 />
                 <span>天内可用</span>
             </ProForm.Group>
-        </ProForm.Group>
+         }
         </>
     )
 }

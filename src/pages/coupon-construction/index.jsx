@@ -15,8 +15,8 @@ const { TextArea } = Input;
 
 const couponConstruction=(props) => {
   const { dispatch,DetailList,UseScopeList }=props
+  const [position,setPosition]=useState(1)
   let id = props.location.query.id
-  console.log('query',id)
   const [form] = Form.useForm()
   useEffect(() => {
     if(id){
@@ -39,9 +39,10 @@ const couponConstruction=(props) => {
   }
   return (
     <>
-      <Divider orientation="left">基本设置</Divider>
+      <Divider orientation="left"><FormattedMessage id="formandbasic-form.basic.setup" /></Divider>
       <ProForm
           form={form}
+          submitter={(parseInt(id)==id)?false:true}
           onFinish={async (values) => {
           console.log('values', values)
           try {
@@ -87,7 +88,7 @@ const couponConstruction=(props) => {
           name="couponName"
           label={<FormattedMessage id="formandbasic-form.title.label" />}
           rules={[
-            { required: true, message: '请输入优惠劵名称' },
+            { required: true, message: <FormattedMessage id="formandbasic-form.please.enter.coupon.name" /> },
             {validator: checkConfirm}
           ]}
         />
@@ -101,7 +102,7 @@ const couponConstruction=(props) => {
         </Form.Item>
 
         {/* 发行量 */}
-        <Form.Item label="发行量" name="layout" >
+        <Form.Item label={<FormattedMessage id="formandbasic-form.circulation" />} name="layout" >
           <Circulation id={id} />
         </Form.Item>
 
@@ -109,15 +110,21 @@ const couponConstruction=(props) => {
         <ProForm.Group>
           <ProFormRadio.Group
             name="limitType"
-            label="每人限领"
+            label={<FormattedMessage id="formandbasic-form.each.limit" />}
             // rules={[{ required: true }]}
-            options={[{ label: '不限张数', value: 1, }, { label: '限领', value: 2 }]}
+            options={[
+              { 
+                label: <FormattedMessage id="formandbasic-form.needless" />, value: 1, 
+              }, 
+              { 
+                label: <FormattedMessage id="formandbasic-form.quota" />, value: 2 
+              }]}
           />
           <ProFormText
             width={120}
             name="limitQuantity"
           />
-          <span>张</span>
+          <span><FormattedMessage id="formandbasic-form.zhang" /></span>
         </ProForm.Group>
 
         {/* 限时领取 */}
@@ -146,7 +153,9 @@ const couponConstruction=(props) => {
         <ProFormRadio.Group
           name="activityTimeType"
           label="有效期"
-          // rules={[{ required: true }]}
+          fieldProps={{
+            onChange: (e) => setPosition(e.target.value),
+          }}
           options={[
             {
               label: '固定时间',
@@ -158,7 +167,7 @@ const couponConstruction=(props) => {
             }
           ]}
         />
-        <PeriodValidity id={id} />
+        <PeriodValidity position={position} id={id} />
 
         <Divider orientation="left">使用设置</Divider>
 
@@ -168,7 +177,7 @@ const couponConstruction=(props) => {
           name="useType"
         // rules={[{ required: true }]}
         >
-          <UseScope/>
+          <UseScope id={id}/>
         </ProForm.Item>
 
         {/* 使用说明 */}

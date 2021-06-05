@@ -7,8 +7,8 @@ import ProForm, { ProFormText, ProFormSelect } from '@ant-design/pro-form';
 
 const couponType=(props)=>{
     let {id}=props
-    console.log('id',id)
     let {dispatch,DetailList}=props
+    const [flag,setFlag]=useState()
     const [discounts,setDiscounts]=useState('');
     const [coupons,setCoupons]=useState('');
     const [immediately,setImmediately]=useState('');
@@ -31,8 +31,11 @@ const couponType=(props)=>{
             }
         })
     }
+    const toggle=val=>{
+        setFlag(val)
+    }
     return(
-        <Tabs onChange={callback} type="card" defaultActiveKey={id&&DetailList.data?.couponType}>
+        <Tabs onChange={callback} type="card" defaultActiveKey={id&&toString(DetailList.data?.couponType)}>
             <TabPane className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.radio.public" />} key="1">
                 <ProForm.Group>
                     <span>使用门槛: 活动商品满</span>
@@ -58,10 +61,11 @@ const couponType=(props)=>{
                     <span>使用门槛 : 活动商品满</span> 
                     <ProFormText
                         width={100}
-                        name='usefulNum'
+                        name={flag==2?'usefulNum':'usefulAmount'}
                     />
                     <ProFormSelect
                         name="unit"
+                        fieldProps={{onChange:(val)=>{toggle(val)}}}
                         options={[
                             {
                             value:1,

@@ -6,6 +6,57 @@ import { history } from 'umi';
 import { Button } from 'antd';
 
 export default props => {
+    //导出
+const exportExcel = (form) => {
+    console.log('form',form)
+    couponList({
+      ...form.getFieldsValue(),
+    }).then(res => {
+      console.log('res',res)
+        const data = res.data.map(item => {
+          const { ...rest } = item;
+          return {
+            ...rest,
+            // couponName: amountTransform(rest.couponName, '/'),
+            // couponType: amountTransform(rest.couponType, '/'),
+            // useType: amountTransform(rest.useType, '/'),
+            // issueQuantity: amountTransform(rest.issueQuantity, '/'),
+            // lqCouponQuantity: amountTransform(rest.lqCouponQuantity, '/'),
+            // activityTimeDisplay: amountTransform(rest.activityTimeDisplay, '/'),
+            // adminName: amountTransform(rest.adminName, '/'),
+            // couponStatus: amountTransform(rest.couponStatus, '/'),
+  
+          }
+        });
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet([
+          {
+            couponName: '会员ID',
+            couponType: '用户名',
+            useType: '发言时间',
+            issueQuantity: '发言记录',
+          },
+          ...data
+        ], {
+          header: [
+            'couponName',
+            'couponType',
+            'useType',
+            'issueQuantity',
+            'issueQuantity',
+            'lqCouponQuantity',
+            'useCouponQuantity',
+            'activityTimeDisplay',
+            'createTime',
+            'adminName',
+            'couponStatus',
+          ],
+          skipHeader: true
+        });
+        XLSX.utils.book_append_sheet(wb, ws, "file");
+        XLSX.writeFile(wb, `${+new Date()}.xlsx`)
+    })
+  }
     const columns = [
         {
             title: '会员ID：',
@@ -72,8 +123,27 @@ export default props => {
         search={{
             defaultCollapsed: false,
             labelWidth: 100,
-            optionRender: (searchConfig, formProps, dom) => [
-                ...dom.reverse(),
+            optionRender: ({ searchText, resetText },{ form }) => [
+                <Button
+                    key="search"
+                    type="primary"
+                    onClick={() => {
+                        form?.submit();
+                    }}
+                    >
+                    {searchText}
+                </Button>,
+                <Button
+                    key="rest"
+                    onClick={() => {
+                        form?.resetFields();
+                    }}
+                    >
+                    {resetText}
+                </Button>,
+                <Button onClick={()=>{exportExcel(form)}} key="out">
+                    导出数据
+                </Button>
             ],
         }}
         columns={columns}

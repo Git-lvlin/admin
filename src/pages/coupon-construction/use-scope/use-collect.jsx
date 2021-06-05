@@ -3,10 +3,10 @@ import { Form, Button,Table } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import '../style.less'
 import { history,connect } from 'umi';
-import { couponWholesaleList } from '@/services/coupon-construction/coupon-wholesaleList';
+import { couponWholesaleList } from '@/services/coupon-construction/coupon-wholesalelist';
 
 const  useCollect=(props)=>{
-    let {dispatch}=props
+    let {id,dispatch,DetailList}=props
     const columns = [
         {
             title: '活动类型',
@@ -15,7 +15,8 @@ const  useCollect=(props)=>{
             valueEnum: {
                 1:'指令集约',
                 2:'主动集约'
-            }
+            },
+            hideInTable: true,
         },
         {
             title: '活动编号',
@@ -47,9 +48,6 @@ const  useCollect=(props)=>{
     const [rowobjs,setRowobjs]=useState([])
     const [loading,setLoading]=useState(true)
     const [wholesaleIds,setWholesaleIds]=useState('')
-
-
-
     const close = () => {
            setLoading(false)
            dispatch({
@@ -69,8 +67,15 @@ const  useCollect=(props)=>{
     }
     return(
         <Form.Item name="collect">
-              
-                    <ProTable
+            {
+                (parseInt(id)==id)?
+                <Table
+                    rowKey='wholesaleId'
+                    columns={columns}
+                    dataSource={DetailList.data?.wsInfo}
+                />
+                :<>
+                  <ProTable
                         rowKey="wholesaleId"
                         options={false}
                         params={{
@@ -102,9 +107,12 @@ const  useCollect=(props)=>{
                             确定
                         </Button>
                     </div>
+                </>
+            }
         </Form.Item>
     )
 }
-export default connect(({ UseScopeList}) => ({
+export default connect(({ DetailList,UseScopeList}) => ({
+    DetailList,
     UseScopeList
   }))(useCollect);
