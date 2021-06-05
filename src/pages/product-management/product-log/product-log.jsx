@@ -22,7 +22,7 @@ const SubTable = (props) => {
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
     { title: '商品价格', dataIndex: 'salePriceDisplay' },
     { title: '可用库存', dataIndex: 'stockNum' },
-    { title: '活动库存', dataIndex: 'activityStockNum' },
+    // { title: '活动库存', dataIndex: 'activityStockNum' },
   ];
 
   useEffect(() => {

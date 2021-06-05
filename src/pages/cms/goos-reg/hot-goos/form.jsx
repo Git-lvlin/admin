@@ -65,12 +65,12 @@ export default (props) => {
       valueType: 'number',
       search: false,
     },
-    {
-      title: '活动库存',
-      dataIndex: 'activityStockNum',
-      valueType: 'number',
-      search: false,
-    },
+    // {
+    //   title: '活动库存',
+    //   dataIndex: 'activityStockNum',
+    //   valueType: 'number',
+    //   search: false,
+    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
