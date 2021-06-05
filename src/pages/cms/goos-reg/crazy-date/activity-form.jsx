@@ -14,11 +14,14 @@ const DetailList = (props) => {
   const [detailData, setDetailData] = useState(true);
   const [acid, setAcId] = useState({cmsId: 0});
 
-  const getDetail = (data) => {
+  const getDetail = (data,channel) => {
     if (!id) {return message.error('请先选择活动')}
     const param = {
       data,
-      id
+      id, 
+    }
+    if (channel) {
+      param.channel = channel
     }
     setDetailData(param);
     setFormVisible(true);
@@ -207,6 +210,9 @@ const DetailList = (props) => {
         </Button>,
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail(record) }}>
           新增
+        </Button>,
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail(record,5) }}>
+          新增(1688)
         </Button>,
       ]}
     />

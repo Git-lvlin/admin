@@ -298,6 +298,27 @@ export const memberOperation = (params = {}, options = {}) => {
 }
 
 export const goosAllList = async (params = {}, options = {}) => {
+  const { current, pageSize, channel, ...rest } = params;
+  const data = {
+    page: current,
+    pageSize: pageSize,
+    ...rest
+  }
+  let url = channel === 5 ? '/auth/activity/Goods/ylbbGoodsList' : '/auth/activity/Goods/wholesaleTransGoodsList'
+  const res = await request(url, {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const goosReplaceList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
 
   const data = {
@@ -305,7 +326,7 @@ export const goosAllList = async (params = {}, options = {}) => {
     pageSize: pageSize,
     ...rest
   }
-  const res = await request('/auth/activity/Goods/wholesaleTransGoodsList', {
+  const res = await request('/auth/activity/Goods/ylbbGoodsList', {
     method: 'POST',
     data,
     ...options
@@ -503,4 +524,20 @@ export const priceComparsionList = async (params = {}, options = {}) => {
     success: true,
     total: res.data.total,
   }
+}
+
+export const createTaskSrc = (params = {}, options = {}) => {
+  return request('/auth/go-spider-api/spiderdbc/auth/spiderdbc/CreateTask', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const getSpiderGoodsListByDate = (params = {}, options = {}) => {
+  return request('/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderGoodsListByDate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
 }

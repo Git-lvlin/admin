@@ -1,77 +1,146 @@
+import React, { useRef, useState } from 'react';
+import { EditableProTable } from '@ant-design/pro-table';
+import ProField from '@ant-design/pro-field';
+import ProCard from '@ant-design/pro-card';
+import { Button, Input, Space, Tag, Form } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
-import ProForm, {
-  ProFormDependency,
-  ProFormFieldSet,
-  ProFormSelect,
-  ProFormText,
-} from '@ant-design/pro-form';
-import React from 'react';
-
-export default () => {
-
-
-
-  const pages = async () => [
-    { label: '首页', value: '/home' },
-    { label: '商品详情页', value: '/goods/details/goodsDetail' },
-    { label: '售后中心', value: '/afterSales/center' },
-    { label: '个人中心', value: '/userCenter' },
-  ]
-  const prefix = async () => [
-    { label: 'IOS', value: 'all' },
-    { label: 'H5', value: 'open' },
-    { label: 'Android', value: 'closed' },
-    { label: 'PC', value: 'processing' },
-    { label: '微信小程序', value: 'processing' },
-  ]
-
-  const attr = async () => [
-    { label: '商品id', value: 'goodsId' },
-    { label: '商品分类id', value: 'goodsClassId' },
-    { label: '售后订单', value: 'afterOrder' },
-    { label: '普通订单', value: 'order' },
-  ]
-  return (
-    <ProForm
-      initialValues={{
-        list: ['1', '2', '3', '4'],
-      }}
-    >
-      <ProFormFieldSet
-        name="list"
-        label="完整链接"
-        readonly
-        transform={(value) => ({ startTime: value[0], endTime: value[1] })}
-      >
-        <ProFormText width="md" readonly />
-        <ProFormText width="md" readonly />
-        ?
-        <ProFormText width="md" readonly />
-        =
-        <ProFormText width="md" readonly />
-      </ProFormFieldSet>
-      <ProFormFieldSet name="list">
-        <ProFormSelect
-          request={prefix}
-          name="prefix"
-          label=""
-        />
-        <ProFormSelect
-          request={pages}
-          name="pageName"
-          label=""
-        />
-        <ProFormSelect
-          request={attr}
-          name="attrs"
-          label=""
-        />
-        <ProFormText width="md" />
-      </ProFormFieldSet>
-
-    </ProForm>
-  );
+const waitTime = (time = 100) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
 };
 
 
+const defaultData = [
+  {
+    id: 624748504,
+    title: '淘宝',
+    labels: [{ key: 'woman', label: '川妹子' }],
+    state: 'open',
+    created_at: '2020-05-26T09:42:56Z',
+  },
+  {
+    id: 624691229,
+    title: '京东',
+    labels: [{ key: 'man', label: '西北汉子' }],
+    state: 'closed',
+    created_at: '2020-05-26T08:19:22Z',
+  },
+  {
+    id: 624748501,
+    title: '拼多多',
+    labels: [{ key: 'woman', label: '川妹子' }],
+    state: 'open',
+    created_at: '2020-05-26T09:42:56Z',
+  },
+  {
+    id: 624691222,
+    title: '天猫',
+    labels: [{ key: 'man', label: '西北汉子' }],
+    state: 'closed',
+    created_at: '2020-05-26T08:19:22Z',
+  },
+  {
+    id: 624691223,
+    title: '美团',
+    labels: [{ key: 'man', label: '西北汉子' }],
+    state: 'closed',
+    created_at: '2020-05-26T08:19:22Z',
+  },
+];
 
+const columns = [
+  {
+    title: '比价电商平台',
+    dataIndex: 'title',
+    valueType: 'text',
+    width: '10%',
+    editable: false
+  },
+  {
+    title: 'skuid',
+    key: 'skuId',
+    dataIndex: 'state',
+    valueType: 'text',
+    width: '10%',
+    editable: false
+  },
+  {
+    title: '售卖价格',
+    dataIndex: 'price',
+    width: '10%',
+    editable: false
+  },
+  {
+    title: '链接',
+    dataIndex: 'url',
+    valueType: 'input',
+    width: '40%',
+  },
+  {
+    title: '操作',
+    valueType: 'option',
+    width: 250,
+    render: (text, record, _, action) => [
+      <a
+        key="editable"
+        onClick={() => {
+          action?.startEditable?.(record.id);
+        }}
+      >
+        抓取
+      </a>,
+      <EditableProTable.RecordCreator
+        key="copy"
+        record={{
+          ...record,
+          id: (Math.random() * 1000000).toFixed(0),
+        }}
+      >
+        <a>复制此行到末尾</a>
+      </EditableProTable.RecordCreator>,
+    ],
+  },
+];
+
+export default () => {
+  const actionRef = useRef();
+  const [dataSource, setDataSource] = useState([]);
+  const [editableKeys, setEditableRowKeys] = useState(() =>
+    defaultData.map((item) => item.id),
+  );
+  const [form] = Form.useForm();
+  return (
+    <>
+      <EditableProTable
+        rowKey="id"
+        actionRef={actionRef}
+        headerTitle="可编辑表格"
+        maxLength={5}
+        // 关闭默认的新建按钮
+        recordCreatorProps={false}
+        columns={columns}
+        request={async () => ({
+          data: defaultData,
+          total: 3,
+          success: true,
+        })}
+        value={dataSource}
+        onChange={setDataSource}
+        editable={{
+          type: 'multiple',
+          form,
+          editableKeys,
+          onSave: async () => {
+            await waitTime(2000);
+          },
+          onChange: setEditableRowKeys,
+          actionRender: (row, config, dom) => [dom.save, dom.cancel],
+        }}
+      />
+    </>
+  );
+};
