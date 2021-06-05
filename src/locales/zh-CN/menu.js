@@ -102,17 +102,21 @@ export default {
   'menu.community-management':'社区管理',
   'menu.community-management.circle-management':'圈子管理',
   'menu.community-management.add-circle':'新建圈子',
-  'menu.community-management.circleInterior-management':'圈内管理',
+  'menu.community-management.circleinterior-management':'圈内管理',
   'menu.community-management.content-management':'内容管理',
+  'menu.community-management.add-content':'新建内容',
+  'menu.community-management.dynamic-listlikes':'点赞列表',
+  'menu.community-management.dynamic-comment-replylist':'评论列表',
+  'menu.community-management.dynamic-getdynamicdetail':'帖子详情',
   'menu.community-management.consultation-management':'会话记录管理',
   'menu.community-management.reporttype-management':'举报类型管理',
   'menu.community-management.review-report':'评论举报',
-  'menu.community-management.review-report.review-report-untreated':'评论举报(未处理)',
-  'menu.community-management.review-report.review-report-processed':'评论举报(已处理)',
+  'menu.community-management.admin-report-detaillist':'详情',
   'menu.community-management.invitation-report':'帖子举报',
-  'menu.community-management.invitation-report.invitation-report-untreated':'帖子举报(未处理)',
-  'menu.community-management.invitation-report.invitation-report-processed':'帖子举报(已处理)',
   'menu.community-management.community-advertising':'社区广告管理',
+  'menu.community-management.add-advertising':'添加/编辑广告',
+  'menu.community-management.advertising-manage':'广告位管理',
+
 
 
 

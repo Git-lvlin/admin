@@ -31,7 +31,7 @@ const TableList = (props) => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入优惠券名称'
-      }
+      },
     },
     {
       title: '优惠券类型',
@@ -81,6 +81,7 @@ const TableList = (props) => {
       dataIndex: 'activityTimeDisplay',
       valueType: 'text',
       hideInSearch: true,
+      width:120
     },
     {
       title: '创建时间',

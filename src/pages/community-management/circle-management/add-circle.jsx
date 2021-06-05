@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { circleInsert } from '@/services/community-management/circle-insert';
-import { circleUpdateCircle } from '@/services/community-management/circle-updateCircle';
-import { circleDetail } from '@/services/community-management/circle-Detail';
+import { circleUpdateCircle } from '@/services/community-management/circle-updatecircle';
+import { circleDetail } from '@/services/community-management/circle-detail';
 import ProForm, { ProFormSwitch,ProFormTextArea,ProFormText,ProFormUploadButton,ProFormRadio} from '@ant-design/pro-form';
 import { history } from 'umi';
 import { message, Form } from 'antd';

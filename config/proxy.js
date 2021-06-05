@@ -8,7 +8,7 @@
 export default {
   dev: {
     '/auth/': {
-      target: 'http://admin.waiad.icu',
+      target: 'https://adminapi-dev.yeahgo.com',
       changeOrigin: true,
       pathRewrite: {
         '^': '',

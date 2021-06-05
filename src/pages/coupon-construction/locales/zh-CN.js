@@ -60,4 +60,12 @@ export default {
   'formandbasic-form.assignClass':'指定品类',
   'formandbasic-form.issued.amount':'按总金额发行',
   'formandbasic-form.issued.quantity':'按总数量发行',
+  'formandbasic-form.basic.setup':'基本设置',
+  'formandbasic-form.circulation':'发行量',
+  'formandbasic-form.each.limit':'每人限领',
+  'formandbasic-form.needless':'不限张数',
+  'formandbasic-form.quota':'限领',
+  'formandbasic-form.zhang':'张',
+  'formandbasic-form.please.enter.coupon.name':'请输入优惠劵名称',
+  'formandbasic-form.please.enter.coupon.name':'有效期',
 };
