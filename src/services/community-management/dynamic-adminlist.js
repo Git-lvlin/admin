@@ -1,13 +1,16 @@
 import request from '@/utils/request';
 
 export const adminList= async (params, options = {}) => {
-  const {id,page,size}=params
+  const {current,dynamicId,circleId,pageSize,status,...rest}=params
   const res = await request('/auth/java-admin/dynamic/adminList', {
     method: 'POST',
     data: {
-      circleId:id,
-      page,
-      size
+      dynamicId:parseInt(dynamicId),
+      circleId:parseInt(circleId),
+      status:parseInt(status),
+      page:current,
+      size:pageSize,
+      ...rest
     },
     ...options
   });

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DatePicker, Input, Form, Divider, message } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
-import styles from './style.less';
 import CouponType from './coupon-type/coupon-type'
 import Circulation from './circulation/circulation'
 import UseScope from './use-scope/use-scope'
@@ -57,7 +56,7 @@ const couponConstruction=(props) => {
               }
               values.useType = parseInt(UseScopeList.useType)||1//使用范围
               values.issueQuantity = parseInt(values.issueQuantity)//发行量
-              values.limitStartTime = values.date?values.date[0]:Date.now(),//限时领取开始时间
+              values.limitStartTime = values.date?values.date[0]:null,//限时领取开始时间
               values.limitEndTime = values.date?values.date[1]:null,//限时领取结束时间
               values.activityStartTime = values.date2?values.date2[0]:null,//有效期开始时间
               values.activityEndTime = values.date2?values.date2[1]:null,//有效期结束时间

@@ -1,11 +1,12 @@
 import request from '@/utils/request';
 export const couponWholesaleList = async (params = {}, options = {}) => {
-    const { current, pageSize, ...rest } = params;
+    const { current, pageSize,wholesaleType, ...rest } = params;
     const res = await request('/auth/activity/Coupon/couponWholesaleList', {
       method: 'POST',
       data: {
         page: current,
-        size: pageSize,
+        pageSize,
+        wholesaleType:parseInt(wholesaleType),
         ...rest
       },
       ...options

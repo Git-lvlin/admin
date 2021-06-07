@@ -1,14 +1,15 @@
 import request from '@/utils/request';
 
 export const commonSpuList= async (params = {}, options = {}) => {
-    const { page,pageSize} = params;
+    const { current,pageSize,spuId,...rest} = params;
     console.log('params',params)
     const res = await request('/auth/activity/Goods/commonSpuList', {
       method: 'POST',
       data: {
-        page,
+        page:current,
         pageSize,
-        // ...rest
+        spuId:parseInt(spuId),
+        ...rest
       },
       ...options
     });
