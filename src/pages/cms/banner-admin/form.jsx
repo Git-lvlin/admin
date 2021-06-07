@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
   DrawerForm,
@@ -32,7 +32,28 @@ const waitTime = (values) => {
 export default (props) => {
   const { detailData, setVisible, onClose, visible } = props;
   const formRef = useRef();
-  const [form] = Form.useForm()
+  const [form] = Form.useForm();
+  const [nowIndex, setNowIndex] = useState(0);
+  const picSize = [
+    false,
+    {
+      width: 351,
+      height: 100,
+    },
+    {
+      width: 375,
+      height: 168,
+    },
+    {
+      width: 351,
+      height: 65,
+    },
+    {
+      width: 375,
+      height: 150,
+    }
+  ]
+
 
   useEffect(() => {
     if (detailData) {
@@ -91,6 +112,11 @@ export default (props) => {
           }}
           placeholder="选择位置"
           rules={[{ required: true, message: '请选择位置!' }]}
+          fieldProps={{
+            onChange: (e) => {
+              setNowIndex(e)
+            }
+          }}
         />
       </ProForm.Group>
       <ProForm.Group>
@@ -106,17 +132,22 @@ export default (props) => {
           label="添加图片"
           name="image"
           required
+          rules={
+            [{
+              
+            }]
+          }
           tooltip={
             <dl>
               <dt>图片要求</dt>
               <dd>首页banner-351*100</dd>
-              <dd>集约页面banner-375*186</dd>
-              <dd>个人中心banner-375*65</dd>
+              <dd>集约页面banner-375*168</dd>
+              <dd>个人中心banner-351*65</dd>
               <dd>会员店专享banner-375*150</dd>
             </dl>
           }
         >
-          <Upload multiple maxCount={1} accept="image/*" dimension="1:1" size={375} />
+          <Upload multiple maxCount={1} accept="image/*" dimension={picSize[nowIndex]||'banner'} />
         </Form.Item>
       </ProForm.Group>
       <ProForm.Group>

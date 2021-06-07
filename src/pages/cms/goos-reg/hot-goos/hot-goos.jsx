@@ -5,14 +5,16 @@ import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
+import ReplaceForm from './replace-form';
+
 import { hotGoosList, hotGoosOperation, tagSortTop } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
 
 const HotGoos = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
+  const [replaceFormVisible, setReplaceFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(false);
-
   const getDetail = (data) => {
     setDetailData(data);
     setFormVisible(true);
@@ -46,6 +48,16 @@ const HotGoos = () => {
       title: 'SPUID',
       dataIndex: 'spuId',
       valueType: 'number',
+    },
+    {
+      title: '商品来源',
+      dataIndex: 'goodsType',
+      valueType: 'select',
+      hideIntable: true,
+      valueEnum: {
+        1: '普通商品库',
+        5: '1688商品库',
+      }
     },
     {
       title: '图片',
@@ -90,17 +102,35 @@ const HotGoos = () => {
       valueType: 'number',
       search: false,
     },
-    // {
-    //   title: '活动库存',
-    //   key: 'activityStockNum',
-    //   dataIndex: 'activityStockNum',
-    //   valueType: 'number',
-    //   search: false,
-    // },
+    {
+      title: '活动库存',
+      key: 'activityStockNum',
+      dataIndex: 'activityStockNum',
+      valueType: 'number',
+      search: false,
+    },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
       valueType: 'number',
+      search: false,
+    },
+    {
+      title: '售价最多上浮百分比',
+      dataIndex: 'floatPercent',
+      valueType: 'text',
+      search: false,
+    },
+    {
+      title: '一级分类',
+      dataIndex: 'gcId1Display',
+      valueType: 'text',
+      search: false,
+    },
+    {
+      title: '二级分类',
+      dataIndex: 'gcId2Display',
+      valueType: 'text',
       search: false,
     },
     {
@@ -136,7 +166,7 @@ const HotGoos = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _, action) => {
+      render: (text, record, _) => {
         return (
           <>
             {record.status===2&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
@@ -156,6 +186,12 @@ const HotGoos = () => {
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
+      postData={(data) => {
+        data.forEach(item => {
+          item.floatPercent = parseInt(item.floatPercent/100)
+        })
+        return data
+      }}
       params={{tagCode:'hot_sale'}}
       request={hotGoosList}
       rowSelection={{
@@ -172,13 +208,23 @@ const HotGoos = () => {
             </a>
           </span>
           <span>{`待发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.containers,
-            0,
-          )} 个`}</span>
-          <span>{`已发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.callNumber,
-            0,
-          )} 个`}</span>
+              (pre, item) => {
+                if (item.status === 1) {
+                  return pre += 1
+                }
+                return pre
+              },
+              0,
+            )} 个`}</span>
+            <span>{`已发布: ${selectedRows.reduce(
+              (pre, item) => {
+                if(item.status === 2) {
+                  return pre += 1
+                }
+                return pre
+              },
+              0,
+            )} 个`}</span>
         </Space>
       )}
       search={{
@@ -202,11 +248,21 @@ const HotGoos = () => {
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
           新建
         </Button>,
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setReplaceFormVisible(true) }}>
+          新建(代发)
+        </Button>,
       ]}
     />
     {formVisible && <Edit
       visible={formVisible}
       setVisible={setFormVisible}
+      detailData={detailData}
+      callback={() => { actionRef.current.reload(); setDetailData(null) }}
+      onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+    />}
+    {replaceFormVisible && <ReplaceForm
+      visible={replaceFormVisible}
+      setVisible={setReplaceFormVisible}
       detailData={detailData}
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { actionRef.current.reload(); setDetailData(null) }}

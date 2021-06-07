@@ -21,13 +21,18 @@ import {spaceInfoList, hotGoosList, goosAllList, goosReplaceList} from '@/servic
 export default (props) => {
   const { detailData, setVisible, onClose, visible } = props;
   const [arr, setArr] = useState(null)
-  const [channel, setChannel] = useState(null)
   const formRef = useRef();
   const columns = [
     {
       title: 'SPUID',
       dataIndex: 'spuId',
       valueType: 'text',
+      search: false,
+    },
+    {
+      title: 'spuids',
+      dataIndex: 'spuIds',
+      hideInTable: true,
     },
     {
       title: '图片',
@@ -42,51 +47,55 @@ export default (props) => {
       search: false,
     },
     {
-      title: '商家名称',
-      dataIndex: 'supplierName',
-      valueType: 'text',
-      search: false,
-    },
-    {
-      title: '供货类型',
-      dataIndex: 'goodsSaleTypeDisplay',
-      valueType: 'text',
-      search: false,
-    },
-    {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'text',
       search: false,
     },
     {
-      title: '可用库存',
+      title: '库存',
       dataIndex: 'stockNum',
-      valueType: 'number',
+      valueType: 'text',
       search: false,
     },
-    // {
-    //   title: '活动库存',
-    //   dataIndex: 'activityStockNum',
-    //   valueType: 'number',
-    //   search: false,
-    // },
     {
-      title: '销量',
-      dataIndex: 'goodsSaleNum',
-      valueType: 'number',
+      title: '售价最多上浮百分比',
+      dataIndex: 'floatPercent',
+      valueType: 'text',
+      search: false,
+    },
+    {
+      title: '一级分类',
+      dataIndex: 'gcId1Display',
+      valueType: 'text',
+      search: false,
+    },
+    {
+      title: '二级分类',
+      dataIndex: 'gcId2Display',
+      valueType: 'text',
       search: false,
     },
   ];
 
   const waitTime = (values) => {
+    if (!arr.length) {
+      message.error('请选择商品');
+      return
+    }
     const { ...rest } = values
-  
+    const len = arr.length
+    let array = []
+    for(let i=0;i<len;i++) {
+      array.push(arr[i].spuId)
+    }
     const param = {
-      tagCode: 'hot_sale',
-      spuIds: arr,
+      tagCode: 'day_yeahgo',
+      spuIds: array.toString(),
+      goodsType: 5,
       ...rest
     }
+
     return new Promise((resolve) => {
       hotGoosAdd(param).then((res) => {
         if (res.code === 0) {
@@ -98,15 +107,12 @@ export default (props) => {
   };
 
   useEffect(() => {
-    // if (detailData) {
-    //   const {channel} = detailData
-    //   setChannel(channel)
-    // }
+
   }, [])
 
   return (
-    <ModalForm
-      title={`${detailData ? '编辑' : '新增'}`}
+    <DrawerForm
+      title={`新增1688`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -131,35 +137,41 @@ export default (props) => {
       }}
     >
 <ProTable
-      key="spuId"
+      rowKey="id"
       options={false}
       columns={columns}
-      request={goosAllList}
+      postData={(data) => {
+        data.forEach(item => {
+          item.floatPercent = parseInt(item.floatPercent/100)
+        })
+        return data
+      }}
+      request={goosReplaceList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项
         // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
       }}
-      // tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
-      //   <Space size={24}>
-      //     <span>
-      //       已选 {selectedRowKeys.length} 项
-      //       <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
-      //         取消选择
-      //       </a>
-      //     </span>
-      //     <span>{`待发布: ${selectedRows.reduce(
-      //       (pre, item) => pre + item.containers,
-      //       0,
-      //     )} 个`}</span>
-      //     <span>{`已发布: ${selectedRows.reduce(
-      //       (pre, item) => pre + item.callNumber,
-      //       0,
-      //     )} 个`}</span>
-      //   </Space>
-      // )}
+      tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
+        <Space size={24}>
+          <span>
+            {/* 已选 {selectedRowKeys.length} 项 */}
+            <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
+              取消选择
+            </a>
+          </span>
+          {/* <span>{`待发布: ${selectedRows.reduce(
+            (pre, item) => pre + item.containers,
+            0,
+          )} 个`}</span>
+          <span>{`已发布: ${selectedRows.reduce(
+            (pre, item) => pre + item.callNumber,
+            0,
+          )} 个`}</span> */}
+        </Space>
+      )}
       tableAlertOptionRender={(a) => {
-        setArr(a.selectedRowKeys.toString())
+        setArr(a.selectedRows)
       }}
       editable={{
         type: 'multiple',
@@ -173,6 +185,6 @@ export default (props) => {
       dateFormatter="string"
       headerTitle="热销好货"
     />
-    </ModalForm>
+    </DrawerForm>
   );
 };

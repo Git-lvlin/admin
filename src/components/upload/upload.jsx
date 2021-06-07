@@ -11,6 +11,10 @@ const Upload = (props) => {
   const fileData = useRef([]);
 
   const beforeUpload = async (file) => {
+    if (dimension === 'banner') {
+      message.error('请先选择位置!')
+      return false;
+    }
     if (size && file.size / 1024 > size) {
       message.error('上传图片的大小不符合要求')
       return false;
