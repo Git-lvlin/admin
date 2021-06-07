@@ -57,6 +57,22 @@ export const bannerAdd = (params = {}, options = {}) => {
   });
 }
 
+export const kingKongAdd = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/goodsType/goodsTypeSave', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const kingKongModify = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/goodsType/goodsTypeUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const expressNewsUpdate = (params = {}, options = {}) => {
   const { id, ...rest } = params
 

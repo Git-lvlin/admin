@@ -7,14 +7,14 @@ import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
 import { kingKongDistrictList, kongKongDistrictDel, kingKongTop } from '@/services/cms/member/member';
 
-const KingKongDistrict = (proprs) => {
+const KingKongDistrict = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [editableKeys, setEditableRowKeys] = useState([]);
 
   const getDetail = (data) => {
-    setDetailData(data);
+    data && setDetailData(data);
     setFormVisible(true);
   }
 
@@ -168,7 +168,7 @@ const KingKongDistrict = (proprs) => {
         <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys) }}>
           批量删除
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail({_,record}) }}>
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail(false) }}>
           新增
         </Button>,
       ]}
