@@ -3,6 +3,7 @@
 /* eslint-disable no-param-reassign */
 import { parse } from 'querystring';
 import Big from 'big.js';
+import moment from 'moment';
 
 export const getPageQuery = () => parse(window.location.href.split('?')[1]);
 
@@ -99,6 +100,13 @@ export const paramsEmptyFilter = (params) => {
   }
 
   return obj;
+}
+
+export const dateFormat = (date) => {
+  if (!date) {
+    return ''
+  }
+  return moment(date).format('YYYY-MM-DD HH:mm:ss')
 }
 
 export const getImageSize = (file) => {

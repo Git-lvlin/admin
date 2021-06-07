@@ -3,24 +3,43 @@ export default {
   name: 'order-management',
   routes: [
     {
-      name: 'pending-orders',
-      path: '/order-management/pending-orders',
-      component: './order-management/pending-orders',
+      name: 'normal-order',
+      path: '/order-management/normal-order',
+      component: './order-management/normal-order',
     },
     {
-      name: 'order-detail',
-      path: '/order-management/order-detail/:id',
-      component: './order-management/order-detail',
-    },
-    {
-      name: 'retail-list',
-      path: '/order-management/retail-list',
-      component: './order-management/retail-list',
+      name: 'normal-order-detail',
+      path: '/order-management/normal-order-detail/:id',
+      component: './order-management/normal-order-detail',
+      hideInMenu: true,
     },
     {
       name: 'intensive-order',
       path: '/order-management/intensive-order',
-      component: './order-management/intensive-order',
+      routes: [
+        {
+          name: 'supplier-order',
+          path: '/order-management/intensive-order/supplier-order',
+          component: './order-management/intensive-order/supplier-order',
+        },
+        {
+          name: 'supplier-order-detail',
+          path: '/order-management/intensive-order/supplier-order-detail/:id',
+          component: './order-management/intensive-order/supplier-order-detail',
+          hideInMenu: true,
+        },
+        {
+          name: 'shopkeeper-order',
+          path: '/order-management/intensive-order/shopkeeper-order',
+          component: './order-management/intensive-order/shopkeeper-order',
+        },
+        {
+          name: 'shopkeeper-order-detail',
+          path: '/order-management/intensive-order/shopkeeper-order-detail/:id',
+          component: './order-management/intensive-order/shopkeeper-order-detail',
+          hideInMenu: true,
+        },
+      ]
     }
   ]
 }

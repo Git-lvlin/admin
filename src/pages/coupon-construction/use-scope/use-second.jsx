@@ -4,13 +4,14 @@ import { FormattedMessage } from 'umi';
 import { ModalForm,ProFormSelect,ProFormRadio} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import styles from '../style.less'
-import {commonSpuList}  from '@/services/coupon-construction/coupon-searchSku';
-import {classList} from '@/services/coupon-construction/coupon-classList'
+import {commonSpuList}  from '@/services/coupon-construction/coupon-searchsku';
+import {classList} from '@/services/coupon-construction/coupon-classlist'
+import BrandSelect from '@/components/brand-select'
 import { history,connect } from 'umi';
 const { TabPane } = Tabs;
 
 const useSecond=(props)=>{
-    const {dispatch}=props
+    const {id,dispatch,DetailList}=props
     const columns = [
         {
             title: 'spuID',
@@ -47,6 +48,7 @@ const useSecond=(props)=>{
             title: '商品品牌',
             dataIndex: 'brandName',
             valueType: 'text',
+            renderFormItem: () => (<BrandSelect />),
         },
         {
             title: '可用库存',
@@ -76,7 +78,7 @@ const useSecond=(props)=>{
     const [flag,setFlag]=useState(true)
     const [goods,setGoods]=useState([])
     const [cates,setCates]=useState([])
-    const [position,setPosition]=useState(1)
+    const [position,setPosition]=useState()
     const [onselect,setOnselect]=useState([])
     const [spuIds,setSpuIds]=useState('')
 
@@ -120,7 +122,6 @@ const useSecond=(props)=>{
                 {label:ele.gcName,value:ele.id}
             )))
         })
-        console.log('onselect',onselect)
     },[])
     return(
         <div className={styles.unfold}>
@@ -128,7 +129,7 @@ const useSecond=(props)=>{
                <ProFormRadio.Group
                     name="goodsType"
                     fieldProps={{
-                    value: position,
+                    value: (parseInt(id)==id )&&DetailList.data?.goodsType||position,
                     onChange: (e) => setPosition(e.target.value),
                     }}
                     options={[
@@ -147,94 +148,121 @@ const useSecond=(props)=>{
                     ]}
                 />
                 {
-                    position==2?
+                    position==2||(parseInt(id)==id )&&DetailList.data?.goodsType==2?
                        <>
-                        <Button type="primary" className={styles.popupBtn} onClick={showModal}>
-                            选择商品
-                        </Button>
-                        
-                        <Modal width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                            <ProTable
+                       {
+                           (parseInt(id)==id)?
+                           <ProTable
+                                toolBarRender={false}
+                                search={false}
                                 rowKey="spuId"
-                                options={false}
-                                params={{
-                                    page:1,
-                                    pageSize: 3,
-                                }}
-                                style={{display:loading?'block':'none'}}
-                                request={commonSpuList}
-                                actionRef={actionRef}
-                                search={{
-                                    defaultCollapsed: false,
-                                    labelWidth: 100,
-                                    optionRender: (searchConfig, formProps, dom) => [
-                                        ...dom.reverse(),
-                                    ],
-                                }}
                                 columns={columns}
-                                rowSelection={{}}
-                                tableAlertOptionRender={onIpute}
+                                dataSource={DetailList.data?.spuInfo}
                             />
-                        </Modal>
-
-                        <ProTable
-                            toolBarRender={false}
-                            search={false}
-                            rowKey="spuId"
-                            columns={columns}
-                            dataSource={goods}
-                            style={{display:loading?'none':'block'}}
-                        />
+                           :
+                           <>
+                             <Button type="primary" className={styles.popupBtn} onClick={showModal}>
+                                选择商品
+                            </Button>
+                            
+                            <Modal width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                <ProTable
+                                    rowKey="spuId"
+                                    options={false}
+                                    params={{
+                                        page:1,
+                                        pageSize: 3,
+                                    }}
+                                    style={{display:loading?'block':'none'}}
+                                    request={commonSpuList}
+                                    actionRef={actionRef}
+                                    search={{
+                                        defaultCollapsed: false,
+                                        labelWidth: 100,
+                                        optionRender: (searchConfig, formProps, dom) => [
+                                            ...dom.reverse(),
+                                        ],
+                                    }}
+                                    columns={columns}
+                                    rowSelection={{}}
+                                    tableAlertOptionRender={onIpute}
+                                />
+                            </Modal>
+                            <ProTable
+                                toolBarRender={false}
+                                search={false}
+                                rowKey="spuId"
+                                columns={columns}
+                                dataSource={goods}
+                                style={{display:loading?'none':'block'}}
+                            />
+                           </>
+                       }
                        </>
                     :null
                 }
                 {
-                    position==3?
+                    position==3||(parseInt(id)==id )&&DetailList.data?.goodsType==3?
                         <>
-                        <ModalForm
-                            title="选择品类"
-                            trigger={<Button className={styles.popupBtn} type="primary" onClick={onCate}>选择品类</Button>}
-                            submitter={{
-                            render: (props, defaultDoms) => {
-                                return [
-                                ...defaultDoms
-                                ];
-                            },
-                            }}
-                            style={{display:flag?'block':'none'}}
-                            onFinish={async (values) => {
-                            console.log('values',values);
-                            dispatch({
-                                type:'UseScopeList/fetchLookUnit',
-                                payload:{
-                                    unit:values.unit
-                                }
-                            })
-                            setCates([
-                                {
-                                    key: '1',
-                                    unit: onselect[values.unit].label,
-                                }
-                                ])
-                            setFlag(false)
-                            message.success('提交成功');
-                            return true;
-                            }}
-                        >
-                            <ProFormSelect
-                                name="unit"
-                                options = {onselect}
-                                placeholder="美妆个护"
-                            />
-                        </ModalForm>
+                        {
+                            (parseInt(id)==id)?
+                            <ProTable
+                                toolBarRender={false}
+                                search={false}
+                                rowKey="spuId"
+                                columns={columns2}
+                                params={{
+                                    gcParentId:DetailList.data?.classId
+                                }}
+                                request={classList}
+                            />:
+                            <>
+                            <ModalForm
+                                title="选择品类"
+                                trigger={<Button className={styles.popupBtn} type="primary" onClick={onCate}>选择品类</Button>}
+                                submitter={{
+                                render: (props, defaultDoms) => {
+                                    return [
+                                    ...defaultDoms
+                                    ];
+                                },
+                                }}
+                                style={{display:flag?'block':'none'}}
+                                onFinish={async (values) => {
+                                console.log('values',values);
+                                dispatch({
+                                    type:'UseScopeList/fetchLookUnit',
+                                    payload:{
+                                        unit:values.unit
+                                    }
+                                })
+                                setCates([
+                                    {
+                                        key: '1',
+                                        unit: onselect[values.unit].label,
+                                    }
+                                    ])
+                                setFlag(false)
+                                message.success('提交成功');
+                                return true;
+                                }}
+                            >
+                                <ProFormSelect
+                                    name="unit"
+                                    options = {onselect}
+                                    placeholder="美妆个护"
+                                />
+                            </ModalForm>
 
-                        <ProTable
-                            search={false}
-                            toolBarRender={false}
-                            columns={columns2}
-                            dataSource={cates}
-                            style={{display:flag?'none':'block'}}
-                        />
+                            <ProTable
+                                search={false}
+                                toolBarRender={false}
+                                columns={columns2}
+                                dataSource={cates}
+                                style={{display:flag?'none':'block'}}
+                            />
+                            </>
+                        }
                         </>
                     :null
                 }
@@ -257,6 +285,7 @@ const useSecond=(props)=>{
         </div>
     )
 }
-export default connect(({ UseScopeList}) => ({
-    UseScopeList
+export default connect(({ DetailList,UseScopeList}) => ({
+    UseScopeList,
+    DetailList
   }))(useSecond);
