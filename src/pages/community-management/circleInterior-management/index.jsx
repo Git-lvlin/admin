@@ -29,17 +29,23 @@ export default props => {
     const columns = [
         {
             title: '帖子ID：',
-            dataIndex: 'id',
+            dataIndex: 'dynamicId',
+            hideInTable: true,
         },
         {
-            title: '帖子类型',
-            dataIndex: 'sourceType',
-            valueType: 'select',
-            valueEnum: {
-                1: '图文',
-                2: '视频',
-              }
+            title: '帖子ID：',
+            dataIndex: 'id',
+            hideInSearch:true
         },
+        // {
+        //     title: '帖子类型',
+        //     dataIndex: 'sourceType',
+        //     valueType: 'select',
+        //     valueEnum: {
+        //         1: '图文',
+        //         2: '视频',
+        //       }
+        // },
         {
             title: '会员ID',
             dataIndex: 'userId',

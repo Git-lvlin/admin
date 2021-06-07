@@ -11,7 +11,7 @@ const validity=(props)=>{
     return (
         <>
          {
-             position==1?
+             position==1||DetailList.data?.activityStartTime?
              <FormItem
                 style={{ display: 'inline-block'}}
                 name="date2"
@@ -25,21 +25,31 @@ const validity=(props)=>{
                     ]}
                 />
             }
-            </FormItem>
-            :<ProForm.Group>
-                <ProFormText
-                    width={100}
-                    name="activityStartDay"
-                    placeholder="0"
-                />
-                <span>天起,</span>  
-                <ProFormText
-                    width={100}
-                    name="activityEndDay"
-                    placeholder="7"
-                />
-                <span>天内可用</span>
-            </ProForm.Group>
+            </FormItem>:null
+         }
+        {
+            position==2||DetailList.data?.activityEndDay?
+            <>
+                {
+                id&&DetailList.data?
+                <p>领券{DetailList.data?.activityStartDay}天起，{DetailList.data?.activityEndDay}天内可用</p>
+                :<ProForm.Group>
+                    <ProFormText
+                        width={100}
+                        name="activityStartDay"
+                        placeholder="0"
+                    />
+                    <span>天起,</span>  
+                    <ProFormText
+                        width={100}
+                        name="activityEndDay"
+                        placeholder="7"
+                    />
+                    <span>天内可用</span>
+                </ProForm.Group>
+               }
+            </>
+            :null
          }
         </>
     )
