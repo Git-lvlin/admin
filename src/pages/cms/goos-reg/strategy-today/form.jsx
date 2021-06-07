@@ -64,12 +64,12 @@ export default (props) => {
       valueType: 'number',
       search: false,
     },
-    // {
-    //   title: '活动库存',
-    //   dataIndex: 'activityStockNum',
-    //   valueType: 'number',
-    //   search: false,
-    // },
+    {
+      title: '活动库存',
+      dataIndex: 'activityStockNum',
+      valueType: 'number',
+      search: false,
+    },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
@@ -128,7 +128,7 @@ export default (props) => {
       }}
     >
 <ProTable
-      rowKey="id"
+      rowKey="spuId"
       options={false}
       columns={columns}
       request={todayAllGoodsList}
@@ -157,7 +157,7 @@ export default (props) => {
       // )}
       tableAlertOptionRender={(a) => {
         console.log('a', a)
-        // setArr(a.selectedRowKeys.toString())
+        setArr(a.selectedRowKeys.toString())
       }}
       editable={{
         type: 'multiple',

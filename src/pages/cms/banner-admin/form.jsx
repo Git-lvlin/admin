@@ -147,11 +147,11 @@ export default (props) => {
             </dl>
           }
         >
-          <Upload multiple maxCount={1} accept="image/*" dimension={picSize[nowIndex]||'banner'} />
+          <Upload multiple maxCount={1} accept="image/*" proportion={picSize[nowIndex]||'banner'} />
         </Form.Item>
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText 
+        <ProFormText
           width="sm"
           name="sort"
           label="排序"

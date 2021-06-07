@@ -5,16 +5,26 @@ import { getImageSize } from '@/utils/utils';
 import upload from '@/utils/upload'
 
 const Upload = (props) => {
-  const { value, onChange, dirName = 'goods', maxCount = 1, size, dimension, ...rest } = props;
+  const { value, onChange, dirName = 'goods', maxCount = 1, size, dimension, proportion, ...rest } = props;
   const [fileList, setFileList] = useState([])
   const [loading, setLoading] = useState(false)
   const fileData = useRef([]);
 
   const beforeUpload = async (file) => {
-    if (dimension === 'banner') {
-      message.error('请先选择位置!')
+
+    if (proportion) {
+      if (proportion === 'banner') {
+        message.error('请先选择位置!')
+        return false;
+      }
+      const { width, height } = await getImageSize(file);
+      if (parseInt(proportion.width/proportion.height) === parseInt(width/height)) {
+        return true;
+      }
+      message.error('上传图片的大小不符合要求')
       return false;
     }
+
     if (size && file.size / 1024 > size) {
       message.error('上传图片的大小不符合要求')
       return false;
