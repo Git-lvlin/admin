@@ -91,12 +91,13 @@ export default {
   'menu.cms.price-comparsion.home-list': '比价优选',
   'menu.cms.price-comparsion.low-goods': '低价爆品',
   'menu.cms.route-url-deploy': '链接路由管理',
+  'menu.price-comparsion-management': '比价管理',
 
   'menu.coupon-management': '优惠券管理',
   'menu.coupon-management.coupon-list': '优惠券列表',
   'menu.coupon-management.construction':'新建优惠劵',
   'menu.coupon-management.coupon-codebase':'码库',
-  'menu.price-comparsion-management': '比价管理',
+ 
 
 
   'menu.community-management':'社区管理',

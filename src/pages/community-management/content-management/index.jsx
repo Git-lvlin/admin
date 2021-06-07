@@ -86,7 +86,7 @@ export default props => {
         },
         {
             title: '会员昵称',
-            dataIndex: 'userName',
+            dataIndex: 'memberName',
             valueType: 'text',
         },
         {
@@ -183,7 +183,8 @@ export default props => {
             options={false}
             actionRef={ref}
             params={{
-                pageSize:5
+                pageSize:5,
+                status:0
             }}
             request={adminList}
             search={{

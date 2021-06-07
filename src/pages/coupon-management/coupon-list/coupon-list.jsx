@@ -52,12 +52,12 @@ const TableList = (props) => {
       },
       hideInSearch: true,
     },
-    {
-      title: '发行总金额（元）',
-      dataIndex: 'issueQuantity',
-      valueType: 'text',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '发行总金额（元）',
+    //   dataIndex: 'issueQuantity',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     {
       title: '发行总数量（张）',
       dataIndex: 'issueQuantity',
@@ -190,7 +190,7 @@ const TableList = (props) => {
   ];
   //跳转到新建页面
   const Examine=(id)=>{
-    history.push(`/coupon-management/construction?id=`+id);
+    history.push(`/coupon-management/coupon-list/construction?id=`+id);
     dispatch({
       type:'DetailList/fetchLookDetail',
       payload:{id:id}
@@ -208,15 +208,13 @@ const TableList = (props) => {
   }
   // 跳转到码库
   const CodeLibrary=(id)=>{
-    history.push(`/coupon-management/coupon-codebase?id=`+id);
+    history.push(`/coupon-management/coupon-list/coupon-codebase?id=`+id);
   }
 
 //导出
-const exportExcel = (form) => {
-  console.log('form',form)
-  couponList({
-    ...form.getFieldsValue(),
-  }).then(res => {
+const exportExcel = (searchConfig) => {
+  // console.log('searchConfig',searchConfig.form.getFieldsValue())
+  couponList({}).then(res => {
     console.log('res',res)
       const data = res.data.map(item => {
         const { ...rest } = item;
@@ -284,25 +282,9 @@ const exportExcel = (form) => {
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
-          optionRender: ({ searchText, resetText },{ form }) => [
-            <Button
-              key="search"
-              type="primary"
-              onClick={() => {
-                form?.submit();
-              }}
-            >
-              {searchText}
-            </Button>,
-            <Button
-              key="rest"
-              onClick={() => {
-                form?.resetFields();
-              }}
-            >
-              {resetText}
-            </Button>,
-            <Button onClick={()=>{exportExcel(form)}} key="out">
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+          <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
             导出数据
           </Button>
           ],
@@ -314,7 +296,7 @@ const exportExcel = (form) => {
               key="primary"
               type="primary"
               onClick={() => {
-                history.push('/coupon-management/construction')
+                history.push('/coupon-management/coupon-list/construction')
               }}
             >
               新建优惠券
