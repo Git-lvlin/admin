@@ -40,45 +40,33 @@ export default function EditTable(props) {
       },
       ...arr,
       {
-        title: '零售供货价',
+        title: '供货价',
         dataIndex: 'retailSupplyPrice',
         width: 100,
         formItemProps: {
           rules: [{
             required: true,
             whitespace: true,
-            message: '请输入零售供货价',
+            message: '请输入供货价',
           }],
         }
       },
       {
-        title: '建议零售价',
-        dataIndex: 'suggestedRetailPrice',
+        title: '秒约价',
+        dataIndex: 'salePrice',
+        width: 100,
+        formItemProps: {
+          rules: [{
+            required: true,
+            whitespace: true,
+            message: '请输入销售价',
+          }],
+        }
+      },
+      {
+        title: '市场价',
+        dataIndex: 'marketPrice',
         width: 100
-      },
-      {
-        title: '批发价',
-        dataIndex: 'wholesalePrice',
-        width: 100,
-        formItemProps: {
-          rules: [{
-            required: true,
-            whitespace: true,
-            message: '请输入批发价',
-          }],
-        }
-      },
-      {
-        title: '批发起售量',
-        dataIndex: 'wholesaleMinNum',
-        width: 100,
-        formItemProps: {
-          rules: [{
-            required: true,
-            whitespace: true,
-            message: '请输入批发起售量',
-          }],
-        }
       },
       {
         title: '库存预警值',
@@ -96,23 +84,6 @@ export default function EditTable(props) {
             message: '请输入可用库存',
           }],
         }
-      },
-      {
-        title: '销售价',
-        dataIndex: 'salePrice',
-        width: 100,
-        formItemProps: {
-          rules: [{
-            required: true,
-            whitespace: true,
-            message: '请输入销售价',
-          }],
-        }
-      },
-      {
-        title: '市场划线价',
-        dataIndex: 'marketPrice',
-        width: 100
       },
       {
         title: '操作',

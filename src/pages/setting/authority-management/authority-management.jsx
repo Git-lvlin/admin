@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, Table } from 'antd';
+import { Button, Card, Table, Spin } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 // import { PlusOutlined } from '@ant-design/icons';
 import * as api from '@/services/setting/authority-management';
@@ -14,6 +14,7 @@ const TableList = () => {
   const [treeData, setTreeData] = useState([])
   const [menuTree, setMenuTree] = useState([])
   const [pageTree, setPageTree] = useState([])
+  const [loading, setLoading] = useState(false);
 
   const getPageTree = (data) => {
     const arr = [];
@@ -43,11 +44,17 @@ const TableList = () => {
   }
 
   const getRuleList = () => {
+    setLoading(true);
     api.adminRule()
       .then(res => {
-        setTreeData(arrayToTree(res.data))
-        setMenuTree(getMenuTree(res.data))
-        setPageTree(getPageTree(res.data))
+        if (res.code === 0) {
+          setTreeData(arrayToTree(res.data))
+          setMenuTree(getMenuTree(res.data))
+          setPageTree(getPageTree(res.data))
+        }
+      })
+      .finally(() => {
+        setLoading(false);
       })
   }
 
@@ -124,14 +131,16 @@ const TableList = () => {
         >
           新建权限
         </Button>
-        <Table
-          dataSource={treeData}
-          rowKey="id"
-          columns={columns}
-          bordered={false}
-          scroll={{ x: 'max-content' }}
-          pagination={false}
-        />
+        <Spin spinning={loading}>
+          <Table
+            dataSource={treeData}
+            rowKey="id"
+            columns={columns}
+            bordered={false}
+            scroll={{ x: 'max-content' }}
+            pagination={false}
+          />
+        </Spin>
       </Card>
       <NewRule
         visible={newRuleVisible}

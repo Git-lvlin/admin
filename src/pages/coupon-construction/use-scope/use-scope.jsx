@@ -7,6 +7,7 @@ const { TabPane } = Tabs;
 
 const useScope=props => {
     const {dispatch}=props
+    const id=props.id
     const onTabs=(val)=>{
         console.log('val',val)
         dispatch({
@@ -20,10 +21,10 @@ const useScope=props => {
         <>
             <Tabs defaultActiveKey="1" onChange={onTabs}>
                 <TabPane tab={<FormattedMessage id="formandbasic-form.Secret.Garden" /> } key="1">
-                    <UseSecond/>
+                    <UseSecond id={id}/>
                 </TabPane>
                 <TabPane tab={<FormattedMessage id="formandbasic-form.container.number" />} key="2">
-                    <UseCollect/>
+                    <UseCollect id={id}/>
                 </TabPane>
             </Tabs>
         </>
