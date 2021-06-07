@@ -210,27 +210,7 @@ const TableList = (props) => {
     history.push(`/coupon-management/coupon-list/coupon-codebase?id=`+id);
   }
 
-<<<<<<< HEAD
-  //导出
-  const exportExcel = (form) => {
-    console.log('form',form)
-    couponList({
-      ...form.getFieldsValue(),
-    }).then(res => {
-      console.log('res',res)
-        const data = res.data.map(item => {
-          const { ...rest } = item;
-          return {
-            ...rest,
-            // couponName: amountTransform(rest.couponName, '/'),
-            // couponType: amountTransform(rest.couponType, '/'),
-            // useType: amountTransform(rest.useType, '/'),
-            // issueQuantity: amountTransform(rest.issueQuantity, '/'),
-            // lqCouponQuantity: amountTransform(rest.lqCouponQuantity, '/'),
-            // activityTimeDisplay: amountTransform(rest.activityTimeDisplay, '/'),
-            // adminName: amountTransform(rest.adminName, '/'),
-            // couponStatus: amountTransform(rest.couponStatus, '/'),
-=======
+
 //导出
 const exportExcel = (searchConfig) => {
   // console.log('searchConfig',searchConfig.form.getFieldsValue())
@@ -248,8 +228,6 @@ const exportExcel = (searchConfig) => {
           // activityTimeDisplay: amountTransform(rest.activityTimeDisplay, '/'),
           // adminName: amountTransform(rest.adminName, '/'),
           // couponStatus: amountTransform(rest.couponStatus, '/'),
->>>>>>> setup
-
           }
         });
         const wb = XLSX.utils.book_new();

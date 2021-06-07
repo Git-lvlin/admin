@@ -71,10 +71,14 @@ const couponConstruction=(props) => {
               values.useTypeInfoJ = {//集约商品详情信息
                 wholesaleIds: UseScopeList.wholesaleIds
               }
-            couponSub(values).then(()=>{
-              history.push('/coupon-management/coupon-list') 
-            })
-            message.success('提交成功'); 
+            couponSub(values).then((res)=>{
+              if(res.code==0){
+                history.push('/coupon-management/coupon-list') 
+                message.success('提交成功'); 
+              }else{
+                message.error(res.msg); 
+              }
+            })  
           } catch (error) {
             console.log('error', error)
           }
