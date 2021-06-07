@@ -67,5 +67,5 @@ export default {
   'formandbasic-form.quota':'限领',
   'formandbasic-form.zhang':'张',
   'formandbasic-form.please.enter.coupon.name':'请输入优惠劵名称',
-  'formandbasic-form.please.enter.coupon.name':'有效期',
+  'formandbasic-form.period.of.validity':'有效期',
 };

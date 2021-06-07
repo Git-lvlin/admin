@@ -14,7 +14,7 @@ const { TextArea } = Input;
 
 const couponConstruction=(props) => {
   const { dispatch,DetailList,UseScopeList }=props
-  const [position,setPosition]=useState(1)
+  const [position,setPosition]=useState()
   let id = props.location.query.id
   const [form] = Form.useForm()
   useEffect(() => {
@@ -27,7 +27,7 @@ const couponConstruction=(props) => {
   //优惠劵验证规则
   const checkConfirm=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
-    if (value.length > 50) {
+    if (value&&value.length > 50) {
           await reject('优惠券名称不超过50个字符')
       }else if (/^[a-zA-Z0-9_]+$/.test(value)) {
           await reject('只能输入汉字')
@@ -71,10 +71,14 @@ const couponConstruction=(props) => {
               values.useTypeInfoJ = {//集约商品详情信息
                 wholesaleIds: UseScopeList.wholesaleIds
               }
-            couponSub(values)
-            message.success('提交成功');
-            history.push('/coupon-management/coupon-list') 
-            
+            couponSub(values).then((res)=>{
+              if(res.code==0){
+                history.push('/coupon-management/coupon-list') 
+                message.success('提交成功'); 
+              }else{
+                message.error(res.msg); 
+              }
+            })  
           } catch (error) {
             console.log('error', error)
           }
@@ -151,7 +155,7 @@ const couponConstruction=(props) => {
         {/* 有效期 */}
         <ProFormRadio.Group
           name="activityTimeType"
-          label="有效期"
+          label={<FormattedMessage id="formandbasic-form.period.of.validity" />}
           fieldProps={{
             onChange: (e) => setPosition(e.target.value),
           }}

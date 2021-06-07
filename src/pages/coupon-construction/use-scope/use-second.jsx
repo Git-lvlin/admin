@@ -81,8 +81,93 @@ const useSecond=(props)=>{
        {
           title: '分类',
           dataIndex: 'unit',
-       }
+       },
+       {
+        title: '操作',
+        valueType: 'text',
+        render:(text, record, _, action)=>[
+            <a onClick={()=>delType(record.key)}>删除</a>
+        ]
+     }
     ]
+    const columns3= [
+        {
+            title: 'spuID',
+            dataIndex: 'spuId',
+        },
+        {
+            title: '商品图片',
+            dataIndex: 'goodsImageUrl',
+            width:50,
+            valueType: 'text',
+        },
+        {
+            title: '商品名称',
+            dataIndex: 'goodsName',
+            valueType: 'text',
+        },
+        {
+            title: '供应商名称',
+            dataIndex: 'supplierName',
+            valueType: 'text',
+        },
+        {
+            title: '商品分类',
+            dataIndex: 'gcId1Display',
+            valueType: 'text',
+        },
+        {
+            title: '商品品牌',
+            dataIndex: 'brandName',
+            valueType: 'text',
+        },
+        {
+            title: '可用库存',
+            dataIndex: 'stockNum',
+        },
+        {
+            title: '销售价',
+            dataIndex: 'goodsSalePrice',
+        },
+        {
+            title: '操作',
+            valueType: 'text',
+            render:(text, record, _, action)=>[
+                <a onClick={()=>delGoods(record.spuId)}>删除</a>
+            ]
+         }
+    ];
+    //删除品类
+    const delType=key=>{
+        console.log('key',key)
+        setCates([])
+        dispatch({
+            type:'UseScopeList/fetchLookUnit',
+            payload:{
+                unit:null
+            }
+        })
+    }
+    //删除商品
+    const delGoods=val=>{
+        setGoods(goods.filter(ele=>(
+            ele.spuId!=val
+        )))
+        console.log('goods',goods)
+    //     let box=''
+    //     goods.map(ele=>{
+    //         box+=ele.spuId+','
+    //     })
+    //     box=box.substring(0,box.length-1)
+    //     console.log('box',box)
+    //    setSpuIds(box)
+    //     dispatch({
+    //         type:'UseScopeList/fetchLookSpuIds',
+    //         payload:{
+    //             spuIds:spuIds.substring(0,spuIds.length-1)
+    //         }
+    //     })
+    }
     const actionRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading,setLoading]=useState(true)
@@ -202,7 +287,7 @@ const useSecond=(props)=>{
                                 toolBarRender={false}
                                 search={false}
                                 rowKey="spuId"
-                                columns={columns}
+                                columns={columns3}
                                 dataSource={goods}
                                 style={{display:loading?'none':'block'}}
                             />
@@ -212,7 +297,7 @@ const useSecond=(props)=>{
                     :null
                 }
                 {
-                    position==3||(parseInt(id)==id )&&DetailList.data?.goodsType==3?
+                    position==3||(parseInt(id)==id)&&DetailList.data?.goodsType==3?
                         <>
                         {
                             (parseInt(id)==id)?
