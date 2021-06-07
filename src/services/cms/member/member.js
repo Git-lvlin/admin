@@ -148,8 +148,8 @@ export const hotGoosList = async (params = {}, options = {}) => {
   }
 }
 export const crazyDateList = async (params = {}, options = {}) => {
-  const { current, pageSize, status, ...rest } = params;
-
+  const { current, pageSize, ...rest } = params;
+  
   const data = {
     page: current,
     size: pageSize,
