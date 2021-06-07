@@ -8,34 +8,30 @@ import ProForm, {
 import Upload from '@/components/upload';
 import { kingKongAdd, kingKongModify } from '@/services/cms/member/member';
 
-const waitTime = (values) => {
-  console.log('values', values)
-  const { id, ...rest } = values
-  const param = {
-    ...rest
-  }
-  let api = kingKongAdd()
-  if (id) {
-    param.id = id
-    api = kingKongModify()
-  }
-  console.log('param', param)
-  return new Promise((resolve) => {
-    api(param).then((res) => {
-      console.log('res', res);
-      if (res.code === 0) {
-        resolve(true);
-      }
-    })
-  });
-};
-
-
-
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, change, setVisible, visible } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
+
+  const waitTime = (values) => {
+    const { id, ...rest } = values
+    const param = {
+      ...rest
+    }
+    let api = kingKongAdd
+    if (id) {
+      param.id = id
+      api = kingKongModify
+    }
+    return new Promise((resolve) => {
+      api(param).then((res) => {
+        if (res.code === 0) {
+          change(true)
+          resolve(true);
+        }
+      })
+    });
+  };
 
   useEffect(() => {
     if (detailData) {
@@ -56,9 +52,6 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        onClose: () => {
-          onClose();
-        }
       }}
       onFinish={async (values) => {
         await waitTime(values);

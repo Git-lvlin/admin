@@ -308,6 +308,13 @@ export const kongKongDistrictDel = (params = {}, options = {}) => {
   });
 }
 
+export const kongKongModifyType = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/goodsType/goodsTypeUpdateMoreState', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
 
 export const memberOperation = (params = {}, options = {}) => {
   return request('/auth/activity/Activity/spanceInfoStatusEdit', {
