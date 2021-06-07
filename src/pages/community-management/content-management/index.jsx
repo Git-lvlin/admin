@@ -21,11 +21,17 @@ export default props => {
     }
     const columns = [
         {
-            title: '帖子ID：',
+            title: '帖子ID',
             dataIndex: 'id',
             render:(text, record, _, action)=>[
                 <a onClick={()=>history.push('/community-management/content-management/dynamic-getdynamicdetail?id='+record.id)}>{record.id}</a>
             ],
+            hideInSearch:true
+        },
+        {
+            title: '帖子ID',
+            dataIndex: 'dynamicId',
+            hideInTable:true
         },
         {
             title: '发布时间',
@@ -37,12 +43,14 @@ export default props => {
         {
             title: '发布时间',
             dataIndex: 'createTime',
+            hideInSearch:true
         },
         {
             title: '按操作状态：',
-            dataIndex: 'spuId',
+            dataIndex: 'status',
             valueType:'select',
             valueEnum: {
+                0:'全部',
                 1: '禁评',
                 2: '禁转',
                 3: '删除',
@@ -60,9 +68,15 @@ export default props => {
         // },
         {
             title: '所属圈子：',
-            dataIndex: 'circleName',
-            valueType:'select',
+            dataIndex:'circleId',
             renderFormItem: () => (<CircleSelect/>),
+            hideInTable:true
+        },
+        {
+            title: '所属圈子',
+            dataIndex: 'circleName',
+            valueType:'text',
+            hideInSearch:true
         },
        
         {
@@ -168,6 +182,9 @@ export default props => {
             rowKey="id"
             options={false}
             actionRef={ref}
+            params={{
+                pageSize:5
+            }}
             request={adminList}
             search={{
                 defaultCollapsed: false,
@@ -175,14 +192,14 @@ export default props => {
                 optionRender: (searchConfig, formProps, dom) => [
                     ...dom.reverse(),
                     <Button
-                        key="primary"
-                        type="primary"
-                        onClick={() => {
-                            history.push('/community-management/content-management/add-content')
-                        }}
-                        >
-                        添加
-                    </Button>,
+                    key="primary"
+                    type="primary"
+                    onClick={() => {
+                        history.push('/community-management/content-management/add-content')
+                    }}
+                    >
+                    添加
+                </Button>,
                 ],
             }}
             columns={columns}

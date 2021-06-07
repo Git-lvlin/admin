@@ -15,6 +15,7 @@ const CircleSelect = ({ value, onChange, }) => {
   },[])
 
   const changeHandle = (v) => {
+    console.log('v',v)
     onChange(v)
   }
   return (
