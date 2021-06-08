@@ -88,7 +88,6 @@ const couponConstruction=(props) => {
           name="couponName"
           label={<FormattedMessage id="formandbasic-form.title.label" />}
           rules={[
-            // {  message:  },
             {validator: checkConfirm}
           ]}
         />
@@ -102,7 +101,7 @@ const couponConstruction=(props) => {
         </Form.Item>
 
         {/* 发行量 */}
-        <Form.Item label={<FormattedMessage id="formandbasic-form.circulation" />} name="layout" >
+        <Form.Item  label={<FormattedMessage id="formandbasic-form.circulation" />} name="layout" >
           <Circulation id={id} />
         </Form.Item>
 
@@ -111,7 +110,7 @@ const couponConstruction=(props) => {
           <ProFormRadio.Group
             name="limitType"
             label={<FormattedMessage id="formandbasic-form.each.limit" />}
-            // rules={[{ required: true }]}
+            rules={[{ required: true, message: '请选择限领方式' }]}
             options={[
               { 
                 label: <FormattedMessage id="formandbasic-form.needless" />, value: 1, 
@@ -131,6 +130,7 @@ const couponConstruction=(props) => {
         <FormItem
           label={<FormattedMessage id="formandbasic-form.date.label" />}
           name="date"
+          rules={[{ required: true, message: '请选择限领时间' }]}
         >
           {
             id&&DetailList.data?
@@ -156,6 +156,7 @@ const couponConstruction=(props) => {
           fieldProps={{
             onChange: (e) => setPosition(e.target.value),
           }}
+          rules={[{ required: true, message: '请选择有效期限' }]}
           options={[
             {
               label: '固定时间',
@@ -175,7 +176,6 @@ const couponConstruction=(props) => {
         <ProForm.Item
           label={<FormattedMessage id="formandbasic-form.usable.range" />}
           name="useType"
-        // rules={[{ required: true }]}
         >
           <UseScope id={id}/>
         </ProForm.Item>
@@ -184,6 +184,7 @@ const couponConstruction=(props) => {
         <FormItem
           label={<FormattedMessage id="formandbasic-form.goal.label" />}
           name="couponRule"
+          rules={[{ required: true, message: '请备注使用说明' }]}
         >
           <TextArea
             style={{ minHeight: 32, marginTop: 15 }}
