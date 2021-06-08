@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Select } from 'antd';
-import { adminCircleList } from '@/services/community-management/circle-admincirclelist';
+import { adminCircleList } from '@/services/community-management/circle-admin-circle-list';
 
 const CircleSelect = ({ value, onChange, }) => {
   const [circleData, setCircleData] = useState([]);

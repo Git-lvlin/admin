@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { getDynamicDetail } from '@/services/community-management/dynamic-getdynamicdetail';
+import { getDynamicDetail } from '@/services/community-management/dynamic-get-dynamic-detail';
 import { Button, Descriptions } from 'antd';
 import { history } from 'umi';
 

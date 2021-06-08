@@ -17,14 +17,6 @@ const exportExcel = (form) => {
           const { ...rest } = item;
           return {
             ...rest,
-            // couponName: amountTransform(rest.couponName, '/'),
-            // couponType: amountTransform(rest.couponType, '/'),
-            // useType: amountTransform(rest.useType, '/'),
-            // issueQuantity: amountTransform(rest.issueQuantity, '/'),
-            // lqCouponQuantity: amountTransform(rest.lqCouponQuantity, '/'),
-            // activityTimeDisplay: amountTransform(rest.activityTimeDisplay, '/'),
-            // adminName: amountTransform(rest.adminName, '/'),
-            // couponStatus: amountTransform(rest.couponStatus, '/'),
   
           }
         });

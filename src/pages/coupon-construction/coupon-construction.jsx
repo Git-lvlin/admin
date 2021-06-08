@@ -5,7 +5,7 @@ import CouponType from './coupon-type/coupon-type'
 import Circulation from './circulation/circulation'
 import UseScope from './use-scope/use-scope'
 import PeriodValidity from './period-validity/period-validity'
-import { couponSub } from '@/services/coupon-construction/coupon-couponsub';
+import { couponSub } from '@/services/coupon-construction/coupon-coupon-sub';
 import ProForm, { ProFormText, ProFormRadio } from '@ant-design/pro-form';
 import { history,connect } from 'umi';
 const FormItem = Form.Item;
