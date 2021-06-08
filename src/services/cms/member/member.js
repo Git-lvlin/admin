@@ -56,6 +56,14 @@ export const bannerAdd = (params = {}, options = {}) => {
   });
 }
 
+export const tagSortModify = (params = {}, options = {}) => {
+  return request('/auth/activity/Goods/goodsTagSortSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const kingKongAdd = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/goodsType/goodsTypeSave', {
     method: 'POST',

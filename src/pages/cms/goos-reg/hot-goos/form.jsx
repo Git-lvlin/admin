@@ -10,7 +10,7 @@ import { todayAllGoodsList } from '@/services/cms/member/member';
 
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { setVisible, setFlag, visible } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
   const columns = [
@@ -80,6 +80,7 @@ export default (props) => {
     return new Promise((resolve) => {
       hotGoosAdd(param).then((res) => {
         if (res.code === 0) {
+          setFlag(true)
           resolve(true);
         }
       })
@@ -93,7 +94,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={`${detailData ? '编辑' : '新增'}`}
+      title={`新增`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -106,9 +107,6 @@ export default (props) => {
       drawerprops={{
         forceRender: true,
         destroyOnClose: true,
-        onClose: () => {
-          onClose();
-        }
       }}
       onFinish={async (values) => {
         await waitTime(values);
@@ -135,21 +133,10 @@ export default (props) => {
               取消选择
             </a>
           </span>
-          <span>{`待发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.containers,
-            0,
-          )} 个`}</span>
-          <span>{`已发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.callNumber,
-            0,
-          )} 个`}</span>
         </Space>
       )}
       tableAlertOptionRender={(a) => {
         setArr(a.selectedRowKeys.toString())
-      }}
-      editable={{
-        type: 'multiple',
       }}
       search={{
         labelWidth: 'auto',

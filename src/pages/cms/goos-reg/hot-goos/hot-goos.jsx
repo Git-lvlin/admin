@@ -1,12 +1,12 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
 import ReplaceForm from './replace-form';
-
+import Modify from './edit';
 import { hotGoosList, hotGoosOperation, tagSortTop } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
 
@@ -14,10 +14,20 @@ const HotGoos = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [replaceFormVisible, setReplaceFormVisible] = useState(false);
+  const [modifyFormVisible, setModifyFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(false);
+  const [flag, setFlag] = useState(false);
+
+  useEffect(() => {
+    if (flag) {
+      actionRef.current.reset();
+      setFlag(false)
+    }
+  }, [flag])
+
   const getDetail = (data) => {
     setDetailData(data);
-    setFormVisible(true);
+    setModifyFormVisible(true);
   }
 
   const formControl = (data,type) => {
@@ -172,7 +182,7 @@ const HotGoos = () => {
             {record.status===2&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
             &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
+            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {getDetail(record)}}>排序</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
           </>
         )
@@ -257,8 +267,7 @@ const HotGoos = () => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+      setFlag={setFlag}
     />}
     {replaceFormVisible && <ReplaceForm
       visible={replaceFormVisible}
@@ -266,6 +275,12 @@ const HotGoos = () => {
       detailData={detailData}
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+    />}
+      {modifyFormVisible && <Modify
+      visible={modifyFormVisible}
+      setVisible={setModifyFormVisible}
+      detailData={detailData}
+      setFlag={setFlag}
     />}
     </PageContainer>
   );
