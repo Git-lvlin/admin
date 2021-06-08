@@ -3,8 +3,8 @@ import request from '@/utils/request';
 export const addressList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
   const res = await request('/auth/supplier/user/addressList', {
-    method: 'GET',
-    params: {
+    method: 'POST',
+    data: {
       page: current,
       size: pageSize,
       ...rest

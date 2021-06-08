@@ -1,13 +1,13 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { adminList } from '@/services/community-management/dynamic-adminlist';
-import { banDynamicComment } from '@/services/community-management/dynamic-bandynamiccomment';
-import { cancelBanDynamicComment } from '@/services/community-management/dynamic-cancelbndynamiccomment';
-import { banShare } from '@/services/community-management/dynamic-banshare';
-import { cancelBanShare } from '@/services/community-management/dynamic-cancelbanshare';
+import { adminList } from '@/services/community-management/dynamic-admin-list';
+import { banDynamicComment } from '@/services/community-management/dynamic-ban-dynamic-comment';
+import { cancelBanDynamicComment } from '@/services/community-management/dynamic-cancel-ban-dynamic-comment';
+import { banShare } from '@/services/community-management/dynamic-ban-share';
+import { cancelBanShare } from '@/services/community-management/dynamic-cancel-ban-share';
 import { dynamicDelete } from '@/services/community-management/dynamic-delete';
-import { cancelDelete } from '@/services/community-management/dynamic-canceldelete';
+import { cancelDelete } from '@/services/community-management/dynamic-cancel-delete';
 import CircleSelect from '@/components/circle-select'
 import  ProForm,{ ModalForm,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';
@@ -24,7 +24,7 @@ export default props => {
             title: '帖子ID',
             dataIndex: 'id',
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/content-management/dynamic-getdynamicdetail?id='+record.id)}>{record.id}</a>
+                <a onClick={()=>history.push('/community-management/content-management/dynamic-get-dynamic-detail?id='+record.id)}>{record.id}</a>
             ],
             hideInSearch:true
         },
@@ -86,7 +86,7 @@ export default props => {
         },
         {
             title: '会员昵称',
-            dataIndex: 'memberName',
+            dataIndex: 'userName',
             valueType: 'text',
         },
         {
@@ -101,7 +101,7 @@ export default props => {
             valueType: 'text',
             hideInSearch: true,
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/content-management/dynamic-listlikes?id='+record.id)}>{record.hitsNum}</a>
+                <a onClick={()=>history.push('/community-management/content-management/dynamic-list-likes?id='+record.id)}>{record.hitsNum}</a>
             ],
         },
         {
@@ -110,7 +110,7 @@ export default props => {
             valueType: 'text',
             hideInSearch: true,
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/content-management/dynamic-comment-replylist?id='+record.id)}>{record.commentNum}</a>
+                <a onClick={()=>history.push('/community-management/content-management/dynamic-comment-reply-list?id='+record.id)}>{record.commentNum}</a>
             ],
         },
         {
@@ -160,11 +160,13 @@ export default props => {
                     }}
                     onFinish={async (values) => {
                         console.log('values',values);
-                        dynamicDelete({id:record.id})
-                        setVisible(false)
-                        message.success('提交成功');
-                        ref.current.reload()
-                        return true;
+                        dynamicDelete({id:record.id}).then(res=>{
+                            if(res==0){
+                                setVisible(false)
+                                ref.current.reload()
+                                return true;
+                            }
+                        })        
                     }}
                 >
                 <p>确认要删除所选帖子吗？</p>

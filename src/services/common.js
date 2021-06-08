@@ -7,3 +7,11 @@ export const getExpressList = (params, options = {}) => {
     ...options
   });
 }
+
+export const categoryAll = (params = {}, options = {}) => {
+  return request('/auth/goods/product/categoryAll', {
+    method: 'get',
+    params,
+    ...options
+  });
+}

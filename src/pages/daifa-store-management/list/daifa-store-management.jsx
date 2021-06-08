@@ -1,10 +1,13 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
-import { helperList, statusSwitch } from '@/services/supplier-management/supplier-list'
+import { storeList, storeDetail } from '@/services/daifa-store-management/list'
 import { history } from 'umi';
+import Edit from './edit';
 
 const TableList = () => {
+  const [formVisible, setFormVisible] = useState(false);
+  const [detailData, setDetailData] = useState(null);
   const actionRef = useRef();
 
   const switchStatus = (id, type) => {
@@ -18,32 +21,51 @@ const TableList = () => {
     })
   }
 
+  const getDetail = (id) => {
+    storeDetail({
+      storeNo: id
+    }).then(res => {
+      if (res.code === 0) {
+        setDetailData(res.data)
+        setFormVisible(true)
+      }
+    })
+  }
+
   const columns = [
     {
-      title: '顾问名称',
-      dataIndex: 'companyUserName',
+      title: '店铺名称',
+      dataIndex: 'storeName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入顾问名称'
+        placeholder: '请输入店铺名称'
       }
     },
     {
-      title: '登录账号',
-      dataIndex: 'accountName',
+      title: '店主姓名',
+      dataIndex: 'realname',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入登录账号'
+        placeholder: '请输入店主姓名'
       }
     },
     {
       title: '手机号码',
-      dataIndex: 'companyUserPhone',
+      dataIndex: 'mobile',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入手机号码'
+      }
+    },
+    {
+      title: '微信号',
+      dataIndex: 'wechatNo',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '备注',
-      dataIndex: 'remark',
+      title: '岗位或角色',
+      dataIndex: 'station',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -52,13 +74,26 @@ const TableList = () => {
       dataIndex: 'status',
       valueType: 'select',
       valueEnum: {
-        3: '禁用',
-        1: '启用'
+        1: '已启用',
+        2: '已禁用',
+        3: '未激活'
+      }
+    },
+    {
+      title: '商品数',
+      dataIndex: 'goodsTotal',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, data) => {
+        if (_ === 0) {
+          return _;
+        }
+        return <a onClick={() => { history.push(`/supplier-management/supplier-sub-account/${data.id}`) }}>{_}</a>
       }
     },
     {
       title: '创建人',
-      dataIndex: 'createUser',
+      dataIndex: '',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -69,38 +104,16 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '涉及供应商',
-      dataIndex: 'manageSupplierNum',
-      valueType: 'text',
-      hideInSearch: true,
-      render: (_, data) => {
-        if (_ === 0) {
-          return _;
-        }
-        return <a onClick={() => { history.push(`/supplier-management/consultant-supplier-list/${data.id}`) }}>{_}</a>
-      }
-    },
-    {
-      title: '返佣SPU商品',
-      dataIndex: 'manageGoodsNum',
-      valueType: 'text',
-      hideInSearch: true,
-      render: (_, data) => {
-        if (_ === 0) {
-          return _;
-        }
-        return <a onClick={() => { history.push(`/supplier-management/consultant-product-list/${data.id}`) }}>{_}</a>
-      }
-    },
-    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, data) => (
         <Space>
           {data.status === 1 && <a onClick={() => { switchStatus(data.id, 2) }}>禁用</a>}
-          {data.status === 3 && <a onClick={() => { switchStatus(data.id, 1) }}>启用</a>}
-          <a>修改密码</a>
+          {data.status === 2 && <a onClick={() => { switchStatus(data.id, 1) }}>启用</a>}
+          <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.storeNo}`) }}>详情</a>
+          <a onClick={() => { getDetail(data.storeNo) }}>编辑</a>
+          <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>佣金明细</a>
         </Space>
       ),
     },
@@ -111,7 +124,7 @@ const TableList = () => {
       <ProTable
         rowKey="id"
         options={false}
-        request={helperList}
+        request={storeList}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -139,6 +152,13 @@ const TableList = () => {
         columns={columns}
         actionRef={actionRef}
       />
+      {formVisible && <Edit
+        visible={formVisible}
+        setVisible={setFormVisible}
+        detailData={detailData}
+        callback={() => { actionRef.current.reload(); setDetailData(null) }}
+        onClose={() => { setDetailData(null) }}
+      />}
     </>
 
   );

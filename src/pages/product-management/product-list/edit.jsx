@@ -182,12 +182,14 @@ export default (props) => {
         goodsName: goods.goodsName,
         goodsDesc: goods.goodsDesc,
         supplierSpuId: goods.supplierSpuId,
+        supplierSkuId: goods.supplierSkuId,
         goodsKeywords: goods.goodsKeywords,
         goodsSaleType: goods.goodsSaleType,
         isFreeFreight: goods.isFreeFreight,
         isMultiSpec: detailData.isMultiSpec,
         stockNum: goods.stockNum,
         stockAlarmNum: goods.stockAlarmNum,
+        freightTemplateId: +goods.freightTemplateId,
         // wholesaleMinNum: goods.wholesaleMinNum,
         supportNoReasonReturn: goods.supportNoReasonReturn,
         buyMinNum: goods.buyMinNum,
@@ -197,21 +199,31 @@ export default (props) => {
         detailImages: uploadImageFormatConversion(detailData.detailImages, 'imageUrl'),
         advImages: uploadImageFormatConversion(detailData.advImages, 'imageUrl'),
         videoUrl: goods.videoUrl,
+        brandId: goods.brandId,
         gcId: [goods.gcId1, goods.gcId2],
       })
 
       if (detailData.isMultiSpec) {
         form.setFieldsValue({
           specName1: specName['1'],
-          specName2: specName['2'],
           specValues1: Object.values(specValues['1']).map(item => ({ name: item })),
-          specValues2: Object.values(specValues['2']).map(item => ({ name: item })),
         })
+
+        if (specName['2']) {
+          form.setFieldsValue({
+            specName2: specName['2'],
+            specValues2: Object.values(specValues['2']).map(item => ({ name: item })),
+          })
+        }
+
         const specValuesMap = {};
         Object.values(specValues).forEach(element => {
           const obj = Object.entries(element);
-          // eslint-disable-next-line prefer-destructuring
-          specValuesMap[obj[0][0]] = obj[0][1];
+          obj.forEach(item => {
+            // eslint-disable-next-line prefer-destructuring
+            specValuesMap[item[0]] = item[1];
+          })
+          
         });
         setTableHead(Object.values(specName))
         setTableData(Object.entries(specData).map(item => {

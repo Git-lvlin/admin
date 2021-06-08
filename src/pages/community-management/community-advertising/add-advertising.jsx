@@ -1,6 +1,6 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { getDetailById } from '@/services/community-management/adsense-getdetailbyId';
-import { saveAdsense } from '@/services/community-management/adsense-saveadsense';
+import { getDetailById } from '@/services/community-management/adsense-get-detail-byid';
+import { saveAdsense } from '@/services/community-management/adsense-save-adsense';
 import ProForm, { ProFormTextArea,ProFormText,ProFormRadio} from '@ant-design/pro-form';
 import { history } from 'umi';
 import { message, Form } from 'antd';
@@ -37,9 +37,12 @@ export default props => {
     <ProForm
         onFinish={async (values) => {
           console.log(values);
-          saveAdsense(values)
-          history.push('/community-management/community-advertising')
-          message.success('提交成功');
+          saveAdsense(values).then(res=>{
+            if(res.code==0){
+              history.push('/community-management/community-advertising')
+              message.success('提交成功');
+            }
+          })
         }}
         form={form}
         params={{}}

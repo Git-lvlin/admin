@@ -5,8 +5,8 @@ export const couponAddQuantity= async (params = {}, options = {}) => {
   const res = await request('/auth/activity/Coupon/couponAddQuantity', {
     method: 'POST',
     data: {
-     id,
-     issueQuantity
+     id:parseInt(id),
+     issueQuantity:parseInt(issueQuantity)
     },
     ...options
   });

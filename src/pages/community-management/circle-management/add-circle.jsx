@@ -1,6 +1,6 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { circleInsert } from '@/services/community-management/circle-insert';
-import { circleUpdateCircle } from '@/services/community-management/circle-updatecircle';
+import { circleUpdateCircle } from '@/services/community-management/circle-update-circle';
 import { circleDetail } from '@/services/community-management/circle-detail';
 import ProForm, { ProFormSwitch,ProFormTextArea,ProFormText,ProFormUploadButton,ProFormRadio} from '@ant-design/pro-form';
 import { history } from 'umi';
@@ -25,12 +25,21 @@ export default props => {
           console.log(values);
           if(id){
             values.id=id
-            circleUpdateCircle(values)
+            circleUpdateCircle(values).then(res=>{
+              if(res.code==0){
+                history.push('/community-management/circle-management')
+                message.success('提交成功');
+              }
+            })
           }else{
-            circleInsert(values)
+            circleInsert(values).then(res=>{
+              if(res.code==0){
+                history.push('/community-management/circle-management')
+                message.success('提交成功');
+              }
+            })
           }
-          history.push('/community-management/circle-management')
-          message.success('提交成功');
+         
         }}
         form={form}
         params={{}}

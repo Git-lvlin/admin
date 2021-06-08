@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { adminReportDetailList } from '@/services/community-management/report-adminreportdetaillist';
+import { listLikes } from '@/services/community-management/dynamic-list-likes';
 import  ProForm,{ ModalForm,ProFormSelect} from '@ant-design/pro-form';
 import { Tabs } from 'antd';
 
@@ -11,32 +11,12 @@ console.log('id',id)
 const actionRef = useRef();
 const columns= [
   {
-      title: '评论ID',
+      title: '会员ID',
       dataIndex: 'userId',
   },
   {
-      title: '举报人昵称',
+      title: '会员昵称',
       dataIndex: 'userName',
-      valueType: 'text',
-  },
-  {
-      title: '举报类型',
-      dataIndex: 'type',
-      valueType: 'text',
-  },
-  {
-      title: '举报时间',
-      dataIndex: 'createTime',
-      valueType: 'text',
-  },
-  {
-      title: '举报原因',
-      dataIndex: 'reason',
-      valueType: 'text',
-  },
-  {
-      title: '证明截图',
-      dataIndex: 'images',
       valueType: 'text',
   }
 ];
@@ -46,12 +26,9 @@ const columns= [
             rowKey="userId"
             options={false}
             params={{
-              page:0,
-              size:5,
-              sourceId:id,
-              status:1,
+                id
             }}
-            request={adminReportDetailList}
+            request={listLikes}
             actionRef={actionRef}
             search={false}
             toolBarRender={false}

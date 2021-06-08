@@ -10,13 +10,13 @@ export default {
     {
       name: 'construction',
       path: '/coupon-management/coupon-list/construction',
-      component: './coupon-construction',
+      component: './coupon-construction/coupon-construction',
       hideInMenu: true,
     },
     {
       name: 'coupon-codebase',
       path: '/coupon-management/coupon-list/coupon-codebase',
-      component: './coupon-codebase',
+      component: './coupon-codebase/coupon-codebase',
       hideInMenu: true,
     },
   ],

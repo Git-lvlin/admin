@@ -8,6 +8,11 @@ export default {
       component: './product-management/product-list',
     },
     {
+      name: 'daifa-product',
+      path: '/product-management/daifa-product',
+      component: './product-management/daifa-product',
+    },
+    {
       name: 'brand-list',
       path: '/product-management/brand-list',
       component: './product-management/brand-list',
@@ -17,11 +22,11 @@ export default {
       path: '/product-management/product-log',
       component: './product-management/product-log',
     },
-    {
-      name: 'freight-template',
-      path: '/product-management/freight-template',
-      component: './product-management/freight-template',
-    },
+    // {
+    //   name: 'freight-template',
+    //   path: '/product-management/freight-template',
+    //   component: './product-management/freight-template',
+    // },
     {
       name: 'product-review',
       path: '/product-management/product-review',
