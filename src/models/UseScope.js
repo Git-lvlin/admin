@@ -52,6 +52,7 @@ const UseScopeModel = {
       return { ...state };
     },
     onUnit(state = { UseScopeObje:{}},{ payload }){
+      console.log('payload.unit',payload.unit)
         state.unit=payload.unit
         return { ...state };
     },

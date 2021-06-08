@@ -20,10 +20,9 @@ const useSecond=(props)=>{
         {
             title: '商品图片',
             dataIndex: 'goodsImageUrl',
-            width:50,
             valueType: 'text',
             hideInSearch: true,
-            // ellipsis:true
+            width:120,
         },
         {
             title: '商品名称',
@@ -97,9 +96,9 @@ const useSecond=(props)=>{
         },
         {
             title: '商品图片',
-            dataIndex: 'goodsImageUrl',
-            width:50,
+            dataIndex: 'goodsImageUrl', 
             valueType: 'text',
+            width:50,
         },
         {
             title: '商品名称',
@@ -144,24 +143,23 @@ const useSecond=(props)=>{
         dispatch({
             type:'UseScopeList/fetchLookUnit',
             payload:{
-                unit:null
+                unit:''
             }
         })
     }
     
     //删除商品
     const  delGoods=val=>{
+        setGoods(goods.filter(ele=>(
+            ele.spuId!=val
+        )))
         let arr =  UseScopeList.spuIds.split(',')
-        console.log('arr',arr)
-        let a= arr.filter(ele=>(
-            ele!=val
-        ))
-        a = a.toString()
-        console.log(a);
         dispatch({
             type:'UseScopeList/fetchLookSpuIds',
             payload:{
-                spuIds:a
+                spuIds:arr.filter(ele=>(
+                            ele!=val
+                        )).toString()
             }
         })
        
@@ -175,10 +173,6 @@ const useSecond=(props)=>{
     const [position,setPosition]=useState()
     const [onselect,setOnselect]=useState([])
     const [spuIds,setSpuIds]=useState('')
-    const [off,setOff]=useState(false)
-
-
-
     const showModal = () => {
         setIsModalVisible(true);
         setLoading(true)

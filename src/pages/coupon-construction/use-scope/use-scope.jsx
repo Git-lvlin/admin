@@ -9,7 +9,6 @@ const useScope=props => {
     const {dispatch}=props
     const id=props.id
     const onTabs=(val)=>{
-        console.log('val',val)
         dispatch({
             type:'UseScopeList/fetchUseType',
             payload:{

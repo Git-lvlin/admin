@@ -107,19 +107,20 @@ const TableList = (props) => {
       key: 'option',
       width: 120,
       valueType: 'option',
-      render: (text, record, _, action) => [
+      render: (_, data) => [
       <a
           key="a"
-          onClick={()=>Examine(record.id)}
+          onClick={()=>Examine(data.id)}
         >
           查看
       </a>,
 
       <ModalForm
         title="增发优惠券"
+        key={data.id}
         onVisibleChange={setVisible}
         visible={visible}
-        trigger={record.couponStatus==3||record.couponStatus==4?null:<a onClick={()=>Additional(record)}>增发</a>}
+        trigger={data.couponStatus==3||data.couponStatus==4?null:<a onClick={()=>Additional(data)}>增发</a>}
         submitter={{
         render: (props, defaultDoms) => {
             return [
@@ -129,8 +130,8 @@ const TableList = (props) => {
         }}
         onFinish={async (values) => {
         console.log('values',values);
-        console.log('id',record)
-        couponAddQuantity({id:record.id,issueQuantity:values.issueQuantity}).then(res=>{
+        console.log('id',data)
+        couponAddQuantity({id:data.id,issueQuantity:values.issueQuantity}).then(res=>{
           if(res.code==0){
             setVisible(false)
             ref.current.reload();
@@ -152,10 +153,10 @@ const TableList = (props) => {
 
     <ModalForm
         title="操作提示"
-        key="model2"
+        key={data.id}
         onVisibleChange={setVisible2}
         visible={visible2}
-        trigger={record.couponStatus==3||record.couponStatus==4?null:<a onClick={Termination}>终止</a>}
+        trigger={data.couponStatus==3||data.couponStatus==4?null:<a onClick={Termination}>终止</a>}
         submitter={{
         render: (props, defaultDoms) => {
             return [
@@ -165,7 +166,7 @@ const TableList = (props) => {
         }}
         onFinish={async (values) => {
         console.log('values',values);
-        couponEnd({id:record.id}).then(res=>{
+        couponEnd({id:data.id}).then(res=>{
           if(res.code==0){
             setVisible2(false)
             return true;
@@ -179,7 +180,7 @@ const TableList = (props) => {
     
       <a
         key="a"
-        onClick={()=>CodeLibrary(record.id)}
+        onClick={()=>CodeLibrary(data.id)}
       >
         码库
       </a>
@@ -196,9 +197,9 @@ const TableList = (props) => {
     })
   }
   //增发
-  const Additional=(record)=>{
-      console.log('record',record.issueQuantity)
-      setRecords(record.issueQuantity)
+  const Additional=(data)=>{
+      console.log('data',data.issueQuantity)
+      setRecords(data.issueQuantity)
       setDiscounts('')
       setVisible(true)
   }
