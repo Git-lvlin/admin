@@ -99,7 +99,7 @@ export default (props) => {
 
   return (
     <DrawerForm
-      title={`${detailData.state ? '编辑' : '新建'}`}
+      title={`${detailData ? '编辑' : '新建'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
