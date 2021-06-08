@@ -117,7 +117,6 @@ const TableList = (props) => {
 
       <ModalForm
         title="增发优惠券"
-        key="model1"
         onVisibleChange={setVisible}
         visible={visible}
         trigger={record.couponStatus==3||record.couponStatus==4?null:<a onClick={()=>Additional(record)}>增发</a>}
@@ -144,7 +143,7 @@ const TableList = (props) => {
        <p>当前总发行量：<span>{records}</span> 张</p>
        <ProForm.Group>
            <Form.Item  name="issueQuantity" label="新增发行量">
-              <Input onChange={onDiscounts} value={discounts} style={{width:'250px'}}/>    
+              <Input  onChange={onDiscounts} value={discounts} style={{width:'250px'}}/>    
           </Form.Item>
           <span>张</span>
         </ProForm.Group>
