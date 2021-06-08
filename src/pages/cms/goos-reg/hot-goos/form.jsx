@@ -1,18 +1,9 @@
 import React, { useRef, useState, useEffect  } from 'react';
-import { Button, message, Form, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import ProForm, {
-  ModalForm,
-  DrawerForm,
-  ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
-} from '@ant-design/pro-form';
-import { PlusOutlined } from '@ant-design/icons';
-import MemberReg from '@/components/member-reg';
-import Upload from '@/components/upload';
+import { message, Space } from 'antd';
+import ProTable from '@ant-design/pro-table';
+import { ModalForm } from '@ant-design/pro-form';
 import { hotGoosAdd } from '@/services/cms/member/member';
-import {spaceInfoList, hotGoosList, goosAllList} from '@/services/cms/member/member';
+import { todayAllGoodsList } from '@/services/cms/member/member';
 
 
 
@@ -102,7 +93,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={`${detailData ? '编辑' : '新建'}`}
+      title={`${detailData ? '编辑' : '新增'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -112,7 +103,7 @@ export default (props) => {
           resetText: '取消',
         },
       }}
-      drawerProps={{
+      drawerprops={{
         forceRender: true,
         destroyOnClose: true,
         onClose: () => {
@@ -127,34 +118,33 @@ export default (props) => {
       }}
     >
 <ProTable
-      rowKey="id"
+      rowKey="spuId"
       options={false}
       columns={columns}
-      // params={}
-      request={goosAllList}
+      request={todayAllGoodsList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项
         // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
       }}
-      // tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
-      //   <Space size={24}>
-      //     <span>
-      //       已选 {selectedRowKeys.length} 项
-      //       <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
-      //         取消选择
-      //       </a>
-      //     </span>
-      //     <span>{`待发布: ${selectedRows.reduce(
-      //       (pre, item) => pre + item.containers,
-      //       0,
-      //     )} 个`}</span>
-      //     <span>{`已发布: ${selectedRows.reduce(
-      //       (pre, item) => pre + item.callNumber,
-      //       0,
-      //     )} 个`}</span>
-      //   </Space>
-      // )}
+      tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
+        <Space size={24}>
+          <span>
+            已选 {selectedRowKeys.length} 项
+            <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
+              取消选择
+            </a>
+          </span>
+          <span>{`待发布: ${selectedRows.reduce(
+            (pre, item) => pre + item.containers,
+            0,
+          )} 个`}</span>
+          <span>{`已发布: ${selectedRows.reduce(
+            (pre, item) => pre + item.callNumber,
+            0,
+          )} 个`}</span>
+        </Space>
+      )}
       tableAlertOptionRender={(a) => {
         setArr(a.selectedRowKeys.toString())
       }}
@@ -170,8 +160,6 @@ export default (props) => {
       dateFormatter="string"
       headerTitle="热销好货"
     />
-
-
     </ModalForm>
   );
 };

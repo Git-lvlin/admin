@@ -1,23 +1,40 @@
-
-import React, { useRef, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { Button, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { Button, Space, message } from 'antd';
+import ProTable from '@ant-design/pro-table';
+import ProCard from '@ant-design/pro-card';
 import Edit from './form';
-import {crazyDateList} from '@/services/cms/member/member';
+import DetailList from './activity-form';
+import { crazyDateList, crazyActivityDel } from '@/services/cms/member/member';
+import { ACTION_TYPE } from '@/utils/text';
 
-const CrazyDate = (proprs) => {
+const CrazyDate = (props) => {
+  const { onChange, detail } = props;
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
-  const [detailData, setDetailData] = useState(true);
+  const [detailData, setDetailData] = useState(false);
 
   const getDetail = (data) => {
-    setDetailData(data);
+    data && setDetailData(data);
     setFormVisible(true);
   }
 
+  const formControl = (data,type) => {
+    crazyActivityDel({ids: data,status: type}).then((res) => {
+      if (res.code === 0) {
+        message.success(`${ACTION_TYPE[type]}成功`);
+        actionRef.current.reset();
+      }
+    })
+  }
+
   const columns = [
+    {
+      title: '活动序号',
+      dataIndex: 'index',
+      valueType: 'indexBorder',
+      search: false
+    },
     {
       title: '活动标题',
       dataIndex: 'title',
@@ -40,14 +57,6 @@ const CrazyDate = (proprs) => {
           text: '已发布',
           status: '2',
         },
-        3: {
-          text: '下线',
-          status: '3',
-        },
-        4: {
-          text: '删除',
-          status: '4',
-        },
       }
     },
     {
@@ -58,8 +67,6 @@ const CrazyDate = (proprs) => {
       valueEnum: {
         1: '未发布',
         2: '已发布',
-        3: '下线',
-        4: '删除',
       }
     },
     {
@@ -81,38 +88,26 @@ const CrazyDate = (proprs) => {
     {
       title: '操作',
       valueType: 'option',
-      render: (text, record, _, action) => [
-        <a
-          key="editable"
-          onClick={() => {
-            console.log('record', record)
-            getDetail(record)
-            // action?.startEditable?.(record.id);
-          }}
-        >
-          编辑
-        </a>,
-        <a href={record.url} target="_blank" rel="noopener noreferrer" key="view">
-          查看
-        </a>,
-        <TableDropdown
-          key="actionGroup"
-          onSelect={() => action?.reload()}
-          menus={[
-            { key: 'copy', name: '复制' },
-            { key: 'delete', name: '删除' },
-          ]}
-        />,
-      ],
+      dataIndex: 'option',
+      render: (text, record, _,) => {
+        return (
+          <>
+            {/* &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>} */}
+            {/* &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>} */}
+            &nbsp;&nbsp;<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>
+            {/* &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>} */}
+          </>
+        )
+      }
     },
   ];
 
 
   return (
-    <PageContainer>
+    <>
     <ProTable
       rowKey="id"
-      // options={false}
+      options={false}
       columns={columns}
       actionRef={actionRef}
       request={crazyDateList}
@@ -130,34 +125,50 @@ const CrazyDate = (proprs) => {
             </a>
           </span>
           <span>{`待发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.containers,
-            0,
-          )} 个`}</span>
-          <span>{`已发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.callNumber,
-            0,
-          )} 个`}</span>
+              (pre, item) => {
+                if (item.status === 1) {
+                  return pre += 1
+                }
+                return pre
+              },
+              0,
+            )} 个`}</span>
+            <span>{`已发布: ${selectedRows.reduce(
+              (pre, item) => {
+                if(item.status === 2) {
+                  return pre += 1
+                }
+                return pre
+              },
+              0,
+            )} 个`}</span>
         </Space>
       )}
-      editable={{
-        type: 'multiple',
-      }}
-      search={{
-        labelWidth: 'auto',
-      }}
+      // search={{
+      //   labelWidth: 'auto',
+      // }}
       pagination={{
         pageSize: 5,
       }}
+      onRow={(record) => {
+        return {
+          onClick: () => {
+            if (record.title) {
+              onChange(record);
+            }
+          },
+        };
+      }}
       dateFormatter="string"
       headerTitle="正在疯约"
-      toolBarRender={() => [
-        <Button key="button" icon={<PlayCircleOutlined />} type="primary">
+      toolBarRender={(_,record) => [
+        <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 2) }}>
           批量发布
         </Button>,
-        <Button key="button" icon={<PauseCircleOutlined />} type="primary">
+        <Button key="button" icon={<PauseCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 1) }}>
           批量下线
         </Button>,
-        <Button key="button" icon={<MinusOutlined />} type="primary">
+        <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 4) }}>
           批量删除
         </Button>,
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
@@ -172,9 +183,22 @@ const CrazyDate = (proprs) => {
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { setDetailData(null) }}
     />}
-    </PageContainer>
+    </>
   );
 };
 
+const Demo = () => {
+  const [detail, setDetail] = useState({});
+  return (
+    <ProCard split="vertical">
+      <ProCard colSpan="50%" ghost>
+        <CrazyDate onChange={(cIp) => setDetail(cIp)} detail={detail} />
+      </ProCard>
+      <ProCard title={`当前选中活动=>${detail.title||'-'}, 活动id=>${detail.id||'-'}`}>
+        <DetailList id={detail.id} />
+      </ProCard>
+    </ProCard>
+  );
+};
 
-export default CrazyDate
+export default Demo;

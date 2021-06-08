@@ -1,3 +1,3 @@
-import ShopkeeperOrder from './shopkeeper-order';
+import IntensiveOrder from './intensive-order';
 
-export default ShopkeeperOrder;
+export default IntensiveOrder;

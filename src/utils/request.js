@@ -51,10 +51,11 @@ const errorHandler = (error) => {
 
 const getPrefix = () => {
   if (process.env.NODE_ENV !== 'development') {
-    return 'http://admin.waiad.icu';
+    return API_URL;
   }
 
   return '';
+
 }
 
 

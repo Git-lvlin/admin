@@ -23,7 +23,7 @@ const SubTable = (props) => {
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
     { title: '商品价格', dataIndex: 'salePriceDisplay' },
     { title: '可用库存', dataIndex: 'stockNum' },
-    { title: '活动库存', dataIndex: 'activityStockNum' },
+    // { title: '活动库存', dataIndex: 'activityStockNum' },
   ];
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const TableList = () => {
   const actionRef = useRef();
 
   const getDetail = (record) => {
-    if (record.firstAudit===1) {
+    if (record.firstAudit === 1) {
       api.getDetail({
         spuId: record.id
       }).then(res => {
@@ -63,7 +63,7 @@ const TableList = () => {
       }).then(res => {
         if (res.code === 0) {
           setDetailData({
-            data:res.data,
+            data: res.data,
             spuId: record.id
           });
           setSecondReviewVisible(true);
@@ -88,11 +88,15 @@ const TableList = () => {
    * 
    * @param {*} type 1:通过并上架，2:只通过，3:驳回
    */
-  const firstCheck = (type, checkType, spuId, goodsVerifyRemark) => {
+  const firstCheck = (type, checkType, spuId, goodsInfo) => {
+    const { supplierHelperId, settleType, ...rest } = goodsInfo;
     api.firstCheck({
       checkType,
       spuId,
-      goodsVerifyRemark
+      isMultiSpec: detailData.isMultiSpec,
+      supplierHelperId,
+      settleType,
+      goodsInfo: rest.goodsInfo
     }, { showSuccess: type !== 1 })
       .then(res => {
         if (res.code === 0) {
@@ -200,12 +204,12 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
     },
-    {
-      title: '活动库存',
-      dataIndex: 'activityStockNum',
-      valueType: 'text',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '活动库存',
+    //   dataIndex: 'activityStockNum',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     {
       title: '审核状态',
       dataIndex: 'goodsVerifyState',

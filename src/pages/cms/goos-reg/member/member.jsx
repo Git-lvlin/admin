@@ -1,23 +1,27 @@
 
 import React, { useRef, useState, useEffect } from 'react';
-import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
+import { MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
+import Modaledit from './modal';
 import MemberReg from '@/components/member-reg';
-import { spaceInfoList, memberOperation } from '@/services/cms/member/member';
+import { spaceInfoList, memberOperation, memberSortTop } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
 
-
-
-const Member = (proprs) => {
+const Member = () => {
   const [formVisible, setFormVisible] = useState(false);
-  const [detailData, setDetailData] = useState(true);
+  const [detailData, setDetailData] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalData, setModalData] = useState(null);
 
   const actionRef = useRef();
-  const formRef = useRef();
 
+  const getDetail = (data) => {
+    setModalData(data);
+    setModalVisible(true);
+  }
 
   const formControl = (data,type) => {
     memberOperation({ids: data,status: type}).then((res) => {
@@ -27,10 +31,18 @@ const Member = (proprs) => {
       }
     })
   }
+  const sortTop = (data) => {
+    memberSortTop({id:data}).then((res) => {
+      if (res.code === 0) {
+        message.success(`置顶成功`);
+        actionRef.current.reset();
+      }
+    })
+  }
 
   useEffect(() => {
     actionRef.current.reset();
-  }, [formVisible])
+  }, [modalVisible, formVisible])
 
   const columns = [
     {
@@ -42,7 +54,6 @@ const Member = (proprs) => {
     {
       title: '区域',
       dataIndex: 'spaceId',
-      // valueType: 'select',
       renderFormItem: () => (<MemberReg />),
       hideInTable: true,
     },
@@ -84,14 +95,6 @@ const Member = (proprs) => {
           text: '已发布',
           status: '2',
         },
-        3: {
-          text: '下线',
-          status: '3',
-        },
-        4: {
-          text: '删除',
-          status: '4',
-        },
       }
     },
     {
@@ -100,7 +103,7 @@ const Member = (proprs) => {
       valueType: 'text',
       hideInSearch: true,
       valueEnum: {
-        1: '未发布',
+        1: '待发布',
         2: '已发布',
         3: '下线',
         4: '删除',
@@ -109,12 +112,13 @@ const Member = (proprs) => {
     {
       title: '操作',
       valueType: 'option',
-      render: (text, record, _, action) => {
+      render: (text, record, _) => {
         return (
           <>
+            {record.status===2&&<a key="top" onClick={() => {sortTop(record.id)}}>置顶</a>}
             &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {action?.startEditable?.(record.key);console.log('action',action,record)}}>编辑</a>}
+            {record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
+            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
           </>
         )
@@ -127,9 +131,7 @@ const Member = (proprs) => {
     <PageContainer>
       <ProTable
         rowKey="id"
-        // options={false}
         actionRef={actionRef}
-        formRef={formRef}
         request={spaceInfoList}
         rowSelection={{}}
         tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
@@ -141,11 +143,21 @@ const Member = (proprs) => {
               </a>
             </span>
             <span>{`待发布: ${selectedRows.reduce(
-              (pre, item) => pre + item.containers,
+              (pre, item) => {
+                if (item.status === 1) {
+                  return pre += 1
+                }
+                return pre
+              },
               0,
             )} 个`}</span>
             <span>{`已发布: ${selectedRows.reduce(
-              (pre, item) => pre + item.callNumber,
+              (pre, item) => {
+                if(item.status === 2) {
+                  return pre += 1
+                }
+                return pre
+              },
               0,
             )} 个`}</span>
           </Space>
@@ -165,9 +177,6 @@ const Member = (proprs) => {
           <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 4) }}>
             批量删除
           </Button>,
-          <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
-            新建
-          </Button>,
         ]}
         columns={columns}
       />
@@ -175,8 +184,13 @@ const Member = (proprs) => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
-      callback={() => { console.log('callback');actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { console.log('close');actionRef.current.reload();setDetailData(null) }}
+      callback={() => { actionRef.current.reload();setDetailData(null) }}
+      onClose={() => { actionRef.current.reload();setDetailData(null) }}
+    />}
+    {modalVisible && <Modaledit
+      visible={modalVisible}
+      setVisible={setModalVisible}
+      detailData={modalData}
     />}
     </PageContainer>
   );

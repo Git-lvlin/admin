@@ -5,7 +5,7 @@ import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
-import { saveMoneyList, saveMoneyOperation } from '@/services/cms/member/member';
+import { saveMoneyList, saveMoneyOperation, saveMoneySortTop } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
 
 
@@ -24,6 +24,14 @@ const SaveMoney = (proprs) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);
         actionRef.current.reset();
+      }
+    })
+  }
+
+  const top = (data) => {
+    saveMoneySortTop({id: data}).then((res) => {
+      if (res.code === 0) {
+        message.success(`置顶成功`);
       }
     })
   }
@@ -76,12 +84,12 @@ const SaveMoney = (proprs) => {
       valueType: 'number',
       search: false,
     },
-    {
-      title: '活动库存',
-      dataIndex: 'activityStockNum',
-      valueType: 'number',
-      search: false,
-    },
+    // {
+    //   title: '活动库存',
+    //   dataIndex: 'activityStockNum',
+    //   valueType: 'number',
+    //   search: false,
+    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
@@ -126,6 +134,7 @@ const SaveMoney = (proprs) => {
       render: (text, record, _, action) => {
         return (
           <>
+            {record.status===2&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
             &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {action?.startEditable?.(record.key);console.log('action',action,record)}}>编辑</a>}

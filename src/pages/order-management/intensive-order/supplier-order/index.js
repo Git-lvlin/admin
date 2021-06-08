@@ -1,3 +1,3 @@
-import SupplierOrder from './supplier-order';
+import IntensiveOrder from './intensive-order';
 
-export default SupplierOrder;
+export default IntensiveOrder;

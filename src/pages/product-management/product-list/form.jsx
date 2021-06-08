@@ -8,7 +8,7 @@ export default (props) => {
   const { visible, setVisible, getData } = props;
   return (
     <ModalForm
-      title="新建表单"
+      title="生成规格配置表"
       modalProps={{
         width: 740,
       }}
@@ -35,31 +35,15 @@ export default (props) => {
         <ProFormText
           width="md"
           name="retailSupplyPrice"
-          label="零售供货价"
-          placeholder="请输入零售供货价"
-          rules={[{ required: true, message: '请输入零售供货价' }]}
+          label="供货价"
+          placeholder="请输入供货价"
+          rules={[{ required: true, message: '请输入供货价' }]}
         />
         <ProFormText
           width="md"
-          name="suggestedRetailPrice"
-          label="建议零售价"
-          placeholder="请输入建议零售价"
-        />
-      </ProForm.Group>
-      <ProForm.Group>
-        <ProFormText
-          width="md"
-          name="wholesalePrice"
-          label="批发价"
-          placeholder="请输入批发价"
-          rules={[{ required: true, message: '请输入批发价' }]}
-        />
-        <ProFormText
-          width="md"
-          name="wholesaleMinNum"
-          label="批发起售量"
-          placeholder="请输入批发起售量"
-          rules={[{ required: true, message: '请输入批发起售量' }]}
+          name="marketPrice"
+          label="市场划线价"
+          placeholder="请输入市场划线价"
         />
       </ProForm.Group>
       <ProForm.Group>
@@ -76,21 +60,6 @@ export default (props) => {
           label="可用库存"
           placeholder="请输入可用库存"
           rules={[{ required: true, message: '请输入可用库存' }]}
-        />
-      </ProForm.Group>
-      <ProForm.Group>
-        <ProFormText
-          width="md"
-          name="salePrice"
-          label="销售价"
-          placeholder="请输入销售价"
-          rules={[{ required: true, message: '请输入销售价' }]}
-        />
-        <ProFormText
-          width="md"
-          name="marketPrice"
-          label="市场划线价"
-          placeholder="请输入市场划线价"
         />
       </ProForm.Group>
     </ModalForm >

@@ -65,10 +65,11 @@ export default (props) => {
       const { code, key, spec1, spec2, specValue, ...rest } = item;
       specData[code] = {
         ...rest,
+        specValue,
         imageUrl: item?.imageUrl,
-        wholesalePrice: amountTransform(item.wholesalePrice),
+        // wholesalePrice: amountTransform(item.wholesalePrice),
         retailSupplyPrice: amountTransform(item.retailSupplyPrice),
-        suggestedRetailPrice: amountTransform(item.suggestedRetailPrice),
+        // suggestedRetailPrice: amountTransform(item.suggestedRetailPrice),
         salePrice: amountTransform(item.salePrice),
         marketPrice: amountTransform(item.marketPrice),
       }
@@ -80,9 +81,9 @@ export default (props) => {
       detailImages,
       advImages,
       isMultiSpec,
-      wholesalePrice,
+      // wholesalePrice,
       retailSupplyPrice,
-      suggestedRetailPrice,
+      // suggestedRetailPrice,
       salePrice,
       marketPrice,
       ...rest } = values;
@@ -105,9 +106,9 @@ export default (props) => {
       obj.specValues = specValues;
       obj.specData = specData;
     } else {
-      obj.goods.wholesalePrice = amountTransform(wholesalePrice);
+      // obj.goods.wholesalePrice = amountTransform(wholesalePrice);
       obj.goods.retailSupplyPrice = amountTransform(retailSupplyPrice);
-      obj.goods.suggestedRetailPrice = amountTransform(suggestedRetailPrice);
+      // obj.goods.suggestedRetailPrice = amountTransform(suggestedRetailPrice);
       obj.goods.salePrice = amountTransform(salePrice);
       obj.goods.marketPrice = amountTransform(marketPrice);
     }
@@ -187,7 +188,7 @@ export default (props) => {
         isMultiSpec: detailData.isMultiSpec,
         stockNum: goods.stockNum,
         stockAlarmNum: goods.stockAlarmNum,
-        wholesaleMinNum: goods.wholesaleMinNum,
+        // wholesaleMinNum: goods.wholesaleMinNum,
         supportNoReasonReturn: goods.supportNoReasonReturn,
         buyMinNum: goods.buyMinNum,
         buyMaxNum: goods.buyMaxNum,
@@ -224,8 +225,8 @@ export default (props) => {
             ...item[1],
             code: item[0],
             retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
-            suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
-            wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
+            // suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
+            // wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
             salePrice: amountTransform(item[1].salePrice, '/'),
             marketPrice: amountTransform(item[1].marketPrice, '/'),
             key: item[1].skuId,
@@ -237,9 +238,9 @@ export default (props) => {
         }))
       } else {
         form.setFieldsValue({
-          wholesalePrice: amountTransform(goods.wholesalePrice, '/'),
+          // wholesalePrice: amountTransform(goods.wholesalePrice, '/'),
           retailSupplyPrice: amountTransform(goods.retailSupplyPrice, '/'),
-          suggestedRetailPrice: amountTransform(goods.suggestedRetailPrice, '/'),
+          // suggestedRetailPrice: amountTransform(goods.suggestedRetailPrice, '/'),
           salePrice: amountTransform(goods.salePrice, '/'),
           marketPrice: amountTransform(goods.marketPrice, '/'),
         })
@@ -346,10 +347,6 @@ export default (props) => {
             label: '仅批发',
             value: 1,
           },
-          {
-            label: '零售',
-            value: 2,
-          },
         ]}
       />
       <ProFormRadio.Group
@@ -443,6 +440,36 @@ export default (props) => {
             :
             <>
               <ProFormText
+                name="supplierSkuId"
+                label="货号"
+                placeholder="请输入货号"
+                rules={[{ required: true, message: '请输入货号' }]}
+              />
+              <ProFormText
+                name="retailSupplyPrice"
+                label="供货价"
+                placeholder="请输入供货价"
+                rules={[{ required: true, message: '请输入供货价' }]}
+              />
+              {/* <ProFormText
+                name="suggestedRetailPrice"
+                label="建议零售价"
+                placeholder="请输入建议零售价"
+                rules={[{ required: true, message: '请输入建议零售价' }]}
+              /> */}
+              <ProFormText
+                name="salePrice"
+                label="秒约价"
+                placeholder="请输入秒约价"
+                rules={[{ required: true, message: '请输入秒约价' }]}
+              />
+              <ProFormText
+                name="marketPrice"
+                label="市场价"
+                placeholder="请输入市场价"
+                rules={[{ required: true, message: '请输入市场价' }]}
+              />
+              <ProFormText
                 name="stockNum"
                 label="可用库存"
                 placeholder="请输入可用库存"
@@ -453,56 +480,33 @@ export default (props) => {
                 label="库存预警值"
                 placeholder="请输入数字 可用库存小于等于此值时提醒"
               />
-              <ProFormText
+              {/* <ProFormText
                 name="wholesalePrice"
                 label="批发价"
                 placeholder="请输入批发价"
                 rules={[{ required: true, message: '请输入供货价' }]}
-              />
-              <ProFormText
+              /> */}
+              {/* <ProFormText
                 name="wholesaleMinNum"
                 label="批发起购量"
                 placeholder="请输入批发起购量"
                 rules={[{ required: true, message: '请输入数字 需大于可用库存' }]}
-              />
-              <ProFormText
-                name="retailSupplyPrice"
-                label="零售供货价"
-                placeholder="请输入零售供货价"
-                rules={[{ required: true, message: '请输入供货价' }]}
-              />
-              <ProFormText
-                name="suggestedRetailPrice"
-                label="建议零售价"
-                placeholder="请输入建议零售价"
-                rules={[{ required: true, message: '请输入建议零售价' }]}
-              />
-              <ProFormText
-                name="salePrice"
-                label="销售价"
-                placeholder="请输入销售价"
-                rules={[{ required: true, message: '请输入销售价' }]}
-              />
-              <ProFormText
-                name="marketPrice"
-                label="市场价"
-                placeholder="请输入市场价"
-                rules={[{ required: true, message: '请输入市场价' }]}
-              />
+              /> */}
+              
 
             </>
         }}
       </ProFormDependency>
       <ProFormText
         name="buyMinNum"
-        label="起售数量"
-        placeholder="请输入起售数量"
-        rules={[{ required: true, message: '请输入起售数量' }]}
+        label="单SKU起售数量"
+        placeholder="请输入单SKU起售数量"
+        rules={[{ required: true, message: '请输入单SKU起售数量' }]}
       />
       <ProFormText
         name="buyMaxNum"
-        label="单次最多零售购买数量"
-        placeholder="请输入单次最多零售购买数量"
+        label="单SKU单次最多零售购买数量"
+        placeholder="请输入单SKU单次最多零售购买数量"
       />
 
       <ProFormRadio.Group

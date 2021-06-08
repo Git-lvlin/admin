@@ -14,6 +14,13 @@ import singleContractActivityManagement from './routers/single-contract-activity
 import groupContractActivityManagement from './routers/group-contract-activity-management'
 import couponManagement from './routers/coupon-management'
 import messageManagement from './routers/message-management';
+import cms from './routers/cms'
+import businessSchool from './routers/business-school'
+import communityManagement from './routers/community-management'
+
+
+
+
 
 const { REACT_APP_ENV } = process.env;
 export default defineConfig({
@@ -70,43 +77,14 @@ export default defineConfig({
             groupContractActivityManagement,
             messageManagement,
             couponManagement,
+            cms,
+            communityManagement,
             {
-              path: '/cms',
-              name: 'cms',
-              routes: [
-                {
-                  name: 'goos-reg',
-                  path: '/cms/goos-reg',
-                  routes: [
-                    {
-                      name: 'member',
-                      path: '/cms/goos-reg/member',
-                      component: './cms/goos-reg/member'
-                    },
-                    {
-                      name: 'hot-goos',
-                      path: '/cms/goos-reg/hot-goos',
-                      component: './cms/goos-reg/hot-goos'
-                    },
-                    {
-                      name: 'crazy-date',
-                      path: '/cms/goos-reg/crazy-date',
-                      component: './cms/goos-reg/crazy-date'
-                    },
-                    {
-                      name: 'save-money',
-                      path: '/cms/goos-reg/save-money',
-                      component: './cms/goos-reg/save-money',
-                    },
-                    {
-                      name: 'strategy-today',
-                      path: '/cms/goos-reg/strategy-today',
-                      component: './cms/goos-reg/strategy-today',
-                    }
-                  ]
-                },
-              ]
+              path: '/price-comparsion-management',
+              name: 'price-comparsion-management',
+              component: './price-comparsion-management',
             },
+            businessSchool,
             {
               component: '404',
             },
