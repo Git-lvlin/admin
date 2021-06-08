@@ -30,8 +30,12 @@ export default props => {
         onFinish={async (values) => {
           console.log(values);
           values.images=[values.images]
-          releaseDynamic(values)
-          message.success('提交成功');
+          releaseDynamic(values).then(res=>{
+            if(res.code==0){
+              message.success('发布成功');
+              history.push('/community-management/content-management')
+            }
+          })
         }}
         style={{ width: '1000px', margin: '0 auto' }}
       >

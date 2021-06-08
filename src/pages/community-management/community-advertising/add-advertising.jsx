@@ -37,9 +37,12 @@ export default props => {
     <ProForm
         onFinish={async (values) => {
           console.log(values);
-          saveAdsense(values)
-          history.push('/community-management/community-advertising')
-          message.success('提交成功');
+          saveAdsense(values).then(res=>{
+            if(res.code==0){
+              history.push('/community-management/community-advertising')
+              message.success('提交成功');
+            }
+          })
         }}
         form={form}
         params={{}}

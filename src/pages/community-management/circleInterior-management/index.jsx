@@ -106,11 +106,13 @@ export default props => {
                     }}
                     onFinish={async (values) => {
                         console.log('values',values);
-                        dynamicDelete({id:record.id})
-                        setVisible(false)
-                        message.success('提交成功');
-                        ref.current.reload()
-                        return true;
+                        dynamicDelete({id:record.id}).then(res=>{
+                            if(res.code==0){
+                                setVisible(false)   
+                                ref.current.reload()
+                                return true;
+                            }
+                        })
                     }}
                 >
                 <p>确认要删除所选内容吗？</p>

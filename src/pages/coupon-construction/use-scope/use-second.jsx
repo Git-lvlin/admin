@@ -148,26 +148,30 @@ const useSecond=(props)=>{
             }
         })
     }
+    
     //删除商品
-    const delGoods=val=>{
+    const  delGoods=val=>{
         setGoods(goods.filter(ele=>(
             ele.spuId!=val
         )))
         console.log('goods',goods)
-    //     let box=''
-    //     goods.map(ele=>{
-    //         box+=ele.spuId+','
-    //     })
-    //     box=box.substring(0,box.length-1)
-    //     console.log('box',box)
-    //    setSpuIds(box)
+        let box=''
+        goods.map(ele=>{
+            box+=ele.spuId+','
+        })
+        box=box.substring(0,box.length-1)
+        console.log('box',box)
+        setSpuIds(box)
+    }
+    // useEffect(()=>{
     //     dispatch({
     //         type:'UseScopeList/fetchLookSpuIds',
     //         payload:{
-    //             spuIds:spuIds.substring(0,spuIds.length-1)
+    //             spuIds:spuIds
     //         }
     //     })
-    }
+    //     return undefined
+    // },[spuIds])
     const actionRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading,setLoading]=useState(true)
