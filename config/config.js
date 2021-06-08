@@ -13,6 +13,7 @@ import intensiveStoreManagement from './routers/intensive-store-management'
 import singleContractActivityManagement from './routers/single-contract-activity-management'
 import groupContractActivityManagement from './routers/group-contract-activity-management'
 import couponManagement from './routers/coupon-management'
+import messageManagement from './routers/message-management';
 import cms from './routers/cms'
 import businessSchool from './routers/business-school'
 import communityManagement from './routers/community-management'
@@ -74,6 +75,7 @@ export default defineConfig({
             intensiveStoreManagement,
             singleContractActivityManagement,
             groupContractActivityManagement,
+            messageManagement,
             couponManagement,
             cms,
             communityManagement,

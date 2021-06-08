@@ -26,6 +26,8 @@ export default {
   'menu.order-management.intensive-order': '集约订单',
   'menu.order-management.intensive-order.shopkeeper-order': '店主订单',
   'menu.order-management.intensive-order.supplier-order': '供应商订单',
+  'menu.order-management.after-sales-order': '售后订单',
+  'menu.order-management.after-sales-order-details': '详请页',
   'menu.order-management.intensive-order.supplier-order-detail': '订单详情',
   'menu.order-management.intensive-order.shopkeeper-order-detail': '订单详情',
 
@@ -99,6 +101,19 @@ export default {
 
   'menu.coupon-management': '优惠券管理',
   'menu.coupon-management.coupon-list': '优惠券列表',
+
+  'menu.message-management': '消息管理',
+  'menu.message-management.member-message-template-config': '会员消息模板配置',
+  'menu.message-management.store-message-template-config': '店铺消息模板配置',
+  'menu.message-management.supplier-message-template-config': '供应商消息模板配置',
+  'menu.message-management.platform-message-template-config': '平台端消息模板配置',
+  'menu.message-management.custom-message': '自定义消息',
+  'menu.message-management.custom-message.new': '新建消息',
+  'menu.message-management.custom-message.audit': '审核',
+  'menu.message-management.custom-message.detail': '详情',
+  'menu.message-management.custom-message.edit': '编辑',
+  'menu.message-management.stand-inside-letter-list': '站内信列表',
+
   'menu.coupon-management.construction':'新建优惠劵',
   'menu.coupon-management.coupon-codebase':'码库',
  

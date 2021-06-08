@@ -40,6 +40,17 @@ export default {
           hideInMenu: true,
         },
       ]
+    },
+    {
+      name: 'after-sales-order',
+      path: '/order-management/after-sales-order',
+      component: './order-management/after-sales-order'
+    },
+    {
+      name: 'after-sales-order-details',
+      path: '/order-management/after-sales-order/detail/:id',
+      component: './order-management/after-sales-order/detail',
+      hideInMenu: true,
     }
   ]
 }
