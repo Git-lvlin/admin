@@ -29,7 +29,10 @@ const couponConstruction=(props) => {
     return new Promise(async (resolve, reject) => {
     if (value&&value.length > 50) {
           await reject('优惠券名称不超过50个字符')
-      }else if (/^[a-zA-Z0-9_]+$/.test(value)) {
+      }else if(!value){
+          await reject('请输入优惠券名称')
+      }
+      else if (/^[a-zA-Z0-9_]+$/.test(value)) {
           await reject('只能输入汉字')
       } else {
           await resolve()
@@ -43,8 +46,6 @@ const couponConstruction=(props) => {
           form={form}
           submitter={(parseInt(id)==id)?false:true}
           onFinish={async (values) => {
-          console.log('values', values)
-          try {
               values.couponType = UseScopeList.couponType || 1,//优惠券类型
               values.couponTypeInfo = {
                 usefulAmount: values.usefulAmount,//用价格门槛(单位分)
@@ -71,13 +72,13 @@ const couponConstruction=(props) => {
               values.useTypeInfoJ = {//集约商品详情信息
                 wholesaleIds: UseScopeList.wholesaleIds
               }
-            couponSub(values).then(()=>{
-              history.push('/coupon-management/coupon-list') 
-            })
-            message.success('提交成功'); 
-          } catch (error) {
-            console.log('error', error)
-          }
+            console.log('values', values)
+            couponSub(values).then((res)=>{
+              if(res.code==0){
+                history.push('/coupon-management/coupon-list') 
+                message.success('提交成功'); 
+              }
+            }) 
         }}
         style={{ width: '1000px', margin: '0 auto' }}
       >
@@ -87,7 +88,7 @@ const couponConstruction=(props) => {
           name="couponName"
           label={<FormattedMessage id="formandbasic-form.title.label" />}
           rules={[
-            { required: true, message: <FormattedMessage id="formandbasic-form.please.enter.coupon.name" /> },
+            // {  message:  },
             {validator: checkConfirm}
           ]}
         />

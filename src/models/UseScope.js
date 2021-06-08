@@ -47,6 +47,7 @@ const UseScopeModel = {
       return { ...state };
     },
     onSpuIds(state = { UseScopeObje:{}},{ payload }){
+      console.log('payload.spuIds',payload.spuIds)
         state.spuIds=payload.spuIds
       return { ...state };
     },
