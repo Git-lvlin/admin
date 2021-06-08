@@ -87,7 +87,7 @@ const TableList = () => {
         1: '待开始',
         2: '进行中',
         3: '已结束',
-        4: '已终止'
+        4: '已中止'
       }
     },
     {
@@ -102,7 +102,7 @@ const TableList = () => {
             &&
             <>
               <a onClick={() => { getDetail(data.id) }}>编辑</a>
-              <a onClick={() => { activityStop(data.id) }}>终止</a>
+              <a onClick={() => { activityStop(data.id) }}>中止</a>
             </>
           }
         </Space>

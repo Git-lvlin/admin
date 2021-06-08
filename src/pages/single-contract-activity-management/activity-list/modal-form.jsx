@@ -110,6 +110,9 @@ export default (props) => {
         columns={columns}
         rowKey="skuId"
         options={false}
+        params={{
+          goodsState: 1,
+        }}
         request={productList}
         search={{
           defaultCollapsed: false,

@@ -2,10 +2,10 @@ import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { ruleGoodsList } from '@/services/single-contract-activity-management/activity-product';
-import { useParams, history } from 'umi';
+import { useParams, history, useLocation } from 'umi';
 
 const TableList = () => {
-
+  const location = useLocation()
   const params = useParams();
   const columns = [
     {
@@ -74,8 +74,9 @@ const TableList = () => {
 
   return (
     <PageContainer>
+      <div style={{ marginBottom: 10, background: '#fff', padding: 10 }}>{location.query.info}</div>
       <ProTable
-        rowKey="id"
+        rowKey="spuId"
         options={false}
         params={{
           id: params.id

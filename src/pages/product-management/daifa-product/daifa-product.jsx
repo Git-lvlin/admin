@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import ProCard from '@ant-design/pro-card';
 import { PageContainer } from '@ant-design/pro-layout';
-import InProgress from './in-progress';
-import Done from './done';
+import SelectedProduct from './selected-product'
 
-const TableList = () => {
+
+const DaifaProduct = () => {
   const [activeKey, setActiveKey] = useState('1')
 
   return (
@@ -16,15 +16,15 @@ const TableList = () => {
           onChange: setActiveKey
         }}
       >
-        <ProCard.TabPane key="1" tab="进行中">
-          {activeKey === '1' && <InProgress />}
+        <ProCard.TabPane key="1" tab="1688已选商品">
+          <SelectedProduct />
         </ProCard.TabPane>
-        <ProCard.TabPane key="2" tab="已成团">
-          {activeKey === '2' && <Done />}
+        <ProCard.TabPane key="2" tab="代发基础商品库">
+          <div>2</div>
         </ProCard.TabPane>
       </ProCard>
     </PageContainer>
   )
-};
+}
 
-export default TableList;
+export default DaifaProduct;

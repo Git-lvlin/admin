@@ -34,6 +34,7 @@ const Upload = (props) => {
   const onRemove = (file) => {
     fileData.current = fileList.filter(item => item.url !== file.url)
     setFileList(fileData.current);
+    onChange(maxCount === 1 ? fileData.current?.[0]?.url : fileData.current.map(item => item.url))
     return true;
   }
 

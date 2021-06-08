@@ -1,12 +1,16 @@
 import request from '@/utils/request';
 
 export const singleGroupList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current, pageSize, joinGroupTime, createGroupTime, ...rest } = params;
   const res = await request('/auth/activity/group/singleGroupList', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      joinGroupStartTime: joinGroupTime?.[0],
+      joinGroupEndTime: joinGroupTime?.[1],
+      createGroupStartTime: createGroupTime?.[0],
+      createGroupEndTime: createGroupTime?.[1],
       ...rest
     },
     ...options
@@ -20,12 +24,18 @@ export const singleGroupList = async (params = {}, options = {}) => {
 }
 
 export const multiGroupList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current, pageSize, finishGroupTime, joinGroupTime, createGroupTime, ...rest } = params;
   const res = await request('/auth/activity/group/multiGroupList', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      joinGroupStartTime: joinGroupTime?.[0],
+      joinGroupEndTime: joinGroupTime?.[1],
+      finishGroupStartTime: finishGroupTime?.[0],
+      finishGroupEndTime: finishGroupTime?.[1],
+      createGroupStartTime: createGroupTime?.[0],
+      createGroupEndTime: createGroupTime?.[1],
       ...rest
     },
     ...options

@@ -4,7 +4,6 @@ import { Steps, Space, Button, Modal } from 'antd';
 import { useParams } from 'umi';
 import { findAdminOrderDetail, deliverGoods, expressInfo } from '@/services/order-management/normal-order-detail';
 import { amountTransform, dateFormat } from '@/utils/utils'
-import Delivery from '@/components/delivery'
 import { history } from 'umi';
 
 import styles from './style.less';
@@ -15,7 +14,6 @@ const OrderDetail = () => {
 
   const params = useParams();
   const [detailData, setDetailData] = useState({});
-  const [deliveryVisible, setDeliveryVisible] = useState(false)
   const [expressInfoState, setExpressInfoState] = useState([])
 
   const expressInfoRequest = () => {

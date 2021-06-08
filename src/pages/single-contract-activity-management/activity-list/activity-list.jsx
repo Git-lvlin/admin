@@ -97,7 +97,7 @@ const TableList = () => {
         1: '待开始',
         2: '进行中',
         3: '已结束',
-        4: '已终止'
+        4: '已中止'
       }
     },
     {
@@ -106,13 +106,20 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          <a onClick={() => { history.push(`/single-contract-activity-management/activity-product/${data.id}`) }}>活动商品</a>
+          <a onClick={() => {
+            history.push(`/single-contract-activity-management/activity-product/${data.id}?info=${data.activityName} ${moment(data.activityStartTime * 1000).format('YYYY-MM-DD HH:mm:ss')}-${moment(data.activityEndTime * 1000).format('YYYY-MM-DD HH:mm:ss')} 单约${data.groupNum}团 ${{
+              1: '待开始',
+              2: '进行中',
+              3: '已结束',
+              4: '已中止'
+            }[data.activityStatus]}`)
+          }}>活动商品</a>
           <a onClick={() => { history.push(`/single-contract-activity-management/activity-detail/${data.id}`) }}>详情</a>
           {data.activityStatus === 1
             &&
             <>
               <a onClick={() => { getDetail(data.id) }}>编辑</a>
-              <a onClick={() => { activityStop(data.id) }}>终止</a>
+              <a onClick={() => { activityStop(data.id) }}>中止</a>
             </>
           }
         </Space>
@@ -150,6 +157,7 @@ const TableList = () => {
           setVisible={setVisible}
           callback={() => { actionRef.current.reload() }}
           detailData={detailData}
+          onClose={() => { setDetailData(null) }}
         />
       }
     </PageContainer>

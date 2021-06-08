@@ -30,6 +30,7 @@ export default {
   'menu.order-management.intensive-order.shopkeeper-order-detail': '订单详情',
 
   'menu.product-management': '商品管理',
+  'menu.product-management.daifa-product': '代发商品',
   'menu.product-management.product-list': '商品列表',
   'menu.product-management.brand-list': '品牌列表',
   'menu.product-management.product-log': '商品日志',
@@ -123,4 +124,7 @@ export default {
   'menu.community-management.community-advertising':'社区广告管理',
   'menu.community-management.add-advertising':'添加/编辑广告',
   'menu.community-management.advertising-manage':'广告位管理',
+
+  'menu.daifa-store-management':'代发店管理',
+  'menu.daifa-store-management.list':'代发店列表',
 };
