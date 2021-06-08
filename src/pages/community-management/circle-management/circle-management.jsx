@@ -5,7 +5,6 @@ import { adminCircleList } from '@/services/community-management/circle-admin-ci
 import { circleHide } from '@/services/community-management/circle-hide';
 import { cancelHide } from '@/services/community-management/circle-cancel-hide';
 import { circleBanDynamic } from '@/services/community-management/circle-ban-dynamic';
-import { circleDetail } from '@/services/community-management/circle-detail';
 import { cancelBanDynamic } from '@/services/community-management/circle-cancel-ban-dynamic';
 import { banDynamicComment } from '@/services/community-management/circle-ban-dynamic-comment';
 import { cancelBanDynamicComment } from '@/services/community-management/circle-cancel-ban-dynamic-comment';
@@ -15,7 +14,7 @@ import ProForm, { ProFormSwitch} from '@ant-design/pro-form';
 import { history } from 'umi';
 import { Button } from 'antd';
 
-export default props => {
+export default ()=> {
     const ref=useRef()
     const onTop=(bol,off)=>{
         if(bol){
