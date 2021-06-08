@@ -29,7 +29,7 @@ export default (props) => {
   const submit = (values) => {
     return new Promise((resolve, reject) => {
       const apiMethod = type === 'add' ? api.categoryAdd : api.categoryEdit;
-      const { comPercent,...rest } = values;
+      const { comPercent, gcShow,...rest } = values;
       const params = {
         ...rest,
         gcShow: gcShow ? 1 : 0,

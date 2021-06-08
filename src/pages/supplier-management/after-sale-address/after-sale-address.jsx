@@ -67,7 +67,14 @@ const TableList = () => {
       dataIndex: 'brandName',
       valueType: 'options',
       render: (_, data) => {
-        return <a onClick={() => { getDetail(data.id) }}>编辑</a>
+        return (
+          <Space>
+            <a onClick={() => { getDetail(data.id) }}>禁用</a>
+            <a onClick={() => { getDetail(data.id) }}>开启</a>
+            <a onClick={() => { getDetail(data.id) }}>设为默认</a>
+            <a onClick={() => { getDetail(data.id) }}>编辑</a>
+          </Space>
+        )
       }
     },
   ];

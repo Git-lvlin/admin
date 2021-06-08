@@ -208,13 +208,8 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        try {
-          await submit(values);
-          return true;
-        } catch (error) {
-          console.log('error', error)
-        }
-
+        await submit(values);
+        return true;
       }}
       visible={visible}
       initialValues={{
@@ -272,10 +267,6 @@ export default (props) => {
           {
             label: '开启',
             value: 2,
-          },
-          {
-            label: '不开启',
-            value: 1,
           },
         ]}
         extra="开启虚拟成团后，当拼约时长到期时，对人数未满的团，系统将会模拟匿名买家凑满人数，使该团成团，开启以提高成团率"

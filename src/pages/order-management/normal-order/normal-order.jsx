@@ -17,7 +17,6 @@ const TableList = () => {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState(0)
   const [deliveryVisible, setDeliveryVisible] = useState(false)
-  const [orderId, setOrderId] = useState('')
 
   const [form] = Form.useForm()
 

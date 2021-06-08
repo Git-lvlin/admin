@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Form, Image } from 'antd';
 import {
   DrawerForm,
@@ -15,6 +15,7 @@ export default (props) => {
   const [overruleVisible, setOverruleVisible] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [tableHead, setTableHead] = useState([]);
+  const type = useRef(0)
 
   const { goods } = detailData;
 
@@ -90,7 +91,7 @@ export default (props) => {
           }))
         }
 
-        check(1, 1, detailData.spuId, {
+        check(type.current, 1, detailData.spuId, {
           supplierHelperId,
           settleType,
           goodsInfo
@@ -99,10 +100,10 @@ export default (props) => {
       submitter={{
         render: (props) => {
           return [
-            <Button key="1" type="primary" onClick={() => { props.submit(); }}>
+            <Button key="1" type="primary" onClick={() => { type.current = 1; props.submit(); }}>
               通过并上架
             </Button>,
-            <Button key="2" onClick={() => { check(2, 1, detailData.spuId) }}>
+            <Button key="2" onClick={() => { type.current = 2; props.submit(); }}>
               通过但不上架
             </Button>,
             <Button type="primary" key="3" danger onClick={() => { setOverruleVisible(true) }}>

@@ -201,7 +201,7 @@ const TableList = () => {
       render: (_, data) => (
         <Space>
           <a onClick={() => { getDetail(data.wholesaleId) }}>详情</a>
-          {data.wholesaleStatusDesc === '待开始' && <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>}
+          {data.wholesaleStatusDesc === '待开始' && <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>中止</a>}
         </Space>
       ),
     },
