@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { adminCircleList } from '@/services/community-management/circle-admincirclelist';
-import { releaseDynamic } from '@/services/community-management/dynamic-releasedynamic';
-import { listSystemVirtualMember } from '@/services/community-management/memberInfo-listSystemVirtualMember';
+import { adminCircleList } from '@/services/community-management/circle-admin-circle-list';
+import { releaseDynamic } from '@/services/community-management/dynamic-release-dynamic';
+import { listSystemVirtualMember } from '@/services/community-management/memberinfo-list-system-virtual-member';
 import ProForm, { ProFormSwitch,ProFormTextArea,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';
 import { message, Form } from 'antd';
@@ -30,8 +30,12 @@ export default props => {
         onFinish={async (values) => {
           console.log(values);
           values.images=[values.images]
-          releaseDynamic(values)
-          message.success('提交成功');
+          releaseDynamic(values).then(res=>{
+            if(res.code==0){
+              message.success('发布成功');
+              history.push('/community-management/content-management')
+            }
+          })
         }}
         style={{ width: '1000px', margin: '0 auto' }}
       >

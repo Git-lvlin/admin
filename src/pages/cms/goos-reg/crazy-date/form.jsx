@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
   DrawerForm,
@@ -52,11 +52,17 @@ export default (props) => {
         }
       }}
       onFinish={async (values) => {
-        await waitTime(values);
-        console.log(values.name);
-        message.success('提交成功');
-        // 不返回不会关闭弹框
-        return true;
+        const start = (new Date(values.activityStartTime)).getTime();
+        const end = (new Date(values.activityEndTime)).getTime();
+        if (end <= start) {
+          message.error('活动结束时间应该大于开始时间!');
+          return false;
+        } else {
+          await waitTime(values);
+          message.success('提交成功');
+          // 不返回不会关闭弹框
+          return true;
+        }
       }}
     >
 

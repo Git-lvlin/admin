@@ -77,14 +77,11 @@ export default (props) => {
           tooltip={
             <dl>
               <dt>图片要求</dt>
-              <dd>首页banner-351*100</dd>
-              <dd>集约页面banner-375*186</dd>
-              <dd>个人中心banner-375*65</dd>
-              <dd>会员店专享banner-375*150</dd>
+              <dd>根据设计，暂无限制</dd>
             </dl>
           }
         >
-          <Upload multiple maxCount={1} accept="image/*" dimension="1:1" size={375} />
+          <Upload multiple maxCount={1} accept="image/*" />
         </Form.Item>
       </ProForm.Group>
       <ProForm.Group>

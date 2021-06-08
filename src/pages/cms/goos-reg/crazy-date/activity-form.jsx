@@ -5,26 +5,37 @@ import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } 
 import { crazyGoodsList } from '@/services/cms/member/member';
 import { Button, Space, message } from 'antd';
 import Edit from './goods-modal-form'
+import ReplaceForm from './replace-form';
 
 const DetailList = (props) => {
   const [listData, setListData] = useState(null)
   const { onChange, id } = props;
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
+  const [replaceFormVisible, setReplaceFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(true);
   const [acid, setAcId] = useState({cmsId: 0});
 
-  const getDetail = (data,channel) => {
+  const getDetail = (data) => {
     if (!id) {return message.error('请先选择活动')}
     const param = {
       data,
       id, 
     }
-    if (channel) {
-      param.channel = channel
-    }
     setDetailData(param);
     setFormVisible(true);
+  }
+
+  const openList = () => {
+    if (!id) {
+      message.error('请先选择活动')
+      return;
+    }
+    const param = {
+      id: id, 
+    }
+    setDetailData(param);
+    setReplaceFormVisible(true);
   }
 
   const columns = [
@@ -135,13 +146,9 @@ const DetailList = (props) => {
   ];
 
 
-  useEffect((props) => {
-
+  useEffect(() => {
     if (id) {
       setAcId({cmsId:id})
-      // const res = crazyGoodsList({cmsId:detail.id});
-      // setListData(res)
-      // actionRef.current.reload();
     }
   }, [id]);
 
@@ -211,7 +218,7 @@ const DetailList = (props) => {
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail(record) }}>
           新增
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail(record,5) }}>
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { openList() }}>
           新增(1688)
         </Button>,
       ]}
@@ -222,6 +229,13 @@ const DetailList = (props) => {
       detailData={detailData}
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { setDetailData(null) }}
+    />}
+    {replaceFormVisible && <ReplaceForm
+      visible={replaceFormVisible}
+      setVisible={setReplaceFormVisible}
+      detailData={detailData}
+      callback={() => { actionRef.current.reload(); setDetailData(null) }}
+      onClose={() => { actionRef.current.reload(); setDetailData(null) }}
     />}
     </>
   );

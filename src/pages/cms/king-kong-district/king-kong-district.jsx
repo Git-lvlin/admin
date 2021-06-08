@@ -1,27 +1,52 @@
 
-import React, { useRef, useState } from 'react';
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import React, { useEffect, useRef, useState } from 'react';
+import { PlusOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
-import { kingKongDistrictList, kongKongDistrictDel, kingKongTop } from '@/services/cms/member/member';
+import { kingKongDistrictList, kongKongDistrictDel, kongKongModifyType, kingKongTop } from '@/services/cms/member/member';
 
-const KingKongDistrict = (proprs) => {
+const KingKongDistrict = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
-  const [editableKeys, setEditableRowKeys] = useState([]);
+  const [flag, setFlag] = useState(false)
+
+  useEffect(() => {
+    if (flag) {
+      actionRef.current.reset();
+      setFlag(false)
+    }
+  }, [flag])
 
   const getDetail = (data) => {
-    setDetailData(data);
+    data && setDetailData(data);
     setFormVisible(true);
   }
 
   const formControl = (data) => {
-    kongKongDistrictDel({ids: data}).then((res) => {
+    kongKongDistrictDel({id: data}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
+        actionRef.current.reset();
+      }
+    })
+  }
+
+  const modifyType = (data, type) => {
+    const selectedRowKeys = data.selectedRowKeys
+    let goodsTypeUpdateStateRequestList = [];
+    let len = selectedRowKeys.length
+    for (let index = 0; index < len; index++) {
+      goodsTypeUpdateStateRequestList.push({
+        id:selectedRowKeys[index],
+        state: type
+      })
+    }
+    kongKongModifyType({goodsTypeUpdateStateRequestList:goodsTypeUpdateStateRequestList}).then((res) => {
+      if (res.code === 0) {
+        message.success(`操作成功`);
         actionRef.current.reset();
       }
     })
@@ -102,12 +127,12 @@ const KingKongDistrict = (proprs) => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _, action) => {
+      render: (text, record, _) => {
         return (
           <>
             {record.state===1&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
             &nbsp;&nbsp;{<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
-            &nbsp;&nbsp;{record.state===0&&<a key="d" onClick={() => {formControl([record.id])}}>删除</a>}
+            &nbsp;&nbsp;{record.state===0&&<a key="d" onClick={() => {formControl(record.id)}}>删除</a>}
           </>
         )
       }
@@ -135,27 +160,25 @@ const KingKongDistrict = (proprs) => {
             </a>
           </span>
           <span>{`待发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.containers,
-            0,
-          )} 个`}</span>
-          <span>{`已发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.callNumber,
-            0,
-          )} 个`}</span>
+              (pre, item) => {
+                if (item.state === 0) {
+                  return pre += 1
+                }
+                return pre
+              },
+              0,
+            )} 个`}</span>
+            <span>{`已发布: ${selectedRows.reduce(
+              (pre, item) => {
+                if(item.state === 1) {
+                  return pre += 1
+                }
+                return pre
+              },
+              0,
+            )} 个`}</span>
         </Space>
       )}
-      editable={{
-        type: 'single',
-        editableKeys,
-        onSave: async () => {
-          console.log('111111')
-            // await waitTime(2000);
-            // setNewRecord({
-            //   id: (Math.random() * 1000000).toFixed(0),
-            // });
-        },
-        onChange: setEditableRowKeys,
-      }}
       search={{
         labelWidth: 'auto',
       }}
@@ -165,10 +188,13 @@ const KingKongDistrict = (proprs) => {
       dateFormatter="string"
       headerTitle="金刚区"
       toolBarRender={(_,record) => [
-        <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys) }}>
-          批量删除
+        <Button key="button" type="primary" onClick={() => { modifyType(record, 1) }}>
+          批量发布
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail({_,record}) }}>
+        <Button key="button" type="primary" onClick={() => { modifyType(record, 0) }}>
+          批量下线
+        </Button>,
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail(false) }}>
           新增
         </Button>,
       ]}
@@ -177,8 +203,7 @@ const KingKongDistrict = (proprs) => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+      change={setFlag}
     />}
     </PageContainer>
   );

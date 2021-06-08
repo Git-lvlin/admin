@@ -1,59 +1,40 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Button, message, Form } from 'antd';
+import React, { useRef, useEffect } from 'react';
+import { message, Form } from 'antd';
 import ProForm, {
   DrawerForm,
   ProFormText,
-  ProFormDateRangePicker,
   ProFormRadio,
-  ProFormSelect,
 } from '@ant-design/pro-form';
-import { PlusOutlined } from '@ant-design/icons';
-import MemberReg from '@/components/member-reg';
 import Upload from '@/components/upload';
-import { bannerAdd } from '@/services/cms/member/member';
-
-const waitTime = (values) => {
-  console.log('values', values)
-  const { id, ...rest } = values
-  const param = {
-    ...rest
-  }
-  if (id) {
-    param.id = id
-  }
-  console.log('param', param)
-  return new Promise((resolve) => {
-    bannerAdd(param).then((res) => {
-      console.log('res', res);
-      if (res.code === 0) {
-        resolve(true);
-      }
-    })
-
-  });
-};
-
-
+import { kingKongAdd, kingKongModify } from '@/services/cms/member/member';
 
 export default (props) => {
-  console.log('pppp', props)
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, change, setVisible, visible } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
 
-  const columns = [
-    {
-      title: 'id',
-      dataIndex: 'id',
-      valueType: 'text',
-      search: false,
-      hideInTable: false,
-    },
-  ];
+  const waitTime = (values) => {
+    const { id, ...rest } = values
+    const param = {
+      ...rest
+    }
+    let api = kingKongAdd
+    if (id) {
+      param.id = id
+      api = kingKongModify
+    }
+    return new Promise((resolve) => {
+      api(param).then((res) => {
+        if (res.code === 0) {
+          change(true)
+          resolve(true);
+        }
+      })
+    });
+  };
 
   useEffect(() => {
     if (detailData) {
-      console.log('1111', detailData)
       const { ...rest } = detailData;
       form.setFieldsValue({
         ...rest
@@ -71,9 +52,6 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        onClose: () => {
-          onClose();
-        }
       }}
       onFinish={async (values) => {
         await waitTime(values);
@@ -83,40 +61,11 @@ export default (props) => {
       }}
     >
       <ProForm.Group>
-        <ProFormSelect
-          name="useType"
-          label="适用平台"
-          valueEnum={{
-            1: '全平台',
-            2: '手机端',
-            3: 'h5',
-            4: 'web网页',
-            5: '小程序',
-          }}
-          placeholder="选择平台"
-          rules={[{ required: true, message: '请选择平台!' }]}
-        />
-      </ProForm.Group>
-      <ProForm.Group>
-        <ProFormSelect
-          name="location"
-          label="位置"
-          valueEnum={{
-            1: '首页',
-            2: '集约',
-            3: '个人中心',
-            4: '会员店',
-          }}
-          placeholder="选择位置"
-          rules={[{ required: true, message: '请选择位置!' }]}
-        />
-      </ProForm.Group>
-      <ProForm.Group>
-        <ProFormText 
+        <ProFormText
           width="sm"
           name="title"
-          label="banner名称"
-          rules={[{ required: true, message: '请输入banner名称' }]}  
+          label="类目名称"
+          rules={[{ required: true, message: '请输入类目名称' }]}  
         />
       </ProForm.Group>
       <ProForm.Group>
@@ -127,14 +76,11 @@ export default (props) => {
           tooltip={
             <dl>
               <dt>图片要求</dt>
-              <dd>首页banner-351*100</dd>
-              <dd>集约页面banner-375*186</dd>
-              <dd>个人中心banner-375*65</dd>
-              <dd>会员店专享banner-375*150</dd>
+              <dd>57*57</dd>
             </dl>
           }
         >
-          <Upload multiple maxCount={1} accept="image/*" dimension="1:1" size={375} />
+          <Upload multiple maxCount={1} accept="image/*" proportion={{width:57,height:57}} />
         </Form.Item>
       </ProForm.Group>
       <ProForm.Group>

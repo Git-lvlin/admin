@@ -1,25 +1,12 @@
 import React, { useRef, useState, useEffect  } from 'react';
-import { Button, message, Form, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import ProForm, {
-  ModalForm,
-  DrawerForm,
-  ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
-} from '@ant-design/pro-form';
-import { PlusOutlined } from '@ant-design/icons';
-import MemberReg from '@/components/member-reg';
-import Upload from '@/components/upload';
+import { message, Space } from 'antd';
+import ProTable from '@ant-design/pro-table';
+import { ModalForm } from '@ant-design/pro-form';
 import { crazyActivityGoodsAdd } from '@/services/cms/member/member';
-import {spaceInfoList, hotGoosList, goosAllList} from '@/services/cms/member/member';
-
-
-
-
+import { goosAllList } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, setVisible, visible } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
 
@@ -39,7 +26,6 @@ export default (props) => {
           resolve(true);
         }
       })
-  
     });
   };
 
@@ -117,13 +103,6 @@ export default (props) => {
           resetText: '取消',
         },
       }}
-      // drawerProps={{
-      //   forceRender: true,
-      //   destroyOnClose: true,
-      //   onClose: () => {
-      //     onClose();
-      //   }
-      // }}
       onFinish={async (values, detailData) => {
         await waitTime(values, detailData);
         message.success('提交成功');

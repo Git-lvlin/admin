@@ -1,17 +1,17 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Form, Button, Modal,Tabs} from 'antd';
+import { Form, Button, Modal,Tabs,Select} from 'antd';
 import { FormattedMessage } from 'umi';
 import { ModalForm,ProFormSelect,ProFormRadio} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import styles from '../style.less'
-import {commonSpuList}  from '@/services/coupon-construction/coupon-searchsku';
-import {classList} from '@/services/coupon-construction/coupon-classlist'
+import {commonSpuList}  from '@/services/coupon-construction/coupon-common-spu-list';
+import {classList} from '@/services/coupon-construction/coupon-class-list'
 import BrandSelect from '@/components/brand-select'
 import { history,connect } from 'umi';
 const { TabPane } = Tabs;
 
 const useSecond=(props)=>{
-    const {id,dispatch,DetailList}=props
+    const {id,dispatch,DetailList, UseScopeList}=props
     const columns = [
         {
             title: 'spuID',
@@ -37,18 +37,33 @@ const useSecond=(props)=>{
         },
         {
             title: '商品分类',
-            dataIndex: 'gcId1Display',
+            dataIndex: 'gcId1',
             valueType: 'select',
-            valueEnum: {
-                1: '秒约商品',
-                2: '集约商品',
-            }
+            renderFormItem: () => (
+            <Select
+                placeholder="请选择商品类型"
+                options={onselect}
+              />
+            ),
+            hideInTable:true
+        },
+        {
+            title: '商品分类',
+            dataIndex: 'gcId1Display',
+            valueType: 'text',
+            hideInSearch:true
         },
         {
             title: '商品品牌',
             dataIndex: 'brandName',
             valueType: 'text',
+            hideInSearch: true,
+        },
+        {
+            title: '商品品牌',
+            dataIndex: 'brandId',
             renderFormItem: () => (<BrandSelect />),
+            hideInTable: true,
         },
         {
             title: '可用库存',
@@ -60,18 +75,97 @@ const useSecond=(props)=>{
             title: '销售价',
             dataIndex: 'goodsSalePrice',
             hideInSearch: true,
-        },
-        {
-            title: '操作',
-            render: () => <a>删除</a>,
-        },
+        }
     ];
     const columns2=[
        {
           title: '分类',
           dataIndex: 'unit',
-       }
+       },
+       {
+        title: '操作',
+        valueType: 'text',
+        render:(text, record, _, action)=>[
+            <a onClick={()=>delType(record.key)}>删除</a>
+        ]
+     }
     ]
+    const columns3= [
+        {
+            title: 'spuID',
+            dataIndex: 'spuId',
+        },
+        {
+            title: '商品图片',
+            dataIndex: 'goodsImageUrl',
+            width:50,
+            valueType: 'text',
+        },
+        {
+            title: '商品名称',
+            dataIndex: 'goodsName',
+            valueType: 'text',
+        },
+        {
+            title: '供应商名称',
+            dataIndex: 'supplierName',
+            valueType: 'text',
+        },
+        {
+            title: '商品分类',
+            dataIndex: 'gcId1Display',
+            valueType: 'text',
+        },
+        {
+            title: '商品品牌',
+            dataIndex: 'brandName',
+            valueType: 'text',
+        },
+        {
+            title: '可用库存',
+            dataIndex: 'stockNum',
+        },
+        {
+            title: '销售价',
+            dataIndex: 'goodsSalePrice',
+        },
+        {
+            title: '操作',
+            valueType: 'text',
+            render:(text, record, _, action)=>[
+                <a onClick={()=>delGoods(record.spuId)}>删除</a>
+            ]
+         }
+    ];
+    //删除品类
+    const delType=key=>{
+        console.log('key',key)
+        setCates([])
+        dispatch({
+            type:'UseScopeList/fetchLookUnit',
+            payload:{
+                unit:null
+            }
+        })
+    }
+    
+    //删除商品
+    const  delGoods=val=>{
+        let arr =  UseScopeList.spuIds.split(',')
+        console.log('arr',arr)
+        let a= arr.filter(ele=>(
+            ele!=val
+        ))
+        a = a.toString()
+        console.log(a);
+        dispatch({
+            type:'UseScopeList/fetchLookSpuIds',
+            payload:{
+                spuIds:a
+            }
+        })
+       
+    }
     const actionRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading,setLoading]=useState(true)
@@ -81,6 +175,8 @@ const useSecond=(props)=>{
     const [position,setPosition]=useState()
     const [onselect,setOnselect]=useState([])
     const [spuIds,setSpuIds]=useState('')
+    const [off,setOff]=useState(false)
+
 
 
     const showModal = () => {
@@ -170,7 +266,6 @@ const useSecond=(props)=>{
                                     rowKey="spuId"
                                     options={false}
                                     params={{
-                                        page:1,
                                         pageSize: 3,
                                     }}
                                     style={{display:loading?'block':'none'}}
@@ -192,7 +287,7 @@ const useSecond=(props)=>{
                                 toolBarRender={false}
                                 search={false}
                                 rowKey="spuId"
-                                columns={columns}
+                                columns={columns3}
                                 dataSource={goods}
                                 style={{display:loading?'none':'block'}}
                             />
@@ -202,7 +297,7 @@ const useSecond=(props)=>{
                     :null
                 }
                 {
-                    position==3||(parseInt(id)==id )&&DetailList.data?.goodsType==3?
+                    position==3||(parseInt(id)==id)&&DetailList.data?.goodsType==3?
                         <>
                         {
                             (parseInt(id)==id)?
@@ -238,10 +333,13 @@ const useSecond=(props)=>{
                                 })
                                 setCates([
                                     {
-                                        key: '1',
-                                        unit: onselect[values.unit].label,
+                                        key: values.unit,
+                                        unit: onselect.filter(ele=>(
+                                            ele.value==values.unit
+                                        ))[0].label
                                     }
                                     ])
+                                    console.log('cates',cates)
                                 setFlag(false)
                                 message.success('提交成功');
                                 return true;

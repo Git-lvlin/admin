@@ -14,19 +14,31 @@ export default {
         '^': '',
       },
     },
-    // '/java-admin/': {
-    //   target: 'http://192.168.14.188:50039',
-    //   changeOrigin: true,
-    //   pathRewrite: {
-    //     '^': '',
-    //   },
-    // },
-    // '/goodsService/': {
-    //   target: 'http://192.168.14.148:50003',
-    //   changeOrigin: true,
-    //   pathRewrite: {
-    //     '^': '',
-    //   },
-    // },
-  }
+    '/java-admin/': {
+      // target: 'http://192.168.3.2:6664',
+      target: 'http://admin.waiad.icu',
+      changeOrigin: true,
+      pathRewrite: {
+        '^': ''
+      }
+    }
+  },
+  test: {
+    '/api/': {
+      target: 'https://preview.pro.ant.design',
+      changeOrigin: true,
+      pathRewrite: {
+        '^': '',
+      },
+    },
+  },
+  pre: {
+    '/api/': {
+      target: 'your pre url',
+      changeOrigin: true,
+      pathRewrite: {
+        '^': '',
+      },
+    },
+  },
 };

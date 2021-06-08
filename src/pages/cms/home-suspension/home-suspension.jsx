@@ -13,7 +13,7 @@ const HomeSuspension = () => {
   const [detailData, setDetailData] = useState(null);
 
   const getDetail = (data) => {
-    setDetailData(data);
+    data && setDetailData(data);
     setFormVisible(true);
   }
 
@@ -92,7 +92,7 @@ const HomeSuspension = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _, action) => {
+      render: (text, record, _) => {
         return (
           <>
             &nbsp;&nbsp;{<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
@@ -119,7 +119,7 @@ const HomeSuspension = () => {
       dateFormatter="string"
       headerTitle="首页悬浮窗"
       toolBarRender={(_,record) => [
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail({_,record}) }}>
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail() }}>
           新增
         </Button>,
       ]}

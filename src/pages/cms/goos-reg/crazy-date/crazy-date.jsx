@@ -12,10 +12,10 @@ const CrazyDate = (props) => {
   const { onChange, detail } = props;
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
-  const [detailData, setDetailData] = useState(true);
+  const [detailData, setDetailData] = useState(false);
 
   const getDetail = (data) => {
-    setDetailData(data);
+    data && setDetailData(data);
     setFormVisible(true);
   }
 
@@ -27,7 +27,6 @@ const CrazyDate = (props) => {
       }
     })
   }
-
 
   const columns = [
     {
@@ -90,7 +89,7 @@ const CrazyDate = (props) => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _, action) => {
+      render: (text, record, _,) => {
         return (
           <>
             {/* &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>} */}
@@ -145,19 +144,15 @@ const CrazyDate = (props) => {
             )} 个`}</span>
         </Space>
       )}
-      editable={{
-        type: 'multiple',
-      }}
-      search={{
-        labelWidth: 'auto',
-      }}
+      // search={{
+      //   labelWidth: 'auto',
+      // }}
       pagination={{
         pageSize: 5,
       }}
       onRow={(record) => {
         return {
           onClick: () => {
-            console.log('左侧栏点击item',record)
             if (record.title) {
               onChange(record);
             }

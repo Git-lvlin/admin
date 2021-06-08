@@ -65,6 +65,7 @@ const couponType=(props)=>{
                     />
                     <ProFormSelect
                         name="unit"
+                        initialValue={1}
                         fieldProps={{onChange:(val)=>{toggle(val)}}}
                         options={[
                             {

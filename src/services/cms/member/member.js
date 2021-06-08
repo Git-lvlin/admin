@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import { number } from 'prop-types';
 
 export const spaceInfoList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;
@@ -56,6 +57,22 @@ export const bannerAdd = (params = {}, options = {}) => {
   });
 }
 
+export const kingKongAdd = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/goodsType/goodsTypeSave', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const kingKongModify = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/goodsType/goodsTypeUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const expressNewsUpdate = (params = {}, options = {}) => {
   const { id, ...rest } = params
 
@@ -105,12 +122,15 @@ export const saveMoneyList = async (params = {}, options = {}) => {
   }
 }
 export const hotGoosList = async (params = {}, options = {}) => {
-  const { current, pageSize, status, ...rest } = params;
+  const { current, pageSize, status, goodsType, ...rest } = params;
 
   const data = {
     page: current,
     pageSize: pageSize,
     ...rest
+  }
+  if (goodsType) {
+    data.goodsType = Number(goodsType)
   }
   if (status) {
     data.status = Number(status);
@@ -128,8 +148,8 @@ export const hotGoosList = async (params = {}, options = {}) => {
   }
 }
 export const crazyDateList = async (params = {}, options = {}) => {
-  const { current, pageSize, status, ...rest } = params;
-
+  const { current, pageSize, ...rest } = params;
+  
   const data = {
     page: current,
     size: pageSize,
@@ -288,6 +308,13 @@ export const kongKongDistrictDel = (params = {}, options = {}) => {
   });
 }
 
+export const kongKongModifyType = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/goodsType/goodsTypeUpdateMoreState', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
 
 export const memberOperation = (params = {}, options = {}) => {
   return request('/auth/activity/Activity/spanceInfoStatusEdit', {
@@ -298,14 +325,13 @@ export const memberOperation = (params = {}, options = {}) => {
 }
 
 export const goosAllList = async (params = {}, options = {}) => {
-  const { current, pageSize, channel, ...rest } = params;
+  const { current, pageSize, ...rest } = params;
   const data = {
     page: current,
     pageSize: pageSize,
     ...rest
   }
-  let url = channel === 5 ? '/auth/activity/Goods/ylbbGoodsList' : '/auth/activity/Goods/wholesaleTransGoodsList'
-  const res = await request(url, {
+  const res = await request('/auth/activity/Goods/wholesaleTransGoodsList', {
     method: 'POST',
     data,
     ...options

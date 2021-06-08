@@ -36,19 +36,22 @@ export default (props) => {
     }
   }, [form, detailData])
 
-
   return (
     <ModalForm
-      title='新建'
+      title='编辑'
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
       form={form}
-      modalProps={{
-        onClose: () => {
-          onClose();
-        }
+      drawerprops={{
+        forceRender: true,
+        destroyOnClose: true,
       }}
+      // modalProps={{
+      //   onClose: () => {
+      //     onClose();
+      //   }
+      // }}
       onFinish={async (values) => {
         await waitTime(values);
         message.success('修改成功');
@@ -57,13 +60,12 @@ export default (props) => {
       }}
     >
       <ProForm.Group>
-        <Form.Item
-          name="id"
-          label="上传区域"
-          rules={[{ required: true, message: '请选择上传区域' }]}
-        >
-          <MemberReg disabled/>
-        </Form.Item>
+        <ProFormText
+            name="title"
+            label="区域"
+            disabled
+            rules={[{ required: true, message: '' }]}
+          />
       </ProForm.Group>
       <ProForm.Group>
         <ProFormText
@@ -106,6 +108,11 @@ export default (props) => {
           rules={[{ required: false, message: '请输入链接' }]}  
         />
       </ProForm.Group>
+      <ProFormText
+          name="id"
+          label="id"
+          hidden
+        />
     </ModalForm>
   );
 };
