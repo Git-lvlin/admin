@@ -1,14 +1,14 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { adminList } from '@/services/community-management/dynamic-adminlist';
-import { banDynamicComment } from '@/services/community-management/dynamic-bandynamiccomment';
-import { banShare } from '@/services/community-management/dynamic-banshare';
+import { adminList } from '@/services/community-management/dynamic-admin-list';
+import { banDynamicComment } from '@/services/community-management/dynamic-ban-dynamic-comment';
+import { banShare } from '@/services/community-management/dynamic-ban-share';
 import { dynamicDelete } from '@/services/community-management/dynamic-delete';
-import { cancelDelete } from '@/services/community-management/dynamic-canceldelete';
+import { cancelDelete } from '@/services/community-management/dynamic-cancel-delete';
 import { circleTop } from '@/services/community-management/circle-top';
-import { cancelBanDynamicComment } from '@/services/community-management/dynamic-cancelbndynamiccomment';
-import { cancelBanShare } from '@/services/community-management/dynamic-cancelbanshare';
+import { cancelBanDynamicComment } from '@/services/community-management/dynamic-cancel-ban-dynamic-comment';
+import { cancelBanShare } from '@/services/community-management/dynamic-cancel-ban-share';
 import ProForm, { ModalForm,ProFormSwitch} from '@ant-design/pro-form';
 import { Button } from 'antd';
 

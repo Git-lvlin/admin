@@ -3,7 +3,7 @@ import { Form, Button,Table } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import '../style.less'
 import { history,connect } from 'umi';
-import { couponWholesaleList } from '@/services/coupon-construction/coupon-wholesalelist';
+import { couponWholesaleList } from '@/services/coupon-construction/coupon-wholesale-list';
 
 const  useCollect=(props)=>{
     let {id,dispatch,DetailList}=props

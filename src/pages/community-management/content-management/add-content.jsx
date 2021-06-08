@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { adminCircleList } from '@/services/community-management/circle-admincirclelist';
-import { releaseDynamic } from '@/services/community-management/dynamic-releasedynamic';
-import { listSystemVirtualMember } from '@/services/community-management/memberInfo-listSystemVirtualMember';
+import { adminCircleList } from '@/services/community-management/circle-admin-circle-list';
+import { releaseDynamic } from '@/services/community-management/dynamic-release-dynamic';
+import { listSystemVirtualMember } from '@/services/community-management/memberinfo-list-system-virtual-member';
 import ProForm, { ProFormSwitch,ProFormTextArea,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';
 import { message, Form } from 'antd';

@@ -1,8 +1,8 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { adsenseAdminList } from '@/services/community-management/adsense-adminlist';
-import { deleteById } from '@/services/community-management/adsense-deletebyId';
+import { adsenseAdminList } from '@/services/community-management/adsense-admin-list';
+import { deleteById } from '@/services/community-management/adsense-delete-byid';
 import  ProForm,{ ModalForm,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';
 import { Button } from 'antd';

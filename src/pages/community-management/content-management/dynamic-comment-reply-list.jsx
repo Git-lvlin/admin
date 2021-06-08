@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { CommentReplyList } from '@/services/community-management/dynamic-comment-replylist';
+import { CommentReplyList } from '@/services/community-management/dynamic-comment-reply-list';
 import { dynamicDelete } from '@/services/community-management/dynamic-delete';
 import  ProForm,{ ModalForm,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';

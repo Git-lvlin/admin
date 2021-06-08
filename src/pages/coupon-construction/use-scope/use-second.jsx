@@ -4,14 +4,14 @@ import { FormattedMessage } from 'umi';
 import { ModalForm,ProFormSelect,ProFormRadio} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import styles from '../style.less'
-import {commonSpuList}  from '@/services/coupon-construction/coupon-searchsku';
-import {classList} from '@/services/coupon-construction/coupon-classlist'
+import {commonSpuList}  from '@/services/coupon-construction/coupon-common-spu-list';
+import {classList} from '@/services/coupon-construction/coupon-class-list'
 import BrandSelect from '@/components/brand-select'
 import { history,connect } from 'umi';
 const { TabPane } = Tabs;
 
 const useSecond=(props)=>{
-    const {id,dispatch,DetailList}=props
+    const {id,dispatch,DetailList, UseScopeList}=props
     const columns = [
         {
             title: 'spuID',
@@ -151,27 +151,21 @@ const useSecond=(props)=>{
     
     //删除商品
     const  delGoods=val=>{
-        setGoods(goods.filter(ele=>(
-            ele.spuId!=val
-        )))
-        console.log('goods',goods)
-        let box=''
-        goods.map(ele=>{
-            box+=ele.spuId+','
+        let arr =  UseScopeList.spuIds.split(',')
+        console.log('arr',arr)
+        let a= arr.filter(ele=>(
+            ele!=val
+        ))
+        a = a.toString()
+        console.log(a);
+        dispatch({
+            type:'UseScopeList/fetchLookSpuIds',
+            payload:{
+                spuIds:a
+            }
         })
-        box=box.substring(0,box.length-1)
-        console.log('box',box)
-        setSpuIds(box)
+       
     }
-    // useEffect(()=>{
-    //     dispatch({
-    //         type:'UseScopeList/fetchLookSpuIds',
-    //         payload:{
-    //             spuIds:spuIds
-    //         }
-    //     })
-    //     return undefined
-    // },[spuIds])
     const actionRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading,setLoading]=useState(true)
@@ -181,6 +175,8 @@ const useSecond=(props)=>{
     const [position,setPosition]=useState()
     const [onselect,setOnselect]=useState([])
     const [spuIds,setSpuIds]=useState('')
+    const [off,setOff]=useState(false)
+
 
 
     const showModal = () => {
