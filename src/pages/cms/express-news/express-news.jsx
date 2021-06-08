@@ -59,12 +59,6 @@ const ExpressNews = () => {
       search: false
     },
     {
-      title: '图片',
-      dataIndex: 'image',
-      render: (text) => <img src={text} width={50} height={50} />,
-      search: false,
-    },
-    {
       title: '消息标题',
       dataIndex: 'title',
     },

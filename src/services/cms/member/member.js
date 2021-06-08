@@ -1,5 +1,4 @@
 import request from '@/utils/request';
-import { number } from 'prop-types';
 
 export const spaceInfoList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;
