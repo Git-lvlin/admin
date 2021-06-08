@@ -115,11 +115,11 @@ const Member = () => {
       render: (text, record, _) => {
         return (
           <>
-            {record.status===2&&<a key="top" onClick={() => {sortTop(record.id)}}>置顶</a>}
-            &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
+            {record.status===2&&<a key="top" style={{marginRight:'10px'}} onClick={() => {sortTop(record.id)}}>置顶</a>}
+            {record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
             {record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
+            {/* &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>} */}
           </>
         )
       }
@@ -174,9 +174,9 @@ const Member = () => {
           <Button key="button" icon={<PauseCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 1) }}>
             批量下线
           </Button>,
-          <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 4) }}>
-            批量删除
-          </Button>,
+          // <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 4) }}>
+          //   批量删除
+          // </Button>,
         ]}
         columns={columns}
       />
