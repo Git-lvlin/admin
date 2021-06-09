@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
@@ -13,6 +13,16 @@ const SaveMoney = (proprs) => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(true);
+  const [flag, setFlag] = useState(false);
+
+
+  useEffect(() => {
+    if (flag) {
+      actionRef.current.reset()
+      setFlag(false)
+    }
+  }, [flag])
+
 
   const getDetail = (data) => {
     setDetailData(data);
@@ -207,8 +217,7 @@ const SaveMoney = (proprs) => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { setDetailData(null) }}
+      setFlag={setFlag}
     />}
     </PageContainer>
   );

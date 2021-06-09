@@ -262,16 +262,16 @@ export const crazyActivityDel = (params = {}, options = {}) => {
 }
 
 export const SetHotGoodsDel = (params = {}, options = {}) => {
-  return request('/auth/go-spider-api/contestprice/auth/contestprice/SetHotGoods', {
-    method: 'POST',
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetHotGoods?ids=${params.ids}&opt=${params.opt}`, {
+    method: 'GET',
     data: params,
     ...options
   });
 }
 
 export const SetHomePageGoodsDel = (params = {}, options = {}) => {
-  return request('/auth/go-spider-api/contestprice/auth/contestprice/SetHomePageGoods', {
-    method: 'POST',
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetHomePageGoods?ids=${params.ids}&opt=${params.opt}`, {
+    method: 'GET',
     data: params,
     ...options
   });
@@ -551,18 +551,35 @@ export const memberSortTop = (params = {}, options = {}) => {
   });
 }
 
-export const priceComparsionList = async (params = {}, options = {}) => {
-  const { current, pageSize, status, ...rest } = params;
+export const priceComparsionListAll = async (params = {}, options = {}) => {
+  const { current, pageSize, ishot, ...rest } = params;
 
   const data = {
     page: current,
     size: pageSize,
     ...rest
   }
-  if (status) {
-    data.status = Number(status);
+  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetContestGoodsList?isHot=0', {
+    method: 'GET',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
   }
-  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetContestGoodsList', {
+}
+
+export const priceComparsionList = async (params = {}, options = {}) => {
+  const { current, pageSize, ishot, ...rest } = params;
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetContestGoodsList?isHot=1', {
     method: 'GET',
     data,
     ...options

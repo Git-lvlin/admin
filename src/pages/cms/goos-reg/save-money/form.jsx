@@ -19,7 +19,7 @@ import {spaceInfoList, hotGoosList, saveMoneyFormList} from '@/services/cms/memb
 
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, setVisible, setFlag, visible } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
   const columns = [
@@ -79,22 +79,22 @@ export default (props) => {
   ];
 
   const waitTime = () => {
-    const goodsInfo = arr.map(({id, spuId, skuId, supplierId, wholesaleType}) => {
+    const goodsInfo = arr.map(({wsId, spuId, skuId, supplierId, wholesaleType}) => {
       const theArray = {
-        id, spuId, skuId, wholesaleType
+        wsId, spuId, skuId, wholesaleType
       }
       if (supplierId) {
         theArray.supplierId = supplierId
       }
       return theArray
     });
-    console.log('goodsInfo', goodsInfo)
     const param = {
       goodsInfo: goodsInfo,
     }
     return new Promise((resolve) => {
       saveMoneyAdd(param).then((res) => {
         if (res.code === 0) {
+          setFlag(true)
           resolve(true);
         }
       })
@@ -118,13 +118,10 @@ export default (props) => {
           resetText: '取消',
         },
       }}
-      // drawerProps={{
-      //   forceRender: true,
-      //   destroyOnClose: true,
-      //   onClose: () => {
-      //     onClose();
-      //   }
-      // }}
+      drawerProps={{
+        forceRender: true,
+        destroyOnClose: true,
+      }}
       onFinish={async () => {
         await waitTime();
         message.success('提交成功');
@@ -133,7 +130,7 @@ export default (props) => {
       }}
     >
 <ProTable
-      rowKey="id"
+      rowKey="wsId"
       options={false}
       columns={columns}
       request={saveMoneyFormList}

@@ -9,7 +9,7 @@ import ProForm, {
   ProFormSelect,
 } from '@ant-design/pro-form';
 import { hotGoosAdd } from '@/services/cms/member/member';
-import { priceComparsionList } from '@/services/cms/member/member';
+import { priceComparsionListAll } from '@/services/cms/member/member';
 
 
 export default (props) => {
@@ -73,7 +73,7 @@ export default (props) => {
       rowKey="id"
       options={false}
       columns={columns}
-      request={priceComparsionList}
+      request={priceComparsionListAll}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项

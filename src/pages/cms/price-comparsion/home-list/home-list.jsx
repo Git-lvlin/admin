@@ -13,8 +13,8 @@ const HomeList = () => {
   const del = (record, opt) => {
     const { id } = record
     const param = {
-      id,
-      opt:opt
+      "id": id.toString(),
+      "opt":opt
     }
     SetHomePageGoodsDel(param).then((res) => {
       if (res.code === 0) {
