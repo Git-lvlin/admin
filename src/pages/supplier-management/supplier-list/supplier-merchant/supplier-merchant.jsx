@@ -14,7 +14,7 @@ const TableList = () => {
     statusSwitch({
       supplierId: id,
       type
-    }).then(res => {
+    }, { showSuccess: true }).then(res => {
       if (res.code === 0) {
         actionRef.current.reload();
       }
@@ -62,7 +62,7 @@ const TableList = () => {
       dataIndex: 'status',
       valueType: 'select',
       valueEnum: {
-        3: '禁用',
+        0: '禁用',
         1: '启用'
       }
     },
@@ -97,7 +97,7 @@ const TableList = () => {
       render: (_, data) => (
         <Space>
           {data.status === 1 && <a onClick={() => { switchStatus(data.id, 2) }}>禁用</a>}
-          {data.status === 3 && <a onClick={() => { switchStatus(data.id, 1) }}>启用</a>}
+          {data.status === 0 && <a onClick={() => { switchStatus(data.id, 1) }}>启用</a>}
           <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.id}`) }}>详情</a>
           <a onClick={() => { getDetail(data.id) }}>编辑</a>
           <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>售后地址</a>

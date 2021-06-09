@@ -50,7 +50,7 @@ export default (props) => {
     return new Promise((resolve, reject) => {
       api.groupAdd({
         title,
-        status:1,
+        status: 1,
         rules: selectKeys.join(',')
       }, { showSuccess: true, showError: true }).then(res => {
         if (res.code === 0) {
@@ -90,13 +90,13 @@ export default (props) => {
       <div style={{ display: 'flex', paddingLeft: 55 }}>
         <div>角色权限</div>
         <div style={{ flex: 1 }}>
-          <Checkbox
+          {treeData.length === 0 && <Checkbox
             onChange={onSelectAll}
             checked={selectAll}
             style={{ marginLeft: 23, marginBottom: 5 }}
           >
             全部功能
-          </Checkbox>
+          </Checkbox>}
           <Tree
             checkable
             treeData={treeData}
