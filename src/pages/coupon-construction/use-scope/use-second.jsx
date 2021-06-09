@@ -11,9 +11,6 @@ import { connect } from 'umi';
 
 const useSecond=(props)=>{
     const {id,dispatch,DetailList, UseScopeList}=props
-    useEffect(()=>{
-        console.log('UseScopeList',UseScopeList)
-    },[])
     const columns = [
         {
             title: 'spuID',
@@ -24,7 +21,7 @@ const useSecond=(props)=>{
             dataIndex: 'goodsImageUrl',
             valueType: 'text',
             hideInSearch: true,
-            width:120,
+            ellipsis:true
         },
         {
             title: '商品名称',
@@ -100,7 +97,7 @@ const useSecond=(props)=>{
             title: '商品图片',
             dataIndex: 'goodsImageUrl', 
             valueType: 'text',
-            width:50,
+            ellipsis:true
         },
         {
             title: '商品名称',
@@ -138,6 +135,12 @@ const useSecond=(props)=>{
             ]
          }
     ];
+    const columns4=[
+        {
+           title: '分类',
+           dataIndex: 'gcName',
+        }
+     ]
     //删除品类
     const delType=key=>{
         setCates([])
@@ -152,7 +155,7 @@ const useSecond=(props)=>{
     
     //删除商品
     const  delGoods=val=>{
-        let arr =  UseScopeList.spuIds.split(',')
+        let arr =  UseScopeList.UseScopeObje.spuIds.split(',')
         dispatch({
             type:'UseScopeList/fetchLookSpuIds',
             payload:{
@@ -164,12 +167,12 @@ const useSecond=(props)=>{
         dispatch({
             type:'UseScopeList/fetchLookSpuIdsArr',
             payload:{
-                spuIdsArr:UseScopeList.spuIdsArr.filter(ele=>(
+                spuIdsArr:UseScopeList.UseScopeObje.spuIdsArr.filter(ele=>(
                             ele.id!=val
                 ))
             }
         })
-        if(UseScopeList.spuIdsArr.length==1){
+        if(UseScopeList.UseScopeObje.spuIdsArr.length==1){
             setLoading(true)
         }
        
@@ -298,7 +301,7 @@ const useSecond=(props)=>{
                                 search={false}
                                 rowKey="spuId"
                                 columns={columns3}
-                                dataSource={UseScopeList.spuIdsArr}
+                                dataSource={UseScopeList.UseScopeObje.spuIdsArr}
                                 style={{display:loading?'none':'block'}}
                             />
                            </>
@@ -314,12 +317,9 @@ const useSecond=(props)=>{
                             <ProTable
                                 toolBarRender={false}
                                 search={false}
-                                rowKey="spuId"
-                                columns={columns2}
-                                params={{
-                                    gcParentId:DetailList.data?.classId
-                                }}
-                                request={classList}
+                                rowKey="id"
+                                columns={columns4}
+                                dataSource={[DetailList.data?.classInfo]}
                             />:
                             <>
                             <ModalForm
