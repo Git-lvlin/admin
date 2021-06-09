@@ -3,7 +3,7 @@ import { message, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm } from '@ant-design/pro-form';
 import { crazyActivityGoodsAdd } from '@/services/cms/member/member';
-import { goosAllList } from '@/services/cms/member/member';
+import { todayAllGoodsList } from '@/services/cms/member/member';
 
 export default (props) => {
   const { detailData, setVisible, visible } = props;
@@ -115,7 +115,7 @@ export default (props) => {
       options={false}
       columns={columns}
       // params={}
-      request={goosAllList}
+      request={todayAllGoodsList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项

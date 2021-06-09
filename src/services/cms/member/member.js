@@ -1,5 +1,4 @@
 import request from '@/utils/request';
-import { number } from 'prop-types';
 
 export const spaceInfoList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;
@@ -51,6 +50,14 @@ export const spaceEdit = (params = {}, options = {}) => {
 
 export const bannerAdd = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/banner/saveOrUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const tagSortModify = (params = {}, options = {}) => {
+  return request('/auth/activity/Goods/goodsTagSortSub', {
     method: 'POST',
     data: params,
     ...options

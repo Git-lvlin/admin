@@ -9,26 +9,6 @@ import ProForm, {
 import Upload from '@/components/upload';
 import { bannerAdd } from '@/services/cms/member/member';
 
-const waitTime = (values) => {
-  const { id, ...rest } = values
-  const param = {
-    ...rest
-  }
-  if (id) {
-    param.id = id
-  }
-  return new Promise((resolve) => {
-    bannerAdd(param).then((res) => {
-      if (res.code === 0) {
-        resolve(true);
-      }
-    })
-
-  });
-};
-
-
-
 export default (props) => {
   const { detailData, setVisible, onClose, visible } = props;
   const formRef = useRef();
@@ -54,10 +34,63 @@ export default (props) => {
     }
   ]
 
+  const waitTime = (values) => {
+    const { id, ...rest } = values
+    console.log('rest', rest)
+    const param = {
+      ...rest
+    }
+    if (id) {
+      param.id = id
+    }
+    if (detailData) {
+      if (param.useType.length > 1) {
+        param.useType = {
+          '全平台':1,
+          '手机端':2,
+          'h5':3,
+          'web网页':4,
+          '小程序':5,
+        }[detailData.useType]
+      }
+      if (param.location.length > 1) {
+        param.location = {
+          '首页':1,
+          '集约':2,
+          '个人中心':3,
+          '会员店':4,
+        }[detailData.location]
+      }
+    }
+  
+  
+    return new Promise((resolve) => {
+      bannerAdd(param).then((res) => {
+        if (res.code === 0) {
+          resolve(true);
+        }
+      })
+  
+    });
+  };
 
   useEffect(() => {
     if (detailData) {
+      detailData.useType = {
+        1: '全平台',
+        2: '手机端',
+        3: 'h5',
+        4: 'web网页',
+        5: '小程序',
+      }[detailData.useType]
+      detailData.location = {
+        1: '首页',
+        2: '集约',
+        3: '个人中心',
+        4: '会员店',
+      }[detailData.location]
       const { ...rest } = detailData;
+      console.log('detailData', detailData)
       form.setFieldsValue({
         ...rest
       })
@@ -66,7 +99,7 @@ export default (props) => {
 
   return (
     <DrawerForm
-      title={`${detailData.state ? '编辑' : '新建'}`}
+      title={`${detailData ? '编辑' : '新建'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}

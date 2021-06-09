@@ -1,24 +1,26 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
+import Modify from './edit';
 import ReplaceForm from './replace-form';
 import { hotGoosList, hotGoosOperation,tagSortTop } from '@/services/cms/member/member';
 
 
 
-const StrategyToday = (proprs) => {
+const StrategyToday = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [replaceFormVisible, setReplaceFormVisible] = useState(false);
+  const [modifyFormVisible, setModifyFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(true);
-
+  const [flag, setFlag] = useState(false)
   const getDetail = (data) => {
     setDetailData(data);
-    setFormVisible(true);
+    setModifyFormVisible(true);
   }
 
   const formControl = (data,type) => {
@@ -28,6 +30,13 @@ const StrategyToday = (proprs) => {
       }
     })
   }
+
+  useEffect(() => {
+    if (flag) {
+      setFlag(false)
+      actionRef.current.reset();
+    }
+  }, [flag])
 
   const top = (data) => {
     tagSortTop({id: data}).then((res) => {
@@ -165,7 +174,7 @@ const StrategyToday = (proprs) => {
             {record.status===2&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
             &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {action?.startEditable?.(record.key);console.log('action',action,record)}}>编辑</a>}
+            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {getDetail(record)}}>排序</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
           </>
         )
@@ -255,8 +264,13 @@ const StrategyToday = (proprs) => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { setDetailData(null) }}
+      setFlag={setFlag}
+    />}
+    {modifyFormVisible && <Modify
+      visible={modifyFormVisible}
+      setVisible={setModifyFormVisible}
+      detailData={detailData}
+      setFlag={setFlag}
     />}
     {replaceFormVisible && <ReplaceForm
       visible={replaceFormVisible}

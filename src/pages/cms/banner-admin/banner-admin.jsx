@@ -13,7 +13,7 @@ const BannerAdmin = () => {
   const [detailData, setDetailData] = useState(null);
 
   const getDetail = (data) => {
-    setDetailData(data);
+    data && setDetailData(data);
     setFormVisible(true);
   }
 
@@ -21,6 +21,7 @@ const BannerAdmin = () => {
     bannerSortTop({id: data}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
+        actionRef.current.reset();
       }
     })
   }
@@ -197,7 +198,7 @@ const BannerAdmin = () => {
         <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys, record) }}>
           批量删除
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail({_,record}) }}>
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail() }}>
           新增
         </Button>,
       ]}

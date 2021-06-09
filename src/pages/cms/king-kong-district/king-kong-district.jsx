@@ -92,7 +92,7 @@ const KingKongDistrict = () => {
     },
     {
       title: '操作人',
-      dataIndex: 'createUserName',
+      dataIndex: 'updateUserName',
       valueType: 'text',
     },
     {

@@ -14,7 +14,7 @@ import ProForm, { ProFormSwitch} from '@ant-design/pro-form';
 import { history } from 'umi';
 import { Button } from 'antd';
 
-export default props => {
+export default ()=> {
     const ref=useRef()
     const onTop=(bol,off)=>{
         if(bol){
