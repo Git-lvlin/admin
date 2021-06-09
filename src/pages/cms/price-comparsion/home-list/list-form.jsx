@@ -9,12 +9,12 @@ import ProForm, {
   ProFormSelect,
 } from '@ant-design/pro-form';
 import { hotGoosAdd } from '@/services/cms/member/member';
-import { priceComparsionListAll } from '@/services/cms/member/member';
+import { priceComparsionListAlls } from '@/services/cms/member/member';
 
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
-  const [arr, setArr] = useState(null)
+  const { detailData, setVisible, setIndexGoods, visible } = props;
+  const [arr, setArr] = useState(false)
   const formRef = useRef();
   const columns = [
     {
@@ -29,20 +29,16 @@ export default (props) => {
     },
   ];
 
-  const waitTime = (values) => {
-    const { ...rest } = values
-  
-    const param = {
-      spuIds: arr,
-      ...rest
-    }
-    return new Promise((resolve) => {
-      hotGoosAdd(param).then((res) => {
-        if (res.code === 0) {
-          resolve(true);
-        }
-      })
-  
+  const waitTime = () => {
+    return new Promise((resolve, reject) => {
+      if (arr.length !== 1) {
+        message.error('只能添加一个商品!')
+        reject(false)
+        return false;
+      } else {
+        setIndexGoods(arr[0])
+        resolve(true);
+      }
     });
   };
 
@@ -64,7 +60,6 @@ export default (props) => {
       }}
       onFinish={async (values) => {
         await waitTime(values);
-        message.success('提交成功');
         // 不返回不会关闭弹框
         return true;
       }}
@@ -73,7 +68,7 @@ export default (props) => {
       rowKey="id"
       options={false}
       columns={columns}
-      request={priceComparsionListAll}
+      request={priceComparsionListAlls}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项
@@ -98,11 +93,9 @@ export default (props) => {
         </Space>
       )}
       tableAlertOptionRender={(a) => {
-        setArr(a.selectedRowKeys.toString())
+        setArr(a.selectedRows)
       }}
-      search={{
-        labelWidth: 'auto',
-      }}
+      search={false}
       pagination={{
         pageSize: 10,
       }}

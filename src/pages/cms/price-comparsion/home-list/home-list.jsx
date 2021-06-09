@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -8,6 +8,7 @@ import Edit from './form'
 const HomeList = () => {
   const [detailData, setDetailData] = useState(false);
   const [formVisible, setFormVisible] = useState(false);
+  const [flag, setFlag] = useState(false);
   const actionRef = useRef();
 
   const del = (record, opt) => {
@@ -24,7 +25,12 @@ const HomeList = () => {
     })
   }
 
-
+  useEffect(() => {
+    if (flag) {
+      actionRef.current.reset()
+      setFlag(false)
+    }
+  }, [flag])
 
   const columns = [
     {
@@ -84,8 +90,7 @@ const HomeList = () => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
-      callback={() => { actionRef.current.reload() }}
-      onClose={() => { actionRef.current.reload() }}
+      setFlag={setFlag}
     />}
     </PageContainer>
   )
