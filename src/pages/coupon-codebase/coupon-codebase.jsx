@@ -34,7 +34,7 @@ export default props => {
       title: '有效期',
       dataIndex: 'activityTimeDisplay',
       valueType: 'text',
-      width:120
+      ellipsis:true
     },
     {
       title: '状态',

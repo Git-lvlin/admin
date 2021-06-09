@@ -285,6 +285,9 @@ const TableList = (props) => {
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
+          <Button onClick={()=>{ref.current.reload()}} key="refresh">
+            刷新
+          </Button>,
           <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
             导出数据
           </Button>

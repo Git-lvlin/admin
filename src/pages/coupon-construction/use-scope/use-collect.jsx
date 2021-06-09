@@ -16,11 +16,11 @@ const  useCollect=(props)=>{
                 1:'指令集约',
                 2:'主动集约'
             },
-            hideInTable: true,
+            hideInTable: true
         },
         {
             title: '活动编号',
-            dataIndex: 'recoverPayTimeout',
+            dataIndex: 'wholesaleId',
             hideInSearch: true,
         },
         {
@@ -32,6 +32,9 @@ const  useCollect=(props)=>{
             title: '活动时段',
             dataIndex: 'wholesaleStartTime',
             hideInSearch: true,
+            render:(text, record, _, action)=>[
+                <p>{record.wholesaleStartTime}至{record.wholesaleEndTime}</p>
+            ]
         },
         {
             title: '可购买的会员店等级',
@@ -42,6 +45,59 @@ const  useCollect=(props)=>{
             title: '可购买的会员用户',
             dataIndex: 'memberLevel',
             hideInSearch: true,
+        }
+    ];
+    const columns2 = [
+        {
+            title: '活动编号',
+            dataIndex: 'wsId',
+        },
+        {
+            title: '活动名称',
+            dataIndex: 'name',
+            valueType: 'text',
+        },
+        {
+            title: '活动时段',
+            dataIndex: 'wholesaleStartTime',
+            render:(text, record, _, action)=>[
+                <p>{record.wholesaleStartTime}至{record.wholesaleEndTime}</p>
+            ]
+        },
+        {
+            title: '可购买的会员店等级',
+            dataIndex: 'storeLevel',
+        },
+        {
+            title: '可购买的会员用户',
+            dataIndex: 'memberLevel',
+        }
+    ];
+    const columns3 = [
+        {
+            title: '活动编号',
+            dataIndex: 'wholesaleId',
+        },
+        {
+            title: '活动名称',
+            dataIndex: 'name',
+            valueType: 'text',
+        },
+        {
+            title: '活动时段',
+            dataIndex: 'wholesaleStartTime',
+            hideInSearch: true,
+            render:(text, record, _, action)=>[
+                <p>{record.wholesaleStartTime}至{record.wholesaleEndTime}</p>
+            ]
+        },
+        {
+            title: '可购买的会员店等级',
+            dataIndex: 'storeLevel',
+        },
+        {
+            title: '可购买的会员用户',
+            dataIndex: 'memberLevel',
         }
     ];
     const actionRef = useRef();
@@ -71,7 +127,7 @@ const  useCollect=(props)=>{
                 (parseInt(id)==id)?
                 <Table
                     rowKey='wholesaleId'
-                    columns={columns}
+                    columns={columns2}
                     dataSource={DetailList.data?.wsInfo}
                 />
                 :<>
@@ -79,7 +135,6 @@ const  useCollect=(props)=>{
                         rowKey="wholesaleId"
                         options={false}
                         params={{
-                            status: 1,
                             pageSize:3,
                         }}
                         request={couponWholesaleList}
@@ -98,7 +153,7 @@ const  useCollect=(props)=>{
                     />
                     <Table
                         rowKey='wholesaleId'
-                        columns={columns}
+                        columns={columns3}
                         dataSource={rowobjs}
                         style={{display:loading?'none':'block'}}
                     />
