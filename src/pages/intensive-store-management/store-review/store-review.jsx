@@ -114,8 +114,10 @@ const StoreReview = () => {
     {
       title: '操作',
       dataIndex: ['verifyStatus', 'code'],
-      valueType: 'option',
-      render: (_, data) => _ === 4 && <a onClick={() => { setSelectItem(data); setFormVisible(true) }}>审核</a>
+      valueType: 'text',
+      render: (_, data) => {
+        return _ === 4 && <a onClick={() => { setSelectItem(data); setFormVisible(true) }}>审核</a>;
+      }
     },
   ];
 
