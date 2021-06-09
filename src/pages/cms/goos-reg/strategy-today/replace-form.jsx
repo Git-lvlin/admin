@@ -8,15 +8,8 @@ import ProForm, {
   ProFormDateRangePicker,
   ProFormSelect,
 } from '@ant-design/pro-form';
-import { PlusOutlined } from '@ant-design/icons';
-import MemberReg from '@/components/member-reg';
-import Upload from '@/components/upload';
 import { hotGoosAdd } from '@/services/cms/member/member';
-import {spaceInfoList, hotGoosList, goosAllList, goosReplaceList} from '@/services/cms/member/member';
-
-
-
-
+import { goosReplaceList } from '@/services/cms/member/member';
 
 export default (props) => {
   const { detailData, setVisible, onClose, visible } = props;

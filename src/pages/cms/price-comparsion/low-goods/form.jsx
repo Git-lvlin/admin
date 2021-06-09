@@ -7,7 +7,7 @@ import ProForm, {
   ProFormText,
   ProFormSelect,
 } from '@ant-design/pro-form';
-import { priceComparsionList, SetHotGoodsDel } from '@/services/cms/member/member';
+import { priceComparsionListAll, SetHotGoodsDel } from '@/services/cms/member/member';
 
 export default (props) => {
   const { setVisible, setFlag, visible } = props;
@@ -16,7 +16,7 @@ export default (props) => {
   const columns = [
     {
       title: 'skuid',
-      dataIndex: 'skuId',
+      dataIndex: 'goodsSkuId',
       valueType: 'text',
     },
     {
@@ -52,7 +52,6 @@ export default (props) => {
   ];
 
   const waitTime = () => {
-    console.log('arr', arr)
     const param = {
       ids: arr,
       opt: 'add'
@@ -95,7 +94,7 @@ export default (props) => {
       rowKey="id"
       options={false}
       columns={columns}
-      request={priceComparsionList}
+      request={priceComparsionListAll}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项
@@ -114,9 +113,7 @@ export default (props) => {
       tableAlertOptionRender={(a) => {
         setArr(a.selectedRowKeys.toString())
       }}
-      search={{
-        labelWidth: 'auto',
-      }}
+      search={false}
       pagination={{
         pageSize: 10,
       }}
