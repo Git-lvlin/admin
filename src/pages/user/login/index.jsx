@@ -37,6 +37,7 @@ const Login = () => {
         }
 
         window.localStorage.setItem('token', res.data.token)
+        window.localStorage.setItem('nickname', res.data.nickname)
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         message.success('登录成功！');
