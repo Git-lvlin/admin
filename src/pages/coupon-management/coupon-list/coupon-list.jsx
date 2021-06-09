@@ -17,9 +17,8 @@ const TableList = (props) => {
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [records,setRecords]=useState(0)
-  const onDiscounts=e=>{
-    setDiscounts(e.target.value)
-  }
+  const [byid,setByid]=useState()
+  const [endid,setEndid]=useState()
   const columns= [
     {
       title: '优惠券名称',
@@ -110,7 +109,10 @@ const TableList = (props) => {
       render: (_, data) => [
       <a
           key="a"
-          onClick={()=>Examine(data.id)}
+          onClick={()=>{
+            console.log('data',data)
+            Examine(data.id)
+          }}
         >
           查看
       </a>,
@@ -130,8 +132,8 @@ const TableList = (props) => {
         }}
         onFinish={async (values) => {
         console.log('values',values);
-        console.log('id',data)
-        couponAddQuantity({id:data.id,issueQuantity:values.issueQuantity}).then(res=>{
+        
+        couponAddQuantity({id:byid,issueQuantity:values.issueQuantity}).then(res=>{
           if(res.code==0){
             setVisible(false)
             ref.current.reload();
@@ -156,7 +158,7 @@ const TableList = (props) => {
         key={data.id}
         onVisibleChange={setVisible2}
         visible={visible2}
-        trigger={data.couponStatus==3||data.couponStatus==4?null:<a onClick={Termination}>终止</a>}
+        trigger={data.couponStatus==3||data.couponStatus==4?null:<a onClick={()=>Termination(data)}>终止</a>}
         submitter={{
         render: (props, defaultDoms) => {
             return [
@@ -166,8 +168,9 @@ const TableList = (props) => {
         }}
         onFinish={async (values) => {
         console.log('values',values);
-        couponEnd({id:data.id}).then(res=>{
+        couponEnd({id:endid}).then(res=>{
           if(res.code==0){
+            ref.current.reload();
             setVisible2(false)
             return true;
           }
@@ -188,6 +191,10 @@ const TableList = (props) => {
     },
     
   ];
+  const onDiscounts=e=>{
+    setDiscounts(e.target.value)
+  }
+ 
   //跳转到新建页面
   const Examine=(id)=>{
     history.push(`/coupon-management/coupon-list/construction?id=`+id);
@@ -198,13 +205,14 @@ const TableList = (props) => {
   }
   //增发
   const Additional=(data)=>{
-      console.log('data',data.issueQuantity)
+      setByid(data.id)
       setRecords(data.issueQuantity)
       setDiscounts('')
       setVisible(true)
   }
   //终止
-  const Termination=()=>{
+  const Termination=(data)=>{
+    setEndid(data.id)
     setVisible2(true)
   }
   // 跳转到码库
@@ -212,55 +220,55 @@ const TableList = (props) => {
     history.push(`/coupon-management/coupon-list/coupon-codebase?id=`+id);
   }
 
-//导出
-const exportExcel = (searchConfig) => {
-  // console.log('searchConfig',searchConfig.form.getFieldsValue())
-  couponList({}).then(res => {
-    console.log('res',res)
-      const data = res.data.map(item => {
-        const { ...rest } = item;
-        return {
-          ...rest
-        }
-      });
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.json_to_sheet([
-        {
-          couponName: '优惠券名称',
-          couponType: '优惠券类型',
-          useType: '使用范围',
-          issueQuantity: '发行总金额（元）',
-          issueQuantity: '发行总数量（张）',
-          lqCouponQuantity: '已被领取',
-          useCouponQuantity: '已被使用',
-          activityTimeDisplay: '有效期',
-          createTime: '创建时间',
-          adminName: '创建人',
-          couponStatus: '状态'
-        },
-        ...data
-      ], {
-        header: [
-          'couponName',
-          'couponType',
-          'useType',
-          'issueQuantity',
-          'issueQuantity',
-          'lqCouponQuantity',
-          'useCouponQuantity',
-          'activityTimeDisplay',
-          'createTime',
-          'adminName',
-          'couponStatus',
-        ],
-        skipHeader: true
-      });
-      XLSX.utils.book_append_sheet(wb, ws, "file");
-      XLSX.writeFile(wb, `${+new Date()}.xlsx`)
+  //导出
+  const exportExcel = (searchConfig) => {
+    // console.log('searchConfig',searchConfig.form.getFieldsValue())
+    couponList({}).then(res => {
+      console.log('res',res)
+        const data = res.data.map(item => {
+          const { ...rest } = item;
+          return {
+            ...rest
+          }
+        });
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet([
+          {
+            couponName: '优惠券名称',
+            couponType: '优惠券类型',
+            useType: '使用范围',
+            issueQuantity: '发行总金额（元）',
+            issueQuantity: '发行总数量（张）',
+            lqCouponQuantity: '已被领取',
+            useCouponQuantity: '已被使用',
+            activityTimeDisplay: '有效期',
+            createTime: '创建时间',
+            adminName: '创建人',
+            couponStatus: '状态'
+          },
+          ...data
+        ], {
+          header: [
+            'couponName',
+            'couponType',
+            'useType',
+            'issueQuantity',
+            'issueQuantity',
+            'lqCouponQuantity',
+            'useCouponQuantity',
+            'activityTimeDisplay',
+            'createTime',
+            'adminName',
+            'couponStatus',
+          ],
+          skipHeader: true
+        });
+        XLSX.utils.book_append_sheet(wb, ws, "file");
+        XLSX.writeFile(wb, `${+new Date()}.xlsx`)
 
-  
-  })
-}
+    
+    })
+  }
 
   return (
     <PageContainer>

@@ -255,9 +255,9 @@ const useSecond=(props)=>{
                                 选择商品
                             </Button>
                             
-                            <Modal width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                            <Modal key="id" width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                                 <ProTable
-                                    rowKey="spuId"
+                                    rowKey="id"
                                     options={false}
                                     params={{
                                         pageSize: 3,
