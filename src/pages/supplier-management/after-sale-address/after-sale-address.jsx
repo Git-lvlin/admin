@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card } from 'antd';
+import { Button, Card, Space } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
 import { addressList, addressDetail } from '@/services/supplier-management/after-sale-address'
 import { useParams } from 'umi';
@@ -26,7 +26,7 @@ const TableList = () => {
   const columns = [
     {
       title: '序号',
-      dataIndex: 'brandName',
+      dataIndex: 'id',
       valueType: 'text',
     },
     {
