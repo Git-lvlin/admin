@@ -117,14 +117,15 @@ const TableList = () => {
         columns={columns}
         pagination={false}
       />
-      <Form
-        visible={formVisible}
-        setVisible={setFormVisible}
-        adminGroupList={adminGroupList}
-        callback={() => { actionRef.current.reload() }}
-        onClose={() => { setSelectItem(null) }}
-        data={selectItem}
-      />
+      {formVisible &&
+        <Form
+          visible={formVisible}
+          setVisible={setFormVisible}
+          adminGroupList={adminGroupList}
+          callback={() => { actionRef.current.reload() }}
+          onClose={() => { setSelectItem(null) }}
+          data={selectItem}
+        />}
     </PageContainer>
   );
 };

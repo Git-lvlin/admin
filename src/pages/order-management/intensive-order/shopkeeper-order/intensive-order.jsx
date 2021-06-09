@@ -201,7 +201,7 @@ const TableList = () => {
           <div className={styles.list_header}>
             <div>商品信息</div>
             <div>金额</div>
-            <div>商家实收</div>
+            {/* <div>商家实收</div> */}
             <div>订单状态</div>
             <div>操作</div>
           </div>
@@ -217,52 +217,49 @@ const TableList = () => {
               <div className={styles.store_name}>所属商家：{item.storeName}</div>
               <div className={styles.second}>
                 <Space size="large">
-                  <span>下单时间：{moment(item.createTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>
-                  <span>订单号：{item.orderId}</span>
-                  <span>下单用户：{item.linkman}</span>
-                  <span>用户手机号：{item.phone}</span>
+                  <span>下单时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</span>
+                  <span>订单号：{item.id}</span>
+                  <span>下单用户：{item.buyerName}</span>
+                  <span>用户手机号：{item.buyerPhone}</span>
                 </Space>
               </div>
 
               <div className={styles.body}>
                 <div className={styles.goods_info}>
-                  <div>
-                    <img width="100" height="100" src={item.skuImageUrl} />
-                    <div className={styles.info}>
-                      <div>{item.goodsName}</div>
-                      <div>集约价：{amountTransform(item.price, '/')}元    规格：{item.skuName}</div>
-                      <div>数量： <span>{item.totalNum}件</span></div>
-                      <div>小计： <span>{amountTransform(item.totalAmount, '/')}</span>元</div>
-                    </div>
-                  </div>
+                  {
+                    item.orderItemList.map(it => (
+                      <div>
+                        <img width="100" height="100" src={it.skuImageUrl} />
+                        <div className={styles.info}>
+                          <div>{it.goodsName}</div>
+                          <div>集约价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
+                          <div>数量： <span>{it.skuNum}件</span></div>
+                          <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
+                        </div>
+                      </div>
+                    ))
+                  }
                 </div>
                 <div>
                   <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
-                    <Descriptions.Item label="应付金额">{amountTransform(item.Amount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="优惠券">-{amountTransform(item.couponAmount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="用户实付">{amountTransform(item.actualAmount, '/')}元</Descriptions.Item>
+                    <Descriptions.Item label="商品总金额">{amountTransform(item.totalAmount, '/')}元</Descriptions.Item>
+                    <Descriptions.Item label="运费">+{amountTransform(item.sumOrder.shippingFeeAmount, '/')}元</Descriptions.Item>
+                    <Descriptions.Item label="优惠券">+{amountTransform(item.sumOrder.couponAmount, '/')}元</Descriptions.Item>
+                    <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>
                   </Descriptions>
                 </div>
-                <div>
-                  {item.final &&
-                    <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
-                      <Descriptions.Item label="应付金额">{amountTransform(item.Amount, '/')}元</Descriptions.Item>
-                      <Descriptions.Item label="运费">+{amountTransform(item.shippingAmount, '/')}元</Descriptions.Item>
-                      <Descriptions.Item label="用户实付">{amountTransform(item.actualAmount, '/')}元</Descriptions.Item>
-                    </Descriptions>}
-                </div>
-                <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div>
-                <div style={{ textAlign: 'center' }}>{item.statusDesc}</div>
+                {/* <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div> */}
+                <div style={{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单', 7: '待分享' }[item.status]}</div>
                 <div style={{ textAlign: 'center' }}>
-                  <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail/${item.orderId}`) }}>详情</a>
+                  <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order-detail/${item.id}`) }}>详情</a>
                 </div>
               </div>
 
               <div className={styles.footer}>
                 <Space size="large">
-                  <span>收货人：{item.receiptUser}</span>
-                  <span>电话：{item.receiptPhone}</span>
-                  <span>地址：{item.receiptAddress}</span>
+                  <span>收货人：{item.sumOrder.consignee}</span>
+                  <span>电话：{item.sumOrder.phone}</span>
+                  <span>地址：{item.sumOrder.address}</span>
                 </Space>
               </div>
             </div>

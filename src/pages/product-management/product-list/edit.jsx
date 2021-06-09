@@ -331,6 +331,9 @@ export default (props) => {
         name="goodsKeywords"
         label="搜索关键字"
         placeholder="请输入搜索关键字"
+        fieldProps={{
+          maxLength: 20,
+        }}
       />
       <Form.Item
         label="商品品类"
@@ -441,12 +444,16 @@ export default (props) => {
                   </>
                 )}
               </Form.List>
-              <Form.Item
-                label=" "
-                colon={false}
-              >
-                <Button type="primary" onClick={() => { setFormModalVisible(true) }}>填写批量规格参数 生成规格配置表</Button>
-              </Form.Item>
+              <ProFormDependency name={['specName1', 'specValues1']}>
+                {({ specName1, specValues1 }) => (
+                  <Form.Item
+                    label=" "
+                    colon={false}
+                  >
+                    <Button type="primary" disabled={!specName1 || !specValues1[0].name} onClick={() => { setFormModalVisible(true) }}>填写批量规格参数 生成规格配置表</Button>
+                  </Form.Item>
+                )}
+              </ProFormDependency>
               {!!tableData.length && <EditTable tableHead={tableHead} tableData={tableData} setTableData={setTableData} />}
             </>
             :

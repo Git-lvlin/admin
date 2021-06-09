@@ -23,6 +23,7 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入商品名称'
       },
+      hideInSearch: true,
     },
     // {
     //   title: '图片',

@@ -2,6 +2,9 @@
 import { defineConfig } from 'umi';
 
 export default defineConfig({
+  define: {
+    API_URL: 'https://adminapi-dev.yeahgo.com',
+  },
   plugins: [
     // https://github.com/zthxxx/react-dev-inspector
     'react-dev-inspector/plugins/umi/react-inspector',
