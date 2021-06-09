@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
   DrawerForm,
@@ -10,7 +10,6 @@ import { kingKongAdd, kingKongModify } from '@/services/cms/member/member';
 
 export default (props) => {
   const { detailData, change, setVisible, visible } = props;
-  const formRef = useRef();
   const [form] = Form.useForm()
 
   const waitTime = (values) => {
@@ -23,11 +22,13 @@ export default (props) => {
       param.id = id
       api = kingKongModify
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       api(param).then((res) => {
         if (res.code === 0) {
           change(true)
           resolve(true);
+        } else {
+          reject(false)
         }
       })
     });
@@ -46,7 +47,6 @@ export default (props) => {
     <DrawerForm
       title={`${detailData ? '编辑' : '新建'}`}
       onVisibleChange={setVisible}
-      formRef={formRef}
       visible={visible}
       form={form}
       drawerProps={{
@@ -72,7 +72,7 @@ export default (props) => {
         <Form.Item
           label="添加图片"
           name="image"
-          required
+          rules={[{ required: true, message: '请上传图片' }]}
           tooltip={
             <dl>
               <dt>图片要求</dt>

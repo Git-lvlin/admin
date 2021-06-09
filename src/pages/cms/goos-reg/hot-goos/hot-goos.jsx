@@ -53,6 +53,8 @@ const HotGoos = () => {
       dataIndex: 'sort',
       valueType: 'text',
       search: false,
+      width: 100,
+      fixed: 'left',
     },
     {
       title: 'SPUID',
@@ -81,8 +83,8 @@ const HotGoos = () => {
       key: 'goodsName',
       dataIndex: 'goodsName',
       valueType: 'text',
-      editable: true,
       search: false,
+      // width: 100,
     },
     {
       title: '商家名称',
@@ -176,14 +178,15 @@ const HotGoos = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
+      fixed: 'right',
       render: (text, record, _) => {
         return (
           <>
-            {record.status===2&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
-            &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {getDetail(record)}}>排序</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
+            {record.status===2&&<Button key="top" onClick={() => {top(record.id)}}>置顶</Button>}
+            {record.status===2&&<Button key="down" onClick={() => {formControl(record.id, 1)}}>下线</Button>}
+            {record.status===1&&<Button key="view" onClick={() => {formControl(record.id,2)}}>发布</Button>}
+            {record.status===1&&<Button key="editable" onClick={() => {getDetail(record)}}>排序</Button>}
+            {record.status===1&&<Button key="d" onClick={() => {formControl(record.id,4)}}>删除</Button>}
           </>
         )
       }
@@ -243,6 +246,7 @@ const HotGoos = () => {
       pagination={{
         pageSize: 5,
       }}
+      scroll={{ x: 2200 }}
       dateFormatter="string"
       headerTitle="热销好货"
       toolBarRender={(_,record) => [

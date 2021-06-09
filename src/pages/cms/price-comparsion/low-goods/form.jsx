@@ -24,6 +24,31 @@ export default (props) => {
       dataIndex: 'goodsName',
       valueType: 'text',
     },
+    {
+      title: '约购',
+      dataIndex: 'goodsPrice',
+      valueType: 'number',
+    },
+    {
+      title: '淘宝',
+      dataIndex: 'tbPrice',
+      valueType: 'number',
+    },
+    {
+      title: '京东',
+      dataIndex: 'jdPrice',
+      valueType: 'number',
+    },
+    {
+      title: '拼多多',
+      dataIndex: 'pddPrice',
+      valueType: 'number',
+    },
+    {
+      title: '天猫',
+      dataIndex: 'tmallPrice',
+      valueType: 'number',
+    },
   ];
 
   const waitTime = () => {

@@ -64,6 +64,14 @@ export const tagSortModify = (params = {}, options = {}) => {
   });
 }
 
+export const saveSortModify = (params = {}, options = {}) => {
+  return request('/auth/activity/Goods/wholesaleGoodsSortSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const kingKongAdd = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/goodsType/goodsTypeSave', {
     method: 'POST',
@@ -189,11 +197,11 @@ export const crazyGoodsList = async (params = {}, options = {}) => {
     data,
     ...options
   });
-  if (!res.data.length) {
+  if (!res.data.records.length) {
     res.data = []
   }
   return {
-    data: res.data,
+    data: res.data.records || [],
     success: true,
     total: res.data.total,
   }
@@ -333,6 +341,14 @@ export const kongKongDistrictDel = (params = {}, options = {}) => {
 
 export const kongKongModifyType = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/goodsType/goodsTypeUpdateMoreState', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const modifySaveMoneySort = (params = {}, options = {}) => {
+  return request('/auth/activity/Goods/wholesaleGoodsSortSub', {
     method: 'POST',
     data: params,
     ...options
@@ -608,6 +624,10 @@ export const savePriceList = async (params = {}, options = {}) => {
     data,
     ...options
   });
+
+  if (!res.data.length) {
+    res.data = []
+  }
 
   return {
     data: res.data || [],
