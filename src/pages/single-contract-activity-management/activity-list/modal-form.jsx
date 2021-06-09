@@ -112,6 +112,7 @@ export default (props) => {
         options={false}
         params={{
           goodsState: 1,
+          goodsVerifyState: 1,
         }}
         request={productList}
         search={{

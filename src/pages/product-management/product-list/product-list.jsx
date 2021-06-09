@@ -141,6 +141,14 @@ const TableList = () => {
       dataIndex: 'name',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => {
+        const { goodsSaleMinPrice, goodsSaleMaxPrice } = data;
+        if (goodsSaleMinPrice === goodsSaleMaxPrice) {
+          return amountTransform(goodsSaleMinPrice, '/');
+        }
+
+        return `${amountTransform(goodsSaleMinPrice, '/')}~${amountTransform(goodsSaleMaxPrice, '/')}`
+      }
     },
     {
       title: '可用库存',

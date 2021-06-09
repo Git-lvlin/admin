@@ -239,8 +239,10 @@ export default function EditTable({ onSelect }) {
         }
       }}
       pagination={{
-        pageSize: 5
+        pageSize: 5,
+        pageSizeOptions:[5, 10, 20, 50, 100]
       }}
+      
       rowSelection={{
         hideSelectAll: true,
         type: 'radio',

@@ -4,17 +4,20 @@ import { Button, Space } from 'antd';
 import { helperList, statusSwitch } from '@/services/supplier-management/supplier-list'
 import { history } from 'umi';
 import Edit from './edit';
+import DisableModal from './disable-modal';
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
+  const [disableModalVisible, setDisableModalVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
 
-  const switchStatus = (id, type) => {
+  const switchStatus = (reason) => {
     statusSwitch({
-      supplierId: id,
-      type
-    }).then(res => {
+      supplierId: selectItem.id,
+      type: selectItem.status === 1 ? 2 : 1,
+      reason,
+    }, { showSuccess: true, }).then(res => {
       if (res.code === 0) {
         actionRef.current.reload();
       }
@@ -55,7 +58,7 @@ const TableList = () => {
       dataIndex: 'status',
       valueType: 'select',
       valueEnum: {
-        3: '禁用',
+        0: '禁用',
         1: '启用'
       }
     },
@@ -101,8 +104,8 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          {data.status === 1 && <a onClick={() => { switchStatus(data.id, 2) }}>禁用</a>}
-          {data.status === 3 && <a onClick={() => { switchStatus(data.id, 1) }}>启用</a>}
+          {data.status === 1 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>禁用</a>}
+          {data.status === 0 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>启用</a>}
           <a>修改密码</a>
         </Space>
       ),
@@ -142,11 +145,19 @@ const TableList = () => {
         columns={columns}
         actionRef={actionRef}
       />
-      <Edit
-        visible={formVisible}
-        setVisible={setFormVisible}
-        callback={() => { actionRef.current.reload() }}
-      />
+      {formVisible &&
+        <Edit
+          visible={formVisible}
+          setVisible={setFormVisible}
+          callback={() => { actionRef.current.reload() }}
+        />}
+      {disableModalVisible &&
+        <DisableModal
+          visible={disableModalVisible}
+          setVisible={setDisableModalVisible}
+          data={selectItem}
+          callback={(v) => { switchStatus(v) }}
+        />}
     </>
 
   );
