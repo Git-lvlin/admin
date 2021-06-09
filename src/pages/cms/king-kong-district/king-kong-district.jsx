@@ -21,7 +21,11 @@ const KingKongDistrict = () => {
   }, [flag])
 
   const getDetail = (data) => {
-    data && setDetailData(data);
+    if (data) {
+      setDetailData(data)
+    } else {
+      setDetailData(null)
+    }
     setFormVisible(true);
   }
 
@@ -183,7 +187,7 @@ const KingKongDistrict = () => {
         labelWidth: 'auto',
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
       dateFormatter="string"
       headerTitle="金刚区"
@@ -194,7 +198,7 @@ const KingKongDistrict = () => {
         <Button key="button" type="primary" onClick={() => { modifyType(record, 0) }}>
           批量下线
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail(false) }}>
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail() }}>
           新增
         </Button>,
       ]}

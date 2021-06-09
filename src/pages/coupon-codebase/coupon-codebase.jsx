@@ -10,7 +10,7 @@ import XLSX from 'xlsx'
 import { history } from 'umi';
 
 export default props => {
-  const actionRef = useRef();
+  const ref=useRef()
   const [couponInfo,setCouponInfo]=useState([])
   const [libraryId,setLibraryId]=useState(1)
 
@@ -23,37 +23,48 @@ export default props => {
     {
       title: '优惠券类型',
       dataIndex: 'couponType',
-      valueType: 'select',
-      valueEnum: {
-        1: '满减券',
-        2: '折扣券',
-        3: '立减券',
-      }
+      valueType: 'text'
     },
     {
       title: '使用范围',
       dataIndex: 'useType',
-      valueType: 'select',
-      valueEnum: {
-        1: '秒约商品',
-        2: '集约商品',
-      }
+      valueType: 'text'
     },
     {
       title: '有效期',
       dataIndex: 'activityTimeDisplay',
       valueType: 'text',
+      ellipsis:true
     },
     {
       title: '状态',
       dataIndex: 'couponStatus',
-      valueType: 'select',
-      valueEnum: {
-        1: '未开始',
-        2: '进行中',
-        3: '已结束',
-        4: '已终止'
-      }
+      valueType: 'text',
+    },
+    {
+      title: '发行量',
+      dataIndex: 'issueQuantity',
+      valueType: 'text',
+    },
+    {
+      title: '已领取',
+      dataIndex: 'lqCouponQuantity',
+      valueType: 'text',
+    },
+    {
+      title: '待领取',
+      dataIndex: 'unLqCouponQuantity',
+      valueType: 'text',
+    },
+    {
+      title: '已使用',
+      dataIndex: 'useCouponQuantity',
+      valueType: 'text',
+    },
+    {
+      title: '未使用',
+      dataIndex: 'unUseCouponQuantity',
+      valueType: 'text',
     },
   ]
   const columns2 = [
@@ -99,6 +110,8 @@ export default props => {
         valueEnum: {
           1: '未使用',
           2: '已使用',
+          3: '已过期',
+          4: '已作废'
         }
     },
     {
@@ -106,6 +119,7 @@ export default props => {
         key: 'dateRange',
         dataIndex: 'createdAtRange',
         valueType: 'dateRange',
+        hideInTable:true
     }
     
   ];
@@ -118,23 +132,15 @@ export default props => {
    return undefined
  },[])
   //导出数据
-const exportExcel = (form) => {
-  api.listExport({
-    ...form.getFieldsValue(),
-  }).then(res => {
+const exportExcel = (searchConfig) => {
+  console.log('searchConfig',searchConfig.form.getFieldsValue())
+  couponCcodebase({...searchConfig.form.getFieldsValue()}).then(res => {
     console.log('res',res)
     if (res.code === 0) {
-      const data = res.data.map(item => {
+      const data = res.data.memberCouponList.records.map(item => {
         const { ...rest } = item;
         return {
           ...rest,
-          // memberCouponCode: amountTransform(rest.memberCouponCode, '/'),
-          // memberNicheng: amountTransform(rest.memberNicheng, '/'),
-          // memberMobile: amountTransform(rest.memberMobile, '/'),
-          // // createTime: amountTransform(rest.createTime, '/'),
-          // actTime: amountTransform(rest.actTime, '/'),
-          // orderSn: amountTransform(rest.orderSn, '/'),
-          // status: amountTransform(rest.status, '/'),
         }
       });
       const wb = XLSX.utils.book_new();
@@ -181,32 +187,34 @@ const exportExcel = (form) => {
       <ProTable
         rowKey="id"
         options={false}
+        actionRef={ref}
         params={{
           status: 1,
           id:libraryId
         }}
         request={
             params => couponCcodebase(params).then(res =>{
-              console.log('res',res)
-              console.log('res.couponInfo',res.couponInfo)
-              setCouponInfo([res.couponInfo])
-              return {
-                code: res.code,
-                data: res.data,
-                success: res.success,
-              }
+              setCouponInfo([res.data.couponInfo])
             })
         }
-        // request={couponCcodebase}
-        actionRef={actionRef}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
-          optionRender: ({ searchText, resetText },{ form }) => [
-            <Button key="del">作废</Button>,
-            <Button onClick={()=>exportExcel(form)} key="out">导出列表</Button>,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+            <Button key="del" onClick={()=>{
+              console.log('searchConfig',searchConfig.form.getFieldsValue())
+              couponEnd({id:searchConfig.form.getFieldsValue().orderSn}).then(res=>{
+                if(res.code==0){
+                  ref.current.reload();
+                  return true;
+                }
+              })
+            }}>作废</Button>,
+            <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
+              导出数据
+            </Button>
           ],
-          
         }}
         columns={columns2}
         rowSelection={{}}

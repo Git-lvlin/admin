@@ -6,6 +6,7 @@ import { crazyGoodsList } from '@/services/cms/member/member';
 import { Button, Space, message } from 'antd';
 import Edit from './goods-modal-form'
 import ReplaceForm from './replace-form';
+import ProCard from '@ant-design/pro-card';
 
 const DetailList = (props) => {
   const [listData, setListData] = useState(null)
@@ -44,6 +45,8 @@ const DetailList = (props) => {
       dataIndex: 'sort',
       valueType: 'text',
       search: false,
+      fixed: 'left',
+      width: 80,
     },
     {
       title: 'SPUID',
@@ -132,6 +135,9 @@ const DetailList = (props) => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
+      width: 140,
+      align: 'center',
+      fixed: 'right',
       render: (text, record, _, action) => {
         return (
           <>
@@ -145,7 +151,6 @@ const DetailList = (props) => {
     },
   ];
 
-
   useEffect(() => {
     if (id) {
       setAcId({cmsId:id})
@@ -154,6 +159,7 @@ const DetailList = (props) => {
 
   return (
     <>
+    <ProCard style={{ maxWidth: 700,overflow:'hidden'}}>
     <ProTable
       rowKey="key"
       options={false}
@@ -193,6 +199,7 @@ const DetailList = (props) => {
       pagination={{
         pageSize: 5,
       }}
+      scroll={{ x: 2200 }}
       onRow={(record) => {
         return {
           onClick: () => {
@@ -237,7 +244,9 @@ const DetailList = (props) => {
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { actionRef.current.reload(); setDetailData(null) }}
     />}
+    </ProCard>
     </>
+    
   );
 };
 

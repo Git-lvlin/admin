@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Form, Button, Modal,Tabs,Select} from 'antd';
+import { Form, Button, Modal,Select} from 'antd';
 import { FormattedMessage } from 'umi';
 import { ModalForm,ProFormSelect,ProFormRadio} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
@@ -7,8 +7,7 @@ import styles from '../style.less'
 import {commonSpuList}  from '@/services/coupon-construction/coupon-common-spu-list';
 import {classList} from '@/services/coupon-construction/coupon-class-list'
 import BrandSelect from '@/components/brand-select'
-import { history,connect } from 'umi';
-const { TabPane } = Tabs;
+import { connect } from 'umi';
 
 const useSecond=(props)=>{
     const {id,dispatch,DetailList, UseScopeList}=props
@@ -22,7 +21,7 @@ const useSecond=(props)=>{
             dataIndex: 'goodsImageUrl',
             valueType: 'text',
             hideInSearch: true,
-            width:120,
+            ellipsis:true
         },
         {
             title: '商品名称',
@@ -98,7 +97,7 @@ const useSecond=(props)=>{
             title: '商品图片',
             dataIndex: 'goodsImageUrl', 
             valueType: 'text',
-            width:50,
+            ellipsis:true
         },
         {
             title: '商品名称',
@@ -136,9 +135,14 @@ const useSecond=(props)=>{
             ]
          }
     ];
+    const columns4=[
+        {
+           title: '分类',
+           dataIndex: 'gcName',
+        }
+     ]
     //删除品类
     const delType=key=>{
-        console.log('key',key)
         setCates([])
         dispatch({
             type:'UseScopeList/fetchLookUnit',
@@ -146,14 +150,12 @@ const useSecond=(props)=>{
                 unit:''
             }
         })
+        setFlag(true)
     }
     
     //删除商品
     const  delGoods=val=>{
-        setGoods(goods.filter(ele=>(
-            ele.spuId!=val
-        )))
-        let arr =  UseScopeList.spuIds.split(',')
+        let arr =  UseScopeList.UseScopeObje.spuIds.split(',')
         dispatch({
             type:'UseScopeList/fetchLookSpuIds',
             payload:{
@@ -162,13 +164,24 @@ const useSecond=(props)=>{
                         )).toString()
             }
         })
+        dispatch({
+            type:'UseScopeList/fetchLookSpuIdsArr',
+            payload:{
+                spuIdsArr:UseScopeList.UseScopeObje.spuIdsArr.filter(ele=>(
+                            ele.id!=val
+                ))
+            }
+        })
+        if(UseScopeList.UseScopeObje.spuIdsArr.length==1){
+            setLoading(true)
+        }
        
     }
     const actionRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading,setLoading]=useState(true)
     const [flag,setFlag]=useState(true)
-    const [goods,setGoods]=useState([])
+    const [spuIdsArr,setSpuIdsArr]=useState([])
     const [cates,setCates]=useState([])
     const [position,setPosition]=useState()
     const [onselect,setOnselect]=useState([])
@@ -186,6 +199,12 @@ const useSecond=(props)=>{
                 spuIds:spuIds
             }
         })
+        dispatch({
+            type:'UseScopeList/fetchLookSpuIdsArr',
+            payload:{
+                spuIdsArr:spuIdsArr
+            }
+        })
     };
 
     const handleCancel = () => {
@@ -194,13 +213,13 @@ const useSecond=(props)=>{
 
     //拼接spuIds
     const onIpute=(res)=>{
-        setGoods(res.selectedRows)
         let spuIds=''
-        goods.map(ele=>{
+        res.selectedRows.map(ele=>{
             spuIds+=ele.spuId+','
         })
         spuIds=spuIds.substring(0,spuIds.length-1)
        setSpuIds(spuIds)
+       setSpuIdsArr(res.selectedRows)
     }
     const onCate=()=>{
         setFlag(true)
@@ -282,7 +301,7 @@ const useSecond=(props)=>{
                                 search={false}
                                 rowKey="spuId"
                                 columns={columns3}
-                                dataSource={goods}
+                                dataSource={UseScopeList.UseScopeObje.spuIdsArr}
                                 style={{display:loading?'none':'block'}}
                             />
                            </>
@@ -298,12 +317,9 @@ const useSecond=(props)=>{
                             <ProTable
                                 toolBarRender={false}
                                 search={false}
-                                rowKey="spuId"
-                                columns={columns2}
-                                params={{
-                                    gcParentId:DetailList.data?.classId
-                                }}
-                                request={classList}
+                                rowKey="id"
+                                columns={columns4}
+                                dataSource={[DetailList.data?.classInfo]}
                             />:
                             <>
                             <ModalForm

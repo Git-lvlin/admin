@@ -4,7 +4,7 @@ import ProForm, {
   ModalForm,
   ProFormText,
 } from '@ant-design/pro-form';
-import { modifySaveMoneySort } from '@/services/cms/member/member';
+import { saveSortModify } from '@/services/cms/member/member';
 
 export default (props) => {
   const { detailData, setVisible, setFlag, visible } = props;
@@ -22,7 +22,7 @@ export default (props) => {
       ]
     }
     return new Promise((resolve) => {
-      modifySaveMoneySort(param).then((res) => {
+      saveSortModify(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
           resolve(true);

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import {Form,Input,Tabs} from 'antd';
 import { FormattedMessage,connect} from 'umi';
 import styles from '../style.less'
@@ -35,7 +35,7 @@ const couponType=(props)=>{
         setFlag(val)
     }
     return(
-        <Tabs onChange={callback} type="card" defaultActiveKey={id&&toString(DetailList.data?.couponType)}>
+        <Tabs onChange={callback} type="card">
             <TabPane className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.radio.public" />} key="1">
                 <ProForm.Group>
                     <span>使用门槛: 活动商品满</span>
