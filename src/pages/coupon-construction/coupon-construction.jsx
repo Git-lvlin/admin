@@ -20,7 +20,6 @@ const couponConstruction=(props) => {
   useEffect(() => {
     if(id){
       form.setFieldsValue(DetailList.data)
-      console.log('UseScopeList',UseScopeList)
     }
     return undefined
   })
@@ -46,37 +45,44 @@ const couponConstruction=(props) => {
           form={form}
           submitter={(parseInt(id)==id)?false:true}
           onFinish={async (values) => {
-              values.couponType = UseScopeList.couponType || 1,//优惠券类型
+              values.couponType = parseInt(UseScopeList.UseScopeObje.couponType) || 1,//优惠券类型
               values.couponTypeInfo = {
-                usefulAmount: values.usefulAmount,//用价格门槛(单位分)
-                freeAmount: values.freeAmount,//优惠金额(单位分)
+                usefulAmount: parseInt(values.usefulAmount),//用价格门槛(单位分)
+                freeAmount: parseInt(values.freeAmount),//优惠金额(单位分)
                 unit: values.unit,//单位
-                usefulNum: values.usefulNum,//用件数门槛
-                freeDiscount: values.freeDiscount,//折扣
-                maxFreeAmount: values.maxFreeAmount//最多优惠（单位分）
+                usefulNum: parseInt(values.usefulNum),//用件数门槛
+                freeDiscount: parseInt(values.freeDiscount),//折扣
+                maxFreeAmount: parseInt(values.maxFreeAmount)//最多优惠（单位分）
               }
-              values.useType = parseInt(UseScopeList.useType)||1//使用范围
+              values.useType = parseInt(UseScopeList.UseScopeObje.useType)||1//使用范围
               values.issueQuantity = parseInt(values.issueQuantity)//发行量
               values.limitStartTime = values.date?values.date[0]:null,//限时领取开始时间
               values.limitEndTime = values.date?values.date[1]:null,//限时领取结束时间
+              values.limitQuantity=parseInt(values.limitQuantity)//限领数量
               values.activityStartTime = values.date2?values.date2[0]:null,//有效期开始时间
               values.activityEndTime = values.date2?values.date2[1]:null,//有效期结束时间
               values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
               values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
               values.useTypeInfoM = {//秒约商品详情信息
                 memberType: parseInt(values.memberType),
-                goodsType: values.goodsType || 1,
-                spuIds: UseScopeList.spuIds,
-                classId: UseScopeList.unit
+                goodsType: values.goodsType,
+                spuIds: UseScopeList.UseScopeObje.spuIds,
+                classId: parseInt(UseScopeList.UseScopeObje.unit)
               }
               values.useTypeInfoJ = {//集约商品详情信息
-                wholesaleIds: UseScopeList.wholesaleIds
+                wholesaleIds:UseScopeList.UseScopeObje.wholesaleIds
               }
             console.log('values', values)
             couponSub(values).then((res)=>{
               if(res.code==0){
                 history.push('/coupon-management/coupon-list') 
                 message.success('提交成功'); 
+                dispatch({
+                  type:'UseScopeList/fetchUseScopeList',
+                  payload:{
+                    UseScopeObje:{}
+                  }
+                })
               }
             }) 
         }}
