@@ -1,4 +1,4 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, {  useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { adminCircleList } from '@/services/community-management/circle-admin-circle-list';
@@ -10,7 +10,7 @@ import { banDynamicComment } from '@/services/community-management/circle-ban-dy
 import { cancelBanDynamicComment } from '@/services/community-management/circle-cancel-ban-dynamic-comment';
 import { circleTop } from '@/services/community-management/circle-top';
 import { sortOrderMove } from '@/services/community-management/circle-sort-order-move';
-import ProForm, { ProFormSwitch} from '@ant-design/pro-form';
+import { ProFormSwitch} from '@ant-design/pro-form';
 import { history } from 'umi';
 import { Button } from 'antd';
 

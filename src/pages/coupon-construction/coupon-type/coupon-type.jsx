@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import {Form,Input,Tabs} from 'antd';
 import { FormattedMessage,connect} from 'umi';
 import styles from '../style.less'

@@ -22,6 +22,12 @@ const UseScopeModel = {
         payload
       });
     },
+    *fetchLookSpuIdsArr({ payload}, { call, put}) {
+      yield put({
+        type: 'onSpuIdsArr',
+        payload
+      });
+    },
     *fetchLookUnit({ payload}, { call, put}) {
         yield put({
           type: 'onUnit',
@@ -47,8 +53,11 @@ const UseScopeModel = {
       return { ...state };
     },
     onSpuIds(state = { UseScopeObje:{}},{ payload }){
-      console.log('payload.spuIds',payload.spuIds)
         state.spuIds=payload.spuIds
+      return { ...state };
+    },
+    onSpuIdsArr(state = { UseScopeObje:{}},{ payload }){
+        state.spuIdsArr=payload.spuIdsArr
       return { ...state };
     },
     onUnit(state = { UseScopeObje:{}},{ payload }){

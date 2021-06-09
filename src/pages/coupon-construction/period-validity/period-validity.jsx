@@ -1,7 +1,6 @@
 import React from 'react';
-import {Form,Input,DatePicker} from 'antd';
-import {FormattedMessage,formatMessage,connect} from 'umi';
-import styles from '../style.less'
+import {Form,DatePicker} from 'antd';
+import {formatMessage,connect} from 'umi';
 import ProForm,{ ProFormText } from '@ant-design/pro-form';
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
