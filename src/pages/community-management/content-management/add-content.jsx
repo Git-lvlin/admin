@@ -1,8 +1,8 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import { adminCircleList } from '@/services/community-management/circle-admin-circle-list';
 import { releaseDynamic } from '@/services/community-management/dynamic-release-dynamic';
 import { listSystemVirtualMember } from '@/services/community-management/memberinfo-list-system-virtual-member';
-import ProForm, { ProFormSwitch,ProFormTextArea,ProFormSelect} from '@ant-design/pro-form';
+import ProForm, { ProFormTextArea,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';
 import { message, Form } from 'antd';
 import Upload from '@/components/upload';
@@ -44,22 +44,23 @@ export default props => {
             label="会员昵称"
             options={virtual}
             placeholder="Please select a country"
-            rules={[{ required: true, message: 'Please select your country!' }]}
+            rules={[{ required: true, message: '请选择会员昵称' }]}
         />
          <ProFormSelect
             name="circleId"
             label="发布圈子"
             options = {onselect}
             placeholder="Please select a country"
-            rules={[{ required: true, message: 'Please select your country!' }]}
+            rules={[{ required: true, message: '请选择发布圈子' }]}
         />
         <ProFormTextArea
             width="md"
             name="content"
             label="分享想法"
             placeholder="用户可编辑500个字。"
+            rules={[{ required: true, message: '请输入分享想法' }]}
         />
-        <Form.Item label="上传照片" name="images">
+        <Form.Item label="上传照片" name="images" rules={[{ required: true, message: '请上传图片' }]}>
          <Upload multiple maxCount={1} accept="image/*" dimension="1:1" size={375} />
          </Form.Item>
       </ProForm>

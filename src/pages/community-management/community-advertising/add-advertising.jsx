@@ -1,7 +1,7 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getDetailById } from '@/services/community-management/adsense-get-detail-byid';
 import { saveAdsense } from '@/services/community-management/adsense-save-adsense';
-import ProForm, { ProFormTextArea,ProFormText,ProFormRadio} from '@ant-design/pro-form';
+import ProForm, { ProFormText,ProFormRadio} from '@ant-design/pro-form';
 import { history } from 'umi';
 import { message, Form } from 'antd';
 import Upload from '@/components/upload';

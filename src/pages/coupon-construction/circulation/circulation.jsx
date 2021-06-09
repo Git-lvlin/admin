@@ -8,11 +8,11 @@ const { TabPane } = Tabs;
 const circulation=props=>{
     const { DetailList}=props
     let {id}=props
-    const [sumcoupon,setSumcoupon] = useState(0);
+    // const [sumcoupon,setSumcoupon] = useState(0);
     const [summoney,setSummoney] = useState(0);
-    const sumCoupon=e=>{
-        setSumcoupon(e.target.value)
-    }
+    // const sumCoupon=e=>{
+    //     setSumcoupon(e.target.value)
+    // }
     const sumMoney=e=>{
         setSummoney(e.target.value)
     }

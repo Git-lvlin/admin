@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Form, Button, Modal,Tabs,Select} from 'antd';
+import { Form, Button, Modal,Select} from 'antd';
 import { FormattedMessage } from 'umi';
 import { ModalForm,ProFormSelect,ProFormRadio} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
@@ -7,11 +7,13 @@ import styles from '../style.less'
 import {commonSpuList}  from '@/services/coupon-construction/coupon-common-spu-list';
 import {classList} from '@/services/coupon-construction/coupon-class-list'
 import BrandSelect from '@/components/brand-select'
-import { history,connect } from 'umi';
-const { TabPane } = Tabs;
+import { connect } from 'umi';
 
 const useSecond=(props)=>{
     const {id,dispatch,DetailList, UseScopeList}=props
+    useEffect(()=>{
+        console.log('UseScopeList',UseScopeList)
+    },[])
     const columns = [
         {
             title: 'spuID',
@@ -138,7 +140,6 @@ const useSecond=(props)=>{
     ];
     //删除品类
     const delType=key=>{
-        console.log('key',key)
         setCates([])
         dispatch({
             type:'UseScopeList/fetchLookUnit',
@@ -146,13 +147,11 @@ const useSecond=(props)=>{
                 unit:''
             }
         })
+        setFlag(true)
     }
     
     //删除商品
     const  delGoods=val=>{
-        setGoods(goods.filter(ele=>(
-            ele.spuId!=val
-        )))
         let arr =  UseScopeList.spuIds.split(',')
         dispatch({
             type:'UseScopeList/fetchLookSpuIds',
@@ -162,13 +161,24 @@ const useSecond=(props)=>{
                         )).toString()
             }
         })
+        dispatch({
+            type:'UseScopeList/fetchLookSpuIdsArr',
+            payload:{
+                spuIdsArr:UseScopeList.spuIdsArr.filter(ele=>(
+                            ele.id!=val
+                ))
+            }
+        })
+        if(UseScopeList.spuIdsArr.length==1){
+            setLoading(true)
+        }
        
     }
     const actionRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading,setLoading]=useState(true)
     const [flag,setFlag]=useState(true)
-    const [goods,setGoods]=useState([])
+    const [spuIdsArr,setSpuIdsArr]=useState([])
     const [cates,setCates]=useState([])
     const [position,setPosition]=useState()
     const [onselect,setOnselect]=useState([])
@@ -186,6 +196,12 @@ const useSecond=(props)=>{
                 spuIds:spuIds
             }
         })
+        dispatch({
+            type:'UseScopeList/fetchLookSpuIdsArr',
+            payload:{
+                spuIdsArr:spuIdsArr
+            }
+        })
     };
 
     const handleCancel = () => {
@@ -194,13 +210,13 @@ const useSecond=(props)=>{
 
     //拼接spuIds
     const onIpute=(res)=>{
-        setGoods(res.selectedRows)
         let spuIds=''
-        goods.map(ele=>{
+        res.selectedRows.map(ele=>{
             spuIds+=ele.spuId+','
         })
         spuIds=spuIds.substring(0,spuIds.length-1)
        setSpuIds(spuIds)
+       setSpuIdsArr(res.selectedRows)
     }
     const onCate=()=>{
         setFlag(true)
@@ -255,9 +271,9 @@ const useSecond=(props)=>{
                                 选择商品
                             </Button>
                             
-                            <Modal width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                            <Modal key="id" width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                                 <ProTable
-                                    rowKey="spuId"
+                                    rowKey="id"
                                     options={false}
                                     params={{
                                         pageSize: 3,
@@ -282,7 +298,7 @@ const useSecond=(props)=>{
                                 search={false}
                                 rowKey="spuId"
                                 columns={columns3}
-                                dataSource={goods}
+                                dataSource={UseScopeList.spuIdsArr}
                                 style={{display:loading?'none':'block'}}
                             />
                            </>

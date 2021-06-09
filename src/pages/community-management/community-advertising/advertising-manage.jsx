@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { adminReportDetailList } from '@/services/community-management/report-admin-report-detail-list';
-import  ProForm,{ ModalForm,ProFormSelect,ProFormRadio,ProFormText} from '@ant-design/pro-form';
+import  ProForm,{ ModalForm,ProFormRadio,ProFormText} from '@ant-design/pro-form';
 import { Button, Tabs } from 'antd';
 
 export default props => {

@@ -1,9 +1,8 @@
-import React, { useState, useRef,useEffect } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
+import React, { useState, useRef} from 'react';
 import ProTable from '@ant-design/pro-table';
 import { adminReportList } from '@/services/community-management/report-admin-report-list';
 import { history } from 'umi';
-import  ProForm,{ ModalForm,ProFormSelect} from '@ant-design/pro-form';
+import { ModalForm} from '@ant-design/pro-form';
 import { Button } from 'antd';
 import { Tabs } from 'antd';
 const { TabPane } = Tabs;
