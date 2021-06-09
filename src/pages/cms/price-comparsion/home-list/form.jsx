@@ -1,67 +1,29 @@
-import React, { useRef, useState, useEffect  } from 'react';
-import { Button, message, Form, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
+import React, { useRef, useEffect, useState } from 'react';
+import { message, Form, Button } from 'antd';
 import ProForm, {
-  ModalForm,
   DrawerForm,
   ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
 } from '@ant-design/pro-form';
-import { PlusOutlined } from '@ant-design/icons';
-import MemberReg from '@/components/member-reg';
-import Upload from '@/components/upload';
-import { hotGoosAdd } from '@/services/cms/member/member';
-import {spaceInfoList, hotGoosList, goosAllList} from '@/services/cms/member/member';
+import { bannerAdd } from '@/services/cms/member/member';
 import Edit from './list-form'
 
-export default (props) => {
-  const [formVisible, setFormVisible] = useState(false);
-  const { detailData, setVisible, onClose, visible } = props;
-  const [arr, setArr] = useState(null)
-  const formRef = useRef();
-  const columns = [
-    {
-      title: '图片',
-      key: 'goodsImageUrl',
-      dataIndex: 'goodsImageUrl',
-      render: (text) => <img src={text} width={90} height={90} />,
-      search: false,
-    },
-    {
-      title: '商品名称',
-      dataIndex: 'goodsName',
-      search: false,
-    },
-    {
-      title: '排序',
-      dataIndex: '',
-      search: false,
-    },
-    {
-      title: '操作',
-      valueType: 'option',
-      dataIndex: 'option',
-      render: (text, record, _, action) => {
-        return (
-          <>
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {}}>修改</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="d">删除</a>}
-          </>
-        )
-      }
-    },
-  ];
 
+export default (props) => {
+  const { detailData, setVisible, visible } = props;
+  const formRef = useRef();
+  const [form] = Form.useForm();
+  const [listFormVisible, setListFormVisible] = useState(false)
   const waitTime = (values) => {
-    const { ...rest } = values
-  
+    const { id, ...rest } = values
     const param = {
-      spuIds: arr,
       ...rest
     }
+    if (id) {
+      param.id = id
+    }
+  
     return new Promise((resolve) => {
-      hotGoosAdd(param).then((res) => {
+      bannerAdd(param).then((res) => {
         if (res.code === 0) {
           resolve(true);
         }
@@ -71,20 +33,24 @@ export default (props) => {
   };
 
   useEffect(() => {
-
-  }, [])
+    if (detailData) {
+      const { ...rest } = detailData;
+      form.setFieldsValue({
+        ...rest
+      })
+    }
+  }, [form, detailData])
 
   return (
     <DrawerForm
-      title={`选择比较商品`}
+      title={`${detailData ? '编辑' : '新建'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
-      submitter={{
-        searchConfig: {
-          submitText: '保存',
-          resetText: '取消',
-        },
+      form={form}
+      drawerProps={{
+        forceRender: true,
+        destroyOnClose: true,
       }}
       onFinish={async (values) => {
         await waitTime(values);
@@ -93,36 +59,51 @@ export default (props) => {
         return true;
       }}
     >
-<ProTable
-      rowKey="id"
-      options={false}
-      columns={columns}
-      request={goosAllList}
-      editable={{
-        type: 'multiple',
-      }}
-      search={{
-        labelWidth: 'auto',
-      }}
-      pagination={{
-        pageSize: 10,
-      }}
-      dateFormatter="string"
-      search={false}
-      toolBarRender={(_,record) => [
-        <Button key="button" type="primary" onClick={() => { setFormVisible(true) }}>
-          选择比价商品
-        </Button>,
-      ]}
-    />
-{formVisible && <Edit
-      visible={formVisible}
-      setVisible={setFormVisible}
-      // detailData={detailData}
-      callback={() => { actionRef.current.reload() }}
-      onClose={() => { actionRef.current.reload() }}
-    />}
+      <ProForm.Group>
+        <Button onClick={() => {
+          setListFormVisible(true)
+        }}>选择比较商品</Button>
+      </ProForm.Group>
+      <ProForm.Group>
+        <ProFormText 
+          width="sm"
+          name="title"
+          label="商品名称"
+          fieldProps={
+           { disabled:true }
+          }
+          
+        />
+      </ProForm.Group>
+      <ProForm.Group>
+        <Form.Item
+          label="商品图片"
+          name="image"
+        >
+        </Form.Item>
+      </ProForm.Group>
+      <ProForm.Group>
+        <ProFormText
+          width="sm"
+          name="sort"
+          label="排序"
+          fieldProps={
+            {defaultValue:100}
+          }
+          rules={[{ required: true, message: '请输入排序序号' }]}  
+        />
 
+      </ProForm.Group>
+        <ProFormText
+          name="id"
+          label="id"
+          hidden
+        />
+      {listFormVisible && <Edit
+      visible={listFormVisible}
+      setVisible={setListFormVisible}
+    />}
     </DrawerForm>
+    
   );
 };
