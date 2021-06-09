@@ -1,9 +1,7 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { listLikes } from '@/services/community-management/dynamic-list-likes';
-import  ProForm,{ ModalForm,ProFormSelect} from '@ant-design/pro-form';
-import { Tabs } from 'antd';
 
 export default props => {
 let id = props.location.query.id

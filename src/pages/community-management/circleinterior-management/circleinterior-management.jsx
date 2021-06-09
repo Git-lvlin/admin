@@ -1,4 +1,4 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { adminList } from '@/services/community-management/dynamic-admin-list';
@@ -9,7 +9,7 @@ import { cancelDelete } from '@/services/community-management/dynamic-cancel-del
 import { circleTop } from '@/services/community-management/circle-top';
 import { cancelBanDynamicComment } from '@/services/community-management/dynamic-cancel-ban-dynamic-comment';
 import { cancelBanShare } from '@/services/community-management/dynamic-cancel-ban-share';
-import ProForm, { ModalForm,ProFormSwitch} from '@ant-design/pro-form';
+import { ModalForm,ProFormSwitch} from '@ant-design/pro-form';
 import { Button } from 'antd';
 
 export default props => {
