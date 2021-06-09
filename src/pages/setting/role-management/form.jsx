@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { message, Tree, Checkbox } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Tree, Checkbox } from 'antd';
 import {
   ModalForm,
   ProFormText,
@@ -10,6 +10,8 @@ export default (props) => {
   const { visible, setVisible, treeData, data } = props;
   const [selectKeys, setSelectKeys] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [form] = Form.useForm()
+
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -62,12 +64,21 @@ export default (props) => {
     });
   }
 
+  useEffect(() => {
+    if (data) {
+      form.setFieldsValue({
+        title: data.title
+      })
+    }
+  }, [])
+
   return (
     <ModalForm
-      title="新建角色"
+      title={`${data ? '新建' : '编辑'}角色`}
       modalProps={{
         onCancel: () => { reset() },
       }}
+      form={form}
       onVisibleChange={setVisible}
       visible={visible}
       width={550}
