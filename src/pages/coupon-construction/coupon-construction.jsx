@@ -99,17 +99,18 @@ const couponConstruction=(props) => {
         />
 
         {/* 优惠券类型 */}
-        <Form.Item
+        <FormItem
           label={<FormattedMessage id="formandbasic-form.public.label" />}
           name="couponType"
+          // rules={[{ required: true, message: '请选择优惠券类型' }]}
         >
           <CouponType id={id}/>
-        </Form.Item>
+        </FormItem>
 
         {/* 发行量 */}
-        <Form.Item  label={<FormattedMessage id="formandbasic-form.circulation" />} name="layout" >
+        <FormItem  label={<FormattedMessage id="formandbasic-form.circulation" />} name="layout" >
           <Circulation id={id} />
-        </Form.Item>
+        </FormItem>
 
         {/* 每人限领 */}
         <ProForm.Group>
@@ -179,12 +180,12 @@ const couponConstruction=(props) => {
         <Divider orientation="left">使用设置</Divider>
 
         {/* 使用范围 */}
-        <ProForm.Item
+        <FormItem
           label={<FormattedMessage id="formandbasic-form.usable.range" />}
           name="useType"
         >
           <UseScope id={id}/>
-        </ProForm.Item>
+        </FormItem>
 
         {/* 使用说明 */}
         <FormItem

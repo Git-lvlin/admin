@@ -233,10 +233,11 @@ const useSecond=(props)=>{
         })
     },[])
     return(
-        <div className={styles.unfold}>
-            <Form.Item label={<FormattedMessage id="formandbasic-form.commodity"/>}>
+        <div className={styles.unfold}> 
                <ProFormRadio.Group
+                    label={<FormattedMessage id="formandbasic-form.commodity"/>}
                     name="goodsType"
+                    rules={[{ required: true, message: '请选择商品范围' }]}
                     fieldProps={{
                     value: (parseInt(id)==id )&&DetailList.data?.goodsType||position,
                     onChange: (e) => setPosition(e.target.value),
@@ -378,6 +379,7 @@ const useSecond=(props)=>{
             <ProFormRadio.Group
                 name="memberType"
                 label="可用人群"
+                rules={[{ required: true, message: '请选择可用人群' }]}
                 options={[
                   {
                     label: '全部会员',
@@ -389,7 +391,6 @@ const useSecond=(props)=>{
                   }
                 ]}
               />
-            </Form.Item>
         </div>
     )
 }
