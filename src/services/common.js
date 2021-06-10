@@ -10,8 +10,20 @@ export const getExpressList = (params, options = {}) => {
 
 export const categoryAll = (params = {}, options = {}) => {
   return request('/auth/goods/product/categoryAll', {
-    method: 'get',
+    method: 'GET',
     params,
+    ...options
+  });
+}
+
+export const supplierList = (params = {}, options = {}) => {
+  return request('/auth/supplier/user/commonList', {
+    method: 'GET',
+    params: {
+      page:1,
+      size: 9999,
+      ...params,
+    },
     ...options
   });
 }

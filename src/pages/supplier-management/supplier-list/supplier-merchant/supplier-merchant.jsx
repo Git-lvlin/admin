@@ -4,17 +4,21 @@ import { Button, Space } from 'antd';
 import { getCommonList, statusSwitch, detailExt } from '@/services/supplier-management/supplier-list'
 import { history } from 'umi';
 import Edit from './edit';
+import DisableModal from './disable-modal';
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
+  const [disableModalVisible, setDisableModalVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
 
-  const switchStatus = (id, type) => {
+  const switchStatus = (reason) => {
     statusSwitch({
-      supplierId: id,
-      type
-    }, { showSuccess: true }).then(res => {
+      supplierId: selectItem.id,
+      type: selectItem.status === 1 ? 2 : 1,
+      reason,
+    }, { showSuccess: true, }).then(res => {
       if (res.code === 0) {
         actionRef.current.reload();
       }
@@ -84,9 +88,6 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => {
-        if (_ === 0) {
-          return _;
-        }
         return <a onClick={() => { history.push(`/supplier-management/supplier-sub-account/${data.id}`) }}>{_}</a>
       }
     },
@@ -96,8 +97,8 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          {data.status === 1 && <a onClick={() => { switchStatus(data.id, 2) }}>禁用</a>}
-          {data.status === 0 && <a onClick={() => { switchStatus(data.id, 1) }}>启用</a>}
+          {data.status === 1 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>禁用</a>}
+          {data.status === 0 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>启用</a>}
           <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.id}`) }}>详情</a>
           <a onClick={() => { getDetail(data.id) }}>编辑</a>
           <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>售后地址</a>
@@ -146,6 +147,14 @@ const TableList = () => {
         callback={() => { actionRef.current.reload(); setDetailData(null) }}
         onClose={() => { setDetailData(null) }}
       />}
+
+      {disableModalVisible &&
+        <DisableModal
+          visible={disableModalVisible}
+          setVisible={setDisableModalVisible}
+          data={selectItem}
+          callback={(v) => { switchStatus(v) }}
+        />}
     </>
 
   );
