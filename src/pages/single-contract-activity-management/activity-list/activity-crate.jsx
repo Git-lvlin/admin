@@ -56,7 +56,7 @@ export default (props) => {
       width: 300,
       render: (_, data) => (
         <div style={{ display: 'flex' }}>
-          <img width="50" height="50" src={data.goodsImageUrl} />
+          <img width="50" height="50" src={data.imageUrl} />
           <div style={{ marginLeft: 10, wordBreak: 'break-all' }}>{_}</div>
         </div>
       )

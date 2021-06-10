@@ -213,6 +213,11 @@ export default function EditTable({ onSelect }) {
       columns={columns}
       rowKey="id"
       value={dataSource}
+      params={{
+        goodsState: 1,
+        goodsVerifyState: 1,
+        hasStock: 1,
+      }}
       request={productList}
       search={{
         defaultCollapsed: false,

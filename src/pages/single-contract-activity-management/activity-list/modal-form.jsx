@@ -7,6 +7,7 @@ import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import { amountTransform } from '@/utils/utils'
+import SupplierSelect from '@/components/supplier-select'
 
 export default (props) => {
   const { visible, setVisible, data, callback } = props;
@@ -57,6 +58,24 @@ export default (props) => {
           <div style={{ marginLeft: 10, wordBreak: 'break-all' }}>{_}</div>
         </div>
       )
+    },
+    {
+      title: '供应商名称',
+      dataIndex: 'supplierId',
+      valueType: 'text',
+      hideInTable: true,
+      renderFormItem: () => <SupplierSelect />
+
+    },
+    {
+      title: '结算模式',
+      dataIndex: 'settleType',
+      valueType: 'select',
+      hideInTable: true,
+      valueEnum: {
+        1: '佣金模式',
+        2: '底价模式',
+      },
     },
     {
       title: '商品分类',
@@ -113,6 +132,7 @@ export default (props) => {
         params={{
           goodsState: 1,
           goodsVerifyState: 1,
+          hasStock: 1,
         }}
         request={productList}
         search={{
