@@ -35,7 +35,7 @@ const couponType=(props)=>{
         setFlag(val)
     }
     return(
-        <Tabs onChange={callback} type="card">
+        <Tabs onChange={callback}  type="card">
             <TabPane className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.radio.public" />} key="1">
                 <ProForm.Group>
                     <span>使用门槛: 活动商品满</span>
