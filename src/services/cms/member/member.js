@@ -294,6 +294,14 @@ export const crazyActivityDel = (params = {}, options = {}) => {
   });
 }
 
+export const crazyActivityGoodsDel = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsGoodsStatusSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const SetHotGoodsDel = (params = {}, options = {}) => {
   return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetHotGoods?ids=${params.ids}&opt=${params.opt}`, {
     method: 'GET',
