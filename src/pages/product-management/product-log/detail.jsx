@@ -67,7 +67,8 @@ const UserDetail = (props) => {
           return imgArr.map(item => (<div key={item} style={{ marginRight: 10, display: 'inline-block' }}><Image style={{ width: 50, height: 50 }} src={item} /></div>))
         }
         return text;
-      }
+      },
+      width: 200,
     },
     {
       title: '操作后新值',
@@ -81,13 +82,15 @@ const UserDetail = (props) => {
           return imgArr.map(item => (<div key={item} style={{ marginRight: 10, display: 'inline-block' }}><Image style={{ width: 50, height: 50 }} src={item} /></div>))
         }
         return text;
-      }
+      },
+      width: 200,
     },
     {
       title: '说明',
       dataIndex: 'actionRemark',
       valueType: 'text',
       hideInSearch: true,
+      width: 200,
     },
     {
       title: '操作时间',
