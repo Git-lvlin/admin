@@ -240,7 +240,7 @@ export default (props) => {
         label="参团(团约)人数"
         name="groupNum"
         min={1}
-        max={999}
+        max={99999}
         step
         rules={[
           { required: true, message: '请输入参团人数' },
@@ -258,18 +258,18 @@ export default (props) => {
       />
 
       <ProFormDigit
-        placeholder="请输入1-96之间的整数"
+        placeholder="请输入1-720之间的整数"
         label="团约拼约时长"
         name="groupTime"
         min={1}
-        max={96}
+        max={720}
         step
         rules={[
           { required: true, message: '请输入团约拼约时长' },
           () => ({
             validator(_, value) {
               if (`${value}`.indexOf('.') !== -1) {
-                return Promise.reject(new Error('请输入1-96之间的整数'));
+                return Promise.reject(new Error('请输入1-720之间的整数'));
               }
               return Promise.resolve();
             },
