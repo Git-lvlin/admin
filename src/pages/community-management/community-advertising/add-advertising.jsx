@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { getDetailById } from '@/services/community-management/adsense-get-detail-byid';
 import { saveAdsense } from '@/services/community-management/adsense-save-adsense';
-import ProForm, { ProFormText,ProFormRadio} from '@ant-design/pro-form';
+import ProForm, { ProFormText,ProFormRadio,DrawerForm,ProFormDateRangePicker,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';
-import { message, Form } from 'antd';
+import { message, Form,Button } from 'antd';
+import ProTable from '@ant-design/pro-table';
+import { PlusOutlined } from '@ant-design/icons';
 import Upload from '@/components/upload';
 
 export default props => {
+ const formRef = useRef();
  const id = props.location.query.id
  const [position,setPosition]=useState(1)
  const [form] = Form.useForm()
@@ -19,6 +22,23 @@ export default props => {
    }
    return undefined
  })
+ const columns=[
+  {
+     title: '商品图片',
+     dataIndex: 'unit',
+  },
+  {
+    title: '商品名称',
+    dataIndex: 'unit',
+ },
+//   {
+//    title: '操作',
+//    valueType: 'text',
+//    render:(text, record, _, action)=>[
+//        <a onClick={()=>delType(record.key)}>删除</a>
+//    ]
+// }
+]
   //标题验证规则
   const checkConfirm=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
@@ -50,17 +70,17 @@ export default props => {
       >
         <ProFormText
             width="md"
-            name="linkId"
+            name="id"
             label="广告ID"
             tooltip="最长为 24 位"
-            placeholder="请输入名称"
+            placeholder="请输入广告ID"
         />
          <ProFormText
             width="md"
             name="title"
             label="广告标题"
             tooltip="最长为 24 位"
-            placeholder="请输入名称"
+            placeholder="请输入广告标题"
             rules={[
               { required: true, message: '请输入标题' },
               {validator: checkConfirm}
@@ -73,26 +93,25 @@ export default props => {
             options={[
                 {
                   label: 'SQ01',
-                  value: 1
+                  value: '1'
                 },
                 {
                   label: 'SQ02',
-                  value: 2
+                  value: '2'
                 },
                 {
                   label: 'SQ03',
-                  value: 3
+                  value: '3'
                 },
             ]}
             />
-        <Form.Item label="圈子ICON" name="url">
+        <Form.Item label="圈子ICON" name="images">
             <Upload multiple maxCount={1} accept="image/*" dimension="1:1" />
         </Form.Item>
         <ProFormRadio.Group
             name="linkType"
             label="链接类型"
             fieldProps={{
-              value: position,
               onChange: (e) => setPosition(e.target.value),
             }}
             options={[
@@ -111,21 +130,47 @@ export default props => {
             ]}
         />
           {
-            position==1?
+            position=='1'?
             <ProFormText
                 width="md"
-                name="order"
+                name="url"
                 label="URL跳转"
                 tooltip="最长为 24 位"
-                placeholder="请输入名称"
             />
             :null
           }
           {
-            position==2?
-            <Button type="primary" className={styles.popupBtn} onClick={showModal}>
+            position=='2'?
+            <DrawerForm
+              title="添加商品"
+              formRef={formRef}
+              trigger={
+                <Button type="primary">
+                  <PlusOutlined />
                   添加商品
-             </Button>
+                </Button>
+              }
+              drawerProps={{
+                forceRender: true,
+                destroyOnClose: true,
+              }}
+              onFinish={async (values) => {
+                await waitTime(2000);
+                console.log(values.name);
+                message.success('提交成功');
+                // 不返回不会关闭弹框
+                return true;
+              }}
+            >
+               <ProTable
+                  toolBarRender={false}
+                  search={false}
+                  rowKey="spuId"
+                  columns={columns}
+                  rowSelection={{}}
+                  // dataSource={DetailList.data?.spuInfo}
+                />
+            </DrawerForm>
             :null
           }
         <ProFormRadio.Group
@@ -147,7 +192,6 @@ export default props => {
             name="order"
             label="排序"
             tooltip="最长为 24 位"
-            placeholder="请输入名称"
         />
         <p>备注：同一个广告位置，序号1-100，1为最前。</p>
       </ProForm>
