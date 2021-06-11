@@ -1,86 +1,53 @@
 import React, { useRef, useState, useEffect  } from 'react';
-import { Button, message, Form, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import ProForm, {
-  ModalForm,
-  DrawerForm,
-  ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
-} from '@ant-design/pro-form';
-import { priceListAdd } from '@/services/cms/member/member';
-import { goodsAllList } from '@/services/cms/member/member';
-import GcCascader from '@/components/gc-cascader'
+import { message, Form, Space } from 'antd';
+import ProTable from '@ant-design/pro-table';
+import { ModalForm, ProFormText } from '@ant-design/pro-form';
+import { bindSkuId } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { setVisible, setFlag, visible } = props;
+  const { setVisible, formData, setFlag, visible } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
+  const [form] = Form.useForm()
   const columns = [
     {
       title: 'skuid',
-      dataIndex: 'skuId',
+      dataIndex: 'sku',
+      valueType: 'text',
+    },
+    {
+      title: 'spuid',
+      dataIndex: 'spu',
       valueType: 'text',
     },
     {
       title: '商品名称',
-      dataIndex: 'goodsName',
+      dataIndex: 'sku_name',
       valueType: 'text',
       search: false,
     },
     {
-      title: '商家名称',
-      dataIndex: 'supplierName',
-      valueType: 'text',
-      search: false,
-    },
-    {
-      title: '商品分类',
-      dataIndex: 'gcId',
-      renderFormItem: () => (<GcCascader />),
-      hideInTable: true,
-    },
-    {
-      title: '结算类型',
-      dataIndex: 'goodsSaleTypeDisplay',
-      valueType: 'text',
-      search: false,
-    },
-    {
-      title: '秒约价',
-      dataIndex: 'salePrice',
+      title: '商品价格',
+      dataIndex: 'price',
       valueType: 'money',
-      search: false,
-    },
-    {
-      title: '市场价',
-      dataIndex: 'marketPrice',
-      valueType: 'money',
-      search: false,
-    },
-    {
-      title: '可用库存',
-      dataIndex: 'stockTotal',
-      valueType: 'number',
-      search: false,
-    },
-    {
-      title: '销量',
-      dataIndex: 'goodsSaleNum',
-      valueType: 'number',
       search: false,
     },
   ];
 
-  const waitTime = () => {  
+  const waitTime = () => {
     const param = {
-      ids: arr.toString(),
+      goodsSpuId: arr.goodsSpuId,
+      sourceType: arr.sourceType,
+      skuId: arr.skuId,
     }
-    return new Promise((resolve) => {
-      priceListAdd(param).then((res) => {
+    return new Promise((resolve,reject) => {
+      bindSkuId(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
-          resolve(true);
+          resolve(true)
+        } else {
+          reject(false)
+          return
         }
       })
   
@@ -88,18 +55,23 @@ export default (props) => {
   };
 
   useEffect(() => {
-
-  }, [])
+    if (formData) {
+      form.setFieldsValue({
+        ...formData
+      })
+    }
+  }, [formData])
 
   return (
     <ModalForm
-      title={'新建'}
+      title={'请选择您需要比价的商品规格'}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
+      form={form}
       submitter={{
         searchConfig: {
-          submitText: '添加商品',
+          submitText: '确定',
           resetText: '取消',
         },
       }}
@@ -107,8 +79,13 @@ export default (props) => {
         forceRender: true,
         destroyOnClose: true,
       }}
-      onFinish={async (values) => {
-        await waitTime(values);
+      onFinish={async () => {
+        console.log('arr', arr)
+        if (arr === null||arr.length > 1) {
+          message.error('请选择一种规格!');
+          return false;
+        }
+        await waitTime();
         message.success('提交成功');
         // 不返回不会关闭弹框
         return true;
@@ -118,14 +95,8 @@ export default (props) => {
       rowKey="skuId"
       options={false}
       columns={columns}
-      postData={(data) => {
-        data.forEach(item => {
-          item.salePrice = parseInt(item.salePrice/100)
-          item.marketPrice = parseInt(item.marketPrice/100)
-        })
-        return data
-      }}
-      request={goodsAllList}
+      params={formData}
+      dataSource={formData?[formData]:false}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项
@@ -150,14 +121,10 @@ export default (props) => {
       //   </Space>
       // )}
       tableAlertOptionRender={(a) => {
-        setArr(a.selectedRowKeys.toString())
+        setArr(a.selectedRowKeys)
       }}
-      search={{
-        labelWidth: 'auto',
-      }}
-      pagination={{
-        pageSize: 10,
-      }}
+      search={false}
+      pagination={false}
       dateFormatter="string"
       headerTitle="添加比价商品"
     />

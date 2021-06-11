@@ -9,7 +9,6 @@ import ReplaceForm from './replace-form';
 import ProCard from '@ant-design/pro-card';
 
 const DetailList = (props) => {
-  const [listData, setListData] = useState(null)
   const { onChange, id } = props;
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
@@ -25,6 +24,15 @@ const DetailList = (props) => {
     }
     setDetailData(param);
     setFormVisible(true);
+  }
+
+    const formControl = (data,type) => {
+    crazyActivityDel({ids: data,status: type}).then((res) => {
+      if (res.code === 0) {
+        message.success(`${ACTION_TYPE[type]}成功`);
+        actionRef.current.reset();
+      }
+    })
   }
 
   const openList = () => {
@@ -81,7 +89,7 @@ const DetailList = (props) => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'money',
       search: false,
     },
     {
@@ -143,7 +151,7 @@ const DetailList = (props) => {
           <>
             &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {action?.startEditable?.(record.key);console.log('action',action,record)}}>编辑</a>}
+            {/* &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {action?.startEditable?.(record.key);console.log('action',action,record)}}>编辑</a>} */}
             &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
           </>
         )
@@ -166,6 +174,12 @@ const DetailList = (props) => {
       columns={columns}
       actionRef={actionRef}
       params={acid}
+      postData={(data) => {
+        data.forEach(item => {
+          item.goodsSalePrice = parseInt(item.goodsSalePrice/100)
+        })
+        return data
+      }}
       request={crazyGoodsList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

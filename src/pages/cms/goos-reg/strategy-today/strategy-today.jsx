@@ -96,7 +96,7 @@ const StrategyToday = () => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'money',
       search: false,
     },
     {
@@ -168,7 +168,7 @@ const StrategyToday = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _, action) => {
+      render: (text, record, _) => {
         return (
           <>
             {record.status===2&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
@@ -187,13 +187,13 @@ const StrategyToday = () => {
     <PageContainer>
     <ProTable
       rowKey="id"
-      // options={false}
       columns={columns}
       actionRef={actionRef}
       params={{tagCode:'day_yeahgo'}}
       postData={(data) => {
         data.forEach(item => {
           item.floatPercent = parseInt(item.floatPercent/100)
+          item.goodsSalePrice = parseInt(item.goodsSalePrice/100)
         })
         return data
       }}

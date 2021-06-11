@@ -88,7 +88,7 @@ const SaveMoney = () => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'money',
       search: false,
     },
     {
@@ -166,6 +166,12 @@ const SaveMoney = () => {
       // options={false}
       columns={columns}
       actionRef={actionRef}
+      postData={(data) => {
+        data.forEach(item => {
+          item.goodsSalePrice = parseInt(item.goodsSalePrice/100)
+        })
+        return data
+      }}
       request={saveMoneyList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
