@@ -23,7 +23,6 @@ const couponType=(props)=>{
         setImmediately(e.target.value)
     }
     const callback=cate=>{
-        console.log('cate',cate)
         dispatch({
             type:'UseScopeList/fetchCouponType',
             payload:{

@@ -1,10 +1,13 @@
 import request from '@/utils/request';
 
 export const saveAdsense= async (params, options = {}) => {
+  const {images,order,...rest}=params
   const res = await request('/auth/java-admin/adsense/saveAdsense', {
     method: 'POST',
     data: {
-      params
+      images:[images],
+      order:parseInt(order),
+      ...rest
     },
     ...options
   });

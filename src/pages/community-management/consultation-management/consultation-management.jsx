@@ -7,7 +7,6 @@ import { Button } from 'antd';
 export default props => {
     //导出
 const exportExcel = (form) => {
-    // console.log('form',form)
     couponList({
       ...form.getFieldsValue(),
     }).then(res => {
