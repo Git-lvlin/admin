@@ -230,6 +230,7 @@ export default (props) => {
         fieldProps={{
           maxLength: 30,
         }}
+        disabled={!!detailData}
       />
       <ProFormText
         name="accountName"
@@ -239,6 +240,7 @@ export default (props) => {
         fieldProps={{
           maxLength: 18,
         }}
+        disabled={!!detailData}
       />
       <ProFormText.Password
         name="password"

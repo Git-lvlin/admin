@@ -4,6 +4,7 @@ import React from 'react';
 import { history, connect } from 'umi';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+import avatar from '@/assets/avatar.png';
 
 class AvatarDropdown extends React.Component {
   onMenuClick = (event) => {
@@ -27,8 +28,8 @@ class AvatarDropdown extends React.Component {
   render() {
     const {
       currentUser = {
-        avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
-        name: 'test',
+        avatar,
+        name: window.localStorage.getItem('nickname'),
       },
       menu,
     } = this.props;

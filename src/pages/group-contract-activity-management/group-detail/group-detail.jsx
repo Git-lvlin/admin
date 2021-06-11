@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import ProTable from '@ant-design/pro-table';
+import { Space } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
-import { useParams } from 'umi';
+import { useParams, useLocation } from 'umi';
 import { multiGroupList, groupMemberList } from '@/services/single-contract-activity-management/group-detail'
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
+
   const columns = [
     { title: '序号', dataIndex: 'index', render: (_, $, index) => data.length - index },
     { title: '参团用户手机号', dataIndex: 'joinMemberPhone' },
@@ -29,6 +31,7 @@ const SubTable = (props) => {
 
 const TableList = () => {
   const params = useParams();
+  const location = useLocation()
 
   const columns = [
     {
@@ -100,6 +103,21 @@ const TableList = () => {
 
   return (
     <PageContainer>
+      <div style={{ marginBottom: 10, background: '#fff', padding: 10 }}>
+        <Space size="large">
+          <span>{location?.query?.goodsName}</span>
+          <span>skuID:{location?.query?.skuId}</span>
+          <span>({location?.query?.activityName}</span>
+          <span>{location?.query?.activityStartTime}~{location?.query?.activityEndTime}</span>
+          <span>团约{location?.query?.groupNum}人团</span>
+          <span>{{
+            1: '待开始',
+            2: '进行中',
+            3: '已结束',
+            4: '已中止'
+          }[location?.query?.activityStatus]})</span>
+        </Space>
+      </div>
       <ProTable
         rowKey="id"
         options={false}

@@ -76,7 +76,7 @@ const TableList = (props) => {
       dataIndex: 'activityTimeDisplay',
       valueType: 'text',
       hideInSearch: true,
-      width:120
+      ellipsis:true
     },
     {
       title: '创建时间',
@@ -207,7 +207,6 @@ const TableList = (props) => {
   const Additional=(data)=>{
       setByid(data.id)
       setRecords(data.issueQuantity)
-      setDiscounts('')
       setVisible(true)
   }
   //终止
