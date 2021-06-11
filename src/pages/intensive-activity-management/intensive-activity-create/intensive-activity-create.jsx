@@ -66,8 +66,9 @@ const IntensiveActivityCreate = () => {
           totalStockNum: selectItem.totalStockNum,
           minNum: selectItem.minNum,
           price: amountTransform(selectItem.price),
-          perStoreMinNum: selectItem.perStoreMinNum,
+          maxNum: selectItem.maxNum,
           supplierId: selectItem.supplierId,
+          totalPrice: selectItem.totalPrice,
         }],
         storeLevel: 'ALL',
         memberLevel: 'ALL',
@@ -144,6 +145,7 @@ const IntensiveActivityCreate = () => {
               canRecoverPayTimes: 1,
               recoverPayTimeout: 3
             }}
+            className={styles.center}
           >
             <ProFormText name="name" label="活动名称" width="md" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
             <ProFormDateTimeRangePicker
@@ -185,6 +187,7 @@ const IntensiveActivityCreate = () => {
               history.push('/intensive-activity-management/intensive-activity-list')
               return true;
             }}
+            className={styles.center}
           >
             <Result
               status="success"
@@ -201,7 +204,7 @@ const IntensiveActivityCreate = () => {
             >
               <Descriptions labelStyle={{ textAlign: 'right', width: 150, display: 'inline-block' }} column={1}>
                 <Descriptions.Item label="参与活动商品">{selectItem.goodsName}（skuID：{selectItem.skuId}）</Descriptions.Item>
-                <Descriptions.Item label="所有全款结清可收款">{numFormat(submitValue.goodsInfos[0].perStoreMinNum)} 元（{digitUppercase(submitValue.goodsInfos[0].perStoreMinNum)}）</Descriptions.Item>
+                <Descriptions.Item label="所有全款结清可收款">{numFormat(submitValue.goodsInfos[0].totalPrice)} 元（{digitUppercase(submitValue.goodsInfos[0].totalPrice)}）</Descriptions.Item>
               </Descriptions>
             </div>}
           </StepsForm.StepForm>

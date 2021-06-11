@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Table } from 'antd';
-import { multiGroupList, groupMemberList } from '@/services/single-contract-activity-management/group-detail'
+import { singleGroupList, groupMemberList } from '@/services/single-contract-activity-management/group-detail'
 import { useParams } from 'umi';
 
 
@@ -106,10 +106,10 @@ const TableList = () => {
         options={false}
         params={{
           activityId: params.id,
-          groupState: 2,
+          groupState: 1,
         }}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
-        request={multiGroupList}
+        request={singleGroupList}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
