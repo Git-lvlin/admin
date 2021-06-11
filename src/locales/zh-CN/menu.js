@@ -90,7 +90,7 @@ export default {
   'menu.cms.goos-reg.hot-goos': '热销好货',
   'menu.cms.goos-reg.crazy-date': '正在疯约',
   'menu.cms.goos-reg.save-money': '约购更省钱',
-  'menu.cms.goos-reg.strategy-today': '约购攻略',
+  'menu.cms.goos-reg.strategy-today': '今日必约',
   'menu.cms.home-suspension': '首页悬浮窗',
   'menu.cms.express-news': '约购快报',
   'menu.cms.king-kong-district': '金刚区',

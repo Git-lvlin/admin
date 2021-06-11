@@ -203,7 +203,7 @@ const SaveMoney = () => {
         labelWidth: 'auto',
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
       dateFormatter="string"
       headerTitle="约购更省钱"

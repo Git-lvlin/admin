@@ -83,8 +83,7 @@ const HotGoos = () => {
       key: 'goodsName',
       dataIndex: 'goodsName',
       valueType: 'text',
-      search: false,
-      // width: 100,
+      // search: false,
     },
     {
       title: '商家名称',
@@ -244,7 +243,7 @@ const HotGoos = () => {
         labelWidth: 'auto',
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
       scroll={{ x: 2200 }}
       dateFormatter="string"

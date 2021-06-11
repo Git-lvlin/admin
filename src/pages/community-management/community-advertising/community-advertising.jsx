@@ -5,11 +5,13 @@ import { adsenseAdminList } from '@/services/community-management/adsense-admin-
 import { deleteById } from '@/services/community-management/adsense-delete-byid';
 import { ModalForm} from '@ant-design/pro-form';
 import { history } from 'umi';
-import { Button } from 'antd';
+import { Button,message } from 'antd';
 
 export default props => {
     const [visible, setVisible] = useState(false);
-    const Termination=()=>{
+    const [byid,setByid]=useState()
+    const Termination=(record)=>{
+        setByid(record.id)
         setVisible(true)
     }
     const columns = [
@@ -44,7 +46,14 @@ export default props => {
               1: 'URL',
               2: '商品',
               3: '销售活动',
-            }
+            },
+            hideInTable:true
+        },
+        {
+            title: '链接类型',
+            dataIndex: 'linkType',
+            valueType:'text',
+            hideInSearch:true,
         },
         {
             title: '状态',
@@ -53,7 +62,14 @@ export default props => {
             valueEnum: {
               1: '启用',
               2: '停用',
-            }
+            },
+            hideInTable:true
+        },
+        {
+            title: '状态',
+            dataIndex: 'state',
+            valueType: 'text',
+            hideInSearch:true
         },
         {
             title: '创建时间',
@@ -64,13 +80,14 @@ export default props => {
         {
             title: '操作',
             render: (text, record, _, action) => [
-              <Button   onClick={()=>history.push('/community-management/community-advertising/add-advertising?id='+record.id)}>编辑</Button>,
+              <Button onClick={()=>history.push('/community-management/community-advertising/add-advertising?id='+record.id)}>编辑</Button>,
+              <DeleteModal record={record} boxref={ref} text={'确认要删除所选内容吗？'} InterFace={deleteById} title={'操作确认'}/>,
                 <ModalForm
                     title="操作确认"
                     key="model2"
                     onVisibleChange={setVisible}
                     visible={visible}
-                    trigger={<Button onClick={Termination}>删除</Button>}
+                    trigger={<Button onClick={()=>Termination(record)}>删除</Button>}
                     submitter={{
                     render: (props, defaultDoms) => {
                         return [
@@ -80,10 +97,14 @@ export default props => {
                     }}
                     onFinish={async (values) => {
                         console.log('values',values);
-                        deleteById({id:record.id})
-                        setVisible(false)
-                        message.success('提交成功');
-                        return true;
+                        deleteById({id:byid}).then(res=>{
+                            if(res.code==0){
+                                setVisible(false)
+                                message.success('提交成功');
+                                return true;
+                            }
+                        })
+                       
                     }}
                 >
                 <p>确认要删除所选广告吗？</p>

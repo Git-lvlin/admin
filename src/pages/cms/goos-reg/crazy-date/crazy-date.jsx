@@ -148,7 +148,7 @@ const CrazyDate = (props) => {
       //   labelWidth: 'auto',
       // }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
       onRow={(record) => {
         return {

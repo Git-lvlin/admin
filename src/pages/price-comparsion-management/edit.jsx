@@ -60,19 +60,19 @@ export default (props) => {
     },
     {
       title: '可用库存',
-      dataIndex: 'stockTotal',
+      dataIndex: 'stockNum',
       valueType: 'number',
       search: false,
     },
     {
       title: '销量',
-      dataIndex: 'goodsSaleNum',
+      dataIndex: 'saleNum',
       valueType: 'number',
       search: false,
     },
   ];
 
-  const waitTime = () => {  
+  const waitTime = () => {
     const param = {
       ids: arr.toString(),
     }
@@ -103,7 +103,7 @@ export default (props) => {
           resetText: '取消',
         },
       }}
-      drawerprops={{
+      drawerProps={{
         forceRender: true,
         destroyOnClose: true,
       }}
@@ -125,6 +125,7 @@ export default (props) => {
         })
         return data
       }}
+      params={{goodsState: 1}}
       request={goodsAllList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

@@ -324,8 +324,9 @@ const PriceComparsionManagement = () => {
         labelWidth: 'auto',
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
+      // pagination={false}
       dateFormatter="string"
       headerTitle="数据列表"
       toolBarRender={(_,record) => [

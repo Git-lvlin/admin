@@ -11,6 +11,7 @@ const HomeSuspension = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
+  const [flag, setFlag] = useState(false);
 
   const getDetail = (data) => {
     data && setDetailData(data);
@@ -27,10 +28,11 @@ const HomeSuspension = () => {
   }
 
   useEffect(() => {
-    if (!formVisible) {
+    if (flag) {
       actionRef.current.reset();
+      setFlag(false)
     }
-  }, [formVisible])
+  }, [flag])
 
   const columns = [
     {
@@ -114,7 +116,7 @@ const HomeSuspension = () => {
         labelWidth: 'auto',
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
       dateFormatter="string"
       headerTitle="首页悬浮窗"
@@ -128,8 +130,7 @@ const HomeSuspension = () => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+      setFlag={setFlag}
     />}
     </PageContainer>
   );

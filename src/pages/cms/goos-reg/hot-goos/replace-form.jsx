@@ -149,9 +149,6 @@ export default (props) => {
       tableAlertOptionRender={(a) => {
         setArr(a.selectedRows)
       }}
-      editable={{
-        type: 'multiple',
-      }}
       search={{
         labelWidth: 'auto',
       }}

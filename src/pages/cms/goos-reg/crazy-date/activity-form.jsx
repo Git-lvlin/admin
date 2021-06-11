@@ -2,12 +2,12 @@
 import ProTable from '@ant-design/pro-table';
 import React, { useRef, useEffect, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { crazyGoodsList } from '@/services/cms/member/member';
+import { crazyGoodsList, crazyActivityGoodsDel } from '@/services/cms/member/member';
 import { Button, Space, message } from 'antd';
 import Edit from './goods-modal-form'
 import ReplaceForm from './replace-form';
 import ProCard from '@ant-design/pro-card';
-
+import { ACTION_TYPE } from '@/utils/text';
 const DetailList = (props) => {
   const { onChange, id } = props;
   const actionRef = useRef();
@@ -27,7 +27,7 @@ const DetailList = (props) => {
   }
 
     const formControl = (data,type) => {
-    crazyActivityDel({ids: data,status: type}).then((res) => {
+    crazyActivityGoodsDel({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);
         actionRef.current.reset();
@@ -211,7 +211,7 @@ const DetailList = (props) => {
         labelWidth: 'auto',
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
       scroll={{ x: 2200 }}
       onRow={(record) => {
