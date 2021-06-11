@@ -8,28 +8,31 @@ import ProForm, {
 import Upload from '@/components/upload';
 import { homeSuspensionAdd } from '@/services/cms/member/member';
 
-const waitTime = (values) => {
-  const { id, ...rest } = values
-  const param = {
-    ...rest
-  }
-  if (id) {
-    param.id = id
-  }
-  return new Promise((resolve) => {
-    homeSuspensionAdd(param).then((res) => {
-      if (res.code === 0) {
-        resolve(true);
-      }
-    })
 
-  });
-};
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, setVisible, setFlag, visible } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
+
+  const waitTime = (values) => {
+    const { id, ...rest } = values
+    const param = {
+      ...rest
+    }
+    if (id) {
+      param.id = id
+    }
+    return new Promise((resolve) => {
+      homeSuspensionAdd(param).then((res) => {
+        if (res.code === 0) {
+          setFlag(true)
+          resolve(true);
+        }
+      })
+  
+    });
+  };
 
   useEffect(() => {
     if (detailData) {
@@ -50,9 +53,6 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        onClose: () => {
-          onClose();
-        }
       }}
       onFinish={async (values) => {
         await waitTime(values);

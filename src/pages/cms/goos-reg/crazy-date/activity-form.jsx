@@ -2,7 +2,7 @@
 import ProTable from '@ant-design/pro-table';
 import React, { useRef, useEffect, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { crazyGoodsList } from '@/services/cms/member/member';
+import { crazyGoodsList, crazyActivityDel } from '@/services/cms/member/member';
 import { Button, Space, message } from 'antd';
 import Edit from './goods-modal-form'
 import ReplaceForm from './replace-form';
@@ -211,7 +211,7 @@ const DetailList = (props) => {
         labelWidth: 'auto',
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
       scroll={{ x: 2200 }}
       onRow={(record) => {

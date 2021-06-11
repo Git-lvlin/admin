@@ -379,8 +379,8 @@ export const kongKongModifyType = (params = {}, options = {}) => {
   });
 }
 
-export const modifySaveMoneySort = (params = {}, options = {}) => {
-  return request('/auth/activity/Goods/wholesaleGoodsSortSub', {
+export const modifyTagSort = (params = {}, options = {}) => {
+  return request('/auth/activity/Goods/goodsTagSortSub', {
     method: 'POST',
     data: params,
     ...options
@@ -648,7 +648,7 @@ export const priceComparsionListAlls = async (params = {}, options = {}) => {
     ...rest
   }
   const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetContestGoodsList', {
-    method: 'GET',
+    method: 'POST',
     data,
     ...options
   });

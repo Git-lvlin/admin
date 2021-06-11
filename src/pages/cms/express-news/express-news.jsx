@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
@@ -11,6 +11,15 @@ const ExpressNews = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
+  const [flag, setFlag] = useState(false);
+
+
+  useEffect(() => {
+    if (flag) {
+      actionRef.current.reset()
+      setFlag(false)
+    }
+  }, [flag])
 
   const getDetail = (data) => {
     setDetailData(data);
@@ -176,8 +185,7 @@ const ExpressNews = () => {
       setVisible={setFormVisible}
       detailData={detailData}
       getContainer={false}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+      setFlag={setFlag}
     />}
     </PageContainer>
   );
