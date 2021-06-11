@@ -27,9 +27,10 @@ export default function EditTable(props) {
       {
         title: '规格图片',
         dataIndex: 'imageUrl',
-        // editable: false,
+        editable: false,
         width: 50,
-        renderFormItem: () => <Upload maxCount={1} className={styles.upload} accept="image/*" />,
+        render: (_) => <img src={_} width="50" height="50" />
+        // renderFormItem: () => <Upload disable maxCount={1} className={styles.upload} accept="image/*" />,
         // formItemProps: {
         //   rules: [{
         //     required: true,
@@ -43,6 +44,7 @@ export default function EditTable(props) {
         title: '供货价',
         dataIndex: 'retailSupplyPrice',
         width: 100,
+        editable: false,
         formItemProps: {
           rules: [{
             required: true,
@@ -71,12 +73,14 @@ export default function EditTable(props) {
       {
         title: '库存预警值',
         dataIndex: 'stockAlarmNum',
-        width: 100
+        width: 100,
+        editable: false,
       },
       {
         title: '可用库存',
         dataIndex: 'stockNum',
         width: 100,
+        editable: false,
         formItemProps: {
           rules: [{
             required: true,
@@ -85,14 +89,14 @@ export default function EditTable(props) {
           }],
         }
       },
-      {
-        title: '操作',
-        valueType: 'option',
-        render: () => {
-          return null;
-        },
-        width: 50
-      },
+      // {
+      //   title: '操作',
+      //   valueType: 'option',
+      //   render: () => {
+      //     return null;
+      //   },
+      //   width: 50
+      // },
     ])
 
   }, [tableHead])
