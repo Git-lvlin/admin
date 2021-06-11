@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card } from 'antd';
 import { memberShopSaleOrder } from '@/services/intensive-store-management/shopkeeper-order';
 import { useParams } from 'umi';
+import { amountTransform } from '@/utils/utils'
+
 
 const TableList = () => {
 
@@ -25,7 +26,7 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入商品名称'
       },
-      render: (_, data) => data?.goodsInfos?.[0]?.goodsName
+      render: (_, data) => data?.orderItemList?.[0]?.goodsName
     },
     {
       title: '商品skuID',
@@ -34,39 +35,41 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入商品skuID'
       },
-      render: (_, data) => data?.goodsInfos?.[0]?.skuId
+      render: (_, data) => data?.orderItemList?.[0]?.skuId
     },
     {
       title: '所属供应商',
       dataIndex: 'skuId',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => data?.goodsInfos?.[0]?.skuId
+      render: (_, data) => data?.orderItemList?.[0]?.skuId
     },
     {
       title: '商品数量',
       dataIndex: 'skuNum',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => data?.goodsInfos?.[0]?.skuNum
+      render: (_, data) => data?.orderItemList?.[0]?.skuNum
     },
     {
       title: '订单金额',
       dataIndex: 'totalAmount',
       valueType: 'text',
       hideInSearch: true,
+      render: _ => amountTransform(_, '/')
     },
     {
       title: '买家手机号',
-      dataIndex: '',
+      dataIndex: 'buyerPhone',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '下单时间',
-      dataIndex: '',
+      dataIndex: 'createTime',
       valueType: 'text',
       hideInSearch: true,
+      render: (_) => _.replace('T', ' ')
     },
   ];
 

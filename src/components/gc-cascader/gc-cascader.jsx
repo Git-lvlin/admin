@@ -34,7 +34,7 @@ const GcCascader = ({ value, onChange }) => {
 
             category({ gcParentId: gcId })
               .then(res2 => {
-                if (res2.code === 0) {
+                if (res2.code === 0 && data[index]) {
                   data[index].children = res2.data.records.map(item => ({ label: item.gcName, value: item.id }));
                   if (res.code === 0) {
                     setGcData([...data])

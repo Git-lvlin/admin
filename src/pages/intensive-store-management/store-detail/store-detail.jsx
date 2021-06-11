@@ -31,12 +31,12 @@ const UserDetail = () => {
           </div>
           <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 120, display: 'inline-block' }}>
             <Descriptions.Item label="店主昵称手机号">{`${detailData?.linkman}（${detailData.phone}）`}</Descriptions.Item>
-            <Descriptions.Item label="所属地区">{`${detailData?.areaInfo?.[1]}${detailData?.areaInfo?.[2]}${detailData?.areaInfo?.[3]}`}</Descriptions.Item>
+            <Descriptions.Item label="所属地区">{detailData?.areaInfo && Object.values(detailData?.areaInfo).join('')}</Descriptions.Item>
             <Descriptions.Item label="店主性别">{detailData?.member?.gender?.desc}</Descriptions.Item>
             <Descriptions.Item label="详细地址">{detailData?.address}</Descriptions.Item>
             <Descriptions.Item label="注册时间">{detailData?.createTime}</Descriptions.Item>
             <Descriptions.Item label="微信账号">{detailData?.member?.wechatBindState?.desc}</Descriptions.Item>
-            <Descriptions.Item label="押金金额">{`¥${detailData?.deposit?.payAmount}`}</Descriptions.Item>
+            <Descriptions.Item label="押金金额">{`¥${detailData?.deposit?.payAmount || ''}`}</Descriptions.Item>
             {/* <Descriptions.Item label="最近登录时间">{}</Descriptions.Item> */}
           </Descriptions>
         </Row>
