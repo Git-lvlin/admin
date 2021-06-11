@@ -222,6 +222,15 @@ export const hotGoosAdd = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const priceListAdd = (params = {}, options = {}) => {
+  return request('/auth/go-spider-api/contestprice/auth/contestprice/AddContestGoods', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const saveMoneyAdd = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/wholesaleGoodsSub', {
     method: 'POST',
@@ -233,6 +242,22 @@ export const saveMoneyAdd = (params = {}, options = {}) => {
 export const hotGoosOperation = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/goodsTagStatusSub', {
     method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const delContestGoods = (params = {}, options = {}) => {
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/DelContestGoods?id=${params.id}`, {
+    method: 'GET',
+    data: params,
+    ...options
+  });
+}
+
+export const bindSkuId = (params = {}, options = {}) => {
+  return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/setContestBindSku?goodsSpuId=${params.goodsSpuId}&sourceType=${params.sourceType}&skuId=${params.skuId}`, {
+    method: 'GET',
     data: params,
     ...options
   });
@@ -378,6 +403,26 @@ export const goosAllList = async (params = {}, options = {}) => {
     ...rest
   }
   const res = await request('/auth/activity/Goods/wholesaleTransGoodsList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const goodsAllList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/goods/product/skuList', {
     method: 'POST',
     data,
     ...options
@@ -680,6 +725,10 @@ export const priceComparsionHomeList = async (params = {}, options = {}) => {
     ...options
   });
 
+  if (!res.data.length) {
+    res.data = []
+  }
+
   return {
     data: res.data || [],
     success: true,
@@ -695,9 +744,17 @@ export const createTaskSrc = (params = {}, options = {}) => {
   });
 }
 
-export const getSpiderGoodsListByDate = (params = {}, options = {}) => {
-  return request('/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderGoodsListByDate', {
+export const sendTask = (params = {}, options = {}) => {
+  return request('/auth/go-spider-api/spiderdbc/auth/spiderdbc/SendTask', {
     method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const getSpiderGoodsListByDate = (params = {}, options = {}) => {
+  return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderGoodsListByDate?sourceType=${params.sourceType}&goodsId=${params.goodsId}`, {
+    method: 'GET',
     data: params,
     ...options
   });
