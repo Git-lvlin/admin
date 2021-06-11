@@ -88,7 +88,7 @@ const IntensiveActivityCreate = () => {
   }
   return (
     <PageContainer className={styles.page}>
-      <ProCard>
+      <ProCard style={{ width: '100%' }}>
         <StepsForm
           formProps={{
             validateMessages: {
