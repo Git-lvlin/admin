@@ -1,21 +1,9 @@
 import React, { useRef, useState, useEffect  } from 'react';
 import { Button, message, Form, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import ProForm, {
-  ModalForm,
-  DrawerForm,
-  ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
-} from '@ant-design/pro-form';
-import { PlusOutlined } from '@ant-design/icons';
-import MemberReg from '@/components/member-reg';
-import Upload from '@/components/upload';
+import ProTable from '@ant-design/pro-table';
+import { ModalForm } from '@ant-design/pro-form';
 import { saveMoneyAdd } from '@/services/cms/member/member';
-import {spaceInfoList, hotGoosList, saveMoneyFormList} from '@/services/cms/member/member';
-
-
-
+import { saveMoneyFormList } from '@/services/cms/member/member';
 
 
 export default (props) => {
@@ -55,7 +43,7 @@ export default (props) => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'money',
       search: false,
     },
     {
@@ -133,6 +121,12 @@ export default (props) => {
       rowKey="wsId"
       options={false}
       columns={columns}
+      postData={(data) => {
+        data.forEach(item => {
+          item.goodsSalePrice = parseInt(item.goodsSalePrice/100)
+        })
+        return data
+      }}
       request={saveMoneyFormList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

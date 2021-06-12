@@ -224,8 +224,8 @@ export const hotGoosAdd = (params = {}, options = {}) => {
 }
 
 export const priceListAdd = (params = {}, options = {}) => {
-  return request('/auth/go-spider-api/contestprice/auth/contestprice/AddContestGoods', {
-    method: 'POST',
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/AddContestGoods?ids=${params.ids}`, {
+    method: 'GET',
     data: params,
     ...options
   });
@@ -275,7 +275,7 @@ export const delContestGoods = (params = {}, options = {}) => {
 }
 
 export const bindSkuId = (params = {}, options = {}) => {
-  return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/setContestBindSku?goodsSpuId=${params.goodsSpuId}&sourceType=${params.sourceType}&skuId=${params.skuId}`, {
+  return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/setContestBindSku?goodsSpuId=${params.goodsSpuId}&goodsSkuId=${params.goodsSkuId}&sourceType=${params.sourceType}&skuId=${params.skuId}`, {
     method: 'GET',
     data: params,
     ...options
