@@ -113,15 +113,8 @@ export default props => {
     }
   ];
   const onIpute=(res)=>{
-    console.log('resrows',res.selectedRows)
-    let arr=[]
-    res.selectedRows.map(ele=>{
-      arr.push(ele.sourceId)
-    })
-    console.log('arr',arr)
-    // let a=arr
-    // setArrId(arr)
-  }
+    setArrId(res.selectedRowKeys)
+}
   return (
     <Tabs onChange={callback} type="card">
       <TabPane tab="未处理" key="1">

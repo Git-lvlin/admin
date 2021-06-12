@@ -17,22 +17,22 @@ const UseScopeModel = {
         });
       },
     *fetchCouponType({ payload}, { call, put}) {
-      yield put({
-        type: 'onCouponType',
-        payload
-      });
+        yield put({
+          type: 'onCouponType',
+          payload
+        });
     },
     *fetchLookSpuIds({ payload}, { call, put}) {
-      yield put({
-        type: 'onSpuIds',
-        payload
-      });
+        yield put({
+          type: 'onSpuIds',
+          payload
+        });
     },
     *fetchLookSpuIdsArr({ payload}, { call, put}) {
-      yield put({
-        type: 'onSpuIdsArr',
-        payload
-      });
+        yield put({
+          type: 'onSpuIdsArr',
+          payload
+        });
     },
     *fetchLookUnit({ payload}, { call, put}) {
         yield put({
@@ -42,10 +42,10 @@ const UseScopeModel = {
       },
     *fetchWholesaleIds({ payload}, { call, put}) {
         console.log('payload',payload)
-    yield put({
-        type: 'onWholesaleIds',
-        payload
-    });
+        yield put({
+            type: 'onWholesaleIds',
+            payload
+        });
     }
 
   },
@@ -78,7 +78,8 @@ const UseScopeModel = {
     onUseScopeList(state = { UseScopeObje:{}},{ payload }){
       state.UseScopeObje=payload.UseScopeObje
       return { ...state };
-  },
+    },
+   
   },
 };
 export default UseScopeModel;
