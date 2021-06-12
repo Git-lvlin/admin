@@ -1,16 +1,18 @@
-import React from 'react';;
+import React,{useEffect} from 'react';;
 import ProTable from '@ant-design/pro-table';
+import { listReportType } from '@/services/community-management/report-list-report-type'
 
 
 const columns= [
   {
     title: 'ID',
-    dataIndex: 'index',
+    dataIndex: 'order',
     valueType: 'indexBorder',
     width: 48,
   },
   {
     title: '举报类型',
+    dataIndex: 'title',
     valueType:'text',
     hideInSearch:true
   }
@@ -20,18 +22,12 @@ const columns= [
 export default () => {
   return (
     <ProTable
+      rowKey="order"
       columns={columns}
-      // request={{}}
+      params={{}}
+      request={listReportType}
       rowKey="key"
-      pagination={{
-        showQuickJumper: true,
-      }}
       search={false}
-      dateFormatter="string"
-      toolbar={{
-        title: '高级表格',
-        tooltip: '这是一个标题提示',
-      }}
       toolBarRender={false}
     />
   );

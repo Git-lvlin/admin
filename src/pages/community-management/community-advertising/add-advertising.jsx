@@ -3,15 +3,17 @@ import { getDetailById } from '@/services/community-management/adsense-get-detai
 import { saveAdsense } from '@/services/community-management/adsense-save-adsense';
 import ProForm, { ProFormText,ProFormRadio,DrawerForm,ProFormDateRangePicker,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';
+import SelectProductModal from '@/components/select-product-modal'
 import { message, Form,Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import Upload from '@/components/upload';
 
 export default props => {
- const formRef = useRef();
  const id = props.location.query.id
- const [position,setPosition]=useState(1)
+ const [position,setPosition]=useState()
+ const [visible, setVisible] = useState(false);
+ const [goods,setGoods]=useState([])
  const [form] = Form.useForm()
  useEffect(()=>{
    if(id){
@@ -22,14 +24,20 @@ export default props => {
    }
    return undefined
  })
+ const Termination=()=>{
+    setVisible(true)
+  }
  const columns=[
   {
      title: '商品图片',
-     dataIndex: 'unit',
+     dataIndex: 'imageUrl',
+     render:(_, data)=>[
+       <a href={data.imageUrl}>{data.imageUrl}</a>
+     ]
   },
   {
     title: '商品名称',
-    dataIndex: 'unit',
+    dataIndex: 'goodsName',
  },
 //   {
 //    title: '操作',
@@ -42,7 +50,7 @@ export default props => {
   //标题验证规则
   const checkConfirm=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
-    if (value.length > 20) {
+    if (value&&value.length > 20) {
           await reject('标题名称不超过20个字符')
       }
       // else if (/^[^('"\\?)]+$/.test(value)) {
@@ -57,6 +65,8 @@ export default props => {
     <ProForm
         onFinish={async (values) => {
           console.log(values);
+          console.log('goods',goods);
+          values.linkId=goods[0].id
           saveAdsense(values).then(res=>{
             if(res.code==0){
               history.push('/community-management/community-advertising')
@@ -74,6 +84,9 @@ export default props => {
             label="广告ID"
             tooltip="最长为 24 位"
             placeholder="请输入广告ID"
+            rules={[
+              { required: true, message: '请输入广告ID' },
+            ]}
         />
          <ProFormText
             width="md"
@@ -90,6 +103,9 @@ export default props => {
          <ProFormRadio.Group
             name="position"
             label="广告位置"
+            rules={[
+              { required: true, message: '请选择广告位置' },
+            ]}
             options={[
                 {
                   label: 'SQ01',
@@ -105,12 +121,15 @@ export default props => {
                 },
             ]}
             />
-        <Form.Item label="圈子ICON" name="images">
+        <Form.Item  rules={[{ required: true, message: '请上传图片' }]} label="圈子ICON" name="images">
             <Upload multiple maxCount={1} accept="image/*" dimension="1:1" />
         </Form.Item>
         <ProFormRadio.Group
             name="linkType"
             label="链接类型"
+            rules={[
+              { required: true, message: '请选择链接类型' },
+            ]}
             fieldProps={{
               onChange: (e) => setPosition(e.target.value),
             }}
@@ -141,41 +160,35 @@ export default props => {
           }
           {
             position=='2'?
-            <DrawerForm
-              title="添加商品"
-              formRef={formRef}
-              trigger={
-                <Button type="primary">
+            <>
+              <SelectProductModal 
+                title={'添加商品'}  
+                visible={visible} 
+                setVisible={setVisible} 
+                callback={(v) => { setGoods(v) }}
+              />
+              <Button type="primary" onClick={Termination} style={{margin:'0 0 20px 20px'}}>
                   <PlusOutlined />
                   添加商品
-                </Button>
-              }
-              drawerProps={{
-                forceRender: true,
-                destroyOnClose: true,
-              }}
-              onFinish={async (values) => {
-                await waitTime(2000);
-                console.log(values.name);
-                message.success('提交成功');
-                // 不返回不会关闭弹框
-                return true;
-              }}
-            >
-               <ProTable
-                  toolBarRender={false}
-                  search={false}
-                  rowKey="spuId"
-                  columns={columns}
-                  rowSelection={{}}
-                  // dataSource={DetailList.data?.spuInfo}
-                />
-            </DrawerForm>
+              </Button>
+              
+              <ProTable
+                rowKey="id"
+                search={false}
+                toolBarRender={false}
+                columns={columns}
+                dataSource={goods}
+                style={{display:visible?'none':'block'}}
+              />
+            </>
             :null
           }
         <ProFormRadio.Group
             name="state"
             label="状态"
+            rules={[
+              { required: true, message: '请选择状态' },
+            ]}
             options={[
                 {
                   label: '启用',
@@ -190,6 +203,9 @@ export default props => {
         <ProFormText
             width="md"
             name="order"
+            rules={[
+              { required: true, message: '请输入排名' },
+            ]}
             label="排序"
             tooltip="最长为 24 位"
         />
