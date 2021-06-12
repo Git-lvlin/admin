@@ -44,9 +44,9 @@ const PriceComparsionManagement = () => {
     setLoading(loading)
     const param = {
       goodsUrl: value,
-      goodsId: formData.id,
-      type: type,
-      skuId: formData.goodsSkuId,
+      goodsId: formData.id + '',
+      type: type + '',
+      skuId: formData.goodsSkuId + '',
     }
     createTaskSrc(param).then((res) => {
       if (res.code === 0) {

@@ -247,6 +247,25 @@ export const hotGoosOperation = (params = {}, options = {}) => {
   });
 }
 
+export const findAdminArticleTypeList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/articleType/findAdminArticleTypeList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
 export const delContestGoods = (params = {}, options = {}) => {
   return request(`/auth/go-spider-api/contestprice/auth/contestprice/DelContestGoods?id=${params.id}`, {
     method: 'GET',
