@@ -497,7 +497,7 @@ export const saveMoneyFormList = async (params = {}, options = {}) => {
 
   const data = {
     page: current,
-    size: pageSize,
+    pageSize: pageSize,
     ...rest
   }
   if (status) {

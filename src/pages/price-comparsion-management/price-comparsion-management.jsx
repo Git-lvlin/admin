@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { Button, Space, message, Input, Form } from 'antd';
+import { MinusOutlined, PauseCircleOutlined } from '@ant-design/icons';
+import { Button, Space, message, Input } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { priceComparsionListAlls, delContestGoods, createTaskSrc, getSpiderGoodsListByDate, sendTask} from '@/services/cms/member/member';
@@ -8,14 +8,9 @@ import Edit from './edit';
 import FormPage from './form';
 import ProCard from '@ant-design/pro-card';
 import styles from './style.less';
-// import ProForm, {
-//   ModalForm,
-//   ProFormText,
-//   ProFormDependency,
-//   ProFormList,
-//   ProFormSelect,
-// } from '@ant-design/pro-form';
+
 const { Search } = Input;
+
 const PriceComparsionManagement = () => {
   const actionRef = useRef()
   const [formVisible, setFormVisible] = useState(false)
@@ -338,7 +333,6 @@ const PriceComparsionManagement = () => {
       pagination={{
         pageSize: 10,
       }}
-      // pagination={false}
       dateFormatter="string"
       headerTitle="数据列表"
       toolBarRender={(_,record) => [

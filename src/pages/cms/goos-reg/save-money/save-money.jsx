@@ -103,12 +103,12 @@ const SaveMoney = () => {
     //   valueType: 'number',
     //   search: false,
     // },
-    {
-      title: '销量',
-      dataIndex: 'goodsSaleNum',
-      valueType: 'number',
-      search: false,
-    },
+    // {
+    //   title: '销量',
+    //   dataIndex: 'goodsSaleNum',
+    //   valueType: 'number',
+    //   search: false,
+    // },
     {
       title: '状态',
       dataIndex: 'status',
