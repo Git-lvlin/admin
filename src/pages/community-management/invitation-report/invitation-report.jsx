@@ -16,6 +16,7 @@ export default props => {
   const [visible4, setVisible4] = useState(false);
   const [byid, setByid] = useState();
   const [byid4, setByid4] = useState();
+  const [arrId,setArrId]=useState([])
   function callback(key) {
     console.log(key);
   }
@@ -155,12 +156,13 @@ export default props => {
   }
   ];
   const onIpute=(res)=>{
+      setArrId(res.selectedRowKeys)
   }
   return (
     <Tabs onChange={callback} type="card">
       <TabPane tab="未处理" key="1">
         <ProTable
-          rowKey="sourceUserId"
+          rowKey="sourceId"
           options={false}
           params={{
             page:0,
@@ -174,14 +176,16 @@ export default props => {
           search={{
             optionRender: ({ searchText, resetText },{ form }) => [
               <HandleModel  
-                status={1}  
+                status={1}
+                arrId={arrId}  
                 label={'忽略'}  
                 text={'确认要处理所选评论为忽略吗？'} 
                 InterFace={reportHandle} 
                 title={'操作确认'}
               />,
               <HandleModel  
-                status={2}   
+                status={2}
+                arrId={arrId}   
                 label={'屏蔽'}  
                 text={'确认要处理所选评论为屏蔽吗？'} 
                 InterFace={reportHandle} 
