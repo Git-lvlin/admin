@@ -1,24 +1,17 @@
 import React, { useState, useRef } from 'react';
-import { Button, Input,Form,message } from 'antd';
+import { Button} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import XLSX from 'xlsx'
 import { couponList } from '@/services/coupon-management/coupon-list';
-import { couponAddQuantity } from '@/services/coupon-management/coupon-add-quantity';
-import { couponEnd } from '@/services/coupon-management/coupon-end';
-import  ProForm,{ ModalForm} from '@ant-design/pro-form';
+import AddModel from './add-model'
+import EndModel from './end-model'
 import { history,connect } from 'umi';
 
 
 const TableList = (props) => {
   const ref=useRef()
   const { dispatch,Detail }=props
-  const [discounts,setDiscounts]=useState('');
-  const [visible, setVisible] = useState(false);
-  const [visible2, setVisible2] = useState(false);
-  const [records,setRecords]=useState(0)
-  const [byid,setByid]=useState()
-  const [endid,setEndid]=useState()
   const columns= [
     {
       title: '优惠券名称',
@@ -47,12 +40,6 @@ const TableList = (props) => {
       },
       hideInSearch: true,
     },
-    // {
-    //   title: '发行总金额（元）',
-    //   dataIndex: 'issueQuantity',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    // },
     {
       title: '发行总数量（张）',
       dataIndex: 'issueQuantity',
@@ -116,71 +103,8 @@ const TableList = (props) => {
         >
           查看
       </a>,
-
-      <ModalForm
-        title="增发优惠券"
-        key={data.id}
-        onVisibleChange={setVisible}
-        visible={visible}
-        trigger={data.couponStatus==3||data.couponStatus==4?null:<a onClick={()=>Additional(data)}>增发</a>}
-        submitter={{
-        render: (props, defaultDoms) => {
-            return [
-            ...defaultDoms
-            ];
-        },
-        }}
-        onFinish={async (values) => {
-        console.log('values',values);
-        
-        couponAddQuantity({id:byid,issueQuantity:values.issueQuantity}).then(res=>{
-          if(res.code==0){
-            setVisible(false)
-            ref.current.reload();
-            message.success('增加成功');
-            return true;
-          }
-        })
-        }}
-    >
-       <p>当前总发行量：<span>{records}</span> 张</p>
-       <ProForm.Group>
-           <Form.Item  name="issueQuantity" label="新增发行量">
-              <Input  onChange={onDiscounts} value={discounts} style={{width:'250px'}}/>    
-          </Form.Item>
-          <span>张</span>
-        </ProForm.Group>
-      <p>更新后总发行量:<span style={{margin:'0 20px'}}>{discounts&&parseInt(discounts)+records}</span>张</p>
-    </ModalForm>,
-
-    <ModalForm
-        title="操作提示"
-        key={data.id}
-        onVisibleChange={setVisible2}
-        visible={visible2}
-        trigger={data.couponStatus==3||data.couponStatus==4?null:<a onClick={()=>Termination(data)}>终止</a>}
-        submitter={{
-        render: (props, defaultDoms) => {
-            return [
-            ...defaultDoms
-            ];
-        },
-        }}
-        onFinish={async (values) => {
-        console.log('values',values);
-        couponEnd({id:endid}).then(res=>{
-          if(res.code==0){
-            ref.current.reload();
-            setVisible2(false)
-            return true;
-          }
-        })
-       
-        }}
-    >
-       <p>确定要终止所选优惠券活动吗？</p>
-    </ModalForm>,
-    
+      <AddModel boxref={ref} data={data}/>,
+      <EndModel boxref={ref} data={data}/>,
       <a
         key="a"
         onClick={()=>CodeLibrary(data.id)}
@@ -191,9 +115,6 @@ const TableList = (props) => {
     },
     
   ];
-  const onDiscounts=e=>{
-    setDiscounts(e.target.value)
-  }
  
   //跳转到新建页面
   const Examine=(id)=>{
@@ -203,17 +124,7 @@ const TableList = (props) => {
       payload:{id:id}
     })
   }
-  //增发
-  const Additional=(data)=>{
-      setByid(data.id)
-      setRecords(data.issueQuantity)
-      setVisible(true)
-  }
-  //终止
-  const Termination=(data)=>{
-    setEndid(data.id)
-    setVisible2(true)
-  }
+ 
   // 跳转到码库
   const CodeLibrary=(id)=>{
     history.push(`/coupon-management/coupon-list/coupon-codebase?id=`+id);
