@@ -38,15 +38,6 @@ export default props => {
             dataIndex: 'id',
             hideInSearch:true
         },
-        // {
-        //     title: '帖子类型',
-        //     dataIndex: 'sourceType',
-        //     valueType: 'select',
-        //     valueEnum: {
-        //         1: '图文',
-        //         2: '视频',
-        //       }
-        // },
         {
             title: '会员ID',
             dataIndex: 'userId',
@@ -92,7 +83,13 @@ export default props => {
                     }
                     
                 }}>{record.banShare?'取消禁转':'禁转'}</Button>,
-                <DeleteModal record={record} boxref={ref} text={'确认要删除所选内容吗？'} InterFace={dynamicDelete} title={'操作确认'}/>,
+                <DeleteModal 
+                    record={record} 
+                    boxref={ref} 
+                    text={'确认要删除所选内容吗？'} 
+                    InterFace={dynamicDelete} 
+                    title={'操作确认'}
+                />,
                 <Button onClick={()=>cancelDelete({id:record.id}).then(res=>{
                     ref.current.reload();
                 }) }>恢复</Button>,

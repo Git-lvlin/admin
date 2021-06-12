@@ -10,18 +10,12 @@ import { dynamicDelete } from '@/services/community-management/dynamic-delete';
 import { cancelDelete } from '@/services/community-management/dynamic-cancel-delete';
 import CircleSelect from '@/components/circle-select'
 import  ProForm,{ ModalForm,ProFormSelect} from '@ant-design/pro-form';
+import DeleteModal from '@/components/DeleteModal'
 import { history } from 'umi';
 import { Button } from 'antd';
 
 export default props => {
     const ref=useRef()
-    const [visible, setVisible] = useState(false);
-    const [byid,setByid]=useState()
-    const Termination=(record)=>{
-        console.log
-        setByid(record.id)
-        setVisible(true)
-    }
     const columns = [
         {
             title: '帖子ID',
@@ -60,15 +54,6 @@ export default props => {
             },
             hideInTable: true,
         },
-        // {
-        //     title: '帖子类型：',
-        //     dataIndex: 'sourceType',
-        //     valueType:'select',
-        //     valueEnum: {
-        //         1: '图文',
-        //         2: '视频',
-        //       }
-        // },
         {
             title: '所属圈子：',
             dataIndex:'circleId',
@@ -148,31 +133,13 @@ export default props => {
                     }
                     
                 }}>{record.banShare?'取消禁转':'禁转'}</Button>,
-                <ModalForm
-                    title="操作确认"
-                    key="model2"
-                    onVisibleChange={setVisible}
-                    visible={visible}
-                    trigger={<Button onClick={()=>Termination(record)}>{record.delete?'已删除':'删除'}</Button>}
-                    submitter={{
-                    render: (props, defaultDoms) => {
-                        return [
-                        ...defaultDoms
-                        ];
-                    },
-                    }}
-                    onFinish={async (values) => {
-                        dynamicDelete({id:byid}).then(res=>{
-                            if(res.code==0){
-                                setVisible(false)
-                                ref.current.reload()
-                                return true;
-                            }
-                        })        
-                    }}
-                >
-                <p>确认要删除所选帖子吗？</p>
-                </ModalForm>,
+                <DeleteModal 
+                    record={record}
+                    boxref={ref}
+                    text={'确认要删除所选帖子吗？'}
+                    InterFace={dynamicDelete}
+                    title={'操作确认'}
+                />,
                 <Button onClick={()=>cancelDelete({id:record.id}).then(res=>{
                     ref.current.reload()
                 }) }>恢复</Button>,
@@ -195,7 +162,7 @@ export default props => {
                 labelWidth: 100,
                 optionRender: (searchConfig, formProps, dom) => [
                     ...dom.reverse(),
-                    <Button
+                <Button
                     key="primary"
                     type="primary"
                     onClick={() => {
