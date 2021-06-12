@@ -233,10 +233,10 @@ const useSecond=(props)=>{
         })
     },[])
     return(
-        <div className={styles.unfold}> 
+            <Form.Item className={styles.unfold}>
                <ProFormRadio.Group
-                    label={<FormattedMessage id="formandbasic-form.commodity"/>}
                     name="goodsType"
+                    label={<FormattedMessage id="formandbasic-form.commodity"/>}
                     rules={[{ required: true, message: '请选择商品范围' }]}
                     fieldProps={{
                     value: (parseInt(id)==id )&&DetailList.data?.goodsType||position,
@@ -391,7 +391,7 @@ const useSecond=(props)=>{
                   }
                 ]}
               />
-        </div>
+            </Form.Item>
     )
 }
 export default connect(({ DetailList,UseScopeList}) => ({

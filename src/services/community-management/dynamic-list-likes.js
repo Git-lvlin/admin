@@ -11,7 +11,7 @@ export const listLikes= async (params, options = {}) => {
   });
   return {
     code: res.code,
-    data: res.data,
+    data: [res.data],
     success: res.success,
   }
 }

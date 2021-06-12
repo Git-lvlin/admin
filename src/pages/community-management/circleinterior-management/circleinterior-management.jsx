@@ -6,24 +6,25 @@ import { banDynamicComment } from '@/services/community-management/dynamic-ban-d
 import { banShare } from '@/services/community-management/dynamic-ban-share';
 import { dynamicDelete } from '@/services/community-management/dynamic-delete';
 import { cancelDelete } from '@/services/community-management/dynamic-cancel-delete';
-import { circleTop } from '@/services/community-management/circle-top';
+import { dynamicTop } from '@/services/community-management/dynamic-top';
 import { cancelBanDynamicComment } from '@/services/community-management/dynamic-cancel-ban-dynamic-comment';
 import { cancelBanShare } from '@/services/community-management/dynamic-cancel-ban-share';
 import { ModalForm,ProFormSwitch} from '@ant-design/pro-form';
+import DeleteModal from '@/components/DeleteModal'
 import { Button } from 'antd';
 
 export default props => {
     const ref=useRef()
     const [visible, setVisible] = useState(false);
+    const [byid,setByid]=useState()
     let id = props.location.query.id
     const onTop=(bol,off)=>{
-        if(bol){
-            circleTop({id:off}).then(res=>{
+        dynamicTop({id:off}).then(res=>{
                 ref.current.reload()
             }) 
-        }
     }
-    const Termination=()=>{
+    const Termination=(record)=>{
+        setByid(record.id)
         setVisible(true)
     }
     const columns = [
@@ -91,35 +92,10 @@ export default props => {
                     }
                     
                 }}>{record.banShare?'取消禁转':'禁转'}</Button>,
-                <ModalForm
-                    title="操作确认"
-                    key="model2"
-                    onVisibleChange={setVisible}
-                    visible={visible}
-                    trigger={<Button onClick={Termination}>{record.delete?'已删除':'删除'}</Button>}
-                    submitter={{
-                    render: (props, defaultDoms) => {
-                        return [
-                        ...defaultDoms
-                        ];
-                    },
-                    }}
-                    onFinish={async (values) => {
-                        console.log('values',values);
-                        dynamicDelete({id:record.id}).then(res=>{
-                            if(res.code==0){
-                                setVisible(false)   
-                                ref.current.reload()
-                                return true;
-                            }
-                        })
-                    }}
-                >
-                <p>确认要删除所选内容吗？</p>
-            </ModalForm>,
-            <Button onClick={()=>cancelDelete({id:record.id}).then(res=>{
-                ref.current.reload();
-            }) }>恢复</Button>,
+                <DeleteModal record={record} boxref={ref} text={'确认要删除所选内容吗？'} InterFace={dynamicDelete} title={'操作确认'}/>,
+                <Button onClick={()=>cancelDelete({id:record.id}).then(res=>{
+                    ref.current.reload();
+                }) }>恢复</Button>,
             ],
             hideInSearch: true,
         },

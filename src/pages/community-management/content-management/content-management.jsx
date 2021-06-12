@@ -16,7 +16,10 @@ import { Button } from 'antd';
 export default props => {
     const ref=useRef()
     const [visible, setVisible] = useState(false);
-    const Termination=()=>{
+    const [byid,setByid]=useState()
+    const Termination=(record)=>{
+        console.log
+        setByid(record.id)
         setVisible(true)
     }
     const columns = [
@@ -50,7 +53,7 @@ export default props => {
             dataIndex: 'status',
             valueType:'select',
             valueEnum: {
-                0:'全部',
+                0: '全部',
                 1: '禁评',
                 2: '禁转',
                 3: '删除',
@@ -150,7 +153,7 @@ export default props => {
                     key="model2"
                     onVisibleChange={setVisible}
                     visible={visible}
-                    trigger={<Button onClick={Termination}>删除</Button>}
+                    trigger={<Button onClick={()=>Termination(record)}>{record.delete?'已删除':'删除'}</Button>}
                     submitter={{
                     render: (props, defaultDoms) => {
                         return [
@@ -159,9 +162,8 @@ export default props => {
                     },
                     }}
                     onFinish={async (values) => {
-                        console.log('values',values);
-                        dynamicDelete({id:record.id}).then(res=>{
-                            if(res==0){
+                        dynamicDelete({id:byid}).then(res=>{
+                            if(res.code==0){
                                 setVisible(false)
                                 ref.current.reload()
                                 return true;
@@ -185,8 +187,7 @@ export default props => {
             options={false}
             actionRef={ref}
             params={{
-                pageSize:5,
-                status:0
+                pageSize:5
             }}
             request={adminList}
             search={{

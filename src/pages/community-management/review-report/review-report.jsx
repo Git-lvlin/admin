@@ -170,8 +170,52 @@ const columns2 = [
             defaultCollapsed: false,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
-              <Button>忽略</Button>,
-              <Button>屏蔽</Button>
+              <ModalForm
+                title="操作确认"
+                key="model2"
+                onVisibleChange={setVisible}
+                visible={visible}
+                trigger={<Button onClick={Termination}>忽略</Button>}
+                submitter={{
+                render: (props, defaultDoms) => {
+                    return [
+                    ...defaultDoms
+                    ];
+                },
+                }}
+                onFinish={async (values) => {
+                    console.log('values',values);
+                    // dynamicDelete({id:record.id})
+                    setVisible(false)
+                    message.success('提交成功');
+                    return true;
+                }}
+                  >
+                  <p>确认要处理所选评论为忽略吗？</p>
+              </ModalForm>,
+              <ModalForm
+                title="操作确认"
+                key="model2"
+                onVisibleChange={setVisible2}
+                visible={visible2}
+                trigger={<Button onClick={Termination2}>屏蔽</Button>}
+                submitter={{
+                render: (props, defaultDoms) => {
+                    return [
+                    ...defaultDoms
+                    ];
+                },
+                }}
+                onFinish={async (values) => {
+                    console.log('values',values);
+                    // dynamicDelete({id:record.id})
+                    setVisible2(false)
+                    message.success('提交成功');
+                    return true;
+                }}
+                >
+                <p>确认要处理所选评论为屏蔽吗？</p>
+            </ModalForm>
             ],
         }}
           columns={columns}
@@ -186,8 +230,8 @@ const columns2 = [
             params={{
               page:0,
               size:5,
-              status:0,
-              type:1
+              status:3,
+              type:'2'
             }}
             request={adminReportList}
             actionRef={actionRef}

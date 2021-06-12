@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import { string } from 'prop-types';
 
 export const adminReportList= async (params, options = {}) => {
   const {page,size,status,type}=params
@@ -8,7 +9,7 @@ export const adminReportList= async (params, options = {}) => {
         page,
         size,
         status,
-        type
+        type:string(type)
     },
     ...options
   });
