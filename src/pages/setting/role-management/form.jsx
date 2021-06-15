@@ -76,7 +76,8 @@ export default (props) => {
         pid.push(...getPid(item, originTreeData))
       })
       pid = [...new Set(pid)];
-      const keys = [...selectKeys, ...pid];
+      let keys = [...selectKeys, ...pid];
+      keys = [...new Set(keys)];
       const obj = { title, status: 1, rules: keys.join(',') };
       if (data) {
         obj.id = data.id;
