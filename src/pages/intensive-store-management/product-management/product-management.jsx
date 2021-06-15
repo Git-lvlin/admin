@@ -3,6 +3,8 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { goodsPage } from '@/services/intensive-store-management/product-management';
 import { useParams } from 'umi';
+import { amountTransform, typeTransform } from '@/utils/utils'
+
 
 const TableList = () => {
 
@@ -64,6 +66,7 @@ const TableList = () => {
       dataIndex: 'price',
       valueType: 'text',
       hideInSearch: true,
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '进店时间',
