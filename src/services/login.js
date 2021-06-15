@@ -17,3 +17,7 @@ export function login(params, options = {}) {
   });
 }
 
+
+export async function LoginOut() {
+  return request('/auth/login/LoginOut');
+}
