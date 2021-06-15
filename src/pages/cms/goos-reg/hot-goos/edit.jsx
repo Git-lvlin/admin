@@ -21,14 +21,15 @@ export default (props) => {
         }
       ]
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       modifyTagSort(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
           resolve(true);
+        } else {
+          reject(false);
         }
       })
-  
     });
   };
 
@@ -65,7 +66,12 @@ export default (props) => {
           width="sm"
           name="sort"
           label="排序"
-          rules={[{ required: true, message: '请输入排序序号' }]}  
+          rules={[{ 
+            required: true,
+            message: '请输入排序序号(整数)',
+            pattern: /^\+?[1-9][0-9]*$/
+        
+        }]}  
         />
 
       </ProForm.Group>
