@@ -27,10 +27,10 @@ const ArticleList = () => {
     })
   }
 
-  const top = (id, type, userId) => {
+  const top = ({id, isTop, userId}) => {
     const param = {
       id: data,
-      isTop: type,
+      isTop: !isTop,
       operatorId: userId,
     }
     articleTop(param).then((res) => {
