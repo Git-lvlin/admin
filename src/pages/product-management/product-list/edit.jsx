@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
 import {
   DrawerForm,
   ProFormText,
@@ -86,6 +86,7 @@ export default (props) => {
       // suggestedRetailPrice,
       salePrice,
       marketPrice,
+      freightTemplateId,
       ...rest } = values;
 
     const obj = {
@@ -100,6 +101,11 @@ export default (props) => {
       advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl,
     };
+
+    if (freightTemplateId) {
+      obj.goods.freightTemplateId = freightTemplateId.value;
+      obj.goods.freightTemplateName = freightTemplateId.label;
+    }
 
     if (isMultiSpec) {
       obj.specName = specName;
@@ -177,7 +183,7 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
-      const { goods, specName, specValues, specData } = detailData;
+      const { goods, specName, specValues, specData, freightTemplateId, freightTemplateName } = detailData;
       form.setFieldsValue({
         goodsName: goods.goodsName,
         goodsDesc: goods.goodsDesc,
@@ -203,6 +209,12 @@ export default (props) => {
         gcId: [goods.gcId1, goods.gcId2],
       })
 
+      if (freightTemplateId && freightTemplateName) {
+        form.setFieldsValue({
+          freightTemplateId: { label: freightTemplateName, value: freightTemplateId }
+        })
+      }
+
       if (detailData.isMultiSpec) {
         form.setFieldsValue({
           specName1: specName['1'],
@@ -223,7 +235,7 @@ export default (props) => {
             // eslint-disable-next-line prefer-destructuring
             specValuesMap[item[0]] = item[1];
           })
-          
+
         });
         setTableHead(Object.values(specName))
         setTableData(Object.entries(specData).map(item => {
@@ -516,7 +528,7 @@ export default (props) => {
                 placeholder="请输入批发起购量"
                 rules={[{ required: true, message: '请输入数字 需大于可用库存' }]}
               /> */}
-              
+
 
             </>
         }}
@@ -551,6 +563,17 @@ export default (props) => {
         ]}
         disabled
       />
+      <ProFormDependency name={['freightTemplateId']}>
+        {({ freightTemplateId }) => (
+          !!freightTemplateId && 
+          <Form.Item
+            name="freightTemplateId"
+            label="选择运费模板"
+          >
+            <Select labelInValue allowClear disabled />
+          </Form.Item>
+        )}
+      </ProFormDependency>
       <ProFormRadio.Group
         name="supportNoReasonReturn"
         label="七天无理由退货"
