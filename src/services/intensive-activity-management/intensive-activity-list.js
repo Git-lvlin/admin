@@ -1,12 +1,13 @@
 import request from '@/utils/request';
 
 export const getWholesaleList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current, pageSize, wholesaleIsOnline, ...rest } = params;
   const res = await request('/auth/wholesale/index/getWholesaleList', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      wholesaleIsOnline: +wholesaleIsOnline,
       ...rest
     },
     ...options

@@ -130,7 +130,7 @@ const TableList = () => {
       dataIndex: 'wholesaleIsOnline',
       valueType: 'select',
       valueEnum: {
-        0: '全部',
+        0: '下架',
         1: '待开始',
         2: '进行中',
         3: '已结束',

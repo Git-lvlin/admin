@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Card } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -12,6 +12,9 @@ const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [treeData, setTreeData] = useState([])
   const [originTreeData, setOriginTreeData] = useState([])
+  const [selectItem, setSelectItem] = useState(null);
+  const actionRef = useRef();
+
 
   const columns = [
     {
@@ -24,11 +27,13 @@ const TableList = () => {
     },
     {
       title: '操作',
-      dataIndex: 'option',
       valueType: 'option',
-      render: () => (
+      render: (_, data) => (
         <>
-          <a>编辑</a>
+          <a onClick={() => {
+            setSelectItem(data);
+            setFormVisible(true);
+          }}>编辑</a>
         </>
       ),
     },
@@ -41,13 +46,15 @@ const TableList = () => {
   useEffect(() => {
     api.adminRule()
       .then(res => {
-        setOriginTreeData(res.data)
-        setTreeData(arrayToTree(res.data.map(item=>{
-          return {
-            ...item,
-            key: item.id,
-          }
-        })))
+        if (res.code === 0) {
+          setOriginTreeData(res.data)
+          setTreeData(arrayToTree(res.data.map(item => {
+            return {
+              ...item,
+              key: item.id,
+            }
+          })))
+        }
       })
   }, [])
 
@@ -62,6 +69,7 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={api.adminGroup}
+        actionRef={actionRef}
         search={{
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [
@@ -86,7 +94,16 @@ const TableList = () => {
         }}
         columns={columns}
       />
-      <Form visible={formVisible} setVisible={setFormVisible} treeData={treeData} data={originTreeData} />
+      {formVisible &&
+        <Form
+          visible={formVisible}
+          setVisible={setFormVisible}
+          treeData={treeData}
+          originTreeData={originTreeData}
+          callback={() => { actionRef.current.reload(); setSelectItem(null) }}
+          data={selectItem}
+          onClose={() => { setSelectItem(null)  }}
+        />}
     </PageContainer>
 
   );
