@@ -60,7 +60,7 @@ export default defineConfig({
           routes: [
             {
               path: '/',
-              redirect: '/product-management/product-list',
+              redirect: '/workplace',
             },
             {
               path: '/workplace',

@@ -27,3 +27,11 @@ export const supplierList = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const cacheUserAuths = (params, options = {}) => {
+  return request('/auth/rule/userRule', {
+    method: 'GET',
+    params,
+    ...options
+  });
+}

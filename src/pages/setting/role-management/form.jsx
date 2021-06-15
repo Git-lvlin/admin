@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Form, Tree, Checkbox } from 'antd';
 import {
   ModalForm,
@@ -6,11 +6,29 @@ import {
 } from '@ant-design/pro-form';
 import * as api from '@/services/setting/role-management'
 
+const getPid = (item, originTreeData) => {
+  let id = item;
+  const arr = [];
+  let findItem = originTreeData.find(it => it.id === id);
+  while (findItem) {
+    if (findItem && findItem.pid !== 0) {
+      arr.push(findItem.pid)
+    }
+    id = findItem.pid;
+    // eslint-disable-next-line @typescript-eslint/no-loop-func
+    findItem = originTreeData.find(it => it.id === id);
+  }
+
+  return arr;
+}
+
 export default (props) => {
-  const { visible, setVisible, treeData, data } = props;
+  const { visible, setVisible, treeData, originTreeData, data, onClose, callback = () => { } } = props;
   const [selectKeys, setSelectKeys] = useState([]);
+  // const [halfKeys, setHalfKeys] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [form] = Form.useForm()
+  const [form] = Form.useForm();
+  const treeRef = useRef();
 
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -28,7 +46,7 @@ export default (props) => {
   const onSelectAll = ({ target }) => {
     const { checked } = target;
     if (checked) {
-      setSelectKeys(data.map(item => item.id));
+      setSelectKeys(originTreeData.map(item => item.id));
     } else {
       setSelectKeys([]);
     }
@@ -37,6 +55,7 @@ export default (props) => {
 
   const onCheck = (checkedKeys) => {
     setSelectKeys(checkedKeys)
+    // setHalfKeys(halfCheckedKeys)
     setSelectAll(!treeData.some(item => {
       return !checkedKeys.includes(item.key);
     }))
@@ -50,11 +69,19 @@ export default (props) => {
   const submit = (values) => {
     const { title } = values;
     return new Promise((resolve, reject) => {
-      api.groupAdd({
-        title,
-        status: 1,
-        rules: selectKeys.join(',')
-      }, { showSuccess: true, showError: true }).then(res => {
+      const apiMethod = data ? api.groupEdit : api.groupAdd;
+      let pid = []
+      const keyArr = [...selectKeys]
+      keyArr.forEach(item => {
+        pid.push(...getPid(item, originTreeData))
+      })
+      pid = [...new Set(pid)];
+      const keys = [...selectKeys, ...pid];
+      const obj = { title, status: 1, rules: keys.join(',') };
+      if (data) {
+        obj.id = data.id;
+      }
+      apiMethod(obj, { showSuccess: true }).then(res => {
         if (res.code === 0) {
           resolve();
         } else {
@@ -69,6 +96,22 @@ export default (props) => {
       form.setFieldsValue({
         title: data.title
       })
+      api.adminRule({
+        groupId: data.id
+      }).then(res => {
+        if (res.code === 0) {
+          const parentId = [];
+
+          res.data.forEach(item => {
+            if (item.pid !== 0) {
+              parentId.push(item.pid)
+            }
+          })
+
+          const arr = res.data.filter(item => !parentId.find(it => item.id === it))
+          setSelectKeys(arr.map(item => item.id));
+        }
+      })
     }
   }, [])
 
@@ -76,15 +119,20 @@ export default (props) => {
     <ModalForm
       title={`${data ? '新建' : '编辑'}角色`}
       modalProps={{
-        onCancel: () => { reset() },
+        onCancel: () => { reset(); onClose(); },
       }}
       form={form}
       onVisibleChange={setVisible}
       visible={visible}
       width={550}
       onFinish={async (values) => {
-        await submit(values)
+        try {
+          await submit(values)
+        } catch (error) {
+          console.log('error', error)
+        }
         reset();
+        callback();
         return true;
       }}
       labelAlign="right"
@@ -95,19 +143,20 @@ export default (props) => {
         label="角色名称"
         placeholder="请输入角色名称"
         width="md"
-        required
+        rules={[{ required: true, message: '请输入角色名称' }]}
       />
 
       <div style={{ display: 'flex', paddingLeft: 55 }}>
         <div>角色权限</div>
         <div style={{ flex: 1 }}>
-          {treeData.length === 0 && <Checkbox
-            onChange={onSelectAll}
-            checked={selectAll}
-            style={{ marginLeft: 23, marginBottom: 5 }}
-          >
-            全部功能
-          </Checkbox>}
+          {treeData.length &&
+            <Checkbox
+              onChange={onSelectAll}
+              checked={selectAll}
+              style={{ marginLeft: 23, marginBottom: 5 }}
+            >
+              全部功能
+            </Checkbox>}
           <Tree
             checkable
             treeData={treeData}
@@ -115,6 +164,7 @@ export default (props) => {
             onCheck={onCheck}
             selectable={false}
             height={500}
+            ref={treeRef}
           />
         </div>
       </div>
