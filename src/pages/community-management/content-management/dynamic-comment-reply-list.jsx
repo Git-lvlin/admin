@@ -1,21 +1,15 @@
-import React, { useState} from 'react';
+import React, { useState,useRef} from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { CommentReplyList } from '@/services/community-management/dynamic-comment-reply-list';
 import { deleteCommentOrReply } from '@/services/community-management/delete-comment-reply';
-import { ModalForm} from '@ant-design/pro-form';
+import DeleteModal from '@/components/DeleteModal'
 import { history } from 'umi';
 import { Button } from 'antd';
 
 export default props => {
+    const ref=useRef()
     const id=props.location.query.id
-    console.log('id',id)
-    const [visible, setVisible] = useState(false);
-    const [byid,setByid]=useState()
-    const Termination=(record)=>{
-        setByid(record.id)
-        setVisible(true)
-    }
     const columns = [
         {
             title: '评论ID：',
@@ -53,29 +47,13 @@ export default props => {
         {
             title: '操作',
             render: (text, record, _, action) => [
-                <ModalForm
-                    title="操作确认"
-                    key="model2"
-                    onVisibleChange={setVisible}
-                    visible={visible}
-                    trigger={<Button onClick={()=>Termination(record)}>删除</Button>}
-                    submitter={{
-                    render: (props, defaultDoms) => {
-                        return [
-                        ...defaultDoms
-                        ];
-                    },
-                    }}
-                    onFinish={async (values) => {
-                        console.log('values',values);
-                        deleteCommentOrReply({id:byid})
-                        setVisible(false)
-                        message.success('提交成功');
-                        return true;
-                    }}
-                >
-                <p>确认要删除所选评论吗？</p>
-                </ModalForm>
+                <DeleteModal 
+                    record={record} 
+                    boxref={ref} 
+                    text={'确认要删除所选评论吗？'} 
+                    InterFace={deleteCommentOrReply} 
+                    title={'操作确认'}
+                />
             ],
             hideInSearch: true,
         },

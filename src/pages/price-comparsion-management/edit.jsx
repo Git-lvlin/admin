@@ -1,13 +1,7 @@
 import React, { useRef, useState, useEffect  } from 'react';
-import { Button, message, Form, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import ProForm, {
-  ModalForm,
-  DrawerForm,
-  ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
-} from '@ant-design/pro-form';
+import { message } from 'antd';
+import ProTable from '@ant-design/pro-table';
+import { ModalForm } from '@ant-design/pro-form';
 import { priceListAdd } from '@/services/cms/member/member';
 import { goodsAllList } from '@/services/cms/member/member';
 import GcCascader from '@/components/gc-cascader'
@@ -132,24 +126,6 @@ export default (props) => {
         // 注释该行则默认不显示下拉选项
         // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
       }}
-      // tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
-      //   <Space size={24}>
-      //     <span>
-      //       已选 {selectedRowKeys.length} 项
-      //       <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
-      //         取消选择
-      //       </a>
-      //     </span>
-      //     <span>{`待发布: ${selectedRows.reduce(
-      //       (pre, item) => pre + item.containers,
-      //       0,
-      //     )} 个`}</span>
-      //     <span>{`已发布: ${selectedRows.reduce(
-      //       (pre, item) => pre + item.callNumber,
-      //       0,
-      //     )} 个`}</span>
-      //   </Space>
-      // )}
       tableAlertOptionRender={(a) => {
         setArr(a.selectedRowKeys.toString())
       }}

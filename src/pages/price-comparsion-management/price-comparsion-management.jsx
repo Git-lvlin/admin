@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { Button, Space, message, Input, Form } from 'antd';
+import { MinusOutlined, PauseCircleOutlined } from '@ant-design/icons';
+import { Button, Space, message, Input } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { priceComparsionListAlls, delContestGoods, createTaskSrc, getSpiderGoodsListByDate, sendTask} from '@/services/cms/member/member';
@@ -8,28 +8,20 @@ import Edit from './edit';
 import FormPage from './form';
 import ProCard from '@ant-design/pro-card';
 import styles from './style.less';
-import ProForm, {
-  ModalForm,
-  ProFormText,
-  ProFormDependency,
-  ProFormList,
-  ProFormSelect,
-} from '@ant-design/pro-form';
+
 const { Search } = Input;
+
 const PriceComparsionManagement = () => {
-  const actionRef = useRef();
-  const [formVisible, setFormVisible] = useState(false);
-  const [grabList, setGrabList] = useState(true)
+  const actionRef = useRef()
+  const [formVisible, setFormVisible] = useState(false)
+  const [grabList, setGrabList] = useState(false)
   const [formData,setFormData] = useState(false)
   const [formjsx, setFormjsx] = useState(false)
+  const [isShow, setIsShow] = useState(false)
   const [flag, setFlag] = useState(false)
-  const [resData, setResData] = useState([])
-  const [loading, setLoading] = useState({
-    'tb': false,
-    'jd': false,
-    'tamll': false,
-    'pdd': false
-  })
+  const [resData, setResData] = useState({})
+  const [loading, setLoading] = useState({})
+
   const formControl = (data) => {
     delContestGoods({id: data}).then((res) => {
       if (res.code === 0) {
@@ -39,12 +31,16 @@ const PriceComparsionManagement = () => {
     })
   }
 
-  const onSearch = (value, type) => {
-    loading[type] = true
-    setLoading(loading)
+  const onSearch = (value, t, i) => {
+    const id = i
+    const type = t
+    setLoading({
+      ...loading,
+      [`${id}${type}`]:true
+    })
     const param = {
       goodsUrl: value,
-      goodsId: formData.id,
+      goodsId: formData.goodsSpuId,
       type: type,
       skuId: formData.goodsSkuId,
     }
@@ -52,34 +48,49 @@ const PriceComparsionManagement = () => {
       if (res.code === 0) {
         sendTask().then((r) => {
           if (r.code === 0) {
-            timeoutfn(param,type)
+            timeoutfn(param,type,id)
           } else {
-            loading[type]=false
-            setLoading(loading)
+            setLoading({
+              ...loading,
+              [`${id}${type}`]:false
+            })
           }
         })
       } else {
-        loading[type]=false
-        setLoading(loading)
+        setLoading({
+          ...loading,
+          [`${id}${type}`]:false
+        })
       }
     })
   };
 
   let timer = null
-  const timeoutfn = (data,type) => {
+  const timeoutfn = (data,type,id) => {
     getSpiderGoodsListByDate({ sourceType:data.type, goodsId:data.goodsId })
     .then((res) => {
-      if (res.code === 0) {
+      if (res.code === 0 && res.data.length) {
         timer = null
         setGrabList(res.data)
-        loading[type]=false
-        setLoading(loading)
+        setLoading({
+          ...loading,
+          [`${id}${type}`]:false
+        })
         return
       }
       timer = setTimeout(()=>{
-        timeoutfn(data)
+        timeoutfn(data,type,id)
       }, 10000)
     })
+  }
+
+  const bindData = (id, type) => {
+    setFormjsx(grabList)
+    setFormData({
+      ...formData,
+      sourceType: type
+    })
+    setIsShow(true)
   }
 
   useEffect(() => {
@@ -89,9 +100,7 @@ const PriceComparsionManagement = () => {
     }
   }, [flag])
 
-
   const expandedRowRender = (a) => {
-    console.log('xxxx', a)
     if (!formData) {
       setFormData(a)
     }
@@ -106,65 +115,117 @@ const PriceComparsionManagement = () => {
         </ProCard>
         <ProCard split="vertical" className={styles.header}>
           <ProCard colSpan="120px" className={styles.card}>淘宝</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData&&resData.skuid}</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData&&resData.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData['tb']?.sku}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData['tb']?.price}</ProCard>
           <ProCard className={styles.card}>
             <Search
               placeholder="请输入对应商品链接地址"
               allowClear
               enterButton="抓取"
-              size="large"
-              onSearch={(_) => {onSearch(_,'tb')}}
-              loading={loading['tb']}
+              style={{
+                width: "92%",
+                float: 'left'
+              }}
+              size="middle"
+              onSearch={(_) => {onSearch(_,'tb', a.id)}}
+              loading={loading[`${a.id}tb`] || false}
             />
+            <Button
+              disabled={!grabList}
+              key={a.id}
+              style={{
+              width: "8%",
+              float: 'right'
+            }} onClick={() => {
+              bindData(a.id, 'tb')
+            }}>绑定</Button>
           </ProCard>
-          {grabList&&<Button style={{
-            height: 50
-          }} onClick={() => {
-            console.log('绑定', grabList)
-            setFormjsx(grabList)
-          }}>绑定</Button>}
+
         </ProCard>
         <ProCard split="vertical" className={styles.header}>
           <ProCard colSpan="120px" className={styles.card}>京东</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData&&resData.skuid}</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData&&resData.skuid}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData['jd']?.sku}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData['jd']?.price}</ProCard>
           <ProCard className={styles.card}>
-          <Search
-              placeholder="请输入对应商品链接地址"
-              allowClear
-              enterButton="抓取"
-              size="large"
-              onSearch={(_) => {onSearch(_,'jd')}}
-              loading={loading['jd']}
-            />
+            <Search
+                placeholder="请输入对应商品链接地址"
+                allowClear
+                enterButton="抓取"
+                style={{
+                  width: "92%",
+                  float: 'left'
+                }}
+                size="middle"
+                onSearch={(_) => {onSearch(_,'jd')}}
+                loading={loading['jd']}
+              />
+            <Button
+              disabled={!grabList}
+              key={a.id}
+              style={{
+              width: "8%",
+              float: 'right'
+            }} onClick={() => {
+              bindData(a.id, 'jd')
+            }}>绑定</Button>
           </ProCard>
+
         </ProCard>
         <ProCard split="vertical" className={styles.header}>
           <ProCard colSpan="120px" className={styles.card}>拼多多</ProCard>
-          <ProCard colSpan="120px" className={styles.card}></ProCard>
-          <ProCard colSpan="120px" className={styles.card}></ProCard>
-          <Search
-              placeholder="请输入对应商品链接地址"
-              allowClear
-              enterButton="抓取"
-              size="large"
-              onSearch={(_) => {onSearch(_,'pdd')}}
-              loading={loading['pdd']}
-            />
+          <ProCard colSpan="120px" className={styles.card}>{resData['pdd']?.sku}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData['pdd']?.price}</ProCard>
+            <ProCard className={styles.card}>
+              <Search
+                  placeholder="请输入对应商品链接地址"
+                  allowClear
+                  enterButton="抓取"
+                  size="middle"
+                  style={{
+                    width: "92%",
+                    float: 'left'
+                  }}
+                  onSearch={(_) => {onSearch(_,'pdd')}}
+                  loading={loading['pdd']}
+                />
+              <Button
+                disabled={!grabList}
+                key={a.id}
+                style={{
+                width: "8%",
+                float: 'right'
+              }} onClick={() => {
+                bindData(a.id, 'pdd')
+              }}>绑定</Button>
+            </ProCard>
         </ProCard>
         <ProCard split="vertical" className={styles.header}>
           <ProCard colSpan="120px" className={styles.card}>天猫</ProCard>
-          <ProCard colSpan="120px" className={styles.card}></ProCard>
-          <ProCard colSpan="120px" className={styles.card}></ProCard>
-          <Search
-              placeholder="请输入对应商品链接地址"
-              allowClear
-              enterButton="抓取"
-              size="large"
-              onSearch={(_) => {onSearch(_,'tamll')}}
-              loading={loading['tamll']}
-            />
+          <ProCard colSpan="120px" className={styles.card}>{resData['tamll']?.sku}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData['tamll']?.price}</ProCard>
+          <ProCard className={styles.card}>
+            <Search
+                placeholder="请输入对应商品链接地址"
+                allowClear
+                enterButton="抓取"
+                style={{
+                  width: "92%",
+                  float: 'left'
+                }}
+                size="middle"
+                onSearch={(_) => {onSearch(_,'tamll')}}
+                loading={loading['tamll']}
+              />
+            <Button
+              disabled={!grabList}
+              key={a.id}
+              style={{
+              width: "8%",
+              float: "right"
+            }} onClick={() => {
+              bindData(a.id, 'tamll')
+            }}>绑定</Button>
+          </ProCard>
         </ProCard>
       </ProCard>
     );
@@ -213,60 +274,6 @@ const PriceComparsionManagement = () => {
         1: '已比价',
       }
     }
-    // {
-    //   title: '比价排名',
-    //   dataIndex: 'status',
-    //   filters: true,
-    //   onFilter: true,
-    //   hideInTable: true,
-    //   valueType: 'select',
-    //   valueEnum: {
-    //     0: { text: '全部', status: 'Default' },
-    //     1: {
-    //       text: '价格最低',
-    //       status: '1',
-    //     },
-    //     2: {
-    //       text: '第二低价',
-    //       status: '2',
-    //     },
-    //     3: {
-    //       text: '第三低价',
-    //       status: '2',
-    //     },
-    //     4: {
-    //       text: '第四低价',
-    //       status: '2',
-    //     },
-    //     5: {
-    //       text: '第五低价',
-    //       status: '2',
-    //     },
-    //     6: {
-    //       text: '价格最高',
-    //       status: '2',
-    //     },
-    //     7: {
-    //       text: '未比价',
-    //       status: '2',
-    //     },
-    //   }
-    // },
-    // {
-    //   title: '比价排名',
-    //   dataIndex: 'status',
-    //   valueType: 'text',
-    //   search: false,
-    //   valueEnum: {
-    //     1: '价格最低',
-    //     2: '第二低价',
-    //     3: '第三低价',
-    //     4: '第四低价',
-    //     5: '第五低价',
-    //     6: '价格最高',
-    //     7: '未比价',
-    //   }
-    // },
     // {
     //   title: '操作',
     //   valueType: 'option',
@@ -326,7 +333,6 @@ const PriceComparsionManagement = () => {
       pagination={{
         pageSize: 10,
       }}
-      // pagination={false}
       dateFormatter="string"
       headerTitle="数据列表"
       toolBarRender={(_,record) => [
@@ -343,10 +349,13 @@ const PriceComparsionManagement = () => {
       setVisible={setFormVisible}
       setFlag={setFlag}
     />}
-      {formjsx && <FormPage
-      visible={formjsx}
-      setVisible={setFormjsx}
-      formData={formjsx}
+      {isShow && <FormPage
+      visible={isShow}
+      setVisible={setIsShow}
+      Listdata={formjsx}
+      formData={formData}
+      setResData={setResData}
+      resData={resData}
       setFlag={setFlag}
     />}
     </PageContainer>

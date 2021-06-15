@@ -7,18 +7,16 @@ import InvitationDetail from './invitation-detail'
 import  ProForm,{ ModalForm,ProFormSelect} from '@ant-design/pro-form';
 import { Button } from 'antd';
 import { Tabs } from 'antd';
+import HandleModel from '@/components/HandleModel'
 const { TabPane } = Tabs;
 
 export default props => {
   const actionRef = useRef();
   const [visible, setVisible] = useState(false);
-  const [visible2, setVisible2] = useState(false);
-  const [visible3, setVisible3] = useState(false);
   const [visible4, setVisible4] = useState(false);
   const [byid, setByid] = useState();
-  const [byid2, setByid2] = useState();
-  const [byid3, setByid3] = useState();
   const [byid4, setByid4] = useState();
+  const [arrId,setArrId]=useState([])
   function callback(key) {
     console.log(key);
   }
@@ -27,15 +25,7 @@ export default props => {
     setByid(record.sourceId)
     setVisible(true)
   }
-  const Termination2=(record)=>{
-    setByid2(record.sourceId)
-    setVisible2(true)
-  }
-  const Termination3=(record)=>{
-    setByid3(record.sourceId)
-    setVisible3(true)
-  }
-  const Termination4=()=>{
+  const Termination4=(record)=>{
     setByid4(record.id)
     setVisible4(true)
   }
@@ -68,56 +58,33 @@ export default props => {
           key="1"
           onVisibleChange={setVisible}
           visible={visible}
+          submitter={{
+            render: (props, defaultDoms) => {
+                return [
+                 <Button onClick={()=>setVisible(false)}>返回</Button>
+                ];
+            },
+            }}
           trigger={<Button onClick={()=>Termination(record)}>预览</Button>}
             >
             <InvitationDetail id={byid}/>
         </ModalForm>,
-        <ModalForm
-          title="操作确认"
-          key="2"
-          onVisibleChange={setVisible2}
-          visible={visible2}
-          trigger={<Button onClick={()=>Termination2(record)}>忽略</Button>}
-          submitter={{
-          render: (props, defaultDoms) => {
-              return [
-              ...defaultDoms
-              ];
-          },
-          }}
-          onFinish={async (values) => {
-              console.log('values',values);
-              reportHandle({sourceId:byid2,status:1})
-              setVisible2(false)
-              message.success('提交成功');
-              return true;
-          }}
-            >
-            <p>确认要处理所选评论为忽略吗？</p>
-        </ModalForm>,
-          <ModalForm
-            title="操作确认"
-            key="3"
-            onVisibleChange={setVisible3}
-            visible={visible3}
-            trigger={<Button onClick={()=>Termination3(record)}>屏蔽</Button>}
-            submitter={{
-            render: (props, defaultDoms) => {
-                return [
-                ...defaultDoms
-                ];
-            },
-            }}
-            onFinish={async (values) => {
-                console.log('values',values);
-                reportHandle({sourceId:byid3,status:2})
-                setVisible3(false)
-                message.success('提交成功');
-                return true;
-            }}
-            >
-            <p>确认要处理所选评论为屏蔽吗？</p>
-        </ModalForm>
+        <HandleModel 
+          record={record} 
+          status={1}  
+          label={'忽略'}  
+          text={'确认要处理所选评论为忽略吗？'} 
+          InterFace={reportHandle} 
+          title={'操作确认'}
+        />,
+        <HandleModel 
+          record={record} 
+          status={2}   
+          label={'屏蔽'}  
+          text={'确认要处理所选评论为屏蔽吗？'} 
+          InterFace={reportHandle} 
+          title={'操作确认'}
+        />,
       ],
       hideInSearch: true,
   }
@@ -167,7 +134,7 @@ export default props => {
     },
     {
       title: '操作',
-      render: () => [
+      render: (_,record) => [
         <ModalForm
           title="操作确认"
           key="1"
@@ -175,33 +142,27 @@ export default props => {
           visible={visible4}
           trigger={<Button onClick={()=>Termination4(record)}>预览</Button>}
           submitter={{
-          render: (props, defaultDoms) => {
-              return [
-              ...defaultDoms
-              ];
-          },
-          }}
-          onFinish={async (values) => {
-              console.log('values',values);
-              // dynamicDelete({id:record.id})
-              setVisible4(false)
-              message.success('提交成功');
-              return true;
-          }}
+            render: (props, defaultDoms) => {
+                return [
+                 <Button onClick={()=>setVisible4(false)}>返回</Button>
+                ];
+            },
+            }}
             >
-            <p>预览</p>
+            <InvitationDetail id={byid4}/>
         </ModalForm>
       ],
       hideInSearch: true,
   }
   ];
   const onIpute=(res)=>{
+      setArrId(res.selectedRowKeys)
   }
   return (
     <Tabs onChange={callback} type="card">
       <TabPane tab="未处理" key="1">
         <ProTable
-          rowKey="sourceUserId"
+          rowKey="sourceId"
           options={false}
           params={{
             page:0,
@@ -213,53 +174,23 @@ export default props => {
           actionRef={actionRef}
           toolBarRender={false}
           search={{
-            optionRender: (searchConfig, formProps, dom) => [
-              <ModalForm
-                title="操作确认"
-                key="model2"
-                onVisibleChange={setVisible}
-                visible={visible}
-                trigger={<Button onClick={Termination}>忽略</Button>}
-                submitter={{
-                render: (props, defaultDoms) => {
-                    return [
-                    ...defaultDoms
-                    ];
-                },
-                }}
-                onFinish={async (values) => {
-                    console.log('values',values);
-                    // dynamicDelete({id:record.id})
-                    setVisible(false)
-                    message.success('提交成功');
-                    return true;
-                }}
-                  >
-                  <p>确认要处理所选评论为忽略吗？</p>
-              </ModalForm>,
-              <ModalForm
-                title="操作确认"
-                key="model2"
-                onVisibleChange={setVisible2}
-                visible={visible2}
-                trigger={<Button onClick={Termination2}>屏蔽</Button>}
-                submitter={{
-                render: (props, defaultDoms) => {
-                    return [
-                    ...defaultDoms
-                    ];
-                },
-                }}
-                onFinish={async (values) => {
-                    console.log('values',values);
-                    // dynamicDelete({id:record.id})
-                    setVisible2(false)
-                    message.success('提交成功');
-                    return true;
-                }}
-                >
-                <p>确认要处理所选评论为屏蔽吗？</p>
-            </ModalForm>
+            optionRender: ({ searchText, resetText },{ form }) => [
+              <HandleModel  
+                status={1}
+                arrId={arrId}  
+                label={'忽略'}  
+                text={'确认要处理所选评论为忽略吗？'} 
+                InterFace={reportHandle} 
+                title={'操作确认'}
+              />,
+              <HandleModel  
+                status={2}
+                arrId={arrId}   
+                label={'屏蔽'}  
+                text={'确认要处理所选评论为屏蔽吗？'} 
+                InterFace={reportHandle} 
+                title={'操作确认'}
+              />
             ],
           }}
           columns={columns}

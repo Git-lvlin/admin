@@ -1,19 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { adsenseAdminList } from '@/services/community-management/adsense-admin-list';
 import { deleteById } from '@/services/community-management/adsense-delete-byid';
-import { ModalForm} from '@ant-design/pro-form';
 import { history } from 'umi';
+import DeleteModal from '@/components/DeleteModal'
 import { Button,message } from 'antd';
 
 export default props => {
-    const [visible, setVisible] = useState(false);
-    const [byid,setByid]=useState()
-    const Termination=(record)=>{
-        setByid(record.id)
-        setVisible(true)
-    }
+    const ref=useRef()
     const columns = [
         {
             title: '广告ID：',
@@ -81,34 +76,13 @@ export default props => {
             title: '操作',
             render: (text, record, _, action) => [
               <Button onClick={()=>history.push('/community-management/community-advertising/add-advertising?id='+record.id)}>编辑</Button>,
-              <DeleteModal record={record} boxref={ref} text={'确认要删除所选内容吗？'} InterFace={deleteById} title={'操作确认'}/>,
-                <ModalForm
-                    title="操作确认"
-                    key="model2"
-                    onVisibleChange={setVisible}
-                    visible={visible}
-                    trigger={<Button onClick={()=>Termination(record)}>删除</Button>}
-                    submitter={{
-                    render: (props, defaultDoms) => {
-                        return [
-                        ...defaultDoms
-                        ];
-                    },
-                    }}
-                    onFinish={async (values) => {
-                        console.log('values',values);
-                        deleteById({id:byid}).then(res=>{
-                            if(res.code==0){
-                                setVisible(false)
-                                message.success('提交成功');
-                                return true;
-                            }
-                        })
-                       
-                    }}
-                >
-                <p>确认要删除所选广告吗？</p>
-                </ModalForm>
+              <DeleteModal 
+                record={record} 
+                boxref={ref} 
+                text={'确认要删除所选广告吗？'} 
+                InterFace={deleteById} 
+                title={'操作确认'}
+              />
             ],
             hideInSearch: true,
         },
@@ -120,7 +94,6 @@ export default props => {
           options={false}
           params={{}}
           request={adsenseAdminList}
-          rowSelection={{}}
           search={{
               defaultCollapsed: false,
               labelWidth: 100,

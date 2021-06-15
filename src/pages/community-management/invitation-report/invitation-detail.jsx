@@ -24,7 +24,6 @@ export default props => {
         <Descriptions.Item label="定位">{detailData.address}</Descriptions.Item>
         <Descriptions.Item label="内容">{detailData.content}</Descriptions.Item>
   </Descriptions>
-  <Button style={{margin:'20px'}} type="primary" onClick={()=>history.push('/community-management/invitation-report')}>返回</Button>
   </>
   );
 };

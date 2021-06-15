@@ -14,29 +14,17 @@ import { spaceAdd } from '@/services/cms/member/member';
 
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { setVisible, setFlag, onClose, visible } = props;
   const formRef = useRef();
   const waitTime = (values) => {
-    const { image,image1,url,url1,sort,sort1, ...rest } = values
-    const info = [
-      {
-        image,
-        url,
-        sort
-      },
-      {
-        image: image1,
-        url: url1,
-        sort: sort1,
-      }
-    ]
+    const { ...rest } = values
     const param = {
-      info,
       ...rest
     }
     return new Promise((resolve) => {
       spaceAdd(param).then((res) => {
         if (res.code === 0) {
+          setFlag(true)
           resolve(true);
         }
       })
@@ -71,7 +59,7 @@ export default (props) => {
             placeholder="请输入分类名称，2-6个字符"
             rules={[{ required: true, message: '请输入分类名称，2-6个字符' }]}
             fieldProps={{
-              maxLength: 16,
+              maxLength: 6,
             }}
           />
       </ProForm.Group>

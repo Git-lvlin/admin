@@ -103,7 +103,7 @@ const HotGoos = () => {
       title: '销售价',
       key: 'goodsSalePrice',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'money',
       search: false,
     },
     {
@@ -113,13 +113,13 @@ const HotGoos = () => {
       valueType: 'number',
       search: false,
     },
-    {
-      title: '活动库存',
-      key: 'activityStockNum',
-      dataIndex: 'activityStockNum',
-      valueType: 'number',
-      search: false,
-    },
+    // {
+    //   title: '活动库存',
+    //   key: 'activityStockNum',
+    //   dataIndex: 'activityStockNum',
+    //   valueType: 'number',
+    //   search: false,
+    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
@@ -200,7 +200,7 @@ const HotGoos = () => {
       actionRef={actionRef}
       postData={(data) => {
         data.forEach(item => {
-          item.floatPercent = parseInt(item.floatPercent/100)
+          item.goodsSalePrice = parseInt(item.goodsSalePrice/100)
         })
         return data
       }}

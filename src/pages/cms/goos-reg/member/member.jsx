@@ -24,6 +24,13 @@ const Member = () => {
   }
 
   const formControl = (data,type) => {
+    console.log('data', data)
+    console.log('type', type)
+    if (!type && !data.length) {
+      return message.error('未勾选批量操作对象!')
+    }
+
+
     memberOperation({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);
