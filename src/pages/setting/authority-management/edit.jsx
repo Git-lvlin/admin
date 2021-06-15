@@ -45,7 +45,7 @@ export default (props) => {
         name: values.name,
         rule_type: values.ruleType,
         status: values.status ?? 1,
-        pid: values.pid ?? 0,
+        pid: values.pid || 0,
         auth_open: 1,
         sort: 0
       }, { showSuccess: true, showError: true }).then(res => {
