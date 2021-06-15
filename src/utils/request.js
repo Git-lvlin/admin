@@ -75,6 +75,7 @@ instance.interceptors.response.use(async (response, options) => {
   if (data.code === 10110) {
     setTimeout(() => {
       window.location.replace(`/user/login?${stringify({ redirect: window.location.href })}`)
+      window.localStorage.removeItem('authority')
     }, 1000)
     message.error(data.msg)
     return data;
