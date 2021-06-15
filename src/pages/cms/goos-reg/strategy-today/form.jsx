@@ -51,12 +51,12 @@ export default (props) => {
       valueType: 'number',
       search: false,
     },
-    {
-      title: '活动库存',
-      dataIndex: 'activityStockNum',
-      valueType: 'number',
-      search: false,
-    },
+    // {
+    //   title: '活动库存',
+    //   dataIndex: 'activityStockNum',
+    //   valueType: 'number',
+    //   search: false,
+    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
@@ -72,11 +72,13 @@ export default (props) => {
       spuIds: arr,
       ...rest
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       hotGoosAdd(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
-          resolve(true);
+          resolve(true)
+        } else {
+          reject(false)
         }
       })
     });
