@@ -162,6 +162,28 @@ export const hotGoosList = async (params = {}, options = {}) => {
     total: res.data.total,
   }
 }
+
+export const articleList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    pageSize: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/articleInfo/findAdminArticleList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
 export const crazyDateList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
   
@@ -247,11 +269,19 @@ export const hotGoosOperation = (params = {}, options = {}) => {
   });
 }
 
+export const articleOperation = (params = {}, options = {}) => {
+  return request('/auth/java-admin/articleType/saveOrUpdateArticleType', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const findAdminArticleTypeList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
   const data = {
-    page: current,
-    size: pageSize,
+    // page: current,
+    // size: pageSize,
     ...rest
   }
   const res = await request('/auth/java-admin/articleType/findAdminArticleTypeList', {
@@ -260,7 +290,7 @@ export const findAdminArticleTypeList = async (params = {}, options = {}) => {
     ...options
   });
   return {
-    data: res.data.records || [],
+    data: res.data || [],
     success: true,
     total: res.data.total,
   }
@@ -289,6 +319,15 @@ export const tagSortTop = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const articleTop = (params = {}, options = {}) => {
+  return request('/auth/java-admin/articleInfo/saveOrUpdateArticle', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const saveMoneySortTop = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/wholesaleGoodsSortTop', {
     method: 'POST',
@@ -528,6 +567,30 @@ export const homeBannerList = async (params = {}, options = {}) => {
     data.status = Number(status);
   }
   const res = await request('/auth/java-admin/cms/banner/page', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const hotSearchList = async (params = {}, options = {}) => {
+  const { current, pageSize, status, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  if (status) {
+    data.status = Number(status);
+  }
+  const res = await request('/auth/search/auth/userSearchHistory/getAllHotKeyword', {
     method: 'POST',
     data,
     ...options

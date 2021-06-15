@@ -62,7 +62,7 @@ export default (props) => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'money',
       search: false,
     },
     {
@@ -71,12 +71,6 @@ export default (props) => {
       valueType: 'number',
       search: false,
     },
-    // {
-    //   title: '活动库存',
-    //   dataIndex: 'activityStockNum',
-    //   valueType: 'number',
-    //   search: false,
-    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
@@ -114,7 +108,12 @@ export default (props) => {
       rowKey="id"
       options={false}
       columns={columns}
-      // params={}
+      postData={(data) => {
+        data.forEach(item => {
+          item.goodsSalePrice = item.goodsSalePrice/100
+        })
+        return data
+      }}
       request={todayAllGoodsList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

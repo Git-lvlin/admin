@@ -5,7 +5,7 @@ import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
-import { hotGoosList, hotGoosOperation, tagSortTop } from '@/services/cms/member/member';
+import { articleList, articleOperation, articleTop } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
 
 const ArticleList = () => {
@@ -19,7 +19,7 @@ const ArticleList = () => {
   }
 
   const formControl = (data,type) => {
-    hotGoosOperation({ids: data,status: type}).then((res) => {
+    articleOperation({id: data,isShow: type}).then((res) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);
         actionRef.current.reset();
@@ -27,8 +27,13 @@ const ArticleList = () => {
     })
   }
 
-  const top = (data) => {
-    tagSortTop({id: data}).then((res) => {
+  const top = (id, type, userId) => {
+    const param = {
+      id: data,
+      isTop: type,
+      operatorId: userId,
+    }
+    articleTop(param).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
       }
@@ -38,73 +43,80 @@ const ArticleList = () => {
   const columns = [
     {
       title: '编号',
-      dataIndex: 'sort',
+      dataIndex: 'id',
       valueType: 'text',
       search: false,
     },
     {
       title: '标题',
-      dataIndex: 'title',
+      dataIndex: 'articleTitle',
       valueType: 'text',
     },
     {
       title: '分类',
-      dataIndex: 'spuId',
+      dataIndex: 'articleTypeName',
       valueType: 'text',
       search: false,
     },
     {
       title: '发布人昵称',
-      key: 'goodsName',
-      dataIndex: 'goodsName',
+      dataIndex: 'authorNickName',
       valueType: 'text',
       search: false,
     },
     {
       title: '封面图片',
-      key: 'goodsImageUrl',
-      dataIndex: 'goodsImageUrl',
+      dataIndex: 'coverPicture',
       render: (text) => <img src={text} width={50} height={50} />,
       search: false,
     },
     {
       title: '真实浏览量',
-      key: 'supplierName',
-      dataIndex: 'supplierName',
+      dataIndex: 'clickNum',
       valueType: 'text',
       search: false,
     },
     {
       title: '虚拟浏览量',
-      key: 'goodsSaleTypeDisplay',
-      dataIndex: 'goodsSaleTypeDisplay',
+      dataIndex: 'virtualClickNum',
       valueType: 'text',
       search: false,
     },
     {
-      title: '创建信息',
-      key: 'goodsSalePrice',
-      dataIndex: 'goodsSalePrice',
+      title: '创建人ID',
+      dataIndex: 'createId',
+      valueType: 'number',
+      search: false,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
       valueType: 'number',
       search: false,
     },
     {
       title: '置顶',
-      key: 'stockNum',
-      dataIndex: 'stockNum',
-      valueType: 'number',
+      dataIndex: 'isTop',
+      valueType: 'text',
       search: false,
+      valueEnum: {
+        0: '否',
+        1: '是',
+      }
     },
     {
       title: '首页',
-      key: 'activityStockNum',
-      dataIndex: 'activityStockNum',
-      valueType: 'number',
+      dataIndex: 'isRecommend',
+      valueType: 'text',
       search: false,
+      valueEnum: {
+        0: '否',
+        1: '是',
+      }
     },
     {
       title: '吐槽数量',
-      dataIndex: 'goodsSaleNum',
+      dataIndex: 'debunkNum',
       valueType: 'number',
       search: false,
     },
@@ -116,46 +128,33 @@ const ArticleList = () => {
       hideInTable: true,
       valueType: 'select',
       valueEnum: {
-        0: { text: '全部', status: 'Default' },
-        1: {
-          text: '待发布',
-          status: '1',
-        },
-        2: {
-          text: '已发布',
-          status: '2',
-        },
+        0: '已隐藏',
+        1: '已显示',
       }
     },
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'isShow',
       valueType: 'text',
       search: false,
       valueEnum: {
-        1: '已隐藏',
-        2: '已显示',
+        0: '已隐藏',
+        1: '已显示',
       }
     },
-    {
-      title: '分类',
-      dataIndex: 'classification',
-      valueType: 'select',
-      hideInTable: true,
-      valueEnum: {
-        1: '已隐藏',
-        2: '已显示',
-      }
-    },
+    // {
+    //   title: '分类',
+    //   dataIndex: 'classification',
+    //   valueType: 'select',
+    //   hideInTable: true,
+    //   valueEnum: {
+    //     1: '已隐藏',
+    //     2: '已显示',
+    //   }
+    // },
     {
       title: '发布人',
-      dataIndex: 'publisher',
-      valueType: 'select',
-      hideInTable: true,
-      valueEnum: {
-        1: '已隐藏',
-        2: '已显示',
-      }
+      dataIndex: 'authorName',
     },
     {
       title: '置顶',
@@ -163,18 +162,20 @@ const ArticleList = () => {
       valueType: 'select',
       hideInTable: true,
       valueEnum: {
-        1: '已隐藏',
-        2: '已显示',
+        0: '否',
+        1: '是',
       }
     },
     {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
+      align: 'center',
+      fixed: 'right',
       render: (text, record, _, action) => {
         return (
           <>
-            {record.status===2&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
+            {<a key="top" onClick={() => {top(record)}}>{record.isTop?'取消置顶':'置顶'}</a>}
             &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>隐藏</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>详情</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {action?.startEditable?.(record.key);console.log('action',action,record)}}>编辑</a>}
@@ -191,7 +192,10 @@ const ArticleList = () => {
       options={false}
       columns={columns}
       actionRef={actionRef}
-      request={hotGoosList}
+      params={
+        {articleType: 1}
+      }
+      request={articleList}
       // rowSelection={{
       //   // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
       //   // 注释该行则默认不显示下拉选项
@@ -218,8 +222,9 @@ const ArticleList = () => {
       search={{
         labelWidth: 'auto',
       }}
+      scroll={{ x: 2200 }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
       dateFormatter="string"
       // headerTitle=""

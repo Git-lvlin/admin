@@ -193,7 +193,7 @@ const StrategyToday = () => {
       postData={(data) => {
         data.forEach(item => {
           item.floatPercent = parseInt(item.floatPercent/100)
-          item.goodsSalePrice = parseInt(item.goodsSalePrice/100)
+          item.goodsSalePrice = item.goodsSalePrice/100
         })
         return data
       }}

@@ -9,24 +9,27 @@ import ProForm, {
 import CrazyAddActivityReg from '@/components/crazy-add-activity-reg';
 import { crazyActivityAdd } from '@/services/cms/member/member';
 
-const waitTime = (values) => {
-  const { ...rest } = values
-  const param = {
-    ...rest
-  }
-  return new Promise((resolve) => {
-    crazyActivityAdd(param).then((res) => {
-      if (res.code === 0) {
-        resolve(true);
-      }
-    })
-  });
-};
+
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, setVisible, setFlag, visible } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
+
+  const waitTime = (values) => {
+    const { ...rest } = values
+    const param = {
+      ...rest
+    }
+    return new Promise((resolve) => {
+      crazyActivityAdd(param).then((res) => {
+        if (res.code === 0) {
+          setFlag(true)
+          resolve(true);
+        }
+      })
+    });
+  };
 
   useEffect(() => {
     if (detailData?.id) {
@@ -47,9 +50,6 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        onClose: () => {
-          onClose();
-        }
       }}
       onFinish={async (values) => {
         const start = (new Date(values.activityStartTime)).getTime();
