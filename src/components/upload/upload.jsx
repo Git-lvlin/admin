@@ -5,7 +5,7 @@ import { getImageSize } from '@/utils/utils';
 import upload from '@/utils/upload'
 
 const Upload = (props) => {
-  const { value, onChange, dirName = 'goods', maxCount = 1, size, dimension, proportion, ...rest } = props;
+  const { value, onChange, dirName = 'goods', maxCount = 1, size, dimension, proportion, disabled = false, ...rest } = props;
   const [fileList, setFileList] = useState([])
   const [loading, setLoading] = useState(false)
   const fileData = useRef([]);
@@ -18,7 +18,7 @@ const Upload = (props) => {
         return false;
       }
       const { width, height } = await getImageSize(file);
-      if (parseInt(proportion.width/proportion.height) === parseInt(width/height)) {
+      if (parseInt(proportion.width / proportion.height) === parseInt(width / height)) {
         return true;
       }
       message.error('上传图片的大小不符合要求')
@@ -99,10 +99,11 @@ const Upload = (props) => {
       beforeUpload={beforeUpload}
       customRequest={customRequest}
       onRemove={onRemove}
+      disabled={disabled}
       {...rest}
     >
       {
-        fileList.length < maxCount
+        (fileList.length < maxCount && !disabled)
         &&
         <div>
           {loading ? <LoadingOutlined /> : <UploadOutlined />}
