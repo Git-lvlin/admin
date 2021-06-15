@@ -103,12 +103,12 @@ const SaveMoney = () => {
     //   valueType: 'number',
     //   search: false,
     // },
-    {
-      title: '销量',
-      dataIndex: 'goodsSaleNum',
-      valueType: 'number',
-      search: false,
-    },
+    // {
+    //   title: '销量',
+    //   dataIndex: 'goodsSaleNum',
+    //   valueType: 'number',
+    //   search: false,
+    // },
     {
       title: '状态',
       dataIndex: 'status',
@@ -168,7 +168,7 @@ const SaveMoney = () => {
       actionRef={actionRef}
       postData={(data) => {
         data.forEach(item => {
-          item.goodsSalePrice = parseInt(item.goodsSalePrice/100)
+          item.goodsSalePrice = item.goodsSalePrice/100
         })
         return data
       }}

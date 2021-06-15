@@ -99,6 +99,8 @@ export default {
   'menu.cms.price-comparsion.low-goods': '低价爆品',
   'menu.cms.route-url-deploy': '链接路由管理',
   'menu.price-comparsion-management': '比价管理',
+  'menu.cms.hot-search': '热门搜索关键词',
+
 
   'menu.coupon-management': '优惠券管理',
   'menu.coupon-management.coupon-list': '优惠券列表',

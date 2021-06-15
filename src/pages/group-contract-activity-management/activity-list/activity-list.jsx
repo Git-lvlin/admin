@@ -140,6 +140,7 @@ const TableList = () => {
           setVisible={setVisible}
           callback={() => { actionRef.current.reload() }}
           detailData={detailData}
+          onClose={() => { setDetailData(null) }}
         />
       }
     </PageContainer>

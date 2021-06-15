@@ -4,55 +4,61 @@ import ProForm, {
   ModalForm,
   ProFormText,
 } from '@ant-design/pro-form';
-import { modifyTagSort } from '@/services/cms/member/member';
+import { bannerAdd } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, setFlag, visible } = props;
+  const { detailData, setVisible, onClose, visible } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
   const waitTime = (values) => {
-    const { id, sort } = values
+    const { id, ...rest } = values
+    console.log('rest', rest)
     const param = {
-      sortInfo:[
-        {
-          id:id,
-          sort: sort
-        }
-      ]
+      ...rest
     }
-    return new Promise((resolve, reject) => {
-      modifyTagSort(param).then((res) => {
+    if (id) {
+      param.id = id
+    }
+    return new Promise((resolve) => {
+      bannerAdd(param).then((res) => {
         if (res.code === 0) {
-          setFlag(true)
           resolve(true);
-        } else {
-          reject(false);
         }
       })
+  
     });
   };
 
   useEffect(() => {
     if (detailData) {
-      const { id, sort } = detailData
+      const { ...rest } = detailData;
+      console.log('detailData', detailData)
       form.setFieldsValue({
-        id,
-        sort
+        ...rest
       })
     }
   }, [form, detailData])
 
   return (
     <ModalForm
-      title={'排序'}
+      title={`${detailData ? '编辑页面' : '新增'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
       form={form}
-      drawerprops={{
+      submitter={{
+        searchConfig: {
+          submitText: detailData?'确认添加':'编辑',
+          resetText: '取消',
+        },
+      }}
+      drawerProps={{
         forceRender: true,
         destroyOnClose: true,
+        onClose: () => {
+          onClose();
+        }
       }}
       onFinish={async (values) => {
         await waitTime(values);
@@ -62,16 +68,19 @@ export default (props) => {
       }}
     >
       <ProForm.Group>
+        <ProFormText 
+          width="sm"
+          name="title"
+          label="关键词名称"
+          rules={[{ required: true, message: '请输入关键词名称' }]}  
+        />
+      </ProForm.Group>
+      <ProForm.Group>
         <ProFormText
           width="sm"
           name="sort"
           label="排序"
-          rules={[{ 
-            required: true,
-            message: '请输入排序序号(整数)',
-            pattern: /^\+?[1-9][0-9]*$/
-        
-        }]}  
+          rules={[{ required: true, message: '请输入排序序号' }]}  
         />
 
       </ProForm.Group>

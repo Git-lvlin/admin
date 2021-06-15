@@ -11,7 +11,7 @@ import SupplierSelect from '@/components/supplier-select'
 
 
 export default (props) => {
-  const { visible, setVisible, data, callback } = props;
+  const { visible, setVisible, data, callback, title = '选择活动商品' } = props;
   const [selectedRowKeys, setSelectedRowKeys] = useState(data.map(item => item.id));
   const [selectItems, setSelectItems] = useState(data);
 
@@ -112,7 +112,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={`选择活动商品`}
+      title={title}
       modalProps={{
       }}
       onVisibleChange={setVisible}

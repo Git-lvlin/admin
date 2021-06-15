@@ -42,7 +42,7 @@ export default (props) => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'money',
       search: false,
     },
     {
@@ -51,12 +51,12 @@ export default (props) => {
       valueType: 'number',
       search: false,
     },
-    {
-      title: '活动库存',
-      dataIndex: 'activityStockNum',
-      valueType: 'number',
-      search: false,
-    },
+    // {
+    //   title: '活动库存',
+    //   dataIndex: 'activityStockNum',
+    //   valueType: 'number',
+    //   search: false,
+    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
@@ -72,11 +72,13 @@ export default (props) => {
       spuIds: arr,
       ...rest
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       hotGoosAdd(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
-          resolve(true);
+          resolve(true)
+        } else {
+          reject(false)
         }
       })
     });
@@ -109,6 +111,12 @@ export default (props) => {
       rowKey="spuId"
       options={false}
       columns={columns}
+      postData={(data) => {
+        data.forEach(item => {
+          item.goodsSalePrice = item.goodsSalePrice/100
+        })
+        return data
+      }}
       request={todayAllGoodsList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

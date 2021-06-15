@@ -1,12 +1,8 @@
 import React, { useRef, useState, useEffect  } from 'react';
 import { Button, message, Form, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
 import ProForm, {
-  ModalForm,
   DrawerForm,
-  ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
 } from '@ant-design/pro-form';
 import { hotGoosAdd } from '@/services/cms/member/member';
 import { goosReplaceList } from '@/services/cms/member/member';
@@ -42,7 +38,7 @@ export default (props) => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'text',
+      valueType: 'money',
       search: false,
     },
     {
@@ -89,10 +85,12 @@ export default (props) => {
       ...rest
     }
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       hotGoosAdd(param).then((res) => {
         if (res.code === 0) {
           resolve(true);
+        } else {
+          reject(false)
         }
       })
   
@@ -136,6 +134,7 @@ export default (props) => {
       postData={(data) => {
         data.forEach(item => {
           item.floatPercent = parseInt(item.floatPercent/100)
+          item.goodsSalePrice = item.floatPercent/100
         })
         return data
       }}

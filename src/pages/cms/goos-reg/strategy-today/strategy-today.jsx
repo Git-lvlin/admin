@@ -105,12 +105,12 @@ const StrategyToday = () => {
       valueType: 'number',
       search: false,
     },
-    {
-      title: '活动库存',
-      dataIndex: 'activityStockNum',
-      valueType: 'number',
-      search: false,
-    },
+    // {
+    //   title: '活动库存',
+    //   dataIndex: 'activityStockNum',
+    //   valueType: 'number',
+    //   search: false,
+    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
@@ -193,7 +193,7 @@ const StrategyToday = () => {
       postData={(data) => {
         data.forEach(item => {
           item.floatPercent = parseInt(item.floatPercent/100)
-          item.goodsSalePrice = parseInt(item.goodsSalePrice/100)
+          item.goodsSalePrice = item.goodsSalePrice/100
         })
         return data
       }}
@@ -255,9 +255,9 @@ const StrategyToday = () => {
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
           新建
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setReplaceFormVisible(true) }}>
-          新建(代发)
-        </Button>,
+        // <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setReplaceFormVisible(true) }}>
+        //   新建(代发)
+        // </Button>,
       ]}
     />
     {formVisible && <Edit

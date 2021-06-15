@@ -21,11 +21,13 @@ export default (props) => {
         }
       ]
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       tagSortModify(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
           resolve(true);
+        } else {
+          reject(false)
         }
       })
   

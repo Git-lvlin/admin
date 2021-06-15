@@ -7,6 +7,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import * as api from '@/services/product-management/product-list';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
+import SupplierSelect from '@/components/supplier-select'
 import Edit from './edit';
 import OffShelf from './off-shelf';
 import { amountTransform, typeTransform } from '@/utils/utils'
@@ -115,12 +116,20 @@ const TableList = () => {
       }
     },
     {
-      title: '商家名称',
+      title: '供应商名称',
       dataIndex: 'supplierName',
       valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '供应商名称',
+      dataIndex: 'supplierId',
+      valueType: 'text',
       fieldProps: {
-        placeholder: '请输入商家名称'
-      }
+        placeholder: '请输入供应商名称'
+      },
+      renderFormItem: () => <SupplierSelect />,
+      hideInTable: true,
     },
     {
       title: '供货类型',
@@ -198,7 +207,7 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '商品关键字',
+      title: '商品关键词',
       dataIndex: 'goodsKeywords',
       valueType: 'text',
       hideInTable: true,
@@ -213,6 +222,14 @@ const TableList = () => {
       title: '商品品牌',
       dataIndex: 'brandId',
       renderFormItem: () => (<BrandSelect />),
+      hideInTable: true,
+    },
+    {
+      title: '商品来源',
+      dataIndex: 'goodsState',
+      onFilter: true,
+      valueType: 'select',
+      valueEnum: typeTransform(config.operateRole),
       hideInTable: true,
     },
     {
@@ -354,6 +371,7 @@ const TableList = () => {
         setVisible={setOffShelfVisible}
         callback={(text) => { offShelf(selectItemId, text) }}
       />}
+
     </PageContainer>
   );
 };

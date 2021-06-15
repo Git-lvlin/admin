@@ -1,39 +1,37 @@
 
 import React, { useRef, useState } from 'react';
-import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
-import { findAdminArticleTypeList, hotGoosOperation, tagSortTop } from '@/services/cms/member/member';
-import { ACTION_TYPE } from '@/utils/text';
+import { findAdminArticleTypeList, articleOperation, tagSortTop } from '@/services/cms/member/member';
 
 const ArticleCategoryList = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
 
   const formControl = (data,type) => {
-    hotGoosOperation({ids: data,status: type}).then((res) => {
+    articleOperation({id: data, isShow: type}).then((res) => {
       if (res.code === 0) {
-        message.success(`${ACTION_TYPE[type]}成功`);
+        message.success(`操作成功`);
         actionRef.current.reset();
       }
     })
   }
 
-  const top = (data) => {
-    tagSortTop({id: data}).then((res) => {
-      if (res.code === 0) {
-        message.success(`置顶成功`);
-        actionRef.current.reset();
-      }
-    })
-  }
+  // const top = (data) => {
+  //   tagSortTop({id: data}).then((res) => {
+  //     if (res.code === 0) {
+  //       message.success(`置顶成功`);
+  //       actionRef.current.reset();
+  //     }
+  //   })
+  // }
 
   const columns = [
     {
       title: '编号',
-      dataIndex: 'sort',
+      dataIndex: 'id',
       valueType: 'text',
       search: false,
     },
@@ -94,9 +92,9 @@ const ArticleCategoryList = () => {
       render: (text, record, _) => {
         return (
           <>
-            {record.status===1&&<a key="down" onClick={() => {top(record.id)}}>置顶</a>}
-            &nbsp;&nbsp;{record.isShow===0&&<a key="down" onClick={() => {formControl(record.id, 0)}}>关闭</a>}
-            &nbsp;&nbsp;{record.isShow===1&&<a key="view" onClick={() => {formControl(record.id, 1)}}>启用</a>}
+            {/* {record.status===1&&<a key="down" onClick={() => {top(record.id)}}>置顶</a>} */}
+            {record.isShow===0&&<a key="down" onClick={() => {formControl(record.id, 1)}}>启用</a>}
+            &nbsp;&nbsp;{record.isShow===1&&<a key="view" onClick={() => {formControl(record.id, 0)}}>关闭</a>}
           </>
         )
       }
@@ -137,9 +135,7 @@ const ArticleCategoryList = () => {
       search={{
         labelWidth: 'auto',
       }}
-      pagination={{
-        pageSize: 5,
-      }}
+      pagination={false}
       dateFormatter="string"
       headerTitle=""
       search={false}

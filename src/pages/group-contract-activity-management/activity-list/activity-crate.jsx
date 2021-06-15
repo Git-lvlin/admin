@@ -202,7 +202,7 @@ export default (props) => {
         forceRender: true,
         destroyOnClose: true,
         width: 1500,
-        onCancel: () => {
+        onClose: () => {
           onClose();
         }
       }}

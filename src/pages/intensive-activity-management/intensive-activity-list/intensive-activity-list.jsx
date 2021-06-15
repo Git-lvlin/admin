@@ -127,22 +127,22 @@ const TableList = () => {
     },
     {
       title: '活动状态',
-      dataIndex: 'brandName',
+      dataIndex: 'wholesaleIsOnline',
       valueType: 'select',
       valueEnum: {
-        0: '全部',
+        0: '下架',
         1: '待开始',
         2: '进行中',
         3: '已结束',
       },
       hideInTable: true,
     },
-    {
-      title: '活动时间',
-      dataIndex: 'wholesaleTime',
-      valueType: 'dateRange',
-      hideInTable: true,
-    },
+    // {
+    //   title: '活动时间',
+    //   dataIndex: 'wholesaleTime',
+    //   valueType: 'dateRange',
+    //   hideInTable: true,
+    // },
     {
       title: '可购买后销售的会员店等级',
       dataIndex: 'storeLevel',
