@@ -57,6 +57,7 @@ const Model = {
       }
 
       window.localStorage.removeItem('token')
+      window.localStorage.removeItem('authority')
     },
   },
   reducers: {
