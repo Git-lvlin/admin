@@ -42,7 +42,7 @@ export default (props) => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'money',
       search: false,
     },
     {
@@ -109,6 +109,12 @@ export default (props) => {
       rowKey="spuId"
       options={false}
       columns={columns}
+      postData={(data) => {
+        data.forEach(item => {
+          item.goodsSalePrice = item.goodsSalePrice/100
+        })
+        return data
+      }}
       request={todayAllGoodsList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

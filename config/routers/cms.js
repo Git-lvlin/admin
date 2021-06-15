@@ -73,6 +73,11 @@ export default {
       name: 'route-url-deploy',
       path: '/cms/route-url-deploy',
       component: './cms/route-url-deploy',
+    },
+    {
+      name: 'hot-search',
+      path: '/cms/hot-search',
+      component: './cms/hot-search',
     }
   ]
 }
