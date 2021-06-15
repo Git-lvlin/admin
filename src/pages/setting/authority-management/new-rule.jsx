@@ -46,7 +46,7 @@ export default (props) => {
         ...item,
         rule_type: values.ruleType,
         status: values.status ?? 1,
-        pid: (values.ruleType === 1 ? values.menuId : values.pageId) ?? 0,
+        pid: (values.ruleType !== 3 ? values.menuId : values.pageId) ?? 0,
         auth_open: 1,
         sort: 0
       }
