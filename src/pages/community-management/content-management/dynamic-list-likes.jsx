@@ -11,6 +11,7 @@ const columns= [
   {
       title: '会员ID',
       dataIndex: 'userId',
+      valueType: 'text',
   },
   {
       title: '会员昵称',
@@ -21,7 +22,7 @@ const columns= [
   return (
       <PageContainer>
           <ProTable
-            rowKey="userId"
+            rowKey="userId"z
             options={false}
             params={{
                 id

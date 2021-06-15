@@ -12,19 +12,26 @@ export default props => {
     const id=props.location.query.id
     const columns = [
         {
-            title: '评论ID：',
+            title: '评论ID',
             dataIndex: 'id',
             hideInSearch: true,
         },
         {
-            title: '会员ID：',
+            title: '会员ID',
             dataIndex: 'userId',
             hideInSearch: true,
         },
         {
             title: '会员昵称',
+            dataIndex: 'memberName',
+            valueType: 'text',
+            hideInTable:true
+        },
+        {
+            title: '会员昵称',
             dataIndex: 'userName',
             valueType: 'text',
+            hideInSearch:true
         },
         {
             title: '评论内容',
@@ -64,7 +71,7 @@ export default props => {
         rowKey="id"
         options={false}
         params={{
-            dynamicId:id
+            id
         }}
         request={CommentReplyList}
         search={{
