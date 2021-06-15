@@ -193,7 +193,8 @@ const HotGoos = () => {
       actionRef={actionRef}
       postData={(data) => {
         data.forEach(item => {
-          item.goodsSalePrice = parseInt(item.goodsSalePrice/100)
+          item.goodsSalePrice = item.goodsSalePrice/100
+          item.floatPercent = parseInt(item.floatPercent/100)
         })
         return data
       }}
