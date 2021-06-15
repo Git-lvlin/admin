@@ -9,6 +9,7 @@ import {
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload'
 import { uploadImageFormatConversion, amountTransform } from '@/utils/utils'
+import { EyeOutlined } from '@ant-design/icons';
 import * as api from '@/services/product-management/product-list';
 import styles from './edit.less'
 import FormModal from './form';
@@ -565,7 +566,7 @@ export default (props) => {
       />
       <ProFormDependency name={['freightTemplateId']}>
         {({ freightTemplateId }) => (
-          !!freightTemplateId && 
+          !!freightTemplateId &&
           <Form.Item
             name="freightTemplateId"
             label="选择运费模板"
@@ -620,18 +621,24 @@ export default (props) => {
       >
         <Upload disabled multiple maxCount={10} accept="image/*" size={500 * 4} />
       </Form.Item>
-      <Form.Item
+      {detailData.advImages && <Form.Item
         label="商品横幅"
         name="advImages"
       >
         <Upload disabled multiple maxCount={10} accept="image/*" dimension={{ width: 702, height: 320 }} size={500} />
-      </Form.Item>
-      <Form.Item
-        label="商品视频"
-        name="videoUrl"
-      >
-        <Upload disabled maxCount={1} accept="video/mp4" size={1024 * 20} />
-      </Form.Item>
+      </Form.Item>}
+      {detailData.videoUrl &&
+        <Form.Item
+          label="商品视频"
+          name="videoUrl"
+        >
+          <div className={styles.video_preview}>
+            <video width="100%" height="100%" src={detailData.videoUrl} />
+            <div>
+              <EyeOutlined onClick={() => { window.open(detailData.videoUrl, '_blank') }} style={{ color: '#fff', cursor: 'pointer' }} />
+            </div>
+          </div>
+        </Form.Item>}
       {detailData && <>
         <Form.Item
           label="创建时间"

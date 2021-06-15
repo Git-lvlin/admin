@@ -142,21 +142,21 @@ const TableList = () => {
           />
         </Spin>
       </Card>
-      <NewRule
+      {newRuleVisible && <NewRule
         visible={newRuleVisible}
         setVisible={setNewRuleVisible}
         callback={() => { getRuleList() }}
         menuTree={menuTree}
         pageTree={pageTree}
-      />
-      <Edit
+      />}
+      {editVisible && <Edit
         visible={editVisible}
         setVisible={setEditVisible}
         callback={() => { getRuleList() }}
         menuTree={menuTree}
         pageTree={pageTree}
         data={selectRule}
-      />
+      />}
     </PageContainer>
 
   );
