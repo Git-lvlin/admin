@@ -33,10 +33,8 @@ const upload = async (file, dirName) => {
       }
       resolve(res.url);
     }).catch(err => {
-      if (err.name.toLowerCase().indexOf('securitytokenexpired') !== -1) {
-        client = null;
-        return upload(file, dirName)
-      }
+      client = null;
+      return upload(file, dirName)
       console.log('上传失败：', err)
     })
   })
