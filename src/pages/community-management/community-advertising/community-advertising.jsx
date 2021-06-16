@@ -48,6 +48,12 @@ export default props => {
             title: '链接类型',
             dataIndex: 'linkType',
             valueType:'text',
+            valueEnum: {
+                0: '全部',
+                1: 'URL',
+                2: '商品',
+                3: '销售活动',
+            },
             hideInSearch:true,
         },
         {
@@ -64,6 +70,10 @@ export default props => {
             title: '状态',
             dataIndex: 'state',
             valueType: 'text',
+            valueEnum: {
+                1: '启用',
+                2: '停用',
+            },
             hideInSearch:true
         },
         {
@@ -92,7 +102,6 @@ export default props => {
         <ProTable
           rowKey="id"
           options={false}
-          params={{}}
           request={adsenseAdminList}
           search={{
               defaultCollapsed: false,

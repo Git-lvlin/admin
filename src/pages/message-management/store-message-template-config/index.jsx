@@ -3,6 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import * as api from '@/services/message-management/message-template-config';
 import Form from './form';
+import '../styles.less';
 
 import { Tabs } from 'antd';
 const { TabPane } = Tabs;

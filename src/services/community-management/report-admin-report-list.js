@@ -7,7 +7,7 @@ export const adminReportList= async (params, options = {}) => {
     data: {
         page,
         size,
-        status:`${status}`,
+        status:status&&`${status}`||'3',
         type:`${type}`
     },
     ...options

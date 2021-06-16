@@ -97,7 +97,6 @@ export default (props) => {
         key="templateTitle"
         name="templateTitle"
         label="消息标题"
-        placeholder="请输入消息标题"
         width="md"
         rules={[
           {
@@ -111,7 +110,7 @@ export default (props) => {
         key='templateCopywritingContent'
         name="templateCopywritingContent"
         label="消息内容"
-        placeholder="请输入消息内容"
+        placeholder=""
         width="md"
         rules={[
           {

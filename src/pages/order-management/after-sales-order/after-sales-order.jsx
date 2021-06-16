@@ -115,7 +115,6 @@ const columns = [
   {
     title: '退款状态',
     dataIndex: 'refundStatus',
-    onFilter: true,
     valueEnum: sourceType,
     colSize: .8,
     align: 'center',
@@ -127,7 +126,6 @@ const columns = [
     valueType: 'option',
     align: 'center',
     render: (_, record) => {
-      // TODO:查看详情
       return (
         <>
           <a onClick={ () => {history.push(`/order-management/after-sales-order/detail/${record.afterSalesNumber}`)} }>查看详情</a>
@@ -185,7 +183,6 @@ const afterSalesOrder = () => {
         params={{
           selectType: 1
         }}
-        // TODO:调接口
         request={dataSource}
         actionRef={actionRef}
         search={{

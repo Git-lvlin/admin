@@ -92,13 +92,24 @@ export default props => {
     },
     {
         title: '处理结果',
-        dataIndex: 'handlerResult',
+        dataIndex: 'status',
         valueType: 'select',
         valueEnum: {
             1: '忽略',
             2: '屏蔽',
-        }
+        },
+        hideInTable:true
     },
+    {
+        title: '处理结果',
+        dataIndex: 'handlerResult',
+        valueType: 'text',
+        valueEnum: {
+            1: '忽略',
+            2: '屏蔽',
+        },
+        hideInSearch:true
+  },
     {
         title: '操作人',
         dataIndex: 'handlerUserId',
@@ -164,7 +175,6 @@ export default props => {
             params={{
               page:0,
               size:5,
-              status:3,
               type:'2'
             }}
             request={adminReportList}

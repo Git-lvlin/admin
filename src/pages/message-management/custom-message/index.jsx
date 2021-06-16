@@ -6,6 +6,7 @@ import * as api from '@/services/message-management/message-template-config';
 import { history } from 'umi';
 import { Space, Button, Tooltip } from 'antd';
 import Edit from './edit';
+import '../styles.less';
 
 const index = () => {
   const [formVisible, setFormVisible] = useState(false)

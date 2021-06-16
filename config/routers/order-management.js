@@ -51,6 +51,17 @@ export default {
       path: '/order-management/after-sales-order/detail/:id',
       component: './order-management/after-sales-order/detail',
       hideInMenu: true,
+    },
+    {
+      name: 'intervention-list',
+      path: '/order-management/intervention-list',
+      component: './order-management/intervention-list'
+    },
+    {
+      name: 'details',
+      path: '/order-management/intervention-list/details/:id',
+      component: './order-management/intervention-list/detail',
+      hideInMenu: true,
     }
   ]
 }
