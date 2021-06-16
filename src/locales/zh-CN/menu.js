@@ -145,4 +145,5 @@ export default {
 
   'menu.daifa-store-management':'代发店管理',
   'menu.daifa-store-management.list':'代发店列表',
+  'menu.daifa-store-management.consultant-product-list':'代发店顾问商品列表',
 };

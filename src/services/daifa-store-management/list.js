@@ -42,3 +42,11 @@ export const storeEdit = (params = {}, options = {}) => {
     ...options,
   });
 }
+
+export const statusSwitch = (params = {}, options = {}) => {
+  return request('/auth/store/AgentShop/status', {
+    method: 'POST',
+    data: params,
+    ...options,
+  });
+}
