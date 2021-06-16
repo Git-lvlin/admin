@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Select } from 'antd';
 import { brand } from '@/services/product-management/brand-list';
 
-const BrandSelect = ({ value, onChange, }) => {
+const BrandSelect = ({ value, onChange, ...rest }) => {
   const [brandData, setBrandData] = useState([]);
 
   useEffect(() => {
@@ -25,6 +25,7 @@ const BrandSelect = ({ value, onChange, }) => {
       value={value}
       onChange={changeHandle}
       allowClear
+      {...rest}
     />
   )
 }

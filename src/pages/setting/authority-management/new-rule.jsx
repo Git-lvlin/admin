@@ -46,7 +46,7 @@ export default (props) => {
         ...item,
         rule_type: values.ruleType,
         status: values.status ?? 1,
-        pid: (values.ruleType === 1 ? values.menuId : values.pageId) ?? 0,
+        pid: (values.ruleType !== 3 ? values.menuId : values.pageId) ?? 0,
         auth_open: 1,
         sort: 0
       }
@@ -178,7 +178,11 @@ export default (props) => {
                           fieldKey={[field.fieldKey, 'title']}
                           placeholder={placeholderType[ruleType].title}
                           rules={[{ required: true, message: placeholderType[ruleType].title }]}
-                          width="md"
+                          fieldProps={{
+                            style: {
+                              width: 328
+                            }
+                          }}
                           key="1"
                         />
                         &nbsp;
@@ -188,8 +192,12 @@ export default (props) => {
                           fieldKey={[field.fieldKey, 'name']}
                           placeholder={placeholderType[ruleType].name}
                           rules={[{ required: true, message: placeholderType[ruleType].name }]}
-                          width="md"
                           key="2"
+                          fieldProps={{
+                            style: {
+                              width: 328
+                            }
+                          }}
                         />
                       </List.Item>
                     )

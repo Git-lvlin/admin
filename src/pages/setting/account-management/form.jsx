@@ -6,8 +6,8 @@ import {
   ProFormSelect,
 } from '@ant-design/pro-form';
 import { Form } from 'antd';
-
 import { adminAdd, adminEdit } from '@/services/setting/account-management'
+import md5 from 'blueimp-md5';
 
 export default (props) => {
   const { visible, setVisible, adminGroupList, callback, onClose, data } = props;
@@ -32,6 +32,7 @@ export default (props) => {
     if (data) {
       obj.id = data.id;
     }
+    // obj.password = md5(obj.password)
     return apiMethod(obj, { showSuccess: true })
   }
 
@@ -49,7 +50,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title="新建账号"
+      title={`${data ? '编辑' : '新建'}账号`}
       modalProps={{
         onCancel: () => onClose(),
       }}
@@ -92,7 +93,7 @@ export default (props) => {
         fieldProps={{
           visibilityToggle: false,
         }}
-        required
+        rules={[{ required: !data, message: '请输入登录密码' }]}
       />
 
       <ProFormSelect
@@ -100,7 +101,7 @@ export default (props) => {
         width="md"
         name="group_id"
         label="选择角色"
-        required
+        rules={[{ required: !data, message: '请选择角色' }]}
       />
 
       <ProFormRadio.Group

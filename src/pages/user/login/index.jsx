@@ -11,6 +11,7 @@ import { history } from 'umi';
 import * as api from '@/services/login';
 import { getPageQuery } from '@/utils/utils';
 import styles from './index.less';
+import md5 from 'blueimp-md5';
 
 const Login = () => {
   const [randstr, setRandstr] = useState(Math.random());
@@ -22,6 +23,7 @@ const Login = () => {
     api.login({
       name,
       passwd,
+      // passwd: md5(passwd),
       vertycode,
       randstr: `${randstr}`,
     }, { showError: true, noAuth: true }).then(res => {
@@ -35,6 +37,7 @@ const Login = () => {
         }
 
         window.localStorage.setItem('token', res.data.token)
+        window.localStorage.setItem('nickname', res.data.nickname)
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         message.success('登录成功！');

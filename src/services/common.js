@@ -7,3 +7,31 @@ export const getExpressList = (params, options = {}) => {
     ...options
   });
 }
+
+export const categoryAll = (params = {}, options = {}) => {
+  return request('/auth/goods/product/categoryAll', {
+    method: 'GET',
+    params,
+    ...options
+  });
+}
+
+export const supplierList = (params = {}, options = {}) => {
+  return request('/auth/supplier/user/commonList', {
+    method: 'GET',
+    params: {
+      page:1,
+      size: 9999,
+      ...params,
+    },
+    ...options
+  });
+}
+
+export const cacheUserAuths = (params, options = {}) => {
+  return request('/auth/rule/userRule', {
+    method: 'GET',
+    params,
+    ...options
+  });
+}

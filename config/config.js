@@ -17,6 +17,7 @@ import messageManagement from './routers/message-management';
 import cms from './routers/cms'
 import businessSchool from './routers/business-school'
 import communityManagement from './routers/community-management'
+import DaifaStoreManagement from './routers/daifa-store-management'
 
 
 
@@ -59,7 +60,7 @@ export default defineConfig({
           routes: [
             {
               path: '/',
-              redirect: '/product-management/product-list',
+              redirect: '/workplace',
             },
             {
               path: '/workplace',
@@ -79,6 +80,7 @@ export default defineConfig({
             couponManagement,
             cms,
             communityManagement,
+            DaifaStoreManagement,
             {
               path: '/price-comparsion-management',
               name: 'price-comparsion-management',

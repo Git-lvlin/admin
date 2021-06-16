@@ -97,22 +97,26 @@ const TableList = () => {
         1: '待开始',
         2: '进行中',
         3: '已结束',
-        4: '已终止'
+        4: '已中止'
       }
     },
     {
       title: '操作',
       dataIndex: 'option',
-      valueType: 'option',
+      valueType: 'text',
       render: (_, data) => (
         <Space>
-          <a onClick={() => { history.push(`/single-contract-activity-management/activity-product/${data.id}`) }}>活动商品</a>
-          <a onClick={() => { history.push(`/single-contract-activity-management/activity-detail/${data.id}`) }}>详情</a>
+          <a
+            onClick={() => {
+              history.push(`/single-contract-activity-management/activity-product/${data.id}`)
+            }}>
+            活动商品</a>
+          <a onClick={() => { history.push(`/single-contract-activity-management/activity-detail/${data.id} `) }}>详情</a>
           {data.activityStatus === 1
             &&
             <>
               <a onClick={() => { getDetail(data.id) }}>编辑</a>
-              <a onClick={() => { activityStop(data.id) }}>终止</a>
+              <a onClick={() => { activityStop(data.id) }}>中止</a>
             </>
           }
         </Space>
@@ -150,6 +154,7 @@ const TableList = () => {
           setVisible={setVisible}
           callback={() => { actionRef.current.reload() }}
           detailData={detailData}
+          onClose={() => { setDetailData(null) }}
         />
       }
     </PageContainer>

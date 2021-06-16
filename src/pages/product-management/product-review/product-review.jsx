@@ -5,9 +5,10 @@ import { PageContainer } from '@ant-design/pro-layout';
 import * as api from '@/services/product-management/product-review'
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
+import SupplierSelect from '@/components/supplier-select'
 import FirstReview from './first-review';
 import SecondReview from './second-review';
-import { typeTransform } from '@/utils/utils'
+import { typeTransform, amountTransform } from '@/utils/utils'
 
 
 
@@ -171,12 +172,20 @@ const TableList = () => {
       }
     },
     {
-      title: '商家名称',
+      title: '供应商名称',
       dataIndex: 'supplierName',
       valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '供应商名称',
+      dataIndex: 'supplierId',
+      valueType: 'text',
       fieldProps: {
-        placeholder: '请输入商家名称'
-      }
+        placeholder: '请输入供应商名称'
+      },
+      renderFormItem: () => <SupplierSelect />,
+      hideInTable: true,
     },
     {
       title: '供货类型',
@@ -197,6 +206,14 @@ const TableList = () => {
       dataIndex: 'name',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => {
+        const { goodsSaleMinPrice, goodsSaleMaxPrice } = data;
+        if (goodsSaleMinPrice === goodsSaleMaxPrice) {
+          return amountTransform(goodsSaleMinPrice, '/');
+        }
+
+        return `${amountTransform(goodsSaleMinPrice, '/')}~${amountTransform(goodsSaleMaxPrice, '/')}`
+      }
     },
     {
       title: '可用库存',
@@ -210,15 +227,15 @@ const TableList = () => {
     //   valueType: 'text',
     //   hideInSearch: true,
     // },
-    {
-      title: '审核状态',
-      dataIndex: 'goodsVerifyState',
-      onFilter: true,
-      valueType: 'select',
-      valueEnum: typeTransform(config.goodsVerifyState),
-      hideInTable: true,
+    // {
+    //   title: '审核状态',
+    //   dataIndex: 'goodsVerifyState',
+    //   onFilter: true,
+    //   valueType: 'select',
+    //   valueEnum: typeTransform(config.goodsVerifyState),
+    //   hideInTable: true,
 
-    },
+    // },
     {
       title: '审核状态',
       dataIndex: 'goodsVerifyStateDisplay',

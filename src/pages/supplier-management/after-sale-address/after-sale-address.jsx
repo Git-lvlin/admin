@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card } from 'antd';
+import { Button, Card, Space } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
 import { addressList, addressDetail } from '@/services/supplier-management/after-sale-address'
 import { useParams } from 'umi';
@@ -26,7 +26,7 @@ const TableList = () => {
   const columns = [
     {
       title: '序号',
-      dataIndex: 'brandName',
+      dataIndex: 'id',
       valueType: 'text',
     },
     {
@@ -67,7 +67,14 @@ const TableList = () => {
       dataIndex: 'brandName',
       valueType: 'options',
       render: (_, data) => {
-        return <a onClick={() => { getDetail(data.id) }}>编辑</a>
+        return (
+          <Space>
+            <a onClick={() => { getDetail(data.id) }}>禁用</a>
+            <a onClick={() => { getDetail(data.id) }}>开启</a>
+            <a onClick={() => { getDetail(data.id) }}>设为默认</a>
+            <a onClick={() => { getDetail(data.id) }}>编辑</a>
+          </Space>
+        )
       }
     },
   ];

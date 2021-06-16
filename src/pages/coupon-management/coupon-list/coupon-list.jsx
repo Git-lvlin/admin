@@ -1,29 +1,17 @@
 import React, { useState, useRef } from 'react';
-import { Button, Input, Space,Form } from 'antd';
+import { Button} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { DownOutlined,ManOutlined, WomanOutlined } from '@ant-design/icons';
-import moment from 'moment';
 import XLSX from 'xlsx'
 import { couponList } from '@/services/coupon-management/coupon-list';
-import { couponAddQuantity } from '@/services/coupon-management/coupon-addquantity';
-import { couponEnd } from '@/services/coupon-management/coupon-end';
-import  ProForm,{ ModalForm,ProFormSelect} from '@ant-design/pro-form';
-import * as api from '@/services/product-management/product-list';
-import { amountTransform, typeTransform } from '@/utils/utils'
-// import styles from '../style.less'
+import AddModel from './add-model'
+import EndModel from './end-model'
 import { history,connect } from 'umi';
 
 
 const TableList = (props) => {
+  const ref=useRef()
   const { dispatch,Detail }=props
-  const [discounts,setDiscounts]=useState('');
-  const [visible, setVisible] = useState(false);
-  const [visible2, setVisible2] = useState(false);
-  const [records,setRecords]=useState(0)
-  const onDiscounts=e=>{
-    setDiscounts(e.target.value)
-  }
   const columns= [
     {
       title: '优惠券名称',
@@ -52,12 +40,6 @@ const TableList = (props) => {
       },
       hideInSearch: true,
     },
-    // {
-    //   title: '发行总金额（元）',
-    //   dataIndex: 'issueQuantity',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    // },
     {
       title: '发行总数量（张）',
       dataIndex: 'issueQuantity',
@@ -81,7 +63,7 @@ const TableList = (props) => {
       dataIndex: 'activityTimeDisplay',
       valueType: 'text',
       hideInSearch: true,
-      width:120
+      ellipsis:true
     },
     {
       title: '创建时间',
@@ -111,76 +93,21 @@ const TableList = (props) => {
       key: 'option',
       width: 120,
       valueType: 'option',
-      render: (text, record, _, action) => [
+      render: (_, data) => [
       <a
           key="a"
-          onClick={()=>Examine(record.id)}
+          onClick={()=>{
+            console.log('data',data)
+            Examine(data.id)
+          }}
         >
           查看
       </a>,
-
-      <ModalForm
-        title="增发优惠券"
-        key="model1"
-        onVisibleChange={setVisible}
-        visible={visible}
-        trigger={record.couponStatus==3||record.couponStatus==4?null:<a onClick={()=>Additional(record)}>增发</a>}
-        submitter={{
-        render: (props, defaultDoms) => {
-            return [
-            ...defaultDoms
-            ];
-        },
-        }}
-        onFinish={async (values) => {
-        console.log('values',values);
-        couponAddQuantity({id:record.id,issueQuantity:values.issueQuantity}).then(res=>{
-            console.log('res',res)
-        })
-        setVisible(false)
-        message.success('提交成功');
-        return true;
-        }}
-    >
-       <p>当前总发行量：<span>{records}</span> 张</p>
-       <ProForm.Group>
-           <Form.Item  name="issueQuantity" label="新增发行量">
-              <Input onChange={onDiscounts} style={{width:'250px'}}/>    
-          </Form.Item>
-          <span>张</span>
-        </ProForm.Group>
-      <p>更新后总发行量:<span style={{margin:'0 20px'}}>{discounts&&parseInt(discounts)+records}</span>张</p>
-    </ModalForm>,
-
-    <ModalForm
-        title="操作提示"
-        key="model2"
-        onVisibleChange={setVisible2}
-        visible={visible2}
-        trigger={record.couponStatus==3||record.couponStatus==4?null:<a onClick={Termination}>终止</a>}
-        submitter={{
-        render: (props, defaultDoms) => {
-            return [
-            ...defaultDoms
-            ];
-        },
-        }}
-        onFinish={async (values) => {
-        console.log('values',values);
-        couponEnd({id:record.id}).then(res=>{
-            console.log('res',res)
-        })
-        setVisible2(false)
-        message.success('提交成功');
-        return true;
-        }}
-    >
-       <p>确定要终止所选优惠券活动吗？</p>
-    </ModalForm>,
-    
+      <AddModel boxref={ref} data={data}/>,
+      <EndModel boxref={ref} data={data}/>,
       <a
         key="a"
-        onClick={()=>CodeLibrary(record.id)}
+        onClick={()=>CodeLibrary(data.id)}
       >
         码库
       </a>
@@ -188,6 +115,7 @@ const TableList = (props) => {
     },
     
   ];
+ 
   //跳转到新建页面
   const Examine=(id)=>{
     history.push(`/coupon-management/coupon-list/construction?id=`+id);
@@ -196,38 +124,21 @@ const TableList = (props) => {
       payload:{id:id}
     })
   }
-  //增发
-  const Additional=(record)=>{
-      setRecords(record.issueQuantity)
-      setVisible(true)
-  }
-  //终止
-  const Termination=()=>{
-      setVisible2(true)
-  }
+ 
   // 跳转到码库
   const CodeLibrary=(id)=>{
     history.push(`/coupon-management/coupon-list/coupon-codebase?id=`+id);
   }
 
-
-//导出
-const exportExcel = (searchConfig) => {
-  // console.log('searchConfig',searchConfig.form.getFieldsValue())
-  couponList({}).then(res => {
-    console.log('res',res)
-      const data = res.data.map(item => {
-        const { ...rest } = item;
-        return {
-          ...rest,
-          // couponName: amountTransform(rest.couponName, '/'),
-          // couponType: amountTransform(rest.couponType, '/'),
-          // useType: amountTransform(rest.useType, '/'),
-          // issueQuantity: amountTransform(rest.issueQuantity, '/'),
-          // lqCouponQuantity: amountTransform(rest.lqCouponQuantity, '/'),
-          // activityTimeDisplay: amountTransform(rest.activityTimeDisplay, '/'),
-          // adminName: amountTransform(rest.adminName, '/'),
-          // couponStatus: amountTransform(rest.couponStatus, '/'),
+  //导出
+  const exportExcel = (searchConfig) => {
+    // console.log('searchConfig',searchConfig.form.getFieldsValue())
+    couponList({}).then(res => {
+      console.log('res',res)
+        const data = res.data.map(item => {
+          const { ...rest } = item;
+          return {
+            ...rest
           }
         });
         const wb = XLSX.utils.book_new();
@@ -272,6 +183,7 @@ const exportExcel = (searchConfig) => {
   return (
     <PageContainer>
       <ProTable
+        actionRef={ref}
         rowKey="id"
         options={false}
         params={{
@@ -283,6 +195,9 @@ const exportExcel = (searchConfig) => {
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
+          <Button onClick={()=>{ref.current.reload()}} key="refresh">
+            刷新
+          </Button>,
           <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
             导出数据
           </Button>

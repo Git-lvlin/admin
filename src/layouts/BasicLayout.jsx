@@ -7,14 +7,16 @@ import ProLayout, {
   // DefaultFooter,
   SettingDrawer
 } from '@ant-design/pro-layout';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { Link, useIntl, connect, history } from 'umi';
 // import { GithubOutlined } from '@ant-design/icons';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
+import { setAuthority, getAuthority } from '@/utils/authority';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/logo.svg';
+import { cacheUserAuths } from '@/services/common';
 import './BasicLayout.less'
 
 const noMatch = (
@@ -31,14 +33,7 @@ const noMatch = (
 );
 
 /** Use Authorized check all menu item */
-const menuDataRender = (menuList) =>
-  menuList.map((item) => {
-    const localItem = {
-      ...item,
-      children: item.children ? menuDataRender(item.children) : undefined,
-    };
-    return Authorized.check(item.authority, localItem, null);
-  });
+
 
 // const defaultFooterDom = (
 //   <DefaultFooter
@@ -76,12 +71,40 @@ const BasicLayout = (props) => {
     },
   } = props;
   const menuDataRef = useRef([]);
+  const [auth, setAuth] = useState(getAuthority);
+
+
+  const menuDataRender = useCallback(
+    (menuList) => {
+      // const auth = getAuthority();
+      if (!auth) {
+        return null;
+      }
+      return menuList.map((item) => {
+        const localItem = {
+          ...item,
+          children: item.children ? menuDataRender(item.children) : undefined,
+        };
+        return auth.find(it => it.name === item.path.substring(1)) ? localItem : null;
+        // return localItem;
+      });
+    },
+    [auth],
+  )
+
   useEffect(() => {
     // if (dispatch) {
     //   dispatch({
     //     type: 'user/fetchCurrent',
     //   });
     // }
+    cacheUserAuths()
+      .then(res => {
+        if (res.code === 0) {
+          setAuthority(res.data)
+          setAuth(res.data);
+        }
+      })
   }, []);
   /** Init variables */
 
@@ -104,68 +127,61 @@ const BasicLayout = (props) => {
   const { formatMessage } = useIntl();
   return (
     <>
-      <ProLayout
-        logo={logo}
-        formatMessage={formatMessage}
-        {...props}
-        {...settings}
-        onCollapse={handleMenuCollapse}
-        onMenuHeaderClick={() => history.push('/')}
-        menuItemRender={(menuItemProps, defaultDom) => {
-          if (
-            menuItemProps.isUrl ||
-            !menuItemProps.path ||
-            location.pathname === menuItemProps.path
-          ) {
-            return defaultDom;
-          }
+      {
+        auth && <ProLayout
+          logo={logo}
+          formatMessage={formatMessage}
+          {...props}
+          {...settings}
+          onCollapse={handleMenuCollapse}
+          onMenuHeaderClick={() => history.push('/')}
+          menuItemRender={(menuItemProps, defaultDom) => {
+            if (
+              menuItemProps.isUrl ||
+              !menuItemProps.path ||
+              location.pathname === menuItemProps.path
+            ) {
+              return defaultDom;
+            }
 
-          return <Link to={menuItemProps.path}>{defaultDom}</Link>;
-        }}
-        breadcrumbRender={(routers = []) => [
-          {
-            path: '/',
-            breadcrumbName: formatMessage({
-              id: 'menu.home',
-            }),
-          },
-          ...routers,
-        ]}
-        itemRender={(route, params, routes, paths) => {
-          const first = routes.indexOf(route) === 0;
-          return first ? (
-            <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
-          ) : (
-            <span>{route.breadcrumbName}</span>
-          );
-        }}
-        footerRender={() => {
-          // if (settings.footerRender || settings.footerRender === undefined) {
-          //   return defaultFooterDom;
-          // }
+            return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+          }}
+          breadcrumbRender={(routers = []) => [
+            {
+              path: '/',
+              breadcrumbName: formatMessage({
+                id: 'menu.home',
+              }),
+            },
+            ...routers,
+          ]}
+          itemRender={(route, params, routes, paths) => {
+            const first = routes.indexOf(route) === 0;
+            return first ? (
+              <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
+            ) : (
+              <span>{route.breadcrumbName}</span>
+            );
+          }}
+          footerRender={() => {
+            // if (settings.footerRender || settings.footerRender === undefined) {
+            //   return defaultFooterDom;
+            // }
 
-          return null;
-        }}
-        menuDataRender={menuDataRender}
-        rightContentRender={() => <RightContent />}
-        postMenuData={(menuData) => {
-          menuDataRef.current = menuData || [];
-          return menuData || [];
-        }}
-      >
-        <Authorized authority={authorized.authority} noMatch={noMatch}>
-          {children}
-        </Authorized>
-      </ProLayout>
-      {/* <SettingDrawer
-        settings={settings}
-        onSettingChange={(config) =>
-          dispatch({
-            type: 'settings/changeSetting',
-            payload: config,
-          })
-        }
-      /> */}
+            return null;
+          }}
+          menuDataRender={menuDataRender}
+          rightContentRender={() => <RightContent />}
+          postMenuData={(menuData) => {
+            menuDataRef.current = menuData || [];
+            return menuData || [];
+          }}
+        >
+          <Authorized authority={authorized.authority} noMatch={noMatch}>
+            {children}
+          </Authorized>
+        </ProLayout>
+      }
     </>
   );
 };

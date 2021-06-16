@@ -1,25 +1,13 @@
 import React, { useRef, useState, useEffect  } from 'react';
-import { Button, message, Form, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import ProForm, {
-  ModalForm,
-  DrawerForm,
-  ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
-} from '@ant-design/pro-form';
-import { PlusOutlined } from '@ant-design/icons';
-import MemberReg from '@/components/member-reg';
-import Upload from '@/components/upload';
-import { hotGoosAdd } from '@/services/cms/member/member';
-import {spaceInfoList, hotGoosList, goosAllList} from '@/services/cms/member/member';
+import { message } from 'antd';
+import ProTable from '@ant-design/pro-table';
+import { ModalForm } from '@ant-design/pro-form';
+import { priceListAdd } from '@/services/cms/member/member';
+import { goodsAllList } from '@/services/cms/member/member';
 import GcCascader from '@/components/gc-cascader'
 
-
-
-
 export default (props) => {
-  const { setVisible, onClose, visible } = props;
+  const { setVisible, setFlag, visible } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
   const columns = [
@@ -54,14 +42,14 @@ export default (props) => {
     },
     {
       title: '秒约价',
-      dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      dataIndex: 'salePrice',
+      valueType: 'money',
       search: false,
     },
     {
       title: '市场价',
-      dataIndex: 'price',
-      valueType: 'number',
+      dataIndex: 'marketPrice',
+      valueType: 'money',
       search: false,
     },
     {
@@ -72,22 +60,20 @@ export default (props) => {
     },
     {
       title: '销量',
-      dataIndex: 'goodsSaleNum',
+      dataIndex: 'saleNum',
       valueType: 'number',
       search: false,
     },
   ];
 
-  const waitTime = (values) => {
-    const { ...rest } = values
-  
+  const waitTime = () => {
     const param = {
-      spuIds: arr,
-      ...rest
+      ids: arr.toString(),
     }
     return new Promise((resolve) => {
-      hotGoosAdd(param).then((res) => {
+      priceListAdd(param).then((res) => {
         if (res.code === 0) {
+          setFlag(true)
           resolve(true);
         }
       })
@@ -111,13 +97,10 @@ export default (props) => {
           resetText: '取消',
         },
       }}
-      // drawerProps={{
-      //   forceRender: true,
-      //   destroyOnClose: true,
-      //   onClose: () => {
-      //     onClose();
-      //   }
-      // }}
+      drawerProps={{
+        forceRender: true,
+        destroyOnClose: true,
+      }}
       onFinish={async (values) => {
         await waitTime(values);
         message.success('提交成功');
@@ -126,39 +109,25 @@ export default (props) => {
       }}
     >
 <ProTable
-      rowKey="id"
+      rowKey="skuId"
       options={false}
       columns={columns}
-      // params={}
-      request={goosAllList}
+      postData={(data) => {
+        data.forEach(item => {
+          item.salePrice = parseInt(item.salePrice/100)
+          item.marketPrice = parseInt(item.marketPrice/100)
+        })
+        return data
+      }}
+      params={{goodsState: 1}}
+      request={goodsAllList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项
         // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
       }}
-      // tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
-      //   <Space size={24}>
-      //     <span>
-      //       已选 {selectedRowKeys.length} 项
-      //       <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
-      //         取消选择
-      //       </a>
-      //     </span>
-      //     <span>{`待发布: ${selectedRows.reduce(
-      //       (pre, item) => pre + item.containers,
-      //       0,
-      //     )} 个`}</span>
-      //     <span>{`已发布: ${selectedRows.reduce(
-      //       (pre, item) => pre + item.callNumber,
-      //       0,
-      //     )} 个`}</span>
-      //   </Space>
-      // )}
       tableAlertOptionRender={(a) => {
         setArr(a.selectedRowKeys.toString())
-      }}
-      editable={{
-        type: 'multiple',
       }}
       search={{
         labelWidth: 'auto',

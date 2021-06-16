@@ -7,9 +7,11 @@ import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import { amountTransform } from '@/utils/utils'
+import SupplierSelect from '@/components/supplier-select'
+
 
 export default (props) => {
-  const { visible, setVisible, data, callback } = props;
+  const { visible, setVisible, data, callback, title = '选择活动商品' } = props;
   const [selectedRowKeys, setSelectedRowKeys] = useState(data.map(item => item.id));
   const [selectItems, setSelectItems] = useState(data);
 
@@ -59,6 +61,23 @@ export default (props) => {
       )
     },
     {
+      title: '供应商名称',
+      dataIndex: 'supplierId',
+      valueType: 'text',
+      hideInTable: true,
+      renderFormItem: () => <SupplierSelect />
+    },
+    {
+      title: '结算模式',
+      dataIndex: 'settleType',
+      valueType: 'select',
+      hideInTable: true,
+      valueEnum: {
+        1: '佣金模式',
+        2: '底价模式',
+      },
+    },
+    {
       title: '商品分类',
       dataIndex: 'gcId',
       renderFormItem: () => (<GcCascader />),
@@ -93,7 +112,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={`选择活动商品`}
+      title={title}
       modalProps={{
       }}
       onVisibleChange={setVisible}
@@ -111,6 +130,11 @@ export default (props) => {
         rowKey="skuId"
         options={false}
         request={productList}
+        params={{
+          goodsState: 1,
+          goodsVerifyState: 1,
+          hasStock: 1,
+        }}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,

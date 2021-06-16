@@ -175,6 +175,7 @@ const TableList = () => {
         setVisible={setVisible}
         spuId={selectId}
         operateRole={typeTransform(config.operateRole)}
+        operatorAction={typeTransform(config.goodsOperatorActionType)}
       />
     </PageContainer>
 

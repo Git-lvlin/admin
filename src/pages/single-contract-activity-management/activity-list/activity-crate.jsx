@@ -56,7 +56,7 @@ export default (props) => {
       width: 300,
       render: (_, data) => (
         <div style={{ display: 'flex' }}>
-          <img width="50" height="50" src={data.goodsImageUrl} />
+          <img width="50" height="50" src={data.imageUrl} />
           <div style={{ marginLeft: 10, wordBreak: 'break-all' }}>{_}</div>
         </div>
       )
@@ -100,7 +100,7 @@ export default (props) => {
       dataIndex: 'activityPrice',
       valueType: 'text',
       editable: (_, data) => {
-        return data.settleType !== 2
+        return data.settleType !== 1
       },
       width: 100,
       fieldProps: {
@@ -193,19 +193,14 @@ export default (props) => {
         forceRender: true,
         destroyOnClose: true,
         width: 1300,
-        onCancel: () => {
+        onClose: () => {
           onClose();
         }
       }}
       form={form}
       onFinish={async (values) => {
-        try {
-          await submit(values);
-          return true;
-        } catch (error) {
-          console.log('error', error)
-        }
-
+        await submit(values);
+        return true;
       }}
       visible={visible}
       initialValues={{
@@ -238,7 +233,17 @@ export default (props) => {
         min={1}
         max={999}
         step
-        rules={[{ required: true, message: '请输入参团人数' }]}
+        rules={[
+          { required: true, message: '请输入参团人数' },
+          () => ({
+            validator(_, value) {
+              if (`${value}`.indexOf('.') !== -1) {
+                return Promise.reject(new Error('请输入整数'));
+              }
+              return Promise.resolve();
+            },
+          })
+        ]}
         extra={<><span style={{ position: 'absolute', left: 280, top: 5 }}>人</span></>}
         width="md"
       />
@@ -250,7 +255,17 @@ export default (props) => {
         min={1}
         max={96}
         step
-        rules={[{ required: true, message: '请输入单约拼约时长' }]}
+        rules={[
+          { required: true, message: '请输入单约拼约时长' },
+          () => ({
+            validator(_, value) {
+              if (`${value}`.indexOf('.') !== -1) {
+                return Promise.reject(new Error('请输入1-96之间的整数'));
+              }
+              return Promise.resolve();
+            },
+          })
+        ]}
         extra={<><span style={{ position: 'absolute', left: 270, top: 5 }}>小时</span></>}
         width="md"
       />
@@ -290,7 +305,7 @@ export default (props) => {
         <Space style={{ marginBottom: 10 }}>
           <Button type="primary" onClick={() => { setFormVisible(true) }}>选择活动商品</Button>
           <Button type="primary" disabled={selectedRowKeys.length === 0} onClick={() => { batchCancel() }}>批量取消</Button>
-          <Button type="primary" onClick={() => { }}>批量导入</Button>
+          {/* <Button type="primary" onClick={() => { }}>批量导入</Button> */}
         </Space>
         {
           !!tableData.length &&

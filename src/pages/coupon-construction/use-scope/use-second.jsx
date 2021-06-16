@@ -1,17 +1,16 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Form, Button, Modal,Tabs,Select} from 'antd';
+import { Form, Button, Modal,Select} from 'antd';
 import { FormattedMessage } from 'umi';
 import { ModalForm,ProFormSelect,ProFormRadio} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import styles from '../style.less'
-import {commonSpuList}  from '@/services/coupon-construction/coupon-searchsku';
-import {classList} from '@/services/coupon-construction/coupon-classlist'
+import {commonSpuList}  from '@/services/coupon-construction/coupon-common-spu-list';
+import {classList} from '@/services/coupon-construction/coupon-class-list'
 import BrandSelect from '@/components/brand-select'
-import { history,connect } from 'umi';
-const { TabPane } = Tabs;
+import { connect } from 'umi';
 
 const useSecond=(props)=>{
-    const {id,dispatch,DetailList}=props
+    const {id,dispatch,DetailList, UseScopeList}=props
     const columns = [
         {
             title: 'spuID',
@@ -20,10 +19,9 @@ const useSecond=(props)=>{
         {
             title: '商品图片',
             dataIndex: 'goodsImageUrl',
-            width:50,
             valueType: 'text',
             hideInSearch: true,
-            // ellipsis:true
+            ellipsis:true
         },
         {
             title: '商品名称',
@@ -97,9 +95,9 @@ const useSecond=(props)=>{
         },
         {
             title: '商品图片',
-            dataIndex: 'goodsImageUrl',
-            width:50,
+            dataIndex: 'goodsImageUrl', 
             valueType: 'text',
+            ellipsis:true
         },
         {
             title: '商品名称',
@@ -137,48 +135,57 @@ const useSecond=(props)=>{
             ]
          }
     ];
+    const columns4=[
+        {
+           title: '分类',
+           dataIndex: 'gcName',
+        }
+     ]
     //删除品类
     const delType=key=>{
-        console.log('key',key)
         setCates([])
         dispatch({
             type:'UseScopeList/fetchLookUnit',
             payload:{
-                unit:null
+                unit:''
             }
         })
+        setFlag(true)
     }
+    
     //删除商品
-    const delGoods=val=>{
-        setGoods(goods.filter(ele=>(
-            ele.spuId!=val
-        )))
-        console.log('goods',goods)
-    //     let box=''
-    //     goods.map(ele=>{
-    //         box+=ele.spuId+','
-    //     })
-    //     box=box.substring(0,box.length-1)
-    //     console.log('box',box)
-    //    setSpuIds(box)
-    //     dispatch({
-    //         type:'UseScopeList/fetchLookSpuIds',
-    //         payload:{
-    //             spuIds:spuIds.substring(0,spuIds.length-1)
-    //         }
-    //     })
+    const  delGoods=val=>{
+        let arr =  UseScopeList.UseScopeObje.spuIds.split(',')
+        dispatch({
+            type:'UseScopeList/fetchLookSpuIds',
+            payload:{
+                spuIds:arr.filter(ele=>(
+                            ele!=val
+                        )).toString()
+            }
+        })
+        dispatch({
+            type:'UseScopeList/fetchLookSpuIdsArr',
+            payload:{
+                spuIdsArr:UseScopeList.UseScopeObje.spuIdsArr.filter(ele=>(
+                            ele.id!=val
+                ))
+            }
+        })
+        if(UseScopeList.UseScopeObje.spuIdsArr.length==1){
+            setLoading(true)
+        }
+       
     }
     const actionRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading,setLoading]=useState(true)
     const [flag,setFlag]=useState(true)
-    const [goods,setGoods]=useState([])
+    const [spuIdsArr,setSpuIdsArr]=useState([])
     const [cates,setCates]=useState([])
     const [position,setPosition]=useState()
     const [onselect,setOnselect]=useState([])
     const [spuIds,setSpuIds]=useState('')
-
-
     const showModal = () => {
         setIsModalVisible(true);
         setLoading(true)
@@ -192,6 +199,12 @@ const useSecond=(props)=>{
                 spuIds:spuIds
             }
         })
+        dispatch({
+            type:'UseScopeList/fetchLookSpuIdsArr',
+            payload:{
+                spuIdsArr:spuIdsArr
+            }
+        })
     };
 
     const handleCancel = () => {
@@ -200,13 +213,13 @@ const useSecond=(props)=>{
 
     //拼接spuIds
     const onIpute=(res)=>{
-        setGoods(res.selectedRows)
         let spuIds=''
-        goods.map(ele=>{
+        res.selectedRows.map(ele=>{
             spuIds+=ele.spuId+','
         })
         spuIds=spuIds.substring(0,spuIds.length-1)
        setSpuIds(spuIds)
+       setSpuIdsArr(res.selectedRows)
     }
     const onCate=()=>{
         setFlag(true)
@@ -220,10 +233,11 @@ const useSecond=(props)=>{
         })
     },[])
     return(
-        <div className={styles.unfold}>
-            <Form.Item label={<FormattedMessage id="formandbasic-form.commodity"/>}>
+            <Form.Item className={styles.unfold}>
                <ProFormRadio.Group
                     name="goodsType"
+                    label={<FormattedMessage id="formandbasic-form.commodity"/>}
+                    rules={[{ required: true, message: '请选择商品范围' }]}
                     fieldProps={{
                     value: (parseInt(id)==id )&&DetailList.data?.goodsType||position,
                     onChange: (e) => setPosition(e.target.value),
@@ -261,9 +275,9 @@ const useSecond=(props)=>{
                                 选择商品
                             </Button>
                             
-                            <Modal width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                            <Modal key="id" width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                                 <ProTable
-                                    rowKey="spuId"
+                                    rowKey="id"
                                     options={false}
                                     params={{
                                         pageSize: 3,
@@ -288,7 +302,7 @@ const useSecond=(props)=>{
                                 search={false}
                                 rowKey="spuId"
                                 columns={columns3}
-                                dataSource={goods}
+                                dataSource={UseScopeList.UseScopeObje.spuIdsArr}
                                 style={{display:loading?'none':'block'}}
                             />
                            </>
@@ -304,12 +318,9 @@ const useSecond=(props)=>{
                             <ProTable
                                 toolBarRender={false}
                                 search={false}
-                                rowKey="spuId"
-                                columns={columns2}
-                                params={{
-                                    gcParentId:DetailList.data?.classId
-                                }}
-                                request={classList}
+                                rowKey="id"
+                                columns={columns4}
+                                dataSource={[DetailList.data?.classInfo]}
                             />:
                             <>
                             <ModalForm
@@ -368,6 +379,7 @@ const useSecond=(props)=>{
             <ProFormRadio.Group
                 name="memberType"
                 label="可用人群"
+                rules={[{ required: true, message: '请选择可用人群' }]}
                 options={[
                   {
                     label: '全部会员',
@@ -380,7 +392,6 @@ const useSecond=(props)=>{
                 ]}
               />
             </Form.Item>
-        </div>
     )
 }
 export default connect(({ DetailList,UseScopeList}) => ({

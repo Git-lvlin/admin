@@ -13,7 +13,7 @@ const CrazyDate = (props) => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(false);
-
+  const [flag, setFlag] = useState(false);
   const getDetail = (data) => {
     data && setDetailData(data);
     setFormVisible(true);
@@ -27,6 +27,13 @@ const CrazyDate = (props) => {
       }
     })
   }
+
+  useEffect(() => {
+    if(flag) {
+      actionRef.current.reset();
+      setFlag(false)
+    }
+  }, [flag])
 
   const columns = [
     {
@@ -148,7 +155,7 @@ const CrazyDate = (props) => {
       //   labelWidth: 'auto',
       // }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
       onRow={(record) => {
         return {
@@ -180,8 +187,7 @@ const CrazyDate = (props) => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { setDetailData(null) }}
+      setFlag={setFlag}
     />}
     </>
   );

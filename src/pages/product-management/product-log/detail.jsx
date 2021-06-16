@@ -3,7 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import { logDetail } from '@/services/product-management/product-log';
 
 const UserDetail = (props) => {
-  const { visible, setVisible, spuId, operateRole } = props;
+  const { visible, setVisible, spuId, operateRole, operatorAction } = props;
 
   const columns = [
     {
@@ -14,7 +14,7 @@ const UserDetail = (props) => {
     },
     {
       title: '操作角色',
-      dataIndex: 'operateRole',
+      dataIndex: 'operatorType',
       onFilter: true,
       valueType: 'select',
       valueEnum: operateRole,
@@ -32,15 +32,28 @@ const UserDetail = (props) => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入操作对象'
-      }
+      },
+      hideInTable: true,
+    },
+    {
+      title: '操作项',
+      dataIndex: 'actionItem',
+      onFilter: true,
+      valueType: 'select',
+      valueEnum: operatorAction,
+      hideInTable: true,
+    },
+    {
+      title: '操作对象',
+      dataIndex: 'operatorName',
+      valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '操作项',
       dataIndex: 'actionTypeDisplay',
       valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入操作项'
-      }
+      hideInSearch: true,
     },
     {
       title: '原值',
@@ -54,7 +67,8 @@ const UserDetail = (props) => {
           return imgArr.map(item => (<div key={item} style={{ marginRight: 10, display: 'inline-block' }}><Image style={{ width: 50, height: 50 }} src={item} /></div>))
         }
         return text;
-      }
+      },
+      width: 200,
     },
     {
       title: '操作后新值',
@@ -68,13 +82,15 @@ const UserDetail = (props) => {
           return imgArr.map(item => (<div key={item} style={{ marginRight: 10, display: 'inline-block' }}><Image style={{ width: 50, height: 50 }} src={item} /></div>))
         }
         return text;
-      }
+      },
+      width: 200,
     },
     {
       title: '说明',
       dataIndex: 'actionRemark',
       valueType: 'text',
       hideInSearch: true,
+      width: 200,
     },
     {
       title: '操作时间',

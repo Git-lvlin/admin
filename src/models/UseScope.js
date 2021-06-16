@@ -4,6 +4,12 @@ const UseScopeModel = {
     UseScopeObje:{}
   },
   effects: {
+    *fetchUseScopeList({ payload}, { call, put}) {
+      yield put({
+        type: 'onUseScopeList',
+        payload
+      });
+    },
     *fetchUseType({ payload}, { call, put}) {
         yield put({
           type: 'onUseType',
@@ -11,16 +17,22 @@ const UseScopeModel = {
         });
       },
     *fetchCouponType({ payload}, { call, put}) {
-      yield put({
-        type: 'onCouponType',
-        payload
-      });
+        yield put({
+          type: 'onCouponType',
+          payload
+        });
     },
     *fetchLookSpuIds({ payload}, { call, put}) {
-      yield put({
-        type: 'onSpuIds',
-        payload
-      });
+        yield put({
+          type: 'onSpuIds',
+          payload
+        });
+    },
+    *fetchLookSpuIdsArr({ payload}, { call, put}) {
+        yield put({
+          type: 'onSpuIdsArr',
+          payload
+        });
     },
     *fetchLookUnit({ payload}, { call, put}) {
         yield put({
@@ -30,34 +42,44 @@ const UseScopeModel = {
       },
     *fetchWholesaleIds({ payload}, { call, put}) {
         console.log('payload',payload)
-    yield put({
-        type: 'onWholesaleIds',
-        payload
-    });
+        yield put({
+            type: 'onWholesaleIds',
+            payload
+        });
     }
 
   },
   reducers: {
     onCouponType(state = { UseScopeObje:{}},{ payload }){
-        state.couponType=payload.couponType
+        state.UseScopeObje.couponType=payload.couponType
       return { ...state };
     },
     onUseType(state = { UseScopeObje:{}},{ payload }){
-        state.useType=payload.useType
+        state.UseScopeObje.useType=payload.useType
       return { ...state };
     },
     onSpuIds(state = { UseScopeObje:{}},{ payload }){
-        state.spuIds=payload.spuIds
+        state.UseScopeObje.spuIds=payload.spuIds
+      return { ...state };
+    },
+    onSpuIdsArr(state = { UseScopeObje:{}},{ payload }){
+        state.UseScopeObje.spuIdsArr=payload.spuIdsArr
       return { ...state };
     },
     onUnit(state = { UseScopeObje:{}},{ payload }){
-        state.unit=payload.unit
+      console.log('payload.unit',payload.unit)
+        state.UseScopeObje.unit=payload.unit
         return { ...state };
     },
     onWholesaleIds(state = { UseScopeObje:{}},{ payload }){
-        state.wholesaleIds=payload.wholesaleIds
+        state.UseScopeObje.wholesaleIds=payload.wholesaleIds
         return { ...state };
     },
+    onUseScopeList(state = { UseScopeObje:{}},{ payload }){
+      state.UseScopeObje=payload.UseScopeObje
+      return { ...state };
+    },
+   
   },
 };
 export default UseScopeModel;

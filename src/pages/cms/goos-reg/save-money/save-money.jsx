@@ -1,22 +1,35 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
+import Modify from './edit';
+
 import { saveMoneyList, saveMoneyOperation, saveMoneySortTop } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
 
 
-const SaveMoney = (proprs) => {
+const SaveMoney = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
+  const [modifyFormVisible, setModifyFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(true);
+  const [flag, setFlag] = useState(false);
+
+
+  useEffect(() => {
+    if (flag) {
+      actionRef.current.reset()
+      setFlag(false)
+    }
+  }, [flag])
+
 
   const getDetail = (data) => {
     setDetailData(data);
-    setFormVisible(true);
+    setModifyFormVisible(true);
   }
 
   const formControl = (data,type) => {
@@ -75,7 +88,7 @@ const SaveMoney = (proprs) => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'money',
       search: false,
     },
     {
@@ -90,12 +103,12 @@ const SaveMoney = (proprs) => {
     //   valueType: 'number',
     //   search: false,
     // },
-    {
-      title: '销量',
-      dataIndex: 'goodsSaleNum',
-      valueType: 'number',
-      search: false,
-    },
+    // {
+    //   title: '销量',
+    //   dataIndex: 'goodsSaleNum',
+    //   valueType: 'number',
+    //   search: false,
+    // },
     {
       title: '状态',
       dataIndex: 'status',
@@ -131,13 +144,13 @@ const SaveMoney = (proprs) => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _, action) => {
+      render: (text, record, _) => {
         return (
           <>
             {record.status===2&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
             &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {action?.startEditable?.(record.key);console.log('action',action,record)}}>编辑</a>}
+            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
           </>
         )
@@ -153,6 +166,12 @@ const SaveMoney = (proprs) => {
       // options={false}
       columns={columns}
       actionRef={actionRef}
+      postData={(data) => {
+        data.forEach(item => {
+          item.goodsSalePrice = item.goodsSalePrice/100
+        })
+        return data
+      }}
       request={saveMoneyList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
@@ -184,7 +203,7 @@ const SaveMoney = (proprs) => {
         labelWidth: 'auto',
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
       dateFormatter="string"
       headerTitle="约购更省钱"
@@ -207,8 +226,13 @@ const SaveMoney = (proprs) => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { setDetailData(null) }}
+      setFlag={setFlag}
+    />}
+    {modifyFormVisible && <Modify
+      visible={modifyFormVisible}
+      setVisible={setModifyFormVisible}
+      detailData={detailData}
+      setFlag={setFlag}
     />}
     </PageContainer>
   );

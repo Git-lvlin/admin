@@ -1,25 +1,13 @@
 import React, { useRef, useState, useEffect  } from 'react';
 import { Button, message, Form, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import ProForm, {
-  ModalForm,
-  DrawerForm,
-  ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
-} from '@ant-design/pro-form';
-import { PlusOutlined } from '@ant-design/icons';
-import MemberReg from '@/components/member-reg';
-import Upload from '@/components/upload';
+import ProTable from '@ant-design/pro-table';
+import { ModalForm } from '@ant-design/pro-form';
 import { saveMoneyAdd } from '@/services/cms/member/member';
-import {spaceInfoList, hotGoosList, saveMoneyFormList} from '@/services/cms/member/member';
-
-
-
+import { saveMoneyFormList } from '@/services/cms/member/member';
 
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, setVisible, setFlag, visible } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
   const columns = [
@@ -55,7 +43,7 @@ export default (props) => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'money',
       search: false,
     },
     {
@@ -79,22 +67,22 @@ export default (props) => {
   ];
 
   const waitTime = () => {
-    const goodsInfo = arr.map(({id, spuId, skuId, supplierId, wholesaleType}) => {
+    const goodsInfo = arr.map(({wsId, spuId, skuId, supplierId, wholesaleType}) => {
       const theArray = {
-        id, spuId, skuId, wholesaleType
+        wsId, spuId, skuId, wholesaleType
       }
       if (supplierId) {
         theArray.supplierId = supplierId
       }
       return theArray
     });
-    console.log('goodsInfo', goodsInfo)
     const param = {
       goodsInfo: goodsInfo,
     }
     return new Promise((resolve) => {
       saveMoneyAdd(param).then((res) => {
         if (res.code === 0) {
+          setFlag(true)
           resolve(true);
         }
       })
@@ -118,13 +106,10 @@ export default (props) => {
           resetText: '取消',
         },
       }}
-      // drawerProps={{
-      //   forceRender: true,
-      //   destroyOnClose: true,
-      //   onClose: () => {
-      //     onClose();
-      //   }
-      // }}
+      drawerProps={{
+        forceRender: true,
+        destroyOnClose: true,
+      }}
       onFinish={async () => {
         await waitTime();
         message.success('提交成功');
@@ -133,9 +118,15 @@ export default (props) => {
       }}
     >
 <ProTable
-      rowKey="id"
+      rowKey="wsId"
       options={false}
       columns={columns}
+      postData={(data) => {
+        data.forEach(item => {
+          item.goodsSalePrice = parseInt(item.goodsSalePrice/100)
+        })
+        return data
+      }}
       request={saveMoneyFormList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
@@ -170,7 +161,7 @@ export default (props) => {
         labelWidth: 'auto',
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
       dateFormatter="string"
       headerTitle="约购更省钱"

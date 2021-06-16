@@ -1,68 +1,34 @@
-import React, { useRef, useState, useEffect  } from 'react';
-import { Button, message, Form, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
+import React, { useRef, useEffect, useState } from 'react';
+import { message, Form, Button } from 'antd';
+import ProTable from '@ant-design/pro-table';
 import ProForm, {
-  ModalForm,
   DrawerForm,
   ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
 } from '@ant-design/pro-form';
-import { PlusOutlined } from '@ant-design/icons';
-import MemberReg from '@/components/member-reg';
-import Upload from '@/components/upload';
-import { hotGoosAdd } from '@/services/cms/member/member';
-import {spaceInfoList, hotGoosList, goosAllList} from '@/services/cms/member/member';
+import { SetHomePageGoodsDelSort } from '@/services/cms/member/member';
 import Edit from './list-form'
 
-export default (props) => {
-  const [formVisible, setFormVisible] = useState(false);
-  const { detailData, setVisible, onClose, visible } = props;
-  const [arr, setArr] = useState(null)
-  const formRef = useRef();
-  const columns = [
-    {
-      title: '图片',
-      key: 'goodsImageUrl',
-      dataIndex: 'goodsImageUrl',
-      render: (text) => <img src={text} width={90} height={90} />,
-      search: false,
-    },
-    {
-      title: '商品名称',
-      dataIndex: 'goodsName',
-      search: false,
-    },
-    {
-      title: '排序',
-      dataIndex: '',
-      search: false,
-    },
-    {
-      title: '操作',
-      valueType: 'option',
-      dataIndex: 'option',
-      render: (text, record, _, action) => {
-        return (
-          <>
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {}}>修改</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="d">删除</a>}
-          </>
-        )
-      }
-    },
-  ];
 
-  const waitTime = (values) => {
-    const { ...rest } = values
-  
+export default (props) => {
+  const { detailData, setVisible, setFlag, visible } = props;
+  const formRef = useRef();
+  const [form] = Form.useForm();
+  const [listFormVisible, setListFormVisible] = useState(false)
+  const [sortValue, setSortValue] = useState(false)
+  const [indexGoods, setIndexGoods] = useState(false)
+
+  const waitTime = () => {
+    console.log('indexGoods', indexGoods)
     const param = {
-      spuIds: arr,
-      ...rest
+      "id": indexGoods.id.toString(),
+      "sort": sortValue || 100,
+      "opt": "add"
     }
+    console.log('param', param)
     return new Promise((resolve) => {
-      hotGoosAdd(param).then((res) => {
+      SetHomePageGoodsDelSort(param).then((res) => {
         if (res.code === 0) {
+          setFlag(true)
           resolve(true);
         }
       })
@@ -70,21 +36,65 @@ export default (props) => {
     });
   };
 
-  useEffect(() => {
+  const columns = [
+    {
+      title: 'id',
+      dataIndex: 'id',
+      hideInTable: true,
+    },
+    {
+      title: '图片',
+      dataIndex: 'goodsImgCover',
+      render: (text) => <img src={text} width={50} height={50} />,
+      search: false,
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      valueType: 'text',
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      dataIndex: 'option',
+      render: (text, record, _) => {
+        return (
+          <>
+            {<Button key="d" onClick={() => {setIndexGoods(false)}}>删除</Button>}
+          </>
+        )
+      }
+    },
+  ];
 
-  }, [])
+  useEffect(() => {
+    console.log('indexGoods', indexGoods)
+    if (detailData) {
+      const { ...rest } = detailData;
+      form.setFieldsValue({
+        ...rest
+      })
+    }
+    if (indexGoods) {
+      const { id, goodsImgCover, goodsName  } = indexGoods;
+      form.setFieldsValue({
+        id,
+        goodsImgCover,
+        goodsName,
+      })
+    }
+  }, [form, detailData, indexGoods])
 
   return (
     <DrawerForm
-      title={`选择比较商品`}
+      title={`${detailData ? '编辑' : '新建'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
-      submitter={{
-        searchConfig: {
-          submitText: '保存',
-          resetText: '取消',
-        },
+      form={form}
+      drawerProps={{
+        forceRender: true,
+        destroyOnClose: true,
       }}
       onFinish={async (values) => {
         await waitTime(values);
@@ -93,36 +103,35 @@ export default (props) => {
         return true;
       }}
     >
+
 <ProTable
-      rowKey="id"
+      Key="id"
       options={false}
       columns={columns}
-      request={goosAllList}
-      editable={{
-        type: 'multiple',
-      }}
-      search={{
-        labelWidth: 'auto',
-      }}
-      pagination={{
-        pageSize: 10,
-      }}
-      dateFormatter="string"
       search={false}
+      params={indexGoods}
+      dataSource={indexGoods?[indexGoods]:false}
+      dateFormatter="string"
       toolBarRender={(_,record) => [
-        <Button key="button" type="primary" onClick={() => { setFormVisible(true) }}>
-          选择比价商品
-        </Button>,
+        <Button onClick={() => {
+          setListFormVisible(true)
+        }}>选择比较商品</Button>
       ]}
+      pagination={false}
     />
-{formVisible && <Edit
-      visible={formVisible}
-      setVisible={setFormVisible}
-      // detailData={detailData}
-      callback={() => { actionRef.current.reload() }}
-      onClose={() => { actionRef.current.reload() }}
+    <ProFormText
+      label='排序'
+      name='sort'
+      fieldProps={{defaultValue:100,onChange:(e)=>{
+        setSortValue(e.target.attributes[4].value)
+      }}}
+    />
+      {listFormVisible && <Edit
+      visible={listFormVisible}
+      setVisible={setListFormVisible}
+      setIndexGoods={setIndexGoods}
     />}
-
     </DrawerForm>
+    
   );
 };

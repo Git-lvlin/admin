@@ -1,25 +1,12 @@
-import React, { useRef, useState, useEffect  } from 'react';
-import { Button, message, Form, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import ProForm, {
-  ModalForm,
-  DrawerForm,
-  ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
-} from '@ant-design/pro-form';
-import { PlusOutlined } from '@ant-design/icons';
-import MemberReg from '@/components/member-reg';
-import Upload from '@/components/upload';
+import React, { useRef, useState } from 'react';
+import { message } from 'antd';
+import ProTable from '@ant-design/pro-table';
+import { ModalForm } from '@ant-design/pro-form';
 import { hotGoosAdd } from '@/services/cms/member/member';
 import { todayAllGoodsList } from '@/services/cms/member/member';
 
-
-
-
-
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, setVisible, setFlag, visible } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
   const columns = [
@@ -55,7 +42,7 @@ export default (props) => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'money',
       search: false,
     },
     {
@@ -64,12 +51,12 @@ export default (props) => {
       valueType: 'number',
       search: false,
     },
-    {
-      title: '活动库存',
-      dataIndex: 'activityStockNum',
-      valueType: 'number',
-      search: false,
-    },
+    // {
+    //   title: '活动库存',
+    //   dataIndex: 'activityStockNum',
+    //   valueType: 'number',
+    //   search: false,
+    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
@@ -80,26 +67,22 @@ export default (props) => {
 
   const waitTime = (values) => {
     const { ...rest } = values
-  
     const param = {
       tagCode: 'day_yeahgo',
       spuIds: arr,
       ...rest
     }
-    console.log('param', param)
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       hotGoosAdd(param).then((res) => {
         if (res.code === 0) {
-          resolve(true);
+          setFlag(true)
+          resolve(true)
+        } else {
+          reject(false)
         }
       })
-  
     });
   };
-
-  useEffect(() => {
-
-  }, [])
 
   return (
     <ModalForm
@@ -113,13 +96,10 @@ export default (props) => {
           resetText: '取消',
         },
       }}
-      // drawerProps={{
-      //   forceRender: true,
-      //   destroyOnClose: true,
-      //   onClose: () => {
-      //     onClose();
-      //   }
-      // }}
+      drawerprops={{
+        forceRender: true,
+        destroyOnClose: true,
+      }}
       onFinish={async (values) => {
         await waitTime(values);
         message.success('提交成功');
@@ -131,6 +111,12 @@ export default (props) => {
       rowKey="spuId"
       options={false}
       columns={columns}
+      postData={(data) => {
+        data.forEach(item => {
+          item.goodsSalePrice = item.goodsSalePrice/100
+        })
+        return data
+      }}
       request={todayAllGoodsList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
@@ -156,11 +142,7 @@ export default (props) => {
       //   </Space>
       // )}
       tableAlertOptionRender={(a) => {
-        console.log('a', a)
         setArr(a.selectedRowKeys.toString())
-      }}
-      editable={{
-        type: 'multiple',
       }}
       search={{
         labelWidth: 'auto',
@@ -171,8 +153,6 @@ export default (props) => {
       dateFormatter="string"
       headerTitle="今日必约"
     />
-
-
     </ModalForm>
   );
 };

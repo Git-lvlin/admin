@@ -31,8 +31,8 @@ export default (props) => {
       apiMethod({
         applyId: data.id,
         ...rest
-      }).then(res => {
-        if (res.code ===0) {
+      }, { showSuccess: true }).then(res => {
+        if (res.code === 0) {
           resolve()
         } else {
           reject()

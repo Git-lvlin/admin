@@ -1,79 +1,58 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { adminReportDetailList } from '@/services/community-management/report-adminreportdetaillist';
-import  ProForm,{ ModalForm,ProFormSelect,ProFormRadio,ProFormText} from '@ant-design/pro-form';
-import { Button, Tabs } from 'antd';
+import { findAdsensePositionList } from '@/services/community-management/adsense-position-list';
+import { findAdsensePositionById } from '@/services/community-management/adsense-position-byid';
+import { saveAdsensePosition } from '@/services/community-management/adsense-position';
+import  ProForm,{ ModalForm,ProFormRadio,ProFormText} from '@ant-design/pro-form';
+import { Button,Form, Tabs,message } from 'antd';
+import AdvertisingModal from './advertising-modal'
+import { render } from 'react-dom';
 
 export default props => {
+const ref=useRef()
 let id = props.location.query.id
 const [visible, setVisible] = useState(false);
-const actionRef = useRef();
-const Termination=()=>{
+const [visible2, setVisible2] = useState(false);
+const [form] = Form.useForm()
+const [byid,setByid]=useState()
+const Termination=(record)=>{
   setVisible(true)
+  setByid(record)
+}
+const addPosition=()=>{
+  setVisible2(true)
 }
 const columns= [
   {
       title: 'ID',
-      dataIndex: 'userId',
+      dataIndex: 'id',
+      hideInSearch:true
   },
   {
       title: '广告位名称',
-      dataIndex: 'userName',
+      dataIndex: 'title',
       valueType: 'text',
+      hideInSearch:true
   },
   {
       title: '状态',
-      dataIndex: 'type',
+      dataIndex: 'status',
       valueType: 'text',
+      valueEnum:{
+        "0":"未启用",
+        "1":"已启用",
+      },
+      hideInSearch:true
   },
   {
       title:'操作',
       valueType:'text',
-      render:()=>[
-        <ModalForm
-            title="编辑广告位"
-            key="model2"
-            onVisibleChange={setVisible}
-            visible={visible}
-            trigger={<Button onClick={Termination}>编辑</Button>}
-            submitter={{
-            render: (props, defaultDoms) => {
-                return [
-                ...defaultDoms
-                ];
-            },
-            }}
-            onFinish={async (values) => {
-                console.log('values',values);
-                setVisible(false)
-                message.success('提交成功');
-                return true;
-            }}
-        >
-         <ProFormText
-            width="md"
-            name="name"
-            label="广告位名称"
-            tooltip="最长为 24 位"
-            placeholder="请输入名称"
-        />
-         <ProFormRadio.Group
-            name="hot"
-            label="广告位状态"
-            options={[
-                {
-                  label: '启用',
-                  value: 1
-                },
-                {
-                  label: '关闭',
-                  value: 2
-                }
-            ]}
-        />
-        </ModalForm>
-      ]
+      render:(text, record, _, action)=>[
+        <Button onClick={()=>Termination(record)}>编辑</Button>,
+        // <AdvertisingModal visible={visible} setVisible={setVisible}  boxref={ref}/>
+      ],
+      hideInSearch:true
   }
 ];
   return (
@@ -87,12 +66,20 @@ const columns= [
               sourceId:id,
               status:1,
             }}
-            // request={adminReportDetailList}
-            actionRef={actionRef}
-            search={false}
+            request={findAdsensePositionList}
+            actionRef={ref}
+            search={{
+              optionRender:(searchConfig, formProps, dom) => [
+              <Button type="primary" onClick={addPosition} key="refresh">
+                添加
+              </Button>,
+              <AdvertisingModal visible={visible2} setVisible={setVisible2}  boxref={ref}/>
+              ],
+            }}
             toolBarRender={false}
             columns={columns}
           />
+        
     </PageContainer>
   );
 };

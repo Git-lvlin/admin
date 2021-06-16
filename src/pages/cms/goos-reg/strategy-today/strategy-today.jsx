@@ -1,24 +1,26 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
+import Modify from './edit';
 import ReplaceForm from './replace-form';
 import { hotGoosList, hotGoosOperation,tagSortTop } from '@/services/cms/member/member';
 
 
 
-const StrategyToday = (proprs) => {
+const StrategyToday = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [replaceFormVisible, setReplaceFormVisible] = useState(false);
+  const [modifyFormVisible, setModifyFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(true);
-
+  const [flag, setFlag] = useState(false)
   const getDetail = (data) => {
     setDetailData(data);
-    setFormVisible(true);
+    setModifyFormVisible(true);
   }
 
   const formControl = (data,type) => {
@@ -28,6 +30,13 @@ const StrategyToday = (proprs) => {
       }
     })
   }
+
+  useEffect(() => {
+    if (flag) {
+      setFlag(false)
+      actionRef.current.reset();
+    }
+  }, [flag])
 
   const top = (data) => {
     tagSortTop({id: data}).then((res) => {
@@ -87,7 +96,7 @@ const StrategyToday = (proprs) => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'money',
       search: false,
     },
     {
@@ -96,12 +105,12 @@ const StrategyToday = (proprs) => {
       valueType: 'number',
       search: false,
     },
-    {
-      title: '活动库存',
-      dataIndex: 'activityStockNum',
-      valueType: 'number',
-      search: false,
-    },
+    // {
+    //   title: '活动库存',
+    //   dataIndex: 'activityStockNum',
+    //   valueType: 'number',
+    //   search: false,
+    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
@@ -159,13 +168,13 @@ const StrategyToday = (proprs) => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _, action) => {
+      render: (text, record, _) => {
         return (
           <>
             {record.status===2&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
             &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {action?.startEditable?.(record.key);console.log('action',action,record)}}>编辑</a>}
+            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {getDetail(record)}}>排序</a>}
             &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
           </>
         )
@@ -178,13 +187,13 @@ const StrategyToday = (proprs) => {
     <PageContainer>
     <ProTable
       rowKey="id"
-      // options={false}
       columns={columns}
       actionRef={actionRef}
       params={{tagCode:'day_yeahgo'}}
       postData={(data) => {
         data.forEach(item => {
           item.floatPercent = parseInt(item.floatPercent/100)
+          item.goodsSalePrice = item.goodsSalePrice/100
         })
         return data
       }}
@@ -229,10 +238,10 @@ const StrategyToday = (proprs) => {
         labelWidth: 'auto',
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
       }}
       dateFormatter="string"
-      headerTitle="约购攻略"
+      headerTitle="今日必约"
       toolBarRender={(_,record) => [
         <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 2) }}>
           批量发布
@@ -246,17 +255,22 @@ const StrategyToday = (proprs) => {
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
           新建
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setReplaceFormVisible(true) }}>
-          新建(代发)
-        </Button>,
+        // <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setReplaceFormVisible(true) }}>
+        //   新建(代发)
+        // </Button>,
       ]}
     />
     {formVisible && <Edit
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { setDetailData(null) }}
+      setFlag={setFlag}
+    />}
+    {modifyFormVisible && <Modify
+      visible={modifyFormVisible}
+      setVisible={setModifyFormVisible}
+      detailData={detailData}
+      setFlag={setFlag}
     />}
     {replaceFormVisible && <ReplaceForm
       visible={replaceFormVisible}

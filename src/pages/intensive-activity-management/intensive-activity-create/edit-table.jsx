@@ -164,12 +164,6 @@ export default function EditTable({ onSelect }) {
       hideInSearch: true
     },
     {
-      title: '限售起售量',
-      dataIndex: 'minNum',
-      valueType: 'text',
-      hideInSearch: true
-    },
-    {
       title: '集约价',
       dataIndex: 'price',
       valueType: 'text',
@@ -178,9 +172,16 @@ export default function EditTable({ onSelect }) {
         return data.settleType !== 1
       }
     },
+    
     {
-      title: '单店集约量',
-      dataIndex: 'perStoreMinNum',
+      title: '单店起订量',
+      dataIndex: 'minNum',
+      valueType: 'text',
+      hideInSearch: true
+    },
+    {
+      title: '单店限订量',
+      dataIndex: 'maxNum',
       valueType: 'text',
       hideInSearch: true
     },
@@ -200,8 +201,8 @@ export default function EditTable({ onSelect }) {
       ...item,
       totalStockNum: item.stockNum,
       minNum: 1,
+      maxNum: 10,
       price: item.salePrice > 0 ? + new Big(item.salePrice).div(100) : 0,
-      perStoreMinNum: 10,
       totalPrice: item.salePrice > 0 ? +new Big(item.salePrice).div(100).times(10) : 0,
     }))
     setDataSource(arr)
@@ -213,6 +214,11 @@ export default function EditTable({ onSelect }) {
       columns={columns}
       rowKey="id"
       value={dataSource}
+      params={{
+        goodsState: 1,
+        goodsVerifyState: 1,
+        hasStock: 1,
+      }}
       request={productList}
       search={{
         defaultCollapsed: false,
@@ -228,7 +234,7 @@ export default function EditTable({ onSelect }) {
             if (item.id === record.id) {
               const data = {
                 ...item,
-                totalPrice: (item.price > 0 && item.perStoreMinNum > 0) ? +new Big(item.price).times(item.perStoreMinNum) : 0
+                totalPrice: (item.price > 0 && item.maxNum > 0) ? +new Big(item.price).times(item.maxNum) : 0
               }
               onSelect(data)
               return data
@@ -239,8 +245,10 @@ export default function EditTable({ onSelect }) {
         }
       }}
       pagination={{
-        pageSize: 5
+        pageSize: 5,
+        pageSizeOptions:[5, 10, 20, 50, 100]
       }}
+      
       rowSelection={{
         hideSelectAll: true,
         type: 'radio',

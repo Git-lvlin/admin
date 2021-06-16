@@ -230,6 +230,7 @@ export default (props) => {
         fieldProps={{
           maxLength: 30,
         }}
+        disabled={!!detailData}
       />
       <ProFormText
         name="accountName"
@@ -239,6 +240,7 @@ export default (props) => {
         fieldProps={{
           maxLength: 18,
         }}
+        disabled={!!detailData}
       />
       <ProFormText.Password
         name="password"
@@ -308,7 +310,7 @@ export default (props) => {
         }}
       />
       <ProFormText
-        name="orderTipphone"
+        name="orderTipPhone"
         label="接收订单提醒的手机号"
         placeholder="请输入手机号码 产生待发货订单时自动发送短信"
         fieldProps={{

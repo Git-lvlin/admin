@@ -34,6 +34,7 @@ export default {
   'menu.order-management.details': '详情',
 
   'menu.product-management': '商品管理',
+  'menu.product-management.daifa-product': '代发商品',
   'menu.product-management.product-list': '商品列表',
   'menu.product-management.brand-list': '品牌列表',
   'menu.product-management.product-log': '商品日志',
@@ -91,7 +92,7 @@ export default {
   'menu.cms.goos-reg.hot-goos': '热销好货',
   'menu.cms.goos-reg.crazy-date': '正在疯约',
   'menu.cms.goos-reg.save-money': '约购更省钱',
-  'menu.cms.goos-reg.strategy-today': '约购攻略',
+  'menu.cms.goos-reg.strategy-today': '今日必约',
   'menu.cms.home-suspension': '首页悬浮窗',
   'menu.cms.express-news': '约购快报',
   'menu.cms.king-kong-district': '金刚区',
@@ -100,6 +101,8 @@ export default {
   'menu.cms.price-comparsion.low-goods': '低价爆品',
   'menu.cms.route-url-deploy': '链接路由管理',
   'menu.price-comparsion-management': '比价管理',
+  'menu.cms.hot-search': '热门搜索关键词',
+
 
   'menu.coupon-management': '优惠券管理',
   'menu.coupon-management.coupon-list': '优惠券列表',
@@ -130,15 +133,18 @@ export default {
   'menu.community-management.circleinterior-management':'圈内管理',
   'menu.community-management.content-management':'内容管理',
   'menu.community-management.add-content':'新建内容',
-  'menu.community-management.dynamic-listlikes':'点赞列表',
-  'menu.community-management.dynamic-comment-replylist':'评论列表',
-  'menu.community-management.dynamic-getdynamicdetail':'帖子详情',
+  'menu.community-management.dynamic-list-likes':'点赞列表',
+  'menu.community-management.dynamic-comment-reply-list':'评论列表',
+  'menu.community-management.dynamic-get-dynamic-detail':'帖子详情',
   'menu.community-management.consultation-management':'会话记录管理',
   'menu.community-management.reporttype-management':'举报类型管理',
   'menu.community-management.review-report':'评论举报',
-  'menu.community-management.admin-report-detaillist':'详情',
+  'menu.community-management.admin-report-detail-list':'详情',
   'menu.community-management.invitation-report':'帖子举报',
   'menu.community-management.community-advertising':'社区广告管理',
   'menu.community-management.add-advertising':'添加/编辑广告',
   'menu.community-management.advertising-manage':'广告位管理',
+
+  'menu.daifa-store-management':'代发店管理',
+  'menu.daifa-store-management.list':'代发店列表',
 };

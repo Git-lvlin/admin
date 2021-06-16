@@ -39,7 +39,7 @@ export default (props) => {
         supplierId,
         isDefault: isDefault ? 1 : 0,
         status: status ? 1 : 2,
-        id: detailData.id,
+        id: detailData?.id,
         ...rest,
       }, { showSuccess: true })
         .then(res => {

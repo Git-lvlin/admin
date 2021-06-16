@@ -3,7 +3,7 @@ import { message, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm } from '@ant-design/pro-form';
 import { crazyActivityGoodsAdd } from '@/services/cms/member/member';
-import { goosAllList } from '@/services/cms/member/member';
+import { todayAllGoodsList } from '@/services/cms/member/member';
 
 export default (props) => {
   const { detailData, setVisible, visible } = props;
@@ -62,7 +62,7 @@ export default (props) => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      valueType: 'money',
       search: false,
     },
     {
@@ -71,12 +71,6 @@ export default (props) => {
       valueType: 'number',
       search: false,
     },
-    // {
-    //   title: '活动库存',
-    //   dataIndex: 'activityStockNum',
-    //   valueType: 'number',
-    //   search: false,
-    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
@@ -114,8 +108,13 @@ export default (props) => {
       rowKey="id"
       options={false}
       columns={columns}
-      // params={}
-      request={goosAllList}
+      postData={(data) => {
+        data.forEach(item => {
+          item.goodsSalePrice = item.goodsSalePrice/100
+        })
+        return data
+      }}
+      request={todayAllGoodsList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项
@@ -129,14 +128,14 @@ export default (props) => {
               取消选择
             </a>
           </span>
-          <span>{`待发布: ${selectedRows.reduce(
+          {/* <span>{`待发布: ${selectedRows.reduce(
             (pre, item) => pre + item.containers,
             0,
           )} 个`}</span>
           <span>{`已发布: ${selectedRows.reduce(
             (pre, item) => pre + item.callNumber,
             0,
-          )} 个`}</span>
+          )} 个`}</span> */}
         </Space>
       )}
       tableAlertOptionRender={(a) => {

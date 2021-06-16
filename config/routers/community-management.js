@@ -5,7 +5,7 @@ export default {
       {
         name: 'circle-management',
         path: '/community-management/circle-management',
-        component: './community-management/circle-management',
+        component: './community-management/circle-management/index.js',
       },
       {
         name: 'add-circle',
@@ -16,13 +16,13 @@ export default {
       {
         name: 'circleinterior-management',
         path: '/community-management/circleinterior-management',
-        component: './community-management/circleinterior-management/index.jsx',
+        component: './community-management/circleinterior-management/index.js',
         hideInMenu: true,
       },
       {
         name: 'content-management',
         path: '/community-management/content-management',
-        component: './community-management/content-management/index.jsx',
+        component: './community-management/content-management/index.js',
       },
       {
         name: 'add-content',
@@ -31,54 +31,54 @@ export default {
         hideInMenu: true,
       },
       {
-        name: 'dynamic-listlikes',
-        path: '/community-management/content-management/dynamic-listlikes',
-        component: './community-management/content-management/dynamic-listlikes',
+        name: 'dynamic-list-likes',
+        path: '/community-management/content-management/dynamic-list-likes',
+        component: './community-management/content-management/dynamic-list-likes',
         hideInMenu: true,
       },
       {
-        name: 'dynamic-comment-replylist',
-        path: '/community-management/content-management/dynamic-comment-replylist',
-        component: './community-management/content-management/dynamic-comment-replylist',
+        name: 'dynamic-comment-reply-list',
+        path: '/community-management/content-management/dynamic-comment-reply-list',
+        component: './community-management/content-management/dynamic-comment-reply-list',
         hideInMenu: true,
       },
       {
-        name: 'dynamic-getdynamicdetail',
-        path: '/community-management/content-management/dynamic-getdynamicdetail',
-        component: './community-management/content-management/dynamic-getdynamicdetail',
+        name: 'dynamic-get-dynamic-detail',
+        path: '/community-management/content-management/dynamic-get-dynamic-detail',
+        component: './community-management/content-management/dynamic-get-dynamic-detail',
         hideInMenu: true,
       },
       {
         name: 'consultation-management',
         path: '/community-management/consultation-management',
-        component: './community-management/consultation-management/index.jsx',
+        component: './community-management/consultation-management/index.js',
       },
       {
         name: 'reporttype-management',
         path: '/community-management/reporttype-management',
-        component: './community-management/reporttype-management/index.jsx',
+        component: './community-management/reporttype-management/index.js',
       },
       {
         name: 'review-report',
         path: '/community-management/review-report',
-        component: './community-management/review-report/index.jsx'
+        component: './community-management/review-report/index.js'
       },
       {
-        name: 'admin-report-detaillist',
-        path: '/community-management/review-report/admin-report-detaillist',
-        component: './community-management/review-report/admin-report-detaillist',
+        name: 'admin-report-detail-list',
+        path: '/community-management/review-report/admin-report-detail-list',
+        component: './community-management/review-report/admin-report-detail-list',
         hideInMenu: true,
 
       },
       {
         name: 'invitation-report',
         path: '/community-management/invitation-report',
-        component: './community-management/invitation-report/index.jsx'
+        component: './community-management/invitation-report/index.js'
       },
       {
         name: 'community-advertising',
         path: '/community-management/community-advertising',
-        component: './community-management/community-advertising/index.jsx',
+        component: './community-management/community-advertising/index.js',
       },
       {
         name: 'add-advertising',
@@ -90,7 +90,6 @@ export default {
         name: 'advertising-manage',
         path: '/community-management/community-advertising/advertising-manage',
         component: './community-management/community-advertising/advertising-manage',
-        hideInMenu: true,
       },
     ],
   }

@@ -1,5 +1,4 @@
 import request from '@/utils/request';
-import { number } from 'prop-types';
 
 export const spaceInfoList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;
@@ -51,6 +50,22 @@ export const spaceEdit = (params = {}, options = {}) => {
 
 export const bannerAdd = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/banner/saveOrUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const tagSortModify = (params = {}, options = {}) => {
+  return request('/auth/activity/Goods/goodsTagSortSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const saveSortModify = (params = {}, options = {}) => {
+  return request('/auth/activity/Goods/wholesaleGoodsSortSub', {
     method: 'POST',
     data: params,
     ...options
@@ -147,6 +162,28 @@ export const hotGoosList = async (params = {}, options = {}) => {
     total: res.data.total,
   }
 }
+
+export const articleList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    pageSize: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/articleInfo/findAdminArticleList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
 export const crazyDateList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
   
@@ -182,11 +219,11 @@ export const crazyGoodsList = async (params = {}, options = {}) => {
     data,
     ...options
   });
-  if (!res.data.length) {
+  if (!res.data.records.length) {
     res.data = []
   }
   return {
-    data: res.data,
+    data: res.data.records || [],
     success: true,
     total: res.data.total,
   }
@@ -207,6 +244,15 @@ export const hotGoosAdd = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const priceListAdd = (params = {}, options = {}) => {
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/AddContestGoods?ids=${params.ids}`, {
+    method: 'GET',
+    data: params,
+    ...options
+  });
+}
+
 export const saveMoneyAdd = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/wholesaleGoodsSub', {
     method: 'POST',
@@ -223,6 +269,49 @@ export const hotGoosOperation = (params = {}, options = {}) => {
   });
 }
 
+export const articleOperation = (params = {}, options = {}) => {
+  return request('/auth/java-admin/articleType/saveOrUpdateArticleType', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const findAdminArticleTypeList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const data = {
+    // page: current,
+    // size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/articleType/findAdminArticleTypeList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+  return {
+    data: res.data || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const delContestGoods = (params = {}, options = {}) => {
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/DelContestGoods?id=${params.id}`, {
+    method: 'GET',
+    data: params,
+    ...options
+  });
+}
+
+export const bindSkuId = (params = {}, options = {}) => {
+  return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/setContestBindSku?goodsSpuId=${params.goodsSpuId}&goodsSkuId=${params.goodsSkuId}&sourceType=${params.sourceType}&skuId=${params.skuId}`, {
+    method: 'GET',
+    data: params,
+    ...options
+  });
+}
+
 export const tagSortTop = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/goodsTagSortTop', {
     method: 'POST',
@@ -230,6 +319,15 @@ export const tagSortTop = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const articleTop = (params = {}, options = {}) => {
+  return request('/auth/java-admin/articleInfo/saveOrUpdateArticle', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const saveMoneySortTop = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/wholesaleGoodsSortTop', {
     method: 'POST',
@@ -249,6 +347,37 @@ export const bannerSortTop = (params = {}, options = {}) => {
 export const crazyActivityDel = (params = {}, options = {}) => {
   return request('/auth/activity/Cms/cmsStatusSub', {
     method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const crazyActivityGoodsDel = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsGoodsStatusSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const SetHotGoodsDel = (params = {}, options = {}) => {
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetHotGoods?ids=${params.ids}&opt=${params.opt}`, {
+    method: 'GET',
+    data: params,
+    ...options
+  });
+}
+
+export const SetHomePageGoodsDel = (params = {}, options = {}) => {
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetHomePageGoods?ids=${params.ids}&opt=${params.opt}`, {
+    method: 'GET',
+    data: params,
+    ...options
+  });
+}
+export const SetHomePageGoodsDelSort = (params = {}, options = {}) => {
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetHomePageGoods?id=${params.id}&sort=${params.sort}&opt=${params.opt}`, {
+    method: 'GET',
     data: params,
     ...options
   });
@@ -316,6 +445,14 @@ export const kongKongModifyType = (params = {}, options = {}) => {
   });
 }
 
+export const modifyTagSort = (params = {}, options = {}) => {
+  return request('/auth/activity/Goods/goodsTagSortSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const memberOperation = (params = {}, options = {}) => {
   return request('/auth/activity/Activity/spanceInfoStatusEdit', {
     method: 'POST',
@@ -332,6 +469,26 @@ export const goosAllList = async (params = {}, options = {}) => {
     ...rest
   }
   const res = await request('/auth/activity/Goods/wholesaleTransGoodsList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const goodsAllList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/goods/product/skuList', {
     method: 'POST',
     data,
     ...options
@@ -379,7 +536,7 @@ export const saveMoneyFormList = async (params = {}, options = {}) => {
 
   const data = {
     page: current,
-    size: pageSize,
+    pageSize: pageSize,
     ...rest
   }
   if (status) {
@@ -410,6 +567,30 @@ export const homeBannerList = async (params = {}, options = {}) => {
     data.status = Number(status);
   }
   const res = await request('/auth/java-admin/cms/banner/page', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const hotSearchList = async (params = {}, options = {}) => {
+  const { current, pageSize, status, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  if (status) {
+    data.status = Number(status);
+  }
+  const res = await request('/auth/search/auth/userSearchHistory/getAllHotKeyword', {
     method: 'POST',
     data,
     ...options
@@ -528,7 +709,68 @@ export const memberSortTop = (params = {}, options = {}) => {
   });
 }
 
+export const priceComparsionListAll = async (params = {}, options = {}) => {
+  const { current, pageSize, ishot, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetContestGoodsList?isHot=0', {
+    method: 'GET',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+export const priceComparsionListAlls = async (params = {}, options = {}) => {
+  const { current, pageSize, ishot, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetContestGoodsList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
 export const priceComparsionList = async (params = {}, options = {}) => {
+  const { current, pageSize, ishot, ...rest } = params;
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetContestGoodsList?isHot=1', {
+    method: 'GET',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const savePriceList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;
 
   const data = {
@@ -539,14 +781,46 @@ export const priceComparsionList = async (params = {}, options = {}) => {
   if (status) {
     data.status = Number(status);
   }
-  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetContestGoodsList', {
+  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetHotGoodsList', {
     method: 'GET',
     data,
     ...options
   });
 
+  if (!res.data.length) {
+    res.data = []
+  }
+
   return {
-    data: res.data.records || [],
+    data: res.data || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const priceComparsionHomeList = async (params = {}, options = {}) => {
+  const { current, pageSize, status, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  if (status) {
+    data.status = Number(status);
+  }
+  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetFaceGoodsList', {
+    method: 'GET',
+    data,
+    ...options
+  });
+
+  if (!res.data.length) {
+    res.data = []
+  }
+
+  return {
+    data: res.data || [],
     success: true,
     total: res.data.total,
   }
@@ -560,9 +834,17 @@ export const createTaskSrc = (params = {}, options = {}) => {
   });
 }
 
-export const getSpiderGoodsListByDate = (params = {}, options = {}) => {
-  return request('/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderGoodsListByDate', {
+export const sendTask = (params = {}, options = {}) => {
+  return request('/auth/go-spider-api/spiderdbc/auth/spiderdbc/SendTask', {
     method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const getSpiderGoodsListByDate = (params = {}, options = {}) => {
+  return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderGoodsListByDate?sourceType=${params.sourceType}&goodsId=${params.goodsId}`, {
+    method: 'GET',
     data: params,
     ...options
   });

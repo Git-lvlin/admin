@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
 import {
   DrawerForm,
   ProFormText,
@@ -9,6 +9,7 @@ import {
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload'
 import { uploadImageFormatConversion, amountTransform } from '@/utils/utils'
+import { EyeOutlined } from '@ant-design/icons';
 import * as api from '@/services/product-management/product-list';
 import styles from './edit.less'
 import FormModal from './form';
@@ -86,6 +87,7 @@ export default (props) => {
       // suggestedRetailPrice,
       salePrice,
       marketPrice,
+      freightTemplateId,
       ...rest } = values;
 
     const obj = {
@@ -100,6 +102,11 @@ export default (props) => {
       advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl,
     };
+
+    if (freightTemplateId) {
+      obj.goods.freightTemplateId = freightTemplateId.value;
+      obj.goods.freightTemplateName = freightTemplateId.label;
+    }
 
     if (isMultiSpec) {
       obj.specName = specName;
@@ -177,17 +184,19 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
-      const { goods, specName, specValues, specData } = detailData;
+      const { goods, specName, specValues, specData, freightTemplateId, freightTemplateName } = detailData;
       form.setFieldsValue({
         goodsName: goods.goodsName,
         goodsDesc: goods.goodsDesc,
         supplierSpuId: goods.supplierSpuId,
+        supplierSkuId: goods.supplierSkuId,
         goodsKeywords: goods.goodsKeywords,
         goodsSaleType: goods.goodsSaleType,
         isFreeFreight: goods.isFreeFreight,
         isMultiSpec: detailData.isMultiSpec,
         stockNum: goods.stockNum,
         stockAlarmNum: goods.stockAlarmNum,
+        freightTemplateId: +goods.freightTemplateId,
         // wholesaleMinNum: goods.wholesaleMinNum,
         supportNoReasonReturn: goods.supportNoReasonReturn,
         buyMinNum: goods.buyMinNum,
@@ -197,21 +206,37 @@ export default (props) => {
         detailImages: uploadImageFormatConversion(detailData.detailImages, 'imageUrl'),
         advImages: uploadImageFormatConversion(detailData.advImages, 'imageUrl'),
         videoUrl: goods.videoUrl,
+        brandId: goods.brandId,
         gcId: [goods.gcId1, goods.gcId2],
       })
+
+      if (freightTemplateId && freightTemplateName) {
+        form.setFieldsValue({
+          freightTemplateId: { label: freightTemplateName, value: freightTemplateId }
+        })
+      }
 
       if (detailData.isMultiSpec) {
         form.setFieldsValue({
           specName1: specName['1'],
-          specName2: specName['2'],
           specValues1: Object.values(specValues['1']).map(item => ({ name: item })),
-          specValues2: Object.values(specValues['2']).map(item => ({ name: item })),
         })
+
+        if (specName['2']) {
+          form.setFieldsValue({
+            specName2: specName['2'],
+            specValues2: Object.values(specValues['2']).map(item => ({ name: item })),
+          })
+        }
+
         const specValuesMap = {};
         Object.values(specValues).forEach(element => {
           const obj = Object.entries(element);
-          // eslint-disable-next-line prefer-destructuring
-          specValuesMap[obj[0][0]] = obj[0][1];
+          obj.forEach(item => {
+            // eslint-disable-next-line prefer-destructuring
+            specValuesMap[item[0]] = item[1];
+          })
+
         });
         setTableHead(Object.values(specName))
         setTableData(Object.entries(specData).map(item => {
@@ -273,7 +298,7 @@ export default (props) => {
         goodsSaleType: 0,
         isFreeFreight: 1,
         buyMinNum: 1,
-        buyMaxNum: 99,
+        buyMaxNum: 200,
         supportNoReasonReturn: 1,
         specValues1: [{}],
         specValues2: [{}],
@@ -297,12 +322,12 @@ export default (props) => {
         fieldProps={{
           maxLength: 50,
         }}
+        disabled
       />
       <ProFormText
         name="goodsDesc"
         label="商品副标题"
         placeholder="请输入商品副标题"
-        rules={[{ required: true, message: '请输入商品副标题' }]}
         fieldProps={{
           maxLength: 20,
         }}
@@ -314,24 +339,28 @@ export default (props) => {
         fieldProps={{
           maxLength: 32,
         }}
+        disabled
       />
       <ProFormText
         name="goodsKeywords"
         label="搜索关键字"
         placeholder="请输入搜索关键字"
+        fieldProps={{
+          maxLength: 30,
+        }}
       />
       <Form.Item
         label="商品品类"
         name="gcId"
         rules={[{ required: true, message: '请选择商品品类' }]}
       >
-        <GcCascader />
+        <GcCascader disabled />
       </Form.Item>
       <Form.Item
         name="brandId"
         label="商品品牌"
       >
-        <BrandSelect />
+        <BrandSelect disabled />
       </Form.Item>
 
       <ProFormRadio.Group
@@ -348,6 +377,7 @@ export default (props) => {
             value: 1,
           },
         ]}
+        disabled
       />
       <ProFormRadio.Group
         name="isMultiSpec"
@@ -363,6 +393,7 @@ export default (props) => {
             value: 1,
           },
         ]}
+        disabled
       />
 
       <ProFormDependency name={['isMultiSpec']}>
@@ -377,6 +408,7 @@ export default (props) => {
                 fieldProps={{
                   maxLength: 18,
                 }}
+                disabled
               />
               <Form.List name="specValues1">
                 {(fields, { add, remove }) => (
@@ -389,11 +421,11 @@ export default (props) => {
                           name={[name, 'name']}
                           colon={false}
                         >
-                          <Input placeholder="请输入规格属性" maxLength={18} addonAfter={
+                          <Input disabled placeholder="请输入规格属性" maxLength={18} addonAfter={
                             key === 0 ?
-                              <Button type="primary" onClick={() => { add() }}>添加</Button>
+                              <Button disabled type="primary" onClick={() => { add() }}>添加</Button>
                               :
-                              <Button type="primary" danger onClick={() => { remove(name) }}>删除</Button>
+                              <Button disabled type="primary" danger onClick={() => { remove(name) }}>删除</Button>
                           } />
                         </Form.Item>
                       )
@@ -405,6 +437,7 @@ export default (props) => {
                 name="specName2"
                 label="规格二"
                 placeholder="请输入规格名称"
+                disabled
               />
               <Form.List name="specValues2">
                 {(fields, { add, remove }) => (
@@ -417,11 +450,11 @@ export default (props) => {
                           name={[name, 'name']}
                           colon={false}
                         >
-                          <Input maxLength={18} placeholder="请输入规格属性" addonAfter={
+                          <Input disabled maxLength={18} placeholder="请输入规格属性" addonAfter={
                             key === 0 ?
-                              <Button type="primary" onClick={() => { add() }}>添加</Button>
+                              <Button disabled type="primary" onClick={() => { add() }}>添加</Button>
                               :
-                              <Button type="primary" danger onClick={() => { remove(name) }}>删除</Button>
+                              <Button disabled type="primary" danger onClick={() => { remove(name) }}>删除</Button>
                           } />
                         </Form.Item>
                       )
@@ -433,7 +466,7 @@ export default (props) => {
                 label=" "
                 colon={false}
               >
-                <Button type="primary" onClick={() => { setFormModalVisible(true) }}>填写批量规格参数 生成规格配置表</Button>
+                <Button disabled type="primary" onClick={() => { setFormModalVisible(true) }}>填写批量规格参数 生成规格配置表</Button>
               </Form.Item>
               {!!tableData.length && <EditTable tableHead={tableHead} tableData={tableData} setTableData={setTableData} />}
             </>
@@ -444,12 +477,14 @@ export default (props) => {
                 label="货号"
                 placeholder="请输入货号"
                 rules={[{ required: true, message: '请输入货号' }]}
+                disabled
               />
               <ProFormText
                 name="retailSupplyPrice"
                 label="供货价"
                 placeholder="请输入供货价"
                 rules={[{ required: true, message: '请输入供货价' }]}
+                disabled
               />
               {/* <ProFormText
                 name="suggestedRetailPrice"
@@ -474,11 +509,13 @@ export default (props) => {
                 label="可用库存"
                 placeholder="请输入可用库存"
                 rules={[{ required: true, message: '请输入可用库存数量' }]}
+                disabled
               />
               <ProFormText
                 name="stockAlarmNum"
                 label="库存预警值"
                 placeholder="请输入数字 可用库存小于等于此值时提醒"
+                disabled
               />
               {/* <ProFormText
                 name="wholesalePrice"
@@ -492,7 +529,7 @@ export default (props) => {
                 placeholder="请输入批发起购量"
                 rules={[{ required: true, message: '请输入数字 需大于可用库存' }]}
               /> */}
-              
+
 
             </>
         }}
@@ -502,11 +539,13 @@ export default (props) => {
         label="单SKU起售数量"
         placeholder="请输入单SKU起售数量"
         rules={[{ required: true, message: '请输入单SKU起售数量' }]}
+        disabled
       />
       <ProFormText
         name="buyMaxNum"
         label="单SKU单次最多零售购买数量"
         placeholder="请输入单SKU单次最多零售购买数量"
+        disabled
       />
 
       <ProFormRadio.Group
@@ -523,7 +562,19 @@ export default (props) => {
             value: 0,
           },
         ]}
+        disabled
       />
+      <ProFormDependency name={['freightTemplateId']}>
+        {({ freightTemplateId }) => (
+          !!freightTemplateId &&
+          <Form.Item
+            name="freightTemplateId"
+            label="选择运费模板"
+          >
+            <Select labelInValue allowClear disabled />
+          </Form.Item>
+        )}
+      </ProFormDependency>
       <ProFormRadio.Group
         name="supportNoReasonReturn"
         label="七天无理由退货"
@@ -538,10 +589,15 @@ export default (props) => {
             value: 0,
           },
         ]}
+        disabled
       />
       <ProFormTextArea
         name="goodsRemark"
         label="特殊说明"
+        disabled
+        fieldProps={{
+          placeholder: ''
+        }}
       />
       <Form.Item
         label="商品主图"
@@ -555,60 +611,34 @@ export default (props) => {
             return Promise.reject(new Error('至少上传3张商品主图'));
           },
         })]}
-        tooltip={
-          <dl>
-            <dt>图片要求</dt>
-            <dd>1.图片大小500kb以内</dd>
-            <dd>2.图片比例1:1</dd>
-            <dd>3.图片格式png/jpg/gif</dd>
-            <dd>4.至少上传3张</dd>
-          </dl>
-        }
       >
-        <Upload multiple maxCount={10} accept="image/*" dimension="1:1" size={500} />
+        <Upload disabled multiple maxCount={10} accept="image/*" dimension="1:1" size={500} />
       </Form.Item>
       <Form.Item
         label="商品详情"
         name="detailImages"
         rules={[{ required: true, message: '请上传商品详情图片' }]}
-        tooltip={
-          <dl>
-            <dt>图片要求</dt>
-            <dd>1.图片大小2MB以内</dd>
-            <dd>2.图片格式png/jpg/gif</dd>
-          </dl>
-        }
       >
-        <Upload multiple maxCount={10} accept="image/*" size={500 * 4} />
+        <Upload disabled multiple maxCount={10} accept="image/*" size={500 * 4} />
       </Form.Item>
-      <Form.Item
+      {detailData.advImages && <Form.Item
         label="商品横幅"
         name="advImages"
-        tooltip={
-          <dl>
-            <dt>图片要求</dt>
-            <dd>1.图片大小500kb以内</dd>
-            <dd>2.图片尺寸702*320px</dd>
-            <dd>3.图片格式png/jpg/gif</dd>
-            <dd>注：商品横幅用于VIP商品推广，非必填</dd>
-          </dl>
-        }
       >
-        <Upload multiple maxCount={10} accept="image/*" dimension={{ width: 702, height: 320 }} size={500} />
-      </Form.Item>
-      <Form.Item
-        label="商品视频"
-        name="videoUrl"
-        tooltip={
-          <dl>
-            <dt>视频要求</dt>
-            <dd>1.视频大小20MB以内</dd>
-            <dd>2.视频格式mp4</dd>
-          </dl>
-        }
-      >
-        <Upload maxCount={1} accept="video/mp4" size={1024 * 20} />
-      </Form.Item>
+        <Upload disabled multiple maxCount={10} accept="image/*" dimension={{ width: 702, height: 320 }} size={500} />
+      </Form.Item>}
+      {detailData.videoUrl &&
+        <Form.Item
+          label="商品视频"
+          name="videoUrl"
+        >
+          <div className={styles.video_preview}>
+            <video width="100%" height="100%" src={detailData.videoUrl} />
+            <div>
+              <EyeOutlined onClick={() => { window.open(detailData.videoUrl, '_blank') }} style={{ color: '#fff', cursor: 'pointer' }} />
+            </div>
+          </div>
+        </Form.Item>}
       {detailData && <>
         <Form.Item
           label="创建时间"

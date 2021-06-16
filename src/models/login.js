@@ -3,6 +3,7 @@ import { history } from 'umi';
 // import { fakeAccountLogin } from '@/services/login';
 // import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
+import { LoginOut } from '@/services/login'
 // import { message } from 'antd';
 
 const Model = {
@@ -45,7 +46,7 @@ const Model = {
 
     logout() {
       const { redirect } = getPageQuery(); // Note: There may be security issues, please note
-
+      LoginOut();
       if (window.location.pathname !== '/user/login' && !redirect) {
         history.replace({
           pathname: '/user/login',
@@ -56,6 +57,7 @@ const Model = {
       }
 
       window.localStorage.removeItem('token')
+      window.localStorage.removeItem('authority')
     },
   },
   reducers: {

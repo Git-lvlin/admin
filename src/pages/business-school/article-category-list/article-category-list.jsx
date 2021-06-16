@@ -1,120 +1,100 @@
 
 import React, { useRef, useState } from 'react';
-import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
-import { hotGoosList, hotGoosOperation, tagSortTop } from '@/services/cms/member/member';
-import { ACTION_TYPE } from '@/utils/text';
+import { findAdminArticleTypeList, articleOperation, tagSortTop } from '@/services/cms/member/member';
 
 const ArticleCategoryList = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
-  const [detailData, setDetailData] = useState(false);
-
-  const getDetail = (data) => {
-    setDetailData(data);
-    setFormVisible(true);
-  }
 
   const formControl = (data,type) => {
-    hotGoosOperation({ids: data,status: type}).then((res) => {
+    articleOperation({id: data, isShow: type}).then((res) => {
       if (res.code === 0) {
-        message.success(`${ACTION_TYPE[type]}成功`);
+        message.success(`操作成功`);
         actionRef.current.reset();
       }
     })
   }
 
-  const top = (data) => {
-    tagSortTop({id: data}).then((res) => {
-      if (res.code === 0) {
-        message.success(`置顶成功`);
-      }
-    })
-  }
+  // const top = (data) => {
+  //   tagSortTop({id: data}).then((res) => {
+  //     if (res.code === 0) {
+  //       message.success(`置顶成功`);
+  //       actionRef.current.reset();
+  //     }
+  //   })
+  // }
 
   const columns = [
     {
       title: '编号',
-      dataIndex: 'sort',
+      dataIndex: 'id',
       valueType: 'text',
       search: false,
     },
     {
       title: '分类名称',
-      key: 'goodsSaleTypeDisplay',
-      dataIndex: 'goodsSaleTypeDisplay',
+      dataIndex: 'typeName',
       valueType: 'text',
       search: false,
     },
     {
       title: '分类描述',
-      key: 'goodsSalePrice',
-      dataIndex: 'goodsSalePrice',
-      valueType: 'number',
+      dataIndex: 'typeDesc',
+      valueType: 'text',
       search: false,
     },
     {
       title: '展示序号',
-      key: 'stockNum',
-      dataIndex: 'stockNum',
+      dataIndex: 'sortNum',
       valueType: 'number',
       search: false,
     },
     {
-      title: '创建信息',
-      key: 'activityStockNum',
-      dataIndex: 'activityStockNum',
-      valueType: 'number',
+      title: '添加人名称',
+      dataIndex: 'authorName',
+      valueType: 'text',
       search: false,
     },
     {
-      title: '文章数量',
-      dataIndex: 'goodsSaleNum',
-      valueType: 'number',
+      title: '创建时间',
+      dataIndex: 'createTime',
+      valueType: 'text',
       search: false,
     },
+
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'isShow',
       filters: true,
       onFilter: true,
       hideInTable: true,
       search: false,
       valueType: 'select',
       valueEnum: {
-        0: { text: '全部', status: 'Default' },
-        1: {
-          text: '待发布',
-          status: '1',
-        },
-        2: {
-          text: '已发布',
-          status: '2',
-        },
+        0: '关闭',
+        1: '启用',
       }
     },
     {
-      title: '状态',
-      dataIndex: 'status',
-      valueType: 'text',
+      title: '文章数量',
+      dataIndex: 'articleNum',
+      valueType: 'number',
       search: false,
-      valueEnum: {
-        1: '未发布',
-        2: '已发布',
-      }
     },
     {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _, action) => {
+      render: (text, record, _) => {
         return (
           <>
-            &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>关闭</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>启用</a>}
+            {/* {record.status===1&&<a key="down" onClick={() => {top(record.id)}}>置顶</a>} */}
+            {record.isShow===0&&<a key="down" onClick={() => {formControl(record.id, 1)}}>启用</a>}
+            &nbsp;&nbsp;{record.isShow===1&&<a key="view" onClick={() => {formControl(record.id, 0)}}>关闭</a>}
           </>
         )
       }
@@ -128,7 +108,7 @@ const ArticleCategoryList = () => {
       options={false}
       columns={columns}
       actionRef={actionRef}
-      request={hotGoosList}
+      request={findAdminArticleTypeList}
       // rowSelection={{
       //   // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
       //   // 注释该行则默认不显示下拉选项
@@ -155,11 +135,9 @@ const ArticleCategoryList = () => {
       search={{
         labelWidth: 'auto',
       }}
-      pagination={{
-        pageSize: 5,
-      }}
+      pagination={false}
       dateFormatter="string"
-      // headerTitle=""
+      headerTitle=""
       search={false}
       toolBarRender={(_,record) => [
         <Button key="button" type="primary" onClick={() => { setFormVisible(true) }}>
@@ -170,9 +148,9 @@ const ArticleCategoryList = () => {
     {formVisible && <Edit
       visible={formVisible}
       setVisible={setFormVisible}
-      detailData={detailData}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+      // setFlag={setFlag}
+      callback={() => { actionRef.current.reload() }}
+      onClose={() => { actionRef.current.reload() }}
     />}
     </PageContainer>
   );

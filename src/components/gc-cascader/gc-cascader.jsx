@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Cascader } from 'antd';
 import { category } from '@/services/product-management/product-category';
 
-const GcCascader = ({ value, onChange }) => {
+const GcCascader = ({ value, onChange, ...rest }) => {
   const [gcData, setGcData] = useState([]);
   const gcLoadData = (selectedOptions) => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
@@ -34,7 +34,7 @@ const GcCascader = ({ value, onChange }) => {
 
             category({ gcParentId: gcId })
               .then(res2 => {
-                if (res2.code === 0) {
+                if (res2.code === 0 && data[index]) {
                   data[index].children = res2.data.records.map(item => ({ label: item.gcName, value: item.id }));
                   if (res.code === 0) {
                     setGcData([...data])
@@ -59,7 +59,7 @@ const GcCascader = ({ value, onChange }) => {
   }, [])
 
   return (
-    <Cascader value={value} onChange={changeHandle} options={gcData} placeholder="请选择商品品类" loadData={gcLoadData} changeOnSelect />
+    <Cascader value={value} onChange={changeHandle} options={gcData} placeholder="请选择商品品类" loadData={gcLoadData} changeOnSelect {...rest} />
   )
 }
 

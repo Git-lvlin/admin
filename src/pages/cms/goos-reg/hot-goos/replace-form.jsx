@@ -30,7 +30,7 @@ export default (props) => {
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'text',
+      valueType: 'money',
       search: false,
     },
     {
@@ -119,6 +119,7 @@ export default (props) => {
       postData={(data) => {
         data.forEach(item => {
           item.floatPercent = parseInt(item.floatPercent/100)
+          item.goodsSalePrice = item.goodsSalePrice/100
         })
         return data
       }}
@@ -148,9 +149,6 @@ export default (props) => {
       )}
       tableAlertOptionRender={(a) => {
         setArr(a.selectedRows)
-      }}
-      editable={{
-        type: 'multiple',
       }}
       search={{
         labelWidth: 'auto',
