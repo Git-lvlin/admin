@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
-import { storeList, storeDetail } from '@/services/daifa-store-management/list'
+import { storeList, storeDetail,statusSwitch } from '@/services/daifa-store-management/list'
 import { history } from 'umi';
 import Edit from './edit';
 
@@ -10,10 +10,10 @@ const TableList = () => {
   const [detailData, setDetailData] = useState(null);
   const actionRef = useRef();
 
-  const switchStatus = (id, type) => {
+  const switchStatus = (storeNo, type) => {
     statusSwitch({
-      supplierId: id,
-      type
+      storeNo: storeNo,
+      status: type
     }).then(res => {
       if (res.code === 0) {
         actionRef.current.reload();
@@ -88,7 +88,7 @@ const TableList = () => {
         if (_ === 0) {
           return _;
         }
-        return <a onClick={() => { history.push(`/supplier-management/supplier-sub-account/${data.id}`) }}>{_}</a>
+        return <a onClick={() => { history.push('/daifa-store-management/consultant-product-list') }}>{_}</a>
       }
     },
     {
@@ -109,8 +109,8 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          {data.status === 1 && <a onClick={() => { switchStatus(data.id, 2) }}>禁用</a>}
-          {data.status === 2 && <a onClick={() => { switchStatus(data.id, 1) }}>启用</a>}
+          {data.status === 1 && <a onClick={() => { switchStatus(data.storeNo, 2) }}>禁用</a>}
+          {data.status === 2 && <a onClick={() => { switchStatus(data.storeNo, 1) }}>启用</a>}
           <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.storeNo}`) }}>详情</a>
           <a onClick={() => { getDetail(data.storeNo) }}>编辑</a>
           <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>佣金明细</a>

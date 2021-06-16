@@ -4,7 +4,6 @@ import ProForm, {
   ModalForm,
   ProFormText,
 } from '@ant-design/pro-form';
-import MemberReg from '@/components/member-reg';
 import Upload from '@/components/upload';
 import { spaceEdit } from '@/services/cms/member/member';
 
@@ -13,21 +12,23 @@ export default (props) => {
   const { detailData, setVisible, onClose, visible } = props;
   const formRef = useRef();
   const waitTime = (values) => {
-    const { ...rest } = values
+    const { actionUrl, ...rest } = values
     const param = {
       ...rest
     }
-    return new Promise((resolve) => {
+    param.actionUrl = actionUrl || null
+    return new Promise((resolve, reject) => {
       spaceEdit(param).then((res) => {
         if (res.code === 0) {
-          resolve(true);
+          resolve(true)
+        } else {
+          reject(false)
         }
       })
     });
   };
 
   useEffect(() => {
-    console.log('detailData', detailData)
     if (detailData) {
       const { ...rest } = detailData;
       form.setFieldsValue({

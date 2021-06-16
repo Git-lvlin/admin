@@ -18,7 +18,7 @@ import cms from './routers/cms'
 import businessSchool from './routers/business-school'
 import communityManagement from './routers/community-management'
 import DaifaStoreManagement from './routers/daifa-store-management'
-
+import pcm from './routers/price-comparsion-management'
 
 
 
@@ -79,13 +79,9 @@ export default defineConfig({
             messageManagement,
             couponManagement,
             cms,
+            pcm,
             communityManagement,
             DaifaStoreManagement,
-            {
-              path: '/price-comparsion-management',
-              name: 'price-comparsion-management',
-              component: './price-comparsion-management',
-            },
             businessSchool,
             {
               component: '404',
