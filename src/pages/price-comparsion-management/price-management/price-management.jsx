@@ -11,7 +11,7 @@ import styles from './style.less';
 
 const { Search } = Input;
 
-const PriceComparsionManagement = () => {
+const PriceManagement = () => {
   const actionRef = useRef()
   const [formVisible, setFormVisible] = useState(false)
   const [grabList, setGrabList] = useState(false)
@@ -363,4 +363,4 @@ const PriceComparsionManagement = () => {
 
 }
 
-export default PriceComparsionManagement
+export default PriceManagement
