@@ -5,10 +5,12 @@ import { helperList, statusSwitch } from '@/services/supplier-management/supplie
 import { history } from 'umi';
 import Edit from './edit';
 import DisableModal from './disable-modal';
+import PasswordModal from './password';
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [disableModalVisible, setDisableModalVisible] = useState(false);
+  const [passwordModalVisible, setPasswordModalVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
 
@@ -106,7 +108,7 @@ const TableList = () => {
         <Space>
           {data.status === 1 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>禁用</a>}
           {data.status === 0 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>启用</a>}
-          <a>修改密码</a>
+          <a onClick={() => { setSelectItem(data); setPasswordModalVisible(true) }}>修改密码</a>
         </Space>
       ),
     },
@@ -157,6 +159,13 @@ const TableList = () => {
           setVisible={setDisableModalVisible}
           data={selectItem}
           callback={(v) => { switchStatus(v) }}
+        />}
+
+      {passwordModalVisible &&
+        <PasswordModal
+          visible={passwordModalVisible}
+          setVisible={setPasswordModalVisible}
+          data={selectItem}
         />}
     </>
 
