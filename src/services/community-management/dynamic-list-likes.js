@@ -9,9 +9,10 @@ export const listLikes= async (params, options = {}) => {
     },
     ...options
   });
+  console.log('res',res)
   return {
     code: res.code,
-    data: [res.data],
+    data: Array.isArray(res.data)?res.data:[],
     success: res.success,
   }
 }
