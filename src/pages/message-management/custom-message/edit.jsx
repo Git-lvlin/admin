@@ -1,44 +1,171 @@
 import React, {useState, useRef} from 'react';
-import {
+import ProForm,{
   DrawerForm,
   ProFormText,
   ProFormRadio,
+  ProFormTextArea,
+  ProFormSelect,
 } from '@ant-design/pro-form';
-import { Form } from 'antd';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { Form, Button } from 'antd';
 
-const edit = props => {
-  const { visible, setVisible, detailData, callback = () => { }, onClose = () => { } } = props
+import Upload from '@/components/upload';
+
+const modules = {
+  toolbar: {
+    container: [
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],, //字体设置
+      ['bold', 'italic', 'underline', 'strike'],  
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+      ['link'], // a链接
+      [{ 'align': [] }],
+      [{
+        'background': ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)',
+          'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)',
+          'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)',
+          'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)',
+          'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)',
+          'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)',
+          'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)',
+          'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)',
+          'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)',
+          'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)',
+          'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)',
+          'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)']
+      }],
+      [{
+        'color': ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)',
+          'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)',
+          'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)',
+          'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)',
+          'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)',
+          'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)',
+          'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)',
+          'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)',
+          'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)',
+          'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)',
+          'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)',
+          'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)']
+      }],
+      ['clean']
+    ]
+  }
+}
+
+const Edit = props => {
+  const { visible, setVisible, callback, detailData, onClose } = props
   const [form] = Form.useForm()
-  
+  const [showTab, setShowTab] = useState(1);
+
+  const DynamicTab =() => {
+    if(showTab == 1) {
+      return (
+        <>
+          <ProFormRadio.Group
+            name="linkType"
+            label="详情链接"
+            initialValue='1'
+            options={[
+              {
+                label: '优惠活动详情',
+                value: '1'
+              },
+              {
+                label: '优惠券-领券中',
+                value: '2',
+              }
+            ]}
+          />
+          <ProFormText
+            name="link"
+            label="活动网址"
+            placeholder="请输入活动网址"
+            rules={[{ required: true }]}
+          />
+        </>
+      )
+    }else if( showTab == 2 ) {
+      return (
+        <ProForm.Item
+          label='内容详情'
+          required
+          name='detail'
+        >
+          <ReactQuill
+            className='richText'
+            theme='snow'
+            key='1'
+            placeholder='请输入内容详情'
+            id='ReactQuill'
+            modules={ modules }
+          />
+        </ProForm.Item>
+      )
+    } else {
+      return (
+        <ProForm.Item
+          label='公告详情'
+          required
+          name='detail'
+        >
+          <ReactQuill
+            className='richText'
+            theme='snow'
+            key='2'
+            placeholder='请输入公告详情'
+            id='ReactQuill'
+            modules={ modules }
+          />
+        </ProForm.Item>
+      )
+    }
+  }
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
     layout: {
       labelCol: {
-        span: 4,
+        span: 6
       },
       wrapperCol: {
-        span: 14,
-      },
+        span: 14
+      }
     }
-  };
-
+  }
+  const selectType = e => {
+    setShowTab(e.target.value)
+  }
+  const draft = _ => {
+    console.log(_);
+  }
+  const submit = _ => {
+    
+  }
   return (
     <DrawerForm
-      title={`${detailData ? '编辑' : '新建'}`}
+      title={detailData?'编辑':'新建'}
       onVisibleChange={setVisible}
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        width: 800,
-        onClose: () => {
-          onClose();
-        }
+        onClose: ()=> onClose()
       }}
       form={form}
-      onFinish={async (values) => {
-        await submit(values);
-        return true;
+      submitter={{
+        render: (props) => {
+          return [
+            <Button type="primary" key="draft" onClick={() => draft(form)}>
+              保存为草稿
+            </Button>,
+            <Button type="primary" key="submit" onClick={() => submit(form)}>
+              提交
+            </Button>,
+            <Button key="rest" onClick={() => onClose()}>
+              返回
+           </Button>
+          ]
+        }
       }}
       visible={visible}
       initialValues={{
@@ -46,17 +173,119 @@ const edit = props => {
       }}
       {...formItemLayout}
     >
-       <ProFormText
-        name="companyName"
-        label="供应商名称"
-        placeholder="请输入供应商名称"
-        rules={[{ required: true, message: '请输入供应商名称' }]}
+      <ProFormText
+        name="name"
+        label="名称"
+        placeholder="请输入名称"
+        rules={[{ required: true }]}
         fieldProps={{
-          maxLength: 30,
+          maxLength: 16
         }}
       />
+      <ProFormRadio.Group
+        name="type"
+        label="自定义类型"
+        initialValue='1'
+        fieldProps={{
+          onChange: (e)=>{ selectType(e) }
+        }}
+        options={[
+          {
+            label: '优惠促销',
+            value: '1'
+          },
+          {
+            label: '内容推广',
+            value: '2'
+          },
+          {
+            label: '系统公告',
+            value: '3'
+          }
+        ]}
+      />
+      <ProFormText
+        name="title"
+        label="标题"
+        width='md'
+        placeholder="请输入标题"
+        rules={[{ required: true }]}
+        fieldProps={{
+          maxLength: 20
+        }}
+      />
+       <ProFormTextArea
+        name="content"
+        label="内容"
+        width='lg'
+        placeholder="请输入内容"
+        rules={[{ required: true }]}
+        fieldProps={{
+          maxLength: 50,
+          showCount: true
+        }}
+      />
+      <ProForm.Item
+        label="封面图片"
+        name="cover"
+        // rules={[
+        //   {
+        //     required: true,
+        //     message: '请上传封面图片'
+        //   }
+        // ]}
+        tooltip={
+          <dl>
+            <dt>图片要求</dt>
+            <dd>1.图片大小500KB以内</dd>
+            <dd>2.图片尺寸为 350 x 125</dd>
+            <dd>3.图片格式png/jpg/gif</dd>
+          </dl>
+        }
+      >
+        <Upload multiple maxCount={1} proportion={{width: '350', height:'125'}} accept="image/*" size={.5 * 1024} />
+      </ProForm.Item>
+      <ProFormSelect
+        name="pushType"
+        label="推送渠道"
+        placeholder="请选择推送渠道"
+        required
+        width="md"
+        valueType="select"
+        valueEnum={{
+          1: '站内信',
+          2: '推送消息',
+          3: '短信',
+          4: '小程序'
+        }}
+      />
+       <ProFormRadio.Group
+        name="targetType"
+        label="适用会员"
+        initialValue='2'
+        rules={[
+          {
+            required: true,
+            message: '请选择适用会员'
+          }
+        ]}
+        tooltip={
+          <>每位用户仅接收1次消息</>
+        }
+        options={[
+          {
+            label: '全部用户',
+            value: '2'
+          },
+          {
+            label: '仅店主',
+            value: '3'
+          }
+        ]}
+      />
+      <DynamicTab />
     </DrawerForm>
   )
 }
 
-export default edit;
+export default Edit;

@@ -30,6 +30,8 @@ export default {
   'menu.order-management.after-sales-order-details': '详请页',
   'menu.order-management.intensive-order.supplier-order-detail': '订单详情',
   'menu.order-management.intensive-order.shopkeeper-order-detail': '订单详情',
+  'menu.order-management.intervention-list': '售后介入',
+  'menu.order-management.details': '详情',
 
   'menu.product-management': '商品管理',
   'menu.product-management.product-list': '商品列表',

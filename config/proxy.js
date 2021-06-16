@@ -9,6 +9,7 @@ export default {
   dev: {
     '/auth/': {
       target: 'https://adminapi-dev.yeahgo.com',
+      // target: 'https://adminapi.yeahgo.com',
       changeOrigin: true,
       pathRewrite: {
         '^': '',
@@ -17,6 +18,13 @@ export default {
     '/java-admin/': {
       // target: 'http://192.168.3.2:6664',
       target: 'http://admin.waiad.icu',
+      changeOrigin: true,
+      pathRewrite: {
+        '^': ''
+      }
+    },
+    '/express/': {
+      target: 'http://192.168.14.157:50029/',
       changeOrigin: true,
       pathRewrite: {
         '^': ''
