@@ -79,7 +79,7 @@ export default (props) => {
       }}
       onVisibleChange={setVisible}
       visible={visible}
-      width={600}
+      width={800}
       form={form}
       onFinish={async (values) => {
         await submit(values);
