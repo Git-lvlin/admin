@@ -43,14 +43,14 @@ export default props => {
             name="userId"
             label="会员昵称"
             options={virtual}
-            placeholder="Please select a country"
+            placeholder="请选择会员昵称"
             rules={[{ required: true, message: '请选择会员昵称' }]}
         />
          <ProFormSelect
             name="circleId"
             label="发布圈子"
             options = {onselect}
-            placeholder="Please select a country"
+            placeholder="请选择发布圈子"
             rules={[{ required: true, message: '请选择发布圈子' }]}
         />
         <ProFormTextArea
@@ -60,8 +60,8 @@ export default props => {
             placeholder="用户可编辑500个字。"
             rules={[{ required: true, message: '请输入分享想法' }]}
         />
-        <Form.Item label="上传照片" name="images" rules={[{ required: true, message: '请上传图片' }]}>
-         <Upload multiple maxCount={1} accept="image/*" dimension="1:1" size={375} />
+        <Form.Item label="上传照片" name="images" tooltip="最大不能超过1M" rules={[{ required: true, message: '请上传图片' }]}>
+         <Upload multiple maxCount={1} accept="image/*" size={1024}/>
          </Form.Item>
       </ProForm>
   );
