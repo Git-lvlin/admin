@@ -7,6 +7,6 @@ export const listSystemVirtualMember= async (params, options = {}) => {
     ...options
   });
   return {
-    data: res.data,
+    data: res.data.length?res.data:[],
   }
 }

@@ -89,7 +89,7 @@ const TableList = () => {
         if (_ === 0) {
           return _;
         }
-        return <a onClick={() => { history.push(`/daifa-store-management/consultant-product-list?spuId=${data.id}&storeNo=${data.storeNo}`) }}>{_}</a>
+        return <a onClick={() => { history.push(`/daifa-store-management/list/consultant-product-list?spuId=${data.id}&storeNo=${data.storeNo}`) }}>{_}</a>
       }
     },
     {
@@ -112,9 +112,9 @@ const TableList = () => {
         <Space>
           {data.status === 1 && <a onClick={() => { switchStatus(data.storeNo, 2) }}>禁用</a>}
           {data.status === 2 && <a onClick={() => { switchStatus(data.storeNo, 1) }}>启用</a>}
-          <a onClick={() => { history.push(`/daifa-store-management/list-detail?storeNo=${data.storeNo}`) }}>详情</a>
+          <a onClick={() => { history.push(`/daifa-store-management/list/list-detail?storeNo=${data.storeNo}`) }}>详情</a>
           <a onClick={() => { getDetail(data.storeNo) }}>编辑</a>
-          <a onClick={() => { history.push(`/daifa-store-management/agent-shop-money?storeNo=${data.storeNo}`) }}>佣金明细</a>
+          <a onClick={() => { history.push(`/daifa-store-management/list/agent-shop-money?storeNo=${data.storeNo}`) }}>佣金明细</a>
         </Space>
       ),
     },
@@ -126,9 +126,6 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={storeList}
-        params={{
-          status:3
-        }}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
