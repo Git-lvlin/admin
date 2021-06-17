@@ -6,7 +6,6 @@ import { crazyGoodsList, crazyActivityGoodsDel } from '@/services/cms/member/mem
 import { Button, Space, message } from 'antd';
 import Edit from './goods-modal-form'
 import ReplaceForm from './replace-form';
-import ProCard from '@ant-design/pro-card';
 import { ACTION_TYPE } from '@/utils/text';
 import { ModalForm } from '@ant-design/pro-form';
 
@@ -16,6 +15,7 @@ const DetailList = (props) => {
   const [formVisible, setFormVisible] = useState(false);
   const [replaceFormVisible, setReplaceFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(true);
+  const [flag, setFlag] = useState(false);
   const getDetail = (data) => {
     if (!acid) {return message.error('请先选择活动')}
     const param = {
@@ -53,8 +53,6 @@ const DetailList = (props) => {
       dataIndex: 'sort',
       valueType: 'text',
       search: false,
-      fixed: 'left',
-      width: 80,
     },
     {
       title: 'SPUID',
@@ -143,31 +141,28 @@ const DetailList = (props) => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      width: 140,
-      align: 'center',
-      fixed: 'right',
       render: (text, record, _, action) => {
         return (
           <>
-            &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
+            &nbsp;&nbsp;{record.status===2&&<Button key="down" onClick={() => {formControl(record.id, 1)}}>下线</Button>}
+            &nbsp;&nbsp;{record.status===1&&<Button key="view" onClick={() => {formControl(record.id,2)}}>发布</Button>}
             {/* &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {action?.startEditable?.(record.key);console.log('action',action,record)}}>编辑</a>} */}
-            &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
+            &nbsp;&nbsp;{record.status===1&&<Button key="d" onClick={() => {formControl(record.id,4)}}>删除</Button>}
           </>
         )
       }
     },
   ];
 
-  // useEffect(() => {
-  //   if (acid) {
-  //     setAcId({cmsId:acid})
-  //   }
-  // }, [acid]);
+  useEffect(() => {
+    if (flag) {
+      actionRef.current.reset()
+      setFlag(false)
+    }
+  }, [flag]);
 
   return (
     <>
-    {/* <ProCard style={{ maxWidth: 700,overflow:'hidden'}}> */}
     <ModalForm
       onVisibleChange={setVisible}
       visible={visible}
@@ -185,7 +180,7 @@ const DetailList = (props) => {
       }}
     >
     <ProTable
-      rowKey="key"
+      rowKey="id"
       options={false}
       columns={columns}
       actionRef={actionRef}
@@ -210,37 +205,23 @@ const DetailList = (props) => {
               取消选择
             </a>
           </span>
-          <span>{`待发布: ${selectedRows.reduce(
+          {/* <span>{`待发布: ${selectedRows.reduce(
             (pre, item) => pre + item.containers,
             0,
           )} 个`}</span>
           <span>{`已发布: ${selectedRows.reduce(
             (pre, item) => pre + item.callNumber,
             0,
-          )} 个`}</span>
+          )} 个`}</span> */}
         </Space>
       )}
-      editable={{
-        type: 'multiple',
-      }}
       search={{
         labelWidth: 'auto',
       }}
       pagination={{
         pageSize: 10,
       }}
-      // onRow={(record) => {
-      //   return {
-      //     onClick: () => {
-      //       console.log('左侧栏点击item',record)
-      //       if (record.title) {
-      //         onChange(record);
-      //       }
-      //     },
-      //   };
-      // }}
       dateFormatter="string"
-      // headerTitle="正在疯约"
       toolBarRender={(_,record) => [
         <Button key="button" icon={<PlayCircleOutlined />} type="primary">
           批量发布
@@ -263,17 +244,14 @@ const DetailList = (props) => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { setDetailData(null) }}
+      setFlag={setFlag}
     />}
     {replaceFormVisible && <ReplaceForm
       visible={replaceFormVisible}
       setVisible={setReplaceFormVisible}
       detailData={detailData}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+      setFlag={setFlag}
     />}
-    {/* </ProCard> */}
     </ModalForm>
     </>
     

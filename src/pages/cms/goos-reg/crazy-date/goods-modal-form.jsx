@@ -6,7 +6,7 @@ import { crazyActivityGoodsAdd } from '@/services/cms/member/member';
 import { todayAllGoodsList } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, visible } = props;
+  const { detailData, setVisible, visible, setFlag } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
 
@@ -23,6 +23,7 @@ export default (props) => {
     return new Promise((resolve) => {
       crazyActivityGoodsAdd(param).then((res) => {
         if (res.code === 0) {
+          setFlag(true)
           resolve(true);
         }
       })
@@ -78,12 +79,6 @@ export default (props) => {
       search: false,
     },
   ];
-
-
-
-  useEffect(() => {
-
-  }, [])
 
   return (
     <ModalForm
@@ -141,9 +136,6 @@ export default (props) => {
       tableAlertOptionRender={(a) => {
         setArr(a.selectedRows)
       }}
-      editable={{
-        type: 'multiple',
-      }}
       search={{
         labelWidth: 'auto',
       }}
@@ -152,7 +144,6 @@ export default (props) => {
       }}
       dateFormatter="string"
     />
-
     </ModalForm>
   );
 };
