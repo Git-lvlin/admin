@@ -25,7 +25,7 @@ export default (props) => {
     }
   };
 
-  const submit = () => {
+  const submit = (password) => {
     editPwd({
       password: md5(password),
       accountId: data.bindAccountId
