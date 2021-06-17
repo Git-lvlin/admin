@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
-import { storeList, storeDetail } from '@/services/daifa-store-management/list'
+import { storeList,statusSwitch, storeDetail } from '@/services/daifa-store-management/list'
 import { history } from 'umi';
+import AddModal from './add-modal'
 import Edit from './edit';
 
 const TableList = () => {
@@ -10,10 +11,10 @@ const TableList = () => {
   const [detailData, setDetailData] = useState(null);
   const actionRef = useRef();
 
-  const switchStatus = (id, type) => {
+  const switchStatus = (storeNo, type) => {
     statusSwitch({
-      supplierId: id,
-      type
+      storeNo,
+      status:type
     }).then(res => {
       if (res.code === 0) {
         actionRef.current.reload();
@@ -88,7 +89,7 @@ const TableList = () => {
         if (_ === 0) {
           return _;
         }
-        return <a onClick={() => { history.push(`/supplier-management/supplier-sub-account/${data.id}`) }}>{_}</a>
+        return <a onClick={() => { history.push(`/daifa-store-management/consultant-product-list?spuId=${data.id}&storeNo=${data.storeNo}`) }}>{_}</a>
       }
     },
     {
@@ -109,11 +110,11 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          {data.status === 1 && <a onClick={() => { switchStatus(data.id, 2) }}>禁用</a>}
-          {data.status === 2 && <a onClick={() => { switchStatus(data.id, 1) }}>启用</a>}
-          <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.storeNo}`) }}>详情</a>
+          {data.status === 1 && <a onClick={() => { switchStatus(data.storeNo, 2) }}>禁用</a>}
+          {data.status === 2 && <a onClick={() => { switchStatus(data.storeNo, 1) }}>启用</a>}
+          <a onClick={() => { history.push(`/daifa-store-management/list-detail?storeNo=${data.storeNo}`) }}>详情</a>
           <a onClick={() => { getDetail(data.storeNo) }}>编辑</a>
-          <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>佣金明细</a>
+          <a onClick={() => { history.push(`/daifa-store-management/agent-shop-money?storeNo=${data.storeNo}`) }}>佣金明细</a>
         </Space>
       ),
     },
@@ -125,6 +126,9 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={storeList}
+        params={{
+          status:3
+        }}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -147,6 +151,7 @@ const TableList = () => {
               {resetText}
             </Button>,
             <Button key="out" type="primary" onClick={() => { setFormVisible(true) }}>新建</Button>,
+            <AddModal/>,
           ],
         }}
         columns={columns}

@@ -146,6 +146,9 @@ export default {
   'menu.community-management.add-advertising':'添加/编辑广告',
   'menu.community-management.advertising-manage':'广告位管理',
 
-  'menu.daifa-store-management':'代发店管理',
-  'menu.daifa-store-management.list':'代发店列表',
+  'menu.daifa-store-management':'内部店管理',
+  'menu.daifa-store-management.list':'内部店列表',
+  'menu.daifa-store-management.list-detail':'内部店详情',
+  'menu.daifa-store-management.consultant-product-list':'内部店顾问商品列表',
+  'menu.daifa-store-management.agent-shop-money':'佣金明细',
 };

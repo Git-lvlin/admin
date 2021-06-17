@@ -101,10 +101,12 @@ export default (props) => {
             }
           })
         });
+        console.log('parentIds',parentIds)
 
         const gcData = [...new Set([...gc, ...parentIds].filter(item => item !== 0))]
         gcData.forEach(item => {
           const findItem = originData.current.find(it => item === it.id);
+        console.log('findItem',findItem)
           const { gcParentId, id } = findItem;
           // if (gcParentId == 0) {
           //   if (!obj[gcParentId]) {
@@ -125,6 +127,7 @@ export default (props) => {
               obj[gcParentId] = [id];
             }
           }
+        console.log('obj',obj)
 
         })
 
@@ -142,6 +145,7 @@ export default (props) => {
           }
         }
 
+
         if (hasError) {
           message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
           reject()
@@ -151,9 +155,13 @@ export default (props) => {
       } else {
         gcArr = ''
       }
+      console.log('values',values)
+      console.log('gcArr',gcArr)
+      console.log('detailData',detailData)
+      values.businessScope=gcArr
       apiMethod({
         ...rest,
-        storeNo: detailData.storeNo,
+        storeNo:detailData&&detailData.storeNo,
         businessScope: JSON.stringify(gcArr),
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
@@ -197,6 +205,16 @@ export default (props) => {
       })
   }, [form, detailData]);
 
+   const checkConfirm=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value.length > 30) {
+          await reject('店主姓名不超过30个字符')
+      }else {
+          await resolve()
+      }
+    })
+  }
+
   return (
     <DrawerForm
       title={`${detailData ? '编辑' : '新建'}`}
@@ -224,7 +242,7 @@ export default (props) => {
         name="realname"
         label="店主姓名"
         placeholder="请输入店主姓名"
-        rules={[{ required: true, message: '请输入店主姓名' }]}
+        rules={[{ required: true, message: '请输入店主姓名' },{validator: checkConfirm}]}
         fieldProps={{
           maxLength: 30,
         }}

@@ -57,9 +57,9 @@ export default props => {
             label="圈子描述"
             rules={[{ required: true, message: '请输入圈子描述' }]}
         />
-        <Form.Item label="圈子ICON" name="logo" rules={[{ required: true, message: '请上传图片' }]} >
-         <Upload multiple maxCount={1} accept="image/*" dimension="1:1" size={375} />
-         </Form.Item>
+        <Form.Item label="圈子ICON" name="logo" tooltip="图片最大不能超过375k，图片比列为1:1" rules={[{ required: true, message: '请上传图片，限制在375k' }]} >
+           <Upload multiple maxCount={1} accept="image/*" dimension="1:1" size={375} />
+        </Form.Item>
         <ProFormRadio.Group
             name="hot"
             label="是否加为热门圈子"

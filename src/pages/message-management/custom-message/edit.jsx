@@ -1,16 +1,17 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react'
 import ProForm,{
   DrawerForm,
   ProFormText,
   ProFormRadio,
   ProFormTextArea,
   ProFormSelect,
-} from '@ant-design/pro-form';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { Form, Button } from 'antd';
+} from '@ant-design/pro-form'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
+import { Form, Button, message } from 'antd'
 
-import Upload from '@/components/upload';
+import { customMessageAdd } from '@/services/message-management/message-template-config';
+import Upload from '@/components/upload'
 
 const modules = {
   toolbar: {
@@ -56,7 +57,7 @@ const modules = {
 const Edit = props => {
   const { visible, setVisible, callback, detailData, onClose } = props
   const [form] = Form.useForm()
-  const [showTab, setShowTab] = useState(1);
+  const [showTab, setShowTab] = useState(1)
 
   const DynamicTab =() => {
     if(showTab == 1) {
@@ -87,37 +88,97 @@ const Edit = props => {
       )
     }else if( showTab == 2 ) {
       return (
-        <ProForm.Item
-          label='内容详情'
-          required
-          name='detail'
-        >
-          <ReactQuill
-            className='richText'
-            theme='snow'
-            key='1'
-            placeholder='请输入内容详情'
-            id='ReactQuill'
-            modules={ modules }
+        <>
+          <ProFormText
+            name="detailTitle"
+            label="内容标题"
+            placeholder="请输入内容标题"
+            rules={[{ required: true }]}
+            fieldProps={{
+              maxLength: 18
+            }}
           />
-        </ProForm.Item>
+          <ProForm.Item
+            label="内容图片"
+            name="detailcCover"
+            rules={[
+              {
+                required: true,
+                message: '请上传内容图片'
+              }
+            ]}
+            tooltip={
+              <dl>
+                <dt>图片要求</dt>
+                <dd>1.图片大小2MB以内</dd>
+                <dd>2.图片格式png/jpg/gif</dd>
+              </dl>
+            }
+          >
+            <Upload multiple maxCount={1} accept="image/*" size={2 * 1024} />
+          </ProForm.Item>
+          <ProForm.Item
+            label='内容'
+            required
+            name='detail'
+          >
+            <ReactQuill
+              className='richText'
+              theme='snow'
+              key='1'
+              placeholder='请输入内容'
+              id='ReactQuill'
+              modules={ modules }
+            />
+          </ProForm.Item>
+        </>
       )
     } else {
       return (
-        <ProForm.Item
-          label='公告详情'
-          required
-          name='detail'
-        >
-          <ReactQuill
-            className='richText'
-            theme='snow'
-            key='2'
-            placeholder='请输入公告详情'
-            id='ReactQuill'
-            modules={ modules }
+        <>
+          <ProFormText
+            name="detailTitle"
+            label="公告标题"
+            placeholder="请输入公告标题"
+            rules={[{ required: true }]}
+            fieldProps={{
+              maxLength: 18
+            }}
           />
-        </ProForm.Item>
+          <ProForm.Item
+            label="公告图片"
+            name="detailcCover"
+            rules={[
+              {
+                required: true,
+                message: '请上传公告图片'
+              }
+            ]}
+            tooltip={
+              <dl>
+                <dt>图片要求</dt>
+                <dd>1.图片大小2MB以内</dd>
+                <dd>2.图片格式png/jpg/gif</dd>
+              </dl>
+            }
+          >
+            <Upload multiple maxCount={1} accept="image/*" size={2 * 1024} />
+          </ProForm.Item>
+          <ProForm.Item
+            label='公告'
+            required
+            name='detail'
+          >
+            <ReactQuill
+              className='richText'
+              theme='snow'
+              key='2'
+              placeholder='请输入公告'
+              id='ReactQuill'
+              modules={ modules }
+            />
+          </ProForm.Item>
+        </>
       )
     }
   }
@@ -136,11 +197,41 @@ const Edit = props => {
   const selectType = e => {
     setShowTab(e.target.value)
   }
-  const draft = _ => {
-    console.log(_);
+  const draft = (values) => {
+    let { ...rest } = values.getFieldsValue()
+    let params = {}
+    if(rest.type == 1) {
+      params ={...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 0}
+    } else {
+      params ={...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.content}, status: 0}
+    }
+    customMessageAdd(params).then(res=>{
+      if(res?.success) {
+        callback()
+        onClose()
+        message.success('草稿保存成功')
+      }
+    }).finally(()=>{
+      onClose()
+    })
   }
-  const submit = _ => {
-    
+  const submit = values => {
+    let { ...rest } = values.getFieldsValue()
+    let params = {}
+    if(rest.type == 1) {
+      params ={...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 1}
+    } else {
+      params ={...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.content}, status: 1}
+    }
+    customMessageAdd(params).then(res=>{
+      if(res?.success) {
+        onClose()
+        callback()
+        message.success('提交成功')
+      }
+    }).finally(()=>{
+      onClose()
+    })
   }
   return (
     <DrawerForm
@@ -153,15 +244,30 @@ const Edit = props => {
       }}
       form={form}
       submitter={{
-        render: (props) => {
+        render: () => {
           return [
-            <Button type="primary" key="draft" onClick={() => draft(form)}>
+            <Button 
+              type="primary" 
+              key="draft" 
+              onClick={() => {
+                draft(form)
+              }}
+            >
               保存为草稿
             </Button>,
-            <Button type="primary" key="submit" onClick={() => submit(form)}>
+            <Button 
+              type="primary"
+              key="submit" 
+              onClick={() =>{
+                submit(form)
+              }}
+            >
               提交
             </Button>,
-            <Button key="rest" onClick={() => onClose()}>
+            <Button 
+              key="rest"
+              onClick={() => onClose()}
+            >
               返回
            </Button>
           ]
@@ -177,7 +283,7 @@ const Edit = props => {
         name="name"
         label="名称"
         placeholder="请输入名称"
-        rules={[{ required: true }]}
+        required
         fieldProps={{
           maxLength: 16
         }}
@@ -209,7 +315,7 @@ const Edit = props => {
         label="标题"
         width='md'
         placeholder="请输入标题"
-        rules={[{ required: true }]}
+        required
         fieldProps={{
           maxLength: 20
         }}
@@ -219,7 +325,7 @@ const Edit = props => {
         label="内容"
         width='lg'
         placeholder="请输入内容"
-        rules={[{ required: true }]}
+        required
         fieldProps={{
           maxLength: 50,
           showCount: true
@@ -228,12 +334,8 @@ const Edit = props => {
       <ProForm.Item
         label="封面图片"
         name="cover"
-        // rules={[
-        //   {
-        //     required: true,
-        //     message: '请上传封面图片'
-        //   }
-        // ]}
+        required
+        rules={[{message: '请上传封面图片'}]}
         tooltip={
           <dl>
             <dt>图片要求</dt>
@@ -263,12 +365,8 @@ const Edit = props => {
         name="targetType"
         label="适用会员"
         initialValue='2'
-        rules={[
-          {
-            required: true,
-            message: '请选择适用会员'
-          }
-        ]}
+        required
+        rules={[{message: '请选择适用会员'} ]}
         tooltip={
           <>每位用户仅接收1次消息</>
         }
@@ -288,4 +386,4 @@ const Edit = props => {
   )
 }
 
-export default Edit;
+export default Edit

@@ -71,6 +71,7 @@ const InterventionDetailStatus = props => {
           <ProFormTextArea
             label="处理意见"
             name="platformOpinion"
+            width='lg'
             rules={[
               {
                 required: true,

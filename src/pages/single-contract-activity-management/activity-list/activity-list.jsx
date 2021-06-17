@@ -83,7 +83,6 @@ const TableList = () => {
       title: '单约虚拟成团',
       dataIndex: 'virtualType',
       valueType: 'text',
-      hideInSearch: true,
       valueEnum: {
         1: '关闭',
         2: '开启',
@@ -121,6 +120,7 @@ const TableList = () => {
           }
         </Space>
       ),
+      hideInSearch: true,
     },
   ];
 

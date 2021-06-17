@@ -7,18 +7,6 @@ import { interventionList } from '@/services/order-management/intervention-list'
 
 const TabList =props=> {
   const { done } =props
-  const formItemLayout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 6
-      },
-      wrapperCol: {
-        span: 14
-      }
-    }
-  }
   const columns =[
     {
       title: '售后编号',
@@ -43,7 +31,7 @@ const TabList =props=> {
       }
     },
     {
-      title: '申请介入时间',
+      title: '处理时间',
       dataIndex: 'applyTime',
       valueType: 'date',
       colSize: .8,
@@ -60,6 +48,19 @@ const TabList =props=> {
       valueType: 'select',
       colSize: .8,
       align: 'center',
+      hideInSearch: true,
+      valueEnum: {
+        1: '介入申请',
+        2: '介入退款'
+      }
+    },
+    {
+      title: '介入类型',
+      dataIndex: 'stage',
+      valueType: 'select',
+      colSize: .8,
+      align: 'center',
+      hideInTable: true,
       valueEnum: {
         1: '介入申请',
         2: '介入退款'
@@ -112,7 +113,6 @@ const TabList =props=> {
         defaultCollapsed: false,
         collapseRender: false
       }}
-      {...formItemLayout}
     />
   )
 }

@@ -59,6 +59,20 @@ export const customMessageAdd = async (params, options = {}) => {
     ...options
   })
   return {
-    success: res.data.success
+    success: res.success
+  }
+}
+
+// 站内信列表
+export const standLetterList = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/message/msg/list', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data.records,
+    success: res.data.success,
+    total: res.data.total
   }
 }

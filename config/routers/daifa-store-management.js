@@ -7,6 +7,21 @@ export default {
       path: '/daifa-store-management/list',
       component: './daifa-store-management/list',
     },
+    {
+      name: 'list-detail',
+      path: '/daifa-store-management/list-detail',
+      component: './daifa-store-management/list-detail',
+    },
+    {
+      name: 'consultant-product-list',
+      path: '/daifa-store-management/consultant-product-list',
+      component: './daifa-store-management/consultant-product-list',
+    },
+    {
+      name: 'agent-shop-money',
+      path: '/daifa-store-management/agent-shop-money',
+      component: './daifa-store-management/agent-shop-money',
+    },
     // {
     //   name: 'role-management',
     //   path: '/setting/role-management',

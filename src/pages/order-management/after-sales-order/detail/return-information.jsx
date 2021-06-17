@@ -1,43 +1,52 @@
-import React, {useEffect, useState} from 'react'
-import { Button, Timeline } from 'antd';
+import React, { useEffect, useState } from 'react'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import { ModalForm } from '@ant-design/pro-form';
+import { Button, Timeline } from 'antd'
+import{ ModalForm } from '@ant-design/pro-form'
 import moment from 'moment'
 
 import { amountTransform } from '@/utils/utils'
-import { expressInfo } from '@/services/order-management/intervention-list'
+import { expressInfo } from '@/services/order-management/after-sales-order'
 
 import styles from './styles.less'
+import './styles.less'
+
 const { Item } = Timeline
 
-const ReturnSingle = props => {
-  const { data, status } = props
-  const [address, setAddress] = useState({})
-  const showLastStatus = lastStatus => {
-    lastStatus = lastStatus?.split(',')
-    return lastStatus?.map((key,idx)=>(
-      <Item key={idx} className={styles.timeline}>
-        {key}
-      </Item>
-    ))
-  }
-  useEffect(()=>{
-    if(data != ![] && status === 2){
+const showLastStatus = lastStatus => {
+  lastStatus = lastStatus?.split(',')
+  return lastStatus?.map((key,idx)=>(
+    <Item key={idx} className={styles.timeline}>
+      {key}
+    </Item>
+  ))
+}
+
+// 退货单信息
+const ReturnInformation = props => {
+  const { 
+    data,
+    status,
+    type
+  } = props
+  const [express, setExpress] = useState({})
+  
+  useEffect(() => {
+    if(data != ![] && status === 2) {
       expressInfo({
         shippingCode: data?.returnShippingCode,
         expressType: data?.returnExpressType,
         mobile: data?.returnPhone,
         deliveryTime: data?.returnTime
       }).then(res => {
-        setAddress(res?.data)
+        setExpress(res.data)
       })
-      return () => {
-        setAddress({})
-      }
+    }
+    return ()=>{
+      setExpress([])
     }
   }, [data])
 
-  const columns =[
+  const columns = [
     {
       title: '商品退回方式',
       dataIndex: 'afterSalesType',
@@ -45,7 +54,7 @@ const ReturnSingle = props => {
       valueEnum: {
         1: '无需退回',
         2: '快递寄送'
-      }
+      },
     },
     {
       title: '售后类型',
@@ -56,7 +65,7 @@ const ReturnSingle = props => {
       },
     },
     {
-      title: '买家收货地址',
+      title: '买家收货地址', 
       dataIndex: 'receiveAddress',
       render: (_, records) => records.buyerDeliveryInfo?.fullAddress
     },
@@ -86,7 +95,7 @@ const ReturnSingle = props => {
     {
       title: '退货物流信息',
       dataIndex: 'returnGoodsInfo',
-      hideInDescriptions: status === 2 ? false : true,
+      hideInDescriptions: (status === 1 && type !== 1) ? true : false,
       render: () => {
         return(
           <div style={{display: 'flex', alignItems:'center'}}>
@@ -94,12 +103,12 @@ const ReturnSingle = props => {
               <div style={{marginBottom: 10}}>
                 快递公司：
                 <span style={{marginRight: 20}}>
-                  {address?.expressName}
+                  {express?.expressName}
                 </span>
               </div>
               <div>运单编号：
                 <span style={{marginRight: 20}}>
-                  {address?.shippingCode}
+                  {express?.shippingCode}
                 </span>
               </div>
             </div>
@@ -112,41 +121,39 @@ const ReturnSingle = props => {
               onFinish={()=> true}
             >
               <Timeline reverse>
-                {showLastStatus(address?.lastStatus)}
-              </Timeline> 
+                {showLastStatus(express?.lastStatus)}
+              </Timeline>
             </ModalForm>
           </div>
         )
       }
     },
-    { 
+    {
       title: '商家收件人名称',
       dataIndex: 'receiveMan',
-      hideInDescriptions: status === 2 ? false : true
+      hideInDescriptions: (status === 1 && type !== 1) ? true : false,
     },
     {
       title: '商家收货手机号',
       dataIndex: 'receivePhone',
-      hideInDescriptions: status === 2 ? false : true
+      hideInDescriptions: (status === 1 && type !== 1) ? true : false,
     },
     {
       title: '商家收货地址',
       dataIndex: 'receiveAddress',
-      hideInDescriptions: status === 2 ? false : true
+      hideInDescriptions: (status === 1 && type !== 1) ? true : false
     },
     {
       title: '商家收货时间',
       dataIndex: 'receiveTime',
-      hideInDescriptions: status === 2 ? false : true,
-      render: (_) => moment(_).format('YYYY-MM-DD HH:mm:ss')
+      hideInDescriptions: (status === 1 && type !== 1) ? true : false
     }
   ]
-
   return (
     <ProDescriptions
       rowKey='orderNumber'
       className={styles.description}
-      dataSource={data}
+      dataSource={props?.data}
       layout='horizontal'
       bordered
       title='退货单信息'
@@ -156,4 +163,4 @@ const ReturnSingle = props => {
   )
 }
 
-export default ReturnSingle
+export default ReturnInformation

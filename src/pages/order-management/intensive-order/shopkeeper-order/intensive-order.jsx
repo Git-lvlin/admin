@@ -130,7 +130,7 @@ const TableList = () => {
             }
           }}
         />
-        <ProFormSelect
+        {/* <ProFormSelect
           label="尾款类型"
           name="isMerge"
           options={[
@@ -149,7 +149,7 @@ const TableList = () => {
               width: 180,
             }
           }}
-        />
+        /> */}
         <ProFormDateRangePicker
           name="time"
           label="下单时间"

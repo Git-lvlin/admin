@@ -5,6 +5,7 @@ import {
   ProFormText,
   ProFormRadio,
   ProFormSelect,
+  ProFormDependency,
 } from '@ant-design/pro-form';
 import Overrule from './overrule';
 import EditTable from './edit-table';
@@ -15,6 +16,8 @@ export default (props) => {
   const [overruleVisible, setOverruleVisible] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [tableHead, setTableHead] = useState([]);
+  const [form] = Form.useForm()
+
   const type = useRef(0)
 
   const { goods } = detailData;
@@ -49,10 +52,10 @@ export default (props) => {
           return {
             ...item[1],
             retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
-            // suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
-            // wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
-            salePrice: '',
-            marketPrice: '',
+            // suggestedRetailPrice: amountTransform(item[1].retailSupplyPrice, '/'),
+            // wholesalePrice: amountTransform(item[1].retailSupplyPrice, '/'),
+            salePrice: amountTransform(item[1].retailSupplyPrice, '/'),
+            marketPrice: amountTransform(item[1].retailSupplyPrice, '/'),
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -60,6 +63,11 @@ export default (props) => {
           }
         }))
       }
+
+      form.setFieldsValue({
+        salePrice: amountTransform(detailData?.goods?.retailSupplyPrice, '/'),
+        marketPrice: amountTransform(detailData?.goods?.retailSupplyPrice, '/'),
+      })
     }
 
   }, [detailData]);
@@ -73,6 +81,7 @@ export default (props) => {
         destroyOnClose: true,
         width: 1200,
       }}
+      form={form}
       onFinish={(values) => {
         const { supplierHelperId, settleType, salePrice, marketPrice } = values;
         let goodsInfo = {
@@ -198,7 +207,16 @@ export default (props) => {
         detailData.isMultiSpec === 1
           ?
           <>
-            {!!tableData.length && <EditTable tableHead={tableHead} tableData={tableData} setTableData={setTableData} />}
+            <ProFormDependency name={['settleType']}>
+              {
+                ({ settleType }) => (
+                  <>
+                    {!!tableData.length && <EditTable settleType={settleType} tableHead={tableHead} tableData={tableData} setTableData={setTableData} />}
+                  </>
+                )
+              }
+            </ProFormDependency>
+
           </>
           :
           <>
@@ -207,18 +225,29 @@ export default (props) => {
             >
               {amountTransform(goods.retailSupplyPrice, '/')}
             </Form.Item>
-            <ProFormText
-              name="marketPrice"
-              label="市场价"
-              placeholder="请输入市场价"
-              rules={[{ required: true, message: '请输入市场价' }]}
-            />
-            <ProFormText
-              name="salePrice"
-              label="秒约价"
-              placeholder="请输入秒约价"
-              rules={[{ required: true, message: '请输入秒约价' }]}
-            />
+            <ProFormDependency name={['settleType']}>
+              {
+                ({ settleType }) => (
+                  <>
+                    <ProFormText
+                      name="marketPrice"
+                      label="市场价"
+                      placeholder="请输入市场价"
+                      rules={[{ required: true, message: '请输入市场价' }]}
+                      disabled={settleType === 1}
+                    />
+                    <ProFormText
+                      name="salePrice"
+                      label="秒约价"
+                      placeholder="请输入秒约价"
+                      rules={[{ required: true, message: '请输入秒约价' }]}
+                      disabled={settleType === 1}
+                    />
+                  </>
+                )
+              }
+            </ProFormDependency>
+
           </>
       }
       {/* <Form.Item
@@ -234,10 +263,17 @@ export default (props) => {
       </Form.Item> */}
 
       <Form.Item
-        label="供货类型"
+        label="是否包邮"
       >
         {{ 0: '不包邮', 1: '包邮', }[goods.isFreeFreight]}
       </Form.Item>
+
+      {detailData.freightTemplateName &&
+        <Form.Item
+          label="运费模板"
+        >
+          {detailData.freightTemplateName}
+        </Form.Item>}
 
       <Form.Item
         label="七天无理由退货"
