@@ -24,7 +24,7 @@ const OrderDetail = () => {
       deliveryTime: detailData.express.expressTime
     }).then(res => {
       if (res.code === 0) {
-        setExpressInfoState(res.data.records?.deliveryList?.reverse())
+        setExpressInfoState(res.data?.deliveryList?.reverse())
       }
     })
   }
