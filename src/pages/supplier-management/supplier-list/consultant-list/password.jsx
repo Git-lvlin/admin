@@ -39,7 +39,7 @@ export default (props) => {
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        companyUserName: data.companyUserName,
+        companyName: data.companyName,
         accountName: data.accountName,
       })
     }
@@ -63,7 +63,7 @@ export default (props) => {
       {...formItemLayout}
     >
       <ProFormText
-        name="companyUserName"
+        name="companyName"
         label={`名称`}
         disabled
       />
