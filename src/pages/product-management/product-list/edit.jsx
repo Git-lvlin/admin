@@ -80,7 +80,7 @@ export default (props) => {
       gcId,
       primaryImages,
       detailImages,
-      advImages,
+      // advImages,
       isMultiSpec,
       // wholesalePrice,
       retailSupplyPrice,
@@ -99,7 +99,7 @@ export default (props) => {
       },
       primaryImages: urlsTransform(primaryImages),
       detailImages: urlsTransform(detailImages),
-      advImages: advImages?.length ? urlsTransform(advImages) : null,
+      // advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl,
     };
 
@@ -204,7 +204,7 @@ export default (props) => {
         goodsRemark: goods.goodsRemark,
         primaryImages: uploadImageFormatConversion(detailData.primaryImages, 'imageUrl'),
         detailImages: uploadImageFormatConversion(detailData.detailImages, 'imageUrl'),
-        advImages: uploadImageFormatConversion(detailData.advImages, 'imageUrl'),
+        // advImages: uploadImageFormatConversion(detailData.advImages, 'imageUrl'),
         videoUrl: goods.videoUrl,
         brandId: goods.brandId,
         gcId: [goods.gcId1, goods.gcId2],
@@ -621,13 +621,13 @@ export default (props) => {
       >
         <Upload disabled multiple maxCount={10} accept="image/*" size={500 * 4} />
       </Form.Item>
-      {detailData.advImages && <Form.Item
+      {/* {detailData.advImages && <Form.Item
         label="商品横幅"
         name="advImages"
       >
         <Upload disabled multiple maxCount={10} accept="image/*" dimension={{ width: 702, height: 320 }} size={500} />
-      </Form.Item>}
-      {detailData.videoUrl &&
+      </Form.Item>} */}
+      {detailData?.videoUrl &&
         <Form.Item
           label="商品视频"
           name="videoUrl"
