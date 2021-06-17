@@ -1,94 +1,99 @@
-import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
-import React, { useRef } from 'react';
+import { PageContainer } from '@ant-design/pro-layout'
+import ProTable from '@ant-design/pro-table'
+import React, { useRef } from 'react'
 import XLSX from 'xlsx'
-import { Button } from 'antd';
-import moment from 'moment';
-import * as api from '@/services/order-management/after-sales-order';
-import { history } from 'umi';
-import './styles.less';
+import { Button } from 'antd'
+import moment from 'moment'
+import { history } from 'umi'
+
+import { refundOrder } from '@/services/order-management/after-sales-order'
+import { amountTransform } from '@/utils/utils'
+import './styles.less'
 
 
 const sourceType = {
-  0: '全部',
-  1: '待处理',
-  2: '待收货',
-  3: '已收货',
-  4: '拒绝申请',
-  5: '拒绝退款',
-  6: '已完成',
-  7: '已关闭'
-};
+  null: '全部',
+  1: '待审核',
+  2: '处理中',
+  3: '已拒绝申请',
+  4: '已拒绝退款',
+  5: '已完成',
+  6: '已关闭'
+}
 
 const columns = [
   {
     title: '售后编号',
-    dataIndex: 'afterSalesNumber',
-    fieldProps: {
-      placeholder: '请输入售后编号'
-    },
+    dataIndex: 'orderSn',
     align: 'center',
     order: 9,
-    colSize: .9
+    colSize: .9,
+    render: (_, records) => {
+      return(
+        <>
+          <div key="1">{ records?.orderSn }</div>
+          <div key="2">
+            { 
+              records?.platformInvolved === 1&& 
+              <span 
+                style={{
+                  background: 'rgba(250, 205, 145, 1)', 
+                  fontSize: 12,
+                  padding: 4,
+                  borderRadius: 5
+                }}
+              >
+                平台已介入
+              </span> 
+            }
+          </div>
+        </>
+      )
+    }
   },
   {
     title: '订单编号',
-    dataIndex: 'orderNumber',
-    fieldProps: {
-      placeholder: '请输入订单编号'
-    },
+    dataIndex: 'subOrderSn',
     align: 'center',
     order: 8,
     colSize: .9
   },
   {
     title: '申请时间',
-    dataIndex: 'applicationTime',
+    dataIndex: 'applyTime',
     valueType: 'dateRange',
     align: 'center',
     order: 5,
     colSize: .9,
-    render: (text) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+    render: (_, recodes) => moment(recodes?.applyTime).format('YYYY-MM-DD HH:mm:ss')
   },
   {
     title: '买家昵称',
-    dataIndex: 'buyerNickname',
+    dataIndex: 'userNickname',
     colSize: .9,
-    fieldProps: {
-      placeholder: '请输入买家昵称'
-    },
     align: 'center',
     order: 4,
     colSize: .9
   },
   {
     title: '买家手机号',
-    dataIndex: 'buyerPhoneNumber',
+    dataIndex: 'buyerPhone',
     colSize: .9,
-    fieldProps: {
-      placeholder: '请输入买家手机号'
-    },
     align: 'center',
     order: 3
   },
   {
     title: '商家名称',
-    dataIndex: 'SellerName',
+    dataIndex: 'storeName',
     colSize: 1,
-    fieldProps: {
-      placeholder: '请输入商家名称'
-    },
     align: 'center',
     order: 2,
     colSize: .9
   },
   {
     title: '商家手机号',
-    dataIndex: 'SellerPhoneNumber',
+    dataIndex: 'storePhone',
     colSize: 1,
-    fieldProps: {
-      placeholder: '请输入商家手机号'
-    },
     align: 'center',
     order: 1,
     colSize: .9
@@ -96,11 +101,11 @@ const columns = [
   {
     title: '售后类型',
     dataIndex: 'afterSalesType',
-    onFilter: true,
+    valueType: 'select',
     valueEnum: {
-      0: '全部',
-      1: '退货退款',
-      2: '仅退款'
+      null: '全部',
+      1: '仅退款',
+      2: '退款退货'
     },
     colSize: .8,
     align: 'center',
@@ -108,14 +113,16 @@ const columns = [
   },
   {
     title: '退款总金额（元）',
-    dataIndex: 'totalRefundAmount',
+    dataIndex: 'returnAmount',
     align: 'center',
-    hideInSearch: true
+    hideInSearch: true,
+    render: (_) => amountTransform(_, '/').toFixed(2)
   },
   {
     title: '退款状态',
-    dataIndex: 'refundStatus',
+    dataIndex: 'status',
     valueEnum: sourceType,
+    valueType: 'select',
     colSize: .8,
     align: 'center',
     order: 6
@@ -128,62 +135,27 @@ const columns = [
     render: (_, record) => {
       return (
         <>
-          <a onClick={ () => {history.push(`/order-management/after-sales-order/detail/${record.afterSalesNumber}`)} }>查看详情</a>
+          <a onClick={ () => {history.push(`/order-management/after-sales-order/detail/${record?.id}`)} }>查看详情</a>
         </>
       )
     }
   }
 ]
 
-const dataSource = () => {
-  const data = [
-    { 
-      afterSalesNumber: "1",
-      OrderNumber:"3",
-      applicationTime: "66",
-      buyerNickname: "仅退款",
-      buyerPhoneNumber: "100",
-      SellerName: "任性",
-      SellerPhoneNumber: "已退款",
-      afterSalesType: '1',
-      totalRefundAmount: '1',
-      refundStatus: '1'
-    },
-    { 
-      afterSalesNumber: "2",
-      OrderNumber:"3",
-      applicationTime: "66",
-      buyerNickname: "退货退款",
-      buyerPhoneNumber: "100",
-      SellerName: "任性",
-      SellerPhoneNumber: "已退款",
-      afterSalesType: '1',
-      totalRefundAmount: '100',
-      refundStatus: '1'
-    },
-  ]
-  return {
-    success: true,
-    data,
-    total: 10
-  }
-}
 
 // 导出表格
 const exportExcel = (form) => {
-  console.log(form);
+  console.log(form)
 }
 const afterSalesOrder = () => {
   const actionRef = useRef();
   return (
-    <PageContainer>
+    <PageContainer title={false}>
       <ProTable
-        rowKey="afterSalesNumber"
+        rowKey="orderSn"
         options={false}
-        params={{
-          selectType: 1
-        }}
-        request={dataSource}
+        params={{}}
+        request={refundOrder}
         actionRef={actionRef}
         search={{
           span: 5,
@@ -194,7 +166,7 @@ const afterSalesOrder = () => {
               key="search"
               type="primary"
               onClick={() => {
-                form?.submit();
+                form?.submit()
               }}
             >
               {searchText}
@@ -202,7 +174,8 @@ const afterSalesOrder = () => {
             <Button
               key="rest"
               onClick={() => {
-                form?.resetFields();
+                form?.resetFields()
+                form?.submit()
               }}
             >
               {resetText}
@@ -216,12 +189,12 @@ const afterSalesOrder = () => {
         headerTitle="数据列表"
         columns={columns}
         pagination={{
-          current: 10,
-          showQuickJumper: true
+          showQuickJumper: true,
+          hideOnSinglePage: true
         }}
       />
     </PageContainer>
   )
 }
 
-export default afterSalesOrder;
+export default afterSalesOrder

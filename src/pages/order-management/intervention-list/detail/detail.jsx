@@ -12,7 +12,7 @@ import ReturnGoods from './return-goods'
 import ReturnSingle from './return-single'
 import NegotiationHistory from './negotiation-history'
 
-import styles from './styles.less';
+import styles from './styles.less'
 
 const interventioListDetail = () => {
   const { id } = useParams()
@@ -41,10 +41,12 @@ const interventioListDetail = () => {
         }
       })
     }
-    return undefined
+    return ()=>{
+      setConsultationRecord([])
+    }
   }, [DTO])
   const handleBack = () => {
-    history.goBack(-1);
+    history.goBack(-1)
   }
   return(
     <PageContainer title={false}>
@@ -78,10 +80,9 @@ const interventioListDetail = () => {
           data={DTO}
           status={detail?.stage}
         />
-        {/* TODO:协商历史 */}
         { <div className={styles.negotiation}>协商历史</div> }
         {
-          consultationRecord?.length === 0 ? 
+          Object.keys(consultationRecord)?.length === 0 ? 
           <Empty className={styles.empty}/>:
           <NegotiationHistory data={consultationRecord}/>
         }
