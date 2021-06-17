@@ -49,10 +49,13 @@ const DetailList = (props) => {
 
   const columns = [
     {
-      title: '排序序号',
+      title: '序号',
       dataIndex: 'sort',
       valueType: 'text',
       search: false,
+      align: 'center',
+      fixed: 'left',
+      width: 50,
     },
     {
       title: 'SPUID',
@@ -141,10 +144,13 @@ const DetailList = (props) => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
+      align: 'center',
+      fixed: 'right',
+      width: 60,
       render: (text, record, _, action) => {
         return (
           <>
-            &nbsp;&nbsp;{record.status===2&&<Button key="down" onClick={() => {formControl(record.id, 1)}}>下线</Button>}
+            {record.status===2&&<Button key="down" onClick={() => {formControl(record.id, 1)}}>下线</Button>}
             &nbsp;&nbsp;{record.status===1&&<Button key="view" onClick={() => {formControl(record.id,2)}}>发布</Button>}
             {/* &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {action?.startEditable?.(record.key);console.log('action',action,record)}}>编辑</a>} */}
             &nbsp;&nbsp;{record.status===1&&<Button key="d" onClick={() => {formControl(record.id,4)}}>删除</Button>}
@@ -178,6 +184,7 @@ const DetailList = (props) => {
           },
         },
       }}
+      style={{overflow:'hidden'}}
     >
     <ProTable
       rowKey="id"
@@ -218,6 +225,7 @@ const DetailList = (props) => {
       search={{
         labelWidth: 'auto',
       }}
+      scroll={{ x: 1700 }}
       pagination={{
         pageSize: 10,
       }}

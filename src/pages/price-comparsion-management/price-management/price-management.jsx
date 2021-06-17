@@ -241,10 +241,6 @@ const PriceManagement = () => {
       dataIndex: 'goodsName',
     },
     {
-      title: '商家名称',
-      dataIndex: 'goodsName',
-    },
-    {
       title: '秒约价',
       dataIndex: 'goodsPrice',
       valueType: 'money',
