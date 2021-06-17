@@ -849,3 +849,11 @@ export const getSpiderGoodsListByDate = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const getGoodsBindData = (params = {}, options = {}) => {
+  return request(`/auth/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderPlatformList?goodsId=${params.goodsId}`, {
+    method: 'GET',
+    data: params,
+    ...options
+  });
+}

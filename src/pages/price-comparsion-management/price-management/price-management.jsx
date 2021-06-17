@@ -3,7 +3,14 @@ import { MinusOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message, Input } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { priceComparsionListAlls, delContestGoods, createTaskSrc, getSpiderGoodsListByDate, sendTask} from '@/services/cms/member/member';
+import { 
+  priceComparsionListAlls,
+  delContestGoods,
+  createTaskSrc,
+  getSpiderGoodsListByDate,
+  sendTask,
+  getGoodsBindData,
+} from '@/services/cms/member/member';
 import Edit from './edit';
 import FormPage from './form';
 import ProCard from '@ant-design/pro-card';
@@ -21,7 +28,8 @@ const PriceManagement = () => {
   const [flag, setFlag] = useState(false)
   const [resData, setResData] = useState({})
   const [loading, setLoading] = useState({})
-
+  const [type, setType] = useState(false)
+  const [binded, setBinded] = useState(false)
   const formControl = (data) => {
     delContestGoods({id: data}).then((res) => {
       if (res.code === 0) {
@@ -34,6 +42,7 @@ const PriceManagement = () => {
   const onSearch = (value, t, i) => {
     const id = i
     const type = t
+    setType(type)
     setLoading({
       ...loading,
       [`${id}${type}`]:true
@@ -65,6 +74,10 @@ const PriceManagement = () => {
     })
   };
 
+  useEffect(() => {
+    grabList&&bindData({},type)
+  }, [grabList])
+
   let timer = null
   const timeoutfn = (data,type,id) => {
     getSpiderGoodsListByDate({ sourceType:data.type, goodsId:data.goodsId })
@@ -84,11 +97,11 @@ const PriceManagement = () => {
     })
   }
 
-  const bindData = (id, type) => {
+  const bindData = (id, t) => {
     setFormjsx(grabList)
     setFormData({
       ...formData,
-      sourceType: type
+      sourceType: t
     })
     setIsShow(true)
   }
@@ -269,33 +282,48 @@ const PriceManagement = () => {
         0: '未比价',
         1: '已比价',
       }
-    }
-    // {
-    //   title: '操作',
-    //   valueType: 'option',
-    //   dataIndex: 'option',
-    //   render: (text, record, _, action) => {
-    //     return (
-    //       <>
-    //         &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {}}>比价设置</a>}
-    //         &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id)}}>删除</a>}
-    //       </>
-    //     )
-    //   }
-    // },
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      dataIndex: 'option',
+      render: (text, record, _, action) => {
+        return (
+          <>
+            {/* {<a key="editable" onClick={() => {}}>比价设置</a>} */}
+            &nbsp;&nbsp;{<a key="d" onClick={() => {formControl(record.id)}}>删除</a>}
+          </>
+        )
+      }
+    },
   ]
+
+  const getBindedData = (arr) => {
+    const spu = arr[arr.length-1]
+    getGoodsBindData({goodsId:spu}).then(res => {
+      if (res.code === 0) {
+        // setBinded(res.data)
+        setResData(res.data)
+      }
+    })
+  }
 
   return (
     <PageContainer>
       <ProTable
-      rowKey="id"
+      rowKey="goodsSpuId"
       columns={columns}
-      expandable={{ expandedRowRender }}
+      expandable={{ 
+        expandedRowRender,
+        onExpandedRowsChange: (expandedRows) => {
+          getBindedData(expandedRows)
+        }
+      }}
       actionRef={actionRef}
       postData={(data) => {
         data.forEach(item => {
-          item.goodsPrice = parseInt(item.goodsPrice/100)
-          item.goodsMarketPrice = parseInt(item.goodsMarketPrice/100)
+          item.goodsPrice = item.goodsPrice/100
+          item.goodsMarketPrice = item.goodsMarketPrice/100
         })
         return data
       }}
