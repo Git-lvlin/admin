@@ -5,7 +5,7 @@ import { Button, Card, Space, Table } from 'antd';
 import { page_spuList,page_skuList } from '@/services/daifa-store-management/consultant-product-list'
 import { history } from 'umi';
 import { amountTransform } from '@/utils/utils'
-// import Detail from './detail';
+import GcCascader from '@/components/gc-cascader'
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -73,8 +73,13 @@ const consultantProductList = props => {
   const actionRef = useRef();
   const columns = [
     {
-      title: 'spuId',
+      title: 'spuID',
       dataIndex: 'spuId',
+      valueType: 'text',
+    },
+    {
+      title: 'skuID',
+      dataIndex: 'spuIds',
       valueType: 'text',
     },
     {
@@ -87,36 +92,39 @@ const consultantProductList = props => {
       title: '图片',
       dataIndex: 'imageUrl',
       valueType: 'text',
+      hideInSearch:true
     },
     {
       title: '商品名称',
       dataIndex: 'goodsName',
-      valueType: 'select',
+      valueType: 'text',
       // render: (_, data) => {
       //   return <a onClick={() => { history.push(`/daifa-store-management/consultant-product-list?spuId=${data.id}&storeNo=${data.storeNo}`) }}>{_}</a>
       // }
     },
     {
       title: '店铺销售价',
-      dataIndex: 'salePrice',
+      dataIndex: 'saleMaxPrice',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '供应链供货价',
-      dataIndex: 'marketPrice',
+      dataIndex: 'saleMinPrice',
       valueType: 'text',
       hideInSearch: true,
     },
     {
+      title: '商品分类',
+      dataIndex: 'gcId1Display',
+      renderFormItem: () => (<GcCascader />),
+      hideInTable:true
+    },
+    {
       title: '所属分类',
       dataIndex: 'gcId1Display',
-      valueType: 'text',
-      valueEnum: {
-        0: '批发+零售',
-        1: '零售',
-        2: '仅批发',
-      }
+      valueType:'text',
+      hideInSearch:true
     },
     {
       title: '销量',
@@ -126,18 +134,47 @@ const consultantProductList = props => {
     },
     {
       title: '售卖状态',
-      dataIndex: 'storeLevel',
+      dataIndex: 'goodsState',
+      valueType: 'select',
+      valueEnum: {
+        0: '批发+零售',
+        1: '零售',
+        2: '仅批发',
+      },
+      hideInTable:true
+    },
+    {
+      title: '售卖状态',
+      dataIndex: 'goodsState',
       valueType: 'text',
       valueEnum: {
         0: '批发+零售',
         1: '零售',
         2: '仅批发',
-      }
+      },
+      hideInSearch: true,
     },
     {
       title: '上架状态',
-      dataIndex: 'endTimeAdvancePayment',
-      valueType: 'text'
+      dataIndex: 'status',
+      valueType: 'select',
+      valueEnum: {
+        "1": '上架',
+        "2": '下架',
+        "3": '草稿',
+      },
+      hideInTable:true
+    },
+    {
+      title: '上架状态',
+      dataIndex: 'status',
+      valueType: 'text',
+      valueEnum: {
+        "1": '上架',
+        "2": '下架',
+        "3": '草稿',
+      },
+      hideInSearch:true
     }
   ];
 

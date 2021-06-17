@@ -66,7 +66,6 @@ export default props => {
     ];
     useEffect(()=>{
         commissionSum({storeNo}).then(res=>{
-            console.log('res',res)
             setMoneyData(res.data)
         })
     },[])

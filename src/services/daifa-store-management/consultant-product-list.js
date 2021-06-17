@@ -32,7 +32,7 @@ export const page_skuList = async (params = {}, options = {}) => {
   });
 
   return {
-    data: res.data,
+    data: res.data.length?res.data:[],
     success: true,
     code:res.code
   }
