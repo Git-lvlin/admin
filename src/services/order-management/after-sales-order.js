@@ -1,9 +1,9 @@
 import request from '@/utils/request';
 
 // 售后订单
-export const refundPendingApproval = async (params = {}, options = {}) => {
+export const refundOrder = async (params = {}, options = {}) => {
   const { page=1, size=10, ...rest } = params;
-  const res = await request('/auth/java-admin/orderReturn/supplier/page', {
+  const res = await request('/java-admin/orderReturn/page', {
     method: 'POST',
     data: {
       page,
@@ -21,7 +21,7 @@ export const refundPendingApproval = async (params = {}, options = {}) => {
 // 订单详情
 export const refundOrderDetail = async (params = {}, options = {}) => {
   const { id } = params
-  const res = await request('/auth/orderReturn/orderReturnDetail', {
+  const res = await request('/java-admin/orderReturn/detail', {
     method: 'POST',
     data: {
       id
@@ -29,8 +29,36 @@ export const refundOrderDetail = async (params = {}, options = {}) => {
     ...options
   })
   return {
-     data: res.data.records,
-     success: true,
-     total: res.data.total
+     data: res.data,
+     success: true
+  }
+}
+
+// 查询物流信息
+export const expressInfo = async (params={}, options={}) => {
+  const res = await request('/express/express/expressInfo', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+  return {
+    data: res?.data,
+    success: res?.success
+  }
+}
+// 订单协商记录
+export const findReturnRecord = async (params={}, options={}) => {
+  const res = await request('/auth/java-admin/orderReturn/findReturnRecord', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+  return {
+    data: res?.data,
+    success: res?.success
   }
 }

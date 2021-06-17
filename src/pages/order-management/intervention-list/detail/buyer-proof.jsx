@@ -1,7 +1,7 @@
 import React from 'react'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import ProCard from '@ant-design/pro-card';
-import { Image } from 'antd';
+import ProCard from '@ant-design/pro-card'
+import { Image } from 'antd'
 
 import styles from './styles.less'
 import './styles.less'
@@ -67,4 +67,4 @@ const BuyerProof = props => {
   )
 }
 
-export default BuyerProof;
+export default BuyerProof

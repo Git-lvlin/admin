@@ -1,6 +1,6 @@
 import { Avatar, Image } from 'antd'
 
-import moment from 'moment';
+import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
 import styles from './styles.less'
 
