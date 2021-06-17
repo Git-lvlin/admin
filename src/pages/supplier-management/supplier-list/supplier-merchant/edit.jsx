@@ -258,12 +258,12 @@ export default (props) => {
         tooltip={
           <dl>
             <dt>图片要求</dt>
-            <dd>1.图片大小1MB以内</dd>
+            <dd>1.图片大小5MB以内</dd>
             <dd>2.图片格式png/jpg/gif</dd>
           </dl>
         }
       >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload multiple maxCount={1} accept="image/*" size={5 * 1024} />
       </Form.Item>
       <Form.Item
         label="相关资质"
@@ -271,13 +271,12 @@ export default (props) => {
         tooltip={
           <dl>
             <dt>图片要求</dt>
-            <dd>1.图片大小1MB以内</dd>
+            <dd>1.图片大小5MB以内</dd>
             <dd>2.图片格式png/jpg/gif</dd>
-            <dd>3.图片数量20张以内</dd>
           </dl>
         }
       >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload multiple maxCount={1} accept="image/*" size={5 * 1024} />
       </Form.Item>
       <Form.Item
         label="可关联顾问"

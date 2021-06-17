@@ -86,6 +86,14 @@ export const statusSwitch = (params = {}, options = {}) => {
   });
 }
 
+export const editPwd = (params = {}, options = {}) => {
+  return request('/auth/supplier/account/editPwd', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const categoryAll = (params = {}, options = {}) => {
   return request('/auth/goods/product/categoryAll', {
     method: 'get',

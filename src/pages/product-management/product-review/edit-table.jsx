@@ -5,7 +5,7 @@ import Upload from '@/components/upload';
 import styles from './edit-table.less';
 
 export default function EditTable(props) {
-  const { tableHead, tableData, setTableData } = props;
+  const { tableHead, tableData, setTableData, settleType } = props;
   const [columns, setColumns] = useState([])
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
@@ -48,12 +48,21 @@ export default function EditTable(props) {
             whitespace: true,
             message: '请输入秒约价',
           }],
-        }
+        },
+        editable: settleType !== 1,
       },
       {
         title: '市场价',
         dataIndex: 'marketPrice',
-        width: 150
+        width: 150,
+        formItemProps: {
+          rules: [{
+            required: true,
+            whitespace: true,
+            message: '请输入市场价',
+          }],
+        },
+        editable: settleType !== 1,
       },
       {
         title: '库存预警值',
@@ -74,7 +83,7 @@ export default function EditTable(props) {
           }],
         }
       },
-      
+
       // {
       //   title: '操作',
       //   valueType: 'option',
@@ -85,7 +94,7 @@ export default function EditTable(props) {
       // },
     ])
 
-  }, [tableHead])
+  }, [tableHead, settleType])
 
   useEffect(() => {
     setEditableKeys(tableData.map(item => item.key));
