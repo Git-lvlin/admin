@@ -369,7 +369,7 @@ export const SetHotGoodsDel = (params = {}, options = {}) => {
 }
 
 export const SetHomePageGoodsDel = (params = {}, options = {}) => {
-  return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetHomePageGoods?ids=${params.ids}&opt=${params.opt}`, {
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetHomePageGoods?id=${params.id}&opt=${params.opt}`, {
     method: 'GET',
     data: params,
     ...options

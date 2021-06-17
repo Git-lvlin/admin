@@ -8,19 +8,19 @@ import Edit from './goods-modal-form'
 import ReplaceForm from './replace-form';
 import ProCard from '@ant-design/pro-card';
 import { ACTION_TYPE } from '@/utils/text';
+import { ModalForm } from '@ant-design/pro-form';
+
 const DetailList = (props) => {
-  const { onChange, id } = props;
+  const { onChange, setVisible, visible, acid } = props;
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [replaceFormVisible, setReplaceFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(true);
-  const [acid, setAcId] = useState({cmsId: 0});
-
   const getDetail = (data) => {
-    if (!id) {return message.error('请先选择活动')}
+    if (!acid) {return message.error('请先选择活动')}
     const param = {
       data,
-      id, 
+      id:acid,
     }
     setDetailData(param);
     setFormVisible(true);
@@ -36,12 +36,12 @@ const DetailList = (props) => {
   }
 
   const openList = () => {
-    if (!id) {
+    if (!acid) {
       message.error('请先选择活动')
       return;
     }
     const param = {
-      id: id, 
+      id: acid, 
     }
     setDetailData(param);
     setReplaceFormVisible(true);
@@ -159,21 +159,37 @@ const DetailList = (props) => {
     },
   ];
 
-  useEffect(() => {
-    if (id) {
-      setAcId({cmsId:id})
-    }
-  }, [id]);
+  // useEffect(() => {
+  //   if (acid) {
+  //     setAcId({cmsId:acid})
+  //   }
+  // }, [acid]);
 
   return (
     <>
-    <ProCard style={{ maxWidth: 700,overflow:'hidden'}}>
+    {/* <ProCard style={{ maxWidth: 700,overflow:'hidden'}}> */}
+    <ModalForm
+      onVisibleChange={setVisible}
+      visible={visible}
+      submitter={{
+        resetButtonProps: {
+          style: {
+            display: 'none',
+          },
+        },
+        submitButtonProps: {
+          style: {
+            display: 'none',
+          },
+        },
+      }}
+    >
     <ProTable
       rowKey="key"
       options={false}
       columns={columns}
       actionRef={actionRef}
-      params={acid}
+      params={acid&&{cmsId:acid}}
       postData={(data) => {
         data.forEach(item => {
           item.goodsSalePrice = item.goodsSalePrice/100
@@ -213,17 +229,16 @@ const DetailList = (props) => {
       pagination={{
         pageSize: 10,
       }}
-      scroll={{ x: 2200 }}
-      onRow={(record) => {
-        return {
-          onClick: () => {
-            console.log('左侧栏点击item',record)
-            if (record.title) {
-              onChange(record);
-            }
-          },
-        };
-      }}
+      // onRow={(record) => {
+      //   return {
+      //     onClick: () => {
+      //       console.log('左侧栏点击item',record)
+      //       if (record.title) {
+      //         onChange(record);
+      //       }
+      //     },
+      //   };
+      // }}
       dateFormatter="string"
       // headerTitle="正在疯约"
       toolBarRender={(_,record) => [
@@ -258,7 +273,8 @@ const DetailList = (props) => {
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { actionRef.current.reload(); setDetailData(null) }}
     />}
-    </ProCard>
+    {/* </ProCard> */}
+    </ModalForm>
     </>
     
   );
