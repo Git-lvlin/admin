@@ -10,7 +10,7 @@ export const adminCircleList= async (params, options = {}) => {
   });
   return {
     code: res.code,
-    data: res.data=={}?[]:res.data,
+    data: res.data.length?res.data:[],
     success: res.success,
   }
 }

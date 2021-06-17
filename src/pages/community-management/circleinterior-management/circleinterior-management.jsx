@@ -89,10 +89,7 @@ export default props => {
                     text={'确认要删除所选内容吗？'} 
                     InterFace={dynamicDelete} 
                     title={'操作确认'}
-                />,
-                <Button onClick={()=>cancelDelete({id:record.id}).then(res=>{
-                    ref.current.reload();
-                }) }>恢复</Button>,
+                />
             ],
             hideInSearch: true,
         },
