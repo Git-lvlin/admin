@@ -216,7 +216,7 @@ export default (props) => {
                 )
               }
             </ProFormDependency>
-            
+
           </>
           :
           <>
@@ -263,10 +263,17 @@ export default (props) => {
       </Form.Item> */}
 
       <Form.Item
-        label="供货类型"
+        label="是否包邮"
       >
         {{ 0: '不包邮', 1: '包邮', }[goods.isFreeFreight]}
       </Form.Item>
+
+      {detailData.freightTemplateName &&
+        <Form.Item
+          label="运费模板"
+        >
+          {detailData.freightTemplateName}
+        </Form.Item>}
 
       <Form.Item
         label="七天无理由退货"
