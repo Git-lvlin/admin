@@ -22,10 +22,10 @@ const Index = () => {
     })
   }
   const handleOk = id =>{
-    console.log(id);
     customMessageAuditIm({id}).then(res=>{
       if(res.success){
         message.success('推送成功')
+        actionRef.current.reload()
       }
     })
   }

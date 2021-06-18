@@ -327,7 +327,6 @@ export default () => {
             }
             onFinish={async (values) => {
               await timingPush(values)
-              message.success('提交成功')
               return true
             }}
           >
@@ -352,7 +351,6 @@ export default () => {
             }
             onFinish={async (values) => {
               await rejectPush(values)
-              message.success('提交成功')
               return true
             }}
           >

@@ -67,6 +67,17 @@ export const customMessageAdd = async (params, options = {}) => {
     success: res.success
   }
 }
+// 修改自定义消息
+export const customMessageEdit = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/message/msg/custom/update', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    success: res.success
+  }
+}
 // 自定义消息详细
 export const customMessageDetail = async (params, options = {}) => {
   const res = await request('/auth/java-admin/message/msg/custom/get', {
@@ -115,7 +126,7 @@ export const customMessageAuditTim = async (params, options = {}) => {
   const res = await request('/auth/java-admin/message/msg/custom/push/timing', {
     method: 'POST',
     data: {
-      params
+      ...params
     },
     ...options
   })
