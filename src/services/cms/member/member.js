@@ -210,7 +210,7 @@ export const crazyGoodsList = async (params = {}, options = {}) => {
 
   const data = {
     page: current,
-    size: pageSize,
+    pageSize,
     ...rest
   }
 
@@ -447,6 +447,14 @@ export const kongKongModifyType = (params = {}, options = {}) => {
 
 export const modifyTagSort = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/goodsTagSortSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const crazyTagSort = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsGoodsSortSub', {
     method: 'POST',
     data: params,
     ...options
