@@ -4,6 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { commissionSum,commissionPage } from '@/services/daifa-store-management/list';
 import { history } from 'umi';
 import { Statistic, Row, Col, Button } from 'antd';
+import './style.less'
 
 export default props => {
     let storeNo = props.location.query.storeNo
@@ -71,15 +72,18 @@ export default props => {
     },[])
   return (
     <PageContainer>
-        <Row gutter={16}>
+        <Row gutter={16} style={{background:'#fff',padding:'20px',marginBottom:'20px'}}>
             <Col span={8}>
-               <Statistic title="累计成交金额" value={moneyData.totalOrderAmount} precision={2} suffix="元" />
+               <Statistic title="累计成交金额" style={{display:'inline-block'}} value={moneyData.totalOrderAmount} precision={2}/>
+               <span style={{fontSize:"18px"}}>元</span>
             </Col>
             <Col span={8}>
-              <Statistic title="累计佣金金额" value={moneyData.totalCommission} precision={2} suffix={'元（其中冻结佣金额为'+moneyData.freezeCommission+'元)'}/>
+              <Statistic title="累计佣金金额" style={{display:'inline-block'}} value={moneyData.totalCommission} precision={2}/>
+              <span style={{fontSize:"18px"}}>{moneyData.freezeCommission?'元（其中冻结佣金额为'+moneyData.freezeCommission+'元)':''}</span>
             </Col>
             <Col span={8}>
-               <Statistic title="累计返佣订单笔数" value={moneyData.totalOrderCount} precision={2} suffix="笔"/>
+               <Statistic title="累计返佣订单笔数" style={{display:'inline-block'}} value={moneyData.totalOrderCount} precision={2}/>
+               <span style={{fontSize:"18px"}}>笔</span>
             </Col>
         </Row>
         <ProTable

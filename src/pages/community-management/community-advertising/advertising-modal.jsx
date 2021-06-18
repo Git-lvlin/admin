@@ -5,12 +5,14 @@ import  ProForm,{ ModalForm,ProFormRadio,ProFormText} from '@ant-design/pro-form
 import { Button,Form, Tabs,message } from 'antd';
 
 export default (props)=>{
-    const {boxref,visible,setVisible,form,byid,record}=props
+    const {boxref,visible,setVisible,form,byid}=props
     useEffect(()=>{
+      console.log('byid',byid)
         if(byid){
-            findAdsensePositionById({id:record&&record.id}).then(res=>{
+            findAdsensePositionById({id:byid}).then(res=>{
                 form.setFieldsValue(res.data)
             })
+            
         }
     },[])
     return (

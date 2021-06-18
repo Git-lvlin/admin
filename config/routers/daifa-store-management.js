@@ -21,16 +21,6 @@ export default {
       name: 'agent-shop-money',
       path: '/daifa-store-management/list/agent-shop-money',
       component: './daifa-store-management/agent-shop-money',
-    },
-    // {
-    //   name: 'role-management',
-    //   path: '/setting/role-management',
-    //   component: './setting/role-management',
-    // },
-    // {
-    //   name: 'authority-management',
-    //   path: '/setting/authority-management',
-    //   component: './setting/authority-management',
-    // },
+    }
   ]
 }
