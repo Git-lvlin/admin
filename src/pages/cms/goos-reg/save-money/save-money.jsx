@@ -55,6 +55,9 @@ const SaveMoney = () => {
       dataIndex: 'sort',
       valueType: 'text',
       search: false,
+      align: 'center',
+      width: 80,
+      fixed: 'left',
     },
     {
       title: 'SPUID',
@@ -144,14 +147,17 @@ const SaveMoney = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
+      align: 'center',
+      width: 180,
+      fixed: 'right',
       render: (text, record, _) => {
         return (
           <>
-            {record.status===2&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
-            &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
+            {record.status===2&&<Button size="small" key="top" onClick={() => {top(record.id)}}>置顶</Button>}
+            {record.status===2&&<Button size="small" key="down" onClick={() => {formControl(record.id, 1)}}>下线</Button>}
+            {record.status===1&&<Button size="small" key="view" onClick={() => {formControl(record.id,2)}}>发布</Button>}
+            {record.status===1&&<Button size="small" key="editable" onClick={() => {getDetail(record)}}>排序</Button>}
+            {record.status===1&&<Button size="small" key="d" onClick={() => {formControl(record.id,4)}}>删除</Button>}
           </>
         )
       }
@@ -187,15 +193,26 @@ const SaveMoney = () => {
             </a>
           </span>
           <span>{`待发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.containers,
-            0,
-          )} 个`}</span>
-          <span>{`已发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.callNumber,
-            0,
-          )} 个`}</span>
+              (pre, item) => {
+                if (item.status === 1) {
+                  return pre += 1
+                }
+                return pre
+              },
+              0,
+            )} 个`}</span>
+            <span>{`已发布: ${selectedRows.reduce(
+              (pre, item) => {
+                if(item.status === 2) {
+                  return pre += 1
+                }
+                return pre
+              },
+              0,
+            )} 个`}</span>
         </Space>
       )}
+      scroll={{ x: 1800 }}
       editable={{
         type: 'multiple',
       }}

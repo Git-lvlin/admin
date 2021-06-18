@@ -6,7 +6,7 @@ import { hotGoosAdd } from '@/services/cms/member/member';
 import { goosReplaceList } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, setVisible, onClose, setFlag, visible } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
   const columns = [
@@ -73,10 +73,13 @@ export default (props) => {
       ...rest
     }
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       hotGoosAdd(param).then((res) => {
         if (res.code === 0) {
+          setFlag(true);
           resolve(true);
+        } else {
+          reject(false);
         }
       })
   
@@ -101,9 +104,9 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        onClose: () => {
-          onClose();
-        }
+        // onClose: () => {
+        //   onClose();
+        // }
       }}
       onFinish={async (values) => {
         await waitTime(values);
@@ -118,7 +121,6 @@ export default (props) => {
       columns={columns}
       postData={(data) => {
         data.forEach(item => {
-          item.floatPercent = parseInt(item.floatPercent/100)
           item.goodsSalePrice = item.goodsSalePrice/100
         })
         return data

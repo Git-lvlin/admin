@@ -9,8 +9,6 @@ import Modify from './edit';
 import ReplaceForm from './replace-form';
 import { hotGoosList, hotGoosOperation,tagSortTop } from '@/services/cms/member/member';
 
-
-
 const StrategyToday = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
@@ -52,6 +50,8 @@ const StrategyToday = () => {
       dataIndex: 'sort',
       valueType: 'text',
       search: false,
+      align: 'center',
+      width: 80,
     },
     {
       title: 'SPUID',
@@ -168,14 +168,17 @@ const StrategyToday = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
+      align: 'center',
+      width: 180,
+      fixed: 'right',
       render: (text, record, _) => {
         return (
           <>
-            {record.status===2&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
-            &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {getDetail(record)}}>排序</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
+            {record.status===2&&<Button size="small" key="top" onClick={() => {top(record.id)}}>置顶</Button>}
+            &nbsp;&nbsp;{record.status===2&&<Button size="small" key="down" onClick={() => {formControl(record.id, 1)}}>下线</Button>}
+            &nbsp;&nbsp;{record.status===1&&<Button size="small" key="view" onClick={() => {formControl(record.id,2)}}>发布</Button>}
+            &nbsp;&nbsp;{record.status===1&&<Button size="small" key="editable" onClick={() => {getDetail(record)}}>排序</Button>}
+            &nbsp;&nbsp;{record.status===1&&<Button size="small" key="d" onClick={() => {formControl(record.id,4)}}>删除</Button>}
           </>
         )
       }
@@ -192,7 +195,6 @@ const StrategyToday = () => {
       params={{tagCode:'day_yeahgo'}}
       postData={(data) => {
         data.forEach(item => {
-          item.floatPercent = parseInt(item.floatPercent/100)
           item.goodsSalePrice = item.goodsSalePrice/100
         })
         return data
@@ -240,6 +242,7 @@ const StrategyToday = () => {
       pagination={{
         pageSize: 10,
       }}
+      scroll={{ x: 1800 }}
       dateFormatter="string"
       headerTitle="今日必约"
       toolBarRender={(_,record) => [

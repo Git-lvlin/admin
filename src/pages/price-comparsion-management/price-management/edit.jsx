@@ -40,9 +40,13 @@ export default (props) => {
     },
     {
       title: '结算类型',
-      dataIndex: 'goodsSaleTypeDisplay',
+      dataIndex: 'settleType',
       valueType: 'text',
       search: false,
+      valueEnum: {
+        1: '佣金模式',
+        2: '底价模式',
+      }
     },
     {
       title: '秒约价',

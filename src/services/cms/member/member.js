@@ -482,11 +482,15 @@ export const goosAllList = async (params = {}, options = {}) => {
 }
 
 export const goodsAllList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current, pageSize, gcId, ...rest } = params;
   const data = {
     page: current,
     size: pageSize,
     ...rest
+  }
+  if (gcId) {
+    data.gcId1 = gcId[0]
+    data.gcId2 = gcId[1]
   }
   const res = await request('/auth/goods/product/skuList', {
     method: 'POST',
@@ -851,7 +855,7 @@ export const getSpiderGoodsListByDate = (params = {}, options = {}) => {
 }
 
 export const getGoodsBindData = (params = {}, options = {}) => {
-  return request(`/auth/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderPlatformList?goodsId=${params.goodsId}`, {
+  return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderPlatformList?goodsId=${params.goodsId}&goodsSkuId=${params.goodsSkuId}`, {
     method: 'GET',
     data: params,
     ...options

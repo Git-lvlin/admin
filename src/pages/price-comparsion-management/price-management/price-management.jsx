@@ -80,7 +80,7 @@ const PriceManagement = () => {
 
   let timer = null
   const timeoutfn = (data,type,id) => {
-    getSpiderGoodsListByDate({ sourceType:data.type, goodsId:data.goodsId })
+    getSpiderGoodsListByDate({ sourceType:data.type, goodsId:data.goodsId, goodsSkuId:data.skuId })
     .then((res) => {
       if (res.code === 0 && res.data.length) {
         timer = null
@@ -299,8 +299,11 @@ const PriceManagement = () => {
   ]
 
   const getBindedData = (arr) => {
-    const spu = arr[arr.length-1]
-    getGoodsBindData({goodsId:spu}).then(res => {
+    if (!arr.length) {
+      return;
+    }
+    const index = arr[arr.length-1]
+    getGoodsBindData({goodsId:index[0],goodsSkuId:index[1]}).then(res => {
       if (res.code === 0) {
         // setBinded(res.data)
         setResData(res.data)
@@ -311,11 +314,12 @@ const PriceManagement = () => {
   return (
     <PageContainer>
       <ProTable
-      rowKey="goodsSpuId"
+      rowKey="allKey"
       columns={columns}
-      expandable={{ 
+      expandable={{
         expandedRowRender,
         onExpandedRowsChange: (expandedRows) => {
+          console.log('expandedRows', expandedRows)
           getBindedData(expandedRows)
         }
       }}
@@ -324,6 +328,7 @@ const PriceManagement = () => {
         data.forEach(item => {
           item.goodsPrice = item.goodsPrice/100
           item.goodsMarketPrice = item.goodsMarketPrice/100
+          item.allKey = [item.goodsSpuId, item.goodsSkuId]
         })
         return data
       }}

@@ -23,12 +23,12 @@ const SubTable = (props) => {
     {
       title: '销售价',
       dataIndex: 'consignPrice',
-      // render: (_) => amountTransform(_, '/')
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '市场价',
       dataIndex: 'retailPrice',
-      // render: (_) => amountTransform(_, '/')
+      render: (_) => amountTransform(_, '/')
     },
     { title: '可用库存', dataIndex: 'amountOnSale' },
   ];
@@ -142,7 +142,7 @@ export default function EditTable() {
       ...item,
       // totalStockNum: item.stockNum,
       // minNum: 1,
-      // price: amountTransform(+item.price, '/'),
+      price: amountTransform(+item.price, '/'),
       // perStoreMinNum: 10,
       // totalPrice: item.salePrice > 0 ? +new Big(+item.salePrice).div(100).times(10) : 0,
     }))

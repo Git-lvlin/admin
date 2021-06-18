@@ -16,6 +16,8 @@ const DetailList = (props) => {
   const [replaceFormVisible, setReplaceFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(true);
   const [flag, setFlag] = useState(false);
+  const [popVisible, setPopVisible] = useState(false);
+
   const getDetail = (data) => {
     if (!acid) {return message.error('请先选择活动')}
     const param = {
@@ -45,6 +47,11 @@ const DetailList = (props) => {
     }
     setDetailData(param);
     setReplaceFormVisible(true);
+  }
+
+
+  const editPop = () => {
+    
   }
 
   const columns = [
@@ -99,12 +106,6 @@ const DetailList = (props) => {
       valueType: 'number',
       search: false,
     },
-    // {
-    //   title: '活动库存',
-    //   dataIndex: 'activityStockNum',
-    //   valueType: 'number',
-    //   search: false,
-    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
@@ -152,7 +153,7 @@ const DetailList = (props) => {
           <>
             {record.status===2&&<Button key="down" onClick={() => {formControl(record.id, 1)}}>下线</Button>}
             &nbsp;&nbsp;{record.status===1&&<Button key="view" onClick={() => {formControl(record.id,2)}}>发布</Button>}
-            {/* &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {action?.startEditable?.(record.key);console.log('action',action,record)}}>编辑</a>} */}
+            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {editPop(record)}}>编辑</a>}
             &nbsp;&nbsp;{record.status===1&&<Button key="d" onClick={() => {formControl(record.id,4)}}>删除</Button>}
           </>
         )

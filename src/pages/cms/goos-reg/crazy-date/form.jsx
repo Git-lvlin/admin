@@ -9,8 +9,6 @@ import ProForm, {
 import CrazyAddActivityReg from '@/components/crazy-add-activity-reg';
 import { crazyActivityAdd } from '@/services/cms/member/member';
 
-
-
 export default (props) => {
   const { detailData, setVisible, setFlag, visible } = props;
   const formRef = useRef();

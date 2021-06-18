@@ -36,8 +36,12 @@ export default (props) => {
     {
       title: '商品组状态',
       dataIndex: 'state',
-      valueType: 'money',
+      valueType: 'text',
       search: false,
+      valueEnum: {
+        0: '失效',
+        1: '正常',
+      }
     },
     {
       title: 'groupId',
