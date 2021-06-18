@@ -65,20 +65,14 @@ export const commissionSum = async (params = {}, options = {}) => {
 
 export const commissionPage = async (params = {}, options = {}) => {
   const { current, pageSize,storeNo, ...rest } = params;
-  const data={
-      page: current,
-      size: pageSize,
-      ...rest
-  }
-  const data2={
-    page: current,
-    size: pageSize,
-    storeNo,
-    ...rest
-  }
   const res = await request('/auth/store/AgentShopMoney/CommissionPage', {
     method: 'POST',
-    data,
+    data:{
+      page: current,
+      size: pageSize,
+      storeNo,
+      ...rest
+  },
     ...options,
   });
   return {

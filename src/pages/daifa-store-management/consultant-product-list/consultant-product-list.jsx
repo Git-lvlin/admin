@@ -29,17 +29,14 @@ const SubTable = (props) => {
     {
       title: '店主售价',
       dataIndex: 'goodsName',
-      // render: (_) => amountTransform(_, '/')
     },
     {
       title: '供应链销售价',
       dataIndex: 'goodsName',
-      // render: (_) => amountTransform(_, '/')
     },
     {
       title: '市场价',
       dataIndex: 'goodsName',
-      // render: (_) => amountTransform(_, '/')
     },
     {
       title: '可用库存',

@@ -176,8 +176,8 @@ export default props => {
           rowKey="sourceId"
           options={false}
           params={{
-            page:0,
-            size:1,
+            page:1,
+            size:5,
             status:0,
             type:1
           }}
@@ -214,9 +214,10 @@ export default props => {
             rowKey="sourceUserId"
             options={false}
             params={{
-              page:0,
+              page:1,
               size:5,
-              type:'1'
+              type:'1',
+              status:3
             }}
             request={adminReportList}
             actionRef={actionRef}

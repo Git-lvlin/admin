@@ -13,6 +13,9 @@ export default props => {
         {
             title: '广告ID：',
             dataIndex: 'id',
+            // render:(text, record, _, action)=>[
+            //     <a onClick={()=>history.push('/community-management/community-advertising/advertising-manage?id='+record.id)}>{record.id}</a>
+            // ],
         },
         {
             title: '广告标题',

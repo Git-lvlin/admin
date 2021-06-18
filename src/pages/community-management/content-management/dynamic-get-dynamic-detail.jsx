@@ -1,7 +1,9 @@
 import React, { useState,useEffect } from 'react';
 import { getDynamicDetail } from '@/services/community-management/dynamic-get-dynamic-detail';
 import { Button, Descriptions } from 'antd';
+import moment from 'moment';
 import { history } from 'umi';
+import { number } from 'prop-types';
 
 
 export default props => {
@@ -14,13 +16,12 @@ export default props => {
     })
     return undefined
   },[])
-  const [dynamicdetail,setDynamicdetail]=useState([])
 
   return (
     <>
     <Descriptions title="帖子详情" style={{background:'#fff',padding:'20px'}}>
         <Descriptions.Item label="内容ID">{detailData.id}</Descriptions.Item>
-        <Descriptions.Item label="发布时间">{detailData.createTime}</Descriptions.Item>
+        <Descriptions.Item label="发布时间">{moment(Number(detailData.createTime)).format('YYYY-MM-DD HH:mm:ss')}</Descriptions.Item>
         <Descriptions.Item label="定位">{detailData.address}</Descriptions.Item>
         <Descriptions.Item label="内容">{detailData.content}</Descriptions.Item>
     </Descriptions>

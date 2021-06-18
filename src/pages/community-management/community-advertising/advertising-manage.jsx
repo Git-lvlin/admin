@@ -17,8 +17,9 @@ const [visible2, setVisible2] = useState(false);
 const [form] = Form.useForm()
 const [byid,setByid]=useState()
 const Termination=(record)=>{
+  console.log('record',record)
+  setByid(record.id)
   setVisible(true)
-  setByid(record)
 }
 const addPosition=()=>{
   setVisible2(true)
@@ -50,7 +51,7 @@ const columns= [
       valueType:'text',
       render:(text, record, _, action)=>[
         <Button onClick={()=>Termination(record)}>编辑</Button>,
-        // <AdvertisingModal visible={visible} setVisible={setVisible}  boxref={ref}/>
+       
       ],
       hideInSearch:true
   }
@@ -79,7 +80,7 @@ const columns= [
             toolBarRender={false}
             columns={columns}
           />
-        
+         <AdvertisingModal visible={visible} setVisible={setVisible} byid={byid} form={form} boxref={ref}/>
     </PageContainer>
   );
 };

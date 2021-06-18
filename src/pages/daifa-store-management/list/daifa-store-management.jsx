@@ -129,27 +129,11 @@ const TableList = () => {
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
-          optionRender: ({ searchText, resetText }, { form }) => [
-            <Button
-              key="search"
-              type="primary"
-              onClick={() => {
-                form?.submit();
-              }}
-            >
-              {searchText}
-            </Button>,
-            <Button
-              key="rest"
-              onClick={() => {
-                form?.resetFields();
-              }}
-            >
-              {resetText}
-            </Button>,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
             <Button key="out" type="primary" onClick={() => { setFormVisible(true) }}>新建</Button>,
-            <AddModal/>,
-          ],
+            <AddModal/>
+          ]
         }}
         columns={columns}
         actionRef={actionRef}
