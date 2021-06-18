@@ -101,25 +101,11 @@ export default (props) => {
             }
           })
         });
-        console.log('parentIds',parentIds)
 
         const gcData = [...new Set([...gc, ...parentIds].filter(item => item !== 0))]
         gcData.forEach(item => {
           const findItem = originData.current.find(it => item === it.id);
-        console.log('findItem',findItem)
           const { gcParentId, id } = findItem;
-          // if (gcParentId == 0) {
-          //   if (!obj[gcParentId]) {
-          //     obj[id] = []
-          //   }
-          // } else if (obj[gcParentId]) {
-          //   obj[gcParentId].push(id)
-          // } else {
-          //   console.log('gcParentId', gcParentId)
-          //   obj[gcParentId] = [id];
-          //   console.log('id', obj)
-          // }
-
           if (gcParentId !== 0) {
             if (obj[gcParentId]) {
               obj[gcParentId].push(id)
@@ -127,12 +113,10 @@ export default (props) => {
               obj[gcParentId] = [id];
             }
           }
-        console.log('obj',obj)
 
         })
 
         let hasError = false;
-        // eslint-disable-next-line no-restricted-syntax
         for (const key in obj) {
           if (Object.hasOwnProperty.call(obj, key)) {
             const g = { gc_id1: key };
@@ -155,9 +139,6 @@ export default (props) => {
       } else {
         gcArr = ''
       }
-      console.log('values',values)
-      console.log('gcArr',gcArr)
-      console.log('detailData',detailData)
       values.businessScope=gcArr
       apiMethod({
         ...rest,
@@ -204,17 +185,6 @@ export default (props) => {
         }
       })
   }, [form, detailData]);
-
-   const checkConfirm=(rule, value, callback)=>{
-    return new Promise(async (resolve, reject) => {
-    if (value.length > 30) {
-          await reject('店主姓名不超过30个字符')
-      }else {
-          await resolve()
-      }
-    })
-  }
-
   return (
     <DrawerForm
       title={`${detailData ? '编辑' : '新建'}`}
@@ -242,10 +212,18 @@ export default (props) => {
         name="realname"
         label="店主姓名"
         placeholder="请输入店主姓名"
-        rules={[{ required: true, message: '请输入店主姓名' },{validator: checkConfirm}]}
-        fieldProps={{
-          maxLength: 30,
-        }}
+        rules={[
+          { required: true, message: '请输入店主姓名' },
+          { validator:(rule,value,callback)=>{
+              return new Promise(async (resolve, reject) => {
+              if(value&&value.length>30){
+                await reject('姓名不超过30个字符')
+              }else {
+                await resolve()
+            }
+            })
+          }}
+        ]}
         disabled={!!detailData}
       />
       <ProFormText
@@ -262,10 +240,18 @@ export default (props) => {
         name="storeName"
         label="店铺名称"
         placeholder="请输入店铺名称"
-        rules={[{ required: true, message: '请输入店铺名称' }]}
-        fieldProps={{
-          maxLength: 11,
+        rules={[
+          { required: true, message: '请输入店铺名称' },
+          { validator:(rule,value,callback)=>{
+            return new Promise(async (resolve, reject) => {
+            if(value&&value.length>30){
+              await reject('店铺名称不超过30个字符')
+            }else {
+              await resolve()
+          }
+          })
         }}
+        ]}
       />
       <Form.Item
         label="手持身份证照片"
@@ -311,22 +297,61 @@ export default (props) => {
         label="店主身份证号"
         placeholder="请输入店主身份证号"
         rules={[{ required: true, message: '请输入店主身份证号' }]}
+        fieldProps={{
+          maxLength: 18,
+        }}
       />
 
       <ProFormText
         name="wechatNo"
         label="微信号"
         placeholder="请输入微信号"
+        rules={[
+          { required: true, message: '请输入微信号' },
+          { validator:(rule,value,callback)=>{
+            return new Promise(async (resolve, reject) => {
+            if(value&&value.length>20){
+              await reject('微信号不超过20个字符')
+            }else {
+              await resolve()
+          }
+          })
+        }}
+        ]}
       />
       <ProFormText
         name="station"
         label="店主内部岗位或身份"
         placeholder="请输入店主内部岗位或身份"
+        rules={[
+          { required: true, message: '请输入店主内部岗位或身份' },
+          { validator:(rule,value,callback)=>{
+            return new Promise(async (resolve, reject) => {
+            if(value&&value.length>30){
+              await reject('岗位或身份不超过30个字符')
+            }else {
+              await resolve()
+          }
+          })
+        }}
+        ]}
       />
       <ProFormText
         name="remark"
         label="备注"
         placeholder="请输入备注"
+        rules={[
+          { required: true, message: '请输入备注' },
+          { validator:(rule,value,callback)=>{
+            return new Promise(async (resolve, reject) => {
+            if(value&&value.length>100){
+              await reject('备注不超过100个字符')
+            }else {
+              await resolve()
+          }
+          })
+        }}
+        ]}
       />
 
       <Form.Item

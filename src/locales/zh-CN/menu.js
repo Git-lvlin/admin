@@ -114,10 +114,8 @@ export default {
   'menu.message-management.supplier-message-template-config': '供应商消息模板配置',
   'menu.message-management.platform-message-template-config': '平台端消息模板配置',
   'menu.message-management.custom-message': '自定义消息',
-  'menu.message-management.custom-message.new': '新建消息',
-  'menu.message-management.custom-message.audit': '审核',
-  'menu.message-management.custom-message.detail': '详情',
-  'menu.message-management.custom-message.edit': '编辑',
+  'menu.message-management.audit': '审核',
+  'menu.message-management.detail': '详情',
   'menu.message-management.stand-inside-letter-list': '站内信列表',
 
   'menu.coupon-management.construction':'新建优惠劵',

@@ -55,7 +55,8 @@ const index = () => {
           toolBarRender={false}
           columns={columns}
           actionRef={ actionRef }
-          request={()=>api.messageTemplateList({toType: type, moduleType: module})}
+          params={{toType: type, moduleType: module}}
+          request={api.messageTemplateList}
           pagination={{
             showQuickJumper: true,
             pageSize: 10,

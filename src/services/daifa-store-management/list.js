@@ -13,7 +13,7 @@ export const storeList = async (params = {}, options = {}) => {
   });
 
   return {
-    data: res.data.records,
+    data: res.data.records.length?res.data.records:[],
     success: true,
     total: res.data.total
   }
@@ -101,7 +101,7 @@ export const file_tpl_ur = async (params = {}, options = {}) => {
     ...options
   });
   return {
-    data: res.data,
+    data: res.data.length?res.data:[],
     success: true
   }
 }
@@ -118,7 +118,7 @@ export const import_store = async (params = {}, options = {}) => {
     ...options
   });
   return {
-    data: res.data,
+    data: res.data.length?res.data:[],
     success: true
   }
 }

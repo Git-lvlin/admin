@@ -180,7 +180,7 @@ const afterSalesOrder = () => {
             >
               {resetText}
             </Button>,
-            <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>
+            // <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>
           ],
         }}
         rowSelection={{

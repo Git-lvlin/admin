@@ -12,7 +12,10 @@ const HomeList = () => {
   const actionRef = useRef();
 
   const del = (record, opt) => {
+    console.log('record', record)
     const { id } = record
+    console.log('id', id)
+
     const param = {
       "id": id.toString(),
       "opt":opt
@@ -51,7 +54,7 @@ const HomeList = () => {
       render: (text, record, _) => {
         return (
           <>
-            {<a key="editable" onClick={() => {}}>修改</a>}
+            {/* {<a key="editable" onClick={() => {}}>修改</a>} */}
             &nbsp;&nbsp;{<a key="d" onClick={() => {
               del(record, 'del')
             }}>删除</a>}
@@ -60,8 +63,6 @@ const HomeList = () => {
       }
     },
   ]
-
-
 
   return (
     <PageContainer>
