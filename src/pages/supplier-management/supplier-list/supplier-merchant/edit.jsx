@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Form, Button, Tree, message, Checkbox } from 'antd';
-import ProForm, {
+import {
   DrawerForm,
   ProFormText,
   ProFormRadio,
@@ -206,7 +206,7 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        width: 1200,
+        width: 800,
         onClose: () => {
           onClose();
         }
@@ -222,144 +222,139 @@ export default (props) => {
       }}
       {...formItemLayout}
     >
-      <ProForm.Group>
-        <ProFormText
-          name="companyName"
-          label="供应商名称"
-          placeholder="请输入供应商名称"
-          rules={[{ required: true, message: '请输入供应商名称' }]}
-          fieldProps={{
-            maxLength: 30,
-          }}
-          disabled={!!detailData}
-        />
-        <ProFormText
-          name="accountName"
-          label="供应商登录账号"
-          placeholder="请输入供应商登录账号"
-          rules={[{ required: true, message: '请输入供应商登录账号' }]}
-          fieldProps={{
-            maxLength: 18,
-          }}
-          disabled={!!detailData}
-        />
-        <ProFormText.Password
-          name="password"
-          label="供应商登录密码"
-          placeholder="请输入供应商登录密码"
-          rules={[{ required: !detailData, message: '请输入供应商登录密码' }]}
-          fieldProps={{
-            maxLength: 32,
-            visibilityToggle: false,
-          }}
-        />
-        <Form.Item
-          label="营业执照"
-          name="businessLicense"
-          tooltip={
-            <dl>
-              <dt>图片要求</dt>
-              <dd>1.图片大小5MB以内</dd>
-              <dd>2.图片格式png/jpg/gif</dd>
-            </dl>
+      <ProFormText
+        name="companyName"
+        label="供应商名称"
+        placeholder="请输入供应商名称"
+        rules={[{ required: true, message: '请输入供应商名称' }]}
+        fieldProps={{
+          maxLength: 30,
+        }}
+        disabled={!!detailData}
+      />
+      <ProFormText
+        name="accountName"
+        label="供应商登录账号"
+        placeholder="请输入供应商登录账号"
+        rules={[{ required: true, message: '请输入供应商登录账号' }]}
+        fieldProps={{
+          maxLength: 18,
+        }}
+        disabled={!!detailData}
+      />
+      <ProFormText.Password
+        name="password"
+        label="供应商登录密码"
+        placeholder="请输入供应商登录密码"
+        rules={[{ required: !detailData, message: '请输入供应商登录密码' }]}
+        fieldProps={{
+          maxLength: 32,
+          visibilityToggle: false,
+        }}
+      />
+      <Form.Item
+        label="营业执照"
+        name="businessLicense"
+        tooltip={
+          <dl>
+            <dt>图片要求</dt>
+            <dd>1.图片大小5MB以内</dd>
+            <dd>2.图片格式png/jpg/gif</dd>
+          </dl>
+        }
+      >
+        <Upload multiple maxCount={1} accept="image/*" size={5 * 1024} />
+      </Form.Item>
+      <Form.Item
+        label="相关资质"
+        name="qualification"
+        tooltip={
+          <dl>
+            <dt>图片要求</dt>
+            <dd>1.图片大小5MB以内</dd>
+            <dd>2.图片格式png/jpg/gif</dd>
+          </dl>
+        }
+      >
+        <Upload multiple maxCount={1} accept="image/*" size={5 * 1024} />
+      </Form.Item>
+      <Form.Item
+        label="可关联顾问"
+      >
+        <Button type="primary" onClick={() => { setFormVisible(true) }}>选择顾问</Button>
+        <div>
+          {!!selectData.length && <div>已选择顾问</div>}
+          {
+            selectData.map(item => (<div key={item.id}>{item.companyName}</div>))
           }
-        >
-          <Upload multiple maxCount={1} accept="image/*" size={5 * 1024} />
-        </Form.Item>
-        <Form.Item
-          label="相关资质"
-          name="qualification"
-          tooltip={
-            <dl>
-              <dt>图片要求</dt>
-              <dd>1.图片大小5MB以内</dd>
-              <dd>2.图片格式png/jpg/gif</dd>
-            </dl>
-          }
-        >
-          <Upload multiple maxCount={1} accept="image/*" size={5 * 1024} />
-        </Form.Item>
-      </ProForm.Group>
-      <ProForm.Group>
-        <Form.Item
-          label="可关联顾问"
-        >
-          <Button type="primary" onClick={() => { setFormVisible(true) }}>选择顾问</Button>
-          <div>
-            {!!selectData.length && <div>已选择顾问</div>}
-            {
-              selectData.map(item => (<div key={item.id}>{item.companyName}</div>))
-            }
-          </div>
-        </Form.Item>
+        </div>
+      </Form.Item>
 
-        <ProFormText
-          name="companyUserName"
-          label="负责人"
-          placeholder="请输入负责人"
-          rules={[{ required: true, message: '请输入负责人' }]}
-          fieldProps={{
-            maxLength: 10,
+      <ProFormText
+        name="companyUserName"
+        label="负责人"
+        placeholder="请输入负责人"
+        rules={[{ required: true, message: '请输入负责人' }]}
+        fieldProps={{
+          maxLength: 10,
+        }}
+      />
+      <ProFormText
+        name="companyUserPhone"
+        label="负责人手机号"
+        placeholder="请输入负责人手机号"
+        rules={[{ required: true, message: '请输入负责人手机号' }]}
+        fieldProps={{
+          maxLength: 11,
+        }}
+      />
+      <ProFormText
+        name="orderTipPhone"
+        label="接收订单提醒的手机号"
+        placeholder="请输入手机号码 产生待发货订单时自动发送短信"
+        fieldProps={{
+          maxLength: 11,
+        }}
+      />
+      <ProFormText
+        name="stockWarn"
+        label="库存预警值"
+        placeholder="请输入整数字 可用库存小于等于此值时提醒"
+      />
+
+      <Form.Item
+        label="主营商品类型"
+        name="gc"
+      >
+        <CTree
+          checkable
+          style={{
+            width: '100%',
           }}
+          treeData={treeData}
+          multiple
+          height={200}
+          data={originData.current}
+          virtual={false}
+          keys={selectKeys}
         />
-        <ProFormText
-          name="companyUserPhone"
-          label="负责人手机号"
-          placeholder="请输入负责人手机号"
-          rules={[{ required: true, message: '请输入负责人手机号' }]}
-          fieldProps={{
-            maxLength: 11,
-          }}
-        />
-        <ProFormText
-          name="orderTipPhone"
-          label="接收订单提醒的手机号"
-          placeholder="请输入手机号码 产生待发货订单时自动发送短信"
-          fieldProps={{
-            maxLength: 11,
-          }}
-        />
-        <ProFormText
-          name="stockWarn"
-          label="库存预警值"
-          placeholder="请输入整数字 可用库存小于等于此值时提醒"
-        />
+      </Form.Item>
 
-        <Form.Item
-          label="主营商品类型"
-          name="gc"
-        >
-          <CTree
-            checkable
-            style={{
-              width: '100%',
-            }}
-            treeData={treeData}
-            multiple
-            height={200}
-            data={originData.current}
-            virtual={false}
-            keys={selectKeys}
-          />
-        </Form.Item>
-
-        <ProFormRadio.Group
-          name="status"
-          label="状态"
-          rules={[{ required: true }]}
-          options={[
-            {
-              label: '启用',
-              value: 1,
-            },
-            {
-              label: '禁用',
-              value: 3,
-            },
-          ]}
-        />
-      </ProForm.Group>
-
+      <ProFormRadio.Group
+        name="status"
+        label="状态"
+        rules={[{ required: true }]}
+        options={[
+          {
+            label: '启用',
+            value: 1,
+          },
+          {
+            label: '禁用',
+            value: 3,
+          },
+        ]}
+      />
       {formVisible && <FormModal
         visible={formVisible}
         setVisible={setFormVisible}
