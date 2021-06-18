@@ -2,7 +2,36 @@ import request from '@/utils/request';
 
 export const productList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
-  const res = await request('/auth/goods/productAli/selectedList', {
+  const res = await request('/auth/goods/Product_Ali/selectedList', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+  const data = res.data.records?res.data.records:res.data
+  return {
+    data: data || [],
+    success: true,
+    total: res.data.total
+  }
+}
+
+
+
+export const brandAdd = (params = {}, options = {}) => {
+  return request('/auth/goods/product/brandAdd', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const indexProductList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/goods/Product_Ali/sendingList', {
     method: 'POST',
     data: {
       page: current,
@@ -19,10 +48,62 @@ export const productList = async (params = {}, options = {}) => {
   }
 }
 
-export const brandAdd = (params = {}, options = {}) => {
-  return request('/auth/goods/product/brandAdd', {
+// 商品组列表
+export const getGoodsList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/goods/Product_Ali/pullGoodsGroup', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data || [],
+    success: true,
+    total: res.data.total
+  }
+}
+
+// 选择商品组
+export const selectGoodsList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/goods/Product_Ali/groupGoodsList', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total
+  }
+}
+
+// 商品设置
+export const setIndex = (params = {}, options = {}) => {
+  return request('/auth/goods/Product_Ali/setGoods', {
     method: 'POST',
     data: params,
     ...options
   });
 }
+
+// 内部基础库商品更新
+export const goodsLoading = (params = {}, options = {}) => {
+  return request('/auth/goods/Product_Ali/modifySetInfo', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+

@@ -369,7 +369,7 @@ export const SetHotGoodsDel = (params = {}, options = {}) => {
 }
 
 export const SetHomePageGoodsDel = (params = {}, options = {}) => {
-  return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetHomePageGoods?ids=${params.ids}&opt=${params.opt}`, {
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetHomePageGoods?id=${params.id}&opt=${params.opt}`, {
     method: 'GET',
     data: params,
     ...options
@@ -844,6 +844,14 @@ export const sendTask = (params = {}, options = {}) => {
 
 export const getSpiderGoodsListByDate = (params = {}, options = {}) => {
   return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderGoodsListByDate?sourceType=${params.sourceType}&goodsId=${params.goodsId}`, {
+    method: 'GET',
+    data: params,
+    ...options
+  });
+}
+
+export const getGoodsBindData = (params = {}, options = {}) => {
+  return request(`/auth/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderPlatformList?goodsId=${params.goodsId}`, {
     method: 'GET',
     data: params,
     ...options

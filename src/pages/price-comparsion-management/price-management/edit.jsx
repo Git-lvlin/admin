@@ -15,18 +15,22 @@ export default (props) => {
       title: 'skuid',
       dataIndex: 'skuId',
       valueType: 'text',
+      width: 60,
     },
     {
       title: '商品名称',
       dataIndex: 'goodsName',
       valueType: 'text',
       search: false,
+      width: 130,
     },
     {
       title: '商家名称',
       dataIndex: 'supplierName',
       valueType: 'text',
       search: false,
+      width: 90,
+      ellipsis: true,
     },
     {
       title: '商品分类',
@@ -89,7 +93,6 @@ export default (props) => {
     <ModalForm
       title={'新建'}
       onVisibleChange={setVisible}
-      formRef={formRef}
       visible={visible}
       submitter={{
         searchConfig: {
@@ -107,6 +110,9 @@ export default (props) => {
         // 不返回不会关闭弹框
         return true;
       }}
+      style={{
+        overflow: 'hidden'
+      }}
     >
 <ProTable
       rowKey="skuId"
@@ -114,8 +120,8 @@ export default (props) => {
       columns={columns}
       postData={(data) => {
         data.forEach(item => {
-          item.salePrice = parseInt(item.salePrice/100)
-          item.marketPrice = parseInt(item.marketPrice/100)
+          item.salePrice = item.salePrice/100
+          item.marketPrice = item.marketPrice/100
         })
         return data
       }}

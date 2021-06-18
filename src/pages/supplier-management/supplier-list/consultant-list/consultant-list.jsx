@@ -29,7 +29,7 @@ const TableList = () => {
   const columns = [
     {
       title: '顾问名称',
-      dataIndex: 'companyUserName',
+      dataIndex: 'companyName',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入顾问名称'

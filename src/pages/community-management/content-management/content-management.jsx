@@ -7,7 +7,6 @@ import { cancelBanDynamicComment } from '@/services/community-management/dynamic
 import { banShare } from '@/services/community-management/dynamic-ban-share';
 import { cancelBanShare } from '@/services/community-management/dynamic-cancel-ban-share';
 import { dynamicDelete } from '@/services/community-management/dynamic-delete';
-import { cancelDelete } from '@/services/community-management/dynamic-cancel-delete';
 import CircleSelect from '@/components/circle-select'
 import  ProForm,{ ModalForm,ProFormSelect} from '@ant-design/pro-form';
 import DeleteModal from '@/components/DeleteModal'
@@ -139,10 +138,7 @@ export default props => {
                     text={'确认要删除所选帖子吗？'}
                     InterFace={dynamicDelete}
                     title={'操作确认'}
-                />,
-                <Button onClick={()=>cancelDelete({id:record.id}).then(res=>{
-                    ref.current.reload()
-                }) }>恢复</Button>,
+                />
             ],
             hideInSearch: true,
         },

@@ -1,17 +1,66 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Form, Select } from 'antd';
-import { productList } from '@/services/product-management/daifa-product';
+import { Button, Form, Select, Table, message } from 'antd';
+import { productList, setIndex } from '@/services/product-management/daifa-product';
 import { categoryAll } from '@/services/common';
-import { amountTransform } from '@/utils/utils'
+import GcCascader from '@/components/gc-cascader'
+import { amountTransform } from '@/utils/utils';
+import Edit from './form';
 import Big from 'big.js';
+import { PageContainer } from '@ant-design/pro-layout';
+const SubTable = (props) => {
+  const [data, setData] = useState([])
+  const columns = [
+    { title: '供应链skuID', dataIndex: 'skuId' },
+    { 
+      title: '规格1',
+      dataIndex: 'attributesOne',
+    },
+    { 
+      title: '规格2',
+      dataIndex: 'attributesTwo',
+    },
+    {
+      title: '销售价',
+      dataIndex: 'consignPrice',
+      // render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '市场价',
+      dataIndex: 'retailPrice',
+      // render: (_) => amountTransform(_, '/')
+    },
+    { title: '可用库存', dataIndex: 'amountOnSale' },
+  ];
 
+  useEffect(() => {
+    productList({
+      page: 1,
+      size: 100,
+      selectType: 2,
+      productId: props.data.feedId
+    }).then(({data}) => {
+      data.forEach((item) => {
+        item.attributesOne = item.attributes[0].attributeName + ':' + item.attributes[0].attributeValue
+        item.attributesTwo = item.attributes[1]?item.attributes[1].attributeName + ':' + item.attributes[1].attributeValue:''
+      })
+      setData(data)
+    })
+  }, [])
+
+  return (
+    <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+  )
+};
 
 export default function EditTable() {
-  const [editableKeys, setEditableKeys] = useState([])
+  const [editableKeys, setEditableKeys] = useState([]);
   const [dataSource, setDataSource] = useState([]);
+  const [hasData, setHasData] = useState(false);
+  const [formVisible, setFormVisible] = useState(false);
+  const [flag, setFlag] = useState(false);
   const [form] = Form.useForm();
-
+  const actionRef = useRef();
   const columns = [
     {
       title: 'spu',
@@ -39,7 +88,7 @@ export default function EditTable() {
       editable: false,
     },
     {
-      title: '1688状态',
+      title: '供应链状态',
       dataIndex: 'invalid',
       valueType: 'text',
       editable: false,
@@ -51,27 +100,41 @@ export default function EditTable() {
       valueType: 'text',
     },
     {
-      title: '一级分类',
-      dataIndex: 'gcId1',
-      renderFormItem: () => <Select options={[{ label: 'a', value: 1 }]} />
-    },
-    {
-      title: '二级分类',
-      dataIndex: 'gcId2',
-      renderFormItem: () => <Select options={[{ label: 'a', value: 1 }]} />
+      title: '商品分类',
+      dataIndex: 'gcId',
+      renderFormItem: () => (<GcCascader />),
     },
     {
       title: '售卖状态',
-      dataIndex: 'saleState',
+      dataIndex: 'goodsState',
       renderFormItem: () => <Select options={[{ label: '暂不售卖', value: 0 }, { label: '售卖', value: 1 }]} />
     },
     {
       title: '操作',
       valueType: 'options',
       editable: false,
-      render: () => <a>设置</a>
+      render: (_,r) => <a onClick={() => {
+        setGoodsIndex(r)
+      }}>设置</a>
     },
   ]
+
+  const setGoodsIndex = (r) => {
+    console.log('r', r)
+    const { feedId:productId, gcId, goodsState, floatPercent } = r
+    const params = {
+      productId,
+      gcId1: gcId?.[0],
+      gcId2: gcId?.[1],
+      goodsState,
+      floatPercent,
+    }
+    setIndex(params).then(res=> {
+      if (res.code === 0) {
+        message.success('设置成功')
+      }
+    }) 
+  }
 
   const postData = (data) => {
     setEditableKeys(data.map(item => item.id));
@@ -79,7 +142,7 @@ export default function EditTable() {
       ...item,
       // totalStockNum: item.stockNum,
       // minNum: 1,
-      price: amountTransform(+item.price, '/'),
+      // price: amountTransform(+item.price, '/'),
       // perStoreMinNum: 10,
       // totalPrice: item.salePrice > 0 ? +new Big(+item.salePrice).div(100).times(10) : 0,
     }))
@@ -87,11 +150,31 @@ export default function EditTable() {
   }
 
   useEffect(() => {
-    categoryAll()
-  }, [])
+    // categoryAll()
+    hasData&&actionRef.current.reset();
+  }, [hasData])
+
+  const getGoodsList = () => {
+    console.log('拉取商品组')
+    hasData&&setHasData(false)
+    setFormVisible(true)
+  }
 
   return (
-    <EditableProTable
+    <PageContainer
+      ghost
+      header={{
+        title: '',
+        breadcrumb: {},
+      }}
+      content={
+        <Button onClick={() => {
+          getGoodsList()
+        }}>获取供应链已选商品组</Button>
+      }
+    >
+    {hasData&&<EditableProTable
+      actionRef={actionRef}
       postData={postData}
       columns={columns}
       params={{
@@ -99,6 +182,7 @@ export default function EditTable() {
       }}
       rowKey="id"
       value={dataSource}
+      expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
       request={productList}
       search={false}
       editable={{
@@ -120,7 +204,7 @@ export default function EditTable() {
         }
       }}
       pagination={{
-        pageSize: 10
+        pageSize: 5
       }}
       rowSelection={{
         onChange: (_, val) => {
@@ -131,6 +215,12 @@ export default function EditTable() {
       recordCreatorProps={false}
       tableAlertRender={false}
       style={{ marginBottom: 20, width: '100%' }}
-    />
+    />}
+      {formVisible && <Edit
+      visible={formVisible}
+      setVisible={setFormVisible}
+      setHasData={setHasData}
+    />}
+    </PageContainer>
   )
 }

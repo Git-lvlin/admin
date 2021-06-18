@@ -9,7 +9,7 @@ import { goosReplaceList, crazyActivityGoodsAdd } from '@/services/cms/member/me
 
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, setVisible, setFlag, visible } = props;
   const [arr, setArr] = useState(null)
   const [acid, setAcId] = useState({cmsId: 0});
   const formRef = useRef();
@@ -70,7 +70,6 @@ export default (props) => {
   ];
 
   const waitTime = (values) => {
-    console.log('arr', arr)
     if (!arr.length) {
       message.error('请选择商品');
       return
@@ -80,17 +79,15 @@ export default (props) => {
     for(let i=0;i<len;i++) {
       array.push(arr[i].spuId)
     }
-    console.log('array', array)
     const param = {
       spuIds: array.toString(),
       goodsType: 5,
       cmsId: detailData.id
     }
-    console.log('ppp', param)
     return new Promise((resolve) => {
       crazyActivityGoodsAdd(param).then((res) => {
-        console.log('res',res)
         if (res.code === 0) {
+          setFlag(true)
           resolve(true);
         }
       })
@@ -106,7 +103,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={`新增1688`}
+      title={`新增供应链商品`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -116,13 +113,6 @@ export default (props) => {
           resetText: '取消',
         },
       }}
-      // drawerProps={{
-      //   forceRender: true,
-      //   destroyOnClose: true,
-      //   onClose: () => {
-      //     onClose();
-      //   }
-      // }}
       onFinish={async (values) => {
         await waitTime(values);
         message.success('提交成功');
@@ -167,9 +157,6 @@ export default (props) => {
       )}
       tableAlertOptionRender={(a) => {
         setArr(a.selectedRows)
-      }}
-      editable={{
-        type: 'multiple',
       }}
       search={{
         labelWidth: 'auto',

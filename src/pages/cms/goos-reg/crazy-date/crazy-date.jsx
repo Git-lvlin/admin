@@ -14,6 +14,9 @@ const CrazyDate = (props) => {
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(false);
   const [flag, setFlag] = useState(false);
+  const [act, setAct] = useState(false);
+  const [acid, setAcId] = useState({cmsId: 0});
+
   const getDetail = (data) => {
     data && setDetailData(data);
     setFormVisible(true);
@@ -101,7 +104,8 @@ const CrazyDate = (props) => {
           <>
             {/* &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>} */}
             {/* &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>} */}
-            &nbsp;&nbsp;<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>
+            <a key="editable" onClick={() => {getDetail(record)}}>编辑</a>
+            &nbsp;&nbsp;<a key="pz" onClick={() => {goDetail(record)}}>配置</a>
             {/* &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>} */}
           </>
         )
@@ -109,6 +113,10 @@ const CrazyDate = (props) => {
     },
   ];
 
+  const goDetail = (record) => {
+    setAcId(record.id)
+    setAct(true)
+  }
 
   return (
     <>
@@ -151,21 +159,19 @@ const CrazyDate = (props) => {
             )} 个`}</span>
         </Space>
       )}
-      // search={{
-      //   labelWidth: 'auto',
-      // }}
       pagination={{
         pageSize: 10,
       }}
-      onRow={(record) => {
-        return {
-          onClick: () => {
-            if (record.title) {
-              onChange(record);
-            }
-          },
-        };
-      }}
+      // onRow={(record) => {
+      //   return {
+      //     onClick: () => {
+      //       console.log('点击item', record)
+      //       if (record.title) {
+      //         goDetail(record)
+      //       }
+      //     },
+      //   };
+      // }}
       dateFormatter="string"
       headerTitle="正在疯约"
       toolBarRender={(_,record) => [
@@ -189,22 +195,27 @@ const CrazyDate = (props) => {
       detailData={detailData}
       setFlag={setFlag}
     />}
+    {act && <DetailList
+      visible={act}
+      setVisible={setAct}
+      acid={acid}
+    />}
     </>
   );
 };
 
-const Demo = () => {
-  const [detail, setDetail] = useState({});
-  return (
-    <ProCard split="vertical">
-      <ProCard colSpan="50%" ghost>
-        <CrazyDate onChange={(cIp) => setDetail(cIp)} detail={detail} />
-      </ProCard>
-      <ProCard title={`当前选中活动=>${detail.title||'-'}, 活动id=>${detail.id||'-'}`}>
-        <DetailList id={detail.id} />
-      </ProCard>
-    </ProCard>
-  );
-};
+// const Demo = () => {
+//   const [detail, setDetail] = useState({});
+//   return (
+//     <ProCard split="vertical">
+//       <ProCard colSpan="50%" ghost>
+//         <CrazyDate onChange={(cIp) => setDetail(cIp)} detail={detail} />
+//       </ProCard>
+//       <ProCard title={`当前选中活动=>${detail.title||'-'}, 活动id=>${detail.id||'-'}`}>
+//         <DetailList id={detail.id} />
+//       </ProCard>
+//     </ProCard>
+//   );
+// };
 
-export default Demo;
+export default CrazyDate;
