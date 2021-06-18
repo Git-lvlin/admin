@@ -51,13 +51,10 @@ const SaveMoney = () => {
 
   const columns = [
     {
-      title: '排序序号',
+      title: '序号',
       dataIndex: 'sort',
       valueType: 'text',
       search: false,
-      align: 'center',
-      width: 80,
-      fixed: 'left',
     },
     {
       title: 'SPUID',
@@ -75,12 +72,16 @@ const SaveMoney = () => {
       dataIndex: 'goodsName',
       valueType: 'text',
       search: false,
+      width: 180,
+      ellipsis: true,
     },
     {
       title: '商家名称',
       dataIndex: 'supplierName',
       valueType: 'text',
       search: false,
+      width: 120,
+      ellipsis: true,
     },
     {
       title: '供货类型',
@@ -100,12 +101,6 @@ const SaveMoney = () => {
       valueType: 'number',
       search: false,
     },
-    // {
-    //   title: '活动库存',
-    //   dataIndex: 'activityStockNum',
-    //   valueType: 'number',
-    //   search: false,
-    // },
     // {
     //   title: '销量',
     //   dataIndex: 'goodsSaleNum',
@@ -147,9 +142,7 @@ const SaveMoney = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      align: 'center',
-      width: 180,
-      fixed: 'right',
+      width: 170,
       render: (text, record, _) => {
         return (
           <>
@@ -169,7 +162,6 @@ const SaveMoney = () => {
     <PageContainer>
     <ProTable
       rowKey="id"
-      // options={false}
       columns={columns}
       actionRef={actionRef}
       postData={(data) => {
@@ -212,10 +204,6 @@ const SaveMoney = () => {
             )} 个`}</span>
         </Space>
       )}
-      scroll={{ x: 1800 }}
-      editable={{
-        type: 'multiple',
-      }}
       search={{
         labelWidth: 'auto',
       }}

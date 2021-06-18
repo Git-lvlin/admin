@@ -62,9 +62,6 @@ const DetailList = (props) => {
       dataIndex: 'sort',
       valueType: 'text',
       search: false,
-      align: 'center',
-      fixed: 'left',
-      width: 50,
     },
     {
       title: 'SPUID',
@@ -83,12 +80,22 @@ const DetailList = (props) => {
       valueType: 'text',
       editable: true,
       search: false,
+      width: 180,
+      ellipsis: true,
+    },
+    {
+      title: '所属内部店',
+      key: 'storeName',
+      dataIndex: 'storeName',
+      valueType: 'text',
     },
     {
       title: '商家名称',
       dataIndex: 'supplierName',
       valueType: 'text',
       search: false,
+      width: 120,
+      ellipsis: true,
     },
     {
       title: '供货类型',
@@ -147,9 +154,6 @@ const DetailList = (props) => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      align: 'center',
-      fixed: 'right',
-      width: 160,
       render: (text, record, _) => {
         return (
           <>
@@ -173,6 +177,8 @@ const DetailList = (props) => {
   return (
     <>
     <ModalForm
+      key='list'
+      width={1400}
       onVisibleChange={setVisible}
       visible={visible}
       submitter={{
@@ -228,7 +234,6 @@ const DetailList = (props) => {
       search={{
         labelWidth: 'auto',
       }}
-      scroll={{ x: 1700 }}
       pagination={{
         pageSize: 10,
       }}

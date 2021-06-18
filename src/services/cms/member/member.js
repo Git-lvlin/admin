@@ -518,7 +518,7 @@ export const goosReplaceList = async (params = {}, options = {}) => {
 
   const data = {
     page: current,
-    pageSize: pageSize,
+    pageSize,
     ...rest
   }
   const res = await request('/auth/activity/Goods/ylbbGoodsList', {
@@ -602,7 +602,7 @@ export const hotSearchList = async (params = {}, options = {}) => {
   if (status) {
     data.status = Number(status);
   }
-  const res = await request('/auth/search/auth/userSearchHistory/getAllHotKeyword', {
+  const res = await request('/auth/search/HotKeyword/getAllHotKeyword', {
     method: 'POST',
     data,
     ...options

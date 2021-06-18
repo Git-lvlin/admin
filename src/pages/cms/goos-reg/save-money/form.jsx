@@ -27,12 +27,16 @@ export default (props) => {
       dataIndex: 'goodsName',
       valueType: 'text',
       search: false,
+      width: 180,
+      ellipsis: true,
     },
     {
       title: '商家名称',
       dataIndex: 'supplierName',
       valueType: 'text',
       search: false,
+      width: 120,
+      ellipsis: true,
     },
     {
       title: '供货类型',
@@ -52,12 +56,6 @@ export default (props) => {
       valueType: 'number',
       search: false,
     },
-    // {
-    //   title: '活动库存',
-    //   dataIndex: 'activityStockNum',
-    //   valueType: 'number',
-    //   search: false,
-    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
