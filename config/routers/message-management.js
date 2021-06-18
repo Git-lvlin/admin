@@ -28,6 +28,18 @@ export default {
       component: './message-management/custom-message'
     },
     {
+      name: 'audit',
+      path: '/message-management/custom-message/audit/:id',
+      component: './message-management/custom-message/audit',
+      hideInMenu: true
+    },
+    {
+      name: 'detail',
+      path: '/message-management/custom-message/detail/:id',
+      component: './message-management/custom-message/detail',
+      hideInMenu: true
+    },
+    {
       name: 'stand-inside-letter-list',
       path: '/message-management/stand-inside-letter-list',
       component: './message-management/stand-inside-letter-list'
