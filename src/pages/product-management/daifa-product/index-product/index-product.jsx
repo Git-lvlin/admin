@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Form, Select, message, Table } from 'antd';
+import { Form, Select, message, Table, Input, Button } from 'antd';
 import { indexProductList, goodsLoading } from '@/services/product-management/daifa-product';
 // import { categoryAll } from '@/services/common';
 import GcCascader from '@/components/gc-cascader'
 import { amountTransform } from '@/utils/utils'
 import Big from 'big.js';
+import ProCard from '@ant-design/pro-card';
+const { Search } = Input;
+
 const SubTable = (props) => {
   const [data, setData] = useState([])
   const columns = [
@@ -49,10 +52,15 @@ const SubTable = (props) => {
 };
 
 export default function EditTable() {
-  const [editableKeys, setEditableKeys] = useState([])
+  const [editableKeys, setEditableKeys] = useState([]);
   const [dataSource, setDataSource] = useState([]);
   const [form] = Form.useForm();
   const actionRef = useRef();
+  const [params, setParams] = useState({
+    selectType: 1,
+  });
+
+
   const upData = (r) => {
     console.log('r', r)
     const { outSpuId:productId, gcId, goodsState, floatPercent } = r
@@ -177,21 +185,39 @@ export default function EditTable() {
   // useEffect(() => {
   //   categoryAll()
   // }, [])
-
+  const onSearch = (value) => {
+    setParams({
+      ...params,
+      goodsName: value,
+    })
+  };
   return (
+    <ProCard>
+      <Search
+      style={
+        {
+          width: 300,
+          marginBottom: 20,
+          marginLeft: 24,
+        }
+      }
+      placeholder="请输入商品名"
+      onSearch={onSearch}
+      enterButton={'商品名称搜索'} />
+    <Button onClick={() => {
+      onSearch(null)
+      setValue(null)
+    }}>重置</Button>
     <EditableProTable
       actionRef={actionRef}
       postData={postData}
       columns={columns}
       expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
-      params={{
-        selectType: 1
-      }}
       rowKey="id"
       value={dataSource}
-      params={{selectType:1}}
+      params={params}
       request={indexProductList}
-      search={false}
+      // search={false}
       editable={{
         form,
         editableKeys,
@@ -223,5 +249,6 @@ export default function EditTable() {
       tableAlertRender={false}
       style={{ marginBottom: 20, width: '100%' }}
     />
+    </ProCard>
   )
 }

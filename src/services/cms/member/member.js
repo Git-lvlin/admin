@@ -237,6 +237,14 @@ export const crazyActivityGoodsAdd = (params = {}, options = {}) => {
   });
 }
 
+export const crazyActivityGoodsAddPT = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsGoodsSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const hotGoosAdd = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/goodsTagSub', {
     method: 'POST',
