@@ -64,7 +64,7 @@ const TableList = () => {
       }).then(res => {
         if (res.code === 0) {
           setDetailData({
-            data: res.data,
+            data: res.data?.length ? res.data : [],
             spuId: record.id
           });
           setSecondReviewVisible(true);

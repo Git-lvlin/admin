@@ -89,7 +89,7 @@ const UserDetail = (props) => {
 
   return (
     <Drawer
-      title="用户详情"
+      title="审核详情"
       width={1200}
       placement="right"
       onClose={() => { setVisible(false) }}

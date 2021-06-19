@@ -45,8 +45,11 @@ export default (props) => {
         const specValuesMap = {};
         Object.values(specValues).forEach(element => {
           const obj = Object.entries(element);
-          // eslint-disable-next-line prefer-destructuring
-          specValuesMap[obj[0][0]] = obj[0][1];
+          obj.forEach(item => {
+            // eslint-disable-next-line prefer-destructuring
+            specValuesMap[item[0]] = item[1];
+          })
+
         });
         setTableHead(Object.values(specName))
         setTableData(Object.entries(specData).map(item => {
