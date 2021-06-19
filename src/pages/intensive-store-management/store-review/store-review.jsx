@@ -47,28 +47,28 @@ const StoreReview = () => {
     },
     {
       title: '提货点所在地区',
-      dataIndex: 'id',
+      dataIndex: '',
       valueType: 'text',
       hideInSearch: true,
       render: (_, { details }) => `${details?.provinceName} ${details?.cityName} ${details?.regionName}`
     },
     {
       title: '提货点详细地址',
-      dataIndex: 'id',
+      dataIndex: '',
       valueType: 'text',
       hideInSearch: true,
       render: (_, { details }) => details?.address
     },
     {
       title: '提货点门牌号',
-      dataIndex: 'id',
+      dataIndex: '',
       valueType: 'text',
       hideInSearch: true,
       render: (_, { details }) => details?.houseNumber
     },
     {
       title: '提货店授权书',
-      dataIndex: 'id',
+      dataIndex: '',
       valueType: 'text',
       hideInSearch: true,
       render: (_, { details }) => (
@@ -79,7 +79,7 @@ const StoreReview = () => {
     },
     {
       title: '身份证',
-      dataIndex: 'id',
+      dataIndex: '',
       valueType: 'text',
       hideInSearch: true,
       render: (_, { details }) => (
@@ -92,13 +92,13 @@ const StoreReview = () => {
     },
     {
       title: '所在地区',
-      dataIndex: 'id',
+      dataIndex: '',
       valueType: 'select',
       hideInTable: true,
     },
     {
       title: '详情地址',
-      dataIndex: 'id',
+      dataIndex: '',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入详情地址'
@@ -115,6 +115,7 @@ const StoreReview = () => {
       title: '操作',
       dataIndex: ['verifyStatus', 'code'],
       valueType: 'text',
+      hideInSearch: true,
       render: (_, data) => {
         return _ === 4 && <a onClick={() => { setSelectItem(data); setFormVisible(true) }}>审核</a>;
       }

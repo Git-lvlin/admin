@@ -58,6 +58,7 @@ export default {
   'menu.supplier-management.after-sale-address': '售后地址',
   'menu.supplier-management.supplier-sub-account': '供应商子账号',
   'menu.supplier-management.supplier-detail': '供应商详情',
+  'menu.supplier-management.supplier-account-info': '供应商资金账户信息',
 
   'menu.asset-management': '资产管理',
   'menu.asset-management.settlement-profit-list': '结算分润列表',
