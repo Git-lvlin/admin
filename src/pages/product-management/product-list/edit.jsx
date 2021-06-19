@@ -496,13 +496,37 @@ export default (props) => {
                 name="salePrice"
                 label="秒约价"
                 placeholder="请输入秒约价"
-                rules={[{ required: true, message: '请输入秒约价' }]}
+                validateFirst
+                rules={[
+                  { required: true, message: '请输入秒约价' },
+                  () => ({
+                    validator(_, value) {
+                      if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                        return Promise.reject(new Error('请输入大于零的数字'));
+                      }
+                      return Promise.resolve();
+                    },
+                  })
+                ]}
+                disabled={detailData?.settleType === 1}
               />
               <ProFormText
                 name="marketPrice"
                 label="市场价"
                 placeholder="请输入市场价"
-                rules={[{ required: true, message: '请输入市场价' }]}
+                validateFirst
+                rules={[
+                  { required: true, message: '请输入市场价' },
+                  () => ({
+                    validator(_, value) {
+                      if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                        return Promise.reject(new Error('请输入大于零的数字'));
+                      }
+                      return Promise.resolve();
+                    },
+                  })
+                ]}
+                disabled={detailData?.settleType === 1}
               />
               <ProFormText
                 name="stockNum"
