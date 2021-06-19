@@ -7,6 +7,7 @@ import AddModal from './add-modal'
 import Edit from './edit';
 
 const TableList = () => {
+  const ref=useRef()
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const actionRef = useRef();
@@ -28,6 +29,7 @@ const TableList = () => {
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data)
+        console.log('res.data',res.data)
         setFormVisible(true)
       }
     })
@@ -75,6 +77,7 @@ const TableList = () => {
       dataIndex: 'status',
       valueType: 'select',
       valueEnum: {
+        0:'全部',
         1: '已启用',
         2: '已禁用',
         3: '未激活'
@@ -132,7 +135,7 @@ const TableList = () => {
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <Button key="out" type="primary" onClick={() => { setFormVisible(true) }}>新建</Button>,
-            <AddModal/>
+            <AddModal boxref={ref}/>
           ]
         }}
         columns={columns}

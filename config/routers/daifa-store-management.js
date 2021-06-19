@@ -21,6 +21,16 @@ export default {
       name: 'agent-shop-money',
       path: '/daifa-store-management/list/agent-shop-money',
       component: './daifa-store-management/agent-shop-money',
-    }
+    },
+    {
+      name: 'agent-shop-store_apply',
+      path: '/daifa-store-management/agent-shop-store_apply',
+      component: './daifa-store-management/agent-shop-store_apply',
+    },
+    {
+      name: 'store-apply-detail',
+      path: '/daifa-store-management/agent-shop-store_apply/store-apply-detail',
+      component: './daifa-store-management/store-apply-detail',
+    },
   ]
 }

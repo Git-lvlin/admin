@@ -74,13 +74,13 @@ const columns= [
               <Button type="primary" onClick={addPosition} key="refresh">
                 添加
               </Button>,
-              <AdvertisingModal visible={visible2} setVisible={setVisible2}  boxref={ref}/>
+              <AdvertisingModal title={'添加广告位'} visible={visible2} setVisible={setVisible2}  boxref={ref}/>
               ],
             }}
             toolBarRender={false}
             columns={columns}
           />
-         <AdvertisingModal visible={visible} setVisible={setVisible} byid={byid} form={form} boxref={ref}/>
+         <AdvertisingModal visible={visible} title={'编辑广告位'} setVisible={setVisible} byid={byid} form={form} boxref={ref}/>
     </PageContainer>
   );
 };

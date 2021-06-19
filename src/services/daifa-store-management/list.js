@@ -36,9 +36,13 @@ export const storeAdd = (params = {}, options = {}) => {
 }
 
 export const storeEdit = (params = {}, options = {}) => {
+  const {storeNo,...rest}=params
   return request('/auth/store/AgentShop/edit', {
     method: 'POST',
-    data: params,
+    data: {
+      storeNo,
+      ...rest
+    },
     ...options,
   });
 }
@@ -83,7 +87,7 @@ export const commissionPage = async (params = {}, options = {}) => {
   
 }
 
-export const file_tpl_ur = async (params = {}, options = {}) => {
+export const file_tpl_url = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
   const res = await request('/auth/store/AgentShop/file_tpl_url', {
     method: 'POST',
@@ -95,7 +99,7 @@ export const file_tpl_ur = async (params = {}, options = {}) => {
     ...options
   });
   return {
-    data: res.data.length?res.data:[],
+    data: res.data,
     success: true
   }
 }
@@ -112,7 +116,7 @@ export const import_store = async (params = {}, options = {}) => {
     ...options
   });
   return {
-    data: res.data.length?res.data:[],
+    data: res.data,
     success: true
   }
 }

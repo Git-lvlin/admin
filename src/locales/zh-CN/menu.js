@@ -149,4 +149,9 @@ export default {
   'menu.daifa-store-management.list-detail':'内部店详情',
   'menu.daifa-store-management.consultant-product-list':'内部店顾问商品列表',
   'menu.daifa-store-management.agent-shop-money':'佣金明细',
+  'menu.daifa-store-management.agent-shop-store_apply':'内部店认证',
+  'menu.daifa-store-management.store-apply-detail':'内部店认证',
+
+  
+
 };

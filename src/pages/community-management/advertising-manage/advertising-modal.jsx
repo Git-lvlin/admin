@@ -1,11 +1,11 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { findAdsensePositionById } from '@/services/community-management/adsense-position-byid';
 import { saveAdsensePosition } from '@/services/community-management/adsense-position';
-import  ProForm,{ ModalForm,ProFormRadio,ProFormText} from '@ant-design/pro-form';
+import  ProForm,{ DrawerForm,ProFormRadio,ProFormText} from '@ant-design/pro-form';
 import { Button,Form, Tabs,message } from 'antd';
 
 export default (props)=>{
-    const {boxref,visible,setVisible,form,byid}=props
+    const {boxref,visible,setVisible,form,byid,title}=props
     useEffect(()=>{
       console.log('byid',byid)
         if(byid){
@@ -14,26 +14,9 @@ export default (props)=>{
             })
             
         }
-    },[])
-    return (
-        <ModalForm
-            title="编辑广告位"
-            key="model2"
-            onVisibleChange={setVisible}
-            visible={visible}
-            submitter={{
-            render: (props, defaultDoms) => {
-                return [
-                ...defaultDoms
-                ];
-            },
-            }}
-        >
-        <ProForm  
-          form={form}
-          // submitter={false}
-          onFinish={async (values) => {
-            console.log('asda',values);
+    },[byid])
+    const submit = (values) => {
+      console.log('asda',values);
             if(byid){
               values.id=byid
             }
@@ -44,8 +27,18 @@ export default (props)=>{
                 message.success('提交成功');
                 return true;
               }
-            })
-        }}
+      })
+    }
+    return (
+        <DrawerForm
+            title={title}
+            onVisibleChange={setVisible}
+            visible={visible}
+            onFinish={async (values) => {
+              await submit(values);
+              return true;
+            }}
+            form={form}
         >
           <ProFormText
               width="md"
@@ -71,7 +64,6 @@ export default (props)=>{
               rules={[{ required: true, message: '请选择广告位状态' }]}
 
           />
-        </ProForm>
-    </ModalForm>
+    </DrawerForm>
     )
 }
