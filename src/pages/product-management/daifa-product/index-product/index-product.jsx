@@ -11,42 +11,34 @@ const SubTable = (props) => {
   const columns = [
     {
       title: '图片',
-      dataIndex: 'image',
+      dataIndex: 'imageUrl',
       render: (text) => <img src={text} width={50} height={50} />,
     },
     { title: '供应链skuID', dataIndex: 'skuId' },
     { 
-      title: '规格1',
-      dataIndex: 'attributesOne',
-    },
-    { 
-      title: '规格2',
-      dataIndex: 'attributesTwo',
+      title: '规格',
+      dataIndex: 'skuNameDisplay',
     },
     {
       title: '销售价',
-      dataIndex: 'consignPrice',
+      dataIndex: 'salePrice',
       // render: (_) => amountTransform(_, '/')
     },
     {
       title: '市场价',
-      dataIndex: 'retailPrice',
+      dataIndex: 'marketPrice',
       // render: (_) => amountTransform(_, '/')
     },
-    { title: '可用库存', dataIndex: 'amountOnSale' },
+    { title: '可用库存', dataIndex: 'stockNum' },
   ];
 
   useEffect(() => {
     indexProductList({
       page: 1,
-      size: 100,
+      size: 5,
       selectType: 2,
       spuId: props.data.spuId
     }).then(({data}) => {
-      data.forEach((item) => {
-        item.attributesOne = item.attributes[0].attributeName + ':' + item.attributes[0].attributeValue
-        item.attributesTwo = item.attributes[1]?item.attributes[1].attributeName + ':' + item.attributes[1].attributeValue:''
-      })
       setData(data)
     })
   }, [])
@@ -104,6 +96,7 @@ export default function EditTable() {
       dataIndex: 'goodsName',
       valueType: 'text',
       editable: false,
+      search: true,
     },
     {
       title: '最高供货价',

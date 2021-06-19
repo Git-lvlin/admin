@@ -230,7 +230,7 @@ export const crazyGoodsList = async (params = {}, options = {}) => {
 }
 
 export const crazyActivityGoodsAdd = (params = {}, options = {}) => {
-  return request('/auth/activity/Cms/cmsGoodsSub', {
+  return request('/auth/activity/Cms/cmsGoodsYlbbSub', {
     method: 'POST',
     data: params,
     ...options
@@ -239,6 +239,14 @@ export const crazyActivityGoodsAdd = (params = {}, options = {}) => {
 
 export const hotGoosAdd = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/goodsTagSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const hotGoosAddDF = (params = {}, options = {}) => {
+  return request('/auth/activity/Goods/goodsTagYlbbSub', {
     method: 'POST',
     data: params,
     ...options

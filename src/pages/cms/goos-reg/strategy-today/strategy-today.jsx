@@ -253,9 +253,9 @@ const StrategyToday = () => {
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
           新建
         </Button>,
-        // <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setReplaceFormVisible(true) }}>
-        //   新建(代发)
-        // </Button>,
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setReplaceFormVisible(true) }}>
+          新建(代发)
+        </Button>,
       ]}
     />
     {formVisible && <Edit
@@ -274,18 +274,7 @@ const StrategyToday = () => {
       visible={replaceFormVisible}
       setVisible={setReplaceFormVisible}
       detailData={detailData}
-      callback={() => {
-        console.log('callback-start')
-        actionRef.current.reload();
-        setDetailData(null);
-        console.log('callback-end')
-      }}
-      onClose={() => {
-        console.log('onclose-start')
-        actionRef.current.reload();
-        setDetailData(null);
-        console.log('onclose-end')
-      }}
+      setFlag={setFlag}
     />}
     </PageContainer>
   );

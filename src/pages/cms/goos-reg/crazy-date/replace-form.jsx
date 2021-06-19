@@ -2,11 +2,7 @@ import React, { useRef, useState, useEffect  } from 'react';
 import { message, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm } from '@ant-design/pro-form';
-import { hotGoosAdd } from '@/services/cms/member/member';
 import { goosReplaceList, crazyActivityGoodsAdd } from '@/services/cms/member/member';
-
-
-
 
 export default (props) => {
   const { detailData, setVisible, setFlag, visible } = props;
@@ -82,15 +78,18 @@ export default (props) => {
       message.error('请选择商品');
       return
     }
-    const len = arr.length
-    let array = []
-    for(let i=0;i<len;i++) {
-      array.push(arr[i].spuId)
-    }
+    const newArr = arr.map((i) => {
+      const {id, spuId, storeNo} = i
+      return {
+        id,
+        spuId,
+        storeNo
+      }
+    })
     const param = {
-      spuIds: array.toString(),
       goodsType: 5,
-      cmsId: detailData.id
+      cmsId: detailData.id,
+      spuInfo: newArr
     }
     return new Promise((resolve) => {
       crazyActivityGoodsAdd(param).then((res) => {
