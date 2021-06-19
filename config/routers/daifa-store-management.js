@@ -22,15 +22,15 @@ export default {
       path: '/daifa-store-management/list/agent-shop-money',
       component: './daifa-store-management/agent-shop-money',
     },
-    // {
-    //   name: 'role-management',
-    //   path: '/setting/role-management',
-    //   component: './setting/role-management',
-    // },
-    // {
-    //   name: 'authority-management',
-    //   path: '/setting/authority-management',
-    //   component: './setting/authority-management',
-    // },
+    {
+      name: 'agent-shop-store_apply',
+      path: '/daifa-store-management/agent-shop-store_apply',
+      component: './daifa-store-management/agent-shop-store_apply',
+    },
+    {
+      name: 'store-apply-detail',
+      path: '/daifa-store-management/agent-shop-store_apply/store-apply-detail',
+      component: './daifa-store-management/store-apply-detail',
+    },
   ]
 }

@@ -6,7 +6,7 @@ export const page_spuList = async (params = {}, options = {}) => {
     method: 'POST',
     data: {
       page: current,
-      size: pageSize,
+      pageSize,
       ...rest
     },
     ...options
