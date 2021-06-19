@@ -19,7 +19,9 @@ const SubTable = (props) => {
     groupMemberList({
       groupId: props.data.id
     }).then(res => {
-      setData(res?.data)
+      if (res.code === 0) {
+        setData(res?.data?.length ? res.data : [])
+      }
     })
   }, [])
 

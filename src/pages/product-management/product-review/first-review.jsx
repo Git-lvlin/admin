@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Form, Image } from 'antd';
+import { EyeOutlined } from '@ant-design/icons'
 import {
   DrawerForm,
   ProFormText,
@@ -10,6 +11,7 @@ import {
 import Overrule from './overrule';
 import EditTable from './edit-table';
 import { amountTransform } from '@/utils/utils'
+import styles from './first-review.less'
 
 export default (props) => {
   const { visible, setVisible, detailData, check, overrule } = props;
@@ -233,14 +235,36 @@ export default (props) => {
                       name="marketPrice"
                       label="市场价"
                       placeholder="请输入市场价"
-                      rules={[{ required: true, message: '请输入市场价' }]}
+                      validateFirst
+                      rules={[
+                        { required: true, message: '请输入市场价' },
+                        () => ({
+                          validator(_, value) {
+                            if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                              return Promise.reject(new Error('请输入大于零的数字'));
+                            }
+                            return Promise.resolve();
+                          },
+                        })
+                      ]}
                       disabled={settleType === 1}
                     />
                     <ProFormText
                       name="salePrice"
                       label="秒约价"
                       placeholder="请输入秒约价"
-                      rules={[{ required: true, message: '请输入秒约价' }]}
+                      validateFirst
+                      rules={[
+                        { required: true, message: '请输入秒约价' },
+                        () => ({
+                          validator(_, value) {
+                            if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                              return Promise.reject(new Error('请输入大于零的数字'));
+                            }
+                            return Promise.resolve();
+                          },
+                        })
+                      ]}
                       disabled={settleType === 1}
                     />
                   </>
@@ -335,19 +359,18 @@ export default (props) => {
           }
         </Form.Item>
       }
-      {/* <Form.Item
-        label="商品视频"
-        name="videoUrl"
-        tooltip={
-          <dl>
-            <dt>视频要求</dt>
-            <dd>1.视频大小20MB以内</dd>
-            <dd>2.视频格式mp4</dd>
-          </dl>
-        }
-      >
-        <Upload maxCount={1} accept="video/mp4" />
-      </Form.Item> */}
+      {detailData?.videoUrl &&
+        <Form.Item
+          label="商品视频"
+          name="videoUrl"
+        >
+          <div className={styles.video_preview}>
+            <video width="100%" height="100%" src={detailData.videoUrl} />
+            <div>
+              <EyeOutlined onClick={() => { window.open(detailData.videoUrl, '_blank') }} style={{ color: '#fff', cursor: 'pointer' }} />
+            </div>
+          </div>
+        </Form.Item>}
 
       <Form.Item
         label="创建时间"
