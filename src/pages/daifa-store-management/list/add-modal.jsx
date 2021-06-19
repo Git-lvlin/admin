@@ -4,12 +4,22 @@ import ProForm,{
     ProFormText
   } from '@ant-design/pro-form';
 import { Button } from 'antd';
+import {import_store,file_tpl_url } from '@/services/daifa-store-management/list'
+
 
 export default props=>{
     const {boxref}=props
     const [visible, setVisible] = useState(false);
     const Termination=()=>{
         setVisible(true)
+    }
+    const fileUrl=()=>{
+        file_tpl_url({}).then(res=>{
+            console.log('res',res.data.filePath)
+        })
+    }
+    const download=()=>{
+
     }
     return (
         <ModalForm
@@ -26,7 +36,7 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                // InterFace({}).then(res=>{
+                // import_store({}).then(res=>{
                 //     if(res.code==0){
                         setVisible(false)   
                 //         boxref.current?.reload()
@@ -35,8 +45,8 @@ export default props=>{
                 // })
             }}
         >
-        导入内部店：<Button type="primary">选择</Button>
-        下载导入的模板：<Button type="primary">下载</Button>
+        <p>导入内部店：<Button type="primary" onClick={fileUrl}>选择</Button></p>
+        <p>下载导入的模板：<Button type="primary" onClick={download}>下载</Button></p>
     </ModalForm>
     
     )
