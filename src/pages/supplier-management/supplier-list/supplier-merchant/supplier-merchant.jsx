@@ -136,7 +136,7 @@ const TableList = () => {
           {data.status === 0 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>启用</a>}
           <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.id}`) }}>详情</a>
           {data.auditStatus === 1 && <a onClick={() => { getDetail(data.id) }}>编辑基本信息</a>}
-          {data.auditStatus === 3 && <a onClick={() => { getDetail(data.id) }}>编辑再提交</a>}
+          {(data.auditStatus === 3 || data.auditStatus === 0) && <a onClick={() => { getDetail(data.id) }}>编辑再提交</a>}
           <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>售后地址</a>
         </Space>
       ),
