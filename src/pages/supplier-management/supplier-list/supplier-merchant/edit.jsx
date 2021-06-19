@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Form, Button, Tree, message, Checkbox, Input, DatePicker, Space, Typography, Divider } from 'antd';
+import { Form, Button, Tree, message, Checkbox, Input, Space, Typography, Divider } from 'antd';
 import {
   DrawerForm,
   ProFormText,
@@ -74,22 +74,22 @@ const SocialCreditInfo = ({ value, onChange }) => {
     setCode(e.target.value);
     onChange({
       code: e.target.value,
-      date: moment(date).format('YYYYMMDD'),
+      date,
     })
   }
 
   const dateChange = (e) => {
-    setDate(e);
+    setDate(e.target.value);
     onChange({
       code,
-      date: e.format('YYYYMMDD'),
+      date: e.target.value,
     })
   }
 
   return (
     <Space>
       <Input placeholder="请输入统一社会信用码" value={code} style={{ width: 230 }} onChange={codeChange} />
-      <DatePicker placeholder="请选择统一社会信用证有效期" value={date} style={{ width: 230 }} onChange={dateChange} />
+      <Input placeholder="请选择统一社会信用证有效期" value={date} style={{ width: 230 }} onChange={dateChange} />
     </Space>
   )
 }
@@ -103,7 +103,7 @@ const LegalInfo = ({ value, onChange }) => {
     setCode(e.target.value);
     onChange({
       code: e.target.value,
-      date: moment(date).format('YYYYMMDD'),
+      date,
       userName,
     })
   }
@@ -112,24 +112,24 @@ const LegalInfo = ({ value, onChange }) => {
     setUserName(e.target.value);
     onChange({
       code,
-      date: moment(date).format('YYYYMMDD'),
+      date,
       userName: e.target.value,
     })
   }
 
   const dateChange = (e) => {
-    setDate(e)
+    setDate(e.target.value)
     onChange({
       code,
       userName,
-      date: e.format('YYYYMMDD'),
+      date: e.target.value,
     })
   }
   return (
     <Space>
       <Input value={userName} placeholder="请输入姓名" style={{ width: 100 }} onChange={userNameChange} />
       <Input value={code} placeholder="请输入身份证号码" style={{ width: 150 }} onChange={codeChange} />
-      <DatePicker value={date} placeholder="请输入身份证号码有效期" style={{ width: 200 }} onChange={dateChange} />
+      <Input value={date} placeholder="请输入身份证号码有效期" style={{ width: 200 }} onChange={dateChange} />
     </Space>
   )
 }
@@ -323,28 +323,28 @@ export default (props) => {
         } = bankAccountInfo
         form.setFieldsValue({
           addressInfo: {
-            area: [provinceCode, areaCode],
+            area: provinceCode ? [provinceCode, areaCode] : [],
             info: companyAddress,
           },
           socialCreditInfo: {
             code: socialCreditCode,
-            date: moment(socialCreditCodeExpire),
+            date: socialCreditCodeExpire,
           },
           businessScope,
           legalInfo: {
             code: legalIdCardNo,
             userName: legalName,
-            date: moment(legalIdCardExpire)
+            date: legalIdCardExpire
           },
           legalPhone,
           imageInfo: {
-            businessLicense: businessLicense[0],
-            bankLicenseImg: bankLicenseImg[0],
-            idCardFrontImg: idCardFrontImg[0],
-            idCardBackImg: idCardBackImg[0],
+            businessLicense: businessLicense?.[0],
+            bankLicenseImg: bankLicenseImg?.[0],
+            idCardFrontImg: idCardFrontImg?.[0],
+            idCardBackImg: idCardBackImg?.[0],
           },
-          bankCode: { label: bankName, value: bankCode},
-          bankAccountType,
+          bankCode: { label: bankName, value: bankCode },
+          bankAccountType: bankAccountType || 1,
           bankCardNo,
           bankAccountName,
         })
