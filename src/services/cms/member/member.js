@@ -572,7 +572,7 @@ export const homeBannerList = async (params = {}, options = {}) => {
 
   const data = {
     page: current,
-    pageSize: pageSize,
+    size: pageSize,
     ...rest
   }
   if (status) {
@@ -855,7 +855,7 @@ export const sendTask = (params = {}, options = {}) => {
 }
 
 export const getSpiderGoodsListByDate = (params = {}, options = {}) => {
-  return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderGoodsListByDate?sourceType=${params.sourceType}&goodsId=${params.goodsId}`, {
+  return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderGoodsListByDate?sourceType=${params.sourceType}&goodsId=${params.goodsId}&goodsSkuId=${params.goodsSkuId}`, {
     method: 'GET',
     data: params,
     ...options

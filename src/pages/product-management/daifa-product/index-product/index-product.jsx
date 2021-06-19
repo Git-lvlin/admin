@@ -1,12 +1,60 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Form, Select, message } from 'antd';
+import { Form, Select, message, Table } from 'antd';
 import { indexProductList, goodsLoading } from '@/services/product-management/daifa-product';
-import { categoryAll } from '@/services/common';
+// import { categoryAll } from '@/services/common';
 import GcCascader from '@/components/gc-cascader'
 import { amountTransform } from '@/utils/utils'
 import Big from 'big.js';
+const SubTable = (props) => {
+  const [data, setData] = useState([])
+  const columns = [
+    {
+      title: '图片',
+      dataIndex: 'image',
+      render: (text) => <img src={text} width={50} height={50} />,
+    },
+    { title: '供应链skuID', dataIndex: 'skuId' },
+    { 
+      title: '规格1',
+      dataIndex: 'attributesOne',
+    },
+    { 
+      title: '规格2',
+      dataIndex: 'attributesTwo',
+    },
+    {
+      title: '销售价',
+      dataIndex: 'consignPrice',
+      // render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '市场价',
+      dataIndex: 'retailPrice',
+      // render: (_) => amountTransform(_, '/')
+    },
+    { title: '可用库存', dataIndex: 'amountOnSale' },
+  ];
 
+  useEffect(() => {
+    indexProductList({
+      page: 1,
+      size: 100,
+      selectType: 2,
+      spuId: props.data.spuId
+    }).then(({data}) => {
+      data.forEach((item) => {
+        item.attributesOne = item.attributes[0].attributeName + ':' + item.attributes[0].attributeValue
+        item.attributesTwo = item.attributes[1]?item.attributes[1].attributeName + ':' + item.attributes[1].attributeValue:''
+      })
+      setData(data)
+    })
+  }, [])
+
+  return (
+    <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+  )
+};
 
 export default function EditTable() {
   const [editableKeys, setEditableKeys] = useState([])
@@ -38,12 +86,12 @@ export default function EditTable() {
       valueType: 'text',
       editable: false,
     },
-    // {
-    //   title: '供应链ID',
-    //   dataIndex: 'feedId',
-    //   valueType: 'text',
-    //   editable: false,
-    // },
+    {
+      title: '供应链spuId',
+      dataIndex: 'outSpuId',
+      valueType: 'text',
+      editable: false,
+    },
     {
       title: '图片',
       dataIndex: 'goodsImageUrl',
@@ -58,14 +106,20 @@ export default function EditTable() {
       editable: false,
     },
     {
-      title: '售卖最高价',
+      title: '最高供货价',
       dataIndex: 'goodsSaleMaxPrice',
       valueType: 'text',
       editable: false,
     },
     {
-      title: '售卖最低价',
+      title: '最低供货价',
       dataIndex: 'goodsSaleMinPrice',
+      valueType: 'text',
+      editable: false,
+    },
+    {
+      title: '库存',
+      dataIndex: 'stockNum',
       valueType: 'text',
       editable: false,
     },
@@ -127,15 +181,16 @@ export default function EditTable() {
     setDataSource(arr)
   }
 
-  useEffect(() => {
-    categoryAll()
-  }, [])
+  // useEffect(() => {
+  //   categoryAll()
+  // }, [])
 
   return (
     <EditableProTable
       actionRef={actionRef}
       postData={postData}
       columns={columns}
+      expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
       params={{
         selectType: 1
       }}
@@ -165,11 +220,11 @@ export default function EditTable() {
       pagination={{
         pageSize: 10
       }}
-      rowSelection={{
-        onChange: (_, val) => {
-          // onSelect(val[0])
-        }
-      }}
+      // rowSelection={{
+      //   onChange: (_, val) => {
+      //     // onSelect(val[0])
+      //   }
+      // }}
       bordered
       recordCreatorProps={false}
       tableAlertRender={false}

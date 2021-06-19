@@ -11,6 +11,11 @@ import { PageContainer } from '@ant-design/pro-layout';
 const SubTable = (props) => {
   const [data, setData] = useState([])
   const columns = [
+    {
+      title: '图片',
+      dataIndex: 'image',
+      render: (text) => <img src={text} width={50} height={50} />,
+    },
     { title: '供应链skuID', dataIndex: 'skuId' },
     { 
       title: '规格1',
@@ -23,12 +28,12 @@ const SubTable = (props) => {
     {
       title: '销售价',
       dataIndex: 'consignPrice',
-      render: (_) => amountTransform(_, '/')
+      // render: (_) => amountTransform(_, '/')
     },
     {
       title: '市场价',
       dataIndex: 'retailPrice',
-      render: (_) => amountTransform(_, '/')
+      // render: (_) => amountTransform(_, '/')
     },
     { title: '可用库存', dataIndex: 'amountOnSale' },
   ];
@@ -82,7 +87,7 @@ export default function EditTable() {
       editable: false,
     },
     {
-      title: '售卖价',
+      title: '供货价(元)',
       dataIndex: 'price',
       valueType: 'text',
       editable: false,
@@ -97,7 +102,8 @@ export default function EditTable() {
     {
       title: '售价最多上浮百分比',
       dataIndex: 'floatPercent',
-      valueType: 'text',
+      valueType: 'number',
+      placeholder: '请选择',
     },
     {
       title: '商品分类',
@@ -107,7 +113,7 @@ export default function EditTable() {
     {
       title: '售卖状态',
       dataIndex: 'goodsState',
-      renderFormItem: () => <Select options={[{ label: '暂不售卖', value: 0 }, { label: '售卖', value: 1 }]} />
+      renderFormItem: () => <Select placeholder='请选择' options={[{ label: '暂不售卖', value: 0 }, { label: '售卖', value: 1 }]} />
     },
     {
       title: '操作',
@@ -122,6 +128,15 @@ export default function EditTable() {
   const setGoodsIndex = (r) => {
     console.log('r', r)
     const { feedId:productId, gcId, goodsState, floatPercent } = r
+    if (!goodsState && goodsState !== 0) {
+      return message.error('请选择售卖状态')
+    }
+    if (!gcId?.[0]) {
+      return message.error('请设置1级分类')
+    }
+    if (!gcId?.[1]) {
+      return message.error('请设置2级分类')
+    }
     const params = {
       productId,
       gcId1: gcId?.[0],
@@ -209,6 +224,7 @@ export default function EditTable() {
       rowSelection={{
         onChange: (_, val) => {
           // onSelect(val[0])
+          console.log('_', _, val)
         }
       }}
       bordered
