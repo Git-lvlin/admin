@@ -147,3 +147,23 @@ export const addSelectHelperList = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+export const getBanks = async () => {
+  const res = await request('/auth/supplier/Bank_Account/getBanks', {
+    method: 'GET',
+  });
+
+  let data = [];
+
+  if (res.code === 0) {
+    data = res.data.map(item => ({ label: item.bankName, value: item.bankCode }))
+  }
+
+  return data;
+}
+
+export const getAreas = async () => {
+  return request('/auth/supplier/Bank_Account/getAreas', {
+    method: 'GET',
+  });
+}

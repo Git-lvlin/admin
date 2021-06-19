@@ -90,13 +90,13 @@ const StoreList = () => {
     },
     {
       title: '所在地区',
-      dataIndex: 'id',
+      dataIndex: '',
       valueType: 'select',
       hideInTable: true,
     },
     {
       title: '详情地址',
-      dataIndex: 'id',
+      dataIndex: '',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入详情地址'
@@ -110,7 +110,7 @@ const StoreList = () => {
     },
     {
       title: '操作',
-      dataIndex: 'id',
+      dataIndex: '',
       valueType: 'options',
       render: (_, data) => (
         <Space>

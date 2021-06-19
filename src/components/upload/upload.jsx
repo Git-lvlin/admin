@@ -5,7 +5,7 @@ import { getImageSize } from '@/utils/utils';
 import upload from '@/utils/upload'
 
 const Upload = (props) => {
-  const { value, onChange, dirName = 'goods', maxCount = 1, size, dimension, proportion, disabled = false, ...rest } = props;
+  const { value, onChange, dirName = 'goods', maxCount = 1, size, dimension, proportion, text = '上传', disabled = false, ...rest } = props;
   const [fileList, setFileList] = useState([])
   const [loading, setLoading] = useState(false)
   const fileData = useRef([]);
@@ -107,7 +107,7 @@ const Upload = (props) => {
         &&
         <div>
           {loading ? <LoadingOutlined /> : <UploadOutlined />}
-          <p>上传</p>
+          <p>{text}</p>
         </div>
       }
     </AntUpload>
