@@ -4,7 +4,8 @@ import {
   DrawerForm,
   ProFormText,
   ProFormRadio,
-  ProFormSelect
+  ProFormSelect,
+  ProFormDigit,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import { supplierAdd, supplierEdit, categoryAll, getBanks } from '@/services/supplier-management/supplier-list';
@@ -12,7 +13,7 @@ import md5 from 'blueimp-md5';
 import { arrayToTree } from '@/utils/utils'
 import FormModal from './form';
 import Address from './address';
-import moment from 'moment';
+import Big from 'big.js'
 
 const { Title } = Typography;
 
@@ -297,7 +298,7 @@ export default (props) => {
         ...detailData
       })
 
-      const { bankAccountInfo } = detailData
+      const { bankAccountInfo, warrantyRatioDisplay } = detailData
 
       if (bankAccountInfo) {
         const {
@@ -347,6 +348,7 @@ export default (props) => {
           bankAccountType: bankAccountType || 1,
           bankCardNo,
           bankAccountName,
+          warrantyRatio: warrantyRatioDisplay,
         })
       }
 
@@ -496,17 +498,42 @@ export default (props) => {
             />
           </Form.Item>
 
-          <Form.Item
-            label="可关联顾问"
-          >
-            <Button type="primary" onClick={() => { setFormVisible(true) }}>选择顾问</Button>
-            <div>
-              {!!selectData.length && <div>已选择顾问</div>}
-              {
-                selectData.map(item => (<div key={item.id}>{item.companyName}</div>))
-              }
-            </div>
-          </Form.Item>
+          {detailData?.status === 1 &&
+            <Form.Item
+              label="可关联顾问"
+            >
+              <Button type="primary" onClick={() => { setFormVisible(true) }}>选择顾问</Button>
+              <div>
+                {!!selectData.length && <div>已选择顾问</div>}
+                {
+                  selectData.map(item => (<div key={item.id}>{item.companyName}</div>))
+                }
+              </div>
+            </Form.Item>}
+          <ProFormDigit
+            placeholder="请输入商品质保金比例"
+            label="商品质保金比例"
+            name="warrantyRatio"
+            min={1}
+            max={50}
+            fieldProps={{
+              formatter: value => value ? +new Big(value).toFixed(2) : value
+            }}
+            extra={<><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
+            step
+            validateFirst
+            rules={[
+              { required: true, message: '请输入商品质保金比例' },
+              () => ({
+                validator(_, value) {
+                  if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                    return Promise.reject(new Error('请输入大于零的数字'));
+                  }
+                  return Promise.resolve();
+                },
+              })
+            ]}
+          />
         </div>
       </div>
 
