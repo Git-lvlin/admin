@@ -11,6 +11,8 @@ const { Search } = Input;
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
+  const [initData, setInitData] = useState([])
+  const [size, setSize] = useState(5)
   const columns = [
     {
       title: '图片',
@@ -36,18 +38,39 @@ const SubTable = (props) => {
   ];
 
   useEffect(() => {
-    indexProductList({
-      page: 1,
-      size: 5,
-      selectType: 2,
-      spuId: props.data.spuId
-    }).then(({data}) => {
-      setData(data)
-    })
-  }, [])
+    // indexProductList({
+    //   page: 1,
+    //   size: size,
+    //   selectType: 2,
+    //   spuId: props.data.spuId
+    // }).then(({data}) => {
+    //   setData(data)
+    // })
+
+    if (size) {
+      indexProductList({
+        page: 1,
+        size: size,
+        selectType: 2,
+        spuId: props.data.spuId
+      }).then(({data, total}) => {
+        if (data.length) {
+          setData(data)
+          setInitData(total)
+        }
+      })
+    }
+  }, [size])
 
   return (
+    <ProCard>
     <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+      {initData>5&&<Button style={{
+        marginTop: 20
+      }} onClick={() => {
+        setSize(999)
+      }}>查看全部{initData}个sku</Button>}
+    </ProCard>
   )
 };
 

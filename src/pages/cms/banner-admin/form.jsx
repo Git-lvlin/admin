@@ -76,6 +76,7 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
+      setNowIndex(detailData.location)
       detailData.useType = {
         1: '全平台',
         2: '手机端',
@@ -167,7 +168,8 @@ export default (props) => {
           required
           rules={
             [{
-              
+              required: true,
+              message: '请上传图片'
             }]
           }
           tooltip={

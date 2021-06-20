@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { MinusOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { Button, Space, message, Input } from 'antd';
+import { Button, Space, message, Input, Form } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { 
@@ -30,6 +30,9 @@ const PriceManagement = () => {
   const [loading, setLoading] = useState({})
   const [type, setType] = useState(false)
   const [binded, setBinded] = useState(false)
+
+  const [form] = Form.useForm();
+
   const formControl = (data) => {
     delContestGoods({id: data}).then((res) => {
       if (res.code === 0) {
@@ -111,6 +114,11 @@ const PriceManagement = () => {
       actionRef.current.reset()
       setFlag(false)
     }
+    // if (resData) {
+    //   form.setFieldsValue({
+    //     'search-jd': resData['jd']?.url
+    //   })
+    // }
   }, [flag])
 
   const expandedRowRender = (a) => {
@@ -132,6 +140,7 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>{resData['tb']?.price}</ProCard>
           <ProCard className={styles.card}>
             <Search
+              name="search-tb"
               placeholder="请输入对应商品链接地址"
               allowClear
               enterButton="抓取"
@@ -161,8 +170,19 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>{resData['jd']?.price}</ProCard>
           <ProCard className={styles.card}>
             <Search
+                name="search-jd"
                 placeholder="请输入对应商品链接地址"
                 allowClear
+                value={resData['jd']?.url}
+                onChange={(e) => {
+                  // e.target.value
+                  setResData({
+                    'jd':{
+                      ...resData['jd'],
+                      url: e.target.value
+                    }
+                  })
+                }}
                 enterButton="抓取"
                 style={{
                   width: "92%",
@@ -214,8 +234,8 @@ const PriceManagement = () => {
         </ProCard>
         <ProCard split="vertical" className={styles.header}>
           <ProCard colSpan="120px" className={styles.card}>天猫</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData['tamll']?.sku}</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData['tamll']?.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData['tmall']?.sku}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData['tmall']?.price}</ProCard>
           <ProCard className={styles.card}>
             <Search
                 placeholder="请输入对应商品链接地址"
@@ -226,8 +246,8 @@ const PriceManagement = () => {
                   float: 'left'
                 }}
                 size="middle"
-                onSearch={(_) => {onSearch(_,'tamll')}}
-                loading={loading['tamll']}
+                onSearch={(_) => {onSearch(_,'tmall')}}
+                loading={loading['tmall']}
               />
             <Button
               disabled={!grabList}
@@ -236,7 +256,7 @@ const PriceManagement = () => {
               width: "8%",
               float: "right"
             }} onClick={() => {
-              bindData(a.id, 'tamll')
+              bindData(a.id, 'tmall')
             }}>绑定</Button>
           </ProCard>
         </ProCard>
@@ -302,6 +322,7 @@ const PriceManagement = () => {
     if (!arr.length) {
       return;
     }
+
     const index = arr[arr.length-1]
     getGoodsBindData({goodsId:index[0],goodsSkuId:index[1]}).then(res => {
       if (res.code === 0) {
@@ -314,6 +335,7 @@ const PriceManagement = () => {
   return (
     <PageContainer>
       <ProTable
+      form={form}
       rowKey="allKey"
       columns={columns}
       expandable={{

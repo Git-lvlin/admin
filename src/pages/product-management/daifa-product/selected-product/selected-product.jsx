@@ -6,10 +6,14 @@ import { categoryAll } from '@/services/common';
 import GcCascader from '@/components/gc-cascader'
 import { amountTransform } from '@/utils/utils';
 import Edit from './form';
+import Pop from './pop';
 import Big from 'big.js';
 import { PageContainer } from '@ant-design/pro-layout';
+import ProCard from '@ant-design/pro-card';
 const SubTable = (props) => {
   const [data, setData] = useState([])
+  const [initData, setInitData] = useState([])
+  const [size, setSize] = useState(5)
   const columns = [
     {
       title: '图片',
@@ -39,22 +43,40 @@ const SubTable = (props) => {
   ];
 
   useEffect(() => {
-    productList({
-      page: 1,
-      size: 100,
-      selectType: 2,
-      productId: props.data.feedId
-    }).then(({data}) => {
-      data.forEach((item) => {
-        item.attributesOne = item.attributes[0].attributeName + ':' + item.attributes[0].attributeValue
-        item.attributesTwo = item.attributes[1]?item.attributes[1].attributeName + ':' + item.attributes[1].attributeValue:''
+    if (size) {
+      productList({
+        page: 1,
+        size: size,
+        selectType: 2,
+        productId: props.data.feedId
+      }).then(({data}) => {
+        if (data.length) {
+          data.forEach((item) => {
+            item.attributesOne = item.attributes[0].attributeName + ':' + item.attributes[0].attributeValue
+            item.attributesTwo = item.attributes[1]?item.attributes[1].attributeName + ':' + item.attributes[1].attributeValue:''
+          })
+          if (size === 999) {
+            setData(data)
+            setInitData([])
+            return
+          }
+          setData(data.slice(0, size))
+          setInitData(data)
+        }
       })
-      setData(data)
-    })
-  }, [])
+    }
+
+  }, [size])
 
   return (
-    <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+    <ProCard>
+      <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+      {initData.length>5&&<Button style={{
+        marginTop: 20
+      }} onClick={() => {
+        setSize(999)
+      }}>查看全部{initData.length}个sku</Button>}
+    </ProCard>
   )
 };
 
@@ -64,6 +86,8 @@ export default function EditTable() {
   const [hasData, setHasData] = useState(false);
   const [formVisible, setFormVisible] = useState(false);
   const [flag, setFlag] = useState(false);
+  const [popShow, setPopShow] = useState(false);
+  const [params, setParams] = useState('');
   const [form] = Form.useForm();
   const actionRef = useRef();
   const columns = [
@@ -103,7 +127,9 @@ export default function EditTable() {
       title: '售价最多上浮百分比',
       dataIndex: 'floatPercent',
       valueType: 'number',
-      placeholder: '请选择',
+      fieldProps: {
+        placeholder:'输入正整数',
+      }
     },
     {
       title: '商品分类',
@@ -119,9 +145,20 @@ export default function EditTable() {
       title: '操作',
       valueType: 'options',
       editable: false,
-      render: (_,r) => <a onClick={() => {
-        setGoodsIndex(r)
-      }}>设置</a>
+      render: (_,r) => {
+
+        return  <>
+                    <a onClick={() => {
+            setGoodsIndex(r)
+          }}>设置</a>&nbsp;
+          {/* <a onClick={() => {
+            setPopShow(true)
+            setParams(r.feedId)
+          }}>所属sku</a> */}
+          </>
+
+
+      }
     },
   ]
 
@@ -236,6 +273,11 @@ export default function EditTable() {
       visible={formVisible}
       setVisible={setFormVisible}
       setHasData={setHasData}
+    />}
+      {popShow && <Pop
+      visible={popShow}
+      setVisible={setPopShow}
+      params={params}
     />}
     </PageContainer>
   )
