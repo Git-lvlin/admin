@@ -498,18 +498,17 @@ export default (props) => {
             />
           </Form.Item>
 
-          {detailData?.status === 1 &&
-            <Form.Item
-              label="可关联顾问"
-            >
-              <Button type="primary" onClick={() => { setFormVisible(true) }}>选择顾问</Button>
-              <div>
-                {!!selectData.length && <div>已选择顾问</div>}
-                {
-                  selectData.map(item => (<div key={item.id}>{item.companyName}</div>))
-                }
-              </div>
-            </Form.Item>}
+          <Form.Item
+            label="可关联顾问"
+          >
+            <Button type="primary" onClick={() => { setFormVisible(true) }}>选择顾问</Button>
+            <div>
+              {!!selectData.length && <div>已选择顾问</div>}
+              {
+                selectData.map(item => (<div key={item.id}>{item.companyName}</div>))
+              }
+            </div>
+          </Form.Item>
           <ProFormDigit
             placeholder="请输入商品质保金比例"
             label="商品质保金比例"
