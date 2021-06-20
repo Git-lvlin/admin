@@ -30,8 +30,9 @@ const upload = async (file, dirName) => {
         getImageSize(file).then(size => {
           resolve(`${res.url}?x-oss-process=image/resize,h_${size.height},w_${size.width}`)
         })
+      } else {
+        resolve(res.url);
       }
-      resolve(res.url);
     }).catch(err => {
       client = null;
       // return upload(file, dirName)

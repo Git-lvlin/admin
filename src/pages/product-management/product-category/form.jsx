@@ -29,7 +29,7 @@ export default (props) => {
   const submit = (values) => {
     return new Promise((resolve, reject) => {
       const apiMethod = type === 'add' ? api.categoryAdd : api.categoryEdit;
-      const { comPercent, gcShow, ...rest } = values;
+      const { comPercent, innerPercent, gcShow, ...rest } = values;
       const params = {
         ...rest,
         gcShow: gcShow ? 1 : 0,
@@ -38,6 +38,7 @@ export default (props) => {
       if (type === 'add') {
         params.gcParentId = id
         params.comPercent = comPercent
+        params.innerPercent = innerPercent
       } else {
         params.id = id;
       }
@@ -59,6 +60,7 @@ export default (props) => {
       form?.setFieldsValue({
         ...data,
         comPercent: data.comPercentDisplay,
+        innerPercent: data.innerPercentDisplay,
         gcShow: data.gcShow ? 1 : 0
       })
     }
@@ -131,6 +133,20 @@ export default (props) => {
         }}
         step
         rules={[{ required: true, message: '请输入佣金抽成' }]}
+        extra={<><span style={{ color: 'red' }}>录入后固定不可编辑修改，谨慎操作</span><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
+      />
+      <ProFormDigit
+        placeholder="请输入内部店佣金抽成"
+        label="内部店佣金抽成"
+        name="innerPercent"
+        min={1}
+        max={50}
+        disabled={!!data}
+        fieldProps={{
+          formatter: value => value ? +new Big(value).toFixed(2) : value
+        }}
+        step
+        rules={[{ required: true, message: '请输入内部店佣金抽成' }]}
         extra={<><span style={{ color: 'red' }}>录入后固定不可编辑修改，谨慎操作</span><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
       />
       <ProFormSwitch checkedChildren="开" unCheckedChildren="关" name="gcShow" label="状态" />

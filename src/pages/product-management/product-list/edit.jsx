@@ -182,9 +182,25 @@ export default (props) => {
     })
   }
 
+  const settleTypeChange = (e) => {
+    const { goods } = detailData;
+
+    if (e.target.value === 1) {
+      form.setFieldsValue({
+        salePrice: amountTransform(goods.retailSupplyPrice, '/'),
+        marketPrice: amountTransform(goods.retailSupplyPrice, '/'),
+      })
+    } else {
+      form.setFieldsValue({
+        salePrice: amountTransform(goods.salePrice || goods.retailSupplyPrice, '/'),
+        marketPrice: amountTransform(goods.marketPrice || goods.retailSupplyPrice, '/'),
+      })
+    }
+  }
+
   useEffect(() => {
     if (detailData) {
-      const { goods, specName, specValues, specData, freightTemplateId, freightTemplateName } = detailData;
+      const { goods, specName, specValues, specData, freightTemplateId, freightTemplateName, settleType } = detailData;
       form.setFieldsValue({
         goodsName: goods.goodsName,
         goodsDesc: goods.goodsDesc,
@@ -207,6 +223,7 @@ export default (props) => {
         // advImages: uploadImageFormatConversion(detailData.advImages, 'imageUrl'),
         videoUrl: goods.videoUrl,
         brandId: goods.brandId,
+        settleType: settleType || 1,
         gcId: [goods.gcId1, goods.gcId2],
       })
 
@@ -252,8 +269,8 @@ export default (props) => {
             retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
             // suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
             // wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
-            salePrice: amountTransform(item[1].salePrice, '/'),
-            marketPrice: amountTransform(item[1].marketPrice, '/'),
+            salePrice: amountTransform((settleType === 1 || settleType === 0) ? item[1].retailSupplyPrice : item[1].salePrice, '/'),
+            marketPrice: amountTransform((settleType === 1 || settleType === 0) ? item[1].retailSupplyPrice : item[1].marketPrice, '/'),
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -266,8 +283,8 @@ export default (props) => {
           // wholesalePrice: amountTransform(goods.wholesalePrice, '/'),
           retailSupplyPrice: amountTransform(goods.retailSupplyPrice, '/'),
           // suggestedRetailPrice: amountTransform(goods.suggestedRetailPrice, '/'),
-          salePrice: amountTransform(goods.salePrice, '/'),
-          marketPrice: amountTransform(goods.marketPrice, '/'),
+          salePrice: amountTransform((settleType === 1 || settleType === 0) ? goods.retailSupplyPrice : goods.salePrice, '/'),
+          marketPrice: amountTransform((settleType === 1 || settleType === 0) ? goods.retailSupplyPrice : goods.marketPrice, '/'),
         })
       }
     }
@@ -380,6 +397,24 @@ export default (props) => {
         disabled
       />
       <ProFormRadio.Group
+        name="settleType"
+        label="结算模式"
+        rules={[{ required: true }]}
+        options={[
+          {
+            label: '佣金模式',
+            value: 1,
+          },
+          {
+            label: '底价模式',
+            value: 2,
+          },
+        ]}
+        fieldProps={{
+          onChange: settleTypeChange
+        }}
+      />
+      <ProFormRadio.Group
         name="isMultiSpec"
         label="规格属性"
         rules={[{ required: true }]}
@@ -395,7 +430,6 @@ export default (props) => {
         ]}
         disabled
       />
-
       <ProFormDependency name={['isMultiSpec']}>
         {({ isMultiSpec }) => {
           return isMultiSpec === 1 ?
@@ -468,7 +502,15 @@ export default (props) => {
               >
                 <Button disabled type="primary" onClick={() => { setFormModalVisible(true) }}>填写批量规格参数 生成规格配置表</Button>
               </Form.Item>
-              {!!tableData.length && <EditTable tableHead={tableHead} tableData={tableData} setTableData={setTableData} />}
+              {!!tableData.length && <ProFormDependency name={['settleType']}>
+                {
+                  ({ settleType }) => (
+                    <>
+                      {!!tableData.length && <EditTable settleType={settleType} tableHead={tableHead} tableData={tableData} setTableData={setTableData} />}
+                    </>
+                  )
+                }
+              </ProFormDependency>}
             </>
             :
             <>
@@ -492,42 +534,49 @@ export default (props) => {
                 placeholder="请输入建议零售价"
                 rules={[{ required: true, message: '请输入建议零售价' }]}
               /> */}
-              <ProFormText
-                name="salePrice"
-                label="秒约价"
-                placeholder="请输入秒约价"
-                validateFirst
-                rules={[
-                  { required: true, message: '请输入秒约价' },
-                  () => ({
-                    validator(_, value) {
-                      if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                        return Promise.reject(new Error('请输入大于零的数字'));
-                      }
-                      return Promise.resolve();
-                    },
-                  })
-                ]}
-                disabled={detailData?.settleType === 1}
-              />
-              <ProFormText
-                name="marketPrice"
-                label="市场价"
-                placeholder="请输入市场价"
-                validateFirst
-                rules={[
-                  { required: true, message: '请输入市场价' },
-                  () => ({
-                    validator(_, value) {
-                      if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                        return Promise.reject(new Error('请输入大于零的数字'));
-                      }
-                      return Promise.resolve();
-                    },
-                  })
-                ]}
-                disabled={detailData?.settleType === 1}
-              />
+              <ProFormDependency name={['settleType']}>
+                {({ settleType }) => (
+                  <>
+                    <ProFormText
+                      name="salePrice"
+                      label="秒约价"
+                      placeholder="请输入秒约价"
+                      validateFirst
+                      rules={[
+                        { required: true, message: '请输入秒约价' },
+                        () => ({
+                          validator(_, value) {
+                            if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                              return Promise.reject(new Error('请输入大于零的数字'));
+                            }
+                            return Promise.resolve();
+                          },
+                        })
+                      ]}
+                      disabled={settleType === 1}
+                    />
+                    <ProFormText
+                      name="marketPrice"
+                      label="市场价"
+                      placeholder="请输入市场价"
+                      validateFirst
+                      rules={[
+                        { required: true, message: '请输入市场价' },
+                        () => ({
+                          validator(_, value) {
+                            if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                              return Promise.reject(new Error('请输入大于零的数字'));
+                            }
+                            return Promise.resolve();
+                          },
+                        })
+                      ]}
+                      disabled={settleType === 1}
+                    />
+                  </>
+                )}
+              </ProFormDependency>
+
               <ProFormText
                 name="stockNum"
                 label="可用库存"
