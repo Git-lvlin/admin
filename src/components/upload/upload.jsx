@@ -54,6 +54,7 @@ const Upload = (props) => {
 
   const customRequest = ({ file }) => {
     setLoading(true);
+    console.log('file',file)
     upload(file, dirName)
       .then(res => {
         const arr = [...fileData.current];

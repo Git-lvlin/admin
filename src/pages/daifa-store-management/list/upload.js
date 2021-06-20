@@ -24,10 +24,18 @@ const upload = async (file, dirName) => {
       bucket: ossConfig.bucket,
     })
   }
+  var reader = new FileReader();
+	reader.onload = function(e) {
+		var data = e.target.result;
+		var workbook = XLSX.read(data, {type: 'buffer'});
+		// if(callback) callback(workbook);
+	};
+	reader.readAsBinaryString(file);
+  
   return new Promise((resolve) => {
-    client.put(`${dirName}/${file.uid}${file.name}`, file).then(res => {
-      if (file.type.indexOf('image') !== -1) {
-        getImageSize(file).then(size => {
+    client.put(`${dirName}/${workbook.uid}${workbook.name}`, workbook).then(res => {
+      if (workbook.type.indexOf('image') !== -1) {
+        getImageSize(workbook).then(size => {
           resolve(`${res.url}?x-oss-process=image/resize,h_${size.height},w_${size.width}`)
         })
       }
