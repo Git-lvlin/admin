@@ -255,21 +255,9 @@ export default (props) => {
         ]}
       />
       <Form.Item
-        label="手持身份证照片"
-        name="idHandheld"
-        tooltip={
-          <dl>
-            <dt>图片要求</dt>
-            <dd>1.图片大小1MB以内</dd>
-            <dd>2.图片格式png/jpg/gif</dd>
-          </dl>
-        }
-      >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
-      </Form.Item>
-      <Form.Item
-        label="身份证正面照片"
+        label="身份证姓名正面照片"
         name="idFront"
+        rules={[{ required: true }]}
         tooltip={
           <dl>
             <dt>图片要求</dt>
@@ -278,10 +266,10 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <Form.Item
-        label="身份证背面照片"
+        label="身份证国徽面照片"
         name="idBack"
         tooltip={
           <dl>
@@ -290,8 +278,23 @@ export default (props) => {
             <dd>2.图片格式png/jpg/gif</dd>
           </dl>
         }
+        rules={[{ required: true }]}
       >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+      </Form.Item>
+      <Form.Item
+        label="手持身份证照片"
+        name="idHandheld"
+        rules={[{ required: true }]}
+        tooltip={
+          <dl>
+            <dt>图片要求</dt>
+            <dd>1.图片大小1MB以内</dd>
+            <dd>2.图片格式png/jpg/gif</dd>
+          </dl>
+        }
+      >
+        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <ProFormText
         name="idNumber"
@@ -301,6 +304,7 @@ export default (props) => {
         fieldProps={{
           maxLength: 18,
         }}
+        disabled={!!detailData}
       />
 
       <ProFormText
@@ -382,6 +386,10 @@ export default (props) => {
           },
           {
             label: '禁用',
+            value: 2,
+          },
+          {
+            label: '未激活',
             value: 3,
           },
         ]}

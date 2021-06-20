@@ -100,10 +100,11 @@ const List = (props) => {
                       onClick={() => { setSelectId(item.id); onClick(item.id) }}
                       style={{ backgroundColor: (parentId === 0 && selectId === item.id) ? '#f0f0f0' : '#fff' }}>
                       <img src={item.gcIcon} />
-                      {item.gcName}
-                      &nbsp;
-                      &nbsp;
-                      佣金抽成：{item.comPercentDisplay ?? 0}%
+                      <div className={styles.gcName}>{item.gcName}</div>
+                      <div className={styles.info}>
+                        <div>佣金抽成：{item.comPercentDisplay ?? 0}%</div>
+                        <div>内部店抽成：{item.innerPercentDisplay ?? 0}%</div>
+                      </div>
                       <div className={styles.actions}>
                         <Switch
                           onClick={(checked, e) => { toggleShow(checked, item.id); e.stopPropagation(); }}

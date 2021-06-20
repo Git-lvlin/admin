@@ -5,6 +5,8 @@ import { Form, Spin, Tree } from 'antd';
 import { storeApplyDetail } from '@/services/daifa-store-management/agent-shop-store_apply'
 import { arrayToTree } from '@/utils/utils'
 import { categoryAll } from '@/services/common';
+import moment from 'moment';
+
 
 
 const formItemLayout = {
@@ -142,13 +144,13 @@ const ListApplyDetail = props => {
           <Form.Item
             label="创建人"
           >
-            {detailData.idNumber}
+            {detailData.adminName}
           </Form.Item>
 
           <Form.Item
             label="创建时间"
           >
-            {detailData.idNumber}
+            {moment(detailData.createTime).format('YYYY-MM-DD HH:mm:ss')}
           </Form.Item>
 
         </Form>

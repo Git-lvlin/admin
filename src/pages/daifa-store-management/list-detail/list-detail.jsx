@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout';
-import { useParams } from 'umi';
-import { Form, Spin, Tree } from 'antd';
+import { history } from 'umi';
+import { Form, Spin, Tree,Button } from 'antd';
+import Upload from '@/components/upload';
 import { storeDetail } from '@/services/daifa-store-management/list'
 import { arrayToTree } from '@/utils/utils'
 import { categoryAll } from '@/services/common';
+import moment from 'moment';
 
 
 const formItemLayout = {
@@ -23,6 +25,7 @@ const formItemLayout = {
 const ListDetail = props => {
   let storeNo = props.location.query.storeNo
   // const params = useParams();
+  const [form] = Form.useForm()
   const [loading, setLoading] = useState(false);
   const [detailData, setDetailData] = useState({});
   const [treeData, setTreeData] = useState([])
@@ -45,6 +48,7 @@ const ListDetail = props => {
         })
         setSelectKeys(ids)
         setDetailData(res.data)
+        form.setFieldsValue(res.data)
       }
     }).finally(() => {
       setLoading(false);
@@ -71,11 +75,13 @@ const ListDetail = props => {
   }, [])
 
   return (
+    <>
     <PageContainer>
       <Spin
         spinning={loading}
       >
         <Form
+          form={form}
           {...formItemLayout}
           style={{ backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
         >
@@ -102,7 +108,24 @@ const ListDetail = props => {
           >
             {detailData.wechatNo}
           </Form.Item>
-
+          <Form.Item
+            label="身份证姓名正面照片"
+            name="idFront"
+          >
+            <Upload  multiple maxCount={1} accept="image/*" size={1 * 1024} />
+          </Form.Item>
+          <Form.Item
+            label="身份证国徽面照片"
+            name="idBack"
+          >
+            <Upload  multiple maxCount={1} accept="image/*" size={1 * 1024} />
+          </Form.Item>
+          <Form.Item
+            label="手持身份证照片"
+            name="idHandheld"
+          >
+            <Upload  multiple maxCount={1} accept="image/*" size={1 * 1024} />
+          </Form.Item>
           <Form.Item
             label="店主内部岗位或身份"
           >
@@ -142,19 +165,24 @@ const ListDetail = props => {
           <Form.Item
             label="创建人"
           >
-            {detailData.idNumber}
+            {detailData.adminName}
           </Form.Item>
 
           <Form.Item
             label="创建时间"
           >
-            {detailData.idNumber}
+            {moment(detailData.createTime).format('YYYY-MM-DD HH:mm:ss')}
           </Form.Item>
-
+          <Form.Item
+            label="."
+          >
+            <Button onClick={()=>history.push('/daifa-store-management/list')}>返回</Button>
+          </Form.Item>
+          
         </Form>
-      </Spin>
-
+      </Spin> 
     </PageContainer>
+    </>
   )
 }
 

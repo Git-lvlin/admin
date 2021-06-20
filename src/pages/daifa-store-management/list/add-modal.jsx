@@ -1,54 +1,100 @@
 import React, { useState, useEffect,useRef } from 'react';
+import ProTable from '@ant-design/pro-table';
+import upload from '@/utils/upload'
 import ProForm,{
-    ModalForm,
-    ProFormText
+    DrawerForm,
+    ProFormText,
+    ProFormUploadDragger, 
+    ProFormUploadButton
   } from '@ant-design/pro-form';
-import { Button } from 'antd';
-import {import_store,file_tpl_url } from '@/services/daifa-store-management/list'
+import {import_store,file_tpl_url,findPage,createImportTask } from '@/services/daifa-store-management/list';
+import {  Button,message } from 'antd';
 
 
 export default props=>{
-    const {boxref}=props
+    const fileData = useRef([]);
     const [visible, setVisible] = useState(false);
+    const [datalist,setDatalist]=useState([])
+    const [baseUrl,setBaseUrl]=useState()
+    const [upfile,setUpfile]=useState()
     const Termination=()=>{
         setVisible(true)
     }
-    const fileUrl=()=>{
-        file_tpl_url({}).then(res=>{
-            console.log('res',res.data.filePath)
+    const fileUrl=async (e)=>{
+        console.log('e',e)
+        if(e.file.status=="done"){
+            const dirName='excel'
+            upload(e.file,dirName)
+            .then(res => {
+              console.log('res',res)
         })
-    }
-    const download=()=>{
+        }
+       
+        
+        // createImportTask({fileUrl:res.data.filePath}).then(res=>{
+        //     console.log('res',res)
+        //     if(res.code==0){
+        //         message.success('选择成功');
+        //     }
+        // })
+        // findPage({}).then(res=>{
+        //     if(res.code==0){
+        //         message.success('导入成功');
+        //         // setDatalist(res.)
+        //         return true;
+        //     }
+        // })
+        
 
     }
+    useEffect(()=>{
+        
+    })
+    // const submit = (values) => {
+    //     console.log('asda',values);
+    // }
+    
     return (
-        <ModalForm
-            title='批量新建内部店'
-            key="model2"
+        <DrawerForm
+            key="1"
+            title='批量新建'
             onVisibleChange={setVisible}
             visible={visible}
             trigger={<Button type="primary" onClick={()=>Termination()}>批量新建</Button>}
-            submitter={{
-            render: (props, defaultDoms) => {
-                return [
-                ...defaultDoms
-                ];
-            },
-            }}
             onFinish={async (values) => {
-                // import_store({}).then(res=>{
-                //     if(res.code==0){
-                        setVisible(false)   
-                //         boxref.current?.reload()
-                //         return true;
-                //     }
-                // })
+              await submit(values);
+              return true;
             }}
         >
-        <p>导入内部店：<Button type="primary" onClick={fileUrl}>选择</Button></p>
-        <p>下载导入的模板：<Button type="primary" onClick={download}>下载</Button></p>
-    </ModalForm>
-    
+        {/* <Button type="primary" onClick={fileUrl}>导入文件</Button> */}
+        <ProFormUploadButton
+            key='2'
+            name="导入文件"
+            label="导入文件 "
+            max={2}
+            fieldProps={{
+            name: 'file',
+                onChange: (e) => {
+                    fileUrl(e)
+                }
+            }}
+            action="/upload.do"
+        />
+        {/* <ProTable
+            rowKey="id"
+            options={false}
+            search={{
+            defaultCollapsed: false,
+            labelWidth: 100,
+            optionRender: (searchConfig, formProps, dom) => [
+                ...dom.reverse(),
+            ]
+            }}
+            dataSource={datalist}
+            // columns={columns}
+            // actionRef={actionRef}
+        /> */}
+        </DrawerForm>
     )
 }
 

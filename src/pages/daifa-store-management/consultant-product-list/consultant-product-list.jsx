@@ -89,7 +89,7 @@ const consultantProductList = props => {
     {
       title: '图片',
       dataIndex: 'goodsImageUrl',
-      valueType: 'text',
+      valueType: 'image',
       hideInSearch:true
     },
     {
@@ -105,12 +105,22 @@ const consultantProductList = props => {
       dataIndex: 'saleMaxPrice',
       valueType: 'text',
       hideInSearch: true,
+      render: (text, record) => (
+        <Space size="middle">
+          <p>{record.saleMaxPrice/100}</p>
+        </Space>
+      ),
     },
     {
       title: '供应链供货价',
       dataIndex: 'saleMinPrice',
       valueType: 'text',
       hideInSearch: true,
+      render: (text, record) => (
+        <Space size="middle">
+          <p>{record.saleMinPrice/100}</p>
+        </Space>
+      ),
     },
     {
       title: '商品分类',
