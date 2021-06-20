@@ -262,7 +262,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <Form.Item
         label="身份证正面照片"
@@ -275,7 +275,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <Form.Item
         label="身份证背面照片"
@@ -288,7 +288,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <ProFormText
         name="idNumber"
@@ -298,6 +298,7 @@ export default (props) => {
         fieldProps={{
           maxLength: 18,
         }}
+        disabled={!!detailData}
       />
 
       <ProFormText
@@ -379,8 +380,12 @@ export default (props) => {
           },
           {
             label: '禁用',
-            value: 3,
+            value: 2,
           },
+          {
+            label: '未激活',
+            value: 3,
+          }
         ]}
       />
       {formVisible && <FormModal

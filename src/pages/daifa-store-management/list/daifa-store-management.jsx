@@ -5,6 +5,7 @@ import { storeList,statusSwitch, storeDetail } from '@/services/daifa-store-mana
 import { history } from 'umi';
 import AddModal from './add-modal'
 import Edit from './edit';
+import Upload from '@/components/upload';
 
 const TableList = () => {
   const ref=useRef()
@@ -13,14 +14,14 @@ const TableList = () => {
   const actionRef = useRef();
 
   const switchStatus = (storeNo, type) => {
-    statusSwitch({
-      storeNo,
-      status:type
-    }).then(res => {
-      if (res.code === 0) {
-        actionRef.current.reload();
-      }
-    })
+    // statusSwitch({
+    //   storeNo,
+    //   status:type
+    // }).then(res => {
+    //   if (res.code === 0) {
+    //     actionRef.current.reload();
+    //   }
+    // })
   }
 
   const getDetail = (id) => {
@@ -97,7 +98,7 @@ const TableList = () => {
     },
     {
       title: '创建人',
-      dataIndex: '',
+      dataIndex: 'adminName',
       valueType: 'text',
       hideInSearch: true,
     },

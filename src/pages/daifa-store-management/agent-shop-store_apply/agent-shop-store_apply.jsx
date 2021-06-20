@@ -36,7 +36,8 @@ const box=(res)=>{
           wechatNo:ele.details.wechatNo,
           station:ele.details.station,
           createTime:ele.createTime,
-          verifyStatus:ele.verifyStatus.code
+          verifyStatus:ele.verifyStatus.code,
+          auditMsg:ele.auditMsg
       }))
       return arr
     }
@@ -78,7 +79,7 @@ const box=(res)=>{
     },
     {
       title: '创建人',
-      dataIndex: '',
+      dataIndex: 'adminName',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -95,11 +96,16 @@ const box=(res)=>{
       valueEnum: {
         0: '未知',
         1: '店铺入驻成功',
-        2: '审核不通过',
-        3: '审核通过',
-        4: '审核中',
+        2: '认证失败',
+        3: '已认证',
+        4: '待审核',
         5:'取消申请'
       }
+    },
+    {
+      title: '详解',
+      dataIndex: 'auditMsg',
+      valueType: 'text',
     },
     {
       title: '操作',
