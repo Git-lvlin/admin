@@ -140,7 +140,7 @@ const BannerAdmin = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _, action) => {
+      render: (text, record, _) => {
         return (
           <>
             {record.state===1&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}

@@ -73,7 +73,12 @@ export default (props) => {
         <Form.Item
           label="添加图片"
           name="image"
-          required
+          rules={
+            [{
+              required: true,
+              message: '请上传图片'
+            }]
+          }
           tooltip={
             <dl>
               <dt>图片要求</dt>

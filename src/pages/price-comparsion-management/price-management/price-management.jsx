@@ -143,6 +143,16 @@ const PriceManagement = () => {
               name="search-tb"
               placeholder="请输入对应商品链接地址"
               allowClear
+              value={resData['tb']?.url}
+              onChange={(e) => {
+                // e.target.value
+                setResData({
+                  'tb':{
+                    ...resData['tb'],
+                    url: e.target.value
+                  }
+                })
+              }}
               enterButton="抓取"
               style={{
                 width: "92%",
@@ -212,6 +222,16 @@ const PriceManagement = () => {
               <Search
                   placeholder="请输入对应商品链接地址"
                   allowClear
+                  value={resData['pdd']?.url}
+                  onChange={(e) => {
+                    // e.target.value
+                    setResData({
+                      'pdd':{
+                        ...resData['pdd'],
+                        url: e.target.value
+                      }
+                    })
+                  }}
                   enterButton="抓取"
                   size="middle"
                   style={{
@@ -240,6 +260,16 @@ const PriceManagement = () => {
             <Search
                 placeholder="请输入对应商品链接地址"
                 allowClear
+                value={resData['tmall']?.url}
+                onChange={(e) => {
+                  // e.target.value
+                  setResData({
+                    'tmall':{
+                      ...resData['tmall'],
+                      url: e.target.value
+                    }
+                  })
+                }}
                 enterButton="抓取"
                 style={{
                   width: "92%",

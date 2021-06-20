@@ -101,7 +101,13 @@ export default function EditTable() {
       }
     })
   }
-
+  const option = []
+  for(let i=0;i<21;i++) {
+    option.push({
+      label: i + '%',
+      value: i
+    })
+  }
   const columns = [
     {
       title: 'spuID',
@@ -158,6 +164,7 @@ export default function EditTable() {
       title: '售价最多上浮百分比',
       dataIndex: 'floatPercent',
       valueType: 'text',
+      renderFormItem: () => <Select placeholder='请选择' options={option} />
     },
     {
       title: '商品分类',

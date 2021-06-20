@@ -10,6 +10,7 @@ import Pop from './pop';
 import Big from 'big.js';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProCard from '@ant-design/pro-card';
+
 const SubTable = (props) => {
   const [data, setData] = useState([])
   const [initData, setInitData] = useState([])
@@ -90,6 +91,14 @@ export default function EditTable() {
   const [params, setParams] = useState('');
   const [form] = Form.useForm();
   const actionRef = useRef();
+
+  const option = []
+  for(let i=0;i<21;i++) {
+    option.push({
+      label: i + '%',
+      value: i
+    })
+  }
   const columns = [
     {
       title: 'spu',
@@ -126,10 +135,7 @@ export default function EditTable() {
     {
       title: '售价最多上浮百分比',
       dataIndex: 'floatPercent',
-      valueType: 'number',
-      fieldProps: {
-        placeholder:'输入正整数',
-      }
+      renderFormItem: () => <Select placeholder='请选择' options={option} />
     },
     {
       title: '商品分类',
@@ -258,12 +264,12 @@ export default function EditTable() {
       pagination={{
         pageSize: 5
       }}
-      rowSelection={{
-        onChange: (_, val) => {
-          // onSelect(val[0])
-          console.log('_', _, val)
-        }
-      }}
+      // rowSelection={{
+      //   onChange: (_, val) => {
+      //     // onSelect(val[0])
+      //     console.log('_', _, val)
+      //   }
+      // }}
       bordered
       recordCreatorProps={false}
       tableAlertRender={false}
