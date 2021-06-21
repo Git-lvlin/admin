@@ -10,7 +10,7 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { Form, Button, message } from 'antd'
 
-import { customMessageAdd } from '@/services/message-management/message-template-config'
+import { customMessageAdd, customMessageEdit } from '@/services/message-management/message-template-config'
 import Upload from '@/components/upload'
 
 const modules = {
@@ -59,6 +59,8 @@ const Edit = props => {
   const [form] = Form.useForm()
   const [showTab, setShowTab] = useState(1)
   const [linkType, setLinkType] = useState(1)
+  const apiMethods = detailData? customMessageEdit : customMessageAdd
+
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -81,7 +83,7 @@ const Edit = props => {
           <ProFormRadio.Group
             name="linkType"
             label="详情链接"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: '请输入详情链接'}]}
             initialValue={linkType}
             fieldProps={{
               onChange: (e)=>{ selectLink(e) }
@@ -101,8 +103,7 @@ const Edit = props => {
             linkType===1&&<ProFormText
               name="link"
               label="活动网址"
-              placeholder="请输入活动网址"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: '请输入活动网址'}]}
             />
           }
         </>
@@ -114,7 +115,7 @@ const Edit = props => {
             name="detailTitle"
             label="内容标题"
             placeholder="请输入内容标题"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: '请输入内容标题'}]}
             fieldProps={{
               maxLength: 18
             }}
@@ -140,7 +141,7 @@ const Edit = props => {
           </ProForm.Item>
           <ProForm.Item
             label='内容'
-            required
+            rules={[{ required: true, message: '请输入内容'}]}
             name='detailContent'
           >
             <ReactQuill
@@ -161,7 +162,7 @@ const Edit = props => {
             name="detailTitle"
             label="公告标题"
             placeholder="请输入公告标题"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: '请输入公告标题'}]}
             fieldProps={{
               maxLength: 18
             }}
@@ -187,7 +188,7 @@ const Edit = props => {
           </ProForm.Item>
           <ProForm.Item
             label='公告'
-            required
+            rules={[{ required: true, message: '请输入公告'}]}
             name='detailContent'
           >
             <ReactQuill
@@ -210,9 +211,9 @@ const Edit = props => {
     let { ...rest } = values.getFieldsValue()
     let params = {}
     if(rest.type == 1) {
-      params ={...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 0}
+      params = {...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 0, pushType:1}
     } else {
-      params ={...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.detailContent}, status: 0}
+      params = {...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.detailContent}, status: 0, pushType:1}
     }
     customMessageAdd(params).then(res=>{
       if(res?.success) {
@@ -228,11 +229,11 @@ const Edit = props => {
     let { ...rest } = values.getFieldsValue()
     let params = {}
     if(rest.type == 1) {
-      params ={...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 1}
+      params = {...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 1, pushType:1, id:detailData?.id}
     } else {
-      params ={...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.content}, status: 1}
+      params = {...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.detailContent}, status: 1, pushType:1, id:detailData?.id}
     }
-    customMessageAdd(params).then(res=>{
+    apiMethods(params).then(res=>{
       if(res?.success) {
         onClose()
         callback()
@@ -306,7 +307,7 @@ const Edit = props => {
         name="name"
         label="名称"
         placeholder="请输入名称"
-        required
+        rules={[{required: true, message: '请输入名称'}]}
         fieldProps={{
           maxLength: 16
         }}
@@ -314,7 +315,7 @@ const Edit = props => {
       <ProFormRadio.Group
         name="type"
         label="自定义类型"
-        rules={[{ required: true }]}
+        rules={[{ required: true, message: '请输入自定义类型'}]}
         initialValue={showTab}
         fieldProps={{
           onChange: (e)=>{ selectType(e) }
@@ -339,7 +340,7 @@ const Edit = props => {
         label="标题"
         width='md'
         placeholder="请输入标题"
-        rules={[{ required: true }]}
+        rules={[{ required: true, message: '请输入标题'}]}
         fieldProps={{
           maxLength: 20
         }}
@@ -349,7 +350,7 @@ const Edit = props => {
         label="内容"
         width='lg'
         placeholder="请输入内容"
-        rules={[{ required: true }]}
+        rules={[{ required: true, message: '请输入内容'}]}
         fieldProps={{
           maxLength: 50,
           showCount: true
@@ -373,10 +374,11 @@ const Edit = props => {
       <ProFormSelect
         name="pushType"
         label="推送渠道"
-        placeholder="请选择推送渠道"
-        rules={[{ required: true }]}
+        rules={[{ required: true, message: '请选择推送渠道'}]}
+        initialValue={1}
         width="md"
         valueType="select"
+        readonly
         valueEnum={{
           1: '站内信',
           2: '推送消息',
@@ -387,7 +389,6 @@ const Edit = props => {
        <ProFormRadio.Group
         name="targetType"
         label="适用会员"
-        rules={[{ required: true }]}
         rules={[{message: '请选择适用会员', required: true} ]}
         tooltip={
           <>每位用户仅接收1次消息</>

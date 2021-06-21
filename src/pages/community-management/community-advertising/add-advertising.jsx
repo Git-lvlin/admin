@@ -66,7 +66,10 @@ export default props => {
         onFinish={async (values) => {
           console.log(values);
           console.log('goods',goods);
-          values.linkId=goods[0].id
+          if(id){
+            values.id=id
+          }
+          values.linkId=goods.length?goods[0].id:null
           saveAdsense(values).then(res=>{
             if(res.code==0){
               history.push('/community-management/community-advertising')
@@ -78,16 +81,6 @@ export default props => {
         params={{}}
         style={{ width: '1000px', margin: '0 auto' }}
       >
-        <ProFormText
-            width="md"
-            name="id"
-            label="广告ID"
-            tooltip="最长为 24 位"
-            placeholder="请输入广告ID"
-            rules={[
-              { required: true, message: '请输入广告ID' },
-            ]}
-        />
          <ProFormText
             width="md"
             name="title"
@@ -189,6 +182,7 @@ export default props => {
             rules={[
               { required: true, message: '请选择状态' },
             ]}
+            initialValue={1}
             options={[
                 {
                   label: '启用',

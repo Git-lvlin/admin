@@ -88,8 +88,8 @@ export default {
       },
       {
         name: 'advertising-manage',
-        path: '/community-management/community-advertising/advertising-manage',
-        component: './community-management/community-advertising/advertising-manage',
+        path: '/community-management/advertising-manage',
+        component: './community-management/advertising-manage/index.js',
       },
     ],
   }

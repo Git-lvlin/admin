@@ -16,7 +16,7 @@ export default props=>{
             key="model2"
             onVisibleChange={setVisible}
             visible={visible}
-            trigger={<Button onClick={()=>Termination(record)}>{record.delete?'已删除':'删除'}</Button>}
+            trigger={<Button disabled={record.delete?true:false} onClick={()=>Termination(record)}>{record.delete?'已删除':'删除'}</Button>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [

@@ -327,7 +327,6 @@ export default () => {
             }
             onFinish={async (values) => {
               await timingPush(values)
-              message.success('提交成功')
               return true
             }}
           >
@@ -352,14 +351,13 @@ export default () => {
             }
             onFinish={async (values) => {
               await rejectPush(values)
-              message.success('提交成功')
               return true
             }}
           >
             <ProFormTextArea
               name="remark"
               label="驳回理由"
-              required
+              rules={[{ required: true, message: '请输入驳回理由'}]}
               fieldProps={{
                 showCount: true,
                 maxLength:30

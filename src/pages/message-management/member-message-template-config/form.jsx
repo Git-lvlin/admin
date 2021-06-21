@@ -23,9 +23,7 @@ export default (props) => {
         span: 14,
       },
     }
-  };
-
-  // 修改
+  }
   const submit = (values) => {
     const pushType = values.pushType.join(',')
     const obj = {toType:1, ...values, pushType}
@@ -84,15 +82,9 @@ export default (props) => {
         placeholder="请输入消息标题"
         width="md"
         fieldProps={{
-          maxLength: 18,
-          minLength:5
+          maxLength: 18
         }}
-        rules={[
-          {
-            required: true,
-            message: '请输入5-18个字符'
-          }
-        ]}
+        rules={[{ required: true, message: '请输入5-18个字符'}]}
       />
 
       <ProFormTextArea
@@ -101,12 +93,7 @@ export default (props) => {
         label="消息内容"
         placeholder="请输入消息内容"
         width="md"
-        rules={[
-          {
-            required: true,
-            message: '请输入至少6个字符',
-          },
-        ]}
+        rules={[{required: true, message: '请输入至少6个字符'}]}
         fieldProps={{
           showCount: true,
           maxLength: 84,

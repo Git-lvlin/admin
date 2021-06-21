@@ -150,4 +150,29 @@ export default {
   'menu.daifa-store-management.list-detail':'内部店详情',
   'menu.daifa-store-management.consultant-product-list':'内部店顾问商品列表',
   'menu.daifa-store-management.agent-shop-money':'佣金明细',
+  'menu.daifa-store-management.agent-shop-store_apply':'内部店认证',
+  'menu.daifa-store-management.store-apply-detail':'内部店认证',  
+  'menu.daifa-store-management.agent-shop-store_apply':'内部店认证',
+  'menu.daifa-store-management.store-apply-detail':'内部店认证',
+
+  'menu.financial-management':'财务管理',
+  'menu.financial-management.money-management':'资金管理',
+  'menu.financial-management.money-management.yeahgo-virtual-account-management':'约购虚拟户',
+  'menu.financial-management.money-management.transaction-details':'交易明细',
+  'menu.financial-management.money-management.supplier-fund-management':'供应商资金管理',
+  'menu.financial-management.money-management.member-store-fund-management':'会员店资金管理',
+  'menu.financial-management.money-management.issuing-store-fund-management':'代发店资金管理',
+  'menu.financial-management.money-management.payment-details':'收支明细',
+  'menu.financial-management.money-management.details':'详情',
+  'menu.financial-management.transaction-detail-management':'交易明细管理',
+  'menu.financial-management.transaction-detail-management.withdrawal-audit-management':'提现审核管理',
+  'menu.financial-management.transaction-detail-management.order-pay-detail-management':'订单支付明细管理',
+  'menu.financial-management.transaction-detail-management.bonus-detail-management':'提成明细管理',
+  'menu.financial-management.transaction-detail-management.commission-detail-management':'佣金明细管理',
+  'menu.financial-management.transaction-detail-management.loan-detail-management':'贷款明细管理',
+  'menu.financial-management.transaction-detail-management.after-sales-order-details':'售后订单明细管理',
+  'menu.financial-management.transaction-allocation-management':'交易配置管理',
+
+  
+
 };

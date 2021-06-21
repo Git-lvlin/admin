@@ -60,7 +60,7 @@ export default props => {
             placeholder="用户可编辑500个字。"
             rules={[{ required: true, message: '请输入分享想法' }]}
         />
-        <Form.Item label="上传照片" name="images" tooltip="最大不能超过1M" rules={[{ required: true, message: '请上传图片' }]}>
+        <Form.Item label="上传照片" name="images" tooltip="最大不能超过1M">
          <Upload multiple maxCount={1} accept="image/*" size={1024}/>
          </Form.Item>
       </ProForm>
