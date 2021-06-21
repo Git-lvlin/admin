@@ -147,6 +147,7 @@ const PriceManagement = () => {
               onChange={(e) => {
                 // e.target.value
                 setResData({
+                  ...resData,
                   'tb':{
                     ...resData['tb'],
                     url: e.target.value
@@ -187,6 +188,7 @@ const PriceManagement = () => {
                 onChange={(e) => {
                   // e.target.value
                   setResData({
+                    ...resData,
                     'jd':{
                       ...resData['jd'],
                       url: e.target.value
@@ -226,6 +228,7 @@ const PriceManagement = () => {
                   onChange={(e) => {
                     // e.target.value
                     setResData({
+                      ...resData,
                       'pdd':{
                         ...resData['pdd'],
                         url: e.target.value
@@ -264,6 +267,7 @@ const PriceManagement = () => {
                 onChange={(e) => {
                   // e.target.value
                   setResData({
+                    ...resData,
                     'tmall':{
                       ...resData['tmall'],
                       url: e.target.value

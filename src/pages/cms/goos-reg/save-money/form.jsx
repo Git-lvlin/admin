@@ -5,7 +5,6 @@ import { ModalForm } from '@ant-design/pro-form';
 import { saveMoneyAdd } from '@/services/cms/member/member';
 import { saveMoneyFormList } from '@/services/cms/member/member';
 
-
 export default (props) => {
   const { detailData, setVisible, setFlag, visible } = props;
   const [arr, setArr] = useState(null)
@@ -77,11 +76,13 @@ export default (props) => {
     const param = {
       goodsInfo: goodsInfo,
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       saveMoneyAdd(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
           resolve(true);
+        } else {
+          reject(false)
         }
       })
   
@@ -94,7 +95,8 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={`${detailData ? '编辑' : '新建'}`}
+      width={1200}
+      title={`新建`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -121,7 +123,7 @@ export default (props) => {
       columns={columns}
       postData={(data) => {
         data.forEach(item => {
-          item.goodsSalePrice = parseInt(item.goodsSalePrice/100)
+          item.goodsSalePrice = item.goodsSalePrice/100
         })
         return data
       }}

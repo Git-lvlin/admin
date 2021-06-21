@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Button, Form, Select, Table, message } from 'antd';
+import { Button, Form, Select, Table, message, Input } from 'antd';
 import { productList, setIndex } from '@/services/product-management/daifa-product';
 import { categoryAll } from '@/services/common';
 import GcCascader from '@/components/gc-cascader'
@@ -10,7 +10,7 @@ import Pop from './pop';
 import Big from 'big.js';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProCard from '@ant-design/pro-card';
-
+const { Search } = Input;
 const SubTable = (props) => {
   const [data, setData] = useState([])
   const [initData, setInitData] = useState([])
@@ -88,17 +88,11 @@ export default function EditTable() {
   const [formVisible, setFormVisible] = useState(false);
   const [flag, setFlag] = useState(false);
   const [popShow, setPopShow] = useState(false);
-  const [params, setParams] = useState('');
+  const [params, setParams] = useState({
+    selectType: 1,
+  });
   const [form] = Form.useForm();
   const actionRef = useRef();
-
-  const option = []
-  for(let i=0;i<21;i++) {
-    option.push({
-      label: i + '%',
-      value: i
-    })
-  }
   const columns = [
     {
       title: 'spu',
@@ -119,29 +113,43 @@ export default function EditTable() {
       valueType: 'text',
       editable: false,
     },
-    {
-      title: '供货价(元)',
-      dataIndex: 'price',
-      valueType: 'text',
-      editable: false,
-    },
+    // {
+    //   title: '供货价(元)',
+    //   dataIndex: 'price',
+    //   valueType: 'text',
+    //   editable: false,
+    // },
     {
       title: '供应链状态',
       dataIndex: 'invalid',
       valueType: 'text',
       editable: false,
-      render: (_) => _ === 0 ? '有效' : '已失效'
+      render: (_,r) => {
+        return _ === 0 ? '有效' : `已失效(${r.invalidInfo})`
+      }
     },
     {
       title: '售价最多上浮百分比',
       dataIndex: 'floatPercent',
-      renderFormItem: () => <Select placeholder='请选择' options={option} />
+      width: 160,
+      align: 'center',
+      renderFormItem: () => <Input placeholder='输入正整数' suffix='%'/>,
     },
     {
       title: '商品分类',
       dataIndex: 'gcId',
       renderFormItem: () => (<GcCascader />),
     },
+    // {
+    //   title: '一级分类',
+    //   dataIndex: 'goodsState',
+    //   renderFormItem: () => <Select placeholder='选择1级分类' options={[{ label: '暂不售卖', value: 0 }, { label: '售卖', value: 1 }]} />
+    // },
+    // {
+    //   title: '二级分类',
+    //   dataIndex: 'goodsState',
+    //   renderFormItem: () => <Select placeholder='选择2级分类' options={[{ label: '暂不售卖', value: 0 }, { label: '售卖', value: 1 }]} />
+    // },
     {
       title: '售卖状态',
       dataIndex: 'goodsState',
@@ -151,10 +159,10 @@ export default function EditTable() {
       title: '操作',
       valueType: 'options',
       editable: false,
+      align: 'center',
       render: (_,r) => {
-
         return  <>
-                    <a onClick={() => {
+          <a onClick={() => {
             setGoodsIndex(r)
           }}>设置</a>&nbsp;
           {/* <a onClick={() => {
@@ -171,6 +179,9 @@ export default function EditTable() {
   const setGoodsIndex = (r) => {
     console.log('r', r)
     const { feedId:productId, gcId, goodsState, floatPercent } = r
+    if (!(/(^[1-9]\d*$)/.test(floatPercent))) {
+      return message.error('请输入正整数')
+    }
     if (!goodsState && goodsState !== 0) {
       return message.error('请选择售卖状态')
     }
@@ -180,6 +191,7 @@ export default function EditTable() {
     if (!gcId?.[1]) {
       return message.error('请设置2级分类')
     }
+
     const params = {
       productId,
       gcId1: gcId?.[0],
@@ -200,7 +212,10 @@ export default function EditTable() {
       ...item,
       // totalStockNum: item.stockNum,
       // minNum: 1,
+      gcId: item.gcId1&&item.gcId2&&[item.gcId1, item.gcId2],
       price: amountTransform(+item.price, '/'),
+      floatPercent: 500,
+      goodsState: 1,
       // perStoreMinNum: 10,
       // totalPrice: item.salePrice > 0 ? +new Big(+item.salePrice).div(100).times(10) : 0,
     }))
@@ -218,6 +233,14 @@ export default function EditTable() {
     setFormVisible(true)
   }
 
+  const onSearch = (value) => {
+    setParams({
+      ...params,
+      goodsName: value,
+    })
+  };
+
+
   return (
     <PageContainer
       ghost
@@ -231,13 +254,27 @@ export default function EditTable() {
         }}>获取供应链已选商品组</Button>
       }
     >
-    {hasData&&<EditableProTable
+    {/* {hasData&&<EditableProTable */}
+    <Search
+      style={
+        {
+          width: 300,
+          marginBottom: 20,
+          marginLeft: 24,
+        }
+      }
+      placeholder="请输入商品名"
+      onSearch={onSearch}
+      enterButton={'商品名称搜索'} />
+    <Button onClick={() => {
+      onSearch(null)
+      setValue(null)
+    }}>重置</Button>
+    {<EditableProTable
       actionRef={actionRef}
       postData={postData}
       columns={columns}
-      params={{
-        selectType: 1
-      }}
+      params={params}
       rowKey="id"
       value={dataSource}
       expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}

@@ -3,6 +3,9 @@ import { EditableProTable } from '@ant-design/pro-table';
 import { Form, Select, message, Table, Input, Button } from 'antd';
 import { indexProductList, goodsLoading } from '@/services/product-management/daifa-product';
 // import { categoryAll } from '@/services/common';
+import {
+  ProFormText,
+} from '@ant-design/pro-form';
 import GcCascader from '@/components/gc-cascader'
 import { amountTransform } from '@/utils/utils'
 import Big from 'big.js';
@@ -25,28 +28,19 @@ const SubTable = (props) => {
       dataIndex: 'skuNameDisplay',
     },
     {
-      title: '销售价',
-      dataIndex: 'salePrice',
-      // render: (_) => amountTransform(_, '/')
+      title: '供货价',
+      dataIndex: 'retailSupplyPrice',
+      render: (_) => amountTransform(_, '/')
     },
-    {
-      title: '市场价',
-      dataIndex: 'marketPrice',
-      // render: (_) => amountTransform(_, '/')
-    },
+    // {
+    //   title: '市场价',
+    //   dataIndex: 'marketPrice',
+    //   // render: (_) => amountTransform(_, '/')
+    // },
     { title: '可用库存', dataIndex: 'stockNum' },
   ];
 
   useEffect(() => {
-    // indexProductList({
-    //   page: 1,
-    //   size: size,
-    //   selectType: 2,
-    //   spuId: props.data.spuId
-    // }).then(({data}) => {
-    //   setData(data)
-    // })
-
     if (size) {
       indexProductList({
         page: 1,
@@ -83,10 +77,21 @@ export default function EditTable() {
     selectType: 1,
   });
 
-
   const upData = (r) => {
     console.log('r', r)
     const { outSpuId:productId, gcId, goodsState, floatPercent } = r
+    if (!(/(^[1-9]\d*$)/.test(floatPercent))) {
+      return message.error('请输入正整数')
+    }
+    if (!goodsState && goodsState !== 0) {
+      return message.error('请选择售卖状态')
+    }
+    if (!gcId?.[0]) {
+      return message.error('请设置1级分类')
+    }
+    if (!gcId?.[1]) {
+      return message.error('请设置2级分类')
+    }
     const params = {
       productId,
       gcId1: gcId?.[0],
@@ -101,13 +106,7 @@ export default function EditTable() {
       }
     })
   }
-  const option = []
-  for(let i=0;i<21;i++) {
-    option.push({
-      label: i + '%',
-      value: i
-    })
-  }
+
   const columns = [
     {
       title: 'spuID',
@@ -136,14 +135,14 @@ export default function EditTable() {
       search: true,
     },
     {
-      title: '最高供货价',
-      dataIndex: 'goodsSaleMaxPrice',
+      title: '最低供货价',
+      dataIndex: 'minRetailSupplyPrice',
       valueType: 'text',
       editable: false,
     },
     {
-      title: '最低供货价',
-      dataIndex: 'goodsSaleMinPrice',
+      title: '最高供货价',
+      dataIndex: 'maxRetailSupplyPrice',
       valueType: 'text',
       editable: false,
     },
@@ -158,13 +157,16 @@ export default function EditTable() {
       dataIndex: 'invalid',
       valueType: 'text',
       editable: false,
-      render: (_) => _ === 0 ? '有效' : '已失效'
+      render: (_,r) => {
+        return _ === 0 ? '有效' : `已失效(${r.invalidInfo})`
+      }
     },
     {
       title: '售价最多上浮百分比',
       dataIndex: 'floatPercent',
-      valueType: 'text',
-      renderFormItem: () => <Select placeholder='请选择' options={option} />
+      // width: 160,
+      align: 'center',
+      renderFormItem: () => <Input placeholder='输入正整数' suffix='%'/>,
     },
     {
       title: '商品分类',
@@ -190,6 +192,7 @@ export default function EditTable() {
       title: '操作',
       valueType: 'options',
       editable: false,
+      align: 'center',
       render: (_, r) => <a onClick={() => {
         upData(r)
       }}>更新</a>
@@ -203,8 +206,8 @@ export default function EditTable() {
       // totalStockNum: item.stockNum,
       // minNum: 1,
       gcId: item.gcId1&&item.gcId2&&[item.gcId1, item.gcId2],
-      goodsSaleMaxPrice: amountTransform(+item.goodsSaleMaxPrice, '/'),
-      goodsSaleMinPrice: amountTransform(+item.goodsSaleMinPrice, '/'),
+      maxRetailSupplyPrice: amountTransform(+item.maxRetailSupplyPrice, '/'),
+      minRetailSupplyPrice: amountTransform(+item.minRetailSupplyPrice, '/'),
       // price: amountTransform(+item.price, '/'),
       // perStoreMinNum: 10,
       // totalPrice: item.salePrice > 0 ? +new Big(+item.salePrice).div(100).times(10) : 0,
