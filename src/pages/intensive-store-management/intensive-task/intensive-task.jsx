@@ -1,11 +1,13 @@
 import React from 'react'
+import { Space } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { orderPage } from '@/services/intensive-store-management/intensive-task';
-import { useParams } from 'umi';
+import { useParams, useLocation } from 'umi';
 
 const IntensiveTask = props => {
   const params = useParams();
+  const location = useLocation();
   const columns = [
     {
       title: '活动编号',
@@ -61,8 +63,14 @@ const IntensiveTask = props => {
   ];
   return (
     <PageContainer>
+      <div style={{ marginBottom: 10, background: '#fff', padding: 10 }}>
+        <Space size="large">
+          <span>{location?.query?.storeName}</span>
+          <span>({location?.query?.linkman} {location?.query?.phone})</span>
+        </Space>
+      </div>
       <ProTable
-        rowKey="id"
+        rowKey="wsId"
         options={false}
         params={{
           storeNo: params.id

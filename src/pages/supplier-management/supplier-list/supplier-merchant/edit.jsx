@@ -6,6 +6,7 @@ import {
   ProFormRadio,
   ProFormSelect,
   ProFormDigit,
+  ProFormDependency,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import { supplierAdd, supplierEdit, categoryAll, getBanks } from '@/services/supplier-management/supplier-list';
@@ -175,10 +176,10 @@ const ImageInfo = ({ value, onChange }) => {
   }
   return (
     <Space>
-      <Upload value={businessLicense} text="上传三合一证件照" maxCount={1} accept="image/*" size={1024 * 2} onChange={businessLicenseChange} />
-      <Upload value={idCardFrontImg} text="上传法人身份证正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardFrontImgChange} />
-      <Upload value={idCardBackImg} text="上传法人身份证背面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardBackImgChange} />
-      <Upload value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankLicenseImgChange} />
+      <Upload code={301} value={businessLicense} text="上传三合一证件照" maxCount={1} accept="image/*" size={1024 * 2} onChange={businessLicenseChange} />
+      <Upload code={302} value={idCardFrontImg} text="上传法人身份证正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardFrontImgChange} />
+      <Upload code={302} value={idCardBackImg} text="上传法人身份证背面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardBackImgChange} />
+      <Upload code={303} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankLicenseImgChange} />
     </Space>
   )
 }
@@ -292,6 +293,20 @@ export default (props) => {
     });
   }
 
+  const bankAccountTypeChange = (e) => {
+    if (e.target.value === 1) {
+      form.setFieldsValue({
+        bankAccountName: form.getFieldValue('companyName')
+      })
+    }
+  }
+
+  const companyNameChange = (e) => {
+    form.setFieldsValue({
+      bankAccountName: e.target.value
+    })
+  }
+
   useEffect(() => {
     if (detailData) {
       form.setFieldsValue({
@@ -347,7 +362,7 @@ export default (props) => {
           bankCode: { label: bankName, value: bankCode },
           bankAccountType: bankAccountType || 1,
           bankCardNo,
-          bankAccountName,
+          bankAccountName: (bankAccountType || 1) ? detailData.companyName : bankAccountName,
           warrantyRatio: warrantyRatioDisplay,
         })
       }
@@ -413,6 +428,7 @@ export default (props) => {
             rules={[{ required: true, message: '请输入供应商名称' }]}
             fieldProps={{
               maxLength: 30,
+              onChange: companyNameChange
             }}
             disabled={!!detailData}
           />
@@ -689,6 +705,9 @@ export default (props) => {
                   value: 2,
                 },
               ]}
+              fieldProps={{
+                onChange: bankAccountTypeChange
+              }}
             />
             <ProFormText
               name="bankCardNo"
@@ -696,13 +715,21 @@ export default (props) => {
               placeholder="请输入结算银行卡号"
               rules={[{ required: true, message: '请输入结算银行卡号' }]}
             />
-            <ProFormText
-              name="bankAccountName"
-              label="结算银行卡开户名"
-              placeholder="请输入结算银行卡开户名"
-              rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
-              extra="银行账户类型为对公账户时，开户名为供应商企业名称"
-            />
+            <ProFormDependency name={['bankAccountType']}>
+              {
+                ({ bankAccountType }) => (
+                  <ProFormText
+                    name="bankAccountName"
+                    label="结算银行卡开户名"
+                    placeholder="请输入结算银行卡开户名"
+                    rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
+                    extra="银行账户类型为对公账户时，开户名为供应商企业名称"
+                    disabled={bankAccountType === 1}
+                  />
+                )
+              }
+            </ProFormDependency>
+
           </div>
         </div>
       </div>

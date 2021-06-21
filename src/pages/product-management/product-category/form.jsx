@@ -119,7 +119,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload accept="image/*" dimension="1:1" size={100} />
+        <Upload accept="image/*" dimension="1:1" size={100} code={216} />
       </Form.Item>
       <ProFormDigit
         placeholder="请输入佣金抽成"

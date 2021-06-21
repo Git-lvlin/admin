@@ -2,12 +2,12 @@ import request from '@/utils/request';
 
 // 售后订单
 export const refundOrder = async (params = {}, options = {}) => {
-  const { page=1, size=10, ...rest } = params;
-  const res = await request('/java-admin/orderReturn/page', {
+  const { current, pageSize, ...rest } = params
+  const res = await request('/auth/java-admin/orderReturn/page', {
     method: 'POST',
     data: {
-      page,
-      size,
+      page: current,
+      size: pageSize,
       ...rest
     },
     ...options
@@ -21,7 +21,7 @@ export const refundOrder = async (params = {}, options = {}) => {
 // 订单详情
 export const refundOrderDetail = async (params = {}, options = {}) => {
   const { id } = params
-  const res = await request('/java-admin/orderReturn/detail', {
+  const res = await request('/auth/java-admin/orderReturn/detail', {
     method: 'POST',
     data: {
       id
