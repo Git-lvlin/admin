@@ -176,10 +176,10 @@ const ImageInfo = ({ value, onChange }) => {
   }
   return (
     <Space>
-      <Upload value={businessLicense} text="上传三合一证件照" maxCount={1} accept="image/*" size={1024 * 2} onChange={businessLicenseChange} />
-      <Upload value={idCardFrontImg} text="上传法人身份证正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardFrontImgChange} />
-      <Upload value={idCardBackImg} text="上传法人身份证背面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardBackImgChange} />
-      <Upload value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankLicenseImgChange} />
+      <Upload code={301} value={businessLicense} text="上传三合一证件照" maxCount={1} accept="image/*" size={1024 * 2} onChange={businessLicenseChange} />
+      <Upload code={302} value={idCardFrontImg} text="上传法人身份证正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardFrontImgChange} />
+      <Upload code={302} value={idCardBackImg} text="上传法人身份证背面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardBackImgChange} />
+      <Upload code={303} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankLicenseImgChange} />
     </Space>
   )
 }
