@@ -20,26 +20,23 @@ const SubTable = (props) => {
     },
     {
       title: '规格1',
-      dataIndex: 'skuNameDisplay',
+      dataIndex: 'gcId1Display',
     },
     {
       title: '规格2',
-      dataIndex: 'skuNameDisplay',
+      dataIndex: 'gcId2Display',
     },
     {
       title: '店主售价',
       dataIndex: 'goodsName',
-      // render: (_) => amountTransform(_, '/')
     },
     {
       title: '供应链销售价',
       dataIndex: 'goodsName',
-      // render: (_) => amountTransform(_, '/')
     },
     {
       title: '市场价',
       dataIndex: 'goodsName',
-      // render: (_) => amountTransform(_, '/')
     },
     {
       title: '可用库存',
@@ -47,7 +44,7 @@ const SubTable = (props) => {
     },
     {
       title: '销量',
-      dataIndex: 'totalStockNum',
+      dataIndex: 'saleNum',
     }
   ];
   useEffect(() => {
@@ -79,8 +76,9 @@ const consultantProductList = props => {
     },
     {
       title: 'skuID',
-      dataIndex: 'spuIds',
+      dataIndex: 'skuId',
       valueType: 'text',
+      hideInTable:true
     },
     {
       title: '供应链ID',
@@ -90,7 +88,7 @@ const consultantProductList = props => {
     },
     {
       title: '图片',
-      dataIndex: 'imageUrl',
+      dataIndex: 'goodsImageUrl',
       valueType: 'text',
       hideInSearch:true
     },
@@ -185,7 +183,7 @@ const consultantProductList = props => {
         options={false}
         request={page_spuList}
         params={{
-          spuId,
+          // spuId,
           storeNo
         }}
         expandable={{ expandedRowRender: (_) => <SubTable spuId={_.spuId} storeNo={_.storeNo} /> }}

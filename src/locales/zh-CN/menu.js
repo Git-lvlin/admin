@@ -167,4 +167,7 @@ export default {
   'menu.financial-management.transaction-detail-management.loan-detail-management':'贷款明细管理',
   'menu.financial-management.transaction-detail-management.after-sales-order-details':'售后订单明细管理',
   'menu.financial-management.transaction-allocation-management':'交易配置管理',
+
+  'menu.daifa-store-management.agent-shop-store_apply':'内部店认证',
+  'menu.daifa-store-management.store-apply-detail':'内部店认证',  
 };

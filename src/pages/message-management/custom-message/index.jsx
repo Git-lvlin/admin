@@ -26,6 +26,7 @@ const Index = () => {
       if(res.success){
         actionRef.current.reload()
         message.success('推送成功')
+        actionRef.current.reload()
       }
     })
   }

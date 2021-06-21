@@ -10,7 +10,7 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { Form, Button, message } from 'antd'
 
-import { customMessageAdd } from '@/services/message-management/message-template-config'
+import { customMessageAdd, customMessageEdit } from '@/services/message-management/message-template-config'
 import Upload from '@/components/upload'
 
 const modules = {
@@ -59,6 +59,8 @@ const Edit = props => {
   const [form] = Form.useForm()
   const [showTab, setShowTab] = useState(1)
   const [linkType, setLinkType] = useState(1)
+  const apiMethods = detailData? customMessageEdit : customMessageAdd
+
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -209,9 +211,9 @@ const Edit = props => {
     let { ...rest } = values.getFieldsValue()
     let params = {}
     if(rest.type == 1) {
-      params ={...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 0}
+      params = {...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 0, pushType:1}
     } else {
-      params ={...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.detailContent}, status: 0}
+      params = {...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.detailContent}, status: 0, pushType:1}
     }
     customMessageAdd(params).then(res=>{
       if(res?.success) {
@@ -227,11 +229,11 @@ const Edit = props => {
     let { ...rest } = values.getFieldsValue()
     let params = {}
     if(rest.type == 1) {
-      params ={...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 1}
+      params = {...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 1, pushType:1, id:detailData?.id}
     } else {
-      params ={...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.content}, status: 1}
+      params = {...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.detailContent}, status: 1, pushType:1, id:detailData?.id}
     }
-    customMessageAdd(params).then(res=>{
+    apiMethods(params).then(res=>{
       if(res?.success) {
         onClose()
         callback()
@@ -373,8 +375,10 @@ const Edit = props => {
         name="pushType"
         label="推送渠道"
         rules={[{ required: true, message: '请选择推送渠道'}]}
+        initialValue={1}
         width="md"
         valueType="select"
+        readonly
         valueEnum={{
           1: '站内信',
           2: '推送消息',

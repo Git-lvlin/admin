@@ -6,7 +6,7 @@ import {
   ProFormRadio,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { storeAdd, storeEdit } from '@/services/daifa-store-management/list';
+import { storeApplyEdit,storeApplyAudit } from '@/services/daifa-store-management/agent-shop-store_apply';
 import { categoryAll } from '@/services/common';
 import { arrayToTree } from '@/utils/utils'
 import FormModal from './form';
@@ -62,7 +62,7 @@ const CTree = (props) => {
 }
 
 export default (props) => {
-  const { visible, setVisible, detailData, callback = () => { }, onClose = () => { } } = props;
+  const { visible, setVisible, detailData,aplyId, callback = () => { }, onClose = () => { } } = props;
   const [form] = Form.useForm()
   const [formVisible, setFormVisible] = useState(false)
   const [selectData, setSelectData] = useState([]);
@@ -87,8 +87,6 @@ export default (props) => {
   const submit = (values) => {
     const { password, gc, ...rest } = values;
     return new Promise((resolve, reject) => {
-      const apiMethod = detailData ? storeEdit : storeAdd;
-
       const obj = {};
       let gcArr = []
       if (gc?.length) {
@@ -139,11 +137,10 @@ export default (props) => {
       } else {
         gcArr = ''
       }
-      console.log('detailData',detailData)
       values.businessScope=gcArr
-      apiMethod({
+      storeApplyEdit({
         ...rest,
-        storeNo:detailData&&detailData.storeNo,
+        applyId:aplyId&&aplyId,
         businessScope: JSON.stringify(gcArr),
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
@@ -188,7 +185,7 @@ export default (props) => {
   }, [form, detailData]);
   return (
     <DrawerForm
-      title={`${detailData ? '编辑' : '新建'}`}
+      title='编辑'
       onVisibleChange={setVisible}
       drawerProps={{
         forceRender: true,
@@ -355,7 +352,7 @@ export default (props) => {
       <Form.Item
         label="主营商品类型"
         name="gc"
-        rules={[{ required: true }]}
+        // rules={[{ required: true }]}
       >
         <CTree
           checkable
