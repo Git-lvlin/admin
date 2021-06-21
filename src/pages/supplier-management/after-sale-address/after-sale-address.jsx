@@ -1,16 +1,20 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card, Space } from 'antd';
+import { Button, Card, Space, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
-import { addressList, addressDetail } from '@/services/supplier-management/after-sale-address'
+import { addressList, addressDetail, addressSwitch } from '@/services/supplier-management/after-sale-address'
 import { useParams } from 'umi';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import Edit from './edit';
+
+const { confirm } = Modal;
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const actionRef = useRef();
+  const params = useParams();
 
   const getDetail = (id) => {
     addressDetail({
@@ -21,6 +25,26 @@ const TableList = () => {
         setFormVisible(true);
       }
     })
+  }
+
+  const switchStatus = (data) => {
+    confirm({
+      title: `${data.status===1?'禁用':'开启'}售后地址信息`,
+      icon: <ExclamationCircleOutlined />,
+      content: `${data.contactName}(${data.address})`,
+      onOk() {
+        addressSwitch({
+          supplierId: params?.id,
+          id: data.id
+        })
+          .then(res => {
+            if (res.code === 0) {
+              actionRef.current.reload()
+            }
+          })
+      },
+    });
+    
   }
 
   const columns = [
@@ -59,7 +83,7 @@ const TableList = () => {
       valueType: 'text',
       valueEnum: {
         1: '启用',
-        2: '禁用'
+        0: '禁用'
       }
     },
     {
@@ -69,9 +93,9 @@ const TableList = () => {
       render: (_, data) => {
         return (
           <Space>
-            <a onClick={() => { getDetail(data.id) }}>禁用</a>
-            <a onClick={() => { getDetail(data.id) }}>开启</a>
-            <a onClick={() => { getDetail(data.id) }}>设为默认</a>
+            {data.status === 1 && <a onClick={() => { switchStatus(data) }}>禁用</a>}
+            {data.status === 0 && <a onClick={() => { switchStatus(data) }}>开启</a>}
+            {data.isDefault === 0 && <a onClick={() => { getDetail(data.id) }}>设为默认</a>}
             <a onClick={() => { getDetail(data.id) }}>编辑</a>
           </Space>
         )
@@ -89,7 +113,7 @@ const TableList = () => {
       <ProTable
         options={false}
         params={{
-          supplierId: useParams()?.id
+          supplierId: params?.id
         }}
         request={addressList}
         search={false}
@@ -99,9 +123,9 @@ const TableList = () => {
       <Edit
         visible={formVisible}
         setVisible={setFormVisible}
-        supplierId={useParams()?.id}
+        supplierId={params?.id}
         detailData={detailData}
-        callback={() => { actionRef.current.reload()}}
+        callback={() => { actionRef.current.reload() }}
       />
     </PageContainer>
   );
