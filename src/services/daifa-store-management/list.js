@@ -1,11 +1,12 @@
 import request from '@/utils/request';
 
 export const storeList = async (params = {}, options = {}) => {
-  const { current} = params;
+  const { current,...rest} = params;
   const res = await request('/auth/store/AgentShop/page', {
     method: 'POST',
     data: {
-      page: current
+      page: current,
+      ...rest
     },
     ...options
   });
@@ -126,10 +127,7 @@ export const createImportTask = async (params = {}, options = {}) => {
     data: {
      code:'inner_store_import',
      fileUrl,
-     param:{
-       'id':'1',
-       "usename":'admin'
-     }
+     param
     },
     ...options
   });

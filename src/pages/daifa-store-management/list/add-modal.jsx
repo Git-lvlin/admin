@@ -16,9 +16,13 @@ export default props=>{
     const Termination=()=>{
         setVisible(true)
     }
+    useEffect(()=>{
+      var user=window.localStorage.getItem('user')
+      console.log('user',user)
+    },[])
     const fileUrl=async (e)=>{
         console.log('e',e)   
-        await createImportTask({fileUrl:e}).then(res=>{
+        await createImportTask({fileUrl:e,param:window.localStorage.getItem('user')}).then(res=>{
             console.log('res',res)
             if(res.code==0){
                 message.success('创建导入任务成功');
@@ -41,8 +45,9 @@ export default props=>{
         },
         {
           title: '导入文件',
-          dataIndex: 'realname',
+          dataIndex: 'fileUrl',
           valueType: 'text',
+          ellipsis:true
         },
         {
           title: '开始时间',
@@ -57,7 +62,7 @@ export default props=>{
         },
         {
           title: '状态',
-          dataIndex: 'status',
+          dataIndex: 'state',
           valueType: 'select',
         //   valueEnum: {
         //     0:'全部',
@@ -68,27 +73,27 @@ export default props=>{
         },
         {
           title: '进度',
-          dataIndex: 'goodsTotal',
+          dataIndex: 'process',
           valueType: 'text',
           hideInSearch: true,
         },
         {
           title: '总记录数',
-          dataIndex: 'adminName',
+          dataIndex: 'count',
           valueType: 'text',
           hideInSearch: true,
         },
         {
           title: '已导入',
-          dataIndex: 'createTime',
+          dataIndex: 'processCount',
           valueType: 'text',
           hideInSearch: true,
         },
-        {
-          title: '操作',
-          dataIndex: 'option',
-          valueType: 'text',
-        },
+        // {
+        //   title: '操作',
+        //   dataIndex: 'option',
+        //   valueType: 'text',
+        // },
       ];
     const submit = (values) => {
         setDatalist([])
@@ -107,7 +112,7 @@ export default props=>{
               return true;
             }}
         >
-        <EcxelUpload calback={fileUrl}  multiple maxCount={1} accept="image/*" size={5 * 1024} />
+        
         {
             datalist.length?
             <ProTable
@@ -117,7 +122,7 @@ export default props=>{
             dataSource={datalist}
             columns={columns}
         />
-        :null
+        :<EcxelUpload calback={fileUrl}  multiple maxCount={1} accept="image/*" size={5 * 1024} />
         }
        
         </DrawerForm>
