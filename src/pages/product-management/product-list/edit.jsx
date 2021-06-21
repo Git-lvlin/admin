@@ -555,28 +555,27 @@ export default (props) => {
                       ]}
                       disabled={settleType === 1}
                     />
-                    <ProFormText
-                      name="marketPrice"
-                      label="市场价"
-                      placeholder="请输入市场价"
-                      validateFirst
-                      rules={[
-                        { required: true, message: '请输入市场价' },
-                        () => ({
-                          validator(_, value) {
-                            if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                              return Promise.reject(new Error('请输入大于零的数字'));
-                            }
-                            return Promise.resolve();
-                          },
-                        })
-                      ]}
-                      disabled={settleType === 1}
-                    />
+                    
                   </>
                 )}
               </ProFormDependency>
-
+              <ProFormText
+                name="marketPrice"
+                label="市场价"
+                placeholder="请输入市场价"
+                validateFirst
+                rules={[
+                  { required: true, message: '请输入市场价' },
+                  () => ({
+                    validator(_, value) {
+                      if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                        return Promise.reject(new Error('请输入大于零的数字'));
+                      }
+                      return Promise.resolve();
+                    },
+                  })
+                ]}
+              />
               <ProFormText
                 name="stockNum"
                 label="可用库存"
@@ -685,14 +684,14 @@ export default (props) => {
           },
         })]}
       >
-        <Upload disabled multiple maxCount={10} accept="image/*" dimension="1:1" size={500} />
+        <Upload code={218} disabled multiple maxCount={10} accept="image/*" dimension="1:1" size={500} />
       </Form.Item>
       <Form.Item
         label="商品详情"
         name="detailImages"
         rules={[{ required: true, message: '请上传商品详情图片' }]}
       >
-        <Upload disabled multiple maxCount={10} accept="image/*" size={500 * 4} />
+        <Upload code={218} disabled multiple maxCount={10} accept="image/*" size={500 * 4} />
       </Form.Item>
       {/* {detailData.advImages && <Form.Item
         label="商品横幅"

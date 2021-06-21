@@ -219,7 +219,7 @@ const TableList = () => {
         }
         {
           data.map(item => (
-            <div className={styles.list} key={item.orderId}>
+            <div className={styles.list} key={item.orderSn}>
               <div className={styles.store_name}>所属供应商：{item.supplier.companyName}</div>
               <div className={styles.second}>
                 <Space size="large">

@@ -1,14 +1,16 @@
 import React, { useState, useRef } from 'react';
+import { Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { memberShopUser } from '@/services/intensive-store-management/shop-user';
-import { useParams } from 'umi';
+import { useParams, useLocation } from 'umi';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
 const TableList = () => {
 
   const params = useParams();
+  const location = useLocation();
 
   const columns = [
     {
@@ -91,6 +93,12 @@ const TableList = () => {
 
   return (
     <PageContainer>
+      <div style={{ marginBottom: 10, background: '#fff', padding: 10 }}>
+        <Space size="large">
+          <span>{location?.query?.storeName}</span>
+          <span>({location?.query?.linkman} {location?.query?.phone})</span>
+        </Space>
+      </div>
       <ProTable
         rowKey="storeNo"
         options={false}

@@ -30,7 +30,7 @@ const SubTable = (props) => {
   )
 };
 
-const TableList = () => {
+const TableList = ({skuId}) => {
   const params = useParams();
 
   const columns = [
@@ -109,6 +109,7 @@ const TableList = () => {
         params={{
           activityId: params.id,
           groupState: 1,
+          skuId,
         }}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         request={singleGroupList}

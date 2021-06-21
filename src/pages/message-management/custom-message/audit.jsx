@@ -357,7 +357,7 @@ export default () => {
             <ProFormTextArea
               name="remark"
               label="驳回理由"
-              required
+              rules={[{ required: true, message: '请输入驳回理由'}]}
               fieldProps={{
                 showCount: true,
                 maxLength:30

@@ -11,10 +11,26 @@ const index = () => {
   const actionRef = useRef()
 
   const columns = [
-    { title: '消息编号', dataIndex: 'id', align: 'center', valueType: 'indexBorder' },
-    { title: '消息名称', dataIndex: 'name', align: 'center' },
-    { title: '消息模板-标题', dataIndex: 'templateTitle', align: 'center' },
-    { title: '消息模板-内容', dataIndex: 'templateCopywritingContent', align: 'center' },
+    { 
+      title: '消息编号',
+      dataIndex: 'id', 
+      valueType: 'indexBorder'
+    },
+    { 
+      title: '消息名称', 
+      dataIndex: 'name', 
+      align: 'center' 
+    },
+    { 
+      title: '消息模板-标题', 
+      dataIndex: 'templateTitle', 
+      align: 'center' 
+    },
+    { 
+      title: '消息模板-内容', 
+      dataIndex: 'templateCopywritingContent', 
+      align: 'center' 
+    },
     { 
       title: '推送渠道',
       dataIndex: 'pushType',

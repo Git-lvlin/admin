@@ -5,7 +5,7 @@ import { getImageSize } from '@/utils/utils';
 import upload from '@/utils/upload'
 
 const Upload = (props) => {
-  const { value, onChange, dirName = 'goods', maxCount = 1, size, dimension, proportion, text = '上传', disabled = false, ...rest } = props;
+  const { value, onChange, code = 218, maxCount = 1, size, dimension, proportion, text = '上传', disabled = false, ...rest } = props;
   const [fileList, setFileList] = useState([])
   const [loading, setLoading] = useState(false)
   const fileData = useRef([]);
@@ -26,7 +26,7 @@ const Upload = (props) => {
     }
 
     if (size && file.size / 1024 > size) {
-      message.error('上传图片的大小不符合要求')
+      message.error('上传文件的大小不符合要求')
       return false;
     }
     if (dimension) {
@@ -54,7 +54,7 @@ const Upload = (props) => {
 
   const customRequest = ({ file }) => {
     setLoading(true);
-    upload(file, dirName)
+    upload(file, code)
       .then(res => {
         const arr = [...fileData.current];
         arr.push({
