@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
   DrawerForm,
@@ -21,14 +21,15 @@ export default (props) => {
     if (id) {
       param.id = id
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       homeSuspensionAdd(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
-          resolve(true);
+          resolve(true)
+        } else {
+          reject(false)
         }
       })
-  
     });
   };
 
@@ -88,7 +89,7 @@ export default (props) => {
         </Form.Item>
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText 
+        <ProFormText
             width="sm"
             name="actionUrl"
             label="跳转链接"
@@ -98,7 +99,7 @@ export default (props) => {
       <ProFormRadio.Group
           name="state"
           label="上线/下架"
-          required
+          initialValue={0}
           options={[
             {
               label: '上线',

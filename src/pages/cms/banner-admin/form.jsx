@@ -205,7 +205,7 @@ export default (props) => {
       <ProFormRadio.Group
           name="state"
           label="上线/下架"
-          required
+          initialValue={0}
           options={[
             {
               label: '上线',
