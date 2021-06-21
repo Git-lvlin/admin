@@ -50,14 +50,20 @@ export const indexProductList = async (params = {}, options = {}) => {
 
 // 商品组列表
 export const getGoodsList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
-  const res = await request('/auth/goods/Product_Ali/pullGoodsGroup', {
+  const { current, pageSize, title, ...rest } = params;
+  let url = '/auth/goods/Product_Ali/pullGoodsGroup'
+  const param = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  if (title) {
+    url = '/auth/goods/Product_Ali/searchGroupInfo'
+    param.groupName = title
+  }
+  const res = await request(url, {
     method: 'POST',
-    data: {
-      page: current,
-      size: pageSize,
-      ...rest
-    },
+    data: param,
     ...options
   });
 

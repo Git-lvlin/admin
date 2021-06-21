@@ -8,8 +8,6 @@ import ProForm, {
 import Upload from '@/components/upload';
 import { homeSuspensionAdd } from '@/services/cms/member/member';
 
-
-
 export default (props) => {
   const { detailData, setVisible, setFlag, visible } = props;
   const formRef = useRef();
