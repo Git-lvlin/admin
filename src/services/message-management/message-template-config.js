@@ -114,9 +114,7 @@ export const customMessageAuditIm = async (params, options = {}) => {
 export const customMessageAuditTim = async (params, options = {}) => {
   const res = await request('/auth/java-admin/message/msg/custom/push/timing', {
     method: 'POST',
-    data: {
-      params
-    },
+    data: params,
     ...options
   })
   return {
