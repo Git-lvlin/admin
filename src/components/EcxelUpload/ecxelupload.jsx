@@ -72,7 +72,7 @@ const EcxelUpload = (props) => {
         &&
         <div>
           {loading ? <LoadingOutlined /> : <UploadOutlined />}
-          <p>上传</p>
+          <p>导入店主表格资料</p>
         </div>
       }
     </AntUpload>

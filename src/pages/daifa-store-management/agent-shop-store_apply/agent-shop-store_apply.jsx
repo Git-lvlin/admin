@@ -104,7 +104,7 @@ const box=(res)=>{
       }
     },
     {
-      title: '详解',
+      title: '认证成功/失败详解',
       dataIndex: 'auditMsg',
       valueType: 'text',
     },
