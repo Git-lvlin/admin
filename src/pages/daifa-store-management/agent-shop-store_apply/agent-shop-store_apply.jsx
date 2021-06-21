@@ -95,12 +95,9 @@ const box=(res)=>{
       dataIndex: 'verifyStatus',
       valueType: 'select',
       valueEnum: {
-        0: '未知',
         1: '认证成功',
         2: '认证失败',
-        3: '审核通过',
-        4: '认证中',
-        5:' 取消认证'
+        4:' 待审核'
       }
     },
     {
