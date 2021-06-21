@@ -4,51 +4,17 @@ import { UploadOutlined, LoadingOutlined } from '@ant-design/icons';
 import { getImageSize } from '@/utils/utils';
 import upload from '@/utils/upload'
 
-const Upload = (props) => {
-  const { value, onChange, dirName = 'goods', maxCount = 1, size, dimension, proportion, disabled = false, ...rest } = props;
+const EcxelUpload = (props) => {
+  const { value, onChange, dirName = 'goods', maxCount = 1, size, dimension, proportion, disabled = false, calback } = props;
   const [fileList, setFileList] = useState([])
   const [loading, setLoading] = useState(false)
   const fileData = useRef([]);
 
-  const beforeUpload = async (file) => {
-
-    if (proportion) {
-      if (proportion === 'banner') {
-        message.error('请先选择位置!')
-        return false;
-      }
-      const { width, height } = await getImageSize(file);
-      if (parseInt(proportion.width / proportion.height) === parseInt(width / height)) {
-        return true;
-      }
-      message.error('上传图片的大小不符合要求')
-      return false;
-    }
-
-    if (size && file.size / 1024 > size) {
-      message.error('上传图片的大小不符合要求')
-      return false;
-    }
-    if (dimension) {
-      const { width, height } = await getImageSize(file);
-
-      if (typeof dimension === 'string' && width !== height) {
-        message.error('上传图片的尺寸不符合要求')
-        return false;
-      }
-
-      if (typeof dimension === 'object' && (width !== dimension.width || height !== dimension.height)) {
-        message.error('上传图片的尺寸不符合要求')
-        return false;
-      }
-    }
-    return true;
-  }
 
   const onRemove = (file) => {
     fileData.current = fileList.filter(item => item.url !== file.url)
     setFileList(fileData.current);
-    onChange(maxCount === 1 ? fileData.current?.[0]?.url : fileData.current.map(item => item.url))
+    // onChange(maxCount === 1 ? fileData.current?.[0]?.url : fileData.current.map(item => item.url))
     return true;
   }
 
@@ -56,6 +22,7 @@ const Upload = (props) => {
     setLoading(true);
     upload(file, dirName)
       .then(res => {
+        calback(res)
         const arr = [...fileData.current];
         arr.push({
           ...file,
@@ -63,7 +30,7 @@ const Upload = (props) => {
         })
         fileData.current = arr;
         setFileList(fileData.current);
-        onChange(maxCount === 1 ? res : arr.map(item => item.url))
+        // onChange(maxCount === 1 ? res : arr.map(item => item.url))
       })
       .finally(() => {
         setLoading(false);
@@ -80,7 +47,7 @@ const Upload = (props) => {
           }
         })
         setFileList(fileData.current)
-        onChange(maxCount === 1 ? value?.[0]?.url : value.map(item => item))
+        // onChange(maxCount === 1 ? value?.[0]?.url : value.map(item => item))
       } else if (value && typeof value === 'string') {
         fileData.current = [{
           url: value,
@@ -96,11 +63,9 @@ const Upload = (props) => {
     <AntUpload
       listType="picture-card"
       fileList={fileList}
-      beforeUpload={beforeUpload}
       customRequest={customRequest}
       onRemove={onRemove}
       disabled={disabled}
-      {...rest}
     >
       {
         (fileList.length < maxCount && !disabled)
@@ -114,4 +79,4 @@ const Upload = (props) => {
   )
 }
 
-export default Upload;
+export default EcxelUpload;

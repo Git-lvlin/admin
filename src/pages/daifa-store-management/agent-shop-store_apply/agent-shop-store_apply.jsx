@@ -37,7 +37,8 @@ const box=(res)=>{
           station:ele.details.station,
           createTime:ele.createTime,
           verifyStatus:ele.verifyStatus.code,
-          auditMsg:ele.auditMsg
+          auditMsg:ele.auditMsg,
+          adminName:ele.details.adminName
       }))
       return arr
     }
