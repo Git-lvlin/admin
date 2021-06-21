@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout';
-import { useParams } from 'umi';
-import { Form, Spin, Tree } from 'antd';
+import { history } from 'umi';
+import { Form, Spin, Tree,Button } from 'antd';
 import { storeApplyDetail } from '@/services/daifa-store-management/agent-shop-store_apply'
 import { arrayToTree } from '@/utils/utils'
 import { categoryAll } from '@/services/common';
+import Upload from '@/components/upload';
 import moment from 'moment';
 
 
@@ -25,6 +26,7 @@ const formItemLayout = {
 const ListApplyDetail = props => {
   let applyId = props.location.query.applyId
   // const params = useParams();
+  const [form] = Form.useForm()
   const [loading, setLoading] = useState(false);
   const [detailData, setDetailData] = useState({});
   const [treeData, setTreeData] = useState([])
@@ -47,6 +49,7 @@ const ListApplyDetail = props => {
         })
         setSelectKeys(ids)
         setDetailData(res.data)
+        form.setFieldsValue(res.data)
       }
     }).finally(() => {
       setLoading(false);
@@ -78,6 +81,7 @@ const ListApplyDetail = props => {
         spinning={loading}
       >
         <Form
+          form={form}
           {...formItemLayout}
           style={{ backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
         >
@@ -104,7 +108,24 @@ const ListApplyDetail = props => {
           >
             {detailData.wechatNo}
           </Form.Item>
-
+          <Form.Item
+            label="身份证姓名正面照片"
+            name="idFront"
+          >
+            <Upload  multiple maxCount={1} accept="image/*" size={1 * 1024} />
+          </Form.Item>
+          <Form.Item
+            label="身份证国徽面照片"
+            name="idBack"
+          >
+            <Upload  multiple maxCount={1} accept="image/*" size={1 * 1024} />
+          </Form.Item>
+          <Form.Item
+            label="手持身份证照片"
+            name="idHandheld"
+          >
+            <Upload  multiple maxCount={1} accept="image/*" size={1 * 1024} />
+          </Form.Item>
           <Form.Item
             label="店主内部岗位或身份"
           >
@@ -151,6 +172,11 @@ const ListApplyDetail = props => {
             label="创建时间"
           >
             {moment(detailData.createTime).format('YYYY-MM-DD HH:mm:ss')}
+          </Form.Item>
+          <Form.Item
+            label="."
+          >
+            <Button onClick={()=>history.push('/daifa-store-management/agent-shop-store_apply')}>返回</Button>
           </Form.Item>
 
         </Form>

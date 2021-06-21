@@ -35,7 +35,7 @@ const upload = async (file, dirName) => {
       }
     }).catch(err => {
       client = null;
-      // return upload(file, dirName)
+      return upload(file, dirName)
       console.log('上传失败：', err)
     })
   })
