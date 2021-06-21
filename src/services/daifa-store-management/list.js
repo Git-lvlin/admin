@@ -120,12 +120,16 @@ export const findPage = async (params = {}, options = {}) => {
 }
 
 export const createImportTask = async (params = {}, options = {}) => {
-  const { fileUrl} = params;
+  const { fileUrl,param} = params;
   const res = await request('/auth/java-admin/importTask/createImportTask', {
     method: 'POST',
     data: {
      code:'inner_store_import',
-     fileUrl
+     fileUrl,
+     param:{
+       'id':'1',
+       "usename":'admin'
+     }
     },
     ...options
   });

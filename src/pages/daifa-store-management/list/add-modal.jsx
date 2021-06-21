@@ -9,9 +9,10 @@ import {  Button,message } from 'antd';
 
 
 export default props=>{
-    const fileData = useRef([]);
+    const {callback = () => { }}=props 
     const [visible, setVisible] = useState(false);
     const [datalist,setDatalist]=useState([])
+    const [falg,setFalg]=useState(false)
     const Termination=()=>{
         setVisible(true)
     }
@@ -20,16 +21,16 @@ export default props=>{
         await createImportTask({fileUrl:e}).then(res=>{
             console.log('res',res)
             if(res.code==0){
-                message.success('选择成功');
+                message.success('创建导入任务成功');
             }
         })
         await findPage({}).then(res=>{
             if(res.code==0){
-                message.success('导入成功');
+                message.success('批量导入成功');
                 console.log('res',res.data)
                 setDatalist(res.data)
             }
-        })  
+          })  
     }
     const columns = [
         {
@@ -91,6 +92,7 @@ export default props=>{
       ];
     const submit = (values) => {
         setDatalist([])
+        callback()
     }
     
     return (

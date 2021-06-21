@@ -28,15 +28,15 @@ const SubTable = (props) => {
     },
     {
       title: '店主售价',
-      dataIndex: 'goodsName',
+      dataIndex: 'retailSupplyPrice',
     },
     {
       title: '供应链销售价',
-      dataIndex: 'goodsName',
+      dataIndex: 'salePrice',
     },
     {
       title: '市场价',
-      dataIndex: 'goodsName',
+      dataIndex: 'marketPrice',
     },
     {
       title: '可用库存',

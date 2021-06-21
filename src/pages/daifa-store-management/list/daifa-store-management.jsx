@@ -136,7 +136,9 @@ const TableList = () => {
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <Button key="out" type="primary" onClick={() => { setFormVisible(true) }}>新建</Button>,
-            <AddModal boxref={ref}/>
+            <AddModal 
+              callback={() => { actionRef.current.reload()}}
+            />
           ]
         }}
         columns={columns}
