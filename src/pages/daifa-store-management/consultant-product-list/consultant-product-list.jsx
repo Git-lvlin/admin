@@ -11,8 +11,8 @@ const SubTable = (props) => {
   const [data, setData] = useState([])
   const columns = [
     {
-      title: 'spuID',
-      dataIndex: 'spuId',
+      title: 'skuId',
+      dataIndex: 'skuId',
     },
     {
       title: '供应链skuID',
@@ -90,12 +90,6 @@ const consultantProductList = props => {
       valueType: 'text',
     },
     {
-      title: 'skuID',
-      dataIndex: 'skuId',
-      valueType: 'text',
-      hideInTable:true
-    },
-    {
       title: '供应链ID',
       dataIndex: 'outSpuId',
       valueType: 'text',
@@ -155,22 +149,11 @@ const consultantProductList = props => {
     {
       title: '售卖状态',
       dataIndex: 'goodsState',
-      valueType: 'select',
-      valueEnum: {
-        0: '批发+零售',
-        1: '零售',
-        2: '仅批发',
-      },
-      hideInTable:true
-    },
-    {
-      title: '售卖状态',
-      dataIndex: 'goodsState',
       valueType: 'text',
       valueEnum: {
-        0: '批发+零售',
-        1: '零售',
-        2: '仅批发',
+        0: '不限',
+        1: '批发',
+        2: '零售',
       },
       hideInSearch: true,
     },
