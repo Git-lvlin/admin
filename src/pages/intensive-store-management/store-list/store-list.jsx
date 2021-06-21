@@ -65,28 +65,92 @@ const StoreList = () => {
       dataIndex: 'wholeTotal',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => _ > 0 ? <a onClick={() => { history.push(`/intensive-store-management/intensive-task/${data.storeNo}`) }}>{_}</a> : _
+      render: (_, data) => {
+        return _ > 0
+          ?
+          <a
+            onClick={() => {
+              history.push({
+                pathname: `/intensive-store-management/intensive-task/${data.storeNo}`,
+                query: {
+                  storeName: data.storeName,
+                  phone: data.phone,
+                  linkman: data.linkman,
+                }
+              })
+            }}>
+            {_}
+          </a>
+          : _
+      }
     },
     {
       title: '店主订单',
       dataIndex: 'saleOrderTotal',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => _ > 0 ? <a onClick={() => { history.push(`/intensive-store-management/shopkeeper-order/${data.storeNo}`) }}>{_}</a> : _
+      render: (_, data) => {
+        return _ > 0
+          ?
+          <a onClick={() => {
+            history.push({
+              pathname: `/intensive-store-management/shopkeeper-order/${data.storeNo}`,
+              query: {
+                storeName: data.storeName,
+                phone: data.phone,
+                linkman: data.linkman,
+              }
+            })
+          }}>
+            {_}
+          </a>
+          :
+          _
+      }
     },
     {
       title: '商品',
       dataIndex: 'productTotal',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => _ > 0 ? <a onClick={() => { history.push(`/intensive-store-management/product-management/${data.storeNo}`) }}>{_}</a> : _
+      render: (_, data) => {
+        return _ > 0
+          ?
+          <a onClick={() => {
+            history.push({
+              pathname: `/intensive-store-management/product-management/${data.storeNo}`,
+              query: {
+                storeName: data.storeName,
+                phone: data.phone,
+                linkman: data.linkman,
+              }
+            })
+          }}>{_}</a>
+          :
+          _
+      }
     },
     {
       title: '用户',
       dataIndex: 'userTotal',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => _ > 0 ? <a onClick={() => { history.push(`/intensive-store-management/shop-user/${data.storeNo}`) }}>{_}</a> : _
+      render: (_, data) => {
+        return _ > 0
+          ?
+          <a onClick={() => {
+            history.push({
+              pathname: `/intensive-store-management/shop-user/${data.storeNo}`,
+              query: {
+                storeName: data.storeName,
+                phone: data.phone,
+                linkman: data.linkman,
+              }
+            })
+          }}>{_}</a>
+          :
+          _
+      }
     },
     {
       title: '所在地区',
