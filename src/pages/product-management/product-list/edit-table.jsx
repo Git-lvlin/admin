@@ -70,7 +70,6 @@ export default function EditTable(props) {
         title: '市场价',
         dataIndex: 'marketPrice',
         width: 100,
-        editable: settleType === 2,
       },
       {
         title: '库存预警值',

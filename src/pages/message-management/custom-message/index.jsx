@@ -24,6 +24,7 @@ const Index = () => {
   const handleOk = id =>{
     customMessageAuditIm({id}).then(res=>{
       if(res.success){
+        actionRef.current.reload()
         message.success('推送成功')
         actionRef.current.reload()
       }
@@ -47,7 +48,6 @@ const Index = () => {
       title: '编号',
       dataIndex: 'id',
       valueType: 'indexBorder', 
-      align: 'center'
     },
     { 
       title: '消息名称',
@@ -92,8 +92,8 @@ const Index = () => {
       render: (_, data) => {
         return(
           <>
-            <div>{data.createInfo?.name}</div>
-            <div>{data.createInfo?.time}</div>
+            <div>{data?.createInfo?.name}</div>
+            <div>{data?.createInfo?.time}</div>
           </>
         )
       }
@@ -105,8 +105,8 @@ const Index = () => {
       render: (_, data) => {
         return(
           <>
-            <div>{data.updateInfo?.name}</div>
-            <div>{data.updateInfo?.time}</div>
+            <div>{data?.updateInfo?.name}</div>
+            <div>{data?.updateInfo?.time}</div>
           </>
         )
       }
@@ -118,8 +118,8 @@ const Index = () => {
       render: (_, data) => {
         return(
           <>
-            <div>{data.pushInfo?.name}</div>
-            <div>{data.pushInfo?.time}</div>
+            <div>{data?.pushInfo?.name}</div>
+            <div>{data?.pushInfo?.time}</div>
           </>
         )
       }
