@@ -107,6 +107,7 @@ const box=(res)=>{
       title: '认证成功/失败详解',
       dataIndex: 'auditMsg',
       valueType: 'text',
+      hideInSearch: true
     },
     {
       title: '操作',
