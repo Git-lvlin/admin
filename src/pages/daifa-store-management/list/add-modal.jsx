@@ -21,8 +21,9 @@ export default props=>{
       console.log('user',user)
     },[])
     const fileUrl=async (e)=>{
-        console.log('e',e)   
-        await createImportTask({fileUrl:e,param:window.localStorage.getItem('user')}).then(res=>{
+        console.log('e',e)
+        if(window.localStorage.getItem('user')){
+          await createImportTask({fileUrl:e,param:window.localStorage.getItem('user')}).then(res=>{
             console.log('res',res)
             if(res.code==0){
                 message.success('创建导入任务成功');
@@ -34,7 +35,8 @@ export default props=>{
                 console.log('res',res.data)
                 setDatalist(res.data)
             }
-          })  
+          })
+        }
     }
     const columns = [
         {

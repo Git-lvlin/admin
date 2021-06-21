@@ -39,11 +39,11 @@ const ListApplyDetail = props => {
     storeApplyDetail({
       applyId
     }).then(res => {
-      console.log('detail',res)
+      // console.log('detail',res.data)
       if (res.code === 0) {
         const ids = [];
-        const businessScope=JSON.parse(res.data.businessScope)
-        businessScope?.forEach(item => {
+        const businessScope=res.data.businessScope&&JSON.parse(res.data.businessScope)
+        businessScope&&businessScope.forEach(item => {
           const gcId = item.gc_id2.split(',').map(item => +item)
           ids.push(...gcId)
         })
