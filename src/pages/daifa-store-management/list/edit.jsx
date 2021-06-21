@@ -163,8 +163,8 @@ export default (props) => {
       })
       setSelectData(detailData.supplierIds)
       const ids = [];
-      const businessScope = JSON.parse(detailData.businessScope);
-      businessScope?.forEach(item => {
+      const businessScope = detailData.businessScope&&JSON.parse(detailData.businessScope);
+      businessScope&&businessScope.forEach(item => {
         const gcId = item.gc_id2.split(',').map(item => +item)
         ids.push(...gcId)
       })

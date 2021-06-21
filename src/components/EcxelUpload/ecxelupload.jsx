@@ -14,7 +14,6 @@ const EcxelUpload = (props) => {
   const onRemove = (file) => {
     fileData.current = fileList.filter(item => item.url !== file.url)
     setFileList(fileData.current);
-    // onChange(maxCount === 1 ? fileData.current?.[0]?.url : fileData.current.map(item => item.url))
     return true;
   }
 
@@ -30,7 +29,6 @@ const EcxelUpload = (props) => {
         })
         fileData.current = arr;
         setFileList(fileData.current);
-        // onChange(maxCount === 1 ? res : arr.map(item => item.url))
       })
       .finally(() => {
         setLoading(false);
@@ -47,7 +45,6 @@ const EcxelUpload = (props) => {
           }
         })
         setFileList(fileData.current)
-        // onChange(maxCount === 1 ? value?.[0]?.url : value.map(item => item))
       } else if (value && typeof value === 'string') {
         fileData.current = [{
           url: value,

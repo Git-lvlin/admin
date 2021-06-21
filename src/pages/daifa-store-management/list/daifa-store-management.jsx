@@ -39,20 +39,20 @@ const TableList = () => {
   const columns = [
     {
       title: '店铺名称',
-      dataIndex: 'realname',
+      dataIndex: 'storeName',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店铺名称'
       }
     },
-    // {
-    //   title: '店主姓名',
-    //   dataIndex: 'realname',
-    //   valueType: 'text',
-    //   fieldProps: {
-    //     placeholder: '请输入店主姓名'
-    //   }
-    // },
+    {
+      title: '店主姓名',
+      dataIndex: 'realname',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入店主姓名'
+      }
+    },
     {
       title: '手机号码',
       dataIndex: 'mobile',
@@ -81,7 +81,6 @@ const TableList = () => {
         0:'全部',
         1: '已启用',
         2: '已禁用',
-        3: '未激活'
       }
     },
     {
