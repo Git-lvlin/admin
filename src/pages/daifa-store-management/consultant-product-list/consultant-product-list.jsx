@@ -111,9 +111,6 @@ const consultantProductList = props => {
       title: '商品名称',
       dataIndex: 'goodsName',
       valueType: 'text',
-      // render: (_, data) => {
-      //   return <a onClick={() => { history.push(`/daifa-store-management/consultant-product-list?spuId=${data.id}&storeNo=${data.storeNo}`) }}>{_}</a>
-      // }
     },
     {
       title: '店铺销售价',

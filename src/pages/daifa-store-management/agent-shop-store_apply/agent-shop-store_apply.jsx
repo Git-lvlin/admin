@@ -16,11 +16,11 @@ const agentShopStoreApply = () => {
     storeApplyDetail({
       applyId:id
     }).then(res => {
-      console.log('deilres',res)
+      // console.log('deilres',res)
       if (res.code === 0) {
         setDetailData(res.data)
-        setAplyId(id)
         setFormVisible(true)
+        setAplyId(id)
       }
     })
   }
@@ -96,11 +96,11 @@ const box=(res)=>{
       valueType: 'select',
       valueEnum: {
         0: '未知',
-        1: '店铺入驻成功',
+        1: '认证成功',
         2: '认证失败',
-        3: '已认证',
-        4: '待审核',
-        5:'取消申请'
+        3: '审核通过',
+        4: '认证中',
+        5:' 取消认证'
       }
     },
     {

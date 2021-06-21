@@ -41,8 +41,8 @@ const ListDetail = props => {
       console.log('detail',res)
       if (res.code === 0) {
         const ids = [];
-        const businessScope=JSON.parse(res.data.businessScope)
-        businessScope?.forEach(item => {
+        const businessScope=res.data.businessScope&&JSON.parse(res.data.businessScope)
+        businessScope&&businessScope.forEach(item => {
           const gcId = item.gc_id2.split(',').map(item => +item)
           ids.push(...gcId)
         })
