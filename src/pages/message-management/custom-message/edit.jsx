@@ -374,10 +374,7 @@ const Edit = props => {
       <ProFormSelect
         name="pushType"
         label="推送渠道"
-<<<<<<< HEAD
         rules={[{ required: true, message: '请选择推送渠道'}]}
-=======
->>>>>>> e0580073c8fd1a669b60de5788ef075bdea1754c
         initialValue={1}
         width="md"
         valueType="select"
