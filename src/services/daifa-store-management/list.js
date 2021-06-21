@@ -1,11 +1,12 @@
 import request from '@/utils/request';
 
 export const storeList = async (params = {}, options = {}) => {
-  const { current} = params;
+  const { current,...rest} = params;
   const res = await request('/auth/store/AgentShop/page', {
     method: 'POST',
     data: {
-      page: current
+      page: current,
+      ...rest
     },
     ...options
   });
@@ -113,22 +114,25 @@ export const findPage = async (params = {}, options = {}) => {
     ...options
   });
   return {
-    data: res.data,
+    code:res.code,
+    data: res.data.records,
     success: true
   }
 }
 
 export const createImportTask = async (params = {}, options = {}) => {
-  const { fileUrl} = params;
+  const { fileUrl,param} = params;
   const res = await request('/auth/java-admin/importTask/createImportTask', {
     method: 'POST',
     data: {
      code:'inner_store_import',
-     fileUrl
+     fileUrl,
+     param
     },
     ...options
   });
   return {
+    code:res.code,
     data: res.data,
     success: true
   }

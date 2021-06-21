@@ -59,3 +59,11 @@ export const addressEdit = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const addressSwitch = (params = {}, options = {}) => {
+  return request('/auth/supplier/user/addressSwitch', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

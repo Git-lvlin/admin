@@ -37,7 +37,8 @@ const box=(res)=>{
           station:ele.details.station,
           createTime:ele.createTime,
           verifyStatus:ele.verifyStatus.code,
-          auditMsg:ele.auditMsg
+          auditMsg:ele.auditMsg,
+          adminName:ele.details.adminName
       }))
       return arr
     }
@@ -103,9 +104,10 @@ const box=(res)=>{
       }
     },
     {
-      title: '详解',
+      title: '认证成功/失败详解',
       dataIndex: 'auditMsg',
       valueType: 'text',
+      hideInSearch: true
     },
     {
       title: '操作',

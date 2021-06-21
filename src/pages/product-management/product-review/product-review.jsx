@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table } from 'antd';
+import { Table, Tooltip } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
+import { QuestionCircleOutlined } from '@ant-design/icons'
 import * as api from '@/services/product-management/product-review'
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
@@ -241,6 +242,15 @@ const TableList = () => {
       dataIndex: 'goodsVerifyStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, record) => {
+        const { goodsVerifyRemark, goodsVerifyState } = record;
+        return (
+          <>
+            {_}&nbsp;
+            {(goodsVerifyRemark && goodsVerifyState === 2) && <Tooltip title={goodsVerifyRemark}><QuestionCircleOutlined /></Tooltip>}
+          </>
+        )
+      },
     },
     {
       title: '上架状态',
@@ -261,6 +271,15 @@ const TableList = () => {
       dataIndex: 'goodsStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, record) => {
+        const { goodsStateRemark, goodsState } = record;
+        return (
+          <>
+            {_}&nbsp;
+            {(goodsStateRemark && goodsState === 0) && <Tooltip title={goodsStateRemark}><QuestionCircleOutlined /></Tooltip>}
+          </>
+        )
+      },
     },
     {
       title: '商品分类',

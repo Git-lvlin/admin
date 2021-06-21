@@ -1,58 +1,104 @@
 import React, { useState, useEffect,useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import upload from '@/utils/upload'
+import EcxelUpload from '@/components/EcxelUpload';
 import ProForm,{
     DrawerForm,
-    ProFormText,
-    ProFormUploadDragger, 
-    ProFormUploadButton
   } from '@ant-design/pro-form';
-import {import_store,file_tpl_url,findPage,createImportTask } from '@/services/daifa-store-management/list';
+import {findPage,createImportTask } from '@/services/daifa-store-management/list';
 import {  Button,message } from 'antd';
 
 
 export default props=>{
-    const fileData = useRef([]);
+    const {callback = () => { }}=props 
     const [visible, setVisible] = useState(false);
     const [datalist,setDatalist]=useState([])
-    const [baseUrl,setBaseUrl]=useState()
-    const [upfile,setUpfile]=useState()
+    const [falg,setFalg]=useState(false)
     const Termination=()=>{
         setVisible(true)
     }
-    const fileUrl=async (e)=>{
-        console.log('e',e)
-        if(e.file.status=="done"){
-            const dirName='excel'
-            upload(e.file,dirName)
-            .then(res => {
-              console.log('res',res)
-        })
-        }
-       
-        
-        // createImportTask({fileUrl:res.data.filePath}).then(res=>{
-        //     console.log('res',res)
-        //     if(res.code==0){
-        //         message.success('选择成功');
-        //     }
-        // })
-        // findPage({}).then(res=>{
-        //     if(res.code==0){
-        //         message.success('导入成功');
-        //         // setDatalist(res.)
-        //         return true;
-        //     }
-        // })
-        
-
-    }
     useEffect(()=>{
-        
-    })
-    // const submit = (values) => {
-    //     console.log('asda',values);
-    // }
+      var user=window.localStorage.getItem('user')
+      console.log('user',user)
+    },[])
+    const fileUrl=async (e)=>{
+        console.log('e',e)   
+        await createImportTask({fileUrl:e,param:window.localStorage.getItem('user')}).then(res=>{
+            console.log('res',res)
+            if(res.code==0){
+                message.success('创建导入任务成功');
+            }
+        })
+        await findPage({}).then(res=>{
+            if(res.code==0){
+                message.success('批量导入成功');
+                console.log('res',res.data)
+                setDatalist(res.data)
+            }
+          })  
+    }
+    const columns = [
+        {
+          title: '任务id',
+          dataIndex: 'id',
+          valueType: 'text',
+          ellipsis:true
+        },
+        {
+          title: '导入文件',
+          dataIndex: 'fileUrl',
+          valueType: 'text',
+          ellipsis:true
+        },
+        {
+          title: '开始时间',
+          dataIndex: 'createTime',
+          valueType: 'text',
+        },
+        {
+          title: '结束时间',
+          dataIndex: 'endTime',
+          valueType: 'text',
+          hideInSearch: true,
+        },
+        {
+          title: '状态',
+          dataIndex: 'state',
+          valueType: 'select',
+        //   valueEnum: {
+        //     0:'全部',
+        //     1: '已启用',
+        //     2: '已禁用',
+        //     3: '未激活'
+        //   }
+        },
+        {
+          title: '进度',
+          dataIndex: 'process',
+          valueType: 'text',
+          hideInSearch: true,
+        },
+        {
+          title: '总记录数',
+          dataIndex: 'count',
+          valueType: 'text',
+          hideInSearch: true,
+        },
+        {
+          title: '已导入',
+          dataIndex: 'processCount',
+          valueType: 'text',
+          hideInSearch: true,
+        },
+        // {
+        //   title: '操作',
+        //   dataIndex: 'option',
+        //   valueType: 'text',
+        // },
+      ];
+    const submit = (values) => {
+        setDatalist([])
+        callback()
+    }
     
     return (
         <DrawerForm
@@ -66,34 +112,19 @@ export default props=>{
               return true;
             }}
         >
-        {/* <Button type="primary" onClick={fileUrl}>导入文件</Button> */}
-        <ProFormUploadButton
-            key='2'
-            name="导入文件"
-            label="导入文件 "
-            max={2}
-            fieldProps={{
-            name: 'file',
-                onChange: (e) => {
-                    fileUrl(e)
-                }
-            }}
-            action="/upload.do"
-        />
-        {/* <ProTable
+        
+        {
+            datalist.length?
+            <ProTable
             rowKey="id"
             options={false}
-            search={{
-            defaultCollapsed: false,
-            labelWidth: 100,
-            optionRender: (searchConfig, formProps, dom) => [
-                ...dom.reverse(),
-            ]
-            }}
+            search={false}
             dataSource={datalist}
-            // columns={columns}
-            // actionRef={actionRef}
-        /> */}
+            columns={columns}
+        />
+        :<EcxelUpload calback={fileUrl}  multiple maxCount={1} accept="image/*" size={5 * 1024} />
+        }
+       
         </DrawerForm>
     )
 }
