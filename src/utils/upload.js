@@ -10,22 +10,25 @@ const getConfig = (params = {}, options = {}) => {
   });
 }
 
-let client = null;
+let uploadDir = [];
+let ossConfig = null
 
-const upload = async (file, dirName) => {
-  if (!client) {
+const upload = async (file, code) => {
+  if (!uploadDir.length) {
     const res = await getConfig();
-    const { ossConfig } = res.data
-    client = new OSS({
-      region: `oss-${ossConfig.regionId}`,
-      accessKeyId: ossConfig.credentials.accessKeyId,
-      accessKeySecret: ossConfig.credentials.accessKeySecret,
-      stsToken: ossConfig.credentials.securityToken,
-      bucket: ossConfig.bucket,
-    })
+    ossConfig = res.data.ossConfig
+    uploadDir = res.data.uploadDir
   }
+  const optItem = uploadDir.find(item => item.code === code)
+  const client = new OSS({
+    region: `oss-${ossConfig.regionId}`,
+    accessKeyId: ossConfig.credentials.accessKeyId,
+    accessKeySecret: ossConfig.credentials.accessKeySecret,
+    stsToken: ossConfig.credentials.securityToken,
+    bucket: optItem.bucket,
+  })
   return new Promise((resolve) => {
-    client.put(`${dirName}/${file.uid}${file.name}`, file).then(res => {
+    client.put(`${optItem.dir}/${file.uid}${file.name}`, file).then(res => {
       if (file.type.indexOf('image') !== -1) {
         getImageSize(file).then(size => {
           resolve(`${res.url}?x-oss-process=image/resize,h_${size.height},w_${size.width}`)
@@ -33,8 +36,8 @@ const upload = async (file, dirName) => {
       }
       resolve(res.url);
     }).catch(err => {
-      client = null;
-      return upload(file, dirName)
+      uploadDir = [];
+      // return upload(file, dirName)
       console.log('上传失败：', err)
     })
   })
