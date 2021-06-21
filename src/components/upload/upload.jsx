@@ -26,7 +26,7 @@ const Upload = (props) => {
     }
 
     if (size && file.size / 1024 > size) {
-      message.error('上传图片的大小不符合要求')
+      message.error('上传文件的大小不符合要求')
       return false;
     }
     if (dimension) {
