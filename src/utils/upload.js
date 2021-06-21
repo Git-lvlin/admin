@@ -15,11 +15,11 @@ let ossConfig = null
 
 const upload = async (file, code) => {
   if (!uploadDir.length) {
-    const res = await getConfig();
+    const res = await getConfig({ code });
     ossConfig = res.data.ossConfig
     uploadDir = res.data.uploadDir
   }
-  const optItem = uploadDir.find(item => item.code === code)
+  const optItem = uploadDir.find(item => item.code === code);
   const client = new OSS({
     region: `oss-${ossConfig.regionId}`,
     accessKeyId: ossConfig.credentials.accessKeyId,

@@ -40,8 +40,8 @@ const TableList = () => {
       render: (_, data) => data?.orderItemList?.[0]?.skuId
     },
     {
-      title: '所属供应商',
-      dataIndex: 'skuId',
+      title: '供应商ID',
+      dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => data?.orderItemList?.[0]?.skuId
