@@ -28,34 +28,37 @@ const SubTable = (props) => {
     },
     {
       title: '店主售价',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'salePrice',
+      valueType:'money',
       render: (text, record) => (
         <Space size="middle">
-          <p>{record.retailSupplyPrice/100}</p>
+          <p>{'￥'+record.salePrice/100}</p>
         </Space>
       ),
     },
     {
       title: '供应链销售价',
-      dataIndex: 'salePrice',
+      dataIndex: 'retailSupplyPrice',
+      valueType:'money',
       render: (text, record) => (
         <Space size="middle">
-          <p>{record.salePrice/100}</p>
+          <p>{'￥'+record.retailSupplyPrice/100}</p>
         </Space>
       ),
     },
     {
       title: '市场价',
       dataIndex: 'marketPrice',
+      valueType:'money',
       render: (text, record) => (
         <Space size="middle">
-          <p>{record.marketPrice/100}</p>
+          <p>{'￥'+record.marketPrice/100}</p>
         </Space>
       ),
     },
     {
       title: '可用库存',
-      dataIndex: 'totalStockNum',
+      dataIndex: 'stockNum',
     },
     {
       title: '销量',
@@ -73,7 +76,7 @@ const SubTable = (props) => {
     })
   }, [])
   return (
-    <Table columns={columns} dataSource={data} pagination={false} />
+    <Table key="id" columns={columns} dataSource={data} pagination={false} />
   )
 };
 
@@ -86,8 +89,15 @@ const consultantProductList = props => {
   const columns = [
     {
       title: 'spuID',
+      dataIndex: 'spuIds',
+      valueType: 'text',
+      hideInTable:true
+    },
+    {
+      title: 'spuID',
       dataIndex: 'spuId',
       valueType: 'text',
+      hideInSearch:true
     },
     {
       title: '供应链ID',
@@ -109,22 +119,22 @@ const consultantProductList = props => {
     {
       title: '店铺销售价',
       dataIndex: 'saleMaxPrice',
-      valueType: 'text',
+      valueType:'money',
       hideInSearch: true,
       render: (text, record) => (
         <Space size="middle">
-          <p>{record.saleMaxPrice/100}</p>
+          <p>{'￥'+record.saleMaxPrice/100}</p>
         </Space>
       ),
     },
     {
       title: '供应链供货价',
       dataIndex: 'saleMinPrice',
-      valueType: 'text',
+      valueType:'money',
       hideInSearch: true,
       render: (text, record) => (
         <Space size="middle">
-          <p>{record.saleMinPrice/100}</p>
+          <p>{'￥'+record.saleMinPrice/100}</p>
         </Space>
       ),
     },
@@ -188,7 +198,6 @@ const consultantProductList = props => {
         options={false}
         request={page_spuList}
         params={{
-          // spuId,
           storeNo
         }}
         expandable={{ expandedRowRender: (_) => <SubTable spuId={_.spuId} storeNo={_.storeNo} /> }}
