@@ -84,11 +84,11 @@ export default props => {
         },
         {
             title: '点赞',
-            dataIndex: 'hitsNum',
+            dataIndex: 'likesNum',
             valueType: 'text',
             hideInSearch: true,
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/content-management/dynamic-list-likes?id='+record.id)}>{record.hitsNum}</a>
+                <a onClick={()=>history.push('/community-management/content-management/dynamic-list-likes?id='+record.id)}>{record.likesNum}</a>
             ],
         },
         {

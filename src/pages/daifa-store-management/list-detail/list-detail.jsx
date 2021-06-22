@@ -33,9 +33,9 @@ const ListDetail = props => {
 
 
 
-  const getDetail = (storeNo) => {
-    setLoading(true);
-    storeDetail({
+  const getDetail = async (storeNo) => {
+   setLoading(true);
+   await storeDetail({
       storeNo
     }).then(res => {
       console.log('detail',res)
@@ -54,7 +54,7 @@ const ListDetail = props => {
       setLoading(false);
     })
 
-    categoryAll()
+  await categoryAll()
       .then(res => {
         if (res.code === 0) {
           const tree = arrayToTree(res.data.records.map(item => ({
