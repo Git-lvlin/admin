@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import ProForm,{
   DrawerForm,
   ProFormText,
@@ -10,7 +10,7 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { Form, Button, message } from 'antd'
 
-import { customMessageAdd } from '@/services/message-management/message-template-config';
+import { customMessageAdd, customMessageEdit } from '@/services/message-management/message-template-config'
 import Upload from '@/components/upload'
 
 const modules = {
@@ -58,7 +58,24 @@ const Edit = props => {
   const { visible, setVisible, callback, detailData, onClose } = props
   const [form] = Form.useForm()
   const [showTab, setShowTab] = useState(1)
+  const [linkType, setLinkType] = useState(1)
+  const apiMethods = detailData? customMessageEdit : customMessageAdd
 
+  const formItemLayout = {
+    labelCol: { span: 6 },
+    wrapperCol: { span: 14 },
+    layout: {
+      labelCol: {
+        span: 4,
+      },
+      wrapperCol: {
+        span: 14,
+      },
+    }
+  }
+  const selectLink = e => {
+    setLinkType(e.target.value)
+  }
   const DynamicTab =() => {
     if(showTab == 1) {
       return (
@@ -66,24 +83,29 @@ const Edit = props => {
           <ProFormRadio.Group
             name="linkType"
             label="详情链接"
-            initialValue='1'
+            rules={[{ required: true, message: '请输入详情链接'}]}
+            initialValue={linkType}
+            fieldProps={{
+              onChange: (e)=>{ selectLink(e) }
+            }}
             options={[
               {
                 label: '优惠活动详情',
-                value: '1'
+                value: 1
               },
               {
                 label: '优惠券-领券中',
-                value: '2',
+                value: 2,
               }
             ]}
           />
-          <ProFormText
-            name="link"
-            label="活动网址"
-            placeholder="请输入活动网址"
-            rules={[{ required: true }]}
-          />
+          { 
+            linkType===1&&<ProFormText
+              name="link"
+              label="活动网址"
+              rules={[{ required: true, message: '请输入活动网址'}]}
+            />
+          }
         </>
       )
     }else if( showTab == 2 ) {
@@ -93,7 +115,7 @@ const Edit = props => {
             name="detailTitle"
             label="内容标题"
             placeholder="请输入内容标题"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: '请输入内容标题'}]}
             fieldProps={{
               maxLength: 18
             }}
@@ -119,8 +141,8 @@ const Edit = props => {
           </ProForm.Item>
           <ProForm.Item
             label='内容'
-            required
-            name='detail'
+            rules={[{ required: true, message: '请输入内容'}]}
+            name='detailContent'
           >
             <ReactQuill
               className='richText'
@@ -140,7 +162,7 @@ const Edit = props => {
             name="detailTitle"
             label="公告标题"
             placeholder="请输入公告标题"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: '请输入公告标题'}]}
             fieldProps={{
               maxLength: 18
             }}
@@ -166,8 +188,8 @@ const Edit = props => {
           </ProForm.Item>
           <ProForm.Item
             label='公告'
-            required
-            name='detail'
+            rules={[{ required: true, message: '请输入公告'}]}
+            name='detailContent'
           >
             <ReactQuill
               className='richText'
@@ -182,18 +204,6 @@ const Edit = props => {
       )
     }
   }
-  const formItemLayout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 6
-      },
-      wrapperCol: {
-        span: 14
-      }
-    }
-  }
   const selectType = e => {
     setShowTab(e.target.value)
   }
@@ -201,9 +211,9 @@ const Edit = props => {
     let { ...rest } = values.getFieldsValue()
     let params = {}
     if(rest.type == 1) {
-      params ={...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 0}
+      params = {...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 0, pushType:1}
     } else {
-      params ={...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.content}, status: 0}
+      params = {...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.detailContent}, status: 0, pushType:1}
     }
     customMessageAdd(params).then(res=>{
       if(res?.success) {
@@ -219,11 +229,11 @@ const Edit = props => {
     let { ...rest } = values.getFieldsValue()
     let params = {}
     if(rest.type == 1) {
-      params ={...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 1}
+      params = {...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 1, pushType:1, id:detailData?.id}
     } else {
-      params ={...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.content}, status: 1}
+      params = {...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.detailContent}, status: 1, pushType:1, id:detailData?.id}
     }
-    customMessageAdd(params).then(res=>{
+    apiMethods(params).then(res=>{
       if(res?.success) {
         onClose()
         callback()
@@ -233,6 +243,22 @@ const Edit = props => {
       onClose()
     })
   }
+  useEffect(() => {
+    if(detailData){
+      const {link, detail} = detailData
+      form.setFieldsValue({
+        ...detailData,
+        linkType: link?.type,
+        link: link?.link,
+        detailTitle: detail?.title,
+        detailcCover: detail?.img,
+        detailContent: detail?.content
+      })
+      setShowTab(detailData?.type)
+      setLinkType(link?.type)
+    }
+    return undefined
+  }, [detailData])
   return (
     <DrawerForm
       title={detailData?'编辑':'新建'}
@@ -246,6 +272,7 @@ const Edit = props => {
       submitter={{
         render: () => {
           return [
+            !detailData&&
             <Button 
               type="primary" 
               key="draft" 
@@ -274,16 +301,13 @@ const Edit = props => {
         }
       }}
       visible={visible}
-      initialValues={{
-        status: 1,
-      }}
       {...formItemLayout}
     >
       <ProFormText
         name="name"
         label="名称"
         placeholder="请输入名称"
-        required
+        rules={[{required: true, message: '请输入名称'}]}
         fieldProps={{
           maxLength: 16
         }}
@@ -291,22 +315,23 @@ const Edit = props => {
       <ProFormRadio.Group
         name="type"
         label="自定义类型"
-        initialValue='1'
+        rules={[{ required: true, message: '请输入自定义类型'}]}
+        initialValue={showTab}
         fieldProps={{
           onChange: (e)=>{ selectType(e) }
         }}
         options={[
           {
             label: '优惠促销',
-            value: '1'
+            value: 1
           },
           {
             label: '内容推广',
-            value: '2'
+            value: 2
           },
           {
             label: '系统公告',
-            value: '3'
+            value: 3
           }
         ]}
       />
@@ -315,7 +340,7 @@ const Edit = props => {
         label="标题"
         width='md'
         placeholder="请输入标题"
-        required
+        rules={[{ required: true, message: '请输入标题'}]}
         fieldProps={{
           maxLength: 20
         }}
@@ -325,7 +350,7 @@ const Edit = props => {
         label="内容"
         width='lg'
         placeholder="请输入内容"
-        required
+        rules={[{ required: true, message: '请输入内容'}]}
         fieldProps={{
           maxLength: 50,
           showCount: true
@@ -334,8 +359,7 @@ const Edit = props => {
       <ProForm.Item
         label="封面图片"
         name="cover"
-        required
-        rules={[{message: '请上传封面图片'}]}
+        rules={[{message: '请上传封面图片', required: true}]}
         tooltip={
           <dl>
             <dt>图片要求</dt>
@@ -350,10 +374,11 @@ const Edit = props => {
       <ProFormSelect
         name="pushType"
         label="推送渠道"
-        placeholder="请选择推送渠道"
-        required
+        rules={[{ required: true, message: '请选择推送渠道'}]}
+        initialValue={1}
         width="md"
         valueType="select"
+        readonly
         valueEnum={{
           1: '站内信',
           2: '推送消息',
@@ -364,20 +389,18 @@ const Edit = props => {
        <ProFormRadio.Group
         name="targetType"
         label="适用会员"
-        initialValue='2'
-        required
-        rules={[{message: '请选择适用会员'} ]}
+        rules={[{message: '请选择适用会员', required: true} ]}
         tooltip={
           <>每位用户仅接收1次消息</>
         }
         options={[
           {
             label: '全部用户',
-            value: '2'
+            value: 2
           },
           {
             label: '仅店主',
-            value: '3'
+            value: 3
           }
         ]}
       />

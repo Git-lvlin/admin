@@ -65,6 +65,7 @@ export default ()=> {
             valueType: 'text',
             render:(text, record, _, action)=>[
                 <a onClick={()=>sortOrderMove({id:record.id,type:'up'}).then(res=>{ref.current.reload()})}>上移</a>,
+                <span> / </span>,
                 <a onClick={()=>sortOrderMove({id:record.id,type:'down'}).then(res=>{ref.current.reload()})}>下移</a>
             ],
             hideInSearch:true

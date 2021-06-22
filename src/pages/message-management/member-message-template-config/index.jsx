@@ -17,7 +17,6 @@ const index = () => {
     { 
       title: '消息编号',
       dataIndex: 'id',
-      align: 'center',
       valueType: 'indexBorder'
     },
     { title: '消息名称', dataIndex: 'name', align: 'center' },
@@ -47,7 +46,6 @@ const index = () => {
       align: 'center'
     }
   ]
-  // 消息
   const message = (type, module) => {
     return(
       <>
@@ -57,7 +55,8 @@ const index = () => {
           toolBarRender={false}
           columns={columns}
           actionRef={actionRef}
-          request={()=>api.messageTemplateList({toType: type, moduleType: module})}
+          params={{toType: type, moduleType: module}}
+          request={api.messageTemplateList}
           pagination={{
             showQuickJumper: true,
             pageSize: 10,

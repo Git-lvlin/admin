@@ -139,6 +139,7 @@ export default (props) => {
       } else {
         gcArr = ''
       }
+      console.log('detailData',detailData)
       values.businessScope=gcArr
       apiMethod({
         ...rest,
@@ -307,7 +308,6 @@ export default (props) => {
         label="微信号"
         placeholder="请输入微信号"
         rules={[
-          { required: true, message: '请输入微信号' },
           { validator:(rule,value,callback)=>{
             return new Promise(async (resolve, reject) => {
             if(value&&value.length>20){
@@ -324,7 +324,6 @@ export default (props) => {
         label="店主内部岗位或身份"
         placeholder="请输入店主内部岗位或身份"
         rules={[
-          { required: true, message: '请输入店主内部岗位或身份' },
           { validator:(rule,value,callback)=>{
             return new Promise(async (resolve, reject) => {
             if(value&&value.length>30){
@@ -341,7 +340,6 @@ export default (props) => {
         label="备注"
         placeholder="请输入备注"
         rules={[
-          { required: true, message: '请输入备注' },
           { validator:(rule,value,callback)=>{
             return new Promise(async (resolve, reject) => {
             if(value&&value.length>100){
@@ -357,7 +355,7 @@ export default (props) => {
       <Form.Item
         label="主营商品类型"
         name="gc"
-        // rules={[{ required: true }]}
+        rules={[{ required: true }]}
       >
         <CTree
           checkable

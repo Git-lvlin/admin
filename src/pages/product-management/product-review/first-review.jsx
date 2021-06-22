@@ -96,7 +96,7 @@ export default (props) => {
             salePrice: amountTransform(item.salePrice),
             marketPrice: amountTransform(item.marketPrice),
             skuId: item.skuId,
-            retailSupplyPrice: item.retailSupplyPrice
+            retailSupplyPrice: amountTransform(item.retailSupplyPrice)
           }))
         }
 

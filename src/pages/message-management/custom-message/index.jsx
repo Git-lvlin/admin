@@ -1,24 +1,53 @@
-import React, {useState, useRef} from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
-import { PlusOutlined } from '@ant-design/icons';
-import * as api from '@/services/message-management/message-template-config';
-import { history } from 'umi';
-import { Space, Button, Tooltip } from 'antd';
-import Edit from './edit';
-import '../styles.less';
+import React, {useState, useRef} from 'react'
+import { PageContainer } from '@ant-design/pro-layout'
+import ProTable from '@ant-design/pro-table'
+import { PlusOutlined } from '@ant-design/icons'
+import { customMessageList, customMessageDetail, customMessageAuditIm } from '@/services/message-management/message-template-config'
+import { history } from 'umi'
+import { Space, Button, Tooltip, Popconfirm, message } from 'antd'
+import Edit from './edit'
+import '../styles.less'
 
-const index = () => {
+const Index = () => {
   const [formVisible, setFormVisible] = useState(false)
   const [detailData, setDetailData] = useState(null)
   const actionRef = useRef()
 
+  const getDetail = id => {
+    customMessageDetail({id}).then(res=> {
+      if(res?.success){
+        setDetailData({...res?.data})
+        setFormVisible(true)
+      }
+    })
+  }
+  const handleOk = id =>{
+    customMessageAuditIm({id}).then(res=>{
+      if(res.success){
+        actionRef.current.reload()
+        message.success('推送成功')
+        actionRef.current.reload()
+      }
+    })
+  }
+  const PopConfirm = props =>{
+    const {id} = props
+    return(
+      <Popconfirm 
+        title="确认现在将此消息推送出去么？" 
+        cancelText="取消"
+        okText="继续"
+        onConfirm={()=>handleOk(id)}
+      >
+        <a>推送</a>
+      </Popconfirm>
+    )
+  }
   const columns = [
     { 
       title: '编号',
       dataIndex: 'id',
       valueType: 'indexBorder', 
-      align: 'center'
     },
     { 
       title: '消息名称',
@@ -63,8 +92,8 @@ const index = () => {
       render: (_, data) => {
         return(
           <>
-            <div>{data.createInfo?.name}</div>
-            <div>{data.createInfo?.time}</div>
+            <div>{data?.createInfo?.name}</div>
+            <div>{data?.createInfo?.time}</div>
           </>
         )
       }
@@ -76,8 +105,8 @@ const index = () => {
       render: (_, data) => {
         return(
           <>
-            <div>{data.updateInfo?.name}</div>
-            <div>{data.updateInfo?.time}</div>
+            <div>{data?.updateInfo?.name}</div>
+            <div>{data?.updateInfo?.time}</div>
           </>
         )
       }
@@ -89,8 +118,8 @@ const index = () => {
       render: (_, data) => {
         return(
           <>
-            <div>{data.pushInfo?.name}</div>
-            <div>{data.pushInfo?.time}</div>
+            <div>{data?.pushInfo?.name}</div>
+            <div>{data?.pushInfo?.time}</div>
           </>
         )
       }
@@ -138,10 +167,10 @@ const index = () => {
       render: (_, data) => {
         return(
           <Space>
-            { data.status == 1 && <a onClick={()=>{}}>审核</a>}
-            { data.status == 2 && <a onClick={()=>{}}>推送</a>}
-            { (data.status == 0 || data.status == 3) && <a onClick={()=>{}}>编辑</a>}
-            <a onClick={()=>{}}>详情</a>
+            { data.status == 1 && <a onClick={()=>history.push(`/message-management/custom-message/audit/${data?.id}`)}>审核</a>}
+            { data.status == 2 && <PopConfirm id={data?.id} />}
+            { (data.status == 0 || data.status == 3) && <a onClick={()=>getDetail(data?.id)}>编辑</a>}
+            <a onClick={()=>{history.push(`/message-management/custom-message/detail/${data?.id}`)}}>详情</a>
           </Space>
         )
       }
@@ -156,7 +185,7 @@ const index = () => {
         options={false}
         columns={columns}
         actionRef={actionRef}
-        request={ api.customMessageList }
+        request={ customMessageList }
         pagination={{
           showQuickJumper: true,
           pageSize: 10,
@@ -188,4 +217,4 @@ const index = () => {
   )
 }
 
-export default index;
+export default Index
