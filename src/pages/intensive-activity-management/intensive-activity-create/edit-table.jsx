@@ -123,8 +123,8 @@ export default function EditTable({ onSelect }) {
       render: (text) => <img src={text} width={50} height={50} />
     },
     {
-      title: '所属供应商名称',
-      dataIndex: 'supplierName',
+      title: '供应商ID',
+      dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
       editable: false,

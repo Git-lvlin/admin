@@ -173,17 +173,17 @@ const TableList = () => {
       }
     },
     {
-      title: '供应商名称',
-      dataIndex: 'supplierName',
+      title: '供应商ID',
+      dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '供应商名称',
+      title: '供应商ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商名称'
+        placeholder: '请输入供应商ID'
       },
       renderFormItem: () => <SupplierSelect />,
       hideInTable: true,
