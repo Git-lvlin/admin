@@ -126,7 +126,7 @@ export default props=>{
             columns={columns}
         />
         :<>
-           <a href="http://dev-yeahgo-secret.oss-cn-shenzhen.aliyuncs.com/store_secret/message/rc-upload-1624330809769-12tmp_agent.xls"><Button type="primary" style={{margin:'20px 0 20px 0'}}>下载模板</Button></a>
+           <a href="https://dev-yeahgo-secret.oss-cn-shenzhen.aliyuncs.com/store_secret/message/rc-upload-1624330809769-12tmp_agent.xls"><Button type="primary" style={{margin:'20px 0 20px 0'}}>下载模板</Button></a>
            <EcxelUpload calback={fileUrl}  multiple maxCount={1} accept="image/*" size={5 * 1024} />
         </>
         }
