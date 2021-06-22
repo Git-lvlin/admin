@@ -66,12 +66,13 @@ export default props=>{
           title: '状态',
           dataIndex: 'state',
           valueType: 'select',
-        //   valueEnum: {
-        //     0:'全部',
-        //     1: '已启用',
-        //     2: '已禁用',
-        //     3: '未激活'
-        //   }
+          valueEnum: {
+            0:'未开始',
+            1: '处理中',
+            2: '导入成功',
+            3: '导入失败',
+            4: '用户取消'
+          }
         },
         {
           title: '进度',
@@ -113,6 +114,18 @@ export default props=>{
               await submit(values);
               return true;
             }}
+            cancelButtonProps={{
+              onCancel: () => {
+                setDatalist([])
+                console.log('asdas')
+              }
+            }}
+            // modalProps={{
+            //   onCancel: () => {
+            //     setDatalist([])
+            //     console.log('asdas')
+            //   },
+            // }}
             destroyOnClose='false'
         >
         
