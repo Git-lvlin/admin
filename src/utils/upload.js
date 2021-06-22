@@ -16,6 +16,7 @@ let ossConfig = null
 const upload = async (file, code) => {
   if (!uploadDir.length) {
     const res = await getConfig({ code });
+    console.log('res.data.uploadDir',res)
     ossConfig = res.data.ossConfig
     uploadDir = res.data.uploadDir
   }

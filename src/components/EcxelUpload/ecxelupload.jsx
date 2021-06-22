@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Upload as AntUpload, message } from 'antd';
 import { UploadOutlined, LoadingOutlined } from '@ant-design/icons';
-import { getImageSize } from '@/utils/utils';
 import upload from '@/utils/upload'
 
 const EcxelUpload = (props) => {
-  const { value, onChange, dirName = 'goods', maxCount = 1, size, dimension, proportion, disabled = false, calback } = props;
+  const { value, onChange, code= 304, maxCount = 1, size, dimension, proportion, disabled = false, calback } = props;
   const [fileList, setFileList] = useState([])
   const [loading, setLoading] = useState(false)
   const fileData = useRef([]);
@@ -19,7 +18,7 @@ const EcxelUpload = (props) => {
 
   const customRequest = ({ file }) => {
     setLoading(true);
-    upload(file, dirName)
+    upload(file, code)
       .then(res => {
         calback(res)
         const arr = [...fileData.current];
@@ -69,7 +68,7 @@ const EcxelUpload = (props) => {
         &&
         <div>
           {loading ? <LoadingOutlined /> : <UploadOutlined />}
-          <p>导入店主表格资料</p>
+          <p>导入</p>
         </div>
       }
     </AntUpload>

@@ -74,11 +74,11 @@ export default props => {
     <PageContainer>
         <Row gutter={16} style={{background:'#fff',padding:'20px',marginBottom:'20px'}}>
             <Col span={8}>
-               <Statistic title="累计成交金额" style={{display:'inline-block'}} value={moneyData.totalOrderAmount/100} precision={2}/>
+               <Statistic title="累计成交金额" style={{display:'inline-block'}} value={moneyData.totalOrderAmount&&moneyData.totalOrderAmount/100} precision={2}/>
                <span style={{fontSize:"18px"}}>元</span>
             </Col>
             <Col span={8}>
-              <Statistic title="累计佣金金额" style={{display:'inline-block'}} value={moneyData.totalCommission/100} precision={2}/>
+              <Statistic title="累计佣金金额" style={{display:'inline-block'}} value={moneyData.totalCommission&&moneyData.totalCommission/100} precision={2}/>
               <span style={{fontSize:"18px"}}>{moneyData.freezeCommission?'元（其中冻结佣金额为'+moneyData.freezeCommission/100+'元)':''}</span>
             </Col>
             <Col span={8}>
