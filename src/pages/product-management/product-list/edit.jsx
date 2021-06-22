@@ -615,7 +615,6 @@ export default (props) => {
         name="buyMaxNum"
         label="单SKU单次最多零售购买数量"
         placeholder="请输入单SKU单次最多零售购买数量"
-        disabled
       />
 
       <ProFormRadio.Group
