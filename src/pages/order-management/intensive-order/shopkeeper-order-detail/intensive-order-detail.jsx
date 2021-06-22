@@ -162,7 +162,7 @@ const OrderDetail = () => {
               </div>
               <div className={styles.box}>
                 <div>用户实付</div>
-                <div>-{amountTransform(detailData?.sumOrder?.payAmount, '/')}元</div>
+                <div>{amountTransform(detailData?.sumOrder?.payAmount, '/')}元</div>
               </div>
             </div>
           </div>

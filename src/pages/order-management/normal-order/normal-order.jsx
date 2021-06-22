@@ -226,8 +226,8 @@ const TableList = () => {
                 <Space size="large">
                   <span>下单时间：{item.createTime.replace('T', ' ')}</span>
                   <span>订单号：{item.orderSn}</span>
-                  <span>下单用户：LUCAS</span>
-                  <span>用户手机号：{item.userPhone}</span>
+                  <span>下单用户：{item.buyerNickname}</span>
+                  <span>用户手机号：{item.buyerPhone}</span>
                 </Space>
               </div>
 
@@ -236,7 +236,7 @@ const TableList = () => {
                   {
                     item.orderItem.map(it => (
                       <div key={it.skuId}>
-                        <img width="100" height="100" src={it.goodsImageUrl} />
+                        <img width="100" height="100" src={it.skuImageUrl} />
                         <div className={styles.info}>
                           <div>{it.goodsName}</div>
                           <div>{{ 1: '秒约', 2: '单约', 3: '团约' }[item.orderType]}价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
