@@ -201,7 +201,7 @@ const PriceManagement = () => {
                   float: 'left'
                 }}
                 size="middle"
-                onSearch={(_) => {onSearch(_,'jd')}}
+                onSearch={(_) => {onSearch(_,'jd',a.id)}}
                 loading={loading['jd']}
               />
             <Button
@@ -241,7 +241,7 @@ const PriceManagement = () => {
                     width: "92%",
                     float: 'left'
                   }}
-                  onSearch={(_) => {onSearch(_,'pdd')}}
+                  onSearch={(_) => {onSearch(_,'pdd',a.id)}}
                   loading={loading['pdd']}
                 />
               <Button
@@ -280,7 +280,7 @@ const PriceManagement = () => {
                   float: 'left'
                 }}
                 size="middle"
-                onSearch={(_) => {onSearch(_,'tmall')}}
+                onSearch={(_) => {onSearch(_,'tmall',a.id)}}
                 loading={loading['tmall']}
               />
             <Button
@@ -371,6 +371,7 @@ const PriceManagement = () => {
       <ProTable
       form={form}
       rowKey="id"
+      key="allKey"
       columns={columns}
       expandable={{
         expandedRowRender,
