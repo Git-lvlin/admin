@@ -29,8 +29,8 @@ const useSecond=(props)=>{
             valueType: 'text',
         },
         {
-            title: '供应商名称',
-            dataIndex: 'supplierName',
+            title: '供应商ID',
+            dataIndex: 'supplierId',
             valueType: 'text',
         },
         {
@@ -105,8 +105,8 @@ const useSecond=(props)=>{
             valueType: 'text',
         },
         {
-            title: '供应商名称',
-            dataIndex: 'supplierName',
+            title: '供应商ID',
+            dataIndex: 'supplierId',
             valueType: 'text',
         },
         {
@@ -141,7 +141,7 @@ const useSecond=(props)=>{
            dataIndex: 'gcName',
         }
      ]
-    //删除品类
+    // 删除品类
     const delType=key=>{
         setCates([])
         dispatch({
@@ -153,9 +153,9 @@ const useSecond=(props)=>{
         setFlag(true)
     }
     
-    //删除商品
+    // 删除商品
     const  delGoods=val=>{
-        let arr =  UseScopeList.UseScopeObje.spuIds.split(',')
+        const arr =  UseScopeList.UseScopeObje.spuIds.split(',')
         dispatch({
             type:'UseScopeList/fetchLookSpuIds',
             payload:{
@@ -196,13 +196,13 @@ const useSecond=(props)=>{
         dispatch({
             type:'UseScopeList/fetchLookSpuIds',
             payload:{
-                spuIds:spuIds
+                spuIds
             }
         })
         dispatch({
             type:'UseScopeList/fetchLookSpuIdsArr',
             payload:{
-                spuIdsArr:spuIdsArr
+                spuIdsArr
             }
         })
     };
@@ -211,11 +211,11 @@ const useSecond=(props)=>{
         setIsModalVisible(false);
     };
 
-    //拼接spuIds
+    // 拼接spuIds
     const onIpute=(res)=>{
         let spuIds=''
         res.selectedRows.map(ele=>{
-            spuIds+=ele.spuId+','
+            spuIds+=`${ele.spuId},`
         })
         spuIds=spuIds.substring(0,spuIds.length-1)
        setSpuIds(spuIds)
@@ -224,7 +224,7 @@ const useSecond=(props)=>{
     const onCate=()=>{
         setFlag(true)
     }
-    //品类下拉接口调用
+    // 品类下拉接口调用
     useEffect(()=>{
         classList({gcParentId:0}).then(res=>{
             setOnselect(res.data.map(ele=>(
