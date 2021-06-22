@@ -52,7 +52,7 @@ const SubTable = (props) => {
       valueType:'money',
       render: (text, record) => (
         <Space size="middle">
-          <p>{'￥'+record.marketPrice/100}</p>
+          <p>{record.marketPrice?'￥'+record.marketPrice/100:null}</p>
         </Space>
       ),
     },
