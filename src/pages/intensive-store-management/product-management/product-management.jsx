@@ -37,17 +37,17 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '供应商名称',
-      dataIndex: 'supplierCompanyName',
+      title: '供应商ID',
+      dataIndex: 'supplierId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入商品名称'
+        placeholder: '请输入供应商ID'
       },
       hideInTable: true,
     },
     {
-      title: '所属供应商',
-      dataIndex: ['supplier', 'companyName'],
+      title: '供应商ID',
+      dataIndex: ['supplier', 'id'],
       valueType: 'text',
       hideInSearch: true,
     },

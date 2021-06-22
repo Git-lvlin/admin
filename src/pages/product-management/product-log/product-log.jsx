@@ -77,11 +77,11 @@ const TableList = () => {
       }
     },
     {
-      title: '商家名称',
-      dataIndex: 'supplierName',
+      title: '供应商ID',
+      dataIndex: 'supplierId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入商家名称'
+        placeholder: '请输入供应商ID'
       }
     },
     {
