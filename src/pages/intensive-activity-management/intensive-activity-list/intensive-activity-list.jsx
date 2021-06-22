@@ -73,7 +73,7 @@ const SubTable = (props) => {
       wholesaleId: props.wholesaleId
     }).then(res => {
       if (res.code === 0) {
-        setData(res?.data)
+        setData(res?.data?.length ? res.data : [])
       }
     })
   }, [])
@@ -104,7 +104,7 @@ const TableList = () => {
     updateWholesaleState({
       wholesaleId
     }).then(res => {
-      if (res.code===0) {
+      if (res.code === 0) {
         actionRef.current.reload();
       }
     })
