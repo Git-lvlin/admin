@@ -518,7 +518,6 @@ export default (props) => {
                 name="supplierSkuId"
                 label="货号"
                 placeholder="请输入货号"
-                rules={[{ required: true, message: '请输入货号' }]}
                 disabled
               />
               <ProFormText
