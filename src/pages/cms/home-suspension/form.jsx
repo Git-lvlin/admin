@@ -85,7 +85,7 @@ export default (props) => {
             </dl>
           }
         >
-          <Upload multiple maxCount={1} accept="image/*" />
+          <Upload multiple maxCount={1} code={220} accept="image/*" />
         </Form.Item>
       </ProForm.Group>
       <ProForm.Group>

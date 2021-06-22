@@ -341,7 +341,7 @@ const PriceManagement = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _, action) => {
+      render: (text, record, _) => {
         return (
           <>
             {/* {<a key="editable" onClick={() => {}}>比价设置</a>} */}
@@ -370,7 +370,7 @@ const PriceManagement = () => {
     <PageContainer>
       <ProTable
       form={form}
-      rowKey="allKey"
+      rowKey="id"
       columns={columns}
       expandable={{
         expandedRowRender,

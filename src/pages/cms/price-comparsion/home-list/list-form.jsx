@@ -27,18 +27,31 @@ export default (props) => {
       dataIndex: 'goodsName',
       valueType: 'text',
     },
+    {
+      title: '是否抓取',
+      dataIndex: 'acquire',
+      valueType: 'text',
+      valueEnum: {
+        0: '未抓取',
+        1: '已抓取',
+      }
+    },
   ];
 
   const waitTime = () => {
+    console.log('arr', arr)
     return new Promise((resolve, reject) => {
       if (arr.length !== 1) {
         message.error('只能添加一个商品!')
         reject(false)
-        return false;
-      } else {
-        setIndexGoods(arr[0])
-        resolve(true);
       }
+      if (arr[0].acquire === 0) {
+        message.error('只能选择已抓取的商品!')
+        reject(false)
+      }
+     
+      setIndexGoods(arr[0])
+      resolve(true);
     });
   };
 

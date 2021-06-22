@@ -182,7 +182,7 @@ export default (props) => {
             </dl>
           }
         >
-          <Upload multiple maxCount={1} accept="image/*" proportion={picSize[nowIndex]||'banner'} />
+          <Upload multiple maxCount={1} code={201} accept="image/*" proportion={picSize[nowIndex]||'banner'} />
         </Form.Item>
       </ProForm.Group>
       <ProForm.Group>

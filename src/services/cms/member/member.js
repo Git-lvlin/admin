@@ -770,6 +770,7 @@ export const priceComparsionListAlls = async (params = {}, options = {}) => {
     data,
     ...options
   });
+  // res.data.records.filter(item=>item.acquire === 1)
 
   return {
     data: res.data.records || [],
