@@ -301,12 +301,12 @@ export default function EditTable() {
       pagination={{
         pageSize: 5
       }}
-      // rowSelection={{
-      //   onChange: (_, val) => {
-      //     // onSelect(val[0])
-      //     console.log('_', _, val)
-      //   }
-      // }}
+      rowSelection={{
+        onChange: (_, val) => {
+          // onSelect(val[0])
+          console.log('_', _, val)
+        }
+      }}
       bordered
       recordCreatorProps={false}
       tableAlertRender={false}
