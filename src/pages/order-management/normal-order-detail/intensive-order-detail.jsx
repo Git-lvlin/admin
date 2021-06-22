@@ -34,7 +34,7 @@ const OrderDetail = () => {
       id: params.id
     }).then(res => {
       if (res.code === 0) {
-        setDetailData(res.data.records)
+        setDetailData(res.data)
       }
     })
   }
