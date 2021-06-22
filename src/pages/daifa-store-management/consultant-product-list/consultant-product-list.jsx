@@ -37,7 +37,7 @@ const SubTable = (props) => {
       ),
     },
     {
-      title: '供应链销售价',
+      title: '供应链供货价',
       dataIndex: 'retailSupplyPrice',
       valueType:'money',
       render: (text, record) => (
@@ -47,7 +47,7 @@ const SubTable = (props) => {
       ),
     },
     {
-      title: '市场价',
+      title: '店铺市场价',
       dataIndex: 'marketPrice',
       valueType:'money',
       render: (text, record) => (
@@ -117,18 +117,18 @@ const consultantProductList = props => {
       valueType: 'text',
     },
     {
-      title: '店铺销售价',
+      title: '店铺销售价（元）',
       dataIndex: 'saleMaxPrice',
       valueType:'money',
       hideInSearch: true,
       render: (text, record) => (
         <Space size="middle">
-          <p>{'￥'+record.saleMaxPrice/100}</p>
+          <p>{record.saleMinPrice/100+'~'+record.saleMaxPrice/100+'元'}</p>
         </Space>
       ),
     },
     {
-      title: '供应链供货价',
+      title: '供应链供货价（元）',
       dataIndex: 'saleMinPrice',
       valueType:'money',
       hideInSearch: true,

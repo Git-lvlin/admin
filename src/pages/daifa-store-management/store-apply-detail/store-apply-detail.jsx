@@ -176,7 +176,7 @@ const ListApplyDetail = props => {
           <Form.Item
             label="."
           >
-            <Button onClick={()=>history.push('/daifa-store-management/agent-shop-store_apply')}>返回</Button>
+            <Button type="primary" onClick={()=>history.push('/daifa-store-management/agent-shop-store_apply')}>返回</Button>
           </Form.Item>
 
         </Form>

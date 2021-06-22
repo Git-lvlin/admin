@@ -266,7 +266,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <Form.Item
         label="身份证国徽面照片"
@@ -280,7 +280,7 @@ export default (props) => {
         }
         rules={[{ required: true }]}
       >
-        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <Form.Item
         label="手持身份证照片"
@@ -294,7 +294,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <ProFormText
         name="idNumber"
