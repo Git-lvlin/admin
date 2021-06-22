@@ -129,12 +129,12 @@ const consultantProductList = props => {
     },
     {
       title: '供应链供货价（元）',
-      dataIndex: 'saleMinPrice',
+      dataIndex: 'minRetailSupplyPrice',
       valueType:'money',
       hideInSearch: true,
       render: (text, record) => (
         <Space size="middle">
-          <p>{'￥'+record.saleMinPrice/100}</p>
+           <p>{record.minRetailSupplyPrice/100+'~'+record.maxRetailSupplyPrice/100+'元'}</p>
         </Space>
       ),
     },
