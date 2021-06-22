@@ -3,9 +3,8 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
 import { storeList,statusSwitch, storeDetail } from '@/services/daifa-store-management/list'
 import { history } from 'umi';
-import AddModal from './add-modal'
+import AddModal from '@/components/ExcelModel'
 import Edit from './edit';
-import Upload from '@/components/upload';
 import { max } from 'moment';
 
 const TableList = () => {
@@ -44,8 +43,16 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店铺名称',
-        maxLength:30
-      }
+      },
+    //   render: (_, data)=>{
+    //     return new Promise(async (resolve, reject) => {
+    //     if(_&&_.length>10){
+    //       await reject('店铺名称不超过10个字符')
+    //     }else {
+    //       await resolve()
+    //   }
+    //   })
+    //  }
     },
     {
       title: '店主姓名',
