@@ -11,10 +11,10 @@ const DebounceSelect = (props) => {
       setOptions([]);
       setFetching(true);
       supplierList({
-        companyName: value
+        supplierId: value
       }).then((res) => {
         if (res.code === 0) {
-          setOptions(res.data.records.map(item => ({ label: item.companyName, value: item.id })));
+          setOptions(res.data.records.map(item => ({ label: item.id, value: item.id })));
         }
 
         setFetching(false);
@@ -30,7 +30,7 @@ const DebounceSelect = (props) => {
       notFoundContent={fetching ? <Spin size="small" /> : null}
       {...props}
       options={options}
-      placeholder="请输入供应商名称"
+      placeholder="请输入供应商ID"
       showSearch
     />
   );

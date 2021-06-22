@@ -17,7 +17,7 @@ import { numFormat, digitUppercase } from '@/utils/utils'
 import { history } from 'umi';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
-
+import Big from 'big.js'
 
 const formItemLayout = {
   labelCol: { span: 10 },
@@ -69,6 +69,9 @@ const IntensiveActivityCreate = () => {
           maxNum: selectItem.maxNum,
           supplierId: selectItem.supplierId,
           totalPrice: selectItem.totalPrice,
+          wholesaleSupplyPrice: amountTransform(selectItem.wholesaleSupplyPrice),
+          fixedPrice: amountTransform(selectItem.fixedPrice),
+          settlePercent: selectItem.settlePercent,
         }],
         storeLevel: 'ALL',
         memberLevel: 'ALL',
@@ -123,11 +126,17 @@ const IntensiveActivityCreate = () => {
             name="base"
             title="选择活动商品"
             onFinish={() => {
-              if (selectItem) {
-                return true;
+              if (!selectItem) {
+                message.error('请选择活动商品');
+                return false;
               }
-              message.error('请选择活动商品');
-              return false;
+              let minWholesalePrice = (amountTransform(selectItem.wholesaleSupplyPrice) + +new Big(selectItem.fixedPrice).times(100)) / (+new Big(1).minus(0.0068).minus(selectItem.settlePercent));
+              minWholesalePrice = +new Big(Math.ceil(minWholesalePrice)).div(100);
+              if (selectItem.price < minWholesalePrice) {
+                message.error(`集约价格小于集约最低价${minWholesalePrice}`);
+                return false;
+              }
+              return true;
             }}
 
           >
@@ -163,9 +172,9 @@ const IntensiveActivityCreate = () => {
             />
             <ProFormDateTimePicker
               name="endTimeAdvancePayment"
-              label="订金支付截至时间"
+              label="店主采购单下单截至时间"
               width="md"
-              rules={[{ required: true, message: '请选择订金支付截至时间' }]}
+              // rules={[{ required: true, message: '请选择店主采购单下单截至时间' }]}
               fieldProps={{
                 disabledDate: (currentDate) => { return +currentDate < +new Date() },
                 disabledTime: disabledRangeTime,
@@ -204,7 +213,7 @@ const IntensiveActivityCreate = () => {
             >
               <Descriptions labelStyle={{ textAlign: 'right', width: 150, display: 'inline-block' }} column={1}>
                 <Descriptions.Item label="参与活动商品">{selectItem.goodsName}（skuID：{selectItem.skuId}）</Descriptions.Item>
-                <Descriptions.Item label="所有全款结清可收款">{numFormat(submitValue.goodsInfos[0].totalPrice)} 元（{digitUppercase(submitValue.goodsInfos[0].totalPrice)}）</Descriptions.Item>
+                {/* <Descriptions.Item label="所有全款结清可收款">{numFormat(submitValue.goodsInfos[0].totalPrice)} 元（{digitUppercase(submitValue.goodsInfos[0].totalPrice)}）</Descriptions.Item> */}
               </Descriptions>
             </div>}
           </StepsForm.StepForm>
