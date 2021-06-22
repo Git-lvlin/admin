@@ -176,7 +176,7 @@ const ListDetail = props => {
           <Form.Item
             label="."
           >
-            <Button onClick={()=>history.push('/daifa-store-management/list')}>返回</Button>
+            <Button type="primary" onClick={()=>history.push('/daifa-store-management/list')}>返回</Button>
           </Form.Item>
           
         </Form>

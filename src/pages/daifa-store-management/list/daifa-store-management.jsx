@@ -6,6 +6,7 @@ import { history } from 'umi';
 import AddModal from './add-modal'
 import Edit from './edit';
 import Upload from '@/components/upload';
+import { max } from 'moment';
 
 const TableList = () => {
   const ref=useRef()
@@ -42,7 +43,8 @@ const TableList = () => {
       dataIndex: 'storeName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入店铺名称'
+        placeholder: '请输入店铺名称',
+        maxLength:30
       }
     },
     {
