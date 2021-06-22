@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Button, Space } from 'antd';
+import { Button, Space, Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/intensive-store-management/store-review';
@@ -73,7 +73,7 @@ const StoreReview = () => {
       hideInSearch: true,
       render: (_, { details }) => (
         <Space>
-          <img src={details.idHandheld} width="50" height="50" />
+          <Image src={details.idHandheld} width={50} height={50} />
         </Space>
       )
     },
@@ -84,9 +84,9 @@ const StoreReview = () => {
       hideInSearch: true,
       render: (_, { details }) => (
         <Space>
-          <img src={details.idHandheld} width="50" height="50" />
-          <img src={details.idFront} width="50" height="50" />
-          <img src={details.idBack} width="50" height="50" />
+          <Image src={details.idHandheld} width={50} height={50} />
+          <Image src={details.idFront} width={50} height={50} />
+          <Image src={details.idBack} width={50} height={50} />
         </Space>
       )
     },

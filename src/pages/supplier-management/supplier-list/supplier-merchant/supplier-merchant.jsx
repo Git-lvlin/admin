@@ -100,7 +100,9 @@ const TableList = () => {
         1: '已审核',
         2: '待审核',
         3: '审核拒绝'
-      }
+      },
+      width: 200,
+      ellipsis: true,
     },
     {
       title: '资金账户审核状态',
