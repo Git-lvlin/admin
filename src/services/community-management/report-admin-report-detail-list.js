@@ -15,6 +15,7 @@ export const adminReportDetailList= async (params, options = {}) => {
   return {
     code: res.code,
     data: res.data.records,
+    total:Number(res.data.total),
     success: res.success,
   }
 }

@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Form } from 'antd';
+import { Form, Select } from 'antd';
+import {
+  ProFormDigit
+} from '@ant-design/pro-form';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import Big from 'big.js';
+import { amountTransform } from '@/utils/utils'
 
+const getOptions = () => {
+  const arr = [];
+  new Array(20).fill(0).forEach((item, index) => {
+    arr.push({ label: `${index + 1}%`, value: index + 1 })
+  })
+  return arr;
+}
 
 export default function EditTable({ onSelect }) {
   const [editableKeys, setEditableKeys] = useState([])
@@ -119,14 +130,14 @@ export default function EditTable({ onSelect }) {
       editable: false,
     },
     {
-      title: '销售价',
-      dataIndex: 'salePriceDisplay',
+      title: '批发供货价(元)',
+      dataIndex: 'wholesaleSupplyPrice',
       valueType: 'text',
       hideInSearch: true,
       editable: false
     },
     {
-      title: '市场价',
+      title: '市场价(元)',
       dataIndex: 'marketPriceDisplay',
       valueType: 'text',
       hideInSearch: true,
@@ -146,44 +157,106 @@ export default function EditTable({ onSelect }) {
       hideInSearch: true,
       editable: false,
     },
-    {
-      title: '结算类型',
-      dataIndex: 'settleType',
-      valueType: 'text',
-      hideInSearch: true,
-      editable: false,
-      valueEnum: {
-        1: '佣金模式',
-        2: '底价模式'
-      },
-    },
+    // {
+    //   title: '结算类型',
+    //   dataIndex: 'settleType',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   editable: false,
+    //   valueEnum: {
+    //     1: '佣金模式',
+    //     2: '底价模式'
+    //   },
+    // },
     {
       title: '集约总库存',
       dataIndex: 'totalStockNum',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            whitespace: true,
+            message: '请输入集约总库存',
+          },
+        ],
+      }
+    },
+    {
+      title: '集约分成比例',
+      dataIndex: 'settlePercent',
+      valueType: 'text',
+      hideInSearch: true,
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            whitespace: true,
+            message: '请输入集约分成比例',
+          },
+        ],
+      }
     },
     {
       title: '集约价',
       dataIndex: 'price',
       valueType: 'text',
       hideInSearch: true,
-      editable: (_, data) => {
-        return data.settleType !== 1
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            whitespace: true,
+            message: '请输入集约价',
+          },
+        ],
       }
     },
-    
+    {
+      title: '配送费补贴(元)',
+      dataIndex: 'fixedPrice',
+      valueType: 'text',
+      hideInSearch: true,
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            whitespace: true,
+            message: '请输入配送费补贴',
+          },
+        ],
+      }
+    },
     {
       title: '单店起订量',
       dataIndex: 'minNum',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            whitespace: true,
+            message: '请输入单店起订量',
+          },
+        ],
+      }
     },
     {
       title: '单店限订量',
       dataIndex: 'maxNum',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            whitespace: true,
+            message: '请输入单店限订量',
+          },
+        ],
+      }
     },
     {
       title: '全款金额',
@@ -202,7 +275,9 @@ export default function EditTable({ onSelect }) {
       totalStockNum: item.stockNum,
       minNum: 1,
       maxNum: 10,
-      price: item.salePrice > 0 ? + new Big(item.salePrice).div(100) : 0,
+      price: amountTransform(item.minWholesalePrice, '/'),
+      fixedPrice: amountTransform(item.fixedPrice, '/'),
+      wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
       totalPrice: item.salePrice > 0 ? +new Big(item.salePrice).div(100).times(1) : 0,
     }))
     setDataSource(arr)
@@ -218,6 +293,7 @@ export default function EditTable({ onSelect }) {
         goodsState: 1,
         goodsVerifyState: 1,
         hasStock: 1,
+        isGetWholesale: 1,
       }}
       request={productList}
       search={{
@@ -246,9 +322,9 @@ export default function EditTable({ onSelect }) {
       }}
       pagination={{
         pageSize: 5,
-        pageSizeOptions:[5, 10, 20, 50, 100]
+        pageSizeOptions: [5, 10, 20, 50, 100]
       }}
-      
+
       rowSelection={{
         hideSelectAll: true,
         type: 'radio',
