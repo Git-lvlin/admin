@@ -212,7 +212,7 @@ export default function EditTable() {
       ...item,
       // totalStockNum: item.stockNum,
       // minNum: 1,
-      gcId: item.gcId1&&item.gcId2&&[item.gcId1, item.gcId2],
+      gcId: item.gcId1&&item.gcId2&&[Number(item.gcId1), Number(item.gcId2)],
       price: amountTransform(+item.price, '/'),
       floatPercent: 500,
       goodsState: 1,
