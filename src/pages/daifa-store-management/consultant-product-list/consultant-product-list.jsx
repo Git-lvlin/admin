@@ -19,32 +19,20 @@ const SubTable = (props) => {
       dataIndex: 'outSkuId',
     },
     {
-      title: '规格1',
-      dataIndex: 'gcId1Display',
-    },
-    {
-      title: '规格2',
-      dataIndex: 'gcId2Display',
+      title: '规格',
+      dataIndex: 'skuNameDisplay',
     },
     {
       title: '店主售价',
       dataIndex: 'salePrice',
       valueType:'money',
-      render: (text, record) => (
-        <Space size="middle">
-          <p>{'￥'+record.salePrice/100}</p>
-        </Space>
-      ),
+      render: (_)=> amountTransform(_, '/').toFixed(2),
     },
     {
       title: '供应链供货价',
       dataIndex: 'retailSupplyPrice',
       valueType:'money',
-      render: (text, record) => (
-        <Space size="middle">
-          <p>{'￥'+record.retailSupplyPrice/100}</p>
-        </Space>
-      ),
+      render: (_)=> amountTransform(_, '/').toFixed(2),
     },
     {
       title: '店铺市场价',
@@ -52,7 +40,7 @@ const SubTable = (props) => {
       valueType:'money',
       render: (text, record) => (
         <Space size="middle">
-          <p>{'￥'+record.marketPrice/100}</p>
+          <p>{record.marketPrice?'￥'+amountTransform(record.marketPrice, '/').toFixed(2):null}</p>
         </Space>
       ),
     },
@@ -123,18 +111,18 @@ const consultantProductList = props => {
       hideInSearch: true,
       render: (text, record) => (
         <Space size="middle">
-          <p>{record.saleMinPrice/100+'~'+record.saleMaxPrice/100+'元'}</p>
+          <p>{amountTransform(record.saleMinPrice, '/').toFixed(2)+'~'+amountTransform(record.saleMaxPrice, '/').toFixed(2)+'元'}</p>
         </Space>
       ),
     },
     {
       title: '供应链供货价（元）',
-      dataIndex: 'saleMinPrice',
+      dataIndex: 'minRetailSupplyPrice',
       valueType:'money',
       hideInSearch: true,
       render: (text, record) => (
         <Space size="middle">
-          <p>{'￥'+record.saleMinPrice/100}</p>
+           <p>{amountTransform(record.minRetailSupplyPrice, '/').toFixed(2)+'~'+amountTransform(record.maxRetailSupplyPrice, '/').toFixed(2)+'元'}</p>
         </Space>
       ),
     },

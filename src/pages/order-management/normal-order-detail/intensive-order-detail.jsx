@@ -92,11 +92,11 @@ const OrderDetail = () => {
               </div>
               <div className={styles.box}>
                 <div>下单用户</div>
-                <div></div>
+                <div>{detailData?.buyerNickname}</div>
               </div>
               <div className={styles.box}>
                 <div>用户手机号</div>
-                <div>{detailData?.userPhone}</div>
+                <div>{detailData?.buyerPhone}</div>
               </div>
               <div className={styles.box}>
                 <div>支付时间</div>

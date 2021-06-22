@@ -4,7 +4,7 @@ import EcxelUpload from '@/components/EcxelUpload';
 import ProForm,{
     DrawerForm,
   } from '@ant-design/pro-form';
-import {findPage,createImportTask } from '@/services/daifa-store-management/list';
+import {findPage,createImportTask,file_tpl_url } from '@/services/daifa-store-management/list';
 import {  Button,message } from 'antd';
 
 
@@ -113,9 +113,10 @@ export default props=>{
               await submit(values);
               return true;
             }}
+            destroyOnClose='false'
         >
         
-        {
+        { 
             datalist.length?
             <ProTable
             rowKey="id"
@@ -124,7 +125,10 @@ export default props=>{
             dataSource={datalist}
             columns={columns}
         />
-        :<EcxelUpload calback={fileUrl}  multiple maxCount={1} accept="image/*" size={5 * 1024} />
+        :<>
+           <a href="https://dev-yeahgo-secret.oss-cn-shenzhen.aliyuncs.com/store_secret/message/rc-upload-1624330809769-12tmp_agent.xls"><Button type="primary" style={{margin:'20px 0 20px 0'}}>下载模板</Button></a>
+           <EcxelUpload calback={fileUrl}  multiple maxCount={1} accept="image/*" size={5 * 1024} />
+        </>
         }
        
         </DrawerForm>

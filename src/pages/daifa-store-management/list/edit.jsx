@@ -387,11 +387,7 @@ export default (props) => {
           {
             label: '禁用',
             value: 2,
-          },
-          {
-            label: '未激活',
-            value: 3,
-          },
+          }
         ]}
       />
       {formVisible && <FormModal
