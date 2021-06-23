@@ -4,22 +4,22 @@ import {
   SafetyCertificateOutlined,
 } from '@ant-design/icons';
 import { message } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { Button } from 'antd';
 import { history } from 'umi';
 import * as api from '@/services/login';
 import { getPageQuery } from '@/utils/utils';
 import styles from './index.less';
-import md5 from 'blueimp-md5';
+// import md5 from 'blueimp-md5';
 
 const Login = () => {
   const [randstr, setRandstr] = useState(Math.random());
   const [isVertyfy, setIsVertyfy] = useState(false);
-  const [account] = useState(JSON.parse(window.localStorage.getItem('account')) || {});
+  // const [account] = useState(JSON.parse(window.localStorage.getItem('account')) || {});
 
   const login = (payload) => {
-    const { autoLogin, name, passwd, vertycode } = payload
+    const { name, passwd, vertycode } = payload
     api.login({
       name,
       passwd,
@@ -30,14 +30,15 @@ const Login = () => {
       setIsVertyfy(res?.data?.isVertyfy)
       if (res.code === 0) {
 
-        if (autoLogin) {
-          window.localStorage.setItem('account', JSON.stringify({ name, passwd }))
-        } else {
-          window.localStorage.removeItem('account');
-        }
-
+        // if (autoLogin) {
+        //   window.localStorage.setItem('account', JSON.stringify({ name, passwd }))
+        // } else {
+        //   window.localStorage.removeItem('account');
+        // }
+        console.log('res',res)
         window.localStorage.setItem('token', res.data.token)
         window.localStorage.setItem('nickname', res.data.nickname)
+        window.localStorage.setItem('user', JSON.stringify({id:res.data.id,username:res.data.username}))
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         message.success('登录成功！');
@@ -86,11 +87,11 @@ const Login = () => {
 
   const upDateCaptchaImg = () => { setRandstr(Math.random()) }
 
-  useEffect(() => {
-    if (account.name) {
-      checkIsVertyfy(account.name)
-    }
-  }, [account])
+  // useEffect(() => {
+  //   if (account.name) {
+  //     checkIsVertyfy(account.name)
+  //   }
+  // }, [account])
 
   return (
     <div className={styles.main}>
@@ -104,11 +105,6 @@ const Login = () => {
         </div>
       </div>
       <ProForm
-        initialValues={{
-          autoLogin: true,
-          name: account.name,
-          passwd: account.passwd,
-        }}
         submitter={{
           render: (props) => {
             return (
@@ -116,9 +112,9 @@ const Login = () => {
                 <Button size="large" style={{ marginBottom: 10, width: '100%' }} key="1" type="primary" onClick={() => props.form?.submit?.()}>
                   登录
                 </Button>
-                <ProFormCheckbox noStyle name="autoLogin">
+                {/* <ProFormCheckbox noStyle name="autoLogin">
                   记住账号密码
-                </ProFormCheckbox>
+                </ProFormCheckbox> */}
               </div>
             )
           },

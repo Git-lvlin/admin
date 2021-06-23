@@ -9,8 +9,8 @@ import { refundPage } from '@/services/financial-management/transaction-detail-m
 // 售后订单明细
 const AfterSalesOrderDetails = () =>{
 
-  const skipToDetails = () => {
-    history.push('')
+  const skipToDetails = data => {
+    history.push(`/financial-management/transaction-detail-management/after-sales-order-details/detail/${data}`)
   }
 
   const columns = [
@@ -156,7 +156,7 @@ const AfterSalesOrderDetails = () =>{
       title: '操作',
       dataIndex: 'optoion',
       valueType: 'option',
-      render: ()=> <a onClick={()=>{skipToDetails()}}>详情</a>
+      render: (_, records)=> <a onClick={()=>{skipToDetails(records?.id)}}>详情</a>
     }
   ]
   return (

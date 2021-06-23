@@ -62,6 +62,7 @@ const Details = () => {
         <ProCard 
           colSpan={{ xs: 24, sm: 12, md: 12, lg: 12, xl: 12 }}
           bordered
+          style={{ height: 280 }}
           title={leftCard()}
         >
            <div className={styles.bindCard}>
@@ -70,8 +71,9 @@ const Details = () => {
             <div>开户银行： <span>{data?.bankBranchName}</span></div>
           </div>
         </ProCard>
-        <ProCard 
+        <ProCard
           colSpan={{ xs: 24, sm: 12, md: 12, lg: 12, xl: 12 }}
+          style={{ height: 280 }}
           bordered
           title={rightCard()}
         >

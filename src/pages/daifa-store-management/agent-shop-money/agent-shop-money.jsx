@@ -14,19 +14,19 @@ export default props => {
         {
             title: '返佣金额',
             dataIndex: 'commission',
-            valueType:'text',
+            valueType:'money',
             hideInSearch:true
         },
         {
             title: '利润金额',
             dataIndex: 'profit',
-            valueType:'text',
+            valueType:'money',
             hideInSearch:true
         },
         {
             title: '订单金额',
             dataIndex: 'orderAmount',
-            valueType:'text',
+            valueType:'money',
             hideInSearch:true
         },
         {
@@ -74,15 +74,15 @@ export default props => {
     <PageContainer>
         <Row gutter={16} style={{background:'#fff',padding:'20px',marginBottom:'20px'}}>
             <Col span={8}>
-               <Statistic title="累计成交金额" style={{display:'inline-block'}} value={moneyData.totalOrderAmount} precision={2}/>
+               <Statistic title="累计成交金额" style={{display:'inline-block'}} value={moneyData.totalOrderAmount&&moneyData.totalOrderAmount/100} precision={2}/>
                <span style={{fontSize:"18px"}}>元</span>
             </Col>
             <Col span={8}>
-              <Statistic title="累计佣金金额" style={{display:'inline-block'}} value={moneyData.totalCommission} precision={2}/>
-              <span style={{fontSize:"18px"}}>{moneyData.freezeCommission?'元（其中冻结佣金额为'+moneyData.freezeCommission+'元)':''}</span>
+              <Statistic title="累计佣金金额" style={{display:'inline-block'}} value={moneyData.totalCommission&&moneyData.totalCommission/100} precision={2}/>
+              <span style={{fontSize:"18px"}}>{moneyData.freezeCommission?'元（其中冻结佣金额为'+moneyData.freezeCommission/100+'元)':''}</span>
             </Col>
             <Col span={8}>
-               <Statistic title="累计返佣订单笔数" style={{display:'inline-block'}} value={moneyData.totalOrderCount} precision={2}/>
+               <Statistic title="累计返佣订单笔数" style={{display:'inline-block'}} value={moneyData.totalOrderCount}/>
                <span style={{fontSize:"18px"}}>笔</span>
             </Col>
         </Row>
@@ -91,6 +91,15 @@ export default props => {
             actionRef={ref}
             params={{
                 storeNo
+            }}
+            postData={(data) => {
+                data.forEach(item => {
+                  item.commission = item.commission/100
+                  item.profit = item.profit/100
+                  item.orderAmount = item.orderAmount/100
+
+                })
+                return data
             }}
             request={commissionPage}
             search={{

@@ -3,8 +3,9 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
 import { storeList,statusSwitch, storeDetail } from '@/services/daifa-store-management/list'
 import { history } from 'umi';
-import AddModal from './add-modal'
+import ExcelModel from '@/components/ExcelModel'
 import Edit from './edit';
+import { max } from 'moment';
 
 const TableList = () => {
   const ref=useRef()
@@ -13,14 +14,14 @@ const TableList = () => {
   const actionRef = useRef();
 
   const switchStatus = (storeNo, type) => {
-    statusSwitch({
-      storeNo,
-      status:type
-    }).then(res => {
-      if (res.code === 0) {
-        actionRef.current.reload();
-      }
-    })
+    // statusSwitch({
+    //   storeNo,
+    //   status:type
+    // }).then(res => {
+    //   if (res.code === 0) {
+    //     actionRef.current.reload();
+    //   }
+    // })
   }
 
   const getDetail = (id) => {
@@ -41,8 +42,17 @@ const TableList = () => {
       dataIndex: 'storeName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入店铺名称'
-      }
+        placeholder: '请输入店铺名称',
+      },
+    //   render: (_, data)=>{
+    //     return new Promise(async (resolve, reject) => {
+    //     if(_&&_.length>10){
+    //       await reject('店铺名称不超过10个字符')
+    //     }else {
+    //       await resolve()
+    //   }
+    //   })
+    //  }
     },
     {
       title: '店主姓名',
@@ -80,7 +90,6 @@ const TableList = () => {
         0:'全部',
         1: '已启用',
         2: '已禁用',
-        3: '未激活'
       }
     },
     {
@@ -97,7 +106,7 @@ const TableList = () => {
     },
     {
       title: '创建人',
-      dataIndex: '',
+      dataIndex: 'adminName',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -135,7 +144,9 @@ const TableList = () => {
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <Button key="out" type="primary" onClick={() => { setFormVisible(true) }}>新建</Button>,
-            <AddModal boxref={ref}/>
+            <ExcelModel 
+              callback={() => { actionRef.current.reload()}}
+            />
           ]
         }}
         columns={columns}

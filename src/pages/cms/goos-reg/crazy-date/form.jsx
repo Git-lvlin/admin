@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
-  DrawerForm,
+  ModalForm,
   ProFormText,
   ProFormRadio,
   ProFormDateTimePicker ,
@@ -39,7 +39,9 @@ export default (props) => {
   }, [])
 
   return (
-    <DrawerForm
+    <ModalForm
+      key="add"
+      width={600}
       title={`${detailData ? '编辑活动' : '新增活动'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
@@ -103,6 +105,6 @@ export default (props) => {
           label="id"
           hidden
         />
-    </DrawerForm>
+    </ModalForm>
   );
 };

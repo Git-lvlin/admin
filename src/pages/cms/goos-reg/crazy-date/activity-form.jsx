@@ -8,6 +8,7 @@ import Edit from './goods-modal-form'
 import ReplaceForm from './replace-form';
 import { ACTION_TYPE } from '@/utils/text';
 import { ModalForm } from '@ant-design/pro-form';
+import Modify from './edit';
 
 const DetailList = (props) => {
   const { onChange, setVisible, visible, acid } = props;
@@ -50,8 +51,9 @@ const DetailList = (props) => {
   }
 
 
-  const editPop = () => {
-    
+  const editPop = (a) => {
+    setDetailData(a)
+    setPopVisible(true)
   }
 
   const columns = [
@@ -60,9 +62,6 @@ const DetailList = (props) => {
       dataIndex: 'sort',
       valueType: 'text',
       search: false,
-      align: 'center',
-      fixed: 'left',
-      width: 50,
     },
     {
       title: 'SPUID',
@@ -80,13 +79,23 @@ const DetailList = (props) => {
       dataIndex: 'goodsName',
       valueType: 'text',
       editable: true,
-      search: false,
+      // search: false,
+      width: 180,
+      ellipsis: true,
+    },
+    {
+      title: '所属内部店',
+      key: 'storeName',
+      dataIndex: 'storeName',
+      valueType: 'text',
     },
     {
       title: '商家名称',
       dataIndex: 'supplierName',
       valueType: 'text',
       search: false,
+      width: 120,
+      ellipsis: true,
     },
     {
       title: '供货类型',
@@ -145,16 +154,13 @@ const DetailList = (props) => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      align: 'center',
-      fixed: 'right',
-      width: 60,
-      render: (text, record, _, action) => {
+      render: (text, record, _) => {
         return (
           <>
-            {record.status===2&&<Button key="down" onClick={() => {formControl(record.id, 1)}}>下线</Button>}
-            &nbsp;&nbsp;{record.status===1&&<Button key="view" onClick={() => {formControl(record.id,2)}}>发布</Button>}
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {editPop(record)}}>编辑</a>}
-            &nbsp;&nbsp;{record.status===1&&<Button key="d" onClick={() => {formControl(record.id,4)}}>删除</Button>}
+            {record.status===2&&<Button size="small" key="down" onClick={() => {formControl(record.id, 1)}}>下线</Button>}
+            {record.status===1&&<Button size="small" key="view" onClick={() => {formControl(record.id,2)}}>发布</Button>}
+            {record.status===1&&<Button size="small" key="editable" onClick={() => {editPop(record)}}>编辑</Button>}
+            {record.status===1&&<Button size="small" key="d" onClick={() => {formControl(record.id,4)}}>删除</Button>}
           </>
         )
       }
@@ -171,6 +177,8 @@ const DetailList = (props) => {
   return (
     <>
     <ModalForm
+      key='list'
+      width={1400}
       onVisibleChange={setVisible}
       visible={visible}
       submitter={{
@@ -226,7 +234,6 @@ const DetailList = (props) => {
       search={{
         labelWidth: 'auto',
       }}
-      scroll={{ x: 1700 }}
       pagination={{
         pageSize: 10,
       }}
@@ -258,6 +265,12 @@ const DetailList = (props) => {
     {replaceFormVisible && <ReplaceForm
       visible={replaceFormVisible}
       setVisible={setReplaceFormVisible}
+      detailData={detailData}
+      setFlag={setFlag}
+    />}
+    {popVisible && <Modify
+      visible={popVisible}
+      setVisible={setPopVisible}
       detailData={detailData}
       setFlag={setFlag}
     />}

@@ -163,8 +163,8 @@ export default (props) => {
       })
       setSelectData(detailData.supplierIds)
       const ids = [];
-      const businessScope = JSON.parse(detailData.businessScope);
-      businessScope?.forEach(item => {
+      const businessScope = detailData.businessScope&&JSON.parse(detailData.businessScope);
+      businessScope&&businessScope.forEach(item => {
         const gcId = item.gc_id2.split(',').map(item => +item)
         ids.push(...gcId)
       })
@@ -217,6 +217,7 @@ export default (props) => {
           { required: true, message: '请输入店主姓名' },
           { validator:(rule,value,callback)=>{
               return new Promise(async (resolve, reject) => {
+                
               if(value&&value.length>30){
                 await reject('姓名不超过30个字符')
               }else {
@@ -255,21 +256,9 @@ export default (props) => {
         ]}
       />
       <Form.Item
-        label="手持身份证照片"
-        name="idHandheld"
-        tooltip={
-          <dl>
-            <dt>图片要求</dt>
-            <dd>1.图片大小1MB以内</dd>
-            <dd>2.图片格式png/jpg/gif</dd>
-          </dl>
-        }
-      >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
-      </Form.Item>
-      <Form.Item
-        label="身份证正面照片"
+        label="身份证姓名正面照片"
         name="idFront"
+        rules={[{ required: true }]}
         tooltip={
           <dl>
             <dt>图片要求</dt>
@@ -277,11 +266,12 @@ export default (props) => {
             <dd>2.图片格式png/jpg/gif</dd>
           </dl>
         }
+        extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
       >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <Form.Item
-        label="身份证背面照片"
+        label="身份证国徽面照片"
         name="idBack"
         tooltip={
           <dl>
@@ -290,9 +280,27 @@ export default (props) => {
             <dd>2.图片格式png/jpg/gif</dd>
           </dl>
         }
+        rules={[{ required: true }]}
+        extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
       >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
+      <Form.Item
+        label="手持身份证照片"
+        name="idHandheld"
+        rules={[{ required: true }]}
+        tooltip={
+          <dl>
+            <dt>图片要求</dt>
+            <dd>1.图片大小1MB以内</dd>
+            <dd>2.图片格式png/jpg/gif</dd>
+          </dl>
+        }
+        extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
+      >
+        <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+      </Form.Item>
+      
       <ProFormText
         name="idNumber"
         label="店主身份证号"
@@ -301,6 +309,7 @@ export default (props) => {
         fieldProps={{
           maxLength: 18,
         }}
+        disabled={!!detailData}
       />
 
       <ProFormText
@@ -382,8 +391,8 @@ export default (props) => {
           },
           {
             label: '禁用',
-            value: 3,
-          },
+            value: 2,
+          }
         ]}
       />
       {formVisible && <FormModal

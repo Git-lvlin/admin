@@ -2,8 +2,7 @@ import React, { useRef, useState, useEffect  } from 'react';
 import { message, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm } from '@ant-design/pro-form';
-import { crazyActivityGoodsAdd } from '@/services/cms/member/member';
-import { todayAllGoodsList } from '@/services/cms/member/member';
+import { crazyActivityGoodsAddPT, todayAllGoodsList } from '@/services/cms/member/member';
 
 export default (props) => {
   const { detailData, setVisible, visible, setFlag } = props;
@@ -21,7 +20,7 @@ export default (props) => {
       param.goodsType = channel
     }
     return new Promise((resolve) => {
-      crazyActivityGoodsAdd(param).then((res) => {
+      crazyActivityGoodsAddPT(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
           resolve(true);
@@ -47,12 +46,16 @@ export default (props) => {
       dataIndex: 'goodsName',
       valueType: 'text',
       search: false,
+      width: 180,
+      ellipsis: true,
     },
     {
       title: '商家名称',
       dataIndex: 'supplierName',
       valueType: 'text',
       search: false,
+      width: 120,
+      ellipsis: true,
     },
     {
       title: '供货类型',
@@ -82,6 +85,8 @@ export default (props) => {
 
   return (
     <ModalForm
+      key="adda"
+      width={1300}
       title='添加'
       onVisibleChange={setVisible}
       formRef={formRef}

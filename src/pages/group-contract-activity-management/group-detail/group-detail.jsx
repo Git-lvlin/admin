@@ -124,6 +124,7 @@ const TableList = () => {
         params={{
           activityId: params.id,
           groupState: 2,
+          skuId: location?.query?.skuId,
         }}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         request={multiGroupList}

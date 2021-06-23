@@ -46,6 +46,7 @@ export default (props) => {
 
   return (
     <ModalForm
+      width={600}
       title={'排序'}
       onVisibleChange={setVisible}
       formRef={formRef}

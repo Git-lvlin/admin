@@ -7,6 +7,7 @@ import { getWholesaleList, getWholesaleDetail, getWholesaleSku, updateWholesaleS
 import { history } from 'umi';
 import { amountTransform } from '@/utils/utils'
 import Detail from './detail';
+import Big from 'big.js';
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -28,19 +29,28 @@ const SubTable = (props) => {
       dataIndex: 'goodsName',
     },
     {
-      title: '结算类型',
-      dataIndex: 'settleType',
-      render: (_) => {
-        return {
-          0: '全部',
-          1: '佣金模式',
-          2: '底价模式'
-        }[_]
-      }
+      title: '供应商ID',
+      dataIndex: 'supplierId',
+    },
+    // {
+    //   title: '结算类型',
+    //   dataIndex: 'settleType',
+    //   render: (_) => {
+    //     return {
+    //       0: '全部',
+    //       1: '佣金模式',
+    //       2: '底价模式'
+    //     }[_]
+    //   }
+    // },
+    {
+      title: '集约分成比例',
+      dataIndex: 'settlePercent',
+      render: (_) => `${amountTransform(_)}%`
     },
     {
-      title: '销售价',
-      dataIndex: 'salePrice',
+      title: '供货价',
+      dataIndex: 'wholesaleSupplyPrice',
       render: (_) => amountTransform(_, '/')
     },
     {
@@ -58,8 +68,17 @@ const SubTable = (props) => {
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '集约量',
+      title: '配送费补贴',
+      dataIndex: 'fixedPrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '单店起订量',
       dataIndex: 'minNum',
+    },
+    {
+      title: '单店限订量',
+      dataIndex: 'maxNum',
     },
     {
       title: '集约全款金额',
@@ -73,7 +92,7 @@ const SubTable = (props) => {
       wholesaleId: props.wholesaleId
     }).then(res => {
       if (res.code === 0) {
-        setData(res?.data)
+        setData(res?.data?.length ? res.data : [])
       }
     })
   }, [])
@@ -104,7 +123,7 @@ const TableList = () => {
     updateWholesaleState({
       wholesaleId
     }).then(res => {
-      if (res.code===0) {
+      if (res.code === 0) {
         actionRef.current.reload();
       }
     })
@@ -130,7 +149,6 @@ const TableList = () => {
       dataIndex: 'wholesaleIsOnline',
       valueType: 'select',
       valueEnum: {
-        0: '下架',
         1: '待开始',
         2: '进行中',
         3: '已结束',
@@ -155,19 +173,19 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
     },
-    {
-      title: '可恢复支付次数',
-      dataIndex: 'canRecoverPayTimes',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '每次恢复的支付时限(小时)',
-      dataIndex: 'recoverPayTimeout',
-      valueType: 'text',
-      hideInSearch: true,
-      render: (text) => text / 3600
-    },
+    // {
+    //   title: '可恢复支付次数',
+    //   dataIndex: 'canRecoverPayTimes',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '每次恢复的支付时限(小时)',
+    //   dataIndex: 'recoverPayTimeout',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   render: (text) => +new Big(text).div(3600).toFixed(1)
+    // },
     {
       title: '活动时段',
       dataIndex: 'wholesaleStartTime',
@@ -183,7 +201,7 @@ const TableList = () => {
       }
     },
     {
-      title: '订金支付截止时间',
+      title: '采购单下单截止时间',
       dataIndex: 'endTimeAdvancePayment',
       valueType: 'text',
       hideInSearch: true,

@@ -51,10 +51,12 @@ const ActivityDetail = () => {
       title: '结算模式',
       dataIndex: 'settleType',
       valueType: 'text',
-      valueEnum: {
-        1: '佣金模式',
-        2: '底价模式'
-      },
+      render: (_) => {
+        return {
+          1: '佣金模式',
+          2: '底价模式'
+        }[_]
+      }
     },
     {
       title: '供货价',

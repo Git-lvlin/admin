@@ -75,9 +75,7 @@ const HomeList = () => {
       search={{
         labelWidth: 'auto',
       }}
-      pagination={{
-        pageSize: 5,
-      }}
+      pagination={false}
       search={false}
       dateFormatter="string"
       headerTitle=""

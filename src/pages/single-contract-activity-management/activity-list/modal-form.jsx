@@ -60,7 +60,7 @@ export default (props) => {
       )
     },
     {
-      title: '供应商名称',
+      title: '供应商ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInTable: true,

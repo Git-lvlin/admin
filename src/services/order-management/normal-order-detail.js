@@ -1,10 +1,9 @@
 import request from '@/utils/request';
 
 export const findAdminOrderDetail = async (params = {}, options = {}) => {
-  return request('/auth/jump/url', {
+  return request('/auth/java-admin/order/findAdminOrderDetail', {
     method: 'POST',
     data: {
-      'requestUrl': '/java-admin/order/findAdminOrderDetail',
       ...params,
     },
     ...options
@@ -12,10 +11,9 @@ export const findAdminOrderDetail = async (params = {}, options = {}) => {
 }
 
 export const deliverGoods = async (params = {}, options = {}) => {
-  return request('/auth/jump/url', {
+  return request('/auth/java-admin/order/deliverGoods', {
     method: 'POST',
     data: {
-      'requestUrl': '/java-admin/order/deliverGoods',
       ...params,
     },
     ...options

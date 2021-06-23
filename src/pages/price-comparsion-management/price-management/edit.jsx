@@ -78,14 +78,15 @@ export default (props) => {
     const param = {
       ids: arr.toString(),
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       priceListAdd(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
-          resolve(true);
+          resolve(true)
+        } else {
+          reject(false)
         }
       })
-  
     });
   };
 

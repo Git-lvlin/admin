@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, Table } from 'antd';
+import { Button, Card, Table, Tooltip } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import * as api from '@/services/product-management/product-log';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
@@ -77,11 +77,11 @@ const TableList = () => {
       }
     },
     {
-      title: '商家名称',
-      dataIndex: 'supplierName',
+      title: '供应商ID',
+      dataIndex: 'supplierId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入商家名称'
+        placeholder: '请输入供应商ID'
       }
     },
     {
@@ -106,6 +106,15 @@ const TableList = () => {
       dataIndex: 'goodsVerifyStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, record) => {
+        const { goodsVerifyRemark, goodsVerifyState } = record;
+        return (
+          <>
+            {_}&nbsp;
+            {(goodsVerifyRemark && goodsVerifyState === 2) && <Tooltip title={goodsVerifyRemark}><QuestionCircleOutlined /></Tooltip>}
+          </>
+        )
+      },
     },
     {
       title: '上架状态',
@@ -120,6 +129,15 @@ const TableList = () => {
       dataIndex: 'goodsStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, record) => {
+        const { goodsStateRemark, goodsState } = record;
+        return (
+          <>
+            {_}&nbsp;
+            {(goodsStateRemark && goodsState === 0) && <Tooltip title={goodsStateRemark}><QuestionCircleOutlined /></Tooltip>}
+          </>
+        )
+      },
     },
     {
       title: '商品分类',

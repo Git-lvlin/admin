@@ -53,8 +53,6 @@ const HotGoos = () => {
       dataIndex: 'sort',
       valueType: 'text',
       search: false,
-      width: 100,
-      fixed: 'left',
     },
     {
       title: 'SPUID',
@@ -83,7 +81,14 @@ const HotGoos = () => {
       key: 'goodsName',
       dataIndex: 'goodsName',
       valueType: 'text',
-      // search: false,
+      width: 180,
+      ellipsis: true,
+    },
+    {
+      title: '所属内部店',
+      key: 'storeName',
+      dataIndex: 'storeName',
+      valueType: 'text',
     },
     {
       title: '商家名称',
@@ -170,9 +175,6 @@ const HotGoos = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      align: 'center',
-      width: 180,
-      fixed: 'right',
       render: (text, record, _) => {
         return (
           <>
@@ -240,7 +242,6 @@ const HotGoos = () => {
       pagination={{
         pageSize: 10,
       }}
-      scroll={{ x: 2200 }}
       dateFormatter="string"
       headerTitle="热销好货"
       toolBarRender={(_,record) => [

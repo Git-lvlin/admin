@@ -1,15 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Form, Button, Tree, message, Checkbox } from 'antd';
+import { Form, Button, Tree, message, Checkbox, Input, Space, Typography, Divider } from 'antd';
 import {
   DrawerForm,
   ProFormText,
   ProFormRadio,
+  ProFormSelect,
+  ProFormDigit,
+  ProFormDependency,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { supplierAdd, supplierEdit, categoryAll } from '@/services/supplier-management/supplier-list';
+import { supplierAdd, supplierEdit, categoryAll, getBanks } from '@/services/supplier-management/supplier-list';
 import md5 from 'blueimp-md5';
 import { arrayToTree } from '@/utils/utils'
 import FormModal from './form';
+import Address from './address';
+import Big from 'big.js'
+
+const { Title } = Typography;
 
 
 const CTree = (props) => {
@@ -61,6 +68,122 @@ const CTree = (props) => {
   )
 }
 
+const SocialCreditInfo = ({ value, onChange }) => {
+  const [code, setCode] = useState(value?.code);
+  const [date, setDate] = useState(value?.date);
+
+  const codeChange = (e) => {
+    setCode(e.target.value);
+    onChange({
+      code: e.target.value,
+      date,
+    })
+  }
+
+  const dateChange = (e) => {
+    setDate(e.target.value);
+    onChange({
+      code,
+      date: e.target.value,
+    })
+  }
+
+  return (
+    <Space>
+      <Input placeholder="请输入统一社会信用码" value={code} style={{ width: 230 }} onChange={codeChange} />
+      <Input placeholder="请选择统一社会信用证有效期" value={date} style={{ width: 230 }} onChange={dateChange} />
+    </Space>
+  )
+}
+
+const LegalInfo = ({ value, onChange }) => {
+  const [code, setCode] = useState(value?.code);
+  const [date, setDate] = useState(value?.date);
+  const [userName, setUserName] = useState(value?.userName);
+
+  const codeChange = (e) => {
+    setCode(e.target.value);
+    onChange({
+      code: e.target.value,
+      date,
+      userName,
+    })
+  }
+
+  const userNameChange = (e) => {
+    setUserName(e.target.value);
+    onChange({
+      code,
+      date,
+      userName: e.target.value,
+    })
+  }
+
+  const dateChange = (e) => {
+    setDate(e.target.value)
+    onChange({
+      code,
+      userName,
+      date: e.target.value,
+    })
+  }
+  return (
+    <Space>
+      <Input value={userName} placeholder="请输入姓名" style={{ width: 100 }} onChange={userNameChange} />
+      <Input value={code} placeholder="请输入身份证号码" style={{ width: 150 }} onChange={codeChange} />
+      <Input value={date} placeholder="请输入身份证号码有效期" style={{ width: 200 }} onChange={dateChange} />
+    </Space>
+  )
+}
+
+const ImageInfo = ({ value, onChange }) => {
+  const [businessLicense, setBusinessLicense] = useState(value?.businessLicense);
+  const [idCardFrontImg, setIdCardFrontImg] = useState(value?.idCardFrontImg);
+  const [idCardBackImg, setIdCardBackImg] = useState(value?.idCardBackImg);
+  const [bankLicenseImg, setBankLicenseImg] = useState(value?.bankLicenseImg);
+  const update = (obj) => {
+    onChange({
+      idCardFrontImg,
+      businessLicense,
+      idCardBackImg,
+      bankLicenseImg,
+      ...obj,
+    })
+  }
+  const businessLicenseChange = (e) => {
+    setBusinessLicense(e)
+    update({
+      businessLicense: e,
+    })
+  }
+  const idCardFrontImgChange = (e) => {
+    setIdCardFrontImg(e)
+    update({
+      idCardFrontImg: e,
+    })
+  }
+  const idCardBackImgChange = (e) => {
+    setIdCardBackImg(e)
+    update({
+      idCardBackImg: e,
+    })
+  }
+  const bankLicenseImgChange = (e) => {
+    setBankLicenseImg(e)
+    update({
+      bankLicenseImg: e,
+    })
+  }
+  return (
+    <Space>
+      <Upload code={301} value={businessLicense} text="上传三合一证件照" maxCount={1} accept="image/*" size={1024 * 2} onChange={businessLicenseChange} />
+      <Upload code={302} value={idCardFrontImg} text="上传法人身份证正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardFrontImgChange} />
+      <Upload code={302} value={idCardBackImg} text="上传法人身份证背面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardBackImgChange} />
+      <Upload code={303} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankLicenseImgChange} />
+    </Space>
+  )
+}
+
 export default (props) => {
   const { visible, setVisible, detailData, callback = () => { }, onClose = () => { } } = props;
   const [form] = Form.useForm()
@@ -72,7 +195,7 @@ export default (props) => {
 
   const formItemLayout = {
     labelCol: { span: 6 },
-    wrapperCol: { span: 14 },
+    wrapperCol: { span: 18 },
     layout: {
       labelCol: {
         span: 4,
@@ -83,9 +206,8 @@ export default (props) => {
     }
   };
 
-
   const submit = (values) => {
-    const { password, gc, ...rest } = values;
+    const { password, gc, addressInfo, socialCreditInfo, legalInfo, imageInfo, bankCode, ...rest } = values;
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? supplierEdit : supplierAdd;
 
@@ -106,17 +228,6 @@ export default (props) => {
         gcData.forEach(item => {
           const findItem = originData.current.find(it => item === it.id);
           const { gcParentId, id } = findItem;
-          // if (gcParentId == 0) {
-          //   if (!obj[gcParentId]) {
-          //     obj[id] = []
-          //   }
-          // } else if (obj[gcParentId]) {
-          //   obj[gcParentId].push(id)
-          // } else {
-          //   console.log('gcParentId', gcParentId)
-          //   obj[gcParentId] = [id];
-          //   console.log('id', obj)
-          // }
 
           if (gcParentId !== 0) {
             if (obj[gcParentId]) {
@@ -153,6 +264,20 @@ export default (props) => {
       }
       apiMethod({
         ...rest,
+        bankCode: bankCode.value,
+        bankName: bankCode.label,
+        businessLicense: [imageInfo.businessLicense],
+        idCardFrontImg: [imageInfo.idCardFrontImg],
+        idCardBackImg: [imageInfo.idCardBackImg],
+        bankLicenseImg: [imageInfo.bankLicenseImg],
+        legalName: legalInfo.userName,
+        legalIdCardNo: legalInfo.code,
+        legalIdCardExpire: legalInfo.date,
+        socialCreditCode: socialCreditInfo.code,
+        socialCreditCodeExpire: socialCreditInfo.date,
+        provinceCode: addressInfo.area[0],
+        areaCode: addressInfo.area[1],
+        companyAddress: addressInfo.info,
         password: password ? md5(password) : '',
         supplierId: detailData?.supplierId,
         bindSupplierIds: selectData.map(item => item.id).join(','),
@@ -168,11 +293,80 @@ export default (props) => {
     });
   }
 
+  const bankAccountTypeChange = (e) => {
+    if (e.target.value === 1) {
+      form.setFieldsValue({
+        bankAccountName: form.getFieldValue('companyName')
+      })
+    }
+  }
+
+  const companyNameChange = (e) => {
+    form.setFieldsValue({
+      bankAccountName: e.target.value
+    })
+  }
+
   useEffect(() => {
     if (detailData) {
       form.setFieldsValue({
         ...detailData
       })
+
+      const { bankAccountInfo, warrantyRatioDisplay } = detailData
+
+      if (bankAccountInfo) {
+        const {
+          provinceCode,
+          areaCode,
+          companyAddress,
+          socialCreditCode,
+          socialCreditCodeExpire,
+          businessScope,
+          legalName,
+          legalIdCardNo,
+          legalIdCardExpire,
+          legalPhone,
+          businessLicense,
+          bankLicenseImg,
+          idCardBackImg,
+          idCardFrontImg,
+          bankCode,
+          bankName,
+          bankAccountType,
+          bankCardNo,
+          bankAccountName,
+        } = bankAccountInfo
+        form.setFieldsValue({
+          addressInfo: {
+            area: provinceCode ? [provinceCode, areaCode] : [],
+            info: companyAddress,
+          },
+          socialCreditInfo: {
+            code: socialCreditCode,
+            date: socialCreditCodeExpire,
+          },
+          businessScope,
+          legalInfo: {
+            code: legalIdCardNo,
+            userName: legalName,
+            date: legalIdCardExpire
+          },
+          legalPhone,
+          imageInfo: {
+            businessLicense: businessLicense?.[0],
+            bankLicenseImg: bankLicenseImg?.[0],
+            idCardFrontImg: idCardFrontImg?.[0],
+            idCardBackImg: idCardBackImg?.[0],
+          },
+          bankCode: { label: bankName, value: bankCode },
+          bankAccountType: bankAccountType || 1,
+          bankCardNo,
+          bankAccountName: (bankAccountType || 1) ? detailData.companyName : bankAccountName,
+          warrantyRatio: warrantyRatioDisplay,
+        })
+      }
+
       setSelectData(detailData.supplierIds)
       const ids = [];
       detailData.gcInfo.forEach(item => {
@@ -206,7 +400,7 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        width: 800,
+        width: 1300,
         onClose: () => {
           onClose();
         }
@@ -219,142 +413,327 @@ export default (props) => {
       visible={visible}
       initialValues={{
         status: 1,
+        bankAccountType: 1,
       }}
       {...formItemLayout}
     >
-      <ProFormText
-        name="companyName"
-        label="供应商名称"
-        placeholder="请输入供应商名称"
-        rules={[{ required: true, message: '请输入供应商名称' }]}
-        fieldProps={{
-          maxLength: 30,
-        }}
-        disabled={!!detailData}
-      />
-      <ProFormText
-        name="accountName"
-        label="供应商登录账号"
-        placeholder="请输入供应商登录账号"
-        rules={[{ required: true, message: '请输入供应商登录账号' }]}
-        fieldProps={{
-          maxLength: 18,
-        }}
-        disabled={!!detailData}
-      />
-      <ProFormText.Password
-        name="password"
-        label="供应商登录密码"
-        placeholder="请输入供应商登录密码"
-        rules={[{ required: !detailData, message: '请输入供应商登录密码' }]}
-        fieldProps={{
-          maxLength: 32,
-          visibilityToggle: false,
-        }}
-      />
-      <Form.Item
-        label="营业执照"
-        name="businessLicense"
-        tooltip={
-          <dl>
-            <dt>图片要求</dt>
-            <dd>1.图片大小5MB以内</dd>
-            <dd>2.图片格式png/jpg/gif</dd>
-          </dl>
-        }
-      >
-        <Upload multiple maxCount={1} accept="image/*" size={5 * 1024} />
-      </Form.Item>
-      <Form.Item
-        label="相关资质"
-        name="qualification"
-        tooltip={
-          <dl>
-            <dt>图片要求</dt>
-            <dd>1.图片大小5MB以内</dd>
-            <dd>2.图片格式png/jpg/gif</dd>
-          </dl>
-        }
-      >
-        <Upload multiple maxCount={1} accept="image/*" size={5 * 1024} />
-      </Form.Item>
-      <Form.Item
-        label="可关联顾问"
-      >
-        <Button type="primary" onClick={() => { setFormVisible(true) }}>选择顾问</Button>
-        <div>
-          {!!selectData.length && <div>已选择顾问</div>}
-          {
-            selectData.map(item => (<div key={item.id}>{item.companyName}</div>))
-          }
+      <Title level={4}>基本信息</Title>
+      <Divider />
+      <div style={{ display: 'flex' }}>
+        <div style={{ flex: 1 }}>
+          <ProFormText
+            name="companyName"
+            label="供应商名称"
+            placeholder="请输入供应商名称"
+            rules={[{ required: true, message: '请输入供应商名称' }]}
+            fieldProps={{
+              maxLength: 30,
+              onChange: companyNameChange
+            }}
+            disabled={!!detailData}
+          />
+          <ProFormText
+            name="accountName"
+            label="供应商登录账号"
+            placeholder="请输入供应商登录账号"
+            rules={[{ required: true, message: '请输入供应商登录账号' }]}
+            fieldProps={{
+              maxLength: 18,
+            }}
+            disabled={!!detailData}
+          />
+          <ProFormText.Password
+            name="password"
+            label="供应商登录密码"
+            placeholder="请输入供应商登录密码"
+            rules={[{ required: !detailData, message: '请输入供应商登录密码' }]}
+            fieldProps={{
+              maxLength: 32,
+              visibilityToggle: false,
+            }}
+          />
+          <ProFormText
+            name="companyUserName"
+            label="负责人"
+            placeholder="请输入负责人"
+            rules={[{ required: true, message: '请输入负责人' }]}
+            fieldProps={{
+              maxLength: 10,
+            }}
+          />
+          <ProFormText
+            name="companyUserPhone"
+            label="负责人手机号"
+            placeholder="请输入负责人手机号"
+            rules={[{ required: true, message: '请输入负责人手机号' }]}
+            fieldProps={{
+              maxLength: 11,
+            }}
+          />
+          <ProFormText
+            name="orderTipPhone"
+            label="提醒手机号"
+            placeholder="请输入手机号码 产生待发货订单时自动发送短信"
+            fieldProps={{
+              maxLength: 11,
+            }}
+          />
+          <ProFormRadio.Group
+            name="status"
+            label="状态"
+            rules={[{ required: true }]}
+            options={[
+              {
+                label: '启用',
+                value: 1,
+              },
+              {
+                label: '禁用',
+                value: 2,
+              },
+            ]}
+          />
+
         </div>
-      </Form.Item>
+        <div style={{ flex: 1 }}>
+          <Form.Item
+            label="主营商品类型"
+            name="gc"
+          >
+            <CTree
+              checkable
+              style={{
+                width: '100%',
+              }}
+              treeData={treeData}
+              multiple
+              height={200}
+              data={originData.current}
+              virtual={false}
+              keys={selectKeys}
+            />
+          </Form.Item>
 
-      <ProFormText
-        name="companyUserName"
-        label="负责人"
-        placeholder="请输入负责人"
-        rules={[{ required: true, message: '请输入负责人' }]}
-        fieldProps={{
-          maxLength: 10,
-        }}
-      />
-      <ProFormText
-        name="companyUserPhone"
-        label="负责人手机号"
-        placeholder="请输入负责人手机号"
-        rules={[{ required: true, message: '请输入负责人手机号' }]}
-        fieldProps={{
-          maxLength: 11,
-        }}
-      />
-      <ProFormText
-        name="orderTipPhone"
-        label="接收订单提醒的手机号"
-        placeholder="请输入手机号码 产生待发货订单时自动发送短信"
-        fieldProps={{
-          maxLength: 11,
-        }}
-      />
-      <ProFormText
-        name="stockWarn"
-        label="库存预警值"
-        placeholder="请输入整数字 可用库存小于等于此值时提醒"
-      />
+          <Form.Item
+            label="可关联顾问"
+          >
+            <Button type="primary" onClick={() => { setFormVisible(true) }}>选择顾问</Button>
+            <div>
+              {!!selectData.length && <div>已选择顾问</div>}
+              {
+                selectData.map(item => (<div key={item.id}>{item.companyName}</div>))
+              }
+            </div>
+          </Form.Item>
+          <ProFormDigit
+            placeholder="请输入商品质保金比例"
+            label="商品质保金比例"
+            name="warrantyRatio"
+            min={1}
+            max={50}
+            fieldProps={{
+              formatter: value => value ? +new Big(value).toFixed(2) : value
+            }}
+            extra={<><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
+            step
+            validateFirst
+            rules={[
+              { required: true, message: '请输入商品质保金比例' },
+              () => ({
+                validator(_, value) {
+                  if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                    return Promise.reject(new Error('请输入大于零的数字'));
+                  }
+                  return Promise.resolve();
+                },
+              })
+            ]}
+          />
+        </div>
+      </div>
 
-      <Form.Item
-        label="主营商品类型"
-        name="gc"
-      >
-        <CTree
-          checkable
-          style={{
-            width: '100%',
-          }}
-          treeData={treeData}
-          multiple
-          height={200}
-          data={originData.current}
-          virtual={false}
-          keys={selectKeys}
-        />
-      </Form.Item>
+      <div style={{ visibility: detailData?.bankAccountInfo?.auditStatus === 1 ? 'hidden' : 'visible' }}>
+        <Title level={4}>资金账户信息</Title>
+        <Divider />
+        <div style={{ display: 'flex' }}>
+          <div style={{ flex: 1 }}>
+            <Form.Item
+              label="企业地址"
+              name="addressInfo"
+              validateFirst
+              rules={[
+                () => ({
+                  required: true,
+                  validator(_, value = {}) {
+                    const { area, info } = value;
+                    if (area?.length === 0 || !area) {
+                      return Promise.reject(new Error('请选择企业所在地'));
+                    }
 
-      <ProFormRadio.Group
-        name="status"
-        label="状态"
-        rules={[{ required: true }]}
-        options={[
-          {
-            label: '启用',
-            value: 1,
-          },
-          {
-            label: '禁用',
-            value: 3,
-          },
-        ]}
-      />
+                    if (!info?.replace(/\s/g, '')) {
+                      return Promise.reject(new Error('请输入企业详细地址'));
+                    }
+
+                    return Promise.resolve();
+                  },
+                })]}
+            >
+              <Address />
+            </Form.Item>
+            <Form.Item
+              label="统一社会信用码"
+              name="socialCreditInfo"
+              validateFirst
+              rules={[{ required: true },
+              () => ({
+                validator(_, value = {}) {
+                  const { code, date } = value;
+                  if (!code?.replace(/\s/g, '')) {
+                    return Promise.reject(new Error('请输入统一社会信用码'));
+                  }
+
+                  if (!date) {
+                    return Promise.reject(new Error('请选择统一社会信用证有效期'));
+                  }
+
+                  return Promise.resolve();
+                },
+              })]}
+            >
+              <SocialCreditInfo />
+            </Form.Item>
+            <ProFormText
+              name="businessScope"
+              label="经营范围"
+              placeholder="请输入经营范围"
+              rules={[{ required: true, message: '请输入经营范围' }]}
+            />
+            <Form.Item
+              label="法人姓名"
+              name="legalInfo"
+              validateFirst
+              rules={[
+                () => ({
+                  required: true,
+                  validator(_, value = {}) {
+                    const { code, date, userName } = value;
+                    if (!userName?.replace(/\s/g, '')) {
+                      return Promise.reject(new Error('请输入姓名'));
+                    }
+
+                    if (!code?.replace(/\s/g, '')) {
+                      return Promise.reject(new Error('请输入身份证号码'));
+                    }
+
+                    if (!date) {
+                      return Promise.reject(new Error('请选择身份证号码有效期'));
+                    }
+                    return Promise.resolve();
+                  },
+                })
+              ]}
+            >
+              <LegalInfo />
+            </Form.Item>
+            <ProFormText
+              name="legalPhone"
+              label="法人手机号"
+              placeholder="请输入法人手机号"
+              rules={[{ required: true, message: '请输入法人手机号' }]}
+              fieldProps={{
+                maxLength: 11,
+              }}
+            />
+
+          </div>
+          <div style={{ flex: 1 }}>
+            <Form.Item
+              label={
+                <div style={{ position: 'relative', top: 20 }}>
+                  <div>开户资质文件</div>
+                  <div>jpg/png格式</div>
+                  <div>大小不超过2MB</div>
+                </div>
+              }
+              name="imageInfo"
+              validateFirst
+              rules={[
+                () => ({
+                  required: true,
+                  validator(_, value = {}) {
+                    const { businessLicense, idCardFrontImg, idCardBackImg, bankLicenseImg } = value;
+                    if (!businessLicense) {
+                      return Promise.reject(new Error('请上传三合一证件照'));
+                    }
+                    if (!idCardFrontImg) {
+                      return Promise.reject(new Error('请上传法人身份证正面照'));
+                    }
+                    if (!idCardBackImg) {
+                      return Promise.reject(new Error('请上传法人身份证背面照'));
+                    }
+                    if (!bankLicenseImg) {
+                      return Promise.reject(new Error('请上传开户银行许可证照'));
+                    }
+                    return Promise.resolve();
+                  },
+                })
+              ]}
+            >
+              <ImageInfo />
+            </Form.Item>
+            <ProFormSelect
+              name="bankCode"
+              label="账户结算银行"
+              placeholder="请选择结算收款银行"
+              request={getBanks}
+              rules={[{ required: true, message: '请选择账户结算银行' }]}
+              fieldProps={{
+                labelInValue: true,
+              }}
+            />
+            <ProFormRadio.Group
+              name="bankAccountType"
+              label="结算银行账户类型"
+              rules={[{ required: true }]}
+              options={[
+                {
+                  label: '对公账户',
+                  value: 1,
+                },
+                {
+                  label: '对私账户',
+                  value: 2,
+                },
+              ]}
+              fieldProps={{
+                onChange: bankAccountTypeChange
+              }}
+            />
+            <ProFormText
+              name="bankCardNo"
+              label="结算银行卡号"
+              placeholder="请输入结算银行卡号"
+              rules={[{ required: true, message: '请输入结算银行卡号' }]}
+            />
+            <ProFormDependency name={['bankAccountType']}>
+              {
+                ({ bankAccountType }) => (
+                  <ProFormText
+                    name="bankAccountName"
+                    label="结算银行卡开户名"
+                    placeholder="请输入结算银行卡开户名"
+                    rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
+                    extra="银行账户类型为对公账户时，开户名为供应商企业名称"
+                    disabled={bankAccountType === 1}
+                  />
+                )
+              }
+            </ProFormDependency>
+
+          </div>
+        </div>
+      </div>
+
       {formVisible && <FormModal
         visible={formVisible}
         setVisible={setFormVisible}
