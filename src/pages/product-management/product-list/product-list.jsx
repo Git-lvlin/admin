@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Card, Table } from 'antd';
+import { Button, Tooltip, Table } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import XLSX from 'xlsx'
 import { PageContainer } from '@ant-design/pro-layout';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import * as api from '@/services/product-management/product-list';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
@@ -116,17 +116,17 @@ const TableList = () => {
       }
     },
     {
-      title: '供应商名称',
-      dataIndex: 'supplierName',
+      title: '供应商ID',
+      dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '供应商名称',
+      title: '供应商ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商名称'
+        placeholder: '请输入供应商ID'
       },
       renderFormItem: () => <SupplierSelect />,
       hideInTable: true,
@@ -184,13 +184,21 @@ const TableList = () => {
       valueType: 'select',
       valueEnum: typeTransform(config.goodsVerifyState),
       hideInTable: true,
-
     },
     {
       title: '审核状态',
       dataIndex: 'goodsVerifyStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, record) => {
+        const { goodsVerifyRemark, goodsVerifyState } = record;
+        return (
+          <>
+            {_}&nbsp;
+            {(goodsVerifyRemark && goodsVerifyState === 2) && <Tooltip title={goodsVerifyRemark}><QuestionCircleOutlined /></Tooltip>}
+          </>
+        )
+      },
     },
     {
       title: '上架状态',
@@ -205,6 +213,15 @@ const TableList = () => {
       dataIndex: 'goodsStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, record) => {
+        const { goodsStateRemark, goodsState } = record;
+        return (
+          <>
+            {_}&nbsp;
+            {(goodsStateRemark && goodsState === 0) && <Tooltip title={goodsStateRemark}><QuestionCircleOutlined /></Tooltip>}
+          </>
+        )
+      },
     },
     {
       title: '商品关键词',

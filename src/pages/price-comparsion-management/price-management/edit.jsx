@@ -40,9 +40,13 @@ export default (props) => {
     },
     {
       title: '结算类型',
-      dataIndex: 'goodsSaleTypeDisplay',
+      dataIndex: 'settleType',
       valueType: 'text',
       search: false,
+      valueEnum: {
+        1: '佣金模式',
+        2: '底价模式',
+      }
     },
     {
       title: '秒约价',
@@ -74,14 +78,15 @@ export default (props) => {
     const param = {
       ids: arr.toString(),
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       priceListAdd(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
-          resolve(true);
+          resolve(true)
+        } else {
+          reject(false)
         }
       })
-  
     });
   };
 

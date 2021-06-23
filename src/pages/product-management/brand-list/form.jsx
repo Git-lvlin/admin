@@ -103,7 +103,8 @@ export default (props) => {
         <Upload
           maxCount={1}
           accept="image/*"
-          dirName="brand"
+          code={217}
+          size={5 * 1024}
         />
       </Form.Item>
     </ModalForm>

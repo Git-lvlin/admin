@@ -92,6 +92,43 @@ const TableList = () => {
       }
     },
     {
+      title: '资金账户审核状态',
+      dataIndex: 'auditStatus',
+      valueType: 'text',
+      hideInTable: true,
+      valueEnum: {
+        1: '已审核',
+        2: '待审核',
+        3: '审核拒绝'
+      },
+      width: 200,
+      ellipsis: true,
+    },
+    {
+      title: '资金账户审核状态',
+      dataIndex: 'auditStatus',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, data) => {
+        if (_ === 3) {
+          return (
+            <>
+              <div>审核拒绝</div>
+              <div style={{ color: 'red' }}>{data.auditReason}</div>
+            </>
+          )
+        }
+        if (_ === 2) {
+          return '待审核'
+        }
+        if (_ === 1) {
+
+          return <a onClick={() => { history.push(`/supplier-management/supplier-account-info/${data.id}`) }}>已审核</a>
+        }
+        return ''
+      }
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
@@ -100,7 +137,8 @@ const TableList = () => {
           {data.status === 1 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>禁用</a>}
           {data.status === 0 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>启用</a>}
           <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.id}`) }}>详情</a>
-          <a onClick={() => { getDetail(data.id) }}>编辑</a>
+          {data.auditStatus === 1 && <a onClick={() => { getDetail(data.id) }}>编辑基本信息</a>}
+          {(data.auditStatus === 3 || data.auditStatus === 0) && <a onClick={() => { getDetail(data.id) }}>编辑再提交</a>}
           <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>售后地址</a>
         </Space>
       ),
@@ -115,7 +153,7 @@ const TableList = () => {
         request={getCommonList}
         search={{
           defaultCollapsed: false,
-          labelWidth: 100,
+          labelWidth: 130,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
               key="search"

@@ -226,8 +226,8 @@ const TableList = () => {
                 <Space size="large">
                   <span>下单时间：{item.createTime.replace('T', ' ')}</span>
                   <span>订单号：{item.orderSn}</span>
-                  <span>下单用户：LUCAS</span>
-                  <span>用户手机号：{item.userPhone}</span>
+                  <span>下单用户：{item.buyerNickname}</span>
+                  <span>用户手机号：{item.buyerPhone}</span>
                 </Space>
               </div>
 
@@ -236,7 +236,7 @@ const TableList = () => {
                   {
                     item.orderItem.map(it => (
                       <div key={it.skuId}>
-                        <img width="100" height="100" src={it.goodsImageUrl} />
+                        <img width="100" height="100" src={it.skuImageUrl} />
                         <div className={styles.info}>
                           <div>{it.goodsName}</div>
                           <div>{{ 1: '秒约', 2: '单约', 3: '团约' }[item.orderType]}价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
@@ -251,12 +251,12 @@ const TableList = () => {
                   <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
                     <Descriptions.Item label="商品总金额">{amountTransform(item.totalAmount, '/')}元</Descriptions.Item>
                     <Descriptions.Item label="运费">+{amountTransform(item.shippingFeeAmount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="优惠券">+{amountTransform(item.couponAmount, '/')}元</Descriptions.Item>
+                    <Descriptions.Item label="优惠券">-{amountTransform(item.couponAmount, '/')}元</Descriptions.Item>
                     <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>
                   </Descriptions>
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  {amountTransform(item.incomeAmount, '/')}元
+                  {item.status === 5 ? 0 : amountTransform(item.incomeAmount, '/')}元
                 </div>
                 <div style={{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}</div>
                 <div style={{ textAlign: 'center' }}><Tag style={{ borderRadius: 10 }} color="#f59a23">{{ 1: '秒约', 2: '单约', 3: '团约' }[item.orderType]}订单</Tag></div>

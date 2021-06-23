@@ -37,5 +37,11 @@ export default {
       component: './supplier-management/supplier-detail',
       hideInMenu: true,
     },
+    {
+      name: 'supplier-account-info',
+      path: '/supplier-management/supplier-account-info/:id',
+      component: './supplier-management/supplier-account-info',
+      hideInMenu: true,
+    },
   ]
 }

@@ -16,11 +16,11 @@ const agentShopStoreApply = () => {
     storeApplyDetail({
       applyId:id
     }).then(res => {
-      console.log('deilres',res)
+      // console.log('deilres',res)
       if (res.code === 0) {
         setDetailData(res.data)
-        setAplyId(id)
         setFormVisible(true)
+        setAplyId(id)
       }
     })
   }
@@ -36,7 +36,9 @@ const box=(res)=>{
           wechatNo:ele.details.wechatNo,
           station:ele.details.station,
           createTime:ele.createTime,
-          verifyStatus:ele.verifyStatus.code
+          verifyStatus:ele.verifyStatus.code,
+          auditMsg:ele.auditMsg,
+          adminName:ele.details.adminName
       }))
       return arr
     }
@@ -78,7 +80,7 @@ const box=(res)=>{
     },
     {
       title: '创建人',
-      dataIndex: '',
+      dataIndex: 'adminName',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -93,13 +95,16 @@ const box=(res)=>{
       dataIndex: 'verifyStatus',
       valueType: 'select',
       valueEnum: {
-        0: '未知',
-        1: '店铺入驻成功',
-        2: '审核不通过',
-        3: '审核通过',
-        4: '审核中',
-        5:'取消申请'
+        1: '认证成功',
+        2: '认证失败',
+        4:' 待审核'
       }
+    },
+    {
+      title: '认证成功/失败详解',
+      dataIndex: 'auditMsg',
+      valueType: 'text',
+      hideInSearch: true
     },
     {
       title: '操作',

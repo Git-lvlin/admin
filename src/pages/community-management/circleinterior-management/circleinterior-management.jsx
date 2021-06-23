@@ -11,7 +11,7 @@ import { cancelBanDynamicComment } from '@/services/community-management/dynamic
 import { cancelBanShare } from '@/services/community-management/dynamic-cancel-ban-share';
 import { ModalForm,ProFormSwitch} from '@ant-design/pro-form';
 import DeleteModal from '@/components/DeleteModal'
-import { Button } from 'antd';
+import { Button,Switch } from 'antd';
 
 export default props => {
     const ref=useRef()
@@ -52,9 +52,15 @@ export default props => {
             title: '置顶',
             dataIndex: 'topNum',
             valueType: 'text',
-            render:(text, record, _, action)=>[
-                <ProFormSwitch fieldProps={{onChange:(bol)=>{onTop(bol,record.id)}}}/>
-            ],
+            render:(_,r) => {
+                return <ProFormSwitch name="Switch"
+                  fieldProps={{
+                    checked: r.topNum,
+                    onChange:(bol)=>{onTop(bol,r.id)
+                  }}
+                }
+                />
+            },
             hideInSearch: true,
         },
         {

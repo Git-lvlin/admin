@@ -1,15 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
-  DrawerForm,
+  ModalForm,
   ProFormText,
   ProFormRadio,
   ProFormDateTimePicker ,
 } from '@ant-design/pro-form';
 import CrazyAddActivityReg from '@/components/crazy-add-activity-reg';
 import { crazyActivityAdd } from '@/services/cms/member/member';
-
-
 
 export default (props) => {
   const { detailData, setVisible, setFlag, visible } = props;
@@ -41,7 +39,9 @@ export default (props) => {
   }, [])
 
   return (
-    <DrawerForm
+    <ModalForm
+      key="add"
+      width={600}
       title={`${detailData ? '编辑活动' : '新增活动'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
@@ -105,6 +105,6 @@ export default (props) => {
           label="id"
           hidden
         />
-    </DrawerForm>
+    </ModalForm>
   );
 };

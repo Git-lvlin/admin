@@ -1,12 +1,11 @@
 import React, { useRef, useState, useEffect  } from 'react';
 import { message, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { DrawerForm } from '@ant-design/pro-form';
-import { hotGoosAdd } from '@/services/cms/member/member';
-import { goosReplaceList } from '@/services/cms/member/member';
+import { ModalForm } from '@ant-design/pro-form';
+import { hotGoosAddDF, goosReplaceList } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, setVisible, onClose, setFlag, visible } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
   const columns = [
@@ -26,6 +25,14 @@ export default (props) => {
       dataIndex: 'goodsName',
       valueType: 'text',
       search: false,
+      width: 180,
+      ellipsis: true,
+    },
+    {
+      title: '所属内部店',
+      key: 'storeName',
+      dataIndex: 'storeName',
+      valueType: 'text',
     },
     {
       title: '销售价',
@@ -60,23 +67,29 @@ export default (props) => {
   ];
 
   const waitTime = (values) => {
-    const { ...rest } = values
-    const len = arr.length
-    let array = []
-    for(let i=0;i<len;i++) {
-      array.push(arr[i].spuId)
-    }
+    const newArr = arr.map((i) => {
+      const {id, spuId, storeNo} = i
+      return {
+        id,
+        spuId,
+        storeNo
+      }
+    })
+
     const param = {
       tagCode: 'hot_sale',
-      spuIds: array.toString(),
       goodsType: 5,
-      ...rest
+      cmsId: detailData.id,
+      spuInfo: newArr
     }
 
-    return new Promise((resolve) => {
-      hotGoosAdd(param).then((res) => {
+    return new Promise((resolve, reject) => {
+      hotGoosAddDF(param).then((res) => {
         if (res.code === 0) {
+          setFlag(true);
           resolve(true);
+        } else {
+          reject(false);
         }
       })
   
@@ -87,7 +100,8 @@ export default (props) => {
   }, [])
 
   return (
-    <DrawerForm
+    <ModalForm
+      width={1300}
       title={`${detailData ? '编辑' : '新增'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
@@ -101,9 +115,6 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        onClose: () => {
-          onClose();
-        }
       }}
       onFinish={async (values) => {
         await waitTime(values);
@@ -118,7 +129,6 @@ export default (props) => {
       columns={columns}
       postData={(data) => {
         data.forEach(item => {
-          item.floatPercent = parseInt(item.floatPercent/100)
           item.goodsSalePrice = item.goodsSalePrice/100
         })
         return data
@@ -159,6 +169,6 @@ export default (props) => {
       dateFormatter="string"
       headerTitle="热销好货"
     />
-    </DrawerForm>
+    </ModalForm>
   );
 };

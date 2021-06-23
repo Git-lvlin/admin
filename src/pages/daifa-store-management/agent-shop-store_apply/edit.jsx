@@ -160,8 +160,8 @@ export default (props) => {
       })
       setSelectData(detailData.supplierIds)
       const ids = [];
-      const businessScope = JSON.parse(detailData.businessScope);
-      businessScope?.forEach(item => {
+      const businessScope = detailData.businessScope&&JSON.parse(detailData.businessScope);
+      businessScope&&businessScope.forEach(item => {
         const gcId = item.gc_id2.split(',').map(item => +item)
         ids.push(...gcId)
       })
@@ -262,7 +262,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <Form.Item
         label="身份证正面照片"
@@ -275,7 +275,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <Form.Item
         label="身份证背面照片"
@@ -288,7 +288,7 @@ export default (props) => {
           </dl>
         }
       >
-        <Upload multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <ProFormText
         name="idNumber"
@@ -298,6 +298,7 @@ export default (props) => {
         fieldProps={{
           maxLength: 18,
         }}
+        disabled={!!detailData}
       />
 
       <ProFormText
@@ -352,7 +353,7 @@ export default (props) => {
       <Form.Item
         label="主营商品类型"
         name="gc"
-        // rules={[{ required: true }]}
+        rules={[{ required: true }]}
       >
         <CTree
           checkable
@@ -379,8 +380,8 @@ export default (props) => {
           },
           {
             label: '禁用',
-            value: 3,
-          },
+            value: 2,
+          }
         ]}
       />
       {formVisible && <FormModal

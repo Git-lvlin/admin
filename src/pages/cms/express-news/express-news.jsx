@@ -120,13 +120,13 @@ const ExpressNews = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _, action) => {
+      render: (text, record, _) => {
         return (
           <>
-            {record.state===1&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
-            {record.state===1&&<a key="down" onClick={() => {down(record)}}>下线</a>}
-            {record.state===0&&<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
-            &nbsp;&nbsp;{record.state===0&&<a key="d" onClick={() => {formControl(record.id)}}>删除</a>}
+            {record.state===1&&<Button key="top" onClick={() => {top(record.id)}}>置顶</Button>}
+            {record.state===1&&<Button key="down" onClick={() => {down(record)}}>下线</Button>}
+            {record.state===0&&<Button key="editable" onClick={() => {getDetail(record)}}>编辑</Button>}
+            {record.state===0&&<Button key="d" onClick={() => {formControl(record.id)}}>删除</Button>}
           </>
         )
       }
@@ -154,11 +154,15 @@ const ExpressNews = () => {
             </a>
           </span>
           <span>{`待发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.containers,
-            0,
-          )} 个`}</span>
+            (pre, item) => {
+              item.state === 0
+              if (item.state === 0) {
+                return pre += 1
+              }
+              return pre
+            },0,)} 个`}</span>
           <span>{`已发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.callNumber,
+            (pre, item) => item.state && pre + 1,
             0,
           )} 个`}</span>
         </Space>

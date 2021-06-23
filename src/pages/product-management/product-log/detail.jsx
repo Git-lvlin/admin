@@ -117,6 +117,9 @@ const UserDetail = (props) => {
         request={logDetail}
         search={{
           defaultCollapsed: false,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+          ],
         }}
         columns={columns}
       />

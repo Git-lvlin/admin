@@ -76,6 +76,7 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
+      setNowIndex(detailData.location)
       detailData.useType = {
         1: '全平台',
         2: '手机端',
@@ -167,7 +168,8 @@ export default (props) => {
           required
           rules={
             [{
-              
+              required: true,
+              message: '请上传图片'
             }]
           }
           tooltip={
@@ -180,7 +182,7 @@ export default (props) => {
             </dl>
           }
         >
-          <Upload multiple maxCount={1} accept="image/*" proportion={picSize[nowIndex]||'banner'} />
+          <Upload multiple maxCount={1} code={201} accept="image/*" proportion={picSize[nowIndex]||'banner'} />
         </Form.Item>
       </ProForm.Group>
       <ProForm.Group>
@@ -203,7 +205,7 @@ export default (props) => {
       <ProFormRadio.Group
           name="state"
           label="上线/下架"
-          required
+          initialValue={0}
           options={[
             {
               label: '上线',

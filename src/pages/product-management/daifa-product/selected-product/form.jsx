@@ -14,12 +14,19 @@ export default (props) => {
       title: 'ID',
       dataIndex: 'id',
       valueType: 'text',
+      search: false,
     },
     {
       title: '商品组名称',
       dataIndex: 'title',
       valueType: 'text',
       search: false,
+    },
+    {
+      title: '商品组名称',
+      dataIndex: 'title',
+      valueType: 'text',
+      hideInTable: true,
     },
     {
       title: '商品数量',
@@ -36,8 +43,12 @@ export default (props) => {
     {
       title: '商品组状态',
       dataIndex: 'state',
-      valueType: 'money',
+      valueType: 'text',
       search: false,
+      valueEnum: {
+        0: '失效',
+        1: '正常',
+      }
     },
     {
       title: 'groupId',
@@ -68,6 +79,7 @@ export default (props) => {
 
   return (
     <ModalForm
+      width={1300}
       title={`选择要获取的供应链商品组商品`}
       onVisibleChange={setVisible}
       formRef={formRef}
@@ -98,7 +110,9 @@ export default (props) => {
       //   return data
       // }}
       request={getGoodsList}
-      search={false}
+      search={{
+        labelWidth: 'auto',
+      }}
       pagination={{
         pageSize: 10
       }}
@@ -115,8 +129,6 @@ export default (props) => {
         };
       }}
     />
-
-
     </ModalForm>
   );
 };

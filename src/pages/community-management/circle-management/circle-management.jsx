@@ -54,9 +54,15 @@ export default ()=> {
         {
             title: '置顶',
             dataIndex: 'hot',
-            render:(text, record, _, action)=>[
-                <ProFormSwitch  fieldProps={{onChange:(bol)=>{onTop(bol,record.id)}}}/>
-            ],
+            render:(_,r) => {
+                return <ProFormSwitch name="Switch"
+                  fieldProps={{
+                    checked: r.isTop,
+                    onChange:(bol)=>{onTop(bol,r.id)
+                  }}
+                }
+                />
+            },
             hideInSearch:true
         },
         {

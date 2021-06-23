@@ -73,7 +73,7 @@ const SubTable = (props) => {
       wholesaleId: props.wholesaleId
     }).then(res => {
       if (res.code === 0) {
-        setData(res?.data)
+        setData(res?.data?.length ? res.data : [])
       }
     })
   }, [])
@@ -104,7 +104,7 @@ const TableList = () => {
     updateWholesaleState({
       wholesaleId
     }).then(res => {
-      if (res.code===0) {
+      if (res.code === 0) {
         actionRef.current.reload();
       }
     })
@@ -130,7 +130,6 @@ const TableList = () => {
       dataIndex: 'wholesaleIsOnline',
       valueType: 'select',
       valueEnum: {
-        0: '下架',
         1: '待开始',
         2: '进行中',
         3: '已结束',

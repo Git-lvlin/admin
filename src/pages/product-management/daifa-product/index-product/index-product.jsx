@@ -1,21 +1,97 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Form, Select, message } from 'antd';
+import { Form, Select, message, Table, Input, Button } from 'antd';
 import { indexProductList, goodsLoading } from '@/services/product-management/daifa-product';
-import { categoryAll } from '@/services/common';
+// import { categoryAll } from '@/services/common';
+import {
+  ProFormText,
+} from '@ant-design/pro-form';
 import GcCascader from '@/components/gc-cascader'
 import { amountTransform } from '@/utils/utils'
 import Big from 'big.js';
+import ProCard from '@ant-design/pro-card';
+const { Search } = Input;
 
+const SubTable = (props) => {
+  const [data, setData] = useState([])
+  const [initData, setInitData] = useState([])
+  const [size, setSize] = useState(5)
+  const columns = [
+    {
+      title: '图片',
+      dataIndex: 'imageUrl',
+      render: (text) => <img src={text} width={50} height={50} />,
+    },
+    { title: '供应链skuID', dataIndex: 'skuId' },
+    { 
+      title: '规格',
+      dataIndex: 'skuNameDisplay',
+    },
+    {
+      title: '供货价',
+      dataIndex: 'retailSupplyPrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    // {
+    //   title: '市场价',
+    //   dataIndex: 'marketPrice',
+    //   // render: (_) => amountTransform(_, '/')
+    // },
+    { title: '可用库存', dataIndex: 'stockNum' },
+  ];
+
+  useEffect(() => {
+    if (size) {
+      indexProductList({
+        page: 1,
+        size: size,
+        selectType: 2,
+        spuId: props.data.spuId
+      }).then(({data, total}) => {
+        if (data.length) {
+          setData(data)
+          setInitData(total)
+        }
+      })
+    }
+  }, [size])
+
+  return (
+    <ProCard>
+    <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+      {initData>5&&<Button style={{
+        marginTop: 20
+      }} onClick={() => {
+        setSize(999)
+      }}>查看全部{initData}个sku</Button>}
+    </ProCard>
+  )
+};
 
 export default function EditTable() {
-  const [editableKeys, setEditableKeys] = useState([])
+  const [editableKeys, setEditableKeys] = useState([]);
   const [dataSource, setDataSource] = useState([]);
   const [form] = Form.useForm();
   const actionRef = useRef();
+  const [params, setParams] = useState({
+    selectType: 1,
+  });
+
   const upData = (r) => {
     console.log('r', r)
     const { outSpuId:productId, gcId, goodsState, floatPercent } = r
+    if (!(/(^[1-9]\d*$)/.test(floatPercent))) {
+      return message.error('请输入正整数')
+    }
+    if (!goodsState && goodsState !== 0) {
+      return message.error('请选择售卖状态')
+    }
+    if (!gcId?.[0]) {
+      return message.error('请设置1级分类')
+    }
+    if (!gcId?.[1]) {
+      return message.error('请设置2级分类')
+    }
     const params = {
       productId,
       gcId1: gcId?.[0],
@@ -38,12 +114,12 @@ export default function EditTable() {
       valueType: 'text',
       editable: false,
     },
-    // {
-    //   title: '供应链ID',
-    //   dataIndex: 'feedId',
-    //   valueType: 'text',
-    //   editable: false,
-    // },
+    {
+      title: '供应链spuId',
+      dataIndex: 'outSpuId',
+      valueType: 'text',
+      editable: false,
+    },
     {
       title: '图片',
       dataIndex: 'goodsImageUrl',
@@ -56,16 +132,23 @@ export default function EditTable() {
       dataIndex: 'goodsName',
       valueType: 'text',
       editable: false,
+      search: true,
     },
     {
-      title: '售卖最高价',
-      dataIndex: 'goodsSaleMaxPrice',
+      title: '最低供货价',
+      dataIndex: 'minRetailSupplyPrice',
       valueType: 'text',
       editable: false,
     },
     {
-      title: '售卖最低价',
-      dataIndex: 'goodsSaleMinPrice',
+      title: '最高供货价',
+      dataIndex: 'maxRetailSupplyPrice',
+      valueType: 'text',
+      editable: false,
+    },
+    {
+      title: '库存',
+      dataIndex: 'stockNum',
       valueType: 'text',
       editable: false,
     },
@@ -74,12 +157,16 @@ export default function EditTable() {
       dataIndex: 'invalid',
       valueType: 'text',
       editable: false,
-      render: (_) => _ === 0 ? '有效' : '已失效'
+      render: (_,r) => {
+        return _ === 0 ? '有效' : `已失效(${r.invalidInfo})`
+      }
     },
     {
       title: '售价最多上浮百分比',
       dataIndex: 'floatPercent',
-      valueType: 'text',
+      // width: 160,
+      align: 'center',
+      renderFormItem: () => <Input placeholder='输入正整数' suffix='%'/>,
     },
     {
       title: '商品分类',
@@ -105,6 +192,7 @@ export default function EditTable() {
       title: '操作',
       valueType: 'options',
       editable: false,
+      align: 'center',
       render: (_, r) => <a onClick={() => {
         upData(r)
       }}>更新</a>
@@ -118,8 +206,8 @@ export default function EditTable() {
       // totalStockNum: item.stockNum,
       // minNum: 1,
       gcId: item.gcId1&&item.gcId2&&[item.gcId1, item.gcId2],
-      goodsSaleMaxPrice: amountTransform(+item.goodsSaleMaxPrice, '/'),
-      goodsSaleMinPrice: amountTransform(+item.goodsSaleMinPrice, '/'),
+      maxRetailSupplyPrice: amountTransform(+item.maxRetailSupplyPrice, '/'),
+      minRetailSupplyPrice: amountTransform(+item.minRetailSupplyPrice, '/'),
       // price: amountTransform(+item.price, '/'),
       // perStoreMinNum: 10,
       // totalPrice: item.salePrice > 0 ? +new Big(+item.salePrice).div(100).times(10) : 0,
@@ -127,23 +215,42 @@ export default function EditTable() {
     setDataSource(arr)
   }
 
-  useEffect(() => {
-    categoryAll()
-  }, [])
-
+  // useEffect(() => {
+  //   categoryAll()
+  // }, [])
+  const onSearch = (value) => {
+    setParams({
+      ...params,
+      goodsName: value,
+    })
+  };
   return (
+    <ProCard>
+      <Search
+      style={
+        {
+          width: 300,
+          marginBottom: 20,
+          marginLeft: 24,
+        }
+      }
+      placeholder="请输入商品名"
+      onSearch={onSearch}
+      enterButton={'商品名称搜索'} />
+    <Button onClick={() => {
+      onSearch(null)
+      setValue(null)
+    }}>重置</Button>
     <EditableProTable
       actionRef={actionRef}
       postData={postData}
       columns={columns}
-      params={{
-        selectType: 1
-      }}
+      expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
       rowKey="id"
       value={dataSource}
-      params={{selectType:1}}
+      params={params}
       request={indexProductList}
-      search={false}
+      // search={false}
       editable={{
         form,
         editableKeys,
@@ -165,15 +272,16 @@ export default function EditTable() {
       pagination={{
         pageSize: 10
       }}
-      rowSelection={{
-        onChange: (_, val) => {
-          // onSelect(val[0])
-        }
-      }}
+      // rowSelection={{
+      //   onChange: (_, val) => {
+      //     // onSelect(val[0])
+      //   }
+      // }}
       bordered
       recordCreatorProps={false}
       tableAlertRender={false}
       style={{ marginBottom: 20, width: '100%' }}
     />
+    </ProCard>
   )
 }

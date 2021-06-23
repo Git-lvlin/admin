@@ -1,14 +1,16 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
+import { Space } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { goodsPage } from '@/services/intensive-store-management/product-management';
-import { useParams } from 'umi';
+import { useParams, useLocation } from 'umi';
 import { amountTransform, typeTransform } from '@/utils/utils'
 
 
 const TableList = () => {
 
   const params = useParams();
+  const location = useLocation();
 
   const columns = [
     {
@@ -35,17 +37,17 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '供应商名称',
-      dataIndex: 'supplierCompanyName',
+      title: '供应商ID',
+      dataIndex: 'supplierId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入商品名称'
+        placeholder: '请输入供应商ID'
       },
       hideInTable: true,
     },
     {
-      title: '所属供应商',
-      dataIndex: ['supplier', 'companyName'],
+      title: '供应商ID',
+      dataIndex: ['supplier', 'id'],
       valueType: 'text',
       hideInSearch: true,
     },
@@ -94,6 +96,12 @@ const TableList = () => {
 
   return (
     <PageContainer>
+      <div style={{ marginBottom: 10, background: '#fff', padding: 10 }}>
+        <Space size="large">
+          <span>{location?.query?.storeName}</span>
+          <span>({location?.query?.linkman} {location?.query?.phone})</span>
+        </Space>
+      </div>
       <ProTable
         rowKey="storeNo"
         options={false}

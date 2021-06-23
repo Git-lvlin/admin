@@ -35,10 +35,10 @@ const TableList = () => {
         }}
       >
         <ProCard.TabPane key="1" tab="进行中">
-          {activeKey === '1' && <InProgress />}
+          {activeKey === '1' && <InProgress skuId={location?.query?.skuId} />}
         </ProCard.TabPane>
         <ProCard.TabPane key="2" tab="已成团">
-          {activeKey === '2' && <Done />}
+          {activeKey === '2' && <Done skuId={location?.query?.skuId} />}
         </ProCard.TabPane>
       </ProCard>
     </PageContainer>

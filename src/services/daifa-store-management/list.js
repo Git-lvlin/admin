@@ -1,19 +1,18 @@
 import request from '@/utils/request';
 
 export const storeList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current,...rest} = params;
   const res = await request('/auth/store/AgentShop/page', {
     method: 'POST',
     data: {
       page: current,
-      size: pageSize,
       ...rest
     },
     ...options
   });
 
   return {
-    data: res.data.records.length?res.data.records:[],
+    data: res.data.length?res.data:[],
     success: true,
     total: res.data.total
   }
@@ -99,6 +98,41 @@ export const file_tpl_url = async (params = {}, options = {}) => {
     ...options
   });
   return {
+    data: res.data,
+    success: true
+  }
+}
+
+export const findPage = async (params = {}, options = {}) => {
+  const { ...rest } = params;
+  const res = await request('/auth/java-admin/importTask/findPage', {
+    method: 'POST',
+    data: {
+      code:'inner_store_import',
+      ...rest
+    },
+    ...options
+  });
+  return {
+    code:res.code,
+    data: res.data.records,
+    success: true
+  }
+}
+
+export const createImportTask = async (params = {}, options = {}) => {
+  const { fileUrl,param} = params;
+  const res = await request('/auth/java-admin/importTask/createImportTask', {
+    method: 'POST',
+    data: {
+     code:'inner_store_import',
+     fileUrl,
+     param
+    },
+    ...options
+  });
+  return {
+    code:res.code,
     data: res.data,
     success: true
   }
