@@ -137,7 +137,13 @@ const Edit = props => {
               </dl>
             }
           >
-            <Upload multiple maxCount={1} accept="image/*" size={2 * 1024} />
+            <Upload 
+              code={304}
+              multiple
+              maxCount={1} 
+              accept="image/*"
+              size={2 * 1024} 
+            />
           </ProForm.Item>
           <ProForm.Item
             label='内容'
@@ -184,7 +190,13 @@ const Edit = props => {
               </dl>
             }
           >
-            <Upload multiple maxCount={1} accept="image/*" size={2 * 1024} />
+            <Upload 
+              code={304}
+              multiple
+              maxCount={1}
+              accept="image/*" 
+              size={2 * 1024} 
+            />
           </ProForm.Item>
           <ProForm.Item
             label='公告'
@@ -369,7 +381,14 @@ const Edit = props => {
           </dl>
         }
       >
-        <Upload multiple maxCount={1} proportion={{width: '350', height:'125'}} accept="image/*" size={.5 * 1024} />
+        <Upload
+          code={304}
+          multiple 
+          maxCount={1} 
+          proportion={{width: '350', height:'125'}} 
+          accept="image/*"
+          size={.5 * 1024} 
+        />
       </ProForm.Item>
       <ProFormSelect
         name="pushType"

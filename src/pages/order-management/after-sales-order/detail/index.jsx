@@ -40,7 +40,7 @@ const Detail = () => {
   }, [orderDetail])
 
   const handleBack = () => {
-    history.goBack(-1)
+    history.goBack()
   }
   return (
     <PageContainer header={false}>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
+import { history } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
 import { platformCommissionPage } from '@/services/financial-management/transaction-detail-management'
@@ -8,6 +9,10 @@ import { platformCommissionPage } from '@/services/financial-management/transact
 // 佣金明细
 const CommissionDetailManagement = () =>{
   
+  const skipToDetail = data => {
+    history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=commission`)
+  }
+
   const columns = [
     {
       title: 'id',
@@ -83,7 +88,7 @@ const CommissionDetailManagement = () =>{
       title: '操作',
       dataIndex: 'optoion',
       valueType: 'option',
-      render: ()=> <a onClick={()=>{}}>详情</a>
+      render: (_, records)=> <a onClick={()=>{skipToDetail(records?.orderNo)}}>详情</a>
     }
   ]
   return (
