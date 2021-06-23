@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Form, Select } from 'antd';
-import {
-  ProFormDigit
-} from '@ant-design/pro-form';
+import { Form, Tooltip, Input } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import Big from 'big.js';
 import { amountTransform } from '@/utils/utils'
 
-const getOptions = () => {
-  const arr = [];
-  new Array(20).fill(0).forEach((item, index) => {
-    arr.push({ label: `${index + 1}%`, value: index + 1 })
-  })
-  return arr;
-}
 
 export default function EditTable({ onSelect }) {
   const [editableKeys, setEditableKeys] = useState([])
@@ -56,10 +47,10 @@ export default function EditTable({ onSelect }) {
     //   hideInTable: true
     // },
     {
-      dataIndex: 'supplierName',
+      dataIndex: 'supplierId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商名称',
+        placeholder: '请输入供应商ID',
         maxLength: 30,
       },
       hideInTable: true
@@ -173,90 +164,53 @@ export default function EditTable({ onSelect }) {
       dataIndex: 'totalStockNum',
       valueType: 'text',
       hideInSearch: true,
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            whitespace: true,
-            message: '请输入集约总库存',
-          },
-        ],
-      }
     },
     {
       title: '集约分成比例',
       dataIndex: 'settlePercent',
       valueType: 'text',
       hideInSearch: true,
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            whitespace: true,
-            message: '请输入集约分成比例',
-          },
-        ],
-      }
+      renderFormItem: () => <Input addonAfter="%" />
+      // formItemProps: {
+      //   rules: [
+      //     {
+      //       required: true,
+      //       whitespace: true,
+      //       message: '请输入集约分成比例',
+      //     },
+      //   ],
+      // }
     },
     {
-      title: '集约价',
+      title: (
+        <>
+          集约价
+          <Tooltip placement="top" title="集约价最低=(售价+配送费补贴)÷（100%-集约分成比例-0.68%）">
+            <QuestionCircleOutlined style={{ marginLeft: 4 }} />
+          </Tooltip>
+        </>
+      ),
       dataIndex: 'price',
       valueType: 'text',
       hideInSearch: true,
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            whitespace: true,
-            message: '请输入集约价',
-          },
-        ],
-      }
     },
     {
       title: '配送费补贴(元)',
       dataIndex: 'fixedPrice',
       valueType: 'text',
       hideInSearch: true,
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            whitespace: true,
-            message: '请输入配送费补贴',
-          },
-        ],
-      }
     },
     {
       title: '单店起订量',
       dataIndex: 'minNum',
       valueType: 'text',
       hideInSearch: true,
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            whitespace: true,
-            message: '请输入单店起订量',
-          },
-        ],
-      }
     },
     {
       title: '单店限订量',
       dataIndex: 'maxNum',
       valueType: 'text',
       hideInSearch: true,
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            whitespace: true,
-            message: '请输入单店限订量',
-          },
-        ],
-      }
     },
     {
       title: '全款金额',
@@ -277,8 +231,9 @@ export default function EditTable({ onSelect }) {
       maxNum: 10,
       price: amountTransform(item.minWholesalePrice, '/'),
       fixedPrice: amountTransform(item.fixedPrice, '/'),
+      settlePercent: amountTransform(item.settlePercent),
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
-      totalPrice: item.salePrice > 0 ? +new Big(item.salePrice).div(100).times(1) : 0,
+      totalPrice: item.salePrice > 0 ? +new Big(item.price || item?.minWholesalePrice).div(100).times(1) : 0,
     }))
     setDataSource(arr)
   }
