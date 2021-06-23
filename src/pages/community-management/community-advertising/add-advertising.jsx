@@ -115,7 +115,7 @@ export default props => {
             ]}
             />
         <Form.Item  rules={[{ required: true, message: '请上传图片' }]} label="圈子ICON" name="images">
-            <Upload multiple maxCount={1} accept="image/*"/>
+            <Upload code={204} multiple maxCount={1} accept="image/*"/>
         </Form.Item>
         <ProFormRadio.Group
             name="linkType"

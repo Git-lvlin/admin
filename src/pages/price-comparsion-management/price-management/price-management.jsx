@@ -29,12 +29,16 @@ const PriceManagement = () => {
   const [resData, setResData] = useState({})
   const [loading, setLoading] = useState({})
   const [type, setType] = useState(false)
-  const [binded, setBinded] = useState(false)
 
   const [form] = Form.useForm();
 
-  const formControl = (data) => {
-    delContestGoods({id: data}).then((res) => {
+  const formControl = ({selectedRows}) => {
+    const ids = []
+    const len = selectedRows.length
+    for(let i=0;i<len;i++) {
+      ids.push(selectedRows[i].id)
+    }
+    delContestGoods({id: ids.toString()}).then((res) => {
       if (res.code === 0) {
         message.success(`成功`);
         actionRef.current.reset();
@@ -53,7 +57,7 @@ const PriceManagement = () => {
     const param = {
       goodsUrl: value,
       goodsId: formData.goodsSpuId,
-      type: type,
+      type,
       skuId: formData.goodsSkuId,
     }
     createTaskSrc(param).then((res) => {
@@ -114,11 +118,6 @@ const PriceManagement = () => {
       actionRef.current.reset()
       setFlag(false)
     }
-    // if (resData) {
-    //   form.setFieldsValue({
-    //     'search-jd': resData['jd']?.url
-    //   })
-    // }
   }, [flag])
 
   const expandedRowRender = (a) => {
@@ -136,20 +135,19 @@ const PriceManagement = () => {
         </ProCard>
         <ProCard split="vertical" className={styles.header}>
           <ProCard colSpan="120px" className={styles.card}>淘宝</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData['tb']?.sku}</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData['tb']?.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData.tb?.sku}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData.tb?.price}</ProCard>
           <ProCard className={styles.card}>
             <Search
               name="search-tb"
               placeholder="请输入对应商品链接地址"
               allowClear
-              value={resData['tb']?.url}
+              value={resData.tb?.url}
               onChange={(e) => {
-                // e.target.value
                 setResData({
                   ...resData,
                   'tb':{
-                    ...resData['tb'],
+                    ...resData.tb,
                     url: e.target.value
                   }
                 })
@@ -177,20 +175,19 @@ const PriceManagement = () => {
         </ProCard>
         <ProCard split="vertical" className={styles.header}>
           <ProCard colSpan="120px" className={styles.card}>京东</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData['jd']?.sku}</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData['jd']?.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData.jd?.sku}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData.jd?.price}</ProCard>
           <ProCard className={styles.card}>
             <Search
                 name="search-jd"
                 placeholder="请输入对应商品链接地址"
                 allowClear
-                value={resData['jd']?.url}
+                value={resData.jd?.url}
                 onChange={(e) => {
-                  // e.target.value
                   setResData({
                     ...resData,
                     'jd':{
-                      ...resData['jd'],
+                      ...resData.jd,
                       url: e.target.value
                     }
                   })
@@ -202,7 +199,7 @@ const PriceManagement = () => {
                 }}
                 size="middle"
                 onSearch={(_) => {onSearch(_,'jd',a.id)}}
-                loading={loading['jd']}
+                loading={loading.jd}
               />
             <Button
               disabled={!grabList}
@@ -218,19 +215,18 @@ const PriceManagement = () => {
         </ProCard>
         <ProCard split="vertical" className={styles.header}>
           <ProCard colSpan="120px" className={styles.card}>拼多多</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData['pdd']?.sku}</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData['pdd']?.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData.pdd?.sku}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData.pdd?.price}</ProCard>
             <ProCard className={styles.card}>
               <Search
                   placeholder="请输入对应商品链接地址"
                   allowClear
-                  value={resData['pdd']?.url}
+                  value={resData.pdd?.url}
                   onChange={(e) => {
-                    // e.target.value
                     setResData({
                       ...resData,
                       'pdd':{
-                        ...resData['pdd'],
+                        ...resData.pdd,
                         url: e.target.value
                       }
                     })
@@ -242,7 +238,7 @@ const PriceManagement = () => {
                     float: 'left'
                   }}
                   onSearch={(_) => {onSearch(_,'pdd',a.id)}}
-                  loading={loading['pdd']}
+                  loading={loading.pdd}
                 />
               <Button
                 disabled={!grabList}
@@ -257,19 +253,18 @@ const PriceManagement = () => {
         </ProCard>
         <ProCard split="vertical" className={styles.header}>
           <ProCard colSpan="120px" className={styles.card}>天猫</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData['tmall']?.sku}</ProCard>
-          <ProCard colSpan="120px" className={styles.card}>{resData['tmall']?.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData.tmall?.sku}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>{resData.tmall?.price}</ProCard>
           <ProCard className={styles.card}>
             <Search
                 placeholder="请输入对应商品链接地址"
                 allowClear
-                value={resData['tmall']?.url}
+                value={resData.tmall?.url}
                 onChange={(e) => {
-                  // e.target.value
                   setResData({
                     ...resData,
                     'tmall':{
-                      ...resData['tmall'],
+                      ...resData.tmall,
                       url: e.target.value
                     }
                   })
@@ -281,7 +276,7 @@ const PriceManagement = () => {
                 }}
                 size="middle"
                 onSearch={(_) => {onSearch(_,'tmall',a.id)}}
-                loading={loading['tmall']}
+                loading={loading.tmall}
               />
             <Button
               disabled={!grabList}
@@ -356,11 +351,11 @@ const PriceManagement = () => {
     if (!arr.length) {
       return;
     }
-
+    console.log('arr',arr)
     const index = arr[arr.length-1]
+    console.log('index', index)
     getGoodsBindData({goodsId:index[0],goodsSkuId:index[1]}).then(res => {
       if (res.code === 0) {
-        // setBinded(res.data)
         setResData(res.data)
       }
     })
@@ -370,8 +365,7 @@ const PriceManagement = () => {
     <PageContainer>
       <ProTable
       form={form}
-      rowKey="id"
-      key="allKey"
+      rowKey="allKey"
       columns={columns}
       expandable={{
         expandedRowRender,
@@ -383,8 +377,8 @@ const PriceManagement = () => {
       actionRef={actionRef}
       postData={(data) => {
         data.forEach(item => {
-          item.goodsPrice = item.goodsPrice/100
-          item.goodsMarketPrice = item.goodsMarketPrice/100
+          item.goodsPrice /=100
+          item.goodsMarketPrice /=100
           item.allKey = [item.goodsSpuId, item.goodsSkuId]
         })
         return data
@@ -425,7 +419,7 @@ const PriceManagement = () => {
         <Button key="button" icon={<PauseCircleOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
           添加比价商品
         </Button>,
-        <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString()) }}>
+        <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record) }}>
           批量删除
         </Button>,
       ]}
