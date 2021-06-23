@@ -261,6 +261,7 @@ export default (props) => {
             <dd>2.图片格式png/jpg/gif</dd>
           </dl>
         }
+        extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
       >
         <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
@@ -274,6 +275,7 @@ export default (props) => {
             <dd>2.图片格式png/jpg/gif</dd>
           </dl>
         }
+        extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
       >
         <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
@@ -287,6 +289,7 @@ export default (props) => {
             <dd>2.图片格式png/jpg/gif</dd>
           </dl>
         }
+        extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
       >
         <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>

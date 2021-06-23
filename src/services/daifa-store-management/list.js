@@ -10,9 +10,10 @@ export const storeList = async (params = {}, options = {}) => {
     },
     ...options
   });
+  console.log('res',res)
 
   return {
-    data: res.data.length?res.data:[],
+    data: res.data.records.length?res.data.records:[],
     success: true,
     total: res.data.total
   }
@@ -104,18 +105,20 @@ export const file_tpl_url = async (params = {}, options = {}) => {
 }
 
 export const findPage = async (params = {}, options = {}) => {
-  const { ...rest } = params;
+  const {current} = params;
   const res = await request('/auth/java-admin/importTask/findPage', {
     method: 'POST',
     data: {
       code:'inner_store_import',
-      ...rest
+      pageSize:10,
+      page:current
     },
     ...options
   });
   return {
     code:res.code,
     data: res.data.records,
+    total:Number(res.data.total),
     success: true
   }
 }

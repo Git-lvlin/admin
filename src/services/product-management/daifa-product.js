@@ -1,14 +1,21 @@
 import request from '@/utils/request';
 
 export const productList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
-  const res = await request('/auth/goods/Product_Ali/selectedList', {
+  const { current, pageSize, groupName, ...rest } = params;
+  let url = '/auth/goods/Product_Ali/selectedList'
+
+  const param = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  if (groupName) {
+    url='/auth/goods/Product_Ali/searchGroupInfo'
+    param.groupName = groupName
+  }
+  const res = await request(url, {
     method: 'POST',
-    data: {
-      page: current,
-      size: pageSize,
-      ...rest
-    },
+    data: param,
     ...options
   });
   const data = res.data.records?res.data.records:res.data
