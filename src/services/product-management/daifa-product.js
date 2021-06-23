@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 export const productList = async (params = {}, options = {}) => {
-  const { current, pageSize, goodsName, ...rest } = params;
+  const { current, pageSize, groupName, ...rest } = params;
   let url = '/auth/goods/Product_Ali/selectedList'
 
   const param = {
@@ -9,9 +9,9 @@ export const productList = async (params = {}, options = {}) => {
     size: pageSize,
     ...rest
   }
-  if (goodsName) {
+  if (groupName) {
     url='/auth/goods/Product_Ali/searchGroupInfo'
-    param.goodsName = goodsName
+    param.groupName = groupName
   }
   const res = await request(url, {
     method: 'POST',
