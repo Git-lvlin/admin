@@ -30,7 +30,7 @@ const PriceManagement = () => {
   const [loading, setLoading] = useState({})
   const [type, setType] = useState(false)
   const [form] = Form.useForm();
-
+  const [rowKeys, setRowKeys] = useState([])
   const formControl = ({selectedRows}) => {
     const ids = []
     const len = selectedRows.length
@@ -350,14 +350,24 @@ const PriceManagement = () => {
     if (!arr.length) {
       return;
     }
-    console.log('arr',arr)
     const index = arr[arr.length-1]
-    console.log('index', index)
     getGoodsBindData({goodsId:index[0],goodsSkuId:index[1]}).then(res => {
       if (res.code === 0) {
         setResData(res.data)
       }
     })
+  }
+
+  const changeRowKeys = (expanded, record) => {
+    console.log('expanded', expanded)
+    console.log('record', record)
+
+    let temp = []
+    if (expanded) {
+      temp.push(record.allKey)
+    }
+    console.log('temp', temp)
+    setRowKeys(temp)
   }
 
   return (
@@ -369,10 +379,14 @@ const PriceManagement = () => {
       expandable={{
         expandedRowRender,
         onExpandedRowsChange: (expandedRows) => {
-          console.log('expandedRows', expandedRows)
+          // console.log('expandedRows', expandedRows)
           getBindedData(expandedRows)
         },
       }}
+      expandedRowKeys={rowKeys}
+      defaultExpandAllRows={true}
+      expandedRowRender={expandedRowRender}
+      onExpand={(expanded, record) => changeRowKeys(expanded, record)}
       actionRef={actionRef}
       postData={(data) => {
         data.forEach(item => {
