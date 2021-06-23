@@ -23,19 +23,28 @@ const columns = [
     dataIndex: 'goodsName',
   },
   {
-    title: '结算类型',
-    dataIndex: 'settleType',
-    render: (_) => {
-      return {
-        0: '全部',
-        1: '佣金模式',
-        2: '底价模式'
-      }[_]
-    }
+    title: '供应商ID',
+    dataIndex: 'supplierId',
+  },
+  // {
+  //   title: '结算类型',
+  //   dataIndex: 'settleType',
+  //   render: (_) => {
+  //     return {
+  //       0: '全部',
+  //       1: '佣金模式',
+  //       2: '底价模式'
+  //     }[_]
+  //   }
+  // },
+  {
+    title: '集约分成比例',
+    dataIndex: 'settlePercent',
+    render: (_) => `${amountTransform(_)}%`
   },
   {
-    title: '销售价',
-    dataIndex: 'salePrice',
+    title: '供货价',
+    dataIndex: 'wholesaleSupplyPrice',
     render: (_) => amountTransform(_, '/')
   },
   {
@@ -53,8 +62,17 @@ const columns = [
     render: (_) => amountTransform(_, '/')
   },
   {
-    title: '集约量',
+    title: '配送费补贴',
+    dataIndex: 'fixedPrice',
+    render: (_) => amountTransform(_, '/')
+  },
+  {
+    title: '单店起订量',
     dataIndex: 'minNum',
+  },
+  {
+    title: '单店限订量',
+    dataIndex: 'maxNum',
   },
   {
     title: '集约全款金额',
@@ -85,19 +103,19 @@ const Detail = ({ onClose, visible, detailData }) => {
         <Descriptions labelStyle={{ textAlign: 'right', width: 150, display: 'inline-block' }}>
           <Descriptions.Item label="活动名称">{wholesale.name}</Descriptions.Item>
           <Descriptions.Item label="活动时间"><span style={{ position: 'absolute', marginTop: -10 }}>{wholesale.wholesaleStartTime}<br />{wholesale.wholesaleEndTime}</span></Descriptions.Item>
-          <Descriptions.Item label="订金支付时间">
+          <Descriptions.Item label="采购单下单截止时间">
             {wholesale.endTimeAdvancePayment}
           </Descriptions.Item>
           <Descriptions.Item label="可购买的会员店等级">{wholesale.storeLevel}</Descriptions.Item>
           <Descriptions.Item label="可购买的会员用户">
             {wholesale.memberLevel}
           </Descriptions.Item>
-          <Descriptions.Item label="可恢复支付次数">
+          {/* <Descriptions.Item label="可恢复支付次数">
             {wholesale.canRecoverPayTimes}
           </Descriptions.Item>
           <Descriptions.Item label="每次恢复支付时长">
             {wholesale.recoverPayTimeout / 3600}小时
-          </Descriptions.Item>
+          </Descriptions.Item> */}
         </Descriptions>
       </Row>
 

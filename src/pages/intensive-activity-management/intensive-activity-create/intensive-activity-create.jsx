@@ -57,7 +57,7 @@ const IntensiveActivityCreate = () => {
   const [selectItem, setSelectItem] = useState(null);
   const [submitValue, setSubmitValue] = useState(null);
   const submit = (values) => {
-    const { wholesaleTime, recoverPayTimeout, ...rest } = values;
+    const { wholesaleTime, ...rest } = values;
     return new Promise((resolve, reject) => {
       const params = {
         goodsInfos: [{
@@ -71,13 +71,14 @@ const IntensiveActivityCreate = () => {
           totalPrice: selectItem.totalPrice,
           wholesaleSupplyPrice: amountTransform(selectItem.wholesaleSupplyPrice),
           fixedPrice: amountTransform(selectItem.fixedPrice),
-          settlePercent: selectItem.settlePercent,
+          settlePercent: amountTransform(selectItem.settlePercent, '/'),
         }],
         storeLevel: 'ALL',
         memberLevel: 'ALL',
         wholesaleStartTime: wholesaleTime[0],
         wholesaleEndTime: wholesaleTime[1],
-        recoverPayTimeout: recoverPayTimeout * 60 * 60,
+        recoverPayTimeout: 0,
+        canRecoverPayTimes: 0,
         ...rest,
       }
       setSubmitValue(params)
@@ -130,7 +131,22 @@ const IntensiveActivityCreate = () => {
                 message.error('请选择活动商品');
                 return false;
               }
-              let minWholesalePrice = (amountTransform(selectItem.wholesaleSupplyPrice) + +new Big(selectItem.fixedPrice).times(100)) / (+new Big(1).minus(0.0068).minus(selectItem.settlePercent));
+
+              if (!/^\d+$/g.test(selectItem.totalStockNum) || selectItem.totalStockNum <= 0) {
+                message.error('集约总库存只能是大于0的整数');
+                return false;
+              }
+
+              if (selectItem.fixedPrice < 0 || selectItem.fixedPrice > 10) {
+                message.error('配送费补贴只能是0-10之间');
+                return false;
+              }
+              if (selectItem.settlePercent < 0 || selectItem.settlePercent > 20) {
+                message.error('集约分成比例只能是0-20之间');
+                return false;
+              }
+
+              let minWholesalePrice = (amountTransform(selectItem.wholesaleSupplyPrice) + +new Big(selectItem.fixedPrice).times(100)) / (+new Big(1).minus(0.0068).minus(amountTransform(selectItem.settlePercent, '/')));
               minWholesalePrice = +new Big(Math.ceil(minWholesalePrice)).div(100);
               if (selectItem.price < minWholesalePrice) {
                 message.error(`集约价格小于集约最低价${minWholesalePrice}`);
@@ -150,10 +166,10 @@ const IntensiveActivityCreate = () => {
               return true;
             }}
             {...formItemLayout}
-            initialValues={{
-              canRecoverPayTimes: 1,
-              recoverPayTimeout: 3
-            }}
+            // initialValues={{
+            //   canRecoverPayTimes: 1,
+            //   recoverPayTimeout: 3
+            // }}
             className={styles.center}
           >
             <ProFormText name="name" label="活动名称" width="md" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
@@ -185,8 +201,8 @@ const IntensiveActivityCreate = () => {
             />
             <ProFormCheckbox.Group value={'1'} label="可购买的会员店等级" disabled options={[{ label: '全部', value: 1 }]} />
             <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} />
-            <ProFormDigit name="canRecoverPayTimes" label="可恢复支付次数" min={0} max={3} placeholder="输入范围0-3" rules={[{ required: true, message: '请输入可恢复支付次数' }]} />
-            <ProFormDigit name="recoverPayTimeout" label="每次恢复可支付时长" min={0} max={24} placeholder="输入范围0-24小时" rules={[{ required: true, message: '请输入每次恢复可支付时长' }]} />
+            {/* <ProFormDigit name="canRecoverPayTimes" label="可恢复支付次数" min={0} max={3} placeholder="输入范围0-3" rules={[{ required: true, message: '请输入可恢复支付次数' }]} /> */}
+            {/* <ProFormDigit name="recoverPayTimeout" label="每次恢复可支付时长" min={0} max={24} placeholder="输入范围0-24小时" rules={[{ required: true, message: '请输入每次恢复可支付时长' }]} /> */}
           </StepsForm.StepForm>
           <StepsForm.StepForm
             name="time"
