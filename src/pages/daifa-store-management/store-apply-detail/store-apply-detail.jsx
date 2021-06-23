@@ -39,7 +39,6 @@ const ListApplyDetail = props => {
     storeApplyDetail({
       applyId
     }).then(res => {
-      // console.log('detail',res.data)
       if (res.code === 0) {
         const ids = [];
         const businessScope=res.data.businessScope&&JSON.parse(res.data.businessScope)

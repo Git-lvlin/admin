@@ -12,7 +12,6 @@ const agentShopStoreApply = () => {
   const actionRef = useRef();
 
   const getDetail = (id,data) => {
-    console.log('data',data)
     storeApplyDetail({
       applyId:id
     }).then(res => {
@@ -26,7 +25,6 @@ const agentShopStoreApply = () => {
   }
 
 const box=(res)=>{
-  console.log('res',res)
     const arr=res.map(ele=>
       ({ 
           id:ele.id,
