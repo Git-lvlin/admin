@@ -113,21 +113,21 @@ const ListDetail = props => {
             name="idFront"
             extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
           >
-            <Upload disabled={false}  multiple maxCount={1} accept="image/*" size={1 * 1024} />
+            <Upload disabled={true}  multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
           <Form.Item
             label="身份证国徽面照片"
             name="idBack"
             extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
           >
-            <Upload disabled={false} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+            <Upload disabled={true} multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
           <Form.Item
             label="手持身份证照片"
             name="idHandheld"
             extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
           >
-            <Upload disabled={false} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+            <Upload disabled={true} multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
           <Form.Item
             label="店主内部岗位或身份"
