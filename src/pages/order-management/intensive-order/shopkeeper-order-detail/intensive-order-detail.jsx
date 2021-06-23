@@ -100,7 +100,7 @@ const OrderDetail = () => {
               </div>
               <div className={styles.box}>
                 <div>订单号</div>
-                <div>{detailData.id}</div>
+                <div>{detailData.orderSn}</div>
               </div>
               <div className={styles.box}>
                 <div>下单时间</div>
