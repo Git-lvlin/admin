@@ -28,6 +28,7 @@ const TableList = () => {
 
   const orderTypeChange = (e) => {
     setOrderType(e.target.value)
+    setPage(1)
   }
 
   const orderShipRequest = (values) => {
