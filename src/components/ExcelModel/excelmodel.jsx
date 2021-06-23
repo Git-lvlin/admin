@@ -17,19 +17,15 @@ export default props=>{
     const Termination=()=>{
         setVisible(true)
         file_tpl_url({}).then(res=>{
-          console.log('resurl',res)
           setBaseUrl(res.data.filePath)
         })
     }
     useEffect(()=>{
       var user=window.localStorage.getItem('user')
-      console.log('user',user)
     },[])
     const fileUrl=async (e)=>{
-        console.log('e',e)
         if(window.localStorage.getItem('user')){
           await createImportTask({fileUrl:e,param:window.localStorage.getItem('user')}).then(res=>{
-            console.log('res',res)
             if(res.code==0){
                 message.success('创建导入任务成功');
                 setFalg(true)

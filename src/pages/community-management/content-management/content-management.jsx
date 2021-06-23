@@ -149,9 +149,6 @@ export default props => {
             rowKey="id"
             options={false}
             actionRef={ref}
-            params={{
-                pageSize:5
-            }}
             request={adminList}
             search={{
                 defaultCollapsed: false,

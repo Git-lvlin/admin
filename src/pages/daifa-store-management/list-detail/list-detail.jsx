@@ -24,7 +24,6 @@ const formItemLayout = {
 
 const ListDetail = props => {
   let storeNo = props.location.query.storeNo
-  // const params = useParams();
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false);
   const [detailData, setDetailData] = useState({});
@@ -38,7 +37,6 @@ const ListDetail = props => {
    await storeDetail({
       storeNo
     }).then(res => {
-      console.log('detail',res)
       if (res.code === 0) {
         const ids = [];
         const businessScope=res.data.businessScope&&JSON.parse(res.data.businessScope)
@@ -57,14 +55,16 @@ const ListDetail = props => {
   await categoryAll()
       .then(res => {
         if (res.code === 0) {
-          const tree = arrayToTree(res.data.records.map(item => ({
+          const tree = arrayToTree(res.data.records.map(item =>({
             ...item,
             pid: item.gcParentId,
             title: item.gcName,
             key: item.id,
             value: item.id,
             selectable: false
-          })))
+          })
+          )
+          )
           setTreeData(tree)
         }
       })

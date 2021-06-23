@@ -10,7 +10,6 @@ export const storeList = async (params = {}, options = {}) => {
     },
     ...options
   });
-  console.log('res',res)
 
   return {
     data: res.data.records.length?res.data.records:[],

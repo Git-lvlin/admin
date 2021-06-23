@@ -29,7 +29,6 @@ const TableList = () => {
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data)
-        console.log('res.data',res.data)
         setFormVisible(true)
       }
     })

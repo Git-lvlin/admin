@@ -71,7 +71,6 @@ const Upload = (props) => {
   }
 
   useEffect(() => {
-    console.log('code',code)
     if (!fileList.length) {
       if (Array.isArray(value) && value?.length) {
         fileData.current = value.map((item, index) => {
