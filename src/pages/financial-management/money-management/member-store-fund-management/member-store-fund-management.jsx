@@ -10,22 +10,22 @@ import { amountTransform } from '@/utils/utils'
 import { platforms, findAllBanks, enabledDisabledSubmit } from '@/services/financial-management/supplier-fund-management'
 
 const MemberStoreFundManagement = () => {
-  const [banks, setBanks] = useState({})
+  // const [banks, setBanks] = useState({})
   const actionRef = useRef()
-  useEffect(() => {
-    findAllBanks().then(res=>{
-      if(res.success) {
-        const obj = {}
-        res?.data.map(item=> {
-          obj[item.bankCode] = item.bankName
-        })
-        setBanks(obj)
-      }
-    })
-    return () => {
-      setBanks({})
-    }
-  }, [])
+  // useEffect(() => {
+  //   findAllBanks().then(res=>{
+  //     if(res.success) {
+  //       const obj = {}
+  //       res?.data.map(item=> {
+  //         obj[item.bankCode] = item.bankName
+  //       })
+  //       setBanks(obj)
+  //     }
+  //   })
+  //   return () => {
+  //     setBanks({})
+  //   }
+  // }, [])
   const skipToDetail = ({accountType, accountId}) => {
     history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
   }
@@ -115,22 +115,31 @@ const MemberStoreFundManagement = () => {
     },
     {
       title: '账户名称',
-      dataIndex: 'realname'
+      dataIndex: 'realname',
+      hideInSearch: true
     },
     {
       title: '银行账户',
-      dataIndex: 'cardNo'
+      dataIndex: 'cardNo',
+      hideInSearch: true
     },
     {
       title: '所属银行',
       dataIndex: 'bankName',
       valueType: 'select',
-      valueEnum: banks
+      hideInSearch: true
+      // valueEnum: banks
     },
     {
       title: '入驻时间',
       dataIndex: 'bindTime',
       hideInSearch: true
+    },
+    {
+      title: '入驻时间',
+      dataIndex: 'bindTime',
+      hideInTable: true,
+      valueType: 'dateRange'
     },
     {
       title: '收支明细',

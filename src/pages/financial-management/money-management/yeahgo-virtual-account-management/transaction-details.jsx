@@ -88,14 +88,22 @@ const TransactionDetails = () => {
       hideInSearch: true
     },
     {
+      title: '交易时间',
+      dataIndex: 'createTime',
+      valueType: 'dateRange',
+      hideInTable: true
+    },
+    {
       title: '入账金额',
       dataIndex: 'changeAmount',
-      render: (_) => amountTransform(_, '/')
+      render: (_) => amountTransform(_, '/'),
+      hideInSearch: true
     },
     {
       title: '账户余额',
       dataIndex: 'balanceAmount',
-      render: (_) => amountTransform(_, '/')
+      render: (_) => amountTransform(_, '/'),
+      hideInSearch: true
     }
   ]
   return (

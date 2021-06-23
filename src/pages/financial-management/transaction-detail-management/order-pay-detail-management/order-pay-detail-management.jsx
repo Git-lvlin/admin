@@ -102,6 +102,12 @@ const OrderPayDetailManagement = () =>{
     {
       title: '支付时间',
       dataIndex: 'payTime',
+      valueType: 'dateRange',
+      hideInTable: true
+    },
+    {
+      title: '支付时间',
+      dataIndex: 'payTime',
       hideInSearch: true
     },
     {

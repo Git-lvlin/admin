@@ -33,9 +33,16 @@ const TabList =props=> {
     {
       title: '处理时间',
       dataIndex: 'applyTime',
+      valueType: 'dateRange',
+      hideInTable: true
+    },
+    {
+      title: '处理时间',
+      dataIndex: 'applyTime',
       valueType: 'date',
       colSize: .8,
       align: 'center',
+      hideInSearch: true,
       render: (_)=>{
         return(
           <>{moment(_.props.text).format('YYYY-MM-DD HH:mm:ss')}</>
