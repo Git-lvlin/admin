@@ -19,6 +19,47 @@ export const withdrawPage = async (params, options = {}) => {
   }
 }
 
+// 提现详情
+export const withdrawPageDetail = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/financial/withdraw/detail', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+
+  return {
+    data: res?.data,
+    success: res?.success
+  }
+}
+
+// 提现审核
+export const audit = async (params= {}, options= {}) => {
+  const res = await request('/auth/java-admin/financial/withdraw/audit', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+
+  return {
+    data: res?.data,
+    success: res?.success
+  }
+}
+// 提现执行
+export const payment = async (params= {}, options= {}) => {
+  const res = await request('/auth/java-admin/financial/withdraw/payment', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+
+  return {
+    data: res?.data,
+    success: res?.success
+  }
+}
+
 // 订单支付明细管理
 export const orderPage = async (params, options = {}) => {
   const { current, pageSize, ...rest } = params
@@ -36,6 +77,19 @@ export const orderPage = async (params, options = {}) => {
     data: res?.data.records,
     success: res?.success,
     total: res.data.total
+  }
+}
+// 订单详情
+export const orderPageDetail = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/financial/trans/orderDetail', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+
+  return {
+    data: res?.data,
+    success: res?.success
   }
 }
 
@@ -58,6 +112,19 @@ export const commissionPage = async (params, options = {}) => {
     total: res.data.total
   }
 }
+// 提成详情
+export const commissionDetail = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/financial/trans/commissionDetail', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+
+  return {
+    data: res?.data,
+    success: res?.success
+  }
+}
 
 // 佣金明细管理
 export const platformCommissionPage = async (params, options = {}) => {
@@ -76,6 +143,19 @@ export const platformCommissionPage = async (params, options = {}) => {
     data: res?.data.records,
     success: res?.success,
     total: res.data.total
+  }
+}
+// 佣金详情
+export const platformCommissionDetail = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/financial/trans/platformCommissionDetail', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+
+  return {
+    data: res?.data,
+    success: res?.success
   }
 }
 
@@ -98,6 +178,20 @@ export const goodsAmountPage = async (params, options = {}) => {
     total: res.data.total
   }
 }
+// 货款详情
+export const goodsAmountDetail = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/financial/trans/goodsAmountDetail', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+
+  return {
+    data: res?.data,
+    success: res?.success
+  }
+}
+
 // 售后订单明细
 export const refundPage = async (params, options = {}) => {
   const { current, pageSize, ...rest } = params
@@ -115,5 +209,18 @@ export const refundPage = async (params, options = {}) => {
     data: res?.data.records,
     success: res?.success,
     total: res.data.total
+  }
+}
+// 售后订单详情
+export const refundDetail = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/financial/trans/refundDetail', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+
+  return {
+    data: res?.data,
+    success: res?.success
   }
 }

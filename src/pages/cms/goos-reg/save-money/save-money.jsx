@@ -71,7 +71,6 @@ const SaveMoney = () => {
       title: '商品名称',
       dataIndex: 'goodsName',
       valueType: 'text',
-      search: false,
       width: 180,
       ellipsis: true,
     },

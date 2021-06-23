@@ -33,7 +33,7 @@ const upload = async (file, code) => {
     client.put(`${ossConfig.uploadInfo.dir}/${file.uid}${file.name}`, file).then(res => {
       if (file.type.indexOf('image') !== -1) {
         getImageSize(file).then(size => {
-          resolve(`${res.url}?x-oss-process=image/resize,h_${size.height},w_${size.width}`)
+          resolve(`${res.url}?imgHeight=${size.height}&imgWidth=${size.width}`)
         })
       } else {
         resolve(res.url);

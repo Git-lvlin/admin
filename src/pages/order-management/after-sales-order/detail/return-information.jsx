@@ -31,7 +31,7 @@ const ReturnInformation = props => {
   const [express, setExpress] = useState({})
   
   useEffect(() => {
-    if(data != ![] && status === 2) {
+    if(data != ![] && status === 2 && type !== 1) {
       expressInfo({
         shippingCode: data?.returnShippingCode,
         expressType: data?.returnExpressType,
@@ -95,7 +95,7 @@ const ReturnInformation = props => {
     {
       title: '退货物流信息',
       dataIndex: 'returnGoodsInfo',
-      hideInDescriptions: (status === 1 && type !== 1) ? true : false,
+      hideInDescriptions: (type === 1) ? true : false,
       render: () => {
         return(
           <div style={{display: 'flex', alignItems:'center'}}>

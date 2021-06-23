@@ -1,29 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, history, useLocation } from 'umi'
+import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@ant-design/pro-layout'
 import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
-import { commissionDetail, platformCommissionDetail, goodsAmountDetail } from "@/services/financial-management/transaction-detail-management"
+import { refundDetail } from "@/services/financial-management/transaction-detail-management"
 import './styles.less'
 
-const TransactionDetails = () => {
+const Detail = () => {
   const {id} = useParams()
-  const {query} = useLocation()
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState({})
+  const [data, setData] = useState({})
   const [payInfos, setPayInfos] = useState([])
-
-  const apiMethod = query?.type === 'bonus' ? commissionDetail:
-  (query?.type === 'commission') ? platformCommissionDetail:
-  (query?.type === 'loan') ? goodsAmountDetail : ''
-  
   useEffect(()=>{
     setLoading(true)
-    apiMethod({orderNo: id}).then(res=> {
+    refundDetail({id}).then(res=> {
       if(res.success) {
         setInfo({...res?.data?.info, ...res?.data})
+        setData({...res?.data})
         setPayInfos(res?.data?.payInfos)
       }
     }).finally(()=> {
@@ -31,9 +27,10 @@ const TransactionDetails = () => {
     })
     return ()=>{
       setInfo({})
+      setData([])
       setPayInfos({})
     }
-  }, [id])
+  }, [])
   const back = ()=> {
     history.goBack()
   }
@@ -48,20 +45,54 @@ const TransactionDetails = () => {
       return ''
     }
   }
+
+  const backCalculation= (data, amount, fee)=> {
+    if(data==='goodsAmount'){
+      return `货款回退: ¥${amountTransform(amount, '/')} 货款交易费回退: ¥${amountTransform(fee, '/')}`
+    }else if(data==='commission'){
+      return `提成回退: ¥${amountTransform(amount, '/')} 货款交易费回退: ¥${amountTransform(fee, '/')}`
+    }else if(data==='platformCommission') {
+      return `佣金回退: ¥${amountTransform(amount, '/')} 货款交易费回退: ¥${amountTransform(fee, '/')}`
+    }else{
+      return ''
+    }
+  }
   const columns1 = [
     {
-      title: '订单ID',
-      dataIndex: 'orderNo'
+      title: '售后订单ID',
+      dataIndex: 'refundNo'
     },
     {
-      title: '订单类型',
-      dataIndex: 'orderType',
+      title: '交易类型',
+      dataIndex: 'tradeType',
       valueType: 'select',
       valueEnum: {
-        'normalOrder': '普通订单',
-        'second': '秒约',
-        'single': '单约',
-        'group': '团约',
+        'goodsAmount': '货款入账',
+        'goodsAmountReturn': '货款回退',
+        'commission': '提成入账',
+        'commissionReturn': '提成回退',
+        'platformCommission': '佣金收入',
+        'platformCommissionReturn': '佣金回退',
+        'fee': '代收交易费',
+        'feeReturn': '交易费回退',
+        'recharge': '充值',
+        'giveOut': '划扣',
+        'withdraw': '提现',
+        'refundRecharge': '售后款入账',
+        'debt': '欠款入账',
+        'debtReturn': '欠款偿还',
+        'unfreeze': '解冻',
+        'freeze': '冻结'
+      }
+    },
+    {
+      title: '关联订单类型',
+      dataIndex: 'payTpyeName',
+      valueEnum: {
+        'normalOrder': '普通商品订单',
+        'second': '秒约订单',
+        'single': '单约订单',
+        'group': '团约订单',
         'commandSalesOrder': '指令集约店主订单',
         'activeSalesOrder': '主动集约店主订单',
         'dropShipping1688': '1688代发订单',
@@ -70,39 +101,64 @@ const TransactionDetails = () => {
       }
     },
     {
-      title: '受益方会员类型',
-      dataIndex: 'accountTypeName'
+      title: '关联订单ID',
+      dataIndex: 'orderNo'
+    },
+    {
+      title: '回退会员类型',
+      dataIndex: 'accountType',
+      valueType: 'select',
+      valueEnum: ''
     },
     {
       title: '',
       dataIndex: ''
     },
     {
-      title: '受益方会员信息',
-      dataIndex: 'accountId'
-    },
-    {
-      title: '虚拟子账户',
-      dataIndex: 'accountSn'
-    },
-    {
-      title: '买家会员类型',
-      dataIndex: 'sellerType'
-    },
-    {
-      title: '',
-      dataIndex: ''
-    },
-    {
-      title: '买家会员信息',
+      title: '回退会员信息',
       dataIndex: 'sellerMobile'
+    },
+    {
+      title: '回退到账时间',
+      dataIndex: 'refundTime'
     },
     {
       title: '虚拟子账户',
       dataIndex: 'sellerSn'
+    },
+    {
+      title: '支付渠道',
+      dataIndex: 'data',
+      render: ()=> '原路退回'
+    },
+    {
+      title: '买家手机号',
+      dataIndex: 'buyerMobile'
+    },
+    {
+      title: '买家会员ID',
+      dataIndex: 'buyerSn'
     }
   ]
   const columns2 = [
+    {
+      title: '支付金额',
+      dataIndex: 'refundAmount'
+    },
+    {
+      title: '回退计算',
+      dataIndex: 'refundDivideInfos',
+      render: (_, data)=> {
+        if(data.returnDivideInfos) {
+          console.log(data?.returnDivideInfos.length);
+          return data?.returnDivideInfos.map(item=> (
+            <div key={item?.type}>{backCalculation(item?.type, item?.amount, item?.fee)}</div>
+          ))
+        }
+      } 
+    }
+  ]
+  const columns3 = [
     {
       title: '支付阶段',
       dataIndex: 'stageName'
@@ -129,12 +185,11 @@ const TransactionDetails = () => {
     },
     {
       title: '支付金额',
-      dataIndex: 'amount',
-      render: (_)=> `¥${amountTransform(_, '/')}`
+      dataIndex: 'amount'
     },
     {
       title: '虚拟分账计算',
-      dataIndex: 'divideInfo',
+      dataIndex: 'divideInfos',
       render: (_, data)=> {
         return data?.divideInfos.map(item=> (
           <div key={item?.type}>
@@ -152,7 +207,7 @@ const TransactionDetails = () => {
       dataIndex: 'transcationId'
     }
   ]
-  const columns3 = [
+  const columns4 = [
     {
       title: '汇能虚拟户（佣金户）',
       dataIndex: 'platformAccountSn'
@@ -162,13 +217,14 @@ const TransactionDetails = () => {
       dataIndex: 'platformFeeAccountSn'
     },
   ]
+
   const CustomList = props=> {
     const { data } = props
     return (
       <ProDescriptions
         loading={loading}
         column={2}
-        columns={columns2}
+        columns={columns3}
         style={{
           background:'#fff',
           padding: 20
@@ -192,6 +248,17 @@ const TransactionDetails = () => {
         bordered
         dataSource={info}
       />
+      <ProDescriptions
+        loading={loading}
+        dataSource={data}
+        column={2}
+        columns={columns2}
+        style={{
+          background:'#fff',
+          padding: 20
+        }}
+        bordered
+      />
       {
         payInfos?.map(item=> (
           <CustomList data={item} key={item.stageName}/>
@@ -200,7 +267,7 @@ const TransactionDetails = () => {
       <ProDescriptions
         loading={loading}
         column={2}
-        columns={columns3}
+        columns={columns4}
         style={{
           background:'#fff',
           padding: 20
@@ -215,4 +282,4 @@ const TransactionDetails = () => {
   )
 }
 
-export default TransactionDetails
+export default Detail

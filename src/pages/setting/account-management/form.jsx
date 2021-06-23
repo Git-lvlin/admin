@@ -74,7 +74,8 @@ export default (props) => {
         label="名称"
         placeholder="请输入名称"
         width="md"
-        required
+        rules={[{ required: true, message: '请输入名称' }]}
+        disabled={!!data}
       />
 
       <ProFormText
@@ -82,7 +83,8 @@ export default (props) => {
         label="登录账号"
         placeholder="请输入登录账号"
         width="md"
-        required
+        rules={[{ required: true, message: '请输入登录账号' }]}
+        disabled={!!data}
       />
 
       <ProFormText.Password
@@ -101,7 +103,7 @@ export default (props) => {
         width="md"
         name="group_id"
         label="选择角色"
-        rules={[{ required: !data, message: '请选择角色' }]}
+        rules={[{ required: true, message: '请选择角色' }]}
       />
 
       <ProFormRadio.Group
