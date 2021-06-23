@@ -1,12 +1,14 @@
 import request from '@/utils/request'
 // 提现审核管理
 export const withdrawPage = async (params, options = {}) => {
-  const { current, pageSize, ...rest } = params
+  const { current, pageSize, createTime, bindTime, ...rest } = params
   const res = await request('/auth/java-admin/financial/withdraw/page', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      createTimeBegin: createTime&& createTime[0],
+      createTimeEnd: createTime&& createTime[1],
       ...rest 
     },
     ...options
@@ -62,12 +64,14 @@ export const payment = async (params= {}, options= {}) => {
 
 // 订单支付明细管理
 export const orderPage = async (params, options = {}) => {
-  const { current, pageSize, ...rest } = params
+  const { current, pageSize, payTime, ...rest } = params
   const res = await request('/auth/java-admin/financial/trans/orderPage', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      payTimeBegin: payTime&& payTime[0],
+      payTimeEnd: payTime&& payTime[1],
       ...rest 
     },
     ...options
@@ -95,12 +99,14 @@ export const orderPageDetail = async (params, options = {}) => {
 
 // 提成明细管理
 export const commissionPage = async (params, options = {}) => {
-  const { current, pageSize, ...rest } = params
+  const { current, pageSize, createTime, ...rest } = params
   const res = await request('/auth/java-admin/financial/trans/commissionPage', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      createTimeBegin: createTime&& createTime[0],
+      createTimeEnd: createTime&& createTime[1],
       ...rest 
     },
     ...options
@@ -128,12 +134,14 @@ export const commissionDetail = async (params, options = {}) => {
 
 // 佣金明细管理
 export const platformCommissionPage = async (params, options = {}) => {
-  const { current, pageSize, ...rest } = params
+  const { current, pageSize, createTime, ...rest } = params
   const res = await request('/auth/java-admin/financial/trans/platformCommissionPage', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      createTimeBegin: createTime&& createTime[0],
+      createTimeEnd: createTime&& createTime[1],
       ...rest 
     },
     ...options
@@ -161,12 +169,14 @@ export const platformCommissionDetail = async (params, options = {}) => {
 
 // 货款明细管理
 export const goodsAmountPage = async (params, options = {}) => {
-  const { current, pageSize, ...rest } = params
+  const { current, pageSize, createTime, ...rest } = params
   const res = await request('/auth/java-admin/financial/trans/goodsAmountPage', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      createTimeBegin: createTime&& createTime[0],
+      createTimeEnd: createTime&& createTime[1],
       ...rest 
     },
     ...options

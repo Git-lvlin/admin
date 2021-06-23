@@ -2,13 +2,17 @@ import request from '@/utils/request'
 
 // 账户分页
 export const platforms = async (params, options= {}) => {
-  const { current=1, pageSize=10, ...rest } = params
+  const { current=1, pageSize=10, registTime, bindTime, ...rest } = params
   const res = await request('/auth/java-admin/financial/account/page', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
-      ...rest 
+      registTimeBegin: registTime&& registTime[0],
+      registTimeEnd: registTime&& registTime[1],
+      bindTimeBegin: bindTime&& bindTime[0],
+      bindTimeEnd: bindTime&& bindTime[1],
+      ...rest
     },
     ...options
   })

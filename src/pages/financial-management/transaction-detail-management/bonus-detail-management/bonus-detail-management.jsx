@@ -100,6 +100,12 @@ const BonusDetailManagement = () =>{
       hideInSearch: true
     },
     {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      valueType: 'dateRange',
+      hideInTable: true
+    },
+    {
       title: '操作',
       dataIndex: 'optoion',
       valueType: 'option',
