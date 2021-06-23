@@ -168,15 +168,15 @@ const OrderDetail = () => {
                 <div className={styles.box_wrap}>
                   <div className={styles.box}>
                     <div>应付金额</div>
-                    <div>{amountTransform(detailData?.advance?.Amount, '/')}</div>
+                    <div>{amountTransform(detailData?.advance?.Amount, '/')}元</div>
                   </div>
                   <div className={styles.box}>
                     <div>优惠券优惠</div>
-                    <div>{amountTransform(detailData?.advance?.couponAmount, '/')}</div>
+                    <div>{amountTransform(detailData?.advance?.couponAmount, '/')}元</div>
                   </div>
                   <div className={styles.box}>
                     <div>用户实付</div>
-                    <div>{amountTransform(detailData?.advance?.actualAmount, '/')}</div>
+                    <div>{amountTransform(detailData?.advance?.actualAmount, '/')}元</div>
                   </div>
                 </div>
               </div>
@@ -185,21 +185,21 @@ const OrderDetail = () => {
                 <div className={styles.box_wrap}>
                   <div className={styles.box}>
                     <div>应付金额</div>
-                    <div>{amountTransform(detailData?.final?.Amount, '/')}</div>
+                    <div>{amountTransform(detailData?.final?.Amount, '/')}元</div>
                   </div>
                   <div className={styles.box}>
                     <div>运费</div>
-                    <div>{amountTransform(detailData?.final?.shippingAmount, '/')}</div>
+                    <div>{amountTransform(detailData?.final?.shippingAmount, '/')}元</div>
                   </div>
                   <div className={styles.box}>
                     <div>用户实付</div>
-                    <div>{amountTransform(detailData?.final?.actualAmount, '/')}</div>
+                    <div>{amountTransform(detailData?.final?.actualAmount, '/')}元</div>
                   </div>
                 </div>
               </div>
               <div className={styles.box}>
                 <div>合计实收</div>
-                <div>{amountTransform(detailData?.actualAmount, '/')}</div>
+                <div>{amountTransform(detailData?.actualAmount, '/')}元</div>
               </div>
             </div>
           </div>
