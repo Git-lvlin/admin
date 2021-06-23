@@ -1,31 +1,89 @@
 import React, { useState,useEffect } from 'react';
 import { getDynamicDetail } from '@/services/community-management/dynamic-get-dynamic-detail';
-import { Button, Descriptions } from 'antd';
+import { Divider, Form, Spin, Tree,Button } from 'antd';
+import { PageContainer } from '@ant-design/pro-layout';
 import moment from 'moment';
 import { history } from 'umi';
 import { number } from 'prop-types';
 
+const formItemLayout = {
+  labelCol: { span: 2 },
+  wrapperCol: { span: 14 },
+  layout: {
+    labelCol: {
+      span: 10,
+    },
+    wrapperCol: {
+      span: 14,
+    },
+  }
+};
 
 export default props => {
   const id=props.location.query.id
+  const [form] = Form.useForm()
   const [detailData,setDetailData]=useState([])
+  const [loading, setLoading] = useState(false);
   useEffect(()=>{
+    setLoading(true);
     getDynamicDetail({id}).then(res=>{
       console.log('res',res.data)
       setDetailData(res.data)
+    }).finally(() => {
+      setLoading(false);
     })
-    return undefined
   },[])
 
   return (
     <>
-    <Descriptions title="帖子详情" style={{background:'#fff',padding:'20px'}}>
-        <Descriptions.Item label="内容ID">{detailData.id}</Descriptions.Item>
-        <Descriptions.Item label="发布时间">{moment(Number(detailData.createTime)).format('YYYY-MM-DD HH:mm:ss')}</Descriptions.Item>
-        <Descriptions.Item label="定位">{detailData.address}</Descriptions.Item>
-        <Descriptions.Item label="内容">{detailData.content}</Descriptions.Item>
-    </Descriptions>
-    <Button style={{margin:'20px'}} type="primary" onClick={()=>history.push('/community-management/content-management')}>返回</Button>
+     <PageContainer>
+      <Spin
+        spinning={loading}
+      >
+         <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">帖子详情</Divider>
+        <Form
+          form={form}
+          {...formItemLayout}
+          style={{ backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
+        >
+          <Form.Item
+            label="内容ID"
+          >
+            {detailData.id}
+          </Form.Item>
+
+          <Form.Item
+            label="发布时间"
+          >
+            {moment(Number(detailData.createTime)).format('YYYY-MM-DD HH:mm:ss')}
+          </Form.Item>
+
+          <Form.Item
+            label="定位"
+          >
+            {detailData.address}
+          </Form.Item>
+
+          <Form.Item
+            label="内容"
+          >
+            {detailData.content}
+          </Form.Item>
+          <Form.Item
+            label="商品快照"
+          >
+            <img width={400} height={400} src={detailData.images?.[0]} alt="" />
+          </Form.Item>
+          <Form.Item
+            label="."
+          >
+            <Button style={{margin:'20px'}} type="primary" onClick={()=>history.push('/community-management/content-management')}>返回</Button>
+          </Form.Item>
+          
+        </Form>
+      </Spin> 
+    </PageContainer>
+    
     </>
   );
 };
