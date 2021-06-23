@@ -210,7 +210,7 @@ export const crazyGoodsList = async (params = {}, options = {}) => {
 
   const data = {
     page: current,
-    size: pageSize,
+    pageSize,
     ...rest
   }
 
@@ -230,6 +230,14 @@ export const crazyGoodsList = async (params = {}, options = {}) => {
 }
 
 export const crazyActivityGoodsAdd = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsGoodsYlbbSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const crazyActivityGoodsAddPT = (params = {}, options = {}) => {
   return request('/auth/activity/Cms/cmsGoodsSub', {
     method: 'POST',
     data: params,
@@ -239,6 +247,14 @@ export const crazyActivityGoodsAdd = (params = {}, options = {}) => {
 
 export const hotGoosAdd = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/goodsTagSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const hotGoosAddDF = (params = {}, options = {}) => {
+  return request('/auth/activity/Goods/goodsTagYlbbSub', {
     method: 'POST',
     data: params,
     ...options
@@ -453,6 +469,14 @@ export const modifyTagSort = (params = {}, options = {}) => {
   });
 }
 
+export const crazyTagSort = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsGoodsSortSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const memberOperation = (params = {}, options = {}) => {
   return request('/auth/activity/Activity/spanceInfoStatusEdit', {
     method: 'POST',
@@ -482,11 +506,15 @@ export const goosAllList = async (params = {}, options = {}) => {
 }
 
 export const goodsAllList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current, pageSize, gcId, ...rest } = params;
   const data = {
     page: current,
     size: pageSize,
     ...rest
+  }
+  if (gcId) {
+    data.gcId1 = gcId[0]
+    data.gcId2 = gcId[1]
   }
   const res = await request('/auth/goods/product/skuList', {
     method: 'POST',
@@ -506,7 +534,7 @@ export const goosReplaceList = async (params = {}, options = {}) => {
 
   const data = {
     page: current,
-    pageSize: pageSize,
+    pageSize,
     ...rest
   }
   const res = await request('/auth/activity/Goods/ylbbGoodsList', {
@@ -560,7 +588,7 @@ export const homeBannerList = async (params = {}, options = {}) => {
 
   const data = {
     page: current,
-    pageSize: pageSize,
+    size: pageSize,
     ...rest
   }
   if (status) {
@@ -590,7 +618,7 @@ export const hotSearchList = async (params = {}, options = {}) => {
   if (status) {
     data.status = Number(status);
   }
-  const res = await request('/auth/search/auth/userSearchHistory/getAllHotKeyword', {
+  const res = await request('/auth/search/HotKeyword/getAllHotKeyword', {
     method: 'POST',
     data,
     ...options
@@ -742,6 +770,7 @@ export const priceComparsionListAlls = async (params = {}, options = {}) => {
     data,
     ...options
   });
+  // res.data.records.filter(item=>item.acquire === 1)
 
   return {
     data: res.data.records || [],
@@ -843,7 +872,7 @@ export const sendTask = (params = {}, options = {}) => {
 }
 
 export const getSpiderGoodsListByDate = (params = {}, options = {}) => {
-  return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderGoodsListByDate?sourceType=${params.sourceType}&goodsId=${params.goodsId}`, {
+  return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderGoodsListByDate?sourceType=${params.sourceType}&goodsId=${params.goodsId}&goodsSkuId=${params.goodsSkuId}`, {
     method: 'GET',
     data: params,
     ...options
@@ -851,7 +880,7 @@ export const getSpiderGoodsListByDate = (params = {}, options = {}) => {
 }
 
 export const getGoodsBindData = (params = {}, options = {}) => {
-  return request(`/auth/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderPlatformList?goodsId=${params.goodsId}`, {
+  return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/GetSpiderPlatformList?goodsId=${params.goodsId}&goodsSkuId=${params.goodsSkuId}`, {
     method: 'GET',
     data: params,
     ...options

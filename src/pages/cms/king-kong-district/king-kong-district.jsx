@@ -89,8 +89,8 @@ const KingKongDistrict = () => {
       search: false,
     },
     {
-      title: '编辑事件',
-      dataIndex: 'createTime',
+      title: '编辑时间',
+      dataIndex: 'updateTime',
       valueType: 'text',
       search: false,
     },

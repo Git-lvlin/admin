@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import {
-  ModalForm,
-} from '@ant-design/pro-form';
+import { ModalForm } from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import SupplierSelect from '@/components/supplier-select'
-
 
 export default (props) => {
   const { visible, setVisible, callback, title = '选择活动商品' } = props;

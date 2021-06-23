@@ -2,11 +2,7 @@ import React, { useRef, useState, useEffect  } from 'react';
 import { message, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm } from '@ant-design/pro-form';
-import { hotGoosAdd } from '@/services/cms/member/member';
 import { goosReplaceList, crazyActivityGoodsAdd } from '@/services/cms/member/member';
-
-
-
 
 export default (props) => {
   const { detailData, setVisible, setFlag, visible } = props;
@@ -36,11 +32,19 @@ export default (props) => {
       dataIndex: 'goodsName',
       valueType: 'text',
       search: false,
+      width: 180,
+      ellipsis: true,
+    },
+    {
+      title: '所属内部店',
+      key: 'storeName',
+      dataIndex: 'storeName',
+      valueType: 'text',
     },
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      valueType: 'text',
+      valueType: 'money',
       search: false,
     },
     {
@@ -74,15 +78,18 @@ export default (props) => {
       message.error('请选择商品');
       return
     }
-    const len = arr.length
-    let array = []
-    for(let i=0;i<len;i++) {
-      array.push(arr[i].spuId)
-    }
+    const newArr = arr.map((i) => {
+      const {id, spuId, storeNo} = i
+      return {
+        id,
+        spuId,
+        storeNo
+      }
+    })
     const param = {
-      spuIds: array.toString(),
       goodsType: 5,
-      cmsId: detailData.id
+      cmsId: detailData.id,
+      spuInfo: newArr
     }
     return new Promise((resolve) => {
       crazyActivityGoodsAdd(param).then((res) => {
@@ -103,6 +110,7 @@ export default (props) => {
 
   return (
     <ModalForm
+      width={1300}
       title={`新增供应链商品`}
       onVisibleChange={setVisible}
       formRef={formRef}
@@ -126,7 +134,7 @@ export default (props) => {
       columns={columns}
       postData={(data) => {
         data.forEach(item => {
-          item.floatPercent = parseInt(item.floatPercent/100)
+          item.goodsSalePrice = parseInt(item.goodsSalePrice/100)
         })
         return data
       }}

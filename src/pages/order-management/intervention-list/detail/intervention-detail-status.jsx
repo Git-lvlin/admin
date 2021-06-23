@@ -88,7 +88,12 @@ const InterventionDetailStatus = props => {
           name="platformEvidenceImg"
           label="处理凭证"
         >
-          <Upload multiple maxCount={3} accept="image/*" size={1 * 1024} />
+          <Upload
+            multiple maxCount={3}
+            accept="image/*"
+            size={1 * 1024} 
+            code={219}
+          />
         </ProForm.Item>
       </ModalForm>
     )

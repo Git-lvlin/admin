@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
   DrawerForm,
@@ -7,8 +7,6 @@ import ProForm, {
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import { homeSuspensionAdd } from '@/services/cms/member/member';
-
-
 
 export default (props) => {
   const { detailData, setVisible, setFlag, visible } = props;
@@ -23,14 +21,15 @@ export default (props) => {
     if (id) {
       param.id = id
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       homeSuspensionAdd(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
-          resolve(true);
+          resolve(true)
+        } else {
+          reject(false)
         }
       })
-  
     });
   };
 
@@ -73,7 +72,12 @@ export default (props) => {
         <Form.Item
           label="添加图片"
           name="image"
-          required
+          rules={
+            [{
+              required: true,
+              message: '请上传图片'
+            }]
+          }
           tooltip={
             <dl>
               <dt>图片要求</dt>
@@ -81,11 +85,11 @@ export default (props) => {
             </dl>
           }
         >
-          <Upload multiple maxCount={1} accept="image/*" />
+          <Upload multiple maxCount={1} code={220} accept="image/*" />
         </Form.Item>
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText 
+        <ProFormText
             width="sm"
             name="actionUrl"
             label="跳转链接"
@@ -95,7 +99,7 @@ export default (props) => {
       <ProFormRadio.Group
           name="state"
           label="上线/下架"
-          required
+          initialValue={0}
           options={[
             {
               label: '上线',

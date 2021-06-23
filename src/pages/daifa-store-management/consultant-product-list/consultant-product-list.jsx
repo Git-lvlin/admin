@@ -11,36 +11,42 @@ const SubTable = (props) => {
   const [data, setData] = useState([])
   const columns = [
     {
-      title: 'spuID',
-      dataIndex: 'spuId',
+      title: 'skuId',
+      dataIndex: 'skuId',
     },
     {
       title: '供应链skuID',
       dataIndex: 'outSkuId',
     },
     {
-      title: '规格1',
-      dataIndex: 'gcId1Display',
-    },
-    {
-      title: '规格2',
-      dataIndex: 'gcId2Display',
+      title: '规格',
+      dataIndex: 'skuNameDisplay',
     },
     {
       title: '店主售价',
-      dataIndex: 'goodsName',
+      dataIndex: 'salePrice',
+      valueType:'money',
+      render: (_)=> amountTransform(_, '/').toFixed(2),
     },
     {
-      title: '供应链销售价',
-      dataIndex: 'goodsName',
+      title: '供应链供货价',
+      dataIndex: 'retailSupplyPrice',
+      valueType:'money',
+      render: (_)=> amountTransform(_, '/').toFixed(2),
     },
     {
-      title: '市场价',
-      dataIndex: 'goodsName',
+      title: '店铺市场价',
+      dataIndex: 'marketPrice',
+      valueType:'money',
+      render: (text, record) => (
+        <Space size="middle">
+          <p>{record.marketPrice?'￥'+amountTransform(record.marketPrice, '/').toFixed(2):null}</p>
+        </Space>
+      ),
     },
     {
       title: '可用库存',
-      dataIndex: 'totalStockNum',
+      dataIndex: 'stockNum',
     },
     {
       title: '销量',
@@ -58,7 +64,7 @@ const SubTable = (props) => {
     })
   }, [])
   return (
-    <Table columns={columns} dataSource={data} pagination={false} />
+    <Table key="id" columns={columns} dataSource={data} pagination={false} />
   )
 };
 
@@ -71,14 +77,15 @@ const consultantProductList = props => {
   const columns = [
     {
       title: 'spuID',
-      dataIndex: 'spuId',
-      valueType: 'text',
-    },
-    {
-      title: 'skuID',
-      dataIndex: 'skuId',
+      dataIndex: 'spuIds',
       valueType: 'text',
       hideInTable:true
+    },
+    {
+      title: 'spuID',
+      dataIndex: 'spuId',
+      valueType: 'text',
+      hideInSearch:true
     },
     {
       title: '供应链ID',
@@ -89,28 +96,35 @@ const consultantProductList = props => {
     {
       title: '图片',
       dataIndex: 'goodsImageUrl',
-      valueType: 'text',
+      valueType: 'image',
       hideInSearch:true
     },
     {
       title: '商品名称',
       dataIndex: 'goodsName',
       valueType: 'text',
-      // render: (_, data) => {
-      //   return <a onClick={() => { history.push(`/daifa-store-management/consultant-product-list?spuId=${data.id}&storeNo=${data.storeNo}`) }}>{_}</a>
-      // }
     },
     {
-      title: '店铺销售价',
+      title: '店铺销售价（元）',
       dataIndex: 'saleMaxPrice',
-      valueType: 'text',
+      valueType:'money',
       hideInSearch: true,
+      render: (text, record) => (
+        <Space size="middle">
+          <p>{amountTransform(record.saleMinPrice, '/').toFixed(2)+'~'+amountTransform(record.saleMaxPrice, '/').toFixed(2)+'元'}</p>
+        </Space>
+      ),
     },
     {
-      title: '供应链供货价',
-      dataIndex: 'saleMinPrice',
-      valueType: 'text',
+      title: '供应链供货价（元）',
+      dataIndex: 'minRetailSupplyPrice',
+      valueType:'money',
       hideInSearch: true,
+      render: (text, record) => (
+        <Space size="middle">
+           <p>{amountTransform(record.minRetailSupplyPrice, '/').toFixed(2)+'~'+amountTransform(record.maxRetailSupplyPrice, '/').toFixed(2)+'元'}</p>
+        </Space>
+      ),
     },
     {
       title: '商品分类',
@@ -133,22 +147,11 @@ const consultantProductList = props => {
     {
       title: '售卖状态',
       dataIndex: 'goodsState',
-      valueType: 'select',
-      valueEnum: {
-        0: '批发+零售',
-        1: '零售',
-        2: '仅批发',
-      },
-      hideInTable:true
-    },
-    {
-      title: '售卖状态',
-      dataIndex: 'goodsState',
       valueType: 'text',
       valueEnum: {
-        0: '批发+零售',
-        1: '零售',
-        2: '仅批发',
+        0: '不限',
+        1: '批发',
+        2: '零售',
       },
       hideInSearch: true,
     },
@@ -183,7 +186,6 @@ const consultantProductList = props => {
         options={false}
         request={page_spuList}
         params={{
-          // spuId,
           storeNo
         }}
         expandable={{ expandedRowRender: (_) => <SubTable spuId={_.spuId} storeNo={_.storeNo} /> }}

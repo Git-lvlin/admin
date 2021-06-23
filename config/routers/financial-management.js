@@ -56,9 +56,19 @@ export default {
           component: './financial-management/transaction-detail-management/withdrawal-audit-management',
         },
         {
+          name: 'show-detail',
+          path: '/financial-management/transaction-detail-management/withdrawal-audit-management/detail/:id',
+          component: './financial-management/transaction-detail-management/withdrawal-audit-management/detail',
+        },
+        {
           name: 'order-pay-detail-management',
           path: '/financial-management/transaction-detail-management/order-pay-detail-management',
           component: './financial-management/transaction-detail-management/order-pay-detail-management',
+        },
+        {
+          name: 'order-pay-detail',
+          path: '/financial-management/transaction-detail-management/order-pay-detail-management/detail/:id',
+          component: './financial-management/transaction-detail-management/order-pay-detail-management/detail',
         },
         {
           name: 'bonus-detail-management',
@@ -76,16 +86,32 @@ export default {
           component: './financial-management/transaction-detail-management/loan-detail-management',
         },
         {
+          name: 'royalty-details',
+          path: '/financial-management/transaction-detail-management/royalty-details/:id',
+          component: './financial-management/transaction-detail-management/royalty-details',
+        },
+        {
           name: 'after-sales-order-details',
           path: '/financial-management/transaction-detail-management/after-sales-order-details',
           component: './financial-management/transaction-detail-management/after-sales-order-details',
+        },
+        {
+          name: 'after-order-details',
+          path: '/financial-management/transaction-detail-management/after-sales-order-details/detail/:id',
+          component: './financial-management/transaction-detail-management/after-sales-order-details/detail',
         }
       ]
     },
     {
       name: 'transaction-allocation-management',
       path: '/financial-management/transaction-allocation-management',
-      routes: []
+      routes: [
+        {
+          name: 'withdrawal-fee-config',
+          path: '/financial-management/transaction-allocation-management/withdrawal-fee-config',
+          component: './financial-management/transaction-allocation-management/withdrawal-fee-configuration',
+        }
+      ]
     }
   ]
 }

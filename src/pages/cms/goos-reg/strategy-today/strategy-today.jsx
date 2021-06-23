@@ -9,8 +9,6 @@ import Modify from './edit';
 import ReplaceForm from './replace-form';
 import { hotGoosList, hotGoosOperation,tagSortTop } from '@/services/cms/member/member';
 
-
-
 const StrategyToday = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
@@ -48,7 +46,7 @@ const StrategyToday = () => {
 
   const columns = [
     {
-      title: '排序序号',
+      title: '序号',
       dataIndex: 'sort',
       valueType: 'text',
       search: false,
@@ -79,13 +77,23 @@ const StrategyToday = () => {
       title: '商品名称',
       dataIndex: 'goodsName',
       valueType: 'text',
-      search: false,
+      // search: false,
+      width: 180,
+      ellipsis: true,
+    },
+    {
+      title: '所属内部店',
+      key: 'storeName',
+      dataIndex: 'storeName',
+      valueType: 'text',
     },
     {
       title: '商家名称',
       dataIndex: 'supplierName',
       valueType: 'text',
       search: false,
+      width: 120,
+      ellipsis: true,
     },
     {
       title: '供货类型',
@@ -105,12 +113,6 @@ const StrategyToday = () => {
       valueType: 'number',
       search: false,
     },
-    // {
-    //   title: '活动库存',
-    //   dataIndex: 'activityStockNum',
-    //   valueType: 'number',
-    //   search: false,
-    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',
@@ -171,11 +173,11 @@ const StrategyToday = () => {
       render: (text, record, _) => {
         return (
           <>
-            {record.status===2&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
-            &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="editable" onClick={() => {getDetail(record)}}>排序</a>}
-            &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>}
+            {record.status===2&&<Button size="small" key="top" onClick={() => {top(record.id)}}>置顶</Button>}
+            {record.status===2&&<Button size="small" key="down" onClick={() => {formControl(record.id, 1)}}>下线</Button>}
+            {record.status===1&&<Button size="small" key="view" onClick={() => {formControl(record.id,2)}}>发布</Button>}
+            {record.status===1&&<Button size="small" key="editable" onClick={() => {getDetail(record)}}>排序</Button>}
+            {record.status===1&&<Button size="small" key="d" onClick={() => {formControl(record.id,4)}}>删除</Button>}
           </>
         )
       }
@@ -192,7 +194,6 @@ const StrategyToday = () => {
       params={{tagCode:'day_yeahgo'}}
       postData={(data) => {
         data.forEach(item => {
-          item.floatPercent = parseInt(item.floatPercent/100)
           item.goodsSalePrice = item.goodsSalePrice/100
         })
         return data
@@ -231,9 +232,6 @@ const StrategyToday = () => {
             )} 个`}</span>
         </Space>
       )}
-      editable={{
-        type: 'multiple',
-      }}
       search={{
         labelWidth: 'auto',
       }}
@@ -255,9 +253,9 @@ const StrategyToday = () => {
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
           新建
         </Button>,
-        // <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setReplaceFormVisible(true) }}>
-        //   新建(代发)
-        // </Button>,
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setReplaceFormVisible(true) }}>
+          新建(代发)
+        </Button>,
       ]}
     />
     {formVisible && <Edit
@@ -276,18 +274,7 @@ const StrategyToday = () => {
       visible={replaceFormVisible}
       setVisible={setReplaceFormVisible}
       detailData={detailData}
-      callback={() => {
-        console.log('callback-start')
-        actionRef.current.reload();
-        setDetailData(null);
-        console.log('callback-end')
-      }}
-      onClose={() => {
-        console.log('onclose-start')
-        actionRef.current.reload();
-        setDetailData(null);
-        console.log('onclose-end')
-      }}
+      setFlag={setFlag}
     />}
     </PageContainer>
   );
