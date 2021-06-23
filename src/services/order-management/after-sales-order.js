@@ -2,12 +2,15 @@ import request from '@/utils/request';
 
 // 售后订单
 export const refundOrder = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params
+  const { current, pageSize, applyTime, ...rest } = params
+  console.log({...rest});
   const res = await request('/auth/java-admin/orderReturn/page', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      beginTime: applyTime&& applyTime[0],
+      endTime: applyTime&& applyTime[1],
       ...rest
     },
     ...options

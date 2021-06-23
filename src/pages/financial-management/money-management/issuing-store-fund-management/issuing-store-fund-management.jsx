@@ -11,21 +11,21 @@ import { platforms, findAllBanks, enabledDisabledSubmit } from '@/services/finan
 
 const IssuingStoreFundManagement = () => {
   const actionRef = useRef()
-  const [banks, setBanks] = useState({})
-  useEffect(() => {
-    findAllBanks().then(res=>{
-      if(res.success) {
-        const obj = {}
-        res?.data.map(item=> {
-          obj[item.bankCode] = item.bankName
-        })
-        setBanks(obj)
-      }
-    })
-    return () => {
-      setBanks({})
-    }
-  }, [])
+  // const [banks, setBanks] = useState({})
+  // useEffect(() => {
+  //   findAllBanks().then(res=>{
+  //     if(res.success) {
+  //       const obj = {}
+  //       res?.data.map(item=> {
+  //         obj[item.bankCode] = item.bankName
+  //       })
+  //       setBanks(obj)
+  //     }
+  //   })
+  //   return () => {
+  //     setBanks({})
+  //   }
+  // }, [])
   const skipToDetail = ({accountType, accountId}) => {
     history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
   }
@@ -117,22 +117,31 @@ const IssuingStoreFundManagement = () => {
     },
     {
       title: '账户名称',
-      dataIndex: 'realname'
+      dataIndex: 'realname',
+      hideInSearch: true
     },
     {
       title: '银行账户',
-      dataIndex: 'cardNo'
+      dataIndex: 'cardNo',
+      hideInSearch: true
     },
     {
       title: '所属银行',
       dataIndex: 'bankName',
       valueType: 'select',
-      valueEnum: banks
+      hideInSearch: true
+      // valueEnum: banks
     },
     {
       title: '绑定时间',
       dataIndex: 'bindTime',
       hideInSearch: true
+    },
+    {
+      title: '绑定时间',
+      dataIndex: 'bindTime',
+      hideInTable: true,
+      valueType: 'dateRange'
     },
     {
       title: '收支明细',

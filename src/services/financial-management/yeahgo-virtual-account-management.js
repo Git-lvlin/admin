@@ -16,12 +16,14 @@ export const platforms = async (params, options = {}) => {
 
 // 账户明细
 export const logPage = async (params, options = {}) => {
-  const { current, pageSize, ...rest } = params
+  const { current, pageSize, createTime, ...rest } = params
   const res = await request('/auth/java-admin/financial/account/logPage', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      createTimeBegin: createTime&& createTime[0],
+      createTimeEnd: createTime&& createTime[1],
       ...rest
     },
     ...options
