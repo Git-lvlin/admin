@@ -150,7 +150,7 @@ const OrderDetail = () => {
               </div>
               <div className={styles.box}>
                 <div>实收</div>
-                <div>{amountTransform(detailData?.incomeAmount, '/')}</div>
+                <div>{amountTransform(detailData?.incomeAmount, '/')}元</div>
               </div>
             </div>
           </div>
