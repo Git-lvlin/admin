@@ -100,7 +100,7 @@ const OrderDetail = () => {
               </div>
               <div className={styles.box}>
                 <div>支付时间</div>
-                <div>{detailData?.paymentTime}</div>
+                <div>{detailData?.payTime}</div>
               </div>
               <div className={styles.box}>
                 <div>支付方式</div>
