@@ -8,7 +8,8 @@ import './styles.less'
 import styles from './styles.less'
 
 const WithdrawalFeeConfiguration = () => {
-  const [flag, setFlag] = useState('')
+  const [contrary, setContrary] = useState('')
+  const [person, setPerson] = useState('')
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
   useEffect(()=> {
@@ -22,8 +23,11 @@ const WithdrawalFeeConfiguration = () => {
     })
     return undefined
   },[])
-  const toggle = (val) => {
-    setFlag(val)
+  const toggleContrary = (val) => {
+    setContrary(val)
+  }
+  const togglePerson = (val) => {
+    setPerson(val)
   }
   const commit = (val) => {
     withdrawConfigUpdate({...val}).then(res=> {
@@ -78,7 +82,7 @@ const WithdrawalFeeConfiguration = () => {
                     allowClear={false}
                     rules={[{ required: true, message: '请选择方式' }]}
                     fieldProps={{
-                      onChange: (val) => { toggle(val) }
+                      onChange: (val) => { toggleContrary(val) }
                     }}
                     options={[
                       {
@@ -94,11 +98,11 @@ const WithdrawalFeeConfiguration = () => {
                   <ProFormDigit
                     width={200}
                     min="0"
-                    max={ flag == 'scale' ? 1 : 99999999 }
+                    max={ contrary == 'scale' ? 1 : 99999999 }
                     fieldProps={{
-                      step:"0.01"
-                    }}
-                    name={flag == 'scale' ? 'withdrawBusinessFeeScale' : 'withdrawBusinessFeeFixed'}
+                      step:"0.01",
+                      precision: 2}}
+                    name={contrary == 'scale' ? 'withdrawBusinessFeeScale' : 'withdrawBusinessFeeFixed'}
                   />
                 </Input.Group>
               </ProForm.Item>
@@ -138,7 +142,7 @@ const WithdrawalFeeConfiguration = () => {
                     allowClear={false}
                     rules={[{ required: true, message: '请选择方式' }]}
                     fieldProps={{
-                      onChange: (val) => { toggle(val) }
+                      onChange: (val) => { togglePerson(val) }
                     }}
                     options={[
                       {
@@ -153,7 +157,10 @@ const WithdrawalFeeConfiguration = () => {
                   />
                   <ProFormDigit
                     width={200}
-                    name={flag == 'scale' ? 'withdrawPersonFeeScale' : 'withdrawPersonFeeFixed'}
+                    min="0"
+                    max={ person === 'scale' ? 1 : 99999999 }
+                    fieldProps={{step:"0.01", precision: 2}}
+                    name={person === 'scale' ? 'withdrawPersonFeeScale' : 'withdrawPersonFeeFixed'}
                   />
                 </Input.Group>
               </ProForm.Item>
