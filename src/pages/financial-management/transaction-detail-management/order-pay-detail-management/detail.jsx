@@ -1,29 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, history, useLocation } from 'umi'
+import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@ant-design/pro-layout'
 import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
-import { commissionDetail, platformCommissionDetail, goodsAmountDetail } from "@/services/financial-management/transaction-detail-management"
+import { orderPageDetail } from "@/services/financial-management/transaction-detail-management"
 import './styles.less'
 
-const TransactionDetails = () => {
+const Detail = () => {
   const {id} = useParams()
-  const {query} = useLocation()
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState({})
   const [payInfos, setPayInfos] = useState([])
-
-  const apiMethod = query?.type === 'bonus' ? commissionDetail:
-  (query?.type === 'commission') ? platformCommissionDetail:
-  (query?.type === 'loan') ? goodsAmountDetail : ''
-  
   useEffect(()=>{
     setLoading(true)
-    apiMethod({orderNo: id}).then(res=> {
+    orderPageDetail({orderNo: id}).then(res=> {
       if(res.success) {
-        setInfo({...res?.data?.info, ...res?.data})
+        setInfo(res?.data?.info)
         setPayInfos(res?.data?.payInfos)
       }
     }).finally(()=> {
@@ -70,24 +64,8 @@ const TransactionDetails = () => {
       }
     },
     {
-      title: '受益方会员类型',
-      dataIndex: 'accountTypeName'
-    },
-    {
-      title: '',
-      dataIndex: ''
-    },
-    {
-      title: '受益方会员信息',
-      dataIndex: 'accountId'
-    },
-    {
-      title: '虚拟子账户',
-      dataIndex: 'accountSn'
-    },
-    {
       title: '买家会员类型',
-      dataIndex: 'sellerType'
+      dataIndex: 'buyerType'
     },
     {
       title: '',
@@ -95,6 +73,22 @@ const TransactionDetails = () => {
     },
     {
       title: '买家会员信息',
+      dataIndex: 'buyerMobile'
+    },
+    {
+      title: '虚拟子账户',
+      dataIndex: 'buyerSn'
+    },
+    {
+      title: '卖家会员类型',
+      dataIndex: 'sellerType'
+    },
+    {
+      title: '',
+      dataIndex: ''
+    },
+    {
+      title: '卖家会员信息',
       dataIndex: 'sellerMobile'
     },
     {
@@ -215,4 +209,4 @@ const TransactionDetails = () => {
   )
 }
 
-export default TransactionDetails
+export default Detail
