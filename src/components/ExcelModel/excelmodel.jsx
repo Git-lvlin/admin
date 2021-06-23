@@ -9,6 +9,7 @@ import {  Button,message } from 'antd';
 
 
 export default props=>{
+    const actionRef = useRef();
     const {callback = () => { }}=props 
     const [visible, setVisible] = useState(false);
     const [falg,setFalg]=useState(false)
@@ -127,7 +128,13 @@ export default props=>{
             options={false}
             request={findPage}
             search={false}
+            actionRef={actionRef}
             columns={columns}
+            toolBarRender={(_,record) => [
+              <Button key="button"  type="primary" onClick={() => { actionRef.current.reload() }}>
+                刷新
+              </Button>
+            ]}
         />
         :<>
            <a href={baseUrl}><Button type="primary" style={{margin:'20px 0 20px 0'}}>下载模板</Button></a>

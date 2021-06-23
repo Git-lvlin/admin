@@ -31,14 +31,14 @@ const SubTable = (props) => {
       dataIndex: 'attributesTwo',
     },
     {
-      title: '销售价',
+      title: '供货价(元)',
       dataIndex: 'consignPrice',
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '市场价',
+      title: '市场价(元)',
       dataIndex: 'retailPrice',
-      // render: (_) => amountTransform(_, '/')
+      render: (_) => amountTransform(_, '/')
     },
     { title: '可用库存', dataIndex: 'amountOnSale' },
   ];
@@ -252,7 +252,7 @@ export default function EditTable() {
       enterButton={'商品组名称搜索'} />
     <Button onClick={() => {
       onSearch(null)
-      setValue(null)
+      // setValue(null)
     }}>重置</Button>
     {<EditableProTable
       actionRef={actionRef}

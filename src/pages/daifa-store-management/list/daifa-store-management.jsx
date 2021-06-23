@@ -5,7 +5,6 @@ import { storeList,statusSwitch, storeDetail } from '@/services/daifa-store-mana
 import { history } from 'umi';
 import ExcelModel from '@/components/ExcelModel'
 import Edit from './edit';
-import { max } from 'moment';
 
 const TableList = () => {
   const ref=useRef()
@@ -43,23 +42,16 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店铺名称',
+        maxLength:30
       },
-    //   render: (_, data)=>{
-    //     return new Promise(async (resolve, reject) => {
-    //     if(_&&_.length>10){
-    //       await reject('店铺名称不超过10个字符')
-    //     }else {
-    //       await resolve()
-    //   }
-    //   })
-    //  }
     },
     {
       title: '店主姓名',
       dataIndex: 'realname',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入店主姓名'
+        placeholder: '请输入店主姓名',
+        maxLength:30
       }
     },
     {
@@ -67,7 +59,8 @@ const TableList = () => {
       dataIndex: 'mobile',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入手机号码'
+        placeholder: '请输入手机号码',
+        maxLength:11
       }
     },
     {

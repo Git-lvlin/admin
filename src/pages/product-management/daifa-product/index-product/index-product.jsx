@@ -22,21 +22,21 @@ const SubTable = (props) => {
       dataIndex: 'imageUrl',
       render: (text) => <img src={text} width={50} height={50} />,
     },
-    { title: '供应链skuID', dataIndex: 'skuId' },
+    { title: 'skuId', dataIndex: 'skuId' },
     { 
       title: '规格',
       dataIndex: 'skuNameDisplay',
     },
     {
-      title: '供货价',
+      title: '供货价(元)',
       dataIndex: 'retailSupplyPrice',
       render: (_) => amountTransform(_, '/')
     },
-    // {
-    //   title: '市场价',
-    //   dataIndex: 'marketPrice',
-    //   // render: (_) => amountTransform(_, '/')
-    // },
+    {
+      title: '市场价(元)',
+      dataIndex: 'marketPrice',
+      render: (_) => amountTransform(_, '/')
+    },
     { title: '可用库存', dataIndex: 'stockNum' },
   ];
 
@@ -239,7 +239,7 @@ export default function EditTable() {
       enterButton={'商品名称搜索'} />
     <Button onClick={() => {
       onSearch(null)
-      setValue(null)
+      // setValue(null)
     }}>重置</Button>
     <EditableProTable
       actionRef={actionRef}
