@@ -166,12 +166,17 @@ export default {
   'menu.financial-management.money-management.details':'详情',
   'menu.financial-management.transaction-detail-management':'交易明细管理',
   'menu.financial-management.transaction-detail-management.withdrawal-audit-management':'提现审核管理',
+  'menu.financial-management.transaction-detail-management.show-detail':'提现详情',
   'menu.financial-management.transaction-detail-management.order-pay-detail-management':'订单支付明细管理',
+  'menu.financial-management.transaction-detail-management.order-pay-detail':'订单支付详情',
   'menu.financial-management.transaction-detail-management.bonus-detail-management':'提成明细管理',
   'menu.financial-management.transaction-detail-management.commission-detail-management':'佣金明细管理',
-  'menu.financial-management.transaction-detail-management.loan-detail-management':'贷款明细管理',
+  'menu.financial-management.transaction-detail-management.loan-detail-management':'货款明细管理',
+  'menu.financial-management.transaction-detail-management.royalty-details':'明细详情',
   'menu.financial-management.transaction-detail-management.after-sales-order-details':'售后订单明细管理',
+  'menu.financial-management.transaction-detail-management.after-order-details':'售后订单详情',
   'menu.financial-management.transaction-allocation-management':'交易配置管理',
+  'menu.financial-management.transaction-allocation-management.withdrawal-fee-config':'提现费配置',
 
   
 

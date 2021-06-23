@@ -13,11 +13,16 @@ export default props=>{
     const [visible, setVisible] = useState(false);
     const [datalist,setDatalist]=useState([])
     const [falg,setFalg]=useState(false)
+    const [baseUrl,setBaseUrl]=useState()
     const Termination=()=>{
         setVisible(true)
     }
     useEffect(()=>{
       var user=window.localStorage.getItem('user')
+      file_tpl_url({}).then(res=>{
+        console.log('resurl',res)
+        setBaseUrl(res.data.filePath)
+      })
       console.log('user',user)
     },[])
     const fileUrl=async (e)=>{
@@ -139,7 +144,7 @@ export default props=>{
             columns={columns}
         />
         :<>
-           <a href="https://dev-yeahgo-secret.oss-cn-shenzhen.aliyuncs.com/store_secret/message/rc-upload-1624330809769-12tmp_agent.xls"><Button type="primary" style={{margin:'20px 0 20px 0'}}>下载模板</Button></a>
+           <a href={baseUrl}><Button type="primary" style={{margin:'20px 0 20px 0'}}>下载模板</Button></a>
            <EcxelUpload calback={fileUrl}  multiple maxCount={1} accept="image/*" size={5 * 1024} />
         </>
         }
