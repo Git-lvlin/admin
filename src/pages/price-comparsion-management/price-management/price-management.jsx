@@ -29,7 +29,6 @@ const PriceManagement = () => {
   const [resData, setResData] = useState({})
   const [loading, setLoading] = useState({})
   const [type, setType] = useState(false)
-
   const [form] = Form.useForm();
 
   const formControl = ({selectedRows}) => {
@@ -372,7 +371,7 @@ const PriceManagement = () => {
         onExpandedRowsChange: (expandedRows) => {
           console.log('expandedRows', expandedRows)
           getBindedData(expandedRows)
-        }
+        },
       }}
       actionRef={actionRef}
       postData={(data) => {

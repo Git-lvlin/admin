@@ -33,7 +33,7 @@ const SubTable = (props) => {
     {
       title: '销售价',
       dataIndex: 'consignPrice',
-      // render: (_) => amountTransform(_, '/')
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '市场价',
@@ -113,12 +113,6 @@ export default function EditTable() {
       valueType: 'text',
       editable: false,
     },
-    // {
-    //   title: '供货价(元)',
-    //   dataIndex: 'price',
-    //   valueType: 'text',
-    //   editable: false,
-    // },
     {
       title: '供应链状态',
       dataIndex: 'invalid',
@@ -140,16 +134,6 @@ export default function EditTable() {
       dataIndex: 'gcId',
       renderFormItem: () => (<GcCascader />),
     },
-    // {
-    //   title: '一级分类',
-    //   dataIndex: 'goodsState',
-    //   renderFormItem: () => <Select placeholder='选择1级分类' options={[{ label: '暂不售卖', value: 0 }, { label: '售卖', value: 1 }]} />
-    // },
-    // {
-    //   title: '二级分类',
-    //   dataIndex: 'goodsState',
-    //   renderFormItem: () => <Select placeholder='选择2级分类' options={[{ label: '暂不售卖', value: 0 }, { label: '售卖', value: 1 }]} />
-    // },
     {
       title: '售卖状态',
       dataIndex: 'goodsState',
