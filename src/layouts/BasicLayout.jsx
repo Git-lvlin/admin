@@ -15,7 +15,7 @@ import Authorized from '@/utils/Authorized';
 import { setAuthority, getAuthority } from '@/utils/authority';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { getMatchMenu } from '@umijs/route-utils';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
 import { cacheUserAuths } from '@/services/common';
 import './BasicLayout.less'
 

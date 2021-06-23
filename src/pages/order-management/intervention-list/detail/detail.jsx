@@ -58,7 +58,7 @@ const interventioListDetail = () => {
           status={detail?.status}
         />
         {
-          detail?.status&&
+          detail?.status !== 0&&
           <PlatformDecision
             platformOpinion={detail?.platformOpinion}
             data={detail}

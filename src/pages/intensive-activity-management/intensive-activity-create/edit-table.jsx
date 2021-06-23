@@ -185,7 +185,7 @@ export default function EditTable({ onSelect }) {
       title: (
         <>
           集约价
-          <Tooltip placement="top" title="集约价最低=(售价+配送费补贴)÷（100%-集约分成比例-0.68%）">
+          <Tooltip placement="top" title="集约价最低=(批发供货价+配送费补贴) ÷（100%-集约分成比例-0.68%）">
             <QuestionCircleOutlined style={{ marginLeft: 4 }} />
           </Tooltip>
         </>

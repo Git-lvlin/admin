@@ -26,6 +26,7 @@ const TableList = () => {
 
   const orderTypeChange = (e) => {
     setOrderType(e.target.value)
+    setPage(1)
   }
 
   useEffect(() => {
@@ -220,7 +221,7 @@ const TableList = () => {
         {
           data.map(item => (
             <div className={styles.list} key={item.orderSn}>
-              <div className={styles.store_name}>所属供应商：{item.supplier.id}</div>
+              <div className={styles.store_name}>供应商ID：{item.supplier.supplierId}</div>
               <div className={styles.second}>
                 <Space size="large">
                   <span>下单时间：{moment(item.createTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>
