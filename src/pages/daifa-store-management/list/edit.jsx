@@ -266,6 +266,7 @@ export default (props) => {
             <dd>2.图片格式png/jpg/gif</dd>
           </dl>
         }
+        extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
       >
         <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
@@ -280,6 +281,7 @@ export default (props) => {
           </dl>
         }
         rules={[{ required: true }]}
+        extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
       >
         <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
@@ -294,7 +296,7 @@ export default (props) => {
             <dd>2.图片格式png/jpg/gif</dd>
           </dl>
         }
-        extra={detailData?null:"1.图片大小1MB以内 2.图片格式png/jpg/gif"}
+        extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
       >
         <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>

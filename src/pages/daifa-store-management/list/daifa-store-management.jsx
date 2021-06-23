@@ -3,7 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
 import { storeList,statusSwitch, storeDetail } from '@/services/daifa-store-management/list'
 import { history } from 'umi';
-import AddModal from '@/components/ExcelModel'
+import ExcelModel from '@/components/ExcelModel'
 import Edit from './edit';
 import { max } from 'moment';
 
@@ -144,7 +144,7 @@ const TableList = () => {
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <Button key="out" type="primary" onClick={() => { setFormVisible(true) }}>新建</Button>,
-            <AddModal 
+            <ExcelModel 
               callback={() => { actionRef.current.reload()}}
             />
           ]

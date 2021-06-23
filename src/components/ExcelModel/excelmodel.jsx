@@ -11,18 +11,17 @@ import {  Button,message } from 'antd';
 export default props=>{
     const {callback = () => { }}=props 
     const [visible, setVisible] = useState(false);
-    const [datalist,setDatalist]=useState([])
     const [falg,setFalg]=useState(false)
     const [baseUrl,setBaseUrl]=useState()
     const Termination=()=>{
         setVisible(true)
+        file_tpl_url({}).then(res=>{
+          console.log('resurl',res)
+          setBaseUrl(res.data.filePath)
+        })
     }
     useEffect(()=>{
       var user=window.localStorage.getItem('user')
-      file_tpl_url({}).then(res=>{
-        console.log('resurl',res)
-        setBaseUrl(res.data.filePath)
-      })
       console.log('user',user)
     },[])
     const fileUrl=async (e)=>{
@@ -32,15 +31,9 @@ export default props=>{
             console.log('res',res)
             if(res.code==0){
                 message.success('创建导入任务成功');
+                setFalg(true)
             }
         })
-        await findPage({}).then(res=>{
-            if(res.code==0){
-                message.success('批量导入成功');
-                console.log('res',res.data)
-                setDatalist(res.data)
-            }
-          })
         }
     }
     const columns = [
@@ -48,7 +41,7 @@ export default props=>{
           title: '任务id',
           dataIndex: 'id',
           valueType: 'text',
-          ellipsis:true
+          ellipsis:true,
         },
         {
           title: '导入文件',
@@ -80,6 +73,11 @@ export default props=>{
           }
         },
         {
+          title: '成功/失败详解',
+          dataIndex: 'exceptionDes',
+          valueType: 'text',
+        },
+        {
           title: '进度',
           dataIndex: 'process',
           valueType: 'text',
@@ -96,16 +94,11 @@ export default props=>{
           dataIndex: 'processCount',
           valueType: 'text',
           hideInSearch: true,
-        },
-        // {
-        //   title: '操作',
-        //   dataIndex: 'option',
-        //   valueType: 'text',
-        // },
+        }
       ];
     const submit = (values) => {
-        setDatalist([])
         callback()
+        setFalg(false)
     }
     
     return (
@@ -121,26 +114,19 @@ export default props=>{
             }}
             cancelButtonProps={{
               onCancel: () => {
-                setDatalist([])
                 console.log('asdas')
               }
             }}
-            // modalProps={{
-            //   onCancel: () => {
-            //     setDatalist([])
-            //     console.log('asdas')
-            //   },
-            // }}
             destroyOnClose='false'
         >
         
         { 
-            datalist.length?
+            falg?
             <ProTable
             rowKey="id"
             options={false}
+            request={findPage}
             search={false}
-            dataSource={datalist}
             columns={columns}
         />
         :<>
