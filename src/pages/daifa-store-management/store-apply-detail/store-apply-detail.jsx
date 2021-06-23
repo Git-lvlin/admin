@@ -111,18 +111,21 @@ const ListApplyDetail = props => {
           <Form.Item
             label="身份证姓名正面照片"
             name="idFront"
+            extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
           >
             <Upload  multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
           <Form.Item
             label="身份证国徽面照片"
             name="idBack"
+            extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
           >
             <Upload  multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
           <Form.Item
             label="手持身份证照片"
             name="idHandheld"
+            extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
           >
             <Upload  multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
@@ -159,7 +162,7 @@ const ListApplyDetail = props => {
           <Form.Item
             label="状态"
           >
-            {detailData.status === 1 ? '已启用' : '已禁用'}
+            {detailData.status == 1 ? '已启用' : '已禁用'}
           </Form.Item>
 
           <Form.Item

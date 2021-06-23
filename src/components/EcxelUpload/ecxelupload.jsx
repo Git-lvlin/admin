@@ -4,7 +4,7 @@ import { UploadOutlined, LoadingOutlined } from '@ant-design/icons';
 import upload from '@/utils/upload'
 
 const EcxelUpload = (props) => {
-  const { value, onChange, code= 304, maxCount = 1, size, dimension, proportion, disabled = false, calback } = props;
+  const { value, onChange, code= 206, maxCount = 1, size, dimension, proportion, disabled = false, calback } = props;
   const [fileList, setFileList] = useState([])
   const [loading, setLoading] = useState(false)
   const fileData = useRef([]);

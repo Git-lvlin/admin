@@ -29,12 +29,16 @@ const PriceManagement = () => {
   const [resData, setResData] = useState({})
   const [loading, setLoading] = useState({})
   const [type, setType] = useState(false)
-  const [binded, setBinded] = useState(false)
 
   const [form] = Form.useForm();
 
-  const formControl = (data) => {
-    delContestGoods({id: data}).then((res) => {
+  const formControl = ({selectedRows}) => {
+    let ids = []
+    const len = selectedRows.length
+    for(let i=0;i<len;i++) {
+      ids.push(selectedRows[i].id)
+    }
+    delContestGoods({id: ids.toString()}).then((res) => {
       if (res.code === 0) {
         message.success(`成功`);
         actionRef.current.reset();
@@ -114,11 +118,6 @@ const PriceManagement = () => {
       actionRef.current.reset()
       setFlag(false)
     }
-    // if (resData) {
-    //   form.setFieldsValue({
-    //     'search-jd': resData['jd']?.url
-    //   })
-    // }
   }, [flag])
 
   const expandedRowRender = (a) => {
@@ -145,7 +144,6 @@ const PriceManagement = () => {
               allowClear
               value={resData['tb']?.url}
               onChange={(e) => {
-                // e.target.value
                 setResData({
                   ...resData,
                   'tb':{
@@ -186,7 +184,6 @@ const PriceManagement = () => {
                 allowClear
                 value={resData['jd']?.url}
                 onChange={(e) => {
-                  // e.target.value
                   setResData({
                     ...resData,
                     'jd':{
@@ -226,7 +223,6 @@ const PriceManagement = () => {
                   allowClear
                   value={resData['pdd']?.url}
                   onChange={(e) => {
-                    // e.target.value
                     setResData({
                       ...resData,
                       'pdd':{
@@ -265,7 +261,6 @@ const PriceManagement = () => {
                 allowClear
                 value={resData['tmall']?.url}
                 onChange={(e) => {
-                  // e.target.value
                   setResData({
                     ...resData,
                     'tmall':{
@@ -356,11 +351,11 @@ const PriceManagement = () => {
     if (!arr.length) {
       return;
     }
-
+    console.log('arr',arr)
     const index = arr[arr.length-1]
+    console.log('index', index)
     getGoodsBindData({goodsId:index[0],goodsSkuId:index[1]}).then(res => {
       if (res.code === 0) {
-        // setBinded(res.data)
         setResData(res.data)
       }
     })
@@ -370,8 +365,7 @@ const PriceManagement = () => {
     <PageContainer>
       <ProTable
       form={form}
-      rowKey="id"
-      key="allKey"
+      rowKey="allKey"
       columns={columns}
       expandable={{
         expandedRowRender,
@@ -425,7 +419,7 @@ const PriceManagement = () => {
         <Button key="button" icon={<PauseCircleOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
           添加比价商品
         </Button>,
-        <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString()) }}>
+        <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record) }}>
           批量删除
         </Button>,
       ]}
