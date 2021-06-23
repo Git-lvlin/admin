@@ -36,7 +36,7 @@ const SubTable = (props) => {
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '市场价',
+      title: '市场价(元)',
       dataIndex: 'retailPrice',
       render: (_) => amountTransform(_, '/')
     },
