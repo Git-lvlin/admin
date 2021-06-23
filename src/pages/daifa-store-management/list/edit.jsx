@@ -217,6 +217,7 @@ export default (props) => {
           { required: true, message: '请输入店主姓名' },
           { validator:(rule,value,callback)=>{
               return new Promise(async (resolve, reject) => {
+                
               if(value&&value.length>30){
                 await reject('姓名不超过30个字符')
               }else {
