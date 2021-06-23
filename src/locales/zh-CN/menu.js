@@ -171,7 +171,7 @@ export default {
   'menu.financial-management.transaction-detail-management.order-pay-detail':'订单支付详情',
   'menu.financial-management.transaction-detail-management.bonus-detail-management':'提成明细管理',
   'menu.financial-management.transaction-detail-management.commission-detail-management':'佣金明细管理',
-  'menu.financial-management.transaction-detail-management.loan-detail-management':'贷款明细管理',
+  'menu.financial-management.transaction-detail-management.loan-detail-management':'货款明细管理',
   'menu.financial-management.transaction-detail-management.royalty-details':'明细详情',
   'menu.financial-management.transaction-detail-management.after-sales-order-details':'售后订单明细管理',
   'menu.financial-management.transaction-detail-management.after-order-details':'售后订单详情',
