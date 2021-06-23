@@ -190,7 +190,7 @@ const IntensiveActivityCreate = () => {
               name="endTimeAdvancePayment"
               label="店主采购单下单截至时间"
               width="md"
-              // rules={[{ required: true, message: '请选择店主采购单下单截至时间' }]}
+              rules={[{ required: true, message: '请选择店主采购单下单截至时间' }]}
               fieldProps={{
                 disabledDate: (currentDate) => { return +currentDate < +new Date() },
                 disabledTime: disabledRangeTime,

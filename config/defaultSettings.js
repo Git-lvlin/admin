@@ -7,7 +7,7 @@ const proSettings = {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: '',
+  title: '约购运营管理平台',
   pwa: false,
   iconfontUrl: '',
 };
