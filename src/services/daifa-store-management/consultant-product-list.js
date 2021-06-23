@@ -17,6 +17,7 @@ export const page_spuList = async (params = {}, options = {}) => {
   return {
     data: res.data.records,
     success: true,
+    total:res.data.total,
     code:res.code
   }
 }
