@@ -11,6 +11,7 @@ import { history } from 'umi';
 import * as api from '@/services/login';
 import { getPageQuery } from '@/utils/utils';
 import styles from './index.less';
+import logo from '@/assets/logo.png'
 // import md5 from 'blueimp-md5';
 
 const Login = () => {
@@ -96,7 +97,7 @@ const Login = () => {
     <div className={styles.main}>
       <div className={styles.title_wrap}>
         <div className={styles.logo}>
-          <img />
+          <img src={logo} />
         </div>
         <div className={styles.title}>
           约购运营管理平台
