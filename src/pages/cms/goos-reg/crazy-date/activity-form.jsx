@@ -79,7 +79,7 @@ const DetailList = (props) => {
       dataIndex: 'goodsName',
       valueType: 'text',
       editable: true,
-      search: false,
+      // search: false,
       width: 180,
       ellipsis: true,
     },
