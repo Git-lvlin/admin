@@ -263,7 +263,7 @@ export default (props) => {
         }
         extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
       >
-        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload code={304}  multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <Form.Item
         label="身份证正面照片"
@@ -277,7 +277,7 @@ export default (props) => {
         }
         extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
       >
-        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload code={304}  multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <Form.Item
         label="身份证背面照片"
@@ -291,7 +291,7 @@ export default (props) => {
         }
         extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
       >
-        <Upload disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        <Upload code={304}  multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <ProFormText
         name="idNumber"
