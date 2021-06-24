@@ -208,6 +208,7 @@ export default (props) => {
 
   const submit = (values) => {
     const { password, gc, addressInfo, socialCreditInfo, legalInfo, imageInfo, bankCode, ...rest } = values;
+    console.log('gc',gc)
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? supplierEdit : supplierAdd;
 
@@ -375,6 +376,7 @@ export default (props) => {
         }
       })
       setSelectKeys(ids)
+      console.log('supids',ids)
     }
     categoryAll()
       .then(res => {

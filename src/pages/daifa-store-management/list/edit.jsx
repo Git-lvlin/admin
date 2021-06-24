@@ -9,7 +9,6 @@ import Upload from '@/components/upload';
 import { storeAdd, storeEdit } from '@/services/daifa-store-management/list';
 import { categoryAll } from '@/services/common';
 import { arrayToTree } from '@/utils/utils'
-import FormModal from './form';
 
 
 const CTree = (props) => {
@@ -64,8 +63,6 @@ const CTree = (props) => {
 export default (props) => {
   const { visible, setVisible, detailData, callback = () => { }, onClose = () => { } } = props;
   const [form] = Form.useForm()
-  const [formVisible, setFormVisible] = useState(false)
-  const [selectData, setSelectData] = useState([]);
   const [treeData, setTreeData] = useState([])
   const [selectKeys, setSelectKeys] = useState([]);
   const originData = useRef([])
@@ -86,6 +83,7 @@ export default (props) => {
 
   const submit = (values) => {
     const { password, gc, ...rest } = values;
+    console.log('gc',gc)
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? storeEdit : storeAdd;
 
@@ -103,31 +101,43 @@ export default (props) => {
         });
 
         const gcData = [...new Set([...gc, ...parentIds].filter(item => item !== 0))]
+        console.log('gcData',gcData)
         gcData.forEach(item => {
           const findItem = originData.current.find(it => item === it.id);
+          console.log('findItem',findItem)
           const { gcParentId, id } = findItem;
-          if (gcParentId !== 0) {
+          if (gcParentId== 0) {
+            if (obj[id]) {
+              obj[id].push(gcParentId)  
+            } else {
+              obj[id] = [gcParentId];
+            }
+          }
+          if (gcParentId!== 0) {
             if (obj[gcParentId]) {
-              obj[gcParentId].push(id)
+              obj[gcParentId].push(id)  
             } else {
               obj[gcParentId] = [id];
             }
-          }
+        }
 
         })
 
         let hasError = false;
+        console.log('obj',obj)
         for (const key in obj) {
           if (Object.hasOwnProperty.call(obj, key)) {
             const g = { gc_id1: key };
-            if (obj[key].length) {
-              g.gc_id2 = obj[key].join(',')
+            if (obj[key].length>=2) {
+              g.gc_id2 = obj[key].filter(item => item !== 0).join(',')
             } else {
               hasError = true;
             }
             gcArr.push(g)
           }
         }
+        console.log('gcArr', gcArr)
+        
 
 
         if (hasError) {
@@ -139,7 +149,7 @@ export default (props) => {
       } else {
         gcArr = ''
       }
-      console.log('detailData',detailData)
+      // console.log('detailData',detailData)
       values.businessScope=gcArr
       apiMethod({
         ...rest,
@@ -151,6 +161,7 @@ export default (props) => {
           callback();
         } else {
           reject();
+          message.error(res.msg);
         }
       })
     });
@@ -161,7 +172,6 @@ export default (props) => {
       form.setFieldsValue({
         ...detailData
       })
-      setSelectData(detailData.supplierIds)
       const ids = [];
       const businessScope = detailData.businessScope&&JSON.parse(detailData.businessScope);
       businessScope&&businessScope.forEach(item => {
@@ -169,6 +179,7 @@ export default (props) => {
         ids.push(...gcId)
       })
       setSelectKeys(ids)
+      console.log('ids',ids)
     }
     categoryAll()
       .then(res => {
@@ -395,12 +406,6 @@ export default (props) => {
           }
         ]}
       />
-      {formVisible && <FormModal
-        visible={formVisible}
-        setVisible={setFormVisible}
-        callback={(v) => { setSelectData(v) }}
-        selectData={selectData}
-      />}
     </DrawerForm>
   );
 };

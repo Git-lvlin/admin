@@ -9,7 +9,6 @@ import Upload from '@/components/upload';
 import { storeApplyEdit,storeApplyAudit } from '@/services/daifa-store-management/agent-shop-store_apply';
 import { categoryAll } from '@/services/common';
 import { arrayToTree } from '@/utils/utils'
-import FormModal from './form';
 
 
 const CTree = (props) => {
@@ -64,8 +63,6 @@ const CTree = (props) => {
 export default (props) => {
   const { visible, setVisible, detailData,aplyId, callback = () => { }, onClose = () => { } } = props;
   const [form] = Form.useForm()
-  const [formVisible, setFormVisible] = useState(false)
-  const [selectData, setSelectData] = useState([]);
   const [treeData, setTreeData] = useState([])
   const [selectKeys, setSelectKeys] = useState([]);
   const originData = useRef([])
@@ -104,6 +101,13 @@ export default (props) => {
         gcData.forEach(item => {
           const findItem = originData.current.find(it => item === it.id);
           const { gcParentId, id } = findItem;
+          if (gcParentId == 0) {
+            if (obj[id]) {
+              obj[id].push(gcParentId)  
+            } else {
+              obj[id] = [gcParentId];
+            }
+          }
           if (gcParentId !== 0) {
             if (obj[gcParentId]) {
               obj[gcParentId].push(id)
@@ -118,15 +122,15 @@ export default (props) => {
         for (const key in obj) {
           if (Object.hasOwnProperty.call(obj, key)) {
             const g = { gc_id1: key };
-            if (obj[key].length) {
-              g.gc_id2 = obj[key].join(',')
+            if (obj[key].length>=2) {
+              g.gc_id2 = obj[key].filter(item => item !== 0).join(',')
             } else {
               hasError = true;
             }
             gcArr.push(g)
           }
         }
-
+        console.log('gcArr', gcArr)
 
         if (hasError) {
           message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
@@ -158,7 +162,6 @@ export default (props) => {
       form.setFieldsValue({
         ...detailData
       })
-      setSelectData(detailData.supplierIds)
       const ids = [];
       const businessScope = detailData.businessScope&&JSON.parse(detailData.businessScope);
       businessScope&&businessScope.forEach(item => {
@@ -387,12 +390,6 @@ export default (props) => {
           }
         ]}
       />
-      {formVisible && <FormModal
-        visible={formVisible}
-        setVisible={setFormVisible}
-        callback={(v) => { setSelectData(v) }}
-        selectData={selectData}
-      />}
     </DrawerForm>
   );
 };
