@@ -9,7 +9,6 @@ import Upload from '@/components/upload';
 import { storeAdd, storeEdit } from '@/services/daifa-store-management/list';
 import { categoryAll } from '@/services/common';
 import { arrayToTree } from '@/utils/utils'
-import FormModal from './form';
 
 
 const CTree = (props) => {
@@ -64,7 +63,6 @@ const CTree = (props) => {
 export default (props) => {
   const { visible, setVisible, detailData, callback = () => { }, onClose = () => { } } = props;
   const [form] = Form.useForm()
-  const [formVisible, setFormVisible] = useState(false)
   const [selectData, setSelectData] = useState([]);
   const [treeData, setTreeData] = useState([])
   const [selectKeys, setSelectKeys] = useState([]);
@@ -151,6 +149,7 @@ export default (props) => {
           callback();
         } else {
           reject();
+          message.error(res.msg);
         }
       })
     });
@@ -395,12 +394,6 @@ export default (props) => {
           }
         ]}
       />
-      {formVisible && <FormModal
-        visible={formVisible}
-        setVisible={setFormVisible}
-        callback={(v) => { setSelectData(v) }}
-        selectData={selectData}
-      />}
     </DrawerForm>
   );
 };
