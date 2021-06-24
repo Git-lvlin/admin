@@ -4,7 +4,6 @@ import { PageContainer } from '@ant-design/pro-layout';
 import SelectedProduct from './selected-product';
 import IndexProduct from './index-product';
 
-
 const DaifaProduct = () => {
   const [activeKey, setActiveKey] = useState('1')
 

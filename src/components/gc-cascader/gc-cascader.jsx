@@ -45,12 +45,12 @@ const GcCascader = ({ value, onChange, ...rest }) => {
         })
     } else {
       category({ gcParentId: 0 })
-        .then(res => {
-          if (res.code === 0) {
-            const data = res.data.records.map(item => ({ label: item.gcName, value: item.id, isLeaf: false }));
-            setGcData(data)
-          }
-        })
+      .then(res => {
+        if (res.code === 0) {
+          const data = res.data.records.map(item => ({ label: item.gcName, value: item.id, isLeaf: false }));
+          setGcData(data)
+        }
+      })
     }
 
     return () => {
