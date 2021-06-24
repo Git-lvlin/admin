@@ -12,6 +12,7 @@ import { cancelBanShare } from '@/services/community-management/dynamic-cancel-b
 import { ModalForm,ProFormSwitch} from '@ant-design/pro-form';
 import DeleteModal from '@/components/DeleteModal'
 import { Button,Switch } from 'antd';
+import { history } from 'umi';
 
 export default props => {
     const ref=useRef()
@@ -36,7 +37,10 @@ export default props => {
         {
             title: '帖子ID：',
             dataIndex: 'id',
-            hideInSearch:true
+            hideInSearch:true,
+            render:(text, record, _, action)=>[
+                <a onClick={()=>history.push('/community-management/content-management/dynamic-get-dynamic-detail?id='+record.id)}>{record.id}</a>
+            ],
         },
         {
             title: '会员ID',

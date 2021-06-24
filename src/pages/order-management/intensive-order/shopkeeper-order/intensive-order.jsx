@@ -219,7 +219,7 @@ const TableList = () => {
               <div className={styles.second}>
                 <Space size="large">
                   <span>下单时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</span>
-                  <span>订单号：{item.id}</span>
+                  <span>订单号：{item.orderSn}</span>
                   <span>下单用户：{item.buyerName}</span>
                   <span>用户手机号：{item.buyerPhone}</span>
                 </Space>
