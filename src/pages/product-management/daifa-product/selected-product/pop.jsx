@@ -1,10 +1,9 @@
-import React, { useRef, useState, useEffect  } from 'react';
-import { Button, message, Form, Space } from 'antd';
+import React, { useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm } from '@ant-design/pro-form';
-import { getGoodsList, selectGoodsList, productList } from '@/services/product-management/daifa-product';
+import { productList } from '@/services/product-management/daifa-product';
 export default (props) => {
-  const { setVisible, setHasData, visible, params } = props;
+  const { setVisible, visible, params } = props;
   const formRef = useRef();
   const columns = [
     {
@@ -24,19 +23,15 @@ export default (props) => {
     {
       title: '销售价',
       dataIndex: 'consignPrice',
-      // render: (_) => amountTransform(_, '/')
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '市场价',
       dataIndex: 'retailPrice',
-      // render: (_) => amountTransform(_, '/')
+      render: (_) => amountTransform(_, '/')
     },
     { title: '可用库存', dataIndex: 'amountOnSale' },
   ];
-
-  useEffect(() => {
-
-  }, [])
 
   return (
     <ModalForm
@@ -57,10 +52,6 @@ export default (props) => {
           },
         },
       }}
-      // drawerprops={{
-      //   forceRender: true,
-      //   destroyOnClose: true,
-      // }}
     >
 <ProTable
       rowKey="id"

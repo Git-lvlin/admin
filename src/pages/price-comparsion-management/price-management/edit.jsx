@@ -9,7 +9,6 @@ import GcCascader from '@/components/gc-cascader'
 export default (props) => {
   const { setVisible, setFlag, visible } = props;
   const [arr, setArr] = useState(null)
-  const formRef = useRef();
   const columns = [
     {
       title: 'skuid',
@@ -90,10 +89,6 @@ export default (props) => {
     });
   };
 
-  useEffect(() => {
-
-  }, [])
-
   return (
     <ModalForm
       title={'新建'}
@@ -149,8 +144,6 @@ export default (props) => {
       dateFormatter="string"
       headerTitle="添加比价商品"
     />
-
-
     </ModalForm>
   );
 };

@@ -338,7 +338,6 @@ const PriceManagement = () => {
       render: (text, record, _) => {
         return (
           <>
-            {/* {<a key="editable" onClick={() => {}}>比价设置</a>} */}
             &nbsp;&nbsp;{<a key="d" onClick={() => {formControl(record.id)}}>删除</a>}
           </>
         )
@@ -359,14 +358,10 @@ const PriceManagement = () => {
   }
 
   const changeRowKeys = (expanded, record) => {
-    console.log('expanded', expanded)
-    console.log('record', record)
-
     let temp = []
     if (expanded) {
       temp.push(record.allKey)
     }
-    console.log('temp', temp)
     setRowKeys(temp)
   }
 
@@ -379,7 +374,6 @@ const PriceManagement = () => {
       expandable={{
         expandedRowRender,
         onExpandedRowsChange: (expandedRows) => {
-          // console.log('expandedRows', expandedRows)
           getBindedData(expandedRows)
         },
       }}
@@ -410,14 +404,6 @@ const PriceManagement = () => {
               取消选择
             </a>
           </span>
-          {/* <span>{`待发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.containers,
-            0,
-          )} 个`}</span>
-          <span>{`已发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.callNumber,
-            0,
-          )} 个`}</span> */}
         </Space>
       )}
       search={{
