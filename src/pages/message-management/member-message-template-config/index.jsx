@@ -1,27 +1,38 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
-import * as api from '@/services/message-management/message-template-config';
-import Form from './form';
-import '../styles.less';
+import React, { useState, useRef } from 'react'
+import { PageContainer } from '@ant-design/pro-layout'
+import ProTable from '@ant-design/pro-table'
+import * as api from '@/services/message-management/message-template-config'
+import PopForm from './form'
+import '../styles.less'
 
-import { Tabs } from 'antd';
-const { TabPane } = Tabs;
+import { Tabs } from 'antd'
+const { TabPane } = Tabs
 
-const index = () => {
+const message = (type, module) => {
   const [selectItem, setSelectItem] = useState(null)
-  const [formVisible, setFormVisible] = useState(false)
   const actionRef = useRef()
-
+  const [formVisible, setFormVisible] = useState(false)
   const columns = [
     { 
       title: '消息编号',
       dataIndex: 'id',
       valueType: 'indexBorder'
     },
-    { title: '消息名称', dataIndex: 'name', align: 'center' },
-    { title: '消息模板-标题', dataIndex: 'templateTitle', align: 'center' },
-    { title: '消息模板-内容', dataIndex: 'templateCopywritingContent', align: 'center' },
+    { 
+      title: '消息名称', 
+      dataIndex: 'name',
+      align: 'center' 
+    },
+    { 
+      title: '消息模板-标题', 
+      dataIndex: 'templateTitle', 
+      align: 'center' 
+    },
+    { 
+      title: '消息模板-内容', 
+      dataIndex: 'templateCopywritingContent', 
+      align: 'center' 
+    },
     { 
       title: '推送渠道',
       dataIndex: 'pushType',
@@ -46,33 +57,34 @@ const index = () => {
       align: 'center'
     }
   ]
-  const message = (type, module) => {
-    return(
-      <>
-        <ProTable
-          rowKey='id'
-          search={false}
-          toolBarRender={false}
-          columns={columns}
-          actionRef={actionRef}
-          params={{toType: type, moduleType: module}}
-          request={api.messageTemplateList}
-          pagination={{
-            showQuickJumper: true,
-            pageSize: 10,
-            hideOnSinglePage: true
-          }}
-        />
-        <Form
-          visible={formVisible}
-          setVisible={setFormVisible}
-          callback={() => { actionRef.current.reload() }}
-          onClose={() => { setSelectItem(null) }}
-          data={selectItem}
-        />
-      </>
-    )
-  }
+  return(
+    <>
+      <ProTable
+        rowKey='id'
+        search={false}
+        toolBarRender={false}
+        columns={columns}
+        actionRef={actionRef}
+        params={{toType: type, moduleType: module}}
+        request={api.messageTemplateList}
+        pagination={{
+          showQuickJumper: true,
+          pageSize: 10,
+          hideOnSinglePage: true
+        }}
+      />
+      <PopForm
+        visible={formVisible}
+        setVisible={setFormVisible}
+        callback={() => { actionRef.current.reload() }}
+        onClose={() => { setSelectItem(null) }}
+        data={selectItem}
+      />
+    </>
+  )
+}
+
+const Index = () => {
   return (
     <PageContainer
       header={{
@@ -104,4 +116,4 @@ const index = () => {
   )
 }
 
-export default index;
+export default Index

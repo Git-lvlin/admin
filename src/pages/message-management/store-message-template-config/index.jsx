@@ -1,18 +1,18 @@
-import React, { useState, useRef } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
-import * as api from '@/services/message-management/message-template-config';
-import Form from './form';
-import '../styles.less';
+import React, { useState, useRef } from 'react'
+import { PageContainer } from '@ant-design/pro-layout'
+import ProTable from '@ant-design/pro-table'
+import { Tabs } from 'antd'
 
-import { Tabs } from 'antd';
-const { TabPane } = Tabs;
+import * as api from '@/services/message-management/message-template-config'
+import Form from './form'
+import '../styles.less'
 
-const index = () => {
+const { TabPane } = Tabs
+
+const message = (type, module) => {
   const [selectItem, setSelectItem] = useState(null)
-  const [formVisible, setFormVisible] = useState(false)
   const actionRef = useRef()
-
+  const [formVisible, setFormVisible] = useState(false)
   const columns = [
     { 
       title: '消息编号',
@@ -62,34 +62,34 @@ const index = () => {
       align: 'center'
     }
   ]
-  // 消息
-  const message = (type, module) => {
-    return(
-      <>
-        <ProTable
-          rowKey='id'
-          search={false}
-          toolBarRender={false}
-          columns={columns}
-          actionRef={ actionRef }
-          params={{toType: type, moduleType: module}}
-          request={api.messageTemplateList}
-          pagination={{
-            showQuickJumper: true,
-            pageSize: 10,
-            hideOnSinglePage: true
-          }}
-        />
-        <Form
-          visible={formVisible}
-          setVisible={setFormVisible}
-          callback={() => { actionRef.current.reload() }}
-          onClose={() => { setSelectItem(null) }}
-          data={selectItem}
-        />
-      </>
-    )
-  }
+  return(
+    <>
+      <ProTable
+        rowKey='id'
+        search={false}
+        toolBarRender={false}
+        columns={columns}
+        actionRef={ actionRef }
+        params={{toType: type, moduleType: module}}
+        request={api.messageTemplateList}
+        pagination={{
+          showQuickJumper: true,
+          pageSize: 10,
+          hideOnSinglePage: true
+        }}
+      />
+      <Form
+        visible={formVisible}
+        setVisible={setFormVisible}
+        callback={() => { actionRef.current.reload() }}
+        onClose={() => { setSelectItem(null) }}
+        data={selectItem}
+      />
+    </>
+  )
+}
+
+const Index = () => {
   return (
     <PageContainer
       header={{
@@ -118,4 +118,4 @@ const index = () => {
   )
 }
 
-export default index;
+export default Index
