@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 import {
   ModalForm,
   ProFormSelect,
   ProFormText,
   ProFormTextArea
-} from '@ant-design/pro-form';
-import { Form } from 'antd';
+} from '@ant-design/pro-form'
+import { Form } from 'antd'
+
 import * as api from '@/services/message-management/message-template-config';
 
 export default (props) => {
-  const { visible, setVisible, callback, onClose, data } = props;
+  const { visible, setVisible, callback, onClose, data } = props
   const [form] = Form.useForm()
 
   const formItemLayout = {
@@ -17,15 +18,14 @@ export default (props) => {
     wrapperCol: { span: 14 },
     layout: {
       labelCol: {
-        span: 4,
+        span: 4
       },
       wrapperCol: {
-        span: 14,
+        span: 14
       },
     }
-  };
+  }
 
-  // 修改
   const submit = (values) => {
     const pushType = values.pushType.join(',')
     const obj = {toType:2, ...values, pushType}
@@ -39,7 +39,7 @@ export default (props) => {
       templateCopywritingContent: data.templateCopywritingContent,
       pushType: data.pushType,
       type: data.type
-    });
+    })
     return undefined
   }, [data, form])
 
@@ -48,20 +48,21 @@ export default (props) => {
       title="消息模板配置"
       modalProps={{
         onCancel: () => onClose(),
+        destroyOnClose: true
       }}
       onVisibleChange={setVisible}
       visible={visible}
       width={550}
       onFinish={async (values) => {
-        await submit(values);
-        callback();
-        return true;
+        await submit(values)
+        callback()
+        return true
       }}
       form={form}
       labelAlign="right"
       {...formItemLayout}
       initialValues={{
-        status: 1,
+        status: 1
       }}
     >
       <ProFormText
@@ -87,7 +88,7 @@ export default (props) => {
         rules={[
           {
             required: true,
-            message: '请输入5-18个字符',
+            message: '请输入5-18个字符'
           },
         ]}
       />
@@ -101,7 +102,7 @@ export default (props) => {
         rules={[
           {
             required: true,
-            message: '请输入至少6个字符',
+            message: '请输入至少6个字符'
           },
         ]}
         fieldProps={{
@@ -124,5 +125,5 @@ export default (props) => {
         readonly
       />
     </ModalForm>
-  );
-};
+  )
+}
