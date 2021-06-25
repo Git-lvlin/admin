@@ -3,7 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Card, Space, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
-import { addressList, addressDetail, addressSwitch } from '@/services/supplier-management/after-sale-address'
+import { addressList, addressDetail, addressSwitch, addressSetDefault } from '@/services/supplier-management/after-sale-address'
 import { useParams } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import Edit from './edit';
@@ -44,7 +44,25 @@ const TableList = () => {
           })
       },
     });
-    
+  }
+
+  const addressSetDefaultHandle = (data) => {
+    confirm({
+      title: `设置默认售后地址信息`,
+      icon: <ExclamationCircleOutlined />,
+      content: `确定要将 ${data.contactName}（${data.address}）设置为默认地址么？`,
+      onOk() {
+        addressSetDefault({
+          supplierId: params?.id,
+          id: data.id
+        })
+          .then(res => {
+            if (res.code === 0) {
+              actionRef.current.reload()
+            }
+          })
+      },
+    });
   }
 
   const columns = [
@@ -95,7 +113,7 @@ const TableList = () => {
           <Space>
             {data.status === 1 && <a onClick={() => { switchStatus(data) }}>禁用</a>}
             {data.status === 0 && <a onClick={() => { switchStatus(data) }}>开启</a>}
-            {data.isDefault === 0 && <a onClick={() => { getDetail(data.id) }}>设为默认</a>}
+            {data.isDefault === 0 && <a onClick={() => { addressSetDefaultHandle(data) }}>设为默认</a>}
             <a onClick={() => { getDetail(data.id) }}>编辑</a>
           </Space>
         )

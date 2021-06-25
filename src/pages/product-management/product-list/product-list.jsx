@@ -243,7 +243,7 @@ const TableList = () => {
     },
     {
       title: '商品来源',
-      dataIndex: 'goodsState',
+      dataIndex: 'goodsFromType',
       onFilter: true,
       valueType: 'select',
       valueEnum: typeTransform(config.operateRole),
