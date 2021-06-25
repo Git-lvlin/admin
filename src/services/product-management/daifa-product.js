@@ -26,8 +26,6 @@ export const productList = async (params = {}, options = {}) => {
   }
 }
 
-
-
 export const brandAdd = (params = {}, options = {}) => {
   return request('/auth/goods/product/brandAdd', {
     method: 'POST',

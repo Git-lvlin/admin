@@ -29,7 +29,6 @@ export default (props) => {
       title: '商品名称',
       dataIndex: 'goodsName',
       valueType: 'text',
-      search: false,
       width: 180,
       ellipsis: true,
     },
@@ -65,12 +64,6 @@ export default (props) => {
       valueType: 'number',
       search: false,
     },
-    // {
-    //   title: '活动库存',
-    //   dataIndex: 'activityStockNum',
-    //   valueType: 'number',
-    //   search: false,
-    // },
     {
       title: '销量',
       dataIndex: 'goodsSaleNum',

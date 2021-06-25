@@ -86,7 +86,6 @@ export default function EditTable() {
   const [dataSource, setDataSource] = useState([]);
   const [hasData, setHasData] = useState(false);
   const [formVisible, setFormVisible] = useState(false);
-  const [flag, setFlag] = useState(false);
   const [popShow, setPopShow] = useState(false);
   const [params, setParams] = useState({
     selectType: 1,
@@ -148,14 +147,8 @@ export default function EditTable() {
         return  <>
           <a onClick={() => {
             setGoodsIndex(r)
-          }}>设置</a>&nbsp;
-          {/* <a onClick={() => {
-            setPopShow(true)
-            setParams(r.feedId)
-          }}>所属sku</a> */}
+          }}>设置</a>
           </>
-
-
       }
     },
   ]
@@ -224,7 +217,6 @@ export default function EditTable() {
     })
   };
 
-
   return (
     <PageContainer
       ghost
@@ -238,7 +230,6 @@ export default function EditTable() {
         }}>获取供应链已选商品组</Button>
       }
     >
-    {/* {hasData&&<EditableProTable */}
     <Search
       style={
         {
@@ -252,7 +243,6 @@ export default function EditTable() {
       enterButton={'商品组名称搜索'} />
     <Button onClick={() => {
       onSearch(null)
-      // setValue(null)
     }}>重置</Button>
     {<EditableProTable
       actionRef={actionRef}
@@ -274,7 +264,6 @@ export default function EditTable() {
                 ...item,
                 totalPrice: (item.price > 0 && item.perStoreMinNum > 0) ? +new Big(item.price).times(item.perStoreMinNum) : 0
               }
-              // onSelect(data)
               return data
             }
             return item
@@ -301,11 +290,11 @@ export default function EditTable() {
       setVisible={setFormVisible}
       setHasData={setHasData}
     />}
-      {popShow && <Pop
+      {/* {popShow && <Pop
       visible={popShow}
       setVisible={setPopShow}
       params={params}
-    />}
+    />} */}
     </PageContainer>
   )
 }

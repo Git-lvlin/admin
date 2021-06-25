@@ -2,10 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
 import { Form, Select, message, Table, Input, Button } from 'antd';
 import { indexProductList, goodsLoading } from '@/services/product-management/daifa-product';
-// import { categoryAll } from '@/services/common';
-import {
-  ProFormText,
-} from '@ant-design/pro-form';
 import GcCascader from '@/components/gc-cascader'
 import { amountTransform } from '@/utils/utils'
 import Big from 'big.js';
@@ -78,7 +74,6 @@ export default function EditTable() {
   });
 
   const upData = (r) => {
-    console.log('r', r)
     const { outSpuId:productId, gcId, goodsState, floatPercent } = r
     if (!(/(^[1-9]\d*$)/.test(floatPercent))) {
       return message.error('请输入正整数')
@@ -164,7 +159,6 @@ export default function EditTable() {
     {
       title: '售价最多上浮百分比',
       dataIndex: 'floatPercent',
-      // width: 160,
       align: 'center',
       renderFormItem: () => <Input placeholder='输入正整数' suffix='%'/>,
     },
@@ -173,16 +167,6 @@ export default function EditTable() {
       dataIndex: 'gcId',
       renderFormItem: () => (<GcCascader />),
     },
-    // {
-    //   title: '一级分类',
-    //   dataIndex: 'gcId1',
-    //   renderFormItem: () => <Select options={[{ label: 'a', value: 1 }]} />
-    // },
-    // {
-    //   title: '二级分类',
-    //   dataIndex: 'gcId2',
-    //   renderFormItem: () => <Select options={[{ label: 'a', value: 1 }]} />
-    // },
     {
       title: '售卖状态',
       dataIndex: 'goodsState',
@@ -215,9 +199,6 @@ export default function EditTable() {
     setDataSource(arr)
   }
 
-  // useEffect(() => {
-  //   categoryAll()
-  // }, [])
   const onSearch = (value) => {
     setParams({
       ...params,
@@ -250,7 +231,6 @@ export default function EditTable() {
       value={dataSource}
       params={params}
       request={indexProductList}
-      // search={false}
       editable={{
         form,
         editableKeys,

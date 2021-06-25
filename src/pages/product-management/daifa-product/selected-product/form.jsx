@@ -1,9 +1,6 @@
-import React, { useRef, useState, useEffect  } from 'react';
-import { Button, message, Form, Space } from 'antd';
+import React, { useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm } from '@ant-design/pro-form';
-import { saveMoneyAdd } from '@/services/cms/member/member';
-import { saveMoneyFormList } from '@/services/cms/member/member';
 import { getGoodsList, selectGoodsList } from '@/services/product-management/daifa-product';
 
 export default (props) => {
@@ -59,18 +56,11 @@ export default (props) => {
     },
   ];
 
-  useEffect(() => {
-
-  }, [])
-
-
   const goToBigList = (record) => {
-    console.log('record', record)
     const param = {
       groupId: record.groupId
     }
     selectGoodsList(param).then((res) => {
-      console.log('res', res)
       if (res.code === 0) {
         return true
       }
@@ -96,19 +86,11 @@ export default (props) => {
           },
         },
       }}
-      // drawerprops={{
-      //   forceRender: true,
-      //   destroyOnClose: true,
-      // }}
     >
 <ProTable
       rowKey="id"
       options={false}
       columns={columns}
-      // postData={(data) => {
-      //   data.filter(item=>item.id < 20)
-      //   return data
-      // }}
       request={getGoodsList}
       search={{
         labelWidth: 'auto',

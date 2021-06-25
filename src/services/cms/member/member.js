@@ -485,26 +485,6 @@ export const memberOperation = (params = {}, options = {}) => {
   });
 }
 
-export const goosAllList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
-  const data = {
-    page: current,
-    pageSize: pageSize,
-    ...rest
-  }
-  const res = await request('/auth/activity/Goods/wholesaleTransGoodsList', {
-    method: 'POST',
-    data,
-    ...options
-  });
-
-  return {
-    data: res.data.records || [],
-    success: true,
-    total: res.data.total,
-  }
-}
-
 export const goodsAllList = async (params = {}, options = {}) => {
   const { current, pageSize, gcId, ...rest } = params;
   const data = {
