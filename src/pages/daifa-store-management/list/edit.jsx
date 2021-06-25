@@ -168,12 +168,13 @@ export default (props) => {
       const ids = [];
       const businessScope = detailData.businessScope&&JSON.parse(detailData.businessScope);
       businessScope&&businessScope.forEach(item => {
-        const gcId = item.gc_id2.split(',').map(item => +item)
+        const gcId = item.gc_id2.split(',').map(item => +item).filter(item => item !== 0)
         const gcId2=[]
         gcId2.push(parseInt(item.gc_id1))
         ids.push(...gcId,...gcId2)
       })
       setSelectKeys(ids)
+      console.log('ids',ids)
     }
     categoryAll()
       .then(res => {
