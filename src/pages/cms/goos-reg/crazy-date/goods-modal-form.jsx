@@ -19,11 +19,13 @@ export default (props) => {
     if (channel) {
       param.goodsType = channel
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       crazyActivityGoodsAddPT(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
           resolve(true);
+        } else {
+          reject(false)
         }
       })
     });
@@ -45,7 +47,6 @@ export default (props) => {
       title: '商品名称',
       dataIndex: 'goodsName',
       valueType: 'text',
-      search: false,
       width: 180,
       ellipsis: true,
     },
