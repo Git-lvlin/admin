@@ -125,18 +125,18 @@ export default (props) => {
             if (obj[key].length>=2) {
               g.gc_id2 = obj[key].filter(item => item !== 0).join(',')
             } else {
-              hasError = true;
+              g.gc_id2 ="0"
+              // hasError = true;
             }
             gcArr.push(g)
           }
         }
-        console.log('gcArr', gcArr)
 
-        if (hasError) {
-          message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
-          reject()
-          return;
-        }
+        // if (hasError) {
+        //   message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
+        //   reject()
+        //   return;
+        // }
 
       } else {
         gcArr = ''
@@ -166,7 +166,9 @@ export default (props) => {
       const businessScope = detailData.businessScope&&JSON.parse(detailData.businessScope);
       businessScope&&businessScope.forEach(item => {
         const gcId = item.gc_id2.split(',').map(item => +item)
-        ids.push(...gcId)
+        const gcId2=[]
+        gcId2.push(parseInt(item.gc_id1))
+        ids.push(...gcId,...gcId2)
       })
       setSelectKeys(ids)
     }
