@@ -4,6 +4,7 @@ import { Input, message, Form, Spin } from 'antd'
 import { PageContainer } from '@ant-design/pro-layout'
 
 import { withdrawConfigDetail, withdrawConfigUpdate } from '@/services/financial-management/withdrawal-fee-configuration'
+import { amountTransform } from '@/utils/utils'
 import './styles.less'
 import styles from './styles.less'
 
@@ -16,8 +17,20 @@ const WithdrawalFeeConfiguration = () => {
     setLoading(true)
     withdrawConfigDetail({}).then(res=> {
       form.setFieldsValue({
-        ...res?.data
+        ...res?.data,
+        withdrawBusinessFaxScale: amountTransform(res?.data.withdrawBusinessFaxScale, '*'),
+        withdrawBusinessFeeFixed: amountTransform(res?.data.withdrawBusinessFeeFixed, '/'),
+        withdrawBusinessFeeScale: amountTransform(res?.data.withdrawBusinessFeeScale, '*'),
+        withdrawBusinessMax: amountTransform(res?.data.withdrawBusinessMax, '/'),
+        withdrawBusinessMin: amountTransform(res?.data.withdrawBusinessMin, '/'),
+        withdrawPersonFaxScale: amountTransform(res?.data.withdrawPersonFaxScale, '*'),
+        withdrawPersonFeeFixed: amountTransform(res?.data.withdrawPersonFeeFixed, '/'),
+        withdrawPersonFeeScale: amountTransform(res?.data.withdrawPersonFeeScale, '*'),
+        withdrawPersonMax: amountTransform(res?.data.withdrawPersonMax, '/'),
+        withdrawPersonMin: amountTransform(res?.data.withdrawPersonMin, '/')
       })
+      setContrary(res?.data?.withdrawBusinessFeeType)
+      setPerson(res?.data?.withdrawPersonFeeType)
     }).finally(()=> {
       setLoading(false)
     })
@@ -30,11 +43,18 @@ const WithdrawalFeeConfiguration = () => {
     setPerson(val)
   }
   const commit = (val) => {
-    withdrawConfigUpdate({...val}).then(res=> {
-      if(res.success){
-        message.success('提交成功')
-      }
-    })
+    const flag = val?.withdrawBusinessMin >= val?.withdrawBusinessMax
+                ||val?.withdrawPersonMin >= val?.withdrawPersonMax
+    if(flag) {
+      message.error('最低金额不能大于最高金额')
+    } else {
+      withdrawConfigUpdate({...val}).then(res=> {
+        if(res.success){
+          message.success('提交成功')
+        }
+      })
+    }
+   
   }
   return (
     <PageContainer title={false}>
@@ -47,18 +67,18 @@ const WithdrawalFeeConfiguration = () => {
               await commit(values)
             }}
           >
-            <span>对公提现限额</span>
+            <span className={styles.label}>对公提现限额</span>
             <ProForm.Group>
               <ProFormDigit
                 width="xs"
                 name="withdrawBusinessMin"
-                label="最低(分)"
+                label="最低(元)"
                 rules={[{ required: true, message: '请输入最低对公提现' }]}
               />
               <ProFormDigit
                 width="xs"
                 name="withdrawBusinessMax"
-                label="最高(分)"
+                label="最高(元)"
                 rules={[{ required: true, message: '请输入最高对公提现' }]}
               />
             </ProForm.Group>
@@ -66,19 +86,20 @@ const WithdrawalFeeConfiguration = () => {
               <ProFormDigit
                 label="对公提现税率"
                 min={0}
-                max={1}
-                fieldProps={{ precision: 2, step: "0.01" }}
+                max={100}
                 name="withdrawBusinessFaxScale"
-                width="sm"
+                width="xs"
                 rules={[{ required: true, message: '请输入对公提现税率' }]}
               />
+              <span className={styles.percentFee}>%</span>
               <ProForm.Item
-                label="对公提现手续费(分)"
+                label="对公提现手续费(元)"
               >
                 <Input.Group compact>
                   <ProFormSelect
                     name="withdrawBusinessFeeType"
                     initialValue={'scale'}
+                    width={85}
                     allowClear={false}
                     rules={[{ required: true, message: '请选择方式' }]}
                     fieldProps={{
@@ -96,29 +117,30 @@ const WithdrawalFeeConfiguration = () => {
                     ]}
                   />
                   <ProFormDigit
-                    width={200}
+                    width="xs"
                     min="0"
-                    max={ contrary == 'scale' ? 1 : 99999999 }
+                    max={ contrary === 'scale' ? 100 : 99999999 }
                     fieldProps={{
-                      step:"0.01",
-                      precision: 2}}
+                      precision: 2
+                    }}
                     name={contrary == 'scale' ? 'withdrawBusinessFeeScale' : 'withdrawBusinessFeeFixed'}
                   />
+                  { contrary === 'scale' ? <span className={styles.percent}>%</span> : '' }
                 </Input.Group>
               </ProForm.Item>
             </ProForm.Group>
-            <span>对私提现限额</span>
+            <span className={styles.label}>对私提现限额</span>
             <ProForm.Group>
               <ProFormDigit
                 width="xs"
                 name="withdrawPersonMin"
-                label="最低(分)"
+                label="最低(元)"
                 rules={[{ required: true, message: '请输入最低对私提现' }]}
               />
               <ProFormDigit
                 width="xs"
                 name="withdrawPersonMax"
-                label="最高(分)"
+                label="最高(元)"
                 rules={[{ required: true, message: '请输入最高对私提现' }]}
               />
             </ProForm.Group>
@@ -126,18 +148,19 @@ const WithdrawalFeeConfiguration = () => {
               <ProFormDigit
                 label="对私提现税率"
                 min={0}
-                max={1}
-                fieldProps={{ precision: 2, step: "0.01" }}
+                max={100}
                 name="withdrawPersonFaxScale"
-                width='sm'
+                width='xs'
                 rules={[{ required: true, message: '请输入对私提现税率' }]}
               />
+              <span className={styles.percentFee}>%</span>
               <ProForm.Item
-                label="对私提现手续费(分)"
+                label="对私提现手续费(元)"
               >
                 <Input.Group compact>
                   <ProFormSelect
                     name="withdrawPersonFeeType"
+                    width={85}
                     initialValue={'scale'}
                     allowClear={false}
                     rules={[{ required: true, message: '请选择方式' }]}
@@ -156,12 +179,13 @@ const WithdrawalFeeConfiguration = () => {
                     ]}
                   />
                   <ProFormDigit
-                    width={200}
+                    width="xs"
                     min="0"
-                    max={ person === 'scale' ? 1 : 99999999 }
-                    fieldProps={{step:"0.01", precision: 2}}
+                    max={ person === 'scale' ? 100 : 99999999 }
+                    fieldProps={{ precision: 2 }}
                     name={person === 'scale' ? 'withdrawPersonFeeScale' : 'withdrawPersonFeeFixed'}
                   />
+                  { person === 'scale' ? <span className={styles.percent}>%</span> : '' }
                 </Input.Group>
               </ProForm.Item>
             </ProForm.Group>

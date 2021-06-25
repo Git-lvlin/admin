@@ -89,7 +89,8 @@ const AfterSalesOrderDetails = () =>{
     },
     {
       title: '买家会员ID',
-      dataIndex: 'buyerId'
+      dataIndex: 'buyerId',
+      ellipsis: true
     },
     {
       title: '买家手机',
@@ -97,7 +98,8 @@ const AfterSalesOrderDetails = () =>{
     },
     {
       title: '售后订单号',
-      dataIndex: 'refundNo'
+      dataIndex: 'refundNo',
+      ellipsis: true
     },
     {
       title: '订单类型',
@@ -131,15 +133,18 @@ const AfterSalesOrderDetails = () =>{
     },
     {
       title: '关联订单号',
-      dataIndex: 'orderNo'
+      dataIndex: 'orderNo',
+      ellipsis: true
     },
     {
       title: '平台支付单号',
-      dataIndex: 'payNo'
+      dataIndex: 'payNo',
+      ellipsis: true
     },
     {
       title: '资金流水号',
-      dataIndex: 'transactionId'
+      dataIndex: 'transactionId',
+      ellipsis: true
     },
     {
       title: '支付金额',
@@ -150,7 +155,8 @@ const AfterSalesOrderDetails = () =>{
     {
       title: '创建时间',
       dataIndex: 'createTime',
-      hideInSearch: true
+      hideInSearch: true,
+      ellipsis: true
     },
     {
       title: '操作',

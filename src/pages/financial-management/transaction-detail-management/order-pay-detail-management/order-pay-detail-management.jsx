@@ -26,6 +26,7 @@ const OrderPayDetailManagement = () =>{
     {
       title: '支方会员ID',
       dataIndex: 'buyerSn',
+      ellipsis: true
     },
     {
       title: '支付渠道',
@@ -56,11 +57,13 @@ const OrderPayDetailManagement = () =>{
     },
     {
       title: '支付账户',
-      dataIndex: 'payAccount'
+      dataIndex: 'payAccount',
+      ellipsis: true
     },
     {
       title: '收方会员ID',
-      dataIndex: 'sellerSn'
+      dataIndex: 'sellerSn',
+      ellipsis: true
     },
     {
       title: '收方注册手机',
@@ -83,15 +86,18 @@ const OrderPayDetailManagement = () =>{
     },
     {
       title: '订单号',
-      dataIndex: 'orderNo'
+      dataIndex: 'orderNo',
+      ellipsis: true
     },
     {
       title: '平台支付单号',
-      dataIndex: 'payNo'
+      dataIndex: 'payNo',
+      ellipsis: true
     },
     {
       title: '资金流水号',
-      dataIndex: 'transactionId'
+      dataIndex: 'transactionId',
+      ellipsis: true
     },
     {
       title: '支付金额',
@@ -108,7 +114,9 @@ const OrderPayDetailManagement = () =>{
     {
       title: '支付时间',
       dataIndex: 'payTime',
-      hideInSearch: true
+      hideInSearch: true,
+      ellipsis: true
+
     },
     {
       title: '操作',
