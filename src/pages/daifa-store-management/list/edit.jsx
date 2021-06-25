@@ -83,7 +83,6 @@ export default (props) => {
 
   const submit = (values) => {
     const { password, gc, ...rest } = values;
-    console.log('gc',gc)
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? storeEdit : storeAdd;
 
@@ -101,10 +100,8 @@ export default (props) => {
         });
 
         const gcData = [...new Set([...gc, ...parentIds].filter(item => item !== 0))]
-        console.log('gcData',gcData)
         gcData.forEach(item => {
           const findItem = originData.current.find(it => item === it.id);
-          console.log('findItem',findItem)
           const { gcParentId, id } = findItem;
           if (gcParentId== 0) {
             if (obj[id]) {
@@ -123,34 +120,30 @@ export default (props) => {
 
         })
 
-        let hasError = false;
-        console.log('obj',obj)
+        // let hasError = false;
         for (const key in obj) {
           if (Object.hasOwnProperty.call(obj, key)) {
             const g = { gc_id1: key };
             if (obj[key].length>=2) {
               g.gc_id2 = obj[key].filter(item => item !== 0).join(',')
             } else {
-              hasError = true;
+              g.gc_id2 ="0"
+              // hasError = true;
             }
             gcArr.push(g)
           }
         }
-        console.log('gcArr', gcArr)
-        
 
 
-        if (hasError) {
-          message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
-          reject()
-          return;
-        }
+        // if (hasError) {
+        //   message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
+        //   reject()
+        //   return;
+        // }
 
       } else {
         gcArr = ''
       }
-      // console.log('detailData',detailData)
-      values.businessScope=gcArr
       apiMethod({
         ...rest,
         storeNo:detailData&&detailData.storeNo,
@@ -176,10 +169,11 @@ export default (props) => {
       const businessScope = detailData.businessScope&&JSON.parse(detailData.businessScope);
       businessScope&&businessScope.forEach(item => {
         const gcId = item.gc_id2.split(',').map(item => +item)
-        ids.push(...gcId)
+        const gcId2=[]
+        gcId2.push(parseInt(item.gc_id1))
+        ids.push(...gcId,...gcId2)
       })
       setSelectKeys(ids)
-      console.log('ids',ids)
     }
     categoryAll()
       .then(res => {
