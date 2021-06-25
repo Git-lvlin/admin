@@ -63,7 +63,6 @@ const CTree = (props) => {
 export default (props) => {
   const { visible, setVisible, detailData, callback = () => { }, onClose = () => { } } = props;
   const [form] = Form.useForm()
-  const [selectData, setSelectData] = useState([]);
   const [treeData, setTreeData] = useState([])
   const [selectKeys, setSelectKeys] = useState([]);
   const originData = useRef([])
@@ -104,41 +103,47 @@ export default (props) => {
         gcData.forEach(item => {
           const findItem = originData.current.find(it => item === it.id);
           const { gcParentId, id } = findItem;
-          if (gcParentId !== 0) {
+          if (gcParentId== 0) {
+            if (obj[id]) {
+              obj[id].push(gcParentId)  
+            } else {
+              obj[id] = [gcParentId];
+            }
+          }
+          if (gcParentId!== 0) {
             if (obj[gcParentId]) {
-              obj[gcParentId].push(id)
+              obj[gcParentId].push(id)  
             } else {
               obj[gcParentId] = [id];
             }
-          }
+        }
 
         })
 
-        let hasError = false;
+        // let hasError = false;
         for (const key in obj) {
           if (Object.hasOwnProperty.call(obj, key)) {
             const g = { gc_id1: key };
-            if (obj[key].length) {
-              g.gc_id2 = obj[key].join(',')
+            if (obj[key].length>=2) {
+              g.gc_id2 = obj[key].filter(item => item !== 0).join(',')
             } else {
-              hasError = true;
+              g.gc_id2 ="0"
+              // hasError = true;
             }
             gcArr.push(g)
           }
         }
 
 
-        if (hasError) {
-          message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
-          reject()
-          return;
-        }
+        // if (hasError) {
+        //   message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
+        //   reject()
+        //   return;
+        // }
 
       } else {
         gcArr = ''
       }
-      console.log('detailData',detailData)
-      values.businessScope=gcArr
       apiMethod({
         ...rest,
         storeNo:detailData&&detailData.storeNo,
@@ -160,14 +165,16 @@ export default (props) => {
       form.setFieldsValue({
         ...detailData
       })
-      setSelectData(detailData.supplierIds)
       const ids = [];
       const businessScope = detailData.businessScope&&JSON.parse(detailData.businessScope);
       businessScope&&businessScope.forEach(item => {
-        const gcId = item.gc_id2.split(',').map(item => +item)
-        ids.push(...gcId)
+        const gcId = item.gc_id2.split(',').map(item => +item).filter(item => item !== 0)
+        const gcId2=[]
+        gcId2.push(parseInt(item.gc_id1))
+        ids.push(...gcId,...gcId2)
       })
       setSelectKeys(ids)
+      console.log('ids',ids)
     }
     categoryAll()
       .then(res => {
