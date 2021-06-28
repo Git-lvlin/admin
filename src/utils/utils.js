@@ -13,7 +13,7 @@ export const arrayToTree = (list, parId = 0) => {
     const res = [];
     for (let i = 0; i < len; i += 1) {
       const item = list[i]
-      if (item.pid === pid) {
+      if (item&&item.pid === pid) {
         item.children = loop(item.id)
         res.push(item)
       }

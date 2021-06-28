@@ -1,11 +1,12 @@
 import request from '@/utils/request';
 
 export const listLikes= async (params, options = {}) => {
-  const { id }=params
+  const { id,...rest }=params
   const res = await request('/auth/java-admin/dynamic/listLikes', {
     method: 'POST',
     data: {
-        id
+        id,
+        ...rest
     },
     ...options
   });
@@ -13,6 +14,7 @@ export const listLikes= async (params, options = {}) => {
   return {
     code: res.code,
     data: Array.isArray(res.data)?res.data:[],
+    total:Number(res.data.total),
     success: res.success,
   }
 }

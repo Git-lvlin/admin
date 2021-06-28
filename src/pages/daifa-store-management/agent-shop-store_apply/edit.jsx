@@ -6,7 +6,7 @@ import {
   ProFormRadio,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { storeApplyEdit,storeApplyAudit } from '@/services/daifa-store-management/agent-shop-store_apply';
+import { storeApplyList,storeApplyEdit,storeApplyAudit } from '@/services/daifa-store-management/agent-shop-store_apply';
 import { categoryAll } from '@/services/common';
 import { arrayToTree } from '@/utils/utils'
 
@@ -216,16 +216,7 @@ export default (props) => {
         label="店主姓名"
         placeholder="请输入店主姓名"
         rules={[
-          { required: true, message: '请输入店主姓名' },
-          { validator:(rule,value,callback)=>{
-              return new Promise(async (resolve, reject) => {
-              if(value&&value.length>30){
-                await reject('姓名不超过30个字符')
-              }else {
-                await resolve()
-            }
-            })
-          }}
+          { required: true, message:'请输入店主姓名' }
         ]}
         disabled={!!detailData}
       />
@@ -233,7 +224,9 @@ export default (props) => {
         name="mobile"
         label="店主手机号码"
         placeholder="请输入店主手机号码"
-        rules={[{ required: true, message: '请输入店主手机号码' }]}
+        rules={[
+          { required: true, message: '请输入店主手机号码' }
+        ]}
         fieldProps={{
           maxLength: 11,
         }}
@@ -247,14 +240,18 @@ export default (props) => {
           { required: true, message: '请输入店铺名称' },
           { validator:(rule,value,callback)=>{
             return new Promise(async (resolve, reject) => {
-            if(value&&value.length>30){
-              await reject('店铺名称不超过30个字符')
-            }else {
+            const res = await storeApplyList({storeName:value})
+            if(detailData&&detailData.storeName!=value){
+              if(res.data.length==1){
+                await reject(`店铺名称已存在，请重新输入`);
+              }else if(value&&value.length>30){
+                await reject('店铺名称不超过30个字符')
+              }
+            }
               await resolve()
-          }
           })
         }}
-        ]}
+      ]}
       />
       <Form.Item
         label="手持身份证照片"
