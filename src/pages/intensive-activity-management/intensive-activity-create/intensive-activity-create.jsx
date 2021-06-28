@@ -168,13 +168,11 @@ const IntensiveActivityCreate = () => {
             title="确认活动参数"
             onFinish={async (values) => {
               const { endTimeAdvancePayment, wholesaleTime } = values;
-              console.log('endTimeAdvancePayment <= wholesaleTime[0]', endTimeAdvancePayment <= wholesaleTime[0])
-              console.log('endTimeAdvancePayment >= wholesaleTime[1]', endTimeAdvancePayment >= wholesaleTime[1])
               if (endTimeAdvancePayment <= wholesaleTime[0] || endTimeAdvancePayment >= wholesaleTime[1]) {
                 message.error('店主采购单下单截止时间必须大于活动开始时间且小于截至时间');
                 return false;
               }
-              // await submit(values);
+              await submit(values);
               return true;
             }}
             {...formItemLayout}
