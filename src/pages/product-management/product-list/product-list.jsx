@@ -128,7 +128,7 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入供应商ID'
       },
-      renderFormItem: () => <SupplierSelect />,
+      // renderFormItem: () => <SupplierSelect />,
       hideInTable: true,
     },
     {
