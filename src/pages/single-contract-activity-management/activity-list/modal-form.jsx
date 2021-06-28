@@ -64,7 +64,7 @@ export default (props) => {
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInTable: true,
-      renderFormItem: () => <SupplierSelect />
+      // renderFormItem: () => <SupplierSelect />
 
     },
     {
