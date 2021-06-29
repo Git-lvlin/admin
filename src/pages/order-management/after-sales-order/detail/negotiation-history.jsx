@@ -11,6 +11,7 @@ const VoucherPic = ({pic}) => {
     <Image
       key={res}
       width={60}
+      height={60}
       src={res}
     />
   ))

@@ -91,13 +91,13 @@
 .goodsInfo {
   display: flex;
   justify-content: center;
-  .goodsConent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  div {
-    margin: 10px 0;
+  text-align: left;
+  .goodsContent {
+    width: 240px;
+    margin: 18px 0;
+    .goodsName {
+      line-height: 16px;
+    }
   }
 }
 
@@ -162,4 +162,12 @@
 }
 .ant-image {
   margin-right: 10px ;
+}
+.isIntervention {
+  font-size: 14px;
+  font-weight: normal;
+  background: rgb(250, 205, 145);
+  padding: 2px 4px;
+  border-radius: 5px;
+  margin-left: 10px;
 }
