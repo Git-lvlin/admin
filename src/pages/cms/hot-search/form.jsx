@@ -1,10 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
   ModalForm,
   ProFormText,
 } from '@ant-design/pro-form';
-import { bannerAdd } from '@/services/cms/member/member';
+import { hotSearchEdit } from '@/services/cms/member/member';
 
 export default (props) => {
   const { detailData, setVisible, onClose, visible } = props;
@@ -13,7 +13,6 @@ export default (props) => {
 
   const waitTime = (values) => {
     const { id, ...rest } = values
-    console.log('rest', rest)
     const param = {
       ...rest
     }
@@ -21,7 +20,7 @@ export default (props) => {
       param.id = id
     }
     return new Promise((resolve) => {
-      bannerAdd(param).then((res) => {
+      hotSearchEdit(param).then((res) => {
         if (res.code === 0) {
           resolve(true);
         }
@@ -33,7 +32,6 @@ export default (props) => {
   useEffect(() => {
     if (detailData) {
       const { ...rest } = detailData;
-      console.log('detailData', detailData)
       form.setFieldsValue({
         ...rest
       })
@@ -42,14 +40,14 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={`${detailData ? '编辑页面' : '新增'}`}
+      title={`${detailData ? '编辑' : '新增'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
       form={form}
       submitter={{
         searchConfig: {
-          submitText: detailData?'确认添加':'编辑',
+          submitText: detailData?'确定':'确认添加',
           resetText: '取消',
         },
       }}
@@ -70,7 +68,7 @@ export default (props) => {
       <ProForm.Group>
         <ProFormText 
           width="sm"
-          name="title"
+          name="keyword"
           label="关键词名称"
           rules={[{ required: true, message: '请输入关键词名称' }]}  
         />

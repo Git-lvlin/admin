@@ -5,9 +5,16 @@ import {
   ProFormRadio,
   ProFormSelect,
 } from '@ant-design/pro-form';
-import { Form } from 'antd';
+import { Form, Select } from 'antd';
 import { adminAdd, adminEdit } from '@/services/setting/account-management'
-import md5 from 'blueimp-md5';
+import { history } from 'umi';
+
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right}</div>
+  </div>
+)
 
 export default (props) => {
   const { visible, setVisible, adminGroupList, callback, onClose, data } = props;
@@ -73,7 +80,6 @@ export default (props) => {
         name="nickname"
         label="名称"
         placeholder="请输入名称"
-        width="md"
         rules={[{ required: true, message: '请输入名称' }]}
         disabled={!!data}
       />
@@ -82,7 +88,6 @@ export default (props) => {
         name="username"
         label="登录账号"
         placeholder="请输入登录账号"
-        width="md"
         rules={[{ required: true, message: '请输入登录账号' }]}
         disabled={!!data}
       />
@@ -91,20 +96,29 @@ export default (props) => {
         name="password"
         label="登录密码"
         placeholder="请输入登录密码"
-        width="md"
         fieldProps={{
           visibilityToggle: false,
         }}
         rules={[{ required: !data, message: '请输入登录密码' }]}
       />
 
-      <ProFormSelect
-        options={adminGroupList}
-        width="md"
+      <Form.Item
         name="group_id"
         label="选择角色"
         rules={[{ required: true, message: '请选择角色' }]}
-      />
+      >
+        <FromWrap
+          content={(value, onChange) => <Select value={value} style={{ width: 290 }} placeholder="请选择" onChange={onChange} options={adminGroupList} />}
+          right={
+            <a onClick={() => { history.push('/setting/role-management') }}>角色管理</a>
+          }
+        />
+      </Form.Item>
+
+      {/* <ProFormSelect
+        options={adminGroupList}
+        
+      /> */}
 
       <ProFormRadio.Group
         required
@@ -125,7 +139,6 @@ export default (props) => {
         name="mobile"
         label="手机号码"
         placeholder="请输入手机号码"
-        width="md"
         fieldProps={{
           maxLength: 11
         }}

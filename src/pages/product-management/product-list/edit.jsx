@@ -348,6 +348,16 @@ export default (props) => {
         fieldProps={{
           maxLength: 20,
         }}
+        rules={[
+          () => ({
+            validator(_, value) {
+              if (!value.replace(/\s/g, '') && value !== '') {
+                return Promise.reject(new Error('请输入商品副标题'));
+              }
+              return Promise.resolve();
+            },
+          })
+        ]}
       />
       <ProFormText
         name="supplierSpuId"
@@ -365,6 +375,16 @@ export default (props) => {
         fieldProps={{
           maxLength: 30,
         }}
+        rules={[
+          () => ({
+            validator(_, value) {
+              if (!value.replace(/\s/g, '') && value !== '') {
+                return Promise.reject(new Error('请输入搜索关键字'));
+              }
+              return Promise.resolve();
+            },
+          })
+        ]}
       />
       <Form.Item
         label="商品品类"
@@ -553,7 +573,7 @@ export default (props) => {
                       ]}
                       disabled={settleType === 1}
                     />
-                    
+
                   </>
                 )}
               </ProFormDependency>

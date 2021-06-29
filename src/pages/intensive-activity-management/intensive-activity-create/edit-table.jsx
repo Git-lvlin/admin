@@ -226,7 +226,7 @@ export default function EditTable({ onSelect }) {
     setEditableKeys(data.map(item => item.id));
     const arr = data.map(item => ({
       ...item,
-      totalStockNum: item.stockNum,
+      totalStockNum: parseInt(item.stockNum * 0.8, 10),
       minNum: 1,
       maxNum: 10,
       price: amountTransform(item.minWholesalePrice, '/'),
