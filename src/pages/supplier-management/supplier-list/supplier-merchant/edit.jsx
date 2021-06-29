@@ -449,11 +449,11 @@ export default (props) => {
             validateFirst
             rules={[
               { required: !detailData, message: '请输入供应商登录密码' },
-              { required: !detailData, message: '密码应不少于6个字符，不超过18个字符', min: 6, max: 16 }
+              { required: !detailData, message: '密码应不少于6个字符，不超过18个字符', min: 6, max: 18 }
             ]}
             fieldProps={{
               visibilityToggle: false,
-              maxLength: 16,
+              maxLength: 18,
             }}
           />
           <ProFormText
