@@ -50,7 +50,8 @@ const TableList = () => {
       dataIndex: 'spuId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入商品SPU'
+        placeholder: '请输入商品SPU',
+        maxLength: 12,
       }
     },
     {
@@ -58,7 +59,8 @@ const TableList = () => {
       dataIndex: 'skuId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入商品SKU'
+        placeholder: '请输入商品SKU',
+        maxLength: 12,
       },
       hideInTable: true,
     },

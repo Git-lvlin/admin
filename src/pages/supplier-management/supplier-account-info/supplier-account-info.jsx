@@ -31,8 +31,8 @@ const SupplierDetail = () => {
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data.records)
-        setTreeData(arrayToTree(res.data.records.gcInfo.map(item => ({ ...item, pid: item.gcParentId, title: item.gcName, key: item.id, value: item.id, selectable: false }))))
-        setSelectKeys(res.data.records.gcInfo.map(item => item.id))
+        // setTreeData(arrayToTree(res.data.records.gcInfo.map(item => ({ ...item, pid: item.gcParentId, title: item.gcName, key: item.id, value: item.id, selectable: false }))))
+        // setSelectKeys(res.data.records.gcInfo.map(item => item.id))
       }
     }).finally(() => {
       setLoading(false);
