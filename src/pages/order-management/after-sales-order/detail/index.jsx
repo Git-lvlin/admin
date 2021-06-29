@@ -43,7 +43,7 @@ const Detail = () => {
     history.goBack()
   }
   return (
-    <PageContainer header={false}>
+    <PageContainer title={false}>
        <Spin spinning={loading}>
         <OrderDetailStatus 
           orderSn={orderDetail?.orderSn}
