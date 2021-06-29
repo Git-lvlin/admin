@@ -253,6 +253,14 @@ export const hotGoosAdd = (params = {}, options = {}) => {
   });
 }
 
+export const couponAdd = (params = {}, options = {}) => {
+  return request('/auth/activity/Coupon/couponCmsSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const hotGoosAddDF = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/goodsTagYlbbSub', {
     method: 'POST',
@@ -360,6 +368,14 @@ export const bannerSortTop = (params = {}, options = {}) => {
   });
 }
 
+export const couponCmsSortTop = (params = {}, options = {}) => {
+  return request('/auth/activity/Coupon/couponCmsSortTop', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const crazyActivityDel = (params = {}, options = {}) => {
   return request('/auth/activity/Cms/cmsStatusSub', {
     method: 'POST',
@@ -398,9 +414,29 @@ export const SetHomePageGoodsDelSort = (params = {}, options = {}) => {
     ...options
   });
 }
-
+export const hotSearchEdit = (params = {}, options = {}) => {
+  return request(`/auth/search/HotKeyword/updateHotKeyword/id/${params.id}`, {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+export const hotSearchDel = (params = {}, options = {}) => {
+  return request(`/auth/search/HotKeyword/updateHotKeyword/id/${params.id}`, {
+    method: 'POST',
+    data: {isDel: 1},
+    ...options
+  });
+}
 export const homeBannerDel = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/banner/delByIds', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+export const couponDel = (params = {}, options = {}) => {
+  return request('/auth/activity/Coupon/couponCmsDel', {
     method: 'POST',
     data: params,
     ...options
@@ -587,6 +623,29 @@ export const homeBannerList = async (params = {}, options = {}) => {
   }
 }
 
+export const couponList = async (params = {}, options = {}) => {
+  const { current, pageSize, freeAmount, ...rest } = params;
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  if (freeAmount) {
+    data.freeAmount = freeAmount*100
+  }
+  const res = await request('/auth/activity/Coupon/couponCmsList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
 export const hotSearchList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;
 
@@ -672,6 +731,27 @@ export const kingKongDistrictList = async (params = {}, options = {}) => {
     data.status = Number(status);
   }
   const res = await request('/auth/java-admin/cms/goodsType/goodsTypeByWays', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const couponAddList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    pageSize: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/activity/Coupon/couponList', {
     method: 'POST',
     data,
     ...options
