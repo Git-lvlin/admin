@@ -90,8 +90,11 @@ const WithdrawalAuditManagement = () =>{
       valueType: 'select',
       valueEnum: {
         'auditing': '待审核',
-        'waitPay': '待打款',
-        'paid': '已打款'
+        'waitPay': '待执行',
+        'arrived': '已到账',
+        'unPass': '审核不通过',
+        'paid': '已打款',
+        'failure': '提现失败'
       }
     },
     {
@@ -109,7 +112,7 @@ const WithdrawalAuditManagement = () =>{
         rowKey='sn'
         columns={columns}
         toolBarRender={false}
-        pagination={{
+        pagination={{   
           pageSize: 10,
           hideOnSinglePage: true,
           showQuickJumper: true

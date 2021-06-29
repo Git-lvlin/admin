@@ -6,7 +6,7 @@ import { history } from 'umi'
 import { amountTransform } from '@/utils/utils'
 import { orderPage } from '@/services/financial-management/transaction-detail-management'
 
-// 订单支付明细
+// Order payment detail
 const OrderPayDetailManagement = () =>{
   const skipToDetail = data=> {
     history.push(`/financial-management/transaction-detail-management/order-pay-detail-management/detail/${data}`)
@@ -72,6 +72,7 @@ const OrderPayDetailManagement = () =>{
     {
       title: '订单类型',
       dataIndex: 'orderType',
+      // ellipsis: true,
       valueEnum: {
         'normalOrder': '普通订单',
         'second': '秒约',
