@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
-import { Space } from 'antd';
+import { Space, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { memberShopUser } from '@/services/intensive-store-management/shop-user';
-import { useParams, useLocation } from 'umi';
+import { useParams, useLocation, history } from 'umi';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
@@ -80,7 +80,7 @@ const TableList = () => {
       hideInTable: true,
     },
     {
-      title: '性别',
+      title: '用户性别',
       dataIndex: 'status',
       valueType: 'select',
       hideInTable: true,
@@ -100,7 +100,7 @@ const TableList = () => {
         </Space>
       </div>
       <ProTable
-        rowKey="storeNo"
+        rowKey="id"
         options={false}
         params={{
           storeNo: params.id
@@ -115,6 +115,9 @@ const TableList = () => {
         }}
         columns={columns}
       />
+      <div style={{ textAlign: 'center', marginTop: 30 }}>
+        <Button onClick={() => { history.goBack() }}>返回</Button>
+      </div>
     </PageContainer>
 
   );

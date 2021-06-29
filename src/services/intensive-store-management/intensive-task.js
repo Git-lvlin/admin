@@ -13,7 +13,7 @@ export const orderPage = async (params = {}, options = {}) => {
   });
 
   return {
-    data: res.data.records,
+    data: res.data,
     success: true,
     total: res.data.total
   }
