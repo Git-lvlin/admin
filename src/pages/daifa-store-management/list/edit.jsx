@@ -6,7 +6,7 @@ import {
   ProFormRadio,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { storeAdd, storeEdit } from '@/services/daifa-store-management/list';
+import {  storeList,storeAdd, storeEdit } from '@/services/daifa-store-management/list';
 import { categoryAll } from '@/services/common';
 import { arrayToTree } from '@/utils/utils'
 
@@ -174,7 +174,6 @@ export default (props) => {
         ids.push(...gcId,...gcId2)
       })
       setSelectKeys(ids)
-      console.log('ids',ids)
     }
     categoryAll()
       .then(res => {
@@ -223,12 +222,15 @@ export default (props) => {
           { required: true, message: '请输入店主姓名' },
           { validator:(rule,value,callback)=>{
               return new Promise(async (resolve, reject) => {
-                
-              if(value&&value.length>30){
-                await reject('姓名不超过30个字符')
-              }else {
-                await resolve()
-            }
+              const res = await storeList({realname:value})
+              if(!detailData){
+                if(res.data.length==1){
+                  await reject(`店主姓名已存在，请重新输入`);
+                }else if(value&&value.length>30){
+                  await reject('店主姓名不超过30个字符')
+                }    
+              }
+               await resolve()
             })
           }}
         ]}
@@ -238,7 +240,20 @@ export default (props) => {
         name="mobile"
         label="店主手机号码"
         placeholder="请输入店主手机号码"
-        rules={[{ required: true, message: '请输入店主手机号码' }]}
+        rules={[
+            { required: true, message: '请输入店主手机号码' },
+            { validator:(rule,value,callback)=>{
+              return new Promise(async (resolve, reject) => {
+              const res = await storeList({mobile:value})
+              if(!detailData){
+                if(res.data.length==1){
+                  await reject(`手机号已存在，请重新输入`);
+                }
+              }
+              await resolve()
+            })
+          }}
+        ]}
         fieldProps={{
           maxLength: 11,
         }}
@@ -249,16 +264,28 @@ export default (props) => {
         label="店铺名称"
         placeholder="请输入店铺名称"
         rules={[
-          { required: true, message: '请输入店铺名称' },
-          { validator:(rule,value,callback)=>{
-            return new Promise(async (resolve, reject) => {
-            if(value&&value.length>30){
-              await reject('店铺名称不超过30个字符')
-            }else {
-              await resolve()
-          }
-          })
-        }}
+            { required: true, message: '请输入店铺名称' },
+            { validator:(rule,value,callback)=>{
+              return new Promise(async (resolve, reject) => {
+              const res = await storeList({storeName:value})
+              if(!detailData){
+                if(res.data.length==1){
+                  await reject(`店铺名称已存在，请重新输入`);
+                }else if(value&&value.length>30){
+                  await reject('店铺名称不超过30个字符')
+                }
+              }
+
+              if(detailData&&detailData.storeName!=value){
+                if(res.data.length==1){
+                  await reject(`店铺名称已存在，请重新输入`);
+                }else if(value&&value.length>30){
+                  await reject('店铺名称不超过30个字符')
+                }
+              }
+                await resolve()
+            })
+          }}
         ]}
       />
       <Form.Item

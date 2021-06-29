@@ -67,3 +67,11 @@ export const addressSwitch = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const addressSetDefault = (params = {}, options = {}) => {
+  return request('/auth/supplier/user/addressSetDefault', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

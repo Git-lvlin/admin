@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout';
-import { useParams } from 'umi';
-import { Form, Spin, Tree } from 'antd';
+import { useParams, history } from 'umi';
+import { Form, Spin, Tree, Button } from 'antd';
 import { detailExt } from '@/services/supplier-management/supplier-list'
 import { arrayToTree } from '@/utils/utils'
 
@@ -56,6 +56,11 @@ const SupplierDetail = () => {
           style={{ backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
         >
           <Form.Item
+            label="供应商ID"
+          >
+            {detailData.supplierId}
+          </Form.Item>
+          <Form.Item
             label="供应商名称"
           >
             {detailData.companyName}
@@ -103,7 +108,21 @@ const SupplierDetail = () => {
           >
             {detailData.status === 1 ? '已启用' : '已禁用'}
           </Form.Item>
+          <Form.Item
+            label="创建人"
+          >
+            {detailData.operateName}
+          </Form.Item>
+          <Form.Item
+            label="创建时间"
+          >
+            {detailData.createTime}
+          </Form.Item>
+          <div style={{ marginTop: 30, textAlign: 'center' }}>
+            <Button onClick={() => { history.goBack() }}>返回</Button>
+          </div>
         </Form>
+
       </Spin>
 
     </PageContainer>

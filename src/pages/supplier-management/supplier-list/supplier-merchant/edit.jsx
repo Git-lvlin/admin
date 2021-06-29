@@ -448,10 +448,14 @@ export default (props) => {
             name="password"
             label="供应商登录密码"
             placeholder="请输入供应商登录密码"
-            rules={[{ required: !detailData, message: '请输入供应商登录密码' }]}
+            validateFirst
+            rules={[
+              { required: !detailData, message: '请输入供应商登录密码' },
+              { required: !detailData, message: '密码应不少于6个字符，不超过18个字符', min: 6, max: 16 }
+            ]}
             fieldProps={{
-              maxLength: 32,
               visibilityToggle: false,
+              maxLength: 16,
             }}
           />
           <ProFormText
@@ -539,17 +543,17 @@ export default (props) => {
             extra={<><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
             step
             validateFirst
-            // rules={[
-            //   { required: true, message: '请输入商品质保金比例' },
-            //   () => ({
-            //     validator(_, value) {
-            //       if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-            //         return Promise.reject(new Error('请输入大于零的数字'));
-            //       }
-            //       return Promise.resolve();
-            //     },
-            //   })
-            // ]}
+          // rules={[
+          //   { required: true, message: '请输入商品质保金比例' },
+          //   () => ({
+          //     validator(_, value) {
+          //       if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+          //         return Promise.reject(new Error('请输入大于零的数字'));
+          //       }
+          //       return Promise.resolve();
+          //     },
+          //   })
+          // ]}
           />
         </div>
       </div>
@@ -562,45 +566,45 @@ export default (props) => {
             <Form.Item
               label="企业地址"
               name="addressInfo"
-              // validateFirst
-              // rules={[
-              //   () => ({
-              //     required: true,
-              //     validator(_, value = {}) {
-              //       const { area, info } = value;
-              //       if (area?.length === 0 || !area) {
-              //         return Promise.reject(new Error('请选择企业所在地'));
-              //       }
+            // validateFirst
+            // rules={[
+            //   () => ({
+            //     required: true,
+            //     validator(_, value = {}) {
+            //       const { area, info } = value;
+            //       if (area?.length === 0 || !area) {
+            //         return Promise.reject(new Error('请选择企业所在地'));
+            //       }
 
-              //       if (!info?.replace(/\s/g, '')) {
-              //         return Promise.reject(new Error('请输入企业详细地址'));
-              //       }
+            //       if (!info?.replace(/\s/g, '')) {
+            //         return Promise.reject(new Error('请输入企业详细地址'));
+            //       }
 
-              //       return Promise.resolve();
-              //     },
-              //   })]}
+            //       return Promise.resolve();
+            //     },
+            //   })]}
             >
               <Address />
             </Form.Item>
             <Form.Item
               label="统一社会信用码"
               name="socialCreditInfo"
-              // validateFirst
-              // rules={[{ required: true },
-              // () => ({
-              //   validator(_, value = {}) {
-              //     const { code, date } = value;
-              //     if (!code?.replace(/\s/g, '')) {
-              //       return Promise.reject(new Error('请输入统一社会信用码'));
-              //     }
+            // validateFirst
+            // rules={[{ required: true },
+            // () => ({
+            //   validator(_, value = {}) {
+            //     const { code, date } = value;
+            //     if (!code?.replace(/\s/g, '')) {
+            //       return Promise.reject(new Error('请输入统一社会信用码'));
+            //     }
 
-              //     if (!date) {
-              //       return Promise.reject(new Error('请选择统一社会信用证有效期'));
-              //     }
+            //     if (!date) {
+            //       return Promise.reject(new Error('请选择统一社会信用证有效期'));
+            //     }
 
-              //     return Promise.resolve();
-              //   },
-              // })]}
+            //     return Promise.resolve();
+            //   },
+            // })]}
             >
               <SocialCreditInfo />
             </Form.Item>
@@ -608,32 +612,32 @@ export default (props) => {
               name="businessScope"
               label="经营范围"
               placeholder="请输入经营范围"
-              // rules={[{ required: true, message: '请输入经营范围' }]}
+            // rules={[{ required: true, message: '请输入经营范围' }]}
             />
             <Form.Item
               label="法人姓名"
               name="legalInfo"
-              // validateFirst
-              // rules={[
-              //   () => ({
-              //     required: true,
-              //     validator(_, value = {}) {
-              //       const { code, date, userName } = value;
-              //       if (!userName?.replace(/\s/g, '')) {
-              //         return Promise.reject(new Error('请输入姓名'));
-              //       }
+            // validateFirst
+            // rules={[
+            //   () => ({
+            //     required: true,
+            //     validator(_, value = {}) {
+            //       const { code, date, userName } = value;
+            //       if (!userName?.replace(/\s/g, '')) {
+            //         return Promise.reject(new Error('请输入姓名'));
+            //       }
 
-              //       if (!code?.replace(/\s/g, '')) {
-              //         return Promise.reject(new Error('请输入身份证号码'));
-              //       }
+            //       if (!code?.replace(/\s/g, '')) {
+            //         return Promise.reject(new Error('请输入身份证号码'));
+            //       }
 
-              //       if (!date) {
-              //         return Promise.reject(new Error('请选择身份证号码有效期'));
-              //       }
-              //       return Promise.resolve();
-              //     },
-              //   })
-              // ]}
+            //       if (!date) {
+            //         return Promise.reject(new Error('请选择身份证号码有效期'));
+            //       }
+            //       return Promise.resolve();
+            //     },
+            //   })
+            // ]}
             >
               <LegalInfo />
             </Form.Item>
@@ -658,28 +662,28 @@ export default (props) => {
                 </div>
               }
               name="imageInfo"
-              // validateFirst
-              // rules={[
-              //   () => ({
-              //     required: true,
-              //     validator(_, value = {}) {
-              //       const { businessLicense, idCardFrontImg, idCardBackImg, bankLicenseImg } = value;
-              //       if (!businessLicense) {
-              //         return Promise.reject(new Error('请上传三合一证件照'));
-              //       }
-              //       if (!idCardFrontImg) {
-              //         return Promise.reject(new Error('请上传法人身份证正面照'));
-              //       }
-              //       if (!idCardBackImg) {
-              //         return Promise.reject(new Error('请上传法人身份证背面照'));
-              //       }
-              //       if (!bankLicenseImg) {
-              //         return Promise.reject(new Error('请上传开户银行许可证照'));
-              //       }
-              //       return Promise.resolve();
-              //     },
-              //   })
-              // ]}
+            // validateFirst
+            // rules={[
+            //   () => ({
+            //     required: true,
+            //     validator(_, value = {}) {
+            //       const { businessLicense, idCardFrontImg, idCardBackImg, bankLicenseImg } = value;
+            //       if (!businessLicense) {
+            //         return Promise.reject(new Error('请上传三合一证件照'));
+            //       }
+            //       if (!idCardFrontImg) {
+            //         return Promise.reject(new Error('请上传法人身份证正面照'));
+            //       }
+            //       if (!idCardBackImg) {
+            //         return Promise.reject(new Error('请上传法人身份证背面照'));
+            //       }
+            //       if (!bankLicenseImg) {
+            //         return Promise.reject(new Error('请上传开户银行许可证照'));
+            //       }
+            //       return Promise.resolve();
+            //     },
+            //   })
+            // ]}
             >
               <ImageInfo />
             </Form.Item>
@@ -715,7 +719,7 @@ export default (props) => {
               name="bankCardNo"
               label="结算银行卡号"
               placeholder="请输入结算银行卡号"
-              // rules={[{ required: true, message: '请输入结算银行卡号' }]}
+            // rules={[{ required: true, message: '请输入结算银行卡号' }]}
             />
             <ProFormDependency name={['bankAccountType']}>
               {

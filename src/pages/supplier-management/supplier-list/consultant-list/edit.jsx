@@ -103,10 +103,14 @@ export default (props) => {
         name="password"
         label="登录密码"
         placeholder="请输入登录密码"
-        rules={[{ required: true, message: '请输入登录密码' }]}
+        validateFirst
+        rules={[
+          { required: true, message: '请输入供应商登录密码' },
+          { required: true, message: '密码应不少于6个字符，不超过18个字符', min: 6, max: 16 }
+        ]}
         fieldProps={{
-          maxLength: 32,
           visibilityToggle: false,
+          maxLength: 16,
         }}
       />
 

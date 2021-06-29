@@ -128,7 +128,7 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入供应商ID'
       },
-      renderFormItem: () => <SupplierSelect />,
+      // renderFormItem: () => <SupplierSelect />,
       hideInTable: true,
     },
     {
@@ -243,7 +243,7 @@ const TableList = () => {
     },
     {
       title: '商品来源',
-      dataIndex: 'goodsState',
+      dataIndex: 'goodsFromType',
       onFilter: true,
       valueType: 'select',
       valueEnum: typeTransform(config.operateRole),
