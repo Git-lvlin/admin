@@ -51,25 +51,32 @@ const ListApplyDetail = props => {
         setSelectKeys(ids)
         setDetailData(res.data)
         form.setFieldsValue(res.data)
+
+        categoryAll().then(res => {
+          if (res.code === 0) {
+            const tree = arrayToTree(res.data.records.map(item =>{
+              if(ids.includes(item.id)){
+                return ({
+                  ...item,
+                  pid: item.gcParentId,
+                  title: item.gcName,
+                  key: item.id,
+                  value: item.id,
+                  selectable: false
+                })
+              }
+            }
+            )
+            )
+            setTreeData(tree)
+          }
+        })
+
       }
     }).finally(() => {
       setLoading(false);
     })
 
-    categoryAll()
-      .then(res => {
-        if (res.code === 0) {
-          const tree = arrayToTree(res.data.records.map(item => ({
-            ...item,
-            pid: item.gcParentId,
-            title: item.gcName,
-            key: item.id,
-            value: item.id,
-            selectable: false
-          })))
-          setTreeData(tree)
-        }
-      })
   }
 
   useEffect(() => {
@@ -145,7 +152,9 @@ const ListApplyDetail = props => {
             label="主营商品类型"
             name="businessScope"
           >
-            <Tree
+            {
+              treeData?
+              <Tree
               checkable
               style={{
                 width: '100%',
@@ -158,6 +167,8 @@ const ListApplyDetail = props => {
               expandedKeys={selectKeys}
               disabled
             />
+            :'还没有选择主营商品类型'
+            }
           </Form.Item>
 
           <Form.Item
