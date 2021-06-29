@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { Space } from 'antd';
+import { Space, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { goodsPage } from '@/services/intensive-store-management/product-management';
-import { useParams, useLocation } from 'umi';
+import { useParams, useLocation, history } from 'umi';
 import { amountTransform, typeTransform } from '@/utils/utils'
+import GcCascader from '@/components/gc-cascader'
+import BrandSelect from '@/components/brand-select'
 
 
 const TableList = () => {
@@ -92,6 +94,18 @@ const TableList = () => {
         2: '已隐藏'
       }
     },
+    {
+      title: '商品分类',
+      dataIndex: 'gcId',
+      renderFormItem: () => (<GcCascader />),
+      hideInTable: true,
+    },
+    // {
+    //   title: '商品品牌',
+    //   dataIndex: 'brandId',
+    //   renderFormItem: () => (<BrandSelect />),
+    //   hideInTable: true,
+    // },
   ];
 
   return (
@@ -103,7 +117,7 @@ const TableList = () => {
         </Space>
       </div>
       <ProTable
-        rowKey="storeNo"
+        rowKey="orderId"
         options={false}
         params={{
           storeNo: params.id
@@ -118,6 +132,9 @@ const TableList = () => {
         }}
         columns={columns}
       />
+      <div style={{ textAlign: 'center', marginTop: 30 }}>
+        <Button onClick={() => { history.goBack() }}>返回</Button>
+      </div>
     </PageContainer>
 
   );

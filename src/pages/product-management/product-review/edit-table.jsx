@@ -62,7 +62,6 @@ export default function EditTable(props) {
             message: '请输入市场价',
           }],
         },
-        editable: settleType !== 1,
       },
       {
         title: '库存预警值',

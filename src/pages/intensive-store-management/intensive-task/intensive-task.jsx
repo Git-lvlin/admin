@@ -1,13 +1,16 @@
-import React from 'react'
-import { Space } from 'antd';
+import React, { useState } from 'react'
+import { Space, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
+import ProCard from '@ant-design/pro-card';
 import ProTable from '@ant-design/pro-table';
 import { orderPage } from '@/services/intensive-store-management/intensive-task';
-import { useParams, useLocation } from 'umi';
+import { useParams, useLocation, history } from 'umi';
 
 const IntensiveTask = props => {
   const params = useParams();
   const location = useLocation();
+  const [count, setCount] = useState(0)
+
   const columns = [
     {
       title: '活动编号',
@@ -45,7 +48,7 @@ const IntensiveTask = props => {
       valueType: 'text',
       render: (_, data) => (
         <>
-          {data.wholesaleStartTime}<br/>
+          {data.wholesaleStartTime}<br />
           {data.wholesaleEndTime}
         </>
       )
@@ -69,16 +72,32 @@ const IntensiveTask = props => {
           <span>({location?.query?.linkman} {location?.query?.phone})</span>
         </Space>
       </div>
-      <ProTable
-        rowKey="wsId"
-        options={false}
-        params={{
-          storeNo: params.id
+      <ProCard
+        tabs={{
+          type: 'card',
+          activeKey: '1',
         }}
-        request={orderPage}
-        search={false}
-        columns={columns}
-      />
+      >
+        <ProCard.TabPane key="1" tab={`指令集约任务（${count}）`}>
+          <ProTable
+            rowKey="wsId"
+            options={false}
+            postData={(data) => {
+              setCount(data.total)
+              return data.records;
+            }}
+            params={{
+              storeNo: params.id
+            }}
+            request={orderPage}
+            search={false}
+            columns={columns}
+          />
+        </ProCard.TabPane>
+      </ProCard>
+      <div style={{ textAlign: 'center', marginTop: 30 }}>
+        <Button onClick={() => { history.goBack() }}>返回</Button>
+      </div>
     </PageContainer>
   )
 }

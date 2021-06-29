@@ -75,6 +75,11 @@ export default {
       component: './cms/route-url-deploy',
     },
     {
+      name: 'coupon',
+      path: '/cms/coupon',
+      component: './cms/coupon',
+    },
+    {
       name: 'hot-search',
       path: '/cms/hot-search',
       component: './cms/hot-search',
