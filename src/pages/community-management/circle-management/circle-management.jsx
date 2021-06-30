@@ -35,9 +35,9 @@ export default ()=> {
             dataIndex: 'name',
             valueType: 'text',
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/circleInterior-management?id='+record.id)}>{record.name}</a>
+                <a onClick={()=>history.push('/community-management/circle-management/circleInterior-management?id='+record.id+'&name='+record.name)}>{record.name}</a>
             ],
-            hideInSearch:true
+            hideInSearch:true   
         },
         {
             title: '内容',

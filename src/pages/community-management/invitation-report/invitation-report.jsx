@@ -54,7 +54,7 @@ export default props => {
       title: '操作',
       render: (text, record, _, action) => [
         <ModalForm
-          title="操作确认"
+          title="帖子详情"
           key="1"
           onVisibleChange={setVisible}
           visible={visible}
@@ -147,7 +147,7 @@ export default props => {
       title: '操作',
       render: (_,record) => [
         <ModalForm
-          title="操作确认"
+          title="帖子详情"
           key="1"
           onVisibleChange={setVisible4}
           visible={visible4}

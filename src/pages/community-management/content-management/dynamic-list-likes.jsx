@@ -20,19 +20,20 @@ const columns= [
   }
 ];
   return (
-      <PageContainer>
-          <ProTable
-            rowKey="userId"z
-            options={false}
-            params={{
-                id
-            }}
-            request={listLikes}
-            actionRef={actionRef}
-            search={false}
-            toolBarRender={false}
-            columns={columns}
-          />
-    </PageContainer>
+    <>
+      <h1>点赞列表</h1>
+      <ProTable
+        rowKey="userId"z
+        options={false}
+        params={{
+            id
+        }}
+        request={listLikes}
+        actionRef={actionRef}
+        search={false}
+        toolBarRender={false}
+        columns={columns}
+      />
+    </>
   );
 };

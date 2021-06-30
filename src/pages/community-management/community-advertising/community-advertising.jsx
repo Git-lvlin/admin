@@ -61,8 +61,8 @@ export default props => {
             dataIndex: 'state',
             valueType:'select',
             valueEnum: {
-              1: '启用',
-              2: '停用',
+                0: '禁用',
+                1: '启用',
             },
             hideInTable:true
         },
@@ -71,8 +71,8 @@ export default props => {
             dataIndex: 'state',
             valueType: 'text',
             valueEnum: {
+                0: '禁用',
                 1: '启用',
-                2: '停用',
             },
             hideInSearch:true
         },
@@ -102,6 +102,7 @@ export default props => {
         <ProTable
           rowKey="id"
           options={false}
+          actionRef={ref}
           request={adsenseAdminList}
           search={{
               defaultCollapsed: false,

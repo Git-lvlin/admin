@@ -51,11 +51,18 @@ export const ruleEnd = async (params = {}, options = {}) => {
   });
 }
 
-export const RuleGoodsImport = async (params = {}, options = {}) => {
-  return request('/auth/activityService/admin/RuleGoodsImport', {
+export const ruleGoodsImport = async (params = {}, options = {}) => {
+  return request('/auth/activity/Rule/ruleGoodsImport', {
     method: 'POST',
     data: params,
-    Headers: { 'Content-Type': 'multipart/form-data' },
+    ...options
+  });
+}
+
+export const ruleGoodsExportTemplate = async (params = {}, options = {}) => {
+  return request('/auth/activity/Rule/ruleGoodsExportTemplate', {
+    method: 'POST',
+    data: params,
     ...options
   });
 }
