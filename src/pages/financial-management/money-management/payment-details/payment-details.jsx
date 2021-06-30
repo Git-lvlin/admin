@@ -88,7 +88,7 @@ const PaymentDetails = () => {
   return (
     <PageContainer title={false}>
       <ProTable
-        rowKey='billNo'
+        rowKey='id'
         toolBarRender={false}
         pagination={{
           hideOnSinglePage: true,
