@@ -30,7 +30,7 @@ export const logPage = async (params, options = {}) => {
   })
 
   return {
-    data: res.data.records,
+    data: res.data?.records,
     success: res.success,
     total: res.data.total
   }
