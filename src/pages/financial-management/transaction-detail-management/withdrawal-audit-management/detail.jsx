@@ -1,92 +1,149 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@ant-design/pro-layout'
 import { useParams, history } from 'umi'
-import { 
+import {
   Button,
-  message, 
-  Popconfirm,
-  Space 
+  message
 } from 'antd'
 import {
   ModalForm,
   ProFormSelect,
-  ProFormTextArea
+  ProFormTextArea,
+  ProFormText
 } from '@ant-design/pro-form'
 
-import { 
-  withdrawPageDetail, 
+import {
+  withdrawPageDetail,
   audit,
-  payment 
+  payment
 } from "@/services/financial-management/transaction-detail-management"
 import './styles.less'
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
 
-const PopModalForm = ({sn}) => {
-  const check = (val) => {
-    audit({...val,sn}).then(res=> {
-      if(res?.success) {
-        message.success('提交成功')
-      }
-    })
-  }
-  return(
-    <ModalForm
-      layout='inline'
-      title='审核'
-      width={600}
-      trigger={<Button>审核</Button>}
-      onFinish={async (values) => {
-        await check(values)
-        return true
-      }}
-    >
-      <div className={styles.opinion}>
-        <ProFormSelect
-          width='md'
-          name="isSuccess"
-          label="选择"
-          valueEnum={{
-            0: '审核不通过',
-            1: '审核通过'
+const Detail = () => {
+  const {id} = useParams()
+  const form = useRef()
+  const PopModalForm = ({sn}) => {
+    const check = (val) => {
+      audit({ ...val, sn }).then(res => {
+        if (res?.success) {
+          form.current.reload()
+          message.success('提交成功')
+        }
+      })
+    }
+    return (
+      <ModalForm
+        layout='inline'
+        title='审核'
+        width={600}
+        modalProps={{
+          destroyOnClose: true
+        }}
+        trigger={<Button>审核</Button>}
+        onFinish={async (values) => {
+          await check(values)
+          return true
+        }}
+      >
+        <div className={styles.opinion}>
+          <ProFormSelect
+            width='md'
+            name="isSuccess"
+            label="选择"
+            valueEnum={{
+              0: '审核不通过',
+              1: '审核通过'
+            }}
+          />
+        </div>
+        <ProFormTextArea
+          name='reason'
+          label='备注'
+          width='lg'
+          rules={[{ required: true, message: '请输入备注' }]}
+          fieldProps={{
+            showCount: true,
+            maxLength: 30
           }}
         />
-      </div>
-      <ProFormTextArea
-        name='reason'
-        label='备注'
-        width='lg'
-        rules={[{required: true, message: '请输入备注'}]}
-        fieldProps={{
-          showCount: true,
-          maxLength: 30
+      </ModalForm>
+    )
+  }
+  const PopModal = ({sn}) => {
+    const [type,setType] = useState('online')
+    const submit = (val) => {
+      payment({ ...val, sn }).then(res => {
+        if (res?.success) {
+          form.current.reload()
+          message.success('提交成功')
+        } 
+      })
+    }
+    return (
+      <ModalForm
+        layout='inline'
+        title='执行'
+        width={500}
+        trigger={<Button>执行</Button>}
+        modalProps={{
+          destroyOnClose: true
         }}
-      />
-    </ModalForm>
-  )
-}
-const PopModal = ({sn, paymentType}) => {
-  return(
-    <Popconfirm
-      title="确定执行本次对公/对私提现吗?"
-      onConfirm={()=>{
-        payment({sn, paymentType}).then(res=> {
-          if(res?.success) {
-            message.success('提交成功')
-          }
-        })
-      }}
-      okText="确定"
-      cancelText="取消"
-    >
-      <Button>执行</Button>
-    </Popconfirm>
-  )
-}
-const Detail = () => {
-  const { id } = useParams()
-  const back = ()=> {
+        onFinish={async (values) => {
+          await submit(values)
+          return true
+        }}
+      >
+        <div className={styles.opinion}>
+          <ProFormSelect
+            width='md'
+            name="paymentType"
+            label="提现类型"
+            rules={[{required: true, message: '请选择提现类型'}]}
+            fieldProps={{
+              onChange:(e)=> {
+                setType(e)
+              }
+            }}
+            valueEnum={{
+              'online': '线上转帐',
+              'offline': '线下转账'
+            }}
+          />
+        </div>
+        {
+          type==='offline'&&
+          <ProFormText 
+            label="付款凭证"
+            width="md"
+            name='voucher'
+            rules={[{required: true, message: '请输入付款凭证'}]}
+          />
+        }
+      </ModalForm>
+    )
+  }
+  const SwitchStatus = ({ type }) => {
+    const { status, sn } = type
+    switch (status) {
+      case 'auditing':
+        return <PopModalForm sn={sn}/>
+      case 'waitPay':
+      case 'failure':
+        return <PopModal sn={sn}/>
+      case 'arrived':
+        return '已到账'
+      case 'unPass':  
+        return '审核拒绝'
+      case 'paid':
+        return '已执行'
+      default:
+        return '状态错误'
+    }
+  }
+  const back = () => {
     history.goBack()
   }
   const columns = [
@@ -110,7 +167,8 @@ const Detail = () => {
     },
     {
       title: '可提现余额',
-      dataIndex: 'balanceAvailable'
+      dataIndex: 'balanceAvailable',
+      render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
       title: '银行账户名称',
@@ -150,27 +208,22 @@ const Detail = () => {
     {
       title: '薪宝手续费',
       dataIndex: 'realFee',
-      render: (_, records)=>(
+      render: (_, records) => (
         <>
-          <div>{_}</div>
-          <div>差额：{records?.feeDifference}</div>
+          <div>{amountTransform(_, '/').toFixed(2)}</div>
+          <div>差额：{`￥${amountTransform(records?.feeDifference, '/').toFixed(2)}`}</div>
         </>
       )
     },
     {
       title: '提现状态',
       dataIndex: 'status',
-      render: (_, records) => (
-        <Space size='large'>
-          <PopModalForm sn={records?.sn}/>
-          <PopModal sn={records?.sn} paymentType={records?.paymentType}/>
-        </Space>
-      )
+      render: (_, records) => <SwitchStatus type={records} />
     },
     {
       title: '审核日志',
       dataIndex: 'log',
-      render: (_, records)=>(
+      render: (_, records) => (
         <>
           <div>审核时间：{records?.auditTime}（{records?.auditUserId}）</div>
           <div>执行时间：{records?.paymentTime}</div>
@@ -191,17 +244,18 @@ const Detail = () => {
     <PageContainer title={false}>
       <ProDescriptions
         column={2}
+        actionRef={form}
         columns={columns}
         style={{
-          background:'#fff',
+          background: '#fff',
           padding: 20
         }}
         bordered
-        params={{id}}
+        params={{ id }}
         request={withdrawPageDetail}
       />
-      <div style={{background: '#fff', padding: 20}}>
-        <Button type='primary' onClick={()=>{back()}}>返回</Button>
+      <div style={{ background: '#fff', padding: 20 }}>
+        <Button type='primary' onClick={() => { back() }}>返回</Button>
       </div>
     </PageContainer>
   )

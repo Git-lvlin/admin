@@ -25,7 +25,6 @@ const formItemLayout = {
 
 const ListApplyDetail = props => {
   let applyId = props.location.query.applyId
-  // const params = useParams();
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false);
   const [detailData, setDetailData] = useState({});
