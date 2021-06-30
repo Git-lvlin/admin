@@ -51,24 +51,24 @@ const ListDetail = props => {
         form.setFieldsValue(res.data)
 
         categoryAll().then(res => {
-            if (res.code === 0) {
-              const tree = arrayToTree(res.data.records.map(item =>{
-                if(ids.includes(item.id)){
-                  return ({
-                    ...item,
-                    pid: item.gcParentId,
-                    title: item.gcName,
-                    key: item.id,
-                    value: item.id,
-                    selectable: false
-                  })
-                }
+          if (res.code === 0) {
+            const tree = arrayToTree(res.data.records.map(item => {
+              if (ids.includes(item.id)) {
+                return ({
+                  ...item,
+                  pid: item.gcParentId,
+                  title: item.gcName,
+                  key: item.id,
+                  value: item.id,
+                  selectable: false
+                })
               }
-              )
-              )
-              setTreeData(tree)
             }
-          })
+            )
+            )
+            setTreeData(tree)
+          }
+        })
 
       }
     }).finally(() => {

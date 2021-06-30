@@ -101,6 +101,7 @@ export default {
   'menu.cms.price-comparsion.home-list': '比价优选',
   'menu.cms.price-comparsion.low-goods': '低价爆品',
   'menu.cms.route-url-deploy': '链接路由管理',
+  'menu.cms.coupon': '优惠券管理',
   'menu.cms.hot-search': '热门搜索关键词',
   
   'menu.price-comparsion-management': '比价管理菜单',

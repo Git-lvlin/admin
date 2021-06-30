@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Space } from 'antd';
+import { Space, Button } from 'antd';
 import { memberShopSaleOrder } from '@/services/intensive-store-management/shopkeeper-order';
-import { useParams, useLocation } from 'umi';
+import { useParams, useLocation, history } from 'umi';
 import { amountTransform } from '@/utils/utils'
 
 
@@ -15,7 +15,7 @@ const TableList = () => {
   const columns = [
     {
       title: '订单编号',
-      dataIndex: 'orderSn',
+      dataIndex: 'sumOrderId',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入订单编号'
@@ -31,7 +31,7 @@ const TableList = () => {
       render: (_, data) => data?.orderItemList?.[0]?.goodsName
     },
     {
-      title: '商品skuID',
+      title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'text',
       fieldProps: {
@@ -73,6 +73,30 @@ const TableList = () => {
       hideInSearch: true,
       render: (_) => _.replace('T', ' ')
     },
+    {
+      title: '订单状态',
+      dataIndex: 'status',
+      valueType: 'select',
+      valueEnum: {
+        1: '待付款',
+        2: '待发货',
+        3: '已发货',
+        4: '已完成',
+        5: '已关闭'
+      }
+    },
+    {
+      title: '下单时间',
+      dataIndex: 'time',
+      valueType: 'dateRange',
+      hideInTable: true,
+    },
+    {
+      title: '下单手机号',
+      dataIndex: 'buyerPhone',
+      valueType: 'text',
+      hideInTable: true,
+    },
   ];
 
   return (
@@ -84,7 +108,7 @@ const TableList = () => {
         </Space>
       </div>
       <ProTable
-        rowKey="storeNo"
+        rowKey="sumOrderId"
         options={false}
         params={{
           storeNo: params.id
@@ -99,6 +123,9 @@ const TableList = () => {
         }}
         columns={columns}
       />
+      <div style={{ textAlign: 'center', marginTop: 30 }}>
+        <Button onClick={() => { history.goBack() }}>返回</Button>
+      </div>
     </PageContainer>
 
   );
