@@ -1,5 +1,5 @@
 import React, { useState, useEffect,useRef } from 'react';
-import { ModalForm,ProFormSwitch} from '@ant-design/pro-form';
+import { ModalForm} from '@ant-design/pro-form';
 import { Button } from 'antd';
 
 export default props=>{
