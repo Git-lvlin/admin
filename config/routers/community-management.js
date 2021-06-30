@@ -15,8 +15,14 @@ export default {
       },
       {
         name: 'circleinterior-management',
-        path: '/community-management/circleinterior-management',
+        path: '/community-management/circle-management/circleinterior-management',
         component: './community-management/circleinterior-management/index.js',
+        hideInMenu: true,
+      },
+      {
+        name: 'circleinterior-management-detail',
+        path: '/community-management/circle-management/circleinterior-management/detail',
+        component: './community-management/circleinterior-management/circleinterior-management-detail',
         hideInMenu: true,
       },
       {

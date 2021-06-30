@@ -20,7 +20,8 @@ const formItemLayout = {
 };
 
 export default props => {
-  const { id }=props
+  const id=props.location.query.id
+  let name=props.location.query.name
   const [form] = Form.useForm()
   const [detailData,setDetailData]=useState([])
   const [loading, setLoading] = useState(false);
@@ -39,6 +40,7 @@ export default props => {
       <Spin
         spinning={loading}
       >
+         <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">帖子详情</Divider>
         <Form
           form={form}
           {...formItemLayout}
@@ -75,7 +77,13 @@ export default props => {
                 <img width={100} height={100} src={ele} alt="" />
               ))
             }
-          </Form.Item>  
+          </Form.Item>
+          <Form.Item
+            label="."
+          >
+            <Button style={{margin:'20px'}} type="primary" onClick={()=>history.push('/community-management/circle-management/circleinterior-management?name='+name)}>返回</Button>
+          </Form.Item>
+          
         </Form>
       </Spin> 
     

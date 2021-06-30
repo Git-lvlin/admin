@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { adminList } from '@/services/community-management/dynamic-admin-list';
@@ -11,6 +11,7 @@ import { cancelBanDynamicComment } from '@/services/community-management/dynamic
 import { cancelBanShare } from '@/services/community-management/dynamic-cancel-ban-share';
 import { ModalForm,ProFormSwitch} from '@ant-design/pro-form';
 import DeleteModal from '@/components/DeleteModal'
+import circleinteriorDetail from './circleinterior-management-detail'
 import { Button,Switch } from 'antd';
 import { history } from 'umi';
 
@@ -19,6 +20,7 @@ export default props => {
     const [visible, setVisible] = useState(false);
     const [byid,setByid]=useState()
     let id = props.location.query.id
+    let name=props.location.query.name
     const onTop=(bol,off)=>{
         dynamicTop({id:off}).then(res=>{
                 ref.current.reload()
@@ -39,7 +41,7 @@ export default props => {
             dataIndex: 'id',
             hideInSearch:true,
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/content-management/dynamic-get-dynamic-detail?id='+record.id)}>{record.id}</a>
+                <a onClick={()=>history.push('/community-management/circle-management/circleinterior-management/detail?id='+record.id+'&name='+name)}>{record.id}</a>
             ],
         },
         {
@@ -105,15 +107,17 @@ export default props => {
         },
     ];
   return (
-    <PageContainer>
+      <>
+      <h1>圈子名称：{name}</h1>
         <ProTable
             actionRef={ref}
             rowKey="id"
             options={false}
             params={{
-                id
+                circleId:id
             }}
-            request={adminList} 
+            request={adminList}
+            
             search={{
                 defaultCollapsed: false,
                 labelWidth: 100,
@@ -123,6 +127,6 @@ export default props => {
             }}
             columns={columns}
         />
-  </PageContainer>
+    </>
   );
 };
