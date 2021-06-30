@@ -86,13 +86,13 @@ export default (props) => {
       hideInTable: true,
     },
     {
-      title: '供货价',
+      title: '供货价(元)',
       dataIndex: 'retailSupplyPriceDisplay',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '秒约价',
+      title: '秒约价(元)',
       dataIndex: 'salePriceDisplay',
       valueType: 'text',
       hideInSearch: true,
