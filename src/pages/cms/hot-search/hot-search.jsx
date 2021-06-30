@@ -60,13 +60,12 @@ const HotSearch = () => {
     {
       title: '添加时间',
       dataIndex: 'addTime',
-      valueType: 'dateRange',
+      valueType: 'date',
       hideInTable: true,
       search: {
         transform: (value) => {
           return {
-            startTime: value[0],
-            endTime: value[1],
+            date: Date.parse(new Date(value))/1000,
           };
         },
       },

@@ -19,10 +19,12 @@ export default (props) => {
     if (id) {
       param.id = id
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       hotSearchEdit(param).then((res) => {
         if (res.code === 0) {
           resolve(true);
+        } else {
+          reject(false);
         }
       })
   
