@@ -1,11 +1,11 @@
 import request from '@/utils/request';
 
 export const reportHandle= async (params, options = {}) => {
-  const {sourceId,status}=params
+  const {sourceIds,status}=params
   const res = await request('/auth/java-admin/report/handle', {
     method: 'POST',
     data: {
-        sourceId,
+        sourceIds,
         status
     },
     ...options
