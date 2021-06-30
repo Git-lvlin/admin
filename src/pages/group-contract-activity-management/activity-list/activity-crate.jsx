@@ -14,10 +14,13 @@ import {
 import { amountTransform } from '@/utils/utils'
 import { ruleSub, ruleEdit } from '@/services/single-contract-activity-management/activity-list'
 import SelectProductModal from '@/components/select-product-modal'
+import ExcelModal from './excel-modal';
+
 
 export default (props) => {
   const { visible, setVisible, detailData, callback, onClose = () => { } } = props;
   const [formVisible, setFormVisible] = useState(false)
+  const [excelVisible, setExcelVisible] = useState(false)
   const [tableData, setTableData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
@@ -307,7 +310,7 @@ export default (props) => {
         <Space style={{ marginBottom: 10 }}>
           <Button type="primary" onClick={() => { setFormVisible(true) }}>选择活动商品</Button>
           <Button type="primary" disabled={selectedRowKeys.length === 0} onClick={() => { batchCancel() }}>批量取消</Button>
-          {/* <Button type="primary" onClick={() => { }}>批量导入</Button> */}
+          <Button type="primary" onClick={() => { setExcelVisible(true) }}>批量导入</Button>
         </Space>
         {
           !!tableData.length &&
@@ -358,6 +361,20 @@ export default (props) => {
           }))
         }}
       />}
+      {excelVisible &&
+        <ExcelModal
+          visible={excelVisible}
+          setVisible={setExcelVisible}
+          callback={(v) => {
+            setTableData(v.map(item => {
+              return {
+                ...item,
+                activityPrice: amountTransform(item.retailSupplyPrice, '/')
+              }
+            }))
+          }}
+        />
+      }
     </DrawerForm>
   );
 };
