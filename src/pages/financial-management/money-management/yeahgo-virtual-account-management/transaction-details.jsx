@@ -56,7 +56,7 @@ const TransactionDetails = () => {
       title: '交易类型',
       dataIndex:'tradeType',
       valueType: 'select',
-      valueEnum: transactionType
+      valueEnum: transactionType()
     },
     {
       title: '订单号',
@@ -68,7 +68,7 @@ const TransactionDetails = () => {
       title: '订单类型',
       dataIndex:'orderType',
       valueType: 'select',
-      valueEnum: orderType,
+      valueEnum: orderType(),
       hideInSearch: query.accountId==='platform' ? false : true,
       hideInTable: query.accountId==='platform' ? false : true
     },
@@ -109,7 +109,7 @@ const TransactionDetails = () => {
   return (
     <PageContainer title={false}>
       <ProTable
-        rowKey='payNo'
+        rowKey='id'
         toolBarRender={false}
         pagination={{
           hideOnSinglePage: true,
