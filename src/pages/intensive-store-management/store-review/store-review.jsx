@@ -73,7 +73,7 @@ const StoreReview = () => {
       hideInSearch: true,
       render: (_, { details }) => (
         <Space>
-          <Image src={details.idHandheld} width={50} height={50} />
+          <Image src={details.credentialUrl} width={50} height={50} />
         </Space>
       )
     },
