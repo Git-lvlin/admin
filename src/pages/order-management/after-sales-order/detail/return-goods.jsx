@@ -7,10 +7,10 @@ import styles from './styles.less'
 
 const tableRow = props => {
   const imageArr = () => {
-    const imgUrl = props[0]?.proofImageUrl.split(',')
+    const imgUrl = props[0]?.proofImageUrl?.split(',')
     return imgUrl?.map(url => (
       <Image
-        key={props[0]?.orderSn}
+        key={url}
         width={80}
         height={80}
         src={url}
@@ -43,7 +43,6 @@ const tableRow = props => {
   )
 }
 
-// 退货商品
 const ReturnGoods = ({data}) => {
   const dataSource = Array.isArray(data) ? [] : [data]
   const columns = [
