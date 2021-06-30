@@ -79,6 +79,7 @@ const ActivityDetail = () => {
       title: '单约价',
       dataIndex: 'activityPrice',
       valueType: 'text',
+      render: (_) => _ > 0 ? amountTransform(_, '/') : 0,
     },
     {
       title: '单约库存',

@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { ruleGoodsList } from '@/services/single-contract-activity-management/activity-product';
 import { useParams, history } from 'umi';
-import { dateFormat } from '@/utils/utils';
+import { dateFormat, amountTransform } from '@/utils/utils';
 
 
 const TableList = () => {
@@ -52,12 +52,14 @@ const TableList = () => {
       dataIndex: 'salePrice',
       valueType: 'text',
       hideInSearch: true,
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '团约价',
       dataIndex: 'activityPrice',
       valueType: 'text',
       hideInSearch: true,
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '团约库存',

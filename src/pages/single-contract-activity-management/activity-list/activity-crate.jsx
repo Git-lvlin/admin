@@ -11,9 +11,10 @@ import {
   ProFormTextArea,
   ProFormDateTimeRangePicker,
 } from '@ant-design/pro-form';
-import FormModal from './modal-form';
 import { amountTransform } from '@/utils/utils'
 import { ruleSub, ruleEdit } from '@/services/single-contract-activity-management/activity-list'
+import SelectProductModal from '@/components/select-product-modal'
+
 
 export default (props) => {
   const { visible, setVisible, detailData, callback, onClose = () => { } } = props;
@@ -26,10 +27,7 @@ export default (props) => {
   }
 
   const batchCancel = () => {
-    selectedRowKeys.forEach(item => {
-      cancel(item)
-    })
-
+    setTableData(tableData.filter(item => !selectedRowKeys.includes(item.id)))
     setSelectedRowKeys([])
   }
 
@@ -344,11 +342,17 @@ export default (props) => {
         width="md"
       />
 
-      {formVisible && <FormModal
+      {formVisible && <SelectProductModal
         visible={formVisible}
         setVisible={setFormVisible}
-        callback={(v) => { setTableData(v) }}
-        data={tableData}
+        callback={(v) => {
+          setTableData(v.map(item => {
+            return {
+              ...item,
+              activityPrice: amountTransform(item.retailSupplyPrice, '/')
+            }
+          }))
+        }}
       />}
     </DrawerForm>
   );

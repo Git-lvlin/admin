@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { Space } from 'antd';
+import { Space, Table } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useParams, useLocation } from 'umi';
 import { multiGroupList, groupMemberList } from '@/services/single-contract-activity-management/group-detail'
@@ -20,7 +20,7 @@ const SubTable = (props) => {
     groupMemberList({
       groupId: props.data.id
     }).then(res => {
-      setData(res?.data)
+      setData(res?.data?.length ? res.data : [])
     })
   }, [])
 
@@ -35,19 +35,28 @@ const TableList = () => {
 
   const columns = [
     {
+      title: '参团手机号',
+      dataIndex: 'joinMemberPhone',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入请输入会员手机号'
+      },
+      hideInTable: true,
+    },
+    {
       title: '团ID',
       dataIndex: 'id',
       valueType: 'text',
       hideInSearch: true,
     },
-    {
-      title: '团长手机号',
-      dataIndex: 'groupMemberPhone',
-      valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入请输入会员手机号'
-      }
-    },
+    // {
+    //   title: '团长手机号',
+    //   dataIndex: 'groupMemberPhone',
+    //   valueType: 'text',
+    //   fieldProps: {
+    //     placeholder: '请输入请输入会员手机号'
+    //   }
+    // },
     {
       title: '开团时间',
       dataIndex: 'createGroupTime',
@@ -73,25 +82,22 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '支付状态',
-      dataIndex: 'payStatus',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
       title: '拼团商品数量',
       dataIndex: 'goodsNum',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '参团手机号',
-      dataIndex: 'joinMemberPhone',
+      title: '拼约状态',
+      dataIndex: 'groupState',
       valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入请输入会员手机号'
-      },
-      hideInTable: true,
+      hideInSearch: true,
+    },
+    {
+      title: '成团时间',
+      dataIndex: 'finishGroupTime',
+      valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '参团时间',

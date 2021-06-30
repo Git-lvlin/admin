@@ -136,17 +136,21 @@ const LegalInfo = ({ value, onChange }) => {
   )
 }
 
-const ImageInfo = ({ value, onChange }) => {
+const ImageInfo = ({ value, onChange, bankAccountType }) => {
   const [businessLicense, setBusinessLicense] = useState(value?.businessLicense);
   const [idCardFrontImg, setIdCardFrontImg] = useState(value?.idCardFrontImg);
   const [idCardBackImg, setIdCardBackImg] = useState(value?.idCardBackImg);
   const [bankLicenseImg, setBankLicenseImg] = useState(value?.bankLicenseImg);
+  const [bankCardFrontImg, setBankCardFrontImg] = useState(value?.bankCardFrontImg);
+  const [bankCardBackImg, setBankCardBackImg] = useState(value?.bankCardBackImg);
   const update = (obj) => {
     onChange({
       idCardFrontImg,
       businessLicense,
       idCardBackImg,
       bankLicenseImg,
+      bankCardFrontImg,
+      bankCardBackImg,
       ...obj,
     })
   }
@@ -174,13 +178,37 @@ const ImageInfo = ({ value, onChange }) => {
       bankLicenseImg: e,
     })
   }
+  const bankCardFrontImgChange = (e) => {
+    setBankCardFrontImg(e)
+    update({
+      bankCardFrontImg: e,
+    })
+  }
+  const bankCardBackImgChange = (e) => {
+    setBankCardBackImg(e)
+    update({
+      bankCardBackImg: e,
+    })
+  }
   return (
-    <Space>
-      <Upload code={301} value={businessLicense} text="上传三合一证件照" maxCount={1} accept="image/*" size={1024 * 2} onChange={businessLicenseChange} />
-      <Upload code={302} value={idCardFrontImg} text="上传法人身份证正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardFrontImgChange} />
-      <Upload code={302} value={idCardBackImg} text="上传法人身份证背面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardBackImgChange} />
-      <Upload code={303} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankLicenseImgChange} />
-    </Space>
+    <div>
+      <Space>
+        <Upload code={301} value={businessLicense} text="上传三合一证件照" maxCount={1} accept="image/*" size={1024 * 2} onChange={businessLicenseChange} />
+        <Upload code={302} value={idCardFrontImg} text="上传法人身份证正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardFrontImgChange} />
+        <Upload code={302} value={idCardBackImg} text="上传法人身份证背面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardBackImgChange} />
+        {
+          bankAccountType === 1
+            ?
+            <Upload code={303} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankLicenseImgChange} />
+            :
+            <Upload code={303} value={bankCardFrontImg} text="上传结算银行卡正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankCardFrontImgChange} />
+        }
+      </Space>
+      {bankAccountType === 2 && <Space>
+        <Upload code={303} value={bankCardBackImg} text="上传结算银行卡背面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankCardBackImgChange} />
+      </Space>}
+    </div>
+
   )
 }
 
@@ -651,50 +679,6 @@ export default (props) => {
 
           </div>
           <div style={{ flex: 1 }}>
-            <Form.Item
-              label={
-                <div style={{ position: 'relative', top: 20 }}>
-                  <div>开户资质文件</div>
-                  <div>jpg/png格式</div>
-                  <div>大小不超过2MB</div>
-                </div>
-              }
-              name="imageInfo"
-            // validateFirst
-            // rules={[
-            //   () => ({
-            //     required: true,
-            //     validator(_, value = {}) {
-            //       const { businessLicense, idCardFrontImg, idCardBackImg, bankLicenseImg } = value;
-            //       if (!businessLicense) {
-            //         return Promise.reject(new Error('请上传三合一证件照'));
-            //       }
-            //       if (!idCardFrontImg) {
-            //         return Promise.reject(new Error('请上传法人身份证正面照'));
-            //       }
-            //       if (!idCardBackImg) {
-            //         return Promise.reject(new Error('请上传法人身份证背面照'));
-            //       }
-            //       if (!bankLicenseImg) {
-            //         return Promise.reject(new Error('请上传开户银行许可证照'));
-            //       }
-            //       return Promise.resolve();
-            //     },
-            //   })
-            // ]}
-            >
-              <ImageInfo />
-            </Form.Item>
-            <ProFormSelect
-              name="bankCode"
-              label="账户结算银行"
-              placeholder="请选择结算收款银行"
-              request={getBanks}
-              // rules={[{ required: true, message: '请选择账户结算银行' }]}
-              fieldProps={{
-                labelInValue: true,
-              }}
-            />
             <ProFormRadio.Group
               name="bankAccountType"
               label="结算银行账户类型"
@@ -711,6 +695,57 @@ export default (props) => {
               ]}
               fieldProps={{
                 onChange: bankAccountTypeChange
+              }}
+            />
+            <ProFormDependency name={['bankAccountType']}>
+              {
+                ({ bankAccountType }) => (
+                  <Form.Item
+                    label={
+                      <div style={{ position: 'relative', top: 20 }}>
+                        <div>开户资质文件</div>
+                        <div>jpg/png格式</div>
+                        <div>大小不超过2MB</div>
+                      </div>
+                    }
+                    name="imageInfo"
+                  // validateFirst
+                  // rules={[
+                  //   () => ({
+                  //     required: true,
+                  //     validator(_, value = {}) {
+                  //       const { businessLicense, idCardFrontImg, idCardBackImg, bankLicenseImg } = value;
+                  //       if (!businessLicense) {
+                  //         return Promise.reject(new Error('请上传三合一证件照'));
+                  //       }
+                  //       if (!idCardFrontImg) {
+                  //         return Promise.reject(new Error('请上传法人身份证正面照'));
+                  //       }
+                  //       if (!idCardBackImg) {
+                  //         return Promise.reject(new Error('请上传法人身份证背面照'));
+                  //       }
+                  //       if (!bankLicenseImg) {
+                  //         return Promise.reject(new Error('请上传开户银行许可证照'));
+                  //       }
+                  //       return Promise.resolve();
+                  //     },
+                  //   })
+                  // ]}
+                  >
+                    <ImageInfo bankAccountType={bankAccountType} />
+                  </Form.Item>
+                )
+              }
+            </ProFormDependency>
+
+            <ProFormSelect
+              name="bankCode"
+              label="账户结算银行"
+              placeholder="请选择结算收款银行"
+              request={getBanks}
+              // rules={[{ required: true, message: '请选择账户结算银行' }]}
+              fieldProps={{
+                labelInValue: true,
               }}
             />
             <ProFormText
