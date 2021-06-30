@@ -21,7 +21,6 @@ const showLastStatus = lastStatus => {
   ))
 }
 
-// 退货单信息
 const ReturnInformation = props => {
   const { 
     data,
@@ -31,7 +30,7 @@ const ReturnInformation = props => {
   const [express, setExpress] = useState({})
   
   useEffect(() => {
-    if(data != ![] && status === 2 && type !== 1) {
+    data?.returnShippingCode &&
       expressInfo({
         shippingCode: data?.returnShippingCode,
         expressType: data?.returnExpressType,
@@ -40,7 +39,6 @@ const ReturnInformation = props => {
       }).then(res => {
         setExpress(res.data)
       })
-    }
     return ()=>{
       setExpress([])
     }
@@ -95,7 +93,7 @@ const ReturnInformation = props => {
     {
       title: '退货物流信息',
       dataIndex: 'returnGoodsInfo',
-      hideInDescriptions: (type === 1) ? true : false,
+      hideInDescriptions: (type === 1 && data?.afterSalesType === 1) ? true : false,
       render: () => {
         return(
           <div style={{display: 'flex', alignItems:'center'}}>
@@ -153,7 +151,7 @@ const ReturnInformation = props => {
     <ProDescriptions
       rowKey='orderNumber'
       className={styles.description}
-      dataSource={props?.data}
+      dataSource={data}
       layout='horizontal'
       bordered
       title='退货单信息'

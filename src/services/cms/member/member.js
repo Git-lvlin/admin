@@ -415,7 +415,11 @@ export const SetHomePageGoodsDelSort = (params = {}, options = {}) => {
   });
 }
 export const hotSearchEdit = (params = {}, options = {}) => {
-  return request(`/auth/search/HotKeyword/updateHotKeyword/id/${params.id}`, {
+  let url = `/auth/search/HotKeyword/updateHotKeyword/id/${params.id}`
+  if (!params.id) {
+    url = '/auth/search/HotKeyword/addHotKeyword'
+  }
+  return request(url, {
     method: 'POST',
     data: params,
     ...options
