@@ -137,6 +137,11 @@ const IntensiveActivityCreate = () => {
                 return false;
               }
 
+              if (selectItem.totalStockNum > selectItem.stockNum) {
+                message.error('集约总库存不能大于可用库存');
+                return false;
+              }
+
               if (selectItem.fixedPrice < 0 || selectItem.fixedPrice > 10) {
                 message.error('配送费补贴只能是0-10之间');
                 return false;
@@ -162,6 +167,11 @@ const IntensiveActivityCreate = () => {
             name="checkbox"
             title="确认活动参数"
             onFinish={async (values) => {
+              const { endTimeAdvancePayment, wholesaleTime } = values;
+              if (endTimeAdvancePayment <= wholesaleTime[0] || endTimeAdvancePayment >= wholesaleTime[1]) {
+                message.error('店主采购单下单截止时间必须大于活动开始时间且小于截至时间');
+                return false;
+              }
               await submit(values);
               return true;
             }}
@@ -179,7 +189,7 @@ const IntensiveActivityCreate = () => {
               width="md"
               rules={[{ required: true, message: '请选择活动时间' }]}
               fieldProps={{
-                disabledDate: (currentDate) => { return +currentDate < +new Date() },
+                disabledDate: (currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() },
                 disabledTime: disabledRangeTime,
                 showTime: {
                   defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('00:59:59', 'HH:mm:ss')]
@@ -192,7 +202,7 @@ const IntensiveActivityCreate = () => {
               width="md"
               rules={[{ required: true, message: '请选择店主采购单下单截至时间' }]}
               fieldProps={{
-                disabledDate: (currentDate) => { return +currentDate < +new Date() },
+                disabledDate: (currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() },
                 disabledTime: disabledRangeTime,
                 showTime: {
                   defaultValue: moment('00:59:59', 'HH:mm:ss')

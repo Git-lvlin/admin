@@ -11,11 +11,10 @@ const agentShopStoreApply = () => {
   const [aplyId, setAplyId] = useState();
   const actionRef = useRef();
 
-  const getDetail = (id,data) => {
+  const getDetail = (id) => {
     storeApplyDetail({
       applyId:id
     }).then(res => {
-      // console.log('deilres',res)
       if (res.code === 0) {
         setDetailData(res.data)
         setFormVisible(true)
@@ -24,7 +23,7 @@ const agentShopStoreApply = () => {
     })
   }
 
-const box=(res)=>{
+const filterData=(res)=>{
     const arr=res.map(ele=>
       ({ 
           id:ele.id,
@@ -112,7 +111,7 @@ const box=(res)=>{
         <Space>
           <a onClick={() => { history.push(`/daifa-store-management/agent-shop-store_apply/store-apply-detail?applyId=${data.id}`) }}>详情</a>
           {
-            data.verifyStatus==3?null:<a onClick={() => { getDetail(data.id,data) }}>编辑</a>
+            data.verifyStatus==3?null:<a onClick={() => { getDetail(data.id) }}>编辑</a>
           }
         </Space>
       ),
@@ -127,8 +126,7 @@ const box=(res)=>{
         params={{
           pageSize:15
         }}
-        // dataSource={listData}
-        postData={box}
+        postData={filterData}
         request={storeApplyList}
         search={{
           defaultCollapsed: false,

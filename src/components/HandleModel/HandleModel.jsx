@@ -7,6 +7,7 @@ export default props=>{
     const [byid,setByid]=useState()
     const [visible, setVisible] = useState(false);
     const Termination=(record)=>{
+        console.log('record',record)
         setByid(record&&record.sourceId)
         setVisible(true)
     }
@@ -25,7 +26,7 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                InterFace({sourceId:arrId?arrId:[byid],status}).then(res=>{
+                InterFace({sourceIds:arrId?arrId:[byid],status}).then(res=>{
                     if(res.code==0){
                         setVisible(false)   
                         boxref&&boxref.current?.reload()

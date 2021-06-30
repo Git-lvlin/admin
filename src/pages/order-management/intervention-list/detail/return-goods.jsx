@@ -12,6 +12,7 @@ const tableRow = props => {
       <Image
         key={props[0]?.orderSn}
         width={80}
+        height={80}
         src={url}
       />
     ))
@@ -54,7 +55,11 @@ const ReturnGoods = props => {
       width: 450,
       render: (_, records) => (
         <div className={styles.goodsInfo}>
-          <Image width={80} src={records?.goodsImageUrl} />
+          <Image 
+            width={80} 
+            height={80}
+            src={records?.goodsImageUrl} 
+          />
           <div className={styles.goodsContent}>
             <div>{records?.goodsName}</div>
             <div>{records?.skuName}</div>

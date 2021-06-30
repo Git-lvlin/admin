@@ -109,7 +109,11 @@ export default () => {
             label="内容图片"
             name="detailcCover"
           >
-            <Image width={80} src={data?.detail?.img}/>
+            <Image 
+              width={80}
+              height={80}
+              src={data?.detail?.img}
+            />
           </ProForm.Item>
           <ProForm.Item
             label='内容'
@@ -135,7 +139,11 @@ export default () => {
             label="公告图片"
             name="detailcCover"
           >
-            <Image width={100} src={data?.detail?.img}/>
+            <Image 
+              width={100} 
+              height={100}
+              src={data?.detail?.img}
+            />
           </ProForm.Item>
           <ProForm.Item
             label='公告'
@@ -220,6 +228,7 @@ export default () => {
           >
             <Image 
               width={80}
+              height={80}
               src={data?.cover}
             />
           </ProForm.Item>

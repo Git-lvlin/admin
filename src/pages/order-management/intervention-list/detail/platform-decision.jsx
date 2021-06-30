@@ -38,6 +38,7 @@ const PlatformDecision = props => {
       <Image
         key={idx}
         width={80}
+        height={80}
         src={url}
       />
     ))
