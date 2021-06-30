@@ -213,7 +213,7 @@ export default function EditTable() {
   const onSearch = (value) => {
     setParams({
       ...params,
-      groupName: value,
+      goodsName: value,
     })
   };
 
@@ -240,7 +240,7 @@ export default function EditTable() {
       }
       placeholder="请输入商品名"
       onSearch={onSearch}
-      enterButton={'商品组名称搜索'} />
+      enterButton={'商品名称搜索'} />
     <Button onClick={() => {
       onSearch(null)
     }}>重置</Button>

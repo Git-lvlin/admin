@@ -76,8 +76,6 @@ export default (props) => {
   ];
 
   const waitTime = (values) => {
-    console.log('values', values)
-    console.log('arr', arr)
     let couponInfo = []
     const len = arr.length
     for(let i=0;i<len;i++) {
@@ -86,7 +84,6 @@ export default (props) => {
         sort: 100
       })
     }
-    console.log('couponInfo', couponInfo)
     const param = {
       couponSpaceId: values.couponSpaceId,
       couponInfo
@@ -186,7 +183,6 @@ export default (props) => {
       pagination={{
         pageSize: 10,
       }}
-      // dateFormatter="string"
     />
     </ModalForm>
   );
