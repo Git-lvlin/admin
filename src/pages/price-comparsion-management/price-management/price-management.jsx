@@ -27,7 +27,6 @@ const PriceManagement = () => {
   const [isShow, setIsShow] = useState(false)
   const [flag, setFlag] = useState(false)
   const [resData, setResData] = useState({})
-  // const [loading, setLoading] = useState({})
   const [type, setType] = useState(false)
   const [form] = Form.useForm()
   const [rowKeys, setRowKeys] = useState([])
@@ -304,7 +303,6 @@ const PriceManagement = () => {
   const changeRowKeys = (expanded, record) => {
     setRowLoadin(true)
     setFormjsx(false)
-    setFormData({})
     setIsShow(false)
     clearTimeout(ref.current)
     setLoadingIndex(-1)

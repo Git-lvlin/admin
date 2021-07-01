@@ -5,7 +5,7 @@ import { ModalForm } from '@ant-design/pro-form';
 import { bindSkuId } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { setVisible, formData, setResData, resData, Listdata, setFlag, visible } = props;
+  const { setVisible, formData, setResData, resData, Listdata, visible } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
   const [form] = Form.useForm()
@@ -49,9 +49,9 @@ export default (props) => {
             [param.sourceType]:{
               sku: param.skuId,
               price: arr[0].price,
+              url: resData[param.sourceType].url,
             }
           })
-          // setFlag(true)
           resolve(true)
         } else {
           reject(false)
