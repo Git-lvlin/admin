@@ -28,7 +28,6 @@ export default props => {
         {label:ele.title,value:ele.id}
         )))
     })
-    console.log('onselect',onselect)
  },[])
  const Termination=()=>{
     setVisible(true)
@@ -40,10 +39,7 @@ export default props => {
   {
      title: '商品图片',
      dataIndex: 'imageUrl',
-     render:(_, data)=>[
-       <a href={data.imageUrl}>{data.imageUrl}</a>
-     ],
-     ellipsis:true
+     valueType: 'image',
   },
   {
       title: '商品名称',
@@ -74,8 +70,6 @@ export default props => {
   return (
     <ProForm
         onFinish={async (values) => {
-          console.log(values);
-          console.log('goods',goods);
           if(id){
             values.id=id
           }
@@ -93,7 +87,6 @@ export default props => {
         submitter={{
           // 完全自定义整个区域
           render: (props, doms) => {
-            console.log(props);
             return [
               <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
                 保存
@@ -175,9 +168,12 @@ export default props => {
                 title={'添加商品'}  
                 visible={visible} 
                 setVisible={setVisible} 
-                callback={(v) => { 
+                callback={(v) => {
+                  if (v.length>=2) {
+                    message.error('只能选择一个商品');
+                    return
+                  }
                   setGoods(v)
-                  console.log('v',v)
                  }}
               />
               <ProTable
