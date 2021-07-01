@@ -9,9 +9,11 @@ const agentShopStoreApply = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [aplyId, setAplyId] = useState();
+  const [vers,setVers]=useState();
   const actionRef = useRef();
 
-  const getDetail = (id) => {
+  const getDetail = (id,vers) => {
+    setVers(vers)
     storeApplyDetail({
       applyId:id
     }).then(res => {
@@ -101,7 +103,8 @@ const filterData=(res)=>{
       title: '认证成功/失败详解',
       dataIndex: 'auditMsg',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      ellipsis:true
     },
     {
       title: '操作',
@@ -111,7 +114,7 @@ const filterData=(res)=>{
         <Space>
           <a onClick={() => { history.push(`/daifa-store-management/agent-shop-store_apply/store-apply-detail?applyId=${data.id}`) }}>详情</a>
           {
-            data.verifyStatus==3?null:<a onClick={() => { getDetail(data.id) }}>编辑</a>
+            data.verifyStatus==3?null:<a onClick={() => { getDetail(data.id,data.verifyStatus) }}>编辑</a>
           }
         </Space>
       ),
@@ -141,6 +144,7 @@ const filterData=(res)=>{
       {formVisible && <Edit
         aplyId={aplyId}
         visible={formVisible}
+        vers={vers}
         setVisible={setFormVisible}
         detailData={detailData}
         callback={() => { actionRef.current.reload(); setDetailData(null) }}
