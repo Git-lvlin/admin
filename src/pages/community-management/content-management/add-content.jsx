@@ -4,7 +4,7 @@ import { releaseDynamic } from '@/services/community-management/dynamic-release-
 import { listSystemVirtualMember } from '@/services/community-management/memberinfo-list-system-virtual-member';
 import ProForm, { ProFormTextArea,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';
-import { message, Form } from 'antd';
+import { message, Form,Button } from 'antd';
 import Upload from '@/components/upload';
 
 export default props => {
@@ -36,6 +36,20 @@ export default props => {
               history.push('/community-management/content-management')
             }
           })
+        }}
+        submitter={{
+          render: (props, doms) => {
+            console.log(props);
+            return [
+              <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
+                保存
+              </Button>,
+              <Button type="default" onClick={()=>history.push('/community-management/content-management')}>
+                返回
+              </Button>,
+              
+            ];
+          }
         }}
         style={{ width: '1000px', margin: '0 auto' }}
       >
