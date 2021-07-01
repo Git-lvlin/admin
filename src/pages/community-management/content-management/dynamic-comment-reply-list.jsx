@@ -66,7 +66,8 @@ export default props => {
         },
     ];
   return (
-    <PageContainer>
+      <>
+      <h1>评论列表</h1>
         <ProTable
         rowKey="id"
         options={false}
@@ -92,7 +93,7 @@ export default props => {
             }}
             >
             返回
-        </Button>,
-  </PageContainer>
+        </Button>
+    </>
   );
 };

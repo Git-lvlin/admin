@@ -1,7 +1,8 @@
 import React, { useState, useEffect,useRef } from 'react';
 import { getDetailById } from '@/services/community-management/adsense-get-detail-byid';
 import { saveAdsense } from '@/services/community-management/adsense-save-adsense';
-import ProForm, { ProFormText,ProFormRadio,DrawerForm,ProFormDateRangePicker,ProFormSelect} from '@ant-design/pro-form';
+import { findAdsensePositionList } from '@/services/community-management/adsense-position-list';
+import ProForm, { ProFormText,ProFormRadio,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';
 import SelectProductModal from '@/components/select-product-modal'
 import { message, Form,Button } from 'antd';
@@ -11,6 +12,7 @@ import Upload from '@/components/upload';
 
 export default props => {
  const id = props.location.query.id
+ const [onselect,setOnselect]=useState([])
  const [position,setPosition]=useState()
  const [visible, setVisible] = useState(false);
  const [goods,setGoods]=useState([])
@@ -20,32 +22,36 @@ export default props => {
     getDetailById({id}).then(res=>{
       form.setFieldsValue(res.data)
     })
-
    }
-   return undefined
- })
+   findAdsensePositionList({}).then(res=>{
+    setOnselect(res.data.map(ele=>(
+        {label:ele.title,value:ele.id}
+        )))
+    })
+ },[])
  const Termination=()=>{
     setVisible(true)
   }
+ const deleGoods=()=>{
+  setGoods([])
+ }
  const columns=[
   {
      title: '商品图片',
      dataIndex: 'imageUrl',
-     render:(_, data)=>[
-       <a href={data.imageUrl}>{data.imageUrl}</a>
-     ]
+     valueType: 'image',
   },
   {
-    title: '商品名称',
-    dataIndex: 'goodsName',
- },
-//   {
-//    title: '操作',
-//    valueType: 'text',
-//    render:(text, record, _, action)=>[
-//        <a onClick={()=>delType(record.key)}>删除</a>
-//    ]
-// }
+      title: '商品名称',
+      dataIndex: 'goodsName',
+  },
+  {
+    title: '操作',
+    render:(_, data)=>[
+      <a onClick={()=>deleGoods()}>删除</a>
+    ],
+    ellipsis:true
+  },
 ]
   //标题验证规则
   const checkConfirm=(rule, value, callback)=>{
@@ -53,9 +59,9 @@ export default props => {
     if (value&&value.length > 20) {
           await reject('标题名称不超过20个字符')
       }
-      // else if (/^[^('"\\?)]+$/.test(value)) {
-      //     await reject('标题不可以含特殊字符')
-      // } 
+      else if (/[%&',;=?$\x22]/.test(value)) {
+          await reject('标题不可以含特殊字符')
+      } 
       else {
           await resolve()
       }
@@ -64,8 +70,6 @@ export default props => {
   return (
     <ProForm
         onFinish={async (values) => {
-          console.log(values);
-          console.log('goods',goods);
           if(id){
             values.id=id
           }
@@ -80,6 +84,20 @@ export default props => {
         form={form}
         params={{}}
         style={{ width: '1000px', margin: '0 auto' }}
+        submitter={{
+          // 完全自定义整个区域
+          render: (props, doms) => {
+            return [
+              <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
+                保存
+              </Button>,
+              <Button type="default" onClick={()=>history.push('/community-management/community-advertising')}>
+                返回
+              </Button>,
+              
+            ];
+          }
+        }}
       >
          <ProFormText
             width="md"
@@ -89,32 +107,20 @@ export default props => {
             placeholder="请输入广告标题"
             rules={[
               { required: true, message: '请输入标题' },
-              {validator: checkConfirm}
+              { validator: checkConfirm}
             ]}
         />
-        
-         <ProFormRadio.Group
+         <ProFormSelect
             name="position"
+            width="md"
             label="广告位置"
+            options = {onselect}
+            placeholder="请选择广告位置"
             rules={[
               { required: true, message: '请选择广告位置' },
             ]}
-            options={[
-                {
-                  label: 'SQ01',
-                  value: '1'
-                },
-                {
-                  label: 'SQ02',
-                  value: '2'
-                },
-                {
-                  label: 'SQ03',
-                  value: '3'
-                },
-            ]}
-            />
-        <Form.Item  rules={[{ required: true, message: '请上传图片' }]} label="圈子ICON" name="images">
+        />
+        <Form.Item  rules={[{ required: true, message: '请上传图片' }]} label="上传图片" name="images">
             <Upload code={204} multiple maxCount={1} accept="image/*"/>
         </Form.Item>
         <ProFormRadio.Group
@@ -154,17 +160,22 @@ export default props => {
           {
             position=='2'?
             <>
-              <SelectProductModal 
-                title={'添加商品'}  
-                visible={visible} 
-                setVisible={setVisible} 
-                callback={(v) => { setGoods(v) }}
-              />
               <Button type="primary" onClick={Termination} style={{margin:'0 0 20px 20px'}}>
                   <PlusOutlined />
                   添加商品
               </Button>
-              
+              <SelectProductModal 
+                title={'添加商品'}  
+                visible={visible} 
+                setVisible={setVisible} 
+                callback={(v) => {
+                  if (v.length>=2) {
+                    message.error('只能选择一个商品');
+                    return
+                  }
+                  setGoods(v)
+                 }}
+              />
               <ProTable
                 rowKey="id"
                 search={false}
@@ -185,13 +196,14 @@ export default props => {
             initialValue={1}
             options={[
                 {
+                  label: '禁用',
+                  value: 0
+                },
+                {
                   label: '启用',
                   value: 1
                 },
-                {
-                  label: '禁用',
-                  value: 0
-                }
+                
             ]}
         />
         <ProFormText
