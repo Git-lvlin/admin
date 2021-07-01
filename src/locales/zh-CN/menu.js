@@ -130,6 +130,7 @@ export default {
   'menu.community-management':'社区管理',
   'menu.community-management.circle-management':'圈子管理',
   'menu.community-management.add-circle':'新建圈子',
+  'menu.community-management.circleinterior-management-detail':'圈内帖子详情',
   'menu.community-management.circleinterior-management':'圈内管理',
   'menu.community-management.content-management':'内容管理',
   'menu.community-management.add-content':'新建内容',

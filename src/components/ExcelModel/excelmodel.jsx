@@ -109,12 +109,6 @@ export default props=>{
               await submit(values);
               return true;
             }}
-            cancelButtonProps={{
-              onCancel: () => {
-                console.log('asdas')
-              }
-            }}
-            destroyOnClose='false'
         >
         
         { 

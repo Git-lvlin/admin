@@ -20,6 +20,7 @@ export default props => {
  useEffect(()=>{
    if(id){
     getDetailById({id}).then(res=>{
+      res.data.images=res.data.images?.[0]
       form.setFieldsValue(res.data)
     })
    }
