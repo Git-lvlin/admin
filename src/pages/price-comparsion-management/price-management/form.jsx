@@ -51,7 +51,7 @@ export default (props) => {
               price: arr[0].price,
             }
           })
-          setFlag(true)
+          // setFlag(true)
           resolve(true)
         } else {
           reject(false)
