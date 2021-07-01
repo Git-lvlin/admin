@@ -178,8 +178,8 @@ export default props => {
           params={{
             page:1,
             size:5,
-            status:0,
-            type:1
+            status:'0',
+            type:'1'
           }}
           request={adminReportList}
           actionRef={actionRef}
@@ -217,7 +217,7 @@ export default props => {
               page:1,
               size:5,
               type:'1',
-              status:3
+              // status:3
             }}
             request={adminReportList}
             actionRef={actionRef}
