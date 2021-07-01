@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { MinusOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { Button, Space, message, Input, Form } from 'antd';
+import { Button, Space, message, Input, Form, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { 
@@ -27,10 +27,12 @@ const PriceManagement = () => {
   const [isShow, setIsShow] = useState(false)
   const [flag, setFlag] = useState(false)
   const [resData, setResData] = useState({})
-  const [loading, setLoading] = useState({})
+  // const [loading, setLoading] = useState({})
   const [type, setType] = useState(false)
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
   const [rowKeys, setRowKeys] = useState([])
+  const [loadingIndex, setLoadingIndex] = useState(-1)
+  const [rowLoadin, setRowLoadin] = useState(true)
   const formControl = ({selectedRows}) => {
     const ids = []
     const len = selectedRows.length
@@ -46,36 +48,27 @@ const PriceManagement = () => {
   }
 
   const onSearch = (value, t, i) => {
+    if (!value) {
+      return
+    }
     const id = i
     const type = t
     setType(type)
-    setLoading({
-      ...loading,
-      [`${id}${type}`]:true
-    })
     const param = {
       goodsUrl: value,
       goodsId: formData.goodsSpuId,
       type,
       skuId: formData.goodsSkuId,
     }
-    createTaskSrc(param).then((res) => {
+    createTaskSrc(param, {showError: false}).then((res) => {
       if (res.code === 0) {
         sendTask().then((r) => {
           if (r.code === 0) {
             timeoutfn(param,type,id)
-          } else {
-            setLoading({
-              ...loading,
-              [`${id}${type}`]:false
-            })
           }
         })
       } else {
-        setLoading({
-          ...loading,
-          [`${id}${type}`]:false
-        })
+        message.success(res.msg)
       }
     })
   };
@@ -84,20 +77,17 @@ const PriceManagement = () => {
     grabList&&bindData({},type)
   }, [grabList])
 
-  let timer = null
+  let ref = useRef()
   const timeoutfn = (data,type,id) => {
-    getSpiderGoodsListByDate({ sourceType:data.type, goodsId:data.goodsId, goodsSkuId:data.skuId })
+    getSpiderGoodsListByDate({ sourceType:data.type, goodsId:data.goodsId, goodsSkuId:data.skuId }, {showError: false})
     .then((res) => {
+      clearTimeout(ref.current)
       if (res.code === 0 && res.data.length) {
-        timer = null
         setGrabList(res.data)
-        setLoading({
-          ...loading,
-          [`${id}${type}`]:false
-        })
+        setLoadingIndex(-1)
         return
       }
-      timer = setTimeout(()=>{
+      ref.current = setTimeout(()=>{
         timeoutfn(data,type,id)
       }, 10000)
     })
@@ -124,6 +114,7 @@ const PriceManagement = () => {
       setFormData(a)
     }
     return (
+      <Spin spinning={rowLoadin}>
       <ProCard name={a.id} split="horizontal" bordered headerBordered style={{ marginBottom: 20 }}>
         <ProCard split="vertical" className={styles.header}>
           <ProCard colSpan="120px" className={styles.card}>比价电商平台</ProCard>
@@ -151,16 +142,10 @@ const PriceManagement = () => {
                   }
                 })
               }}
-              enterButton="抓取"
-              style={{
-                width: "92%",
-                float: 'left'
-              }}
-              size="middle"
-              onSearch={(_) => {onSearch(_,'tb', a.id)}}
-              loading={loading[`${a.id}tb`] || false}
+              enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 1?true:false}>抓取</Button>}
+              onSearch={(_) => {setLoadingIndex(1);onSearch(_,'tb', a.id)}}
             />
-            <Button
+            {/* <Button
               disabled={!grabList}
               key={a.id}
               style={{
@@ -168,7 +153,7 @@ const PriceManagement = () => {
               float: 'right'
             }} onClick={() => {
               bindData(a.id, 'tb')
-            }}>绑定</Button>
+            }}>绑定</Button> */}
           </ProCard>
 
         </ProCard>
@@ -178,39 +163,23 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>{resData.jd?.price}</ProCard>
           <ProCard className={styles.card}>
             <Search
-                name="search-jd"
-                placeholder="请输入对应商品链接地址"
-                allowClear
-                value={resData.jd?.url}
-                onChange={(e) => {
-                  setResData({
-                    ...resData,
-                    'jd':{
-                      ...resData.jd,
-                      url: e.target.value
-                    }
-                  })
-                }}
-                enterButton="抓取"
-                style={{
-                  width: "92%",
-                  float: 'left'
-                }}
-                size="middle"
-                onSearch={(_) => {onSearch(_,'jd',a.id)}}
-                loading={loading.jd}
-              />
-            <Button
-              disabled={!grabList}
-              key={a.id}
-              style={{
-              width: "8%",
-              float: 'right'
-            }} onClick={() => {
-              bindData(a.id, 'jd')
-            }}>绑定</Button>
+              name="search-jd"
+              placeholder="请输入对应商品链接地址"
+              allowClear
+              value={resData.jd?.url}
+              onChange={(e) => {
+                setResData({
+                  ...resData,
+                  'jd':{
+                    ...resData.jd,
+                    url: e.target.value
+                  }
+                })
+              }}
+              enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 2?true:false}>抓取</Button>}
+              onSearch={(_) => {setLoadingIndex(2);onSearch(_,'jd', a.id)}}
+            />
           </ProCard>
-
         </ProCard>
         <ProCard split="vertical" className={styles.header}>
           <ProCard colSpan="120px" className={styles.card}>拼多多</ProCard>
@@ -218,28 +187,22 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>{resData.pdd?.price}</ProCard>
             <ProCard className={styles.card}>
               <Search
-                  placeholder="请输入对应商品链接地址"
-                  allowClear
-                  value={resData.pdd?.url}
-                  onChange={(e) => {
-                    setResData({
-                      ...resData,
-                      'pdd':{
-                        ...resData.pdd,
-                        url: e.target.value
-                      }
-                    })
-                  }}
-                  enterButton="抓取"
-                  size="middle"
-                  style={{
-                    width: "92%",
-                    float: 'left'
-                  }}
-                  onSearch={(_) => {onSearch(_,'pdd',a.id)}}
-                  loading={loading.pdd}
-                />
-              <Button
+                placeholder="请输入对应商品链接地址"
+                allowClear
+                value={resData.pdd?.url}
+                onChange={(e) => {
+                  setResData({
+                    ...resData,
+                    'pdd':{
+                      ...resData.pdd,
+                      url: e.target.value
+                    }
+                  })
+                }}
+                enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 3?true:false}>抓取</Button>}
+                onSearch={(_) => {setLoadingIndex(3);onSearch(_,'pdd', a.id)}}
+              />
+              {/* <Button
                 disabled={!grabList}
                 key={a.id}
                 style={{
@@ -247,48 +210,34 @@ const PriceManagement = () => {
                 float: 'right'
               }} onClick={() => {
                 bindData(a.id, 'pdd')
-              }}>绑定</Button>
+              }}>绑定</Button> */}
             </ProCard>
         </ProCard>
         <ProCard split="vertical" className={styles.header}>
-          <ProCard colSpan="120px" className={styles.card}>天猫</ProCard>
+          <ProCard colSpan="120px" className={styles.top  }>天猫</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.tmall?.sku}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.tmall?.price}</ProCard>
           <ProCard className={styles.card}>
             <Search
-                placeholder="请输入对应商品链接地址"
-                allowClear
-                value={resData.tmall?.url}
-                onChange={(e) => {
-                  setResData({
-                    ...resData,
-                    'tmall':{
-                      ...resData.tmall,
-                      url: e.target.value
-                    }
-                  })
-                }}
-                enterButton="抓取"
-                style={{
-                  width: "92%",
-                  float: 'left'
-                }}
-                size="middle"
-                onSearch={(_) => {onSearch(_,'tmall',a.id)}}
-                loading={loading.tmall}
-              />
-            <Button
-              disabled={!grabList}
-              key={a.id}
-              style={{
-              width: "8%",
-              float: "right"
-            }} onClick={() => {
-              bindData(a.id, 'tmall')
-            }}>绑定</Button>
+              placeholder="请输入对应商品链接地址"
+              allowClear
+              value={resData.tmall?.url}
+              onChange={(e) => {
+                setResData({
+                  ...resData,
+                  'tmall':{
+                    ...resData.tmall,
+                    url: e.target.value
+                  }
+                })
+              }}
+              enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 4?true:false}>抓取</Button>}
+              onSearch={(_) => {setLoadingIndex(4);onSearch(_,'tmall', a.id)}}
+            />
           </ProCard>
         </ProCard>
       </ProCard>
+      </ Spin>
     );
   };
 
@@ -335,13 +284,7 @@ const PriceManagement = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _) => {
-        return (
-          <>
-            &nbsp;&nbsp;{<a key="d" onClick={() => {formControl(record.id)}}>删除</a>}
-          </>
-        )
-      }
+      render: (text, record, _)=><a key="d" onClick={() => {formControl(record.id)}}>删除</a>
     },
   ]
 
@@ -353,11 +296,18 @@ const PriceManagement = () => {
     getGoodsBindData({goodsId:index[0],goodsSkuId:index[1]}).then(res => {
       if (res.code === 0) {
         setResData(res.data)
+        setRowLoadin(false)
       }
     })
   }
 
   const changeRowKeys = (expanded, record) => {
+    setRowLoadin(true)
+    setFormjsx(false)
+    setFormData({})
+    setIsShow(false)
+    clearTimeout(ref.current)
+    setLoadingIndex(-1)
     let temp = []
     if (expanded) {
       temp.push(record.allKey)
