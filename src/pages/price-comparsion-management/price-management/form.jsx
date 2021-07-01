@@ -99,6 +99,10 @@ export default (props) => {
       }}
     >
 <ProTable
+      style={{
+        height: 500,
+        overflowY: "auto"
+      }}
       rowKey="id"
       options={false}
       columns={columns}
