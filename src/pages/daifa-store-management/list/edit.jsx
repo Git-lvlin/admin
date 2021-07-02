@@ -305,7 +305,7 @@ export default (props) => {
           label="账户结算银行"
           placeholder="请选择结算收款银行"
           request={getBanks}
-          // rules={[{ required: true, message: '请选择账户结算银行' }]}
+          rules={[{ required: true, message: '请选择账户结算银行' }]}
           fieldProps={{
             labelInValue: true,
           }}
@@ -314,7 +314,7 @@ export default (props) => {
           name="bankCardNo"
           label="结算银行卡号"
           placeholder="请输入结算银行卡号"
-          // rules={[{ required: true, message: '请输入结算银行卡号' }]}
+          rules={[{ required: true, message: '请输入结算银行卡号' }]}
       /> */}
       <Form.Item
         label="身份证姓名正面照片"
@@ -390,8 +390,8 @@ export default (props) => {
         extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
       >
         <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
-      </Form.Item>
-       */}
+      </Form.Item> */}
+      
 
       <ProFormText
         name="wechatNo"

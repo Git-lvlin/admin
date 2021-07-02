@@ -1,13 +1,9 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
-import { couponCcodebase } from '@/services/coupon-codebase/coupon-codebase';
+import { couponCcodebase } from '@/services/coupon-management/coupon-codebase';
 import { couponEnd } from '@/services/coupon-management/coupon-end';
-import * as api from '@/services/product-management/product-list';
-import { amountTransform, typeTransform } from '@/utils/utils'
 import XLSX from 'xlsx'
-import { history } from 'umi';
 
 export default props => {
   const ref=useRef()
@@ -112,7 +108,20 @@ export default props => {
           2: '已使用',
           3: '已过期',
           4: '已作废'
-        }
+        },
+        hideInTable:true
+    },
+    {
+        title: '优惠券状态',
+        dataIndex: 'status',
+        valueType: 'text',
+        valueEnum: {
+          1: '未使用',
+          2: '已使用',
+          3: '已过期',
+          4: '已作废'
+        },
+        hideInSearch: true
     },
     {
         title: '领券时间',
@@ -123,9 +132,6 @@ export default props => {
     }
     
   ];
-  const onIpute=(res)=>{
-        // console.log('res.selectedRows',res.selectedRows)
-  }
  useEffect(()=>{
   let id=props.location.query.id
   setLibraryId(parseInt(id))
@@ -173,9 +179,13 @@ const exportExcel = (searchConfig) => {
     }
   })
 }
+const filterData=(res)=>{
+  setCouponInfo([res.couponInfo])
+  return res.memberCouponList.records
+  }
 
   return (
-    <PageContainer>
+    <>
      <ProTable
         toolBarRender={false}
         search={false}
@@ -192,11 +202,8 @@ const exportExcel = (searchConfig) => {
           status: 1,
           id:libraryId
         }}
-        request={
-            params => couponCcodebase(params).then(res =>{
-              setCouponInfo([res.data.couponInfo])
-            })
-        }
+        postData={filterData}
+        request={couponCcodebase}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -218,9 +225,7 @@ const exportExcel = (searchConfig) => {
         }}
         columns={columns2}
         rowSelection={{}}
-        tableAlertOptionRender={onIpute}
       />
-    </PageContainer>
-
+      </>
   );
 };

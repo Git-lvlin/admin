@@ -58,6 +58,7 @@ export default {
         name: 'consultation-management',
         path: '/community-management/consultation-management',
         component: './community-management/consultation-management/index.js',
+        hideInMenu: true,
       },
       {
         name: 'reporttype-management',
