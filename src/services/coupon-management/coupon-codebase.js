@@ -19,5 +19,6 @@ export const couponCcodebase= async (params, options = {}) => {
     code: res.code,
     data: res.data,
     success: res.success,
+    total:res.data.memberCouponList.total
   }
 }

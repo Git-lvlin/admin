@@ -157,7 +157,7 @@ const  useCollect=(props)=>{
                         dataSource={rowobjs}
                         style={{display:loading?'none':'block'}}
                     />
-                    <div style={{ marginBottom: 16 }}>
+                    <div style={{ margin: 16 }}>
                         <Button type="primary" onClick={close} style={{display:loading?'block':'none'}}>
                             确定
                         </Button>

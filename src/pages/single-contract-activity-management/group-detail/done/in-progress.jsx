@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { Table } from 'antd';
+import { Table, Spin } from 'antd';
 import { singleGroupList, groupMemberList } from '@/services/single-contract-activity-management/group-detail'
 import { useParams } from 'umi';
 
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false);
   const columns = [
     { title: '序号', dataIndex: 'index', render: (_, $, index) => data.length - index },
     { title: '参团用户手机号', dataIndex: 'joinMemberPhone' },
@@ -16,17 +17,22 @@ const SubTable = (props) => {
   ];
 
   useEffect(() => {
+    setLoading(true);
     groupMemberList({
       groupId: props.data.id
     }).then(res => {
       if (res.code === 0) {
         setData(res?.data?.length ? res.data : [])
       }
+    }).finally(() => {
+      setLoading(false);
     })
   }, [])
 
   return (
-    <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+    <Spin spinning={loading}>
+      <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+    </Spin>
   )
 };
 
