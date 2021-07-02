@@ -874,18 +874,14 @@ export const savePriceList = async (params = {}, options = {}) => {
   if (status) {
     data.status = Number(status);
   }
-  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetHotGoodsList', {
+  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetHotGoodsList?isPage=true', {
     method: 'GET',
     data,
     ...options
   });
 
-  if (!res.data.length) {
-    res.data = []
-  }
-
   return {
-    data: res.data || [],
+    data: res.data.records || [],
     success: true,
     total: res.data.total,
   }
