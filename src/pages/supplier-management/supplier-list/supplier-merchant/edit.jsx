@@ -199,9 +199,9 @@ const ImageInfo = ({ value, onChange, bankAccountType }) => {
         {
           bankAccountType === 1
             ?
-            <Upload code={303} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankLicenseImgChange} />
+            <Upload key="1" code={303} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankLicenseImgChange} />
             :
-            <Upload code={303} value={bankCardFrontImg} text="上传结算银行卡正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankCardFrontImgChange} />
+            <Upload key="2" code={303} value={bankCardFrontImg} text="上传结算银行卡正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankCardFrontImgChange} />
         }
       </Space>
       {bankAccountType === 2 && <Space>
