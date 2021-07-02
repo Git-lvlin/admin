@@ -158,6 +158,9 @@ export default (props) => {
         })
         return data
       }}
+      params={{
+        couponStatus: 2
+      }}
       request={couponAddList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

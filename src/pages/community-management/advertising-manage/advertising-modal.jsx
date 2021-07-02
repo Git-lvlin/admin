@@ -7,16 +7,13 @@ import { Button,Form, Tabs,message } from 'antd';
 export default (props)=>{
     const {boxref,visible,setVisible,form,byid,title}=props
     useEffect(()=>{
-      console.log('byid',byid)
         if(byid){
             findAdsensePositionById({id:byid}).then(res=>{
                 form.setFieldsValue(res.data)
             })
-            
         }
     },[byid])
     const submit = (values) => {
-      console.log('asda',values);
             if(byid){
               values.id=byid
             }

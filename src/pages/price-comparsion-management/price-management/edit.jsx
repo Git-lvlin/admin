@@ -22,6 +22,7 @@ export default (props) => {
       valueType: 'text',
       search: false,
       width: 130,
+      ellipsis: true,
     },
     {
       title: '商家名称',
@@ -115,6 +116,10 @@ export default (props) => {
       }}
     >
 <ProTable
+      style={{
+        height: 600,
+        overflowY: "auto"
+      }}
       rowKey="skuId"
       options={false}
       columns={columns}
