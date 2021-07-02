@@ -88,6 +88,8 @@ export default (props) => {
       salePrice,
       marketPrice,
       freightTemplateId,
+      wholesaleFreight,
+      wholesaleTaxRate,
       ...rest } = values;
 
     const obj = {
@@ -99,6 +101,8 @@ export default (props) => {
       },
       primaryImages: urlsTransform(primaryImages),
       detailImages: urlsTransform(detailImages),
+      wholesaleFreight: amountTransform(wholesaleFreight),
+      wholesaleTaxRate,
       // advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl,
     };
@@ -335,10 +339,30 @@ export default (props) => {
         name="goodsName"
         label="商品名称"
         placeholder="请输入商品名称"
-        rules={[{ required: true, message: '请输入商品名称' }]}
+        rules={[
+          { required: true, message: '请输入商品名称' },
+          () => ({
+            validator(_, value) {
+              if (!value.replace(/\s/g, '') && value !== '') {
+                return Promise.reject(new Error('请输入商品名称'));
+              }
+              return Promise.resolve();
+            },
+          })
+        ]}
         fieldProps={{
           maxLength: 50,
         }}
+        disabled
+      />
+      <ProFormText
+        name="wholesaleFreight"
+        label="单位运费(元)"
+        disabled
+      />
+      <ProFormText
+        name="wholesaleTaxRate"
+        label="发票税率(%)"
         disabled
       />
       <ProFormText
