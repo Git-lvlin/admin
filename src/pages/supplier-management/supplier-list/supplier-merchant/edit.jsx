@@ -199,9 +199,9 @@ const ImageInfo = ({ value, onChange, bankAccountType }) => {
         {
           bankAccountType === 1
             ?
-            <Upload code={303} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankLicenseImgChange} />
+            <Upload key="1" code={303} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankLicenseImgChange} />
             :
-            <Upload code={303} value={bankCardFrontImg} text="上传结算银行卡正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankCardFrontImgChange} />
+            <Upload key="2" code={303} value={bankCardFrontImg} text="上传结算银行卡正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankCardFrontImgChange} />
         }
       </Space>
       {bankAccountType === 2 && <Space>
@@ -299,6 +299,8 @@ export default (props) => {
         idCardFrontImg: [imageInfo?.idCardFrontImg],
         idCardBackImg: [imageInfo?.idCardBackImg],
         bankLicenseImg: [imageInfo?.bankLicenseImg],
+        bankCardFrontImg: [imageInfo?.bankCardFrontImg],
+        bankCardBackImg: [imageInfo?.bankCardBackImg],
         legalName: legalInfo?.userName,
         legalIdCardNo: legalInfo?.code,
         legalIdCardExpire: legalInfo?.date,
@@ -360,6 +362,8 @@ export default (props) => {
           bankLicenseImg,
           idCardBackImg,
           idCardFrontImg,
+          bankCardFrontImg,
+          bankCardBackImg,
           bankCode,
           bankName,
           bankAccountType,
@@ -387,6 +391,8 @@ export default (props) => {
             bankLicenseImg: bankLicenseImg?.[0],
             idCardFrontImg: idCardFrontImg?.[0],
             idCardBackImg: idCardBackImg?.[0],
+            bankCardBackImg: bankCardBackImg?.[0],
+            bankCardFrontImg: bankCardFrontImg?.[0],
           },
           bankCode: { label: bankName, value: bankCode },
           bankAccountType: bankAccountType || 1,

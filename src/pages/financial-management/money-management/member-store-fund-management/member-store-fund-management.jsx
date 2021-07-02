@@ -132,12 +132,12 @@ const MemberStoreFundManagement = () => {
     },
     {
       title: '入驻时间',
-      dataIndex: 'bindTime',
+      dataIndex: 'settleTime',
       hideInSearch: true
     },
     {
       title: '入驻时间',
-      dataIndex: 'bindTime',
+      dataIndex: 'settleTime',
       hideInTable: true,
       valueType: 'dateRange'
     },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DatePicker, Input, Form, Divider, message } from 'antd';
+import { DatePicker, Input, Form, Divider, message,Button } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
 import CouponType from './coupon-type/coupon-type'
 import Circulation from './circulation/circulation'
@@ -23,69 +23,94 @@ const couponConstruction=(props) => {
     }
     return undefined
   })
-  //优惠劵验证规则
+  //优惠劵名称验证规则
   const checkConfirm=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
     if (value&&value.length > 50) {
           await reject('优惠券名称不超过50个字符')
-      }else if(!value){
-          await reject('请输入优惠券名称')
-      }
-      else if (/^[a-zA-Z0-9_]+$/.test(value)) {
+      }else if (/[^\u4e00-\u9fa5\0-9]/.test(value)) {
           await reject('只能输入汉字')
       } else {
           await resolve()
       }
     })
   }
+  const onsubmit=(values)=>{
+    values.couponType = parseInt(UseScopeList.UseScopeObje.couponType) || 1,//优惠券类型
+    values.couponTypeInfo = {
+      usefulAmount: parseInt(values.usefulAmount),//用价格门槛(单位分)
+      freeAmount: parseInt(values.freeAmount),//优惠金额(单位分)
+      unit: values.unit,//单位
+      usefulNum: parseInt(values.usefulNum),//用件数门槛
+      freeDiscount: parseInt(values.freeDiscount),//折扣
+      maxFreeAmount: parseInt(values.maxFreeAmount)//最多优惠（单位分）
+    }
+    values.useType = parseInt(UseScopeList.UseScopeObje.useType)||1//使用范围
+    values.issueQuantity = parseInt(values.issueQuantity)//发行量
+    values.limitStartTime = values.date?values.date[0]:null,//限时领取开始时间
+    values.limitEndTime = values.date?values.date[1]:null,//限时领取结束时间
+    values.limitQuantity=parseInt(values.limitQuantity)//限领数量
+    values.activityStartTime = values.date2?values.date2[0]:null,//有效期开始时间
+    values.activityEndTime = values.date2?values.date2[1]:null,//有效期结束时间
+    values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
+    values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
+    values.useTypeInfoM = {//秒约商品详情信息
+      memberType: parseInt(values.memberType),
+      goodsType: values.goodsType,
+      spuIds: UseScopeList.UseScopeObje.spuIds,
+      classId: parseInt(UseScopeList.UseScopeObje.unit)
+    }
+    if(values.goodsType==1){
+      delete values.useTypeInfoM.spuIds
+      delete values.useTypeInfoM.classId
+    }else if(values.goodsType==2){
+      delete values.useTypeInfoM.classId
+    }else if(values.goodsType==3){
+      delete values.useTypeInfoM.spuIds
+    }
+    values.useTypeInfoJ = {//集约商品详情信息
+      wholesaleIds:UseScopeList.UseScopeObje.wholesaleIds
+    }
+    couponSub(values).then((res)=>{
+      if(res.code==0){
+        history.push('/coupon-management/coupon-list') 
+        message.success('提交成功'); 
+        dispatch({
+          type:'UseScopeList/fetchUseScopeList',
+          payload:{
+            UseScopeObje:{}
+          }
+        })
+      }
+    }) 
+  }
   return (
     <>
       <Divider orientation="left"><FormattedMessage id="formandbasic-form.basic.setup" /></Divider>
       <ProForm
           form={form}
-          submitter={(parseInt(id)==id)?false:true}
-          onFinish={async (values) => {
-              values.couponType = parseInt(UseScopeList.UseScopeObje.couponType) || 1,//优惠券类型
-              values.couponTypeInfo = {
-                usefulAmount: parseInt(values.usefulAmount),//用价格门槛(单位分)
-                freeAmount: parseInt(values.freeAmount),//优惠金额(单位分)
-                unit: values.unit,//单位
-                usefulNum: parseInt(values.usefulNum),//用件数门槛
-                freeDiscount: parseInt(values.freeDiscount),//折扣
-                maxFreeAmount: parseInt(values.maxFreeAmount)//最多优惠（单位分）
+          submitter={
+            {
+              render: (props, doms) => {
+                if(parseInt(id)!=id){
+                return [
+                  <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
+                    保存
+                  </Button>,
+                  <Button type="default" onClick={()=>history.push('/coupon-management/coupon-list')}>
+                    返回
+                  </Button>,
+                  
+                ];
               }
-              values.useType = parseInt(UseScopeList.UseScopeObje.useType)||1//使用范围
-              values.issueQuantity = parseInt(values.issueQuantity)//发行量
-              values.limitStartTime = values.date?values.date[0]:null,//限时领取开始时间
-              values.limitEndTime = values.date?values.date[1]:null,//限时领取结束时间
-              values.limitQuantity=parseInt(values.limitQuantity)//限领数量
-              values.activityStartTime = values.date2?values.date2[0]:null,//有效期开始时间
-              values.activityEndTime = values.date2?values.date2[1]:null,//有效期结束时间
-              values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
-              values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
-              values.useTypeInfoM = {//秒约商品详情信息
-                memberType: parseInt(values.memberType),
-                goodsType: values.goodsType,
-                spuIds: UseScopeList.UseScopeObje.spuIds,
-                classId: parseInt(UseScopeList.UseScopeObje.unit)
               }
-              values.useTypeInfoJ = {//集约商品详情信息
-                wholesaleIds:UseScopeList.UseScopeObje.wholesaleIds
-              }
-            console.log('values', values)
-            couponSub(values).then((res)=>{
-              if(res.code==0){
-                history.push('/coupon-management/coupon-list') 
-                message.success('提交成功'); 
-                dispatch({
-                  type:'UseScopeList/fetchUseScopeList',
-                  payload:{
-                    UseScopeObje:{}
-                  }
-                })
-              }
-            }) 
-        }}
+            }
+          }
+          onFinish={async (values)=>{
+             await  onsubmit(values);
+             return true;
+            }
+           }
         style={{ width: '1000px', margin: '0 auto' }}
       >
         {/* 优惠券名称 */}
@@ -94,6 +119,7 @@ const couponConstruction=(props) => {
           name="couponName"
           label={<FormattedMessage id="formandbasic-form.title.label" />}
           rules={[
+            { required: true, message: '请输入优惠劵名称' },
             {validator: checkConfirm}
           ]}
         />

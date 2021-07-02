@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Tooltip, Table } from 'antd';
+import { Button, Tooltip, Table, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import XLSX from 'xlsx'
 import { PageContainer } from '@ant-design/pro-layout';
@@ -14,6 +14,8 @@ import { amountTransform, typeTransform } from '@/utils/utils'
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false);
+
   const columns = [
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
@@ -28,16 +30,21 @@ const SubTable = (props) => {
   ];
 
   useEffect(() => {
+    setLoading(true);
     api.productList({
       selectType: 2,
       spuId: props.data.spuId
     }).then(res => {
       setData(res?.data)
+    }).finally(() => {
+      setLoading(false);
     })
   }, [])
 
   return (
-    <Table columns={columns} dataSource={data} pagination={false} />
+    <Spin spinning={loading}>
+      <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+    </Spin>
   )
 };
 

@@ -27,26 +27,28 @@ const Details = () => {
     }
   }, [])
 
-  const leftCard = () => {
+  const card = () => {
     if(query.accountType==='supplier'){
       return '供应商银行账户'
     } else if(query.accountType==='store'){
       return '会员店银行账户'
     }else if(query.accountType==='agentStore'){
-      return '消费者银行账户'
+      return '代发店银行账户'
     }else{
       return ''
     }
   }
-  const rightCard = () => {
-    if(query.accountType==='supplier'|| query.accountType==='store'){
-      return '会员店虚拟子账户'
-    }else if(query.accountType==='agentStore'){
-      return '消费者虚拟子账户'
-    }else{
-      return ''
-    }
-  }
+  // const rightCard = () => {
+  //   if(query.accountType==='store'){
+  //     return '会员店虚拟子账户'
+  //   }else if(query.accountType==='agentStore'){
+  //     return '消费者虚拟子账户'
+  //   }else if(query.accountType==='supplier'){
+  //     return ''
+  //   }else {
+  //     return ''
+  //   }
+  // }
 
   const skipToDetail = ({accountType, accountId}) => {
     history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
@@ -63,7 +65,7 @@ const Details = () => {
           colSpan={{ xs: 24, sm: 12, md: 12, lg: 12, xl: 12 }}
           bordered
           style={{ height: 280 }}
-          title={leftCard()}
+          title={card()}
         >
            <div className={styles.bindCard}>
             <div>账户名称： <span>{data?.realname}</span></div>
@@ -75,7 +77,7 @@ const Details = () => {
           colSpan={{ xs: 24, sm: 12, md: 12, lg: 12, xl: 12 }}
           style={{ height: 280 }}
           bordered
-          title={rightCard()}
+          title={card()}
         >
            <div className={styles.platform}>
             <div>账户号码： </div>

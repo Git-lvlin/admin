@@ -40,6 +40,12 @@ const TableList = () => {
 
   const columns = [
     {
+      title: 'ID',
+      dataIndex: 'id',
+      valueType: 'text',
+      hideInSearch: true
+    },
+    {
       title: '供应商名称',
       dataIndex: 'companyName',
       valueType: 'text',

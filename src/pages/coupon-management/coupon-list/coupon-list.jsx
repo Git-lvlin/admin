@@ -97,7 +97,6 @@ const TableList = (props) => {
       <a
           key="a"
           onClick={()=>{
-            console.log('data',data)
             Examine(data.id)
           }}
         >

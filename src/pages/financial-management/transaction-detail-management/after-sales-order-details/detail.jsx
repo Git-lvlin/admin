@@ -59,7 +59,7 @@ const Detail = () => {
   }
   const columns1 = [
     {
-      title: '售后订单ID',
+      title: '售后订单号',
       dataIndex: 'refundNo'
     },
     {
@@ -101,7 +101,7 @@ const Detail = () => {
       }
     },
     {
-      title: '关联订单ID',
+      title: '关联订单号',
       dataIndex: 'orderNo'
     },
     {

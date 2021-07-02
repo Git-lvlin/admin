@@ -15,7 +15,7 @@ const TableList = () => {
   const columns = [
     {
       title: '订单编号',
-      dataIndex: 'sumOrderId',
+      dataIndex: 'orderSn',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入订单编号'

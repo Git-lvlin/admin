@@ -63,7 +63,6 @@ const PaymentDetails = () => {
     {
       title: '交易时间',
       dataIndex: 'createTime',
-      valueType: 'dateRange',
       hideInSearch: true
     },
     {

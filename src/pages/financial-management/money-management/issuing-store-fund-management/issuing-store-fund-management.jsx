@@ -87,7 +87,7 @@ const IssuingStoreFundManagement = () => {
       valueType: 'indexBorder'
     },
     {
-      title: '会员ID',
+      title: '代发店ID',
       dataIndex: 'accountId'
     },
     {
