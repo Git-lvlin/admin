@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card, Space, Table } from 'antd';
+import { Button, Card, Space, Table, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { getWholesaleList, getWholesaleDetail, getWholesaleSku, updateWholesaleState } from '@/services/intensive-activity-management/intensive-activity-list'
 import { history } from 'umi';
@@ -11,6 +11,8 @@ import Big from 'big.js';
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false);
+
   const columns = [
     {
       title: 'spuID',
@@ -88,17 +90,22 @@ const SubTable = (props) => {
   ];
 
   useEffect(() => {
+    setLoading(true);
     getWholesaleSku({
       wholesaleId: props.wholesaleId
     }).then(res => {
       if (res.code === 0) {
         setData(res?.data?.length ? res.data : [])
       }
+    }).finally(() => {
+      setLoading(false);
     })
   }, [])
 
   return (
-    <Table columns={columns} dataSource={data} pagination={false} />
+    <Spin spinning={loading}>
+      <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+    </Spin>
   )
 };
 

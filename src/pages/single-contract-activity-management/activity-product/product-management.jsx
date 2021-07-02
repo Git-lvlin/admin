@@ -25,7 +25,6 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入商品名称'
       },
-      hideInSearch: true,
     },
     // {
     //   title: '图片',
@@ -41,8 +40,8 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '所属商家',
-      dataIndex: 'supplierName',
+      title: '商家ID',
+      dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
     },

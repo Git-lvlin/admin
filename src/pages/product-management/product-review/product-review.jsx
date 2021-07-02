@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Tooltip } from 'antd';
+import { Table, Tooltip, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { QuestionCircleOutlined } from '@ant-design/icons'
@@ -15,6 +15,8 @@ import { typeTransform, amountTransform } from '@/utils/utils'
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false);
+
   const columns = [
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
@@ -29,16 +31,21 @@ const SubTable = (props) => {
   ];
 
   useEffect(() => {
+    setLoading(true);
     api.checkList({
       selectType: 2,
       spuId: props.data.spuId
     }).then(res => {
       setData(res?.data)
+    }).finally(() => {
+      setLoading(false);
     })
   }, [])
 
   return (
-    <Table columns={columns} dataSource={data} pagination={false} />
+    <Spin spinning={loading}>
+      <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+    </Spin>
   )
 };
 

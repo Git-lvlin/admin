@@ -140,6 +140,16 @@ export default (props) => {
       >
         {goods.goodsName}
       </Form.Item>
+      <Form.Item
+        label="单位运费(元)"
+      >
+        {goods.wholesaleFreight}
+      </Form.Item>
+      <Form.Item
+        label="发票税率(%)"
+      >
+        {goods.wholesaleTaxRate}
+      </Form.Item>
       {goods.goodsDesc &&
         <Form.Item
           label="商品副标题"
@@ -251,7 +261,7 @@ export default (props) => {
               {
                 ({ settleType }) => (
                   <>
-                    
+
                     <ProFormText
                       name="salePrice"
                       label="秒约价"

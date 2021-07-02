@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { Space, Table } from 'antd';
+import { Space, Table, Spin } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useParams, useLocation } from 'umi';
 import { multiGroupList, groupMemberList } from '@/services/single-contract-activity-management/group-detail'
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false);
 
   const columns = [
     { title: '序号', dataIndex: 'index', render: (_, $, index) => data.length - index },
@@ -17,15 +18,20 @@ const SubTable = (props) => {
   ];
 
   useEffect(() => {
+    setLoading(true);
     groupMemberList({
       groupId: props.data.id
     }).then(res => {
       setData(res?.data?.length ? res.data : [])
+    }).finally(() => {
+      setLoading(false);
     })
   }, [])
 
   return (
-    <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+    <Spin spinning={loading}>
+      <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+    </Spin>
   )
 };
 
