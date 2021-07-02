@@ -4,7 +4,7 @@ import { releaseDynamic } from '@/services/community-management/dynamic-release-
 import { listSystemVirtualMember } from '@/services/community-management/memberinfo-list-system-virtual-member';
 import ProForm, { ProFormTextArea,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';
-import { message, Form } from 'antd';
+import { message, Form,Button } from 'antd';
 import Upload from '@/components/upload';
 
 export default props => {
@@ -37,6 +37,20 @@ export default props => {
             }
           })
         }}
+        submitter={{
+          render: (props, doms) => {
+            console.log(props);
+            return [
+              <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
+                保存
+              </Button>,
+              <Button type="default" onClick={()=>history.push('/community-management/content-management')}>
+                返回
+              </Button>,
+              
+            ];
+          }
+        }}
         style={{ width: '1000px', margin: '0 auto' }}
       >
          <ProFormSelect
@@ -58,9 +72,20 @@ export default props => {
             name="content"
             label="分享想法"
             placeholder="用户可编辑500个字。"
-            rules={[{ required: true, message: '请输入分享想法' }]}
+            rules={[
+              { required: true, message: '请输入分享想法' },
+              { validator:(rule,value,callback)=>{
+                return new Promise(async (resolve, reject) => {
+                if(value&&value.length>500){
+                  await reject('最多500个字')
+                }else {
+                  await resolve()
+              }
+              })
+              }}
+            ]}
         />
-        <Form.Item label="上传照片" name="images" tooltip="最大不能超过1M">
+        <Form.Item label="上传照片" name="images" tooltip="尺寸任意。支持图片类型：png、jpg、gif，大小不超过1M">
          <Upload code={204} multiple maxCount={1} accept="image/*" size={1024}/>
          </Form.Item>
       </ProForm>

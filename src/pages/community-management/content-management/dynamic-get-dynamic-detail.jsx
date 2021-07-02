@@ -36,7 +36,6 @@ export default props => {
 
   return (
     <>
-     <PageContainer>
       <Spin
         spinning={loading}
       >
@@ -72,7 +71,11 @@ export default props => {
           <Form.Item
             label="商品快照"
           >
-            <img width={400} height={400} src={detailData.images?.[0]} alt="" />
+            {
+              detailData.images?.map(ele=>(
+                <img width={100} height={100} src={ele} alt="" />
+              ))
+            }
           </Form.Item>
           <Form.Item
             label="."
@@ -82,7 +85,6 @@ export default props => {
           
         </Form>
       </Spin> 
-    </PageContainer>
     
     </>
   );

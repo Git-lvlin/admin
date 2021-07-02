@@ -11,7 +11,6 @@ const CircleSelect = ({ value, onChange, }) => {
               {label:ele.name,value:ele.id}
           )))
       })
-      console.log('circleData',circleData)
   },[])
 
   const changeHandle = (v) => {

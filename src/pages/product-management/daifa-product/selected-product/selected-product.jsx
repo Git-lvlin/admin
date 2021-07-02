@@ -2,11 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
 import { Button, Form, Select, Table, message, Input } from 'antd';
 import { productList, setIndex } from '@/services/product-management/daifa-product';
-import { categoryAll } from '@/services/common';
-import GcCascader from '@/components/gc-cascader'
+import GcCascader from '@/components/gc-cascader';
 import { amountTransform } from '@/utils/utils';
 import Edit from './form';
-import Pop from './pop';
+// import Pop from './pop';
 import Big from 'big.js';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProCard from '@ant-design/pro-card';
@@ -86,7 +85,7 @@ export default function EditTable() {
   const [dataSource, setDataSource] = useState([]);
   const [hasData, setHasData] = useState(false);
   const [formVisible, setFormVisible] = useState(false);
-  const [popShow, setPopShow] = useState(false);
+  // const [popShow, setPopShow] = useState(false);
   const [params, setParams] = useState({
     selectType: 1,
   });
@@ -154,7 +153,6 @@ export default function EditTable() {
   ]
 
   const setGoodsIndex = (r) => {
-    console.log('r', r)
     const { feedId:productId, gcId, goodsState, floatPercent } = r
     if (!(/(^[1-9]\d*$)/.test(floatPercent))) {
       return message.error('请输入正整数')
@@ -187,20 +185,15 @@ export default function EditTable() {
     setEditableKeys(data.map(item => item.id));
     const arr = data.map(item => ({
       ...item,
-      // totalStockNum: item.stockNum,
-      // minNum: 1,
       gcId: item.gcId1&&item.gcId2&&[Number(item.gcId1), Number(item.gcId2)],
       price: amountTransform(+item.price, '/'),
       floatPercent: 500,
       goodsState: 1,
-      // perStoreMinNum: 10,
-      // totalPrice: item.salePrice > 0 ? +new Big(+item.salePrice).div(100).times(10) : 0,
     }))
     setDataSource(arr)
   }
 
   useEffect(() => {
-    // categoryAll()
     hasData&&actionRef.current.reset();
   }, [hasData])
 
@@ -274,12 +267,12 @@ export default function EditTable() {
       pagination={{
         pageSize: 5
       }}
-      rowSelection={{
-        onChange: (_, val) => {
-          // onSelect(val[0])
-          console.log('_', _, val)
-        }
-      }}
+      // rowSelection={{
+      //   onChange: (_, val) => {
+      //     onSelect(val[0])
+      //     console.log('_', _, val)
+      //   }
+      // }}
       bordered
       recordCreatorProps={false}
       tableAlertRender={false}

@@ -3,7 +3,7 @@ import { circleInsert,circleDetail } from '@/services/community-management/circl
 import { circleUpdateCircle } from '@/services/community-management/circle-update-circle';
 import ProForm, { ProFormTextArea,ProFormText,ProFormRadio} from '@ant-design/pro-form';
 import { history } from 'umi';
-import { message, Form } from 'antd';
+import { message, Form,Button } from 'antd';
 import Upload from '@/components/upload';
 
 export default props => {
@@ -38,26 +38,68 @@ export default props => {
               }
             })
           }
-         
         }}
         form={form}
         params={{}}
         style={{ width: '1000px', margin: '0 auto' }}
+        submitter={{
+          // 完全自定义整个区域
+          render: (props, doms) => {
+            console.log(props);
+            return [
+              <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
+                保存
+              </Button>,
+              <Button type="default" onClick={()=>history.push('/community-management/circle-management')}>
+                返回
+              </Button>,
+              
+            ];
+          }
+        }}
+        
       >
         <ProFormText
             width="md"
             name="name"
             label="圈子名称"
             tooltip="最长为 24 位"
-            rules={[{ required: true, message: '请输入圈子名称' }]}
+            rules={[
+              { required: true, message: '请输入圈子名称' },
+              { validator:(rule,value,callback)=>{
+                return new Promise(async (resolve, reject) => {
+                if(value&&value.length>15){
+                  await reject('圈子名称不超过15个字符')
+                }else if (/[%&',;=?$\x22]/.test(value)) {
+                  await reject('圈子名称不可以含特殊字符')
+                }else {
+                    await resolve()
+                }
+              })
+              }}
+            ]}
         />
         <ProFormTextArea
             width="md"
             name="describe"
             label="圈子描述"
-            rules={[{ required: true, message: '请输入圈子描述' }]}
+            rules={[
+              { required: true, message: '请输入圈子描述' },
+              { validator:(rule,value,callback)=>{
+                return new Promise(async (resolve, reject) => {
+                if(value&&value.length>50){
+                  await reject('圈子描述不超过50个字符')
+                }else if (/[%&',;=?$\x22]/.test(value)) {
+                    await reject('圈子描述不可以含特殊字符')
+                } 
+                else {
+                  await resolve()
+              }
+              })
+              }}
+            ]}
         />
-        <Form.Item label="圈子ICON" name="logo" tooltip="图片最大不能超过375k，图片比列为1:1" rules={[{ required: true, message: '请上传图片，限制在375k' }]} >
+        <Form.Item extra="建议尺寸：宽240px   高240px，支持扩展名：png、jpg、gif，大小不超过1M" label="圈子ICON" name="logo" tooltip="建议尺寸：宽240px   高240px，支持扩展名：png、jpg、gif，大小不超过1M" rules={[{ required: true, message: '请上传图片，限制在375k' }]} >
            <Upload code={204} multiple maxCount={1} accept="image/*" dimension="1:1" size={375} />
         </Form.Item>
         <ProFormRadio.Group

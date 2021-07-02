@@ -17,7 +17,6 @@ const [visible2, setVisible2] = useState(false);
 const [form] = Form.useForm()
 const [byid,setByid]=useState()
 const Termination=(record)=>{
-  console.log('record',record)
   setByid(record.id)
   setVisible(true)
 }

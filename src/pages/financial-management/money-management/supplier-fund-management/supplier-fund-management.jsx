@@ -100,12 +100,12 @@ const SupplierFundManagement = () => {
     },
     {
       title: '入驻日期',
-      dataIndex: 'registTime',
+      dataIndex: 'settleTime',
       hideInSearch: true
     },
     {
       title: '入驻日期',
-      dataIndex: 'registTime',
+      dataIndex: 'settleTime',
       hideInTable: true,
       valueType: 'dateRange'
     },
