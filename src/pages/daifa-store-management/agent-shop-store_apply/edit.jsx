@@ -298,7 +298,7 @@ export default (props) => {
           label="账户结算银行"
           placeholder="请选择结算收款银行"
           request={getBanks}
-          // rules={[{ required: true, message: '请选择账户结算银行' }]}
+          rules={[{ required: true, message: '请选择账户结算银行' }]}
           fieldProps={{
             labelInValue: true,
           }}
@@ -307,7 +307,7 @@ export default (props) => {
           name="bankCardNo"
           label="结算银行卡号"
           placeholder="请输入结算银行卡号"
-          // rules={[{ required: true, message: '请输入结算银行卡号' }]}
+          rules={[{ required: true, message: '请输入结算银行卡号' }]}
       /> */}
       <Form.Item
         label="身份证正面照片"

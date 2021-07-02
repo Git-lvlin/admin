@@ -43,7 +43,6 @@ export default props => {
         params={{}}
         style={{ width: '1000px', margin: '0 auto' }}
         submitter={{
-          // 完全自定义整个区域
           render: (props, doms) => {
             console.log(props);
             return [
