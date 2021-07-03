@@ -120,7 +120,9 @@ const OrderPayDetailManagement = () =>{
     {
       title: '操作',
       dataIndex: 'option',
+      width: 80,
       valueType: 'option',
+      fixed: 'right',
       render: (_, records)=> <a onClick={()=>{skipToDetail(records?.orderNo)}}>详情</a>
     }
   ]
@@ -130,7 +132,7 @@ const OrderPayDetailManagement = () =>{
         rowKey='id'
         columns={columns}
         toolBarRender={false}
-        scroll={{ x: 2400 }}
+        scroll={{ x: 2100 }}
         pagination={{
           pageSize: 10,
           hideOnSinglePage: true,

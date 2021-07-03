@@ -6,7 +6,7 @@ import { history } from 'umi'
 import { amountTransform } from '@/utils/utils'
 import { platformCommissionPage } from '@/services/financial-management/transaction-detail-management'
 
-// 佣金明细
+// commission detail
 const CommissionDetailManagement = () =>{
   
   const skipToDetail = data => {
