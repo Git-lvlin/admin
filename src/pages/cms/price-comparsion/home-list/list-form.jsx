@@ -44,12 +44,13 @@ export default (props) => {
       if (arr.length !== 1) {
         message.error('只能添加一个商品!')
         reject(false)
+        return
       }
       if (arr[0].acquire === 0) {
         message.error('只能选择已抓取的商品!')
         reject(false)
+        return
       }
-     
       setIndexGoods(arr[0])
       resolve(true);
     });
