@@ -28,7 +28,6 @@ export default props => {
   useEffect(()=>{
     setLoading(true);
     getDynamicDetail({id}).then(res=>{
-      console.log('res',res.data)
       setDetailData(res.data)
     }).finally(() => {
       setLoading(false);

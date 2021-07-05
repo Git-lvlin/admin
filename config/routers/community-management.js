@@ -71,9 +71,9 @@ export default {
         component: './community-management/review-report/index.js'
       },
       {
-        name: 'admin-report-detail-list',
-        path: '/community-management/review-report/admin-report-detail-list',
-        component: './community-management/review-report/admin-report-detail-list',
+        name: 'report-detail-list',
+        path: '/community-management/report-detail-list',
+        component: './community-management/report-detail-list',
         hideInMenu: true,
 
       },

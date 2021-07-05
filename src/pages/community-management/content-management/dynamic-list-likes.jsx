@@ -1,6 +1,8 @@
 import React, { useRef,useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
+import { Button } from 'antd';
+import { history } from 'umi';
 import { listLikes } from '@/services/community-management/dynamic-list-likes';
 
 export default props => {
@@ -34,6 +36,9 @@ const columns= [
         toolBarRender={false}
         columns={columns}
       />
+       <Button style={{margin:"20px 0 20px 0"}} type="default" onClick={()=>history.goBack()}>
+            返回
+        </Button>
     </>
   );
 };

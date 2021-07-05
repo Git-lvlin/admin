@@ -27,7 +27,6 @@ export default props => {
   useEffect(()=>{
     setLoading(true);
     getDynamicDetail({id}).then(res=>{
-      console.log('res',res.data)
       setDetailData(res.data)
     }).finally(() => {
       setLoading(false);
@@ -80,7 +79,7 @@ export default props => {
           <Form.Item
             label="."
           >
-            <Button style={{margin:'20px'}} type="primary" onClick={()=>history.push('/community-management/content-management')}>返回</Button>
+            <Button style={{margin:'20px'}} type="primary" onClick={()=>history.goBack()}>返回</Button>
           </Form.Item>
           
         </Form>

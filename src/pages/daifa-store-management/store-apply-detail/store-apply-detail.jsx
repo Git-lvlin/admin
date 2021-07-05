@@ -83,7 +83,6 @@ const ListApplyDetail = props => {
   }, [])
 
   return (
-    <PageContainer>
       <Spin
         spinning={loading}
       >
@@ -190,13 +189,11 @@ const ListApplyDetail = props => {
           <Form.Item
             label="."
           >
-            <Button type="primary" onClick={()=>history.push('/daifa-store-management/agent-shop-store_apply')}>返回</Button>
+            <Button type="primary" onClick={()=>history.goBack()}>返回</Button>
           </Form.Item>
 
         </Form>
       </Spin>
-
-    </PageContainer>
   )
 }
 

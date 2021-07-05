@@ -18,12 +18,10 @@ export default props => {
           )))
       })
     listSystemVirtualMember({}).then(res=>{
-      console.log('res',res)
         setVirtual(res.data.map(ele=>(
             {label:ele.nickName,value:ele.id}
         )))
     })
-      console.log('onselect',onselect)
   },[])
   return (
     <ProForm
@@ -39,12 +37,11 @@ export default props => {
         }}
         submitter={{
           render: (props, doms) => {
-            console.log(props);
             return [
               <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
                 保存
               </Button>,
-              <Button type="default" onClick={()=>history.push('/community-management/content-management')}>
+              <Button type="default" onClick={()=>history.goBack()}>
                 返回
               </Button>,
               
@@ -54,6 +51,7 @@ export default props => {
         style={{ width: '1000px', margin: '0 auto' }}
       >
          <ProFormSelect
+            width="md"
             name="userId"
             label="会员昵称"
             options={virtual}
@@ -61,6 +59,7 @@ export default props => {
             rules={[{ required: true, message: '请选择会员昵称' }]}
         />
          <ProFormSelect
+            width="md"
             name="circleId"
             label="发布圈子"
             options = {onselect}
