@@ -37,10 +37,10 @@ export default () => {
   const modules = {
     toolbar: {
       container: [
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],, //字体设置
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         ['bold', 'italic', 'underline', 'strike'],  
         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-        ['link'], // a链接
+        ['link'],
         [{ 'align': [] }],
         [{
           'background': ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)',
@@ -79,11 +79,11 @@ export default () => {
     wrapperCol: { span: 14 },
     layout: {
       labelCol: {
-        span: 4,
+        span: 4
       },
       wrapperCol: {
-        span: 14,
-      },
+        span: 14
+      }
     }
   }
   const DynamicProForm = () => {

@@ -6,7 +6,7 @@ import { history } from 'umi'
 import { amountTransform } from '@/utils/utils'
 import { commissionPage } from '@/services/financial-management/transaction-detail-management'
 
-//提成明细
+// bonus detail
 const BonusDetailManagement = () =>{
   const skipToDetail = data => {
     history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=bonus`)

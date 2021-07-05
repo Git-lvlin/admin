@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 import {
   ModalForm,
   ProFormSelect,
   ProFormText,
   ProFormTextArea
-} from '@ant-design/pro-form';
-import { Form } from 'antd';
-import * as api from '@/services/message-management/message-template-config';
+} from '@ant-design/pro-form'
+import { Form } from 'antd'
+import * as api from '@/services/message-management/message-template-config'
 
 export default (props) => {
-  const { visible, setVisible, callback, onClose, data } = props;
+  const { visible, setVisible, callback, onClose, data } = props
   const [form] = Form.useForm()
 
   const formItemLayout = {
@@ -17,11 +17,11 @@ export default (props) => {
     wrapperCol: { span: 14 },
     layout: {
       labelCol: {
-        span: 4,
+        span: 4
       },
       wrapperCol: {
-        span: 14,
-      },
+        span: 14
+      }
     }
   };
 
@@ -61,7 +61,7 @@ export default (props) => {
       labelAlign="right"
       {...formItemLayout}
       initialValues={{
-        status: 1,
+        status: 1
       }}
     >
       <ProFormText
@@ -87,8 +87,8 @@ export default (props) => {
         rules={[
           {
             required: true,
-            message: '请输入5-18个字符',
-          },
+            message: '请输入5-18个字符'
+          }
         ]}
       />
 
@@ -101,8 +101,8 @@ export default (props) => {
         rules={[
           {
             required: true,
-            message: '请输入至少6个字符',
-          },
+            message: '请输入至少6个字符'
+          }
         ]}
         fieldProps={{
           showCount: true,
@@ -124,5 +124,5 @@ export default (props) => {
         readonly
       />
     </ModalForm>
-  );
-};
+  )
+}

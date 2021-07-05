@@ -30,7 +30,7 @@ export default props => {
         dataIndex: 'count',
         valueType: 'text',
         render:(text, record, _, action)=>[
-          <a onClick={()=>history.push('/community-management/review-report/admin-report-detail-list?id='+record.sourceId)}>{record.count}</a>
+          <a onClick={()=>history.push('/community-management/report-detail-list?id='+record.sourceId)}>{record.count}</a>
         ],
         hideInSearch: true,
     },
@@ -80,7 +80,7 @@ export default props => {
         dataIndex: 'count',
         valueType: 'text',
         render:(text, record, _, action)=>[
-          <a onClick={()=>history.push('/community-management/review-report/admin-report-detail-list?id='+record.sourceId)}>{record.count}</a>
+          <a onClick={()=>history.push('/community-management/report-detail-list?id='+record.sourceId)}>{record.count}</a>
         ],
         hideInSearch: true,
     },
@@ -176,7 +176,6 @@ export default props => {
               page:1,
               size:5,
               type:'2',
-              // status:3
             }}
             request={adminReportList}
             actionRef={actionRef}

@@ -6,7 +6,7 @@ import { history } from 'umi'
 import { amountTransform } from '@/utils/utils'
 import { refundPage } from '@/services/financial-management/transaction-detail-management'
 
-// 售后订单明细
+// after sales order detail
 const AfterSalesOrderDetails = () =>{
 
   const skipToDetails = data => {
@@ -90,7 +90,7 @@ const AfterSalesOrderDetails = () =>{
     {
       title: '买家会员ID',
       dataIndex: 'buyerId',
-      ellipsis: true
+      
     },
     {
       title: '买家手机',
@@ -99,7 +99,7 @@ const AfterSalesOrderDetails = () =>{
     {
       title: '售后订单号',
       dataIndex: 'refundNo',
-      ellipsis: true
+      
     },
     {
       title: '订单类型',
@@ -134,17 +134,17 @@ const AfterSalesOrderDetails = () =>{
     {
       title: '关联订单号',
       dataIndex: 'orderNo',
-      ellipsis: true
+      
     },
     {
       title: '平台支付单号',
       dataIndex: 'payNo',
-      ellipsis: true
+      
     },
     {
       title: '资金流水号',
       dataIndex: 'transactionId',
-      ellipsis: true
+      
     },
     {
       title: '支付金额',
@@ -156,7 +156,7 @@ const AfterSalesOrderDetails = () =>{
       title: '创建时间',
       dataIndex: 'createTime',
       hideInSearch: true,
-      ellipsis: true
+      
     },
     {
       title: '操作',
@@ -169,6 +169,7 @@ const AfterSalesOrderDetails = () =>{
     <PageContainer title={false}>
       <ProTable
         rowKey='id'
+        scroll={{x: 2400}}
         columns={columns}
         toolBarRender={false}
         pagination={{

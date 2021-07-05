@@ -1,5 +1,4 @@
-import React, { useState,useRef} from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
+import React, {useRef} from 'react';
 import ProTable from '@ant-design/pro-table';
 import { CommentReplyList } from '@/services/community-management/dynamic-comment-reply-list';
 import { deleteCommentOrReply } from '@/services/community-management/delete-comment-reply';
@@ -84,14 +83,7 @@ export default props => {
         }}
         columns={columns}
         />
-        <Button
-            key="primary"
-            type="primary"
-            style={{margin:'20px'}}
-            onClick={() => {
-                history.push('/community-management/content-management')
-            }}
-            >
+        <Button style={{margin:"20px 0 20px 0"}} type="default" onClick={()=>history.goBack()}>
             返回
         </Button>
     </>

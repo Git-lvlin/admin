@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ProForm, {
   ProFormSelect,
-  ProFormText,
+  ProFormText
 } from '@ant-design/pro-form'
 import { Button, Form, Image, Spin } from 'antd'
 import { useParams, history } from 'umi'
@@ -23,10 +23,10 @@ export default () => {
   const modules = {
     toolbar: {
       container: [
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],, //字体设置
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         ['bold', 'italic', 'underline', 'strike'],  
         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-        ['link'], // a链接
+        ['link'],
         [{ 'align': [] }],
         [{
           'background': ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)',

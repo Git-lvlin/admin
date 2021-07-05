@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
-import * as api from '@/services/message-management/message-template-config';
-import Form from './form';
-import '../styles.less';
+import React, { useState, useRef } from 'react'
+import { PageContainer } from '@ant-design/pro-layout'
+import ProTable from '@ant-design/pro-table'
+import * as api from '@/services/message-management/message-template-config'
+import Form from './form'
+import '../styles.less'
 
 const index = () => {
   const [selectItem, setSelectItem] = useState(null)
@@ -94,4 +94,4 @@ const index = () => {
   )
 }
 
-export default index;
+export default index

@@ -1,18 +1,15 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { adminList } from '@/services/community-management/dynamic-admin-list';
 import { banDynamicComment } from '@/services/community-management/dynamic-ban-dynamic-comment';
 import { banShare } from '@/services/community-management/dynamic-ban-share';
 import { dynamicDelete } from '@/services/community-management/dynamic-delete';
-import { cancelDelete } from '@/services/community-management/dynamic-cancel-delete';
 import { dynamicTop } from '@/services/community-management/dynamic-top';
 import { cancelBanDynamicComment } from '@/services/community-management/dynamic-cancel-ban-dynamic-comment';
 import { cancelBanShare } from '@/services/community-management/dynamic-cancel-ban-share';
-import { ModalForm,ProFormSwitch} from '@ant-design/pro-form';
+import { ProFormSwitch} from '@ant-design/pro-form';
 import DeleteModal from '@/components/DeleteModal'
-import circleinteriorDetail from './circleinterior-management-detail'
-import { Button,Switch } from 'antd';
+import { Button} from 'antd';
 import { history } from 'umi';
 
 export default props => {

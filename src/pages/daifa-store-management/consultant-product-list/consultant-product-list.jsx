@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card, Space, Table } from 'antd';
+import { Space, Table } from 'antd';
 import { page_spuList,page_skuList } from '@/services/daifa-store-management/consultant-product-list'
-import { history } from 'umi';
 import { amountTransform } from '@/utils/utils'
 import GcCascader from '@/components/gc-cascader'
 
@@ -71,6 +69,8 @@ const SubTable = (props) => {
 const consultantProductList = props => {
   let spuId = props.location.query.spuId
   let storeNo = props.location.query.storeNo
+  let storeName = props.location.query.storeName
+  let wechatNo = props.location.query.wechatNo
   const [visible, setVisible] = useState(false);
   const [detailData, setDetailData] = useState(null)
   const actionRef = useRef();
@@ -180,7 +180,11 @@ const consultantProductList = props => {
   ];
 
   return (
-    <PageContainer>
+    <>
+      <Space>
+          <h1>{storeName}</h1>
+          <h3>{'(登录账号： '+wechatNo+')'}</h3>
+      </Space>
       <ProTable
         rowKey="id"
         options={false}
@@ -200,8 +204,7 @@ const consultantProductList = props => {
         actionRef={actionRef}
       />
       {detailData && <Detail detailData={detailData} visible={visible} onClose={() => { setVisible(false) }} />}
-    </PageContainer>
-
+  </>
   );
 };
 

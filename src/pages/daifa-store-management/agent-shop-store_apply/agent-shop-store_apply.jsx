@@ -1,6 +1,7 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { Button, Space } from 'antd';
+import { Space } from 'antd';
+import { PageContainer } from '@ant-design/pro-layout';
 import { storeApplyList,storeApplyDetail } from '@/services/daifa-store-management/agent-shop-store_apply'
 import { history } from 'umi';
 import Edit from './edit';
@@ -100,7 +101,7 @@ const filterData=(res)=>{
       }
     },
     {
-      title: '认证成功/失败详解',
+      title: '成功/失败详解',
       dataIndex: 'auditMsg',
       valueType: 'text',
       hideInSearch: true,
@@ -122,7 +123,7 @@ const filterData=(res)=>{
   ];
 
   return (
-    <>
+    <PageContainer>
       <ProTable
         rowKey="id"
         options={false}
@@ -150,8 +151,7 @@ const filterData=(res)=>{
         callback={() => { actionRef.current.reload(); setDetailData(null) }}
         onClose={() => { setDetailData(null) }}
       />}
-    </>
-
+     </PageContainer>
   );
 };
 

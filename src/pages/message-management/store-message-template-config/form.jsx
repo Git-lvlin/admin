@@ -89,7 +89,7 @@ export default (props) => {
           {
             required: true,
             message: '请输入5-18个字符'
-          },
+          }
         ]}
       />
 

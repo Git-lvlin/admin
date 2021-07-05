@@ -92,7 +92,7 @@ export default props => {
               <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
                 保存
               </Button>,
-              <Button type="default" onClick={()=>history.push('/community-management/community-advertising')}>
+              <Button type="default" onClick={()=>history.goBack()}>
                 返回
               </Button>,
               
@@ -104,7 +104,7 @@ export default props => {
             width="md"
             name="title"
             label="广告标题"
-            tooltip="最长为 24 位"
+            tooltip="最多20个字符"
             placeholder="请输入广告标题"
             rules={[
               { required: true, message: '请输入标题' },
@@ -154,7 +154,6 @@ export default props => {
                 width="md"
                 name="url"
                 label="URL跳转"
-                tooltip="最长为 24 位"
             />
             :null
           }
@@ -214,7 +213,6 @@ export default props => {
               { required: true, message: '请输入排名' },
             ]}
             label="排序"
-            tooltip="最长为 24 位"
         />
         <p>备注：同一个广告位置，序号1-100，1为最前。</p>
       </ProForm>

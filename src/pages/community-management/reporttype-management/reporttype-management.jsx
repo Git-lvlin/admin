@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';;
+import React from 'react';;
 import ProTable from '@ant-design/pro-table';
 import { listReportType } from '@/services/community-management/report-list-report-type'
 

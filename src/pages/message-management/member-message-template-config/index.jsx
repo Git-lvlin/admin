@@ -44,7 +44,11 @@ const message = (type, module) => {
         4: '小程序'
       }
     },
-    { title: '消息类型', dataIndex: 'type', hideInTable: true },
+    { 
+      title: '消息类型',
+      dataIndex: 'type',
+      hideInTable: true 
+    },
     { 
       title: '操作',
       dataIndex: 'option',

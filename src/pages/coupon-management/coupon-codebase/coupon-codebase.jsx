@@ -1,14 +1,14 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button, Space } from 'antd';
+import { Button} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { couponCcodebase } from '@/services/coupon-management/coupon-codebase';
-import { couponEnd } from '@/services/coupon-management/coupon-end';
+import { couponCcodebase,couponCodebaseEnd } from '@/services/coupon-management/coupon-codebase';
 import XLSX from 'xlsx'
 
 export default props => {
   const ref=useRef()
   const [couponInfo,setCouponInfo]=useState([])
   const [libraryId,setLibraryId]=useState(1)
+  const [byid,setByid]=useState()
 
   const columns=[
     {
@@ -135,13 +135,11 @@ export default props => {
  useEffect(()=>{
   let id=props.location.query.id
   setLibraryId(parseInt(id))
-   return undefined
  },[])
-  //导出数据
+//导出数据
 const exportExcel = (searchConfig) => {
-  console.log('searchConfig',searchConfig.form.getFieldsValue())
-  couponCcodebase({...searchConfig.form.getFieldsValue()}).then(res => {
-    console.log('res',res)
+  console.log('libraryId',libraryId)
+  couponCcodebase({id:libraryId,...searchConfig.form.getFieldsValue()}).then(res => {
     if (res.code === 0) {
       const data = res.data.memberCouponList.records.map(item => {
         const { ...rest } = item;
@@ -183,6 +181,9 @@ const filterData=(res)=>{
   setCouponInfo([res.couponInfo])
   return res.memberCouponList.records
   }
+const onIpute=(res)=>{
+  setByid(res.selectedRowKeys.toString())
+}
 
   return (
     <>
@@ -199,7 +200,6 @@ const filterData=(res)=>{
         options={false}
         actionRef={ref}
         params={{
-          status: 1,
           id:libraryId
         }}
         postData={filterData}
@@ -209,9 +209,8 @@ const filterData=(res)=>{
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-            <Button key="del" onClick={()=>{
-              console.log('searchConfig',searchConfig.form.getFieldsValue())
-              couponEnd({id:searchConfig.form.getFieldsValue().orderSn}).then(res=>{
+            <Button  onClick={()=>{
+              couponCodebaseEnd({ids:byid}).then(res=>{
                 if(res.code==0){
                   ref.current.reload();
                   return true;
@@ -225,6 +224,7 @@ const filterData=(res)=>{
         }}
         columns={columns2}
         rowSelection={{}}
+        tableAlertOptionRender={onIpute}
       />
       </>
   );

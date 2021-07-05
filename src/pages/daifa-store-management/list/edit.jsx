@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Form, Button, Tree, message, Checkbox } from 'antd';
+import { Form, Tree, message, Checkbox } from 'antd';
 import {
   DrawerForm,
   ProFormText,
@@ -67,6 +67,7 @@ export default (props) => {
   const [form] = Form.useForm()
   const [treeData, setTreeData] = useState([])
   const [selectKeys, setSelectKeys] = useState([]);
+  const [dataList,setDataList]=useState([])
   const originData = useRef([])
 
   const formItemLayout = {
@@ -81,7 +82,6 @@ export default (props) => {
       },
     }
   };
-
 
   const submit = (values) => {
     const { password, gc, ...rest } = values;
@@ -122,7 +122,6 @@ export default (props) => {
 
         })
 
-        // let hasError = false;
         for (const key in obj) {
           if (Object.hasOwnProperty.call(obj, key)) {
             const g = { gc_id1: key };
@@ -130,25 +129,19 @@ export default (props) => {
               g.gc_id2 = obj[key].filter(item => item !== 0).join(',')
             } else {
               g.gc_id2 ="0"
-              // hasError = true;
             }
             gcArr.push(g)
           }
         }
 
-
-        // if (hasError) {
-        //   message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
-        //   reject()
-        //   return;
-        // }
-
-      } else {
+      } else { 
         gcArr = ''
       }
       apiMethod({
         ...rest,
         storeNo:detailData&&detailData.storeNo,
+        bankCode:values.bankCode&&values.bankCode.key,
+        bankName:values.bankCode&&values.bankCode.label,
         businessScope: JSON.stringify(gcArr),
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
@@ -162,6 +155,58 @@ export default (props) => {
     });
   }
 
+  //店铺认证
+  const verifyStoreName=(rule,value,callback)=>{
+    return new Promise((resolve, reject) => {
+      dataList.map(ele=>{
+        if(!detailData){
+          if(ele.storeName==value){
+            reject(`店铺名称已存在，请重新输入`);
+          }
+        }else if(value&&value.length>30){
+            reject('店铺名称不超过30个字符')
+          }
+
+        if(detailData&&detailData.storeName!=value){
+            if(ele.storeName==value){
+              reject(`店铺名称已存在，请重新输入`);
+            }
+        }else if(value&&value.length>30){
+          reject('店铺名称不超过30个字符')
+        }
+      })
+          resolve()
+  })
+}
+  //店主认证
+  const verifyRealname=(rule,value,callback)=>{
+    return new Promise((resolve, reject) => {
+    dataList.map(ele=>{
+      if(!detailData){
+        if(ele.realname==value){
+          reject(`店主姓名已存在，请重新输入`);
+        }else if(value&&value.length>30){
+          reject('店主姓名不超过30个字符')
+        }    
+      }
+    })
+
+    resolve()
+  })
+}
+  //手机验证
+  const verifyMobile=(rule,value,callback)=>{
+    return new Promise((resolve, reject) => {
+      dataList.map(ele=>{
+        if(!detailData){
+          if(ele.mobile==value){
+            reject(`手机号已存在，请重新输入`);
+          }
+        }
+      })
+    resolve()
+  })
+}
   useEffect(() => {
     if (detailData) {
       form.setFieldsValue({
@@ -192,7 +237,10 @@ export default (props) => {
           setTreeData(tree)
         }
       })
-  }, [form, detailData]);
+      storeList({}).then(res=>{
+        setDataList(res.data)
+      })
+  }, []);
   return (
     <DrawerForm
       title={`${detailData ? '编辑' : '新建'}`}
@@ -222,27 +270,7 @@ export default (props) => {
         placeholder="请输入店铺名称"
         rules={[
             { required: true, message: '请输入店铺名称' },
-            { validator:(rule,value,callback)=>{
-              return new Promise(async (resolve, reject) => {
-              const res = await storeList({storeName:value})
-              if(!detailData){
-                if(res.data.length==1){
-                  await reject(`店铺名称已存在，请重新输入`);
-                }else if(value&&value.length>30){
-                  await reject('店铺名称不超过30个字符')
-                }
-              }
-
-              if(detailData&&detailData.storeName!=value){
-                if(res.data.length==1){
-                  await reject(`店铺名称已存在，请重新输入`);
-                }else if(value&&value.length>30){
-                  await reject('店铺名称不超过30个字符')
-                }
-              }
-                await resolve()
-            })
-          }}
+            { validator:verifyStoreName}
         ]}
       />
       <ProFormText
@@ -251,19 +279,7 @@ export default (props) => {
         placeholder="请输入店主姓名"
         rules={[
           { required: true, message: '请输入店主姓名' },
-          { validator:(rule,value,callback)=>{
-              return new Promise(async (resolve, reject) => {
-              const res = await storeList({realname:value})
-              if(!detailData){
-                if(res.data.length==1){
-                  await reject(`店主姓名已存在，请重新输入`);
-                }else if(value&&value.length>30){
-                  await reject('店主姓名不超过30个字符')
-                }    
-              }
-               await resolve()
-            })
-          }}
+          { validator:verifyRealname}
         ]}
         disabled={!!detailData}
       />
@@ -273,17 +289,7 @@ export default (props) => {
         placeholder="请输入店主手机号码"
         rules={[
             { required: true, message: '请输入店主手机号码' },
-            { validator:(rule,value,callback)=>{
-              return new Promise(async (resolve, reject) => {
-              const res = await storeList({mobile:value})
-              if(!detailData){
-                if(res.data.length==1){
-                  await reject(`手机号已存在，请重新输入`);
-                }
-              }
-              await resolve()
-            })
-          }}
+            { validator:verifyMobile}
         ]}
         fieldProps={{
           maxLength: 11,
@@ -300,7 +306,10 @@ export default (props) => {
         }}
         disabled={!!detailData}
       />
-       {/* <ProFormSelect
+      {
+        detailData?
+        null:
+        <ProFormSelect
           name="bankCode"
           label="账户结算银行"
           placeholder="请选择结算收款银行"
@@ -309,13 +318,34 @@ export default (props) => {
           fieldProps={{
             labelInValue: true,
           }}
-      />
-      <ProFormText
-          name="bankCardNo"
+        />
+      }
+      
+      {
+        detailData?
+        null:
+        <ProFormText
+          name="bankCard"
           label="结算银行卡号"
           placeholder="请输入结算银行卡号"
           rules={[{ required: true, message: '请输入结算银行卡号' }]}
-      /> */}
+          fieldProps={{
+            maxLength: 16,
+          }}
+      />
+      }
+      
+      {
+        detailData?
+        null:
+        <ProFormText
+          name="bankUserName"
+          label="结算银行卡开户名"
+          placeholder="请输入结算银行卡开户名"
+          rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
+      />
+      }
+       
       <Form.Item
         label="身份证姓名正面照片"
         name="idFront"
@@ -361,38 +391,46 @@ export default (props) => {
       >
         <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
-      {/* <Form.Item
-        label="上传结算银行卡正面照"
-        name="idHandheld"
-        rules={[{ required: true }]}
-        tooltip={
-          <dl>
-            <dt>图片要求</dt>
-            <dd>1.图片大小1MB以内</dd>
-            <dd>2.图片格式png/jpg/gif</dd>
-          </dl>
-        }
-        extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
-      >
-        <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
-      </Form.Item>
-      <Form.Item
-        label="上传结算银行卡背面照"
-        name="idHandheld"
-        rules={[{ required: true }]}
-        tooltip={
-          <dl>
-            <dt>图片要求</dt>
-            <dd>1.图片大小1MB以内</dd>
-            <dd>2.图片格式png/jpg/gif</dd>
-          </dl>
-        }
-        extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
-      >
-        <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
-      </Form.Item> */}
+      {
+         detailData?
+         null:
+         <Form.Item
+          label="结算银行卡正面照"
+          name="bankFront"
+          rules={[{ required: true }]}
+          tooltip={
+            <dl>
+              <dt>图片要求</dt>
+              <dd>1.图片大小1MB以内</dd>
+              <dd>2.图片格式png/jpg/gif</dd>
+            </dl>
+          }
+          extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
+        >
+          <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        </Form.Item>
+      }
       
-
+      {
+        detailData?
+        null:
+        <Form.Item
+          label="结算银行卡背面照"
+          name="bankBack"
+          rules={[{ required: true }]}
+          tooltip={
+            <dl>
+              <dt>图片要求</dt>
+              <dd>1.图片大小1MB以内</dd>
+              <dd>2.图片格式png/jpg/gif</dd>
+            </dl>
+          }
+          extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
+        >
+          <Upload code={304} disabled={!!detailData} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+        </Form.Item>
+      }
+     
       <ProFormText
         name="wechatNo"
         label="微信号"
