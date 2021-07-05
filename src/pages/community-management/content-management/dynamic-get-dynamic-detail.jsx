@@ -1,10 +1,8 @@
 import React, { useState,useEffect } from 'react';
 import { getDynamicDetail } from '@/services/community-management/dynamic-get-dynamic-detail';
-import { Divider, Form, Spin, Tree,Button } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
+import { Divider, Form, Spin,Button } from 'antd';
 import moment from 'moment';
 import { history } from 'umi';
-import { number } from 'prop-types';
 
 const formItemLayout = {
   labelCol: { span: 2 },

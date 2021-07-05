@@ -1,13 +1,14 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { commissionSum,commissionPage } from '@/services/daifa-store-management/list';
-import { history } from 'umi';
-import { Statistic, Row, Col, Button } from 'antd';
+import { Statistic, Row, Col,Space } from 'antd';
 import './style.less'
 
 export default props => {
     let storeNo = props.location.query.storeNo
+    let storeName = props.location.query.storeName
+    let realname = props.location.query.realname
+    let mobile = props.location.query.mobile
     let [moneyData,setMoneyData]=useState({})
     const ref=useRef()
     const columns = [
@@ -71,7 +72,11 @@ export default props => {
         })
     },[])
   return (
-    <PageContainer>
+      <>
+        <Space>
+            <h1>{storeName}</h1>
+            <h3>{'('+realname+' '+mobile +')'}</h3>
+        </Space>
         <Row gutter={16} style={{background:'#fff',padding:'20px',marginBottom:'20px'}}>
             <Col span={8}>
                <Statistic title="累计成交金额" style={{display:'inline-block'}} value={moneyData.totalOrderAmount&&moneyData.totalOrderAmount/100} precision={2}/>
@@ -111,6 +116,6 @@ export default props => {
             }}
             columns={columns}
         />
-  </PageContainer>
+    </>
   );
 };

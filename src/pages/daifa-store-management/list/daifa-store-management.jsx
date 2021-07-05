@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
-import { storeList,statusSwitch, storeDetail } from '@/services/daifa-store-management/list'
+import { PageContainer } from '@ant-design/pro-layout';
+import { storeList, storeDetail } from '@/services/daifa-store-management/list'
 import { history } from 'umi';
 import ExcelModel from '@/components/ExcelModel'
 import Edit from './edit';
@@ -93,7 +94,9 @@ const TableList = () => {
         if (_ === 0) {
           return _;
         }
-        return <a onClick={() => { history.push(`/daifa-store-management/list/consultant-product-list?spuId=${data.id}&storeNo=${data.storeNo}`) }}>{_}</a>
+        return <a onClick={() => { 
+          history.push(`/daifa-store-management/list/consultant-product-list?spuId=${data.id}&storeNo=${data.storeNo}&storeName=${data.storeName}&wechatNo=${data.wechatNo}`) 
+        }}>{_}</a>
       }
     },
     {
@@ -119,14 +122,14 @@ const TableList = () => {
           <a onClick={() => { history.push(`/daifa-store-management/list/bank-edit?storeNo=${data.storeNo}`) }}>再次认证</a>
           <a onClick={() => { history.push(`/daifa-store-management/list/list-detail?storeNo=${data.storeNo}`) }}>详情</a>
           <a onClick={() => { getDetail(data.storeNo) }}>编辑</a>
-          <a onClick={() => { history.push(`/daifa-store-management/list/agent-shop-money?storeNo=${data.storeNo}`) }}>佣金明细</a>
+          <a onClick={() => { history.push(`/daifa-store-management/list/agent-shop-money?storeNo=${data.storeNo}&storeName=${data.storeName}&realname=${data.realname}&mobile=${data.mobile}`) }}>佣金明细</a>
         </Space>
       ),
     },
   ];
 
   return (
-    <>
+    <PageContainer>
       <ProTable
         rowKey="id"
         options={false}
@@ -152,7 +155,7 @@ const TableList = () => {
         callback={() => { actionRef.current.reload(); setDetailData(null) }}
         onClose={() => { setDetailData(null) }}
       />}
-    </>
+    </PageContainer>
 
   );
 };

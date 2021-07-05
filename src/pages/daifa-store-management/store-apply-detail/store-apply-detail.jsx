@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
 import { history } from 'umi';
 import { Form, Spin, Tree,Button } from 'antd';
 import { storeApplyDetail } from '@/services/daifa-store-management/agent-shop-store_apply'

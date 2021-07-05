@@ -1,13 +1,9 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useState, useRef} from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { findAdsensePositionList } from '@/services/community-management/adsense-position-list';
-import { findAdsensePositionById } from '@/services/community-management/adsense-position-byid';
-import { saveAdsensePosition } from '@/services/community-management/adsense-position';
-import  ProForm,{ ModalForm,ProFormRadio,ProFormText} from '@ant-design/pro-form';
-import { Button,Form, Tabs,message } from 'antd';
+import { Button,Form} from 'antd';
 import AdvertisingModal from './advertising-modal'
-import { render } from 'react-dom';
 
 export default props => {
 const ref=useRef()
