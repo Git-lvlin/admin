@@ -176,7 +176,6 @@ export default props => {
               page:1,
               size:5,
               type:'2',
-              // status:3
             }}
             request={adminReportList}
             actionRef={actionRef}

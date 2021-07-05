@@ -1,8 +1,8 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { findAdsensePositionById } from '@/services/community-management/adsense-position-byid';
 import { saveAdsensePosition } from '@/services/community-management/adsense-position';
-import  ProForm,{ DrawerForm,ProFormRadio,ProFormText} from '@ant-design/pro-form';
-import { Button,Form, Tabs,message } from 'antd';
+import  { DrawerForm,ProFormRadio,ProFormText} from '@ant-design/pro-form';
+import { message } from 'antd';
 
 export default (props)=>{
     const {boxref,visible,setVisible,form,byid,title}=props

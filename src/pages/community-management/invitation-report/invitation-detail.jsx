@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import { getDynamicDetail } from '@/services/community-management/dynamic-get-dynamic-detail';
-import { Divider, Form, Spin, Tree,Button } from 'antd';
+import { Form, Spin } from 'antd';
 import moment from 'moment';
 
 

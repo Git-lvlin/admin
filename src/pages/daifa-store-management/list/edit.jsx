@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Form, Button, Tree, message, Checkbox } from 'antd';
+import { Form, Tree, message, Checkbox } from 'antd';
 import {
   DrawerForm,
   ProFormText,
@@ -134,7 +134,7 @@ export default (props) => {
           }
         }
 
-      } else {
+      } else { 
         gcArr = ''
       }
       apiMethod({
@@ -395,7 +395,7 @@ export default (props) => {
          detailData?
          null:
          <Form.Item
-          label="上传结算银行卡正面照"
+          label="结算银行卡正面照"
           name="bankFront"
           rules={[{ required: true }]}
           tooltip={
@@ -415,7 +415,7 @@ export default (props) => {
         detailData?
         null:
         <Form.Item
-          label="上传结算银行卡背面照"
+          label="结算银行卡背面照"
           name="bankBack"
           rules={[{ required: true }]}
           tooltip={
