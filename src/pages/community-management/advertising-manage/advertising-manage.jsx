@@ -40,8 +40,8 @@ const columns= [
       dataIndex: 'status',
       valueType: 'text',
       valueEnum:{
-        "0":"未启用",
-        "1":"已启用",
+        "1":"启用",
+        "0":"关闭",
       },
       hideInSearch:true
   },

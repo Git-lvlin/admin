@@ -84,6 +84,7 @@ export default (props) => {
   };
 
   const submit = (values) => {
+    console.log('values',values)
     const { password, gc, ...rest } = values;
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? storeEdit : storeAdd;
@@ -122,6 +123,7 @@ export default (props) => {
 
         })
 
+        // let hasError = false;
         for (const key in obj) {
           if (Object.hasOwnProperty.call(obj, key)) {
             const g = { gc_id1: key };
@@ -129,10 +131,18 @@ export default (props) => {
               g.gc_id2 = obj[key].filter(item => item !== 0).join(',')
             } else {
               g.gc_id2 ="0"
+              // hasError = true;
             }
             gcArr.push(g)
           }
         }
+
+
+        // if (hasError) {
+        //   message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
+        //   reject()
+        //   return;
+        // }
 
       } else {
         gcArr = ''
@@ -140,8 +150,8 @@ export default (props) => {
       apiMethod({
         ...rest,
         storeNo:detailData&&detailData.storeNo,
-        bankCode:values.bankCode&&values.bankCode.key,
-        bankName:values.bankCode&&values.bankCode.label,
+        bankCode:bankCode&&values.bankCode.key,
+        bankName:bankCode&&values.bankCode.label,
         businessScope: JSON.stringify(gcArr),
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
@@ -240,7 +250,7 @@ export default (props) => {
       storeList({}).then(res=>{
         setDataList(res.data)
       })
-  }, []);
+  }, [form, detailData]);
   return (
     <DrawerForm
       title={`${detailData ? '编辑' : '新建'}`}
@@ -270,7 +280,7 @@ export default (props) => {
         placeholder="请输入店铺名称"
         rules={[
             { required: true, message: '请输入店铺名称' },
-            { validator:verifyStoreName}
+            // { validator:verifyStoreName}
         ]}
       />
       <ProFormText
@@ -279,7 +289,7 @@ export default (props) => {
         placeholder="请输入店主姓名"
         rules={[
           { required: true, message: '请输入店主姓名' },
-          { validator:verifyRealname}
+          // { validator:verifyRealname}
         ]}
         disabled={!!detailData}
       />
@@ -289,7 +299,7 @@ export default (props) => {
         placeholder="请输入店主手机号码"
         rules={[
             { required: true, message: '请输入店主手机号码' },
-            { validator:verifyMobile}
+            // { validator:verifyMobile}
         ]}
         fieldProps={{
           maxLength: 11,

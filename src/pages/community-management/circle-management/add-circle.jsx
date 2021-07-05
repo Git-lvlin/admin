@@ -44,12 +44,11 @@ export default props => {
         style={{ width: '1000px', margin: '0 auto' }}
         submitter={{
           render: (props, doms) => {
-            console.log(props);
             return [
               <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
                 保存
               </Button>,
-              <Button type="default" onClick={()=>history.push('/community-management/circle-management')}>
+              <Button type="default" onClick={()=>history.goBack()}>
                 返回
               </Button>,
               
