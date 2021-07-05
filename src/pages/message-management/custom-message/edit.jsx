@@ -4,7 +4,7 @@ import ProForm,{
   ProFormText,
   ProFormRadio,
   ProFormTextArea,
-  ProFormSelect,
+  ProFormSelect
 } from '@ant-design/pro-form'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
@@ -16,10 +16,10 @@ import Upload from '@/components/upload'
 const modules = {
   toolbar: {
     container: [
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],, //字体设置
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
       ['bold', 'italic', 'underline', 'strike'],  
       [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-      ['link'], // a链接
+      ['link'],
       [{ 'align': [] }],
       [{
         'background': ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)',
@@ -66,11 +66,11 @@ const Edit = props => {
     wrapperCol: { span: 14 },
     layout: {
       labelCol: {
-        span: 4,
+        span: 4
       },
       wrapperCol: {
-        span: 14,
-      },
+        span: 14
+      }
     }
   }
   const selectLink = e => {
@@ -95,7 +95,7 @@ const Edit = props => {
               },
               {
                 label: '优惠券-领券中',
-                value: 2,
+                value: 2
               }
             ]}
           />
@@ -383,11 +383,11 @@ const Edit = props => {
       >
         <Upload
           code={304}
-          multiple 
-          maxCount={1} 
-          proportion={{width: '350', height:'125'}} 
+          multiple
+          maxCount={1}
+          proportion={{width: '350', height:'125'}}
           accept="image/*"
-          size={.5 * 1024} 
+          size={.5 * 1024}
         />
       </ProForm.Item>
       <ProFormSelect

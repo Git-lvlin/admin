@@ -28,7 +28,9 @@ const ReturnInformation = props => {
     type
   } = props
   const [express, setExpress] = useState({})
-  
+  const isHide = ()=> {
+    return (status === 1 && type !== 1) ? true : false
+  }
   useEffect(() => {
     data?.returnShippingCode &&
       expressInfo({
@@ -93,7 +95,7 @@ const ReturnInformation = props => {
     {
       title: '退货物流信息',
       dataIndex: 'returnGoodsInfo',
-      hideInDescriptions: (type === 1 && data?.afterSalesType === 1) ? true : false,
+      hideInDescriptions: isHide(),
       render: () => {
         return(
           <div style={{display: 'flex', alignItems:'center'}}>
@@ -129,22 +131,22 @@ const ReturnInformation = props => {
     {
       title: '商家收件人名称',
       dataIndex: 'receiveMan',
-      hideInDescriptions: (status === 1 && type !== 1) ? true : false,
+      hideInDescriptions: isHide()
     },
     {
       title: '商家收货手机号',
       dataIndex: 'receivePhone',
-      hideInDescriptions: (status === 1 && type !== 1) ? true : false,
+      hideInDescriptions: isHide()
     },
     {
       title: '商家收货地址',
       dataIndex: 'receiveAddress',
-      hideInDescriptions: (status === 1 && type !== 1) ? true : false
+      hideInDescriptions: isHide()
     },
     {
       title: '商家收货时间',
       dataIndex: 'receiveTime',
-      hideInDescriptions: (status === 1 && type !== 1) ? true : false
+      hideInDescriptions: isHide()
     }
   ]
   return (

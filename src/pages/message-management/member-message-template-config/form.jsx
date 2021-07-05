@@ -16,12 +16,8 @@ export default (props) => {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
     layout: {
-      labelCol: {
-        span: 4,
-      },
-      wrapperCol: {
-        span: 14,
-      },
+      labelCol: { span: 4 },
+      wrapperCol: { span: 14 }
     }
   }
   const submit = (values) => {
@@ -46,7 +42,7 @@ export default (props) => {
       title="消息模板配置"
       modalProps={{
         onCancel: () => onClose(),
-        destroyOnClose: true,
+        destroyOnClose: true
       }}
       onVisibleChange={setVisible}
       visible={visible}
