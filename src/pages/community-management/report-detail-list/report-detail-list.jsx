@@ -1,11 +1,12 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
+import { Button } from 'antd';
+import { history } from 'umi';
 import { adminReportDetailList } from '@/services/community-management/report-admin-report-detail-list';
 
 export default props => {
 let id = props.location.query.id
-console.log('id',id)
 const actionRef = useRef();
 const columns= [
   {
@@ -35,19 +36,19 @@ const columns= [
   {
       title: '证明截图',
       dataIndex: 'images',
-      valueType: 'text',
+      valueType: 'image',
   }
 ];
   return (
-      <PageContainer>
+    <>
+          <Button style={{margin:"20px 0 20px 0"}} type="default" onClick={()=>history.goBack()}>
+            返回
+          </Button>
           <ProTable
             rowKey="userId"
             options={false}
             params={{
-              page:1,
-              size:5,
               sourceId:id,
-              status:1,
             }}
             request={adminReportDetailList}
             actionRef={actionRef}
@@ -55,6 +56,6 @@ const columns= [
             toolBarRender={false}
             columns={columns}
           />
-    </PageContainer>
+    </>
   );
 };

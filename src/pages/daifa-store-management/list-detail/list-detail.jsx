@@ -82,7 +82,6 @@ const ListDetail = props => {
 
   return (
     <>
-    <PageContainer>
       <Spin
         spinning={loading}
       >
@@ -91,6 +90,12 @@ const ListDetail = props => {
           {...formItemLayout}
           style={{ backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
         >
+          <Form.Item
+            label="店铺名称"
+          >
+            {detailData.storeName}
+          </Form.Item>
+
           <Form.Item
             label="店主姓名"
           >
@@ -104,16 +109,17 @@ const ListDetail = props => {
           </Form.Item>
 
           <Form.Item
-            label="店铺名称"
+            label="账户结算银行"
           >
-            {detailData.storeName}
+            {detailData.bankName}
           </Form.Item>
 
           <Form.Item
-            label="店主微信号"
+            label="账户结算银行卡"
           >
-            {detailData.wechatNo}
+            {detailData.bankCard}
           </Form.Item>
+    
           <Form.Item
             label="身份证姓名正面照片"
             name="idFront"
@@ -135,6 +141,29 @@ const ListDetail = props => {
           >
             <Upload disabled={true} multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
+
+          <Form.Item
+            label="结算银行卡正面照"
+            name="bankFront"
+            extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
+          >
+            <Upload disabled={true} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+          </Form.Item>
+
+          <Form.Item
+            label="结算银行卡背面照"
+            name="bankBack"
+            extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
+          >
+            <Upload disabled={true} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+          </Form.Item>
+
+          <Form.Item
+            label="店主微信号"
+          >
+            {detailData.wechatNo}
+          </Form.Item>
+
           <Form.Item
             label="店主内部岗位或身份"
           >
@@ -190,12 +219,11 @@ const ListDetail = props => {
           <Form.Item
             label="."
           >
-            <Button type="primary" onClick={()=>history.push('/daifa-store-management/list')}>返回</Button>
+            <Button type="primary" onClick={()=>history.goBack()}>返回</Button>
           </Form.Item>
           
         </Form>
       </Spin> 
-    </PageContainer>
     </>
   )
 }

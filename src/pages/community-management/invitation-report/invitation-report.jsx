@@ -40,7 +40,7 @@ export default props => {
         dataIndex: 'count',
         valueType: 'text',
         render:(text, record, _, action)=>[
-          <a onClick={()=>history.push('/community-management/review-report/admin-report-detail-list?id='+record.sourceId)}>{record.count}</a>
+          <a onClick={()=>history.push('/community-management/report-detail-list?id='+record.sourceId)}>{record.count}</a>
         ],
         hideInSearch:true
     },
@@ -102,7 +102,7 @@ export default props => {
         valueType: 'text',
         hideInSearch: true,
         render:(text, record, _, action)=>[
-          <a onClick={()=>history.push('/community-management/review-report/admin-report-detail-list?id='+record.sourceId)}>{record.count}</a>
+          <a onClick={()=>history.push('/community-management/report-detail-list?id='+record.sourceId)}>{record.count}</a>
         ]
     },
     {

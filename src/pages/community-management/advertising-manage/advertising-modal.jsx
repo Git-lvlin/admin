@@ -41,7 +41,6 @@ export default (props)=>{
               width="md"
               name="title"
               label="广告位名称"
-              tooltip="最长为 24 位"
               placeholder="请输入名称"
               rules={[{ required: true, message: '请输入广告位名称' }]}
           />
@@ -50,12 +49,12 @@ export default (props)=>{
               label="广告位状态"
               options={[
                   {
-                    label: '未启用',
-                    value: '0'
+                    label: '启用',
+                    value: '1'
                   },
                   {
-                    label: '已启用',
-                    value: '1'
+                    label: '关闭',
+                    value: '0'
                   }
               ]}
               rules={[{ required: true, message: '请选择广告位状态' }]}

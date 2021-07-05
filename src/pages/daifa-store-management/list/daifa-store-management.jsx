@@ -116,6 +116,7 @@ const TableList = () => {
         <Space>
             {/* {data.status === 1 && <a onClick={() => { switchStatus(data.storeNo, 2) }}>禁用</a>}
             {data.status === 2 && <a onClick={() => { switchStatus(data.storeNo, 1) }}>启用</a>} */}
+          <a onClick={() => { history.push(`/daifa-store-management/list/bank-edit?storeNo=${data.storeNo}`) }}>再次认证</a>
           <a onClick={() => { history.push(`/daifa-store-management/list/list-detail?storeNo=${data.storeNo}`) }}>详情</a>
           <a onClick={() => { getDetail(data.storeNo) }}>编辑</a>
           <a onClick={() => { history.push(`/daifa-store-management/list/agent-shop-money?storeNo=${data.storeNo}`) }}>佣金明细</a>
