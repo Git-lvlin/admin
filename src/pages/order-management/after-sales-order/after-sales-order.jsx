@@ -265,9 +265,6 @@ const afterSalesOrder = () => {
             // <Button key="out" onClick={()=> {exportExcel(data)}}>导出</Button>
           ],
         }}
-        rowSelection={{
-          type: "checkbox"
-        }}
         headerTitle="数据列表"
         columns={columns}
         pagination={{
