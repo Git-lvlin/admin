@@ -123,7 +123,7 @@ const WithdrawalFeeConfiguration = () => {
                     fieldProps={{
                       precision: 2
                     }}
-                    name={contrary == 'scale' ? 'withdrawBusinessFeeScale' : 'withdrawBusinessFeeFixed'}
+                    name={contrary === 'scale' ? 'withdrawBusinessFeeScale' : 'withdrawBusinessFeeFixed'}
                   />
                   { contrary === 'scale' ? <span className={styles.percent}>%</span> : '' }
                 </Input.Group>

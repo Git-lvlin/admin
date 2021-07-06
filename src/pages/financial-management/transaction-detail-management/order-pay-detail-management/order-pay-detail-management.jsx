@@ -26,7 +26,7 @@ const OrderPayDetailManagement = () =>{
     {
       title: '支方会员ID',
       dataIndex: 'buyerSn',
-      ellipsis: true
+      
     },
     {
       title: '支付渠道',
@@ -58,12 +58,12 @@ const OrderPayDetailManagement = () =>{
     {
       title: '支付账户',
       dataIndex: 'payAccount',
-      ellipsis: true
+      
     },
     {
       title: '收方会员ID',
       dataIndex: 'sellerSn',
-      ellipsis: true
+      
     },
     {
       title: '收方注册手机',
@@ -72,7 +72,6 @@ const OrderPayDetailManagement = () =>{
     {
       title: '订单类型',
       dataIndex: 'orderType',
-      // ellipsis: true,
       valueEnum: {
         'normalOrder': '普通订单',
         'second': '秒约',
@@ -88,17 +87,17 @@ const OrderPayDetailManagement = () =>{
     {
       title: '订单号',
       dataIndex: 'orderNo',
-      ellipsis: true
+      
     },
     {
       title: '平台支付单号',
       dataIndex: 'payNo',
-      ellipsis: true
+      
     },
     {
       title: '资金流水号',
       dataIndex: 'transactionId',
-      ellipsis: true
+      
     },
     {
       title: '支付金额',
@@ -116,13 +115,14 @@ const OrderPayDetailManagement = () =>{
       title: '支付时间',
       dataIndex: 'payTime',
       hideInSearch: true,
-      ellipsis: true
-
+      
     },
     {
       title: '操作',
       dataIndex: 'option',
+      width: 80,
       valueType: 'option',
+      fixed: 'right',
       render: (_, records)=> <a onClick={()=>{skipToDetail(records?.orderNo)}}>详情</a>
     }
   ]
@@ -132,6 +132,7 @@ const OrderPayDetailManagement = () =>{
         rowKey='id'
         columns={columns}
         toolBarRender={false}
+        scroll={{ x: 2100 }}
         pagination={{
           pageSize: 10,
           hideOnSinglePage: true,

@@ -50,7 +50,7 @@ const TransactionDetails = () => {
   }
   const columns1 = [
     {
-      title: '订单ID',
+      title: '订单号',
       dataIndex: 'orderNo'
     },
     {

@@ -1,11 +1,10 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { couponCcodebase } from '@/services/coupon-codebase/coupon-codebase';
 import { Button } from 'antd';
 
 export default props => {
-    //导出
+//导出
 const exportExcel = (form) => {
     couponList({
       ...form.getFieldsValue(),

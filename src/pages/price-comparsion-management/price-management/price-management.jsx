@@ -63,7 +63,7 @@ const PriceManagement = () => {
       if (res.code === 0) {
         sendTask().then((r) => {
           if (r.code === 0) {
-            timeoutfn(param,type,id)
+            timeoutfn(param, type, id)
           }
         })
       } else {
@@ -78,7 +78,7 @@ const PriceManagement = () => {
 
   let ref = useRef()
   const timeoutfn = (data,type,id) => {
-    getSpiderGoodsListByDate({ sourceType:data.type, goodsId:data.goodsId, goodsSkuId:data.skuId }, {showError: false})
+    getSpiderGoodsListByDate({ sourceType: data.type, goodsId: data.goodsId, goodsSkuId: data.skuId }, {showError: false})
     .then((res) => {
       clearTimeout(ref.current)
       if (res.code === 0 && res.data.length) {
@@ -292,7 +292,7 @@ const PriceManagement = () => {
       return;
     }
     const index = arr[arr.length-1]
-    getGoodsBindData({goodsId:index[0],goodsSkuId:index[1]}).then(res => {
+    getGoodsBindData({goodsId: index[0], goodsSkuId: index[1]}).then(res => {
       if (res.code === 0) {
         setResData(res.data)
         setRowLoadin(false)
@@ -332,8 +332,8 @@ const PriceManagement = () => {
       actionRef={actionRef}
       postData={(data) => {
         data.forEach(item => {
-          item.goodsPrice /=100
-          item.goodsMarketPrice /=100
+          item.goodsPrice /= 100
+          item.goodsMarketPrice /= 100
           item.allKey = [item.goodsSpuId, item.goodsSkuId]
         })
         return data

@@ -46,15 +46,17 @@ export default (props) => {
 
   useEffect(()=>{
     api.platformRoleList().then(res => {
-      const data = res.map(data => (
-        {
+      if(Object.keys(res).length) {
+        const data = res.map(data => ({
           label: data.title,
           value: data.id
-        }
-      ))
-      setTargetRole(data)
+        }))
+        setTargetRole(data)
+      }
     })
-    return undefined
+    return ()=> {
+      setTargetRole([])
+    }
   },[])
   return (
     <ModalForm

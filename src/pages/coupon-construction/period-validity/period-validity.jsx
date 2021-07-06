@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {Form,DatePicker} from 'antd';
 import {formatMessage,connect} from 'umi';
 import ProForm,{ ProFormText } from '@ant-design/pro-form';
@@ -10,7 +10,7 @@ const validity=(props)=>{
     return (
         <>
          {
-             position==1||DetailList.data?.activityStartTime?
+             position==1||(parseInt(id)==id )&&DetailList.data?.activityStartTime?
              <FormItem
                 style={{ display: 'inline-block'}}
                 name="date2"
@@ -27,7 +27,7 @@ const validity=(props)=>{
             </FormItem>:null
          }
         {
-            position==2||DetailList.data?.activityEndDay?
+            position==2||(parseInt(id)==id )&&DetailList.data?.activityEndDay?
             <>
                 {
                 id&&DetailList.data?

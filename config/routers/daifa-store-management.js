@@ -13,6 +13,11 @@ export default {
       component: './daifa-store-management/list-detail',
     },
     {
+      name: 'bank-edit',
+      path: '/daifa-store-management/list/bank-edit',
+      component: './daifa-store-management/bank-edit',
+    },
+    {
       name: 'consultant-product-list',
       path: '/daifa-store-management/list/consultant-product-list',
       component: './daifa-store-management/consultant-product-list',
@@ -31,6 +36,6 @@ export default {
       name: 'store-apply-detail',
       path: '/daifa-store-management/agent-shop-store_apply/store-apply-detail',
       component: './daifa-store-management/store-apply-detail',
-    },
+    }
   ]
 }

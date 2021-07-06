@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Form, Button,Table } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import '../style.less'
-import { history,connect } from 'umi';
+import { connect } from 'umi';
 import { couponWholesaleList } from '@/services/coupon-construction/coupon-wholesale-list';
 
 const  useCollect=(props)=>{
@@ -157,7 +157,7 @@ const  useCollect=(props)=>{
                         dataSource={rowobjs}
                         style={{display:loading?'none':'block'}}
                     />
-                    <div style={{ marginBottom: 16 }}>
+                    <div style={{ margin: 16 }}>
                         <Button type="primary" onClick={close} style={{display:loading?'block':'none'}}>
                             确定
                         </Button>

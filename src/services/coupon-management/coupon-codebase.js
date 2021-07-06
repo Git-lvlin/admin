@@ -13,11 +13,27 @@ export const couponCcodebase= async (params, options = {}) => {
     },
     ...options
   });
-  console.log('res',res)
 
   return {
     code: res.code,
     data: res.data,
     success: res.success,
+    total:res.data.memberCouponList?.total
+  }
+}
+
+export const couponCodebaseEnd= async (params, options = {}) => {
+  const res = await request('/auth/activity/Coupon/couponCodebaseEnd', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  });
+
+  return {
+    code: res.code,
+    data: res.data,
+    success: res.success
   }
 }

@@ -103,9 +103,6 @@ const TabList =props=> {
       rowKey='orderSn'
       columns={columns}
       headerTitle="数据列表"
-      rowSelection={{
-        type: "checkbox"
-      }}
       options={false}
       params={{
         done

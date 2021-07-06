@@ -1,18 +1,14 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button, Space } from 'antd';
+import { Button} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
-import { couponCcodebase } from '@/services/coupon-codebase/coupon-codebase';
-import { couponEnd } from '@/services/coupon-management/coupon-end';
-import * as api from '@/services/product-management/product-list';
-import { amountTransform, typeTransform } from '@/utils/utils'
+import { couponCcodebase,couponCodebaseEnd } from '@/services/coupon-management/coupon-codebase';
 import XLSX from 'xlsx'
-import { history } from 'umi';
 
 export default props => {
   const ref=useRef()
   const [couponInfo,setCouponInfo]=useState([])
   const [libraryId,setLibraryId]=useState(1)
+  const [byid,setByid]=useState()
 
   const columns=[
     {
@@ -112,7 +108,20 @@ export default props => {
           2: '已使用',
           3: '已过期',
           4: '已作废'
-        }
+        },
+        hideInTable:true
+    },
+    {
+        title: '优惠券状态',
+        dataIndex: 'status',
+        valueType: 'text',
+        valueEnum: {
+          1: '未使用',
+          2: '已使用',
+          3: '已过期',
+          4: '已作废'
+        },
+        hideInSearch: true
     },
     {
         title: '领券时间',
@@ -123,19 +132,14 @@ export default props => {
     }
     
   ];
-  const onIpute=(res)=>{
-        // console.log('res.selectedRows',res.selectedRows)
-  }
  useEffect(()=>{
   let id=props.location.query.id
   setLibraryId(parseInt(id))
-   return undefined
  },[])
-  //导出数据
+//导出数据
 const exportExcel = (searchConfig) => {
-  console.log('searchConfig',searchConfig.form.getFieldsValue())
-  couponCcodebase({...searchConfig.form.getFieldsValue()}).then(res => {
-    console.log('res',res)
+  console.log('libraryId',libraryId)
+  couponCcodebase({id:libraryId,...searchConfig.form.getFieldsValue()}).then(res => {
     if (res.code === 0) {
       const data = res.data.memberCouponList.records.map(item => {
         const { ...rest } = item;
@@ -173,9 +177,16 @@ const exportExcel = (searchConfig) => {
     }
   })
 }
+const filterData=(res)=>{
+  setCouponInfo([res.couponInfo])
+  return res.memberCouponList.records
+  }
+const onIpute=(res)=>{
+  setByid(res.selectedRowKeys.toString())
+}
 
   return (
-    <PageContainer>
+    <>
      <ProTable
         toolBarRender={false}
         search={false}
@@ -189,22 +200,17 @@ const exportExcel = (searchConfig) => {
         options={false}
         actionRef={ref}
         params={{
-          status: 1,
           id:libraryId
         }}
-        request={
-            params => couponCcodebase(params).then(res =>{
-              setCouponInfo([res.data.couponInfo])
-            })
-        }
+        postData={filterData}
+        request={couponCcodebase}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-            <Button key="del" onClick={()=>{
-              console.log('searchConfig',searchConfig.form.getFieldsValue())
-              couponEnd({id:searchConfig.form.getFieldsValue().orderSn}).then(res=>{
+            <Button  onClick={()=>{
+              couponCodebaseEnd({ids:byid}).then(res=>{
                 if(res.code==0){
                   ref.current.reload();
                   return true;
@@ -220,7 +226,6 @@ const exportExcel = (searchConfig) => {
         rowSelection={{}}
         tableAlertOptionRender={onIpute}
       />
-    </PageContainer>
-
+      </>
   );
 };

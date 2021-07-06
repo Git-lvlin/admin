@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
 import { history } from 'umi';
 import { Form, Spin, Tree,Button } from 'antd';
 import { storeApplyDetail } from '@/services/daifa-store-management/agent-shop-store_apply'
@@ -83,7 +82,6 @@ const ListApplyDetail = props => {
   }, [])
 
   return (
-    <PageContainer>
       <Spin
         spinning={loading}
       >
@@ -190,13 +188,11 @@ const ListApplyDetail = props => {
           <Form.Item
             label="."
           >
-            <Button type="primary" onClick={()=>history.push('/daifa-store-management/agent-shop-store_apply')}>返回</Button>
+            <Button type="primary" onClick={()=>history.goBack()}>返回</Button>
           </Form.Item>
 
         </Form>
       </Spin>
-
-    </PageContainer>
   )
 }
 

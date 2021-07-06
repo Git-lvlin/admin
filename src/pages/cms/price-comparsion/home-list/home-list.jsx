@@ -12,10 +12,7 @@ const HomeList = () => {
   const actionRef = useRef();
 
   const del = (record, opt) => {
-    console.log('record', record)
     const { id } = record
-    console.log('id', id)
-
     const param = {
       "id": id.toString(),
       "opt":opt

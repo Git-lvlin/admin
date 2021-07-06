@@ -16,7 +16,7 @@ export default {
     {
       name: 'coupon-codebase',
       path: '/coupon-management/coupon-list/coupon-codebase',
-      component: './coupon-codebase/coupon-codebase',
+      component: './coupon-management/coupon-codebase',
       hideInMenu: true,
     },
   ],

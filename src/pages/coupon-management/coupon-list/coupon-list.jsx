@@ -97,7 +97,6 @@ const TableList = (props) => {
       <a
           key="a"
           onClick={()=>{
-            console.log('data',data)
             Examine(data.id)
           }}
         >
@@ -132,7 +131,6 @@ const TableList = (props) => {
 
   //导出
   const exportExcel = (searchConfig) => {
-    // console.log('searchConfig',searchConfig.form.getFieldsValue())
     couponList({}).then(res => {
       console.log('res',res)
         const data = res.data.map(item => {
@@ -175,8 +173,6 @@ const TableList = (props) => {
         });
         XLSX.utils.book_append_sheet(wb, ws, "file");
         XLSX.writeFile(wb, `${+new Date()}.xlsx`)
-
-    
     })
   }
 

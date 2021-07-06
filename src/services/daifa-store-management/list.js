@@ -152,6 +152,53 @@ export const import_store = async (params = {}, options = {}) => {
     ...options
   });
   return {
+    code:res.code,
+    data: res.data,
+    success: true
+  }
+}
+
+export const get_bank_data= async (params = {}, options = {}) => {
+  const res = await request('/auth/store/AgentShop/get_bank_data', {
+    method: 'POST',
+    data: {
+     ...params
+    },
+    ...options
+  });
+  return {
+    code:res.code,
+    data: res.data,
+    success: true
+  }
+}
+
+
+export const agent_bank_detail= async (params = {}, options = {}) => {
+  const res = await request('/auth/store/AgentShop/agent_bank_detail', {
+    method: 'POST',
+    data: {
+     ...params
+    },
+    ...options
+  });
+  return {
+    code:res.code,
+    data: res.data,
+    success: true
+  }
+}
+
+export const agent_bank_edit= async (params = {}, options = {}) => {
+  const res = await request('/auth/store/AgentShop/agent_bank_edit', {
+    method: 'POST',
+    data: {
+     ...params
+    },
+    ...options
+  });
+  return {
+    code:res.code,
     data: res.data,
     success: true
   }
