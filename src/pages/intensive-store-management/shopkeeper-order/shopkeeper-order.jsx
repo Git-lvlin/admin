@@ -19,7 +19,8 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入订单编号'
-      }
+      },
+      render: (_, data) => <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order-detail/${data.id}`) }}>{data.orderSn}</a>
     },
     {
       title: '商品名称',
@@ -28,7 +29,7 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入商品名称'
       },
-      render: (_, data) => data?.orderItemList?.[0]?.goodsName
+      render: (_, data) => <a onClick={() => { history.push(`/product-management/product-detail/${data?.orderItemList?.[0]?.spuId}`) }}>{data?.orderItemList?.[0]?.goodsName}</a>
     },
     {
       title: 'skuID',
@@ -44,7 +45,7 @@ const TableList = () => {
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => data?.orderItemList?.[0]?.skuId
+      render: (_, data) => <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data?.orderItemList?.[0]?.supplierId}`) }}>{data?.orderItemList?.[0]?.supplierId}</a>
     },
     {
       title: '商品数量',
@@ -65,6 +66,7 @@ const TableList = () => {
       dataIndex: 'buyerPhone',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => <a onClick={() => { history.push(`/user-management/user-detail/${data?.buyerId}`) }}>{_}</a>
     },
     {
       title: '下单时间',

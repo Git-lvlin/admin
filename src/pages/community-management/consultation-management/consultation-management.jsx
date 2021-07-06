@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { Button } from 'antd';
 
 export default props => {
-    //导出
+//导出
 const exportExcel = (form) => {
     couponList({
       ...form.getFieldsValue(),

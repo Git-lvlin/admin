@@ -18,3 +18,14 @@ export const gradeList = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+export const memberShopGradeEdit = async (params = {}, options = {}) => {
+  return request('/auth/store/memberShopGrade/edit', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+    ...options
+  });
+  
+}

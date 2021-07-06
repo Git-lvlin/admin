@@ -1,5 +1,4 @@
-import React, { useRef,useEffect } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
+import React, { useRef} from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { history } from 'umi';

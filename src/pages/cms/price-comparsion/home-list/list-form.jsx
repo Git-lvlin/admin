@@ -1,19 +1,11 @@
 import React, { useRef, useState, useEffect  } from 'react';
-import { Button, message, Form, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import ProForm, {
-  ModalForm,
-  DrawerForm,
-  ProFormText,
-  ProFormDateRangePicker,
-  ProFormSelect,
-} from '@ant-design/pro-form';
-import { hotGoosAdd } from '@/services/cms/member/member';
+import { message, Space } from 'antd';
+import ProTable from '@ant-design/pro-table';
+import { ModalForm } from '@ant-design/pro-form';
 import { priceComparsionListAlls } from '@/services/cms/member/member';
 
-
 export default (props) => {
-  const { detailData, setVisible, setIndexGoods, visible } = props;
+  const { setVisible, setIndexGoods, visible } = props;
   const [arr, setArr] = useState(false)
   const formRef = useRef();
   const columns = [
@@ -39,7 +31,6 @@ export default (props) => {
   ];
 
   const waitTime = () => {
-    console.log('arr', arr)
     return new Promise((resolve, reject) => {
       if (arr.length !== 1) {
         message.error('只能添加一个商品!')
@@ -96,14 +87,6 @@ export default (props) => {
               取消选择
             </a>
           </span>
-          {/* <span>{`待发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.containers,
-            0,
-          )} 个`}</span>
-          <span>{`已发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.callNumber,
-            0,
-          )} 个`}</span> */}
         </Space>
       )}
       tableAlertOptionRender={(a) => {

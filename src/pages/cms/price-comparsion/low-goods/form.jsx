@@ -1,12 +1,7 @@
 import React, { useRef, useState, useEffect  } from 'react';
-import { Button, message, Form, Space } from 'antd';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import ProForm, {
-  ModalForm,
-  DrawerForm,
-  ProFormText,
-  ProFormSelect,
-} from '@ant-design/pro-form';
+import { message, Space } from 'antd';
+import ProTable from '@ant-design/pro-table';
+import { ModalForm } from '@ant-design/pro-form';
 import { priceComparsionListAll, SetHotGoodsDel } from '@/services/cms/member/member';
 
 export default (props) => {
@@ -56,20 +51,17 @@ export default (props) => {
       ids: arr,
       opt: 'add'
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       SetHotGoodsDel(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
-          resolve(true);
+          resolve(true)
+        } else {
+          reject(false)
         }
       })
-  
     });
   };
-
-  useEffect(() => {
-
-  }, [])
 
   return (
     <ModalForm

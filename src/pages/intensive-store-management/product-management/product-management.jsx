@@ -30,6 +30,8 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入商品名称'
       },
+      render: (_, data) => <a onClick={() => { history.push(`/product-management/product-detail/${data.spuId}`) }}>{data.goodsName}</a>
+
     },
     {
       title: '图片',

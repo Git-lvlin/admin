@@ -1,4 +1,4 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { adminList } from '@/services/community-management/dynamic-admin-list';
@@ -8,7 +8,6 @@ import { banShare } from '@/services/community-management/dynamic-ban-share';
 import { cancelBanShare } from '@/services/community-management/dynamic-cancel-ban-share';
 import { dynamicDelete } from '@/services/community-management/dynamic-delete';
 import CircleSelect from '@/components/circle-select'
-import  ProForm,{ ModalForm,ProFormSelect} from '@ant-design/pro-form';
 import DeleteModal from '@/components/DeleteModal'
 import { history } from 'umi';
 import { Button } from 'antd';

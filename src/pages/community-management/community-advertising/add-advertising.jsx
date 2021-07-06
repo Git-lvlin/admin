@@ -2,6 +2,7 @@ import React, { useState, useEffect,useRef } from 'react';
 import { getDetailById } from '@/services/community-management/adsense-get-detail-byid';
 import { saveAdsense } from '@/services/community-management/adsense-save-adsense';
 import { findAdsensePositionList } from '@/services/community-management/adsense-position-list';
+import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import ProForm, { ProFormText,ProFormRadio,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';
 import SelectProductModal from '@/components/select-product-modal'
@@ -16,13 +17,24 @@ export default props => {
  const [position,setPosition]=useState()
  const [visible, setVisible] = useState(false);
  const [goods,setGoods]=useState([])
+ const [linkData,setLinkData]=useState()
+ const [editLinkData,setEditLinkData]=useState()
  const [form] = Form.useForm()
  useEffect(()=>{
    if(id){
     getDetailById({id}).then(res=>{
       res.data.images=res.data.images?.[0]
       form.setFieldsValue(res.data)
+      setLinkData(res.data)
+      productList({}).then(lis=>{
+        lis.data.map(ele=>{
+          if(ele.id==res.data.linkId){
+            setEditLinkData([ele])
+          }
+        })
+      })
     })
+  
    }
    findAdsensePositionList({}).then(res=>{
     setOnselect(res.data.map(ele=>(
@@ -63,6 +75,17 @@ export default props => {
       else if (/[%&',;=?$\x22]/.test(value)) {
           await reject('标题不可以含特殊字符')
       } 
+      else {
+          await resolve()
+      }
+    })
+  }
+  //排序验证规则
+  const sortConfirm=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (parseInt(value)<=0||parseInt(value)>100) {
+          await reject('序号只能为1-100')
+      }
       else {
           await resolve()
       }
@@ -149,7 +172,7 @@ export default props => {
             ]}
         />
           {
-            position=='1'?
+            position=='1'||linkData?.url?
             <ProFormText
                 width="md"
                 name="url"
@@ -158,7 +181,7 @@ export default props => {
             :null
           }
           {
-            position=='2'?
+            position=='2'||linkData?.linkId?
             <>
               <Button type="primary" onClick={Termination} style={{margin:'0 0 20px 20px'}}>
                   <PlusOutlined />
@@ -181,7 +204,7 @@ export default props => {
                 search={false}
                 toolBarRender={false}
                 columns={columns}
-                dataSource={goods}
+                dataSource={editLinkData||goods}
                 style={{display:visible?'none':'block'}}
               />
             </>
@@ -211,6 +234,7 @@ export default props => {
             name="order"
             rules={[
               { required: true, message: '请输入排名' },
+              { validator: sortConfirm}
             ]}
             label="排序"
         />

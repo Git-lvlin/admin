@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Form, Button,Space, Tree, message, Checkbox } from 'antd';
+import React, { useState, useEffect} from 'react';
+import { Form, Button, message} from 'antd';
 import ProForm,{
-  DrawerForm,
   ProFormText,
-  ProFormRadio,
   ProFormSelect
 } from '@ant-design/pro-form';
 import { history } from 'umi';
@@ -139,7 +137,7 @@ export default (props) => {
           rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
       />
       <Form.Item
-        label="上传结算银行卡正面照"
+        label="结算银行卡正面照"
         name="bankFront"
         rules={[{ required: true }]}
         tooltip={
@@ -154,7 +152,7 @@ export default (props) => {
         <Upload code={304}  multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
       <Form.Item
-        label="上传结算银行卡背面照"
+        label="结算银行卡背面照"
         name="bankBack"
         rules={[{ required: true }]}
         tooltip={

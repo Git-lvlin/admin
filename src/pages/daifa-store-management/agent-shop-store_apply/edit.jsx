@@ -4,11 +4,9 @@ import {
   DrawerForm,
   ProFormText,
   ProFormRadio,
-  ProFormSelect
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { storeApplyList,storeApplyEdit,storeApplyAudit } from '@/services/daifa-store-management/agent-shop-store_apply';
-import { getBanks } from '@/services/supplier-management/supplier-list';
+import { storeApplyList,storeApplyEdit} from '@/services/daifa-store-management/agent-shop-store_apply';
 import { categoryAll } from '@/services/common';
 import { arrayToTree } from '@/utils/utils'
 

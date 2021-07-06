@@ -1,13 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { message, Form, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm, {
+import {
   DrawerForm,
   ProFormText,
 } from '@ant-design/pro-form';
 import { SetHomePageGoodsDelSort } from '@/services/cms/member/member';
 import Edit from './list-form'
-
 
 export default (props) => {
   const { detailData, setVisible, setFlag, visible } = props;
@@ -18,18 +17,18 @@ export default (props) => {
   const [indexGoods, setIndexGoods] = useState(false)
 
   const waitTime = () => {
-    console.log('indexGoods', indexGoods)
     const param = {
       "id": indexGoods.id.toString(),
       "sort": sortValue || 100,
       "opt": "add"
     }
-    console.log('param', param)
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       SetHomePageGoodsDelSort(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
-          resolve(true);
+          resolve(true)
+        } else {
+          reject(false)
         }
       })
   
@@ -68,7 +67,6 @@ export default (props) => {
   ];
 
   useEffect(() => {
-    console.log('indexGoods', indexGoods)
     if (detailData) {
       const { ...rest } = detailData;
       form.setFieldsValue({

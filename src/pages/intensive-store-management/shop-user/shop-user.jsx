@@ -37,6 +37,8 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入手机号'
       },
+      render: (_, data) => <a onClick={() => { history.push(`/user-management/user-detail/${data?.memberId}`) }}>{_}</a>
+
     },
     {
       title: '积分',
