@@ -1,12 +1,14 @@
 import React, { useState, useRef } from 'react';
-// import { Button } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons'
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { gradeList } from '@/services/intensive-store-management/grade-index';
 import { amountTransform } from '@/utils/utils'
+import Form from './form';
 
 const GradeIndex = () => {
-  // const [formVisible, setFormVisible] = useState(false);
+  const [formVisible, setFormVisible] = useState(false);
+  const [detailData, setDetailData] = useState({});
   const actionRef = useRef();
   const formRef = useRef();
 
@@ -28,20 +30,25 @@ const GradeIndex = () => {
       valueType: 'text',
     },
     {
-      title: '积分门槛',
-      dataIndex: ['upgrade', 'score', 'min'],
+      title: '成长值',
+      dataIndex: ['upgrade', 'score', 'max'],
       valueType: 'text',
     },
     {
-      title: '月度指标',
+      title: '月度指标(元)',
       dataIndex: 'scoreGradeMonthlyIndicator',
       valueType: 'text',
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '权益可开小区店铺数量',
+      title: '权益可开分店数量',
       dataIndex: 'equity',
       valueType: 'text',
+    },
+    {
+      title: '操作',
+      valueType: 'options',
+      render: (_, data) => <a onClick={() => { setDetailData(data); setFormVisible(true) }}>配置</a>
     },
   ];
 
@@ -55,7 +62,25 @@ const GradeIndex = () => {
         request={gradeList}
         search={false}
         columns={columns}
+        pagination={false}
       />
+      <div style={{ backgroundColor: '#fff', padding: 30, display: 'flex' }}>
+        <InfoCircleOutlined style={{ fontSize: 30, color: '#40a9ff' }} />
+        <dl style={{ marginLeft: 20 }}>
+          <dt style={{ fontSize: 20, marginBottom: 10 }}>店铺等级权益说明</dt>
+          <dd>1.店铺的成长值只增不减</dd>
+          <dd>2.店铺的成长值按成本金额计算，不考虑售后</dd>
+        </dl>
+      </div>
+      {
+        formVisible &&
+        <Form
+          visible={formVisible}
+          setVisible={setFormVisible}
+          data={detailData}
+          callback={() => { actionRef.current.reload() }}
+        />
+      }
     </PageContainer>
   );
 };

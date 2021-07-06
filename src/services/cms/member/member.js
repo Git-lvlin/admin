@@ -792,7 +792,6 @@ export const todayAllGoodsList = async (params = {}, options = {}) => {
   }
 }
 
-
 export const memberSortTop = (params = {}, options = {}) => {
   return request('/auth/activity/Activity/spanceInfoSortTop', {
     method: 'POST',
@@ -803,7 +802,6 @@ export const memberSortTop = (params = {}, options = {}) => {
 
 export const priceComparsionListAll = async (params = {}, options = {}) => {
   const { current, pageSize, ishot, ...rest } = params;
-
   const data = {
     page: current,
     size: pageSize,
@@ -814,13 +812,18 @@ export const priceComparsionListAll = async (params = {}, options = {}) => {
     data,
     ...options
   });
-
+  const news = res.data?.records?.filter(item => {
+    if (item.acquire === 1) {
+      return item
+    }
+  })
   return {
-    data: res.data.records || [],
+    data: news || [],
     success: true,
     total: res.data.total,
   }
 }
+
 export const priceComparsionListAlls = async (params = {}, options = {}) => {
   const { current, pageSize, ishot, ...rest } = params;
 
@@ -834,8 +837,6 @@ export const priceComparsionListAlls = async (params = {}, options = {}) => {
     data,
     ...options
   });
-  // res.data.records.filter(item=>item.acquire === 1)
-
   return {
     data: res.data.records || [],
     success: true,
