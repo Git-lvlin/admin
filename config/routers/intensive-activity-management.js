@@ -13,5 +13,11 @@ export default {
       component: './intensive-activity-management/intensive-activity-create',
       hideInMenu: true,
     },
+    {
+      name: 'intensive-activity-detail',
+      path: '/intensive-activity-management/intensive-activity-detail/:id',
+      component: './intensive-activity-management/intensive-activity-detail',
+      hideInMenu: true,
+    },
   ]
 }
