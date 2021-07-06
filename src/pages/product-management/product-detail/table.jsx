@@ -20,27 +20,19 @@ export default function EditTable(props) {
       {
         title: '规格图片',
         dataIndex: 'imageUrl',
-        width: 50,
+        width: 100,
         render: (text) => {
           return <img src={text} width="50" height="50" />
         }
       },
       ...arr,
       {
-        title: '零售供货价',
+        title: '货号',
+        dataIndex: 'supplierSkuId',
+      },
+      {
+        title: '供货价',
         dataIndex: 'retailSupplyPrice',
-      },
-      {
-        title: '建议零售价',
-        dataIndex: 'suggestedRetailPrice',
-      },
-      {
-        title: '批发价',
-        dataIndex: 'wholesalePrice',
-      },
-      {
-        title: '批发起售量',
-        dataIndex: 'wholesaleMinNum',
       },
       {
         title: '库存预警值',
@@ -50,14 +42,22 @@ export default function EditTable(props) {
         title: '可用库存',
         dataIndex: 'stockNum',
       },
-      {
-        title: '销售价',
-        dataIndex: 'salePrice',
-      },
-      {
-        title: '市场划线价',
-        dataIndex: 'marketPrice',
-      },
+      // {
+      //   title: '库存预警值',
+      //   dataIndex: 'stockAlarmNum',
+      // },
+      // {
+      //   title: '可用库存',
+      //   dataIndex: 'stockNum',
+      // },
+      // {
+      //   title: '销售价',
+      //   dataIndex: 'salePrice',
+      // },
+      // {
+      //   title: '市场划线价',
+      //   dataIndex: 'marketPrice',
+      // },
     ])
 
   }, [tableHead])

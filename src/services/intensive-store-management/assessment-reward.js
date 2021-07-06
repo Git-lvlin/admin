@@ -18,3 +18,11 @@ export const memberShopResults = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+export const memberShopResultsEdit = async (params = {}, options = {}) => {
+  return request('/auth/store/memberShopResults/edit', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

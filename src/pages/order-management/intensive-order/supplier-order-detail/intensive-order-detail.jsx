@@ -24,6 +24,7 @@ const OrderDetail = () => {
   const [detailData, setDetailData] = useState({});
   const [deliveryVisible, setDeliveryVisible] = useState(false)
   const [expressInfoState, setExpressInfoState] = useState([])
+  const [loading, setLoading] = useState(false);
 
   const expressInfoRequest = () => {
     expressInfo({

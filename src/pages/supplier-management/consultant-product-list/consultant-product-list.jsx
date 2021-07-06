@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Table } from 'antd';
+import { Button, Table, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import XLSX from 'xlsx'
 import { PageContainer } from '@ant-design/pro-layout';
@@ -8,57 +8,50 @@ import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import { amountTransform, typeTransform } from '@/utils/utils'
 import { manageProductSpu } from '@/services/supplier-management/consultant-product-list';
-import { getDetail } from '@/services/product-management/product-review'
-import { useParams } from 'umi';
+import { useParams, history } from 'umi';
 import Detail from './detail';
 
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false);
   const columns = [
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
-    { title: '零售供货价', dataIndex: 'retailSupplyPriceDisplay' },
-    { title: '批发价', dataIndex: 'wholesalePriceDisplay' },
-    { title: '批发起购量', dataIndex: 'wholesaleMinNum' },
-    { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
-    { title: '市场价', dataIndex: 'marketPriceDisplay' },
-    { title: '商品价格', dataIndex: 'salePriceDisplay' },
+    { title: '供货价', dataIndex: 'retailSupplyPrice', render: (_) => amountTransform(_, '/') },
+    // { title: '批发价', dataIndex: 'wholesalePriceDisplay' },
+    // { title: '批发起购量', dataIndex: 'wholesaleMinNum' },
+    // { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
+    // { title: '市场价', dataIndex: 'marketPriceDisplay' },
+    // { title: '商品价格', dataIndex: 'salePriceDisplay' },
     { title: '可用库存', dataIndex: 'stockNum' },
     // { title: '活动库存', dataIndex: 'activityStockNum' },
   ];
 
   useEffect(() => {
+    setLoading(true);
     api.productList({
       selectType: 2,
       spuId: props.data.spuId
     }).then(res => {
       setData(res?.data)
+    }).finally(() => {
+      setLoading(false);
     })
   }, [])
 
   return (
-    <Table columns={columns} dataSource={data} pagination={false} />
+    <Spin spinning={loading}>
+      <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+    </Spin>
   )
 };
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [config, setConfig] = useState({});
-  const [detailData, setDetailData] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
-
-  const getDetails = (id) => {
-    getDetail({
-      spuId: id
-    }).then(res => {
-      if(res.code ===0) {
-        setDetailData(res.data);
-        setFormVisible(true);
-      }
-    })
-  }
 
   const columns = [
     {
@@ -92,15 +85,15 @@ const TableList = () => {
         placeholder: '请输入商品名称'
       },
       render: (_, data) => {
-        return (<a onClick={() => { getDetails(data.spuId); }}>{_}</a>)
+        return (<a onClick={() => { history.push(`/product-management/product-detail/${data.spuId}`); }}>{_}</a>)
       }
     },
     {
-      title: '商家名称',
-      dataIndex: 'supplierName',
+      title: '供应商ID',
+      dataIndex: 'supplierId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入商家名称'
+        placeholder: '请输入供应商ID'
       }
     },
     {
@@ -119,9 +112,17 @@ const TableList = () => {
     },
     {
       title: '销售价',
-      dataIndex: 'name',
+      dataIndex: 'goodsSaleMinPrice',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => {
+        const { goodsSaleMinPrice, goodsSaleMaxPrice } = data;
+        if (goodsSaleMinPrice === goodsSaleMaxPrice) {
+          return amountTransform(goodsSaleMinPrice, '/');
+        }
+
+        return `${amountTransform(goodsSaleMinPrice, '/')}~${amountTransform(goodsSaleMaxPrice, '/')}`
+      }
     },
     {
       title: '可用库存',
@@ -295,11 +296,6 @@ const TableList = () => {
         }}
         columns={columns}
       />
-      {formVisible && <Detail
-        detailData={detailData}
-        visible={formVisible}
-        setVisible={setFormVisible}
-      />}
     </PageContainer>
   );
 };
