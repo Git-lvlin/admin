@@ -20,13 +20,13 @@ const StoreReview = () => {
         placeholder: '请输入店铺ID'
       }
     },
-    {
-      title: '店铺图片',
-      dataIndex: ['details', 'storeLogo'],
-      valueType: 'text',
-      hideInSearch: true,
-      render: (_) => <img src={_} width="50" height="50" />
-    },
+    // {
+    //   title: '店铺图片',
+    //   dataIndex: ['details', 'storeLogo'],
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   render: (_) => <img src={_} width="50" height="50" />
+    // },
     {
       title: '店主手机号',
       dataIndex: 'phone',

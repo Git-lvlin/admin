@@ -74,7 +74,7 @@ const UserDetail = () => {
             <Descriptions.Item label="下单手机号">{info?.phoneNumber}</Descriptions.Item>
             <Descriptions.Item label="注册来源">{sourceType[info?.sourceType]}</Descriptions.Item>
             <Descriptions.Item label="邀请码">
-              HG8J2W &nbsp;<a>查看二维码</a>
+              HG8J2W &nbsp;
             </Descriptions.Item>
             <Descriptions.Item label="性别">{info?.gender === 1 ? '男' : '女'}</Descriptions.Item>
             <Descriptions.Item label="会员店主">

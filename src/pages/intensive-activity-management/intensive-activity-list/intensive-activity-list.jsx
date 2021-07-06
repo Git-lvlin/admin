@@ -6,7 +6,6 @@ import { PlusOutlined } from '@ant-design/icons';
 import { getWholesaleList, getWholesaleDetail, getWholesaleSku, updateWholesaleState } from '@/services/intensive-activity-management/intensive-activity-list'
 import { history } from 'umi';
 import { amountTransform } from '@/utils/utils'
-import Detail from './detail';
 import Big from 'big.js';
 
 const SubTable = (props) => {
@@ -225,7 +224,7 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          <a onClick={() => { getDetail(data.wholesaleId) }}>详情</a>
+          <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-detail/${data.wholesaleId}`) }}>详情</a>
           {data.wholesaleStatusDesc === '待开始' && <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>中止</a>}
         </Space>
       ),
@@ -254,7 +253,6 @@ const TableList = () => {
         columns={columns}
         actionRef={actionRef}
       />
-      {detailData && <Detail detailData={detailData} visible={visible} onClose={() => { setVisible(false) }} />}
     </PageContainer>
 
   );

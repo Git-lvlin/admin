@@ -36,6 +36,7 @@ export default {
   'menu.product-management': '商品管理',
   'menu.product-management.daifa-product': '代发商品',
   'menu.product-management.product-list': '商品列表',
+  'menu.product-management.product-detail': '商品详情',
   'menu.product-management.brand-list': '品牌列表',
   'menu.product-management.product-log': '商品日志',
   'menu.product-management.freight-template': '运费模板',
@@ -50,6 +51,7 @@ export default {
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
+  'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
 
   'menu.supplier-management': '供应商管理',
   'menu.supplier-management.supplier-list': '供应商列表',
@@ -71,8 +73,8 @@ export default {
   'menu.intensive-store-management.product-management': '商品管理',
   'menu.intensive-store-management.shop-user': '店铺用户',
   'menu.intensive-store-management.store-review': '店铺审核',
-  'menu.intensive-store-management.grade-index': '等级指标',
-  'menu.intensive-store-management.assessment-reward': '考核奖励',
+  'menu.intensive-store-management.grade-index': '等级权益',
+  'menu.intensive-store-management.assessment-reward': '指标考核',
 
   'menu.single-contract-activity-management': '单约活动管理',
   'menu.single-contract-activity-management.activity-list': '活动列表',

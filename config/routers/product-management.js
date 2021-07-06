@@ -8,6 +8,11 @@ export default {
       component: './product-management/product-list',
     },
     {
+      name: 'product-detail',
+      path: '/product-management/product-detail/:id',
+      component: './product-management/product-detail',
+    },
+    {
       name: 'daifa-product',
       path: '/product-management/daifa-product',
       component: './product-management/daifa-product',

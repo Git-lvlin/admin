@@ -5,6 +5,8 @@ import ProCard from '@ant-design/pro-card';
 import ProTable from '@ant-design/pro-table';
 import { orderPage } from '@/services/intensive-store-management/intensive-task';
 import { useParams, useLocation, history } from 'umi';
+import { amountTransform } from '@/utils/utils'
+
 
 const IntensiveTask = props => {
   const params = useParams();
@@ -21,6 +23,8 @@ const IntensiveTask = props => {
       title: '活动名称',
       dataIndex: 'wsName',
       valueType: 'text',
+      render: (_, data) => <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-detail/${data.wsId}`) }}>{data.wsName}</a>
+
     },
     {
       title: '集约量',
@@ -31,11 +35,14 @@ const IntensiveTask = props => {
       title: '集约金额',
       dataIndex: 'totalAmount',
       valueType: 'text',
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '活动商品名称',
       dataIndex: 'goodsName',
       valueType: 'text',
+      render: (_, data) => <a onClick={() => { history.push(`/product-management/product-detail/${data?.spuId}`) }}>{data?.goodsName}</a>
+
     },
     {
       title: '活动商品skuID',
