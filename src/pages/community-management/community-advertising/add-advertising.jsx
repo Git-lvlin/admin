@@ -80,6 +80,17 @@ export default props => {
       }
     })
   }
+  //排序验证规则
+  const sortConfirm=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (parseInt(value)<=0||parseInt(value)>100) {
+          await reject('序号只能为1-100')
+      }
+      else {
+          await resolve()
+      }
+    })
+  }
   return (
     <ProForm
         onFinish={async (values) => {
@@ -223,6 +234,7 @@ export default props => {
             name="order"
             rules={[
               { required: true, message: '请输入排名' },
+              { validator: sortConfirm}
             ]}
             label="排序"
         />
