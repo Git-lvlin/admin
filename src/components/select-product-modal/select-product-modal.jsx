@@ -7,7 +7,7 @@ import { productList } from '@/services/intensive-activity-management/intensive-
 import SupplierSelect from '@/components/supplier-select'
 
 export default (props) => {
-  const { visible, setVisible, callback, title = '选择活动商品' } = props;
+  const { visible, setVisible, callback,hideAll, title = '选择活动商品' } = props;
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectItems, setSelectItems] = useState([]);
 
@@ -142,6 +142,7 @@ export default (props) => {
           pageSize: 10,
         }}
         rowSelection={{
+          hideSelectAll:hideAll||false,
           selectedRowKeys,
           preserveSelectedRowKeys: true,
           onChange: (_, val) => {
