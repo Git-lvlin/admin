@@ -74,6 +74,7 @@ const TableList = () => {
         style={{ backgroundColor: '#fff', padding: 10, paddingBottom: '0px' }}
         layout="inline"
         onFinish={() => {
+          setPage(1)
           setSearch(search + 1)
         }}
         submitter={{

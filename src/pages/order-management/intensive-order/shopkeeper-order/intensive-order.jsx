@@ -56,6 +56,7 @@ const TableList = () => {
         form={form}
         style={{ backgroundColor: '#fff', padding: 10, paddingBottom: '0px' }}
         onFinish={() => {
+          setPage(1)
           setSearch(search + 1)
         }}
         layout="inline"
