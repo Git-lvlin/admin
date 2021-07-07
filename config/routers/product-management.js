@@ -11,6 +11,7 @@ export default {
       name: 'product-detail',
       path: '/product-management/product-detail/:id',
       component: './product-management/product-detail',
+      hideInMenu: true,
     },
     {
       name: 'daifa-product',

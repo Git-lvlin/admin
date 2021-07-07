@@ -139,6 +139,9 @@ const TableList = () => {
           ],
         }}
         columns={columns}
+        pagination={{
+          pageSize: 10,
+        }}
       />
     </PageContainer>
 

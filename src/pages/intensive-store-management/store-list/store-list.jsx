@@ -32,7 +32,15 @@ const StoreList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店主手机号'
-      }
+      },
+      hideInTable: true,
+    },
+    {
+      title: '店主',
+      dataIndex: 'phone',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, data) => <div style={{ textAlign: 'center' }}><div>{data.phone}</div><div>{data.linkman}</div></div>
     },
     {
       title: '店铺名称',
@@ -217,6 +225,9 @@ const StoreList = () => {
           ],
         }}
         columns={columns}
+        pagination={{
+          pageSize: 10,
+        }}
       />
     </PageContainer>
   );

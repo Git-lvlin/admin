@@ -134,6 +134,9 @@ const TableList = () => {
         }}
         columns={columns}
         actionRef={actionRef}
+        pagination={{
+          pageSize: 10,
+        }}
       />
       {visible &&
         <ActivityCrate

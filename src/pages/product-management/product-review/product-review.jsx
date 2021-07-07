@@ -344,6 +344,9 @@ const TableList = () => {
           ],
         }}
         columns={columns}
+        pagination={{
+          pageSize: 10,
+        }}
       />
       {firstReviewVisible && <FirstReview
         visible={firstReviewVisible}
