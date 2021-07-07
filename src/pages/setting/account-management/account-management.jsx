@@ -115,7 +115,6 @@ const TableList = () => {
           defaultCollapsed: false,
         }}
         columns={columns}
-        pagination={false}
       />
       {formVisible &&
         <Form

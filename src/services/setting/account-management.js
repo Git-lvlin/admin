@@ -1,9 +1,15 @@
 import request from '@/utils/request';
 
 export const adminList = async (params, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
   const res = await request('/auth/admin/adminList', {
     method: 'GET',
-    params,
+    params: {
+      page: current,
+      size: pageSize,
+      ...rest,
+    },
     ...options
   });
 

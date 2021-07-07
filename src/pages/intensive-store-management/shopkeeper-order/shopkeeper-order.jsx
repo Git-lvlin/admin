@@ -124,6 +124,9 @@ const TableList = () => {
           ],
         }}
         columns={columns}
+        pagination={{
+          pageSize: 10,
+        }}
       />
       <div style={{ textAlign: 'center', marginTop: 30 }}>
         <Button onClick={() => { history.goBack() }}>返回</Button>

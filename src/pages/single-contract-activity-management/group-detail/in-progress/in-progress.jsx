@@ -127,6 +127,9 @@ const TableList = ({ skuId }) => {
           ],
         }}
         columns={columns}
+        pagination={{
+          pageSize: 10,
+        }}
       />
     </>
 

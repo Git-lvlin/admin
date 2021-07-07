@@ -71,6 +71,9 @@ const TableList = () => {
         }}
         columns={columns}
         actionRef={actionRef}
+        pagination={{
+          pageSize: 10,
+        }}
       />
       <Form
         visible={formVisible}

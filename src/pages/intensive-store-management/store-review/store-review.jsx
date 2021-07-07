@@ -186,6 +186,9 @@ const StoreReview = () => {
           ],
         }}
         columns={columns}
+        pagination={{
+          pageSize: 10,
+        }}
       />
       {formVisible && <Form
         visible={formVisible}
