@@ -59,7 +59,7 @@ const GcCascader = ({ value, onChange, ...rest }) => {
   }, [])
 
   return (
-    <Cascader value={value} onChange={changeHandle} options={gcData} placeholder="请选择商品品类" loadData={gcLoadData} changeOnSelect {...rest} />
+    <Cascader value={value} onChange={changeHandle} options={gcData} placeholder="请选择商品品类" loadData={gcLoadData} {...rest} />
   )
 }
 
