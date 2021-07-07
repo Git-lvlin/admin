@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Input, Select } from 'antd';
+import { Button, Form, Input, message, Select } from 'antd';
 import {
   DrawerForm,
   ProFormText,
@@ -62,6 +62,8 @@ export default (props) => {
       }
     })
 
+    let errorMsg = '';
+
     tableData.forEach(item => {
       const { code, key, spec1, spec2, specValue, ...rest } = item;
       specData[code] = {
@@ -74,7 +76,17 @@ export default (props) => {
         salePrice: amountTransform(item.salePrice),
         marketPrice: amountTransform(item.marketPrice),
       }
+
+      if (item.retailSupplyPrice > item.salePrice || item.retailSupplyPrice > item.marketPrice) {
+        errorMsg = '供货价不能大于秒约价和市场价';
+        
+      }
     })
+
+    if (errorMsg) {
+      message.error(errorMsg);
+      reject();
+    }
     const {
       videoUrl,
       gcId,
@@ -122,6 +134,11 @@ export default (props) => {
       // obj.goods.suggestedRetailPrice = amountTransform(suggestedRetailPrice);
       obj.goods.salePrice = amountTransform(salePrice);
       obj.goods.marketPrice = amountTransform(marketPrice);
+
+      if (retailSupplyPrice > salePrice || retailSupplyPrice > marketPrice) {
+        message.error('供货价不能大于秒约价和市场价');
+        reject();
+      }
     }
 
     if (detailData) {
