@@ -122,6 +122,9 @@ const UserDetail = (props) => {
           ],
         }}
         columns={columns}
+        pagination={{
+          pageSize: 10,
+        }}
       />
     </Drawer>
   )

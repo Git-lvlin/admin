@@ -183,6 +183,9 @@ const TableList = () => {
         }}
         columns={columns}
         actionRef={actionRef}
+        pagination={{
+          pageSize: 10,
+        }}
       />
       {formVisible && <Edit
         visible={formVisible}

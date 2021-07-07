@@ -360,6 +360,9 @@ const TableList = () => {
         formRef={formRef}
         request={api.productList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
+        pagination={{
+          pageSize: 10,
+        }}
         search={{
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [
