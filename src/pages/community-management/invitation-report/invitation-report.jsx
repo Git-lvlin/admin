@@ -94,7 +94,7 @@ export default props => {
   const columns2 = [
     {
         title: '内容ID',
-        dataIndex: 'sourceUserId',
+        dataIndex: 'sourceId',
         valueType: 'text',
         hideInSearch: true,
     },
@@ -195,6 +195,7 @@ export default props => {
                 text={'确认要处理所选评论为忽略吗？'} 
                 InterFace={reportHandle} 
                 title={'操作确认'}
+                boxref={actionRef}
               />,
               <HandleModel  
                 status={2}
@@ -203,6 +204,7 @@ export default props => {
                 text={'确认要处理所选评论为屏蔽吗？'} 
                 InterFace={reportHandle} 
                 title={'操作确认'}
+                boxref={actionRef}
               />
             ],
           }}
