@@ -76,6 +76,7 @@ export default props => {
           text={'确认要处理所选评论为忽略吗？'} 
           InterFace={reportHandle} 
           title={'操作确认'}
+          boxref={actionRef}
         />,
         <HandleModel 
           record={record} 
@@ -84,6 +85,7 @@ export default props => {
           text={'确认要处理所选评论为屏蔽吗？'} 
           InterFace={reportHandle} 
           title={'操作确认'}
+          boxref={actionRef}
         />,
       ],
       hideInSearch: true,
