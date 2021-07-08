@@ -35,7 +35,9 @@ const columns= [
   {
       title: '证明截图',
       dataIndex: 'images',
-      valueType: 'image',
+      render: (text) =>{
+        return <img src={text?.[0]} width={50} height={50} />
+      } 
   }
 ];
   return (
