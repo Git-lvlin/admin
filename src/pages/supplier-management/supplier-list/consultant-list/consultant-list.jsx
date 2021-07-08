@@ -89,7 +89,7 @@ const TableList = () => {
       }
     },
     {
-      title: '返佣SPU商品',
+      title: 'SPU商品',
       dataIndex: 'manageGoodsNum',
       valueType: 'text',
       hideInSearch: true,

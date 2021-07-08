@@ -47,6 +47,7 @@ export default {
   'menu.setting.account-management': '子账号管理',
   'menu.setting.role-management': '角色管理',
   'menu.setting.authority-management': '权限管理',
+  'menu.setting.password': '修改密码',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',

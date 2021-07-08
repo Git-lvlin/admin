@@ -72,6 +72,7 @@ export default (props) => {
       form.setFieldsValue({
         salePrice: amountTransform(detailData?.goods?.retailSupplyPrice, '/'),
         marketPrice: amountTransform(detailData?.goods?.retailSupplyPrice, '/'),
+        supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId
       })
     }
 
