@@ -239,6 +239,7 @@ const OrderDetail = () => {
               确定
             </Button>,
           ]}
+          onCancel={() => { setExpressInfoState([]) }}
         >
           <Steps progressDot current={999} direction="vertical">
             {

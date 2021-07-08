@@ -160,6 +160,7 @@ const TableList = () => {
           }}
         />
         <ProFormDateRangePicker
+          name="time"
           label="下单时间"
           fieldProps={{
             style: {
