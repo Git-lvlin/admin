@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Button} from 'antd';
+import { Button,Tabs} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import XLSX from 'xlsx'
@@ -7,11 +7,11 @@ import { couponList } from '@/services/coupon-management/coupon-list';
 import AddModel from './add-model'
 import EndModel from './end-model'
 import { history,connect } from 'umi';
+const { TabPane } = Tabs
 
 
-const TableList = (props) => {
+const message = (type, module,dispatch) => {
   const ref=useRef()
-  const { dispatch,Detail }=props
   const columns= [
     {
       title: '优惠券名称',
@@ -31,13 +31,29 @@ const TableList = (props) => {
         3: '立减券'
       }
     },
+    // {
+    //   title: '使用范围',
+    //   dataIndex: 'useType',
+    //   valueEnum: {
+    //     1: '秒约商品',
+    //     2: '集约商品',
+    //   },
+    //   hideInSearch: true,
+    // },
     {
-      title: '使用范围',
+      title: '面值',
       dataIndex: 'useType',
-      valueEnum: {
-        1: '秒约商品',
-        2: '集约商品',
-      },
+      hideInSearch: true,
+    },
+    {
+      title: '发行方式',
+      dataIndex: 'useType',
+      hideInSearch: true,
+    },
+    {
+      title: '发行总金额（元）',
+      dataIndex: 'issueQuantity',
+      valueType: 'text',
       hideInSearch: true,
     },
     {
@@ -47,35 +63,30 @@ const TableList = (props) => {
       hideInSearch: true,
     },
     {
-      title: '已被领取',
-      dataIndex: 'lqCouponQuantity',
+      title: '可领取时间',
+      dataIndex: 'activityTimeDisplay',
       valueType: 'text',
       hideInSearch: true,
+      ellipsis:true
     },
-    {
-      title: '已被使用',
-      dataIndex: 'useCouponQuantity',
-      valueType: 'text',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '已被领取',
+    //   dataIndex: 'lqCouponQuantity',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '已被使用',
+    //   dataIndex: 'useCouponQuantity',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     {
       title: '有效期',
       dataIndex: 'activityTimeDisplay',
       valueType: 'text',
       hideInSearch: true,
       ellipsis:true
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '创建人',
-      dataIndex: 'adminName',
-      valueType: 'text',
-      hideInSearch: true,
     },
     {
       title: '状态',
@@ -88,6 +99,18 @@ const TableList = (props) => {
         4: '已终止'
       }
     },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    // {
+    //   title: '创建人',
+    //   dataIndex: 'adminName',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     {
       title: '操作',
       key: 'option',
@@ -177,7 +200,6 @@ const TableList = (props) => {
   }
 
   return (
-    <PageContainer>
       <ProTable
         actionRef={ref}
         rowKey="id"
@@ -214,10 +236,34 @@ const TableList = (props) => {
           ]
         }}
       />
-    </PageContainer>
-
   );
 };
+
+const TableList= (props) =>{
+  const { dispatch }=props
+  return (
+    <PageContainer>
+      <Tabs
+        centered
+        defaultActiveKey="1"
+        style={{
+          background: '#fff',
+          padding: 25
+        }}
+      >
+        <TabPane tab="待提交" key="1">
+          {message(1, 1,dispatch)}
+        </TabPane>
+        <TabPane tab="审核中" key="2">
+          {message(1, 2,dispatch)}
+        </TabPane>
+        <TabPane tab="已通过" key="3">
+          { message(1, 5,dispatch) }
+        </TabPane>
+      </Tabs>
+    </PageContainer>
+  )
+}
 
 export default connect(({ DetailList}) => ({
   DetailList

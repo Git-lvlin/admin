@@ -9,7 +9,7 @@ let id = props.location.query.id
 const actionRef = useRef();
 const columns= [
   {
-      title: '评论ID',
+      title: '举报人ID',
       dataIndex: 'userId',
   },
   {

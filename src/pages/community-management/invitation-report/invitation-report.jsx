@@ -135,7 +135,7 @@ export default props => {
     },
     {
         title: '操作人',
-        dataIndex: 'handlerUserId',
+        dataIndex: 'handlerUserName',
         valueType: 'text',
         hideInSearch: true,
     },
