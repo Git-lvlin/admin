@@ -18,3 +18,12 @@ export const getStoreList = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+export const changeStatus = (params = {}, options = {}) => {
+  return request('/auth/store/memberShop/changeStatus', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+
+}
