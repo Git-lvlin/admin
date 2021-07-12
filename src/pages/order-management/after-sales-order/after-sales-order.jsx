@@ -61,7 +61,7 @@ const columns = [
   {
     title: '申请时间',
     dataIndex: 'applyTime',
-    valueType: 'dateRange',
+    valueType: 'dateTimeRange',
     align: 'center',
     order: 5,
     colSize: .9,

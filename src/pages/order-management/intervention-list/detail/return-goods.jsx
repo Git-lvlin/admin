@@ -8,14 +8,18 @@ import styles from './styles.less'
 const tableRow = props => {
   const imageArr = () => {
     const imgUrl = props[0]?.proofImageUrl.split(',')
-    return imgUrl?.map(url => (
-      <Image
-        key={props[0]?.orderSn}
-        width={80}
-        height={80}
-        src={url}
-      />
-    ))
+    return imgUrl?.map(url => {
+      if(url) {
+        return(
+          <Image
+            key={props[0]?.orderSn}
+            width={80}
+            height={80}
+            src={url}
+          />
+        )
+      }
+    })
   }
   return (
     <ProTable.Summary.Row>

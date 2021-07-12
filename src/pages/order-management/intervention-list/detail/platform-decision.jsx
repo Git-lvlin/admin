@@ -34,14 +34,18 @@ const PlatformDecision = props => {
 
   const imageArr = () => {
     const imgUrl = platformEvidenceImg?.split(',')
-    return imgUrl?.map((url, idx) => (
-      <Image
-        key={idx}
-        width={80}
-        height={80}
-        src={url}
-      />
-    ))
+    return imgUrl?.map((url, idx) => {
+      if(url) {
+        return (
+          <Image
+            key={idx}
+            width={80}
+            height={80}
+            src={url}
+          />
+        )
+      }
+    })
   }
 
   return (
@@ -67,7 +71,7 @@ const PlatformDecision = props => {
           <div className={styles.itemImg}>
             <div className={styles.itemTxt}>处理凭证：</div>
             <Image.PreviewGroup>
-              { imageArr() }
+              {imageArr()}
             </Image.PreviewGroup>
           </div>
         </ProCard>
