@@ -178,7 +178,7 @@ const OrderDetail = () => {
                           <div>{item.skuName}</div>
                         </div>
                         <div className={styles.box}>
-                          <div>{{ 1: '秒约', 2: '单约', 3: '团约' }[detailData.orderType]}价</div>
+                          <div>{{ 1: '秒约', 2: '单约', 3: '团约' }[1]}价</div>
                           <div>{amountTransform(item.skuSalePrice, '/')}元</div>
                         </div>
                         <div className={styles.box}>
