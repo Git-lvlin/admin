@@ -26,11 +26,11 @@ const BuyerProof = props => {
 
   const imageArr = () => {
     const imgUrl = userEvidenceImg?.split(',')
-    return imgUrl?.map((url, idx) => {
+    return imgUrl?.map((url) => {
       if(url) {
         return (
           <Image
-            key={idx}
+            key={url}
             width={80}
             height={80}
             src={url}
@@ -63,7 +63,7 @@ const BuyerProof = props => {
           <div className={styles.itemImg}>
             <div className={styles.itemTxt}>申述凭证：</div>
             <Image.PreviewGroup>
-              { imageArr() }
+              {imageArr()}
             </Image.PreviewGroup>
           </div>
         </ProCard>

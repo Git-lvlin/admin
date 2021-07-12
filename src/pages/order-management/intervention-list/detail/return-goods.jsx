@@ -12,7 +12,7 @@ const tableRow = props => {
       if(url) {
         return(
           <Image
-            key={props[0]?.orderSn}
+            key={url}
             width={80}
             height={80}
             src={url}

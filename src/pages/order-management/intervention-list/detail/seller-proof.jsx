@@ -26,11 +26,11 @@ const BuyerProof = props => {
 
   const imageArr = () => {
     const imgUrl = storeEvidenceImg?.split(',')
-    return imgUrl?.map((url, idx) => {
+    return imgUrl?.map((url) => {
       if(url) {
         return (
           <Image
-            key={idx}
+            key={url}
             width={80}
             height={80}
             src={url}

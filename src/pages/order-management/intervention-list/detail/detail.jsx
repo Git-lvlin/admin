@@ -46,7 +46,7 @@ const interventioListDetail = () => {
     }
   }, [DTO])
   const handleBack = () => {
-    history.goBack(-1)
+    history.goBack()
   }
   return(
     <PageContainer title={false}>
@@ -58,7 +58,7 @@ const interventioListDetail = () => {
           status={detail?.status}
         />
         {
-          detail?.status !== 0&&
+          detail?.status !== 0 &&
           <PlatformDecision
             platformOpinion={detail?.platformOpinion}
             data={detail}
@@ -78,7 +78,7 @@ const interventioListDetail = () => {
         <ReturnGoods data={DTO}/>
         <ReturnSingle
           data={DTO}
-          status={detail?.stage}
+          type={detail?.afterSalesType}
         />
         { <div className={styles.negotiation}>协商历史</div> }
         {

@@ -18,12 +18,12 @@ const AfterState = ({ stage }) => {
       case 2:
         return '介入退款'
       default:
-        return '订单不存在'
+        return ''
     }
   }
   return (
     <div className={styles.detailTitle}>
-      { status() }
+      {status()}
     </div>
   )
 }

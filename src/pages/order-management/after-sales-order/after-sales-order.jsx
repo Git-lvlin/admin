@@ -69,7 +69,7 @@ const columns = [
   },
   {
     title: '买家昵称',
-    dataIndex: 'userNickname',
+    dataIndex: 'nickname',
     colSize: .9,
     align: 'center',
     order: 4,

@@ -70,7 +70,7 @@ const NegotiationHistory = props => {
       <div className={styles.warp} key={res.id}>
         <div className={styles.avatar}>
           <Avatar
-            size={ 54 }
+            size={54}
             src={
               res?.createRole == 1
               ? res?.sysLogo
