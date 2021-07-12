@@ -45,7 +45,7 @@ const TableList = () => {
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data?.orderItemList?.[0]?.supplierId}`) }}>{data?.orderItemList?.[0]?.supplierId}</a>
+      render: (_, data) => data?.orderItemList?.[0]?.supplierId
     },
     {
       title: '商品数量',
