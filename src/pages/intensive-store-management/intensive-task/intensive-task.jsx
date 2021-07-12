@@ -99,6 +99,9 @@ const IntensiveTask = props => {
             request={orderPage}
             search={false}
             columns={columns}
+            pagination={{
+              pageSize: 10,
+            }}
           />
         </ProCard.TabPane>
       </ProCard>

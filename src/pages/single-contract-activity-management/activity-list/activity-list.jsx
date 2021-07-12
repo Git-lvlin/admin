@@ -113,10 +113,11 @@ const TableList = () => {
           <a onClick={() => { history.push(`/single-contract-activity-management/activity-detail/${data.id} `) }}>详情</a>
           {data.activityStatus === 1
             &&
-            <>
-              <a onClick={() => { getDetail(data.id) }}>编辑</a>
-              <a onClick={() => { activityStop(data.id) }}>中止</a>
-            </>
+            <a onClick={() => { getDetail(data.id) }}>编辑</a>
+          }
+          {(data.activityStatus === 2 || data.activityStatus === 1)
+            &&
+            <a onClick={() => { activityStop(data.id) }}>中止</a>
           }
         </Space>
       ),
@@ -147,6 +148,9 @@ const TableList = () => {
         }}
         columns={columns}
         actionRef={actionRef}
+        pagination={{
+          pageSize: 10,
+        }}
       />
       {visible &&
         <ActivityCrate

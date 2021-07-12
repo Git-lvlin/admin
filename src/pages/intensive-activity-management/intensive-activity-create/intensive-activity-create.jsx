@@ -151,6 +151,11 @@ const IntensiveActivityCreate = () => {
                 return false;
               }
 
+              if (selectItem.minNum > selectItem.maxNum) {
+                message.error('单店起订量不能大于单店限订量');
+                return false;
+              }
+
               let minWholesalePrice = (amountTransform(selectItem.wholesaleSupplyPrice) + +new Big(selectItem.fixedPrice).times(100)) / (+new Big(1).minus(0.0068).minus(amountTransform(selectItem.settlePercent, '/')));
               minWholesalePrice = +new Big(Math.ceil(minWholesalePrice)).div(100);
               if (selectItem.price < minWholesalePrice) {

@@ -35,3 +35,19 @@ export const cacheUserAuths = (params, options = {}) => {
     ...options
   });
 }
+
+export const getProvinces = (params = {}, options = {}) => {
+  return request('/auth/supplier/user/getProvinces', {
+    method: 'GET',
+    params,
+    ...options
+  });
+}
+
+export const getChildArea = (params = {}, options = {}) => {
+  return request('/auth/supplier/user/getChildArea', {
+    method: 'GET',
+    params,
+    ...options
+  });
+}

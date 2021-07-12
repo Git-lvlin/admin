@@ -3,6 +3,7 @@ import { Button, Space, Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/intensive-store-management/store-review';
+import AddressCascader from '@/components/address-cascader';
 import Form from './form';
 
 const StoreReview = () => {
@@ -107,9 +108,40 @@ const StoreReview = () => {
     },
     {
       title: '审核状态',
-      dataIndex: ['verifyStatus', 'desc'],
+      dataIndex: ['verifyStatus', 'code'],
       valueType: 'text',
       hideInSearch: true,
+      valueEnum: {
+        1: '店铺入驻成功',
+        2: '驳回',
+        3: '已通过',
+        4: '待审核'
+      }
+    },
+    {
+      title: '审核状态',
+      dataIndex: 'verifyStatus',
+      valueType: 'text',
+      hideInTable: true,
+      valueEnum: {
+        1: '店铺入驻成功',
+        2: '驳回',
+        3: '已通过',
+        4: '待审核'
+      }
+    },
+    {
+      title: '所在地区',
+      dataIndex: 'area',
+      valueType: 'text',
+      hideInTable: true,
+      renderFormItem: () => <AddressCascader />
+    },
+    {
+      title: '详细地址',
+      dataIndex: 'address',
+      valueType: 'text',
+      hideInTable: true,
     },
     {
       title: '操作',
@@ -154,6 +186,9 @@ const StoreReview = () => {
           ],
         }}
         columns={columns}
+        pagination={{
+          pageSize: 10,
+        }}
       />
       {formVisible && <Form
         visible={formVisible}

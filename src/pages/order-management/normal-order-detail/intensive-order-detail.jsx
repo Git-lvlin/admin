@@ -19,10 +19,10 @@ const OrderDetail = () => {
 
   const expressInfoRequest = () => {
     expressInfo({
-      shippingCode: detailData.express.expressNo,
-      expressType: detailData.express.companyNo,
-      mobile: detailData.receivingInfo.receiptPhone,
-      deliveryTime: detailData.express.expressTime
+      shippingCode: detailData.shippingCode,
+      expressType: detailData.expressType,
+      mobile: detailData.buyerPhone,
+      deliveryTime: detailData.deliveryTime
     }).then(res => {
       if (res.code === 0) {
         setExpressInfoState(res.data?.deliveryList?.reverse())
@@ -212,6 +212,7 @@ const OrderDetail = () => {
               确定
             </Button>,
           ]}
+          onCancel={() => { setExpressInfoState([]) }}
         >
           <Steps progressDot current={999} direction="vertical">
             {

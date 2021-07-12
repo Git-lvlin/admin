@@ -22,7 +22,7 @@ class AvatarDropdown extends React.Component {
       return;
     }
 
-    history.push(`/account/${key}`);
+    history.push(key);
   };
 
   render() {
@@ -40,17 +40,17 @@ class AvatarDropdown extends React.Component {
             <UserOutlined />
             个人中心
           </Menu.Item>
-        )}
+        )} */}
         {menu && (
-          <Menu.Item key="settings">
-            <SettingOutlined />
-            个人设置
+          <Menu.Item key="/setting/password">
+            {/* <SettingOutlined /> */}
+            修改密码
           </Menu.Item>
         )}
-        {menu && <Menu.Divider />} */}
+        {menu && <Menu.Divider />}
 
         <Menu.Item key="logout">
-          <LogoutOutlined />
+          {/* <LogoutOutlined /> */}
           退出登录
         </Menu.Item>
       </Menu>

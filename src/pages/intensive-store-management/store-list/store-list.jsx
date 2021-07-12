@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Space } from 'antd';
+import { Button, Space, Tooltip } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import { QuestionCircleOutlined } from '@ant-design/icons'
 import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/intensive-store-management/store-list';
 import { history } from 'umi';
+import Form from './form';
 
 const StoreList = () => {
-
+  const [formVisible, setFormVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
 
@@ -32,7 +35,15 @@ const StoreList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店主手机号'
-      }
+      },
+      hideInTable: true,
+    },
+    {
+      title: '店主',
+      dataIndex: 'phone',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, data) => <div><div>{data.phone}</div><div>{data.linkman}</div></div>
     },
     {
       title: '店铺名称',
@@ -170,7 +181,28 @@ const StoreList = () => {
     {
       title: '营业状态',
       dataIndex: ['status', 'desc'],
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_,data) => {
+        const { remark } = data;
+        return (
+          <>
+            {_}&nbsp;
+            {remark && <Tooltip title={remark}><QuestionCircleOutlined /></Tooltip>}
+          </>
+        )
+      }
+    },
+    {
+      title: '营业状态',
+      dataIndex: 'status',
       valueType: 'select',
+      hideInTable: true,
+      valueEnum: {
+        1: '启用',
+        2: '注销',
+        3: '关闭'
+      },
     },
     {
       title: '操作',
@@ -179,7 +211,9 @@ const StoreList = () => {
       render: (_, data) => (
         <Space>
           <a onClick={() => { history.push(`/intensive-store-management/store-detail/${data.storeNo}`) }}>详情</a>
-          <a>关闭</a>
+          {data.status.code === 1 && <a onClick={() => { setSelectItem({ ...data, toStatus: 3 }); setFormVisible(true) }}>关闭</a>}
+          {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 1 }); setFormVisible(true) }}>开启</a>}
+          {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 2 }); setFormVisible(true) }}>注销</a>}
         </Space>
       )
     },
@@ -217,7 +251,16 @@ const StoreList = () => {
           ],
         }}
         columns={columns}
+        pagination={{
+          pageSize: 10,
+        }}
       />
+      {formVisible && <Form
+        visible={formVisible}
+        setVisible={setFormVisible}
+        data={selectItem}
+        callback={() => { actionRef.current.reload() }}
+      />}
     </PageContainer>
   );
 };

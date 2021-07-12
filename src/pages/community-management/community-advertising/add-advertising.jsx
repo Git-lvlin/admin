@@ -198,6 +198,7 @@ export default props => {
                   }
                   setGoods(v)
                  }}
+                 hideAll={true}
               />
               <ProTable
                 rowKey="id"

@@ -1,12 +1,15 @@
 import request from '@/utils/request';
 
 export const getStoreList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current, pageSize, area = [], ...rest } = params;
   const res = await request('/auth/store/memberShopApply/page', {
     method: 'GET',
     params: {
       page: current,
       size: pageSize,
+      provinceName: area[0]?.label,
+      cityName: area[1]?.label,
+      regionName: area[2]?.label,
       ...rest
     },
     ...options

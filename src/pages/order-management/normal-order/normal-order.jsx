@@ -74,6 +74,7 @@ const TableList = () => {
         style={{ backgroundColor: '#fff', padding: 10, paddingBottom: '0px' }}
         layout="inline"
         onFinish={() => {
+          setPage(1)
           setSearch(search + 1)
         }}
         submitter={{
@@ -159,6 +160,7 @@ const TableList = () => {
           }}
         />
         <ProFormDateRangePicker
+          name="time"
           label="下单时间"
           fieldProps={{
             style: {
