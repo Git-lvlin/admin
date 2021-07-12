@@ -246,7 +246,7 @@ const TableList = () => {
                 </div>
                 <div>
                   <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
-                    <Descriptions.Item label="应付金额">{amountTransform(item.advance.Amount, '/')}元</Descriptions.Item>
+                    <Descriptions.Item label="应付金额">{amountTransform(item.advance.amount, '/')}元</Descriptions.Item>
                     <Descriptions.Item label="优惠券">-{amountTransform(item.advance.couponAmount, '/')}元</Descriptions.Item>
                     <Descriptions.Item label="用户实付">{amountTransform(item.advance.actualAmount, '/')}元</Descriptions.Item>
                   </Descriptions>
@@ -254,7 +254,7 @@ const TableList = () => {
                 <div>
                   {item.final &&
                     <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
-                      <Descriptions.Item label="应付金额">{amountTransform(item.final.Amount, '/')}元</Descriptions.Item>
+                      <Descriptions.Item label="应付金额">{amountTransform(item.final.amount, '/')}元</Descriptions.Item>
                       <Descriptions.Item label="运费">+{amountTransform(item.final.shippingAmount, '/')}元</Descriptions.Item>
                       <Descriptions.Item label="用户实付">{amountTransform(item.final.actualAmount, '/')}元</Descriptions.Item>
                     </Descriptions>}
