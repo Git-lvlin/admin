@@ -20,6 +20,7 @@ const interventioListDetail = () => {
   const [DTO, setDTO] = useState([])
   const [consultationRecord, setConsultationRecord] = useState([])
   const [loading, setLoading] = useState(false)
+  const [flag, setFlag] = useState(false)
   useEffect(()=>{
     setLoading(true)
     interventionListDetail({id}).then(res=> {
@@ -32,7 +33,7 @@ const interventioListDetail = () => {
       setDetail([])
       setDTO([])
     }
-  }, [])
+  }, [flag])
   useEffect(()=>{
     if(DTO != ![]) {
       findReturnRecord({id: DTO?.id}).then(res=> {
@@ -55,6 +56,7 @@ const interventioListDetail = () => {
           orderId={detail?.orderSn}
           stage={detail?.stage}
           id={id}
+          change={setFlag}
           status={detail?.status}
         />
         {

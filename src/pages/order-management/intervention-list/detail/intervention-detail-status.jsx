@@ -28,8 +28,7 @@ const AfterState = ({ stage }) => {
   )
 }
 
-const InterventionDetailStatus = props => {
-  const { stage, orderId, id, status } = props
+const InterventionDetailStatus = ({stage, orderId, id, status, change}) => {
   const formRef = useRef()
 
   const Modal = props => {
@@ -60,6 +59,7 @@ const InterventionDetailStatus = props => {
             platformEvidenceImg
           }).then(res=>{
             if(res.success){
+              change(true)
               message.success('提交成功')
               return true
             }
