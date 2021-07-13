@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Form, Button, Modal,Select} from 'antd';
+import { Form, Button, Modal,Select, message} from 'antd';
 import { FormattedMessage } from 'umi';
 import { ModalForm,ProFormSelect,ProFormRadio} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
@@ -271,7 +271,7 @@ const useSecond=(props)=>{
                         />
                         :
                         <>
-                            <Button type="primary" className={styles.popupBtn} onClick={showModal}>
+                        <Button type="primary" className={styles.popupBtn} onClick={showModal}>
                             选择商品
                         </Button>
                         
@@ -376,7 +376,7 @@ const useSecond=(props)=>{
                 :null
             }
 
-        <ProFormRadio.Group
+        {/* <ProFormRadio.Group
             name="memberType"
             label="可用人群"
             rules={[{ required: true, message: '请选择可用人群' }]}
@@ -390,7 +390,7 @@ const useSecond=(props)=>{
                 value: 2,
                 }
             ]}
-            />
+            /> */}
         </Form.Item>
     )
 }

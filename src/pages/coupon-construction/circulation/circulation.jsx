@@ -8,17 +8,17 @@ const { TabPane } = Tabs;
 const circulation=props=>{
     const { DetailList}=props
     let {id}=props
-    // const [sumcoupon,setSumcoupon] = useState(0);
+    const [sumcoupon,setSumcoupon] = useState(0);
     const [summoney,setSummoney] = useState(0);
-    // const sumCoupon=e=>{
-    //     setSumcoupon(e.target.value)
-    // }
+    const sumCoupon=e=>{
+        setSumcoupon(e.target.value)
+    }
     const sumMoney=e=>{
         setSummoney(e.target.value)
     }
     return(
         <Tabs  type="card">
-            {/* <TabPane className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.issued.amount" />} key="1">
+            <TabPane className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.issued.amount" />} key="1">
                 <ProForm.Group>
                     <Form.Item name="issueQuantity">
                         <Input placeholder="请输入拟发行的总金额" onChange={sumCoupon}/>
@@ -26,7 +26,7 @@ const circulation=props=>{
                     <span>元</span>
                 </ProForm.Group>
                 <p>优惠券发行总数量为<span className={styles.compute }>{(parseInt(id)==id)&&DetailList.data?.issueQuantity/10||sumcoupon/10}</span>张</p>
-            </TabPane> */}
+            </TabPane>
             <TabPane className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.issued.quantity" />} key="2">
                <ProForm.Group>
                     <Form.Item name="issueQuantity">

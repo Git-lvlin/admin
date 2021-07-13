@@ -112,6 +112,17 @@ export default {
 
   'menu.coupon-management': '优惠券管理',
   'menu.coupon-management.coupon-list': '优惠券列表',
+  'menu.coupon-management.construction':'新建优惠劵',
+  'menu.coupon-management.coupon-codebase':'码库',
+  'menu.coupon-management.coupon-audit':'优惠券审核',
+  'menu.coupon-management.audit-details':'审核详情',
+  'menu.coupon-management.list-details':'优惠券详情',
+  'menu.coupon-management.coupon-crowd':'群体管理',
+  'menu.coupon-management.add-crowd':'新建群体',
+  
+
+
+
 
   'menu.message-management': '消息管理',
   'menu.message-management.member-message-template-config': '会员消息模板配置',
@@ -123,8 +134,7 @@ export default {
   'menu.message-management.detail': '详情',
   'menu.message-management.stand-inside-letter-list': '站内信列表',
 
-  'menu.coupon-management.construction':'新建优惠劵',
-  'menu.coupon-management.coupon-codebase':'码库',
+ 
  
 
   'menu.business-school': '商学院',
@@ -149,6 +159,9 @@ export default {
   'menu.community-management.community-advertising':'社区广告管理',
   'menu.community-management.add-advertising':'添加/编辑广告',
   'menu.community-management.advertising-manage':'广告位管理',
+  'menu.community-management.invitation-audi':'帖子审核',
+  'menu.community-management.invitation-audi.list':'审核列表',
+
 
   'menu.daifa-store-management':'内部店管理',
   'menu.daifa-store-management.list':'内部店列表',
