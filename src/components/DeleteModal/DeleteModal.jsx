@@ -3,7 +3,7 @@ import { ModalForm} from '@ant-design/pro-form';
 import { Button } from 'antd';
 
 export default props=>{
-    const {record,text,InterFace,title,boxref}=props
+    const {record,text,InterFace,title,boxref,blok}=props
     const [byid,setByid]=useState()
     const [visible, setVisible] = useState(false);
     const Termination=(record)=>{
@@ -16,7 +16,12 @@ export default props=>{
             key="model2"
             onVisibleChange={setVisible}
             visible={visible}
-            trigger={<Button disabled={record.delete?true:false} onClick={()=>Termination(record)}>{record.delete?'已删除':'删除'}</Button>}
+            trigger={
+                blok
+                ?<a onClick={()=>Termination(record)}>{blok==1?'删除':null}</a>
+                :<Button disabled={record.delete?true:false} onClick={()=>Termination(record)}>
+                    {record.delete?'已删除':'删除'}
+                 </Button>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
