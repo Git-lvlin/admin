@@ -209,12 +209,10 @@ export default (props) => {
     if (e.target.value === 1) {
       form.setFieldsValue({
         salePrice: amountTransform(goods.retailSupplyPrice, '/'),
-        marketPrice: amountTransform(goods.retailSupplyPrice, '/'),
       })
     } else {
       form.setFieldsValue({
         salePrice: amountTransform(goods.salePrice || goods.retailSupplyPrice, '/'),
-        marketPrice: amountTransform(goods.marketPrice || goods.retailSupplyPrice, '/'),
       })
     }
   }
@@ -291,7 +289,7 @@ export default (props) => {
             // suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
             // wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
             salePrice: amountTransform((settleType === 1 || settleType === 0) ? item[1].retailSupplyPrice : item[1].salePrice, '/'),
-            marketPrice: amountTransform((settleType === 1 || settleType === 0) ? item[1].retailSupplyPrice : item[1].marketPrice, '/'),
+            marketPrice: amountTransform(item[1].marketPrice || item[1].retailSupplyPrice, '/'),
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -305,7 +303,7 @@ export default (props) => {
           retailSupplyPrice: amountTransform(goods.retailSupplyPrice, '/'),
           // suggestedRetailPrice: amountTransform(goods.suggestedRetailPrice, '/'),
           salePrice: amountTransform((settleType === 1 || settleType === 0) ? goods.retailSupplyPrice : goods.salePrice, '/'),
-          marketPrice: amountTransform((settleType === 1 || settleType === 0) ? goods.retailSupplyPrice : goods.marketPrice, '/'),
+          marketPrice: amountTransform(goods.marketPrice || goods.retailSupplyPrice, '/'),
         })
       }
     }
