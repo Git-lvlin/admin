@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { Form, Button,Table } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import '../style.less'
+import { ModalForm,ProFormSelect,ProFormRadio} from '@ant-design/pro-form';
+import styles from '../style.less'
 import { connect } from 'umi';
 import { couponWholesaleList } from '@/services/coupon-construction/coupon-wholesale-list';
 
@@ -104,6 +105,7 @@ const  useCollect=(props)=>{
     const [rowobjs,setRowobjs]=useState([])
     const [loading,setLoading]=useState(true)
     const [wholesaleIds,setWholesaleIds]=useState('')
+    const [position,setPosition]=useState()
     const close = () => {
            setLoading(false)
            dispatch({
@@ -122,8 +124,28 @@ const  useCollect=(props)=>{
         setWholesaleIds(wholesaleIds)
     }
     return(
-        <Form.Item name="collect">
+        <Form.Item className={styles.unfold} name="collect">
+            <ProFormRadio.Group
+                name="goodsType"
+                label="商品范围"
+                rules={[{ required: true, message: '请选择商品范围' }]}
+                fieldProps={{
+                value: (parseInt(id)==id )&&DetailList.data?.goodsType||position,
+                onChange: (e) => setPosition(e.target.value),
+                }}
+                options={[
+                {
+                    label:'全部集约',
+                    value: 1,
+                },
+                {
+                    label: '指定集约',
+                    value: 2,
+                },
+                ]}
+            />
             {
+                position==2||(parseInt(id)==id )&&DetailList.data?.goodsType==2?
                 (parseInt(id)==id)?
                 <Table
                     rowKey='wholesaleId'
@@ -161,8 +183,9 @@ const  useCollect=(props)=>{
                         <Button type="primary" onClick={close} style={{display:loading?'block':'none'}}>
                             确定
                         </Button>
-                    </div>
+                    </div>  
                 </>
+                :null
             }
         </Form.Item>
     )

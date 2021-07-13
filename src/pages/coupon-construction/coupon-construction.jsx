@@ -5,6 +5,7 @@ import CouponType from './coupon-type/coupon-type'
 import Circulation from './circulation/circulation'
 import UseScope from './use-scope/use-scope'
 import PeriodValidity from './period-validity/period-validity'
+import AssignCrowd from './assign-crowd/assign-crowd'
 import { couponSub } from '@/services/coupon-construction/coupon-coupon-sub';
 import ProForm, { ProFormText, ProFormRadio } from '@ant-design/pro-form';
 import { history,connect } from 'umi';
@@ -15,7 +16,10 @@ const { TextArea } = Input;
 const couponConstruction=(props) => {
   const { dispatch,DetailList,UseScopeList }=props
   const [position,setPosition]=useState()
+  const [choose,setChoose]=useState()
+  const [submitType,setSubmitType]=useState()
   let id = props.location.query.id
+  let type = props.location.query.type
   const [form] = Form.useForm()
   useEffect(() => {
     if(id){
@@ -36,6 +40,8 @@ const couponConstruction=(props) => {
     })
   }
   const onsubmit=(values)=>{
+    //发放类型
+    values.issueType=type
     values.couponType = parseInt(UseScopeList.UseScopeObje.couponType) || 1,//优惠券类型
     values.couponTypeInfo = {
       usefulAmount: parseInt(values.usefulAmount),//用价格门槛(单位分)
@@ -71,6 +77,8 @@ const couponConstruction=(props) => {
     values.useTypeInfoJ = {//集约商品详情信息
       wholesaleIds:UseScopeList.UseScopeObje.wholesaleIds
     }
+    //提交类型
+    values.couponVerifyStatus=submitType
     couponSub(values).then((res)=>{
       if(res.code==0){
         history.push('/coupon-management/coupon-list') 
@@ -92,17 +100,24 @@ const couponConstruction=(props) => {
           submitter={
             {
               render: (props, doms) => {
-                if(parseInt(id)!=id){
                 return [
-                  <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
+                  <Button type="primary" key="submit" onClick={() =>{
+                    props.form?.submit?.()
+                    setSubmitType(1)
+                  }}>
                     保存
                   </Button>,
+                   <Button type="primary" key="submit" onClick={() =>{
+                    props.form?.submit?.()
+                    setSubmitType(3)
+                   }}>
+                    提交审核
+                 </Button>,
                   <Button type="default" onClick={()=>history.push('/coupon-management/coupon-list')}>
                     返回
                   </Button>,
                   
                 ];
-              }
               }
             }
           }
@@ -134,13 +149,40 @@ const couponConstruction=(props) => {
         </FormItem>
 
         {/* 发行量 */}
-        <FormItem  label={<FormattedMessage id="formandbasic-form.circulation" />} name="layout" >
-          <Circulation id={id} />
-        </FormItem>
+        {
+            type==2?
+            <ProFormRadio.Group
+              name="issueQuantity"
+              label='发行量'
+              rules={[{ required: true, message: '请选择发行量' }]}
+              options={[
+                { 
+                  label:'不限量发放',
+                  value: 1 
+                }]}
+            />
+            :
+            <FormItem  label={<FormattedMessage id="formandbasic-form.circulation" />} name="layout" >
+               <Circulation id={id} />
+            </FormItem>
+           
+          }
+       
 
         {/* 每人限领 */}
         <ProForm.Group>
-          <ProFormRadio.Group
+          {
+            type==2?
+            <ProFormRadio.Group
+            name="limitType"
+            label={<FormattedMessage id="formandbasic-form.each.limit" />}
+            rules={[{ required: true, message: '请选择限领方式' }]}
+            options={[
+              { 
+                label: <FormattedMessage id="formandbasic-form.quota" />, value: 2 
+              }]}
+            />
+            :<ProFormRadio.Group
             name="limitType"
             label={<FormattedMessage id="formandbasic-form.each.limit" />}
             rules={[{ required: true, message: '请选择限领方式' }]}
@@ -152,6 +194,7 @@ const couponConstruction=(props) => {
                 label: <FormattedMessage id="formandbasic-form.quota" />, value: 2 
               }]}
           />
+          }
           <ProFormText
             width={120}
             name="limitQuantity"
@@ -159,31 +202,52 @@ const couponConstruction=(props) => {
           <span><FormattedMessage id="formandbasic-form.zhang" /></span>
         </ProForm.Group>
 
-        {/* 限时领取 */}
-        <FormItem
-          label={<FormattedMessage id="formandbasic-form.date.label" />}
-          name="date"
-          rules={[{ required: true, message: '请选择限领时间' }]}
-        >
-          {
-            id&&DetailList.data?
-            <p >{DetailList.data?.limitStartTime+' -- '+DetailList.data?.limitEndTime}</p>
-            :<RangePicker
-              name="dateRange"
-              placeholder={[
-                formatMessage({
-                  id: 'formandbasic-form.placeholder.start',
-                }),
-                formatMessage({
-                  id: 'formandbasic-form.placeholder.end',
-                }),
-              ]}
-            />
-          }
-        </FormItem>
+        {/* 可领取时间 */}
+        {
+          type==2?null
+          :
+          <FormItem
+            label='可领取时间'
+            name="date"
+            rules={[{ required: true, message: '请选择限领时间' }]}
+          >
+            {
+              id&&DetailList.data?
+              <p >{DetailList.data?.limitStartTime+' -- '+DetailList.data?.limitEndTime}</p>
+              :<RangePicker
+                name="dateRange"
+                placeholder={[
+                  formatMessage({
+                    id: 'formandbasic-form.placeholder.start',
+                  }),
+                  formatMessage({
+                    id: 'formandbasic-form.placeholder.end',
+                  }),
+                ]}
+              />
+            }
+          </FormItem>
+        }
+        
 
         {/* 有效期 */}
-        <ProFormRadio.Group
+        {
+          type==2?
+          <ProFormRadio.Group
+            name="activityTimeType"
+            label={<FormattedMessage id="formandbasic-form.period.of.validity" />}
+            fieldProps={{
+              onChange: (e) => setPosition(e.target.value),
+            }}
+            rules={[{ required: true, message: '请选择有效期限' }]}
+            options={[
+              {
+                label: '领券',
+                value: 2,
+              }
+            ]}
+          />
+        : <ProFormRadio.Group
           name="activityTimeType"
           label={<FormattedMessage id="formandbasic-form.period.of.validity" />}
           fieldProps={{
@@ -201,7 +265,31 @@ const couponConstruction=(props) => {
             }
           ]}
         />
+        }
+       
         <PeriodValidity position={position} id={id} />
+
+         {/* 可领券群体 */}
+          <ProFormRadio.Group
+            name="box"
+            label={type==1?'可领券群体':'发券群体'}
+            rules={[{ required: true, message: '请选择商品范围' }]}
+            fieldProps={{
+              value: (parseInt(id)==id )&&DetailList.data?.box||choose,
+              onChange: (e) => setChoose(e.target.value),
+            }}
+            options={[
+            {
+                label:'全部用户',
+                value: 1,
+            },
+            {
+                label: '指定群体用户',
+                value: 2,
+            },
+            ]}
+        />
+        <AssignCrowd choose={choose}/>
 
         <Divider orientation="left">使用设置</Divider>
 

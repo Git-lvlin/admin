@@ -1,8 +1,9 @@
 import React, { useState,useEffect,useRef } from 'react';
 import { couponDetail } from '@/services/coupon-management/coupon-detail';
 import { Divider, Form, Spin,Button } from 'antd';
+import ProForm from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
-import moment from 'moment';
+import AuditModel from './audit-model'
 import { history } from 'umi';
 
 const formItemLayout = {
@@ -83,27 +84,22 @@ export default props => {
   ];
   const columns3= [
     {
-      title: '活动编号',
+      title: '审核时间',
       dataIndex: 'couponName',
       valueType: 'text',
     },
     {
-      title: '活动名称',
+      title: '审核人员',
       dataIndex: 'couponType',
       valueType: 'text',
     },
     {
-        title: '活动时段',
+        title: '审核结果',
         dataIndex: 'couponStatus',
         valueType: 'text',
     },
     {
-        title: '可购买的会员店等级',
-        dataIndex: 'useType',
-        valueType: 'text'
-    },
-    {
-        title: '可购买的会员用户',
+        title: '意见审核',
         dataIndex: 'useType',
         valueType: 'text'
     },
@@ -124,12 +120,12 @@ export default props => {
       <Spin
         spinning={loading}
       >
-         <h1>查看详情</h1>
+         <h1>优惠券审核详情</h1>
          <Button style={{marginBottom:'20px'}} type="primary" onClick={()=>history.goBack()}>返回</Button>
         <Form
           form={form}
           {...formItemLayout}
-          style={{ backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
+          style={{  backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
         >
           <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">基本信息</Divider>
           <Form.Item
@@ -203,7 +199,7 @@ export default props => {
           </Form.Item>
 
           <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">使用设置</Divider>
-          
+
           <Form.Item
             label="使用范围"
           >
@@ -222,6 +218,7 @@ export default props => {
               // status: 1,
               // }}
               // request={couponList}
+              // style={{width:'800px'}}
               search={false}
               columns={columns2}
             />
@@ -236,7 +233,40 @@ export default props => {
               label="规则说明"
             >
               {detailData.couponRule}
-          </Form.Item>
+          </Form.Item> 
+
+          <AuditModel 
+            type={1} 
+            state={1}  
+            label={'审核通过'}  
+            text={'确认审核通过吗？'} 
+            // InterFace={auditDynamic} 
+            title={'操作确认'}
+            boxref={ref}
+          />,
+           <AuditModel 
+            type={2} 
+            state={2}  
+            label={'驳回'}  
+            // InterFace={auditDynamic} 
+            title={'审核驳回'}
+            boxref={ref}
+          />,
+
+          <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">审核信息</Divider>
+
+          <ProTable
+              actionRef={ref}
+              rowKey="id"
+              options={false}
+              // params={{
+              // status: 1,
+              // }}
+              // request={couponList}
+              // style={{width:'800px'}}
+              search={false}
+              columns={columns3}
+            />
         </Form>
       </Spin> 
     
