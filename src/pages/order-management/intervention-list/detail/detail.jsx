@@ -80,7 +80,7 @@ const interventioListDetail = () => {
         <ReturnGoods data={DTO}/>
         <ReturnSingle
           data={DTO}
-          type={detail?.afterSalesType}
+          type={detail?.orderReturnApplyDTO?.afterSalesType}
         />
         { <div className={styles.negotiation}>协商历史</div> }
         {
