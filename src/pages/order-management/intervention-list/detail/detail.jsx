@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout'
 import { Spin, Empty, Button } from 'antd'
 import { useParams, history } from 'umi'
 
-import { interventionListDetail, findReturnRecord} from '@/services/order-management/intervention-list'
+import {interventionListDetail, findReturnRecord} from '@/services/order-management/intervention-list'
 import InterventionDetailStatus from './intervention-detail-status'
 import PlatformDecision from './platform-decision'
 import BuyerProof from './buyer-proof'
