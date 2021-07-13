@@ -3,7 +3,7 @@ import { ModalForm} from '@ant-design/pro-form';
 import { couponEnd } from '@/services/coupon-management/coupon-end';
 
 export default props=>{
-    const {data,boxref}=props
+    const {data,boxref,type}=props
     const [endid,setEndid]=useState()
     const [visible, setVisible] = useState(false);
     //终止
@@ -17,7 +17,7 @@ export default props=>{
           key={data.id}
           onVisibleChange={setVisible}
           visible={visible}
-          trigger={data.couponStatus==3||data.couponStatus==4?null:<a onClick={()=>Termination(data)}>终止</a>}
+          trigger={data.couponStatus==3||data.couponStatus==4?null:<a onClick={()=>Termination(data)}>{type==4?'终止':null}</a>}
           submitter={{
           render: (props, defaultDoms) => {
               return [
