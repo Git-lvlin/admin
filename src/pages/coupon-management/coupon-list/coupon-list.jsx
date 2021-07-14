@@ -56,7 +56,7 @@ const message = (type, module,dispatch) => {
     },
     {
       title: '发行总金额（元）',
-      dataIndex: 'issueQuantity',
+      dataIndex: 'issueAmount',
       valueType: 'text',
       hideInSearch: true,
     },

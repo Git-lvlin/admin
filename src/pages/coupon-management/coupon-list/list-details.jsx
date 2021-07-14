@@ -2,6 +2,7 @@ import React, { useState,useEffect,useRef } from 'react';
 import { couponDetail } from '@/services/coupon-management/coupon-detail';
 import { Divider, Form, Spin,Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import ProCard from '@ant-design/pro-card';
 import moment from 'moment';
 import { history } from 'umi';
 
@@ -28,16 +29,21 @@ export default props => {
   const columns= [
     {
       title: '群体名称',
-      dataIndex: 'couponName',
+      dataIndex: 'name',
       valueType: 'text',
     },
     {
       title: '选项',
-      dataIndex: 'couponType'
+      dataIndex: 'type',
+      valueEnum: {
+        1: '会员等级',
+        2: '消费次数',
+        3: '累计消费'
+      },
     },
     {
         title: '范围',
-        dataIndex: 'couponStatus',
+        dataIndex: 'isContain',
         valueType: 'select',
         valueEnum: {
           1: '包含',
@@ -46,50 +52,51 @@ export default props => {
     },
     {
         title: '条件',
-        dataIndex: 'useType',
+        dataIndex: 'msgDisplay',
     } 
   ];
   const columns2= [
     {
       title: 'spuID',
-      dataIndex: 'couponName',
+      dataIndex: 'spuId',
       valueType: 'text',
     },
     {
       title: '商品名称',
-      dataIndex: 'couponType'
+      dataIndex: 'goodsName'
     },
     {
         title: '结算模式',
-        dataIndex: 'couponStatus',
+        dataIndex: 'settleType',
         valueType: 'select',
         valueEnum: {
-          1: '包含',
-          2: '不包含',
+          1: '佣金模式',
+          2: '底价模式',
+          3: '集约模式'
         },
     },
     {
         title: '供货价',
-        dataIndex: 'useType',
+        dataIndex: 'retailSupplyPrice',
     },
     {
         title: '销售价',
-        dataIndex: 'useType',
+        dataIndex: 'goodsSalePrice',
     }, 
     {
         title: '可用库存',
-        dataIndex: 'useType',
+        dataIndex: 'stockNum',
     },
   ];
   const columns3= [
     {
       title: '活动编号',
-      dataIndex: 'couponName',
+      dataIndex: 'wsId',
       valueType: 'text',
     },
     {
       title: '活动名称',
-      dataIndex: 'couponType',
+      dataIndex: 'name',
       valueType: 'text',
     },
     {
@@ -99,12 +106,12 @@ export default props => {
     },
     {
         title: '可购买的会员店等级',
-        dataIndex: 'useType',
+        dataIndex: 'storeLevel',
         valueType: 'text'
     },
     {
         title: '可购买的会员用户',
-        dataIndex: 'useType',
+        dataIndex: 'memberLevel',
         valueType: 'text'
     },
   ];
@@ -141,19 +148,25 @@ export default props => {
           <Form.Item
             label="优惠券类型"
           >
-            {detailData.couponType}
+            {
+            detailData.couponType==1?
+            '满减券'
+            :detailData.couponType==2?
+            '折扣券'
+            :'立减券'
+            }
           </Form.Item>
 
           <Form.Item
             label="使用门槛"
           >
-            {detailData.address}
+            {detailData.couponMsg}
           </Form.Item>
 
           <Form.Item
               label="券面值"
             >
-              {detailData.content}
+              {detailData.couponAmountDisplay}
               {
                 detailData.images?.map(ele=>(
                   <img style={{display:"block"}} width={100} height={100} src={ele} alt="" />
@@ -163,7 +176,11 @@ export default props => {
             <Form.Item
               label="发行方式"
             >
-              {detailData.address}
+              {
+               detailData.issueType==1?
+               '会员领取券'
+               :'系统发放券'
+              }
           </Form.Item>
           <Form.Item
             label="发放数量"
@@ -189,6 +206,11 @@ export default props => {
           <Form.Item
             label="可领券群体"
           >
+            {
+              detailData.memberType==1?
+              '全部会员'
+              :'指定用户群体'
+            }
             <ProTable
               actionRef={ref}
               rowKey="id"
@@ -197,6 +219,7 @@ export default props => {
               // status: 1,
               // }}
               // request={couponList}
+              // dataSource={{}}
               search={false}
               columns={columns}
             />
@@ -207,13 +230,23 @@ export default props => {
           <Form.Item
             label="使用范围"
           >
-            {detailData.useType}
+            {
+              detailData.useType==1?
+              '秒约商品'
+              :'集约商品'
+            }
           </Form.Item>
 
           <Form.Item
             label="商品范围"
           >
-            {detailData.goodsType}
+            {
+              detailData.goodsType==1?
+              '全部商品':
+              detailData.goodsType==2?
+              '指定商品':
+              '指定品类'
+            }
             <ProTable
               actionRef={ref}
               rowKey="id"
@@ -222,6 +255,7 @@ export default props => {
               // status: 1,
               // }}
               // request={couponList}
+              dataSource={detailData.spuInfo}
               search={false}
               columns={columns2}
             />
@@ -229,7 +263,11 @@ export default props => {
           <Form.Item
             label="可用人群"
           >
-            {detailData.memberType}
+            {
+            detailData.memberType==1?
+            '全部会员':
+            '指定用户群体'
+            }
           </Form.Item>
 
           <Form.Item
