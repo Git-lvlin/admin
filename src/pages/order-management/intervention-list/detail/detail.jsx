@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout'
 import { Spin, Empty, Button } from 'antd'
 import { useParams, history } from 'umi'
 
-import { interventionListDetail, findReturnRecord} from '@/services/order-management/intervention-list'
+import {interventionListDetail, findReturnRecord} from '@/services/order-management/intervention-list'
 import InterventionDetailStatus from './intervention-detail-status'
 import PlatformDecision from './platform-decision'
 import BuyerProof from './buyer-proof'
@@ -20,6 +20,7 @@ const interventioListDetail = () => {
   const [DTO, setDTO] = useState([])
   const [consultationRecord, setConsultationRecord] = useState([])
   const [loading, setLoading] = useState(false)
+  const [flag, setFlag] = useState(false)
   useEffect(()=>{
     setLoading(true)
     interventionListDetail({id}).then(res=> {
@@ -32,7 +33,7 @@ const interventioListDetail = () => {
       setDetail([])
       setDTO([])
     }
-  }, [])
+  }, [flag])
   useEffect(()=>{
     if(DTO != ![]) {
       findReturnRecord({id: DTO?.id}).then(res=> {
@@ -55,6 +56,7 @@ const interventioListDetail = () => {
           orderId={detail?.orderSn}
           stage={detail?.stage}
           id={id}
+          change={setFlag}
           status={detail?.status}
         />
         {
@@ -78,7 +80,7 @@ const interventioListDetail = () => {
         <ReturnGoods data={DTO}/>
         <ReturnSingle
           data={DTO}
-          type={detail?.afterSalesType}
+          type={detail?.orderReturnApplyDTO?.afterSalesType}
         />
         { <div className={styles.negotiation}>协商历史</div> }
         {

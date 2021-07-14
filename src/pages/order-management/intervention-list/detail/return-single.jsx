@@ -141,7 +141,10 @@ const ReturnSingle = props => {
       title: '商家收货时间',
       dataIndex: 'receiveTime',
       hideInDescriptions: isRefunds(),
-      render: (_) => moment(_).format('YYYY-MM-DD HH:mm:ss')
+      render: (_) => {
+        if(_) return moment(_).format('YYYY-MM-DD HH:mm:ss')
+        return ''
+      }
     }
   ]
 
