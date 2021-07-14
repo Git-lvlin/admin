@@ -5,6 +5,7 @@ import Upload from '@/components/upload';
 import { storeDetail } from '@/services/daifa-store-management/list'
 import { arrayToTree } from '@/utils/utils'
 import { categoryAll } from '@/services/common';
+import ProCard from '@ant-design/pro-card';
 import moment from 'moment';
 
 
