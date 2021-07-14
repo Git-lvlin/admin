@@ -25,7 +25,10 @@ const message = (type, module,dispatch) => {
       title: '帖子ID',
       dataIndex: 'id',
       valueType: 'text',
-      hideInSearch:true
+      hideInSearch:true,
+      render:(text, record, _, action)=>[
+        <a onClick={()=>history.push('/community-management/content-management/dynamic-get-dynamic-detail?id='+record.id)}>{record.id}</a>
+    ],
     },
     {
       title: '发布时间',

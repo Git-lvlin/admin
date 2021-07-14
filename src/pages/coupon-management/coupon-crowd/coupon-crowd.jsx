@@ -1,31 +1,30 @@
-import React, { useState, useRef } from 'react';
-import { Button,Tabs} from 'antd';
+import React, { useState, useRef,useEffect } from 'react';
+import { Button,Tabs,Table } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm,{ ModalForm,ProFormRadio} from '@ant-design/pro-form';
+import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
-import { couponList } from '@/services/coupon-management/coupon-list';
+import { couponCrowdList,couponCrowdStatusSub,couponCrowdDel } from '@/services/crowd-management/coupon-crowd';
 import DeleteModal from '@/components/DeleteModal'
 import { history} from 'umi';
 
-
-
-export default (props) =>{
-  const [visible, setVisible] = useState(false);
-  const ref=useRef()
-  const columns= [
-    {
-      title: '群体名称',
-      dataIndex: 'couponName',
-      valueType: 'text',
-    },
+const SubTable = (props) => {
+  const [data, setData] = useState([])
+  const {name}=props
+  const columns = [
     {
       title: '选项',
-      dataIndex: 'couponType',
+      dataIndex: 'type',
+      valueType: 'select',
+      valueEnum: {
+        1: '会员等级',
+        2: '消费次数',
+        3: '累计消费'
+      },
       hideInSearch: true,
-    },
+  },
     {
         title: '范围',
-        dataIndex: 'couponStatus',
+        dataIndex: 'isContain',
         valueType: 'select',
         valueEnum: {
           1: '包含',
@@ -35,16 +34,40 @@ export default (props) =>{
     },
     {
         title: '条件',
-        dataIndex: 'useType',
+        dataIndex: 'msgDisplay',
         hideInSearch: true,
+    }
+  ];
+  useEffect(() => {
+    couponCrowdList({
+      name:name
+    }).then(res => {
+      if (res.code === 0) {
+        setData(res?.data?.[0].crowdInfo)
+      }
+    })
+  }, [])
+  return (
+    <ProTable search={false} key="type" columns={columns} dataSource={data} pagination={false} />
+  )
+};
+
+export default (props) =>{
+  const [visible, setVisible] = useState(false);
+  const ref=useRef()
+  const columns= [
+    {
+      title: '群体名称',
+      dataIndex: 'name',
+      valueType: 'text',
     },
     {
         title: '状态',
-        dataIndex: 'couponStatus',
+        dataIndex: 'status',
         valueType: 'select',
         valueEnum: {
-          1: '开启',
-          2: '关闭',
+          1: '关闭',
+          2: '开启',
         },
         hideInSearch: true,
     },
@@ -54,26 +77,47 @@ export default (props) =>{
       width: 120,
       valueType: 'option',
       render: (_, data) => [
+      <ProFormSwitch name="Switch"
+        fieldProps={{
+          checked: data.status==2?true:false,
+          onChange:(bol)=>{
+            if(bol){
+              couponCrowdStatusSub({id:data.id,status:2}).then(res=>{
+                if(res.code==0){
+                  ref.current.reload();
+                }
+              })
+            }else{
+              couponCrowdStatusSub({id:data.id,status:1}).then(res=>{
+                if(res.code==0){
+                  ref.current.reload();
+                }
+              })
+            }
+          }
+        }
+      }
+      />,
       <a
           key="a"
           onClick={()=>{
             Examine(data.id)
           }}
         >
-          {
-            type==1?
-            '编辑'
-            :null
-          }
+          编辑
       </a>,
-      <DeleteModal
-        record={data} 
-        boxref={ref} 
-        text={'确定要删除所选优惠券吗？'} 
-        // InterFace={dynamicDelete} 
-        blok={type}
-        title={'操作确认'}
-      />
+       <a
+          key="a"
+          onClick={()=>{
+            couponCrowdDel({id:data.id}).then(res=>{
+              if(res.code==0){
+                ref.current.reload();
+              }
+            })
+          }}
+        >
+          删除
+      </a>,
       ],
     },
     
@@ -81,7 +125,7 @@ export default (props) =>{
  
   //编辑
   const Examine=(id)=>{
-    history.push(`/coupon-management/coupon-list/construction?id=`+id);
+    history.push(`/coupon-management/coupon-crowd/add-crowd?id=`+id);
   }
   //新建
   const addcoupon=()=>{
@@ -104,7 +148,8 @@ export default (props) =>{
             // params={{
             // status: 1,
             // }}
-            // request={couponList}
+            expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
+            request={couponCrowdList}
             search={{
             defaultCollapsed: false,
             labelWidth: 100,
