@@ -132,26 +132,27 @@ const IntensiveActivityCreate = () => {
                 return false;
               }
 
-              if (!/^\d+$/g.test(selectItem.totalStockNum) || selectItem.totalStockNum <= 0) {
+              if (!/^\d+$/g.test(selectItem.totalStockNum) || +selectItem.totalStockNum <= 0) {
                 message.error('集约总库存只能是大于0的整数');
                 return false;
               }
 
-              if (selectItem.totalStockNum > selectItem.stockNum) {
+              if (+selectItem.totalStockNum > +selectItem.stockNum) {
                 message.error('集约总库存不能大于可用库存');
                 return false;
               }
 
-              if (selectItem.fixedPrice < 0 || selectItem.fixedPrice > 10) {
+              if (+selectItem.fixedPrice < 0 || +selectItem.fixedPrice > 10) {
                 message.error('配送费补贴只能是0-10之间');
                 return false;
               }
-              if (selectItem.settlePercent < 0 || selectItem.settlePercent > 20) {
+              if (+selectItem.settlePercent < 0 || +selectItem.settlePercent > 20) {
                 message.error('集约分成比例只能是0-20之间');
                 return false;
               }
 
-              if (selectItem.minNum > selectItem.maxNum) {
+
+              if (+selectItem.minNum > +selectItem.maxNum) {
                 message.error('单店起订量不能大于单店限订量');
                 return false;
               }

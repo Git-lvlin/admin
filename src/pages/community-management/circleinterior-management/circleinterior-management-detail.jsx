@@ -19,7 +19,8 @@ const formItemLayout = {
 
 export default props => {
   const id=props.location.query.id
-  let name=props.location.query.name
+  const byid=props.location.query.byid
+  const name=props.location.query.name
   const [form] = Form.useForm()
   const [detailData,setDetailData]=useState([])
   const [loading, setLoading] = useState(false);
@@ -27,6 +28,7 @@ export default props => {
     setLoading(true);
     getDynamicDetail({id}).then(res=>{
       setDetailData(res.data)
+      console.log('res.data',res.data)
     }).finally(() => {
       setLoading(false);
     })
@@ -62,23 +64,43 @@ export default props => {
           </Form.Item>
 
           <Form.Item
-            label="内容"
+              label="内容"
+            >
+              {detailData.content}
+              {
+                detailData.images?.map(ele=>(
+                  <img style={{display:"block"}} width={100} height={100} src={ele} alt="" />
+                ))
+              }
+            </Form.Item>
+
+          {
+           detailData.sourceType==1?
+            <Form.Item
+              label="商品快照"
+            >
+             <h3>{detailData.sourceData.subtitle}</h3>
+             <h4>{detailData.sourceData.title}</h4>
+             <img src={detailData.sourceData.icon} width={100} height={100} alt="" />
+            </Form.Item>
+            :null
+          }
+         
+         {
+           detailData.sourceType==3?
+           <Form.Item
+            label="转发内容快照"
           >
-            {detailData.content}
+            <h3>{detailData.sourceData.subtitle}</h3>
+            <h4>{detailData.sourceData.title}</h4>
+            <img src={detailData.sourceData.icon} width={100} height={100} alt="" />
           </Form.Item>
+          :null
+         }
           <Form.Item
-            label="商品快照"
+            style={{marginLeft:'90px'}}
           >
-            {
-              detailData.images?.map(ele=>(
-                <img width={100} height={100} src={ele} alt="" />
-              ))
-            }
-          </Form.Item>
-          <Form.Item
-            label="."
-          >
-            <Button style={{margin:'20px'}} type="primary" onClick={()=>history.push('/community-management/circle-management/circleinterior-management?name='+name)}>返回</Button>
+            <Button style={{margin:'20px'}} type="primary" onClick={()=>history.push('/community-management/circle-management/circleinterior-management?id='+byid+'&name='+name)}>返回</Button>
           </Form.Item>
           
         </Form>

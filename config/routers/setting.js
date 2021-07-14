@@ -17,5 +17,11 @@ export default {
       path: '/setting/authority-management',
       component: './setting/authority-management',
     },
+    {
+      name: 'password',
+      path: '/setting/password',
+      component: './setting/password',
+      hideInMenu: true,
+    },
   ]
 }

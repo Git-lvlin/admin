@@ -8,8 +8,7 @@ import styles from './styles.less'
 import './styles.less'
 
 
-const PlatformDecision = props => {
-  const { data, platformEvidenceImg, platformOpinion } = props
+const PlatformDecision = ({data, platformEvidenceImg, platformOpinion}) => {
 
   const columns = [
     {
@@ -34,14 +33,18 @@ const PlatformDecision = props => {
 
   const imageArr = () => {
     const imgUrl = platformEvidenceImg?.split(',')
-    return imgUrl?.map((url, idx) => (
-      <Image
-        key={idx}
-        width={80}
-        height={80}
-        src={url}
-      />
-    ))
+    return imgUrl?.map((url) => {
+      if(url) {
+        return (
+          <Image
+            key={url}
+            width={80}
+            height={80}
+            src={url}
+          />
+        )
+      }
+    })
   }
 
   return (
@@ -67,7 +70,7 @@ const PlatformDecision = props => {
           <div className={styles.itemImg}>
             <div className={styles.itemTxt}>处理凭证：</div>
             <Image.PreviewGroup>
-              { imageArr() }
+              {imageArr()}
             </Image.PreviewGroup>
           </div>
         </ProCard>

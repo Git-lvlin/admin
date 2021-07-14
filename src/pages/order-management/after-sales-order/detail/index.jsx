@@ -57,7 +57,7 @@ const Detail = () => {
           status={orderDetail?.afterSalesType}
           type={orderDetail?.status}
         />
-        { <div className={styles.negotiation}>协商历史</div> }
+        <div className={styles.negotiation}>协商历史</div>
         {
           Object.keys(consultationRecord)?.length === 0 ? 
           <Empty className={styles.empty}/>:

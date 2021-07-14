@@ -7,14 +7,18 @@ import styles from './styles.less'
 const { PreviewGroup } = Image
 
 const VoucherPic = ({pic}) => {
-  return pic?.map(res => (
-    <Image
-      key={res}
-      width={60}
-      height={60}
-      src={res}
-    />
-  ))
+  return pic?.map(res => {
+    if(res) {
+      return (
+        <Image
+          key={res}
+          width={60}
+          height={60}
+          src={res}
+        />
+      )
+    }
+  })
 }
 const optType = (type, data) => {
   let { parameterMap } = data
@@ -66,7 +70,7 @@ const NegotiationHistory = props => {
       <div className={styles.warp} key={res.id}>
         <div className={styles.avatar}>
           <Avatar
-            size={ 54 }
+            size={54}
             src={
               res?.createRole == 1
               ? res?.sysLogo

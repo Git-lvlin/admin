@@ -11,7 +11,7 @@ import styles from './styles.less'
 const { Item } = Timeline
 
 const ReturnSingle = props => {
-  const { data, status } = props
+  const { data, type } = props
   const [address, setAddress] = useState({})
   const showLastStatus = lastStatus => {
     lastStatus = lastStatus?.split(',')
@@ -22,20 +22,23 @@ const ReturnSingle = props => {
     ))
   }
   useEffect(()=>{
-    if(data != ![] && status === 2){
-      expressInfo({
-        shippingCode: data?.returnShippingCode,
-        expressType: data?.returnExpressType,
-        mobile: data?.returnPhone,
-        deliveryTime: data?.returnTime
-      }).then(res => {
-        setAddress(res?.data)
-      })
-      return () => {
-        setAddress({})
-      }
+    data?.returnShippingCode&&
+    expressInfo({
+      shippingCode: data?.returnShippingCode,
+      expressType: data?.returnExpressType,
+      mobile: data?.returnPhone,
+      deliveryTime: data?.returnTime
+    }).then(res => {
+      setAddress(res?.data)
+    })
+    return () => {
+      setAddress({})
     }
   }, [data])
+
+  const isRefunds = ()=> {
+    return type === 2 ? false : true
+  }
 
   const columns =[
     {
@@ -86,7 +89,7 @@ const ReturnSingle = props => {
     {
       title: '退货物流信息',
       dataIndex: 'returnGoodsInfo',
-      hideInDescriptions: status === 2 ? false : true,
+      hideInDescriptions: isRefunds(),
       render: () => {
         return(
           <div style={{display: 'flex', alignItems:'center'}}>
@@ -122,22 +125,22 @@ const ReturnSingle = props => {
     { 
       title: '商家收件人名称',
       dataIndex: 'receiveMan',
-      hideInDescriptions: status === 2 ? false : true
+      hideInDescriptions: isRefunds()
     },
     {
       title: '商家收货手机号',
       dataIndex: 'receivePhone',
-      hideInDescriptions: status === 2 ? false : true
+      hideInDescriptions: isRefunds()
     },
     {
       title: '商家收货地址',
       dataIndex: 'receiveAddress',
-      hideInDescriptions: status === 2 ? false : true
+      hideInDescriptions: isRefunds()
     },
     {
       title: '商家收货时间',
       dataIndex: 'receiveTime',
-      hideInDescriptions: status === 2 ? false : true,
+      hideInDescriptions: isRefunds(),
       render: (_) => moment(_).format('YYYY-MM-DD HH:mm:ss')
     }
   ]

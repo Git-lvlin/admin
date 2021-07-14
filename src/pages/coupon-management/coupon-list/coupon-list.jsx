@@ -1,17 +1,18 @@
 import React, { useState, useRef } from 'react';
-import { Button} from 'antd';
+import { Button,Tabs} from 'antd';
 import ProTable from '@ant-design/pro-table';
+import ProForm,{ ModalForm,ProFormRadio} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import XLSX from 'xlsx'
 import { couponList } from '@/services/coupon-management/coupon-list';
-import AddModel from './add-model'
+import DeleteModal from '@/components/DeleteModal'
 import EndModel from './end-model'
 import { history,connect } from 'umi';
+const { TabPane } = Tabs
 
 
-const TableList = (props) => {
+const message = (type, module,dispatch) => {
   const ref=useRef()
-  const { dispatch,Detail }=props
   const columns= [
     {
       title: '优惠券名称',
@@ -31,13 +32,32 @@ const TableList = (props) => {
         3: '立减券'
       }
     },
+    // {
+    //   title: '使用范围',
+    //   dataIndex: 'useType',
+    //   valueEnum: {
+    //     1: '秒约商品',
+    //     2: '集约商品',
+    //   },
+    //   hideInSearch: true,
+    // },
     {
-      title: '使用范围',
-      dataIndex: 'useType',
+      title: '面值',
+      dataIndex: 'couponAmountDisplay',
+      hideInSearch: true,
+    },
+    {
+      title: '发行方式',
+      dataIndex: 'issueType',
       valueEnum: {
-        1: '秒约商品',
-        2: '集约商品',
+        1: '会员领取券',
+        2: '系统发放券'
       },
+    },
+    {
+      title: '发行总金额（元）',
+      dataIndex: 'issueQuantity',
+      valueType: 'text',
       hideInSearch: true,
     },
     {
@@ -47,17 +67,24 @@ const TableList = (props) => {
       hideInSearch: true,
     },
     {
-      title: '已被领取',
-      dataIndex: 'lqCouponQuantity',
+      title: '可领取时间',
+      dataIndex: 'activityTimeDisplay',
       valueType: 'text',
       hideInSearch: true,
+      ellipsis:true
     },
-    {
-      title: '已被使用',
-      dataIndex: 'useCouponQuantity',
-      valueType: 'text',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '已被领取',
+    //   dataIndex: 'lqCouponQuantity',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '已被使用',
+    //   dataIndex: 'useCouponQuantity',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     {
       title: '有效期',
       dataIndex: 'activityTimeDisplay',
@@ -66,16 +93,16 @@ const TableList = (props) => {
       ellipsis:true
     },
     {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '创建人',
-      dataIndex: 'adminName',
-      valueType: 'text',
-      hideInSearch: true,
+      title: '审核状态',
+      dataIndex: 'couponVerifyStatus',
+      valueType: 'select',
+      valueEnum: {
+        1: '待提交',
+        2: '审核驳回',
+        3: '审核中',
+        4: '已通过'
+      },
+      hideInSearch:true
     },
     {
       title: '状态',
@@ -86,42 +113,82 @@ const TableList = (props) => {
         2: '进行中',
         3: '已结束',
         4: '已终止'
-      }
+      },
+      hideInSearch:type!=4,
+      hideInTable:true
     },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    // {
+    //   title: '创建人',
+    //   dataIndex: 'adminName',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     {
       title: '操作',
       key: 'option',
       width: 120,
       valueType: 'option',
       render: (_, data) => [
-      <a
-          key="a"
-          onClick={()=>{
-            Examine(data.id)
-          }}
-        >
-          查看
+      <a key="a" onClick={()=>{ Examine(data.id) }}>
+        {
+          type==1?
+          '编辑'
+          :null
+        }
       </a>,
-      <AddModel boxref={ref} data={data}/>,
-      <EndModel boxref={ref} data={data}/>,
-      <a
-        key="a"
-        onClick={()=>CodeLibrary(data.id)}
-      >
-        码库
+      <DeleteModal
+        record={data} 
+        boxref={ref} 
+        text={'确定要删除所选优惠券吗？'} 
+        // InterFace={dynamicDelete} 
+        blok={type}
+        title={'操作确认'}
+      />,
+      <a key="a" onClick={()=>{ look(data.id)}}>
+        {
+          type==3||type==4?
+          '查看'
+          :null
+        } 
+      </a>,
+       <a key="a" onClick={()=>{ look(data.id)}}>
+       {
+          type==3?
+          '撤回'
+          :null
+       }
+      </a>,
+      // <AddModel boxref={ref} data={data}/>,
+      <EndModel type={type} boxref={ref} data={data}/>,
+      <a key="a" onClick={()=>CodeLibrary(data.id)}>
+        {
+           type==4?
+           '码库'
+           :null
+        }
       </a>
       ],
     },
     
   ];
  
-  //跳转到新建页面
+  //编辑
   const Examine=(id)=>{
     history.push(`/coupon-management/coupon-list/construction?id=`+id);
     dispatch({
       type:'DetailList/fetchLookDetail',
       payload:{id:id}
     })
+  }
+  //查看
+  const look=(id)=>{
+    history.push(`/coupon-management/coupon-list/list-details?id=`+id);
   }
  
   // 跳转到码库
@@ -177,13 +244,12 @@ const TableList = (props) => {
   }
 
   return (
-    <PageContainer>
       <ProTable
         actionRef={ref}
         rowKey="id"
         options={false}
         params={{
-          status: 1,
+          couponVerifyStatus: type,
         }}
         request={couponList}
         search={{
@@ -200,24 +266,79 @@ const TableList = (props) => {
           ],
         }}
         columns={columns}
-        toolbar={{
-          actions: [
-            <Button
-              key="primary"
-              type="primary"
-              onClick={() => {
-                history.push('/coupon-management/coupon-list/construction')
-              }}
-            >
-              新建优惠券
-            </Button>,
-          ]
-        }}
       />
-    </PageContainer>
-
   );
 };
+
+const TableList= (props) =>{
+  const { dispatch }=props
+  const [visible, setVisible] = useState(false);
+  return (
+    <PageContainer>
+      <ModalForm
+        title="新建优惠券"
+        onVisibleChange={setVisible}
+        visible={visible}
+        trigger={ <Button
+          key="primary"
+          type="primary"
+          style={{marginBottom:'20px'}}
+          onClick={() =>setVisible(true)}
+        >
+          新建优惠券
+        </Button>}
+        submitter={{
+        render: (props, defaultDoms) => {
+            return [
+            ...defaultDoms
+            ];
+        },
+        }}
+        onFinish={async (values) => {
+          console.log('values',values);
+          setVisible(false)
+        }}
+      >
+        <ProFormRadio.Group
+          name="activityTimeType"
+          fieldProps={{
+            onChange: (e) =>{
+                history.push('/coupon-management/coupon-list/construction?type='+e.target.value)
+            },
+          }}
+          options={[
+            {
+              label: '会员领取券',
+              value: 1,
+            },
+            {
+              label: '系统发放券',
+              value: 2,
+            }
+          ]}
+        />
+      </ModalForm>
+      <Tabs
+        centered
+        defaultActiveKey="1"
+        style={{
+          background: '#fff',
+          padding: 25
+        }}
+      >
+        <TabPane tab="待提交" key="1">
+          {message(1, 1,dispatch)}
+        </TabPane>
+        <TabPane tab="审核中" key="3">
+          {message(3, 3)}
+        </TabPane>
+        <TabPane tab="已通过" key="4">
+          { message(4, 4) }
+        </TabPane>
+      </Tabs>
+    </PageContainer>
+  )
+}
 
 export default connect(({ DetailList}) => ({
   DetailList

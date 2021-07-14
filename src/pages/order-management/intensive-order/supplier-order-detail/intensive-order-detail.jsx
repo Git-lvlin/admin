@@ -173,7 +173,7 @@ const OrderDetail = () => {
                   <div className={styles.box_wrap}>
                     <div className={styles.box}>
                       <div>应付金额</div>
-                      <div>{amountTransform(detailData?.advance?.Amount, '/')}元</div>
+                      <div>{amountTransform(detailData?.advance?.amount, '/')}元</div>
                     </div>
                     <div className={styles.box}>
                       <div>优惠券优惠</div>
@@ -190,7 +190,7 @@ const OrderDetail = () => {
                   <div className={styles.box_wrap}>
                     <div className={styles.box}>
                       <div>应付金额</div>
-                      <div>{amountTransform(detailData?.final?.Amount, '/')}元</div>
+                      <div>{amountTransform(detailData?.final?.amount, '/')}元</div>
                     </div>
                     <div className={styles.box}>
                       <div>运费</div>
@@ -271,6 +271,7 @@ const OrderDetail = () => {
               确定
             </Button>,
           ]}
+          onCancel={() => { setExpressInfoState([]) }}
         >
           <Steps progressDot current={999} direction="vertical">
             {

@@ -22,13 +22,6 @@ export default {
       pathRewrite: {
         '^': ''
       }
-    },
-    '/express/': {
-      target: 'http://192.168.14.157:50029/',
-      changeOrigin: true,
-      pathRewrite: {
-        '^': ''
-      }
     }
   },
   test: {

@@ -61,21 +61,41 @@ export default props => {
           </Form.Item>
 
           <Form.Item
-            label="内容"
+              label="内容"
+            >
+              {detailData.content}
+              {
+                detailData.images?.map(ele=>(
+                  <img style={{display:"block"}} width={100} height={100} src={ele} alt="" />
+                ))
+              }
+            </Form.Item>
+
+          {
+           detailData.sourceType==1?
+            <Form.Item
+              label="商品快照"
+            >
+             <h3>{detailData.sourceData.subtitle}</h3>
+             <h4>{detailData.sourceData.title}</h4>
+             <img src={detailData.sourceData.icon} width={100} height={100} alt="" />
+            </Form.Item>
+            :null
+          }
+         
+         {
+           detailData.sourceType==3?
+           <Form.Item
+            label="转发内容快照"
           >
-            {detailData.content}
+            <h3>{detailData.sourceData.subtitle}</h3>
+            <h4>{detailData.sourceData.title}</h4>
+            <img src={detailData.sourceData.icon} width={100} height={100} alt="" />
           </Form.Item>
+          :null
+         }
           <Form.Item
-            label="商品快照"
-          >
-            {
-              detailData.images?.map(ele=>(
-                <img width={100} height={100} src={ele} alt="" />
-              ))
-            }
-          </Form.Item>
-          <Form.Item
-            label="."
+            style={{marginLeft:'90px'}}
           >
             <Button style={{margin:'20px'}} type="primary" onClick={()=>history.goBack()}>返回</Button>
           </Form.Item>

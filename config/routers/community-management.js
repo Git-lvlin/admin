@@ -98,6 +98,18 @@ export default {
         path: '/community-management/advertising-manage',
         component: './community-management/advertising-manage/index.js',
       },
+      {
+        name: 'invitation-audi',
+        path: '/community-management/invitation-audit',
+        routes: [
+          {
+            name: 'list',
+            path: '/community-management/invitation-audit/list',
+            component: './community-management/invitation-audit',
+          },
+        ]
+      },
+      
     ],
   }
   
