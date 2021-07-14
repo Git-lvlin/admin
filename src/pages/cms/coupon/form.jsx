@@ -159,7 +159,8 @@ export default (props) => {
         return data
       }}
       params={{
-        couponStatus: 2
+        couponStatus: 2,
+        couponVerifyStatus: 4,
       }}
       request={couponAddList}
       rowSelection={{
