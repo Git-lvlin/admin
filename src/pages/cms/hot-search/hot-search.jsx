@@ -41,7 +41,7 @@ const HotSearch = () => {
       hideInTable: true,
     },
     {
-      title: '序号',
+      title: '位置',
       dataIndex: 'num',
       valueType: 'text',
       search: false,
