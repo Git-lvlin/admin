@@ -84,8 +84,8 @@ export default props => {
               }}
             ]}
         />
-        <Form.Item label="上传照片" name="images" tooltip="尺寸任意。支持图片类型：png、jpg、gif，大小不超过1M">
-         <Upload code={204} multiple maxCount={1} accept="image/*" size={1024}/>
+        <Form.Item label="上传照片" name="images">
+         <Upload code={204} multiple maxCount={100} accept="image/*"/>
          </Form.Item>
       </ProForm>
   );

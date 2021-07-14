@@ -1,22 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import { DatePicker, Input, Form, Divider, message,Button,Space,Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable,{ EditableProTable,ActionType } from '@ant-design/pro-table';
 import ProField from '@ant-design/pro-field';
 import ProForm, {
-    StepsForm,
     ProFormText,
-    ProFormDatePicker,
-    ProFormDateRangePicker,
-    ProFormSelect,
-    ProFormCheckbox,
-    ProFormDigit,
+    ProFormRadio,
+    ProFormFieldSet
   } from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
 import ProCard from '@ant-design/pro-card';
-import { couponList } from '@/services/coupon-management/coupon-list';
-import DeleteModal from '@/components/DeleteModal'
+import { couponCrowdSub,couponCrowdDetail,couponCrowdEdit } from '@/services/crowd-management/coupon-crowd';
 import { history} from 'umi';
+import CrowdModel from './crowd-model'
 
 
 const waitTime = (time) => {
@@ -27,125 +22,147 @@ const waitTime = (time) => {
     });
   };
 
-const TagList = ({ value, onChange }) => {
-    const ref = useRef(null);
-    const [newTags, setNewTags] = useState([]);
-    const [inputValue, setInputValue] = useState('');
-
-    const handleInputChange = (e) => {
-      setInputValue(e.target.value);
-    };
-  
-    const handleInputConfirm = () => {
-      let tempsTags = [...(value || [])];
-      if (inputValue && tempsTags.filter((tag) => tag.label === inputValue).length === 0) {
-        tempsTags = [...tempsTags, { key: `new-${tempsTags.length}`, label: inputValue }];
-      }
-      onChange?.(tempsTags);
-      setNewTags([]);
-      setInputValue('');
-    };
-  
-    return (
-      <Space>
-        {(value || []).concat(newTags).map((item) => (
-          <Tag key={item.key}>{item.label}</Tag>
-        ))}
-        <Input
-          ref={ref}
-          type="text"
-          size="small"
-          style={{ width: 78 }}
-          value={inputValue}
-          onChange={handleInputChange}
-          onBlur={handleInputConfirm}
-          onPressEnter={handleInputConfirm}
-        />
-      </Space>
-    );
-  };
-
 export default (props) =>{
-  const [visible, setVisible] = useState(false);
+  const id = props.location.query.id
   const [editableKeys, setEditableRowKeys] = useState([]);
   const [dataSource, setDataSource] = useState([]);
+  const [levelId,setLevelId]=useState()
+  const [detailData,setDetailData]=useState()
   const [form] = Form.useForm();
   const ref=useRef()
-  
+  const Callback=val=>{
+    console.log('val',val)
+    setLevelId(val)
+  }
+  useEffect(()=>{
+    if(id){
+      couponCrowdDetail({id:id}).then(res=>{
+        console.log('res.data.crowdInfo',res.data.crowdInfo)
+        form.setFieldsValue(res.data)
+        setDetailData(res.data.crowdInfo)
+        const arr=[]
+        res.data.crowdInfo.map(ele=>{
+          arr.push({id:ele.crowdInfoId,state:ele.isContain,title:ele.type==1?'会员等级':ele.type==2?'消费次数':'累计消费'})
+        })
+        setDataSource(arr)
+      })
+    }
+  },[])
+  const onsubmit=values=>{
+      console.log('values',values);
+      console.log('dataSource',dataSource)
+      dataSource.map(ele=>{
+        if(ele.title=='会员等级'){
+          values.userLevelInfo={
+            isContain: ele.state,
+            userLevel: levelId.userLevel.toString()    
+          }
+        }else if(ele.title=='消费次数'){
+          values.consumeNumInfo={
+            isContain: ele.state,
+            numStart: ele.labels[0],
+            numEnd: ele.labels[1]
+          }
+        }else if(ele.title=='累计消费'){
+          values.consumeLjInfo={
+            isContain: ele.state,
+            moneyStart: ele.labels[0],
+            moneyEnd: ele.labels[1]
+          }
+        }
+      })
+      if(id){
+        couponCrowdEdit({...values,id:id}).then(res=>{
+          if(res.code==0){
+            history.push('/coupon-management/coupon-crowd') 
+          }
+        })
+      }else{
+        couponCrowdSub(values).then(res=>{
+          if(res.code==0){
+            history.push('/coupon-management/coupon-crowd') 
+          }
+        })
+      }
+  }
   const columns= [
     {
       title: '选项',
       dataIndex: 'title',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '此项为必填项',
-          },
-        ],
-      },
-      width: '30%',
+      width: '30%'
     },
     {
       title: '范围',
       key: 'state',
       dataIndex: 'state',
-      valueType: 'select',
-      valueEnum: {
-        all: { text: '全部', status: 'Default' },
-        open: {
-          text: '不包含',
-          status: 'Error',
-        },
-        closed: {
-          text: '包含',
-          status: 'Success',
-        },
-      },
+      renderFormItem: () => 
+        <ProFormRadio.Group
+          name="limitType"
+          options={[
+            { 
+              label: '包含', value: 1, 
+            }, 
+            { 
+              label: '不包含', value: 2 
+            }]}
+        />
     },
     {
       title: '条件',
       dataIndex: 'labels',
       width: '20%',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '此项为必填项',
-          },
-        ],
-      },
       renderFormItem: (_, { isEditable }) => {
-        return isEditable ? <TagList /> : <Input />;
-      },
-      render: (_, row) => row?.labels?.map((item) => <Tag key={item.key}>{item.label}</Tag>),
+        if(_.entry.title=='会员等级'){
+        return <CrowdModel Callback={Callback}/>;
+        }else if(_.entry.title=='消费次数'){
+        return <ProFormFieldSet>
+                  <Input style={{width:'100px'}} suffix="次" /> 
+                  至 
+                  <Input style={{width:'100px'}} suffix="次" />
+                </ProFormFieldSet>;
+        }
+        return <ProFormFieldSet> 
+                <Input name='min' style={{width:'100px'}} suffix="元" />
+                 至 
+                <Input name='max' style={{width:'100px'}} suffix="元" />
+                </ProFormFieldSet>;
+      }
     },
     {
       title: '操作',
       valueType: 'option',
       width: 250,
-      render: (text, record, _, action) => [
+      render: (_,record) => [
         <a
-          key="editable"
+          key="delete"
           onClick={() => {
-            action?.startEditable?.(record.id);
+            setDataSource(dataSource.filter((item) => item.id !== record.id));
           }}
-        >
-          编辑
-        </a>,
-        <a 
-          key="editable"
-          // onClick={() => {
-          //   action?.startEditable?.(record.id);
-          // }}
         >
           删除
         </a>
       ],
-    },
+    }
   ];
   return (
       <>
+      <ProForm
+        // form={form}
+        onFinish={onsubmit}
+        submitter={{
+          render: (props, doms) => {
+            return [
+              <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => props.form?.submit?.()}>
+                保存
+              </Button>,
+              <Button type="default"  key="rest" onClick={() => props.form?.resetFields()}>
+                取消
+              </Button>,
+              
+            ];
+          }
+        }}
+      >
         <ProCard
           title="基础设置"
           bordered
@@ -187,37 +204,40 @@ export default (props) =>{
             >
             <h3 style={{background:'#fafafa',padding:'10px',color:'#ccc'}}>会员基本信息</h3>
             <Button 
-              type="primary"  
-              onClick={() => {
-                ref.current?.addEditRecord?.({
-                id: (Math.random() * 1000000).toFixed(0),
-                title: '会员等级',
-                });
-                }} 
-              style={{margin:"20px 0 20px 0"}}
-              >
-                会员等级
-              </Button>
+                type="primary"  
+                onClick={() => {
+                  ref.current?.addEditRecord?.({
+                  id: (Math.random() * 1000000).toFixed(0),
+                  title: '会员等级',
+                  });
+                  }} 
+                style={{margin:"20px 0 20px 0"}}
+                >
+                  会员等级
+            </Button>
             <h3 style={{background:'#fafafa',padding:'10px',color:'#ccc'}}>会员消费情况</h3>
             <Button
-             type="primary"
-             onClick={() => {
-                ref.current?.addEditRecord?.({
-                id: (Math.random() * 1000000).toFixed(0),
-                title: '消费次数',
-                });
-            }}
-             >消费次数</Button>
+              type="primary"
+              onClick={() => {
+                  ref.current?.addEditRecord?.({
+                  id: (Math.random() * 1000000).toFixed(0),
+                  title: '消费次数',
+                  });
+              }}
+              >
+                消费次数
+            </Button>
             <Button 
-            type="primary"
-            style={{margin:"20px"}}
-            onClick={() => {
-                ref.current?.addEditRecord?.({
-                id: (Math.random() * 1000000).toFixed(0),
-                title: '累计消费',
-                });
-            }}
-            >累计消费</Button>
+              type="primary"
+              style={{margin:"20px"}}
+              onClick={() => {
+                  ref.current?.addEditRecord?.({
+                  id: (Math.random() * 1000000).toFixed(0),
+                  title: '累计消费',
+                  });
+              }}>
+                累计消费
+            </Button>
         </ProCard>
         <ProCard
             title="群体设置"
@@ -235,30 +255,22 @@ export default (props) =>{
                 rowKey="id"
                 options={false}
                 recordCreatorProps={false}
-                // params={{
-                // status: 1,
-                // }}
                 value={dataSource}
                 onChange={setDataSource}
-                // request={async () => ({
-                //     data: defaultData,
-                //     total: 3,
-                //     success: true,
-                //   })}
                 editable={{
-                    form,
-                    editableKeys,
-                    onSave: async () => {
-                        await waitTime(2000);
-                    },
-                    onChange: setEditableRowKeys,
-                    actionRender: (row, config, dom) => [dom.save, dom.cancel],
+                  form,
+                  editableKeys,
+                  onSave: async () => {
+                    await waitTime(500);
+                  },
+                  onChange: setEditableRowKeys,
+                  actionRender: (row, config, dom) => [dom.save, dom.cancel],
                 }}
                 search={false}
                 columns={columns}
             />
         </ProCard>
-      
+      </ProForm>
     </>
   )
 }
