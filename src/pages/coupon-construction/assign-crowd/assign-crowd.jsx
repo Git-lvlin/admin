@@ -3,6 +3,7 @@ import {Form,DatePicker,Button,Modal,Select} from 'antd';
 import {formatMessage,connect} from 'umi';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ProFormText } from '@ant-design/pro-form';
+import { couponCrowdList } from '@/services/crowd-management/coupon-crowd';
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 
@@ -11,96 +12,93 @@ const validity=(props)=>{
     const actionRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading,setLoading]=useState(true)
-    const [spuIdsArr,setSpuIdsArr]=useState([])
+    const [CrowdIdsArr,setCrowdIdsArr]=useState([])
     const [onselect,setOnselect]=useState([])
-    const [spuIds,setSpuIds]=useState('')
+    const [CrowdIds,setCrowdIds]=useState('')
     const columns = [
         {
             title: '群体名称',
-            dataIndex: 'spuId',
+            dataIndex: 'name',
             valueType: 'text',
-        },
-        {
-            title: '选项',
-            dataIndex: 'goodsImageUrl',
-            valueType: 'image',
-            hideInSearch: true,
-        },
-        {
-            title: '范围',
-            dataIndex: 'goodsName',
-            valueType: 'select',
-            valueEnum: {
-                1: '包含',
-                2: '不包含',
-            },
-            hideInSearch: true,
-        },
-        {
-            title: '条件',
-            dataIndex: 'gcId1',
-            valueType: 'text',
-            hideInSearch: true,
         }
     ];
     const columns3= [
         {
             title: '群体名称',
-            dataIndex: 'spuId',
+            dataIndex: 'name',
             valueType: 'text',
-        },
-        {
-            title: '选项',
-            dataIndex: 'goodsImageUrl',
-            valueType: 'image',
-            hideInSearch: true,
-        },
-        {
-            title: '范围',
-            dataIndex: 'goodsName',
-            valueType: 'select',
-            valueEnum: {
-                1: '包含',
-                2: '不包含',
-            },
-            hideInSearch: true,
-        },
-        {
-            title: '条件',
-            dataIndex: 'gcId1',
-            valueType: 'text',
-            hideInTable:true
         },
         {
             title: '操作',
             valueType: 'text',
             render:(text, record, _, action)=>[
-                <a onClick={()=>delGoods(record.spuId)}>删除</a>
+                <a onClick={()=>delGoods(record.id)}>删除</a>
             ]
          }
     ];
+    const SubTable = (props) => {
+        const [data, setData] = useState([])
+        const {name}=props
+        const columns = [
+          {
+            title: '选项',
+            dataIndex: 'type',
+            valueType: 'select',
+            valueEnum: {
+              1: '会员等级',
+              2: '消费次数',
+              3: '累计消费'
+            },
+            hideInSearch: true,
+        },
+          {
+              title: '范围',
+              dataIndex: 'isContain',
+              valueType: 'select',
+              valueEnum: {
+                1: '包含',
+                2: '不包含',
+              },
+              hideInSearch: true,
+          },
+          {
+              title: '条件',
+              dataIndex: 'msgDisplay',
+              hideInSearch: true,
+          }
+        ];
+        useEffect(() => {
+          couponCrowdList({
+            name:name
+          }).then(res => {
+            if (res.code === 0) {
+              setData(res?.data?.[0].crowdInfo)
+            }
+          })
+        }, [])
+        return (
+          <ProTable search={false} key="type" columns={columns} dataSource={data} pagination={false} />
+        )
+      };
      // 删除商品
      const  delGoods=val=>{
-        const arr =  UseScopeList.UseScopeObje.spuIds.split(',')
+        const arr =  UseScopeList.UseScopeObje.CrowdIds.split(',')
         dispatch({
-            type:'UseScopeList/fetchLookSpuIds',
+            type:'UseScopeList/fetchCrowdIds',
             payload:{
-                spuIds:arr.filter(ele=>(
+                CrowdIds:arr.filter(ele=>(
                             ele!=val
                         )).toString()
             }
         })
         dispatch({
-            type:'UseScopeList/fetchLookSpuIdsArr',
+            type:'UseScopeList/fetchCrowdIdsArr',
             payload:{
-                spuIdsArr:UseScopeList.UseScopeObje.spuIdsArr.filter(ele=>(
+                CrowdIdsArr:UseScopeList.UseScopeObje.CrowdIdsArr.filter(ele=>(
                             ele.id!=val
                 ))
             }
         })
-        if(UseScopeList.UseScopeObje.spuIdsArr.length==1){
-            setLoading(true)
-        }
        
     }
     const showModal = () => {
@@ -111,30 +109,24 @@ const validity=(props)=>{
         setIsModalVisible(false);
         setLoading(false)
         dispatch({
-            type:'UseScopeList/fetchLookSpuIds',
+            type:'UseScopeList/fetchCrowdIds',
             payload:{
-                spuIds
+                CrowdIds
             }
         })
         dispatch({
-            type:'UseScopeList/fetchLookSpuIdsArr',
+            type:'UseScopeList/fetchCrowdIdsArr',
             payload:{
-                spuIdsArr
+                CrowdIdsArr
             }
         })
     };
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-     // 拼接spuIds
      const onIpute=(res)=>{
-        let spuIds=''
-        res.selectedRows.map(ele=>{
-            spuIds+=`${ele.spuId},`
-        })
-        spuIds=spuIds.substring(0,spuIds.length-1)
-       setSpuIds(spuIds)
-       setSpuIdsArr(res.selectedRows)
+       setCrowdIds(res.selectedRowKeys.toString())
+       setCrowdIdsArr(res.selectedRows)
     }
     return (
         <>
@@ -163,8 +155,9 @@ const validity=(props)=>{
                             pageSize: 3,
                         }}
                         style={{display:loading?'block':'none'}}
-                        // request={commonSpuList}
+                        request={couponCrowdList}
                         actionRef={actionRef}
+                        expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
                         search={{
                             defaultCollapsed: false,
                             labelWidth: 100,
@@ -179,10 +172,11 @@ const validity=(props)=>{
                 </Modal>
                 <ProTable
                     toolBarRender={false}
+                    expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
                     search={false}
                     rowKey="spuId"
                     columns={columns3}
-                    dataSource={UseScopeList.UseScopeObje.spuIdsArr}
+                    dataSource={UseScopeList.UseScopeObje.CrowdIdsArr}
                     style={{display:loading?'none':'block'}}
                 />
                 </>

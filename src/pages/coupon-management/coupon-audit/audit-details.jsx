@@ -1,5 +1,6 @@
 import React, { useState,useEffect,useRef } from 'react';
-import { couponDetail } from '@/services/coupon-management/coupon-detail';
+import { couponVerifyDetail,couponVerify } from '@/services/coupon-management/coupon-audit';
+import { couponCrowdList} from '@/services/crowd-management/coupon-crowd';
 import { Divider, Form, Spin,Button } from 'antd';
 import ProForm from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
@@ -19,6 +20,53 @@ const formItemLayout = {
   }
 };
 
+const SubTable = (props) => {
+  const [data, setData] = useState([])
+  const {name}=props
+  const columns = [
+    {
+      title: '选项',
+      dataIndex: 'type',
+      valueType: 'select',
+      valueEnum: {
+        1: '会员等级',
+        2: '消费次数',
+        3: '累计消费'
+      },
+      hideInSearch: true,
+  },
+    {
+        title: '范围',
+        dataIndex: 'isContain',
+        valueType: 'select',
+        valueEnum: {
+          1: '包含',
+          2: '不包含',
+        },
+        hideInSearch: true,
+    },
+    {
+        title: '条件',
+        dataIndex: 'msgDisplay',
+        hideInSearch: true,
+    }
+  ];
+  useEffect(() => {
+    if(name){
+      couponCrowdList({
+        name:name
+      }).then(res => {
+        if (res.code === 0) {
+          setData(res?.data?.[0].crowdInfo)
+        }
+      })
+    }
+  }, [])
+  return (
+    <ProTable toolBarRender={false} search={false} key="type" columns={columns} dataSource={data} pagination={false} />
+  )
+};
+
 
 export default props => {
   const ref=useRef()
@@ -29,85 +77,73 @@ export default props => {
   const columns= [
     {
       title: '群体名称',
-      dataIndex: 'couponName',
+      dataIndex: 'name',
       valueType: 'text',
-    },
-    {
-      title: '选项',
-      dataIndex: 'couponType'
-    },
-    {
-        title: '范围',
-        dataIndex: 'couponStatus',
-        valueType: 'select',
-        valueEnum: {
-          1: '包含',
-          2: '不包含',
-        },
-    },
-    {
-        title: '条件',
-        dataIndex: 'useType',
-    } 
+    }
   ];
   const columns2= [
     {
       title: 'spuID',
-      dataIndex: 'couponName',
+      dataIndex: 'spuId',
       valueType: 'text',
     },
     {
       title: '商品名称',
-      dataIndex: 'couponType'
+      dataIndex: 'goodsName'
     },
     {
         title: '结算模式',
-        dataIndex: 'couponStatus',
+        dataIndex: 'settleType',
         valueType: 'select',
         valueEnum: {
-          1: '包含',
-          2: '不包含',
+          1: '佣金模式',
+          2: '底价模式',
+          3: '集约模式'
         },
     },
     {
         title: '供货价',
-        dataIndex: 'useType',
+        dataIndex: 'retailSupplyPrice',
     },
     {
         title: '销售价',
-        dataIndex: 'useType',
+        dataIndex: 'goodsSalePrice',
     }, 
     {
         title: '可用库存',
-        dataIndex: 'useType',
+        dataIndex: 'stockNum',
     },
   ];
   const columns3= [
     {
       title: '审核时间',
-      dataIndex: 'couponName',
+      dataIndex: 'createTime',
       valueType: 'text',
     },
     {
       title: '审核人员',
-      dataIndex: 'couponType',
+      dataIndex: 'adminName',
       valueType: 'text',
     },
     {
         title: '审核结果',
-        dataIndex: 'couponStatus',
-        valueType: 'text',
+        dataIndex: 'status',
+        valueType: 'select',
+        valueEnum: {
+          3: '审核驳回',
+          4: '审核通过',
+        },
     },
     {
         title: '意见审核',
-        dataIndex: 'useType',
+        dataIndex: 'content',
         valueType: 'text'
     },
   ];
  
   useEffect(()=>{
     setLoading(true);
-    couponDetail({id}).then(res=>{
+    couponVerifyDetail({id}).then(res=>{
       setDetailData(res.data)
       console.log('res.data',res.data)
     }).finally(() => {
@@ -121,11 +157,11 @@ export default props => {
         spinning={loading}
       >
          <h1>优惠券审核详情</h1>
-         <Button style={{marginBottom:'20px'}} type="primary" onClick={()=>history.goBack()}>返回</Button>
+         <Button style={{marginTop:'-40px',float:'right'}} type="default" onClick={()=>history.goBack()}>返回</Button>
         <Form
           form={form}
           {...formItemLayout}
-          style={{  backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
+          style={{  backgroundColor: '#fff',paddingBottom: 100 }}
         >
           <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">基本信息</Divider>
           <Form.Item
@@ -137,29 +173,34 @@ export default props => {
           <Form.Item
             label="优惠券类型"
           >
-            {detailData.couponType}
+             {
+              detailData.couponType==1?
+              '满减券'
+              :detailData.couponType==2?
+              '折扣券'
+              :'立减券'
+            }
           </Form.Item>
 
           <Form.Item
             label="使用门槛"
           >
-            {detailData.address}
+            {detailData.couponMsg}
           </Form.Item>
 
           <Form.Item
               label="券面值"
             >
-              {detailData.content}
-              {
-                detailData.images?.map(ele=>(
-                  <img style={{display:"block"}} width={100} height={100} src={ele} alt="" />
-                ))
-              }
+              {detailData.couponAmountDisplay}
             </Form.Item>
             <Form.Item
               label="发行方式"
             >
-              {detailData.address}
+               {
+               detailData.issueType==1?
+               '会员领取券'
+               :'系统发放券'
+              }
           </Form.Item>
           <Form.Item
             label="发放数量"
@@ -185,48 +226,56 @@ export default props => {
           <Form.Item
             label="可领券群体"
           >
-            <ProTable
+          </Form.Item>
+          <ProTable
               actionRef={ref}
               rowKey="id"
               options={false}
-              // params={{
-              // status: 1,
-              // }}
-              // request={couponList}
+              expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
+              dataSource={[detailData.crowdList]}
               search={false}
               columns={columns}
             />
-          </Form.Item>
 
           <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">使用设置</Divider>
 
           <Form.Item
             label="使用范围"
           >
-            {detailData.useType}
+            {
+              detailData.useType==1?
+              '秒约商品'
+              :'集约商品'
+            }
           </Form.Item>
 
           <Form.Item
             label="商品范围"
           >
-            {detailData.goodsType}
-            <ProTable
+              {
+              detailData.goodsType==1?
+              '全部商品':
+              detailData.goodsType==2?
+              '指定商品':
+              '指定品类'
+            }
+          </Form.Item>
+          <ProTable
               actionRef={ref}
               rowKey="id"
               options={false}
-              // params={{
-              // status: 1,
-              // }}
-              // request={couponList}
-              // style={{width:'800px'}}
+              dataSource={detailData.spuInfo}
               search={false}
               columns={columns2}
             />
-          </Form.Item>
           <Form.Item
             label="可用人群"
           >
-            {detailData.memberType}
+             {
+              detailData.memberType==1?
+              '全部会员':
+              '指定用户群体'
+            }
           </Form.Item>
 
           <Form.Item
@@ -235,38 +284,47 @@ export default props => {
               {detailData.couponRule}
           </Form.Item> 
 
-          <AuditModel 
-            type={1} 
-            state={1}  
-            label={'审核通过'}  
-            text={'确认审核通过吗？'} 
-            // InterFace={auditDynamic} 
-            title={'操作确认'}
-            boxref={ref}
-          />,
-           <AuditModel 
-            type={2} 
-            state={2}  
-            label={'驳回'}  
-            // InterFace={auditDynamic} 
-            title={'审核驳回'}
-            boxref={ref}
-          />,
-
-          <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">审核信息</Divider>
-
-          <ProTable
-              actionRef={ref}
-              rowKey="id"
-              options={false}
-              // params={{
-              // status: 1,
-              // }}
-              // request={couponList}
-              // style={{width:'800px'}}
-              search={false}
-              columns={columns3}
-            />
+          {
+            detailData.verifyInfo?.length?
+            <>
+              <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">审核信息</Divider>
+              <ProTable
+                  actionRef={ref}
+                  rowKey="id"
+                  options={false}
+                  // params={{
+                  // status: 1,
+                  // }}
+                  // request={couponList}
+                  dataSource={detailData.verifyInfo}
+                  search={false}
+                  columns={columns3}
+                />
+            </>
+            :
+            <>
+              <AuditModel 
+                type={1} 
+                status={4}  
+                label={'审核通过'}  
+                text={'确认审核通过吗？'} 
+                InterFace={couponVerify} 
+                id={id}
+                title={'操作确认'}
+                boxref={ref}
+              />
+              <AuditModel 
+                type={2} 
+                status={3}  
+                label={'驳回'}  
+                InterFace={couponVerify} 
+                title={'审核驳回'}
+                id={id}
+                boxref={ref}
+              />
+            </>
+          }
+         
         </Form>
       </Spin> 
     

@@ -48,7 +48,7 @@ const SubTable = (props) => {
     })
   }, [])
   return (
-    <ProTable search={false} key="type" columns={columns} dataSource={data} pagination={false} />
+    <ProTable toolBarRender={false} search={false} key="type" columns={columns} dataSource={data} pagination={false} />
   )
 };
 

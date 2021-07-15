@@ -107,7 +107,8 @@ const message = (type, module,dispatch) => {
         rowKey="id"
         options={false}
         params={{
-          auditStatus:type
+          auditStatus:type,
+          status:type==0?4:0
         }}
         request={adminList}
         rowSelection={type==0?true:false}

@@ -32,15 +32,6 @@ const message = (type, module,dispatch) => {
         3: '立减券'
       }
     },
-    // {
-    //   title: '使用范围',
-    //   dataIndex: 'useType',
-    //   valueEnum: {
-    //     1: '秒约商品',
-    //     2: '集约商品',
-    //   },
-    //   hideInSearch: true,
-    // },
     {
       title: '面值',
       dataIndex: 'couponAmountDisplay',
@@ -73,18 +64,6 @@ const message = (type, module,dispatch) => {
       hideInSearch: true,
       ellipsis:true
     },
-    // {
-    //   title: '已被领取',
-    //   dataIndex: 'lqCouponQuantity',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    // },
-    // {
-    //   title: '已被使用',
-    //   dataIndex: 'useCouponQuantity',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    // },
     {
       title: '有效期',
       dataIndex: 'activityTimeDisplay',
