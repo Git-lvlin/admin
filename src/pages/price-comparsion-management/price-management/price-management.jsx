@@ -47,6 +47,10 @@ const PriceManagement = () => {
   }
 
   const onSearch = (value, t, i) => {
+    console.log('value', value)
+    console.log('t', t)
+    console.log('i', i)
+
     if (!value) {
       return
     }
@@ -302,6 +306,7 @@ const PriceManagement = () => {
 
   const changeRowKeys = (expanded, record) => {
     setRowLoadin(true)
+    setFormData(record)
     setFormjsx(false)
     setIsShow(false)
     clearTimeout(ref.current)
