@@ -603,6 +603,30 @@ export const saveMoneyFormList = async (params = {}, options = {}) => {
   }
 }
 
+export const saveMoneyFormLists = async (params = {}, options = {}) => {
+  const { current, pageSize, status, ...rest } = params;
+
+  const data = {
+    page: current,
+    pageSize: pageSize,
+    ...rest
+  }
+  if (status) {
+    data.status = Number(status);
+  }
+  const res = await request('/auth/activity/Goods/commonSpuList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
 export const homeBannerList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;
 

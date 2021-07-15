@@ -6,6 +6,7 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
 import Modify from './edit';
+import Edits from './forms';
 
 import { saveMoneyList, saveMoneyOperation, saveMoneySortTop } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
@@ -14,6 +15,8 @@ import { ACTION_TYPE } from '@/utils/text';
 const SaveMoney = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
+  const [formVisibles, setFormVisibles] = useState(false);
+
   const [modifyFormVisible, setModifyFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(true);
   const [flag, setFlag] = useState(false);
@@ -224,11 +227,20 @@ const SaveMoney = () => {
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
           新建
         </Button>,
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisibles(true) }}>
+          新增秒约商品
+        </Button>,
       ]}
     />
     {formVisible && <Edit
       visible={formVisible}
       setVisible={setFormVisible}
+      detailData={detailData}
+      setFlag={setFlag}
+    />}
+    {formVisibles && <Edits
+      visible={formVisibles}
+      setVisible={setFormVisibles}
       detailData={detailData}
       setFlag={setFlag}
     />}

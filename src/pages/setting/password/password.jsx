@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Form, Button } from 'antd';
+import { Form, Button, Space } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormDependency } from '@ant-design/pro-form';
 import { changePwd } from '@/services/setting/password';
+import { history } from 'umi';
 
 const formItemLayout = {
   labelCol: { span: 10 },
@@ -33,9 +34,14 @@ const Password = () => {
         submitter={{
           render: (props, doms) => {
             return <div style={{ textAlign: 'center' }}>
-              <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
-                确定
-              </Button>
+              <Space>
+                <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
+                  确定
+                </Button>
+                <Button key="goBack" onClick={() => history.goBack()}>
+                  取消
+                </Button>
+              </Space>
             </div>
           }
         }}
@@ -46,7 +52,7 @@ const Password = () => {
             passwdNew
           }, { showSuccess: true }).then(res => {
             if (res.code === 0) {
-              form.resetFields()
+              history.goBack();
             }
           })
         }}
