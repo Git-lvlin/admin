@@ -46,18 +46,19 @@ const PriceManagement = () => {
     })
   }
 
-  const onSearch = (value, t, i) => {
+  const onSearch = (value, t, a) => {
     if (!value) {
+      setLoadingIndex(-1)
       return
     }
-    const id = i
+    const id = a.id
     const type = t
     setType(type)
     const param = {
       goodsUrl: value,
-      goodsId: formData.goodsSpuId,
+      goodsId: a.goodsSpuId,
       type,
-      skuId: formData.goodsSkuId,
+      skuId: a.goodsSkuId,
     }
     createTaskSrc(param, {showError: false}).then((res) => {
       if (res.code === 0) {
@@ -109,7 +110,7 @@ const PriceManagement = () => {
   }, [flag])
 
   const expandedRowRender = (a) => {
-    if (!formData) {
+    if (!formData || formData !== a) {
       setFormData(a)
     }
     return (
@@ -142,7 +143,7 @@ const PriceManagement = () => {
                 })
               }}
               enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 1?true:false}>抓取</Button>}
-              onSearch={(_) => {setLoadingIndex(1);onSearch(_,'tb', a.id)}}
+              onSearch={(_) => {setLoadingIndex(1);onSearch(_,'tb', a)}}
             />
             {/* <Button
               disabled={!grabList}
@@ -176,7 +177,7 @@ const PriceManagement = () => {
                 })
               }}
               enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 2?true:false}>抓取</Button>}
-              onSearch={(_) => {setLoadingIndex(2);onSearch(_,'jd', a.id)}}
+              onSearch={(_) => {setLoadingIndex(2);onSearch(_,'jd', a)}}
             />
           </ProCard>
         </ProCard>
@@ -199,7 +200,7 @@ const PriceManagement = () => {
                   })
                 }}
                 enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 3?true:false}>抓取</Button>}
-                onSearch={(_) => {setLoadingIndex(3);onSearch(_,'pdd', a.id)}}
+                onSearch={(_) => {setLoadingIndex(3);onSearch(_,'pdd', a)}}
               />
               {/* <Button
                 disabled={!grabList}
@@ -231,7 +232,7 @@ const PriceManagement = () => {
                 })
               }}
               enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 4?true:false}>抓取</Button>}
-              onSearch={(_) => {setLoadingIndex(4);onSearch(_,'tmall', a.id)}}
+              onSearch={(_) => {setLoadingIndex(4);onSearch(_,'tmall', a)}}
             />
           </ProCard>
         </ProCard>
@@ -302,6 +303,7 @@ const PriceManagement = () => {
 
   const changeRowKeys = (expanded, record) => {
     setRowLoadin(true)
+    setFormData(record)
     setFormjsx(false)
     setIsShow(false)
     clearTimeout(ref.current)
