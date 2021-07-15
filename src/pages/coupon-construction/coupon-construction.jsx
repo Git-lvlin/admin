@@ -7,6 +7,7 @@ import UseScope from './use-scope/use-scope'
 import PeriodValidity from './period-validity/period-validity'
 import AssignCrowd from './assign-crowd/assign-crowd'
 import { couponSub } from '@/services/coupon-construction/coupon-coupon-sub';
+import { couponEdit } from '@/services/coupon-construction/coupon-edit';
 import ProForm, { ProFormText, ProFormRadio } from '@ant-design/pro-form';
 import { history,connect } from 'umi';
 const FormItem = Form.Item;
@@ -74,23 +75,42 @@ const couponConstruction=(props) => {
     }else if(values.goodsType==3){
       delete values.useTypeInfoM.spuIds
     }
-    values.useTypeInfoJ = {//集约商品详情信息
+    //集约商品详情信息
+    values.useTypeInfoJ = {
       wholesaleIds:UseScopeList.UseScopeObje.wholesaleIds
     }
     //提交类型
     values.couponVerifyStatus=submitType
-    couponSub(values).then((res)=>{
-      if(res.code==0){
-        history.push('/coupon-management/coupon-list') 
-        message.success('提交成功'); 
-        dispatch({
-          type:'UseScopeList/fetchUseScopeList',
-          payload:{
-            UseScopeObje:{}
-          }
-        })
-      }
-    }) 
+    //群体Id
+    values.couponCrowdId=UseScopeList.UseScopeObje.CrowdIds
+    if(id){
+      couponEdit(values).then((res)=>{
+        // if(res.code==0){
+          history.push('/coupon-management/coupon-list') 
+          message.success('提交成功'); 
+          dispatch({
+            type:'UseScopeList/fetchUseScopeList',
+            payload:{
+              UseScopeObje:{}
+            }
+          })
+        // }  
+      }) 
+    }else{
+      couponSub(values).then((res)=>{
+        // if(res.code==0){
+          history.push('/coupon-management/coupon-list') 
+          message.success('提交成功'); 
+          dispatch({
+            type:'UseScopeList/fetchUseScopeList',
+            payload:{
+              UseScopeObje:{}
+            }
+          })
+        // }
+      }) 
+    }
+    
   }
   return (
     <>
@@ -211,21 +231,17 @@ const couponConstruction=(props) => {
             name="date"
             rules={[{ required: true, message: '请选择限领时间' }]}
           >
-            {
-              id&&DetailList.data?
-              <p >{DetailList.data?.limitStartTime+' -- '+DetailList.data?.limitEndTime}</p>
-              :<RangePicker
-                name="dateRange"
-                placeholder={[
-                  formatMessage({
-                    id: 'formandbasic-form.placeholder.start',
-                  }),
-                  formatMessage({
-                    id: 'formandbasic-form.placeholder.end',
-                  }),
-                ]}
-              />
-            }
+          <RangePicker
+                  name="dateRange"
+                  placeholder={[
+                    formatMessage({
+                      id: 'formandbasic-form.placeholder.start',
+                    }),
+                    formatMessage({
+                      id: 'formandbasic-form.placeholder.end',
+                    }),
+                  ]}
+                />
           </FormItem>
         }
         
@@ -271,11 +287,11 @@ const couponConstruction=(props) => {
 
          {/* 可领券群体 */}
           <ProFormRadio.Group
-            name="box"
+            name="memberType"
             label={type==1?'可领券群体':'发券群体'}
             rules={[{ required: true, message: '请选择商品范围' }]}
             fieldProps={{
-              value: (parseInt(id)==id )&&DetailList.data?.box||choose,
+              value: (parseInt(id)==id )&&DetailList.data?.memberType||choose,
               onChange: (e) => setChoose(e.target.value),
             }}
             options={[

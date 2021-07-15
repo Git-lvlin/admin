@@ -3,6 +3,7 @@ import { Button,Tabs} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { couponList } from '@/services/coupon-management/coupon-list';
+
 import { history} from 'umi';
 const { TabPane } = Tabs
 
@@ -17,6 +18,9 @@ const message = (type, module) => {
       fieldProps: {
         placeholder: '请输入优惠券名称'
       },
+      render:(text, record, _, action)=>[
+        <a onClick={()=>history.push('/coupon-management/coupon-list/list-details?id='+record.id)}>{record.couponName}</a>
+    ],
     },
     {
       title: '优惠券类型',
@@ -30,7 +34,7 @@ const message = (type, module) => {
     },
     {
       title: '发行总金额（元）',
-      dataIndex: 'issueQuantity',
+      dataIndex: 'issueAmount',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -42,7 +46,7 @@ const message = (type, module) => {
     },
     {
       title: '面额（元）',
-      dataIndex: 'useType',
+      dataIndex: 'couponAmountDisplay',
       hideInSearch: true,
     },
     {
@@ -61,13 +65,13 @@ const message = (type, module) => {
     },
     {
       title: '状态',
-      dataIndex: 'couponStatus',
+      dataIndex: 'couponVerifyStatus',
       valueType: 'select',
       valueEnum: {
-        1: '未开始',
-        2: '进行中',
-        3: '已结束',
-        4: '已终止'
+        1: '待提交',
+        2: '审核驳回',
+        3: '审核中',
+        4: '已通过'
       },
       hideInSearch: true
     },
@@ -84,7 +88,7 @@ const message = (type, module) => {
         }}
         >
         {
-          type==1?
+          type==3?
           '审核'
           :null
         }
@@ -94,7 +98,7 @@ const message = (type, module) => {
         onClick={()=>Examine(data.id)}
       >
         {
-          type==2?
+          type==4?
           '查看'
           :null
         }
@@ -115,7 +119,7 @@ const message = (type, module) => {
         rowKey="id"
         options={false}
         params={{
-          status: 1,
+          couponVerifyStatus: type,
         }}
         request={couponList}
         search={{
@@ -145,10 +149,10 @@ export default (props) =>{
         }}
       >
         <TabPane tab="待审核" key="1">
-          {message(1, 1)}
+          {message(3, 1)}
         </TabPane>
         <TabPane tab="审核通过" key="2">
-          {message(2, 2)}
+          {message(4, 2)}
         </TabPane>
       </Tabs>
     </PageContainer>
