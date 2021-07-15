@@ -10,7 +10,7 @@ const InterventionList = () => {
     >
       <ProCard
         tabs={{
-          type: 'defult',
+          type: 'defult'
         }}
       >
         <ProCard.TabPane key="tab1" tab="待处理">

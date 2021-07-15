@@ -1,16 +1,16 @@
-import React, { useRef } from 'react';
-import styles from './styles.less';
-import { Button, message, Space } from 'antd';
+import React, { useRef, useEffect, useState } from 'react'
+import styles from './styles.less'
+import { Button, message, Space, Select } from 'antd'
 import ProForm, {
   ModalForm,
+  ProFormSelect,
   ProFormTextArea
-} from '@ant-design/pro-form';
+} from '@ant-design/pro-form'
 
-import { interventionSentence } from '@/services/order-management/intervention-list';
+import { interventionSentence, addressList } from '@/services/order-management/intervention-list'
+import Upload from '@/components/upload'
 
-import Upload from '@/components/upload';
-
-const AfterState = ({ stage }) => {
+const AfterState = ({stage})=> {
   const status = () => {
     switch(stage){
       case 1:
@@ -28,7 +28,41 @@ const AfterState = ({ stage }) => {
   )
 }
 
-const InterventionDetailStatus = ({stage, orderId, id, status, change}) => {
+const InterventionDetailStatus = props => {
+  const {
+    stage,
+    orderId,
+    id,
+    status,
+    change,
+    supplierId
+  } = props
+  const [address, setAddress] = useState([])
+  useEffect(()=>{
+    supplierId&&
+    addressList({supplierId}).then(res=> {
+      setAddress(res?.data)
+    })
+    return ()=> { 
+      setAddress([])
+    }
+  }, [supplierId])
+
+  // const AddressSelect = ({value, onChange, address}) => {
+  //   const changeHandle = v => {
+  //     onChange(v)
+  //   }
+  //   return (
+  //     <Select
+  //       style={{width: 400}}
+  //       placeholder="请选择收货地址"
+  //       options={address}
+  //       value={value}
+  //       defaultValue={value}
+  //       onChange={changeHandle}
+  //     />
+  //   )
+  // }
   const formRef = useRef()
 
   const Modal = props => {
@@ -47,23 +81,29 @@ const InterventionDetailStatus = ({stage, orderId, id, status, change}) => {
           <Button size="large" type={btnType}>{title}</Button>
         }
         modalProps={{
+          destroyOnClose: true,
           onCancel: () => formRef.current?.resetFields()
         }}
-        onFinish={(values)=>{
+        onFinish={async (values)=> {
           let { platformEvidenceImg } = values
           platformEvidenceImg =  Array.isArray(platformEvidenceImg) ? platformEvidenceImg.join(',') : platformEvidenceImg
-          interventionSentence({
-            id: id,
-            winnerRole: winnerRole,
-            ...values,
-            platformEvidenceImg
-          }).then(res=>{
-            if(res.success){
-              change(true)
-              message.success('提交成功')
-              return true
-            }
-          })
+          const addrObj = address.filter(item=> item.id === values.address)[0]
+          // interventionSentence({
+          //   id: id,
+          //   winnerRole: winnerRole,
+          //   ...values,
+          //   companyAddressId: addrObj.id,
+          //   receiveMan: addrObj.contactName,
+          //   receivePhone: addrObj.contactPhone,
+          //   receiveAddress: addrObj.address,
+          //   platformEvidenceImg
+          // }).then(res=>{
+          //   if(res.success){
+          //     change(true)
+          //     message.success('提交成功')
+          //     return true
+          //   }
+          // })
           return true
         }}
       >
@@ -72,6 +112,7 @@ const InterventionDetailStatus = ({stage, orderId, id, status, change}) => {
             label="处理意见"
             name="platformOpinion"
             width='lg'
+            placeholder="请输入处理意见"
             rules={[
               {
                 required: true,
@@ -84,6 +125,34 @@ const InterventionDetailStatus = ({stage, orderId, id, status, change}) => {
             }}
           />
         </div>
+        {
+          winnerRole === 1 &&
+          <div className={styles.opinion}>
+            <ProFormSelect
+              label="收货地址"
+              name="address"
+              request={()=>{
+                return addressList({supplierId}).then(res=>{
+                  return res.data.map(item=> (
+                    {label: item.address, value: item.id}
+                  ))
+                })
+              }}
+              placeholder="请选择收货地址"
+              rules={[
+                {
+                  required: true,
+                  message: '请选择收货地址'
+                }
+              ]}
+            />
+            {/* <AddressSelect 
+              address={list}
+              onChange={e=> {handleAddr(e)}}
+              value={showAddr()}
+            /> */}
+          </div>
+        }
         <ProForm.Item
           name="platformEvidenceImg"
           label="处理凭证"

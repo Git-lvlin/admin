@@ -11,7 +11,6 @@ import SellerProof from './seller-proof'
 import ReturnGoods from './return-goods'
 import ReturnSingle from './return-single'
 import NegotiationHistory from './negotiation-history'
-
 import styles from './styles.less'
 
 const interventioListDetail = () => {
@@ -54,6 +53,7 @@ const interventioListDetail = () => {
       <Spin spinning={loading}>
         <InterventionDetailStatus 
           orderId={detail?.orderSn}
+          supplierId={detail?.supplierId}
           stage={detail?.stage}
           id={id}
           change={setFlag}
