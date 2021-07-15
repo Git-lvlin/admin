@@ -112,7 +112,7 @@ const InterventionDetailStatus = props => {
           />
         </div>
         {
-          (winnerRole === 1 && type === 2) &&
+          (winnerRole === 1 && type === 2 && stage === 1 ) &&
           <div className={styles.opinion}>
             <ProFormSelect
               label="收货地址"
