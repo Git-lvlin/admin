@@ -52,7 +52,7 @@ export const interventionSentence = async (params = {}, options = {}) => {
 
 // 查询物流信息
 export const expressInfo = async (params={}, options={}) => {
-  const res = await request('/auth/express/open/expressInfo', {
+  const res = await request('/auth/express/express/expressInfo', {
     method: 'POST',
     data: {
       ...params 
