@@ -48,6 +48,7 @@ const PriceManagement = () => {
 
   const onSearch = (value, t, a) => {
     if (!value) {
+      setLoadingIndex(-1)
       return
     }
     const id = a.id
