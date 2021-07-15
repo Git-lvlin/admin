@@ -48,21 +48,6 @@ const InterventionDetailStatus = props => {
     }
   }, [supplierId])
 
-  // const AddressSelect = ({value, onChange, address}) => {
-  //   const changeHandle = v => {
-  //     onChange(v)
-  //   }
-  //   return (
-  //     <Select
-  //       style={{width: 400}}
-  //       placeholder="请选择收货地址"
-  //       options={address}
-  //       value={value}
-  //       defaultValue={value}
-  //       onChange={changeHandle}
-  //     />
-  //   )
-  // }
   const formRef = useRef()
 
   const Modal = props => {
@@ -88,22 +73,23 @@ const InterventionDetailStatus = props => {
           let { platformEvidenceImg } = values
           platformEvidenceImg =  Array.isArray(platformEvidenceImg) ? platformEvidenceImg.join(',') : platformEvidenceImg
           const addrObj = address.filter(item=> item.id === values.address)[0]
-          // interventionSentence({
-          //   id: id,
-          //   winnerRole: winnerRole,
-          //   ...values,
-          //   companyAddressId: addrObj.id,
-          //   receiveMan: addrObj.contactName,
-          //   receivePhone: addrObj.contactPhone,
-          //   receiveAddress: addrObj.address,
-          //   platformEvidenceImg
-          // }).then(res=>{
-          //   if(res.success){
-          //     change(true)
-          //     message.success('提交成功')
-          //     return true
-          //   }
-          // })
+          console.log(addrObj);
+          interventionSentence({
+            id: id,
+            winnerRole: winnerRole,
+            ...values,
+            companyAddressId: addrObj.id,
+            receiveMan: addrObj.contactName,
+            receivePhone: addrObj.contactPhone,
+            receiveAddress: addrObj.address,
+            platformEvidenceImg
+          }).then(res=>{
+            if(res.success){
+              change(true)
+              message.success('提交成功')
+              return true
+            }
+          })
           return true
         }}
       >
@@ -131,13 +117,9 @@ const InterventionDetailStatus = props => {
             <ProFormSelect
               label="收货地址"
               name="address"
-              request={()=>{
-                return addressList({supplierId}).then(res=>{
-                  return res.data.map(item=> (
-                    {label: item.address, value: item.id}
-                  ))
-                })
-              }}
+              options={address.map(item=>(
+                {label: item.address, value: item.id}
+              ))}
               placeholder="请选择收货地址"
               rules={[
                 {
@@ -146,11 +128,6 @@ const InterventionDetailStatus = props => {
                 }
               ]}
             />
-            {/* <AddressSelect 
-              address={list}
-              onChange={e=> {handleAddr(e)}}
-              value={showAddr()}
-            /> */}
           </div>
         }
         <ProForm.Item
