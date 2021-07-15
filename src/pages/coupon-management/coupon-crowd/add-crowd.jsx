@@ -31,20 +31,18 @@ export default (props) =>{
   const [form] = Form.useForm();
   const ref=useRef()
   const Callback=val=>{
-    console.log('val',val)
     setLevelId(val)
   }
   useEffect(()=>{
     if(id){
       couponCrowdDetail({id:id}).then(res=>{
-        console.log('res.data.crowdInfo',res.data.crowdInfo)
         form.setFieldsValue(res.data)
-        setDetailData(res.data.crowdInfo)
-        const arr=[]
-        res.data.crowdInfo.map(ele=>{
-          arr.push({id:ele.crowdInfoId,state:ele.isContain,title:ele.type==1?'会员等级':ele.type==2?'消费次数':'累计消费'})
-        })
-        setDataSource(arr)
+        // setDetailData(res.data.crowdInfo)
+        // const arr=[]
+        // res.data.crowdInfo.map(ele=>{
+        //   arr.push({id:ele.crowdInfoId,state:ele.isContain,title:ele.type==1?'会员等级':ele.type==2?'消费次数':'累计消费'})
+        // })
+        // setDataSource(arr)
       })
     }
   },[])
@@ -147,8 +145,11 @@ export default (props) =>{
   return (
       <>
       <ProForm
-        // form={form}
-        onFinish={onsubmit}
+        form={form}
+        onFinish={async (values)=>{
+          await  onsubmit(values);
+          return true;
+         } }
         submitter={{
           render: (props, doms) => {
             return [

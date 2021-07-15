@@ -14,25 +14,26 @@ const validity=(props)=>{
              <FormItem
                 style={{ display: 'inline-block'}}
                 name="date2"
-            >{
-                id&&DetailList.data?
+            >
+                {/* id&&DetailList.data?
                 <p >{DetailList.data?.activityStartTime+' -- '+DetailList.data?.activityEndTime}</p>
-                :<RangePicker
+                : */}
+                <RangePicker
                     placeholder={[
                         formatMessage({id: 'formandbasic-form.placeholder.start'}),
                         formatMessage({id: 'formandbasic-form.placeholder.end'}),
                     ]}
                 />
-            }
+            
             </FormItem>:null
          }
         {
             position==2||(parseInt(id)==id )&&DetailList.data?.activityEndDay?
             <>
-                {
-                id&&DetailList.data?
+                {/*                 id&&DetailList.data?
                 <p>领券{DetailList.data?.activityStartDay}天起，{DetailList.data?.activityEndDay}天内可用</p>
-                :<ProForm.Group>
+                : */}
+                <ProForm.Group>
                     <ProFormText
                         width={100}
                         name="activityStartDay"
@@ -46,7 +47,7 @@ const validity=(props)=>{
                     />
                     <span>天内可用</span>
                 </ProForm.Group>
-               }
+               
             </>
             :null
          }

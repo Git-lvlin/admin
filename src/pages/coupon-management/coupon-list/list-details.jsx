@@ -1,9 +1,8 @@
 import React, { useState,useEffect,useRef } from 'react';
 import { couponDetail } from '@/services/coupon-management/coupon-detail';
+import { couponCrowdList} from '@/services/crowd-management/coupon-crowd';
 import { Divider, Form, Spin,Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProCard from '@ant-design/pro-card';
-import moment from 'moment';
 import { history } from 'umi';
 
 const formItemLayout = {
@@ -19,6 +18,53 @@ const formItemLayout = {
   }
 };
 
+const SubTable = (props) => {
+  const [data, setData] = useState([])
+  const {name}=props
+  const columns = [
+    {
+      title: '选项',
+      dataIndex: 'type',
+      valueType: 'select',
+      valueEnum: {
+        1: '会员等级',
+        2: '消费次数',
+        3: '累计消费'
+      },
+      hideInSearch: true,
+  },
+    {
+        title: '范围',
+        dataIndex: 'isContain',
+        valueType: 'select',
+        valueEnum: {
+          1: '包含',
+          2: '不包含',
+        },
+        hideInSearch: true,
+    },
+    {
+        title: '条件',
+        dataIndex: 'msgDisplay',
+        hideInSearch: true,
+    }
+  ];
+  useEffect(() => {
+    if(name){
+      couponCrowdList({
+        name:name
+      }).then(res => {
+        if (res.code === 0) {
+          setData(res?.data?.[0].crowdInfo)
+        }
+      })
+    }
+  }, [])
+  return (
+    <ProTable toolBarRender={false} search={false} key="type" columns={columns} dataSource={data} pagination={false} />
+  )
+};
+
 
 export default props => {
   const ref=useRef()
@@ -31,29 +77,7 @@ export default props => {
       title: '群体名称',
       dataIndex: 'name',
       valueType: 'text',
-    },
-    {
-      title: '选项',
-      dataIndex: 'type',
-      valueEnum: {
-        1: '会员等级',
-        2: '消费次数',
-        3: '累计消费'
-      },
-    },
-    {
-        title: '范围',
-        dataIndex: 'isContain',
-        valueType: 'select',
-        valueEnum: {
-          1: '包含',
-          2: '不包含',
-        },
-    },
-    {
-        title: '条件',
-        dataIndex: 'msgDisplay',
-    } 
+    }
   ];
   const columns2= [
     {
@@ -101,8 +125,11 @@ export default props => {
     },
     {
         title: '活动时段',
-        dataIndex: 'couponStatus',
+        dataIndex: 'wholesaleEndTime',
         valueType: 'text',
+        render:(_, data)=>{
+          return <p>{data.wholesaleStartTime} 至 {data.wholesaleEndTime}</p>
+        }
     },
     {
         title: '可购买的会员店等级',
@@ -132,11 +159,11 @@ export default props => {
         spinning={loading}
       >
          <h1>查看详情</h1>
-         <Button style={{marginBottom:'20px'}} type="primary" onClick={()=>history.goBack()}>返回</Button>
+         <Button style={{marginTop:'-40px',float:'right'}} type="default" onClick={()=>history.goBack()}>返回</Button>
         <Form
           form={form}
           {...formItemLayout}
-          style={{ backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
+          style={{ backgroundColor: '#fff', paddingBottom: 100 }}
         >
           <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">基本信息</Divider>
           <Form.Item
@@ -167,13 +194,8 @@ export default props => {
               label="券面值"
             >
               {detailData.couponAmountDisplay}
-              {
-                detailData.images?.map(ele=>(
-                  <img style={{display:"block"}} width={100} height={100} src={ele} alt="" />
-                ))
-              }
-            </Form.Item>
-            <Form.Item
+          </Form.Item>
+          <Form.Item
               label="发行方式"
             >
               {
@@ -211,19 +233,17 @@ export default props => {
               '全部会员'
               :'指定用户群体'
             }
-            <ProTable
+         
+          </Form.Item>
+          <ProTable
               actionRef={ref}
               rowKey="id"
               options={false}
-              // params={{
-              // status: 1,
-              // }}
-              // request={couponList}
-              // dataSource={{}}
+              expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
+              dataSource={[detailData.crowdList]}
               search={false}
               columns={columns}
             />
-          </Form.Item>
 
           <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">使用设置</Divider>
           
@@ -236,30 +256,40 @@ export default props => {
               :'集约商品'
             }
           </Form.Item>
-
-          <Form.Item
-            label="商品范围"
-          >
-            {
-              detailData.goodsType==1?
-              '全部商品':
-              detailData.goodsType==2?
-              '指定商品':
-              '指定品类'
-            }
-            <ProTable
-              actionRef={ref}
-              rowKey="id"
-              options={false}
-              // params={{
-              // status: 1,
-              // }}
-              // request={couponList}
-              dataSource={detailData.spuInfo}
-              search={false}
-              columns={columns2}
-            />
-          </Form.Item>
+          
+          {
+            detailData.useType==1?
+            <>
+              <Form.Item
+                label="商品范围"
+              >
+                {
+                  detailData.goodsType==1?
+                  '全部商品':
+                  detailData.goodsType==2?
+                  '指定商品':
+                  '指定品类'
+                }
+              </Form.Item>
+              <ProTable
+                  actionRef={ref}
+                  rowKey="id"
+                  options={false}
+                  dataSource={detailData.spuInfo}
+                  search={false}
+                  columns={columns2}
+                />
+            </>
+            :  <ProTable
+                actionRef={ref}
+                rowKey="id"
+                options={false}
+                dataSource={detailData.wsInfo}
+                search={false}
+                columns={columns3}
+              />
+          }
+         
           <Form.Item
             label="可用人群"
           >

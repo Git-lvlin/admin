@@ -46,7 +46,21 @@ const UseScopeModel = {
             type: 'onWholesaleIds',
             payload
         });
-    }
+    },
+    *fetchCrowdIdsArr({ payload}, { call, put}) {
+      console.log('payload',payload)
+      yield put({
+          type: 'onCrowdIdsArr',
+          payload
+      });
+  },
+    *fetchCrowdIds({ payload}, { call, put}) {
+      console.log('payload',payload)
+      yield put({
+          type: 'onCrowdIds',
+          payload
+      });
+  }
 
   },
   reducers: {
@@ -74,6 +88,14 @@ const UseScopeModel = {
     onWholesaleIds(state = { UseScopeObje:{}},{ payload }){
         state.UseScopeObje.wholesaleIds=payload.wholesaleIds
         return { ...state };
+    },
+    onCrowdIdsArr(state = { UseScopeObje:{}},{ payload }){
+      state.UseScopeObje.CrowdIdsArr=payload.CrowdIdsArr
+    return { ...state };
+    },
+    onCrowdIds(state = { UseScopeObje:{}},{ payload }){
+      state.UseScopeObje.CrowdIds=payload.CrowdIds
+      return { ...state };
     },
     onUseScopeList(state = { UseScopeObje:{}},{ payload }){
       state.UseScopeObje=payload.UseScopeObje
