@@ -1,9 +1,9 @@
 import React, { useState, useEffect,useRef } from 'react';
 import { ModalForm,ProFormSwitch,ProFormTextArea} from '@ant-design/pro-form';
-import { Button } from 'antd';
+import { Button,message } from 'antd';
 
 export default props=>{
-    const {record,type,text,InterFace,title,boxref,label,state,arrId}=props
+    const {record,type,text,InterFace,title,boxref,label,status,id}=props
     const [byid,setByid]=useState()
     const [visible, setVisible] = useState(false);
     const Termination=(record)=>{
@@ -25,21 +25,23 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                InterFace({dynamicIds:arrId?arrId:[byid],state,refuseReason:values.refuseReason}).then(res=>{
+                console.log('values',values)
+                InterFace({id:id,status:status,content:values.content}).then(res=>{
                     if(res.code==0){
                         setVisible(false)   
                         boxref&&boxref.current?.reload()
-                        return true;
+                        message.success('操作成功')
+                        return true;    
                     }
                 })
             }}
         >
         <p>{text}</p>
         {
-            state==2?
+            status==3?
             <ProFormTextArea
                 width="md"
-                name="refuseReason"
+                name="content"
                 label="请填写驳回原因"
                 rules={[
                     {
