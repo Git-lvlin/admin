@@ -73,16 +73,15 @@ const InterventionDetailStatus = props => {
         onFinish={async (values)=> {
           let { platformEvidenceImg } = values
           platformEvidenceImg =  Array.isArray(platformEvidenceImg) ? platformEvidenceImg.join(',') : platformEvidenceImg
-          const addrObj = address.filter(item=> item.id === values.address)[0]
-          console.log(addrObj);
+          const addrObj = address?.filter(item=> item.id === values.address)[0]
           interventionSentence({
             id: id,
             winnerRole: winnerRole,
             ...values,
-            companyAddressId: addrObj.id,
-            receiveMan: addrObj.contactName,
-            receivePhone: addrObj.contactPhone,
-            receiveAddress: addrObj.address,
+            companyAddressId: addrObj?.id,
+            receiveMan: addrObj?.contactName,
+            receivePhone: addrObj?.contactPhone,
+            receiveAddress: addrObj?.address,
             platformEvidenceImg
           }).then(res=>{
             if(res.success){
