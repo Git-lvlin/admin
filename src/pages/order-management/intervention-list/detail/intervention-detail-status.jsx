@@ -35,7 +35,8 @@ const InterventionDetailStatus = props => {
     id,
     status,
     change,
-    supplierId
+    supplierId,
+    type
   } = props
   const [address, setAddress] = useState([])
   useEffect(()=>{
@@ -112,7 +113,7 @@ const InterventionDetailStatus = props => {
           />
         </div>
         {
-          winnerRole === 1 &&
+          (winnerRole === 1 && type === 2) &&
           <div className={styles.opinion}>
             <ProFormSelect
               label="收货地址"

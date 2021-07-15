@@ -58,6 +58,7 @@ const interventioListDetail = () => {
           id={id}
           change={setFlag}
           status={detail?.status}
+          type={DTO?.afterSalesType}
         />
         {
           detail?.status !== 0 &&
