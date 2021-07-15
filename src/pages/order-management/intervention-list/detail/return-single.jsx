@@ -15,7 +15,7 @@ const ReturnSingle = props => {
   const [address, setAddress] = useState({})
   const showLastStatus = expressInfo => {
     return expressInfo?.map((item, idx)=>(
-      <Item key={idx} className={styles.timeline}>
+      <Item key={idx}>
         {item.content}
         <span style={{marginLeft: 30}}>{item.time}</span>
       </Item>
@@ -114,7 +114,7 @@ const ReturnSingle = props => {
               }
               onFinish={()=> true}
             >
-              <Timeline reverse className={styles.timelineWarp}>
+              <Timeline className={styles.timelineWarp}>
                 {showLastStatus(address?.deliveryList)}
               </Timeline>
             </ModalForm>

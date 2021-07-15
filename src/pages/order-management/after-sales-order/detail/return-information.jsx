@@ -14,7 +14,7 @@ const { Item } = Timeline
 
 const showLastStatus = lastStatus => {
   return lastStatus?.map((item,idx)=>(
-    <Item key={idx} className={styles.timeline}>
+    <Item key={idx}>
       {item.content}
       <span style={{marginLeft: 30}}>{item.time}</span>
     </Item>
@@ -120,7 +120,7 @@ const ReturnInformation = props => {
               }
               onFinish={()=> true}
             >
-              <Timeline reverse className={styles.timelineWarp}>
+              <Timeline className={styles.timelineWarp}>
                 {showLastStatus(express?.deliveryList)}
               </Timeline>
             </ModalForm>
