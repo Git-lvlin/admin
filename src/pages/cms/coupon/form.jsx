@@ -161,6 +161,7 @@ export default (props) => {
       params={{
         couponStatus: 2,
         couponVerifyStatus: 4,
+        issueType: 1,
       }}
       request={couponAddList}
       rowSelection={{

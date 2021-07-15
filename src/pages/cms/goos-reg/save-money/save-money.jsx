@@ -224,9 +224,6 @@ const SaveMoney = () => {
         <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 4) }}>
           批量删除
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
-          新建
-        </Button>,
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisibles(true) }}>
           新增秒约商品
         </Button>,
