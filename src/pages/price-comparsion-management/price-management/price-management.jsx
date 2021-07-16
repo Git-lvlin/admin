@@ -110,7 +110,7 @@ const PriceManagement = () => {
   }, [flag])
 
   const expandedRowRender = (a) => {
-    if (!formData || formData !== a) {
+    if (!formData) {
       setFormData(a)
     }
     return (
@@ -145,15 +145,6 @@ const PriceManagement = () => {
               enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 1?true:false}>抓取</Button>}
               onSearch={(_) => {setLoadingIndex(1);onSearch(_,'tb', a)}}
             />
-            {/* <Button
-              disabled={!grabList}
-              key={a.id}
-              style={{
-              width: "8%",
-              float: 'right'
-            }} onClick={() => {
-              bindData(a.id, 'tb')
-            }}>绑定</Button> */}
           </ProCard>
 
         </ProCard>
@@ -202,15 +193,6 @@ const PriceManagement = () => {
                 enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 3?true:false}>抓取</Button>}
                 onSearch={(_) => {setLoadingIndex(3);onSearch(_,'pdd', a)}}
               />
-              {/* <Button
-                disabled={!grabList}
-                key={a.id}
-                style={{
-                width: "8%",
-                float: 'right'
-              }} onClick={() => {
-                bindData(a.id, 'pdd')
-              }}>绑定</Button> */}
             </ProCard>
         </ProCard>
         <ProCard split="vertical" className={styles.header}>
@@ -302,12 +284,12 @@ const PriceManagement = () => {
   }
 
   const changeRowKeys = (expanded, record) => {
-    setRowLoadin(true)
-    setFormData(record)
-    setFormjsx(false)
-    setIsShow(false)
     clearTimeout(ref.current)
     setLoadingIndex(-1)
+    setRowLoadin(true)
+    // setFormData(record)
+    setFormjsx(false)
+    setIsShow(false)
     let temp = []
     if (expanded) {
       temp.push(record.allKey)
