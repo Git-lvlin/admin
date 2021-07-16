@@ -116,7 +116,6 @@ const couponConstruction=(props) => {
   }
   return (
     <>
-      <Divider orientation="left"><FormattedMessage id="formandbasic-form.basic.setup" /></Divider>
       <ProForm
           initialValues={id?{
             dateRange: [
@@ -146,7 +145,7 @@ const couponConstruction=(props) => {
                    }}>
                     提交审核
                  </Button>,
-                  <Button type="default" onClick={()=>history.push('/coupon-management/coupon-list')}>
+                  <Button type="default" onClick={()=>history.goBack()}>
                     返回
                   </Button>,
                   
@@ -159,8 +158,9 @@ const couponConstruction=(props) => {
              return true;
             }
            }
-        style={{ width: '1000px', margin: '0 auto' }}
+        style={{ width: '1500px', margin: '0 auto' }}
       >
+        <Divider orientation="left"><FormattedMessage id="formandbasic-form.basic.setup" /></Divider>
         {/* 优惠券名称 */}
         <ProFormText
           width="md"
@@ -200,7 +200,6 @@ const couponConstruction=(props) => {
             </FormItem>
            
           }
-       
 
         {/* 每人限领 */}
         <ProForm.Group>
@@ -239,14 +238,10 @@ const couponConstruction=(props) => {
         {
           type==2||DetailList.data?.issueType==2&&id?null
           :
-          <FormItem
-            label='可领取时间'
-            name="date"
-            
-          >
           <ProFormDateRangePicker
-            name="dateRange"
+            label='可领取时间'
             rules={[{ required: true, message: '请选择限领时间' }]}
+            name="dateRange"
             placeholder={[
               formatMessage({
                 id: 'formandbasic-form.placeholder.start',
@@ -256,7 +251,6 @@ const couponConstruction=(props) => {
               }),
             ]}
           />
-          </FormItem>
         }
         
 
