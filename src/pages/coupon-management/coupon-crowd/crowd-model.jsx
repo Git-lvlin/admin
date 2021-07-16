@@ -1,7 +1,7 @@
 import React, { useState, useEffect,useRef, useCallback } from 'react';
 import { ModalForm,ProFormSwitch,ProFormTextArea,ProFormCheckbox} from '@ant-design/pro-form';
 import { userLevelList } from '@/services/crowd-management/coupon-crowd';
-import { Button } from 'antd';
+import { Button,message } from 'antd';
 
 export default props=>{
     const {record,type,text,InterFace,title,boxref,label,state,arrId,Callback}=props
@@ -40,6 +40,7 @@ export default props=>{
                 console.log('values',values)
                 setVisible(false)
                 Callback(values)   
+                message.success('选择完成')
                 boxref&&boxref.current?.reload()
                 return true;
             }}

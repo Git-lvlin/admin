@@ -124,6 +124,7 @@ const UseScopeModel = {
       return { ...state };
     },
     onUseScopeList(state = { UseScopeObje:{}},{ payload }){
+      console.log('UseScopeObje',payload.UseScopeObje)
       state.UseScopeObje=payload.UseScopeObje
       return { ...state };
     },
