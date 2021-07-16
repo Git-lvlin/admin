@@ -48,32 +48,6 @@ const  useCollect=(props)=>{
             hideInSearch: true,
         }
     ];
-    const columns2 = [
-        {
-            title: '活动编号',
-            dataIndex: 'wsId',
-        },
-        {
-            title: '活动名称',
-            dataIndex: 'name',
-            valueType: 'text',
-        },
-        {
-            title: '活动时段',
-            dataIndex: 'wholesaleStartTime',
-            render:(text, record, _, action)=>[
-                <p>{record.wholesaleStartTime}至{record.wholesaleEndTime}</p>
-            ]
-        },
-        {
-            title: '可购买的会员店等级',
-            dataIndex: 'storeLevel',
-        },
-        {
-            title: '可购买的会员用户',
-            dataIndex: 'memberLevel',
-        }
-    ];
     const columns3 = [
         {
             title: '活动编号',
@@ -126,7 +100,7 @@ const  useCollect=(props)=>{
     return(
         <Form.Item className={styles.unfold} name="collect">
             <ProFormRadio.Group
-                name="goodsType"
+                name="wholesaleType"
                 label="商品范围"
                 rules={[{ required: true, message: '请选择商品范围' }]}
                 fieldProps={{
@@ -146,13 +120,13 @@ const  useCollect=(props)=>{
             />
             {
                 position==2||(parseInt(id)==id )&&DetailList.data?.goodsType==2?
-                (parseInt(id)==id)?
-                <Table
-                    rowKey='wholesaleId'
-                    columns={columns2}
-                    dataSource={DetailList.data?.wsInfo}
-                />
-                :<>
+                // (parseInt(id)==id)?
+                // <Table
+                //     rowKey='wholesaleId'
+                //     columns={columns2}
+                //     dataSource={DetailList.data?.wsInfo}
+                // />
+                <>
                   <ProTable
                         rowKey="wholesaleId"
                         options={false}

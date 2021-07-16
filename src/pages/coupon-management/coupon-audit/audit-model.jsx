@@ -1,6 +1,7 @@
 import React, { useState, useEffect,useRef } from 'react';
 import { ModalForm,ProFormSwitch,ProFormTextArea} from '@ant-design/pro-form';
 import { Button,message } from 'antd';
+import { history } from 'umi';
 
 export default props=>{
     const {record,type,text,InterFace,title,boxref,label,status,id}=props
@@ -31,6 +32,7 @@ export default props=>{
                         setVisible(false)   
                         boxref&&boxref.current?.reload()
                         message.success('操作成功')
+                        history.goBack()
                         return true;    
                     }
                 })

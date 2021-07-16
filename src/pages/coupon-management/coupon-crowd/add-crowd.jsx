@@ -1,8 +1,6 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { DatePicker, Input, Form, Divider, message,Button,Space,Tag } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
 import ProTable,{ EditableProTable,ActionType } from '@ant-design/pro-table';
-import ProField from '@ant-design/pro-field';
 import ProForm, {
     ProFormText,
     ProFormRadio,
@@ -73,12 +71,14 @@ export default (props) =>{
         couponCrowdEdit({...values,id:id}).then(res=>{
           if(res.code==0){
             history.push('/coupon-management/coupon-crowd') 
+            message.success('操作成功')
           }
         })
       }else{
         couponCrowdSub(values).then(res=>{
           if(res.code==0){
-            history.push('/coupon-management/coupon-crowd') 
+            history.push('/coupon-management/coupon-crowd')
+            message.success('操作成功')
           }
         })
       }
@@ -145,7 +145,7 @@ export default (props) =>{
   return (
       <>
       <ProForm
-        form={form}
+        // form={form}
         onFinish={async (values)=>{
           await  onsubmit(values);
           return true;
@@ -158,8 +158,7 @@ export default (props) =>{
               </Button>,
               <Button type="default"  key="rest" onClick={() => props.form?.resetFields()}>
                 取消
-              </Button>,
-              
+              </Button>
             ];
           }
         }}
