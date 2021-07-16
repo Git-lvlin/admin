@@ -41,29 +41,34 @@ export default function EditTable(props) {
       },
       ...arr,
       {
-        title: '供货价',
+        title: '零售供货价(元)',
         dataIndex: 'retailSupplyPrice',
-        width: 100,
+        width: 130,
         editable: false,
-        formItemProps: {
-          rules: [{
-            required: true,
-            whitespace: true,
-            message: '请输入供货价',
-          }],
-        }
+      },
+      {
+        title: '批发供货价(元)',
+        dataIndex: 'wholesaleSupplyPrice',
+        width: 130,
+        editable: false,
+      },
+      {
+        title: '最低批发量',
+        dataIndex: 'wholesaleMinNum',
+        width: 130,
+        editable: false,
       },
       {
         title: '秒约价',
         dataIndex: 'salePrice',
         width: 100,
-        formItemProps: {
-          rules: [{
-            required: true,
-            whitespace: true,
-            message: '请输入销售价',
-          }],
-        },
+        // formItemProps: {
+        //   rules: [{
+        //     required: true,
+        //     whitespace: true,
+        //     message: '请输入秒约价',
+        //   }],
+        // },
         editable: settleType === 2,
       },
       {
@@ -82,13 +87,13 @@ export default function EditTable(props) {
         dataIndex: 'stockNum',
         width: 100,
         editable: false,
-        formItemProps: {
-          rules: [{
-            required: true,
-            whitespace: true,
-            message: '请输入可用库存',
-          }],
-        }
+        // formItemProps: {
+        //   rules: [{
+        //     required: true,
+        //     whitespace: true,
+        //     message: '请输入可用库存',
+        //   }],
+        // }
       },
       // {
       //   title: '操作',

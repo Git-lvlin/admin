@@ -57,6 +57,7 @@ export default (props) => {
           return {
             ...item[1],
             retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
+            wholesaleSupplyPrice: amountTransform(item[1].wholesaleSupplyPrice, '/'),
             // suggestedRetailPrice: amountTransform(item[1].retailSupplyPrice, '/'),
             // wholesalePrice: amountTransform(item[1].retailSupplyPrice, '/'),
             salePrice: amountTransform(item[1].retailSupplyPrice, '/'),
@@ -85,7 +86,7 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        width: 1200,
+        width: 1300,
       }}
       form={form}
       onFinish={(values) => {
@@ -132,7 +133,7 @@ export default (props) => {
       }}
       visible={visible}
       initialValues={{
-        settleType: 1,
+        settleType: 2,
       }}
       {...formItemLayout}
     >
@@ -202,10 +203,10 @@ export default (props) => {
         label="结算模式"
         rules={[{ required: true }]}
         options={[
-          {
-            label: '佣金模式',
-            value: 1,
-          },
+          // {
+          //   label: '佣金模式',
+          //   value: 1,
+          // },
           {
             label: '底价模式',
             value: 2,
@@ -237,9 +238,19 @@ export default (props) => {
           :
           <>
             <Form.Item
-              label="供货价"
+              label="零售供货价(元)"
             >
               {amountTransform(goods.retailSupplyPrice, '/')}
+            </Form.Item>
+            <Form.Item
+              label="批发供货价(元)"
+            >
+              {amountTransform(goods.wholesaleSupplyPrice, '/')}
+            </Form.Item>
+            <Form.Item
+              label="最低批发量"
+            >
+              {goods.wholesaleMinNum}
             </Form.Item>
             <ProFormText
               name="marketPrice"
