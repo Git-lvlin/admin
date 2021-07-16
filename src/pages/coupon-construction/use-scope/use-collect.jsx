@@ -48,10 +48,10 @@ const  useCollect=(props)=>{
             hideInSearch: true,
         }
     ];
-    const columns3 = [
+    const columns2 = [
         {
             title: '活动编号',
-            dataIndex: 'wsId',
+            dataIndex: 'wholesaleId',
         },
         {
             title: '活动名称',
@@ -78,7 +78,7 @@ const  useCollect=(props)=>{
             title: '操作',
             valueType: 'text',
             render:(text, record, _, action)=>[
-                <a onClick={()=>delType(record.key)}>删除</a>
+                <a onClick={()=>delWholesale(record.wholesaleId)}>删除</a>
             ]
          }
     ];
@@ -96,6 +96,29 @@ const  useCollect=(props)=>{
         setIsModalVisible(true);
         setLoading(true)
     };
+    // 删除集约
+    const  delWholesale=val=>{
+        console.log('val',val)
+        console.log('wholesaleArr',UseScopeList.UseScopeObje.wholesaleArr)
+        const arr = UseScopeList.UseScopeObje.wholesaleIds.split(',')
+        dispatch({
+            type:'UseScopeList/fetchWholesaleIds',
+            payload:{
+                wholesaleIds:arr.filter(ele=>(
+                    ele!=val
+                )).toString()
+            }
+        })
+        dispatch({
+            type:'UseScopeList/fetchWholesaleArr',
+            payload:{
+                wholesaleArr:UseScopeList.UseScopeObje.wholesaleArr.filter(ele=>(
+                            ele.wholesaleId!=val
+                ))
+            }
+        })
+       
+    }
     useEffect(()=>{
         setTimeout(()=>{
             if(id){
@@ -157,42 +180,36 @@ const  useCollect=(props)=>{
             />
             {
                 position==2||(parseInt(id)==id )&&DetailList.data?.wholesaleType==2?
-                // (parseInt(id)==id)?
-                // <Table
-                //     rowKey='wholesaleId'
-                //     columns={columns2}
-                //     dataSource={DetailList.data?.wsInfo}
-                // />
                 <>
                 <Button type="primary" className={styles.popupBtn} onClick={showModal}>
                             选择商品
                 </Button>
                   <Modal key="id" width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                        <ProTable
-                                rowKey="wholesaleId"
-                                options={false}
-                                params={{
-                                    pageSize:3,
-                                    wholesaleType:5
-                                }}
-                                request={couponWholesaleList}
-                                actionRef={actionRef}
-                                search={{
-                                    defaultCollapsed: false,
-                                    labelWidth: 100,
-                                    optionRender: (searchConfig, formProps, dom) => [
-                                        ...dom.reverse(),
-                                    ],
-                                }}
-                                columns={columns}
-                                rowSelection={{}}
-                                tableAlertOptionRender={onIpute}
-                                style={{display:loading?'block':'none'}}
-                            />
+                    <ProTable
+                            rowKey="wholesaleId"
+                            options={false}
+                            params={{
+                                pageSize:3,
+                                wholesaleType:5
+                            }}
+                            request={couponWholesaleList}
+                            actionRef={actionRef}
+                            search={{
+                                defaultCollapsed: false,
+                                labelWidth: 100,
+                                optionRender: (searchConfig, formProps, dom) => [
+                                    ...dom.reverse(),
+                                ],
+                            }}
+                            columns={columns}
+                            rowSelection={{}}
+                            tableAlertOptionRender={onIpute}
+                            style={{display:loading?'block':'none'}}
+                        />
                     </Modal>
                     <Table
                         rowKey='wholesaleId'
-                        columns={columns3}
+                        columns={columns2}
                         dataSource={UseScopeList.UseScopeObje.wholesaleArr}
                         // style={{display:loading?'none':'block'}}
                     />

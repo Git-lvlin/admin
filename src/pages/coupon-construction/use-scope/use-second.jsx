@@ -28,11 +28,6 @@ const useSecond=(props)=>{
             dataIndex: 'goodsName',
             valueType: 'text',
         },
-        // {
-        //     title: '供应商ID',
-        //     dataIndex: 'supplierId',
-        //     valueType: 'text',
-        // },
         {
             title: '商品分类',
             dataIndex: 'gcId1',
@@ -104,11 +99,6 @@ const useSecond=(props)=>{
             dataIndex: 'goodsName',
             valueType: 'text',
         },
-        // {
-        //     title: '供应商ID',
-        //     dataIndex: 'supplierId',
-        //     valueType: 'text',
-        // },
         {
             title: '商品分类',
             dataIndex: 'gcId1Display',
@@ -135,18 +125,12 @@ const useSecond=(props)=>{
             ]
          }
     ];
-    // const columns4=[
-    //     {
-    //        title: '分类',
-    //        dataIndex: 'gcName',
-    //     }
-    //  ]
     // 删除品类
-    const delType=key=>{
+    const delType=id=>{
         dispatch({
             type:'UseScopeList/fetchLookUnit',
             payload:{
-                unit:''
+                unit:null
             }
         })
         dispatch({
@@ -186,7 +170,6 @@ const useSecond=(props)=>{
     const [loading,setLoading]=useState(true)
     const [flag,setFlag]=useState(true)
     const [spuIdsArr,setSpuIdsArr]=useState([])
-    const [cates,setCates]=useState([])
     const [position,setPosition]=useState()
     const [onselect,setOnselect]=useState([])
     const [spuIds,setSpuIds]=useState('')
