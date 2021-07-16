@@ -46,19 +46,19 @@ const PriceManagement = () => {
     })
   }
 
-  const onSearch = (value, t, a) => {
+  const onSearch = (value, t, {id, goodsSpuId, goodsSkuId}) => {
     if (!value) {
-      setLoadingIndex(-1)
+      // setLoadingIndex(-1)
       return
     }
-    const id = a.id
+    // const id = id
     const type = t
     setType(type)
     const param = {
       goodsUrl: value,
-      goodsId: a.goodsSpuId,
+      goodsId: goodsSpuId,
       type,
-      skuId: a.goodsSkuId,
+      skuId: goodsSkuId,
     }
     createTaskSrc(param, {showError: false}).then((res) => {
       if (res.code === 0) {
