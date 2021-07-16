@@ -13,10 +13,10 @@ import './styles.less'
 const { Item } = Timeline
 
 const showLastStatus = lastStatus => {
-  lastStatus = lastStatus?.split(',')
-  return lastStatus?.map((key,idx)=>(
-    <Item key={idx} className={styles.timeline}>
-      {key}
+  return lastStatus?.map((item,idx)=>(
+    <Item key={idx}>
+      {item.content}
+      <span style={{marginLeft: 30}}>{item.time}</span>
     </Item>
   ))
 }
@@ -120,8 +120,8 @@ const ReturnInformation = props => {
               }
               onFinish={()=> true}
             >
-              <Timeline reverse>
-                {showLastStatus(express?.lastStatus)}
+              <Timeline className={styles.timelineWarp}>
+                {showLastStatus(express?.deliveryList)}
               </Timeline>
             </ModalForm>
           </div>
