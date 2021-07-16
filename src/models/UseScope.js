@@ -40,6 +40,12 @@ const UseScopeModel = {
           payload
         });
       },
+    *fetchLookUnitArr({ payload}, { call, put}) {
+      yield put({
+        type: 'onUnitArr',
+        payload
+      });
+    },
     *fetchWholesaleIds({ payload}, { call, put}) {
         console.log('payload',payload)
         yield put({
@@ -84,6 +90,11 @@ const UseScopeModel = {
     onUnit(state = { UseScopeObje:{}},{ payload }){
       console.log('payload.unit',payload.unit)
         state.UseScopeObje.unit=payload.unit
+        return { ...state };
+    },
+    onUnitArr(state = { UseScopeObje:{}},{ payload }){
+      console.log('payload.unitArr',payload.unitArr)
+        state.UseScopeObje.unitArr=payload.unitArr
         return { ...state };
     },
     onWholesaleIds(state = { UseScopeObje:{}},{ payload }){

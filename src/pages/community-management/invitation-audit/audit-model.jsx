@@ -25,7 +25,7 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                if(arrId.length||byid){
+                if(byid||arrId.length){
                     InterFace({dynamicIds:arrId?arrId:[byid],state,refuseReason:values.refuseReason}).then(res=>{
                         if(res.code==0){
                             setVisible(false)   
