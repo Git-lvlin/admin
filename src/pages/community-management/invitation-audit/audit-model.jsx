@@ -25,14 +25,19 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                InterFace({dynamicIds:arrId?arrId:[byid],state,refuseReason:values.refuseReason}).then(res=>{
-                    if(res.code==0){
-                        setVisible(false)   
-                        boxref&&boxref.current?.reload()
-                        message.success('操作成功')
-                        return true;
-                    }
-                })
+                if(arrId.length||byid){
+                    InterFace({dynamicIds:arrId?arrId:[byid],state,refuseReason:values.refuseReason}).then(res=>{
+                        if(res.code==0){
+                            setVisible(false)   
+                            boxref&&boxref.current?.reload()
+                            message.success('操作成功')
+                            return true;
+                        }
+                    })
+                }else{
+                    message.error('请先选择帖子')
+                }
+                
             }}
         >
         <p>{text}</p>

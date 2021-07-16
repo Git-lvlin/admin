@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react';
 import {Form,DatePicker} from 'antd';
 import {formatMessage,connect} from 'umi';
-import ProForm,{ ProFormText } from '@ant-design/pro-form';
+import ProForm,{ ProFormText,ProFormDateRangePicker } from '@ant-design/pro-form';
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 
@@ -15,10 +15,8 @@ const validity=(props)=>{
                 style={{ display: 'inline-block'}}
                 name="date2"
             >
-                {/* id&&DetailList.data?
-                <p >{DetailList.data?.activityStartTime+' -- '+DetailList.data?.activityEndTime}</p>
-                : */}
-                <RangePicker
+                <ProFormDateRangePicker
+                    name='dateTimeRange'
                     placeholder={[
                         formatMessage({id: 'formandbasic-form.placeholder.start'}),
                         formatMessage({id: 'formandbasic-form.placeholder.end'}),
@@ -30,9 +28,6 @@ const validity=(props)=>{
         {
             position==2||(parseInt(id)==id )&&DetailList.data?.activityEndDay?
             <>
-                {/*                 id&&DetailList.data?
-                <p>领券{DetailList.data?.activityStartDay}天起，{DetailList.data?.activityEndDay}天内可用</p>
-                : */}
                 <ProForm.Group>
                     <ProFormText
                         width={100}
@@ -47,7 +42,6 @@ const validity=(props)=>{
                     />
                     <span>天内可用</span>
                 </ProForm.Group>
-               
             </>
             :null
          }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
 import { Form, Tooltip, Input } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
@@ -7,6 +7,7 @@ import BrandSelect from '@/components/brand-select'
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import Big from 'big.js';
 import { amountTransform } from '@/utils/utils'
+import debounce from 'lodash/debounce';
 
 
 export default function EditTable({ onSelect }) {
@@ -166,7 +167,7 @@ export default function EditTable({ onSelect }) {
       hideInSearch: true,
     },
     {
-      title: '集约分成比例',
+      title: '售价上浮比(%)',
       dataIndex: 'settlePercent',
       valueType: 'text',
       hideInSearch: true,
@@ -185,14 +186,21 @@ export default function EditTable({ onSelect }) {
       title: (
         <>
           集约价
-          <Tooltip placement="top" title="集约价最低=(批发供货价+配送费补贴) ÷（100%-集约分成比例-0.68%）">
+          {/* <Tooltip placement="top" title="集约价最低=(批发供货价+配送费补贴) ÷（100%-集约分成比例-0.68%）">
             <QuestionCircleOutlined style={{ marginLeft: 4 }} />
-          </Tooltip>
+          </Tooltip> */}
         </>
       ),
       dataIndex: 'price',
       valueType: 'text',
       hideInSearch: true,
+    },
+    {
+      title: '实际盈亏(元)',
+      dataIndex: 'profit',
+      valueType: 'text',
+      hideInSearch: true,
+      editable: false,
     },
     {
       title: '配送费补贴(元)',
@@ -229,15 +237,64 @@ export default function EditTable({ onSelect }) {
       totalStockNum: parseInt(item.stockNum * 0.8, 10),
       minNum: 1,
       maxNum: 10,
-      price: amountTransform(item.minWholesalePrice, '/'),
+      price: amountTransform(item.price, '/'),
       fixedPrice: amountTransform(item.fixedPrice, '/'),
       settlePercent: amountTransform(item.settlePercent),
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
-      totalPrice: item.salePrice > 0 ? +new Big(item.price || item?.minWholesalePrice).div(100).times(1) : 0,
+      profit: amountTransform(item.profit, '/'),
+      totalPrice: item.salePrice > 0 ? +new Big(item.price || item?.price).div(100).times(1) : 0,
     }))
     setDataSource(arr)
+    // return arr;
   }
 
+  const debounceFetcher = useMemo(() => {
+    const loadData = (value) => {
+      const { recordList, record } = value;
+
+      const findItem = dataSource.find(item => item.id === record.id);
+      const obj = {
+        skuId: record.skuId,
+        fixedPrice: amountTransform(record.fixedPrice),
+        isGetWholesale: 1,
+        priceScale: amountTransform(record.settlePercent, '/'),
+        price: amountTransform(record.price)
+      }
+      if (findItem.price !== record.price) {
+        obj.price = amountTransform(record.price);
+        obj.priceScale = -1;
+      }
+
+      if (findItem.settlePercent !== record.settlePercent) {
+        obj.priceScale = amountTransform(record.settlePercent, '/');
+        delete obj.price;
+      }
+
+      productList(obj).then(res => {
+        const skuData = res.data[0];
+        const arr = recordList.map(item => {
+          if (item.id === record.id) {
+            const data = {
+              ...item,
+              fixedPrice: amountTransform(skuData.fixedPrice, '/'),
+              settlePercent: amountTransform(skuData.settlePercent),
+              price: amountTransform(skuData.price, '/'),
+              profit: amountTransform(skuData.profit, '/'),
+              totalPrice: (skuData.price > 0 && item.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(item.minNum) : 0
+            }
+            onSelect(data)
+            return data
+          }
+          return item
+        })
+        setDataSource(arr)
+      })
+
+
+    };
+
+    return debounce(loadData, 500);
+  }, [dataSource]);
   return (
     <EditableProTable
       postData={postData}
@@ -250,6 +307,7 @@ export default function EditTable({ onSelect }) {
         hasStock: 1,
         isGetWholesale: 1,
       }}
+      controlled
       request={productList}
       search={{
         defaultCollapsed: false,
@@ -258,21 +316,10 @@ export default function EditTable({ onSelect }) {
         ],
       }}
       editable={{
-        form,
+        // form,
         editableKeys,
         onValuesChange: (record, recordList) => {
-          const arr = recordList.map(item => {
-            if (item.id === record.id) {
-              const data = {
-                ...item,
-                totalPrice: (item.price > 0 && item.maxNum > 0) ? +new Big(item.price).times(item.minNum) : 0
-              }
-              onSelect(data)
-              return data
-            }
-            return item
-          })
-          setDataSource(arr)
+          debounceFetcher({ record, recordList })
         }
       }}
       pagination={{

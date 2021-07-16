@@ -286,6 +286,8 @@ export default (props) => {
             ...item[1],
             code: item[0],
             retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
+            wholesaleSupplyPrice: amountTransform(item[1].wholesaleSupplyPrice, '/'),
+            wholesaleMinNum: item[1].wholesaleMinNum,
             // suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
             // wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
             salePrice: amountTransform((settleType === 1 || settleType === 0) ? item[1].retailSupplyPrice : item[1].salePrice, '/'),
@@ -304,6 +306,8 @@ export default (props) => {
           // suggestedRetailPrice: amountTransform(goods.suggestedRetailPrice, '/'),
           salePrice: amountTransform((settleType === 1 || settleType === 0) ? goods.retailSupplyPrice : goods.salePrice, '/'),
           marketPrice: amountTransform(goods.marketPrice || goods.retailSupplyPrice, '/'),
+          wholesaleSupplyPrice: amountTransform(goods.wholesaleSupplyPrice, '/'),
+          wholesaleMinNum: goods.wholesaleMinNum,
         })
       }
     }
@@ -460,10 +464,10 @@ export default (props) => {
         label="结算模式"
         rules={[{ required: true }]}
         options={[
-          {
-            label: '佣金模式',
-            value: 1,
-          },
+          // {
+          //   label: '佣金模式',
+          //   value: 1,
+          // },
           {
             label: '底价模式',
             value: 2,
@@ -580,9 +584,23 @@ export default (props) => {
               />
               <ProFormText
                 name="retailSupplyPrice"
-                label="供货价"
-                placeholder="请输入供货价"
-                rules={[{ required: true, message: '请输入供货价' }]}
+                label="零售供货价(元)"
+                placeholder="请输入零售供货价"
+                rules={[{ required: true, message: '请输入零售供货价' }]}
+                disabled
+              />
+              <ProFormText
+                name="wholesaleSupplyPrice"
+                label="批发供货价(元)"
+                placeholder="请输入批发供货价"
+                rules={[{ required: true, message: '请输入批发供货价' }]}
+                disabled
+              />
+              <ProFormText
+                name="wholesaleMinNum"
+                label="最低批发量"
+                placeholder="请输入最低批发量"
+                rules={[{ required: true, message: '请输入最低批发量' }]}
                 disabled
               />
               {/* <ProFormText
@@ -685,14 +703,14 @@ export default (props) => {
             label: '包邮',
             value: 1,
           },
-          {
-            label: '不包邮',
-            value: 0,
-          },
+          // {
+          //   label: '不包邮',
+          //   value: 0,
+          // },
         ]}
         disabled
       />
-      <ProFormDependency name={['freightTemplateId']}>
+      {/* <ProFormDependency name={['freightTemplateId']}>
         {({ freightTemplateId }) => (
           !!freightTemplateId &&
           <Form.Item
@@ -702,7 +720,7 @@ export default (props) => {
             <Select labelInValue allowClear disabled />
           </Form.Item>
         )}
-      </ProFormDependency>
+      </ProFormDependency> */}
       <ProFormRadio.Group
         name="supportNoReasonReturn"
         label="七天无理由退货"

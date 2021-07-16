@@ -27,15 +27,28 @@ export default function EditTable(props) {
       {
         title: '规格图片',
         dataIndex: 'imageUrl',
-        width: 50,
+        width: 80,
         editable: false,
         render: (_) => _ ? <img src={_} width="50" height="50" /> : '',
 
       },
       ...arr,
       {
-        title: '供货价',
+        title: '零售供货价(元)',
         dataIndex: 'retailSupplyPrice',
+        width: 130,
+        editable: false,
+      },
+      {
+        title: '批发供货价(元)',
+        dataIndex: 'wholesaleSupplyPrice',
+        width: 130,
+        editable: false,
+      },
+      {
+        title: '最低批发量',
+        dataIndex: 'wholesaleMinNum',
+        width: 130,
         editable: false,
       },
       {
@@ -66,13 +79,13 @@ export default function EditTable(props) {
       {
         title: '库存预警值',
         dataIndex: 'stockAlarmNum',
-        width: 150,
+        width: 90,
         editable: false,
       },
       {
         title: '可用库存',
         dataIndex: 'stockNum',
-        width: 150,
+        width: 90,
         editable: false,
         formItemProps: {
           rules: [{

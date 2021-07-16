@@ -64,11 +64,13 @@ export default props => {
               label="内容"
             >
               {detailData.content}
-              {
-                detailData.images?.map(ele=>(
-                  <img style={{display:"block"}} width={100} height={100} src={ele} alt="" />
-                ))
-              }
+              <div style={{display:'flex',width:'300px',flexWrap:'wrap'}}>
+                  {
+                    detailData.images?.map(ele=>(
+                      <img style={{margin:'10px'}} width={100} height={100} src={ele} alt="" />
+                    ))
+                  }
+              </div>
             </Form.Item>
 
           {
