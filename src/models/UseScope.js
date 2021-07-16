@@ -74,6 +74,7 @@ const UseScopeModel = {
     },
     onSpuIds(state = { UseScopeObje:{}},{ payload }){
         state.UseScopeObje.spuIds=payload.spuIds
+        console.log('spuIds',payload.spuIds)
       return { ...state };
     },
     onSpuIdsArr(state = { UseScopeObje:{}},{ payload }){
@@ -94,6 +95,7 @@ const UseScopeModel = {
     return { ...state };
     },
     onCrowdIds(state = { UseScopeObje:{}},{ payload }){
+      console.log('CrowdIds',payload.CrowdIds)
       state.UseScopeObje.CrowdIds=payload.CrowdIds
       return { ...state };
     },

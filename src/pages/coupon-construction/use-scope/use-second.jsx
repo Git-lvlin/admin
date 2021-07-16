@@ -155,26 +155,25 @@ const useSecond=(props)=>{
     
     // 删除商品
     const  delGoods=val=>{
-        const arr =  UseScopeList.UseScopeObje.spuIds.split(',')
+        console.log('val',val)
+        console.log('spuIdsArr',UseScopeList.UseScopeObje.spuIdsArr)
+        const arr = UseScopeList.UseScopeObje.spuIds.split(',')
         dispatch({
             type:'UseScopeList/fetchLookSpuIds',
             payload:{
                 spuIds:arr.filter(ele=>(
-                            ele!=val
-                        )).toString()
+                    ele!=val
+                )).toString()
             }
         })
         dispatch({
             type:'UseScopeList/fetchLookSpuIdsArr',
             payload:{
                 spuIdsArr:UseScopeList.UseScopeObje.spuIdsArr.filter(ele=>(
-                            ele.id!=val
+                            ele.spuId!=val
                 ))
             }
         })
-        if(UseScopeList.UseScopeObje.spuIdsArr.length==1){
-            setLoading(true)
-        }
        
     }
     const actionRef = useRef();
@@ -190,6 +189,27 @@ const useSecond=(props)=>{
         setIsModalVisible(true);
         setLoading(true)
     };
+    useEffect(()=>{
+        setTimeout(()=>{
+            console.log('DetailList.data&&DetailList.data?.spuInfo',DetailList.data&&DetailList.data?.spuInfo)
+            if(id){
+                dispatch({
+                    type:'UseScopeList/fetchLookSpuIds',
+                    payload:{
+                        spuIds:DetailList.data&&DetailList.data?.spuIds
+                    }
+                })
+                dispatch({
+                    type:'UseScopeList/fetchLookSpuIdsArr',
+                    payload:{
+                        spuIdsArr:DetailList.data&&DetailList.data?.spuInfo
+                    }
+                })
+            }
+            console.log('UseScopeList.UseScopeObje.spuIdsArr',UseScopeList.UseScopeObje.spuIdsArr)
+
+        },1000) 
+    },[])
     const handleOk = () => {
         setIsModalVisible(false);
         setLoading(false)
@@ -211,14 +231,8 @@ const useSecond=(props)=>{
         setIsModalVisible(false);
     };
 
-    // 拼接spuIds
     const onIpute=(res)=>{
-        let spuIds=''
-        res.selectedRows.map(ele=>{
-            spuIds+=`${ele.spuId},`
-        })
-        spuIds=spuIds.substring(0,spuIds.length-1)
-       setSpuIds(spuIds)
+       setSpuIds(res.selectedRowKeys.toString())
        setSpuIdsArr(res.selectedRows)
     }
     const onCate=()=>{
@@ -237,7 +251,7 @@ const useSecond=(props)=>{
             <ProFormRadio.Group
                 name="goodsType"
                 label={<FormattedMessage id="formandbasic-form.commodity"/>}
-                rules={[{ required: true, message: '请选择商品范围' }]}
+                // rules={[{ required: true, message: '请选择商品范围' }]}
                 fieldProps={{
                 value: (parseInt(id)==id )&&DetailList.data?.goodsType||position,
                 onChange: (e) => setPosition(e.target.value),
@@ -260,17 +274,6 @@ const useSecond=(props)=>{
             {
                 position==2||(parseInt(id)==id )&&DetailList.data?.goodsType==2?
                     <>
-                    {
-                        (parseInt(id)==id)?
-                        <ProTable
-                            toolBarRender={false}
-                            search={false}
-                            rowKey="spuId"
-                            columns={columns}
-                            dataSource={DetailList.data?.spuInfo}
-                        />
-                        :
-                        <>
                         <Button type="primary" className={styles.popupBtn} onClick={showModal}>
                             选择商品
                         </Button>
@@ -303,10 +306,8 @@ const useSecond=(props)=>{
                             rowKey="spuId"
                             columns={columns3}
                             dataSource={UseScopeList.UseScopeObje.spuIdsArr}
-                            style={{display:loading?'none':'block'}}
+                            style={{display:isModalVisible?'none':'block'}}
                         />
-                        </>
-                    }
                     </>
                 :null
             }
@@ -352,7 +353,6 @@ const useSecond=(props)=>{
                                 ])
                                 console.log('cates',cates)
                             setFlag(false)
-                            message.success('提交成功');
                             return true;
                             }}
                         >
@@ -375,22 +375,6 @@ const useSecond=(props)=>{
                     </>
                 :null
             }
-
-        {/* <ProFormRadio.Group
-            name="memberType"
-            label="可用人群"
-            rules={[{ required: true, message: '请选择可用人群' }]}
-            options={[
-                {
-                label: '全部会员',
-                value: 1,
-                },
-                {
-                label: '新会员',
-                value: 2,
-                }
-            ]}
-            /> */}
         </Form.Item>
     )
 }
