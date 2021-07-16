@@ -26,7 +26,6 @@ export default props => {
   return (
     <ProForm
         onFinish={async (values) => {
-          console.log(values);
           releaseDynamic(values).then(res=>{
             if(res.code==0){
               message.success('发布成功');

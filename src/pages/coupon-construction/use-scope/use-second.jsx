@@ -84,7 +84,7 @@ const useSecond=(props)=>{
         title: '操作',
         valueType: 'text',
         render:(text, record, _, action)=>[
-            <a onClick={()=>delType(record.key)}>删除</a>
+            <a onClick={()=>delType(record.id)}>删除</a>
         ]
      }
     ]
