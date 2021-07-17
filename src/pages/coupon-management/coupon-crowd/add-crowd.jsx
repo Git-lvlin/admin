@@ -12,31 +12,37 @@ import { history} from 'umi';
 import CrowdModel from './crowd-model'
 
 
-const waitTime = (time) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, time);
-    });
-  };
+
 
 export default (props) =>{
   const id = props.location.query.id
   const [editableKeys, setEditableRowKeys] = useState([]);
   const [dataSource, setDataSource] = useState([]);
-  const [falg,setFalg]=useState(false)
+  const [falg,setFalg]=useState(true)
+  const [block,setBlock]=useState(true)
   const [falg1,setFalg1]=useState(false)
   const [falg2,setFalg2]=useState(false)
   const [falg3,setFalg3]=useState(false)
   const [levelId,setLevelId]=useState()
-  const [detailData,setDetailData]=useState()
   const [form] = Form.useForm();
   const ref=useRef()
   const Callback=val=>{
+    console.log('val',val)
     setLevelId(val)
   }
+  const waitTime = (time) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        setBlock(false)
+        setFalg(false)
+        resolve(true);
+      }, time);
+    });
+  };
   useEffect(()=>{
     if(id){
+      setBlock(false)
+      setFalg(false)
       couponCrowdDetail({id:id}).then(res=>{
         form.setFieldsValue({name:res.data.name})
         console.log('res.data.crowdInfo',res.data.crowdInfo)
@@ -109,27 +115,9 @@ export default (props) =>{
       title: '范围',
       key: 'state',
       dataIndex: 'state',
-      renderFormItem: () => 
-        <ProFormRadio.Group
-          name="limitType"
-          options={[
-            { 
-              label: '包含', value: 1, 
-            }
-            // { 
-            //   label: '不包含', value: 2 
-            // }
-          ]}
-        />,
-        hideInTable:falg?false:true
-    },
-    {
-      title: '范围',
-      dataIndex: 'state',
       valueEnum: {
         1: '包含',
-      },
-      hideInTable:falg?true:false
+      }
     },
     {
       title: '条件',
@@ -157,15 +145,16 @@ export default (props) =>{
       title: '条件',
       dataIndex: 'labels',
       render:(_, data)=>{
-        console.log('data',data)
         if(data.title=='会员等级'){
-          return <p>{data.userLevelDisplay}</p>;
+          return <p>{levelId?.userLevel.map(ele=>{
+            return <span>V{ele}等级、</span>
+          })||data.userLevelDisplay}</p>;
           }else if(data.title=='消费次数'){
           return <p>{data.labels[0]}次 至 {data.labels[1]}次</p>
           }
           return <p>{data.labels[0]}元 至 {data.labels[1]}元</p>
       },
-      hideInTable:falg?true:false
+      hideInTable:block?true:false
     },
     {
       title: '操作',
@@ -202,6 +191,7 @@ export default (props) =>{
               <Button type="default"  key="rest" onClick={() => props.form?.resetFields()}>
                 取消
               </Button>
+              
             ];
           }
         }}
@@ -249,18 +239,25 @@ export default (props) =>{
             <Button 
                 type={falg1?"primary":"default"}  
                 onClick={() => {
+                  setBlock(true)
                   setFalg(true)
                   if(!falg1){
                     setFalg1(true)
                   }else{
                     setFalg1(false)
                   }
-                  
-                  ref.current?.addEditRecord?.({
-                  id: '1',
-                  title: '会员等级',
-                  });
-                  }} 
+                  if(dataSource.length<3){
+                    ref.current?.addEditRecord?.({
+                    id: '1',
+                    title: '会员等级',
+                    });
+                  }else{
+                    message.error('已有该选项')
+                    setFalg1(false)
+                  }
+                } 
+                    
+                }
                 style={{margin:"20px 0 20px 0"}}
                 >
                   会员等级
@@ -269,16 +266,18 @@ export default (props) =>{
             <Button
               type={falg2?"primary":"default"}  
               onClick={() => {
+                  setBlock(true)
                   setFalg(true)
-                  if(!falg2){
-                    setFalg2(true)
+                  setFalg2(true)
+                  if(dataSource.length<3&&!falg2){
+                    ref.current?.addEditRecord?.({
+                    id: '2',
+                    title: '消费次数',
+                    });
                   }else{
+                    message.error('已有该选项')
                     setFalg2(false)
                   }
-                  ref.current?.addEditRecord?.({
-                  id: '2',
-                  title: '消费次数',
-                  });
               }}
               >
                 消费次数
@@ -287,16 +286,22 @@ export default (props) =>{
               type={falg3?"primary":"default"}  
               style={{margin:"20px"}}
               onClick={() => {
+                  setBlock(true)
                   setFalg(true)
                   if(!falg3){
                     setFalg3(true)
                   }else{
                     setFalg3(false)
                   }
-                  ref.current?.addEditRecord?.({
-                  id: '3',
-                  title: '累计消费',
-                  });
+                  if(dataSource.length<3){
+                    ref.current?.addEditRecord?.({
+                    id: '3',
+                    title: '累计消费',
+                    });
+                  }else{
+                    message.error('已有该选项')
+                    setFalg3(false)
+                  }
               }}>
                 累计消费
             </Button>
@@ -321,11 +326,12 @@ export default (props) =>{
                 onChange={setDataSource}
                 editable={{
                   editableKeys,
-                  onSave: async () => {
+                  onSave: async (rowKey, data, row) => {
+                    console.log(rowKey, data, row);
                     await waitTime(500);
                   },
                   onChange: setEditableRowKeys,
-                  actionRender: (row, config, dom) => [dom.save, dom.cancel],
+                  // actionRender: (row, config, dom) => [dom.save, dom.cancel],
                 }}
                 search={false}
                 columns={columns}

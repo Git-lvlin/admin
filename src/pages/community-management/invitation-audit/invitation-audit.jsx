@@ -31,6 +31,25 @@ const message = (type, module,dispatch) => {
     ],
     },
     {
+      title: '用户',
+      dataIndex: 'userName',
+      valueType: 'text',
+      hideInSearch:true,
+    },
+    {
+      title: '内容',
+      dataIndex: 'content',
+      valueType: 'text',
+      hideInSearch:true,
+      ellipsis:true
+    },
+    {
+      title: '图片',
+      dataIndex: 'images',
+      valueType: 'image',
+      hideInSearch:true,
+    },
+    {
       title: '发布时间',
       key: 'dateRange',
       dataIndex: 'createTime',
