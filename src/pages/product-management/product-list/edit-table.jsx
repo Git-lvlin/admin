@@ -69,6 +69,7 @@ export default function EditTable(props) {
         dataIndex: 'salePrice',
         editable: settleType === 2,
         width: 130,
+        hideInTable: goodsSaleType !== 0,
       },
       {
         title: '秒约价上浮比例',

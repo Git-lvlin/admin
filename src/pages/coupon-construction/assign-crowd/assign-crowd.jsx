@@ -179,7 +179,7 @@ const validity=(props)=>{
                     rowKey="spuId"
                     expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
                     columns={columns2}
-                    dataSource={DetailList.data?.crowdList&&[DetailList.data?.crowdList]||UseScopeList.UseScopeObje.CrowdIdsArr}
+                    dataSource={parseInt(id)==id&&[DetailList.data?.crowdList]||UseScopeList.UseScopeObje.CrowdIdsArr}
                     style={{display:isModalVisible?'none':'block'}}
                 />
             </>

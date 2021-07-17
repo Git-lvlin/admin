@@ -213,7 +213,7 @@ const StoreList = () => {
     {
       title: '操作',
       dataIndex: '',
-      valueType: 'options',
+      valueType: 'option',
       render: (_, data) => (
         <Space>
           <a onClick={() => { history.push(`/intensive-store-management/store-detail/${data.storeNo}`) }}>详情</a>

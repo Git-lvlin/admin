@@ -98,8 +98,6 @@ const  useCollect=(props)=>{
     };
     // 删除集约
     const  delWholesale=val=>{
-        console.log('val',val)
-        console.log('wholesaleArr',UseScopeList.UseScopeObje.wholesaleArr)
         const arr = UseScopeList.UseScopeObje.wholesaleIds.split(',')
         dispatch({
             type:'UseScopeList/fetchWholesaleIds',
@@ -120,8 +118,9 @@ const  useCollect=(props)=>{
        
     }
     useEffect(()=>{
+        console.log('UseScopeList.UseScopeObje.wholesaleArr',UseScopeList.UseScopeObje.wholesaleArr)
         setTimeout(()=>{
-            if(id){
+            if(parseInt(id)==id){
                 dispatch({
                     type:'UseScopeList/fetchWholesaleIds',
                     payload:{

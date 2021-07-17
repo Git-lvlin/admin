@@ -6,8 +6,7 @@ import UseSecond from './use-second'
 const { TabPane } = Tabs;
 
 const useScope=props => {
-    const {dispatch,DetailList}=props
-    const id=props.id
+    const {dispatch,DetailList,id,type}=props
     const onTabs=(val)=>{
         dispatch({
             type:'UseScopeList/fetchUseType',
@@ -16,12 +15,9 @@ const useScope=props => {
             }
         })
     }
-    useEffect(()=>{
-        console.log('DetailList.data?.useType',DetailList.data?.useType.toString())
-    },[])
     return (
         <>
-            <Tabs defaultActiveKey={DetailList.data?.useType.toString()} onChange={onTabs}>
+            <Tabs defaultActiveKey={parseInt(id)==id&&`${DetailList.data?.couponType}`} onChange={onTabs}>
                 <TabPane key='1' tab={<FormattedMessage id="formandbasic-form.Secret.Garden" /> } key="1">
                     <UseSecond id={id}/>
                 </TabPane>

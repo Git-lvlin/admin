@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Form, Spin, Space, Image } from 'antd';
 import { storeDetail } from '@/services/intensive-store-management/store-review';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useParams } from 'umi';
+import ProForm, { ProFormText } from '@ant-design/pro-form';
+import AddressCascader from '@/components/address-cascader'
+import Upload from '@/components/upload';
+
 
 const formItemLayout = {
   labelCol: { span: 10 },
@@ -17,10 +21,68 @@ const formItemLayout = {
   }
 };
 
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right}</div>
+  </div>
+)
+
+const ImageInfo = ({ value, onChange }) => {
+  const [idHandheld, setIdHandheld] = useState(value?.idHandheld);
+  const [idCardFrontImg, setIdCardFrontImg] = useState(value?.idCardFrontImg);
+  const [idCardBackImg, setIdCardBackImg] = useState(value?.idCardBackImg);
+  const update = (obj) => {
+    onChange({
+      idCardFrontImg,
+      idCardBackImg,
+      idHandheld,
+      ...obj,
+    })
+  }
+  const idHandheldChange = (e) => {
+    setIdHandheld(e)
+    update({
+      idHandheld: e,
+    })
+  }
+  const idCardFrontImgChange = (e) => {
+    setIdCardFrontImg(e)
+    update({
+      idCardFrontImg: e,
+    })
+  }
+  const idCardBackImgChange = (e) => {
+    setIdCardBackImg(e)
+    update({
+      idCardBackImg: e,
+    })
+  }
+  useEffect(() => {
+    setIdHandheld(value?.idHandheld)
+    setIdCardFrontImg(value?.idCardFrontImg)
+    setIdCardBackImg(value?.idCardBackImg)
+  }, [value])
+  return (
+    <div>
+      <Space>
+        <Upload code={305} value={idCardFrontImg} text="上传身份证姓名面照片" maxCount={1} accept="image/*" size={1024 * 1} onChange={idCardFrontImgChange} />
+        <Upload code={305} value={idCardBackImg} text="上传身份证国徽面照片" maxCount={1} accept="image/*" size={1024 * 1} onChange={idCardBackImgChange} />
+        <Upload code={305} value={idHandheld} text="上传手持身份证照片" maxCount={1} accept="image/*" size={1024 * 1} onChange={idHandheldChange} />
+      </Space>
+    </div>
+
+  )
+}
+
 const Detail = () => {
   const params = useParams();
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm()
+  const [addressText, setAddressText] = useState('');
+  const [location, setLocation] = useState([]);
+  const map = useRef();
 
 
   useEffect(() => {
@@ -31,29 +93,77 @@ const Detail = () => {
       if (res.code === 0) {
         setDetailData(res.data)
 
-        var marker = new AMap.Marker({
-          position: new AMap.LngLat(res.data.details.longitude, res.data.details.latitude),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        const { details } = res.data;
+        setLocation([details.longitude, details.latitude]);
+        map.current = new AMap.Map('container', {
+          zoom: 20,
+          center: [details.longitude, details.latitude],
+        });
+        map.current.add(new AMap.Marker({
+          position: new AMap.LngLat(details.longitude, details.latitude),
+        }))
+        map.current.on('click', function (ev) {
+          map.current.clearMap()
+          const marker = new AMap.Marker({
+            position: new AMap.LngLat(ev.lnglat.lng, ev.lnglat.lat),
+          });
+          map.current.add(marker)
+          setLocation([ev.lnglat.lng, ev.lnglat.lat]);
         });
 
-        const map = new AMap.Map('container', {
-          zoom: 20,//级别
-          center: [res.data.details.longitude, res.data.details.latitude],//中心点坐标
-        });
-        map.add(marker)
+        form.setFieldsValue({
+          area: [
+            { label: details.provinceName, value: details.provinceId },
+            { label: details.cityName, value: details.cityId },
+            { label: details.regionName, value: details.regionId },
+          ],
+          address: details.address,
+          houseNumber: details.houseNumber,
+          communityName: details.communityName,
+          imageInfo: {
+            idCardFrontImg: details.idFront,
+            idCardBackImg: details.idBack,
+            idHandheld: details.idHandheld,
+          }
+        })
       }
     }).finally(() => {
       setLoading(false);
     })
 
   }, [])
+
+  useEffect(() => {
+    if (addressText) {
+      AMap.plugin('AMap.Autocomplete', function () {
+        const autoOptions = {
+          city: '全国'
+        }
+        const autoComplete = new AMap.Autocomplete(autoOptions);
+        autoComplete.search(addressText, function (status, result) {
+          if (result.info === 'OK') {
+            map.current.clearMap()
+            map.current.setZoomAndCenter(20, [result.tips[0].location.lng, result.tips[0].location.lat])
+            const marker = new AMap.Marker({
+              position: new AMap.LngLat(result.tips[0].location.lng, result.tips[0].location.lat),
+            });
+            map.current.add(marker)
+            setLocation([result.tips[0].location.lng, result.tips[0].location.lat])
+          }
+        })
+      })
+    }
+  }, [addressText])
+
   return (
     <PageContainer>
       <Spin
         spinning={loading}
       >
-        <Form
+        <ProForm
           {...formItemLayout}
           style={{ backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
+          form={form}
         >
           <Form.Item
             label="手机号"
@@ -67,29 +177,40 @@ const Detail = () => {
           </Form.Item>
           <Form.Item
             label="所在地区"
+            rules={[{ required: true, message: '请选择所在地区' }]}
+            name="area"
           >
-            {detailData?.details?.provinceName}
-            {detailData?.details?.cityName}
-            {detailData?.details?.regionName}
+            <AddressCascader style={{ width: 328 }} />
           </Form.Item>
-          <Form.Item
+          <ProFormText
+            name="address"
             label="详细地址"
-          >
-            {detailData?.details?.address}
-          </Form.Item>
-          <Form.Item
+            placeholder="请输入详细地址"
+            rules={[{ required: true, message: '请输入详细地址' }]}
+            width="md"
+          />
+          <ProFormText
+            name="houseNumber"
             label="门牌号"
-          >
-            {detailData?.details?.houseNumber}
-          </Form.Item>
-          <Form.Item
+            placeholder="请输入门牌号"
+            rules={[{ required: true, message: '请输入门牌号' }]}
+            width="md"
+          />
+          <ProFormText
+            name="communityName"
             label="小区名称"
-          >
-            <div style={{ paddingTop: 5 }}>
-              {detailData?.details?.communityName}
-              <div id="container" style={{ width: 600, height: 300 }}></div>
-            </div>
-          </Form.Item>
+            placeholder="请输入小区名称"
+            validateFirst
+            rules={[
+              { required: true, message: '请输入小区名称' },
+              { required: true, message: '小区名称2-60个字符', min: 2, max: 60 },
+            ]}
+            fieldProps={{
+              maxLength: 60,
+            }}
+            width="md"
+          />
+          <div id="container" style={{ width: 600, height: 300, marginBottom: 10, marginLeft: 600 }}></div>
           <Form.Item
             label="姓名"
           >
@@ -101,24 +222,41 @@ const Detail = () => {
             {detailData?.details?.idNumber}
           </Form.Item>
           <Form.Item
-            label="身份证照片"
+            label="审核资料文件"
+            name="imageInfo"
+            validateFirst
+            rules={[
+              () => ({
+                required: true,
+                validator(_, value = {}) {
+                  const { idCardFrontImg, idCardBackImg, idHandheld } = value;
+                  if (!idCardFrontImg) {
+                    return Promise.reject(new Error('请上身份证正面照片'));
+                  }
+                  if (!idCardBackImg) {
+                    return Promise.reject(new Error('请上传身份证背面照片'));
+                  }
+                  if (!idHandheld) {
+                    return Promise.reject(new Error('请上传手持身份证照片'));
+                  }
+                  return Promise.resolve();
+                },
+              })
+            ]}
           >
-            <Space>
-              <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-                <Image width={100} height={100} src={detailData?.details?.idFront} />
-                身份照正面照
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-                <Image width={100} height={100} src={detailData?.details?.idBack} />
-                身份照背面照
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-                <Image width={100} height={100} src={detailData?.details?.idHandheld} />
-                手持身份照
-              </div>
-            </Space>
+            <FromWrap
+              content={(value, onChange) => (<ImageInfo value={value} onChange={onChange} />)}
+              right={
+                <dl>
+                  <dt>图片要求</dt>
+                  <dd>1.图片大小1MB以内</dd>
+                  <dd>2.图片格式为：jpg/png/gif</dd>
+                </dl>
+              }
+            />
+
           </Form.Item>
-        </Form>
+        </ProForm>
       </Spin>
     </PageContainer>
   )

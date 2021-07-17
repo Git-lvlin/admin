@@ -25,10 +25,22 @@ const couponConstruction=(props) => {
   const [form] = Form.useForm()
   useEffect(() => {
     if(id){
-      form.setFieldsValue(DetailList.data)
+      setTimeout(()=>{
+        form.setFieldsValue({
+          dateRange:[moment(DetailList.data?.limitStartTime).valueOf(),moment(DetailList.data?.limitEndTime).valueOf()],
+          dateTimeRange:[moment(DetailList.data?.activityStartTime).valueOf(),moment(DetailList.data?.activityEndTime).valueOf()],
+          ...DetailList.data
+        })
+      },500)
+    }else{
+      dispatch({
+        type:'UseScopeList/fetchUseScopeList',
+        payload:{
+          UseScopeObje:{}
+        }
+      })
     }
-    return undefined
-  })
+  },[])
   //优惠劵名称验证规则
   const checkConfirm=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
@@ -44,7 +56,7 @@ const couponConstruction=(props) => {
   const onsubmit=(values)=>{
     //发放类型
     values.issueType=type
-    values.couponType = parseInt(UseScopeList.UseScopeObje.couponType) || 1,//优惠券类型
+    values.couponType = parseInt(UseScopeList.UseScopeObje.couponType) || id&&DetailList.data?.couponType || 1,//优惠券类型
     values.couponTypeInfo = {
       usefulAmount: parseInt(values.usefulAmount),//用价格门槛(单位分)
       freeAmount: parseInt(values.freeAmount),//优惠金额(单位分)
@@ -53,7 +65,7 @@ const couponConstruction=(props) => {
       freeDiscount: parseInt(values.freeDiscount),//折扣
       maxFreeAmount: parseInt(values.maxFreeAmount)//最多优惠（单位分）
     }
-    values.useType = parseInt(UseScopeList.UseScopeObje.useType)||1//使用范围
+    values.useType = parseInt(UseScopeList.UseScopeObje.useType)||id&&DetailList.data?.useType||1//使用范围
     values.issueQuantity = parseInt(values.issueQuantity)//发行量
     values.limitStartTime = values.dateRange?values.dateRange[0]:null,//可领取开始时间
     values.limitEndTime = values.dateRange?values.dateRange[1]:null,//可领取结束时间
@@ -117,17 +129,6 @@ const couponConstruction=(props) => {
   return (
     <>
       <ProForm
-          initialValues={id?{
-            dateRange: [
-              moment(DetailList.data?.limitStartTime).valueOf(),
-              moment(DetailList.data?.limitEndTime).valueOf()
-              ],
-            dateTimeRange:[
-              moment(DetailList.data?.activityStartTime).valueOf(),
-              moment(DetailList.data?.activityEndTime).valueOf()
-            ],
-            memberType:DetailList.data?.memberType
-          }:false}
           form={form}
           submitter={
             {
