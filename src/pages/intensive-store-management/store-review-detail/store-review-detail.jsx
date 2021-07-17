@@ -58,7 +58,11 @@ const ImageInfo = ({ value, onChange }) => {
       idCardBackImg: e,
     })
   }
-  console.log('value', idCardFrontImg);
+  useEffect(() => {
+    setIdHandheld(value?.idHandheld)
+    setIdCardFrontImg(value?.idCardFrontImg)
+    setIdCardBackImg(value?.idCardBackImg)
+  }, [value])
   return (
     <div>
       <Space>
@@ -118,6 +122,8 @@ const Detail = () => {
           communityName: details.communityName,
           imageInfo: {
             idCardFrontImg: details.idFront,
+            idCardBackImg: details.idBack,
+            idHandheld: details.idHandheld,
           }
         })
       }
