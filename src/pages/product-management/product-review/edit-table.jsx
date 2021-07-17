@@ -22,6 +22,7 @@ export default function EditTable(props) {
           title: item,
           dataIndex: `spec${index + 1}`,
           editable: false,
+          width: 130,
         })
       }
     });
