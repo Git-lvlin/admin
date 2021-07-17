@@ -89,7 +89,7 @@ const PriceManagement = () => {
       }
       ref.current = setTimeout(()=>{
         timeoutfn(data,type,id)
-      }, 50000)
+      }, 5000)
     })
   }
 
