@@ -65,6 +65,7 @@ export default (props) => {
       wholesaleTaxRate,
       wholesaleSupplyPrice,
       salePriceFloat,
+      goodsSaleType,
       ...rest } = values;
     const { specValues1, specValues2 } = form.getFieldsValue(['specValues1', 'specValues2']);
     const specName = {};
@@ -82,33 +83,46 @@ export default (props) => {
       }
     })
 
-    let errorMsg = '';
+    // let errorMsg = '';
 
     tableData.forEach(item => {
-      const { code, key, spec1, spec2, specValue, ...rest } = item;
+      const {
+        code,
+        key,
+        spec1,
+        spec2,
+        specValue,
+        retailSupplyPrice: retailSupplyPrices,
+        salePriceProfitLoss: salePriceProfitLosss,
+        salePriceFloat: salePriceFloats,
+        salePrice: salePrices,
+        ...rests
+      } = item;
+      const obj = {};
+
+      if (goodsSaleType === 0) {
+        obj.retailSupplyPrice = amountTransform(retailSupplyPrices)
+        obj.salePriceProfitLoss = amountTransform(salePriceProfitLosss)
+        obj.salePrice = amountTransform(salePrices)
+        obj.salePriceFloat = amountTransform(salePriceFloats, '/')
+      }
       specData[code] = {
-        ...rest,
+        ...rests,
         specValue,
         imageUrl: item?.imageUrl,
-        // wholesalePrice: amountTransform(item.wholesalePrice),
-        retailSupplyPrice: amountTransform(item.retailSupplyPrice),
         wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice),
-        salePriceProfitLoss: amountTransform(item.salePriceProfitLoss),
-        salePriceFloat: amountTransform(item.salePriceFloat, '/'),
-        // suggestedRetailPrice: amountTransform(item.suggestedRetailPrice),
-        salePrice: amountTransform(item.salePrice),
         marketPrice: amountTransform(item.marketPrice),
       }
 
-      if (item.retailSupplyPrice > item.salePrice || item.retailSupplyPrice > item.marketPrice) {
-        errorMsg = '供货价不能大于秒约价和市场价';
-      }
+      // if (item.retailSupplyPrice > item.salePrice || item.retailSupplyPrice > item.marketPrice) {
+      //   errorMsg = '秒约价和市场价不能小于供货价';
+      // }
     })
 
-    if (errorMsg) {
-      message.error(errorMsg);
-      reject();
-    }
+    // if (errorMsg) {
+    //   message.error(errorMsg);
+    //   reject();
+    // }
 
     const obj = {
       isMultiSpec,
@@ -118,6 +132,7 @@ export default (props) => {
         gcId2: gcId[1],
         wholesaleFreight: amountTransform(wholesaleFreight),
         wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
+        goodsSaleType,
       },
       primaryImages: urlsTransform(primaryImages),
       detailImages: urlsTransform(detailImages),
@@ -135,19 +150,20 @@ export default (props) => {
       obj.specValues = specValues;
       obj.specData = specData;
     } else {
-      // obj.goods.wholesalePrice = amountTransform(wholesalePrice);
-      obj.goods.retailSupplyPrice = amountTransform(retailSupplyPrice);
-      obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
-      obj.goods.salePriceProfitLoss = amountTransform(salePriceProfitLoss);
-      // obj.goods.suggestedRetailPrice = amountTransform(suggestedRetailPrice);
-      obj.goods.salePrice = amountTransform(salePrice);
-      obj.goods.marketPrice = amountTransform(marketPrice);
-      obj.goods.salePriceFloat = amountTransform(salePriceFloat, '/');
-
-      if (retailSupplyPrice > salePrice || retailSupplyPrice > marketPrice) {
-        message.error('供货价不能大于秒约价和市场价');
-        reject();
+      if (goodsSaleType === 0) {
+        obj.goods.retailSupplyPrice = amountTransform(retailSupplyPrice);
+        obj.goods.salePriceProfitLoss = amountTransform(salePriceProfitLoss);
+        obj.goods.salePrice = amountTransform(salePrice);
+        obj.goods.salePriceFloat = amountTransform(salePriceFloat, '/');
       }
+      obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
+      
+      obj.goods.marketPrice = amountTransform(marketPrice);
+      
+      // if (retailSupplyPrice > salePrice || retailSupplyPrice > marketPrice) {
+      //   message.error('秒约价和市场价不能小于供货价');
+      //   reject();
+      // }
     }
 
     if (detailData) {
@@ -241,9 +257,6 @@ export default (props) => {
   }
 
   const salePriceChange = useMemo(() => {
-    if (detailData?.goods?.goodsSaleType !== 0) {
-      return;
-    }
     const loadData = (e) => {
       subAccountCheck({
         salePrice: amountTransform(e.target.value)
@@ -258,9 +271,6 @@ export default (props) => {
   }, [])
 
   const salePriceFloatChange = useMemo(() => {
-    if (detailData?.goods?.goodsSaleType !== 0 ) {
-      return;
-    }
     const loadData = (e) => {
       subAccountCheck({
         salePriceFloat: amountTransform(e.target.value, '/')
@@ -391,8 +401,12 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        await submit(values);
-        return true;
+        try {
+          await submit(values);
+          return true;
+        } catch (error) {
+          console.log('error', error);
+        }
       }}
       visible={visible}
       initialValues={{
@@ -676,17 +690,17 @@ export default (props) => {
                   disabled
                 />
               }
-              
+
               {/* <ProFormText
                 name="suggestedRetailPrice"
                 label="建议零售价"
                 placeholder="请输入建议零售价"
                 rules={[{ required: true, message: '请输入建议零售价' }]}
               /> */}
-              <ProFormDependency name={['settleType']}>
-                {({ settleType }) => (
+              <ProFormDependency name={['settleType', 'goodsSaleType']}>
+                {({ settleType, goodsSaleType }) => (
                   <>
-                    <ProFormText
+                    {goodsSaleType === 0 && <ProFormText
                       name="salePrice"
                       label="秒约价"
                       placeholder="请输入秒约价"
@@ -706,12 +720,12 @@ export default (props) => {
                       fieldProps={{
                         onChange: salePriceChange
                       }}
-                    />
+                    />}
 
                   </>
                 )}
               </ProFormDependency>
-              {detailData?.goods?.goodsSaleType === 0 &&<ProFormText
+              {detailData?.goods?.goodsSaleType === 0 && <ProFormText
                 name="salePriceFloat"
                 label="秒约价上浮比例"
                 placeholder="秒约价上浮比例"
@@ -731,7 +745,7 @@ export default (props) => {
                   onChange: salePriceFloatChange
                 }}
               />}
-              {detailData?.goods?.goodsSaleType === 0 &&<Form.Item
+              {detailData?.goods?.goodsSaleType === 0 && <Form.Item
                 label="秒约价实际盈亏"
               >
                 {salePriceProfitLoss || amountTransform(detailData?.goods?.salePriceProfitLoss, '/')}

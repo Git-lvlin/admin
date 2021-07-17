@@ -76,12 +76,12 @@ export default function EditTable({ onSelect }) {
     },
     {
       dataIndex: 'gcId',
-      renderFormItem: () => (<GcCascader />),
+      renderFormItem: () => (<GcCascader placeholder="请选择商品分类" />),
       hideInTable: true,
     },
     {
       dataIndex: 'brandId',
-      renderFormItem: () => (<BrandSelect />),
+      renderFormItem: () => (<BrandSelect placeholder="请选择商品品牌" />),
       hideInTable: true,
     },
     {
@@ -217,13 +217,13 @@ export default function EditTable({ onSelect }) {
       editable: false,
     },
     {
-      title: '单店起订量',
+      title: '单次起订量',
       dataIndex: 'minNum',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '单店限订量',
+      title: '单次限订量',
       dataIndex: 'maxNum',
       valueType: 'text',
       hideInSearch: true,
@@ -243,15 +243,15 @@ export default function EditTable({ onSelect }) {
     const arr = data.map(item => ({
       ...item,
       totalStockNum: parseInt(item.stockNum * 0.8, 10),
-      minNum: 1,
-      maxNum: 10,
+      minNum: 10,
+      maxNum: 100,
       price: amountTransform(item.price, '/'),
       fixedPrice: amountTransform(item.fixedPrice, '/'),
       settlePercent: amountTransform(item.settlePercent),
       wholesaleFreight: amountTransform(item.wholesaleFreight, '/'),
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
       profit: amountTransform(item.profit, '/'),
-      totalPrice: item.salePrice > 0 ? +new Big(item.price || item?.price).div(100).times(1) : 0,
+      totalPrice: item.salePrice > 0 ? +new Big(item.price || item?.price).div(100).times(10) : 0,
     }))
     setDataSource(arr)
     // return arr;

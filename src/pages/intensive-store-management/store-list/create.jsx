@@ -128,7 +128,7 @@ export default (props) => {
 
   useEffect(() => {
     map.current = new AMap.Map('container', {
-      zoom: 10,
+      zoom: 20,
       center: [116.40396, 39.915118],
     });
     map.current.on('click', function (ev) {
@@ -144,10 +144,10 @@ export default (props) => {
   useEffect(() => {
     if (addressText) {
       AMap.plugin('AMap.Autocomplete', function () {
-        var autoOptions = {
+        const autoOptions = {
           city: '全国'
         }
-        var autoComplete = new AMap.Autocomplete(autoOptions);
+        const autoComplete = new AMap.Autocomplete(autoOptions);
         autoComplete.search(addressText, function (status, result) {
           if (result.info === 'OK') {
             map.current.clearMap()

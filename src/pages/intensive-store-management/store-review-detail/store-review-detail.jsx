@@ -3,6 +3,8 @@ import { Form, Spin, Space, Image } from 'antd';
 import { storeDetail } from '@/services/intensive-store-management/store-review';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useParams } from 'umi';
+import ProForm, { ProFormText } from '@ant-design/pro-form';
+import AddressCascader from '@/components/address-cascader'
 
 const formItemLayout = {
   labelCol: { span: 10 },
@@ -21,6 +23,7 @@ const Detail = () => {
   const params = useParams();
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm()
 
 
   useEffect(() => {
@@ -31,15 +34,21 @@ const Detail = () => {
       if (res.code === 0) {
         setDetailData(res.data)
 
-        var marker = new AMap.Marker({
-          position: new AMap.LngLat(res.data.details.longitude, res.data.details.latitude),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        const { details } = res.data;
+
+        const marker = new AMap.Marker({
+          position: new AMap.LngLat(details.longitude, details.latitude),
         });
 
         const map = new AMap.Map('container', {
-          zoom: 20,//级别
-          center: [res.data.details.longitude, res.data.details.latitude],//中心点坐标
+          zoom: 20,
+          center: [details.longitude, details.latitude],
         });
         map.add(marker)
+
+        form.setFieldsValue({
+          area: [{ label: details.provinceName, value: details.provinceId }]
+        })
       }
     }).finally(() => {
       setLoading(false);
@@ -51,9 +60,10 @@ const Detail = () => {
       <Spin
         spinning={loading}
       >
-        <Form
+        <ProForm
           {...formItemLayout}
           style={{ backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
+          form={form}
         >
           <Form.Item
             label="手机号"
@@ -67,10 +77,10 @@ const Detail = () => {
           </Form.Item>
           <Form.Item
             label="所在地区"
+            rules={[{ required: true, message: '请选择所在地区' }]}
+            name="area"
           >
-            {detailData?.details?.provinceName}
-            {detailData?.details?.cityName}
-            {detailData?.details?.regionName}
+            <AddressCascader style={{ width: 328 }} />
           </Form.Item>
           <Form.Item
             label="详细地址"
@@ -118,7 +128,7 @@ const Detail = () => {
               </div>
             </Space>
           </Form.Item>
-        </Form>
+        </ProForm>
       </Spin>
     </PageContainer>
   )
