@@ -62,7 +62,10 @@ const TableList = () => {
         spuId: record.id
       }).then(res => {
         if (res.code === 0) {
-          setDetailData(res.data);
+          setDetailData({
+            ...res.data,
+            settleType: 2,
+          });
           setFirstReviewVisible(true);
         }
       })

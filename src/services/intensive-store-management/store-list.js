@@ -25,5 +25,20 @@ export const changeStatus = (params = {}, options = {}) => {
     data: params,
     ...options
   });
+}
 
+export const excelImport = (params = {}, options = {}) => {
+  return request('/auth/store/memberShopApply/import', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const storeAdd = (params = {}, options = {}) => {
+  return request('/auth/store/memberShopApply/add', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
 }

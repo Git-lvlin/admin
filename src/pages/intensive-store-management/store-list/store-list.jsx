@@ -6,9 +6,15 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/intensive-store-management/store-list';
 import { history } from 'umi';
 import Form from './form';
+import Create from './create';
+import Return from './return';
+import ExcelModal from './excel-modal'
 
 const StoreList = () => {
   const [formVisible, setFormVisible] = useState(false);
+  const [createVisible, setCreateVisible] = useState(false);
+  const [returnVisible, setReturnVisible] = useState(false);
+  const [excelVisible, setExcelVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
@@ -211,6 +217,7 @@ const StoreList = () => {
       render: (_, data) => (
         <Space>
           <a onClick={() => { history.push(`/intensive-store-management/store-detail/${data.storeNo}`) }}>详情</a>
+          {/* <a onClick={() => { setSelectItem({ ...data, toStatus: 3 }); setReturnVisible(true) }}>退回保证金登记</a> */}
           {data.status.code === 1 && <a onClick={() => { setSelectItem({ ...data, toStatus: 3 }); setFormVisible(true) }}>关闭</a>}
           {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 1 }); setFormVisible(true) }}>开启</a>}
           {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 2 }); setFormVisible(true) }}>注销</a>}
@@ -247,7 +254,23 @@ const StoreList = () => {
             >
               {resetText}
             </Button>,
-            <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
+            <Button
+              key="new"
+              onClick={() => {
+                setCreateVisible(true);
+              }}
+            >
+              新建
+            </Button>,
+            <Button
+              key="new2"
+              onClick={() => {
+                setExcelVisible(true);
+              }}
+            >
+              批量新建
+            </Button>,
+            // <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
           ],
         }}
         columns={columns}
@@ -259,6 +282,22 @@ const StoreList = () => {
         visible={formVisible}
         setVisible={setFormVisible}
         data={selectItem}
+        callback={() => { actionRef.current.reload() }}
+      />}
+      {returnVisible && <Return
+        visible={returnVisible}
+        setVisible={setReturnVisible}
+        data={selectItem}
+        callback={() => { actionRef.current.reload() }}
+      />}
+      {createVisible && <Create
+        visible={createVisible}
+        setVisible={setCreateVisible}
+        callback={() => { actionRef.current.reload() }}
+      />}
+      {excelVisible && <ExcelModal
+        visible={excelVisible}
+        setVisible={setExcelVisible}
         callback={() => { actionRef.current.reload() }}
       />}
     </PageContainer>
