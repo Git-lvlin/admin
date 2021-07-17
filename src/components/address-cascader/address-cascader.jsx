@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Cascader } from 'antd';
 import { getProvinces, getChildArea } from '@/services/common';
 
-const GcCascader = ({ value = [], onChange, ...rest }) => {
+const GcCascader = ({ value = [], onChange, fieldProps, ...rest }) => {
   const [data, setData] = useState([]);
   const pid = useRef();
   const loadData = (selectedOptions) => {
@@ -20,6 +20,7 @@ const GcCascader = ({ value = [], onChange, ...rest }) => {
 
   const changeHandle = (v, selectedOptions) => {
     onChange(selectedOptions.map(item => ({ label: item.label, value: item.value })))
+    fieldProps?.onChange?.(selectedOptions.map(item => ({ label: item.label, value: item.value })))
   }
 
   useEffect(() => {
@@ -30,10 +31,13 @@ const GcCascader = ({ value = [], onChange, ...rest }) => {
           setData(res.data.map(item => ({ label: item.name, value: item.id, isLeaf: false })))
         }
       })
+    return () => {
+      setData([])
+    }
   }, [])
 
   return (
-    <Cascader value={value.map(item => item.value)} onChange={changeHandle} options={data} placeholder="请选择" loadData={loadData} changeOnSelect {...rest} />
+    <Cascader value={value?.map(item => item.value)} onChange={changeHandle} options={data} placeholder="请选择" loadData={loadData} {...rest} />
   )
 }
 

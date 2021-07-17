@@ -466,7 +466,7 @@ export default (props) => {
               maxLength: 30,
               onChange: companyNameChange
             }}
-            disabled={!!detailData}
+            disabled={detailData?.bankAccountInfo?.auditStatus===1}
           />
           <ProFormText
             name="accountName"
@@ -476,7 +476,7 @@ export default (props) => {
             fieldProps={{
               maxLength: 18,
             }}
-            disabled={!!detailData}
+            disabled={detailData?.bankAccountInfo?.auditStatus === 1}
           />
           <ProFormText.Password
             name="password"

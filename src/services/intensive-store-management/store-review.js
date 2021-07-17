@@ -37,3 +37,11 @@ export const refuse = async (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const storeDetail = async (params = {}, options = {}) => {
+  return request('/auth/store/memberShopApply/detail', {
+    method: 'GET',
+    params,
+    ...options
+  });
+}
