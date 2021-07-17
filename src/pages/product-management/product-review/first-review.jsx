@@ -106,7 +106,7 @@ export default (props) => {
             // suggestedRetailPrice: amountTransform(item[1].retailSupplyPrice, '/'),
             // wholesalePrice: amountTransform(item[1].retailSupplyPrice, '/'),
             salePrice: amountTransform(item[1].salePrice, '/'),
-            marketPrice: amountTransform(item[1].retailSupplyPrice, '/'),
+            marketPrice: amountTransform(item[1].marketPrice, '/'),
             salePriceFloat: amountTransform(item[1].salePriceFloat),
             salePriceProfitLoss: amountTransform(item[1].salePriceProfitLoss, '/'),
             key: item[1].skuId,
@@ -119,7 +119,7 @@ export default (props) => {
 
       form.setFieldsValue({
         salePrice: amountTransform(detailData?.goods?.salePrice, '/'),
-        marketPrice: amountTransform(detailData?.goods?.retailSupplyPrice, '/'),
+        marketPrice: amountTransform(detailData?.goods?.marketPrice, '/'),
         supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId,
         salePriceFloat: amountTransform(detailData?.goods?.salePriceFloat),
       })
