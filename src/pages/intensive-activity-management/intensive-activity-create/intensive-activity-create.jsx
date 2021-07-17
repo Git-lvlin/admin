@@ -152,7 +152,12 @@ const IntensiveActivityCreate = () => {
               }
 
               if (+selectItem.minNum > +selectItem.maxNum) {
-                message.error('单店起订量不能大于单店限订量');
+                message.error('单次起订量不能大于单次限订量');
+                return false;
+              }
+
+              if (+selectItem.profit < 0) {
+                message.error('实际盈亏不能小于0');
                 return false;
               }
 

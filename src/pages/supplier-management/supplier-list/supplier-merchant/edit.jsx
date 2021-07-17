@@ -235,7 +235,16 @@ export default (props) => {
   };
 
   const submit = (values) => {
-    const { password, gc, addressInfo, socialCreditInfo, legalInfo, imageInfo, bankCode, ...rest } = values;
+    const {
+      password,
+      gc,
+      addressInfo,
+      socialCreditInfo,
+      legalInfo,
+      imageInfo,
+      bankCode,
+      ...rest
+    } = values;
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? supplierEdit : supplierAdd;
 
@@ -343,7 +352,7 @@ export default (props) => {
         ...detailData
       })
 
-      const { bankAccountInfo, warrantyRatioDisplay } = detailData
+      const { bankAccountInfo, warrantyRatioDisplay, defaultWholesaleTaxRateDisplay } = detailData
 
       if (bankAccountInfo) {
         const {
@@ -398,6 +407,7 @@ export default (props) => {
           bankCardNo,
           bankAccountName: (bankAccountType || 1) ? detailData.companyName : bankAccountName,
           warrantyRatio: warrantyRatioDisplay,
+          defaultWholesaleTaxRate: defaultWholesaleTaxRateDisplay,
         })
       }
 
@@ -464,7 +474,7 @@ export default (props) => {
               maxLength: 30,
               onChange: companyNameChange
             }}
-            disabled={detailData?.bankAccountInfo?.auditStatus===1}
+            disabled={detailData?.bankAccountInfo?.auditStatus === 1}
           />
           <ProFormText
             name="accountName"
@@ -563,6 +573,30 @@ export default (props) => {
               }
             </div>
           </Form.Item>
+          <ProFormDigit
+            placeholder="请输入商品开票税率"
+            label="商品开票税率"
+            name="defaultWholesaleTaxRate"
+            min={1}
+            max={50}
+            fieldProps={{
+              formatter: value => value ? +new Big(value).toFixed(2) : value
+            }}
+            extra={<><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
+            step
+            validateFirst
+            rules={[
+              { required: true, message: '请输入商品开票税率' },
+              () => ({
+                validator(_, value) {
+                  if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                    return Promise.reject(new Error('请输入大于零的数字'));
+                  }
+                  return Promise.resolve();
+                },
+              })
+            ]}
+          />
           <ProFormDigit
             placeholder="请输入商品质保金比例"
             label="商品质保金比例"
