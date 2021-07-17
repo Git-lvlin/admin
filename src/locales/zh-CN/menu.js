@@ -107,6 +107,7 @@ export default {
   'menu.cms.route-url-deploy': '链接路由管理',
   'menu.cms.coupon': '优惠券管理',
   'menu.cms.hot-search': '热门搜索关键词',
+  'menu.cms.market': '营销资源管理',
   
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',

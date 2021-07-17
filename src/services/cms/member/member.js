@@ -56,6 +56,22 @@ export const bannerAdd = (params = {}, options = {}) => {
   });
 }
 
+export const merketDetailUpdata = (params = {}, options = {}) => {
+  return request('/auth/java-admin/activitySubject/itemSaveOrUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const marketUpdata = (params = {}, options = {}) => {
+  return request('/auth/java-admin/activitySubject/saveOrUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const tagSortModify = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/goodsTagSortSub', {
     method: 'POST',
@@ -439,6 +455,20 @@ export const homeBannerDel = (params = {}, options = {}) => {
     ...options
   });
 }
+export const marketDel = (params = {}, options = {}) => {
+  return request('/auth/java-admin/activitySubject/delById', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+export const marketItemDel = (params = {}, options = {}) => {
+  return request('/auth/java-admin/activitySubject/delByItemId', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
 export const couponDel = (params = {}, options = {}) => {
   return request('/auth/activity/Coupon/couponCmsDel', {
     method: 'POST',
@@ -651,6 +681,30 @@ export const homeBannerList = async (params = {}, options = {}) => {
   }
 }
 
+export const marketList = async (params = {}, options = {}) => {
+  const { current, pageSize, status, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  if (status) {
+    data.status = Number(status);
+  }
+  const res = await request('/auth/java-admin/activitySubject/findPage', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
 export const couponList = async (params = {}, options = {}) => {
   const { current, pageSize, freeAmount, ...rest } = params;
   const data = {
@@ -811,6 +865,26 @@ export const todayAllGoodsList = async (params = {}, options = {}) => {
 
   return {
     data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const marketItemList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    pageSize: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/activitySubject/findPage', {
+    method: 'POST',
+    data,
+    ...options
+  });
+  return {
+    data: res.data.records[0].itemList || [],
     success: true,
     total: res.data.total,
   }

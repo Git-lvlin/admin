@@ -83,6 +83,11 @@ export default {
       name: 'hot-search',
       path: '/cms/hot-search',
       component: './cms/hot-search',
+    },
+    {
+      name: 'market',
+      path: '/cms/market',
+      component: './cms/market',
     }
   ]
 }
