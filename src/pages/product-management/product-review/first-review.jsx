@@ -173,7 +173,8 @@ export default (props) => {
         check(type.current, 1, detailData.spuId, {
           supplierHelperId,
           settleType,
-          goodsInfo
+          goodsInfo,
+          goodsSaleType: detailData.goods.goodsSaleType,
         });
       }}
       submitter={{

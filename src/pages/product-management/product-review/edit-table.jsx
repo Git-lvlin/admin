@@ -58,7 +58,7 @@ export default function EditTable(props) {
       {
         title: '秒约价',
         dataIndex: 'salePrice',
-        width: 150,
+        width: 130,
         editable: settleType !== 1,
         hideInTable: goodsSaleType !== 0,
       },
@@ -66,17 +66,19 @@ export default function EditTable(props) {
         title: '秒约价上浮比例',
         dataIndex: 'salePriceFloat',
         hideInTable: goodsSaleType !== 0,
+        width: 130,
       },
       {
         title: '秒约价实际盈亏',
         dataIndex: 'salePriceProfitLoss',
         editable: false,
         hideInTable: goodsSaleType !== 0,
+        width: 130,
       },
       {
         title: '市场价',
         dataIndex: 'marketPrice',
-        width: 150,
+        width: 130,
       },
       {
         title: '库存预警值',
