@@ -341,12 +341,12 @@ export default (props) => {
                 })
               ]}
             />
-            <ProFormDependency name={['settleType', 'goodsSaleType']}>
+            <ProFormDependency name={['settleType']}>
               {
-                ({ settleType, goodsSaleType }) => (
+                ({ settleType }) => (
                   <>
 
-                    {goodsSaleType === 0 && <ProFormText
+                    {detailData?.goods?.goodsSaleType === 0 && <ProFormText
                       name="salePrice"
                       label="秒约价"
                       placeholder="请输入秒约价"
@@ -394,7 +394,7 @@ export default (props) => {
             {detailData?.goods?.goodsSaleType === 0 && <Form.Item
               label="秒约价实际盈亏"
             >
-              {amountTransform(salePriceProfitLoss || detailData?.goods?.salePriceProfitLoss, '/')}
+              {salePriceProfitLoss || amountTransform(detailData?.goods?.salePriceProfitLoss, '/')}
             </Form.Item>}
           </>
       }
