@@ -46,7 +46,7 @@ const couponType = (props) => {
         console.log('DetailList.data',DetailList.data)
     },[])
     return (
-        <Tabs onChange={callback}  defaultActiveKey={DetailList.data?.couponType.toString()}>
+        <Tabs onChange={callback}  defaultActiveKey={parseInt(id)==id&&`${DetailList.data?.couponType}`}>
             <TabPane key='1' className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.radio.public" />} key="1">
                 <ProForm.Group>
                     <span>使用门槛: 活动商品满</span>

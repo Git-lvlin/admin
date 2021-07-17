@@ -74,7 +74,7 @@ export default props => {
             </Form.Item>
 
           {
-           detailData.sourceType==1?
+           detailData.sourceType==1&&detailData.sourceData?
             <Form.Item
               label="商品快照"
             >
@@ -86,7 +86,7 @@ export default props => {
           }
          
          {
-           detailData.sourceType==3?
+           detailData.sourceType==3&&detailData.sourceData?
            <Form.Item
             label="转发内容快照"
           >
