@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import styles from './styles.less'
-import { Button, message, Space, Select } from 'antd'
+import { Button, message, Space } from 'antd'
 import ProForm, {
   ModalForm,
   ProFormSelect,
@@ -112,7 +112,7 @@ const InterventionDetailStatus = props => {
           />
         </div>
         {
-          (winnerRole === 1 && type === 2) &&
+          (winnerRole === 1 && type === 2 && stage === 1 ) &&
           <div className={styles.opinion}>
             <ProFormSelect
               label="收货地址"

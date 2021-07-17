@@ -13,11 +13,11 @@ const { Item } = Timeline
 const ReturnSingle = props => {
   const { data, type } = props
   const [address, setAddress] = useState({})
-  const showLastStatus = lastStatus => {
-    lastStatus = lastStatus?.split(',')
-    return lastStatus?.map((key,idx)=>(
-      <Item key={idx} className={styles.timeline}>
-        {key}
+  const showLastStatus = expressInfo => {
+    return expressInfo?.map((item, idx)=>(
+      <Item key={idx}>
+        {item.content}
+        <span style={{marginLeft: 30}}>{item.time}</span>
       </Item>
     ))
   }
@@ -114,9 +114,9 @@ const ReturnSingle = props => {
               }
               onFinish={()=> true}
             >
-              <Timeline reverse>
-                {showLastStatus(address?.lastStatus)}
-              </Timeline> 
+              <Timeline className={styles.timelineWarp}>
+                {showLastStatus(address?.deliveryList)}
+              </Timeline>
             </ModalForm>
           </div>
         )
