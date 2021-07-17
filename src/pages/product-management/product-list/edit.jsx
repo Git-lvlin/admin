@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Button, Form, Input, message, Select } from 'antd';
 import {
   DrawerForm,
@@ -16,12 +16,14 @@ import FormModal from './form';
 import EditTable from './edit-table';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
+import debounce from 'lodash/debounce';
 
 export default (props) => {
   const { visible, setVisible, detailData, callback, onClose } = props;
   const [formModalVisible, setFormModalVisible] = useState(false);
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
+  const [salePriceProfitLoss, setSalePriceProfitLoss] = useState(null);
   const [form] = Form.useForm()
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -46,6 +48,24 @@ export default (props) => {
   }
 
   const submit = (values) => {
+    const {
+      videoUrl,
+      gcId,
+      primaryImages,
+      detailImages,
+      // advImages,
+      isMultiSpec,
+      // wholesalePrice,
+      retailSupplyPrice,
+      // suggestedRetailPrice,
+      salePrice,
+      marketPrice,
+      freightTemplateId,
+      wholesaleFreight,
+      wholesaleTaxRate,
+      wholesaleSupplyPrice,
+      salePriceFloat,
+      ...rest } = values;
     const { specValues1, specValues2 } = form.getFieldsValue(['specValues1', 'specValues2']);
     const specName = {};
     const specValues = {};
@@ -72,6 +92,9 @@ export default (props) => {
         imageUrl: item?.imageUrl,
         // wholesalePrice: amountTransform(item.wholesalePrice),
         retailSupplyPrice: amountTransform(item.retailSupplyPrice),
+        wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice),
+        salePriceProfitLoss: amountTransform(item.salePriceProfitLoss),
+        salePriceFloat: amountTransform(item.salePriceFloat, '/'),
         // suggestedRetailPrice: amountTransform(item.suggestedRetailPrice),
         salePrice: amountTransform(item.salePrice),
         marketPrice: amountTransform(item.marketPrice),
@@ -79,7 +102,6 @@ export default (props) => {
 
       if (item.retailSupplyPrice > item.salePrice || item.retailSupplyPrice > item.marketPrice) {
         errorMsg = '供货价不能大于秒约价和市场价';
-        
       }
     })
 
@@ -87,22 +109,6 @@ export default (props) => {
       message.error(errorMsg);
       reject();
     }
-    const {
-      videoUrl,
-      gcId,
-      primaryImages,
-      detailImages,
-      // advImages,
-      isMultiSpec,
-      // wholesalePrice,
-      retailSupplyPrice,
-      // suggestedRetailPrice,
-      salePrice,
-      marketPrice,
-      freightTemplateId,
-      wholesaleFreight,
-      wholesaleTaxRate,
-      ...rest } = values;
 
     const obj = {
       isMultiSpec,
@@ -110,11 +116,11 @@ export default (props) => {
         ...rest,
         gcId1: gcId[0],
         gcId2: gcId[1],
+        wholesaleFreight: amountTransform(wholesaleFreight),
+        wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
       },
       primaryImages: urlsTransform(primaryImages),
       detailImages: urlsTransform(detailImages),
-      wholesaleFreight: amountTransform(wholesaleFreight),
-      wholesaleTaxRate,
       // advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl,
     };
@@ -131,9 +137,12 @@ export default (props) => {
     } else {
       // obj.goods.wholesalePrice = amountTransform(wholesalePrice);
       obj.goods.retailSupplyPrice = amountTransform(retailSupplyPrice);
+      obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
+      obj.goods.salePriceProfitLoss = amountTransform(salePriceProfitLoss);
       // obj.goods.suggestedRetailPrice = amountTransform(suggestedRetailPrice);
       obj.goods.salePrice = amountTransform(salePrice);
       obj.goods.marketPrice = amountTransform(marketPrice);
+      obj.goods.salePriceFloat = amountTransform(salePriceFloat, '/');
 
       if (retailSupplyPrice > salePrice || retailSupplyPrice > marketPrice) {
         message.error('供货价不能大于秒约价和市场价');
@@ -217,6 +226,54 @@ export default (props) => {
     }
   }
 
+  const subAccountCheck = (params, cb) => {
+    api.subAccountCheck({
+      skuId: detailData.goods.skuId,
+      retailSupplyPrice: detailData.goods.retailSupplyPrice,
+      wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
+      // wholesaleTaxRate: 0.01,
+      ...params,
+    }).then(res => {
+      if (res.code === 0) {
+        cb(res.data[0])
+      }
+    })
+  }
+
+  const salePriceChange = useMemo(() => {
+    if (detailData?.goods?.goodsSaleType !== 0) {
+      return;
+    }
+    const loadData = (e) => {
+      subAccountCheck({
+        salePrice: amountTransform(e.target.value)
+      }, (data) => {
+        form.setFieldsValue({
+          salePriceFloat: amountTransform(data.salePriceFloat),
+        })
+        setSalePriceProfitLoss(amountTransform(data.salePriceProfitLoss, '/'))
+      })
+    }
+    return debounce(loadData, 500);
+  }, [])
+
+  const salePriceFloatChange = useMemo(() => {
+    if (detailData?.goods?.goodsSaleType !== 0 ) {
+      return;
+    }
+    const loadData = (e) => {
+      subAccountCheck({
+        salePriceFloat: amountTransform(e.target.value, '/')
+      }, (data) => {
+        form.setFieldsValue({
+          salePrice: amountTransform(data.salePrice, '/'),
+        })
+        setSalePriceProfitLoss(amountTransform(data.salePriceProfitLoss, '/'))
+      })
+    }
+    return debounce(loadData, 500);
+  }, [])
+
   useEffect(() => {
     if (detailData) {
       const { goods, specName, specValues, specData, freightTemplateId, freightTemplateName, settleType } = detailData;
@@ -244,6 +301,8 @@ export default (props) => {
         brandId: goods.brandId,
         settleType: settleType || 1,
         gcId: [goods.gcId1, goods.gcId2],
+        wholesaleFreight: amountTransform(goods.wholesaleFreight, '/'),
+        wholesaleTaxRate: amountTransform(goods.wholesaleTaxRate),
       })
 
       if (freightTemplateId && freightTemplateName) {
@@ -288,6 +347,8 @@ export default (props) => {
             retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
             wholesaleSupplyPrice: amountTransform(item[1].wholesaleSupplyPrice, '/'),
             wholesaleMinNum: item[1].wholesaleMinNum,
+            salePriceFloat: amountTransform(item[1].salePriceFloat),
+            salePriceProfitLoss: amountTransform(item[1].salePriceProfitLoss, '/'),
             // suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
             // wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
             salePrice: amountTransform((settleType === 1 || settleType === 0) ? item[1].retailSupplyPrice : item[1].salePrice, '/'),
@@ -308,6 +369,7 @@ export default (props) => {
           marketPrice: amountTransform(goods.marketPrice || goods.retailSupplyPrice, '/'),
           wholesaleSupplyPrice: amountTransform(goods.wholesaleSupplyPrice, '/'),
           wholesaleMinNum: goods.wholesaleMinNum,
+          salePriceFloat: amountTransform(goods.salePriceFloat),
         })
       }
     }
@@ -569,7 +631,15 @@ export default (props) => {
                 {
                   ({ settleType }) => (
                     <>
-                      {!!tableData.length && <EditTable settleType={settleType} tableHead={tableHead} tableData={tableData} setTableData={setTableData} />}
+                      {!!tableData.length &&
+                        <EditTable
+                          settleType={settleType}
+                          tableHead={tableHead}
+                          tableData={tableData}
+                          setTableData={setTableData}
+                          wholesaleTaxRate={detailData?.goods?.wholesaleTaxRate}
+                          goodsSaleType={detailData?.goods?.goodsSaleType}
+                        />}
                     </>
                   )
                 }
@@ -581,13 +651,6 @@ export default (props) => {
                 name="supplierSkuId"
                 label="货号"
                 placeholder="请输入货号"
-              />
-              <ProFormText
-                name="retailSupplyPrice"
-                label="零售供货价(元)"
-                placeholder="请输入零售供货价"
-                rules={[{ required: true, message: '请输入零售供货价' }]}
-                disabled
               />
               <ProFormText
                 name="wholesaleSupplyPrice"
@@ -603,6 +666,17 @@ export default (props) => {
                 rules={[{ required: true, message: '请输入最低批发量' }]}
                 disabled
               />
+              {
+                detailData?.goods?.goodsSaleType === 0 &&
+                <ProFormText
+                  name="retailSupplyPrice"
+                  label="零售供货价(元)"
+                  placeholder="请输入零售供货价"
+                  rules={[{ required: true, message: '请输入零售供货价' }]}
+                  disabled
+                />
+              }
+              
               {/* <ProFormText
                 name="suggestedRetailPrice"
                 label="建议零售价"
@@ -629,11 +703,39 @@ export default (props) => {
                         })
                       ]}
                       disabled={settleType === 1}
+                      fieldProps={{
+                        onChange: salePriceChange
+                      }}
                     />
 
                   </>
                 )}
               </ProFormDependency>
+              {detailData?.goods?.goodsSaleType === 0 &&<ProFormText
+                name="salePriceFloat"
+                label="秒约价上浮比例"
+                placeholder="秒约价上浮比例"
+                validateFirst
+                rules={[
+                  { required: true, message: '请输入秒约价上浮比例' },
+                  () => ({
+                    validator(_, value) {
+                      if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                        return Promise.reject(new Error('请输入大于零的数字'));
+                      }
+                      return Promise.resolve();
+                    },
+                  })
+                ]}
+                fieldProps={{
+                  onChange: salePriceFloatChange
+                }}
+              />}
+              {detailData?.goods?.goodsSaleType === 0 &&<Form.Item
+                label="秒约价实际盈亏"
+              >
+                {salePriceProfitLoss || amountTransform(detailData?.goods?.salePriceProfitLoss, '/')}
+              </Form.Item>}
               <ProFormText
                 name="marketPrice"
                 label="市场价"

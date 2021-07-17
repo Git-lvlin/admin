@@ -76,3 +76,12 @@ export const listExport = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const subAccountCheck = (params = {}, options = {}) => {
+  return request('/auth/goods/product/subAccountCheck', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+

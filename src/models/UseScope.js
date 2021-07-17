@@ -34,19 +34,32 @@ const UseScopeModel = {
           payload
         });
     },
-    *fetchLookUnit({ payload}, { call, put}) {
+    *fetchLookUnit({ payload }, { call, put}) {
         yield put({
           type: 'onUnit',
           payload
         });
       },
-    *fetchWholesaleIds({ payload}, { call, put}) {
+    *fetchLookUnitArr({ payload }, { call, put}) {
+      yield put({
+        type: 'onUnitArr',
+        payload
+      });
+    },
+    *fetchWholesaleIds({ payload }, { call, put}) {
         console.log('payload',payload)
         yield put({
             type: 'onWholesaleIds',
             payload
         });
     },
+    *fetchWholesaleArr({ payload }, { call, put}) {
+      console.log('payload',payload)
+      yield put({
+          type: 'onWholesaleArr',
+          payload
+      });
+  },
     *fetchCrowdIdsArr({ payload}, { call, put}) {
       console.log('payload',payload)
       yield put({
@@ -86,10 +99,21 @@ const UseScopeModel = {
         state.UseScopeObje.unit=payload.unit
         return { ...state };
     },
+    onUnitArr(state = { UseScopeObje:{}},{ payload }){
+      console.log('payload.unitArr',payload.unitArr)
+        state.UseScopeObje.unitArr=payload.unitArr
+        return { ...state };
+    },
     onWholesaleIds(state = { UseScopeObje:{}},{ payload }){
+      console.log('payload.wholesaleIds',payload.wholesaleIds)
         state.UseScopeObje.wholesaleIds=payload.wholesaleIds
         return { ...state };
     },
+    onWholesaleArr(state = { UseScopeObje:{}},{ payload }){
+      console.log('payload.wholesaleArr',payload.wholesaleArr)
+      state.UseScopeObje.wholesaleArr=payload.wholesaleArr
+      return { ...state };
+  },
     onCrowdIdsArr(state = { UseScopeObje:{}},{ payload }){
       state.UseScopeObje.CrowdIdsArr=payload.CrowdIdsArr
     return { ...state };
@@ -100,6 +124,7 @@ const UseScopeModel = {
       return { ...state };
     },
     onUseScopeList(state = { UseScopeObje:{}},{ payload }){
+      console.log('UseScopeObje',payload.UseScopeObje)
       state.UseScopeObje=payload.UseScopeObje
       return { ...state };
     },

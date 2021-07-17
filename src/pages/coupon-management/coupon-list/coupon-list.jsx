@@ -56,6 +56,9 @@ const message = (type, module,dispatch) => {
       dataIndex: 'issueQuantity',
       valueType: 'text',
       hideInSearch: true,
+      render:(_, data)=>{
+        return <p>{data.issueQuantity==-1?'不限量':data.issueQuantity}</p>
+      }
     },
     {
       title: '可领取时间',

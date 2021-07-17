@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Form, Input, Tabs } from 'antd';
 import { FormattedMessage, connect } from 'umi';
 import styles from '../style.less'
@@ -33,34 +33,59 @@ const couponType = (props) => {
     const toggle = val => {
         setFlag(val)
     }
+    const checkConfirm=(rule, value, callback)=>{
+        return new Promise(async (resolve, reject) => {
+        if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)) {
+            await reject('不能输入小数')
+        } else {
+            await resolve()
+        }
+        })
+    }
+    useEffect(()=>{
+        console.log('DetailList.data',DetailList.data)
+    },[])
     return (
-        <Tabs onChange={callback} type="card">
-            <TabPane className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.radio.public" />} key="1">
+        <Tabs onChange={callback}  defaultActiveKey={DetailList.data?.couponType.toString()}>
+            <TabPane key='1' className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.radio.public" />} key="1">
                 <ProForm.Group>
                     <span>使用门槛: 活动商品满</span>
                     <ProFormText
                         width={100}
                         name="usefulAmount"
+                        rules={[
+                            {validator: checkConfirm}
+                        ]}
                     />
                     <span>元 （如果设置为0，则无使用门槛)</span>
                 </ProForm.Group>
                 <ProForm.Group>
                     <span>优惠内容 : 减免</span>
-                    <Form.Item name="freeAmount">
-                        <Input onChange={onDiscounts} style={{ width: '100px' }} />
-                    </Form.Item>
+                    <ProFormText 
+                        name="freeAmount"
+                        fieldProps={{
+                            onChange: (e) => onDiscounts(e),
+                            }}
+                        width={100}
+                        rules={[
+                            {validator: checkConfirm}
+                        ]} 
+                    />
                     <span>元</span>
                 </ProForm.Group>
-                <p>优惠券面值<span className={styles.compute}>{(parseInt(id) == id) && DetailList.data?.freeAmount || discounts}</span> 元</p>
+                <p>优惠券面值<span className={styles.compute}>{ discounts||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay}</span> 元</p>
             </TabPane>
 
 
-            <TabPane className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.radio.partially-public" />} key="2">
+            <TabPane key='2' className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.radio.partially-public" />} key="2">
                 <ProForm.Group>
                     <span>使用门槛 : 活动商品满</span>
                     <ProFormText
                         width={100}
                         name={flag == 2 ? 'usefulNum' : 'usefulAmount'}
+                        rules={[
+                            {validator: checkConfirm}
+                        ]} 
                     />
                     <ProFormSelect
                         name="unit"
@@ -83,37 +108,57 @@ const couponType = (props) => {
                 </ProForm.Group>
                 <ProForm.Group>
                     <span>优惠内容: </span>
-                    <Form.Item name="freeDiscount">
-                        <Input style={{ width: '100px' }} onChange={onCoupons} />
-                    </Form.Item>
+                    <ProFormText 
+                        name="freeDiscount"
+                        fieldProps={{
+                            onChange: (e) => onCoupons(e),
+                            }}
+                        width={100}
+                        rules={[
+                            {validator: checkConfirm}
+                        ]} 
+                    />
                     <span> %折扣，最多优惠</span>
                     <ProFormText
                         width={100}
                         name="maxFreeAmount"
+                        rules={[
+                            {validator: checkConfirm}
+                        ]} 
                     />
                     <span>（不填写则不作限制） 元</span>
                     <p>（只能填1-99的整数）</p>
                 </ProForm.Group>
-                <p>优惠券面值<span className={styles.compute}>{(parseInt(id) == id) && DetailList.data?.freeDiscount ? (100 - DetailList.data?.freeDiscount) / 100 : '' || coupons ? (100 - coupons) / 100 : ''}</span> 折券</p>
+                <p>优惠券面值<span className={styles.compute}>{coupons ? (100 - coupons) / 100 : ''||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay ? (100 - DetailList.data?.freeDiscount) / 100 : ''}</span> 折券</p>
             </TabPane>
 
-            <TabPane className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.radio.private" />} key="3">
+            <TabPane key='3' className={styles.unfold} tab={<FormattedMessage id="formandbasic-form.radio.private" />} key="3">
                 <ProForm.Group>
                     <span>使用门槛 :订单金额满</span>
                     <ProFormText
                         width={100}
                         name='usefulAmount'
+                        rules={[
+                            {validator: checkConfirm}
+                        ]} 
                     />
                     <span>元 （如果设置为0，则无使用门槛）</span>
                 </ProForm.Group>
                 <ProForm.Group>
                     <span>优惠内容 : 可立减</span>
-                    <Form.Item name="freeAmount">
-                        <Input style={{ width: '100px' }} onChange={onImmediately} />
-                    </Form.Item>
+                    <ProFormText 
+                        name="freeAmount"
+                        fieldProps={{
+                            onChange: (e) => onImmediately(e),
+                            }}
+                        width={100}
+                        rules={[
+                            {validator: checkConfirm}
+                        ]} 
+                    />
                     <span>元</span>
                 </ProForm.Group>
-                <p>优惠券面值<span className={styles.compute}>{(parseInt(id) == id) && DetailList.data?.freeAmount || immediately}</span> 元</p>
+                <p>优惠券面值<span className={styles.compute}>{immediately||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay}</span> 元</p>
             </TabPane>
 
         </Tabs>

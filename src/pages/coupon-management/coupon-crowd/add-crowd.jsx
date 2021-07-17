@@ -24,6 +24,10 @@ export default (props) =>{
   const id = props.location.query.id
   const [editableKeys, setEditableRowKeys] = useState([]);
   const [dataSource, setDataSource] = useState([]);
+  const [falg,setFalg]=useState(false)
+  const [falg1,setFalg1]=useState(false)
+  const [falg2,setFalg2]=useState(false)
+  const [falg3,setFalg3]=useState(false)
   const [levelId,setLevelId]=useState()
   const [detailData,setDetailData]=useState()
   const [form] = Form.useForm();
@@ -34,39 +38,51 @@ export default (props) =>{
   useEffect(()=>{
     if(id){
       couponCrowdDetail({id:id}).then(res=>{
-        form.setFieldsValue(res.data)
-        // setDetailData(res.data.crowdInfo)
-        // const arr=[]
-        // res.data.crowdInfo.map(ele=>{
-        //   arr.push({id:ele.crowdInfoId,state:ele.isContain,title:ele.type==1?'会员等级':ele.type==2?'消费次数':'累计消费'})
-        // })
-        // setDataSource(arr)
+        form.setFieldsValue({name:res.data.name})
+        console.log('res.data.crowdInfo',res.data.crowdInfo)
+        const arr=[]
+        res.data.crowdInfo.map(ele=>{
+          arr.push({
+            id:ele.crowdInfoId,
+            state:ele.isContain,
+            title:ele.type==1?'会员等级':ele.type==2?'消费次数':'累计消费',
+            labels:ele.type==2?[ele.numStart,ele.numEnd]:ele.type==3&&[ele.moneyStart,ele.moneyEnd],
+            userLevel:ele.userLevel,
+            userLevelDisplay:ele.userLevelDisplay
+          })
+        })
+        console.log('arr',arr)
+        setDataSource(arr)
       })
     }
   },[])
   const onsubmit=values=>{
+      try {
+        dataSource.map(ele=>{
+          if(ele.title=='会员等级'){
+            values.userLevelInfo={
+              isContain: ele.state||1,
+              userLevel: levelId&&levelId.userLevel.toString()||ele.userLevel    
+            }
+          }else if(ele.title=='消费次数'){
+            values.consumeNumInfo={
+              isContain: ele.state||1,
+              numStart: ele.labels[0],
+              numEnd: ele.labels[1]
+            }
+          }else if(ele.title=='累计消费'){
+            values.consumeLjInfo={
+              isContain: ele.state||1,
+              moneyStart: ele.labels[0],
+              moneyEnd: ele.labels[1]
+            }
+          }
+        })
+      } catch (error) {
+        console.log('error',error)
+      }
       console.log('values',values);
       console.log('dataSource',dataSource)
-      dataSource.map(ele=>{
-        if(ele.title=='会员等级'){
-          values.userLevelInfo={
-            isContain: ele.state,
-            userLevel: levelId.userLevel.toString()    
-          }
-        }else if(ele.title=='消费次数'){
-          values.consumeNumInfo={
-            isContain: ele.state,
-            numStart: ele.labels[0],
-            numEnd: ele.labels[1]
-          }
-        }else if(ele.title=='累计消费'){
-          values.consumeLjInfo={
-            isContain: ele.state,
-            moneyStart: ele.labels[0],
-            moneyEnd: ele.labels[1]
-          }
-        }
-      })
       if(id){
         couponCrowdEdit({...values,id:id}).then(res=>{
           if(res.code==0){
@@ -99,11 +115,21 @@ export default (props) =>{
           options={[
             { 
               label: '包含', value: 1, 
-            }, 
-            { 
-              label: '不包含', value: 2 
-            }]}
-        />
+            }
+            // { 
+            //   label: '不包含', value: 2 
+            // }
+          ]}
+        />,
+        hideInTable:falg?false:true
+    },
+    {
+      title: '范围',
+      dataIndex: 'state',
+      valueEnum: {
+        1: '包含',
+      },
+      hideInTable:falg?true:false
     },
     {
       title: '条件',
@@ -124,7 +150,22 @@ export default (props) =>{
                  至 
                 <Input name='max' style={{width:'100px'}} suffix="元" />
                 </ProFormFieldSet>;
-      }
+      },
+      hideInTable:falg?false:true
+    },
+    {
+      title: '条件',
+      dataIndex: 'labels',
+      render:(_, data)=>{
+        console.log('data',data)
+        if(data.title=='会员等级'){
+          return <p>{data.userLevelDisplay}</p>;
+          }else if(data.title=='消费次数'){
+          return <p>{data.labels[0]}次 至 {data.labels[1]}次</p>
+          }
+          return <p>{data.labels[0]}元 至 {data.labels[1]}元</p>
+      },
+      hideInTable:falg?true:false
     },
     {
       title: '操作',
@@ -145,15 +186,17 @@ export default (props) =>{
   return (
       <>
       <ProForm
-        // form={form}
+        form={form}
         onFinish={async (values)=>{
-          await  onsubmit(values);
+            await  onsubmit(values);
           return true;
          } }
         submitter={{
           render: (props, doms) => {
             return [
-              <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => props.form?.submit?.()}>
+              <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
+                props.form?.submit?.()
+              }}>
                 保存
               </Button>,
               <Button type="default"  key="rest" onClick={() => props.form?.resetFields()}>
@@ -204,10 +247,17 @@ export default (props) =>{
             >
             <h3 style={{background:'#fafafa',padding:'10px',color:'#ccc'}}>会员基本信息</h3>
             <Button 
-                type="primary"  
+                type={falg1?"primary":"default"}  
                 onClick={() => {
+                  setFalg(true)
+                  if(!falg1){
+                    setFalg1(true)
+                  }else{
+                    setFalg1(false)
+                  }
+                  
                   ref.current?.addEditRecord?.({
-                  id: (Math.random() * 1000000).toFixed(0),
+                  id: '1',
                   title: '会员等级',
                   });
                   }} 
@@ -217,10 +267,16 @@ export default (props) =>{
             </Button>
             <h3 style={{background:'#fafafa',padding:'10px',color:'#ccc'}}>会员消费情况</h3>
             <Button
-              type="primary"
+              type={falg2?"primary":"default"}  
               onClick={() => {
+                  setFalg(true)
+                  if(!falg2){
+                    setFalg2(true)
+                  }else{
+                    setFalg2(false)
+                  }
                   ref.current?.addEditRecord?.({
-                  id: (Math.random() * 1000000).toFixed(0),
+                  id: '2',
                   title: '消费次数',
                   });
               }}
@@ -228,11 +284,17 @@ export default (props) =>{
                 消费次数
             </Button>
             <Button 
-              type="primary"
+              type={falg3?"primary":"default"}  
               style={{margin:"20px"}}
               onClick={() => {
+                  setFalg(true)
+                  if(!falg3){
+                    setFalg3(true)
+                  }else{
+                    setFalg3(false)
+                  }
                   ref.current?.addEditRecord?.({
-                  id: (Math.random() * 1000000).toFixed(0),
+                  id: '3',
                   title: '累计消费',
                   });
               }}>
@@ -258,7 +320,6 @@ export default (props) =>{
                 value={dataSource}
                 onChange={setDataSource}
                 editable={{
-                  form,
                   editableKeys,
                   onSave: async () => {
                     await waitTime(500);
