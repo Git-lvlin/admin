@@ -1,12 +1,14 @@
 import request from '@/utils/request';
 
 export const goodsPage = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current, pageSize, gcId = [], ...rest } = params;
   const res = await request('/auth/store/memberShopWholesale/goodsPage', {
     method: 'GET',
     params: {
       page: current,
       size: pageSize,
+      gcId1: gcId[0],
+      gcId2: gcId[1],
       ...rest
     },
     ...options

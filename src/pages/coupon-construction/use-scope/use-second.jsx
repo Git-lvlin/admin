@@ -179,7 +179,7 @@ const useSecond=(props)=>{
     };
     useEffect(()=>{
         setTimeout(()=>{
-            if(id){
+            if(parseInt(id)==id){
                 dispatch({
                     type:'UseScopeList/fetchLookSpuIds',
                     payload:{
