@@ -46,7 +46,7 @@ const IntensiveTask = props => {
     },
     {
       title: '活动商品skuID',
-      dataIndex: 'skuIds',
+      dataIndex: 'skuId',
       valueType: 'text',
     },
     {
