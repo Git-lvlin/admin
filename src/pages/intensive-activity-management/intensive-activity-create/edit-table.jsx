@@ -136,6 +136,13 @@ export default function EditTable({ onSelect }) {
       editable: false
     },
     {
+      title: '平均运费(元)',
+      dataIndex: 'wholesaleFreight',
+      valueType: 'text',
+      hideInSearch: true,
+      editable: false
+    },
+    {
       title: '总库存',
       dataIndex: 'stockNum',
       valueType: 'text',
@@ -207,6 +214,7 @@ export default function EditTable({ onSelect }) {
       dataIndex: 'fixedPrice',
       valueType: 'text',
       hideInSearch: true,
+      editable: false,
     },
     {
       title: '单店起订量',
@@ -240,6 +248,7 @@ export default function EditTable({ onSelect }) {
       price: amountTransform(item.price, '/'),
       fixedPrice: amountTransform(item.fixedPrice, '/'),
       settlePercent: amountTransform(item.settlePercent),
+      wholesaleFreight: amountTransform(item.wholesaleFreight, '/'),
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
       profit: amountTransform(item.profit, '/'),
       totalPrice: item.salePrice > 0 ? +new Big(item.price || item?.price).div(100).times(1) : 0,
@@ -289,8 +298,6 @@ export default function EditTable({ onSelect }) {
         })
         setDataSource(arr)
       })
-
-
     };
 
     return debounce(loadData, 500);
@@ -307,6 +314,7 @@ export default function EditTable({ onSelect }) {
         hasStock: 1,
         isGetWholesale: 1,
       }}
+      scroll={{ x: '120vw' }}
       controlled
       request={productList}
       search={{
@@ -332,7 +340,8 @@ export default function EditTable({ onSelect }) {
         type: 'radio',
         onChange: (_, val) => {
           onSelect(val[0])
-        }
+        },
+        fixed: true
       }}
       bordered
       recordCreatorProps={false}

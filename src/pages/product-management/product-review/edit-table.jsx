@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
 import { Form } from 'antd';
 import Upload from '@/components/upload';
 import styles from './edit-table.less';
+import debounce from 'lodash/debounce';
+import * as api from '@/services/product-management/product-list';
+import { amountTransform } from '@/utils/utils'
 
 export default function EditTable(props) {
-  const { tableHead, tableData, setTableData, settleType } = props;
+  const { tableHead, tableData, setTableData, settleType, goodsSaleType } = props;
   const [columns, setColumns] = useState([])
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
@@ -38,6 +41,7 @@ export default function EditTable(props) {
         dataIndex: 'retailSupplyPrice',
         width: 130,
         editable: false,
+        hideInTable: goodsSaleType !== 0,
       },
       {
         title: '批发供货价(元)',
@@ -55,26 +59,23 @@ export default function EditTable(props) {
         title: '秒约价',
         dataIndex: 'salePrice',
         width: 150,
-        formItemProps: {
-          rules: [{
-            required: true,
-            whitespace: true,
-            message: '请输入秒约价',
-          }],
-        },
         editable: settleType !== 1,
+      },
+      {
+        title: '秒约价上浮比例',
+        dataIndex: 'salePriceFloat',
+        hideInTable: goodsSaleType !== 0,
+      },
+      {
+        title: '秒约价实际盈亏',
+        dataIndex: 'salePriceProfitLoss',
+        editable: false,
+        hideInTable: goodsSaleType !== 0,
       },
       {
         title: '市场价',
         dataIndex: 'marketPrice',
         width: 150,
-        formItemProps: {
-          rules: [{
-            required: true,
-            whitespace: true,
-            message: '请输入市场价',
-          }],
-        },
       },
       {
         title: '库存预警值',
@@ -87,13 +88,6 @@ export default function EditTable(props) {
         dataIndex: 'stockNum',
         width: 90,
         editable: false,
-        formItemProps: {
-          rules: [{
-            required: true,
-            whitespace: true,
-            message: '请输入可用库存',
-          }],
-        }
       },
 
       // {
@@ -108,6 +102,53 @@ export default function EditTable(props) {
 
   }, [tableHead, settleType])
 
+  const debounceFetcher = useMemo(() => {
+    const loadData = (value) => {
+      const { recordList, record } = value;
+
+      const findItem = dataSource.find(item => item.id === record.id);
+      const obj = {
+        skuId: findItem.skuId,
+        retailSupplyPrice: amountTransform(findItem.retailSupplyPrice),
+        wholesaleTaxRate: props.wholesaleTaxRate,
+      }
+      if (findItem.salePrice !== record.salePrice) {
+        obj.salePrice = amountTransform(record.salePrice);
+      }
+
+      if (findItem.salePriceFloat !== record.salePriceFloat) {
+        obj.salePriceFloat = amountTransform(record.salePriceFloat, '/');
+      }
+
+      if ((findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat) && goodsSaleType === 0) {
+        api.subAccountCheck(obj).then(res => {
+          if (res.code === 0) {
+            const skuData = res.data[0];
+            const arr = recordList.map(item => {
+              if (item.id === record.id) {
+                const data = {
+                  ...item,
+                  salePrice: amountTransform(skuData.salePrice, '/'),
+                  salePriceProfitLoss: amountTransform(skuData.salePriceProfitLoss, '/'),
+                  salePriceFloat: amountTransform(skuData.salePriceFloat),
+                }
+                return data
+              }
+              return item
+            })
+            setDataSource(arr)
+            setTableData(arr)
+          }
+        })
+      } else {
+        setDataSource(recordList)
+        setTableData(recordList)
+      }
+    };
+
+    return debounce(loadData, 500);
+  }, [dataSource, props]);
+
   useEffect(() => {
     setEditableKeys(tableData.map(item => item.key));
     setDataSource(tableData);
@@ -118,15 +159,17 @@ export default function EditTable(props) {
       columns={columns}
       rowKey="key"
       value={dataSource}
+      scroll={{ x: '70vw' }}
+      controlled
       editable={{
-        form,
         editableKeys,
         actionRender: (row, config, defaultDoms) => {
           return [defaultDoms.delete];
         },
         onValuesChange: (record, recordList) => {
-          setDataSource(recordList);
-          setTableData(recordList)
+          // setDataSource(recordList);
+          // setTableData(recordList)
+          debounceFetcher({ record, recordList })
         }
       }}
       bordered

@@ -43,6 +43,12 @@ export default {
       component: './intensive-store-management/store-review',
     },
     {
+      name: 'store-review-detail',
+      path: '/intensive-store-management/store-review-detail/:id',
+      component: './intensive-store-management/store-review-detail',
+      hideInMenu: true,
+    },
+    {
       name: 'grade-index',
       path: '/intensive-store-management/grade-index',
       component: './intensive-store-management/grade-index',

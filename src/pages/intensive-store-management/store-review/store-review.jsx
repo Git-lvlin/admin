@@ -92,12 +92,6 @@ const StoreReview = () => {
       )
     },
     {
-      title: '所在地区',
-      dataIndex: '',
-      valueType: 'select',
-      hideInTable: true,
-    },
-    {
       title: '详情地址',
       dataIndex: '',
       valueType: 'text',
@@ -133,9 +127,8 @@ const StoreReview = () => {
     {
       title: '所在地区',
       dataIndex: 'area',
-      valueType: 'text',
       hideInTable: true,
-      renderFormItem: () => <AddressCascader />
+      renderFormItem: () => (<AddressCascader changeOnSelect />)
     },
     {
       title: '详细地址',
