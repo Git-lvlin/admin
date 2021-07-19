@@ -42,3 +42,11 @@ export const storeAdd = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const refunded = (params = {}, options = {}) => {
+  return request('/auth/store/storeDeposit/refunded', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

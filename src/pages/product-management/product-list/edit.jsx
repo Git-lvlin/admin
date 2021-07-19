@@ -281,7 +281,7 @@ export default (props) => {
         setSalePriceProfitLoss(amountTransform(data.salePriceProfitLoss, '/'))
       })
     }
-    return debounce(loadData, 500);
+    return debounce(loadData, 1000);
   }, [])
 
   useEffect(() => {

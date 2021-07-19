@@ -89,11 +89,12 @@ const Detail = () => {
   const map = useRef();
 
   const submit = (values) => {
+    const { area, imageInfo, ...rest} = values;
     return new Promise((resolve, reject) => {
       let userInfo = window.localStorage.getItem('user');
       userInfo = userInfo && JSON.parse(userInfo)
       approve({
-        ...values,
+        ...rest,
         applyId: params.id,
         optAdminId: userInfo.id,
         optAdminName: userInfo.username,
@@ -101,9 +102,9 @@ const Detail = () => {
         latitude: location[2],
         realname: detailData.details.realname,
         idNumber: detailData.details.idNumber,
-        idFront: values.imageInfo.idCardFrontImg,
-        idBack: values.imageInfo.idCardBackImg,
-        idHandheld: values.imageInfo.idHandheld,
+        idFront: imageInfo.idCardFrontImg,
+        idBack: imageInfo.idCardBackImg,
+        idHandheld: imageInfo.idHandheld,
         memberId: detailData.memberId,
         deposit: detailData.deposit.length === 0 ? values.depositValue : 0
       }, { showSuccess: true }).then(res => {
@@ -342,7 +343,7 @@ const Detail = () => {
             {detailData?.createTime}
           </Form.Item>
           {
-            detailData?.verifyStatus?.code === 3
+            detailData?.deposit?.payAmount
             &&
             <>
               <Form.Item
