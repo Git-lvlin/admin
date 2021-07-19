@@ -8,25 +8,28 @@ import Upload from '@/components/upload';
 import { merketDetailUpdata } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailDataz, setVisible, onClose, visible } = props;
+  const { detailDataz, setVisible, visible, setFlag } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
 
   const waitTime = (values) => {
-    const { id, ...rest } = values
+    const { ...rest } = values
     console.log('rest', rest)
-    const param = {
+    let param = {
       ...rest
     }
-    if (id) {
-      param.id = id
+    if (detailDataz.id) {
+      param.id = detailDataz.id
     }
-  
-    return new Promise((resolve) => {
+    console.log('param', param)
+    return new Promise((resolve, reject) => {
       merketDetailUpdata(param).then((res) => {
         if (res.code === 0) {
+          setFlag(true)
           resolve(true);
+        } else {
+          reject(false);
         }
       })
   
@@ -53,9 +56,6 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        onClose: () => {
-          onClose();
-        }
       }}
       onFinish={async (values) => {
         await waitTime(values);
@@ -103,7 +103,7 @@ export default (props) => {
 
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText 
+        <ProFormText
             width="sm"
             name="actionUrl"
             label="跳转链接"
@@ -111,8 +111,8 @@ export default (props) => {
           />
       </ProForm.Group>
       <ProFormText
-        name="id"
-        label="id"
+        name="itemId"
+        label="itemId"
         hidden
       />
     </DrawerForm>

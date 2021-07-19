@@ -20,7 +20,14 @@ export default (props) => {
     if (id) {
       param.id = id
     }
-  
+    console.log('process.env', process.env)
+    const env = {
+      'development': '-dev',
+      'production': '',
+      'release': '-uat'
+    }
+    const envName = env[process.env.NODE_ENV]
+    param.actionUrl = `http://publicmobile${env[process.env.NODE_ENV]}.yeahgo.com/web/market`
     return new Promise((resolve) => {
       marketUpdata(param).then((res) => {
         if (res.code === 0) {
@@ -87,14 +94,14 @@ export default (props) => {
         />
 
       </ProForm.Group>
-      <ProForm.Group>
+      {/* <ProForm.Group>
         <ProFormText 
             width="sm"
             name="actionUrl"
             label="跳转链接"
             rules={[{ required: false, message: '请输入跳转链接' }]}  
           />
-      </ProForm.Group>
+      </ProForm.Group> */}
         <ProFormText
           name="id"
           label="id"

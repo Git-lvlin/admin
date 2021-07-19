@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect  } from 'react';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm } from '@ant-design/pro-form';
 import { marketItemList } from '@/services/cms/member/member';
@@ -11,14 +11,19 @@ export default (props) => {
   const actionRef = useRef();
   const [detailDataz, setDetailDataz] = useState(null);
   const [formVisiblez, setFormVisiblez] = useState(false);
+  const [flag, setFlag] = useState(false);
+
+  useEffect(() => {
+    flag&&actionRef.current.reset()
+  }, [flag])
 
   const getDetail = (data) => {
-    data && setDetailDataz(data);
+    data?setDetailDataz(data):setDetailDataz({id: detailData.id})
     setFormVisiblez(true);
   }
 
-  const formControl = (id) => {
-    marketItemDel({id: id}).then((res) => {
+  const formControl = (itemId, id) => {
+    marketItemDel({itemId: itemId,id:id}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
         actionRef.current.reset();
@@ -59,7 +64,7 @@ export default (props) => {
         return (
           <>
             {<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
-            &nbsp;&nbsp;{<a key="d" onClick={() => {formControl(record.id)}}>删除</a>}
+            &nbsp;&nbsp;{<a key="d" onClick={() => {formControl(record.itemId, record.id)}}>删除</a>}
           </>
         )
       }
@@ -112,8 +117,7 @@ export default (props) => {
       visible={formVisiblez}
       setVisible={setFormVisiblez}
       detailDataz={detailDataz}
-      callback={() => { actionRef.current.reload(); setDetailDataz(null) }}
-      onClose={() => { actionRef.current.reload(); setDetailDataz(null) }}
+      setFlag={setFlag}
     />}
     </ModalForm>
   );
