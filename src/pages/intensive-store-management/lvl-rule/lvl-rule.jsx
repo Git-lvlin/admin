@@ -59,20 +59,22 @@ const LvlRule = () => {
       render: (value, row, index) => {
         const obj = {
           children: value,
-          props: {
-            style: {
-              textAlign: 'center'
-            }
-          },
+          props: {},
         };
 
         if (index === 0) {
           obj.children = '申请通过即可'
           obj.props.colSpan = 4;
+          obj.props.style = {
+            textAlign: 'center'
+          }
         }
         if (index === 1) {
           obj.children = '持续2个月未升级关闭店铺(关闭后可联系客服再次开启)'
           obj.props.colSpan = 4;
+          obj.props.style = {
+            textAlign: 'center'
+          }
         }
 
         return obj;
@@ -228,6 +230,7 @@ const LvlRule = () => {
             required
           >
             <DatePicker
+              showNow={false}
               showTime
               onOk={onOk}
               disabledDate={(currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() }}
