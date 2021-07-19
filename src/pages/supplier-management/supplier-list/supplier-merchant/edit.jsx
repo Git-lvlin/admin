@@ -633,23 +633,23 @@ export default (props) => {
             <Form.Item
               label="企业地址"
               name="addressInfo"
-              validateFirst
-              rules={[
-                () => ({
-                  required: true,
-                  validator(_, value = {}) {
-                    const { area, info } = value;
-                    if (area?.length === 0 || !area) {
-                      return Promise.reject(new Error('请选择企业所在地'));
-                    }
+              // validateFirst
+              // rules={[
+              //   () => ({
+              //     required: true,
+              //     validator(_, value = {}) {
+              //       const { area, info } = value;
+              //       if (area?.length === 0 || !area) {
+              //         return Promise.reject(new Error('请选择企业所在地'));
+              //       }
 
-                    if (!info?.replace(/\s/g, '')) {
-                      return Promise.reject(new Error('请输入企业详细地址'));
-                    }
+              //       if (!info?.replace(/\s/g, '')) {
+              //         return Promise.reject(new Error('请输入企业详细地址'));
+              //       }
 
-                    return Promise.resolve();
-                  },
-                })]}
+              //       return Promise.resolve();
+              //     },
+              //   })]}
             >
               <Address />
             </Form.Item>
