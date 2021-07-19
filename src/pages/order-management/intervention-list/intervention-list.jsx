@@ -1,6 +1,6 @@
-import { PageContainer } from '@ant-design/pro-layout';
-import ProCard from '@ant-design/pro-card';
-import TabList from './tab-list';
+import { PageContainer } from '@ant-design/pro-layout'
+import ProCard from '@ant-design/pro-card'
+import TabList from './tab-list'
 
 
 const InterventionList = () => {

@@ -63,7 +63,7 @@ const ReturnGoods = ({data}) => {
             src={records?.goodsImageUrl}
           />
           <div className={styles.goodsContent}>
-            <div className={styles.goodsName}>{records?.goodsName}</div>
+            <div>{records?.goodsName}</div>
             <div className={styles.skuName}>{records?.skuName}</div>
           </div>
         </div>

@@ -7,7 +7,7 @@ import styles from './styles.less'
 
 const tableRow = props => {
   const imageArr = () => {
-    const imgUrl = props[0]?.proofImageUrl.split(',')
+    const imgUrl = props[0]?.returnVoucher?.split(',')
     return imgUrl?.map(url => {
       if(url) {
         return(
@@ -27,11 +27,11 @@ const tableRow = props => {
         <div className={styles.summary}>
           <div className={styles.summaryItem}>
             退货原因：
-            <span className={styles.summaryItemText}>{props[0]?.reason}</span>
+            <span className={styles.summaryItemText}>{props[0]?.returnReason}</span>
           </div>
           <div className={styles.summaryItem}>
             退货描述：
-            <span className={styles.summaryItemText}>{props[0]?.description}</span>
+            <span className={styles.summaryItemText}>{props[0]?.returnDesc}</span>
           </div>
           <div className={styles.summaryImg}>
             <div className={styles.summaryItemTxt}>退货凭证：</div>
@@ -47,9 +47,7 @@ const tableRow = props => {
   )
 }
 
-// 退货商品
-const ReturnGoods = props => {
-  const { data } = props
+const ReturnGoods = ({data}) => {
   const dataSource = Array.isArray(data) ? [] : [data]
   const columns = [
     {
@@ -59,44 +57,32 @@ const ReturnGoods = props => {
       width: 450,
       render: (_, records) => (
         <div className={styles.goodsInfo}>
-          <Image 
-            width={80} 
+          <Image
+            width={80}
             height={80}
-            src={records?.goodsImageUrl} 
+            src={records?.goodsImgUrl}
           />
           <div className={styles.goodsContent}>
             <div>{records?.goodsName}</div>
-            <div className={styles.skuName}>{records?.skuName}</div>
+            <div className={styles.skuName}>{records?.goodsSkuName}</div>
           </div>
         </div>
       )
     },
     {
       title: '单价',
-      dataIndex: 'skuSalePrice',
+      dataIndex: 'goodsPrice',
       align: 'center',
       render: (_) => `¥${amountTransform(Number(_), '/').toFixed(2)}`
     },
     { 
       title: '退货数量',
-      dataIndex: 'returnNum',
+      dataIndex: 'goodsRefundNum',
       align: 'center' 
     },
     {
-      title: '小计',
-      dataIndex: 'subtotal',
-      align: 'center',
-      render: (_, records) => `¥${amountTransform((records?.skuSalePrice * records?.returnNum), '/').toFixed(2)}`
-    },
-    {
-      title: '优惠金额',
-      dataIndex: 'couponAmount',
-      align: 'center',
-      render: (_) => `¥${amountTransform(Number(_), '/').toFixed(2)}`
-    },
-    {
       title: '应退金额',
-      dataIndex: 'returnAmount',
+      dataIndex: 'goodsRefundAmount',
       align: 'center',
       render: (_) => `¥${amountTransform(Number(_), '/').toFixed(2)}`
     }
@@ -104,7 +90,7 @@ const ReturnGoods = props => {
 
   return (
     <ProTable
-      rowKey="orderItemId"
+      rowKey="goodsRefundNum"
       pagination={false}
       columns={columns}
       bordered
@@ -117,4 +103,4 @@ const ReturnGoods = props => {
   )
 }
 
-export default ReturnGoods;
+export default ReturnGoods

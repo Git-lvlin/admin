@@ -3,25 +3,24 @@ import ProTable from '@ant-design/pro-table'
 import { history } from 'umi'
 import moment from 'moment'
 
-import { interventionList } from '@/services/order-management/intervention-list'
+import { interventionList } from '@/services/order-management/intensive-intervention-list'
 
-const TabList =props=> {
-  const { done } =props
+const TabList =({done})=> {
   const columns =[
     {
       title: '售后编号',
-      dataIndex: 'orderSn',
+      dataIndex: 'refundId',
       align: 'center',
       
     },
     {
       title: '订单编号',
-      dataIndex: 'subOrderSn',
+      dataIndex: 'orderId',
       align: 'center',
     },
     {
       title: '售后类型',
-      dataIndex: 'afterSalesType',
+      dataIndex: 'refundType',
       valueType: 'select',
       align: 'center',
       hideInSearch: true,
@@ -51,19 +50,14 @@ const TabList =props=> {
     },
     {
       title: '申请介入类型',
-      dataIndex: 'stage',
-      valueType: 'select',
+      dataIndex: 'joinTypeDesc',
       colSize: .8,
       align: 'center',
-      hideInSearch: true,
-      valueEnum: {
-        1: '介入申请',
-        2: '介入退款'
-      }
+      hideInSearch: true
     },
     {
       title: '介入类型',
-      dataIndex: 'stage',
+      dataIndex: 'joinType',
       valueType: 'select',
       colSize: .8,
       align: 'center',
@@ -75,14 +69,9 @@ const TabList =props=> {
     },
     {
       title: '状态',
-      dataIndex: 'status',
-      valueType: 'select',
+      dataIndex: 'statusDesc',
       align: 'center',
       hideInSearch: true,
-      valueEnum: {
-        0: '待处理',
-        1: '已处理'
-      }
     },
     {
       title: '操作',
@@ -92,7 +81,7 @@ const TabList =props=> {
       render:(_, data)=>{
         return (
           <>
-            <a onClick={()=>history.push(`/order-management/intervention-list/details/${data.id}`)}>查看详情</a>
+            <a onClick={()=>history.push(`/order-management/intensive-intervention-list/details/${data?.id}`)}>查看详情</a>
           </>
         )
       }
@@ -100,17 +89,16 @@ const TabList =props=> {
   ]
   return (
     <ProTable
-      rowKey='orderSn'
+      rowKey='refundId'
       columns={columns}
       headerTitle="数据列表"
       options={false}
-      params={{
-        done
-      }}
+      params={{status: done}}
       request={interventionList}
       pagination={{
         hideOnSinglePage: true,
-        showQuickJumper: true
+        showQuickJumper: true,
+        pageSize: 10
       }}
       search={{
         span: 5,

@@ -1,85 +1,80 @@
-import React, { useEffect, useState } from 'react'
-import ProDescriptions from '@ant-design/pro-descriptions'
+import React, {useEffect, useState} from 'react'
 import { Button, Timeline, Empty } from 'antd'
-import{ ModalForm } from '@ant-design/pro-form'
+import ProDescriptions from '@ant-design/pro-descriptions'
+import { ModalForm } from '@ant-design/pro-form'
 import moment from 'moment'
 
 import { amountTransform } from '@/utils/utils'
-import { expressInfo } from '@/services/order-management/after-sales-order'
+import { expressInfo } from '@/services/order-management/intervention-list'
 
 import styles from './styles.less'
-import './styles.less'
-
 const { Item } = Timeline
 
-const showLastStatus = lastStatus => {
-  if(lastStatus){
-    return lastStatus?.map((item)=>(
-      <Item key={item.time}>
-        <span className={styles.time}>{item.time}</span>
-        {item.content}
-      </Item>
-    ))
-  } else {
-    return <Empty className={styles.empty}/>
+const ReturnSingle = ({data}) => {
+  const [address, setAddress] = useState({})
+  const showLastStatus = lastStatus => {
+    if(lastStatus){
+      return lastStatus?.map((item)=>(
+        <Item key={item.time}>
+          <span className={styles.time}>{item.time}</span>
+          {item.content}
+        </Item>
+      ))
+    } else {
+      return <Empty className={styles.empty}/>
+    }
   }
-}
-
-const ReturnInformation = props => {
-  const { 
-    data,
-    status,
-    type
-  } = props
-  const [express, setExpress] = useState({})
-  const isHide = ()=> {
-    return (status === 1 && type !== 1) ? true : false
-  }
-  useEffect(() => {
-    data?.returnShippingCode &&
-      expressInfo({
-        shippingCode: data?.returnShippingCode,
-        expressType: data?.returnExpressType,
-        mobile: data?.returnPhone,
-        deliveryTime: data?.returnTime
-      }).then(res => {
-        setExpress(res.data)
-      })
-    return ()=>{
-      setExpress([])
+  useEffect(()=>{
+    data?.expressNo&&
+    expressInfo({
+      shippingCode: data?.expressNo,
+      expressType: data?.expressType,
+      mobile: data?.business?.receiptPhone,
+      deliveryTime: data?.expressTime
+    }).then(res => {
+      setAddress(res?.data)
+    })
+    return () => {
+      setAddress({})
     }
   }, [data])
 
-  const columns = [
+  const isRefunds = ()=> {
+    return data?.refundType === 2 ? false : true
+  }
+
+  const columns =[
     {
       title: '商品退回方式',
-      dataIndex: 'afterSalesType',
+      dataIndex: 'refundType',
       valueType: 'select',
       valueEnum: {
         1: '无需退回',
         2: '快递寄送'
-      },
+      }
     },
     {
       title: '售后类型',
-      dataIndex: 'afterSalesType',
+      dataIndex: 'refundType',
       valueEnum: {
         1: '退款',
         2: '退款退货'
       },
     },
     {
-      title: '买家收货地址', 
+      title: '买家收货地址',
       dataIndex: 'receiveAddress',
-      render: (_, records) => records.buyerDeliveryInfo?.fullAddress
+      render: (_, records) => records.buyer?.receiptAddress
     },
     {
       title: '买家昵称',
-      dataIndex: 'userNickname'
+      dataIndex: 'userNickname',
+      render: (_, records) => records.buyer?.storeName
     },
     {
       title: '买家手机号',
-      dataIndex: 'buyerPhone'
+      dataIndex: 'buyerPhone',
+      render: (_, records) => records.buyer?.storePhone
     },
     {
       title: '申请时间',
@@ -89,17 +84,17 @@ const ReturnInformation = props => {
     },
     {
       title: '订单编号',
-      dataIndex: 'subOrderSn'
+      dataIndex: 'orderId'
     },
     {
       title: '退款总金额',
-      dataIndex: 'returnAmount',
+      dataIndex: 'refundTotalAmount',
       render:(_) =>`¥${amountTransform(_, '/').toFixed(2)}`
     },
     {
       title: '退货物流信息',
       dataIndex: 'returnGoodsInfo',
-      hideInDescriptions: isHide(),
+      hideInDescriptions: isRefunds(),
       render: () => {
         return(
           <div style={{display: 'flex', alignItems:'center'}}>
@@ -107,18 +102,18 @@ const ReturnInformation = props => {
               <div style={{marginBottom: 10}}>
                 快递公司：
                 <span style={{marginRight: 20}}>
-                  {express?.expressName}
+                  {address?.expressName}
                 </span>
               </div>
               <div>运单编号：
                 <span style={{marginRight: 20}}>
-                  {express?.shippingCode}
+                  {address?.shippingCode}
                 </span>
               </div>
             </div>
             <ModalForm
               title='快递消息'
-              width={700}
+              width={800}
               modalProps={{
                 closable: true,
                 destroyOnClose: true
@@ -129,34 +124,39 @@ const ReturnInformation = props => {
               onFinish={()=> true}
             >
               <Timeline className={styles.timelineWarp}>
-                {showLastStatus(express?.deliveryList)}
+                {showLastStatus(address?.deliveryList)}
               </Timeline>
             </ModalForm>
           </div>
         )
       }
     },
-    {
+    { 
       title: '商家收件人名称',
       dataIndex: 'receiveMan',
-      hideInDescriptions: isHide()
+      hideInDescriptions: isRefunds()
     },
     {
       title: '商家收货手机号',
       dataIndex: 'receivePhone',
-      hideInDescriptions: isHide()
+      hideInDescriptions: isRefunds()
     },
     {
       title: '商家收货地址',
       dataIndex: 'receiveAddress',
-      hideInDescriptions: isHide()
+      hideInDescriptions: isRefunds()
     },
     {
       title: '商家收货时间',
       dataIndex: 'receiveTime',
-      hideInDescriptions: isHide()
+      hideInDescriptions: isRefunds(),
+      render: (_) => {
+        if(_) return moment(_).format('YYYY-MM-DD HH:mm:ss')
+        return ''
+      }
     }
   ]
+
   return (
     <ProDescriptions
       rowKey='orderNumber'
@@ -171,4 +171,4 @@ const ReturnInformation = props => {
   )
 }
 
-export default ReturnInformation
+export default ReturnSingle
