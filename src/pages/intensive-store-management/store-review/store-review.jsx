@@ -4,6 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/intensive-store-management/store-review';
 import AddressCascader from '@/components/address-cascader';
+import { history } from 'umi';
 import Form from './form';
 
 const StoreReview = () => {
@@ -106,10 +107,13 @@ const StoreReview = () => {
       valueType: 'text',
       hideInSearch: true,
       valueEnum: {
-        1: '店铺入驻成功',
-        2: '驳回',
-        3: '已通过',
-        4: '待审核'
+        0: '没有申请过',
+        1: '审核通过',
+        2: '审核不通过',
+        3: '已缴保证金',
+        4: '待缴保证金',
+        5: '取消申请',
+        6: '待审核',
       }
     },
     {
@@ -118,10 +122,13 @@ const StoreReview = () => {
       valueType: 'text',
       hideInTable: true,
       valueEnum: {
-        1: '店铺入驻成功',
-        2: '驳回',
-        3: '已通过',
-        4: '待审核'
+        0: '没有申请过',
+        1: '审核通过',
+        2: '审核不通过',
+        3: '已缴保证金',
+        4: '待缴保证金',
+        5: '取消申请',
+        6: '待审核',
       }
     },
     {
@@ -142,7 +149,7 @@ const StoreReview = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => {
-        return _ === 4 && <a onClick={() => { setSelectItem(data); setFormVisible(true) }}>审核</a>;
+        return _ !== 1 && <a onClick={() => { history.push(`/intensive-store-management/store-review-detail/${data.id}`) }}>审核</a>;
       }
     },
   ];
