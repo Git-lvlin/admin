@@ -452,8 +452,12 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        await submit(values);
-        return true;
+        try {
+          await submit(values);
+          return true;
+        } catch (error) {
+          console.log('error', error);
+        }
       }}
       visible={visible}
       initialValues={{
@@ -590,8 +594,8 @@ export default (props) => {
               { required: true, message: '请输入商品开票税率' },
               () => ({
                 validator(_, value) {
-                  if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                    return Promise.reject(new Error('请输入大于零的数字'));
+                  if (!/^\d+\.?\d*$/g.test(value)) {
+                    return Promise.reject(new Error('请输入0-13之间的数字'));
                   }
                   return Promise.resolve();
                 },
@@ -625,7 +629,7 @@ export default (props) => {
         </div>
       </div>
 
-      <div style={{ visibility: detailData?.bankAccountInfo?.auditStatus === 1 ? 'hidden' : 'visible' }}>
+      <div style={{ visibility: detailData?.bankAccountInfo?.auditStatus === 1 ? 'visible' : 'visible' }}>
         <Title level={4}>资金账户信息</Title>
         <Divider />
         <div style={{ display: 'flex' }}>
