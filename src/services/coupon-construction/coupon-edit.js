@@ -1,19 +1,24 @@
 import request from '@/utils/request';
+import moment from 'moment';
 
 export const couponEdit = async (params, options = {}) => {
-  const {...rest} = params;
-  const res = await request('/activityService/admin/couponEdit', {
+  const {limitStartTime,limitEndTime,activityStartTime,activityEndTime,...rest} = params;
+  const res = await request('/auth/activity/Coupon/couponEdit', {
     method: 'POST',
     data: {
+      limitStartTime: moment(limitStartTime).format('YYYY-MM-DD HH:mm:ss'),
+      limitEndTime:moment(limitEndTime).format('YYYY-MM-DD HH:mm:ss'),
+      activityStartTime:moment(activityStartTime).format('YYYY-MM-DD HH:mm:ss'),
+      activityEndTime:moment(activityEndTime).format('YYYY-MM-DD HH:mm:ss'),
       ...rest
     },  
     ...options
   });
   console.log('res',res)
 
-//   return {
-//     // code: res.code,
-//     data: res.data,
-//     success: res.success,
-//   }
+  return {
+    code: res.code,
+    data: res.data,
+    success: res.success,
+  }
 }

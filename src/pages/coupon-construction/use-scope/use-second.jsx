@@ -28,11 +28,6 @@ const useSecond=(props)=>{
             dataIndex: 'goodsName',
             valueType: 'text',
         },
-        // {
-        //     title: '供应商ID',
-        //     dataIndex: 'supplierId',
-        //     valueType: 'text',
-        // },
         {
             title: '商品分类',
             dataIndex: 'gcId1',
@@ -78,13 +73,13 @@ const useSecond=(props)=>{
     const columns2=[
        {
           title: '分类',
-          dataIndex: 'unit',
+          dataIndex: 'gcName',
        },
        {
         title: '操作',
         valueType: 'text',
         render:(text, record, _, action)=>[
-            <a onClick={()=>delType(record.key)}>删除</a>
+            <a onClick={()=>delType(record.id)}>删除</a>
         ]
      }
     ]
@@ -104,11 +99,6 @@ const useSecond=(props)=>{
             dataIndex: 'goodsName',
             valueType: 'text',
         },
-        // {
-        //     title: '供应商ID',
-        //     dataIndex: 'supplierId',
-        //     valueType: 'text',
-        // },
         {
             title: '商品分类',
             dataIndex: 'gcId1Display',
@@ -135,19 +125,18 @@ const useSecond=(props)=>{
             ]
          }
     ];
-    const columns4=[
-        {
-           title: '分类',
-           dataIndex: 'gcName',
-        }
-     ]
     // 删除品类
-    const delType=key=>{
-        setCates([])
+    const delType=id=>{
         dispatch({
             type:'UseScopeList/fetchLookUnit',
             payload:{
-                unit:''
+                unit:null
+            }
+        })
+        dispatch({
+            type:'UseScopeList/fetchLookUnitArr',
+            payload:{
+                unitArr:[]
             }
         })
         setFlag(true)
@@ -155,26 +144,25 @@ const useSecond=(props)=>{
     
     // 删除商品
     const  delGoods=val=>{
-        const arr =  UseScopeList.UseScopeObje.spuIds.split(',')
+        console.log('val',val)
+        console.log('spuIdsArr',UseScopeList.UseScopeObje.spuIdsArr)
+        const arr = UseScopeList.UseScopeObje.spuIds.split(',')
         dispatch({
             type:'UseScopeList/fetchLookSpuIds',
             payload:{
                 spuIds:arr.filter(ele=>(
-                            ele!=val
-                        )).toString()
+                    ele!=val
+                )).toString()
             }
         })
         dispatch({
             type:'UseScopeList/fetchLookSpuIdsArr',
             payload:{
                 spuIdsArr:UseScopeList.UseScopeObje.spuIdsArr.filter(ele=>(
-                            ele.id!=val
+                            ele.spuId!=val
                 ))
             }
         })
-        if(UseScopeList.UseScopeObje.spuIdsArr.length==1){
-            setLoading(true)
-        }
        
     }
     const actionRef = useRef();
@@ -182,7 +170,6 @@ const useSecond=(props)=>{
     const [loading,setLoading]=useState(true)
     const [flag,setFlag]=useState(true)
     const [spuIdsArr,setSpuIdsArr]=useState([])
-    const [cates,setCates]=useState([])
     const [position,setPosition]=useState()
     const [onselect,setOnselect]=useState([])
     const [spuIds,setSpuIds]=useState('')
@@ -190,6 +177,36 @@ const useSecond=(props)=>{
         setIsModalVisible(true);
         setLoading(true)
     };
+    useEffect(()=>{
+        setTimeout(()=>{
+            if(parseInt(id)==id){
+                dispatch({
+                    type:'UseScopeList/fetchLookSpuIds',
+                    payload:{
+                        spuIds:DetailList.data&&DetailList.data?.spuIds
+                    }
+                })
+                dispatch({
+                    type:'UseScopeList/fetchLookSpuIdsArr',
+                    payload:{
+                        spuIdsArr:DetailList.data&&DetailList.data?.spuInfo
+                    }
+                })
+                dispatch({
+                    type:'UseScopeList/fetchLookUnit',
+                    payload:{
+                        unit:DetailList.data&&DetailList.data?.classInfo.id
+                    }
+                })
+                dispatch({
+                    type:'UseScopeList/fetchLookUnitArr',
+                    payload:{
+                        unitArr:DetailList.data&&[DetailList.data?.classInfo]
+                    }
+                })
+            }
+        },1000) 
+    },[])
     const handleOk = () => {
         setIsModalVisible(false);
         setLoading(false)
@@ -211,14 +228,8 @@ const useSecond=(props)=>{
         setIsModalVisible(false);
     };
 
-    // 拼接spuIds
     const onIpute=(res)=>{
-        let spuIds=''
-        res.selectedRows.map(ele=>{
-            spuIds+=`${ele.spuId},`
-        })
-        spuIds=spuIds.substring(0,spuIds.length-1)
-       setSpuIds(spuIds)
+       setSpuIds(res.selectedRowKeys.toString())
        setSpuIdsArr(res.selectedRows)
     }
     const onCate=()=>{
@@ -237,7 +248,7 @@ const useSecond=(props)=>{
             <ProFormRadio.Group
                 name="goodsType"
                 label={<FormattedMessage id="formandbasic-form.commodity"/>}
-                rules={[{ required: true, message: '请选择商品范围' }]}
+                // rules={[{ required: true, message: '请选择商品范围' }]}
                 fieldProps={{
                 value: (parseInt(id)==id )&&DetailList.data?.goodsType||position,
                 onChange: (e) => setPosition(e.target.value),
@@ -260,17 +271,6 @@ const useSecond=(props)=>{
             {
                 position==2||(parseInt(id)==id )&&DetailList.data?.goodsType==2?
                     <>
-                    {
-                        (parseInt(id)==id)?
-                        <ProTable
-                            toolBarRender={false}
-                            search={false}
-                            rowKey="spuId"
-                            columns={columns}
-                            dataSource={DetailList.data?.spuInfo}
-                        />
-                        :
-                        <>
                         <Button type="primary" className={styles.popupBtn} onClick={showModal}>
                             选择商品
                         </Button>
@@ -303,26 +303,14 @@ const useSecond=(props)=>{
                             rowKey="spuId"
                             columns={columns3}
                             dataSource={UseScopeList.UseScopeObje.spuIdsArr}
-                            style={{display:loading?'none':'block'}}
+                            style={{display:isModalVisible?'none':'block'}}
                         />
-                        </>
-                    }
                     </>
                 :null
             }
             {
                 position==3||(parseInt(id)==id)&&DetailList.data?.goodsType==3?
                     <>
-                    {
-                        (parseInt(id)==id)?
-                        <ProTable
-                            toolBarRender={false}
-                            search={false}
-                            rowKey="id"
-                            columns={columns4}
-                            dataSource={[DetailList.data?.classInfo]}
-                        />:
-                        <>
                         <ModalForm
                             title="选择品类"
                             trigger={<Button className={styles.popupBtn} type="primary" onClick={onCate}>选择品类</Button>}
@@ -342,17 +330,20 @@ const useSecond=(props)=>{
                                     unit:values.unit
                                 }
                             })
-                            setCates([
-                                {
-                                    key: values.unit,
-                                    unit: onselect.filter(ele=>(
-                                        ele.value==values.unit
-                                    ))[0].label
+                            dispatch({
+                                type:'UseScopeList/fetchLookUnitArr',
+                                payload:{
+                                    unitArr:[
+                                        {
+                                            id: values.unit,
+                                            gcName: onselect.filter(ele=>(
+                                                ele.value==values.unit
+                                            ))[0].label
+                                        }
+                                        ]
                                 }
-                                ])
-                                console.log('cates',cates)
+                            })
                             setFlag(false)
-                            message.success('提交成功');
                             return true;
                             }}
                         >
@@ -367,30 +358,12 @@ const useSecond=(props)=>{
                             search={false}
                             toolBarRender={false}
                             columns={columns2}
-                            dataSource={cates}
-                            style={{display:flag?'none':'block'}}
+                            dataSource={UseScopeList.UseScopeObje.unitArr}
+                            // style={{display:flag?'block':'none'}}
                         />
                         </>
-                    }
-                    </>
                 :null
             }
-
-        {/* <ProFormRadio.Group
-            name="memberType"
-            label="可用人群"
-            rules={[{ required: true, message: '请选择可用人群' }]}
-            options={[
-                {
-                label: '全部会员',
-                value: 1,
-                },
-                {
-                label: '新会员',
-                value: 2,
-                }
-            ]}
-            /> */}
         </Form.Item>
     )
 }

@@ -1,11 +1,57 @@
 import React,{useEffect,useRef,useState} from 'react';
-import {Form,DatePicker,Button,Modal,Select} from 'antd';
+import {Form,DatePicker,Button,Modal,Select,message} from 'antd';
 import {formatMessage,connect} from 'umi';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ProFormText } from '@ant-design/pro-form';
 import { couponCrowdList } from '@/services/crowd-management/coupon-crowd';
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
+
+const SubTable = (props) => {
+    const [data, setData] = useState([])
+    const {name}=props
+    const columns = [
+      {
+        title: '选项',
+        dataIndex: 'type',
+        valueType: 'select',
+        valueEnum: {
+          1: '会员等级',
+          2: '消费次数',
+          3: '累计消费'
+        },
+        hideInSearch: true,
+    },
+      {
+          title: '范围',
+          dataIndex: 'isContain',
+          valueType: 'select',
+          valueEnum: {
+            1: '包含',
+            2: '不包含',
+          },
+          hideInSearch: true,
+      },
+      {
+          title: '条件',
+          dataIndex: 'msgDisplay',
+          hideInSearch: true,
+      }
+    ];
+    useEffect(() => {
+      couponCrowdList({
+        name:name
+      }).then(res => {
+        if (res.code === 0) {
+          setData(res?.data?.[0].crowdInfo)
+        }
+      })
+    }, [])
+    return (
+      <ProTable toolBarRender={false} search={false} key="type" columns={columns} dataSource={data} pagination={false} />
+    )
+  };
+
 
 const validity=(props)=>{
     let {id,DetailList,choose,dispatch,UseScopeList}=props
@@ -22,7 +68,7 @@ const validity=(props)=>{
             valueType: 'text',
         }
     ];
-    const columns3= [
+    const columns2= [
         {
             title: '群体名称',
             dataIndex: 'name',
@@ -36,67 +82,30 @@ const validity=(props)=>{
             ]
          }
     ];
-    const SubTable = (props) => {
-        const [data, setData] = useState([])
-        const {name}=props
-        const columns = [
-          {
-            title: '选项',
-            dataIndex: 'type',
-            valueType: 'select',
-            valueEnum: {
-              1: '会员等级',
-              2: '消费次数',
-              3: '累计消费'
-            },
-            hideInSearch: true,
-        },
-          {
-              title: '范围',
-              dataIndex: 'isContain',
-              valueType: 'select',
-              valueEnum: {
-                1: '包含',
-                2: '不包含',
-              },
-              hideInSearch: true,
-          },
-          {
-              title: '条件',
-              dataIndex: 'msgDisplay',
-              hideInSearch: true,
-          }
-        ];
-        useEffect(() => {
-          couponCrowdList({
-            name:name
-          }).then(res => {
-            if (res.code === 0) {
-              setData(res?.data?.[0].crowdInfo)
+    useEffect(()=>{
+        setTimeout(()=>{
+            if(id){
+                dispatch({
+                    type:'UseScopeList/fetchCrowdIds',
+                    payload:{
+                        CrowdIds:DetailList.data&&DetailList.data?.crowdList.id
+                    }
+                })
             }
-          })
-        }, [])
-        return (
-          <ProTable search={false} key="type" columns={columns} dataSource={data} pagination={false} />
-        )
-      };
+        },1000) 
+    },[])
      // 删除商品
      const  delGoods=val=>{
-        const arr =  UseScopeList.UseScopeObje.CrowdIds.split(',')
         dispatch({
             type:'UseScopeList/fetchCrowdIds',
             payload:{
-                CrowdIds:arr.filter(ele=>(
-                            ele!=val
-                        )).toString()
+                CrowdIds:''
             }
         })
         dispatch({
             type:'UseScopeList/fetchCrowdIdsArr',
             payload:{
-                CrowdIdsArr:UseScopeList.UseScopeObje.CrowdIdsArr.filter(ele=>(
-                            ele.id!=val
-                ))
+                CrowdIdsArr:[]
             }
         })
        
@@ -127,23 +136,15 @@ const validity=(props)=>{
      const onIpute=(res)=>{
        setCrowdIds(res.selectedRowKeys.toString())
        setCrowdIdsArr(res.selectedRows)
+       if(res.selectedRows.length>1){
+        message.error('只能选择一个商品');
+       }
     }
     return (
         <>
         {
-            choose==2||(parseInt(id)==id )&&DetailList.data?.activityEndDay?
+            choose==2||(parseInt(id)==id )&&DetailList.data?.memberType?
             <>
-                {
-                (parseInt(id)==id)&&DetailList.data?
-                <ProTable
-                    toolBarRender={false}
-                    search={false}
-                    rowKey="spuId"
-                    columns={columns}
-                    dataSource={DetailList.data?.spuInfo}
-                />
-                :
-                <>
                 <Button type="primary" style={{margin:"0 0 20px 20px"}} onClick={showModal}>
                     选择群体
                 </Button>
@@ -154,6 +155,7 @@ const validity=(props)=>{
                         params={{
                             pageSize: 3,
                         }}
+                        hideAll={true}
                         style={{display:loading?'block':'none'}}
                         request={couponCrowdList}
                         actionRef={actionRef}
@@ -175,12 +177,11 @@ const validity=(props)=>{
                     expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
                     search={false}
                     rowKey="spuId"
-                    columns={columns3}
-                    dataSource={UseScopeList.UseScopeObje.CrowdIdsArr}
-                    style={{display:loading?'none':'block'}}
+                    expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
+                    columns={columns2}
+                    dataSource={parseInt(id)==id&&[DetailList.data?.crowdList]||UseScopeList.UseScopeObje.CrowdIdsArr}
+                    style={{display:isModalVisible?'none':'block'}}
                 />
-                </>
-               }
             </>
             :null
          }

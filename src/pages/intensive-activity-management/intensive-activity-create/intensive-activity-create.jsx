@@ -142,27 +142,31 @@ const IntensiveActivityCreate = () => {
                 return false;
               }
 
-              if (+selectItem.fixedPrice < 0 || +selectItem.fixedPrice > 10) {
-                message.error('配送费补贴只能是0-10之间');
+              if (+selectItem.fixedPrice < 0 || +selectItem.fixedPrice > 100) {
+                message.error('配送费补贴只能是0-100之间');
                 return false;
               }
-              if (+selectItem.settlePercent < 0 || +selectItem.settlePercent > 20) {
-                message.error('集约分成比例只能是0-20之间');
+              if (+selectItem.settlePercent < 0 || +selectItem.settlePercent > 500) {
+                message.error('售价上浮比只能是0-500之间');
                 return false;
               }
-
 
               if (+selectItem.minNum > +selectItem.maxNum) {
-                message.error('单店起订量不能大于单店限订量');
+                message.error('单次起订量不能大于单次限订量');
                 return false;
               }
 
-              let minWholesalePrice = (amountTransform(selectItem.wholesaleSupplyPrice) + +new Big(selectItem.fixedPrice).times(100)) / (+new Big(1).minus(0.0068).minus(amountTransform(selectItem.settlePercent, '/')));
-              minWholesalePrice = +new Big(Math.ceil(minWholesalePrice)).div(100);
-              if (selectItem.price < minWholesalePrice) {
-                message.error(`集约价格小于集约最低价${minWholesalePrice}`);
+              if (+selectItem.profit < 0) {
+                message.error('实际盈亏不能小于0');
                 return false;
               }
+
+              // let minWholesalePrice = (amountTransform(selectItem.wholesaleSupplyPrice) + +new Big(selectItem.fixedPrice).times(100)) / (+new Big(1).minus(0.0068).minus(amountTransform(selectItem.settlePercent, '/')));
+              // minWholesalePrice = +new Big(Math.ceil(minWholesalePrice)).div(100);
+              // if (selectItem.price < minWholesalePrice) {
+              //   message.error(`集约价格小于集约最低价${minWholesalePrice}`);
+              //   return false;
+              // }
               return true;
             }}
 

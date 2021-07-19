@@ -62,7 +62,10 @@ const TableList = () => {
         spuId: record.id
       }).then(res => {
         if (res.code === 0) {
-          setDetailData(res.data);
+          setDetailData({
+            ...res.data,
+            settleType: 2,
+          });
           setFirstReviewVisible(true);
         }
       })
@@ -98,14 +101,15 @@ const TableList = () => {
    * @param {*} type 1:通过并上架，2:只通过，3:驳回
    */
   const firstCheck = (type, checkType, spuId, goodsInfo) => {
-    const { supplierHelperId, settleType, ...rest } = goodsInfo;
+    const { supplierHelperId, settleType, goodsSaleType, ...rest } = goodsInfo;
     api.firstCheck({
       checkType,
       spuId,
       isMultiSpec: detailData.isMultiSpec,
       supplierHelperId,
       settleType,
-      goodsInfo: rest.goodsInfo
+      goodsInfo: rest.goodsInfo,
+      goodsSaleType,
     }, { showSuccess: type !== 1 })
       .then(res => {
         if (res.code === 0) {
@@ -261,35 +265,35 @@ const TableList = () => {
         )
       },
     },
-    {
-      title: '上架状态',
-      dataIndex: 'goodsState',
-      onFilter: true,
-      valueType: 'select',
-      valueEnum: typeTransform(config.goodsState),
-      hideInTable: true,
-    },
+    // {
+    //   title: '上架状态',
+    //   dataIndex: 'goodsState',
+    //   onFilter: true,
+    //   valueType: 'select',
+    //   valueEnum: typeTransform(config.goodsState),
+    //   hideInTable: true,
+    // },
     {
       title: '审核类型',
       dataIndex: 'firstAuditDisplay',
       valueType: 'text',
       hideInSearch: true,
     },
-    {
-      title: '上架状态',
-      dataIndex: 'goodsStateDisplay',
-      valueType: 'text',
-      hideInSearch: true,
-      render: (_, record) => {
-        const { goodsStateRemark, goodsState } = record;
-        return (
-          <>
-            {_}&nbsp;
-            {(goodsStateRemark && goodsState === 0) && <Tooltip title={goodsStateRemark}><QuestionCircleOutlined /></Tooltip>}
-          </>
-        )
-      },
-    },
+    // {
+    //   title: '上架状态',
+    //   dataIndex: 'goodsStateDisplay',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   render: (_, record) => {
+    //     const { goodsStateRemark, goodsState } = record;
+    //     return (
+    //       <>
+    //         {_}&nbsp;
+    //         {(goodsStateRemark && goodsState === 0) && <Tooltip title={goodsStateRemark}><QuestionCircleOutlined /></Tooltip>}
+    //       </>
+    //     )
+    //   },
+    // },
     {
       title: '商品分类',
       dataIndex: 'gcId',

@@ -34,28 +34,37 @@ const UseScopeModel = {
           payload
         });
     },
-    *fetchLookUnit({ payload}, { call, put}) {
+    *fetchLookUnit({ payload }, { call, put}) {
         yield put({
           type: 'onUnit',
           payload
         });
       },
-    *fetchWholesaleIds({ payload}, { call, put}) {
-        console.log('payload',payload)
+    *fetchLookUnitArr({ payload }, { call, put}) {
+      yield put({
+        type: 'onUnitArr',
+        payload
+      });
+    },
+    *fetchWholesaleIds({ payload }, { call, put}) {
         yield put({
             type: 'onWholesaleIds',
             payload
         });
     },
+    *fetchWholesaleArr({ payload }, { call, put}) {
+      yield put({
+          type: 'onWholesaleArr',
+          payload
+      });
+  },
     *fetchCrowdIdsArr({ payload}, { call, put}) {
-      console.log('payload',payload)
       yield put({
           type: 'onCrowdIdsArr',
           payload
       });
   },
     *fetchCrowdIds({ payload}, { call, put}) {
-      console.log('payload',payload)
       yield put({
           type: 'onCrowdIds',
           payload
@@ -81,14 +90,21 @@ const UseScopeModel = {
       return { ...state };
     },
     onUnit(state = { UseScopeObje:{}},{ payload }){
-      console.log('payload.unit',payload.unit)
         state.UseScopeObje.unit=payload.unit
+        return { ...state };
+    },
+    onUnitArr(state = { UseScopeObje:{}},{ payload }){
+        state.UseScopeObje.unitArr=payload.unitArr
         return { ...state };
     },
     onWholesaleIds(state = { UseScopeObje:{}},{ payload }){
         state.UseScopeObje.wholesaleIds=payload.wholesaleIds
         return { ...state };
     },
+    onWholesaleArr(state = { UseScopeObje:{}},{ payload }){
+      state.UseScopeObje.wholesaleArr=payload.wholesaleArr
+      return { ...state };
+  },
     onCrowdIdsArr(state = { UseScopeObje:{}},{ payload }){
       state.UseScopeObje.CrowdIdsArr=payload.CrowdIdsArr
     return { ...state };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Button, Form, Image } from 'antd';
 import { EyeOutlined } from '@ant-design/icons'
 import {
@@ -12,6 +12,8 @@ import Overrule from './overrule';
 import EditTable from './edit-table';
 import { amountTransform } from '@/utils/utils'
 import styles from './first-review.less'
+import * as api from '@/services/product-management/product-list';
+import debounce from 'lodash/debounce';
 
 export default (props) => {
   const { visible, setVisible, detailData, check, overrule } = props;
@@ -19,6 +21,7 @@ export default (props) => {
   const [tableData, setTableData] = useState([]);
   const [tableHead, setTableHead] = useState([]);
   const [form] = Form.useForm()
+  const [salePriceProfitLoss, setSalePriceProfitLoss] = useState(null);
 
   const type = useRef(0)
 
@@ -36,6 +39,48 @@ export default (props) => {
       },
     }
   };
+
+  const subAccountCheck = (params, cb) => {
+    api.subAccountCheck({
+      skuId: detailData.goods.skuId,
+      retailSupplyPrice: detailData.goods.retailSupplyPrice,
+      wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
+      // wholesaleTaxRate: 0.01,
+      ...params,
+    }).then(res => {
+      if (res.code === 0) {
+        cb(res.data[0])
+      }
+    })
+  }
+
+  const salePriceChange = useMemo(() => {
+    const loadData = (e) => {
+      subAccountCheck({
+        salePrice: amountTransform(e.target.value)
+      }, (data) => {
+        form.setFieldsValue({
+          salePriceFloat: amountTransform(data.salePriceFloat),
+        })
+        setSalePriceProfitLoss(amountTransform(data.salePriceProfitLoss, '/'))
+      })
+    }
+    return debounce(loadData, 500);
+  }, [])
+
+  const salePriceFloatChange = useMemo(() => {
+    const loadData = (e) => {
+      subAccountCheck({
+        salePriceFloat: amountTransform(e.target.value, '/')
+      }, (data) => {
+        form.setFieldsValue({
+          salePrice: amountTransform(data.salePrice, '/'),
+        })
+        setSalePriceProfitLoss(amountTransform(data.salePriceProfitLoss, '/'))
+      })
+    }
+    return debounce(loadData, 500);
+  }, [])
 
   useEffect(() => {
     if (detailData) {
@@ -57,10 +102,13 @@ export default (props) => {
           return {
             ...item[1],
             retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
+            wholesaleSupplyPrice: amountTransform(item[1].wholesaleSupplyPrice, '/'),
             // suggestedRetailPrice: amountTransform(item[1].retailSupplyPrice, '/'),
             // wholesalePrice: amountTransform(item[1].retailSupplyPrice, '/'),
-            salePrice: amountTransform(item[1].retailSupplyPrice, '/'),
-            marketPrice: amountTransform(item[1].retailSupplyPrice, '/'),
+            salePrice: amountTransform(item[1].salePrice, '/'),
+            marketPrice: amountTransform(item[1].marketPrice, '/'),
+            salePriceFloat: amountTransform(item[1].salePriceFloat),
+            salePriceProfitLoss: amountTransform(item[1].salePriceProfitLoss, '/'),
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -70,9 +118,10 @@ export default (props) => {
       }
 
       form.setFieldsValue({
-        salePrice: amountTransform(detailData?.goods?.retailSupplyPrice, '/'),
-        marketPrice: amountTransform(detailData?.goods?.retailSupplyPrice, '/'),
-        supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId
+        salePrice: amountTransform(detailData?.goods?.salePrice, '/'),
+        marketPrice: amountTransform(detailData?.goods?.marketPrice, '/'),
+        supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId,
+        salePriceFloat: amountTransform(detailData?.goods?.salePriceFloat),
       })
     }
 
@@ -85,31 +134,47 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        width: 1200,
+        width: 1300,
       }}
       form={form}
       onFinish={(values) => {
-        const { supplierHelperId, settleType, salePrice, marketPrice } = values;
+        const { supplierHelperId, settleType, salePrice, marketPrice, salePriceFloat } = values;
         let goodsInfo = {
-          salePrice: amountTransform(salePrice),
           marketPrice: amountTransform(marketPrice),
+          wholesaleSupplyPrice: detailData.goods.wholesaleSupplyPrice,
           skuId: detailData.goods.skuId,
-          retailSupplyPrice: detailData.goods.retailSupplyPrice
+        }
+
+        if (detailData.goods.goodsSaleType === 0) {
+          goodsInfo.salePrice = amountTransform(salePrice);
+          goodsInfo.salePriceProfitLoss = amountTransform(salePriceProfitLoss);
+          goodsInfo.salePriceFloat = amountTransform(salePriceFloat, '/');
+          goodsInfo.retailSupplyPrice = detailData.goods.retailSupplyPrice;
         }
 
         if (detailData.isMultiSpec) {
-          goodsInfo = tableData.map(item => ({
-            salePrice: amountTransform(item.salePrice),
-            marketPrice: amountTransform(item.marketPrice),
-            skuId: item.skuId,
-            retailSupplyPrice: amountTransform(item.retailSupplyPrice)
-          }))
+          goodsInfo = tableData.map(item => {
+            const obj = {};
+            if (detailData.goods.goodsSaleType === 0) {
+              obj.salePrice = amountTransform(item.salePrice)
+              obj.salePriceProfitLoss = amountTransform(item.salePriceProfitLoss);
+              obj.salePriceFloat = amountTransform(item.salePriceFloat, '/');
+              obj.retailSupplyPrice = item.retailSupplyPrice;
+            }
+            return {
+              marketPrice: amountTransform(item.marketPrice),
+              skuId: item.skuId,
+              retailSupplyPrice: amountTransform(item.retailSupplyPrice),
+              ...obj,
+            }
+          })
         }
 
         check(type.current, 1, detailData.spuId, {
           supplierHelperId,
           settleType,
-          goodsInfo
+          goodsInfo,
+          goodsSaleType: detailData.goods.goodsSaleType,
         });
       }}
       submitter={{
@@ -132,7 +197,7 @@ export default (props) => {
       }}
       visible={visible}
       initialValues={{
-        settleType: 1,
+        settleType: 2,
       }}
       {...formItemLayout}
     >
@@ -149,7 +214,7 @@ export default (props) => {
       <Form.Item
         label="发票税率(%)"
       >
-        {goods.wholesaleTaxRate}
+        {amountTransform(goods.wholesaleTaxRate)}
       </Form.Item>
       {goods.goodsDesc &&
         <Form.Item
@@ -202,10 +267,10 @@ export default (props) => {
         label="结算模式"
         rules={[{ required: true }]}
         options={[
-          {
-            label: '佣金模式',
-            value: 1,
-          },
+          // {
+          //   label: '佣金模式',
+          //   value: 1,
+          // },
           {
             label: '底价模式',
             value: 2,
@@ -227,7 +292,15 @@ export default (props) => {
               {
                 ({ settleType }) => (
                   <>
-                    {!!tableData.length && <EditTable settleType={settleType} tableHead={tableHead} tableData={tableData} setTableData={setTableData} />}
+                    {!!tableData.length &&
+                      <EditTable
+                        settleType={settleType}
+                        tableHead={tableHead}
+                        tableData={tableData}
+                        setTableData={setTableData}
+                        wholesaleTaxRate={detailData?.goods?.wholesaleTaxRate}
+                        goodsSaleType={detailData?.goods?.goodsSaleType}
+                      />}
                   </>
                 )
               }
@@ -237,10 +310,20 @@ export default (props) => {
           :
           <>
             <Form.Item
-              label="供货价"
+              label="批发供货价(元)"
+            >
+              {amountTransform(goods.wholesaleSupplyPrice, '/')}
+            </Form.Item>
+            <Form.Item
+              label="最低批发量"
+            >
+              {goods.wholesaleMinNum}
+            </Form.Item>
+            {detailData?.goods?.goodsSaleType === 0 && <Form.Item
+              label="零售供货价(元)"
             >
               {amountTransform(goods.retailSupplyPrice, '/')}
-            </Form.Item>
+            </Form.Item>}
             <ProFormText
               name="marketPrice"
               label="市场价"
@@ -263,7 +346,7 @@ export default (props) => {
                 ({ settleType }) => (
                   <>
 
-                    <ProFormText
+                    {detailData?.goods?.goodsSaleType === 0 && <ProFormText
                       name="salePrice"
                       label="秒约价"
                       placeholder="请输入秒约价"
@@ -280,12 +363,39 @@ export default (props) => {
                         })
                       ]}
                       disabled={settleType === 1}
-                    />
+                      fieldProps={{
+                        onChange: salePriceChange
+                      }}
+                    />}
                   </>
                 )
               }
             </ProFormDependency>
-
+            {detailData?.goods?.goodsSaleType === 0 && <ProFormText
+              name="salePriceFloat"
+              label="秒约价上浮比例"
+              placeholder="秒约价上浮比例"
+              validateFirst
+              rules={[
+                { required: true, message: '请输入秒约价上浮比例' },
+                () => ({
+                  validator(_, value) {
+                    if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                      return Promise.reject(new Error('请输入大于零的数字'));
+                    }
+                    return Promise.resolve();
+                  },
+                })
+              ]}
+              fieldProps={{
+                onChange: salePriceFloatChange
+              }}
+            />}
+            {detailData?.goods?.goodsSaleType === 0 && <Form.Item
+              label="秒约价实际盈亏"
+            >
+              {salePriceProfitLoss || amountTransform(detailData?.goods?.salePriceProfitLoss, '/')}
+            </Form.Item>}
           </>
       }
       {/* <Form.Item

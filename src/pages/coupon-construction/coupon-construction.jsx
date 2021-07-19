@@ -8,8 +8,9 @@ import PeriodValidity from './period-validity/period-validity'
 import AssignCrowd from './assign-crowd/assign-crowd'
 import { couponSub } from '@/services/coupon-construction/coupon-coupon-sub';
 import { couponEdit } from '@/services/coupon-construction/coupon-edit';
-import ProForm, { ProFormText, ProFormRadio } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio,ProFormDateRangePicker } from '@ant-design/pro-form';
 import { history,connect } from 'umi';
+import moment from 'moment';
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -24,10 +25,22 @@ const couponConstruction=(props) => {
   const [form] = Form.useForm()
   useEffect(() => {
     if(id){
-      form.setFieldsValue(DetailList.data)
+      setTimeout(()=>{
+        form.setFieldsValue({
+          dateRange:[moment(DetailList.data?.limitStartTime).valueOf(),moment(DetailList.data?.limitEndTime).valueOf()],
+          dateTimeRange:[moment(DetailList.data?.activityStartTime).valueOf(),moment(DetailList.data?.activityEndTime).valueOf()],
+          ...DetailList.data
+        })
+      },500)
+    }else{
+      dispatch({
+        type:'UseScopeList/fetchUseScopeList',
+        payload:{
+          UseScopeObje:{}
+        }
+      })
     }
-    return undefined
-  })
+  },[])
   //优惠劵名称验证规则
   const checkConfirm=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
@@ -43,7 +56,7 @@ const couponConstruction=(props) => {
   const onsubmit=(values)=>{
     //发放类型
     values.issueType=type
-    values.couponType = parseInt(UseScopeList.UseScopeObje.couponType) || 1,//优惠券类型
+    values.couponType = parseInt(UseScopeList.UseScopeObje.couponType) || id&&DetailList.data?.couponType || 1,//优惠券类型
     values.couponTypeInfo = {
       usefulAmount: parseInt(values.usefulAmount),//用价格门槛(单位分)
       freeAmount: parseInt(values.freeAmount),//优惠金额(单位分)
@@ -52,13 +65,13 @@ const couponConstruction=(props) => {
       freeDiscount: parseInt(values.freeDiscount),//折扣
       maxFreeAmount: parseInt(values.maxFreeAmount)//最多优惠（单位分）
     }
-    values.useType = parseInt(UseScopeList.UseScopeObje.useType)||1//使用范围
+    values.useType = parseInt(UseScopeList.UseScopeObje.useType)||id&&DetailList.data?.useType||1//使用范围
     values.issueQuantity = parseInt(values.issueQuantity)//发行量
-    values.limitStartTime = values.date?values.date[0]:null,//限时领取开始时间
-    values.limitEndTime = values.date?values.date[1]:null,//限时领取结束时间
+    values.limitStartTime = values.dateRange?values.dateRange[0]:null,//可领取开始时间
+    values.limitEndTime = values.dateRange?values.dateRange[1]:null,//可领取结束时间
     values.limitQuantity=parseInt(values.limitQuantity)//限领数量
-    values.activityStartTime = values.date2?values.date2[0]:null,//有效期开始时间
-    values.activityEndTime = values.date2?values.date2[1]:null,//有效期结束时间
+    values.activityStartTime = values.dateTimeRange?values.dateTimeRange[0]:null,//有效期开始时间
+    values.activityEndTime = values.dateTimeRange?values.dateTimeRange[1]:null,//有效期结束时间
     values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
     values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
     values.useTypeInfoM = {//秒约商品详情信息
@@ -77,6 +90,7 @@ const couponConstruction=(props) => {
     }
     //集约商品详情信息
     values.useTypeInfoJ = {
+      wholesaleType:values.wholesaleType,
       wholesaleIds:UseScopeList.UseScopeObje.wholesaleIds
     }
     //提交类型
@@ -84,8 +98,8 @@ const couponConstruction=(props) => {
     //群体Id
     values.couponCrowdId=UseScopeList.UseScopeObje.CrowdIds
     if(id){
-      couponEdit(values).then((res)=>{
-        // if(res.code==0){
+      couponEdit({...values,id:id}).then((res)=>{
+        if(res.code==0){
           history.push('/coupon-management/coupon-list') 
           message.success('提交成功'); 
           dispatch({
@@ -94,11 +108,11 @@ const couponConstruction=(props) => {
               UseScopeObje:{}
             }
           })
-        // }  
+        }  
       }) 
     }else{
       couponSub(values).then((res)=>{
-        // if(res.code==0){
+        if(res.code==0){
           history.push('/coupon-management/coupon-list') 
           message.success('提交成功'); 
           dispatch({
@@ -107,14 +121,13 @@ const couponConstruction=(props) => {
               UseScopeObje:{}
             }
           })
-        // }
+        }
       }) 
     }
     
   }
   return (
     <>
-      <Divider orientation="left"><FormattedMessage id="formandbasic-form.basic.setup" /></Divider>
       <ProForm
           form={form}
           submitter={
@@ -133,7 +146,7 @@ const couponConstruction=(props) => {
                    }}>
                     提交审核
                  </Button>,
-                  <Button type="default" onClick={()=>history.push('/coupon-management/coupon-list')}>
+                  <Button type="default" onClick={()=>history.goBack()}>
                     返回
                   </Button>,
                   
@@ -146,8 +159,9 @@ const couponConstruction=(props) => {
              return true;
             }
            }
-        style={{ width: '1000px', margin: '0 auto' }}
+        style={{ width: '1500px', margin: '0 auto' }}
       >
+        <Divider orientation="left"><FormattedMessage id="formandbasic-form.basic.setup" /></Divider>
         {/* 优惠券名称 */}
         <ProFormText
           width="md"
@@ -174,7 +188,7 @@ const couponConstruction=(props) => {
             <ProFormRadio.Group
               name="issueQuantity"
               label='发行量'
-              rules={[{ required: true, message: '请选择发行量' }]}
+              // rules={[{ required: true, message: '请选择发行量' }]}  
               options={[
                 { 
                   label:'不限量发放',
@@ -187,7 +201,6 @@ const couponConstruction=(props) => {
             </FormItem>
            
           }
-       
 
         {/* 每人限领 */}
         <ProForm.Group>
@@ -224,25 +237,21 @@ const couponConstruction=(props) => {
 
         {/* 可领取时间 */}
         {
-          type==2?null
+          type==2||DetailList.data?.issueType==2&&id?null
           :
-          <FormItem
+          <ProFormDateRangePicker
             label='可领取时间'
-            name="date"
             rules={[{ required: true, message: '请选择限领时间' }]}
-          >
-          <RangePicker
-                  name="dateRange"
-                  placeholder={[
-                    formatMessage({
-                      id: 'formandbasic-form.placeholder.start',
-                    }),
-                    formatMessage({
-                      id: 'formandbasic-form.placeholder.end',
-                    }),
-                  ]}
-                />
-          </FormItem>
+            name="dateRange"
+            placeholder={[
+              formatMessage({
+                id: 'formandbasic-form.placeholder.start',
+              }),
+              formatMessage({
+                id: 'formandbasic-form.placeholder.end',
+              }),
+            ]}
+          />
         }
         
 
@@ -289,9 +298,9 @@ const couponConstruction=(props) => {
           <ProFormRadio.Group
             name="memberType"
             label={type==1?'可领券群体':'发券群体'}
-            rules={[{ required: true, message: '请选择商品范围' }]}
+            rules={[{ required: true, message: '请选择群体' }]}
             fieldProps={{
-              value: (parseInt(id)==id )&&DetailList.data?.memberType||choose,
+              // value: (parseInt(id)==id )&&DetailList.data?.memberType||choose,
               onChange: (e) => setChoose(e.target.value),
             }}
             options={[
@@ -305,7 +314,7 @@ const couponConstruction=(props) => {
             },
             ]}
         />
-        <AssignCrowd choose={choose}/>
+        <AssignCrowd id={id} choose={choose}/>
 
         <Divider orientation="left">使用设置</Divider>
 

@@ -121,6 +121,22 @@
     react-color "2.19.3"
     swr "^0.3.6"
 
+"@ant-design/pro-field@1.18.10":
+  version "1.18.10"
+  resolved "https://registry.yarnpkg.com/@ant-design/pro-field/-/pro-field-1.18.10.tgz#bd82012bb07c2838bc9aa01b069e9a533e87cece"
+  integrity sha512-P3FP4F/Ot2Z0Q/HKVrAs38o16TJUTBGcHuh3ExTnB3wbUsCO3iHIzafl61O+UGA3Mc1cSGZtGXGOmIulKLLDbg==
+  dependencies:
+    "@ant-design/icons" "^4.2.1"
+    "@ant-design/pro-provider" "1.4.15"
+    "@ant-design/pro-utils" "1.19.5"
+    classnames "^2.2.6"
+    lodash.tonumber "^4.0.3"
+    moment "^2.27.0"
+    omit.js "^2.0.2"
+    rc-util "^5.4.0"
+    react-color "2.19.3"
+    swr "^0.5.6"
+
 "@ant-design/pro-form@1.18.4", "@ant-design/pro-form@^1.3.0":
   version "1.18.4"
   resolved "https://registry.yarnpkg.com/@ant-design/pro-form/-/pro-form-1.18.4.tgz#641a287b8f12091ca872981be7aad06b80664aae"
@@ -132,6 +148,23 @@
     "@ant-design/pro-utils" "1.15.0"
     "@umijs/use-params" "^1.0.2"
     classnames "^2.2.6"
+    omit.js "^2.0.2"
+    rc-resize-observer "^0.2.3"
+    rc-util "^5.0.6"
+    use-media-antd-query "^1.0.6"
+
+"@ant-design/pro-form@1.31.2":
+  version "1.31.2"
+  resolved "https://registry.yarnpkg.com/@ant-design/pro-form/-/pro-form-1.31.2.tgz#8603381344f508f7d1892984fd451ddc08342781"
+  integrity sha512-3eKQX1OBnYR3usnDnCDbwZy/SnfAuEYBs6TqH7nmzl1IWKH7PbXmDghnEneC68MXj1JavisOtOktxW2yjNjbMg==
+  dependencies:
+    "@ant-design/icons" "^4.2.1"
+    "@ant-design/pro-field" "1.18.10"
+    "@ant-design/pro-provider" "1.4.15"
+    "@ant-design/pro-utils" "1.19.5"
+    "@umijs/use-params" "^1.0.2"
+    classnames "^2.2.6"
+    lodash.merge "^4.6.2"
     omit.js "^2.0.2"
     rc-resize-observer "^0.2.3"
     rc-util "^5.0.6"
@@ -164,6 +197,13 @@
   dependencies:
     rc-util "^5.0.1"
 
+"@ant-design/pro-provider@1.4.15":
+  version "1.4.15"
+  resolved "https://registry.yarnpkg.com/@ant-design/pro-provider/-/pro-provider-1.4.15.tgz#2786c65d968bd0ed3cccebe46d326e9e6aaa3cb5"
+  integrity sha512-DhAct74aP95RDnoASvfZiOSr534OaM5oNqGd19H2JSZ7tbmagqoDRw06vA+ZvJZvMkAGqVHXddwqW1Gu2yNMZw==
+  dependencies:
+    rc-util "^5.0.1"
+
 "@ant-design/pro-provider@1.4.8":
   version "1.4.8"
   resolved "https://registry.yarnpkg.com/@ant-design/pro-provider/-/pro-provider-1.4.8.tgz#6dd5c293f1f4ae79a12c75a8a99356220c69f3de"
@@ -178,17 +218,18 @@
   dependencies:
     use-media-antd-query "^1.0.6"
 
-"@ant-design/pro-table@^2.17.0":
-  version "2.31.0"
-  resolved "https://registry.yarnpkg.com/@ant-design/pro-table/-/pro-table-2.31.0.tgz#caf305c31b8db0a09fd6044c8e6fe4093aeba181"
-  integrity sha512-84mCvkGCWmeeAPEbAT3AjrNO2seH1gcaBfTNjU78qkaVvXz7VeCi+PbLcaHT0brgE9JAASU0hfN28OiJUsXjwg==
+"@ant-design/pro-table@2.43.4":
+  version "2.43.4"
+  resolved "https://registry.yarnpkg.com/@ant-design/pro-table/-/pro-table-2.43.4.tgz#559fae1b0cfed5e463ccea79c1edfe61078a56b9"
+  integrity sha512-nt+JrL1SiJrbSE517kJ9jbX4UjMkFGP/zyBteIu4/EG2NlfLLVRLFBoOlpoSWQZPnP0NqloOxnnBfQbRkgavgQ==
   dependencies:
     "@ant-design/icons" "^4.1.0"
-    "@ant-design/pro-field" "1.12.0"
-    "@ant-design/pro-form" "1.18.4"
-    "@ant-design/pro-provider" "1.4.8"
-    "@ant-design/pro-utils" "1.15.0"
+    "@ant-design/pro-field" "1.18.10"
+    "@ant-design/pro-form" "1.31.2"
+    "@ant-design/pro-provider" "1.4.15"
+    "@ant-design/pro-utils" "1.19.5"
     classnames "^2.2.6"
+    fast-deep-equal "^3.1.3"
     moment "^2.24.0"
     omit.js "^2.0.2"
     rc-util "^5.0.1"
@@ -219,6 +260,20 @@
     fast-deep-equal "^3.1.3"
     moment "^2.27.0"
     rc-util "^5.0.6"
+
+"@ant-design/pro-utils@1.19.5":
+  version "1.19.5"
+  resolved "https://registry.yarnpkg.com/@ant-design/pro-utils/-/pro-utils-1.19.5.tgz#df49b3f0e99fe4adcc896ea37e28abbff31838bc"
+  integrity sha512-XIjbsDrgA1pxc2os6vuzWnuaE93f55oQ8cWPtOoo7mOxmkxn4481muB/kaA6+3uV8pbXBecumqO6DLHwii47pw==
+  dependencies:
+    "@ant-design/icons" "^4.3.0"
+    "@ant-design/pro-provider" "1.4.15"
+    classnames "^2.2.6"
+    fast-deep-equal "^3.1.3"
+    lodash.merge "^4.6.2"
+    moment "^2.27.0"
+    rc-util "^5.0.6"
+    swr "^0.5.6"
 
 "@ant-design/react-slick@~0.28.1":
   version "0.28.2"
@@ -11153,6 +11208,11 @@ lodash.memoize@4.1.2:
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
 
+lodash.merge@^4.6.2:
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
+  integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
+
 lodash.mergewith@^4.6.0:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.2.tgz#617121f89ac55f59047c7aec1ccd6654c6590f55"
@@ -16616,6 +16676,13 @@ swr@^0.3.6:
   version "0.3.11"
   resolved "https://registry.yarnpkg.com/swr/-/swr-0.3.11.tgz#f7f50ed26c06afea4249482cec504768a2272664"
   integrity sha512-ya30LuRGK2R7eDlttnb7tU5EmJYJ+N6ytIOM2j0Hqs0qauJcDjVLDOGy7KmFeH5ivOwLHalFaIyYl2K+SGa7HQ==
+  dependencies:
+    dequal "2.0.2"
+
+swr@^0.5.6:
+  version "0.5.6"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-0.5.6.tgz#70bfe9bc9d7ac49a064be4a0f4acf57982e55a31"
+  integrity sha512-Bmx3L4geMZjYT5S2Z6EE6/5Cx6v1Ka0LhqZKq8d6WL2eu9y6gHWz3dUzfIK/ymZVHVfwT/EweFXiYGgfifei3w==
   dependencies:
     dequal "2.0.2"
 
