@@ -138,7 +138,11 @@ export default function EditTable(props) {
         obj.salePriceFloat = amountTransform(record.salePriceFloat, '/');
       }
 
-      if ((findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat) && goodsSaleType === 0) {
+      if (
+        (findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat)
+        && goodsSaleType === 0
+        && (record.salePrice !== '' && record.salePriceFloat !== '')
+      ) {
         api.subAccountCheck(obj).then(res => {
           if (res.code === 0) {
             const skuData = res.data[0];
@@ -164,7 +168,7 @@ export default function EditTable(props) {
       }
     };
 
-    return debounce(loadData, 500);
+    return debounce(loadData, 1000);
   }, [dataSource, props]);
 
 

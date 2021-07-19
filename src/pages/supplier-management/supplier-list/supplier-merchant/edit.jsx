@@ -759,7 +759,7 @@ export default (props) => {
                       () => ({
                         required: true,
                         validator(_, value = {}) {
-                          const { businessLicense, idCardFrontImg, idCardBackImg, bankLicenseImg } = value;
+                          const { businessLicense, idCardFrontImg, idCardBackImg, bankLicenseImg, bankCardFrontImg, bankCardBackImg } = value;
                           if (!businessLicense) {
                             return Promise.reject(new Error('请上传三合一证件照'));
                           }
@@ -769,8 +769,14 @@ export default (props) => {
                           if (!idCardBackImg) {
                             return Promise.reject(new Error('请上传法人身份证背面照'));
                           }
-                          if (!bankLicenseImg) {
+                          if (!bankLicenseImg && bankAccountType === 1) {
                             return Promise.reject(new Error('请上传开户银行许可证照'));
+                          }
+                          if (!bankCardFrontImg && bankAccountType === 2) {
+                            return Promise.reject(new Error('请上传结算银行卡正面照'));
+                          }
+                          if (!bankCardBackImg && bankAccountType === 2) {
+                            return Promise.reject(new Error('请上传结算银行卡背面照'));
                           }
                           return Promise.resolve();
                         },
