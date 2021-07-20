@@ -88,7 +88,13 @@ const validity=(props)=>{
                 dispatch({
                     type:'UseScopeList/fetchCrowdIds',
                     payload:{
-                        CrowdIds:DetailList.data&&DetailList.data?.crowdList.id
+                        CrowdIds:DetailList.data&&DetailList.data?.crowdList?.id
+                    }
+                })
+                dispatch({
+                    type:'UseScopeList/fetchCrowdIdsArr',
+                    payload:{
+                        CrowdIdsArr:DetailList.data&&[DetailList.data?.crowdList]
                     }
                 })
             }
@@ -143,8 +149,8 @@ const validity=(props)=>{
     return (
         <>
         {
-            choose==2||(parseInt(id)==id )&&DetailList.data?.memberType?
-            <>
+            choose==2||(parseInt(id)==id )&&DetailList.data?.memberType==2?
+            <div style={{display:choose==1?'none':'block'}}>
                 <Button type="primary" style={{margin:"0 0 20px 20px"}} onClick={showModal}>
                     选择群体
                 </Button>
@@ -179,10 +185,10 @@ const validity=(props)=>{
                     rowKey="spuId"
                     expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
                     columns={columns2}
-                    dataSource={parseInt(id)==id&&[DetailList.data?.crowdList]||UseScopeList.UseScopeObje.CrowdIdsArr}
+                    dataSource={UseScopeList.UseScopeObje.CrowdIdsArr}
                     style={{display:isModalVisible?'none':'block'}}
                 />
-            </>
+            </div>
             :null
          }
         </>

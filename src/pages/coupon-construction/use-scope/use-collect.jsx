@@ -163,7 +163,6 @@ const  useCollect=(props)=>{
                 label="商品范围"
                 rules={[{ required: true, message: '请选择商品范围' }]}
                 fieldProps={{
-                value: (parseInt(id)==id )&&DetailList.data?.wholesaleType||position,
                 onChange: (e) => setPosition(e.target.value),
                 }}
                 options={[
@@ -179,7 +178,7 @@ const  useCollect=(props)=>{
             />
             {
                 position==2||(parseInt(id)==id )&&DetailList.data?.wholesaleType==2?
-                <>
+                <div style={{display:position==1?'none':'block'}}>
                 <Button type="primary" className={styles.popupBtn} onClick={showModal}>
                             选择商品
                 </Button>
@@ -212,7 +211,7 @@ const  useCollect=(props)=>{
                         dataSource={UseScopeList.UseScopeObje.wholesaleArr}
                         // style={{display:loading?'none':'block'}}
                     />
-                </>
+                </div>
                 :null
             }
         </Form.Item>
