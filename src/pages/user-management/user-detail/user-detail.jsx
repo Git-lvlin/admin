@@ -78,17 +78,17 @@ const UserDetail = () => {
             </Descriptions.Item>
             <Descriptions.Item label="性别">{info?.gender === 1 ? '男' : '女'}</Descriptions.Item>
             <Descriptions.Item label="会员店主">
-              否
+              {info?.userType === 1 ? '是' : '否'}
             </Descriptions.Item>
             <Descriptions.Item label="注册时间">
               {info?.createTime}
             </Descriptions.Item>
             <Descriptions.Item label="微信账号">
-              {/* 未绑定 */}
+              {info?.uId}
             </Descriptions.Item>
-            <Descriptions.Item label="所属小区">
-              {/* 满京华-艺峦大厦 */}
-            </Descriptions.Item>
+            {/* <Descriptions.Item label="所属小区">
+              满京华-艺峦大厦
+            </Descriptions.Item> */}
             <Descriptions.Item label="最近登录时间">
               {info?.loginTime}
             </Descriptions.Item>

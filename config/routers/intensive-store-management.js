@@ -64,6 +64,11 @@ export default {
       component: './intensive-store-management/lvl-setup',
     },
     {
+      name: 'lvl-commission',
+      path: '/intensive-store-management/lvl-commission',
+      component: './intensive-store-management/lvl-commission',
+    },
+    {
       name: 'lvl-rule',
       path: '/intensive-store-management/lvl-rule',
       component: './intensive-store-management/lvl-rule',

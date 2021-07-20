@@ -79,6 +79,7 @@ export default {
   'menu.intensive-store-management.assessment-reward': '指标考核',
   'menu.intensive-store-management.lvl-rule': '等级规则配置',
   'menu.intensive-store-management.lvl-setup': '等级配置',
+  'menu.intensive-store-management.lvl-commission': '等级佣金',
 
   'menu.single-contract-activity-management': '单约活动管理',
   'menu.single-contract-activity-management.activity-list': '活动列表',
