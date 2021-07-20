@@ -1,11 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Form, Spin, Space, Image } from 'antd';
+import { Form, Spin, Space, Image, Button } from 'antd';
 import { storeDetail } from '@/services/intensive-store-management/store-review';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useParams } from 'umi';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
 import AddressCascader from '@/components/address-cascader'
 import Upload from '@/components/upload';
+import RejectForm from './form';
+import { amountTransform } from '@/utils/utils'
+import { history } from 'umi';
+import { approve } from '@/services/intensive-store-management/store-review'
 
 
 const formItemLayout = {
@@ -84,6 +88,36 @@ const Detail = () => {
   const [location, setLocation] = useState([]);
   const map = useRef();
 
+  const submit = (values) => {
+    const { area, imageInfo, ...rest} = values;
+    return new Promise((resolve, reject) => {
+      let userInfo = window.localStorage.getItem('user');
+      userInfo = userInfo && JSON.parse(userInfo)
+      approve({
+        ...rest,
+        applyId: params.id,
+        optAdminId: userInfo.id,
+        optAdminName: userInfo.username,
+        longitude: location[1],
+        latitude: location[2],
+        realname: detailData.details.realname,
+        idNumber: detailData.details.idNumber,
+        idFront: imageInfo.idCardFrontImg,
+        idBack: imageInfo.idCardBackImg,
+        idHandheld: imageInfo.idHandheld,
+        memberId: detailData.memberId,
+        deposit: detailData.deposit.length === 0 ? values.depositValue : 0
+      }, { showSuccess: true }).then(res => {
+        if (res.code === 0) {
+          resolve()
+          history.goBack();
+        } else {
+          reject()
+        }
+      })
+    });
+  }
+
 
   useEffect(() => {
     setLoading(true);
@@ -133,6 +167,20 @@ const Detail = () => {
 
   }, [])
 
+  const onValuesChange = (e) => {
+    const { area, address } = form.getFieldsValue(['area', 'address'])
+    let text = '';
+    if (area) {
+      area.forEach(item => {
+        text += item.label;
+      })
+    }
+    if (address) {
+      text += address
+    }
+    setAddressText(text)
+  }
+
   useEffect(() => {
     if (addressText) {
       AMap.plugin('AMap.Autocomplete', function () {
@@ -164,6 +212,35 @@ const Detail = () => {
           {...formItemLayout}
           style={{ backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
           form={form}
+          onValuesChange={onValuesChange}
+          submitter={{
+            render: (props, doms) => {
+              return (
+                <div style={{ textAlign: 'center', marginTop: 100 }}>
+                  <Space>
+                    <Button type="primary" onClick={() => props.form?.submit()}>
+                      通过
+                    </Button>
+                    <RejectForm id={detailData?.id} />
+                    <Button onClick={() => {
+                      
+                    }}>
+                      返回
+                    </Button>
+                  </Space>
+                </div>
+              )
+            }
+          }}
+          onFinish={async (values) => {
+            try {
+              await submit(values);
+              return true;
+            } catch (error) {
+              console.log('error', error);
+            }
+
+          }}
         >
           <Form.Item
             label="手机号"
@@ -210,7 +287,12 @@ const Detail = () => {
             }}
             width="md"
           />
-          <div id="container" style={{ width: 600, height: 300, marginBottom: 10, marginLeft: 600 }}></div>
+          <Form.Item
+            label=" "
+            colon={false}
+          >
+            <div id="container" style={{ width: 600, height: 300 }}></div>
+          </Form.Item>
           <Form.Item
             label="姓名"
           >
@@ -254,8 +336,42 @@ const Detail = () => {
                 </dl>
               }
             />
-
           </Form.Item>
+          <Form.Item
+            label="申请时间"
+          >
+            {detailData?.createTime}
+          </Form.Item>
+          {
+            detailData?.deposit?.payAmount
+            &&
+            <>
+              <Form.Item
+                label="保证金缴纳状态"
+              >
+                已交（¥{amountTransform(detailData?.deposit?.payAmount, '/')}）
+              </Form.Item>
+              <Form.Item
+                label="保证金缴纳时间"
+              >
+                {detailData?.deposit?.payTime}
+              </Form.Item>
+            </>
+          }
+          {
+            detailData?.deposit?.length === 0
+            && <ProFormText
+              name="depositValue"
+              label="保证金金额"
+              placeholder="请输入保证金金额"
+              rules={[{ required: true, message: '请输入保证金金额' }]}
+              width="md"
+              fieldProps={{
+                placeholder: '请输入保证金金额',
+                maxLength: 30,
+              }}
+            />
+          }
         </ProForm>
       </Spin>
     </PageContainer>

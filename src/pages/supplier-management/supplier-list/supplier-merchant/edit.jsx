@@ -452,8 +452,12 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        await submit(values);
-        return true;
+        try {
+          await submit(values);
+          return true;
+        } catch (error) {
+          console.log('error', error);
+        }
       }}
       visible={visible}
       initialValues={{
@@ -586,17 +590,17 @@ export default (props) => {
             extra={<><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
             step
             validateFirst
-            // rules={[
-            //   { required: true, message: '请输入商品开票税率' },
-            //   () => ({
-            //     validator(_, value) {
-            //       if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-            //         return Promise.reject(new Error('请输入大于零的数字'));
-            //       }
-            //       return Promise.resolve();
-            //     },
-            //   })
-            // ]}
+            rules={[
+              { required: true, message: '请输入商品开票税率' },
+              () => ({
+                validator(_, value) {
+                  if (!/^\d+\.?\d*$/g.test(value)) {
+                    return Promise.reject(new Error('请输入0-13之间的数字'));
+                  }
+                  return Promise.resolve();
+                },
+              })
+            ]}
           />
           <ProFormDigit
             placeholder="请输入商品质保金比例"
@@ -610,22 +614,22 @@ export default (props) => {
             extra={<><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
             step
             validateFirst
-            // rules={[
-            //   { required: true, message: '请输入商品质保金比例' },
-            //   () => ({
-            //     validator(_, value) {
-            //       if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-            //         return Promise.reject(new Error('请输入大于零的数字'));
-            //       }
-            //       return Promise.resolve();
-            //     },
-            //   })
-            // ]}
+            rules={[
+              { required: true, message: '请输入商品质保金比例' },
+              () => ({
+                validator(_, value) {
+                  if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                    return Promise.reject(new Error('请输入大于零的数字'));
+                  }
+                  return Promise.resolve();
+                },
+              })
+            ]}
           />
         </div>
       </div>
 
-      <div style={{ visibility: detailData?.bankAccountInfo?.auditStatus === 1 ? 'hidden' : 'visible' }}>
+      <div style={{ visibility: detailData?.bankAccountInfo?.auditStatus === 1 ? 'visible' : 'visible' }}>
         <Title level={4}>资金账户信息</Title>
         <Divider />
         <div style={{ display: 'flex' }}>
@@ -633,45 +637,45 @@ export default (props) => {
             <Form.Item
               label="企业地址"
               name="addressInfo"
-              // validateFirst
-              // rules={[
-              //   () => ({
-              //     required: true,
-              //     validator(_, value = {}) {
-              //       const { area, info } = value;
-              //       if (area?.length === 0 || !area) {
-              //         return Promise.reject(new Error('请选择企业所在地'));
-              //       }
+              validateFirst
+              rules={[
+                () => ({
+                  required: true,
+                  validator(_, value = {}) {
+                    const { area, info } = value;
+                    if (area?.length === 0 || !area) {
+                      return Promise.reject(new Error('请选择企业所在地'));
+                    }
 
-              //       if (!info?.replace(/\s/g, '')) {
-              //         return Promise.reject(new Error('请输入企业详细地址'));
-              //       }
+                    if (!info?.replace(/\s/g, '')) {
+                      return Promise.reject(new Error('请输入企业详细地址'));
+                    }
 
-              //       return Promise.resolve();
-              //     },
-              //   })]}
+                    return Promise.resolve();
+                  },
+                })]}
             >
               <Address />
             </Form.Item>
             <Form.Item
               label="统一社会信用码"
               name="socialCreditInfo"
-              // validateFirst
-              // rules={[{ required: true },
-              // () => ({
-              //   validator(_, value = {}) {
-              //     const { code, date } = value;
-              //     if (!code?.replace(/\s/g, '')) {
-              //       return Promise.reject(new Error('请输入统一社会信用码'));
-              //     }
+              validateFirst
+              rules={[{ required: true },
+              () => ({
+                validator(_, value = {}) {
+                  const { code, date } = value;
+                  if (!code?.replace(/\s/g, '')) {
+                    return Promise.reject(new Error('请输入统一社会信用码'));
+                  }
 
-              //     if (!date) {
-              //       return Promise.reject(new Error('请选择统一社会信用证有效期'));
-              //     }
+                  if (!date) {
+                    return Promise.reject(new Error('请选择统一社会信用证有效期'));
+                  }
 
-              //     return Promise.resolve();
-              //   },
-              // })]}
+                  return Promise.resolve();
+                },
+              })]}
             >
               <SocialCreditInfo />
             </Form.Item>
@@ -679,32 +683,32 @@ export default (props) => {
               name="businessScope"
               label="经营范围"
               placeholder="请输入经营范围"
-              // rules={[{ required: true, message: '请输入经营范围' }]}
+              rules={[{ required: true, message: '请输入经营范围' }]}
             />
             <Form.Item
               label="法人姓名"
               name="legalInfo"
-              // validateFirst
-              // rules={[
-              //   () => ({
-              //     required: true,
-              //     validator(_, value = {}) {
-              //       const { code, date, userName } = value;
-              //       if (!userName?.replace(/\s/g, '')) {
-              //         return Promise.reject(new Error('请输入姓名'));
-              //       }
+              validateFirst
+              rules={[
+                () => ({
+                  required: true,
+                  validator(_, value = {}) {
+                    const { code, date, userName } = value;
+                    if (!userName?.replace(/\s/g, '')) {
+                      return Promise.reject(new Error('请输入姓名'));
+                    }
 
-              //       if (!code?.replace(/\s/g, '')) {
-              //         return Promise.reject(new Error('请输入身份证号码'));
-              //       }
+                    if (!code?.replace(/\s/g, '')) {
+                      return Promise.reject(new Error('请输入身份证号码'));
+                    }
 
-              //       if (!date) {
-              //         return Promise.reject(new Error('请选择身份证号码有效期'));
-              //       }
-              //       return Promise.resolve();
-              //     },
-              //   })
-              // ]}
+                    if (!date) {
+                      return Promise.reject(new Error('请选择身份证号码有效期'));
+                    }
+                    return Promise.resolve();
+                  },
+                })
+              ]}
             >
               <LegalInfo />
             </Form.Item>
@@ -712,7 +716,7 @@ export default (props) => {
               name="legalPhone"
               label="法人手机号"
               placeholder="请输入法人手机号"
-              // rules={[{ required: true, message: '请输入法人手机号' }]}
+              rules={[{ required: true, message: '请输入法人手机号' }]}
               fieldProps={{
                 maxLength: 11,
               }}
@@ -723,7 +727,7 @@ export default (props) => {
             <ProFormRadio.Group
               name="bankAccountType"
               label="结算银行账户类型"
-              // rules={[{ required: true }]}
+              rules={[{ required: true }]}
               options={[
                 {
                   label: '对公账户',
@@ -750,28 +754,34 @@ export default (props) => {
                       </div>
                     }
                     name="imageInfo"
-                    // validateFirst
-                    // rules={[
-                    //   () => ({
-                    //     required: true,
-                    //     validator(_, value = {}) {
-                    //       const { businessLicense, idCardFrontImg, idCardBackImg, bankLicenseImg } = value;
-                    //       if (!businessLicense) {
-                    //         return Promise.reject(new Error('请上传三合一证件照'));
-                    //       }
-                    //       if (!idCardFrontImg) {
-                    //         return Promise.reject(new Error('请上传法人身份证正面照'));
-                    //       }
-                    //       if (!idCardBackImg) {
-                    //         return Promise.reject(new Error('请上传法人身份证背面照'));
-                    //       }
-                    //       if (!bankLicenseImg) {
-                    //         return Promise.reject(new Error('请上传开户银行许可证照'));
-                    //       }
-                    //       return Promise.resolve();
-                    //     },
-                    //   })
-                    // ]}
+                    validateFirst
+                    rules={[
+                      () => ({
+                        required: true,
+                        validator(_, value = {}) {
+                          const { businessLicense, idCardFrontImg, idCardBackImg, bankLicenseImg, bankCardFrontImg, bankCardBackImg } = value;
+                          if (!businessLicense) {
+                            return Promise.reject(new Error('请上传三合一证件照'));
+                          }
+                          if (!idCardFrontImg) {
+                            return Promise.reject(new Error('请上传法人身份证正面照'));
+                          }
+                          if (!idCardBackImg) {
+                            return Promise.reject(new Error('请上传法人身份证背面照'));
+                          }
+                          if (!bankLicenseImg && bankAccountType === 1) {
+                            return Promise.reject(new Error('请上传开户银行许可证照'));
+                          }
+                          if (!bankCardFrontImg && bankAccountType === 2) {
+                            return Promise.reject(new Error('请上传结算银行卡正面照'));
+                          }
+                          if (!bankCardBackImg && bankAccountType === 2) {
+                            return Promise.reject(new Error('请上传结算银行卡背面照'));
+                          }
+                          return Promise.resolve();
+                        },
+                      })
+                    ]}
                   >
                     <ImageInfo bankAccountType={bankAccountType} />
                   </Form.Item>
@@ -784,7 +794,7 @@ export default (props) => {
               label="账户结算银行"
               placeholder="请选择结算收款银行"
               request={getBanks}
-              // rules={[{ required: true, message: '请选择账户结算银行' }]}
+              rules={[{ required: true, message: '请选择账户结算银行' }]}
               fieldProps={{
                 labelInValue: true,
               }}
@@ -793,7 +803,7 @@ export default (props) => {
               name="bankCardNo"
               label="结算银行卡号"
               placeholder="请输入结算银行卡号"
-              // rules={[{ required: true, message: '请输入结算银行卡号' }]}
+              rules={[{ required: true, message: '请输入结算银行卡号' }]}
             />
             <ProFormDependency name={['bankAccountType']}>
               {
@@ -802,7 +812,7 @@ export default (props) => {
                     name="bankAccountName"
                     label="结算银行卡开户名"
                     placeholder="请输入结算银行卡开户名"
-                    // rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
+                    rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
                     extra="银行账户类型为对公账户时，开户名为供应商企业名称"
                     disabled={bankAccountType === 1}
                   />

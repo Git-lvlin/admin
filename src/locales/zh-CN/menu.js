@@ -81,6 +81,7 @@ export default {
   'menu.intensive-store-management.store-review-detail': '店铺审核详情',
   'menu.intensive-store-management.grade-index': '等级权益',
   'menu.intensive-store-management.assessment-reward': '指标考核',
+  'menu.intensive-store-management.lvl-rule': '等级规则配置',
 
   'menu.single-contract-activity-management': '单约活动管理',
   'menu.single-contract-activity-management.activity-list': '活动列表',

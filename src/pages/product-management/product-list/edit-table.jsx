@@ -124,7 +124,7 @@ export default function EditTable(props) {
     const loadData = (value) => {
       const { recordList, record } = value;
 
-      const findItem = dataSource.find(item => item.id === record.id);
+      const findItem = dataSource.find(item => item.skuId === record.skuId);
       const obj = {
         skuId: findItem.skuId,
         retailSupplyPrice: amountTransform(findItem.retailSupplyPrice),
@@ -138,12 +138,16 @@ export default function EditTable(props) {
         obj.salePriceFloat = amountTransform(record.salePriceFloat, '/');
       }
 
-      if ((findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat) && goodsSaleType === 0) {
+      if (
+        (findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat)
+        && goodsSaleType === 0
+        && (record.salePrice !== '' && record.salePriceFloat !== '')
+      ) {
         api.subAccountCheck(obj).then(res => {
           if (res.code === 0) {
             const skuData = res.data[0];
             const arr = recordList.map(item => {
-              if (item.id === record.id) {
+              if (item.skuId === record.skuId) {
                 const data = {
                   ...item,
                   salePrice: amountTransform(skuData.salePrice, '/'),
@@ -164,7 +168,7 @@ export default function EditTable(props) {
       }
     };
 
-    return debounce(loadData, 500);
+    return debounce(loadData, 1000);
   }, [dataSource, props]);
 
 

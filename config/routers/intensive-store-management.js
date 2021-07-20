@@ -58,5 +58,10 @@ export default {
       path: '/intensive-store-management/assessment-reward',
       component: './intensive-store-management/assessment-reward',
     },
+    {
+      name: 'lvl-rule',
+      path: '/intensive-store-management/lvl-rule',
+      component: './intensive-store-management/lvl-rule',
+    },
   ]
 }
