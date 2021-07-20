@@ -38,17 +38,6 @@ const Details = () => {
       return ''
     }
   }
-  // const rightCard = () => {
-  //   if(query.accountType==='store'){
-  //     return '会员店虚拟子账户'
-  //   }else if(query.accountType==='agentStore'){
-  //     return '消费者虚拟子账户'
-  //   }else if(query.accountType==='supplier'){
-  //     return ''
-  //   }else {
-  //     return ''
-  //   }
-  // }
 
   const skipToDetail = ({accountType, accountId}) => {
     history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
