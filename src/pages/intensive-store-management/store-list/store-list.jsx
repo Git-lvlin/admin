@@ -61,7 +61,7 @@ const StoreList = () => {
     },
     {
       title: '等级',
-      dataIndex: ['grade', 'gradeName'],
+      dataIndex: 'score',
       valueType: 'text',
       hideInSearch: true,
     },
