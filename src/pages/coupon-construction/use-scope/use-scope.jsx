@@ -1,13 +1,11 @@
-import React,{useEffect,useState} from 'react';
-import { Tabs } from 'antd';
+import React,{useState} from 'react';
 import { FormattedMessage,connect } from 'umi';
 import { ProFormRadio} from '@ant-design/pro-form';
 import UseCollect from './use-collect'
 import UseSecond from './use-second'
-const { TabPane } = Tabs;
 
 const useScope=props => {
-    const {dispatch,DetailList,id,type}=props
+    const {DetailList,id}=props
     const [position,setPosition]=useState()
     return (
         <>

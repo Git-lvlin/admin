@@ -1,9 +1,8 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Input, Form, message,Button} from 'antd';
-import ProTable,{ EditableProTable } from '@ant-design/pro-table';
+import { EditableProTable } from '@ant-design/pro-table';
 import ProForm, {
     ProFormText,
-    ProFormRadio,
     ProFormFieldSet
   } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
@@ -142,9 +141,9 @@ export default (props) =>{
             return <span>V{ele}等级、</span>
           })||row.userLevelDisplay}</p>;
           }else if(row.title=='消费次数'){
-          return <p>{row.labels[0]}次 至 {row.labels[1]}次</p>;
+            return <p>{row.labels[0]}次 至 {row.labels[1]}次</p>;
           }
-          return <p>{row.labels[0]}元 至 {row.labels[1]}元</p>;
+            return <p>{row.labels[0]}元 至 {row.labels[1]}元</p>;
       }
     },
     {
@@ -205,23 +204,23 @@ export default (props) =>{
           maxWidth: '100%',
           }}
         >
-          <ProFormText
-            name="name"
-            width="200px"
-            label="群体名称"
-            placeholder="请输入名称"
-            rules={[
-              { required: true, message: '请输入群体名称' },
-              { validator:(rule,value,callback)=>{
-                return new Promise(async (resolve, reject) => {
-                if(value&&value.length>20){
-                  await reject('群体名称不超过20个字符')
-                }else {
-                    await resolve()
-                }
-              })
-              }}
-            ]}
+        <ProFormText
+          name="name"
+          width="200px"
+          label="群体名称"
+          placeholder="请输入名称"
+          rules={[
+            { required: true, message: '请输入群体名称' },
+            { validator:(rule,value,callback)=>{
+              return new Promise(async (resolve, reject) => {
+              if(value&&value.length>20){
+                await reject('群体名称不超过20个字符')
+              }else {
+                  await resolve()
+              }
+            })
+            }}
+          ]}
           />
         </ProCard>
         <ProCard
@@ -248,10 +247,7 @@ export default (props) =>{
                   }else{
                     message.error('已有该选项')
                   }
-                 
-                } 
-                    
-                }
+                }}
                 style={{margin:"20px 0 20px 0"}}
                 >
                   会员等级
@@ -304,23 +300,23 @@ export default (props) =>{
             }}
           >
             <EditableProTable
-                actionRef={ref}
-                rowKey="id"
-                options={false}
-                recordCreatorProps={false}
-                value={dataSource}
-                onChange={setDataSource}
-                maxLength={3}
-                editable={{
-                  editableKeys,
-                  onSave: async (rowKey, data, row) => {
-                    await waitTime(500);
-                  },
-                  onChange: setEditableRowKeys,
-                  onlyAddOneLineAlertMessage:'不能同时新增多行'
-                }}
-                search={false}
-                columns={columns}
+              actionRef={ref}
+              rowKey="id"
+              options={false}
+              recordCreatorProps={false}
+              value={dataSource}
+              onChange={setDataSource}
+              maxLength={3}
+              editable={{
+                editableKeys,
+                onSave: async (rowKey, data, row) => {
+                  await waitTime(500);
+                },
+                onChange: setEditableRowKeys,
+                onlyAddOneLineAlertMessage:'不能同时新增多行'
+              }}
+              search={false}
+              columns={columns}
             />
         </ProCard>
       </ProForm>

@@ -1,13 +1,11 @@
-import React, { useState,useEffect } from 'react';
-import { Form, Input, Tabs } from 'antd';
-import { FormattedMessage, connect } from 'umi';
+import React, { useState } from 'react';
+import { connect } from 'umi';
 import styles from '../style.less'
-const { TabPane } = Tabs;
 import ProForm, { ProFormText, ProFormSelect,ProFormRadio } from '@ant-design/pro-form';
 
 const couponType = (props) => {
     let { id } = props
-    let { dispatch, DetailList } = props
+    let { DetailList } = props
     const [flag, setFlag] = useState()
     const [discounts, setDiscounts] = useState('');
     const [coupons, setCoupons] = useState('');
