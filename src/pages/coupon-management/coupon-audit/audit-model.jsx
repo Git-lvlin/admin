@@ -1,5 +1,5 @@
-import React, { useState, useEffect,useRef } from 'react';
-import { ModalForm,ProFormSwitch,ProFormTextArea} from '@ant-design/pro-form';
+import React, { useState} from 'react';
+import { ModalForm,ProFormTextArea} from '@ant-design/pro-form';
 import { Button,message } from 'antd';
 import { history } from 'umi';
 
@@ -26,7 +26,6 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                console.log('values',values)
                 InterFace({id:id,status:status,content:values.content}).then(res=>{
                     if(res.code==0){
                         setVisible(false)   

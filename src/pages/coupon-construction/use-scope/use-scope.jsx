@@ -1,34 +1,50 @@
-import React,{useEffect} from 'react';
-import { Tabs } from 'antd';
+import React,{useState} from 'react';
 import { FormattedMessage,connect } from 'umi';
+import { ProFormRadio} from '@ant-design/pro-form';
 import UseCollect from './use-collect'
 import UseSecond from './use-second'
-const { TabPane } = Tabs;
 
 const useScope=props => {
-    const {dispatch,DetailList,id,type}=props
-    const onTabs=(val)=>{
-        dispatch({
-            type:'UseScopeList/fetchUseType',
-            payload:{
-                useType:val
-            }
-        })
-    }
+    const {DetailList,id}=props
+    const [position,setPosition]=useState()
     return (
         <>
-            <Tabs defaultActiveKey={parseInt(id)==id&&`${DetailList.data?.couponType}`} onChange={onTabs}>
-                <TabPane key='1' tab={<FormattedMessage id="formandbasic-form.Secret.Garden" /> } key="1">
-                    <UseSecond id={id}/>
-                </TabPane>
-                <TabPane key='2' tab={<FormattedMessage id="formandbasic-form.container.number" />} key="2">
-                    <UseCollect id={id}/>
-                </TabPane>
-            </Tabs>
+           <ProFormRadio.Group
+                name="useType"
+                label={<FormattedMessage id="formandbasic-form.usable.range" />}
+                rules={[{ required: true, message: '请选择使用范围' }]}
+                fieldProps={{
+                onChange: (e) => setPosition(e.target.value),
+                }}
+                options={[
+                {
+                    label:<FormattedMessage id="formandbasic-form.Secret.Garden" />,
+                    value: 1,
+                },
+                {
+                    label: <FormattedMessage id="formandbasic-form.container.number" />,
+                    value: 2,
+                },
+                ]}
+            />
+            {
+                position==1||(parseInt(id)==id )&&DetailList.data?.useType==1?
+                <div style={{display:position==2?'none':'block'}}>
+                  <UseSecond id={id}/>
+                </div>
+                :null
+            }
+            {
+                position==2||(parseInt(id)==id )&&DetailList.data?.useType==2?
+                <div style={{display:position==1?'none':'block'}}>
+                  <UseCollect id={id}/>
+                </div>
+                :null
+            }
+            
         </>
     )
 }
-export default connect(({ DetailList,UseScopeList}) => ({
+export default connect(({ DetailList}) => ({
     DetailList,
-    UseScopeList
   }))(useScope);

@@ -1,8 +1,7 @@
 import React, { useState,useEffect,useRef } from 'react';
 import { couponVerifyDetail,couponVerify } from '@/services/coupon-management/coupon-audit';
-import { couponCrowdList} from '@/services/crowd-management/coupon-crowd';
+import SubTable from '@/pages/coupon-construction/coupon-subtable'
 import { Divider, Form, Spin,Button } from 'antd';
-import ProForm from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import AuditModel from './audit-model'
 import { history } from 'umi';
@@ -20,52 +19,6 @@ const formItemLayout = {
   }
 };
 
-const SubTable = (props) => {
-  const [data, setData] = useState([])
-  const {name}=props
-  const columns = [
-    {
-      title: '选项',
-      dataIndex: 'type',
-      valueType: 'select',
-      valueEnum: {
-        1: '会员等级',
-        2: '消费次数',
-        3: '累计消费'
-      },
-      hideInSearch: true,
-  },
-    {
-        title: '范围',
-        dataIndex: 'isContain',
-        valueType: 'select',
-        valueEnum: {
-          1: '包含',
-          2: '不包含',
-        },
-        hideInSearch: true,
-    },
-    {
-        title: '条件',
-        dataIndex: 'msgDisplay',
-        hideInSearch: true,
-    }
-  ];
-  useEffect(() => {
-    if(name){
-      couponCrowdList({
-        name:name
-      }).then(res => {
-        if (res.code === 0) {
-          setData(res?.data?.[0].crowdInfo)
-        }
-      })
-    }
-  }, [])
-  return (
-    <ProTable toolBarRender={false} search={false} key="type" columns={columns} dataSource={data} pagination={false} />
-  )
-};
 
 
 export default props => {
@@ -178,7 +131,8 @@ export default props => {
               '满减券'
               :detailData.couponType==2?
               '折扣券'
-              :'立减券'
+              :detailData.couponType==3?
+              '立减券':null
             }
           </Form.Item>
 
@@ -226,8 +180,15 @@ export default props => {
           <Form.Item
             label="可领券群体"
           >
+            {
+              detailData.memberType==1?
+              '全部会员'
+              :'指定用户群体'
+            }
           </Form.Item>
-          <ProTable
+          {
+            detailData.memberType==2?
+            <ProTable
               actionRef={ref}
               rowKey="id"
               options={false}
@@ -236,6 +197,8 @@ export default props => {
               search={false}
               columns={columns}
             />
+            : null
+          }
 
           <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">使用设置</Divider>
 
@@ -257,10 +220,13 @@ export default props => {
               '全部商品':
               detailData.goodsType==2?
               '指定商品':
-              '指定品类'
+              detailData.goodsType==3?
+              '指定品类':null
             }
           </Form.Item>
-          <ProTable
+          {
+            detailData.goodsType==2?
+            <ProTable
               actionRef={ref}
               rowKey="id"
               options={false}
@@ -268,6 +234,8 @@ export default props => {
               search={false}
               columns={columns2}
             />
+            :null
+          }
           <Form.Item
             label="可用人群"
           >
@@ -292,10 +260,6 @@ export default props => {
                   actionRef={ref}
                   rowKey="id"
                   options={false}
-                  // params={{
-                  // status: 1,
-                  // }}
-                  // request={couponList}
                   dataSource={detailData.verifyInfo}
                   search={false}
                   columns={columns3}

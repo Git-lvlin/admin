@@ -1,56 +1,10 @@
 import React,{useEffect,useRef,useState} from 'react';
-import {Form,DatePicker,Button,Modal,Select,message} from 'antd';
-import {formatMessage,connect} from 'umi';
+import {Form,Button,Modal,message} from 'antd';
+import {connect} from 'umi';
 import ProTable from '@ant-design/pro-table';
-import ProForm,{ ProFormText } from '@ant-design/pro-form';
 import { couponCrowdList } from '@/services/crowd-management/coupon-crowd';
-const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
+import SubTable from '@/pages/coupon-construction/coupon-subtable'
 
-const SubTable = (props) => {
-    const [data, setData] = useState([])
-    const {name}=props
-    const columns = [
-      {
-        title: '选项',
-        dataIndex: 'type',
-        valueType: 'select',
-        valueEnum: {
-          1: '会员等级',
-          2: '消费次数',
-          3: '累计消费'
-        },
-        hideInSearch: true,
-    },
-      {
-          title: '范围',
-          dataIndex: 'isContain',
-          valueType: 'select',
-          valueEnum: {
-            1: '包含',
-            2: '不包含',
-          },
-          hideInSearch: true,
-      },
-      {
-          title: '条件',
-          dataIndex: 'msgDisplay',
-          hideInSearch: true,
-      }
-    ];
-    useEffect(() => {
-      couponCrowdList({
-        name:name
-      }).then(res => {
-        if (res.code === 0) {
-          setData(res?.data?.[0].crowdInfo)
-        }
-      })
-    }, [])
-    return (
-      <ProTable toolBarRender={false} search={false} key="type" columns={columns} dataSource={data} pagination={false} />
-    )
-  };
 
 
 const validity=(props)=>{
@@ -59,7 +13,6 @@ const validity=(props)=>{
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading,setLoading]=useState(true)
     const [CrowdIdsArr,setCrowdIdsArr]=useState([])
-    const [onselect,setOnselect]=useState([])
     const [CrowdIds,setCrowdIds]=useState('')
     const columns = [
         {
@@ -88,7 +41,13 @@ const validity=(props)=>{
                 dispatch({
                     type:'UseScopeList/fetchCrowdIds',
                     payload:{
-                        CrowdIds:DetailList.data&&DetailList.data?.crowdList.id
+                        CrowdIds:DetailList.data&&DetailList.data?.crowdList?.id
+                    }
+                })
+                dispatch({
+                    type:'UseScopeList/fetchCrowdIdsArr',
+                    payload:{
+                        CrowdIdsArr:DetailList.data&&[DetailList.data?.crowdList]
                     }
                 })
             }
@@ -143,8 +102,8 @@ const validity=(props)=>{
     return (
         <>
         {
-            choose==2||(parseInt(id)==id )&&DetailList.data?.memberType?
-            <>
+            choose==2||(parseInt(id)==id )&&DetailList.data?.memberType==2?
+            <div style={{display:choose==1?'none':'block'}}>
                 <Button type="primary" style={{margin:"0 0 20px 20px"}} onClick={showModal}>
                     选择群体
                 </Button>
@@ -177,12 +136,11 @@ const validity=(props)=>{
                     expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
                     search={false}
                     rowKey="spuId"
-                    expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
                     columns={columns2}
-                    dataSource={parseInt(id)==id&&[DetailList.data?.crowdList]||UseScopeList.UseScopeObje.CrowdIdsArr}
+                    dataSource={UseScopeList.UseScopeObje.CrowdIdsArr}
                     style={{display:isModalVisible?'none':'block'}}
                 />
-            </>
+            </div>
             :null
          }
         </>
