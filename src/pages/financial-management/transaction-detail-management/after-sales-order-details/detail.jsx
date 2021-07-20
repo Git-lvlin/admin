@@ -7,6 +7,7 @@ import { Button } from 'antd'
 import { amountTransform } from '@/utils/utils'
 import { refundDetail } from "@/services/financial-management/transaction-detail-management"
 import './styles.less'
+import styles from './styles.less'
 
 const Detail = () => {
   const {id} = useParams()
@@ -36,11 +37,26 @@ const Detail = () => {
   }
   const fashionableType =(data, amount, fee) =>{
     if(data==='goodsAmount'){
-      return `货款: ¥${amountTransform(amount, '/')} 货款交易费: ¥${amountTransform(fee, '/')}`
+      return (
+        <>
+          <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
+          <span>货款交易费: ¥{amountTransform(fee, '/')}</span>
+        </>
+      )
     }else if(data==='commission'){
-      return `提成: ¥${amountTransform(amount, '/')} 货款交易费: ¥${amountTransform(fee, '/')}`
+      return (
+        <>
+          <span className={styles.amount}>提成: ¥{amountTransform(amount, '/')}</span>
+          <span>提成交易费: ¥{amountTransform(fee, '/')}</span>
+        </>
+      )
     }else if(data==='platformCommission') {
-      return `佣金: ¥${amountTransform(amount, '/')} 货款交易费: ¥${amountTransform(fee, '/')}`
+      return (
+        <>
+          <span className={styles.amount}>佣金: ¥{amountTransform(amount, '/')}</span>
+          <span>佣金交易费: ¥{amountTransform(fee, '/')}</span>
+        </>
+      )
     }else{
       return ''
     }
@@ -48,11 +64,26 @@ const Detail = () => {
 
   const backCalculation= (data, amount, fee)=> {
     if(data==='goodsAmount'){
-      return `货款回退: ¥${amountTransform(amount, '/')} 货款交易费回退: ¥${amountTransform(fee, '/')}`
+      return (
+        <>
+          <span className={styles.amount}>货款回退: ¥{amountTransform(amount, '/')}</span>
+          <span>货款交易费回退: ¥{amountTransform(fee, '/')}</span>
+        </>
+      )
     }else if(data==='commission'){
-      return `提成回退: ¥${amountTransform(amount, '/')} 货款交易费回退: ¥${amountTransform(fee, '/')}`
+      return (
+        <>
+          <span className={styles.amount}>提成回退: ¥{amountTransform(amount, '/')}</span>
+          <span>提成交易费回退: ¥{amountTransform(fee, '/')}</span>
+        </>
+      )
     }else if(data==='platformCommission') {
-      return `佣金回退: ¥${amountTransform(amount, '/')} 货款交易费回退: ¥${amountTransform(fee, '/')}`
+      return (
+        <>
+          <span className={styles.amount}>佣金回退: ¥{amountTransform(amount, '/')}</span>
+          <span>佣金交易费回退: ¥{amountTransform(fee, '/')}</span>
+        </>
+      )
     }else{
       return ''
     }
@@ -150,7 +181,6 @@ const Detail = () => {
       dataIndex: 'refundDivideInfos',
       render: (_, data)=> {
         if(data.returnDivideInfos) {
-          console.log(data?.returnDivideInfos.length);
           return data?.returnDivideInfos.map(item=> (
             <div key={item?.type}>{backCalculation(item?.type, item?.amount, item?.fee)}</div>
           ))

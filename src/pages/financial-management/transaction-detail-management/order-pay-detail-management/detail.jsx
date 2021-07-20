@@ -6,6 +6,7 @@ import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { orderPageDetail } from "@/services/financial-management/transaction-detail-management"
+import styles from './styles.less'
 import './styles.less'
 
 const Detail = () => {
@@ -33,11 +34,26 @@ const Detail = () => {
   }
   const fashionableType =(data, amount, fee) =>{
     if(data==='goodsAmount'){
-      return `货款: ¥${amountTransform(amount, '/')} 货款交易费: ¥${amountTransform(fee, '/')}`
+      return (
+        <>
+          <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
+          <span>货款交易费: ¥{amountTransform(fee, '/')}</span>
+        </>
+      )
     }else if(data==='commission'){
-      return `提成: ¥${amountTransform(amount, '/')} 货款交易费: ¥${amountTransform(fee, '/')}`
+      return (
+        <>
+          <span className={styles.amount}>提成: ¥{amountTransform(amount, '/')}</span>
+          <span>提成交易费: ¥{amountTransform(fee, '/')}</span>
+        </>
+      )
     }else if(data==='platformCommission') {
-      return `佣金: ¥${amountTransform(amount, '/')} 货款交易费: ¥${amountTransform(fee, '/')}`
+      return (
+        <>
+          <span className={styles.amount}>佣金: ¥{amountTransform(amount, '/')}</span>
+          <span>佣金交易费: ¥{amountTransform(fee, '/')}</span>
+        </>
+      )
     }else{
       return ''
     }
@@ -124,7 +140,7 @@ const Detail = () => {
     {
       title: '支付金额',
       dataIndex: 'amount',
-      render: (_)=> `¥${amountTransform(_, '/')}`
+      render: (_)=> `¥${amountTransform(_, '/').toFixed(2)}`
     },
     {
       title: '虚拟分账计算',
