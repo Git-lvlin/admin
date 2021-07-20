@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DatePicker, Input, Form, Divider, message,Button } from 'antd';
+import { Input, Form, Divider, message,Button } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
 import CouponType from './coupon-type/coupon-type'
 import Circulation from './circulation/circulation'
@@ -12,7 +12,6 @@ import ProForm, { ProFormText, ProFormRadio,ProFormDateRangePicker } from '@ant-
 import { history,connect } from 'umi';
 import moment from 'moment';
 const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const couponConstruction=(props) => {
@@ -31,7 +30,7 @@ const couponConstruction=(props) => {
           dateTimeRange:[moment(DetailList.data?.activityStartTime).valueOf(),moment(DetailList.data?.activityEndTime).valueOf()],
           ...DetailList.data
         })
-      },500)
+      },1000)
     }else{
       dispatch({
         type:'UseScopeList/fetchUseScopeList',
@@ -141,36 +140,35 @@ const couponConstruction=(props) => {
   return (
     <>
       <ProForm
-          form={form}
-          submitter={
-            {
-              render: (props, doms) => {
-                return [
-                  <Button type="primary" key="submit" onClick={() =>{
-                    props.form?.submit?.()
-                    setSubmitType(1)
-                  }}>
-                    保存
-                  </Button>,
-                   <Button type="primary" key="submit" onClick={() =>{
-                    props.form?.submit?.()
-                    setSubmitType(3)
-                   }}>
-                    提交审核
-                 </Button>,
-                  <Button type="default" onClick={()=>history.push('/coupon-management/coupon-list')}>
-                    返回
-                  </Button>,
-                  
-                ];
-              }
+        form={form}
+        submitter={
+          {
+            render: (props, doms) => {
+              return [
+                <Button type="primary" key="submit" onClick={() =>{
+                  props.form?.submit?.()
+                  setSubmitType(1)
+                }}>
+                  保存
+                </Button>,
+                <Button type="primary" key="submit" onClick={() =>{
+                  props.form?.submit?.()
+                  setSubmitType(3)
+                }}>
+                  提交审核
+              </Button>,
+                <Button type="default" onClick={()=>history.push('/coupon-management/coupon-list')}>
+                  返回
+                </Button> 
+              ];
             }
           }
-          onFinish={async (values)=>{
-             await  onsubmit(values);
-             return true;
-            }
-           }
+        }
+        onFinish={async (values)=>{
+          await  onsubmit(values);
+          return true;
+          }
+        }
         style={{ width: '1500px', margin: '0 auto' }}
       >
         <Divider orientation="left"><FormattedMessage id="formandbasic-form.basic.setup" /></Divider>

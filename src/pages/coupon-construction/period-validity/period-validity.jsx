@@ -1,9 +1,6 @@
-import React,{useEffect} from 'react';
-import {Form,DatePicker} from 'antd';
+import React from 'react';
 import {formatMessage,connect} from 'umi';
 import ProForm,{ ProFormText,ProFormDateRangePicker } from '@ant-design/pro-form';
-const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
 
 const validity=(props)=>{
     let {id,DetailList,position}=props

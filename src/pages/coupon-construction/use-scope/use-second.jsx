@@ -144,7 +144,6 @@ const useSecond=(props)=>{
     
     // 删除商品
     const  delGoods=val=>{
-        console.log('val',val)
         console.log('spuIdsArr',UseScopeList.UseScopeObje.spuIdsArr)
         const arr = UseScopeList.UseScopeObje.spuIds.split(',')
         dispatch({
