@@ -28,10 +28,14 @@ export default {
   'menu.order-management.intensive-order.supplier-order': '供应商订单',
   'menu.order-management.after-sales-order': '售后订单',
   'menu.order-management.after-sales-order-details': '详请页',
+  'menu.order-management.intensive-after-sale-orders': '集约售后订单',
+  'menu.order-management.intensive-after-sale-orders-details': '详请页',
   'menu.order-management.intensive-order.supplier-order-detail': '订单详情',
   'menu.order-management.intensive-order.shopkeeper-order-detail': '订单详情',
   'menu.order-management.intervention-list': '售后介入',
   'menu.order-management.details': '详情',
+  'menu.order-management.intensive-intervention-list': '集约售后介入',
+  'menu.order-management.intensive-intervention-list-details': '集约售后详情',
 
   'menu.product-management': '商品管理',
   'menu.product-management.daifa-product': '代发商品',
@@ -77,6 +81,7 @@ export default {
   'menu.intensive-store-management.store-review-detail': '店铺审核详情',
   'menu.intensive-store-management.grade-index': '等级权益',
   'menu.intensive-store-management.assessment-reward': '指标考核',
+  'menu.intensive-store-management.lvl-rule': '等级规则配置',
 
   'menu.single-contract-activity-management': '单约活动管理',
   'menu.single-contract-activity-management.activity-list': '活动列表',

@@ -281,7 +281,7 @@ export default (props) => {
         setSalePriceProfitLoss(amountTransform(data.salePriceProfitLoss, '/'))
       })
     }
-    return debounce(loadData, 500);
+    return debounce(loadData, 1000);
   }, [])
 
   useEffect(() => {
@@ -308,7 +308,7 @@ export default (props) => {
         detailImages: uploadImageFormatConversion(detailData.detailImages, 'imageUrl'),
         // advImages: uploadImageFormatConversion(detailData.advImages, 'imageUrl'),
         videoUrl: goods.videoUrl,
-        brandId: goods.brandId,
+        brandId: goods.brandId === 0 ? null : goods.brandId,
         settleType: settleType || 1,
         gcId: [goods.gcId1, goods.gcId2],
         wholesaleFreight: amountTransform(goods.wholesaleFreight, '/'),

@@ -452,8 +452,12 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        await submit(values);
-        return true;
+        try {
+          await submit(values);
+          return true;
+        } catch (error) {
+          console.log('error', error);
+        }
       }}
       visible={visible}
       initialValues={{
@@ -590,8 +594,8 @@ export default (props) => {
               { required: true, message: '请输入商品开票税率' },
               () => ({
                 validator(_, value) {
-                  if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                    return Promise.reject(new Error('请输入大于零的数字'));
+                  if (!/^\d+\.?\d*$/g.test(value)) {
+                    return Promise.reject(new Error('请输入0-13之间的数字'));
                   }
                   return Promise.resolve();
                 },
@@ -625,7 +629,7 @@ export default (props) => {
         </div>
       </div>
 
-      <div style={{ visibility: detailData?.bankAccountInfo?.auditStatus === 1 ? 'hidden' : 'visible' }}>
+      <div style={{ visibility: detailData?.bankAccountInfo?.auditStatus === 1 ? 'visible' : 'visible' }}>
         <Title level={4}>资金账户信息</Title>
         <Divider />
         <div style={{ display: 'flex' }}>
@@ -755,7 +759,7 @@ export default (props) => {
                       () => ({
                         required: true,
                         validator(_, value = {}) {
-                          const { businessLicense, idCardFrontImg, idCardBackImg, bankLicenseImg } = value;
+                          const { businessLicense, idCardFrontImg, idCardBackImg, bankLicenseImg, bankCardFrontImg, bankCardBackImg } = value;
                           if (!businessLicense) {
                             return Promise.reject(new Error('请上传三合一证件照'));
                           }
@@ -765,8 +769,14 @@ export default (props) => {
                           if (!idCardBackImg) {
                             return Promise.reject(new Error('请上传法人身份证背面照'));
                           }
-                          if (!bankLicenseImg) {
+                          if (!bankLicenseImg && bankAccountType === 1) {
                             return Promise.reject(new Error('请上传开户银行许可证照'));
+                          }
+                          if (!bankCardFrontImg && bankAccountType === 2) {
+                            return Promise.reject(new Error('请上传结算银行卡正面照'));
+                          }
+                          if (!bankCardBackImg && bankAccountType === 2) {
+                            return Promise.reject(new Error('请上传结算银行卡背面照'));
                           }
                           return Promise.resolve();
                         },

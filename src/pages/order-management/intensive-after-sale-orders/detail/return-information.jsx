@@ -33,15 +33,15 @@ const ReturnInformation = props => {
   } = props
   const [express, setExpress] = useState({})
   const isHide = ()=> {
-    return (status === 1 && type !== 1) ? true : false
+    return (type === 1 && status !== 1) ? true : false
   }
   useEffect(() => {
-    data?.returnShippingCode &&
+    data?.expressNo &&
       expressInfo({
-        shippingCode: data?.returnShippingCode,
-        expressType: data?.returnExpressType,
-        mobile: data?.returnPhone,
-        deliveryTime: data?.returnTime
+        shippingCode: data?.expressNo,
+        expressType: data?.expressType,
+        mobile: data?.business?.receiptPhone,
+        deliveryTime: data?.expressTime
       }).then(res => {
         setExpress(res.data)
       })
@@ -53,7 +53,7 @@ const ReturnInformation = props => {
   const columns = [
     {
       title: '商品退回方式',
-      dataIndex: 'afterSalesType',
+      dataIndex: 'returnType',
       valueType: 'select',
       valueEnum: {
         1: '无需退回',
@@ -62,7 +62,7 @@ const ReturnInformation = props => {
     },
     {
       title: '售后类型',
-      dataIndex: 'afterSalesType',
+      dataIndex: 'returnType',
       valueEnum: {
         1: '退款',
         2: '退款退货'
@@ -71,15 +71,17 @@ const ReturnInformation = props => {
     {
       title: '买家收货地址', 
       dataIndex: 'receiveAddress',
-      render: (_, records) => records.buyerDeliveryInfo?.fullAddress
+      render: (_, records) => records.buyer?.receiptAddress
     },
     {
       title: '买家昵称',
-      dataIndex: 'userNickname'
+      dataIndex: 'userNickname',
+      render: (_, records) => records.buyer?.storeName
     },
     {
       title: '买家手机号',
-      dataIndex: 'buyerPhone'
+      dataIndex: 'buyerPhone',
+      render: (_, records) => records.buyer?.storePhone
     },
     {
       title: '申请时间',
@@ -89,11 +91,11 @@ const ReturnInformation = props => {
     },
     {
       title: '订单编号',
-      dataIndex: 'subOrderSn'
+      dataIndex: 'orderId'
     },
     {
       title: '退款总金额',
-      dataIndex: 'returnAmount',
+      dataIndex: 'refundTotalAmount',
       render:(_) =>`¥${amountTransform(_, '/').toFixed(2)}`
     },
     {
@@ -139,27 +141,25 @@ const ReturnInformation = props => {
     {
       title: '商家收件人名称',
       dataIndex: 'receiveMan',
-      hideInDescriptions: isHide()
+      hideInDescriptions: isHide(),
+      render: (_, records) => records?.business?.receiptUsername
     },
     {
       title: '商家收货手机号',
       dataIndex: 'receivePhone',
-      hideInDescriptions: isHide()
+      hideInDescriptions: isHide(),
+      render: (_, records) => records.business?.receiptPhone
     },
     {
       title: '商家收货地址',
       dataIndex: 'receiveAddress',
-      hideInDescriptions: isHide()
-    },
-    {
-      title: '商家收货时间',
-      dataIndex: 'receiveTime',
-      hideInDescriptions: isHide()
+      hideInDescriptions: isHide(),
+      render: (_, records) => records.business?.receiptAddress
     }
   ]
   return (
     <ProDescriptions
-      rowKey='orderNumber'
+      rowKey='refundTotalAmount'
       className={styles.description}
       dataSource={data}
       layout='horizontal'

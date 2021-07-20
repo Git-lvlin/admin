@@ -62,43 +62,29 @@ const optType = (type, data) => {
   }
 }
 
-const NegotiationHistory = props => {
-  let { data } = props
-  data = Array.isArray(data) ? data : []
-  return data?.map(res => {
+const NegotiationHistory = ({data}) => {
+  return data?.map(res=> {
     return (
-      <div className={styles.warp} key={res.id}>
+      <div className={styles.warp} key={res?.contentDisplay}>
         <div className={styles.avatar}>
           <Avatar
             size={54}
-            src={
-              res?.createRole == 1
-              ? res?.sysLogo
-              : (res?.createRole == 2)
-              ? res?.storeLogo
-              : res?.userHeadUrl
-            }
+            src={res?.operatorAvatar}
           />
         </div>
         <div className={styles.list}>
           <div className={styles.top}>
             <div className={styles.name}>
-              {
-                res?.createRole == 1
-                ? '系统'
-                : (res?.createRole == 2)
-                ? res?.storeName
-                : res?.userName
-              }
+              {res?.operatorName}
             </div>
             <div className={styles.time}>
               {moment(res?.createTime).format('YYYY-MM-DD HH:mm:ss')}
             </div>
           </div>
           <div className={ styles.content }>
-            <div className={ styles.text }>{optType(res?.optType, res)}</div>
+            <div className={styles.text}>{res?.contentDisplay}</div>
             <PreviewGroup>
-              <VoucherPic pic={(res?.imageUrl)?.split(',')}/>
+              <VoucherPic pic={(res?.voucherPics)}/>
             </PreviewGroup>
           </div>
         </div>

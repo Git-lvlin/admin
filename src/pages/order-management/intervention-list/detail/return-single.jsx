@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import { Button, Timeline } from 'antd';
+import { Button, Timeline, Empty } from 'antd'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import { ModalForm } from '@ant-design/pro-form';
+import { ModalForm } from '@ant-design/pro-form'
 import moment from 'moment'
 
 import { amountTransform } from '@/utils/utils'
@@ -13,13 +13,17 @@ const { Item } = Timeline
 const ReturnSingle = props => {
   const { data, type } = props
   const [address, setAddress] = useState({})
-  const showLastStatus = expressInfo => {
-    return expressInfo?.map((item, idx)=>(
-      <Item key={idx}>
-        {item.content}
-        <span style={{marginLeft: 30}}>{item.time}</span>
-      </Item>
-    ))
+  const showLastStatus = lastStatus => {
+    if(lastStatus){
+      return lastStatus?.map((item)=>(
+        <Item key={item.time}>
+          <span className={styles.time}>{item.time}</span>
+          {item.content}
+        </Item>
+      ))
+    } else {
+      return <Empty className={styles.empty}/>
+    }
   }
   useEffect(()=>{
     data?.returnShippingCode&&
@@ -109,6 +113,10 @@ const ReturnSingle = props => {
             <ModalForm
               title='快递消息'
               width={800}
+              modalProps={{
+                closable: true,
+                destroyOnClose: true
+              }}
               trigger={
                 <Button size="large" type="default">查看快递详情</Button>
               }

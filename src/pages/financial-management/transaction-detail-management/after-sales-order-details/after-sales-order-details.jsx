@@ -162,6 +162,7 @@ const AfterSalesOrderDetails = () =>{
       title: '操作',
       dataIndex: 'optoion',
       valueType: 'option',
+      fixed: 'right',
       render: (_, records)=> <a onClick={()=>{skipToDetails(records?.id)}}>详情</a>
     }
   ]
@@ -169,7 +170,7 @@ const AfterSalesOrderDetails = () =>{
     <PageContainer title={false}>
       <ProTable
         rowKey='id'
-        scroll={{x: 2400}}
+        scroll={{x: 2200}}
         columns={columns}
         toolBarRender={false}
         pagination={{

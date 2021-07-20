@@ -7,7 +7,7 @@ import styles from './styles.less'
 const { PreviewGroup } = Image
 
 const VoucherPic = ({pic}) => {
-  return pic?.map(res => {
+  return pic && pic?.map(res => {
     if(res){
       return (
         <Image

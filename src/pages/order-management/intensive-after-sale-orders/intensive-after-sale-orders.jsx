@@ -1,59 +1,26 @@
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
-import React, { useRef, useEffect, useState} from 'react'
-import XLSX from 'xlsx'
+import React, { useRef } from 'react'
 import { Button } from 'antd'
 import moment from 'moment'
 import { history } from 'umi'
 
-import { refundOrder } from '@/services/order-management/after-sales-order'
 import { amountTransform } from '@/utils/utils'
+import { refundOrder } from '@/services/order-management/intensive-after-sale-orders'
 import './styles.less'
-
-
-const sourceType = {
-  1: '待审核',
-  2: '处理中',
-  3: '已拒绝申请',
-  4: '已拒绝退款',
-  5: '已完成',
-  6: '已关闭'
-}
 
 const columns = [
   {
     title: '售后编号',
-    dataIndex: 'orderSn',
+    dataIndex: 'refundId',
     align: 'center',
-    order: 9,
-    render: (_, records) => {
-      return(
-        <>
-          <div>{ records?.orderSn }</div>
-          <div>
-            { 
-              records?.platformInvolved === 1&& 
-              <span 
-                style={{
-                  background: 'rgba(250, 205, 145, 1)', 
-                  fontSize: 12,
-                  padding: 4,
-                  borderRadius: 5
-                }}
-              >
-                平台已介入
-              </span> 
-            }
-          </div>
-        </>
-      )
-    }
+    order: 9
   },
   {
     title: '订单编号',
-    dataIndex: 'subOrderSn',
+    dataIndex: 'orderId',
     align: 'center',
-    order: 8
+    order: 8,
   },
   {
     title: '申请时间',
@@ -65,9 +32,9 @@ const columns = [
   },
   {
     title: '买家昵称',
-    dataIndex: 'userNickname',
+    dataIndex: 'buyerNickname',
     align: 'center',
-    order: 4
+    order: 4,
   },
   {
     title: '买家手机号',
@@ -77,48 +44,57 @@ const columns = [
   },
   {
     title: '商家名称',
-    dataIndex: 'storeName',
+    dataIndex: 'businessName',
     align: 'center',
-    order: 2,
+    order: 2
   },
   {
     title: '商家手机号',
-    dataIndex: 'storePhone',
+    dataIndex: 'businessPhone',
     align: 'center',
-    order: 1,
+    order: 1
   },
   {
     title: '售后类型',
-    dataIndex: 'afterSalesType',
+    dataIndex: 'refundType',
+    align: 'center',
+    order: 7,
     valueType: 'select',
     valueEnum: {
-      1: '仅退款',
-      2: '退款退货'
-    },
-    align: 'center',
-    order: 7
+      1: '退款',
+      2: '退货退款'
+    }
   },
   {
     title: '退款总金额（元）',
-    dataIndex: 'returnAmount',
+    dataIndex: 'refundTotalMoney',
     align: 'center',
     hideInSearch: true,
     render: (_) => amountTransform(_, '/').toFixed(2)
   },
   {
     title: '退款状态',
-    dataIndex: 'status',
-    valueEnum: sourceType,
-    valueType: 'select',
+    dataIndex: 'refundStatus',
     align: 'center',
-    order: 6
+    order: 6,
+    valueType: 'select',
+    valueEnum: {
+      1: '待审核,',
+      2: '拒绝审核',
+      3: '待退货',
+      4: '待退款',
+      5: '拒绝退款',
+      6: '退款中',
+      7: '已完成',
+      8: '已关闭'
+    }
   },
   {
     title: '操作',
     dataIndex: 'operation',
     valueType: 'option',
     align: 'center',
-    render: (_, record) => <a onClick={ () => {history.push(`/order-management/after-sales-order/detail/${record?.id}`)} }>查看详情</a>
+    render: (_, record) => <a onClick={ () => {history.push(`/order-management/intensive-after-sale-orders/detail/${record?.refundId}`)} }>查看详情</a>
   }
 ]
 // function saleType(val) {
@@ -214,7 +190,7 @@ const afterSalesOrder = () => {
   return (
     <PageContainer title={false}>
       <ProTable
-        rowKey="orderSn"
+        rowKey="refundId"
         options={false}
         params={{}}
         request={refundOrder}
@@ -246,7 +222,8 @@ const afterSalesOrder = () => {
         columns={columns}
         pagination={{
           showQuickJumper: true,
-          hideOnSinglePage: true
+          hideOnSinglePage: true,
+          pageSize: 10
         }}
       />
     </PageContainer>

@@ -300,7 +300,7 @@ export default function EditTable({ onSelect }) {
       })
     };
 
-    return debounce(loadData, 500);
+    return debounce(loadData, 1000);
   }, [dataSource]);
   return (
     <EditableProTable

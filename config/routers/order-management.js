@@ -53,6 +53,17 @@ export default {
       hideInMenu: true,
     },
     {
+      name: 'intensive-after-sale-orders',
+      path: '/order-management/intensive-after-sale-orders',
+      component: './order-management/intensive-after-sale-orders'
+    },
+    {
+      name: 'intensive-after-sale-orders-details',
+      path: '/order-management/intensive-after-sale-orders/detail/:id',
+      component: './order-management/intensive-after-sale-orders/detail',
+      hideInMenu: true,
+    },
+    {
       name: 'intervention-list',
       path: '/order-management/intervention-list',
       component: './order-management/intervention-list'
@@ -61,6 +72,17 @@ export default {
       name: 'details',
       path: '/order-management/intervention-list/details/:id',
       component: './order-management/intervention-list/detail',
+      hideInMenu: true,
+    },
+    {
+      name: 'intensive-intervention-list',
+      path: '/order-management/intensive-intervention-list',
+      component: './order-management/intensive-intervention-list'
+    },
+    {
+      name: 'intensive-intervention-list-details',
+      path: '/order-management/intensive-intervention-list/details/:id',
+      component: './order-management/intensive-intervention-list/detail',
       hideInMenu: true,
     }
   ]
