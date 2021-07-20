@@ -74,11 +74,11 @@ const SubTable = (props) => {
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '单店起订量',
+      title: '单次起订量',
       dataIndex: 'minNum',
     },
     {
-      title: '单店限订量',
+      title: '单次限订量',
       dataIndex: 'maxNum',
     },
     {

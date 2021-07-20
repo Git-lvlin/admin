@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormDateRangePicker, ProFormSelect } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form } from 'antd';
-import { history } from 'umi';
+import { history, useLocation } from 'umi';
 import moment from 'moment';
 import styles from './style.less';
 import { orderList } from '@/services/order-management/shopkeeper-order';
@@ -17,6 +17,8 @@ const TableList = () => {
   const [orderType, setOrderType] = useState('')
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
+  const location = useLocation();
+
 
   const pageChange = (a, b) => {
     setPage(a)
@@ -37,6 +39,7 @@ const TableList = () => {
       status: orderType,
       startTime: time?.[0]?.format('YYYY-MM-DD'),
       endTime: time?.[1]?.format('YYYY-MM-DD'),
+      // storeNoList: location?.query?.storeNo ? [location?.query?.storeNo]:'',
       ...rest,
     })
       .then(res => {
