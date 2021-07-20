@@ -33,29 +33,44 @@ const Detail = () => {
     history.goBack()
   }
   const fashionableType =(data, amount, fee) =>{
-    if(data==='goodsAmount'){
-      return (
-        <>
-          <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
-          <span>货款交易费: ¥{amountTransform(fee, '/')}</span>
-        </>
-      )
-    }else if(data==='commission'){
-      return (
-        <>
-          <span className={styles.amount}>提成: ¥{amountTransform(amount, '/')}</span>
-          <span>提成交易费: ¥{amountTransform(fee, '/')}</span>
-        </>
-      )
-    }else if(data==='platformCommission') {
-      return (
-        <>
-          <span className={styles.amount}>佣金: ¥{amountTransform(amount, '/')}</span>
-          <span>佣金交易费: ¥{amountTransform(fee, '/')}</span>
-        </>
-      )
-    }else{
-      return ''
+    switch(data){
+      case 'goodsAmount':
+        return (
+          <>
+            <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
+            <span>货款交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'commission':
+        return (
+          <>
+            <span className={styles.amount}>提成: ¥{amountTransform(amount, '/')}</span>
+            <span>提成交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'platformCommission':
+        return (
+          <>
+            <span className={styles.amount}>佣金: ¥{amountTransform(amount, '/')}</span>
+            <span>佣金交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'suggestCommission':
+        return (
+          <>
+            <span className={styles.amount}>推荐提成: ¥{amountTransform(amount, '/')}</span>
+            <span>推荐提成交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'agentCompanyCommission':
+        return (
+          <>
+            <span className={styles.amount}>经销商提成: ¥{amountTransform(amount, '/')}</span>
+            <span>经销商提成交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      default:
+        return ''
     }
   }
   const columns1 = [
