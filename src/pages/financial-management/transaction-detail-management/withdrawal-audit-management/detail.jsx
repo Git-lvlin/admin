@@ -255,7 +255,7 @@ const Detail = () => {
         request={withdrawPageDetail}
       />
       <div style={{ background: '#fff', padding: 20 }}>
-        <Button type='primary' onClick={() => { back() }}>返回</Button>
+        <Button type='primary' onClick={() => {back()}}>返回</Button>
       </div>
     </PageContainer>
   )
