@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Button,Tabs} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm,{ ModalForm,ProFormRadio} from '@ant-design/pro-form';
+import { ModalForm,ProFormRadio} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import XLSX from 'xlsx'
 import { couponList } from '@/services/coupon-management/coupon-list';
@@ -17,6 +17,12 @@ const { TabPane } = Tabs
 const message = (type, module,dispatch) => {
   const ref=useRef()
   const columns= [
+    {
+      title: 'id',
+      dataIndex: 'id',
+      hideInSearch:true,
+      hideInTable:true
+    },
     {
       title: '优惠券名称',
       dataIndex: 'couponName',
@@ -236,30 +242,30 @@ const message = (type, module,dispatch) => {
     })
   }
 
-  return (
-      <ProTable
-        actionRef={ref}
-        rowKey="id"
-        options={false}
-        params={{
-          couponVerifyStatus: type,
-        }}
-        request={couponList}
-        search={{
-          defaultCollapsed: false,
-          labelWidth: 100,
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
-          <Button onClick={()=>{ref.current.reload()}} key="refresh">
-            刷新
-          </Button>,
-          <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
-            导出数据
-          </Button>
-          ],
-        }}
-        columns={columns}
-      />
+return(
+    <ProTable
+      actionRef={ref}
+      rowKey="id"
+      options={false}
+      params={{
+        couponVerifyStatus: type,
+      }}
+      request={couponList}
+      search={{
+        defaultCollapsed: false,
+        labelWidth: 100,
+        optionRender: (searchConfig, formProps, dom) => [
+          ...dom.reverse(),
+        <Button onClick={()=>{ref.current.reload()}} key="refresh">
+          刷新
+        </Button>,
+        <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
+          导出数据
+        </Button>
+        ],
+      }}
+      columns={columns}
+    />
   );
 };
 

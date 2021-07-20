@@ -1,5 +1,4 @@
 import React, { useState} from 'react';
-import {Form,Input,Tabs} from 'antd';
 import {FormattedMessage,connect} from 'umi';
 import styles from '../style.less'
 import ProForm,{ProFormText,ProFormRadio} from '@ant-design/pro-form';
