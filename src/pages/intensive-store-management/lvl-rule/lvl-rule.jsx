@@ -159,8 +159,8 @@ const LvlRule = () => {
     setDataSource(arr)
   }
 
-  const onOk = (e) => {
-    setDate(e.format('YYYY-MM-DD HH:mm:ss'))
+  const onChange = (e) => {
+    setDate(e?.format?.('YYYY-MM-DD HH:mm:ss'))
   }
 
   const submit = () => {
@@ -232,7 +232,7 @@ const LvlRule = () => {
             <DatePicker
               showNow={false}
               showTime
-              onOk={onOk}
+              onChange={onChange}
               disabledDate={(currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() }}
             />
           </Form.Item>}
