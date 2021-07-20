@@ -223,7 +223,7 @@ const Detail = () => {
                     </Button>
                     <RejectForm id={detailData?.id} />
                     <Button onClick={() => {
-                      
+                      history.goBack();
                     }}>
                       返回
                     </Button>

@@ -69,6 +69,14 @@ const IntensiveTask = props => {
       title: '活动采购单数',
       dataIndex: 'total',
       valueType: 'text',
+      render: (_) => <a onClick={() => {
+        // history.push({
+        //   pathname: `/order-management/intensive-order/shopkeeper-order`,
+        //   query: {
+        //     storeNo: params.id,
+        //   }
+        // })
+      }}>{_}</a>
     },
   ];
   return (

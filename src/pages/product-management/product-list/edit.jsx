@@ -189,7 +189,6 @@ export default (props) => {
 
   const createEditTableData = (data) => {
     const { specName1, specName2, specValues1, specValues2 } = form.getFieldsValue(['specName1', 'specName2', 'specValues1', 'specValues2']);
-
     const specArr = [];
     specValues1.forEach((item, index) => {
       if (specValues2[0].name) {
