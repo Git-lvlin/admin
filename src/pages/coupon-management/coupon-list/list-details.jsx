@@ -115,7 +115,7 @@ export default props => {
   const columns3= [
     {
       title: '活动编号',
-      dataIndex: 'wsId',
+      dataIndex: 'wholesaleId',
       valueType: 'text',
     },
     {
@@ -147,7 +147,6 @@ export default props => {
     setLoading(true);
     couponDetail({id}).then(res=>{
       setDetailData(res.data)
-      console.log('res.data',res.data)
     }).finally(() => {
       setLoading(false);
     })
@@ -235,7 +234,9 @@ export default props => {
             }
          
           </Form.Item>
-          <ProTable
+          {
+            detailData.memberType==2?
+            <ProTable
               actionRef={ref}
               rowKey="id"
               options={false}
@@ -244,6 +245,9 @@ export default props => {
               search={false}
               columns={columns}
             />
+            : null
+          }
+          
 
           <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">使用设置</Divider>
           
@@ -268,10 +272,13 @@ export default props => {
                   '全部商品':
                   detailData.goodsType==2?
                   '指定商品':
-                  '指定品类'
+                  detailData.goodsType==3?
+                  '指定品类':null
                 }
               </Form.Item>
-              <ProTable
+              {
+                detailData.goodsType==2?
+                <ProTable
                   actionRef={ref}
                   rowKey="id"
                   options={false}
@@ -279,6 +286,9 @@ export default props => {
                   search={false}
                   columns={columns2}
                 />
+                :null
+              }
+              
             </>
             :  <ProTable
                 actionRef={ref}

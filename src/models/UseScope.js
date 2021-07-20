@@ -10,18 +10,6 @@ const UseScopeModel = {
         payload
       });
     },
-    *fetchUseType({ payload}, { call, put}) {
-        yield put({
-          type: 'onUseType',
-          payload
-        });
-      },
-    *fetchCouponType({ payload}, { call, put}) {
-        yield put({
-          type: 'onCouponType',
-          payload
-        });
-    },
     *fetchLookSpuIds({ payload}, { call, put}) {
         yield put({
           type: 'onSpuIds',
@@ -73,14 +61,6 @@ const UseScopeModel = {
 
   },
   reducers: {
-    onCouponType(state = { UseScopeObje:{}},{ payload }){
-        state.UseScopeObje.couponType=payload.couponType
-      return { ...state };
-    },
-    onUseType(state = { UseScopeObje:{}},{ payload }){
-        state.UseScopeObje.useType=payload.useType
-      return { ...state };
-    },
     onSpuIds(state = { UseScopeObje:{}},{ payload }){
         state.UseScopeObje.spuIds=payload.spuIds
       return { ...state };

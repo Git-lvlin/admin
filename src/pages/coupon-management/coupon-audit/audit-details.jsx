@@ -178,7 +178,8 @@ export default props => {
               '满减券'
               :detailData.couponType==2?
               '折扣券'
-              :'立减券'
+              :detailData.couponType==3?
+              '立减券':null
             }
           </Form.Item>
 
@@ -226,8 +227,15 @@ export default props => {
           <Form.Item
             label="可领券群体"
           >
+            {
+              detailData.memberType==1?
+              '全部会员'
+              :'指定用户群体'
+            }
           </Form.Item>
-          <ProTable
+          {
+            detailData.memberType==2?
+            <ProTable
               actionRef={ref}
               rowKey="id"
               options={false}
@@ -236,6 +244,8 @@ export default props => {
               search={false}
               columns={columns}
             />
+            : null
+          }
 
           <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">使用设置</Divider>
 
@@ -257,10 +267,13 @@ export default props => {
               '全部商品':
               detailData.goodsType==2?
               '指定商品':
-              '指定品类'
+              detailData.goodsType==3?
+              '指定品类':null
             }
           </Form.Item>
-          <ProTable
+          {
+            detailData.goodsType==2?
+            <ProTable
               actionRef={ref}
               rowKey="id"
               options={false}
@@ -268,6 +281,8 @@ export default props => {
               search={false}
               columns={columns2}
             />
+            :null
+          }
           <Form.Item
             label="可用人群"
           >
@@ -292,10 +307,6 @@ export default props => {
                   actionRef={ref}
                   rowKey="id"
                   options={false}
-                  // params={{
-                  // status: 1,
-                  // }}
-                  // request={couponList}
                   dataSource={detailData.verifyInfo}
                   search={false}
                   columns={columns3}

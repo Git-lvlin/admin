@@ -12,12 +12,9 @@ export default props=>{
         setByid(record&&record.id)
         setVisible(true)
         userLevelList({}).then(res=>{
-            console.log('res',res)
-            
             const arr=res.data.map(ele=>(
                 {label:ele.name,value:ele.lv}
             ))
-            console.log('arr',arr)
             setLeveData(arr)
 
         })
@@ -37,7 +34,6 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                console.log('values',values)
                 setVisible(false)
                 Callback(values)   
                 message.success('选择完成')
