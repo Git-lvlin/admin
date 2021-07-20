@@ -3,6 +3,8 @@ import { Descriptions, Divider, Row, Avatar, Typography } from 'antd';
 import { getDetail } from '@/services/intensive-store-management/store-detail';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useParams } from 'umi';
+import { amountTransform } from '@/utils/utils'
+
 
 const { Title } = Typography;
 
@@ -42,11 +44,11 @@ const Detail = () => {
           </div>
           <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 120, display: 'inline-block' }}>
             <Descriptions.Item label="店主昵称手机号">{`${detailData?.linkman}（${detailData.phone}）`}</Descriptions.Item>
-            <Descriptions.Item label="保证金金额">{`¥${detailData?.deposit?.payAmount || ''}`}</Descriptions.Item>
+            <Descriptions.Item label="保证金金额">{`¥${amountTransform(detailData?.deposit?.payAmount, '/') || ''}`}</Descriptions.Item>
             <Descriptions.Item label="店主性别">{detailData?.member?.gender?.desc}</Descriptions.Item>
             <Descriptions.Item label="缴纳保证金时间">{detailData?.deposit?.payTime}</Descriptions.Item>
-            <Descriptions.Item label="入驻时间">{detailData?.deposit?.payTime}</Descriptions.Item>
-            <Descriptions.Item label="注册时间">{detailData?.createTime}</Descriptions.Item>
+            <Descriptions.Item label="入驻时间">{detailData?.createTime}</Descriptions.Item>
+            <Descriptions.Item label="注册时间">{detailData?.memberShop?.applyRow?.createTime}</Descriptions.Item>
             <Descriptions.Item label="微信账号">{detailData?.member?.wechatBindState?.desc}</Descriptions.Item>
             {/* <Descriptions.Item label="最近登录时间">{}</Descriptions.Item> */}
           </Descriptions>

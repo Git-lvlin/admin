@@ -70,7 +70,7 @@ const LvlRule = () => {
           }
         }
         if (index === 1) {
-          obj.children = '持续2个月未升级关闭店铺(关闭后可联系客服再次开启)'
+          obj.children = '持续2个月未升级关闭店铺'
           obj.props.colSpan = 4;
           obj.props.style = {
             textAlign: 'center'
