@@ -422,6 +422,7 @@ export const SetHomePageGoodsDel = (params = {}, options = {}) => {
     data: params,
     ...options
   });
+
 }
 export const SetHomePageGoodsDelSort = (params = {}, options = {}) => {
   return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetHomePageGoods?id=${params.id}&sort=${params.sort}&opt=${params.opt}`, {
