@@ -1,10 +1,10 @@
-import React, { useState, useEffect,useRef, useCallback } from 'react';
-import { ModalForm,ProFormSwitch,ProFormTextArea,ProFormCheckbox} from '@ant-design/pro-form';
+import React, { useState } from 'react';
+import { ModalForm,ProFormCheckbox} from '@ant-design/pro-form';
 import { userLevelList } from '@/services/crowd-management/coupon-crowd';
 import { Button,message } from 'antd';
 
 export default props=>{
-    const {record,type,text,InterFace,title,boxref,label,state,arrId,Callback}=props
+    const {record,title,boxref,Callback}=props
     const [byid,setByid]=useState()
     const [leveData,setLeveData]=useState([])
     const [visible, setVisible] = useState(false);

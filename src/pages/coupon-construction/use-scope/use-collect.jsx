@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Form, Button,Table,Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { ModalForm,ProFormSelect,ProFormRadio} from '@ant-design/pro-form';
+import { ProFormRadio} from '@ant-design/pro-form';
 import styles from '../style.less'
 import { connect } from 'umi';
 import { couponWholesaleList } from '@/services/coupon-construction/coupon-wholesale-list';
@@ -118,7 +118,6 @@ const  useCollect=(props)=>{
        
     }
     useEffect(()=>{
-        console.log('UseScopeList.UseScopeObje.wholesaleArr',UseScopeList.UseScopeObje.wholesaleArr)
         setTimeout(()=>{
             if(parseInt(id)==id){
                 dispatch({
@@ -184,32 +183,31 @@ const  useCollect=(props)=>{
                 </Button>
                   <Modal key="id" width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                     <ProTable
-                            rowKey="wholesaleId"
-                            options={false}
-                            params={{
-                                pageSize:3,
-                                wholesaleType:5
-                            }}
-                            request={couponWholesaleList}
-                            actionRef={actionRef}
-                            search={{
-                                defaultCollapsed: false,
-                                labelWidth: 100,
-                                optionRender: (searchConfig, formProps, dom) => [
-                                    ...dom.reverse(),
-                                ],
-                            }}
-                            columns={columns}
-                            rowSelection={{}}
-                            tableAlertOptionRender={onIpute}
-                            style={{display:loading?'block':'none'}}
+                        rowKey="wholesaleId"
+                        options={false}
+                        params={{
+                            pageSize:3,
+                            wholesaleType:5
+                        }}
+                        request={couponWholesaleList}
+                        actionRef={actionRef}
+                        search={{
+                            defaultCollapsed: false,
+                            labelWidth: 100,
+                            optionRender: (searchConfig, formProps, dom) => [
+                                ...dom.reverse(),
+                            ],
+                        }}
+                        columns={columns}
+                        rowSelection={{}}
+                        tableAlertOptionRender={onIpute}
+                        style={{display:loading?'block':'none'}}
                         />
                     </Modal>
                     <Table
                         rowKey='wholesaleId'
                         columns={columns2}
                         dataSource={UseScopeList.UseScopeObje.wholesaleArr}
-                        // style={{display:loading?'none':'block'}}
                     />
                 </div>
                 :null
