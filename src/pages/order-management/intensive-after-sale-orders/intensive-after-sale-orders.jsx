@@ -14,15 +14,13 @@ const columns = [
     title: '售后编号',
     dataIndex: 'refundId',
     align: 'center',
-    order: 9,
-    colSize: .9
+    order: 9
   },
   {
     title: '订单编号',
     dataIndex: 'orderId',
     align: 'center',
     order: 8,
-    colSize: .9
   },
   {
     title: '申请时间',
@@ -30,44 +28,35 @@ const columns = [
     valueType: 'dateTimeRange',
     align: 'center',
     order: 5,
-    colSize: .9,
     render: (_, recodes) => moment(recodes?.applyTime).format('YYYY-MM-DD HH:mm:ss')
   },
   {
     title: '买家昵称',
     dataIndex: 'buyerNickname',
-    colSize: .9,
     align: 'center',
     order: 4,
-    colSize: .9
   },
   {
     title: '买家手机号',
     dataIndex: 'buyerPhone',
-    colSize: .9,
     align: 'center',
     order: 3
   },
   {
     title: '商家名称',
     dataIndex: 'businessName',
-    colSize: 1,
     align: 'center',
-    order: 2,
-    colSize: .9
+    order: 2
   },
   {
     title: '商家手机号',
     dataIndex: 'businessPhone',
-    colSize: 1,
     align: 'center',
-    order: 1,
-    colSize: .9
+    order: 1
   },
   {
     title: '售后类型',
     dataIndex: 'refundType',
-    colSize: .8,
     align: 'center',
     order: 7,
     valueType: 'select',
@@ -86,7 +75,6 @@ const columns = [
   {
     title: '退款状态',
     dataIndex: 'refundStatus',
-    colSize: .8,
     align: 'center',
     order: 6,
     valueType: 'select',
@@ -106,13 +94,7 @@ const columns = [
     dataIndex: 'operation',
     valueType: 'option',
     align: 'center',
-    render: (_, record) => {
-      return (
-        <>
-          <a onClick={ () => {history.push(`/order-management/intensive-after-sale-orders/detail/${record?.refundId}`)} }>查看详情</a>
-        </>
-      )
-    }
+    render: (_, record) => <a onClick={ () => {history.push(`/order-management/intensive-after-sale-orders/detail/${record?.refundId}`)} }>查看详情</a>
   }
 ]
 // function saleType(val) {
@@ -214,9 +196,6 @@ const afterSalesOrder = () => {
         request={refundOrder}
         actionRef={actionRef}
         search={{
-          span: 5,
-          defaultCollapsed: false,
-          collapseRender: false,
           optionRender: ({searchText, resetText}, {form}) => [
             <Button
               key="search"

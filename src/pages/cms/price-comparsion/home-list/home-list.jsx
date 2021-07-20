@@ -9,26 +9,37 @@ const HomeList = () => {
   const [detailData, setDetailData] = useState(false);
   const [formVisible, setFormVisible] = useState(false);
   const [flag, setFlag] = useState(false);
+  const [loading, setLoading] = useState(false);
   const actionRef = useRef();
 
-  const del = (record, opt) => {
+  const del = async (record, opt) => {
     const { id } = record
     const param = {
       "id": id.toString(),
       "opt":opt
     }
     SetHomePageGoodsDel(param).then((res) => {
-      if (res.code === 0) {
-        message.success(`删除成功`);
-        actionRef.current.reset();
+      if (res && res.code ===0) {
+        setLoading(true)
+        setTimeout(() => {
+          message.success(`删除成功`);
+          actionRef.current.reset();
+          setLoading(false)
+        }, 5000)
       }
     })
+
   }
 
   useEffect(() => {
     if (flag) {
-      actionRef.current.reset()
-      setFlag(false)
+      setLoading(true)
+      setTimeout(() => {
+        actionRef.current.reset()
+        setLoading(false)
+        setFlag(false)
+      }, 5000)
+
     }
   }, [flag])
 
@@ -69,6 +80,7 @@ const HomeList = () => {
       columns={columns}
       actionRef={actionRef}
       request={priceComparsionHomeList}
+      loading={loading}
       search={{
         labelWidth: 'auto',
       }}
