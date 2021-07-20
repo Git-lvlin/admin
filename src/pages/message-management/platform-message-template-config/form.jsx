@@ -29,7 +29,8 @@ export default (props) => {
     const pushType = values.pushType.join(',')
     const targetRole = values.targetRole.join(',')
     const obj = {toType:4, ...values, pushType, targetRole}
-    return api.updeTemplate(obj, { showSuccess: true })
+    api.updeTemplate(obj, { showSuccess: true })
+    return true
   }
 
   useEffect(() => {
@@ -39,8 +40,8 @@ export default (props) => {
       templateCopywritingContent: data.templateCopywritingContent,
       pushType: data.pushType,
       type: data.type,
-      targetRole: data.targetRole
-    });
+      targetRole: data.targetRole.join(',')
+    })
     return undefined
   }, [data, form])
 
@@ -128,7 +129,7 @@ export default (props) => {
       <ProFormCheckbox.Group
         label='推送角色'
         name="targetRole"
-        valueType={'checkbox'}
+        valueType='checkbox'
         options={targetRole}
         rules={[
           {
