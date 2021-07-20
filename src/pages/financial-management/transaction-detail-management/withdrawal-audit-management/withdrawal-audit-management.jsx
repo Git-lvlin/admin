@@ -112,7 +112,7 @@ const WithdrawalAuditManagement = () =>{
         rowKey='sn'
         columns={columns}
         toolBarRender={false}
-        pagination={{   
+        pagination={{
           pageSize: 10,
           hideOnSinglePage: true,
           showQuickJumper: true
