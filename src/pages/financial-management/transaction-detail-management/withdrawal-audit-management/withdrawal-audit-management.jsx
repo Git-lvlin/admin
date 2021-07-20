@@ -71,7 +71,7 @@ const WithdrawalAuditManagement = () =>{
       title: '提现时间',
       dataIndex: 'createTime',
       valueType: 'dateRange',
-      hideInTabel: true
+      hideInTable: true
     },
     {
       title: '提现时间',
