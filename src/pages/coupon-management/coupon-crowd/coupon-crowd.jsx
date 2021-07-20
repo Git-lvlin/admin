@@ -69,7 +69,6 @@ export default (props) =>{
           1: '关闭',
           2: '开启',
         },
-        hideInSearch: true,
     },
     {
       title: '操作',

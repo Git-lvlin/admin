@@ -51,8 +51,11 @@ const message = (type, module) => {
     },
     {
       title: '可领取时间',
-      dataIndex: 'activityTimeDisplay',
+      dataIndex: 'dateRange',
       valueType: 'text',
+      render:(_, data)=>{
+        return <p>{data.limitStartTime} 至 {data.limitEndTime}</p>
+      },
       hideInSearch: true,
       ellipsis:true
     },
@@ -64,7 +67,7 @@ const message = (type, module) => {
       ellipsis:true
     },
     {
-      title: '状态',
+      title: '审核状态',
       dataIndex: 'couponVerifyStatus',
       valueType: 'select',
       valueEnum: {

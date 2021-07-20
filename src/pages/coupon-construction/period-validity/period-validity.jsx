@@ -11,9 +11,8 @@ const validity=(props)=>{
         <>
          {
              position==1||(parseInt(id)==id )&&DetailList.data?.activityStartTime?
-             <FormItem
-                style={{ display: 'inline-block'}}
-                name="date2"
+             <div
+                style={{display:position==2?'none':'block'}}
             >
                 <ProFormDateRangePicker
                     name='dateTimeRange'
@@ -23,11 +22,11 @@ const validity=(props)=>{
                     ]}
                 />
             
-            </FormItem>:null
+            </div>:null
          }
         {
             position==2||(parseInt(id)==id )&&DetailList.data?.activityEndDay?
-            <>
+            <div style={{display:position==1?'none':'block'}}>
                 <ProForm.Group>
                     <ProFormText
                         width={100}
@@ -42,7 +41,7 @@ const validity=(props)=>{
                     />
                     <span>天内可用</span>
                 </ProForm.Group>
-            </>
+            </div>
             :null
          }
         </>
