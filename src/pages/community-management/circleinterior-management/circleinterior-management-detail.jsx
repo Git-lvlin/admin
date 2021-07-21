@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import { getDynamicDetail } from '@/services/community-management/dynamic-get-dynamic-detail';
-import { Divider, Form, Spin,Button } from 'antd';
+import { Divider, Form, Spin,Button,Image } from 'antd';
 import moment from 'moment';
 import { history } from 'umi';
 
@@ -70,7 +70,7 @@ export default props => {
               <div style={{display:'flex',width:'300px',flexWrap:'wrap'}}>
                 {
                   detailData.images?.map(ele=>(
-                    <img style={{margin:'10px'}} width={100} height={100} src={ele} alt="" />
+                    <Image style={{margin:'10px'}} width={100} height={100} src={ele} alt="" />
                   ))
                 }
               </div>
@@ -83,7 +83,7 @@ export default props => {
             >
              <h3>{detailData.sourceData.subtitle}</h3>
              <h4>{detailData.sourceData.title}</h4>
-             <img src={detailData.sourceData.icon} width={100} height={100} alt="" />
+             <Image src={detailData.sourceData.icon} width={100} height={100} alt="" />
             </Form.Item>
             :null
           }
@@ -95,7 +95,7 @@ export default props => {
           >
             <h3>{detailData.sourceData.subtitle}</h3>
             <h4>{detailData.sourceData.title}</h4>
-            <img src={detailData.sourceData.icon} width={100} height={100} alt="" />
+            <Image src={detailData.sourceData.icon} width={100} height={100} alt="" />
           </Form.Item>
           :null
          }

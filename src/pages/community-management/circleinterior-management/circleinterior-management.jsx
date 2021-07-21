@@ -9,7 +9,7 @@ import { cancelBanDynamicComment } from '@/services/community-management/dynamic
 import { cancelBanShare } from '@/services/community-management/dynamic-cancel-ban-share';
 import { ProFormSwitch} from '@ant-design/pro-form';
 import DeleteModal from '@/components/DeleteModal'
-import { Button} from 'antd';
+import { Button,Image} from 'antd';
 import { history } from 'umi';
 
 export default props => {
@@ -44,6 +44,22 @@ export default props => {
                 <a onClick={()=>history.push('/community-management/circle-management/circleinterior-management/detail?id='+record.id+'&byid='+id+'&name='+name)}>{record.id}</a>
             ],
         },
+        {
+            title: '内容',
+            dataIndex: 'content',
+            valueType: 'text',
+            hideInSearch:true,
+            ellipsis:true
+          },
+          {
+            title: '图片',
+            dataIndex: 'images',
+            valueType: 'image',
+            hideInSearch:true,
+            render:(_,data)=>{
+              return <Image src={data.images[0]} alt="" width='50px' height='50px' />
+            }
+          },
         {
             title: '会员ID',
             dataIndex: 'userId',
