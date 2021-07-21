@@ -48,6 +48,9 @@ const message = (type, module,dispatch) => {
       dataIndex: 'images',
       valueType: 'image',
       hideInSearch:true,
+      render:(_,data)=>{
+        return <img src={data.images[0]} alt="" width='50px' height='50px' />
+      }
     },
     {
       title: '发布时间',
