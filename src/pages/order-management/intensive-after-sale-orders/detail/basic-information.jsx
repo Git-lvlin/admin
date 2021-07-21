@@ -21,20 +21,10 @@ const BasicInformation = ({data}) => {
       render: (_, records)=> records?.buyer?.storePhone
     },
     {
-      title: '商家ID',
-      dataIndex: 'storeNo',
+      title: '供应商ID',
+      dataIndex: 'supplierId',
       render: (_, records)=> records?.business?.businessId
-    },
-    {
-      title: '商家名称',
-      dataIndex: 'businessName',
-      render: (_, records)=> records?.business?.businessName
-    },
-    {
-      title: '商家手机号',
-      dataIndex: 'storePhone',
-      render: (_, records)=> records?.business?.businessPhone
-    },
+    }
   ]
   return (
     <ProDescriptions
