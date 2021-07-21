@@ -31,12 +31,12 @@ const columns = [
     dataIndex: 'supplierId',
   },
   {
-    title: '集约分成比例',
+    title: '售价上浮比(%)',
     dataIndex: 'settlePercent',
     render: (_) => `${amountTransform(_)}%`
   },
   {
-    title: '供货价',
+    title: '批发供货价(元)',
     dataIndex: 'wholesaleSupplyPrice',
     render: (_) => amountTransform(_, '/')
   },
@@ -60,11 +60,11 @@ const columns = [
     render: (_) => amountTransform(_, '/')
   },
   {
-    title: '单店起订量',
+    title: '单次起订量',
     dataIndex: 'minNum',
   },
   {
-    title: '单店限订量',
+    title: '单次限订量',
     dataIndex: 'maxNum',
   },
   {
@@ -119,6 +119,12 @@ const Detail = () => {
               <Descriptions.Item label="可购买的会员店等级">{detailData?.wholesale?.storeLevel}</Descriptions.Item>
               <Descriptions.Item label="可购买的会员用户">
                 {detailData?.wholesale?.memberLevel}
+              </Descriptions.Item>
+              <Descriptions.Item label="活动创建人">
+                {detailData?.wholesale?.createAdminName}
+              </Descriptions.Item>
+              <Descriptions.Item label="创建时间">
+                {detailData?.wholesale?.createTime}
               </Descriptions.Item>
               {/* <Descriptions.Item label="可恢复支付次数">
             {detailData?.wholesale.canRecoverPayTimes}

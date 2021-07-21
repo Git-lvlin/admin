@@ -153,10 +153,10 @@ const OrderDetail = () => {
                   <div>用户实付</div>
                   <div>{amountTransform(detailData?.payAmount, '/')}元</div>
                 </div>
-                <div className={styles.box}>
+                {/* <div className={styles.box}>
                   <div>实收</div>
                   <div>{amountTransform(detailData?.incomeAmount, '/')}元</div>
-                </div>
+                </div> */}
               </div>
             </div>
             <div style={{ flex: 1 }}>
