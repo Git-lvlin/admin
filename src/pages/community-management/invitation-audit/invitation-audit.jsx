@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Button,Tabs} from 'antd';
+import { Button,Tabs,Image} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -49,7 +49,7 @@ const message = (type, module,dispatch) => {
       valueType: 'image',
       hideInSearch:true,
       render:(_,data)=>{
-        return <img src={data.images[0]} alt="" width='50px' height='50px' />
+        return <Image src={data.images[0]} alt="" width='50px' height='50px' />
       }
     },
     {
