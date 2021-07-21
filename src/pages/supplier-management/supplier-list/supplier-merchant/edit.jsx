@@ -462,6 +462,7 @@ export default (props) => {
       initialValues={{
         status: 1,
         bankAccountType: 1,
+        defaultWholesaleTaxRate: 0,
       }}
       {...formItemLayout}
     >
@@ -577,7 +578,7 @@ export default (props) => {
               }
             </div>
           </Form.Item>
-          <ProFormDigit
+          {/* <ProFormDigit
             placeholder="请输入商品开票税率"
             label="商品开票税率"
             name="defaultWholesaleTaxRate"
@@ -599,6 +600,40 @@ export default (props) => {
                   return Promise.resolve();
                 },
               })
+            ]}
+          /> */}
+          <ProFormSelect
+            name="defaultWholesaleTaxRate"
+            label="商品开票税率(%)"
+            fieldProps={{
+              allowClear: false,
+            }}
+            required
+            options={[
+              {
+                label: '0%',
+                value: 0
+              },
+              {
+                label: '1%',
+                value: 1
+              },
+              {
+                label: '3%',
+                value: 3
+              },
+              {
+                label: '6%',
+                value: 6
+              },
+              {
+                label: '9%',
+                value: 9
+              },
+              {
+                label: '13%',
+                value: 13
+              }
             ]}
           />
           <ProFormDigit

@@ -451,12 +451,12 @@ export default (props) => {
       />
       <ProFormText
         name="wholesaleFreight"
-        label="单位运费(元)"
+        label="平均运费(元)"
         disabled
       />
       <ProFormText
         name="wholesaleTaxRate"
-        label="发票税率(%)"
+        label="商品开票税率(%)"
         disabled
       />
       <ProFormText
