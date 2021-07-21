@@ -40,6 +40,12 @@ export default ()=> {
             hideInSearch:true   
         },
         {
+            title: '图片',
+            dataIndex: 'logo',
+            valueType: 'image',
+            hideInSearch:true,
+          },
+        {
             title: '内容',
             dataIndex: 'postNum',
             valueType: 'text',
