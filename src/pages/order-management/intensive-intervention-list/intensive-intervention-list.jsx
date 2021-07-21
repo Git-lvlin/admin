@@ -11,7 +11,6 @@ const InterventionList = () => {
       title={ false }
     >
       <Tabs
-       centered
        defaultActiveKey="1"
        style={{
          background: '#fff',
