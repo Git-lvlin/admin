@@ -66,7 +66,7 @@ const OrderPayDetailManagement = () =>{
       
     },
     {
-      title: '收方注册手机',
+      title: '收方手机',
       dataIndex: 'sellerMobile',
     },
     {
@@ -90,7 +90,7 @@ const OrderPayDetailManagement = () =>{
       
     },
     {
-      title: '平台支付单号',
+      title: '支付单号',
       dataIndex: 'payNo',
       
     },

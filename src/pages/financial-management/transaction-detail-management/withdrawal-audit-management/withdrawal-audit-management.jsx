@@ -52,7 +52,7 @@ const WithdrawalAuditManagement = () =>{
       dataIndex: 'withdrawAccountName',
     },
     {
-      title: '提现银行账户',
+      title: '提现银行卡',
       dataIndex: 'withdrawAccount',
     },
     {
@@ -65,7 +65,7 @@ const WithdrawalAuditManagement = () =>{
       dataIndex: 'voucher'
     },
     {
-      title: '平台提现单号',
+      title: '提现单号',
       dataIndex: 'sn',
     },
     {
