@@ -29,4 +29,4 @@ const InterventionList = () => {
   )
 };
 
-export default InterventionList;
+export default InterventionList

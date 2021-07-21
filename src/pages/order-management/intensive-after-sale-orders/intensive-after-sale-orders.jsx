@@ -37,23 +37,29 @@ const columns = [
     order: 4,
   },
   {
-    title: '买家手机号',
-    dataIndex: 'buyerPhone',
+    title: '供应商id',
+    dataIndex: 'supplierId',
     align: 'center',
-    order: 3
+    order: 1,
   },
-  {
-    title: '商家名称',
-    dataIndex: 'businessName',
-    align: 'center',
-    order: 2
-  },
-  {
-    title: '商家手机号',
-    dataIndex: 'businessPhone',
-    align: 'center',
-    order: 1
-  },
+  // {
+  //   title: '买家手机号',
+  //   dataIndex: 'buyerPhone',
+  //   align: 'center',
+  //   order: 3
+  // },
+  // {
+  //   title: '商家名称',
+  //   dataIndex: 'businessName',
+  //   align: 'center',
+  //   order: 2
+  // },
+  // {
+  //   title: '商家手机号',
+  //   dataIndex: 'businessPhone',
+  //   align: 'center',
+  //   order: 1
+  // },
   {
     title: '售后类型',
     dataIndex: 'refundType',
