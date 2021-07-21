@@ -73,7 +73,7 @@ const Detail = () => {
         <SellerProof 
            platformOpinion={detail?.business?.description}
            storeEvidenceImg={detail?.business?.voucherPics}
-           data={detail?.business}
+           data={detail}
         />
         <ReturnGoods data={detail}/>
         <ReturnSingle data={detail}/>

@@ -8,19 +8,10 @@ import './styles.less'
 
 const BuyerProof = props => {
   const { platformOpinion, data, storeEvidenceImg } = props
-
   const columns = [
     {
-      title: '店铺ID',
-      dataIndex: 'businessId'
-    },
-    {
-      title: '店铺名称',
-      dataIndex: 'businessName'
-    },
-    {
-      title: '店铺手机号',
-      dataIndex: 'businessPhone'
+      title: '供应商ID',
+      dataIndex: 'supplierId'
     }
   ]
 
