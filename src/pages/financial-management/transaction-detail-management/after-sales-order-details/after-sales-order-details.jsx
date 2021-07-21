@@ -26,11 +26,11 @@ const AfterSalesOrderDetails = () =>{
       valueType: 'indexBorder'
     },
     {
-      title: '卖家ID',
+      title: '退方ID',
       dataIndex: 'accountId'
     },
     {
-      title: '卖家手机',
+      title: '退方手机',
       dataIndex: 'accountMobile'
     },
     {
@@ -137,7 +137,7 @@ const AfterSalesOrderDetails = () =>{
       
     },
     {
-      title: '平台支付单号',
+      title: '支付单号',
       dataIndex: 'payNo',
       
     },

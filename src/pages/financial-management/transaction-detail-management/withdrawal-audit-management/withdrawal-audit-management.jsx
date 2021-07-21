@@ -34,7 +34,8 @@ const WithdrawalAuditManagement = () =>{
         'supplier': '供应商',
         'platform': '平台',
         'member': '会员',
-        'agentStore': '代发店'
+        'agentStore': '代发店',
+        'agentCompany': '经销商'
       }
     },
     {
@@ -51,7 +52,7 @@ const WithdrawalAuditManagement = () =>{
       dataIndex: 'withdrawAccountName',
     },
     {
-      title: '提现银行账户',
+      title: '提现银行卡',
       dataIndex: 'withdrawAccount',
     },
     {
@@ -64,7 +65,7 @@ const WithdrawalAuditManagement = () =>{
       dataIndex: 'voucher'
     },
     {
-      title: '平台提现单号',
+      title: '提现单号',
       dataIndex: 'sn',
     },
     {

@@ -78,29 +78,68 @@ const Detail = () => {
   }
 
   const backCalculation= (data, amount, fee)=> {
-    if(data==='goodsAmount'){
-      return (
-        <>
-          <span className={styles.amount}>货款回退: ¥{amountTransform(amount, '/')}</span>
-          <span>货款交易费回退: ¥{amountTransform(fee, '/')}</span>
-        </>
-      )
-    }else if(data==='commission'){
-      return (
-        <>
-          <span className={styles.amount}>提成回退: ¥{amountTransform(amount, '/')}</span>
-          <span>提成交易费回退: ¥{amountTransform(fee, '/')}</span>
-        </>
-      )
-    }else if(data==='platformCommission') {
-      return (
-        <>
-          <span className={styles.amount}>佣金回退: ¥{amountTransform(amount, '/')}</span>
-          <span>佣金交易费回退: ¥{amountTransform(fee, '/')}</span>
-        </>
-      )
-    }else{
-      return ''
+    // if(data==='goodsAmount'){
+    //   return (
+    //     <>
+    //       <span className={styles.amount}>货款回退: ¥{amountTransform(amount, '/')}</span>
+    //       <span>货款交易费回退: ¥{amountTransform(fee, '/')}</span>
+    //     </>
+    //   )
+    // }else if(data==='commission'){
+    //   return (
+    //     <>
+    //       <span className={styles.amount}>提成回退: ¥{amountTransform(amount, '/')}</span>
+    //       <span>提成交易费回退: ¥{amountTransform(fee, '/')}</span>
+    //     </>
+    //   )
+    // }else if(data==='platformCommission') {
+    //   return (
+    //     <>
+    //       <span className={styles.amount}>佣金回退: ¥{amountTransform(amount, '/')}</span>
+    //       <span>佣金交易费回退: ¥{amountTransform(fee, '/')}</span>
+    //     </>
+    //   )
+    // }else{
+    //   return ''
+    // }
+    switch(data){
+      case 'goodsAmount':
+        return (
+          <>
+            <span className={styles.amount}>货款回退: ¥{amountTransform(amount, '/')}</span>
+            <span>货款交易费回退: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'commission':
+        return (
+          <>
+            <span className={styles.amount}>提成回退: ¥{amountTransform(amount, '/')}</span>
+            <span>提成交易费回退: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'platformCommission':
+        return (
+          <>
+            <span className={styles.amount}>佣金回退: ¥{amountTransform(amount, '/')}</span>
+            <span>佣金交易费回退: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'suggestCommission':
+        return (
+          <>
+            <span className={styles.amount}>推荐提成回退: ¥{amountTransform(amount, '/')}</span>
+            <span>推荐提成交易费回退: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'agentCompanyCommission':
+        return (
+          <>
+            <span className={styles.amount}>经销商提成回退: ¥{amountTransform(amount, '/')}</span>
+            <span>经销商提成交易费回退: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      default:
+        return ''
     }
   }
   const columns1 = [
@@ -133,7 +172,7 @@ const Detail = () => {
     },
     {
       title: '关联订单类型',
-      dataIndex: 'payTpyeName',
+      dataIndex: 'orderType',
       valueEnum: {
         'normalOrder': '普通商品订单',
         'second': '秒约订单',
@@ -154,7 +193,14 @@ const Detail = () => {
       title: '回退会员类型',
       dataIndex: 'accountType',
       valueType: 'select',
-      valueEnum: ''
+      valueEnum: {
+        'store': '店铺',
+        'supplier': '供应商',
+        'platform': '平台',
+        'member': '会员',
+        'agentStore': '代发店',
+        'agentCompany': '经销商'
+      }
     },
     {
       title: '',

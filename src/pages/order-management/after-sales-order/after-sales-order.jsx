@@ -65,7 +65,7 @@ const columns = [
   },
   {
     title: '买家昵称',
-    dataIndex: 'userNickname',
+    dataIndex: 'buyerNickname',
     align: 'center',
     order: 4
   },
