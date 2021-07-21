@@ -169,7 +169,7 @@ const couponConstruction=(props) => {
           return true;
           }
         }
-        style={{ width: '1500px', margin: '0 auto' }}
+        style={{ width: '2000px'}}
       >
         <Divider orientation="left"><FormattedMessage id="formandbasic-form.basic.setup" /></Divider>
         {/* 优惠券名称 */}
