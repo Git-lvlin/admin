@@ -29,6 +29,22 @@ export default props => {
             hideInTable:true
         },
         {
+            title: '内容',
+            dataIndex: 'content',
+            valueType: 'text',
+            hideInSearch:true,
+            ellipsis:true
+          },
+          {
+            title: '图片',
+            dataIndex: 'images',
+            valueType: 'image',
+            hideInSearch:true,
+            render:(_,data)=>{
+              return <img src={data.images[0]} alt="" width='50px' height='50px' />
+            }
+          },
+        {
             title: '发布时间',
             key: 'dateRange',
             dataIndex: 'createTime',
