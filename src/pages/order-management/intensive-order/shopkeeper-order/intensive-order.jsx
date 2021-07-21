@@ -17,7 +17,6 @@ const TableList = () => {
   const [orderType, setOrderType] = useState('')
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
-  const location = useLocation();
 
 
   const pageChange = (a, b) => {
@@ -39,7 +38,6 @@ const TableList = () => {
       status: orderType,
       startTime: time?.[0]?.format('YYYY-MM-DD'),
       endTime: time?.[1]?.format('YYYY-MM-DD'),
-      // storeNoList: location?.query?.storeNo ? [location?.query?.storeNo]:'',
       ...rest,
     })
       .then(res => {

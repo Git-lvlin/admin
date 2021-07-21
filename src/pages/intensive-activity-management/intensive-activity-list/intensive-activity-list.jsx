@@ -45,12 +45,12 @@ const SubTable = (props) => {
     //   }
     // },
     {
-      title: '集约分成比例',
+      title: '售价上浮比(%)',
       dataIndex: 'settlePercent',
       render: (_) => `${amountTransform(_)}%`
     },
     {
-      title: '供货价',
+      title: '批发供货价(元)',
       dataIndex: 'wholesaleSupplyPrice',
       render: (_) => amountTransform(_, '/')
     },
