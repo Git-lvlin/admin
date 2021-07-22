@@ -5,6 +5,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons'
 import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/intensive-store-management/store-list';
 import { history } from 'umi';
+import AddressCascader from '@/components/address-cascader';
 import Form from './form';
 import Create from './create';
 import Return from './return';
@@ -195,13 +196,13 @@ const StoreList = () => {
     },
     {
       title: '所在地区',
-      dataIndex: '',
-      valueType: 'select',
+      dataIndex: 'area',
       hideInTable: true,
+      renderFormItem: () => (<AddressCascader changeOnSelect />)
     },
     {
       title: '详情地址',
-      dataIndex: '',
+      dataIndex: 'address',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入详情地址'
