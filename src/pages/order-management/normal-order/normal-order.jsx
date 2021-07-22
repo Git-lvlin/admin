@@ -54,6 +54,7 @@ const TableList = () => {
       orderStatus: orderType === 0 ? '' : orderType,
       startCreateTime: time?.[0]?.format('YYYY-MM-DD'),
       endCreateTime: time?.[1]?.format('YYYY-MM-DD'),
+      orderType: 2,
       ...rest,
     })
       .then(res => {
@@ -148,7 +149,7 @@ const TableList = () => {
             }
           }}
         /> */}
-        <ProFormSelect
+        {/* <ProFormSelect
           name="orderType"
           label="订单类型"
           options={[{ value: 1, label: '秒约' }, { value: 2, label: '单约' }, { value: 3, label: '团约' }]}
@@ -158,7 +159,7 @@ const TableList = () => {
               width: 180,
             }
           }}
-        />
+        /> */}
         <ProFormDateRangePicker
           name="time"
           label="下单时间"
