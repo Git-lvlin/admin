@@ -41,6 +41,7 @@ const TableList = () => {
       startTime: time?.[0]?.format('YYYY-MM-DD'),
       endTime: time?.[1]?.format('YYYY-MM-DD'),
       memberId: location?.query?.memberId,
+      wsId: location?.query?.wsId,
       ...rest,
     })
       .then(res => {
