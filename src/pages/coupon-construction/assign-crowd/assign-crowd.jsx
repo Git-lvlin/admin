@@ -36,6 +36,7 @@ const validity=(props)=>{
          }
     ];
     useEffect(()=>{
+       
         setTimeout(()=>{
             if(id){
                 dispatch({
@@ -47,7 +48,7 @@ const validity=(props)=>{
                 dispatch({
                     type:'UseScopeList/fetchCrowdIdsArr',
                     payload:{
-                        CrowdIdsArr:DetailList.data&&[DetailList.data?.crowdList]
+                        CrowdIdsArr:DetailList.data&&DetailList.data?.crowdList.length==0?[]:[DetailList.data?.crowdList]
                     }
                 })
             }

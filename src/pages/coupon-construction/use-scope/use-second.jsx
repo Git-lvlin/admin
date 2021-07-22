@@ -200,7 +200,7 @@ const useSecond=(props)=>{
                 dispatch({
                     type:'UseScopeList/fetchLookUnitArr',
                     payload:{
-                        unitArr:DetailList.data&&[DetailList.data?.classInfo]
+                        unitArr:DetailList.data&&DetailList.data?.classInfo.length==0?[]:[DetailList.data?.classInfo]
                     }
                 })
             }
