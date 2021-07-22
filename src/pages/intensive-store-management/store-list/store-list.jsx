@@ -180,11 +180,12 @@ const StoreList = () => {
           ?
           <a onClick={() => {
             history.push({
-              pathname: `/intensive-store-management/shopkeeper-user/${data.memberId}`,
+              pathname: `/intensive-store-management/shopkeeper-user/${data.storeNo}`,
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
                 linkman: data.linkman,
+                memberId: data.memberId,
               }
             })
           }}>{_}</a>

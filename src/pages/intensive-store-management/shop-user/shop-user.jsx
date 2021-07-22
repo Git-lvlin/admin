@@ -48,7 +48,7 @@ const TableList = () => {
     },
     {
       title: '店主订单数',
-      dataIndex: 'orderNum',
+      dataIndex: 'storeOrderAmount',
       valueType: 'text',
       hideInSearch: true,
     },
