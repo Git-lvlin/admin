@@ -64,7 +64,7 @@ const TableList = () => {
     },
     {
       title: '店主订单数',
-      dataIndex: 'orderNum',
+      dataIndex: 'storeOrderAmount',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -114,7 +114,8 @@ const TableList = () => {
         rowKey="id"
         options={false}
         params={{
-          parentId: params.id
+          storeNo: params.id,
+          parentId: location?.query?.memberId,
         }}
         request={shopkeeperInvited}
         search={{

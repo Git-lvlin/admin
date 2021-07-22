@@ -34,13 +34,21 @@ export default (props) => {
   };
 
   const submit = (values) => {
-    const apiMethod = data ? adminEdit : adminAdd;
-    const obj = { ...values };
-    if (data) {
-      obj.id = data.id;
-    }
-    // obj.password = md5(obj.password)
-    return apiMethod(obj, { showSuccess: true })
+    return new Promise((resolve, reject) => {
+      const apiMethod = data ? adminEdit : adminAdd;
+      const obj = { ...values };
+      if (data) {
+        obj.id = data.id;
+      }
+      apiMethod(obj, { showSuccess: true })
+        .then(res => {
+          if (res.code === 0) {
+            resolve();
+          } else {
+            reject();
+          }
+        })
+    });
   }
 
   useEffect(() => {
@@ -88,7 +96,11 @@ export default (props) => {
         name="username"
         label="登录账号"
         placeholder="请输入登录账号"
-        rules={[{ required: true, message: '请输入登录账号' }]}
+        validateFirst
+        rules={[
+          { required: true, message: '请输入登录账号' },
+          { required: true, pattern: /^[a-zA-Z]+$/, message: '登录账号必须为字母' },
+        ]}
         disabled={!!data}
       />
 

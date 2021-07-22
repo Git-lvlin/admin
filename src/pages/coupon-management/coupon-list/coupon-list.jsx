@@ -17,12 +17,13 @@ const { TabPane } = Tabs
 const message = (type, module,dispatch) => {
   const ref=useRef()
   const columns= [
-    {
-      title: 'id',
-      dataIndex: 'id',
-      hideInSearch:true,
-      hideInTable:true
-    },
+    // {
+    //   title: 'id',
+    //   dataIndex: 'id',
+    //   hideInSearch:true,
+    //   // hideInTable:true,
+    //   valueType:'indexBorder'
+    // },
     {
       title: '优惠券名称',
       dataIndex: 'couponName',
