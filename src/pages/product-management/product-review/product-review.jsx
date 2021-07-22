@@ -54,6 +54,7 @@ const TableList = () => {
   const [secondReviewVisible, setSecondReviewVisible] = useState(false);
   const [config, setConfig] = useState({});
   const [detailData, setDetailData] = useState(null);
+  const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
 
   const getDetail = (record) => {
@@ -70,17 +71,18 @@ const TableList = () => {
         }
       })
     } else {
-      api.noFirstCheckList({
-        spuId: record.id
-      }).then(res => {
-        if (res.code === 0) {
-          setDetailData({
-            data: res.data?.length ? res.data : [],
-            spuId: record.id
-          });
-          setSecondReviewVisible(true);
-        }
-      })
+      setSelectItem(record)
+      // api.noFirstCheckList({
+      //   spuId: record.id
+      // }).then(res => {
+      //   if (res.code === 0) {
+      //     setDetailData({
+      //       data: res.data?.length ? res.data : [],
+      //       spuId: record.id
+      //     });
+      //   }
+      // })
+      setSecondReviewVisible(true);
     }
   }
 
@@ -375,7 +377,7 @@ const TableList = () => {
         visible={secondReviewVisible}
         setVisible={setSecondReviewVisible}
         check={check}
-        detailData={detailData}
+        record={selectItem}
         operateRole={typeTransform(config.operateRole)}
       />}
     </PageContainer>
