@@ -5,6 +5,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons'
 import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/intensive-store-management/store-list';
 import { history } from 'umi';
+import AddressCascader from '@/components/address-cascader';
 import Form from './form';
 import Create from './create';
 import Return from './return';
@@ -93,6 +94,7 @@ const StoreList = () => {
                   storeName: data.storeName,
                   phone: data.phone,
                   linkman: data.linkman,
+                  memberId: data.memberId,
                 }
               })
             }}>
@@ -102,7 +104,7 @@ const StoreList = () => {
       }
     },
     {
-      title: '店主订单',
+      title: '店内订单',
       dataIndex: 'saleOrderTotal',
       valueType: 'text',
       hideInSearch: true,
@@ -148,7 +150,7 @@ const StoreList = () => {
       }
     },
     {
-      title: '用户',
+      title: '订单用户',
       dataIndex: 'userTotal',
       valueType: 'text',
       hideInSearch: true,
@@ -170,14 +172,37 @@ const StoreList = () => {
       }
     },
     {
+      title: '直推用户',
+      dataIndex: 'shopkeeperInvitedTotal',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, data) => {
+        return _ > 0
+          ?
+          <a onClick={() => {
+            history.push({
+              pathname: `/intensive-store-management/shopkeeper-user/${data.storeNo}`,
+              query: {
+                storeName: data.storeName,
+                phone: data.phone,
+                linkman: data.linkman,
+                memberId: data.memberId,
+              }
+            })
+          }}>{_}</a>
+          :
+          _
+      }
+    },
+    {
       title: '所在地区',
-      dataIndex: '',
-      valueType: 'select',
+      dataIndex: 'area',
       hideInTable: true,
+      renderFormItem: () => (<AddressCascader changeOnSelect />)
     },
     {
       title: '详情地址',
-      dataIndex: '',
+      dataIndex: 'address',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入详情地址'

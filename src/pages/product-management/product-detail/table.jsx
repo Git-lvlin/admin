@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table } from 'antd';
 
 export default function EditTable(props) {
-  const { tableHead, tableData } = props;
+  const { tableHead, tableData, goodsSaleType, settleType } = props;
   const [columns, setColumns] = useState([])
 
   useEffect(() => {
@@ -27,36 +27,75 @@ export default function EditTable(props) {
       },
       ...arr,
       {
-        title: '货号',
-        dataIndex: 'supplierSkuId',
+        title: '零售供货价(元)',
+        dataIndex: 'retailSupplyPrice',
+        editable: false,
+        hideInTable: goodsSaleType !== 0,
+        width: 130,
       },
       {
-        title: '供货价',
-        dataIndex: 'retailSupplyPrice',
+        title: '批发供货价(元)',
+        dataIndex: 'wholesaleSupplyPrice',
+        editable: false,
+        width: 130,
+      },
+      {
+        title: '最低批发量',
+        dataIndex: 'wholesaleMinNum',
+        editable: false,
+        width: 130,
+      },
+      {
+        title: '秒约价',
+        dataIndex: 'salePrice',
+        editable: settleType === 2,
+        width: 130,
+        hideInTable: goodsSaleType !== 0,
+      },
+      {
+        title: '秒约价上浮比例',
+        dataIndex: 'salePriceFloat',
+        hideInTable: goodsSaleType !== 0,
+        width: 130,
+      },
+      {
+        title: '秒约价实际盈亏',
+        dataIndex: 'salePriceProfitLoss',
+        editable: false,
+        hideInTable: goodsSaleType !== 0,
+        width: 130,
+      },
+      {
+        title: '市场价',
+        dataIndex: 'marketPrice',
+        width: 130,
       },
       {
         title: '库存预警值',
         dataIndex: 'stockAlarmNum',
+        editable: false,
+        width: 130,
       },
       {
         title: '可用库存',
         dataIndex: 'stockNum',
+        editable: false,
+        width: 130,
+        // formItemProps: {
+        //   rules: [{
+        //     required: true,
+        //     whitespace: true,
+        //     message: '请输入可用库存',
+        //   }],
+        // }
       },
       // {
-      //   title: '库存预警值',
-      //   dataIndex: 'stockAlarmNum',
-      // },
-      // {
-      //   title: '可用库存',
-      //   dataIndex: 'stockNum',
-      // },
-      // {
-      //   title: '销售价',
-      //   dataIndex: 'salePrice',
-      // },
-      // {
-      //   title: '市场划线价',
-      //   dataIndex: 'marketPrice',
+      //   title: '操作',
+      //   valueType: 'option',
+      //   render: () => {
+      //     return null;
+      //   },
+      //   width: 50
       // },
     ])
 

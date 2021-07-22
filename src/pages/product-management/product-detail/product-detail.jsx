@@ -36,11 +36,15 @@ export default () => {
       spuId: params.id
     }).then(res => {
       if (res.code === 0) {
-        setDetailData(res.data);
+        const resData = {
+          ...res.data,
+          settleType: 2,
+        }
+        setDetailData(resData);
 
-        const { specName, specValues, specData } = res.data;
+        const { specName, specValues, specData } = resData;
 
-        if (res.data.isMultiSpec) {
+        if (resData.isMultiSpec) {
           const specValuesMap = {};
           Object.values(specValues).forEach(element => {
             const obj = Object.entries(element);
@@ -53,17 +57,28 @@ export default () => {
           setTableHead(Object.values(specName))
           setTableData(Object.entries(specData).map(item => {
             const specDataKeys = item[0].substring(1).split('|');
+            const specValue = {};
+            specDataKeys.forEach(it => {
+              const index = it.slice(0, 1)
+              specValue[index] = it
+            })
             return {
               ...item[1],
+              code: item[0],
               retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
-              // suggestedRetailPrice: amountTransform(item[1].retailSupplyPrice, '/'),
-              // wholesalePrice: amountTransform(item[1].retailSupplyPrice, '/'),
-              salePrice: amountTransform(item[1].retailSupplyPrice, '/'),
-              marketPrice: amountTransform(item[1].retailSupplyPrice, '/'),
+              wholesaleSupplyPrice: amountTransform(item[1].wholesaleSupplyPrice, '/'),
+              wholesaleMinNum: item[1].wholesaleMinNum,
+              salePriceFloat: amountTransform(item[1].salePriceFloat),
+              salePriceProfitLoss: amountTransform(item[1].salePriceProfitLoss, '/'),
+              // suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
+              // wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
+              salePrice: amountTransform((resData.settleType === 1 || resData.settleType === 0) ? item[1].retailSupplyPrice : item[1].salePrice, '/'),
+              marketPrice: amountTransform(item[1].marketPrice || item[1].retailSupplyPrice, '/'),
               key: item[1].skuId,
               imageUrl: item[1].imageUrl,
               spec1: specValuesMap[specDataKeys[0]],
               spec2: specValuesMap[specDataKeys[1]],
+              specValue,
             }
           }))
         }
@@ -96,7 +111,7 @@ export default () => {
           <Form.Item
             label="发票税率(%)"
           >
-            {detailData?.goods.wholesaleTaxRate}
+            {amountTransform(detailData?.goods.wholesaleTaxRate)}
           </Form.Item>
           {detailData?.goods.goodsDesc &&
             <Form.Item
@@ -147,31 +162,57 @@ export default () => {
             detailData?.isMultiSpec === 1
               ?
               <>
-                {!!tableData.length && <EditTable tableHead={tableHead} tableData={tableData} />}
+                {!!tableData.length && <EditTable tableHead={tableHead} tableData={tableData} goodsSaleType={detailData?.goods?.goodsSaleType} settleType={detailData?.settleType} />}
               </>
               :
               <>
                 <Form.Item
-                  label="供货价"
+                  label="货号"
                 >
-                  {amountTransform(detailData?.goods.retailSupplyPrice, '/')}
+                  {detailData?.goods?.supplierSkuId}
+                </Form.Item>
+                <Form.Item
+                  label="批发供货价(元)"
+                >
+                  {amountTransform(detailData?.goods?.wholesaleSupplyPrice, '/')}
+                </Form.Item>
+                <Form.Item
+                  label="最低批发量"
+                >
+                  {detailData?.goods?.wholesaleMinNum}
                 </Form.Item>
                 <Form.Item
                   label="市场价"
                 >
-                  {amountTransform(detailData?.goods.marketPrice, '/')}
+                  {amountTransform(detailData?.goods?.marketPrice, '/')}
                 </Form.Item>
                 <Form.Item
                   label="秒约价"
                 >
-                  {amountTransform(detailData?.goods.salePrice, '/')}
+                  {amountTransform(detailData?.goods?.salePrice, '/')}
                 </Form.Item>
+                {
+                  detailData?.goods?.goodsSaleType===0
+                  &&
+                  <>
+                    <Form.Item
+                      label="秒约价上浮比例"
+                    >
+                      {amountTransform(detailData?.goods?.salePriceFloat)}
+                    </Form.Item>
+                    <Form.Item
+                      label="秒约价实际盈亏"
+                    >
+                      {amountTransform(detailData?.goods?.salePriceProfitLoss, '/')}
+                    </Form.Item>
+                  </>
+                }
               </>
           }
           <Form.Item
             label="是否包邮"
           >
-            {{ 0: '不包邮', 1: '包邮', }[detailData?.goods.isFreeFreight]}
+            {{ 0: '不包邮', 1: '包邮', }[detailData?.goods?.isFreeFreight]}
           </Form.Item>
           {detailData?.freightTemplateName &&
             <Form.Item
@@ -182,7 +223,7 @@ export default () => {
           <Form.Item
             label="七天无理由退货"
           >
-            {{ 0: '不支持', 1: '支持', }[detailData?.goods.supportNoReasonReturn]}
+            {{ 0: '不支持', 1: '支持', }[detailData?.goods?.supportNoReasonReturn]}
           </Form.Item>
           {detailData?.goods.goodsRemark
             &&

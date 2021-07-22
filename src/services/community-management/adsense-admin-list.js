@@ -1,13 +1,14 @@
 import request from '@/utils/request';
 
 export const adsenseAdminList= async (params, options = {}) => {
-  const {id,current,pageSize,...rest}=params
+  const {id,state,current,pageSize,...rest}=params
   const res = await request('/auth/java-admin/adsense/adminList', {
     method: 'POST',
     data: {
       id,
       page:current,
       size:pageSize,
+      state:parseInt(state),
       ...rest
     },
     ...options
