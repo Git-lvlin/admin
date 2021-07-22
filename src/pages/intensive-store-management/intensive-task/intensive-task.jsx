@@ -69,11 +69,12 @@ const IntensiveTask = props => {
       title: '活动采购单数',
       dataIndex: 'total',
       valueType: 'text',
-      render: (_) => <a onClick={() => {
+      render: (_, data) => <a onClick={() => {
         history.push({
           pathname: `/order-management/intensive-order/supplier-order`,
           query: {
             memberId: location?.query?.memberId,
+            wsId: data?.wsId,
           }
         })
       }}>{_}</a>
