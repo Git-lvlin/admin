@@ -25,7 +25,7 @@ const HomeList = () => {
           message.success(`删除成功`);
           actionRef.current.reset();
           setLoading(false)
-        }, 5000)
+        }, 0)
       }
     })
 
@@ -38,7 +38,7 @@ const HomeList = () => {
         actionRef.current.reset()
         setLoading(false)
         setFlag(false)
-      }, 5000)
+      }, 0)
 
     }
   }, [flag])
