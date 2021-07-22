@@ -287,14 +287,14 @@ const StoreList = () => {
             >
               新建
             </Button>,
-            <Button
-              key="new2"
-              onClick={() => {
-                setExcelVisible(true);
-              }}
-            >
-              批量新建
-            </Button>,
+            // <Button
+            //   key="new2"
+            //   onClick={() => {
+            //     setExcelVisible(true);
+            //   }}
+            // >
+            //   批量新建
+            // </Button>,
             // <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
           ],
         }}
