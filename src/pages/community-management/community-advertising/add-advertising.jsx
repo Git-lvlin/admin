@@ -173,16 +173,17 @@ export default props => {
         />
           {
             position=='1'||linkData?.url?
-            <ProFormText
+           <div style={{display:position==2||position==3?'none':'block'}}>
+              <ProFormText
                 width="md"
                 name="url"
-                label="URL跳转"
-            />
+              />
+           </div>
             :null
           }
           {
             position=='2'||linkData?.linkId?
-            <>
+            <div style={{display:position==1||position==3?'none':'block'}}>
               <Button type="primary" onClick={Termination} style={{margin:'0 0 20px 20px'}}>
                   <PlusOutlined />
                   添加商品
@@ -208,7 +209,7 @@ export default props => {
                 dataSource={editLinkData||goods}
                 style={{display:visible?'none':'block'}}
               />
-            </>
+            </div>
             :null
           }
         <ProFormRadio.Group
