@@ -70,12 +70,12 @@ const IntensiveTask = props => {
       dataIndex: 'total',
       valueType: 'text',
       render: (_) => <a onClick={() => {
-        // history.push({
-        //   pathname: `/order-management/intensive-order/shopkeeper-order`,
-        //   query: {
-        //     storeNo: params.id,
-        //   }
-        // })
+        history.push({
+          pathname: `/order-management/intensive-order/supplier-order`,
+          query: {
+            memberId: location?.query?.memberId,
+          }
+        })
       }}>{_}</a>
     },
   ];

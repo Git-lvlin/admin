@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Space, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { memberShopUser } from '@/services/intensive-store-management/shop-user';
+import { shopkeeperInvited } from '@/services/intensive-store-management/shopkeeper-user';
 import { useParams, useLocation, history } from 'umi';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -38,7 +38,23 @@ const TableList = () => {
         placeholder: '请输入手机号'
       },
       render: (_, data) => <a onClick={() => { history.push(`/user-management/user-detail/${data?.memberId}`) }}>{_}</a>
-
+    },
+    {
+      title: '是否为店主',
+      dataIndex: 'userType',
+      valueType: 'select',
+      hideInTable: true,
+      valueEnum: {
+        1: '是',
+        0: '否'
+      }
+    },
+    {
+      title: '是否为店主',
+      dataIndex: 'userType',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_) => _ === 1 ? '是' : '否'
     },
     {
       title: '积分',
@@ -61,15 +77,8 @@ const TableList = () => {
     },
     {
       title: '状态',
-      dataIndex: ['status', 'desc'],
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '状态',
       dataIndex: 'status',
       valueType: 'select',
-      hideInTable: true,
       valueEnum: {
         1: '启用',
         2: '禁用'
@@ -105,9 +114,10 @@ const TableList = () => {
         rowKey="id"
         options={false}
         params={{
-          storeNo: params.id
+          storeNo: params.id,
+          parentId: location?.query?.memberId,
         }}
-        request={memberShopUser}
+        request={shopkeeperInvited}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,

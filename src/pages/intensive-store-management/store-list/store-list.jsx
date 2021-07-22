@@ -93,6 +93,7 @@ const StoreList = () => {
                   storeName: data.storeName,
                   phone: data.phone,
                   linkman: data.linkman,
+                  memberId: data.memberId,
                 }
               })
             }}>
@@ -102,7 +103,7 @@ const StoreList = () => {
       }
     },
     {
-      title: '店主订单',
+      title: '店内订单',
       dataIndex: 'saleOrderTotal',
       valueType: 'text',
       hideInSearch: true,
@@ -148,7 +149,7 @@ const StoreList = () => {
       }
     },
     {
-      title: '用户',
+      title: '订单用户',
       dataIndex: 'userTotal',
       valueType: 'text',
       hideInSearch: true,
@@ -162,6 +163,29 @@ const StoreList = () => {
                 storeName: data.storeName,
                 phone: data.phone,
                 linkman: data.linkman,
+              }
+            })
+          }}>{_}</a>
+          :
+          _
+      }
+    },
+    {
+      title: '直推用户',
+      dataIndex: 'shopkeeperInvitedTotal',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, data) => {
+        return _ > 0
+          ?
+          <a onClick={() => {
+            history.push({
+              pathname: `/intensive-store-management/shopkeeper-user/${data.storeNo}`,
+              query: {
+                storeName: data.storeName,
+                phone: data.phone,
+                linkman: data.linkman,
+                memberId: data.memberId,
               }
             })
           }}>{_}</a>

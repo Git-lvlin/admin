@@ -77,6 +77,7 @@ export default {
   'menu.intensive-store-management.shopkeeper-order': '店主订单',
   'menu.intensive-store-management.product-management': '商品管理',
   'menu.intensive-store-management.shop-user': '店铺用户',
+  'menu.intensive-store-management.shopkeeper-user': '直推用户',
   'menu.intensive-store-management.store-review': '店铺审核',
   'menu.intensive-store-management.store-review-detail': '店铺审核详情',
   'menu.intensive-store-management.grade-index': '等级权益',
