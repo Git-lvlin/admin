@@ -16,7 +16,7 @@ export default props => {
  const [onselect,setOnselect]=useState([])
  const [position,setPosition]=useState()
  const [visible, setVisible] = useState(false);
- const [goods,setGoods]=useState([])
+ const [goods,setGoods]=useState()
  const [linkData,setLinkData]=useState()
  const [editLinkData,setEditLinkData]=useState()
  const [form] = Form.useForm()
@@ -206,7 +206,7 @@ export default props => {
                 search={false}
                 toolBarRender={false}
                 columns={columns}
-                dataSource={editLinkData||goods}
+                dataSource={goods||editLinkData}
                 style={{display:visible?'none':'block'}}
               />
             </div>
