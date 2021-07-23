@@ -10,7 +10,7 @@ const BuyerProof = props => {
   const { platformOpinion, data, storeEvidenceImg } = props
   const columns = [
     {
-      title: '供应商ID',
+      title: '供应商家ID',
       dataIndex: 'supplierId'
     }
   ]

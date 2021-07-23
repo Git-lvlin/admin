@@ -86,7 +86,7 @@ export default props => {
         }
     },
     {
-        title: '可购买的会员店等级',
+        title: '可购买的社区店等级',
         dataIndex: 'storeLevel',
         valueType: 'text'
     },

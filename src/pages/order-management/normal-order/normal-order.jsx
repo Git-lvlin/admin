@@ -225,7 +225,7 @@ const TableList = () => {
         {
           data.map(item => (
             <div className={styles.list} key={item.id}>
-              <div className={styles.store_name}>供应商ID：{item.supplierId}</div>
+              <div className={styles.store_name}>供应商家ID：{item.supplierId}</div>
               <div className={styles.second}>
                 <Space size="large">
                   <span>下单时间：{item.createTime.replace('T', ' ')}</span>
