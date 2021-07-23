@@ -16,10 +16,6 @@ const PaymentDetails = () => {
       valueType: 'indexBorder'
     },
     {
-      title: '会员ID',
-      dataIndex:'memberId'
-    },
-    {
       title: '虚拟子账户',
       dataIndex:'accountSn',
       hideInSearch: true,
