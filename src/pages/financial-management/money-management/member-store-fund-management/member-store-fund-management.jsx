@@ -85,7 +85,7 @@ const MemberStoreFundManagement = () => {
       valueType: 'indexBorder'
     },
     {
-      title: '会员店ID',
+      title: '社区店ID',
       dataIndex: 'accountId'
     },
     {

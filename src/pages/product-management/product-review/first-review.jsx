@@ -280,7 +280,7 @@ export default (props) => {
 
       <ProFormSelect
         name="supplierHelperId"
-        label="供应商顾问"
+        label="供应商家顾问"
         options={detailData?.supplierHelpList?.map(item => ({ label: item.companyName, value: item.id }))}
       />
 

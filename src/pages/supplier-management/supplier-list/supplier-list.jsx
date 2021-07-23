@@ -16,10 +16,10 @@ const TableList = () => {
           onChange: setActiveKey
         }}
       >
-        <ProCard.TabPane key="1" tab="供应商商家">
+        <ProCard.TabPane key="1" tab="供应商家商家">
           {activeKey === '1' && <SupplierMerchant />}
         </ProCard.TabPane>
-        <ProCard.TabPane key="2" tab="供应商顾问">
+        <ProCard.TabPane key="2" tab="供应商家顾问">
           {activeKey === '2' && <ConsultantList />}
         </ProCard.TabPane>
       </ProCard>

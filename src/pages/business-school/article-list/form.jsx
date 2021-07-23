@@ -100,7 +100,7 @@ export default (props) => {
               <dd>首页banner-351*100</dd>
               <dd>集约页面banner-375*186</dd>
               <dd>个人中心banner-375*65</dd>
-              <dd>会员店专享banner-375*150</dd>
+              <dd>社区店专享banner-375*150</dd>
             </dl>
           }
         >
@@ -115,7 +115,7 @@ export default (props) => {
             1: '首页',
             2: '集约',
             3: '个人中心',
-            4: '会员店',
+            4: '社区店',
           }}
           placeholder="选择位置"
           rules={[{ required: true, message: '请选择位置!' }]}
