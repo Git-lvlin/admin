@@ -440,7 +440,7 @@ export default (props) => {
 
   return (
     <DrawerForm
-      title={`${detailData ? '编辑' : '新建'}供应商`}
+      title={`${detailData ? '编辑' : '新建'}供应商家`}
       onVisibleChange={setVisible}
       drawerProps={{
         forceRender: true,
@@ -473,9 +473,9 @@ export default (props) => {
         <div style={{ flex: 1 }}>
           <ProFormText
             name="companyName"
-            label="供应商名称"
-            placeholder="请输入供应商名称"
-            rules={[{ required: true, message: '请输入供应商名称' }]}
+            label="供应商家名称"
+            placeholder="请输入供应商家名称"
+            rules={[{ required: true, message: '请输入供应商家名称' }]}
             fieldProps={{
               maxLength: 30,
               onChange: companyNameChange
@@ -484,9 +484,9 @@ export default (props) => {
           />
           <ProFormText
             name="accountName"
-            label="供应商登录账号"
-            placeholder="请输入供应商登录账号"
-            rules={[{ required: true, message: '请输入供应商登录账号' }]}
+            label="供应商家登录账号"
+            placeholder="请输入供应商家登录账号"
+            rules={[{ required: true, message: '请输入供应商家登录账号' }]}
             fieldProps={{
               maxLength: 18,
             }}
@@ -494,11 +494,11 @@ export default (props) => {
           />
           <ProFormText.Password
             name="password"
-            label="供应商登录密码"
-            placeholder="请输入供应商登录密码"
+            label="供应商家登录密码"
+            placeholder="请输入供应商家登录密码"
             validateFirst
             rules={[
-              { required: !detailData, message: '请输入供应商登录密码' },
+              { required: !detailData, message: '请输入供应商家登录密码' },
               { required: !detailData, message: '密码应不少于6个字符，不超过18个字符', min: 6, max: 18 }
             ]}
             fieldProps={{
@@ -849,7 +849,7 @@ export default (props) => {
                       label="结算银行卡开户名"
                       placeholder="请输入结算银行卡开户名"
                       // rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
-                      extra="银行账户类型为对公账户时，开户名为供应商企业名称"
+                      extra="银行账户类型为对公账户时，开户名为供应商家企业名称"
                       disabled={bankAccountType === 1}
                     />
                   )
