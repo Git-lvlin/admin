@@ -105,7 +105,10 @@ export default (props) =>{
     {
       title: '选项',
       dataIndex: 'title',
-      width: '30%'
+      width: '30%',
+      renderFormItem:(_,data)=>{
+        return <p>{_.entry.title}</p>
+      }
     },
     {
       title: '范围',
@@ -119,9 +122,21 @@ export default (props) =>{
       title: '条件',
       dataIndex: 'labels',
       width: '20%',
-      renderFormItem: (_, { isEditable }) => {
+      renderFormItem: (_, row) => {
         if(_.entry.title=='会员等级'){
-        return <CrowdModel Callback={Callback}/>;
+              if(levelId){
+                return <>
+                  <p style={{display:'inline-block'}}>{
+                    levelId?.userLevel.map(ele=>{
+                      return <span>V{ele}等级、</span>
+                      })
+                    }
+                  </p>
+                <CrowdModel Callback={Callback}/>
+                </>
+              }else{
+                return <CrowdModel Callback={Callback}/>
+              }
         }else if(_.entry.title=='消费次数'){
         return <ProFormFieldSet>
                   <Input style={{width:'100px'}} suffix="次" /> 
@@ -309,9 +324,9 @@ export default (props) =>{
               maxLength={3}
               editable={{
                 editableKeys,
-                onSave: async (rowKey, data, row) => {
-                  await waitTime(500);
-                },
+                // onSave: async (rowKey, data, row) => {
+                //   await waitTime(500);
+                // },
                 onChange: setEditableRowKeys,
                 onlyAddOneLineAlertMessage:'不能同时新增多行'
               }}
