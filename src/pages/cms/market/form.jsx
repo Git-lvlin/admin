@@ -20,14 +20,7 @@ export default (props) => {
     if (id) {
       param.id = id
     }
-    console.log('process.env', process.env)
-    const env = {
-      'development': '-dev',
-      'production': '',
-      'release': '-uat'
-    }
-    const envName = env[process.env.NODE_ENV]
-    param.actionUrl = `http://publicmobile${env[process.env.NODE_ENV]}.yeahgo.com/web/market`
+    param.actionUrl = `${MARKET_URL}/web/market`
     return new Promise((resolve) => {
       marketUpdata(param).then((res) => {
         if (res.code === 0) {
