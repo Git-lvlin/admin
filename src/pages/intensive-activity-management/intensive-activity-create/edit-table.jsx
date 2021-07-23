@@ -39,7 +39,7 @@ export default function EditTable({ onSelect }) {
     //   dataIndex: 'retailSupplyPrice',
     //   valueType: 'select',
     //   fieldProps: {
-    //     placeholder: '请选择商品所属供应商类型'
+    //     placeholder: '请选择商品所属供应商家类型'
     //   },
     //   valueEnum: {
     //     0: '全部',
@@ -52,7 +52,7 @@ export default function EditTable({ onSelect }) {
       dataIndex: 'supplierId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商ID',
+        placeholder: '请输入供应商家ID',
         maxLength: 30,
       },
       hideInTable: true
@@ -116,7 +116,7 @@ export default function EditTable({ onSelect }) {
       render: (text) => <img src={text} width={50} height={50} />
     },
     {
-      title: '供应商ID',
+      title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,

@@ -105,7 +105,7 @@ export default (props) => {
         placeholder="请输入登录密码"
         validateFirst
         rules={[
-          { required: true, message: '请输入供应商登录密码' },
+          { required: true, message: '请输入供应商家登录密码' },
           { required: true, message: '密码应不少于6个字符，不超过18个字符', min: 6, max: 18 }
         ]}
         fieldProps={{
@@ -115,11 +115,11 @@ export default (props) => {
       />
 
       <Form.Item
-        label="可关联供应商"
+        label="可关联供应商家"
       >
-        <Button type="primary" onClick={() => { setFormVisible(true) }}>选择供应商</Button>
+        <Button type="primary" onClick={() => { setFormVisible(true) }}>选择供应商家</Button>
         <div>
-          {!!selectData.length && <div>已选择供应商</div>}
+          {!!selectData.length && <div>已选择供应商家</div>}
           {
             selectData.map(item => (<div key={item.id}>{item.companyName}</div>))
           }

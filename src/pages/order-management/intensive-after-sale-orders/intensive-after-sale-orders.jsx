@@ -37,7 +37,7 @@ const columns = [
     order: 4,
   },
   {
-    title: '供应商id',
+    title: '供应商家id',
     dataIndex: 'supplierId',
     align: 'center',
     order: 1,

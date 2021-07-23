@@ -26,11 +26,11 @@ export default (props) => {
 
   const columns = [
     {
-      title: '供应商名称',
+      title: '供应商家名称',
       dataIndex: 'companyName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商名称'
+        placeholder: '请输入供应商家名称'
       }
     },
     {
@@ -57,7 +57,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={'选择关联的供应商'}
+      title={'选择关联的供应商家'}
       modalProps={{
         onCancel: () => form.resetFields(),
       }}
