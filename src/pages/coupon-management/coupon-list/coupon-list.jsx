@@ -218,12 +218,12 @@ const message = (type, module,dispatch) => {
             limitStartTime:'可领取时间',
             activityTimeDisplay:'有效期',
             couponVerifyStatus: '审核状态',
-            couponStatus: '优惠劵状态',
+            couponStatus: type==4?'优惠劵状态':null,
             createTime: '创建时间',
           },
           ...data
         ], {
-          header: [
+          header:type==4? [
             'couponName',
             'couponType',
             'couponAmountDisplay',
@@ -234,6 +234,17 @@ const message = (type, module,dispatch) => {
             'limitStartTime',
             'couponVerifyStatus',
             'couponStatus',
+            'createTime'
+          ]: [
+            'couponName',
+            'couponType',
+            'couponAmountDisplay',
+            'issueType',
+            'issueAmount',
+            'issueQuantity',
+            'activityTimeDisplay',
+            'limitStartTime',
+            'couponVerifyStatus',
             'createTime'
           ],
           skipHeader: true
