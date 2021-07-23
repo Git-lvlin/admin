@@ -170,7 +170,7 @@ const message = (type, module,dispatch) => {
           ],
         }}
         toolBarRender={()=>[
-          <Space style={{marginRight:"1350px",marginBottom:'10px'}}>
+          <Space style={{marginBottom:'10px'}}>
           <AuditModel 
             state={1}  
             label={'全部通过'}  
