@@ -30,7 +30,7 @@ const DebounceSelect = (props) => {
       notFoundContent={fetching ? <Spin size="small" /> : null}
       {...props}
       options={options}
-      placeholder="请输入供应商ID"
+      placeholder="请输入供应商家ID"
       showSearch
     />
   );
