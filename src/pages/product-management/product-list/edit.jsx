@@ -17,6 +17,14 @@ import EditTable from './edit-table';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import debounce from 'lodash/debounce';
+import ImageSort from './image-sort';
+
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+  </div>
+)
 
 export default (props) => {
   const { visible, setVisible, detailData, callback, onClose } = props;
@@ -447,7 +455,7 @@ export default (props) => {
         fieldProps={{
           maxLength: 50,
         }}
-        disabled
+        // disabled
       />
       <ProFormText
         name="wholesaleFreight"
@@ -873,7 +881,21 @@ export default (props) => {
           },
         })]}
       >
-        <Upload code={218} disabled multiple maxCount={10} accept="image/*" dimension="1:1" size={500} />
+        <FromWrap
+          content={(value, onChange) => <Upload code={218} value={value} onChange={onChange} multiple maxCount={50} accept="image/*" dimension="1:1" size={1024} />}
+          right={(value) => {
+            return (
+              <dl>
+                <dt>图片要求</dt>
+                <dd>1.图片大小1MB以内</dd>
+                <dd>2.图片比例1:1</dd>
+                <dd>3.图片格式png/jpg/gif</dd>
+                <dd>4.至少上传3张</dd>
+                {value?.length > 1 && <dd><ImageSort data={value} callback={(v) => { form.setFieldsValue({ primaryImages: v }) }} /></dd>}
+              </dl>
+            )
+          }}
+        />
       </Form.Item>
       <Form.Item
         label="商品详情"
