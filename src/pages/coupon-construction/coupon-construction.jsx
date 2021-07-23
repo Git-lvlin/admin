@@ -27,7 +27,7 @@ const couponConstruction = (props) => {
       setTimeout(() => {
         form.setFieldsValue({
           dateRange: [moment(DetailList.data?.limitStartTime).valueOf(), moment(DetailList.data?.limitEndTime).valueOf()],
-          dateTimeRange: [moment(DetailList.data?.activityStartTime).valueOf(), moment(DetailList.data?.activityEndTime).valueOf()],
+          dateTimeRange: DetailList.data?.activityStartTime?[moment(DetailList.data?.activityStartTime).valueOf(), moment(DetailList.data?.activityEndTime).valueOf()]:null,
           ...DetailList.data
         })
       }, 1000)
