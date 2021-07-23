@@ -11,7 +11,7 @@ const BasicInformation = ({data}) => {
     },
     {
       title: '买家昵称',
-      dataIndex: 'userNickname'
+      dataIndex: 'buyerNickname'
     },
     {
       title: '买家手机号',
