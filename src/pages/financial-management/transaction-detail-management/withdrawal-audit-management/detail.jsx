@@ -25,7 +25,14 @@ import { amountTransform } from '@/utils/utils'
 const Detail = () => {
   const {id} = useParams()
   const form = useRef()
+
   const PopModalForm = ({sn}) => {
+    const [choosed, setChoosed] = useState('')
+
+    const choose =(value)=> {
+      setChoosed(value)
+    }
+    
     const check = (val) => {
       audit({ ...val, sn }).then(res => {
         if (res?.success) {
@@ -53,22 +60,29 @@ const Detail = () => {
             width='md'
             name="isSuccess"
             label="选择"
+            rules={[{ required: true, message: '请选择' }]}
+            fieldProps={{
+              onChange: (v)=> choose(v)
+            }}
             valueEnum={{
               0: '审核不通过',
               1: '审核通过'
             }}
           />
         </div>
-        <ProFormTextArea
-          name='reason'
-          label='备注'
-          width='lg'
-          rules={[{ required: true, message: '请输入备注' }]}
-          fieldProps={{
-            showCount: true,
-            maxLength: 30
-          }}
-        />
+        {
+          choosed === '0' &&
+          <ProFormTextArea
+            name='reason'
+            label='备注'
+            width='lg'
+            rules={[{ required: true, message: '请输入备注' }]}
+            fieldProps={{
+              showCount: true,
+              maxLength: 30
+            }}
+          />
+        }
       </ModalForm>
     )
   }
