@@ -21,7 +21,7 @@ const BasicInformation = ({data}) => {
       render: (_, records)=> records?.buyer?.storePhone
     },
     {
-      title: '供应商ID',
+      title: '供应商家ID',
       dataIndex: 'supplierId',
       render: (_, records)=> records?.business?.businessId
     }

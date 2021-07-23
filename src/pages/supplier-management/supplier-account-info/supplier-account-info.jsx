@@ -53,7 +53,7 @@ const SupplierDetail = () => {
           style={{ backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
         >
           <Form.Item
-            label="供应商名称"
+            label="供应商家名称"
           >
             {detailData.companyName}
           </Form.Item>
