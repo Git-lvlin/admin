@@ -189,7 +189,6 @@ export default (props) => {
 
   const createEditTableData = (data) => {
     const { specName1, specName2, specValues1, specValues2 } = form.getFieldsValue(['specName1', 'specName2', 'specValues1', 'specValues2']);
-
     const specArr = [];
     specValues1.forEach((item, index) => {
       if (specValues2[0].name) {
@@ -452,12 +451,12 @@ export default (props) => {
       />
       <ProFormText
         name="wholesaleFreight"
-        label="单位运费(元)"
+        label="平均运费(元)"
         disabled
       />
       <ProFormText
         name="wholesaleTaxRate"
-        label="发票税率(%)"
+        label="商品开票税率(%)"
         disabled
       />
       <ProFormText

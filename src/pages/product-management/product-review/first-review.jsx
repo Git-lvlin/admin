@@ -159,7 +159,7 @@ export default (props) => {
               obj.salePrice = amountTransform(item.salePrice)
               obj.salePriceProfitLoss = amountTransform(item.salePriceProfitLoss);
               obj.salePriceFloat = amountTransform(item.salePriceFloat, '/');
-              obj.retailSupplyPrice = item.retailSupplyPrice;
+              obj.retailSupplyPrice = amountTransform(item.retailSupplyPrice);
             }
             return {
               marketPrice: amountTransform(item.marketPrice),
@@ -207,12 +207,12 @@ export default (props) => {
         {goods.goodsName}
       </Form.Item>
       <Form.Item
-        label="单位运费(元)"
+        label="平均运费(元)"
       >
-        {goods.wholesaleFreight}
+        {amountTransform(goods.wholesaleFreight, '/')}
       </Form.Item>
       <Form.Item
-        label="发票税率(%)"
+        label="商品开票税率(%)"
       >
         {amountTransform(goods.wholesaleTaxRate)}
       </Form.Item>

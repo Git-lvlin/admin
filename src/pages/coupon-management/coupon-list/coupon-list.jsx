@@ -1,12 +1,15 @@
 import React, { useState, useRef } from 'react';
 import { Button,Tabs} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm,{ ModalForm,ProFormRadio} from '@ant-design/pro-form';
+import { ModalForm,ProFormRadio} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import XLSX from 'xlsx'
 import { couponList } from '@/services/coupon-management/coupon-list';
+import { couponDelSub,couponStatusSub } from '@/services/coupon-management/coupon-delsub';
 import DeleteModal from '@/components/DeleteModal'
 import EndModel from './end-model'
+import TurnDownModel from './turn-down-model'
+
 import { history,connect } from 'umi';
 const { TabPane } = Tabs
 
@@ -14,6 +17,13 @@ const { TabPane } = Tabs
 const message = (type, module,dispatch) => {
   const ref=useRef()
   const columns= [
+    // {
+    //   title: 'id',
+    //   dataIndex: 'id',
+    //   hideInSearch:true,
+    //   // hideInTable:true,
+    //   valueType:'indexBorder'
+    // },
     {
       title: '优惠券名称',
       dataIndex: 'couponName',
@@ -62,8 +72,11 @@ const message = (type, module,dispatch) => {
     },
     {
       title: '可领取时间',
-      dataIndex: 'activityTimeDisplay',
+      dataIndex: 'dateRange',
       valueType: 'text',
+      render:(_, data)=>{
+        return <p>{data.limitStartTime} 至 {data.limitEndTime}</p>
+      },
       hideInSearch: true,
       ellipsis:true
     },
@@ -77,17 +90,26 @@ const message = (type, module,dispatch) => {
     {
       title: '审核状态',
       dataIndex: 'couponVerifyStatus',
-      valueType: 'select',
-      valueEnum: {
-        1: '待提交',
-        2: '审核驳回',
-        3: '审核中',
-        4: '已通过'
+      valueType: 'text',
+      render: (_, data)=>{
+        if(data.couponVerifyStatus==1){
+          return <p>待提交</p>
+        }else if(data.couponVerifyStatus==2){
+          return <>
+            <p>审核驳回</p>
+            <TurnDownModel id={data.id}/>
+          </>
+        }else if(data.couponVerifyStatus==3){
+          return <p>审核中</p>
+        }else if(data.couponVerifyStatus==4){
+          return <p>已通过</p>
+        }
+        
       },
       hideInSearch:true
     },
     {
-      title: '状态',
+      title: '优惠劵状态',
       dataIndex: 'couponStatus',
       valueType: 'select',
       valueEnum: {
@@ -97,7 +119,7 @@ const message = (type, module,dispatch) => {
         4: '已终止'
       },
       hideInSearch:type!=4,
-      hideInTable:true
+      hideInTable:type!=4
     },
     {
       title: '创建时间',
@@ -105,12 +127,6 @@ const message = (type, module,dispatch) => {
       valueType: 'text',
       hideInSearch: true,
     },
-    // {
-    //   title: '创建人',
-    //   dataIndex: 'adminName',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    // },
     {
       title: '操作',
       key: 'option',
@@ -127,8 +143,9 @@ const message = (type, module,dispatch) => {
       <DeleteModal
         record={data} 
         boxref={ref} 
+        label1={'删除'}
         text={'确定要删除所选优惠券吗？'} 
-        // InterFace={dynamicDelete} 
+        InterFace={couponDelSub}
         blok={type}
         title={'操作确认'}
       />,
@@ -139,14 +156,16 @@ const message = (type, module,dispatch) => {
           :null
         } 
       </a>,
-       <a key="a" onClick={()=>{ look(data.id)}}>
-       {
-          type==3?
-          '撤回'
-          :null
-       }
-      </a>,
-      // <AddModel boxref={ref} data={data}/>,
+       <DeleteModal
+        record={data}
+        label2={'撤回'}
+        status={1}
+        boxref={ref} 
+        text={'确定要撤回吗？'} 
+        InterFace={couponStatusSub}
+        blok={type}
+        title={'操作确认'}
+      />,
       <EndModel type={type} boxref={ref} data={data}/>,
       <a key="a" onClick={()=>CodeLibrary(data.id)}>
         {
@@ -181,7 +200,6 @@ const message = (type, module,dispatch) => {
   //导出
   const exportExcel = (searchConfig) => {
     couponList({}).then(res => {
-      console.log('res',res)
         const data = res.data.map(item => {
           const { ...rest } = item;
           return {
@@ -193,30 +211,30 @@ const message = (type, module,dispatch) => {
           {
             couponName: '优惠券名称',
             couponType: '优惠券类型',
-            useType: '使用范围',
-            issueQuantity: '发行总金额（元）',
+            couponAmountDisplay:'面值',
+            issueType:'发行方式',
+            issueAmount: '发行总金额（元）',
             issueQuantity: '发行总数量（张）',
-            lqCouponQuantity: '已被领取',
-            useCouponQuantity: '已被使用',
-            activityTimeDisplay: '有效期',
+            limitStartTime:'可领取时间',
+            activityTimeDisplay:'有效期',
+            couponVerifyStatus: '审核状态',
+            couponStatus: '优惠劵状态',
             createTime: '创建时间',
-            adminName: '创建人',
-            couponStatus: '状态'
           },
           ...data
         ], {
           header: [
             'couponName',
             'couponType',
-            'useType',
+            'couponAmountDisplay',
+            'issueType',
+            'issueAmount',
             'issueQuantity',
-            'issueQuantity',
-            'lqCouponQuantity',
-            'useCouponQuantity',
             'activityTimeDisplay',
-            'createTime',
-            'adminName',
+            'limitStartTime',
+            'couponVerifyStatus',
             'couponStatus',
+            'createTime'
           ],
           skipHeader: true
         });
@@ -225,30 +243,30 @@ const message = (type, module,dispatch) => {
     })
   }
 
-  return (
-      <ProTable
-        actionRef={ref}
-        rowKey="id"
-        options={false}
-        params={{
-          couponVerifyStatus: type,
-        }}
-        request={couponList}
-        search={{
-          defaultCollapsed: false,
-          labelWidth: 100,
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
-          <Button onClick={()=>{ref.current.reload()}} key="refresh">
-            刷新
-          </Button>,
-          <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
-            导出数据
-          </Button>
-          ],
-        }}
-        columns={columns}
-      />
+return(
+    <ProTable
+      actionRef={ref}
+      rowKey="id"
+      options={false}
+      params={{
+        couponVerifyStatus: type,
+      }}
+      request={couponList}
+      search={{
+        defaultCollapsed: false,
+        labelWidth: 100,
+        optionRender: (searchConfig, formProps, dom) => [
+          ...dom.reverse(),
+        <Button onClick={()=>{ref.current.reload()}} key="refresh">
+          刷新
+        </Button>,
+        <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
+          导出数据
+        </Button>
+        ],
+      }}
+      columns={columns}
+    />
   );
 };
 

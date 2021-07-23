@@ -7,9 +7,9 @@ export const getStoreList = async (params = {}, options = {}) => {
     params: {
       page: current,
       size: pageSize,
-      provinceName: area[0]?.label,
-      cityName: area[1]?.label,
-      regionName: area[2]?.label,
+      provinceId: area[0]?.value,
+      cityId: area[1]?.value,
+      regionId: area[2]?.value,
       ...rest
     },
     ...options

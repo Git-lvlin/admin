@@ -70,7 +70,7 @@ const LvlRule = () => {
           }
         }
         if (index === 1) {
-          obj.children = '持续2个月未升级关闭店铺(关闭后可联系客服再次开启)'
+          obj.children = '持续2个月未升级关闭店铺'
           obj.props.colSpan = 4;
           obj.props.style = {
             textAlign: 'center'
@@ -159,8 +159,8 @@ const LvlRule = () => {
     setDataSource(arr)
   }
 
-  const onOk = (e) => {
-    setDate(e.format('YYYY-MM-DD HH:mm:ss'))
+  const onChange = (e) => {
+    setDate(e?.format?.('YYYY-MM-DD HH:mm:ss'))
   }
 
   const submit = () => {
@@ -232,7 +232,7 @@ const LvlRule = () => {
             <DatePicker
               showNow={false}
               showTime
-              onOk={onOk}
+              onChange={onChange}
               disabledDate={(currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() }}
             />
           </Form.Item>}

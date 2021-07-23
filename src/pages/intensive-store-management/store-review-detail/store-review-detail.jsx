@@ -98,8 +98,8 @@ const Detail = () => {
         applyId: params.id,
         optAdminId: userInfo.id,
         optAdminName: userInfo.username,
-        longitude: location[1],
-        latitude: location[2],
+        longitude: location[0],
+        latitude: location[1],
         realname: detailData.details.realname,
         idNumber: detailData.details.idNumber,
         idFront: imageInfo.idCardFrontImg,
@@ -223,7 +223,7 @@ const Detail = () => {
                     </Button>
                     <RejectForm id={detailData?.id} />
                     <Button onClick={() => {
-                      
+                      history.goBack();
                     }}>
                       返回
                     </Button>

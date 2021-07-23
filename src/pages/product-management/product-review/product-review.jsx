@@ -20,10 +20,10 @@ const SubTable = (props) => {
   const columns = [
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
-    { title: '零售供货价', dataIndex: 'retailSupplyPriceDisplay' },
-    { title: '批发价', dataIndex: 'wholesalePriceDisplay' },
+    { title: '零售供货价', dataIndex: 'retailSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
+    { title: '批发供货价', dataIndex: 'wholesalePrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
     { title: '批发起购量', dataIndex: 'wholesaleMinNum' },
-    { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
+    // { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
     { title: '商品价格', dataIndex: 'salePriceDisplay' },
     { title: '可用库存', dataIndex: 'stockNum' },
@@ -54,6 +54,7 @@ const TableList = () => {
   const [secondReviewVisible, setSecondReviewVisible] = useState(false);
   const [config, setConfig] = useState({});
   const [detailData, setDetailData] = useState(null);
+  const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
 
   const getDetail = (record) => {
@@ -70,17 +71,18 @@ const TableList = () => {
         }
       })
     } else {
-      api.noFirstCheckList({
-        spuId: record.id
-      }).then(res => {
-        if (res.code === 0) {
-          setDetailData({
-            data: res.data?.length ? res.data : [],
-            spuId: record.id
-          });
-          setSecondReviewVisible(true);
-        }
-      })
+      setSelectItem(record)
+      // api.noFirstCheckList({
+      //   spuId: record.id
+      // }).then(res => {
+      //   if (res.code === 0) {
+      //     setDetailData({
+      //       data: res.data?.length ? res.data : [],
+      //       spuId: record.id
+      //     });
+      //   }
+      // })
+      setSecondReviewVisible(true);
     }
   }
 
@@ -212,6 +214,18 @@ const TableList = () => {
     {
       title: '供货类型',
       dataIndex: 'goodsSaleTypeDisplay',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '批发供货价(元)',
+      dataIndex: 'wholesaleSupplyPriceRange',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '零售供货价(元)',
+      dataIndex: 'retailSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -363,7 +377,7 @@ const TableList = () => {
         visible={secondReviewVisible}
         setVisible={setSecondReviewVisible}
         check={check}
-        detailData={detailData}
+        record={selectItem}
         operateRole={typeTransform(config.operateRole)}
       />}
     </PageContainer>

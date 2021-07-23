@@ -1,9 +1,8 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { DatePicker, Input, Form, Divider, message,Button,Space,Tag } from 'antd';
-import ProTable,{ EditableProTable,ActionType } from '@ant-design/pro-table';
+import { Input, Form, message,Button} from 'antd';
+import { EditableProTable } from '@ant-design/pro-table';
 import ProForm, {
     ProFormText,
-    ProFormRadio,
     ProFormFieldSet
   } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
@@ -18,8 +17,6 @@ export default (props) =>{
   const id = props.location.query.id
   const [editableKeys, setEditableRowKeys] = useState([]);
   const [dataSource, setDataSource] = useState([]);
-  const [falg,setFalg]=useState(true)
-  const [block,setBlock]=useState(true)
   const [falg1,setFalg1]=useState(false)
   const [falg2,setFalg2]=useState(false)
   const [falg3,setFalg3]=useState(false)
@@ -27,27 +24,29 @@ export default (props) =>{
   const [form] = Form.useForm();
   const ref=useRef()
   const Callback=val=>{
-    console.log('val',val)
     setLevelId(val)
   }
   const waitTime = (time) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        setBlock(false)
-        setFalg(false)
         resolve(true);
       }, time);
     });
   };
   useEffect(()=>{
     if(id){
-      setBlock(false)
-      setFalg(false)
       couponCrowdDetail({id:id}).then(res=>{
         form.setFieldsValue({name:res.data.name})
-        console.log('res.data.crowdInfo',res.data.crowdInfo)
         const arr=[]
         res.data.crowdInfo.map(ele=>{
+          if(ele.type==1){
+            setFalg1(true)
+          }else if(ele.type==2){
+            setFalg2(true)
+          }
+          else if(ele.type==3){
+            setFalg3(true)
+          }
           arr.push({
             id:ele.crowdInfoId,
             state:ele.isContain,
@@ -57,7 +56,6 @@ export default (props) =>{
             userLevelDisplay:ele.userLevelDisplay
           })
         })
-        console.log('arr',arr)
         setDataSource(arr)
       })
     }
@@ -87,8 +85,6 @@ export default (props) =>{
       } catch (error) {
         console.log('error',error)
       }
-      console.log('values',values);
-      console.log('dataSource',dataSource)
       if(id){
         couponCrowdEdit({...values,id:id}).then(res=>{
           if(res.code==0){
@@ -134,27 +130,21 @@ export default (props) =>{
                 </ProFormFieldSet>;
         }
         return <ProFormFieldSet> 
-                <Input name='min' style={{width:'100px'}} suffix="元" />
-                 至 
-                <Input name='max' style={{width:'100px'}} suffix="元" />
+                  <Input name='min' style={{width:'100px'}} suffix="元" />
+                  至 
+                  <Input name='max' style={{width:'100px'}} suffix="元" />
                 </ProFormFieldSet>;
       },
-      hideInTable:falg?false:true
-    },
-    {
-      title: '条件',
-      dataIndex: 'labels',
-      render:(_, data)=>{
-        if(data.title=='会员等级'){
+      render: (_, row) =>{
+        if(row.title=='会员等级'){
           return <p>{levelId?.userLevel.map(ele=>{
             return <span>V{ele}等级、</span>
-          })||data.userLevelDisplay}</p>;
-          }else if(data.title=='消费次数'){
-          return <p>{data.labels[0]}次 至 {data.labels[1]}次</p>
+          })||row.userLevelDisplay}</p>;
+          }else if(row.title=='消费次数'){
+            return <p>{row.labels[0]}次 至 {row.labels[1]}次</p>;
           }
-          return <p>{data.labels[0]}元 至 {data.labels[1]}元</p>
-      },
-      hideInTable:block?true:false
+            return <p>{row.labels[0]}元 至 {row.labels[1]}元</p>;
+      }
     },
     {
       title: '操作',
@@ -164,6 +154,14 @@ export default (props) =>{
         <a
           key="delete"
           onClick={() => {
+            if(record.title=='会员等级'){
+              setFalg1(false)
+            }else if(record.title=='消费次数'){
+              setFalg2(false)
+            }
+            else if(record.title=='累计消费'){
+              setFalg3(false)
+            }
             setDataSource(dataSource.filter((item) => item.id !== record.id));
           }}
         >
@@ -206,23 +204,23 @@ export default (props) =>{
           maxWidth: '100%',
           }}
         >
-          <ProFormText
-            name="name"
-            width="200px"
-            label="群体名称"
-            placeholder="请输入名称"
-            rules={[
-              { required: true, message: '请输入群体名称' },
-              { validator:(rule,value,callback)=>{
-                return new Promise(async (resolve, reject) => {
-                if(value&&value.length>20){
-                  await reject('群体名称不超过20个字符')
-                }else {
-                    await resolve()
-                }
-              })
-              }}
-            ]}
+        <ProFormText
+          name="name"
+          width="200px"
+          label="群体名称"
+          placeholder="请输入名称"
+          rules={[
+            { required: true, message: '请输入群体名称' },
+            { validator:(rule,value,callback)=>{
+              return new Promise(async (resolve, reject) => {
+              if(value&&value.length>20){
+                await reject('群体名称不超过20个字符')
+              }else {
+                  await resolve()
+              }
+            })
+            }}
+          ]}
           />
         </ProCard>
         <ProCard
@@ -239,25 +237,17 @@ export default (props) =>{
             <Button 
                 type={falg1?"primary":"default"}  
                 onClick={() => {
-                  setBlock(true)
-                  setFalg(true)
-                  if(!falg1){
-                    setFalg1(true)
-                  }else{
-                    setFalg1(false)
-                  }
-                  if(dataSource.length<3){
+                  setFalg1(true)
+                  let falg=dataSource.some(ele=>ele.title=='会员等级')
+                  if(dataSource.length==0||!falg){
                     ref.current?.addEditRecord?.({
                     id: '1',
                     title: '会员等级',
                     });
                   }else{
                     message.error('已有该选项')
-                    setFalg1(false)
                   }
-                } 
-                    
-                }
+                }}
                 style={{margin:"20px 0 20px 0"}}
                 >
                   会员等级
@@ -266,17 +256,15 @@ export default (props) =>{
             <Button
               type={falg2?"primary":"default"}  
               onClick={() => {
-                  setBlock(true)
-                  setFalg(true)
                   setFalg2(true)
-                  if(dataSource.length<3&&!falg2){
+                  let falg=dataSource.some(ele=>ele.title=='消费次数')
+                  if(dataSource.length==0||!falg){
                     ref.current?.addEditRecord?.({
                     id: '2',
                     title: '消费次数',
                     });
                   }else{
                     message.error('已有该选项')
-                    setFalg2(false)
                   }
               }}
               >
@@ -286,21 +274,15 @@ export default (props) =>{
               type={falg3?"primary":"default"}  
               style={{margin:"20px"}}
               onClick={() => {
-                  setBlock(true)
-                  setFalg(true)
-                  if(!falg3){
-                    setFalg3(true)
-                  }else{
-                    setFalg3(false)
-                  }
-                  if(dataSource.length<3){
+                  setFalg3(true)
+                  let falg=dataSource.some(ele=>ele.title=='累计消费')
+                  if(dataSource.length==0||!falg){
                     ref.current?.addEditRecord?.({
                     id: '3',
                     title: '累计消费',
                     });
                   }else{
                     message.error('已有该选项')
-                    setFalg3(false)
                   }
               }}>
                 累计消费
@@ -318,23 +300,23 @@ export default (props) =>{
             }}
           >
             <EditableProTable
-                actionRef={ref}
-                rowKey="id"
-                options={false}
-                recordCreatorProps={false}
-                value={dataSource}
-                onChange={setDataSource}
-                editable={{
-                  editableKeys,
-                  onSave: async (rowKey, data, row) => {
-                    console.log(rowKey, data, row);
-                    await waitTime(500);
-                  },
-                  onChange: setEditableRowKeys,
-                  // actionRender: (row, config, dom) => [dom.save, dom.cancel],
-                }}
-                search={false}
-                columns={columns}
+              actionRef={ref}
+              rowKey="id"
+              options={false}
+              recordCreatorProps={false}
+              value={dataSource}
+              onChange={setDataSource}
+              maxLength={3}
+              editable={{
+                editableKeys,
+                onSave: async (rowKey, data, row) => {
+                  await waitTime(500);
+                },
+                onChange: setEditableRowKeys,
+                onlyAddOneLineAlertMessage:'不能同时新增多行'
+              }}
+              search={false}
+              columns={columns}
             />
         </ProCard>
       </ProForm>

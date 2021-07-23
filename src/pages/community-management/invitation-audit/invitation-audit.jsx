@@ -1,10 +1,11 @@
-import React, { useState, useRef } from 'react';
-import { Button,Tabs} from 'antd';
+import React, { useState, useRef,useEffect } from 'react';
+import { Button,Tabs,Image,Form} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm,{ ModalForm,ProFormRadio} from '@ant-design/pro-form';
+import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { adminList } from '@/services/community-management/dynamic-admin-list';
 import { auditDynamic } from '@/services/community-management/dynamic-audit-dynamic';
+import { checkAuditDynamicSwitch,updateAuditDynamicSwitch } from '@/services/community-management/dynamic-audit-switch';
 import AuditModel from './audit-model'
 import { history,connect } from 'umi';
 const { TabPane } = Tabs
@@ -14,6 +15,7 @@ const message = (type, module,dispatch) => {
   const ref=useRef()
   const [visible, setVisible] = useState(false);
   const [arrId,setArrId]=useState([])
+  const [check,setCheck]=useState()
   const columns= [
     {
       title: '帖子ID',
@@ -48,6 +50,9 @@ const message = (type, module,dispatch) => {
       dataIndex: 'images',
       valueType: 'image',
       hideInSearch:true,
+      render:(_,data)=>{
+        return <Image src={data.images[0]} alt="" width='50px' height='50px' />
+      }
     },
     {
       title: '发布时间',
@@ -120,6 +125,20 @@ const message = (type, module,dispatch) => {
  const onIpute=(res)=>{
       setArrId(res.selectedRowKeys)
   }
+ useEffect(()=>{
+  if(type==0){
+    checkAuditDynamicSwitch({}).then(res=>{
+      setCheck(res.data)
+    })
+  }
+ },[]) 
+ const auditSwitch=(off)=>{
+  setCheck(off)
+   console.log('off',off)
+   updateAuditDynamicSwitch({}).then(res=>{
+     console.log('update',res)
+   })
+ }
   return (
       <ProTable
         actionRef={ref}
@@ -136,6 +155,18 @@ const message = (type, module,dispatch) => {
           defaultCollapsed: false,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
+           <p> 
+             {
+               type==0?
+               <Form.Item
+                label="审核功能开关"
+                style={{marginTop:'45px'}}
+              >
+                <ProFormSwitch  fieldProps={{ checked:check, onChange:(bol)=>{auditSwitch(bol) }}}/>
+              </Form.Item>
+              :null
+             }
+           </p>,
             <AuditModel 
               state={1}  
               label={'全部通过'}  

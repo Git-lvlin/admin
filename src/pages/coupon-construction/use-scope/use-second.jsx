@@ -144,7 +144,6 @@ const useSecond=(props)=>{
     
     // 删除商品
     const  delGoods=val=>{
-        console.log('val',val)
         console.log('spuIdsArr',UseScopeList.UseScopeObje.spuIdsArr)
         const arr = UseScopeList.UseScopeObje.spuIds.split(',')
         dispatch({
@@ -201,7 +200,7 @@ const useSecond=(props)=>{
                 dispatch({
                     type:'UseScopeList/fetchLookUnitArr',
                     payload:{
-                        unitArr:DetailList.data&&[DetailList.data?.classInfo]
+                        unitArr:DetailList.data&&DetailList.data?.classInfo.length==0?[]:[DetailList.data?.classInfo]
                     }
                 })
             }
@@ -248,9 +247,8 @@ const useSecond=(props)=>{
             <ProFormRadio.Group
                 name="goodsType"
                 label={<FormattedMessage id="formandbasic-form.commodity"/>}
-                // rules={[{ required: true, message: '请选择商品范围' }]}
+                rules={[{ required: true, message: '请选择商品范围' }]}
                 fieldProps={{
-                value: (parseInt(id)==id )&&DetailList.data?.goodsType||position,
                 onChange: (e) => setPosition(e.target.value),
                 }}
                 options={[
@@ -270,7 +268,7 @@ const useSecond=(props)=>{
             />
             {
                 position==2||(parseInt(id)==id )&&DetailList.data?.goodsType==2?
-                    <>
+                    <div style={{display:position==1||position==3?'none':'block'}}>
                         <Button type="primary" className={styles.popupBtn} onClick={showModal}>
                             选择商品
                         </Button>
@@ -305,12 +303,12 @@ const useSecond=(props)=>{
                             dataSource={UseScopeList.UseScopeObje.spuIdsArr}
                             style={{display:isModalVisible?'none':'block'}}
                         />
-                    </>
+                    </div>
                 :null
             }
             {
                 position==3||(parseInt(id)==id)&&DetailList.data?.goodsType==3?
-                    <>
+                    <div style={{display:position==1||position==2?'none':'block'}}>
                         <ModalForm
                             title="选择品类"
                             trigger={<Button className={styles.popupBtn} type="primary" onClick={onCate}>选择品类</Button>}
@@ -359,9 +357,8 @@ const useSecond=(props)=>{
                             toolBarRender={false}
                             columns={columns2}
                             dataSource={UseScopeList.UseScopeObje.unitArr}
-                            // style={{display:flag?'block':'none'}}
                         />
-                        </>
+                        </div>
                 :null
             }
         </Form.Item>

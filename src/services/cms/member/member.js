@@ -422,6 +422,7 @@ export const SetHomePageGoodsDel = (params = {}, options = {}) => {
     data: params,
     ...options
   });
+
 }
 export const SetHomePageGoodsDelSort = (params = {}, options = {}) => {
   return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetHomePageGoods?id=${params.id}&sort=${params.sort}&opt=${params.opt}`, {
@@ -973,7 +974,8 @@ export const savePriceList = async (params = {}, options = {}) => {
   if (status) {
     data.status = Number(status);
   }
-  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetHotGoodsList?isPage=true', {
+  // const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetHotGoodsList?isPage=true', {
+  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetHotGoodsListAdmin?isPage=true', {
     method: 'GET',
     data,
     ...options

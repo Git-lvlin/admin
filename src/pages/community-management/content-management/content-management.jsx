@@ -10,7 +10,7 @@ import { dynamicDelete } from '@/services/community-management/dynamic-delete';
 import CircleSelect from '@/components/circle-select'
 import DeleteModal from '@/components/DeleteModal'
 import { history } from 'umi';
-import { Button } from 'antd';
+import { Button,Image } from 'antd';
 
 export default props => {
     const ref=useRef()
@@ -28,6 +28,22 @@ export default props => {
             dataIndex: 'dynamicId',
             hideInTable:true
         },
+        {
+            title: '内容',
+            dataIndex: 'content',
+            valueType: 'text',
+            hideInSearch:true,
+            ellipsis:true
+          },
+          {
+            title: '图片',
+            dataIndex: 'images',
+            valueType: 'image',
+            hideInSearch:true,
+            render:(_,data)=>{
+              return <Image src={data.images[0]} alt="" width='50px' height='50px' />
+            }
+          },
         {
             title: '发布时间',
             key: 'dateRange',
@@ -49,6 +65,7 @@ export default props => {
                 1: '禁评',
                 2: '禁转',
                 3: '删除',
+                5: '正常'
             },
             hideInTable: true,
         },

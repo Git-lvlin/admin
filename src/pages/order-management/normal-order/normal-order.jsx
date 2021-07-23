@@ -54,6 +54,7 @@ const TableList = () => {
       orderStatus: orderType === 0 ? '' : orderType,
       startCreateTime: time?.[0]?.format('YYYY-MM-DD'),
       endCreateTime: time?.[1]?.format('YYYY-MM-DD'),
+      orderType: 2,
       ...rest,
     })
       .then(res => {
@@ -148,7 +149,7 @@ const TableList = () => {
             }
           }}
         /> */}
-        <ProFormSelect
+        {/* <ProFormSelect
           name="orderType"
           label="订单类型"
           options={[{ value: 1, label: '秒约' }, { value: 2, label: '单约' }, { value: 3, label: '团约' }]}
@@ -158,7 +159,7 @@ const TableList = () => {
               width: 180,
             }
           }}
-        />
+        /> */}
         <ProFormDateRangePicker
           name="time"
           label="下单时间"
@@ -210,7 +211,7 @@ const TableList = () => {
           <div className={styles.list_header}>
             <div>商品信息</div>
             <div>金额</div>
-            <div>实收</div>
+            {/* <div>实收</div> */}
             <div>订单状态</div>
             <div>订单类型</div>
             <div>操作</div>
@@ -224,7 +225,7 @@ const TableList = () => {
         {
           data.map(item => (
             <div className={styles.list} key={item.id}>
-              <div className={styles.store_name}>所属商家：{item.storeName}</div>
+              <div className={styles.store_name}>供应商ID：{item.supplierId}</div>
               <div className={styles.second}>
                 <Space size="large">
                   <span>下单时间：{item.createTime.replace('T', ' ')}</span>
@@ -252,15 +253,15 @@ const TableList = () => {
                 </div>
                 <div>
                   <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
-                    <Descriptions.Item label="商品总金额">{amountTransform(item.totalAmount, '/')}元</Descriptions.Item>
+                    <Descriptions.Item label="商品总金额">{amountTransform(item.goodsTotalAmount, '/')}元</Descriptions.Item>
                     <Descriptions.Item label="运费">+{amountTransform(item.shippingFeeAmount, '/')}元</Descriptions.Item>
                     <Descriptions.Item label="优惠券">-{amountTransform(item.couponAmount, '/')}元</Descriptions.Item>
                     <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>
                   </Descriptions>
                 </div>
-                <div style={{ textAlign: 'center' }}>
+                {/* <div style={{ textAlign: 'center' }}>
                   {item.status === 5 ? 0 : amountTransform(item.incomeAmount, '/')}元
-                </div>
+                </div> */}
                 <div style={{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}</div>
                 <div style={{ textAlign: 'center' }}><Tag style={{ borderRadius: 10 }} color="#f59a23">{{ 1: '秒约', 2: '单约', 3: '团约' }[1]}订单</Tag></div>
                 <div style={{ textAlign: 'center' }}>
