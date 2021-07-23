@@ -293,6 +293,7 @@ export default function EditTable({ onSelect }) {
               totalPrice: (skuData.price > 0 && item.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(item.minNum) : 0
             }
             setSelectedRowKeys([data.skuId])
+            onSelect(data)
             return data
           }
           return item

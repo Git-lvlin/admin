@@ -159,7 +159,7 @@ export default (props) => {
               obj.salePrice = amountTransform(item.salePrice)
               obj.salePriceProfitLoss = amountTransform(item.salePriceProfitLoss);
               obj.salePriceFloat = amountTransform(item.salePriceFloat, '/');
-              obj.retailSupplyPrice = item.retailSupplyPrice;
+              obj.retailSupplyPrice = amountTransform(item.retailSupplyPrice);
             }
             return {
               marketPrice: amountTransform(item.marketPrice),
