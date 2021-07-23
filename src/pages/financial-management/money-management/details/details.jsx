@@ -29,9 +29,9 @@ const Details = () => {
 
   const card = () => {
     if(query.accountType==='supplier'){
-      return '供应商银行账户'
+      return '供应商家银行账户'
     } else if(query.accountType==='store'){
-      return '会员店银行账户'
+      return '社区店银行账户'
     }else if(query.accountType==='agentStore'){
       return '代发店银行账户'
     }else{

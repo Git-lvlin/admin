@@ -30,7 +30,7 @@ const SubTable = (props) => {
       dataIndex: 'goodsName',
     },
     {
-      title: '供应商ID',
+      title: '供应商家ID',
       dataIndex: 'supplierId',
     },
     // {
@@ -168,7 +168,7 @@ const TableList = () => {
     //   hideInTable: true,
     // },
     {
-      title: '可购买后销售的会员店等级',
+      title: '可购买后销售的社区店等级',
       dataIndex: 'storeLevel',
       valueType: 'text',
       hideInSearch: true,

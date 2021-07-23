@@ -4,6 +4,7 @@ import { defineConfig } from 'umi';
 export default defineConfig({
   define: {
     API_URL: 'https://adminapi-dev.yeahgo.com',
+    MARKET_URL: 'http://publicmobile-dev.yeahgo.com',
   },
   plugins: [
     // https://github.com/zthxxx/react-dev-inspector

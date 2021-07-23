@@ -77,7 +77,7 @@ const UserDetail = () => {
               HG8J2W &nbsp;
             </Descriptions.Item>
             <Descriptions.Item label="性别">{info?.gender === 1 ? '男' : '女'}</Descriptions.Item>
-            <Descriptions.Item label="会员店主">
+            <Descriptions.Item label="社区店主">
               {info?.userType === 1 ? '是' : '否'}
             </Descriptions.Item>
             <Descriptions.Item label="注册时间">
