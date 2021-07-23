@@ -18,7 +18,7 @@ const LowGoods = () => {
         actionRef.current.reset()
         setFlag(false)
         setLoading(false)
-      }, 5000)
+      }, 0)
     }
   }, [flag])
 
@@ -34,7 +34,7 @@ const LowGoods = () => {
           message.success(`删除成功`);
           actionRef.current.reset();
           setLoading(false)
-        }, 5000)
+        }, 0)
       } else {
         setLoading(false)
       }
