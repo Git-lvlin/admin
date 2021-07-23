@@ -219,7 +219,7 @@ const IntensiveActivityCreate = () => {
                 }
               }}
             />
-            <ProFormCheckbox.Group value={'1'} label="可购买的会员店等级" disabled options={[{ label: '全部', value: 1 }]} />
+            <ProFormCheckbox.Group value={'1'} label="可购买的社区店等级" disabled options={[{ label: '全部', value: 1 }]} />
             <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} />
             {/* <ProFormDigit name="canRecoverPayTimes" label="可恢复支付次数" min={0} max={3} placeholder="输入范围0-3" rules={[{ required: true, message: '请输入可恢复支付次数' }]} /> */}
             {/* <ProFormDigit name="recoverPayTimeout" label="每次恢复可支付时长" min={0} max={24} placeholder="输入范围0-24小时" rules={[{ required: true, message: '请输入每次恢复可支付时长' }]} /> */}

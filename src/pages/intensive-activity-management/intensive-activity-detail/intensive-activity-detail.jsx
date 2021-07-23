@@ -116,7 +116,7 @@ const Detail = () => {
               <Descriptions.Item label="采购单下单截止时间">
                 {detailData?.wholesale?.endTimeAdvancePayment}
               </Descriptions.Item>
-              <Descriptions.Item label="可购买的会员店等级">{detailData?.wholesale?.storeLevel}</Descriptions.Item>
+              <Descriptions.Item label="可购买的社区店等级">{detailData?.wholesale?.storeLevel}</Descriptions.Item>
               <Descriptions.Item label="可购买的会员用户">
                 {detailData?.wholesale?.memberLevel}
               </Descriptions.Item>
