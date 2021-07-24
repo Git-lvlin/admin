@@ -138,7 +138,6 @@ export default props => {
  },[])
 //导出数据
 const exportExcel = (searchConfig) => {
-  console.log('libraryId',libraryId)
   couponCcodebase({id:libraryId,...searchConfig.form.getFieldsValue()}).then(res => {
     if (res.code === 0) {
       const data = res.data.memberCouponList.records.map(item => {
