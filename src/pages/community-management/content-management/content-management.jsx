@@ -21,7 +21,8 @@ export default props => {
             render:(text, record, _, action)=>[
                 <a onClick={()=>history.push('/community-management/content-management/dynamic-get-dynamic-detail?id='+record.id)}>{record.id}</a>
             ],
-            hideInSearch:true
+            hideInSearch:true,
+            ellipsis:true
         },
         {
             title: '帖子ID',
@@ -124,6 +125,7 @@ export default props => {
         },
         {
             title: '操作',
+            width: 250,
             render: (text, record, _, action) => [
                 <Button onClick={()=>{
                     if(record.banComment){

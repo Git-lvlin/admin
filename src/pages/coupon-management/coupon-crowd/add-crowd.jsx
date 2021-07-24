@@ -9,6 +9,7 @@ import ProCard from '@ant-design/pro-card';
 import { couponCrowdSub,couponCrowdDetail,couponCrowdEdit } from '@/services/crowd-management/coupon-crowd';
 import { history} from 'umi';
 import CrowdModel from './crowd-model'
+import styles from './style.less'
 
 
 
@@ -26,13 +27,6 @@ export default (props) =>{
   const Callback=val=>{
     setLevelId(val)
   }
-  const waitTime = (time) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, time);
-    });
-  };
   useEffect(()=>{
     if(id){
       couponCrowdDetail({id:id}).then(res=>{
@@ -126,7 +120,7 @@ export default (props) =>{
         if(_.entry.title=='会员等级'){
               if(levelId){
                 return <>
-                  <p style={{display:'inline-block'}}>{
+                  <p className={style.grade}>{
                     levelId?.userLevel.map(ele=>{
                       return <span>V{ele}等级、</span>
                       })
@@ -139,15 +133,15 @@ export default (props) =>{
               }
         }else if(_.entry.title=='消费次数'){
         return <ProFormFieldSet>
-                  <Input style={{width:'100px'}} suffix="次" /> 
+                  <Input className={styles.nums} suffix="次" /> 
                   至 
-                  <Input style={{width:'100px'}} suffix="次" />
+                  <Input className={styles.nums} suffix="次" />
                 </ProFormFieldSet>;
         }
         return <ProFormFieldSet> 
-                  <Input name='min' style={{width:'100px'}} suffix="元" />
+                  <Input name='min' className={styles.nums} suffix="元" />
                   至 
-                  <Input name='max' style={{width:'100px'}} suffix="元" />
+                  <Input name='max' className={styles.nums} suffix="元" />
                 </ProFormFieldSet>;
       },
       render: (_, row) =>{
@@ -214,10 +208,7 @@ export default (props) =>{
           bordered
           headerBordered
           collapsible
-          style={{
-          minWidth: 800,
-          maxWidth: '100%',
-          }}
+          className={styles.sets}
         >
         <ProFormText
           name="name"
@@ -243,12 +234,9 @@ export default (props) =>{
             bordered
             headerBordered
             collapsible
-            style={{
-                minWidth: 800,
-                maxWidth: '100%',
-            }}
+            className={styles.sets}
             >
-            <h3 style={{background:'#fafafa',padding:'10px',color:'#ccc'}}>会员基本信息</h3>
+            <h3 className={styles.memberMsg}>会员基本信息</h3>
             <Button 
                 type={falg1?"primary":"default"}  
                 onClick={() => {
@@ -267,7 +255,7 @@ export default (props) =>{
                 >
                   会员等级
             </Button>
-            <h3 style={{background:'#fafafa',padding:'10px',color:'#ccc'}}>会员消费情况</h3>
+            <h3 className={styles.memberMsg}>会员消费情况</h3>
             <Button
               type={falg2?"primary":"default"}  
               onClick={() => {
@@ -308,11 +296,8 @@ export default (props) =>{
             bordered
             headerBordered
             collapsible
-            style={{
-              minWidth: 800,
-              maxWidth: '100%',
-              marginTop:'20px'
-            }}
+            className={styles.sets}
+            style={{marginTop:'20px'}}
           >
             <EditableProTable
               actionRef={ref}
@@ -324,9 +309,6 @@ export default (props) =>{
               maxLength={3}
               editable={{
                 editableKeys,
-                // onSave: async (rowKey, data, row) => {
-                //   await waitTime(500);
-                // },
                 onChange: setEditableRowKeys,
                 onlyAddOneLineAlertMessage:'不能同时新增多行'
               }}
