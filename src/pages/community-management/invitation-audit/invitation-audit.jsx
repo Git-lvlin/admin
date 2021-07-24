@@ -159,7 +159,7 @@ const message = (type, module,dispatch) => {
                type==0?
                <Form.Item
                 label="审核功能开关"
-                style={{marginTop:'20px'}}
+                className='switchTop'
               >
                 <Switch  checked={check} onChange={(bol)=>{auditSwitch(bol) }}/>
               </Form.Item>
@@ -170,7 +170,7 @@ const message = (type, module,dispatch) => {
           ],
         }}
         toolBarRender={()=>[
-          <Space style={{marginBottom:'10px'}}>
+          <Space>
           <AuditModel 
             state={1}  
             label={'全部通过'}  
