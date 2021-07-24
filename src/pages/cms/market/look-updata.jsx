@@ -102,7 +102,7 @@ export default (props) => {
         />
 
       </ProForm.Group>
-      <ProForm.Group>例子：http://publicmobile-uat.yeahgo.com/web/market?spuId=2441&skuId=3285</ProForm.Group>
+      <ProForm.Group>例子：https://publicmobile-uat.yeahgo.com/web/market?spuId=2441&skuId=3285</ProForm.Group>
       <ProForm.Group>
         <ProFormText
             width="sm"
