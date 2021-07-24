@@ -26,7 +26,6 @@ export default props=>{
           },
           }}
           onFinish={async (values) => {
-          console.log('values',values);
           couponEnd({id:endid}).then(res=>{
             if(res.code==0){
               boxref.current.reload();

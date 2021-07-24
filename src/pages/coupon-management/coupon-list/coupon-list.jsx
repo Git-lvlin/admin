@@ -9,7 +9,7 @@ import { couponDelSub,couponStatusSub } from '@/services/coupon-management/coupo
 import DeleteModal from '@/components/DeleteModal'
 import EndModel from './end-model'
 import TurnDownModel from './turn-down-model'
-
+import styles from './style.less'
 import { history,connect } from 'umi';
 const { TabPane } = Tabs
 
@@ -17,13 +17,6 @@ const { TabPane } = Tabs
 const message = (type, module,dispatch) => {
   const ref=useRef()
   const columns= [
-    // {
-    //   title: 'id',
-    //   dataIndex: 'id',
-    //   hideInSearch:true,
-    //   // hideInTable:true,
-    //   valueType:'indexBorder'
-    // },
     {
       title: '优惠券名称',
       dataIndex: 'couponName',
@@ -130,7 +123,6 @@ const message = (type, module,dispatch) => {
     {
       title: '操作',
       key: 'option',
-      width: 120,
       valueType: 'option',
       render: (_, data) => [
       <a key="a" onClick={()=>{ Examine(data.id) }}>
@@ -293,7 +285,7 @@ const TableList= (props) =>{
         trigger={ <Button
           key="primary"
           type="primary"
-          style={{marginBottom:'20px'}}
+          className={styles.addCouponBtn}
           onClick={() =>setVisible(true)}
         >
           新建优惠券
@@ -332,10 +324,7 @@ const TableList= (props) =>{
       <Tabs
         centered
         defaultActiveKey="1"
-        style={{
-          background: '#fff',
-          padding: 25
-        }}
+        className={styles.cuoponTabs}
       >
         <TabPane tab="待提交" key="1">
           {message(1, 1,dispatch)}
