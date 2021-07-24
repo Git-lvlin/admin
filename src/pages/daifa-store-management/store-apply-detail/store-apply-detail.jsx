@@ -153,9 +153,6 @@ const ListApplyDetail = props => {
               treeData?
               <Tree
               checkable
-              style={{
-                width: '100%',
-              }}
               treeData={treeData}
               multiple
               height={200}

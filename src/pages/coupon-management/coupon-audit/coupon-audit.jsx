@@ -3,7 +3,7 @@ import { Button,Tabs} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { couponList } from '@/services/coupon-management/coupon-list';
-
+import styles from './style.less'
 import { history} from 'umi';
 const { TabPane } = Tabs
 
@@ -146,10 +146,7 @@ export default (props) =>{
       <Tabs
         centered
         defaultActiveKey="1"
-        style={{
-          background: '#fff',
-          padding: 25
-        }}
+        className={styles.auditTabs}
       >
         <TabPane tab="待审核" key="1">
           {message(3, 1)}

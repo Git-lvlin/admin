@@ -3,6 +3,7 @@ import { getDynamicDetail } from '@/services/community-management/dynamic-get-dy
 import { Divider, Form, Spin,Button,Image } from 'antd';
 import moment from 'moment';
 import { history } from 'umi';
+import styles from './style.less'
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -36,11 +37,11 @@ export default props => {
       <Spin
         spinning={loading}
       >
-         <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">帖子详情</Divider>
+         <Divider className={styles.divider} orientation="left">帖子详情</Divider>
         <Form
           form={form}
           {...formItemLayout}
-          style={{ backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
+          className={styles.detailform}
         >
           <Form.Item
             label="内容ID"
@@ -64,10 +65,10 @@ export default props => {
               label="内容"
             >
               {detailData.content}
-              <div style={{display:'flex',width:'300px',flexWrap:'wrap'}}>
+              <div className={styles.content}>
                   {
                     detailData.images?.map(ele=>(
-                      <Image style={{margin:'10px'}} width={100} height={100} src={ele} alt="" />
+                      <Image className={styles.detailimg} width={100} height={100} src={ele} alt="" />
                     ))
                   }
               </div>
@@ -97,9 +98,9 @@ export default props => {
           :null
          }
           <Form.Item
-            style={{marginLeft:'90px'}}
+            className={styles.formbutton}
           >
-            <Button style={{margin:'20px'}} type="primary" onClick={()=>history.goBack()}>返回</Button>
+            <Button className={styles.button} type="primary" onClick={()=>history.goBack()}>返回</Button>
           </Form.Item>
           
         </Form>
