@@ -41,7 +41,7 @@ export default props => {
             dataIndex: 'id',
             hideInSearch:true,
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/circle-management/circleinterior-management/detail?id='+record.id+'&byid='+id+'&name='+name)}>{record.id}</a>
+                <a onClick={()=>history.push('/community-management/invitation-detail?id='+record.id+'&byid='+id+'&name='+name)}>{record.id}</a>
             ],
         },
         {

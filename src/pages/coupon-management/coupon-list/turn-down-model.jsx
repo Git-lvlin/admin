@@ -1,13 +1,11 @@
 import React, { useState} from 'react';
-import ProForm,{ ModalForm} from '@ant-design/pro-form';
+import { ModalForm} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
-import { Input,Form,message } from 'antd';
 import { couponVerifyList } from '@/services/coupon-management/coupon-audit';
 
 export default props=>{
     const {id}=props
     const [visible, setVisible] = useState(false);
-    //增发
     const Additional=()=>{
         setVisible(true)
     }
@@ -40,7 +38,7 @@ export default props=>{
      
     return (
         <ModalForm
-            title="增发优惠券"
+            title="审核详情"
             key={id}
             onVisibleChange={setVisible}
             visible={visible}
@@ -57,16 +55,16 @@ export default props=>{
             }}
         >
           <ProTable
-                  rowKey="id"
-                  options={false}
-                  params={{
-                   id:id
-                  }}
-                  request={couponVerifyList}
-                  search={false}
-                  columns={columns3}
-                />
-    </ModalForm>
+            rowKey="id"
+            options={false}
+            params={{
+              id:id
+            }}
+            request={couponVerifyList}
+            search={false}
+            columns={columns3}
+          />
+      </ModalForm>
     )
 }
 
