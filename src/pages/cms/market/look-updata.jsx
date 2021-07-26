@@ -135,7 +135,7 @@ export default (props) => {
       {selectType&&<SelectProductModal
         visible={selectType}
         setVisible={setSelectType}
-        callback={(v) => { 
+        callback={(v) => {
           if (v.length > 1) {
             message.success('只能添加单个商品!');
             return
