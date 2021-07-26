@@ -103,6 +103,7 @@ export default (props) => {
         salePriceProfitLoss: salePriceProfitLosss,
         salePriceFloat: salePriceFloats,
         salePrice: salePrices,
+        wholesaleSupplyPrice: wholesaleSupplyPrices,
         ...rests
       } = item;
       const obj = {};
