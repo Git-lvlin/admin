@@ -1,4 +1,4 @@
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { DownOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
 import React from 'react';
 import { history, connect } from 'umi';
@@ -56,6 +56,7 @@ class AvatarDropdown extends React.Component {
         <span className={`${styles.action} ${styles.account}`}>
           <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
           <span className={`${styles.name} anticon`}>{currentUser.name}</span>
+          <DownOutlined style={{ marginLeft: 5 }} />
         </span>
       </HeaderDropdown>
     ) : (
