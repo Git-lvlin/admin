@@ -56,11 +56,6 @@ const OrderPayDetailManagement = () =>{
       }
     },
     {
-      title: '支付账户',
-      dataIndex: 'payAccount',
-      
-    },
-    {
       title: '收方会员ID',
       dataIndex: 'sellerSn',
       
