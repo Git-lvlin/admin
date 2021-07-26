@@ -116,7 +116,7 @@ export default (props) => {
       }
 
       if (detailData?.goods?.goodsSaleType !== 2) {
-        obj.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrices, '/')
+        obj.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrices)
       }
 
       specData[code] = {
