@@ -73,7 +73,6 @@ export default (props) => {
       wholesaleTaxRate,
       wholesaleSupplyPrice,
       salePriceFloat,
-      goodsSaleType,
       ...rest } = values;
     const { specValues1, specValues2 } = form.getFieldsValue(['specValues1', 'specValues2']);
     const specName = {};
@@ -104,22 +103,28 @@ export default (props) => {
         salePriceProfitLoss: salePriceProfitLosss,
         salePriceFloat: salePriceFloats,
         salePrice: salePrices,
+        wholesaleSupplyPrice: wholesaleSupplyPrices,
         ...rests
       } = item;
       const obj = {};
 
-      if (goodsSaleType === 0) {
+      if (detailData?.goods?.goodsSaleType !== 1) {
         obj.retailSupplyPrice = amountTransform(retailSupplyPrices)
         obj.salePriceProfitLoss = amountTransform(salePriceProfitLosss)
         obj.salePrice = amountTransform(salePrices)
         obj.salePriceFloat = amountTransform(salePriceFloats, '/')
       }
+
+      if (detailData?.goods?.goodsSaleType !== 2) {
+        obj.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrices)
+      }
+
       specData[code] = {
         ...rests,
         specValue,
         imageUrl: item?.imageUrl,
-        wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice),
         marketPrice: amountTransform(item.marketPrice),
+        ...obj,
       }
 
       // if (item.retailSupplyPrice > item.salePrice || item.retailSupplyPrice > item.marketPrice) {
@@ -140,7 +145,7 @@ export default (props) => {
         gcId2: gcId[1],
         wholesaleFreight: amountTransform(wholesaleFreight),
         wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
-        goodsSaleType,
+        goodsSaleType: detailData?.goods?.goodsSaleType,
       },
       primaryImages: urlsTransform(primaryImages),
       detailImages: urlsTransform(detailImages),
@@ -158,16 +163,19 @@ export default (props) => {
       obj.specValues = specValues;
       obj.specData = specData;
     } else {
-      if (goodsSaleType === 0) {
+      if (detailData?.goods?.goodsSaleType !== 1) {
         obj.goods.retailSupplyPrice = amountTransform(retailSupplyPrice);
         obj.goods.salePriceProfitLoss = amountTransform(salePriceProfitLoss);
         obj.goods.salePrice = amountTransform(salePrice);
         obj.goods.salePriceFloat = amountTransform(salePriceFloat, '/');
       }
-      obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
-      
+
+      if (detailData?.goods?.goodsSaleType !== 2) {
+        obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
+      }
+
       obj.goods.marketPrice = amountTransform(marketPrice);
-      
+
       // if (retailSupplyPrice > salePrice || retailSupplyPrice > marketPrice) {
       //   message.error('秒约价和市场价不能小于供货价');
       //   reject();
@@ -455,13 +463,13 @@ export default (props) => {
         fieldProps={{
           maxLength: 50,
         }}
-        // disabled
+      // disabled
       />
-      <ProFormText
+      {detailData?.goods?.goodsSaleType !== 2 && <ProFormText
         name="wholesaleFreight"
         label="平均运费(元)"
         disabled
-      />
+      />}
       <ProFormText
         name="wholesaleTaxRate"
         label="商品开票税率(%)"
@@ -538,6 +546,10 @@ export default (props) => {
           {
             label: '仅批发',
             value: 1,
+          },
+          {
+            label: '仅零售',
+            value: 2,
           },
         ]}
         disabled
@@ -673,29 +685,82 @@ export default (props) => {
                 label="货号"
                 placeholder="请输入货号"
               />
-              <ProFormText
-                name="wholesaleSupplyPrice"
-                label="批发供货价(元)"
-                placeholder="请输入批发供货价"
-                rules={[{ required: true, message: '请输入批发供货价' }]}
-                disabled
-              />
-              <ProFormText
-                name="wholesaleMinNum"
-                label="最低批发量"
-                placeholder="请输入最低批发量"
-                rules={[{ required: true, message: '请输入最低批发量' }]}
-                disabled
-              />
               {
-                detailData?.goods?.goodsSaleType === 0 &&
-                <ProFormText
-                  name="retailSupplyPrice"
-                  label="零售供货价(元)"
-                  placeholder="请输入零售供货价"
-                  rules={[{ required: true, message: '请输入零售供货价' }]}
-                  disabled
-                />
+                detailData?.goods?.goodsSaleType !== 2 &&
+                <>
+                  <ProFormText
+                    name="wholesaleSupplyPrice"
+                    label="批发供货价(元)"
+                    placeholder="请输入批发供货价"
+                    rules={[{ required: true, message: '请输入批发供货价' }]}
+                    disabled
+                  />
+                  <ProFormText
+                    name="wholesaleMinNum"
+                    label="最低批发量"
+                    placeholder="请输入最低批发量"
+                    rules={[{ required: true, message: '请输入最低批发量' }]}
+                    disabled
+                  />
+                </>
+              }
+              {
+                detailData?.goods?.goodsSaleType !== 1 &&
+                <>
+                  <ProFormText
+                    name="retailSupplyPrice"
+                    label="零售供货价(元)"
+                    placeholder="请输入零售供货价"
+                    rules={[{ required: true, message: '请输入零售供货价' }]}
+                    disabled
+                  />
+                  <ProFormText
+                    name="salePrice"
+                    label="秒约价"
+                    placeholder="请输入秒约价"
+                    validateFirst
+                    rules={[
+                      { required: true, message: '请输入秒约价' },
+                      () => ({
+                        validator(_, value) {
+                          if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                            return Promise.reject(new Error('请输入大于零的数字'));
+                          }
+                          return Promise.resolve();
+                        },
+                      })
+                    ]}
+                    disabled={detailData?.settleType === 1}
+                    fieldProps={{
+                      onChange: salePriceChange
+                    }}
+                  />
+                  <ProFormText
+                    name="salePriceFloat"
+                    label="秒约价上浮比例"
+                    placeholder="秒约价上浮比例"
+                    validateFirst
+                    rules={[
+                      { required: true, message: '请输入秒约价上浮比例' },
+                      () => ({
+                        validator(_, value) {
+                          if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                            return Promise.reject(new Error('请输入大于零的数字'));
+                          }
+                          return Promise.resolve();
+                        },
+                      })
+                    ]}
+                    fieldProps={{
+                      onChange: salePriceFloatChange
+                    }}
+                  />
+                  <Form.Item
+                    label="秒约价实际盈亏"
+                  >
+                    {salePriceProfitLoss || amountTransform(detailData?.goods?.salePriceProfitLoss, '/')}
+                  </Form.Item>
+                </>
               }
 
               {/* <ProFormText
@@ -704,59 +769,6 @@ export default (props) => {
                 placeholder="请输入建议零售价"
                 rules={[{ required: true, message: '请输入建议零售价' }]}
               /> */}
-              <ProFormDependency name={['settleType', 'goodsSaleType']}>
-                {({ settleType, goodsSaleType }) => (
-                  <>
-                    {goodsSaleType === 0 && <ProFormText
-                      name="salePrice"
-                      label="秒约价"
-                      placeholder="请输入秒约价"
-                      validateFirst
-                      rules={[
-                        { required: true, message: '请输入秒约价' },
-                        () => ({
-                          validator(_, value) {
-                            if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                              return Promise.reject(new Error('请输入大于零的数字'));
-                            }
-                            return Promise.resolve();
-                          },
-                        })
-                      ]}
-                      disabled={settleType === 1}
-                      fieldProps={{
-                        onChange: salePriceChange
-                      }}
-                    />}
-
-                  </>
-                )}
-              </ProFormDependency>
-              {detailData?.goods?.goodsSaleType === 0 && <ProFormText
-                name="salePriceFloat"
-                label="秒约价上浮比例"
-                placeholder="秒约价上浮比例"
-                validateFirst
-                rules={[
-                  { required: true, message: '请输入秒约价上浮比例' },
-                  () => ({
-                    validator(_, value) {
-                      if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                        return Promise.reject(new Error('请输入大于零的数字'));
-                      }
-                      return Promise.resolve();
-                    },
-                  })
-                ]}
-                fieldProps={{
-                  onChange: salePriceFloatChange
-                }}
-              />}
-              {detailData?.goods?.goodsSaleType === 0 && <Form.Item
-                label="秒约价实际盈亏"
-              >
-                {salePriceProfitLoss || amountTransform(detailData?.goods?.salePriceProfitLoss, '/')}
-              </Form.Item>}
               <ProFormText
                 name="marketPrice"
                 label="市场价"
