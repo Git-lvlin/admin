@@ -47,9 +47,16 @@ export const spaceEdit = (params = {}, options = {}) => {
   });
 }
 
-
 export const bannerAdd = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/banner/saveOrUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const posterUpdata = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/poster/saveOrUpdate', {
     method: 'POST',
     data: params,
     ...options
@@ -456,6 +463,15 @@ export const homeBannerDel = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const posterDel = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/poster/delById', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const marketDel = (params = {}, options = {}) => {
   return request('/auth/java-admin/activitySubject/delById', {
     method: 'POST',
@@ -670,6 +686,27 @@ export const homeBannerList = async (params = {}, options = {}) => {
     data.status = Number(status);
   }
   const res = await request('/auth/java-admin/cms/banner/page', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const posterList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/cms/poster/findPage', {
     method: 'POST',
     data,
     ...options

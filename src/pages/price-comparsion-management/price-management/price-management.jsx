@@ -236,6 +236,12 @@ const PriceManagement = () => {
     {
       title: 'skuId',
       dataIndex: 'goodsSkuId',
+      search: false,
+    },
+    {
+      title: 'skuId',
+      dataIndex: 'skuId',
+      hideInTable: true
     },
     {
       title: '商品名称',
