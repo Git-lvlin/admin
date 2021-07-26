@@ -46,6 +46,15 @@ const PriceManagement = () => {
     })
   }
 
+  const formControlOne = (id) => {
+    delContestGoods({id: id.toString()}).then((res) => {
+      if (res.code === 0) {
+        message.success(`成功`);
+        actionRef.current.reset();
+      }
+    })
+  }
+
   const onSearch = (value, t, {id, goodsSpuId, goodsSkuId}) => {
     if (!value) {
       // setLoadingIndex(-1)
@@ -227,6 +236,12 @@ const PriceManagement = () => {
     {
       title: 'skuId',
       dataIndex: 'goodsSkuId',
+      search: false,
+    },
+    {
+      title: 'skuId',
+      dataIndex: 'skuId',
+      hideInTable: true
     },
     {
       title: '商品名称',
@@ -266,7 +281,7 @@ const PriceManagement = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _)=><a key="d" onClick={() => {formControl(record.id)}}>删除</a>
+      render: (text, record, _)=><a key="d" onClick={() => {formControlOne(record.id)}}>删除</a>
     },
   ]
 
