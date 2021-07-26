@@ -8,6 +8,8 @@ import { auditDynamic } from '@/services/community-management/dynamic-audit-dyna
 import { checkAuditDynamicSwitch,updateAuditDynamicSwitch } from '@/services/community-management/dynamic-audit-switch';
 import AuditModel from './audit-model'
 import { history,connect } from 'umi';
+import { Space,Switch } from 'antd';
+import './style.less'
 const { TabPane } = Tabs
 
 
@@ -29,7 +31,7 @@ const message = (type, module,dispatch) => {
       valueType: 'text',
       hideInSearch:true,
       render:(text, record, _, action)=>[
-        <a onClick={()=>history.push('/community-management/content-management/dynamic-get-dynamic-detail?id='+record.id)}>{record.id}</a>
+        <a onClick={()=>history.push('/community-management/invitation-detail?id='+record.id)}>{record.id}</a>
     ],
     },
     {
@@ -94,7 +96,6 @@ const message = (type, module,dispatch) => {
     {
       title: '操作',
       key: 'option',
-      width: 120,
       valueType: 'option',
       render: (_, data) => [
           <AuditModel 
@@ -134,9 +135,7 @@ const message = (type, module,dispatch) => {
  },[]) 
  const auditSwitch=(off)=>{
   setCheck(off)
-   console.log('off',off)
    updateAuditDynamicSwitch({}).then(res=>{
-     console.log('update',res)
    })
  }
   return (
@@ -155,41 +154,45 @@ const message = (type, module,dispatch) => {
           defaultCollapsed: false,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
-           <p> 
+           <> 
              {
                type==0?
                <Form.Item
                 label="审核功能开关"
-                style={{marginTop:'45px'}}
+                className='switchTop'
               >
-                <ProFormSwitch  fieldProps={{ checked:check, onChange:(bol)=>{auditSwitch(bol) }}}/>
+                <Switch  checked={check} onChange={(bol)=>{auditSwitch(bol) }}/>
               </Form.Item>
               :null
              }
-           </p>,
-            <AuditModel 
-              state={1}  
-              label={'全部通过'}  
-              text={'确认要通过该帖子的发布吗？'} 
-              InterFace={auditDynamic} 
-              title={'审核确认'}
-              type={type}
-              arrId={arrId}
-              boxref={ref}
-            />,
-            <AuditModel 
-              type={type} 
-              state={2}  
-              label={'全部拒绝'}  
-              text={'确认要拒绝该帖子的通过吗？'} 
-              InterFace={auditDynamic} 
-              title={'审核确认'}
-              arrId={arrId}
-              boxref={ref}
-            />,
+           </>,
              ...dom.reverse(),
           ],
         }}
+        toolBarRender={()=>[
+          <Space>
+          <AuditModel 
+            state={1}  
+            label={'全部通过'}  
+            text={'确认要通过该帖子的发布吗？'} 
+            InterFace={auditDynamic} 
+            title={'审核确认'}
+            type={type}
+            arrId={arrId}
+            boxref={ref}
+          />
+          <AuditModel 
+            type={type} 
+            state={2}  
+            label={'全部拒绝'}  
+            text={'确认要拒绝该帖子的通过吗？'} 
+            InterFace={auditDynamic} 
+            title={'审核确认'}
+            arrId={arrId}
+            boxref={ref}
+          />
+          </Space>
+        ]}
         columns={columns}
       />
   );

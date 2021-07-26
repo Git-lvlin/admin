@@ -1,18 +1,19 @@
-import React, { useRef, useEffect } from 'react';
-import { message, Form } from 'antd';
+import React, { useRef, useEffect, useState } from 'react';
+import { message, Form, Button } from 'antd';
 import ProForm, {
-  DrawerForm,
+  ModalForm,
   ProFormText,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import { merketDetailUpdata } from '@/services/cms/member/member';
+import SelectProductModal from '@/components/select-product-modal'
 
 export default (props) => {
   const { detailDataz, setVisible, visible, setFlag } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
-
-
+  const [index, setIndex] = useState(false);
+  const [selectType, setSelectType] = useState(false);
   const waitTime = (values) => {
     const { ...rest } = values
     console.log('rest', rest)
@@ -22,6 +23,7 @@ export default (props) => {
     if (detailDataz.id) {
       param.id = detailDataz.id
     }
+    param.actionUrl = `https://publicmobile-uat.yeahgo.com/web/market?spuId=${index.spuId}&skuId=${index.skuId}`
     console.log('param', param)
     return new Promise((resolve, reject) => {
       merketDetailUpdata(param).then((res) => {
@@ -37,6 +39,14 @@ export default (props) => {
   };
 
   useEffect(() => {
+    if (index.spuId) {
+      form.setFieldsValue({
+        actionUrl: `https://publicmobile-uat.yeahgo.com/web/market?spuId=${index.spuId}&skuId=${index.skuId||''}`
+      })
+    }
+  }, [index])
+
+  useEffect(() => {
     if (detailDataz) {
       const { ...rest } = detailDataz;
       console.log('detailDataz', detailDataz)
@@ -47,7 +57,7 @@ export default (props) => {
   }, [form, detailDataz])
 
   return (
-    <DrawerForm
+    <ModalForm
       title={`${detailDataz ? '编辑' : '新建'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
@@ -102,12 +112,18 @@ export default (props) => {
         />
 
       </ProForm.Group>
-      <ProForm.Group>例子：http://publicmobile-uat.yeahgo.com/web/market?spuId=2441&skuId=3285</ProForm.Group>
+      <ProForm.Group >
+        <Button key="button" type="primary" onClick={() => { setSelectType(true) }}>
+          选择商品
+        </Button>,
+        选中商品：{index.goodsName || '-'}
+      </ProForm.Group>
       <ProForm.Group>
         <ProFormText
             width="sm"
             name="actionUrl"
             label="跳转链接"
+            disabled={true}
             rules={[{ required: false, message: '请输入跳转链接' }]}  
           />
       </ProForm.Group>
@@ -116,6 +132,17 @@ export default (props) => {
         label="itemId"
         hidden
       />
-    </DrawerForm>
+      {selectType&&<SelectProductModal
+        visible={selectType}
+        setVisible={setSelectType}
+        callback={(v) => {
+          if (v.length > 1) {
+            message.success('只能添加单个商品!');
+            return
+          }
+          console.log(v);setIndex(v[0]) 
+        }}
+      />}
+    </ModalForm>
   );
 };

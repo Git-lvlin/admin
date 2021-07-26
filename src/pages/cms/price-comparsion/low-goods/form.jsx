@@ -105,7 +105,7 @@ export default (props) => {
       tableAlertOptionRender={(a) => {
         setArr(a.selectedRowKeys.toString())
       }}
-      search={false}
+      // search={false}
       pagination={{
         pageSize: 10,
       }}

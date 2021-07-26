@@ -2,6 +2,7 @@ import React, { useState} from 'react';
 import ProForm,{ ModalForm} from '@ant-design/pro-form';
 import { Input,Form,message } from 'antd';
 import { couponAddQuantity } from '@/services/coupon-management/coupon-add-quantity';
+import styles from './style.less'
 
 export default props=>{
     const {data,boxref}=props
@@ -33,9 +34,7 @@ export default props=>{
                 ];
             },
             }}
-            onFinish={async (values) => {
-            console.log('values',values);
-            
+            onFinish={async (values) => { 
             couponAddQuantity({id:byid,issueQuantity:values.issueQuantity}).then(res=>{
             if(res.code==0){
                 setVisible(false)
@@ -49,11 +48,11 @@ export default props=>{
         <p>当前总发行量：<span>{records}</span> 张</p>
         <ProForm.Group>
             <Form.Item  name="issueQuantity" label="新增发行量">
-                <Input  onChange={onDiscounts} value={discounts} style={{width:'250px'}}/>    
+                <Input  onChange={onDiscounts} value={discounts} className={styles.circulation}/>    
             </Form.Item>
             <span>张</span>
             </ProForm.Group>
-        <p>更新后总发行量:<span style={{margin:'0 20px'}}>{discounts&&parseInt(discounts)+records}</span>张</p>
+        <p>更新后总发行量:<span className={styles.upCirculation}>{discounts&&parseInt(discounts)+records}</span>张</p>
     </ModalForm>
     )
 }

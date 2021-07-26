@@ -4,6 +4,7 @@ import SubTable from '@/pages/coupon-construction/coupon-subtable'
 import { Divider, Form, Spin,Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { history } from 'umi';
+import styles from './style.less'
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -112,13 +113,13 @@ export default props => {
         spinning={loading}
       >
          <h1>查看详情</h1>
-         <Button style={{marginTop:'-40px',float:'right'}} type="default" onClick={()=>history.goBack()}>返回</Button>
+         <Button className={styles.goback} type="default" onClick={()=>history.goBack()}>返回</Button>
         <Form
           form={form}
           {...formItemLayout}
-          style={{ backgroundColor: '#fff', paddingBottom: 100 }}
+          className={styles.couponFrom}
         >
-          <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">基本信息</Divider>
+          <Divider className={styles.msg} orientation="left">基本信息</Divider>
           <Form.Item
             label="优惠券名称"
           >
@@ -203,7 +204,7 @@ export default props => {
           }
           
 
-          <Divider style={{ backgroundColor: '#fff', paddingTop: 30, paddingBottom: 30 }} orientation="left">使用设置</Divider>
+          <Divider className={styles.msg} orientation="left">使用设置</Divider>
           
           <Form.Item
             label="使用范围"

@@ -35,8 +35,7 @@ export default props=>{
             }}
             onFinish={async (values) => {
                 setVisible(false)
-                Callback(values)   
-                message.success('选择完成')
+                Callback(values)
                 boxref&&boxref.current?.reload()
                 return true;
             }}
