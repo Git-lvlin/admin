@@ -195,8 +195,8 @@ export default (props) =>{
               }}>
                 保存
               </Button>,
-              <Button type="default"  key="rest" onClick={() => props.form?.resetFields()}>
-                取消
+              <Button type="default" onClick={() => history.goBack()}>
+                返回
               </Button>
               
             ];
@@ -208,7 +208,6 @@ export default (props) =>{
           bordered
           headerBordered
           collapsible
-          className={styles.sets}
         >
         <ProFormText
           name="name"

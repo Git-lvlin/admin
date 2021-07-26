@@ -20,9 +20,9 @@ export default {
         hideInMenu: true,
       },
       {
-        name: 'circleinterior-management-detail',
-        path: '/community-management/circle-management/circleinterior-management/detail',
-        component: './community-management/circleinterior-management/circleinterior-management-detail',
+        name: 'invitation-detail',
+        path: '/community-management/invitation-detail',
+        component: './community-management/invitation-detail',
         hideInMenu: true,
       },
       {
@@ -46,12 +46,6 @@ export default {
         name: 'dynamic-comment-reply-list',
         path: '/community-management/content-management/dynamic-comment-reply-list',
         component: './community-management/content-management/dynamic-comment-reply-list',
-        hideInMenu: true,
-      },
-      {
-        name: 'dynamic-get-dynamic-detail',
-        path: '/community-management/content-management/dynamic-get-dynamic-detail',
-        component: './community-management/content-management/dynamic-get-dynamic-detail',
         hideInMenu: true,
       },
       {

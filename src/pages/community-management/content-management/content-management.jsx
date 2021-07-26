@@ -19,7 +19,7 @@ export default props => {
             title: '帖子ID',
             dataIndex: 'id',
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/content-management/dynamic-get-dynamic-detail?id='+record.id)}>{record.id}</a>
+                <a onClick={()=>history.push('/community-management/invitation-detail?id='+record.id)}>{record.id}</a>
             ],
             hideInSearch:true,
             ellipsis:true
