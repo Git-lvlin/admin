@@ -167,7 +167,14 @@ const Detail = () => {
         'debt': '欠款入账',
         'debtReturn': '欠款偿还',
         'unfreeze': '解冻',
-        'freeze': '冻结'
+        'freeze': '冻结',
+        'suggestCommission': '推荐提成入账',
+        'suggestCommissionReturn': '推荐提成回退',
+        'agentCompanyCommission': '经销商佣金收入',
+        'agentCompanyCommissionReturn': '经销商佣金回退',
+        'freight': '运费',
+        'freightReturn': '运费回退',
+        'yeahCardRecharge': '约卡充值'
       }
     },
     {
