@@ -10,8 +10,8 @@ export const withdrawConfigDetail = async (params, options = {}) => {
   })
 
   return {
-    data: res.data,
-    success: res.success
+    data: res?.data,
+    success: res?.success
   }
 }
 
@@ -48,7 +48,7 @@ export const withdrawConfigUpdate = async (params, options = {}) => {
   })
 
   return {
-    data: res.data,
-    success: res.success
+    data: res?.data,
+    success: res?.success
   }
 }

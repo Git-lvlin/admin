@@ -9,8 +9,8 @@ export const platforms = async (params, options = {}) => {
   })
 
   return {
-    data: res.data,
-    success: res.success
+    data: res?.data,
+    success: res?.success
   }
 }
 
@@ -31,8 +31,8 @@ export const logPage = async (params, options = {}) => {
 
   return {
     data: res.data?.records,
-    success: res.success,
-    total: res.data.total
+    success: res?.success,
+    total: res?.data.total
   }
 }
 
