@@ -22,6 +22,7 @@ const TableList = () => {
           confirm({
             title: '确认要删除么？',
             icon: <ExclamationCircleOutlined />,
+            centered: true,
             onOk() {
               api.brandDel({
                 brandId
@@ -38,6 +39,7 @@ const TableList = () => {
           warning({
             title: '此品牌下已关联商品，请先移除关联的商品，再进行删除操作！',
             icon: <ExclamationCircleOutlined />,
+            centered: true,
           });
         }
       }
