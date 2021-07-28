@@ -665,7 +665,7 @@ export default (props) => {
       </div>
 
       {
-        detailData?.bankAccountInfo?.auditStatus!==1
+        detailData?.bankAccountInfo?.auditStatus===123456
         &&
         <div>
           <Title level={4}>资金账户信息</Title>
