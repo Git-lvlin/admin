@@ -641,7 +641,7 @@ export default (props) => {
             placeholder="请输入商品质保金比例"
             label="商品质保金比例"
             name="warrantyRatio"
-            min={1}
+            min={0}
             max={50}
             fieldProps={{
               formatter: value => value ? +new Big(value).toFixed(2) : value
@@ -653,8 +653,8 @@ export default (props) => {
               { required: true, message: '请输入商品质保金比例' },
               () => ({
                 validator(_, value) {
-                  if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                    return Promise.reject(new Error('请输入大于零的数字'));
+                  if (!/^\d+\.?\d*$/g.test(value) || value < 0) {
+                    return Promise.reject(new Error('请输入大于零或等于零的数字'));
                   }
                   return Promise.resolve();
                 },
@@ -665,7 +665,7 @@ export default (props) => {
       </div>
 
       {
-        detailData?.bankAccountInfo?.auditStatus!==1
+        detailData?.bankAccountInfo?.auditStatus===123456
         &&
         <div>
           <Title level={4}>资金账户信息</Title>
