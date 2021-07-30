@@ -49,7 +49,7 @@ export default function EditTable(props) {
         title: '零售供货价(元)',
         dataIndex: 'retailSupplyPrice',
         editable: false,
-        hideInTable: goodsSaleType !== 0,
+        hideInTable: goodsSaleType === 1,
         width: 130,
       },
       {
@@ -57,31 +57,33 @@ export default function EditTable(props) {
         dataIndex: 'wholesaleSupplyPrice',
         editable: false,
         width: 130,
+        hideInTable: goodsSaleType === 2,
       },
       {
         title: '最低批发量',
         dataIndex: 'wholesaleMinNum',
         editable: false,
         width: 130,
+        hideInTable: goodsSaleType === 2,
       },
       {
         title: '秒约价',
         dataIndex: 'salePrice',
         editable: settleType === 2,
         width: 130,
-        hideInTable: goodsSaleType !== 0,
+        hideInTable: goodsSaleType === 1,
       },
       {
         title: '秒约价上浮比例',
         dataIndex: 'salePriceFloat',
-        hideInTable: goodsSaleType !== 0,
+        hideInTable: goodsSaleType === 1,
         width: 130,
       },
       {
         title: '秒约价实际盈亏',
         dataIndex: 'salePriceProfitLoss',
         editable: false,
-        hideInTable: goodsSaleType !== 0,
+        hideInTable: goodsSaleType === 1,
         width: 130,
       },
       {
@@ -140,7 +142,7 @@ export default function EditTable(props) {
 
       if (
         (findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat)
-        && goodsSaleType === 0
+        && goodsSaleType !== 1
         && (record.salePrice !== '' && record.salePriceFloat !== '')
       ) {
         api.subAccountCheck(obj).then(res => {

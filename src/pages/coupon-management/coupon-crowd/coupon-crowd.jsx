@@ -89,27 +89,27 @@ export default (props) =>{
   return (
     <PageContainer>
         <Button
-            key="primary"
-            type="primary"
-            style={{marginBottom:'20px'}}
-            onClick={addcoupon}
+          key="primary"
+          type="primary"
+          style={{marginBottom:'20px'}}
+          onClick={addcoupon}
         >
             新建
         </Button>
       <ProTable
-            actionRef={ref}
-            rowKey="id"
-            options={false}
-            expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
-            request={couponCrowdList}
-            search={{
-            defaultCollapsed: false,
-            labelWidth: 100,
-            optionRender: (searchConfig, formProps, dom) => [
-                ...dom.reverse(),
-            ],
-            }}
-            columns={columns}
+          actionRef={ref}
+          rowKey="id"
+          options={false}
+          expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
+          request={couponCrowdList}
+          search={{
+          defaultCollapsed: false,
+          labelWidth: 100,
+          optionRender: (searchConfig, formProps, dom) => [                                                   
+              ...dom.reverse(),
+          ],
+          }}
+          columns={columns}
       />
     </PageContainer>
   )

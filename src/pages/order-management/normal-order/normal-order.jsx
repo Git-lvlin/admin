@@ -54,7 +54,6 @@ const TableList = () => {
       orderStatus: orderType === 0 ? '' : orderType,
       startCreateTime: time?.[0]?.format('YYYY-MM-DD'),
       endCreateTime: time?.[1]?.format('YYYY-MM-DD'),
-      orderType: 2,
       ...rest,
     })
       .then(res => {
@@ -149,17 +148,17 @@ const TableList = () => {
             }
           }}
         /> */}
-        {/* <ProFormSelect
+        <ProFormSelect
           name="orderType"
           label="订单类型"
-          options={[{ value: 1, label: '秒约' }, { value: 2, label: '单约' }, { value: 3, label: '团约' }]}
+          options={[{ value: 2, label: '秒约订单' }, { value: 3, label: '单约订单' }, { value: 4, label: '团约订单' }, { value: 11, label: '1688订单' }]}
           fieldProps={{
             style: {
               marginBottom: 20,
               width: 180,
             }
           }}
-        /> */}
+        />
         <ProFormDateRangePicker
           name="time"
           label="下单时间"
@@ -243,7 +242,7 @@ const TableList = () => {
                         <img width="100" height="100" src={it.skuImageUrl} />
                         <div className={styles.info}>
                           <div>{it.goodsName}</div>
-                          <div>{{ 1: '秒约', 2: '单约', 3: '团约' }[1]}价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
+                          <div>{{ 2: '秒约', 3: '单约', 4: '团约', 11: '零售' }[item.orderType]}价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
                           <div>数量： <span>{it.skuNum}件</span></div>
                           <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
                         </div>
@@ -263,7 +262,7 @@ const TableList = () => {
                   {item.status === 5 ? 0 : amountTransform(item.incomeAmount, '/')}元
                 </div> */}
                 <div style={{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}</div>
-                <div style={{ textAlign: 'center' }}><Tag style={{ borderRadius: 10 }} color="#f59a23">{{ 1: '秒约', 2: '单约', 3: '团约' }[1]}订单</Tag></div>
+                <div style={{ textAlign: 'center' }}><Tag style={{ borderRadius: 10 }} color="#f59a23">{{ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType]}订单</Tag></div>
                 <div style={{ textAlign: 'center' }}>
                   <a onClick={() => { history.push(`/order-management/normal-order-detail/${item.id}`) }}>详情</a>
                 </div>
