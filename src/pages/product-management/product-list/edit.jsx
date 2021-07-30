@@ -829,22 +829,25 @@ export default (props) => {
         placeholder="请输入单SKU单次最多零售购买数量"
       />
 
-      <ProFormRadio.Group
-        name="isFreeFreight"
-        label="是否包邮"
-        rules={[{ required: true }]}
-        options={[
-          {
-            label: '包邮',
-            value: 1,
-          },
-          // {
-          //   label: '不包邮',
-          //   value: 0,
-          // },
-        ]}
-        disabled
-      />
+      {
+        detailData?.goods?.goodsSaleType !== 1 &&
+        <ProFormRadio.Group
+          name="isFreeFreight"
+          label="是否包邮"
+          rules={[{ required: true }]}
+          options={[
+            {
+              label: '包邮',
+              value: 1,
+            },
+            // {
+            //   label: '不包邮',
+            //   value: 0,
+            // },
+          ]}
+          disabled
+        />
+      }
       {/* <ProFormDependency name={['freightTemplateId']}>
         {({ freightTemplateId }) => (
           !!freightTemplateId &&

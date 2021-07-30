@@ -43,3 +43,11 @@ export const brandEdit = (params = {}, options = {}) => {
   });
 }
 
+export const getExistsByBrandId = (params = {}, options = {}) => {
+  return request('/auth/goods/product/getExistsByBrandId', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
