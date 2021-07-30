@@ -173,7 +173,6 @@ const CrazyDate = (props) => {
       //   };
       // }}
       dateFormatter="string"
-      headerTitle="正在疯约"
       toolBarRender={(_,record) => [
         <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 2) }}>
           批量发布
