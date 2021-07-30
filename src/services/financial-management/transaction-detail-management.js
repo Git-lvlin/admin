@@ -80,7 +80,7 @@ export const orderPage = async (params, options = {}) => {
   return {
     data: res?.data.records,
     success: res?.success,
-    total: res.data.total
+    total: res?.data.total
   }
 }
 // 订单详情
@@ -150,7 +150,7 @@ export const platformCommissionPage = async (params, options = {}) => {
   return {
     data: res?.data.records,
     success: res?.success,
-    total: res.data.total
+    total: res?.data.total
   }
 }
 // 佣金详情
@@ -185,7 +185,7 @@ export const goodsAmountPage = async (params, options = {}) => {
   return {
     data: res?.data.records,
     success: res?.success,
-    total: res.data.total
+    total: res?.data.total
   }
 }
 // 货款详情
