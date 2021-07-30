@@ -22,7 +22,6 @@ export default props => {
   return (
     <ProForm
         onFinish={async (values) => {
-          console.log(values);
           if(id){
             values.id=id
             circleUpdateCircle(values).then(res=>{
@@ -51,8 +50,7 @@ export default props => {
               </Button>,
               <Button type="default" onClick={()=>history.goBack()}>
                 返回
-              </Button>,
-              
+              </Button>
             ];
           }
         }}

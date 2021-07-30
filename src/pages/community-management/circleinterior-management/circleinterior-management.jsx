@@ -14,8 +14,6 @@ import { history } from 'umi';
 
 export default props => {
     const ref=useRef()
-    const [visible, setVisible] = useState(false);
-    const [byid,setByid]=useState()
     let id = props.location.query.id
     let name=props.location.query.name
     const onTop=(bol,off)=>{
@@ -23,13 +21,6 @@ export default props => {
                 ref.current.reload()
             }) 
     }
-    const Termination=(record)=>{
-        setByid(record.id)
-        setVisible(true)
-    }
-    useEffect(()=>{
-
-    },[])
     const columns = [
         {
             title: '帖子ID：',
@@ -41,7 +32,7 @@ export default props => {
             dataIndex: 'id',
             hideInSearch:true,
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/circle-management/circleinterior-management/detail?id='+record.id+'&byid='+id+'&name='+name)}>{record.id}</a>
+                <a onClick={()=>history.push('/community-management/invitation-detail?id='+record.id+'&byid='+id+'&name='+name)}>{record.id}</a>
             ],
         },
         {

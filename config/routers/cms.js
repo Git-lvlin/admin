@@ -88,6 +88,11 @@ export default {
       name: 'market',
       path: '/cms/market',
       component: './cms/market',
+    },
+    {
+      name: 'poster',
+      path: '/cms/poster',
+      component: './cms/poster',
     }
   ]
 }

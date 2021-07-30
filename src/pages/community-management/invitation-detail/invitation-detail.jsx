@@ -20,6 +20,8 @@ const formItemLayout = {
 
 export default props => {
   const id=props.location.query.id
+  const byid=props.location.query.byid
+  const name=props.location.query.name
   const [form] = Form.useForm()
   const [detailData,setDetailData]=useState([])
   const [loading, setLoading] = useState(false);
@@ -66,11 +68,11 @@ export default props => {
             >
               {detailData.content}
               <div className={styles.content}>
-                  {
-                    detailData.images?.map(ele=>(
-                      <Image className={styles.detailimg} width={100} height={100} src={ele} alt="" />
-                    ))
-                  }
+                {
+                  detailData.images?.map(ele=>(
+                    <Image className={styles.detailimg}  width={100} height={100} src={ele} alt="" />
+                  ))
+                }
               </div>
             </Form.Item>
 
@@ -100,7 +102,12 @@ export default props => {
           <Form.Item
             className={styles.formbutton}
           >
-            <Button className={styles.button} type="primary" onClick={()=>history.goBack()}>返回</Button>
+              {
+                  name?
+                  <Button className={styles.button}  type="primary" onClick={()=>history.push('/community-management/circle-management/circleinterior-management?id='+byid+'&name='+name)}>返回</Button>
+                  :<Button className={styles.button} type="primary" onClick={()=>history.goBack()}>返回</Button>
+              }
+         
           </Form.Item>
           
         </Form>

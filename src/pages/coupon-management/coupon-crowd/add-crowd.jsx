@@ -3,13 +3,15 @@ import { Input, Form, message,Button} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import ProForm, {
     ProFormText,
-    ProFormFieldSet
+    ProFormFieldSet,
+    ProFormDateRangePicker
   } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
 import { couponCrowdSub,couponCrowdDetail,couponCrowdEdit } from '@/services/crowd-management/coupon-crowd';
 import { history} from 'umi';
 import CrowdModel from './crowd-model'
-import styles from './style.less'
+import {formatMessage,connect} from 'umi';
+import  './style.less'
 
 
 
@@ -45,7 +47,7 @@ export default (props) =>{
             id:ele.crowdInfoId,
             state:ele.isContain,
             title:ele.type==1?'会员等级':ele.type==2?'消费次数':'累计消费',
-            labels:ele.type==2?[ele.numStart,ele.numEnd]:ele.type==3&&[ele.moneyStart,ele.moneyEnd],
+            labels:ele.type==2?[ele.numStart,ele.numEnd,[ele.validTimeStart,ele.validTimeEnd]]:ele.type==3&&[ele.moneyStart,ele.moneyEnd,[ele.validTimeStart,ele.validTimeEnd]],
             userLevel:ele.userLevel,
             userLevelDisplay:ele.userLevelDisplay
           })
@@ -66,13 +68,17 @@ export default (props) =>{
             values.consumeNumInfo={
               isContain: ele.state||1,
               numStart: ele.labels[0],
-              numEnd: ele.labels[1]
+              numEnd: ele.labels[1],
+              validTimeStart:ele.labels[2][0],
+              validTimeEnd:ele.labels[2][1]
             }
           }else if(ele.title=='累计消费'){
             values.consumeLjInfo={
               isContain: ele.state||1,
               moneyStart: ele.labels[0],
-              moneyEnd: ele.labels[1]
+              moneyEnd: ele.labels[1],
+              validTimeStart:ele.labels[2][0],
+              validTimeEnd:ele.labels[2][1]
             }
           }
         })
@@ -110,17 +116,17 @@ export default (props) =>{
       dataIndex: 'state',
       valueEnum: {
         1: '包含',
+        2: '不包含',
       }
     },
     {
       title: '条件',
       dataIndex: 'labels',
-      width: '20%',
       renderFormItem: (_, row) => {
         if(_.entry.title=='会员等级'){
               if(levelId){
                 return <>
-                  <p className={style.grade}>{
+                  <p className='grade'>{
                     levelId?.userLevel.map(ele=>{
                       return <span>V{ele}等级、</span>
                       })
@@ -133,15 +139,29 @@ export default (props) =>{
               }
         }else if(_.entry.title=='消费次数'){
         return <ProFormFieldSet>
-                  <Input className={styles.nums} suffix="次" /> 
+                  <Input className='nums' suffix="次" /> 
                   至 
-                  <Input className={styles.nums} suffix="次" />
+                  <Input className='nums' suffix="次" />
+                  <ProFormDateRangePicker
+                    name='dateRange'
+                    placeholder={[
+                        formatMessage({id: 'formandbasic-form.placeholder.start'}),
+                        formatMessage({id: 'formandbasic-form.placeholder.end'}),
+                    ]}
+                />
                 </ProFormFieldSet>;
         }
         return <ProFormFieldSet> 
-                  <Input name='min' className={styles.nums} suffix="元" />
+                  <Input name='min' className='nums' suffix="元" />
                   至 
-                  <Input name='max' className={styles.nums} suffix="元" />
+                  <Input name='max' className='nums' suffix="元" />
+                  <ProFormDateRangePicker
+                    name='dateTimeRange'
+                    placeholder={[
+                        formatMessage({id: 'formandbasic-form.placeholder.start'}),
+                        formatMessage({id: 'formandbasic-form.placeholder.end'}),
+                    ]}
+                />
                 </ProFormFieldSet>;
       },
       render: (_, row) =>{
@@ -150,9 +170,15 @@ export default (props) =>{
             return <span>V{ele}等级、</span>
           })||row.userLevelDisplay}</p>;
           }else if(row.title=='消费次数'){
-            return <p>{row.labels[0]}次 至 {row.labels[1]}次</p>;
+            return <>
+                    <p>{row.labels[0]}次 至 {row.labels[1]}次</p>
+                    <p>{row.labels[2][0]} 到 {row.labels[2][1]}</p>
+                  </>;
           }
-            return <p>{row.labels[0]}元 至 {row.labels[1]}元</p>;
+            return <>
+                    <p>{row.labels[0]}元 至 {row.labels[1]}元</p>
+                    <p>{row.labels[2][0]} 到 {row.labels[2][1]}</p>
+                  </>;
       }
     },
     {
@@ -195,8 +221,8 @@ export default (props) =>{
               }}>
                 保存
               </Button>,
-              <Button type="default"  key="rest" onClick={() => props.form?.resetFields()}>
-                取消
+              <Button type="default" onClick={() => history.goBack()}>
+                返回
               </Button>
               
             ];
@@ -208,7 +234,6 @@ export default (props) =>{
           bordered
           headerBordered
           collapsible
-          className={styles.sets}
         >
         <ProFormText
           name="name"
@@ -234,9 +259,9 @@ export default (props) =>{
             bordered
             headerBordered
             collapsible
-            className={styles.sets}
+            className='sets'
             >
-            <h3 className={styles.memberMsg}>会员基本信息</h3>
+            <h3 className='memberMsg'>会员基本信息</h3>
             <Button 
                 type={falg1?"primary":"default"}  
                 onClick={() => {
@@ -255,7 +280,7 @@ export default (props) =>{
                 >
                   会员等级
             </Button>
-            <h3 className={styles.memberMsg}>会员消费情况</h3>
+            <h3 className='memberMsg'>会员消费情况</h3>
             <Button
               type={falg2?"primary":"default"}  
               onClick={() => {
@@ -296,7 +321,7 @@ export default (props) =>{
             bordered
             headerBordered
             collapsible
-            className={styles.sets}
+            className='sets'
             style={{marginTop:'20px'}}
           >
             <EditableProTable
@@ -310,7 +335,19 @@ export default (props) =>{
               editable={{
                 editableKeys,
                 onChange: setEditableRowKeys,
-                onlyAddOneLineAlertMessage:'不能同时新增多行'
+                onlyAddOneLineAlertMessage:'不能同时新增多行',
+                onSave: async (rowKey, data, row) => {
+                  console.log(rowKey, data, row);
+                },
+                onCancel:async (rowKey, data, row) => {
+                  if(rowKey==1){
+                    setFalg1(false)
+                  }else if(rowKey==2){
+                    setFalg2(false)
+                  }else if(rowKey==3){
+                    setFalg3(false)
+                  }
+                }
               }}
               search={false}
               columns={columns}

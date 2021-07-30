@@ -209,11 +209,11 @@ export default () => {
                 }
               </>
           }
-          <Form.Item
+          {detailData?.goods?.goodsSaleType !== 1 &&<Form.Item
             label="是否包邮"
           >
             {{ 0: '不包邮', 1: '包邮', }[detailData?.goods?.isFreeFreight]}
-          </Form.Item>
+          </Form.Item>}
           {detailData?.freightTemplateName &&
             <Form.Item
               label="运费模板"
