@@ -37,7 +37,7 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入手机号'
       },
-      render: (_, data) => <a onClick={() => { history.push(`/user-management/user-detail/${data?.memberId}`) }}>{_}</a>
+      render: (_, data) => <a onClick={() => { history.push(`/user-management/user-detail/${data?.id}`) }}>{_}</a>
     },
     {
       title: '是否为店主',
