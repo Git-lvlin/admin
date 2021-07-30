@@ -199,8 +199,8 @@ const IntensiveActivityCreate = () => {
               width="md"
               rules={[{ required: true, message: '请选择活动时间' }]}
               fieldProps={{
-                disabledDate: (currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() },
-                disabledTime: disabledRangeTime,
+                // disabledDate: (currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() },
+                // disabledTime: disabledRangeTime,
                 showTime: {
                   defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('00:59:59', 'HH:mm:ss')]
                 }
@@ -212,8 +212,8 @@ const IntensiveActivityCreate = () => {
               width="md"
               rules={[{ required: true, message: '请选择店主采购单下单截至时间' }]}
               fieldProps={{
-                disabledDate: (currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() },
-                disabledTime: disabledRangeTime,
+                // disabledDate: (currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() },
+                // disabledTime: disabledRangeTime,
                 showTime: {
                   defaultValue: moment('00:59:59', 'HH:mm:ss')
                 }
