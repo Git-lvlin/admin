@@ -106,7 +106,7 @@ const Detail = () => {
         idBack: imageInfo.idCardBackImg,
         idHandheld: imageInfo.idHandheld,
         memberId: detailData.memberId,
-        deposit: detailData.deposit.length === 0 ? values.depositValue : 0
+        deposit: detailData.deposit.length === 0 ? amountTransform(values.depositValue) : 0
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
           resolve()
@@ -369,6 +369,7 @@ const Detail = () => {
               fieldProps={{
                 placeholder: '请输入保证金金额',
                 maxLength: 30,
+                suffix: '元'
               }}
             />
           }
