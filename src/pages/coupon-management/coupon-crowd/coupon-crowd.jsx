@@ -105,7 +105,7 @@ export default (props) =>{
           search={{
           defaultCollapsed: false,
           labelWidth: 100,
-          optionRender: (searchConfig, formProps, dom) => [
+          optionRender: (searchConfig, formProps, dom) => [                                                   
               ...dom.reverse(),
           ],
           }}
