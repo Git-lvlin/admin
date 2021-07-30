@@ -16,7 +16,9 @@ const TransactionDetails = () => {
         'platformCommission': '佣金收入',
         'platformCommissionReturn': '佣金回退',
         'commission': '提成入账',
-        'commissionReturn': '提成回退'
+        'commissionReturn': '提成回退',
+        'suggestCommission': '推荐提成入账',
+        'suggestCommissionReturn': '推荐提成回退'
       }
     }else if(query.accountId==='platformFee'){
       return {

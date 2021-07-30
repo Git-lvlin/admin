@@ -75,7 +75,7 @@ const ReturnInformation = props => {
     },
     {
       title: '买家昵称',
-      dataIndex: 'userNickname',
+      dataIndex: 'buyerNickname',
       render: (_, records) => records.buyer?.storeName
     },
     {
