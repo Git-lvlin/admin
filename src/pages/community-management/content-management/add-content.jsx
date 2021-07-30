@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import { adminCircleList } from '@/services/community-management/circle-admin-circle-list';
+import { miniCircleList } from '@/services/community-management/circle-admin-circle-list';
 import { releaseDynamic } from '@/services/community-management/dynamic-release-dynamic';
 import { listSystemVirtualMember } from '@/services/community-management/memberinfo-list-system-virtual-member';
 import ProForm, { ProFormTextArea,ProFormSelect} from '@ant-design/pro-form';
@@ -12,7 +12,7 @@ export default props => {
   const [virtual,setVirtual]=useState([])
   //会员昵称下拉接口调用
   useEffect(()=>{
-    adminCircleList({}).then(res=>{
+    miniCircleList({}).then(res=>{
           setOnselect(res.data.map(ele=>(
               {label:ele.name,value:ele.id}
           )))
