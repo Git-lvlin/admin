@@ -193,19 +193,19 @@ const ImageInfo = ({ value, onChange, bankAccountType }) => {
   return (
     <div>
       <Space>
-        <Upload code={301} value={businessLicense} text="上传三合一证件照" maxCount={1} accept="image/*" size={1024 * 2} onChange={businessLicenseChange} />
-        <Upload code={302} value={idCardFrontImg} text="上传法人身份证正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardFrontImgChange} />
-        <Upload code={302} value={idCardBackImg} text="上传法人身份证背面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={idCardBackImgChange} />
+        <Upload code={301} value={businessLicense} text="上传三合一证件照" maxCount={1} accept="image/*" onChange={businessLicenseChange} />
+        <Upload code={302} value={idCardFrontImg} text="上传法人身份证正面照" maxCount={1} accept="image/*" onChange={idCardFrontImgChange} />
+        <Upload code={302} value={idCardBackImg} text="上传法人身份证背面照" maxCount={1} accept="image/*" onChange={idCardBackImgChange} />
         {
           bankAccountType === 1
             ?
-            <Upload key="1" code={303} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankLicenseImgChange} />
+            <Upload key="1" code={303} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" onChange={bankLicenseImgChange} />
             :
-            <Upload key="2" code={303} value={bankCardFrontImg} text="上传结算银行卡正面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankCardFrontImgChange} />
+            <Upload key="2" code={303} value={bankCardFrontImg} text="上传结算银行卡正面照" maxCount={1} accept="image/*" onChange={bankCardFrontImgChange} />
         }
       </Space>
       {bankAccountType === 2 && <Space>
-        <Upload code={303} value={bankCardBackImg} text="上传结算银行卡背面照" maxCount={1} accept="image/*" size={1024 * 2} onChange={bankCardBackImgChange} />
+        <Upload code={303} value={bankCardBackImg} text="上传结算银行卡背面照" maxCount={1} accept="image/*" onChange={bankCardBackImgChange} />
       </Space>}
     </div>
 
