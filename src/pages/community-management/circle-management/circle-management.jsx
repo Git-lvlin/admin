@@ -20,9 +20,6 @@ export default ()=> {
           circleTop({id:off}).then(res=>{
             ref.current.reload();
           })
-        
-        console.log('bol',bol)
-        console.log('off',off)
     }
     const columns = [
         {
