@@ -145,14 +145,6 @@ const Detail = () => {
       dataIndex: ''
     },
     {
-      title: '支付用户名',
-      dataIndex: 'payUsername'
-    },
-    {
-      title: '支付账户',
-      dataIndex: 'payAccount'
-    },
-    {
       title: '支付金额',
       dataIndex: 'amount',
       render: (_)=> `¥${amountTransform(_, '/').toFixed(2)}`
