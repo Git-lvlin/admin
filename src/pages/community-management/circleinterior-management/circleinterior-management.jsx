@@ -14,8 +14,6 @@ import { history } from 'umi';
 
 export default props => {
     const ref=useRef()
-    const [visible, setVisible] = useState(false);
-    const [byid,setByid]=useState()
     let id = props.location.query.id
     let name=props.location.query.name
     const onTop=(bol,off)=>{
@@ -23,13 +21,6 @@ export default props => {
                 ref.current.reload()
             }) 
     }
-    const Termination=(record)=>{
-        setByid(record.id)
-        setVisible(true)
-    }
-    useEffect(()=>{
-
-    },[])
     const columns = [
         {
             title: '帖子ID：',
