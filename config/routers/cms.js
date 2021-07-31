@@ -93,6 +93,11 @@ export default {
       name: 'poster',
       path: '/cms/poster',
       component: './cms/poster',
+    },
+    {
+      name: 'content-version',
+      path: '/cms/content-version',
+      component: './cms/content-version',
     }
   ]
 }

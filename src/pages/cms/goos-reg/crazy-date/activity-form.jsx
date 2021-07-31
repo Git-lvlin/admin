@@ -7,8 +7,9 @@ import { Button, Space, message } from 'antd';
 import Edit from './goods-modal-form'
 import ReplaceForm from './replace-form';
 import { ACTION_TYPE } from '@/utils/text';
-import { ModalForm } from '@ant-design/pro-form';
+import ProForm, { ModalForm } from '@ant-design/pro-form';
 import Modify from './edit';
+import ContentVersionTab from '@/components/content-version-tab';
 
 const DetailList = (props) => {
   const { onChange, setVisible, visible, acid } = props;
@@ -18,6 +19,7 @@ const DetailList = (props) => {
   const [detailData, setDetailData] = useState(true);
   const [flag, setFlag] = useState(false);
   const [popVisible, setPopVisible] = useState(false);
+  const [verifyVersionId, setVerifyVersionId] = useState(1);
 
   const getDetail = (data) => {
     if (!acid) {return message.error('请先选择活动')}
@@ -79,7 +81,6 @@ const DetailList = (props) => {
       dataIndex: 'goodsName',
       valueType: 'text',
       editable: true,
-      // search: false,
       width: 180,
       ellipsis: true,
     },
@@ -195,12 +196,15 @@ const DetailList = (props) => {
       }}
       style={{overflow:'hidden'}}
     >
+    <ProForm.Group>
+      <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
+    </ProForm.Group>
     <ProTable
       rowKey="id"
       options={false}
       columns={columns}
       actionRef={actionRef}
-      params={acid&&{cmsId:acid}}
+      params={acid&&{cmsId:acid,verifyVersionId: verifyVersionId}}
       postData={(data) => {
         data.forEach(item => {
           item.goodsSalePrice = item.goodsSalePrice/100
@@ -221,14 +225,6 @@ const DetailList = (props) => {
               取消选择
             </a>
           </span>
-          {/* <span>{`待发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.containers,
-            0,
-          )} 个`}</span>
-          <span>{`已发布: ${selectedRows.reduce(
-            (pre, item) => pre + item.callNumber,
-            0,
-          )} 个`}</span> */}
         </Space>
       )}
       search={{
@@ -260,11 +256,13 @@ const DetailList = (props) => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
+      setVerifyVersionId={setVerifyVersionId}
       setFlag={setFlag}
     />}
     {replaceFormVisible && <ReplaceForm
       visible={replaceFormVisible}
       setVisible={setReplaceFormVisible}
+      setVerifyVersionId={setVerifyVersionId}
       detailData={detailData}
       setFlag={setFlag}
     />}
