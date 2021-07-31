@@ -50,13 +50,13 @@ export default props => {
  }
  const columns=[
   {
-     title: '商品图片',
-     dataIndex: 'imageUrl',
-     valueType: 'image',
+    title: '商品图片',
+    dataIndex: 'imageUrl',
+    valueType: 'image',
   },
   {
-      title: '商品名称',
-      dataIndex: 'goodsName',
+    title: '商品名称',
+    dataIndex: 'goodsName',
   },
   {
     title: '操作',
