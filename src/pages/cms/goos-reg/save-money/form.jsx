@@ -6,7 +6,7 @@ import { saveMoneyAdd } from '@/services/cms/member/member';
 import { saveMoneyFormList } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, setFlag, visible } = props;
+  const { detailData, setVisible, setFlag, visible, verifyVersionId } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
   const columns = [
@@ -74,6 +74,9 @@ export default (props) => {
     });
     const param = {
       goodsInfo: goodsInfo,
+    }
+    if (verifyVersionId) {
+      param.verifyVersionId = verifyVersionId
     }
     return new Promise((resolve, reject) => {
       saveMoneyAdd(param).then((res) => {
