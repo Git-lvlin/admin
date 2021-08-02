@@ -3,15 +3,13 @@ import { message, Form } from 'antd';
 import ProForm, {
   DrawerForm,
   ProFormText,
-  ProFormRadio,
-  ProFormDigit,
 } from '@ant-design/pro-form';
-import { expressNewsUpdate } from '@/services/cms/member/member';
+import { verifyVersionEdit } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, setFlag, visible, verifyVersionId } = props;
+  const { detailData, setVisible, onClose, visible } = props;
   const formRef = useRef();
-  const [form] = Form.useForm()
+  const [form] = Form.useForm();
 
   const waitTime = (values) => {
     const { id, ...rest } = values
@@ -21,13 +19,10 @@ export default (props) => {
     if (id) {
       param.id = id
     }
-    if (verifyVersionId) {
-      param.verifyVersionId = verifyVersionId
-    }
+  
     return new Promise((resolve, reject) => {
-      expressNewsUpdate(param).then((res) => {
+      verifyVersionEdit(param).then((res) => {
         if (res.code === 0) {
-          setFlag(true);
           resolve(true);
         } else {
           reject(false);
@@ -47,7 +42,7 @@ export default (props) => {
 
   return (
     <DrawerForm
-      title={`${detailData.title ? '编辑' : '新建'}`}
+      title={`${detailData ? '编辑' : '新建'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -55,6 +50,9 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
+        onClose: () => {
+          onClose();
+        }
       }}
       onFinish={async (values) => {
         await waitTime(values);
@@ -67,46 +65,23 @@ export default (props) => {
         <ProFormText 
           width="sm"
           name="title"
-          label="消息标题"
-          rules={[{ required: true, message: '请输入消息标题' }]}  
+          label="名称"
+          rules={[{ required: true, message: '请输入名称' }]}
         />
       </ProForm.Group>
       <ProForm.Group>
         <ProFormText 
-            width="sm"
-            name="actionUrl"
-            label="跳转链接"
-            rules={[{ required: true, message: '请输入跳转链接' }]}  
-          />
-      </ProForm.Group>
-      <ProForm.Group>
-        <ProFormDigit
           width="sm"
-          name="sort"
-          label="排序"
-          rules={[{ required: true, message: '请输入排序序号' }]}  
+          name="remark"
+          label="备注"
+          rules={[{ required: true, message: '请输入备注' }]}  
         />
       </ProForm.Group>
-      <ProFormRadio.Group
-          name="state"
-          label="上线/下架"
-          required
-          options={[
-            {
-              label: '上线',
-              value: 1,
-            },
-            {
-              label: '下架',
-              value: 0,
-            },
-          ]}
-        />
-        <ProFormText
-          name="id"
-          label="id"
-          hidden
-        />
+      <ProFormText
+        name="id"
+        label="id"
+        hidden
+      />
     </DrawerForm>
   );
 };

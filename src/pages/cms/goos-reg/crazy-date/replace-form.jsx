@@ -5,7 +5,7 @@ import { ModalForm } from '@ant-design/pro-form';
 import { goosReplaceList, crazyActivityGoodsAdd } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, setFlag, visible } = props;
+  const { detailData, setVisible, setFlag, visible, verifyVersionId } = props;
   const [arr, setArr] = useState(null)
   const [acid, setAcId] = useState({cmsId: 0});
   const formRef = useRef();
@@ -89,6 +89,9 @@ export default (props) => {
       goodsType: 5,
       cmsId: detailData.id,
       spuInfo: newArr
+    }
+    if (verifyVersionId) {
+      param.verifyVersionId = verifyVersionId
     }
     return new Promise((resolve) => {
       crazyActivityGoodsAdd(param).then((res) => {

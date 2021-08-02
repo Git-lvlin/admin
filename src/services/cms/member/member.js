@@ -55,6 +55,14 @@ export const bannerAdd = (params = {}, options = {}) => {
   });
 }
 
+export const verifyVersionEdit = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/verifyVersionEdit', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const posterUpdata = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/poster/saveOrUpdate', {
     method: 'POST',
@@ -391,6 +399,14 @@ export const bannerSortTop = (params = {}, options = {}) => {
   });
 }
 
+export const cententVersionStatus = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/verifyVersionStatusSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const couponCmsSortTop = (params = {}, options = {}) => {
   return request('/auth/activity/Coupon/couponCmsSortTop', {
     method: 'POST',
@@ -693,6 +709,27 @@ export const homeBannerList = async (params = {}, options = {}) => {
 
   return {
     data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const contentVersionList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/activity/Cms/verifyVersionList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data || [],
     success: true,
     total: res.data.total,
   }

@@ -3,10 +3,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import { MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
 import Modaledit from './modal';
 import MemberReg from '@/components/member-reg';
+import ContentVersionTab from '@/components/content-version-tab';
 import { spaceInfoList, memberOperation, memberSortTop } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
 
@@ -15,7 +17,7 @@ const Member = () => {
   const [detailData, setDetailData] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalData, setModalData] = useState(null);
-
+  const [verifyVersionId, setVerifyVersionId] = useState(1);
   const actionRef = useRef();
 
   const getDetail = (data) => {
@@ -136,9 +138,15 @@ const Member = () => {
 
   return (
     <PageContainer>
+      <ProForm.Group>
+        <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
+      </ProForm.Group>
       <ProTable
         rowKey="id"
         actionRef={actionRef}
+        params={{
+          verifyVersionId: verifyVersionId
+        }}
         request={spaceInfoList}
         rowSelection={{}}
         tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
