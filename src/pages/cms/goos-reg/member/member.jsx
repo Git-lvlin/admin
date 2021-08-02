@@ -173,7 +173,6 @@ const Member = () => {
           labelWidth: 'auto',
         }}
         dateFormatter="string"
-        headerTitle="会员及社区店约购区"
         toolBarRender={(_,record) => [
           <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 2) }}>
             批量发布

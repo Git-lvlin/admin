@@ -213,7 +213,6 @@ const SaveMoney = () => {
         pageSize: 10,
       }}
       dateFormatter="string"
-      headerTitle="约购更省钱"
       toolBarRender={(_,record) => [
         <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 2) }}>
           批量发布
