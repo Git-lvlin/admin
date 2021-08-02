@@ -145,7 +145,8 @@ const Member = () => {
         rowKey="id"
         actionRef={actionRef}
         params={{
-          verifyVersionId: verifyVersionId
+          verifyVersionId: verifyVersionId,
+          status: 2
         }}
         request={spaceInfoList}
         rowSelection={{}}
