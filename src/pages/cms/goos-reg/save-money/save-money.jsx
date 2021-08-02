@@ -169,7 +169,8 @@ const SaveMoney = () => {
         return data
       }}
       params={{
-        verifyVersionId: verifyVersionId
+        verifyVersionId: verifyVersionId,
+        status: 2
       }}
       request={saveMoneyList}
       rowSelection={{

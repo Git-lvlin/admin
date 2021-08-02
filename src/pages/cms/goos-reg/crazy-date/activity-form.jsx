@@ -204,7 +204,7 @@ const DetailList = (props) => {
       options={false}
       columns={columns}
       actionRef={actionRef}
-      params={acid&&{cmsId:acid,verifyVersionId: verifyVersionId}}
+      params={acid&&{cmsId:acid,verifyVersionId: verifyVersionId, status: 2}}
       postData={(data) => {
         data.forEach(item => {
           item.goodsSalePrice = item.goodsSalePrice/100
@@ -256,13 +256,13 @@ const DetailList = (props) => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
-      setVerifyVersionId={setVerifyVersionId}
+      verifyVersionId={verifyVersionId}
       setFlag={setFlag}
     />}
     {replaceFormVisible && <ReplaceForm
       visible={replaceFormVisible}
       setVisible={setReplaceFormVisible}
-      setVerifyVersionId={setVerifyVersionId}
+      verifyVersionId={verifyVersionId}
       detailData={detailData}
       setFlag={setFlag}
     />}
