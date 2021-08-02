@@ -10,7 +10,7 @@ import Upload from '@/components/upload';
 import { bannerAdd } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, setVisible, onClose, visible, verifyVersionId } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
   const [nowIndex, setNowIndex] = useState(0);
@@ -44,15 +44,15 @@ export default (props) => {
       param.id = id
     }
     if (detailData) {
-      if (param.useType.length > 1) {
-        param.useType = {
-          '全平台':1,
-          '手机端':2,
-          'h5':3,
-          'web网页':4,
-          '小程序':5,
-        }[detailData.useType]
-      }
+      // if (param.useType.length > 1) {
+      //   param.useType = {
+      //     '全平台':1,
+      //     '手机端':2,
+      //     'h5':3,
+      //     'web网页':4,
+      //     '小程序':5,
+      //   }[detailData.useType]
+      // }
       if (param.location.length > 1) {
         param.location = {
           '首页':1,
@@ -63,11 +63,15 @@ export default (props) => {
       }
     }
   
-  
-    return new Promise((resolve) => {
+    if (verifyVersionId) {
+      param.verifyVersionId = verifyVersionId
+    }
+    return new Promise((resolve, reject) => {
       bannerAdd(param).then((res) => {
         if (res.code === 0) {
           resolve(true);
+        } else {
+          reject(false);
         }
       })
   
@@ -77,13 +81,13 @@ export default (props) => {
   useEffect(() => {
     if (detailData) {
       setNowIndex(detailData.location)
-      detailData.useType = {
-        1: '全平台',
-        2: '手机端',
-        3: 'h5',
-        4: 'web网页',
-        5: '小程序',
-      }[detailData.useType]
+      // detailData.useType = {
+      //   1: '全平台',
+      //   2: '手机端',
+      //   3: 'h5',
+      //   4: 'web网页',
+      //   5: '小程序',
+      // }[detailData.useType]
       detailData.location = {
         1: '首页',
         2: '集约',
@@ -119,7 +123,7 @@ export default (props) => {
         return true;
       }}
     >
-      <ProForm.Group>
+      {/* <ProForm.Group>
         <ProFormSelect
           name="useType"
           label="适用平台"
@@ -133,7 +137,7 @@ export default (props) => {
           placeholder="选择平台"
           rules={[{ required: true, message: '请选择平台!' }]}
         />
-      </ProForm.Group>
+      </ProForm.Group> */}
       <ProForm.Group>
         <ProFormSelect
           name="location"

@@ -3,14 +3,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
+import ContentVersionTab from '@/components/content-version-tab';
 import { kingKongDistrictList, kongKongDistrictDel, kongKongModifyType, kingKongTop } from '@/services/cms/member/member';
 
 const KingKongDistrict = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
+  const [verifyVersionId, setVerifyVersionId] = useState(1);
   const [flag, setFlag] = useState(false)
 
   useEffect(() => {
@@ -145,6 +148,9 @@ const KingKongDistrict = () => {
 
   return (
     <PageContainer>
+      <ProForm.Group>
+        <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
+      </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
@@ -207,6 +213,7 @@ const KingKongDistrict = () => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
+      verifyVersionId={verifyVersionId}
       change={setFlag}
     />}
     </PageContainer>
