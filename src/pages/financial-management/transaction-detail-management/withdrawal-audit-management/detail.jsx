@@ -177,7 +177,7 @@ const Detail = () => {
     },
     {
       title: '提现虚拟账户',
-      dataIndex: 'account_sn'
+      dataIndex: 'accountSn'
     },
     {
       title: '可提现余额',
