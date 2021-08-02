@@ -155,6 +155,9 @@ const KingKongDistrict = () => {
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
+      params={{
+        verifyVersionId: verifyVersionId
+      }}
       request={kingKongDistrictList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

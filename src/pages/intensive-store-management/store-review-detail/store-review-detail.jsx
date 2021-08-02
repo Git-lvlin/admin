@@ -100,8 +100,8 @@ const Detail = () => {
         optAdminName: userInfo.username,
         longitude: location[0],
         latitude: location[1],
-        realname: detailData.details.realname,
-        idNumber: detailData.details.idNumber,
+        // realname: detailData.details.realname,
+        // idNumber: detailData.details.idNumber,
         idFront: imageInfo.idCardFrontImg,
         idBack: imageInfo.idCardBackImg,
         idHandheld: imageInfo.idHandheld,
@@ -158,7 +158,9 @@ const Detail = () => {
             idCardFrontImg: details.idFront,
             idCardBackImg: details.idBack,
             idHandheld: details.idHandheld,
-          }
+          },
+          realname: details?.realname,
+          idNumber: details?.idNumber,
         })
       }
     }).finally(() => {
@@ -293,16 +295,30 @@ const Detail = () => {
           >
             <div id="container" style={{ width: 600, height: 300 }}></div>
           </Form.Item>
-          <Form.Item
+          <ProFormText
+            name="realname"
+            label="姓名"
+            placeholder="请输入姓名"
+            rules={[{ required: true, message: '请输入姓名' }]}
+            width="md"
+          />
+          <ProFormText
+            name="idNumber"
+            label="身份证号"
+            placeholder="请输入身份证号"
+            rules={[{ required: true, message: '请输入身份证号' }]}
+            width="md"
+          />
+          {/* <Form.Item
             label="姓名"
           >
             {detailData?.details?.realname}
-          </Form.Item>
-          <Form.Item
+          </Form.Item> */}
+          {/* <Form.Item
             label="身份证号"
           >
             {detailData?.details?.idNumber}
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             label="审核资料文件"
             name="imageInfo"

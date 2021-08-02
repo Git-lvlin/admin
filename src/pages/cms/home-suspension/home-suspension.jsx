@@ -3,8 +3,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
+import ContentVersionTab from '@/components/content-version-tab';
 import { homeSuspensionList, homeSuspensionDel } from '@/services/cms/member/member';
 
 const HomeSuspension = () => {
@@ -12,6 +14,7 @@ const HomeSuspension = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [flag, setFlag] = useState(false);
+  const [verifyVersionId, setVerifyVersionId] = useState(1);
 
   const getDetail = (data) => {
     data && setDetailData(data);
@@ -107,10 +110,16 @@ const HomeSuspension = () => {
 
   return (
     <PageContainer>
+      <ProForm.Group>
+        <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
+      </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
+      params={{
+        verifyVersionId: verifyVersionId
+      }}
       request={homeSuspensionList}
       search={{
         labelWidth: 'auto',
@@ -129,6 +138,7 @@ const HomeSuspension = () => {
     {formVisible && <Edit
       visible={formVisible}
       setVisible={setFormVisible}
+      verifyVersionId={verifyVersionId}
       detailData={detailData}
       setFlag={setFlag}
     />}
