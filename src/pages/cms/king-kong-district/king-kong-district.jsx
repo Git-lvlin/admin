@@ -33,7 +33,7 @@ const KingKongDistrict = () => {
   }
 
   const formControl = (data) => {
-    kongKongDistrictDel({id: data}).then((res) => {
+    kongKongDistrictDel({id: data, verifyVersionId:verifyVersionId}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
         actionRef.current.reset();
@@ -51,7 +51,7 @@ const KingKongDistrict = () => {
         state: type
       })
     }
-    kongKongModifyType({goodsTypeUpdateStateRequestList:goodsTypeUpdateStateRequestList}).then((res) => {
+    kongKongModifyType({goodsTypeUpdateStateRequestList:goodsTypeUpdateStateRequestList, verifyVersionId:verifyVersionId}).then((res) => {
       if (res.code === 0) {
         message.success(`操作成功`);
         actionRef.current.reset();
@@ -60,7 +60,7 @@ const KingKongDistrict = () => {
   }
 
   const top = (id) => {
-    kingKongTop({id:id}).then((res) => {
+    kingKongTop({id:id, verifyVersionId:verifyVersionId}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
         actionRef.current.reset();
