@@ -3,10 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
-import ContentVersionTab from '@/components/content-version-tab';
 import { expressNewsList, expressNewsDel, expressNewsDown, expressNewsTop } from '@/services/cms/member/member';
 
 const ExpressNews = () => {
@@ -14,7 +12,6 @@ const ExpressNews = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [flag, setFlag] = useState(false);
-  const [verifyVersionId, setVerifyVersionId] = useState(1);
 
   useEffect(() => {
     if (flag) {
@@ -29,11 +26,9 @@ const ExpressNews = () => {
   }
 
   const formControl = (record) => {
-    console.log('record....', record)
     let data = [{'id':record}]
     if (record.selectedRows) {
       data = record.selectedRows.map((item) =>{ return {id:item['id']}})
-      console.log('data...', data)
     }
     expressNewsDel({deleteIdLists: data}).then((res) => {
       if (res.code === 0) {
@@ -137,14 +132,10 @@ const ExpressNews = () => {
 
   return (
     <PageContainer>
-      <ProForm.Group>
-        <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
-      </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
-      params={{verifyVersionId: verifyVersionId}}
       request={expressNewsList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
@@ -195,7 +186,6 @@ const ExpressNews = () => {
       setVisible={setFormVisible}
       detailData={detailData}
       getContainer={false}
-      verifyVersionId={verifyVersionId}
       setFlag={setFlag}
     />}
     </PageContainer>
