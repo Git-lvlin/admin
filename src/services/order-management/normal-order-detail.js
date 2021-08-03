@@ -28,3 +28,11 @@ export const expressInfo = async (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const expressInfoYlbb = async (params = {}, options = {}) => {
+  return request('/auth/express/express/expressInfoYlbb', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

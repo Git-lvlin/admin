@@ -3,12 +3,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
 import ReplaceForm from './replace-form';
 import Modify from './edit';
 import { hotGoosList, hotGoosOperation, tagSortTop } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
+import ContentVersionTab from '@/components/content-version-tab';
 
 const HotGoos = () => {
   const actionRef = useRef();
@@ -17,6 +19,7 @@ const HotGoos = () => {
   const [modifyFormVisible, setModifyFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(false);
   const [flag, setFlag] = useState(false);
+  const [verifyVersionId, setVerifyVersionId] = useState(1);
 
   useEffect(() => {
     if (flag) {
@@ -191,6 +194,9 @@ const HotGoos = () => {
 
   return (
     <PageContainer>
+      <ProForm.Group>
+        <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
+      </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
@@ -201,7 +207,7 @@ const HotGoos = () => {
         })
         return data
       }}
-      params={{tagCode:'hot_sale'}}
+      params={{tagCode:'hot_sale', verifyVersionId: verifyVersionId, status: 2}}
       request={hotGoosList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
@@ -266,12 +272,14 @@ const HotGoos = () => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
+      verifyVersionId={verifyVersionId}
       setFlag={setFlag}
     />}
     {replaceFormVisible && <ReplaceForm
       visible={replaceFormVisible}
       setVisible={setReplaceFormVisible}
       detailData={detailData}
+      verifyVersionId={verifyVersionId}
       setFlag={setFlag}
     />}
       {modifyFormVisible && <Modify

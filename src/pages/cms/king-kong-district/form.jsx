@@ -9,7 +9,7 @@ import Upload from '@/components/upload';
 import { kingKongAdd, kingKongModify } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, change, setVisible, visible } = props;
+  const { detailData, change, setVisible, visible, verifyVersionId } = props;
   const [form] = Form.useForm()
 
   const waitTime = (values) => {
@@ -21,6 +21,9 @@ export default (props) => {
     if (id) {
       param.id = id
       api = kingKongModify
+    }
+    if (verifyVersionId) {
+      param.verifyVersionId = verifyVersionId
     }
     return new Promise((resolve, reject) => {
       api(param).then((res) => {

@@ -3,11 +3,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
 import Modify from './edit';
 import Edits from './forms';
-
+import ContentVersionTab from '@/components/content-version-tab';
 import { saveMoneyList, saveMoneyOperation, saveMoneySortTop } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
 
@@ -20,7 +21,7 @@ const SaveMoney = () => {
   const [modifyFormVisible, setModifyFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(true);
   const [flag, setFlag] = useState(false);
-
+  const [verifyVersionId, setVerifyVersionId] = useState(1);
 
   useEffect(() => {
     if (flag) {
@@ -103,12 +104,6 @@ const SaveMoney = () => {
       valueType: 'number',
       search: false,
     },
-    // {
-    //   title: '销量',
-    //   dataIndex: 'goodsSaleNum',
-    //   valueType: 'number',
-    //   search: false,
-    // },
     {
       title: '状态',
       dataIndex: 'status',
@@ -136,8 +131,6 @@ const SaveMoney = () => {
       valueEnum: {
         1: '未发布',
         2: '已发布',
-        // 3: '下线',
-        // 4: '删除',
       }
     },
     {
@@ -162,6 +155,9 @@ const SaveMoney = () => {
 
   return (
     <PageContainer>
+      <ProForm.Group>
+        <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
+      </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
@@ -171,6 +167,10 @@ const SaveMoney = () => {
           item.goodsSalePrice = item.goodsSalePrice/100
         })
         return data
+      }}
+      params={{
+        verifyVersionId: verifyVersionId,
+        status: 2
       }}
       request={saveMoneyList}
       rowSelection={{
@@ -232,12 +232,14 @@ const SaveMoney = () => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
+      verifyVersionId={verifyVersionId}
       setFlag={setFlag}
     />}
     {formVisibles && <Edits
       visible={formVisibles}
       setVisible={setFormVisibles}
       detailData={detailData}
+      verifyVersionId={verifyVersionId}
       setFlag={setFlag}
     />}
     {modifyFormVisible && <Modify
