@@ -403,9 +403,9 @@ export default (props) => {
             bankCardFrontImg: bankCardFrontImg?.[0],
           },
           bankCode: { label: bankName, value: bankCode },
-          bankAccountType: bankAccountType || 1,
+          bankAccountType,
           bankCardNo,
-          bankAccountName: (bankAccountType || 1) ? detailData.companyName : bankAccountName,
+          bankAccountName: bankAccountType === 1 ? detailData.companyName : bankAccountName,
           warrantyRatio: warrantyRatioDisplay,
           defaultWholesaleTaxRate: defaultWholesaleTaxRateDisplay,
         })
