@@ -159,7 +159,6 @@ export default (props) => {
               全部功能
             </Checkbox>}
           <Tree
-            checkable
             treeData={treeData}
             checkedKeys={selectKeys}
             onCheck={onCheck}
