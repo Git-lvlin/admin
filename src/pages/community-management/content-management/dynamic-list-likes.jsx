@@ -6,7 +6,6 @@ import { listLikes } from '@/services/community-management/dynamic-list-likes';
 
 export default props => {
 let id = props.location.query.id
-console.log('id',id)
 const actionRef = useRef();
 const columns= [
   {

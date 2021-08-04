@@ -5,7 +5,6 @@ import Upload from '@/components/upload';
 import { storeDetail } from '@/services/daifa-store-management/list'
 import { arrayToTree } from '@/utils/utils'
 import { categoryAll } from '@/services/common';
-import ProCard from '@ant-design/pro-card';
 import moment from 'moment';
 
 
@@ -123,21 +122,18 @@ const ListDetail = props => {
           <Form.Item
             label="身份证姓名正面照片"
             name="idFront"
-            extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
           >
             <Upload disabled={true}  multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
           <Form.Item
             label="身份证国徽面照片"
             name="idBack"
-            extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
           >
             <Upload disabled={true} multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
           <Form.Item
             label="手持身份证照片"
             name="idHandheld"
-            extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
           >
             <Upload disabled={true} multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
@@ -145,7 +141,6 @@ const ListDetail = props => {
           <Form.Item
             label="结算银行卡正面照"
             name="bankFront"
-            extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
           >
             <Upload disabled={true} multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
@@ -153,7 +148,6 @@ const ListDetail = props => {
           <Form.Item
             label="结算银行卡背面照"
             name="bankBack"
-            extra="1.图片大小1MB以内 2.图片格式png/jpg/gif"
           >
             <Upload disabled={true} multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
@@ -217,9 +211,9 @@ const ListDetail = props => {
             {moment(detailData.createTime).format('YYYY-MM-DD HH:mm:ss')}
           </Form.Item>
           <Form.Item
-            label="."
+            label=" "
           >
-            <Button type="primary" onClick={()=>history.goBack()}>返回</Button>
+            <Button type="default" onClick={()=>history.goBack()}>返回</Button>
           </Form.Item>
           
         </Form>
