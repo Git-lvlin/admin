@@ -321,7 +321,6 @@ const useSecond=(props)=>{
                             }}
                             style={{display:flag?'block':'none'}}
                             onFinish={async (values) => {
-                            console.log('values',values);
                             dispatch({
                                 type:'UseScopeList/fetchLookUnit',
                                 payload:{

@@ -39,20 +39,20 @@ const circulation=props=>{
             {
                 position==1||DetailList.data?.issueQuantity?
                     <div className={styles.unfold}>
-                    <ProForm.Group>
-                        <ProFormText 
-                            name="issueQuantity"
-                            fieldProps={{
-                                onChange: (e) => sumMoney(e),
-                                }}
-                            placeholder="请输入拟发行的总数量"
-                            rules={[
-                                {validator: checkConfirm}
-                            ]} 
-                        />
-                        <span>张</span>
-                    </ProForm.Group>
-                    <p>优惠券发行总金额为<span className={styles.compute }>{summoney*10||(parseInt(id)==id)&&DetailList.data?.issueQuantity*10}</span>元</p>
+                        <ProForm.Group>
+                            <ProFormText 
+                                name="issueQuantity"
+                                fieldProps={{
+                                    onChange: (e) => sumMoney(e),
+                                    }}
+                                placeholder="请输入拟发行的总数量"
+                                rules={[
+                                    {validator: checkConfirm}
+                                ]} 
+                            />
+                            <span>张</span>
+                        </ProForm.Group>
+                        <p>优惠券发行总金额为<span className={styles.compute }>{summoney*10||(parseInt(id)==id)&&DetailList.data?.issueQuantity*10}</span>元</p>
                     </div>
                 :null
             }
