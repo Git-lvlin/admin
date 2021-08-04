@@ -65,17 +65,17 @@ const couponConstruction = (props) => {
     }
     values.issueQuantity = parseInt(values.issueQuantity)//发行量
     values.limitStartTime = values.dateRange ? values.dateRange[0] : null,//可领取开始时间
-      values.limitEndTime = values.dateRange ? values.dateRange[1] : null,//可领取结束时间
-      values.limitQuantity = parseInt(values.limitQuantity)//限领数量
+    values.limitEndTime = values.dateRange ? values.dateRange[1] : null,//可领取结束时间
+    values.limitQuantity = parseInt(values.limitQuantity)//限领数量
     values.activityStartTime = values.dateTimeRange ? values.dateTimeRange[0] : null,//有效期开始时间
-      values.activityEndTime = values.dateTimeRange ? values.dateTimeRange[1] : null,//有效期结束时间
-      values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
-      values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
-      values.useTypeInfoM = {//秒约商品详情信息
-        goodsType: values.goodsType,
-        spuIds: UseScopeList.UseScopeObje.spuIds,
-        classId: parseInt(UseScopeList.UseScopeObje.unit)
-      }
+    values.activityEndTime = values.dateTimeRange ? values.dateTimeRange[1] : null,//有效期结束时间
+    values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
+    values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
+    values.useTypeInfoM = {//秒约商品详情信息
+      goodsType: values.goodsType,
+      spuIds: UseScopeList.UseScopeObje.spuIds,
+      classId: parseInt(UseScopeList.UseScopeObje.unit)
+    }
     //群体Id
     values.couponCrowdId = UseScopeList.UseScopeObje.CrowdIds
     values.memberType = parseInt(values.memberType)
