@@ -24,7 +24,7 @@ const TransactionDetails = () => {
     setLoading(true)
     apiMethod({orderNo: id}).then(res=> {
       if(res.success) {
-        setInfo({...res?.data?.info, ...res?.data})
+        setInfo({...res?.data, ...res?.data?.info})
         setPayInfos(res?.data?.payInfos)
       }
     }).finally(()=> {
@@ -110,7 +110,7 @@ const TransactionDetails = () => {
     },
     {
       title: '受益方会员信息',
-      dataIndex: 'accountId'
+      dataIndex: 'accountMobile'
     },
     {
       title: '虚拟子账户',
@@ -118,7 +118,7 @@ const TransactionDetails = () => {
     },
     {
       title: '买家会员类型',
-      dataIndex: 'sellerType'
+      dataIndex: 'buyerType'
     },
     {
       title: '',
@@ -126,11 +126,11 @@ const TransactionDetails = () => {
     },
     {
       title: '买家会员信息',
-      dataIndex: 'sellerMobile'
+      dataIndex: 'buyerMobile'
     },
     {
       title: '虚拟子账户',
-      dataIndex: 'sellerSn'
+      dataIndex: 'buyerSn'
     }
   ]
   const columns2 = [
