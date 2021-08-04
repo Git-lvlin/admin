@@ -20,7 +20,6 @@ const CTree = (props) => {
     if (checked) {
       setSelectKeys(data.map(item => item.id));
       onChange(data.map(item => item.id))
-
     } else {
       setSelectKeys([]);
       onChange([])
@@ -51,6 +50,7 @@ const CTree = (props) => {
       </Checkbox>
       <Tree
         {...rest}
+        checkable
         treeData={treeData}
         onCheck={onCheck}
         checkedKeys={selectKeys}

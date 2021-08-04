@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Button, message, Form } from 'antd';
+import { message, Form } from 'antd';
 import ProForm, {
   DrawerForm,
   ProFormText,
@@ -7,10 +7,6 @@ import ProForm, {
 import MemberReg from '@/components/member-reg';
 import Upload from '@/components/upload';
 import { spaceAdd } from '@/services/cms/member/member';
-
-
-
-
 
 export default (props) => {
   const { detailData, setVisible, onClose, visible } = props;
@@ -33,10 +29,12 @@ export default (props) => {
       info,
       ...rest
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       spaceAdd(param).then((res) => {
         if (res.code === 0) {
           resolve(true);
+        } else {
+          reject(false);
         }
       })
   
