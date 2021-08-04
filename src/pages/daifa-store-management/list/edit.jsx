@@ -44,7 +44,7 @@ const CTree = (props) => {
 
   return (
     <div style={{ flex: 1 }}>
-      <Checkbox
+      <Checkbox 
         onChange={onSelectAll}
         checked={selectAll}
         style={{ marginLeft: 23, marginBottom: 5 }}
