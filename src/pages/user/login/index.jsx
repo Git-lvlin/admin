@@ -36,7 +36,6 @@ const Login = () => {
         // } else {
         //   window.localStorage.removeItem('account');
         // }
-        console.log('res',res)
         window.localStorage.setItem('token', res.data.token)
         window.localStorage.setItem('nickname', res.data.nickname)
         window.localStorage.setItem('user', JSON.stringify({id:res.data.id,username:res.data.username}))
