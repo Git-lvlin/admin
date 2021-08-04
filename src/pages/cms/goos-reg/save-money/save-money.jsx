@@ -152,7 +152,6 @@ const SaveMoney = () => {
     },
   ];
 
-
   return (
     <PageContainer>
       <ProForm.Group>
@@ -169,8 +168,7 @@ const SaveMoney = () => {
         return data
       }}
       params={{
-        verifyVersionId: verifyVersionId,
-        status: 2
+        verifyVersionId: verifyVersionId
       }}
       request={saveMoneyList}
       rowSelection={{
@@ -251,6 +249,5 @@ const SaveMoney = () => {
     </PageContainer>
   );
 };
-
 
 export default SaveMoney

@@ -204,7 +204,7 @@ const DetailList = (props) => {
       options={false}
       columns={columns}
       actionRef={actionRef}
-      params={acid&&{cmsId:acid,verifyVersionId: verifyVersionId, status: 2}}
+      params={acid&&{cmsId:acid,verifyVersionId: verifyVersionId}}
       postData={(data) => {
         data.forEach(item => {
           item.goodsSalePrice = item.goodsSalePrice/100
