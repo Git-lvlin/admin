@@ -6,7 +6,6 @@ import { history } from 'umi'
 import { amountTransform } from '@/utils/utils'
 import { goodsAmountPage } from '@/services/financial-management/transaction-detail-management'
 
-// payment details
 const LoanDetailManagement = () =>{
   const skipToDetail = data => {
     history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=loan`)
