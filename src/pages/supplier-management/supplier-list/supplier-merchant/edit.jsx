@@ -321,7 +321,7 @@ export default (props) => {
         supplierId: detailData?.supplierId,
         bindSupplierIds: selectData.map(item => item.id).join(','),
         gcInfo: gcArr,
-      }, { showSuccess: true, showError: true, noFilterParams: true, }).then(res => {
+      }, { showSuccess: true, showError: true, noFilterParams: true, paramsUndefinedToEmpty: true }).then(res => {
         if (res.code === 0) {
           resolve();
           callback();
