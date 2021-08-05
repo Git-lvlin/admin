@@ -6,10 +6,10 @@ const ContentVersionTab = ({setVerifyVersionId}) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    // contentVersionList()
-    //   .then(res => {
-    //     setData(res.data)
-    //   })
+    contentVersionList()
+      .then(res => {
+        setData(res.data)
+      })
     return () => {
       setData([])
     }
