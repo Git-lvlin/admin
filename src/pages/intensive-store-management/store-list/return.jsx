@@ -4,12 +4,12 @@ import {
   ModalForm,
   ProFormTextArea,
 } from '@ant-design/pro-form';
-import { refunded } from '@/services/intensive-store-management/store-list';
+import { refunded, backTrack } from '@/services/intensive-store-management/store-list';
 import { getDetail } from '@/services/intensive-store-management/store-detail';
 import { amountTransform } from '@/utils/utils'
 
 export default (props) => {
-  const { visible, setVisible, callback, data } = props;
+  const { visible, setVisible, callback, data, type } = props;
   const [deposit, setDeposit] = useState({})
   const [form] = Form.useForm();
   const formItemLayout = {
@@ -28,8 +28,9 @@ export default (props) => {
   const submit = (values) => {
     return new Promise((resolve, reject) => {
       let userInfo = window.localStorage.getItem('user');
-      userInfo = userInfo && JSON.parse(userInfo)
-      refunded({
+      userInfo = userInfo && JSON.parse(userInfo);
+      const apiMethod = type === 1 ? refunded : backTrack
+      apiMethod({
         applyId: data.applyId,
         refendAmount: amountTransform(values.refendAmount),
         remark: values.remark,
