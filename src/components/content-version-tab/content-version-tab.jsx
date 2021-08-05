@@ -6,10 +6,10 @@ const ContentVersionTab = ({setVerifyVersionId}) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    contentVersionList()
-      .then(res => {
-        setData(res.data)
-      })
+    // contentVersionList()
+    //   .then(res => {
+    //     setData(res.data)
+    //   })
     return () => {
       setData([])
     }
@@ -20,13 +20,13 @@ const ContentVersionTab = ({setVerifyVersionId}) => {
   }
 
   return (
-    <ProCard>
+    data.length?<ProCard>
       {
         data.map((item, index) => {
           return <Button key={index} onClick={() => setId(item.id)}>{item.title}</Button>
         })
       }
-    </ProCard>
+    </ProCard>:''
   )
 }
 
