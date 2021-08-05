@@ -68,17 +68,17 @@ const StoreReview = () => {
       hideInSearch: true,
       render: (_, { details }) => details?.houseNumber
     },
-    {
-      title: '提货店授权书',
-      dataIndex: '',
-      valueType: 'text',
-      hideInSearch: true,
-      render: (_, { details }) => (
-        <Space>
-          <Image src={details.credentialUrl} width={50} height={50} />
-        </Space>
-      )
-    },
+    // {
+    //   title: '提货店授权书',
+    //   dataIndex: '',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   render: (_, { details }) => (
+    //     <Space>
+    //       <Image src={details.credentialUrl} width={50} height={50} />
+    //     </Space>
+    //   )
+    // },
     {
       title: '身份证',
       dataIndex: '',
