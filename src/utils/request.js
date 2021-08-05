@@ -123,12 +123,12 @@ const request = (url, options = {}) => {
     return null;
   }
 
-  if (options.data) {
+  if (options.data && !options.noFilterParams) {
     // eslint-disable-next-line no-param-reassign
     options.data = paramsEmptyFilter(options.data)
   }
 
-  if (options.params) {
+  if (options.params && !options.noFilterParams) {
     // eslint-disable-next-line no-param-reassign
     options.params = paramsEmptyFilter(options.params)
   }

@@ -321,7 +321,7 @@ export default (props) => {
         supplierId: detailData?.supplierId,
         bindSupplierIds: selectData.map(item => item.id).join(','),
         gcInfo: gcArr,
-      }, { showSuccess: true, showError: true }).then(res => {
+      }, { showSuccess: true, showError: true, noFilterParams: true, }).then(res => {
         if (res.code === 0) {
           resolve();
           callback();
@@ -647,18 +647,18 @@ export default (props) => {
             }}
             extra={<><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
             step
-            // validateFirst
-            // rules={[
-            //   { required: true, message: '请输入商品质保金比例' },
-            //   () => ({
-            //     validator(_, value) {
-            //       if (!/^\d+\.?\d*$/g.test(value) || value < 0) {
-            //         return Promise.reject(new Error('请输入大于零或等于零的数字'));
-            //       }
-            //       return Promise.resolve();
-            //     },
-            //   })
-            // ]}
+          // validateFirst
+          // rules={[
+          //   { required: true, message: '请输入商品质保金比例' },
+          //   () => ({
+          //     validator(_, value) {
+          //       if (!/^\d+\.?\d*$/g.test(value) || value < 0) {
+          //         return Promise.reject(new Error('请输入大于零或等于零的数字'));
+          //       }
+          //       return Promise.resolve();
+          //     },
+          //   })
+          // ]}
           />
         </div>
       </div>
