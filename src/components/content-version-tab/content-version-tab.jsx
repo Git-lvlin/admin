@@ -4,7 +4,7 @@ import ProCard from '@ant-design/pro-card';
 import { contentVersionList } from '@/services/cms/member/member';
 const ContentVersionTab = ({setVerifyVersionId}) => {
   const [data, setData] = useState([]);
-
+  const [indexbtn, setIndexbtn] = useState(null);
   useEffect(() => {
     contentVersionList()
       .then(res => {
@@ -15,18 +15,19 @@ const ContentVersionTab = ({setVerifyVersionId}) => {
     }
   }, [])
 
-  const setId = (id) => {
+  const setId = (id, index) => {
+    setIndexbtn(index)
     return setVerifyVersionId(id)
   }
 
   return (
-    <ProCard>
+    data.length?<ProCard>
       {
         data.map((item, index) => {
-          return <Button key={index} onClick={() => setId(item.id)}>{item.title}</Button>
+          return <Button key={index} type={indexbtn==index?'primary':''} onClick={() => setId(item.id, index)}>{item.title}</Button>
         })
       }
-    </ProCard>
+    </ProCard>:''
   )
 }
 

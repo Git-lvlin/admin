@@ -53,3 +53,11 @@ export const refunded = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const backTrack = (params = {}, options = {}) => {
+  return request('/auth/store/storeDeposit/backTrack', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
