@@ -198,7 +198,7 @@ const StrategyToday = () => {
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
-      params={{tagCode:'day_yeahgo'}}
+      params={{tagCode:'day_yeahgo', verifyVersionId: verifyVersionId}}
       postData={(data) => {
         data.forEach(item => {
           item.goodsSalePrice = item.goodsSalePrice/100
