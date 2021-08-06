@@ -25,8 +25,8 @@ export const findByWays = async (params = {}, options = {}) => {
   });
 
   return {
-    data: res?.data?.records,
-    total: res?.data?.total,
+    data: Array.isArray(res.data.records) ? res.data.records : [],
+    total: res.data.total,
     success: res?.success
   }
 }
