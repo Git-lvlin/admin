@@ -1,14 +1,16 @@
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
-import React, { useRef, useEffect, useState} from 'react'
-import XLSX from 'xlsx'
-import { Button } from 'antd'
+import React, { useState } from 'react'
+import { 
+  Button,
+} from 'antd'
 import moment from 'moment'
 import { history } from 'umi'
 
 import { refundOrder } from '@/services/order-management/after-sales-order'
 import { amountTransform } from '@/utils/utils'
-import './styles.less'
+// import Export from '@/pages/export-excel/export'
+// import ExportHistory from '@/pages/export-excel/export-history'
 
 
 const sourceType = {
@@ -121,104 +123,16 @@ const columns = [
     render: (_, record) => <a onClick={ () => {history.push(`/order-management/after-sales-order/detail/${record?.id}`)} }>查看详情</a>
   }
 ]
-// function saleType(val) {
-//   switch(val) {
-//     case 1: 
-//       return  '仅退款';
-//     case 2:
-//       return '退款退货'
-//   }
-// }
-// function saleStatus(val) {
-//   switch(val) {
-//     case 1: 
-//       return '待审核';
-//     case 2:
-//       return '处理中';
-//     case 3:
-//       return '已拒绝申请';
-//     case 4:
-//       return '已拒绝退款';
-//     case 5:
-//       return '已完成';
-//     case 6:
-//       return '已关闭';
-//   }
-// }
-
-// const exportExcel = val => {
-//   const data = val.map(data=> {
-//     return {
-//       orderSn: data.orderSn,
-//       subOrderSn: data.subOrderSn,
-//       applyTime: moment(data.applyTime).format('YYYY-MM-DD HH:mm:ss'),
-//       userNickname: data.userNickname,
-//       buyerPhone: data.buyerPhone,
-//       storeName: data.storeName,
-//       storePhone: data.storePhone,
-//       afterSalesType: saleType(data.afterSalesType),
-//       returnAmount: amountTransform(data.returnAmount, '/'),
-//       status: saleStatus(data.status)
-//     }
-//   })
-//   const ws = XLSX.utils.json_to_sheet(
-//     [
-//       {
-//         orderSn: '售后编号',
-//         subOrderSn: '订单编号',
-//         applyTime: '申请时间',
-//         userNickname: '买家昵称',
-//         buyerPhone: '买家手机号',
-//         storeName: '商家名称',
-//         storePhone: '商家手机号',
-//         afterSalesType: '售后类型',
-//         returnAmount: '退款总金额（元）',
-//         status: '退款状态'
-//       },
-//       ...data
-//     ],
-//     {
-//       header: [
-//         'orderSn',
-//         'subOrderSn',
-//         'applyTime',
-//         'userNickname',
-//         'buyerPhone',
-//         'storeName',
-//         'storePhone',
-//         'afterSalesType',
-//         'returnAmount',
-//         'status'
-//       ],
-//       skipHeader: true
-//     }
-//   )
-//   const wb = XLSX.utils.book_new()
-//   XLSX.utils.book_append_sheet(wb, ws, "file")
-//   XLSX.writeFile(wb, `售后订单${+new Date()}.xlsx`)
-// }
 const afterSalesOrder = () => {
-  const actionRef = useRef()
-  // const [data, setData] = useState([])
-  // useEffect(()=> {
-  //   refundOrder({size: 9999999999}).then(res=> {
-  //     if(res.success) {
-  //       setData(res.data)
-  //     }
-  //   })
-  //   return ()=> {
-  //     setData([])
-  //   }
-  // }, [])
-
+  const [visit, setVisit] = useState(false)
+  
   return (
     <PageContainer title={false}>
-      <ProTable
+      <ProTable 
         rowKey="orderSn"
         options={false}
         params={{}}
         request={refundOrder}
-        actionRef={actionRef}
         search={{
           optionRender: ({searchText, resetText}, {form}) => [
             <Button
@@ -238,15 +152,15 @@ const afterSalesOrder = () => {
               }}
             >
               {resetText}
-            </Button>,
-            // <Button key="out" onClick={()=> {exportExcel(data)}}>导出</Button>
-          ],
+            </Button>
+          ]
         }}
         headerTitle="数据列表"
         columns={columns}
         pagination={{
           showQuickJumper: true,
-          hideOnSinglePage: true
+          hideOnSinglePage: true,
+          pageSize: 10
         }}
       />
     </PageContainer>
