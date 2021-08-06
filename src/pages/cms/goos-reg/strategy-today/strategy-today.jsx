@@ -8,6 +8,8 @@ import Edit from './form';
 import Modify from './edit';
 import ReplaceForm from './replace-form';
 import { hotGoosList, hotGoosOperation,tagSortTop } from '@/services/cms/member/member';
+import ContentVersionTab from '@/components/content-version-tab';
+import ProForm from '@ant-design/pro-form';
 
 const StrategyToday = () => {
   const actionRef = useRef();
@@ -15,7 +17,9 @@ const StrategyToday = () => {
   const [replaceFormVisible, setReplaceFormVisible] = useState(false);
   const [modifyFormVisible, setModifyFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(true);
-  const [flag, setFlag] = useState(false)
+  const [flag, setFlag] = useState(false);
+  const [verifyVersionId, setVerifyVersionId] = useState(1);
+
   const getDetail = (data) => {
     setDetailData(data);
     setModifyFormVisible(true);
@@ -187,6 +191,9 @@ const StrategyToday = () => {
 
   return (
     <PageContainer>
+      <ProForm.Group>
+        <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
+      </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
@@ -261,18 +268,21 @@ const StrategyToday = () => {
     {formVisible && <Edit
       visible={formVisible}
       setVisible={setFormVisible}
+      verifyVersionId={verifyVersionId}
       detailData={detailData}
       setFlag={setFlag}
     />}
     {modifyFormVisible && <Modify
       visible={modifyFormVisible}
       setVisible={setModifyFormVisible}
+      verifyVersionId={verifyVersionId}
       detailData={detailData}
       setFlag={setFlag}
     />}
     {replaceFormVisible && <ReplaceForm
       visible={replaceFormVisible}
       setVisible={setReplaceFormVisible}
+      verifyVersionId={verifyVersionId}
       detailData={detailData}
       setFlag={setFlag}
     />}
