@@ -61,7 +61,7 @@ const StoreList = () => {
       }
     },
     {
-      title: '等级',
+      title: '积分',
       dataIndex: 'score',
       valueType: 'text',
       hideInSearch: true,
@@ -214,7 +214,7 @@ const StoreList = () => {
       dataIndex: ['status', 'desc'],
       valueType: 'text',
       hideInSearch: true,
-      render: (_,data) => {
+      render: (_, data) => {
         const { remark } = data;
         return (
           <>
@@ -242,7 +242,8 @@ const StoreList = () => {
       render: (_, data) => (
         <Space>
           <a onClick={() => { history.push(`/intensive-store-management/store-detail/${data.storeNo}`) }}>详情</a>
-          {data.status.code === 2&& <a onClick={() => { setSelectItem({ ...data }); setReturnVisible(true) }}>退回保证金登记</a>}
+          {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 1 }); setReturnVisible(true) }}>线下退保证金登记</a>}
+          {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 2 }); setReturnVisible(true) }}>线上原路退回保证金</a>}
           {data.status.code === 1 && <a onClick={() => { setSelectItem({ ...data, toStatus: 3 }); setFormVisible(true) }}>关闭</a>}
           {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 1 }); setFormVisible(true) }}>开启</a>}
           {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 2 }); setFormVisible(true) }}>注销</a>}
