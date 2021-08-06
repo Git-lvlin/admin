@@ -7,10 +7,14 @@ import styles from './style.less';
 import Delivery from '@/components/delivery'
 import { amountTransform } from '@/utils/utils'
 import { orderList, deliverGoods } from '@/services/order-management/normal-order';
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+
 
 const TableList = () => {
   const [data, setData] = useState([])
   const [page, setPage] = useState(1)
+  const [visit, setVisit] = useState(false)
   const [pageSize, setPageSize] = useState(10)
   const [pageTotal, setPageTotal] = useState(0)
   const [orderType, setOrderType] = useState(0)
@@ -43,6 +47,17 @@ const TableList = () => {
           setSearch(search + 1)
         }
       })
+  }
+
+  const getFieldValue = () => {
+    const { time, ...rest } = form.getFieldsValue();
+
+    return {
+      orderStatus: orderType === 0 ? '' : orderType,
+      startCreateTime: time?.[0]?.format('YYYY-MM-DD'),
+      endCreateTime: time?.[1]?.format('YYYY-MM-DD'),
+      ...rest,
+    }
   }
 
   useEffect(() => {
@@ -97,7 +112,14 @@ const TableList = () => {
                   >
                     重置
                   </Button>
-                  <Button onClick={() => { exportExcel(form) }}>导出</Button>
+                  <Export
+                    change={(e) => { setVisit(e) }}
+                    key="export"
+                    type="order-common-export"
+                    conditions={getFieldValue()}
+                  />
+                  <ExportHistory key="exportHistory" show={visit} setShow={setVisit} />
+
                 </Space>
               </div>
             );
