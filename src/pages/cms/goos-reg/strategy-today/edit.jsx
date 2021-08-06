@@ -7,7 +7,7 @@ import ProForm, {
 import { tagSortModify } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, setFlag, visible } = props;
+  const { detailData, setVisible, setFlag, visible, verifyVersionId } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
@@ -20,6 +20,9 @@ export default (props) => {
           sort: sort
         }
       ]
+    }
+    if (verifyVersionId) {
+      param.verifyVersionId = verifyVersionId
     }
     return new Promise((resolve, reject) => {
       tagSortModify(param).then((res) => {
