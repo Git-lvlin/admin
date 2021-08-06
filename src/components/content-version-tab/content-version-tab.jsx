@@ -4,7 +4,7 @@ import ProCard from '@ant-design/pro-card';
 import { contentVersionList } from '@/services/cms/member/member';
 const ContentVersionTab = ({setVerifyVersionId}) => {
   const [data, setData] = useState([]);
-  const [indexbtn, setIndexbtn] = useState(null);
+  const [indexbtn, setIndexbtn] = useState(0);
   useEffect(() => {
     contentVersionList()
       .then(res => {
