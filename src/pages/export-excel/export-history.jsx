@@ -1,22 +1,22 @@
-import React,{ useEffect, useState } from 'react'
-import { 
-  Button, 
-  Tooltip, 
-  Form, 
-  Space, 
-  Pagination, 
-  Spin, 
+import React, { useEffect, useState } from 'react'
+import {
+  Button,
+  Tooltip,
+  Form,
+  Space,
+  Pagination,
+  Spin,
   Empty,
   Progress,
   Drawer
 } from 'antd'
-import ProForm,{ ProFormDateRangePicker } from '@ant-design/pro-form'
+import ProForm, { ProFormDateRangePicker } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 
 import { findByWays } from '@/services/export-excel/export-template'
 import styles from './styles.less'
 
-const ExportHistory = ({show, setShow})=> {
+const ExportHistory = ({ show, setShow }) => {
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
   const [pageTotal, setPageTotal] = useState(0)
@@ -44,20 +44,27 @@ const ExportHistory = ({show, setShow})=> {
     }).finally(() => {
       setLoading(false)
     })
-    return ()=> {
+    return () => {
       setData([])
     }
   }, [page, pageSize, form, query])
 
-  const ExprotState = ({state})=> {
+  useEffect(() => {
+    if (show) {
+      setQuery(query + 1)
+    }
+  }, [show])
+
+
+  const ExprotState = ({ state }) => {
     let stateTxt = ''
-    if(state === 1) {
+    if (state === 1) {
       stateTxt = '导出中...'
-    } else if(state === 2) {
+    } else if (state === 2) {
       stateTxt = '导出成功'
-    } else if(state === 3) {
+    } else if (state === 3) {
       stateTxt = '导出失败'
-    } else if(state === 4) {
+    } else if (state === 4) {
       stateTxt = '导出取消'
     } else {
       stateTxt = ''
@@ -67,10 +74,10 @@ const ExportHistory = ({show, setShow})=> {
     )
   }
 
-  return(
+  return (
     <>
       <Tooltip key="history" title="查看历史导出任务">
-        <Button 
+        <Button
           type='primary'
           onClick={() => {
             setShow(true)
@@ -144,7 +151,7 @@ const ExportHistory = ({show, setShow})=> {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           }
           {
-            data.map(item=> (
+            data.map(item => (
               <ProCard
                 loading={loading}
                 key={item.id}
@@ -153,16 +160,16 @@ const ExportHistory = ({show, setShow})=> {
               >
                 <div className={styles.content}>
                   <div className={styles.tag}>导出编号：<span className={styles.no}>{item.id}</span></div>
-                  <ExprotState state={item?.state}/>
+                  <ExprotState state={item?.state} />
                 </div>
                 <div className={styles.footer}>
                   <div className={styles.exportTime}>导出时间：{item.createTime}</div>
                   {
-                    item.process === 100?
-                    <a href={item.fileUrl}>下载</a>:
-                    <div style={{ width: 170 }}>
-                      <Progress percent={item.process} size="small"/>
-                    </div>
+                    item.process === 100 ?
+                      <a href={item.fileUrl}>下载</a> :
+                      <div style={{ width: 170 }}>
+                        <Progress percent={item.process} size="small" />
+                      </div>
                   }
                 </div>
               </ProCard>
@@ -178,7 +185,7 @@ const ExportHistory = ({show, setShow})=> {
             onChange={pageChange}
           />
         </div>
-      </Drawer>    
+      </Drawer>
     </>
   )
 }
