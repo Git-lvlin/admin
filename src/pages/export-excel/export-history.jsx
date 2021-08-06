@@ -7,9 +7,10 @@ import {
   Pagination, 
   Spin, 
   Empty,
-  Progress 
+  Progress,
+  Drawer
 } from 'antd'
-import ProForm,{ DrawerForm, ProFormDateRangePicker } from '@ant-design/pro-form'
+import ProForm,{ ProFormDateRangePicker } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 
 import { findByWays } from '@/services/export-excel/export-template'
@@ -78,20 +79,17 @@ const ExportHistory = ({show, setShow})=> {
           ···
         </Button>
       </Tooltip>
-      <DrawerForm
+      <Drawer
         title="导出任务列表"
         layout="inline"
-        onVisibleChange={setShow}
-        form={form}
-        visible={show}
-        drawerProps={{
-          width:1000,
-          forceRender: true,
-          destroyOnClose: true,
-          footerStyle:{
-            display: 'none'
-          }
+        onClose={() => {
+          setShow(false)
         }}
+        form={form}
+        width={1000}
+        visible={show}
+        forceRender={true}
+        destroyOnClose={true}
       >
         <ProForm
           layout="inline"
@@ -141,7 +139,8 @@ const ExportHistory = ({show, setShow})=> {
         <Spin
           spinning={loading}
         >
-          {data.length === 0 &&
+          {
+            data.length === 0 &&
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           }
           {
@@ -179,7 +178,7 @@ const ExportHistory = ({show, setShow})=> {
             onChange={pageChange}
           />
         </div>
-      </DrawerForm>    
+      </Drawer>    
     </>
   )
 }
