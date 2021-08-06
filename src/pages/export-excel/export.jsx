@@ -7,12 +7,13 @@ import {
 import { createExportTask } from '@/services/export-excel/export-template'
 
 const Export = ({type, change, conditions})=> {
+  const str = JSON.stringify(conditions)
   const downExcel = ()=> {
     createExportTask({
       code: type,
       fileName: type + +new Date() + '.xlsx',
       // TODO:条件
-      queryParamStr: conditions,
+      queryParamStr: str,
       // querydesc: ''
     }).then(res=> {
       if(res?.success) {
