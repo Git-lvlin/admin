@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-// add export config
-export const add = async (params = {}, options = {}) => {
-  const res = await request('/auth/java-admin/exportConfig/add', {
+// 创建导出任务
+export const createExportTask = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/exportTask/createExportTask', {
     method: 'POST',
     data: {
       ...params
@@ -14,9 +14,9 @@ export const add = async (params = {}, options = {}) => {
   }
 }
 
-// update export config
-export const update = async (params = {}, options = {}) => {
-  const res = await request('/auth/java-admin/exportConfig/update', {
+// 导出任务分页查询
+export const findByWays = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/exportTask/findByWays', {
     method: 'POST',
     data: {
       ...params
@@ -25,22 +25,9 @@ export const update = async (params = {}, options = {}) => {
   });
 
   return {
-    success: res.success
-  }
-}
-
-// create export task
-export const create = async (params = {}, options = {}) => {
-  const res = await request('/auth/java-admin/exportTask/createExportTask', {
-    method: 'POST',
-    data: { 
-      ...params
-    },
-    ...options
-  });
-
-  return {
-    success: res.success
+    data: Array.isArray(res.data.records) ? res.data.records : [],
+    total: res?.data?.total,
+    success: res?.success
   }
 }
 
