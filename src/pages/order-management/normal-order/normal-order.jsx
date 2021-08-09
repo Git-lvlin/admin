@@ -114,7 +114,7 @@ const TableList = () => {
                     type="order-common-export"
                     conditions={getFieldValue()}
                   />
-                  <ExportHistory key="exportHistory" show={visit} setShow={setVisit} />
+                  <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type="order-common-export" />
 
                 </Space>
               </div>
