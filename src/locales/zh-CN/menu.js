@@ -60,6 +60,7 @@ export default {
 
   'menu.supplier-management': '供应商家管理',
   'menu.supplier-management.supplier-list': '供应商家列表',
+  'menu.supplier-management.audit-list': '供应商家审核',
   'menu.supplier-management.consultant-product-list': '供应商家顾问商品列表',
   'menu.supplier-management.consultant-supplier-list': '顾问供应商家列表',
   'menu.supplier-management.after-sale-address': '售后地址',
