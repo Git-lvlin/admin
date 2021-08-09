@@ -1,4 +1,4 @@
-import React,{ useEffect, useState } from 'react'
+import React,{ useEffect, useRef, useState } from 'react'
 import { 
   Button, 
   Tooltip, 
@@ -18,19 +18,21 @@ import styles from './styles.less'
 
 const ExportHistory = ({show, setShow})=> {
   const [form] = Form.useForm()
-  const [loading, setLoading] = useState(false)
+  const [load, setLoad] = useState(false)
   const [pageTotal, setPageTotal] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const [page, setPage] = useState(1)
   const [data, setData] = useState([])
   const [query, setQuery] = useState(0)
+  const timer = useRef()
   const pageChange = (a, b) => {
+    clearInterval(timer.current)
     setPage(a)
     setPageSize(b)
   }
-  useEffect(() => {
-    setLoading(true)
+  const getData = ()=> {
     const { time, ...rest } = form.getFieldsValue()
+    setLoad(true)
     findByWays({
       page,
       size: pageSize,
@@ -41,14 +43,27 @@ const ExportHistory = ({show, setShow})=> {
         setData(res.data)
         setPageTotal(res.total)
       }
-    }).finally(() => {
-      setLoading(false)
+    }).finally(()=>{
+      setLoad(false)
     })
+  }
+  useEffect(() => {
+    getData()
     return ()=> {
       setData([])
     }
   }, [page, pageSize, form, query])
 
+  useEffect(()=> {
+    clearInterval(timer.current)
+    timer.current = setInterval(()=>{
+      getData()
+    }, 3000)
+    return ()=> {
+      clearInterval(timer.current)
+      setData([])
+    }
+  }, [page])
   const ExprotState = ({state, desc})=> {
     if(state === 1) {
       return (
@@ -144,9 +159,7 @@ const ExportHistory = ({show, setShow})=> {
             label="导出时间"
           />
         </ProForm>
-        <Spin
-          spinning={loading}
-        >
+        <Spin delay={500} spinning={load}>
           {
             data.length === 0 &&
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
@@ -154,7 +167,6 @@ const ExportHistory = ({show, setShow})=> {
           {
             data.map(item=> (
               <ProCard
-                loading={loading}
                 key={item.id}
                 bordered
                 className={styles.card}
