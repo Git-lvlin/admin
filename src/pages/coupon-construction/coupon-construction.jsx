@@ -11,6 +11,7 @@ import { couponEdit } from '@/services/coupon-construction/coupon-edit';
 import ProForm, { ProFormText, ProFormRadio, ProFormDateRangePicker } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import moment from 'moment';
+import styles from './style.less'
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
@@ -19,6 +20,7 @@ const couponConstruction = (props) => {
   const [position, setPosition] = useState()
   const [choose, setChoose] = useState()
   const [submitType, setSubmitType] = useState()
+  const [face,setFace]=useState()
   let id = props.location.query.id
   let type = props.location.query.type
   const [form] = Form.useForm()
@@ -137,6 +139,10 @@ const couponConstruction = (props) => {
     }
 
   }
+
+  const Discounts=(val)=>{
+    setFace(val)
+  }
   return (
     <>
       <ProForm
@@ -169,9 +175,9 @@ const couponConstruction = (props) => {
           return true;
         }
         }
-        style={{ width: '2000px' }}
+        style={{ width: '2000px',background:'#fff',padding:'20px' }}
       >
-        <Divider orientation="left"><FormattedMessage id="formandbasic-form.basic.setup" /></Divider>
+        <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>基本信息</span></h3>
         {/* 优惠券名称 */}
         <ProFormText
           width="md"
@@ -184,7 +190,7 @@ const couponConstruction = (props) => {
         />
 
         {/* 优惠券类型 */}
-        <CouponType id={id} />
+        <CouponType id={id} Discounts={Discounts} />
 
         {/* 发行量 */}
         {
@@ -200,7 +206,7 @@ const couponConstruction = (props) => {
                 }]}
             />
             :
-            <Circulation id={id} />
+            <Circulation id={id} face={face} />
 
         }
 
@@ -317,7 +323,7 @@ const couponConstruction = (props) => {
         />
         <AssignCrowd id={id} choose={choose} />
 
-        <Divider orientation="left">使用设置</Divider>
+        <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>使用设置</span></h3>
 
         {/* 使用范围 */}
         <UseScope id={id} />
