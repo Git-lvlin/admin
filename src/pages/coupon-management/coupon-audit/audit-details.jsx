@@ -100,7 +100,6 @@ export default props => {
     setLoading(true);
     couponVerifyDetail({ id }).then(res => {
       setDetailData(res.data)
-      console.log('res.data', res.data)
     }).finally(() => {
       setLoading(false);
     })
@@ -111,7 +110,6 @@ export default props => {
       <Spin
         spinning={loading}
       >
-
         <Form
           form={form}
           {...formItemLayout}
