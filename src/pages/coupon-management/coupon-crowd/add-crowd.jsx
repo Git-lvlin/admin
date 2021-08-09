@@ -337,7 +337,6 @@ export default (props) =>{
                 onChange: setEditableRowKeys,
                 onlyAddOneLineAlertMessage:'不能同时新增多行',
                 onSave: async (rowKey, data, row) => {
-                  console.log(rowKey, data, row);
                 },
                 onCancel:async (rowKey, data, row) => {
                   if(rowKey==1){
