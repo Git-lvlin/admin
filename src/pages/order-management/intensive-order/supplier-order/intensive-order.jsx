@@ -7,6 +7,8 @@ import moment from 'moment';
 import styles from './style.less';
 import { orderList } from '@/services/order-management/supplier-order';
 import { amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const TableList = () => {
   const [data, setData] = useState([])
@@ -19,6 +21,8 @@ const TableList = () => {
   const [deliveryVisible, setDeliveryVisible] = useState(false)
   const [form] = Form.useForm()
   const location = useLocation();
+  const [visit, setVisit] = useState(false)
+
 
 
   const pageChange = (a, b) => {
@@ -29,6 +33,20 @@ const TableList = () => {
   const orderTypeChange = (e) => {
     setOrderType(e.target.value)
     setPage(1)
+  }
+
+  const getFieldValue = () => {
+    const { time, ...rest } = form.getFieldsValue();
+
+    return {
+      status: orderType,
+      startTime: time?.[0]?.format('YYYY-MM-DD'),
+      endTime: time?.[1]?.format('YYYY-MM-DD'),
+      memberId: location?.query?.memberId,
+      wsId: location?.query?.wsId,
+      ...rest,
+      ...rest,
+    }
   }
 
   useEffect(() => {
@@ -85,7 +103,13 @@ const TableList = () => {
                   >
                     重置
                   </Button>
-                  <Button onClick={() => { exportExcel(form) }}>导出</Button>
+                  <Export
+                    change={(e) => { setVisit(e) }}
+                    key="export"
+                    type="order-intensive-export"
+                    conditions={getFieldValue()}
+                  />
+                  <ExportHistory key="exportHistory" show={visit} setShow={setVisit} />
                 </Space>
               </div>
             );
