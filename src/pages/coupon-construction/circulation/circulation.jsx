@@ -4,7 +4,7 @@ import styles from '../style.less'
 import ProForm,{ProFormText,ProFormRadio} from '@ant-design/pro-form';
 
 const circulation=props=>{
-    const { DetailList}=props
+    const { DetailList,face}=props
     let {id}=props
     const [summoney,setSummoney] = useState(0);
     const [position,setPosition]=useState()
@@ -52,7 +52,7 @@ const circulation=props=>{
                             />
                             <span>张</span>
                         </ProForm.Group>
-                        <p>优惠券发行总金额为<span className={styles.compute }>{summoney*10||(parseInt(id)==id)&&DetailList.data?.issueQuantity*10}</span>元</p>
+                        <p>优惠券发行总金额为<span className={styles.compute }>{summoney*face||(parseInt(id)==id)&&DetailList.data?.issueQuantity*DetailList.data?.couponAmountDisplay}</span>元</p>
                     </div>
                 :null
             }

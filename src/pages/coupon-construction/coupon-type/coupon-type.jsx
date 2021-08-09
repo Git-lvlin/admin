@@ -4,7 +4,7 @@ import styles from '../style.less'
 import ProForm, { ProFormText, ProFormSelect,ProFormRadio } from '@ant-design/pro-form';
 
 const couponType = (props) => {
-    let { id } = props
+    let { id,Discounts } = props
     let { DetailList } = props
     const [flag, setFlag] = useState()
     const [discounts, setDiscounts] = useState('');
@@ -13,12 +13,14 @@ const couponType = (props) => {
     const [position,setPosition]=useState()
     const onDiscounts = e => {
         setDiscounts(e.target.value)
+        Discounts(e.target.value)
     }
     const onCoupons = e => {
         setCoupons(e.target.value)
     }
     const onImmediately = e => {
         setImmediately(e.target.value)
+        Discounts(e.target.value)
     }
     const toggle = val => {
         setFlag(val)
@@ -75,7 +77,7 @@ const couponType = (props) => {
                         <ProFormText 
                             name="freeAmount"
                             fieldProps={{
-                                onChange: (e) => onDiscounts(e),
+                                onChange: (e) => onDiscounts(e)
                                 }}
                             width={100}
                             rules={[
@@ -124,7 +126,7 @@ const couponType = (props) => {
                     <ProFormText 
                         name="freeDiscount"
                         fieldProps={{
-                            onChange: (e) => onCoupons(e),
+                            onChange: (e) => onCoupons(e)
                             }}
                         width={100}
                         rules={[
