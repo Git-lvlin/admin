@@ -18,9 +18,9 @@ const Export = ({type, change, conditions})=> {
     }).then(res=> {
       if(res?.success) {
         message.success('导出任务创建成功')
+        change(true)
       }
     })
-    change(true)
   }
 
   return (
