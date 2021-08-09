@@ -141,7 +141,7 @@ const couponType = (props) => {
                             {validator: checkConfirm}
                         ]} 
                     />
-                    <span>（不填写则不作限制） 元</span>
+                    <span>元 （不填写则不作限制） </span>
                     <p>（只能填1-99的整数）</p>
                 </ProForm.Group>
                 <p>优惠券面值<span className={styles.compute}>{coupons ? (100 - coupons) / 100 : ''||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay ? (100 - DetailList.data?.freeDiscount) / 100 : ''}</span> 折券</p>

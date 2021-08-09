@@ -52,7 +52,7 @@ const circulation=props=>{
                             />
                             <span>张</span>
                         </ProForm.Group>
-                        <p>优惠券发行总金额为<span className={styles.compute }>{summoney*face||(parseInt(id)==id)&&DetailList.data?.issueQuantity*DetailList.data?.couponAmountDisplay}</span>元</p>
+                        <p>优惠券发行总金额为<span className={styles.compute }>{summoney*face||(parseInt(id)==id)&&DetailList.data?.issueQuantity*parseInt(DetailList.data?.couponAmountDisplay)}</span>元</p>
                     </div>
                 :null
             }
