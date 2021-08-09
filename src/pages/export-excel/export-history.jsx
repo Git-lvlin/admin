@@ -49,22 +49,30 @@ const ExportHistory = ({show, setShow})=> {
     }
   }, [page, pageSize, form, query])
 
-  const ExprotState = ({state})=> {
-    let stateTxt = ''
+  const ExprotState = ({state, desc})=> {
     if(state === 1) {
-      stateTxt = '导出中...'
+      return (
+        <div>导出中...</div>
+      )
     } else if(state === 2) {
-      stateTxt = '导出成功'
+      return (
+        <div>导出成功</div>
+      )
     } else if(state === 3) {
-      stateTxt = '导出失败'
+      return (
+        <Tooltip key="history" title={desc}>
+          <div className={styles.fail}>
+            导出失败
+          </div>
+        </Tooltip>
+      )
     } else if(state === 4) {
-      stateTxt = '导出取消'
+      return (
+        <div>导出取消</div>
+      )
     } else {
-      stateTxt = ''
+      return ''
     }
-    return (
-      <div>{stateTxt}</div>
-    )
   }
 
   return(
@@ -153,7 +161,7 @@ const ExportHistory = ({show, setShow})=> {
               >
                 <div className={styles.content}>
                   <div className={styles.tag}>导出编号：<span className={styles.no}>{item.id}</span></div>
-                  <ExprotState state={item?.state}/>
+                  <ExprotState state={item?.state} desc={item.exceptionDes}/>
                 </div>
                 <div className={styles.footer}>
                   <div className={styles.exportTime}>导出时间：{item.createTime}</div>
