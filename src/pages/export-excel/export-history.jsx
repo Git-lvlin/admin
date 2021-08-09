@@ -10,13 +10,13 @@ import {
   Progress,
   Drawer
 } from 'antd'
-import ProForm,{ ProFormDateRangePicker } from '@ant-design/pro-form'
+import ProForm, { ProFormDateRangePicker } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 
 import { findByWays } from '@/services/export-excel/export-template'
 import styles from './styles.less'
 
-const ExportHistory = ({show, setShow})=> {
+const ExportHistory = ({ show, setShow }) => {
   const [form] = Form.useForm()
   const [load, setLoad] = useState(false)
   const [pageTotal, setPageTotal] = useState(0)
@@ -64,6 +64,11 @@ const ExportHistory = ({show, setShow})=> {
       setData([])
     }
   }, [page])
+  useEffect(() => {
+    if (show) {
+      setQuery(query + 1)
+    }
+  }, [show])
   const ExprotState = ({state, desc})=> {
     if(state === 1) {
       return (
@@ -90,10 +95,10 @@ const ExportHistory = ({show, setShow})=> {
     }
   }
 
-  return(
+  return (
     <>
       <Tooltip key="history" title="查看历史导出任务">
-        <Button 
+        <Button
           type='primary'
           onClick={() => {
             setShow(true)
@@ -165,7 +170,7 @@ const ExportHistory = ({show, setShow})=> {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           }
           {
-            data.map(item=> (
+            data.map(item => (
               <ProCard
                 key={item.id}
                 bordered
@@ -178,11 +183,11 @@ const ExportHistory = ({show, setShow})=> {
                 <div className={styles.footer}>
                   <div className={styles.exportTime}>导出时间：{item.createTime}</div>
                   {
-                    item.process === 100?
-                    <a href={item.fileUrl}>下载</a>:
-                    <div style={{ width: 170 }}>
-                      <Progress percent={item.process} size="small"/>
-                    </div>
+                    item.process === 100 ?
+                      <a href={item.fileUrl}>下载</a> :
+                      <div style={{ width: 170 }}>
+                        <Progress percent={item.process} size="small" />
+                      </div>
                   }
                 </div>
               </ProCard>
@@ -198,7 +203,7 @@ const ExportHistory = ({show, setShow})=> {
             onChange={pageChange}
           />
         </div>
-      </Drawer>    
+      </Drawer>
     </>
   )
 }
