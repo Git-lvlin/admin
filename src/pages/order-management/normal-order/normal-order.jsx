@@ -62,14 +62,10 @@ const TableList = () => {
 
   useEffect(() => {
     setLoading(true);
-    const { time, ...rest } = form.getFieldsValue();
     orderList({
       page,
       size: pageSize,
-      orderStatus: orderType === 0 ? '' : orderType,
-      startCreateTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
-      endCreateTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
-      ...rest,
+      ...getFieldValue(),
     })
       .then(res => {
         if (res.code === 0) {

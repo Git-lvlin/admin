@@ -66,22 +66,15 @@ const TableList = () => {
       memberId: location?.query?.memberId,
       wsId: location?.query?.wsId,
       ...rest,
-      ...rest,
     }
   }
 
   useEffect(() => {
     setLoading(true);
-    const { time, ...rest } = form.getFieldsValue();
     orderList({
       page,
       size: pageSize,
-      status: orderType,
-      startTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
-      endTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
-      memberId: location?.query?.memberId,
-      wsId: location?.query?.wsId,
-      ...rest,
+      ...getFieldValue()
     })
       .then(res => {
         if (res.code === 0) {
@@ -271,7 +264,7 @@ const TableList = () => {
         }
         {
           data.map(item => (
-            <div className={styles.list} key={item.orderSn}>
+            <div className={styles.list} key={item.id}>
               <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}</div>
               <div className={styles.second}>
                 <Space size="large">
