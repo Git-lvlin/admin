@@ -10,13 +10,14 @@ import {
   Progress,
   Drawer
 } from 'antd'
-import ProForm, { ProFormDateRangePicker } from '@ant-design/pro-form'
+import ProForm, { ProFormDateTimeRangePicker } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 
 import { findByWays } from '@/services/export-excel/export-template'
+import moment from 'moment'
 import styles from './styles.less'
 
-const ExportHistory = ({ show, setShow }) => {
+const ExportHistory = ({ show, setShow, type }) => {
   const [form] = Form.useForm()
   const [load, setLoad] = useState(false)
   const [pageTotal, setPageTotal] = useState(0)
@@ -32,11 +33,16 @@ const ExportHistory = ({ show, setShow }) => {
   }
   const getData = ()=> {
     const { time, ...rest } = form.getFieldsValue()
+    const user = localStorage.getItem("user")
+    const rule = user&&JSON.parse(user).id
     setLoad(true)
     findByWays({
       page,
+      code: type&& type,
       size: pageSize,
-      // TODO:时间筛选
+      searchByUser: !!rule ? 1 : 2 ,
+      createStartTime: time&&moment(time[0]).format('YYYY-MM-DD HH:mm:ss'),
+      createEndTime: time&&moment(time[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest
     }).then(res => {
       if (res.success) {
@@ -159,7 +165,7 @@ const ExportHistory = ({ show, setShow }) => {
             }
           }}
         >
-          <ProFormDateRangePicker
+          <ProFormDateTimeRangePicker
             name="time"
             label="导出时间"
           />
@@ -184,10 +190,10 @@ const ExportHistory = ({ show, setShow }) => {
                   <div className={styles.exportTime}>导出时间：{item.createTime}</div>
                   {
                     item.process === 100 ?
-                      <a href={item.fileUrl}>下载</a> :
-                      <div style={{ width: 170 }}>
-                        <Progress percent={item.process} size="small" />
-                      </div>
+                    <a href={item.fileUrl}>下载</a> :
+                    <div style={{ width: 170 }}>
+                      <Progress percent={item.process} size="small" />
+                    </div>
                   }
                 </div>
               </ProCard>

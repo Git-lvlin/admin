@@ -123,7 +123,7 @@ const TableList = () => {
                     type="order-intensive-export"
                     conditions={getFieldValue()}
                   />
-                  <ExportHistory key="exportHistory" show={visit} setShow={setVisit} />
+                  <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type="order-intensive-export" />
                 </Space>
               </div>
             );
