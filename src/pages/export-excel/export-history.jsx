@@ -33,13 +33,14 @@ const ExportHistory = ({ show, setShow, type }) => {
   }
   const getData = ()=> {
     const { time, ...rest } = form.getFieldsValue()
-    const rule = localStorage.getItem("supplierType")
+    const user = localStorage.getItem("user")
+    const rule = user&&JSON.parse(user).id
     setLoad(true)
     findByWays({
       page,
-      code: type&&type,
+      code: type&& type,
       size: pageSize,
-      searchByUser: rule,
+      searchByUser: !!rule ? 1 : 2 ,
       createStartTime: time&&moment(time[0]).format('YYYY-MM-DD HH:mm:ss'),
       createEndTime: time&&moment(time[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest
