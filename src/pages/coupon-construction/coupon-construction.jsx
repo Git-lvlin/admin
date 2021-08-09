@@ -8,7 +8,7 @@ import PeriodValidity from './period-validity/period-validity'
 import AssignCrowd from './assign-crowd/assign-crowd'
 import { couponSub } from '@/services/coupon-construction/coupon-coupon-sub';
 import { couponEdit } from '@/services/coupon-construction/coupon-edit';
-import ProForm, { ProFormText, ProFormRadio, ProFormDateRangePicker } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import moment from 'moment';
 import styles from './style.less'
@@ -175,7 +175,7 @@ const couponConstruction = (props) => {
           return true;
         }
         }
-        style={{ width: '2000px',background:'#fff',padding:'20px' }}
+        style={{background:'#fff',padding:'20px' }}
       >
         <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>基本信息</span></h3>
         {/* 优惠券名称 */}
@@ -247,7 +247,7 @@ const couponConstruction = (props) => {
         {
           type == 2 || DetailList.data?.issueType == 2 && id ? null
             :
-            <ProFormDateRangePicker
+            <ProFormDateTimeRangePicker
               label='可领取时间'
               rules={[{ required: true, message: '请选择限领时间' }]}
               name="dateRange"
