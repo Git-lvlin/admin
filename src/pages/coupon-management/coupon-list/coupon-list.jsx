@@ -97,7 +97,6 @@ const message = (type, module,dispatch) => {
         }else if(data.couponVerifyStatus==4){
           return <p>已通过</p>
         }
-        
       },
       hideInSearch:true
     },
