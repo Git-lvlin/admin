@@ -54,6 +54,7 @@ const TableList = () => {
           })
       },
     });
+  }
     
   const getFieldValue = () => {
     const { time, ...rest } = form.getFieldsValue();
