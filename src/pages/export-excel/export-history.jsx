@@ -47,28 +47,28 @@ const ExportHistory = ({ show, setShow }) => {
       setLoad(false)
     })
   }
+
   useEffect(() => {
-    getData()
+    if(show) {
+      getData()
+    }
     return ()=> {
       setData([])
     }
-  }, [page, pageSize, form, query])
+  }, [show, page, pageSize, form, query])
 
   useEffect(()=> {
     clearInterval(timer.current)
-    timer.current = setInterval(()=>{
-      getData()
-    }, 3000)
-    return ()=> {
-      clearInterval(timer.current)
-      setData([])
+    if(show) {
+      timer.current = setInterval(()=>{
+        getData()
+      }, 3000)
+      return ()=> {
+        clearInterval(timer.current)
+        setData([])
+      }
     }
-  }, [page])
-  useEffect(() => {
-    if (show) {
-      setQuery(query + 1)
-    }
-  }, [show])
+  }, [page, show])
   const ExprotState = ({state, desc})=> {
     if(state === 1) {
       return (
