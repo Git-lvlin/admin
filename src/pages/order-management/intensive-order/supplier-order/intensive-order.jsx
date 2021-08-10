@@ -128,12 +128,12 @@ const TableList = () => {
                     conditions={getFieldValue()}
                   />
                   <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type="order-intensive-export" />
-                  <Import
+                  {/* <Import
                     change={(e) => { setImportVisit(e) }}
                     code="order_intensive_send_goods_import"
                     conditions={getFieldValue()}
                   />
-                  <ImportHistory key="exportHistory" show={importVisit} setShow={setImportVisit} type="order_intensive_send_goods_import" />
+                  <ImportHistory key="exportHistory" show={importVisit} setShow={setImportVisit} type="order_intensive_send_goods_import" /> */}
                 </Space>
               </div>
             );
