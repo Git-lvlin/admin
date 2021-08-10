@@ -359,6 +359,14 @@ export const delContestGoods = (params = {}, options = {}) => {
   });
 }
 
+export const upDataPrice = (params = {}, options = {}) => {
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetContestDefaultPrice`, {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const bindSkuId = (params = {}, options = {}) => {
   return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/setContestBindSku?goodsSpuId=${params.goodsSpuId}&goodsSkuId=${params.goodsSkuId}&sourceType=${params.sourceType}&skuId=${params.skuId}`, {
     method: 'GET',
