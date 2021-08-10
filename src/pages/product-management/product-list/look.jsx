@@ -15,7 +15,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={`${dataList.goods.salePrice?'单规格':'多规格'}`}
+      title={`${dataList.goods.salePrice?'底价模式单规格':'其它'}`}
       onVisibleChange={setVisible}
       visible={visible}
       width={400}

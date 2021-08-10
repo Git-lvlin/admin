@@ -423,9 +423,11 @@ export default (props) => {
             <Button
               key="look"
               onClick={(_) => {
-                setLookVisible(true)
-                console.log('yulan', _)
-                console.log('props', props)
+                if (detailData) {
+                  setLookVisible(true)
+                } else {
+                  message.error('请剪辑完成后预览')
+                }
               }}
             >
               预览
