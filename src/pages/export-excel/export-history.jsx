@@ -1,77 +1,104 @@
-import React, { useEffect, useState } from 'react'
-import {
-  Button,
-  Tooltip,
-  Form,
-  Space,
-  Pagination,
-  Spin,
+import React,{ useEffect, useRef, useState } from 'react'
+import { 
+  Button, 
+  Tooltip, 
+  Form, 
+  Space, 
+  Pagination, 
+  Spin, 
   Empty,
   Progress,
   Drawer
 } from 'antd'
-import ProForm, { ProFormDateRangePicker } from '@ant-design/pro-form'
+import ProForm, { ProFormDateTimeRangePicker } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 
 import { findByWays } from '@/services/export-excel/export-template'
+import moment from 'moment'
 import styles from './styles.less'
 
-const ExportHistory = ({ show, setShow }) => {
+const ExportHistory = ({ show, setShow, type }) => {
   const [form] = Form.useForm()
-  const [loading, setLoading] = useState(false)
+  const [load, setLoad] = useState(false)
   const [pageTotal, setPageTotal] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const [page, setPage] = useState(1)
   const [data, setData] = useState([])
   const [query, setQuery] = useState(0)
+  const timer = useRef()
   const pageChange = (a, b) => {
+    clearInterval(timer.current)
     setPage(a)
     setPageSize(b)
   }
-  useEffect(() => {
-    setLoading(true)
+  const getData = ()=> {
     const { time, ...rest } = form.getFieldsValue()
+    const user = localStorage.getItem("user")
+    const rule = user&&JSON.parse(user).id
+    setLoad(true)
     findByWays({
       page,
+      code: type&& type,
       size: pageSize,
-      // TODO:时间筛选
+      searchByUser: !!rule ? 1 : 2 ,
+      createStartTime: time&&moment(time[0]).format('YYYY-MM-DD HH:mm:ss'),
+      createEndTime: time&&moment(time[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest
     }).then(res => {
       if (res.success) {
         setData(res.data)
         setPageTotal(res.total)
       }
-    }).finally(() => {
-      setLoading(false)
+    }).finally(()=>{
+      setLoad(false)
     })
-    return () => {
-      setData([])
-    }
-  }, [page, pageSize, form, query])
+  }
 
   useEffect(() => {
-    if (show) {
-      setQuery(query + 1)
+    if(show) {
+      getData()
     }
-  }, [show])
+    return ()=> {
+      setData([])
+    }
+  }, [show, page, pageSize, form, query])
 
-
-  const ExprotState = ({ state }) => {
-    let stateTxt = ''
-    if (state === 1) {
-      stateTxt = '导出中...'
-    } else if (state === 2) {
-      stateTxt = '导出成功'
-    } else if (state === 3) {
-      stateTxt = '导出失败'
-    } else if (state === 4) {
-      stateTxt = '导出取消'
+  useEffect(()=> {
+    clearInterval(timer.current)
+    if(show) {
+      timer.current = setInterval(()=>{
+        getData()
+      }, 3000)
+      return ()=> {
+        clearInterval(timer.current)
+        setData([])
+      }
+    }
+  }, [page, show])
+  const ExprotState = ({state, desc})=> {
+    if(state === 1) {
+      return (
+        <div>导出中...</div>
+      )
+    } else if(state === 2) {
+      return (
+        <div>导出成功</div>
+      )
+    } else if(state === 3) {
+      return (
+        <Tooltip key="history" title={desc}>
+          <div className={styles.fail}>
+            导出失败
+          </div>
+        </Tooltip>
+      )
+    } else if(state === 4) {
+      return (
+        <div>导出取消</div>
+      )
     } else {
-      stateTxt = ''
+      return ''
     }
-    return (
-      <div>{stateTxt}</div>
-    )
   }
 
   return (
@@ -138,14 +165,12 @@ const ExportHistory = ({ show, setShow }) => {
             }
           }}
         >
-          <ProFormDateRangePicker
+          <ProFormDateTimeRangePicker
             name="time"
             label="导出时间"
           />
         </ProForm>
-        <Spin
-          spinning={loading}
-        >
+        <Spin delay={500} spinning={load}>
           {
             data.length === 0 &&
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
@@ -153,23 +178,22 @@ const ExportHistory = ({ show, setShow }) => {
           {
             data.map(item => (
               <ProCard
-                loading={loading}
                 key={item.id}
                 bordered
                 className={styles.card}
               >
                 <div className={styles.content}>
                   <div className={styles.tag}>导出编号：<span className={styles.no}>{item.id}</span></div>
-                  <ExprotState state={item?.state} />
+                  <ExprotState state={item?.state} desc={item.exceptionDes}/>
                 </div>
                 <div className={styles.footer}>
                   <div className={styles.exportTime}>导出时间：{item.createTime}</div>
                   {
                     item.process === 100 ?
-                      <a href={item.fileUrl}>下载</a> :
-                      <div style={{ width: 170 }}>
-                        <Progress percent={item.process} size="small" />
-                      </div>
+                    <a href={item.fileUrl}>下载</a> :
+                    <div style={{ width: 170 }}>
+                      <Progress percent={item.process} size="small" />
+                    </div>
                   }
                 </div>
               </ProCard>
