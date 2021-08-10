@@ -426,7 +426,7 @@ export default (props) => {
                 if (detailData) {
                   setLookVisible(true)
                 } else {
-                  message.error('请剪辑完成后预览')
+                  message.error('请编辑完成后预览')
                 }
               }}
             >
