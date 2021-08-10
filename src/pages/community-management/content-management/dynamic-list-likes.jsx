@@ -2,6 +2,7 @@ import React, { useRef} from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button } from 'antd';
 import { history } from 'umi';
+import { CaretRightFilled } from '@ant-design/icons';
 import { listLikes } from '@/services/community-management/dynamic-list-likes';
 
 export default props => {
@@ -21,9 +22,9 @@ const columns= [
 ];
   return (
     <>
-      <h1>点赞列表</h1>
+      <h1><CaretRightFilled /> 点赞列表</h1>
       <ProTable
-        rowKey="userId"z
+        rowKey="userId"
         options={false}
         params={{
             id
