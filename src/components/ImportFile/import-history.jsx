@@ -13,11 +13,11 @@ import {
 import ProForm, { ProFormDateTimeRangePicker } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 
-import { findByWays } from '@/services/export-excel/export-template'
+import { findPage } from '@/services/import-file/import-file'
 import moment from 'moment'
 import styles from './styles.less'
 
-const ExportHistory = ({ show, setShow, type }) => {
+const ImportHistroy = ({ show, setShow, type }) => {
   const [form] = Form.useForm()
   const [load, setLoad] = useState(false)
   const [pageTotal, setPageTotal] = useState(0)
@@ -36,13 +36,13 @@ const ExportHistory = ({ show, setShow, type }) => {
   const getData = ()=> {
     const { time, ...rest } = form.getFieldsValue()
     const user = localStorage.getItem("user")
-    const rule = user&&JSON.parse(user).id === 1
+    const rule = user&&JSON.parse(user).id
     setLoad(true)
-    findByWays({
+    findPage({
       page,
       code: type&& type,
       size: pageSize,
-      searchByUser: rule ? 2 : 1,
+      searchByUser: !!rule ? 1 : 2 ,
       createStartTime: time&&moment(time[0]).format('YYYY-MM-DD HH:mm:ss'),
       createEndTime: time&&moment(time[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest
@@ -86,26 +86,42 @@ const ExportHistory = ({ show, setShow, type }) => {
       clearTimeout(timeOut.current)
     }
   }, [show])
-  const ExprotState = ({state, desc})=> {
+
+  const ImportState = ({state, desc})=> {
     if(state === 1) {
       return (
-        <div>导出中...</div>
+        <div>处理中...</div>
       )
     } else if(state === 2) {
       return (
-        <div>导出成功</div>
+        <div>导入成功</div>
       )
     } else if(state === 3) {
       return (
         <Tooltip key="history" title={desc}>
           <div className={styles.fail}>
-            导出失败
+            导入失败
           </div>
         </Tooltip>
       )
     } else if(state === 4) {
       return (
-        <div>导出取消</div>
+        <div>取消导入</div>
+      )
+    } else {
+      return ''
+    }
+  }
+  const ImportResult = ({state, failNum, href, process})=> {
+    if(state === 1) {
+      return (
+        <div className={styles.process}>
+          <Progress percent={process} size="small" />
+        </div>
+      )
+    }else if(state !== 1 && failNum > 0) {
+      return (
+        <a href={href} className={styles.failRes}>失败结果下载</a>
       )
     } else {
       return ''
@@ -114,7 +130,7 @@ const ExportHistory = ({ show, setShow, type }) => {
 
   return (
     <>
-      <Tooltip key="history" title="查看历史导出任务">
+      <Tooltip key="history" title="导入结果详情">
         <Button
           type='primary'
           onClick={() => {
@@ -125,7 +141,7 @@ const ExportHistory = ({ show, setShow, type }) => {
         </Button>
       </Tooltip>
       <Drawer
-        title="导出任务列表"
+        title="结果列表"
         layout="inline"
         onClose={() => {
           setShow(false)
@@ -178,7 +194,7 @@ const ExportHistory = ({ show, setShow, type }) => {
         >
           <ProFormDateTimeRangePicker
             name="time"
-            label="导出时间"
+            label="导入时间"
           />
         </ProForm>
         <Spin delay={500} spinning={load}>
@@ -194,19 +210,19 @@ const ExportHistory = ({ show, setShow, type }) => {
                 className={styles.card}
               >
                 <div className={styles.content}>
-                  <div className={styles.tag}>导出编号：<span className={styles.no}>{item.id}</span></div>
-                  <ExprotState state={item?.state} desc={item.exceptionDes}/>
+                  <div className={styles.tag}>执行数：<span className={styles.no}>{item.count}</span></div>
+                  <div className={styles.tag}>成功数：<span className={styles.no}>{item.processCount}</span></div>
+                  <div className={styles.tag}>失败数：<span className={styles.no}>{item.errorCount}</span></div>
+                  <ImportState state={item.state} desc={item.exceptionDes}/>
                 </div>
                 <div className={styles.footer}>
-                  <div className={styles.exportTime}>导出时间：{item.createTime}</div>
-                  <div className={styles.exportName}>导出人：{item.createName}</div>
-                  {
-                    item.process === 100 ?
-                    <a href={item.fileUrl}>下载</a> :
-                    <div className={styles.progress}>
-                      <Progress percent={item.process} size="small" />
-                    </div>
-                  }
+                  <div className={styles.exportTime}>导入时间：{item.createTime}</div>
+                  <ImportResult 
+                    state={item.state}
+                    failNum={item.errorCount}
+                    href={item.errorFileUrl}
+                    process={item.process}
+                  />
                 </div>
               </ProCard>
             ))
@@ -226,4 +242,4 @@ const ExportHistory = ({ show, setShow, type }) => {
   )
 }
 
-export default ExportHistory
+export default ImportHistroy

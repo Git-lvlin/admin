@@ -10,6 +10,8 @@ import { orderList, refundAllRetailOrders } from '@/services/order-management/su
 import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import ImportHistory from '@/components/ImportFile/import-history'
+import Import from '@/components/ImportFile/import'
 
 const { confirm } = Modal;
 
@@ -26,6 +28,8 @@ const TableList = () => {
   const [form] = Form.useForm()
   const location = useLocation();
   const [visit, setVisit] = useState(false)
+  const [importVisit, setImportVisit] = useState(false)
+
 
 
 
@@ -124,6 +128,12 @@ const TableList = () => {
                     conditions={getFieldValue()}
                   />
                   <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type="order-intensive-export" />
+                  <Import
+                    change={(e) => { setImportVisit(e) }}
+                    code="order_intensive_send_goods_import"
+                    conditions={getFieldValue()}
+                  />
+                  <ImportHistory key="exportHistory" show={importVisit} setShow={setImportVisit} type="order_intensive_send_goods_import" />
                 </Space>
               </div>
             );
