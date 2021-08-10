@@ -60,7 +60,7 @@ const PriceManagement = () => {
     const param = {
       contestId: id,
       type: t,
-      priceDefault: value
+      priceDefault: value*100
     }
     upDataPrice(param)
   }
@@ -146,7 +146,7 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>{resData.tb?.sku}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.tb?.price}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>
-            {resData.tb&&<InputNumber min={1} max={1000} defaultValue={resData.tb.priceDefault} onChange={(value) => {
+            {resData.tb&&<InputNumber min={0.01} max={99999} defaultValue={resData.tb.priceDefault&&resData.tb.priceDefault/100} onChange={(value) => {
               setPrice(value, a.id, 'tb')
             }} />}
           </ProCard>
@@ -176,7 +176,7 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>{resData.jd?.sku}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.jd?.price}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>
-            {resData.jd&&<InputNumber min={1} max={1000} defaultValue={resData.jd.priceDefault} onChange={(value) => {
+            {resData.jd&&<InputNumber min={0.01} max={1000} defaultValue={resData.jd.priceDefault&&resData.jd.priceDefault/100} onChange={(value) => {
               setPrice(value, a.id, 'jd')
             }} />}
           </ProCard>
@@ -205,7 +205,7 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>{resData.pdd?.sku}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.pdd?.price}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>
-            {resData.pdd&&<InputNumber min={1} max={1000} defaultValue={resData.pdd.priceDefault} onChange={(value) => {
+            {resData.pdd&&<InputNumber min={0.01} max={1000} defaultValue={resData.pdd.priceDefault&&resData.pdd.priceDefault/100} onChange={(value) => {
               setPrice(value, a.id, 'pdd')
             }} />}
           </ProCard>
@@ -233,7 +233,7 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>{resData.tmall?.sku}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.tmall?.price}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>
-            {resData.tmall&&<InputNumber min={1} max={1000} defaultValue={resData.tmall.priceDefault} onChange={(value) => {
+            {resData.tmall&&<InputNumber min={0.01} max={99999} defaultValue={resData.tmall.priceDefault&&resData.tmall.priceDefault/100} onChange={(value) => {
               setPrice(value, a.id, 'tmall')
             }} />}
           </ProCard>
