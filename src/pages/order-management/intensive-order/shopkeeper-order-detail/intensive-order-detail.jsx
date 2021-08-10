@@ -97,8 +97,8 @@ const OrderDetail = () => {
                   订单信息
                 </div>
                 <div className={styles.box}>
-                  <div>所属商家</div>
-                  <div>{detailData.storeName}</div>
+                  <div>所属供应商家ID</div>
+                  <div>{detailData.supplierId}</div>
                 </div>
                 <div className={styles.box}>
                   <div>订单状态</div>
