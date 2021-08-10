@@ -9,6 +9,8 @@ import { amountTransform } from '@/utils/utils'
 import { orderList, deliverGoods } from '@/services/order-management/normal-order';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import ImportHistory from '@/components/ImportFile/import-history'
+import Import from '@/components/ImportFile/import'
 
 
 const TableList = () => {
@@ -21,6 +23,8 @@ const TableList = () => {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState(0)
   const [deliveryVisible, setDeliveryVisible] = useState(false)
+  const [importVisit, setImportVisit] = useState(false)
+
 
   const [form] = Form.useForm()
 
@@ -115,7 +119,12 @@ const TableList = () => {
                     conditions={getFieldValue()}
                   />
                   <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type="order-common-export" />
-
+                  <Import
+                    change={(e) => { setImportVisit(e) }}
+                    code="order_common_send_goods_import"
+                    conditions={getFieldValue()}
+                  />
+                  <ImportHistory key="exportHistory" show={importVisit} setShow={setImportVisit} type="order_common_send_goods_import" />
                 </Space>
               </div>
             );
