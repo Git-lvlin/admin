@@ -26,6 +26,8 @@ const ExportHistory = ({ show, setShow, type }) => {
   const [data, setData] = useState([])
   const [query, setQuery] = useState(0)
   const timer = useRef()
+  const timeOut = useRef()
+  const awaitTime = 3 * 60 * 1000   //TimeOut await times
   const pageChange = (a, b) => {
     clearInterval(timer.current)
     setPage(a)
@@ -75,6 +77,15 @@ const ExportHistory = ({ show, setShow, type }) => {
       }
     }
   }, [page, show])
+  useEffect(()=> {
+    timeOut.current = setTimeout(()=> {
+      console.log(1);
+      clearInterval(timer.current)
+    }, awaitTime)
+    return ()=> {
+      clearTimeout(timeOut.current)
+    }
+  }, [show])
   const ExprotState = ({state, desc})=> {
     if(state === 1) {
       return (
@@ -188,10 +199,11 @@ const ExportHistory = ({ show, setShow, type }) => {
                 </div>
                 <div className={styles.footer}>
                   <div className={styles.exportTime}>导出时间：{item.createTime}</div>
+                  <div className={styles.exportName}>导出人：{item.createName}</div>
                   {
                     item.process === 100 ?
                     <a href={item.fileUrl}>下载</a> :
-                    <div style={{ width: 170 }}>
+                    <div className={styles.progress}>
                       <Progress percent={item.process} size="small" />
                     </div>
                   }
