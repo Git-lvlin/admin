@@ -118,7 +118,8 @@ export default {
   'menu.cms.hot-search': '热门搜索关键词',
   'menu.cms.market': '营销资源管理',
   'menu.cms.poster': '海报管理',
-  
+  'menu.cms.content-version': '版本配置管理',
+
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
 

@@ -5,7 +5,7 @@ import { ModalForm } from '@ant-design/pro-form';
 import { hotGoosAddDF, goosReplaceList } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, onClose, setFlag, visible } = props;
+  const { detailData, setVisible, verifyVersionId, setFlag, visible } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
   const columns = [
@@ -65,7 +65,7 @@ export default (props) => {
     },
   ];
 
-  const waitTime = (values) => {
+  const waitTime = () => {
     const newArr = arr.map((i) => {
       const {id, spuId, storeNo} = i
       return {
@@ -81,7 +81,9 @@ export default (props) => {
       cmsId: detailData.id,
       spuInfo: newArr
     }
-
+    if (verifyVersionId) {
+      param.verifyVersionId = verifyVersionId
+    }
     return new Promise((resolve, reject) => {
       hotGoosAddDF(param).then((res) => {
         if (res.code === 0) {
@@ -115,8 +117,8 @@ export default (props) => {
         forceRender: true,
         destroyOnClose: true,
       }}
-      onFinish={async (values) => {
-        await waitTime(values);
+      onFinish={async () => {
+        await waitTime();
         message.success('提交成功');
         // 不返回不会关闭弹框
         return true;

@@ -5,7 +5,7 @@ import { ModalForm } from '@ant-design/pro-form';
 import { crazyActivityGoodsAddPT, todayAllGoodsList } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, visible, setFlag } = props;
+  const { detailData, setVisible, visible, setFlag, verifyVersionId } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
 
@@ -18,6 +18,9 @@ export default (props) => {
     }
     if (channel) {
       param.goodsType = channel
+    }
+    if (verifyVersionId) {
+      param.verifyVersionId = verifyVersionId
     }
     return new Promise((resolve, reject) => {
       crazyActivityGoodsAddPT(param).then((res) => {

@@ -15,7 +15,6 @@ const { TabPane } = Tabs
 
 const message = (type, module,dispatch) => {
   const ref=useRef()
-  const [visible, setVisible] = useState(false);
   const [arrId,setArrId]=useState([])
   const [check,setCheck]=useState()
   const columns= [
@@ -199,7 +198,6 @@ const message = (type, module,dispatch) => {
 };
 
 export default (props) =>{
-  const [visible, setVisible] = useState(false);
   return (
     <PageContainer>
       <Tabs

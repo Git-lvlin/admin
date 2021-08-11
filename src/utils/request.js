@@ -3,7 +3,7 @@ import { extend } from 'umi-request';
 import { notification, message } from 'antd';
 import { stringify } from 'querystring';
 import { history } from 'umi';
-import { paramsEmptyFilter } from '@/utils/utils';
+import { paramsEmptyFilter, paramsUndefinedToEmpty } from '@/utils/utils';
 
 
 const codeMessage = {
@@ -123,14 +123,24 @@ const request = (url, options = {}) => {
     return null;
   }
 
-  if (options.data) {
+  if (options.data && !options.noFilterParams) {
     // eslint-disable-next-line no-param-reassign
     options.data = paramsEmptyFilter(options.data)
   }
 
-  if (options.params) {
+  if (options.params && !options.noFilterParams) {
     // eslint-disable-next-line no-param-reassign
     options.params = paramsEmptyFilter(options.params)
+  }
+
+  if (options.data && options.paramsUndefinedToEmpty) {
+    // eslint-disable-next-line no-param-reassign
+    options.data = paramsUndefinedToEmpty(options.data)
+  }
+
+  if (options.params && options.paramsUndefinedToEmpty) {
+    // eslint-disable-next-line no-param-reassign
+    options.params = paramsUndefinedToEmpty(options.params)
   }
 
   return instance(url, {

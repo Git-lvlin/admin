@@ -28,7 +28,6 @@ export default (props) => {
           resolve(true);
         } else {
           reject(false);
-          return
         }
       })
     });

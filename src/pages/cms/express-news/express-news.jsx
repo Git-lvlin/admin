@@ -13,7 +13,6 @@ const ExpressNews = () => {
   const [detailData, setDetailData] = useState(null);
   const [flag, setFlag] = useState(false);
 
-
   useEffect(() => {
     if (flag) {
       actionRef.current.reset()
@@ -27,11 +26,9 @@ const ExpressNews = () => {
   }
 
   const formControl = (record) => {
-    console.log('record....', record)
     let data = [{'id':record}]
     if (record.selectedRows) {
       data = record.selectedRows.map((item) =>{ return {id:item['id']}})
-      console.log('data...', data)
     }
     expressNewsDel({deleteIdLists: data}).then((res) => {
       if (res.code === 0) {

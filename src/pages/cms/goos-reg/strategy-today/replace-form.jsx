@@ -7,7 +7,7 @@ import ProForm, {
 import { hotGoosAddDF, goosReplaceList } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, setFlag, visible } = props;
+  const { detailData, setVisible, setFlag, visible, verifyVersionId } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
   const columns = [
@@ -93,6 +93,10 @@ export default (props) => {
       goodsType: 5,
       cmsId: detailData.id,
       spuInfo: newArr
+    }
+    
+    if (verifyVersionId) {
+      param.verifyVersionId = verifyVersionId
     }
 
     return new Promise((resolve, reject) => {

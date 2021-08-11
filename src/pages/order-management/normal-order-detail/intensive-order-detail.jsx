@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout';
 import { Steps, Space, Button, Modal, Spin } from 'antd';
-import { useParams } from 'umi';
-import { findAdminOrderDetail, deliverGoods, expressInfo } from '@/services/order-management/normal-order-detail';
+import { useParams, history } from 'umi';
+import { findAdminOrderDetail, deliverGoods, expressInfo, expressInfoYlbb } from '@/services/order-management/normal-order-detail';
 import { amountTransform, dateFormat } from '@/utils/utils'
-import { history } from 'umi';
+import moment from 'moment';
 
 import styles from './style.less';
 
@@ -18,16 +18,32 @@ const OrderDetail = () => {
   const [loading, setLoading] = useState(false);
 
   const expressInfoRequest = () => {
-    expressInfo({
-      shippingCode: detailData.shippingCode,
-      expressType: detailData.expressType,
-      mobile: detailData.buyerPhone,
-      deliveryTime: detailData.deliveryTime
-    }).then(res => {
-      if (res.code === 0) {
-        setExpressInfoState(res.data?.deliveryList?.reverse())
-      }
-    })
+
+    if (detailData.orderType === 11) {
+      expressInfoYlbb({
+        orderType: 11,
+        webSite: 1688,
+        orderId: detailData.outOrderSn,
+        shippingCode: detailData.shippingCode,
+        deliveryTime: moment(detailData.deliveryTime).unix(),
+      }).then(res => {
+        if (res.code === 0) {
+          setExpressInfoState(res.data?.deliveryList?.reverse())
+        }
+      })
+    } else {
+      expressInfo({
+        shippingCode: detailData.shippingCode,
+        expressType: detailData.expressType,
+        mobile: detailData.buyerPhone,
+        deliveryTime: detailData.deliveryTime
+      }).then(res => {
+        if (res.code === 0) {
+          setExpressInfoState(res.data?.deliveryList?.reverse())
+        }
+      })
+    }
+    
   }
 
   const getDetailData = () => {

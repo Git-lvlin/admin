@@ -1,6 +1,6 @@
 import React from 'react';
 import {formatMessage,connect} from 'umi';
-import ProForm,{ ProFormText,ProFormDateRangePicker } from '@ant-design/pro-form';
+import ProForm,{ ProFormText,ProFormDateTimeRangePicker } from '@ant-design/pro-form';
 
 const validity=(props)=>{
     let {id,DetailList,position}=props
@@ -11,7 +11,7 @@ const validity=(props)=>{
              <div
                 style={{display:position==2?'none':'block'}}
             >
-                <ProFormDateRangePicker
+                <ProFormDateTimeRangePicker
                     name='dateTimeRange'
                     placeholder={[
                         formatMessage({id: 'formandbasic-form.placeholder.start'}),

@@ -8,9 +8,10 @@ import PeriodValidity from './period-validity/period-validity'
 import AssignCrowd from './assign-crowd/assign-crowd'
 import { couponSub } from '@/services/coupon-construction/coupon-coupon-sub';
 import { couponEdit } from '@/services/coupon-construction/coupon-edit';
-import ProForm, { ProFormText, ProFormRadio, ProFormDateRangePicker } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import moment from 'moment';
+import styles from './style.less'
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
@@ -19,6 +20,7 @@ const couponConstruction = (props) => {
   const [position, setPosition] = useState()
   const [choose, setChoose] = useState()
   const [submitType, setSubmitType] = useState()
+  const [face,setFace]=useState()
   let id = props.location.query.id
   let type = props.location.query.type
   const [form] = Form.useForm()
@@ -65,17 +67,17 @@ const couponConstruction = (props) => {
     }
     values.issueQuantity = parseInt(values.issueQuantity)//发行量
     values.limitStartTime = values.dateRange ? values.dateRange[0] : null,//可领取开始时间
-      values.limitEndTime = values.dateRange ? values.dateRange[1] : null,//可领取结束时间
-      values.limitQuantity = parseInt(values.limitQuantity)//限领数量
+    values.limitEndTime = values.dateRange ? values.dateRange[1] : null,//可领取结束时间
+    values.limitQuantity = parseInt(values.limitQuantity)//限领数量
     values.activityStartTime = values.dateTimeRange ? values.dateTimeRange[0] : null,//有效期开始时间
-      values.activityEndTime = values.dateTimeRange ? values.dateTimeRange[1] : null,//有效期结束时间
-      values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
-      values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
-      values.useTypeInfoM = {//秒约商品详情信息
-        goodsType: values.goodsType,
-        spuIds: UseScopeList.UseScopeObje.spuIds,
-        classId: parseInt(UseScopeList.UseScopeObje.unit)
-      }
+    values.activityEndTime = values.dateTimeRange ? values.dateTimeRange[1] : null,//有效期结束时间
+    values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
+    values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
+    values.useTypeInfoM = {//秒约商品详情信息
+      goodsType: values.goodsType,
+      spuIds: UseScopeList.UseScopeObje.spuIds,
+      classId: parseInt(UseScopeList.UseScopeObje.unit)
+    }
     //群体Id
     values.couponCrowdId = UseScopeList.UseScopeObje.CrowdIds
     values.memberType = parseInt(values.memberType)
@@ -137,6 +139,10 @@ const couponConstruction = (props) => {
     }
 
   }
+
+  const Discounts=(val)=>{
+    setFace(val)
+  }
   return (
     <>
       <ProForm
@@ -169,9 +175,9 @@ const couponConstruction = (props) => {
           return true;
         }
         }
-        style={{ width: '2000px' }}
+        style={{background:'#fff',padding:'20px' }}
       >
-        <Divider orientation="left"><FormattedMessage id="formandbasic-form.basic.setup" /></Divider>
+        <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>基本信息</span></h3>
         {/* 优惠券名称 */}
         <ProFormText
           width="md"
@@ -184,7 +190,7 @@ const couponConstruction = (props) => {
         />
 
         {/* 优惠券类型 */}
-        <CouponType id={id} />
+        <CouponType id={id} Discounts={Discounts} />
 
         {/* 发行量 */}
         {
@@ -200,7 +206,7 @@ const couponConstruction = (props) => {
                 }]}
             />
             :
-            <Circulation id={id} />
+            <Circulation id={id} face={face} />
 
         }
 
@@ -241,7 +247,7 @@ const couponConstruction = (props) => {
         {
           type == 2 || DetailList.data?.issueType == 2 && id ? null
             :
-            <ProFormDateRangePicker
+            <ProFormDateTimeRangePicker
               label='可领取时间'
               rules={[{ required: true, message: '请选择限领时间' }]}
               name="dateRange"
@@ -317,7 +323,7 @@ const couponConstruction = (props) => {
         />
         <AssignCrowd id={id} choose={choose} />
 
-        <Divider orientation="left">使用设置</Divider>
+        <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>使用设置</span></h3>
 
         {/* 使用范围 */}
         <UseScope id={id} />
