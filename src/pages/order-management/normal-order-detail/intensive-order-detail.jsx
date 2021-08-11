@@ -4,6 +4,7 @@ import { Steps, Space, Button, Modal, Spin } from 'antd';
 import { useParams, history } from 'umi';
 import { findAdminOrderDetail, deliverGoods, expressInfo, expressInfoYlbb } from '@/services/order-management/normal-order-detail';
 import { amountTransform, dateFormat } from '@/utils/utils'
+import moment from 'moment';
 
 import styles from './style.less';
 
@@ -24,7 +25,7 @@ const OrderDetail = () => {
         webSite: 1688,
         orderId: detailData.outOrderSn,
         shippingCode: detailData.shippingCode,
-        deliveryTime: detailData.deliveryTime
+        deliveryTime: moment(detailData.deliveryTime).unix(),
       }).then(res => {
         if (res.code === 0) {
           setExpressInfoState(res.data?.deliveryList?.reverse())
