@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProForm, { ProFormText, ProFormDateRangePicker, ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Tag, Form } from 'antd';
 import { history } from 'umi';
 import styles from './style.less';
@@ -9,6 +9,8 @@ import { amountTransform } from '@/utils/utils'
 import { orderList, deliverGoods } from '@/services/order-management/normal-order';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import ImportHistory from '@/components/ImportFile/import-history'
+import Import from '@/components/ImportFile/import'
 
 
 const TableList = () => {
@@ -21,6 +23,8 @@ const TableList = () => {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState(0)
   const [deliveryVisible, setDeliveryVisible] = useState(false)
+  const [importVisit, setImportVisit] = useState(false)
+
 
   const [form] = Form.useForm()
 
@@ -54,22 +58,18 @@ const TableList = () => {
 
     return {
       orderStatus: orderType === 0 ? '' : orderType,
-      startCreateTime: time?.[0]?.format('YYYY-MM-DD'),
-      endCreateTime: time?.[1]?.format('YYYY-MM-DD'),
+      startCreateTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
+      endCreateTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
 
   useEffect(() => {
     setLoading(true);
-    const { time, ...rest } = form.getFieldsValue();
     orderList({
       page,
       size: pageSize,
-      orderStatus: orderType === 0 ? '' : orderType,
-      startCreateTime: time?.[0]?.format('YYYY-MM-DD'),
-      endCreateTime: time?.[1]?.format('YYYY-MM-DD'),
-      ...rest,
+      ...getFieldValue(),
     })
       .then(res => {
         if (res.code === 0) {
@@ -118,8 +118,13 @@ const TableList = () => {
                     type="order-common-export"
                     conditions={getFieldValue()}
                   />
-                  <ExportHistory key="exportHistory" show={visit} setShow={setVisit} />
-
+                  <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type="order-common-export" />
+                  {/* <Import
+                    change={(e) => { setImportVisit(e) }}
+                    code="order_common_send_goods_import"
+                    conditions={getFieldValue()}
+                  />
+                  <ImportHistory key="exportHistory" show={importVisit} setShow={setImportVisit} type="order_common_send_goods_import" /> */}
                 </Space>
               </div>
             );
@@ -181,13 +186,14 @@ const TableList = () => {
             }
           }}
         />
-        <ProFormDateRangePicker
+        <ProFormDateTimeRangePicker
           name="time"
           label="下单时间"
           fieldProps={{
             style: {
               marginBottom: 20
-            }
+            },
+            showTime: true,
           }}
         />
       </ProForm>
