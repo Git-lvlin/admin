@@ -7,6 +7,7 @@ import { message, Form,Button,Modal,Space,Image } from 'antd';
 import GcCascader from '@/components/gc-cascader'
 import ProTable from '@ant-design/pro-table';
 import * as api from '@/services/product-management/product-list';
+import { releaseDynamic } from '@/services/community-management/dynamic-release-dynamic';
 import Upload from '@/components/upload';
 
 export default props => {
@@ -99,23 +100,21 @@ export default props => {
   return (
     <Form
         onFinish={async (values) => {
-          console.log('spuIdsArr',spuIdsArr)
           values.sourceData={
             icon:spuIdsArr[0]?.goodsImageUrl,
             title:spuIdsArr[0]?.goodsName,
             amount:spuIdsArr[0]?.goodsSaleMinPrice,
+            subtitle:'',
             params:{
-              // orderType,
+              orderType:2,
               spuId:spuIdsArr[0]?.spuId,
-              // objectId,
-              // activityId,
-              // skuId,
-              // wsId
+              objectId:'',
+              activityId:'',
+              wsId:''
             }
           }
           values.sourceId=spuIdsArr[0]?.spuId
           values.sourceType=spuIdsArr?1:0
-          console.log('values',values)
           releaseDynamic(values).then(res=>{
             if(res.code==0){
               message.success('发布成功');

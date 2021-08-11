@@ -141,18 +141,22 @@ const message = (type, module) => {
 };
 
 export default (props) =>{
+  const [seleType,setSeleType]=useState()
   return (
     <PageContainer>
       <Tabs
         centered
         defaultActiveKey="1"
         className={styles.auditTabs}
+        onChange={(val)=>{
+          setSeleType(val)
+        }}
       >
-        <TabPane tab="待审核" key="1">
-          {message(3, 1)}
+        <TabPane tab="待审核" key="3">
+          {message(seleType||3, 1)}
         </TabPane>
-        <TabPane tab="审核通过" key="2">
-          {message(4, 2)}
+        <TabPane tab="审核通过" key="4">
+          {message(seleType||4, 2)}
         </TabPane>
       </Tabs>
     </PageContainer>
