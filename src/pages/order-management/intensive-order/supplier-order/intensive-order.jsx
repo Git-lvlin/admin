@@ -124,17 +124,16 @@ const TableList = () => {
                   </Button>
                   <Export
                     change={(e) => { setVisit(e) }}
-                    key="export"
                     type="order-intensive-export"
                     conditions={getFieldValue()}
                   />
-                  <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type="order-intensive-export" />
-                  {/* <Import
+                  <ExportHistory show={visit} setShow={setVisit} type="order-intensive-export" />
+                  <Import
                     change={(e) => { setImportVisit(e) }}
                     code="order_intensive_send_goods_import"
                     conditions={getFieldValue()}
                   />
-                  <ImportHistory key="exportHistory" show={importVisit} setShow={setImportVisit} type="order_intensive_send_goods_import" /> */}
+                  <ImportHistory show={importVisit} setShow={setImportVisit} type="order_intensive_send_goods_import" />
                 </Space>
               </div>
             );
