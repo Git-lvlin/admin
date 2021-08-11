@@ -204,7 +204,7 @@ const DetailList = (props) => {
       options={false}
       columns={columns}
       actionRef={actionRef}
-      params={acid&&{cmsId:acid,verifyVersionId: verifyVersionId, status: 2}}
+      params={acid&&{cmsId:acid,verifyVersionId: verifyVersionId}}
       postData={(data) => {
         data.forEach(item => {
           item.goodsSalePrice = item.goodsSalePrice/100
@@ -235,13 +235,13 @@ const DetailList = (props) => {
       }}
       dateFormatter="string"
       toolBarRender={(_,record) => [
-        <Button key="button" icon={<PlayCircleOutlined />} type="primary">
+        <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => {formControl(record.selectedRowKeys.toString(), 2)}}>
           批量发布
         </Button>,
-        <Button key="button" icon={<PauseCircleOutlined />} type="primary">
+        <Button key="button" icon={<PauseCircleOutlined />} type="primary" onClick={() => {formControl(record.selectedRowKeys.toString(), 1)}}>
           批量下线
         </Button>,
-        <Button key="button" icon={<MinusOutlined />} type="primary">
+        <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => {formControl(record.selectedRowKeys.toString(), 4)}}>
           批量删除
         </Button>,
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail(record) }}>
