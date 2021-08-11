@@ -415,7 +415,6 @@ const TableList = () => {
         setVisible={setOffShelfVisible}
         callback={(text) => { offShelf(selectItemId, text) }}
       />}
-
     </PageContainer>
   );
 };

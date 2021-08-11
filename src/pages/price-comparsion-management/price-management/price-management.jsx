@@ -67,6 +67,7 @@ const PriceManagement = () => {
 
   const onSearch = (value, t, {id, goodsSpuId, goodsSkuId}) => {
     if (!value) {
+      setLoadingIndex(-1)
       return
     }
     const type = t
@@ -326,21 +327,29 @@ const PriceManagement = () => {
           data.tb = {
             priceDefault: null
           }
+        } else if (!data.tb.priceDefault) {
+          data.tb.priceDefault = null
         }
         if (!data.jd) {
           data.jd = {
             priceDefault: null
           }
+        } else if (!data.jd.priceDefault) {
+          data.jd.priceDefault = null
         }
         if (!data.pdd) {
           data.pdd = {
             priceDefault: null
           }
+        } else if (!data.pdd.priceDefault) {
+          data.pdd.priceDefault = null
         }
         if (!data.tmall) {
           data.tmall = {
             priceDefault: null
-          }
+          } 
+        } else if (!data.tmall.priceDefault) {
+          data.tmall.priceDefault = null
         }
         setResData(data)
         setRowLoadin(false)

@@ -125,7 +125,7 @@ const TableList = () => {
           }}
         />
         <ProFormText
-          name="supplierName"
+          name="storeName"
           label="所属商家"
           fieldProps={{
             style: {
