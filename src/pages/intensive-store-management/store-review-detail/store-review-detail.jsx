@@ -106,6 +106,7 @@ const Detail = () => {
         idBack: imageInfo.idCardBackImg,
         idHandheld: imageInfo.idHandheld,
         memberId: detailData.memberId,
+        verifyStatus: detailData.verifyStatus.code,
         deposit: detailData.deposit.length === 0 ? amountTransform(values.depositValue) : 0
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {

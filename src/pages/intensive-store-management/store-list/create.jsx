@@ -327,6 +327,7 @@ export default (props) => {
               fieldProps={{
                 placeholder: '请输入保证金金额',
                 maxLength: 30,
+                suffix: '元'
               }}
             />
         }}
