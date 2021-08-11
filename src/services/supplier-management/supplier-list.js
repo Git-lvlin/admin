@@ -52,6 +52,14 @@ export const supplierEdit = (params = {}, options = {}) => {
     data: params,
     ...options
   });
+
+}
+export const openAccount = (params = {}, options = {}) => {
+  return request('/auth/supplier/bank_account/openAccount', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
 }
 
 export const details = (params = {}, options = {}) => {
@@ -165,5 +173,21 @@ export const getBanks = async () => {
 export const getAreas = async () => {
   return request('/auth/supplier/Bank_Account/getAreas', {
     method: 'GET',
+  });
+}
+
+export const delSupplier = (params = {}, options = {}) => {
+  return request('/auth/supplier/user/delSupplier', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const resetPwd = (params = {}, options = {}) => {
+  return request('/auth/supplier/user/resetPwd', {
+    method: 'POST',
+    data: params,
+    ...options
   });
 }
