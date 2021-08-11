@@ -1,33 +1,38 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import styles from '../style.less'
+import Circulation from '../circulation/circulation'
 import ProForm, { ProFormText, ProFormSelect,ProFormRadio } from '@ant-design/pro-form';
 
 const couponType = (props) => {
-    let { id,Discounts } = props
+    let { id,Discounts,type } = props
     let { DetailList } = props
     const [flag, setFlag] = useState()
     const [discounts, setDiscounts] = useState('');
     const [coupons, setCoupons] = useState('');
     const [immediately, setImmediately] = useState('');
     const [position,setPosition]=useState()
+    const [face1,setFace1]=useState()
+    const [face3,setFace3]=useState()
+    const [most,setMost]=useState()
+    const [fullSubtract,setFullSubtract]=useState()
     const onDiscounts = e => {
         setDiscounts(e.target.value)
-        Discounts(e.target.value)
+        setFace1(e.target.value)
     }
     const onCoupons = e => {
         setCoupons(e.target.value)
     }
     const onImmediately = e => {
         setImmediately(e.target.value)
-        Discounts(e.target.value)
+        setFace3(e.target.value)
     }
     const toggle = val => {
         setFlag(val)
     }
     const checkConfirm=(rule, value, callback)=>{
         return new Promise(async (resolve, reject) => {
-        if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)) {
+        if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
             await reject('不能输入小数')
         } else {
             await resolve()
@@ -86,7 +91,13 @@ const couponType = (props) => {
                         />
                         <span>元</span>
                     </ProForm.Group>
-                    <p>优惠券面值<span className={styles.compute}>{ discounts||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay}</span> 元</p>
+                    <p>
+                        优惠券面值
+                        <span className={styles.compute}>
+                            {discounts||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay}
+                        </span> 
+                        元
+                    </p>
                 </div>
                 :null
             }
@@ -98,6 +109,7 @@ const couponType = (props) => {
                     <ProFormText
                         width={100}
                         name={flag == 2 ? 'usefulNum' : 'usefulAmount'}
+                        fieldProps={{ onChange: (val) => setFullSubtract(val.target.value) }}
                         rules={[
                             {validator: checkConfirm}
                         ]} 
@@ -127,7 +139,7 @@ const couponType = (props) => {
                         name="freeDiscount"
                         fieldProps={{
                             onChange: (e) => onCoupons(e)
-                            }}
+                        }}
                         width={100}
                         rules={[
                             {validator: checkConfirm}
@@ -139,12 +151,21 @@ const couponType = (props) => {
                         name="maxFreeAmount"
                         rules={[
                             {validator: checkConfirm}
-                        ]} 
+                        ]}
+                        fieldProps={{
+                            onChange: (e) =>setMost(e.target.value)
+                        }} 
                     />
                     <span>元 （不填写则不作限制） </span>
                     <p>（只能填1-99的整数）</p>
                 </ProForm.Group>
-                <p>优惠券面值<span className={styles.compute}>{coupons ? (100 - coupons) / 100 : ''||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay ? (100 - DetailList.data?.freeDiscount) / 100 : ''}</span> 折券</p>
+                <p>
+                    优惠券面值
+                    <span className={styles.compute}>
+                        {coupons ? (100 - coupons) / 10 : ''||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay ?(100 - DetailList.data?.freeDiscount) / 10 : ''}
+                    </span> 
+                    折券
+                </p>
                 </div>
                 :null
             }
@@ -176,9 +197,31 @@ const couponType = (props) => {
                     />
                     <span>元</span>
                 </ProForm.Group>
-                <p>优惠券面值<span className={styles.compute}>{immediately||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay}</span> 元</p>
+                <p>
+                    优惠券面值
+                    <span className={styles.compute}>
+                        {immediately||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay}
+                    </span> 
+                    元
+                </p>
                 </div>
                 :null
+            }
+            {/* 发行量 */}
+            {
+            type == 2 ?
+                <ProFormRadio.Group
+                    name="issueQuantity"
+                    label='发行量'
+                    // rules={[{ required: true, message: '请选择发行量' }]}  
+                    options={[
+                        {
+                        label: '不限量发放',
+                        value: 1
+                        }]}
+                />
+                :
+                <Circulation id={id} face1={face1} face3={face3} most={most} coupons={coupons} fullSubtract={fullSubtract} pcType={position}/>
             }
         </>
     )

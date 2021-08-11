@@ -3,6 +3,7 @@ import { getDynamicDetail } from '@/services/community-management/dynamic-get-dy
 import { Divider, Form, Spin,Button,Image } from 'antd';
 import moment from 'moment';
 import { history } from 'umi';
+import { CaretRightFilled } from '@ant-design/icons';
 import styles from './style.less'
 
 const formItemLayout = {
@@ -36,15 +37,12 @@ export default props => {
 
   return (
     <>
-      <Spin
-        spinning={loading}
-      >
-         <Divider className={styles.divider} orientation="left">帖子详情</Divider>
         <Form
           form={form}
           {...formItemLayout}
           className={styles.detailform}
         >
+           <h2 className={styles.head}><CaretRightFilled /> 帖子详情</h2>
           <Form.Item
             label="内容ID"
           >
@@ -111,8 +109,6 @@ export default props => {
           </Form.Item>
           
         </Form>
-      </Spin> 
-    
     </>
   );
 };
