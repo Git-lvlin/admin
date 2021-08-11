@@ -30,7 +30,7 @@ export default props=>{
             },
         },
         {
-            title: '意见审核',
+            title: '审核意见',
             dataIndex: 'content',
             valueType: 'text'
         },
