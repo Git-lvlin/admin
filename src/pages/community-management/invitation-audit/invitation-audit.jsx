@@ -213,13 +213,13 @@ export default (props) =>{
         }}
       >
         <TabPane tab="待审核" key="0">
-          {message(seleType, 1)}
+          {message(seleType||0, 1)}
         </TabPane>
         <TabPane tab="审核通过" key="1">
-          {message(seleType, 2)}
+          {message(seleType||1, 2)}
         </TabPane>
         <TabPane tab="审核拒绝" key="2">
-          { message(seleType, 3) }
+          { message(seleType||2, 3) }
         </TabPane>
       </Tabs>
     </PageContainer>
