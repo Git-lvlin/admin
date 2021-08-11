@@ -18,6 +18,7 @@ import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import debounce from 'lodash/debounce';
 import ImageSort from './image-sort';
+import Look from './look';
 
 const FromWrap = ({ value, onChange, content, right }) => (
   <div style={{ display: 'flex' }}>
@@ -32,6 +33,7 @@ export default (props) => {
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [salePriceProfitLoss, setSalePriceProfitLoss] = useState(null);
+  const [lookVisible, setLookVisible] = useState(false);
   const [form] = Form.useForm()
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -413,6 +415,25 @@ export default (props) => {
         onClose: () => {
           onClose();
         }
+      }}
+      submitter={{
+        render: (props, defaultDoms) => {
+          return [
+            ...defaultDoms,
+            <Button
+              key="look"
+              onClick={(_) => {
+                if (detailData) {
+                  setLookVisible(true)
+                } else {
+                  message.error('请编辑完成后预览')
+                }
+              }}
+            >
+              预览
+            </Button>,
+          ];
+        },
       }}
       form={form}
       onFinish={async (values) => {
@@ -962,6 +983,12 @@ export default (props) => {
           <span style={{ color: 'red' }}>{detailData.goods.goodsVerifyRemark}</span>
         </Form.Item>}
       </>}
+      {lookVisible && <Look
+        visible={lookVisible}
+        setVisible={setLookVisible}
+        dataList={detailData}
+        callback={(text) => { console.log('callback', text) }}
+      />}
     </DrawerForm>
   );
 };
