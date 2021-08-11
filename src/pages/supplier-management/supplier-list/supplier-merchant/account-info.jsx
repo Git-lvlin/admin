@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Form, Button, Tree, message, Checkbox, Input, Space, Typography, Divider, DatePicker } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Input, Space, Typography, Divider, DatePicker } from 'antd';
 import {
   DrawerForm,
   ProFormText,
   ProFormRadio,
   ProFormSelect,
-  ProFormDigit,
   ProFormDependency,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
@@ -16,7 +15,7 @@ import moment from 'moment'
 
 const { Title } = Typography;
 
-const SocialCreditInfo = ({ value, onChange }) => {
+const SocialCreditInfo = ({ value, onChange, disabled }) => {
   const [code, setCode] = useState(value?.code);
   const [date, setDate] = useState(value?.date);
 
@@ -38,13 +37,13 @@ const SocialCreditInfo = ({ value, onChange }) => {
 
   return (
     <Space>
-      <Input placeholder="请输入统一社会信用码" value={code} style={{ width: 230 }} onChange={codeChange} />
-      <DatePicker placeholder="请选择统一社会信用证有效期" value={date} style={{ width: 230 }} onChange={dateChange} />
+      <Input placeholder="请输入统一社会信用码" disabled={disabled} value={code} style={{ width: 230 }} onChange={codeChange} />
+      <DatePicker placeholder="请选择统一社会信用证有效期" disabled={disabled} value={date} style={{ width: 230 }} onChange={dateChange} />
     </Space>
   )
 }
 
-const LegalInfo = ({ value, onChange }) => {
+const LegalInfo = ({ value, onChange, disabled }) => {
   const [code, setCode] = useState(value?.code);
   const [date, setDate] = useState(value?.date);
   const [userName, setUserName] = useState(value?.userName);
@@ -77,14 +76,14 @@ const LegalInfo = ({ value, onChange }) => {
   }
   return (
     <Space>
-      <Input value={userName} placeholder="请输入姓名" style={{ width: 100 }} onChange={userNameChange} />
-      <Input value={code} placeholder="请输入身份证号码" style={{ width: 150 }} onChange={codeChange} />
-      <DatePicker value={date} placeholder="请输入身份证号码有效期" style={{ width: 200 }} onChange={dateChange} />
+      <Input value={userName} disabled={disabled} placeholder="请输入姓名" style={{ width: 100 }} onChange={userNameChange} />
+      <Input value={code} disabled={disabled} placeholder="请输入身份证号码" style={{ width: 150 }} onChange={codeChange} />
+      <DatePicker value={date} disabled={disabled} placeholder="请输入身份证号码有效期" style={{ width: 200 }} onChange={dateChange} />
     </Space>
   )
 }
 
-const ImageInfo = ({ value, onChange, bankAccountType, bindBankSwitch }) => {
+const ImageInfo = ({ value, onChange, bankAccountType, bindBankSwitch, disabled }) => {
   const [businessLicense, setBusinessLicense] = useState(value?.businessLicense);
   const [idCardFrontImg, setIdCardFrontImg] = useState(value?.idCardFrontImg);
   const [idCardBackImg, setIdCardBackImg] = useState(value?.idCardBackImg);
@@ -141,16 +140,16 @@ const ImageInfo = ({ value, onChange, bankAccountType, bindBankSwitch }) => {
   return (
     <div>
       <Space>
-        <Upload code={301} value={businessLicense} text="上传三合一证件照" maxCount={1} accept="image/*" onChange={businessLicenseChange} />
-        <Upload code={302} value={idCardFrontImg} text="上传法人身份证正面照" maxCount={1} accept="image/*" onChange={idCardFrontImgChange} />
-        <Upload code={302} value={idCardBackImg} text="上传法人身份证背面照" maxCount={1} accept="image/*" onChange={idCardBackImgChange} />
+        <Upload code={301} disabled={disabled} value={businessLicense} text="上传三合一证件照" maxCount={1} accept="image/*" size={2 * 1024} onChange={businessLicenseChange} />
+        <Upload code={302} disabled={disabled} value={idCardFrontImg} text="上传法人身份证正面照" maxCount={1} accept="image/*" size={2 * 1024} onChange={idCardFrontImgChange} />
+        <Upload code={302} disabled={disabled} value={idCardBackImg} text="上传法人身份证背面照" maxCount={1} accept="image/*" size={2 * 1024} onChange={idCardBackImgChange} />
         {bindBankSwitch === 1 && <>
           {
             bankAccountType === 1
               ?
-              <Upload key="1" code={303} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} accept="image/*" onChange={bankLicenseImgChange} />
+              <Upload key="1" code={303} disabled={disabled} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} size={2 * 1024} accept="image/*" onChange={bankLicenseImgChange} />
               :
-              <Upload key="2" code={303} value={bankCardFrontImg} text="上传结算银行卡正面照" maxCount={1} accept="image/*" onChange={bankCardFrontImgChange} />
+              <Upload key="2" code={303} disabled={disabled} value={bankCardFrontImg} text="上传结算银行卡正面照" maxCount={1} size={2 * 1024} accept="image/*" onChange={bankCardFrontImgChange} />
           }
         </>}
 
@@ -158,7 +157,7 @@ const ImageInfo = ({ value, onChange, bankAccountType, bindBankSwitch }) => {
       {
         bindBankSwitch === 1 && <>
           {bankAccountType === 2 && <Space>
-            <Upload code={303} value={bankCardBackImg} text="上传结算银行卡背面照" maxCount={1} accept="image/*" onChange={bankCardBackImgChange} />
+            <Upload code={303} disabled={disabled} value={bankCardBackImg} text="上传结算银行卡背面照" maxCount={1} accept="image/*" size={2 * 1024} onChange={bankCardBackImgChange} />
           </Space>}
         </>
       }
@@ -328,6 +327,20 @@ export default (props) => {
         bindBankSwitch: 2,
       }}
       {...formItemLayout}
+      submitter={{
+        render: (props) => {
+          return (
+            <Space>
+              <Button onClick={() => { setVisible(false) }}>
+                取消
+              </Button>
+              {detailData?.bankAccountInfo?.auditStatus !== 1 && <Button type="primary" onClick={() => { props.submit(); }}>
+                确认
+              </Button>}
+            </Space>
+          )
+        },
+      }}
     >
 
 
@@ -356,7 +369,7 @@ export default (props) => {
                 },
               })]}
           >
-            <Address />
+            <Address disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
           </Form.Item>
           <Form.Item
             label="统一社会信用码"
@@ -376,13 +389,14 @@ export default (props) => {
               },
             })]}
           >
-            <SocialCreditInfo />
+            <SocialCreditInfo disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
           </Form.Item>
           <ProFormText
             name="businessScope"
             label="经营范围"
             placeholder="请输入经营范围"
             rules={[{ required: true, message: '请输入经营范围' }]}
+            disabled={detailData?.bankAccountInfo?.auditStatus === 1}
           />
           <Form.Item
             label="法人姓名"
@@ -409,7 +423,7 @@ export default (props) => {
               })
             ]}
           >
-            <LegalInfo />
+            <LegalInfo disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
           </Form.Item>
           <ProFormText
             name="legalPhone"
@@ -419,6 +433,7 @@ export default (props) => {
             fieldProps={{
               maxLength: 11,
             }}
+            disabled={detailData?.bankAccountInfo?.auditStatus === 1}
           />
           <ProFormSelect
             label="绑卡状态"
@@ -434,6 +449,7 @@ export default (props) => {
                 value: 1,
               }
             ]}
+            disabled={detailData?.bankAccountInfo?.auditStatus === 1}
           />
         </div>
         <div style={{ flex: 1 }}>
@@ -456,6 +472,7 @@ export default (props) => {
                 fieldProps={{
                   onChange: bankAccountTypeChange
                 }}
+                disabled={detailData?.bankAccountInfo?.auditStatus === 1}
               />
             }
           </ProFormDependency>
@@ -504,7 +521,7 @@ export default (props) => {
                     })
                   ]}
                 >
-                  <ImageInfo bankAccountType={bankAccountType} bindBankSwitch={bindBankSwitch} />
+                  <ImageInfo disabled={detailData?.bankAccountInfo?.auditStatus === 1} bankAccountType={bankAccountType} bindBankSwitch={bindBankSwitch} />
                 </Form.Item>
               )
             }
@@ -523,12 +540,14 @@ export default (props) => {
                   fieldProps={{
                     labelInValue: true,
                   }}
+                  disabled={detailData?.bankAccountInfo?.auditStatus === 1}
                 />
                 <ProFormText
                   name="bankCardNo"
                   label="结算银行卡号"
                   placeholder="请输入结算银行卡号"
                   rules={[{ required: true, message: '请输入结算银行卡号' }]}
+                  disabled={detailData?.bankAccountInfo?.auditStatus === 1}
                 />
                 <ProFormDependency name={['bankAccountType']}>
                   {
@@ -539,7 +558,7 @@ export default (props) => {
                         placeholder="请输入结算银行卡开户名"
                         rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
                         extra="银行账户类型为对公账户时，开户名为供应商家企业名称"
-                        disabled={bankAccountType === 1}
+                        disabled={bankAccountType === 1 || detailData?.bankAccountInfo?.auditStatus === 1}
                       />
                     )
                   }

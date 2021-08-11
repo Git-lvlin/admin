@@ -144,6 +144,9 @@ export default function EditTable(props) {
             })
             setDataSource(arr)
             setTableData(arr)
+          } else {
+            setDataSource(recordList)
+            setTableData(recordList)
           }
         })
       } else {

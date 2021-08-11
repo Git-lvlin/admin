@@ -188,7 +188,7 @@ const TableList = () => {
           {data.status === 0 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>启用</a>}
           {/* <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.id}`) }}>详情</a> */}
           <a onClick={() => { getDetail(data.id, 1) }}>基本信息</a>
-          <a onClick={() => { getDetail(data.id, 2) }}>开户信息</a>
+          {data.accountSwitch === 1 &&<a onClick={() => { getDetail(data.id, 2) }}>开户信息</a>}
           {data.isAllowDel === 1 && <a onClick={() => { deleteSup(data.id) }}>删除</a>}
           <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>售后地址</a>
           <a onClick={() => { setSelectItem(data); setIsModalVisible(true) }}>重置密码</a>

@@ -3,6 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
 import { getAuditedList } from '@/services/supplier-management/audit-list'
 import Audit from './audit';
+import moment from 'moment';
 
 const TableList = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -71,7 +72,7 @@ const TableList = () => {
       hideInSearch: true,
       render: (_, data) => <>
         <div>{data.auditUser}</div>
-        <div>{!!data.auditTime && data.auditTime}</div>
+        <div>{data.auditTime > 0 && moment(data.moment).format('YYYY-MM-DD HH:mm:ss')}</div>
       </>
     },
     {
