@@ -178,7 +178,12 @@ export default props => {
             <Form.Item
               label="有效期"
             >
-              <p>领券{detailData.activityStartDay}天起，{detailData.activityEndDay}天内可用</p>
+               {
+                detailData.activityTimeType == 1 ?
+                <p>{detailData.activityStartTime + ' -- ' + detailData.activityEndTime}</p>
+                :
+                <p>领券{detailData.activityStartDay}天起，{detailData.activityEndDay}天内可用</p>
+              }
             </Form.Item>
 
             <Form.Item
