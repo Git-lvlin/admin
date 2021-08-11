@@ -298,7 +298,6 @@ const TableList= (props) =>{
         },
         }}
         onFinish={async (values) => {
-          console.log('values',values);
           setVisible(false)
         }}
       >
@@ -330,13 +329,13 @@ const TableList= (props) =>{
         }}
       >
         <TabPane tab="待提交" key="1">
-          {message(seleType, 1,dispatch)}
+          {message(seleType||1, 1,dispatch)}
         </TabPane>
         <TabPane tab="审核中" key="3">
-          {message(seleType, 3)}
+          {message(seleType||3, 3)}
         </TabPane>
         <TabPane tab="已通过" key="4">
-          { message(seleType, 4) }
+          { message(seleType||4, 4) }
         </TabPane>
       </Tabs>
     </PageContainer>
