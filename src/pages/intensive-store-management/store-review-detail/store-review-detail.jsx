@@ -95,6 +95,12 @@ const Detail = () => {
       userInfo = userInfo && JSON.parse(userInfo)
       approve({
         ...rest,
+        provinceId: area[0].value,
+        provinceName: area[0].label,
+        cityId: area[1].value,
+        cityName: area[1].label,
+        regionId: area[2].value,
+        regionName: area[2].label,
         applyId: params.id,
         optAdminId: userInfo.id,
         optAdminName: userInfo.username,
