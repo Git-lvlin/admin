@@ -185,7 +185,8 @@ export default props => {
                   options={false}
                   params={{
                     selectType: 1,
-                    goodsState:1
+                    goodsState:1,
+                    pageSize:10
                   }}
                   style={{display:loading?'block':'none'}}
                   request={api.productList}

@@ -1,10 +1,12 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useRef } from 'react';
 import { getDynamicDetail } from '@/services/community-management/dynamic-get-dynamic-detail';
-import { Divider, Form, Spin,Button,Image } from 'antd';
+import { Divider, Form, Spin,Button,Image,Menu, Dropdown,Space,List, Avatar } from 'antd';
 import moment from 'moment';
 import { history } from 'umi';
 import { CaretRightFilled } from '@ant-design/icons';
 import styles from './style.less'
+import ReplyModel from './reply-model'
+import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -26,6 +28,24 @@ export default props => {
   const [form] = Form.useForm()
   const [detailData,setDetailData]=useState([])
   const [loading, setLoading] = useState(false);
+  const ref=useRef()
+  const listData = []
+  for (let i = 0; i < 23; i++) {
+    listData.push({
+      href: 'https://ant.design',
+      title: `张三 ${i}`,
+      avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+      description:
+        '2021-07-15 15:32:28',
+      content:
+        '评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容',
+      chat:[
+        '李四：这是回复...这是回复...',
+        '王五：兄弟顶你....',
+        '小鸭蛋：专业补刀20年'
+      ]
+    });
+  }
   useEffect(()=>{
     setLoading(true);
     getDynamicDetail({id}).then(res=>{
@@ -35,6 +55,25 @@ export default props => {
     })
   },[])
 
+  const menu = (
+    <Menu>
+      <Menu.Item>
+          <ReplyModel 
+            state={1}  
+            label={'发布评论'}  
+            // InterFace={auditDynamic} 
+            boxref={ref}
+          />
+      </Menu.Item>
+      <Menu.Item>
+          置顶
+      </Menu.Item>
+      <Menu.Item>
+          隐藏帖子
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <>
         <Form
@@ -43,6 +82,9 @@ export default props => {
           className={styles.detailform}
         >
            <h2 className={styles.head}><CaretRightFilled /> 帖子详情</h2>
+           <Dropdown overlay={menu} placement="bottomCenter" arrow>
+            <Button style={{marginLeft:'1400px'}} type='primary'>帖子管理</Button>
+          </Dropdown>
           <Form.Item
             label="内容ID"
           >
@@ -72,9 +114,58 @@ export default props => {
                   ))
                 }
               </div>
-            </Form.Item>
+              <Space>
+                {/* <Image width={100} src={detailData.sourceData.goodsImageUrl} /> */}
+                {/* <div>
+                <p>{detailData.sourceData.goodsName}</p>
+                <p>{detailData.sourceData.specName}</p>
+                <p>￥ {detailData.sourceData.goodsSaleMinPrice}</p>
+                </div> */}
+            </Space>
+            <hr style={{marginTop:'70px'}}/>
+            <p style={{marginTop:'20px'}}>共（{listData.length}）条评论</p>
+            <List
+              itemLayout="vertical"
+              size="large"
+              pagination={{
+                onChange: page => {
+                  console.log(page);
+                },
+                pageSize: 3,
+              }}
+              dataSource={listData}
+              renderItem={item => (
+                <List.Item
+                  key={item.title}
+                  actions={[
+                    <ReplyModel 
+                      state={1}  
+                      label={'回复'}  
+                      // InterFace={auditDynamic} 
+                      boxref={ref}
+                    />
+                  ]}
+                >
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.avatar} />}
+                    title={<a href={item.href}>{item.title}</a>}
+                    description={item.description}
+                  />
+                  {item.content}
+                  <div style={{background:'#F2F2F2',padding:'20px'}}>
+                        {
+                          item.chat.map((ele)=>(
+                            <p>{ele}</p>
+                          ))
+                        }
+                  </div>
+                </List.Item>
+              )}
+            />
+          </Form.Item>
+      
 
-          {
+          {/* {
            detailData.sourceType==1&&detailData.sourceData?
             <Form.Item
               label="商品快照"
@@ -106,7 +197,7 @@ export default props => {
                   :<Button className={styles.button} type="primary" onClick={()=>history.goBack()}>返回</Button>
               }
          
-          </Form.Item>
+          </Form.Item> */}
           
         </Form>
     </>
