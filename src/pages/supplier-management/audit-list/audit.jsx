@@ -221,10 +221,12 @@ const Detail = (props) => {
               <Space style={{ display: 'flex' }}>
                 <Image src={detailData?.bankAccountInfo?.businessLicense?.[0]} width={150} height={150} />
                 <Image src={detailData?.bankAccountInfo?.idCardFrontImg?.[0]} width={150} height={150} />
+                <Image src={detailData?.bankAccountInfo?.idCardBackImg?.[0]} width={150} height={150} />
               </Space>
               <Space style={{ display: 'flex' }}>
-                <Image src={detailData?.bankAccountInfo?.idCardBackImg?.[0]} width={150} height={150} />
                 {detailData?.bankAccountInfo?.bankLicenseImg?.[0] && <Image src={detailData?.bankAccountInfo?.bankLicenseImg?.[0]} width={150} height={150} />}
+                {detailData?.bankAccountInfo?.bankCardFrontImg?.[0] && <Image src={detailData?.bankAccountInfo?.bankCardFrontImg?.[0]} width={150} height={150} />}
+                {detailData?.bankAccountInfo?.bankCardBackImg?.[0] && <Image src={detailData?.bankAccountInfo?.bankCardBackImg?.[0]} width={150} height={150} />}
               </Space>
             </Form.Item>
           </div>
