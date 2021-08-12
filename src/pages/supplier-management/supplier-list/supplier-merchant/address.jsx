@@ -3,11 +3,10 @@ import { Cascader, Input, Space } from 'antd';
 import { getAreas } from '@/services/supplier-management/supplier-list'
 
 
-const Address = ({ value, onChange }) => {
+const Address = ({ value, onChange, disabled }) => {
   const [areaData, setAreaData] = useState([]);
   const [area, setArea] = useState(value?.area);
   const [info, setInfo] = useState(value?.info);
-
 
   const handleProvinceChange = (val) => {
     setArea(val)
@@ -43,10 +42,10 @@ const Address = ({ value, onChange }) => {
   return (
     <>
       <Space>
-        <Cascader value={area} placeholder="请选择所在地区" onChange={handleProvinceChange} options={areaData} style={{ width: 470 }} />
+        <Cascader value={area} placeholder="请选择所在地区" disabled={disabled} onChange={handleProvinceChange} options={areaData} style={{ width: 470 }} />
       </Space>
       <div style={{ marginTop: 10 }}>
-        <Input value={info} placeholder="请输入详细地址" value={info} onChange={onInfoChang} />
+        <Input value={info} placeholder="请输入详细地址" value={info} disabled={disabled} onChange={onInfoChang} />
       </div>
     </>
   )
