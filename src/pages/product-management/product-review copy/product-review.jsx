@@ -72,24 +72,83 @@ const TableList = () => {
       })
     } else {
       setSelectItem(record)
+      // api.noFirstCheckList({
+      //   spuId: record.id
+      // }).then(res => {
+      //   if (res.code === 0) {
+      //     setDetailData({
+      //       data: res.data?.length ? res.data : [],
+      //       spuId: record.id
+      //     });
+      //   }
+      // })
       setSecondReviewVisible(true);
     }
   }
 
-  const purchaseAuditPass = (spuId) => {
-    api.purchaseAuditPass({ spuId }, { showSuccess: true })
+  const onShelf = (spuId, cb) => {
+    api.onShelf({ spuId }, { showSuccess: true })
       .then(res => {
         if (res.code === 0) {
           actionRef.current.reload();
+          if (cb) {
+            cb()
+          }
         }
       })
   }
 
-  const overrule = (spuIds) => {
-    api.purchaseAuditRefuse({ spuIds }, { showSuccess: true })
+  /**
+   * 
+   * @param {*} type 1:通过并上架，2:只通过，3:驳回
+   */
+  const firstCheck = (type, checkType, spuId, goodsInfo) => {
+    const { supplierHelperId, settleType, goodsSaleType, ...rest } = goodsInfo;
+    api.firstCheck({
+      checkType,
+      spuId,
+      isMultiSpec: detailData.isMultiSpec,
+      supplierHelperId,
+      settleType,
+      goodsInfo: rest.goodsInfo,
+      goodsSaleType,
+    }, { showSuccess: type !== 1 })
       .then(res => {
         if (res.code === 0) {
-          actionRef.current.reload();
+          if (type === 1) {
+            onShelf(spuId, () => {
+              setFirstReviewVisible(false)
+            })
+          } else {
+            setFirstReviewVisible(false)
+            actionRef.current.reload();
+          }
+        }
+      })
+  }
+
+  /**
+   * 
+   * @param {*} type 1:通过并上架，2:只通过，3:驳回
+   */
+  const check = (type, checkType, spuId, goodsVerifyRemark) => {
+    api.check({
+      checkType,
+      spuId,
+      goodsVerifyRemark
+    }, { showSuccess: type !== 1 })
+      .then(res => {
+        if (res.code === 0) {
+          if (type === 1) {
+            onShelf(spuId, () => {
+              setFirstReviewVisible(false)
+              setSecondReviewVisible(false)
+            })
+          } else {
+            setSecondReviewVisible(false)
+            setFirstReviewVisible(false)
+            actionRef.current.reload();
+          }
         }
       })
   }
@@ -311,13 +370,13 @@ const TableList = () => {
         visible={firstReviewVisible}
         setVisible={setFirstReviewVisible}
         detailData={detailData}
-        check={purchaseAuditPass}
-        overrule={overrule}
+        check={firstCheck}
+        overrule={check}
       />}
       {secondReviewVisible && <SecondReview
         visible={secondReviewVisible}
         setVisible={setSecondReviewVisible}
-        check={purchaseAuditPass}
+        check={check}
         record={selectItem}
         operateRole={typeTransform(config.operateRole)}
       />}

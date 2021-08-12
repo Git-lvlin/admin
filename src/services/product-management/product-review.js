@@ -37,16 +37,16 @@ export const getDetail = (params = {}, options = {}) => {
   });
 }
 
-export const firstCheck = (params = {}, options = {}) => {
-  return request('/auth/goods/product/firstCheck', {
+export const purchaseAuditPass = (params = {}, options = {}) => {
+  return request('/auth/goods/product/purchaseAuditPass', {
     method: 'POST',
     data: params,
     ...options
   });
 }
 
-export const check = (params = {}, options = {}) => {
-  return request('/auth/goods/product/check', {
+export const purchaseAuditRefuse = (params = {}, options = {}) => {
+  return request('/auth/goods/product/purchaseAuditRefuse', {
     method: 'POST',
     data: params,
     ...options

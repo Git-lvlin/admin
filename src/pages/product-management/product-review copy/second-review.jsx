@@ -7,7 +7,7 @@ import Edit from '../product-list/edit';
 
 
 const UserDetail = (props) => {
-  const { visible, setVisible, record, operateRole, overrule } = props;
+  const { visible, setVisible, record, operateRole, check } = props;
   const [overruleVisible, setOverruleVisible] = useState(false);
   const [hasChange, setHasChange] = useState(false);
   const [formVisible, setFormVisible] = useState(false);
@@ -105,9 +105,9 @@ const UserDetail = (props) => {
   }
 
   const postData = (data) => {
-    // if (data?.length) {
-    //   setHasChange(data[0]?.priceChange === 1)
-    // }
+    if (data?.length) {
+      setHasChange(data[0]?.priceChange === 1)
+    }
     return data;
   }
 
@@ -174,7 +174,7 @@ const UserDetail = (props) => {
       {overruleVisible && <Overrule
         visible={overruleVisible}
         setVisible={setOverruleVisible}
-        callback={(text) => { overrule([record.spuId], text) }}
+        callback={(text) => { check(3, 2, record.spuId, text) }}
       />}
       {formVisible && <Edit
         visible={formVisible}
