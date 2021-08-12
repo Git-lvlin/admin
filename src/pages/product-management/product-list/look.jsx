@@ -45,8 +45,8 @@ export default (props) => {
             </div>
           </div>
           <div className={style.text}>
-            <div className={style.name}>{dataList.goods.goodsName}</div>
-            {dataList.goods.salePrice&&<div className={style.price}>{'￥'+dataList.goods.salePrice/100}</div>}
+            {dataList.goods&&<div className={style.name}>{dataList.goods.goodsName || '-'}</div>}
+            {dataList.goods?.salePrice&&<div className={style.price}>{'￥'+dataList.goods.salePrice/100}</div>}
           </div>
           <div>
             {
