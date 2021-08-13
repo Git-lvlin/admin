@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Button, Form, Input, message, Select } from 'antd';
+import { Button, Form, Input, message, Select, Tag } from 'antd';
 import {
   DrawerForm,
   ProFormText,
@@ -18,6 +18,9 @@ import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import debounce from 'lodash/debounce';
 import ImageSort from './image-sort';
+import MultiCascader from 'rsuite/lib/MultiCascader';
+import 'rsuite/lib/MultiCascader/styles';
+import { arrayToTree } from '@/utils/utils'
 
 const FromWrap = ({ value, onChange, content, right }) => (
   <div style={{ display: 'flex' }}>
@@ -33,6 +36,9 @@ export default (props) => {
   const [tableData, setTableData] = useState([]);
   const [salePriceProfitLoss, setSalePriceProfitLoss] = useState(null);
   const [form] = Form.useForm()
+  const [selectAreaKey, setSelectAreaKey] = useState([]);
+  const [areaData, setAreaData] = useState([]);
+
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -53,6 +59,30 @@ export default (props) => {
         imageSort: index,
       }
     })
+  }
+
+  const getSubmitAreaData = (v) => {
+    const arr = [];
+    v.forEach(item => {
+      let deep = 0;
+      let node = window.yeahgo_area.find(it => it.id === item);
+      const nodeIds = [node.id];
+      const nodeNames = [node.name]
+      while (node.pid) {
+        deep += 1;
+        node = window.yeahgo_area.find(it => it.id === node.pid);
+        nodeIds.push(node.id);
+        nodeNames.push(node.name);
+      }
+      arr.push({
+        provinceId: nodeIds[deep],
+        cityId: deep > 0 ? nodeIds[deep - 1] : 0,
+        areaId: deep > 1 ? nodeIds[deep - 2] : 0,
+        areaName: nodeNames.reverse().join('')
+      })
+    })
+
+    return arr;
   }
 
   const submit = (values) => {
@@ -152,6 +182,10 @@ export default (props) => {
       // advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl,
     };
+
+    if (selectAreaKey.length) {
+      obj.refuseArea = getSubmitAreaData(selectAreaKey)
+    }
 
     if (freightTemplateId) {
       obj.goods.freightTemplateId = freightTemplateId.value;
@@ -299,6 +333,42 @@ export default (props) => {
     return debounce(loadData, 1000);
   }, [])
 
+  const renderMultiCascaderTag = (selectedItems) => {
+    const titleArr = [];
+    selectedItems.forEach(item => {
+      const arr = [];
+      let node = item.parent;
+      arr.push(item.label)
+      while (node) {
+        arr.push(node.label)
+        node = node.parent;
+      }
+      titleArr.push({
+        label: arr.reverse().join('-'),
+        value: item.value
+      })
+    })
+
+    return (
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {
+          titleArr.map(item => (
+            <Tag
+              key={item.value}
+              closable
+              style={{ marginBottom: 10 }}
+              onClose={() => {
+                setSelectAreaKey(selectAreaKey.filter(it => it !== item.value))
+              }}
+            >
+              {item.label}
+            </Tag>
+          ))
+        }
+      </div>
+    );
+  }
+
   useEffect(() => {
     if (detailData) {
       const { goods, specName, specValues, specData, freightTemplateId, freightTemplateName, settleType } = detailData;
@@ -334,6 +404,25 @@ export default (props) => {
         form.setFieldsValue({
           freightTemplateId: { label: freightTemplateName, value: freightTemplateId }
         })
+      }
+
+      if (detailData?.refuseArea?.length) {
+        const areaArr = [];
+        for (let index = 0; index < detailData.refuseArea.length; index++) {
+          const refuseArea = detailData.refuseArea[index];
+          if (refuseArea.areaId) {
+            areaArr.push(refuseArea.areaId)
+            continue;
+          }
+          if (refuseArea.cityId) {
+            areaArr.push(refuseArea.cityId)
+            continue;
+          }
+
+          areaArr.push(refuseArea.cityId)
+
+        }
+        setSelectAreaKey(areaArr)
       }
 
       if (detailData.isMultiSpec) {
@@ -400,6 +489,13 @@ export default (props) => {
     }
 
   }, [form, detailData]);
+
+  useEffect(() => {
+    const arr = arrayToTree(window.yeahgo_area || [])
+    let str = JSON.stringify(arr)
+    str = str.replace(/name/g, 'label').replace(/id/g, 'value')
+    setAreaData(JSON.parse(str))
+  }, [])
 
   return (
     <DrawerForm
@@ -883,6 +979,18 @@ export default (props) => {
           placeholder: ''
         }}
       />
+      <Form.Item
+        label="不发货地区"
+      >
+        <MultiCascader
+          value={selectAreaKey}
+          data={areaData}
+          style={{ width: '100%' }}
+          placeholder="请选择不发货地区"
+          renderValue={(a, b) => renderMultiCascaderTag(b)} locale={{ searchPlaceholder: '输入省市区名称' }}
+          onChange={setSelectAreaKey}
+        />
+      </Form.Item>
       <Form.Item
         label="商品主图"
         name="primaryImages"

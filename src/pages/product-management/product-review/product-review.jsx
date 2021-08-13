@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Tooltip, Spin } from 'antd';
+import { Table, Tooltip, Spin, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { QuestionCircleOutlined } from '@ant-design/icons'
@@ -9,6 +9,8 @@ import BrandSelect from '@/components/brand-select'
 import SupplierSelect from '@/components/supplier-select'
 import FirstReview from './first-review';
 import SecondReview from './second-review';
+import Overrule from './overrule';
+
 import { typeTransform, amountTransform } from '@/utils/utils'
 
 
@@ -55,6 +57,9 @@ const TableList = () => {
   const [config, setConfig] = useState({});
   const [detailData, setDetailData] = useState(null);
   const [selectItem, setSelectItem] = useState(null);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [overruleVisible, setOverruleVisible] = useState(false);
+
   const actionRef = useRef();
 
   const getDetail = (record) => {
@@ -94,6 +99,8 @@ const TableList = () => {
           actionRef.current.reload();
           setFirstReviewVisible(false)
           setSecondReviewVisible(false)
+          setOverruleVisible(false)
+          setSelectedRowKeys([])
         }
       })
   }
@@ -310,6 +317,19 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
+        rowSelection={{
+          selectedRowKeys,
+          onChange: (_) => {
+            setSelectedRowKeys(_);
+          }
+        }}
+        tableAlertOptionRender={() => {
+          return (
+            <Space size={16}>
+              <a onClick={() => { setOverruleVisible(true) }}>批量驳回</a>
+            </Space>
+          );
+        }}
       />
       {firstReviewVisible && <FirstReview
         visible={firstReviewVisible}
@@ -322,8 +342,14 @@ const TableList = () => {
         visible={secondReviewVisible}
         setVisible={setSecondReviewVisible}
         check={purchaseAuditPass}
+        overrule={overrule}
         record={selectItem}
         operateRole={typeTransform(config.operateRole)}
+      />}
+      {overruleVisible && <Overrule
+        visible={overruleVisible}
+        setVisible={setOverruleVisible}
+        callback={(text) => { overrule(selectedRowKeys.join(','), text) }}
       />}
     </PageContainer>
 

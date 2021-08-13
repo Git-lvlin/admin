@@ -3,15 +3,15 @@ import { Drawer, Button, Image, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import Overrule from './overrule';
 import * as api from '@/services/product-management/product-review'
-import Edit from '../product-list/edit';
+// import Edit from '../product-list/edit';
 
 
 const UserDetail = (props) => {
-  const { visible, setVisible, record, operateRole, overrule } = props;
+  const { visible, setVisible, record, operateRole, overrule, check } = props;
   const [overruleVisible, setOverruleVisible] = useState(false);
-  const [hasChange, setHasChange] = useState(false);
-  const [formVisible, setFormVisible] = useState(false);
-  const [detailData, setDetailData] = useState(null);
+  // const [hasChange, setHasChange] = useState(false);
+  // const [formVisible, setFormVisible] = useState(false);
+  // const [detailData, setDetailData] = useState(null);
   const actionRef = useRef();
 
 
@@ -138,9 +138,18 @@ const UserDetail = (props) => {
             textAlign: 'right',
           }}
         >
-          {hasChange && <div style={{ color: 'red', marginBottom: 10 }}>必须先修改商品秒约价或秒约上浮比才能进行审核!</div>}
+          {/* {hasChange && <div style={{ color: 'red', marginBottom: 10 }}>必须先修改商品秒约价或秒约上浮比才能进行审核!</div>} */}
           <Space>
-            <Button disabled={hasChange} key="1" type="primary" onClick={() => { check(1, 1, record.spuId) }}>
+            <Button key="1" type="primary" onClick={() => { check(record.spuId) }}>
+              审核通过
+            </Button>
+            <Button type="danger" key="3" danger onClick={() => { setOverruleVisible(true) }}>
+              审核驳回
+            </Button>
+            <Button key="4" onClick={() => { setVisible(false) }}>
+              返回
+            </Button>
+            {/* <Button disabled={hasChange} key="1" type="primary" onClick={() => { check(1, 1, record.spuId) }}>
               通过并上架
             </Button>
             <Button disabled={hasChange} key="2" onClick={() => { check(2, 1, record.spuId) }}>
@@ -152,7 +161,7 @@ const UserDetail = (props) => {
             </Button>
             <Button key="4" onClick={() => { setVisible(false) }}>
               返回
-            </Button>
+            </Button> */}
           </Space>
         </div>
       }
@@ -176,13 +185,13 @@ const UserDetail = (props) => {
         setVisible={setOverruleVisible}
         callback={(text) => { overrule([record.spuId].join(','), text) }}
       />}
-      {formVisible && <Edit
+      {/* {formVisible && <Edit
         visible={formVisible}
         setVisible={setFormVisible}
         detailData={detailData}
         callback={() => { actionRef.current.reload(); setDetailData(null) }}
         onClose={() => { setDetailData(null) }}
-      />}
+      />} */}
     </Drawer>
   )
 }
