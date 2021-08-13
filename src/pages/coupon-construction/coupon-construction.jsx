@@ -149,7 +149,7 @@ const couponConstruction = (props) => {
           {
             render: (props, defaultDoms) => {
               return [
-                <Button type="primary" key="submit" onClick={(e) => {
+                <Button type="primary" key="submit" onClick={() => {
                   props.form?.submit?.()
                   setSubmitType(1)
                 }}>
