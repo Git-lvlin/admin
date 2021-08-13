@@ -81,15 +81,19 @@ const TableList = () => {
       .then(res => {
         if (res.code === 0) {
           actionRef.current.reload();
+          setFirstReviewVisible(false)
+          setSecondReviewVisible(false)
         }
       })
   }
 
-  const overrule = (spuIds) => {
-    api.purchaseAuditRefuse({ spuIds }, { showSuccess: true })
+  const overrule = (spuIds, goodsVerifyRemark) => {
+    api.purchaseAuditRefuse({ spuIds, goodsVerifyRemark }, { showSuccess: true })
       .then(res => {
         if (res.code === 0) {
           actionRef.current.reload();
+          setFirstReviewVisible(false)
+          setSecondReviewVisible(false)
         }
       })
   }

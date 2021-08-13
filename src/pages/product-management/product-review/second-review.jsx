@@ -138,7 +138,7 @@ const UserDetail = (props) => {
             textAlign: 'right',
           }}
         >
-          {hasChange &&<div style={{ color: 'red', marginBottom: 10 }}>必须先修改商品秒约价或秒约上浮比才能进行审核!</div>}
+          {hasChange && <div style={{ color: 'red', marginBottom: 10 }}>必须先修改商品秒约价或秒约上浮比才能进行审核!</div>}
           <Space>
             <Button disabled={hasChange} key="1" type="primary" onClick={() => { check(1, 1, record.spuId) }}>
               通过并上架
@@ -146,7 +146,7 @@ const UserDetail = (props) => {
             <Button disabled={hasChange} key="2" onClick={() => { check(2, 1, record.spuId) }}>
               通过但不上架
             </Button>
-            {hasChange && <Button type="primary" onClick={() => { getDetail()}}>编辑商品</Button>}
+            {hasChange && <Button type="primary" onClick={() => { getDetail() }}>编辑商品</Button>}
             <Button type="primary" key="3" danger onClick={() => { setOverruleVisible(true) }}>
               驳回
             </Button>
@@ -174,7 +174,7 @@ const UserDetail = (props) => {
       {overruleVisible && <Overrule
         visible={overruleVisible}
         setVisible={setOverruleVisible}
-        callback={(text) => { overrule([record.spuId], text) }}
+        callback={(text) => { overrule([record.spuId].join(','), text) }}
       />}
       {formVisible && <Edit
         visible={formVisible}

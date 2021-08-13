@@ -252,11 +252,11 @@ export default (props) => {
             </Form.Item>}
           </>
       }
-      <Form.Item
+      {goods.stockNum && <Form.Item
         label="总可用库存"
       >
         {goods.stockNum}
-      </Form.Item>
+      </Form.Item>}
       <Form.Item
         label="单SKU起售数量"
       >
@@ -368,7 +368,7 @@ export default (props) => {
       {overruleVisible && <Overrule
         visible={overruleVisible}
         setVisible={setOverruleVisible}
-        callback={(text) => { overrule([record.spuId], text) }}
+        callback={(text) => { overrule([detailData.spuId].join(','), text) }}
       />}
     </DrawerForm>
   );

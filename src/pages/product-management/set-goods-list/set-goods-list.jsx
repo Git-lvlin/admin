@@ -2,14 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Table, Tooltip, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { QuestionCircleOutlined } from '@ant-design/icons'
 import * as api from '@/services/product-management/product-review'
+import { setGoodsList } from '@/services/product-management/set-goods-list'
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
-import SupplierSelect from '@/components/supplier-select'
-import FirstReview from './first-review';
-import SecondReview from './second-review';
 import { typeTransform, amountTransform } from '@/utils/utils'
+import Edit from '../product-list/edit'
 
 
 
@@ -32,7 +30,7 @@ const SubTable = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    api.checkList({
+    api.setGoodsList({
       selectType: 2,
       spuId: props.data.spuId
     }).then(res => {
@@ -50,107 +48,24 @@ const SubTable = (props) => {
 };
 
 const TableList = () => {
-  const [firstReviewVisible, setFirstReviewVisible] = useState(false);
-  const [secondReviewVisible, setSecondReviewVisible] = useState(false);
   const [config, setConfig] = useState({});
   const [detailData, setDetailData] = useState(null);
-  const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
+  const [formVisible, setFormVisible] = useState(false);
+
 
   const getDetail = (record) => {
-    if (record.firstAudit === 1) {
-      api.getDetail({
-        spuId: record.id
-      }).then(res => {
-        if (res.code === 0) {
-          setDetailData({
-            ...res.data,
-            settleType: 2,
-          });
-          setFirstReviewVisible(true);
-        }
-      })
-    } else {
-      setSelectItem(record)
-      // api.noFirstCheckList({
-      //   spuId: record.id
-      // }).then(res => {
-      //   if (res.code === 0) {
-      //     setDetailData({
-      //       data: res.data?.length ? res.data : [],
-      //       spuId: record.id
-      //     });
-      //   }
-      // })
-      setSecondReviewVisible(true);
-    }
-  }
-
-  const onShelf = (spuId, cb) => {
-    api.onShelf({ spuId }, { showSuccess: true })
-      .then(res => {
-        if (res.code === 0) {
-          actionRef.current.reload();
-          if (cb) {
-            cb()
-          }
-        }
-      })
-  }
-
-  /**
-   * 
-   * @param {*} type 1:通过并上架，2:只通过，3:驳回
-   */
-  const firstCheck = (type, checkType, spuId, goodsInfo) => {
-    const { supplierHelperId, settleType, goodsSaleType, ...rest } = goodsInfo;
-    api.firstCheck({
-      checkType,
-      spuId,
-      isMultiSpec: detailData.isMultiSpec,
-      supplierHelperId,
-      settleType,
-      goodsInfo: rest.goodsInfo,
-      goodsSaleType,
-    }, { showSuccess: type !== 1 })
-      .then(res => {
-        if (res.code === 0) {
-          if (type === 1) {
-            onShelf(spuId, () => {
-              setFirstReviewVisible(false)
-            })
-          } else {
-            setFirstReviewVisible(false)
-            actionRef.current.reload();
-          }
-        }
-      })
-  }
-
-  /**
-   * 
-   * @param {*} type 1:通过并上架，2:只通过，3:驳回
-   */
-  const check = (type, checkType, spuId, goodsVerifyRemark) => {
-    api.check({
-      checkType,
-      spuId,
-      goodsVerifyRemark
-    }, { showSuccess: type !== 1 })
-      .then(res => {
-        if (res.code === 0) {
-          if (type === 1) {
-            onShelf(spuId, () => {
-              setFirstReviewVisible(false)
-              setSecondReviewVisible(false)
-            })
-          } else {
-            setSecondReviewVisible(false)
-            setFirstReviewVisible(false)
-            actionRef.current.reload();
-          }
-        }
-      })
+    api.getDetail({
+      spuId: record.id
+    }).then(res => {
+      if (res.code === 0) {
+        setDetailData({
+          ...res.data,
+          settleType: 2,
+        });
+        setFormVisible(true);
+      }
+    })
   }
 
   const columns = [
@@ -230,7 +145,7 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '销售价',
+      title: '秒约价(元)',
       dataIndex: 'name',
       valueType: 'text',
       hideInSearch: true,
@@ -264,35 +179,35 @@ const TableList = () => {
     //   hideInTable: true,
 
     // },
-    {
-      title: '审核状态',
-      dataIndex: 'goodsVerifyStateDisplay',
-      valueType: 'text',
-      hideInSearch: true,
-      render: (_, record) => {
-        const { goodsVerifyRemark, goodsVerifyState } = record;
-        return (
-          <>
-            {_}&nbsp;
-            {(goodsVerifyRemark && goodsVerifyState === 2) && <Tooltip title={goodsVerifyRemark}><QuestionCircleOutlined /></Tooltip>}
-          </>
-        )
-      },
-    },
     // {
-    //   title: '上架状态',
-    //   dataIndex: 'goodsState',
-    //   onFilter: true,
-    //   valueType: 'select',
-    //   valueEnum: typeTransform(config.goodsState),
-    //   hideInTable: true,
+    //   title: '审核状态',
+    //   dataIndex: 'goodsVerifyStateDisplay',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   render: (_, record) => {
+    //     const { goodsVerifyRemark, goodsVerifyState } = record;
+    //     return (
+    //       <>
+    //         {_}&nbsp;
+    //         {(goodsVerifyRemark && goodsVerifyState === 2) && <Tooltip title={goodsVerifyRemark}><QuestionCircleOutlined /></Tooltip>}
+    //       </>
+    //     )
+    //   },
     // },
     {
-      title: '审核类型',
-      dataIndex: 'firstAuditDisplay',
-      valueType: 'text',
-      hideInSearch: true,
+      title: '上架状态',
+      dataIndex: 'goodsState',
+      onFilter: true,
+      valueType: 'select',
+      valueEnum: typeTransform(config.goodsState),
+      hideInTable: true,
     },
+    // {
+    //   title: '审核类型',
+    //   dataIndex: 'firstAuditDisplay',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     // {
     //   title: '上架状态',
     //   dataIndex: 'goodsStateDisplay',
@@ -321,12 +236,18 @@ const TableList = () => {
       hideInTable: true,
     },
     {
+      title: '上架状态',
+      dataIndex: 'goodsStateDisplay',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a onClick={() => { getDetail(record) }}>审核</a>
+          <a onClick={() => { getDetail(record) }}>设置</a>
         </>
       ),
     },
@@ -353,7 +274,7 @@ const TableList = () => {
         params={{
           selectType: 1,
         }}
-        request={api.checkList}
+        request={setGoodsList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
           defaultCollapsed: false,
@@ -366,19 +287,12 @@ const TableList = () => {
           pageSize: 10,
         }}
       />
-      {firstReviewVisible && <FirstReview
-        visible={firstReviewVisible}
-        setVisible={setFirstReviewVisible}
+      {formVisible && <Edit
+        visible={formVisible}
+        setVisible={setFormVisible}
         detailData={detailData}
-        check={firstCheck}
-        overrule={check}
-      />}
-      {secondReviewVisible && <SecondReview
-        visible={secondReviewVisible}
-        setVisible={setSecondReviewVisible}
-        check={check}
-        record={selectItem}
-        operateRole={typeTransform(config.operateRole)}
+        callback={() => { actionRef.current.reload(); setDetailData(null) }}
+        onClose={() => { setDetailData(null) }}
       />}
     </PageContainer>
 

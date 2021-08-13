@@ -58,31 +58,7 @@ export default function EditTable(props) {
         width: 130,
         hideInTable: goodsSaleType === 2,
       },
-      {
-        title: '秒约价',
-        dataIndex: 'salePrice',
-        editable: settleType === 2,
-        width: 130,
-        hideInTable: goodsSaleType === 1,
-      },
-      {
-        title: '秒约价上浮比例',
-        dataIndex: 'salePriceFloat',
-        hideInTable: goodsSaleType === 1,
-        width: 130,
-      },
-      {
-        title: '秒约价实际盈亏',
-        dataIndex: 'salePriceProfitLoss',
-        editable: false,
-        hideInTable: goodsSaleType === 1,
-        width: 130,
-      },
-      {
-        title: '市场价',
-        dataIndex: 'marketPrice',
-        width: 130,
-      },
+      
       {
         title: '库存预警值',
         dataIndex: 'stockAlarmNum',
@@ -108,55 +84,7 @@ export default function EditTable(props) {
 
   }, [tableHead, settleType])
 
-  const debounceFetcher = useMemo(() => {
-    const loadData = (value) => {
-      const { recordList, record } = value;
-
-      const findItem = dataSource.find(item => item.skuId === record.skuId);
-      const obj = {
-        skuId: findItem.skuId,
-        retailSupplyPrice: amountTransform(findItem.retailSupplyPrice),
-        wholesaleTaxRate: props.wholesaleTaxRate,
-      }
-      if (findItem.salePrice !== record.salePrice) {
-        obj.salePrice = amountTransform(record.salePrice);
-      }
-
-      if (findItem.salePriceFloat !== record.salePriceFloat) {
-        obj.salePriceFloat = amountTransform(record.salePriceFloat, '/');
-      }
-
-      if ((findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat) && goodsSaleType !== 1) {
-        api.subAccountCheck(obj).then(res => {
-          if (res.code === 0) {
-            const skuData = res.data[0];
-            const arr = recordList.map(item => {
-              if (item.skuId === record.skuId) {
-                const data = {
-                  ...item,
-                  salePrice: amountTransform(skuData.salePrice, '/'),
-                  salePriceProfitLoss: amountTransform(skuData.salePriceProfitLoss, '/'),
-                  salePriceFloat: amountTransform(skuData.salePriceFloat),
-                }
-                return data
-              }
-              return item
-            })
-            setDataSource(arr)
-            setTableData(arr)
-          }
-        })
-      } else {
-        setDataSource(recordList)
-        setTableData(recordList)
-      }
-    };
-
-    return debounce(loadData, 500);
-  }, [dataSource, props]);
-
   useEffect(() => {
-    setEditableKeys(tableData.map(item => item.key));
     setDataSource(tableData);
   }, [tableData])
 
