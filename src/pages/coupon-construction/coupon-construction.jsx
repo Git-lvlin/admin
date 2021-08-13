@@ -7,7 +7,7 @@ import PeriodValidity from './period-validity/period-validity'
 import AssignCrowd from './assign-crowd/assign-crowd'
 import { couponSub } from '@/services/coupon-construction/coupon-coupon-sub';
 import { couponEdit } from '@/services/coupon-construction/coupon-edit';
-import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import moment from 'moment';
 import styles from './style.less'
@@ -147,9 +147,9 @@ const couponConstruction = (props) => {
         form={form}
         submitter={
           {
-            render: (props, doms) => {
+            render: (props, defaultDoms) => {
               return [
-                <Button type="primary" key="submit" onClick={() => {
+                <Button type="primary" key="submit" onClick={(e) => {
                   props.form?.submit?.()
                   setSubmitType(1)
                 }}>
@@ -168,8 +168,8 @@ const couponConstruction = (props) => {
             }
           }
         }
-        onFinish={async (values) => {
-          await onsubmit(values);
+        onFinish={async (e,values) => {
+            await onsubmit(values);
           return true;
         }
         }
@@ -319,7 +319,7 @@ const couponConstruction = (props) => {
           name="couponRule"
           rules={[{ required: true, message: '请备注使用说明' }]}
         >
-          <TextArea
+          <ProFormTextArea
             style={{ minHeight: 32, marginTop: 15 }}
             placeholder={formatMessage({
               id: 'formandbasic-form.goal.placeholder',
