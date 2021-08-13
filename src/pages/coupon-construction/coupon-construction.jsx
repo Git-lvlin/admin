@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Input, Form, Divider, message, Button } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
 import CouponType from './coupon-type/coupon-type'
-import Circulation from './circulation/circulation'
 import UseScope from './use-scope/use-scope'
 import PeriodValidity from './period-validity/period-validity'
 import AssignCrowd from './assign-crowd/assign-crowd'
 import { couponSub } from '@/services/coupon-construction/coupon-coupon-sub';
 import { couponEdit } from '@/services/coupon-construction/coupon-edit';
-import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import moment from 'moment';
 import styles from './style.less'
@@ -20,7 +19,6 @@ const couponConstruction = (props) => {
   const [position, setPosition] = useState()
   const [choose, setChoose] = useState()
   const [submitType, setSubmitType] = useState()
-  const [face,setFace]=useState()
   let id = props.location.query.id
   let type = props.location.query.type
   const [form] = Form.useForm()
@@ -140,8 +138,8 @@ const couponConstruction = (props) => {
 
   }
 
-  const Discounts=(val)=>{
-    setFace(val)
+  const disabledDate=(current)=>{
+    return current && current < moment().startOf('day');
   }
   return (
     <>
@@ -149,7 +147,7 @@ const couponConstruction = (props) => {
         form={form}
         submitter={
           {
-            render: (props, doms) => {
+            render: (props, defaultDoms) => {
               return [
                 <Button type="primary" key="submit" onClick={() => {
                   props.form?.submit?.()
@@ -170,8 +168,8 @@ const couponConstruction = (props) => {
             }
           }
         }
-        onFinish={async (values) => {
-          await onsubmit(values);
+        onFinish={async (e,values) => {
+            await onsubmit(values);
           return true;
         }
         }
@@ -190,25 +188,8 @@ const couponConstruction = (props) => {
         />
 
         {/* 优惠券类型 */}
-        <CouponType id={id} Discounts={Discounts} />
+        <CouponType id={id} type={type}/>
 
-        {/* 发行量 */}
-        {
-          type == 2 ?
-            <ProFormRadio.Group
-              name="issueQuantity"
-              label='发行量'
-              // rules={[{ required: true, message: '请选择发行量' }]}  
-              options={[
-                {
-                  label: '不限量发放',
-                  value: 1
-                }]}
-            />
-            :
-            <Circulation id={id} face={face} />
-
-        }
 
         {/* 每人限领 */}
         <ProForm.Group>
@@ -251,6 +232,10 @@ const couponConstruction = (props) => {
               label='可领取时间'
               rules={[{ required: true, message: '请选择限领时间' }]}
               name="dateRange"
+              fieldProps={{
+                disabledDate:(current)=>disabledDate(current)
+              }}
+              
               placeholder={[
                 formatMessage({
                   id: 'formandbasic-form.placeholder.start',
@@ -334,7 +319,7 @@ const couponConstruction = (props) => {
           name="couponRule"
           rules={[{ required: true, message: '请备注使用说明' }]}
         >
-          <TextArea
+          <ProFormTextArea
             style={{ minHeight: 32, marginTop: 15 }}
             placeholder={formatMessage({
               id: 'formandbasic-form.goal.placeholder',

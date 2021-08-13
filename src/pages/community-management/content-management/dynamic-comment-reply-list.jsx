@@ -3,6 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import { CommentReplyList } from '@/services/community-management/dynamic-comment-reply-list';
 import { deleteCommentOrReply } from '@/services/community-management/delete-comment-reply';
 import DeleteModal from '@/components/DeleteModal'
+import { CaretRightFilled } from '@ant-design/icons';
 import { history } from 'umi';
 import { Button } from 'antd';
 
@@ -66,7 +67,7 @@ export default props => {
     ];
   return (
       <>
-      <h1>评论列表</h1>
+      <h1><CaretRightFilled /> 评论列表</h1>
         <ProTable
         rowKey="id"
         options={false}
