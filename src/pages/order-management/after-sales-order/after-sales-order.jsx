@@ -120,7 +120,7 @@ const columns = [
     dataIndex: 'operation',
     valueType: 'option',
     align: 'center',
-    render: (_, record) => <a onClick={ () => {history.push(`/order-management/after-sales-order/detail/${record?.id}`)} }>查看详情</a>
+    render: (_, record) => <a onClick={ ()=> {history.push(`/order-management/after-sales-order/detail/${record?.id}`)} }>查看详情</a>
   }
 ]
 const afterSalesOrder = () => {
@@ -152,8 +152,15 @@ const afterSalesOrder = () => {
               }}
             >
               {resetText}
-            </Button>
-          ]
+            </Button>,
+            // <Export
+            //   change={(e)=> {setVisit(e)}}
+            //   key="export" 
+            //   type="order-common-export"
+            //   conditions={form?.getFieldValue()}
+            // />,
+            // <ExportHistory key="exportHistory" show={visit} setShow={setVisit}/>
+          ],
         }}
         headerTitle="数据列表"
         columns={columns}

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@ant-design/pro-layout'
-import { Button } from 'antd'
+import { Button, Timeline } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { refundDetail } from "@/services/financial-management/transaction-detail-management"
 import './styles.less'
 import styles from './styles.less'
+
+const { Item } = Timeline
 
 const Detail = () => {
   const {id} = useParams()
@@ -32,6 +34,8 @@ const Detail = () => {
       setPayInfos({})
     }
   }, [])
+
+
   const back = ()=> {
     history.goBack()
   }
@@ -78,30 +82,6 @@ const Detail = () => {
   }
 
   const backCalculation= (data, amount, fee)=> {
-    // if(data==='goodsAmount'){
-    //   return (
-    //     <>
-    //       <span className={styles.amount}>货款回退: ¥{amountTransform(amount, '/')}</span>
-    //       <span>货款交易费回退: ¥{amountTransform(fee, '/')}</span>
-    //     </>
-    //   )
-    // }else if(data==='commission'){
-    //   return (
-    //     <>
-    //       <span className={styles.amount}>提成回退: ¥{amountTransform(amount, '/')}</span>
-    //       <span>提成交易费回退: ¥{amountTransform(fee, '/')}</span>
-    //     </>
-    //   )
-    // }else if(data==='platformCommission') {
-    //   return (
-    //     <>
-    //       <span className={styles.amount}>佣金回退: ¥{amountTransform(amount, '/')}</span>
-    //       <span>佣金交易费回退: ¥{amountTransform(fee, '/')}</span>
-    //     </>
-    //   )
-    // }else{
-    //   return ''
-    // }
     switch(data){
       case 'goodsAmount':
         return (
@@ -280,13 +260,17 @@ const Detail = () => {
     {
       title: '虚拟分账计算',
       dataIndex: 'divideInfos',
-      render: (_, data)=> {
-        return data?.divideInfos.map(item=> (
-          <div key={item?.type}>
-            {fashionableType(item?.type, item?.amount, item?.fee)}
-          </div>
-        ))
-      } 
+      render: (_, data)=> (
+        <>
+          {
+            data?.divideInfos.map(item=> (
+              <div key={item?.type}>
+                {fashionableType(item?.type, item?.amount, item?.fee)}
+              </div>
+            ))
+          }
+        </>
+      ) 
     },
     {
       title: '支付单号',
