@@ -45,6 +45,7 @@ export default {
   'menu.product-management.product-log': '商品日志',
   'menu.product-management.freight-template': '运费模板',
   'menu.product-management.product-review': '商品审核',
+  'menu.product-management.set-goods-list': '商品运营配置',
   'menu.product-management.product-category': '商品分类',
 
   'menu.setting': '设置',
