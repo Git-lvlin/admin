@@ -12,7 +12,6 @@ import { history, connect } from 'umi';
 import moment from 'moment';
 import styles from './style.less'
 const FormItem = Form.Item;
-const { TextArea } = Input;
 
 const couponConstruction = (props) => {
   const { dispatch, DetailList, UseScopeList } = props
@@ -53,8 +52,9 @@ const couponConstruction = (props) => {
     })
   }
   const onsubmit = (values) => {
+    try {
     //发放类型
-    values.issueType = type
+    values.issueType = parseInt(type)
     values.couponTypeInfo = {
       usefulAmount: parseInt(values.usefulAmount),//用价格门槛(单位分)
       freeAmount: parseInt(values.freeAmount),//优惠金额(单位分)
@@ -63,6 +63,7 @@ const couponConstruction = (props) => {
       freeDiscount: parseInt(values.freeDiscount),//折扣
       maxFreeAmount: parseInt(values.maxFreeAmount)//最多优惠（单位分）
     }
+    
     values.issueQuantity = parseInt(values.issueQuantity)//发行量
     values.limitStartTime = values.dateRange ? values.dateRange[0] : null,//可领取开始时间
     values.limitEndTime = values.dateRange ? values.dateRange[1] : null,//可领取结束时间
@@ -108,6 +109,10 @@ const couponConstruction = (props) => {
     }
     //提交类型
     values.couponVerifyStatus = submitType
+    } catch (error) {
+      console.log('error',error)
+    }
+   
     if (id) {
       couponEdit({ ...values, id: id }).then((res) => {
         if (res.code == 0) {
@@ -168,7 +173,7 @@ const couponConstruction = (props) => {
             }
           }
         }
-        onFinish={async (e,values) => {
+        onFinish={async (values) => {
             await onsubmit(values);
           return true;
         }
@@ -314,19 +319,16 @@ const couponConstruction = (props) => {
         <UseScope id={id} />
 
         {/* 使用说明 */}
-        <FormItem
-          label={<FormattedMessage id="formandbasic-form.goal.label" />}
-          name="couponRule"
-          rules={[{ required: true, message: '请备注使用说明' }]}
-        >
           <ProFormTextArea
+            label={<FormattedMessage id="formandbasic-form.goal.label" />}
+            name="couponRule"
             style={{ minHeight: 32, marginTop: 15 }}
             placeholder={formatMessage({
               id: 'formandbasic-form.goal.placeholder',
             })}
+            rules={[{ required: true, message: '请备注使用说明' }]}
             rows={4}
           />
-        </FormItem>
 
       </ProForm >
     </>
