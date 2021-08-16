@@ -9,7 +9,7 @@ import ProForm, {
 import { expressNewsUpdate } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, setFlag, visible, verifyVersionId } = props;
+  const { detailData, setVisible, setFlag, visible } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
 
@@ -20,9 +20,6 @@ export default (props) => {
     }
     if (id) {
       param.id = id
-    }
-    if (verifyVersionId) {
-      param.verifyVersionId = verifyVersionId
     }
     return new Promise((resolve, reject) => {
       expressNewsUpdate(param).then((res) => {

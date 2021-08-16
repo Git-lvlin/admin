@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProForm, { ProFormText, ProFormDateRangePicker, ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Tag, Form } from 'antd';
 import { history } from 'umi';
 import styles from './style.less';
 import Delivery from '@/components/delivery'
 import { amountTransform } from '@/utils/utils'
 import { orderList, deliverGoods } from '@/services/order-management/normal-order';
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+import ImportHistory from '@/components/ImportFile/import-history'
+import Import from '@/components/ImportFile/import'
+
 
 const TableList = () => {
   const [data, setData] = useState([])
   const [page, setPage] = useState(1)
+  const [visit, setVisit] = useState(false)
   const [pageSize, setPageSize] = useState(10)
   const [pageTotal, setPageTotal] = useState(0)
   const [orderType, setOrderType] = useState(0)
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState(0)
   const [deliveryVisible, setDeliveryVisible] = useState(false)
+  const [importVisit, setImportVisit] = useState(false)
+
 
   const [form] = Form.useForm()
 
@@ -45,16 +53,23 @@ const TableList = () => {
       })
   }
 
+  const getFieldValue = () => {
+    const { time, ...rest } = form.getFieldsValue();
+
+    return {
+      orderStatus: orderType === 0 ? '' : orderType,
+      startCreateTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
+      endCreateTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
+      ...rest,
+    }
+  }
+
   useEffect(() => {
     setLoading(true);
-    const { time, ...rest } = form.getFieldsValue();
     orderList({
       page,
       size: pageSize,
-      orderStatus: orderType === 0 ? '' : orderType,
-      startCreateTime: time?.[0]?.format('YYYY-MM-DD'),
-      endCreateTime: time?.[1]?.format('YYYY-MM-DD'),
-      ...rest,
+      ...getFieldValue(),
     })
       .then(res => {
         if (res.code === 0) {
@@ -97,7 +112,18 @@ const TableList = () => {
                   >
                     重置
                   </Button>
-                  <Button onClick={() => { exportExcel(form) }}>导出</Button>
+                  <Export
+                    change={(e) => { setVisit(e) }}
+                    type="order-common-export"
+                    conditions={getFieldValue()}
+                  />
+                  <ExportHistory show={visit} setShow={setVisit} type="order-common-export" />
+                  <Import
+                    change={(e) => { setImportVisit(e) }}
+                    code="order_common_send_goods_import"
+                    conditions={getFieldValue()}
+                  />
+                  <ImportHistory show={importVisit} setShow={setImportVisit} type="order_common_send_goods_import" />
                 </Space>
               </div>
             );
@@ -159,13 +185,14 @@ const TableList = () => {
             }
           }}
         />
-        <ProFormDateRangePicker
+        <ProFormDateTimeRangePicker
           name="time"
           label="下单时间"
           fieldProps={{
             style: {
               marginBottom: 20
-            }
+            },
+            showTime: true,
           }}
         />
       </ProForm>

@@ -23,6 +23,7 @@ const CrazyDate = (props) => {
   }
 
   const formControl = (data,type) => {
+    console.log('type', type, 'data', data)
     crazyActivityDel({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);

@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Input, Form, Divider, message, Button } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
 import CouponType from './coupon-type/coupon-type'
-import Circulation from './circulation/circulation'
 import UseScope from './use-scope/use-scope'
 import PeriodValidity from './period-validity/period-validity'
 import AssignCrowd from './assign-crowd/assign-crowd'
 import { couponSub } from '@/services/coupon-construction/coupon-coupon-sub';
 import { couponEdit } from '@/services/coupon-construction/coupon-edit';
-import ProForm, { ProFormText, ProFormRadio, ProFormDateRangePicker } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import moment from 'moment';
+import styles from './style.less'
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
@@ -65,17 +65,17 @@ const couponConstruction = (props) => {
     }
     values.issueQuantity = parseInt(values.issueQuantity)//发行量
     values.limitStartTime = values.dateRange ? values.dateRange[0] : null,//可领取开始时间
-      values.limitEndTime = values.dateRange ? values.dateRange[1] : null,//可领取结束时间
-      values.limitQuantity = parseInt(values.limitQuantity)//限领数量
+    values.limitEndTime = values.dateRange ? values.dateRange[1] : null,//可领取结束时间
+    values.limitQuantity = parseInt(values.limitQuantity)//限领数量
     values.activityStartTime = values.dateTimeRange ? values.dateTimeRange[0] : null,//有效期开始时间
-      values.activityEndTime = values.dateTimeRange ? values.dateTimeRange[1] : null,//有效期结束时间
-      values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
-      values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
-      values.useTypeInfoM = {//秒约商品详情信息
-        goodsType: values.goodsType,
-        spuIds: UseScopeList.UseScopeObje.spuIds,
-        classId: parseInt(UseScopeList.UseScopeObje.unit)
-      }
+    values.activityEndTime = values.dateTimeRange ? values.dateTimeRange[1] : null,//有效期结束时间
+    values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
+    values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
+    values.useTypeInfoM = {//秒约商品详情信息
+      goodsType: values.goodsType,
+      spuIds: UseScopeList.UseScopeObje.spuIds,
+      classId: parseInt(UseScopeList.UseScopeObje.unit)
+    }
     //群体Id
     values.couponCrowdId = UseScopeList.UseScopeObje.CrowdIds
     values.memberType = parseInt(values.memberType)
@@ -137,13 +137,17 @@ const couponConstruction = (props) => {
     }
 
   }
+
+  const disabledDate=(current)=>{
+    return current && current < moment().startOf('day');
+  }
   return (
     <>
       <ProForm
         form={form}
         submitter={
           {
-            render: (props, doms) => {
+            render: (props, defaultDoms) => {
               return [
                 <Button type="primary" key="submit" onClick={() => {
                   props.form?.submit?.()
@@ -164,14 +168,14 @@ const couponConstruction = (props) => {
             }
           }
         }
-        onFinish={async (values) => {
-          await onsubmit(values);
+        onFinish={async (e,values) => {
+            await onsubmit(values);
           return true;
         }
         }
-        style={{ width: '2000px' }}
+        style={{background:'#fff',padding:'20px' }}
       >
-        <Divider orientation="left"><FormattedMessage id="formandbasic-form.basic.setup" /></Divider>
+        <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>基本信息</span></h3>
         {/* 优惠券名称 */}
         <ProFormText
           width="md"
@@ -184,25 +188,8 @@ const couponConstruction = (props) => {
         />
 
         {/* 优惠券类型 */}
-        <CouponType id={id} />
+        <CouponType id={id} type={type}/>
 
-        {/* 发行量 */}
-        {
-          type == 2 ?
-            <ProFormRadio.Group
-              name="issueQuantity"
-              label='发行量'
-              // rules={[{ required: true, message: '请选择发行量' }]}  
-              options={[
-                {
-                  label: '不限量发放',
-                  value: 1
-                }]}
-            />
-            :
-            <Circulation id={id} />
-
-        }
 
         {/* 每人限领 */}
         <ProForm.Group>
@@ -241,10 +228,14 @@ const couponConstruction = (props) => {
         {
           type == 2 || DetailList.data?.issueType == 2 && id ? null
             :
-            <ProFormDateRangePicker
+            <ProFormDateTimeRangePicker
               label='可领取时间'
               rules={[{ required: true, message: '请选择限领时间' }]}
               name="dateRange"
+              fieldProps={{
+                disabledDate:(current)=>disabledDate(current)
+              }}
+              
               placeholder={[
                 formatMessage({
                   id: 'formandbasic-form.placeholder.start',
@@ -317,7 +308,7 @@ const couponConstruction = (props) => {
         />
         <AssignCrowd id={id} choose={choose} />
 
-        <Divider orientation="left">使用设置</Divider>
+        <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>使用设置</span></h3>
 
         {/* 使用范围 */}
         <UseScope id={id} />
@@ -328,7 +319,7 @@ const couponConstruction = (props) => {
           name="couponRule"
           rules={[{ required: true, message: '请备注使用说明' }]}
         >
-          <TextArea
+          <ProFormTextArea
             style={{ minHeight: 32, marginTop: 15 }}
             placeholder={formatMessage({
               id: 'formandbasic-form.goal.placeholder',

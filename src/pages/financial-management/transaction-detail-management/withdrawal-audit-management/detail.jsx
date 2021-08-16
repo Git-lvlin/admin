@@ -177,7 +177,7 @@ const Detail = () => {
     },
     {
       title: '提现虚拟账户',
-      dataIndex: 'account_sn'
+      dataIndex: 'accountSn'
     },
     {
       title: '可提现余额',
@@ -239,7 +239,7 @@ const Detail = () => {
       dataIndex: 'log',
       render: (_, records) => (
         <>
-          <div>审核时间：{records?.auditTime}（{records?.auditUserId}）</div>
+          <div>审核时间：{records?.auditTime}（{records?.auditUserName}）</div>
           <div>执行时间：{records?.paymentTime}</div>
           <div>执行结果通知时间：{records?.notifyTime}</div>
         </>

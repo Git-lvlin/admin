@@ -47,7 +47,7 @@ export default (props) =>{
             id:ele.crowdInfoId,
             state:ele.isContain,
             title:ele.type==1?'会员等级':ele.type==2?'消费次数':'累计消费',
-            labels:ele.type==2?[ele.numStart,ele.numEnd,[ele.validTimeStart,ele.validTimeEnd]]:ele.type==3&&[ele.moneyStart,ele.moneyEnd,[ele.validTimeStart,ele.validTimeEnd]],
+            labels:ele.type==2?[ele.numStart,ele.numEnd]:ele.type==3&&[ele.moneyStart,ele.moneyEnd],
             userLevel:ele.userLevel,
             userLevelDisplay:ele.userLevelDisplay
           })
@@ -69,16 +69,16 @@ export default (props) =>{
               isContain: ele.state||1,
               numStart: ele.labels[0],
               numEnd: ele.labels[1],
-              validTimeStart:ele.labels[2][0],
-              validTimeEnd:ele.labels[2][1]
+              // validTimeStart:ele.labels[2][0],
+              // validTimeEnd:ele.labels[2][1]
             }
           }else if(ele.title=='累计消费'){
             values.consumeLjInfo={
               isContain: ele.state||1,
               moneyStart: ele.labels[0],
               moneyEnd: ele.labels[1],
-              validTimeStart:ele.labels[2][0],
-              validTimeEnd:ele.labels[2][1]
+              // validTimeStart:ele.labels[2][0],
+              // validTimeEnd:ele.labels[2][1]
             }
           }
         })
@@ -142,26 +142,26 @@ export default (props) =>{
                   <Input className='nums' suffix="次" /> 
                   至 
                   <Input className='nums' suffix="次" />
-                  <ProFormDateRangePicker
+                  {/* <ProFormDateRangePicker
                     name='dateRange'
                     placeholder={[
                         formatMessage({id: 'formandbasic-form.placeholder.start'}),
                         formatMessage({id: 'formandbasic-form.placeholder.end'}),
                     ]}
-                />
+                /> */}
                 </ProFormFieldSet>;
         }
         return <ProFormFieldSet> 
                   <Input name='min' className='nums' suffix="元" />
                   至 
                   <Input name='max' className='nums' suffix="元" />
-                  <ProFormDateRangePicker
+                  {/* <ProFormDateRangePicker
                     name='dateTimeRange'
                     placeholder={[
                         formatMessage({id: 'formandbasic-form.placeholder.start'}),
                         formatMessage({id: 'formandbasic-form.placeholder.end'}),
                     ]}
-                />
+                /> */}
                 </ProFormFieldSet>;
       },
       render: (_, row) =>{
@@ -172,12 +172,12 @@ export default (props) =>{
           }else if(row.title=='消费次数'){
             return <>
                     <p>{row.labels[0]}次 至 {row.labels[1]}次</p>
-                    <p>{row.labels[2][0]} 到 {row.labels[2][1]}</p>
+                    {/* <p>{row.labels[2][0]} 到 {row.labels[2][1]}</p> */}
                   </>;
           }
             return <>
                     <p>{row.labels[0]}元 至 {row.labels[1]}元</p>
-                    <p>{row.labels[2][0]} 到 {row.labels[2][1]}</p>
+                    {/* <p>{row.labels[2][0]} 到 {row.labels[2][1]}</p> */}
                   </>;
       }
     },
@@ -337,7 +337,6 @@ export default (props) =>{
                 onChange: setEditableRowKeys,
                 onlyAddOneLineAlertMessage:'不能同时新增多行',
                 onSave: async (rowKey, data, row) => {
-                  console.log(rowKey, data, row);
                 },
                 onCancel:async (rowKey, data, row) => {
                   if(rowKey==1){

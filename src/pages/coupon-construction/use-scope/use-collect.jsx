@@ -178,9 +178,9 @@ const  useCollect=(props)=>{
             {
                 position==2||(parseInt(id)==id )&&DetailList.data?.wholesaleType==2?
                 <div style={{display:position==1?'none':'block'}}>
-                <Button type="primary" className={styles.popupBtn} onClick={showModal}>
-                            选择商品
-                </Button>
+                  <Button type="primary" className={styles.popupBtn} onClick={showModal}>
+                        选择商品
+                  </Button>
                   <Modal key="id" width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                     <ProTable
                         rowKey="wholesaleId"

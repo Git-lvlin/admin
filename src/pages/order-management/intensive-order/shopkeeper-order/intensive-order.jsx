@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProForm, { ProFormText, ProFormDateRangePicker, ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form } from 'antd';
 import { history, useLocation } from 'umi';
 import moment from 'moment';
@@ -36,8 +36,8 @@ const TableList = () => {
       page,
       size: pageSize,
       status: orderType,
-      startTime: time?.[0]?.format('YYYY-MM-DD'),
-      endTime: time?.[1]?.format('YYYY-MM-DD'),
+      startTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
+      endTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     })
       .then(res => {
@@ -90,7 +90,7 @@ const TableList = () => {
       >
         <ProFormText
           label="订单号"
-          name="orderId"
+          name="subOrderSn"
           fieldProps={{
             style: {
               marginBottom: 20,
@@ -125,7 +125,7 @@ const TableList = () => {
           }}
         />
         <ProFormText
-          name="supplierName"
+          name="storeName"
           label="所属商家"
           fieldProps={{
             style: {
@@ -153,13 +153,14 @@ const TableList = () => {
             }
           }}
         /> */}
-        <ProFormDateRangePicker
+        <ProFormDateTimeRangePicker
           name="time"
           label="下单时间"
           fieldProps={{
             style: {
               marginBottom: 20
-            }
+            },
+            showTime: true,
           }}
         />
       </ProForm>
@@ -216,7 +217,11 @@ const TableList = () => {
         }
         {
           data.map(item => (
+<<<<<<< HEAD
             <div className={styles.list} key={item.id}>
+=======
+            <div className={styles.list} key={item.orderSn}>
+>>>>>>> 3882ccec2c2c10346f64d94d00c22b267877d45c
               <div className={styles.store_name}>所属商家：{item.storeName}</div>
               <div className={styles.second}>
                 <Space size="large">
@@ -231,7 +236,11 @@ const TableList = () => {
                 <div className={styles.goods_info}>
                   {
                     item.orderItemList.map(it => (
+<<<<<<< HEAD
                       <div key={it.orderId}>
+=======
+                      <div key={it.id}>
+>>>>>>> 3882ccec2c2c10346f64d94d00c22b267877d45c
                         <img width="100" height="100" src={it.skuImageUrl} />
                         <div className={styles.info}>
                           <div>{it.goodsName}</div>

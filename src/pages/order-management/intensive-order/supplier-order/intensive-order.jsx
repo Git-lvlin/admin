@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProForm, { ProFormText, ProFormDateRangePicker, ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal } from 'antd';
 import { history, useLocation } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
@@ -8,6 +8,10 @@ import moment from 'moment';
 import styles from './style.less';
 import { orderList, refundAllRetailOrders } from '@/services/order-management/supplier-order';
 import { amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+import ImportHistory from '@/components/ImportFile/import-history'
+import Import from '@/components/ImportFile/import'
 
 const { confirm } = Modal;
 
@@ -23,6 +27,10 @@ const TableList = () => {
   const [deliveryVisible, setDeliveryVisible] = useState(false)
   const [form] = Form.useForm()
   const location = useLocation();
+  const [visit, setVisit] = useState(false)
+  const [importVisit, setImportVisit] = useState(false)
+
+
 
 
   const pageChange = (a, b) => {
@@ -52,19 +60,26 @@ const TableList = () => {
     });
     
   }
-
-  useEffect(() => {
-    setLoading(true);
+  
+  const getFieldValue = () => {
     const { time, ...rest } = form.getFieldsValue();
-    orderList({
-      page,
-      size: pageSize,
+
+    return {
       status: orderType,
-      startTime: time?.[0]?.format('YYYY-MM-DD'),
-      endTime: time?.[1]?.format('YYYY-MM-DD'),
+      startTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
+      endTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
       memberId: location?.query?.memberId,
       wsId: location?.query?.wsId,
       ...rest,
+    }
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    orderList({
+      page,
+      size: pageSize,
+      ...getFieldValue()
     })
       .then(res => {
         if (res.code === 0) {
@@ -107,7 +122,18 @@ const TableList = () => {
                   >
                     重置
                   </Button>
-                  <Button onClick={() => { exportExcel(form) }}>导出</Button>
+                  <Export
+                    change={(e) => { setVisit(e) }}
+                    type="order-intensive-export"
+                    conditions={getFieldValue()}
+                  />
+                  <ExportHistory show={visit} setShow={setVisit} type="order-intensive-export" />
+                  <Import
+                    change={(e) => { setImportVisit(e) }}
+                    code="order_intensive_send_goods_import"
+                    conditions={getFieldValue()}
+                  />
+                  <ImportHistory show={importVisit} setShow={setImportVisit} type="order_intensive_send_goods_import" />
                 </Space>
               </div>
             );
@@ -179,13 +205,14 @@ const TableList = () => {
             }
           }}
         />
-        <ProFormDateRangePicker
+        <ProFormDateTimeRangePicker
           name="time"
           label="下单时间"
           fieldProps={{
             style: {
               marginBottom: 20
-            }
+            },
+            showTime: true,
           }}
         />
       </ProForm>
@@ -247,7 +274,7 @@ const TableList = () => {
         }
         {
           data.map(item => (
-            <div className={styles.list} key={item.orderSn}>
+            <div className={styles.list} key={item.id}>
               <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}</div>
               <div className={styles.second}>
                 <Space size="large">
