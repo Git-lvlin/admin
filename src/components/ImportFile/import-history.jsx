@@ -1,11 +1,11 @@
-import React,{ useEffect, useRef, useState } from 'react'
-import { 
-  Button, 
-  Tooltip, 
-  Form, 
-  Space, 
-  Pagination, 
-  Spin, 
+import React, { useEffect, useRef, useState } from 'react'
+import {
+  Button,
+  Tooltip,
+  Form,
+  Space,
+  Pagination,
+  Spin,
   Empty,
   Progress,
   Drawer
@@ -33,70 +33,70 @@ const ImportHistroy = ({ show, setShow, type }) => {
     setPage(a)
     setPageSize(b)
   }
-  const getData = ()=> {
+  const getData = () => {
     const { time, ...rest } = form.getFieldsValue()
     const user = localStorage.getItem("user")
-    const rule = user&&JSON.parse(user).id
+    const rule = user && JSON.parse(user).id === 1
     setLoad(true)
     findPage({
       page,
-      code: type&& type,
+      code: type && type,
       size: pageSize,
-      searchByUser: !!rule ? 1 : 2 ,
-      createStartTime: time&&moment(time[0]).format('YYYY-MM-DD HH:mm:ss'),
-      createEndTime: time&&moment(time[1]).format('YYYY-MM-DD HH:mm:ss'),
+      searchByUser: rule ? 2 : 1,
+      createStartTime: time && moment(time[0]).format('YYYY-MM-DD HH:mm:ss'),
+      createEndTime: time && moment(time[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest
     }).then(res => {
       if (res.success) {
         setData(res.data)
         setPageTotal(res.total)
       }
-    }).finally(()=>{
+    }).finally(() => {
       setLoad(false)
     })
   }
 
   useEffect(() => {
-    if(show) {
+    if (show) {
       getData()
     }
-    return ()=> {
+    return () => {
       setData([])
     }
   }, [show, page, pageSize, form, query])
 
-  useEffect(()=> {
+  useEffect(() => {
     clearInterval(timer.current)
-    if(show) {
-      timer.current = setInterval(()=>{
+    if (show) {
+      timer.current = setInterval(() => {
         getData()
       }, 3000)
-      return ()=> {
+      return () => {
         clearInterval(timer.current)
         setData([])
       }
     }
   }, [page, show])
-  useEffect(()=> {
-    timeOut.current = setTimeout(()=> {
+  useEffect(() => {
+    timeOut.current = setTimeout(() => {
       console.log(1);
       clearInterval(timer.current)
     }, awaitTime)
-    return ()=> {
+    return () => {
       clearTimeout(timeOut.current)
     }
   }, [show])
 
-  const ImportState = ({state, desc})=> {
-    if(state === 1) {
+  const ImportState = ({ state, desc }) => {
+    if (state === 1) {
       return (
         <div>处理中...</div>
       )
-    } else if(state === 2) {
+    } else if (state === 2) {
       return (
         <div>导入成功</div>
       )
-    } else if(state === 3) {
+    } else if (state === 3) {
       return (
         <Tooltip key="history" title={desc}>
           <div className={styles.fail}>
@@ -104,7 +104,7 @@ const ImportHistroy = ({ show, setShow, type }) => {
           </div>
         </Tooltip>
       )
-    } else if(state === 4) {
+    } else if (state === 4) {
       return (
         <div>取消导入</div>
       )
@@ -112,14 +112,14 @@ const ImportHistroy = ({ show, setShow, type }) => {
       return ''
     }
   }
-  const ImportResult = ({state, failNum, href, process})=> {
-    if(state === 1) {
+  const ImportResult = ({ state, failNum, href, process }) => {
+    if (state === 1) {
       return (
         <div className={styles.process}>
           <Progress percent={process} size="small" />
         </div>
       )
-    }else if(state !== 1 && failNum > 0) {
+    } else if (state !== 1 && failNum > 0) {
       return (
         <a href={href} className={styles.failRes}>失败结果下载</a>
       )
@@ -213,11 +213,11 @@ const ImportHistroy = ({ show, setShow, type }) => {
                   <div className={styles.tag}>执行数：<span className={styles.no}>{item.count}</span></div>
                   <div className={styles.tag}>成功数：<span className={styles.no}>{item.processCount}</span></div>
                   <div className={styles.tag}>失败数：<span className={styles.no}>{item.errorCount}</span></div>
-                  <ImportState state={item.state} desc={item.exceptionDes}/>
+                  <ImportState state={item.state} desc={item.exceptionDes} />
                 </div>
                 <div className={styles.footer}>
                   <div className={styles.exportTime}>导入时间：{item.createTime}</div>
-                  <ImportResult 
+                  <ImportResult
                     state={item.state}
                     failNum={item.errorCount}
                     href={item.errorFileUrl}
