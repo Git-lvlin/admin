@@ -7,6 +7,7 @@ import AuditModel from './audit-model'
 import { history } from 'umi';
 import { CaretRightFilled } from '@ant-design/icons';
 import styles from './style.less'
+import { arrayOf } from 'prop-types';
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -177,7 +178,12 @@ export default props => {
             <Form.Item
               label="有效期"
             >
-              <p>领券{detailData.activityStartDay}天起，{detailData.activityEndDay}天内可用</p>
+               {
+                detailData.activityTimeType == 1 ?
+                <p>{detailData.activityStartTime + ' -- ' + detailData.activityEndTime}</p>
+                :
+                <p>领券{detailData.activityStartDay}天起，{detailData.activityEndDay}天内可用</p>
+              }
             </Form.Item>
 
             <Form.Item
@@ -257,10 +263,9 @@ export default props => {
             </Form.Item>
           </div>
 
-          <div className={styles.msg}>
             {
-              detailData.verifyInfo && detailData.verifyInfo[0].status ?
-                <>
+             detailData.verifyInfo && detailData.verifyInfo.length !=0 && detailData.verifyInfo[0].status ?
+                <div className={styles.msg}>
                   <h3 className={styles.head}>审核信息</h3>
                   <ProTable
                     actionRef={ref}
@@ -270,14 +275,13 @@ export default props => {
                     search={false}
                     columns={columns3}
                   />
-                </>
+                </div>
                 :
                 null
             }
-          </div>
 
           {
-            detailData.verifyInfo && detailData.verifyInfo[0].status == 4 ?
+            detailData.verifyInfo && detailData.verifyInfo.length !=0 && detailData.verifyInfo[0].status == 4 ?
               null
               : <>
                 <AuditModel
