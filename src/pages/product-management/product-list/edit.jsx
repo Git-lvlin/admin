@@ -422,7 +422,7 @@ export default (props) => {
           areaArr.push(refuseArea.cityId)
 
         }
-        setSelectAreaKey(areaArr)
+        setSelectAreaKey([...new Set(areaArr)])
       }
 
       if (detailData.isMultiSpec) {
