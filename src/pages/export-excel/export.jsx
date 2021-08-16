@@ -1,22 +1,30 @@
 import { ModalForm } from '@ant-design/pro-form'
-import { 
-  Button, 
-  message, 
+import {
+  Button,
+  message,
 } from 'antd'
 
 import { createExportTask } from '@/services/export-excel/export-template'
 
-const Export = ({type, change, conditions})=> {
-  const str = JSON.stringify(conditions)
-  const downExcel = ()=> {
+const Export = ({ type, change, conditions }) => {
+
+  const downExcel = () => {
+
+    let str;
+    if (typeof conditions === 'function') {
+      str = JSON.stringify(conditions())
+    } else {
+      str = JSON.stringify(conditions)
+    }
+
     createExportTask({
       code: type,
       fileName: type + +new Date() + '.xlsx',
       // TODO:条件
       queryParamStr: str,
       // querydesc: ''
-    }).then(res=> {
-      if(res?.success) {
+    }).then(res => {
+      if (res?.success) {
         message.success('导出任务创建成功')
         change(true)
       }
@@ -24,7 +32,7 @@ const Export = ({type, change, conditions})=> {
   }
 
   return (
-    <ModalForm 
+    <ModalForm
       title={'导出规则'}
       trigger={
         <Button type="primary">导出</Button>

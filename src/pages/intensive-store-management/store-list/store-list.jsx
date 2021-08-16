@@ -10,6 +10,8 @@ import Form from './form';
 import Create from './create';
 import Return from './return';
 import ExcelModal from './excel-modal'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const StoreList = () => {
   const [formVisible, setFormVisible] = useState(false);
@@ -17,6 +19,7 @@ const StoreList = () => {
   const [returnVisible, setReturnVisible] = useState(false);
   const [excelVisible, setExcelVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
+  const [visit, setVisit] = useState(false)
   const actionRef = useRef();
   const formRef = useRef();
 
@@ -252,6 +255,19 @@ const StoreList = () => {
     },
   ];
 
+  const getFieldValue = () => {
+    if (formRef?.current?.getFieldsValue) {
+      const { current, pageSize, area = [], ...rest } = formRef?.current?.getFieldsValue?.();
+      return {
+        provinceId: area[0]?.value,
+        cityId: area[1]?.value,
+        regionId: area[2]?.value,
+        ...rest
+      }
+    }
+    return {}
+  }
+
   return (
     <PageContainer>
       <ProTable
@@ -288,6 +304,13 @@ const StoreList = () => {
             >
               新建
             </Button>,
+            <Export
+              change={(e) => { setVisit(e) }}
+              key="export"
+              type="community-shopkeeper-export"
+              conditions={getFieldValue}
+            />,
+            <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type="community-shopkeeper-export" />
             // <Button
             //   key="new2"
             //   onClick={() => {
