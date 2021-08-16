@@ -7,8 +7,6 @@ import ProForm, {
   ProFormTextArea,
 } from '@ant-design/pro-form';
 import { generateSubmit, generateIntData, generateUpdata, getGenerteUrl } from '@/services/cms/member/member';
-import { Item } from 'gg-editor';
-
 
 const GenerateInvitationCode = () => {
   const [loading, setLoading] = useState(false);
@@ -69,21 +67,49 @@ const GenerateInvitationCode = () => {
       console.log('generateUpdata-res', res)
       if (res.code === 0) {
         setTaskId(res?.data?.taskId)
+        setTimeout(() => {
+          setLoading(false)
+          setUpDataIsOk(true)
+        }, 2000)
+      } else {
+        setLoading(false)
+        message.error(res.msg)
       }
-      setLoading(false)
-      setUpDataIsOk(true)
     })
   }
 
+  const init = () => {
+    setUpDataIsOk(false)
+    setLoading(false)
+    setTaskId(null)
+    setInitialData(null)
+  }
+
   const upData = () => {
-    console.log('taskId', taskId)
-    taskId&&getGenerteUrl({id: taskId}).then(({data}) => {
-      console.log('data', data)
-      if (data.fileUrl) {
-        window.open(data.fileUrl, "_blank");
-        // setFileUrl(data.fileUrl)
-      }
-    })
+    if (taskId) {
+      getGenerteUrl({id: taskId}).then(({data}) => {
+        switch(data.state) {
+          case 0:
+            message.error('未开始')
+            break
+          case 1:
+            message.error('导出处理中')
+            break
+          case 2:
+            message.success('导出成功,点击下载后将回到上一页')
+            window.open(data.fileUrl, "_blank");
+            setTimeout(() => {
+              init()
+            }, 3000);
+            break
+          case 3:
+            message.error('导出失败')
+            break
+        }
+      })
+    } else {
+      message.error('缺少参数taskId')
+    }
   }
 
   return (
