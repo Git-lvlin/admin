@@ -39,6 +39,11 @@ export default {
       component: './product-management/product-review',
     },
     {
+      name: 'set-goods-list',
+      path: '/product-management/set-goods-list',
+      component: './product-management/set-goods-list',
+    },
+    {
       name: 'product-category',
       path: '/product-management/product-category',
       component: './product-management/product-category',
