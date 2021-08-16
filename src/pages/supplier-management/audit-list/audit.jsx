@@ -4,6 +4,7 @@ import { detailExt } from '@/services/supplier-management/supplier-list'
 import { auditAccount } from '@/services/supplier-management/audit-list'
 import { arrayToTree } from '@/utils/utils'
 import moment from 'moment';
+import Reject from './reject';
 
 
 const { Title } = Typography;
@@ -26,6 +27,7 @@ const Detail = (props) => {
   const [detailData, setDetailData] = useState({});
   const [treeData, setTreeData] = useState([])
   const [selectKeys, setSelectKeys] = useState([]);
+  const [rejectVisible, setRejectVisible] = useState(false);
 
   const getDetail = () => {
     detailExt({
@@ -41,10 +43,11 @@ const Detail = (props) => {
     })
   }
 
-  const audit = (auditStatus) => {
+  const audit = (auditStatus, auditReason) => {
     auditAccount({
       id,
       auditStatus,
+      auditReason,
     }, { showSuccess: true })
       .then(res => {
         if (res.code === 0) {
@@ -69,7 +72,7 @@ const Detail = (props) => {
         <div style={{ textAlign: 'right' }}>
           <Space>
             <Button onClick={() => { setVisible(false) }}>取消</Button>
-            <Button onClick={() => { audit(2) }} type="danger">审核拒绝</Button>
+            <Button onClick={() => { setRejectVisible(true)}} type="danger">审核拒绝</Button>
             <Button onClick={() => { audit(1) }} type="primary">审核通过去开户</Button>
           </Space>
         </div>
@@ -221,15 +224,25 @@ const Detail = (props) => {
               <Space style={{ display: 'flex' }}>
                 <Image src={detailData?.bankAccountInfo?.businessLicense?.[0]} width={150} height={150} />
                 <Image src={detailData?.bankAccountInfo?.idCardFrontImg?.[0]} width={150} height={150} />
+                <Image src={detailData?.bankAccountInfo?.idCardBackImg?.[0]} width={150} height={150} />
               </Space>
               <Space style={{ display: 'flex' }}>
-                <Image src={detailData?.bankAccountInfo?.idCardBackImg?.[0]} width={150} height={150} />
                 {detailData?.bankAccountInfo?.bankLicenseImg?.[0] && <Image src={detailData?.bankAccountInfo?.bankLicenseImg?.[0]} width={150} height={150} />}
+                {detailData?.bankAccountInfo?.bankCardFrontImg?.[0] && <Image src={detailData?.bankAccountInfo?.bankCardFrontImg?.[0]} width={150} height={150} />}
+                {detailData?.bankAccountInfo?.bankCardBackImg?.[0] && <Image src={detailData?.bankAccountInfo?.bankCardBackImg?.[0]} width={150} height={150} />}
               </Space>
             </Form.Item>
           </div>
           <div style={{ flex: 1 }}></div>
         </div>
+        {rejectVisible
+          &&
+          <Reject
+            visible={rejectVisible}
+            setVisible={setRejectVisible}
+            callback={(text) => { audit(2, text) }}
+          />
+        }
       </Form>
     </Drawer>
   )
