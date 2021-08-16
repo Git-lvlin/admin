@@ -79,7 +79,7 @@ const TransactionDetails = () => {
       dataIndex:'transactionId',
     },
     {
-      title: '平台支付单号',
+      title: '支付单号',
       dataIndex:'payNo',
       hideInSearch: query.accountId==='platformXinbao' ? true : false,
       hideInTable: query.accountId==='platformXinbao' ? true : false

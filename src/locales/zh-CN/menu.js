@@ -211,5 +211,14 @@ export default {
   'menu.financial-management.transaction-allocation-management':'交易配置管理',
   'menu.financial-management.transaction-allocation-management.withdrawal-fee-config':'提现费配置',
   'menu.financial-management.subsidy-summary' : '补贴汇总',
-  'menu.financial-management.subsidy-summary-detail' : '补贴明细'
+  'menu.financial-management.subsidy-summary-detail' : '补贴明细',
+
+  'menu.data-board': '数据看板',
+  'menu.data-board.data-board-detail': '数据预览',
+  'menu.data-board.sales-data': '销售数据',
+  'menu.data-board.class-of-view': '分类查看',
+  'menu.data-board.ranking': '排名',
+  'menu.data-board.order': '订单',
+  'menu.data-board.GMV-detail': 'GMV',
+  'menu.data-board.sales-detail': '销售额',
 };
