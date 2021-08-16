@@ -217,11 +217,7 @@ const TableList = () => {
         }
         {
           data.map(item => (
-<<<<<<< HEAD
             <div className={styles.list} key={item.id}>
-=======
-            <div className={styles.list} key={item.orderSn}>
->>>>>>> 3882ccec2c2c10346f64d94d00c22b267877d45c
               <div className={styles.store_name}>所属商家：{item.storeName}</div>
               <div className={styles.second}>
                 <Space size="large">
@@ -236,11 +232,7 @@ const TableList = () => {
                 <div className={styles.goods_info}>
                   {
                     item.orderItemList.map(it => (
-<<<<<<< HEAD
                       <div key={it.orderId}>
-=======
-                      <div key={it.id}>
->>>>>>> 3882ccec2c2c10346f64d94d00c22b267877d45c
                         <img width="100" height="100" src={it.skuImageUrl} />
                         <div className={styles.info}>
                           <div>{it.goodsName}</div>
