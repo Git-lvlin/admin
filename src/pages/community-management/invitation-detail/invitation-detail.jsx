@@ -1,11 +1,13 @@
 import React, { useState,useEffect,useRef } from 'react';
-import { getDynamicDetail } from '@/services/community-management/dynamic-get-dynamic-detail';
-import { Divider, Form, Spin,Button,Image,Menu, Dropdown,Space,List, Avatar } from 'antd';
+import { getDynamicDetail,findAdminCommentList,insertComment,insertReply } from '@/services/community-management/dynamic-get-dynamic-detail';
+import { Divider, Form, Spin,Button,Image,Menu, Dropdown,Space,List, Avatar,message } from 'antd';
 import moment from 'moment';
 import { history } from 'umi';
 import { CaretRightFilled } from '@ant-design/icons';
 import styles from './style.less'
 import ReplyModel from './reply-model'
+import { circleHide } from '@/services/community-management/circle-hide';
+import { circleTop } from '@/services/community-management/circle-top';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 
 const formItemLayout = {
@@ -28,24 +30,23 @@ export default props => {
   const [form] = Form.useForm()
   const [detailData,setDetailData]=useState([])
   const [loading, setLoading] = useState(false);
+  const [listData,setListData] =useState()
   const ref=useRef()
-  const listData = []
-  for (let i = 0; i < 23; i++) {
-    listData.push({
-      href: 'https://ant.design',
-      title: `张三 ${i}`,
-      avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-      description:
-        '2021-07-15 15:32:28',
-      content:
-        '评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容',
-      chat:[
-        '李四：这是回复...这是回复...',
-        '王五：兄弟顶你....',
-        '小鸭蛋：专业补刀20年'
-      ]
+  const commentList=[]
+
+  listData&&listData.map(ele=>{
+    commentList.push({
+      href: ele.userHeadUrl,
+      title: ele.userName,
+      avatar: ele.userHeadUrl,
+      description:moment(Number(ele.createTime)).format('YYYY-MM-DD HH:mm:ss'),
+      content:ele.content,
+      replys:ele.replys,
+      dynamicCommentId:ele.id,
+      ...ele
     });
-  }
+  })
+  
   useEffect(()=>{
     setLoading(true);
     getDynamicDetail({id}).then(res=>{
@@ -53,23 +54,42 @@ export default props => {
     }).finally(() => {
       setLoading(false);
     })
+    findAdminCommentList({dynamicId:id}).then(res=>{
+      setListData(res.data)
+    })
   },[])
+  const oncircleTop=()=>{
+    circleTop({id}).then(res=>{
+      if(res.code==0){
+        message.success('置顶成功')
+        return true;
+    }
+    })
+  }
+  const oncircleHide=()=>{
+    circleHide({id}).then(res=>{
+      if(res.code==0){
+        message.success('隐藏成功')
+        return true;
+    }
+  })
+  }
 
   const menu = (
     <Menu>
       <Menu.Item>
           <ReplyModel 
-            state={1}  
+            dynamicId={id}
             label={'发布评论'}  
-            // InterFace={auditDynamic} 
+            InterFace={insertComment} 
             boxref={ref}
           />
       </Menu.Item>
       <Menu.Item>
-          置顶
+          <p  onClick={()=>oncircleTop()}>置顶</p>
       </Menu.Item>
       <Menu.Item>
-          隐藏帖子
+          <p  onClick={()=>oncircleHide()}>隐藏帖子</p>
       </Menu.Item>
     </Menu>
   );
@@ -80,6 +100,7 @@ export default props => {
           form={form}
           {...formItemLayout}
           className={styles.detailform}
+          actionRef={ref}
         >
            <h2 className={styles.head}><CaretRightFilled /> 帖子详情</h2>
            <Dropdown overlay={menu} placement="bottomCenter" arrow>
@@ -114,16 +135,18 @@ export default props => {
                   ))
                 }
               </div>
+              <div style={{background:'#F2F2F2',padding:'20px',marginTop:'20px', display:detailData.sourceData?'block':'none'}}>
               <Space>
-                {/* <Image width={100} src={detailData.sourceData.goodsImageUrl} /> */}
-                {/* <div>
-                <p>{detailData.sourceData.goodsName}</p>
-                <p>{detailData.sourceData.specName}</p>
-                <p>￥ {detailData.sourceData.goodsSaleMinPrice}</p>
-                </div> */}
+                <Image width={100} src={detailData.sourceData&&detailData.sourceData.icon} />
+                <div>
+                <p>{detailData.sourceData&&detailData.sourceData.title}</p>
+                {/* <p>{detailData.sourceData.specName}</p> */}
+                <p>￥ {detailData.sourceData&&detailData.sourceData.amount}</p>
+                </div>
             </Space>
+            </div>
             <hr style={{marginTop:'70px'}}/>
-            <p style={{marginTop:'20px'}}>共（{listData.length}）条评论</p>
+            <p style={{marginTop:'20px'}}>共（{listData&&listData.length}）条评论</p>
             <List
               itemLayout="vertical"
               size="large"
@@ -133,34 +156,40 @@ export default props => {
                 },
                 pageSize: 3,
               }}
-              dataSource={listData}
-              renderItem={item => (
-                <List.Item
-                  key={item.title}
-                  actions={[
-                    <ReplyModel 
-                      state={1}  
-                      label={'回复'}  
-                      // InterFace={auditDynamic} 
-                      boxref={ref}
-                    />
-                  ]}
-                >
-                  <List.Item.Meta
-                    avatar={<Avatar src={item.avatar} />}
-                    title={<a href={item.href}>{item.title}</a>}
-                    description={item.description}
+              dataSource={commentList}
+              renderItem={item => {
+                return <List.Item
+                key={item.title}
+                actions={[  
+                  <ReplyModel 
+                    dynamicCommentId={item.dynamicCommentId}
+                    // parentId={}
+                    label={'回复'}  
+                    InterFace={insertReply} 
+                    boxref={ref}
                   />
-                  {item.content}
-                  <div style={{background:'#F2F2F2',padding:'20px'}}>
-                        {
-                          item.chat.map((ele)=>(
-                            <p>{ele}</p>
-                          ))
-                        }
-                  </div>
-                </List.Item>
-              )}
+                ]}
+              >
+                <List.Item.Meta
+                  avatar={<Avatar src={item.avatar} />}
+                  title={<a href={item.href}>{item.title}</a>}
+                  description={item.description}
+                />
+                {item.content}
+                <div style={{background:'#F2F2F2',padding:'20px'}}>
+                      {
+                        item.replys.length>0&&item.replys.map((ele)=>(
+                          <>
+                           <div style={{display:'flex'}}>
+                              <p>{ele.userName}{ele.beUserName?` 回复 ${ele.beUserName} ：`:' ： '}</p>
+                              <p>{ele.content}</p>
+                            </div>
+                          </>
+                        ))
+                      }
+                </div>
+              </List.Item>
+              }}
             />
           </Form.Item>
       
