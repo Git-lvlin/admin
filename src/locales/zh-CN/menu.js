@@ -118,6 +118,7 @@ export default {
   'menu.cms.market': '营销资源管理',
   'menu.cms.poster': '海报管理',
   'menu.cms.content-version': '版本配置管理',
+  'menu.cms.generate-invitation-code': '生成邀请码',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
