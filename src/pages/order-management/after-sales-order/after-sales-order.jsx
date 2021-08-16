@@ -9,8 +9,8 @@ import { history } from 'umi'
 
 import { refundOrder } from '@/services/order-management/after-sales-order'
 import { amountTransform } from '@/utils/utils'
-import Export from '@/pages/export-excel/export'
-import ExportHistory from '@/pages/export-excel/export-history'
+// import Export from '@/pages/export-excel/export'
+// import ExportHistory from '@/pages/export-excel/export-history'
 
 
 const sourceType = {
@@ -153,13 +153,13 @@ const afterSalesOrder = () => {
             >
               {resetText}
             </Button>,
-            <Export
-              change={(e)=> {setVisit(e)}}
-              key="export" 
-              type="order-common-export"
-              conditions={form?.getFieldValue()}
-            />,
-            <ExportHistory key="exportHistory" show={visit} setShow={setVisit}/>
+            // <Export
+            //   change={(e)=> {setVisit(e)}}
+            //   key="export" 
+            //   type="order-common-export"
+            //   conditions={form?.getFieldValue()}
+            // />,
+            // <ExportHistory key="exportHistory" show={visit} setShow={setVisit}/>
           ],
         }}
         headerTitle="数据列表"
