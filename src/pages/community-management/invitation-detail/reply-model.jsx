@@ -4,7 +4,7 @@ import {Form, Button,message } from 'antd';
 import { listSystemVirtualMember } from '@/services/community-management/memberinfo-list-system-virtual-member';
 
 export default props=>{
-    const {record,type,InterFace,title,boxref,label,state,arrId}=props
+    const {record,InterFace,boxref,label,dynamicId,dynamicCommentId,parentId}=props
     const [byid,setByid]=useState()
     const [visible, setVisible] = useState(false);
     const [virtual,setVirtual]=useState([])
@@ -37,8 +37,7 @@ export default props=>{
             }}
             onFinish={async (values) => {
                 console.log('values',values)
-                if(byid||arrId.length){
-                    InterFace({dynamicIds:arrId?arrId:[byid],state,refuseReason:values.refuseReason}).then(res=>{
+                    InterFace({content:values.content,dynamicId,userId:values.userId,dynamicCommentId,parentId}).then(res=>{
                         if(res.code==0){
                             setVisible(false)   
                             boxref&&boxref.current?.reload()
@@ -46,9 +45,6 @@ export default props=>{
                             return true;
                         }
                     })
-                }else{
-                    message.error('请先选择帖子')
-                }
                 
             }}
         >
