@@ -8,8 +8,19 @@ export default {
       component: './order-management/normal-order',
     },
     {
+      name: 'normal-order-purchase',
+      path: '/order-management/normal-order-purchase',
+      component: './order-management/normal-order',
+    },
+    {
       name: 'normal-order-detail',
       path: '/order-management/normal-order-detail/:id',
+      component: './order-management/normal-order-detail',
+      hideInMenu: true,
+    },
+    {
+      name: 'normal-order-detail-purchase',
+      path: '/order-management/normal-order-detail-purchase/:id',
       component: './order-management/normal-order-detail',
       hideInMenu: true,
     },
@@ -23,8 +34,19 @@ export default {
           component: './order-management/intensive-order/supplier-order',
         },
         {
+          name: 'supplier-order-purchase',
+          path: '/order-management/intensive-order/supplier-order-purchase',
+          component: './order-management/intensive-order/supplier-order',
+        },
+        {
           name: 'supplier-order-detail',
           path: '/order-management/intensive-order/supplier-order-detail/:id',
+          component: './order-management/intensive-order/supplier-order-detail',
+          hideInMenu: true,
+        },
+        {
+          name: 'supplier-order-detail-purchase',
+          path: '/order-management/intensive-order/supplier-order-detail-purchase/:id',
           component: './order-management/intensive-order/supplier-order-detail',
           hideInMenu: true,
         },
