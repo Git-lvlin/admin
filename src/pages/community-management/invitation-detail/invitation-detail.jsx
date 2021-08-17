@@ -98,7 +98,7 @@ export default props => {
         >
            <h2 className={styles.head}><CaretRightFilled /> 帖子详情</h2>
            <Dropdown overlay={menu} placement="bottomCenter" arrow>
-            <Button style={{marginLeft:'1400px'}} type='primary'>帖子管理</Button>
+            <Button style={{marginLeft:'60%'}} type='primary'>帖子管理</Button>
           </Dropdown>
           <Form.Item
             label="内容ID"
