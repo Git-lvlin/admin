@@ -76,7 +76,7 @@ const TableList = () => {
 
   useEffect(() => {
     setLoading(true);
-    const apiMethod = isPurchase ? getPurchaseOrderList : orderList
+    const apiMethod = isPurchase ? getPurchaseOrderList : orderList;
     apiMethod({
       page,
       size: pageSize,

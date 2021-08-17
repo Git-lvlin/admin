@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Tooltip, Spin, Space } from 'antd';
+import { Table, Tooltip, Spin, message, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { QuestionCircleOutlined } from '@ant-design/icons'
@@ -311,25 +311,41 @@ const TableList = () => {
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
+            <Button
+              key="3"
+              type="primary"
+              onClick={() => {
+                if (!selectedRowKeys.length) {
+                  message.error('请先选中要驳回的商品')
+                  return;
+                }
+                setOverruleVisible(true)
+              }}>
+              批量驳回
+            </Button>
           ],
         }}
         columns={columns}
         pagination={{
           pageSize: 10,
+          onChange: () => {
+            setSelectedRowKeys([])
+          }
         }}
+        // alwayShowAlert={false}
         rowSelection={{
           selectedRowKeys,
           onChange: (_) => {
             setSelectedRowKeys(_);
-          }
+          },
         }}
-        tableAlertOptionRender={() => {
-          return (
-            <Space size={16}>
-              <a onClick={() => { setOverruleVisible(true) }}>批量驳回</a>
-            </Space>
-          );
-        }}
+      // tableAlertOptionRender={() => {
+      //   return (
+      //     <Space size={16}>
+      //       <a onClick={() => { setOverruleVisible(true) }}>批量驳回</a>
+      //     </Space>
+      //   );
+      // }}
       />
       {firstReviewVisible && <FirstReview
         visible={firstReviewVisible}
