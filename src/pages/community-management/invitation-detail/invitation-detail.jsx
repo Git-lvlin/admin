@@ -2,13 +2,11 @@ import React, { useState,useEffect,useRef } from 'react';
 import { getDynamicDetail,findAdminCommentList,insertComment,insertReply } from '@/services/community-management/dynamic-get-dynamic-detail';
 import { Divider, Form, Spin,Button,Image,Menu, Dropdown,Space,List, Avatar,message } from 'antd';
 import moment from 'moment';
-import { history } from 'umi';
 import { CaretRightFilled } from '@ant-design/icons';
 import styles from './style.less'
 import ReplyModel from './reply-model'
 import { circleHide } from '@/services/community-management/circle-hide';
 import { circleTop } from '@/services/community-management/circle-top';
-import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -25,13 +23,10 @@ const formItemLayout = {
 
 export default props => {
   const id=props.location.query.id
-  const byid=props.location.query.byid
-  const name=props.location.query.name
   const [form] = Form.useForm()
   const [detailData,setDetailData]=useState([])
   const [loading, setLoading] = useState(false);
   const [listData,setListData] =useState()
-  const ref=useRef()
   const commentList=[]
 
   listData&&listData.map(ele=>{
@@ -48,16 +43,13 @@ export default props => {
   })
   
   useEffect(()=>{
-    setLoading(true);
     getDynamicDetail({id}).then(res=>{
       setDetailData(res.data)
-    }).finally(() => {
-      setLoading(false);
     })
     findAdminCommentList({dynamicId:id}).then(res=>{
       setListData(res.data)
     })
-  },[])
+  },[loading])
   const oncircleTop=()=>{
     circleTop({id}).then(res=>{
       if(res.code==0){
@@ -82,7 +74,9 @@ export default props => {
             dynamicId={id}
             label={'发布评论'}  
             InterFace={insertComment} 
-            boxref={ref}
+            canback={(e)=>{
+              setLoading(e)
+            }}
           />
       </Menu.Item>
       <Menu.Item>
@@ -96,11 +90,11 @@ export default props => {
 
   return (
     <>
+    <Spin spinning={loading}>
         <Form
           form={form}
           {...formItemLayout}
           className={styles.detailform}
-          actionRef={ref}
         >
            <h2 className={styles.head}><CaretRightFilled /> 帖子详情</h2>
            <Dropdown overlay={menu} placement="bottomCenter" arrow>
@@ -166,7 +160,9 @@ export default props => {
                     // parentId={}
                     label={'回复'}  
                     InterFace={insertReply} 
-                    boxref={ref}
+                    canback={(e)=>{
+                      setLoading(e)
+                    }}
                   />
                 ]}
               >
@@ -229,6 +225,7 @@ export default props => {
           </Form.Item> */}
           
         </Form>
+        </Spin>
     </>
   );
 };

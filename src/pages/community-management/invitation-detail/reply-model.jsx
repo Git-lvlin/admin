@@ -4,12 +4,10 @@ import {Form, Button,message } from 'antd';
 import { listSystemVirtualMember } from '@/services/community-management/memberinfo-list-system-virtual-member';
 
 export default props=>{
-    const {record,InterFace,boxref,label,dynamicId,dynamicCommentId,parentId}=props
-    const [byid,setByid]=useState()
+    const {InterFace,label,dynamicId,dynamicCommentId,parentId,canback}=props
     const [visible, setVisible] = useState(false);
     const [virtual,setVirtual]=useState([])
-    const Termination=(record)=>{
-        setByid(record&&record.id)
+    const Termination=()=>{
         setVisible(true)
     }
     //会员昵称下拉接口调用
@@ -22,10 +20,9 @@ export default props=>{
   },[])
     return (
         <ModalForm
-            key={byid}
             onVisibleChange={setVisible}
             visible={visible}
-            trigger={<p  onClick={()=>Termination(record)}>{label}</p>}
+            trigger={<p  onClick={()=>Termination()}>{label}</p>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
@@ -36,11 +33,13 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                console.log('values',values)
                     InterFace({content:values.content,dynamicId,userId:values.userId,dynamicCommentId,parentId}).then(res=>{
                         if(res.code==0){
-                            setVisible(false)   
-                            boxref&&boxref.current?.reload()
+                            setVisible(false) 
+                            canback(true)
+                            setTimeout(()=>{
+                            canback(false)
+                            },1000)  
                             message.success('操作成功')
                             return true;
                         }
