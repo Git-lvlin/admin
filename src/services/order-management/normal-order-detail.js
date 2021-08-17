@@ -10,6 +10,16 @@ export const findAdminOrderDetail = async (params = {}, options = {}) => {
   });
 }
 
+export const findAdminOrderDetail2 = async (params = {}, options = {}) => {
+  return request('/auth/java-admin/order/findAdminOrderDetail2', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+    ...options
+  });
+}
+
 export const deliverGoods = async (params = {}, options = {}) => {
   return request('/auth/java-admin/order/deliverGoods', {
     method: 'POST',

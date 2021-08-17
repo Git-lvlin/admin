@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout';
 import { Steps, Space, Button, Modal, Spin } from 'antd';
 import { useParams } from 'umi';
-import { getSupplierOrderDetail, modifyShip, expressInfo } from '@/services/order-management/supplier-order-detail';
+import { getSupplierOrderDetail, modifyShip, expressInfo, getPurchaseOrderDetail } from '@/services/order-management/supplier-order-detail';
 import { amountTransform, dateFormat } from '@/utils/utils'
-import { history } from 'umi';
+import { history, useLocation } from 'umi';
 
 import styles from './style.less';
 
@@ -25,6 +25,9 @@ const OrderDetail = () => {
   const [deliveryVisible, setDeliveryVisible] = useState(false)
   const [expressInfoState, setExpressInfoState] = useState([])
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const isPurchase = location.pathname.includes('purchase')
+
 
   const expressInfoRequest = () => {
     expressInfo({
@@ -41,7 +44,8 @@ const OrderDetail = () => {
 
   const getDetailData = () => {
     setLoading(true);
-    getSupplierOrderDetail({
+    const apiMethod = isPurchase ? getPurchaseOrderDetail : getSupplierOrderDetail
+    apiMethod({
       orderId: params.id
     }).then(res => {
       if (res.code === 0) {
