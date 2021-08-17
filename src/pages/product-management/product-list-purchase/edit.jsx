@@ -419,7 +419,7 @@ export default (props) => {
             continue;
           }
 
-          areaArr.push(refuseArea.cityId)
+          areaArr.push(refuseArea.provinceId)
 
         }
         setSelectAreaKey([...new Set(areaArr)])
