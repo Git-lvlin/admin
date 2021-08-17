@@ -170,7 +170,7 @@ export default props => {
                   />
                 ]}
               >
-                <List.Item.Meta
+              <List.Item.Meta
                   avatar={<Avatar src={item.avatar} />}
                   title={<a href={item.href}>{item.title}</a>}
                   description={item.description}
@@ -181,7 +181,7 @@ export default props => {
                         item.replys.length>0&&item.replys.map((ele)=>(
                           <>
                            <div style={{display:'flex'}}>
-                              <p>{ele.userName}{ele.beUserName?` 回复 ${ele.beUserName} ：`:' ： '}</p>
+                              <p>{ele.userName}{ele.beUserName?<><span style={{color:'#ccc'}}> 回复 </span>${ele.beUserName} ：</>:' ： '}</p>
                               <p>{ele.content}</p>
                             </div>
                           </>
