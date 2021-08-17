@@ -100,21 +100,24 @@ export default props => {
   return (
     <Form
         onFinish={async (values) => {
-          values.sourceData={
-            icon:spuIdsArr[0]?.goodsImageUrl,
-            title:spuIdsArr[0]?.goodsName,
-            amount:spuIdsArr[0]?.goodsSaleMinPrice,
-            subtitle:'',
-            params:{
-              orderType:2,
-              spuId:spuIdsArr[0]?.spuId,
-              objectId:'',
-              activityId:'',
-              wsId:''
+          if(spuIdsArr.length>0){
+            values.sourceData={
+              icon:spuIdsArr&&spuIdsArr[0]?.goodsImageUrl,
+              title:spuIdsArr&&spuIdsArr[0]?.goodsName,
+              amount:spuIdsArr&&spuIdsArr[0]?.goodsSaleMinPrice,
+              subtitle:'',
+              params:{
+                orderType:2,
+                spuId:spuIdsArr&&spuIdsArr[0]?.spuId,
+                objectId:'',
+                activityId:'',
+                wsId:''
+              }
             }
+            values.sourceType=spuIdsArr&&spuIdsArr.length>0?1:0
           }
-          values.sourceId=spuIdsArr[0]?.spuId
-          values.sourceType=spuIdsArr?1:0
+          values.sourceId=spuIdsArr&&spuIdsArr[0]?.spuId
+          
           releaseDynamic(values).then(res=>{
             if(res.code==0){
               message.success('发布成功');
@@ -199,7 +202,7 @@ export default props => {
                       ],
                   }}
                   toolBarRender={() => [
-                    <Button type="primary" style={{marginLeft:'-1100px'}} disabled={spuIdsArr.length>0?false:true}  onClick={handleOk}>
+                    <Button type="primary" style={{marginLeft:'-1100px'}} disabled={spuIdsArr&&spuIdsArr.length>0?false:true}  onClick={handleOk}>
                         确定
                     </Button>
                   ]}
@@ -212,11 +215,11 @@ export default props => {
           </Modal>
           <div style={{background:'#F2F2F2',padding:'20px',marginTop:'20px', display:loading?'none':'block'}}>
             <Space>
-              <Image width={100} src={spuIdsArr[0]?.goodsImageUrl} />
+              <Image width={100} src={spuIdsArr&&spuIdsArr[0]?.goodsImageUrl} />
                <div>
-               <p>{spuIdsArr[0]?.goodsName}</p>
-               <p>{spuIdsArr[0]?.specName}</p>
-               <p>￥ {spuIdsArr[0]?.goodsSaleMinPrice}</p>
+               <p>{spuIdsArr&&spuIdsArr[0]?.goodsName}</p>
+               <p>{spuIdsArr&&spuIdsArr[0]?.specName}</p>
+               <p>￥ {spuIdsArr&&spuIdsArr[0]?.goodsSaleMinPrice}</p>
                </div>
             </Space>
           </div>
