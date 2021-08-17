@@ -4,7 +4,7 @@ import { Spin } from 'antd'
 import { history } from 'umi'
 import moment from 'moment'
 
-import { findMoreYueGmv } from '@/services/data-board/data-board'
+import { findSumMoreYue } from '@/services/data-board/data-board'
 import { amountTransform } from '@/utils/utils'
 
 // const skipToGMVDetail = (e) => {
@@ -20,29 +20,29 @@ const columns = [
   },
   {
     title: 'GMV（￥/元）',
-    dataIndex: 'dayGmv',
+    dataIndex: 'sumDayGmv',
     align: 'center',
     render: (_)=> <a>{amountTransform(_, '/')}</a>
   },
   {
     title: 'GMV订单数',
-    dataIndex: 'gmvOrderCount',
+    dataIndex: 'sumGmvOrderCount',
     align: 'center'
   },
   {
     title: '销售额（￥/元）',
-    dataIndex: 'daySale',
+    dataIndex: 'sumDaySale',
     align: 'center',
     render: (_)=> <a>{amountTransform(_, '/')}</a>
   },
   {
     title: '支付订单数',
-    dataIndex: 'payCount',
+    dataIndex: 'sumPayCount',
     align: 'center'
   },
   {
     title: '支付用户数',
-    dataIndex: 'payUserCount',
+    dataIndex: 'sumPayUserCount',
     align: 'center'
   },
 ]
@@ -58,11 +58,12 @@ const TableList = (props)=>  {
   } = props
   useEffect(()=>{
     setLoading(true)
-    findMoreYueGmv({
+    findSumMoreYue({
       startTime,
       endTime
     }).then(res=> {
       if(res.success) {
+        // console.log(res.data);
         setData(res.data)
       } else {
         setData([])

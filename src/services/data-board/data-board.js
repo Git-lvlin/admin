@@ -284,3 +284,18 @@ export const sumMonthPayCount = async (params = {}, options = {}) => {
     success: res.success
   }
 }
+
+// 统计各种约的总和
+export const findSumMoreYue = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/findSumMoreYue', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+  return {
+    data: res.data.moreYueGmvResponseList,
+    success: res.success
+  }
+}
