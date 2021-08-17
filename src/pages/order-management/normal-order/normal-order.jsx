@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Tag, Form } from 'antd';
-import { history } from 'umi';
+import { history, useLocation } from 'umi';
 import styles from './style.less';
 import Delivery from '@/components/delivery'
 import { amountTransform } from '@/utils/utils'
@@ -24,7 +24,7 @@ const TableList = () => {
   const [search, setSearch] = useState(0)
   const [deliveryVisible, setDeliveryVisible] = useState(false)
   const [importVisit, setImportVisit] = useState(false)
-
+  const isPurchase = useLocation().pathname.includes('purchase')
 
   const [form] = Form.useForm()
 

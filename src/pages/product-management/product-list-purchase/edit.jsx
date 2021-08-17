@@ -10,7 +10,7 @@ import {
 import Upload from '@/components/upload'
 import { uploadImageFormatConversion, amountTransform } from '@/utils/utils'
 import { EyeOutlined } from '@ant-design/icons';
-import * as api from '@/services/product-management/product-list';
+import * as api from '@/services/product-management/product-list-purchase';
 import styles from './edit.less'
 import FormModal from './form';
 import EditTable from './edit-table';

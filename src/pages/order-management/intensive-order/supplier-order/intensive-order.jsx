@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
-import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form } from 'antd';
+import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Tag } from 'antd';
 import { history, useLocation } from 'umi';
 import moment from 'moment';
 import styles from './style.less';
-import { orderList } from '@/services/order-management/supplier-order';
+import { orderList, getPurchaseOrderList } from '@/services/order-management/supplier-order';
 import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -25,6 +25,7 @@ const TableList = () => {
   const location = useLocation();
   const [visit, setVisit] = useState(false)
   const [importVisit, setImportVisit] = useState(false)
+  const isPurchase = location.pathname.includes('purchase')
 
 
 
@@ -54,7 +55,8 @@ const TableList = () => {
 
   useEffect(() => {
     setLoading(true);
-    orderList({
+    const apiMethod = isPurchase ? getPurchaseOrderList : orderList
+    apiMethod({
       page,
       size: pageSize,
       ...getFieldValue()
@@ -157,13 +159,29 @@ const TableList = () => {
         />
         <ProFormText
           name="supplierName"
-          label="所属商家"
+          label="所属商家ID"
           fieldProps={{
             style: {
               marginBottom: 20
             }
           }}
         />
+        {isPurchase && <ProFormSelect
+          label="商家类型"
+          name="supplierType"
+          options={[
+            {
+              value: 1,
+              label: '代理运营商家'
+            }
+          ]}
+          fieldProps={{
+            style: {
+              marginBottom: 20,
+              width: 180,
+            }
+          }}
+        />}
         <ProFormSelect
           label="尾款类型"
           name="isMerge"
@@ -254,7 +272,7 @@ const TableList = () => {
         {
           data.map(item => (
             <div className={styles.list} key={item.id}>
-              <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}</div>
+              <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
               <div className={styles.second}>
                 <Space size="large">
                   <span>下单时间：{moment(item.createTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>
@@ -294,7 +312,7 @@ const TableList = () => {
                 <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div>
                 <div style={{ textAlign: 'center' }}>{item.statusDesc}</div>
                 <div style={{ textAlign: 'center' }}>
-                  <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail/${item.orderId}`) }}>详情</a>
+                  <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a>
                 </div>
               </div>
 
