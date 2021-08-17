@@ -171,7 +171,7 @@ export default (props) => {
       })
 
       const { warrantyRatioDisplay, defaultWholesaleTaxRateDisplay } = detailData
-      
+
       form.setFieldsValue({
         warrantyRatio: warrantyRatioDisplay,
         defaultWholesaleTaxRate: defaultWholesaleTaxRateDisplay,
@@ -287,6 +287,7 @@ export default (props) => {
             fieldProps={{
               maxLength: 11,
             }}
+            extra="此手机号会用做平台联系和对绑定的银行卡解绑确认"
           />
           <ProFormText
             name="orderTipPhone"
@@ -394,7 +395,13 @@ export default (props) => {
           />
           <ProFormDigit
             placeholder="请输入商品质保金比例"
-            label="商品质保金比例"
+            label={
+              <div style={{ position: 'relative', top: 10 }}>
+                <div>商品质保金比例</div>
+                <div style={{ fontSize: 12, color: '#888' }}>此部分金额需商品</div>
+                <div style={{ fontSize: 12, color: '#888' }}>过售后期才可提现</div>
+              </div>
+            }
             name="warrantyRatio"
             min={0}
             max={50}
@@ -416,7 +423,7 @@ export default (props) => {
               })
             ]}
           />
-          <div style={{marginTop: '-20px'}}>
+          <div style={{ marginTop: '-20px' }}>
             <ProFormText
               name="stockWarn"
               label="商品预警量"
@@ -435,7 +442,7 @@ export default (props) => {
               ]}
             />
           </div>
-          
+
         </div>
       </div>
       {formVisible && <FormModal
