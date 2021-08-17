@@ -238,9 +238,9 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
-      const { bankAccountInfo, accountSwitch } = detailData
+      const { bankAccountInfo } = detailData
       form.setFieldsValue({
-        bindBankSwitch: accountSwitch,
+        bindBankSwitch: bankAccountInfo.bindBankSwitch,
       })
 
       if (bankAccountInfo) {
@@ -324,7 +324,7 @@ export default (props) => {
       visible={visible}
       initialValues={{
         bankAccountType: 1,
-        bindBankSwitch: 2,
+        bindBankSwitch: 1,
       }}
       {...formItemLayout}
       submitter={{
