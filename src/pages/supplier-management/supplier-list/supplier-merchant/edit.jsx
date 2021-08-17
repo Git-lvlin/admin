@@ -521,6 +521,7 @@ export default (props) => {
             // rules={[{ required: true, message: '请输入负责人手机号' }]}
             fieldProps={{
               maxLength: 11,
+              extra: "此手机号会用做平台联系和对绑定的银行卡解绑确认"
             }}
           />
           <ProFormText
