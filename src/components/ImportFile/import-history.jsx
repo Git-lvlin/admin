@@ -121,7 +121,7 @@ const ImportHistroy = ({ show, setShow, type }) => {
       )
     } else if (state !== 1 && failNum > 0) {
       return (
-        <a href={href} className={styles.failRes}>失败结果下载</a>
+        href ? <a href={href} className={styles.failRes}>失败结果下载</a> : ''
       )
     } else {
       return ''
