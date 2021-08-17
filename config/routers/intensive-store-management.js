@@ -54,16 +54,16 @@ export default {
       component: './intensive-store-management/store-review-detail',
       hideInMenu: true,
     },
-    {
-      name: 'grade-index',
-      path: '/intensive-store-management/grade-index',
-      component: './intensive-store-management/grade-index',
-    },
-    {
-      name: 'assessment-reward',
-      path: '/intensive-store-management/assessment-reward',
-      component: './intensive-store-management/assessment-reward',
-    },
+    // {
+    //   name: 'grade-index',
+    //   path: '/intensive-store-management/grade-index',
+    //   component: './intensive-store-management/grade-index',
+    // },
+    // {
+    //   name: 'assessment-reward',
+    //   path: '/intensive-store-management/assessment-reward',
+    //   component: './intensive-store-management/assessment-reward',
+    // },
     {
       name: 'lvl-setup',
       path: '/intensive-store-management/lvl-setup',

@@ -161,7 +161,7 @@ const OrderDetail = () => {
                 <div className={styles.box}>
                   <div>物流信息</div>
                   <div className={styles.block}>
-                    <p>快递公司：{detailData?.express?.companyNo}</p>
+                    <p>快递公司：{detailData?.express?.expressName}</p>
                     <p>运单编号：{detailData?.express?.expressNo} {detailData?.express?.expressNo && <a onClick={expressInfoRequest}>物流跟踪</a>}</p>
                     <p>发货时间：{dateFormat(detailData?.express?.expressTime * 1000)}</p>
                     <p>收货时间：{dateFormat(detailData?.receivingInfo?.signForTime * 1000)}</p>
