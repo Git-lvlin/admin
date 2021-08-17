@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout';
 import { Steps, Space, Button, Modal, Spin } from 'antd';
-import { useParams, history } from 'umi';
-import { findAdminOrderDetail, deliverGoods, expressInfo, expressInfoYlbb } from '@/services/order-management/normal-order-detail';
+import { useParams, history, useLocation } from 'umi';
+import { findAdminOrderDetail, deliverGoods, expressInfo, expressInfoYlbb, findAdminOrderDetail2 } from '@/services/order-management/normal-order-detail';
 import { amountTransform, dateFormat } from '@/utils/utils'
 import moment from 'moment';
 
@@ -16,6 +16,7 @@ const OrderDetail = () => {
   const [detailData, setDetailData] = useState({});
   const [expressInfoState, setExpressInfoState] = useState([])
   const [loading, setLoading] = useState(false);
+  const isPurchase = useLocation().pathname.includes('purchase')
 
   const expressInfoRequest = () => {
 
@@ -48,7 +49,8 @@ const OrderDetail = () => {
 
   const getDetailData = () => {
     setLoading(true);
-    findAdminOrderDetail({
+    const apiMethod = isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
+    apiMethod({
       id: params.id
     }).then(res => {
       if (res.code === 0) {
