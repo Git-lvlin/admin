@@ -22,7 +22,7 @@ export default props=>{
         <ModalForm
             onVisibleChange={setVisible}
             visible={visible}
-            trigger={<p  onClick={()=>Termination()}>{label}</p>}
+            trigger={<p style={{color:'#000',cursor:'pointer'}} onClick={()=>Termination()}>{label}</p>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
