@@ -89,7 +89,8 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入供应商家名称'
-      }
+      },
+      width: 200,
     },
     {
       title: '登录账号',
@@ -97,13 +98,15 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入登录账号'
-      }
+      },
+      width: 200,
     },
     {
       title: '负责人',
       dataIndex: 'companyUserName',
       valueType: 'text',
       hideInSearch: true,
+      width: 200,
     },
     {
       title: '状态',
@@ -120,6 +123,7 @@ const TableList = () => {
       dataIndex: 'createUser',
       valueType: 'text',
       hideInSearch: true,
+      width: 200,
     },
     {
       title: '创建时间',
