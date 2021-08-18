@@ -271,7 +271,13 @@ const TableList = () => {
         {
           data.map(item => (
             <div className={styles.list} key={item.id}>
-              <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+              {
+                isPurchase
+                  ?
+                  <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                  :
+                  <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}</div>
+              }
               <div className={styles.second}>
                 <Space size="large">
                   <span>下单时间：{moment(item.createTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>
