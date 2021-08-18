@@ -44,6 +44,31 @@ export default props => {
   const handleCancel = () => {
       setIsModalVisible(false);
   };
+  const specification=(specName,specValue)=>{
+    var arr1=[]
+    var arr2=[]
+    for(let k in specName){
+      arr1.push(specName[k])
+    }
+    for(let key in specValue){
+      arr2.push(specValue[key])
+    }
+    return <>
+    {
+      arr1.map((ele,inx)=>(
+        <p>
+        {
+          ele+':'+  arr2.map((item,dex)=>{
+          if(inx==dex){
+            return Object.values(item)
+          }
+          })
+        }
+        </p>
+      ))
+    }
+    </>
+  }
   const columns = [
     {
       title: 'spuID',
@@ -95,6 +120,10 @@ export default props => {
       message.error('只能选择一个商品');
       return
     }
+    if(spuIdsArr==res.selectedRows){
+      return
+    }
+    console.log('res.selectedRows',res.selectedRows)
     setSpuIdsArr(res.selectedRows)
   }
   return (
@@ -217,7 +246,7 @@ export default props => {
               <Image width={100} src={spuIdsArr&&spuIdsArr[0]?.goodsImageUrl} />
                <div>
                <p>{spuIdsArr&&spuIdsArr[0]?.goodsName}</p>
-               <p>{spuIdsArr&&spuIdsArr[0]?.specName}</p>
+               <p>{specification(spuIdsArr&&spuIdsArr[0]?.specName,spuIdsArr&&spuIdsArr[0]?.specValue)}</p>
                <p>￥ {spuIdsArr&&spuIdsArr[0]?.goodsSaleMinPrice}</p>
                </div>
             </Space>
