@@ -18,7 +18,11 @@ const TransactionDetails = () => {
         'commission': '提成入账',
         'commissionReturn': '提成回退',
         'suggestCommission': '推荐提成入账',
-        'suggestCommissionReturn': '推荐提成回退'
+        'suggestCommissionReturn': '推荐提成回退',
+        'deposit': '保证金入账',
+        'depositReturn': '保证金回退',
+        'agentCompanyCommission': '经销商佣金收入',
+        'agentCompanyCommissionReturn': '经销商佣金回退'
       }
     }else if(query.accountId==='platformFee'){
       return {
@@ -35,15 +39,10 @@ const TransactionDetails = () => {
   const orderType = () => {
     if(query.accountId==='platform') {
       return {
-        'normalOrder': '普通商品订单',
         'second': '秒约订单',
-        'single': '单约订单',
-        'group': '团约订单',
-        'commandSalesOrder': '指令集约店主订单',
-        'activeSalesOrder': '主动集约店主订单',
+        'commandSalesOrder': '集约采购订单',
         'dropShipping1688': '1688代发订单',
-        'commandCollect': '指令集约C端订单',
-        'activeCollect': '主动集约C端订单'
+        'commandCollect': '集约C端订单'
       }
     }
   }
@@ -106,6 +105,10 @@ const TransactionDetails = () => {
       dataIndex: 'balanceAmount',
       render: (_) => amountTransform(_, '/'),
       hideInSearch: true
+    },
+    {
+      title: '描述',
+      dataIndex: 'description',
     }
   ]
   return (
