@@ -173,7 +173,7 @@ export default function EditTable(props) {
       }
     };
 
-    return debounce(loadData, 1000);
+    return debounce(loadData, 200);
   }, [dataSource, props]);
 
 
