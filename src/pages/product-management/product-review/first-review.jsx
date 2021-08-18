@@ -14,6 +14,7 @@ import { amountTransform } from '@/utils/utils'
 import styles from './first-review.less'
 import * as api from '@/services/product-management/product-list';
 import debounce from 'lodash/debounce';
+import Look from './look';
 
 export default (props) => {
   const { visible, setVisible, detailData, check, overrule } = props;
@@ -22,7 +23,7 @@ export default (props) => {
   const [tableHead, setTableHead] = useState([]);
   const [form] = Form.useForm()
   const [salePriceProfitLoss, setSalePriceProfitLoss] = useState(null);
-
+  const [lookVisible, setLookVisible] = useState(false);
   const type = useRef(0)
 
   const { goods } = detailData;
@@ -196,6 +197,18 @@ export default (props) => {
             </Button>,
             <Button key="4" onClick={() => { setVisible(false) }}>
               返回
+            </Button>,
+            <Button
+              key="look"
+              onClick={(_) => {
+                if (detailData) {
+                  setLookVisible(true)
+                } else {
+                  message.error('请编辑完成后预览')
+                }
+              }}
+            >
+              预览
             </Button>,
           ];
         },
@@ -530,6 +543,11 @@ export default (props) => {
         visible={overruleVisible}
         setVisible={setOverruleVisible}
         callback={(text) => { overrule(3, 2, detailData.spuId, text) }}
+      />}
+      {lookVisible && <Look
+        visible={lookVisible}
+        setVisible={setLookVisible}
+        dataList={detailData}
       />}
     </DrawerForm>
   );
