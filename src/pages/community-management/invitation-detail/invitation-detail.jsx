@@ -26,10 +26,10 @@ export default props => {
   const [form] = Form.useForm()
   const [detailData,setDetailData]=useState([])
   const [loading, setLoading] = useState(false);
-  const [listData,setListData] =useState()
+  const [listData,setListData] =useState([])
   const commentList=[]
 
-  listData&&listData.map(ele=>{
+  listData.length>0&&listData.map(ele=>{
     commentList.push({
       href: ele.userHeadUrl,
       title: ele.userName,
@@ -96,7 +96,7 @@ export default props => {
           {...formItemLayout}
           className={styles.detailform}
         >
-           <h2 className={styles.head}><CaretRightFilled /> 帖子详情</h2>
+           <h2 className={styles.invitation_head}><CaretRightFilled /> 帖子详情</h2>
            <Dropdown overlay={menu} placement="bottomCenter" arrow>
             <Button style={{marginLeft:'60%'}} type='primary'>帖子管理</Button>
           </Dropdown>
@@ -122,14 +122,14 @@ export default props => {
               label="内容"
             >
               {detailData.content}
-              <div className={styles.content}>
+              <div className={styles.invitation_content}>
                 {
                   detailData.images?.map(ele=>(
                     <Image className={styles.detailimg}  width={100} height={100} src={ele} alt="" />
                   ))
                 }
               </div>
-              <div style={{background:'#F2F2F2',padding:'20px',marginTop:'20px', display:detailData.sourceData?'block':'none'}}>
+              <div className={styles.commodity} style={{ display:detailData.sourceData?'block':'none'}}>
               <Space>
                 <Image width={100} src={detailData.sourceData&&detailData.sourceData.icon} />
                 <div>
@@ -137,10 +137,10 @@ export default props => {
                 {/* <p>{detailData.sourceData.specName}</p> */}
                 <p>￥ {detailData.sourceData&&detailData.sourceData.amount}</p>
                 </div>
-            </Space>
+              </Space>
             </div>
-            <hr style={{marginTop:'70px'}}/>
-            <p style={{marginTop:'20px'}}>共（{listData&&listData.length}）条评论</p>
+            <hr className={styles.boundary}/>
+            <p className={styles.comment_sum}>共（{listData&&listData.length}）条评论</p>
             <List
               itemLayout="vertical"
               size="large"
@@ -171,59 +171,23 @@ export default props => {
                   title={<a href={item.href}>{item.title}</a>}
                   description={item.description}
                 />
-                {item.content}
-                <div style={{background:'#F2F2F2',padding:'20px'}}>
+                <Space className={styles.post_content}>
+                    {item.content}
+                </Space>
+                <div className={styles.reply} style={{display:item.replys.length>0?'block':'none'}}>
                       {
                         item.replys.length>0&&item.replys.map((ele)=>(
-                          <>
-                           <div style={{display:'flex'}}>
-                              <p>{ele.userName}{ele.beUserName?<><span style={{color:'#ccc'}}> 回复 </span>${ele.beUserName} ：</>:' ： '}</p>
-                              <p>{ele.content}</p>
-                            </div>
-                          </>
+                          <div style={{display:'flex'}}>
+                            <p>{ele.userName}{ele.beUserName?<><span style={{color:'#ccc'}}> 回复 </span>${ele.beUserName} ：</>:' ： '}</p>
+                            <p>{ele.content}</p>
+                          </div>
                         ))
                       }
                 </div>
               </List.Item>
               }}
             />
-          </Form.Item>
-      
-
-          {/* {
-           detailData.sourceType==1&&detailData.sourceData?
-            <Form.Item
-              label="商品快照"
-            >
-             <h3>{detailData.sourceData.subtitle}</h3>
-             <h4>{detailData.sourceData.title}</h4>
-             <Image src={detailData.sourceData.icon} width={100} height={100} alt="" />
-            </Form.Item>
-            :null
-          }
-         
-         {
-           detailData.sourceType==3&&detailData.sourceData?
-           <Form.Item
-            label="转发内容快照"
-          >
-            <h3>{detailData.sourceData.subtitle}</h3>
-            <h4>{detailData.sourceData.title}</h4>
-            <Image src={detailData.sourceData.icon} width={100} height={100} alt="" />
-          </Form.Item>
-          :null
-         }
-          <Form.Item
-            className={styles.formbutton}
-          >
-              {
-                  name?
-                  <Button className={styles.button}  type="primary" onClick={()=>history.push('/community-management/circle-management/circleinterior-management?id='+byid+'&name='+name)}>返回</Button>
-                  :<Button className={styles.button} type="primary" onClick={()=>history.goBack()}>返回</Button>
-              }
-         
-          </Form.Item> */}
-          
+          </Form.Item>     
         </Form>
         </Spin>
     </>
