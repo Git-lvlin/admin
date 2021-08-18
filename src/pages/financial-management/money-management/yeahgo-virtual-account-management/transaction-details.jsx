@@ -160,8 +160,8 @@ const TransactionDetails = () => {
                 {
                   accountId: 'platform',
                   accountType: 'platform',
-                },
-                form?.getFieldValue()
+                  ...form?.getFieldValue()
+                }
               }
             />,
             query.accountId==='platform'&&
