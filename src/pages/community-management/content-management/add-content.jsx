@@ -102,22 +102,21 @@ export default props => {
         onFinish={async (values) => {
           if(spuIdsArr.length>0){
             values.sourceData={
-              icon:spuIdsArr&&spuIdsArr[0]?.goodsImageUrl,
-              title:spuIdsArr&&spuIdsArr[0]?.goodsName,
-              amount:spuIdsArr&&spuIdsArr[0]?.goodsSaleMinPrice,
+              icon:spuIdsArr[0]?.goodsImageUrl,
+              title:spuIdsArr[0]?.goodsName,
+              amount:spuIdsArr[0]?.goodsSaleMinPrice,
               subtitle:'',
               params:{
                 orderType:2,
-                spuId:spuIdsArr&&spuIdsArr[0]?.spuId,
+                spuId:spuIdsArr[0]?.spuId,
                 objectId:'',
                 activityId:'',
                 wsId:''
               }
             }
-            values.sourceType=spuIdsArr&&spuIdsArr.length>0?1:0
-          }
-          values.sourceId=spuIdsArr&&spuIdsArr[0]?.spuId
-          
+            values.sourceType=spuIdsArr.length>0?1:0
+            values.sourceId=spuIdsArr[0]?.spuId
+          } 
           releaseDynamic(values).then(res=>{
             if(res.code==0){
               message.success('发布成功');
@@ -174,7 +173,7 @@ export default props => {
               }}
             ]}
         />
-        <Form.Item label="上传照片" name="images">
+        <Form.Item label="添加照片" name="images">
          <Upload code={204} multiple maxCount={100} accept="image/*"/>
         </Form.Item>
         <Form.Item label="添加商品">
