@@ -63,7 +63,6 @@ const TableList = (props)=>  {
       endTime
     }).then(res=> {
       if(res.success) {
-        // console.log(res.data);
         setData(res.data)
       } else {
         setData([])
