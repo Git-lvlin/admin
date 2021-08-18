@@ -30,7 +30,7 @@ const SubTable = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    api.setGoodsList({
+    setGoodsList({
       selectType: 2,
       spuId: props.data.spuId
     }).then(res => {
