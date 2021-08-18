@@ -1,9 +1,7 @@
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import React, { useState } from 'react'
-import { 
-  Button,
-} from 'antd'
+import { Button } from 'antd'
 import moment from 'moment'
 import { history } from 'umi'
 

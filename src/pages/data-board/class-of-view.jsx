@@ -8,6 +8,7 @@ import { history } from 'umi'
 
 import TableList from './table-list'
 import styles from './styles.less'
+import { amountTransform } from '@/utils/utils'
 import {
   findYueSales,
   findYueGmv
@@ -19,8 +20,12 @@ const StatisticCard_ = (props) => {
   const {
     title,
     date,
-    Bottom
+    Bottom,
+    isGMV
   } = props
+  const salesNum = (e) => {
+    return isGMV ? amountTransform(e.sumGmv, '/') : amountTransform(e.daySale, '/')
+  }
   return (
     <div className={styles.statisticCard}>
       <StatisticCard
@@ -38,21 +43,21 @@ const StatisticCard_ = (props) => {
                     return (
                       <div key={index}>
                         今日：
-                        <span>{res.sumGmv}</span>
+                        <span>{salesNum(res)}</span>
                       </div>
                     )
                   case 2:
                     return (
                       <div key={index}>
                         本周：
-                        <span>{res.sumGmv}</span>
+                        <span>{salesNum(res)}</span>
                       </div>
                     )
                   case 3:
                     return (
                       <div key={index}>
                         本月：
-                        <span>{res.sumGmv}</span>
+                        <span>{salesNum(res)}</span>
                       </div>
                     )
                 }
@@ -103,7 +108,9 @@ const ClassOfView = ()=> {
 
   useEffect(()=>{
     setLoad(true)
-    findYueGmv().then(res=> {
+    findYueGmv({
+      time: dateNow
+    }).then(res=> {
       if(res.success) setGmv(res.data)
     }).finally(()=> {
       setLoad(false)
@@ -114,7 +121,9 @@ const ClassOfView = ()=> {
   },[])
 
   useEffect(()=>{
-    findYueSales().then(res=> {
+    findYueSales({
+      time: dateNow
+    }).then(res=> {
       if(res.success) setSales(res.data)
     })
     return ()=> {
@@ -134,6 +143,7 @@ const ClassOfView = ()=> {
               return (
                 <StatisticCard_
                   key={idx}
+                  isGMV={true}
                   title="B端集约GMV："
                   date={item.dwdYueGmvResponseList}
                   Bottom={()=>(
@@ -158,6 +168,7 @@ const ClassOfView = ()=> {
               return (
                 <StatisticCard_
                   key={idx}
+                  isGMV={true}
                   title="C端集约GMV："
                   date={item.dwdYueGmvResponseList}
                   Bottom={()=>(
@@ -174,6 +185,7 @@ const ClassOfView = ()=> {
               return (
                 <StatisticCard_
                   key={idx}
+                  isGMV={true}
                   title="秒约GMV："
                   date={item.dwdYueGmvResponseList}
                   Bottom={()=>(
@@ -190,6 +202,7 @@ const ClassOfView = ()=> {
               return (
                 <StatisticCard_
                   key={idx}
+                  isGMV={true}
                   title="1688GMV："
                   date={item.dwdYueGmvResponseList}
                   Bottom={()=>(
@@ -213,6 +226,7 @@ const ClassOfView = ()=> {
               return (
                 <StatisticCard_
                   key={idx}
+                  isGMV={false}
                   title="B端集约销售额："
                   date={item.dwdYueGmvResponseList}
                   Bottom={()=>(
@@ -237,6 +251,7 @@ const ClassOfView = ()=> {
               return (
                 <StatisticCard_
                   key={idx}
+                  isGMV={false}
                   title="C端集约销售额："
                   date={item.dwdYueGmvResponseList}
                   Bottom={()=>(
@@ -253,6 +268,7 @@ const ClassOfView = ()=> {
               return (
                 <StatisticCard_
                   key={idx}
+                  isGMV={false}
                   title="秒约GMV销售额："
                   date={item.dwdYueGmvResponseList}
                   Bottom={()=>(
@@ -269,6 +285,7 @@ const ClassOfView = ()=> {
               return (
                 <StatisticCard_
                   key={idx}
+                  isGMV={false}
                   title="1688销售额："
                   date={item.dwdYueGmvResponseList}
                   Bottom={()=>(

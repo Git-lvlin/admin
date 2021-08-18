@@ -20,7 +20,6 @@ const Export = ({ type, change, conditions }) => {
     createExportTask({
       code: type,
       fileName: type + +new Date() + '.xlsx',
-      // TODO:条件
       queryParamStr: str,
       // querydesc: ''
     }).then(res => {
