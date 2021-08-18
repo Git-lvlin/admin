@@ -1104,7 +1104,7 @@ export default (props) => {
       {lookVisible && <Look
         visible={lookVisible}
         setVisible={setLookVisible}
-        dataList={detailData || lookData}
+        dataList={lookData || detailData}
         callback={(text) => { console.log('callback', text) }}
       />}
     </DrawerForm>
