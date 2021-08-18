@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { useLocation } from "umi"
+import { Button } from 'antd'
 
 import { logPage } from '@/services/financial-management/yeahgo-virtual-account-management'
 import { amountTransform } from '@/utils/utils'
+import { Export,ExportHistory } from '@/pages/export-excel'
 
 const TransactionDetails = () => {
   const {query} = useLocation()
+  const [visit, setVisit] = useState(false)
+  const actionform = useRef()
+
   const transactionType = () =>{
     if(query.accountId==='platform') {
       return {
@@ -36,6 +41,7 @@ const TransactionDetails = () => {
       }
     }
   }
+
   const orderType = () => {
     if(query.accountId==='platform') {
       return {
@@ -124,6 +130,41 @@ const TransactionDetails = () => {
         columns={columns}
         params={{...query}}
         request={logPage}
+        actionRef={actionform}
+        search={{
+          optionRender: ({searchText, resetText}, {form}) => [
+            <Button
+              key="search"
+              type="primary"
+              onClick={() => {
+                form?.submit()
+              }}
+            >
+              {searchText}
+            </Button>,
+            <Button
+              key="rest"
+              onClick={() => {
+                form?.resetFields()
+                form?.submit()
+              }}
+            >
+              {resetText}
+            </Button>,
+            query.accountId==='platform'&&
+            <Export
+              change={(e)=> {setVisit(e)}}
+              key="export" 
+              type="financial-account-log-page-export"
+              conditions={{
+                accountId: 'platform',
+                accountType: 'platform'
+              }}
+            />,
+            query.accountId==='platform'&&
+            <ExportHistory key="exportHistory" show={visit} setShow={setVisit}/>
+          ],
+        }}
       />
     </PageContainer>
   )
