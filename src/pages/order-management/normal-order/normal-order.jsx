@@ -115,10 +115,10 @@ const TableList = () => {
                   </Button>
                   <Export
                     change={(e) => { setVisit(e) }}
-                    type="order-common-export"
+                    type={`${isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`}
                     conditions={getFieldValue()}
                   />
-                  <ExportHistory show={visit} setShow={setVisit} type="order-common-export" />
+                  <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`} />
                   <Import
                     change={(e) => { setImportVisit(e) }}
                     code="order_common_send_goods_import"
@@ -268,7 +268,13 @@ const TableList = () => {
         {
           data.map(item => (
             <div className={styles.list} key={item.id}>
-              <div className={styles.store_name}>供应商家ID：{item.supplierId}{(item.supplierHelper === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+              {
+                isPurchase
+                  ?
+                  <div className={styles.store_name}>供应商家名称：{item.supplierName}{(item.supplierHelper === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                  :
+                  <div className={styles.store_name}>供应商家ID：{item.supplierId}</div>
+              }
               <div className={styles.second}>
                 <Space size="large">
                   <span>下单时间：{item.createTime.replace('T', ' ')}</span>
@@ -308,7 +314,7 @@ const TableList = () => {
                 <div style={{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}</div>
                 <div style={{ textAlign: 'center' }}><Tag style={{ borderRadius: 10 }} color="#f59a23">{{ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType]}订单</Tag></div>
                 <div style={{ textAlign: 'center' }}>
-                  <a onClick={() => { history.push(`/order-management/normal-order-detail${isPurchase ?'-purchase':''}/${item.id}`) }}>详情</a>
+                  <a onClick={() => { history.push(`/order-management/normal-order-detail${isPurchase ? '-purchase' : ''}/${item.id}`) }}>详情</a>
                 </div>
               </div>
 
