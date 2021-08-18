@@ -162,7 +162,12 @@ const TransactionDetails = () => {
               }}
             />,
             query.accountId==='platform'&&
-            <ExportHistory key="exportHistory" show={visit} setShow={setVisit}/>
+            <ExportHistory
+              key="exportHistory"
+              show={visit}
+              setShow={setVisit}
+              type="financial-account-log-page-export"
+            />
           ],
         }}
       />
