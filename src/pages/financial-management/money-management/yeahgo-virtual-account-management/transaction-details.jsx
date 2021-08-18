@@ -156,10 +156,13 @@ const TransactionDetails = () => {
               change={(e)=> {setVisit(e)}}
               key="export" 
               type="financial-account-log-page-export"
-              conditions={{
-                accountId: 'platform',
-                accountType: 'platform'
-              }}
+              conditions={
+                {
+                  accountId: 'platform',
+                  accountType: 'platform',
+                },
+                form?.getFieldValue()
+              }
             />,
             query.accountId==='platform'&&
             <ExportHistory
