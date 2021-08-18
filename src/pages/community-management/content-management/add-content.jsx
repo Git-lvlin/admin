@@ -100,6 +100,7 @@ export default props => {
   return (
     <Form
         onFinish={async (values) => {
+         if(spuIdsArr.length>0){
           values.sourceData={
             icon:spuIdsArr[0]?.goodsImageUrl,
             title:spuIdsArr[0]?.goodsName,
@@ -115,6 +116,7 @@ export default props => {
           }
           values.sourceId=spuIdsArr[0]?.spuId
           values.sourceType=spuIdsArr?1:0
+         }
           releaseDynamic(values).then(res=>{
             if(res.code==0){
               message.success('发布成功');
@@ -212,11 +214,11 @@ export default props => {
           </Modal>
           <div style={{background:'#F2F2F2',padding:'20px',marginTop:'20px', display:loading?'none':'block'}}>
             <Space>
-              <Image width={100} src={spuIdsArr[0]?.goodsImageUrl} />
+              <Image width={100} src={spuIdsArr&&spuIdsArr[0]?.goodsImageUrl} />
                <div>
-               <p>{spuIdsArr[0]?.goodsName}</p>
-               <p>{spuIdsArr[0]?.specName}</p>
-               <p>￥ {spuIdsArr[0]?.goodsSaleMinPrice}</p>
+               <p>{spuIdsArr&&spuIdsArr[0]?.goodsName}</p>
+               <p>{spuIdsArr&&spuIdsArr[0]?.specName}</p>
+               <p>￥ {spuIdsArr&&spuIdsArr[0]?.goodsSaleMinPrice}</p>
                </div>
             </Space>
           </div>
