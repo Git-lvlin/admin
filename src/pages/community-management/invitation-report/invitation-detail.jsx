@@ -6,7 +6,6 @@ import moment from 'moment';
 
 export default props => {
   const { id }=props
-  const [form] = Form.useForm()
   const [detailData,setDetailData]=useState([])
   const [loading, setLoading] = useState(false);
   useEffect(()=>{
