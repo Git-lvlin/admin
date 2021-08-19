@@ -127,7 +127,7 @@ export default props => {
             title: '操作',
             width: 250,
             render: (text, record, _, action) => [
-                <Button onClick={()=>{
+                <Button style={{marginRight:'10px'}} onClick={()=>{
                     if(record.banComment){
                         cancelBanDynamicComment({id:record.id}).then(res=>{
                             ref.current.reload()
@@ -138,7 +138,7 @@ export default props => {
                         }) 
                     }
                 }}>{record.banComment?'取消禁评':'禁评'}</Button>,
-                <Button onClick={()=>{
+                <Button style={{marginRight:'10px'}} onClick={()=>{
                     if(record.banShare){
                         cancelBanShare({id:record.id}).then(res=>{
                             ref.current.reload()

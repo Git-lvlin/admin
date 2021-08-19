@@ -10,14 +10,26 @@ export default props=>{
     const Termination=()=>{
         setVisible(true)
     }
+    const formItemLayout = {
+        labelCol: { span: 2 },
+        wrapperCol: { span: 14 },
+        layout: {
+          labelCol: {
+            span: 10,
+          },
+          wrapperCol: {
+            span: 14,
+          },
+        }
+      };
     //会员昵称下拉接口调用
-  useEffect(()=>{
-    listSystemVirtualMember({}).then(res=>{
-        setVirtual(res.data.map(ele=>(
-            {label:ele.nickName,value:ele.id}
-        )))
-    })
-  },[])
+    useEffect(()=>{
+        listSystemVirtualMember({}).then(res=>{
+            setVirtual(res.data.map(ele=>(
+                {label:ele.nickName,value:ele.id}
+            )))
+        })
+    },[])
     return (
         <ModalForm
             onVisibleChange={setVisible}
@@ -32,6 +44,7 @@ export default props=>{
                 ];
             },
             }}
+            {...formItemLayout}
             onFinish={async (values) => {
                     InterFace({content:values.content,dynamicId,userId:values.userId,dynamicCommentId,parentId}).then(res=>{
                         if(res.code==0){
