@@ -30,10 +30,8 @@ export default props => {
     }
   };
   function callback(key) {
-    console.log(key);
   }
   const Termination=(record)=>{
-    console.log('byid',record)
     setByid(record.sourceId)
     setVisible(true)
   }
@@ -67,6 +65,15 @@ export default props => {
         dataIndex: 'sourceUserId',
         valueType: 'text',
         hideInSearch:true
+    },
+    {
+        title: '状态',
+        dataIndex: 'delete',
+        valueType: 'select',
+        valueEnum: {
+            0: '正常',
+            1: '已删除',
+        }
     },
     {
       title: '操作',
@@ -204,8 +211,6 @@ export default props => {
           rowKey="sourceId"
           options={false}
           params={{
-            page:1,
-            size:5,
             status:'0',
             type:'1'
           }}
@@ -245,10 +250,7 @@ export default props => {
             rowKey="sourceUserId"
             options={false}
             params={{
-              page:1,
-              size:5,
-              type:'1',
-              // status:3
+              type:'1'
             }}
             request={adminReportList}
             actionRef={actionRef}
