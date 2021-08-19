@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
-import { Button, Space } from 'antd'
-import { ModalForm, ProFormText } from '@ant-design/pro-form'
+import { Button, Space, message } from 'antd'
+import { ModalForm, ProFormText, ProFormDigit } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 import { history } from 'umi'
 
@@ -10,7 +10,6 @@ import { amountTransform } from '@/utils/utils'
 import { platforms, platformWithdraw } from '@/services/financial-management/yeahgo-virtual-account-management'
 
 const WithdrawalModal = ({ val, change, update }) => {
-  console.log(val);
   const withdrawal = (v) => {
     const money = amountTransform(v.amount, '*')
     platformWithdraw({
@@ -39,7 +38,7 @@ const WithdrawalModal = ({ val, change, update }) => {
       }}
     >
       <Space align="baseline">
-        <ProFormText
+        <ProFormDigit
           label="提现金额"
           name="amount"
           rules={[{required: true }]}
