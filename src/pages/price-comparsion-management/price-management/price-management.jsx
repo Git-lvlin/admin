@@ -130,6 +130,7 @@ const PriceManagement = () => {
 
   const expandedRowRender = (a) => {
     if (!formData) {
+      console.log('aaa', a)
       setFormData(a)
     }
     return (
@@ -359,11 +360,14 @@ const PriceManagement = () => {
   }
 
   const changeRowKeys = (expanded, record) => {
+    console.log('expanded', expanded)
+    console.log('record', record)
+
     clearTimeout(ref.current)
     setLoadingIndex(-1)
     setRowLoadin(true)
     setResData({})
-    setFormData(false)
+    setFormData(record)
     setFormjsx(false)
     setIsShow(false)
     let temp = []
