@@ -23,6 +23,7 @@ export default props => {
         dataIndex: 'content',
         valueType: 'text',
         hideInSearch: true,
+        ellipsis:true
     },
     {
         title: '被举报次数',
@@ -38,6 +39,16 @@ export default props => {
         dataIndex: 'sourceUserId',
         valueType: 'text',
         hideInSearch: true,
+    },
+    {
+        title: '状态',
+        dataIndex: 'delete',
+        valueType: 'select',
+        valueEnum: {
+            0: '正常',
+            1: '已删除',
+        },
+        hideInSearch: true
     },
     {
       title: '操作',
@@ -75,6 +86,7 @@ export default props => {
         dataIndex: 'content',
         valueType: 'text',
         hideInSearch: true,
+        ellipsis:true
     },
     {
         title: '被举报次数',
@@ -134,8 +146,6 @@ export default props => {
           rowKey="sourceId"
           options={false}
           params={{
-            page:1,
-            size:5,
             status:'0',
             type:'2'
           }}
@@ -146,6 +156,7 @@ export default props => {
             defaultCollapsed: false,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
+              ...dom.reverse(),
               <HandleModel  
                 status={1}  
                 label={'忽略'}
@@ -176,8 +187,6 @@ export default props => {
             rowKey="sourceId"
             options={false}
             params={{
-              page:1,
-              size:5,
               type:'2',
             }}
             request={adminReportList}

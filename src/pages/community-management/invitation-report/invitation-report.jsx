@@ -17,11 +17,21 @@ export default props => {
   const [byid, setByid] = useState();
   const [byid4, setByid4] = useState();
   const [arrId,setArrId]=useState([])
+  const formItemLayout = {
+    labelCol: { span: 2 },
+    wrapperCol: { span: 14 },
+    layout: {
+      labelCol: {
+        span: 10,
+      },
+      wrapperCol: {
+        span: 14,
+      },
+    }
+  };
   function callback(key) {
-    console.log(key);
   }
   const Termination=(record)=>{
-    console.log('byid',record)
     setByid(record.sourceId)
     setVisible(true)
   }
@@ -34,6 +44,13 @@ export default props => {
         title: '内容ID',
         dataIndex: 'sourceId',
         hideInSearch:true
+    },
+    {
+        title: '评论内容',
+        dataIndex: 'content',
+        valueType: 'text',
+        hideInSearch: true,
+        ellipsis:true
     },
     {
         title: '被举报次数',
@@ -51,6 +68,16 @@ export default props => {
         hideInSearch:true
     },
     {
+        title: '状态',
+        dataIndex: 'delete',
+        valueType: 'select',
+        valueEnum: {
+            0: '正常',
+            1: '已删除',
+        },
+        hideInSearch: true,
+    },
+    {
       title: '操作',
       render: (text, record, _, action) => [
         <ModalForm
@@ -65,9 +92,10 @@ export default props => {
                 ];
             },
             }}
-          trigger={<Button onClick={()=>Termination(record)}>预览</Button>}
+          {...formItemLayout}
+          trigger={<Button style={{marginRight:'10px'}} onClick={()=>Termination(record)}>预览</Button>}
             >
-            <InvitationDetail id={byid}/>
+          <InvitationDetail id={byid}/>
         </ModalForm>,
         <HandleModel 
           record={record} 
@@ -97,6 +125,13 @@ export default props => {
         dataIndex: 'sourceId',
         valueType: 'text',
         hideInSearch: true,
+    },
+    {
+        title: '评论内容',
+        dataIndex: 'content',
+        valueType: 'text',
+        hideInSearch: true,
+        ellipsis:true
     },
     {
         title: '被举报次数',
@@ -154,6 +189,7 @@ export default props => {
           onVisibleChange={setVisible4}
           visible={visible4}
           trigger={<Button onClick={()=>Termination4(record)}>预览</Button>}
+          {...formItemLayout}
           submitter={{
             render: (props, defaultDoms) => {
                 return [
@@ -178,8 +214,6 @@ export default props => {
           rowKey="sourceId"
           options={false}
           params={{
-            page:1,
-            size:5,
             status:'0',
             type:'1'
           }}
@@ -187,7 +221,8 @@ export default props => {
           actionRef={actionRef}
           toolBarRender={false}
           search={{
-            optionRender: ({ searchText, resetText },{ form }) => [
+            optionRender: (searchConfig, formProps, dom) => [
+              ...dom.reverse(),
               <HandleModel  
                 status={1}
                 arrId={arrId}  
@@ -218,10 +253,7 @@ export default props => {
             rowKey="sourceUserId"
             options={false}
             params={{
-              page:1,
-              size:5,
-              type:'1',
-              // status:3
+              type:'1'
             }}
             request={adminReportList}
             actionRef={actionRef}

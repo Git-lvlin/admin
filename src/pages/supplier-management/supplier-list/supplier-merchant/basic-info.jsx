@@ -112,13 +112,15 @@ export default (props) => {
         const gcData = [...new Set([...gc, ...parentIds].filter(item => item !== 0))]
         gcData.forEach(item => {
           const findItem = originData.current.find(it => item === it.id);
-          const { gcParentId, id } = findItem;
+          if (findItem) {
+            const { gcParentId, id } = findItem;
 
-          if (gcParentId !== 0) {
-            if (obj[gcParentId]) {
-              obj[gcParentId].push(id)
-            } else {
-              obj[gcParentId] = [id];
+            if (gcParentId !== 0) {
+              if (obj[gcParentId]) {
+                obj[gcParentId].push(id)
+              } else {
+                obj[gcParentId] = [id];
+              }
             }
           }
 
