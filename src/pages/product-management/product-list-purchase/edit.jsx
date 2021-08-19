@@ -6,6 +6,7 @@ import {
   ProFormRadio,
   ProFormTextArea,
   ProFormDependency,
+  ProFormSelect,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload'
 import { uploadImageFormatConversion, amountTransform } from '@/utils/utils'
@@ -106,6 +107,8 @@ export default (props) => {
       wholesaleTaxRate,
       wholesaleSupplyPrice,
       salePriceFloat,
+      supplierHelperId,
+
       ...rest } = values;
     const { specValues1, specValues2 } = form.getFieldsValue(['specValues1', 'specValues2']);
     const specName = {};
@@ -171,6 +174,8 @@ export default (props) => {
     // }
 
     const obj = {
+      supplierHelperId,
+
       isMultiSpec,
       goods: {
         ...rest,
@@ -401,6 +406,7 @@ export default (props) => {
         gcId: [goods.gcId1, goods.gcId2],
         wholesaleFreight: amountTransform(goods.wholesaleFreight, '/'),
         wholesaleTaxRate: amountTransform(goods.wholesaleTaxRate),
+        supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId,
       })
 
       if (freightTemplateId && freightTemplateName) {
@@ -694,6 +700,11 @@ export default (props) => {
         fieldProps={{
           onChange: settleTypeChange
         }}
+      />
+      <ProFormSelect
+        name="supplierHelperId"
+        label="供应商家顾问"
+        options={detailData?.supplierHelpList?.map(item => ({ label: item.companyName, value: item.id }))}
       />
       <ProFormRadio.Group
         name="isMultiSpec"
