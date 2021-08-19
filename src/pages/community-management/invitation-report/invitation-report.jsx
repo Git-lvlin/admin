@@ -50,6 +50,7 @@ export default props => {
         dataIndex: 'content',
         valueType: 'text',
         hideInSearch: true,
+        ellipsis:true
     },
     {
         title: '被举报次数',
@@ -73,7 +74,8 @@ export default props => {
         valueEnum: {
             0: '正常',
             1: '已删除',
-        }
+        },
+        hideInSearch: true,
     },
     {
       title: '操作',
@@ -129,6 +131,7 @@ export default props => {
         dataIndex: 'content',
         valueType: 'text',
         hideInSearch: true,
+        ellipsis:true
     },
     {
         title: '被举报次数',
