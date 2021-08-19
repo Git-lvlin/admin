@@ -7,10 +7,10 @@ import moment from 'moment'
 import { findSumMoreYue } from '@/services/data-board/data-board'
 import { amountTransform } from '@/utils/utils'
 
-// const skipToGMVDetail = (e) => {
-//   const time = moment(e.orderDate).valueOf()
-//   // history.push(`/data-board/GMVDetail/${e.id}`)
-// }
+const skipToGMVDetail = (e, isGMV) => {
+  const time = moment(e.orderDate).valueOf()
+  history.push(`/data-board/GMVDetail?date=${time}&isGMV=${isGMV}`)
+}
 
 const columns = [
   {
@@ -22,7 +22,7 @@ const columns = [
     title: 'GMV（￥/元）',
     dataIndex: 'sumDayGmv',
     align: 'center',
-    render: (_)=> <a>{amountTransform(_, '/')}</a>
+    render: (_, records)=> <a onClick={()=>skipToGMVDetail(records, 'gmv')}>{amountTransform(_, '/')}</a>
   },
   {
     title: 'GMV订单数',
@@ -33,7 +33,7 @@ const columns = [
     title: '销售额（￥/元）',
     dataIndex: 'sumDaySale',
     align: 'center',
-    render: (_)=> <a>{amountTransform(_, '/')}</a>
+    render: (_, records)=> <a onClick={()=>skipToGMVDetail(records, 'sale')}>{amountTransform(_, '/')}</a>
   },
   {
     title: '支付订单数',
