@@ -13,7 +13,7 @@ import { amountTransform } from '@/utils/utils'
 
 const orderList = () => {
   const [orderData, setOrderData] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false) 
   const {id} = useParams()
   const { query } = useLocation()
   const endTime = moment(+new Date()).format('YYYY-MM-DD')
@@ -29,10 +29,10 @@ const orderList = () => {
     setLoading(true)
     if(query.type === 'normal'){
       findAdminOrderList({
-        storeId: id,
+        // storeId: id,
         startCreateTime: startTime(),
         endCreateTime: endTime,
-        size: 20
+        size: 100
       }).then(res=> {
         if(res.success) {
           setOrderData(res.data)
@@ -44,10 +44,10 @@ const orderList = () => {
       })
     } else if(query.type === 'intensive') {
       getOrderPage({
-        storeId: id,
+        // storeId: id,
         beginTime: startTime(),
         endTime: endTime,
-        size: 20
+        size: 100
       }).then(res=> {
         if(res.success) {
           setOrderData(res.data)
