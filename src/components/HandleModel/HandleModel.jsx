@@ -17,7 +17,7 @@ export default props=>{
             key={byid}
             onVisibleChange={setVisible}
             visible={visible}
-            trigger={<Button onClick={()=>Termination(record)}>{label}</Button>}
+            trigger={<Button  style={{marginRight:'10px'}} onClick={()=>Termination(record)}>{label}</Button>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [

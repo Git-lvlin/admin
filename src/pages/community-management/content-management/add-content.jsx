@@ -123,7 +123,6 @@ export default props => {
     if(spuIdsArr==res.selectedRows){
       return
     }
-    console.log('res.selectedRows',res.selectedRows)
     setSpuIdsArr(res.selectedRows)
   }
   return (
