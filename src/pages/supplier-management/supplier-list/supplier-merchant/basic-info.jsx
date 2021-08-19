@@ -270,6 +270,7 @@ export default (props) => {
             fieldProps={{
               visibilityToggle: false,
               maxLength: 18,
+              autoComplete: 'new-password',
             }}
           />
           <ProFormText
@@ -408,7 +409,8 @@ export default (props) => {
             min={0}
             max={50}
             fieldProps={{
-              formatter: value => value ? +new Big(value).toFixed(2) : value
+              // stringMode: true,
+              // formatter: value => value ? +new Big(value).toFixed(2) : value
             }}
             extra={<><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
             step
