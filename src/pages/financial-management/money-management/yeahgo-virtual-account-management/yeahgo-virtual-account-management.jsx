@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import { Button, Space, message } from 'antd'
-import { ModalForm, ProFormText } from '@ant-design/pro-form'
+import { ModalForm, ProFormText, ProFormDigit } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 import { history } from 'umi'
 
@@ -38,7 +38,7 @@ const WithdrawalModal = ({ val, change, update }) => {
       }}
     >
       <Space align="baseline">
-        <ProFormText
+        <ProFormDigit
           label="提现金额"
           name="amount"
           rules={[{required: true }]}
