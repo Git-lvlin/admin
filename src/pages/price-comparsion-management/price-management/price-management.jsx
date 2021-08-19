@@ -362,7 +362,7 @@ const PriceManagement = () => {
     setLoadingIndex(-1)
     setRowLoadin(true)
     setResData({})
-    setFormData(null)
+    setFormData(false)
     setFormjsx(false)
     setIsShow(false)
     let temp = []
