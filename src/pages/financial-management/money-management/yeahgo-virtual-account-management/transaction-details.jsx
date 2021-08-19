@@ -27,7 +27,8 @@ const TransactionDetails = () => {
         'deposit': '保证金入账',
         'depositReturn': '保证金回退',
         'agentCompanyCommission': '经销商佣金收入',
-        'agentCompanyCommissionReturn': '经销商佣金回退'
+        'agentCompanyCommissionReturn': '经销商佣金回退',
+        'withdraw': '提现'
       }
     }else if(query.accountId==='platformFee'){
       return {
