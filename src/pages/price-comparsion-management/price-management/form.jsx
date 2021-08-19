@@ -35,6 +35,7 @@ export default (props) => {
   ];
 
   const waitTime = () => {
+    console.log('绑定前formData', formData)
     const param = {
       goodsSkuId: formData.goodsSkuId,
       goodsSpuId: formData.goodsSpuId,
