@@ -299,3 +299,63 @@ export const findSumMoreYue = async (params = {}, options = {}) => {
     success: res.success
   }
 }
+
+// 根据类型和时间查gmv
+export const moreTypeGmvSumYue = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/moreTypeGmvSumYue', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
+
+// 根据类型和时间查销售额
+export const moreTypeSaleSumYue = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/moreTypeSaleSumYue', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
+
+// gmv订单数
+export const gmvOrder = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/gmvOrder', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
+
+// 销售额订单
+export const saleOrder = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/saleOrder', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
