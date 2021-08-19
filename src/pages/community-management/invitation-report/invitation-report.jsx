@@ -17,6 +17,18 @@ export default props => {
   const [byid, setByid] = useState();
   const [byid4, setByid4] = useState();
   const [arrId,setArrId]=useState([])
+  const formItemLayout = {
+    labelCol: { span: 2 },
+    wrapperCol: { span: 14 },
+    layout: {
+      labelCol: {
+        span: 10,
+      },
+      wrapperCol: {
+        span: 14,
+      },
+    }
+  };
   function callback(key) {
     console.log(key);
   }
@@ -34,6 +46,12 @@ export default props => {
         title: '内容ID',
         dataIndex: 'sourceId',
         hideInSearch:true
+    },
+    {
+        title: '评论内容',
+        dataIndex: 'content',
+        valueType: 'text',
+        hideInSearch: true,
     },
     {
         title: '被举报次数',
@@ -65,9 +83,10 @@ export default props => {
                 ];
             },
             }}
-          trigger={<Button onClick={()=>Termination(record)}>预览</Button>}
+          {...formItemLayout}
+          trigger={<Button style={{marginRight:'10px'}} onClick={()=>Termination(record)}>预览</Button>}
             >
-            <InvitationDetail id={byid}/>
+          <InvitationDetail id={byid}/>
         </ModalForm>,
         <HandleModel 
           record={record} 
@@ -95,6 +114,12 @@ export default props => {
     {
         title: '内容ID',
         dataIndex: 'sourceId',
+        valueType: 'text',
+        hideInSearch: true,
+    },
+    {
+        title: '评论内容',
+        dataIndex: 'content',
         valueType: 'text',
         hideInSearch: true,
     },
@@ -154,6 +179,7 @@ export default props => {
           onVisibleChange={setVisible4}
           visible={visible4}
           trigger={<Button onClick={()=>Termination4(record)}>预览</Button>}
+          {...formItemLayout}
           submitter={{
             render: (props, defaultDoms) => {
                 return [
@@ -187,7 +213,8 @@ export default props => {
           actionRef={actionRef}
           toolBarRender={false}
           search={{
-            optionRender: ({ searchText, resetText },{ form }) => [
+            optionRender: (searchConfig, formProps, dom) => [
+              ...dom.reverse(),
               <HandleModel  
                 status={1}
                 arrId={arrId}  
