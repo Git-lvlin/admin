@@ -40,6 +40,15 @@ export default props => {
         hideInSearch: true,
     },
     {
+        title: '状态',
+        dataIndex: 'delete',
+        valueType: 'select',
+        valueEnum: {
+            0: '正常',
+            1: '已删除',
+        }
+    },
+    {
       title: '操作',
       render: (text, record, _, action) => [
         <HandleModel 
@@ -175,8 +184,6 @@ export default props => {
             rowKey="sourceId"
             options={false}
             params={{
-              page:1,
-              size:5,
               type:'2',
             }}
             request={adminReportList}

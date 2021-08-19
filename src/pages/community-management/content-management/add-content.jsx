@@ -244,9 +244,9 @@ export default props => {
             <Space>
               <Image width={100} src={spuIdsArr&&spuIdsArr[0]?.goodsImageUrl} />
                <div>
-               <p>{spuIdsArr&&spuIdsArr[0]?.goodsName}</p>
-               <p>{specification(spuIdsArr&&spuIdsArr[0]?.specName,spuIdsArr&&spuIdsArr[0]?.specValue)}</p>
-               <p>￥ {spuIdsArr&&spuIdsArr[0]?.goodsSaleMinPrice}</p>
+                <p>{spuIdsArr&&spuIdsArr[0]?.goodsName}</p>
+                <p>{specification(spuIdsArr&&spuIdsArr[0]?.specName,spuIdsArr&&spuIdsArr[0]?.specValue)}</p>
+                <p>￥ {spuIdsArr&&spuIdsArr[0]?.goodsSaleMinPrice}</p>
                </div>
             </Space>
           </div>
