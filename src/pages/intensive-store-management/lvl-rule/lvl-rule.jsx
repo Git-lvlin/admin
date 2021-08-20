@@ -233,7 +233,7 @@ const LvlRule = () => {
               showNow={false}
               showTime
               onChange={onChange}
-              disabledDate={(currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() }}
+              // disabledDate={(currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() }}
             />
           </Form.Item>}
           {editableKeys.length === 0 && <Button type="primary"
