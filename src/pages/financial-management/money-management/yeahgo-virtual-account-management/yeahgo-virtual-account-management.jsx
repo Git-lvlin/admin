@@ -1,16 +1,83 @@
 import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
-import { Button } from 'antd'
+import { Button, Space, message } from 'antd'
+import { ModalForm, ProFormText, ProFormDigit } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 import { history } from 'umi'
 
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
-import { platforms } from '@/services/financial-management/yeahgo-virtual-account-management'
+import { platforms, platformWithdraw } from '@/services/financial-management/yeahgo-virtual-account-management'
+
+const WithdrawalModal = ({ val, change, update }) => {
+  const withdrawal = (v) => {
+    const money = amountTransform(v.amount, '*')
+    platformWithdraw({
+      amount: money
+    }).then(res=> {
+      if(res?.success){
+        update(change + 1)
+        message.success('提现成功')
+      }
+    })
+  }
+  return (
+    <ModalForm
+      title="提现"
+      layout='horizontal'
+      width={500}
+      trigger={
+        <Button>提现</Button>
+      }
+      modalProps={{
+        destroyOnClose: true
+      }}
+      onFinish={async (values) => {
+        await withdrawal(values)
+        return true
+      }}
+    >
+      <Space align="baseline">
+        <ProFormDigit
+          label="提现金额"
+          name="amount"
+          rules={[{required: true }]}
+          width="md"
+        />
+        <span>元</span>
+      </Space>
+      <ProFormText
+        name="realName"
+        label="提现账户名"
+        initialValue={val?.realname}
+        readonly
+      />
+      <ProFormText
+        name="cardNo"
+        initialValue={val?.cardNo}
+        label="提现账号"
+        readonly
+      />
+      <ProFormText
+        name="bankName"
+        label="所属银行"
+        initialValue={val?.bankName}
+        readonly
+      />
+      <ProFormText
+        name="mobile"
+        label="银行预留手机号"
+        initialValue={val?.mobile}
+        readonly
+      />
+    </ModalForm>
+  )
+}
 
 const YeahgoVirtualAccountManagement = () => {
   const [account, setAccount] = useState({})
   const [loading, setLoading] = useState(false)
+  const [change, setChange] = useState(1)
 
   useEffect(()=>{
     setLoading(true)
@@ -26,6 +93,7 @@ const YeahgoVirtualAccountManagement = () => {
   const skipToDetail = ({accountType, accountId}) => {
     history.push(`/financial-management/money-management/yeahgo-virtual-account-management/transaction-details?accountType=${accountType}&accountId=${accountId}`)
   }
+
   return (
     <PageContainer title={false}>
       <ProCard 
@@ -49,6 +117,16 @@ const YeahgoVirtualAccountManagement = () => {
           bordered
           title='汇能虚拟户'
         >
+          <div className={styles.withdrawal}>
+            {
+              account?.bindCard?.cardNo && 
+              <WithdrawalModal
+                val={account?.bindCard}
+                update={setChange}
+                change={change}
+              />
+            }
+          </div>
           <div className={styles.platform}>
             <div>账户号码： </div>
             <div><span className={styles.sn}>{account?.platform?.sn}</span></div>

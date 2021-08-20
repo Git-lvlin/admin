@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@ant-design/pro-layout'
-import { Button } from 'antd'
+import{ ModalForm } from '@ant-design/pro-form'
+import { Button, Timeline, Empty } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { orderPageDetail } from "@/services/financial-management/transaction-detail-management"
 import styles from './styles.less'
 import './styles.less'
+const { Item } = Timeline
 
 const Detail = () => {
   const {id} = useParams()
@@ -29,6 +31,18 @@ const Detail = () => {
       setPayInfos({})
     }
   }, [id])
+
+  const openLog = (data) => {
+    if(data){
+      return data.map(item=>(
+        <Item key={item}>
+          { item }
+        </Item>
+      ))
+    } else {
+      return <Empty className={styles.empty}/>
+    }
+  }
   const back = ()=> {
     history.goBack()
   }
@@ -152,13 +166,33 @@ const Detail = () => {
     {
       title: '虚拟分账计算',
       dataIndex: 'divideInfo',
-      render: (_, data)=> {
-        return data?.divideInfos.map(item=> (
-          <div key={item?.type}>
-            {fashionableType(item?.type, item?.amount, item?.fee)}
-          </div>
-        ))
-      } 
+      render: (_, data)=> (
+        <>
+          {
+            data?.divideInfos.map(item=> (
+              <div key={item?.type}>
+                {fashionableType(item?.type, item?.amount, item?.fee)}
+              </div>
+            ))
+          }
+          {/* <ModalForm
+            title='日志信息'
+            width={700}
+            modalProps={{
+              closable: true,
+              destroyOnClose: true
+            }}
+            trigger={
+              <Button size="large" type="primary">查看日志</Button>
+            }
+            onFinish={()=> true}
+          >
+            <Timeline className={styles.timelineWarp}>
+              {openLog(data?.processLog)}
+            </Timeline>
+          </ModalForm> */}
+        </>
+      )
     },
     {
       title: '支付单号',

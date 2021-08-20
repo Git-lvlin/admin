@@ -20,6 +20,7 @@ import communityManagement from './routers/community-management'
 import DaifaStoreManagement from './routers/daifa-store-management'
 import pcm from './routers/price-comparsion-management'
 import financialManagement from './routers/financial-management'
+import dataBoard from './routers/data-board'
 
 
 
@@ -85,6 +86,7 @@ export default defineConfig({
             DaifaStoreManagement,
             businessSchool,
             financialManagement,
+            dataBoard,
             {
               component: '404',
             },
