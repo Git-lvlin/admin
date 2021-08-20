@@ -4,28 +4,37 @@ import {Form, Button,message } from 'antd';
 import { listSystemVirtualMember } from '@/services/community-management/memberinfo-list-system-virtual-member';
 
 export default props=>{
-    const {record,type,InterFace,title,boxref,label,state,arrId}=props
-    const [byid,setByid]=useState()
+    const {InterFace,label,dynamicId,dynamicCommentId,parentId,canback}=props
     const [visible, setVisible] = useState(false);
     const [virtual,setVirtual]=useState([])
-    const Termination=(record)=>{
-        setByid(record&&record.id)
+    const Termination=()=>{
         setVisible(true)
     }
+    const formItemLayout = {
+        labelCol: { span: 2 },
+        wrapperCol: { span: 14 },
+        layout: {
+          labelCol: {
+            span: 10,
+          },
+          wrapperCol: {
+            span: 14,
+          },
+        }
+      };
     //会员昵称下拉接口调用
-  useEffect(()=>{
-    listSystemVirtualMember({}).then(res=>{
-        setVirtual(res.data.map(ele=>(
-            {label:ele.nickName,value:ele.id}
-        )))
-    })
-  },[])
+    useEffect(()=>{
+        listSystemVirtualMember({}).then(res=>{
+            setVirtual(res.data.map(ele=>(
+                {label:ele.nickName,value:ele.id}
+            )))
+        })
+    },[])
     return (
         <ModalForm
-            key={byid}
             onVisibleChange={setVisible}
             visible={visible}
-            trigger={<p  onClick={()=>Termination(record)}>{label}</p>}
+            trigger={<p style={{color:'#000',cursor:'pointer'}} onClick={()=>Termination()}>{label}</p>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
@@ -35,20 +44,19 @@ export default props=>{
                 ];
             },
             }}
+            {...formItemLayout}
             onFinish={async (values) => {
-                console.log('values',values)
-                if(byid||arrId.length){
-                    InterFace({dynamicIds:arrId?arrId:[byid],state,refuseReason:values.refuseReason}).then(res=>{
+                    InterFace({content:values.content,dynamicId,userId:values.userId,dynamicCommentId,parentId}).then(res=>{
                         if(res.code==0){
-                            setVisible(false)   
-                            boxref&&boxref.current?.reload()
+                            setVisible(false) 
+                            canback(true)
+                            setTimeout(()=>{
+                            canback(false)
+                            },1000)  
                             message.success('操作成功')
                             return true;
                         }
                     })
-                }else{
-                    message.error('请先选择帖子')
-                }
                 
             }}
         >

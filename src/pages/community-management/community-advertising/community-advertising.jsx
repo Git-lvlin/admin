@@ -85,7 +85,7 @@ export default props => {
         {
             title: '操作',
             render: (text, record, _, action) => [
-              <Button onClick={()=>history.push('/community-management/community-advertising/add-advertising?id='+record.id)}>编辑</Button>,
+              <Button style={{marginRight:'10px'}} onClick={()=>history.push('/community-management/community-advertising/add-advertising?id='+record.id)}>编辑</Button>,
               <DeleteModal 
                 record={record} 
                 boxref={ref} 

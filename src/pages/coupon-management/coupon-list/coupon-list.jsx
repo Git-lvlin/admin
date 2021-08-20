@@ -123,6 +123,7 @@ const message = (type, module,dispatch) => {
       title: '操作',
       key: 'option',
       valueType: 'option',
+      width:200,
       render: (_, data) => [
       <a key="a" onClick={()=>{ Examine(data.id) }}>
         {

@@ -9,7 +9,6 @@ const exportExcel = (form) => {
     couponList({
       ...form.getFieldsValue(),
     }).then(res => {
-      console.log('res',res)
         const data = res.data.map(item => {
           const { ...rest } = item;
           return {
