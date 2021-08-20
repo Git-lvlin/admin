@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { useLocation } from "umi"
+import { Button } from 'antd'
 
 import { logPage } from '@/services/financial-management/yeahgo-virtual-account-management'
 import { amountTransform } from '@/utils/utils'
+import { Export,ExportHistory } from '@/pages/export-excel'
 
 const TransactionDetails = () => {
   const {query} = useLocation()
+  const [visit, setVisit] = useState(false)
+  const actionform = useRef()
+
   const transactionType = () =>{
     if(query.accountId==='platform') {
       return {
@@ -18,7 +23,12 @@ const TransactionDetails = () => {
         'commission': '提成入账',
         'commissionReturn': '提成回退',
         'suggestCommission': '推荐提成入账',
-        'suggestCommissionReturn': '推荐提成回退'
+        'suggestCommissionReturn': '推荐提成回退',
+        'deposit': '保证金入账',
+        'depositReturn': '保证金回退',
+        'agentCompanyCommission': '经销商佣金收入',
+        'agentCompanyCommissionReturn': '经销商佣金回退',
+        'withdraw': '提现'
       }
     }else if(query.accountId==='platformFee'){
       return {
@@ -32,18 +42,14 @@ const TransactionDetails = () => {
       }
     }
   }
+
   const orderType = () => {
     if(query.accountId==='platform') {
       return {
-        'normalOrder': '普通商品订单',
         'second': '秒约订单',
-        'single': '单约订单',
-        'group': '团约订单',
-        'commandSalesOrder': '指令集约店主订单',
-        'activeSalesOrder': '主动集约店主订单',
+        'commandSalesOrder': '集约采购订单',
         'dropShipping1688': '1688代发订单',
-        'commandCollect': '指令集约C端订单',
-        'activeCollect': '主动集约C端订单'
+        'commandCollect': '集约C端订单'
       }
     }
   }
@@ -79,7 +85,7 @@ const TransactionDetails = () => {
       dataIndex:'transactionId',
     },
     {
-      title: '平台支付单号',
+      title: '支付单号',
       dataIndex:'payNo',
       hideInSearch: query.accountId==='platformXinbao' ? true : false,
       hideInTable: query.accountId==='platformXinbao' ? true : false
@@ -106,6 +112,10 @@ const TransactionDetails = () => {
       dataIndex: 'balanceAmount',
       render: (_) => amountTransform(_, '/'),
       hideInSearch: true
+    },
+    {
+      title: '描述',
+      dataIndex: 'description',
     }
   ]
   return (
@@ -121,6 +131,49 @@ const TransactionDetails = () => {
         columns={columns}
         params={{...query}}
         request={logPage}
+        actionRef={actionform}
+        search={{
+          optionRender: ({searchText, resetText}, {form}) => [
+            <Button
+              key="search"
+              type="primary"
+              onClick={() => {
+                form?.submit()
+              }}
+            >
+              {searchText}
+            </Button>,
+            <Button
+              key="rest"
+              onClick={() => {
+                form?.resetFields()
+                form?.submit()
+              }}
+            >
+              {resetText}
+            </Button>,
+            query.accountId==='platform'&&
+            <Export
+              change={(e)=> {setVisit(e)}}
+              key="export" 
+              type="financial-account-log-page-export"
+              conditions={
+                {
+                  accountId: 'platform',
+                  accountType: 'platform',
+                  ...form?.getFieldValue()
+                }
+              }
+            />,
+            query.accountId==='platform'&&
+            <ExportHistory
+              key="exportHistory"
+              show={visit}
+              setShow={setVisit}
+              type="financial-account-log-page-export"
+            />
+          ],
+        }}
       />
     </PageContainer>
   )
