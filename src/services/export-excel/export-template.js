@@ -26,11 +26,7 @@ export const findByWays = async (params = {}, options = {}) => {
 
   return {
     data: Array.isArray(res.data.records) ? res.data.records : [],
-<<<<<<< HEAD
-    total: res?.data?.total,
-=======
     total: res.data.total,
->>>>>>> coderby
     success: res?.success
   }
 }
