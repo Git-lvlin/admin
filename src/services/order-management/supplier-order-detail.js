@@ -8,6 +8,14 @@ export const getSupplierOrderDetail = async (params = {}, options = {}) => {
   });
 }
 
+export const getPurchaseOrderDetail = async (params = {}, options = {}) => {
+  return request('/auth/wholesale/SupplierOrder/getPurchaseOrderDetail', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const modifyShip = async (params = {}, options = {}) => {
   return request('/auth/order/collectiveOrder/modifyShip', {
     method: 'POST',

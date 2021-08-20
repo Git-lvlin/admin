@@ -6,6 +6,7 @@ import {
   ProFormRadio,
   ProFormTextArea,
   ProFormDependency,
+  ProFormSelect,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload'
 import { uploadImageFormatConversion, amountTransform } from '@/utils/utils'
@@ -106,6 +107,8 @@ export default (props) => {
       wholesaleTaxRate,
       wholesaleSupplyPrice,
       salePriceFloat,
+      supplierHelperId,
+
       ...rest } = values;
     const { specValues1, specValues2 } = form.getFieldsValue(['specValues1', 'specValues2']);
     const specName = {};
@@ -171,6 +174,7 @@ export default (props) => {
     // }
 
     const obj = {
+      supplierHelperId,
       isMultiSpec,
       goods: {
         ...rest,
@@ -229,7 +233,7 @@ export default (props) => {
 
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? api.editGoods : api.addGoods
-      apiMethod(obj, { showSuccess: true, showError: true }).then(res => {
+      apiMethod(obj, { showSuccess: true, showError: true, paramsUndefinedToEmpty: true }).then(res => {
         if (res.code === 0) {
           resolve();
           callback();
@@ -401,6 +405,7 @@ export default (props) => {
         gcId: [goods.gcId1, goods.gcId2],
         wholesaleFreight: amountTransform(goods.wholesaleFreight, '/'),
         wholesaleTaxRate: amountTransform(goods.wholesaleTaxRate),
+        supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId,
       })
 
       if (freightTemplateId && freightTemplateName) {
@@ -521,13 +526,13 @@ export default (props) => {
               key="look"
               onClick={(_) => {
                 const d = form.getFieldsValue();
-                if (detailData) {
-                  setLookVisible(true)
-                } else if (d.primaryImages && d.detailImages) {
+                if (d.primaryImages && d.detailImages) {
                   setLookData(d)
                   setLookVisible(true)
+                } else if (detailData) {
+                  setLookVisible(true)
                 } else {
-                  message.error('请编辑完成后预览')
+                  message.error('请上传图片后预览')
                 }
               }}
             >
@@ -694,6 +699,11 @@ export default (props) => {
         fieldProps={{
           onChange: settleTypeChange
         }}
+      />
+      <ProFormSelect
+        name="supplierHelperId"
+        label="供应商家顾问"
+        options={detailData?.supplierHelpList?.map(item => ({ label: item.companyName, value: item.id }))}
       />
       <ProFormRadio.Group
         name="isMultiSpec"

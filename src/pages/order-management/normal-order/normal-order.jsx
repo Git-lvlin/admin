@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Tag, Form } from 'antd';
-import { history } from 'umi';
+import { history, useLocation } from 'umi';
 import styles from './style.less';
 import Delivery from '@/components/delivery'
 import { amountTransform } from '@/utils/utils'
-import { orderList, deliverGoods } from '@/services/order-management/normal-order';
+import { orderList, deliverGoods, orderList2 } from '@/services/order-management/normal-order';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import ImportHistory from '@/components/ImportFile/import-history'
@@ -24,7 +24,7 @@ const TableList = () => {
   const [search, setSearch] = useState(0)
   const [deliveryVisible, setDeliveryVisible] = useState(false)
   const [importVisit, setImportVisit] = useState(false)
-
+  const isPurchase = useLocation().pathname.includes('purchase')
 
   const [form] = Form.useForm()
 
@@ -66,7 +66,8 @@ const TableList = () => {
 
   useEffect(() => {
     setLoading(true);
-    orderList({
+    const apiMethod = isPurchase ? orderList2 : orderList;
+    apiMethod({
       page,
       size: pageSize,
       ...getFieldValue(),
@@ -114,16 +115,22 @@ const TableList = () => {
                   </Button>
                   <Export
                     change={(e) => { setVisit(e) }}
-                    type="order-common-export"
+                    type={`${isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`}
                     conditions={getFieldValue()}
                   />
-                  <ExportHistory show={visit} setShow={setVisit} type="order-common-export" />
-                  <Import
-                    change={(e) => { setImportVisit(e) }}
-                    code="order_common_send_goods_import"
-                    conditions={getFieldValue()}
-                  />
-                  <ImportHistory show={importVisit} setShow={setImportVisit} type="order_common_send_goods_import" />
+                  <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`} />
+                  {
+                    isPurchase
+                    &&
+                    <>
+                      <Import
+                        change={(e) => { setImportVisit(e) }}
+                        code="order_common_send_goods_import"
+                        conditions={getFieldValue()}
+                      />
+                      <ImportHistory show={importVisit} setShow={setImportVisit} type="order_common_send_goods_import" />
+                    </>
+                  }
                 </Space>
               </div>
             );
@@ -185,6 +192,22 @@ const TableList = () => {
             }
           }}
         />
+        {isPurchase && <ProFormSelect
+          label="商家类型"
+          name="businessType"
+          options={[
+            {
+              value: 1,
+              label: '代理运营商家'
+            }
+          ]}
+          fieldProps={{
+            style: {
+              marginBottom: 20,
+              width: 180,
+            }
+          }}
+        />}
         <ProFormDateTimeRangePicker
           name="time"
           label="下单时间"
@@ -251,7 +274,13 @@ const TableList = () => {
         {
           data.map(item => (
             <div className={styles.list} key={item.id}>
-              <div className={styles.store_name}>供应商家ID：{item.supplierId}</div>
+              {
+                isPurchase
+                  ?
+                  <div className={styles.store_name}>供应商家名称：{item.supplierName}{(item.supplierHelper === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                  :
+                  <div className={styles.store_name}>供应商家ID：{item.supplierId}</div>
+              }
               <div className={styles.second}>
                 <Space size="large">
                   <span>下单时间：{item.createTime.replace('T', ' ')}</span>
@@ -291,7 +320,7 @@ const TableList = () => {
                 <div style={{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}</div>
                 <div style={{ textAlign: 'center' }}><Tag style={{ borderRadius: 10 }} color="#f59a23">{{ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType]}订单</Tag></div>
                 <div style={{ textAlign: 'center' }}>
-                  <a onClick={() => { history.push(`/order-management/normal-order-detail/${item.id}`) }}>详情</a>
+                  <a onClick={() => { history.push(`/order-management/normal-order-detail${isPurchase ? '-purchase' : ''}/${item.id}`) }}>详情</a>
                 </div>
               </div>
 
