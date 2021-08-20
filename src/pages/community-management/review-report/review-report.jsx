@@ -143,8 +143,8 @@ export default props => {
     <Tabs onChange={callback} type="card">
       <TabPane tab="未处理" key="1">
         <ProTable
-          rowKey="sourceId"
-          options={false}
+          rowKey="key"
+          options={false}          
           params={{
             status:'0',
             type:'2'
@@ -184,7 +184,7 @@ export default props => {
       </TabPane>
       <TabPane tab="已处理" key="2">
           <ProTable
-            rowKey="sourceId"
+            rowKey="key"
             options={false}
             params={{
               type:'2',
