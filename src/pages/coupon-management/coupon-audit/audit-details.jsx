@@ -259,7 +259,11 @@ export default props => {
             <Form.Item
               label="规则说明"
             >
-              {detailData.couponRule}
+               {
+                detailData.couponRule?.split('\n').map(ele=>(
+                  <p>{ele}</p>
+                ))
+               }
             </Form.Item>
           </div>
 
