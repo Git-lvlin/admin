@@ -123,6 +123,7 @@ const message = (type, module,dispatch) => {
       title: '操作',
       key: 'option',
       valueType: 'option',
+      width:200,
       render: (_, data) => [
       <a key="a" onClick={()=>{ Examine(data.id) }}>
         {
@@ -275,6 +276,7 @@ return(
 const TableList= (props) =>{
   const { dispatch }=props
   const [visible, setVisible] = useState(false);
+  const [seleType,setSeleType]=useState()
   return (
     <PageContainer>
       <ModalForm
@@ -297,7 +299,6 @@ const TableList= (props) =>{
         },
         }}
         onFinish={async (values) => {
-          console.log('values',values);
           setVisible(false)
         }}
       >
@@ -324,15 +325,18 @@ const TableList= (props) =>{
         centered
         defaultActiveKey="1"
         className={styles.cuoponTabs}
+        onChange={(val)=>{
+          setSeleType(val)
+        }}
       >
         <TabPane tab="待提交" key="1">
-          {message(1, 1,dispatch)}
+          {message(seleType||1, 1,dispatch)}
         </TabPane>
         <TabPane tab="审核中" key="3">
-          {message(3, 3)}
+          {message(seleType||3, 3)}
         </TabPane>
         <TabPane tab="已通过" key="4">
-          { message(4, 4) }
+          { message(seleType||4, 4) }
         </TabPane>
       </Tabs>
     </PageContainer>

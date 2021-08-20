@@ -119,6 +119,38 @@ export const kingKongModify = (params = {}, options = {}) => {
   });
 }
 
+export const generateSubmit = (params = {}, options = {}) => {
+  return request('/auth/java-admin/public/invationcode/internalTest/generator', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const generateIntData = (params = {}, options = {}) => {
+  return request('/auth/java-admin/public/invationcode/internalTest/export', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const generateUpdata = (params = {}, options = {}) => {
+  return request('/auth/java-admin/exportTask/createExportTask', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const getGenerteUrl = (params = {}, options = {}) => {
+  return request('/auth/java-admin/exportTask/findById', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const expressNewsUpdate = (params = {}, options = {}) => {
   const { id, ...rest } = params
 
@@ -354,6 +386,14 @@ export const findAdminArticleTypeList = async (params = {}, options = {}) => {
 export const delContestGoods = (params = {}, options = {}) => {
   return request(`/auth/go-spider-api/contestprice/auth/contestprice/DelContestGoods?id=${params.id}`, {
     method: 'GET',
+    data: params,
+    ...options
+  });
+}
+
+export const upDataPrice = (params = {}, options = {}) => {
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetContestDefaultPrice`, {
+    method: 'POST',
     data: params,
     ...options
   });

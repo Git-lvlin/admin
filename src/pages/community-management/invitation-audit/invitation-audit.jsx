@@ -198,24 +198,28 @@ const message = (type, module,dispatch) => {
 };
 
 export default (props) =>{
+  const [seleType,setSeleType]=useState()
   return (
     <PageContainer>
       <Tabs
         centered
-        defaultActiveKey="1"
+        defaultActiveKey="0"
         style={{
           background: '#fff',
           padding: 25
         }}
+        onChange={(val)=>{
+          setSeleType(val)
+        }}
       >
-        <TabPane tab="待审核" key="1">
-          {message(0, 1)}
+        <TabPane tab="待审核" key="0">
+          {message(seleType||0, 1)}
         </TabPane>
-        <TabPane tab="审核通过" key="2">
-          {message(1, 2)}
+        <TabPane tab="审核通过" key="1">
+          {message(seleType||1, 2)}
         </TabPane>
-        <TabPane tab="审核拒绝" key="3">
-          { message(2, 3) }
+        <TabPane tab="审核拒绝" key="2">
+          { message(seleType||2, 3) }
         </TabPane>
       </Tabs>
     </PageContainer>

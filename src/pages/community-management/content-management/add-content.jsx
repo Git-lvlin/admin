@@ -1,15 +1,22 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useRef } from 'react';
 import { miniCircleList } from '@/services/community-management/circle-admin-circle-list';
-import { releaseDynamic } from '@/services/community-management/dynamic-release-dynamic';
 import { listSystemVirtualMember } from '@/services/community-management/memberinfo-list-system-virtual-member';
 import ProForm, { ProFormTextArea,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';
-import { message, Form,Button } from 'antd';
+import { message, Form,Button,Modal,Space,Image } from 'antd';
+import GcCascader from '@/components/gc-cascader'
+import ProTable from '@ant-design/pro-table';
+import * as api from '@/services/product-management/product-list';
+import { releaseDynamic } from '@/services/community-management/dynamic-release-dynamic';
 import Upload from '@/components/upload';
 
 export default props => {
   const [onselect,setOnselect]=useState([])
   const [virtual,setVirtual]=useState([])
+  const actionRef = useRef();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [loading,setLoading]=useState(true)
+  const [spuIdsArr,setSpuIdsArr]=useState([])
   //会员昵称下拉接口调用
   useEffect(()=>{
     miniCircleList({}).then(res=>{
@@ -23,9 +30,121 @@ export default props => {
         )))
     })
   },[])
+  const tailLayout = {
+    wrapperCol: { offset: 1, span: 16 },
+  };
+  const showModal = () => {
+    setIsModalVisible(true);
+    setLoading(true)
+  };
+  const handleOk = () => {
+    setIsModalVisible(false);
+    setLoading(false)
+  };
+  const handleCancel = () => {
+      setIsModalVisible(false);
+  };
+  const specification=(specName,specValue)=>{
+    var arr1=[]
+    var arr2=[]
+    for(let k in specName){
+      arr1.push(specName[k])
+    }
+    for(let key in specValue){
+      arr2.push(specValue[key])
+    }
+    return <>
+    {
+      arr1.map((ele,inx)=>(
+        <p>
+        {
+          ele+':'+  arr2.map((item,dex)=>{
+          if(inx==dex){
+            return Object.values(item)
+          }
+          })
+        }
+        </p>
+      ))
+    }
+    </>
+  }
+  const columns = [
+    {
+      title: 'spuID',
+      dataIndex: 'spuId',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '图片',
+      dataIndex: 'goodsImageUrl',
+      render: (text) => <img src={text} width={50} height={50} />,
+      hideInSearch: true,
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入商品名称'
+      }
+    },
+    {
+      title: '商品分类',
+      dataIndex: 'gcId',
+      renderFormItem: () => (<GcCascader />),
+      hideInTable: true,
+    },
+    {
+      title: '商家ID',
+      dataIndex: 'supplierId',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '秒约价',
+      dataIndex: 'goodsSaleMinPrice',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '可用库存',
+      dataIndex: 'stockNum',
+      valueType: 'text',
+      hideInSearch: true,
+    }
+  ];
+  const onIpute=(res)=>{
+    if(res.selectedRows.length>=2){
+      message.error('只能选择一个商品');
+      return
+    }
+    if(spuIdsArr==res.selectedRows){
+      return
+    }
+    setSpuIdsArr(res.selectedRows)
+  }
   return (
-    <ProForm
+    <Form
         onFinish={async (values) => {
+          if(spuIdsArr.length>0){
+            values.sourceData={
+              icon:spuIdsArr[0]?.goodsImageUrl,
+              title:spuIdsArr[0]?.goodsName,
+              amount:spuIdsArr[0]?.goodsSaleMinPrice,
+              subtitle:'',
+              params:{
+                orderType:2,
+                spuId:spuIdsArr[0]?.spuId,
+                objectId:'',
+                activityId:'',
+                wsId:''
+              }
+            }
+            values.sourceType=spuIdsArr.length>0?1:0
+            values.sourceId=spuIdsArr[0]?.spuId
+          } 
           releaseDynamic(values).then(res=>{
             if(res.code==0){
               message.success('发布成功');
@@ -46,7 +165,7 @@ export default props => {
             ];
           }
         }}
-        style={{ width: '1000px', margin: '0 auto' }}
+        style={{ padding:'50px',background:'#fff' }}
       >
          <ProFormSelect
             width="md"
@@ -82,9 +201,64 @@ export default props => {
               }}
             ]}
         />
-        <Form.Item label="上传照片" name="images">
+        <Form.Item label="添加照片" name="images">
          <Upload code={204} multiple maxCount={100} accept="image/*"/>
-         </Form.Item>
-      </ProForm>
+        </Form.Item>
+        <Form.Item label="添加商品">
+          <Button type="primary"  onClick={showModal}>
+              选择商品
+          </Button>
+          
+          <Modal key="id" width={1200}  visible={isModalVisible}  onCancel={handleCancel} footer={null}>
+              <ProTable
+                  rowKey="id"
+                  options={false}
+                  params={{
+                    selectType: 1,
+                    goodsState:1,
+                    pageSize:10
+                  }}
+                  style={{display:loading?'block':'none'}}
+                  request={api.productList}
+                  actionRef={actionRef}
+                  search={{
+                      defaultCollapsed: false,
+                      labelWidth: 100,
+                      optionRender: (searchConfig, formProps, dom) => [
+                          ...dom.reverse(),
+                      ],
+                  }}
+                  toolBarRender={() => [
+                    <Button type="primary" style={{marginLeft:'-1100px'}} disabled={spuIdsArr&&spuIdsArr.length>0?false:true}  onClick={handleOk}>
+                        确定
+                    </Button>
+                  ]}
+                  columns={columns}
+                  rowSelection={{
+                    hideSelectAll:true
+                  }}
+                  tableAlertOptionRender={onIpute}
+              />
+          </Modal>
+          <div style={{background:'#F2F2F2',padding:'20px',marginTop:'20px', display:loading?'none':'block'}}>
+            <Space>
+              <Image width={100} src={spuIdsArr&&spuIdsArr[0]?.goodsImageUrl} />
+               <div>
+                <p>{spuIdsArr&&spuIdsArr[0]?.goodsName}</p>
+                <p>{specification(spuIdsArr&&spuIdsArr[0]?.specName,spuIdsArr&&spuIdsArr[0]?.specValue)}</p>
+                <p>￥ {spuIdsArr&&spuIdsArr[0]?.goodsSaleMinPrice}</p>
+               </div>
+            </Space>
+          </div>
+        </Form.Item>
+        <Form.Item {...tailLayout} style={{marginTop:'120px'}}>
+          <Button type="primary" htmlType="submit">
+            保存
+          </Button>
+          <Button style={{marginLeft:'20px'}} type="default" onClick={()=>history.goBack()}>
+            返回
+          </Button>
+      </Form.Item>
+      </Form>
   );
 };
