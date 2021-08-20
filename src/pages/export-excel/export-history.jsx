@@ -40,7 +40,7 @@ const ExportHistory = ({ show, setShow, type }) => {
     setLoad(true)
     findByWays({
       page,
-      code: type&& type,
+      code: type && type,
       size: pageSize,
       searchByUser: rule ? 2 : 1,
       createStartTime: time&&moment(time[0]).format('YYYY-MM-DD HH:mm:ss'),

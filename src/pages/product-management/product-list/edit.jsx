@@ -22,6 +22,7 @@ import ImageSort from './image-sort';
 import MultiCascader from 'rsuite/lib/MultiCascader';
 import 'rsuite/lib/MultiCascader/styles';
 import { arrayToTree } from '@/utils/utils'
+import Look from '@/components/look';
 
 const FromWrap = ({ value, onChange, content, right }) => (
   <div style={{ display: 'flex' }}>
@@ -36,6 +37,8 @@ export default (props) => {
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [salePriceProfitLoss, setSalePriceProfitLoss] = useState(null);
+  const [lookVisible, setLookVisible] = useState(false);
+  const [lookData, setLookData] = useState(false);
   const [form] = Form.useForm()
   const [selectAreaKey, setSelectAreaKey] = useState([]);
   const [areaData, setAreaData] = useState([]);
@@ -513,6 +516,30 @@ export default (props) => {
         onClose: () => {
           onClose();
         }
+      }}
+      submitter={{
+        render: (props, defaultDoms) => {
+          return [
+            ...defaultDoms,
+            <Button
+              key="look"
+              onClick={(_) => {
+                const d = form.getFieldsValue();
+                if (d.primaryImages && d.detailImages) {
+                  setLookData(d)
+                  setLookVisible(true)
+                } else if (detailData) {
+                  setLookVisible(true)
+                } else {
+                  message.error('请上传图片后预览')
+                }
+
+              }}
+            >
+              预览
+            </Button>,
+          ];
+        },
       }}
       form={form}
       onFinish={async (values) => {
@@ -1083,6 +1110,12 @@ export default (props) => {
           <span style={{ color: 'red' }}>{detailData.goods.goodsVerifyRemark}</span>
         </Form.Item>}
       </>}
+      {lookVisible && <Look
+        visible={lookVisible}
+        setVisible={setLookVisible}
+        dataList={lookData || detailData}
+        callback={(text) => { console.log('callback', text) }}
+      />}
     </DrawerForm>
   );
 };

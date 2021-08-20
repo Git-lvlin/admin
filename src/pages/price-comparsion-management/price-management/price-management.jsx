@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { MinusOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { Button, Space, message, Input, Form, Spin } from 'antd';
+import { Button, Space, message, Input, Form, Spin, InputNumber } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { 
@@ -10,6 +10,7 @@ import {
   getSpiderGoodsListByDate,
   sendTask,
   getGoodsBindData,
+  upDataPrice,
 } from '@/services/cms/member/member';
 import Edit from './edit';
 import FormPage from './form';
@@ -55,12 +56,20 @@ const PriceManagement = () => {
     })
   }
 
+  const setPrice = (value, id, t) => {
+    const param = {
+      contestId: id,
+      type: t,
+      priceDefault: value*100
+    }
+    upDataPrice(param)
+  }
+
   const onSearch = (value, t, {id, goodsSpuId, goodsSkuId}) => {
     if (!value) {
-      // setLoadingIndex(-1)
+      setLoadingIndex(-1)
       return
     }
-    // const id = id
     const type = t
     setType(type)
     const param = {
@@ -129,6 +138,7 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>比价电商平台</ProCard>
           <ProCard colSpan="120px" className={styles.card}>skuid</ProCard>
           <ProCard colSpan="120px" className={styles.card}>售卖价格</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>默认价格</ProCard>
           <ProCard className={styles.card}>链接</ProCard>
           <ProCard colSpan="120px" className={styles.card}>操作</ProCard>
         </ProCard>
@@ -136,6 +146,11 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>淘宝</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.tb?.sku}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.tb?.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>
+            {resData.tb&&<InputNumber min={0.01} max={99999} defaultValue={resData.tb.priceDefault&&resData.tb.priceDefault/100} onChange={(value) => {
+              setPrice(value, a.id, 'tb')
+            }} />}
+          </ProCard>
           <ProCard className={styles.card}>
             <Search
               name="search-tb"
@@ -161,6 +176,11 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>京东</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.jd?.sku}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.jd?.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>
+            {resData.jd&&<InputNumber min={0.01} max={1000} defaultValue={resData.jd.priceDefault&&resData.jd.priceDefault/100} onChange={(value) => {
+              setPrice(value, a.id, 'jd')
+            }} />}
+          </ProCard>
           <ProCard className={styles.card}>
             <Search
               name="search-jd"
@@ -185,6 +205,11 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>拼多多</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.pdd?.sku}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.pdd?.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>
+            {resData.pdd&&<InputNumber min={0.01} max={1000} defaultValue={resData.pdd.priceDefault&&resData.pdd.priceDefault/100} onChange={(value) => {
+              setPrice(value, a.id, 'pdd')
+            }} />}
+          </ProCard>
             <ProCard className={styles.card}>
               <Search
                 placeholder="请输入对应商品链接地址"
@@ -208,6 +233,11 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.top  }>天猫</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.tmall?.sku}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.tmall?.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>
+            {resData.tmall&&<InputNumber min={0.01} max={99999} defaultValue={resData.tmall.priceDefault&&resData.tmall.priceDefault/100} onChange={(value) => {
+              setPrice(value, a.id, 'tmall')
+            }} />}
+          </ProCard>
           <ProCard className={styles.card}>
             <Search
               placeholder="请输入对应商品链接地址"
@@ -292,7 +322,36 @@ const PriceManagement = () => {
     const index = arr[arr.length-1]
     getGoodsBindData({goodsId: index[0], goodsSkuId: index[1]}).then(res => {
       if (res.code === 0) {
-        setResData(res.data)
+        let data = res.data;
+        if (!data.tb) {
+          data.tb = {
+            priceDefault: null
+          }
+        } else if (!data.tb.priceDefault) {
+          data.tb.priceDefault = null
+        }
+        if (!data.jd) {
+          data.jd = {
+            priceDefault: null
+          }
+        } else if (!data.jd.priceDefault) {
+          data.jd.priceDefault = null
+        }
+        if (!data.pdd) {
+          data.pdd = {
+            priceDefault: null
+          }
+        } else if (!data.pdd.priceDefault) {
+          data.pdd.priceDefault = null
+        }
+        if (!data.tmall) {
+          data.tmall = {
+            priceDefault: null
+          } 
+        } else if (!data.tmall.priceDefault) {
+          data.tmall.priceDefault = null
+        }
+        setResData(data)
         setRowLoadin(false)
       }
     })
@@ -302,7 +361,8 @@ const PriceManagement = () => {
     clearTimeout(ref.current)
     setLoadingIndex(-1)
     setRowLoadin(true)
-    // setFormData(record)
+    setResData({})
+    setFormData(record)
     setFormjsx(false)
     setIsShow(false)
     let temp = []

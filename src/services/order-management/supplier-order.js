@@ -30,3 +30,11 @@ export const orderShip = async (params = {}, options = {}) => {
   });
 }
 
+export const refundAllRetailOrders = async (params = {}, options = {}) => {
+  return request('/auth/wholesale/storeOrder/refundAllRetailOrders', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+

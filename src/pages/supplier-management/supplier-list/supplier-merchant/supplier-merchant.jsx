@@ -1,13 +1,19 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { Button, Space } from 'antd';
-import { getCommonList, statusSwitch, detailExt } from '@/services/supplier-management/supplier-list'
+import { Button, Space, Modal } from 'antd';
+import { getCommonList, statusSwitch, detailExt, delSupplier, resetPwd } from '@/services/supplier-management/supplier-list'
 import { history } from 'umi';
-import Edit from './edit';
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+import BasicInfo from './basic-info';
+import AccountInfo from './account-info';
 import DisableModal from './disable-modal';
 
+const { confirm } = Modal;
+
 const TableList = () => {
-  const [formVisible, setFormVisible] = useState(false);
+  const [basicInfoVisible, setBasicInfoVisible] = useState(false);
+  const [accountInfoVisible, setAccountInfoVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [disableModalVisible, setDisableModalVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
@@ -25,7 +31,7 @@ const TableList = () => {
     })
   }
 
-  const getDetail = (id) => {
+  const getDetail = (id, type) => {
     detailExt({
       supplierId: id
     }).then(res => {
@@ -33,7 +39,38 @@ const TableList = () => {
         setDetailData({
           ...res.data.records,
         })
-        setFormVisible(true)
+        if (type === 1) {
+          setBasicInfoVisible(true)
+        } else {
+          setAccountInfoVisible(true)
+        }
+      }
+    })
+  }
+
+  const deleteSup = (supplierId) => {
+    confirm({
+      title: '确认要删除已创建的供应商么？',
+      icon: <ExclamationCircleOutlined />,
+      onOk() {
+        delSupplier({
+          supplierId
+        }, { showSuccess: true, }).then(res => {
+          if (res.code === 0) {
+            actionRef.current.reload();
+          }
+        })
+      }
+    });
+  }
+
+  const pwdReset = () => {
+    resetPwd({
+      supplierId: selectItem.id
+    }, { showSuccess: true }).then(res => {
+      if (res.code === 0) {
+        setIsModalVisible(false);
+        setSelectItem(null)
       }
     })
   }
@@ -43,7 +80,8 @@ const TableList = () => {
       title: 'ID',
       dataIndex: 'id',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      width: 70,
     },
     {
       title: '供应商家名称',
@@ -51,7 +89,8 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入供应商家名称'
-      }
+      },
+      width: 200,
     },
     {
       title: '登录账号',
@@ -59,13 +98,15 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入登录账号'
-      }
+      },
+      width: 200,
     },
     {
       title: '负责人',
       dataIndex: 'companyUserName',
       valueType: 'text',
       hideInSearch: true,
+      width: 200,
     },
     {
       title: '状态',
@@ -74,19 +115,22 @@ const TableList = () => {
       valueEnum: {
         0: '禁用',
         1: '启用'
-      }
+      },
+      width: 50,
     },
     {
       title: '创建人',
       dataIndex: 'createUser',
       valueType: 'text',
       hideInSearch: true,
+      width: 200,
     },
     {
       title: '创建时间',
       dataIndex: 'createTime',
       valueType: 'text',
       hideInSearch: true,
+      width: 150,
     },
     {
       title: '子账号',
@@ -95,7 +139,8 @@ const TableList = () => {
       hideInSearch: true,
       render: (_, data) => {
         return <a onClick={() => { history.push(`/supplier-management/supplier-sub-account/${data.bindAccountId}`) }}>{_}</a>
-      }
+      },
+      width: 80,
     },
     {
       title: '资金账户审核状态',
@@ -103,20 +148,23 @@ const TableList = () => {
       valueType: 'text',
       hideInTable: true,
       valueEnum: {
-        1: '已审核',
+        0: '待提交',
+        1: '开户成功',
         2: '待审核',
-        3: '审核拒绝'
+        3: '开户失败',
+        4: '待开户',
+        5: '审核拒绝'
       },
       width: 200,
       ellipsis: true,
     },
     {
-      title: '资金账户审核状态',
+      title: '审核开户状态',
       dataIndex: 'auditStatus',
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => {
-        if (_ === 3) {
+        if (_ === 5) {
           return (
             <>
               <div>审核拒绝</div>
@@ -124,14 +172,14 @@ const TableList = () => {
             </>
           )
         }
-        if (_ === 2) {
-          return '待审核'
-        }
-        if (_ === 1) {
-
-          return <a onClick={() => { history.push(`/supplier-management/supplier-account-info/${data.id}`) }}>已审核</a>
-        }
-        return ''
+        return {
+          0: '待提交',
+          1: '开户成功',
+          2: '待审核',
+          3: '开户失败',
+          4: '待开户',
+          5: '审核拒绝'
+        }[_]
       }
     },
     {
@@ -142,10 +190,12 @@ const TableList = () => {
         <Space>
           {data.status === 1 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>禁用</a>}
           {data.status === 0 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>启用</a>}
-          <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.id}`) }}>详情</a>
-          {data.auditStatus === 1 && <a onClick={() => { getDetail(data.id) }}>编辑基本信息</a>}
-          {(data.auditStatus === 3 || data.auditStatus === 0) && <a onClick={() => { getDetail(data.id) }}>编辑再提交</a>}
+          {/* <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.id}`) }}>详情</a> */}
+          <a onClick={() => { getDetail(data.id, 1) }}>基本信息</a>
+          {data.accountSwitch === 1 &&<a onClick={() => { getDetail(data.id, 2) }}>开户信息</a>}
+          {data.isAllowDel === 1 && <a onClick={() => { deleteSup(data.id) }}>删除</a>}
           <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>售后地址</a>
+          <a onClick={() => { setSelectItem(data); setIsModalVisible(true) }}>重置密码</a>
         </Space>
       ),
     },
@@ -178,7 +228,7 @@ const TableList = () => {
             >
               {resetText}
             </Button>,
-            <Button key="out" type="primary" onClick={() => { setFormVisible(true) }}>新建</Button>,
+            <Button key="out" type="primary" onClick={() => { setBasicInfoVisible(true) }}>新建</Button>,
           ],
         }}
         columns={columns}
@@ -187,9 +237,16 @@ const TableList = () => {
           pageSize: 10,
         }}
       />
-      {formVisible && <Edit
-        visible={formVisible}
-        setVisible={setFormVisible}
+      {basicInfoVisible && <BasicInfo
+        visible={basicInfoVisible}
+        setVisible={setBasicInfoVisible}
+        detailData={detailData}
+        callback={() => { actionRef.current.reload(); setDetailData(null) }}
+        onClose={() => { setDetailData(null) }}
+      />}
+      {accountInfoVisible && <AccountInfo
+        visible={accountInfoVisible}
+        setVisible={setAccountInfoVisible}
         detailData={detailData}
         callback={() => { actionRef.current.reload(); setDetailData(null) }}
         onClose={() => { setDetailData(null) }}
@@ -202,6 +259,16 @@ const TableList = () => {
           data={selectItem}
           callback={(v) => { switchStatus(v) }}
         />}
+
+      <Modal
+        title={`请确认要重置供应商家：${selectItem?.companyName}（账号：${selectItem?.accountName}）的登录密码？`}
+        visible={isModalVisible}
+        onOk={() => { pwdReset() }}
+        onCancel={() => { setIsModalVisible(false) }}
+      >
+        <p>注意：重置密码后，新密码将立即生效，原密码无法继续使用！</p>
+        <p style={{ fontSize: 12 }}>重置密码将同步发送给供应商</p>
+      </Modal>
     </>
 
   );

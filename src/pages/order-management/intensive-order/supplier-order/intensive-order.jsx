@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
-import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Tag } from 'antd';
+import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal, Tag } from 'antd';
 import { history, useLocation } from 'umi';
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from 'moment';
 import styles from './style.less';
-import { orderList, getPurchaseOrderList } from '@/services/order-management/supplier-order';
+import { orderList, refundAllRetailOrders, getPurchaseOrderList } from '@/services/order-management/supplier-order';
 import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
+
+const { confirm } = Modal;
+
 
 const TableList = () => {
   const [data, setData] = useState([])
@@ -40,6 +44,24 @@ const TableList = () => {
     setPage(1)
   }
 
+  const refund = (orderId) => {
+    confirm({
+      title: '与此订单关联的C端订单将执行关闭并退款，确定启动吗？',
+      icon: <ExclamationCircleOutlined />,
+      onOk() {
+        refundAllRetailOrders({
+          orderId
+        }, { showSuccess: true })
+          .then(res => {
+            if (res.code === 0) {
+              setSearch(search + 1)
+            }
+          })
+      },
+    });
+    
+  }
+  
   const getFieldValue = () => {
     const { time, ...rest } = form.getFieldsValue();
 
@@ -321,9 +343,14 @@ const TableList = () => {
                     </Descriptions>}
                 </div>
                 <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div>
-                <div style={{ textAlign: 'center' }}>{item.statusDesc}</div>
+                <div style={{ textAlign: 'center' }}>
+                  {item.statusDesc}
+                  {item.refundAllRetailStatus=== 1 &&<div style={{ color: 'red' }}>已启动C端退款</div>}
+                </div>
                 <div style={{ textAlign: 'center' }}>
                   <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a>
+                  {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail/${item.orderId}`) }}>详情</a> */}
+                  {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId)}}>启动C端退款</a></div>}
                 </div>
               </div>
 

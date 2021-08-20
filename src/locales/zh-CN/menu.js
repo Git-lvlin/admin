@@ -66,6 +66,7 @@ export default {
 
   'menu.supplier-management': '供应商家管理',
   'menu.supplier-management.supplier-list': '供应商家列表',
+  'menu.supplier-management.audit-list': '供应商家审核',
   'menu.supplier-management.consultant-product-list': '供应商家顾问商品列表',
   'menu.supplier-management.consultant-supplier-list': '顾问供应商家列表',
   'menu.supplier-management.after-sale-address': '售后地址',
@@ -124,6 +125,7 @@ export default {
   'menu.cms.market': '营销资源管理',
   'menu.cms.poster': '海报管理',
   'menu.cms.content-version': '版本配置管理',
+  'menu.cms.generate-invitation-code': '生成邀请码',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
@@ -214,5 +216,8 @@ export default {
   'menu.financial-management.transaction-allocation-management':'交易配置管理',
   'menu.financial-management.transaction-allocation-management.withdrawal-fee-config':'提现费配置',
   'menu.financial-management.subsidy-summary' : '补贴汇总',
-  'menu.financial-management.subsidy-summary-detail' : '补贴明细'
+  'menu.financial-management.subsidy-summary-detail' : '补贴明细',
+
+  'menu.data-board': '数据看板',
+  'menu.data-board.data-preview': '数据预览'
 };

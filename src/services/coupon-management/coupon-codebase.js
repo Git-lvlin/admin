@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 export const couponCcodebase= async (params, options = {}) => {
-  const {status,id,dateRange,...rest } = params;
+  const {status,id,dateRange,current,pageSize,...rest } = params;
   const res = await request('/auth/activity/Coupon/couponCodebase', {
     method: 'POST',
     data: {
@@ -9,6 +9,8 @@ export const couponCcodebase= async (params, options = {}) => {
         id:parseInt(id),
         lqStartTime:dateRange&&dateRange[0],
         lqEndTime:dateRange&&dateRange[1],
+        size:pageSize,
+        page:current,
         ...rest
     },
     ...options
