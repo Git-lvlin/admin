@@ -41,48 +41,6 @@ export default (props) => {
     }
   };
 
-  const subAccountCheck = (params, cb) => {
-    api.subAccountCheck({
-      skuId: detailData.goods.skuId,
-      retailSupplyPrice: detailData.goods.retailSupplyPrice,
-      wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
-      // wholesaleTaxRate: 0.01,
-      ...params,
-    }).then(res => {
-      if (res.code === 0) {
-        cb(res.data[0])
-      }
-    })
-  }
-
-  const salePriceChange = useMemo(() => {
-    const loadData = (e) => {
-      subAccountCheck({
-        salePrice: amountTransform(e.target.value)
-      }, (data) => {
-        form.setFieldsValue({
-          salePriceFloat: amountTransform(data.salePriceFloat),
-        })
-        setSalePriceProfitLoss(amountTransform(data.salePriceProfitLoss, '/'))
-      })
-    }
-    return debounce(loadData, 500);
-  }, [])
-
-  const salePriceFloatChange = useMemo(() => {
-    const loadData = (e) => {
-      subAccountCheck({
-        salePriceFloat: amountTransform(e.target.value, '/')
-      }, (data) => {
-        form.setFieldsValue({
-          salePrice: amountTransform(data.salePrice, '/'),
-        })
-        setSalePriceProfitLoss(amountTransform(data.salePriceProfitLoss, '/'))
-      })
-    }
-    return debounce(loadData, 500);
-  }, [])
-
   useEffect(() => {
     if (detailData) {
       const { specName, specValues, specData } = detailData;
@@ -138,62 +96,17 @@ export default (props) => {
         width: 1300,
       }}
       form={form}
-      onFinish={(values) => {
-        const { supplierHelperId, settleType, salePrice, marketPrice, salePriceFloat } = values;
-        let goodsInfo = {
-          marketPrice: amountTransform(marketPrice),
-          skuId: detailData.goods.skuId,
-        }
-
-        if (detailData.goods.goodsSaleType !== 1) {
-          goodsInfo.salePrice = amountTransform(salePrice);
-          goodsInfo.salePriceProfitLoss = amountTransform(salePriceProfitLoss);
-          goodsInfo.salePriceFloat = amountTransform(salePriceFloat, '/');
-          goodsInfo.retailSupplyPrice = detailData.goods.retailSupplyPrice;
-        }
-
-        if (detailData.goods.goodsSaleType === 2) {
-          goodsInfo.wholesaleSupplyPrice = detailData.goods.wholesaleSupplyPrice;
-        }
-
-        if (detailData.isMultiSpec) {
-          goodsInfo = tableData.map(item => {
-            const obj = {};
-            if (detailData.goods.goodsSaleType !== 1) {
-              obj.salePrice = amountTransform(item.salePrice)
-              obj.salePriceProfitLoss = amountTransform(item.salePriceProfitLoss);
-              obj.salePriceFloat = amountTransform(item.salePriceFloat, '/');
-              obj.retailSupplyPrice = amountTransform(item.retailSupplyPrice);
-            }
-
-
-            return {
-              marketPrice: amountTransform(item.marketPrice),
-              skuId: item.skuId,
-              retailSupplyPrice: amountTransform(item.retailSupplyPrice),
-              ...obj,
-            }
-          })
-        }
-
-        check(type.current, 1, detailData.spuId, {
-          supplierHelperId,
-          settleType,
-          goodsInfo,
-          goodsSaleType: detailData.goods.goodsSaleType,
-        });
+      onFinish={() => {
+        check(detailData.spuId);
       }}
       submitter={{
         render: (props) => {
           return [
-            <Button key="1" type="primary" onClick={() => { type.current = 1; props.submit(); }}>
-              通过并上架
+            <Button key="1" type="primary" onClick={() => { props.submit(); }}>
+              审核通过
             </Button>,
-            <Button key="2" onClick={() => { type.current = 2; props.submit(); }}>
-              通过但不上架
-            </Button>,
-            <Button type="primary" key="3" danger onClick={() => { setOverruleVisible(true) }}>
-              驳回
+            <Button type="danger" key="3" danger onClick={() => { setOverruleVisible(true) }}>
+              审核驳回
             </Button>,
             <Button key="4" onClick={() => { setVisible(false) }}>
               返回
@@ -224,23 +137,12 @@ export default (props) => {
       >
         {goods.goodsName}
       </Form.Item>
+
       <Form.Item
-        label="平均运费(元)"
+        label="商品品类"
       >
-        {amountTransform(goods.wholesaleFreight, '/')}
+        {`${goods.gcId1Display}/${goods.gcId2Display}`}
       </Form.Item>
-      <Form.Item
-        label="商品开票税率(%)"
-      >
-        {amountTransform(goods.wholesaleTaxRate)}
-      </Form.Item>
-      {goods.goodsDesc &&
-        <Form.Item
-          label="商品副标题"
-        >
-          {goods.goodsDesc}
-        </Form.Item>
-      }
 
       <Form.Item
         label="商品编号"
@@ -248,19 +150,6 @@ export default (props) => {
         {goods.supplierSpuId}
       </Form.Item>
 
-      {goods.goodsKeywords &&
-        <Form.Item
-          label="搜索关键字"
-        >
-          {goods.goodsKeywords}
-        </Form.Item>
-      }
-
-      <Form.Item
-        label="商品品类"
-      >
-        {`${goods.gcId1Display}/${goods.gcId2Display}`}
-      </Form.Item>
       {goods.brandIdDisplay &&
         <Form.Item
           label="商品品牌"
@@ -275,12 +164,42 @@ export default (props) => {
       </Form.Item>
 
       <Form.Item
+        label="平均运费(元)"
+      >
+        {amountTransform(goods.wholesaleFreight, '/')}
+      </Form.Item>
+      <Form.Item
+        label="商品开票税率(%)"
+      >
+        {amountTransform(goods.wholesaleTaxRate)}
+      </Form.Item>
+      {detailData?.goods?.goodsSaleType !== 1 && <Form.Item
+        label="是否包邮"
+      >
+        {{ 0: '不包邮', 1: '包邮', }[goods.isFreeFreight]}
+      </Form.Item>}
+
+      {detailData.freightTemplateName &&
+        <Form.Item
+          label="运费模板"
+        >
+          {detailData.freightTemplateName}
+        </Form.Item>}
+      {goods.goodsKeywords &&
+        <Form.Item
+          label="搜索关键字"
+        >
+          {goods.goodsKeywords}
+        </Form.Item>
+      }
+
+      <Form.Item
         label="规格属性"
       >
         {{ 0: '单规格', 1: '多规格' }[detailData.isMultiSpec]}
       </Form.Item>
 
-      <ProFormRadio.Group
+      {/* <ProFormRadio.Group
         name="settleType"
         label="结算模式"
         rules={[{ required: true }]}
@@ -294,13 +213,13 @@ export default (props) => {
             value: 2,
           },
         ]}
-      />
+      /> */}
 
-      <ProFormSelect
+      {/* <ProFormSelect
         name="supplierHelperId"
         label="供应商家顾问"
         options={detailData?.supplierHelpList?.map(item => ({ label: item.companyName, value: item.id }))}
-      />
+      /> */}
 
       {
         detailData.isMultiSpec === 1
@@ -349,99 +268,24 @@ export default (props) => {
             >
               {amountTransform(goods.retailSupplyPrice, '/')}
             </Form.Item>}
-            <ProFormText
-              name="marketPrice"
-              label="市场价"
-              placeholder="请输入市场价"
-              validateFirst
-              rules={[
-                { required: true, message: '请输入市场价' },
-                () => ({
-                  validator(_, value) {
-                    if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                      return Promise.reject(new Error('请输入大于零的数字'));
-                    }
-                    return Promise.resolve();
-                  },
-                })
-              ]}
-            />
-            {detailData?.goods?.goodsSaleType !== 1 &&
-              <>
-              <ProFormText
-                name="salePrice"
-                label="秒约价"
-                placeholder="请输入秒约价"
-                validateFirst
-                rules={[
-                  { required: true, message: '请输入秒约价' },
-                  () => ({
-                    validator(_, value) {
-                      if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                        return Promise.reject(new Error('请输入大于零的数字'));
-                      }
-                      return Promise.resolve();
-                    },
-                  })
-                ]}
-                disabled={detailData?.settleType === 1}
-                fieldProps={{
-                  onChange: salePriceChange
-                }}
-              />
-              <ProFormText
-                name="salePriceFloat"
-                label="秒约价上浮比例"
-                placeholder="秒约价上浮比例"
-                validateFirst
-                rules={[
-                  { required: true, message: '请输入秒约价上浮比例' },
-                  () => ({
-                    validator(_, value) {
-                      if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                        return Promise.reject(new Error('请输入大于零的数字'));
-                      }
-                      return Promise.resolve();
-                    },
-                  })
-                ]}
-                fieldProps={{
-                  onChange: salePriceFloatChange
-                }}
-              />
-              <Form.Item
-                label="秒约价实际盈亏"
-              >
-                {salePriceProfitLoss || amountTransform(detailData?.goods?.salePriceProfitLoss, '/')}
-              </Form.Item>
-              </>
-            }
           </>
       }
-      {/* <Form.Item
-        label="起售数量"
+      {goods.stockNum && <Form.Item
+        label="总可用库存"
+      >
+        {goods.stockNum}
+      </Form.Item>}
+      <Form.Item
+        label="单SKU起售数量"
       >
         {goods.buyMinNum}
       </Form.Item>
 
-      <Form.Item
+      {/* <Form.Item
         label="单次最多零售购买数量"
       >
         {goods.buyMaxNum}
       </Form.Item> */}
-
-      {detailData?.goods?.goodsSaleType !== 1 &&<Form.Item
-        label="是否包邮"
-      >
-        {{ 0: '不包邮', 1: '包邮', }[goods.isFreeFreight]}
-      </Form.Item>}
-
-      {detailData.freightTemplateName &&
-        <Form.Item
-          label="运费模板"
-        >
-          {detailData.freightTemplateName}
-        </Form.Item>}
 
       <Form.Item
         label="七天无理由退货"
@@ -516,7 +360,7 @@ export default (props) => {
           </div>
         </Form.Item>}
 
-      <Form.Item
+      {/* <Form.Item
         label="创建时间"
       >
         {goods.createTimeDisplay}
@@ -538,11 +382,11 @@ export default (props) => {
         label="原因"
       >
         <span style={{ color: 'red' }}>{goods.goodsVerifyRemark}</span>
-      </Form.Item>}
+      </Form.Item>} */}
       {overruleVisible && <Overrule
         visible={overruleVisible}
         setVisible={setOverruleVisible}
-        callback={(text) => { overrule(3, 2, detailData.spuId, text) }}
+        callback={(text) => { overrule([detailData.spuId].join(','), text) }}
       />}
       {lookVisible && <Look
         visible={lookVisible}

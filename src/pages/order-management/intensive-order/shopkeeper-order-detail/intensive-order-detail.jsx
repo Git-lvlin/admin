@@ -208,7 +208,7 @@ const OrderDetail = () => {
                 }
                 <div className={styles.box}>
                   <div>买家留言</div>
-                  <div>{detailData?.receivingInfo?.remark}</div>
+                  <div>{detailData?.note}</div>
                 </div>
               </div>
             </div>

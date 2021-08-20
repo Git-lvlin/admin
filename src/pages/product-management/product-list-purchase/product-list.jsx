@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import XLSX from 'xlsx'
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import * as api from '@/services/product-management/product-list';
+import * as api from '@/services/product-management/product-list-purchase';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import SupplierSelect from '@/components/supplier-select'
@@ -134,11 +134,11 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '供应商家ID',
-      dataIndex: 'supplierId',
+      title: '供应商名称',
+      dataIndex: 'supplierName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商家ID'
+        placeholder: '请输入供应商名称'
       },
       // renderFormItem: () => <SupplierSelect />,
       hideInTable: true,
@@ -415,6 +415,7 @@ const TableList = () => {
         setVisible={setOffShelfVisible}
         callback={(text) => { offShelf(selectItemId, text) }}
       />}
+
     </PageContainer>
   );
 };

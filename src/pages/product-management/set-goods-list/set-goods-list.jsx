@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Tooltip, Spin, message, Button } from 'antd';
+import { Table, Tooltip, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { QuestionCircleOutlined } from '@ant-design/icons'
 import * as api from '@/services/product-management/product-review'
+import { setGoodsList } from '@/services/product-management/set-goods-list'
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
-import SupplierSelect from '@/components/supplier-select'
-import FirstReview from './first-review';
-import SecondReview from './second-review';
-import Overrule from './overrule';
-
 import { typeTransform, amountTransform } from '@/utils/utils'
+import Edit from '../product-list/edit'
 
 
 
@@ -23,7 +19,7 @@ const SubTable = (props) => {
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
     { title: '零售供货价', dataIndex: 'retailSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
-    { title: '批发供货价', dataIndex: 'wholesaleSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
+    { title: '批发供货价', dataIndex: 'wholesalePrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
     { title: '批发起购量', dataIndex: 'wholesaleMinNum' },
     // { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
@@ -34,7 +30,7 @@ const SubTable = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    api.checkList({
+    setGoodsList({
       selectType: 2,
       spuId: props.data.spuId
     }).then(res => {
@@ -52,57 +48,24 @@ const SubTable = (props) => {
 };
 
 const TableList = () => {
-  const [firstReviewVisible, setFirstReviewVisible] = useState(false);
-  const [secondReviewVisible, setSecondReviewVisible] = useState(false);
   const [config, setConfig] = useState({});
   const [detailData, setDetailData] = useState(null);
-  const [selectItem, setSelectItem] = useState(null);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [overruleVisible, setOverruleVisible] = useState(false);
-
   const actionRef = useRef();
+  const [formVisible, setFormVisible] = useState(false);
+
 
   const getDetail = (record) => {
-    if (record.firstAudit === 1) {
-      api.getDetail({
-        spuId: record.id
-      }).then(res => {
-        if (res.code === 0) {
-          setDetailData({
-            ...res.data,
-            settleType: 2,
-          });
-          setFirstReviewVisible(true);
-        }
-      })
-    } else {
-      setSelectItem(record)
-      setSecondReviewVisible(true);
-    }
-  }
-
-  const purchaseAuditPass = (spuId) => {
-    api.purchaseAuditPass({ spuId }, { showSuccess: true })
-      .then(res => {
-        if (res.code === 0) {
-          actionRef.current.reload();
-          setFirstReviewVisible(false)
-          setSecondReviewVisible(false)
-        }
-      })
-  }
-
-  const overrule = (spuIds, goodsVerifyRemark) => {
-    api.purchaseAuditRefuse({ spuIds, goodsVerifyRemark }, { showSuccess: true })
-      .then(res => {
-        if (res.code === 0) {
-          actionRef.current.reload();
-          setFirstReviewVisible(false)
-          setSecondReviewVisible(false)
-          setOverruleVisible(false)
-          setSelectedRowKeys([])
-        }
-      })
+    api.getDetail({
+      spuId: record.id
+    }).then(res => {
+      if (res.code === 0) {
+        setDetailData({
+          ...res.data,
+          settleType: 2,
+        });
+        setFormVisible(true);
+      }
+    })
   }
 
   const columns = [
@@ -182,7 +145,7 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '销售价',
+      title: '秒约价(元)',
       dataIndex: 'name',
       valueType: 'text',
       hideInSearch: true,
@@ -216,35 +179,35 @@ const TableList = () => {
     //   hideInTable: true,
 
     // },
-    {
-      title: '审核状态',
-      dataIndex: 'goodsVerifyStateDisplay',
-      valueType: 'text',
-      hideInSearch: true,
-      render: (_, record) => {
-        const { goodsVerifyRemark, goodsVerifyState } = record;
-        return (
-          <>
-            {_}&nbsp;
-            {(goodsVerifyRemark && goodsVerifyState === 2) && <Tooltip title={goodsVerifyRemark}><QuestionCircleOutlined /></Tooltip>}
-          </>
-        )
-      },
-    },
     // {
-    //   title: '上架状态',
-    //   dataIndex: 'goodsState',
-    //   onFilter: true,
-    //   valueType: 'select',
-    //   valueEnum: typeTransform(config.goodsState),
-    //   hideInTable: true,
+    //   title: '审核状态',
+    //   dataIndex: 'goodsVerifyStateDisplay',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   render: (_, record) => {
+    //     const { goodsVerifyRemark, goodsVerifyState } = record;
+    //     return (
+    //       <>
+    //         {_}&nbsp;
+    //         {(goodsVerifyRemark && goodsVerifyState === 2) && <Tooltip title={goodsVerifyRemark}><QuestionCircleOutlined /></Tooltip>}
+    //       </>
+    //     )
+    //   },
     // },
     {
-      title: '审核类型',
-      dataIndex: 'firstAuditDisplay',
-      valueType: 'text',
-      hideInSearch: true,
+      title: '上架状态',
+      dataIndex: 'goodsState',
+      onFilter: true,
+      valueType: 'select',
+      valueEnum: typeTransform(config.goodsState),
+      hideInTable: true,
     },
+    // {
+    //   title: '审核类型',
+    //   dataIndex: 'firstAuditDisplay',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     // {
     //   title: '上架状态',
     //   dataIndex: 'goodsStateDisplay',
@@ -273,12 +236,18 @@ const TableList = () => {
       hideInTable: true,
     },
     {
+      title: '上架状态',
+      dataIndex: 'goodsStateDisplay',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a onClick={() => { getDetail(record) }}>审核</a>
+          <a onClick={() => { getDetail(record) }}>设置</a>
         </>
       ),
     },
@@ -305,67 +274,25 @@ const TableList = () => {
         params={{
           selectType: 1,
         }}
-        request={api.checkList}
+        request={setGoodsList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-            <Button
-              key="3"
-              type="primary"
-              onClick={() => {
-                if (!selectedRowKeys.length) {
-                  message.error('请先选中要驳回的商品')
-                  return;
-                }
-                setOverruleVisible(true)
-              }}>
-              批量驳回
-            </Button>
           ],
         }}
         columns={columns}
         pagination={{
           pageSize: 10,
-          onChange: () => {
-            setSelectedRowKeys([])
-          }
         }}
-        // alwayShowAlert={false}
-        rowSelection={{
-          selectedRowKeys,
-          onChange: (_) => {
-            setSelectedRowKeys(_);
-          },
-        }}
-      // tableAlertOptionRender={() => {
-      //   return (
-      //     <Space size={16}>
-      //       <a onClick={() => { setOverruleVisible(true) }}>批量驳回</a>
-      //     </Space>
-      //   );
-      // }}
       />
-      {firstReviewVisible && <FirstReview
-        visible={firstReviewVisible}
-        setVisible={setFirstReviewVisible}
+      {formVisible && <Edit
+        visible={formVisible}
+        setVisible={setFormVisible}
         detailData={detailData}
-        check={purchaseAuditPass}
-        overrule={overrule}
-      />}
-      {secondReviewVisible && <SecondReview
-        visible={secondReviewVisible}
-        setVisible={setSecondReviewVisible}
-        check={purchaseAuditPass}
-        overrule={overrule}
-        record={selectItem}
-        operateRole={typeTransform(config.operateRole)}
-      />}
-      {overruleVisible && <Overrule
-        visible={overruleVisible}
-        setVisible={setOverruleVisible}
-        callback={(text) => { overrule(selectedRowKeys.join(','), text) }}
+        callback={() => { actionRef.current.reload(); setDetailData(null) }}
+        onClose={() => { setDetailData(null) }}
       />}
     </PageContainer>
 
