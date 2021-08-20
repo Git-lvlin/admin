@@ -1,12 +1,12 @@
 import request from '@/utils/request';
 
 export const adminReportList= async (params, options = {}) => {
-  const {page,size,status,type}=params
+  const {current,pageSize,status,type}=params
   const res = await request('/auth/java-admin/report/adminReportList', {
     method: 'POST',
     data: {
-        page,
-        size,
+        page:current,
+        size:pageSize,
         status:status|| '3',
         type
     },

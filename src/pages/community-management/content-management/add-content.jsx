@@ -44,6 +44,31 @@ export default props => {
   const handleCancel = () => {
       setIsModalVisible(false);
   };
+  const specification=(specName,specValue)=>{
+    var arr1=[]
+    var arr2=[]
+    for(let k in specName){
+      arr1.push(specName[k])
+    }
+    for(let key in specValue){
+      arr2.push(specValue[key])
+    }
+    return <>
+    {
+      arr1.map((ele,inx)=>(
+        <p>
+        {
+          ele+':'+  arr2.map((item,dex)=>{
+          if(inx==dex){
+            return Object.values(item)
+          }
+          })
+        }
+        </p>
+      ))
+    }
+    </>
+  }
   const columns = [
     {
       title: 'spuID',
@@ -95,26 +120,31 @@ export default props => {
       message.error('只能选择一个商品');
       return
     }
+    if(spuIdsArr==res.selectedRows){
+      return
+    }
     setSpuIdsArr(res.selectedRows)
   }
   return (
     <Form
         onFinish={async (values) => {
-          values.sourceData={
-            icon:spuIdsArr[0]?.goodsImageUrl,
-            title:spuIdsArr[0]?.goodsName,
-            amount:spuIdsArr[0]?.goodsSaleMinPrice,
-            subtitle:'',
-            params:{
-              orderType:2,
-              spuId:spuIdsArr[0]?.spuId,
-              objectId:'',
-              activityId:'',
-              wsId:''
+          if(spuIdsArr.length>0){
+            values.sourceData={
+              icon:spuIdsArr[0]?.goodsImageUrl,
+              title:spuIdsArr[0]?.goodsName,
+              amount:spuIdsArr[0]?.goodsSaleMinPrice,
+              subtitle:'',
+              params:{
+                orderType:2,
+                spuId:spuIdsArr[0]?.spuId,
+                objectId:'',
+                activityId:'',
+                wsId:''
+              }
             }
-          }
-          values.sourceId=spuIdsArr[0]?.spuId
-          values.sourceType=spuIdsArr?1:0
+            values.sourceType=spuIdsArr.length>0?1:0
+            values.sourceId=spuIdsArr[0]?.spuId
+          } 
           releaseDynamic(values).then(res=>{
             if(res.code==0){
               message.success('发布成功');
@@ -171,7 +201,7 @@ export default props => {
               }}
             ]}
         />
-        <Form.Item label="上传照片" name="images">
+        <Form.Item label="添加照片" name="images">
          <Upload code={204} multiple maxCount={100} accept="image/*"/>
         </Form.Item>
         <Form.Item label="添加商品">
@@ -199,7 +229,7 @@ export default props => {
                       ],
                   }}
                   toolBarRender={() => [
-                    <Button type="primary" style={{marginLeft:'-1100px'}} disabled={spuIdsArr.length>0?false:true}  onClick={handleOk}>
+                    <Button type="primary" style={{marginLeft:'-1100px'}} disabled={spuIdsArr&&spuIdsArr.length>0?false:true}  onClick={handleOk}>
                         确定
                     </Button>
                   ]}
@@ -212,11 +242,11 @@ export default props => {
           </Modal>
           <div style={{background:'#F2F2F2',padding:'20px',marginTop:'20px', display:loading?'none':'block'}}>
             <Space>
-              <Image width={100} src={spuIdsArr[0]?.goodsImageUrl} />
+              <Image width={100} src={spuIdsArr&&spuIdsArr[0]?.goodsImageUrl} />
                <div>
-               <p>{spuIdsArr[0]?.goodsName}</p>
-               <p>{spuIdsArr[0]?.specName}</p>
-               <p>￥ {spuIdsArr[0]?.goodsSaleMinPrice}</p>
+                <p>{spuIdsArr&&spuIdsArr[0]?.goodsName}</p>
+                <p>{specification(spuIdsArr&&spuIdsArr[0]?.specName,spuIdsArr&&spuIdsArr[0]?.specValue)}</p>
+                <p>￥ {spuIdsArr&&spuIdsArr[0]?.goodsSaleMinPrice}</p>
                </div>
             </Space>
           </div>

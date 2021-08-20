@@ -19,9 +19,6 @@ const circulation=props=>{
         }
         })
     }
-    useEffect(()=>{
-        console.log('most',most)
-    },[most])
     return(
         <>
          <ProFormRadio.Group
