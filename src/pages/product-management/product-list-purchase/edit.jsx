@@ -175,7 +175,6 @@ export default (props) => {
 
     const obj = {
       supplierHelperId,
-
       isMultiSpec,
       goods: {
         ...rest,
@@ -234,7 +233,7 @@ export default (props) => {
 
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? api.editGoods : api.addGoods
-      apiMethod(obj, { showSuccess: true, showError: true }).then(res => {
+      apiMethod(obj, { showSuccess: true, showError: true, paramsUndefinedToEmpty: true }).then(res => {
         if (res.code === 0) {
           resolve();
           callback();
