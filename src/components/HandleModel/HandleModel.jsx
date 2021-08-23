@@ -7,7 +7,6 @@ export default props=>{
     const [byid,setByid]=useState()
     const [visible, setVisible] = useState(false);
     const Termination=(record)=>{
-        console.log('record',record)
         setByid(record&&record.sourceId)
         setVisible(true)
     }
@@ -17,7 +16,7 @@ export default props=>{
             key={byid}
             onVisibleChange={setVisible}
             visible={visible}
-            trigger={<Button onClick={()=>Termination(record)}>{label}</Button>}
+            trigger={<Button disabled={status==2&&record?.delete?true:false}  style={{marginRight:'10px'}} onClick={()=>Termination(record)}>{label}</Button>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [

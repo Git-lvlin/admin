@@ -41,7 +41,7 @@ const TableList = ({ skuId }) => {
 
   const columns = [
     {
-      title: '团ID',
+      title: <div style={{ position: 'relative' }}><span style={{ position: 'absolute', marginLeft: '-50px' }}>详情</span>团ID</div>,
       dataIndex: 'id',
       valueType: 'text',
       hideInSearch: true,

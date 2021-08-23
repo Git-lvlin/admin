@@ -3,7 +3,7 @@ import { Button,Tabs} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { couponList } from '@/services/coupon-management/coupon-list';
-
+import styles from './style.less'
 import { history} from 'umi';
 const { TabPane } = Tabs
 
@@ -51,8 +51,11 @@ const message = (type, module) => {
     },
     {
       title: '可领取时间',
-      dataIndex: 'activityTimeDisplay',
+      dataIndex: 'dateRange',
       valueType: 'text',
+      render:(_, data)=>{
+        return <p>{data.limitStartTime} 至 {data.limitEndTime}</p>
+      },
       hideInSearch: true,
       ellipsis:true
     },
@@ -64,7 +67,7 @@ const message = (type, module) => {
       ellipsis:true
     },
     {
-      title: '状态',
+      title: '审核状态',
       dataIndex: 'couponVerifyStatus',
       valueType: 'select',
       valueEnum: {
@@ -138,21 +141,22 @@ const message = (type, module) => {
 };
 
 export default (props) =>{
+  const [seleType,setSeleType]=useState()
   return (
     <PageContainer>
       <Tabs
         centered
         defaultActiveKey="1"
-        style={{
-          background: '#fff',
-          padding: 25
+        className={styles.auditTabs}
+        onChange={(val)=>{
+          setSeleType(val)
         }}
       >
-        <TabPane tab="待审核" key="1">
-          {message(3, 1)}
+        <TabPane tab="待审核" key="3">
+          {message(seleType||3, 1)}
         </TabPane>
-        <TabPane tab="审核通过" key="2">
-          {message(4, 2)}
+        <TabPane tab="审核通过" key="4">
+          {message(seleType||4, 2)}
         </TabPane>
       </Tabs>
     </PageContainer>

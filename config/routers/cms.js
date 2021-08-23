@@ -88,6 +88,21 @@ export default {
       name: 'market',
       path: '/cms/market',
       component: './cms/market',
+    },
+    {
+      name: 'poster',
+      path: '/cms/poster',
+      component: './cms/poster',
+    },
+    {
+      name: 'content-version',
+      path: '/cms/content-version',
+      component: './cms/content-version',
+    },
+    {
+      name: 'generate-invitation-code',
+      path: '/cms/generate-invitation-code',
+      component: './cms/generate-invitation-code',
     }
   ]
 }

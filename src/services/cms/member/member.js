@@ -47,9 +47,24 @@ export const spaceEdit = (params = {}, options = {}) => {
   });
 }
 
-
 export const bannerAdd = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/banner/saveOrUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const verifyVersionEdit = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/verifyVersionEdit', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const posterUpdata = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/poster/saveOrUpdate', {
     method: 'POST',
     data: params,
     ...options
@@ -98,6 +113,38 @@ export const kingKongAdd = (params = {}, options = {}) => {
 
 export const kingKongModify = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/goodsType/goodsTypeUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const generateSubmit = (params = {}, options = {}) => {
+  return request('/auth/java-admin/public/invationcode/internalTest/generator', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const generateIntData = (params = {}, options = {}) => {
+  return request('/auth/java-admin/public/invationcode/internalTest/export', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const generateUpdata = (params = {}, options = {}) => {
+  return request('/auth/java-admin/exportTask/createExportTask', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const getGenerteUrl = (params = {}, options = {}) => {
+  return request('/auth/java-admin/exportTask/findById', {
     method: 'POST',
     data: params,
     ...options
@@ -344,6 +391,14 @@ export const delContestGoods = (params = {}, options = {}) => {
   });
 }
 
+export const upDataPrice = (params = {}, options = {}) => {
+  return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetContestDefaultPrice`, {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const bindSkuId = (params = {}, options = {}) => {
   return request(`/auth/go-spider-api/spiderdbc/auth/spiderdbc/setContestBindSku?goodsSpuId=${params.goodsSpuId}&goodsSkuId=${params.goodsSkuId}&sourceType=${params.sourceType}&skuId=${params.skuId}`, {
     method: 'GET',
@@ -378,6 +433,14 @@ export const saveMoneySortTop = (params = {}, options = {}) => {
 
 export const bannerSortTop = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/banner/setTop', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const cententVersionStatus = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/verifyVersionStatusSub', {
     method: 'POST',
     data: params,
     ...options
@@ -422,6 +485,7 @@ export const SetHomePageGoodsDel = (params = {}, options = {}) => {
     data: params,
     ...options
   });
+
 }
 export const SetHomePageGoodsDelSort = (params = {}, options = {}) => {
   return request(`/auth/go-spider-api/contestprice/auth/contestprice/SetHomePageGoods?id=${params.id}&sort=${params.sort}&opt=${params.opt}`, {
@@ -455,6 +519,15 @@ export const homeBannerDel = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const posterDel = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/poster/delById', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const marketDel = (params = {}, options = {}) => {
   return request('/auth/java-admin/activitySubject/delById', {
     method: 'POST',
@@ -669,6 +742,48 @@ export const homeBannerList = async (params = {}, options = {}) => {
     data.status = Number(status);
   }
   const res = await request('/auth/java-admin/cms/banner/page', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const contentVersionList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/activity/Cms/verifyVersionList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const posterList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/cms/poster/findPage', {
     method: 'POST',
     data,
     ...options
@@ -973,7 +1088,8 @@ export const savePriceList = async (params = {}, options = {}) => {
   if (status) {
     data.status = Number(status);
   }
-  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetHotGoodsList?isPage=true', {
+  // const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetHotGoodsList?isPage=true', {
+  const res = await request('/auth/go-spider-api/contestprice/auth/contestprice/GetHotGoodsListAdmin?isPage=true', {
     method: 'GET',
     data,
     ...options

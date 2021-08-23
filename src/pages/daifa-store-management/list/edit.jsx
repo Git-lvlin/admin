@@ -218,7 +218,7 @@ export default (props) => {
         const gcId = item.gc_id2.split(',').map(item => +item).filter(item => item !== 0)
         const gcId2=[]
         gcId2.push(parseInt(item.gc_id1))
-        ids.push(...gcId,...gcId2)
+          ids.push(...gcId)
       })
       setSelectKeys(ids)
     }

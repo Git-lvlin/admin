@@ -1,59 +1,15 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Table } from 'antd';
+import { Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
+import {ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { couponCrowdList,couponCrowdStatusSub,couponCrowdDel } from '@/services/crowd-management/coupon-crowd';
-import DeleteModal from '@/components/DeleteModal'
 import { history} from 'umi';
+import SubTable from '@/pages/coupon-construction/coupon-subtable'
 
-const SubTable = (props) => {
-  const [data, setData] = useState([])
-  const {name}=props
-  const columns = [
-    {
-      title: '选项',
-      dataIndex: 'type',
-      valueType: 'select',
-      valueEnum: {
-        1: '会员等级',
-        2: '消费次数',
-        3: '累计消费'
-      },
-      hideInSearch: true,
-  },
-    {
-        title: '范围',
-        dataIndex: 'isContain',
-        valueType: 'select',
-        valueEnum: {
-          1: '包含',
-          2: '不包含',
-        },
-        hideInSearch: true,
-    },
-    {
-        title: '条件',
-        dataIndex: 'msgDisplay',
-        hideInSearch: true,
-    }
-  ];
-  useEffect(() => {
-    couponCrowdList({
-      name:name
-    }).then(res => {
-      if (res.code === 0) {
-        setData(res?.data?.[0].crowdInfo)
-      }
-    })
-  }, [])
-  return (
-    <ProTable toolBarRender={false} search={false} key="type" columns={columns} dataSource={data} pagination={false} />
-  )
-};
+
 
 export default (props) =>{
-  const [visible, setVisible] = useState(false);
   const ref=useRef()
   const columns= [
     {
@@ -69,7 +25,6 @@ export default (props) =>{
           1: '关闭',
           2: '开启',
         },
-        hideInSearch: true,
     },
     {
       title: '操作',
@@ -134,30 +89,27 @@ export default (props) =>{
   return (
     <PageContainer>
         <Button
-            key="primary"
-            type="primary"
-            style={{marginBottom:'20px'}}
-            onClick={addcoupon}
+          key="primary"
+          type="primary"
+          style={{marginBottom:'20px'}}
+          onClick={addcoupon}
         >
             新建
         </Button>
       <ProTable
-            actionRef={ref}
-            rowKey="id"
-            options={false}
-            // params={{
-            // status: 1,
-            // }}
-            expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
-            request={couponCrowdList}
-            search={{
-            defaultCollapsed: false,
-            labelWidth: 100,
-            optionRender: (searchConfig, formProps, dom) => [
-                ...dom.reverse(),
-            ],
-            }}
-            columns={columns}
+          actionRef={ref}
+          rowKey="id"
+          options={false}
+          expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
+          request={couponCrowdList}
+          search={{
+          defaultCollapsed: false,
+          labelWidth: 100,
+          optionRender: (searchConfig, formProps, dom) => [                                                   
+              ...dom.reverse(),
+          ],
+          }}
+          columns={columns}
       />
     </PageContainer>
   )

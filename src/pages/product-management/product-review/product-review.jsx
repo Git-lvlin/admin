@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Tooltip, Spin } from 'antd';
+import { Table, Tooltip, Spin, message, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { QuestionCircleOutlined } from '@ant-design/icons'
@@ -9,6 +9,8 @@ import BrandSelect from '@/components/brand-select'
 import SupplierSelect from '@/components/supplier-select'
 import FirstReview from './first-review';
 import SecondReview from './second-review';
+import Overrule from './overrule';
+
 import { typeTransform, amountTransform } from '@/utils/utils'
 
 
@@ -20,10 +22,10 @@ const SubTable = (props) => {
   const columns = [
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
-    { title: '零售供货价', dataIndex: 'retailSupplyPriceDisplay' },
-    { title: '批发价', dataIndex: 'wholesalePriceDisplay' },
+    { title: '零售供货价', dataIndex: 'retailSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
+    { title: '批发供货价', dataIndex: 'wholesaleSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
     { title: '批发起购量', dataIndex: 'wholesaleMinNum' },
-    { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
+    // { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
     { title: '商品价格', dataIndex: 'salePriceDisplay' },
     { title: '可用库存', dataIndex: 'stockNum' },
@@ -54,6 +56,10 @@ const TableList = () => {
   const [secondReviewVisible, setSecondReviewVisible] = useState(false);
   const [config, setConfig] = useState({});
   const [detailData, setDetailData] = useState(null);
+  const [selectItem, setSelectItem] = useState(null);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [overruleVisible, setOverruleVisible] = useState(false);
+
   const actionRef = useRef();
 
   const getDetail = (record) => {
@@ -70,83 +76,31 @@ const TableList = () => {
         }
       })
     } else {
-      api.noFirstCheckList({
-        spuId: record.id
-      }).then(res => {
-        if (res.code === 0) {
-          setDetailData({
-            data: res.data?.length ? res.data : [],
-            spuId: record.id
-          });
-          setSecondReviewVisible(true);
-        }
-      })
+      setSelectItem(record)
+      setSecondReviewVisible(true);
     }
   }
 
-  const onShelf = (spuId, cb) => {
-    api.onShelf({ spuId }, { showSuccess: true })
+  const purchaseAuditPass = (spuId) => {
+    api.purchaseAuditPass({ spuId }, { showSuccess: true })
       .then(res => {
         if (res.code === 0) {
           actionRef.current.reload();
-          if (cb) {
-            cb()
-          }
+          setFirstReviewVisible(false)
+          setSecondReviewVisible(false)
         }
       })
   }
 
-  /**
-   * 
-   * @param {*} type 1:通过并上架，2:只通过，3:驳回
-   */
-  const firstCheck = (type, checkType, spuId, goodsInfo) => {
-    const { supplierHelperId, settleType, goodsSaleType, ...rest } = goodsInfo;
-    api.firstCheck({
-      checkType,
-      spuId,
-      isMultiSpec: detailData.isMultiSpec,
-      supplierHelperId,
-      settleType,
-      goodsInfo: rest.goodsInfo,
-      goodsSaleType,
-    }, { showSuccess: type !== 1 })
+  const overrule = (spuIds, goodsVerifyRemark) => {
+    api.purchaseAuditRefuse({ spuIds, goodsVerifyRemark }, { showSuccess: true })
       .then(res => {
         if (res.code === 0) {
-          if (type === 1) {
-            onShelf(spuId, () => {
-              setFirstReviewVisible(false)
-            })
-          } else {
-            setFirstReviewVisible(false)
-            actionRef.current.reload();
-          }
-        }
-      })
-  }
-
-  /**
-   * 
-   * @param {*} type 1:通过并上架，2:只通过，3:驳回
-   */
-  const check = (type, checkType, spuId, goodsVerifyRemark) => {
-    api.check({
-      checkType,
-      spuId,
-      goodsVerifyRemark
-    }, { showSuccess: type !== 1 })
-      .then(res => {
-        if (res.code === 0) {
-          if (type === 1) {
-            onShelf(spuId, () => {
-              setFirstReviewVisible(false)
-              setSecondReviewVisible(false)
-            })
-          } else {
-            setSecondReviewVisible(false)
-            setFirstReviewVisible(false)
-            actionRef.current.reload();
-          }
+          actionRef.current.reload();
+          setFirstReviewVisible(false)
+          setSecondReviewVisible(false)
+          setOverruleVisible(false)
+          setSelectedRowKeys([])
         }
       })
   }
@@ -186,17 +140,17 @@ const TableList = () => {
       }
     },
     {
-      title: '供应商ID',
+      title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '供应商ID',
+      title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商ID'
+        placeholder: '请输入供应商家ID'
       },
       // renderFormItem: () => <SupplierSelect />,
       hideInTable: true,
@@ -212,6 +166,18 @@ const TableList = () => {
     {
       title: '供货类型',
       dataIndex: 'goodsSaleTypeDisplay',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '批发供货价(元)',
+      dataIndex: 'wholesaleSupplyPriceRange',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '零售供货价(元)',
+      dataIndex: 'retailSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -345,26 +311,61 @@ const TableList = () => {
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
+            <Button
+              key="3"
+              type="primary"
+              onClick={() => {
+                if (!selectedRowKeys.length) {
+                  message.error('请先选中要驳回的商品')
+                  return;
+                }
+                setOverruleVisible(true)
+              }}>
+              批量驳回
+            </Button>
           ],
         }}
         columns={columns}
         pagination={{
           pageSize: 10,
+          onChange: () => {
+            setSelectedRowKeys([])
+          }
         }}
+        // alwayShowAlert={false}
+        rowSelection={{
+          selectedRowKeys,
+          onChange: (_) => {
+            setSelectedRowKeys(_);
+          },
+        }}
+      // tableAlertOptionRender={() => {
+      //   return (
+      //     <Space size={16}>
+      //       <a onClick={() => { setOverruleVisible(true) }}>批量驳回</a>
+      //     </Space>
+      //   );
+      // }}
       />
       {firstReviewVisible && <FirstReview
         visible={firstReviewVisible}
         setVisible={setFirstReviewVisible}
         detailData={detailData}
-        check={firstCheck}
-        overrule={check}
+        check={purchaseAuditPass}
+        overrule={overrule}
       />}
       {secondReviewVisible && <SecondReview
         visible={secondReviewVisible}
         setVisible={setSecondReviewVisible}
-        check={check}
-        detailData={detailData}
+        check={purchaseAuditPass}
+        overrule={overrule}
+        record={selectItem}
         operateRole={typeTransform(config.operateRole)}
+      />}
+      {overruleVisible && <Overrule
+        visible={overruleVisible}
+        setVisible={setOverruleVisible}
+        callback={(text) => { overrule(selectedRowKeys.join(','), text) }}
       />}
     </PageContainer>
 

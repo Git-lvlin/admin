@@ -40,47 +40,25 @@ export default function EditTable(props) {
       {
         title: '零售供货价(元)',
         dataIndex: 'retailSupplyPrice',
-        width: 130,
         editable: false,
-        hideInTable: goodsSaleType !== 0,
+        hideInTable: goodsSaleType === 1,
+        width: 130,
       },
       {
         title: '批发供货价(元)',
         dataIndex: 'wholesaleSupplyPrice',
-        width: 130,
         editable: false,
+        width: 130,
+        hideInTable: goodsSaleType === 2,
       },
       {
         title: '最低批发量',
         dataIndex: 'wholesaleMinNum',
-        width: 130,
         editable: false,
-      },
-      {
-        title: '秒约价',
-        dataIndex: 'salePrice',
         width: 130,
-        editable: settleType !== 1,
-        hideInTable: goodsSaleType !== 0,
+        hideInTable: goodsSaleType === 2,
       },
-      {
-        title: '秒约价上浮比例',
-        dataIndex: 'salePriceFloat',
-        hideInTable: goodsSaleType !== 0,
-        width: 130,
-      },
-      {
-        title: '秒约价实际盈亏',
-        dataIndex: 'salePriceProfitLoss',
-        editable: false,
-        hideInTable: goodsSaleType !== 0,
-        width: 130,
-      },
-      {
-        title: '市场价',
-        dataIndex: 'marketPrice',
-        width: 130,
-      },
+      
       {
         title: '库存预警值',
         dataIndex: 'stockAlarmNum',
@@ -106,55 +84,7 @@ export default function EditTable(props) {
 
   }, [tableHead, settleType])
 
-  const debounceFetcher = useMemo(() => {
-    const loadData = (value) => {
-      const { recordList, record } = value;
-
-      const findItem = dataSource.find(item => item.id === record.id);
-      const obj = {
-        skuId: findItem.skuId,
-        retailSupplyPrice: amountTransform(findItem.retailSupplyPrice),
-        wholesaleTaxRate: props.wholesaleTaxRate,
-      }
-      if (findItem.salePrice !== record.salePrice) {
-        obj.salePrice = amountTransform(record.salePrice);
-      }
-
-      if (findItem.salePriceFloat !== record.salePriceFloat) {
-        obj.salePriceFloat = amountTransform(record.salePriceFloat, '/');
-      }
-
-      if ((findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat) && goodsSaleType === 0) {
-        api.subAccountCheck(obj).then(res => {
-          if (res.code === 0) {
-            const skuData = res.data[0];
-            const arr = recordList.map(item => {
-              if (item.id === record.id) {
-                const data = {
-                  ...item,
-                  salePrice: amountTransform(skuData.salePrice, '/'),
-                  salePriceProfitLoss: amountTransform(skuData.salePriceProfitLoss, '/'),
-                  salePriceFloat: amountTransform(skuData.salePriceFloat),
-                }
-                return data
-              }
-              return item
-            })
-            setDataSource(arr)
-            setTableData(arr)
-          }
-        })
-      } else {
-        setDataSource(recordList)
-        setTableData(recordList)
-      }
-    };
-
-    return debounce(loadData, 500);
-  }, [dataSource, props]);
-
   useEffect(() => {
-    setEditableKeys(tableData.map(item => item.key));
     setDataSource(tableData);
   }, [tableData])
 

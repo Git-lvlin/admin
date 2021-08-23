@@ -1,19 +1,22 @@
-import React, { useState, useRef } from 'react';
-import { Button,Tabs} from 'antd';
+import React, { useState, useRef,useEffect } from 'react';
+import { Button,Tabs,Image,Form} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm,{ ModalForm,ProFormRadio} from '@ant-design/pro-form';
+import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { adminList } from '@/services/community-management/dynamic-admin-list';
 import { auditDynamic } from '@/services/community-management/dynamic-audit-dynamic';
+import { checkAuditDynamicSwitch,updateAuditDynamicSwitch } from '@/services/community-management/dynamic-audit-switch';
 import AuditModel from './audit-model'
 import { history,connect } from 'umi';
+import { Space,Switch } from 'antd';
+import './style.less'
 const { TabPane } = Tabs
 
 
 const message = (type, module,dispatch) => {
   const ref=useRef()
-  const [visible, setVisible] = useState(false);
   const [arrId,setArrId]=useState([])
+  const [check,setCheck]=useState()
   const columns= [
     {
       title: '帖子ID',
@@ -27,7 +30,7 @@ const message = (type, module,dispatch) => {
       valueType: 'text',
       hideInSearch:true,
       render:(text, record, _, action)=>[
-        <a onClick={()=>history.push('/community-management/content-management/dynamic-get-dynamic-detail?id='+record.id)}>{record.id}</a>
+        <a onClick={()=>history.push('/community-management/invitation-detail?id='+record.id)}>{record.id}</a>
     ],
     },
     {
@@ -48,6 +51,9 @@ const message = (type, module,dispatch) => {
       dataIndex: 'images',
       valueType: 'image',
       hideInSearch:true,
+      render:(_,data)=>{
+        return <Image src={data.images[0]} alt="" width='50px' height='50px' />
+      }
     },
     {
       title: '发布时间',
@@ -89,7 +95,6 @@ const message = (type, module,dispatch) => {
     {
       title: '操作',
       key: 'option',
-      width: 120,
       valueType: 'option',
       render: (_, data) => [
           <AuditModel 
@@ -120,6 +125,18 @@ const message = (type, module,dispatch) => {
  const onIpute=(res)=>{
       setArrId(res.selectedRowKeys)
   }
+ useEffect(()=>{
+  if(type==0){
+    checkAuditDynamicSwitch({}).then(res=>{
+      setCheck(res.data)
+    })
+  }
+ },[]) 
+ const auditSwitch=(off)=>{
+  setCheck(off)
+   updateAuditDynamicSwitch({}).then(res=>{
+   })
+ }
   return (
       <ProTable
         actionRef={ref}
@@ -136,54 +153,73 @@ const message = (type, module,dispatch) => {
           defaultCollapsed: false,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
-            <AuditModel 
-              state={1}  
-              label={'全部通过'}  
-              text={'确认要通过该帖子的发布吗？'} 
-              InterFace={auditDynamic} 
-              title={'审核确认'}
-              type={type}
-              arrId={arrId}
-              boxref={ref}
-            />,
-            <AuditModel 
-              type={type} 
-              state={2}  
-              label={'全部拒绝'}  
-              text={'确认要拒绝该帖子的通过吗？'} 
-              InterFace={auditDynamic} 
-              title={'审核确认'}
-              arrId={arrId}
-              boxref={ref}
-            />,
+           <> 
+             {
+               type==0?
+               <Form.Item
+                label="审核功能开关"
+                className='switchTop'
+              >
+                <Switch  checked={check} onChange={(bol)=>{auditSwitch(bol) }}/>
+              </Form.Item>
+              :null
+             }
+           </>,
              ...dom.reverse(),
           ],
         }}
+        toolBarRender={()=>[
+          <Space>
+          <AuditModel 
+            state={1}  
+            label={'全部通过'}  
+            text={'确认要通过该帖子的发布吗？'} 
+            InterFace={auditDynamic} 
+            title={'审核确认'}
+            type={type}
+            arrId={arrId}
+            boxref={ref}
+          />
+          <AuditModel 
+            type={type} 
+            state={2}  
+            label={'全部拒绝'}  
+            text={'确认要拒绝该帖子的通过吗？'} 
+            InterFace={auditDynamic} 
+            title={'审核确认'}
+            arrId={arrId}
+            boxref={ref}
+          />
+          </Space>
+        ]}
         columns={columns}
       />
   );
 };
 
 export default (props) =>{
-  const [visible, setVisible] = useState(false);
+  const [seleType,setSeleType]=useState()
   return (
     <PageContainer>
       <Tabs
         centered
-        defaultActiveKey="1"
+        defaultActiveKey="0"
         style={{
           background: '#fff',
           padding: 25
         }}
+        onChange={(val)=>{
+          setSeleType(val)
+        }}
       >
-        <TabPane tab="待审核" key="1">
-          {message(0, 1)}
+        <TabPane tab="待审核" key="0">
+          {message(seleType||0, 1)}
         </TabPane>
-        <TabPane tab="审核通过" key="2">
-          {message(1, 2)}
+        <TabPane tab="审核通过" key="1">
+          {message(seleType||1, 2)}
         </TabPane>
-        <TabPane tab="审核拒绝" key="3">
-          { message(2, 3) }
+        <TabPane tab="审核拒绝" key="2">
+          { message(seleType||2, 3) }
         </TabPane>
       </Tabs>
     </PageContainer>

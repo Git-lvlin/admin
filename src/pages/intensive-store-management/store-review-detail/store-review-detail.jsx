@@ -95,18 +95,25 @@ const Detail = () => {
       userInfo = userInfo && JSON.parse(userInfo)
       approve({
         ...rest,
+        provinceId: area[0].value,
+        provinceName: area[0].label,
+        cityId: area[1].value,
+        cityName: area[1].label,
+        regionId: area[2].value,
+        regionName: area[2].label,
         applyId: params.id,
         optAdminId: userInfo.id,
         optAdminName: userInfo.username,
-        longitude: location[1],
-        latitude: location[2],
-        realname: detailData.details.realname,
-        idNumber: detailData.details.idNumber,
+        longitude: location[0],
+        latitude: location[1],
+        // realname: detailData.details.realname,
+        // idNumber: detailData.details.idNumber,
         idFront: imageInfo.idCardFrontImg,
         idBack: imageInfo.idCardBackImg,
         idHandheld: imageInfo.idHandheld,
         memberId: detailData.memberId,
-        deposit: detailData.deposit.length === 0 ? values.depositValue : 0
+        verifyStatus: detailData.verifyStatus.code,
+        deposit: detailData.deposit.length === 0 ? amountTransform(values.depositValue) : 0
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
           resolve()
@@ -158,7 +165,9 @@ const Detail = () => {
             idCardFrontImg: details.idFront,
             idCardBackImg: details.idBack,
             idHandheld: details.idHandheld,
-          }
+          },
+          realname: details?.realname,
+          idNumber: details?.idNumber,
         })
       }
     }).finally(() => {
@@ -223,7 +232,7 @@ const Detail = () => {
                     </Button>
                     <RejectForm id={detailData?.id} />
                     <Button onClick={() => {
-                      
+                      history.goBack();
                     }}>
                       返回
                     </Button>
@@ -293,16 +302,30 @@ const Detail = () => {
           >
             <div id="container" style={{ width: 600, height: 300 }}></div>
           </Form.Item>
-          <Form.Item
+          <ProFormText
+            name="realname"
+            label="姓名"
+            placeholder="请输入姓名"
+            rules={[{ required: true, message: '请输入姓名' }]}
+            width="md"
+          />
+          <ProFormText
+            name="idNumber"
+            label="身份证号"
+            placeholder="请输入身份证号"
+            rules={[{ required: true, message: '请输入身份证号' }]}
+            width="md"
+          />
+          {/* <Form.Item
             label="姓名"
           >
             {detailData?.details?.realname}
-          </Form.Item>
-          <Form.Item
+          </Form.Item> */}
+          {/* <Form.Item
             label="身份证号"
           >
             {detailData?.details?.idNumber}
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             label="审核资料文件"
             name="imageInfo"
@@ -369,6 +392,7 @@ const Detail = () => {
               fieldProps={{
                 placeholder: '请输入保证金金额',
                 maxLength: 30,
+                suffix: '元'
               }}
             />
           }

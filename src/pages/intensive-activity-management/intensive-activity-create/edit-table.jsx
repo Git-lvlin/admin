@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
 import { Form, Tooltip, Input } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
@@ -13,6 +13,7 @@ import debounce from 'lodash/debounce';
 export default function EditTable({ onSelect }) {
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [form] = Form.useForm();
 
   const columns = [
@@ -38,7 +39,7 @@ export default function EditTable({ onSelect }) {
     //   dataIndex: 'retailSupplyPrice',
     //   valueType: 'select',
     //   fieldProps: {
-    //     placeholder: '请选择商品所属供应商类型'
+    //     placeholder: '请选择商品所属供应商家类型'
     //   },
     //   valueEnum: {
     //     0: '全部',
@@ -51,7 +52,7 @@ export default function EditTable({ onSelect }) {
       dataIndex: 'supplierId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商ID',
+        placeholder: '请输入供应商家ID',
         maxLength: 30,
       },
       hideInTable: true
@@ -115,7 +116,7 @@ export default function EditTable({ onSelect }) {
       render: (text) => <img src={text} width={50} height={50} />
     },
     {
-      title: '供应商ID',
+      title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
@@ -243,7 +244,7 @@ export default function EditTable({ onSelect }) {
     const arr = data.map(item => ({
       ...item,
       totalStockNum: parseInt(item.stockNum * 0.8, 10),
-      minNum: 10,
+      minNum: item.wholesaleMinNum || 10,
       maxNum: 100,
       price: amountTransform(item.price, '/'),
       fixedPrice: amountTransform(item.fixedPrice, '/'),
@@ -251,7 +252,7 @@ export default function EditTable({ onSelect }) {
       wholesaleFreight: amountTransform(item.wholesaleFreight, '/'),
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
       profit: amountTransform(item.profit, '/'),
-      totalPrice: item.salePrice > 0 ? +new Big(item.price || item?.price).div(100).times(10) : 0,
+      totalPrice: item.salePrice > 0 ? +new Big(item.price || item?.price).div(100).times(item.wholesaleMinNum || 10) : 0,
     }))
     setDataSource(arr)
     // return arr;
@@ -291,6 +292,7 @@ export default function EditTable({ onSelect }) {
               profit: amountTransform(skuData.profit, '/'),
               totalPrice: (skuData.price > 0 && item.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(item.minNum) : 0
             }
+            setSelectedRowKeys([data.skuId])
             onSelect(data)
             return data
           }
@@ -306,7 +308,7 @@ export default function EditTable({ onSelect }) {
     <EditableProTable
       postData={postData}
       columns={columns}
-      rowKey="id"
+      rowKey="skuId"
       value={dataSource}
       params={{
         goodsState: 1,
@@ -338,8 +340,10 @@ export default function EditTable({ onSelect }) {
       rowSelection={{
         hideSelectAll: true,
         type: 'radio',
+        selectedRowKeys,
         onChange: (_, val) => {
           onSelect(val[0])
+          setSelectedRowKeys([val[0].skuId])
         },
         fixed: true
       }}

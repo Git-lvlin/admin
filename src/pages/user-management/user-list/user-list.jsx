@@ -105,7 +105,7 @@ const TableList = () => {
     //   hideInSearch: true,
     // },
     // {
-    //   title: '所属会员店',
+    //   title: '所属社区店',
     //   dataIndex: 'name',
     //   onFilter: true,
     //   valueType: 'select',
@@ -117,7 +117,7 @@ const TableList = () => {
     //   },
     // },
     // {
-    //   title: '会员店主',
+    //   title: '社区店主',
     //   dataIndex: 'name',
     //   onFilter: true,
     //   valueType: 'select',

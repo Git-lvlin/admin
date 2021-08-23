@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProForm, { ProFormText, ProFormDateRangePicker, ProFormSelect } from '@ant-design/pro-form';
-import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form } from 'antd';
-import { history } from 'umi';
+import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
+import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal, Tag } from 'antd';
+import { history, useLocation } from 'umi';
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from 'moment';
 import styles from './style.less';
-import { orderList } from '@/services/order-management/supplier-order';
+import { orderList, refundAllRetailOrders, getPurchaseOrderList } from '@/services/order-management/supplier-order';
 import { amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+import ImportHistory from '@/components/ImportFile/import-history'
+import Import from '@/components/ImportFile/import'
+
+const { confirm } = Modal;
+
 
 const TableList = () => {
   const [data, setData] = useState([])
@@ -18,6 +26,13 @@ const TableList = () => {
   const [loading, setLoading] = useState(false)
   const [deliveryVisible, setDeliveryVisible] = useState(false)
   const [form] = Form.useForm()
+  const location = useLocation();
+  const [visit, setVisit] = useState(false)
+  const [importVisit, setImportVisit] = useState(false)
+  const isPurchase = location.pathname.includes('purchase')
+
+
+
 
   const pageChange = (a, b) => {
     setPage(a)
@@ -29,16 +44,44 @@ const TableList = () => {
     setPage(1)
   }
 
+  const refund = (orderId) => {
+    confirm({
+      title: '与此订单关联的C端订单将执行关闭并退款，确定启动吗？',
+      icon: <ExclamationCircleOutlined />,
+      onOk() {
+        refundAllRetailOrders({
+          orderId
+        }, { showSuccess: true })
+          .then(res => {
+            if (res.code === 0) {
+              setSearch(search + 1)
+            }
+          })
+      },
+    });
+    
+  }
+  
+  const getFieldValue = () => {
+    const { time, ...rest } = form.getFieldsValue();
+
+    return {
+      status: orderType,
+      startTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
+      endTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
+      memberId: location?.query?.memberId,
+      wsId: location?.query?.wsId,
+      ...rest,
+    }
+  }
+
   useEffect(() => {
     setLoading(true);
-    const { time, ...rest } = form.getFieldsValue();
-    orderList({
+    const apiMethod = isPurchase ? getPurchaseOrderList : orderList;
+    apiMethod({
       page,
       size: pageSize,
-      status: orderType,
-      startTime: time?.[0]?.format('YYYY-MM-DD'),
-      endTime: time?.[1]?.format('YYYY-MM-DD'),
-      ...rest,
+      ...getFieldValue()
     })
       .then(res => {
         if (res.code === 0) {
@@ -81,7 +124,24 @@ const TableList = () => {
                   >
                     重置
                   </Button>
-                  <Button onClick={() => { exportExcel(form) }}>导出</Button>
+                  <Export
+                    change={(e) => { setVisit(e) }}
+                    type={`${isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`}
+                    conditions={getFieldValue()}
+                  />
+                  <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`} />
+                  {
+                    isPurchase
+                    &&
+                    <>
+                      <Import
+                        change={(e) => { setImportVisit(e) }}
+                        code="order_intensive_send_goods_import"
+                        conditions={getFieldValue()}
+                      />
+                      <ImportHistory show={importVisit} setShow={setImportVisit} type="order_intensive_send_goods_import" />
+                    </>
+                  }
                 </Space>
               </div>
             );
@@ -126,13 +186,29 @@ const TableList = () => {
         />
         <ProFormText
           name="supplierName"
-          label="所属商家"
+          label="所属商家ID"
           fieldProps={{
             style: {
               marginBottom: 20
             }
           }}
         />
+        {isPurchase && <ProFormSelect
+          label="商家类型"
+          name="supplierType"
+          options={[
+            {
+              value: 1,
+              label: '代理运营商家'
+            }
+          ]}
+          fieldProps={{
+            style: {
+              marginBottom: 20,
+              width: 180,
+            }
+          }}
+        />}
         <ProFormSelect
           label="尾款类型"
           name="isMerge"
@@ -153,13 +229,14 @@ const TableList = () => {
             }
           }}
         />
-        <ProFormDateRangePicker
+        <ProFormDateTimeRangePicker
           name="time"
           label="下单时间"
           fieldProps={{
             style: {
               marginBottom: 20
-            }
+            },
+            showTime: true,
           }}
         />
       </ProForm>
@@ -221,8 +298,14 @@ const TableList = () => {
         }
         {
           data.map(item => (
-            <div className={styles.list} key={item.orderSn}>
-              <div className={styles.store_name}>供应商ID：{item.supplier.supplierId}</div>
+            <div className={styles.list} key={item.id}>
+              {
+                isPurchase
+                  ?
+                  <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                  :
+                  <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}</div>
+              }
               <div className={styles.second}>
                 <Space size="large">
                   <span>下单时间：{moment(item.createTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>
@@ -260,9 +343,14 @@ const TableList = () => {
                     </Descriptions>}
                 </div>
                 <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div>
-                <div style={{ textAlign: 'center' }}>{item.statusDesc}</div>
                 <div style={{ textAlign: 'center' }}>
-                  <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail/${item.orderId}`) }}>详情</a>
+                  {item.statusDesc}
+                  {item.refundAllRetailStatus=== 1 &&<div style={{ color: 'red' }}>已启动C端退款</div>}
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a>
+                  {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail/${item.orderId}`) }}>详情</a> */}
+                  {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId)}}>启动C端退款</a></div>}
                 </div>
               </div>
 

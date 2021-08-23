@@ -5,12 +5,8 @@ import { ModalForm } from '@ant-design/pro-form';
 import { hotGoosAdd } from '@/services/cms/member/member';
 import { todayAllGoodsList } from '@/services/cms/member/member';
 
-
-
-
-
 export default (props) => {
-  const { setVisible, setFlag, visible } = props;
+  const { setVisible, setFlag, visible, verifyVersionId } = props;
   const [arr, setArr] = useState(null)
   const formRef = useRef();
   const columns = [
@@ -80,11 +76,16 @@ export default (props) => {
       spuIds: arr,
       ...rest
     }
-    return new Promise((resolve) => {
+    if (verifyVersionId) {
+      param.verifyVersionId = verifyVersionId
+    }
+    return new Promise((resolve, reject) => {
       hotGoosAdd(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
-          resolve(true);
+          resolve(true)
+        } else {
+          reject(false)
         }
       })
   

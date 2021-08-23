@@ -5,6 +5,7 @@ import ProForm, { ProFormTextArea,ProFormText,ProFormRadio} from '@ant-design/pr
 import { history } from 'umi';
 import { message, Form,Button } from 'antd';
 import Upload from '@/components/upload';
+import styles from './style.less'
 
 export default props => {
  let id = props.location.query.id
@@ -21,7 +22,6 @@ export default props => {
   return (
     <ProForm
         onFinish={async (values) => {
-          console.log(values);
           if(id){
             values.id=id
             circleUpdateCircle(values).then(res=>{
@@ -41,7 +41,7 @@ export default props => {
         }}
         form={form}
         params={{}}
-        style={{ width: '1000px', margin: '0 auto' }}
+        className={styles.addcircle}
         submitter={{
           render: (props, doms) => {
             return [
@@ -50,8 +50,7 @@ export default props => {
               </Button>,
               <Button type="default" onClick={()=>history.goBack()}>
                 返回
-              </Button>,
-              
+              </Button>
             ];
           }
         }}

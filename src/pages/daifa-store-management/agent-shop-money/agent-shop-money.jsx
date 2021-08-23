@@ -77,18 +77,18 @@ export default props => {
             <h1>{storeName}</h1>
             <h3>{'('+realname+' '+mobile +')'}</h3>
         </Space>
-        <Row gutter={16} style={{background:'#fff',padding:'20px',marginBottom:'20px'}}>
+        <Row gutter={16} className='commission'>
             <Col span={8}>
-               <Statistic title="累计成交金额" style={{display:'inline-block'}} value={moneyData.totalOrderAmount&&moneyData.totalOrderAmount/100} precision={2}/>
-               <span style={{fontSize:"18px"}}>元</span>
+               <Statistic title="累计成交金额" className='moneyData' value={moneyData.totalOrderAmount&&moneyData.totalOrderAmount/100} precision={2}/>
+               <span className='amount'>元</span>
             </Col>
             <Col span={8}>
-              <Statistic title="累计佣金金额" style={{display:'inline-block'}} value={moneyData.totalCommission&&moneyData.totalCommission/100} precision={2}/>
-              <span style={{fontSize:"18px"}}>{moneyData.freezeCommission?'元（其中冻结佣金额为'+moneyData.freezeCommission/100+'元)':''}</span>
+              <Statistic title="累计佣金金额" className='moneyData' value={moneyData.totalCommission&&moneyData.totalCommission/100} precision={2}/>
+              <span className='amount'>{moneyData.freezeCommission?'元（其中冻结佣金额为'+moneyData.freezeCommission/100+'元)':''}</span>
             </Col>
             <Col span={8}>
-               <Statistic title="累计返佣订单笔数" style={{display:'inline-block'}} value={moneyData.totalOrderCount}/>
-               <span style={{fontSize:"18px"}}>笔</span>
+               <Statistic title="累计返佣订单笔数" className='moneyData' value={moneyData.totalOrderCount}/>
+               <span className='amount'>笔</span>
             </Col>
         </Row>
         <ProTable

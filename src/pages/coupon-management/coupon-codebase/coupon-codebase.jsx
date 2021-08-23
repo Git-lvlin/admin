@@ -19,12 +19,21 @@ export default props => {
     {
       title: '优惠券类型',
       dataIndex: 'couponType',
-      valueType: 'text'
+      valueType: 'select',
+      valueEnum: {
+        1: '满减券',
+        2: '折扣券',
+        3: '立减券'
+      }
     },
     {
       title: '使用范围',
       dataIndex: 'useType',
-      valueType: 'text'
+      valueType: 'select',
+      valueEnum: {
+        1: '秒约商品',
+        2: '集约商品',
+      }
     },
     {
       title: '有效期',
@@ -35,7 +44,13 @@ export default props => {
     {
       title: '状态',
       dataIndex: 'couponStatus',
-      valueType: 'text',
+      valueType: 'select',
+      valueEnum: {
+        1: '未开始',
+        2: '进行中',
+        3: '已结束',
+        4: '已终止'
+      },
     },
     {
       title: '发行量',
@@ -97,7 +112,13 @@ export default props => {
     {
         title: '订单编号',
         dataIndex: 'orderSn',
-        valueType: 'text'
+        render:(_,data)=>{
+          console.log('data',data)
+          return <>
+           <p>子订单：{data.orderSnSon}</p>
+           <p>父订单：{data.orderSn}</p>
+          </>
+        }
     },
     {
         title: '优惠券状态',
@@ -138,7 +159,6 @@ export default props => {
  },[])
 //导出数据
 const exportExcel = (searchConfig) => {
-  console.log('libraryId',libraryId)
   couponCcodebase({id:libraryId,...searchConfig.form.getFieldsValue()}).then(res => {
     if (res.code === 0) {
       const data = res.data.memberCouponList.records.map(item => {

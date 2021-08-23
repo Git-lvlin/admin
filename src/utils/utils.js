@@ -102,6 +102,20 @@ export const paramsEmptyFilter = (params) => {
   return obj;
 }
 
+export const paramsUndefinedToEmpty = (params) => {
+  const obj = {};
+  // eslint-disable-next-line no-restricted-syntax
+  for (const key in params) {
+    if (params[key] === undefined) {
+      obj[key] = ''
+    } else {
+      obj[key] = params[key]
+    }
+  }
+
+  return obj;
+}
+
 export const dateFormat = (date) => {
   if (!date) {
     return ''

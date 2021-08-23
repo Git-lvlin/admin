@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Button, Form, Input, message, Select } from 'antd';
+import { Button, Form, Input, message, Select, Tag } from 'antd';
 import {
   DrawerForm,
   ProFormText,
   ProFormRadio,
   ProFormTextArea,
   ProFormDependency,
+  ProFormSelect,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload'
 import { uploadImageFormatConversion, amountTransform } from '@/utils/utils'
@@ -17,6 +18,18 @@ import EditTable from './edit-table';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import debounce from 'lodash/debounce';
+import ImageSort from './image-sort';
+import MultiCascader from 'rsuite/lib/MultiCascader';
+import 'rsuite/lib/MultiCascader/styles';
+import { arrayToTree } from '@/utils/utils'
+import Look from '@/components/look';
+
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+  </div>
+)
 
 export default (props) => {
   const { visible, setVisible, detailData, callback, onClose } = props;
@@ -24,7 +37,12 @@ export default (props) => {
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [salePriceProfitLoss, setSalePriceProfitLoss] = useState(null);
+  const [lookVisible, setLookVisible] = useState(false);
+  const [lookData, setLookData] = useState(false);
   const [form] = Form.useForm()
+  const [selectAreaKey, setSelectAreaKey] = useState([]);
+  const [areaData, setAreaData] = useState([]);
+
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -47,6 +65,30 @@ export default (props) => {
     })
   }
 
+  const getSubmitAreaData = (v) => {
+    const arr = [];
+    v.forEach(item => {
+      let deep = 0;
+      let node = window.yeahgo_area.find(it => it.id === item);
+      const nodeIds = [node.id];
+      const nodeNames = [node.name]
+      while (node.pid) {
+        deep += 1;
+        node = window.yeahgo_area.find(it => it.id === node.pid);
+        nodeIds.push(node.id);
+        nodeNames.push(node.name);
+      }
+      arr.push({
+        provinceId: nodeIds[deep],
+        cityId: deep > 0 ? nodeIds[deep - 1] : 0,
+        areaId: deep > 1 ? nodeIds[deep - 2] : 0,
+        areaName: nodeNames.reverse().join('')
+      })
+    })
+
+    return arr;
+  }
+
   const submit = (values) => {
     const {
       videoUrl,
@@ -65,7 +107,7 @@ export default (props) => {
       wholesaleTaxRate,
       wholesaleSupplyPrice,
       salePriceFloat,
-      goodsSaleType,
+      supplierHelperId,
       ...rest } = values;
     const { specValues1, specValues2 } = form.getFieldsValue(['specValues1', 'specValues2']);
     const specName = {};
@@ -96,22 +138,28 @@ export default (props) => {
         salePriceProfitLoss: salePriceProfitLosss,
         salePriceFloat: salePriceFloats,
         salePrice: salePrices,
+        wholesaleSupplyPrice: wholesaleSupplyPrices,
         ...rests
       } = item;
       const obj = {};
 
-      if (goodsSaleType === 0) {
+      if (detailData?.goods?.goodsSaleType !== 1) {
         obj.retailSupplyPrice = amountTransform(retailSupplyPrices)
         obj.salePriceProfitLoss = amountTransform(salePriceProfitLosss)
         obj.salePrice = amountTransform(salePrices)
         obj.salePriceFloat = amountTransform(salePriceFloats, '/')
       }
+
+      if (detailData?.goods?.goodsSaleType !== 2) {
+        obj.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrices)
+      }
+
       specData[code] = {
         ...rests,
         specValue,
         imageUrl: item?.imageUrl,
-        wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice),
         marketPrice: amountTransform(item.marketPrice),
+        ...obj,
       }
 
       // if (item.retailSupplyPrice > item.salePrice || item.retailSupplyPrice > item.marketPrice) {
@@ -126,19 +174,24 @@ export default (props) => {
 
     const obj = {
       isMultiSpec,
+      supplierHelperId,
       goods: {
         ...rest,
         gcId1: gcId[0],
         gcId2: gcId[1],
         wholesaleFreight: amountTransform(wholesaleFreight),
         wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
-        goodsSaleType,
+        goodsSaleType: detailData?.goods?.goodsSaleType,
       },
       primaryImages: urlsTransform(primaryImages),
       detailImages: urlsTransform(detailImages),
       // advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl,
     };
+
+    if (selectAreaKey.length) {
+      obj.refuseArea = getSubmitAreaData(selectAreaKey)
+    }
 
     if (freightTemplateId) {
       obj.goods.freightTemplateId = freightTemplateId.value;
@@ -150,16 +203,19 @@ export default (props) => {
       obj.specValues = specValues;
       obj.specData = specData;
     } else {
-      if (goodsSaleType === 0) {
+      if (detailData?.goods?.goodsSaleType !== 1) {
         obj.goods.retailSupplyPrice = amountTransform(retailSupplyPrice);
         obj.goods.salePriceProfitLoss = amountTransform(salePriceProfitLoss);
         obj.goods.salePrice = amountTransform(salePrice);
         obj.goods.salePriceFloat = amountTransform(salePriceFloat, '/');
       }
-      obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
-      
+
+      if (detailData?.goods?.goodsSaleType !== 2) {
+        obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
+      }
+
       obj.goods.marketPrice = amountTransform(marketPrice);
-      
+
       // if (retailSupplyPrice > salePrice || retailSupplyPrice > marketPrice) {
       //   message.error('秒约价和市场价不能小于供货价');
       //   reject();
@@ -176,7 +232,7 @@ export default (props) => {
 
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? api.editGoods : api.addGoods
-      apiMethod(obj, { showSuccess: true, showError: true }).then(res => {
+      apiMethod(obj, { showSuccess: true, showError: true, paramsUndefinedToEmpty: true }).then(res => {
         if (res.code === 0) {
           resolve();
           callback();
@@ -189,7 +245,6 @@ export default (props) => {
 
   const createEditTableData = (data) => {
     const { specName1, specName2, specValues1, specValues2 } = form.getFieldsValue(['specName1', 'specName2', 'specValues1', 'specValues2']);
-
     const specArr = [];
     specValues1.forEach((item, index) => {
       if (specValues2[0].name) {
@@ -284,6 +339,42 @@ export default (props) => {
     return debounce(loadData, 1000);
   }, [])
 
+  const renderMultiCascaderTag = (selectedItems) => {
+    const titleArr = [];
+    selectedItems.forEach(item => {
+      const arr = [];
+      let node = item.parent;
+      arr.push(item.label)
+      while (node) {
+        arr.push(node.label)
+        node = node.parent;
+      }
+      titleArr.push({
+        label: arr.reverse().join('-'),
+        value: item.value
+      })
+    })
+
+    return (
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {
+          titleArr.map(item => (
+            <Tag
+              key={item.value}
+              closable
+              style={{ marginBottom: 10 }}
+              onClose={() => {
+                setSelectAreaKey(selectAreaKey.filter(it => it !== item.value))
+              }}
+            >
+              {item.label}
+            </Tag>
+          ))
+        }
+      </div>
+    );
+  }
+
   useEffect(() => {
     if (detailData) {
       const { goods, specName, specValues, specData, freightTemplateId, freightTemplateName, settleType } = detailData;
@@ -313,12 +404,32 @@ export default (props) => {
         gcId: [goods.gcId1, goods.gcId2],
         wholesaleFreight: amountTransform(goods.wholesaleFreight, '/'),
         wholesaleTaxRate: amountTransform(goods.wholesaleTaxRate),
+        supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId,
       })
 
       if (freightTemplateId && freightTemplateName) {
         form.setFieldsValue({
           freightTemplateId: { label: freightTemplateName, value: freightTemplateId }
         })
+      }
+
+      if (detailData?.refuseArea?.length) {
+        const areaArr = [];
+        for (let index = 0; index < detailData.refuseArea.length; index++) {
+          const refuseArea = detailData.refuseArea[index];
+          if (refuseArea.areaId) {
+            areaArr.push(refuseArea.areaId)
+            continue;
+          }
+          if (refuseArea.cityId) {
+            areaArr.push(refuseArea.cityId)
+            continue;
+          }
+
+          areaArr.push(refuseArea.provinceId)
+
+        }
+        setSelectAreaKey([...new Set(areaArr)])
       }
 
       if (detailData.isMultiSpec) {
@@ -386,6 +497,13 @@ export default (props) => {
 
   }, [form, detailData]);
 
+  useEffect(() => {
+    const arr = arrayToTree(window.yeahgo_area || [])
+    let str = JSON.stringify(arr)
+    str = str.replace(/name/g, 'label').replace(/id/g, 'value')
+    setAreaData(JSON.parse(str))
+  }, [])
+
   return (
     <DrawerForm
       title={`${detailData ? '编辑' : '新建'}商品`}
@@ -398,6 +516,30 @@ export default (props) => {
         onClose: () => {
           onClose();
         }
+      }}
+      submitter={{
+        render: (props, defaultDoms) => {
+          return [
+            ...defaultDoms,
+            <Button
+              key="look"
+              onClick={(_) => {
+                const d = form.getFieldsValue();
+                if (d.primaryImages && d.detailImages) {
+                  setLookData(d)
+                  setLookVisible(true)
+                } else if (detailData) {
+                  setLookVisible(true)
+                } else {
+                  message.error('请上传图片后预览')
+                }
+
+              }}
+            >
+              预览
+            </Button>,
+          ];
+        },
       }}
       form={form}
       onFinish={async (values) => {
@@ -448,16 +590,16 @@ export default (props) => {
         fieldProps={{
           maxLength: 50,
         }}
-        disabled
+      // disabled
       />
-      <ProFormText
+      {detailData?.goods?.goodsSaleType !== 2 && <ProFormText
         name="wholesaleFreight"
-        label="单位运费(元)"
+        label="平均运费(元)"
         disabled
-      />
+      />}
       <ProFormText
         name="wholesaleTaxRate"
-        label="发票税率(%)"
+        label="商品开票税率(%)"
         disabled
       />
       <ProFormText
@@ -532,6 +674,10 @@ export default (props) => {
             label: '仅批发',
             value: 1,
           },
+          {
+            label: '仅零售',
+            value: 2,
+          },
         ]}
         disabled
       />
@@ -552,6 +698,11 @@ export default (props) => {
         fieldProps={{
           onChange: settleTypeChange
         }}
+      />
+      <ProFormSelect
+        name="supplierHelperId"
+        label="供应商家顾问"
+        options={detailData?.supplierHelpList?.map(item => ({ label: item.companyName, value: item.id }))}
       />
       <ProFormRadio.Group
         name="isMultiSpec"
@@ -582,6 +733,7 @@ export default (props) => {
                   maxLength: 18,
                 }}
                 disabled
+                extra='示例：包装、重量、尺寸等'
               />
               <Form.List name="specValues1">
                 {(fields, { add, remove }) => (
@@ -593,6 +745,7 @@ export default (props) => {
                           label=" "
                           name={[name, 'name']}
                           colon={false}
+                          extra='示例：盒装/袋装、200g/300g、22码/24码等'
                         >
                           <Input disabled placeholder="请输入规格属性" maxLength={18} addonAfter={
                             key === 0 ?
@@ -611,6 +764,7 @@ export default (props) => {
                 label="规格二"
                 placeholder="请输入规格名称"
                 disabled
+                extra='示例：包装、重量、尺寸等'
               />
               <Form.List name="specValues2">
                 {(fields, { add, remove }) => (
@@ -622,6 +776,7 @@ export default (props) => {
                           label=" "
                           name={[name, 'name']}
                           colon={false}
+                          extra='示例：盒装/袋装、200g/300g、22码/24码等'
                         >
                           <Input disabled maxLength={18} placeholder="请输入规格属性" addonAfter={
                             key === 0 ?
@@ -666,29 +821,82 @@ export default (props) => {
                 label="货号"
                 placeholder="请输入货号"
               />
-              <ProFormText
-                name="wholesaleSupplyPrice"
-                label="批发供货价(元)"
-                placeholder="请输入批发供货价"
-                rules={[{ required: true, message: '请输入批发供货价' }]}
-                disabled
-              />
-              <ProFormText
-                name="wholesaleMinNum"
-                label="最低批发量"
-                placeholder="请输入最低批发量"
-                rules={[{ required: true, message: '请输入最低批发量' }]}
-                disabled
-              />
               {
-                detailData?.goods?.goodsSaleType === 0 &&
-                <ProFormText
-                  name="retailSupplyPrice"
-                  label="零售供货价(元)"
-                  placeholder="请输入零售供货价"
-                  rules={[{ required: true, message: '请输入零售供货价' }]}
-                  disabled
-                />
+                detailData?.goods?.goodsSaleType !== 2 &&
+                <>
+                  <ProFormText
+                    name="wholesaleSupplyPrice"
+                    label="批发供货价(元)"
+                    placeholder="请输入批发供货价"
+                    rules={[{ required: true, message: '请输入批发供货价' }]}
+                    disabled
+                  />
+                  <ProFormText
+                    name="wholesaleMinNum"
+                    label="最低批发量"
+                    placeholder="请输入最低批发量"
+                    rules={[{ required: true, message: '请输入最低批发量' }]}
+                    disabled
+                  />
+                </>
+              }
+              {
+                detailData?.goods?.goodsSaleType !== 1 &&
+                <>
+                  <ProFormText
+                    name="retailSupplyPrice"
+                    label="零售供货价(元)"
+                    placeholder="请输入零售供货价"
+                    rules={[{ required: true, message: '请输入零售供货价' }]}
+                    disabled
+                  />
+                  <ProFormText
+                    name="salePrice"
+                    label="秒约价"
+                    placeholder="请输入秒约价"
+                    validateFirst
+                    rules={[
+                      { required: true, message: '请输入秒约价' },
+                      () => ({
+                        validator(_, value) {
+                          if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                            return Promise.reject(new Error('请输入大于零的数字'));
+                          }
+                          return Promise.resolve();
+                        },
+                      })
+                    ]}
+                    disabled={detailData?.settleType === 1}
+                    fieldProps={{
+                      onChange: salePriceChange
+                    }}
+                  />
+                  <ProFormText
+                    name="salePriceFloat"
+                    label="秒约价上浮比例"
+                    placeholder="秒约价上浮比例"
+                    validateFirst
+                    rules={[
+                      { required: true, message: '请输入秒约价上浮比例' },
+                      () => ({
+                        validator(_, value) {
+                          if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                            return Promise.reject(new Error('请输入大于零的数字'));
+                          }
+                          return Promise.resolve();
+                        },
+                      })
+                    ]}
+                    fieldProps={{
+                      onChange: salePriceFloatChange
+                    }}
+                  />
+                  <Form.Item
+                    label="秒约价实际盈亏"
+                  >
+                    {salePriceProfitLoss || amountTransform(detailData?.goods?.salePriceProfitLoss, '/')}
+                  </Form.Item>
+                </>
               }
 
               {/* <ProFormText
@@ -697,59 +905,6 @@ export default (props) => {
                 placeholder="请输入建议零售价"
                 rules={[{ required: true, message: '请输入建议零售价' }]}
               /> */}
-              <ProFormDependency name={['settleType', 'goodsSaleType']}>
-                {({ settleType, goodsSaleType }) => (
-                  <>
-                    {goodsSaleType === 0 && <ProFormText
-                      name="salePrice"
-                      label="秒约价"
-                      placeholder="请输入秒约价"
-                      validateFirst
-                      rules={[
-                        { required: true, message: '请输入秒约价' },
-                        () => ({
-                          validator(_, value) {
-                            if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                              return Promise.reject(new Error('请输入大于零的数字'));
-                            }
-                            return Promise.resolve();
-                          },
-                        })
-                      ]}
-                      disabled={settleType === 1}
-                      fieldProps={{
-                        onChange: salePriceChange
-                      }}
-                    />}
-
-                  </>
-                )}
-              </ProFormDependency>
-              {detailData?.goods?.goodsSaleType === 0 && <ProFormText
-                name="salePriceFloat"
-                label="秒约价上浮比例"
-                placeholder="秒约价上浮比例"
-                validateFirst
-                rules={[
-                  { required: true, message: '请输入秒约价上浮比例' },
-                  () => ({
-                    validator(_, value) {
-                      if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                        return Promise.reject(new Error('请输入大于零的数字'));
-                      }
-                      return Promise.resolve();
-                    },
-                  })
-                ]}
-                fieldProps={{
-                  onChange: salePriceFloatChange
-                }}
-              />}
-              {detailData?.goods?.goodsSaleType === 0 && <Form.Item
-                label="秒约价实际盈亏"
-              >
-                {salePriceProfitLoss || amountTransform(detailData?.goods?.salePriceProfitLoss, '/')}
-              </Form.Item>}
               <ProFormText
                 name="marketPrice"
                 label="市场价"
@@ -810,22 +965,25 @@ export default (props) => {
         placeholder="请输入单SKU单次最多零售购买数量"
       />
 
-      <ProFormRadio.Group
-        name="isFreeFreight"
-        label="是否包邮"
-        rules={[{ required: true }]}
-        options={[
-          {
-            label: '包邮',
-            value: 1,
-          },
-          // {
-          //   label: '不包邮',
-          //   value: 0,
-          // },
-        ]}
-        disabled
-      />
+      {
+        detailData?.goods?.goodsSaleType !== 1 &&
+        <ProFormRadio.Group
+          name="isFreeFreight"
+          label="是否包邮"
+          rules={[{ required: true }]}
+          options={[
+            {
+              label: '包邮',
+              value: 1,
+            },
+            // {
+            //   label: '不包邮',
+            //   value: 0,
+            // },
+          ]}
+          disabled
+        />
+      }
       {/* <ProFormDependency name={['freightTemplateId']}>
         {({ freightTemplateId }) => (
           !!freightTemplateId &&
@@ -862,6 +1020,18 @@ export default (props) => {
         }}
       />
       <Form.Item
+        label="不发货地区"
+      >
+        <MultiCascader
+          value={selectAreaKey}
+          data={areaData}
+          style={{ width: '100%' }}
+          placeholder="请选择不发货地区"
+          renderValue={(a, b) => renderMultiCascaderTag(b)} locale={{ searchPlaceholder: '输入省市区名称' }}
+          onChange={setSelectAreaKey}
+        />
+      </Form.Item>
+      <Form.Item
         label="商品主图"
         name="primaryImages"
         required
@@ -874,7 +1044,21 @@ export default (props) => {
           },
         })]}
       >
-        <Upload code={218} disabled multiple maxCount={10} accept="image/*" dimension="1:1" size={500} />
+        <FromWrap
+          content={(value, onChange) => <Upload code={218} value={value} onChange={onChange} multiple maxCount={50} accept="image/*" dimension="1:1" size={1024} />}
+          right={(value) => {
+            return (
+              <dl>
+                <dt>图片要求</dt>
+                <dd>1.图片大小1MB以内</dd>
+                <dd>2.图片比例1:1</dd>
+                <dd>3.图片格式png/jpg/gif</dd>
+                <dd>4.至少上传3张</dd>
+                {value?.length > 1 && <dd><ImageSort data={value} callback={(v) => { form.setFieldsValue({ primaryImages: v }) }} /></dd>}
+              </dl>
+            )
+          }}
+        />
       </Form.Item>
       <Form.Item
         label="商品详情"
@@ -926,6 +1110,12 @@ export default (props) => {
           <span style={{ color: 'red' }}>{detailData.goods.goodsVerifyRemark}</span>
         </Form.Item>}
       </>}
+      {lookVisible && <Look
+        visible={lookVisible}
+        setVisible={setLookVisible}
+        dataList={lookData || detailData}
+        callback={(text) => { console.log('callback', text) }}
+      />}
     </DrawerForm>
   );
 };

@@ -20,9 +20,6 @@ export default ()=> {
           circleTop({id:off}).then(res=>{
             ref.current.reload();
           })
-        
-        console.log('bol',bol)
-        console.log('off',off)
     }
     const columns = [
         {
@@ -39,6 +36,12 @@ export default ()=> {
             ],
             hideInSearch:true   
         },
+        {
+            title: '图片',
+            dataIndex: 'logo',
+            valueType: 'image',
+            hideInSearch:true,
+          },
         {
             title: '内容',
             dataIndex: 'postNum',
@@ -79,7 +82,7 @@ export default ()=> {
         {
             title: '操作',
             render: (text, record, _, action) => [
-                <Button onClick={()=>{
+                <Button style={{marginRight:'10px'}} onClick={()=>{
                     if(record.delete==2){
                         cancelHide({id:record.id}).then(res=>{
                             ref.current.reload();
@@ -93,7 +96,7 @@ export default ()=> {
                     record.delete?record.delete==1?'已删除':'取消隐藏':'隐藏'
                     }
                 </Button>,
-                <Button onClick={()=>{
+                <Button style={{marginRight:'10px'}} onClick={()=>{
                     if(record.banDynamic){
                         cancelBanDynamic({id:record.id}).then(res=>{
                             ref.current.reload();
@@ -104,7 +107,7 @@ export default ()=> {
                         })
                     }
                 }}>{record.banDynamic?'取消禁贴':'禁贴'}</Button>,
-                <Button onClick={()=>{
+                <Button style={{marginRight:'10px'}} onClick={()=>{
                     if(record.banComment){
                         cancelBanDynamicComment({id:record.id}).then(res=>{
                             ref.current.reload();

@@ -9,13 +9,11 @@ import { cancelBanDynamicComment } from '@/services/community-management/dynamic
 import { cancelBanShare } from '@/services/community-management/dynamic-cancel-ban-share';
 import { ProFormSwitch} from '@ant-design/pro-form';
 import DeleteModal from '@/components/DeleteModal'
-import { Button} from 'antd';
+import { Button,Image} from 'antd';
 import { history } from 'umi';
 
 export default props => {
     const ref=useRef()
-    const [visible, setVisible] = useState(false);
-    const [byid,setByid]=useState()
     let id = props.location.query.id
     let name=props.location.query.name
     const onTop=(bol,off)=>{
@@ -23,13 +21,6 @@ export default props => {
                 ref.current.reload()
             }) 
     }
-    const Termination=(record)=>{
-        setByid(record.id)
-        setVisible(true)
-    }
-    useEffect(()=>{
-
-    },[])
     const columns = [
         {
             title: '帖子ID：',
@@ -41,9 +32,25 @@ export default props => {
             dataIndex: 'id',
             hideInSearch:true,
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/circle-management/circleinterior-management/detail?id='+record.id+'&byid='+id+'&name='+name)}>{record.id}</a>
+                <a onClick={()=>history.push('/community-management/invitation-detail?id='+record.id+'&byid='+id+'&name='+name)}>{record.id}</a>
             ],
         },
+        {
+            title: '内容',
+            dataIndex: 'content',
+            valueType: 'text',
+            hideInSearch:true,
+            ellipsis:true
+          },
+          {
+            title: '图片',
+            dataIndex: 'images',
+            valueType: 'image',
+            hideInSearch:true,
+            render:(_,data)=>{
+              return <Image src={data.images[0]} alt="" width='50px' height='50px' />
+            }
+          },
         {
             title: '会员ID',
             dataIndex: 'userId',
@@ -72,7 +79,7 @@ export default props => {
         {
             title: '操作',
             render: (text, record, _, action) => [
-                <Button onClick={()=>{
+                <Button style={{marginRight:'10px'}} onClick={()=>{
                     if(record.banComment){
                         cancelBanDynamicComment({id:record.id}).then(res=>{
                             ref.current.reload()
@@ -83,7 +90,7 @@ export default props => {
                         }) 
                     }
                 }}>{record.banComment?'取消禁评':'禁评'}</Button>,
-                <Button onClick={()=>{
+                <Button style={{marginRight:'10px'}} onClick={()=>{
                     if(record.banShare){
                         cancelBanShare({id:record.id}).then(res=>{
                             ref.current.reload()

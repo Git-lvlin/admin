@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { Button } from 'antd';
+import { Button,Image } from 'antd';
 import { history } from 'umi';
 import { adminReportDetailList } from '@/services/community-management/report-admin-report-detail-list';
 
@@ -36,7 +36,7 @@ const columns= [
       title: '证明截图',
       dataIndex: 'images',
       render: (text) =>{
-        return <img src={text?.[0]} width={50} height={50} />
+        return <Image src={text?.[0]} width={50} height={50} />
       } 
   }
 ];

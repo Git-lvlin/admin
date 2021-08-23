@@ -9,7 +9,6 @@ const exportExcel = (form) => {
     couponList({
       ...form.getFieldsValue(),
     }).then(res => {
-      console.log('res',res)
         const data = res.data.map(item => {
           const { ...rest } = item;
           return {
@@ -57,7 +56,7 @@ const exportExcel = (form) => {
             valueType: 'select',
             valueEnum: {
                 1: '消费者',
-                2: '会员店',
+                2: '社区店',
             }
         },
         {

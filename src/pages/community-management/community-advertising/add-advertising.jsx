@@ -16,7 +16,7 @@ export default props => {
  const [onselect,setOnselect]=useState([])
  const [position,setPosition]=useState()
  const [visible, setVisible] = useState(false);
- const [goods,setGoods]=useState([])
+ const [goods,setGoods]=useState()
  const [linkData,setLinkData]=useState()
  const [editLinkData,setEditLinkData]=useState()
  const [form] = Form.useForm()
@@ -50,13 +50,13 @@ export default props => {
  }
  const columns=[
   {
-     title: '商品图片',
-     dataIndex: 'imageUrl',
-     valueType: 'image',
+    title: '商品图片',
+    dataIndex: 'imageUrl',
+    valueType: 'image',
   },
   {
-      title: '商品名称',
-      dataIndex: 'goodsName',
+    title: '商品名称',
+    dataIndex: 'goodsName',
   },
   {
     title: '操作',
@@ -173,16 +173,17 @@ export default props => {
         />
           {
             position=='1'||linkData?.url?
-            <ProFormText
+           <div style={{display:position==2||position==3?'none':'block'}}>
+              <ProFormText
                 width="md"
                 name="url"
-                label="URL跳转"
-            />
+              />
+           </div>
             :null
           }
           {
             position=='2'||linkData?.linkId?
-            <>
+            <div style={{display:position==1||position==3?'none':'block'}}>
               <Button type="primary" onClick={Termination} style={{margin:'0 0 20px 20px'}}>
                   <PlusOutlined />
                   添加商品
@@ -205,10 +206,10 @@ export default props => {
                 search={false}
                 toolBarRender={false}
                 columns={columns}
-                dataSource={editLinkData||goods}
+                dataSource={goods||editLinkData}
                 style={{display:visible?'none':'block'}}
               />
-            </>
+            </div>
             :null
           }
         <ProFormRadio.Group

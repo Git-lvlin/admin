@@ -7,7 +7,8 @@ import * as api from '@/services/product-management/product-log';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import Detail from './detail';
-import { typeTransform } from '@/utils/utils'
+import { amountTransform, typeTransform } from '@/utils/utils'
+
 
 
 const SubTable = (props) => {
@@ -16,10 +17,10 @@ const SubTable = (props) => {
   const columns = [
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
-    { title: '零售供货价', dataIndex: 'retailSupplyPriceDisplay' },
-    { title: '批发价', dataIndex: 'wholesalePriceDisplay' },
+    { title: '零售供货价', dataIndex: 'retailSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
+    { title: '批发供货价', dataIndex: 'wholesaleSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
     { title: '批发起购量', dataIndex: 'wholesaleMinNum' },
-    { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
+    // { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
     { title: '商品价格', dataIndex: 'salePriceDisplay' },
     { title: '可用库存', dataIndex: 'stockNum' },
@@ -85,11 +86,11 @@ const TableList = () => {
       }
     },
     {
-      title: '供应商ID',
+      title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商ID'
+        placeholder: '请输入供应商家ID'
       }
     },
     {

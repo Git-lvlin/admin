@@ -12,11 +12,11 @@ const TableList = () => {
 
   const columns = [
     {
-      title: '供应商名称',
+      title: '供应商家名称',
       dataIndex: 'companyName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商名称'
+        placeholder: '请输入供应商家名称'
       }
     },
     {

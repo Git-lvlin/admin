@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Button, Card, Modal } from 'antd';
+import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import * as api from '@/services/product-management/brand-list';
 import Form from './form';
+
+const { confirm, warning } = Modal;
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
@@ -12,13 +14,37 @@ const TableList = () => {
   const actionRef = useRef();
 
   const brandDel = (brandId) => {
-    api.brandDel({
+    api.getExistsByBrandId({
       brandId
-    }, { showSuccess: true }).then(res => {
+    }).then(res => {
       if (res.code === 0) {
-        actionRef.current.reload();
+        if (res.data === 0) {
+          confirm({
+            title: '确认要删除么？',
+            icon: <ExclamationCircleOutlined />,
+            centered: true,
+            onOk() {
+              api.brandDel({
+                brandId
+              }, { showSuccess: true }).then(res => {
+                if (res.code === 0) {
+                  actionRef.current.reload();
+                }
+              })
+            },
+          });
+        }
+
+        if (res.data === 1) {
+          warning({
+            title: '此品牌下已关联商品，请先移除关联的商品，再进行删除操作！',
+            icon: <ExclamationCircleOutlined />,
+            centered: true,
+          });
+        }
       }
     })
+    
   }
 
   const columns = [

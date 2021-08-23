@@ -1,33 +1,36 @@
-import React,{useEffect} from 'react';
-import {Form,DatePicker} from 'antd';
+import React from 'react';
 import {formatMessage,connect} from 'umi';
-import ProForm,{ ProFormText,ProFormDateRangePicker } from '@ant-design/pro-form';
-const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
+import moment from 'moment';
+import ProForm,{ ProFormText,ProFormDateTimeRangePicker } from '@ant-design/pro-form';
 
 const validity=(props)=>{
     let {id,DetailList,position}=props
+    const disabledDate=(current)=>{
+        return current && current < moment().startOf('day');
+    }
     return (
         <>
          {
              position==1||(parseInt(id)==id )&&DetailList.data?.activityStartTime?
-             <FormItem
-                style={{ display: 'inline-block'}}
-                name="date2"
+             <div
+                style={{display:position==2?'none':'block'}}
             >
-                <ProFormDateRangePicker
+                <ProFormDateTimeRangePicker
                     name='dateTimeRange'
                     placeholder={[
                         formatMessage({id: 'formandbasic-form.placeholder.start'}),
                         formatMessage({id: 'formandbasic-form.placeholder.end'}),
                     ]}
+                    fieldProps={{
+                        disabledDate:(current)=>disabledDate(current)
+                    }}
                 />
             
-            </FormItem>:null
+            </div>:null
          }
         {
             position==2||(parseInt(id)==id )&&DetailList.data?.activityEndDay?
-            <>
+            <div style={{display:position==1?'none':'block'}}>
                 <ProForm.Group>
                     <ProFormText
                         width={100}
@@ -42,7 +45,7 @@ const validity=(props)=>{
                     />
                     <span>天内可用</span>
                 </ProForm.Group>
-            </>
+            </div>
             :null
          }
         </>
