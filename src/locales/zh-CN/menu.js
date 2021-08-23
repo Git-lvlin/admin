@@ -207,5 +207,14 @@ export default {
   'menu.financial-management.subsidy-summary-detail' : '补贴明细',
 
   'menu.data-board': '数据看板',
-  'menu.data-board.data-preview': '数据预览'
+  'menu.data-board.data-preview': '数据预览',
+  'menu.data-board.data-sales': '销售数据',
+  'menu.data-board.gmv-detail': 'GMV',
+  'menu.data-board.sales-detail': '销售额',
+  'menu.data-board.gmv-order': 'GMV订单列表',
+  'menu.data-board.sales-order': '销售额订单列表',
+  'menu.data-board.class-of-view': '分类查看',
+  'menu.data-board.order-list': '订单列表',
+  'menu.data-board.rank': '排名',
+  'menu.data-board.order': '订单',
 };

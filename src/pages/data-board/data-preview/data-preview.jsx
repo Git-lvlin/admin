@@ -73,10 +73,6 @@ const DataBord = ()=> {
                 会员店：
                 <span>{memberCount.memeberStoreCount}</span>
               </div>
-              {/* <div>
-                经销商：
-                <span>{memberCount.agentCount}</span>
-              </div> */}
             </div>
             <div className={styles.line}>
               <div>
