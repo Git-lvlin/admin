@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
-import { Radio, Spin } from 'antd'
+import { Button, Radio, Spin } from 'antd'
 import ProTable from '@ant-design/pro-table'
 import { useLocation, history } from 'umi'
 import moment from 'moment'
@@ -88,6 +88,14 @@ const GmvDetail = () => {
           columns={columns}
           pagination={false}
         />
+        <Button
+          type='primary'
+          onClick={
+            ()=>{ history.goBack()}
+          }
+        >
+          返回
+        </Button>
       </Spin> 
     </PageContainer>
   )
