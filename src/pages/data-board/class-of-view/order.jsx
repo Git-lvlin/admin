@@ -13,7 +13,6 @@ const Order = () => {
   const [loading, setLoading] = useState(false) 
   const { query } = useLocation()
   const  time = moment(Number(query.date)).format('YYYY-MM-DD hh:mm:ss')
-  const type = query.type
 
   const skipToOrderDetail = (e) => {
     history.push(`/order-management/normal-order-detail/${e.orderSn}`)
@@ -33,7 +32,7 @@ const Order = () => {
     } else if(query.type === 'order') {
       saleOrder({
         time,
-        type
+        type: query.kind
       }).then(res=> {
         setOrderData(res.data)
       }).finally(()=> {
