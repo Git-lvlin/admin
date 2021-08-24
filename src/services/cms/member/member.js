@@ -681,6 +681,29 @@ export const saveMoneyOperation = (params = {}, options = {}) => {
   });
 }
 
+export const getAppPopup = (params = {}, options = {}) => {
+  return request('/auth/java-admin/public/adimg/activity/popup', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const getStartUp = (params = {}, options = {}) => {
+  return request('/auth/java-admin/public/adimg/boot', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const homePopupUpdate = (params = {}, options = {}) => {
+  return request('/auth/java-admin/public/adimg/update', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
 
 export const saveMoneyFormList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;

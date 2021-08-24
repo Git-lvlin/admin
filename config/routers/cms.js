@@ -103,6 +103,16 @@ export default {
       name: 'generate-invitation-code',
       path: '/cms/generate-invitation-code',
       component: './cms/generate-invitation-code',
+    },
+    {
+      name: 'home-popup',
+      path: '/cms/home-popup',
+      component: './cms/home-popup',
+    },
+    {
+      name: 'start-up',
+      path: '/cms/start-up',
+      component: './cms/start-up',
     }
   ]
 }
