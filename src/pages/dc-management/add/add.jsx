@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Table, Input, Popconfirm, Form, Typography, Select, Divider, message, Button } from 'antd';
 import { history, useLocation } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
-import { attrType } from '@/constants/index'
+import { attrType, platformTypeAll } from '@/constants/index'
 import { addRes, getResDetail, updateRes, getVersionAllList } from '@/services/resource'
 import { objToArr, itemToJson } from '@/utils/tojson'
-import { platformType } from '@/constants/index'
 import JoinJson from './component/joinJson'
 import ChooseResources from './component/chooseResources'
 
@@ -344,6 +343,9 @@ const EditableTable = () => {
     let resultData = {};
     let isEmpty = false;
     const formData = await headForm.validateFields();
+    if (formData.platform&&formData.platform[0] == 0) {
+      formData.platform = platformTypeAll
+    }
     let platformData = '';
     data.forEach(item => {
       if(!!item.name){
@@ -367,7 +369,7 @@ const EditableTable = () => {
         if(history.action == "PUSH"){
           history.goBack();
         } else {
-          history.push("/resource-list/list");
+          history.push("/dc-management/list");
         }
       } else {
         message.error(res.msg);

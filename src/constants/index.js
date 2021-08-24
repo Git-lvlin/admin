@@ -8,6 +8,9 @@ export const platformType = {
     6: "FultterIos",
 }
 
+// 全平台
+export const platformTypeAll = [1,2,3,4,5,6]
+
 export const platformTypeSearch = {
     0: {
       text: '全平台',

@@ -131,9 +131,9 @@ export default {
   'menu.price-comparsion-management.price-management': '比价管理页面',
 
   'menu.dc-management': 'DC管理菜单',
-  'menu.dc-management.add': 'add',
-  'menu.dc-management.list': 'list',
-  'menu.dc-management.version': 'version',
+  // 'menu.dc-management.add': '新增',
+  'menu.dc-management.list': '资源位列表',
+  'menu.dc-management.version': '资源位版本',
 
   'menu.coupon-management': '优惠券管理',
   'menu.coupon-management.coupon-list': '优惠券列表',
