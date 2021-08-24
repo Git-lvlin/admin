@@ -105,8 +105,8 @@ const TransactionDetails = () => {
       dataIndex: 'accountTypeName'
     },
     {
-      title: '',
-      dataIndex: ''
+      title: '店主等级',
+      dataIndex: 'storeLevel'
     },
     {
       title: '受益方会员信息',
