@@ -143,13 +143,14 @@ const Ranking = () => {
   },[query.type])
 
   const rankType = (e) => {
+    console.log(e&&Object.keys(e));
     switch(query.type) {
       case '1':
         return {
           id: 'supplierId',
           name: 'companyName',
           url: ()=>(
-            history.push(`/data-board/order/${e?.supplierId}?orderType=${query.orderType}&no=${query.type}&type=1`
+            history.push(`/data-board/order/${e?.supplierId}?orderType=${e&&Object.keys(e)[2]}&no=${query.type}&type=1`
           ))
         }
       case '4':
@@ -157,7 +158,7 @@ const Ranking = () => {
           id: 'supplierId',
           name: 'companyName',
           url: ()=>(
-            history.push(`/data-board/order/${e?.supplierId}?orderType=${query.orderType}&no=${query.type}&type=3`
+            history.push(`/data-board/order/${e?.supplierId}?orderType=${e&&Object.keys(e)[2]}&no=${query.type}&type=3`
           ))
         }
       case '6':
@@ -165,7 +166,7 @@ const Ranking = () => {
           id: 'supplierId',
           name: 'companyName',
           url: ()=>(
-            history.push(`/data-board/order/${e?.supplierId}?orderType=${query.orderType}&no=${query.type}&type=1`
+            history.push(`/data-board/order/${e?.supplierId}?orderType=${e&&Object.keys(e)[2]}&no=${query.type}&type=1`
           ))
         }
       case '9':
@@ -173,7 +174,7 @@ const Ranking = () => {
           id: 'supplierId',
           name: 'companyName',
           url: ()=>(
-            history.push(`/data-board/order/${e?.supplierId}?orderType=${query.orderType}&no=${query.type}&type=3`
+            history.push(`/data-board/order/${e?.supplierId}?orderType=${e&&Object.keys(e)[2]}&no=${query.type}&type=3`
           ))
         }
       case '2':
@@ -181,7 +182,7 @@ const Ranking = () => {
           id: 'storeId',
           name: 'storeName',
           url: ()=>(
-            history.push(`/data-board/order/${e?.storeId}?orderType=${query.orderType}&no=${query.type}&type=1`)
+            history.push(`/data-board/order/${e?.storeId}?orderType=${e&&Object.keys(e)[1]}&no=${query.type}&type=1`)
           )
         }
       case '3':
@@ -189,7 +190,7 @@ const Ranking = () => {
           id: 'storeId',
           name: 'storeName',
           url: ()=>(
-            history.push(`/data-board/order/${e?.storeId}?orderType=${query.orderType}&no=${query.type}&type=2`)
+            history.push(`/data-board/order/${e?.storeId}?orderType=${e&&Object.keys(e)[1]}&no=${query.type}&type=2`)
           )
         }
       case '5':
@@ -197,7 +198,7 @@ const Ranking = () => {
           id: 'storeId',
           name: 'storeName',
           url: ()=>(
-            history.push(`/data-board/order/${e?.storeId}?orderType=${query.orderType}&no=${query.type}&type=4`)
+            history.push(`/data-board/order/${e?.storeId}?orderType=${e&&Object.keys(e)[1]}&no=${query.type}&type=4`)
           )
         }
       case '7':
@@ -205,7 +206,7 @@ const Ranking = () => {
           id: 'storeId',
           name: 'storeName',
           url: ()=>(
-            history.push(`/data-board/order/${e?.storeId}?orderType=${query.orderType}&no=${query.type}&type=1`)
+            history.push(`/data-board/order/${e?.storeId}?orderType=${e&&Object.keys(e)[1]}&no=${query.type}&type=1`)
           )
         }
       case '8':
@@ -213,7 +214,7 @@ const Ranking = () => {
           id: 'storeId',
           name: 'storeName',
           url: ()=>(
-            history.push(`/data-board/order/${e?.storeId}?orderType=${query.orderType}&no=${query.type}&type=2`)
+            history.push(`/data-board/order/${e?.storeId}?orderType=${e&&Object.keys(e)[1]}&no=${query.type}&type=2`)
           )
         }
       case '10':
@@ -221,7 +222,7 @@ const Ranking = () => {
           id: 'storeId',
           name: 'storeName',
           url: ()=>(
-            history.push(`/data-board/order/${e?.storeId}?orderType=${query.orderType}&no=${query.type}&type=4`)
+            history.push(`/data-board/order/${e?.storeId}?orderType=${e&&Object.keys(e)[1]}&no=${query.type}&type=4`)
           )
         }
     }

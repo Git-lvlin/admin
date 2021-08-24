@@ -12,7 +12,7 @@ const GmvDetail = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false) 
   const { query } = useLocation()
-  const  time = moment(Number(query.date)).format('YYYY-MM-DD hh:mm:ss')
+  const  time = moment(Number(query.date)).format('YYYY-MM-DD')
   useEffect(()=>{
     setLoading(true)
     moreTypeGmvSumYue({

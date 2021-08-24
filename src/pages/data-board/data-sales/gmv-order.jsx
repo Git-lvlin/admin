@@ -12,7 +12,7 @@ const GmvOrder = () => {
   const [orderData, setOrderData] = useState([])
   const [loading, setLoading] = useState(false) 
   const { query } = useLocation()
-  const  time = moment(Number(query.date)).format('YYYY-MM-DD hh:mm:ss')
+  const  time = moment(Number(query.date)).format('YYYY-MM-DD')
   const type = query.type
 
   const skipToOrderDetail = (e) => {
