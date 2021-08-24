@@ -160,7 +160,7 @@ export const gmvFindByStoreId = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data?.gmvOrderSubDetailResponseList,
+    data: res.data?.orderSubDetailResponseList,
     success: res.success
   }
 }
@@ -175,7 +175,7 @@ export const gmvFindBySupperId = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data?.gmvOrderSubDetailResponseList,
+    data: res.data?.orderSubDetailResponseList,
     success: res.success
   }
 }
@@ -190,7 +190,7 @@ export const saleFindByStoreId = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data?.salesOrderSubDetailResponseList,
+    data: res.data?.orderSubDetailResponseList,
     success: res.success
   }
 }
@@ -205,7 +205,7 @@ export const saleFindBySupperId = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data?.salesOrderSubDetailResponseList,
+    data: res.data?.orderSubDetailResponseList,
     success: res.success
   }
 }

@@ -24,7 +24,7 @@ const orderList = () => {
 
   useEffect(() => {
     setLoading(true)
-    if(query.no <= 5 && query.orderType === 'normal') {
+    if(query.no <= 5 && query.orderType === 'storeId') {
       gmvFindByStoreId({
         storeNo: id,
         type: query.type
@@ -37,12 +37,13 @@ const orderList = () => {
       }).finally(()=> {
         setLoading(false)
       })
-    } else if(query.no <= 5 && query.orderType === 'intensive') {
+    } else if(query.no <= 5 && query.orderType === 'supplierId') {
       gmvFindBySupperId({
         supplierId: id,
         type: query.type
       }).then(res=> {
         if(res.success){
+          console.log(res );
           setOrderData(res.data)
         } else {
           setOrderData([])
@@ -50,7 +51,7 @@ const orderList = () => {
       }).finally(()=> {
         setLoading(false)
       })
-    } else if(query.no >= 5 && query.orderType === 'normal') {
+    } else if(query.no >= 5 && query.orderType === 'storeId') {
       saleFindByStoreId({
         storeNo: id,
         type: query.type
@@ -63,7 +64,7 @@ const orderList = () => {
       }).finally(()=> {
         setLoading(false)
       })
-    } else if(query.no >= 5 && query.orderType === 'intensive') {
+    } else if(query.no >= 5 && query.orderType === 'supplierId') {
       saleFindBySupperId({
         supplierId: id,
         type: query.type

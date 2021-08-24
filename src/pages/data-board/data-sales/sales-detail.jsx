@@ -15,7 +15,7 @@ const SalesDetail = () => {
   useEffect(()=>{
     setLoading(true)
     moreTypeSaleSumYue({
-      time: moment(Number(query.date)).format('YYYY-MM-DD hh:mm:ss'),
+      time: moment(Number(query.date)).format('YYYY-MM-DD'),
       type
     }).then(res => {
       setData(res.data)
