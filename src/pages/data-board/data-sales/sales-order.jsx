@@ -16,7 +16,7 @@ const SalesOrder = () => {
   const type = query.type
 
   const skipToOrderDetail = (e) => {
-    history.push(`/order-management/normal-order-detail/${e.orderSn}`)
+    history.push(`/order-management/normal-order-detail/${e.subId}`)
   }
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const SalesOrder = () => {
     },
     {
       title: '订单号',
-      dataIndex: 'orderSn',
+      dataIndex: 'subId',
       align: 'center'
     },
     {
@@ -63,7 +63,7 @@ const SalesOrder = () => {
     <PageContainer title={false}>
       <Spin spinning={loading}>
         <ProTable
-          rowKey='orderSn'
+          rowKey='subId'
           columns={columns}
           search={false}
           toolBarRender={false}

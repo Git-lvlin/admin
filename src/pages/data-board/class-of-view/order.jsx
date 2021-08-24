@@ -15,7 +15,7 @@ const Order = () => {
   const  time = moment(Number(query.date)).format('YYYY-MM-DD hh:mm:ss')
 
   const skipToOrderDetail = (e) => {
-    history.push(`/order-management/normal-order-detail/${e.orderSn}`)
+    history.push(`/order-management/normal-order-detail/${e.subId}`)
   }
 
   useEffect(() => {
