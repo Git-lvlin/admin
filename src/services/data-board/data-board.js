@@ -310,7 +310,7 @@ export const moreTypeGmvSumYue = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data,
+    data: [res.data],
     success: res.success
   }
 }
@@ -325,7 +325,7 @@ export const moreTypeSaleSumYue = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data,
+    data: [res.data],
     success: res.success
   }
 }
@@ -340,7 +340,7 @@ export const gmvOrder = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data,
+    data: res.data.gmvOrderSubDetailResponseList,
     success: res.success
   }
 }
@@ -355,7 +355,7 @@ export const saleOrder = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data,
+    data: res.data.salesOrderSubDetailResponseList,
     success: res.success
   }
 }
