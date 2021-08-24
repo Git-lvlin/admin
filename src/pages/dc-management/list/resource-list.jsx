@@ -133,7 +133,7 @@ const TableList = () => {
 
   // 点击添加
   const onToAdd = (record) => {
-    history.push(`/resource-list/add${!!record.id ? '?id=' + record.id : ''}`)
+    history.push(`/dc-management/add${!!record.id ? '?id=' + record.id : ''}`)
   }
 
   // 打开导出弹窗
