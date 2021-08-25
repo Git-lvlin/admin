@@ -16,7 +16,11 @@ const SalesOrder = () => {
   const type = query.type
 
   const skipToOrderDetail = (e) => {
-    history.push(`/order-management/normal-order-detail/${e.orderSn}`)
+    if(type === '1') {
+      history.push(`/order-management/intensive-order/supplier-order-detail/${e.subId}`)
+    } else {
+      history.push(`/order-management/normal-order-detail/${e.subId}`)
+    }
   }
 
   useEffect(() => {
@@ -42,14 +46,14 @@ const SalesOrder = () => {
     },
     {
       title: '订单号',
-      dataIndex: 'orderSn',
+      dataIndex: 'subId',
       align: 'center'
     },
     {
       title: '订单金额（￥/元）',
       dataIndex: 'totalAmount',
       align: 'center',
-      render: (_) => amountTransform(_, '/')
+      render: (_) => amountTransform(Number(_), '/')
     },
     {
       title: '订单详情',
@@ -63,7 +67,7 @@ const SalesOrder = () => {
     <PageContainer title={false}>
       <Spin spinning={loading}>
         <ProTable
-          rowKey='orderSn'
+          rowKey='subId'
           columns={columns}
           search={false}
           toolBarRender={false}

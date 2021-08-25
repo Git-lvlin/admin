@@ -19,7 +19,11 @@ const orderList = () => {
   const { id } = useParams()
 
   const skipToOrderDetail = (e) => {
-    history.push(`/order-management/normal-order-detail/${e.orderSn}`)
+    if(query.no === '1' || query.no === '2') {
+      history.push(`/order-management/intensive-order/supplier-order-detail/${e.subId}`)
+    } else {
+      history.push(`/order-management/normal-order-detail/${e.subId}`)
+    }
   }
 
   useEffect(() => {
@@ -38,12 +42,12 @@ const orderList = () => {
         setLoading(false)
       })
     } else if(query.no <= 5 && query.orderType === 'supplierId') {
+      console.log(2);
       gmvFindBySupperId({
         supplierId: id,
         type: query.type
       }).then(res=> {
         if(res.success){
-          console.log(res );
           setOrderData(res.data)
         } else {
           setOrderData([])
@@ -91,7 +95,7 @@ const orderList = () => {
     },
     {
       title: '订单号',
-      dataIndex: 'orderSn',
+      dataIndex: 'subId',
       align: 'center'
     },
     {
@@ -112,7 +116,7 @@ const orderList = () => {
     <PageContainer title={false}>
       <Spin spinning={loading}>
         <ProTable
-          rowKey='orderSn'
+          rowKey='subId'
           columns={columns}
           search={false}
           toolBarRender={false}

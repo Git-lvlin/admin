@@ -143,7 +143,6 @@ const Ranking = () => {
   },[query.type])
 
   const rankType = (e) => {
-    console.log(e&&Object.keys(e));
     switch(query.type) {
       case '1':
         return {
