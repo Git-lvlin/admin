@@ -180,7 +180,7 @@ const Detail = () => {
       dataIndex: 'accountSn'
     },
     {
-      title: '可提现余额',
+      title: '可提现金额（提现前）',
       dataIndex: 'balanceAvailable',
       render: (_) => `￥${amountTransform(_, '/')}`
     },
@@ -205,7 +205,7 @@ const Detail = () => {
       }
     },
     {
-      title: '提现含手续费金额',
+      title: '本次提现金额',
       dataIndex: 'amount',
       render: (_) => `￥${amountTransform(_, '/')}`
     },

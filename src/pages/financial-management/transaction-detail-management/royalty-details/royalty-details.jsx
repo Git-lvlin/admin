@@ -44,35 +44,35 @@ const TransactionDetails = () => {
         return (
           <>
             <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
-            <span>货款交易费: ¥{amountTransform(fee, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'commission':
         return (
           <>
-            <span className={styles.amount}>提成: ¥{amountTransform(amount, '/')}</span>
-            <span>提成交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>店主收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'platformCommission':
         return (
           <>
-            <span className={styles.amount}>佣金: ¥{amountTransform(amount, '/')}</span>
-            <span>佣金交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>平台收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'suggestCommission':
         return (
           <>
-            <span className={styles.amount}>推荐提成: ¥{amountTransform(amount, '/')}</span>
-            <span>推荐提成交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>店主推荐收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'agentCompanyCommission':
         return (
           <>
-            <span className={styles.amount}>经销商提成: ¥{amountTransform(amount, '/')}</span>
-            <span>经销商提成交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>经销商收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       default:
@@ -105,8 +105,8 @@ const TransactionDetails = () => {
       dataIndex: 'accountTypeName'
     },
     {
-      title: '',
-      dataIndex: ''
+      title: '店主等级',
+      dataIndex: 'storeLevel'
     },
     {
       title: '受益方会员信息',
