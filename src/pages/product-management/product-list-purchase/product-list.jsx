@@ -11,6 +11,8 @@ import SupplierSelect from '@/components/supplier-select'
 import Edit from './edit';
 import OffShelf from './off-shelf';
 import { amountTransform, typeTransform } from '@/utils/utils'
+import ProductDetailDrawer from '@/components/product-detail-drawer'
+
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -53,6 +55,8 @@ const TableList = () => {
   const [detailData, setDetailData] = useState(null);
   const [config, setConfig] = useState({});
   const [offShelfVisible, setOffShelfVisible] = useState(false);
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
+
   const [selectItemId, setSelectItemId] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
@@ -125,6 +129,16 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入商品名称'
+      },
+      hideInTable: true,
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, record) => {
+        return <a onClick={() => { setSelectItemId(record.spuId); setProductDetailDrawerVisible(true); }}>{_}</a>
       }
     },
     {
@@ -415,6 +429,14 @@ const TableList = () => {
         setVisible={setOffShelfVisible}
         callback={(text) => { offShelf(selectItemId, text) }}
       />}
+      {
+        productDetailDrawerVisible &&
+        <ProductDetailDrawer
+          visible={productDetailDrawerVisible}
+          setVisible={setProductDetailDrawerVisible}
+          spuId={selectItemId}
+        />
+      }
 
     </PageContainer>
   );

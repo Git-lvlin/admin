@@ -7,6 +7,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons'
 import BasicInfo from './basic-info';
 import AccountInfo from './account-info';
 import DisableModal from './disable-modal';
+import BankCard from './bind-card';
 
 const { confirm } = Modal;
 
@@ -14,6 +15,7 @@ const TableList = () => {
   const [basicInfoVisible, setBasicInfoVisible] = useState(false);
   const [accountInfoVisible, setAccountInfoVisible] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [bandCardVisible, setBandCardVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [disableModalVisible, setDisableModalVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
@@ -164,23 +166,44 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => {
-        if (_ === 5) {
-          return (
-            <>
-              <div>审核拒绝</div>
-              <div style={{ color: 'red' }}>{data.auditReason}</div>
-            </>
-          )
-        }
-        return {
-          0: '待提交',
-          1: '开户成功',
-          2: '待审核',
-          3: '开户失败',
-          4: '待开户',
-          5: '审核拒绝'
-        }[_]
+        return (
+          <>
+            <div>
+              {
+                {
+                  0: '待提交',
+                  1: '开户成功',
+                  2: '待审核',
+                  3: '开户失败',
+                  4: '待开户',
+                  5: '审核拒绝'
+                }[_]
+              }
+            </div>
+            {!!data.auditReason && <div style={{ color: 'red' }}>{data.auditReason}</div>}
+          </>
+        )
       }
+    },
+    {
+      title: '绑卡状态',
+      dataIndex: 'bankStatus',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, data) => {
+        if (_ === 1) {
+          return '已绑卡'
+        }
+
+        if (_ !== 1 && data.auditStatus === 1) {
+          return <a onClick={() => { setSelectItem(data); setBandCardVisible(true) }}>未绑卡</a>
+        }
+
+        if (_ === 0) {
+          return '未绑卡'
+        }
+      },
+      width: 80,
     },
     {
       title: '操作',
@@ -192,7 +215,7 @@ const TableList = () => {
           {data.status === 0 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>启用</a>}
           {/* <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.id}`) }}>详情</a> */}
           <a onClick={() => { getDetail(data.id, 1) }}>基本信息</a>
-          {data.accountSwitch === 1 &&<a onClick={() => { getDetail(data.id, 2) }}>开户信息</a>}
+          {data.accountSwitch === 1 && <a onClick={() => { getDetail(data.id, 2) }}>开户信息</a>}
           {data.isAllowDel === 1 && <a onClick={() => { deleteSup(data.id) }}>删除</a>}
           <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>售后地址</a>
           <a onClick={() => { setSelectItem(data); setIsModalVisible(true) }}>重置密码</a>
@@ -207,6 +230,9 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={getCommonList}
+        style={{
+          minWidth: '1400px'
+        }}
         search={{
           defaultCollapsed: false,
           labelWidth: 130,
@@ -236,6 +262,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
+        scroll={{ x: '85vw' }}
       />
       {basicInfoVisible && <BasicInfo
         visible={basicInfoVisible}
@@ -259,6 +286,16 @@ const TableList = () => {
           data={selectItem}
           callback={(v) => { switchStatus(v) }}
         />}
+
+      {
+        bandCardVisible
+        &&
+        <BankCard
+          supplierId={selectItem.id}
+          setVisible={setBandCardVisible}
+          callback={() => { actionRef.current.reload(); setSelectItem(null) }}
+        />
+      }
 
       <Modal
         title={`请确认要重置供应商家：${selectItem?.companyName}（账号：${selectItem?.accountName}）的登录密码？`}
