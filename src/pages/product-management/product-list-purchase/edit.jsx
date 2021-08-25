@@ -175,7 +175,6 @@ export default (props) => {
 
     const obj = {
       supplierHelperId,
-
       isMultiSpec,
       goods: {
         ...rest,
@@ -234,7 +233,7 @@ export default (props) => {
 
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? api.editGoods : api.addGoods
-      apiMethod(obj, { showSuccess: true, showError: true }).then(res => {
+      apiMethod(obj, { showSuccess: true, showError: true, paramsUndefinedToEmpty: true }).then(res => {
         if (res.code === 0) {
           resolve();
           callback();
@@ -271,7 +270,7 @@ export default (props) => {
           spec1: item.name,
           key: index,
           specValue: {
-            1: 100 + index + 1,
+            1: `10${index + 1}`,
           },
           code: `i_10${index + 1}`
         })
@@ -363,7 +362,7 @@ export default (props) => {
           titleArr.map(item => (
             <Tag
               key={item.value}
-              closable
+              // closable
               style={{ marginBottom: 10 }}
               onClose={() => {
                 setSelectAreaKey(selectAreaKey.filter(it => it !== item.value))
@@ -517,7 +516,8 @@ export default (props) => {
         className: styles.drawer_form,
         onClose: () => {
           onClose();
-        }
+        },
+        maskClosable: true,
       }}
       submitter={{
         render: (props, defaultDoms) => {
@@ -527,13 +527,13 @@ export default (props) => {
               key="look"
               onClick={(_) => {
                 const d = form.getFieldsValue();
-                if (detailData) {
-                  setLookVisible(true)
-                } else if (d.primaryImages && d.detailImages) {
+                if (d.primaryImages && d.detailImages) {
                   setLookData(d)
                   setLookVisible(true)
+                } else if (detailData) {
+                  setLookVisible(true)
                 } else {
-                  message.error('请编辑完成后预览')
+                  message.error('请上传图片后预览')
                 }
               }}
             >
@@ -668,10 +668,10 @@ export default (props) => {
         label="供货类型"
         rules={[{ required: true }]}
         options={[
-          {
-            label: '批发+零售',
-            value: 0,
-          },
+          // {
+          //   label: '批发+零售',
+          //   value: 0,
+          // },
           {
             label: '仅批发',
             value: 1,
@@ -1031,6 +1031,7 @@ export default (props) => {
           placeholder="请选择不发货地区"
           renderValue={(a, b) => renderMultiCascaderTag(b)} locale={{ searchPlaceholder: '输入省市区名称' }}
           onChange={setSelectAreaKey}
+          cleanable={false}
         />
       </Form.Item>
       <Form.Item

@@ -30,10 +30,8 @@ export default props => {
     }
   };
   function callback(key) {
-    console.log(key);
   }
   const Termination=(record)=>{
-    console.log('byid',record)
     setByid(record.sourceId)
     setVisible(true)
   }
@@ -52,6 +50,7 @@ export default props => {
         dataIndex: 'content',
         valueType: 'text',
         hideInSearch: true,
+        ellipsis:true
     },
     {
         title: '被举报次数',
@@ -67,6 +66,16 @@ export default props => {
         dataIndex: 'sourceUserId',
         valueType: 'text',
         hideInSearch:true
+    },
+    {
+        title: '状态',
+        dataIndex: 'delete',
+        valueType: 'select',
+        valueEnum: {
+            0: '正常',
+            1: '已删除',
+        },
+        hideInSearch: true,
     },
     {
       title: '操作',
@@ -122,6 +131,7 @@ export default props => {
         dataIndex: 'content',
         valueType: 'text',
         hideInSearch: true,
+        ellipsis:true
     },
     {
         title: '被举报次数',
@@ -201,11 +211,9 @@ export default props => {
     <Tabs onChange={callback} type="card">
       <TabPane tab="未处理" key="1">
         <ProTable
-          rowKey="sourceId"
+          rowKey="key"
           options={false}
           params={{
-            page:1,
-            size:5,
             status:'0',
             type:'1'
           }}
@@ -242,13 +250,10 @@ export default props => {
       </TabPane>
       <TabPane tab="已处理" key="2">
           <ProTable
-            rowKey="sourceUserId"
+            rowKey="key"
             options={false}
             params={{
-              page:1,
-              size:5,
-              type:'1',
-              // status:3
+              type:'1'
             }}
             request={adminReportList}
             actionRef={actionRef}

@@ -10,7 +10,7 @@ import SupplierSelect from '@/components/supplier-select'
 import FirstReview from './first-review';
 import SecondReview from './second-review';
 import Overrule from './overrule';
-
+import ProductDetailDrawer from '@/components/product-detail-drawer'
 import { typeTransform, amountTransform } from '@/utils/utils'
 
 
@@ -23,7 +23,7 @@ const SubTable = (props) => {
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
     { title: '零售供货价', dataIndex: 'retailSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
-    { title: '批发供货价', dataIndex: 'wholesalePrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
+    { title: '批发供货价', dataIndex: 'wholesaleSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
     { title: '批发起购量', dataIndex: 'wholesaleMinNum' },
     // { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
@@ -59,6 +59,8 @@ const TableList = () => {
   const [selectItem, setSelectItem] = useState(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [overruleVisible, setOverruleVisible] = useState(false);
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
+
 
   const actionRef = useRef();
 
@@ -137,6 +139,16 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入商品名称'
+      },
+      hideInTable: true,
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, record) => {
+        return <a onClick={() => { setSelectItem(record); setProductDetailDrawerVisible(true); }}>{_}</a>
       }
     },
     {
@@ -367,6 +379,14 @@ const TableList = () => {
         setVisible={setOverruleVisible}
         callback={(text) => { overrule(selectedRowKeys.join(','), text) }}
       />}
+      {
+        productDetailDrawerVisible &&
+        <ProductDetailDrawer
+          visible={productDetailDrawerVisible}
+          setVisible={setProductDetailDrawerVisible}
+          spuId={selectItem?.spuId}
+        />
+      }
     </PageContainer>
 
   );

@@ -36,3 +36,19 @@ export const logPage = async (params, options = {}) => {
   }
 }
 
+// 平台申请提现
+export const platformWithdraw = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/financial/account/platformWithdraw', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+
+  return {
+    data: res?.data,
+    success: res?.success
+  }
+}
+

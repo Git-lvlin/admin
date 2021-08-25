@@ -26,7 +26,7 @@ import dataBoard from './routers/data-board'
 
 
 const { REACT_APP_ENV } = process.env;
-export default defineConfig({
+const config = {
   hash: true,
   antd: {},
   dva: {
@@ -45,6 +45,7 @@ export default defineConfig({
   dynamicImport: {
     loading: '@/components/PageLoading/index',
   },
+
   targets: {
     ie: 11,
   },
@@ -110,4 +111,29 @@ export default defineConfig({
     type: 'none',
     exclude: [],
   },
-});
+}
+if (process.env.NODE_ENV !== 'development') {
+  config.chunks = ['vendors', 'umi'];
+  config.chainWebpack = function (config, { webpack }) {
+    config.merge({
+      optimization: {
+        splitChunks: {
+          chunks: 'all',
+          minSize: 30000,
+          minChunks: 3,
+          automaticNameDelimiter: '.',
+          cacheGroups: {
+            vendor: {
+              name: 'vendors',
+              test({ resource }) {
+                return /[\\/]node_modules[\\/]/.test(resource);
+              },
+              priority: 10,
+            },
+          },
+        },
+      }
+    });
+  }
+}
+export default defineConfig(config);
