@@ -16,7 +16,11 @@ const GmvOrder = () => {
   const type = query.type
 
   const skipToOrderDetail = (e) => {
-    history.push(`/order-management/normal-order-detail/${e.subId}`)
+    if(type === '1') {
+      history.push(`/order-management/intensive-order/supplier-order-detail/${e.subId}`)
+    } else {
+      history.push(`/order-management/normal-order-detail/${e.subId}`)
+    }
   }
 
   useEffect(() => {
