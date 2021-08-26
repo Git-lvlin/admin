@@ -202,6 +202,11 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => {
+
+        if (data.auditStatus !== 1 && _ === 0) {
+          return '-';
+        }
+
         if (_ === 1) {
           return '已绑卡'
         }
@@ -209,10 +214,7 @@ const TableList = () => {
         if (_ !== 1 && data.auditStatus === 1) {
           return <a onClick={() => { getDetail(data.id, 3) }}>未绑卡</a>
         }
-
-        if (_ === 0) {
-          return '未绑卡'
-        }
+        
       },
       width: 80,
     },

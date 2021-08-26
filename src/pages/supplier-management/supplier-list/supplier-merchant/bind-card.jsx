@@ -110,13 +110,13 @@ export default (props) => {
     });
   }
 
-  // const bankAccountTypeChange = (e) => {
-  //   if (e.target.value === 1) {
-  //     form.setFieldsValue({
-  //       bankAccountName: detailData.companyName
-  //     })
-  //   }
-  // }
+  const bankAccountTypeChange = (e) => {
+    if (e.target.value === 1) {
+      form.setFieldsValue({
+        bankAccountName: detailData.companyName
+      })
+    }
+  }
 
   useEffect(() => {
     if (detailData) {
@@ -209,6 +209,9 @@ export default (props) => {
                 value: 2,
               },
             ]}
+            fieldProps={{
+              onChange: bankAccountTypeChange
+            }}
           />
 
           <ProFormDependency name={['bankAccountType', 'bindBankSwitch']}>
@@ -271,13 +274,20 @@ export default (props) => {
             rules={[{ required: true, message: '请输入结算银行卡号' }]}
           // disabled={detailData?.bankAccountInfo?.auditStatus === 1}
           />
-          <ProFormText
-            name="bankAccountName"
-            label="结算银行卡开户名"
-            placeholder="请输入结算银行卡开户名"
-            rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
-            extra="银行账户类型为对公账户时，开户名为供应商家企业名称"
-          />
+          <ProFormDependency name={['bankAccountType']}>
+            {
+              ({ bankAccountType }) => (
+                <ProFormText
+                  name="bankAccountName"
+                  label="结算银行卡开户名"
+                  placeholder="请输入结算银行卡开户名"
+                  rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
+                  extra="银行账户类型为对公账户时，开户名为供应商家企业名称"
+                  disabled={bankAccountType === 1}
+                />
+              )
+            }
+          </ProFormDependency>
         </div>
       </div>
     </DrawerForm>
