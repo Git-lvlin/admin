@@ -126,9 +126,16 @@ export default {
   'menu.cms.poster': '海报管理',
   'menu.cms.content-version': '版本配置管理',
   'menu.cms.generate-invitation-code': '生成邀请码',
+  'menu.cms.home-popup': 'app首页弹窗管理',
+  'menu.cms.start-up': 'app启动广告配置',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
+
+  'menu.dc-management': 'DC管理菜单',
+  'menu.dc-management.add': '新增',
+  'menu.dc-management.list': '资源位列表',
+  'menu.dc-management.version': '资源位版本',
 
   'menu.coupon-management': '优惠券管理',
   'menu.coupon-management.coupon-list': '优惠券列表',
@@ -219,11 +226,14 @@ export default {
   'menu.financial-management.subsidy-summary-detail' : '补贴明细',
 
   'menu.data-board': '数据看板',
-  'menu.data-board.data-board-detail': '数据预览',
-  'menu.data-board.sales-data': '销售数据',
-  'menu.data-board.class-of-view': '分类查看',
-  'menu.data-board.ranking': '排名',
-  'menu.data-board.order': '订单',
-  'menu.data-board.GMV-detail': 'GMV',
+  'menu.data-board.data-preview': '数据预览',
+  'menu.data-board.data-sales': '销售数据',
+  'menu.data-board.gmv-detail': 'GMV',
   'menu.data-board.sales-detail': '销售额',
+  'menu.data-board.gmv-order': 'GMV订单列表',
+  'menu.data-board.sales-order': '销售额订单列表',
+  'menu.data-board.class-of-view': '分类查看',
+  'menu.data-board.order-list': '订单列表',
+  'menu.data-board.rank': '排名',
+  'menu.data-board.order': '订单',
 };

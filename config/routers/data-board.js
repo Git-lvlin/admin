@@ -3,44 +3,54 @@ export default {
   path: '/data-board',
   routes: [
     {
-      name: 'data-board-detail',
-      path: '/data-board/data-board',
-      component: './data-board/data-board'
+      name: 'data-preview',
+      path: '/data-board/data-preview',
+      component: './data-board/data-preview'
     },
     {
-      name: 'sales-data',
-      path: '/data-board/sales-data',
-      component: './data-board/sales-data'
+      name: 'data-sales',
+      path: '/data-board/data-sales',
+      component: './data-board/data-sales'
     },
     {
-      name: 'class-of-view',
-      path: '/data-board/class-of-view',
-      component: './data-board/class-of-view',
-      hidenMenu: true
-    },
-    {
-      name: 'ranking',
-      path: '/data-board/ranking',
-      component: './data-board/ranking',
-      hidenMenu: true
-    },
-    {
-      name: 'order',
-      path: '/data-board/order/:id',
-      component: './data-board/order-list',
-      hidenMenu: true
-    },
-    {
-      name: 'GMV-detail',
-      path: '/data-board/GMVDetail',
-      component: './data-board/GMV-detail',
-      hidenMenu: true
+      name: 'gmv-detail',
+      path: '/data-board/gmv-detail',
+      component: './data-board/data-sales/gmv-detail'
     },
     {
       name: 'sales-detail',
       path: '/data-board/sales-detail',
-      component: './data-board/sales-detail',
-      hidenMenu: true
+      component: './data-board/data-sales/sales-detail'
+    },
+    {
+      name: 'gmv-order',
+      path: '/data-board/gmv-order',
+      component: './data-board/data-sales/gmv-order'
+    },
+    {
+      name: 'sales-order',
+      path: '/data-board/sales-order',
+      component: './data-board/data-sales/sales-order'
+    },
+    {
+      name: 'class-of-view',
+      path: '/data-board/class-of-view',
+      component: './data-board/class-of-view'
+    },
+    {
+      name: 'order-list',
+      path: '/data-board/order-list',
+      component: './data-board/class-of-view/order'
+    },
+    {
+      name: 'rank',
+      path: '/data-board/rank',
+      component: './data-board/rank'
+    },
+    {
+      name: 'order',
+      path: '/data-board/order/:id',
+      component: './data-board/order'
     }
   ]
 }

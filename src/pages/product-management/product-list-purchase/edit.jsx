@@ -526,13 +526,13 @@ export default (props) => {
               key="look"
               onClick={(_) => {
                 const d = form.getFieldsValue();
-                if (detailData) {
-                  setLookVisible(true)
-                } else if (d.primaryImages && d.detailImages) {
+                if (d.primaryImages && d.detailImages) {
                   setLookData(d)
                   setLookVisible(true)
+                } else if (detailData) {
+                  setLookVisible(true)
                 } else {
-                  message.error('请编辑完成后预览')
+                  message.error('请上传图片后预览')
                 }
               }}
             >

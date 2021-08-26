@@ -115,8 +115,6 @@ const AfterSalesOrderDetails = () =>{
       valueEnum: {
         'normalOrder': '普通商品订单',
         'second': '秒约订单',
-        'single': '单约订单',
-        'group': '团约订单',
         'commandSalesOrder': '指令集约店主订单',
         'activeSalesOrder': '主动集约店主订单',
         'dropShipping1688': '1688代发订单',
@@ -132,9 +130,7 @@ const AfterSalesOrderDetails = () =>{
       valueEnum: {
         'commandSalesOrder': '指令集约店主订单',
         'dropShipping1688': '1688代发订单',
-        'second': '秒约订单',
-        'single': '单约订单',
-        'group': '团约订单',
+        'second': '秒约订单'
       },
       hideInTable: true
     },

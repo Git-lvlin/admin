@@ -31,9 +31,6 @@ const TableList = () => {
   const [importVisit, setImportVisit] = useState(false)
   const isPurchase = location.pathname.includes('purchase')
 
-
-
-
   const pageChange = (a, b) => {
     setPage(a)
     setPageSize(b)
@@ -347,7 +344,6 @@ const TableList = () => {
                   {item.refundAllRetailStatus=== 1 &&<div style={{ color: 'red' }}>已启动C端退款</div>}
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail/${item.orderId}`) }}>详情</a> */}
                   {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId)}}>启动C端退款</a></div>}
                   <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a>
                 </div>
