@@ -104,8 +104,7 @@ export default (props) => {
           resolve();
           callback();
         } else {
-          resolve();
-          callback();
+          reject();
         }
       })
     });
