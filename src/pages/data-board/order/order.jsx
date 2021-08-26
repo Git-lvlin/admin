@@ -19,7 +19,11 @@ const orderList = () => {
   const { id } = useParams()
 
   const skipToOrderDetail = (e) => {
-    history.push(`/order-management/normal-order-detail/${e.subId}`)
+    if(query.no === '1' || query.no === '2') {
+      history.push(`/order-management/intensive-order/supplier-order-detail/${e.subId}`)
+    } else {
+      history.push(`/order-management/normal-order-detail/${e.subId}`)
+    }
   }
 
   useEffect(() => {
