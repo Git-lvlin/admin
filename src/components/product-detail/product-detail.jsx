@@ -12,6 +12,7 @@ export default (props) => {
   const { detailData } = props;
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
+
   const { goods } = detailData;
   const [selectAreaKey, setSelectAreaKey] = useState([]);
   const [areaData, setAreaData] = useState([]);
@@ -354,6 +355,7 @@ export default (props) => {
       >
         <span style={{ color: 'red' }}>{detailData?.goods.goodsVerifyRemark}</span>
       </Form.Item>}
+      
       {/* 
           <ProFormSelect
             name="supplierHelperId"

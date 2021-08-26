@@ -45,18 +45,16 @@ const ImageInfo = ({ value, onChange, bankAccountType, bindBankSwitch, disabled 
   return (
     <div>
       <Space>
-        {bindBankSwitch === 1 && <>
-          {
-            bankAccountType === 1
-              ?
-              <Upload key="1" code={303} disabled={disabled} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} size={2 * 1024} accept="image/*" onChange={bankLicenseImgChange} />
-              :
-              <>
-                <Upload key="2" code={303} disabled={disabled} value={bankCardFrontImg} text="上传结算银行卡正面照" maxCount={1} size={2 * 1024} accept="image/*" onChange={bankCardFrontImgChange} />
-                <Upload key="3" code={303} disabled={disabled} value={bankCardBackImg} text="上传结算银行卡背面照" maxCount={1} accept="image/*" size={2 * 1024} onChange={bankCardBackImgChange} />
-              </>
-          }
-        </>}
+        {
+          bankAccountType === 1
+            ?
+            <Upload key="1" code={303} disabled={disabled} value={bankLicenseImg} text="上传开户银行许可证照" maxCount={1} size={2 * 1024} accept="image/*" onChange={bankLicenseImgChange} />
+            :
+            <>
+              <Upload key="2" code={303} disabled={disabled} value={bankCardFrontImg} text="上传结算银行卡正面照" maxCount={1} size={2 * 1024} accept="image/*" onChange={bankCardFrontImgChange} />
+              <Upload key="3" code={303} disabled={disabled} value={bankCardBackImg} text="上传结算银行卡背面照" maxCount={1} accept="image/*" size={2 * 1024} onChange={bankCardBackImgChange} />
+            </>
+        }
       </Space>
     </div>
 
@@ -64,7 +62,7 @@ const ImageInfo = ({ value, onChange, bankAccountType, bindBankSwitch, disabled 
 }
 
 export default (props) => {
-  const { setVisible, supplierId, callback = () => { }, onClose = () => { } } = props;
+  const { setVisible, detailData, callback = () => { }, onClose = () => { } } = props;
   const [form] = Form.useForm()
 
   const formItemLayout = {
@@ -100,13 +98,14 @@ export default (props) => {
         bankLicenseImg: [imageInfo?.bankLicenseImg],
         bankCardFrontImg: [imageInfo?.bankCardFrontImg],
         bankCardBackImg: [imageInfo?.bankCardBackImg],
-        supplierId: supplierId,
+        supplierId: detailData?.supplierId,
       }, { showSuccess: true, showError: true }).then(res => {
         if (res.code === 0) {
           resolve();
           callback();
         } else {
-          reject();
+          resolve();
+          callback();
         }
       })
     });
@@ -120,40 +119,38 @@ export default (props) => {
   //   }
   // }
 
-  // useEffect(() => {
-  //   if (detailData) {
-  //     const { bankAccountInfo } = detailData
-  //     form.setFieldsValue({
-  //       bindBankSwitch: bankAccountInfo.bindBankSwitch,
-  //     })
+  useEffect(() => {
+    if (detailData) {
+      const { bankAccountInfo } = detailData
+      form.setFieldsValue({
+        bindBankSwitch: bankAccountInfo.bindBankSwitch,
+      })
 
-  //     if (bankAccountInfo) {
-  //       const {
-  //         legalPhone,
-  //         bankLicenseImg,
-  //         bankCardFrontImg,
-  //         bankCardBackImg,
-  //         bankCode,
-  //         bankName,
-  //         bankAccountType,
-  //         bankCardNo,
-  //         bankAccountName,
-  //       } = bankAccountInfo
-  //       form.setFieldsValue({
-  //         legalPhone,
-  //         imageInfo: {
-  //           bankLicenseImg: bankLicenseImg?.[0],
-  //           bankCardBackImg: bankCardBackImg?.[0],
-  //           bankCardFrontImg: bankCardFrontImg?.[0],
-  //         },
-  //         bankCode: { label: bankName, value: bankCode },
-  //         bankAccountType,
-  //         bankCardNo,
-  //         bankAccountName: bankAccountType === 1 ? detailData.companyName : bankAccountName,
-  //       })
-  //     }
-  //   }
-  // }, [form, detailData]);
+      if (bankAccountInfo) {
+        const {
+          bankLicenseImg,
+          bankCardFrontImg,
+          bankCardBackImg,
+          bankCode,
+          bankName,
+          bankAccountType,
+          bankCardNo,
+          bankAccountName,
+        } = bankAccountInfo
+        form.setFieldsValue({
+          imageInfo: {
+            bankLicenseImg: bankLicenseImg?.[0],
+            bankCardBackImg: bankCardBackImg?.[0],
+            bankCardFrontImg: bankCardFrontImg?.[0],
+          },
+          bankCode: { label: bankName, value: bankCode },
+          bankAccountType,
+          bankCardNo,
+          bankAccountName: bankAccountType === 1 ? detailData.companyName : bankAccountName,
+        })
+      }
+    }
+  }, [form, detailData]);
 
   return (
     <DrawerForm
@@ -199,29 +196,21 @@ export default (props) => {
     >
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1 }}>
-          <ProFormDependency name={['bindBankSwitch']}>
-            {
-              ({ bindBankSwitch }) => bindBankSwitch === 1 && <ProFormRadio.Group
-                name="bankAccountType"
-                label="结算银行账户类型"
-                rules={[{ required: true }]}
-                options={[
-                  {
-                    label: '对公账户',
-                    value: 1,
-                  },
-                  {
-                    label: '对私账户',
-                    value: 2,
-                  },
-                ]}
-              // fieldProps={{
-              //   onChange: bankAccountTypeChange
-              // }}
-              // disabled={detailData?.bankAccountInfo?.auditStatus === 1}
-              />
-            }
-          </ProFormDependency>
+          <ProFormRadio.Group
+            name="bankAccountType"
+            label="结算银行账户类型"
+            rules={[{ required: true }]}
+            options={[
+              {
+                label: '对公账户',
+                value: 1,
+              },
+              {
+                label: '对私账户',
+                value: 2,
+              },
+            ]}
+          />
 
           <ProFormDependency name={['bankAccountType', 'bindBankSwitch']}>
             {
