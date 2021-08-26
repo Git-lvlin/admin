@@ -16,7 +16,6 @@ export default (props) => {
   const [selectType, setSelectType] = useState(false);
   const waitTime = (values) => {
     const { ...rest } = values
-    console.log('rest', rest)
     let param = {
       ...rest
     }
@@ -49,7 +48,6 @@ export default (props) => {
   useEffect(() => {
     if (detailDataz) {
       const { ...rest } = detailDataz;
-      console.log('detailDataz', detailDataz)
       form.setFieldsValue({
         ...rest
       })
