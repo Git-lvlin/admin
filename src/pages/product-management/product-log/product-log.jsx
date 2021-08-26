@@ -8,7 +8,7 @@ import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import Detail from './detail';
 import { amountTransform, typeTransform } from '@/utils/utils'
-
+import ProductDetailDrawer from '@/components/product-detail-drawer'
 
 
 const SubTable = (props) => {
@@ -49,6 +49,7 @@ const SubTable = (props) => {
 const TableList = () => {
   const [visible, setVisible] = useState(false);
   const [selectId, setSelectId] = useState(null);
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
   const [config, setConfig] = useState({});
 
   const columns = [
@@ -83,6 +84,16 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入商品名称'
+      },
+      hideInTable: true,
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, record) => {
+        return <a onClick={() => { setSelectId(record.spuId); setProductDetailDrawerVisible(true); }}>{_}</a>
       }
     },
     {
@@ -207,6 +218,14 @@ const TableList = () => {
         operateRole={typeTransform(config.operateRole)}
         operatorAction={typeTransform(config.goodsOperatorActionType)}
       />
+      {
+        productDetailDrawerVisible &&
+        <ProductDetailDrawer
+          visible={productDetailDrawerVisible}
+          setVisible={setProductDetailDrawerVisible}
+          spuId={selectId}
+        />
+      }
     </PageContainer>
 
   );

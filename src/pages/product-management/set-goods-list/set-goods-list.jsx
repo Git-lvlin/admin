@@ -8,6 +8,7 @@ import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import { typeTransform, amountTransform } from '@/utils/utils'
 import Edit from '../product-list/edit'
+import ProductDetailDrawer from '@/components/product-detail-drawer'
 
 
 
@@ -50,8 +51,10 @@ const SubTable = (props) => {
 const TableList = () => {
   const [config, setConfig] = useState({});
   const [detailData, setDetailData] = useState(null);
+  const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
 
 
   const getDetail = (record) => {
@@ -100,6 +103,16 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入商品名称'
+      },
+      hideInTable: true,
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, record) => {
+        return <a onClick={() => { setSelectItem(record); setProductDetailDrawerVisible(true); }}>{_}</a>
       }
     },
     {
@@ -294,6 +307,14 @@ const TableList = () => {
         callback={() => { actionRef.current.reload(); setDetailData(null) }}
         onClose={() => { setDetailData(null) }}
       />}
+      {
+        productDetailDrawerVisible &&
+        <ProductDetailDrawer
+          visible={productDetailDrawerVisible}
+          setVisible={setProductDetailDrawerVisible}
+          spuId={selectItem.spuId}
+        />
+      }
     </PageContainer>
 
   );

@@ -3,16 +3,35 @@ import { Drawer, Button, Image, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import Overrule from './overrule';
 import * as api from '@/services/product-management/product-review'
+
+import ProductDetailDrawer from '@/components/product-detail-drawer'
+
 // import Edit from '../product-list/edit';
 
 
 const UserDetail = (props) => {
   const { visible, setVisible, record, operateRole, overrule, check } = props;
   const [overruleVisible, setOverruleVisible] = useState(false);
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
+
   // const [hasChange, setHasChange] = useState(false);
   // const [formVisible, setFormVisible] = useState(false);
-  // const [detailData, setDetailData] = useState(null);
+  const [detailData, setDetailData] = useState(null);
   const actionRef = useRef();
+
+  const getDetail = (id) => {
+    api.getDetail({
+      spuId: id
+    }).then(res => {
+      if (res.code === 0) {
+        setDetailData({
+          ...res.data,
+          settleType: 2,
+        });
+        setProductDetailDrawerVisible(true)
+      }
+    })
+  }
 
 
   const columns = [
@@ -111,19 +130,6 @@ const UserDetail = (props) => {
     return data;
   }
 
-  const getDetail = () => {
-    api.getDetail({
-      spuId: record.spuId
-    }).then(res => {
-      if (res.code === 0) {
-        setDetailData({
-          ...res.data,
-          settleType: 2,
-        });
-        setFormVisible(true);
-      }
-    })
-  }
 
   return (
     <Drawer
@@ -176,6 +182,26 @@ const UserDetail = (props) => {
         postData={postData}
         search={{
           defaultCollapsed: false,
+          optionRender: ({ searchText, resetText }, { form }) => [
+            <Button
+              key="search"
+              type="primary"
+              onClick={() => {
+                form?.submit();
+              }}
+            >
+              {searchText}
+            </Button>,
+            <Button
+              key="rest"
+              onClick={() => {
+                form?.resetFields();
+              }}
+            >
+              {resetText}
+            </Button>,
+            <Button key="out" type="primary" onClick={() => { getDetail(record.spuId) }}>查看商品全部信息</Button>,
+          ],
         }}
         columns={columns}
         actionRef={actionRef}
@@ -185,13 +211,14 @@ const UserDetail = (props) => {
         setVisible={setOverruleVisible}
         callback={(text) => { overrule([record.spuId].join(','), text) }}
       />}
-      {/* {formVisible && <Edit
-        visible={formVisible}
-        setVisible={setFormVisible}
-        detailData={detailData}
-        callback={() => { actionRef.current.reload(); setDetailData(null) }}
-        onClose={() => { setDetailData(null) }}
-      />} */}
+      {
+        productDetailDrawerVisible &&
+        <ProductDetailDrawer
+          visible={productDetailDrawerVisible}
+          setVisible={setProductDetailDrawerVisible}
+          spuId={record.spuId}
+        />
+      }
     </Drawer>
   )
 }

@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Tooltip, Table, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import XLSX from 'xlsx'
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import * as api from '@/services/product-management/product-list';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
-import SupplierSelect from '@/components/supplier-select'
+import ProductDetailDrawer from '@/components/product-detail-drawer'
+// import SupplierSelect from '@/components/supplier-select'
 import Edit from './edit';
 import OffShelf from './off-shelf';
 import { amountTransform, typeTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -50,14 +52,16 @@ const SubTable = (props) => {
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [config, setConfig] = useState({});
   const [offShelfVisible, setOffShelfVisible] = useState(false);
   const [selectItemId, setSelectItemId] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
+  const [visit, setVisit] = useState(false)
 
-  const getDetail = (id) => {
+  const getDetail = (id, cb) => {
     api.getDetail({
       spuId: id
     }).then(res => {
@@ -66,7 +70,10 @@ const TableList = () => {
           ...res.data,
           settleType: 2,
         });
-        setFormVisible(true);
+
+        if (cb) {
+          cb();
+        }
       }
     })
   }
@@ -125,6 +132,16 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入商品名称'
+      },
+      hideInTable: true,
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, record) => {
+        return <a onClick={() => { setSelectItemId(record.spuId); setProductDetailDrawerVisible(true); }}>{_}</a>
       }
     },
     {
@@ -283,7 +300,7 @@ const TableList = () => {
           <>
             {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { setSelectItemId(record.spuId); setOffShelfVisible(true) }}>下架</a>}
             &nbsp;{(goodsVerifyState === 1 && goodsState === 0) && <a onClick={() => { onShelf(record.spuId) }}>上架</a>}
-            &nbsp;<a onClick={() => { getDetail(record.spuId) }}>编辑</a>
+            &nbsp;<a onClick={() => { getDetail(record.spuId, () => { setFormVisible(true); }) }}>编辑</a>
           </>
         )
       },
@@ -350,6 +367,17 @@ const TableList = () => {
     //   }
     // })
   }
+  const getFieldValue = () => {
+    if (formRef?.current?.getFieldsValue) {
+      const { current, pageSize, gcId = [], ...rest } = formRef?.current?.getFieldsValue?.();
+      return {
+        gcId1: gcId[0],
+        gcId2: gcId[1],
+        ...rest
+      }
+    }
+    return {}
+  }
 
   useEffect(() => {
     api.getConfig()
@@ -398,7 +426,13 @@ const TableList = () => {
             >
               {resetText}
             </Button>,
-            <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
+            <Export
+              key="3"
+              change={(e) => { setVisit(e) }}
+              type="goods-export"
+              conditions={getFieldValue}
+            />,
+            <ExportHistory key="4" show={visit} setShow={setVisit} type="goods-export" />,
           ],
         }}
         columns={columns}
@@ -415,6 +449,15 @@ const TableList = () => {
         setVisible={setOffShelfVisible}
         callback={(text) => { offShelf(selectItemId, text) }}
       />}
+      {
+        productDetailDrawerVisible &&
+        <ProductDetailDrawer
+          visible={productDetailDrawerVisible}
+          setVisible={setProductDetailDrawerVisible}
+          spuId={selectItemId}
+        />
+      }
+
     </PageContainer>
   );
 };
