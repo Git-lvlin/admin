@@ -23,7 +23,7 @@ export default (props) => {
     if (detailDataz.id) {
       param.id = detailDataz.id
     }
-    param.actionUrl = `https://publicmobile-uat.yeahgo.com/web/market?spuId=${index.spuId}&skuId=${index.skuId}`
+    param.actionUrl = `https://publicmobile-uat.yeahgo.com/web/market?spuId=${index.spuId}&skuId=${index.skuId}&orderType=${index.orderType}`
     console.log('param', param)
     return new Promise((resolve, reject) => {
       merketDetailUpdata(param).then((res) => {
@@ -41,7 +41,7 @@ export default (props) => {
   useEffect(() => {
     if (index.spuId) {
       form.setFieldsValue({
-        actionUrl: `https://publicmobile-uat.yeahgo.com/web/market?spuId=${index.spuId}&skuId=${index.skuId||''}`
+        actionUrl: `https://publicmobile-uat.yeahgo.com/web/market?spuId=${index.spuId}&skuId=${index.skuId||''}&orderType=${index.orderType}`
       })
     }
   }, [index])
