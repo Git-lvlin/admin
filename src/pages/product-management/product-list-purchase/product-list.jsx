@@ -12,6 +12,8 @@ import Edit from './edit';
 import OffShelf from './off-shelf';
 import { amountTransform, typeTransform } from '@/utils/utils'
 import ProductDetailDrawer from '@/components/product-detail-drawer'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 
 const SubTable = (props) => {
@@ -56,7 +58,7 @@ const TableList = () => {
   const [config, setConfig] = useState({});
   const [offShelfVisible, setOffShelfVisible] = useState(false);
   const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
-
+  const [visit, setVisit] = useState(false)
   const [selectItemId, setSelectItemId] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
@@ -365,6 +367,18 @@ const TableList = () => {
     // })
   }
 
+  const getFieldValue = () => {
+    if (formRef?.current?.getFieldsValue) {
+      const { current, pageSize, gcId = [], ...rest } = formRef?.current?.getFieldsValue?.();
+      return {
+        gcId1: gcId[0],
+        gcId2: gcId[1],
+        ...rest
+      }
+    }
+    return {}
+  }
+
   useEffect(() => {
     api.getConfig()
       .then(res => {
@@ -412,7 +426,13 @@ const TableList = () => {
             >
               {resetText}
             </Button>,
-            <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
+            <Export
+              key="3"
+              change={(e) => { setVisit(e) }}
+              type="goods-export"
+              conditions={getFieldValue}
+            />,
+            <ExportHistory key="4" show={visit} setShow={setVisit} type="goods-export" />,
           ],
         }}
         columns={columns}

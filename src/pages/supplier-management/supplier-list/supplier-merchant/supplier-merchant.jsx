@@ -43,8 +43,10 @@ const TableList = () => {
         })
         if (type === 1) {
           setBasicInfoVisible(true)
-        } else {
+        } else if (type === 2) {
           setAccountInfoVisible(true)
+        } else {
+          setBandCardVisible(true)
         }
       }
     })
@@ -93,6 +95,15 @@ const TableList = () => {
         placeholder: '请输入供应商家名称'
       },
       width: 200,
+    },
+    {
+      title: '供应商家ID',
+      dataIndex: 'supplierId',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入供应商家ID'
+      },
+      hideInTable: true,
     },
     {
       title: '登录账号',
@@ -196,7 +207,7 @@ const TableList = () => {
         }
 
         if (_ !== 1 && data.auditStatus === 1) {
-          return <a onClick={() => { setSelectItem(data); setBandCardVisible(true) }}>未绑卡</a>
+          return <a onClick={() => { getDetail(data.id, 3) }}>未绑卡</a>
         }
 
         if (_ === 0) {
@@ -291,9 +302,9 @@ const TableList = () => {
         bandCardVisible
         &&
         <BankCard
-          supplierId={selectItem.id}
+          detailData={detailData}
           setVisible={setBandCardVisible}
-          callback={() => { actionRef.current.reload(); setSelectItem(null) }}
+          callback={() => { actionRef.current.reload(); setDetailData(null) }}
         />
       }
 

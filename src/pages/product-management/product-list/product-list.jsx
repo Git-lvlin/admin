@@ -11,6 +11,8 @@ import ProductDetailDrawer from '@/components/product-detail-drawer'
 import Edit from './edit';
 import OffShelf from './off-shelf';
 import { amountTransform, typeTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -57,6 +59,7 @@ const TableList = () => {
   const [selectItemId, setSelectItemId] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
+  const [visit, setVisit] = useState(false)
 
   const getDetail = (id, cb) => {
     api.getDetail({
@@ -67,7 +70,7 @@ const TableList = () => {
           ...res.data,
           settleType: 2,
         });
-        
+
         if (cb) {
           cb();
         }
@@ -297,7 +300,7 @@ const TableList = () => {
           <>
             {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { setSelectItemId(record.spuId); setOffShelfVisible(true) }}>下架</a>}
             &nbsp;{(goodsVerifyState === 1 && goodsState === 0) && <a onClick={() => { onShelf(record.spuId) }}>上架</a>}
-            &nbsp;<a onClick={() => { getDetail(record.spuId, () => { setFormVisible(true);}) }}>编辑</a>
+            &nbsp;<a onClick={() => { getDetail(record.spuId, () => { setFormVisible(true); }) }}>编辑</a>
           </>
         )
       },
@@ -364,6 +367,17 @@ const TableList = () => {
     //   }
     // })
   }
+  const getFieldValue = () => {
+    if (formRef?.current?.getFieldsValue) {
+      const { current, pageSize, gcId = [], ...rest } = formRef?.current?.getFieldsValue?.();
+      return {
+        gcId1: gcId[0],
+        gcId2: gcId[1],
+        ...rest
+      }
+    }
+    return {}
+  }
 
   useEffect(() => {
     api.getConfig()
@@ -412,7 +426,13 @@ const TableList = () => {
             >
               {resetText}
             </Button>,
-            // <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
+            <Export
+              key="3"
+              change={(e) => { setVisit(e) }}
+              type="goods-export"
+              conditions={getFieldValue}
+            />,
+            <ExportHistory key="4" show={visit} setShow={setVisit} type="goods-export" />,
           ],
         }}
         columns={columns}
