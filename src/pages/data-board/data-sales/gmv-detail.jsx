@@ -19,7 +19,7 @@ const GmvDetail = () => {
       time,
       type
     }).then(res => {
-      setData(res.data)
+      !!Object.keys(res.data[0]).length&&setData(res.data)
     }).finally(()=> {
       setLoading(false)
     })
