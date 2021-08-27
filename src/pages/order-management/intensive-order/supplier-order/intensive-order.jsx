@@ -130,12 +130,18 @@ const TableList = () => {
                     conditions={getFieldValue()}
                   />
                   <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`} />
-                  <Import
-                    change={(e) => { setImportVisit(e) }}
-                    code="order_intensive_send_goods_import"
-                    conditions={getFieldValue()}
-                  />
-                  <ImportHistory show={importVisit} setShow={setImportVisit} type="order_intensive_send_goods_import" />
+                  {
+                    isPurchase
+                    &&
+                    <>
+                      <Import
+                        change={(e) => { setImportVisit(e) }}
+                        code="order_intensive_send_goods_import"
+                        conditions={getFieldValue()}
+                      />
+                      <ImportHistory show={importVisit} setShow={setImportVisit} type="order_intensive_send_goods_import" />
+                    </>
+                  }
                 </Space>
               </div>
             );
@@ -342,7 +348,6 @@ const TableList = () => {
                   {item.refundAllRetailStatus=== 1 &&<div style={{ color: 'red' }}>已启动C端退款</div>}
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail/${item.orderId}`) }}>详情</a> */}
                   {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId)}}>启动C端退款</a></div>}
                   <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a>
                 </div>

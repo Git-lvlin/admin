@@ -7,7 +7,8 @@ import * as api from '@/services/product-management/product-log';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import Detail from './detail';
-import { typeTransform } from '@/utils/utils'
+import { amountTransform, typeTransform } from '@/utils/utils'
+import ProductDetailDrawer from '@/components/product-detail-drawer'
 
 
 const SubTable = (props) => {
@@ -16,10 +17,10 @@ const SubTable = (props) => {
   const columns = [
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
-    { title: '零售供货价', dataIndex: 'retailSupplyPriceDisplay' },
-    { title: '批发价', dataIndex: 'wholesalePriceDisplay' },
+    { title: '零售供货价', dataIndex: 'retailSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
+    { title: '批发供货价', dataIndex: 'wholesaleSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
     { title: '批发起购量', dataIndex: 'wholesaleMinNum' },
-    { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
+    // { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
     { title: '商品价格', dataIndex: 'salePriceDisplay' },
     { title: '可用库存', dataIndex: 'stockNum' },
@@ -48,6 +49,7 @@ const SubTable = (props) => {
 const TableList = () => {
   const [visible, setVisible] = useState(false);
   const [selectId, setSelectId] = useState(null);
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
   const [config, setConfig] = useState({});
 
   const columns = [
@@ -82,6 +84,16 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入商品名称'
+      },
+      hideInTable: true,
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, record) => {
+        return <a onClick={() => { setSelectId(record.spuId); setProductDetailDrawerVisible(true); }}>{_}</a>
       }
     },
     {
@@ -206,6 +218,14 @@ const TableList = () => {
         operateRole={typeTransform(config.operateRole)}
         operatorAction={typeTransform(config.goodsOperatorActionType)}
       />
+      {
+        productDetailDrawerVisible &&
+        <ProductDetailDrawer
+          visible={productDetailDrawerVisible}
+          setVisible={setProductDetailDrawerVisible}
+          spuId={selectId}
+        />
+      }
     </PageContainer>
 
   );

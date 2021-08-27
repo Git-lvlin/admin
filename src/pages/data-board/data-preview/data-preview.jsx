@@ -73,10 +73,6 @@ const DataBord = ()=> {
                 会员店：
                 <span>{memberCount.memeberStoreCount}</span>
               </div>
-              {/* <div>
-                经销商：
-                <span>{memberCount.agentCount}</span>
-              </div> */}
             </div>
             <div className={styles.line}>
               <div>
@@ -113,12 +109,12 @@ const DataBord = ()=> {
           colSpan={{ xs: 24, sm: 12, md: 12, lg: 12, xl: 12 }} 
           bordered
         >
-          <div className={styles.sales}>
-            <div className={styles.title}>
+          <div className={styles.bottom}>
+            <div>
               商家可售商品SKU：
               <span>{sku.supplierSkuCount}</span>
             </div>
-            <div className={styles.title}>
+            <div>
               内部店可售商品SKU：
               <span>{sku.agentSkuCount}</span>
             </div>

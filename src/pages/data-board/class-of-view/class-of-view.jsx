@@ -72,7 +72,7 @@ const StatisticCard_ = (props) => {
 }
 
 const skipToRank = (type, orderType) => {
-  history.push(`/data-board/ranking?type=${type}&orderType=${orderType}`)
+  history.push(`/data-board/rank?type=${type}&orderType=${orderType}`)
 }
 
 const ClassOfView = ()=> {

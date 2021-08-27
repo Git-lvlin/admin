@@ -52,35 +52,35 @@ const Detail = () => {
         return (
           <>
             <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
-            <span>货款交易费: ¥{amountTransform(fee, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'commission':
         return (
           <>
-            <span className={styles.amount}>提成: ¥{amountTransform(amount, '/')}</span>
-            <span>提成交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>店主收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'platformCommission':
         return (
           <>
-            <span className={styles.amount}>佣金: ¥{amountTransform(amount, '/')}</span>
-            <span>佣金交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>平台收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'suggestCommission':
         return (
           <>
-            <span className={styles.amount}>推荐提成: ¥{amountTransform(amount, '/')}</span>
-            <span>推荐提成交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>店主推荐收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
-      case 'agentCompanyCommission':
+      case 'agentCompanyCommission':  
         return (
           <>
-            <span className={styles.amount}>经销商提成: ¥{amountTransform(amount, '/')}</span>
-            <span>经销商提成交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>经销商收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       default:
@@ -99,8 +99,6 @@ const Detail = () => {
       valueEnum: {
         'normalOrder': '普通订单',
         'second': '秒约',
-        'single': '单约',
-        'group': '团约',
         'commandSalesOrder': '指令集约店主订单',
         'activeSalesOrder': '主动集约店主订单',
         'dropShipping1688': '1688代发订单',
@@ -129,7 +127,7 @@ const Detail = () => {
       dataIndex: 'sellerType'
     },
     {
-      title: '',
+      title: ' ',
       dataIndex: ''
     },
     {
@@ -175,22 +173,6 @@ const Detail = () => {
               </div>
             ))
           }
-          {/* <ModalForm
-            title='日志信息'
-            width={700}
-            modalProps={{
-              closable: true,
-              destroyOnClose: true
-            }}
-            trigger={
-              <Button size="large" type="primary">查看日志</Button>
-            }
-            onFinish={()=> true}
-          >
-            <Timeline className={styles.timelineWarp}>
-              {openLog(data?.processLog)}
-            </Timeline>
-          </ModalForm> */}
         </>
       )
     },

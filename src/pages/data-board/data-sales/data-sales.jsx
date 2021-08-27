@@ -6,7 +6,7 @@ import { Button, Form, Space } from 'antd'
 import moment from 'moment'
 import { history } from 'umi'
 
-import TableList from './form'
+import FormTable from './form'
 import styles from './styles.less'
 import {
   sumDayGmv,
@@ -350,7 +350,7 @@ const SalesData = ()=> {
           {dateSelect} 至 {dateNow}
         </div>
       </ProForm>
-      <TableList
+      <FormTable
         startTime={dateSelect}
         endTime={ dateNow }
         form={form}

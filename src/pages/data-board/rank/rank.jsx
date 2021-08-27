@@ -145,27 +145,83 @@ const Ranking = () => {
   const rankType = (e) => {
     switch(query.type) {
       case '1':
+        return {
+          id: 'supplierId',
+          name: 'companyName',
+          url: ()=>(
+            history.push(`/data-board/order/${e?.supplierId}?orderType=${e&&Object.keys(e)[2]}&no=${query.type}&type=1`
+          ))
+        }
       case '4':
+        return {
+          id: 'supplierId',
+          name: 'companyName',
+          url: ()=>(
+            history.push(`/data-board/order/${e?.supplierId}?orderType=${e&&Object.keys(e)[2]}&no=${query.type}&type=3`
+          ))
+        }
       case '6':
+        return {
+          id: 'supplierId',
+          name: 'companyName',
+          url: ()=>(
+            history.push(`/data-board/order/${e?.supplierId}?orderType=${e&&Object.keys(e)[2]}&no=${query.type}&type=1`
+          ))
+        }
       case '9':
         return {
           id: 'supplierId',
           name: 'companyName',
           url: ()=>(
-            history.push(`/data-board/order/${e?.supplierId}?type=${query.orderType}`
+            history.push(`/data-board/order/${e?.supplierId}?orderType=${e&&Object.keys(e)[2]}&no=${query.type}&type=3`
           ))
         }
       case '2':
+        return {
+          id: 'storeId',
+          name: 'storeName',
+          url: ()=>(
+            history.push(`/data-board/order/${e?.storeId}?orderType=${e&&Object.keys(e)[1]}&no=${query.type}&type=1`)
+          )
+        }
       case '3':
+        return {
+          id: 'storeId',
+          name: 'storeName',
+          url: ()=>(
+            history.push(`/data-board/order/${e?.storeId}?orderType=${e&&Object.keys(e)[1]}&no=${query.type}&type=2`)
+          )
+        }
       case '5':
+        return {
+          id: 'storeId',
+          name: 'storeName',
+          url: ()=>(
+            history.push(`/data-board/order/${e?.storeId}?orderType=${e&&Object.keys(e)[1]}&no=${query.type}&type=4`)
+          )
+        }
       case '7':
+        return {
+          id: 'storeId',
+          name: 'storeName',
+          url: ()=>(
+            history.push(`/data-board/order/${e?.storeId}?orderType=${e&&Object.keys(e)[1]}&no=${query.type}&type=1`)
+          )
+        }
       case '8':
+        return {
+          id: 'storeId',
+          name: 'storeName',
+          url: ()=>(
+            history.push(`/data-board/order/${e?.storeId}?orderType=${e&&Object.keys(e)[1]}&no=${query.type}&type=2`)
+          )
+        }
       case '10':
         return {
           id: 'storeId',
           name: 'storeName',
           url: ()=>(
-            history.push(`/data-board/order/${e?.storeId}?type=${query.orderType}`)
+            history.push(`/data-board/order/${e?.storeId}?orderType=${e&&Object.keys(e)[1]}&no=${query.type}&type=4`)
           )
         }
     }

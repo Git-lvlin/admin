@@ -11,6 +11,10 @@ import SupplierSelect from '@/components/supplier-select'
 import Edit from './edit';
 import OffShelf from './off-shelf';
 import { amountTransform, typeTransform } from '@/utils/utils'
+import ProductDetailDrawer from '@/components/product-detail-drawer'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -20,7 +24,7 @@ const SubTable = (props) => {
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
     { title: '零售供货价', dataIndex: 'retailSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
-    { title: '批发供货价', dataIndex: 'wholesalePrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
+    { title: '批发供货价', dataIndex: 'wholesaleSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
     { title: '批发起购量', dataIndex: 'wholesaleMinNum' },
     // { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
@@ -53,6 +57,8 @@ const TableList = () => {
   const [detailData, setDetailData] = useState(null);
   const [config, setConfig] = useState({});
   const [offShelfVisible, setOffShelfVisible] = useState(false);
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
+  const [visit, setVisit] = useState(false)
   const [selectItemId, setSelectItemId] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
@@ -125,6 +131,16 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入商品名称'
+      },
+      hideInTable: true,
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, record) => {
+        return <a onClick={() => { setSelectItemId(record.spuId); setProductDetailDrawerVisible(true); }}>{_}</a>
       }
     },
     {
@@ -351,6 +367,18 @@ const TableList = () => {
     // })
   }
 
+  const getFieldValue = () => {
+    if (formRef?.current?.getFieldsValue) {
+      const { current, pageSize, gcId = [], ...rest } = formRef?.current?.getFieldsValue?.();
+      return {
+        gcId1: gcId[0],
+        gcId2: gcId[1],
+        ...rest
+      }
+    }
+    return {}
+  }
+
   useEffect(() => {
     api.getConfig()
       .then(res => {
@@ -398,7 +426,13 @@ const TableList = () => {
             >
               {resetText}
             </Button>,
-            <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
+            <Export
+              key="3"
+              change={(e) => { setVisit(e) }}
+              type="goods-export"
+              conditions={getFieldValue}
+            />,
+            <ExportHistory key="4" show={visit} setShow={setVisit} type="goods-export" />,
           ],
         }}
         columns={columns}
@@ -415,6 +449,14 @@ const TableList = () => {
         setVisible={setOffShelfVisible}
         callback={(text) => { offShelf(selectItemId, text) }}
       />}
+      {
+        productDetailDrawerVisible &&
+        <ProductDetailDrawer
+          visible={productDetailDrawerVisible}
+          setVisible={setProductDetailDrawerVisible}
+          spuId={selectItemId}
+        />
+      }
 
     </PageContainer>
   );
