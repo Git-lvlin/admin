@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Button, Form, Image } from 'antd';
 import { EyeOutlined } from '@ant-design/icons'
 import {
@@ -12,6 +12,9 @@ import Overrule from './overrule';
 import EditTable from './edit-table';
 import { amountTransform } from '@/utils/utils'
 import styles from './first-review.less'
+import * as api from '@/services/product-management/product-list';
+import debounce from 'lodash/debounce';
+import Look from './look';
 
 export default (props) => {
   const { visible, setVisible, detailData, check, overrule } = props;
@@ -19,7 +22,8 @@ export default (props) => {
   const [tableData, setTableData] = useState([]);
   const [tableHead, setTableHead] = useState([]);
   const [form] = Form.useForm()
-
+  const [salePriceProfitLoss, setSalePriceProfitLoss] = useState(null);
+  const [lookVisible, setLookVisible] = useState(false);
   const type = useRef(0)
 
   const { goods } = detailData;
@@ -57,10 +61,13 @@ export default (props) => {
           return {
             ...item[1],
             retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
+            wholesaleSupplyPrice: amountTransform(item[1].wholesaleSupplyPrice, '/'),
             // suggestedRetailPrice: amountTransform(item[1].retailSupplyPrice, '/'),
             // wholesalePrice: amountTransform(item[1].retailSupplyPrice, '/'),
-            salePrice: amountTransform(item[1].retailSupplyPrice, '/'),
-            marketPrice: amountTransform(item[1].retailSupplyPrice, '/'),
+            salePrice: amountTransform(item[1].salePrice, '/'),
+            marketPrice: amountTransform(item[1].marketPrice, '/'),
+            salePriceFloat: amountTransform(item[1].salePriceFloat),
+            salePriceProfitLoss: amountTransform(item[1].salePriceProfitLoss, '/'),
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -70,8 +77,10 @@ export default (props) => {
       }
 
       form.setFieldsValue({
-        salePrice: amountTransform(detailData?.goods?.retailSupplyPrice, '/'),
-        marketPrice: amountTransform(detailData?.goods?.retailSupplyPrice, '/'),
+        salePrice: amountTransform(detailData?.goods?.salePrice, '/'),
+        marketPrice: amountTransform(detailData?.goods?.marketPrice, '/'),
+        supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId,
+        salePriceFloat: amountTransform(detailData?.goods?.salePriceFloat),
       })
     }
 
@@ -84,54 +93,42 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        width: 1200,
+        width: 1300,
       }}
       form={form}
-      onFinish={(values) => {
-        const { supplierHelperId, settleType, salePrice, marketPrice } = values;
-        let goodsInfo = {
-          salePrice: amountTransform(salePrice),
-          marketPrice: amountTransform(marketPrice),
-          skuId: detailData.goods.skuId,
-          retailSupplyPrice: detailData.goods.retailSupplyPrice
-        }
-
-        if (detailData.isMultiSpec) {
-          goodsInfo = tableData.map(item => ({
-            salePrice: amountTransform(item.salePrice),
-            marketPrice: amountTransform(item.marketPrice),
-            skuId: item.skuId,
-            retailSupplyPrice: amountTransform(item.retailSupplyPrice)
-          }))
-        }
-
-        check(type.current, 1, detailData.spuId, {
-          supplierHelperId,
-          settleType,
-          goodsInfo
-        });
+      onFinish={() => {
+        check(detailData.spuId);
       }}
       submitter={{
         render: (props) => {
           return [
-            <Button key="1" type="primary" onClick={() => { type.current = 1; props.submit(); }}>
-              通过并上架
+            <Button key="1" type="primary" onClick={() => { props.submit(); }}>
+              审核通过
             </Button>,
-            <Button key="2" onClick={() => { type.current = 2; props.submit(); }}>
-              通过但不上架
-            </Button>,
-            <Button type="primary" key="3" danger onClick={() => { setOverruleVisible(true) }}>
-              驳回
+            <Button type="danger" key="3" danger onClick={() => { setOverruleVisible(true) }}>
+              审核驳回
             </Button>,
             <Button key="4" onClick={() => { setVisible(false) }}>
               返回
+            </Button>,
+            <Button
+              key="look"
+              onClick={(_) => {
+                if (detailData) {
+                  setLookVisible(true)
+                } else {
+                  message.error('请上传图片后预览')
+                }
+              }}
+            >
+              预览
             </Button>,
           ];
         },
       }}
       visible={visible}
       initialValues={{
-        settleType: 1,
+        settleType: 2,
       }}
       {...formItemLayout}
     >
@@ -140,23 +137,12 @@ export default (props) => {
       >
         {goods.goodsName}
       </Form.Item>
+
       <Form.Item
-        label="单位运费(元)"
+        label="商品品类"
       >
-        {goods.wholesaleFreight}
+        {`${goods.gcId1Display}/${goods.gcId2Display}`}
       </Form.Item>
-      <Form.Item
-        label="发票税率(%)"
-      >
-        {goods.wholesaleTaxRate}
-      </Form.Item>
-      {goods.goodsDesc &&
-        <Form.Item
-          label="商品副标题"
-        >
-          {goods.goodsDesc}
-        </Form.Item>
-      }
 
       <Form.Item
         label="商品编号"
@@ -164,19 +150,6 @@ export default (props) => {
         {goods.supplierSpuId}
       </Form.Item>
 
-      {goods.goodsKeywords &&
-        <Form.Item
-          label="搜索关键字"
-        >
-          {goods.goodsKeywords}
-        </Form.Item>
-      }
-
-      <Form.Item
-        label="商品品类"
-      >
-        {`${goods.gcId1Display}/${goods.gcId2Display}`}
-      </Form.Item>
       {goods.brandIdDisplay &&
         <Form.Item
           label="商品品牌"
@@ -191,32 +164,62 @@ export default (props) => {
       </Form.Item>
 
       <Form.Item
+        label="平均运费(元)"
+      >
+        {amountTransform(goods.wholesaleFreight, '/')}
+      </Form.Item>
+      <Form.Item
+        label="商品开票税率(%)"
+      >
+        {amountTransform(goods.wholesaleTaxRate)}
+      </Form.Item>
+      {detailData?.goods?.goodsSaleType !== 1 && <Form.Item
+        label="是否包邮"
+      >
+        {{ 0: '不包邮', 1: '包邮', }[goods.isFreeFreight]}
+      </Form.Item>}
+
+      {detailData.freightTemplateName &&
+        <Form.Item
+          label="运费模板"
+        >
+          {detailData.freightTemplateName}
+        </Form.Item>}
+      {goods.goodsKeywords &&
+        <Form.Item
+          label="搜索关键字"
+        >
+          {goods.goodsKeywords}
+        </Form.Item>
+      }
+
+      <Form.Item
         label="规格属性"
       >
         {{ 0: '单规格', 1: '多规格' }[detailData.isMultiSpec]}
       </Form.Item>
 
-      <ProFormRadio.Group
+      {/* <ProFormRadio.Group
         name="settleType"
         label="结算模式"
         rules={[{ required: true }]}
         options={[
-          {
-            label: '佣金模式',
-            value: 1,
-          },
+          // {
+          //   label: '佣金模式',
+          //   value: 1,
+          // },
           {
             label: '底价模式',
             value: 2,
           },
         ]}
-      />
+      /> */}
 
-      <ProFormSelect
+      {/* <ProFormSelect
         name="supplierHelperId"
-        label="供应商顾问"
+        label="供应商家顾问"
         options={detailData?.supplierHelpList?.map(item => ({ label: item.companyName, value: item.id }))}
-      />
+      /> */}
 
       {
         detailData.isMultiSpec === 1
@@ -226,7 +229,15 @@ export default (props) => {
               {
                 ({ settleType }) => (
                   <>
-                    {!!tableData.length && <EditTable settleType={settleType} tableHead={tableHead} tableData={tableData} setTableData={setTableData} />}
+                    {!!tableData.length &&
+                      <EditTable
+                        settleType={settleType}
+                        tableHead={tableHead}
+                        tableData={tableData}
+                        setTableData={setTableData}
+                        wholesaleTaxRate={detailData?.goods?.wholesaleTaxRate}
+                        goodsSaleType={detailData?.goods?.goodsSaleType}
+                      />}
                   </>
                 )
               }
@@ -235,82 +246,46 @@ export default (props) => {
           </>
           :
           <>
-            <Form.Item
-              label="供货价"
+            {
+              detailData?.goods?.goodsSaleType !== 2
+              &&
+              <>
+                <Form.Item
+                  label="批发供货价(元)"
+                >
+                  {amountTransform(goods.wholesaleSupplyPrice, '/')}
+                </Form.Item>
+                <Form.Item
+                  label="最低批发量"
+                >
+                  {goods.wholesaleMinNum}
+                </Form.Item>
+              </>
+            }
+
+            {detailData?.goods?.goodsSaleType !== 1 && <Form.Item
+              label="零售供货价(元)"
             >
               {amountTransform(goods.retailSupplyPrice, '/')}
-            </Form.Item>
-            <ProFormText
-              name="marketPrice"
-              label="市场价"
-              placeholder="请输入市场价"
-              validateFirst
-              rules={[
-                { required: true, message: '请输入市场价' },
-                () => ({
-                  validator(_, value) {
-                    if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                      return Promise.reject(new Error('请输入大于零的数字'));
-                    }
-                    return Promise.resolve();
-                  },
-                })
-              ]}
-            />
-            <ProFormDependency name={['settleType']}>
-              {
-                ({ settleType }) => (
-                  <>
-
-                    <ProFormText
-                      name="salePrice"
-                      label="秒约价"
-                      placeholder="请输入秒约价"
-                      validateFirst
-                      rules={[
-                        { required: true, message: '请输入秒约价' },
-                        () => ({
-                          validator(_, value) {
-                            if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                              return Promise.reject(new Error('请输入大于零的数字'));
-                            }
-                            return Promise.resolve();
-                          },
-                        })
-                      ]}
-                      disabled={settleType === 1}
-                    />
-                  </>
-                )
-              }
-            </ProFormDependency>
-
+            </Form.Item>}
           </>
       }
-      {/* <Form.Item
-        label="起售数量"
+      {goods.stockNum && <Form.Item
+        label="总可用库存"
+      >
+        {goods.stockNum}
+      </Form.Item>}
+      <Form.Item
+        label="单SKU起售数量"
       >
         {goods.buyMinNum}
       </Form.Item>
 
-      <Form.Item
+      {/* <Form.Item
         label="单次最多零售购买数量"
       >
         {goods.buyMaxNum}
       </Form.Item> */}
-
-      <Form.Item
-        label="是否包邮"
-      >
-        {{ 0: '不包邮', 1: '包邮', }[goods.isFreeFreight]}
-      </Form.Item>
-
-      {detailData.freightTemplateName &&
-        <Form.Item
-          label="运费模板"
-        >
-          {detailData.freightTemplateName}
-        </Form.Item>}
 
       <Form.Item
         label="七天无理由退货"
@@ -385,7 +360,7 @@ export default (props) => {
           </div>
         </Form.Item>}
 
-      <Form.Item
+      {/* <Form.Item
         label="创建时间"
       >
         {goods.createTimeDisplay}
@@ -407,11 +382,16 @@ export default (props) => {
         label="原因"
       >
         <span style={{ color: 'red' }}>{goods.goodsVerifyRemark}</span>
-      </Form.Item>}
+      </Form.Item>} */}
       {overruleVisible && <Overrule
         visible={overruleVisible}
         setVisible={setOverruleVisible}
-        callback={(text) => { overrule(3, 2, detailData.spuId, text) }}
+        callback={(text) => { overrule([detailData.spuId].join(','), text) }}
+      />}
+      {lookVisible && <Look
+        visible={lookVisible}
+        setVisible={setLookVisible}
+        dataList={detailData}
       />}
     </DrawerForm>
   );

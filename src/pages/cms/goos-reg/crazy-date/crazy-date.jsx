@@ -23,6 +23,7 @@ const CrazyDate = (props) => {
   }
 
   const formControl = (data,type) => {
+    console.log('type', type, 'data', data)
     crazyActivityDel({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);
@@ -173,7 +174,6 @@ const CrazyDate = (props) => {
       //   };
       // }}
       dateFormatter="string"
-      headerTitle="正在疯约"
       toolBarRender={(_,record) => [
         <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 2) }}>
           批量发布

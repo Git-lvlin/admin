@@ -3,15 +3,17 @@ import React, { useRef, useState, useEffect } from 'react';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
+import ContentVersionTab from '@/components/content-version-tab';
 import { homeBannerList, homeBannerDel, bannerSortTop } from '@/services/cms/member/member';
 
 const BannerAdmin = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
-
+  const [verifyVersionId, setVerifyVersionId] = useState(1);
   const getDetail = (data) => {
     data && setDetailData(data);
     setFormVisible(true);
@@ -71,19 +73,19 @@ const BannerAdmin = () => {
       title: 'banner名称',
       dataIndex: 'title',
     },
-    {
-      title: '适用平台',
-      dataIndex: 'useType',
-      valueType: 'text',
-      valueEnum: {
-        1: '全平台',
-        2: '手机端',
-        3: 'h5',
-        4: 'web网页',
-        5: '小程序',
-      },
-      search: false
-    },
+    // {
+    //   title: '适用平台',
+    //   dataIndex: 'useType',
+    //   valueType: 'text',
+    //   valueEnum: {
+    //     1: '全平台',
+    //     2: '手机端',
+    //     3: 'h5',
+    //     4: 'web网页',
+    //     5: '小程序',
+    //   },
+    //   search: false
+    // },
     {
       title: '跳转链接',
       dataIndex: 'actionUrl',
@@ -105,7 +107,7 @@ const BannerAdmin = () => {
         1: '首页',
         2: '集约',
         3: '个人中心',
-        4: '会员店',
+        4: '社区店',
       }
     },
     {
@@ -154,10 +156,14 @@ const BannerAdmin = () => {
 
   return (
     <PageContainer>
+      <ProForm.Group>
+        <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
+      </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
+      params={{verifyVersionId: verifyVersionId}}
       request={homeBannerList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
@@ -206,6 +212,7 @@ const BannerAdmin = () => {
     {formVisible && <Edit
       visible={formVisible}
       setVisible={setFormVisible}
+      verifyVersionId={verifyVersionId}
       detailData={detailData}
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { actionRef.current.reload(); setDetailData(null) }}

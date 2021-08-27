@@ -4,6 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/intensive-store-management/store-review';
 import AddressCascader from '@/components/address-cascader';
+import { history } from 'umi';
 import Form from './form';
 
 const StoreReview = () => {
@@ -67,17 +68,17 @@ const StoreReview = () => {
       hideInSearch: true,
       render: (_, { details }) => details?.houseNumber
     },
-    {
-      title: '提货店授权书',
-      dataIndex: '',
-      valueType: 'text',
-      hideInSearch: true,
-      render: (_, { details }) => (
-        <Space>
-          <Image src={details.credentialUrl} width={50} height={50} />
-        </Space>
-      )
-    },
+    // {
+    //   title: '提货店授权书',
+    //   dataIndex: '',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   render: (_, { details }) => (
+    //     <Space>
+    //       <Image src={details.credentialUrl} width={50} height={50} />
+    //     </Space>
+    //   )
+    // },
     {
       title: '身份证',
       dataIndex: '',
@@ -90,12 +91,6 @@ const StoreReview = () => {
           <Image src={details.idBack} width={50} height={50} />
         </Space>
       )
-    },
-    {
-      title: '所在地区',
-      dataIndex: '',
-      valueType: 'select',
-      hideInTable: true,
     },
     {
       title: '详情地址',
@@ -112,10 +107,13 @@ const StoreReview = () => {
       valueType: 'text',
       hideInSearch: true,
       valueEnum: {
-        1: '店铺入驻成功',
-        2: '驳回',
-        3: '已通过',
-        4: '待审核'
+        0: '没有申请过',
+        1: '审核通过',
+        2: '审核不通过',
+        3: '已缴保证金',
+        4: '待缴保证金',
+        5: '取消申请',
+        6: '待审核',
       }
     },
     {
@@ -124,18 +122,20 @@ const StoreReview = () => {
       valueType: 'text',
       hideInTable: true,
       valueEnum: {
-        1: '店铺入驻成功',
-        2: '驳回',
-        3: '已通过',
-        4: '待审核'
+        0: '没有申请过',
+        1: '审核通过',
+        2: '审核不通过',
+        3: '已缴保证金',
+        4: '待缴保证金',
+        5: '取消申请',
+        6: '待审核',
       }
     },
     {
       title: '所在地区',
       dataIndex: 'area',
-      valueType: 'text',
       hideInTable: true,
-      renderFormItem: () => <AddressCascader />
+      renderFormItem: () => (<AddressCascader changeOnSelect />)
     },
     {
       title: '详细地址',
@@ -149,7 +149,7 @@ const StoreReview = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => {
-        return _ === 4 && <a onClick={() => { setSelectItem(data); setFormVisible(true) }}>审核</a>;
+        return _ !== 1 && <a onClick={() => { history.push(`/intensive-store-management/store-review-detail/${data.id}`) }}>审核</a>;
       }
     },
   ];
@@ -182,7 +182,7 @@ const StoreReview = () => {
             >
               {resetText}
             </Button>,
-            <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
+            // <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
           ],
         }}
         columns={columns}

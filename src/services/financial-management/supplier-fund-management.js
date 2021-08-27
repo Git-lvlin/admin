@@ -20,7 +20,7 @@ export const platforms = async (params, options= {}) => {
   return {
     data: res?.data.records,
     success: res?.success,
-    total: res.data.total
+    total: res?.data.total
   }
 }
 

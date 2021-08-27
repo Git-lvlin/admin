@@ -1,25 +1,28 @@
-import { PageContainer } from '@ant-design/pro-layout';
-import ProCard from '@ant-design/pro-card';
-import TabList from './tab-list';
+import { PageContainer } from '@ant-design/pro-layout'
+import { Tabs } from 'antd'
+import TabList from './tab-list'
 
+const { TabPane } = Tabs
 
 const InterventionList = () => {
   return (
     <PageContainer
       title={ false }
     >
-      <ProCard
-        tabs={{
-          type: 'defult',
-        }}
+      <Tabs
+       defaultActiveKey="1"
+       style={{
+         background: '#fff',
+         padding: 25
+       }}
       >
-        <ProCard.TabPane key="tab1" tab="待处理">
+        <TabPane key="1" tab="待处理">
           <TabList done={0}/>
-        </ProCard.TabPane>
-        <ProCard.TabPane key="tab2" tab="已处理">
+        </TabPane>
+        <TabPane key="2" tab="已处理">
           <TabList done={1}/>
-        </ProCard.TabPane>
-      </ProCard>
+        </TabPane>
+      </Tabs>
     </PageContainer>
   )
 };

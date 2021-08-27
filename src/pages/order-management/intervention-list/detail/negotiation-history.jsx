@@ -7,14 +7,18 @@ import styles from './styles.less'
 const { PreviewGroup } = Image
 
 const VoucherPic = ({pic}) => {
-  return pic?.map(res => (
-    <Image
-      key={res}
-      width={60}
-      height={60}
-      src={res}
-    />
-  ))
+  return pic && pic?.map(res => {
+    if(res) {
+      return (
+        <Image
+          key={res}
+          width={60}
+          height={60}
+          src={res}
+        />
+      )
+    }
+  })
 }
 const optType = (type, data) => {
   let { parameterMap } = data
@@ -30,15 +34,14 @@ const optType = (type, data) => {
     case 5:
       return `买家申请了平台介入。申诉原因：${data?.description}`
     case 6:
+    case 9:
+      return `商家确认收货地址：${parameterMap?.receiveMan}，${parameterMap?.receivePhone}，${parameterMap?.receiveAddress}，退货说明：${data?.description}`
+    case 7:
     case 15:
     case 16:
       return `${data?.description}`
-    case 7:
-      return `商家确认收货地址：${parameterMap?.receiveMan}，${parameterMap?.receivePhone}，${parameterMap?.receiveAddress}，退货说明：${data?.description}`
     case 8:
       return `商家同意了本次售后服务申请。`
-    case 9:
-      return `商家确认收货地址：${parameterMap?.receiveMan}，${parameterMap?.receivePhone}，${parameterMap?.receiveAddress}，退货说明：${data?.description}`
     case 10:
       return `买家已退货。商品退回方式：${parameterMap?.returnMode}，快递公司：${parameterMap?.expressName}，运单编号：${parameterMap?.shippingCode}`
     case 11:
@@ -55,6 +58,8 @@ const optType = (type, data) => {
       return `因买家主动撤销申请，系统已关闭本次售后服务。`
     case 19:
       return `商家申请了平台介入。申诉原因：${data?.description}`
+    case 20:
+      return `售后关闭`
   }
 }
 
@@ -66,7 +71,7 @@ const NegotiationHistory = props => {
       <div className={styles.warp} key={res.id}>
         <div className={styles.avatar}>
           <Avatar
-            size={ 54 }
+            size={54}
             src={
               res?.createRole == 1
               ? res?.sysLogo

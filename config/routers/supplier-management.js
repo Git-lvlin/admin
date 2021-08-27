@@ -8,6 +8,11 @@ export default {
       component: './supplier-management/supplier-list',
     },
     {
+      name: 'audit-list',
+      path: '/supplier-management/audit-list',
+      component: './supplier-management/audit-list',
+    },
+    {
       name: 'consultant-product-list',
       path: '/supplier-management/consultant-product-list/:id',
       component: './supplier-management/consultant-product-list',

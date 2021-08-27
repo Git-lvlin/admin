@@ -8,6 +8,11 @@ export default {
       component: './product-management/product-list',
     },
     {
+      name: 'product-list-purchase',
+      path: '/product-management/product-list-purchase',
+      component: './product-management/product-list-purchase',
+    },
+    {
       name: 'product-detail',
       path: '/product-management/product-detail/:id',
       component: './product-management/product-detail',
@@ -37,6 +42,11 @@ export default {
       name: 'product-review',
       path: '/product-management/product-review',
       component: './product-management/product-review',
+    },
+    {
+      name: 'set-goods-list',
+      path: '/product-management/set-goods-list',
+      component: './product-management/set-goods-list',
     },
     {
       name: 'product-category',

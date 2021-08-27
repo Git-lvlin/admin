@@ -15,7 +15,7 @@ const TableList = () => {
   const columns = [
     {
       title: '订单编号',
-      dataIndex: 'orderSn',
+      dataIndex: 'subOrderSn',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入订单编号'
@@ -41,11 +41,11 @@ const TableList = () => {
       render: (_, data) => data?.orderItemList?.[0]?.skuId
     },
     {
-      title: '供应商ID',
+      title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data?.orderItemList?.[0]?.supplierId}`) }}>{data?.orderItemList?.[0]?.supplierId}</a>
+      render: (_, data) => data?.orderItemList?.[0]?.supplierId
     },
     {
       title: '商品数量',

@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
 import { Form } from 'antd';
 import Upload from '@/components/upload';
 import styles from './edit-table.less';
+import debounce from 'lodash/debounce';
+import * as api from '@/services/product-management/product-list';
+import { amountTransform } from '@/utils/utils'
 
 export default function EditTable(props) {
-  const { tableHead, tableData, setTableData, settleType } = props;
+  const { tableHead, tableData, setTableData, settleType, goodsSaleType } = props;
   const [columns, setColumns] = useState([])
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
@@ -19,6 +22,7 @@ export default function EditTable(props) {
           title: item,
           dataIndex: `spec${index + 1}`,
           editable: false,
+          width: 130,
         })
       }
     });
@@ -27,60 +31,45 @@ export default function EditTable(props) {
       {
         title: '规格图片',
         dataIndex: 'imageUrl',
-        width: 50,
+        width: 80,
         editable: false,
         render: (_) => _ ? <img src={_} width="50" height="50" /> : '',
 
       },
       ...arr,
       {
-        title: '供货价',
+        title: '零售供货价(元)',
         dataIndex: 'retailSupplyPrice',
         editable: false,
+        hideInTable: goodsSaleType === 1,
+        width: 130,
       },
       {
-        title: '秒约价',
-        dataIndex: 'salePrice',
-        width: 150,
-        formItemProps: {
-          rules: [{
-            required: true,
-            whitespace: true,
-            message: '请输入秒约价',
-          }],
-        },
-        editable: settleType !== 1,
+        title: '批发供货价(元)',
+        dataIndex: 'wholesaleSupplyPrice',
+        editable: false,
+        width: 130,
+        hideInTable: goodsSaleType === 2,
       },
       {
-        title: '市场价',
-        dataIndex: 'marketPrice',
-        width: 150,
-        formItemProps: {
-          rules: [{
-            required: true,
-            whitespace: true,
-            message: '请输入市场价',
-          }],
-        },
+        title: '最低批发量',
+        dataIndex: 'wholesaleMinNum',
+        editable: false,
+        width: 130,
+        hideInTable: goodsSaleType === 2,
       },
+      
       {
         title: '库存预警值',
         dataIndex: 'stockAlarmNum',
-        width: 150,
+        width: 90,
         editable: false,
       },
       {
         title: '可用库存',
         dataIndex: 'stockNum',
-        width: 150,
+        width: 90,
         editable: false,
-        formItemProps: {
-          rules: [{
-            required: true,
-            whitespace: true,
-            message: '请输入可用库存',
-          }],
-        }
       },
 
       // {
@@ -96,7 +85,6 @@ export default function EditTable(props) {
   }, [tableHead, settleType])
 
   useEffect(() => {
-    setEditableKeys(tableData.map(item => item.key));
     setDataSource(tableData);
   }, [tableData])
 
@@ -105,15 +93,17 @@ export default function EditTable(props) {
       columns={columns}
       rowKey="key"
       value={dataSource}
+      scroll={{ x: '70vw' }}
+      controlled
       editable={{
-        form,
         editableKeys,
         actionRender: (row, config, defaultDoms) => {
           return [defaultDoms.delete];
         },
         onValuesChange: (record, recordList) => {
-          setDataSource(recordList);
-          setTableData(recordList)
+          // setDataSource(recordList);
+          // setTableData(recordList)
+          debounceFetcher({ record, recordList })
         }
       }}
       bordered

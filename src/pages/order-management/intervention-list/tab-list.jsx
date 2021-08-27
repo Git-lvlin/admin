@@ -1,7 +1,7 @@
-import React from 'react';
-import ProTable from '@ant-design/pro-table';
-import { history } from 'umi';
-import moment from 'moment';
+import React from 'react'
+import ProTable from '@ant-design/pro-table'
+import { history } from 'umi'
+import moment from 'moment'
 
 import { interventionList } from '@/services/order-management/intervention-list'
 
@@ -121,4 +121,4 @@ const TabList =props=> {
   )
 }
 
-export default TabList;
+export default TabList

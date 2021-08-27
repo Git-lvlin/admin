@@ -29,10 +29,11 @@ const BonusDetailManagement = () =>{
       valueType: 'select',
       valueEnum: {
         'store': '店铺',
-        'supplier': '供应商',
+        'supplier': '供应商家',
         'platform': '平台',
         'member': '会员',
-        'agentStore': '代发店'
+        'agentStore': '代发店',
+        'agentCompany': '经销商'
       }
     },
     {

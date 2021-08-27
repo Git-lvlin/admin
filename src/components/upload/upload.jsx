@@ -71,24 +71,20 @@ const Upload = (props) => {
   }
 
   useEffect(() => {
-    if (!fileList.length) {
-      if (Array.isArray(value) && value?.length) {
-        fileData.current = value.map((item, index) => {
-          return {
-            url: item,
-            uid: index
-          }
-        })
-        setFileList(fileData.current)
-        onChange(maxCount === 1 ? value?.[0]?.url : value.map(item => item))
-      } else if (value && typeof value === 'string') {
-        fileData.current = [{
-          url: value,
-          uid: 0
-        }]
-        setFileList(fileData.current)
-        onChange(value)
-      }
+    if (Array.isArray(value) && value?.length) {
+      fileData.current = value.map((item, index) => {
+        return {
+          url: item,
+          uid: index
+        }
+      })
+      setFileList(fileData.current)
+    } else if (value && typeof value === 'string') {
+      fileData.current = [{
+        url: value,
+        uid: 0
+      }]
+      setFileList(fileData.current)
     }
   }, [value])
 

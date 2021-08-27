@@ -19,10 +19,10 @@ const SubTable = (props) => {
   const columns = [
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
-    { title: '零售供货价', dataIndex: 'retailSupplyPriceDisplay' },
-    { title: '批发价', dataIndex: 'wholesalePriceDisplay' },
+    { title: '零售供货价', dataIndex: 'retailSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
+    { title: '批发供货价', dataIndex: 'wholesaleSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
     { title: '批发起购量', dataIndex: 'wholesaleMinNum' },
-    { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
+    // { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
     { title: '商品价格', dataIndex: 'salePriceDisplay' },
     { title: '可用库存', dataIndex: 'stockNum' },
@@ -62,7 +62,10 @@ const TableList = () => {
       spuId: id
     }).then(res => {
       if (res.code === 0) {
-        setDetailData(res.data);
+        setDetailData({
+          ...res.data,
+          settleType: 2,
+        });
         setFormVisible(true);
       }
     })
@@ -125,17 +128,17 @@ const TableList = () => {
       }
     },
     {
-      title: '供应商ID',
+      title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '供应商ID',
+      title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商ID'
+        placeholder: '请输入供应商家ID'
       },
       // renderFormItem: () => <SupplierSelect />,
       hideInTable: true,
@@ -151,6 +154,18 @@ const TableList = () => {
     {
       title: '供货类型',
       dataIndex: 'goodsSaleTypeDisplay',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '批发供货价(元)',
+      dataIndex: 'wholesaleSupplyPriceRange',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '零售供货价(元)',
+      dataIndex: 'retailSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -276,64 +291,64 @@ const TableList = () => {
   ];
 
   const exportExcel = (form) => {
-    api.listExport({
-      ...form.getFieldsValue(),
-    }).then(res => {
-      if (res.code === 0) {
-        const data = res.data.map(item => {
-          const { goodsState, goodsFromType, goodsVerifyState, ...rest } = item;
-          return {
-            ...rest,
-            retailSupplyPrice: amountTransform(rest.retailSupplyPrice, '/'),
-            suggestedRetailPrice: amountTransform(rest.suggestedRetailPrice, '/'),
-            wholesalePrice: amountTransform(rest.wholesalePrice, '/'),
-          }
-        });
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet([
-          {
-            spuId: 'spuId',
-            goodsName: '商品名称',
-            skuId: 'skuId',
-            skuSpec: '规格组合',
-            goodsFromTypeDisplay: '供货类型',
-            retailSupplyPrice: '零售价',
-            suggestedRetailPrice: '建议零售价',
-            wholesalePrice: '批发价',
-            stockNum: '可用库存',
-            // activityNum: '活动库存',
-            isFreeFreightDisplay: '是否包邮',
-            supportNoReasonReturn: '七天无理由退货',
-            goodsVerifyStateDisplay: '审核状态',
-            goodsStateDisplay: '上架状态',
-            createTime: '创建时间',
-          },
-          ...data
-        ], {
-          header: [
-            'spuId',
-            'goodsName',
-            'skuId',
-            'skuSpec',
-            'goodsFromTypeDisplay',
-            'retailSupplyPrice',
-            'suggestedRetailPrice',
-            'wholesalePrice',
-            'stockNum',
-            // 'activityNum',
-            'isFreeFreightDisplay',
-            'supportNoReasonReturn',
-            'goodsVerifyStateDisplay',
-            'goodsStateDisplay',
-            'createTime',
-          ],
-          skipHeader: true
-        });
-        XLSX.utils.book_append_sheet(wb, ws, "file");
-        XLSX.writeFile(wb, `${+new Date()}.xlsx`)
+    // api.listExport({
+    //   ...form.getFieldsValue(),
+    // }).then(res => {
+    //   if (res.code === 0) {
+    //     const data = res.data.map(item => {
+    //       const { goodsState, goodsFromType, goodsVerifyState, ...rest } = item;
+    //       return {
+    //         ...rest,
+    //         retailSupplyPrice: amountTransform(rest.retailSupplyPrice, '/'),
+    //         suggestedRetailPrice: amountTransform(rest.suggestedRetailPrice, '/'),
+    //         wholesalePrice: amountTransform(rest.wholesalePrice, '/'),
+    //       }
+    //     });
+    //     const wb = XLSX.utils.book_new();
+    //     const ws = XLSX.utils.json_to_sheet([
+    //       {
+    //         spuId: 'spuId',
+    //         goodsName: '商品名称',
+    //         skuId: 'skuId',
+    //         skuSpec: '规格组合',
+    //         goodsFromTypeDisplay: '供货类型',
+    //         retailSupplyPrice: '零售价',
+    //         suggestedRetailPrice: '建议零售价',
+    //         wholesalePrice: '批发价',
+    //         stockNum: '可用库存',
+    //         // activityNum: '活动库存',
+    //         isFreeFreightDisplay: '是否包邮',
+    //         supportNoReasonReturn: '七天无理由退货',
+    //         goodsVerifyStateDisplay: '审核状态',
+    //         goodsStateDisplay: '上架状态',
+    //         createTime: '创建时间',
+    //       },
+    //       ...data
+    //     ], {
+    //       header: [
+    //         'spuId',
+    //         'goodsName',
+    //         'skuId',
+    //         'skuSpec',
+    //         'goodsFromTypeDisplay',
+    //         'retailSupplyPrice',
+    //         'suggestedRetailPrice',
+    //         'wholesalePrice',
+    //         'stockNum',
+    //         // 'activityNum',
+    //         'isFreeFreightDisplay',
+    //         'supportNoReasonReturn',
+    //         'goodsVerifyStateDisplay',
+    //         'goodsStateDisplay',
+    //         'createTime',
+    //       ],
+    //       skipHeader: true
+    //     });
+    //     XLSX.utils.book_append_sheet(wb, ws, "file");
+    //     XLSX.writeFile(wb, `${+new Date()}.xlsx`)
 
-      }
-    })
+    //   }
+    // })
   }
 
   useEffect(() => {
@@ -400,7 +415,6 @@ const TableList = () => {
         setVisible={setOffShelfVisible}
         callback={(text) => { offShelf(selectItemId, text) }}
       />}
-
     </PageContainer>
   );
 };

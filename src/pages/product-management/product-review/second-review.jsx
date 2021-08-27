@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
-import { Drawer, Button, Image } from 'antd';
+import React, { useState, useRef } from 'react';
+import { Drawer, Button, Image, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import Overrule from './overrule';
+import * as api from '@/services/product-management/product-review'
+// import Edit from '../product-list/edit';
 
 
 const UserDetail = (props) => {
-  const { visible, setVisible, detailData, operateRole, check } = props;
+  const { visible, setVisible, record, operateRole, overrule, check } = props;
   const [overruleVisible, setOverruleVisible] = useState(false);
+  // const [hasChange, setHasChange] = useState(false);
+  // const [formVisible, setFormVisible] = useState(false);
+  // const [detailData, setDetailData] = useState(null);
+  const actionRef = useRef();
+
 
   const columns = [
     {
@@ -87,6 +94,37 @@ const UserDetail = (props) => {
     },
   ];
 
+  const getNoFirstCheckList = async (params) => {
+    const res = await api.noFirstCheckList({
+      ...params,
+    })
+    return {
+      data: res.data?.length ? res.data : [],
+      success: true,
+    }
+  }
+
+  const postData = (data) => {
+    // if (data?.length) {
+    //   setHasChange(data[0]?.priceChange === 1)
+    // }
+    return data;
+  }
+
+  const getDetail = () => {
+    api.getDetail({
+      spuId: record.spuId
+    }).then(res => {
+      if (res.code === 0) {
+        setDetailData({
+          ...res.data,
+          settleType: 2,
+        });
+        setFormVisible(true);
+      }
+    })
+  }
+
   return (
     <Drawer
       title="审核详情"
@@ -100,35 +138,60 @@ const UserDetail = (props) => {
             textAlign: 'right',
           }}
         >
-          <Button style={{ marginLeft: 10 }} key="1" type="primary" onClick={() => { check(1, 1, detailData.spuId) }}>
-            通过并上架
-          </Button>
-          <Button style={{ marginLeft: 10 }} key="2" onClick={() => { check(2, 1, detailData.spuId) }}>
-            通过但不上架
-          </Button>
-          <Button style={{ marginLeft: 10 }} type="primary" key="3" danger onClick={() => { setOverruleVisible(true) }}>
-            驳回
-          </Button>
-          <Button style={{ marginLeft: 10 }} key="4" onClick={() => { setVisible(false) }}>
-            返回
-          </Button>
+          {/* {hasChange && <div style={{ color: 'red', marginBottom: 10 }}>必须先修改商品秒约价或秒约上浮比才能进行审核!</div>} */}
+          <Space>
+            <Button key="1" type="primary" onClick={() => { check(record.spuId) }}>
+              审核通过
+            </Button>
+            <Button type="danger" key="3" danger onClick={() => { setOverruleVisible(true) }}>
+              审核驳回
+            </Button>
+            <Button key="4" onClick={() => { setVisible(false) }}>
+              返回
+            </Button>
+            {/* <Button disabled={hasChange} key="1" type="primary" onClick={() => { check(1, 1, record.spuId) }}>
+              通过并上架
+            </Button>
+            <Button disabled={hasChange} key="2" onClick={() => { check(2, 1, record.spuId) }}>
+              通过但不上架
+            </Button>
+            {hasChange && <Button type="primary" onClick={() => { getDetail() }}>编辑商品</Button>}
+            <Button type="primary" key="3" danger onClick={() => { setOverruleVisible(true) }}>
+              驳回
+            </Button>
+            <Button key="4" onClick={() => { setVisible(false) }}>
+              返回
+            </Button> */}
+          </Space>
         </div>
       }
     >
       <ProTable
         rowKey="id"
         options={false}
-        dataSource={detailData.data}
+        request={getNoFirstCheckList}
+        params={{
+          spuId: record.id
+        }}
+        postData={postData}
         search={{
           defaultCollapsed: false,
         }}
         columns={columns}
+        actionRef={actionRef}
       />
       {overruleVisible && <Overrule
         visible={overruleVisible}
         setVisible={setOverruleVisible}
-        callback={(text) => { check(3, 2, detailData.spuId, text) }}
+        callback={(text) => { overrule([record.spuId].join(','), text) }}
       />}
+      {/* {formVisible && <Edit
+        visible={formVisible}
+        setVisible={setFormVisible}
+        detailData={detailData}
+        callback={() => { actionRef.current.reload(); setDetailData(null) }}
+        onClose={() => { setDetailData(null) }}
+      />} */}
     </Drawer>
   )
 }

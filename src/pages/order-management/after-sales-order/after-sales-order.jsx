@@ -1,18 +1,17 @@
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
-import React, { useRef, useEffect, useState} from 'react'
-import XLSX from 'xlsx'
+import React, { useState } from 'react'
 import { Button } from 'antd'
 import moment from 'moment'
 import { history } from 'umi'
 
 import { refundOrder } from '@/services/order-management/after-sales-order'
 import { amountTransform } from '@/utils/utils'
-import './styles.less'
+// import Export from '@/pages/export-excel/export'
+// import ExportHistory from '@/pages/export-excel/export-history'
 
 
 const sourceType = {
-  null: '全部',
   1: '待审核',
   2: '处理中',
   3: '已拒绝申请',
@@ -27,12 +26,11 @@ const columns = [
     dataIndex: 'orderSn',
     align: 'center',
     order: 9,
-    colSize: .9,
     render: (_, records) => {
       return(
         <>
-          <div key="1">{ records?.orderSn }</div>
-          <div key="2">
+          <div>{ records?.orderSn }</div>
+          <div>
             { 
               records?.platformInvolved === 1&& 
               <span 
@@ -55,59 +53,48 @@ const columns = [
     title: '订单编号',
     dataIndex: 'subOrderSn',
     align: 'center',
-    order: 8,
-    colSize: .9
+    order: 8
   },
   {
     title: '申请时间',
     dataIndex: 'applyTime',
-    valueType: 'dateRange',
+    valueType: 'dateTimeRange',
     align: 'center',
     order: 5,
-    colSize: .9,
     render: (_, recodes) => moment(recodes?.applyTime).format('YYYY-MM-DD HH:mm:ss')
   },
   {
     title: '买家昵称',
-    dataIndex: 'userNickname',
-    colSize: .9,
+    dataIndex: 'buyerNickname',
     align: 'center',
-    order: 4,
-    colSize: .9
+    order: 4
   },
   {
     title: '买家手机号',
     dataIndex: 'buyerPhone',
-    colSize: .9,
     align: 'center',
     order: 3
   },
   {
     title: '商家名称',
     dataIndex: 'storeName',
-    colSize: 1,
     align: 'center',
     order: 2,
-    colSize: .9
   },
   {
     title: '商家手机号',
     dataIndex: 'storePhone',
-    colSize: 1,
     align: 'center',
     order: 1,
-    colSize: .9
   },
   {
     title: '售后类型',
     dataIndex: 'afterSalesType',
     valueType: 'select',
     valueEnum: {
-      null: '全部',
       1: '仅退款',
       2: '退款退货'
     },
-    colSize: .8,
     align: 'center',
     order: 7
   },
@@ -123,7 +110,6 @@ const columns = [
     dataIndex: 'status',
     valueEnum: sourceType,
     valueType: 'select',
-    colSize: .8,
     align: 'center',
     order: 6
   },
@@ -132,117 +118,20 @@ const columns = [
     dataIndex: 'operation',
     valueType: 'option',
     align: 'center',
-    render: (_, record) => {
-      return (
-        <>
-          <a onClick={ () => {history.push(`/order-management/after-sales-order/detail/${record?.id}`)} }>查看详情</a>
-        </>
-      )
-    }
+    render: (_, record) => <a onClick={ ()=> {history.push(`/order-management/after-sales-order/detail/${record?.id}`)} }>查看详情</a>
   }
 ]
-// function saleType(val) {
-//   switch(val) {
-//     case 1: 
-//       return  '仅退款';
-//     case 2:
-//       return '退款退货'
-//   }
-// }
-// function saleStatus(val) {
-//   switch(val) {
-//     case 1: 
-//       return '待审核';
-//     case 2:
-//       return '处理中';
-//     case 3:
-//       return '已拒绝申请';
-//     case 4:
-//       return '已拒绝退款';
-//     case 5:
-//       return '已完成';
-//     case 6:
-//       return '已关闭';
-//   }
-// }
-
-// const exportExcel = val => {
-//   const data = val.map(data=> {
-//     return {
-//       orderSn: data.orderSn,
-//       subOrderSn: data.subOrderSn,
-//       applyTime: moment(data.applyTime).format('YYYY-MM-DD HH:mm:ss'),
-//       userNickname: data.userNickname,
-//       buyerPhone: data.buyerPhone,
-//       storeName: data.storeName,
-//       storePhone: data.storePhone,
-//       afterSalesType: saleType(data.afterSalesType),
-//       returnAmount: amountTransform(data.returnAmount, '/'),
-//       status: saleStatus(data.status)
-//     }
-//   })
-//   const ws = XLSX.utils.json_to_sheet(
-//     [
-//       {
-//         orderSn: '售后编号',
-//         subOrderSn: '订单编号',
-//         applyTime: '申请时间',
-//         userNickname: '买家昵称',
-//         buyerPhone: '买家手机号',
-//         storeName: '商家名称',
-//         storePhone: '商家手机号',
-//         afterSalesType: '售后类型',
-//         returnAmount: '退款总金额（元）',
-//         status: '退款状态'
-//       },
-//       ...data
-//     ],
-//     {
-//       header: [
-//         'orderSn',
-//         'subOrderSn',
-//         'applyTime',
-//         'userNickname',
-//         'buyerPhone',
-//         'storeName',
-//         'storePhone',
-//         'afterSalesType',
-//         'returnAmount',
-//         'status'
-//       ],
-//       skipHeader: true
-//     }
-//   )
-//   const wb = XLSX.utils.book_new()
-//   XLSX.utils.book_append_sheet(wb, ws, "file")
-//   XLSX.writeFile(wb, `售后订单${+new Date()}.xlsx`)
-// }
 const afterSalesOrder = () => {
-  const actionRef = useRef()
-  // const [data, setData] = useState([])
-  // useEffect(()=> {
-  //   refundOrder({size: 9999999999}).then(res=> {
-  //     if(res.success) {
-  //       setData(res.data)
-  //     }
-  //   })
-  //   return ()=> {
-  //     setData([])
-  //   }
-  // }, [])
-
+  const [visit, setVisit] = useState(false)
+  
   return (
     <PageContainer title={false}>
-      <ProTable
+      <ProTable 
         rowKey="orderSn"
         options={false}
         params={{}}
         request={refundOrder}
-        actionRef={actionRef}
         search={{
-          span: 5,
-          defaultCollapsed: false,
-          collapseRender: false,
           optionRender: ({searchText, resetText}, {form}) => [
             <Button
               key="search"
@@ -262,14 +151,21 @@ const afterSalesOrder = () => {
             >
               {resetText}
             </Button>,
-            // <Button key="out" onClick={()=> {exportExcel(data)}}>导出</Button>
+            // <Export
+            //   change={(e)=> {setVisit(e)}}
+            //   key="export" 
+            //   type="order-common-export"
+            //   conditions={form?.getFieldValue()}
+            // />,
+            // <ExportHistory key="exportHistory" show={visit} setShow={setVisit}/>
           ],
         }}
         headerTitle="数据列表"
         columns={columns}
         pagination={{
           showQuickJumper: true,
-          hideOnSinglePage: true
+          hideOnSinglePage: true,
+          pageSize: 10
         }}
       />
     </PageContainer>

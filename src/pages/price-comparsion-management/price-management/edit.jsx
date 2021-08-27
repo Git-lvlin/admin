@@ -24,14 +24,14 @@ export default (props) => {
       width: 130,
       ellipsis: true,
     },
-    {
-      title: '商家名称',
-      dataIndex: 'supplierName',
-      valueType: 'text',
-      search: false,
-      width: 90,
-      ellipsis: true,
-    },
+    // {
+    //   title: '商家名称',
+    //   dataIndex: 'supplierName',
+    //   valueType: 'text',
+    //   search: false,
+    //   width: 90,
+    //   ellipsis: true,
+    // },
     {
       title: '商品分类',
       dataIndex: 'gcId',

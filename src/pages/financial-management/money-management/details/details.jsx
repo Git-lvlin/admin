@@ -29,26 +29,26 @@ const Details = () => {
 
   const card = () => {
     if(query.accountType==='supplier'){
-      return '供应商银行账户'
+      return '供应商家银行账户'
     } else if(query.accountType==='store'){
-      return '会员店银行账户'
+      return '社区店银行账户'
     }else if(query.accountType==='agentStore'){
       return '代发店银行账户'
     }else{
       return ''
     }
   }
-  // const rightCard = () => {
-  //   if(query.accountType==='store'){
-  //     return '会员店虚拟子账户'
-  //   }else if(query.accountType==='agentStore'){
-  //     return '消费者虚拟子账户'
-  //   }else if(query.accountType==='supplier'){
-  //     return ''
-  //   }else {
-  //     return ''
-  //   }
-  // }
+  const leftCard = () => {
+    if(query.accountType==='supplier'){
+      return '供应商虚拟子账户'
+    } else if(query.accountType==='store'){
+      return '会员店虚拟子账户'
+    }else if(query.accountType==='agentStore'){
+      return '代发店虚拟子账户'
+    }else{
+      return ''
+    }
+  }
 
   const skipToDetail = ({accountType, accountId}) => {
     history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
@@ -70,14 +70,14 @@ const Details = () => {
            <div className={styles.bindCard}>
             <div>账户名称： <span>{data?.realname}</span></div>
             <div>账户号码： <span>{data?.cardNo}</span></div>
-            <div>开户银行： <span>{data?.bankBranchName}</span></div>
+            <div>开户银行： <span>{data?.bankName}</span></div>
           </div>
         </ProCard>
         <ProCard
           colSpan={{ xs: 24, sm: 12, md: 12, lg: 12, xl: 12 }}
           style={{ height: 280 }}
           bordered
-          title={card()}
+          title={leftCard()}
         >
            <div className={styles.platform}>
             <div>账户号码： </div>

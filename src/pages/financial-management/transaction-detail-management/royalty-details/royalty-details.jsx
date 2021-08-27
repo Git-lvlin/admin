@@ -7,6 +7,7 @@ import { Button } from 'antd'
 import { amountTransform } from '@/utils/utils'
 import { commissionDetail, platformCommissionDetail, goodsAmountDetail } from "@/services/financial-management/transaction-detail-management"
 import './styles.less'
+import styles from './styles.less'
 
 const TransactionDetails = () => {
   const {id} = useParams()
@@ -23,7 +24,7 @@ const TransactionDetails = () => {
     setLoading(true)
     apiMethod({orderNo: id}).then(res=> {
       if(res.success) {
-        setInfo({...res?.data?.info, ...res?.data})
+        setInfo({...res?.data, ...res?.data?.info})
         setPayInfos(res?.data?.payInfos)
       }
     }).finally(()=> {
@@ -38,14 +39,44 @@ const TransactionDetails = () => {
     history.goBack()
   }
   const fashionableType =(data, amount, fee) =>{
-    if(data==='goodsAmount'){
-      return `货款: ¥${amountTransform(amount, '/')} 货款交易费: ¥${amountTransform(fee, '/')}`
-    }else if(data==='commission'){
-      return `提成: ¥${amountTransform(amount, '/')} 货款交易费: ¥${amountTransform(fee, '/')}`
-    }else if(data==='platformCommission') {
-      return `佣金: ¥${amountTransform(amount, '/')} 货款交易费: ¥${amountTransform(fee, '/')}`
-    }else{
-      return ''
+    switch(data){
+      case 'goodsAmount':
+        return (
+          <>
+            <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
+            <span>货款交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'commission':
+        return (
+          <>
+            <span className={styles.amount}>提成: ¥{amountTransform(amount, '/')}</span>
+            <span>提成交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'platformCommission':
+        return (
+          <>
+            <span className={styles.amount}>佣金: ¥{amountTransform(amount, '/')}</span>
+            <span>佣金交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'suggestCommission':
+        return (
+          <>
+            <span className={styles.amount}>推荐提成: ¥{amountTransform(amount, '/')}</span>
+            <span>推荐提成交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'agentCompanyCommission':
+        return (
+          <>
+            <span className={styles.amount}>经销商提成: ¥{amountTransform(amount, '/')}</span>
+            <span>经销商提成交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      default:
+        return ''
     }
   }
   const columns1 = [
@@ -79,7 +110,7 @@ const TransactionDetails = () => {
     },
     {
       title: '受益方会员信息',
-      dataIndex: 'accountId'
+      dataIndex: 'accountMobile'
     },
     {
       title: '虚拟子账户',
@@ -87,7 +118,7 @@ const TransactionDetails = () => {
     },
     {
       title: '买家会员类型',
-      dataIndex: 'sellerType'
+      dataIndex: 'buyerType'
     },
     {
       title: '',
@@ -95,11 +126,11 @@ const TransactionDetails = () => {
     },
     {
       title: '买家会员信息',
-      dataIndex: 'sellerMobile'
+      dataIndex: 'buyerMobile'
     },
     {
       title: '虚拟子账户',
-      dataIndex: 'sellerSn'
+      dataIndex: 'buyerSn'
     }
   ]
   const columns2 = [
@@ -118,14 +149,6 @@ const TransactionDetails = () => {
     {
       title: '',
       dataIndex: ''
-    },
-    {
-      title: '支付用户名',
-      dataIndex: 'payUsername'
-    },
-    {
-      title: '支付账户',
-      dataIndex: 'payAccount'
     },
     {
       title: '支付金额',

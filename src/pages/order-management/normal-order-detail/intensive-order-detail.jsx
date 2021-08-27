@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout';
 import { Steps, Space, Button, Modal, Spin } from 'antd';
-import { useParams } from 'umi';
-import { findAdminOrderDetail, deliverGoods, expressInfo } from '@/services/order-management/normal-order-detail';
+import { useParams, history, useLocation } from 'umi';
+import { findAdminOrderDetail, deliverGoods, expressInfo, expressInfoYlbb, findAdminOrderDetail2 } from '@/services/order-management/normal-order-detail';
 import { amountTransform, dateFormat } from '@/utils/utils'
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { history } from 'umi';
+import moment from 'moment';
 
 import styles from './style.less';
 
@@ -18,23 +19,41 @@ const OrderDetail = () => {
   const [detailData, setDetailData] = useState({});
   const [expressInfoState, setExpressInfoState] = useState([])
   const [loading, setLoading] = useState(false);
+  const isPurchase = useLocation().pathname.includes('purchase')
 
   const expressInfoRequest = () => {
-    expressInfo({
-      shippingCode: detailData.express.expressNo,
-      expressType: detailData.express.companyNo,
-      mobile: detailData.receivingInfo.receiptPhone,
-      deliveryTime: detailData.express.expressTime
-    }).then(res => {
-      if (res.code === 0) {
-        setExpressInfoState(res.data?.deliveryList?.reverse())
-      }
-    })
+
+    if (detailData.orderType === 11) {
+      expressInfoYlbb({
+        orderType: 11,
+        webSite: 1688,
+        orderId: detailData.outOrderSn,
+        shippingCode: detailData.shippingCode,
+        deliveryTime: moment(detailData.deliveryTime).unix(),
+      }).then(res => {
+        if (res.code === 0) {
+          setExpressInfoState(res.data?.deliveryList?.reverse())
+        }
+      })
+    } else {
+      expressInfo({
+        shippingCode: detailData.shippingCode,
+        expressType: detailData.expressType,
+        mobile: detailData.buyerPhone,
+        deliveryTime: detailData.deliveryTime
+      }).then(res => {
+        if (res.code === 0) {
+          setExpressInfoState(res.data?.deliveryList?.reverse())
+        }
+      })
+    }
+    
   }
 
   const getDetailData = () => {
     setLoading(true);
-    findAdminOrderDetail({
+    const apiMethod = isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
+    apiMethod({
       id: params.id
     }).then(res => {
       if (res.code === 0) {
@@ -162,7 +181,7 @@ const OrderDetail = () => {
                   <div>用户实付</div>
                   <div>{amountTransform(detailData?.payAmount, '/')}元</div>
                 </div>
-                <div className={styles.box}>
+                {/* <div className={styles.box}>
                   <div>实收</div>
                   <div>{amountTransform(detailData?.incomeAmount, '/')}元</div>
                 </div>
@@ -205,6 +224,7 @@ const OrderDetail = () => {
                 </> 
              }
                 
+                </div> */}
               </div>
             </div>
             <div style={{ flex: 1 }}>
@@ -226,7 +246,7 @@ const OrderDetail = () => {
                           <div>{item.skuName}</div>
                         </div>
                         <div className={styles.box}>
-                          <div>{{ 1: '秒约', 2: '单约', 3: '团约' }[detailData.orderType]}价</div>
+                          <div>{{ 2: '秒约', 3: '单约', 4: '团约', 11: '零售' }[detailData.orderType]}价</div>
                           <div>{amountTransform(item.skuSalePrice, '/')}元</div>
                         </div>
                         <div className={styles.box}>
@@ -260,6 +280,7 @@ const OrderDetail = () => {
               确定
             </Button>,
           ]}
+          onCancel={() => { setExpressInfoState([]) }}
         >
           <Steps progressDot current={999} direction="vertical">
             {

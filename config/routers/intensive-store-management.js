@@ -38,19 +38,46 @@ export default {
       hideInMenu: true,
     },
     {
+      name: 'shopkeeper-user',
+      path: '/intensive-store-management/shopkeeper-user/:id',
+      component: './intensive-store-management/shopkeeper-user',
+      hideInMenu: true,
+    },
+    {
       name: 'store-review',
       path: '/intensive-store-management/store-review',
       component: './intensive-store-management/store-review',
     },
     {
-      name: 'grade-index',
-      path: '/intensive-store-management/grade-index',
-      component: './intensive-store-management/grade-index',
+      name: 'store-review-detail',
+      path: '/intensive-store-management/store-review-detail/:id',
+      component: './intensive-store-management/store-review-detail',
+      hideInMenu: true,
+    },
+    // {
+    //   name: 'grade-index',
+    //   path: '/intensive-store-management/grade-index',
+    //   component: './intensive-store-management/grade-index',
+    // },
+    // {
+    //   name: 'assessment-reward',
+    //   path: '/intensive-store-management/assessment-reward',
+    //   component: './intensive-store-management/assessment-reward',
+    // },
+    {
+      name: 'lvl-setup',
+      path: '/intensive-store-management/lvl-setup',
+      component: './intensive-store-management/lvl-setup',
     },
     {
-      name: 'assessment-reward',
-      path: '/intensive-store-management/assessment-reward',
-      component: './intensive-store-management/assessment-reward',
+      name: 'lvl-commission',
+      path: '/intensive-store-management/lvl-commission',
+      component: './intensive-store-management/lvl-commission',
+    },
+    {
+      name: 'lvl-rule',
+      path: '/intensive-store-management/lvl-rule',
+      component: './intensive-store-management/lvl-rule',
     },
   ]
 }

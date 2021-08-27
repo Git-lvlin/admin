@@ -112,6 +112,16 @@ export default {
           component: './financial-management/transaction-allocation-management/withdrawal-fee-configuration',
         }
       ]
+    },
+    {
+      name: 'subsidy-summary',
+      path: '/financial-management/subsidy-summary',
+      component: './financial-management/subsidy-summary'
+    },
+    {
+      name: 'subsidy-summary-detail',
+      path: '/financial-management/subsidy-summary/detail/:id',
+      component: './financial-management/subsidy-summary/detail'
     }
   ]
 }

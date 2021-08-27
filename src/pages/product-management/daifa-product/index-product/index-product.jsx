@@ -157,6 +157,13 @@ export default function EditTable() {
       }
     },
     {
+      title: '售价最低上浮百分比',
+      dataIndex: 'floatPercentMin',
+      valueType: 'text',
+      editable: false,
+      render: (_) => _ + '%' 
+    },
+    {
       title: '售价最多上浮百分比',
       dataIndex: 'floatPercent',
       align: 'center',

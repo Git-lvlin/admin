@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout'
 import { Spin, Empty, Button } from 'antd'
 import { useParams, history } from 'umi'
 
-import { interventionListDetail, findReturnRecord} from '@/services/order-management/intervention-list'
+import {interventionListDetail, findReturnRecord} from '@/services/order-management/intervention-list'
 import InterventionDetailStatus from './intervention-detail-status'
 import PlatformDecision from './platform-decision'
 import BuyerProof from './buyer-proof'
@@ -11,7 +11,6 @@ import SellerProof from './seller-proof'
 import ReturnGoods from './return-goods'
 import ReturnSingle from './return-single'
 import NegotiationHistory from './negotiation-history'
-
 import styles from './styles.less'
 
 const interventioListDetail = () => {
@@ -20,6 +19,7 @@ const interventioListDetail = () => {
   const [DTO, setDTO] = useState([])
   const [consultationRecord, setConsultationRecord] = useState([])
   const [loading, setLoading] = useState(false)
+  const [flag, setFlag] = useState(false)
   useEffect(()=>{
     setLoading(true)
     interventionListDetail({id}).then(res=> {
@@ -32,7 +32,7 @@ const interventioListDetail = () => {
       setDetail([])
       setDTO([])
     }
-  }, [])
+  }, [flag])
   useEffect(()=>{
     if(DTO != ![]) {
       findReturnRecord({id: DTO?.id}).then(res=> {
@@ -46,19 +46,22 @@ const interventioListDetail = () => {
     }
   }, [DTO])
   const handleBack = () => {
-    history.goBack(-1)
+    history.goBack()
   }
   return(
     <PageContainer title={false}>
       <Spin spinning={loading}>
         <InterventionDetailStatus 
           orderId={detail?.orderSn}
+          supplierId={detail?.supplierId}
           stage={detail?.stage}
           id={id}
+          change={setFlag}
           status={detail?.status}
+          type={DTO?.afterSalesType}
         />
         {
-          detail?.status !== 0&&
+          detail?.status !== 0 &&
           <PlatformDecision
             platformOpinion={detail?.platformOpinion}
             data={detail}
@@ -78,7 +81,7 @@ const interventioListDetail = () => {
         <ReturnGoods data={DTO}/>
         <ReturnSingle
           data={DTO}
-          status={detail?.stage}
+          type={detail?.orderReturnApplyDTO?.afterSalesType}
         />
         { <div className={styles.negotiation}>协商历史</div> }
         {

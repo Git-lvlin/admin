@@ -56,7 +56,7 @@ const exportExcel = (form) => {
             valueType: 'select',
             valueEnum: {
                 1: '消费者',
-                2: '会员店',
+                2: '社区店',
             }
         },
         {

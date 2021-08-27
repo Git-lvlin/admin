@@ -25,7 +25,14 @@ import { amountTransform } from '@/utils/utils'
 const Detail = () => {
   const {id} = useParams()
   const form = useRef()
+
   const PopModalForm = ({sn}) => {
+    const [choosed, setChoosed] = useState('')
+
+    const choose =(value)=> {
+      setChoosed(value)
+    }
+    
     const check = (val) => {
       audit({ ...val, sn }).then(res => {
         if (res?.success) {
@@ -53,22 +60,29 @@ const Detail = () => {
             width='md'
             name="isSuccess"
             label="选择"
+            rules={[{ required: true, message: '请选择' }]}
+            fieldProps={{
+              onChange: (v)=> choose(v)
+            }}
             valueEnum={{
               0: '审核不通过',
               1: '审核通过'
             }}
           />
         </div>
-        <ProFormTextArea
-          name='reason'
-          label='备注'
-          width='lg'
-          rules={[{ required: true, message: '请输入备注' }]}
-          fieldProps={{
-            showCount: true,
-            maxLength: 30
-          }}
-        />
+        {
+          choosed === '0' &&
+          <ProFormTextArea
+            name='reason'
+            label='备注'
+            width='lg'
+            rules={[{ required: true, message: '请输入备注' }]}
+            fieldProps={{
+              showCount: true,
+              maxLength: 30
+            }}
+          />
+        }
       </ModalForm>
     )
   }
@@ -163,7 +177,7 @@ const Detail = () => {
     },
     {
       title: '提现虚拟账户',
-      dataIndex: 'account_sn'
+      dataIndex: 'accountSn'
     },
     {
       title: '可提现余额',
@@ -225,7 +239,7 @@ const Detail = () => {
       dataIndex: 'log',
       render: (_, records) => (
         <>
-          <div>审核时间：{records?.auditTime}（{records?.auditUserId}）</div>
+          <div>审核时间：{records?.auditTime}（{records?.auditUserName}）</div>
           <div>执行时间：{records?.paymentTime}</div>
           <div>执行结果通知时间：{records?.notifyTime}</div>
         </>
@@ -255,7 +269,7 @@ const Detail = () => {
         request={withdrawPageDetail}
       />
       <div style={{ background: '#fff', padding: 20 }}>
-        <Button type='primary' onClick={() => { back() }}>返回</Button>
+        <Button type='primary' onClick={() => {back()}}>返回</Button>
       </div>
     </PageContainer>
   )

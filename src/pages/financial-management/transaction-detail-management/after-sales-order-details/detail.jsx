@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@ant-design/pro-layout'
-import { Button } from 'antd'
+import { Button, Timeline } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { refundDetail } from "@/services/financial-management/transaction-detail-management"
 import './styles.less'
+import styles from './styles.less'
+
+const { Item } = Timeline
 
 const Detail = () => {
   const {id} = useParams()
@@ -31,30 +34,92 @@ const Detail = () => {
       setPayInfos({})
     }
   }, [])
+
+
   const back = ()=> {
     history.goBack()
   }
   const fashionableType =(data, amount, fee) =>{
-    if(data==='goodsAmount'){
-      return `货款: ¥${amountTransform(amount, '/')} 货款交易费: ¥${amountTransform(fee, '/')}`
-    }else if(data==='commission'){
-      return `提成: ¥${amountTransform(amount, '/')} 货款交易费: ¥${amountTransform(fee, '/')}`
-    }else if(data==='platformCommission') {
-      return `佣金: ¥${amountTransform(amount, '/')} 货款交易费: ¥${amountTransform(fee, '/')}`
-    }else{
-      return ''
+    switch(data){
+      case 'goodsAmount':
+        return (
+          <>
+            <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
+            <span>货款交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'commission':
+        return (
+          <>
+            <span className={styles.amount}>提成: ¥{amountTransform(amount, '/')}</span>
+            <span>提成交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'platformCommission':
+        return (
+          <>
+            <span className={styles.amount}>佣金: ¥{amountTransform(amount, '/')}</span>
+            <span>佣金交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'suggestCommission':
+        return (
+          <>
+            <span className={styles.amount}>推荐提成: ¥{amountTransform(amount, '/')}</span>
+            <span>推荐提成交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'agentCompanyCommission':
+        return (
+          <>
+            <span className={styles.amount}>经销商提成: ¥{amountTransform(amount, '/')}</span>
+            <span>经销商提成交易费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      default:
+        return ''
     }
   }
 
   const backCalculation= (data, amount, fee)=> {
-    if(data==='goodsAmount'){
-      return `货款回退: ¥${amountTransform(amount, '/')} 货款交易费回退: ¥${amountTransform(fee, '/')}`
-    }else if(data==='commission'){
-      return `提成回退: ¥${amountTransform(amount, '/')} 货款交易费回退: ¥${amountTransform(fee, '/')}`
-    }else if(data==='platformCommission') {
-      return `佣金回退: ¥${amountTransform(amount, '/')} 货款交易费回退: ¥${amountTransform(fee, '/')}`
-    }else{
-      return ''
+    switch(data){
+      case 'goodsAmount':
+        return (
+          <>
+            <span className={styles.amount}>货款回退: ¥{amountTransform(amount, '/')}</span>
+            <span>货款交易费回退: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'commission':
+        return (
+          <>
+            <span className={styles.amount}>提成回退: ¥{amountTransform(amount, '/')}</span>
+            <span>提成交易费回退: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'platformCommission':
+        return (
+          <>
+            <span className={styles.amount}>佣金回退: ¥{amountTransform(amount, '/')}</span>
+            <span>佣金交易费回退: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'suggestCommission':
+        return (
+          <>
+            <span className={styles.amount}>推荐提成回退: ¥{amountTransform(amount, '/')}</span>
+            <span>推荐提成交易费回退: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'agentCompanyCommission':
+        return (
+          <>
+            <span className={styles.amount}>经销商提成回退: ¥{amountTransform(amount, '/')}</span>
+            <span>经销商提成交易费回退: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      default:
+        return ''
     }
   }
   const columns1 = [
@@ -82,12 +147,19 @@ const Detail = () => {
         'debt': '欠款入账',
         'debtReturn': '欠款偿还',
         'unfreeze': '解冻',
-        'freeze': '冻结'
+        'freeze': '冻结',
+        'suggestCommission': '推荐提成入账',
+        'suggestCommissionReturn': '推荐提成回退',
+        'agentCompanyCommission': '经销商佣金收入',
+        'agentCompanyCommissionReturn': '经销商佣金回退',
+        'freight': '运费',
+        'freightReturn': '运费回退',
+        'yeahCardRecharge': '约卡充值'
       }
     },
     {
       title: '关联订单类型',
-      dataIndex: 'payTpyeName',
+      dataIndex: 'orderType',
       valueEnum: {
         'normalOrder': '普通商品订单',
         'second': '秒约订单',
@@ -108,7 +180,14 @@ const Detail = () => {
       title: '回退会员类型',
       dataIndex: 'accountType',
       valueType: 'select',
-      valueEnum: ''
+      valueEnum: {
+        'store': '店铺',
+        'supplier': '供应商家',
+        'platform': '平台',
+        'member': '会员',
+        'agentStore': '代发店',
+        'agentCompany': '经销商'
+      }
     },
     {
       title: '',
@@ -150,7 +229,6 @@ const Detail = () => {
       dataIndex: 'refundDivideInfos',
       render: (_, data)=> {
         if(data.returnDivideInfos) {
-          console.log(data?.returnDivideInfos.length);
           return data?.returnDivideInfos.map(item=> (
             <div key={item?.type}>{backCalculation(item?.type, item?.amount, item?.fee)}</div>
           ))
@@ -176,27 +254,23 @@ const Detail = () => {
       dataIndex: ''
     },
     {
-      title: '支付用户名',
-      dataIndex: 'payUsername'
-    },
-    {
-      title: '支付账户',
-      dataIndex: 'payAccount'
-    },
-    {
       title: '支付金额',
       dataIndex: 'amount'
     },
     {
       title: '虚拟分账计算',
       dataIndex: 'divideInfos',
-      render: (_, data)=> {
-        return data?.divideInfos.map(item=> (
-          <div key={item?.type}>
-            {fashionableType(item?.type, item?.amount, item?.fee)}
-          </div>
-        ))
-      } 
+      render: (_, data)=> (
+        <>
+          {
+            data?.divideInfos.map(item=> (
+              <div key={item?.type}>
+                {fashionableType(item?.type, item?.amount, item?.fee)}
+              </div>
+            ))
+          }
+        </>
+      ) 
     },
     {
       title: '支付单号',

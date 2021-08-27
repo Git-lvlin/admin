@@ -26,11 +26,11 @@ const AfterSalesOrderDetails = () =>{
       valueType: 'indexBorder'
     },
     {
-      title: '卖家ID',
+      title: '退方ID',
       dataIndex: 'accountId'
     },
     {
-      title: '卖家手机',
+      title: '退方手机',
       dataIndex: 'accountMobile'
     },
     {
@@ -71,7 +71,14 @@ const AfterSalesOrderDetails = () =>{
         'debt': '欠款入账',
         'debtReturn': '欠款偿还',
         'unfreeze': '解冻',
-        'freeze': '冻结'
+        'freeze': '冻结',
+        'suggestCommission': '推荐提成入账',
+        'suggestCommissionReturn': '推荐提成回退',
+        'agentCompanyCommission': '经销商佣金收入',
+        'agentCompanyCommissionReturn': '经销商佣金回退',
+        'freight': '运费',
+        'freightReturn': '运费回退',
+        'yeahCardRecharge': '约卡充值'
       },
       hideInSearch: true
     },
@@ -137,7 +144,7 @@ const AfterSalesOrderDetails = () =>{
       
     },
     {
-      title: '平台支付单号',
+      title: '支付单号',
       dataIndex: 'payNo',
       
     },
@@ -162,6 +169,7 @@ const AfterSalesOrderDetails = () =>{
       title: '操作',
       dataIndex: 'optoion',
       valueType: 'option',
+      fixed: 'right',
       render: (_, records)=> <a onClick={()=>{skipToDetails(records?.id)}}>详情</a>
     }
   ]
@@ -169,7 +177,7 @@ const AfterSalesOrderDetails = () =>{
     <PageContainer title={false}>
       <ProTable
         rowKey='id'
-        scroll={{x: 2400}}
+        scroll={{x: 2200}}
         columns={columns}
         toolBarRender={false}
         pagination={{

@@ -227,7 +227,7 @@ const OrderDetail = () => {
                 }
                 <div className={styles.box}>
                   <div>买家留言</div>
-                  <div>{detailData?.receivingInfo?.remark}</div>
+                  <div>{detailData?.note}</div>
                 </div>
               </div>
               <Space style={{ marginTop: 30 }}>
@@ -258,6 +258,7 @@ const OrderDetail = () => {
               确定
             </Button>,
           ]}
+          onCancel={() => { setExpressInfoState([]) }}
         >
           <Steps progressDot current={999} direction="vertical">
             {

@@ -77,7 +77,7 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '涉及供应商',
+      title: '涉及供应商家',
       dataIndex: 'manageSupplierNum',
       valueType: 'text',
       hideInSearch: true,
@@ -89,7 +89,7 @@ const TableList = () => {
       }
     },
     {
-      title: '返佣SPU商品',
+      title: 'SPU商品',
       dataIndex: 'manageGoodsNum',
       valueType: 'text',
       hideInSearch: true,

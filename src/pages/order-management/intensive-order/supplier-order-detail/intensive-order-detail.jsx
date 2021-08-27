@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout';
 import { Steps, Space, Button, Modal, Spin } from 'antd';
 import { useParams } from 'umi';
-import { getSupplierOrderDetail, modifyShip, expressInfo } from '@/services/order-management/supplier-order-detail';
+import { getSupplierOrderDetail, modifyShip, expressInfo, getPurchaseOrderDetail } from '@/services/order-management/supplier-order-detail';
 import { amountTransform, dateFormat } from '@/utils/utils'
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { history } from 'umi';
+import { history, useLocation } from 'umi';
 
 import styles from './style.less';
 
@@ -27,11 +28,15 @@ const OrderDetail = () => {
   const [deliveryVisible, setDeliveryVisible] = useState(false)
   const [expressInfoState, setExpressInfoState] = useState([])
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const isPurchase = location.pathname.includes('purchase')
+
 
 
   const getDetailData = () => {
     setLoading(true);
-    getSupplierOrderDetail({
+    const apiMethod = isPurchase ? getPurchaseOrderDetail : getSupplierOrderDetail
+    apiMethod({
       orderId: params.id
     }).then(res => {
       if (res.code === 0) {
@@ -154,7 +159,7 @@ const OrderDetail = () => {
                   <div className={styles.box_wrap}>
                     <div className={styles.box}>
                       <div>应付金额</div>
-                      <div>{amountTransform(detailData?.advance?.Amount, '/')}元</div>
+                      <div>{amountTransform(detailData?.advance?.amount, '/')}元</div>
                     </div>
                     <div className={styles.box}>
                       <div>优惠券优惠</div>
@@ -171,7 +176,7 @@ const OrderDetail = () => {
                   <div className={styles.box_wrap}>
                     <div className={styles.box}>
                       <div>应付金额</div>
-                      <div>{amountTransform(detailData?.final?.Amount, '/')}元</div>
+                      <div>{amountTransform(detailData?.final?.amount, '/')}元</div>
                     </div>
                     <div className={styles.box}>
                       <div>运费</div>
@@ -291,6 +296,7 @@ const OrderDetail = () => {
               确定
             </Button>,
           ]}
+          onCancel={() => { setExpressInfoState([]) }}
         >
           <Steps progressDot current={999} direction="vertical">
             {

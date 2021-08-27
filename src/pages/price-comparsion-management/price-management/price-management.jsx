@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { MinusOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { Button, Space, message, Input, Form, Spin } from 'antd';
+import { Button, Space, message, Input, Form, Spin, InputNumber } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { 
@@ -10,6 +10,7 @@ import {
   getSpiderGoodsListByDate,
   sendTask,
   getGoodsBindData,
+  upDataPrice,
 } from '@/services/cms/member/member';
 import Edit from './edit';
 import FormPage from './form';
@@ -46,18 +47,36 @@ const PriceManagement = () => {
     })
   }
 
-  const onSearch = (value, t, i) => {
+  const formControlOne = (id) => {
+    delContestGoods({id: id.toString()}).then((res) => {
+      if (res.code === 0) {
+        message.success(`成功`);
+        actionRef.current.reset();
+      }
+    })
+  }
+
+  const setPrice = (value, id, t) => {
+    const param = {
+      contestId: id,
+      type: t,
+      priceDefault: value*100
+    }
+    upDataPrice(param)
+  }
+
+  const onSearch = (value, t, {id, goodsSpuId, goodsSkuId}) => {
     if (!value) {
+      setLoadingIndex(-1)
       return
     }
-    const id = i
     const type = t
     setType(type)
     const param = {
       goodsUrl: value,
-      goodsId: formData.goodsSpuId,
+      goodsId: goodsSpuId,
       type,
-      skuId: formData.goodsSkuId,
+      skuId: goodsSkuId,
     }
     createTaskSrc(param, {showError: false}).then((res) => {
       if (res.code === 0) {
@@ -88,7 +107,7 @@ const PriceManagement = () => {
       }
       ref.current = setTimeout(()=>{
         timeoutfn(data,type,id)
-      }, 50000)
+      }, 5000)
     })
   }
 
@@ -119,6 +138,7 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>比价电商平台</ProCard>
           <ProCard colSpan="120px" className={styles.card}>skuid</ProCard>
           <ProCard colSpan="120px" className={styles.card}>售卖价格</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>默认价格</ProCard>
           <ProCard className={styles.card}>链接</ProCard>
           <ProCard colSpan="120px" className={styles.card}>操作</ProCard>
         </ProCard>
@@ -126,6 +146,11 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>淘宝</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.tb?.sku}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.tb?.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>
+            {resData.tb&&<InputNumber min={0.01} max={99999} defaultValue={resData.tb.priceDefault&&resData.tb.priceDefault/100} onChange={(value) => {
+              setPrice(value, a.id, 'tb')
+            }} />}
+          </ProCard>
           <ProCard className={styles.card}>
             <Search
               name="search-tb"
@@ -142,17 +167,8 @@ const PriceManagement = () => {
                 })
               }}
               enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 1?true:false}>抓取</Button>}
-              onSearch={(_) => {setLoadingIndex(1);onSearch(_,'tb', a.id)}}
+              onSearch={(_) => {setLoadingIndex(1);onSearch(_,'tb', a)}}
             />
-            {/* <Button
-              disabled={!grabList}
-              key={a.id}
-              style={{
-              width: "8%",
-              float: 'right'
-            }} onClick={() => {
-              bindData(a.id, 'tb')
-            }}>绑定</Button> */}
           </ProCard>
 
         </ProCard>
@@ -160,6 +176,11 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>京东</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.jd?.sku}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.jd?.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>
+            {resData.jd&&<InputNumber min={0.01} max={1000} defaultValue={resData.jd.priceDefault&&resData.jd.priceDefault/100} onChange={(value) => {
+              setPrice(value, a.id, 'jd')
+            }} />}
+          </ProCard>
           <ProCard className={styles.card}>
             <Search
               name="search-jd"
@@ -176,7 +197,7 @@ const PriceManagement = () => {
                 })
               }}
               enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 2?true:false}>抓取</Button>}
-              onSearch={(_) => {setLoadingIndex(2);onSearch(_,'jd', a.id)}}
+              onSearch={(_) => {setLoadingIndex(2);onSearch(_,'jd', a)}}
             />
           </ProCard>
         </ProCard>
@@ -184,6 +205,11 @@ const PriceManagement = () => {
           <ProCard colSpan="120px" className={styles.card}>拼多多</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.pdd?.sku}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.pdd?.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>
+            {resData.pdd&&<InputNumber min={0.01} max={1000} defaultValue={resData.pdd.priceDefault&&resData.pdd.priceDefault/100} onChange={(value) => {
+              setPrice(value, a.id, 'pdd')
+            }} />}
+          </ProCard>
             <ProCard className={styles.card}>
               <Search
                 placeholder="请输入对应商品链接地址"
@@ -199,23 +225,19 @@ const PriceManagement = () => {
                   })
                 }}
                 enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 3?true:false}>抓取</Button>}
-                onSearch={(_) => {setLoadingIndex(3);onSearch(_,'pdd', a.id)}}
+                onSearch={(_) => {setLoadingIndex(3);onSearch(_,'pdd', a)}}
               />
-              {/* <Button
-                disabled={!grabList}
-                key={a.id}
-                style={{
-                width: "8%",
-                float: 'right'
-              }} onClick={() => {
-                bindData(a.id, 'pdd')
-              }}>绑定</Button> */}
             </ProCard>
         </ProCard>
         <ProCard split="vertical" className={styles.header}>
           <ProCard colSpan="120px" className={styles.top  }>天猫</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.tmall?.sku}</ProCard>
           <ProCard colSpan="120px" className={styles.card}>{resData.tmall?.price}</ProCard>
+          <ProCard colSpan="120px" className={styles.card}>
+            {resData.tmall&&<InputNumber min={0.01} max={99999} defaultValue={resData.tmall.priceDefault&&resData.tmall.priceDefault/100} onChange={(value) => {
+              setPrice(value, a.id, 'tmall')
+            }} />}
+          </ProCard>
           <ProCard className={styles.card}>
             <Search
               placeholder="请输入对应商品链接地址"
@@ -231,7 +253,7 @@ const PriceManagement = () => {
                 })
               }}
               enterButton={<Button type="primary" disabled={loadingIndex>=0?true:false} loading={loadingIndex == 4?true:false}>抓取</Button>}
-              onSearch={(_) => {setLoadingIndex(4);onSearch(_,'tmall', a.id)}}
+              onSearch={(_) => {setLoadingIndex(4);onSearch(_,'tmall', a)}}
             />
           </ProCard>
         </ProCard>
@@ -244,6 +266,12 @@ const PriceManagement = () => {
     {
       title: 'skuId',
       dataIndex: 'goodsSkuId',
+      search: false,
+    },
+    {
+      title: 'skuId',
+      dataIndex: 'skuId',
+      hideInTable: true
     },
     {
       title: '商品名称',
@@ -283,7 +311,7 @@ const PriceManagement = () => {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
-      render: (text, record, _)=><a key="d" onClick={() => {formControl(record.id)}}>删除</a>
+      render: (text, record, _)=><a key="d" onClick={() => {formControlOne(record.id)}}>删除</a>
     },
   ]
 
@@ -294,18 +322,49 @@ const PriceManagement = () => {
     const index = arr[arr.length-1]
     getGoodsBindData({goodsId: index[0], goodsSkuId: index[1]}).then(res => {
       if (res.code === 0) {
-        setResData(res.data)
+        let data = res.data;
+        if (!data.tb) {
+          data.tb = {
+            priceDefault: null
+          }
+        } else if (!data.tb.priceDefault) {
+          data.tb.priceDefault = null
+        }
+        if (!data.jd) {
+          data.jd = {
+            priceDefault: null
+          }
+        } else if (!data.jd.priceDefault) {
+          data.jd.priceDefault = null
+        }
+        if (!data.pdd) {
+          data.pdd = {
+            priceDefault: null
+          }
+        } else if (!data.pdd.priceDefault) {
+          data.pdd.priceDefault = null
+        }
+        if (!data.tmall) {
+          data.tmall = {
+            priceDefault: null
+          } 
+        } else if (!data.tmall.priceDefault) {
+          data.tmall.priceDefault = null
+        }
+        setResData(data)
         setRowLoadin(false)
       }
     })
   }
 
   const changeRowKeys = (expanded, record) => {
-    setRowLoadin(true)
-    setFormjsx(false)
-    setIsShow(false)
     clearTimeout(ref.current)
     setLoadingIndex(-1)
+    setRowLoadin(true)
+    setResData({})
+    setFormData(record)
+    setFormjsx(false)
+    setIsShow(false)
     let temp = []
     if (expanded) {
       temp.push(record.allKey)

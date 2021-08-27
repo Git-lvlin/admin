@@ -52,10 +52,10 @@ export const interventionSentence = async (params = {}, options = {}) => {
 
 // 查询物流信息
 export const expressInfo = async (params={}, options={}) => {
-  const res = await request('/express/open/expressInfo', {
+  const res = await request('/auth/express/express/expressInfo', {
     method: 'POST',
     data: {
-      ...params
+      ...params 
     },
     ...options
   })
@@ -79,3 +79,22 @@ export const findReturnRecord = async (params={}, options={}) => {
     success: res?.success
   }
 }
+
+// 售后地址列表
+export const addressList = async (params={}, options={}) => {
+  const { supplierId } = params
+  const res = await request('/auth/supplier/user/addressList', {
+    method: 'POST',
+    data: {
+      page: 1,
+      size: 999,
+      supplierId
+    },
+    ...options
+  })
+  return {
+    data: res?.data.records,
+    success: res?.success
+  }
+}
+

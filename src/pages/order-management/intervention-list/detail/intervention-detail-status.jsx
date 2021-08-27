@@ -1,16 +1,16 @@
-import React, { useRef } from 'react';
-import styles from './styles.less';
-import { Button, message, Space } from 'antd';
+import React, { useRef, useEffect, useState } from 'react'
+import styles from './styles.less'
+import { Button, message, Space } from 'antd'
 import ProForm, {
   ModalForm,
+  ProFormSelect,
   ProFormTextArea
-} from '@ant-design/pro-form';
+} from '@ant-design/pro-form'
 
-import { interventionSentence } from '@/services/order-management/intervention-list';
+import { interventionSentence, addressList } from '@/services/order-management/intervention-list'
+import Upload from '@/components/upload'
 
-import Upload from '@/components/upload';
-
-const AfterState = ({ stage }) => {
+const AfterState = ({stage})=> {
   const status = () => {
     switch(stage){
       case 1:
@@ -18,18 +18,37 @@ const AfterState = ({ stage }) => {
       case 2:
         return '介入退款'
       default:
-        return '订单不存在'
+        return ''
     }
   }
   return (
     <div className={styles.detailTitle}>
-      { status() }
+      {status()}
     </div>
   )
 }
 
 const InterventionDetailStatus = props => {
-  const { stage, orderId, id, status } = props
+  const {
+    stage,
+    orderId,
+    id,
+    status,
+    change,
+    supplierId,
+    type
+  } = props
+  const [address, setAddress] = useState([])
+  useEffect(()=>{
+    supplierId&&
+    addressList({supplierId}).then(res=> {
+      setAddress(res?.data)
+    })
+    return ()=> { 
+      setAddress([])
+    }
+  }, [supplierId])
+
   const formRef = useRef()
 
   const Modal = props => {
@@ -48,18 +67,25 @@ const InterventionDetailStatus = props => {
           <Button size="large" type={btnType}>{title}</Button>
         }
         modalProps={{
+          destroyOnClose: true,
           onCancel: () => formRef.current?.resetFields()
         }}
-        onFinish={(values)=>{
+        onFinish={async (values)=> {
           let { platformEvidenceImg } = values
           platformEvidenceImg =  Array.isArray(platformEvidenceImg) ? platformEvidenceImg.join(',') : platformEvidenceImg
+          const addrObj = address?.filter(item=> item.id === values.address)[0]
           interventionSentence({
             id: id,
             winnerRole: winnerRole,
             ...values,
+            companyAddressId: addrObj?.id,
+            receiveMan: addrObj?.contactName,
+            receivePhone: addrObj?.contactPhone,
+            receiveAddress: addrObj?.address,
             platformEvidenceImg
           }).then(res=>{
             if(res.success){
+              change(true)
               message.success('提交成功')
               return true
             }
@@ -72,6 +98,7 @@ const InterventionDetailStatus = props => {
             label="处理意见"
             name="platformOpinion"
             width='lg'
+            placeholder="请输入处理意见"
             rules={[
               {
                 required: true,
@@ -84,6 +111,25 @@ const InterventionDetailStatus = props => {
             }}
           />
         </div>
+        {
+          (winnerRole === 1 && type === 2 && stage === 1 ) &&
+          <div className={styles.opinion}>
+            <ProFormSelect
+              label="收货地址"
+              name="address"
+              options={address.map(item=>(
+                {label: item.address, value: item.id}
+              ))}
+              placeholder="请选择收货地址"
+              rules={[
+                {
+                  required: true,
+                  message: '请选择收货地址'
+                }
+              ]}
+            />
+          </div>
+        }
         <ProForm.Item
           name="platformEvidenceImg"
           label="处理凭证"

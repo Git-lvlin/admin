@@ -66,37 +66,57 @@
   background: #fff;
   padding: 20px;
 }
-.timeline {
-  margin-left: 100px;
+.timelineWarp{
+  height: auto;
+  max-height: 600px;
+  overflow-y: auto;
+  padding: 10px 20px 0 !important;
+  .time {
+    margin-right: 20px;
+    color: rgb(12, 90, 255);
+  }
+  &::-webkit-scrollbar {
+    width : 10px;
+    height: 1px;
+    }
+  &::-webkit-scrollbar-thumb {
+    border-radius   : 10px;
+    background-color: rgba(12, 90, 255, .7);
+    background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+    );
+  }
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #ededed;
+    border-radius: 10px;
+  }
 }
-.ant-descriptions-bordered .ant-descriptions-row {
-  border-color: #f0f0f0;
+
+:scope .ant-descriptions-bordered .ant-descriptions-item-label {
+  width: 200px;
 }
-.ant-descriptions-bordered .ant-descriptions-item-label {
-  width: 300px;
-  font-size: 16px;
-  border-color: #f0f0f0;
-  background-color: rgba(245,245,245,.5);
-}
-.ant-descriptions-bordered .ant-descriptions-view {
-  border-color: #f0f0f0;
-}
-.ant-descriptions-item-content {
-  font-size: 16px;
-}
-.ant-pro-table-list-toolbar-title {
+:scope .ant-pro-table-list-toolbar-title {
   font-weight: bold;
 }
 
 .goodsInfo {
   display: flex;
   justify-content: center;
+  align-items: center;
   text-align: left;
   .goodsContent {
     width: 240px;
     margin: 18px 0;
-    .goodsName {
-      line-height: 16px;
+    .skuName {
+      color: #f00;
     }
   }
 }

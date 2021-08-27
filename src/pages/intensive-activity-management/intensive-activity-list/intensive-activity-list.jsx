@@ -30,7 +30,7 @@ const SubTable = (props) => {
       dataIndex: 'goodsName',
     },
     {
-      title: '供应商ID',
+      title: '供应商家ID',
       dataIndex: 'supplierId',
     },
     // {
@@ -45,12 +45,12 @@ const SubTable = (props) => {
     //   }
     // },
     {
-      title: '集约分成比例',
+      title: '售价上浮比(%)',
       dataIndex: 'settlePercent',
       render: (_) => `${amountTransform(_)}%`
     },
     {
-      title: '供货价',
+      title: '批发供货价(元)',
       dataIndex: 'wholesaleSupplyPrice',
       render: (_) => amountTransform(_, '/')
     },
@@ -74,11 +74,11 @@ const SubTable = (props) => {
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '单店起订量',
+      title: '单次起订量',
       dataIndex: 'minNum',
     },
     {
-      title: '单店限订量',
+      title: '单次限订量',
       dataIndex: 'maxNum',
     },
     {
@@ -168,7 +168,7 @@ const TableList = () => {
     //   hideInTable: true,
     // },
     {
-      title: '可购买后销售的会员店等级',
+      title: '可购买后销售的社区店等级',
       dataIndex: 'storeLevel',
       valueType: 'text',
       hideInSearch: true,
@@ -225,7 +225,7 @@ const TableList = () => {
       render: (_, data) => (
         <Space>
           <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-detail/${data.wholesaleId}`) }}>详情</a>
-          {data.wholesaleStatusDesc === '待开始' && <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>中止</a>}
+          {(data.wholesaleStatusDesc === '待开始' || data.wholesaleStatusDesc === '进行中') && <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>}
         </Space>
       ),
     },

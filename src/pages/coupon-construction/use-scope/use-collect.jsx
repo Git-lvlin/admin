@@ -38,7 +38,7 @@ const  useCollect=(props)=>{
             ]
         },
         {
-            title: '可购买的会员店等级',
+            title: '可购买的社区店等级',
             dataIndex: 'storeLevel',
             hideInSearch: true,
         },
@@ -67,7 +67,7 @@ const  useCollect=(props)=>{
             ]
         },
         {
-            title: '可购买的会员店等级',
+            title: '可购买的社区店等级',
             dataIndex: 'storeLevel',
         },
         {

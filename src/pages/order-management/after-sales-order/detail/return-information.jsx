@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import { Button, Timeline } from 'antd'
+import { Button, Timeline, Empty } from 'antd'
 import{ ModalForm } from '@ant-design/pro-form'
 import moment from 'moment'
 
@@ -13,12 +13,16 @@ import './styles.less'
 const { Item } = Timeline
 
 const showLastStatus = lastStatus => {
-  lastStatus = lastStatus?.split(',')
-  return lastStatus?.map((key,idx)=>(
-    <Item key={idx} className={styles.timeline}>
-      {key}
-    </Item>
-  ))
+  if(lastStatus){
+    return lastStatus?.map((item)=>(
+      <Item key={item.time}>
+        <span className={styles.time}>{item.time}</span>
+        {item.content}
+      </Item>
+    ))
+  } else {
+    return <Empty className={styles.empty}/>
+  }
 }
 
 const ReturnInformation = props => {
@@ -71,7 +75,7 @@ const ReturnInformation = props => {
     },
     {
       title: '买家昵称',
-      dataIndex: 'userNickname'
+      dataIndex: 'buyerNickname'
     },
     {
       title: '买家手机号',
@@ -114,14 +118,18 @@ const ReturnInformation = props => {
             </div>
             <ModalForm
               title='快递消息'
-              width={800}
+              width={700}
+              modalProps={{
+                closable: true,
+                destroyOnClose: true
+              }}
               trigger={
                 <Button size="large" type="default">查看快递详情</Button>
               }
               onFinish={()=> true}
             >
-              <Timeline reverse>
-                {showLastStatus(express?.lastStatus)}
+              <Timeline className={styles.timelineWarp}>
+                {showLastStatus(express?.deliveryList)}
               </Timeline>
             </ModalForm>
           </div>
