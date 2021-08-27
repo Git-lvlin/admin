@@ -218,6 +218,24 @@ const TableList = () => {
             showTime: true,
           }}
         />
+         <ProFormText
+          name="consignee"
+          label="收件人"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
+        <ProFormText
+          name="shippingCode"
+          label="物流单号"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -348,14 +366,6 @@ const TableList = () => {
           onChange={pageChange}
         />
       </div>
-
-      {deliveryVisible &&
-        <Delivery
-          visible={deliveryVisible}
-          setVisible={setDeliveryVisible}
-          callback={(values) => { orderShipRequest(values) }}
-        />
-      }
     </PageContainer>
   );
 };
