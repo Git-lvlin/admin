@@ -16,8 +16,6 @@ const TableList = () => {
   const [orderType, setOrderType] = useState(0)
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState(0)
-  const [deliveryVisible, setDeliveryVisible] = useState(false)
-
   const [form] = Form.useForm()
 
 
@@ -29,20 +27,6 @@ const TableList = () => {
   const orderTypeChange = (e) => {
     setOrderType(e.target.value)
     setPage(1)
-  }
-
-  const orderShipRequest = (values) => {
-    deliverGoods({
-      id: orderId,
-      shippingCode: values.expressNo,
-      expressType: values.expressId,
-      expressName: values.expressName
-    }, { showSuccess: true })
-      .then(res => {
-        if (res.code === 0) {
-          setSearch(search + 1)
-        }
-      })
   }
 
   useEffect(() => {
@@ -161,6 +145,24 @@ const TableList = () => {
         />
         <ProFormDateRangePicker
           label="下单时间"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
+         <ProFormText
+          name="consignee"
+          label="收件人"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
+        <ProFormText
+          name="shippingCode"
+          label="物流单号"
           fieldProps={{
             style: {
               marginBottom: 20
@@ -291,14 +293,6 @@ const TableList = () => {
           onChange={pageChange}
         />
       </div>
-
-      {deliveryVisible &&
-        <Delivery
-          visible={deliveryVisible}
-          setVisible={setDeliveryVisible}
-          callback={(values) => { orderShipRequest(values) }}
-        />
-      }
     </PageContainer>
   );
 };

@@ -161,6 +161,24 @@ const TableList = () => {
             }
           }}
         />
+        <ProFormText
+        name="receiptUser"
+        label="收件人"
+        fieldProps={{
+          style: {
+            marginBottom: 20
+          }
+        }}
+      />
+        <ProFormText
+          name="expressNo"
+          label="物流单号"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}

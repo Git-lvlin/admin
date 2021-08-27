@@ -4,6 +4,8 @@ import { Steps, Space, Button, Modal, Spin } from 'antd';
 import { useParams } from 'umi';
 import { findAdminOrderDetail, deliverGoods, expressInfo } from '@/services/order-management/normal-order-detail';
 import { amountTransform, dateFormat } from '@/utils/utils'
+import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
+import ProDescriptions from '@ant-design/pro-descriptions';
 import { history } from 'umi';
 
 import styles from './style.less';
@@ -45,17 +47,33 @@ const OrderDetail = () => {
 
   const orderShipRequest = (values) => {
     deliverGoods({
-      id: params.id,
+      subOrderId: params.id,
       shippingCode: values.expressNo,
-      expressType: values.expressId,
-      expressName: values.expressName
+      expressType: values.expressType,
+      expressName: values.expressName,
+      expressId:values.expressId
     }, { showSuccess: true })
       .then(res => {
         if (res.code === 0) {
           getDetailData()
         }
-      })
-  }
+    })
+}
+
+  const modifyShipRequest = (values) => {
+    updateOrderLogistics({
+      id: orderId,
+      shippingCode: values.expressNo,
+      expressType: values.expressType,
+      expressId:values.expressId,
+      expressName: values.expressName
+    }, { showSuccess: true })
+    .then(res => {
+      if (res.code === 0) {
+        getDetailData()
+      }
+  })
+}
 
 
   useEffect(() => {
@@ -123,15 +141,6 @@ const OrderDetail = () => {
                     <p>收货地址：{detailData?.fullAddress}</p>
                   </div>
                 </div>
-                <div className={styles.box}>
-                  <div>物流信息</div>
-                  <div className={styles.block}>
-                    <p>快递公司：{detailData?.expressName}</p>
-                    <p>运单编号：{detailData?.shippingCode} {detailData?.shippingCode && <a onClick={expressInfoRequest}>物流跟踪</a>}</p>
-                    <p>发货时间：{dateFormat(detailData?.deliveryTime)}</p>
-                    <p>收货时间：{dateFormat(detailData?.receiveTime)}</p>
-                  </div>
-                </div>
               </div>
               <div className={styles.box_wrap} style={{ marginTop: '-1px' }}>
                 <div className={`${styles.box} ${styles.box_header}`}>
@@ -157,6 +166,45 @@ const OrderDetail = () => {
                   <div>实收</div>
                   <div>{amountTransform(detailData?.incomeAmount, '/')}元</div>
                 </div>
+                 {
+                <>
+                <div className={`${styles.box} ${styles.box_header}`}>
+                  物流信息
+                </div>
+                {
+                  detailData.logisticsList&&detailData.logisticsList.map((ele,idx)=>(
+                  <ProDescriptions  style={{padding:'20px'}} column={2} title={"包裹"+parseInt(idx+1)}>
+                    <ProDescriptions.Item
+                      label="快递公司"
+                    >
+                      {ele.expressName}
+                    </ProDescriptions.Item>
+                    <ProDescriptions.Item
+                      label="运单编号"
+                    >
+                      {ele.shippingCode}
+                    </ProDescriptions.Item>
+                    <ProDescriptions.Item
+                      label="物流进度"
+                    >
+                      <p className={styles.schedule}>{ele.lastStatus}</p>
+                    </ProDescriptions.Item>
+
+                    <ProDescriptions.Item
+                      fieldProps={{}}
+                    >
+                      <LogisticsTrackingModel 
+                          record={ele.deliveryList}     
+                          title={'物流跟踪'}
+                          byid={ele.id}
+                        />
+                    </ProDescriptions.Item>
+                </ProDescriptions>
+                  ))
+                }  
+                </> 
+             }
+                
               </div>
             </div>
             <div style={{ flex: 1 }}>
@@ -198,11 +246,11 @@ const OrderDetail = () => {
                   <div>{detailData?.note}</div>
                 </div>
               </div>
+              <Space style={{ marginTop: 30 }}>
+                <Button type="primary" onClick={() => { history.goBack() }}>返回</Button>
+              </Space>
             </div>
           </div>
-          <Space style={{ marginTop: 30 }}>
-            <Button type="primary" onClick={() => { history.goBack() }}>返回</Button>
-          </Space>
         </div>
         <Modal
           title="物流跟踪"
