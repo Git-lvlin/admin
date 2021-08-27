@@ -17,8 +17,8 @@ const sourceType = {
   5: '移动端浏览器',
   6: '官方渠道',
   7: '魅族',
-  8: '360',
-  9: '百度',
+  8: 'oppo',
+  9: '华为',
   10: 'appStore',
   11: 'WEB',
 }
@@ -54,13 +54,13 @@ const TableList = () => {
     //   valueType: 'text',
     //   hideInSearch: true,
     // },
-    // {
-    //   title: '性别',
-    //   dataIndex: 'gender',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    //   render: (text) => text === 1 ? '男' : '女'
-    // },
+    {
+      title: '是否开店',
+      dataIndex: 'userType',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (text) => text === 1 ? '是' : '否'
+    },
     {
       title: '手机号',
       dataIndex: 'phoneNumber',
@@ -171,6 +171,17 @@ const TableList = () => {
       valueEnum: {
         1: '男',
         0: '女'
+      },
+    },
+    {
+      title: '会员店主',
+      dataIndex: 'userType',
+      onFilter: true,
+      valueType: 'select',
+      hideInTable: true,
+      valueEnum: {
+        1: '是',
+        0: '否'
       },
     },
     {
