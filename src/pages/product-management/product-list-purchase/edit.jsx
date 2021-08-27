@@ -668,10 +668,10 @@ export default (props) => {
         label="供货类型"
         rules={[{ required: true }]}
         options={[
-          // {
-          //   label: '批发+零售',
-          //   value: 0,
-          // },
+          {
+            label: '批发+零售',
+            value: 0,
+          },
           {
             label: '仅批发',
             value: 1,
