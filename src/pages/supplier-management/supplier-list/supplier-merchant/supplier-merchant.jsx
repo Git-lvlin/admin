@@ -191,7 +191,7 @@ const TableList = () => {
                 }[_]
               }
             </div>
-            {!!data.auditReason && <div style={{ color: 'red' }}>{data.auditReason}</div>}
+            {!!data.auditReason && _ !== 2 && <div style={{ color: 'red' }}>{data.auditReason}</div>}
           </>
         )
       }
@@ -214,7 +214,7 @@ const TableList = () => {
         if (_ !== 1 && data.auditStatus === 1) {
           return <a onClick={() => { getDetail(data.id, 3) }}>未绑卡</a>
         }
-        
+
       },
       width: 80,
     },

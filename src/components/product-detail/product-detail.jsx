@@ -150,7 +150,7 @@ export default (props) => {
       <Form.Item
         label="单位运费(元)"
       >
-        {detailData?.goods.wholesaleFreight}
+        {amountTransform(detailData?.goods.wholesaleFreight, '/')}
       </Form.Item>
       <Form.Item
         label="发票税率(%)"
@@ -277,7 +277,7 @@ export default (props) => {
           {detailData?.goods.goodsRemark}
         </Form.Item>
       }
-      <Form.Item
+      {selectAreaKey.length !== 0 && <Form.Item
         label="不发货地区"
       >
         <MultiCascader
@@ -289,7 +289,7 @@ export default (props) => {
           onChange={setSelectAreaKey}
           cleanable={false}
         />
-      </Form.Item>
+      </Form.Item>}
       <Form.Item
         label="商品主图"
         name="primaryImages"
@@ -355,7 +355,7 @@ export default (props) => {
       >
         <span style={{ color: 'red' }}>{detailData?.goods.goodsVerifyRemark}</span>
       </Form.Item>}
-      
+
       {/* 
           <ProFormSelect
             name="supplierHelperId"
