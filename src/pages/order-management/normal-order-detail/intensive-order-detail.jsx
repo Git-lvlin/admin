@@ -6,7 +6,6 @@ import { findAdminOrderDetail, deliverGoods, expressInfo, expressInfoYlbb, findA
 import { amountTransform, dateFormat } from '@/utils/utils'
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { history } from 'umi';
 import moment from 'moment';
 
 import styles from './style.less';
@@ -181,14 +180,12 @@ const OrderDetail = () => {
                   <div>用户实付</div>
                   <div>{amountTransform(detailData?.payAmount, '/')}元</div>
                 </div>
-                {/* <div className={styles.box}>
+                <div className={styles.box}>
                   <div>实收</div>
                   <div>{amountTransform(detailData?.incomeAmount, '/')}元</div>
                 </div>
-                 {
-                <>
                 <div className={`${styles.box} ${styles.box_header}`}>
-                  物流信息
+                  <div>物流信息</div>
                 </div>
                 {
                   detailData.logisticsList&&detailData.logisticsList.map((ele,idx)=>(
@@ -219,12 +216,8 @@ const OrderDetail = () => {
                         />
                     </ProDescriptions.Item>
                 </ProDescriptions>
-                  ))
-                }  
-                </> 
-             }
-                
-                </div> */}
+                  )) 
+                }
               </div>
             </div>
             <div style={{ flex: 1 }}>

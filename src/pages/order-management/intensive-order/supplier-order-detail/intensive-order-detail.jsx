@@ -6,7 +6,6 @@ import { getSupplierOrderDetail, modifyShip, expressInfo, getPurchaseOrderDetail
 import { amountTransform, dateFormat } from '@/utils/utils'
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { history } from 'umi';
 import { history, useLocation } from 'umi';
 
 import styles from './style.less';
@@ -25,8 +24,6 @@ const payType = {
 const OrderDetail = () => {
   const params = useParams();
   const [detailData, setDetailData] = useState({});
-  const [deliveryVisible, setDeliveryVisible] = useState(false)
-  const [expressInfoState, setExpressInfoState] = useState([])
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const isPurchase = location.pathname.includes('purchase')
@@ -45,31 +42,6 @@ const OrderDetail = () => {
     }).finally(() => {
       setLoading(false);
     })
-  }
-
-  const orderShipRequest = (values) => {
-    orderShip({
-      orderId: detailData.orderId,
-      ...values,
-    }, { showSuccess: true })
-      .then(res => {
-        if (res.code === 0) {
-          getDetailData()
-        }
-      })
-  }
-
-  const modifyShipRequest = (values) => {
-    modifyShip({
-      orderId: detailData.orderId,
-      oldExpressNo: detailData.express.expressNo,
-      ...values,
-    }, { showSuccess: true })
-      .then(res => {
-        if (res.code === 0) {
-          getDetailData()
-        }
-      })
   }
 
   useEffect(() => {
@@ -192,8 +164,6 @@ const OrderDetail = () => {
                   <div>合计实收</div>
                   <div>{amountTransform(detailData?.actualAmount, '/')}元</div>
                 </div>
-                {
-                <>
                 <div className={`${styles.box} ${styles.box_header}`}>
                   物流信息
                 </div>
@@ -227,9 +197,7 @@ const OrderDetail = () => {
                     </ProDescriptions.Item>
                 </ProDescriptions>
                   ))
-                }  
-                </> 
-             }
+                }
               </div>
             </div>
             <div style={{ flex: 1 }}>
@@ -274,38 +242,6 @@ const OrderDetail = () => {
           </div>
         
         </div>
-        {deliveryVisible &&
-          <Delivery
-            visible={deliveryVisible}
-            setVisible={setDeliveryVisible}
-            callback={(values) => {
-              // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-              detailData?.express?.expressId ? modifyShipRequest(values) : orderShipRequest(values)
-            }}
-            data={{
-              expressId: detailData?.express?.expressId,
-              expressNo: detailData?.express?.expressNo
-            }}
-          />
-        }
-        <Modal
-          title="物流跟踪"
-          visible={expressInfoState.length}
-          footer={[
-            <Button type="primary" onClick={() => { setExpressInfoState([]) }}>
-              确定
-            </Button>,
-          ]}
-          onCancel={() => { setExpressInfoState([]) }}
-        >
-          <Steps progressDot current={999} direction="vertical">
-            {
-              expressInfoState.map(item => (
-                <Step title={item.content} description={item.time} />
-              ))
-            }
-          </Steps>
-        </Modal>
       </Spin>
     </PageContainer>
   )

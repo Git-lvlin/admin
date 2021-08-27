@@ -3,7 +3,6 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { Steps, Space, Button, Modal, Spin } from 'antd';
 import { useParams } from 'umi';
 import { findAdminOrderDetail} from '@/services/order-management/normal-order-detail';
-import { getOrderDetail, modifyShip, expressInfo } from '@/services/order-management/shopkeeper-order-detail';
 import { amountTransform, dateFormat } from '@/utils/utils'
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
 import ProDescriptions from '@ant-design/pro-descriptions';
@@ -22,8 +21,6 @@ const payType = {
 const OrderDetail = () => {
   const params = useParams();
   const [detailData, setDetailData] = useState({});
-  const [deliveryVisible, setDeliveryVisible] = useState(false)
-  const [expressInfoState, setExpressInfoState] = useState([])
   const [loading, setLoading] = useState(false);
 
 
@@ -40,30 +37,6 @@ const OrderDetail = () => {
     })
   }
 
-  const orderShipRequest = (values) => {
-    orderShip({
-      orderId: detailData.orderId,
-      ...values,
-    }, { showSuccess: true })
-      .then(res => {
-        if (res.code === 0) {
-          getDetailDataRequest()
-        }
-      })
-  }
-
-  const modifyShipRequest = (values) => {
-    modifyShip({
-      orderId: detailData.orderId,
-      oldExpressNo: detailData.express.expressNo,
-      ...values,
-    }, { showSuccess: true })
-      .then(res => {
-        if (res.code === 0) {
-          getDetailDataRequest()
-        }
-      })
-  }
 
   useEffect(() => {
     getDetailDataRequest()
@@ -104,7 +77,7 @@ const OrderDetail = () => {
                 </div>
                 <div className={styles.box}>
                   <div>下单用户</div>
-                  <div>{detailData.buyerName}</div>
+                  <div>{detailData.buyerNickname}</div>
                 </div>
                 <div className={styles.box}>
                   <div>用户手机号</div>
@@ -112,22 +85,22 @@ const OrderDetail = () => {
                 </div>
                 <div className={styles.box}>
                   <div>支付时间</div>
-                  <div>{dateFormat(detailData?.sumOrder?.payTime)}</div>
+                  <div>{dateFormat(detailData?.payTime)}</div>
                 </div>
                 <div className={styles.box}>
                   <div>支付方式</div>
-                  <div>{payType[detailData?.sumOrder?.payType]}</div>
+                  <div>{detailData?.payTypeStr}</div>
                 </div>
                 <div className={styles.box}>
                   <div>支付流水号</div>
-                  <div>{detailData?.sumOrder?.paySN}</div>
+                  <div>{detailData?.paySn}</div>
                 </div>
                 <div className={styles.box}>
                   <div>收货信息</div>
                   <div className={styles.block}>
-                    <p>收货人：{detailData?.sumOrder?.consignee}</p>
-                    <p>收货手机号码：{detailData?.sumOrder?.phone}</p>
-                    <p>收货地址：{detailData?.sumOrder?.fullAddress}</p>
+                    <p>收货人：{detailData?.consignee}</p>
+                    <p>收货手机号码：{detailData?.phone}</p>
+                    <p>收货地址：{detailData?.fullAddress}</p>
                   </div>
                 </div>
               </div>
@@ -137,22 +110,20 @@ const OrderDetail = () => {
                 </div>
                 <div className={styles.box}>
                   <div>商品总金额</div>
-                  <div>{amountTransform(detailData?.sumOrder?.totalAmount, '/')}元</div>
+                  <div>{amountTransform(detailData?.goodsTotalAmount ,'/')}元</div>
                 </div>
                 <div className={styles.box}>
                   <div>运费</div>
-                  <div>+{amountTransform(detailData?.sumOrder?.shippingFeeAmount, '/')}元</div>
+                  <div>+{amountTransform(detailData?.shippingFeeAmount, '/')}元</div>
                 </div>
                 <div className={styles.box}>
                   <div>优惠券优惠</div>
-                  <div>-{amountTransform(detailData?.sumOrder?.couponAmount, '/')}元</div>
+                  <div>-{amountTransform(detailData?.couponAmount, '/')}元</div>
                 </div>
                 <div className={styles.box}>
                   <div>用户实付</div>
-                  <div>{amountTransform(detailData?.sumOrder?.payAmount, '/')}元</div>
+                  <div>{amountTransform(detailData?.payAmount, '/')}元</div>
                 </div>
-                {
-                <>
                 <div className={`${styles.box} ${styles.box_header}`}>
                   物流信息
                 </div>
@@ -187,8 +158,6 @@ const OrderDetail = () => {
                 </ProDescriptions>
                   ))
                 }  
-                </> 
-             }
               </div>
             </div>
             <div style={{ flex: 1 }}>
@@ -197,7 +166,7 @@ const OrderDetail = () => {
                   商品信息
                 </div>
                 {
-                  detailData?.orderItemList?.map((item, index) => (
+                  detailData?.goodsInfo?.map((item, index) => (
                     <div className={styles.box}>
                       <div>商品{index + 1}</div>
                       <div className={styles.box_wrap}>
@@ -236,38 +205,6 @@ const OrderDetail = () => {
             </div>
           </div>
         </div>
-        {deliveryVisible &&
-          <Delivery
-            visible={deliveryVisible}
-            setVisible={setDeliveryVisible}
-            callback={(values) => {
-              // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-              detailData?.express?.expressId ? modifyShipRequest(values) : orderShipRequest(values)
-            }}
-            data={{
-              expressId: detailData?.express?.expressId,
-              expressNo: detailData?.express?.expressNo
-            }}
-          />
-        }
-        <Modal
-          title="物流跟踪"
-          visible={expressInfoState.length}
-          footer={[
-            <Button type="primary" onClick={() => { setExpressInfoState([]) }}>
-              确定
-            </Button>,
-          ]}
-          onCancel={() => { setExpressInfoState([]) }}
-        >
-          <Steps progressDot current={999} direction="vertical">
-            {
-              expressInfoState.map(item => (
-                <Step title={item.content} description={item.time} />
-              ))
-            }
-          </Steps>
-        </Modal>
       </Spin>
     </PageContainer>
   )
