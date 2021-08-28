@@ -185,7 +185,7 @@ const OrderDetail = () => {
                   <div>{amountTransform(detailData?.incomeAmount, '/')}元</div>
                 </div>
                 <div className={`${styles.box} ${styles.box_header}`}>
-                  <div>物流信息</div>
+                  物流信息
                 </div>
                 {
                   detailData.logisticsList&&detailData.logisticsList.map((ele,idx)=>(
