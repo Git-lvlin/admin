@@ -31,9 +31,6 @@ const TableList = () => {
   const [importVisit, setImportVisit] = useState(false)
   const isPurchase = location.pathname.includes('purchase')
 
-
-
-
   const pageChange = (a, b) => {
     setPage(a)
     setPageSize(b)
@@ -59,9 +56,8 @@ const TableList = () => {
           })
       },
     });
-    
   }
-  
+    
   const getFieldValue = () => {
     const { time, ...rest } = form.getFieldsValue();
 

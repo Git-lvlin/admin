@@ -90,14 +90,10 @@ const TransactionDetails = () => {
       valueType: 'select',
       valueEnum: {
         'normalOrder': '普通订单',
-        'second': '秒约',
-        'single': '单约',
-        'group': '团约',
-        'commandSalesOrder': '指令集约店主订单',
-        'activeSalesOrder': '主动集约店主订单',
+        'second': '秒约订单',
+        'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
-        'commandCollect': '指令集约C端订单',
-        'activeCollect': '主动集约C端订单'
+        'commandCollect': '集约销售订单'
       }
     },
     {
@@ -105,8 +101,9 @@ const TransactionDetails = () => {
       dataIndex: 'accountTypeName'
     },
     {
-      title: '店主等级',
-      dataIndex: 'storeLevel'
+      title: (_) => _.dataIndex ? '店铺提成比例' : '',
+      dataIndex: info.storeCommissionRatio ? 'storeCommissionRatio' : '',
+      render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
     },
     {
       title: '受益方会员信息',
@@ -133,7 +130,37 @@ const TransactionDetails = () => {
       dataIndex: 'buyerSn'
     }
   ]
+
   const columns2 = [
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName'
+    },
+    {
+      title: '购买规格',
+      dataIndex: 'skuName'
+    },
+    {
+      title: '商品供货价',
+      dataIndex: 'supplyPrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '实际销售价',
+      dataIndex: 'salePrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title:(_)=> _.dataIndex === 'preCount' ? '预定数量' : '购买数量',
+      dataIndex: info.orderType === 'commandSalesOrder' ? 'preCount' : 'paidCount'
+    },
+    {
+      title: (_) => _.dataIndex ? '实际采购数量' : '',
+      dataIndex: info.orderType === 'commandSalesOrder' ? 'paidCount' : ''
+    }
+  ]
+
+  const columns3 = [
     {
       title: '支付阶段',
       dataIndex: 'stageName'
@@ -175,7 +202,7 @@ const TransactionDetails = () => {
       dataIndex: 'transcationId'
     }
   ]
-  const columns3 = [
+  const columns4 = [
     {
       title: '汇能虚拟户（佣金户）',
       dataIndex: 'platformAccountSn'
@@ -185,13 +212,12 @@ const TransactionDetails = () => {
       dataIndex: 'platformFeeAccountSn'
     },
   ]
-  const CustomList = props=> {
-    const { data } = props
+  const CustomList = ({ data, columns }) => {
     return (
       <ProDescriptions
         loading={loading}
         column={2}
-        columns={columns2}
+        columns={columns}
         style={{
           background:'#fff',
           padding: 20
@@ -216,14 +242,20 @@ const TransactionDetails = () => {
         dataSource={info}
       />
       {
+        info.skus &&
+        info.skus.map(item => (
+          <CustomList data={item} key={item.skuId} columns={columns2}/>
+        ))
+      }
+      {
         payInfos?.map(item=> (
-          <CustomList data={item} key={item.stageName}/>
+          <CustomList data={item} key={item.stageName} columns={columns3}/>
         ))
       }
       <ProDescriptions
         loading={loading}
         column={2}
-        columns={columns3}
+        columns={columns4}
         style={{
           background:'#fff',
           padding: 20

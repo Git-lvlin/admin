@@ -192,7 +192,7 @@ const Detail = (props) => {
             >
               <span style={{ marginRight: 20 }}>{detailData?.bankAccountInfo?.legalName}</span>
               <span style={{ marginRight: 20 }}>{detailData?.bankAccountInfo?.legalIdCardNo}</span>
-              有效期至：{moment(detailData?.bankAccountInfo?.socialCreditCodeExpire).format('YYYY-MM-DD')}
+              有效期至：{moment(detailData?.bankAccountInfo?.legalIdCardExpire).format('YYYY-MM-DD')}
             </Form.Item>
             <Form.Item
               label="法人手机号"

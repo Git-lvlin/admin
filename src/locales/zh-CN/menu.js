@@ -212,6 +212,7 @@ export default {
   'menu.financial-management.transaction-detail-management':'交易明细管理',
   'menu.financial-management.transaction-detail-management.withdrawal-audit-management':'提现审核管理',
   'menu.financial-management.transaction-detail-management.show-detail':'提现详情',
+  'menu.financial-management.transaction-detail-management.withdrawal-balance-details':'可提现余额明细',
   'menu.financial-management.transaction-detail-management.order-pay-detail-management':'订单支付明细管理',
   'menu.financial-management.transaction-detail-management.order-pay-detail':'订单支付详情',
   'menu.financial-management.transaction-detail-management.bonus-detail-management':'提成明细管理',
@@ -227,6 +228,7 @@ export default {
 
   'menu.data-board': '数据看板',
   'menu.data-board.data-preview': '数据预览',
+  'menu.data-board.intensive-data-export': '集约数据导出',
   'menu.data-board.data-sales': '销售数据',
   'menu.data-board.gmv-detail': 'GMV',
   'menu.data-board.sales-detail': '销售额',
