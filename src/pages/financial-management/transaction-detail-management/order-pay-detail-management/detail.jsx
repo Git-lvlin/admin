@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@ant-design/pro-layout'
-import{ ModalForm } from '@ant-design/pro-form'
 import { Button, Timeline, Empty } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
@@ -32,17 +31,6 @@ const Detail = () => {
     }
   }, [id])
 
-  const openLog = (data) => {
-    if(data){
-      return data.map(item=>(
-        <Item key={item}>
-          { item }
-        </Item>
-      ))
-    } else {
-      return <Empty className={styles.empty}/>
-    }
-  }
   const back = ()=> {
     history.goBack()
   }
@@ -99,11 +87,9 @@ const Detail = () => {
       valueEnum: {
         'normalOrder': '普通订单',
         'second': '秒约',
-        'commandSalesOrder': '指令集约店主订单',
-        'activeSalesOrder': '主动集约店主订单',
+        'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
-        'commandCollect': '指令集约C端订单',
-        'activeCollect': '主动集约C端订单'
+        'commandCollect': '集约销售订单'
       }
     },
     {
@@ -111,8 +97,9 @@ const Detail = () => {
       dataIndex: 'buyerType'
     },
     {
-      title: '',
-      dataIndex: ''
+      title: (_) => _.dataIndex ? '店铺提成比例' : '',
+      dataIndex: info.storeCommissionRatio ? 'storeCommissionRatio' : '',
+      render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
     },
     {
       title: '买家会员信息',
@@ -127,7 +114,7 @@ const Detail = () => {
       dataIndex: 'sellerType'
     },
     {
-      title: ' ',
+      title: '',
       dataIndex: ''
     },
     {
@@ -139,7 +126,37 @@ const Detail = () => {
       dataIndex: 'sellerSn'
     }
   ]
+
   const columns2 = [
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName'
+    },
+    {
+      title: '购买规格',
+      dataIndex: 'skuName'
+    },
+    {
+      title: '商品供货价',
+      dataIndex: 'supplyPrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '实际销售价',
+      dataIndex: 'salePrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title:(_)=> _.dataIndex === 'preCount' ? '预定数量' : '购买数量',
+      dataIndex: info.orderType === 'commandSalesOrder' ? 'preCount' : 'paidCount'
+    },
+    {
+      title: (_) => _.dataIndex ? '实际采购数量' : '',
+      dataIndex: info.orderType === 'commandSalesOrder' ? 'paidCount' : ''
+    }
+  ]
+
+  const columns3 = [
     {
       title: '支付阶段',
       dataIndex: 'stageName'
@@ -159,7 +176,7 @@ const Detail = () => {
     {
       title: '支付金额',
       dataIndex: 'amount',
-      render: (_)=> `¥${amountTransform(_, '/').toFixed(2)}`
+      render: (_) => `¥${amountTransform(_, '/').toFixed(2)}`
     },
     {
       title: '虚拟分账计算',
@@ -167,7 +184,7 @@ const Detail = () => {
       render: (_, data)=> (
         <>
           {
-            data?.divideInfos.map(item=> (
+            data?.divideInfos?.map(item=> (
               <div key={item?.type}>
                 {fashionableType(item?.type, item?.amount, item?.fee)}
               </div>
@@ -185,7 +202,7 @@ const Detail = () => {
       dataIndex: 'transcationId'
     }
   ]
-  const columns3 = [
+  const columns4 = [
     {
       title: '汇能虚拟户（佣金户）',
       dataIndex: 'platformAccountSn'
@@ -195,13 +212,12 @@ const Detail = () => {
       dataIndex: 'platformFeeAccountSn'
     },
   ]
-  const CustomList = props=> {
-    const { data } = props
+  const CustomList = ({data, columns}) => {
     return (
       <ProDescriptions
         loading={loading}
         column={2}
-        columns={columns2}
+        columns={columns}
         style={{
           background:'#fff',
           padding: 20
@@ -226,14 +242,20 @@ const Detail = () => {
         dataSource={info}
       />
       {
+        info.skus &&
+        info.skus.map(item => (
+          <CustomList data={item} key={item.skuId} columns={columns2}/>
+        ))
+      }
+      {
         payInfos?.map(item=> (
-          <CustomList data={item} key={item.stageName}/>
+          <CustomList data={item} key={item.stageName} columns={columns3}/>
         ))
       }
       <ProDescriptions
         loading={loading}
         column={2}
-        columns={columns3}
+        columns={columns4}
         style={{
           background:'#fff',
           padding: 20

@@ -35,7 +35,7 @@ const CommissionDetailManagement = () =>{
         'commandSalesOrder': '集约批发订单',
         'activeSalesOrder': '主动集约店主订单',
         'dropShipping1688': '1688代发订单',
-        'commandCollect': '指令集约C端订单',
+        'commandCollect': '集约销售订单',
         'activeCollect': '主动集约C端订单'
       },
       hideInSearch: true

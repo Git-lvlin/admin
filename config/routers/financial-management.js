@@ -59,6 +59,13 @@ export default {
           name: 'show-detail',
           path: '/financial-management/transaction-detail-management/withdrawal-audit-management/detail/:id',
           component: './financial-management/transaction-detail-management/withdrawal-audit-management/detail',
+          hidenMenu: true
+        },
+        {
+          name: 'withdrawal-balance-details',
+          path: '/financial-management/transaction-detail-management/withdrawal-audit-management/details',
+          component: './financial-management/transaction-detail-management/withdrawal-audit-management/withdrawal-balance-details',
+          hidenMenu: true
         },
         {
           name: 'order-pay-detail-management',
