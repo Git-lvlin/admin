@@ -11,6 +11,10 @@ import SupplierSelect from '@/components/supplier-select'
 import Edit from './edit';
 import OffShelf from './off-shelf';
 import { amountTransform, typeTransform } from '@/utils/utils'
+import ProductDetailDrawer from '@/components/product-detail-drawer'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -53,6 +57,8 @@ const TableList = () => {
   const [detailData, setDetailData] = useState(null);
   const [config, setConfig] = useState({});
   const [offShelfVisible, setOffShelfVisible] = useState(false);
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
+  const [visit, setVisit] = useState(false)
   const [selectItemId, setSelectItemId] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
@@ -125,6 +131,16 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入商品名称'
+      },
+      hideInTable: true,
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, record) => {
+        return <a onClick={() => { setSelectItemId(record.spuId); setProductDetailDrawerVisible(true); }}>{_}</a>
       }
     },
     {
@@ -134,11 +150,11 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '供应商名称',
-      dataIndex: 'supplierName',
+      title: '供应商家',
+      dataIndex: 'supplierNameId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商名称'
+        placeholder: '请输入供应商家ID或名称'
       },
       // renderFormItem: () => <SupplierSelect />,
       hideInTable: true,
@@ -289,66 +305,18 @@ const TableList = () => {
       },
     },
   ];
+  
 
-  const exportExcel = (form) => {
-    // api.listExport({
-    //   ...form.getFieldsValue(),
-    // }).then(res => {
-    //   if (res.code === 0) {
-    //     const data = res.data.map(item => {
-    //       const { goodsState, goodsFromType, goodsVerifyState, ...rest } = item;
-    //       return {
-    //         ...rest,
-    //         retailSupplyPrice: amountTransform(rest.retailSupplyPrice, '/'),
-    //         suggestedRetailPrice: amountTransform(rest.suggestedRetailPrice, '/'),
-    //         wholesalePrice: amountTransform(rest.wholesalePrice, '/'),
-    //       }
-    //     });
-    //     const wb = XLSX.utils.book_new();
-    //     const ws = XLSX.utils.json_to_sheet([
-    //       {
-    //         spuId: 'spuId',
-    //         goodsName: '商品名称',
-    //         skuId: 'skuId',
-    //         skuSpec: '规格组合',
-    //         goodsFromTypeDisplay: '供货类型',
-    //         retailSupplyPrice: '零售价',
-    //         suggestedRetailPrice: '建议零售价',
-    //         wholesalePrice: '批发价',
-    //         stockNum: '可用库存',
-    //         // activityNum: '活动库存',
-    //         isFreeFreightDisplay: '是否包邮',
-    //         supportNoReasonReturn: '七天无理由退货',
-    //         goodsVerifyStateDisplay: '审核状态',
-    //         goodsStateDisplay: '上架状态',
-    //         createTime: '创建时间',
-    //       },
-    //       ...data
-    //     ], {
-    //       header: [
-    //         'spuId',
-    //         'goodsName',
-    //         'skuId',
-    //         'skuSpec',
-    //         'goodsFromTypeDisplay',
-    //         'retailSupplyPrice',
-    //         'suggestedRetailPrice',
-    //         'wholesalePrice',
-    //         'stockNum',
-    //         // 'activityNum',
-    //         'isFreeFreightDisplay',
-    //         'supportNoReasonReturn',
-    //         'goodsVerifyStateDisplay',
-    //         'goodsStateDisplay',
-    //         'createTime',
-    //       ],
-    //       skipHeader: true
-    //     });
-    //     XLSX.utils.book_append_sheet(wb, ws, "file");
-    //     XLSX.writeFile(wb, `${+new Date()}.xlsx`)
-
-    //   }
-    // })
+  const getFieldValue = () => {
+    if (formRef?.current?.getFieldsValue) {
+      const { current, pageSize, gcId = [], ...rest } = formRef?.current?.getFieldsValue?.();
+      return {
+        gcId1: gcId[0],
+        gcId2: gcId[1],
+        ...rest
+      }
+    }
+    return {}
   }
 
   useEffect(() => {
@@ -398,7 +366,13 @@ const TableList = () => {
             >
               {resetText}
             </Button>,
-            <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
+            <Export
+              key="3"
+              change={(e) => { setVisit(e) }}
+              type="goods-export"
+              conditions={getFieldValue}
+            />,
+            <ExportHistory key="4" show={visit} setShow={setVisit} type="goods-export" />,
           ],
         }}
         columns={columns}
@@ -415,6 +389,14 @@ const TableList = () => {
         setVisible={setOffShelfVisible}
         callback={(text) => { offShelf(selectItemId, text) }}
       />}
+      {
+        productDetailDrawerVisible &&
+        <ProductDetailDrawer
+          visible={productDetailDrawerVisible}
+          setVisible={setProductDetailDrawerVisible}
+          spuId={selectItemId}
+        />
+      }
 
     </PageContainer>
   );

@@ -64,8 +64,8 @@ const StoreList = () => {
       }
     },
     {
-      title: '积分',
-      dataIndex: 'score',
+      title: '等级',
+      dataIndex: ['level', 'levelName'],
       valueType: 'text',
       hideInSearch: true,
     },
@@ -236,6 +236,19 @@ const StoreList = () => {
         1: '启用',
         2: '注销',
         3: '关闭'
+      },
+    },
+    {
+      title: '店铺等级',
+      dataIndex: 'level',
+      valueType: 'select',
+      hideInTable: true,
+      valueEnum: {
+        1: '一星店主',
+        2: '二星店主',
+        3: '三星店主',
+        4: '四星店主',
+        5: '五星店主',
       },
     },
     {

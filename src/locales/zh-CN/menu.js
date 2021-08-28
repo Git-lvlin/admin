@@ -126,12 +126,14 @@ export default {
   'menu.cms.poster': '海报管理',
   'menu.cms.content-version': '版本配置管理',
   'menu.cms.generate-invitation-code': '生成邀请码',
+  'menu.cms.home-popup': 'app首页弹窗管理',
+  'menu.cms.start-up': 'app启动广告配置',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
 
   'menu.dc-management': 'DC管理菜单',
-  // 'menu.dc-management.add': '新增',
+  'menu.dc-management.add': '新增',
   'menu.dc-management.list': '资源位列表',
   'menu.dc-management.version': '资源位版本',
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form } from 'antd';
+import { Form,Select } from 'antd';
 import {
   ModalForm,
   ProFormText,
@@ -7,6 +7,7 @@ import {
 } from '@ant-design/pro-form';
 
 import { getExpressList } from '@/services/common'
+const { Option } = Select;
 
 export default (props) => {
   const { visible, setVisible, callback = () => {}, data } = props;
@@ -38,7 +39,12 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        callback(values)
+        var logistics=expressList.find(item => item.id === values.expressId)
+        callback({
+          ...values,
+          expressName: logistics?.expressName,
+          expressType:logistics?.expressType
+        })
         return true;
       }}
       onVisibleChange={setVisible}
@@ -47,22 +53,23 @@ export default (props) => {
         method: 1,
       }}
     >
-      {/* <ProFormRadio.Group
-        name="method"
-        label="物流方式"
-        options={[
-          {
-            label: '快递',
-            value: 1,
-          },
-        ]}
-      /> */}
-      <ProFormSelect
+      <Form.Item 
         name="expressId"
         label="快递公司"
         rules={[{ required: true, message: '请选择快递公司' }]}
-        options={expressList.map(item => ({ label: item.expressName, value: item.id }))}
-      />
+        >
+        <Select
+          showSearch
+          placeholder="输入快递名称"
+          optionFilterProp="children"
+          filterOption={(input, option) =>
+            option.label.indexOf(input) >= 0
+          }
+          options={
+            expressList.map(item => ({ label: item.expressName, value: item.id }))
+          }
+        />
+      </Form.Item>
       <ProFormText
         name="expressNo"
         label="快递单号"
