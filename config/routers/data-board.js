@@ -8,6 +8,11 @@ export default {
       component: './data-board/data-preview'
     },
     {
+      name: 'intensive-data-export',
+      path: '/data-board/intensive-data-export',
+      component: './data-board/intensive-data-export'
+    },
+    {
       name: 'data-sales',
       path: '/data-board/data-sales',
       component: './data-board/data-sales'

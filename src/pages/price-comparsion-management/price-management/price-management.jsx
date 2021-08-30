@@ -117,6 +117,7 @@ const PriceManagement = () => {
       ...formData,
       sourceType: t
     })
+    console.log('bindData-formData', formData)
     setIsShow(true)
   }
 
@@ -129,6 +130,7 @@ const PriceManagement = () => {
 
   const expandedRowRender = (a) => {
     if (!formData) {
+      console.log('aaa', a)
       setFormData(a)
     }
     return (
@@ -358,6 +360,9 @@ const PriceManagement = () => {
   }
 
   const changeRowKeys = (expanded, record) => {
+    console.log('expanded', expanded)
+    console.log('record', record)
+
     clearTimeout(ref.current)
     setLoadingIndex(-1)
     setRowLoadin(true)

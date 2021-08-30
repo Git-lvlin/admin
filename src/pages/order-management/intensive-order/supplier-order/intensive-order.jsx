@@ -31,9 +31,6 @@ const TableList = () => {
   const [importVisit, setImportVisit] = useState(false)
   const isPurchase = location.pathname.includes('purchase')
 
-
-
-
   const pageChange = (a, b) => {
     setPage(a)
     setPageSize(b)
@@ -59,9 +56,8 @@ const TableList = () => {
           })
       },
     });
-    
   }
-  
+    
   const getFieldValue = () => {
     const { time, ...rest } = form.getFieldsValue();
 
@@ -237,6 +233,24 @@ const TableList = () => {
               marginBottom: 20
             },
             showTime: true,
+          }}
+        />
+        <ProFormText
+          name="receiptUser"
+          label="收件人"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
+        <ProFormText
+          name="expressNo"
+          label="物流单号"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
           }}
         />
       </ProForm>

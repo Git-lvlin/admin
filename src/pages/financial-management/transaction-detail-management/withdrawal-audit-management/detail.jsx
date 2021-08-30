@@ -160,6 +160,9 @@ const Detail = () => {
   const back = () => {
     history.goBack()
   }
+  const skipToDetail = () => {
+    history.push('/financial-management/transaction-detail-management/withdrawal-audit-management/details')
+  }
   const columns = [
     {
       title: '提现会员信息',
@@ -182,7 +185,13 @@ const Detail = () => {
     {
       title: '可提现金额（提现前）',
       dataIndex: 'balanceAvailable',
-      render: (_) => `￥${amountTransform(_, '/')}`
+      render: (_) => (
+        <>
+          <span className={styles.balanceAvailable}>￥{amountTransform(Number(_), '/')}</span>
+          
+          <Button onClick={()=>skipToDetail()}>查看明细</Button>
+        </>
+      )
     },
     {
       title: '银行账户名称',

@@ -148,11 +148,6 @@ export default (props) => {
         {detailData?.goods.goodsName}
       </Form.Item>
       <Form.Item
-        label="单位运费(元)"
-      >
-        {amountTransform(detailData?.goods.wholesaleFreight, '/')}
-      </Form.Item>
-      <Form.Item
         label="发票税率(%)"
       >
         {amountTransform(detailData?.goods.wholesaleTaxRate)}
@@ -164,11 +159,6 @@ export default (props) => {
           {detailData?.goods.goodsDesc}
         </Form.Item>
       }
-      <Form.Item
-        label="商品编号"
-      >
-        {detailData?.goods.supplierSpuId}
-      </Form.Item>
       {detailData?.goods.goodsKeywords &&
         <Form.Item
           label="搜索关键字"
@@ -181,6 +171,11 @@ export default (props) => {
       >
         {`${detailData?.goods.gcId1Display}/${detailData?.goods.gcId2Display}`}
       </Form.Item>
+      <Form.Item
+        label="商品编号"
+      >
+        {detailData?.goods.supplierSpuId}
+      </Form.Item>
       {detailData?.goods.brandIdDisplay &&
         <Form.Item
           label="商品品牌"
@@ -190,7 +185,12 @@ export default (props) => {
       <Form.Item
         label="供货类型"
       >
-        {{ 0: '批发+零售', 1: '仅批发', 2: '零售' }[detailData?.goods.goodsSaleType]}
+        {{ 0: '批发+零售', 1: '仅批发', 2: '仅零售' }[detailData?.goods.goodsSaleType]}
+      </Form.Item>
+      <Form.Item
+        label="结算模式"
+      >
+        {{ 1: '佣金模式', 2: '底价模式' }[detailData?.settleType]}
       </Form.Item>
       <Form.Item
         label="规格属性"
@@ -198,9 +198,9 @@ export default (props) => {
         {{ 0: '单规格', 1: '多规格' }[detailData?.isMultiSpec]}
       </Form.Item>
       <Form.Item
-        label="结算模式"
+        label="单位运费(元)"
       >
-        {{ 1: '佣金模式', 2: '底价模式' }[detailData?.settleType]}
+        {amountTransform(detailData?.goods.wholesaleFreight, '/')}
       </Form.Item>
       {
         detailData?.isMultiSpec === 1
@@ -215,15 +215,36 @@ export default (props) => {
             >
               {detailData?.goods?.supplierSkuId}
             </Form.Item>
+            
+            {
+              detailData?.goods?.goodsSaleType !== 2 &&
+              <>
+                <Form.Item
+                  label="批发供货价(元)"
+                >
+                  {amountTransform(detailData?.goods?.wholesaleSupplyPrice, '/')}
+                </Form.Item>
+                <Form.Item
+                  label="最低批发量"
+                >
+                  {detailData?.goods?.wholesaleMinNum}
+                </Form.Item>
+              </>
+            }
+            {
+              detailData?.goods?.goodsSaleType !== 1 &&
+              <>
+                <Form.Item
+                  label="零售供货价(元)"
+                >
+                  {amountTransform(detailData?.goods?.retailSupplyPrice, '/')}
+                </Form.Item>
+              </>
+            }
             <Form.Item
-              label="批发供货价(元)"
+              label="秒约价"
             >
-              {amountTransform(detailData?.goods?.wholesaleSupplyPrice, '/')}
-            </Form.Item>
-            <Form.Item
-              label="最低批发量"
-            >
-              {detailData?.goods?.wholesaleMinNum}
+              {amountTransform(detailData?.goods?.salePrice, '/')}
             </Form.Item>
             <Form.Item
               label="市场价"
@@ -231,33 +252,27 @@ export default (props) => {
               {amountTransform(detailData?.goods?.marketPrice, '/')}
             </Form.Item>
             <Form.Item
-              label="秒约价"
+              label="可用库存"
             >
-              {amountTransform(detailData?.goods?.salePrice, '/')}
+              {detailData?.goods?.totalStock}
             </Form.Item>
-            {
-              detailData?.goods?.goodsSaleType === 0
-              &&
-              <>
-                <Form.Item
-                  label="秒约价上浮比例"
-                >
-                  {amountTransform(detailData?.goods?.salePriceFloat)}
-                </Form.Item>
-                <Form.Item
-                  label="秒约价实际盈亏"
-                >
-                  {amountTransform(detailData?.goods?.salePriceProfitLoss, '/')}
-                </Form.Item>
-              </>
-            }
+            <Form.Item
+              label="库存预警值"
+            >
+              {detailData?.goods?.activityStockNum}
+            </Form.Item>
+            <Form.Item
+              label="单SKU起售数量"
+            >
+              {detailData?.goods?.buyMinNum}
+            </Form.Item>
           </>
       }
-      {detailData?.goods?.goodsSaleType !== 1 && <Form.Item
+      <Form.Item
         label="是否包邮"
       >
         {{ 0: '不包邮', 1: '包邮', }[detailData?.goods?.isFreeFreight]}
-      </Form.Item>}
+      </Form.Item>
       {detailData?.freightTemplateName &&
         <Form.Item
           label="运费模板"

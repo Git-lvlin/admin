@@ -89,7 +89,7 @@ const TableList = () => {
           4: '待开户',
           5: '审核拒绝'
         }[_]}</div>
-        <div style={{ color: 'red' }}>{data.auditReason}</div>
+        {!!data.auditReason && _ !== 2 && <div style={{ color: 'red' }}>{data.auditReason}</div>}
       </>
     },
     {

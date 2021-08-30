@@ -163,6 +163,15 @@ const TableList = () => {
             showTime: true,
           }}
         />
+        <ProFormText
+        name="receiptUser"
+        label="收件人"
+        fieldProps={{
+          style: {
+            marginBottom: 20
+          }
+        }}
+      />
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -247,8 +256,8 @@ const TableList = () => {
                 <div>
                   <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
                     <Descriptions.Item label="商品总金额">{amountTransform(item.totalAmount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="运费">+{amountTransform(item.sumOrder.shippingFeeAmount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="优惠券">-{amountTransform(item.sumOrder.couponAmount, '/')}元</Descriptions.Item>
+                    <Descriptions.Item label="运费">+{amountTransform(item.sumOrder?.shippingFeeAmount, '/')}元</Descriptions.Item>
+                    <Descriptions.Item label="优惠券">-{amountTransform(item.sumOrder?.couponAmount, '/')}元</Descriptions.Item>
                     <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>
                   </Descriptions>
                 </div>
@@ -261,9 +270,9 @@ const TableList = () => {
 
               <div className={styles.footer}>
                 <Space size="large">
-                  <span>收货人：{item.sumOrder.consignee}</span>
-                  <span>电话：{item.sumOrder.phone}</span>
-                  <span>地址：{item.sumOrder.address}</span>
+                  <span>收货人：{item.sumOrder?.consignee}</span>
+                  <span>电话：{item.sumOrder?.phone}</span>
+                  <span>地址：{item.sumOrder?.address}</span>
                 </Space>
               </div>
             </div>
