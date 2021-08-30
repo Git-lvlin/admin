@@ -13,6 +13,12 @@ const Detail = ()=> {
 
   const columns = [
     {
+      title: 'id',
+      dataIndex: 'id',
+      hideInSearch: true,
+      hideInTable: true
+    },
+    {
       title: '订单编号',
       dataIndex: 'orderNo',
       align: 'center'
@@ -57,7 +63,7 @@ const Detail = ()=> {
   return (
     <PageContainer title={false}>
       <ProTable
-        rowKey='orderNo'
+        rowKey='id'
         columns={columns}
         pagination={{
           pageSize: 10,
