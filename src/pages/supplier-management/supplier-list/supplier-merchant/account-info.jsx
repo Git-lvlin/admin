@@ -47,7 +47,7 @@ const SocialCreditInfo = ({ value, onChange, disabled }) => {
     <Space>
       <Input placeholder="请输入统一社会信用码" disabled={disabled} value={code} style={{ width: 230 }} onChange={codeChange} />
       <DatePicker placeholder="请选择统一社会信用证有效期" disabled={disabled} value={date} style={{ width: 160 }} onChange={dateChange} />
-      <Checkbox checked={date?.isSame('2099-12-31')} disabled={disabled} onChange={modeChange}>长期</Checkbox>
+      <Checkbox checked={date?.isSame?.('2099-12-31')} disabled={disabled} onChange={modeChange}>长期</Checkbox>
     </Space>
   )
 }
