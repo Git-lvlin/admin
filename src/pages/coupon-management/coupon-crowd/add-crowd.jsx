@@ -261,7 +261,7 @@ export default (props) =>{
             collapsible
             className='sets'
             >
-            <h3 className='memberMsg'>会员基本信息</h3>
+            <h4 className='memberMsg'>会员基本信息</h4>
             <Button 
                 type={falg1?"primary":"default"}  
                 onClick={() => {
@@ -276,13 +276,14 @@ export default (props) =>{
                     message.error('已有该选项')
                   }
                 }}
-                style={{margin:"20px 0 20px 0"}}
+                style={{margin:"20px 0 20px 50px"}}
                 >
                   会员等级
             </Button>
-            <h3 className='memberMsg'>会员消费情况</h3>
+            <h4 className='memberMsg'>会员消费情况</h4>
             <Button
               type={falg2?"primary":"default"}  
+              style={{margin:"20px 0 20px 50px"}}
               onClick={() => {
                   setFalg2(true)
                   let falg=dataSource.some(ele=>ele.title=='消费次数')
@@ -299,7 +300,7 @@ export default (props) =>{
                 消费次数
             </Button>
             <Button 
-              type={falg3?"primary":"default"}  
+              type={falg3?"primary":"default"}
               style={{margin:"20px"}}
               onClick={() => {
                   setFalg3(true)
