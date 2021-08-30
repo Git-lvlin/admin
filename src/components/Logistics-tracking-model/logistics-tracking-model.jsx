@@ -27,13 +27,14 @@ export default props=>{
                  setVisible(false)   
             }}
         >
-          <div style={{height:'500px',overflowY:'auto'}}>
+          <div style={{height:'500px',overflowY:'auto',padding:'20px'}}>
             <Timeline>
             {
                 record&&record.map(ele=>{
-                return  <>
-                        <Timeline.Item label={ele.time}>{ele.content} </Timeline.Item>
-                        </>
+                return  <Timeline.Item>
+                            <p>{ele.content}</p>
+                            <p style={{color:"#C7C7C7"}}>{ele.time}</p>
+                        </Timeline.Item>
                 })
             }
             </Timeline>
