@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Input, Space, Typography, Divider, DatePicker } from 'antd';
+import { Form, Button, Input, Space, Typography, Divider, DatePicker, Checkbox } from 'antd';
 import {
   DrawerForm,
   ProFormText,
@@ -35,10 +35,19 @@ const SocialCreditInfo = ({ value, onChange, disabled }) => {
     })
   }
 
+  const modeChange = (e) => {
+    if (e.target.checked) {
+      dateChange(moment('2099-12-31'))
+    } else {
+      dateChange(moment())
+    }
+  }
+
   return (
     <Space>
       <Input placeholder="请输入统一社会信用码" disabled={disabled} value={code} style={{ width: 230 }} onChange={codeChange} />
-      <DatePicker placeholder="请选择统一社会信用证有效期" disabled={disabled} value={date} style={{ width: 230 }} onChange={dateChange} />
+      <DatePicker placeholder="请选择统一社会信用证有效期" disabled={disabled} value={date} style={{ width: 160 }} onChange={dateChange} />
+      <Checkbox checked={date?.isSame('2099-12-31')} disabled={disabled} onChange={modeChange}>长期</Checkbox>
     </Space>
   )
 }
