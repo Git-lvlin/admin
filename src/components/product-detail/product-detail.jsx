@@ -289,7 +289,7 @@ export default (props) => {
       >
         {detailData?.goods.goodsRemark}
       </Form.Item>
-      {selectAreaKey.length !== 0 && <Form.Item
+      {selectAreaKey.length !== 0 ? <Form.Item
         label="不发货地区"
       >
         <MultiCascader
@@ -301,6 +301,10 @@ export default (props) => {
           onChange={setSelectAreaKey}
           cleanable={false}
         />
+      </Form.Item> : <Form.Item
+        label="不发货地区"
+      >
+        
       </Form.Item>}
       <Form.Item
         label="商品主图"
