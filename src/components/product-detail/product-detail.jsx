@@ -254,7 +254,7 @@ export default (props) => {
             <Form.Item
               label="库存预警值"
             >
-              {detailData?.goods?.activityStockNum}
+              {detailData?.goods?.stockAlarmNum}
             </Form.Item>
             <Form.Item
               label="单SKU起售数量"
