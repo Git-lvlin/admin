@@ -164,7 +164,7 @@ const TableList = () => {
           }}
         />
         <ProFormText
-        name="receiptUser"
+        name="consignee"
         label="收件人"
         fieldProps={{
           style: {
