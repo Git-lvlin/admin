@@ -96,10 +96,14 @@ const Detail = () => {
       title: '买家会员类型',
       dataIndex: 'buyerType'
     },
+    // {
+    //   title: (_) => _.dataIndex ? '店铺提成比例' : '',
+    //   dataIndex: info.storeCommissionRatio ? 'storeCommissionRatio' : '',
+    //   render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
+    // },
     {
-      title: (_) => _.dataIndex ? '店铺提成比例' : '',
-      dataIndex: info.storeCommissionRatio ? 'storeCommissionRatio' : '',
-      render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
+      title: '',
+      dataIndex: ''
     },
     {
       title: '买家会员信息',
@@ -241,12 +245,12 @@ const Detail = () => {
         bordered
         dataSource={info}
       />
-      {
+      {/* {
         info.skus &&
         info.skus.map(item => (
           <CustomList data={item} key={item.skuId} columns={columns2}/>
         ))
-      }
+      } */}
       {
         payInfos?.map(item=> (
           <CustomList data={item} key={item.stageName} columns={columns3}/>
