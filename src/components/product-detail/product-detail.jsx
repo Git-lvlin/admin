@@ -171,11 +171,11 @@ export default (props) => {
       >
         {`${detailData?.goods.gcId1Display}/${detailData?.goods.gcId2Display}`}
       </Form.Item>
-      <Form.Item
+      {detailData?.goods.supplierSpuId && <Form.Item
         label="商品编号"
       >
         {detailData?.goods.supplierSpuId}
-      </Form.Item>
+      </Form.Item>}
       {detailData?.goods.brandIdDisplay &&
         <Form.Item
           label="商品品牌"
@@ -210,12 +210,12 @@ export default (props) => {
           </>
           :
           <>
-            <Form.Item
+            {detailData?.goods?.supplierSkuId &&<Form.Item
               label="货号"
             >
               {detailData?.goods?.supplierSkuId}
-            </Form.Item>
-            
+            </Form.Item>}
+
             {
               detailData?.goods?.goodsSaleType !== 2 &&
               <>
@@ -265,6 +265,11 @@ export default (props) => {
               label="单SKU起售数量"
             >
               {detailData?.goods?.buyMinNum}
+            </Form.Item>
+            <Form.Item
+              label="单SKU单次最多零售购买数量"
+            >
+              {detailData?.goods?.buyMaxNum}
             </Form.Item>
           </>
       }

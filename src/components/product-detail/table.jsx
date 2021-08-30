@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table } from 'antd';
+import { EditableProTable } from '@ant-design/pro-table';
 
 export default function EditTable(props) {
   const { tableHead, tableData, goodsSaleType, settleType } = props;
@@ -12,6 +12,7 @@ export default function EditTable(props) {
         arr.push({
           title: item,
           dataIndex: `spec${index + 1}`,
+          width: 130,
         })
       }
     });
@@ -20,17 +21,24 @@ export default function EditTable(props) {
       {
         title: '规格图片',
         dataIndex: 'imageUrl',
+        editable: false,
+        render: (_) => <img src={_} width="50" height="50" />,
         width: 100,
-        render: (text) => {
-          return <img src={text} width="50" height="50" />
-        }
+        // renderFormItem: () => <Upload disable maxCount={1} className={styles.upload} accept="image/*" />,
+        // formItemProps: {
+        //   rules: [{
+        //     required: true,
+        //     whitespace: true,
+        //     message: '请上传规格图片',
+        //   }],
+        // }
       },
       ...arr,
       {
         title: '零售供货价(元)',
         dataIndex: 'retailSupplyPrice',
         editable: false,
-        hideInTable: goodsSaleType !== 0,
+        hideInTable: goodsSaleType === 1,
         width: 130,
       },
       {
@@ -38,33 +46,35 @@ export default function EditTable(props) {
         dataIndex: 'wholesaleSupplyPrice',
         editable: false,
         width: 130,
+        hideInTable: goodsSaleType === 2,
       },
       {
         title: '最低批发量',
         dataIndex: 'wholesaleMinNum',
         editable: false,
         width: 130,
+        hideInTable: goodsSaleType === 2,
       },
       {
         title: '秒约价',
         dataIndex: 'salePrice',
         editable: settleType === 2,
         width: 130,
-        hideInTable: goodsSaleType !== 0,
+        hideInTable: goodsSaleType === 1,
       },
-      {
-        title: '秒约价上浮比例',
-        dataIndex: 'salePriceFloat',
-        hideInTable: goodsSaleType !== 0,
-        width: 130,
-      },
-      {
-        title: '秒约价实际盈亏',
-        dataIndex: 'salePriceProfitLoss',
-        editable: false,
-        hideInTable: goodsSaleType !== 0,
-        width: 130,
-      },
+      // {
+      //   title: '秒约价上浮比例',
+      //   dataIndex: 'salePriceFloat',
+      //   hideInTable: goodsSaleType === 1,
+      //   width: 130,
+      // },
+      // {
+      //   title: '秒约价实际盈亏',
+      //   dataIndex: 'salePriceProfitLoss',
+      //   editable: false,
+      //   hideInTable: goodsSaleType === 1,
+      //   width: 130,
+      // },
       {
         title: '市场价',
         dataIndex: 'marketPrice',
@@ -99,17 +109,18 @@ export default function EditTable(props) {
       // },
     ])
 
-  }, [tableHead])
+  }, [tableHead, goodsSaleType, settleType])
 
   return (
-    <Table
+    <EditableProTable
       columns={columns}
       rowKey="key"
-      dataSource={tableData}
+      value={tableData}
       bordered
       style={{ marginBottom: 20 }}
       pagination={false}
       scroll={{ x: '70vw' }}
+      recordCreatorProps={false}
     />
   )
 }
