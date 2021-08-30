@@ -189,7 +189,7 @@ const Detail = () => {
         <>
           <span className={styles.balanceAvailable}>￥{amountTransform(Number(_) , '/') + amountTransform(Number(records.amount) , '/')}</span>
           {/* TODO:查看明细 */}
-          <Button onClick={()=>skipToDetail()}>查看明细</Button>
+          {/* <Button onClick={()=>skipToDetail()}>查看明细</Button> */}
         </>
       )
     },
