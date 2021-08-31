@@ -145,7 +145,7 @@ const couponType = (props) => {
                             {validator: checkConfirm}
                         ]} 
                     />
-                    <span> %折扣，最多优惠</span>
+                    <span>折，最多优惠</span>
                     <ProFormText
                         width={100}
                         name="maxFreeAmount"
@@ -157,7 +157,7 @@ const couponType = (props) => {
                         }} 
                     />
                     <span>元 （不填写则不作限制） </span>
-                    <p>（只能填1-99的整数）</p>
+                    <span>（只能填1-9的整数）</span>
                 </ProForm.Group>
                 <p>
                     优惠券面值
