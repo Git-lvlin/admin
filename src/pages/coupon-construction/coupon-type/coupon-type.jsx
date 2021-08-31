@@ -48,6 +48,15 @@ const couponType = (props) => {
         }
         })
     }
+    const checkRestrict=(rule, value, callback)=>{
+        return new Promise(async (resolve, reject) => {
+        if(value&&value>9){
+            await reject('只能填1-9的整数')
+        }else {
+            await resolve()
+        }
+        })
+    }
     return (
         <>
             <ProFormRadio.Group
@@ -159,7 +168,7 @@ const couponType = (props) => {
                         width={100}
                         name="maxFreeAmount"
                         rules={[
-                            {validator: checkConfirm}
+                            {validator: checkRestrict}
                         ]}
                         fieldProps={{
                             onChange: (e) =>setMost(e.target.value)
