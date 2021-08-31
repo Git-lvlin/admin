@@ -10,6 +10,7 @@ export const createExportTask = async (params = {}, options = {}) => {
     ...options
   })
   return {
+    data: res.data,
     success: res.success
   }
 }
@@ -30,4 +31,21 @@ export const findByWays = async (params = {}, options = {}) => {
     success: res?.success
   }
 }
+
+// id查找导出任务
+export const findById = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/exportTask/findById', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  });
+
+  return {
+    data: res.data,
+    success: res?.success
+  }
+}
+
 

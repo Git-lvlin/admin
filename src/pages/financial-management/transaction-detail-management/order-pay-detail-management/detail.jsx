@@ -1,20 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@ant-design/pro-layout'
-import { Button, Timeline, Empty } from 'antd'
+import { Button, Space, Progress } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
 
 import { amountTransform } from '@/utils/utils'
 import { orderPageDetail } from "@/services/financial-management/transaction-detail-management"
+import { createExportTask, findById } from "@/services/export-excel/export-template"
 import styles from './styles.less'
 import './styles.less'
-const { Item } = Timeline
 
 const Detail = () => {
   const {id} = useParams()
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState({})
   const [payInfos, setPayInfos] = useState([])
+  const [data, setData] = useState({})
+  const [down, setDown] = useState(false)
+  const [isDown, setIsDown] = useState(false)
+  const [taskId, setTaskId] = useState('')
+  const [process, setProcess] = useState(0)
+  const timer = useRef()
   useEffect(()=>{
     setLoading(true)
     orderPageDetail({orderNo: id}).then(res=> {
@@ -31,9 +38,43 @@ const Detail = () => {
     }
   }, [id])
 
-  const back = ()=> {
-    history.goBack()
+  const downTrade = (e) => {
+    createExportTask({
+      code: 'financial-huifu-payment-export',
+      fileName: 'financial-huifu-payment-export' + +new Date() + '.xlsx',
+      queryParamStr: JSON.stringify({orderNo: e.payNo})
+    }).then(res => {
+      setDown(true)
+      setTaskId(res.data.taskId)
+    })
   }
+
+  const getData = () => {
+    findById({
+      id: taskId
+    }).then(res => {
+      setProcess(res.data.process)
+      if(res.data.fileUrl) {
+        setDown(false)
+        setIsDown(true)
+        setData(res.data)
+      }
+    })
+  }
+  
+  useEffect(()=> {
+    clearInterval(timer.current)
+    if(down) {
+      timer.current = setInterval(()=> {
+        getData()
+      }, 500)
+    }
+    return ()=> {
+      clearInterval(timer.current)
+      setData({})
+    }
+  }, [taskId, down])
+
   const fashionableType =(data, amount, fee) =>{
     switch(data){
       case 'goodsAmount':
@@ -75,6 +116,31 @@ const Detail = () => {
         return ''
     }
   }
+
+  const back = () => {
+    history.goBack()
+  }
+
+  const DownExport = () => {
+    if(isDown) {
+      return <a href={data.fileUrl}>下载</a>
+    } else if(process !== 100 && down){
+      return (
+        <div style={{ width: 170 }}>
+          <Progress percent={process} size='small'/>
+        </div>
+      )
+    } else if(data.state === 3 && !down){
+      return (
+        <Tooltip title={data.exceptionDes}>
+          <span className={styles.fail}>导出失败</span>
+        </Tooltip>
+      )
+    } else {
+      return ''
+    }
+  }
+
   const columns1 = [
     {
       title: '订单号',
@@ -195,7 +261,28 @@ const Detail = () => {
     },
     {
       title: '支付单号',
-      dataIndex: 'payNo'
+      dataIndex: 'payNo',
+      render: (_, records) => (
+        <>
+          <Space size='large'>
+            <span>{_}</span>
+            <Button 
+              onClick={
+                ()=> downTrade(records)
+              }
+              disabled={down}
+              type='primary'
+            >
+              {
+                down&&
+                <LoadingOutlined />
+              }
+              导出汇付交易单
+            </Button>
+            <DownExport />
+          </Space>
+        </>
+      )
     },
     {
       title: '资金流水号',
@@ -264,7 +351,7 @@ const Detail = () => {
         dataSource={info}
       />
       <div style={{background: '#fff', padding: 20}}>
-        <Button type='primary' onClick={()=>{back()}}>返回</Button>
+        <Button type='primary' onClick={()=> back()}>返回</Button>
       </div>
     </PageContainer>
   )
