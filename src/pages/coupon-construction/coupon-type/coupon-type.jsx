@@ -39,6 +39,15 @@ const couponType = (props) => {
         }
         })
     }
+    const checkDiscounts=(rule, value, callback)=>{
+        return new Promise(async (resolve, reject) => {
+        if(value&&value>10){
+            await reject('折扣不能大于10')
+        }else {
+            await resolve()
+        }
+        })
+    }
     return (
         <>
             <ProFormRadio.Group
@@ -142,7 +151,7 @@ const couponType = (props) => {
                         }}
                         width={100}
                         rules={[
-                            {validator: checkConfirm}
+                            {validator: checkDiscounts}
                         ]} 
                     />
                     <span>折，最多优惠</span>
@@ -162,7 +171,7 @@ const couponType = (props) => {
                 <p>
                     优惠券面值
                     <span className={styles.compute}>
-                        {coupons ? (100 - coupons) / 10 : ''||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay ?(100 - DetailList.data?.freeDiscount) / 10 : ''}
+                        {coupons ? coupons: ''||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay ?DetailList.data?.freeDiscount: ''}
                     </span> 
                     折券
                 </p>
