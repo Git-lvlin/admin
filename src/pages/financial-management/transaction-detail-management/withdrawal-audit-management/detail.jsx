@@ -160,8 +160,8 @@ const Detail = () => {
   const back = () => {
     history.goBack()
   }
-  const skipToDetail = () => {
-    history.push('/financial-management/transaction-detail-management/withdrawal-audit-management/details')
+  const skipToDetail = (e) => {
+    history.push(`/financial-management/transaction-detail-management/withdrawal-audit-management/details?amountType=available&accountType=${e.accountType}&accountId=${e.accountId}`)
   }
   const columns = [
     {
@@ -188,8 +188,7 @@ const Detail = () => {
       render: (_, records) => (
         <>
           <span className={styles.balanceAvailable}>￥{amountTransform(Number(_) , '/') + amountTransform(Number(records.amount) , '/')}</span>
-          {/* TODO:查看明细 */}
-          {/* <Button onClick={()=>skipToDetail()}>查看明细</Button> */}
+          <Button onClick={()=>skipToDetail(records)}>查看明细</Button>
         </>
       )
     },
