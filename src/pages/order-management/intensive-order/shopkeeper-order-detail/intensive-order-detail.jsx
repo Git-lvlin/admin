@@ -124,6 +124,12 @@ const OrderDetail = () => {
                   <div>用户实付</div>
                   <div>{amountTransform(detailData?.payAmount, '/')}元</div>
                 </div>
+                {
+                  detailData.status != 1 && detailData.status != 5 &&<div className={styles.box}>
+                    <div>备注</div>
+                    <div>买家确认收货后可提现 {detailData?.warrantyRatio*100+'%'}  金额,订单超过售后期可提现剩余金额。</div>
+                  </div>
+                }
                 <div className={`${styles.box} ${styles.box_header}`}>
                   物流信息
                 </div>
