@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { Table, Input, Popconfirm, Form, Typography, Select, Divider, message, Button } from 'antd';
 import { history, useLocation } from 'umi';
