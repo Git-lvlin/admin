@@ -42,7 +42,7 @@ const errorHandler = (error) => {
     //   message: '网络异常',
     // });
 
-    message.error('服务不可用，服务器暂时过载或维护。')
+    message.error('服务器发生错误，请检查服务器。')
   }
 
   return response;
