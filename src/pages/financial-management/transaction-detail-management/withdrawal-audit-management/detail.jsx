@@ -160,8 +160,8 @@ const Detail = () => {
   const back = () => {
     history.goBack()
   }
-  const skipToDetail = () => {
-    history.push('/financial-management/transaction-detail-management/withdrawal-audit-management/details')
+  const skipToDetail = (e) => {
+    history.push(`/financial-management/transaction-detail-management/withdrawal-audit-management/details?amountType=available&accountType=${e.accountType}&accountId=${e.accountId}`)
   }
   const columns = [
     {
@@ -182,20 +182,15 @@ const Detail = () => {
       title: '提现虚拟账户',
       dataIndex: 'accountSn'
     },
-    // {
-    //   title: '可提现金额（提现前）',
-    //   dataIndex: 'balanceAvailable',
-    //   render: (_, records) => (
-    //     <>
-    //       <span className={styles.balanceAvailable}>￥{amountTransform(Number(_) , '/') + amountTransform(Number(records.amount) , '/')}</span>
-    //       <Button onClick={()=>skipToDetail()}>查看明细</Button>
-    //     </>
-    //   )
-    // },
     {
-      title: '可提现余额',
+      title: '可提现金额（提现前）',
       dataIndex: 'balanceAvailable',
-      render: (_) => <span className={styles.balanceAvailable}>￥{amountTransform(Number(_) , '/')}</span>
+      render: (_, records) => (
+        <>
+          <span className={styles.balanceAvailable}>￥{amountTransform(Number(_) , '/') + amountTransform(Number(records.amount) , '/')}</span>
+          <Button onClick={()=>skipToDetail(records)}>查看明细</Button>
+        </>
+      )
     },
     {
       title: '银行账户名称',
@@ -217,13 +212,8 @@ const Detail = () => {
         'person': '对私'
       }
     },
-    // {
-    //   title: '本次提现金额',
-    //   dataIndex: 'amount',
-    //   render: (_) => `￥${amountTransform(_, '/')}`
-    // },
     {
-      title: '提现含手续费金额',
+      title: '本次提现金额',
       dataIndex: 'amount',
       render: (_) => `￥${amountTransform(_, '/')}`
     },

@@ -1,110 +1,90 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
-import { history } from 'umi'
 import { Button } from 'antd'
+import { history, useLocation } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
-import { withdrawPage } from '@/services/financial-management/transaction-detail-management'
-import { Export,ExportHistory } from '@/pages/export-excel'
+import { logPage } from '@/services/financial-management/yeahgo-virtual-account-management'
 
 const WithdrawalBalanceDetails = () =>{
-  const [visit, setVisit] = useState(false)
-  const skipToDetail = data => {
-    history.push(`/financial-management/transaction-detail-management/withdrawal-audit-management/detail/${data}`)
-  }
+  const {query} = useLocation()
   const columns = [
     {
       title: '序号',
       dataIndex: 'serial',
-      hideInSearch: true,
       valueType: 'indexBorder'
     },
     {
-      title: '会员ID',
-      dataIndex: 'accountId',
-    },
-    {
-      title: '注册手机号',
-      dataIndex: 'registMobile',
-    },
-    {
-      title: '用户类型',
-      dataIndex: 'accountType',
-      valueType: 'select',
-      valueEnum: {
-        'store': '社区店',
-        'supplier': '商家',
-        'platform': '平台',
-        'agentStore': '内部店',
-        'agentCompany': '经销商'
-      }
-    },
-    {
-      title: '提现类型',
-      dataIndex: 'bankAcctType',
-      valueType: 'select',
-      valueEnum: {
-        'business': '对公',
-        'person': '对私'
-      }
-    },
-    {
-      title: '提现账户名',
-      dataIndex: 'withdrawAccountName',
-    },
-    {
-      title: '提现银行卡',
-      dataIndex: 'withdrawAccount',
-    },
-    {
-      title: '账户所属行',
-      dataIndex: 'bankName',
-      hideInSearch: true
-    },
-    {
-      title: '资金流水号',
-      dataIndex: 'voucher'
-    },
-    {
-      title: '提现单号',
-      dataIndex: 'sn',
-    },
-    {
-      title: '提现时间',
-      dataIndex: 'createTime',
-      valueType: 'dateRange',
+      title: 'id',
+      dataIndex: 'id',
       hideInTable: true
     },
     {
-      title: '提现时间',
-      dataIndex: 'createTime',
-      hideInSearch: true
+      title: '虚拟子账户',
+      dataIndex: 'accountSn',
     },
     {
-      title: '提现金额',
-      dataIndex: 'amount',
-      render: (_)=> amountTransform(_, '/'),
-      hideInSearch: true
-    },
-    {
-      title: '提现状态',
-      dataIndex: 'status',
+      title: '交易类型',
+      dataIndex: 'tradeType',
       valueType: 'select',
       valueEnum: {
-        'auditing': '待审核',
-        'waitPay': '待执行',
-        'arrived': '已到账',
-        'unPass': '审核不通过',
-        'paid': '已打款',
-        'failure': '提现失败'
+        'goodsAmount': '货款入账',
+        'goodsAmountReturn': '货款回退',
+        'commission': '店主收益入账',
+        'commissionReturn': '店主收益回退',
+        'platformCommission': '平台收益入账',
+        'platformCommissionReturn': '平台收益回退',
+        'fee': '交易通道费',
+        'feeReturn': '交易通道费回退',
+        'recharge': '充值',
+        'giveOut': '划扣',
+        'withdraw': '提现',
+        'refundRecharge': '售后款入账',
+        'debt': '欠款入账',
+        'debtReturn': '欠款偿还',
+        'unfreeze': '解冻',
+        'freeze': '冻结',
+        'suggestCommission': '推荐店主收益入账',
+        'suggestCommissionReturn': '推荐店主收益回退',
+        'agentCompanyCommission': '经销商收益入账',
+        'agentCompanyCommissionReturn': '经销商收益回退',
+        'freight': '运费',
+        'freightReturn': '运费回退',
+        'yeahCardRecharge': '约卡充值'
       }
+    },
+    {
+      title: '订单号',
+      dataIndex: 'billNo'
+    },
+    {
+      title: '平台单号',
+      dataIndex: 'payNo',
+    },
+    {
+      title: '资金流水号',
+      dataIndex: 'transactionId',
+    },
+    {
+      title: '交易时间',
+      dataIndex: 'createTime'
+    },
+    {
+      title: '交易金额',
+      dataIndex: 'changeAmount',
+      render: (_) => amountTransform(_, '/'),
+    },
+    {
+      title: '账户余额',
+      dataIndex: 'balanceAmount',
+      render: (_) => amountTransform(_, '/')
     }
   ]
   return (
     <PageContainer title={false}>
       <ProTable
-        rowKey='sn'
+        rowKey='id'
         columns={columns}
         toolBarRender={false}
         pagination={{
@@ -112,43 +92,29 @@ const WithdrawalBalanceDetails = () =>{
           hideOnSinglePage: true,
           showQuickJumper: true
         }}
-        search={{
-          optionRender: ({searchText, resetText}, {form}) => [
-            <Button
-              key="search"
-              type="primary"
-              onClick={() => {
-                form?.submit()
-              }}
-            >
-              {searchText}
-            </Button>,
-            <Button
-              key="rest"
-              onClick={() => {
-                form?.resetFields()
-                form?.submit()
-              }}
-            >
-              {resetText}
-            </Button>,
-            <Export
-              change={(e)=> {setVisit(e)}}
-              key="export"
-              type="financial-withdraw-page-export"
-              conditions={form?.getFieldValue()}
-            />,
-            <ExportHistory
-              key="exportHistory" 
-              show={visit}
-              setShow={setVisit}
-              type="financial-withdraw-page-export"
-            />
-          ],
-        }}
-        params={{}}
-        request={withdrawPage}
+        search={false}
+        params={{...query}}
+        request={logPage}
       />
+      <div
+        style={{
+          background: 'rgb(255, 255, 255)'
+        }}
+      >
+        <Button
+          style={{
+            margin: 20
+          }}
+          type='primary'
+          onClick={
+            ()=> {
+              history.goBack()
+            }
+          }
+        >
+          返回
+        </Button>
+      </div>
     </PageContainer>
   )
 }

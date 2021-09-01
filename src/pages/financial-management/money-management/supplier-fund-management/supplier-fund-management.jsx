@@ -12,23 +12,23 @@ import styles from './styles.less'
 
 const SupplierFundManagement = () => {
   const actionRef = useRef()
-  // const formRef = Form.useForm()
-  // const [total, setTotal] = useState(0)
-  // const [page, setPage] = useState(1)
-  // const [search, setSearch] = useState({})
-  // const [data, setData] = useState({})
+  const formRef = Form.useForm()
+  const [total, setTotal] = useState(0)
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState({})
+  const [data, setData] = useState({})
 
-  // useEffect(()=> {
-  //   subtotal({
-  //     accountType: 'supplier',
-  //     page,
-  //     ...search
-  //   }).then(res=> {
-  //     if(res.success) {
-  //       setTotal(res.data)
-  //     }
-  //   })
-  // }, [page, search])
+  useEffect(()=> {
+    subtotal({
+      accountType: 'supplier',
+      page,
+      ...search
+    }).then(res=> {
+      if(res.success) {
+        setTotal(res.data)
+      }
+    })
+  }, [page, search])
 
   const skipToDetail = ({accountType, accountId}) => {
     history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
@@ -186,37 +186,37 @@ const SupplierFundManagement = () => {
     <PageContainer title={false}>
       <ProTable
         actionRef={actionRef}
-        // formRef={formRef}
+        formRef={formRef}
         pagination={{
           pageSize: 10,
-          // onChange: (e) => {
-          //   setPage(e)
-          // }
+          onChange: (e) => {
+            setPage(e)
+          }
         }}
         rowKey='accountId'
-        // postData={
-        //   (e)=>{
-        //     setSearch(formRef.current?.getFieldsValue())
-        //     setData(e)
-        //     return e
-        //   }
-        // }
+        postData={
+          (e)=>{
+            setSearch(formRef.current?.getFieldsValue())
+            setData(e)
+            return e
+          }
+        }
         toolBarRender={false}
         columns={columns}
         params={{accountType: 'supplier'}}
         request={platforms}
-        // tableRender={(_, dom) => (
-        //   <>
-        //     {dom}
-        //     {
-        //       data?.length !== 0 &&
-        //         <div className={styles.summary}>
-        //         账户余额总合计：
-        //         <span>￥{amountTransform(Number(total.totalBalance),'/')}</span>
-        //       </div>
-        //     }
-        //   </>
-        // )}
+        tableRender={(_, dom) => (
+          <>
+            {dom}
+            {
+              data?.length !== 0 &&
+                <div className={styles.summary}>
+                账户余额总合计：
+                <span>￥{amountTransform(Number(total.totalBalance),'/')}</span>
+              </div>
+            }
+          </>
+        )}
       />
     </PageContainer>
   )
