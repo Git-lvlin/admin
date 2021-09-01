@@ -12,7 +12,7 @@ const Order = () => {
   const [orderData, setOrderData] = useState([])
   const [loading, setLoading] = useState(false) 
   const { query } = useLocation()
-  const  time = moment(Number(query.date)).format('YYYY-MM-DD hh:mm:ss')
+  const  time = moment(Number(query.date)).format('YYYY-MM-DD')
 
   const skipToOrderDetail = (e) => {
     console.log(query);

@@ -49,6 +49,16 @@ const Detail = ()=> {
       }
     },
     {
+      title: '下单时间',
+      dataIndex: 'createTime',
+      align: 'center'
+    },
+    {
+      title: '结算时间',
+      dataIndex: 'settleTime',
+      align: 'center'
+    },
+    {
       title: '结算状态',
       dataIndex: 'status',
       align: 'center',
@@ -66,19 +76,28 @@ const Detail = ()=> {
         rowKey='id'
         columns={columns}
         pagination={{
-          pageSize: 10,
-          hideOnSinglePage: true
+          pageSize: 10
         }}
         toolBarRender={false}
         params={{accountId: id, status: query?.status}}
         request={detail}
       />
-      <Button 
-        type='primary'
-        onClick={()=>{history.goBack()}}
+      <div
+        style={{
+          background: '#fff',
+          paddingBottom: 20
+        }}
       >
-        返回
-      </Button>
+        <Button 
+          type='primary'
+          onClick={()=>{history.goBack()}}
+          style={{
+            marginLeft: 20
+          }}
+        >
+          返回
+        </Button>
+      </div>
     </PageContainer>
   )
 }
