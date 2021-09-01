@@ -69,14 +69,10 @@ const OrderPayDetailManagement = () =>{
       dataIndex: 'orderType',
       valueEnum: {
         'normalOrder': '普通订单',
-        'second': '秒约',
-        'single': '单约',
-        'group': '团约',
-        'commandSalesOrder': '指令集约店主订单',
-        'activeSalesOrder': '主动集约店主订单',
+        'second': '秒约订单',
+        'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
-        'commandCollect': '指令集约C端订单',
-        'activeCollect': '主动集约C端订单'
+        'commandCollect': '集约销售订单'
       }
     },
     {

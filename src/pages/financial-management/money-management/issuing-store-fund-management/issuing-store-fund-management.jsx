@@ -3,29 +3,33 @@ import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { ModalForm } from '@ant-design/pro-form'
 import { ProFormTextArea } from '@ant-design/pro-form'
-import { Space, message } from 'antd'
+import { Space, message, Form } from 'antd'
 import { history } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
-import { platforms, findAllBanks, enabledDisabledSubmit } from '@/services/financial-management/supplier-fund-management'
+import { platforms, enabledDisabledSubmit, subtotal } from '@/services/financial-management/supplier-fund-management'
+import styles from './styles.less'
 
 const IssuingStoreFundManagement = () => {
   const actionRef = useRef()
-  // const [banks, setBanks] = useState({})
-  // useEffect(() => {
-  //   findAllBanks().then(res=>{
+  const formRef = Form.useForm()
+  // const [total, setTotal] = useState(0)
+  // const [page, setPage] = useState(1)
+  // const [search, setSearch] = useState({})
+  // const [data, setData] = useState({})
+
+  // useEffect(()=> {
+  //   subtotal({
+  //     accountType: 'agentStore',
+  //     page,
+  //     ...search
+  //   }).then(res=> {
   //     if(res.success) {
-  //       const obj = {}
-  //       res?.data.map(item=> {
-  //         obj[item.bankCode] = item.bankName
-  //       })
-  //       setBanks(obj)
+  //       setTotal(res.data)
   //     }
   //   })
-  //   return () => {
-  //     setBanks({})
-  //   }
-  // }, [])
+  // }, [page, search])
+
   const skipToDetail = ({accountType, accountId}) => {
     history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
   }
@@ -130,18 +134,6 @@ const IssuingStoreFundManagement = () => {
       dataIndex: 'bankName',
       valueType: 'select',
       hideInSearch: true
-      // valueEnum: banks
-    },
-    {
-      title: '绑定时间',
-      dataIndex: 'bindTime',
-      hideInSearch: true
-    },
-    {
-      title: '绑定时间',
-      dataIndex: 'bindTime',
-      hideInTable: true,
-      valueType: 'dateRange'
     },
     {
       title: '收支明细',
@@ -155,12 +147,37 @@ const IssuingStoreFundManagement = () => {
       valueType: 'option',
       render: (_, records)=>(
         <Space size='large'>
-          <a onClick={()=>{toDetails({accountType: records?.accountType, accountId: records?.accountId})}}>详情</a>
-          {
-            records?.status === 'normal' ?
-            <PopModal accountType={records?.accountType} accountId={records?.accountId}/>:
-            <a onClick={()=>{restore({isEnabled:1, accountType: records?.accountType, accountId: records?.accountId })}}>恢复</a>
-          }
+          <a onClick={
+              ()=>{
+                toDetails({
+                  accountType: records?.accountType,
+                  accountId: records?.accountId
+                })
+              }
+            }
+          >
+            详情
+          </a>
+            {
+              records?.status === 'normal' ?
+              <PopModal 
+                accountType={records?.accountType}
+                accountId={records?.accountId}
+              />:
+              <a 
+                onClick={
+                  ()=>{
+                    restore({
+                      isEnabled:1,
+                      accountType: records?.accountType,
+                      accountId: records?.accountId 
+                    })
+                  }
+                }
+              >
+                恢复
+              </a>
+            }
         </Space>
       )
     }
@@ -169,15 +186,37 @@ const IssuingStoreFundManagement = () => {
     <PageContainer title={false}>
       <ProTable
         actionRef={actionRef}
+        // formRef={formRef}
         pagination={{
           pageSize: 10,
-          hideOnSinglePage: true
+          // onChange: (e) => {
+          //   setPage(e)
+          // }
         }}
+        // postData={
+        //   (e)=>{
+        //     setSearch(formRef.current?.getFieldsValue())
+        //     setData(e)
+        //     return e
+        //   }
+        // }
         rowKey='accountId'
         toolBarRender={false}
         columns={columns}
         params={{accountType: 'agentStore'}}
         request={platforms}
+        // tableRender={(_, dom) => (
+        //   <>
+        //     {dom}
+        //     {
+        //       data?.length !== 0 &&
+        //         <div className={styles.summary}>
+        //         账户余额总合计：
+        //         <span>￥{amountTransform(Number(total.totalBalance),'/')}</span>
+        //       </div>
+        //     }
+        //   </>
+        // )}
       />
     </PageContainer>
   )

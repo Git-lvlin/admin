@@ -21,7 +21,7 @@ import DaifaStoreManagement from './routers/daifa-store-management'
 import pcm from './routers/price-comparsion-management'
 import financialManagement from './routers/financial-management'
 import dataBoard from './routers/data-board'
-
+import dc from './routers/dc'
 
 
 
@@ -88,6 +88,7 @@ const config = {
             businessSchool,
             financialManagement,
             dataBoard,
+            dc,
             {
               component: '404',
             },

@@ -156,7 +156,7 @@ const TableList = () => {
           }}
         />
         <ProFormText
-          name="consignee"
+          name="buyerNickname"
           label="下单用户"
           fieldProps={{
             style: {
@@ -216,6 +216,24 @@ const TableList = () => {
               marginBottom: 20
             },
             showTime: true,
+          }}
+        />
+         <ProFormText
+          name="consignee"
+          label="收件人"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
+        <ProFormText
+          name="shippingCode"
+          label="物流单号"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
           }}
         />
       </ProForm>
@@ -348,14 +366,6 @@ const TableList = () => {
           onChange={pageChange}
         />
       </div>
-
-      {deliveryVisible &&
-        <Delivery
-          visible={deliveryVisible}
-          setVisible={setDeliveryVisible}
-          callback={(values) => { orderShipRequest(values) }}
-        />
-      }
     </PageContainer>
   );
 };

@@ -150,9 +150,9 @@ export const saleAgentMonRanking = async (params = {}, options = {}) => {
   }
 }
 
-// 集约订单列表
-export const getOrderPage = async (params = {}, options = {}) => {
-  const res = await request('/auth/java-admin/order/ops/getOrderPage', {
+// 商家idGMV排名
+export const gmvFindByStoreId = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/gmvFindByStoreId', {
     method: 'POST',
     data: {
       ...params
@@ -160,15 +160,14 @@ export const getOrderPage = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data?.records,
-    success: res.success,
-    total: res.data?.total
+    data: res.data?.orderSubDetailResponseList,
+    success: res.success
   }
 }
 
-// 订单列表
-export const findAdminOrderList = async (params, options = {}) => {
-  const res = await request('/auth/java-admin/order/findAdminOrderList', {
+// 供应商idGMV排名
+export const gmvFindBySupperId = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/gmvFindBySupperId', {
     method: 'POST',
     data: {
       ...params
@@ -176,8 +175,37 @@ export const findAdminOrderList = async (params, options = {}) => {
     ...options
   })
   return {
-    data: res.data?.records,
-    success: res.success,
-    total: res.data?.total
+    data: res.data?.orderSubDetailResponseList,
+    success: res.success
+  }
+}
+
+// 商家id销售额排名
+export const saleFindByStoreId = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/saleFindByStoreId', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+  return {
+    data: res.data?.orderSubDetailResponseList,
+    success: res.success
+  }
+}
+
+// 供应商id销售额排名
+export const saleFindBySupperId = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/saleFindBySupperId', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+  return {
+    data: res.data?.orderSubDetailResponseList,
+    success: res.success
   }
 }

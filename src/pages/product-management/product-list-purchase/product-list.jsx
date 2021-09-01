@@ -150,11 +150,11 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '供应商家',
-      dataIndex: 'supplierNameId',
+      title: '供应商家名称',
+      dataIndex: 'supplierName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商家ID或名称'
+        placeholder: '请输入供应商家名称'
       },
       // renderFormItem: () => <SupplierSelect />,
       hideInTable: true,
@@ -347,6 +347,7 @@ const TableList = () => {
           pageSize: 10,
         }}
         search={{
+          labelWidth: 130,
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button

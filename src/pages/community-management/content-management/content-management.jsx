@@ -125,7 +125,7 @@ export default props => {
         },
         {
             title: '操作',
-            width: 250,
+            width: 350,
             render: (text, record, _, action) => [
                 <Button style={{marginRight:'10px'}} onClick={()=>{
                     if(record.banComment){
