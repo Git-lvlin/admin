@@ -152,20 +152,16 @@ export default (props) => {
       >
         {amountTransform(detailData?.goods.wholesaleTaxRate)}
       </Form.Item>
-      {detailData?.goods.goodsDesc &&
-        <Form.Item
-          label="商品副标题"
-        >
-          {detailData?.goods.goodsDesc}
-        </Form.Item>
-      }
-      {detailData?.goods.goodsKeywords &&
-        <Form.Item
-          label="搜索关键字"
-        >
-          {detailData?.goods.goodsKeywords}
-        </Form.Item>
-      }
+      <Form.Item
+        label="商品副标题"
+      >
+        {detailData?.goods.goodsDesc}
+      </Form.Item>
+      <Form.Item
+        label="搜索关键字"
+      >
+        {detailData?.goods.goodsKeywords}
+      </Form.Item>
       <Form.Item
         label="商品品类"
       >
@@ -176,12 +172,11 @@ export default (props) => {
       >
         {detailData?.goods.supplierSpuId}
       </Form.Item>
-      {detailData?.goods.brandIdDisplay &&
-        <Form.Item
-          label="商品品牌"
-        >
-          {detailData?.goods.brandIdDisplay}
-        </Form.Item>}
+      <Form.Item
+        label="商品品牌"
+      >
+        {detailData?.goods.brandIdDisplay}
+      </Form.Item>
       <Form.Item
         label="供货类型"
       >
@@ -198,7 +193,7 @@ export default (props) => {
         {{ 0: '单规格', 1: '多规格' }[detailData?.isMultiSpec]}
       </Form.Item>
       <Form.Item
-        label="单位运费(元)"
+        label="平均运费(元)"
       >
         {amountTransform(detailData?.goods.wholesaleFreight, '/')}
       </Form.Item>
@@ -207,6 +202,16 @@ export default (props) => {
           ?
           <>
             {!!tableData.length && <EditTable tableHead={tableHead} tableData={tableData} goodsSaleType={detailData?.goods?.goodsSaleType} settleType={detailData?.settleType} />}
+            <Form.Item
+              label="总可用库存"
+            >
+              {detailData?.goods?.totalStock}
+            </Form.Item>
+            <Form.Item
+              label="单SKU起售数量"
+            >
+              {detailData?.goods?.buyMinNum}
+            </Form.Item>
           </>
           :
           <>
@@ -215,7 +220,7 @@ export default (props) => {
             >
               {detailData?.goods?.supplierSkuId}
             </Form.Item>
-            
+
             {
               detailData?.goods?.goodsSaleType !== 2 &&
               <>
@@ -259,12 +264,17 @@ export default (props) => {
             <Form.Item
               label="库存预警值"
             >
-              {detailData?.goods?.activityStockNum}
+              {detailData?.goods?.stockAlarmNum}
             </Form.Item>
             <Form.Item
               label="单SKU起售数量"
             >
               {detailData?.goods?.buyMinNum}
+            </Form.Item>
+            <Form.Item
+              label="单SKU单次最多零售购买数量"
+            >
+              {detailData?.goods?.buyMaxNum}
             </Form.Item>
           </>
       }
@@ -284,15 +294,12 @@ export default (props) => {
       >
         {{ 0: '不支持', 1: '支持', }[detailData?.goods?.supportNoReasonReturn]}
       </Form.Item>
-      {detailData?.goods.goodsRemark
-        &&
-        <Form.Item
-          label="特殊说明"
-        >
-          {detailData?.goods.goodsRemark}
-        </Form.Item>
-      }
-      {selectAreaKey.length !== 0 && <Form.Item
+      <Form.Item
+        label="特殊说明"
+      >
+        {detailData?.goods.goodsRemark}
+      </Form.Item>
+      {selectAreaKey.length !== 0 ? <Form.Item
         label="不发货地区"
       >
         <MultiCascader
@@ -304,6 +311,10 @@ export default (props) => {
           onChange={setSelectAreaKey}
           cleanable={false}
         />
+      </Form.Item> : <Form.Item
+        label="不发货地区"
+      >
+        
       </Form.Item>}
       <Form.Item
         label="商品主图"

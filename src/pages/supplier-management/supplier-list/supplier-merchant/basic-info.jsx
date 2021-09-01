@@ -149,13 +149,19 @@ export default (props) => {
       } else {
         gcArr = ''
       }
-      apiMethod({
+
+      const params = {
         ...rest,
-        password: password ? md5(password) : '',
         supplierId: detailData?.supplierId,
         bindSupplierIds: selectData.map(item => item.id).join(','),
         gcInfo: gcArr,
-      }, { showSuccess: true, showError: true }).then(res => {
+      }
+
+      if (password) {
+        params.password = md5(password)
+      }
+
+      apiMethod(params, { showSuccess: true, showError: true, noFilterParams: true, paramsUndefinedToEmpty: true }).then(res => {
         if (res.code === 0) {
           resolve();
           callback();
