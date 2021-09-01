@@ -15,7 +15,6 @@ const Order = () => {
   const  time = moment(Number(query.date)).format('YYYY-MM-DD')
 
   const skipToOrderDetail = (e) => {
-    console.log(query);
     if(query.kind === '1') {
       history.push(`/order-management/intensive-order/supplier-order-detail/${e.subId}`)
     } else {
