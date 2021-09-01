@@ -7,7 +7,7 @@ export const allowance = async (params, options= {}) => {
     method: 'POST',
     data: {
       page: current,
-      pageSize: pageSize,
+      size: pageSize,
       ...rest
     },
     ...options
@@ -27,7 +27,7 @@ export const detail = async (params, options= {}) => {
     method: 'POST',
     data: {
       page: current,
-      pageSize: pageSize,
+      size: pageSize,
       ...rest
     },
     ...options

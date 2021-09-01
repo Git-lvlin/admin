@@ -100,14 +100,10 @@ const TransactionDetails = () => {
       title: '受益方会员类型',
       dataIndex: 'accountTypeName'
     },
-    // {
-    //   title: (_) => _.dataIndex ? '店铺提成比例' : '',
-    //   dataIndex: info.storeCommissionRatio ? 'storeCommissionRatio' : '',
-    //   render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
-    // },
     {
-      title: '',
-      dataIndex: ''
+      title: (_) => _.dataIndex ? '店铺提成比例' : '',
+      dataIndex: info.storeCommissionRatio ? 'storeCommissionRatio' : '',
+      render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
     },
     {
       title: '受益方会员信息',
@@ -245,12 +241,12 @@ const TransactionDetails = () => {
         bordered
         dataSource={info}
       />
-      {/* {
+      {
         info.skus &&
         info.skus.map(item => (
           <CustomList data={item} key={item.skuId} columns={columns2}/>
         ))
-      } */}
+      }
       {
         payInfos?.map(item=> (
           <CustomList data={item} key={item.stageName} columns={columns3}/>
