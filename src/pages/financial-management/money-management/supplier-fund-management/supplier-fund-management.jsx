@@ -3,12 +3,13 @@ import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { ModalForm } from '@ant-design/pro-form'
 import { ProFormTextArea } from '@ant-design/pro-form'
-import { Space, message, Form } from 'antd'
+import { Space, message, Form, Button} from 'antd'
 import { history } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
 import { platforms, enabledDisabledSubmit, subtotal } from '@/services/financial-management/supplier-fund-management'
 import styles from './styles.less'
+import { Export,ExportHistory } from '@/pages/export-excel'
 
 const SupplierFundManagement = () => {
   const actionRef = useRef()
@@ -17,6 +18,7 @@ const SupplierFundManagement = () => {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState({})
   const [data, setData] = useState({})
+  const [visit, setVisit] = useState(false)
 
   useEffect(()=> {
     subtotal({
@@ -80,7 +82,6 @@ const SupplierFundManagement = () => {
       </ModalForm>
     )
   }
-
 
   const columns = [
     {
@@ -205,12 +206,46 @@ const SupplierFundManagement = () => {
         columns={columns}
         params={{accountType: 'supplier'}}
         request={platforms}
+        search={{
+          optionRender: ({searchText, resetText}, {form}) => [
+            <Button
+              key="search"
+              type="primary"
+              onClick={() => {
+                form?.submit()
+              }}
+            >
+              {searchText}
+            </Button>,
+            <Button
+              key="rest"
+              onClick={() => {
+                form?.resetFields()
+                form?.submit()
+              }}
+            >
+              {resetText}
+            </Button>,
+            <Export
+              change={(e)=> {setVisit(e)}}
+              key="export"
+              type="financial-account-page-supplier-export"
+              conditions={{accountType: "supplier"}}
+            />,
+            <ExportHistory
+              key="exportHistory" 
+              show={visit}
+              setShow={setVisit}
+              type="financial-account-page-supplier-export"
+            />
+          ],
+        }}
         tableRender={(_, dom) => (
           <>
             {dom}
             {
               data?.length !== 0 &&
-                <div className={styles.summary}>
+              <div className={styles.summary}>
                 账户余额总合计：
                 <span>￥{amountTransform(Number(total.totalBalance),'/')}</span>
               </div>

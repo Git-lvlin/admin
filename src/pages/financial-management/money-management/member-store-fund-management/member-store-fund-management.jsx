@@ -3,12 +3,13 @@ import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { ModalForm } from '@ant-design/pro-form'
 import { ProFormTextArea } from '@ant-design/pro-form'
-import { Space, message,Form } from 'antd'
+import { Space, message, Form, Button} from 'antd'
 import { history } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
 import { platforms, enabledDisabledSubmit, subtotal } from '@/services/financial-management/supplier-fund-management'
 import styles from './styles.less'
+import { Export, ExportHistory } from '@/pages/export-excel'
 
 const MemberStoreFundManagement = () => {
   const actionRef = useRef()
@@ -17,6 +18,7 @@ const MemberStoreFundManagement = () => {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState({})
   const [data, setData] = useState({})
+  const [visit, setVisit] = useState(false)
 
   useEffect(()=> {
     subtotal({
@@ -215,6 +217,40 @@ const MemberStoreFundManagement = () => {
         columns={columns}
         params={{accountType: 'store'}}
         request={platforms}
+        search={{
+          optionRender: ({searchText, resetText}, {form}) => [
+            <Button
+              key="search"
+              type="primary"
+              onClick={() => {
+                form?.submit()
+              }}
+            >
+              {searchText}
+            </Button>,
+            <Button
+              key="rest"
+              onClick={() => {
+                form?.resetFields()
+                form?.submit()
+              }}
+            >
+              {resetText}
+            </Button>,
+            <Export
+              change={(e)=> {setVisit(e)}}
+              key="export"
+              type="financial-account-page-store-export"
+              conditions={{accountType: "store"}}
+            />,
+            <ExportHistory
+              key="exportHistory"
+              show={visit}
+              setShow={setVisit}
+              type="financial-account-page-store-export"
+            />
+          ],
+        }}
         tableRender={(_, dom) => (
           <>
             {dom}
