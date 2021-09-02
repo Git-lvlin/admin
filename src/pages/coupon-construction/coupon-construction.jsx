@@ -60,7 +60,7 @@ const couponConstruction = (props) => {
       freeAmount: parseInt(values.freeAmount),//优惠金额(单位分)
       unit: values.unit,//单位
       usefulNum: parseInt(values.usefulNum),//用件数门槛
-      freeDiscount: parseInt(values.freeDiscount),//折扣
+      freeDiscount: values.freeDiscount,//折扣
       maxFreeAmount: parseInt(values.maxFreeAmount)//最多优惠（单位分）
     }
     
