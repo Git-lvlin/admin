@@ -241,7 +241,7 @@ const MemberStoreFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-store-export"
-              conditions={{accountType: "store"}}
+              conditions={{accountType: "store", ...form?.getFieldValue()}}
             />,
             <ExportHistory
               key="exportHistory"
