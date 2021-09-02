@@ -10,7 +10,7 @@ import BrandSelect from '@/components/brand-select'
 import { connect } from 'umi';
     
 const useSecond=(props)=>{
-    const {id,dispatch,DetailList, UseScopeList}=props
+    const {id,dispatch,DetailList, UseScopeList,choose}=props
     const columns = [
         {
             title: 'spuID',
@@ -250,11 +250,13 @@ const useSecond=(props)=>{
                 rules={[{ required: true, message: '请选择商品范围' }]}
                 fieldProps={{
                 onChange: (e) => setPosition(e.target.value),
+                value:choose==3?2:position
                 }}
                 options={[
                 {
                     label:<FormattedMessage id="formandbasic-form.allGoods" />,
                     value: 1,
+                    disabled:choose==3
                 },
                 {
                     label: <FormattedMessage id="formandbasic-form.assignGoods" />,
@@ -263,11 +265,12 @@ const useSecond=(props)=>{
                 {
                     label: <FormattedMessage id="formandbasic-form.assignClass" />,
                     value: 3,
+                    disabled:choose==3
                 },
                 ]}
             />
             {
-                position==2||(parseInt(id)==id )&&DetailList.data?.goodsType==2?
+                position==2||(parseInt(id)==id )&&DetailList.data?.goodsType==2||choose==3?
                     <div style={{display:position==1||position==3?'none':'block'}}>
                         <Button type="primary" className={styles.popupBtn} onClick={showModal}>
                             选择商品

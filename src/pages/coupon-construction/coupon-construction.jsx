@@ -309,6 +309,10 @@ const couponConstruction = (props) => {
               label: '指定群体用户',
               value: 2,
             },
+            // {
+            //   label: '新用户（未下过订单的用户）',
+            //   value: 3,
+            // },
           ]}
         />
         <AssignCrowd id={id} choose={choose} />
@@ -316,7 +320,7 @@ const couponConstruction = (props) => {
         <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>使用设置</span></h3>
 
         {/* 使用范围 */}
-        <UseScope id={id} />
+        <UseScope id={id} choose={choose} />
 
         {/* 使用说明 */}
           <ProFormTextArea
