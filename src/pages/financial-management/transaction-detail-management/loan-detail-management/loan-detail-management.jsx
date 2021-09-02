@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { history } from 'umi'
+import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { goodsAmountPage } from '@/services/financial-management/transaction-detail-management'
+import { Export, ExportHistory } from '@/pages/export-excel'
 
 const LoanDetailManagement = () =>{
+  const [visit, setVisit] = useState(false)
+
   const skipToDetail = data => {
     history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=loan`)
   }
@@ -117,6 +121,40 @@ const LoanDetailManagement = () =>{
         rowKey='id'
         columns={columns}
         toolBarRender={false}
+        search={{
+          optionRender: ({searchText, resetText}, {form}) => [
+            <Button
+              key="search"
+              type="primary"
+              onClick={() => {
+                form?.submit()
+              }}
+            >
+              {searchText}
+            </Button>,
+            <Button
+              key="rest"
+              onClick={() => {
+                form?.resetFields()
+                form?.submit()
+              }}
+            >
+              {resetText}
+            </Button>,
+            <Export
+              change={(e)=> {setVisit(e)}}
+              key="export"
+              type="financial-trans-goodsAmount-page-export"
+              conditions={form?.getFieldValue()}
+            />,
+            <ExportHistory
+              key="exportHistory"
+              show={visit}
+              setShow={setVisit}
+              type="financial-trans-goodsAmount-page-export"
+            />
+          ],
+        }}
         pagination={{
           pageSize: 10,
           hideOnSinglePage: true,
