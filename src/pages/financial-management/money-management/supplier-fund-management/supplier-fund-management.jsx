@@ -230,7 +230,7 @@ const SupplierFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-supplier-export"
-              conditions={{accountType: "supplier"}}
+              conditions={{accountType: "supplier", ...form?.getFieldValue()}}
             />,
             <ExportHistory
               key="exportHistory" 
