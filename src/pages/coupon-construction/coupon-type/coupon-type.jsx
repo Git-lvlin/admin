@@ -33,7 +33,7 @@ const couponType = (props) => {
     const checkConfirm=(rule, value, callback)=>{
         return new Promise(async (resolve, reject) => {
         if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
-            await reject('不能输入小数')
+            await reject('只能输入整数')
         } else {
             await resolve()
         }
@@ -41,17 +41,10 @@ const couponType = (props) => {
     }
     const checkDiscounts=(rule, value, callback)=>{
         return new Promise(async (resolve, reject) => {
-        if(value&&value>10){
-            await reject('折扣不能大于10')
-        }else {
-            await resolve()
-        }
-        })
-    }
-    const checkRestrict=(rule, value, callback)=>{
-        return new Promise(async (resolve, reject) => {
-        if(value&&value>9){
-            await reject('只能填1-9的整数')
+        if(value&&value>=10){
+            await reject('折扣不能大于等于10')
+        }else if(value&&!/^[0-9]+(.[0-9]{0,2})?$/.test(value)){
+            await reject('最多输入两位小数点')
         }else {
             await resolve()
         }
@@ -168,14 +161,14 @@ const couponType = (props) => {
                         width={100}
                         name="maxFreeAmount"
                         rules={[
-                            {validator: checkRestrict}
+                            {validator: checkConfirm}
                         ]}
                         fieldProps={{
                             onChange: (e) =>setMost(e.target.value)
                         }} 
                     />
                     <span>元 （不填写则不作限制） </span>
-                    <span>（只能填1-9的整数）</span>
+                    {/* <span>（只能填1-9的整数）</span> */}
                 </ProForm.Group>
                 <p>
                     优惠券面值
