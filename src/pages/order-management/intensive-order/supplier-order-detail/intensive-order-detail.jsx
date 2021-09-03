@@ -164,6 +164,13 @@ const OrderDetail = () => {
                   <div>合计实收</div>
                   <div>{amountTransform(detailData?.actualAmount, '/')}元</div>
                 </div>
+                {
+                  detailData.status !=0&&detailData.status !=6&&
+                  <div className={styles.box}>
+                    <div>备注</div>
+                    <div>买家付款后可提现 {detailData?.receivingInfo?.withdrawableCashRatio*100+'%'} 金额,订单超过售后期可提现剩余金额。</div>
+                  </div>
+                }
                 <div className={`${styles.box} ${styles.box_header}`}>
                   物流信息
                 </div>

@@ -39,6 +39,24 @@ const couponType = (props) => {
         }
         })
     }
+    const checkDiscounts=(rule, value, callback)=>{
+        return new Promise(async (resolve, reject) => {
+        if(value&&value>10){
+            await reject('折扣不能大于10')
+        }else {
+            await resolve()
+        }
+        })
+    }
+    const checkRestrict=(rule, value, callback)=>{
+        return new Promise(async (resolve, reject) => {
+        if(value&&value>9){
+            await reject('只能填1-9的整数')
+        }else {
+            await resolve()
+        }
+        })
+    }
     return (
         <>
             <ProFormRadio.Group
@@ -142,27 +160,27 @@ const couponType = (props) => {
                         }}
                         width={100}
                         rules={[
-                            {validator: checkConfirm}
+                            {validator: checkDiscounts}
                         ]} 
                     />
-                    <span> %折扣，最多优惠</span>
+                    <span>折，最多优惠</span>
                     <ProFormText
                         width={100}
                         name="maxFreeAmount"
                         rules={[
-                            {validator: checkConfirm}
+                            {validator: checkRestrict}
                         ]}
                         fieldProps={{
                             onChange: (e) =>setMost(e.target.value)
                         }} 
                     />
                     <span>元 （不填写则不作限制） </span>
-                    <p>（只能填1-99的整数）</p>
+                    <span>（只能填1-9的整数）</span>
                 </ProForm.Group>
                 <p>
                     优惠券面值
                     <span className={styles.compute}>
-                        {coupons ? (100 - coupons) / 10 : ''||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay ?(100 - DetailList.data?.freeDiscount) / 10 : ''}
+                        {coupons ? coupons: ''||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay ?DetailList.data?.freeDiscount: ''}
                     </span> 
                     折券
                 </p>
