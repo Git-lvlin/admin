@@ -4,7 +4,8 @@ import { PageContainer } from '@ant-design/pro-layout'
 import { useParams, history } from 'umi'
 import {
   Button,
-  message
+  message,
+  Space
 } from 'antd'
 import {
   ModalForm,
@@ -163,6 +164,9 @@ const Detail = () => {
   const skipToDetail = (e) => {
     history.push(`/financial-management/transaction-detail-management/withdrawal-audit-management/details?amountType=available&accountType=${e.accountType}&accountId=${e.accountId}`)
   }
+  const jumpToDetail = (e) => {
+    history.push(`/financial-management/transaction-detail-management/withdrawal-audit-management/details?amountType=commission&accountType=${e.accountType}&accountId=${e.accountId}`)
+  }
   const columns = [
     {
       title: '提现会员信息',
@@ -193,7 +197,10 @@ const Detail = () => {
               <div>提成：￥{amountTransform(records.beforeCommissionAvailable, '/')}</div>
               <div>总计：￥{amountTransform(records.beforeTotalAvailable, '/')}</div>
             </div>
-            <Button onClick={()=>skipToDetail(records)}>查看明细</Button>
+            <Space direction="vertical" size={5}>
+              <Button onClick={()=>skipToDetail(records)}>货款明细</Button>
+              <Button onClick={()=>jumpToDetail(records)}>提成明细</Button>
+            </Space>
           </div>
           
         </>
