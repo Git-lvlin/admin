@@ -44,7 +44,7 @@ const couponConstruction = (props) => {
     return new Promise(async (resolve, reject) => {
       if (value && value.length > 50) {
         await reject('优惠券名称不超过50个字符')
-      } else if (/[^\u4e00-\u9fa5\0-9]/.test(value)) {
+      } else if (value&&/[^\u4e00-\u9fa5\0-9]/.test(value)) {
         await reject('只能输入汉字')
       } else {
         await resolve()
@@ -103,6 +103,9 @@ const couponConstruction = (props) => {
       delete values.useTypeInfoJ
     } else if (values.useType == 2) {
       delete values.useTypeInfoM
+    }else if(values.useType==4){
+      delete values.useTypeInfoM
+      delete values.useTypeInfoJ
     }
     if (values.wholesaleType == 1) {
       delete values.wholesaleIds
@@ -112,7 +115,6 @@ const couponConstruction = (props) => {
     } catch (error) {
       console.log('error',error)
     }
-   
     if (id) {
       couponEdit({ ...values, id: id }).then((res) => {
         if (res.code == 0) {
@@ -240,7 +242,6 @@ const couponConstruction = (props) => {
               fieldProps={{
                 disabledDate:(current)=>disabledDate(current)
               }}
-              
               placeholder={[
                 formatMessage({
                   id: 'formandbasic-form.placeholder.start',
@@ -251,7 +252,6 @@ const couponConstruction = (props) => {
               ]}
             />
         }
-
 
         {/* 有效期 */}
         {
@@ -309,10 +309,10 @@ const couponConstruction = (props) => {
               label: '指定群体用户',
               value: 2,
             },
-            // {
-            //   label: '新用户（未下过订单的用户）',
-            //   value: 3,
-            // },
+            {
+              label: '新用户（未下过订单的用户）',
+              value: 4,
+            },
           ]}
         />
         <AssignCrowd id={id} choose={choose} />
@@ -320,7 +320,7 @@ const couponConstruction = (props) => {
         <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>使用设置</span></h3>
 
         {/* 使用范围 */}
-        <UseScope id={id} choose={choose} />
+        <UseScope id={id} choose={choose} form={form}/>
 
         {/* 使用说明 */}
           <ProFormTextArea
