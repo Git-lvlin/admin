@@ -187,8 +187,15 @@ const Detail = () => {
       dataIndex: 'balanceAvailable',
       render: (_, records) => (
         <>
-          <span className={styles.balanceAvailable}>￥{amountTransform(Number(_) , '/') + amountTransform(Number(records.amount) , '/')}</span>
-          <Button onClick={()=>skipToDetail(records)}>查看明细</Button>
+          <div className={styles.amount}>
+            <div className={styles.available}>
+              <div>货款：￥{amountTransform(records.beforeBalanceAvailable, '/')}</div>
+              <div>提成：￥{amountTransform(records.beforeCommissionAvailable, '/')}</div>
+              <div>总计：￥{amountTransform(records.beforeTotalAvailable, '/')}</div>
+            </div>
+            <Button onClick={()=>skipToDetail(records)}>查看明细</Button>
+          </div>
+          
         </>
       )
     },
