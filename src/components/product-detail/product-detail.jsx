@@ -193,7 +193,7 @@ export default (props) => {
         {{ 0: '单规格', 1: '多规格' }[detailData?.isMultiSpec]}
       </Form.Item>
       <Form.Item
-        label="单位运费(元)"
+        label="平均运费(元)"
       >
         {amountTransform(detailData?.goods.wholesaleFreight, '/')}
       </Form.Item>
@@ -202,6 +202,16 @@ export default (props) => {
           ?
           <>
             {!!tableData.length && <EditTable tableHead={tableHead} tableData={tableData} goodsSaleType={detailData?.goods?.goodsSaleType} settleType={detailData?.settleType} />}
+            <Form.Item
+              label="总可用库存"
+            >
+              {detailData?.goods?.totalStock}
+            </Form.Item>
+            <Form.Item
+              label="单SKU起售数量"
+            >
+              {detailData?.goods?.buyMinNum}
+            </Form.Item>
           </>
           :
           <>
