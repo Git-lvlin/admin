@@ -81,10 +81,14 @@ const PaymentDetails = () => {
       hideInSearch: true
     },
     {
-      title: '账户余额',
+      title: '交易后余额',
       dataIndex: 'balanceAmount',
       render: (_) => amountTransform(_, '/'),
       hideInSearch: true
+    },
+    {
+      title: '交易描述',
+      dataIndex: 'description'
     }
   ]
   return (
