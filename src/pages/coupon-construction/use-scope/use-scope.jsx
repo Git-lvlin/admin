@@ -1,16 +1,18 @@
 import React,{useState} from 'react';
 import { FormattedMessage,connect } from 'umi';
-import { ProFormRadio} from '@ant-design/pro-form';
+import ProForm,{ ProFormRadio} from '@ant-design/pro-form';
 import UseCollect from './use-collect'
+import { Radio } from 'antd';
 import UseSecond from './use-second'
+import { useEffect } from 'react';
 
 const useScope=props => {
-    const {DetailList,id,choose}=props
+    const {DetailList,id,choose,form}=props
     const [position,setPosition]=useState()
     const options=[
         {
             label:<FormattedMessage id="formandbasic-form.Secret.Garden" />,
-            value: 1
+            value: 1,
         },
         {
             label: <FormattedMessage id="formandbasic-form.container.number" />,
@@ -20,25 +22,30 @@ const useScope=props => {
     const options2=[
         {
             label:<FormattedMessage id="formandbasic-form.Secret.Garden" />,
-            value: 1
+            value: 1,
         }
     ]
+    useEffect(()=>{
+        if(choose==4){
+        form.setFieldsValue({useType:1})
+        }
+    },[choose])
     return (
         <>
            <ProFormRadio.Group
                 name="useType"
                 label={<FormattedMessage id="formandbasic-form.usable.range" />}
-                rules={[{ required: true, message: '请选择使用范围' }]}
+                rules={[ { required: true, message: '请选择使用范围' }]}
                 fieldProps={{
-                onChange: (e) => setPosition(e.target.value),
-                value:choose==3?1:position
+                    onChange: (e) => setPosition(e.target.value),
+                    value:choose==4?1:position,
                 }}
-                options={choose==3?options2:options}
+                options={choose==4?options2:options} 
             />
             {
-                position==1||(parseInt(id)==id )&&DetailList.data?.useType==1||choose==3?
+                position==1||(parseInt(id)==id )&&DetailList.data?.useType==1||choose==4?
                 <div style={{display:position==2?'none':'block'}}>
-                  <UseSecond id={id} choose={choose}/>
+                  <UseSecond id={id} choose={choose} form={form}/>
                 </div>
                 :null
             }
