@@ -165,7 +165,7 @@ const Detail = () => {
     history.push(`/financial-management/transaction-detail-management/withdrawal-audit-management/details?amountType=available&accountType=${e.accountType}&accountId=${e.accountId}`)
   }
   const jumpToDetail = (e) => {
-    history.push(`/financial-management/transaction-detail-management/withdrawal-audit-management/details?amountType=commission&accountType=${e.accountType}&accountId=${e.accountId}`)
+    history.push(`/financial-management/transaction-detail-management/withdrawal-audit-management/details?amountType=commissionAvailable&accountType=${e.accountType}&accountId=${e.accountId}`)
   }
   const columns = [
     {
