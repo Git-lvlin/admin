@@ -347,6 +347,7 @@ const TableList = () => {
           pageSize: 10,
         }}
         search={{
+          labelWidth: 130,
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button

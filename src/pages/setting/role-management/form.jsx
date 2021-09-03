@@ -101,16 +101,9 @@ export default (props) => {
         groupId: data.id
       }).then(res => {
         if (res.code === 0) {
-          // const parentId = [];
-
-          // res.data.forEach(item => {
-          //   if (item.pid !== 0) {
-          //     parentId.push(item.pid)
-          //   }
-          // })
-
-          // const arr = res.data.filter(item => !parentId.find(it => item.id === it))
-          setSelectKeys(res.data.map(item => item.id));
+          const originData = res.data;
+          const filterData = res.data.filter(item => !originData.some(it => it.pid === item.id))
+          setSelectKeys(filterData.map(item => item.id));
         }
       })
     }
