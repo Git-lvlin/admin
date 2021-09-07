@@ -158,7 +158,7 @@ const useSecond=(props)=>{
             type:'UseScopeList/fetchLookSpuIdsArr',
             payload:{
                 spuIdsArr:UseScopeList.UseScopeObje.spuIdsArr.filter(ele=>(
-                            ele.spuId!=val
+                    ele.spuId!=val
                 ))
             }
         })
