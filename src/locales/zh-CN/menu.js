@@ -126,6 +126,7 @@ export default {
   'menu.cms.poster': '海报管理',
   'menu.cms.content-version': '版本配置管理',
   'menu.cms.generate-invitation-code': '生成邀请码',
+  'menu.cms.home-red-envelopes': 'app首页红包弹窗',
   'menu.cms.home-popup': 'app首页弹窗管理',
   'menu.cms.start-up': 'app启动广告配置',
 
