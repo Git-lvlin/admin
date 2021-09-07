@@ -4,7 +4,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProCard from '@ant-design/pro-card';
 import Upload from '@/components/upload';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormRadio } from '@ant-design/pro-form';
-import { getAppPopup, homePopupUpdate } from '@/services/cms/member/member';
+import { getAppRedBoxPopup, homePopupUpdate } from '@/services/cms/member/member';
 
 const HomeRedEnvelopes = () => {
   const [form] = Form.useForm();
@@ -13,7 +13,7 @@ const HomeRedEnvelopes = () => {
 
   useEffect(() => {
     if (!popupInfo) {
-      getAppPopup().then((res) => {
+      getAppRedBoxPopup().then((res) => {
         if (res.code === 0 && res.data) {
           const {img, link, status, endTime, startTime, id, platform, targetUser} = res.data
           form.setFieldsValue({
