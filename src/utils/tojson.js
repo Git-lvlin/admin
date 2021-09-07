@@ -45,6 +45,7 @@ export const objToArr = ({
   child.attr = (!!define && define === "Reference") ? "Reference" : getTypeOf(value);
   child.name = objKey;
   child.value = (child.attr === "Object" || child.attr === "Array") ? "" : value;
+  child.value = child.attr === "Boolean" ? child.value.toString() : child.value;
   child.level = level;
   if(preParent) child.preParent = preParent;
   if(parent) child.parent = parent;

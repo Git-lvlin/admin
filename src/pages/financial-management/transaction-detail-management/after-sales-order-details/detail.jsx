@@ -222,7 +222,8 @@ const Detail = () => {
   const columns2 = [
     {
       title: '支付金额',
-      dataIndex: 'refundAmount'
+      dataIndex: 'refundAmount',
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '回退计算',
@@ -255,7 +256,8 @@ const Detail = () => {
     },
     {
       title: '支付金额',
-      dataIndex: 'amount'
+      dataIndex: 'amount',
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '虚拟分账计算',
