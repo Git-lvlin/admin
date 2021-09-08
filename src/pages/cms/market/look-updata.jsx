@@ -47,6 +47,7 @@ export default (props) => {
 
   useEffect(() => {
     if (detailDataz) {
+      console.log('编辑回显数据detailDataz', detailDataz);
       const { ...rest } = detailDataz;
       form.setFieldsValue({
         ...rest
@@ -113,8 +114,8 @@ export default (props) => {
       <ProForm.Group >
         <Button key="button" type="primary" onClick={() => { setSelectType(true) }}>
           选择商品
-        </Button>,
-        选中商品：{index.goodsName || '-'}
+        </Button>
+        {index.goodsName&&<span>选中商品：{index.goodsName || '-'}</span>}
       </ProForm.Group>
       <ProForm.Group>
         <ProFormText

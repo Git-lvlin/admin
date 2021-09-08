@@ -10,7 +10,7 @@ import BrandSelect from '@/components/brand-select'
 import { connect } from 'umi';
     
 const useSecond=(props)=>{
-    const {id,dispatch,DetailList, UseScopeList,choose}=props
+    const {id,dispatch,DetailList, UseScopeList,choose,form}=props
     const columns = [
         {
             title: 'spuID',
@@ -158,7 +158,7 @@ const useSecond=(props)=>{
             type:'UseScopeList/fetchLookSpuIdsArr',
             payload:{
                 spuIdsArr:UseScopeList.UseScopeObje.spuIdsArr.filter(ele=>(
-                            ele.spuId!=val
+                    ele.spuId!=val
                 ))
             }
         })
@@ -237,11 +237,19 @@ const useSecond=(props)=>{
     //商品分类
     useEffect(()=>{
         classList({gcParentId:0}).then(res=>{
+           if(res.code==0){
             setOnselect(res.data.map(ele=>(
                 {label:ele.gcName,value:ele.id}
             )))
+           }
         })
     },[])
+
+    useEffect(()=>{
+        if(choose==4){
+            form.setFieldsValue({goodsType:2})
+        }
+    },[choose])
     return(
         <Form.Item className={styles.unfold}>
             <ProFormRadio.Group
@@ -249,14 +257,14 @@ const useSecond=(props)=>{
                 label={<FormattedMessage id="formandbasic-form.commodity"/>}
                 rules={[{ required: true, message: '请选择商品范围' }]}
                 fieldProps={{
-                onChange: (e) => setPosition(e.target.value),
-                value:choose==3?2:position
+                    onChange: (e) => setPosition(e.target.value),
+                    value:choose==4?2:position
                 }}
                 options={[
                 {
                     label:<FormattedMessage id="formandbasic-form.allGoods" />,
                     value: 1,
-                    disabled:choose==3
+                    disabled:choose==4
                 },
                 {
                     label: <FormattedMessage id="formandbasic-form.assignGoods" />,
@@ -265,12 +273,13 @@ const useSecond=(props)=>{
                 {
                     label: <FormattedMessage id="formandbasic-form.assignClass" />,
                     value: 3,
-                    disabled:choose==3
+                    disabled:choose==4
                 },
                 ]}
+
             />
             {
-                position==2||(parseInt(id)==id )&&DetailList.data?.goodsType==2||choose==3?
+                position==2||(parseInt(id)==id )&&DetailList.data?.goodsType==2||choose==4?
                     <div style={{display:position==1||position==3?'none':'block'}}>
                         <Button type="primary" className={styles.popupBtn} onClick={showModal}>
                             选择商品
