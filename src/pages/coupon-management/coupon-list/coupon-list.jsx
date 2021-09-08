@@ -193,7 +193,7 @@ const Message = (props) => {
 
   //导出
   const exportExcel = (searchConfig) => {
-    couponList({}).then(res => {
+    couponList({couponVerifyStatus:type}).then(res => {
         const data = res.data.map(item => {
           const { ...rest } = item;
           return {
