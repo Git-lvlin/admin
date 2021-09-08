@@ -144,7 +144,6 @@ const useSecond=(props)=>{
     
     // 删除商品
     const  delGoods=val=>{
-        console.log('spuIdsArr',UseScopeList.UseScopeObje.spuIdsArr)
         const arr = UseScopeList.UseScopeObje.spuIds.split(',')
         dispatch({
             type:'UseScopeList/fetchLookSpuIds',
@@ -169,7 +168,7 @@ const useSecond=(props)=>{
     const [loading,setLoading]=useState(true)
     const [flag,setFlag]=useState(true)
     const [spuIdsArr,setSpuIdsArr]=useState([])
-    const [position,setPosition]=useState()
+    const [position,setPosition]=useState(false)
     const [onselect,setOnselect]=useState([])
     const [spuIds,setSpuIds]=useState('')
     const showModal = () => {
@@ -258,7 +257,7 @@ const useSecond=(props)=>{
                 rules={[{ required: true, message: '请选择商品范围' }]}
                 fieldProps={{
                     onChange: (e) => setPosition(e.target.value),
-                    value:choose==4?2:position
+                    value:choose==4?2:position||(parseInt(id)==id )&&DetailList.data?.goodsType
                 }}
                 options={[
                 {
@@ -369,7 +368,7 @@ const useSecond=(props)=>{
                             columns={columns2}
                             dataSource={UseScopeList.UseScopeObje.unitArr}
                         />
-                        </div>
+                    </div>
                 :null
             }
         </Form.Item>
