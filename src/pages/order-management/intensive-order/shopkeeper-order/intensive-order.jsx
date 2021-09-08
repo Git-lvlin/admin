@@ -164,14 +164,14 @@ const TableList = () => {
           }}
         />
         <ProFormText
-        name="consignee"
-        label="收件人"
-        fieldProps={{
-          style: {
-            marginBottom: 20
-          }
-        }}
-      />
+          name="consignee"
+          label="收件人"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -245,7 +245,7 @@ const TableList = () => {
                         <img width="100" height="100" src={it.skuImageUrl} />
                         <div className={styles.info}>
                           <div>{it.goodsName}</div>
-                          <div>集约价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
+                          <div>集约价：{amountTransform(it.skuSalePrice, '/')}元<time style={{ marginLeft: 20 }}>规格：{it.skuName}</time></div>
                           <div>数量： <span>{it.skuNum}件</span></div>
                           <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
                         </div>
@@ -255,8 +255,8 @@ const TableList = () => {
                 </div>
                 <div>
                   <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
-                    <Descriptions.Item label="商品总金额">{amountTransform(item.totalAmount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="运费">+{amountTransform(item.sumOrder?.shippingFeeAmount, '/')}元</Descriptions.Item>
+                    <Descriptions.Item label="商品总金额">{amountTransform(item.totalAmount, '/')}元（含运费）</Descriptions.Item>
+                    {/* <Descriptions.Item label="运费">+{amountTransform(item.sumOrder?.shippingFeeAmount, '/')}元</Descriptions.Item> */}
                     <Descriptions.Item label="优惠券">-{amountTransform(item.sumOrder?.couponAmount, '/')}元</Descriptions.Item>
                     <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>
                   </Descriptions>

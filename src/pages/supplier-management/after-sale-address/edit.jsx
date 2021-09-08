@@ -109,7 +109,7 @@ export default (props) => {
         name="contactPhone"
         placeholder="请输入售后联系手机号！"
         fieldProps={{
-          maxLength: 11
+          maxLength: 30
         }}
       />
       <ProFormSwitch checkedChildren="是" unCheckedChildren="否" name="isDefault" label="默认售后地址" />
