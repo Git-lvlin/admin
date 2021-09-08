@@ -137,3 +137,29 @@ export const getImageSize = (file) => {
     }
   });
 }
+
+export const getAreaData = (v) => {
+  const arr = [];
+  v?.forEach?.(item => {
+    let deep = 0;
+    let node = window.yeahgo_area.find(it => it.id === item);
+    const nodeIds = [node.id];
+    const nodeNames = [node.name]
+    while (node.pid) {
+      deep += 1;
+      node = window.yeahgo_area.find(it => it.id === node.pid);
+      nodeIds.push(node.id);
+      nodeNames.push(node.name);
+    }
+    arr.push({
+      provinceId: nodeIds[deep],
+      provinceName: nodeNames[deep],
+      cityId: deep > 0 ? nodeIds[deep - 1] : 0,
+      cityName: deep > 0 ? nodeNames[deep - 1] : '',
+      regionId: deep > 1 ? nodeIds[deep - 2] : 0,
+      regionName: deep > 1 ? nodeNames[deep - 2] : '',
+    })
+  })
+
+  return arr;
+}
