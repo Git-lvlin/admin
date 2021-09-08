@@ -4,11 +4,9 @@ import { listSystemVirtualMember } from '@/services/community-management/memberi
 import ProForm, { ProFormTextArea,ProFormSelect} from '@ant-design/pro-form';
 import { history } from 'umi';
 import { message, Form,Button,Modal,Space,Image } from 'antd';
-import GcCascader from '@/components/gc-cascader'
-import ProTable from '@ant-design/pro-table';
-import * as api from '@/services/product-management/product-list';
 import { releaseDynamic } from '@/services/community-management/dynamic-release-dynamic';
 import Upload from '@/components/upload';
+import Assigngoodsmodel from './assign-goods-model'
 
 export default props => {
   const [onselect,setOnselect]=useState([])
@@ -37,94 +35,6 @@ export default props => {
     setIsModalVisible(true);
     setLoading(true)
   };
-  const handleOk = () => {
-    setIsModalVisible(false);
-    setLoading(false)
-  };
-  const handleCancel = () => {
-      setIsModalVisible(false);
-  };
-  const specification=(specName,specValue)=>{
-    var arr1=[]
-    var arr2=[]
-    for(let k in specName){
-      arr1.push(specName[k])
-    }
-    for(let key in specValue){
-      arr2.push(specValue[key])
-    }
-    return <>
-    {
-      arr1.map((ele,inx)=>(
-        <p>
-        {
-          ele+':'+  arr2.map((item,dex)=>{
-          if(inx==dex){
-            return Object.values(item)
-          }
-          })
-        }
-        </p>
-      ))
-    }
-    </>
-  }
-  const columns = [
-    {
-      title: 'spuID',
-      dataIndex: 'spuId',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '图片',
-      dataIndex: 'goodsImageUrl',
-      render: (text) => <img src={text} width={50} height={50} />,
-      hideInSearch: true,
-    },
-    {
-      title: '商品名称',
-      dataIndex: 'goodsName',
-      valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入商品名称'
-      }
-    },
-    {
-      title: '商品分类',
-      dataIndex: 'gcId',
-      renderFormItem: () => (<GcCascader />),
-      hideInTable: true,
-    },
-    {
-      title: '商家ID',
-      dataIndex: 'supplierId',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '秒约价',
-      dataIndex: 'goodsSaleMinPrice',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '可用库存',
-      dataIndex: 'stockNum',
-      valueType: 'text',
-      hideInSearch: true,
-    }
-  ];
-  const onIpute=(res)=>{
-    if(res.selectedRows.length>=2){
-      message.error('只能选择一个商品');
-      return
-    }
-    if(spuIdsArr==res.selectedRows){
-      return
-    }
-    setSpuIdsArr(res.selectedRows)
-  }
   return (
     <Form
         onFinish={async (values) => {
@@ -151,19 +61,6 @@ export default props => {
               history.push('/community-management/content-management')
             }
           })
-        }}
-        submitter={{
-          render: (props, doms) => {
-            return [
-              <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
-                保存
-              </Button>,
-              <Button type="default" onClick={()=>history.goBack()}>
-                返回
-              </Button>,
-              
-            ];
-          }
         }}
         style={{ padding:'50px',background:'#fff' }}
       >
@@ -208,48 +105,16 @@ export default props => {
           <Button type="primary"  onClick={showModal}>
               选择商品
           </Button>
-          
-          <Modal key="id" width={1200}  visible={isModalVisible}  onCancel={handleCancel} footer={null}>
-              <ProTable
-                  rowKey="id"
-                  options={false}
-                  params={{
-                    selectType: 1,
-                    goodsState:1,
-                    pageSize:10
-                  }}
-                  style={{display:loading?'block':'none'}}
-                  request={api.productList}
-                  actionRef={actionRef}
-                  search={{
-                      defaultCollapsed: false,
-                      labelWidth: 100,
-                      optionRender: (searchConfig, formProps, dom) => [
-                          ...dom.reverse(),
-                      ],
-                  }}
-                  toolBarRender={() => [
-                    <Button type="primary" style={{marginLeft:'-1100px'}} disabled={spuIdsArr&&spuIdsArr.length>0?false:true}  onClick={handleOk}>
-                        确定
-                    </Button>
-                  ]}
-                  columns={columns}
-                  rowSelection={{
-                    hideSelectAll:true
-                  }}
-                  tableAlertOptionRender={onIpute}
-              />
-          </Modal>
-          <div style={{background:'#F2F2F2',padding:'20px',marginTop:'20px', display:loading?'none':'block'}}>
-            <Space>
-              <Image width={100} src={spuIdsArr&&spuIdsArr[0]?.goodsImageUrl} />
-               <div>
-                <p>{spuIdsArr&&spuIdsArr[0]?.goodsName}</p>
-                <p>{specification(spuIdsArr&&spuIdsArr[0]?.specName,spuIdsArr&&spuIdsArr[0]?.specValue)}</p>
-                <p>￥ {spuIdsArr&&spuIdsArr[0]?.goodsSaleMinPrice}</p>
-               </div>
-            </Space>
-          </div>
+          <Assigngoodsmodel 
+            isModalVisible={isModalVisible} 
+            setIsModalVisible={setIsModalVisible} 
+            actionRef={actionRef}
+            callback={(Rows)=>{
+              setSpuIdsArr(Rows)
+            }}
+            loading={loading}
+            setLoading={setLoading}
+          />
         </Form.Item>
         <Form.Item {...tailLayout} style={{marginTop:'120px'}}>
           <Button type="primary" htmlType="submit">
