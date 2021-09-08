@@ -12,8 +12,7 @@ import ProCard from '@ant-design/pro-card';
 import { Button, Result, message, Descriptions, Form } from 'antd';
 import EditTable from './edit-table';
 import styles from './index.less';
-import { addWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
-import { getApplicableArea } from '@/services/intensive-store-management/shop-area'
+import { addWholesale, getApplicableAreaForWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
 import { numFormat, digitUppercase } from '@/utils/utils'
 import AddressMultiCascader from '@/components/address-multi-cascader'
 import { history } from 'umi';
@@ -123,9 +122,10 @@ const IntensiveActivityCreate = () => {
   }
 
   const getUncheckableItemValues = () => {
-    getApplicableArea({
+    getApplicableAreaForWholesale({
       page: 1,
       size: 9999,
+      status: 'on',
     }).then(res => {
       const ids = [];
       res.data.records.forEach(item => {
