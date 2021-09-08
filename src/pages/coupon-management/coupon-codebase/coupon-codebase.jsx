@@ -113,7 +113,6 @@ export default props => {
         title: '订单编号',
         dataIndex: 'orderSn',
         render:(_,data)=>{
-          console.log('data',data)
           return <>
            <p>子订单：{data.orderSnSon}</p>
            <p>父订单：{data.orderSn}</p>
