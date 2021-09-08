@@ -148,12 +148,12 @@ const OrderDetail = () => {
                   <div className={styles.box_wrap}>
                     <div className={styles.box}>
                       <div>应付金额</div>
-                      <div>{amountTransform(detailData?.final?.amount, '/')}元</div>
+                      <div>{amountTransform(detailData?.final?.amount, '/')}元（含运费）</div>
                     </div>
-                    <div className={styles.box}>
+                    {/* <div className={styles.box}>
                       <div>运费</div>
                       <div>{amountTransform(detailData?.final?.shippingAmount, '/')}元</div>
-                    </div>
+                    </div> */}
                     <div className={styles.box}>
                       <div>用户实付</div>
                       <div>{amountTransform(detailData?.final?.actualAmount, '/')}元</div>
@@ -225,7 +225,7 @@ const OrderDetail = () => {
                     </div>
                     <div className={styles.box}>
                       <div>秒约价</div>
-                      <div>{amountTransform(detailData?.sku?.price, '/')}元</div>
+                      <div>{amountTransform(detailData?.sku?.price, '/')}元{detailData?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(detailData?.sku?.wholesaleFreight)}/件）` : ''}</div>
                     </div>
                     <div className={styles.box}>
                       <div>预定数量</div>

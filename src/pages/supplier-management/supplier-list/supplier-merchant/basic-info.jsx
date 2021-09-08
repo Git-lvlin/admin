@@ -236,7 +236,8 @@ export default (props) => {
       initialValues={{
         accountSwitch: 1,
         status: 1,
-        defaultWholesaleTaxRate: 0,
+        defaultWholesaleTaxRate: 13,
+        warrantyRatio: 10
       }}
       {...formItemLayout}
     >
