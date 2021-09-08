@@ -17,6 +17,7 @@ export default props => {
   const [byid, setByid] = useState();
   const [byid4, setByid4] = useState();
   const [arrId,setArrId]=useState([])
+  const [seleType,setSeleType]=useState(0)
   const formItemLayout = {
     labelCol: { span: 2 },
     wrapperCol: { span: 14 },
@@ -30,6 +31,7 @@ export default props => {
     }
   };
   function callback(key) {
+    setSeleType(key)
   }
   const Termination=(record)=>{
     setByid(record.sourceId)
@@ -209,47 +211,52 @@ export default props => {
   }
   return (
     <Tabs onChange={callback} type="card">
-      <TabPane tab="未处理" key="1">
-        <ProTable
-          rowKey="key"
-          options={false}
-          params={{
-            status:'0',
-            type:'1'
-          }}
-          request={adminReportList}
-          actionRef={actionRef}
-          toolBarRender={false}
-          search={{
-            optionRender: (searchConfig, formProps, dom) => [
-              ...dom.reverse(),
-              <HandleModel  
-                status={1}
-                arrId={arrId}  
-                label={'忽略'}  
-                text={'确认要处理所选评论为忽略吗？'} 
-                InterFace={reportHandle} 
-                title={'操作确认'}
-                boxref={actionRef}
-              />,
-              <HandleModel  
-                status={2}
-                arrId={arrId}   
-                label={'屏蔽'}  
-                text={'确认要处理所选评论为屏蔽吗？'} 
-                InterFace={reportHandle} 
-                title={'操作确认'}
-                boxref={actionRef}
-              />
-            ],
-          }}
-          columns={columns}
-          rowSelection={{}}
-          tableAlertOptionRender={onIpute}
-        />
-      </TabPane>
-      <TabPane tab="已处理" key="2">
+      <TabPane tab="未处理" key="0">
+        {
+          seleType==0&&
           <ProTable
+            rowKey="key"
+            options={false}
+            params={{
+              status:'0',
+              type:'1'
+            }}
+            request={adminReportList}
+            actionRef={actionRef}
+            toolBarRender={false}
+            search={{
+              optionRender: (searchConfig, formProps, dom) => [
+                ...dom.reverse(),
+                <HandleModel  
+                  status={1}
+                  arrId={arrId}  
+                  label={'忽略'}  
+                  text={'确认要处理所选评论为忽略吗？'} 
+                  InterFace={reportHandle} 
+                  title={'操作确认'}
+                  boxref={actionRef}
+                />,
+                <HandleModel  
+                  status={2}
+                  arrId={arrId}   
+                  label={'屏蔽'}  
+                  text={'确认要处理所选评论为屏蔽吗？'} 
+                  InterFace={reportHandle} 
+                  title={'操作确认'}
+                  boxref={actionRef}
+                />
+              ],
+            }}
+            columns={columns}
+            rowSelection={{}}
+            tableAlertOptionRender={onIpute}
+          />
+        }
+      </TabPane>
+      <TabPane tab="已处理" key="3">
+         {
+           seleType==3&&
+           <ProTable
             rowKey="key"
             options={false}
             params={{
@@ -266,6 +273,7 @@ export default props => {
             }}
             columns={columns2}
           />
+         }
       </TabPane>
     </Tabs>
   );

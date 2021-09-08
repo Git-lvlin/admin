@@ -79,5 +79,10 @@ export default {
       path: '/intensive-store-management/lvl-rule',
       component: './intensive-store-management/lvl-rule',
     },
+    {
+      name: 'shop-area',
+      path: '/intensive-store-management/shop-area',
+      component: './intensive-store-management/shop-area',
+    },
   ]
 }
