@@ -55,7 +55,7 @@ const Message = (props) => {
       dataIndex: 'dateRange',
       valueType: 'text',
       render:(_, data)=>{
-        return <p>{data.limitStartTime} 至 {data.limitEndTime}</p>
+        return data.limitStartTime&&<p>{data.limitStartTime} 至 {data.limitEndTime}</p>
       },
       hideInSearch: true,
       ellipsis:true
