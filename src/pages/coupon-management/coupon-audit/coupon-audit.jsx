@@ -8,7 +8,8 @@ import { history} from 'umi';
 const { TabPane } = Tabs
 
 
-const message = (type, module) => {
+const Message = (props) => {
+  const { type }=props
   const ref=useRef()
   const columns= [
     {
@@ -141,7 +142,7 @@ const message = (type, module) => {
 };
 
 export default (props) =>{
-  const [seleType,setSeleType]=useState()
+  const [seleType,setSeleType]=useState(3)
   return (
     <PageContainer>
       <Tabs
@@ -153,10 +154,14 @@ export default (props) =>{
         }}
       >
         <TabPane tab="待审核" key="3">
-          {message(seleType||3, 1)}
+          {
+            seleType==3&&<Message type={3}/>
+          }
         </TabPane>
         <TabPane tab="审核通过" key="4">
-          {message(seleType||4, 2)}
+          {
+            seleType==4&&<Message type={4}/>
+          }
         </TabPane>
       </Tabs>
     </PageContainer>

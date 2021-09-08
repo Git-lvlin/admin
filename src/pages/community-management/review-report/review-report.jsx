@@ -10,7 +10,9 @@ const { TabPane } = Tabs;
 export default props => {
   const actionRef = useRef();
   const [arrId,setArrId]=useState([])
+  const [seleType,setSeleType]=useState(0)
   function callback(key) {
+    setSeleType(key)
   }
   const columns = [
     {
@@ -141,48 +143,53 @@ export default props => {
 }
   return (
     <Tabs onChange={callback} type="card">
-      <TabPane tab="未处理" key="1">
-        <ProTable
-          rowKey="key"
-          options={false}          
-          params={{
-            status:'0',
-            type:'2'
+      <TabPane tab="未处理" key="0">
+        {
+          seleType==0&&
+          <ProTable
+            rowKey="key"
+            options={false}          
+            params={{
+              status:'0',
+              type:'2'
+            }}
+            request={adminReportList}
+            actionRef={actionRef}
+            toolBarRender={false}
+            search={{
+              defaultCollapsed: false,
+              labelWidth: 100,
+              optionRender: (searchConfig, formProps, dom) => [
+                ...dom.reverse(),
+                <HandleModel  
+                  status={1}  
+                  label={'忽略'}
+                  arrId={arrId}  
+                  text={'确认要处理所选评论为忽略吗？'} 
+                  InterFace={reportHandle} 
+                  title={'操作确认'}
+                  boxref={actionRef}
+                />,
+                <HandleModel  
+                  status={2}   
+                  label={'屏蔽'}
+                  arrId={arrId}  
+                  text={'确认要处理所选评论为屏蔽吗？'} 
+                  InterFace={reportHandle} 
+                  boxref={actionRef}
+                  title={'操作确认'}
+                />,
+              ],
           }}
-          request={adminReportList}
-          actionRef={actionRef}
-          toolBarRender={false}
-          search={{
-            defaultCollapsed: false,
-            labelWidth: 100,
-            optionRender: (searchConfig, formProps, dom) => [
-              ...dom.reverse(),
-              <HandleModel  
-                status={1}  
-                label={'忽略'}
-                arrId={arrId}  
-                text={'确认要处理所选评论为忽略吗？'} 
-                InterFace={reportHandle} 
-                title={'操作确认'}
-                boxref={actionRef}
-              />,
-              <HandleModel  
-                status={2}   
-                label={'屏蔽'}
-                arrId={arrId}  
-                text={'确认要处理所选评论为屏蔽吗？'} 
-                InterFace={reportHandle} 
-                boxref={actionRef}
-                title={'操作确认'}
-              />,
-            ],
-        }}
-          columns={columns}
-          rowSelection={{}}
-          tableAlertOptionRender={onIpute}
-        />
+            columns={columns}
+            rowSelection={{}}
+            tableAlertOptionRender={onIpute}
+          />
+        }
       </TabPane>
-      <TabPane tab="已处理" key="2">
+      <TabPane tab="已处理" key="3">
+        {
+          seleType==3&&
           <ProTable
             rowKey="key"
             options={false}
@@ -200,6 +207,8 @@ export default props => {
             }}
             columns={columns2}
           />
+        }
+       
       </TabPane>
     </Tabs>
   );
