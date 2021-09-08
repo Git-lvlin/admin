@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 
 const useScope=props => {
     const {DetailList,id,choose,form}=props
-    const [position,setPosition]=useState()
+    const [position,setPosition]=useState(false)
     const options=[
         {
             label:<FormattedMessage id="formandbasic-form.Secret.Garden" />,
@@ -38,7 +38,7 @@ const useScope=props => {
                 rules={[ { required: true, message: '请选择使用范围' }]}
                 fieldProps={{
                     onChange: (e) => setPosition(e.target.value),
-                    value:choose==4?1:position,
+                    value:choose==4?1:position||(parseInt(id)==id )&&DetailList.data?.useType,
                 }}
                 options={choose==4?options2:options} 
             />
