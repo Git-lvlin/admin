@@ -112,10 +112,10 @@ const OrderDetail = () => {
                   <div>商品总金额</div>
                   <div>{amountTransform(detailData?.goodsTotalAmount ,'/')}元</div>
                 </div>
-                <div className={styles.box}>
+                {/* <div className={styles.box}>
                   <div>运费</div>
                   <div>+{amountTransform(detailData?.shippingFeeAmount, '/')}元</div>
-                </div>
+                </div> */}
                 <div className={styles.box}>
                   <div>优惠券优惠</div>
                   <div>-{amountTransform(detailData?.couponAmount, '/')}元</div>
@@ -186,7 +186,7 @@ const OrderDetail = () => {
                         </div>
                         <div className={styles.box}>
                           <div>集约价</div>
-                          <div>{amountTransform(item.skuSalePrice, '/')}元</div>
+                          <div>{amountTransform(item.skuSalePrice, '/')}元{!!item.wholesaleFreight && `（含平均运费¥${amountTransform(item.wholesaleFreight)}/件）`}</div>
                         </div>
                         <div className={styles.box}>
                           <div>购买数量</div>
