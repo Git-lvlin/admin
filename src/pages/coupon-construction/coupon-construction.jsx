@@ -177,10 +177,10 @@ const couponConstruction = (props) => {
         }
         onFinish={async (values) => {
             await onsubmit(values);
-          return true;
+            return true;
         }
         }
-        style={{background:'#fff',padding:'20px' }}
+        className={styles.discountFrom}
       >
         <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>基本信息</span></h3>
         {/* 优惠券名称 */}
