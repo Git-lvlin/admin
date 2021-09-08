@@ -245,7 +245,7 @@ const TableList = () => {
                         <img width="100" height="100" src={it.skuImageUrl} />
                         <div className={styles.info}>
                           <div>{it.goodsName}</div>
-                          <div>集约价：{amountTransform(it.skuSalePrice, '/')}元<time style={{ marginLeft: 20 }}>规格：{it.skuName}</time></div>
+                          <div>集约价：{amountTransform(it.skuSalePrice, '/')}元{!!it.wholesaleFreight && `（含平均运费¥${amountTransform(it.wholesaleFreight)}/件）`}<time style={{ marginLeft: 20 }}>规格：{it.skuName}</time></div>
                           <div>数量： <span>{it.skuNum}件</span></div>
                           <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
                         </div>
