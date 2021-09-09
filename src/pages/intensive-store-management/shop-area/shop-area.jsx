@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import AddressMultiCascader from '@/components/address-multi-cascader'
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { getApplicableArea, setApplicableArea, changeApplicableArea } from '@/services/intensive-store-management/shop-area'
 import { getAreaData } from '@/utils/utils'
 
@@ -81,13 +81,18 @@ const ShopArea = () => {
   }
 
   const setArea = () => {
+    if (selectKeys.length === 0) {
+      message.error('请选择要添加的区域')
+      return;
+    }
     setApplicableArea({
-      areas: getAreaData(selectKeys),
-      append: true
+      areas: getAreaData(selectKeys).map(item => ({ ...item, status: 'on' })),
+      append: true,
     }, { showSuccess: true }).then(res => {
       if (res.code === 0) {
         actionRef.current.reload();
         getUncheckableItemValues();
+        document.querySelector('.tips').click()
       }
     })
   }
@@ -105,7 +110,7 @@ const ShopArea = () => {
           placeholder="添加地区"
           renderValue={() => <span style={{ color: '#8e8e93' }}>添加地区</span>}
           cleanable={false}
-          renderExtraFooter={() => <div style={{ padding: 10, textAlign: 'right' }}><Button type="primary" onClick={() => { setArea(); document.querySelector('.tips').click() }}>确定</Button></div>}
+          renderExtraFooter={() => <div style={{ padding: 10, textAlign: 'right' }}><Button type="primary" onClick={() => { setArea() }}>确定</Button></div>}
           onChange={setSelectKeys}
           uncheckableItemValues={uncheckableItemValues}
           disabledItemValues={disabledItemValues}
