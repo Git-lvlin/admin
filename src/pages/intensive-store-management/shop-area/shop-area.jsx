@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import AddressMultiCascader from '@/components/address-multi-cascader'
+import AddressCascader from '@/components/address-cascader'
 import { Button, message } from 'antd';
 import { getApplicableArea, setApplicableArea, changeApplicableArea } from '@/services/intensive-store-management/shop-area'
 import { getAreaData } from '@/utils/utils'
@@ -34,16 +35,25 @@ const ShopArea = () => {
       title: '省份',
       dataIndex: 'provinceName',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '城市',
       dataIndex: 'cityName',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '地区/县城',
       dataIndex: 'regionName',
       valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '所在地区',
+      dataIndex: 'area',
+      hideInTable: true,
+      renderFormItem: () => (<AddressCascader changeOnSelect placeholder="请选择" />),
     },
     {
       title: '状态',
@@ -51,11 +61,22 @@ const ShopArea = () => {
       valueType: 'text',
       render: (_) => {
         return <span style={{ color: _ === 'on' ? 'green' : 'red' }}>{_ === 'on' ? '启用' : '禁用'}</span>
-      }
+      },
+      hideInSearch: true,
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      valueType: 'select',
+      valueEnum: {
+        'on': '启用',
+        'off': '禁用'
+      },
+      hideInTable: true,
     },
     {
       title: '操作',
-      valueType: 'options',
+      valueType: 'option',
       render: (_, data) => {
         return <a onClick={() => { changeStatus(data) }}>{data.status === 'on' ? '禁用' : '启用'}</a>
       }
@@ -116,9 +137,6 @@ const ShopArea = () => {
           disabledItemValues={disabledItemValues}
           onClose={() => { setSelectKeys([]) }}
         />
-        <div style={{ marginTop: 20, textAlign: 'right' }} className="tips">
-          {tips}
-        </div>
       </div>
       <ProTable
         rowKey="regionId"
@@ -126,7 +144,13 @@ const ShopArea = () => {
         actionRef={actionRef}
         formRef={formRef}
         request={getApplicableArea}
-        search={false}
+        toolBarRender={() => <div>{tips}</div>}
+        search={{
+          defaultCollapsed: false,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+          ],
+        }}
         columns={columns}
         pagination={{
           pageSize: 10,

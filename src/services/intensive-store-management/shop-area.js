@@ -1,12 +1,15 @@
 import request from '@/utils/request';
 
 export const getApplicableArea = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current, pageSize, area = [], ...rest } = params;
   const res = await request('/auth/store/storeSetting/getApplicableArea', {
     method: 'GET',
     params: {
       page: current,
       size: pageSize,
+      provinceId: area[0]?.value,
+      cityId: area[1]?.value,
+      regionId: area[2]?.value,
       ...rest
     },
     ...options
