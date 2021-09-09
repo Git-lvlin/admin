@@ -4,6 +4,7 @@ import { FormattedMessage } from 'umi';
 import { ModalForm,ProFormSelect,ProFormRadio} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import styles from '../style.less'
+import { amountTransform } from '@/utils/utils'
 import {commonSpuList}  from '@/services/coupon-construction/coupon-common-spu-list';
 import {classList} from '@/services/coupon-construction/coupon-class-list'
 import BrandSelect from '@/components/brand-select'
@@ -68,6 +69,7 @@ const useSecond=(props)=>{
             title: '销售价',
             dataIndex: 'goodsSalePrice',
             hideInSearch: true,
+            render: (_)=> amountTransform(_, '/').toFixed(2)
         }
     ];
     const columns2=[
@@ -116,6 +118,7 @@ const useSecond=(props)=>{
         {
             title: '销售价',
             dataIndex: 'goodsSalePrice',
+            render: (_)=> amountTransform(_, '/').toFixed(2)
         },
         {
             title: '操作',
