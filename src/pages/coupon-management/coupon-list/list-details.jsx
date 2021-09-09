@@ -244,6 +244,8 @@ export default props => {
                   </Form.Item>
                   {
                     detailData.goodsType == 2 ?
+                    <>
+                      <p className={styles.mark}>已选中<span>{detailData.spuInfo?.length}个</span>指定商品</p>
                       <ProTable
                         actionRef={ref}
                         rowKey="id"
@@ -252,18 +254,22 @@ export default props => {
                         search={false}
                         columns={columns2}
                       />
+                    </>
                       : null
                   }
 
                 </>
-                : <ProTable
-                  actionRef={ref}
-                  rowKey="id"
-                  options={false}
-                  dataSource={detailData.wsInfo}
-                  search={false}
-                  columns={columns3}
-                />
+                : <>
+                  <p className={styles.mark}>已选中<span>{detailData.wsInfo?.length}个</span>集约活动。</p>
+                  <ProTable
+                    actionRef={ref}
+                    rowKey="id"
+                    options={false}
+                    dataSource={detailData.wsInfo}
+                    search={false}
+                    columns={columns3}
+                  />
+                </>
             }
 
             <Form.Item
