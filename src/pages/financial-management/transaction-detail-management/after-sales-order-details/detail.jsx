@@ -45,35 +45,35 @@ const Detail = () => {
         return (
           <>
             <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
-            <span>货款交易费: ¥{amountTransform(fee, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'commission':
         return (
           <>
-            <span className={styles.amount}>提成: ¥{amountTransform(amount, '/')}</span>
-            <span>提成交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>店主收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'platformCommission':
         return (
           <>
-            <span className={styles.amount}>佣金: ¥{amountTransform(amount, '/')}</span>
-            <span>佣金交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>平台收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'suggestCommission':
         return (
           <>
-            <span className={styles.amount}>推荐提成: ¥{amountTransform(amount, '/')}</span>
-            <span>推荐提成交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>店主推荐收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'agentCompanyCommission':
         return (
           <>
-            <span className={styles.amount}>经销商提成: ¥{amountTransform(amount, '/')}</span>
-            <span>经销商提成交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>经销商收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       default:
@@ -87,35 +87,35 @@ const Detail = () => {
         return (
           <>
             <span className={styles.amount}>货款回退: ¥{amountTransform(amount, '/')}</span>
-            <span>货款交易费回退: ¥{amountTransform(fee, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'commission':
         return (
           <>
-            <span className={styles.amount}>提成回退: ¥{amountTransform(amount, '/')}</span>
-            <span>提成交易费回退: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>店主收益回退: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'platformCommission':
         return (
           <>
-            <span className={styles.amount}>佣金回退: ¥{amountTransform(amount, '/')}</span>
-            <span>佣金交易费回退: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>平台收益回退: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'suggestCommission':
         return (
           <>
-            <span className={styles.amount}>推荐提成回退: ¥{amountTransform(amount, '/')}</span>
-            <span>推荐提成交易费回退: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>店主推荐收益回退: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'agentCompanyCommission':
         return (
           <>
-            <span className={styles.amount}>经销商提成回退: ¥{amountTransform(amount, '/')}</span>
-            <span>经销商提成交易费回退: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>经销商收益回退: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       default:
@@ -134,12 +134,12 @@ const Detail = () => {
       valueEnum: {
         'goodsAmount': '货款入账',
         'goodsAmountReturn': '货款回退',
-        'commission': '提成入账',
-        'commissionReturn': '提成回退',
-        'platformCommission': '佣金收入',
-        'platformCommissionReturn': '佣金回退',
-        'fee': '代收交易费',
-        'feeReturn': '交易费回退',
+        'commission': '店主收益入账',
+        'commissionReturn': '店主收益回退',
+        'platformCommission': '平台收益入账',
+        'platformCommissionReturn': '平台收益回退',
+        'fee': '交易通道费',
+        'feeReturn': '交易通道费回退',
         'recharge': '充值',
         'giveOut': '划扣',
         'withdraw': '提现',
@@ -148,10 +148,10 @@ const Detail = () => {
         'debtReturn': '欠款偿还',
         'unfreeze': '解冻',
         'freeze': '冻结',
-        'suggestCommission': '推荐提成入账',
-        'suggestCommissionReturn': '推荐提成回退',
-        'agentCompanyCommission': '经销商佣金收入',
-        'agentCompanyCommissionReturn': '经销商佣金回退',
+        'suggestCommission': '推荐店主收益入账',
+        'suggestCommissionReturn': '推荐店主收益回退',
+        'agentCompanyCommission': '经销商收益入账',
+        'agentCompanyCommissionReturn': '经销商收益回退',
         'freight': '运费',
         'freightReturn': '运费回退',
         'yeahCardRecharge': '约卡充值'
@@ -165,10 +165,10 @@ const Detail = () => {
         'second': '秒约订单',
         'single': '单约订单',
         'group': '团约订单',
-        'commandSalesOrder': '指令集约店主订单',
+        'commandSalesOrder': '集约批发订单',
         'activeSalesOrder': '主动集约店主订单',
         'dropShipping1688': '1688代发订单',
-        'commandCollect': '指令集约C端订单',
+        'commandCollect': '集约销售订单',
         'activeCollect': '主动集约C端订单'
       }
     },

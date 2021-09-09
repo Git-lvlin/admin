@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
+import { Button } from 'antd'
 import { history } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
 import { platformCommissionPage } from '@/services/financial-management/transaction-detail-management'
+import { Export, ExportHistory } from '@/pages/export-excel'
 
 // commission detail
 const CommissionDetailManagement = () =>{
-  
+  const [visit, setVisit] = useState(false)
+
   const skipToDetail = data => {
     history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=commission`)
   }
@@ -32,12 +35,10 @@ const CommissionDetailManagement = () =>{
       valueEnum: {
         'normalOrder': '普通商品订单',
         'second': '秒约订单',
-        'single': '单约订单',
-        'group': '团约订单',
-        'commandSalesOrder': 'B端集约订单',
+        'commandSalesOrder': '集约批发订单',
         'activeSalesOrder': '主动集约店主订单',
         'dropShipping1688': '1688代发订单',
-        'commandCollect': '指令集约C端订单',
+        'commandCollect': '集约销售订单',
         'activeCollect': '主动集约C端订单'
       },
       hideInSearch: true
@@ -47,10 +48,8 @@ const CommissionDetailManagement = () =>{
       dataIndex: 'orderType',
       valueType: 'select',
       valueEnum: {
-        'commandSalesOrder': 'B端集约订单',
+        'commandSalesOrder': '集约批发订单',
         'second': '秒约订单',
-        'single': '单约订单',
-        'group': '团约订单',
         'dropShipping1688': '1688代发订单',
       },
       hideInTable: true
@@ -103,6 +102,40 @@ const CommissionDetailManagement = () =>{
         rowKey='id'
         columns={columns}
         toolBarRender={false}
+        search={{
+          optionRender: ({searchText, resetText}, {form}) => [
+            <Button
+              key="search"
+              type="primary"
+              onClick={() => {
+                form?.submit()
+              }}
+            >
+              {searchText}
+            </Button>,
+            <Button
+              key="rest"
+              onClick={() => {
+                form?.resetFields()
+                form?.submit()
+              }}
+            >
+              {resetText}
+            </Button>,
+            <Export
+              change={(e)=> {setVisit(e)}}
+              key="export"
+              type="financial-trans-platformCommission-page-export"
+              conditions={form?.getFieldValue()}
+            />,
+            <ExportHistory
+              key="exportHistory"
+              show={visit}
+              setShow={setVisit}
+              type="financial-trans-platformCommission-page-export"
+            />
+          ],
+        }}
         pagination={{
           pageSize: 10,
           hideOnSinglePage: true,

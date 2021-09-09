@@ -1,21 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@ant-design/pro-layout'
-import{ ModalForm } from '@ant-design/pro-form'
-import { Button, Timeline, Empty } from 'antd'
+import { Button, Space, Progress } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
 
 import { amountTransform } from '@/utils/utils'
 import { orderPageDetail } from "@/services/financial-management/transaction-detail-management"
+import { createExportTask, findById } from "@/services/export-excel/export-template"
 import styles from './styles.less'
 import './styles.less'
-const { Item } = Timeline
 
 const Detail = () => {
   const {id} = useParams()
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState({})
   const [payInfos, setPayInfos] = useState([])
+  const [data, setData] = useState({})
+  const [down, setDown] = useState(false)
+  const [isDown, setIsDown] = useState(false)
+  const [taskId, setTaskId] = useState('')
+  const [process, setProcess] = useState(0)
+  const timer = useRef()
   useEffect(()=>{
     setLoading(true)
     orderPageDetail({orderNo: id}).then(res=> {
@@ -32,61 +38,109 @@ const Detail = () => {
     }
   }, [id])
 
-  const openLog = (data) => {
-    if(data){
-      return data.map(item=>(
-        <Item key={item}>
-          { item }
-        </Item>
-      ))
-    } else {
-      return <Empty className={styles.empty}/>
+  const downTrade = (e) => {
+    createExportTask({
+      code: 'financial-huifu-payment-export',
+      fileName: 'financial-huifu-payment-export' + +new Date() + '.xlsx',
+      queryParamStr: JSON.stringify({orderNo: e.payNo})
+    }).then(res => {
+      setDown(true)
+      setTaskId(res.data.taskId)
+    })
+  }
+
+  const getData = () => {
+    findById({
+      id: taskId
+    }).then(res => {
+      setProcess(res.data.process)
+      if(res.data.fileUrl) {
+        setDown(false)
+        setIsDown(true)
+        setData(res.data)
+      }
+    })
+  }
+  
+  useEffect(()=> {
+    clearInterval(timer.current)
+    if(down) {
+      timer.current = setInterval(()=> {
+        getData()
+      }, 500)
     }
-  }
-  const back = ()=> {
-    history.goBack()
-  }
+    return ()=> {
+      clearInterval(timer.current)
+      setData({})
+    }
+  }, [taskId, down])
+
   const fashionableType =(data, amount, fee) =>{
     switch(data){
       case 'goodsAmount':
         return (
           <>
             <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
-            <span>货款交易费: ¥{amountTransform(fee, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'commission':
         return (
           <>
-            <span className={styles.amount}>提成: ¥{amountTransform(amount, '/')}</span>
-            <span>提成交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>店主收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'platformCommission':
         return (
           <>
-            <span className={styles.amount}>佣金: ¥{amountTransform(amount, '/')}</span>
-            <span>佣金交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>平台收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       case 'suggestCommission':
         return (
           <>
-            <span className={styles.amount}>推荐提成: ¥{amountTransform(amount, '/')}</span>
-            <span>推荐提成交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>店主推荐收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
-      case 'agentCompanyCommission':
+      case 'agentCompanyCommission':  
         return (
           <>
-            <span className={styles.amount}>经销商提成: ¥{amountTransform(amount, '/')}</span>
-            <span>经销商提成交易费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>经销商收益: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
       default:
         return ''
     }
   }
+
+  const back = () => {
+    history.goBack()
+  }
+
+  const DownExport = () => {
+    if(isDown) {
+      return <a href={data.fileUrl}>下载</a>
+    } else if(process !== 100 && down){
+      return (
+        <div style={{ width: 170 }}>
+          <Progress percent={process} size='small'/>
+        </div>
+      )
+    } else if(data.state === 3 && !down){
+      return (
+        <Tooltip title={data.exceptionDes}>
+          <span className={styles.fail}>导出失败</span>
+        </Tooltip>
+      )
+    } else {
+      return ''
+    }
+  }
+
   const columns1 = [
     {
       title: '订单号',
@@ -99,13 +153,9 @@ const Detail = () => {
       valueEnum: {
         'normalOrder': '普通订单',
         'second': '秒约',
-        'single': '单约',
-        'group': '团约',
-        'commandSalesOrder': '指令集约店主订单',
-        'activeSalesOrder': '主动集约店主订单',
+        'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
-        'commandCollect': '指令集约C端订单',
-        'activeCollect': '主动集约C端订单'
+        'commandCollect': '集约销售订单'
       }
     },
     {
@@ -113,8 +163,9 @@ const Detail = () => {
       dataIndex: 'buyerType'
     },
     {
-      title: '',
-      dataIndex: ''
+      title: (_) => _.dataIndex ? '店铺提成比例' : '',
+      dataIndex: info.storeCommissionRatio ? 'storeCommissionRatio' : '',
+      render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
     },
     {
       title: '买家会员信息',
@@ -141,7 +192,37 @@ const Detail = () => {
       dataIndex: 'sellerSn'
     }
   ]
+
   const columns2 = [
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName'
+    },
+    {
+      title: '购买规格',
+      dataIndex: 'skuName'
+    },
+    {
+      title: '商品供货价',
+      dataIndex: 'supplyPrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '实际销售价',
+      dataIndex: 'salePrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title:(_)=> _.dataIndex === 'preCount' ? '预定数量' : '购买数量',
+      dataIndex: info.orderType === 'commandSalesOrder' ? 'preCount' : 'paidCount'
+    },
+    {
+      title: (_) => _.dataIndex ? '实际采购数量' : '',
+      dataIndex: info.orderType === 'commandSalesOrder' ? 'paidCount' : ''
+    }
+  ]
+
+  const columns3 = [
     {
       title: '支付阶段',
       dataIndex: 'stageName'
@@ -161,7 +242,7 @@ const Detail = () => {
     {
       title: '支付金额',
       dataIndex: 'amount',
-      render: (_)=> `¥${amountTransform(_, '/').toFixed(2)}`
+      render: (_) => `¥${amountTransform(_, '/').toFixed(2)}`
     },
     {
       title: '虚拟分账计算',
@@ -169,41 +250,46 @@ const Detail = () => {
       render: (_, data)=> (
         <>
           {
-            data?.divideInfos.map(item=> (
+            data?.divideInfos?.map(item=> (
               <div key={item?.type}>
                 {fashionableType(item?.type, item?.amount, item?.fee)}
               </div>
             ))
           }
-          {/* <ModalForm
-            title='日志信息'
-            width={700}
-            modalProps={{
-              closable: true,
-              destroyOnClose: true
-            }}
-            trigger={
-              <Button size="large" type="primary">查看日志</Button>
-            }
-            onFinish={()=> true}
-          >
-            <Timeline className={styles.timelineWarp}>
-              {openLog(data?.processLog)}
-            </Timeline>
-          </ModalForm> */}
         </>
       )
     },
     {
       title: '支付单号',
-      dataIndex: 'payNo'
+      dataIndex: 'payNo',
+      render: (_, records) => (
+        <>
+          <Space size='large'>
+            <span>{_}</span>
+            <Button 
+              onClick={
+                ()=> downTrade(records)
+              }
+              disabled={down}
+              type='primary'
+            >
+              {
+                down&&
+                <LoadingOutlined />
+              }
+              导出汇付交易单
+            </Button>
+            <DownExport />
+          </Space>
+        </>
+      )
     },
     {
       title: '资金流水号',
       dataIndex: 'transcationId'
     }
   ]
-  const columns3 = [
+  const columns4 = [
     {
       title: '汇能虚拟户（佣金户）',
       dataIndex: 'platformAccountSn'
@@ -213,13 +299,12 @@ const Detail = () => {
       dataIndex: 'platformFeeAccountSn'
     },
   ]
-  const CustomList = props=> {
-    const { data } = props
+  const CustomList = ({data, columns}) => {
     return (
       <ProDescriptions
         loading={loading}
         column={2}
-        columns={columns2}
+        columns={columns}
         style={{
           background:'#fff',
           padding: 20
@@ -244,14 +329,20 @@ const Detail = () => {
         dataSource={info}
       />
       {
+        info.skus &&
+        info.skus.map(item => (
+          <CustomList data={item} key={item.skuId} columns={columns2}/>
+        ))
+      }
+      {
         payInfos?.map(item=> (
-          <CustomList data={item} key={item.stageName}/>
+          <CustomList data={item} key={item.stageName} columns={columns3}/>
         ))
       }
       <ProDescriptions
         loading={loading}
         column={2}
-        columns={columns3}
+        columns={columns4}
         style={{
           background:'#fff',
           padding: 20
@@ -260,7 +351,7 @@ const Detail = () => {
         dataSource={info}
       />
       <div style={{background: '#fff', padding: 20}}>
-        <Button type='primary' onClick={()=>{back()}}>返回</Button>
+        <Button type='primary' onClick={()=> back()}>返回</Button>
       </div>
     </PageContainer>
   )

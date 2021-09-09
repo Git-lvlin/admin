@@ -126,9 +126,16 @@ export default {
   'menu.cms.poster': '海报管理',
   'menu.cms.content-version': '版本配置管理',
   'menu.cms.generate-invitation-code': '生成邀请码',
+  'menu.cms.home-popup': 'app首页弹窗管理',
+  'menu.cms.start-up': 'app启动广告配置',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
+
+  'menu.dc-management': 'DC管理菜单',
+  'menu.dc-management.add': '新增',
+  'menu.dc-management.list': '资源位列表',
+  'menu.dc-management.version': '资源位版本',
 
   'menu.coupon-management': '优惠券管理',
   'menu.coupon-management.coupon-list': '优惠券列表',
@@ -199,12 +206,13 @@ export default {
   'menu.financial-management.money-management.transaction-details':'交易明细',
   'menu.financial-management.money-management.supplier-fund-management':'供应商家资金管理',
   'menu.financial-management.money-management.member-store-fund-management':'社区店资金管理',
-  'menu.financial-management.money-management.issuing-store-fund-management':'代发店资金管理',
+  'menu.financial-management.money-management.issuing-store-fund-management':'内部店资金管理',
   'menu.financial-management.money-management.payment-details':'收支明细',
   'menu.financial-management.money-management.details':'详情',
   'menu.financial-management.transaction-detail-management':'交易明细管理',
   'menu.financial-management.transaction-detail-management.withdrawal-audit-management':'提现审核管理',
   'menu.financial-management.transaction-detail-management.show-detail':'提现详情',
+  'menu.financial-management.transaction-detail-management.withdrawal-balance-details':'可提现余额明细',
   'menu.financial-management.transaction-detail-management.order-pay-detail-management':'订单支付明细管理',
   'menu.financial-management.transaction-detail-management.order-pay-detail':'订单支付详情',
   'menu.financial-management.transaction-detail-management.bonus-detail-management':'提成明细管理',
@@ -219,5 +227,15 @@ export default {
   'menu.financial-management.subsidy-summary-detail' : '补贴明细',
 
   'menu.data-board': '数据看板',
-  'menu.data-board.data-preview': '数据预览'
+  'menu.data-board.data-preview': '数据预览',
+  'menu.data-board.intensive-data-export': '集约数据导出',
+  'menu.data-board.data-sales': '销售数据',
+  'menu.data-board.gmv-detail': 'GMV',
+  'menu.data-board.sales-detail': '销售额',
+  'menu.data-board.gmv-order': 'GMV订单列表',
+  'menu.data-board.sales-order': '销售额订单列表',
+  'menu.data-board.class-of-view': '分类查看',
+  'menu.data-board.order-list': '订单列表',
+  'menu.data-board.rank': '排名',
+  'menu.data-board.order': '订单',
 };

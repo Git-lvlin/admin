@@ -104,9 +104,9 @@ export default () => {
             {detailData?.goods.goodsName}
           </Form.Item>
           <Form.Item
-            label="单位运费(元)"
+            label="平均运费(元)"
           >
-            {detailData?.goods.wholesaleFreight}
+            {amountTransform(detailData?.goods.wholesaleFreight, '/')}
           </Form.Item>
           <Form.Item
             label="发票税率(%)"

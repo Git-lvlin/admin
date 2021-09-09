@@ -4,7 +4,8 @@ import { PageContainer } from '@ant-design/pro-layout'
 import { useParams, history } from 'umi'
 import {
   Button,
-  message
+  message,
+  Space
 } from 'antd'
 import {
   ModalForm,
@@ -160,6 +161,12 @@ const Detail = () => {
   const back = () => {
     history.goBack()
   }
+  const skipToDetail = (e) => {
+    history.push(`/financial-management/transaction-detail-management/withdrawal-audit-management/details?amountType=available&accountType=${e.accountType}&accountId=${e.accountId}`)
+  }
+  const jumpToDetail = (e) => {
+    history.push(`/financial-management/transaction-detail-management/withdrawal-audit-management/details?amountType=commissionAvailable&accountType=${e.accountType}&accountId=${e.accountId}`)
+  }
   const columns = [
     {
       title: '提现会员信息',
@@ -180,9 +187,24 @@ const Detail = () => {
       dataIndex: 'accountSn'
     },
     {
-      title: '可提现余额',
+      title: '可提现金额（提现前）',
       dataIndex: 'balanceAvailable',
-      render: (_) => `￥${amountTransform(_, '/')}`
+      render: (_, records) => (
+        <>
+          <div className={styles.amount}>
+            <div className={styles.available}>
+              <div>货款：￥{amountTransform(records.beforeBalanceAvailable, '/')}</div>
+              <div>提成：￥{amountTransform(records.beforeCommissionAvailable, '/')}</div>
+              <div>总计：￥{amountTransform(records.beforeTotalAvailable, '/')}</div>
+            </div>
+            <Space direction="vertical" size={5}>
+              <Button onClick={()=>skipToDetail(records)}>货款明细</Button>
+              <Button onClick={()=>jumpToDetail(records)}>提成明细</Button>
+            </Space>
+          </div>
+          
+        </>
+      )
     },
     {
       title: '银行账户名称',
@@ -205,7 +227,7 @@ const Detail = () => {
       }
     },
     {
-      title: '提现含手续费金额',
+      title: '本次提现金额',
       dataIndex: 'amount',
       render: (_) => `￥${amountTransform(_, '/')}`
     },

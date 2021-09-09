@@ -16,14 +16,13 @@ export default (props) => {
   const [selectType, setSelectType] = useState(false);
   const waitTime = (values) => {
     const { ...rest } = values
-    console.log('rest', rest)
     let param = {
       ...rest
     }
     if (detailDataz.id) {
       param.id = detailDataz.id
     }
-    param.actionUrl = `https://publicmobile-uat.yeahgo.com/web/market?spuId=${index.spuId}&skuId=${index.skuId}`
+    param.actionUrl = `https://publicmobile-uat.yeahgo.com/web/market?spuId=${index.spuId}&skuId=${index.skuId}&orderType=${index.orderType}`
     console.log('param', param)
     return new Promise((resolve, reject) => {
       merketDetailUpdata(param).then((res) => {
@@ -41,15 +40,15 @@ export default (props) => {
   useEffect(() => {
     if (index.spuId) {
       form.setFieldsValue({
-        actionUrl: `https://publicmobile-uat.yeahgo.com/web/market?spuId=${index.spuId}&skuId=${index.skuId||''}`
+        actionUrl: `https://publicmobile-uat.yeahgo.com/web/market?spuId=${index.spuId}&skuId=${index.skuId||''}&orderType=${index.orderType}`
       })
     }
   }, [index])
 
   useEffect(() => {
     if (detailDataz) {
+      console.log('编辑回显数据detailDataz', detailDataz);
       const { ...rest } = detailDataz;
-      console.log('detailDataz', detailDataz)
       form.setFieldsValue({
         ...rest
       })
@@ -115,8 +114,8 @@ export default (props) => {
       <ProForm.Group >
         <Button key="button" type="primary" onClick={() => { setSelectType(true) }}>
           选择商品
-        </Button>,
-        选中商品：{index.goodsName || '-'}
+        </Button>
+        {index.goodsName&&<span>选中商品：{index.goodsName || '-'}</span>}
       </ProForm.Group>
       <ProForm.Group>
         <ProFormText

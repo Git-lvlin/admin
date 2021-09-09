@@ -10,7 +10,7 @@ const SubsidySummary = ()=> {
 
   const columns = [
     {
-      title: '所属商家',
+      title: 'id',
       dataIndex: 'accountId',
       hideInSearch: true,
       hideInTable: true
