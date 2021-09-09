@@ -186,7 +186,6 @@ const  useCollect=(props)=>{
                         rowKey="wholesaleId"
                         options={false}
                         params={{
-                            pageSize:3,
                             wholesaleType:5
                         }}
                         request={couponWholesaleList}

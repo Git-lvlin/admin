@@ -112,9 +112,6 @@ const validity=(props)=>{
                     <ProTable
                         rowKey="id"
                         options={false}
-                        params={{
-                            pageSize: 3,
-                        }}
                         hideAll={true}
                         style={{display:loading?'block':'none'}}
                         request={couponCrowdList}
