@@ -111,8 +111,7 @@ const Message = (props) => {
     },
     
   ];
- 
-  //跳转到新建页面
+
   const Examine=(id)=>{
     history.push(`/coupon-management/coupon-audit/audit-details?id=`+id);
   }
