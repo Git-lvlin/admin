@@ -288,9 +288,6 @@ const useSecond=(props)=>{
                             <ProTable
                                 rowKey="id"
                                 options={false}
-                                params={{
-                                    pageSize: 3,
-                                }}
                                 style={{display:loading?'block':'none'}}
                                 request={commonSpuList}
                                 actionRef={actionRef}
