@@ -6,7 +6,7 @@ export const commonSpuList= async (params = {}, options = {}) => {
       method: 'POST',
       data: {
         page:current,
-        size:pageSize,
+        pageSize:pageSize,
         spuId:parseInt(spuId),
         ...rest
       },
