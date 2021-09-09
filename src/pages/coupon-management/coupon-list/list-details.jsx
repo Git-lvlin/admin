@@ -3,6 +3,7 @@ import { couponDetail } from '@/services/coupon-management/coupon-detail';
 import SubTable from '@/pages/coupon-construction/coupon-subtable'
 import { Divider, Form, Spin, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import { amountTransform } from '@/utils/utils'
 import { history } from 'umi';
 import { CaretRightFilled } from '@ant-design/icons';
 import styles from './style.less'
@@ -58,10 +59,12 @@ export default props => {
     {
       title: '供货价',
       dataIndex: 'retailSupplyPrice',
+      render: (_)=> amountTransform(_, '/').toFixed(2)
     },
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
+      render: (_)=> amountTransform(_, '/').toFixed(2)
     },
     {
       title: '可用库存',
