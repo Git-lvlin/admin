@@ -152,11 +152,11 @@ const AfterSalesOrderDetails = () =>{
     {
       title: '支付金额',
       dataIndex: 'amount',
-      render: (_)=> Math.abs(amountTransform(_, '/')),
+      render: (_)=> `￥${Math.abs(amountTransform(_, '/'))}`,
       hideInSearch: true
     },
     {
-      title: '创建时间',
+      title: '创建时间', 
       dataIndex: 'createTime',
       hideInSearch: true,
       

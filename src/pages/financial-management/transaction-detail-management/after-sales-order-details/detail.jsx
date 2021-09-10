@@ -223,7 +223,7 @@ const Detail = () => {
     {
       title: '支付金额',
       dataIndex: 'refundAmount',
-      render: (_) => amountTransform(_, '/')
+      render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
       title: '回退计算',
@@ -257,7 +257,7 @@ const Detail = () => {
     {
       title: '支付金额',
       dataIndex: 'amount',
-      render: (_) => amountTransform(_, '/')
+      render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
       title: '虚拟分账计算',
