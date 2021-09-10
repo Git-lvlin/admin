@@ -241,7 +241,12 @@ const MemberStoreFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-store-export"
-              conditions={{accountType: "store", ...form?.getFieldValue()}}
+              conditions={{
+                accountType: "store",
+                ...form?.getFieldValue(),
+                settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
+                settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD')
+              }}
             />,
             <ExportHistory
               key="exportHistory"

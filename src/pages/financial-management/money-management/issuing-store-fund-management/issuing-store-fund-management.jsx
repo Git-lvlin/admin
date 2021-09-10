@@ -231,7 +231,12 @@ const IssuingStoreFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-agentStore-export"
-              conditions={{accountType: "agentStore", ...form?.getFieldValue()}}
+              conditions={{
+                accountType: "agentStore",
+                ...form?.getFieldValue(),
+                registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
+                registTimeEnd: form?.getFieldValue()?.registTime?.[1].format('YYYY-MM-DD')
+              }}
             />,
             <ExportHistory
               key="exportHistory" 
