@@ -10,6 +10,14 @@ const skipToSettlement = (e) => {
   history.push(`/financial-management/subsidy-summary/detail/${e}`)
 }
 
+const text = (e) => {
+  if(e.status === 'unSettle') {
+    return '立即结算'
+  } else {
+    return '查看详情'
+  }
+}
+
 const SubsidySummary = ()=> {
 
   const columns = [
@@ -45,7 +53,7 @@ const SubsidySummary = ()=> {
       valueEnum: {
         0: '全部',
         'counting': '待统计',
-        'unSettle': '未结算',
+        'unSettle': '待结算',
         'settled': '已结算'
       }
     },
@@ -82,7 +90,9 @@ const SubsidySummary = ()=> {
       title: '操作',
       valueType: 'option',
       align: 'center',
-      render: (_, records) => <a onClick={()=> {skipToSettlement(records.id)}}>立即结算</a>
+      render: (_, records) => <a onClick={()=> {skipToSettlement(records.id)}}>
+        { text(records) }
+      </a>
     }
   ]
   return (
