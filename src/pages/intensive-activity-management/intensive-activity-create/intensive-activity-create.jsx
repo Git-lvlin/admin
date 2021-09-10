@@ -297,7 +297,7 @@ const IntensiveActivityCreate = () => {
                 })
               ]}
             >
-              <AddressMultiCascader data={areaData} uncheckableItemValues={uncheckableItemValues} style={{ width: '440px' }} />
+              <AddressMultiCascader placeholder="请选择可参与集约活动的店铺所属省市区" data={areaData} uncheckableItemValues={uncheckableItemValues} style={{ width: '440px' }} />
             </Form.Item>
             {/* <ProFormDigit name="canRecoverPayTimes" label="可恢复支付次数" min={0} max={3} placeholder="输入范围0-3" rules={[{ required: true, message: '请输入可恢复支付次数' }]} /> */}
             {/* <ProFormDigit name="recoverPayTimeout" label="每次恢复可支付时长" min={0} max={24} placeholder="输入范围0-24小时" rules={[{ required: true, message: '请输入每次恢复可支付时长' }]} /> */}

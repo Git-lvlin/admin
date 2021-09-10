@@ -144,7 +144,7 @@ const ShopArea = () => {
         actionRef={actionRef}
         formRef={formRef}
         request={getApplicableArea}
-        toolBarRender={() => <div>{tips}</div>}
+        toolBarRender={() => <div className="tips">{tips}</div>}
         search={{
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [
