@@ -224,8 +224,8 @@ export default {
   'menu.financial-management.transaction-detail-management.after-order-details':'售后订单详情',
   'menu.financial-management.transaction-allocation-management':'交易配置管理',
   'menu.financial-management.transaction-allocation-management.withdrawal-fee-config':'提现费配置',
-  'menu.financial-management.subsidy-summary' : '补贴汇总',
-  'menu.financial-management.subsidy-summary-detail' : '补贴明细',
+  'menu.financial-management.subsidy-summary' : '优惠补贴',
+  'menu.financial-management.subsidy-summary-detail' : '补贴结算',
 
   'menu.data-board': '数据看板',
   'menu.data-board.data-preview': '数据预览',
