@@ -60,7 +60,7 @@ const AddressMultiCascader = ({ value = '', onChange = () => { }, data, ...rest 
       value={selectAreaKey}
       data={areaData}
       style={{ width: '100%' }}
-      placeholder="请选择不发货地区"
+      placeholder="请选择"
       renderValue={(a, b) => renderMultiCascaderTag(b)}
       locale={{ searchPlaceholder: '输入省市区名称' }}
       onChange={(v) => { onChange(v); setSelectAreaKey(v) }}
