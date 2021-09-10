@@ -254,7 +254,7 @@ const SupplierFundManagement = () => {
               data?.length !== 0 &&
               <div className={styles.summary}>
                 账户余额总合计：
-                <span>￥{amountTransform(Number(total.totalBalance),'/')}</span>
+                <span>￥{amountTransform(Number(total.total),'/')}</span>
               </div>
             }
           </>
