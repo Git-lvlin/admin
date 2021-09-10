@@ -200,30 +200,15 @@ const couponConstruction = (props) => {
 
         {/* 每人限领 */}
         <ProForm.Group>
-          {
-            type == 2 ?
-              <ProFormRadio.Group
-                name="limitType"
-                label={<FormattedMessage id="formandbasic-form.each.limit" />}
-                rules={[{ required: true, message: '请选择限领方式' }]}
-                options={[
-                  {
-                    label: <FormattedMessage id="formandbasic-form.quota" />, value: 2
-                  }]}
-              />
-              : <ProFormRadio.Group
-                name="limitType"
-                label={<FormattedMessage id="formandbasic-form.each.limit" />}
-                rules={[{ required: true, message: '请选择限领方式' }]}
-                options={[
-                  {
-                    label: <FormattedMessage id="formandbasic-form.needless" />, value: 1,
-                  },
-                  {
-                    label: <FormattedMessage id="formandbasic-form.quota" />, value: 2
-                  }]}
-              />
-          }
+          <ProFormRadio.Group
+            name="limitType"
+            label={<FormattedMessage id="formandbasic-form.each.limit" />}
+            rules={[{ required: true, message: '请选择限领方式' }]}
+            options={[
+              {
+                label: <FormattedMessage id="formandbasic-form.quota" />, value: 2
+              }]}
+          />
           <ProFormText
             width={120}
             name="limitQuantity"

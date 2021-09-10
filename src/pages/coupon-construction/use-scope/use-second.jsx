@@ -21,13 +21,13 @@ const useSecond=(props)=>{
             title: '商品图片',
             dataIndex: 'goodsImageUrl',
             valueType: 'image',
-            hideInSearch: true,
-            ellipsis:true
+            hideInSearch: true
         },
         {
             title: '商品名称',
             dataIndex: 'goodsName',
             valueType: 'text',
+            ellipsis:true
         },
         {
             title: '商品分类',
@@ -93,13 +93,13 @@ const useSecond=(props)=>{
         {
             title: '商品图片',
             dataIndex: 'goodsImageUrl', 
-            valueType: 'image',
-            ellipsis:true
+            valueType: 'image'
         },
         {
             title: '商品名称',
             dataIndex: 'goodsName',
             valueType: 'text',
+            ellipsis:true
         },
         {
             title: '商品分类',
