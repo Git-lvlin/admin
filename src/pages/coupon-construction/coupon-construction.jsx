@@ -81,10 +81,10 @@ const couponConstruction = (props) => {
     values.couponCrowdId = UseScopeList.UseScopeObje.CrowdIds
     values.memberType = parseInt(values.memberType)
     //集约商品详情信息
-    values.useTypeInfoJ = {
-      wholesaleType: values.wholesaleType,
-      wholesaleIds: UseScopeList.UseScopeObje.wholesaleIds
-    }
+    // values.useTypeInfoJ = {
+    //   wholesaleType: values.wholesaleType,
+    //   wholesaleIds: UseScopeList.UseScopeObje.wholesaleIds
+    // }
 
     if (values.memberType == 1) {
       delete values.couponCrowdId
@@ -100,16 +100,16 @@ const couponConstruction = (props) => {
     }
 
     if (values.useType == 1) {
-      delete values.useTypeInfoJ
+      // delete values.useTypeInfoJ
     } else if (values.useType == 2) {
       delete values.useTypeInfoM
     }else if(values.useType==4){
       delete values.useTypeInfoM
-      delete values.useTypeInfoJ
+      // delete values.useTypeInfoJ
     }
-    if (values.wholesaleType == 1) {
-      delete values.wholesaleIds
-    }
+    // if (values.wholesaleType == 1) {
+    //   delete values.wholesaleIds
+    // }
     //提交类型
     values.couponVerifyStatus = submitType
     } catch (error) {
