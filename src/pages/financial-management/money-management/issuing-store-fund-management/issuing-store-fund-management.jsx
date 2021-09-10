@@ -24,13 +24,15 @@ const IssuingStoreFundManagement = () => {
     subtotal({
       accountType: 'agentStore',
       page,
-      ...search
+      ...search,
+      registTimeBegin: search?.registTime?.[0].format('YYYY-MM-DD'),
+      registTimeEnd: search?.registTime?.[1].format('YYYY-MM-DD')
     }).then(res=> {
       if(res.success) {
         setTotal(res.data)
       }
     })
-  }, [page, search])
+  }, [search])
 
   const skipToDetail = ({accountType, accountId}) => {
     history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)

@@ -24,13 +24,15 @@ const SupplierFundManagement = () => {
     subtotal({
       accountType: 'supplier',
       page,
-      ...search
+      ...search,
+      settleTimeBegin: search?.settleTime?.[0].format('YYYY-MM-DD'),
+      settleTimeEnd: search?.settleTime?.[1].format('YYYY-MM-DD')
     }).then(res=> {
       if(res.success) {
         setTotal(res.data)
       }
     })
-  }, [page, search])
+  }, [search])
 
   const skipToDetail = ({accountType, accountId}) => {
     history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
