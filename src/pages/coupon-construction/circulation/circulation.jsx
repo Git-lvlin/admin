@@ -24,7 +24,6 @@ const circulation=props=>{
          <ProFormRadio.Group
                 name="circulation"
                 label={<FormattedMessage id="formandbasic-form.circulation" />}
-                // rules={[{ required: true, message: '请选择发行量' }]}
                 fieldProps={{
                   onChange: (e) => setPosition(e.target.value),
                 }}

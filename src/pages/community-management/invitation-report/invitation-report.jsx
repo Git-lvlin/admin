@@ -12,34 +12,10 @@ const { TabPane } = Tabs;
 
 export default props => {
   const actionRef = useRef();
-  const [visible, setVisible] = useState(false);
-  const [visible4, setVisible4] = useState(false);
-  const [byid, setByid] = useState();
-  const [byid4, setByid4] = useState();
   const [arrId,setArrId]=useState([])
   const [seleType,setSeleType]=useState(0)
-  const formItemLayout = {
-    labelCol: { span: 2 },
-    wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
-  };
   function callback(key) {
     setSeleType(key)
-  }
-  const Termination=(record)=>{
-    setByid(record.sourceId)
-    setVisible(true)
-  }
-  const Termination4=(record)=>{
-    setByid4(record.sourceId)
-    setVisible4(true)
   }
   const columns = [
     {
@@ -82,23 +58,9 @@ export default props => {
     {
       title: '操作',
       render: (text, record, _, action) => [
-        <ModalForm
-          title="帖子详情"
-          key="1"
-          onVisibleChange={setVisible}
-          visible={visible}
-          submitter={{
-            render: (props, defaultDoms) => {
-                return [
-                 <Button onClick={()=>setVisible(false)}>返回</Button>
-                ];
-            },
-            }}
-          {...formItemLayout}
-          trigger={<Button style={{marginRight:'10px'}} onClick={()=>Termination(record)}>预览</Button>}
-            >
-          <InvitationDetail id={byid}/>
-        </ModalForm>,
+        <InvitationDetail 
+          id={record.sourceId}
+        />,
         <HandleModel 
           record={record} 
           status={1}  
@@ -185,23 +147,9 @@ export default props => {
     { 
       title: '操作',
       render: (_,record) => [
-        <ModalForm
-          title="帖子详情"
-          key="1"
-          onVisibleChange={setVisible4}
-          visible={visible4}
-          trigger={<Button onClick={()=>Termination4(record)}>预览</Button>}
-          {...formItemLayout}
-          submitter={{
-            render: (props, defaultDoms) => {
-                return [
-                 <Button onClick={()=>setVisible4(false)}>返回</Button>
-                ];
-            },
-            }}
-            >
-            <InvitationDetail id={byid4}/>
-        </ModalForm>
+        <InvitationDetail  
+          id={record.sourceId}
+        />
       ],
       hideInSearch: true,
   }

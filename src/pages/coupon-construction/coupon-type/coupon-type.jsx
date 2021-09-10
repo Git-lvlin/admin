@@ -168,7 +168,6 @@ const couponType = (props) => {
                         }} 
                     />
                     <span>元 （不填写则不作限制） </span>
-                    {/* <span>（只能填1-9的整数）</span> */}
                 </ProForm.Group>
                 <p>
                     优惠券面值
@@ -223,8 +222,7 @@ const couponType = (props) => {
             type == 2 ?
                 <ProFormRadio.Group
                     name="issueQuantity"
-                    label='发行量'
-                    // rules={[{ required: true, message: '请选择发行量' }]}  
+                    label='发行量' 
                     options={[
                         {
                         label: '不限量发放',

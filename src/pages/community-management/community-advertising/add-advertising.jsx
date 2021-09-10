@@ -107,7 +107,7 @@ export default props => {
         }}
         form={form}
         params={{}}
-        style={{ width: '1000px', margin: '0 auto' }}
+        style={{ background:'#fff',padding:'30px' }}
         submitter={{
           // 完全自定义整个区域
           render: (props, doms) => {
