@@ -118,7 +118,7 @@ const SupplierFundManagement = () => {
     },
     {
       title: '账户余额',
-      dataIndex: 'balance',
+      dataIndex: 'total',
       hideInSearch: true,
       render: (_) => amountTransform(_, '/')
     },
