@@ -118,10 +118,16 @@ const MemberStoreFundManagement = () => {
       valueType: 'dateRange'
     },
     {
-      title: '账户余额',
+      title: '货款',
       dataIndex: 'balance',
       hideInSearch: true,
-      render: (_) => amountTransform(_, '/')
+      render: (_) => `￥${amountTransform(_, '/')}`
+    },
+    {
+      title: '佣金',
+      dataIndex: 'commission',
+      hideInSearch: true,
+      render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
       title: '账户名称',
