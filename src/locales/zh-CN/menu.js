@@ -240,4 +240,8 @@ export default {
   'menu.data-board.order-list': '订单列表',
   'menu.data-board.rank': '排名',
   'menu.data-board.order': '订单',
+
+  'menu.import-export-configuration': '导入导出配置',
+  'menu.import-export-configuration.export-configuration': '导出配置',
+  'menu.import-export-configuration.import-configuration': '导入配置',
 };
