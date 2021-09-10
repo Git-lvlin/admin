@@ -4,8 +4,6 @@ import { adminReportList } from '@/services/community-management/report-admin-re
 import { reportHandle } from '@/services/community-management/report-handle';
 import { history } from 'umi';
 import InvitationDetail from './invitation-detail'
-import { ModalForm} from '@ant-design/pro-form';
-import { Button } from 'antd';
 import { Tabs } from 'antd';
 import HandleModel from '@/components/HandleModel'
 const { TabPane } = Tabs;
