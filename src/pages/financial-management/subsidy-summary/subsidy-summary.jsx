@@ -6,55 +6,83 @@ import { history } from 'umi'
 import { allowance } from '@/services/financial-management/subsidy-summary'
 import { amountTransform } from '@/utils/utils'
 
+const skipToSettlement = (e) => {
+  history.push(`/financial-management/subsidy-summary/detail/${e}`)
+}
+
 const SubsidySummary = ()=> {
 
   const columns = [
     {
-      title: 'id',
-      dataIndex: 'accountId',
-      hideInSearch: true,
-      hideInTable: true
-    },
-    {
-      title: '所属商家',
-      dataIndex: 'accountName',
+      title: '补贴单',
+      dataIndex: 'sn',
       align: 'center'
     },
     {
-      title: '订单数量',
-      dataIndex: 'count',
+      title: '商家名称',
+      dataIndex: 'accountName',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '未结算补贴总金额',
-      dataIndex: 'unSettle',
+      title: '订单数量',
+      dataIndex: 'orderCount',
       align: 'center',
-      hideInSearch: true,
-      render: (_, records)=> (
-        <a
-          onClick={()=> {
-            history.push(`/financial-management/subsidy-summary/detail/${records?.accountId}?status=unSettle`)}
-          }
-        >
-            {`￥${amountTransform(_, '/')}`}
-        </a>
-      )
+      hideInSearch: true
     },
     {
-      title: '已结算补贴总金额',
-      dataIndex: 'settled',
+      title: '补贴结算金额',
+      dataIndex: 'allowanceAmount',
       align: 'center',
       hideInSearch: true,
-      render: (_, records)=> (
-        <a
-        onClick={()=> {
-          history.push(`/financial-management/subsidy-summary/detail/${records?.accountId}?status=settled`)}
-        }
-      >
-          {`￥${amountTransform(_, '/')}`}
-      </a>
-      )
+      render: (_) => `￥${amountTransform(_, '/')}`
+    },
+    {
+      title: '结算状态',
+      dataIndex: 'status',
+      align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        0: '全部',
+        'counting': '待统计',
+        'unSettle': '未结算',
+        'settled': '已结算'
+      }
+    },
+    {
+      title: '开始周期',
+      dataIndex: 'beginPeriod',
+      colSize: .2,
+      align: 'center',
+      valueType: 'dateMonth',
+      hideInTable: true
+    },
+    {
+      title: '结束周期',
+      dataIndex: 'endPeriod',
+      colSize: .2,
+      align: 'center',
+      valueType: 'dateMonth',
+      hideInTable: true
+    },
+    {
+      title: '结算周期',
+      dataIndex: 'period',
+      align: 'center',
+      valueType: 'dateMonth',
+      hideInSearch: true
+    },
+    {
+      title: '结算人员',
+      dataIndex: 'settleMan',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      align: 'center',
+      render: (_, records) => <a onClick={()=> {skipToSettlement(records.id)}}>立即结算</a>
     }
   ]
   return (
@@ -65,7 +93,7 @@ const SubsidySummary = ()=> {
           pageSize: 10,
           hideOnSinglePage: true
         }}
-        rowKey='accountId'
+        rowKey='sn'
         toolBarRender={false}
         params={{}}
         request={allowance}
