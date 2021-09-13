@@ -57,7 +57,7 @@ const TableList = () => {
       },
     });
   }
-    
+
   const getFieldValue = () => {
     const { time, ...rest } = form.getFieldsValue();
 
@@ -336,7 +336,7 @@ const TableList = () => {
                     <img width="100" height="100" src={item.sku.skuImageUrl} />
                     <div className={styles.info}>
                       <div>{item.sku.goodsName}</div>
-                      <div>集约价：{amountTransform(item.sku.price, '/')}元{item?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(item?.sku?.wholesaleFreight)}/件）` : ''}<time style={{ marginLeft: 20 }}>规格：{item.sku.skuName}</time></div>
+                      <div>集约价：{amountTransform(item.sku.price, '/')}元{item?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(item?.sku?.wholesaleFreight, '/')}/件）` : ''}<time style={{ marginLeft: 20 }}>规格：{item.sku.skuName}</time></div>
                       <div>数量： <span>{item.sku.totalNum}件</span></div>
                       <div>小计： <span>{amountTransform(item.sku.totalAmount, '/')}</span>元</div>
                     </div>
@@ -360,10 +360,10 @@ const TableList = () => {
                 <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div>
                 <div style={{ textAlign: 'center' }}>
                   {item.statusDesc}
-                  {item.refundAllRetailStatus=== 1 &&<div style={{ color: 'red' }}>已启动C端退款</div>}
+                  {item.refundAllRetailStatus === 1 && <div style={{ color: 'red' }}>已启动C端退款</div>}
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId)}}>启动C端退款</a></div>}
+                  {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId) }}>启动C端退款</a></div>}
                   <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a>
                 </div>
               </div>
