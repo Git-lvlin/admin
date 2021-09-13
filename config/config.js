@@ -22,6 +22,7 @@ import pcm from './routers/price-comparsion-management'
 import financialManagement from './routers/financial-management'
 import dataBoard from './routers/data-board'
 import dc from './routers/dc'
+import importExportConfiguration from './routers/import-export-configuration'
 
 
 
@@ -89,6 +90,7 @@ const config = {
             financialManagement,
             dataBoard,
             dc,
+            importExportConfiguration,
             {
               component: '404',
             },

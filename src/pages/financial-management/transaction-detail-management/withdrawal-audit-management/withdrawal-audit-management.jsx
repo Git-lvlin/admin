@@ -13,6 +13,16 @@ const WithdrawalAuditManagement = () =>{
   const skipToDetail = data => {
     history.push(`/financial-management/transaction-detail-management/withdrawal-audit-management/detail/${data}`)
   }
+
+  const getFieldValue = (form) => {
+    const { createTime, ...rest } = form.getFieldsValue()
+    return {
+      begin: createTime?.[0]?.format('YYYY-MM-DD'),
+      end: createTime?.[1]?.format('YYYY-MM-DD'),
+      ...rest
+    }
+  }
+
   const columns = [
     {
       title: '序号',
@@ -144,7 +154,7 @@ const WithdrawalAuditManagement = () =>{
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-withdraw-page-export"
-              conditions={form?.getFieldValue()}
+              conditions={getFieldValue(form)}
             />,
             <ExportHistory
               key="exportHistory" 
