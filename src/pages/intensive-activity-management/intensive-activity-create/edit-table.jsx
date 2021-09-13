@@ -281,9 +281,9 @@ export default function EditTable({ onSelect }) {
         delete obj.price;
       }
 
-      const getList = (list, skuData) => {
+      const getList = (list, skuData, cb) => {
         const arr = list.map(item => {
-          if (item.id === record.id) {
+          if (item.id === skuData.id) {
             const data = {
               ...item,
               fixedPrice: amountTransform(skuData.fixedPrice, '/'),
@@ -296,18 +296,21 @@ export default function EditTable({ onSelect }) {
           }
           return item
         })
+        if (cb) {
+          cb(arr);
+        }
         return arr;
       }
 
       productList(obj).then(res => {
         const skuData = res.data[0];
-        onSelect(getList(selectData, skuData))
+        onSelect(getList(selectData, skuData, (arr) => { setSelectData(arr)}))
         setDataSource(getList(recordList, skuData))
       })
     };
 
     return debounce(loadData, 1000);
-  }, [dataSource]);
+  }, [dataSource, selectData, onSelect]);
   return (
     <EditableProTable
       postData={postData}
@@ -361,6 +364,7 @@ export default function EditTable({ onSelect }) {
             setSelectedRowKeys(arr);
             const datas = [...selectData];
             datas.push(record);
+            console.log('datas', datas);
             setSelectData(datas);
             onSelect(datas);
           } else {
