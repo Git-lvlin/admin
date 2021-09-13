@@ -104,7 +104,7 @@ const validity=(props)=>{
         <>
         {
             choose==2||(parseInt(id)==id )&&DetailList.data?.memberType==2?
-            <div style={{display:choose==1?'none':'block'}}>
+            <div style={{display:choose==1||choose==4?'none':'block'}}>
                 <Button type="primary" style={{margin:"0 0 20px 20px"}} onClick={showModal}>
                     选择群体
                 </Button>
@@ -112,9 +112,6 @@ const validity=(props)=>{
                     <ProTable
                         rowKey="id"
                         options={false}
-                        params={{
-                            pageSize: 3,
-                        }}
                         hideAll={true}
                         style={{display:loading?'block':'none'}}
                         request={couponCrowdList}

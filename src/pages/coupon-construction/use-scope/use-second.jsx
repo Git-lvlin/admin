@@ -4,13 +4,14 @@ import { FormattedMessage } from 'umi';
 import { ModalForm,ProFormSelect,ProFormRadio} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import styles from '../style.less'
+import { amountTransform } from '@/utils/utils'
 import {commonSpuList}  from '@/services/coupon-construction/coupon-common-spu-list';
 import {classList} from '@/services/coupon-construction/coupon-class-list'
 import BrandSelect from '@/components/brand-select'
 import { connect } from 'umi';
     
 const useSecond=(props)=>{
-    const {id,dispatch,DetailList, UseScopeList}=props
+    const {id,dispatch,DetailList, UseScopeList,choose,form}=props
     const columns = [
         {
             title: 'spuID',
@@ -20,13 +21,13 @@ const useSecond=(props)=>{
             title: '商品图片',
             dataIndex: 'goodsImageUrl',
             valueType: 'image',
-            hideInSearch: true,
-            ellipsis:true
+            hideInSearch: true
         },
         {
             title: '商品名称',
             dataIndex: 'goodsName',
             valueType: 'text',
+            ellipsis:true
         },
         {
             title: '商品分类',
@@ -68,6 +69,7 @@ const useSecond=(props)=>{
             title: '销售价',
             dataIndex: 'goodsSalePrice',
             hideInSearch: true,
+            render: (_)=> amountTransform(_, '/').toFixed(2)
         }
     ];
     const columns2=[
@@ -91,13 +93,13 @@ const useSecond=(props)=>{
         {
             title: '商品图片',
             dataIndex: 'goodsImageUrl', 
-            valueType: 'image',
-            ellipsis:true
+            valueType: 'image'
         },
         {
             title: '商品名称',
             dataIndex: 'goodsName',
             valueType: 'text',
+            ellipsis:true
         },
         {
             title: '商品分类',
@@ -116,6 +118,7 @@ const useSecond=(props)=>{
         {
             title: '销售价',
             dataIndex: 'goodsSalePrice',
+            render: (_)=> amountTransform(_, '/').toFixed(2)
         },
         {
             title: '操作',
@@ -144,7 +147,6 @@ const useSecond=(props)=>{
     
     // 删除商品
     const  delGoods=val=>{
-        console.log('spuIdsArr',UseScopeList.UseScopeObje.spuIdsArr)
         const arr = UseScopeList.UseScopeObje.spuIds.split(',')
         dispatch({
             type:'UseScopeList/fetchLookSpuIds',
@@ -158,7 +160,7 @@ const useSecond=(props)=>{
             type:'UseScopeList/fetchLookSpuIdsArr',
             payload:{
                 spuIdsArr:UseScopeList.UseScopeObje.spuIdsArr.filter(ele=>(
-                            ele.spuId!=val
+                    ele.spuId!=val
                 ))
             }
         })
@@ -169,7 +171,7 @@ const useSecond=(props)=>{
     const [loading,setLoading]=useState(true)
     const [flag,setFlag]=useState(true)
     const [spuIdsArr,setSpuIdsArr]=useState([])
-    const [position,setPosition]=useState()
+    const [position,setPosition]=useState(false)
     const [onselect,setOnselect]=useState([])
     const [spuIds,setSpuIds]=useState('')
     const showModal = () => {
@@ -237,11 +239,19 @@ const useSecond=(props)=>{
     //商品分类
     useEffect(()=>{
         classList({gcParentId:0}).then(res=>{
+           if(res.code==0){
             setOnselect(res.data.map(ele=>(
                 {label:ele.gcName,value:ele.id}
             )))
+           }
         })
     },[])
+
+    useEffect(()=>{
+        if(choose==4){
+            form.setFieldsValue({goodsType:2})
+        }
+    },[choose])
     return(
         <Form.Item className={styles.unfold}>
             <ProFormRadio.Group
@@ -249,12 +259,14 @@ const useSecond=(props)=>{
                 label={<FormattedMessage id="formandbasic-form.commodity"/>}
                 rules={[{ required: true, message: '请选择商品范围' }]}
                 fieldProps={{
-                onChange: (e) => setPosition(e.target.value),
+                    onChange: (e) => setPosition(e.target.value),
+                    value:choose==4?2:position||(parseInt(id)==id )&&DetailList.data?.goodsType
                 }}
                 options={[
                 {
                     label:<FormattedMessage id="formandbasic-form.allGoods" />,
                     value: 1,
+                    disabled:choose==4
                 },
                 {
                     label: <FormattedMessage id="formandbasic-form.assignGoods" />,
@@ -263,11 +275,13 @@ const useSecond=(props)=>{
                 {
                     label: <FormattedMessage id="formandbasic-form.assignClass" />,
                     value: 3,
+                    disabled:choose==4
                 },
                 ]}
+
             />
             {
-                position==2||(parseInt(id)==id )&&DetailList.data?.goodsType==2?
+                position==2||(parseInt(id)==id )&&DetailList.data?.goodsType==2||choose==4?
                     <div style={{display:position==1||position==3?'none':'block'}}>
                         <Button type="primary" className={styles.popupBtn} onClick={showModal}>
                             选择商品
@@ -277,9 +291,6 @@ const useSecond=(props)=>{
                             <ProTable
                                 rowKey="id"
                                 options={false}
-                                params={{
-                                    pageSize: 3,
-                                }}
                                 style={{display:loading?'block':'none'}}
                                 request={commonSpuList}
                                 actionRef={actionRef}
@@ -357,7 +368,7 @@ const useSecond=(props)=>{
                             columns={columns2}
                             dataSource={UseScopeList.UseScopeObje.unitArr}
                         />
-                        </div>
+                    </div>
                 :null
             }
         </Form.Item>

@@ -4,40 +4,16 @@ import { adminReportList } from '@/services/community-management/report-admin-re
 import { reportHandle } from '@/services/community-management/report-handle';
 import { history } from 'umi';
 import InvitationDetail from './invitation-detail'
-import { ModalForm} from '@ant-design/pro-form';
-import { Button } from 'antd';
 import { Tabs } from 'antd';
 import HandleModel from '@/components/HandleModel'
 const { TabPane } = Tabs;
 
 export default props => {
   const actionRef = useRef();
-  const [visible, setVisible] = useState(false);
-  const [visible4, setVisible4] = useState(false);
-  const [byid, setByid] = useState();
-  const [byid4, setByid4] = useState();
   const [arrId,setArrId]=useState([])
-  const formItemLayout = {
-    labelCol: { span: 2 },
-    wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
-  };
+  const [seleType,setSeleType]=useState(0)
   function callback(key) {
-  }
-  const Termination=(record)=>{
-    setByid(record.sourceId)
-    setVisible(true)
-  }
-  const Termination4=(record)=>{
-    setByid4(record.sourceId)
-    setVisible4(true)
+    setSeleType(key)
   }
   const columns = [
     {
@@ -80,23 +56,9 @@ export default props => {
     {
       title: '操作',
       render: (text, record, _, action) => [
-        <ModalForm
-          title="帖子详情"
-          key="1"
-          onVisibleChange={setVisible}
-          visible={visible}
-          submitter={{
-            render: (props, defaultDoms) => {
-                return [
-                 <Button onClick={()=>setVisible(false)}>返回</Button>
-                ];
-            },
-            }}
-          {...formItemLayout}
-          trigger={<Button style={{marginRight:'10px'}} onClick={()=>Termination(record)}>预览</Button>}
-            >
-          <InvitationDetail id={byid}/>
-        </ModalForm>,
+        <InvitationDetail 
+          id={record.sourceId}
+        />,
         <HandleModel 
           record={record} 
           status={1}  
@@ -183,23 +145,9 @@ export default props => {
     { 
       title: '操作',
       render: (_,record) => [
-        <ModalForm
-          title="帖子详情"
-          key="1"
-          onVisibleChange={setVisible4}
-          visible={visible4}
-          trigger={<Button onClick={()=>Termination4(record)}>预览</Button>}
-          {...formItemLayout}
-          submitter={{
-            render: (props, defaultDoms) => {
-                return [
-                 <Button onClick={()=>setVisible4(false)}>返回</Button>
-                ];
-            },
-            }}
-            >
-            <InvitationDetail id={byid4}/>
-        </ModalForm>
+        <InvitationDetail  
+          id={record.sourceId}
+        />
       ],
       hideInSearch: true,
   }
@@ -209,47 +157,52 @@ export default props => {
   }
   return (
     <Tabs onChange={callback} type="card">
-      <TabPane tab="未处理" key="1">
-        <ProTable
-          rowKey="key"
-          options={false}
-          params={{
-            status:'0',
-            type:'1'
-          }}
-          request={adminReportList}
-          actionRef={actionRef}
-          toolBarRender={false}
-          search={{
-            optionRender: (searchConfig, formProps, dom) => [
-              ...dom.reverse(),
-              <HandleModel  
-                status={1}
-                arrId={arrId}  
-                label={'忽略'}  
-                text={'确认要处理所选评论为忽略吗？'} 
-                InterFace={reportHandle} 
-                title={'操作确认'}
-                boxref={actionRef}
-              />,
-              <HandleModel  
-                status={2}
-                arrId={arrId}   
-                label={'屏蔽'}  
-                text={'确认要处理所选评论为屏蔽吗？'} 
-                InterFace={reportHandle} 
-                title={'操作确认'}
-                boxref={actionRef}
-              />
-            ],
-          }}
-          columns={columns}
-          rowSelection={{}}
-          tableAlertOptionRender={onIpute}
-        />
-      </TabPane>
-      <TabPane tab="已处理" key="2">
+      <TabPane tab="未处理" key="0">
+        {
+          seleType==0&&
           <ProTable
+            rowKey="key"
+            options={false}
+            params={{
+              status:'0',
+              type:'1'
+            }}
+            request={adminReportList}
+            actionRef={actionRef}
+            toolBarRender={false}
+            search={{
+              optionRender: (searchConfig, formProps, dom) => [
+                ...dom.reverse(),
+                <HandleModel  
+                  status={1}
+                  arrId={arrId}  
+                  label={'忽略'}  
+                  text={'确认要处理所选评论为忽略吗？'} 
+                  InterFace={reportHandle} 
+                  title={'操作确认'}
+                  boxref={actionRef}
+                />,
+                <HandleModel  
+                  status={2}
+                  arrId={arrId}   
+                  label={'屏蔽'}  
+                  text={'确认要处理所选评论为屏蔽吗？'} 
+                  InterFace={reportHandle} 
+                  title={'操作确认'}
+                  boxref={actionRef}
+                />
+              ],
+            }}
+            columns={columns}
+            rowSelection={{}}
+            tableAlertOptionRender={onIpute}
+          />
+        }
+      </TabPane>
+      <TabPane tab="已处理" key="3">
+         {
+           seleType==3&&
+           <ProTable
             rowKey="key"
             options={false}
             params={{
@@ -266,6 +219,7 @@ export default props => {
             }}
             columns={columns2}
           />
+         }
       </TabPane>
     </Tabs>
   );

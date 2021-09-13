@@ -3,6 +3,7 @@ import { couponDetail } from '@/services/coupon-management/coupon-detail';
 import SubTable from '@/pages/coupon-construction/coupon-subtable'
 import { Divider, Form, Spin, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import { amountTransform } from '@/utils/utils'
 import { history } from 'umi';
 import { CaretRightFilled } from '@ant-design/icons';
 import styles from './style.less'
@@ -58,10 +59,12 @@ export default props => {
     {
       title: '供货价',
       dataIndex: 'retailSupplyPrice',
+      render: (_)=> amountTransform(_, '/').toFixed(2)
     },
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
+      render: (_)=> amountTransform(_, '/').toFixed(2)
     },
     {
       title: '可用库存',
@@ -151,6 +154,13 @@ export default props => {
             >
               {detailData.couponAmountDisplay}
             </Form.Item>
+
+            <Form.Item
+              label="最高优惠"
+            >
+              {detailData.maxFreeAmount}元
+            </Form.Item>
+
             <Form.Item
               label="发行方式"
             >
@@ -193,7 +203,7 @@ export default props => {
               {
                 detailData.memberType == 1 ?
                   '全部会员'
-                  : '指定用户群体'
+                  :detailData.memberType == 2? '指定用户群体':'新用户（未下过订单的用户）'
               }
 
             </Form.Item>
@@ -241,6 +251,8 @@ export default props => {
                   </Form.Item>
                   {
                     detailData.goodsType == 2 ?
+                    <>
+                      <p className={styles.mark}>已选中<span>{detailData.spuInfo?.length}个</span>指定商品</p>
                       <ProTable
                         actionRef={ref}
                         rowKey="id"
@@ -249,18 +261,22 @@ export default props => {
                         search={false}
                         columns={columns2}
                       />
+                    </>
                       : null
                   }
 
                 </>
-                : <ProTable
-                  actionRef={ref}
-                  rowKey="id"
-                  options={false}
-                  dataSource={detailData.wsInfo}
-                  search={false}
-                  columns={columns3}
-                />
+                : <>
+                  <p className={styles.mark}>已选中<span>{detailData.wsInfo?.length}个</span>集约活动。</p>
+                  <ProTable
+                    actionRef={ref}
+                    rowKey="id"
+                    options={false}
+                    dataSource={detailData.wsInfo}
+                    search={false}
+                    columns={columns3}
+                  />
+                </>
             }
 
             <Form.Item
@@ -269,7 +285,7 @@ export default props => {
               {
                 detailData.memberType == 1 ?
                   '全部会员' :
-                  '指定用户群体'
+                  detailData.memberType == 2? '指定用户群体':'新用户（未下过订单的用户）'
               }
             </Form.Item>
 
@@ -278,7 +294,7 @@ export default props => {
             >
               {
               detailData.couponRule?.split('\n').map(ele=>(
-                <p>{ele}</p>
+                <span>{ele}</span>
               ))
               }
             </Form.Item>
