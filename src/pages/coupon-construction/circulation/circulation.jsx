@@ -46,7 +46,7 @@ const circulation=props=>{
                 options={type==3?options2:options}
             />
             {
-                type==1&&position==1||DetailList.data?.issueQuantity?
+                position==1||DetailList.data?.issueQuantity?
                     <div className={styles.unfold}>
                         <ProForm.Group>
                             <ProFormText 
