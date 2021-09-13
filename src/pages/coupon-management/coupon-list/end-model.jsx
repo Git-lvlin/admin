@@ -36,7 +36,7 @@ export default props=>{
         
           }}
       >
-        <p>确定要终止所选优惠券活动吗？</p>
+        <p>确定要终止所选红包活动吗？</p>
       </ModalForm>
     )
 }

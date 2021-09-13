@@ -169,13 +169,13 @@ const exportExcel = (searchConfig) => {
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.json_to_sheet([
         {
-          memberCouponCode: '优惠券码',
+          memberCouponCode: '红包码',
           memberNicheng: '领取会员昵称',
           memberMobile: '会员手机号',
           createTime: '领取时间',
           actTime: '使用时间',
           orderSn: '订单编号',
-          status: '优惠券状态',
+          status: '红包状态',
         },
         ...data
       ], {
