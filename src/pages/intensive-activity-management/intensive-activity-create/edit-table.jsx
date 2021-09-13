@@ -285,7 +285,7 @@ export default function EditTable({ onSelect }) {
         const arr = list.map(item => {
           if (item.id === skuData.id) {
             const data = {
-              ...item,
+              ...record,
               fixedPrice: amountTransform(skuData.fixedPrice, '/'),
               settlePercent: amountTransform(skuData.settlePercent),
               price: amountTransform(skuData.price, '/'),
@@ -304,6 +304,7 @@ export default function EditTable({ onSelect }) {
 
       productList(obj).then(res => {
         const skuData = res.data[0];
+        console.log('getList(selectData, skuData, (arr) => { setSelectData(arr)})', getList(selectData, skuData, (arr) => { setSelectData(arr) }));
         onSelect(getList(selectData, skuData, (arr) => { setSelectData(arr)}))
         setDataSource(getList(recordList, skuData))
       })
@@ -364,7 +365,6 @@ export default function EditTable({ onSelect }) {
             setSelectedRowKeys(arr);
             const datas = [...selectData];
             datas.push(record);
-            console.log('datas', datas);
             setSelectData(datas);
             onSelect(datas);
           } else {
