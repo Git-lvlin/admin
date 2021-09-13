@@ -50,6 +50,26 @@ const couponType = (props) => {
         }
         })
     }
+    const options=[
+        {
+            label:'满减券',
+            value: 1,
+        },
+        {
+            label: '折扣券',
+            value: 2,
+        },
+        {
+            label: '立减券',
+            value: 3,
+        }
+    ]
+    const options2=[
+        {
+            label: '满减红包',
+            value: 4
+        },
+    ]
     return (
         <>
             <ProFormRadio.Group
@@ -59,20 +79,7 @@ const couponType = (props) => {
                 fieldProps={{
                   onChange: (e) => setPosition(e.target.value),
                 }}
-                options={[
-                {
-                    label:'满减券',
-                    value: 1,
-                },
-                {
-                    label: '折扣券',
-                    value: 2,
-                },
-                {
-                    label: '立减券',
-                    value: 3,
-                },
-                ]}
+                options={type==3?options2:options}
             />
             {
                 position==1||(parseInt(id)==id )&&DetailList.data?.couponType==1?
@@ -217,6 +224,50 @@ const couponType = (props) => {
                 </div>
                 :null
             }
+             {/* {
+                position==4||(parseInt(id)==id )&&DetailList.data?.couponType==4?
+                <div className={styles.unfold}>
+                    <ProForm.Group>
+                    <span>使用门槛: 满</span>
+                    <ProFormText
+                        width={100}
+                        name="usefulAmount"
+                        rules={[
+                            {validator: checkConfirm}
+                        ]}
+                    />
+                    <span>元， （填写0，则无使用门槛）</span>
+                    </ProForm.Group>
+                    <p>红包面值：随机</p>
+                    <ProForm.Group>
+                        <span>随机取值范围：</span>
+                        <ProFormText 
+                            name="freeAmount"
+                            fieldProps={{
+                                onChange: (e) => onDiscounts(e)
+                                }}
+                            width={100}
+                            rules={[
+                                {validator: checkConfirm}
+                            ]} 
+                        />
+                        <span>到</span>
+                        <ProFormText 
+                            name="freeAmount"
+                            fieldProps={{
+                                onChange: (e) => onDiscounts(e)
+                                }}
+                            width={100}
+                            rules={[
+                                {validator: checkConfirm}
+                            ]} 
+                        />
+                        <span>元</span>
+                    </ProForm.Group>
+                    <p>示例：输入1到3元，则用户领取红包金额从1-3元里随机取值，只可输入整数</p>
+                </div>
+                :null
+            } */}
             {/* 发行量 */}
             {
             type == 2 ?
@@ -230,7 +281,16 @@ const couponType = (props) => {
                         }]}
                 />
                 :
-                <Circulation id={id} face1={face1} face3={face3} most={most} coupons={coupons} fullSubtract={fullSubtract} pcType={position}/>
+                <Circulation 
+                    id={id} 
+                    face1={face1} 
+                    face3={face3} 
+                    most={most} 
+                    coupons={coupons} 
+                    fullSubtract={fullSubtract} 
+                    pcType={position}
+                    // type={type}
+                />
             }
         </>
     )
