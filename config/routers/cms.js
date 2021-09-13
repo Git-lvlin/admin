@@ -113,6 +113,11 @@ export default {
       name: 'start-up',
       path: '/cms/start-up',
       component: './cms/start-up',
+    },
+    {
+      name: 'home-red-envelopes',
+      path: '/cms/home-red-envelopes',
+      component: './cms/home-red-envelopes',
     }
   ]
 }
