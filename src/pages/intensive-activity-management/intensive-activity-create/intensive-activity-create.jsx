@@ -125,7 +125,7 @@ const IntensiveActivityCreate = () => {
     getApplicableAreaForWholesale({
       page: 1,
       size: 9999,
-      status: 'on',
+      // status: 'on',
     }).then(res => {
       const ids = [];
       res.data.records.forEach(item => {
