@@ -11,10 +11,12 @@ import EndModel from './end-model'
 import TurnDownModel from './turn-down-model'
 import styles from './style.less'
 import { history,connect } from 'umi';
+import { useEffect } from 'react';
 const { TabPane } = Tabs
 
 
-const message = (type, module,dispatch) => {
+const Message = (props) => {
+  const {type,dispatch}=props
   const ref=useRef()
   const columns= [
     {
@@ -191,7 +193,7 @@ const message = (type, module,dispatch) => {
 
   //导出
   const exportExcel = (searchConfig) => {
-    couponList({}).then(res => {
+    couponList({couponVerifyStatus:type}).then(res => {
         const data = res.data.map(item => {
           const { ...rest } = item;
           return {
@@ -276,70 +278,76 @@ return(
 const TableList= (props) =>{
   const { dispatch }=props
   const [visible, setVisible] = useState(false);
-  const [seleType,setSeleType]=useState()
+  const [seleType,setSeleType]=useState(1)
   return (
-    <PageContainer>
-      <ModalForm
-        title="新建优惠券"
-        onVisibleChange={setVisible}
-        visible={visible}
-        trigger={ <Button
-          key="primary"
-          type="primary"
-          className={styles.addCouponBtn}
-          onClick={() =>setVisible(true)}
-        >
-          新建优惠券
-        </Button>}
-        submitter={{
-        render: (props, defaultDoms) => {
-            return [
-            ...defaultDoms
-            ];
-        },
-        }}
-        onFinish={async (values) => {
-          setVisible(false)
-        }}
-      >
-        <ProFormRadio.Group
-          name="activityTimeType"
-          fieldProps={{
-            onChange: (e) =>{
-                history.push('/coupon-management/coupon-list/construction?type='+e.target.value)
-            },
+      <PageContainer>
+        <ModalForm
+          title="新建优惠券"
+          onVisibleChange={setVisible}
+          visible={visible}
+          trigger={ <Button
+            key="primary"
+            type="primary"
+            className={styles.addCouponBtn}
+            onClick={() =>setVisible(true)}
+          >
+            新建优惠券
+          </Button>}
+          submitter={{
+          render: (props, defaultDoms) => {
+              return [
+              ...defaultDoms
+              ];
+          },
           }}
-          options={[
+          onFinish={async (values) => {
+            setVisible(false)
+          }}
+        >
+          <ProFormRadio.Group
+            name="activityTimeType"
+            fieldProps={{
+              onChange: (e) =>{
+                  history.push('/coupon-management/coupon-list/construction?type='+e.target.value)
+              },
+            }}
+            options={[
+              {
+                label: '会员领取券',
+                value: 1,
+              },
+              {
+                label: '系统发放券',
+                value: 2,
+              }
+            ]}
+          />
+        </ModalForm>
+        <Tabs
+          centered
+          defaultActiveKey="1"
+          className={styles.cuoponTabs}
+          onChange={(val)=>{
+            setSeleType(val)
+          }}
+        >
+          <TabPane tab="待提交" key="1">
             {
-              label: '会员领取券',
-              value: 1,
-            },
-            {
-              label: '系统发放券',
-              value: 2,
+              seleType==1&&<Message type={1} dispatch={dispatch}/>
             }
-          ]}
-        />
-      </ModalForm>
-      <Tabs
-        centered
-        defaultActiveKey="1"
-        className={styles.cuoponTabs}
-        onChange={(val)=>{
-          setSeleType(val)
-        }}
-      >
-        <TabPane tab="待提交" key="1">
-          {message(seleType||1, 1,dispatch)}
-        </TabPane>
-        <TabPane tab="审核中" key="3">
-          {message(seleType||3, 3)}
-        </TabPane>
-        <TabPane tab="已通过" key="4">
-          { message(seleType||4, 4) }
-        </TabPane>
-      </Tabs>
-    </PageContainer>
+          </TabPane>
+          <TabPane tab="审核中" key="3">
+            {
+              seleType==3&&<Message type={3} dispatch={dispatch}/>
+            }
+          </TabPane>
+          <TabPane tab="已通过" key="4">
+            { 
+              seleType==4&&<Message type={4} dispatch={dispatch}/>
+            }
+          </TabPane>
+        </Tabs>
+      </PageContainer>
   )
 }
 
