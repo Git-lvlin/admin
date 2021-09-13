@@ -67,6 +67,7 @@ const TableList = () => {
       endTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
       memberId: location?.query?.memberId,
       wsId: location?.query?.wsId,
+      operatorSource: 2,
       ...rest,
     }
   }
