@@ -4,7 +4,7 @@ import styles from '../style.less'
 import ProForm,{ProFormText,ProFormRadio} from '@ant-design/pro-form';
 
 const circulation=props=>{
-    const { DetailList,face1,face3,most,coupons,fullSubtract,id,pcType}=props
+    const { DetailList,face1,face3,most,coupons,fullSubtract,id,pcType,type}=props
     const [summoney,setSummoney] = useState(0);
     const [position,setPosition]=useState()
     const sumMoney=e=>{
@@ -19,6 +19,22 @@ const circulation=props=>{
         }
         })
     }
+    const options=[
+        {
+            label:<FormattedMessage id="formandbasic-form.issued.quantity" />,
+            value: 1,
+        }
+    ]
+    const options2=[
+        {
+            label:'按总数量发行',
+            value: 1,
+        },
+        {
+            label:'不限制',
+            value: 2,
+        }
+    ]
     return(
         <>
          <ProFormRadio.Group
@@ -27,15 +43,10 @@ const circulation=props=>{
                 fieldProps={{
                   onChange: (e) => setPosition(e.target.value),
                 }}
-                options={[
-                {
-                    label:<FormattedMessage id="formandbasic-form.issued.quantity" />,
-                    value: 1,
-                },
-                ]}
+                options={type==3?options2:options}
             />
             {
-                position==1||DetailList.data?.issueQuantity?
+                type==1&&position==1||DetailList.data?.issueQuantity?
                     <div className={styles.unfold}>
                         <ProForm.Group>
                             <ProFormText 
@@ -69,6 +80,27 @@ const circulation=props=>{
                     </div>
                 :null
             }
+            {/* {
+                type==3&&position==1||DetailList.data?.issueQuantity?
+                    <div className={styles.unfold}>
+                        <ProForm.Group>
+                        <span>红包发行总数量为</span>
+                            <ProFormText 
+                                width={100}
+                                name="issueQuantity"
+                                // fieldProps={{
+                                //     onChange: (e) => sumMoney(e),
+                                //     }}
+                                placeholder="请输入"
+                                rules={[
+                                    {validator: checkConfirm}
+                                ]} 
+                            />
+                            <span>张, 数量达标后活动结束</span>
+                        </ProForm.Group>
+                    </div>
+                :null
+            } */}
         </>
     )
 }
