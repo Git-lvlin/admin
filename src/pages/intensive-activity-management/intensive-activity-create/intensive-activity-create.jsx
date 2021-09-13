@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout';
 import {
   StepsForm,
@@ -9,11 +9,12 @@ import {
   ProFormDigit,
 } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
-import { Button, Result, message, Descriptions } from 'antd';
+import { Button, Result, message, Descriptions, Form } from 'antd';
 import EditTable from './edit-table';
 import styles from './index.less';
-import { addWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
+import { addWholesale, getApplicableAreaForWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
 import { numFormat, digitUppercase } from '@/utils/utils'
+import AddressMultiCascader from '@/components/address-multi-cascader'
 import { history } from 'umi';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
@@ -54,25 +55,53 @@ const disabledRangeTime = (_, type) => {
 }
 
 const IntensiveActivityCreate = () => {
-  const [selectItem, setSelectItem] = useState(null);
+  const [selectItem, setSelectItem] = useState([]);
+  const [areaData, setAreaData] = useState([]);
+  const [uncheckableItemValues, setUncheckableItemValues] = useState([]);
   const [submitValue, setSubmitValue] = useState(null);
+
+  const getSubmitAreaData = (v) => {
+    const arr = [];
+    v.forEach(item => {
+      let deep = 0;
+      let node = window.yeahgo_area.find(it => it.id === item);
+      const nodeIds = [node.id];
+      const nodeNames = [node.name]
+      while (node.pid) {
+        deep += 1;
+        node = window.yeahgo_area.find(it => it.id === node.pid);
+        nodeIds.push(node.id);
+        nodeNames.push(node.name);
+      }
+      arr.push({
+        provinceId: nodeIds[deep],
+        cityId: deep > 0 ? nodeIds[deep - 1] : 0,
+        areaId: deep > 1 ? nodeIds[deep - 2] : 0,
+        areaName: nodeNames.reverse().join('')
+      })
+    })
+
+    return arr;
+  }
+
   const submit = (values) => {
-    const { wholesaleTime, ...rest } = values;
+    const { wholesaleTime, area, ...rest } = values;
     return new Promise((resolve, reject) => {
       const params = {
-        goodsInfos: [{
-          spuId: selectItem.spuId,
-          skuId: selectItem.skuId,
-          totalStockNum: selectItem.totalStockNum,
-          minNum: selectItem.minNum,
-          price: amountTransform(selectItem.price),
-          maxNum: selectItem.maxNum,
-          supplierId: selectItem.supplierId,
-          totalPrice: selectItem.totalPrice,
-          wholesaleSupplyPrice: amountTransform(selectItem.wholesaleSupplyPrice),
-          fixedPrice: amountTransform(selectItem.fixedPrice),
-          settlePercent: amountTransform(selectItem.settlePercent, '/'),
-        }],
+        goodsInfos: selectItem.map(item => ({
+          spuId: item.spuId,
+          skuId: item.skuId,
+          totalStockNum: item.totalStockNum,
+          minNum: item.minNum,
+          price: amountTransform(item.price),
+          maxNum: item.maxNum,
+          supplierId: item.supplierId,
+          totalPrice: item.totalPrice,
+          wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice),
+          fixedPrice: amountTransform(item.fixedPrice),
+          settlePercent: amountTransform(item.settlePercent, '/'),
+        })),
+        allowArea: getSubmitAreaData(area),
         storeLevel: 'ALL',
         memberLevel: 'ALL',
         wholesaleStartTime: wholesaleTime[0],
@@ -91,6 +120,32 @@ const IntensiveActivityCreate = () => {
       })
     });
   }
+
+  const getUncheckableItemValues = () => {
+    getApplicableAreaForWholesale({
+      page: 1,
+      size: 9999,
+      status: 'on',
+    }).then(res => {
+      const ids = [];
+      res.data.records.forEach(item => {
+        ids.push(item.provinceId)
+        ids.push(item.cityId)
+        ids.push(item.regionId)
+      })
+      const data = window.yeahgo_area.filter(item => ids.includes(item.id))
+      setAreaData(data)
+      setUncheckableItemValues(data.filter(item => item.deep !== 3).map(item => item.id))
+      // const keys = res.data.records.map(item => item.regionId)
+    })
+  }
+
+
+
+  useEffect(() => {
+    getUncheckableItemValues();
+  }, [])
+
   return (
     <PageContainer className={styles.page}>
       <ProCard style={{ width: '100%' }}>
@@ -127,39 +182,44 @@ const IntensiveActivityCreate = () => {
             name="base"
             title="选择活动商品"
             onFinish={() => {
-              if (!selectItem) {
+              if (!selectItem.length) {
                 message.error('请选择活动商品');
                 return false;
               }
 
-              if (!/^\d+$/g.test(selectItem.totalStockNum) || +selectItem.totalStockNum <= 0) {
-                message.error('集约总库存只能是大于0的整数');
-                return false;
+              for (let index = 0; index < selectItem.length; index++) {
+                const item = selectItem[index];
+                if (!/^\d+$/g.test(item.totalStockNum) || +item.totalStockNum <= 0) {
+                  message.error(`sku:${item.skuId}集约总库存只能是大于0的整数`);
+                  return false;
+                }
+
+                if (+item.totalStockNum > +item.stockNum) {
+                  message.error(`sku:${item.skuId}集约总库存不能大于可用库存`);
+                  return false;
+                }
+
+                if (+item.fixedPrice < 0 || +item.fixedPrice > 100) {
+                  message.error(`sku:${item.skuId}配送费补贴只能是0-100之间`);
+                  return false;
+                }
+                if (+item.settlePercent < 0 || +item.settlePercent > 500) {
+                  message.error(`sku:${item.skuId}售价上浮比只能是0-500之间`);
+                  return false;
+                }
+
+                if (+item.minNum > +item.maxNum) {
+                  message.error(`sku:${item.skuId}单次起订量不能大于单次限订量`);
+                  return false;
+                }
+
+                if (+item.profit < 0) {
+                  message.error(`sku:${item.skuId}实际盈亏不能小于0`);
+                  return false;
+                }
               }
 
-              if (+selectItem.totalStockNum > +selectItem.stockNum) {
-                message.error('集约总库存不能大于可用库存');
-                return false;
-              }
 
-              if (+selectItem.fixedPrice < 0 || +selectItem.fixedPrice > 100) {
-                message.error('配送费补贴只能是0-100之间');
-                return false;
-              }
-              if (+selectItem.settlePercent < 0 || +selectItem.settlePercent > 500) {
-                message.error('售价上浮比只能是0-500之间');
-                return false;
-              }
-
-              if (+selectItem.minNum > +selectItem.maxNum) {
-                message.error('单次起订量不能大于单次限订量');
-                return false;
-              }
-
-              if (+selectItem.profit < 0) {
-                message.error('实际盈亏不能小于0');
-                return false;
-              }
 
               // let minWholesalePrice = (amountTransform(selectItem.wholesaleSupplyPrice) + +new Big(selectItem.fixedPrice).times(100)) / (+new Big(1).minus(0.0068).minus(amountTransform(selectItem.settlePercent, '/')));
               // minWholesalePrice = +new Big(Math.ceil(minWholesalePrice)).div(100);
@@ -186,10 +246,11 @@ const IntensiveActivityCreate = () => {
               return true;
             }}
             {...formItemLayout}
-            // initialValues={{
-            //   canRecoverPayTimes: 1,
-            //   recoverPayTimeout: 3
-            // }}
+            initialValues={{
+              // canRecoverPayTimes: 1,
+              // recoverPayTimeout: 3
+              t: [],
+            }}
             className={styles.center}
           >
             <ProFormText name="name" label="活动名称" width="md" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
@@ -221,6 +282,23 @@ const IntensiveActivityCreate = () => {
             />
             <ProFormCheckbox.Group value={'1'} label="可购买的社区店等级" disabled options={[{ label: '全部', value: 1 }]} />
             <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} />
+            <Form.Item
+              label="可集约店铺区域"
+              name="area"
+              required
+              rules={[
+                () => ({
+                  validator(_, value) {
+                    if (!value?.length) {
+                      return Promise.reject(new Error('请选择可集约店铺区域'));
+                    }
+                    return Promise.resolve();
+                  },
+                })
+              ]}
+            >
+              <AddressMultiCascader placeholder="请选择可参与集约活动的店铺所属省市区" data={areaData} uncheckableItemValues={uncheckableItemValues} style={{ width: '440px' }} />
+            </Form.Item>
             {/* <ProFormDigit name="canRecoverPayTimes" label="可恢复支付次数" min={0} max={3} placeholder="输入范围0-3" rules={[{ required: true, message: '请输入可恢复支付次数' }]} /> */}
             {/* <ProFormDigit name="recoverPayTimeout" label="每次恢复可支付时长" min={0} max={24} placeholder="输入范围0-24小时" rules={[{ required: true, message: '请输入每次恢复可支付时长' }]} /> */}
           </StepsForm.StepForm>
@@ -248,7 +326,15 @@ const IntensiveActivityCreate = () => {
               }}
             >
               <Descriptions labelStyle={{ textAlign: 'right', width: 150, display: 'inline-block' }} column={1}>
-                <Descriptions.Item label="参与活动商品">{selectItem.goodsName}（skuID：{selectItem.skuId}）</Descriptions.Item>
+                <Descriptions.Item label="参与活动商品">
+                  <div>
+                    {
+                      selectItem.map(item => (
+                        <div>{item.goodsName}（skuID：{item.skuId}）</div>
+                      ))
+                    }
+                  </div>
+                </Descriptions.Item>
                 {/* <Descriptions.Item label="所有全款结清可收款">{numFormat(submitValue.goodsInfos[0].totalPrice)} 元（{digitUppercase(submitValue.goodsInfos[0].totalPrice)}）</Descriptions.Item> */}
               </Descriptions>
             </div>}

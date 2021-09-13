@@ -103,13 +103,13 @@ export default (props) => {
         }}
       />
       <ProFormText
-        label="售后联系手机号"
+        label="售后联系方式"
         width="md"
-        rules={[{ required: true, message: '请输入售后联系手机号！' }]}
+        rules={[{ required: true, message: '请输入售后联系方式！' }]}
         name="contactPhone"
-        placeholder="请输入售后联系手机号！"
+        placeholder="请输入售后联系方式！"
         fieldProps={{
-          maxLength: 11
+          maxLength: 30
         }}
       />
       <ProFormSwitch checkedChildren="是" unCheckedChildren="否" name="isDefault" label="默认售后地址" />

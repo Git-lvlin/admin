@@ -28,3 +28,11 @@ export const addWholesale = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const getApplicableAreaForWholesale = (params = {}, options = {}) => {
+  return request('/auth/store/storeSetting/getApplicableAreaForWholesale', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

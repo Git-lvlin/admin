@@ -260,7 +260,7 @@ export default (props) => {
               1: `10${index + 1}`,
               2: `20${index2 + 1}`,
             },
-            code: `i_10${index + 1}20${index2 + 1}`
+            code: `i10${index + 1}|20${index2 + 1}`
           })
         })
       } else {
@@ -272,7 +272,7 @@ export default (props) => {
           specValue: {
             1: `10${index + 1}`,
           },
-          code: `i_10${index + 1}`
+          code: `i10${index + 1}`
         })
       }
 

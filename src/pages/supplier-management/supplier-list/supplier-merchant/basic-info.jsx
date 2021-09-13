@@ -18,7 +18,7 @@ const { Title } = Typography;
 
 
 const CTree = (props) => {
-  const { value, onChange, treeData, data, keys, ...rest } = props;
+  const { value, onChange, treeData, data, keys, selectData, ...rest } = props;
   const [selectKeys, setSelectKeys] = useState(keys);
   const [selectAll, setSelectAll] = useState(false);
   const onSelectAll = ({ target }) => {
@@ -46,6 +46,10 @@ const CTree = (props) => {
     onChange(keys)
   }, [])
 
+  useEffect(() => {
+    setSelectAll(selectData?.length === data?.length)
+  }, [selectData, data])
+
   return (
     <div style={{ flex: 1 }}>
       <Checkbox
@@ -56,10 +60,10 @@ const CTree = (props) => {
         全部分类
       </Checkbox>
       <Tree
-        {...rest}
         treeData={treeData}
         onCheck={onCheck}
         checkedKeys={selectKeys}
+        {...rest}
       />
     </div>
 
@@ -236,7 +240,8 @@ export default (props) => {
       initialValues={{
         accountSwitch: 1,
         status: 1,
-        defaultWholesaleTaxRate: 0,
+        defaultWholesaleTaxRate: 13,
+        warrantyRatio: 10
       }}
       {...formItemLayout}
     >
@@ -354,6 +359,7 @@ export default (props) => {
               data={originData.current}
               virtual={false}
               keys={selectKeys}
+              selectData={detailData?.gcInfo}
             />
           </Form.Item>
 

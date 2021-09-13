@@ -46,7 +46,7 @@ const TableList = () => {
     },
     {
       title: '角色',
-      dataIndex: 'title',
+      dataIndex: 'groupId',
       onFilter: true,
       valueType: 'select',
       valueEnum: typeTransform(adminGroupList),
