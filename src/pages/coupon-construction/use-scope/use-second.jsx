@@ -178,8 +178,6 @@ const useSecond=(props)=>{
         setIsModalVisible(true);
         setLoading(true)
     };
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [selectItems, setSelectItems] = useState([]);
     useEffect(()=>{
         setTimeout(()=>{
             if(parseInt(id)==id){

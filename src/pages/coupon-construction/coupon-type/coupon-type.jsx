@@ -270,14 +270,14 @@ const couponType = (props) => {
             } */}
             {/* 发行量 */}
             {
-            type == 2 ?
+            type == 2 || DetailList.data?.issueType == 2 && id?
                 <ProFormRadio.Group
                     name="issueQuantity"
                     label='发行量' 
                     options={[
                         {
                         label: '不限量发放',
-                        value: 1
+                        value: -1
                         }]}
                 />
                 :
