@@ -290,7 +290,7 @@ export default function EditTable({ onSelect }) {
               settlePercent: amountTransform(skuData.settlePercent),
               price: amountTransform(skuData.price, '/'),
               profit: amountTransform(skuData.profit, '/'),
-              totalPrice: (skuData.price > 0 && item.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(item.minNum) : 0
+              totalPrice: (skuData.price > 0 && record.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(record.minNum) : 0
             }
             return data
           }
@@ -304,7 +304,6 @@ export default function EditTable({ onSelect }) {
 
       productList(obj).then(res => {
         const skuData = res.data[0];
-        console.log('getList(selectData, skuData, (arr) => { setSelectData(arr)})', getList(selectData, skuData, (arr) => { setSelectData(arr) }));
         onSelect(getList(selectData, skuData, (arr) => { setSelectData(arr)}))
         setDataSource(getList(recordList, skuData))
       })
