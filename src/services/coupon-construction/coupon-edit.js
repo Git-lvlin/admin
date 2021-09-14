@@ -6,8 +6,8 @@ export const couponEdit = async (params, options = {}) => {
   const res = await request('/auth/activity/Coupon/couponEdit', {
     method: 'POST',
     data: {
-      limitStartTime: moment(limitStartTime).format('YYYY-MM-DD HH:mm:ss'),
-      limitEndTime:moment(limitEndTime).format('YYYY-MM-DD HH:mm:ss'),
+      limitStartTime: limitStartTime&&moment(limitStartTime).format('YYYY-MM-DD HH:mm:ss'),
+      limitEndTime:limitEndTime&&moment(limitEndTime).format('YYYY-MM-DD HH:mm:ss'),
       activityStartTime:moment(activityStartTime).format('YYYY-MM-DD HH:mm:ss'),
       activityEndTime:moment(activityEndTime).format('YYYY-MM-DD HH:mm:ss'),
       ...rest
