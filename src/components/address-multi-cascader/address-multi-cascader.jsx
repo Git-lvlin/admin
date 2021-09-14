@@ -37,6 +37,7 @@ const AddressMultiCascader = ({ value = '', onChange = () => { }, data, pId = 0,
               style={{ marginBottom: 10 }}
               onClose={() => {
                 setSelectAreaKey(selectAreaKey.filter(it => it !== item.value))
+                onChange(selectAreaKey.filter(it => it !== item.value))
               }}
             >
               {item.label}
