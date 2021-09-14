@@ -17,6 +17,7 @@ const Detail = ()=> {
   const {id} = useParams()
   const [data, setData] = useState({})
   const [load, setLoad] = useState(false)
+  const [change, setchange] = useState(0)
 
   useEffect(() => {
     setLoad(true)
@@ -28,7 +29,7 @@ const Detail = ()=> {
     return () => {
       setData({})
     }
-  }, [])
+  }, [change])
 
   const VoucherPic = ({pic}) => {
     return pic && pic?.map(res => {
@@ -39,9 +40,21 @@ const Detail = ()=> {
             width={60}
             height={60}
             src={res}
+            style={{
+              marginRight: 10
+            }}
           />
         )
       }
+    })
+  }
+
+  const submitData = (e) => {
+    settle({
+      id,
+      attachment: e.attachment.join()
+    }).then(res => {
+      if(res.data) setchange(change + 1)
     })
   }
 
@@ -50,8 +63,8 @@ const Detail = ()=> {
       case 'unSettle':
         return (
           <ProForm
-            onFinish={async (values) => {
-              console.log(values)
+            onFinish={(values) => {
+              submitData(values)
               message.success('提交成功')
             }}
             layout="horizontal"
@@ -71,6 +84,7 @@ const Detail = ()=> {
                   <dt>图片要求</dt>
                   <dd>1.图片大小2MB以内</dd>
                   <dd>2.图片格式png/jpg/gif</dd>
+                  <dd>3.图片最大支持上传3张</dd>
                 </dl>
               }
             >

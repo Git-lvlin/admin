@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout';
 import { Steps, Space, Button, Modal, Spin } from 'antd';
 import { useParams } from 'umi';
-import { findAdminOrderDetail} from '@/services/order-management/normal-order-detail';
+import { findAdminOrderDetail } from '@/services/order-management/normal-order-detail';
 import { amountTransform, dateFormat } from '@/utils/utils'
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
 import ProDescriptions from '@ant-design/pro-descriptions';
@@ -110,7 +110,7 @@ const OrderDetail = () => {
                 </div>
                 <div className={styles.box}>
                   <div>商品总金额</div>
-                  <div>{amountTransform(detailData?.goodsTotalAmount ,'/')}元</div>
+                  <div>{amountTransform(detailData?.goodsTotalAmount, '/')}元</div>
                 </div>
                 {/* <div className={styles.box}>
                   <div>运费</div>
@@ -125,45 +125,45 @@ const OrderDetail = () => {
                   <div>{amountTransform(detailData?.payAmount, '/')}元</div>
                 </div>
                 {
-                  detailData.status != 1 && detailData.status != 5 &&<div className={styles.box}>
+                  detailData.status != 1 && detailData.status != 5 && <div className={styles.box}>
                     <div>备注</div>
-                    <div>买家确认收货后可提现 {detailData?.warrantyRatio*100+'%'}  金额,订单超过售后期可提现剩余金额。</div>
+                    <div>买家确认收货后可提现 {detailData?.warrantyRatio * 100 + '%'}  金额,订单超过售后期可提现剩余金额。</div>
                   </div>
                 }
                 <div className={`${styles.box} ${styles.box_header}`}>
                   物流信息
                 </div>
                 {
-                  detailData.logisticsList&&detailData.logisticsList.map((ele,idx)=>(
-                  <ProDescriptions  style={{padding:'20px'}} column={2} title={"包裹"+parseInt(idx+1)}>
-                    <ProDescriptions.Item
-                      label="快递公司"
-                    >
-                      {ele.expressName}
-                    </ProDescriptions.Item>
-                    <ProDescriptions.Item
-                      label="运单编号"
-                    >
-                      {ele.shippingCode}
-                    </ProDescriptions.Item>
-                    <ProDescriptions.Item
-                      label="物流进度"
-                    >
-                      <p className={styles.schedule}>{ele.lastStatus}</p>
-                    </ProDescriptions.Item>
+                  detailData.logisticsList && detailData.logisticsList.map((ele, idx) => (
+                    <ProDescriptions style={{ padding: '20px' }} column={2} title={"包裹" + parseInt(idx + 1)}>
+                      <ProDescriptions.Item
+                        label="快递公司"
+                      >
+                        {ele.expressName}
+                      </ProDescriptions.Item>
+                      <ProDescriptions.Item
+                        label="运单编号"
+                      >
+                        {ele.shippingCode}
+                      </ProDescriptions.Item>
+                      <ProDescriptions.Item
+                        label="物流进度"
+                      >
+                        <p className={styles.schedule}>{ele.lastStatus}</p>
+                      </ProDescriptions.Item>
 
-                    <ProDescriptions.Item
-                      fieldProps={{}}
-                    >
-                      <LogisticsTrackingModel 
-                          record={ele.deliveryList}     
+                      <ProDescriptions.Item
+                        fieldProps={{}}
+                      >
+                        <LogisticsTrackingModel
+                          record={ele.deliveryList}
                           title={'物流跟踪'}
                           byid={ele.id}
                         />
-                    </ProDescriptions.Item>
-                </ProDescriptions>
+                      </ProDescriptions.Item>
+                    </ProDescriptions>
                   ))
-                }  
+                }
               </div>
             </div>
             <div style={{ flex: 1 }}>
@@ -186,7 +186,7 @@ const OrderDetail = () => {
                         </div>
                         <div className={styles.box}>
                           <div>集约价</div>
-                          <div>{amountTransform(item.skuSalePrice, '/')}元{!!item.wholesaleFreight && `（含平均运费¥${amountTransform(item.wholesaleFreight)}/件）`}</div>
+                          <div>{amountTransform(item.skuSalePrice, '/')}元{!!item.wholesaleFreight && `（含平均运费¥${amountTransform(item.wholesaleFreight, '/')}/件）`}</div>
                         </div>
                         <div className={styles.box}>
                           <div>购买数量</div>
