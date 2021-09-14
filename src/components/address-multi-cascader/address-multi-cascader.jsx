@@ -5,7 +5,7 @@ import 'rsuite/lib/MultiCascader/styles';
 import { arrayToTree } from '@/utils/utils'
 import './style.less'
 
-const AddressMultiCascader = ({ value = '', onChange = () => { }, data, ...rest }) => {
+const AddressMultiCascader = ({ value = '', onChange = () => { }, data, pId = 0, ...rest }) => {
   const [areaData, setAreaData] = useState([]);
   const [selectAreaKey, setSelectAreaKey] = useState(value);
 
@@ -16,7 +16,9 @@ const AddressMultiCascader = ({ value = '', onChange = () => { }, data, ...rest 
       let node = item.parent;
       arr.push(item.label)
       while (node) {
-        arr.push(node.label)
+        if (node.pvalue !==-1) {
+          arr.push(node.label)
+        }
         node = node.parent;
       }
       titleArr.push({
@@ -46,7 +48,7 @@ const AddressMultiCascader = ({ value = '', onChange = () => { }, data, ...rest 
   }
 
   useEffect(() => {
-    const arr = arrayToTree(data || window.yeahgo_area || [])
+    const arr = arrayToTree(data || window.yeahgo_area || [], pId)
     let str = JSON.stringify(arr)
     str = str.replace(/name/g, 'label').replace(/id/g, 'value')
     setAreaData(JSON.parse(str))
