@@ -285,12 +285,12 @@ export default function EditTable({ onSelect }) {
         const arr = list.map(item => {
           if (item.id === skuData.id) {
             const data = {
-              ...item,
+              ...record,
               fixedPrice: amountTransform(skuData.fixedPrice, '/'),
               settlePercent: amountTransform(skuData.settlePercent),
               price: amountTransform(skuData.price, '/'),
               profit: amountTransform(skuData.profit, '/'),
-              totalPrice: (skuData.price > 0 && item.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(item.minNum) : 0
+              totalPrice: (skuData.price > 0 && record.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(record.minNum) : 0
             }
             return data
           }
@@ -364,7 +364,6 @@ export default function EditTable({ onSelect }) {
             setSelectedRowKeys(arr);
             const datas = [...selectData];
             datas.push(record);
-            console.log('datas', datas);
             setSelectData(datas);
             onSelect(datas);
           } else {
