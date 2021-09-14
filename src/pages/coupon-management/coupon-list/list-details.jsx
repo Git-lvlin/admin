@@ -158,7 +158,7 @@ export default props => {
             <Form.Item
               label="最高优惠"
             >
-              {detailData.maxFreeAmount}
+              {detailData.maxFreeAmount}元
             </Form.Item>
 
             <Form.Item
@@ -180,11 +180,14 @@ export default props => {
             >
               {detailData.limitQuantity}
             </Form.Item>
-            <Form.Item
-              label="可领取时间"
-            >
+            {
+              detailData.limitStartTime&&<Form.Item
+                label="可领取时间"
+              >
               {detailData.limitStartTime + ' -- ' + detailData.limitEndTime}
             </Form.Item>
+            }
+            
             <Form.Item
               label="有效期"
             >

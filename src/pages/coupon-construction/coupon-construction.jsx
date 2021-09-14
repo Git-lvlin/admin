@@ -52,9 +52,10 @@ const couponConstruction = (props) => {
     })
   }
   const onsubmit = (values) => {
+    console.log('values',values.dateRange)
     try {
     //发放类型
-    values.issueType = parseInt(type)
+    values.issueType = parseInt(type)|| id&&DetailList.data?.issueType
     values.couponTypeInfo = {
       usefulAmount: parseInt(values.usefulAmount),//用价格门槛(单位分)
       freeAmount: parseInt(values.freeAmount),//优惠金额(单位分)
@@ -89,6 +90,7 @@ const couponConstruction = (props) => {
     if (values.memberType == 1) {
       delete values.couponCrowdId
     }
+  
 
     if (values.goodsType == 1) {
       delete values.useTypeInfoM.spuIds
@@ -115,6 +117,7 @@ const couponConstruction = (props) => {
     } catch (error) {
       console.log('error',error)
     }
+   
     if (id) {
       couponEdit({ ...values, id: id }).then((res) => {
         if (res.code == 0) {
@@ -240,7 +243,7 @@ const couponConstruction = (props) => {
 
         {/* 有效期 */}
         {
-          type == 2 ?
+          type == 2 || DetailList.data?.issueType == 2 && id?
             <ProFormRadio.Group
               name="activityTimeType"
               label={<FormattedMessage id="formandbasic-form.period.of.validity" />}
