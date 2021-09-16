@@ -118,6 +118,16 @@ export default {
       name: 'home-red-envelopes',
       path: '/cms/home-red-envelopes',
       component: './cms/home-red-envelopes',
+    },
+    {
+      name: 'home-activity',
+      path: '/cms/home-activity',
+      component: './cms/home-activity',
+    },
+    {
+      name: 'home-classification',
+      path: '/cms/home-classification',
+      component: './cms/home-classification',
     }
   ]
 }

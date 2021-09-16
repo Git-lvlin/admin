@@ -115,6 +115,8 @@ export default {
   'menu.cms.goos-reg.save-money': '集约优选',
   'menu.cms.goos-reg.strategy-today': '今日必约',
   'menu.cms.home-suspension': '首页悬浮窗',
+  'menu.cms.home-activity': '首页活动',
+  'menu.cms.home-classification': '首页分类管理',
   'menu.cms.express-news': '约购快报',
   'menu.cms.king-kong-district': '金刚区',
   'menu.cms.price-comparsion': '首页比价优选',
