@@ -228,11 +228,6 @@ const useSecond=(props)=>{
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-
-    const onIpute=(res)=>{
-       setSpuIds(res.selectedRowKeys.toString())
-       setSpuIdsArr(res.selectedRows)
-    }
     const onCate=()=>{
         setFlag(true)
     }
@@ -302,8 +297,13 @@ const useSecond=(props)=>{
                                     ],
                                 }}
                                 columns={columns}
-                                rowSelection={{}}
-                                tableAlertOptionRender={onIpute}
+                                rowSelection={{
+                                    preserveSelectedRowKeys: true,
+                                    onChange: (_, val) => {
+                                        setSpuIds(_.toString())
+                                        setSpuIdsArr(val)
+                                      }
+                                }}
                             />
                         </Modal>
                         <ProTable
