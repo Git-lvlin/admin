@@ -1,25 +1,16 @@
 
-import React, { useRef, useState, useEffect } from 'react';
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import ProCard from '@ant-design/pro-card';
-import { Button, Space, message, Input } from 'antd';
+import React, { useRef, useState } from 'react';
+import { Input } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm, {ProFormText} from '@ant-design/pro-form';
+import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
-import { userRelationShip, homeBannerDel, bannerSortTop } from '@/services/cms/member/member';
+import { userRelationShip } from '@/services/cms/member/member';
 const { Search } = Input;
 const UserRelationship = () => {
   const actionRef = useRef();
-  const [formVisible, setFormVisible] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState(18420013303);
+  const [phoneNumber, setPhoneNumber] = useState();
   const [indexData, setIndexData] = useState(false);
 
-
-  useEffect(() => {
-    if (!formVisible) {
-      actionRef.current.reset();
-    }
-  }, [formVisible])
 
   const columns = [
     {
@@ -31,7 +22,7 @@ const UserRelationship = () => {
     {
       title: '用户手机号',
       dataIndex: 'subPhoneNumber',
-      valueType: 'text',
+      valueType: 'digit',
       hideInTable: true,
     },
     {
@@ -86,7 +77,7 @@ const UserRelationship = () => {
           <ProForm.Group>
             &nbsp;&nbsp;用户昵称：{indexData?.nickName}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人昵称：{indexData?.inviteNickName}&nbsp;&nbsp;&nbsp;&nbsp;邀请成功的好友数量（位）：{indexData?.inviteCount}
           </ProForm.Group>
-    <ProTable
+    {phoneNumber&&<ProTable
       style={{paddingTop: 100}}
       rowKey="id"
       columns={columns}
@@ -104,7 +95,7 @@ const UserRelationship = () => {
         pageSize: 5,
       }}
       dateFormatter="string"
-    />
+    />}
     </PageContainer>
   );
 };
