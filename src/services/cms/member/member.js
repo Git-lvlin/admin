@@ -47,6 +47,14 @@ export const spaceEdit = (params = {}, options = {}) => {
   });
 }
 
+export const homeActivityUpdata = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/activityIcon/saveOrUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const bannerAdd = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/banner/saveOrUpdate', {
     method: 'POST',
@@ -439,6 +447,14 @@ export const bannerSortTop = (params = {}, options = {}) => {
   });
 }
 
+export const homeActivitySortTop = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/activityIcon/setTop', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const cententVersionStatus = (params = {}, options = {}) => {
   return request('/auth/activity/Cms/verifyVersionStatusSub', {
     method: 'POST',
@@ -749,6 +765,27 @@ export const saveMoneyFormLists = async (params = {}, options = {}) => {
     data.status = Number(status);
   }
   const res = await request('/auth/activity/Goods/commonSpuList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const homeActivityList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/cms/activityIcon/page', {
     method: 'POST',
     data,
     ...options

@@ -3,24 +3,21 @@ import React, { useRef, useState, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
-import ContentVersionTab from '@/components/content-version-tab';
-import { homeBannerList, bannerSortTop } from '@/services/cms/member/member';
+import { homeActivityList, homeActivitySortTop } from '@/services/cms/member/member';
 
 const HomeActivity = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
-  const [verifyVersionId, setVerifyVersionId] = useState(1);
   const getDetail = (data) => {
     data && setDetailData(data);
     setFormVisible(true);
   }
 
   const top = (data) => {
-    bannerSortTop({id: data}).then((res) => {
+    homeActivitySortTop({id: data}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
         actionRef.current.reset();
@@ -59,13 +56,13 @@ const HomeActivity = () => {
     },
     {
       title: '编辑时间',
-      dataIndex: 'createTime',
+      dataIndex: 'updateTime',
       valueType: 'text',
       search: false,
     },
     {
       title: '操作人',
-      dataIndex: 'createTime',
+      dataIndex: 'updateName',
       valueType: 'text',
     },
     {
@@ -113,15 +110,11 @@ const HomeActivity = () => {
 
   return (
     <PageContainer>
-      <ProForm.Group>
-        <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
-      </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
-      params={{verifyVersionId: verifyVersionId}}
-      request={homeBannerList}
+      request={homeActivityList}
       search={{
         labelWidth: 'auto',
       }}
@@ -139,7 +132,6 @@ const HomeActivity = () => {
     {formVisible && <Edit
       visible={formVisible}
       setVisible={setFormVisible}
-      verifyVersionId={verifyVersionId}
       detailData={detailData}
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { actionRef.current.reload(); setDetailData(null) }}

@@ -7,10 +7,10 @@ import ProForm, {
   ProFormRadio,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { bannerAdd } from '@/services/cms/member/member';
+import { homeActivityUpdata } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible, verifyVersionId } = props;
+  const { detailData, setVisible, onClose, visible } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
@@ -23,11 +23,8 @@ export default (props) => {
       param.id = id
     }
   
-    if (verifyVersionId) {
-      param.verifyVersionId = verifyVersionId
-    }
     return new Promise((resolve, reject) => {
-      bannerAdd(param).then((res) => {
+      homeActivityUpdata(param).then((res) => {
         if (res.code === 0) {
           resolve(true);
         } else {
