@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
+import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Space, Modal } from 'antd';
-import { getCommonList, statusSwitch, detailExt, delSupplier, resetPwd } from '@/services/supplier-management/supplier-list'
+import { getCommonList, statusSwitch, detailExt, deloperation, resetPwd } from '@/services/operation-management/operation-list'
 import { history } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import Export from '@/pages/export-excel/export'
@@ -27,7 +28,7 @@ const TableList = () => {
 
   const switchStatus = (reason) => {
     statusSwitch({
-      supplierId: selectItem.id,
+      operationId: selectItem.id,
       type: selectItem.status === 1 ? 2 : 1,
       reason,
     }, { showSuccess: true, }).then(res => {
@@ -39,11 +40,11 @@ const TableList = () => {
 
   const getDetail = (id, type) => {
     detailExt({
-      supplierId: id
+      operationId: id
     }).then(res => {
       if (res.code === 0) {
         setDetailData({
-          ...res.data.records,
+          ...res.data,
         })
         if (type === 1) {
           setBasicInfoVisible(true)
@@ -56,13 +57,13 @@ const TableList = () => {
     })
   }
 
-  const deleteSup = (supplierId) => {
+  const deleteSup = (operationId) => {
     confirm({
-      title: '确认要删除已创建的供应商么？',
+      title: '确认要删除已创建的运营商么？',
       icon: <ExclamationCircleOutlined />,
       onOk() {
-        delSupplier({
-          supplierId
+        deloperation({
+          operationId
         }, { showSuccess: true, }).then(res => {
           if (res.code === 0) {
             actionRef.current.reload();
@@ -74,7 +75,7 @@ const TableList = () => {
 
   const pwdReset = () => {
     resetPwd({
-      supplierId: selectItem.id
+      operationId: selectItem.id
     }, { showSuccess: true }).then(res => {
       if (res.code === 0) {
         setIsModalVisible(false);
@@ -92,20 +93,20 @@ const TableList = () => {
       width: 70,
     },
     {
-      title: '供应商家名称',
+      title: '运营商名称',
       dataIndex: 'companyName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商家名称'
+        placeholder: '请输入运营商名称'
       },
       width: 200,
     },
     {
-      title: '供应商家ID',
-      dataIndex: 'supplierId',
+      title: '运营商ID',
+      dataIndex: 'operationId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商家ID'
+        placeholder: '请输入运营商ID'
       },
       hideInTable: true,
     },
@@ -155,7 +156,7 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => {
-        return <a onClick={() => { history.push(`/supplier-management/supplier-sub-account/${data.bindAccountId}`) }}>{_}</a>
+        return <a onClick={() => { history.push(`/operation-management/operation-sub-account/${data.bindAccountId}`) }}>{_}</a>
       },
       width: 80,
     },
@@ -199,7 +200,7 @@ const TableList = () => {
           </>
         )
       },
-      width: 400
+      width: 400,
     },
     {
       title: '绑卡状态',
@@ -231,15 +232,15 @@ const TableList = () => {
         <Space>
           {data.status === 1 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>禁用</a>}
           {data.status === 0 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>启用</a>}
-          {/* <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.id}`) }}>详情</a> */}
+          {/* <a onClick={() => { history.push(`/operation-management/operation-detail/${data.id}`) }}>详情</a> */}
           <a onClick={() => { getDetail(data.id, 1) }}>基本信息</a>
           {data.accountSwitch === 1 && <a onClick={() => { getDetail(data.id, 2) }}>开户信息</a>}
           {data.isAllowDel === 1 && <a onClick={() => { deleteSup(data.id) }}>删除</a>}
-          <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>售后地址</a>
+          <a onClick={() => { history.push(`/operation-management/after-sale-address/${data.id}`) }}>售后地址</a>
           <a onClick={() => { setSelectItem(data); setIsModalVisible(true) }}>重置密码</a>
         </Space>
       ),
-      width: 350,
+      width: 400,
     },
   ];
 
@@ -254,7 +255,7 @@ const TableList = () => {
   }
 
   return (
-    <>
+    <PageContainer>
       <ProTable
         rowKey="id"
         options={false}
@@ -287,10 +288,10 @@ const TableList = () => {
             <Export
               key="3"
               change={(e) => { setExportVisible(e) }}
-              type="supplier-export"
+              type="operation-export"
               conditions={getFieldValue}
             />,
-            <ExportHistory key="4" show={exportVisible} setShow={setExportVisible} type="supplier-export" />,
+            <ExportHistory key="4" show={exportVisible} setShow={setExportVisible} type="operation-export" />,
           ],
         }}
         columns={columns}
@@ -299,7 +300,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: '86vw' }}
+        scroll={{ x: '85vw' }}
       />
       {basicInfoVisible && <BasicInfo
         visible={basicInfoVisible}
@@ -335,7 +336,7 @@ const TableList = () => {
       }
 
       <Modal
-        title={`请确认要重置供应商家：${selectItem?.companyName}（账号：${selectItem?.accountName}）的登录密码？`}
+        title={`请确认要重置运营商：${selectItem?.companyName}（账号：${selectItem?.accountName}）的登录密码？`}
         visible={isModalVisible}
         onOk={() => { pwdReset() }}
         onCancel={() => { setIsModalVisible(false) }}
@@ -343,7 +344,7 @@ const TableList = () => {
         <p>注意：重置密码后，新密码将立即生效，原密码无法继续使用！</p>
         <p style={{ fontSize: 12 }}>重置密码将同步发送给供应商</p>
       </Modal>
-    </>
+    </PageContainer>
 
   );
 };

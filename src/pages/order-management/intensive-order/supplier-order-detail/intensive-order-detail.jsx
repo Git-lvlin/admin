@@ -160,10 +160,10 @@ const OrderDetail = () => {
                     </div>
                   </div>
                 </div>
-                <div className={styles.box}>
+                {/* <div className={styles.box}>
                   <div>合计实收</div>
                   <div>{amountTransform(detailData?.actualAmount, '/')}元</div>
-                </div>
+                </div> */}
                 {
                   detailData.status != 0 && detailData.status != 6 &&
                   <div className={styles.box}>

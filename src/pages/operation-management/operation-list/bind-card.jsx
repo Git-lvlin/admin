@@ -8,8 +8,8 @@ import {
   ProFormDependency,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { getBanks } from '@/services/supplier-management/supplier-list';
-import { bindBank } from '@/services/supplier-management/bind-card';
+import { getBanks } from '@/services/operation-management/operation-list';
+import { bindBank } from '@/services/operation-management/bind-card';
 
 
 const ImageInfo = ({ value, onChange, bankAccountType, bindBankSwitch, disabled }) => {
