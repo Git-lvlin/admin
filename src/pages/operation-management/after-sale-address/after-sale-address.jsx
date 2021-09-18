@@ -3,7 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Card, Space, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
-import { addressList, addressDetail, addressSwitch, addressSetDefault } from '@/services/supplier-management/after-sale-address'
+import { addressList, addressDetail, addressSwitch, addressSetDefault } from '@/services/operation-management/after-sale-address'
 import { useParams } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import Edit from './edit';
@@ -21,7 +21,7 @@ const TableList = () => {
       id
     }).then(res => {
       if (res.code === 0) {
-        setDetailData(res?.data?.records);
+        setDetailData(res?.data);
         setFormVisible(true);
       }
     })
@@ -34,7 +34,7 @@ const TableList = () => {
       content: `${data.contactName}(${data.address})`,
       onOk() {
         addressSwitch({
-          supplierId: params?.id,
+          operationId: params?.id,
           id: data.id
         })
           .then(res => {
@@ -53,7 +53,7 @@ const TableList = () => {
       content: `确定要将 ${data.contactName}（${data.address}）设置为默认地址么？`,
       onOk() {
         addressSetDefault({
-          supplierId: params?.id,
+          operationId: params?.id,
           id: data.id
         })
           .then(res => {
@@ -131,7 +131,7 @@ const TableList = () => {
       <ProTable
         options={false}
         params={{
-          supplierId: params?.id
+          operationId: params?.id
         }}
         request={addressList}
         search={false}
@@ -142,7 +142,7 @@ const TableList = () => {
       <Edit
         visible={formVisible}
         setVisible={setFormVisible}
-        supplierId={params?.id}
+        operationId={params?.id}
         detailData={detailData}
         callback={() => { actionRef.current.reload() }}
       />
