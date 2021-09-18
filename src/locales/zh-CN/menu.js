@@ -75,6 +75,16 @@ export default {
   'menu.supplier-management.supplier-detail': '供应商家详情',
   'menu.supplier-management.supplier-account-info': '供应商家资金账户信息',
 
+  'menu.operation-management': '运营商管理',
+  'menu.operation-management.operation-list': '运营商列表',
+  'menu.operation-management.audit-list': '运营商审核',
+  'menu.operation-management.consultant-product-list': '运营商顾问商品列表',
+  'menu.operation-management.consultant-operation-list': '顾问运营商列表',
+  'menu.operation-management.after-sale-address': '售后地址',
+  'menu.operation-management.operation-sub-account': '运营商子账号',
+  'menu.operation-management.operation-detail': '运营商详情',
+  'menu.operation-management.operation-account-info': '运营商资金账户信息',
+
   'menu.asset-management': '资产管理',
   'menu.asset-management.settlement-profit-list': '结算分润列表',
 

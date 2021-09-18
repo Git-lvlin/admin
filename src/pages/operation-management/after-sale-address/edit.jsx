@@ -6,11 +6,11 @@ import {
   ProFormText
 } from '@ant-design/pro-form';
 import Address from './address';
-import { addressAdd, addressEdit } from '@/services/supplier-management/after-sale-address'
+import { addressAdd, addressEdit } from '@/services/operation-management/after-sale-address'
 
 
 export default (props) => {
-  const { visible, setVisible, supplierId, detailData, callback } = props;
+  const { visible, setVisible, operationId, detailData, callback } = props;
   const [form] = Form.useForm();
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -36,7 +36,7 @@ export default (props) => {
         areaId: area.id,
         detailAddress: info,
         address: `${province.name}${city.name}${area.name}${info}`,
-        supplierId,
+        operationId,
         isDefault: isDefault ? 1 : 0,
         status: status ? 1 : 0,
         id: detailData?.id,

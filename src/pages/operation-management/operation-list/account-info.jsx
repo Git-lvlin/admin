@@ -8,8 +8,7 @@ import {
   ProFormDependency,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { openAccount, getBanks } from '@/services/supplier-management/supplier-list';
-import FormModal from './form';
+import { openAccount, getBanks } from '@/services/operation-management/operation-list';
 import Address from './address';
 import moment from 'moment'
 
@@ -179,7 +178,6 @@ const ImageInfo = ({ value, onChange, bankAccountType, bindBankSwitch, disabled 
 export default (props) => {
   const { visible, setVisible, detailData, callback = () => { }, onClose = () => { } } = props;
   const [form] = Form.useForm()
-  const [formVisible, setFormVisible] = useState(false)
   const [selectData, setSelectData] = useState([]);
 
   const formItemLayout = {
@@ -225,7 +223,7 @@ export default (props) => {
         provinceCode: addressInfo?.area?.[0],
         areaCode: addressInfo?.area?.[1],
         companyAddress: addressInfo?.info,
-        supplierId: detailData?.supplierId,
+        operationId: detailData?.operationId,
       }, { showSuccess: true, showError: true }).then(res => {
         if (res.code === 0) {
           resolve();
@@ -306,6 +304,7 @@ export default (props) => {
           bankAccountName: (1 || bankAccountType) === 1 ? detailData.companyName : bankAccountName,
         })
       }
+      
     }
   }, [form, detailData]);
 
@@ -323,12 +322,8 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        try {
-          await submit(values);
-          return true;
-        } catch (error) {
-          console.log('error', error);
-        }
+        await submit(values);
+        return true;
       }}
       visible={visible}
       initialValues={{
@@ -351,8 +346,6 @@ export default (props) => {
         },
       }}
     >
-
-
       <Title level={4}>资金账户信息</Title>
       <Divider />
       <div style={{ display: 'flex' }}>
@@ -577,13 +570,6 @@ export default (props) => {
           </ProFormDependency>
         </div>
       </div>
-
-      {formVisible && <FormModal
-        visible={formVisible}
-        setVisible={setFormVisible}
-        callback={(v) => { setSelectData(v) }}
-        selectData={selectData}
-      />}
     </DrawerForm>
   );
 };
