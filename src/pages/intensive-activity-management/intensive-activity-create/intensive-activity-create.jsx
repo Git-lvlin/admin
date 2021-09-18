@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout';
 import {
   StepsForm,
@@ -57,11 +57,15 @@ const disabledRangeTime = (_, type) => {
 const IntensiveActivityCreate = () => {
   const [selectItem, setSelectItem] = useState([]);
   const [areaData, setAreaData] = useState([]);
-  const [uncheckableItemValues, setUncheckableItemValues] = useState([]);
+  // const [uncheckableItemValues, setUncheckableItemValues] = useState([]);
   const [submitValue, setSubmitValue] = useState(null);
+  const formRef = useRef();
 
   const getSubmitAreaData = (v) => {
     const arr = [];
+    if (v[0] === 0) {
+      return '';
+    }
     v.forEach(item => {
       let deep = 0;
       let node = window.yeahgo_area.find(it => it.id === item);
@@ -122,25 +126,10 @@ const IntensiveActivityCreate = () => {
   }
 
   const getUncheckableItemValues = () => {
-    getApplicableAreaForWholesale({
-      page: 1,
-      size: 9999,
-      status: 'on',
-    }).then(res => {
-      const ids = [];
-      res.data.records.forEach(item => {
-        ids.push(item.provinceId)
-        ids.push(item.cityId)
-        ids.push(item.regionId)
-      })
-      const data = window.yeahgo_area.filter(item => ids.includes(item.id))
-      setAreaData(data)
-      setUncheckableItemValues(data.filter(item => item.deep !== 3).map(item => item.id))
-      // const keys = res.data.records.map(item => item.regionId)
-    })
+    const data = JSON.parse(JSON.stringify(window.yeahgo_area))
+    data.unshift({ name: '全国', id: 0, pid: -1 })
+    setAreaData(data)
   }
-
-
 
   useEffect(() => {
     getUncheckableItemValues();
@@ -155,7 +144,6 @@ const IntensiveActivityCreate = () => {
               required: '此项为必填项',
             },
           }}
-
           submitter={{
             render: (props) => {
               if (props.step === 0 || props.step === 1) {
@@ -165,7 +153,6 @@ const IntensiveActivityCreate = () => {
                       下一步
                     </Button>
                   </div>
-
                 );
               }
               return (
@@ -245,11 +232,11 @@ const IntensiveActivityCreate = () => {
               await submit(values);
               return true;
             }}
+            formRef={formRef}
             {...formItemLayout}
             initialValues={{
               // canRecoverPayTimes: 1,
               // recoverPayTimeout: 3
-              t: [],
             }}
             className={styles.center}
           >
@@ -297,7 +284,19 @@ const IntensiveActivityCreate = () => {
                 })
               ]}
             >
-              <AddressMultiCascader placeholder="请选择可参与集约活动的店铺所属省市区" data={areaData} uncheckableItemValues={uncheckableItemValues} style={{ width: '440px' }} />
+              <AddressMultiCascader
+                placeholder="请选择可参与集约活动的店铺所属省市区"
+                data={areaData}
+                style={{ width: '440px' }}
+                pId={-1}
+              // onCheck={() => {
+              //   const data = window.yeahgo_area.filter(item => item.deep === 1);
+              //   data.unshift({ name: '全国', id: -1, pid: 0 })
+              //   formRef.current.setFieldsValue({
+              //     'area': data.map(item => item.id)
+              //   })
+              // }}
+              />
             </Form.Item>
             {/* <ProFormDigit name="canRecoverPayTimes" label="可恢复支付次数" min={0} max={3} placeholder="输入范围0-3" rules={[{ required: true, message: '请输入可恢复支付次数' }]} /> */}
             {/* <ProFormDigit name="recoverPayTimeout" label="每次恢复可支付时长" min={0} max={24} placeholder="输入范围0-24小时" rules={[{ required: true, message: '请输入每次恢复可支付时长' }]} /> */}

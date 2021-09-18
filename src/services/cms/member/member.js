@@ -689,6 +689,14 @@ export const getAppPopup = (params = {}, options = {}) => {
   });
 }
 
+export const getAppRedBoxPopup = (params = {}, options = {}) => {
+  return request('/auth/java-admin/public/adimg/newuser/coupon', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const getStartUp = (params = {}, options = {}) => {
   return request('/auth/java-admin/public/adimg/boot', {
     method: 'POST',

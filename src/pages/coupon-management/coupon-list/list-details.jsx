@@ -154,6 +154,13 @@ export default props => {
             >
               {detailData.couponAmountDisplay}
             </Form.Item>
+
+            <Form.Item
+              label="最高优惠"
+            >
+              {detailData.maxFreeAmount}元
+            </Form.Item>
+
             <Form.Item
               label="发行方式"
             >
