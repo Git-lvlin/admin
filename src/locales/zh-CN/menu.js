@@ -16,6 +16,7 @@ export default {
   'menu.user-management.user-list': '用户列表',
   'menu.user-management.disable-user-list': '禁用列表',
   'menu.user-management.user-detail': '用户详情',
+  'menu.user-management.user-relationship': '用户关系',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
@@ -130,6 +131,7 @@ export default {
   'menu.cms.home-red-envelopes': 'app首页红包弹窗',
   'menu.cms.home-popup': 'app首页弹窗管理',
   'menu.cms.start-up': 'app启动广告配置',
+
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
