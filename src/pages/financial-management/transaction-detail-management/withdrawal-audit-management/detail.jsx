@@ -219,17 +219,25 @@ const Detail = () => {
       dataIndex: 'withdrawAccount'
     },
     {
-      title: '提现类型',
+      title: '账户类型',
       dataIndex: 'bankAcctType',
       valueEnum: {
-        'business': '对公',
-        'person': '对私'
+        'business': '公司户',
+        'person': '个人户'
       }
     },
     {
       title: '本次提现金额',
       dataIndex: 'amount',
       render: (_) => `￥${amountTransform(_, '/')}`
+    },
+    {
+      title: '提现类型',
+      dataIndex: 'withdrawType',
+      valueEnum: {
+        'goodsAmount': '货款提现',
+        'commission': '收益提现'
+      }
     },
     {
       title: '提现手续费',
@@ -274,6 +282,10 @@ const Detail = () => {
     {
       title: '资金流水号',
       dataIndex: 'voucher'
+    },
+    {
+      title: '',
+      dataIndex: ''
     }
   ]
   return (
