@@ -16,6 +16,7 @@ export default {
   'menu.user-management.user-list': '用户列表',
   'menu.user-management.disable-user-list': '禁用列表',
   'menu.user-management.user-detail': '用户详情',
+  'menu.user-management.user-relationship': '用户关系',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
@@ -74,6 +75,16 @@ export default {
   'menu.supplier-management.supplier-detail': '供应商家详情',
   'menu.supplier-management.supplier-account-info': '供应商家资金账户信息',
 
+  'menu.operation-management': '运营商管理',
+  'menu.operation-management.operation-list': '运营商列表',
+  'menu.operation-management.audit-list': '运营商审核',
+  'menu.operation-management.consultant-product-list': '运营商顾问商品列表',
+  'menu.operation-management.consultant-operation-list': '顾问运营商列表',
+  'menu.operation-management.after-sale-address': '售后地址',
+  'menu.operation-management.operation-sub-account': '运营商子账号',
+  'menu.operation-management.operation-detail': '运营商详情',
+  'menu.operation-management.operation-account-info': '运营商资金账户信息',
+
   'menu.asset-management': '资产管理',
   'menu.asset-management.settlement-profit-list': '结算分润列表',
 
@@ -130,6 +141,7 @@ export default {
   'menu.cms.home-red-envelopes': 'app首页红包弹窗',
   'menu.cms.home-popup': 'app首页弹窗管理',
   'menu.cms.start-up': 'app启动广告配置',
+
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',

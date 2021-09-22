@@ -483,7 +483,6 @@ export default (props) => {
       <Form.Item
         label="主营商品类型"
         name="gc"
-        rules={[{ required: true }]}
       >
         <CTree
           checkable

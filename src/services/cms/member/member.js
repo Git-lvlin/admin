@@ -785,6 +785,26 @@ export const homeBannerList = async (params = {}, options = {}) => {
   }
 }
 
+export const userRelationShip = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/memberInfo/getInviteList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data || [],
+    success: true,
+    total: res.data.list.total,
+  }
+}
+
 export const contentVersionList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
 

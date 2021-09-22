@@ -12,6 +12,8 @@ import SecondReview from './second-review';
 import Overrule from './overrule';
 import ProductDetailDrawer from '@/components/product-detail-drawer'
 import { typeTransform, amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 
 
@@ -60,9 +62,10 @@ const TableList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [overruleVisible, setOverruleVisible] = useState(false);
   const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
-
+  const [visit, setVisit] = useState(false)
 
   const actionRef = useRef();
+  const formRef = useRef();
 
   const getDetail = (record) => {
     if (record.firstAudit === 1) {
@@ -296,6 +299,18 @@ const TableList = () => {
     },
   ];
 
+  const getFieldValue = () => {
+    if (formRef?.current?.getFieldsValue) {
+      const { current, pageSize, gcId = [], ...rest } = formRef?.current?.getFieldsValue?.();
+      return {
+        gcId1: gcId[0],
+        gcId2: gcId[1],
+        ...rest
+      }
+    }
+    return {}
+  }
+
   useEffect(() => {
     api.getConfig()
       .then(res => {
@@ -317,6 +332,7 @@ const TableList = () => {
         params={{
           selectType: 1,
         }}
+        formRef={formRef}
         request={api.checkList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
@@ -334,7 +350,14 @@ const TableList = () => {
                 setOverruleVisible(true)
               }}>
               批量驳回
-            </Button>
+            </Button>,
+            <Export
+              key="4"
+              change={(e) => { setVisit(e) }}
+              type="goods-audit-export"
+              conditions={getFieldValue}
+            />,
+            <ExportHistory key="5" show={visit} setShow={setVisit} type="goods-audit-export" />,
           ],
         }}
         columns={columns}
