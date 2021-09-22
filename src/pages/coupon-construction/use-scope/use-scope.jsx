@@ -1,13 +1,13 @@
 import React,{useState} from 'react';
 import { FormattedMessage,connect } from 'umi';
-import ProForm,{ ProFormRadio} from '@ant-design/pro-form';
+import ProForm,{ ProFormRadio,ProFormDependency} from '@ant-design/pro-form';
 import UseCollect from './use-collect'
 import { Radio } from 'antd';
 import UseSecond from './use-second'
 import { useEffect } from 'react';
 
 const useScope=props => {
-    const {DetailList,id,choose,form}=props
+    const {DetailList,id,choose,form,type}=props
     const [position,setPosition]=useState(false)
     useEffect(()=>{
         if(choose==4){
@@ -35,20 +35,24 @@ const useScope=props => {
                     // },
                 ]} 
             />
-            {
+             {
                 position==1||(parseInt(id)==id )&&DetailList.data?.useType==1||choose==4?
                 <div style={{display:position==2?'none':'block'}}>
-                  <UseSecond id={id} choose={choose} form={form}/>
+                  <UseSecond type={type} id={id} choose={choose} form={form}/>
                 </div>
                 :null
             }
-            {/* {
-                position==2||(parseInt(id)==id )&&DetailList.data?.useType==2?
-                <div style={{display:position==1?'none':'block'}}>
-                  <UseCollect id={id}/>
-                </div>
-                :null
-            } */}
+
+            {/* <ProFormDependency name={['useType']}>
+              {({ useType }) => { 
+                  if(useType==1||choose==4){
+                      return  <UseSecond type={type} id={id} choose={choose} form={form}/>
+                  }
+                //   if(useType==2){
+                //       return  <UseCollect id={id}/>
+                //   }
+              }}
+            </ProFormDependency> */}
             
         </>
     )

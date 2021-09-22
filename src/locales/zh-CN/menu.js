@@ -64,6 +64,10 @@ export default {
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
+  'menu.intensive-activity-management.intensive-remind-configuration': '集约提醒配置',
+  'menu.intensive-activity-management.intensive-remind-statistics': '集约提醒统计',
+
+
 
   'menu.supplier-management': '供应商家管理',
   'menu.supplier-management.supplier-list': '供应商家列表',
@@ -153,13 +157,13 @@ export default {
   'menu.dc-management.list': '资源位列表',
   'menu.dc-management.version': '资源位版本',
 
-  'menu.coupon-management': '优惠券管理',
-  'menu.coupon-management.coupon-list': '优惠券列表',
-  'menu.coupon-management.construction':'新建优惠劵',
+  'menu.coupon-management': '红包管理',
+  'menu.coupon-management.coupon-list': '红包列表',
+  'menu.coupon-management.construction':'新建红包',
   'menu.coupon-management.coupon-codebase':'码库',
-  'menu.coupon-management.coupon-audit':'优惠券审核',
+  'menu.coupon-management.coupon-audit':'红包审核',
   'menu.coupon-management.audit-details':'审核详情',
-  'menu.coupon-management.list-details':'优惠券详情',
+  'menu.coupon-management.list-details':'红包详情',
   'menu.coupon-management.coupon-crowd':'群体管理',
   'menu.coupon-management.add-crowd':'新建群体',
   
