@@ -12,7 +12,12 @@ const HomeActivity = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const getDetail = (data) => {
-    data && setDetailData(data);
+    if (data) {
+      setDetailData(data);
+      setFormVisible(true);
+      return
+    }
+    setDetailData(null);
     setFormVisible(true);
   }
 
