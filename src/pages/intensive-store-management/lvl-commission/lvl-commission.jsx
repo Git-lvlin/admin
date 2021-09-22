@@ -36,11 +36,11 @@ const LvlRule = () => {
     },
     {
       title: '直推普通会员购买秒约订单交易总额返佣比例（%）',
-      dataIndex: ['brokerageConf', 'storeUserPoint'],
+      dataIndex: ['brokerageConf', 'normalUserPoint'],
     },
     {
       title: '直推店主会员购买采购订单交易总额返佣比例（%）',
-      dataIndex: ['brokerageConf', 'normalUserPoint'],
+      dataIndex: ['brokerageConf', 'storeUserPoint'],
     },
   ]
 

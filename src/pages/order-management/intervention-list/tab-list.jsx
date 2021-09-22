@@ -20,6 +20,12 @@ const TabList =props=> {
       align: 'center',
     },
     {
+      title: '供应商家ID',
+      dataIndex: 'supplierId',
+      align: 'center',
+      order: -1
+    },
+    {
       title: '售后类型',
       dataIndex: 'afterSalesType',
       valueType: 'select',
