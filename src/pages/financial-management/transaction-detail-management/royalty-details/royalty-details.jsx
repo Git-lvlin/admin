@@ -64,7 +64,7 @@ const TransactionDetails = () => {
       case 'suggestCommission':
         return (
           <>
-            <span className={styles.amount}>店主推荐收益: ¥{amountTransform(amount, '/')}</span>
+            <span className={styles.amount}>上级推荐人收益: ¥{amountTransform(amount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )

@@ -159,7 +159,7 @@ export default props => {
             <Form.Item
               label="最高优惠"
             >
-              {detailData.maxFreeAmount}
+              {detailData.maxFreeAmount}元
             </Form.Item>
             
             <Form.Item

@@ -4,16 +4,16 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProCard from '@ant-design/pro-card';
 import Upload from '@/components/upload';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormRadio } from '@ant-design/pro-form';
-import { getAppPopup, homePopupUpdate } from '@/services/cms/member/member';
+import { getAppRedBoxPopup, homePopupUpdate } from '@/services/cms/member/member';
 
-const HomePopup = () => {
+const HomeRedEnvelopes = () => {
   const [form] = Form.useForm();
   const formRef = useRef();
   const [popupInfo, setPopupInfo] = useState(false);
 
   useEffect(() => {
     if (!popupInfo) {
-      getAppPopup().then((res) => {
+      getAppRedBoxPopup().then((res) => {
         if (res.code === 0 && res.data) {
           const {img, link, status, endTime, startTime, id, platform, targetUser} = res.data
           form.setFieldsValue({
@@ -140,6 +140,7 @@ const HomePopup = () => {
             <ProFormRadio.Group
               name="platform"
               label="平台"
+              // initialValue={0}
               rules={[{ required: true, message: '请选择状态' }]}
               options={[
                 {
@@ -167,6 +168,7 @@ const HomePopup = () => {
             <ProFormRadio.Group
               name="targetUser"
               label="人群"
+              // initialValue={0}
               rules={[{ required: true, message: '请选择状态' }]}
               options={[
                 {
@@ -182,7 +184,7 @@ const HomePopup = () => {
             <ProFormRadio.Group
               name="status"
               label="状态"
-              initialValue={0}
+              // initialValue={0}
               rules={[{ required: true, message: '请选择状态' }]}
               options={[
                 {
@@ -213,4 +215,4 @@ const HomePopup = () => {
   )
 }
 
-export default HomePopup
+export default HomeRedEnvelopes
