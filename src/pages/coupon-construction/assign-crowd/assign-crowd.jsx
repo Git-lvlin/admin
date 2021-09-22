@@ -3,12 +3,13 @@ import {Form,Button,Modal,message} from 'antd';
 import {connect} from 'umi';
 import ProTable from '@ant-design/pro-table';
 import { couponCrowdList } from '@/services/crowd-management/coupon-crowd';
+import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency } from '@ant-design/pro-form';
 import SubTable from '@/pages/coupon-construction/coupon-subtable'
-
+import styles from '../style.less'
 
 
 const validity=(props)=>{
-    let {id,DetailList,choose,dispatch,UseScopeList}=props
+    let {id,DetailList,dispatch,UseScopeList,callback,type}=props
     const actionRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading,setLoading]=useState(true)
@@ -100,47 +101,79 @@ const validity=(props)=>{
         message.error('只能选择一个商品');
        }
     }
+    const options=[
+        {
+          label: '全部用户',
+          value: 1,
+        },
+        {
+          label: '指定群体用户',
+          value: 2,
+        },
+        {
+          label: '新用户（未下过订单的用户）',
+          value: 4,
+        },
+      ]
+      const options2=[
+        {
+          label: '全部用户',
+          value: 1,
+        }
+      ]
     return (
         <>
-        {
-            choose==2||(parseInt(id)==id )&&DetailList.data?.memberType==2?
-            <div style={{display:choose==1||choose==4?'none':'block'}}>
-                <Button type="primary" style={{margin:"0 0 20px 20px"}} onClick={showModal}>
-                    选择群体
-                </Button>
-                <Modal key="id" width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                    <ProTable
-                        rowKey="id"
-                        options={false}
-                        hideAll={true}
-                        style={{display:loading?'block':'none'}}
-                        request={couponCrowdList}
-                        actionRef={actionRef}
-                        expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
-                        search={{
-                            defaultCollapsed: false,
-                            labelWidth: 100,
-                            optionRender: (searchConfig, formProps, dom) => [
-                                ...dom.reverse(),
-                            ],
-                        }}
-                        columns={columns}
-                        rowSelection={{}}
-                        tableAlertOptionRender={onIpute}
-                    />
-                </Modal>
-                <ProTable
-                    toolBarRender={false}
-                    expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
-                    search={false}
-                    rowKey="spuId"
-                    columns={columns2}
-                    dataSource={UseScopeList.UseScopeObje.CrowdIdsArr}
-                    style={{display:isModalVisible?'none':'block'}}
-                />
-            </div>
-            :null
-         }
+         <ProFormRadio.Group
+          name="memberType"
+          label={type == 2||DetailList.data?.issueType == 2 && id ? '发券群体':'可领券群体'}
+          rules={[{ required: true, message: '请选择群体' }]}
+          options={type==3||DetailList.data?.issueType == 3 && id ?options2:options}
+          fieldProps={{
+            onChange:(current)=>callback(current.target.value)
+          }}
+        />
+        <ProFormDependency name={['memberType']}>
+            {({ memberType }) => {
+                if(!memberType||memberType==1||memberType==4) return null
+                if(memberType==2){
+                    return <div className={styles.unfold}>
+                            <Button type="primary" style={{margin:"0 0 20px 20px"}} onClick={showModal}>
+                                选择群体
+                            </Button>
+                            <Modal key="id" width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                <ProTable
+                                    rowKey="id"
+                                    options={false}
+                                    hideAll={true}
+                                    style={{display:loading?'block':'none'}}
+                                    request={couponCrowdList}
+                                    actionRef={actionRef}
+                                    expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
+                                    search={{
+                                        defaultCollapsed: false,
+                                        labelWidth: 100,
+                                        optionRender: (searchConfig, formProps, dom) => [
+                                            ...dom.reverse(),
+                                        ],
+                                    }}
+                                    columns={columns}
+                                    rowSelection={{}}
+                                    tableAlertOptionRender={onIpute}
+                                />
+                            </Modal>
+                            <ProTable
+                                toolBarRender={false}
+                                expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
+                                search={false}
+                                rowKey="spuId"
+                                columns={columns2}
+                                dataSource={UseScopeList.UseScopeObje.CrowdIdsArr}
+                                style={{display:isModalVisible?'none':'block'}}
+                            />
+                        </div>
+                }
+            }}
+         </ProFormDependency>
         </>
     )
 }
