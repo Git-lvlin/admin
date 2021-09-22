@@ -94,13 +94,14 @@ const IntensiveActivityCreate = () => {
       const params = {
         goodsInfos: selectItem.map(item => ({
           spuId: item.spuId,
+          batchNumber: item.batchNumber,
           skuId: item.skuId,
           totalStockNum: item.totalStockNum,
           minNum: item.minNum,
-          price: amountTransform(item.price),
           maxNum: item.maxNum,
           supplierId: item.supplierId,
           totalPrice: item.totalPrice,
+          price: amountTransform(item.price),
           wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice),
           fixedPrice: amountTransform(item.fixedPrice),
           settlePercent: amountTransform(item.settlePercent, '/'),
@@ -204,16 +205,28 @@ const IntensiveActivityCreate = () => {
                   message.error(`sku:${item.skuId}实际盈亏不能小于0`);
                   return false;
                 }
+
+                if (+item.batchNumber < 0 || /\./.test(+item.batchNumber)) {
+                  message.error(`sku:${item.skuId}集采箱柜单位量只能是1-9999之间的整数`);
+                  return false;
+                }
+
+                if (+item.totalStockNum % +item.batchNumber !== 0 ) {
+                  message.error(`sku:${item.skuId}集约总库存数量与集采箱柜单位量之间必须为倍数关系，请重新输入`);
+                  return false;
+                }
+
+                if (+item.minNum % +item.batchNumber !== 0 ) {
+                  message.error(`sku:${item.skuId}单次起订量与集采箱柜单位量之间必须为倍数关系，请重新输入`);
+                  return false;
+                }
+
+                if (+item.maxNum % +item.batchNumber !== 0 ) {
+                  message.error(`sku:${item.skuId}单次限订量与集采箱柜单位量之间必须为倍数关系，请重新输入`);
+                  return false;
+                }
               }
 
-
-
-              // let minWholesalePrice = (amountTransform(selectItem.wholesaleSupplyPrice) + +new Big(selectItem.fixedPrice).times(100)) / (+new Big(1).minus(0.0068).minus(amountTransform(selectItem.settlePercent, '/')));
-              // minWholesalePrice = +new Big(Math.ceil(minWholesalePrice)).div(100);
-              // if (selectItem.price < minWholesalePrice) {
-              //   message.error(`集约价格小于集约最低价${minWholesalePrice}`);
-              //   return false;
-              // }
               return true;
             }}
 
