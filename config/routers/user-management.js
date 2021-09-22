@@ -18,5 +18,10 @@ export default {
       component: './user-management/user-detail',
       hideInMenu: true,
     },
+    {
+      name: 'user-relationship',
+      path: '/user-management/user-relationship',
+      component: './user-management/user-relationship',
+    },
   ]
 }
