@@ -219,6 +219,12 @@ export default function EditTable({ onSelect }) {
       editable: false,
     },
     {
+      title: '集采箱柜单位量',
+      dataIndex: 'batchNumber',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
       title: '单次起订量',
       dataIndex: 'minNum',
       valueType: 'text',
@@ -245,7 +251,7 @@ export default function EditTable({ onSelect }) {
     const arr = data.map(item => ({
       ...item,
       totalStockNum: parseInt(item.stockNum * 0.8, 10),
-      minNum: item.wholesaleMinNum || 10,
+      minNum: item.batchNumber,
       maxNum: 100,
       price: amountTransform(item.price, '/'),
       fixedPrice: amountTransform(item.fixedPrice, '/'),
