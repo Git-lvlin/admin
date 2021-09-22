@@ -54,7 +54,7 @@ const OrderDetail = () => {
         <div className={styles.order_detail}>
           <Steps progressDot current={detailData.status}>
             {
-              detailData?.Process?.map(item => (
+              detailData?.process?.map(item => (
                 <Step title={item.name} description={<><div>{item.time}</div></>} />
               ))
             }
