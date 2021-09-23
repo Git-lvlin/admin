@@ -168,7 +168,9 @@ export default props => {
               {
                 detailData.issueType == 1 ?
                   '会员领取券'
-                  : '系统发放券'
+                  :detailData.issueType == 2 ? 
+                  '系统发放券'
+                  :'每日红包'
               }
             </Form.Item>
             <Form.Item
@@ -191,11 +193,12 @@ export default props => {
             <Form.Item
               label="有效期"
             >
-               {
+             {
                 detailData.activityTimeType == 1 ?
                 <p>{detailData.activityStartTime + ' -- ' + detailData.activityEndTime}</p>
-                :
+                :detailData.activityTimeType == 2?
                 <p>领券{detailData.activityStartDay}天起，{detailData.activityEndDay}天内可用</p>
+                : <p>领券0天起，{detailData.activityEndHour}小时内可用</p>
               }
             </Form.Item>
 
@@ -287,7 +290,7 @@ export default props => {
                 label="活动说明"
               >
                 {
-                detailData.couponRule?.split('\n').map(ele=>(
+                detailData.couponActivityRule?.split('\n').map(ele=>(
                   <span>{ele}</span>
                 ))
                 }

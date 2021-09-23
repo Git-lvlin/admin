@@ -7,7 +7,7 @@ import PeriodValidity from './period-validity/period-validity'
 import AssignCrowd from './assign-crowd/assign-crowd'
 import { couponSub } from '@/services/coupon-construction/coupon-coupon-sub';
 import { couponEdit } from '@/services/coupon-construction/coupon-edit';
-import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import moment from 'moment';
 import styles from './style.less'
@@ -129,7 +129,7 @@ const couponConstruction = (props) => {
     } catch (error) {
       console.log('error',error)
     }
-   
+   console.log('values',values)
     if (id) {
       couponEdit({ ...values, id: id }).then((res) => {
         if (res.code == 0) {
@@ -217,12 +217,15 @@ const couponConstruction = (props) => {
         {/* 每人限领 */}
          {
            type==3||DetailList.data?.issueType == 3 && id?
-           <Form.Item
-              label="每人限领"
-              name="limitQuantity"
-            >
-              1张/天
-           </Form.Item>
+           <ProFormText
+            width={120}
+            label="每人限领"
+            name="limitQuantity"
+            readonly
+            fieldProps={{
+              value:'1张/天'
+            }}
+           />
          :
          <>
           <ProFormRadio.Group
@@ -322,14 +325,16 @@ const couponConstruction = (props) => {
 
         {/* 活动规则 */}
         {
-            type==3||DetailList.data?.issueType == 3 && id&&<ProFormTextArea
+            type==3||DetailList.data?.issueType == 3 && id?
+            <ProFormTextArea
               label='活动规则'
-              name="couponRule"
+              name="couponActivityRule"
               style={{ minHeight: 32, marginTop: 15 }}
               placeholder='列如玩法规则、简单的用户协议'
               rules={[{ required: true, message: '请备注活动规则' }]}
               rows={4}
-            />
+            />:
+            null
         }
       </ProForm >
     </>
