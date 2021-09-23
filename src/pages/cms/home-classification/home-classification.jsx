@@ -1,30 +1,47 @@
 
 import React, { useRef, useState, useEffect } from 'react';
-import { message } from 'antd';
+import { message, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm from '@ant-design/pro-form';
+import ProForm, { ProFormSwitch } from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
+import { dateFormat } from '@/utils/utils';
 import Edit from './form';
-import ContentVersionTab from '@/components/content-version-tab';
-import { homeBannerList, bannerSortTop } from '@/services/cms/member/member';
+import { homeClassificationList, homeClassificationSortTop, homeClassificationStatus } from '@/services/cms/member/member';
 
 const HomeClassification = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
-  const [verifyVersionId, setVerifyVersionId] = useState(1);
   const getDetail = (data) => {
-    data && setDetailData(data);
+    setDetailData(data);
     setFormVisible(true);
   }
 
+  const controlSort = () => {
+    console.log('排序')
+  }
+
   const top = (data) => {
-    bannerSortTop({id: data}).then((res) => {
+    // if (data.homeStatus === 0) {
+    //   message.error('关闭状态无法置顶')
+    //   return
+    // }
+    homeClassificationSortTop({id: data.id}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
         actionRef.current.reset();
       }
     })
+  }
+
+  const onChangeSwitch = ({id, homeStatus}) => {
+    console.log('param', id, homeStatus)
+    homeClassificationStatus({id: id,status: homeStatus}).then((res) => {
+      if (res.code === 0) {
+        message.success(`切换状态成功`);
+      }
+    })
+    
   }
 
   useEffect(() => {
@@ -36,34 +53,36 @@ const HomeClassification = () => {
   const columns = [
     {
       title: '排序',
-      dataIndex: 'sort',
+      dataIndex: 'homeSort',
       valueType: 'text',
       search: false,
     },
     {
       title: '分类名称',
-      dataIndex: 'title',
-    },
-    {
-      title: '跳转链接',
-      dataIndex: 'actionUrl',
-      valueType: 'text',
-      search: false,
-    },
-    {
-      title: '编辑时间',
-      dataIndex: 'createTime',
-      valueType: 'text',
-      search: false,
+      dataIndex: 'gcName',
     },
     {
       title: '操作人',
-      dataIndex: 'createTime',
+      dataIndex: 'lastEditor',
+      hideInTable: true,
+    },
+    {
+      title: '编辑时间',
+      dataIndex: 'homeLastEditTime',
+      valueType: 'text',
+      search: false,
+      render:(time) => {
+        return dateFormat(time*1000)
+      }
+    },
+    {
+      title: '操作人',
+      dataIndex: 'homeLastEditor',
       valueType: 'text',
     },
     {
       title: '状态',
-      dataIndex: 'state',
+      dataIndex: 'homeStatus',
       filters: true,
       onFilter: true,
       hideInTable: true,
@@ -81,12 +100,23 @@ const HomeClassification = () => {
     },
     {
       title: '状态',
-      dataIndex: 'state',
+      dataIndex: 'homeStatus',
       valueType: 'text',
       search: false,
-      valueEnum: {
-        0: '下架',
-        1: '上架',
+      render: (_,item) => {
+        return (
+          <ProFormSwitch
+            name="homeStatus"
+            fieldProps={{
+              style: {marginTop: 24},
+              defaultChecked:_?true:false,
+              onChange: () => {
+                item.homeStatus = item.homeStatus?0:1
+                onChangeSwitch(item)
+              },
+            }}
+          />
+        )
       }
     },
     {
@@ -96,8 +126,8 @@ const HomeClassification = () => {
       render: (text, record, _) => {
         return (
           <>
-            {record.state===1&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
-            &nbsp;&nbsp;{<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
+            <a key="top" onClick={() => {top(record)}}>置顶</a>
+            &nbsp;&nbsp;<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>
           </>
         )
       }
@@ -106,15 +136,11 @@ const HomeClassification = () => {
 
   return (
     <PageContainer>
-      <ProForm.Group>
-        <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
-      </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
-      params={{verifyVersionId: verifyVersionId}}
-      request={homeBannerList}
+      request={homeClassificationList}
       search={{
         labelWidth: 'auto',
       }}
@@ -123,11 +149,16 @@ const HomeClassification = () => {
       }}
       dateFormatter="string"
       headerTitle="首页分类配置"
+      toolBarRender={(_,record) => [
+        <Button key="button" type="primary" onClick={() => { controlSort }}>
+          编辑排序
+        </Button>,
+      ]}
     />
     {formVisible && <Edit
       visible={formVisible}
       setVisible={setFormVisible}
-      verifyVersionId={verifyVersionId}
+      onChangeSwitch={onChangeSwitch}
       detailData={detailData}
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { actionRef.current.reload(); setDetailData(null) }}
