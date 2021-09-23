@@ -6,27 +6,25 @@ import ProForm, { ProFormSwitch } from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { dateFormat } from '@/utils/utils';
 import Edit from './form';
-import { homeClassificationList, homeClassificationSortTop, homeClassificationStatus } from '@/services/cms/member/member';
+import ClassSort from './sort';
+import { homeClassificationList, homeClassificationSortTop, homeClassificationStatus, homeClassificationSetSort } from '@/services/cms/member/member';
 
 const HomeClassification = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
+  const [listData, setListData] = useState(null);
   const getDetail = (data) => {
     setDetailData(data);
     setFormVisible(true);
   }
 
-  const controlSort = () => {
-    console.log('排序')
-  }
-
-  const top = (data) => {
-    // if (data.homeStatus === 0) {
-    //   message.error('关闭状态无法置顶')
-    //   return
-    // }
-    homeClassificationSortTop({id: data.id}).then((res) => {
+  const top = ({homeStatus, id}) => {
+    if (!homeStatus) {
+      message.error('关闭状态无法置顶')
+      return
+    }
+    homeClassificationSortTop({id:id}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
         actionRef.current.reset();
@@ -35,13 +33,25 @@ const HomeClassification = () => {
   }
 
   const onChangeSwitch = ({id, homeStatus}) => {
-    console.log('param', id, homeStatus)
     homeClassificationStatus({id: id,status: homeStatus}).then((res) => {
       if (res.code === 0) {
         message.success(`切换状态成功`);
       }
     })
     
+  }
+
+  const setSort = (v) => {
+    const param = {}
+    v.map((item, index) => {
+      param[item.id]=index+1
+    })
+    homeClassificationSetSort({sortList:param}).then((res) => {
+      if (res.code === 0) {
+        message.success(`编辑排序成功`);
+        actionRef.current.reset();
+      }
+    })
   }
 
   useEffect(() => {
@@ -141,6 +151,10 @@ const HomeClassification = () => {
       columns={columns}
       actionRef={actionRef}
       request={homeClassificationList}
+      postData={(data) => {
+        setListData(data)
+        return data
+      }}
       search={{
         labelWidth: 'auto',
       }}
@@ -149,10 +163,8 @@ const HomeClassification = () => {
       }}
       dateFormatter="string"
       headerTitle="首页分类配置"
-      toolBarRender={(_,record) => [
-        <Button key="button" type="primary" onClick={() => { controlSort }}>
-          编辑排序
-        </Button>,
+      toolBarRender={() => [
+        <ClassSort data={listData} callback={(v) => { setSort(v) }} />
       ]}
     />
     {formVisible && <Edit
