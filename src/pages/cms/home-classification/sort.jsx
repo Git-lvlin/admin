@@ -9,20 +9,26 @@ const gridStyles = {
   display: 'grid',
   gridTemplateColumns: 'repeat(4, 1fr)',
   gridGap: '16px',
-  maxHeight: 500,
+  maxHeight: 700,
   overflow: 'auto',
+  textAlign: 'center',
 };
 
 const gridItemStyles = {
-  width: 100,
+  width: '100%',
   height: 100,
   // backgroundColor: '#e5e5e5',
-  zIndex: 9999
+  zIndex: 9999,
+  textAlign: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
 };
 
 const GridItem = SortableElement(({ value }) =>
   <div style={gridItemStyles}>
-    <Image src={value.gcIcon} width="50" height="50" />
+    <img src={value.gcIcon} width="50" height="50" />
     <div width="50" height="50">{value.gcName}</div>
   </div>
 );
