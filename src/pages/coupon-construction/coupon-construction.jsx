@@ -324,7 +324,7 @@ const couponConstruction = (props) => {
         {
             type==3||DetailList.data?.issueType == 3 && id&&<ProFormTextArea
               label='活动规则'
-              name="couponRule"
+              name="couponActivityRule"
               style={{ minHeight: 32, marginTop: 15 }}
               placeholder='列如玩法规则、简单的用户协议'
               rules={[{ required: true, message: '请备注活动规则' }]}
