@@ -456,6 +456,14 @@ export const homeClassCategorySecondCategory = (params = {}, options = {}) => {
   });
 }
 
+export const homeClassificationSetSort = (params = {}, options = {}) => {
+  return request('/auth/goods/product/setHomeSort', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const homeClassificationStatus = (params = {}, options = {}) => {
   return request('/auth/goods/product/categorySetHomeStatus', {
     method: 'POST',
