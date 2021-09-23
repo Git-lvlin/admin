@@ -243,11 +243,16 @@ export default (props) => {
     }
   }
 
+  const setDisable = () => {
+    return detailData?.bankAccountInfo?.auditStatus === 1 || detailData?.bankAccountInfo?.auditStatus === 4
+  }
+
   useEffect(() => {
     if (detailData) {
       const { bankAccountInfo } = detailData
       form.setFieldsValue({
         bindBankSwitch: bankAccountInfo?.bindBankSwitch,
+        bankAccountName: detailData.companyName,
       })
 
       if (bankAccountInfo) {
@@ -310,7 +315,7 @@ export default (props) => {
 
   return (
     <DrawerForm
-      title={`${detailData ? '编辑' : '新建'}供应商家`}
+      title={`${detailData ? '编辑' : '新建'}运营商`}
       onVisibleChange={setVisible}
       drawerProps={{
         forceRender: true,
@@ -338,7 +343,7 @@ export default (props) => {
               <Button onClick={() => { setVisible(false) }}>
                 取消
               </Button>
-              {detailData?.bankAccountInfo?.auditStatus !== 1 && <Button type="primary" onClick={() => { props.submit(); }}>
+              {(detailData?.bankAccountInfo?.auditStatus !== 1 && detailData?.bankAccountInfo?.auditStatus !== 4) && <Button type="primary" onClick={() => { props.submit(); }}>
                 确认
               </Button>}
             </Space>
@@ -371,7 +376,7 @@ export default (props) => {
                 },
               })]}
           >
-            <Address disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
+            <Address disabled={setDisable()} />
           </Form.Item>
           <Form.Item
             label="统一社会信用码"
@@ -391,14 +396,14 @@ export default (props) => {
               },
             })]}
           >
-            <SocialCreditInfo disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
+            <SocialCreditInfo disabled={setDisable()} />
           </Form.Item>
           <ProFormText
             name="businessScope"
             label="经营范围"
             placeholder="请输入经营范围"
             rules={[{ required: true, message: '请输入经营范围' }]}
-            disabled={detailData?.bankAccountInfo?.auditStatus === 1}
+            disabled={setDisable()}
           />
           <Form.Item
             label="法人姓名"
@@ -425,7 +430,7 @@ export default (props) => {
               })
             ]}
           >
-            <LegalInfo disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
+            <LegalInfo disabled={setDisable()} />
           </Form.Item>
           <ProFormText
             name="legalPhone"
@@ -435,7 +440,7 @@ export default (props) => {
             fieldProps={{
               maxLength: 11,
             }}
-            disabled={detailData?.bankAccountInfo?.auditStatus === 1}
+            disabled={setDisable()}
           />
           <ProFormSelect
             label="绑卡状态"
@@ -451,7 +456,7 @@ export default (props) => {
                 value: 1,
               }
             ]}
-            disabled={detailData?.bankAccountInfo?.auditStatus === 1}
+            disabled={setDisable()}
           />
         </div>
         <div style={{ flex: 1 }}>
@@ -474,7 +479,7 @@ export default (props) => {
                 fieldProps={{
                   onChange: bankAccountTypeChange
                 }}
-                disabled={detailData?.bankAccountInfo?.auditStatus === 1}
+                disabled={setDisable()}
               />
             }
           </ProFormDependency>
@@ -523,7 +528,7 @@ export default (props) => {
                     })
                   ]}
                 >
-                  <ImageInfo disabled={detailData?.bankAccountInfo?.auditStatus === 1} bankAccountType={bankAccountType} bindBankSwitch={bindBankSwitch} />
+                  <ImageInfo disabled={setDisable()} bankAccountType={bankAccountType} bindBankSwitch={bindBankSwitch} />
                 </Form.Item>
               )
             }
@@ -542,14 +547,14 @@ export default (props) => {
                   fieldProps={{
                     labelInValue: true,
                   }}
-                  disabled={detailData?.bankAccountInfo?.auditStatus === 1}
+                  disabled={setDisable()}
                 />
                 <ProFormText
                   name="bankCardNo"
                   label="结算银行卡号"
                   placeholder="请输入结算银行卡号"
                   rules={[{ required: true, message: '请输入结算银行卡号' }]}
-                  disabled={detailData?.bankAccountInfo?.auditStatus === 1}
+                  disabled={setDisable()}
                 />
                 <ProFormDependency name={['bankAccountType']}>
                   {
@@ -559,8 +564,8 @@ export default (props) => {
                         label="结算银行卡开户名"
                         placeholder="请输入结算银行卡开户名"
                         rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
-                        extra="银行账户类型为对公账户时，开户名为供应商家企业名称"
-                        disabled={bankAccountType === 1 || detailData?.bankAccountInfo?.auditStatus === 1}
+                        extra="银行账户类型为对公账户时，开户名为运营商企业名称"
+                        disabled={bankAccountType === 1 || setDisable()}
                       />
                     )
                   }

@@ -37,6 +37,16 @@ const OrderDetail = () => {
     })
   }
 
+  const getCurrent = () => {
+    let current = 0;
+    detailData?.nodeList?.forEach(item => {
+      if (item.eventTime) {
+        current += 1;
+      }
+    })
+    return current - 1;
+  }
+
 
   useEffect(() => {
     getDetailDataRequest()
@@ -46,10 +56,10 @@ const OrderDetail = () => {
     <PageContainer style={{ backgroundColor: '#fff', minHeight: '100%', paddingBottom: 40 }}>
       <Spin spinning={loading}>
         <div className={styles.order_detail}>
-          <Steps progressDot current={detailData.status}>
+          <Steps progressDot current={getCurrent()}>
             {
-              detailData?.Process?.map(item => (
-                <Step title={item.name} description={<><div>{item.time}</div></>} />
+              detailData?.nodeList?.map(item => (
+                <Step title={item.event} description={<><div>{item.eventTime?.replace('T',' ')}</div></>} />
               ))
             }
           </Steps>

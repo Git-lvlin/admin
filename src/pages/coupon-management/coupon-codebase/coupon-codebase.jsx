@@ -12,12 +12,12 @@ export default props => {
 
   const columns=[
     {
-      title: '优惠券名称',
+      title: '红包名称',
       dataIndex: 'couponName',
       valueType: 'text',
     },
     {
-      title: '优惠券类型',
+      title: '红包类型',
       dataIndex: 'couponType',
       valueType: 'select',
       valueEnum: {
@@ -80,7 +80,7 @@ export default props => {
   ]
   const columns2 = [
     {
-        title: '优惠券码',
+        title: '红包码',
         dataIndex: 'memberCouponCode',
         valueType: 'text',
     },
@@ -104,6 +104,12 @@ export default props => {
         hideInSearch: true,
     },
     {
+        title: '面值',
+        dataIndex: 'couponAmountDisplay',
+        valueType: 'text',
+        hideInSearch: true,
+    },
+    {
         title: '使用时间',
         dataIndex: 'actTime',
         valueType: 'text',
@@ -120,7 +126,7 @@ export default props => {
         }
     },
     {
-        title: '优惠券状态',
+        title: '红包状态',
         dataIndex: 'status',
         valueType: 'select',
         valueEnum: {
@@ -132,7 +138,7 @@ export default props => {
         hideInTable:true
     },
     {
-        title: '优惠券状态',
+        title: '红包状态',
         dataIndex: 'status',
         valueType: 'text',
         valueEnum: {

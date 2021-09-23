@@ -121,18 +121,18 @@ export default props => {
           className={styles.couponFrom}
         >
 
-          <h1><CaretRightFilled /> 优惠券审核详情</h1>
+          <h1><CaretRightFilled /> 红包审核详情</h1>
           <Button className={styles.goback} type="default" onClick={() => history.goBack()}>返回</Button>
           <div className={styles.msg}>
             <h3 className={styles.head}>基本信息</h3>
             <Form.Item
-              label="优惠券名称"
+              label="红包名称"
             >
               {detailData.couponName}
             </Form.Item>
 
             <Form.Item
-              label="优惠券类型"
+              label="红包类型"
             >
               {
                 detailData.couponType == 1 ?
@@ -168,7 +168,9 @@ export default props => {
               {
                 detailData.issueType == 1 ?
                   '会员领取券'
-                  : '系统发放券'
+                  :detailData.issueType == 2 ? 
+                  '系统发放券'
+                  :'每日红包'
               }
             </Form.Item>
             <Form.Item
@@ -191,11 +193,12 @@ export default props => {
             <Form.Item
               label="有效期"
             >
-               {
+             {
                 detailData.activityTimeType == 1 ?
                 <p>{detailData.activityStartTime + ' -- ' + detailData.activityEndTime}</p>
-                :
+                :detailData.activityTimeType == 2?
                 <p>领券{detailData.activityStartDay}天起，{detailData.activityEndDay}天内可用</p>
+                : <p>领券0天起，{detailData.activityEndHour}小时内可用</p>
               }
             </Form.Item>
 
@@ -281,6 +284,18 @@ export default props => {
                 ))
                }
             </Form.Item>
+
+            {
+              detailData.memberType == 3&&<Form.Item
+                label="活动说明"
+              >
+                {
+                detailData.couponActivityRule?.split('\n').map(ele=>(
+                  <span>{ele}</span>
+                ))
+                }
+              </Form.Item>
+            }
           </div>
 
             {
