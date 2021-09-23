@@ -447,6 +447,31 @@ export const bannerSortTop = (params = {}, options = {}) => {
   });
 }
 
+
+export const homeClassCategorySecondCategory = (params = {}, options = {}) => {
+  return request('/auth/goods/product/categorySecondCategory', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const homeClassificationStatus = (params = {}, options = {}) => {
+  return request('/auth/goods/product/categorySetHomeStatus', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const homeClassificationSortTop = (params = {}, options = {}) => {
+  return request('/auth/goods/product/categorySetHomeStick', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const homeActivitySortTop = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/activityIcon/setTop', {
     method: 'POST',
@@ -810,6 +835,30 @@ export const homeBannerList = async (params = {}, options = {}) => {
     data.status = Number(status);
   }
   const res = await request('/auth/java-admin/cms/banner/page', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const homeClassificationList = async (params = {}, options = {}) => {
+  const { current, pageSize, status, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  if (status) {
+    data.status = Number(status);
+  }
+  const res = await request('/auth/goods/product/categorySearchHomeList', {
     method: 'POST',
     data,
     ...options

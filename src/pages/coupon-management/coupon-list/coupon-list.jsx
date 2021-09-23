@@ -20,15 +20,15 @@ const Message = (props) => {
   const ref=useRef()
   const columns= [
     {
-      title: '优惠券名称',
+      title: '红包名称',
       dataIndex: 'couponName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入优惠券名称'
+        placeholder: '请输入红包名称'
       },
     },
     {
-      title: '优惠券类型',
+      title: '红包类型',
       dataIndex: 'couponType',
       valueType: 'select',
       valueEnum: {
@@ -47,7 +47,8 @@ const Message = (props) => {
       dataIndex: 'issueType',
       valueEnum: {
         1: '会员领取券',
-        2: '系统发放券'
+        2: '系统发放券',
+        3: '每日红包'
       },
     },
     {
@@ -103,7 +104,7 @@ const Message = (props) => {
       hideInSearch:true
     },
     {
-      title: '优惠劵状态',
+      title: '红包状态',
       dataIndex: 'couponStatus',
       valueType: 'select',
       valueEnum: {
@@ -138,7 +139,7 @@ const Message = (props) => {
         record={data} 
         boxref={ref} 
         label1={'删除'}
-        text={'确定要删除所选优惠券吗？'} 
+        text={'确定要删除所选红包吗？'} 
         InterFace={couponDelSub}
         blok={type}
         title={'操作确认'}
@@ -203,8 +204,8 @@ const Message = (props) => {
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.json_to_sheet([
           {
-            couponName: '优惠券名称',
-            couponType: '优惠券类型',
+            couponName: '红包名称',
+            couponType: '红包类型',
             couponAmountDisplay:'面值',
             issueType:'发行方式',
             issueAmount: '发行总金额（元）',
@@ -212,7 +213,7 @@ const Message = (props) => {
             limitStartTime:'可领取时间',
             activityTimeDisplay:'有效期',
             couponVerifyStatus: '审核状态',
-            couponStatus: type==4?'优惠劵状态':null,
+            couponStatus: type==4?'红包状态':null,
             createTime: '创建时间',
           },
           ...data
@@ -282,7 +283,7 @@ const TableList= (props) =>{
   return (
       <PageContainer>
         <ModalForm
-          title="新建优惠券"
+          title="新建红包"
           onVisibleChange={setVisible}
           visible={visible}
           trigger={ <Button
@@ -291,7 +292,7 @@ const TableList= (props) =>{
             className={styles.addCouponBtn}
             onClick={() =>setVisible(true)}
           >
-            新建优惠券
+            新建红包
           </Button>}
           submitter={{
           render: (props, defaultDoms) => {
@@ -319,6 +320,13 @@ const TableList= (props) =>{
               {
                 label: '系统发放券',
                 value: 2,
+              },
+              {
+                label:<>
+                        <p>每日红包</p>
+                        <span className={styles.packet_hint}>只能存在一个正在进行的每日红包活动</span>
+                      </>,
+                value: 3
               }
             ]}
           />

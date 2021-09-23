@@ -64,6 +64,10 @@ export default {
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
+  'menu.intensive-activity-management.intensive-remind-configuration': '集约提醒配置',
+  'menu.intensive-activity-management.intensive-remind-statistics': '集约提醒统计',
+
+
 
 
 

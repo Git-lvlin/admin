@@ -2,6 +2,7 @@ import React from 'react'
 import ProTable from '@ant-design/pro-table'
 import { amountTransform } from '@/utils/utils'
 import { Image } from 'antd'
+import { history } from 'umi'
 
 import styles from './styles.less'
 
@@ -23,7 +24,7 @@ const tableRow = props => {
   }
   return (
     <ProTable.Summary.Row>
-      <ProTable.Summary.Cell colSpan={6}>
+      <ProTable.Summary.Cell colSpan={7}>
         <div className={styles.summary}>
           <div className={styles.summaryItem}>
             退货原因：
@@ -45,6 +46,24 @@ const tableRow = props => {
       </ProTable.Summary.Cell>
     </ProTable.Summary.Row>
   )
+}
+
+const skipToOrderDetail = (type, id) => {
+  switch(type){
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 11:
+      history.push(`/order-management/normal-order-detail/${id}`)
+    break
+    case 15:
+    case 16:
+      history.push(`/order-management/intensive-order-detail/${id}`)
+    break
+    default:
+      return ''
+  }
 }
 
 const ReturnGoods = ({data}) => {
@@ -91,6 +110,17 @@ const ReturnGoods = ({data}) => {
       dataIndex: 'payAmount',
       align: 'center',
       render: (_) => `¥${amountTransform(Number(_), '/').toFixed(2)}`
+    },
+    {
+      title: '订单状态',
+      dataIndex: 'orderStatusStr',
+      align: 'center',
+      render: (_, records) => (
+        <>
+          <div>{_}</div>
+          <a onClick={()=>skipToOrderDetail(records?.orderType, records?.subOrderId)}>查看订单详情</a>
+        </>
+      )
     },
     {
       title: '应退金额',
