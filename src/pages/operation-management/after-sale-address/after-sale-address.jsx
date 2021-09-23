@@ -111,7 +111,7 @@ const TableList = () => {
       render: (_, data) => {
         return (
           <Space>
-            {data.status === 1 && <a onClick={() => { switchStatus(data) }}>禁用</a>}
+            {/* {data.status === 1 && <a onClick={() => { switchStatus(data) }}>禁用</a>} */}
             {data.status === 0 && <a onClick={() => { switchStatus(data) }}>开启</a>}
             {data.isDefault === 0 && <a onClick={() => { addressSetDefaultHandle(data) }}>设为默认</a>}
             <a onClick={() => { getDetail(data.id) }}>编辑</a>
@@ -123,11 +123,11 @@ const TableList = () => {
 
   return (
     <PageContainer>
-      <Card>
+      {/* <Card>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button key="out" type="primary" icon={<PlusOutlined />} onClick={() => { setFormVisible(true) }}>新建</Button>
         </div>
-      </Card>
+      </Card> */}
       <ProTable
         options={false}
         params={{

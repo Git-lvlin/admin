@@ -342,7 +342,7 @@ const TableList = () => {
         onCancel={() => { setIsModalVisible(false) }}
       >
         <p>注意：重置密码后，新密码将立即生效，原密码无法继续使用！</p>
-        <p style={{ fontSize: 12 }}>重置密码将同步发送给供应商</p>
+        <p style={{ fontSize: 12 }}>重置密码将同步发送给运营商</p>
       </Modal>
     </PageContainer>
 
