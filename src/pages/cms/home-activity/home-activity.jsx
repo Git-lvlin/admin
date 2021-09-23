@@ -69,6 +69,13 @@ const HomeActivity = () => {
       title: '操作人',
       dataIndex: 'updateName',
       valueType: 'text',
+      search: false,
+    },
+    {
+      title: '操作人',
+      dataIndex: 'operator',
+      valueType: 'text',
+      hideInTable: true,
     },
     {
       title: '状态',
