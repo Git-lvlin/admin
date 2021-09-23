@@ -457,7 +457,7 @@ export const homeClassCategorySecondCategory = (params = {}, options = {}) => {
 }
 
 export const homeClassificationSetSort = (params = {}, options = {}) => {
-  return request('/auth/goods/product/setHomeSort', {
+  return request('/auth/goods/product/categorySetHomeSort', {
     method: 'POST',
     data: params,
     ...options
