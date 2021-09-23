@@ -94,7 +94,6 @@ const IntensiveActivityCreate = () => {
       const params = {
         goodsInfos: selectItem.map(item => ({
           spuId: item.spuId,
-          batchNumber: item.batchNumber,
           skuId: item.skuId,
           totalStockNum: item.totalStockNum,
           minNum: item.minNum,
@@ -203,11 +202,6 @@ const IntensiveActivityCreate = () => {
 
                 if (+item.profit < 0) {
                   message.error(`sku:${item.skuId}实际盈亏不能小于0`);
-                  return false;
-                }
-
-                if (+item.batchNumber < 0 || /\./.test(+item.batchNumber)) {
-                  message.error(`sku:${item.skuId}集采箱柜单位量只能是1-9999之间的整数`);
                   return false;
                 }
 
