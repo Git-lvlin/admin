@@ -224,50 +224,6 @@ const couponType = (props) => {
                 </div>
                 :null
             }
-             {/* {
-                position==4||(parseInt(id)==id )&&DetailList.data?.couponType==4?
-                <div className={styles.unfold}>
-                    <ProForm.Group>
-                    <span>使用门槛: 满</span>
-                    <ProFormText
-                        width={100}
-                        name="usefulAmount"
-                        rules={[
-                            {validator: checkConfirm}
-                        ]}
-                    />
-                    <span>元， （填写0，则无使用门槛）</span>
-                    </ProForm.Group>
-                    <p>红包面值：随机</p>
-                    <ProForm.Group>
-                        <span>随机取值范围：</span>
-                        <ProFormText 
-                            name="freeAmount"
-                            fieldProps={{
-                                onChange: (e) => onDiscounts(e)
-                                }}
-                            width={100}
-                            rules={[
-                                {validator: checkConfirm}
-                            ]} 
-                        />
-                        <span>到</span>
-                        <ProFormText 
-                            name="freeAmount"
-                            fieldProps={{
-                                onChange: (e) => onDiscounts(e)
-                                }}
-                            width={100}
-                            rules={[
-                                {validator: checkConfirm}
-                            ]} 
-                        />
-                        <span>元</span>
-                    </ProForm.Group>
-                    <p>示例：输入1到3元，则用户领取红包金额从1-3元里随机取值，只可输入整数</p>
-                </div>
-                :null
-            } */}
             {/* 发行量 */}
             {
             type == 2 || DetailList.data?.issueType == 2 && id?
