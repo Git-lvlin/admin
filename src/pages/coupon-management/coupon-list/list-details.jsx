@@ -126,13 +126,13 @@ export default props => {
           <div className={styles.msg}>
             <h3 className={styles.head}>基本信息</h3>
             <Form.Item
-              label="优惠券名称"
+              label="红包名称"
             >
               {detailData.couponName}
             </Form.Item>
 
             <Form.Item
-              label="优惠券类型"
+              label="红包类型"
             >
               {
                 detailData.couponType == 1 ?
@@ -301,6 +301,18 @@ export default props => {
               ))
               }
             </Form.Item>
+
+            {
+              detailData.memberType == 3&&<Form.Item
+                label="活动说明"
+              >
+                {
+                detailData.couponRule?.split('\n').map(ele=>(
+                  <span>{ele}</span>
+                ))
+                }
+              </Form.Item>
+            }
           </div>
         </Form>
       </Spin>

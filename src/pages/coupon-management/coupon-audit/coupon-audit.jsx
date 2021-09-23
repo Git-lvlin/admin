@@ -13,18 +13,18 @@ const Message = (props) => {
   const ref=useRef()
   const columns= [
     {
-      title: '优惠券名称',
+      title: '红包名称',
       dataIndex: 'couponName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入优惠券名称'
+        placeholder: '请输入红包名称'
       },
       render:(text, record, _, action)=>[
         <a onClick={()=>history.push('/coupon-management/coupon-list/list-details?id='+record.id)}>{record.couponName}</a>
     ],
     },
     {
-      title: '优惠券类型',
+      title: '红包类型',
       dataIndex: 'couponType',
       valueType: 'select',
       valueEnum: {

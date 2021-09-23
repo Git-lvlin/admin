@@ -98,7 +98,7 @@ export default (props) => {
         bankLicenseImg: [imageInfo?.bankLicenseImg],
         bankCardFrontImg: [imageInfo?.bankCardFrontImg],
         bankCardBackImg: [imageInfo?.bankCardBackImg],
-        supplierId: detailData?.supplierId,
+        operationId: detailData?.operationId,
       }, { showSuccess: true, showError: true }).then(res => {
         if (res.code === 0) {
           resolve();
@@ -123,6 +123,7 @@ export default (props) => {
       const { bankAccountInfo } = detailData
       form.setFieldsValue({
         bindBankSwitch: bankAccountInfo?.bindBankSwitch,
+        bankAccountName: detailData.companyName,
       })
 
       if (bankAccountInfo) {
