@@ -80,27 +80,6 @@ const circulation=props=>{
                     </div>
                 :null
             }
-            {/* {
-                type==3&&position==1||DetailList.data?.issueQuantity?
-                    <div className={styles.unfold}>
-                        <ProForm.Group>
-                        <span>红包发行总数量为</span>
-                            <ProFormText 
-                                width={100}
-                                name="issueQuantity"
-                                // fieldProps={{
-                                //     onChange: (e) => sumMoney(e),
-                                //     }}
-                                placeholder="请输入"
-                                rules={[
-                                    {validator: checkConfirm}
-                                ]} 
-                            />
-                            <span>张, 数量达标后活动结束</span>
-                        </ProForm.Group>
-                    </div>
-                :null
-            } */}
         </>
     )
 }
