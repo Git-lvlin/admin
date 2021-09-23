@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Cascader, Input, Space } from 'antd';
-import { getAreas } from '@/services/supplier-management/supplier-list'
+import { getAreas } from '@/services/operation-management/operation-list'
 
 
 const Address = ({ value, onChange, disabled }) => {
