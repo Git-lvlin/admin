@@ -20,6 +20,7 @@ import BrandSelect from '@/components/brand-select'
 import debounce from 'lodash/debounce';
 import ImageSort from './image-sort';
 import Look from '@/components/look';
+import FreightTemplateSelect from '@/components/freight-template-select'
 
 const FromWrap = ({ value, onChange, content, right }) => (
   <div style={{ display: 'flex' }}>
