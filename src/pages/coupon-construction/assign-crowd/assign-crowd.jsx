@@ -125,7 +125,7 @@ const validity=(props)=>{
         <>
          <ProFormRadio.Group
           name="memberType"
-          label={type == 2||DetailList.data?.issueType == 2 && id ? '发券群体':'可领券群体'}
+          label={type == 2||DetailList.data?.issueType == 2 && id ? '发红包群体':'可领红包群体'}
           rules={[{ required: true, message: '请选择群体' }]}
           options={type==3||DetailList.data?.issueType == 3 && id ?options2:options}
           fieldProps={{

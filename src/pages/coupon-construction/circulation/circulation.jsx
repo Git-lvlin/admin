@@ -22,30 +22,30 @@ const circulation=props=>{
     const options=[
         {
             label:<FormattedMessage id="formandbasic-form.issued.quantity" />,
-            value: 3,
+            value: 2,
         }
     ]
     const options2=[
         {
             label:'按总数量发行',
-            value: 1,
+            value: 2,
         },
         {
             label:'不限制',
-            value: 2,
+            value: 1,
         }
     ]
     return(
         <>
          <ProFormRadio.Group
-                name="circulation"
+                name="issueQuantityType"
                 label={<FormattedMessage id="formandbasic-form.circulation" />}
                 options={type==3||DetailList.data?.issueType == 3 && id ?options2:options}
             />
-              <ProFormDependency name={['circulation']}>
-              {({ circulation }) => {
-                  if(circulation==2) return null 
-                  if(circulation==3||DetailList.data?.usefulAmount){
+              <ProFormDependency name={['issueQuantityType']}>
+              {({ issueQuantityType }) => {
+                  if(issueQuantityType==1) return null 
+                  if(issueQuantityType==2&&type==1||DetailList.data?.issueType == 1 && id){
                     return <div className={styles.unfold}>
                             <Space>
                                 <ProFormText 
@@ -78,16 +78,13 @@ const circulation=props=>{
                             </p>
                         </div>
                   }
-                  if(circulation==1){
+                  if(issueQuantityType==2){
                     return <div className={styles.unfold}>
                             <ProForm.Group>
                             <span>红包发行总数量为</span>
                                 <ProFormText 
                                     width={100}
                                     name="issueQuantity"
-                                    // fieldProps={{
-                                    //     onChange: (e) => sumMoney(e),
-                                    //     }}
                                     placeholder="请输入"
                                     rules={[
                                         {validator: checkConfirm}

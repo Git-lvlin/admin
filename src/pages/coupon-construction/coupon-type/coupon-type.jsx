@@ -52,22 +52,22 @@ const couponType = (props) => {
     }
     const options=[
         {
-            label:'满减券',
+            label:'满减红包',
             value: 1,
         },
         {
-            label: '折扣券',
+            label: '折扣红包',
             value: 2,
         },
         {
-            label: '立减券',
+            label: '立减红包',
             value: 3,
         }
     ]
     const options2=[
         {
             label: '满减红包',
-            value: 4
+            value: 1
         },
     ]
     return (
@@ -84,7 +84,7 @@ const couponType = (props) => {
             <ProFormDependency name={['couponType']}>
                 {({ couponType }) => { 
                 if(!couponType) return null
-                if(couponType==1){
+                if(couponType==1&&type!=3||DetailList.data?.issueType != 3 && id){
                     return  <div className={styles.unfold}>
                                 <ProForm.Group>
                                 <span>使用门槛: 活动商品满</span>
@@ -222,7 +222,7 @@ const couponType = (props) => {
                             </p>
                         </div>
                 }
-                if(couponType==4){
+                if(couponType==1){
                     return <div className={styles.unfold}>
                                 <ProForm.Group>
                                 <span>使用门槛: 满</span>

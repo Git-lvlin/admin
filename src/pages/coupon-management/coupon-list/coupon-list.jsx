@@ -6,6 +6,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import XLSX from 'xlsx'
 import { couponList } from '@/services/coupon-management/coupon-list';
 import { couponDelSub,couponStatusSub } from '@/services/coupon-management/coupon-delsub';
+import { checkIssueTypeLog } from '@/services/coupon-management/coupon-checkIssue-typelog';
 import DeleteModal from '@/components/DeleteModal'
 import EndModel from './end-model'
 import TurnDownModel from './turn-down-model'
@@ -32,9 +33,9 @@ const Message = (props) => {
       dataIndex: 'couponType',
       valueType: 'select',
       valueEnum: {
-        1: '满减券',
-        2: '折扣券',
-        3: '立减券'
+        1: '满减红包',
+        2: '折扣红包',
+        3: '立减红包'
       }
     },
     {
@@ -46,8 +47,8 @@ const Message = (props) => {
       title: '发行方式',
       dataIndex: 'issueType',
       valueEnum: {
-        1: '会员领取券',
-        2: '系统发放券',
+        1: '会员领取红包',
+        2: '系统发放红包',
         3: '每日红包'
       },
     },
@@ -280,6 +281,7 @@ const TableList= (props) =>{
   const { dispatch }=props
   const [visible, setVisible] = useState(false);
   const [seleType,setSeleType]=useState(1)
+  const [isCreate,setIsCreate]=useState()
   return (
       <PageContainer>
         <ModalForm
@@ -290,7 +292,14 @@ const TableList= (props) =>{
             key="primary"
             type="primary"
             className={styles.addCouponBtn}
-            onClick={() =>setVisible(true)}
+            onClick={() =>{
+              setVisible(true)
+              checkIssueTypeLog({}).then(res=>{
+                if(res.code==0){
+                  setIsCreate(res.data.isCreate)
+                }
+              })
+            }}
           >
             新建红包
           </Button>}
@@ -314,11 +323,11 @@ const TableList= (props) =>{
             }}
             options={[
               {
-                label: '会员领取券',
+                label: '会员领取红包',
                 value: 1,
               },
               {
-                label: '系统发放券',
+                label: '系统发放红包',
                 value: 2,
               },
               {
@@ -326,7 +335,8 @@ const TableList= (props) =>{
                         <p>每日红包</p>
                         <span className={styles.packet_hint}>只能存在一个正在进行的每日红包活动</span>
                       </>,
-                value: 3
+                value: 3,
+                disabled:isCreate==2?true:false
               }
             ]}
           />

@@ -64,7 +64,6 @@ const couponConstruction = (props) => {
     })
   }
   const onsubmit = (values) => {
-    console.log('values',values.dateRange)
     try {
     //发放类型
     values.issueType = parseInt(type)|| id&&DetailList.data?.issueType
@@ -74,19 +73,24 @@ const couponConstruction = (props) => {
       unit: values.unit,//单位
       usefulNum: parseInt(values.usefulNum),//用件数门槛
       freeDiscount: values.freeDiscount,//折扣
-      maxFreeAmount: parseInt(values.maxFreeAmount)//最多优惠（单位分）
+      maxFreeAmount: parseInt(values.maxFreeAmount),//最多优惠（单位分）
+      freeAmountStart:parseInt(values.freeAmountStart),
+      freeAmountEnd:parseInt(values.freeAmountEnd)
     }
     
     values.issueQuantity = parseInt(values.issueQuantity)//发行量
     values.limitStartTime = values.dateRange ? values.dateRange[0] : null,//可领取开始时间
     values.limitEndTime = values.dateRange ? values.dateRange[1] : null,//可领取结束时间
     values.limitQuantity = parseInt(values.limitQuantity)//限领数量
+    values.limitType=values.issueType==3?2:values.limitType//限领类型
+    values.issueQuantityType=values.issueType==2?1: values.issueQuantityType//发行量类型
+  
     values.activityStartTime = values.dateTimeRange ? values.dateTimeRange[0] : null,//有效期开始时间
     values.activityEndTime = values.dateTimeRange ? values.dateTimeRange[1] : null,//有效期结束时间
     values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
     values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
     values.useTypeInfoM = {//秒约商品详情信息
-      goodsType: values.goodsType,
+      goodsType: type==3||DetailList.data?.issueType == 3 && id?2:values.goodsType,
       spuIds: UseScopeList.UseScopeObje.spuIds,
       classId: parseInt(UseScopeList.UseScopeObje.unit)
     }
@@ -129,7 +133,7 @@ const couponConstruction = (props) => {
     } catch (error) {
       console.log('error',error)
     }
-   console.log('values',values)
+    console.log('values',values)
     if (id) {
       couponEdit({ ...values, id: id }).then((res) => {
         if (res.code == 0) {
@@ -222,9 +226,7 @@ const couponConstruction = (props) => {
             label="每人限领"
             name="limitQuantity"
             readonly
-            fieldProps={{
-              value:'1张/天'
-            }}
+            initialValue="1张/天"
            />
          :
          <>
@@ -305,7 +307,7 @@ const couponConstruction = (props) => {
         <PeriodValidity  id={id} type={type}/>
         
 
-        {/* 可领券群体 */}
+        {/* 可领红包群体 */}
         <AssignCrowd id={id} type={type} callback={(current)=>setChoose(current)} />
 
         <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>使用设置</span></h3>
