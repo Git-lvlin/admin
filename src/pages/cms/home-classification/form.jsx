@@ -31,7 +31,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      width={400}
+      width={560}
       title={`${detailData.gcName}`}
       onVisibleChange={setVisible}
       formRef={formRef}
@@ -54,12 +54,12 @@ export default (props) => {
       <ProForm.Group>
         二级分类
       </ProForm.Group>
-      <ProForm.Group style={{textAlign: 'center'}}>
+      <ProForm.Group>
         {list&&<ProCard>
           {list.map((item) => {
             return <ProForm.Group style={{borderBottom: '1px solid #f0f0f0'}}>
               <Avatar shape="square" size={64} icon={<UserOutlined />} src={item.gcIcon}/>
-              {item.gcName}
+              <ProCard style={{width: 280}}>{item.gcName}</ProCard>
               <ProFormSwitch
                 name={item.id}
                 fieldProps={{
