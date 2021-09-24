@@ -242,7 +242,4 @@ export default {
   'menu.data-board.order-list': '订单列表',
   'menu.data-board.rank': '排名',
   'menu.data-board.order': '订单',
-
-  'menu.pull-couple-activity':'拉新活动管理',
-  'menu.pull-couple-activity.activity-list':'活动列表',
 };

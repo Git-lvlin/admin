@@ -21,9 +21,9 @@ export default props => {
       dataIndex: 'couponType',
       valueType: 'select',
       valueEnum: {
-        1: '满减券',
-        2: '折扣券',
-        3: '立减券'
+        1: '满减红包',
+        2: '折扣红包',
+        3: '立减红包'
       }
     },
     {
@@ -150,7 +150,7 @@ export default props => {
         hideInSearch: true
     },
     {
-        title: '领券时间',
+        title: '领红包时间',
         key: 'dateRange',
         dataIndex: 'createdAtRange',
         valueType: 'dateRange',
