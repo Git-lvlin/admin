@@ -86,11 +86,11 @@ const HomeActivity = () => {
       valueType: 'select',
       valueEnum: {
         0: {
-          text: '已下线',
+          text: '关闭',
           status: '1',
         },
         1: {
-          text: '已上线',
+          text: '启用',
           status: '2',
         },
       }
@@ -101,8 +101,8 @@ const HomeActivity = () => {
       valueType: 'text',
       search: false,
       valueEnum: {
-        0: '下架',
-        1: '上架',
+        0: '关闭',
+        1: '启用',
       }
     },
     {
