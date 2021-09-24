@@ -856,15 +856,15 @@ export const homeBannerList = async (params = {}, options = {}) => {
 }
 
 export const homeClassificationList = async (params = {}, options = {}) => {
-  const { current, pageSize, status, ...rest } = params;
+  const { current, pageSize, homeStatus, ...rest } = params;
 
   const data = {
     page: current,
     size: pageSize,
     ...rest
   }
-  if (status) {
-    data.status = Number(status);
+  if (homeStatus) {
+    data.homeStatus = Number(homeStatus);
   }
   const res = await request('/auth/goods/product/categorySearchHomeList', {
     method: 'POST',
