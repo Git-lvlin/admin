@@ -7,7 +7,7 @@ import {
 import { refuse } from '@/services/intensive-store-management/store-review'
 
 export default (props) => {
-  const { id } = props;
+  const { id, visible, setVisible } = props;
   const [form] = Form.useForm();
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -46,7 +46,8 @@ export default (props) => {
   return (
     <ModalForm
       title={`请确认操作`}
-      trigger={<Button type="danger">驳回</Button>}
+      visible={visible}
+      onVisibleChange={setVisible}
       width={550}
       form={form}
       onFinish={async (values) => {
