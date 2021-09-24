@@ -86,6 +86,7 @@ const Detail = (props) => {
   const [form] = Form.useForm()
   const [addressText, setAddressText] = useState('');
   const [location, setLocation] = useState([]);
+  const [rejectFormVisible, setRejectFormVisible] = useState(false);
   const map = useRef();
 
   const submit = (values) => {
@@ -230,7 +231,9 @@ const Detail = (props) => {
                 <Button type="primary" onClick={() => props.form?.submit()}>
                   通过
                 </Button>
-                <RejectForm id={detailData?.id} />
+                <Button type="danger" onClick={() => {
+                  setRejectFormVisible(true);
+                }}>驳回</Button>
                 <Button onClick={() => {
                   setVisible(false)
                 }}>
@@ -253,6 +256,15 @@ const Detail = (props) => {
       <Spin
         spinning={loading}
       >
+        {
+          rejectFormVisible
+          &&
+          <RejectForm
+            visible={rejectFormVisible}
+            setVisible={setRejectFormVisible}
+            id={props?.id}
+          />
+        }
         <Form.Item
           label="手机号"
         >
