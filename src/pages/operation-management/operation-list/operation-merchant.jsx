@@ -288,10 +288,10 @@ const TableList = () => {
             <Export
               key="3"
               change={(e) => { setExportVisible(e) }}
-              type="operation-export"
+              type="admin-services-provider-export"
               conditions={getFieldValue}
             />,
-            <ExportHistory key="4" show={exportVisible} setShow={setExportVisible} type="operation-export" />,
+            <ExportHistory key="4" show={exportVisible} setShow={setExportVisible} type="admin-services-provider-export" />,
           ],
         }}
         columns={columns}
