@@ -102,7 +102,7 @@ const Detail = (props) => {
         cityName: area[1].label,
         regionId: area[2].value,
         regionName: area[2].label,
-        applyId: params.id,
+        applyId: props.id,
         optAdminId: userInfo.id,
         optAdminName: userInfo.username,
         longitude: location[0],
