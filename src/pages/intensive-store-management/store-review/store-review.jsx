@@ -199,7 +199,8 @@ const StoreReview = () => {
           setVisible={setDrawerVisible}
           callback={() => {
             setDrawerVisible(false);
-            setSelectItem(null)
+            setSelectItem(null);
+            actionRef.current.reload()
           }}
         />
       }

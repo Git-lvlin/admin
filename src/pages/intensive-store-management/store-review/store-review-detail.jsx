@@ -263,6 +263,7 @@ const Detail = (props) => {
             visible={rejectFormVisible}
             setVisible={setRejectFormVisible}
             id={props?.id}
+            callback={props?.callback}
           />
         }
         <Form.Item
