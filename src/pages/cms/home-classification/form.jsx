@@ -59,7 +59,7 @@ export default (props) => {
           {list.map((item) => {
             return <ProForm.Group style={{borderBottom: '1px solid #f0f0f0'}}>
               <Avatar shape="square" size={64} icon={<UserOutlined />} src={item.gcIcon}/>
-              {item.gcName}
+              <span style={{width: 120}}>{item.gcName}</span>
               <ProFormSwitch
                 name={item.id}
                 fieldProps={{
