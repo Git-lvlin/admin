@@ -7,7 +7,7 @@ import {
 import { refuse } from '@/services/intensive-store-management/store-review'
 
 export default (props) => {
-  const { id, visible, setVisible } = props;
+  const { id, visible, setVisible, callback } = props;
   const [form] = Form.useForm();
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -35,6 +35,7 @@ export default (props) => {
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
           resolve()
+          callback()
         } else {
           reject()
         }
