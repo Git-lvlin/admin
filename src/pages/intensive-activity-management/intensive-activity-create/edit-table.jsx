@@ -212,7 +212,14 @@ export default function EditTable({ onSelect }) {
       editable: false,
     },
     {
-      title: '配送费补贴(元)',
+      title: '运营中心配送费补贴',
+      dataIndex: 'operationFixedPrice',
+      valueType: 'text',
+      hideInSearch: true,
+      editable: false,
+    },
+    {
+      title: '社区店配送费补贴',
       dataIndex: 'fixedPrice',
       valueType: 'text',
       hideInSearch: true,
@@ -223,6 +230,7 @@ export default function EditTable({ onSelect }) {
       dataIndex: 'batchNumber',
       valueType: 'text',
       hideInSearch: true,
+      editable: false,
     },
     {
       title: '单次起订量',
@@ -255,6 +263,7 @@ export default function EditTable({ onSelect }) {
       maxNum: 100,
       price: amountTransform(item.price, '/'),
       fixedPrice: amountTransform(item.fixedPrice, '/'),
+      operationFixedPrice: amountTransform(item.operationFixedPrice, '/'),
       settlePercent: amountTransform(item.settlePercent),
       wholesaleFreight: amountTransform(item.wholesaleFreight, '/'),
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
@@ -293,6 +302,7 @@ export default function EditTable({ onSelect }) {
             const data = {
               ...record,
               fixedPrice: amountTransform(skuData.fixedPrice, '/'),
+              operationFixedPrice: amountTransform(skuData.operationFixedPrice, '/'),
               settlePercent: amountTransform(skuData.settlePercent),
               price: amountTransform(skuData.price, '/'),
               profit: amountTransform(skuData.profit, '/'),

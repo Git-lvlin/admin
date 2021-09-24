@@ -68,6 +68,10 @@ export default (props) => {
             marketPrice: amountTransform(item[1].marketPrice, '/'),
             salePriceFloat: amountTransform(item[1].salePriceFloat),
             salePriceProfitLoss: amountTransform(item[1].salePriceProfitLoss, '/'),
+            wholesaleFreight: amountTransform(item[1].wholesaleFreight, '/'),
+            batchNumber: item[1].batchNumber,
+            isFreeFreight: item[1].isFreeFreight,
+            freightTemplateId: item[1]?.freightTemplateName ? { label: item[1]?.freightTemplateName, value: item[1]?.freightTemplateId } : undefined,
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -163,23 +167,23 @@ export default (props) => {
         {{ 0: '批发+零售', 1: '仅批发', 2: '零售' }[goods.goodsSaleType]}
       </Form.Item>
 
-      <Form.Item
+      {detailData?.goods?.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 && <Form.Item
         label="平均运费(元)"
       >
         {amountTransform(goods.wholesaleFreight, '/')}
-      </Form.Item>
+      </Form.Item>}
       <Form.Item
         label="商品开票税率(%)"
       >
         {amountTransform(goods.wholesaleTaxRate)}
       </Form.Item>
-      {detailData?.goods?.goodsSaleType !== 1 && <Form.Item
+      {detailData?.goods?.goodsSaleType !== 1 && detailData?.isMultiSpec === 0 && <Form.Item
         label="是否包邮"
       >
         {{ 0: '不包邮', 1: '包邮', }[goods.isFreeFreight]}
       </Form.Item>}
 
-      {detailData.freightTemplateName &&
+      {detailData?.goods?.goodsSaleType !== 1 && detailData?.isMultiSpec === 0 && goods.isFreeFreight === 0 &&
         <Form.Item
           label="运费模板"
         >
@@ -254,6 +258,11 @@ export default (props) => {
                   label="批发供货价(元)"
                 >
                   {amountTransform(goods.wholesaleSupplyPrice, '/')}
+                </Form.Item>
+                <Form.Item
+                  label="集采箱柜单位量"
+                >
+                  {goods.batchNumber}
                 </Form.Item>
                 <Form.Item
                   label="最低批发量"
