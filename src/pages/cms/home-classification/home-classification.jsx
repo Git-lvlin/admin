@@ -89,6 +89,7 @@ const HomeClassification = () => {
       title: '操作人',
       dataIndex: 'homeLastEditor',
       valueType: 'text',
+      search: false,
     },
     {
       title: '状态',
