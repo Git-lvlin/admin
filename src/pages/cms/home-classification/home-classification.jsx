@@ -101,11 +101,11 @@ const HomeClassification = () => {
       valueEnum: {
         0: {
           text: '已下线',
-          status: '1',
+          homeStatus: 0,
         },
         1: {
           text: '已上线',
-          status: '2',
+          homeStatus: 1,
         },
       }
     },
