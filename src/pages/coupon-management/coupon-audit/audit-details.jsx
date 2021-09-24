@@ -136,11 +136,11 @@ export default props => {
             >
               {
                 detailData.couponType == 1 ?
-                  '满减券'
+                  '满减红包'
                   : detailData.couponType == 2 ?
-                    '折扣券'
+                    '折扣红包'
                     : detailData.couponType == 3 ?
-                      '立减券' : null
+                      '立减红包' : null
               }
             </Form.Item>
 
@@ -151,7 +151,7 @@ export default props => {
             </Form.Item>
 
             <Form.Item
-              label="券面值"
+              label="红包面值"
             >
               {detailData.couponAmountDisplay}
             </Form.Item>
@@ -167,9 +167,9 @@ export default props => {
             >
               {
                 detailData.issueType == 1 ?
-                  '会员领取券'
+                  '会员领取红包'
                   :detailData.issueType == 2 ? 
-                  '系统发放券'
+                  '系统发放红包'
                   :'每日红包'
               }
             </Form.Item>
@@ -197,13 +197,13 @@ export default props => {
                 detailData.activityTimeType == 1 ?
                 <p>{detailData.activityStartTime + ' -- ' + detailData.activityEndTime}</p>
                 :detailData.activityTimeType == 2?
-                <p>领券{detailData.activityStartDay}天起，{detailData.activityEndDay}天内可用</p>
-                : <p>领券0天起，{detailData.activityEndHour}小时内可用</p>
+                <p>领红包{detailData.activityStartDay}天起，{detailData.activityEndDay}天内可用</p>
+                : <p>领红包0天起，{detailData.activityEndHour}小时内可用</p>
               }
             </Form.Item>
 
             <Form.Item
-              label="可领券群体"
+              label="可领红包群体"
             >
               {
                 detailData.memberType == 1 ?

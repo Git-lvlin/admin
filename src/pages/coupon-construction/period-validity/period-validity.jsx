@@ -16,13 +16,13 @@ const validity=(props)=>{
           value: 1,
         },
         {
-          label: '领券',
+          label: '领红包',
           value: 2,
         }
     ]
     const options2=[
         {
-          label: '领券',
+          label: '领红包',
           value: 2,
         }
     ]
@@ -42,7 +42,7 @@ const validity=(props)=>{
                     rules={[{ required: true, message: '请选择有效期限' }]}
                     options={[
                         {
-                            label: '领券',
+                            label: '领红包',
                             value: 3,
                         }
                     ]}
@@ -88,7 +88,7 @@ const validity=(props)=>{
                 if (activityTimeType==3){
                     return <div className={styles.unfold}>
                                <ProForm.Group>
-                                <p>领券后</p>
+                                <p>领红包后</p>
                                 <ProFormText
                                     width={100}
                                     name="activityEndHour"
