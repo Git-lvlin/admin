@@ -70,7 +70,10 @@ export default (props) => {
           width="sm"
           name="title"
           label="活动标题"
-          rules={[{ required: true, message: '请输入活动标题' }]}  
+          rules={[{ required: true, message: '请输入活动标题' }]}
+          fieldProps={{
+            maxLength: 10
+          }}
         />
       </ProForm.Group>
       <ProForm.Group>
