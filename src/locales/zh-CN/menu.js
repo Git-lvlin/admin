@@ -26,6 +26,7 @@ export default {
   'menu.order-management.normal-order-detail': '订单详情',
   'menu.order-management.normal-order-detail-purchase': '订单详情',
   'menu.order-management.intensive-order': '集约订单',
+  'menu.order-management.intensive-order.intensive-purchase-order': '平台采购订单',
   'menu.order-management.intensive-order.shopkeeper-order': '集约零售订单',
   'menu.order-management.intensive-order.supplier-order': '集约批发订单',
   'menu.order-management.intensive-order.supplier-order-purchase': '集约批发订单(采购)',
@@ -76,6 +77,7 @@ export default {
 
   'menu.operation-management': '运营商管理',
   'menu.operation-management.operation-list': '运营商列表',
+  'menu.operation-management.bind-list': '社区店绑定列表',
   'menu.operation-management.audit-list': '运营商审核',
   'menu.operation-management.consultant-product-list': '运营商顾问商品列表',
   'menu.operation-management.consultant-operation-list': '顾问运营商列表',
