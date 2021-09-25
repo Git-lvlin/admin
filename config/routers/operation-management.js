@@ -12,6 +12,11 @@ export default {
       path: '/operation-management/audit-list',
       component: './operation-management/audit-list',
     },
+    {
+      name: 'bind-list',
+      path: '/operation-management/bind-list',
+      component: './operation-management/bind-list',
+    },
     // {
     //   name: 'consultant-product-list',
     //   path: '/operation-management/consultant-product-list/:id',

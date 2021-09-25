@@ -19,7 +19,8 @@ import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import debounce from 'lodash/debounce';
 import ImageSort from './image-sort';
-import Look from './look';
+import Look from '@/components/look';
+import FreightTemplateSelect from '@/components/freight-template-select'
 
 const FromWrap = ({ value, onChange, content, right }) => (
   <div style={{ display: 'flex' }}>
@@ -354,6 +355,7 @@ export default (props) => {
         wholesaleFreight: amountTransform(goods.wholesaleFreight, '/'),
         wholesaleTaxRate: amountTransform(goods.wholesaleTaxRate),
         supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId,
+        batchNumber: goods.batchNumber
       })
 
       if (freightTemplateId && freightTemplateName) {
