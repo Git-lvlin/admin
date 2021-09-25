@@ -355,6 +355,7 @@ export default (props) => {
         wholesaleFreight: amountTransform(goods.wholesaleFreight, '/'),
         wholesaleTaxRate: amountTransform(goods.wholesaleTaxRate),
         supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId,
+        batchNumber: goods.batchNumber
       })
 
       if (freightTemplateId && freightTemplateName) {
