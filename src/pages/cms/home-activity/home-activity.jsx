@@ -3,9 +3,11 @@ import React, { useRef, useState, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
 import { homeActivityList, homeActivitySortTop } from '@/services/cms/member/member';
+import ProCard from '@ant-design/pro-card';
 
 const HomeActivity = () => {
   const actionRef = useRef();
@@ -122,10 +124,17 @@ const HomeActivity = () => {
 
   return (
     <PageContainer>
+      <ProForm.Group>
+        <ProCard style={{display: 'flex',}}>
+          <Button type={'primary'} onClick={() => {}}>APP</Button>
+          <Button disabled onClick={() => {}}>小程序</Button>
+        </ProCard>
+      </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
+      params={{useType: 1}}
       request={homeActivityList}
       search={{
         labelWidth: 'auto',
