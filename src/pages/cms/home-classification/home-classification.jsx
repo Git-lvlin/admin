@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { message, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm, { ProFormSwitch } from '@ant-design/pro-form';
+import ProCard from '@ant-design/pro-card';
 import { PageContainer } from '@ant-design/pro-layout';
 import { dateFormat } from '@/utils/utils';
 import Edit from './form';
@@ -147,6 +148,12 @@ const HomeClassification = () => {
 
   return (
     <PageContainer>
+      <ProForm.Group>
+        <ProCard style={{display: 'flex',}}>
+          <Button type={'primary'} onClick={() => {}}>APP</Button>
+          <Button disabled onClick={() => {}}>小程序</Button>
+        </ProCard>
+      </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
