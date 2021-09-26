@@ -9,7 +9,7 @@ import Upload from '@/components/upload';
 import { posterUpdata } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, setVisible, onClose, visible, refresh, setRefresh } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
@@ -29,12 +29,14 @@ export default (props) => {
         relativeY: 179,
         qrcodeWidth: 92,
         qrcodeHeight: 92,
-      }
+      },
+      verison: 2,
     }
   
     return new Promise((resolve, reject) => {
       posterUpdata(param).then((res) => {
         if (res.code === 0) {
+          setRefresh(!refresh);
           resolve(true);
         } else {
           reject(false);
