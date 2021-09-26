@@ -1,107 +1,208 @@
 
-import React, { useRef, useState, useEffect } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, message } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import React, { useState, useEffect } from 'react';
+import { Button, Form, Space, Pagination, Spin } from 'antd';
+import ProForm, { ProFormText, ProFormSelect } from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
-import { posterList, posterDel } from '@/services/cms/member/member';
+import Reason from './reason';
+import { posterListNew, posterUpData } from '@/services/cms/member/member';
+import styles from './style.less';
 
 const NewPoster = () => {
-  const actionRef = useRef();
+  const [form] = Form.useForm()
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(8)
+  const [pageTotal, setPageTotal] = useState(0)
   const [formVisible, setFormVisible] = useState(false);
+  const [formVisibleReason, setFormVisibleReason] = useState(false);
   const [detailData, setDetailData] = useState(null);
-
-  const getDetail = (data) => {
-    data && setDetailData(data);
+  const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [reasonData, setReasonData] = useState(false);
+  const [search, setSearch] = useState(0)
+  const [num, setNum] = useState(0)
+  const getDetail = () => {
     setFormVisible(true);
   }
 
-  const formControl = (id) => {
-    posterDel({id: id}).then((res) => {
+  const pageChange = (a, b) => {
+    setPage(a)
+    setPageSize(b)
+  }
+
+  const getFieldValue = () => {
+    const { ...rest } = form.getFieldsValue();
+    return {
+      ...rest,
+    }
+  }
+
+  const upDown = ({state, ...rest}) => {
+
+    if (state) {
+      setReasonData({state, ...rest})
+      setFormVisibleReason(true)
+      return
+    }
+    const param = {
+      ...rest,
+      state: 1,
+    }
+    posterUpData(param).then(res => {
       if (res.code === 0) {
-        message.success(`删除成功`);
-        actionRef.current.reset();
+        setRefresh(!refresh)
       }
     })
   }
 
-  useEffect(() => {
-    if (!formVisible) {
-      actionRef.current.reset();
-    }
-  }, [formVisible])
-
-  const columns = [
-    {
-      title: '排序',
-      dataIndex: 'sort',
-      valueType: 'text',
-      search: false,
-    },
-    {
-      title: '图片',
-      dataIndex: 'image',
-      render: (text) => <img src={text} width={50} height={50} />,
-      search: false,
-    },
-    {
-      title: '海报名称',
-      dataIndex: 'title',
-    },
-    {
-      title: '添加时间',
-      dataIndex: 'createTime',
-      valueType: 'text',
-      search: false,
-    },
-    {
-      title: '操作人',
-      dataIndex: 'updateName',
-      valueType: 'text',
-      search: false,
-    },
-    {
-      title: '操作',
-      valueType: 'option',
-      dataIndex: 'option',
-      render: (text, record, _) => {
-        return (
-          <>
-            {<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
-            &nbsp;&nbsp;{<a key="d" onClick={() => {formControl(record.id)}}>删除</a>}
-          </>
-        )
+  const setStateNum = (resData) => {
+    const len = resData.length
+    let number = 0
+    for(let i=0;i<len;i++) {
+      if (resData[i].state === 1) {
+        number += 1
       }
-    },
-  ];
+    }
+    setNum(number)
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    posterListNew({
+      page,
+      size: pageSize,
+      version: 2,
+      ...getFieldValue(),
+    })
+      .then(res => {
+        if (res.code === 0) {
+          const resData = res.data;
+          setData(resData.records)
+          setPageTotal(resData.total)
+          setStateNum(resData.records)
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      })
+  }, [page, pageSize, form, refresh, search])
 
   return (
     <PageContainer>
-    <ProTable
-      rowKey="id"
-      columns={columns}
-      actionRef={actionRef}
-      request={posterList}
-      search={{
-        labelWidth: 'auto',
-      }}
-      pagination={{
-        pageSize: 9,
-      }}
-      dateFormatter="string"
-      toolBarRender={(_,record) => [
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail() }}>
-          新增
-        </Button>,
-      ]}
-    />
+      <ProForm
+        form={form}
+        style={{ backgroundColor: '#fff', padding: 20, paddingLeft: 42 }}
+        layout="inline"
+        onFinish={() => {
+          setPage(1)
+          setSearch(search + 1)
+        }}
+        submitter={{
+          render: ({ form }, doms) => {
+            return (
+              <div>
+                <Space>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      form?.submit();
+                    }}
+                  >
+                    查询
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      form?.resetFields();
+                    }}
+                  >
+                    重置
+                  </Button>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      getDetail()
+                    }}
+                  >
+                    上传
+                  </Button>
+                </Space>
+              </div>
+            );
+          },
+        }}
+      >
+        <ProFormText
+          name="title"
+          label="名称"
+        />
+        <ProFormSelect
+          label="状态"
+          name="state"
+          options={[
+            {
+              value: 0,
+              label: '下架'
+            },
+            {
+              value: 1,
+              label: '上架'
+            }
+          ]}
+        />
+      </ProForm>
+      <Spin spinning={loading}>
+        <div className={styles.box}>
+        {
+          data&&data.map((item) => 
+            <span className={styles.itembox}>
+              <img className={styles.img} src={item.image}  />
+              <p className={styles.title}>
+                <span>{item.title}</span>
+                <Button onClick={() => {upDown(item)}}>{item.state?'下架':'上架'}</Button>
+              </p>
+              <p>
+                <span>{item.updateName}于</span>
+                <span>{item.updateTime}</span>
+                <span>上传</span>
+              </p>
+              <p>
+                {
+                  item.state?<span className={styles.green}>已上架</span>
+                  :<div>
+                    <span className={styles.red}>已下架 </span> 
+                    <span className={styles.text}> 下架原因：{item.offDesc}</span>
+                  </div>
+                }
+              </p>
+            </span>
+          )
+        }
+        </div>
+      </Spin>
+      <Pagination
+        className={styles.pagination}
+        total={pageTotal}
+        showTotal={(total, range) => `共 ${pageTotal} 张海报 已上架 ${num} 张`}
+        pageSize={pageSize}
+        current={page}
+        onChange={pageChange}
+      />
     {formVisible && <Edit
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
-      callback={() => { actionRef.current.reload(); setDetailData(null) }}
-      onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+      callback={() => { setDetailData(null) }}
+      onClose={() => { setDetailData(null) }}
+    />}
+    {formVisibleReason && <Reason
+      visible={formVisibleReason}
+      setVisible={setFormVisibleReason}
+      detailData={reasonData}
+      setRefresh={setRefresh}
+      refresh={refresh}
+      callback={() => { setRefresh(!refresh);setReasonData(null) }}
+      onClose={() => { setReasonData(null) }}
     />}
     </PageContainer>
   );

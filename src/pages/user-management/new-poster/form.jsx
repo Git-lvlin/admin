@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
-  DrawerForm,
+  ModalForm,
   ProFormText,
+  ProFormRadio,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import { posterUpdata } from '@/services/cms/member/member';
@@ -13,12 +14,22 @@ export default (props) => {
   const [form] = Form.useForm();
 
   const waitTime = (values) => {
-    const { id, ...rest } = values
+    const { image, ...rest } = values
     const param = {
-      ...rest
-    }
-    if (id) {
-      param.id = id
+      ...rest,
+      bgImage: {
+        url: image,
+        with: 308,
+        height: 410,
+        relativeX: 34,
+        relativeY: 162,
+      },
+      compositeXY: {
+        relativeX: 108,
+        relativeY: 179,
+        qrcodeWidth: 92,
+        qrcodeHeight: 92,
+      }
     }
   
     return new Promise((resolve, reject) => {
@@ -43,8 +54,8 @@ export default (props) => {
   }, [form, detailData])
 
   return (
-    <DrawerForm
-      title={`${detailData ? '编辑' : '新建'}`}
+    <ModalForm
+      title={'上传'}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -64,11 +75,15 @@ export default (props) => {
       }}
     >
       <ProForm.Group>
-        <ProFormText 
-          width="sm"
+        <ProFormText
           name="title"
           label="海报名称"
-          rules={[{ required: true, message: '请输入海报名称' }]}  
+          placeholder={'请输入海报名称，长度3-8个汉字、字母或数字'}
+          rules={[{ required: true, message: '请输入海报名称，长度3-8个汉字、字母或数字' }]}
+          fieldProps={{
+            maxLength: 8,
+            minLength: 3,
+          }}
         />
       </ProForm.Group>
       <ProForm.Group>
@@ -85,27 +100,30 @@ export default (props) => {
           tooltip={
             <dl>
               <dt>图片要求</dt>
-              <dd>设计师直接提供，不做限制</dd>
+              <dd>大小：不超过2MB</dd>
+              <dd>尺寸：375px*676px</dd>
+              <dd>格式：png/jpg/gif</dd>
             </dl>
           }
         >
           <Upload multiple maxCount={1} />
         </Form.Item>
       </ProForm.Group>
-      <ProForm.Group>
-        <ProFormText
-          width="sm"
-          name="sort"
-          label="排序"
-          rules={[{ required: true, message: '请输入排序序号' }]}  
+      <ProFormRadio.Group
+          name="state"
+          label="是否上架"
+          initialValue={1}
+          options={[
+            {
+              label: '立即上架',
+              value: 1,
+            },
+            {
+              label: '暂不上架',
+              value: 0,
+            },
+          ]}
         />
-
-      </ProForm.Group>
-      <ProFormText
-        name="id"
-        label="id"
-        hidden
-      />
-    </DrawerForm>
+    </ModalForm>
   );
 };

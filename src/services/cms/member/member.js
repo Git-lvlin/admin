@@ -713,6 +713,14 @@ export const homePopupUpdate = (params = {}, options = {}) => {
   });
 }
 
+export const posterUpData = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/poster/saveOrUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const saveMoneyFormList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;
 
@@ -845,6 +853,23 @@ export const posterList = async (params = {}, options = {}) => {
     success: true,
     total: res.data.total,
   }
+}
+
+export const posterListNew = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/cms/poster/findPage', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return res
 }
 
 export const marketList = async (params = {}, options = {}) => {
