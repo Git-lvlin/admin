@@ -249,7 +249,7 @@ export default (props) => {
     if (detailData) {
       const { bankAccountInfo } = detailData
       form.setFieldsValue({
-        bindBankSwitch: bankAccountInfo.bindBankSwitch,
+        bindBankSwitch: bankAccountInfo?.bindBankSwitch,
       })
 
       if (bankAccountInfo) {
