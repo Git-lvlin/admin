@@ -192,6 +192,8 @@ const NewPoster = () => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
+      setRefresh={setRefresh}
+      refresh={refresh}
       callback={() => { setDetailData(null) }}
       onClose={() => { setDetailData(null) }}
     />}
