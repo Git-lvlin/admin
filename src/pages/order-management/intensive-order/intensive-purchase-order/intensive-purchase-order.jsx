@@ -74,6 +74,7 @@ const TableList = () => {
 
   const getFieldValue = () => {
     if (formRef?.current?.getFieldsValue) {
+      const user = JSON.parse(localStorage.getItem('user'))
       const { current, pageSize, createTime, ...rest } = formRef?.current?.getFieldsValue?.();
       const obj = {};
 
@@ -82,7 +83,10 @@ const TableList = () => {
         obj.endTime = moment(createTime[1]).format('YYYY-MM-DD HH:mm:ss');
       }
 
-      return { ...rest, ...obj, ...params }
+      return {
+        operatorSource: 2, operatorId: user.id, operatorName: user.username,
+        ...rest, ...obj, ...params
+      }
     }
     return {}
   }
