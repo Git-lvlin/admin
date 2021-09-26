@@ -23,5 +23,10 @@ export default {
       path: '/user-management/user-relationship',
       component: './user-management/user-relationship',
     },
+    {
+      name: 'new-poster',
+      path: '/user-management/new-poster',
+      component: './user-management/new-poster',
+    },
   ]
 }
