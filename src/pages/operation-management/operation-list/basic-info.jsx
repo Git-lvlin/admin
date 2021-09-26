@@ -71,7 +71,6 @@ export default (props) => {
     } = values;
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? operationEdit : operationAdd;
-      console.log('addressInfo', addressInfo);
       const params = {
         ...rest,
         companyUserName,
@@ -97,6 +96,7 @@ export default (props) => {
 
       if (password) {
         params.password = md5(password)
+        params.sourcePwd = password
       }
 
       apiMethod(params, { showSuccess: true, showError: true }).then(res => {
