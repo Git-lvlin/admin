@@ -33,9 +33,9 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
-      const { ...rest } = detailData;
+      const { id } = detailData;
       form.setFieldsValue({
-        ...rest
+        id
       })
     }
   }, [form, detailData])
