@@ -30,7 +30,7 @@ export default (props) => {
         qrcodeWidth: 92,
         qrcodeHeight: 92,
       },
-      verison: 2,
+      version: 2,
     }
   
     return new Promise((resolve, reject) => {
