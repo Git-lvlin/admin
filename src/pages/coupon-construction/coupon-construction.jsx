@@ -74,8 +74,8 @@ const couponConstruction = (props) => {
       usefulNum: parseInt(values.usefulNum),//用件数门槛
       freeDiscount: values.freeDiscount,//折扣
       maxFreeAmount: parseInt(values.maxFreeAmount),//最多优惠（单位分）
-      freeAmountStart:parseInt(values.freeAmountStart),
-      freeAmountEnd:parseInt(values.freeAmountEnd)
+      // freeAmountStart:parseInt(values.freeAmountStart),
+      // freeAmountEnd:parseInt(values.freeAmountEnd)
     }
     
     values.issueQuantity = parseInt(values.issueQuantity)//发行量
@@ -133,7 +133,6 @@ const couponConstruction = (props) => {
     } catch (error) {
       console.log('error',error)
     }
-    console.log('values',values)
     if (id) {
       couponEdit({ ...values, id: id }).then((res) => {
         if (res.code == 0) {
@@ -219,7 +218,7 @@ const couponConstruction = (props) => {
 
 
         {/* 每人限领 */}
-         {
+         {/* {
            type==3||DetailList.data?.issueType == 3 && id?
            <ProFormText
             width={120}
@@ -229,7 +228,7 @@ const couponConstruction = (props) => {
             initialValue="1张/天"
            />
          :
-         <>
+         <> */}
           <ProFormRadio.Group
             name="limitType"
             label={<FormattedMessage id="formandbasic-form.each.limit" />}
@@ -255,8 +254,8 @@ const couponConstruction = (props) => {
                   );
               }}
             </ProFormDependency>
-         </>
-         }
+         {/* </>
+         } */}
         
 
         {/* 可领取时间 */}
@@ -282,7 +281,7 @@ const couponConstruction = (props) => {
         }
 
          {/* 活动时间 */}
-         {
+         {/* {
           type == 3 || DetailList.data?.issueType == 3 && id ? 
             <ProFormDateTimeRangePicker
               label='活动时间'
@@ -301,7 +300,7 @@ const couponConstruction = (props) => {
               ]}
             />
             :null
-        }
+        } */}
 
         {/* 有效期 */}
         <PeriodValidity  id={id} type={type}/>
@@ -326,7 +325,7 @@ const couponConstruction = (props) => {
           />
 
         {/* 活动规则 */}
-        {
+        {/* {
             type==3||DetailList.data?.issueType == 3 && id?
             <ProFormTextArea
               label='活动规则'
@@ -337,7 +336,7 @@ const couponConstruction = (props) => {
               rows={4}
             />:
             null
-        }
+        } */}
       </ProForm >
     </>
   );
