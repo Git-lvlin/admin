@@ -57,10 +57,10 @@ const TableList = () => {
   const [secondReviewVisible, setSecondReviewVisible] = useState(false);
   const [config, setConfig] = useState({});
   const [detailData, setDetailData] = useState(null);
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [overruleVisible, setOverruleVisible] = useState(false);
-  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
   const [visit, setVisit] = useState(false)
 
   const actionRef = useRef();
