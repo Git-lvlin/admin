@@ -348,14 +348,14 @@ const useSecond=(props)=>{
     },[choose])
     return(
         <Form.Item className={styles.unfold}>
-            {
+            {/* {
                 type==3||DetailList.data?.issueType == 3 && id ?
                 <GoosModel 
                     dispatch={dispatch} 
                     DetailList={DetailList} 
                     UseScopeList={UseScopeList}
                 />
-            :
+            : */}
             <>
                 <ProFormRadio.Group
                     name="goodsType"
@@ -403,7 +403,7 @@ const useSecond=(props)=>{
                 </ProFormDependency>
             </>
 
-            }
+            {/* } */}
            
         </Form.Item>
     )

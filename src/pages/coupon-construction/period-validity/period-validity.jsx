@@ -29,24 +29,24 @@ const validity=(props)=>{
     return (
         <>
         {
-            type!=3||DetailList.data?.issueType != 3 && id?
+            // type!=3||DetailList.data?.issueType != 3 && id?
                 <ProFormRadio.Group
                     name="activityTimeType"
                     label={<FormattedMessage id="formandbasic-form.period.of.validity" />}
                     rules={[{ required: true, message: '请选择有效期限' }]}
                     options={type==2||DetailList.data?.issueType == 2 && id?options2:options}
                 />
-                : <ProFormRadio.Group
-                    name="activityTimeType"
-                    label={<FormattedMessage id="formandbasic-form.period.of.validity" />}
-                    rules={[{ required: true, message: '请选择有效期限' }]}
-                    options={[
-                        {
-                            label: '领红包',
-                            value: 3,
-                        }
-                    ]}
-        />
+                // : <ProFormRadio.Group
+                //     name="activityTimeType"
+                //     label={<FormattedMessage id="formandbasic-form.period.of.validity" />}
+                //     rules={[{ required: true, message: '请选择有效期限' }]}
+                //     options={[
+                //         {
+                //             label: '领红包',
+                //             value: 3,
+                //         }
+                //     ]}
+        // />
         }
         <ProFormDependency name={['activityTimeType']}>
             {({ activityTimeType }) => {
@@ -85,18 +85,18 @@ const validity=(props)=>{
                     </div>
                     );
                 }
-                if (activityTimeType==3){
-                    return <div className={styles.unfold}>
-                               <ProForm.Group>
-                                <p>领红包后</p>
-                                <ProFormText
-                                    width={100}
-                                    name="activityEndHour"
-                                />
-                                <p>小时内可用</p>
-                                </ProForm.Group>
-                            </div>
-                }
+                // if (activityTimeType==3){
+                //     return <div className={styles.unfold}>
+                //                <ProForm.Group>
+                //                 <p>领红包后</p>
+                //                 <ProFormText
+                //                     width={100}
+                //                     name="activityEndHour"
+                //                 />
+                //                 <p>小时内可用</p>
+                //                 </ProForm.Group>
+                //             </div>
+                // }
                 }}
         </ProFormDependency>
         </>

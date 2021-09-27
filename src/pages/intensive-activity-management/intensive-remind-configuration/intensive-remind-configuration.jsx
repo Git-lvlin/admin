@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useRef } from 'react';
 import { Form, message, Button, Space,Spin} from 'antd';
-import { remindSetConfig } from '@/services/intensive-activity-management/intensive-remind-configuration';
+import { remindSetConfig,remindGetConfig } from '@/services/intensive-activity-management/intensive-remind-configuration';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProForm, { ProFormText} from '@ant-design/pro-form';
 import styles from './style.less'
@@ -34,11 +34,15 @@ export default (props) => {
   const onsubmit = (values) => {
     remindSetConfig({smsCount:parseInt(values.smsCount)}).then(res=>{
       if(res.code==0){
-        message.success('提醒成功')
-        ref.current.resetFields()
+        message.success('配置成功')
       }
     })
   }
+  useEffect(()=>{
+    remindGetConfig({}).then(res=>{
+      form.setFieldsValue(res.data)
+    })
+  },[])
   return (
     <PageContainer>
       <ProForm
