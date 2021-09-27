@@ -98,7 +98,7 @@ export default (props) => {
         bankLicenseImg: [imageInfo?.bankLicenseImg],
         bankCardFrontImg: [imageInfo?.bankCardFrontImg],
         bankCardBackImg: [imageInfo?.bankCardBackImg],
-        supplierId: detailData?.supplierId,
+        operationId: detailData?.operationId,
       }, { showSuccess: true, showError: true }).then(res => {
         if (res.code === 0) {
           resolve();
@@ -123,6 +123,7 @@ export default (props) => {
       const { bankAccountInfo } = detailData
       form.setFieldsValue({
         bindBankSwitch: bankAccountInfo?.bindBankSwitch,
+        bankAccountName: detailData.companyName,
       })
 
       if (bankAccountInfo) {
@@ -282,7 +283,7 @@ export default (props) => {
                   label="结算银行卡开户名"
                   placeholder="请输入结算银行卡开户名"
                   rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
-                  extra="银行账户类型为对公账户时，开户名为供应商家企业名称"
+                  extra="银行账户类型为对公账户时，开户名为运营商企业名称"
                   disabled={bankAccountType === 1}
                 />
               )

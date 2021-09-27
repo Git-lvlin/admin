@@ -19,5 +19,15 @@ export default {
       component: './intensive-activity-management/intensive-activity-detail',
       hideInMenu: true,
     },
+    {
+      name: 'intensive-remind-configuration',
+      path: '/intensive-activity-management/intensive-remind-configuration',
+      component: './intensive-activity-management/intensive-remind-configuration',
+    },
+    {
+      name: 'intensive-remind-statistics',
+      path: '/intensive-activity-management/intensive-remind-statistics',
+      component: './intensive-activity-management/intensive-remind-statistics',
+    }
   ]
 }

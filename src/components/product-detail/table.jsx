@@ -56,6 +56,13 @@ export default function EditTable(props) {
         hideInTable: goodsSaleType === 2,
       },
       {
+        title: '最低批发量',
+        dataIndex: 'wholesaleMinNum',
+        editable: false,
+        width: 130,
+        hideInTable: goodsSaleType === 2,
+      },
+      {
         title: '秒约价',
         dataIndex: 'salePrice',
         editable: settleType === 2,
@@ -98,6 +105,29 @@ export default function EditTable(props) {
         //     message: '请输入可用库存',
         //   }],
         // }
+      },
+      {
+        title: '平均运费(元)',
+        dataIndex: 'wholesaleFreight',
+        width: 130,
+        hideInTable: goodsSaleType === 2,
+        editable: false,
+      },
+      {
+        title: '是否包邮',
+        dataIndex: 'isFreeFreight',
+        width: 130,
+        render: (_) => _ === 1 ? '包邮' : '不包邮',
+        hideInTable: goodsSaleType === 1,
+        editable: false,
+      },
+      {
+        title: '运费模板',
+        dataIndex: 'freightTemplateId',
+        width: 130,
+        render: (_) => _.label ? _.label : '_',
+        hideInTable: goodsSaleType === 1,
+        editable: false,
       },
       // {
       //   title: '操作',

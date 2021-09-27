@@ -288,10 +288,10 @@ const TableList = () => {
             <Export
               key="3"
               change={(e) => { setExportVisible(e) }}
-              type="operation-export"
+              type="admin-services-provider-export"
               conditions={getFieldValue}
             />,
-            <ExportHistory key="4" show={exportVisible} setShow={setExportVisible} type="operation-export" />,
+            <ExportHistory key="4" show={exportVisible} setShow={setExportVisible} type="admin-services-provider-export" />,
           ],
         }}
         columns={columns}
@@ -342,7 +342,7 @@ const TableList = () => {
         onCancel={() => { setIsModalVisible(false) }}
       >
         <p>注意：重置密码后，新密码将立即生效，原密码无法继续使用！</p>
-        <p style={{ fontSize: 12 }}>重置密码将同步发送给供应商</p>
+        <p style={{ fontSize: 12 }}>重置密码将同步发送给运营商</p>
       </Modal>
     </PageContainer>
 

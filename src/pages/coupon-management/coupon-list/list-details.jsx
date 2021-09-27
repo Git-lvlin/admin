@@ -126,20 +126,20 @@ export default props => {
           <div className={styles.msg}>
             <h3 className={styles.head}>基本信息</h3>
             <Form.Item
-              label="优惠券名称"
+              label="红包名称"
             >
               {detailData.couponName}
             </Form.Item>
 
             <Form.Item
-              label="优惠券类型"
+              label="红包类型"
             >
               {
                 detailData.couponType == 1 ?
-                  '满减券'
+                  '满减红包'
                   : detailData.couponType == 2 ?
-                    '折扣券'
-                    : '立减券'
+                    '折扣红包'
+                    : '立减红包'
               }
             </Form.Item>
 
@@ -150,7 +150,7 @@ export default props => {
             </Form.Item>
 
             <Form.Item
-              label="券面值"
+              label="红包面值"
             >
               {detailData.couponAmountDisplay}
             </Form.Item>
@@ -164,10 +164,12 @@ export default props => {
             <Form.Item
               label="发行方式"
             >
-              {
+               {
                 detailData.issueType == 1 ?
-                  '会员领取券'
-                  : '系统发放券'
+                  '会员领取红包'
+                  :detailData.issueType == 2 ? 
+                  '系统发放红包'
+                  :'每日红包'
               }
             </Form.Item>
             <Form.Item
@@ -194,14 +196,15 @@ export default props => {
               {
                 detailData.activityTimeType == 1 ?
                 <p>{detailData.activityStartTime + ' -- ' + detailData.activityEndTime}</p>
-                :
-                <p>领券{detailData.activityStartDay}天起，{detailData.activityEndDay}天内可用</p>
+                :detailData.activityTimeType == 2?
+                <p>领红包{detailData.activityStartDay}天起，{detailData.activityEndDay}天内可用</p>
+                : <p>领红包0天起，{detailData.activityEndHour}小时内可用</p>
               }
               
             </Form.Item>
 
             <Form.Item
-              label="可领券群体"
+              label="可领红包群体"
             >
               {
                 detailData.memberType == 1 ?
@@ -301,6 +304,18 @@ export default props => {
               ))
               }
             </Form.Item>
+
+            {
+              detailData.memberType == 3&&<Form.Item
+                label="活动说明"
+              >
+                {
+                detailData.couponActivityRule?.split('\n').map(ele=>(
+                  <span>{ele}</span>
+                ))
+                }
+              </Form.Item>
+            }
           </div>
         </Form>
       </Spin>

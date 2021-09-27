@@ -1,7 +1,8 @@
 import request from '@/utils/request';
+import moment from 'moment';
 
 export const checkList = async (params = {}, options = {}) => {
-  const { current, pageSize, gcId = [], ...rest } = params;
+  const { current, pageSize, gcId = [], createTime = [], ...rest } = params;
   const res = await request('/auth/goods/product/checkList', {
     method: 'POST',
     data: {
@@ -9,6 +10,8 @@ export const checkList = async (params = {}, options = {}) => {
       size: pageSize,
       gcId1: gcId[0],
       gcId2: gcId[1],
+      createTimeStart: createTime[0] && moment(createTime[0]).unix(),
+      createTimeEnd: createTime[1] && moment(createTime[1]).unix(),
       ...rest
     },
     ...options
