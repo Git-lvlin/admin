@@ -115,19 +115,19 @@ const validity=(props)=>{
           value: 4,
         },
       ]
-      const options2=[
-        {
-          label: '全部用户',
-          value: 1,
-        }
-      ]
+    //   const options2=[
+    //     {
+    //       label: '全部用户',
+    //       value: 1,
+    //     }
+    //   ]
     return (
         <>
          <ProFormRadio.Group
           name="memberType"
           label={type == 2||DetailList.data?.issueType == 2 && id ? '发红包群体':'可领红包群体'}
           rules={[{ required: true, message: '请选择群体' }]}
-          options={type==3||DetailList.data?.issueType == 3 && id ?options2:options}
+          options={options}
           fieldProps={{
             onChange:(current)=>callback(current.target.value)
           }}
