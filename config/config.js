@@ -22,6 +22,9 @@ import pcm from './routers/price-comparsion-management'
 import financialManagement from './routers/financial-management'
 import dataBoard from './routers/data-board'
 import dc from './routers/dc'
+import signActivityManagement from './routers/sign-activity-management'
+import BlindBoxActivityManagement from './routers/blind-box-activity-management'
+
 
 
 
@@ -89,6 +92,8 @@ const config = {
             financialManagement,
             dataBoard,
             dc,
+            signActivityManagement,
+            BlindBoxActivityManagement,
             {
               component: '404',
             },

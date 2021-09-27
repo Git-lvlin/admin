@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
+import { amountTransform } from '@/utils/utils'
 import { remindStatisticsList } from '@/services/intensive-activity-management/intensive-remind-statistics';
 
 
@@ -25,7 +26,8 @@ export default (props) => {
     {
       title: '集约价(元)',
       dataIndex: 'price',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_)=> amountTransform(_, '/').toFixed(2)
     },
     {
       title: '提醒产生采购单数',

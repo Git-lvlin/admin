@@ -49,7 +49,7 @@ const Message = (props) => {
       valueEnum: {
         1: '会员领取红包',
         2: '系统发放红包',
-        3: '每日红包'
+        // 3: '每日红包'
       },
     },
     {
@@ -330,14 +330,14 @@ const TableList= (props) =>{
                 label: '系统发放红包',
                 value: 2,
               },
-              {
-                label:<>
-                        <p>每日红包</p>
-                        <span className={styles.packet_hint}>只能存在一个正在进行的每日红包活动</span>
-                      </>,
-                value: 3,
-                disabled:isCreate==2?true:false
-              }
+              // {
+              //   label:<>
+              //           <p>每日红包</p>
+              //           <span className={styles.packet_hint}>只能存在一个正在进行的每日红包活动</span>
+              //         </>,
+              //   value: 3,
+              //   disabled:isCreate==2?true:false
+              // }
             ]}
           />
         </ModalForm>

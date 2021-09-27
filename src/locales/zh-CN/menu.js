@@ -242,4 +242,20 @@ export default {
   'menu.data-board.order-list': '订单列表',
   'menu.data-board.rank': '排名',
   'menu.data-board.order': '订单',
+
+  'menu.sign-activity-management': '签到活动管理',
+  'menu.sign-activity-management.sign-rule': '签到规则',
+  'menu.sign-activity-management.usable-commodity': '可用商品',
+  'menu.sign-activity-management.grant-detail': '发放明细',
+  'menu.sign-activity-management.user-detail': '用户明细',
+  'menu.sign-activity-management.consume-detail': '消耗明细',
+
+
+  'menu.blind-box-activity-management': '盲盒活动管理',
+  'menu.blind-box-activity-management.blind-box-management-list': '盲盒活动列表',
+  'menu.blind-box-activity-management.blind-box-consume-detail': '盲盒机会消耗明细',
+  'menu.blind-box-activity-management.blind-box-grant-detail': '盲盒机会发放明细',
+  'menu.blind-box-activity-management.blind-box-user-detail': '用户盲盒机会明细',
+  'menu.blind-box-activity-management.bind-box-rule-set': '盲盒规则配置',
+  'menu.blind-box-activity-management.bind-box-rule-set-detail': '盲盒规则配置详情',
 };
