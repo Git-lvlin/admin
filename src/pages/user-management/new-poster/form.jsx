@@ -19,16 +19,16 @@ export default (props) => {
       ...rest,
       bgImage: {
         url: image,
-        with: 308,
-        height: 410,
+        width: 375,
+        height: 676,
         relativeX: 34,
         relativeY: 162,
       },
       compositeXY: {
-        relativeX: 108,
-        relativeY: 179,
-        qrcodeWidth: 92,
-        qrcodeHeight: 92,
+        relativeX: 112.5,
+        relativeY: 475,
+        qrcodeWidth: 150,
+        qrcodeHeight: 150,
       },
       version: 2,
     }
