@@ -52,3 +52,18 @@ export const platformWithdraw = async (params, options = {}) => {
   }
 }
 
+// 平台供应链申请提现
+export const supplyChainWithdraw = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/financial/account/supplyChainWithdraw', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+
+  return {
+    data: res?.data,
+    success: res?.success
+  }
+}
