@@ -27,6 +27,9 @@ const TableList = () => {
       dataIndex: 'address',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => {
+        return `${Object.values(data.areaInfo).join('')}${_}`
+      }
     },
     {
       title: '绑定状态',
@@ -36,7 +39,7 @@ const TableList = () => {
     },
     {
       title: '绑定状态',
-      dataIndex: 'status',
+      dataIndex: 'operationIsBinded',
       valueType: 'select',
       hideInTable: true,
       valueEnum: {
