@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@ant-design/pro-layout'
-import { Button, Timeline } from 'antd'
+import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { refundDetail } from "@/services/financial-management/transaction-detail-management"
 import './styles.less'
 import styles from './styles.less'
-
-const { Item } = Timeline
+import { tradeType } from '../../common-enum'
 
 const Detail = () => {
   const {id} = useParams()
@@ -131,31 +130,7 @@ const Detail = () => {
       title: '交易类型',
       dataIndex: 'tradeType',
       valueType: 'select',
-      valueEnum: {
-        'goodsAmount': '货款入账',
-        'goodsAmountReturn': '货款回退',
-        'commission': '店主收益入账',
-        'commissionReturn': '店主收益回退',
-        'platformCommission': '平台收益入账',
-        'platformCommissionReturn': '平台收益回退',
-        'fee': '交易通道费',
-        'feeReturn': '交易通道费回退',
-        'recharge': '充值',
-        'giveOut': '划扣',
-        'withdraw': '提现',
-        'refundRecharge': '售后款入账',
-        'debt': '欠款入账',
-        'debtReturn': '欠款偿还',
-        'unfreeze': '解冻',
-        'freeze': '冻结',
-        'suggestCommission': '推荐店主收益入账',
-        'suggestCommissionReturn': '推荐店主收益回退',
-        'agentCompanyCommission': '经销商收益入账',
-        'agentCompanyCommissionReturn': '经销商收益回退',
-        'freight': '运费',
-        'freightReturn': '运费回退',
-        'yeahCardRecharge': '约卡充值'
-      }
+      valueEnum: tradeType
     },
     {
       title: '关联订单类型',
