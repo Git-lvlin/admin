@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Form, Divider, message, Button,List, Space } from 'antd';
-import { FormattedMessage, formatMessage } from 'umi';
+import { Input, Form, Divider, message, Button,List, Space,Avatar } from 'antd';
+import { FormattedMessage, formatMessage,history } from 'umi';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import GainType from './gain-type/gain-type'
 import PeriodValidity from './period-validity/period-validity'
@@ -46,6 +46,10 @@ export default (props) => {
           probability3:res.data.content?.accessGain.orderConsume.probability,
           dayGainMax:res.data.content?.accessGain.inviteFriends.dayGainMax,
           ruleText:res.data.content?.ruleText,
+          validiteType:res.data.content?.validiteType,
+          validiteHour:res.data.content?.validiteHour,
+          redeemEarlyDay:res.data.content?.redeemEarlyDay,
+          maxPrizeNum:res.data.content?.maxPrizeNum,
           dateRange: [ moment(res.data.startTime).format('YYYY-MM-DD HH:mm:ss'), moment(res.data.endTime).format('YYYY-MM-DD HH:mm:ss')],
           ...res.data
         })
@@ -65,7 +69,7 @@ export default (props) => {
     })
   }
   const onsubmit = (values) => {
-    values.id=0
+    values.id=id?1:0
     values.startTime=values.dateRange ?values.dateRange[0]:null
     values.endTime=values.dateRange ?values.dateRange[1]:null
     values.accessGain={
@@ -92,7 +96,7 @@ export default (props) => {
     const arr = [];
     dataSource.forEach(item => {
       arr.push({
-        id: 0,
+        id: id&&item.id||0,
         probability: item.probability,
         status: item.status?1:0,
         skuId: item.skuId,
@@ -106,12 +110,12 @@ export default (props) => {
     })
     values.skus=arr
     console.log('values',values)
-    saveActiveConfig(values).then(res=>{
-      if (res.code == 0) {
-        history.push('/blind-box-activity-management/blind-box-management-list')
-        message.success('提交成功');
-      }
-    })
+    // saveActiveConfig(values).then(res=>{
+    //   if (res.code == 0) {
+    //     history.push('/blind-box-activity-management/blind-box-management-list')
+    //     message.success('提交成功');
+    //   }
+    // })
   }
 
   // const disabledDate=(current)=>{
@@ -128,9 +132,18 @@ export default (props) => {
                <Space>
                  {
                   id?
-                    <Button style={{marginLeft:'80px'}} type="primary"  onClick={()=>{setFalg(false)}}>
-                        编辑
-                    </Button>
+                  <>
+                     {
+                       falg?<Button style={{marginLeft:'80px'}} type="primary"  onClick={()=>{setFalg(false)}}>
+                              编辑
+                          </Button>
+                          :<Button style={{marginLeft:'80px'}} type="primary" key="submit" onClick={() => {
+                            props.form?.submit?.()
+                          }}>
+                            保存
+                          </Button>
+                     }
+                  </>
                   :
                     <Button style={{marginLeft:'80px'}} type="primary" key="submit" onClick={() => {
                       props.form?.submit?.()
@@ -151,7 +164,7 @@ export default (props) => {
         className={styles.bindBoxRuleSet}
         initialValues={{
           ruleItems: [{
-            title: '',
+            imageUrl: '',
             name: ''
           }]
         }}
@@ -176,6 +189,7 @@ export default (props) => {
             // fieldProps={{
             //    disabledDate:(current)=>disabledDate(current)
             // }}
+            readonly={id&&falg}
             placeholder={[
             formatMessage({
                 id: 'formandbasic-form.placeholder.start',
@@ -210,7 +224,7 @@ export default (props) => {
 
         {/* 中奖次数 */}
         <ProForm.Group>
-            <span>每天可中奖最高总次数</span>
+            <span className={styles.back}>每天可中奖最高总次数</span>
             <ProFormText 
                 name="maxPrizeNum"
                 width={100}
@@ -230,7 +244,18 @@ export default (props) => {
         <Form.Item label="奖品预告（尺寸30x50）">
           {
             id&&falg?
-            <p>asdsa</p>
+            <List
+              itemLayout="horizontal"
+              dataSource={detailList?.content?.prizeNotice}
+              renderItem={item => (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.imageUrl} />}
+                    title={<p>{item.name}</p>}
+                  />
+                </List.Item>
+              )}
+            />
             : <Form.List name="prizeNotice">
             {(fields, { add, remove }) => (
               <>
@@ -285,6 +310,12 @@ export default (props) => {
             rows={4}
             readonly={id&&falg}
         />
+        {
+          id&&falg?
+          <p className={styles.back}>最近一次操作人：admin     2021/09/16  19:00</p>
+          :null
+        }
+        
         {/* 活动状态 */}
         <ProFormRadio.Group
           name="status"
@@ -301,7 +332,11 @@ export default (props) => {
           ]}
           readonly={id&&falg}
       />
-        <p className={styles.hint}>提示：关闭活动后，将清空用户的账户记录，请谨慎操作。</p>
+      {
+        id&&falg?null
+        :<p className={styles.hint}>提示：关闭活动后，将清空用户的账户记录，请谨慎操作。</p>
+      }
+
       </ProForm >
   );
 };
