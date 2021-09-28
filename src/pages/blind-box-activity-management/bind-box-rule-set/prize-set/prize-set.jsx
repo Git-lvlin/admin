@@ -106,7 +106,7 @@ export default (props) => {
         headerTitle="奖品设置"
         // maxLength={5}
         name="table"
-        value={dataSource}
+        value={detailList?.skus||dataSource}
         recordCreatorProps={false}
         // onChange={setDataSource}
         columns={columns}
@@ -121,7 +121,7 @@ export default (props) => {
           }
         }}
         toolBarRender={()=>[
-            <Button type="primary" onClick={() => { setEditableKeys(dataSource.map(item => item.id))}}>编辑概率</Button>,
+            <Button type="primary" onClick={() => { setEditableKeys(detailList?.skus.map(item => item.id)||dataSource.map(item => item.id))}}>编辑概率</Button>,
             <Button type="primary" onClick={() => { setEditableKeys([])}}>保存</Button>,
             <Button type="primary" onClick={()=>setVisible(true)}>
                 <PlusOutlined />
@@ -135,13 +135,12 @@ export default (props) => {
                 const arr = [];
                 val.forEach(item => {
                   arr.push({
-                    id: item.id,
+                    id: 0,
                     status:false,
                     ...item
                   })
                 })
                 setDataSource(arr)
-
               }}
             />
         ]}
@@ -153,7 +152,7 @@ export default (props) => {
         search={false}
         rowKey="skuId"
         columns={columns}
-        dataSource={detailList.skus}
+        dataSource={detailList?.skus}
         style={{display:id&&falg?'block':'none'}}
     />
     </>
