@@ -125,14 +125,14 @@ const TableList = () => {
             >
               {resetText}
             </Button>,
-            <Button
-              key="rest"
-              onClick={() => {
-                form?.resetFields();
-              }}
-            >
-              {resetText}
-            </Button>,
+            // <Button
+            //   key="rest"
+            //   onClick={() => {
+            //     form?.resetFields();
+            //   }}
+            // >
+            //   {resetText}
+            // </Button>,
             <Export
               key="3"
               change={(e) => { setVisit(e) }}

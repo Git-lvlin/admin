@@ -33,7 +33,7 @@ const Detail = (props) => {
     },
     {
       title: '采购金额',
-      dataIndex: 'orderAmount',
+      dataIndex: 'goodsPayment',
       render: (_) => amountTransform(_, '/'),
     },
     {
