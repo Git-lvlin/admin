@@ -7,9 +7,11 @@ import AddressCascader from '@/components/address-cascader';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { history } from 'umi';
 import Form from './form';
+import Drawer from './store-review-detail';
 
 const StoreReview = () => {
   const [formVisible, setFormVisible] = useState(false);
+  const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
@@ -160,7 +162,7 @@ const StoreReview = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => {
-        return _ !== 1 && <a onClick={() => { history.push(`/intensive-store-management/store-review-detail/${data.id}`) }}>审核</a>;
+        return _ !== 1 && <a onClick={() => { setDrawerVisible(true); setSelectItem(data); }}>审核</a>;
       }
     },
   ];
@@ -201,6 +203,18 @@ const StoreReview = () => {
           pageSize: 10,
         }}
       />
+      {drawerVisible &&
+        <Drawer
+          id={selectItem.id}
+          visible={drawerVisible}
+          setVisible={setDrawerVisible}
+          callback={() => {
+            setDrawerVisible(false);
+            setSelectItem(null);
+            actionRef.current.reload()
+          }}
+        />
+      }
       {formVisible && <Form
         visible={formVisible}
         setVisible={setFormVisible}

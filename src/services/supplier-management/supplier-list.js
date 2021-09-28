@@ -191,3 +191,11 @@ export const resetPwd = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const searchUniName = (params = {}, options = {}) => {
+  return request('/auth/supplier/user/searchUniName', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

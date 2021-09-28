@@ -180,11 +180,14 @@ export default props => {
             >
               {detailData.limitQuantity}
             </Form.Item>
-            <Form.Item
-              label="可领取时间"
-            >
+            {
+              detailData.limitStartTime&&<Form.Item
+                label="可领取时间"
+              >
               {detailData.limitStartTime + ' -- ' + detailData.limitEndTime}
             </Form.Item>
+            }
+            
             <Form.Item
               label="有效期"
             >
