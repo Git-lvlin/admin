@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Tooltip, Table, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import XLSX from 'xlsx'
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import * as api from '@/services/product-management/product-list-purchase';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
-import SupplierSelect from '@/components/supplier-select'
+import ProductDetailDrawer from '@/components/product-detail-drawer'
+// import SupplierSelect from '@/components/supplier-select'
 import Edit from './edit';
 import OffShelf from './off-shelf';
 import { amountTransform, typeTransform } from '@/utils/utils'
-import ProductDetailDrawer from '@/components/product-detail-drawer'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
-
+import moment from 'moment';
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -54,14 +53,14 @@ const SubTable = (props) => {
 
 const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [config, setConfig] = useState({});
   const [offShelfVisible, setOffShelfVisible] = useState(false);
-  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
-  const [visit, setVisit] = useState(false)
   const [selectItemId, setSelectItemId] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
+  const [visit, setVisit] = useState(false)
 
   const getDetail = (id) => {
     api.getDetail({
@@ -290,6 +289,18 @@ const TableList = () => {
       hideInTable: true,
     },
     {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+    },
+    {
+      title: '审核时间',
+      dataIndex: 'auditTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
@@ -305,12 +316,26 @@ const TableList = () => {
       },
     },
   ];
-  
 
   const getFieldValue = () => {
     if (formRef?.current?.getFieldsValue) {
-      const { current, pageSize, gcId = [], ...rest } = formRef?.current?.getFieldsValue?.();
+      const { current, pageSize, gcId = [], createTime, auditTime, ...rest } = formRef?.current?.getFieldsValue?.();
+
+      const obj = {};
+
+      if (createTime) {
+        obj.createTimeStart = moment(createTime[0]).unix();
+        obj.createTimeEnd = moment(createTime[1]).unix();
+      }
+
+      if (auditTime) {
+        obj.auditTimeStart = moment(auditTime[0]).unix();
+        obj.auditTimeEnd = moment(auditTime[1]).unix();
+      }
+
       return {
+        ...obj,
+        selectType: 1,
         gcId1: gcId[0],
         gcId2: gcId[1],
         ...rest

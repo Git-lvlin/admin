@@ -300,10 +300,10 @@ export default (props) => {
             bankCardBackImg: bankCardBackImg?.[0],
             bankCardFrontImg: bankCardFrontImg?.[0],
           },
-          bankCode: { label: bankName, value: bankCode },
-          bankAccountType,
+          bankCode: bankCode ? { label: bankName, value: bankCode } : undefined,
+          bankAccountType: 1 || bankAccountType,
           bankCardNo,
-          bankAccountName: bankAccountType === 1 ? detailData.companyName : bankAccountName,
+          bankAccountName: (1 || bankAccountType) === 1 ? detailData.companyName : bankAccountName,
         })
       }
     }

@@ -198,7 +198,8 @@ const TableList = () => {
             {!!data.auditReason && _ !== 2 && <div style={{ color: 'red' }}>{data.auditReason}</div>}
           </>
         )
-      }
+      },
+      width: 400
     },
     {
       title: '绑卡状态',
@@ -238,6 +239,7 @@ const TableList = () => {
           <a onClick={() => { setSelectItem(data); setIsModalVisible(true) }}>重置密码</a>
         </Space>
       ),
+      width: 350,
     },
   ];
 
@@ -297,7 +299,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: '85vw' }}
+        scroll={{ x: '86vw' }}
       />
       {basicInfoVisible && <BasicInfo
         visible={basicInfoVisible}

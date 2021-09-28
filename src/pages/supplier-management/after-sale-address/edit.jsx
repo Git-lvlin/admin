@@ -38,7 +38,7 @@ export default (props) => {
         address: `${province.name}${city.name}${area.name}${info}`,
         supplierId,
         isDefault: isDefault ? 1 : 0,
-        status: status ? 1 : 2,
+        status: status ? 1 : 0,
         id: detailData?.id,
         ...rest,
       }, { showSuccess: true })
