@@ -152,6 +152,15 @@ const TableList = () => {
             }
           }}
         />
+        <ProFormText
+          name="objectId"
+          label="关联采购订单号"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
         {/* <ProFormSelect
           label="尾款类型"
           name="isMerge"
