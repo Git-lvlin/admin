@@ -116,7 +116,7 @@ const TableList = () => {
                   <Export
                     change={(e) => { setVisit(e) }}
                     type={`${isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`}
-                    conditions={getFieldValue()}
+                    conditions={getFieldValue}
                   />
                   <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`} />
                   {
@@ -126,7 +126,7 @@ const TableList = () => {
                       <Import
                         change={(e) => { setImportVisit(e) }}
                         code="order_common_send_goods_import"
-                        conditions={getFieldValue()}
+                        conditions={getFieldValue}
                       />
                       <ImportHistory show={importVisit} setShow={setImportVisit} type="order_common_send_goods_import" />
                     </>
@@ -218,7 +218,7 @@ const TableList = () => {
             showTime: true,
           }}
         />
-         <ProFormText
+        <ProFormText
           name="consignee"
           label="收件人"
           fieldProps={{
@@ -237,8 +237,8 @@ const TableList = () => {
           }}
         />
         {
-          isPurchase&&
-          <>  
+          isPurchase &&
+          <>
             <ProFormText
               name="supplierId"
               label="供应商家ID"
@@ -259,7 +259,7 @@ const TableList = () => {
             />
           </>
         }
-        
+
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -344,6 +344,7 @@ const TableList = () => {
                           <div>数量： <span>{it.skuNum}件</span></div>
                           <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
                           {isPurchase && <div>零售供货价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
+                          {it.afterSalesStatus !== 0 && <Tag style={{ borderRadius: 10 }} color="#f59a23"><span style={{ color: '#fff' }}>{it.afterSalesStatusStr}</span></Tag>}
                         </div>
                       </div>
                     ))
@@ -360,7 +361,9 @@ const TableList = () => {
                 {/* <div style={{ textAlign: 'center' }}>
                   {item.status === 5 ? 0 : amountTransform(item.incomeAmount, '/')}元
                 </div> */}
-                <div style={{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}</div>
+                <div style={{ textAlign: 'center' }}>
+                  {{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}
+                </div>
                 <div style={{ textAlign: 'center' }}><Tag style={{ borderRadius: 10 }} color="#f59a23">{{ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType]}订单</Tag></div>
                 <div style={{ textAlign: 'center' }}>
                   <a onClick={() => { history.push(`/order-management/normal-order-detail${isPurchase ? '-purchase' : ''}/${item.id}`) }}>详情</a>
