@@ -124,7 +124,7 @@ const TableList = () => {
                   <Export
                     change={(e) => { setVisit(e) }}
                     type={`${isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`}
-                    conditions={getFieldValue()}
+                    conditions={getFieldValue}
                   />
                   <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`} />
                   {
@@ -134,7 +134,7 @@ const TableList = () => {
                       <Import
                         change={(e) => { setImportVisit(e) }}
                         code="order_intensive_send_goods_import"
-                        conditions={getFieldValue()}
+                        conditions={getFieldValue}
                       />
                       <ImportHistory show={importVisit} setShow={setImportVisit} type="order_intensive_send_goods_import" />
                     </>
