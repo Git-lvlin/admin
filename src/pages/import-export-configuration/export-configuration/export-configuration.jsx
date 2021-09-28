@@ -27,12 +27,38 @@ const ExportConfiguration = () => {
     const [form] = Form.useForm()
     const columns = [
       {
-        title: 'code',
-        dataIndex: 'code'
+        title: '状态',
+        key: 'state',
+        dataIndex: 'state',
+        valueType: 'select',
+        valueEnum: {
+          all: { text: '全部', status: 'Default' },
+          open: {
+            text: '未解决',
+            status: 'Error',
+          },
+          closed: {
+            text: '已解决',
+            status: 'Success',
+          },
+        },
       },
       {
-        title: '名称',
-        dataIndex: 'name'
+        title: '描述',
+        dataIndex: 'decs',
+        fieldProps: (from, { rowKey, rowIndex }) => {
+          if (from.getFieldValue([rowKey || '', 'title']) === '不好玩') {
+            return {
+              disabled: true,
+            };
+          }
+          if (rowIndex > 9) {
+            return {
+              disabled: true,
+            };
+          }
+          return {};
+        },
       },
       {
         title: '操作',
@@ -81,7 +107,7 @@ const ExportConfiguration = () => {
               maxLength={5}
               recordCreatorProps={false}
               columns={columns}
-              value={dataSource}
+              // value={dataSource}
               onChange={setDataSource}
               editable={{
                 form,

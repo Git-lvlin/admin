@@ -6,6 +6,7 @@ import { useLocation, history } from 'umi'
 import moment from 'moment'
 
 import { moreTypeSaleSumYue } from '@/services/data-board/data-board'
+import { amountTransform } from '@/utils/utils'
 
 const SalesDetail = () => {
   const [type, setType] = useState(1)
@@ -35,7 +36,8 @@ const SalesDetail = () => {
     {
       title: '销售额（￥/元）',
       dataIndex: 'daySale',
-      align: 'center'
+      align: 'center',
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '订单数',
