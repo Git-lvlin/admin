@@ -239,7 +239,7 @@ const YeahgoVirtualAccountManagement = () => {
         >
           <div className={styles.withdrawal}>
             {
-              account?.supplyChain?.bindCard.cardNo &&
+              account?.supplyChain?.bindCard?.cardNo &&
               <WithdrawalModal
                 val={account?.supplyChain?.bindCard}
                 update={setChange}
