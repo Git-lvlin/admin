@@ -111,8 +111,8 @@ const TransactionDetails = () => {
       title: '订单号',
       dataIndex:'billNo',
       render: (_, records) => (
-        records.sumOrderId ? 
-        <a onClick={()=>skipToOrder(records.sumOrderId, records.orderType)}>{_}</a>:
+        records.orderId ? 
+        <a onClick={()=>skipToOrder(records.orderId, records.orderType)}>{_}</a>:
         <span>{_}</span>
       )
     },
