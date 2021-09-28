@@ -281,7 +281,7 @@ const YeahgoVirtualAccountManagement = () => {
                 <Button
                   type='default'
                   onClick={() => {
-                    skipToDetail({ accountId: account?.supplyChain?.accountId, accountType: account?.supplyChain?.accountType, amountType: 'available'})
+                    skipToDetail({ accountId: account?.supplyChain?.accountId, accountType: account?.supplyChain?.accountType, amountType: 'freeze'})
                   }}
                 >
                   交易明细
