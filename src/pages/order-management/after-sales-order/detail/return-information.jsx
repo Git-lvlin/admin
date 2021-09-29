@@ -97,7 +97,7 @@ const ReturnInformation = props => {
       render:(_) =>`¥${amountTransform(_, '/').toFixed(2)}`
     },
     {
-      title: '退货物流信息',
+      title: '售后物流信息',
       dataIndex: 'returnGoodsInfo',
       hideInDescriptions: isHide(),
       render: () => {
@@ -164,7 +164,7 @@ const ReturnInformation = props => {
       dataSource={data}
       layout='horizontal'
       bordered
-      title='退货单信息'
+      title='售后单信息'
       column={1}
       columns={columns}
     />
