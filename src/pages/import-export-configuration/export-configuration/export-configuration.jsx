@@ -206,9 +206,9 @@ const ExportConfiguration = () => {
             <ProCard.TabPane key="tab1" tab="Sheet1" closable={false}>
               <FormData />
             </ProCard.TabPane>
-            <ProCard.TabPane key="tab2" tab="Sheet2" closable={false}>
+            {/* <ProCard.TabPane key="tab2" tab="Sheet2" closable={false}>
               <FormData />
-            </ProCard.TabPane>
+            </ProCard.TabPane> */}
           </ProCard>
         </ProForm>
       </div>
