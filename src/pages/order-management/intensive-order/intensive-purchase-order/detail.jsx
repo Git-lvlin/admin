@@ -164,8 +164,6 @@ const Detail = (props) => {
         <div style={{ textAlign: 'right' }}>
           <Space>
             <Button onClick={() => { setVisible(false) }}>返回</Button>
-            {/* <Button onClick={() => { }} type="danger">审核拒绝</Button> */}
-            {/* <Button onClick={() => { }} type="primary">审核通过去开户</Button> */}
           </Space>
         </div>
       }
