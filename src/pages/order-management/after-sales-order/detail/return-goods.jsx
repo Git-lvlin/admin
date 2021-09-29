@@ -27,15 +27,15 @@ const tableRow = props => {
       <ProTable.Summary.Cell colSpan={7}>
         <div className={styles.summary}>
           <div className={styles.summaryItem}>
-            退货原因：
+            售后原因：
             <span className={styles.summaryItemText}>{props[0]?.reason}</span>
           </div>
           <div className={styles.summaryItem}>
-            退货描述：
+            售后描述：
             <span className={styles.summaryItemText}>{props[0]?.description}</span>
           </div>
           <div className={styles.summaryImg}>
-            <div className={styles.summaryItemTxt}>退货凭证：</div>
+            <div className={styles.summaryItemTxt}>售后凭证：</div>
             <div className={styles.summaryItemPic}>
               <Image.PreviewGroup>
                 { imageArr() }
@@ -95,7 +95,7 @@ const ReturnGoods = ({data}) => {
       render: (_) => `¥${amountTransform(Number(_), '/').toFixed(2)}`
     },
     { 
-      title: '退货数量',
+      title: '数量',
       dataIndex: 'returnNum',
       align: 'center' 
     },
@@ -137,7 +137,7 @@ const ReturnGoods = ({data}) => {
       columns={columns}
       bordered
       options={false}
-      headerTitle="退货商品"
+      headerTitle="订单商品"
       search={false}
       dataSource={dataSource}
       summary={tableRow}
