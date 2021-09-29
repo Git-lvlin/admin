@@ -384,6 +384,7 @@ const TableList = () => {
                   {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId) }}>启动C端退款</a></div>}
                   {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a> */}
                   <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
+                  <div><a target="_blank" href={`/order-management/intensive-order/shopkeeper-order?objectId=${item.orderId}`}>查看零售订单</a></div>
                 </div>
               </div>
 

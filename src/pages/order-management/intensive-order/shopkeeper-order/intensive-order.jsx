@@ -23,6 +23,7 @@ const TableList = () => {
   const [visit, setVisit] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({});
+  const location = useLocation();
 
   const pageChange = (a, b) => {
     setPage(a)
@@ -48,6 +49,9 @@ const TableList = () => {
 
   useEffect(() => {
     setLoading(true);
+    form.setFieldsValue({
+      objectId: location?.query?.objectId,
+    })
     const { time, ...rest } = form.getFieldsValue();
     orderList({
       page,
