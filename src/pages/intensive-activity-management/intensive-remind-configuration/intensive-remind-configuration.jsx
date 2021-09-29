@@ -26,7 +26,9 @@ export default (props) => {
     return new Promise(async (resolve, reject) => {
       if (value && value > 9999||parseInt(value)<1) {
         await reject('范围1-9999')
-      } else {
+      } else if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+          await reject('只能输入整数')
+      }else {
         await resolve()
       }
     })
