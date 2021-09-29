@@ -11,6 +11,7 @@ import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
+import Detail from './detail';
 
 
 const TableList = () => {
@@ -25,6 +26,9 @@ const TableList = () => {
   const [deliveryVisible, setDeliveryVisible] = useState(false)
   const [importVisit, setImportVisit] = useState(false)
   const isPurchase = useLocation().pathname.includes('purchase')
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState({});
+
 
   const [form] = Form.useForm()
 
@@ -366,7 +370,8 @@ const TableList = () => {
                 </div>
                 <div style={{ textAlign: 'center' }}><Tag style={{ borderRadius: 10 }} color="#f59a23">{{ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType]}订单</Tag></div>
                 <div style={{ textAlign: 'center' }}>
-                  <a onClick={() => { history.push(`/order-management/normal-order-detail${isPurchase ? '-purchase' : ''}/${item.id}`) }}>详情</a>
+                  {/* <a onClick={() => { history.push(`/order-management/normal-order-detail${isPurchase ? '-purchase' : ''}/${item.id}`) }}>详情</a> */}
+                  <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
                 </div>
               </div>
 
@@ -381,7 +386,15 @@ const TableList = () => {
           ))
         }
       </Spin>
-
+      {
+        detailVisible &&
+        <Detail
+          id={selectItem?.id}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+          isPurchase={isPurchase}
+        />
+      }
 
       <div
         className={styles.pagination}

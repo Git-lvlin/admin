@@ -28,13 +28,7 @@ export default {
         path: '/blind-box-activity-management/bind-box-rule-set',
         component: './blind-box-activity-management/bind-box-rule-set',
         hideInMenu: true
-      },
-      {
-        name: 'bind-box-rule-set-detail',
-        path: '/blind-box-activity-management/bind-box-rule-set-detail',
-        component: './blind-box-activity-management/bind-box-rule-set-detail',
-        hideInMenu: true
-      },
+      }
     ]
   }
   

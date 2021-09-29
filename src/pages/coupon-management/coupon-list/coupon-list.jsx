@@ -294,11 +294,11 @@ const TableList= (props) =>{
             className={styles.addCouponBtn}
             onClick={() =>{
               setVisible(true)
-              checkIssueTypeLog({}).then(res=>{
-                if(res.code==0){
-                  setIsCreate(res.data.isCreate)
-                }
-              })
+              // checkIssueTypeLog({}).then(res=>{
+              //   if(res.code==0){
+              //     setIsCreate(res.data.isCreate)
+              //   }
+              // })
             }}
           >
             新建红包

@@ -1,167 +1,161 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
-import ProTable from '@ant-design/pro-table';
-import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch,ProFormDigit} from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
-import DeleteModal from '@/components/DeleteModal'
+import { Button,Tabs,Image,Form,Modal,Select,Switch} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
-import GoosModel from './goos-model'
+import SelectProductModal from '@/components/select-product-modal'
+import { PlusOutlined } from '@ant-design/icons';
+import ProTable from '@ant-design/pro-table';
 
 
-export default () => {
+export default (props) => {
+  const {callback,id,falg,detailList}=props
   const ref=useRef()
-  const [spuIdsArr,setSpuIdsArr]=useState([])
-  const [onoff,setOnoff]=useState(false)
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
+  const [visible, setVisible] = useState(false);
   const columns= [
     {
-        title: '序号',
-        dataIndex:'id',
-        valueType: 'borderIndex',
-        hideInSearch: true,
-        valueType: 'indexBorder',
-        editable:false
+      title: '序号',
+      dataIndex:'id',
+      valueType: 'borderIndex',
+      hideInSearch: true,
+      valueType: 'indexBorder',
+      editable:false,
     },
     {
       title: 'SPUID',
-      dataIndex: 'dynamicId',
+      dataIndex: 'skuId',
       valueType: 'text',
-      editable:false
+      editable:false,
     },
     {
       title: '商品图片',
-      dataIndex: 'id',
-      valueType: 'text',
+      dataIndex: 'imageUrl',
+      valueType: 'image',
       hideInSearch:true,
-      editable:false
-      // render:(_,data)=>{
-      //   return <Image src={data.images[0]} alt="" width='50px' height='50px' />
-      // }
+      editable:false,
     },
     {
       title: '商品名称',
-      dataIndex: 'userName',
+      dataIndex: 'goodsName',
       valueType: 'text',
-      editable:false
-    },
-    {
-      title: '商品分类',
-      dataIndex: 'content',
-      valueType: 'text',
-      hideInSearch:true,
-      editable:false
+      editable:false,
     },
     {
       title: '销售价',
-      key: 'dateRange',
-      dataIndex: 'createTime',
+      valueType: 'text',
+      dataIndex: 'salePrice',
       hideInSearch:true,
-      editable:false
+      editable:false,
     },
     {
       title: '零售供货价',
-      dataIndex: 'createTime',
+      dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       hideInSearch:true,
-      editable:false
+      editable:false,
     },
     {
       title: '奖品库存',
-      dataIndex: 'images',
-      valueType: 'image',
+      dataIndex: 'stockNum',
+      valueType: 'text',
       hideInSearch:true,
-      renderFormItem:(_,r) => {
-        return <ProFormDigit width="xs" name="num1" initialValue={5} />
-    },
     },
     {
       title: '中奖概率',
-      dataIndex: 'state',
+      dataIndex: 'probability',
       hideInSearch: true,
-      renderFormItem:(_,r) => {
-        return <ProFormDigit width="xs" name="num2" initialValue={5} />
-      },
-      render: (_,r) => {
-        console.log('r',r)
-        return <p>{}</p>
-      }
     },
     {
       title: '状态',
-      dataIndex: 'createTime',
-      valueType: 'text',
+      dataIndex: 'status',
       hideInSearch: true,
-      renderFormItem:(_, row) => {
-        return <ProFormSwitch name="Switch"
-        //   fieldProps={{
-        //     checked: onoff,
-        //     // onChange:(bol)=>{onTop(bol,r.id)
-        //   }
-        // }
-        />
+      renderFormItem: (_,r) => {
+      return <Switch />
       },
-      render: (_,r) => {
-        console.log('r',r)
-        return <p>{}</p>
+      render: (_,r) =>{
+        return <p>
+        {
+          r.status?'开启':'关闭'
+        }
+      </p>
       }
     },
     {
       title: '操作',
-      key: 'option',
-      valueType: 'option',
-      render:(text, record, _, action)=>[
-        <a onClick={()=>delGoods(record.spuId)}>删除</a>
-     ]
-    },
+      valueType: 'text',
+      render:(text, record, _, action)=>{
+        return [
+          <a onClick={()=>delGoods(record.id)}>删除</a>
+      ]
+      },
+      editable:false
+   }
   ]; 
-   // 删除商品
-   const  delGoods=val=>{
-    setDataSource( 
+  // 删除商品
+  const  delGoods=val=>{
+    setDataSource(
       dataSource.filter(ele=>(
-      ele.spuId!=val
-    ))
-    )
-}
-  const defaultData= [
-    {
-      id: '624748504',
-      title: '当天红包金额',
-      decs: '这个活动真好玩',
-    },
-    {
-      id: '624691229',
-      title: '连续签到额外奖励金额',
-    },
-  ]
+            ele.id!=val
+      ))
+    ) 
+  }
   return (
+    <>
     <EditableProTable
-        rowKey="id"
+        rowKey="skuId"
         headerTitle="奖品设置"
-        maxLength={5}
+        // maxLength={5}
         name="table"
-        value={defaultData}
-        // onChange={setDataSource}
+        value={detailList?.skus||dataSource}
         recordCreatorProps={false}
+        // onChange={setDataSource}
         columns={columns}
-        // request={async () => ({
-        //   data: defaultData
-        // })}
         editable={{
-        editableKeys,
-        actionRender: (row, config, defaultDoms) => {
-            return [defaultDoms.delete];
-        },
-        onValuesChange: (record, recordList) => {
+          editableKeys,
+          actionRender: (row, config, defaultDoms) => {
+              return [defaultDoms.delete];
+          },
+          onValuesChange: (record, recordList) => {
             setDataSource(recordList)
-        }
+            callback(recordList)
+          }
         }}
         toolBarRender={()=>[
-            <Button type="primary" onClick={() => { setEditableKeys(defaultData.map(item => item.id))}}>编辑概率</Button>,
-            <Button type="primary" onClick={() => { setEditableKeys([]) }}>保存</Button>,
-            <GoosModel callback={(val)=>setSpuIdsArr(val)}/>
+            <Button type="primary" onClick={() => { setEditableKeys(detailList?.skus.map(item => item.id)||dataSource.map(item => item.id))}}>编辑概率</Button>,
+            <Button type="primary" onClick={() => { setEditableKeys([])}}>保存</Button>,
+            <Button type="primary" onClick={()=>setVisible(true)}>
+                <PlusOutlined />
+                添加商品
+            </Button>,
+            <SelectProductModal 
+              title={'添加商品'}  
+              visible={visible} 
+              setVisible={setVisible} 
+              callback={(val)=>{
+                const arr = [];
+                val.forEach(item => {
+                  arr.push({
+                    id: 0,
+                    status:false,
+                    ...item
+                  })
+                })
+                setDataSource(arr)
+              }}
+            />
         ]}
-        style={{marginBottom:'30px'}}
+        style={{marginBottom:'30px',display:id&&falg?'none':'block'}}
     />
+
+    <ProTable
+        toolBarRender={false}
+        search={false}
+        rowKey="skuId"
+        columns={columns}
+        dataSource={detailList?.skus}
+        style={{display:id&&falg?'block':'none'}}
+    />
+    </>
+    
   );
 };
