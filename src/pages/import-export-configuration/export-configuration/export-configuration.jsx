@@ -150,6 +150,7 @@ const ExportConfiguration = () => {
           }}
           layout="horizontal"
           formRef={formRef}
+          trigger="onDataSourceChange"
         >
           <ProFormText
             width="md"
