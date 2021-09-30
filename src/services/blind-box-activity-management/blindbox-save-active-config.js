@@ -12,7 +12,6 @@ export const saveActiveConfig = async (params, options = {}) => {
     },  
     ...options
   });
-  console.log('res',res)
 
   return {
     code: res.code,

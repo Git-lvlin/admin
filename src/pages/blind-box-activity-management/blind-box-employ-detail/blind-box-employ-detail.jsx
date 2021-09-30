@@ -1,15 +1,19 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
+import { Button,Tabs,Image,Form,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
-import { getBlindboxUseList } from '@/services/blind-box-activity-management/blindbox-get-use-list';
-import { history, connect } from 'umi';
+import { adminList } from '@/services/community-management/dynamic-admin-list';
+import { auditDynamic } from '@/services/community-management/dynamic-audit-dynamic';
+import { checkAuditDynamicSwitch,updateAuditDynamicSwitch } from '@/services/community-management/dynamic-audit-switch';
+import { history,connect } from 'umi';
+import { getBlindboxUseDetail } from '@/services/blind-box-activity-management/blindbox-get-use-list';
+import AuditModel from './audit-model'
 const { TabPane } = Tabs
 
 
-
-export default () => {
+export default (props) => {
+    let id = props.location.query.id
     const ref=useRef()
     const [detailList,setDetailList]=useState()
     const columns= [
@@ -19,72 +23,6 @@ export default () => {
         valueType: 'borderIndex',
         hideInSearch: true,
         valueType: 'indexBorder'
-      },
-      {
-        title: '活动名称',
-        dataIndex: 'name',
-        valueType: 'text',
-      },
-      {
-        title: '活动时间',
-        key: 'dateRange',
-        dataIndex: 'activityStartTime',
-        valueType: 'dateRange',
-        hideInTable: true,
-      },
-      {
-        title: '活动时间',
-        dataIndex: 'activityStartTime',
-        valueType: 'text',
-        hideInSearch:true,
-        render:(_,data)=>{
-          return <p>{data.activityStartTime} 至 {data.activityEndTime}</p>
-        }
-      },
-      {
-        title: '用户手机号',
-        dataIndex: 'memberMobile',
-        valueType: 'text',
-      },
-      {
-        title: '用户名',
-        dataIndex: 'memberNicheng',
-        valueType: 'text',
-      },
-      {
-        title: '使用时间',
-        key: 'dateRange2',
-        dataIndex: 'createTime',
-        valueType: 'dateRange',
-        hideInTable: true,
-      },
-      {
-        title: '使用时间',
-        dataIndex: 'createTime',  
-        hideInSearch:true
-      },
-      {
-        title: '使用次数',
-        dataIndex: 'num',
-        valueType: 'text',
-        hideInSearch:true
-      },
-      {
-        title: '使用类型',
-        dataIndex: 'type',
-        valueType: 'select',
-        hideInSearch:true,
-        valueEnum: {
-          4: '开盲盒',
-          5: '机会过期',
-          6: '官方回收'
-        },
-      },
-      {
-        title: '机会编号',
-        dataIndex: 'code',
-        valueType: 'text',
-        ellipsis:true
       },
       {
         title: '筛选',
@@ -100,6 +38,40 @@ export default () => {
           6: '官方回收'
         },
         hideInTable:true
+      },
+      {
+        title: '时间',
+        key: 'dateRange',
+        dataIndex: 'createTime',
+        valueType: 'dateRange',
+        hideInTable: true,
+      },
+      {
+        title: '使用时间',
+        dataIndex: 'createTime', 
+        hideInSearch:true 
+      },
+      {
+        title: '使用次数',
+        dataIndex: 'num',
+        valueType: 'text',
+        hideInSearch:true
+      },
+      {
+        title: '使用类型',
+        dataIndex: 'type',
+        valueType: 'text',
+        hideInSearch:true,
+        valueEnum: {
+          4: '开盲盒',
+          5: '机会过期',
+          6: '官方回收'
+        },
+      },
+      {
+        title: '机会编号',
+        dataIndex: 'code',
+        valueType: 'text'
       },
       {
         title: '获得奖品',
@@ -146,15 +118,7 @@ export default () => {
             </p>
           </>
         } 
-      },
-      {
-        title: '操作',
-        key: 'option',
-        valueType: 'option',
-        render:(text, record, _, action)=>[
-          <a onClick={()=>history.push('/blind-box-activity-management/blind-box-employ-detail?id='+record.id)}>查看此用户明细</a>
-        ],
-      }, 
+    },
     ];
     const postData=(data)=>{
       console.log('data',data)
@@ -163,36 +127,25 @@ export default () => {
     }
     return (
       <PageContainer>
-         <div style={{backgroundColor:'#fff',marginBottom:'20px'}}>
-         <Descriptions labelStyle={{fontWeight:'bold'}} column={7} layout="vertical" bordered>
-            <Descriptions.Item  label="参与总人数">{detailList?.totalMemberNum}  </Descriptions.Item>
-            <Descriptions.Item  label="已发放次数">{detailList?.totalNum}  </Descriptions.Item>
-            <Descriptions.Item  label="未使用次数">{detailList?.restNum}  </Descriptions.Item>
-            <Descriptions.Item  label="已使用次数">{detailList?.useNum}  </Descriptions.Item>
-            <Descriptions.Item  label="已过期">{detailList?.reclaimNum}  </Descriptions.Item>
-            <Descriptions.Item  label="已兑奖数">{detailList?.prizeNum}  </Descriptions.Item>
-            <Descriptions.Item  label="未兑奖数">{detailList?.noPrizeNum}  </Descriptions.Item>
-        </Descriptions>
-         </div>
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle={`使用明细     剩余开盒总次数：${detailList?.restNum}        已开盒总次数：${detailList?.useNum}`}
+          headerTitle={`用户手机号:${detailList?.memberMobile}         用户名：${detailList?.memberNicheng}         剩余开盒次数：${detailList?.restNum}        已使用次数：${detailList?.useNum}`}
           options={false}
-          request={getBlindboxUseList}
+          request={getBlindboxUseDetail}
           postData={postData}
+          params={{
+            id:id
+          }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
-               <Button onClick={()=>{}} key="out">
-                导出数据
-               </Button>
             ],
           }}
           columns={columns}
         />
-        </PageContainer>
+      </PageContainer>
     );
   };

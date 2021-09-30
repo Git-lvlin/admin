@@ -47,6 +47,7 @@ export default (props) => {
                         value: 0,
                     }
                 ]}
+                readonly={id&&falg}
             />
             <ProFormDependency name={['switch1']}>
                 {({ switch1 }) => { 
@@ -86,7 +87,7 @@ export default (props) => {
                                             label: '每邀请10位新用户注册获得1次',
                                         }
                                     ]}
-                                    readonly={id&&falg}
+                                    readonly={id}
                                 />
                                 <ProForm.Group>
                                 <span>此任务每天最高可获得</span>
@@ -96,7 +97,7 @@ export default (props) => {
                                     rules={[
                                         {validator: checkConfirm}
                                     ]}
-                                    readonly={id&&falg}
+                                    readonly={id}
                                 />
                                 <span>次</span>
                                 </ProForm.Group>
@@ -129,6 +130,7 @@ export default (props) => {
                         value: 0,
                     }
                 ]}
+                readonly={id&&falg}
             />
             <ProFormDependency name={['switch2']}>
                 {({ switch2 }) => { 
@@ -164,7 +166,7 @@ export default (props) => {
                                             label: '每连续到15天获得1次',
                                         }
                                     ]}
-                                    readonly={id&&falg}
+                                    readonly={id}
                                 />
                                 <ProForm.Group>
                                     <span>中奖概率</span>
@@ -195,6 +197,7 @@ export default (props) => {
                         value: 2,
                     }
                 ]}
+                readonly={id&&falg}
             />
             <ProFormDependency name={['switch3']}>
                 {({ switch3 }) => { 
@@ -226,7 +229,7 @@ export default (props) => {
                                             label: '每日首次消费5笔获得1次',
                                         }
                                     ]}
-                                    readonly={id&&falg}
+                                    readonly={id}
                                 />
                                 <ProForm.Group>
                                     <span>中奖概率</span>
