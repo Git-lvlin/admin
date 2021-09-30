@@ -1,34 +1,38 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
+import { Button,Tabs,Image,Form,Modal,Select,message} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
+import { productPage,productUpdateStatus,productDelete,productEdit,productAdd } from '@/services/sign-activity-management/sign-red-packet-product';
 import { PageContainer } from '@ant-design/pro-layout';
 import DiscountsModel from './discounts-model'
-import DeleteModal from '@/components/DeleteModal'
-import GoosModel from './goos-model'
+import { amountTransform } from '@/utils/utils'
+import { PlusOutlined } from '@ant-design/icons';
+import SelectProductModal from '@/components/select-product-modal'
 
 
 export default () => {
   const ref=useRef()
-  const [spuIdsArr,setSpuIdsArr]=useState([])
   const [onoff,setOnoff]=useState(false)
+  const [visible, setVisible] = useState(false);
+  const [form] = Form.useForm()
+  const [spuIds,setSpuIds]=useState()
   const columns= [
     {
-        title: '序号',
-        dataIndex:'id',
-        valueType: 'borderIndex',
-        hideInSearch: true,
-        valueType: 'indexBorder'
+      title: '序号',
+      dataIndex:'id',
+      valueType: 'borderIndex',
+      hideInSearch: true,
+      valueType: 'indexBorder'
     },
     {
       title: 'SPUID',
-      dataIndex: 'dynamicId',
+      dataIndex: 'spuId',
       valueType: 'text',
     },
     {
       title: '商品图片',
-      dataIndex: 'id',
-      valueType: 'text',
+      dataIndex: 'goodsImageUrl',
+      valueType: 'image',
       hideInSearch:true,
       // render:(_,data)=>{
       //   return <Image src={data.images[0]} alt="" width='50px' height='50px' />
@@ -36,55 +40,50 @@ export default () => {
     },
     {
       title: '商品名称',
-      dataIndex: 'userName',
+      dataIndex: 'goodsName',
       valueType: 'text',
     },
     {
       title: '商品分类',
-      dataIndex: 'content',
+      dataIndex: 'gcId1Display',
       valueType: 'text',
       hideInSearch:true,
       ellipsis:true
     },
     {
       title: '可用库存',
-      dataIndex: 'images',
-      valueType: 'image',
+      dataIndex: 'stockNum',
+      valueType: 'text',
       hideInSearch:true,
-     
     },
     {
       title: '销售价',
-      key: 'dateRange',
-      dataIndex: 'createTime',
-      hideInSearch:true
+      dataIndex: 'goodsSalePrice',
+      hideInSearch:true,
+      render: (_)=> amountTransform(_, '/').toFixed(2)
     },
     {
       title: '零售供货价',
-      dataIndex: 'createTime',
+      dataIndex: 'retailSupplyPrice',
       valueType: 'text',
-      hideInSearch:true
+      hideInSearch:true,
+      render: (_)=> amountTransform(_, '/').toFixed(2)
     },
     {
       title: '满减金额',
-      dataIndex: 'state',
+      dataIndex: 'maxDeduction',
       hideInSearch: true,
-      valueEnum: {
-        0:'未审核',
-        1:'已审核',
-        2:'审核拒绝'
-    },
     },
     {
       title: '开启状态',
-      dataIndex: 'createTime',
+      dataIndex: 'status',
       valueType: 'text',
       hideInSearch: true,
-      render:(_,r) => {
+      render:(_,data) => {
         return <ProFormSwitch name="Switch"
           fieldProps={{
-            checked: onoff,
-            // onChange:(bol)=>{onTop(bol,r.id)
+            checked: data.status,
+            onChange:(bol)=>{onFF(bol,data.id)}
           }
         }
         />
@@ -96,34 +95,33 @@ export default () => {
       valueType: 'option',
       render: (_, data) => [
           <DiscountsModel 
-            record={data}
-            state={1}  
-            label={'通过'}  
-            text={'确认要通过该帖子的发布吗？'} 
-            // InterFace={auditDynamic} 
-            title={'审核确认'}
+            spuId={data.spuId}
+            InterFace={productEdit} 
             boxref={ref}
           />,
-          <DeleteModal
-            record={data} 
-            boxref={ref} 
-            label1={'删除'}
-            text={'确定要删除该商品吗？'} 
-            // InterFace={couponDelSub}
-            blok={1}
-            title={'操作确认'}
-            />
+          <a onClick={()=>{
+            productDelete({ids:[data.id]}).then(res=>{
+              if(res.code==0){
+                ref.current.reload()
+              }
+            })
+          }}>删除</a>
       ],
     },
     
   ];
- useEffect(()=>{
-//   if(type==0){
-//     checkAuditDynamicSwitch({}).then(res=>{
-//       setCheck(res.data)
-//     })
-//   }
- },[]) 
+  const onFF=(bol,id)=>{
+    productUpdateStatus({ids:[id],status:bol}).then(res=>{
+      if(res.code==0){
+        message.success('设置成功');
+        ref.current.reload()
+      }
+    })
+}
+const onIpute=(res)=>{
+  console.log('res',res.selectedRowKeys)
+  setSpuIds(res.selectedRowKeys)
+}
   return (
     <PageContainer>
       <ProTable
@@ -131,11 +129,8 @@ export default () => {
         rowKey="id"
         headerTitle="签到红包可用商品配置"
         options={false}
-        params={{
-        //   auditStatus:type,
-        }}
-        // request={adminList}
-        dataSource={spuIdsArr}
+        request={productPage}
+        // dataSource={spuIdsArr}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -143,14 +138,52 @@ export default () => {
              ...dom.reverse(),
           ],
         }}
+        // rowSelection={{}}
+        // tableAlertOptionRender={onIpute}
         toolBarRender={()=>[
-            <Button  onClick={()=>setOnoff(false)} type="primary">
-                关闭全部商品
+            // <Button  onClick={()=>{
+            //   setOnoff(false)
+            //   // productUpdateStatus({ids:'',status:false}).then(res=>{
+            //   //   if(res.code==0){
+            //   //     message.success('关闭成功');
+            //   //   }
+            //   // })
+            // }} type="primary">
+            //     关闭全部商品
+            // </Button>, 
+            // <Button  onClick={()=>{
+            //   setOnoff(true)
+            //   // productUpdateStatus({ids:"",status:true}).then(res=>{
+            //   //   if(res.code==0){
+            //   //     message.success('开启成功');
+            //   //   }
+            //   // })
+            // }} type="primary">
+            //     开启全部商品
+            // </Button>,
+             <Button type="primary" onClick={()=>setVisible(true)}>
+                <PlusOutlined />
+                添加秒约商品
             </Button>,
-            <Button  onClick={()=>setOnoff(true)} type="primary">
-                开启全部商品
-            </Button>,
-            <GoosModel callback={(val)=>setSpuIdsArr(val)}/>
+            <SelectProductModal 
+              title={'添加秒约商品'}  
+              visible={visible} 
+              setVisible={setVisible} 
+              callback={(val)=>{
+                console.log('val',val)
+                const arr = [];
+                val.forEach(item => {
+                  arr.push(item.spuId)
+                })
+                productAdd({addList:arr}).then(res=>{
+                  if(res.code==0){
+                    message.success('新增商品成功');
+                    ref.current.reload()
+                  }
+                })
+                // setDataSource([...dataSource,...arr])
+              }}
+            />
         ]}
         columns={columns}
       />

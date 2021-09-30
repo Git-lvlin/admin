@@ -9,7 +9,7 @@ export default (props)=>{
         <ProFormRadio.Group
             name="validiteType"
             label='盲盒机会有效期'
-            // rules={[{ required: true, message: '请选择有效期限' }]}
+            rules={[{ required: true, message: '请选择有效期限' }]}
             options={[
                 {
                     label:'限时',
@@ -20,6 +20,7 @@ export default (props)=>{
                     value: 0,
                 }
             ]}
+            readonly={id} 
         />
         <ProFormDependency name={['validiteType']}>
             {({ validiteType }) => {
@@ -32,7 +33,7 @@ export default (props)=>{
                             <ProFormText
                                 width={100}
                                 name="validiteHour"
-                                readonly={id&&falg} 
+                                readonly={id} 
                             />
                             <span>小时内可用</span>
                         </ProForm.Group>
