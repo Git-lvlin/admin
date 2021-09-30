@@ -36,7 +36,6 @@ export default (props) => {
     if (id) {
       getActiveConfigById({id:id}).then(res=>{
         setDetailList(res.data)
-        console.log('res',res)
         form.setFieldsValue({
           switch1:res.data.content?.accessGain.inviteFriends.switch,
           switch2:res.data.content?.accessGain.signIn.switch,
@@ -50,13 +49,13 @@ export default (props) => {
           validiteHour:res.data.content?.validiteHour,
           redeemEarlyDay:res.data.content?.redeemEarlyDay,
           maxPrizeNum:res.data.content?.maxPrizeNum,
-          dateRange: [ moment(res.data.startTime).format('YYYY-MM-DD HH:mm:ss'), moment(res.data.endTime).format('YYYY-MM-DD HH:mm:ss')],
+          prizeNotice:res.data.content?.prizeNotice,
+          dateRange: [ moment(res.data.startTime*1000).format('YYYY-MM-DD HH:mm:ss'), moment(res.data.endTime*1000).format('YYYY-MM-DD HH:mm:ss')],
           ...res.data
         })
       })
     } 
   }, [])
-  //红包名称验证规则
   const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
       if (value && value.length > 50) {
@@ -69,58 +68,68 @@ export default (props) => {
     })
   }
   const onsubmit = (values) => {
-    values.id=id?1:0
-    values.startTime=values.dateRange ?values.dateRange[0]:null
-    values.endTime=values.dateRange ?values.dateRange[1]:null
-    values.accessGain={
-      inviteFriends:{
-        switch:values.switch1,
-        inviteNum:values.inviteNum,
-        prizeNum:1,
-        dayGainMax:values.dayGainMax,
-        probability:values.probability1
-      },
-      signIn:{
-        switch:values.switch2,
-        signInNum:values.signInNum,
-        prizeNum:1,
-        probability:values.probability2
-      },
-      orderConsume:{
-        switch:values.switch3,
-        consumeNum:values.consumeNum,
-        prizeNum:1,
-        probability:values.probability3
+    try {
+      values.id=id||0
+      values.startTime=values.dateRange ?values.dateRange[0]:null
+      values.endTime=values.dateRange ?values.dateRange[1]:null
+      values.accessGain={
+        inviteFriends:{
+          switch:values.switch1,
+          inviteNum:values.inviteNum,
+          prizeNum:1,
+          dayGainMax:values.dayGainMax,
+          probability:values.probability1
+        },
+        signIn:{
+          switch:values.switch2,
+          signInNum:values.signInNum,
+          prizeNum:1,
+          probability:values.probability2
+        },
+        orderConsume:{
+          switch:values.switch3,
+          consumeNum:values.consumeNum,
+          prizeNum:1,
+          probability:values.probability3
+        }
       }
-    }
-    const arr = [];
-    dataSource.forEach(item => {
-      arr.push({
-        id: id&&item.id||0,
-        probability: item.probability,
-        status: item.status?1:0,
-        skuId: item.skuId,
-        spuId: item.spuId,
-        stockNum: item.stockNum,
-        goodsName: item.goodsName,
-        imageUrl: item.imageUrl,
-        salePrice: item.salePrice,
-        retailSupplyPrice: item.retailSupplyPrice,
+      const arr = [];
+      dataSource.forEach(item => {
+        arr.push({
+          id: item.add?0:item.id,
+          probability: item.probability,
+          status: item.status?1:0,
+          skuId: item.skuId,
+          spuId: item.spuId,
+          stockNum: item.stockNum,
+          goodsName: item.goodsName,
+          imageUrl: item.imageUrl,
+          salePrice: item.salePrice,
+          retailSupplyPrice: item.retailSupplyPrice,
+        })
       })
+      
+      values.skus=arr.length>0&&arr||detailList?.skus
+    } catch (error) {
+      console.log('error',error)
+    }
+ 
+    saveActiveConfig(values).then(res=>{
+      if (res.code == 0) {
+        history.push('/blind-box-activity-management/blind-box-management-list')
+        if(id){
+          message.success('编辑成功');
+        }else{
+          message.success('提交成功');
+        }
+       
+      }
     })
-    values.skus=arr
-    console.log('values',values)
-    // saveActiveConfig(values).then(res=>{
-    //   if (res.code == 0) {
-    //     history.push('/blind-box-activity-management/blind-box-management-list')
-    //     message.success('提交成功');
-    //   }
-    // })
   }
 
-  // const disabledDate=(current)=>{
-  //   return current && current < moment().startOf('day');
-  // }
+  const disabledDate=(current)=>{
+    return current && current < moment().startOf('day');
+  }
   return (
       <ProForm
         form={form}
@@ -134,14 +143,20 @@ export default (props) => {
                   id?
                   <>
                      {
-                       falg?<Button style={{marginLeft:'80px'}} type="primary"  onClick={()=>{setFalg(false)}}>
-                              编辑
-                          </Button>
-                          :<Button style={{marginLeft:'80px'}} type="primary" key="submit" onClick={() => {
-                            props.form?.submit?.()
-                          }}>
-                            保存
-                          </Button>
+                       detailList?.status==1?
+                       <>
+                       {
+                         falg?<Button style={{marginLeft:'80px'}} type="primary"  onClick={()=>{setFalg(false)}}>
+                         编辑
+                        </Button>
+                        :<Button style={{marginLeft:'80px'}} type="primary" key="submit" onClick={() => {
+                          props.form?.submit?.()
+                        }}>
+                          保存
+                        </Button>
+                       }
+                       </>
+                       :null
                      }
                   </>
                   :
@@ -186,9 +201,9 @@ export default (props) => {
             rules={[{ required: true, message: '请选择活动时间' }]}
             name="dateRange"
             extra="提示：活动时间不能和其他盲盒活动时间重叠"
-            // fieldProps={{
-            //    disabledDate:(current)=>disabledDate(current)
-            // }}
+            fieldProps={{
+               disabledDate:(current)=>disabledDate(current)
+            }}
             readonly={id&&falg}
             placeholder={[
             formatMessage({
@@ -212,7 +227,7 @@ export default (props) => {
             <ProFormText
                 width={120}
                 name="redeemEarlyDay"
-                readonly={id&&falg} 
+                readonly={id} 
             />
             <span>天内有效</span>
             </ProForm.Group>
@@ -237,7 +252,9 @@ export default (props) => {
         </ProForm.Group>
 
         {/* 奖品设置 */}
-        <PrizeSet detailList={detailList} id={id} falg={falg} callback={(val)=>setDataSource(val)}/>
+        <PrizeSet detailList={detailList} id={id} falg={falg} callback={(val)=>{
+          setDataSource(val)
+        }}/>
         
 
         {/* 奖品预告 */}
@@ -306,13 +323,13 @@ export default (props) => {
             name="ruleText"
             style={{ minHeight: 32, marginTop: 15 }}
             placeholder='列如玩法规则、简单的用户协议'
-            // rules={[{ required: true, message: '请备注活动规则' }]}
+            rules={[{ required: true, message: '请备注活动规则' }]}
             rows={4}
             readonly={id&&falg}
         />
         {
           id&&falg?
-          <p className={styles.back}>最近一次操作人：admin     2021/09/16  19:00</p>
+          <p className={styles.back}>最近一次操作人：{detailList?.lastEditor}     {moment(detailList?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
           :null
         }
         
