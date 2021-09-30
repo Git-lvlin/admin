@@ -42,7 +42,7 @@ const Details = () => {
     if(query.accountType==='supplier'){
       return '供应商虚拟子账户'
     } else if(query.accountType==='store'){
-      return '会员店虚拟子账户'
+      return '社区店虚拟子账户'
     }else if(query.accountType==='agentStore'){
       return '代发店虚拟子账户'
     }else{
@@ -84,7 +84,14 @@ const Details = () => {
             <div><span className={styles.sn}>{data?.sn}</span></div>
             <div className={styles.balance}>
               <div>
-                总余额： <span>{`${amountTransform((parseInt(data?.balance)+parseInt(data?.commission)), '/')}元`}</span>
+                交易总额： 
+                <span>
+                  {
+                    query.accountType==='store'?
+                    `${amountTransform((parseInt(data?.balance)+parseInt(data?.balanceSumWithdraw)+parseInt(data?.commission)+parseInt(data?.commissionSumWithdraw)), '/')}元`:
+                    `${amountTransform((parseInt(data?.balance)+parseInt(data?.commission)), '/')}元`
+                  }
+                </span>
               </div>
               <Button 
                 type='default'
@@ -112,15 +119,21 @@ const Details = () => {
                     货款可提现余额： <span>{`${amountTransform(data?.balanceAvailable, '/')}元`}</span>
                   </div>
                   <div>
-                    冻结余额： <span>{`${amountTransform(data?.balanceFreeze, '/')}元`}</span>
+                    货款已提现余额： <span>{`${amountTransform(data?.balanceSumWithdraw, '/')}元`}</span>
+                  </div>
+                  <div>
+                    货款冻结余额： <span>{`${amountTransform(data?.balanceFreeze, '/')}元`}</span>
                   </div>
                 </div>
                 <div className={styles.balance}> 
                   <div>
-                    提成可提现余额： <span>{`${amountTransform(data?.commissionAvailable, '/')}元`}</span>
+                    收益可提现金额： <span>{`${amountTransform(data?.commissionAvailable, '/')}元`}</span>
                   </div>
                   <div>
-                    冻结余额： <span>{`${amountTransform(data?.commissionFreeze, '/')}元`}</span>
+                    收益已提现金额： <span>{`${amountTransform(data?.commissionSumWithdraw, '/')}元`}</span>
+                  </div>
+                  <div>
+                    收益冻结余额： <span>{`${amountTransform(data?.commissionFreeze, '/')}元`}</span>
                   </div>
                 </div>
               </>
