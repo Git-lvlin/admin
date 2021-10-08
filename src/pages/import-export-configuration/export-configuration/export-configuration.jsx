@@ -2,7 +2,8 @@ import React, { useState, useRef } from 'react'
 import { message, Form, Button } from 'antd'
 import ProForm, { 
   ProFormText, 
-  ProFormSelect
+  ProFormSelect,
+  ProFormDigit
 } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 import { PageContainer } from '@ant-design/pro-layout'
@@ -11,9 +12,14 @@ import { PlusOutlined } from '@ant-design/icons'
 
 import Upload from '@/components/upload'
 import styles from './styles.less'
+import importExportConfiguration from '@/services/import-export-configuration'
 
 const waitTime = (e) => {
   console.log(e)
+}
+
+const editParams = (values) => {
+  console.log(values)
 }
 
 const ExportConfiguration = () => {
@@ -87,15 +93,21 @@ const ExportConfiguration = () => {
       <>
         <ProFormText
           width="md"
-          name="1"
+          name="interUrl"
           label="数据接口Url："
           placeholder="请输入数据接口Url" 
         />
-        <ProFormText
+        <ProFormDigit
           width="md"
-          name="2"
+          name="rowStartIndex"
           label="起始数据行："
           placeholder="请输入起始数据行" 
+        />
+         <ProFormDigit
+          width="md"
+          name="cellStartIndex"
+          label="起始数据列："
+          placeholder="请输入起始数据列" 
         />
         {
           choose === 2 &&
@@ -112,8 +124,8 @@ const ExportConfiguration = () => {
               editable={{
                 form,
                 editableKeys,
-                onSave: async () => {
-                  await waitTime(2000)
+                onSave: async (val) => {
+                  await editParams(val)
                 },
                 onChange: setEditableRowKeys,
                 // actionRender: (row, config, dom) => [dom.save, dom.cancel]
@@ -154,13 +166,13 @@ const ExportConfiguration = () => {
         >
           <ProFormText
             width="md"
-            name="name"
+            name="title"
             label="导出文件名"
             placeholder="请输入文件名称" 
           />
           <ProFormText
             width="md"
-            name="company"
+            name="code"
             label="唯一编码"
             placeholder="请输入唯一编码" 
           />
@@ -190,7 +202,7 @@ const ExportConfiguration = () => {
             choose === 1&&
             <ProForm.Item
               label="模板文件"
-              name="file"
+              name="templateUrl"
               // rules={[{message: '请上传模板文件', required: true}]}
             >
               <Upload
@@ -201,15 +213,12 @@ const ExportConfiguration = () => {
           }
           <ProCard
             tabs={{ 
-              type: 'editable-card'
+              type: 'card'
             }}
           >
             <ProCard.TabPane key="tab1" tab="Sheet1" closable={false}>
               <FormData />
             </ProCard.TabPane>
-            {/* <ProCard.TabPane key="tab2" tab="Sheet2" closable={false}>
-              <FormData />
-            </ProCard.TabPane> */}
           </ProCard>
         </ProForm>
       </div>
