@@ -23,7 +23,7 @@ const TableList = () => {
   const [orderType, setOrderType] = useState(0)
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState(0)
-  const [deliveryVisible, setDeliveryVisible] = useState(false)
+  // const [deliveryVisible, setDeliveryVisible] = useState(false)
   const [importVisit, setImportVisit] = useState(false)
   const isPurchase = useLocation().pathname.includes('purchase')
   const [detailVisible, setDetailVisible] = useState(false);
@@ -368,7 +368,12 @@ const TableList = () => {
                 <div style={{ textAlign: 'center' }}>
                   {{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}
                 </div>
-                <div style={{ textAlign: 'center' }}><Tag style={{ borderRadius: 10 }} color="#f59a23">{{ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType]}订单</Tag></div>
+                <div style={{ textAlign: 'center' }}>
+                  <Tag style={{ borderRadius: 10 }} color="#f59a23">{{ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType]}订单</Tag>
+                  {
+                    item.relevant1688OrderId && <div>关联1688单号：{item.relevant1688OrderId}</div>
+                  }
+                </div>
                 <div style={{ textAlign: 'center' }}>
                   {/* <a onClick={() => { history.push(`/order-management/normal-order-detail${isPurchase ? '-purchase' : ''}/${item.id}`) }}>详情</a> */}
                   <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
