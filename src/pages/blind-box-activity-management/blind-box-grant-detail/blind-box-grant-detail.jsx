@@ -2,8 +2,10 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
+import { getBlindboxIncomeList } from '@/services/blind-box-activity-management/blindbox-blindbox-get-lncome';
 import { PageContainer } from '@ant-design/pro-layout';
 // import './style.less'
+import { history,connect } from 'umi';
 const { TabPane } = Tabs
 
 
@@ -12,52 +14,74 @@ export default () => {
     const ref=useRef()
     const columns= [
       {
-          title: '序号',
-          dataIndex:'id',
-          valueType: 'borderIndex',
-          hideInSearch: true,
-          valueType: 'indexBorder'
+        title: '序号',
+        dataIndex:'id',
+        valueType: 'borderIndex',
+        hideInSearch: true,
+        valueType: 'indexBorder'
+      },
+      {
+        title: '活动名称',
+        dataIndex: 'name',
+        valueType: 'text',
+      },
+      {
+        title: '活动时间',
+        dataIndex: 'activityStartTime',
+        valueType: 'text',
+        hideInSearch:true,
+        render:(_,data)=>{
+          return <p>{data.activityStartTime} 至 {data.activityEndTime}</p>
+        }
       },
       {
         title: '用户手机号',
-        dataIndex: 'dynamicId',
+        dataIndex: 'memberMobile',
         valueType: 'text',
-        hideInTable:true
       },
       {
         title: '用户名',
-        dataIndex: 'id',
+        dataIndex: 'memberNicheng',
         valueType: 'text',
       },
       {
         title: '发放原因',
-        dataIndex: 'userName',
+        dataIndex: 'type',
         valueType: 'text',
-        hideInSearch:true
+        valueEnum: {
+          1:'连续签到',
+          2:'邀请好友', 
+          3:'订单消费'
+        },
       },
       {
         title: '发放时间',
         key: 'dateRange',
-        dataIndex: 'createTime',
-        valueType: 'dateRange',   
+        dataIndex: 'usefulTime',
+        valueType: 'dateRange',
+        hideInTable: true,
+      },
+      {
+        title: '发放时间',
+        dataIndex: 'usefulTime',
+        valueType: 'text',
+        hideInSearch:true   
       },
       {
         title: '过期时间',
-        key: 'dateRange',
-        dataIndex: 'createTime',
+        dataIndex: 'outUsefulTime',
         hideInSearch:true
       },
       {
         title: '发放次数',
-        dataIndex: 'createTime',
+        dataIndex: 'num',
         valueType: 'text',
         hideInSearch:true
       },
       {
         title: '机会编号',
-        dataIndex: 'createTime',
+        dataIndex: 'code',
         valueType: 'text',
-        hideInSearch: true
       },
       {
         title: '操作',
@@ -75,10 +99,7 @@ export default () => {
           rowKey="id"
           headerTitle="签到红包发放明细"
           options={false}
-          params={{
-          //   auditStatus:type,
-          }}
-          // request={adminList}
+          request={getBlindboxIncomeList}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,

@@ -1,8 +1,9 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select,Switch} from 'antd';
+import { Button,Tabs,Image,Form,Modal,Select,Switch, Input} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import SelectProductModal from '@/components/select-product-modal'
 import { PlusOutlined } from '@ant-design/icons';
+import ProForm, { ProFormText} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 
 
@@ -57,12 +58,13 @@ export default (props) => {
     {
       title: '奖品库存',
       dataIndex: 'stockNum',
-      valueType: 'text',
+      valueType: 'digit',
       hideInSearch:true,
     },
     {
       title: '中奖概率',
       dataIndex: 'probability',
+      valueType: 'digit',
       hideInSearch: true,
     },
     {
@@ -70,7 +72,7 @@ export default (props) => {
       dataIndex: 'status',
       hideInSearch: true,
       renderFormItem: (_,r) => {
-      return <Switch />
+      return <Switch checked={r.record.status}/>
       },
       render: (_,r) =>{
         return <p>
@@ -88,27 +90,32 @@ export default (props) => {
           <a onClick={()=>delGoods(record.id)}>删除</a>
       ]
       },
-      editable:false
+      editable:false,
+      hideInTable:id&&falg
    }
   ]; 
   // 删除商品
   const  delGoods=val=>{
-    setDataSource(
-      dataSource.filter(ele=>(
-            ele.id!=val
-      ))
-    ) 
+    const arr=dataSource.filter(ele=>(
+          ele.id!=val
+    ))
+    setDataSource(arr) 
+    callback(arr)
   }
+  useEffect(()=>{
+    if(!falg){
+     setDataSource(detailList?.skus)
+    }
+   
+  },[falg])
   return (
     <>
     <EditableProTable
-        rowKey="skuId"
+        rowKey="id"
         headerTitle="奖品设置"
-        // maxLength={5}
         name="table"
-        value={detailList?.skus||dataSource}
+        value={dataSource}
         recordCreatorProps={false}
-        // onChange={setDataSource}
         columns={columns}
         editable={{
           editableKeys,
@@ -121,26 +128,29 @@ export default (props) => {
           }
         }}
         toolBarRender={()=>[
-            <Button type="primary" onClick={() => { setEditableKeys(detailList?.skus.map(item => item.id)||dataSource.map(item => item.id))}}>编辑概率</Button>,
+            <Button type="primary" onClick={() => { 
+              setEditableKeys(dataSource.map(item => item.id))
+            } 
+            }>编辑概率</Button>,
             <Button type="primary" onClick={() => { setEditableKeys([])}}>保存</Button>,
             <Button type="primary" onClick={()=>setVisible(true)}>
                 <PlusOutlined />
-                添加商品
+                添加秒约商品
             </Button>,
             <SelectProductModal 
-              title={'添加商品'}  
+              title={'添加秒约商品'}  
               visible={visible} 
               setVisible={setVisible} 
               callback={(val)=>{
                 const arr = [];
                 val.forEach(item => {
                   arr.push({
-                    id: 0,
                     status:false,
+                    add:true,
                     ...item
                   })
                 })
-                setDataSource(arr)
+                setDataSource([...dataSource,...arr])
               }}
             />
         ]}

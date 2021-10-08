@@ -27,7 +27,7 @@ export default () => {
         valueType: 'text',
         hideInSearch:true,
         render:(_,data)=>{
-          return <p>{moment(data.startTime).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(data.endTime).format('YYYY-MM-DD HH:mm:ss')}</p>
+          return <p>{moment(data?.startTime*1000).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(data?.endTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
         }
       },
       {
@@ -99,8 +99,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a onClick={()=>history.push('/blind-box-activity-management/bind-box-rule-set?id='+record.id)}>查看详情</a>,
-            <a onClick={()=>{}}>删除</a>
+            <a onClick={()=>history.push('/blind-box-activity-management/bind-box-rule-set?id='+record.id)}>查看详情</a>
         ],
       }, 
     ];

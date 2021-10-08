@@ -24,6 +24,12 @@ export default {
         hideInMenu: true
       },
       {
+        name: 'blind-box-employ-detail',
+        path: '/blind-box-activity-management/blind-box-employ-detail',
+        component: './blind-box-activity-management/blind-box-employ-detail',
+        hideInMenu: true
+      },
+      {
         name: 'bind-box-rule-set',
         path: '/blind-box-activity-management/bind-box-rule-set',
         component: './blind-box-activity-management/bind-box-rule-set',
