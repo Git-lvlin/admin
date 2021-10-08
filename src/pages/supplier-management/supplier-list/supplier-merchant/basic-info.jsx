@@ -263,7 +263,7 @@ export default (props) => {
                       companyName: value
                     }, { showError: false }).then(res => {
                       if (res.code === 0) {
-                        if (res.data.records?.id && value !== detailData?.accountName) {
+                        if (res.data.records?.id && value !== detailData?.companyName) {
                           reject(new Error('供应商家名称已存在'));
                         } else {
                           resolve();
