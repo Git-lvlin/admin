@@ -1,14 +1,14 @@
 import request from '@/utils/request';
 
 export const getBlindboxIncomeList = async (params = {}, options = {}) => {
-    const { current, pageSize,dateRange, ...rest } = params;
+    const { current, pageSize,dateTimeRange, ...rest } = params;
     const res = await request('/auth/blindbox/Blindbox/getBlindboxIncomeList', {
       method: 'POST',
       data: {
         page: current,
         pageSize: pageSize,
-        startTime1:dateRange&&dateRange[0],
-        startTime2:dateRange&&dateRange[1],
+        startTime1:dateTimeRange&&dateTimeRange[0],
+        startTime2:dateTimeRange&&dateTimeRange[1],
         ...rest
       },
       ...options
@@ -23,13 +23,15 @@ export const getBlindboxIncomeList = async (params = {}, options = {}) => {
 
 
   export const getBlindboxIncomeDetail = async (params = {}, options = {}) => {
-    const { dateRange,...rest } = params;
+    const { current, pageSize,dateTimeRange,...rest } = params;
     const res = await request('/auth/blindbox/Blindbox/getBlindboxIncomeDetail', {
     method: 'POST',
     data: {
+        page: current,
+        pageSize:pageSize,
+        startTime1:dateTimeRange&&dateTimeRange[0],
+        startTime2:dateTimeRange&&dateTimeRange[1],
         ...rest,
-        startTime1:dateRange&&dateRange[0],
-        startTime2:dateRange&&dateRange[1],
     },
     ...options
     });
@@ -37,7 +39,8 @@ export const getBlindboxIncomeList = async (params = {}, options = {}) => {
     return {
     data: res.data,
     success: true,
-    code: res.code
+    code: res.code,
+    total: res.data.total
     }
 }
 

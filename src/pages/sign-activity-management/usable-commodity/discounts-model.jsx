@@ -19,7 +19,7 @@ const formItemLayout = {
   };
 
 export default props=>{
-    const {spuId,InterFace,boxref}=props
+    const {data,InterFace,boxref}=props
     const [visible, setVisible] = useState(false);
     const Termination=()=>{
         setVisible(true)
@@ -28,7 +28,9 @@ export default props=>{
         return new Promise(async (resolve, reject) => {
         if (value&&value<0) {
             await reject('必须大于等于0')
-        } else {
+        }else if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+            await reject('只能输入整数')
+        }else {
             await resolve()
         }
         })
@@ -37,6 +39,10 @@ export default props=>{
         return new Promise(async (resolve, reject) => {
         if (value&&value<=0) {
             await reject('必须大于0')
+        }else if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+            await reject('只能输入数字')
+        }else if(value&&!/^[0-9]+(.[0-9]{0,1})?$/.test(value)){
+            await reject('最多输入一位小数')
         } else {
             await resolve()
         }
@@ -56,7 +62,7 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                InterFace({spuId:spuId,...values}).then(res=>{
+                InterFace({spuId:data.spuId,...values}).then(res=>{
                     if(res.code==0){
                         setVisible(false)   
                         boxref&&boxref.current?.reload()
@@ -67,6 +73,38 @@ export default props=>{
             }}
             {...formItemLayout}
         >
+        <ProFormText
+            width={100}
+            label="SPUID"
+            readonly
+            fieldProps={{
+                value:data.spuId
+            }}
+        />
+        <ProFormText
+            width={100}
+            label="商品名称"
+            readonly
+            fieldProps={{
+                value:data.goodsName
+            }}
+        />
+        <ProFormText
+            width={100}
+            label="零售供货价"
+            readonly
+            fieldProps={{
+                value:`￥${data.retailSupplyPrice/100}`
+            }}
+        />
+        <ProFormText
+            width={100}
+            label="销售价"
+            readonly
+            fieldProps={{
+                value:`￥${data.goodsSalePrice/100}`
+            }}
+        />
         <ProForm.Group>
             <span>使用门槛 : 满</span>
             <ProFormText

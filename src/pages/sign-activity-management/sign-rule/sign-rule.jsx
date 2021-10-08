@@ -352,14 +352,18 @@ export default (props) =>{
                 }
               }
           />
-           <ProFormText
-              width={120}
-              label="生效时间"
-              fieldProps={{
-                value: "修改后马上生效"
-              }}
-              readonly
-            />
+         {
+           !save?
+            <ProFormText
+            width={120}
+            label="生效时间"
+            fieldProps={{
+              value: "修改后马上生效"
+            }}
+            readonly
+          />
+          :null
+         }
           <ProFormRadio.Group
               name="status"
               label="活动状态"
@@ -377,7 +381,7 @@ export default (props) =>{
           />
           {
             save?
-            <p className={styles.back}>最近一次操作人：{detailList?.lastHandler}      {detailList?.updateTime?moment(detailList?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss'):null}</p>
+            <p className={styles.back}>最近一次操作人：{detailList?.lastHandler}      {detailList?.updateTime}</p>
             :null
           }
           
