@@ -18,7 +18,14 @@ export default props=>{
             submitter={{
             render: (props, defaultDoms) => {
                 return [
-                ...defaultDoms
+                    <Button  key="submit" onClick={() =>setVisible(false)}>
+                        取消
+                    </Button>,
+                    <Button  type="primary" key="submit" onClick={() => {
+                        props.form?.submit?.()
+                      }}>
+                        确认回收
+                    </Button>
                 ];
             },
             }}

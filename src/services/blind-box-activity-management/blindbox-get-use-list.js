@@ -1,16 +1,16 @@
 import request from '@/utils/request';
 
 export const getBlindboxUseList = async (params = {}, options = {}) => {
-    const { current, pageSize,dateRange,dateRange2, ...rest } = params;
+    const { current, pageSize,dateTimeRange,dateTimeRange2, ...rest } = params;
     const res = await request('/auth/blindbox/Blindbox/getBlindboxUseList', {
       method: 'POST',
       data: {
         page: current,
         pageSize:pageSize,
-        activityStartTime:dateRange&&dateRange[0],
-        activityEndTime:dateRange&&dateRange[1],
-        startTime1:dateRange2&&dateRange2[0],
-        startTime2:dateRange2&&dateRange2[1],
+        activityStartTime:dateTimeRange&&dateTimeRange[0],
+        activityEndTime:dateTimeRange&&dateTimeRange[1],
+        startTime1:dateTimeRange2&&dateTimeRange2[0],
+        startTime2:dateTimeRange2&&dateTimeRange2[1],
         ...rest
       },
       ...options
@@ -25,14 +25,14 @@ export const getBlindboxUseList = async (params = {}, options = {}) => {
 
 
   export const getBlindboxUseDetail = async (params = {}, options = {}) => {
-    const { current, pageSize,dateRange, ...rest } = params;
+    const { current, pageSize,dateTimeRange, ...rest } = params;
     const res = await request('/auth/blindbox/Blindbox/getBlindboxUseDetail', {
       method: 'POST',
       data: {
         page: current,
         pageSize:pageSize,
-        startTime1:dateRange&&dateRange[0],
-        startTime2:dateRange&&dateRange[1],
+        startTime1:dateTimeRange&&dateTimeRange[0],
+        startTime2:dateTimeRange&&dateTimeRange[1],
         ...rest
       },
       ...options
