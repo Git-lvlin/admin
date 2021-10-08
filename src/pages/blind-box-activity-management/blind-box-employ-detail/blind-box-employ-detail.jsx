@@ -3,9 +3,6 @@ import { Button,Tabs,Image,Form,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
-import { adminList } from '@/services/community-management/dynamic-admin-list';
-import { auditDynamic } from '@/services/community-management/dynamic-audit-dynamic';
-import { checkAuditDynamicSwitch,updateAuditDynamicSwitch } from '@/services/community-management/dynamic-audit-switch';
 import { history,connect } from 'umi';
 import { getBlindboxUseDetail } from '@/services/blind-box-activity-management/blindbox-get-use-list';
 import AuditModel from './audit-model'
@@ -41,9 +38,9 @@ export default (props) => {
       },
       {
         title: '时间',
-        key: 'dateRange',
+        key: 'dateTimeRange',
         dataIndex: 'createTime',
-        valueType: 'dateRange',
+        valueType: 'dateTimeRange',
         hideInTable: true,
       },
       {
@@ -62,11 +59,18 @@ export default (props) => {
         dataIndex: 'type',
         valueType: 'text',
         hideInSearch:true,
-        valueEnum: {
-          4: '开盲盒',
-          5: '机会过期',
-          6: '官方回收'
-        },
+        render:(_,data)=>{
+          if(data.type==4){
+            return <p>开盲盒</p>
+          }else if(data.type==5){
+            return <p>机会过期</p>
+          }else if(data.type==6){
+            return  <AuditModel
+                      data={data}
+                      title={'回收原因'}
+                    />
+          }
+          }
       },
       {
         title: '机会编号',
@@ -95,33 +99,29 @@ export default (props) => {
         valueType: 'text',
         hideInSearch: true,
         render: (_, data)=>{
-          return <>
-            <p>
-              {
-              data.orderInfo.orderStatus==0?
-              '未兑换'
-              :data.orderInfo.orderStatus==1?
-              '兑换中'
-              :data.orderInfo.orderStatus==2?
-              '已兑换'
-              :'已失效'
-              }
-            </p>
-            <p>订单号：</p>
-            <a onClick={()=>{}}>{data.orderInfo.orderSn}</a>
-            <p>
-              {
-                data.orderInfo.orderStatus==0||data.orderInfo.orderStatus==3?
-                <p>过期时间：{data.orderInfo.expireTime}</p>
-                :null
-              }
-            </p>
-          </>
+          if(data.orderInfo.orderStatus==0){
+            return <>
+                    <p>未兑换</p>
+                    <p>过期时间：{data.orderInfo.expireTime}</p>
+                  </>
+          }else if(data.orderInfo.orderStatus==1){
+            return <p>兑换中</p>
+          }else if(data.orderInfo.orderStatus==2){
+            return  <>
+                    <p>已兑换</p>
+                    <p>订单号：</p>
+                    <a onClick={()=>{history.push('/order-management/normal-order-detail/'+data.orderInfo.orderSn)}}>{data.orderInfo.orderSn}</a>
+                    </>
+          }else if(data.orderInfo.orderStatus==3){
+            return  <>
+                    <p>已失效</p>
+                    <p>过期时间：{data.orderInfo.expireTime}</p>
+                    </>
+          }
         } 
-    },
+      },
     ];
     const postData=(data)=>{
-      console.log('data',data)
       setDetailList(data)
       return data.records
     }

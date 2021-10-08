@@ -5,13 +5,57 @@ import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-for
 import { PageContainer } from '@ant-design/pro-layout';
 import { getBlindboxUseList } from '@/services/blind-box-activity-management/blindbox-get-use-list';
 import { history, connect } from 'umi';
-const { TabPane } = Tabs
+import XLSX from 'xlsx'
+import AuditModel from '../blind-box-employ-detail/audit-model'
 
 
 
 export default () => {
     const ref=useRef()
     const [detailList,setDetailList]=useState()
+     //导出
+     const exportExcel = (searchConfig) => {
+      getBlindboxUseList({...searchConfig.form.getFieldsValue()}).then(res => {
+          const data = res.data.records.map(item => {
+            const { ...rest } = item;
+            return {
+              ...rest
+            }
+          });
+          const wb = XLSX.utils.book_new();
+          const ws = XLSX.utils.json_to_sheet([
+            {
+              name: '活动名称',
+              activityStartTime: '活动时间',
+              memberMobile:'用户手机号',
+              memberNicheng:'用户名',
+              createTime: '使用时间',
+              num: '使用次数',
+              type:'使用类型',
+              code:'机会编号',
+              prizeInfo: '获得奖品',
+              orderInfo: '兑换详情',
+            },
+            ...data
+          ], {
+            header: [
+              'name',
+              'activityStartTime',
+              'couponAmountDisplay',
+              'memberNicheng',
+              'createTime',
+              'num',
+              'type',
+              'code',
+              'prizeInfo',
+              'orderInfo',
+            ],
+            skipHeader: true
+          });
+          XLSX.utils.book_append_sheet(wb, ws, "file");
+          XLSX.writeFile(wb, `${+new Date()}.xlsx`)
+      })
+    }
     const columns= [
       {
         title: '序号',
@@ -27,9 +71,9 @@ export default () => {
       },
       {
         title: '活动时间',
-        key: 'dateRange',
+        key: 'dateTimeRange',
         dataIndex: 'activityStartTime',
-        valueType: 'dateRange',
+        valueType: 'dateTimeRange',
         hideInTable: true,
       },
       {
@@ -53,9 +97,9 @@ export default () => {
       },
       {
         title: '使用时间',
-        key: 'dateRange2',
+        key: 'dateTimeRange2',
         dataIndex: 'createTime',
-        valueType: 'dateRange',
+        valueType: 'dateTimeRange',
         hideInTable: true,
       },
       {
@@ -72,13 +116,20 @@ export default () => {
       {
         title: '使用类型',
         dataIndex: 'type',
-        valueType: 'select',
+        valueType: 'text',
         hideInSearch:true,
-        valueEnum: {
-          4: '开盲盒',
-          5: '机会过期',
-          6: '官方回收'
-        },
+        render:(_,data)=>{
+          if(data.type==4){
+            return <p>开盲盒</p>
+          }else if(data.type==5){
+            return <p>机会过期</p>
+          }else if(data.type==6){
+            return  <AuditModel
+                      data={data}
+                      title={'回收原因'}
+                    />
+          }
+          }
       },
       {
         title: '机会编号',
@@ -119,32 +170,29 @@ export default () => {
       },
       {
         title: '兑换详情',
-        dataIndex: 'createTime',
+        dataIndex: 'orderInfo',
         valueType: 'text',
         hideInSearch: true,
         render: (_, data)=>{
-          return <>
-            <p>
-              {
-              data.orderInfo.orderStatus==0?
-              '未兑换'
-              :data.orderInfo.orderStatus==1?
-              '兑换中'
-              :data.orderInfo.orderStatus==2?
-              '已兑换'
-              :'已失效'
-              }
-            </p>
-            <p>订单号：</p>
-            <a onClick={()=>{}}>{data.orderInfo.orderSn}</a>
-            <p>
-              {
-                data.orderInfo.orderStatus==0||data.orderInfo.orderStatus==3?
-                <p>过期时间：{data.orderInfo.expireTime}</p>
-                :null
-              }
-            </p>
-          </>
+          if(data.orderInfo.orderStatus==0){
+            return <>
+                    <p>未兑换</p>
+                    <p>过期时间：{data.orderInfo.expireTime}</p>
+                  </>
+          }else if(data.orderInfo.orderStatus==1){
+            return <p>兑换中</p>
+          }else if(data.orderInfo.orderStatus==2){
+            return  <>
+                    <p>已兑换</p>
+                    <p>订单号：</p>
+                    <a onClick={()=>{history.push('/order-management/normal-order-detail/'+data.orderInfo.orderSn)}}>{data.orderInfo.orderSn}</a>
+                    </>
+          }else if(data.orderInfo.orderStatus==3){
+            return  <>
+                    <p>已失效</p>
+                    <p>过期时间：{data.orderInfo.expireTime}</p>
+                    </>
+          }
         } 
       },
       {
@@ -157,7 +205,6 @@ export default () => {
       }, 
     ];
     const postData=(data)=>{
-      console.log('data',data)
       setDetailList(data)
       return data.records
     }
@@ -186,9 +233,9 @@ export default () => {
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
-               <Button onClick={()=>{}} key="out">
+               <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
                 导出数据
-               </Button>
+              </Button>
             ],
           }}
           columns={columns}

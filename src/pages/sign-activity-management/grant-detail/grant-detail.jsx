@@ -12,11 +12,11 @@ export default () => {
     const ref=useRef()
     const columns= [
       {
-          title: '序号',
-          dataIndex:'id',
-          valueType: 'borderIndex',
-          hideInSearch: true,
-          valueType: 'indexBorder'
+        title: '序号',
+        dataIndex:'id',
+        valueType: 'borderIndex',
+        hideInSearch: true,
+        valueType: 'indexBorder'
       },
       {
         title: '用户手机号',

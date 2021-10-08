@@ -44,9 +44,9 @@ export default(props) => {
     },
     {
       title: '发放时间',
-      key: 'dateRange',
+      key: 'dateTimeRange',
       dataIndex: 'usefulTime',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       hideInTable: true,
     },
     {
