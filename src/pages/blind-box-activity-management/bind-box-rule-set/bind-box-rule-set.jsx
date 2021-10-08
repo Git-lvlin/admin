@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Form, Divider, message, Button,List, Space } from 'antd';
-import { FormattedMessage, formatMessage } from 'umi';
+import { Input, Form, Divider, message, Button,List, Space,Avatar } from 'antd';
+import { FormattedMessage, formatMessage,history } from 'umi';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import GainType from './gain-type/gain-type'
 import PeriodValidity from './period-validity/period-validity'
@@ -36,7 +36,6 @@ export default (props) => {
     if (id) {
       getActiveConfigById({id:id}).then(res=>{
         setDetailList(res.data)
-        console.log('res',res)
         form.setFieldsValue({
           switch1:res.data.content?.accessGain.inviteFriends.switch,
           switch2:res.data.content?.accessGain.signIn.switch,
@@ -46,13 +45,17 @@ export default (props) => {
           probability3:res.data.content?.accessGain.orderConsume.probability,
           dayGainMax:res.data.content?.accessGain.inviteFriends.dayGainMax,
           ruleText:res.data.content?.ruleText,
-          dateRange: [ moment(res.data.startTime).format('YYYY-MM-DD HH:mm:ss'), moment(res.data.endTime).format('YYYY-MM-DD HH:mm:ss')],
+          validiteType:res.data.content?.validiteType,
+          validiteHour:res.data.content?.validiteHour,
+          redeemEarlyDay:res.data.content?.redeemEarlyDay,
+          maxPrizeNum:res.data.content?.maxPrizeNum,
+          prizeNotice:res.data.content?.prizeNotice,
+          dateRange: [ moment(res.data.startTime*1000).format('YYYY-MM-DD HH:mm:ss'), moment(res.data.endTime*1000).format('YYYY-MM-DD HH:mm:ss')],
           ...res.data
         })
       })
     } 
   }, [])
-  //红包名称验证规则
   const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
       if (value && value.length > 50) {
@@ -65,58 +68,68 @@ export default (props) => {
     })
   }
   const onsubmit = (values) => {
-    values.id=0
-    values.startTime=values.dateRange ?values.dateRange[0]:null
-    values.endTime=values.dateRange ?values.dateRange[1]:null
-    values.accessGain={
-      inviteFriends:{
-        switch:values.switch1,
-        inviteNum:values.inviteNum,
-        prizeNum:1,
-        dayGainMax:values.dayGainMax,
-        probability:values.probability1
-      },
-      signIn:{
-        switch:values.switch2,
-        signInNum:values.signInNum,
-        prizeNum:1,
-        probability:values.probability2
-      },
-      orderConsume:{
-        switch:values.switch3,
-        consumeNum:values.consumeNum,
-        prizeNum:1,
-        probability:values.probability3
+    try {
+      values.id=id||0
+      values.startTime=values.dateRange ?values.dateRange[0]:null
+      values.endTime=values.dateRange ?values.dateRange[1]:null
+      values.accessGain={
+        inviteFriends:{
+          switch:values.switch1,
+          inviteNum:values.inviteNum,
+          prizeNum:1,
+          dayGainMax:values.dayGainMax,
+          probability:values.probability1
+        },
+        signIn:{
+          switch:values.switch2,
+          signInNum:values.signInNum,
+          prizeNum:1,
+          probability:values.probability2
+        },
+        orderConsume:{
+          switch:values.switch3,
+          consumeNum:values.consumeNum,
+          prizeNum:1,
+          probability:values.probability3
+        }
       }
-    }
-    const arr = [];
-    dataSource.forEach(item => {
-      arr.push({
-        id: 0,
-        probability: item.probability,
-        status: item.status?1:0,
-        skuId: item.skuId,
-        spuId: item.spuId,
-        stockNum: item.stockNum,
-        goodsName: item.goodsName,
-        imageUrl: item.imageUrl,
-        salePrice: item.salePrice,
-        retailSupplyPrice: item.retailSupplyPrice,
+      const arr = [];
+      dataSource.forEach(item => {
+        arr.push({
+          id: item.add?0:item.id,
+          probability: item.probability,
+          status: item.status?1:0,
+          skuId: item.skuId,
+          spuId: item.spuId,
+          stockNum: item.stockNum,
+          goodsName: item.goodsName,
+          imageUrl: item.imageUrl,
+          salePrice: item.salePrice,
+          retailSupplyPrice: item.retailSupplyPrice,
+        })
       })
-    })
-    values.skus=arr
-    console.log('values',values)
+      
+      values.skus=arr.length>0&&arr||detailList?.skus
+    } catch (error) {
+      console.log('error',error)
+    }
+ 
     saveActiveConfig(values).then(res=>{
       if (res.code == 0) {
         history.push('/blind-box-activity-management/blind-box-management-list')
-        message.success('提交成功');
+        if(id){
+          message.success('编辑成功');
+        }else{
+          message.success('提交成功');
+        }
+       
       }
     })
   }
 
-  // const disabledDate=(current)=>{
-  //   return current && current < moment().startOf('day');
-  // }
+  const disabledDate=(current)=>{
+    return current && current < moment().startOf('day');
+  }
   return (
       <ProForm
         form={form}
@@ -128,9 +141,24 @@ export default (props) => {
                <Space>
                  {
                   id?
-                    <Button style={{marginLeft:'80px'}} type="primary"  onClick={()=>{setFalg(false)}}>
-                        编辑
-                    </Button>
+                  <>
+                     {
+                       detailList?.status==1?
+                       <>
+                       {
+                         falg?<Button style={{marginLeft:'80px'}} type="primary"  onClick={()=>{setFalg(false)}}>
+                         编辑
+                        </Button>
+                        :<Button style={{marginLeft:'80px'}} type="primary" key="submit" onClick={() => {
+                          props.form?.submit?.()
+                        }}>
+                          保存
+                        </Button>
+                       }
+                       </>
+                       :null
+                     }
+                  </>
                   :
                     <Button style={{marginLeft:'80px'}} type="primary" key="submit" onClick={() => {
                       props.form?.submit?.()
@@ -151,7 +179,7 @@ export default (props) => {
         className={styles.bindBoxRuleSet}
         initialValues={{
           ruleItems: [{
-            title: '',
+            imageUrl: '',
             name: ''
           }]
         }}
@@ -173,9 +201,10 @@ export default (props) => {
             rules={[{ required: true, message: '请选择活动时间' }]}
             name="dateRange"
             extra="提示：活动时间不能和其他盲盒活动时间重叠"
-            // fieldProps={{
-            //    disabledDate:(current)=>disabledDate(current)
-            // }}
+            fieldProps={{
+               disabledDate:(current)=>disabledDate(current)
+            }}
+            readonly={id&&falg}
             placeholder={[
             formatMessage({
                 id: 'formandbasic-form.placeholder.start',
@@ -198,7 +227,7 @@ export default (props) => {
             <ProFormText
                 width={120}
                 name="redeemEarlyDay"
-                readonly={id&&falg} 
+                readonly={id} 
             />
             <span>天内有效</span>
             </ProForm.Group>
@@ -210,7 +239,7 @@ export default (props) => {
 
         {/* 中奖次数 */}
         <ProForm.Group>
-            <span>每天可中奖最高总次数</span>
+            <span className={styles.back}>每天可中奖最高总次数</span>
             <ProFormText 
                 name="maxPrizeNum"
                 width={100}
@@ -223,14 +252,27 @@ export default (props) => {
         </ProForm.Group>
 
         {/* 奖品设置 */}
-        <PrizeSet detailList={detailList} id={id} falg={falg} callback={(val)=>setDataSource(val)}/>
+        <PrizeSet detailList={detailList} id={id} falg={falg} callback={(val)=>{
+          setDataSource(val)
+        }}/>
         
 
         {/* 奖品预告 */}
         <Form.Item label="奖品预告（尺寸30x50）">
           {
             id&&falg?
-            <p>asdsa</p>
+            <List
+              itemLayout="horizontal"
+              dataSource={detailList?.content?.prizeNotice}
+              renderItem={item => (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.imageUrl} />}
+                    title={<p>{item.name}</p>}
+                  />
+                </List.Item>
+              )}
+            />
             : <Form.List name="prizeNotice">
             {(fields, { add, remove }) => (
               <>
@@ -281,10 +323,16 @@ export default (props) => {
             name="ruleText"
             style={{ minHeight: 32, marginTop: 15 }}
             placeholder='列如玩法规则、简单的用户协议'
-            // rules={[{ required: true, message: '请备注活动规则' }]}
+            rules={[{ required: true, message: '请备注活动规则' }]}
             rows={4}
             readonly={id&&falg}
         />
+        {
+          id&&falg?
+          <p className={styles.back}>最近一次操作人：{detailList?.lastEditor}     {moment(detailList?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
+          :null
+        }
+        
         {/* 活动状态 */}
         <ProFormRadio.Group
           name="status"
@@ -301,7 +349,11 @@ export default (props) => {
           ]}
           readonly={id&&falg}
       />
-        <p className={styles.hint}>提示：关闭活动后，将清空用户的账户记录，请谨慎操作。</p>
+      {
+        id&&falg?null
+        :<p className={styles.hint}>提示：关闭活动后，将清空用户的账户记录，请谨慎操作。</p>
+      }
+
       </ProForm >
   );
 };

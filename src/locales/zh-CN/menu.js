@@ -280,5 +280,6 @@ export default {
   'menu.blind-box-activity-management.blind-box-consume-detail': '盲盒机会消耗明细',
   'menu.blind-box-activity-management.blind-box-grant-detail': '盲盒机会发放明细',
   'menu.blind-box-activity-management.blind-box-user-detail': '用户盲盒机会明细',
+  'menu.blind-box-activity-management.blind-box-employ-detail': '用户盲盒使用明细',
   'menu.blind-box-activity-management.bind-box-rule-set': '盲盒规则配置',
 };
