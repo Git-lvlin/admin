@@ -16,7 +16,7 @@ export const queryIssuanceList = async (params, options = {}) => {
 
   return {
     code: res.code,
-    data: res.data,
+    data: res.data.records,
     success: res.success,
     total: res.data.total
   }

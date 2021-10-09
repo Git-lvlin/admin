@@ -1,15 +1,17 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { history, connect } from 'umi';
 import { queryIssuanceList } from '@/services/sign-activity-management/packet-record-query-issuance-list';
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 
 
 export default () => {
     const ref=useRef()
+    const [visit, setVisit] = useState(false)
     const columns= [
       {
         title: '序号',
@@ -79,42 +81,10 @@ export default () => {
         ],
       }, 
     ];
-      //导出
-      const exportExcel = (searchConfig) => {
-        queryIssuanceList({...searchConfig.form.getFieldsValue()}).then(res => {
-          const data = res?.data.map(item => {
-            const { ...rest } = item;
-            return {
-              ...rest
-            }
-          });
-          const wb = XLSX.utils.book_new();
-          const ws = XLSX.utils.json_to_sheet([
-            {
-              phoneNum: '用户手机号',
-              userName: '用户名',
-              signInVersion:'修改版本',
-              channelName:'发放方式',
-              createTime:'签到时间',
-              changeValue: '领取金额',
-              signInDay: '连签天数'
-            },
-            ...data
-          ], {
-            header: [
-              'phoneNum',
-              'userName',
-              'signInVersion',
-              'channelName',
-              'createTime',
-              'changeValue',
-              'signInDay'
-            ],
-            skipHeader: true
-          });
-          XLSX.utils.book_append_sheet(wb, ws, "file");
-          XLSX.writeFile(wb, `${+new Date()}.xlsx`)
-      })
+    const getFieldValue = (searchConfig) => {
+      return {
+        ...searchConfig.form.getFieldsValue(),
+      }
     }
     return (
       <PageContainer>
@@ -129,9 +99,12 @@ export default () => {
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
-               <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
-               导出数据
-              </Button>
+               <Export
+               change={(e) => { setVisit(e) }}
+               type={'red-packet-give-detail-export'}
+               conditions={getFieldValue(searchConfig)}
+             />,
+             <ExportHistory show={visit} setShow={setVisit} type={'red-packet-give-detail-export'} />,
             ],
           }}
           columns={columns}

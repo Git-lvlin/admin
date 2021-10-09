@@ -4,14 +4,15 @@ import ProTable from '@ant-design/pro-table';
 import { history, connect } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import { queryConsumeList,getConsumeData } from '@/services/sign-activity-management/packet-record-query-consume-list';
-import Export from '@/components/export-excel/export'
-import ExportHistory from '@/components/export-excel/export-history'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 
 
 export default () => {
     const ref=useRef()
     const [detailList,setDetailList]=useState()
+    const [visit, setVisit] = useState(false)
     const columns= [
       {
         title: '序号',
@@ -64,6 +65,9 @@ export default () => {
         valueType: 'text',
         hideInSearch: true,
         render: (_, data)=>{
+          if(!data?.goodsInfo){
+            return null
+          }
           return <div style={{display:'flex',alignItems:'center'}}>
                     <Image src={data.goodsInfo?.goodsImageUrl} alt="" width='80px' height='50px' />
                     <div>
@@ -94,49 +98,19 @@ export default () => {
         setDetailList(res.data)
       })
     },[])
-      //导出
-      const exportExcel = (searchConfig) => {
-        queryConsumeList({...searchConfig.form.getFieldsValue()}).then(res => {
-          const data = res?.data.map(item => {
-            const { ...rest } = item;
-            return {
-              ...rest
-            }
-          });
-          const wb = XLSX.utils.book_new();
-          const ws = XLSX.utils.json_to_sheet([
-            {
-              phoneNum: '用户手机号',
-              userName: '用户名',
-              usedTime:'使用时间',
-              usedAmount: '使用金额',
-              goodsInfo: '订单',
-              channelName: '类型'
-            },
-            ...data
-          ], {
-            header: [
-              'phoneNum',
-              'userName',
-              'usedTime',
-              'usedAmount',
-              'goodsInfo',
-              'channelName'
-            ],
-            skipHeader: true
-          });
-          XLSX.utils.book_append_sheet(wb, ws, "file");
-          XLSX.writeFile(wb, `${+new Date()}.xlsx`)
-      })
+    const getFieldValue = (searchConfig) => {
+      return {
+        ...searchConfig.form.getFieldsValue()
+      }
     }
     return (
       <PageContainer>
          <div style={{backgroundColor:'#fff',marginBottom:'20px'}}>
          <Descriptions labelStyle={{fontWeight:'bold'}} column={7} layout="vertical" bordered>
             <Descriptions.Item  label="签到总人数">{detailList?.signInMembers}</Descriptions.Item>
-            <Descriptions.Item  label="已领取金额">{detailList?.receivedAmount}</Descriptions.Item>
-            <Descriptions.Item  label="已使用金额">{detailList?.usedAmount}</Descriptions.Item>
-            <Descriptions.Item  label="已过期金额">{detailList?.expireAmount}</Descriptions.Item>
+            <Descriptions.Item  label="已领取金额">{detailList?.receivedAmount/100}</Descriptions.Item>
+            <Descriptions.Item  label="已使用金额">{detailList?.usedAmount/100}</Descriptions.Item>
+            <Descriptions.Item  label="已过期金额">{detailList?.expireAmount/100}</Descriptions.Item>
             <Descriptions.Item  label="连签3日人数">{detailList?.signThreeNum}</Descriptions.Item>
             <Descriptions.Item  label="连签7日人数">{detailList?.signSevenNum}</Descriptions.Item>
             <Descriptions.Item  label="连签15日人数">{detailList?.signFifteenNum}</Descriptions.Item>
@@ -155,13 +129,10 @@ export default () => {
                ...dom.reverse(),
                <Export
                change={(e) => { setVisit(e) }}
-               type={'community-store-list-export'}
+               type={'red-packet-consume-detail-export'}
                conditions={getFieldValue(searchConfig)}
              />,
-             <ExportHistory show={visit} setShow={setVisit} type={'community-store-list-export'} />,
-              //  <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
-              //   导出数据
-              //  </Button>
+             <ExportHistory show={visit} setShow={setVisit} type={'red-packet-consume-detail-export'} />,
             ],
           }}
           columns={columns}

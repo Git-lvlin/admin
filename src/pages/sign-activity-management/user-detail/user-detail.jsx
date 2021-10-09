@@ -3,10 +3,10 @@ import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
-import { amountTransform } from '@/utils/utils'
 import { history, connect } from 'umi';
-import XLSX from 'xlsx'
 import { queryUserRecordList } from '@/services/sign-activity-management/packet-record-query-user-record-list';
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 
 
@@ -14,6 +14,7 @@ export default (props) => {
     const ref=useRef()
     let id = props.location.query.id
     const [detailList,setDetailList]=useState()
+    const [visit, setVisit] = useState(false)
     const columns= [
       {
         title: '序号',
@@ -26,6 +27,22 @@ export default (props) => {
         title: '红包名称',
         dataIndex: 'channelName',
         valueType: 'text',
+        hideInSearch: true,
+      },
+      {
+        title: '筛选',
+        dataIndex: 'channelId',
+        valueType: 'select',
+        valueEnum: {
+          0: '全部',
+          1: '签到红包',
+          2: '连签额外奖励',
+          3: '订单抵扣',
+          4: '签到红包过期',
+          100: '仅看获得',
+          101: '仅看使用'
+        },
+        hideInTable:true
       },
       {
         title: '时间',
@@ -78,6 +95,9 @@ export default (props) => {
         valueType: 'text',
         hideInSearch: true,
         render: (_, data)=>{
+          if(!data?.goodsInfo){
+            return null
+          }
           return <div style={{display:'flex',alignItems:'center'}}>
                     <Image src={data.goodsInfo?.goodsImageUrl} alt="" width='80px' height='50px' />
                     <div>
@@ -91,51 +111,21 @@ export default (props) => {
       }
     ];
     const postData=(data)=>{
-      console.log('data',data)
       setDetailList(data)
-      return data.recordList
+      return data.records
     }
-    //导出
-    const exportExcel = (searchConfig) => {
-      queryUserRecordList({...searchConfig.form.getFieldsValue()}).then(res => {
-        const data = res.data?.recordList.map(item => {
-          const { ...rest } = item;
-          return {
-            ...rest
-          }
-        });
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet([
-          {
-            channelName: '红包名称',
-            createTime: '时间',
-            recordType:'明细类型',
-            redPacketAmount:'金额',
-            signInDay:'连签天数',
-            goodsInfo: '订单',
-          },
-          ...data
-        ], {
-          header: [
-            'channelName',
-            'createTime',
-            'recordType',
-            'redPacketAmount',
-            'signInDay',
-            'goodsInfo',
-          ],
-          skipHeader: true
-        });
-        XLSX.utils.book_append_sheet(wb, ws, "file");
-        XLSX.writeFile(wb, `${+new Date()}.xlsx`)
-    })
+  const getFieldValue = (searchConfig) => {
+    return {
+      ...searchConfig.form.getFieldsValue(),
+      memberId:id 
+    }
   }
     return (
       <PageContainer>
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle={`用户手机号：${detailList?.phoneNum}    用户名：${detailList?.userName}         签到总天数：${detailList?.signInDays}        签到红包余额：￥${detailList?.userAmount}`}
+          headerTitle={`用户手机号：${detailList?.phoneNum}    用户名：${detailList?.userName}         签到总天数：${detailList?.signInDays}        签到红包余额：￥${detailList?.userAmount/100}`}
           options={false}
           request={queryUserRecordList}
           params={{
@@ -147,9 +137,12 @@ export default (props) => {
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
-               <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
-                导出数据
-               </Button>
+               <Export
+               change={(e) => { setVisit(e) }}
+               type={'red-packet-user-detail-export'}
+               conditions={getFieldValue(searchConfig)}
+             />,
+             <ExportHistory show={visit} setShow={setVisit} type={'red-packet-user-detail-export'} />,
             ],
           }}
           columns={columns}
