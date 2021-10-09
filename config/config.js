@@ -94,15 +94,9 @@ const config = {
             financialManagement,
             dataBoard,
             dc,
-<<<<<<< HEAD
-            importExportConfiguration,
-            signActivityManagement,
-            BlindBoxActivityManagement,
-=======
             signActivityManagement,
             BlindBoxActivityManagement,
             importExportConfiguration,
->>>>>>> setup
             {
               component: '404',
             },
