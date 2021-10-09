@@ -126,6 +126,11 @@ const Detail = () => {
               <Descriptions.Item label="创建时间">
                 {detailData?.wholesale?.createTime}
               </Descriptions.Item>
+              <Descriptions.Item label="可集约店铺区域">
+                <div>
+                  {detailData?.allowArea?.map?.(item => <div>{item.areaName}</div>)}
+                </div>
+              </Descriptions.Item>
               {/* <Descriptions.Item label="可恢复支付次数">
             {detailData?.wholesale.canRecoverPayTimes}
           </Descriptions.Item>

@@ -24,13 +24,17 @@ const MemberStoreFundManagement = () => {
     subtotal({
       accountType: 'store',
       page,
-      ...search
+      ...search,
+      settleTimeBegin: search?.settleTime?.[0].format('YYYY-MM-DD'),
+      settleTimeEnd: search?.settleTime?.[1].format('YYYY-MM-DD'),
+      registTimeBegin: search?.registTime?.[0].format('YYYY-MM-DD'),
+      registTimeEnd: search?.registTime?.[1].format('YYYY-MM-DD')
     }).then(res=> {
       if(res.success) {
         setTotal(res.data)
       }
     })
-  }, [page, search])
+  }, [search])
 
   const skipToDetail = ({accountType, accountId}) => {
     history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
@@ -114,10 +118,16 @@ const MemberStoreFundManagement = () => {
       valueType: 'dateRange'
     },
     {
-      title: '账户余额',
+      title: '货款',
       dataIndex: 'balance',
       hideInSearch: true,
-      render: (_) => amountTransform(_, '/')
+      render: (_) => `￥${amountTransform(_, '/')}`
+    },
+    {
+      title: '佣金',
+      dataIndex: 'commission',
+      hideInSearch: true,
+      render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
       title: '账户名称',
@@ -241,7 +251,14 @@ const MemberStoreFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-store-export"
-              conditions={{accountType: "store", ...form?.getFieldValue()}}
+              conditions={{
+                accountType: "store",
+                ...form?.getFieldValue(),
+                settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
+                settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD'),
+                registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
+                registTimeEnd: form?.getFieldValue()?.registTime?.[1].format('YYYY-MM-DD')
+              }}
             />,
             <ExportHistory
               key="exportHistory"
@@ -256,9 +273,9 @@ const MemberStoreFundManagement = () => {
             {dom}
             {
               data?.length !== 0 &&
-                <div className={styles.summary}>
+              <div className={styles.summary}>
                 账户余额总合计：
-                <span>￥{amountTransform(Number(total.totalBalance),'/')}</span>
+                <span>￥{amountTransform(Number(total.total),'/')}</span>
               </div>
             }
           </>

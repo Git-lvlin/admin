@@ -16,6 +16,7 @@ export default {
   'menu.user-management.user-list': '用户列表',
   'menu.user-management.disable-user-list': '禁用列表',
   'menu.user-management.user-detail': '用户详情',
+  'menu.user-management.user-relationship': '用户关系',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
@@ -26,6 +27,7 @@ export default {
   'menu.order-management.normal-order-detail': '订单详情',
   'menu.order-management.normal-order-detail-purchase': '订单详情',
   'menu.order-management.intensive-order': '集约订单',
+  'menu.order-management.intensive-order.intensive-purchase-order': '平台采购订单',
   'menu.order-management.intensive-order.shopkeeper-order': '集约零售订单',
   'menu.order-management.intensive-order.supplier-order': '集约批发订单',
   'menu.order-management.intensive-order.supplier-order-purchase': '集约批发订单(采购)',
@@ -78,6 +80,17 @@ export default {
   'menu.supplier-management.supplier-detail': '供应商家详情',
   'menu.supplier-management.supplier-account-info': '供应商家资金账户信息',
 
+  'menu.operation-management': '运营商管理',
+  'menu.operation-management.operation-list': '运营商列表',
+  'menu.operation-management.bind-list': '社区店绑定列表',
+  'menu.operation-management.audit-list': '运营商审核',
+  'menu.operation-management.consultant-product-list': '运营商顾问商品列表',
+  'menu.operation-management.consultant-operation-list': '顾问运营商列表',
+  'menu.operation-management.after-sale-address': '售后地址',
+  'menu.operation-management.operation-sub-account': '运营商子账号',
+  'menu.operation-management.operation-detail': '运营商详情',
+  'menu.operation-management.operation-account-info': '运营商资金账户信息',
+
   'menu.asset-management': '资产管理',
   'menu.asset-management.settlement-profit-list': '结算分润列表',
 
@@ -96,6 +109,7 @@ export default {
   'menu.intensive-store-management.lvl-rule': '等级规则配置',
   'menu.intensive-store-management.lvl-setup': '等级配置',
   'menu.intensive-store-management.lvl-commission': '等级佣金',
+  'menu.intensive-store-management.shop-area': '可开店区域配置',
 
   'menu.single-contract-activity-management': '单约活动管理',
   'menu.single-contract-activity-management.activity-list': '活动列表',
@@ -130,8 +144,10 @@ export default {
   'menu.cms.poster': '海报管理',
   'menu.cms.content-version': '版本配置管理',
   'menu.cms.generate-invitation-code': '生成邀请码',
+  'menu.cms.home-red-envelopes': 'app首页红包弹窗',
   'menu.cms.home-popup': 'app首页弹窗管理',
   'menu.cms.start-up': 'app启动广告配置',
+
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
@@ -227,8 +243,8 @@ export default {
   'menu.financial-management.transaction-detail-management.after-order-details':'售后订单详情',
   'menu.financial-management.transaction-allocation-management':'交易配置管理',
   'menu.financial-management.transaction-allocation-management.withdrawal-fee-config':'提现费配置',
-  'menu.financial-management.subsidy-summary' : '补贴汇总',
-  'menu.financial-management.subsidy-summary-detail' : '补贴明细',
+  'menu.financial-management.subsidy-summary' : '优惠补贴',
+  'menu.financial-management.subsidy-summary-detail' : '补贴结算',
 
   'menu.data-board': '数据看板',
   'menu.data-board.data-preview': '数据预览',
@@ -258,4 +274,9 @@ export default {
   'menu.blind-box-activity-management.blind-box-user-detail': '用户盲盒机会明细',
   'menu.blind-box-activity-management.blind-box-employ-detail': '用户盲盒使用明细',
   'menu.blind-box-activity-management.bind-box-rule-set': '盲盒规则配置',
+
+  
+  'menu.import-export-configuration': '导入导出配置',
+  'menu.import-export-configuration.export-configuration': '导出配置',
+  'menu.import-export-configuration.import-configuration': '导入配置',
 };

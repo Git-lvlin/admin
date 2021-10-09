@@ -689,6 +689,14 @@ export const getAppPopup = (params = {}, options = {}) => {
   });
 }
 
+export const getAppRedBoxPopup = (params = {}, options = {}) => {
+  return request('/auth/java-admin/public/adimg/newuser/coupon', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const getStartUp = (params = {}, options = {}) => {
   return request('/auth/java-admin/public/adimg/boot', {
     method: 'POST',
@@ -774,6 +782,26 @@ export const homeBannerList = async (params = {}, options = {}) => {
     data: res.data.records || [],
     success: true,
     total: res.data.total,
+  }
+}
+
+export const userRelationShip = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/memberInfo/getInviteList', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data || [],
+    success: true,
+    total: res.data.list.total,
   }
 }
 

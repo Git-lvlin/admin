@@ -33,8 +33,8 @@ const Detail = () => {
       setLoading(false)
     })
     return ()=>{
-      setInfo({})
-      setPayInfos({})
+      setInfo([])
+      setPayInfos([])
     }
   }, [id])
 
@@ -101,7 +101,7 @@ const Detail = () => {
       case 'suggestCommission':
         return (
           <>
-            <span className={styles.amount}>店主推荐收益: ¥{amountTransform(amount, '/')}</span>
+            <span className={styles.amount}>上级推荐人收益: ¥{amountTransform(amount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
@@ -205,12 +205,12 @@ const Detail = () => {
     {
       title: '商品供货价',
       dataIndex: 'supplyPrice',
-      render: (_) => amountTransform(_, '/')
+      render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
       title: '实际销售价',
       dataIndex: 'salePrice',
-      render: (_) => amountTransform(_, '/')
+      render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
       title:(_)=> _.dataIndex === 'preCount' ? '预定数量' : '购买数量',
@@ -219,6 +219,15 @@ const Detail = () => {
     {
       title: (_) => _.dataIndex ? '实际采购数量' : '',
       dataIndex: info.orderType === 'commandSalesOrder' ? 'paidCount' : ''
+    },
+    {
+      title: '运费',
+      dataIndex: 'freight',
+      render: (_) => `￥${amountTransform(_, '/')}`
+    },
+    {
+      title: '',
+      dataIndex: ''
     }
   ]
 

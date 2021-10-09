@@ -1,14 +1,17 @@
 import React, { useState, useRef } from 'react';
-import { Button, Space, Image } from 'antd';
+import { Button, Space, Image, Tooltip } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/intensive-store-management/store-review';
 import AddressCascader from '@/components/address-cascader';
+import { QuestionCircleOutlined } from '@ant-design/icons'
 import { history } from 'umi';
 import Form from './form';
+import Drawer from './store-review-detail';
 
 const StoreReview = () => {
   const [formVisible, setFormVisible] = useState(false);
+  const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
@@ -106,14 +109,24 @@ const StoreReview = () => {
       dataIndex: ['verifyStatus', 'code'],
       valueType: 'text',
       hideInSearch: true,
-      valueEnum: {
-        0: '没有申请过',
-        1: '审核通过',
-        2: '审核不通过',
-        3: '已缴保证金',
-        4: '待缴保证金',
-        5: '取消申请',
-        6: '待审核',
+      render: (_, data) => {
+        if (_ === 2) {
+          return (
+            <>
+              审核不通过&nbsp;
+              <Tooltip title={data.auditMsg}><QuestionCircleOutlined /></Tooltip>
+            </>
+          )
+        }
+        return {
+          0: '没有申请过',
+          1: '审核通过',
+          2: '审核不通过',
+          3: '已缴保证金',
+          4: '待缴保证金',
+          5: '取消申请',
+          6: '待审核',
+        }[_]
       }
     },
     {
@@ -149,7 +162,7 @@ const StoreReview = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => {
-        return _ !== 1 && <a onClick={() => { history.push(`/intensive-store-management/store-review-detail/${data.id}`) }}>审核</a>;
+        return _ !== 1 && <a onClick={() => { setDrawerVisible(true); setSelectItem(data); }}>审核</a>;
       }
     },
   ];
@@ -190,6 +203,18 @@ const StoreReview = () => {
           pageSize: 10,
         }}
       />
+      {drawerVisible &&
+        <Drawer
+          id={selectItem.id}
+          visible={drawerVisible}
+          setVisible={setDrawerVisible}
+          callback={() => {
+            setDrawerVisible(false);
+            setSelectItem(null);
+            actionRef.current.reload()
+          }}
+        />
+      }
       {formVisible && <Form
         visible={formVisible}
         setVisible={setFormVisible}

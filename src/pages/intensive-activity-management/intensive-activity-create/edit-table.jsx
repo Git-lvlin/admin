@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Form, Tooltip, Input } from 'antd';
+import { Form, Tooltip, Input, message } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
@@ -14,6 +14,7 @@ export default function EditTable({ onSelect }) {
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectData, setSelectData] = useState([]);
   const [form] = Form.useForm();
 
   const columns = [
@@ -211,8 +212,22 @@ export default function EditTable({ onSelect }) {
       editable: false,
     },
     {
-      title: '配送费补贴(元)',
+      title: '运营中心配送费补贴',
+      dataIndex: 'operationFixedPrice',
+      valueType: 'text',
+      hideInSearch: true,
+      editable: false,
+    },
+    {
+      title: '社区店配送费补贴',
       dataIndex: 'fixedPrice',
+      valueType: 'text',
+      hideInSearch: true,
+      editable: false,
+    },
+    {
+      title: '集采箱柜单位量',
+      dataIndex: 'batchNumber',
       valueType: 'text',
       hideInSearch: true,
       editable: false,
@@ -244,15 +259,16 @@ export default function EditTable({ onSelect }) {
     const arr = data.map(item => ({
       ...item,
       totalStockNum: parseInt(item.stockNum * 0.8, 10),
-      minNum: item.wholesaleMinNum || 10,
+      minNum: item.batchNumber,
       maxNum: 100,
       price: amountTransform(item.price, '/'),
       fixedPrice: amountTransform(item.fixedPrice, '/'),
+      operationFixedPrice: amountTransform(item.operationFixedPrice, '/'),
       settlePercent: amountTransform(item.settlePercent),
       wholesaleFreight: amountTransform(item.wholesaleFreight, '/'),
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
       profit: amountTransform(item.profit, '/'),
-      totalPrice: item.salePrice > 0 ? +new Big(item.price || item?.price).div(100).times(item.wholesaleMinNum || 10) : 0,
+      totalPrice: item.salePrice > 0 ? +new Big(item.price).div(100).times(item.wholesaleMinNum || 10) : 0,
     }))
     setDataSource(arr)
     // return arr;
@@ -280,30 +296,37 @@ export default function EditTable({ onSelect }) {
         delete obj.price;
       }
 
-      productList(obj).then(res => {
-        const skuData = res.data[0];
-        const arr = recordList.map(item => {
-          if (item.id === record.id) {
+      const getList = (list, skuData, cb) => {
+        const arr = list.map(item => {
+          if (item.id === skuData.id) {
             const data = {
-              ...item,
+              ...record,
               fixedPrice: amountTransform(skuData.fixedPrice, '/'),
+              operationFixedPrice: amountTransform(skuData.operationFixedPrice, '/'),
               settlePercent: amountTransform(skuData.settlePercent),
               price: amountTransform(skuData.price, '/'),
               profit: amountTransform(skuData.profit, '/'),
-              totalPrice: (skuData.price > 0 && item.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(item.minNum) : 0
+              totalPrice: (skuData.price > 0 && record.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(record.minNum) : 0
             }
-            setSelectedRowKeys([data.skuId])
-            onSelect(data)
             return data
           }
           return item
         })
-        setDataSource(arr)
+        if (cb) {
+          cb(arr);
+        }
+        return arr;
+      }
+
+      productList(obj).then(res => {
+        const skuData = res.data[0];
+        onSelect(getList(selectData, skuData, (arr) => { setSelectData(arr)}))
+        setDataSource(getList(recordList, skuData))
       })
     };
 
     return debounce(loadData, 1000);
-  }, [dataSource]);
+  }, [dataSource, selectData, onSelect]);
   return (
     <EditableProTable
       postData={postData}
@@ -339,11 +362,33 @@ export default function EditTable({ onSelect }) {
 
       rowSelection={{
         hideSelectAll: true,
-        type: 'radio',
+        // type: 'radio',
         selectedRowKeys,
-        onChange: (_, val) => {
-          onSelect(val[0])
-          setSelectedRowKeys([val[0].skuId])
+        // onChange: (_, val) => {
+        //   console.log('_', _);
+        //   onSelect(val)
+        //   setSelectedRowKeys(val.map(item => item.skuId))
+        // },
+        onSelect: (record, selected) => {
+          if (selected) {
+            if (selectedRowKeys.length === 10) {
+              message.error('最多只能选择10个商品');
+              return;
+            }
+            const arr = [...selectedRowKeys];
+            arr.push(record.skuId);
+            setSelectedRowKeys(arr);
+            const datas = [...selectData];
+            datas.push(record);
+            setSelectData(datas);
+            onSelect(datas);
+          } else {
+            const arr = selectedRowKeys.filter(item => item !== record.skuId)
+            setSelectedRowKeys(arr);
+            const datas = selectData.filter(item => item.skuId !== record.skuId);
+            setSelectData(datas);
+            onSelect(datas);
+          }
         },
         fixed: true
       }}

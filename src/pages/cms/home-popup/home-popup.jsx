@@ -15,13 +15,15 @@ const HomePopup = () => {
     if (!popupInfo) {
       getAppPopup().then((res) => {
         if (res.code === 0 && res.data) {
-          const {img, link, status, endTime, startTime, id} = res.data
+          const {img, link, status, endTime, startTime, id, platform, targetUser} = res.data
           form.setFieldsValue({
             timeReg: [startTime, endTime],
             img,
             link,
             status,
             id,
+            platform,
+            targetUser,
           })
         }
       })
@@ -29,10 +31,13 @@ const HomePopup = () => {
   }, [])
   
   const submit = (param) => {
-    const now = new Date().getTime()
-    const old = (new Date(param.startTime)).getTime()
-    if (old<=now || (old - now) < 60 * 10 * 1000) {
-      return message.error('开始时间应最少距当前时间提前10分钟！');
+    // 只有弹窗开启时才校验时间
+    if (param.status === 1) {
+      const now = new Date().getTime()
+      const old = (new Date(param.startTime)).getTime()
+      if (old<=now || (old - now) < 60 * 10 * 1000) {
+        return message.error('开始时间应最少距当前时间提前10分钟！');
+      }
     }
     homePopupUpdate(param).then(res=> {
       if (res.code === 0) {
@@ -57,7 +62,7 @@ const HomePopup = () => {
         form={form}
         onFinish={
           (res) => {
-            const { id, img, link, status, timeReg } = res
+            const { id, img, link, status, timeReg, platform, targetUser } = res
             const param = {
               id,
               img,
@@ -65,6 +70,8 @@ const HomePopup = () => {
               status,
               startTime: timeReg[0],
               endTime: timeReg[1],
+              platform,
+              targetUser,
             }
 
             submit(param)
@@ -130,6 +137,48 @@ const HomePopup = () => {
                 placeholder="请输入点击弹窗跳转的链接地址，不超过80个字符"
               />
             </ProForm.Group>
+            <ProFormRadio.Group
+              name="platform"
+              label="平台"
+              rules={[{ required: true, message: '请选择状态' }]}
+              options={[
+                {
+                  label: '所有',
+                  value: 'ALL',
+                },
+                {
+                  label: 'IOS',
+                  value: 'IOS',
+                },
+                {
+                  label: 'ANDROID',
+                  value: 'ANDROID',
+                },
+                {
+                  label: 'H5',
+                  value: 'H5',
+                },
+                {
+                  label: 'MINIPROGRAM',
+                  value: 'MINIPROGRAM',
+                },
+              ]}
+            />
+            <ProFormRadio.Group
+              name="targetUser"
+              label="人群"
+              rules={[{ required: true, message: '请选择状态' }]}
+              options={[
+                {
+                  label: '所有',
+                  value: 'ALL',
+                },
+                {
+                  label: '新用户',
+                  value: 'NEW',
+                },
+              ]}
+            />
             <ProFormRadio.Group
               name="status"
               label="状态"

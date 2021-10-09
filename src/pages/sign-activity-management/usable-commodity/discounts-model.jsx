@@ -39,10 +39,8 @@ export default props=>{
         return new Promise(async (resolve, reject) => {
         if (value&&value<=0) {
             await reject('必须大于0')
-        }else if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
-            await reject('只能输入数字')
         }else if(value&&!/^[0-9]+(.[0-9]{0,1})?$/.test(value)){
-            await reject('最多输入一位小数')
+            await reject('只能输入数字，最多输入一位小数')
         } else {
             await resolve()
         }

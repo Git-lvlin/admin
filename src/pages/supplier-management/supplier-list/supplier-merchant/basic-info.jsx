@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Form, Button, Tree, message, Checkbox, Input, Space, Typography, Divider, DatePicker } from 'antd';
+import { Form, Button, Tree, message, Checkbox, Typography, Divider } from 'antd';
 import {
   DrawerForm,
   ProFormText,
@@ -8,7 +8,7 @@ import {
   ProFormDigit,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { supplierAdd, supplierEdit, categoryAll } from '@/services/supplier-management/supplier-list';
+import { supplierAdd, supplierEdit, categoryAll, searchUniName } from '@/services/supplier-management/supplier-list';
 import md5 from 'blueimp-md5';
 import { arrayToTree } from '@/utils/utils'
 import FormModal from './form';
@@ -18,7 +18,7 @@ const { Title } = Typography;
 
 
 const CTree = (props) => {
-  const { value, onChange, treeData, data, keys, ...rest } = props;
+  const { value, onChange, treeData, data, keys, selectData, ...rest } = props;
   const [selectKeys, setSelectKeys] = useState(keys);
   const [selectAll, setSelectAll] = useState(false);
   const onSelectAll = ({ target }) => {
@@ -46,6 +46,10 @@ const CTree = (props) => {
     onChange(keys)
   }, [])
 
+  useEffect(() => {
+    setSelectAll(selectData?.length === data?.length)
+  }, [selectData, data])
+
   return (
     <div style={{ flex: 1 }}>
       <Checkbox
@@ -56,10 +60,10 @@ const CTree = (props) => {
         全部分类
       </Checkbox>
       <Tree
-        {...rest}
         treeData={treeData}
         onCheck={onCheck}
         checkedKeys={selectKeys}
+        {...rest}
       />
     </div>
 
@@ -236,7 +240,8 @@ export default (props) => {
       initialValues={{
         accountSwitch: 1,
         status: 1,
-        defaultWholesaleTaxRate: 0,
+        defaultWholesaleTaxRate: 13,
+        warrantyRatio: 10
       }}
       {...formItemLayout}
     >
@@ -248,7 +253,26 @@ export default (props) => {
             name="companyName"
             label="供应商家名称"
             placeholder="请输入供应商家名称"
-            rules={[{ required: true, message: '请输入供应商家名称' }]}
+            rules={[
+              { required: true, message: '请输入供应商家名称' },
+              () => ({
+                required: true,
+                validator(_, value) {
+                  return new Promise((resolve, reject) => {
+                    searchUniName({
+                      companyName: value
+                    }, { showError: false }).then(res => {
+                      if (res.code === 0) {
+                        if (res.data.records?.id && value !== detailData?.companyName) {
+                          reject(new Error('供应商家名称已存在'));
+                        } else {
+                          resolve();
+                        }
+                      }
+                    })
+                  });
+                },
+              })]}
             fieldProps={{
               maxLength: 30,
             }}
@@ -354,6 +378,7 @@ export default (props) => {
               data={originData.current}
               virtual={false}
               keys={selectKeys}
+              selectData={detailData?.gcInfo}
             />
           </Form.Item>
 

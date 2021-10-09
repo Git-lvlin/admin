@@ -54,7 +54,7 @@ const OrderDetail = () => {
         <div className={styles.order_detail}>
           <Steps progressDot current={detailData.status}>
             {
-              detailData?.Process?.map(item => (
+              detailData?.process?.map(item => (
                 <Step title={item.name} description={<><div>{item.time}</div></>} />
               ))
             }
@@ -148,61 +148,61 @@ const OrderDetail = () => {
                   <div className={styles.box_wrap}>
                     <div className={styles.box}>
                       <div>应付金额</div>
-                      <div>{amountTransform(detailData?.final?.amount, '/')}元</div>
+                      <div>{amountTransform(detailData?.final?.amount, '/')}元（含运费）</div>
                     </div>
-                    <div className={styles.box}>
+                    {/* <div className={styles.box}>
                       <div>运费</div>
                       <div>{amountTransform(detailData?.final?.shippingAmount, '/')}元</div>
-                    </div>
+                    </div> */}
                     <div className={styles.box}>
                       <div>用户实付</div>
                       <div>{amountTransform(detailData?.final?.actualAmount, '/')}元</div>
                     </div>
                   </div>
                 </div>
-                <div className={styles.box}>
+                {/* <div className={styles.box}>
                   <div>合计实收</div>
                   <div>{amountTransform(detailData?.actualAmount, '/')}元</div>
-                </div>
+                </div> */}
                 {
-                  detailData.status !=0&&detailData.status !=6&&
+                  detailData.status != 0 && detailData.status != 6 &&
                   <div className={styles.box}>
                     <div>备注</div>
-                    <div>买家付款后可提现 {detailData?.receivingInfo?.withdrawableCashRatio*100+'%'} 金额,订单超过售后期可提现剩余金额。</div>
+                    <div>买家付款后可提现 {detailData?.receivingInfo?.withdrawableCashRatio * 100 + '%'} 金额,订单超过售后期可提现剩余金额。</div>
                   </div>
                 }
                 <div className={`${styles.box} ${styles.box_header}`}>
                   物流信息
                 </div>
                 {
-                  detailData.express&&detailData.express.map((ele,idx)=>(
-                  <ProDescriptions  style={{padding:'20px'}} column={2} title={"包裹"+parseInt(idx+1)}>
-                    <ProDescriptions.Item
-                      label="快递公司"
-                    >
-                      {ele.expressName}
-                    </ProDescriptions.Item>
-                    <ProDescriptions.Item
-                      label="运单编号"
-                    >
-                      {ele.shippingCode}
-                    </ProDescriptions.Item>
-                    <ProDescriptions.Item
-                      label="物流进度"
-                    >
-                      <p className={styles.schedule}>{ele.lastStatus}</p>
-                    </ProDescriptions.Item>
+                  detailData.express && detailData.express.map((ele, idx) => (
+                    <ProDescriptions style={{ padding: '20px' }} column={2} title={"包裹" + parseInt(idx + 1)}>
+                      <ProDescriptions.Item
+                        label="快递公司"
+                      >
+                        {ele.expressName}
+                      </ProDescriptions.Item>
+                      <ProDescriptions.Item
+                        label="运单编号"
+                      >
+                        {ele.shippingCode}
+                      </ProDescriptions.Item>
+                      <ProDescriptions.Item
+                        label="物流进度"
+                      >
+                        <p className={styles.schedule}>{ele.lastStatus}</p>
+                      </ProDescriptions.Item>
 
-                    <ProDescriptions.Item
-                      fieldProps={{}}
-                    >
-                      <LogisticsTrackingModel 
-                          record={ele.deliveryList}     
+                      <ProDescriptions.Item
+                        fieldProps={{}}
+                      >
+                        <LogisticsTrackingModel
+                          record={ele.deliveryList}
                           title={'物流跟踪'}
                           byid={ele.id}
                         />
-                    </ProDescriptions.Item>
-                </ProDescriptions>
+                      </ProDescriptions.Item>
+                    </ProDescriptions>
                   ))
                 }
               </div>
@@ -225,7 +225,7 @@ const OrderDetail = () => {
                     </div>
                     <div className={styles.box}>
                       <div>秒约价</div>
-                      <div>{amountTransform(detailData?.sku?.price, '/')}元</div>
+                      <div>{amountTransform(detailData?.sku?.price, '/')}元{detailData?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(detailData?.sku?.wholesaleFreight, '/')}/件）` : ''}</div>
                     </div>
                     <div className={styles.box}>
                       <div>预定数量</div>
@@ -247,7 +247,7 @@ const OrderDetail = () => {
               </Space>
             </div>
           </div>
-        
+
         </div>
       </Spin>
     </PageContainer>

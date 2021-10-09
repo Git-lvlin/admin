@@ -7,8 +7,8 @@ export const withdrawPage = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      createTimeBegin: createTime&& createTime[0],
-      createTimeEnd: createTime&& createTime[1],
+      begin: createTime&& createTime[0],
+      end: createTime&& createTime[1],
       ...rest 
     },
     ...options
@@ -70,8 +70,8 @@ export const orderPage = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      payTimeBegin: payTime&& payTime[0],
-      payTimeEnd: payTime&& payTime[1],
+      begin: payTime&& payTime[0],
+      end: payTime&& payTime[1],
       ...rest 
     },
     ...options
@@ -105,8 +105,8 @@ export const commissionPage = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      createTimeBegin: createTime&& createTime[0],
-      createTimeEnd: createTime&& createTime[1],
+      begin: createTime && createTime[0],
+      end: createTime && createTime[1],
       ...rest 
     },
     ...options
@@ -140,8 +140,8 @@ export const platformCommissionPage = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      createTimeBegin: createTime&& createTime[0],
-      createTimeEnd: createTime&& createTime[1],
+      begin: createTime&& createTime[0],
+      end: createTime&& createTime[1],
       ...rest 
     },
     ...options
@@ -175,8 +175,8 @@ export const goodsAmountPage = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      createTimeBegin: createTime&& createTime[0],
-      createTimeEnd: createTime&& createTime[1],
+      begin: createTime&& createTime[0],
+      end: createTime&& createTime[1],
       ...rest 
     },
     ...options

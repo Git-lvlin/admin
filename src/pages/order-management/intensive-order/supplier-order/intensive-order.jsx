@@ -57,7 +57,7 @@ const TableList = () => {
       },
     });
   }
-    
+
   const getFieldValue = () => {
     const { time, ...rest } = form.getFieldsValue();
 
@@ -67,6 +67,7 @@ const TableList = () => {
       endTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
       memberId: location?.query?.memberId,
       wsId: location?.query?.wsId,
+      operatorSource: 2,
       ...rest,
     }
   }
@@ -180,15 +181,6 @@ const TableList = () => {
             }
           }}
         />
-        <ProFormText
-          name="supplierName"
-          label="所属商家ID"
-          fieldProps={{
-            style: {
-              marginBottom: 20
-            }
-          }}
-        />
         {isPurchase && <ProFormSelect
           label="商家类型"
           name="supplierType"
@@ -253,6 +245,29 @@ const TableList = () => {
             }
           }}
         />
+        {
+          isPurchase &&
+          <>
+            <ProFormText
+              name="supplierId"
+              label="供应商家ID"
+              fieldProps={{
+                style: {
+                  marginBottom: 20
+                }
+              }}
+            />
+            <ProFormText
+              name="supplierName"
+              label="供应商家名称"
+              fieldProps={{
+                style: {
+                  marginBottom: 20
+                }
+              }}
+            />
+          </>
+        }
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -316,7 +331,7 @@ const TableList = () => {
               {
                 isPurchase
                   ?
-                  <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                  <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}（ID:{item.supplierId}）{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
                   :
                   <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}</div>
               }
@@ -335,9 +350,10 @@ const TableList = () => {
                     <img width="100" height="100" src={item.sku.skuImageUrl} />
                     <div className={styles.info}>
                       <div>{item.sku.goodsName}</div>
-                      <div>集约价：{amountTransform(item.sku.price, '/')}元    规格：{item.sku.skuName}</div>
+                      <div>集约价：{amountTransform(item.sku.price, '/')}元{item?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(item?.sku?.wholesaleFreight, '/')}/件）` : ''}<time style={{ marginLeft: 20 }}>规格：{item.sku.skuName}</time></div>
                       <div>数量： <span>{item.sku.totalNum}件</span></div>
                       <div>小计： <span>{amountTransform(item.sku.totalAmount, '/')}</span>元</div>
+                      {isPurchase && <div>批发供货价： ¥{amountTransform(item.sku.wholesaleSupplyPrice, '/')}</div>}
                     </div>
                   </div>
                 </div>
@@ -351,18 +367,18 @@ const TableList = () => {
                 <div>
                   {item.final &&
                     <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
-                      <Descriptions.Item label="应付金额">{amountTransform(item.final.amount, '/')}元</Descriptions.Item>
-                      <Descriptions.Item label="运费">+{amountTransform(item.final.shippingAmount, '/')}元</Descriptions.Item>
+                      <Descriptions.Item label="应付金额">{amountTransform(item.final.amount, '/')}元（含运费）</Descriptions.Item>
+                      {/* <Descriptions.Item label="运费">+{amountTransform(item.final.shippingAmount, '/')}元</Descriptions.Item> */}
                       <Descriptions.Item label="用户实付">{amountTransform(item.final.actualAmount, '/')}元</Descriptions.Item>
                     </Descriptions>}
                 </div>
                 <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div>
                 <div style={{ textAlign: 'center' }}>
                   {item.statusDesc}
-                  {item.refundAllRetailStatus=== 1 &&<div style={{ color: 'red' }}>已启动C端退款</div>}
+                  {item.refundAllRetailStatus === 1 && <div style={{ color: 'red' }}>已启动C端退款</div>}
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId)}}>启动C端退款</a></div>}
+                  {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId) }}>启动C端退款</a></div>}
                   <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a>
                 </div>
               </div>

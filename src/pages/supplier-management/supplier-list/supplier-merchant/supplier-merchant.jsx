@@ -4,6 +4,8 @@ import { Button, Space, Modal } from 'antd';
 import { getCommonList, statusSwitch, detailExt, delSupplier, resetPwd } from '@/services/supplier-management/supplier-list'
 import { history } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 import BasicInfo from './basic-info';
 import AccountInfo from './account-info';
 import DisableModal from './disable-modal';
@@ -15,11 +17,13 @@ const TableList = () => {
   const [basicInfoVisible, setBasicInfoVisible] = useState(false);
   const [accountInfoVisible, setAccountInfoVisible] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [exportVisible, setExportVisible] = useState(false);
   const [bandCardVisible, setBandCardVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [disableModalVisible, setDisableModalVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
+  const formRef = useRef();
 
   const switchStatus = (reason) => {
     statusSwitch({
@@ -194,7 +198,8 @@ const TableList = () => {
             {!!data.auditReason && _ !== 2 && <div style={{ color: 'red' }}>{data.auditReason}</div>}
           </>
         )
-      }
+      },
+      width: 400
     },
     {
       title: '绑卡状态',
@@ -234,8 +239,19 @@ const TableList = () => {
           <a onClick={() => { setSelectItem(data); setIsModalVisible(true) }}>重置密码</a>
         </Space>
       ),
+      width: 350,
     },
   ];
+
+  const getFieldValue = () => {
+    if (formRef?.current?.getFieldsValue) {
+      const { current, pageSize, ...rest } = formRef?.current?.getFieldsValue?.();
+      return {
+        ...rest
+      }
+    }
+    return {}
+  }
 
   return (
     <>
@@ -268,14 +284,22 @@ const TableList = () => {
               {resetText}
             </Button>,
             <Button key="out" type="primary" onClick={() => { setBasicInfoVisible(true) }}>新建</Button>,
+            <Export
+              key="3"
+              change={(e) => { setExportVisible(e) }}
+              type="supplier-export"
+              conditions={getFieldValue}
+            />,
+            <ExportHistory key="4" show={exportVisible} setShow={setExportVisible} type="supplier-export" />,
           ],
         }}
         columns={columns}
         actionRef={actionRef}
+        formRef={formRef}
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: '85vw' }}
+        scroll={{ x: '86vw' }}
       />
       {basicInfoVisible && <BasicInfo
         visible={basicInfoVisible}

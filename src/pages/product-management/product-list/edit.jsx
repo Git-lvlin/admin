@@ -19,10 +19,8 @@ import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import debounce from 'lodash/debounce';
 import ImageSort from './image-sort';
-import MultiCascader from 'rsuite/lib/MultiCascader';
-import 'rsuite/lib/MultiCascader/styles';
-import { arrayToTree } from '@/utils/utils'
 import Look from '@/components/look';
+import FreightTemplateSelect from '@/components/freight-template-select'
 
 const FromWrap = ({ value, onChange, content, right }) => (
   <div style={{ display: 'flex' }}>
@@ -40,8 +38,6 @@ export default (props) => {
   const [lookVisible, setLookVisible] = useState(false);
   const [lookData, setLookData] = useState(false);
   const [form] = Form.useForm()
-  const [selectAreaKey, setSelectAreaKey] = useState([]);
-  const [areaData, setAreaData] = useState([]);
 
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -65,30 +61,6 @@ export default (props) => {
     })
   }
 
-  const getSubmitAreaData = (v) => {
-    const arr = [];
-    v.forEach(item => {
-      let deep = 0;
-      let node = window.yeahgo_area.find(it => it.id === item);
-      const nodeIds = [node.id];
-      const nodeNames = [node.name]
-      while (node.pid) {
-        deep += 1;
-        node = window.yeahgo_area.find(it => it.id === node.pid);
-        nodeIds.push(node.id);
-        nodeNames.push(node.name);
-      }
-      arr.push({
-        provinceId: nodeIds[deep],
-        cityId: deep > 0 ? nodeIds[deep - 1] : 0,
-        areaId: deep > 1 ? nodeIds[deep - 2] : 0,
-        areaName: nodeNames.reverse().join('')
-      })
-    })
-
-    return arr;
-  }
-
   const submit = (values) => {
     const {
       videoUrl,
@@ -108,6 +80,7 @@ export default (props) => {
       wholesaleSupplyPrice,
       salePriceFloat,
       supplierHelperId,
+      isFreeFreight,
       ...rest } = values;
     const { specValues1, specValues2 } = form.getFieldsValue(['specValues1', 'specValues2']);
     const specName = {};
@@ -139,6 +112,9 @@ export default (props) => {
         salePriceFloat: salePriceFloats,
         salePrice: salePrices,
         wholesaleSupplyPrice: wholesaleSupplyPrices,
+        wholesaleFreight: wholesaleFreights,
+        isFreeFreight: isFreeFreights,
+        freightTemplateId: freightTemplateIds,
         ...rests
       } = item;
       const obj = {};
@@ -152,6 +128,18 @@ export default (props) => {
 
       if (detailData?.goods?.goodsSaleType !== 2) {
         obj.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrices)
+      }
+
+      if (wholesaleFreights) {
+        obj.wholesaleFreight = amountTransform(wholesaleFreights)
+      }
+
+      if (isFreeFreights || isFreeFreights === 0) {
+        obj.isFreeFreight = isFreeFreights
+      }
+      if (freightTemplateIds) {
+        obj.freightTemplateId = freightTemplateIds.value;
+        obj.freightTemplateName = freightTemplateIds.label;
       }
 
       specData[code] = {
@@ -189,15 +177,6 @@ export default (props) => {
       videoUrl,
     };
 
-    if (selectAreaKey.length) {
-      obj.refuseArea = getSubmitAreaData(selectAreaKey)
-    }
-
-    if (freightTemplateId) {
-      obj.goods.freightTemplateId = freightTemplateId.value;
-      obj.goods.freightTemplateName = freightTemplateId.label;
-    }
-
     if (isMultiSpec) {
       obj.specName = specName;
       obj.specValues = specValues;
@@ -208,10 +187,17 @@ export default (props) => {
         obj.goods.salePriceProfitLoss = amountTransform(salePriceProfitLoss);
         obj.goods.salePrice = amountTransform(salePrice);
         obj.goods.salePriceFloat = amountTransform(salePriceFloat, '/');
+        obj.goods.isFreeFreight = isFreeFreight;
+
+        if (freightTemplateId) {
+          obj.goods.freightTemplateId = freightTemplateId.value;
+          obj.goods.freightTemplateName = freightTemplateId.label;
+        }
       }
 
       if (detailData?.goods?.goodsSaleType !== 2) {
         obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
+        obj.goods.wholesaleFreight = amountTransform(wholesaleFreight)
       }
 
       obj.goods.marketPrice = amountTransform(marketPrice);
@@ -259,7 +245,7 @@ export default (props) => {
               1: `10${index + 1}`,
               2: `20${index2 + 1}`,
             },
-            code: `i_10${index + 1}20${index2 + 1}`
+            code: `i10${index + 1}|20${index2 + 1}`
           })
         })
       } else {
@@ -271,7 +257,7 @@ export default (props) => {
           specValue: {
             1: `10${index + 1}`,
           },
-          code: `i_10${index + 1}`
+          code: `i10${index + 1}`
         })
       }
 
@@ -339,42 +325,6 @@ export default (props) => {
     return debounce(loadData, 1000);
   }, [])
 
-  const renderMultiCascaderTag = (selectedItems) => {
-    const titleArr = [];
-    selectedItems.forEach(item => {
-      const arr = [];
-      let node = item.parent;
-      arr.push(item.label)
-      while (node) {
-        arr.push(node.label)
-        node = node.parent;
-      }
-      titleArr.push({
-        label: arr.reverse().join('-'),
-        value: item.value
-      })
-    })
-
-    return (
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {
-          titleArr.map(item => (
-            <Tag
-              key={item.value}
-              // closable
-              style={{ marginBottom: 10 }}
-              onClose={() => {
-                setSelectAreaKey(selectAreaKey.filter(it => it !== item.value))
-              }}
-            >
-              {item.label}
-            </Tag>
-          ))
-        }
-      </div>
-    );
-  }
-
   useEffect(() => {
     if (detailData) {
       const { goods, specName, specValues, specData, freightTemplateId, freightTemplateName, settleType } = detailData;
@@ -405,31 +355,13 @@ export default (props) => {
         wholesaleFreight: amountTransform(goods.wholesaleFreight, '/'),
         wholesaleTaxRate: amountTransform(goods.wholesaleTaxRate),
         supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId,
+        batchNumber: goods.batchNumber
       })
 
       if (freightTemplateId && freightTemplateName) {
         form.setFieldsValue({
           freightTemplateId: { label: freightTemplateName, value: freightTemplateId }
         })
-      }
-
-      if (detailData?.refuseArea?.length) {
-        const areaArr = [];
-        for (let index = 0; index < detailData.refuseArea.length; index++) {
-          const refuseArea = detailData.refuseArea[index];
-          if (refuseArea.areaId) {
-            areaArr.push(refuseArea.areaId)
-            continue;
-          }
-          if (refuseArea.cityId) {
-            areaArr.push(refuseArea.cityId)
-            continue;
-          }
-
-          areaArr.push(refuseArea.provinceId)
-
-        }
-        setSelectAreaKey([...new Set(areaArr)])
       }
 
       if (detailData.isMultiSpec) {
@@ -474,6 +406,10 @@ export default (props) => {
             // wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
             salePrice: amountTransform((settleType === 1 || settleType === 0) ? item[1].retailSupplyPrice : item[1].salePrice, '/'),
             marketPrice: amountTransform(item[1].marketPrice || item[1].retailSupplyPrice, '/'),
+            wholesaleFreight: amountTransform(item[1].wholesaleFreight, '/'),
+            batchNumber: item[1].batchNumber,
+            isFreeFreight: item[1].isFreeFreight,
+            freightTemplateId: item[1]?.freightTemplateName ? { label: item[1]?.freightTemplateName, value: item[1]?.freightTemplateId } : undefined,
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -496,13 +432,6 @@ export default (props) => {
     }
 
   }, [form, detailData]);
-
-  useEffect(() => {
-    const arr = arrayToTree(window.yeahgo_area || [])
-    let str = JSON.stringify(arr)
-    str = str.replace(/name/g, 'label').replace(/id/g, 'value')
-    setAreaData(JSON.parse(str))
-  }, [])
 
   return (
     <DrawerForm
@@ -534,7 +463,6 @@ export default (props) => {
                 } else {
                   message.error('请上传图片后预览')
                 }
-
               }}
             >
               预览
@@ -593,7 +521,7 @@ export default (props) => {
         }}
       // disabled
       />
-      {detailData?.goods?.goodsSaleType !== 2 && <ProFormText
+      {detailData?.goods?.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 && <ProFormText
         name="wholesaleFreight"
         label="平均运费(元)"
         disabled
@@ -833,6 +761,12 @@ export default (props) => {
                     disabled
                   />
                   <ProFormText
+                    name="batchNumber"
+                    label="集采箱柜单位量"
+                    placeholder="请输入店主集约采购下单的加购倍数单位量，范围1-9999"
+                    disabled
+                  />
+                  <ProFormText
                     name="wholesaleMinNum"
                     label="最低批发量"
                     placeholder="请输入最低批发量"
@@ -967,7 +901,7 @@ export default (props) => {
       />
 
       {
-        detailData?.goods?.goodsSaleType !== 1 &&
+        detailData?.goods?.goodsSaleType !== 1 && detailData?.isMultiSpec === 0 &&
         <ProFormRadio.Group
           name="isFreeFreight"
           label="是否包邮"
@@ -977,25 +911,23 @@ export default (props) => {
               label: '包邮',
               value: 1,
             },
-            // {
-            //   label: '不包邮',
-            //   value: 0,
-            // },
+            {
+              label: '不包邮',
+              value: 0,
+            },
           ]}
           disabled
         />
       }
-      {/* <ProFormDependency name={['freightTemplateId']}>
-        {({ freightTemplateId }) => (
-          !!freightTemplateId &&
-          <Form.Item
-            name="freightTemplateId"
-            label="选择运费模板"
-          >
-            <Select labelInValue allowClear disabled />
-          </Form.Item>
-        )}
-      </ProFormDependency> */}
+
+      {detailData?.goods?.goodsSaleType !== 1 && !detailData?.goods?.isFreeFreight && detailData?.isMultiSpec === 0 && <Form.Item
+        name="freightTemplateId"
+        label="选择运费模板"
+        rules={[{ required: true, message: '请选择运费模板' }]}
+      >
+        <FreightTemplateSelect labelInValue disabled />
+      </Form.Item>}
+
       <ProFormRadio.Group
         name="supportNoReasonReturn"
         label="七天无理由退货"
@@ -1020,19 +952,6 @@ export default (props) => {
           placeholder: ''
         }}
       />
-      <Form.Item
-        label="不发货地区"
-      >
-        <MultiCascader
-          value={selectAreaKey}
-          data={areaData}
-          style={{ width: '100%' }}
-          placeholder="请选择不发货地区"
-          renderValue={(a, b) => renderMultiCascaderTag(b)} locale={{ searchPlaceholder: '输入省市区名称' }}
-          onChange={setSelectAreaKey}
-          cleanable={false}
-        />
-      </Form.Item>
       <Form.Item
         label="商品主图"
         name="primaryImages"

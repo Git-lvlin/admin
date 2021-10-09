@@ -236,6 +236,30 @@ const TableList = () => {
             }
           }}
         />
+        {
+          isPurchase&&
+          <>  
+            <ProFormText
+              name="supplierId"
+              label="供应商家ID"
+              fieldProps={{
+                style: {
+                  marginBottom: 20
+                }
+              }}
+            />
+            <ProFormText
+              name="supplierName"
+              label="供应商家名称"
+              fieldProps={{
+                style: {
+                  marginBottom: 20
+                }
+              }}
+            />
+          </>
+        }
+        
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -295,7 +319,7 @@ const TableList = () => {
               {
                 isPurchase
                   ?
-                  <div className={styles.store_name}>供应商家名称：{item.supplierName}{(item.supplierHelper === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                  <div className={styles.store_name}>供应商家名称：{item.supplierName}（ID:{item.supplierId}）{(item.supplierHelper === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
                   :
                   <div className={styles.store_name}>供应商家ID：{item.supplierId}</div>
               }
@@ -319,6 +343,7 @@ const TableList = () => {
                           <div>{{ 2: '秒约', 3: '单约', 4: '团约', 11: '零售' }[item.orderType]}价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
                           <div>数量： <span>{it.skuNum}件</span></div>
                           <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
+                          {isPurchase && <div>零售供货价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
                         </div>
                       </div>
                     ))

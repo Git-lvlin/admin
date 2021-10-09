@@ -77,7 +77,7 @@ const TableList = () => {
       valueType: 'text',
     },
     {
-      title: '售后联系人手机号码',
+      title: '售后联系方式',
       dataIndex: 'contactPhone',
       valueType: 'text',
     },
@@ -137,6 +137,7 @@ const TableList = () => {
         search={false}
         columns={columns}
         actionRef={actionRef}
+        rowKey="id"
       />
       <Edit
         visible={formVisible}

@@ -24,13 +24,15 @@ const SupplierFundManagement = () => {
     subtotal({
       accountType: 'supplier',
       page,
-      ...search
+      ...search,
+      settleTimeBegin: search?.settleTime?.[0].format('YYYY-MM-DD'),
+      settleTimeEnd: search?.settleTime?.[1].format('YYYY-MM-DD')
     }).then(res=> {
       if(res.success) {
         setTotal(res.data)
       }
     })
-  }, [page, search])
+  }, [search])
 
   const skipToDetail = ({accountType, accountId}) => {
     history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
@@ -116,7 +118,7 @@ const SupplierFundManagement = () => {
     },
     {
       title: '账户余额',
-      dataIndex: 'balance',
+      dataIndex: 'total',
       hideInSearch: true,
       render: (_) => amountTransform(_, '/')
     },
@@ -230,7 +232,12 @@ const SupplierFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-supplier-export"
-              conditions={{accountType: "supplier", ...form?.getFieldValue()}}
+              conditions={{
+                accountType: "supplier", 
+                ...form?.getFieldValue(),
+                settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
+                settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD')
+              }}
             />,
             <ExportHistory
               key="exportHistory" 
@@ -247,7 +254,7 @@ const SupplierFundManagement = () => {
               data?.length !== 0 &&
               <div className={styles.summary}>
                 账户余额总合计：
-                <span>￥{amountTransform(Number(total.totalBalance),'/')}</span>
+                <span>￥{amountTransform(Number(total.total),'/')}</span>
               </div>
             }
           </>
