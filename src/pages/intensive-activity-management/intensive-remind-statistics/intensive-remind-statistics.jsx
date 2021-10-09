@@ -39,7 +39,8 @@ export default (props) => {
       title: '提醒产生采购单金额(元)',
       dataIndex: 'orderPay',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_)=> amountTransform(_, '/').toFixed(2)
     }
     
   ];

@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { getBlindboxIncomeList } from '@/services/blind-box-activity-management/blindbox-blindbox-get-lncome';
 import { PageContainer } from '@ant-design/pro-layout';
-// import './style.less'
+import XLSX from 'xlsx'
 import { history,connect } from 'umi';
 const { TabPane } = Tabs
 
@@ -12,6 +12,47 @@ const { TabPane } = Tabs
 
 export default () => {
     const ref=useRef()
+    //导出
+    const exportExcel = (searchConfig) => {
+      getBlindboxIncomeList({...searchConfig.form.getFieldsValue()}).then(res => {
+          const data = res.data.map(item => {
+            const { ...rest } = item;
+            return {
+              ...rest
+            }
+          });
+          const wb = XLSX.utils.book_new();
+          const ws = XLSX.utils.json_to_sheet([
+            {
+              name: '活动名称',
+              activityStartTime: '活动时间',
+              memberMobile:'用户手机号',
+              memberNicheng:'用户名',
+              type:'发放原因',
+              usefulTime: '发放时间',
+              outUsefulTime:'过期时间',
+              num: '发放次数',
+              code:'机会编号',
+            },
+            ...data
+          ], {
+            header: [
+              'name',
+              'activityStartTime',
+              'couponAmountDisplay',
+              'memberNicheng',
+              'usefulTime',
+              'outUsefulTime',
+              'num',
+              'type',
+              'code',
+            ],
+            skipHeader: true
+          });
+          XLSX.utils.book_append_sheet(wb, ws, "file");
+          XLSX.writeFile(wb, `${+new Date()}.xlsx`)
+      })
+    }
     const columns= [
       {
         title: '序号',
@@ -56,9 +97,9 @@ export default () => {
       },
       {
         title: '发放时间',
-        key: 'dateRange',
+        key: 'dateTimeRange',
         dataIndex: 'usefulTime',
-        valueType: 'dateRange',
+        valueType: 'dateTimeRange',
         hideInTable: true,
       },
       {
@@ -105,9 +146,9 @@ export default () => {
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
-               <Button onClick={()=>{}} key="out">
+               <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
                 导出数据
-               </Button>
+              </Button>
             ],
           }}
           columns={columns}

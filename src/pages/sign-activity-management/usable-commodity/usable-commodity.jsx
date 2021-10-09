@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select,message} from 'antd';
+import { Button,Tabs,Image,Form,Modal,Select,message,Table} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { productPage,productUpdateStatus,productDelete,productEdit,productAdd } from '@/services/sign-activity-management/sign-red-packet-product';
@@ -12,10 +12,8 @@ import SelectProductModal from '@/components/select-product-modal'
 
 export default () => {
   const ref=useRef()
-  const [onoff,setOnoff]=useState(false)
   const [visible, setVisible] = useState(false);
-  const [form] = Form.useForm()
-  const [spuIds,setSpuIds]=useState()
+  const [selectedRowKeys,setSelectedRowKeys]=useState([])
   const columns= [
     {
       title: '序号',
@@ -34,9 +32,6 @@ export default () => {
       dataIndex: 'goodsImageUrl',
       valueType: 'image',
       hideInSearch:true,
-      // render:(_,data)=>{
-      //   return <Image src={data.images[0]} alt="" width='50px' height='50px' />
-      // }
     },
     {
       title: '商品名称',
@@ -71,8 +66,15 @@ export default () => {
     },
     {
       title: '满减金额',
-      dataIndex: 'maxDeduction',
+      dataIndex: 'deductionDesc',
       hideInSearch: true,
+      render: (_,data)=>{
+        if(data.destAmount){
+          return <p>满{data.destAmount}可用{data.maxDeduction}元</p>
+        }else{
+          return null
+        }
+      }
     },
     {
       title: '开启状态',
@@ -80,10 +82,16 @@ export default () => {
       valueType: 'text',
       hideInSearch: true,
       render:(_,data) => {
-        return <ProFormSwitch name="Switch"
+        if(!data.deductionDesc){
+          return <>
+            <ProFormSwitch disabled={!data.deductionDesc}/>
+            <p style={{fontSize:'10px',color:'#ccc'}}>请设置优惠</p>
+          </>
+        }
+        return <ProFormSwitch disabled={!data.deductionDesc}  name="Switch"
           fieldProps={{
-            checked: data.status,
-            onChange:(bol)=>{onFF(bol,data.id)}
+            checked:data.status?true:false,
+            onChange:(bol)=>{onFF(bol,data)},
           }
         }
         />
@@ -95,8 +103,8 @@ export default () => {
       valueType: 'option',
       render: (_, data) => [
           <DiscountsModel 
-            spuId={data.spuId}
-            InterFace={productEdit} 
+            data={data}
+            InterFace={productEdit}
             boxref={ref}
           />,
           <a onClick={()=>{
@@ -110,17 +118,13 @@ export default () => {
     },
     
   ];
-  const onFF=(bol,id)=>{
-    productUpdateStatus({ids:[id],status:bol}).then(res=>{
-      if(res.code==0){
-        message.success('设置成功');
-        ref.current.reload()
-      }
-    })
-}
-const onIpute=(res)=>{
-  console.log('res',res.selectedRowKeys)
-  setSpuIds(res.selectedRowKeys)
+  const onFF=(bol,data)=>{
+      productUpdateStatus({ids:[data.id],status:bol?1:0}).then(res=>{
+        if(res.code==0){
+          message.success('设置成功');
+          ref.current.reload()
+        }
+      })
 }
   return (
     <PageContainer>
@@ -130,7 +134,6 @@ const onIpute=(res)=>{
         headerTitle="签到红包可用商品配置"
         options={false}
         request={productPage}
-        // dataSource={spuIdsArr}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -138,29 +141,36 @@ const onIpute=(res)=>{
              ...dom.reverse(),
           ],
         }}
-        // rowSelection={{}}
-        // tableAlertOptionRender={onIpute}
+        rowSelection={{
+          selectedRowKeys,
+          onChange:(selectedRowKeys)=>setSelectedRowKeys(selectedRowKeys),
+          getCheckboxProps: (record) => ({
+            disabled: record.deductionDesc === '',
+          })
+        }}
         toolBarRender={()=>[
-            // <Button  onClick={()=>{
-            //   setOnoff(false)
-            //   // productUpdateStatus({ids:'',status:false}).then(res=>{
-            //   //   if(res.code==0){
-            //   //     message.success('关闭成功');
-            //   //   }
-            //   // })
-            // }} type="primary">
-            //     关闭全部商品
-            // </Button>, 
-            // <Button  onClick={()=>{
-            //   setOnoff(true)
-            //   // productUpdateStatus({ids:"",status:true}).then(res=>{
-            //   //   if(res.code==0){
-            //   //     message.success('开启成功');
-            //   //   }
-            //   // })
-            // }} type="primary">
-            //     开启全部商品
-            // </Button>,
+            <Button  onClick={()=>{
+              productUpdateStatus({ids:selectedRowKeys,status:false}).then(res=>{
+                if(res.code==0){
+                  setSelectedRowKeys([])
+                  message.success('关闭成功');
+                  ref.current.reload()
+                }
+              })
+            }} type="primary">
+                关闭选中商品
+            </Button>, 
+            <Button  onClick={()=>{
+              productUpdateStatus({ids:selectedRowKeys,status:true}).then(res=>{
+                if(res.code==0){
+                  setSelectedRowKeys([])
+                  message.success('开启成功');
+                  ref.current.reload()
+                }
+              })
+            }} type="primary">
+                开启选中商品
+            </Button>,
              <Button type="primary" onClick={()=>setVisible(true)}>
                 <PlusOutlined />
                 添加秒约商品
@@ -181,7 +191,6 @@ const onIpute=(res)=>{
                     ref.current.reload()
                   }
                 })
-                // setDataSource([...dataSource,...arr])
               }}
             />
         ]}

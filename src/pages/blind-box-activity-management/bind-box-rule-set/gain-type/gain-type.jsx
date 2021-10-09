@@ -32,7 +32,9 @@ export default (props) => {
                 width={120}
                 label="开盲盒机会获取途径"
                 readonly
-                initialValue=" "
+                fieldProps={{
+                    value:' '
+                 }}
             />
             <ProFormRadio.Group
                 name="switch1"
