@@ -68,13 +68,6 @@ export default () => {
       title: '满减金额',
       dataIndex: 'deductionDesc',
       hideInSearch: true,
-      render: (_,data)=>{
-        if(data.destAmount){
-          return <p>满{data.destAmount}可用{data.maxDeduction}元</p>
-        }else{
-          return null
-        }
-      }
     },
     {
       title: '开启状态',

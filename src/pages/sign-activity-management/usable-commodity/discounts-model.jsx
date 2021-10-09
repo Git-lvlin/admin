@@ -60,6 +60,8 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
+                values.destAmount=values.destAmount*100
+                values.maxDeduction=values.maxDeduction*100
                 InterFace({spuId:data.spuId,...values}).then(res=>{
                     if(res.code==0){
                         setVisible(false)   
