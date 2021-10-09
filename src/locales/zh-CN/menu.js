@@ -264,11 +264,6 @@ export default {
   'menu.data-board.rank': '排名',
   'menu.data-board.order': '订单',
 
-  'menu.import-export-configuration': '导入导出配置',
-  'menu.import-export-configuration.export-configuration': '导出配置',
-  'menu.import-export-configuration.import-configuration': '导入配置',
-
-  
   'menu.sign-activity-management': '签到活动管理',
   'menu.sign-activity-management.sign-rule': '签到规则设置',
   'menu.sign-activity-management.usable-commodity': '签到红包可用商品',
@@ -284,4 +279,9 @@ export default {
   'menu.blind-box-activity-management.blind-box-user-detail': '用户盲盒机会明细',
   'menu.blind-box-activity-management.blind-box-employ-detail': '用户盲盒使用明细',
   'menu.blind-box-activity-management.bind-box-rule-set': '盲盒规则配置',
+
+  
+  'menu.import-export-configuration': '导入导出配置',
+  'menu.import-export-configuration.export-configuration': '导出配置',
+  'menu.import-export-configuration.import-configuration': '导入配置',
 };
