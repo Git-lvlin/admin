@@ -71,7 +71,7 @@ export default (props) => {
       }
     },
     {
-      title: '中奖概率',
+      title: '中奖概率%',
       dataIndex: 'probability',
       valueType: 'digit',
       hideInSearch: true,
@@ -84,7 +84,7 @@ export default (props) => {
                 />
         },
       render: (_,r) =>{
-        return <p>{_}</p>
+        return <p>{_}%</p>
       }
     },
     {
