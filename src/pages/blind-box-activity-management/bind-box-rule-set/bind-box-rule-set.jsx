@@ -219,7 +219,9 @@ export default (props) => {
             width={120}
             label="盲盒中奖后兑奖有效期"
             readonly
-            initialValue=" "
+            fieldProps={{
+              value:' '
+           }}
         />
         <div className={styles.unfold}>
             <ProForm.Group>
@@ -286,7 +288,7 @@ export default (props) => {
                         key={field.key}
                       >
                         <ProForm.Group>
-                          <Form.Item name={[field.name, 'imageUrl']} fieldKey={[field.fieldKey, 'imageUrl']}>
+                          <Form.Item key="1" {...field} name={[field.name, 'imageUrl']} fieldKey={[field.fieldKey, 'imageUrl']}>
                             <Upload code={204} multiple maxCount={1} accept="image/*" size={1 * 1024} />
                           </Form.Item>
                           &nbsp;
@@ -295,7 +297,7 @@ export default (props) => {
                             name={[field.name, 'name']}
                             fieldKey={[field.fieldKey, 'name']}
                             placeholder='奖品名，6个字以内'
-                            key="1"
+                            key="2"
                             fieldProps={{
                               style: {
                                 width: 328

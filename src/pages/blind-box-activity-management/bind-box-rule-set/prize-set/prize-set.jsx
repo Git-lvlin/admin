@@ -13,6 +13,7 @@ export default (props) => {
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
+  const [cut,setCut]=useState(true)
   const columns= [
     {
       title: '序号',
@@ -128,11 +129,19 @@ export default (props) => {
           }
         }}
         toolBarRender={()=>[
-            <Button type="primary" onClick={() => { 
-              setEditableKeys(dataSource.map(item => item.id))
-            } 
-            }>编辑概率</Button>,
-            <Button type="primary" onClick={() => { setEditableKeys([])}}>保存</Button>,
+            <>
+            {
+              cut?<Button type="primary" onClick={() => { 
+                setEditableKeys(dataSource.map(item => item.id))
+                setCut(false)
+              } 
+              }>编辑概率</Button>
+              :<Button type="primary" onClick={() => { 
+                setEditableKeys([])
+                setCut(true)
+              }}>保存</Button>
+            }
+            </>,
             <Button type="primary" onClick={()=>setVisible(true)}>
                 <PlusOutlined />
                 添加秒约商品

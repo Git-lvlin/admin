@@ -268,16 +268,16 @@ export default {
 
   
   'menu.sign-activity-management': '签到活动管理',
-  'menu.sign-activity-management.sign-rule': '签到规则',
-  'menu.sign-activity-management.usable-commodity': '可用商品',
-  'menu.sign-activity-management.grant-detail': '发放明细',
-  'menu.sign-activity-management.user-detail': '用户明细',
-  'menu.sign-activity-management.consume-detail': '消耗明细',
+  'menu.sign-activity-management.sign-rule': '签到规则设置',
+  'menu.sign-activity-management.usable-commodity': '签到红包可用商品',
+  'menu.sign-activity-management.grant-detail': '签到红包发放明细',
+  'menu.sign-activity-management.user-detail': '用户红包明细',
+  'menu.sign-activity-management.consume-detail': '签到红包消耗明细',
 
 
   'menu.blind-box-activity-management': '盲盒活动管理',
   'menu.blind-box-activity-management.blind-box-management-list': '盲盒活动列表',
-  'menu.blind-box-activity-management.blind-box-consume-detail': '盲盒机会消耗明细',
+  'menu.blind-box-activity-management.blind-box-consume-detail': '盲盒机会使用明细',
   'menu.blind-box-activity-management.blind-box-grant-detail': '盲盒机会发放明细',
   'menu.blind-box-activity-management.blind-box-user-detail': '用户盲盒机会明细',
   'menu.blind-box-activity-management.blind-box-employ-detail': '用户盲盒使用明细',
