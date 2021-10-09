@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Input, Form, message,Button} from 'antd';
+import { Input, Form, message,Button,InputNumber} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { editSignRedPacketConfig,getSignRedPacketConfig } from '@/services/sign-activity-management/get-sign-red-packet-config';
@@ -199,64 +199,214 @@ export default (props) =>{
       title: '第1天',
       dataIndex: 'changeValue1',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     },
     {
       title: '第2天',
       dataIndex: 'changeValue2',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第3天',
       dataIndex: 'changeValue3',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第4天',
       dataIndex: 'changeValue4',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第5天',
       dataIndex: 'changeValue5',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第6天',
       dataIndex: 'changeValue6',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第7天',
       dataIndex: 'changeValue7',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第8天',
       dataIndex: 'changeValue8',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第9天',
       dataIndex: 'changeValue9',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第10天',
       dataIndex: 'changeValue10',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第11天',
       dataIndex: 'changeValue11',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第12天',
       dataIndex: 'changeValue12',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第13天',
       dataIndex: 'changeValue13',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第14天',
       dataIndex: 'changeValue14',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     },
     {
       title: '第15天',
       dataIndex: 'changeValue15',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }
   ];
   return (

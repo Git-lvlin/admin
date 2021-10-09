@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getBlindboxIncomeDetail,getBlindboxIncomeReclaim } from '@/services/blind-box-activity-management/blindbox-blindbox-get-lncome';
 import AuditModel from './audit-model'
-const { TabPane } = Tabs
+import { history, connect } from 'umi';
 
 
 export default(props) => {
@@ -121,6 +121,9 @@ export default(props) => {
         }}
         columns={columns}
       />
+      <Button style={{float:'right',margin:'20px 20px 0 0'}} type="default" onClick={() => history.goBack()}>
+           返回
+        </Button>
     </PageContainer>
   );
 };

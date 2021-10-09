@@ -1,9 +1,8 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select,Switch, Input} from 'antd';
+import { Button,Tabs,Image,Form,Modal,Select,Switch, Input,InputNumber} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import SelectProductModal from '@/components/select-product-modal'
 import { PlusOutlined } from '@ant-design/icons';
-import ProForm, { ProFormText} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 
 
@@ -61,12 +60,32 @@ export default (props) => {
       dataIndex: 'stockNum',
       valueType: 'digit',
       hideInSearch:true,
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0"
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     },
     {
       title: '中奖概率',
       dataIndex: 'probability',
       valueType: 'digit',
       hideInSearch: true,
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0"
+                  max="100"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     },
     {
       title: '状态',
