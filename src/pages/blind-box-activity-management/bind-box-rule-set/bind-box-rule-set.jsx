@@ -55,6 +55,7 @@ export default (props) => {
         })
       })
     } 
+    console.log('detailList?.content?.ruleText',detailList?.content?.ruleText)
   }, [])
   const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
@@ -290,7 +291,7 @@ export default (props) => {
                       >
                         <ProForm.Group>
                           <Form.Item key="1" {...field} name={[field.name, 'imageUrl']} fieldKey={[field.fieldKey, 'imageUrl']}>
-                            <Upload code={204} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+                            <Upload dimension={{width:30,height:50}} code={204} multiple maxCount={1} accept="image/*" size={1 * 1024} />
                           </Form.Item>
                           &nbsp;
                           <ProFormText
