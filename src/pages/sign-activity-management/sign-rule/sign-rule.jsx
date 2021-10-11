@@ -550,7 +550,7 @@ export default (props) =>{
                   },
                   {
                     label: '关闭',
-                    value: 2
+                    value: 0
                   }
               ]}
               readonly={save}
