@@ -101,7 +101,7 @@ const DataBord = ()=> {
             </div>
             <div className={styles.pay}>
               支付完成率：
-              <span>{gmv.payRatio}%</span>
+              <span>{amountTransform(gmv.payRatio, '*')}%</span>
             </div>
           </div>
         </ProCard>
