@@ -325,15 +325,15 @@ export default (props) => {
         {
           id&&falg?
           <Form.Item
-          label="活动规则"
-        >
-           {
-            detailList?.content?.ruleText.split('\n').map(ele=>(
-              <span>{ele}</span>
-            ))
-           }
-        </Form.Item>
-        :  <ProFormTextArea
+            label="活动规则"
+          >
+          <pre style={{fontFamily:"-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"}}>
+            {
+              detailList?.content?.ruleText
+            }
+          </pre>
+          </Form.Item>
+        :<ProFormTextArea 
               label='活动规则'
               name="ruleText"
               style={{ minHeight: 32, marginTop: 15 }}
@@ -343,6 +343,7 @@ export default (props) => {
               readonly={id&&falg}
           />
         }
+
       
        
         {
