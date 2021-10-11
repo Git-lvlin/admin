@@ -8,6 +8,7 @@ import DiscountsModel from './discounts-model'
 import { amountTransform } from '@/utils/utils'
 import { PlusOutlined } from '@ant-design/icons';
 import SelectProductModal from '@/components/select-product-modal'
+import DeleteModal from './delete-modal'
 
 
 export default () => {
@@ -55,14 +56,14 @@ export default () => {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
       hideInSearch:true,
-      render: (_)=> amountTransform(_, '/').toFixed(2)
+      render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
     },
     {
       title: '零售供货价',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       hideInSearch:true,
-      render: (_)=> amountTransform(_, '/').toFixed(2)
+      render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
     },
     {
       title: '满减金额',
@@ -100,13 +101,13 @@ export default () => {
             InterFace={productEdit}
             boxref={ref}
           />,
-          <a onClick={()=>{
-            productDelete({ids:[data.id]}).then(res=>{
-              if(res.code==0){
-                ref.current.reload()
-              }
-            })
-          }}>删除</a>
+          <DeleteModal 
+            boxref={ref} 
+            text={'确认要删除所选商品吗？'} 
+            InterFace={productDelete}
+            id={data.id} 
+            title={'操作确认'}
+        />
       ],
     },
     
@@ -173,17 +174,18 @@ export default () => {
               visible={visible} 
               setVisible={setVisible} 
               callback={(val)=>{
-                console.log('val',val)
                 const arr = [];
                 val.forEach(item => {
-                  arr.push(item.spuId)
+                  arr.push({spuId:item.spuId,skuId:item.skuId})
                 })
-                productAdd({addList:arr}).then(res=>{
-                  if(res.code==0){
-                    message.success('新增商品成功');
-                    ref.current.reload()
-                  }
-                })
+                if(arr.length>0){
+                  productAdd({addList:arr}).then(res=>{
+                    if(res.code==0){
+                      message.success('新增商品成功');
+                      ref.current.reload()
+                    }
+                  })
+                }
               }}
             />
         ]}
