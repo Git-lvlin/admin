@@ -8,6 +8,7 @@ import DiscountsModel from './discounts-model'
 import { amountTransform } from '@/utils/utils'
 import { PlusOutlined } from '@ant-design/icons';
 import SelectProductModal from '@/components/select-product-modal'
+import DeleteModal from './delete-modal'
 
 
 export default () => {
@@ -100,13 +101,13 @@ export default () => {
             InterFace={productEdit}
             boxref={ref}
           />,
-          <a onClick={()=>{
-            productDelete({ids:[data.id]}).then(res=>{
-              if(res.code==0){
-                ref.current.reload()
-              }
-            })
-          }}>删除</a>
+          <DeleteModal 
+            boxref={ref} 
+            text={'确认要删除所选商品吗？'} 
+            InterFace={productDelete}
+            id={data.id} 
+            title={'操作确认'}
+        />
       ],
     },
     
@@ -173,7 +174,6 @@ export default () => {
               visible={visible} 
               setVisible={setVisible} 
               callback={(val)=>{
-                console.log('val',val)
                 const arr = [];
                 val.forEach(item => {
                   arr.push(item.spuId)

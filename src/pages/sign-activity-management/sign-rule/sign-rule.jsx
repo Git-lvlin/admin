@@ -41,7 +41,7 @@ export default (props) =>{
             title:'当天红包金额'
           }
           res.data?.extraPacketConfigResList.map((ele,index)=>{
-            data[`changeValue${index+1}`]=ele.changeValue
+            data[`changeValue${index+1}`]=parseInt(ele.changeValue)/100
             data['typeId']=1
           })
           if(res.data?.extraPacketConfigResList.length<1){
@@ -54,7 +54,7 @@ export default (props) =>{
             title:'连续签到额外奖励金额'
           }
           res.data?.fixRedPacketConfigResList.map((ele,index)=>{
-            data2[`changeValue${index+1}`]=ele.changeValue
+            data2[`changeValue${index+1}`]=parseInt(ele.changeValue)/100
             data2['typeId']=2
           })
           if(res.data?.fixRedPacketConfigResList.length<1){
@@ -500,20 +500,34 @@ export default (props) =>{
               }}
               readonly
             />
-          <ProFormTextArea
-              name="remark"
-              label="活动规则"
-              placeholder="列如玩法规则、红包有效期、简单的用户协议"
-              rules={[
-                { required: true, message: '请输入活动规则' },
-              ]}
-              readonly={save}
-              fieldProps={
+            {
+              save?
+              <Form.Item
+                label="活动规则"
+              >
                 {
-                  autoSize:true
+                  detailList?.remark.split('\n').map(ele=>(
+                    <span>{ele}</span>
+                  ))
                 }
-              }
-          />
+              </Form.Item>
+              :
+              <ProFormTextArea
+                name="remark"
+                label="活动规则"
+                placeholder="列如玩法规则、红包有效期、简单的用户协议"
+                rules={[
+                  { required: true, message: '请输入活动规则' },
+                ]}
+                readonly={save}
+                fieldProps={
+                  {
+                    autoSize:true
+                  }
+                }
+            />
+            }
+          
          {
            !save?
             <ProFormText
