@@ -194,6 +194,7 @@ export default (props) =>{
       },
 
     ]
+    values.status=1
     editSignRedPacketConfig({handler:user.username,changeIds:changeData,...values}).then(res=>{
       if(res.code==0){
         message.success('编辑成功'); 
@@ -540,7 +541,7 @@ export default (props) =>{
           />
           :null
          }
-          <ProFormRadio.Group
+          {/* <ProFormRadio.Group
               name="status"
               label="活动状态"
               options={[
@@ -554,7 +555,7 @@ export default (props) =>{
                   }
               ]}
               readonly={save}
-          />
+          /> */}
           {
             save?
             <p className={styles.back}>最近一次操作人：{detailList?.lastHandler}      {detailList?.updateTime}</p>
