@@ -40,11 +40,11 @@ export default (props) =>{
           const data={
             title:'当天红包金额'
           }
-          res.data?.extraPacketConfigResList.map((ele,index)=>{
+          res.data?.fixRedPacketConfigResList.map((ele,index)=>{
             data[`changeValue${index+1}`]=parseInt(ele.changeValue)/100
             data['typeId']=1
           })
-          if(res.data?.extraPacketConfigResList.length<1){
+          if(res.data?.fixRedPacketConfigResList.length<1){
             for (let index = 0; index < 15; index++) {
               data[`changeValue${index+1}`]=' '
               data['typeId']=1
@@ -53,11 +53,11 @@ export default (props) =>{
           const data2={
             title:'连续签到额外奖励金额'
           }
-          res.data?.fixRedPacketConfigResList.map((ele,index)=>{
+          res.data?.extraPacketConfigResList.map((ele,index)=>{
             data2[`changeValue${index+1}`]=parseInt(ele.changeValue)/100
             data2['typeId']=2
           })
-          if(res.data?.fixRedPacketConfigResList.length<1){
+          if(res.data?.extraPacketConfigResList.length<1){
             for (let index = 0; index < 15; index++) {
               data2[`changeValue${index+1}`]=' '
               data2['typeId']=2
@@ -68,7 +68,7 @@ export default (props) =>{
           res.data?.exTimeList.map(ele=>{
             arr.push({
               value: ele,
-              label: `${ele}天`
+              label: `${ele}${parseInt(ele)>=0?'天':''}`
             })
           })
           setOption(arr)
@@ -84,113 +84,113 @@ export default (props) =>{
     const changeData=[
       {
         id:0,
-        changeValue:dataSource[1].changeValue1*100
-      },
-      {
-        id:1,
-        changeValue:dataSource[1].changeValue2*100
-      },
-      {
-        id:2,
-        changeValue:dataSource[1].changeValue3*100
-      },
-      {
-        id:3,
-        changeValue:dataSource[1].changeValue4*100
-      },
-      {
-        id:4,
-        changeValue:dataSource[1].changeValue5*100
-      },
-      {
-        id:5,
-        changeValue:dataSource[1].changeValue6*100
-      },
-      {
-        id:6,
-        changeValue:dataSource[1].changeValue7*100
-      },
-      {
-        id:7,
-        changeValue:dataSource[1].changeValue8*100
-      },
-      {
-        id:8,
-        changeValue:dataSource[1].changeValue9*100
-      },
-      {
-        id:9,
-        changeValue:dataSource[1].changeValue10*100
-      },
-      {
-        id:10,
-        changeValue:dataSource[1].changeValue11*100
-      },
-      {
-        id:11,
-        changeValue:dataSource[1].changeValue12*100
-      },
-      {
-        id:12,
-        changeValue:dataSource[1].changeValue13*100
-      },
-      {
-        id:13,
-        changeValue:dataSource[1].changeValue14*100
-      },
-      {
-        id:14,
-        changeValue:dataSource[1].changeValue15*100
-      },
-      {
-        id:15,
         changeValue:dataSource[0].changeValue1*100
       },
       {
-        id:16,
+        id:1,
         changeValue:dataSource[0].changeValue2*100
-      }, {
-        id:17,
+      },
+      {
+        id:2,
         changeValue:dataSource[0].changeValue3*100
-      }, {
-        id:18,
+      },
+      {
+        id:3,
         changeValue:dataSource[0].changeValue4*100
-      }, {
-        id:19,
+      },
+      {
+        id:4,
         changeValue:dataSource[0].changeValue5*100
-      }, {
-        id:20,
+      },
+      {
+        id:5,
         changeValue:dataSource[0].changeValue6*100
-      }, {
-        id:21,
+      },
+      {
+        id:6,
         changeValue:dataSource[0].changeValue7*100
-      }, {
-        id:22,
+      },
+      {
+        id:7,
         changeValue:dataSource[0].changeValue8*100
-      }, {
-        id:23,
+      },
+      {
+        id:8,
         changeValue:dataSource[0].changeValue9*100
-      }, {
-        id:24,
+      },
+      {
+        id:9,
         changeValue:dataSource[0].changeValue10*100
-      }, {
-        id:25,
+      },
+      {
+        id:10,
         changeValue:dataSource[0].changeValue11*100
-      }, {
-        id:26,
+      },
+      {
+        id:11,
         changeValue:dataSource[0].changeValue12*100
       },
       {
-        id:27,
+        id:12,
         changeValue:dataSource[0].changeValue13*100
       },
       {
-        id:28,
+        id:13,
         changeValue:dataSource[0].changeValue14*100
       },
       {
-        id:29,
+        id:14,
         changeValue:dataSource[0].changeValue15*100
+      },
+      {
+        id:15,
+        changeValue:dataSource[1].changeValue1*100
+      },
+      {
+        id:16,
+        changeValue:dataSource[1].changeValue2*100
+      }, {
+        id:17,
+        changeValue:dataSource[1].changeValue3*100
+      }, {
+        id:18,
+        changeValue:dataSource[1].changeValue4*100
+      }, {
+        id:19,
+        changeValue:dataSource[1].changeValue5*100
+      }, {
+        id:20,
+        changeValue:dataSource[1].changeValue6*100
+      }, {
+        id:21,
+        changeValue:dataSource[1].changeValue7*100
+      }, {
+        id:22,
+        changeValue:dataSource[1].changeValue8*100
+      }, {
+        id:23,
+        changeValue:dataSource[1].changeValue9*100
+      }, {
+        id:24,
+        changeValue:dataSource[1].changeValue10*100
+      }, {
+        id:25,
+        changeValue:dataSource[1].changeValue11*100
+      }, {
+        id:26,
+        changeValue:dataSource[1].changeValue12*100
+      },
+      {
+        id:27,
+        changeValue:dataSource[1].changeValue13*100
+      },
+      {
+        id:28,
+        changeValue:dataSource[1].changeValue14*100
+      },
+      {
+        id:29,
+        changeValue:dataSource[1].changeValue15*100
       },
 
     ]
