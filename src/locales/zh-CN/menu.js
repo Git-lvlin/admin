@@ -115,7 +115,7 @@ export default {
   'menu.cms.goos-reg.hot-goos': '热销好货',
   'menu.cms.goos-reg.crazy-date': '限时秒杀',
   'menu.cms.goos-reg.save-money': '集约优选',
-  'menu.cms.goos-reg.strategy-today': '今日必约',
+  'menu.cms.goos-reg.strategy-today': '首页秒约爆品',
   'menu.cms.home-suspension': '首页悬浮窗',
   'menu.cms.express-news': '约购快报',
   'menu.cms.king-kong-district': '金刚区',

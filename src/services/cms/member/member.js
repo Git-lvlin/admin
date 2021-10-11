@@ -95,6 +95,30 @@ export const tagSortModify = (params = {}, options = {}) => {
   });
 }
 
+export const cmsImageInfo = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsImageInfo', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const cmsImageAdd = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsImageAdd', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const cmsImageEdit = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsImageEdit', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const saveSortModify = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/wholesaleGoodsSortSub', {
     method: 'POST',
