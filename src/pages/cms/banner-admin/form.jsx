@@ -35,6 +35,10 @@ export default (props) => {
     {
       with: 375,
       height: 160,
+    },
+    {
+      with: 375,
+      height: 160,
     }
   ]
 
