@@ -111,6 +111,7 @@ export default props=>{
                 width={100}
                 name='destAmount'
                 rules={[
+                    { required: true, message: '请输入使用门槛' },
                     {validator: checkConfirm}
                 ]} 
             />
@@ -122,6 +123,7 @@ export default props=>{
                 width={100}
                 name='maxDeduction'
                 rules={[
+                    { required: true, message: '请输入可用红包' },
                     {validator: checkConfirm2}
                 ]} 
             />
