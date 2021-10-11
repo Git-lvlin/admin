@@ -76,6 +76,7 @@ export default (props) => {
       valueType: 'digit',
       hideInSearch: true,
       renderFormItem: (_,r) => {
+        // console.log('r',r)
         return  <InputNumber
                   min="0"
                   max="100"

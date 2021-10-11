@@ -44,6 +44,12 @@ export default (props) =>{
             data[`changeValue${index+1}`]=ele.changeValue
             data['typeId']=1
           })
+          if(res.data?.extraPacketConfigResList.length<1){
+            for (let index = 0; index < 15; index++) {
+              data[`changeValue${index+1}`]=' '
+              data['typeId']=1
+            }
+          }
           const data2={
             title:'连续签到额外奖励金额'
           }
@@ -51,6 +57,12 @@ export default (props) =>{
             data2[`changeValue${index+1}`]=ele.changeValue
             data2['typeId']=2
           })
+          if(res.data?.fixRedPacketConfigResList.length<1){
+            for (let index = 0; index < 15; index++) {
+              data2[`changeValue${index+1}`]=' '
+              data2['typeId']=2
+            }
+          }
           setDataSource([{...data},{...data2}])
           const arr=[]
           res.data?.exTimeList.map(ele=>{
