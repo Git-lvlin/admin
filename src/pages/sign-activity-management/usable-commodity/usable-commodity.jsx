@@ -55,14 +55,14 @@ export default () => {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
       hideInSearch:true,
-      render: (_)=> amountTransform(_, '/').toFixed(2)
+      render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
     },
     {
       title: '零售供货价',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       hideInSearch:true,
-      render: (_)=> amountTransform(_, '/').toFixed(2)
+      render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
     },
     {
       title: '满减金额',
