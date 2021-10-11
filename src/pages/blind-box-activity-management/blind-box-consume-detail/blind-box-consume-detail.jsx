@@ -154,6 +154,9 @@ export default () => {
           if(data.type==5||data.type==6){
             return null
           }
+          if(data.prizeInfo?.prizeStatus==0){
+            return <p>未抽中</p>
+          }
           return <div style={{display:'flex',alignItems:'center',justifyContent:'space-around'}}>
                     <Image src={data.prizeInfo.imageUrl} alt="" width='80px' height='50px' />
                     <div>

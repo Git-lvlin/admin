@@ -502,16 +502,16 @@ export default (props) =>{
             />
             {
               save?
-              <Form.Item
+               <Form.Item
                 label="活动规则"
               >
+              <pre style={{fontFamily:"-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"}}>
                 {
-                  detailList?.remark.split('\n').map(ele=>(
-                    <span>{ele}</span>
-                  ))
+                  detailList?.remark
                 }
+              </pre>
               </Form.Item>
-              :
+                :
               <ProFormTextArea
                 name="remark"
                 label="活动规则"
