@@ -14,7 +14,7 @@ import styles from './style.less'
 const FormItem = Form.Item;
 
 const formItemLayout = {
-  labelCol: { span: 2 },
+  labelCol: { span: 3 },
   wrapperCol: { span: 14 },
   layout: {
     labelCol: {
@@ -321,15 +321,29 @@ export default (props) => {
           </Form.Item>
 
         {/* 活动规则 */}
-        <ProFormTextArea
-            label='活动规则'
-            name="ruleText"
-            style={{ minHeight: 32, marginTop: 15 }}
-            placeholder='列如玩法规则、简单的用户协议'
-            rules={[{ required: true, message: '请备注活动规则' }]}
-            rows={4}
-            readonly={id&&falg}
-        />
+        {
+          id&&falg?
+          <Form.Item
+          label="活动规则"
+        >
+           {
+            detailList?.content?.ruleText.split('\n').map(ele=>(
+              <span>{ele}</span>
+            ))
+           }
+        </Form.Item>
+        :  <ProFormTextArea
+              label='活动规则'
+              name="ruleText"
+              style={{ minHeight: 32, marginTop: 15 }}
+              placeholder='列如玩法规则、简单的用户协议'
+              rules={[{ required: true, message: '请备注活动规则' }]}
+              rows={4}
+              readonly={id&&falg}
+          />
+        }
+      
+       
         {
           id&&falg?
           <p className={styles.back}>最近一次操作人：{detailList?.lastEditor}     {moment(detailList?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
