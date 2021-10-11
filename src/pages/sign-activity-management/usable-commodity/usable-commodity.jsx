@@ -176,7 +176,7 @@ export default () => {
               callback={(val)=>{
                 const arr = [];
                 val.forEach(item => {
-                  arr.push(item.spuId)
+                  arr.push({spuId:item.spuId,skuId:item.skuId})
                 })
                 if(arr.length>0){
                   productAdd({addList:arr}).then(res=>{
