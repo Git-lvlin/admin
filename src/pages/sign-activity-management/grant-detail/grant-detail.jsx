@@ -69,7 +69,10 @@ export default () => {
         valueType: 'text',
         hideInSearch:true,
         render: (_,data)=> {
-          return <p>第{_}天</p>
+          if(_>=15){
+            return null
+          }
+          return <p>第{_+1}天</p>
         }
       },
       {
