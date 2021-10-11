@@ -69,8 +69,8 @@ export default () => {
             return null
           }
           return <div style={{display:'flex',alignItems:'center'}}>
-                    <Image src={data.goodsInfo?.goodsImageUrl} alt="" width='80px' height='50px' />
-                    <div>
+                    <Image src={data.goodsInfo?.goodsImageUrl} alt="" width='80px' height='80px' />
+                    <div style={{marginLeft:'10px'}}>
                       <h5>{data.goodsInfo?.goodsName}</h5>
                       <span style={{color:'red',fontSize:'10px'}}>¥{data.goodsInfo?.salePrice}</span>
                       <p style={{fontSize:'10px'}}>SKU  {data.goodsInfo?.skuId}</p>

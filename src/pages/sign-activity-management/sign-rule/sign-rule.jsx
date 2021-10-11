@@ -505,7 +505,7 @@ export default (props) =>{
                <Form.Item
                 label="活动规则"
               >
-              <pre style={{fontFamily:"-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"}}>
+              <pre className={styles.line_feed}>
                 {
                   detailList?.remark
                 }
@@ -550,7 +550,7 @@ export default (props) =>{
                   },
                   {
                     label: '关闭',
-                    value: 2
+                    value: 0
                   }
               ]}
               readonly={save}

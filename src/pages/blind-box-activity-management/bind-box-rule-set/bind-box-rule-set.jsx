@@ -55,7 +55,6 @@ export default (props) => {
         })
       })
     } 
-    console.log('detailList?.content?.ruleText',detailList?.content?.ruleText)
   }, [])
   const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
@@ -327,7 +326,7 @@ export default (props) => {
           <Form.Item
             label="活动规则"
           >
-          <pre style={{fontFamily:"-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"}}>
+          <pre className={styles.line_feed}>
             {
               detailList?.content?.ruleText
             }
