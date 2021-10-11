@@ -189,7 +189,8 @@ export default (props) => {
             <SelectProductModal 
               title={'添加秒约商品'}  
               visible={visible} 
-              setVisible={setVisible} 
+              setVisible={setVisible}
+              goodsSaleType={2} 
               callback={(val)=>{
                 const arr = [];
                 val.forEach(item => {
