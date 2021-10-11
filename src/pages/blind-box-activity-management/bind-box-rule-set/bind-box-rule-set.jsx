@@ -72,6 +72,7 @@ export default (props) => {
       values.id=id||0
       values.startTime=values.dateRange ?values.dateRange[0]:null
       values.endTime=values.dateRange ?values.dateRange[1]:null
+      values.validiteHour=values.validiteType?values.validiteHour:0
       values.accessGain={
         inviteFriends:{
           switch:values.switch1,

@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select,Switch, Input,InputNumber} from 'antd';
+import { Button,Tabs,Image,Form,Modal,Select,Switch, Input,InputNumber,message} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import SelectProductModal from '@/components/select-product-modal'
 import { PlusOutlined } from '@ant-design/icons';
@@ -13,6 +13,7 @@ export default (props) => {
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
   const [cut,setCut]=useState(true)
+  const [submi,setSubmi]=useState(0)
   const columns= [
     {
       title: '序号',
@@ -76,7 +77,6 @@ export default (props) => {
       valueType: 'digit',
       hideInSearch: true,
       renderFormItem: (_,r) => {
-        // console.log('r',r)
         return  <InputNumber
                   min="0"
                   max="100"
@@ -144,8 +144,19 @@ export default (props) => {
               return [defaultDoms.delete];
           },
           onValuesChange: (record, recordList) => {
-            setDataSource(recordList)
-            callback(recordList)
+            let sum=0
+            recordList.map(ele=>{
+              if(ele.status){
+                sum+=parseInt(ele.probability)
+              }
+            })
+            setSubmi(sum)
+            if(sum>100){
+              message.error('所有商品概率总和不能超过100%')
+            }else if(sum==100){
+              setDataSource(recordList)
+              callback(recordList)
+            }
           }
         }}
         toolBarRender={()=>[
@@ -157,8 +168,17 @@ export default (props) => {
               } 
               }>编辑概率</Button>
               :<Button type="primary" onClick={() => { 
-                setEditableKeys([])
-                setCut(true)
+                if(submi==100){
+                  setEditableKeys([])
+                  setCut(true)
+                }else if(submi>100){
+                  message.error('所有商品概率总和不能超过100%')
+                }else if(submi==0){
+                  setEditableKeys([])
+                  setCut(true)
+                }else if(submi!=0&&submi<100){
+                  message.error('中奖概率之和必须=100')
+                }
               }}>保存</Button>
             }
             </>,

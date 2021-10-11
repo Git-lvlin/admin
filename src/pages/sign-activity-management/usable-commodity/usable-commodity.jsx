@@ -178,12 +178,14 @@ export default () => {
                 val.forEach(item => {
                   arr.push(item.spuId)
                 })
-                productAdd({addList:arr}).then(res=>{
-                  if(res.code==0){
-                    message.success('新增商品成功');
-                    ref.current.reload()
-                  }
-                })
+                if(arr.length>0){
+                  productAdd({addList:arr}).then(res=>{
+                    if(res.code==0){
+                      message.success('新增商品成功');
+                      ref.current.reload()
+                    }
+                  })
+                }
               }}
             />
         ]}
