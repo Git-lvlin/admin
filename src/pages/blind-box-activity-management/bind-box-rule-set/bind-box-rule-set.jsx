@@ -55,7 +55,6 @@ export default (props) => {
         })
       })
     } 
-    console.log('detailList?.content?.ruleText',detailList?.content?.ruleText)
   }, [])
   const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
