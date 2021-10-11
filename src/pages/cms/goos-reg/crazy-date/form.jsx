@@ -4,7 +4,6 @@ import ProForm, {
   ModalForm,
   ProFormText,
   ProFormRadio,
-  ProFormDateTimePicker ,
 } from '@ant-design/pro-form';
 import CrazyAddActivityReg from '@/components/crazy-add-activity-reg';
 import { crazyActivityAdd } from '@/services/cms/member/member';
@@ -19,11 +18,13 @@ export default (props) => {
     const param = {
       ...rest
     }
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       crazyActivityAdd(param).then((res) => {
         if (res.code === 0) {
-          setFlag(true)
+          setFlag(true);
           resolve(true);
+        } else {
+          reject(false);
         }
       })
     });
@@ -52,20 +53,12 @@ export default (props) => {
         destroyOnClose: true,
       }}
       onFinish={async (values) => {
-        const start = (new Date(values.activityStartTime)).getTime();
-        const end = (new Date(values.activityEndTime)).getTime();
-        if (end <= start) {
-          message.error('活动结束时间应该大于开始时间!');
-          return false;
-        } else {
-          await waitTime(values);
-          message.success('提交成功');
-          // 不返回不会关闭弹框
-          return true;
-        }
+        await waitTime(values);
+        message.success('提交成功');
+        // 不返回不会关闭弹框
+        return true;
       }}
     >
-
       <ProForm.Group>
         <ProFormText
             name="title"
@@ -74,8 +67,6 @@ export default (props) => {
             rules={[{ required: true, message: '请输入活动标题' }]}
           />
       </ProForm.Group>
-      <ProFormDateTimePicker name="activityStartTime" required label="开始时间" />
-      <ProFormDateTimePicker name="activityEndTime" required label="结束时间" />
       <ProFormRadio.Group
           name="status"
           label="上线/下架"

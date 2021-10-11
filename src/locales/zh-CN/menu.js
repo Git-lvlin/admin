@@ -17,6 +17,7 @@ export default {
   'menu.user-management.disable-user-list': '禁用列表',
   'menu.user-management.user-detail': '用户详情',
   'menu.user-management.user-relationship': '用户关系',
+  'menu.user-management.new-poster': '海报管理',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
@@ -65,6 +66,12 @@ export default {
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
+  'menu.intensive-activity-management.intensive-remind-configuration': '集约提醒配置',
+  'menu.intensive-activity-management.intensive-remind-statistics': '集约提醒统计',
+
+
+
+
 
   'menu.supplier-management': '供应商家管理',
   'menu.supplier-management.supplier-list': '供应商家列表',
@@ -126,8 +133,10 @@ export default {
   'menu.cms.goos-reg.hot-goos': '热销好货',
   'menu.cms.goos-reg.crazy-date': '限时秒杀',
   'menu.cms.goos-reg.save-money': '集约优选',
-  'menu.cms.goos-reg.strategy-today': '今日必约',
+  'menu.cms.goos-reg.strategy-today': '首页秒约爆品',
   'menu.cms.home-suspension': '首页悬浮窗',
+  'menu.cms.home-activity': '首页活动',
+  'menu.cms.home-classification': '首页分类管理',
   'menu.cms.express-news': '约购快报',
   'menu.cms.king-kong-district': '金刚区',
   'menu.cms.price-comparsion': '首页比价优选',
@@ -153,13 +162,13 @@ export default {
   'menu.dc-management.list': '资源位列表',
   'menu.dc-management.version': '资源位版本',
 
-  'menu.coupon-management': '优惠券管理',
-  'menu.coupon-management.coupon-list': '优惠券列表',
-  'menu.coupon-management.construction':'新建优惠劵',
+  'menu.coupon-management': '红包管理',
+  'menu.coupon-management.coupon-list': '红包列表',
+  'menu.coupon-management.construction':'新建红包',
   'menu.coupon-management.coupon-codebase':'码库',
-  'menu.coupon-management.coupon-audit':'优惠券审核',
+  'menu.coupon-management.coupon-audit':'红包审核',
   'menu.coupon-management.audit-details':'审核详情',
-  'menu.coupon-management.list-details':'优惠券详情',
+  'menu.coupon-management.list-details':'红包详情',
   'menu.coupon-management.coupon-crowd':'群体管理',
   'menu.coupon-management.add-crowd':'新建群体',
   
@@ -255,6 +264,23 @@ export default {
   'menu.data-board.rank': '排名',
   'menu.data-board.order': '订单',
 
+  'menu.sign-activity-management': '签到活动管理',
+  'menu.sign-activity-management.sign-rule': '签到规则',
+  'menu.sign-activity-management.usable-commodity': '可用商品',
+  'menu.sign-activity-management.grant-detail': '发放明细',
+  'menu.sign-activity-management.user-detail': '用户红包明细',
+  'menu.sign-activity-management.consume-detail': '消耗明细',
+
+
+  'menu.blind-box-activity-management': '盲盒活动管理',
+  'menu.blind-box-activity-management.blind-box-management-list': '盲盒活动列表',
+  'menu.blind-box-activity-management.blind-box-consume-detail': '盲盒机会使用明细',
+  'menu.blind-box-activity-management.blind-box-grant-detail': '盲盒机会发放明细',
+  'menu.blind-box-activity-management.blind-box-user-detail': '用户盲盒机会明细',
+  'menu.blind-box-activity-management.blind-box-employ-detail': '用户盲盒使用明细',
+  'menu.blind-box-activity-management.bind-box-rule-set': '盲盒规则配置',
+
+  
   'menu.import-export-configuration': '导入导出配置',
   'menu.import-export-configuration.export-configuration': '导出配置',
   'menu.import-export-configuration.import-configuration': '导入配置',

@@ -17,8 +17,8 @@ export default (props) => {
   const picSize = [
     false,
     {
-      width: 351,
-      height: 100,
+      width: 350,
+      height: 150,
     },
     {
       width: 375,
@@ -31,6 +31,10 @@ export default (props) => {
     {
       width: 375,
       height: 150,
+    },
+    {
+      with: 375,
+      height: 160,
     }
   ]
 
@@ -44,21 +48,13 @@ export default (props) => {
       param.id = id
     }
     if (detailData) {
-      // if (param.useType.length > 1) {
-      //   param.useType = {
-      //     '全平台':1,
-      //     '手机端':2,
-      //     'h5':3,
-      //     'web网页':4,
-      //     '小程序':5,
-      //   }[detailData.useType]
-      // }
       if (param.location.length > 1) {
         param.location = {
           '首页':1,
           '集约':2,
           '个人中心':3,
           '社区店':4,
+          '秒杀爆品':6,
         }[detailData.location]
       }
     }
@@ -81,18 +77,12 @@ export default (props) => {
   useEffect(() => {
     if (detailData) {
       setNowIndex(detailData.location)
-      // detailData.useType = {
-      //   1: '全平台',
-      //   2: '手机端',
-      //   3: 'h5',
-      //   4: 'web网页',
-      //   5: '小程序',
-      // }[detailData.useType]
       detailData.location = {
         1: '首页',
         2: '集约',
         3: '个人中心',
         4: '社区店',
+        6: '秒杀爆品',
       }[detailData.location]
       const { ...rest } = detailData;
       console.log('detailData', detailData)
@@ -179,7 +169,7 @@ export default (props) => {
           tooltip={
             <dl>
               <dt>图片要求</dt>
-              <dd>首页banner-351*100</dd>
+              <dd>首页banner-350*150</dd>
               <dd>集约页面banner-375*168</dd>
               <dd>个人中心banner-351*65</dd>
               <dd>社区店专享banner-375*150</dd>

@@ -1,13 +1,14 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { Button, Space, message } from 'antd';
+import { Button, Space, message, Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import Edit from './form';
+import Img from './up-img';
 import Modify from './edit';
 import ReplaceForm from './replace-form';
-import { hotGoosList, hotGoosOperation,tagSortTop } from '@/services/cms/member/member';
+import { hotGoosList, hotGoosOperation, tagSortTop, cmsImageInfo } from '@/services/cms/member/member';
 import ContentVersionTab from '@/components/content-version-tab';
 import ProForm from '@ant-design/pro-form';
 
@@ -16,9 +17,13 @@ const StrategyToday = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [replaceFormVisible, setReplaceFormVisible] = useState(false);
   const [modifyFormVisible, setModifyFormVisible] = useState(false);
+  const [formVisibleImg, setFormVisibleImg] = useState(false);
   const [detailData, setDetailData] = useState(true);
   const [flag, setFlag] = useState(false);
   const [verifyVersionId, setVerifyVersionId] = useState(1);
+
+  const [img, setImg] = useState(null);
+
 
   const getDetail = (data) => {
     setDetailData(data);
@@ -32,6 +37,17 @@ const StrategyToday = () => {
       }
     })
   }
+
+  useEffect(() => {
+    cmsImageInfo().then((res) => {
+      console.log('res')
+      if (res.code === 0) {
+        setImg(res.data)
+      }
+    })
+    return {}
+  }, [])
+
 
   useEffect(() => {
     if (flag) {
@@ -194,6 +210,13 @@ const StrategyToday = () => {
       <ProForm.Group>
         <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
       </ProForm.Group>
+      <ProForm.Group>
+        {img&&<Image
+          width={200}
+          src={img.image}
+        />}
+        <Button type="primary" onClick={() => {setFormVisibleImg(true)}}>{img?'编辑封面图片':'添加封面图片'}</Button>
+      </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
@@ -246,7 +269,7 @@ const StrategyToday = () => {
         pageSize: 10,
       }}
       dateFormatter="string"
-      headerTitle="今日必约"
+      headerTitle="首页秒约爆品"
       toolBarRender={(_,record) => [
         <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 2) }}>
           批量发布
@@ -260,11 +283,18 @@ const StrategyToday = () => {
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
           新建
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setReplaceFormVisible(true) }}>
-          新建(代发)
-        </Button>,
+        // <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setReplaceFormVisible(true) }}>
+        //   新建(代发)
+        // </Button>,
       ]}
     />
+    {formVisibleImg && <Img
+      visible={formVisibleImg}
+      setVisible={setFormVisibleImg}
+      verifyVersionId={verifyVersionId}
+      detailData={img}
+      setFlag={setFlag}
+    />}
     {formVisible && <Edit
       visible={formVisible}
       setVisible={setFormVisible}

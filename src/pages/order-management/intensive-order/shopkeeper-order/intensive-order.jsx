@@ -7,6 +7,9 @@ import moment from 'moment';
 import styles from './style.less';
 import { orderList } from '@/services/order-management/shopkeeper-order';
 import { amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+import Detail from './detail';
 
 const TableList = () => {
   const [data, setData] = useState([])
@@ -17,7 +20,10 @@ const TableList = () => {
   const [orderType, setOrderType] = useState('')
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
-
+  const [visit, setVisit] = useState(false)
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState({});
+  const location = useLocation();
 
   const pageChange = (a, b) => {
     setPage(a)
@@ -29,8 +35,23 @@ const TableList = () => {
     setPage(1)
   }
 
+  const getFieldValue = () => {
+    const { time, ...rest } = form.getFieldsValue();
+
+    return {
+      status: orderType,
+      orderType: 15,
+      startTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
+      endTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
+      ...rest,
+    }
+  }
+
   useEffect(() => {
     setLoading(true);
+    form.setFieldsValue({
+      objectId: location?.query?.objectId,
+    })
     const { time, ...rest } = form.getFieldsValue();
     orderList({
       page,
@@ -81,7 +102,12 @@ const TableList = () => {
                   >
                     重置
                   </Button>
-                  <Button onClick={() => { exportExcel(form) }}>导出</Button>
+                  <Export
+                    change={(e) => { setVisit(e) }}
+                    type={`intensive-retail-user-order-export`}
+                    conditions={getFieldValue}
+                  />
+                  <ExportHistory show={visit} setShow={setVisit} type={`intensive-retail-user-order-export`} />
                 </Space>
               </div>
             );
@@ -127,6 +153,15 @@ const TableList = () => {
         <ProFormText
           name="storeName"
           label="所属商家"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
+        <ProFormText
+          name="objectId"
+          label="关联采购订单号"
           fieldProps={{
             style: {
               marginBottom: 20
@@ -264,7 +299,8 @@ const TableList = () => {
                 {/* <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div> */}
                 <div style={{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单', 7: '待分享' }[item.status]}</div>
                 <div style={{ textAlign: 'center' }}>
-                  <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order-detail/${item.id}`) }}>详情</a>
+                  {/* <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order-detail/${item.id}`) }}>详情</a> */}
+                  <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
                 </div>
               </div>
 
@@ -280,6 +316,14 @@ const TableList = () => {
         }
       </Spin>
 
+      {
+        detailVisible &&
+        <Detail
+          id={selectItem?.id}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
 
       <div
         className={styles.pagination}
