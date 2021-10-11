@@ -260,7 +260,7 @@ export default (props) => {
         
 
         {/* 奖品预告 */}
-        <Form.Item label="奖品预告（尺寸30x50）">
+        <Form.Item label="奖品预告（尺寸30x50）" rules={[{ required: true, message: '请设置奖品预告' }]}>
           {
             id&&falg?
             <List
