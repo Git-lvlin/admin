@@ -3,6 +3,7 @@ import { Button,Tabs,Image,Form,Modal,Select,Switch, Input,InputNumber,message} 
 import { EditableProTable } from '@ant-design/pro-table';
 import SelectProductModal from '@/components/select-product-modal'
 import { PlusOutlined } from '@ant-design/icons';
+import { amountTransform } from '@/utils/utils'
 import ProTable from '@ant-design/pro-table';
 
 
@@ -48,6 +49,7 @@ export default (props) => {
       dataIndex: 'salePrice',
       hideInSearch:true,
       editable:false,
+       render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
     },
     {
       title: '零售供货价',
@@ -55,6 +57,7 @@ export default (props) => {
       valueType: 'text',
       hideInSearch:true,
       editable:false,
+       render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
     },
     {
       title: '奖品库存',
@@ -120,6 +123,13 @@ export default (props) => {
     const arr=dataSource.filter(ele=>(
           ele.id!=val
     ))
+    let sum=0
+    arr.map(ele=>{
+      if(ele.status){
+        sum+=parseInt(ele.probability)
+      }
+    })
+    setSubmi(sum)
     setDataSource(arr) 
     callback(arr)
   }
