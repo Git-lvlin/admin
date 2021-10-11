@@ -201,6 +201,7 @@ export default (props) => {
               visible={visible} 
               setVisible={setVisible}
               goodsSaleType={2} 
+              apolloConfig={'MHSupplierId'}
               callback={(val)=>{
                 const arr = [];
                 val.forEach(item => {
