@@ -147,6 +147,9 @@ export default (props) => {
           rules={[{ required: true, message: '请选择位置!' }]}
           fieldProps={{
             onChange: (e) => {
+              if (e==5) {
+                e = 6
+              }
               setNowIndex(e)
             }
           }}
