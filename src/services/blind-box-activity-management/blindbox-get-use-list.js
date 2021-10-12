@@ -1,16 +1,14 @@
 import request from '@/utils/request';
 
 export const getBlindboxUseList = async (params = {}, options = {}) => {
-    const { current, pageSize,dateTimeRange,dateTimeRange2, ...rest } = params;
+    const { current, pageSize,dateTimeRange, ...rest } = params;
     const res = await request('/auth/blindbox/Blindbox/getBlindboxUseList', {
       method: 'POST',
       data: {
         page: current,
         pageSize:pageSize,
-        activityStartTime:dateTimeRange&&dateTimeRange[0],
-        activityEndTime:dateTimeRange&&dateTimeRange[1],
-        startTime1:dateTimeRange2&&dateTimeRange2[0],
-        startTime2:dateTimeRange2&&dateTimeRange2[1],
+        startTime1:dateTimeRange&&dateTimeRange[0],
+        startTime2:dateTimeRange&&dateTimeRange[1],
         ...rest
       },
       ...options

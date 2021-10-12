@@ -5,10 +5,8 @@ import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { getActiveConfigList } from '@/services/blind-box-activity-management/blindbox-get-active-config-list';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
-// import './style.less'
 import moment from 'moment';
 import { history,connect } from 'umi';
-const { TabPane } = Tabs
 
 
 
@@ -73,8 +71,8 @@ export default () => {
         hideInSearch:true,
         render:(_,data)=>{
           return <p>
-            每日邀请{data.content.accessGain.orderConsume.consumeNum}
-            位新用户注册获得{data.content.accessGain.orderConsume.prizeNum}次
+            每日首次消费{data.content.accessGain.orderConsume.consumeNum}
+            笔获得{data.content.accessGain.orderConsume.prizeNum}次
             （概率{data.content.accessGain.orderConsume.probability}%）
             </p>
         }   

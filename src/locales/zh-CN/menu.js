@@ -133,7 +133,7 @@ export default {
   'menu.cms.goos-reg.hot-goos': '热销好货',
   'menu.cms.goos-reg.crazy-date': '限时秒杀',
   'menu.cms.goos-reg.save-money': '集约优选',
-  'menu.cms.goos-reg.strategy-today': '今日必约',
+  'menu.cms.goos-reg.strategy-today': '首页秒约爆品',
   'menu.cms.home-suspension': '首页悬浮窗',
   'menu.cms.home-activity': '首页活动',
   'menu.cms.home-classification': '首页分类管理',
@@ -264,17 +264,12 @@ export default {
   'menu.data-board.rank': '排名',
   'menu.data-board.order': '订单',
 
-  'menu.import-export-configuration': '导入导出配置',
-  'menu.import-export-configuration.export-configuration': '导出配置',
-  'menu.import-export-configuration.import-configuration': '导入配置',
-
-  
   'menu.sign-activity-management': '签到活动管理',
-  'menu.sign-activity-management.sign-rule': '签到规则设置',
-  'menu.sign-activity-management.usable-commodity': '签到红包可用商品',
-  'menu.sign-activity-management.grant-detail': '签到红包发放明细',
+  'menu.sign-activity-management.sign-rule': '签到规则',
+  'menu.sign-activity-management.usable-commodity': '可用商品',
+  'menu.sign-activity-management.grant-detail': '发放明细',
   'menu.sign-activity-management.user-detail': '用户红包明细',
-  'menu.sign-activity-management.consume-detail': '签到红包消耗明细',
+  'menu.sign-activity-management.consume-detail': '消耗明细',
 
 
   'menu.blind-box-activity-management': '盲盒活动管理',
@@ -284,4 +279,9 @@ export default {
   'menu.blind-box-activity-management.blind-box-user-detail': '用户盲盒机会明细',
   'menu.blind-box-activity-management.blind-box-employ-detail': '用户盲盒使用明细',
   'menu.blind-box-activity-management.bind-box-rule-set': '盲盒规则配置',
+
+  
+  'menu.import-export-configuration': '导入导出配置',
+  'menu.import-export-configuration.export-configuration': '导出配置',
+  'menu.import-export-configuration.import-configuration': '导入配置',
 };

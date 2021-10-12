@@ -71,13 +71,6 @@ export default () => {
       },
       {
         title: '活动时间',
-        key: 'dateTimeRange',
-        dataIndex: 'activityStartTime',
-        valueType: 'dateTimeRange',
-        hideInTable: true,
-      },
-      {
-        title: '活动时间',
         dataIndex: 'activityStartTime',
         valueType: 'text',
         hideInSearch:true,
@@ -97,7 +90,7 @@ export default () => {
       },
       {
         title: '使用时间',
-        key: 'dateTimeRange2',
+        key: 'dateTimeRange',
         dataIndex: 'createTime',
         valueType: 'dateTimeRange',
         hideInTable: true,
@@ -158,12 +151,18 @@ export default () => {
         valueType: 'text',
         hideInSearch: true,
         render: (_, data)=>{
-          return <div style={{display:'flex',alignItems:'center'}}>
+          if(data.type==5||data.type==6){
+            return null
+          }
+          if(data.prizeInfo?.prizeStatus==0){
+            return <p>未抽中</p>
+          }
+          return <div style={{display:'flex',alignItems:'center',justifyContent:'space-around'}}>
                     <Image src={data.prizeInfo.imageUrl} alt="" width='50px' height='50px' />
-                    <div>
-                      <h4>{data.prizeInfo.goodsName}</h4>
+                    <div style={{marginLeft:'10px'}}>
+                      <h5>{data.prizeInfo.goodsName}</h5>
                       <span style={{color:'red',fontSize:'10px'}}>销售价¥{data.prizeInfo.salePrice}</span>
-                      <p>SKU  {data.prizeInfo.skuId}</p>
+                      <p style={{fontSize:'12px'}}>SKU  {data.prizeInfo.skuId}</p>
                     </div>
                  </div>
         },
@@ -216,7 +215,7 @@ export default () => {
             <Descriptions.Item  label="已发放次数">{detailList?.totalNum}  </Descriptions.Item>
             <Descriptions.Item  label="未使用次数">{detailList?.restNum}  </Descriptions.Item>
             <Descriptions.Item  label="已使用次数">{detailList?.useNum}  </Descriptions.Item>
-            <Descriptions.Item  label="已过期">{detailList?.reclaimNum}  </Descriptions.Item>
+            <Descriptions.Item  label="已回收">{detailList?.reclaimNum}  </Descriptions.Item>
             <Descriptions.Item  label="已兑奖数">{detailList?.prizeNum}  </Descriptions.Item>
             <Descriptions.Item  label="未兑奖数">{detailList?.noPrizeNum}  </Descriptions.Item>
         </Descriptions>
@@ -240,6 +239,9 @@ export default () => {
           }}
           columns={columns}
         />
+        <Button style={{float:'right',margin:'20px 20px 0 0'}} type="default" onClick={() => history.push('/blind-box-activity-management/blind-box-grant-detail')}>
+           返回
+        </Button>
         </PageContainer>
     );
   };

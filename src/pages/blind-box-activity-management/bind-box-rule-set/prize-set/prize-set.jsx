@@ -1,9 +1,9 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select,Switch, Input} from 'antd';
+import { Button,Tabs,Image,Form,Modal,Select,Switch, Input,InputNumber,message} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import SelectProductModal from '@/components/select-product-modal'
 import { PlusOutlined } from '@ant-design/icons';
-import ProForm, { ProFormText} from '@ant-design/pro-form';
+import { amountTransform } from '@/utils/utils'
 import ProTable from '@ant-design/pro-table';
 
 
@@ -14,6 +14,7 @@ export default (props) => {
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
   const [cut,setCut]=useState(true)
+  const [submi,setSubmi]=useState(0)
   const columns= [
     {
       title: '序号',
@@ -48,6 +49,7 @@ export default (props) => {
       dataIndex: 'salePrice',
       hideInSearch:true,
       editable:false,
+       render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
     },
     {
       title: '零售供货价',
@@ -55,18 +57,39 @@ export default (props) => {
       valueType: 'text',
       hideInSearch:true,
       editable:false,
+       render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
     },
     {
       title: '奖品库存',
       dataIndex: 'stockNum',
       valueType: 'digit',
       hideInSearch:true,
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0"
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     },
     {
-      title: '中奖概率',
+      title: '中奖概率%',
       dataIndex: 'probability',
       valueType: 'digit',
       hideInSearch: true,
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0"
+                  max="100"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}%</p>
+      }
     },
     {
       title: '状态',
@@ -100,6 +123,13 @@ export default (props) => {
     const arr=dataSource.filter(ele=>(
           ele.id!=val
     ))
+    let sum=0
+    arr.map(ele=>{
+      if(ele.status){
+        sum+=parseInt(ele.probability)
+      }
+    })
+    setSubmi(sum)
     setDataSource(arr) 
     callback(arr)
   }
@@ -124,8 +154,19 @@ export default (props) => {
               return [defaultDoms.delete];
           },
           onValuesChange: (record, recordList) => {
-            setDataSource(recordList)
-            callback(recordList)
+            let sum=0
+            recordList.map(ele=>{
+              if(ele.status){
+                sum+=parseInt(ele.probability)
+              }
+            })
+            setSubmi(sum)
+            if(sum>100){
+              message.error('所有商品概率总和不能超过100%')
+            }else if(sum==100){
+              setDataSource(recordList)
+              callback(recordList)
+            }
           }
         }}
         toolBarRender={()=>[
@@ -137,8 +178,17 @@ export default (props) => {
               } 
               }>编辑概率</Button>
               :<Button type="primary" onClick={() => { 
-                setEditableKeys([])
-                setCut(true)
+                if(submi==100){
+                  setEditableKeys([])
+                  setCut(true)
+                }else if(submi>100){
+                  message.error('所有商品概率总和不能超过100%')
+                }else if(submi==0){
+                  setEditableKeys([])
+                  setCut(true)
+                }else if(submi!=0&&submi<100){
+                  message.error('中奖概率之和必须=100')
+                }
               }}>保存</Button>
             }
             </>,
@@ -149,7 +199,9 @@ export default (props) => {
             <SelectProductModal 
               title={'添加秒约商品'}  
               visible={visible} 
-              setVisible={setVisible} 
+              setVisible={setVisible}
+              goodsSaleType={2} 
+              apolloConfig={'MHSupplierId'}
               callback={(val)=>{
                 const arr = [];
                 val.forEach(item => {

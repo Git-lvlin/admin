@@ -37,7 +37,7 @@ export default (props) => {
         hideInTable:true
       },
       {
-        title: '时间',
+        title: '使用时间',
         key: 'dateTimeRange',
         dataIndex: 'createTime',
         valueType: 'dateTimeRange',
@@ -83,12 +83,18 @@ export default (props) => {
         valueType: 'text',
         hideInSearch: true,
         render: (_, data)=>{
+          if(data.type==5||data.type==6){
+            return null
+          }
+          if(data.prizeInfo?.prizeStatus==0){
+            return <p>未抽中</p>
+          }
           return <div style={{display:'flex',alignItems:'center'}}>
                     <Image src={data.prizeInfo.imageUrl} alt="" width='50px' height='50px' />
-                    <div>
-                      <h4>{data.prizeInfo.goodsName}</h4>
+                    <div style={{marginLeft:'10px'}}>
+                      <h5>{data.prizeInfo.goodsName}</h5>
                       <span style={{color:'red',fontSize:'10px'}}>销售价¥{data.prizeInfo.salePrice}</span>
-                      <p>SKU  {data.prizeInfo.skuId}</p>
+                      <p style={{fontSize:'10px'}}>SKU  {data.prizeInfo.skuId}</p>
                     </div>
                  </div>
         },
@@ -146,6 +152,9 @@ export default (props) => {
           }}
           columns={columns}
         />
+        <Button style={{float:'right',margin:'20px 20px 0 0'}} type="default" onClick={() => history.goBack()}>
+           返回
+        </Button>
       </PageContainer>
     );
   };

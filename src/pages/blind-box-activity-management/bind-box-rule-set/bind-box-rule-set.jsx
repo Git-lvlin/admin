@@ -14,7 +14,7 @@ import styles from './style.less'
 const FormItem = Form.Item;
 
 const formItemLayout = {
-  labelCol: { span: 2 },
+  labelCol: { span: 3 },
   wrapperCol: { span: 14 },
   layout: {
     labelCol: {
@@ -72,6 +72,7 @@ export default (props) => {
       values.id=id||0
       values.startTime=values.dateRange ?values.dateRange[0]:null
       values.endTime=values.dateRange ?values.dateRange[1]:null
+      values.validiteHour=values.validiteType?values.validiteHour:0
       values.accessGain={
         inviteFriends:{
           switch:values.switch1,
@@ -260,7 +261,7 @@ export default (props) => {
         
 
         {/* 奖品预告 */}
-        <Form.Item label="奖品预告（尺寸30x50）">
+        <Form.Item label="奖品预告（尺寸30x50）" rules={[{ required: true, message: '请设置奖品预告' }]}>
           {
             id&&falg?
             <List
@@ -289,7 +290,7 @@ export default (props) => {
                       >
                         <ProForm.Group>
                           <Form.Item key="1" {...field} name={[field.name, 'imageUrl']} fieldKey={[field.fieldKey, 'imageUrl']}>
-                            <Upload code={204} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+                            <Upload dimension={{width:30,height:50}} code={204} multiple maxCount={1} accept="image/*" size={1 * 1024} />
                           </Form.Item>
                           &nbsp;
                           <ProFormText
@@ -320,15 +321,30 @@ export default (props) => {
           </Form.Item>
 
         {/* 活动规则 */}
-        <ProFormTextArea
-            label='活动规则'
-            name="ruleText"
-            style={{ minHeight: 32, marginTop: 15 }}
-            placeholder='列如玩法规则、简单的用户协议'
-            rules={[{ required: true, message: '请备注活动规则' }]}
-            rows={4}
-            readonly={id&&falg}
-        />
+        {
+          id&&falg?
+          <Form.Item
+            label="活动规则"
+          >
+          <pre className={styles.line_feed}>
+            {
+              detailList?.content?.ruleText
+            }
+          </pre>
+          </Form.Item>
+        :<ProFormTextArea 
+              label='活动规则'
+              name="ruleText"
+              style={{ minHeight: 32, marginTop: 15 }}
+              placeholder='列如玩法规则、简单的用户协议'
+              rules={[{ required: true, message: '请备注活动规则' }]}
+              rows={4}
+              readonly={id&&falg}
+          />
+        }
+
+      
+       
         {
           id&&falg?
           <p className={styles.back}>最近一次操作人：{detailList?.lastEditor}     {moment(detailList?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>

@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Input, Form, message,Button} from 'antd';
+import { Input, Form, message,Button,InputNumber} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { editSignRedPacketConfig,getSignRedPacketConfig } from '@/services/sign-activity-management/get-sign-red-packet-config';
@@ -40,23 +40,35 @@ export default (props) =>{
           const data={
             title:'当天红包金额'
           }
-          res.data?.extraPacketConfigResList.map((ele,index)=>{
-            data[`changeValue${index+1}`]=ele.changeValue
+          res.data?.fixRedPacketConfigResList.map((ele,index)=>{
+            data[`changeValue${index+1}`]=parseInt(ele.changeValue)/100
             data['typeId']=1
           })
+          if(res.data?.fixRedPacketConfigResList.length<1){
+            for (let index = 0; index < 15; index++) {
+              data[`changeValue${index+1}`]=' '
+              data['typeId']=1
+            }
+          }
           const data2={
             title:'连续签到额外奖励金额'
           }
-          res.data?.fixRedPacketConfigResList.map((ele,index)=>{
-            data2[`changeValue${index+1}`]=ele.changeValue
+          res.data?.extraPacketConfigResList.map((ele,index)=>{
+            data2[`changeValue${index+1}`]=parseInt(ele.changeValue)/100
             data2['typeId']=2
           })
+          if(res.data?.extraPacketConfigResList.length<1){
+            for (let index = 0; index < 15; index++) {
+              data2[`changeValue${index+1}`]=' '
+              data2['typeId']=2
+            }
+          }
           setDataSource([{...data},{...data2}])
           const arr=[]
           res.data?.exTimeList.map(ele=>{
             arr.push({
               value: ele,
-              label: `${ele}天`
+              label: `${ele}${parseInt(ele)>=0?'天':''}`
             })
           })
           setOption(arr)
@@ -72,116 +84,117 @@ export default (props) =>{
     const changeData=[
       {
         id:0,
-        changeValue:dataSource[1].changeValue1
+        changeValue:dataSource[0].changeValue1*100
       },
       {
         id:1,
-        changeValue:dataSource[1].changeValue2
+        changeValue:dataSource[0].changeValue2*100
       },
       {
         id:2,
-        changeValue:dataSource[1].changeValue3
+        changeValue:dataSource[0].changeValue3*100
       },
       {
         id:3,
-        changeValue:dataSource[1].changeValue4
+        changeValue:dataSource[0].changeValue4*100
       },
       {
         id:4,
-        changeValue:dataSource[1].changeValue5
+        changeValue:dataSource[0].changeValue5*100
       },
       {
         id:5,
-        changeValue:dataSource[1].changeValue6
+        changeValue:dataSource[0].changeValue6*100
       },
       {
         id:6,
-        changeValue:dataSource[1].changeValue7
+        changeValue:dataSource[0].changeValue7*100
       },
       {
         id:7,
-        changeValue:dataSource[1].changeValue8
+        changeValue:dataSource[0].changeValue8*100
       },
       {
         id:8,
-        changeValue:dataSource[1].changeValue9
+        changeValue:dataSource[0].changeValue9*100
       },
       {
         id:9,
-        changeValue:dataSource[1].changeValue10
+        changeValue:dataSource[0].changeValue10*100
       },
       {
         id:10,
-        changeValue:dataSource[1].changeValue11
+        changeValue:dataSource[0].changeValue11*100
       },
       {
         id:11,
-        changeValue:dataSource[1].changeValue12
+        changeValue:dataSource[0].changeValue12*100
       },
       {
         id:12,
-        changeValue:dataSource[1].changeValue13
+        changeValue:dataSource[0].changeValue13*100
       },
       {
         id:13,
-        changeValue:dataSource[1].changeValue14
+        changeValue:dataSource[0].changeValue14*100
       },
       {
         id:14,
-        changeValue:dataSource[1].changeValue15
+        changeValue:dataSource[0].changeValue15*100
       },
       {
         id:15,
-        changeValue:dataSource[0].changeValue1
+        changeValue:dataSource[1].changeValue1*100
       },
       {
         id:16,
-        changeValue:dataSource[0].changeValue2
+        changeValue:dataSource[1].changeValue2*100
       }, {
         id:17,
-        changeValue:dataSource[0].changeValue3
+        changeValue:dataSource[1].changeValue3*100
       }, {
         id:18,
-        changeValue:dataSource[0].changeValue4
+        changeValue:dataSource[1].changeValue4*100
       }, {
         id:19,
-        changeValue:dataSource[0].changeValue5
+        changeValue:dataSource[1].changeValue5*100
       }, {
         id:20,
-        changeValue:dataSource[0].changeValue6
+        changeValue:dataSource[1].changeValue6*100
       }, {
         id:21,
-        changeValue:dataSource[0].changeValue7
+        changeValue:dataSource[1].changeValue7*100
       }, {
         id:22,
-        changeValue:dataSource[0].changeValue8
+        changeValue:dataSource[1].changeValue8*100
       }, {
         id:23,
-        changeValue:dataSource[0].changeValue9
+        changeValue:dataSource[1].changeValue9*100
       }, {
         id:24,
-        changeValue:dataSource[0].changeValue10
+        changeValue:dataSource[1].changeValue10*100
       }, {
         id:25,
-        changeValue:dataSource[0].changeValue11
+        changeValue:dataSource[1].changeValue11*100
       }, {
         id:26,
-        changeValue:dataSource[0].changeValue12
+        changeValue:dataSource[1].changeValue12*100
       },
       {
         id:27,
-        changeValue:dataSource[0].changeValue13
+        changeValue:dataSource[1].changeValue13*100
       },
       {
         id:28,
-        changeValue:dataSource[0].changeValue14
+        changeValue:dataSource[1].changeValue14*100
       },
       {
         id:29,
-        changeValue:dataSource[0].changeValue15
+        changeValue:dataSource[1].changeValue15*100
       },
 
     ]
+    values.status=1
     editSignRedPacketConfig({handler:user.username,changeIds:changeData,...values}).then(res=>{
       if(res.code==0){
         message.success('编辑成功'); 
@@ -199,64 +212,214 @@ export default (props) =>{
       title: '第1天',
       dataIndex: 'changeValue1',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     },
     {
       title: '第2天',
       dataIndex: 'changeValue2',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第3天',
       dataIndex: 'changeValue3',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第4天',
       dataIndex: 'changeValue4',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第5天',
       dataIndex: 'changeValue5',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第6天',
       dataIndex: 'changeValue6',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第7天',
       dataIndex: 'changeValue7',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第8天',
       dataIndex: 'changeValue8',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第9天',
       dataIndex: 'changeValue9',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第10天',
       dataIndex: 'changeValue10',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第11天',
       dataIndex: 'changeValue11',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第12天',
       dataIndex: 'changeValue12',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第13天',
       dataIndex: 'changeValue13',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }, {
       title: '第14天',
       dataIndex: 'changeValue14',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     },
     {
       title: '第15天',
       dataIndex: 'changeValue15',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <InputNumber
+                  min="0.00000000000001"
+                  precision='2'
+                  stringMode
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     }
   ];
   return (
@@ -338,20 +501,34 @@ export default (props) =>{
               }}
               readonly
             />
-          <ProFormTextArea
-              name="remark"
-              label="活动规则"
-              placeholder="列如玩法规则、红包有效期、简单的用户协议"
-              rules={[
-                { required: true, message: '请输入活动规则' },
-              ]}
-              readonly={save}
-              fieldProps={
+            {
+              save?
+               <Form.Item
+                label="活动规则"
+              >
+              <pre className={styles.line_feed}>
                 {
-                  autoSize:true
+                  detailList?.remark
                 }
-              }
-          />
+              </pre>
+              </Form.Item>
+                :
+              <ProFormTextArea
+                name="remark"
+                label="活动规则"
+                placeholder="列如玩法规则、红包有效期、简单的用户协议"
+                rules={[
+                  { required: true, message: '请输入活动规则' },
+                ]}
+                readonly={save}
+                fieldProps={
+                  {
+                    autoSize:true
+                  }
+                }
+            />
+            }
+          
          {
            !save?
             <ProFormText
@@ -364,7 +541,7 @@ export default (props) =>{
           />
           :null
          }
-          <ProFormRadio.Group
+          {/* <ProFormRadio.Group
               name="status"
               label="活动状态"
               options={[
@@ -374,11 +551,11 @@ export default (props) =>{
                   },
                   {
                     label: '关闭',
-                    value: 2
+                    value: 0
                   }
               ]}
               readonly={save}
-          />
+          /> */}
           {
             save?
             <p className={styles.back}>最近一次操作人：{detailList?.lastHandler}      {detailList?.updateTime}</p>

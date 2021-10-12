@@ -23,10 +23,9 @@ import pcm from './routers/price-comparsion-management'
 import financialManagement from './routers/financial-management'
 import dataBoard from './routers/data-board'
 import dc from './routers/dc'
-import importExportConfiguration from './routers/import-export-configuration'
 import signActivityManagement from './routers/sign-activity-management'
 import BlindBoxActivityManagement from './routers/blind-box-activity-management'
-
+import importExportConfiguration from './routers/import-export-configuration'
 
 
 
@@ -95,9 +94,9 @@ const config = {
             financialManagement,
             dataBoard,
             dc,
-            importExportConfiguration,
             signActivityManagement,
             BlindBoxActivityManagement,
+            importExportConfiguration,
             {
               component: '404',
             },
