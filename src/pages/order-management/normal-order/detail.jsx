@@ -1,59 +1,24 @@
-import React, { useEffect, useState } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
-import { Steps, Space, Button, Modal, Spin } from 'antd';
-import { useParams, history, useLocation } from 'umi';
-import { findAdminOrderDetail, deliverGoods, expressInfo, expressInfoYlbb, findAdminOrderDetail2 } from '@/services/order-management/normal-order-detail';
-import { amountTransform, dateFormat } from '@/utils/utils'
-import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
+import React, { useState, useEffect } from 'react';
+import { Drawer, Space, Button, Modal, Steps, Spin } from 'antd';
+import { findAdminOrderDetail, findAdminOrderDetail2 } from '@/services/order-management/normal-order-detail';
+import { amountTransform } from '@/utils/utils'
 import ProDescriptions from '@ant-design/pro-descriptions';
-import moment from 'moment';
-
-import styles from './style.less';
+import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
+import styles from './detail.less';
 
 const { Step } = Steps;
 
-const OrderDetail = () => {
-
-  const params = useParams();
+const Detail = (props) => {
+  const { visible, setVisible, isPurchase, id } = props;
   const [detailData, setDetailData] = useState({});
-  const [expressInfoState, setExpressInfoState] = useState([])
   const [loading, setLoading] = useState(false);
-  const isPurchase = useLocation().pathname.includes('purchase')
-
-  const expressInfoRequest = () => {
-
-    if (detailData.orderType === 11) {
-      expressInfoYlbb({
-        orderType: 11,
-        webSite: 1688,
-        orderId: detailData.outOrderSn,
-        shippingCode: detailData.shippingCode,
-        deliveryTime: moment(detailData.deliveryTime).unix(),
-      }).then(res => {
-        if (res.code === 0) {
-          setExpressInfoState(res.data?.deliveryList?.reverse())
-        }
-      })
-    } else {
-      expressInfo({
-        shippingCode: detailData.shippingCode,
-        expressType: detailData.expressType,
-        mobile: detailData.buyerPhone,
-        deliveryTime: detailData.deliveryTime
-      }).then(res => {
-        if (res.code === 0) {
-          setExpressInfoState(res.data?.deliveryList?.reverse())
-        }
-      })
-    }
-    
-  }
+  const [expressInfoState, setExpressInfoState] = useState([])
 
   const getDetailData = () => {
     setLoading(true);
     const apiMethod = isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
     apiMethod({
-      id: params.id
+      id
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data)
@@ -63,43 +28,25 @@ const OrderDetail = () => {
     })
   }
 
-  const orderShipRequest = (values) => {
-    deliverGoods({
-      subOrderId: params.id,
-      shippingCode: values.expressNo,
-      expressType: values.expressType,
-      expressName: values.expressName,
-      expressId:values.expressId
-    }, { showSuccess: true })
-      .then(res => {
-        if (res.code === 0) {
-          getDetailData()
-        }
-    })
-}
-
-  const modifyShipRequest = (values) => {
-    updateOrderLogistics({
-      id: orderId,
-      shippingCode: values.expressNo,
-      expressType: values.expressType,
-      expressId:values.expressId,
-      expressName: values.expressName
-    }, { showSuccess: true })
-    .then(res => {
-      if (res.code === 0) {
-        getDetailData()
-      }
-  })
-}
-
-
   useEffect(() => {
-    getDetailData()
+    getDetailData();
   }, [])
 
   return (
-    <PageContainer style={{ backgroundColor: '#fff', minHeight: '100%', paddingBottom: 40 }}>
+    <Drawer
+      title="订单详情"
+      width={1200}
+      placement="right"
+      onClose={() => { setVisible(false) }}
+      visible={visible}
+      footer={
+        <div style={{ textAlign: 'right' }}>
+          <Space>
+            <Button onClick={() => { setVisible(false) }}>返回</Button>
+          </Space>
+        </div>
+      }
+    >
       <Spin spinning={loading}>
         <div className={styles.order_detail}>
           <Steps progressDot current={detailData.status - 1}>
@@ -174,7 +121,7 @@ const OrderDetail = () => {
                 </div>
                 <div className={styles.box}>
                   <div>红包</div>
-                  <div>-{amountTransform(detailData?.couponAmount, '/')}元{detailData?.orderType===18&&'（签到红包）'}</div>
+                  <div>-{amountTransform(detailData?.couponAmount, '/')}元{detailData?.orderType === 18 && '（签到红包）'}</div>
                 </div>
                 <div className={styles.box}>
                   <div>用户实付</div>
@@ -185,44 +132,44 @@ const OrderDetail = () => {
                   <div>{amountTransform(detailData?.incomeAmount, '/')}元</div>
                 </div> */}
                 {
-                  detailData.status != 1 && detailData.status != 5 &&<div className={styles.box}>
+                  detailData.status != 1 && detailData.status != 5 && <div className={styles.box}>
                     <div>备注</div>
-                    <div>买家确认收货后可提现 {detailData?.warrantyRatio*100+'%'}  金额,订单超过售后期可提现剩余金额。</div>
+                    <div>买家确认收货后可提现 {detailData?.warrantyRatio * 100 + '%'}  金额,订单超过售后期可提现剩余金额。</div>
                   </div>
                 }
                 <div className={`${styles.box} ${styles.box_header}`}>
                   物流信息
                 </div>
                 {
-                  detailData.logisticsList&&detailData.logisticsList.map((ele,idx)=>(
-                  <ProDescriptions  style={{padding:'20px'}} column={2} title={"包裹"+parseInt(idx+1)}>
-                    <ProDescriptions.Item
-                      label="快递公司"
-                    >
-                      {ele.expressName}
-                    </ProDescriptions.Item>
-                    <ProDescriptions.Item
-                      label="运单编号"
-                    >
-                      {ele.shippingCode}
-                    </ProDescriptions.Item>
-                    <ProDescriptions.Item
-                      label="物流进度"
-                    >
-                      <p className={styles.schedule}>{ele.lastStatus}</p>
-                    </ProDescriptions.Item>
+                  detailData.logisticsList && detailData.logisticsList.map((ele, idx) => (
+                    <ProDescriptions style={{ padding: '20px' }} column={2} title={"包裹" + parseInt(idx + 1)}>
+                      <ProDescriptions.Item
+                        label="快递公司"
+                      >
+                        {ele.expressName}
+                      </ProDescriptions.Item>
+                      <ProDescriptions.Item
+                        label="运单编号"
+                      >
+                        {ele.shippingCode}
+                      </ProDescriptions.Item>
+                      <ProDescriptions.Item
+                        label="物流进度"
+                      >
+                        <p className={styles.schedule}>{ele.lastStatus}</p>
+                      </ProDescriptions.Item>
 
-                    <ProDescriptions.Item
-                      fieldProps={{}}
-                    >
-                      <LogisticsTrackingModel 
-                          record={ele.deliveryList}     
+                      <ProDescriptions.Item
+                        fieldProps={{}}
+                      >
+                        <LogisticsTrackingModel
+                          record={ele.deliveryList}
                           title={'物流跟踪'}
                           byid={ele.id}
                         />
-                    </ProDescriptions.Item>
-                </ProDescriptions>
-                  )) 
+                      </ProDescriptions.Item>
+                    </ProDescriptions>
+                  ))
                 }
               </div>
             </div>
@@ -265,9 +212,6 @@ const OrderDetail = () => {
                   <div>{detailData?.note}</div>
                 </div>
               </div>
-              <Space style={{ marginTop: 30 }}>
-                <Button type="primary" onClick={() => { history.goBack() }}>返回</Button>
-              </Space>
             </div>
           </div>
         </div>
@@ -290,9 +234,8 @@ const OrderDetail = () => {
           </Steps>
         </Modal>
       </Spin>
-    </PageContainer>
+    </Drawer>
   )
 }
 
-
-export default OrderDetail
+export default Detail;

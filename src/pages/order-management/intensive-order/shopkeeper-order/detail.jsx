@@ -1,33 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
-import { Steps, Space, Button, Modal, Spin } from 'antd';
-import { useParams } from 'umi';
+import React, { useState, useEffect } from 'react';
+import { Drawer, Space, Button, Modal, Steps, Spin } from 'antd';
 import { findAdminOrderDetail } from '@/services/order-management/normal-order-detail';
-import { amountTransform, dateFormat } from '@/utils/utils'
-import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
+import { amountTransform, dateFormat  } from '@/utils/utils'
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { history } from 'umi';
-
-import styles from './style.less';
+import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
+import styles from './detail.less';
 
 const { Step } = Steps;
 
-const payType = {
-  1: '支付宝',
-  2: '微信',
-  3: '银联',
-}
-
-const OrderDetail = () => {
-  const params = useParams();
+const Detail = (props) => {
+  const { visible, setVisible, id } = props;
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [expressInfoState, setExpressInfoState] = useState([])
 
-
-  const getDetailDataRequest = () => {
+  const getDetailData = () => {
     setLoading(true);
     findAdminOrderDetail({
-      id: params.id
+      id
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data)
@@ -47,19 +37,31 @@ const OrderDetail = () => {
     return current - 1;
   }
 
-
   useEffect(() => {
-    getDetailDataRequest()
+    getDetailData();
   }, [])
 
   return (
-    <PageContainer style={{ backgroundColor: '#fff', minHeight: '100%', paddingBottom: 40 }}>
+    <Drawer
+      title="订单详情"
+      width={1200}
+      placement="right"
+      onClose={() => { setVisible(false) }}
+      visible={visible}
+      footer={
+        <div style={{ textAlign: 'right' }}>
+          <Space>
+            <Button onClick={() => { setVisible(false) }}>返回</Button>
+          </Space>
+        </div>
+      }
+    >
       <Spin spinning={loading}>
         <div className={styles.order_detail}>
           <Steps progressDot current={getCurrent()}>
             {
               detailData?.nodeList?.map(item => (
-                <Step title={item.event} description={<><div>{item.eventTime?.replace('T',' ')}</div></>} />
+                <Step title={item.event} description={<><div>{item.eventTime?.replace('T', ' ')}</div></>} />
               ))
             }
           </Steps>
@@ -215,16 +217,12 @@ const OrderDetail = () => {
                   <div>{detailData?.note}</div>
                 </div>
               </div>
-              <Space style={{ marginTop: 30 }}>
-                <Button type="primary" onClick={() => { history.goBack() }}>返回</Button>
-              </Space>
             </div>
           </div>
         </div>
       </Spin>
-    </PageContainer>
+    </Drawer>
   )
 }
 
-
-export default OrderDetail
+export default Detail;
