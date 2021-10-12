@@ -69,7 +69,12 @@ const SubTable = (props) => {
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '配送费补贴',
+      title: '运营中心配送费补贴',
+      dataIndex: 'operationFixedPrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '社区店配送费补贴',
       dataIndex: 'fixedPrice',
       render: (_) => amountTransform(_, '/')
     },
