@@ -85,7 +85,7 @@ const EmployDetail=(props) => {
         title: '获得奖品',
         dataIndex: 'prizeInfo',
         valueType: 'text',
-        width:200,
+        width:230,
         hideInSearch: true,
         render: (_, data)=>{
           if(data.type==5||data.type==6){
@@ -94,11 +94,11 @@ const EmployDetail=(props) => {
           if(data.prizeInfo?.prizeStatus==0){
             return <p>未抽中</p>
           }
-          return <div>
-                    <Image style={{float:'right'}} src={data.prizeInfo.imageUrl} alt="" width='50px' height='50px' />
-                    <div style={{float:'right'}}>
+          return <div style={{display:'flex'}}>
+                    <Image src={data.prizeInfo.imageUrl} alt="" width='50px' height='50px' />
+                    <div style={{marginLeft:'10px'}}>
                       <h5>{data.prizeInfo.goodsName}</h5>
-                      <span style={{color:'red',fontSize:'10px'}}>销售价¥{data.prizeInfo.salePrice}</span>
+                      <span style={{color:'red',fontSize:'10px'}}>销售价¥{data.prizeInfo.salePrice/100}</span>
                       <p style={{fontSize:'10px'}}>SKU  {data.prizeInfo.skuId}</p>
                     </div>
                  </div>
