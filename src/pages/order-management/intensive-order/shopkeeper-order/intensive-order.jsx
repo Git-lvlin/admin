@@ -292,7 +292,7 @@ const TableList = () => {
                   <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
                     <Descriptions.Item label="商品总金额">{amountTransform(item.totalAmount, '/')}元（含运费）</Descriptions.Item>
                     {/* <Descriptions.Item label="运费">+{amountTransform(item.sumOrder?.shippingFeeAmount, '/')}元</Descriptions.Item> */}
-                    <Descriptions.Item label="优惠券">-{amountTransform(item.sumOrder?.couponAmount, '/')}元</Descriptions.Item>
+                    <Descriptions.Item label="红包">-{amountTransform(item.sumOrder?.couponAmount, '/')}元</Descriptions.Item>
                     <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>
                   </Descriptions>
                 </div>
