@@ -75,6 +75,13 @@ const Detail = () => {
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
+      case 'freight':
+        return (
+          <>
+            <span className={styles.amount}>运费: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
       default:
         return ''
     }
