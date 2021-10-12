@@ -11,6 +11,7 @@ import { getActiveConfigById } from '@/services/blind-box-activity-management/bl
 import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import moment from 'moment';
 import styles from './style.less'
+import { PageContainer } from '@ant-design/pro-layout';
 const FormItem = Form.Item;
 
 const formItemLayout = {
@@ -132,6 +133,7 @@ export default (props) => {
     return current && current < moment().startOf('day');
   }
   return (
+    <PageContainer>
       <ProForm
         form={form}
         {...formItemLayout}
@@ -261,7 +263,7 @@ export default (props) => {
         
 
         {/* 奖品预告 */}
-        <Form.Item label="奖品预告（尺寸30x50）" rules={[{ required: true, message: '请设置奖品预告' }]}>
+        <Form.Item label="奖品预告（尺寸72x56）" rules={[{ required: true, message: '请设置奖品预告' }]}>
           {
             id&&falg?
             <List
@@ -290,7 +292,7 @@ export default (props) => {
                       >
                         <ProForm.Group>
                           <Form.Item key="1" {...field} name={[field.name, 'imageUrl']} fieldKey={[field.fieldKey, 'imageUrl']}>
-                            <Upload dimension={{width:30,height:50}} code={204} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+                            <Upload dimension={{width:72,height:56}} code={204} multiple maxCount={1} accept="image/*" size={1 * 1024} />
                           </Form.Item>
                           &nbsp;
                           <ProFormText
@@ -371,8 +373,8 @@ export default (props) => {
         id&&falg?null
         :<p className={styles.hint}>提示：关闭活动后，将清空用户的账户记录，请谨慎操作。</p>
       }
-
       </ProForm >
+    </PageContainer>
   );
 };
 

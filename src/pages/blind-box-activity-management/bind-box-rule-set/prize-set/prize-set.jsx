@@ -25,7 +25,7 @@ export default (props) => {
       editable:false,
     },
     {
-      title: 'SPUID',
+      title: 'SKUID',
       dataIndex: 'skuId',
       valueType: 'text',
       editable:false,
@@ -67,6 +67,7 @@ export default (props) => {
       renderFormItem: (_,r) => {
         return  <InputNumber
                   min="0"
+                  max={_.entry.sumNum}
                   stringMode
                 />
         },
@@ -206,9 +207,18 @@ export default (props) => {
                 const arr = [];
                 val.forEach(item => {
                   arr.push({
+                    id:item.id,
                     status:false,
                     add:true,
-                    ...item
+                    probability: item.probability,
+                    skuId: item.skuId,
+                    spuId: item.spuId,
+                    stockNum: 0,
+                    sumNum:item.stockNum,
+                    goodsName: item.goodsName,
+                    imageUrl: item.imageUrl,
+                    salePrice: item.salePrice,
+                    retailSupplyPrice: item.retailSupplyPrice,
                   })
                 })
                 setDataSource([...dataSource,...arr])

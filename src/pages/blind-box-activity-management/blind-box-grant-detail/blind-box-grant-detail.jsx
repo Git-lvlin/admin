@@ -129,7 +129,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a onClick={()=>history.push('/blind-box-activity-management/blind-box-user-detail?id='+record.id)}>查看此用户明细</a>
+            <a onClick={()=>history.push('/blind-box-activity-management/blind-box-employ-detail?id='+record.id)}>查看此用户明细</a>
         ],
       }, 
     ];
