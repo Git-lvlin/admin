@@ -90,7 +90,7 @@ export default (props) => {
       </ProForm.Group>
       <ProForm.Group>
         <Form.Item
-          label="添加海报图片"
+          label="上传海报"
           name="image"
           required
           rules={
