@@ -124,7 +124,7 @@ const EmployDetail=(props) => {
                     <a onClick={() => {  setDetailVisible(true); }}>{data.orderInfo.orderSn}</a>
                     {
                       detailVisible && <Detail
-                      id={data.orderInfo.orderSn}
+                      id={data.orderInfo.orderId}
                       visible={detailVisible}
                       setVisible={setDetailVisible}
                     />
