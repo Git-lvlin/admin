@@ -134,7 +134,7 @@ const OrderDetail = () => {
                       <div>{amountTransform(detailData?.advance?.amount, '/')}元</div>
                     </div>
                     <div className={styles.box}>
-                      <div>优惠券优惠</div>
+                      <div>红包</div>
                       <div>{amountTransform(detailData?.advance?.couponAmount, '/')}元</div>
                     </div>
                     <div className={styles.box}>
