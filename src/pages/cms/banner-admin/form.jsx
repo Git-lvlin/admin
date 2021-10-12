@@ -33,18 +33,17 @@ export default (props) => {
       height: 150,
     },
     {
-      with: 375,
+      width: 375,
       height: 160,
     },
     {
-      with: 375,
+      width: 375,
       height: 160,
     }
   ]
 
   const waitTime = (values) => {
     const { id, ...rest } = values
-    console.log('rest', rest)
     const param = {
       ...rest
     }
@@ -113,25 +112,9 @@ export default (props) => {
       onFinish={async (values) => {
         await waitTime(values);
         message.success('提交成功');
-        // 不返回不会关闭弹框
         return true;
       }}
     >
-      {/* <ProForm.Group>
-        <ProFormSelect
-          name="useType"
-          label="适用平台"
-          valueEnum={{
-            1: '全平台',
-            2: '手机端',
-            3: 'h5',
-            4: 'web网页',
-            5: '小程序',
-          }}
-          placeholder="选择平台"
-          rules={[{ required: true, message: '请选择平台!' }]}
-        />
-      </ProForm.Group> */}
       <ProForm.Group>
         <ProFormSelect
           name="location"
@@ -147,9 +130,6 @@ export default (props) => {
           rules={[{ required: true, message: '请选择位置!' }]}
           fieldProps={{
             onChange: (e) => {
-              if (e==5) {
-                e = 6
-              }
               setNowIndex(e)
             }
           }}
@@ -174,16 +154,6 @@ export default (props) => {
               message: '请上传图片'
             }]
           }
-          // tooltip={
-          //   <dl>
-          //     <dt>图片要求</dt>
-          //     <dd>首页banner-351*100</dd>
-          //     <dd>集约页面banner-375*168</dd>
-          //     <dd>个人中心banner-351*65</dd>
-          //     <dd>社区店专享banner-375*150</dd>
-          //     <dd>秒杀爆品banner-375*160</dd>
-          //   </dl>
-          // }
         >
           <Upload multiple maxCount={1} code={201} accept="image/*" proportion={picSize[nowIndex]||'banner'} />
         </Form.Item>
