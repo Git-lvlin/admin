@@ -33,9 +33,8 @@ export default (props) => {
                 label="开盲盒机会获取途径"
                 readonly
                 fieldProps={{
-                    value:' ',
+                    value:' '
                  }}
-                
             />
             <ProFormRadio.Group
                 name="switch1"
@@ -50,7 +49,6 @@ export default (props) => {
                         value: 0,
                     }
                 ]}
-                rules={[{ required: true, message: '请设置邀请状态' }]}
                 readonly={id&&falg}
             />
             <ProFormDependency name={['switch1']}>
@@ -135,7 +133,6 @@ export default (props) => {
                     }
                 ]}
                 readonly={id&&falg}
-                rules={[{ required: true, message: '请设置签到状态' }]}
             />
             <ProFormDependency name={['switch2']}>
                 {({ switch2 }) => { 
@@ -144,8 +141,12 @@ export default (props) => {
                     return  <div className={styles.unfold}>
                                 <ProFormSelect
                                     name="signInNum"
-                                    initialValue={2}
+                                    initialValue={1}
                                     options={[
+                                        {
+                                            value: 1,
+                                            label: '每连续到1天获得1次',
+                                        },
                                         {
                                             value: 2,
                                             label: '每连续到2天获得1次',
@@ -203,7 +204,6 @@ export default (props) => {
                     }
                 ]}
                 readonly={id&&falg}
-                rules={[{ required: true, message: '请设置订单消费状态' }]}
             />
             <ProFormDependency name={['switch3']}>
                 {({ switch3 }) => { 
