@@ -31,12 +31,19 @@ export default (props) => {
     {
       width: 375,
       height: 150,
+    },
+    {
+      width: 375,
+      height: 160,
+    },
+    {
+      width: 375,
+      height: 160,
     }
   ]
 
   const waitTime = (values) => {
     const { id, ...rest } = values
-    console.log('rest', rest)
     const param = {
       ...rest
     }
@@ -44,21 +51,13 @@ export default (props) => {
       param.id = id
     }
     if (detailData) {
-      // if (param.useType.length > 1) {
-      //   param.useType = {
-      //     '全平台':1,
-      //     '手机端':2,
-      //     'h5':3,
-      //     'web网页':4,
-      //     '小程序':5,
-      //   }[detailData.useType]
-      // }
       if (param.location.length > 1) {
         param.location = {
           '首页':1,
           '集约':2,
           '个人中心':3,
           '社区店':4,
+          '秒杀爆品':6,
         }[detailData.location]
       }
     }
@@ -81,18 +80,12 @@ export default (props) => {
   useEffect(() => {
     if (detailData) {
       setNowIndex(detailData.location)
-      // detailData.useType = {
-      //   1: '全平台',
-      //   2: '手机端',
-      //   3: 'h5',
-      //   4: 'web网页',
-      //   5: '小程序',
-      // }[detailData.useType]
       detailData.location = {
         1: '首页',
         2: '集约',
         3: '个人中心',
         4: '社区店',
+        6: '秒杀爆品',
       }[detailData.location]
       const { ...rest } = detailData;
       console.log('detailData', detailData)
@@ -119,25 +112,9 @@ export default (props) => {
       onFinish={async (values) => {
         await waitTime(values);
         message.success('提交成功');
-        // 不返回不会关闭弹框
         return true;
       }}
     >
-      {/* <ProForm.Group>
-        <ProFormSelect
-          name="useType"
-          label="适用平台"
-          valueEnum={{
-            1: '全平台',
-            2: '手机端',
-            3: 'h5',
-            4: 'web网页',
-            5: '小程序',
-          }}
-          placeholder="选择平台"
-          rules={[{ required: true, message: '请选择平台!' }]}
-        />
-      </ProForm.Group> */}
       <ProForm.Group>
         <ProFormSelect
           name="location"
@@ -147,6 +124,7 @@ export default (props) => {
             2: '集约',
             3: '个人中心',
             4: '社区店',
+            6: '秒杀爆品',
           }}
           placeholder="选择位置"
           rules={[{ required: true, message: '请选择位置!' }]}
@@ -176,18 +154,19 @@ export default (props) => {
               message: '请上传图片'
             }]
           }
-          tooltip={
-            <dl>
-              <dt>图片要求</dt>
-              <dd>首页banner-350*150</dd>
-              <dd>集约页面banner-375*168</dd>
-              <dd>个人中心banner-351*65</dd>
-              <dd>社区店专享banner-375*150</dd>
-            </dl>
-          }
         >
           <Upload multiple maxCount={1} code={201} accept="image/*" proportion={picSize[nowIndex]||'banner'} />
         </Form.Item>
+        <div>
+          <dl>
+            <dt>图片要求</dt>
+            <dd>首页banner-351*100</dd>
+            <dd>集约页面banner-375*168</dd>
+            <dd>个人中心banner-351*65</dd>
+            <dd>社区店专享banner-375*150</dd>
+            <dd>秒杀爆品banner-375*160</dd>
+          </dl>
+        </div>
       </ProForm.Group>
       <ProForm.Group>
         <ProFormText

@@ -103,6 +103,30 @@ export const tagSortModify = (params = {}, options = {}) => {
   });
 }
 
+export const cmsImageInfo = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsImageInfo', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const cmsImageAdd = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsImageAdd', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const cmsImageEdit = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsImageEdit', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const saveSortModify = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/wholesaleGoodsSortSub', {
     method: 'POST',
@@ -762,6 +786,14 @@ export const homePopupUpdate = (params = {}, options = {}) => {
   });
 }
 
+export const posterUpData = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/poster/saveOrUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const saveMoneyFormList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;
 
@@ -939,6 +971,23 @@ export const posterList = async (params = {}, options = {}) => {
     success: true,
     total: res.data.total,
   }
+}
+
+export const posterListNew = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/cms/poster/findPage', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return res
 }
 
 export const marketList = async (params = {}, options = {}) => {

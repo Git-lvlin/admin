@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Form, Button,Table,Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { ProFormRadio} from '@ant-design/pro-form';
+import { ProFormRadio,ProFormDependency} from '@ant-design/pro-form';
 import styles from '../style.less'
 import { connect } from 'umi';
 import { couponWholesaleList } from '@/services/coupon-construction/coupon-wholesale-list';
@@ -87,7 +87,6 @@ const  useCollect=(props)=>{
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [wholesaleIds,setWholesaleIds]=useState('')
     const [wholesaleArr,setWholesaleArr]=useState()
-    const [position,setPosition]=useState()
     const onIpute=(res)=>{
         setWholesaleIds(res.selectedRowKeys.toString())
         setWholesaleArr(res.selectedRows)
@@ -161,9 +160,6 @@ const  useCollect=(props)=>{
                 name="wholesaleType"
                 label="商品范围"
                 rules={[{ required: true, message: '请选择商品范围' }]}
-                fieldProps={{
-                onChange: (e) => setPosition(e.target.value),
-                }}
                 options={[
                 {
                     label:'全部集约',
@@ -175,42 +171,45 @@ const  useCollect=(props)=>{
                 },
                 ]}
             />
-            {
-                position==2||(parseInt(id)==id )&&DetailList.data?.wholesaleType==2?
-                <div style={{display:position==1?'none':'block'}}>
-                  <Button type="primary" className={styles.popupBtn} onClick={showModal}>
-                        选择商品
-                  </Button>
-                  <Modal key="id" width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                    <ProTable
-                        rowKey="wholesaleId"
-                        options={false}
-                        params={{
-                            wholesaleType:5
-                        }}
-                        request={couponWholesaleList}
-                        actionRef={actionRef}
-                        search={{
-                            defaultCollapsed: false,
-                            labelWidth: 100,
-                            optionRender: (searchConfig, formProps, dom) => [
-                                ...dom.reverse(),
-                            ],
-                        }}
-                        columns={columns}
-                        rowSelection={{}}
-                        tableAlertOptionRender={onIpute}
-                        style={{display:loading?'block':'none'}}
+            <ProFormDependency name={['wholesaleType']}>
+              {({ wholesaleType }) => { 
+                  if(!wholesaleType||wholesaleType==1) return null
+                  if(wholesaleType==2){
+                      return <>
+                        <Button type="primary" className={styles.popupBtn} onClick={showModal}>
+                          选择商品
+                        </Button>
+                        <Modal key="id" width={1200}  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                            <ProTable
+                                rowKey="wholesaleId"
+                                options={false}
+                                params={{
+                                    wholesaleType:5
+                                }}
+                                request={couponWholesaleList}
+                                actionRef={actionRef}
+                                search={{
+                                    defaultCollapsed: false,
+                                    labelWidth: 100,
+                                    optionRender: (searchConfig, formProps, dom) => [
+                                        ...dom.reverse(),
+                                    ],
+                                }}
+                                columns={columns}
+                                rowSelection={{}}
+                                tableAlertOptionRender={onIpute}
+                                style={{display:loading?'block':'none'}}
+                                />
+                        </Modal>
+                        <Table
+                            rowKey='wholesaleId'
+                            columns={columns2}
+                            dataSource={UseScopeList.UseScopeObje.wholesaleArr}
                         />
-                    </Modal>
-                    <Table
-                        rowKey='wholesaleId'
-                        columns={columns2}
-                        dataSource={UseScopeList.UseScopeObje.wholesaleArr}
-                    />
-                </div>
-                :null
-            }
+                      </>
+                  }
+               }}
+            </ProFormDependency>
         </Form.Item>
     )
 }

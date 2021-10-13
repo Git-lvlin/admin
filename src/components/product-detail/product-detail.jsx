@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Form, Image, Tag } from 'antd';
 import { amountTransform } from '@/utils/utils'
 import EditTable from './table';
-import MultiCascader from 'rsuite/lib/MultiCascader';
-import 'rsuite/lib/MultiCascader/styles';
-import { arrayToTree } from '@/utils/utils'
 import styles from './edit.less'
 import { EyeOutlined } from '@ant-design/icons'
 
@@ -14,8 +11,6 @@ export default (props) => {
   const [tableData, setTableData] = useState([]);
 
   const { goods } = detailData;
-  const [selectAreaKey, setSelectAreaKey] = useState([]);
-  const [areaData, setAreaData] = useState([]);
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -28,42 +23,6 @@ export default (props) => {
       },
     }
   };
-
-  const renderMultiCascaderTag = (selectedItems) => {
-    const titleArr = [];
-    selectedItems.forEach(item => {
-      const arr = [];
-      let node = item.parent;
-      arr.push(item.label)
-      while (node) {
-        arr.push(node.label)
-        node = node.parent;
-      }
-      titleArr.push({
-        label: arr.reverse().join('-'),
-        value: item.value
-      })
-    })
-
-    return (
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {
-          titleArr.map(item => (
-            <Tag
-              key={item.value}
-              // closable
-              style={{ marginBottom: 10 }}
-              onClose={() => {
-                setSelectAreaKey(selectAreaKey.filter(it => it !== item.value))
-              }}
-            >
-              {item.label}
-            </Tag>
-          ))
-        }
-      </div>
-    );
-  }
 
   useEffect(() => {
     if (detailData) {
@@ -99,6 +58,10 @@ export default (props) => {
             // wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
             salePrice: amountTransform((detailData.settleType === 1 || detailData.settleType === 0) ? item[1].retailSupplyPrice : item[1].salePrice, '/'),
             marketPrice: amountTransform(item[1].marketPrice || item[1].retailSupplyPrice, '/'),
+            wholesaleFreight: amountTransform(item[1].wholesaleFreight, '/'),
+            batchNumber: item[1].batchNumber,
+            isFreeFreight: item[1].isFreeFreight,
+            freightTemplateId: item[1]?.freightTemplateName ? { label: item[1]?.freightTemplateName, value: item[1]?.freightTemplateId } : undefined,
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -107,35 +70,9 @@ export default (props) => {
           }
         }))
       }
-
-      if (detailData?.refuseArea?.length) {
-        const areaArr = [];
-        for (let index = 0; index < detailData.refuseArea.length; index++) {
-          const refuseArea = detailData.refuseArea[index];
-          if (refuseArea.areaId) {
-            areaArr.push(refuseArea.areaId)
-            continue;
-          }
-          if (refuseArea.cityId) {
-            areaArr.push(refuseArea.cityId)
-            continue;
-          }
-
-          areaArr.push(refuseArea.provinceId)
-
-        }
-        setSelectAreaKey([...new Set(areaArr)])
-      }
     }
 
   }, [detailData]);
-
-  useEffect(() => {
-    const arr = arrayToTree(window.yeahgo_area || [])
-    let str = JSON.stringify(arr)
-    str = str.replace(/name/g, 'label').replace(/id/g, 'value')
-    setAreaData(JSON.parse(str))
-  }, [])
 
   return (
     <Form
@@ -192,11 +129,14 @@ export default (props) => {
       >
         {{ 0: '单规格', 1: '多规格' }[detailData?.isMultiSpec]}
       </Form.Item>
-      <Form.Item
-        label="平均运费(元)"
-      >
-        {amountTransform(detailData?.goods.wholesaleFreight, '/')}
-      </Form.Item>
+      {
+        detailData?.goods?.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 &&
+        <Form.Item
+          label="平均运费(元)"
+        >
+          {amountTransform(detailData?.goods.wholesaleFreight, '/')}
+        </Form.Item>
+      }
       {
         detailData?.isMultiSpec === 1
           ?
@@ -228,6 +168,11 @@ export default (props) => {
                   label="批发供货价(元)"
                 >
                   {amountTransform(detailData?.goods?.wholesaleSupplyPrice, '/')}
+                </Form.Item>
+                <Form.Item
+                  label="集采箱柜单位量"
+                >
+                  {detailData?.goods?.batchNumber}
                 </Form.Item>
                 <Form.Item
                   label="最低批发量"
@@ -278,12 +223,12 @@ export default (props) => {
             </Form.Item>
           </>
       }
-      <Form.Item
+      {detailData?.goods?.goodsSaleType !== 1 && detailData?.isMultiSpec === 0 &&<Form.Item
         label="是否包邮"
       >
         {{ 0: '不包邮', 1: '包邮', }[detailData?.goods?.isFreeFreight]}
-      </Form.Item>
-      {detailData?.freightTemplateName &&
+      </Form.Item>}
+      {detailData?.goods?.goodsSaleType !== 1 && !detailData?.goods?.isFreeFreight && detailData?.isMultiSpec === 0 &&
         <Form.Item
           label="运费模板"
         >
@@ -299,23 +244,6 @@ export default (props) => {
       >
         {detailData?.goods.goodsRemark}
       </Form.Item>
-      {selectAreaKey.length !== 0 ? <Form.Item
-        label="不发货地区"
-      >
-        <MultiCascader
-          value={selectAreaKey}
-          data={areaData}
-          style={{ width: '100%' }}
-          placeholder="请选择不发货地区"
-          renderValue={(a, b) => renderMultiCascaderTag(b)} locale={{ searchPlaceholder: '输入省市区名称' }}
-          onChange={setSelectAreaKey}
-          cleanable={false}
-        />
-      </Form.Item> : <Form.Item
-        label="不发货地区"
-      >
-        
-      </Form.Item>}
       <Form.Item
         label="商品主图"
         name="primaryImages"

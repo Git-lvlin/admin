@@ -69,7 +69,12 @@ const SubTable = (props) => {
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '配送费补贴',
+      title: '运营中心配送费补贴',
+      dataIndex: 'operationFixedPrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '社区店配送费补贴',
       dataIndex: 'fixedPrice',
       render: (_) => amountTransform(_, '/')
     },
@@ -225,7 +230,7 @@ const TableList = () => {
       render: (_, data) => (
         <Space>
           <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-detail/${data.wholesaleId}`) }}>详情</a>
-          {(data.wholesaleStatusDesc === '待开始' || data.wholesaleStatusDesc === '进行中') && <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>}
+          {data.wholesaleStatusDesc === '待开始' && <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>}
         </Space>
       ),
     },

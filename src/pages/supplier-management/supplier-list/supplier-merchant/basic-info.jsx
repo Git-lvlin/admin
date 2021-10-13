@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Form, Button, Tree, message, Checkbox, Input, Space, Typography, Divider, DatePicker } from 'antd';
+import { Form, Button, Tree, message, Checkbox, Typography, Divider } from 'antd';
 import {
   DrawerForm,
   ProFormText,
@@ -8,7 +8,7 @@ import {
   ProFormDigit,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { supplierAdd, supplierEdit, categoryAll } from '@/services/supplier-management/supplier-list';
+import { supplierAdd, supplierEdit, categoryAll, searchUniName } from '@/services/supplier-management/supplier-list';
 import md5 from 'blueimp-md5';
 import { arrayToTree } from '@/utils/utils'
 import FormModal from './form';
@@ -253,7 +253,26 @@ export default (props) => {
             name="companyName"
             label="供应商家名称"
             placeholder="请输入供应商家名称"
-            rules={[{ required: true, message: '请输入供应商家名称' }]}
+            rules={[
+              { required: true, message: '请输入供应商家名称' },
+              () => ({
+                required: true,
+                validator(_, value) {
+                  return new Promise((resolve, reject) => {
+                    searchUniName({
+                      companyName: value
+                    }, { showError: false }).then(res => {
+                      if (res.code === 0) {
+                        if (res.data.records?.id && value !== detailData?.companyName) {
+                          reject(new Error('供应商家名称已存在'));
+                        } else {
+                          resolve();
+                        }
+                      }
+                    })
+                  });
+                },
+              })]}
             fieldProps={{
               maxLength: 30,
             }}

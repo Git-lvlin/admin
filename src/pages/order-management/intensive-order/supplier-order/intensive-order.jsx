@@ -12,6 +12,7 @@ import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
+import Detail from './detail';
 
 const { confirm } = Modal;
 
@@ -30,6 +31,8 @@ const TableList = () => {
   const [visit, setVisit] = useState(false)
   const [importVisit, setImportVisit] = useState(false)
   const isPurchase = location.pathname.includes('purchase')
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState({});
 
   const pageChange = (a, b) => {
     setPage(a)
@@ -124,7 +127,7 @@ const TableList = () => {
                   <Export
                     change={(e) => { setVisit(e) }}
                     type={`${isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`}
-                    conditions={getFieldValue()}
+                    conditions={getFieldValue}
                   />
                   <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`} />
                   {
@@ -134,7 +137,7 @@ const TableList = () => {
                       <Import
                         change={(e) => { setImportVisit(e) }}
                         code="order_intensive_send_goods_import"
-                        conditions={getFieldValue()}
+                        conditions={getFieldValue}
                       />
                       <ImportHistory show={importVisit} setShow={setImportVisit} type="order_intensive_send_goods_import" />
                     </>
@@ -175,15 +178,6 @@ const TableList = () => {
         <ProFormText
           label="下单手机号"
           name="phoneNumber"
-          fieldProps={{
-            style: {
-              marginBottom: 20
-            }
-          }}
-        />
-        <ProFormText
-          name="supplierName"
-          label="所属商家ID"
           fieldProps={{
             style: {
               marginBottom: 20
@@ -254,6 +248,29 @@ const TableList = () => {
             }
           }}
         />
+        {
+          isPurchase &&
+          <>
+            <ProFormText
+              name="supplierId"
+              label="供应商家ID"
+              fieldProps={{
+                style: {
+                  marginBottom: 20
+                }
+              }}
+            />
+            <ProFormText
+              name="supplierName"
+              label="供应商家名称"
+              fieldProps={{
+                style: {
+                  marginBottom: 20
+                }
+              }}
+            />
+          </>
+        }
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -317,7 +334,7 @@ const TableList = () => {
               {
                 isPurchase
                   ?
-                  <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                  <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}（ID:{item.supplierId}）{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
                   :
                   <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}</div>
               }
@@ -339,13 +356,14 @@ const TableList = () => {
                       <div>集约价：{amountTransform(item.sku.price, '/')}元{item?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(item?.sku?.wholesaleFreight, '/')}/件）` : ''}<time style={{ marginLeft: 20 }}>规格：{item.sku.skuName}</time></div>
                       <div>数量： <span>{item.sku.totalNum}件</span></div>
                       <div>小计： <span>{amountTransform(item.sku.totalAmount, '/')}</span>元</div>
+                      {isPurchase && <div>批发供货价： ¥{amountTransform(item.sku.wholesaleSupplyPrice, '/')}</div>}
                     </div>
                   </div>
                 </div>
                 <div>
                   <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
                     <Descriptions.Item label="应付金额">{amountTransform(item.advance.amount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="优惠券">-{amountTransform(item.advance.couponAmount, '/')}元</Descriptions.Item>
+                    <Descriptions.Item label="红包">-{amountTransform(item.advance.couponAmount, '/')}元</Descriptions.Item>
                     <Descriptions.Item label="用户实付">{amountTransform(item.advance.actualAmount, '/')}元</Descriptions.Item>
                   </Descriptions>
                 </div>
@@ -364,7 +382,9 @@ const TableList = () => {
                 </div>
                 <div style={{ textAlign: 'center' }}>
                   {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId) }}>启动C端退款</a></div>}
-                  <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a>
+                  {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a> */}
+                  <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
+                  <div><a target="_blank" href={`/order-management/intensive-order/shopkeeper-order?objectId=${item.orderId}`}>查看零售订单</a></div>
                 </div>
               </div>
 
@@ -380,6 +400,15 @@ const TableList = () => {
         }
       </Spin>
 
+      {
+        detailVisible &&
+        <Detail
+          id={selectItem?.orderId}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+          isPurchase={isPurchase}
+        />
+      }
 
       <div
         className={styles.pagination}

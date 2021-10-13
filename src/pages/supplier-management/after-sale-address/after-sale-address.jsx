@@ -137,6 +137,7 @@ const TableList = () => {
         search={false}
         columns={columns}
         actionRef={actionRef}
+        rowKey="id"
       />
       <Edit
         visible={formVisible}

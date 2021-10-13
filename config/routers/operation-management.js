@@ -1,0 +1,57 @@
+export default {
+  path: '/operation-management',
+  name: 'operation-management',
+  routes: [
+    {
+      name: 'operation-list',
+      path: '/operation-management/operation-list',
+      component: './operation-management/operation-list',
+    },
+    {
+      name: 'audit-list',
+      path: '/operation-management/audit-list',
+      component: './operation-management/audit-list',
+    },
+    {
+      name: 'bind-list',
+      path: '/operation-management/bind-list',
+      component: './operation-management/bind-list',
+    },
+    // {
+    //   name: 'consultant-product-list',
+    //   path: '/operation-management/consultant-product-list/:id',
+    //   component: './operation-management/consultant-product-list',
+    //   hideInMenu: true,
+    // },
+    // {
+    //   name: 'consultant-operation-list',
+    //   path: '/operation-management/consultant-operation-list/:id',
+    //   component: './operation-management/consultant-operation-list',
+    //   hideInMenu: true,
+    // },
+    {
+      name: 'after-sale-address',
+      path: '/operation-management/after-sale-address/:id',
+      component: './operation-management/after-sale-address',
+      hideInMenu: true,
+    },
+    {
+      name: 'operation-sub-account',
+      path: '/operation-management/operation-sub-account/:id',
+      component: './operation-management/operation-sub-account',
+      hideInMenu: true,
+    },
+    {
+      name: 'operation-detail',
+      path: '/operation-management/operation-detail/:id',
+      component: './operation-management/operation-detail',
+      hideInMenu: true,
+    },
+    {
+      name: 'operation-account-info',
+      path: '/operation-management/operation-account-info/:id',
+      component: './operation-management/operation-account-info',
+      hideInMenu: true,
+    },
+  ]
+}

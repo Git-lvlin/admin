@@ -54,7 +54,7 @@ const OrderDetail = () => {
         <div className={styles.order_detail}>
           <Steps progressDot current={detailData.status}>
             {
-              detailData?.Process?.map(item => (
+              detailData?.process?.map(item => (
                 <Step title={item.name} description={<><div>{item.time}</div></>} />
               ))
             }
@@ -134,7 +134,7 @@ const OrderDetail = () => {
                       <div>{amountTransform(detailData?.advance?.amount, '/')}元</div>
                     </div>
                     <div className={styles.box}>
-                      <div>优惠券优惠</div>
+                      <div>红包</div>
                       <div>{amountTransform(detailData?.advance?.couponAmount, '/')}元</div>
                     </div>
                     <div className={styles.box}>
@@ -160,10 +160,10 @@ const OrderDetail = () => {
                     </div>
                   </div>
                 </div>
-                <div className={styles.box}>
+                {/* <div className={styles.box}>
                   <div>合计实收</div>
                   <div>{amountTransform(detailData?.actualAmount, '/')}元</div>
-                </div>
+                </div> */}
                 {
                   detailData.status != 0 && detailData.status != 6 &&
                   <div className={styles.box}>
