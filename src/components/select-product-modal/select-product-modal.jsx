@@ -7,7 +7,7 @@ import { productList } from '@/services/intensive-activity-management/intensive-
 import SupplierSelect from '@/components/supplier-select'
 
 export default (props) => {
-  const { visible, setVisible, callback,hideAll, title = '选择活动商品' } = props;
+  const { visible, setVisible, callback,hideAll, title = '选择活动商品',goodsSaleType, apolloConfig} = props;
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectItems, setSelectItems] = useState([]);
 
@@ -130,6 +130,8 @@ export default (props) => {
           goodsState: 1,
           goodsVerifyState: 1,
           hasStock: 1,
+          goodsSaleType:goodsSaleType?2:'',
+          apolloConfig:apolloConfig?apolloConfig:''
         }}
         search={{
           defaultCollapsed: false,

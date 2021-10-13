@@ -22,7 +22,7 @@ export default props=>{
 
     return (
         <ModalForm
-            title="增发优惠券"
+            title="增发红包"
             key={data.id}
             onVisibleChange={setVisible}
             visible={visible}

@@ -129,7 +129,8 @@ export default (props) => {
             ]}
             columns={columns}
             rowSelection={{
-            hideSelectAll:true
+              hideSelectAll:true,
+              preserveSelectedRowKeys: true
             }}
             tableAlertOptionRender={onIpute}
         />
