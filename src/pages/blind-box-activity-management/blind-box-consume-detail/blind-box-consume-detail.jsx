@@ -107,7 +107,6 @@ export default () => {
         dataIndex: 'prizeInfo',
         valueType: 'text',
         hideInSearch: true,
-        width:280,
         render: (_, data)=>{
           if(data.type==5||data.type==6){
             return null
@@ -115,7 +114,7 @@ export default () => {
           if(data.prizeInfo?.prizeStatus==0){
             return <p>未抽中</p>
           }
-          return <div style={{display:'flex',justifyContent:'center'}}>
+          return <div style={{display:'flex'}}>
                     <Image src={data.prizeInfo.imageUrl} alt="" width='50px' height='50px' />
                     <div style={{marginLeft:'10px'}}>
                       <h5>{data.prizeInfo.goodsName}</h5>
