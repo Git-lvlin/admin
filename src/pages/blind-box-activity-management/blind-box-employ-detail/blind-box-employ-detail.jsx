@@ -95,11 +95,11 @@ const EmployDetail=(props) => {
             return <p>未抽中</p>
           }
           return <div style={{display:'flex',justifyContent:'center'}}>
-                    <Image src={data.prizeInfo.imageUrl} alt="" width='50px' height='50px' />
+                    <Image src={data.prizeInfo?.imageUrl} alt="" width='50px' height='50px' />
                     <div style={{marginLeft:'10px'}}>
-                      <h5>{data.prizeInfo.goodsName}</h5>
-                      <span style={{color:'red',fontSize:'10px'}}>销售价¥{data.prizeInfo.salePrice/100}</span>
-                      <p style={{fontSize:'10px'}}>SKU  {data.prizeInfo.skuId}</p>
+                      <h5>{data.prizeInfo?.goodsName}</h5>
+                      <span style={{color:'red',fontSize:'10px'}}>销售价¥{data.prizeInfo?.salePrice/100}</span>
+                      <p style={{fontSize:'10px'}}>SKU  {data.prizeInfo?.skuId}</p>
                     </div>
                  </div>
         },
@@ -113,27 +113,27 @@ const EmployDetail=(props) => {
           if(data.orderInfo.orderStatus==0){
             return <>
                     <p>未兑换</p>
-                    <p>过期时间：{data.orderInfo.expireTime}</p>
+                    <p>过期时间：{data.orderInfo?.expireTime}</p>
                   </>
-          }else if(data.orderInfo.orderStatus==1){
+          }else if(data.orderInfo?.orderStatus==1){
             return <p>兑换中</p>
-          }else if(data.orderInfo.orderStatus==2){
+          }else if(data.orderInfo?.orderStatus==2){
             return  <>
                     <p>已兑换</p>
                     <p>订单号：</p>
-                    <a onClick={() => {  setDetailVisible(true); }}>{data.orderInfo.orderSn}</a>
+                    <a onClick={() => {  setDetailVisible(true); }}>{data.orderInfo?.orderSn}</a>
                     {
                       detailVisible && <Detail
-                      id={data.orderInfo.orderId}
+                      id={data.orderInfo?.orderId}
                       visible={detailVisible}
                       setVisible={setDetailVisible}
                     />
                     }
                     </>
-          }else if(data.orderInfo.orderStatus==3){
+          }else if(data.orderInfo?.orderStatus==3){
             return  <>
                     <p>已失效</p>
-                    <p>过期时间：{data.orderInfo.expireTime}</p>
+                    <p>过期时间：{data.orderInfo?.expireTime}</p>
                     </>
           }
         } 
