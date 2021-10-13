@@ -34,7 +34,7 @@ export default () => {
         valueType: 'text',
         hideInSearch:true,
         render:(_,data)=>{
-          return <p>{data.content.maxPrizeNum}</p>
+          return <p>{data?.content?.maxPrizeNum}</p>
         }
       },
       {
@@ -44,9 +44,9 @@ export default () => {
         hideInSearch:true,
         render:(_,data)=>{
           return <p>
-            每邀请{data.content.accessGain.inviteFriends.inviteNum}
-            位新用户注册获得{data.content.accessGain.inviteFriends.prizeNum}次
-            （概率{data.content.accessGain.inviteFriends.probability}%）
+            每邀请{data?.content?.accessGain?.inviteFriends?.inviteNum}
+            位新用户注册获得{data?.content?.accessGain?.inviteFriends?.prizeNum}次
+            （概率{data?.content?.accessGain?.inviteFriends?.probability}%）
             </p>
         }
       },
@@ -58,9 +58,9 @@ export default () => {
         hideInSearch:true,
         render:(_,data)=>{
           return <p>
-            每连续签到{data.content.accessGain.signIn.signInNum}
-            天获得{data.content.accessGain.signIn.prizeNum}次
-            （概率{data.content.accessGain.signIn.probability}%）
+            每连续签到{data?.content?.accessGain?.signIn?.signInNum}
+            天获得{data?.content?.accessGain?.signIn?.prizeNum}次
+            （概率{data?.content?.accessGain?.signIn?.probability}%）
             </p>
         }   
       },
@@ -71,9 +71,9 @@ export default () => {
         hideInSearch:true,
         render:(_,data)=>{
           return <p>
-            每日首次消费{data.content.accessGain.orderConsume.consumeNum}
-            笔获得{data.content.accessGain.orderConsume.prizeNum}次
-            （概率{data.content.accessGain.orderConsume.probability}%）
+            每日首次消费{data?.content?.accessGain?.orderConsume?.consumeNum}
+            笔获得{data?.content?.accessGain?.orderConsume?.prizeNum}次
+            （概率{data?.content?.accessGain?.orderConsume?.probability}%）
             </p>
         }   
       },
@@ -83,7 +83,7 @@ export default () => {
         valueType: 'text',
         hideInSearch:true,
         render:(_,data)=>{
-          return <p>{data.content.maxPrizeNum}</p>
+          return <p>{data?.content?.maxPrizeNum}</p>
         }
       },
       {

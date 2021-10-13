@@ -18,12 +18,6 @@ export default {
         component: './blind-box-activity-management/blind-box-grant-detail',
       },
       {
-        name: 'blind-box-user-detail',
-        path: '/blind-box-activity-management/blind-box-user-detail',
-        component: './blind-box-activity-management/blind-box-user-detail',
-        hideInMenu: true
-      },
-      {
         name: 'blind-box-employ-detail',
         path: '/blind-box-activity-management/blind-box-employ-detail',
         component: './blind-box-activity-management/blind-box-employ-detail',

@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
-import { Steps, Space, Button, Modal, Spin } from 'antd';
-import { useParams } from 'umi';
-import { getSupplierOrderDetail, modifyShip, expressInfo, getPurchaseOrderDetail } from '@/services/order-management/supplier-order-detail';
+import React, { useState, useEffect } from 'react';
+import { Drawer, Space, Button, Modal, Steps, Spin } from 'antd';
+import { getSupplierOrderDetail, getPurchaseOrderDetail } from '@/services/order-management/supplier-order-detail';
 import { amountTransform, dateFormat } from '@/utils/utils'
-import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { history, useLocation } from 'umi';
-
-import styles from './style.less';
+import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
+import styles from './detail.less';
 
 const { Step } = Steps;
 
@@ -21,20 +17,16 @@ const payType = {
   5: '钱包支付'
 }
 
-const OrderDetail = () => {
-  const params = useParams();
+const Detail = (props) => {
+  const { visible, setVisible, isPurchase, id } = props;
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
-  const location = useLocation();
-  const isPurchase = location.pathname.includes('purchase')
-
-
 
   const getDetailData = () => {
     setLoading(true);
     const apiMethod = isPurchase ? getPurchaseOrderDetail : getSupplierOrderDetail
     apiMethod({
-      orderId: params.id
+      orderId: id
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data)
@@ -45,11 +37,24 @@ const OrderDetail = () => {
   }
 
   useEffect(() => {
-    getDetailData()
+    getDetailData();
   }, [])
 
   return (
-    <PageContainer style={{ backgroundColor: '#fff', minHeight: '100%', paddingBottom: 40 }}>
+    <Drawer
+      title="订单详情"
+      width={1200}
+      placement="right"
+      onClose={() => { setVisible(false) }}
+      visible={visible}
+      footer={
+        <div style={{ textAlign: 'right' }}>
+          <Space>
+            <Button onClick={() => { setVisible(false) }}>返回</Button>
+          </Space>
+        </div>
+      }
+    >
       <Spin spinning={loading}>
         <div className={styles.order_detail}>
           <Steps progressDot current={detailData.status}>
@@ -242,17 +247,13 @@ const OrderDetail = () => {
                   <div>{detailData?.receivingInfo?.remark}</div>
                 </div>
               </div>
-              <Space style={{ marginTop: 30 }}>
-                <Button type="primary" onClick={() => { history.goBack() }}>返回</Button>
-              </Space>
             </div>
           </div>
 
         </div>
       </Spin>
-    </PageContainer>
+    </Drawer>
   )
 }
 
-
-export default OrderDetail
+export default Detail;
