@@ -12,6 +12,7 @@ import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
+import Detail from './detail';
 
 const { confirm } = Modal;
 
@@ -30,6 +31,8 @@ const TableList = () => {
   const [visit, setVisit] = useState(false)
   const [importVisit, setImportVisit] = useState(false)
   const isPurchase = location.pathname.includes('purchase')
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState({});
 
   const pageChange = (a, b) => {
     setPage(a)
@@ -124,7 +127,7 @@ const TableList = () => {
                   <Export
                     change={(e) => { setVisit(e) }}
                     type={`${isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`}
-                    conditions={getFieldValue()}
+                    conditions={getFieldValue}
                   />
                   <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`} />
                   {
@@ -134,7 +137,7 @@ const TableList = () => {
                       <Import
                         change={(e) => { setImportVisit(e) }}
                         code="order_intensive_send_goods_import"
-                        conditions={getFieldValue()}
+                        conditions={getFieldValue}
                       />
                       <ImportHistory show={importVisit} setShow={setImportVisit} type="order_intensive_send_goods_import" />
                     </>
@@ -360,7 +363,7 @@ const TableList = () => {
                 <div>
                   <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
                     <Descriptions.Item label="应付金额">{amountTransform(item.advance.amount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="优惠券">-{amountTransform(item.advance.couponAmount, '/')}元</Descriptions.Item>
+                    <Descriptions.Item label="红包">-{amountTransform(item.advance.couponAmount, '/')}元</Descriptions.Item>
                     <Descriptions.Item label="用户实付">{amountTransform(item.advance.actualAmount, '/')}元</Descriptions.Item>
                   </Descriptions>
                 </div>
@@ -379,7 +382,9 @@ const TableList = () => {
                 </div>
                 <div style={{ textAlign: 'center' }}>
                   {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId) }}>启动C端退款</a></div>}
-                  <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a>
+                  {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a> */}
+                  <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
+                  <div><a target="_blank" href={`/order-management/intensive-order/shopkeeper-order?objectId=${item.orderId}`}>查看零售订单</a></div>
                 </div>
               </div>
 
@@ -395,6 +400,15 @@ const TableList = () => {
         }
       </Spin>
 
+      {
+        detailVisible &&
+        <Detail
+          id={selectItem?.orderId}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+          isPurchase={isPurchase}
+        />
+      }
 
       <div
         className={styles.pagination}

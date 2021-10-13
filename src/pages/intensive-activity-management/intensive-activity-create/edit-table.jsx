@@ -13,9 +13,9 @@ import debounce from 'lodash/debounce';
 export default function EditTable({ onSelect }) {
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  // const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectData, setSelectData] = useState([]);
-  const [form] = Form.useForm();
+  // const [form] = Form.useForm();
 
   const columns = [
     {
@@ -362,33 +362,35 @@ export default function EditTable({ onSelect }) {
 
       rowSelection={{
         hideSelectAll: true,
-        // type: 'radio',
-        selectedRowKeys,
+        type: 'radio',
+        // selectedRowKeys,
         // onChange: (_, val) => {
         //   console.log('_', _);
         //   onSelect(val)
         //   setSelectedRowKeys(val.map(item => item.skuId))
         // },
         onSelect: (record, selected) => {
-          if (selected) {
-            if (selectedRowKeys.length === 10) {
-              message.error('最多只能选择10个商品');
-              return;
-            }
-            const arr = [...selectedRowKeys];
-            arr.push(record.skuId);
-            setSelectedRowKeys(arr);
-            const datas = [...selectData];
-            datas.push(record);
-            setSelectData(datas);
-            onSelect(datas);
-          } else {
-            const arr = selectedRowKeys.filter(item => item !== record.skuId)
-            setSelectedRowKeys(arr);
-            const datas = selectData.filter(item => item.skuId !== record.skuId);
-            setSelectData(datas);
-            onSelect(datas);
-          }
+          // if (selected) {
+          //   if (selectedRowKeys.length === 10) {
+          //     message.error('最多只能选择10个商品');
+          //     return;
+          //   }
+          //   const arr = [...selectedRowKeys];
+          //   arr.push(record.skuId);
+          //   setSelectedRowKeys(arr);
+          //   const datas = [...selectData];
+          //   datas.push(record);
+          //   setSelectData(datas);
+          //   onSelect(datas);
+          // } else {
+          //   const arr = selectedRowKeys.filter(item => item !== record.skuId)
+          //   setSelectedRowKeys(arr);
+          //   const datas = selectData.filter(item => item.skuId !== record.skuId);
+          //   setSelectData(datas);
+          //   onSelect(datas);
+          // }
+          setSelectData([record]);
+          onSelect([record]);
         },
         fixed: true
       }}
