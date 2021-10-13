@@ -86,7 +86,6 @@ const EmployDetail=(props) => {
         title: '获得奖品',
         dataIndex: 'prizeInfo',
         valueType: 'text',
-        width:280,
         hideInSearch: true,
         render: (_, data)=>{
           if(data.type==5||data.type==6){
@@ -95,7 +94,7 @@ const EmployDetail=(props) => {
           if(data.prizeInfo?.prizeStatus==0){
             return <p>未抽中</p>
           }
-          return <div style={{display:'flex',justifyContent:'center'}}>
+          return <div style={{display:'flex'}}>
                     <Image src={data.prizeInfo?.imageUrl} alt="" width='50px' height='50px' />
                     <div style={{marginLeft:'10px'}}>
                       <h5>{data.prizeInfo?.goodsName}</h5>
