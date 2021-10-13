@@ -197,33 +197,37 @@ export default (props) => {
                 <PlusOutlined />
                 添加秒约商品
             </Button>,
-            <SelectProductModal 
-              title={'添加秒约商品'}  
-              visible={visible} 
-              setVisible={setVisible}
-              goodsSaleType={2} 
-              apolloConfig={'MHSupplierId'}
-              callback={(val)=>{
-                const arr = [];
-                val.forEach(item => {
-                  arr.push({
-                    id:item.id,
-                    status:false,
-                    add:true,
-                    probability: item.probability,
-                    skuId: item.skuId,
-                    spuId: item.spuId,
-                    stockNum: 0,
-                    sumNum:item.stockNum,
-                    goodsName: item.goodsName,
-                    imageUrl: item.imageUrl,
-                    salePrice: item.salePrice,
-                    retailSupplyPrice: item.retailSupplyPrice,
+            <>
+            {
+              visible&&<SelectProductModal 
+                title={'添加秒约商品'}  
+                visible={visible} 
+                setVisible={setVisible}
+                goodsSaleType={2} 
+                apolloConfig={'MHSupplierId'}
+                callback={(val)=>{
+                  const arr = [];
+                  val.forEach(item => {
+                    arr.push({
+                      id:item.id,
+                      status:false,
+                      add:true,
+                      probability: item.probability,
+                      skuId: item.skuId,
+                      spuId: item.spuId,
+                      stockNum: 0,
+                      sumNum:item.stockNum,
+                      goodsName: item.goodsName,
+                      imageUrl: item.imageUrl,
+                      salePrice: item.salePrice,
+                      retailSupplyPrice: item.retailSupplyPrice,
+                    })
                   })
-                })
-                setDataSource([...dataSource,...arr])
-              }}
-            />
+                    setDataSource([...dataSource,...arr])
+                }}
+              />
+            }
+            </>
         ]}
         style={{marginBottom:'30px',display:id&&falg?'none':'block'}}
     />
