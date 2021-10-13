@@ -90,7 +90,7 @@ export default (props) => {
       </ProForm.Group>
       <ProForm.Group>
         <Form.Item
-          label="添加海报图片"
+          label="上传海报"
           name="image"
           required
           rules={
@@ -99,17 +99,25 @@ export default (props) => {
               message: '请上传海报图片'
             }]
           }
-          tooltip={
-            <dl>
-              <dt>图片要求</dt>
-              <dd>大小：不超过2MB</dd>
-              <dd>尺寸：375px*676px</dd>
-              <dd>格式：png/jpg/gif</dd>
-            </dl>
-          }
         >
           <Upload multiple maxCount={1} />
         </Form.Item>
+        <div>
+          <dl>
+            <dt>图片要求</dt>
+            <dd>大小：不超过2MB</dd>
+            <dd>尺寸：375px*676px</dd>
+            <dd>格式：png/jpg/gif</dd>
+          </dl>
+        </div>
+      </ProForm.Group>
+      <ProForm.Group>
+        <div>
+          <p>试例：</p>
+          <p style={{width: 125,height: 225,}}>
+            <img style={{width: '100%',height: '100%'}} src="https://uat-yeahgo.oss-cn-shenzhen.aliyuncs.com/goods/base/rc-upload-1632897787078-269.png?imgHeight=676&imgWidth=375" />
+          </p>
+        </div>
       </ProForm.Group>
       <ProFormRadio.Group
           name="state"
