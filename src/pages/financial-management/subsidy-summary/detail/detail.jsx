@@ -35,15 +35,13 @@ const Detail = ()=> {
     return pic && pic?.map(res => {
       if(res){
         return (
-          <Image
-            key={res}
-            width={60}
-            height={60}
-            src={res}
-            style={{
-              marginRight: 10
-            }}
-          />
+          <span key={res} className={styles.img}>
+            <Image
+              width={60}
+              height={60}
+              src={res}
+            />
+          </span>
         )
       }
     })
@@ -102,6 +100,7 @@ const Detail = ()=> {
         return(
           <ProForm
             submitter={false}
+            layout="horizontal"
           >
             <ProForm.Item
               label="列表图片："
@@ -109,10 +108,9 @@ const Detail = ()=> {
               <PreviewGroup>
                 <VoucherPic pic={(data?.attachment)?.split(',')}/>
               </PreviewGroup>
-              <Paragraph>结算时间：{data?.settleTime}</Paragraph>
-              <Paragraph>结算人员：{data?.settleMan}</Paragraph>
             </ProForm.Item>
-            
+            <Paragraph>结算时间：{data?.settleTime}</Paragraph>
+            <Paragraph>结算人员：{data?.settleMan}</Paragraph>
           </ProForm>
         )
       default:
@@ -136,6 +134,11 @@ const Detail = ()=> {
       dataIndex: 'couponAmount',
       align: 'center',
       render: (_) => `￥${amountTransform(_, '/')}`
+    },
+    {
+      title: '券名称',
+      dataIndex: 'couponName',
+      align: 'center',
     },
     {
       title: '订单摊分优惠金额',
