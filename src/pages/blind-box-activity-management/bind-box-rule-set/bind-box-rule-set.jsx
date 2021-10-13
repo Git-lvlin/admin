@@ -68,6 +68,15 @@ export default (props) => {
       }
     })
   }
+  const checkConfirm2 = (rule, value, callback) => {
+    return new Promise(async (resolve, reject) => {
+      if (value && value.length > 1000) {
+        await reject('活动规则不超过1000个字符')
+      }else {
+        await resolve()
+      }
+    })
+  }
   const onsubmit = (values) => {
     try {
       values.id=id||0
@@ -339,7 +348,10 @@ export default (props) => {
               name="ruleText"
               style={{ minHeight: 32, marginTop: 15 }}
               placeholder='列如玩法规则、简单的用户协议'
-              rules={[{ required: true, message: '请备注活动规则' }]}
+              rules={[
+                { required: true, message: '请备注活动规则' },
+                {validator: checkConfirm2}
+              ]}
               rows={4}
               readonly={id&&falg}
           />
