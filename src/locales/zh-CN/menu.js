@@ -28,6 +28,7 @@ export default {
   'menu.order-management.normal-order-detail': '订单详情',
   'menu.order-management.normal-order-detail-purchase': '订单详情',
   'menu.order-management.intensive-order': '集约订单',
+  'menu.order-management.intensive-order.intensive-purchase-order': '平台采购订单',
   'menu.order-management.intensive-order.shopkeeper-order': '集约零售订单',
   'menu.order-management.intensive-order.supplier-order': '集约批发订单',
   'menu.order-management.intensive-order.supplier-order-purchase': '集约批发订单(采购)',
@@ -65,6 +66,10 @@ export default {
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
+  'menu.intensive-activity-management.intensive-remind-configuration': '集约提醒配置',
+  'menu.intensive-activity-management.intensive-remind-statistics': '集约提醒统计',
+
+
 
   'menu.supplier-management': '供应商家管理',
   'menu.supplier-management.supplier-list': '供应商家列表',
@@ -75,6 +80,17 @@ export default {
   'menu.supplier-management.supplier-sub-account': '供应商家子账号',
   'menu.supplier-management.supplier-detail': '供应商家详情',
   'menu.supplier-management.supplier-account-info': '供应商家资金账户信息',
+
+  'menu.operation-management': '运营商管理',
+  'menu.operation-management.operation-list': '运营商列表',
+  'menu.operation-management.bind-list': '社区店绑定列表',
+  'menu.operation-management.audit-list': '运营商审核',
+  'menu.operation-management.consultant-product-list': '运营商顾问商品列表',
+  'menu.operation-management.consultant-operation-list': '顾问运营商列表',
+  'menu.operation-management.after-sale-address': '售后地址',
+  'menu.operation-management.operation-sub-account': '运营商子账号',
+  'menu.operation-management.operation-detail': '运营商详情',
+  'menu.operation-management.operation-account-info': '运营商资金账户信息',
 
   'menu.asset-management': '资产管理',
   'menu.asset-management.settlement-profit-list': '结算分润列表',
@@ -142,13 +158,13 @@ export default {
   'menu.dc-management.list': '资源位列表',
   'menu.dc-management.version': '资源位版本',
 
-  'menu.coupon-management': '优惠券管理',
-  'menu.coupon-management.coupon-list': '优惠券列表',
-  'menu.coupon-management.construction':'新建优惠劵',
+  'menu.coupon-management': '红包管理',
+  'menu.coupon-management.coupon-list': '红包列表',
+  'menu.coupon-management.construction':'新建红包',
   'menu.coupon-management.coupon-codebase':'码库',
-  'menu.coupon-management.coupon-audit':'优惠券审核',
+  'menu.coupon-management.coupon-audit':'红包审核',
   'menu.coupon-management.audit-details':'审核详情',
-  'menu.coupon-management.list-details':'优惠券详情',
+  'menu.coupon-management.list-details':'红包详情',
   'menu.coupon-management.coupon-crowd':'群体管理',
   'menu.coupon-management.add-crowd':'新建群体',
   
@@ -220,8 +236,8 @@ export default {
   'menu.financial-management.transaction-detail-management.withdrawal-balance-details':'可提现余额明细',
   'menu.financial-management.transaction-detail-management.order-pay-detail-management':'订单支付明细管理',
   'menu.financial-management.transaction-detail-management.order-pay-detail':'订单支付详情',
-  'menu.financial-management.transaction-detail-management.bonus-detail-management':'提成明细管理',
-  'menu.financial-management.transaction-detail-management.commission-detail-management':'佣金明细管理',
+  'menu.financial-management.transaction-detail-management.bonus-detail-management':'店铺收益明细管理',
+  'menu.financial-management.transaction-detail-management.commission-detail-management':'平台收益明细管理',
   'menu.financial-management.transaction-detail-management.loan-detail-management':'货款明细管理',
   'menu.financial-management.transaction-detail-management.royalty-details':'明细详情',
   'menu.financial-management.transaction-detail-management.after-sales-order-details':'售后订单明细管理',
@@ -244,6 +260,22 @@ export default {
   'menu.data-board.rank': '排名',
   'menu.data-board.order': '订单',
 
+  'menu.sign-activity-management': '签到活动管理',
+  'menu.sign-activity-management.sign-rule': '签到规则',
+  'menu.sign-activity-management.usable-commodity': '可用商品',
+  'menu.sign-activity-management.grant-detail': '发放明细',
+  'menu.sign-activity-management.user-detail': '用户红包明细',
+  'menu.sign-activity-management.consume-detail': '消耗明细',
+
+
+  'menu.blind-box-activity-management': '盲盒活动管理',
+  'menu.blind-box-activity-management.blind-box-management-list': '盲盒活动列表',
+  'menu.blind-box-activity-management.blind-box-grant-detail': '发放明细',
+  'menu.blind-box-activity-management.blind-box-consume-detail': '使用明细',
+  'menu.blind-box-activity-management.blind-box-employ-detail': '用户盲盒机会明细',
+  'menu.blind-box-activity-management.bind-box-rule-set': '盲盒规则配置',
+
+  
   'menu.import-export-configuration': '导入导出配置',
   'menu.import-export-configuration.export-configuration': '导出配置',
   'menu.import-export-configuration.import-configuration': '导入配置',

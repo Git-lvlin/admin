@@ -56,6 +56,12 @@ const columns = [
     order: 8
   },
   {
+    title: '供应商家ID',
+    dataIndex: 'supplierId',
+    align: 'center',
+    order: -1
+  },
+  {
     title: '申请时间',
     dataIndex: 'applyTime',
     valueType: 'dateTimeRange',
@@ -132,6 +138,7 @@ const afterSalesOrder = () => {
         params={{}}
         request={refundOrder}
         search={{
+          defaultCollapsed: false,
           optionRender: ({searchText, resetText}, {form}) => [
             <Button
               key="search"

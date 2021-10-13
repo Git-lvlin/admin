@@ -9,8 +9,9 @@ import BrandSelect from '@/components/brand-select'
 import { typeTransform, amountTransform } from '@/utils/utils'
 import Edit from '../product-list/edit'
 import ProductDetailDrawer from '@/components/product-detail-drawer'
-
-
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+import moment from 'moment';
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -55,7 +56,9 @@ const TableList = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
+  const [visit, setVisit] = useState(false)
 
+  const formRef = useRef();
 
   const getDetail = (record) => {
     api.getDetail({
@@ -255,6 +258,18 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+    },
+    {
+      title: '审核时间',
+      dataIndex: 'auditTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
@@ -265,6 +280,32 @@ const TableList = () => {
       ),
     },
   ];
+
+  const getFieldValue = () => {
+    if (formRef?.current?.getFieldsValue) {
+      const { current, pageSize, gcId = [], createTime, auditTime, ...rest } = formRef?.current?.getFieldsValue?.();
+      const obj = {};
+
+      if (createTime) {
+        obj.createTimeStart = moment(createTime[0]).unix();
+        obj.createTimeEnd = moment(createTime[1]).unix();
+      }
+
+      if (auditTime) {
+        obj.auditTimeStart = moment(auditTime[0]).unix();
+        obj.auditTimeEnd = moment(auditTime[1]).unix();
+      }
+
+      return {
+        ...obj,
+        selectType: 1,
+        gcId1: gcId[0],
+        gcId2: gcId[1],
+        ...rest
+      }
+    }
+    return {}
+  }
 
   useEffect(() => {
     api.getConfig()
@@ -284,6 +325,7 @@ const TableList = () => {
         rowKey="id"
         options={false}
         actionRef={actionRef}
+        formRef={formRef}
         params={{
           selectType: 1,
         }}
@@ -293,6 +335,13 @@ const TableList = () => {
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
+            <Export
+              key="4"
+              change={(e) => { setVisit(e) }}
+              type="goods-operate-export"
+              conditions={getFieldValue}
+            />,
+            <ExportHistory key="5" show={visit} setShow={setVisit} type="goods-operate-export" />,
           ],
         }}
         columns={columns}

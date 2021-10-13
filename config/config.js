@@ -9,6 +9,7 @@ import productManagement from './routers/product-management'
 import setting from './routers/setting'
 import intensiveActivityManagement from './routers/intensive-activity-management'
 import supplierManagement from './routers/supplier-management'
+import operationManagement from './routers/operation-management'
 import intensiveStoreManagement from './routers/intensive-store-management'
 import singleContractActivityManagement from './routers/single-contract-activity-management'
 import groupContractActivityManagement from './routers/group-contract-activity-management'
@@ -22,6 +23,8 @@ import pcm from './routers/price-comparsion-management'
 import financialManagement from './routers/financial-management'
 import dataBoard from './routers/data-board'
 import dc from './routers/dc'
+import signActivityManagement from './routers/sign-activity-management'
+import BlindBoxActivityManagement from './routers/blind-box-activity-management'
 import importExportConfiguration from './routers/import-export-configuration'
 
 
@@ -77,6 +80,7 @@ const config = {
             setting,
             intensiveActivityManagement,
             supplierManagement,
+            operationManagement,
             intensiveStoreManagement,
             singleContractActivityManagement,
             groupContractActivityManagement,
@@ -90,6 +94,8 @@ const config = {
             financialManagement,
             dataBoard,
             dc,
+            signActivityManagement,
+            BlindBoxActivityManagement,
             importExportConfiguration,
             {
               component: '404',

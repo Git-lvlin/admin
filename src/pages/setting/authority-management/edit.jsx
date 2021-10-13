@@ -111,12 +111,12 @@ export default (props) => {
       }}
       onValuesChange={onValuesChange}
       {...formItemLayout}
-    // initialValues={{
-    //   ruleType: data.rule_type,
-    //   status: data.status,
-    //   title: data.title,
-    //   name: data.name
-    // }}
+      initialValues={{
+        ruleType: data.rule_type,
+        status: data.status,
+        title: data.title,
+        name: data.name
+      }}
     >
       <ProFormRadio.Group
         options={[

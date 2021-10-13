@@ -21,21 +21,20 @@ const VoucherPic = ({pic}) => {
   })
 }
 const optType = (type, data) => {
-  let { parameterMap } = data
-  const genre = parameterMap?.afterSalesType == 1 ? '退款':'退款退货' 
+  const { parameterMap } = data
   switch(type) {
     case 1:
     case 4:
-      return `发起了${genre}申请，等待商家审核。退货原因：${data?.description}，退款金额：¥${amountTransform(parameterMap?.returnAmount, '/').toFixed(2)}`
+      return `发起了${parameterMap?.afterSalesType}申请，等待商家审核。退货原因：${parameterMap?.reason}，退款金额：¥${amountTransform(parameterMap?.returnAmount, '/').toFixed(2)}`
     case 2:
       return `商家拒绝了申请。拒绝原因：${data?.description}`
     case 3:
       return `商家拒绝了申请。拒绝原因：空`
     case 5:
       return `买家申请了平台介入。申诉原因：${data?.description}`
-    case 6:
     case 9:
-      return `商家确认收货地址：${parameterMap?.receiveMan}，${parameterMap?.receivePhone}，${parameterMap?.receiveAddress}，退货说明：${data?.description}`
+      return `商家确认收货地址：${parameterMap?.receiveMan}，${parameterMap?.receivePhone}，${parameterMap?.receiveAddress}`
+    case 6:
     case 7:
     case 15:
     case 16:

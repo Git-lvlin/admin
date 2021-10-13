@@ -7,7 +7,6 @@ import debounce from 'lodash/debounce';
 import * as api from '@/services/product-management/product-list';
 import { amountTransform } from '@/utils/utils'
 
-
 export default function EditTable(props) {
   const { tableHead, tableData, setTableData, settleType, goodsSaleType } = props;
   const [columns, setColumns] = useState([])
@@ -55,6 +54,13 @@ export default function EditTable(props) {
       {
         title: '批发供货价(元)',
         dataIndex: 'wholesaleSupplyPrice',
+        editable: false,
+        width: 130,
+        hideInTable: goodsSaleType === 2,
+      },
+      {
+        title: '集采箱柜单位量',
+        dataIndex: 'batchNumber',
         editable: false,
         width: 130,
         hideInTable: goodsSaleType === 2,
@@ -110,6 +116,26 @@ export default function EditTable(props) {
         //   }],
         // }
       },
+      {
+        title: '平均运费(元)',
+        dataIndex: 'wholesaleFreight',
+        width: 130,
+        hideInTable: goodsSaleType === 2,
+      },
+      {
+        title: '是否包邮',
+        dataIndex: 'isFreeFreight',
+        width: 130,
+        render: (_) => _ === 1 ? '包邮' : '不包邮',
+        hideInTable: goodsSaleType === 1,
+      },
+      {
+        title: '运费模板',
+        dataIndex: 'freightTemplateId',
+        width: 130,
+        render: (_) => _.label ? _.label : '_',
+        hideInTable: goodsSaleType === 1,
+      },
       // {
       //   title: '操作',
       //   valueType: 'option',
@@ -162,6 +188,9 @@ export default function EditTable(props) {
             })
             setDataSource(arr)
             setTableData(arr)
+          } else {
+            setDataSource(recordList)
+            setTableData(recordList)
           }
         })
       } else {

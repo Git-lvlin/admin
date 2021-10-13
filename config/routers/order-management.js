@@ -29,6 +29,11 @@ export default {
       path: '/order-management/intensive-order',
       routes: [
         {
+          name: 'intensive-purchase-order',
+          path: '/order-management/intensive-order/intensive-purchase-order',
+          component: './order-management/intensive-order/intensive-purchase-order',
+        },
+        {
           name: 'supplier-order',
           path: '/order-management/intensive-order/supplier-order',
           component: './order-management/intensive-order/supplier-order',

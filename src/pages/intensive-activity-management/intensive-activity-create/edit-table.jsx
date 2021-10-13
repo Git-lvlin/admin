@@ -13,9 +13,9 @@ import debounce from 'lodash/debounce';
 export default function EditTable({ onSelect }) {
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  // const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectData, setSelectData] = useState([]);
-  const [form] = Form.useForm();
+  // const [form] = Form.useForm();
 
   const columns = [
     {
@@ -212,8 +212,22 @@ export default function EditTable({ onSelect }) {
       editable: false,
     },
     {
-      title: '配送费补贴(元)',
+      title: '运营中心配送费补贴',
+      dataIndex: 'operationFixedPrice',
+      valueType: 'text',
+      hideInSearch: true,
+      editable: false,
+    },
+    {
+      title: '社区店配送费补贴',
       dataIndex: 'fixedPrice',
+      valueType: 'text',
+      hideInSearch: true,
+      editable: false,
+    },
+    {
+      title: '集采箱柜单位量',
+      dataIndex: 'batchNumber',
       valueType: 'text',
       hideInSearch: true,
       editable: false,
@@ -245,10 +259,11 @@ export default function EditTable({ onSelect }) {
     const arr = data.map(item => ({
       ...item,
       totalStockNum: parseInt(item.stockNum * 0.8, 10),
-      minNum: item.wholesaleMinNum || 10,
+      minNum: item.batchNumber,
       maxNum: 100,
       price: amountTransform(item.price, '/'),
       fixedPrice: amountTransform(item.fixedPrice, '/'),
+      operationFixedPrice: amountTransform(item.operationFixedPrice, '/'),
       settlePercent: amountTransform(item.settlePercent),
       wholesaleFreight: amountTransform(item.wholesaleFreight, '/'),
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
@@ -287,6 +302,7 @@ export default function EditTable({ onSelect }) {
             const data = {
               ...record,
               fixedPrice: amountTransform(skuData.fixedPrice, '/'),
+              operationFixedPrice: amountTransform(skuData.operationFixedPrice, '/'),
               settlePercent: amountTransform(skuData.settlePercent),
               price: amountTransform(skuData.price, '/'),
               profit: amountTransform(skuData.profit, '/'),
@@ -346,33 +362,35 @@ export default function EditTable({ onSelect }) {
 
       rowSelection={{
         hideSelectAll: true,
-        // type: 'radio',
-        selectedRowKeys,
+        type: 'radio',
+        // selectedRowKeys,
         // onChange: (_, val) => {
         //   console.log('_', _);
         //   onSelect(val)
         //   setSelectedRowKeys(val.map(item => item.skuId))
         // },
         onSelect: (record, selected) => {
-          if (selected) {
-            if (selectedRowKeys.length === 10) {
-              message.error('最多只能选择10个商品');
-              return;
-            }
-            const arr = [...selectedRowKeys];
-            arr.push(record.skuId);
-            setSelectedRowKeys(arr);
-            const datas = [...selectData];
-            datas.push(record);
-            setSelectData(datas);
-            onSelect(datas);
-          } else {
-            const arr = selectedRowKeys.filter(item => item !== record.skuId)
-            setSelectedRowKeys(arr);
-            const datas = selectData.filter(item => item.skuId !== record.skuId);
-            setSelectData(datas);
-            onSelect(datas);
-          }
+          // if (selected) {
+          //   if (selectedRowKeys.length === 10) {
+          //     message.error('最多只能选择10个商品');
+          //     return;
+          //   }
+          //   const arr = [...selectedRowKeys];
+          //   arr.push(record.skuId);
+          //   setSelectedRowKeys(arr);
+          //   const datas = [...selectData];
+          //   datas.push(record);
+          //   setSelectData(datas);
+          //   onSelect(datas);
+          // } else {
+          //   const arr = selectedRowKeys.filter(item => item !== record.skuId)
+          //   setSelectedRowKeys(arr);
+          //   const datas = selectData.filter(item => item.skuId !== record.skuId);
+          //   setSelectData(datas);
+          //   onSelect(datas);
+          // }
+          setSelectData([record]);
+          onSelect([record]);
         },
         fixed: true
       }}

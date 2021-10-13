@@ -45,17 +45,17 @@ const Model = {
     },
 
     logout() {
-      const { redirect } = getPageQuery(); // Note: There may be security issues, please note
+      // const { redirect } = getPageQuery(); // Note: There may be security issues, please note
       LoginOut();
-      if (window.location.pathname !== '/user/login' && !redirect) {
-        history.replace({
-          pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
-        });
-      }
-
+      // if (window.location.pathname !== '/user/login' && !redirect) {
+      //   history.replace({
+      //     pathname: '/user/login',
+      //     search: stringify({
+      //       redirect: window.location.href,
+      //     }),
+      //   });
+      // }
+      window.location.replace('/user/login')
       window.localStorage.removeItem('token')
       window.localStorage.removeItem('authority')
     },
