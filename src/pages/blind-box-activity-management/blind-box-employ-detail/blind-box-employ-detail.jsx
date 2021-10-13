@@ -17,6 +17,7 @@ const EmployDetail=(props) => {
     const ref=useRef()
     const [detailList,setDetailList]=useState()
     const [detailVisible, setDetailVisible] = useState(false);
+    const [orderId,setOrderId]=useState()
     const columns= [
       {
         title: '序号',
@@ -121,14 +122,7 @@ const EmployDetail=(props) => {
             return  <>
                     <p>已兑换</p>
                     <p>订单号：</p>
-                    <a onClick={() => {  setDetailVisible(true); }}>{data.orderInfo?.orderSn}</a>
-                    {
-                      detailVisible && <Detail
-                      id={data.orderInfo?.orderId}
-                      visible={detailVisible}
-                      setVisible={setDetailVisible}
-                    />
-                    }
+                    <a onClick={() => {  setDetailVisible(true);setOrderId(data.orderInfo?.orderId) }}>{data.orderInfo?.orderSn}</a>
                     </>
           }else if(data.orderInfo?.orderStatus==3){
             return  <>
@@ -164,7 +158,13 @@ const EmployDetail=(props) => {
           }}
           columns={columns}
         />
-       
+        {
+          detailVisible && <Detail
+          id={orderId}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+        }
         <Button style={{float:'right',margin:'20px 20px 0 0'}} type="default" onClick={() => history.goBack()}>
            返回
         </Button>

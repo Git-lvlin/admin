@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getBlindboxUseList } from '@/services/blind-box-activity-management/blindbox-get-use-list';
 import { history, connect } from 'umi';
-import AuditModel from '../blind-box-employ-detail/audit-model'
+import AuditModel from '../blind-box-employ-detail/audit-detail-model'
 import Detail from '@/pages/order-management/normal-order/detail';
 
 
@@ -13,6 +13,7 @@ export default () => {
     const ref=useRef()
     const [detailList,setDetailList]=useState()
     const [detailVisible, setDetailVisible] = useState(false);
+    const [orderId,setOrderId]=useState()
     const columns= [
       {
         title: '序号',
@@ -85,7 +86,6 @@ export default () => {
         title: '机会编号',
         dataIndex: 'code',
         valueType: 'text',
-        ellipsis:true
       },
       {
         title: '筛选',
@@ -142,14 +142,7 @@ export default () => {
             return  <>
                     <p>已兑换</p>
                     <p>订单号：</p>
-                    <a onClick={() => {  setDetailVisible(true); }}>{data.orderInfo.orderSn}</a>
-                    {
-                      detailVisible && <Detail
-                      id={data.orderInfo.orderId}
-                      visible={detailVisible}
-                      setVisible={setDetailVisible}
-                    />
-                    }
+                    <a onClick={() => {  setDetailVisible(true);setOrderId(data.orderInfo?.orderId) }}>{data.orderInfo.orderSn}</a>
                     </>
           }else if(data.orderInfo.orderStatus==3){
             return  <>
@@ -201,6 +194,13 @@ export default () => {
           }}
           columns={columns}
         />
+        {
+          detailVisible && <Detail
+          id={orderId}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+        }
         <Button style={{float:'right',margin:'20px 20px 0 0'}} type="default" onClick={() => history.push('/blind-box-activity-management/blind-box-grant-detail')}>
            返回
         </Button>
