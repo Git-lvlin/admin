@@ -50,6 +50,7 @@ export default (props) => {
                     }
                 ]}
                 readonly={id&&falg}
+                rules={[{ required: true, message: '请设置邀请状态' }]}
             />
             <ProFormDependency name={['switch1']}>
                 {({ switch1 }) => { 
@@ -133,6 +134,7 @@ export default (props) => {
                     }
                 ]}
                 readonly={id&&falg}
+                rules={[{ required: true, message: '请设置签到状态' }]}
             />
             <ProFormDependency name={['switch2']}>
                 {({ switch2 }) => { 
@@ -141,31 +143,35 @@ export default (props) => {
                     return  <div className={styles.unfold}>
                                 <ProFormSelect
                                     name="signInNum"
-                                    initialValue={2}
+                                    initialValue={1}
                                     options={[
                                         {
+                                            value: 1,
+                                            label: '每连续签到1天获得1次',
+                                        },
+                                        {
                                             value: 2,
-                                            label: '每连续到2天获得1次',
+                                            label: '每连续签到2天获得1次',
                                         },
                                         {
                                             value: 3,
-                                            label: '每连续到3天获得1次',
+                                            label: '每连续签到3天获得1次',
                                         },
                                         {
                                             value: 4,
-                                            label: '每连续到4天获得1次',
+                                            label: '每连续签到4天获得1次',
                                         },
                                         {
                                             value: 5,
-                                            label: '每连续到5天获得1次',
+                                            label: '每连续签到5天获得1次',
                                         },
                                         {
                                             value: 7,
-                                            label: '每连续到7天获得1次',
+                                            label: '每连续签到7天获得1次',
                                         },
                                         {
                                             value: 15,
-                                            label: '每连续到15天获得1次',
+                                            label: '每连续签到15天获得1次',
                                         }
                                     ]}
                                     readonly={id}
@@ -196,10 +202,11 @@ export default (props) => {
                     },
                     {
                         label: '关闭',
-                        value: 2,
+                        value: 0,
                     }
                 ]}
                 readonly={id&&falg}
+                rules={[{ required: true, message: '请设置订单消费状态' }]}
             />
             <ProFormDependency name={['switch3']}>
                 {({ switch3 }) => { 

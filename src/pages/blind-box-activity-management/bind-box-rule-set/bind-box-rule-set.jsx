@@ -190,6 +190,10 @@ export default (props) => {
         }
         className={styles.bindBoxRuleSet}
         initialValues={{
+          prizeNotice:[{
+            imageUrl: '',
+            name: ''
+          }],
           ruleItems: [{
             imageUrl: '',
             name: ''
@@ -261,6 +265,7 @@ export default (props) => {
                     {validator: checkConfirm}
                 ]} 
                 readonly={id&&falg}
+                rules={[{ required: true, message: '请设置中奖次数' }]}
             />
             <span>次，当天总计达到此中奖次数，后面的人不再中奖</span>
         </ProForm.Group>
@@ -272,7 +277,7 @@ export default (props) => {
         
 
         {/* 奖品预告 */}
-        <Form.Item label="奖品预告（尺寸72x56）" rules={[{ required: true, message: '请设置奖品预告' }]}>
+        <Form.Item label="奖品预告（尺寸72x56）" className={styles.box}>
           {
             id&&falg?
             <List
@@ -300,7 +305,7 @@ export default (props) => {
                         key={field.key}
                       >
                         <ProForm.Group>
-                          <Form.Item key="1" {...field} name={[field.name, 'imageUrl']} fieldKey={[field.fieldKey, 'imageUrl']}>
+                          <Form.Item  key="1" {...field} name={[field.name, 'imageUrl']} fieldKey={[field.fieldKey, 'imageUrl']}>
                             <Upload dimension={{width:72,height:56}} code={204} multiple maxCount={1} accept="image/*" size={1 * 1024} />
                           </Form.Item>
                           &nbsp;
@@ -315,6 +320,7 @@ export default (props) => {
                                 width: 328
                               }
                             }}
+                            rules={[{ required: true, message: '请设置奖品预告' }]}
                           />
                         </ProForm.Group>
                       </List.Item>
