@@ -141,8 +141,12 @@ export default (props) => {
                     return  <div className={styles.unfold}>
                                 <ProFormSelect
                                     name="signInNum"
-                                    initialValue={2}
+                                    initialValue={1}
                                     options={[
+                                        {
+                                            value: 1,
+                                            label: '每连续到1天获得1次',
+                                        },
                                         {
                                             value: 2,
                                             label: '每连续到2天获得1次',
