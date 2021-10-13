@@ -75,6 +75,13 @@ const TransactionDetails = () => {
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )
+      case 'freight':
+        return (
+          <>
+            <span className={styles.amount}>运费: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
       default:
         return ''
     }
@@ -89,11 +96,12 @@ const TransactionDetails = () => {
       dataIndex: 'orderType',
       valueType: 'select',
       valueEnum: {
-        'normalOrder': '普通订单',
-        'second': '秒约订单',
+        'second': '秒约',
         'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
-        'commandCollect': '集约销售订单'
+        'commandCollect': '集约销售订单',
+        'blindBox': '盲盒订单',
+        'signIn': '签到订单'
       }
     },
     {

@@ -6,9 +6,9 @@ import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { withdrawPage } from '@/services/financial-management/transaction-detail-management'
-import { Export,ExportHistory } from '@/pages/export-excel'
+import { Export, ExportHistory } from '@/pages/export-excel'
 
-const WithdrawalAuditManagement = () =>{
+const WithdrawalAuditManagement = () => {
   const [visit, setVisit] = useState(false)
   const skipToDetail = data => {
     history.push(`/financial-management/transaction-detail-management/withdrawal-audit-management/detail/${data}`)
@@ -51,12 +51,21 @@ const WithdrawalAuditManagement = () =>{
       }
     },
     {
-      title: '提现类型',
+      title: '帐户类型',
       dataIndex: 'bankAcctType',
       valueType: 'select',
       valueEnum: {
-        'business': '对公',
-        'person': '对私'
+        'business': '公司户',
+        'person': '个人户'
+      }
+    },
+    {
+      title: '提现类型',
+      dataIndex: 'withdrawType',
+      valueType: 'select',
+      valueEnum: {
+        'goodsAmount': '货款提现',
+        'commission': '收益提现'
       }
     },
     {

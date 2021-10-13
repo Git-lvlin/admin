@@ -6,6 +6,7 @@ import { useLocation, history } from 'umi'
 import moment from 'moment'
 
 import { moreTypeGmvSumYue } from '@/services/data-board/data-board'
+import { amountTransform } from '@/utils/utils'
 
 const GmvDetail = () => {
   const [type, setType] = useState(1)
@@ -36,7 +37,8 @@ const GmvDetail = () => {
     {
       title: 'GMV',
       dataIndex: 'dayGmv',
-      align: 'center'
+      align: 'center',
+      render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
       title: '订单数',
