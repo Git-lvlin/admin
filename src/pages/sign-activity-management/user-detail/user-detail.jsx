@@ -105,7 +105,7 @@ export default (props) => {
                     <Image src={data.goodsInfo?.goodsImageUrl} alt="" width='80px' height='80px' />
                     <div style={{marginLeft:'10px'}}>
                       <h4>{data.goodsInfo?.goodsName}</h4>
-                      <span style={{color:'red',fontSize:'10px'}}>¥{data.goodsInfo?.salePrice}</span>
+                      <span style={{color:'red',fontSize:'10px'}}>¥{data.goodsInfo?.salePrice/100}</span>
                       <p style={{fontSize:'10px'}}>SKU  {data.goodsInfo?.skuId}</p>
                       <p style={{fontSize:'10px'}}>订单号：{data.goodsInfo?.orderId}</p>
                     </div>

@@ -1,61 +1,18 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getBlindboxUseList } from '@/services/blind-box-activity-management/blindbox-get-use-list';
 import { history, connect } from 'umi';
-import XLSX from 'xlsx'
 import AuditModel from '../blind-box-employ-detail/audit-model'
+import Detail from '@/pages/order-management/normal-order/detail';
 
 
 
 export default () => {
     const ref=useRef()
     const [detailList,setDetailList]=useState()
-     //导出
-     const exportExcel = (searchConfig) => {
-      getBlindboxUseList({...searchConfig.form.getFieldsValue()}).then(res => {
-          const data = res.data.records.map(item => {
-            const { ...rest } = item;
-            return {
-              ...rest
-            }
-          });
-          const wb = XLSX.utils.book_new();
-          const ws = XLSX.utils.json_to_sheet([
-            {
-              name: '活动名称',
-              activityStartTime: '活动时间',
-              memberMobile:'用户手机号',
-              memberNicheng:'用户名',
-              createTime: '使用时间',
-              num: '使用次数',
-              type:'使用类型',
-              code:'机会编号',
-              prizeInfo: '获得奖品',
-              orderInfo: '兑换详情',
-            },
-            ...data
-          ], {
-            header: [
-              'name',
-              'activityStartTime',
-              'couponAmountDisplay',
-              'memberNicheng',
-              'createTime',
-              'num',
-              'type',
-              'code',
-              'prizeInfo',
-              'orderInfo',
-            ],
-            skipHeader: true
-          });
-          XLSX.utils.book_append_sheet(wb, ws, "file");
-          XLSX.writeFile(wb, `${+new Date()}.xlsx`)
-      })
-    }
+    const [detailVisible, setDetailVisible] = useState(false);
     const columns= [
       {
         title: '序号',
@@ -150,6 +107,7 @@ export default () => {
         dataIndex: 'prizeInfo',
         valueType: 'text',
         hideInSearch: true,
+        width:280,
         render: (_, data)=>{
           if(data.type==5||data.type==6){
             return null
@@ -157,11 +115,11 @@ export default () => {
           if(data.prizeInfo?.prizeStatus==0){
             return <p>未抽中</p>
           }
-          return <div style={{display:'flex',alignItems:'center',justifyContent:'space-around'}}>
+          return <div style={{display:'flex',justifyContent:'center'}}>
                     <Image src={data.prizeInfo.imageUrl} alt="" width='50px' height='50px' />
                     <div style={{marginLeft:'10px'}}>
                       <h5>{data.prizeInfo.goodsName}</h5>
-                      <span style={{color:'red',fontSize:'10px'}}>销售价¥{data.prizeInfo.salePrice}</span>
+                      <span style={{color:'red',fontSize:'10px'}}>销售价¥{data.prizeInfo.salePrice/100}</span>
                       <p style={{fontSize:'12px'}}>SKU  {data.prizeInfo.skuId}</p>
                     </div>
                  </div>
@@ -184,7 +142,14 @@ export default () => {
             return  <>
                     <p>已兑换</p>
                     <p>订单号：</p>
-                    <a onClick={()=>{history.push('/order-management/normal-order-detail/'+data.orderInfo.orderSn)}}>{data.orderInfo.orderSn}</a>
+                    <a onClick={() => {  setDetailVisible(true); }}>{data.orderInfo.orderSn}</a>
+                    {
+                      detailVisible && <Detail
+                      id={data.orderInfo.orderId}
+                      visible={detailVisible}
+                      setVisible={setDetailVisible}
+                    />
+                    }
                     </>
           }else if(data.orderInfo.orderStatus==3){
             return  <>
@@ -232,9 +197,6 @@ export default () => {
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
-               <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
-                导出数据
-              </Button>
             ],
           }}
           columns={columns}

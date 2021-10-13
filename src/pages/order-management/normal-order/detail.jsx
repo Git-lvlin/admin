@@ -120,8 +120,8 @@ const Detail = (props) => {
                   <div>+{amountTransform(detailData?.shippingFeeAmount, '/')}元</div>
                 </div>
                 <div className={styles.box}>
-                  <div>优惠券优惠</div>
-                  <div>-{amountTransform(detailData?.couponAmount, '/')}元</div>
+                  <div>红包</div>
+                  <div>-{amountTransform(detailData?.couponAmount, '/')}元{detailData?.orderType === 18 && '（签到红包）'}</div>
                 </div>
                 <div className={styles.box}>
                   <div>用户实付</div>
@@ -192,7 +192,7 @@ const Detail = (props) => {
                           <div>{item.skuName}</div>
                         </div>
                         <div className={styles.box}>
-                          <div>{{ 2: '秒约', 3: '单约', 4: '团约', 11: '零售' }[detailData.orderType]}价</div>
+                          <div>{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[detailData.orderType] || '秒约')}价</div>
                           <div>{amountTransform(item.skuSalePrice, '/')}元</div>
                         </div>
                         <div className={styles.box}>
