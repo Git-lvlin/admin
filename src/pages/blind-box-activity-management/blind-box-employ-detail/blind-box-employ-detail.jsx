@@ -13,7 +13,7 @@ const { TabPane } = Tabs
 
 
 const EmployDetail=(props) => {
-    const { id }=props
+    const { code }=props
     const ref=useRef()
     const [detailList,setDetailList]=useState()
     const [detailVisible, setDetailVisible] = useState(false);
@@ -147,7 +147,7 @@ const EmployDetail=(props) => {
           request={getBlindboxUseDetail}
           postData={postData}
           params={{
-            id:id
+            code:code
           }}
           search={{
             defaultCollapsed: false,
@@ -174,7 +174,7 @@ const EmployDetail=(props) => {
 
 
 const UserDetail=(props) => {
-  const { id }=props
+  const { code }=props
   const ref=useRef()
   const [detailList,setDetailList]=useState()
   const columns= [
@@ -279,7 +279,7 @@ const UserDetail=(props) => {
         options={false}
         headerTitle={`用户手机号:${detailList?.memberMobile}         用户名：${detailList?.memberNicheng}         剩余开盒次数：${detailList?.restNum}        已使用次数：${detailList?.useNum}`}
         params={{
-          id:id
+          code:code
         }}
         postData={postData}
         request={getBlindboxIncomeDetail}
@@ -302,7 +302,7 @@ const UserDetail=(props) => {
 
 
 export default (props) =>{
-    let id = props.location.query.id
+    let code = props.location.query.code
     const [seleType,setSeleType]=useState(1)
     return (
         <PageContainer>
@@ -316,12 +316,12 @@ export default (props) =>{
           >
             <TabPane tab="获取明细" key="1">
               {
-                seleType==1&&<UserDetail id={id} />
+                seleType==1&&<UserDetail code={code} />
               }
             </TabPane>
             <TabPane tab="使用明细" key="2">
               {
-                seleType==2&&<EmployDetail id={id} />
+                seleType==2&&<EmployDetail code={code} />
               }
             </TabPane>
           </Tabs>
