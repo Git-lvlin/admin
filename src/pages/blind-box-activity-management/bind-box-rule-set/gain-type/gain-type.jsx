@@ -88,6 +88,7 @@ export default (props) => {
                                         {validator: checkConfirm}
                                     ]}
                                     readonly={id}
+                                    rules={[{ required: true, message: '请设置获得次数' }]}
                                 />
                                 <span>次</span>
                                 </ProForm.Group>
@@ -98,8 +99,9 @@ export default (props) => {
                                         width={100}
                                         rules={[
                                             {validator: checkConfirm}
-                                        ]} 
+                                        ]}
                                         readonly={id&&falg}
+                                        rules={[{ required: true, message: '请设置中奖概率' }]}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
@@ -127,12 +129,8 @@ export default (props) => {
                     return  <div className={styles.unfold}>
                                 <ProFormSelect
                                     name="signInNum"
-                                    initialValue={1}
+                                    initialValue={2}
                                     options={[
-                                        {
-                                            value: 1,
-                                            label: '每连续签到1天获得1次',
-                                        },
                                         {
                                             value: 2,
                                             label: '每连续签到2天获得1次',
@@ -169,6 +167,7 @@ export default (props) => {
                                             {validator: checkConfirm}
                                         ]} 
                                         readonly={id&&falg}
+                                        rules={[{ required: true, message: '请设置中奖概率' }]}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
@@ -230,6 +229,7 @@ export default (props) => {
                                             {validator: checkConfirm}
                                         ]} 
                                         readonly={id&&falg}
+                                        rules={[{ required: true, message: '请设置中奖概率' }]}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
