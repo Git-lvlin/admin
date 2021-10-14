@@ -216,14 +216,14 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
     },
-    {
-      title: '审核状态',
-      dataIndex: 'goodsVerifyState',
-      onFilter: true,
-      valueType: 'select',
-      valueEnum: typeTransform(config.goodsVerifyState),
-      hideInTable: true,
-    },
+    // {
+    //   title: '审核状态',
+    //   dataIndex: ' ',
+    //   onFilter: true,
+    //   valueType: 'select',
+    //   valueEnum: typeTransform(config.goodsVerifyState),
+    //   hideInTable: true,
+    // },
     {
       title: '审核状态',
       dataIndex: 'goodsVerifyStateDisplay',
