@@ -78,7 +78,6 @@ export default (props) => {
     })
   }
   const onsubmit = (values) => {
-    try {
       values.id=id||0
       values.startTime=values.dateRange ?values.dateRange[0]:null
       values.endTime=values.dateRange ?values.dateRange[1]:null
@@ -105,6 +104,7 @@ export default (props) => {
         }
       }
       const arr = [];
+      let sum=0
       dataSource.forEach(item => {
         arr.push({
           id: item.add?0:item.id,
@@ -121,21 +121,24 @@ export default (props) => {
       })
       
       values.skus=arr.length>0&&arr||detailList?.skus
-    } catch (error) {
-      console.log('error',error)
-    }
- 
-    saveActiveConfig(values).then(res=>{
-      if (res.code == 0) {
-        history.push('/blind-box-activity-management/blind-box-management-list')
-        if(id){
-          message.success('编辑成功');
-        }else{
-          message.success('提交成功');
+      values.skus.map(ele=>{
+        sum+=parseInt(ele.probability)
+      })
+    if(sum<100||sum>100){
+      message.error('商品中奖概率之和必须等于100')
+    }else{
+      saveActiveConfig(values).then(res=>{
+        if (res.code == 0) {
+          history.push('/blind-box-activity-management/blind-box-management-list')
+          if(id){
+            message.success('编辑成功');
+          }else{
+            message.success('提交成功');
+          }
+         
         }
-       
-      }
-    })
+      })
+    }
   }
 
   const disabledDate=(current)=>{
