@@ -410,6 +410,7 @@ export default (props) => {
               }
           ]}
           readonly={id&&falg}
+          initialValue={1}
       />
       {
         id&&falg?null
