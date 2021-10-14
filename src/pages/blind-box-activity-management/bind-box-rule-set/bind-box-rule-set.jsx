@@ -294,7 +294,7 @@ export default (props) => {
         
 
         {/* 奖品预告 */}
-        <Form.Item label="奖品预告（尺寸72x56）" className={styles.box}>
+        <Form.Item label="奖品预告（尺寸200x156）" className={styles.box}>
           {
             id&&falg?
             <List
@@ -327,7 +327,7 @@ export default (props) => {
                       >
                         <ProForm.Group>
                           <Form.Item  key="1" {...field} name={[field.name, 'imageUrl']} fieldKey={[field.fieldKey, 'imageUrl']}>
-                            <Upload dimension={{width:72,height:56}} code={204} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+                            <Upload dimension={{width:200,height:156}} code={204} multiple maxCount={1} accept="image/*" size={1 * 1024} />
                           </Form.Item>
                           &nbsp;
                           <ProFormText
@@ -410,6 +410,7 @@ export default (props) => {
               }
           ]}
           readonly={id&&falg}
+          initialValue={1}
       />
       {
         id&&falg?null
