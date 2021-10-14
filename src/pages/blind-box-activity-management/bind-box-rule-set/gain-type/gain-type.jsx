@@ -88,6 +88,7 @@ export default (props) => {
                                         {validator: checkConfirm}
                                     ]}
                                     readonly={id}
+                                    rules={[{ required: true, message: '请设置获得次数' }]}
                                 />
                                 <span>次</span>
                                 </ProForm.Group>
@@ -98,8 +99,9 @@ export default (props) => {
                                         width={100}
                                         rules={[
                                             {validator: checkConfirm}
-                                        ]} 
+                                        ]}
                                         readonly={id&&falg}
+                                        rules={[{ required: true, message: '请设置中奖概率' }]}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
@@ -169,6 +171,7 @@ export default (props) => {
                                             {validator: checkConfirm}
                                         ]} 
                                         readonly={id&&falg}
+                                        rules={[{ required: true, message: '请设置中奖概率' }]}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
@@ -230,6 +233,7 @@ export default (props) => {
                                             {validator: checkConfirm}
                                         ]} 
                                         readonly={id&&falg}
+                                        rules={[{ required: true, message: '请设置中奖概率' }]}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
