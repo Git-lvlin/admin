@@ -8,11 +8,10 @@ import PrizeSet from './prize-set/prize-set'
 import Upload from '@/components/upload';
 import { saveActiveConfig } from '@/services/blind-box-activity-management/blindbox-save-active-config';
 import { getActiveConfigById } from '@/services/blind-box-activity-management/blindbox-get-active-config-list';
-import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio,ProFormDateRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import moment from 'moment';
 import styles from './style.less'
 import { PageContainer } from '@ant-design/pro-layout';
-const FormItem = Form.Item;
 
 const formItemLayout = {
   labelCol: { span: 3 },
@@ -113,7 +112,7 @@ export default (props) => {
         }
       }
       const arr = [];
-      let sum=0
+      // let sum=0
       dataSource.forEach(item => {
         arr.push({
           id: item.add?0:item.id,
@@ -130,12 +129,12 @@ export default (props) => {
       })
       
       values.skus=arr.length>0&&arr||detailList?.skus
-      values.skus.map(ele=>{
-        sum+=parseInt(ele.probability)
-      })
-    if(sum<100||sum>100){
-      message.error('商品中奖概率之和必须等于100')
-    }else{
+      // values.skus.map(ele=>{
+      //   sum+=parseInt(ele.probability)
+      // })
+    // if(sum<100||sum>100){
+    //   message.error('商品中奖概率之和必须等于100')
+    // }else{
       saveActiveConfig(values).then(res=>{
         if (res.code == 0) {
           history.push('/blind-box-activity-management/blind-box-management-list')
@@ -147,7 +146,7 @@ export default (props) => {
          
         }
       })
-    }
+    // }
   }
 
   const disabledDate=(current)=>{
@@ -224,13 +223,18 @@ export default (props) => {
             ]}
         />
         {/* 活动时间 */}
-        <ProFormDateTimeRangePicker
+        <ProFormDateRangePicker
             label='活动时间'
             rules={[{ required: true, message: '请选择活动时间' }]}
             name="dateRange"
             extra="提示：活动时间不能和其他盲盒活动时间重叠"
             fieldProps={{
-               disabledDate:(current)=>disabledDate(current)
+               disabledDate:(current)=>disabledDate(current),
+               showTime:{
+                hideDisabledOptions: true,
+                defaultValue: [moment('00:00', 'HH:mm'), moment('11:59', 'HH:mm')],
+              },
+              format:"YYYY-MM-DD HH:mm"
             }}
             readonly={id&&falg}
             placeholder={[
@@ -316,6 +320,10 @@ export default (props) => {
                     return (
                       <List.Item
                         key={field.key}
+                        extra={fields.length !== 1 &&
+                          <Button style={{ marginLeft: 10, width: 80 }} onClick={() => { remove(field.name) }} type="primary" danger>
+                            删除
+                          </Button>}
                       >
                         <ProForm.Group>
                           <Form.Item  key="1" {...field} name={[field.name, 'imageUrl']} fieldKey={[field.fieldKey, 'imageUrl']}>
