@@ -5,6 +5,7 @@ import SelectProductModal from '@/components/select-product-modal'
 import { PlusOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import ProTable from '@ant-design/pro-table';
+const _ = require('lodash');
 
 
 export default (props) => {
@@ -14,7 +15,7 @@ export default (props) => {
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
   const [cut,setCut]=useState(true)
-  const [submi,setSubmi]=useState(0)
+  // const [submi,setSubmi]=useState(0)
   const columns= [
     {
       title: '序号',
@@ -124,13 +125,13 @@ export default (props) => {
     const arr=dataSource.filter(ele=>(
           ele.id!=val
     ))
-    let sum=0
-    arr.map(ele=>{
-      if(ele.status){
-        sum+=parseInt(ele.probability)
-      }
-    })
-    setSubmi(sum)
+    // let sum=0
+    // arr.map(ele=>{
+    //   if(ele.status){
+    //     sum+=parseInt(ele.probability)
+    //   }
+    // })
+    // setSubmi(sum)
     setDataSource(arr) 
     callback(arr)
   }
@@ -155,19 +156,19 @@ export default (props) => {
               return [defaultDoms.delete];
           },
           onValuesChange: (record, recordList) => {
-            let sum=0
-            recordList.map(ele=>{
-              if(ele.status){
-                sum+=parseInt(ele.probability)
-              }
-            })
-            setSubmi(sum)
-            if(sum>100){
-              message.error('所有商品概率总和不能超过100%')
-            }else if(sum==100){
+            // let sum=0
+            // recordList.map(ele=>{
+            //   if(ele.status){
+            //     sum+=parseInt(ele.probability)
+            //   }
+            // })
+            // setSubmi(sum)
+            // if(sum>100){
+            //   message.error('所有商品概率总和不能超过100%')
+            // }else if(sum==100){
               setDataSource(recordList)
               callback(recordList)
-            }
+            // }
           }
         }}
         toolBarRender={()=>[
@@ -179,17 +180,17 @@ export default (props) => {
               } 
               }>编辑概率</Button>
               :<Button type="primary" onClick={() => { 
-                if(submi==100){
+                // if(submi==100){
                   setEditableKeys([])
                   setCut(true)
-                }else if(submi>100){
-                  message.error('所有商品概率总和不能超过100%')
-                }else if(submi==0){
-                  setEditableKeys([])
-                  setCut(true)
-                }else if(submi!=0&&submi<100){
-                  message.error('中奖概率之和必须=100')
-                }
+                // }else if(submi>100){
+                //   message.error('所有商品概率总和不能超过100%')
+                // }else if(submi==0){
+                //   setEditableKeys([])
+                //   setCut(true)
+                // }else if(submi!=0&&submi<100){
+                //   message.error('中奖概率之和必须=100')
+                // }
               }}>保存</Button>
             }
             </>,
@@ -197,33 +198,38 @@ export default (props) => {
                 <PlusOutlined />
                 添加秒约商品
             </Button>,
-            <SelectProductModal 
-              title={'添加秒约商品'}  
-              visible={visible} 
-              setVisible={setVisible}
-              goodsSaleType={2} 
-              apolloConfig={'MHSupplierId'}
-              callback={(val)=>{
-                const arr = [];
-                val.forEach(item => {
-                  arr.push({
-                    id:item.id,
-                    status:false,
-                    add:true,
-                    probability: item.probability,
-                    skuId: item.skuId,
-                    spuId: item.spuId,
-                    stockNum: 0,
-                    sumNum:item.stockNum,
-                    goodsName: item.goodsName,
-                    imageUrl: item.imageUrl,
-                    salePrice: item.salePrice,
-                    retailSupplyPrice: item.retailSupplyPrice,
+            <>
+            {
+              visible&&<SelectProductModal 
+                title={'添加秒约商品'}  
+                visible={visible} 
+                setVisible={setVisible}
+                goodsSaleType={2} 
+                apolloConfig={'MHSupplierId'}
+                callback={(val)=>{
+                  const arr = [];
+                  val.forEach(item => {
+                    arr.push({
+                      id:item.id,
+                      status:false,
+                      add:true,
+                      probability: item.probability,
+                      skuId: item.skuId,
+                      spuId: item.spuId,
+                      stockNum: 0,
+                      sumNum:item.stockNum,
+                      goodsName: item.goodsName,
+                      imageUrl: item.imageUrl,
+                      salePrice: item.salePrice,
+                      retailSupplyPrice: item.retailSupplyPrice,
+                    })
                   })
-                })
-                setDataSource([...dataSource,...arr])
-              }}
-            />
+                  let arr2=_.uniqWith([...dataSource,...arr], _.isEqual)
+                    setDataSource(arr2)
+                }}
+              />
+            }
+            </>
         ]}
         style={{marginBottom:'30px',display:id&&falg?'none':'block'}}
     />

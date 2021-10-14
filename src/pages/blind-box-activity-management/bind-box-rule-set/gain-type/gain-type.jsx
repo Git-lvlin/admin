@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import styles from '../style.less'
-// import Circulation from '../circulation/circulation'
-import ProForm, { ProFormText, ProFormSelect,ProFormRadio,ProFormDependency } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormSelect,ProFormRadio,ProFormDependency,ProFormDigit } from '@ant-design/pro-form';
 
 export default (props) => {
     const {id,falg}=props
@@ -11,17 +10,6 @@ export default (props) => {
         if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
             await reject('只能输入整数')
         } else {
-            await resolve()
-        }
-        })
-    }
-    const checkDiscounts=(rule, value, callback)=>{
-        return new Promise(async (resolve, reject) => {
-        if(value&&value>=10){
-            await reject('折扣不能大于等于10')
-        }else if(value&&!/^[0-9]+(.[0-9]{0,2})?$/.test(value)){
-            await reject('最多输入两位小数点')
-        }else {
             await resolve()
         }
         })
@@ -50,11 +38,10 @@ export default (props) => {
                     }
                 ]}
                 readonly={id&&falg}
+                rules={[{ required: true, message: '请设置邀请状态' }]}
             />
             <ProFormDependency name={['switch1']}>
                 {({ switch1 }) => { 
-                if(!switch1) return null
-                if(switch1==1){
                     return  <div className={styles.unfold}>
                                 <ProFormSelect
                                     name="inviteNum"
@@ -100,23 +87,25 @@ export default (props) => {
                                         {validator: checkConfirm}
                                     ]}
                                     readonly={id}
+                                    rules={[{ required: true, message: '请设置获得次数' }]}
                                 />
                                 <span>次</span>
                                 </ProForm.Group>
                                 <ProForm.Group>
                                     <span>中奖概率</span>
-                                    <ProFormText 
+                                    <ProFormDigit
                                         name="probability1"
-                                        width={100}
+                                        min={1}
+                                        max={100}
                                         rules={[
-                                            {validator: checkConfirm}
-                                        ]} 
+                                            {validator: checkConfirm},
+                                            { required: true, message: '请设置中奖概率' }
+                                        ]}
                                         readonly={id&&falg}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
                             </div>
-                }
               }}
             </ProFormDependency>
             <ProFormRadio.Group
@@ -133,11 +122,10 @@ export default (props) => {
                     }
                 ]}
                 readonly={id&&falg}
+                rules={[{ required: true, message: '请设置签到状态' }]}
             />
             <ProFormDependency name={['switch2']}>
                 {({ switch2 }) => { 
-                if(!switch2) return null
-                if(switch2==1){
                     return  <div className={styles.unfold}>
                                 <ProFormSelect
                                     name="signInNum"
@@ -145,45 +133,46 @@ export default (props) => {
                                     options={[
                                         {
                                             value: 2,
-                                            label: '每连续到2天获得1次',
+                                            label: '每连续签到2天获得1次',
                                         },
                                         {
                                             value: 3,
-                                            label: '每连续到3天获得1次',
+                                            label: '每连续签到3天获得1次',
                                         },
                                         {
                                             value: 4,
-                                            label: '每连续到4天获得1次',
+                                            label: '每连续签到4天获得1次',
                                         },
                                         {
                                             value: 5,
-                                            label: '每连续到5天获得1次',
+                                            label: '每连续签到5天获得1次',
                                         },
                                         {
                                             value: 7,
-                                            label: '每连续到7天获得1次',
+                                            label: '每连续签到7天获得1次',
                                         },
                                         {
                                             value: 15,
-                                            label: '每连续到15天获得1次',
+                                            label: '每连续签到15天获得1次',
                                         }
                                     ]}
                                     readonly={id}
                                 />
                                 <ProForm.Group>
                                     <span>中奖概率</span>
-                                    <ProFormText 
+                                    <ProFormDigit
                                         name="probability2"
-                                        width={100}
+                                        min={1}
+                                        max={100}
                                         rules={[
-                                            {validator: checkConfirm}
-                                        ]} 
+                                            {validator: checkConfirm},
+                                            { required: true, message: '请设置中奖概率' }
+                                        ]}
                                         readonly={id&&falg}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
                             </div>
-                }
               }}
             </ProFormDependency>
             <ProFormRadio.Group
@@ -196,15 +185,14 @@ export default (props) => {
                     },
                     {
                         label: '关闭',
-                        value: 2,
+                        value: 0,
                     }
                 ]}
                 readonly={id&&falg}
+                rules={[{ required: true, message: '请设置订单消费状态' }]}
             />
             <ProFormDependency name={['switch3']}>
                 {({ switch3 }) => { 
-                if(!switch3) return null
-                if(switch3==1){
                     return  <div className={styles.unfold}>
                                 <ProFormSelect
                                     name="consumeNum"
@@ -235,18 +223,19 @@ export default (props) => {
                                 />
                                 <ProForm.Group>
                                     <span>中奖概率</span>
-                                    <ProFormText 
+                                    <ProFormDigit
                                         name="probability3"
-                                        width={100}
+                                        min={1}
+                                        max={100}
                                         rules={[
-                                            {validator: checkConfirm}
-                                        ]} 
+                                            {validator: checkConfirm},
+                                            { required: true, message: '请设置中奖概率' }
+                                        ]}
                                         readonly={id&&falg}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
                             </div>
-                }
               }}
             </ProFormDependency>
 

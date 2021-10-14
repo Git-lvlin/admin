@@ -14,6 +14,12 @@ export default () => {
     const ref=useRef()
     const columns= [
       {
+        title: 'id',
+        dataIndex: 'id',
+        valueType: 'text',
+        hideInSearch:true
+      },
+      {
         title: '活动名称',
         dataIndex: 'name',
         valueType: 'text',
@@ -21,7 +27,7 @@ export default () => {
       },
       {
         title: '活动时间',
-        dataIndex: 'id',
+        dataIndex: 'startTime',
         valueType: 'text',
         hideInSearch:true,
         render:(_,data)=>{

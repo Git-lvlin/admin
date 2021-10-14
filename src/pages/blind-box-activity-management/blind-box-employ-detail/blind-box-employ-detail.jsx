@@ -13,10 +13,11 @@ const { TabPane } = Tabs
 
 
 const EmployDetail=(props) => {
-    const { id }=props
+    const { memberId }=props
     const ref=useRef()
     const [detailList,setDetailList]=useState()
     const [detailVisible, setDetailVisible] = useState(false);
+    const [orderId,setOrderId]=useState()
     const columns= [
       {
         title: '序号',
@@ -85,7 +86,6 @@ const EmployDetail=(props) => {
         title: '获得奖品',
         dataIndex: 'prizeInfo',
         valueType: 'text',
-        width:280,
         hideInSearch: true,
         render: (_, data)=>{
           if(data.type==5||data.type==6){
@@ -94,7 +94,7 @@ const EmployDetail=(props) => {
           if(data.prizeInfo?.prizeStatus==0){
             return <p>未抽中</p>
           }
-          return <div style={{display:'flex',justifyContent:'center'}}>
+          return <div style={{display:'flex'}}>
                     <Image src={data.prizeInfo?.imageUrl} alt="" width='50px' height='50px' />
                     <div style={{marginLeft:'10px'}}>
                       <h5>{data.prizeInfo?.goodsName}</h5>
@@ -121,14 +121,7 @@ const EmployDetail=(props) => {
             return  <>
                     <p>已兑换</p>
                     <p>订单号：</p>
-                    <a onClick={() => {  setDetailVisible(true); }}>{data.orderInfo?.orderSn}</a>
-                    {
-                      detailVisible && <Detail
-                      id={data.orderInfo?.orderId}
-                      visible={detailVisible}
-                      setVisible={setDetailVisible}
-                    />
-                    }
+                    <a onClick={() => {  setDetailVisible(true);setOrderId(data.orderInfo?.orderId) }}>{data.orderInfo?.orderSn}</a>
                     </>
           }else if(data.orderInfo?.orderStatus==3){
             return  <>
@@ -153,7 +146,7 @@ const EmployDetail=(props) => {
           request={getBlindboxUseDetail}
           postData={postData}
           params={{
-            id:id
+            memberId:memberId
           }}
           search={{
             defaultCollapsed: false,
@@ -164,7 +157,13 @@ const EmployDetail=(props) => {
           }}
           columns={columns}
         />
-       
+        {
+          detailVisible && <Detail
+          id={orderId}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+        }
         <Button style={{float:'right',margin:'20px 20px 0 0'}} type="default" onClick={() => history.goBack()}>
            返回
         </Button>
@@ -174,7 +173,7 @@ const EmployDetail=(props) => {
 
 
 const UserDetail=(props) => {
-  const { id }=props
+  const { memberId }=props
   const ref=useRef()
   const [detailList,setDetailList]=useState()
   const columns= [
@@ -279,7 +278,7 @@ const UserDetail=(props) => {
         options={false}
         headerTitle={`用户手机号:${detailList?.memberMobile}         用户名：${detailList?.memberNicheng}         剩余开盒次数：${detailList?.restNum}        已使用次数：${detailList?.useNum}`}
         params={{
-          id:id
+          memberId:memberId
         }}
         postData={postData}
         request={getBlindboxIncomeDetail}
@@ -302,7 +301,7 @@ const UserDetail=(props) => {
 
 
 export default (props) =>{
-    let id = props.location.query.id
+    let memberId = props.location.query.memberId
     const [seleType,setSeleType]=useState(1)
     return (
         <PageContainer>
@@ -316,12 +315,12 @@ export default (props) =>{
           >
             <TabPane tab="获取明细" key="1">
               {
-                seleType==1&&<UserDetail id={id} />
+                seleType==1&&<UserDetail memberId={memberId} />
               }
             </TabPane>
             <TabPane tab="使用明细" key="2">
               {
-                seleType==2&&<EmployDetail id={id} />
+                seleType==2&&<EmployDetail memberId={memberId} />
               }
             </TabPane>
           </Tabs>
