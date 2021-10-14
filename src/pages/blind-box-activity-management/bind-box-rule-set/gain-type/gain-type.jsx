@@ -15,17 +15,6 @@ export default (props) => {
         }
         })
     }
-    const checkDiscounts=(rule, value, callback)=>{
-        return new Promise(async (resolve, reject) => {
-        if(value&&value>=10){
-            await reject('折扣不能大于等于10')
-        }else if(value&&!/^[0-9]+(.[0-9]{0,2})?$/.test(value)){
-            await reject('最多输入两位小数点')
-        }else {
-            await resolve()
-        }
-        })
-    }
     return (
         <>
             <ProFormText
@@ -54,8 +43,6 @@ export default (props) => {
             />
             <ProFormDependency name={['switch1']}>
                 {({ switch1 }) => { 
-                if(!switch1) return null
-                if(switch1==1){
                     return  <div className={styles.unfold}>
                                 <ProFormSelect
                                     name="inviteNum"
@@ -117,7 +104,6 @@ export default (props) => {
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
                             </div>
-                }
               }}
             </ProFormDependency>
             <ProFormRadio.Group
@@ -138,8 +124,6 @@ export default (props) => {
             />
             <ProFormDependency name={['switch2']}>
                 {({ switch2 }) => { 
-                if(!switch2) return null
-                if(switch2==1){
                     return  <div className={styles.unfold}>
                                 <ProFormSelect
                                     name="signInNum"
@@ -189,7 +173,6 @@ export default (props) => {
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
                             </div>
-                }
               }}
             </ProFormDependency>
             <ProFormRadio.Group
@@ -210,8 +193,6 @@ export default (props) => {
             />
             <ProFormDependency name={['switch3']}>
                 {({ switch3 }) => { 
-                if(!switch3) return null
-                if(switch3==1){
                     return  <div className={styles.unfold}>
                                 <ProFormSelect
                                     name="consumeNum"
@@ -253,7 +234,6 @@ export default (props) => {
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
                             </div>
-                }
               }}
             </ProFormDependency>
 
