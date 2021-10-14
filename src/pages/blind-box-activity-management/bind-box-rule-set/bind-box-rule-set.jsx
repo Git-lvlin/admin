@@ -77,6 +77,15 @@ export default (props) => {
       }
     })
   }
+  const checkConfirm3 = (rule, value, callback) => {
+    return new Promise(async (resolve, reject) => {
+      if (value && value.length > 6) {
+        await reject('奖品名，6个字以内')
+      }else {
+        await resolve()
+      }
+    })
+  }
   const onsubmit = (values) => {
       values.id=id||0
       values.startTime=values.dateRange ?values.dateRange[0]:null
@@ -249,6 +258,7 @@ export default (props) => {
                 width={120}
                 name="redeemEarlyDay"
                 readonly={id} 
+                rules={[{ required: true, message: '请设置兑奖有效期' }]}
             />
             <span>天内有效</span>
             </ProForm.Group>
@@ -323,7 +333,10 @@ export default (props) => {
                                 width: 328
                               }
                             }}
-                            rules={[{ required: true, message: '请设置奖品预告' }]}
+                            rules={[
+                              { required: true, message: '请设置奖品预告' },
+                              {validator: checkConfirm3}
+                            ]}
                           />
                         </ProForm.Group>
                       </List.Item>
