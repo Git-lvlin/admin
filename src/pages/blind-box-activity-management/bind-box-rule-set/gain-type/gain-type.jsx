@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import styles from '../style.less'
-// import Circulation from '../circulation/circulation'
-import ProForm, { ProFormText, ProFormSelect,ProFormRadio,ProFormDependency } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormSelect,ProFormRadio,ProFormDependency,ProFormDigit } from '@ant-design/pro-form';
 
 export default (props) => {
     const {id,falg}=props
@@ -94,14 +93,15 @@ export default (props) => {
                                 </ProForm.Group>
                                 <ProForm.Group>
                                     <span>中奖概率</span>
-                                    <ProFormText 
+                                    <ProFormDigit
                                         name="probability1"
-                                        width={100}
+                                        min={1}
+                                        max={100}
                                         rules={[
-                                            {validator: checkConfirm}
+                                            {validator: checkConfirm},
+                                            { required: true, message: '请设置中奖概率' }
                                         ]}
                                         readonly={id&&falg}
-                                        rules={[{ required: true, message: '请设置中奖概率' }]}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
@@ -160,14 +160,15 @@ export default (props) => {
                                 />
                                 <ProForm.Group>
                                     <span>中奖概率</span>
-                                    <ProFormText 
+                                    <ProFormDigit
                                         name="probability2"
-                                        width={100}
+                                        min={1}
+                                        max={100}
                                         rules={[
-                                            {validator: checkConfirm}
-                                        ]} 
+                                            {validator: checkConfirm},
+                                            { required: true, message: '请设置中奖概率' }
+                                        ]}
                                         readonly={id&&falg}
-                                        rules={[{ required: true, message: '请设置中奖概率' }]}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
@@ -222,14 +223,15 @@ export default (props) => {
                                 />
                                 <ProForm.Group>
                                     <span>中奖概率</span>
-                                    <ProFormText 
+                                    <ProFormDigit
                                         name="probability3"
-                                        width={100}
+                                        min={1}
+                                        max={100}
                                         rules={[
-                                            {validator: checkConfirm}
-                                        ]} 
+                                            {validator: checkConfirm},
+                                            { required: true, message: '请设置中奖概率' }
+                                        ]}
                                         readonly={id&&falg}
-                                        rules={[{ required: true, message: '请设置中奖概率' }]}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
