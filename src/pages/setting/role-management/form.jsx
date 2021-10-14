@@ -111,7 +111,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={`${data ? '新建' : '编辑'}角色`}
+      title={`${data ? '编辑' : '新建'}角色`}
       modalProps={{
         onCancel: () => { reset(); onClose(); },
       }}
