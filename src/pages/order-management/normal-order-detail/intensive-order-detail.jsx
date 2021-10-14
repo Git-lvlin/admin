@@ -46,7 +46,7 @@ const OrderDetail = () => {
         }
       })
     }
-    
+
   }
 
   const getDetailData = () => {
@@ -69,29 +69,29 @@ const OrderDetail = () => {
       shippingCode: values.expressNo,
       expressType: values.expressType,
       expressName: values.expressName,
-      expressId:values.expressId
+      expressId: values.expressId
     }, { showSuccess: true })
       .then(res => {
         if (res.code === 0) {
           getDetailData()
         }
-    })
-}
+      })
+  }
 
   const modifyShipRequest = (values) => {
     updateOrderLogistics({
       id: orderId,
       shippingCode: values.expressNo,
       expressType: values.expressType,
-      expressId:values.expressId,
+      expressId: values.expressId,
       expressName: values.expressName
     }, { showSuccess: true })
-    .then(res => {
-      if (res.code === 0) {
-        getDetailData()
-      }
-  })
-}
+      .then(res => {
+        if (res.code === 0) {
+          getDetailData()
+        }
+      })
+  }
 
 
   useEffect(() => {
@@ -174,7 +174,13 @@ const OrderDetail = () => {
                 </div>
                 <div className={styles.box}>
                   <div>红包</div>
-                  <div>-{amountTransform(detailData?.couponAmount, '/')}元{detailData?.orderType===18&&'（签到红包）'}</div>
+                  <div>
+                    {
+                      detailData?.orderType === 17
+                        ? '盲盒全额抵扣'
+                        : `-${amountTransform(detailData?.couponAmount, '/')}元${detailData?.orderType === 18 ? '（签到红包）' : ''}`
+                    }
+                  </div>
                 </div>
                 <div className={styles.box}>
                   <div>用户实付</div>
@@ -185,44 +191,44 @@ const OrderDetail = () => {
                   <div>{amountTransform(detailData?.incomeAmount, '/')}元</div>
                 </div> */}
                 {
-                  detailData.status != 1 && detailData.status != 5 &&<div className={styles.box}>
+                  detailData.status != 1 && detailData.status != 5 && <div className={styles.box}>
                     <div>备注</div>
-                    <div>买家确认收货后可提现 {detailData?.warrantyRatio*100+'%'}  金额,订单超过售后期可提现剩余金额。</div>
+                    <div>买家确认收货后可提现 {detailData?.warrantyRatio * 100 + '%'}  金额,订单超过售后期可提现剩余金额。</div>
                   </div>
                 }
                 <div className={`${styles.box} ${styles.box_header}`}>
                   物流信息
                 </div>
                 {
-                  detailData.logisticsList&&detailData.logisticsList.map((ele,idx)=>(
-                  <ProDescriptions  style={{padding:'20px'}} column={2} title={"包裹"+parseInt(idx+1)}>
-                    <ProDescriptions.Item
-                      label="快递公司"
-                    >
-                      {ele.expressName}
-                    </ProDescriptions.Item>
-                    <ProDescriptions.Item
-                      label="运单编号"
-                    >
-                      {ele.shippingCode}
-                    </ProDescriptions.Item>
-                    <ProDescriptions.Item
-                      label="物流进度"
-                    >
-                      <p className={styles.schedule}>{ele.lastStatus}</p>
-                    </ProDescriptions.Item>
+                  detailData.logisticsList && detailData.logisticsList.map((ele, idx) => (
+                    <ProDescriptions style={{ padding: '20px' }} column={2} title={"包裹" + parseInt(idx + 1)}>
+                      <ProDescriptions.Item
+                        label="快递公司"
+                      >
+                        {ele.expressName}
+                      </ProDescriptions.Item>
+                      <ProDescriptions.Item
+                        label="运单编号"
+                      >
+                        {ele.shippingCode}
+                      </ProDescriptions.Item>
+                      <ProDescriptions.Item
+                        label="物流进度"
+                      >
+                        <p className={styles.schedule}>{ele.lastStatus}</p>
+                      </ProDescriptions.Item>
 
-                    <ProDescriptions.Item
-                      fieldProps={{}}
-                    >
-                      <LogisticsTrackingModel 
-                          record={ele.deliveryList}     
+                      <ProDescriptions.Item
+                        fieldProps={{}}
+                      >
+                        <LogisticsTrackingModel
+                          record={ele.deliveryList}
                           title={'物流跟踪'}
                           byid={ele.id}
                         />
-                    </ProDescriptions.Item>
-                </ProDescriptions>
-                  )) 
+                      </ProDescriptions.Item>
+                    </ProDescriptions>
+                  ))
                 }
               </div>
             </div>
