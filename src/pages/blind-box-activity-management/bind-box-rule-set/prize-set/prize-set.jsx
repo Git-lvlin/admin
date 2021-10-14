@@ -5,6 +5,7 @@ import SelectProductModal from '@/components/select-product-modal'
 import { PlusOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import ProTable from '@ant-design/pro-table';
+const _ = require('lodash');
 
 
 export default (props) => {
@@ -223,7 +224,9 @@ export default (props) => {
                       retailSupplyPrice: item.retailSupplyPrice,
                     })
                   })
-                    setDataSource([...dataSource,...arr])
+                  let arr2=_.uniqWith([...dataSource,...arr], _.isEqual)
+                  console.log('arr2',arr2)
+                    setDataSource(arr2)
                 }}
               />
             }
