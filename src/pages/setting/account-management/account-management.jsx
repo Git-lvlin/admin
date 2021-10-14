@@ -92,7 +92,10 @@ const TableList = () => {
   ];
 
   useEffect(() => {
-    adminGroup().then(res => {
+    adminGroup({
+      page_size: 999,
+      page: 1,
+    }).then(res => {
       if (res.code === 0) {
         setAdminGroupList(res.data.records.map(item => ({ label: item.title, value: item.id })))
       }
