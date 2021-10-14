@@ -247,9 +247,9 @@ const DetailList = (props) => {
         <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail(record) }}>
           新增
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { openList() }}>
-          新增(1688)
-        </Button>,
+        // <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { openList() }}>
+        //   新增(1688)
+        // </Button>,
       ]}
     />
     {formVisible && <Edit

@@ -2,14 +2,12 @@ import React, { useRef, useEffect, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProCard from '@ant-design/pro-card';
 import Edit from './form';
 import DetailList from './activity-form';
 import { crazyDateList, crazyActivityDel } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
 
-const CrazyDate = (props) => {
-  const { onChange, detail } = props;
+const CrazyDate = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(false);
@@ -23,7 +21,6 @@ const CrazyDate = (props) => {
   }
 
   const formControl = (data,type) => {
-    console.log('type', type, 'data', data)
     crazyActivityDel({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);
@@ -81,16 +78,6 @@ const CrazyDate = (props) => {
       }
     },
     {
-      title: '开始时间',
-      dataIndex: 'activityStartTime',
-      search: false,
-    },
-    {
-      title: '结束时间',
-      dataIndex: 'activityEndTime',
-      search: false,
-    },
-    {
       title: '位置',
       dataIndex: 'cmsClassName',
       valueType: 'text',
@@ -103,11 +90,8 @@ const CrazyDate = (props) => {
       render: (text, record, _,) => {
         return (
           <>
-            {/* &nbsp;&nbsp;{record.status===2&&<a key="down" onClick={() => {formControl(record.id, 1)}}>下线</a>} */}
-            {/* &nbsp;&nbsp;{record.status===1&&<a key="view" onClick={() => {formControl(record.id,2)}}>发布</a>} */}
             <a key="editable" onClick={() => {getDetail(record)}}>编辑</a>
             &nbsp;&nbsp;<a key="pz" onClick={() => {goDetail(record)}}>配置</a>
-            {/* &nbsp;&nbsp;{record.status===1&&<a key="d" onClick={() => {formControl(record.id,4)}}>删除</a>} */}
           </>
         )
       }
@@ -163,16 +147,6 @@ const CrazyDate = (props) => {
       pagination={{
         pageSize: 10,
       }}
-      // onRow={(record) => {
-      //   return {
-      //     onClick: () => {
-      //       console.log('点击item', record)
-      //       if (record.title) {
-      //         goDetail(record)
-      //       }
-      //     },
-      //   };
-      // }}
       dateFormatter="string"
       toolBarRender={(_,record) => [
         <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 2) }}>
@@ -203,19 +177,5 @@ const CrazyDate = (props) => {
     </>
   );
 };
-
-// const Demo = () => {
-//   const [detail, setDetail] = useState({});
-//   return (
-//     <ProCard split="vertical">
-//       <ProCard colSpan="50%" ghost>
-//         <CrazyDate onChange={(cIp) => setDetail(cIp)} detail={detail} />
-//       </ProCard>
-//       <ProCard title={`当前选中活动=>${detail.title||'-'}, 活动id=>${detail.id||'-'}`}>
-//         <DetailList id={detail.id} />
-//       </ProCard>
-//     </ProCard>
-//   );
-// };
 
 export default CrazyDate;
