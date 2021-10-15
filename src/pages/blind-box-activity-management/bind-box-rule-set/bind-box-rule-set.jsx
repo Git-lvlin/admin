@@ -14,7 +14,7 @@ import styles from './style.less'
 import { PageContainer } from '@ant-design/pro-layout';
 
 const formItemLayout = {
-  labelCol: { span: 3 },
+  labelCol: { span: 4 },
   wrapperCol: { span: 14 },
   layout: {
     labelCol: {
@@ -167,23 +167,23 @@ export default (props) => {
                   <>
                      {
                        detailList?.status==1?
-                       <>
+                       <div  style={{marginLeft:'250px'}}>
                        {
-                         falg?<Button style={{marginLeft:'80px'}} type="primary"  onClick={()=>{setFalg(false)}}>
+                         falg?<Button type="primary"  onClick={()=>{setFalg(false)}}>
                          编辑
                         </Button>
-                        :<Button style={{marginLeft:'80px'}} type="primary" key="submit" onClick={() => {
+                        :<Button  type="primary" key="submit" onClick={() => {
                           props.form?.submit?.()
                         }}>
                           保存
                         </Button>
                        }
-                       </>
+                       </div>
                        :null
                      }
                   </>
                   :
-                    <Button style={{marginLeft:'80px'}} type="primary" key="submit" onClick={() => {
+                    <Button style={{marginLeft:'250px'}} type="primary" key="submit" onClick={() => {
                       props.form?.submit?.()
                     }}>
                       保存
