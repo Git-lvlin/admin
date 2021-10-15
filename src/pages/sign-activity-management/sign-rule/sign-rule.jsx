@@ -562,10 +562,10 @@ export default (props) =>{
             :null
           }
           
-          {
+          {/* {
             !save? <p className={styles.hint}>提示：关闭活动后，将清空用户账户里的红包记录，请谨慎操作。</p>
             :null
-          }
+          } */}
          
        
       </ProForm>
