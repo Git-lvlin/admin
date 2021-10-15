@@ -33,6 +33,9 @@ export default (props) => {
   useEffect(() => {
     if (detailData?.id) {
       const { subtitle ,...rest } = detailData;
+      if (rest.title.includes('(')) {
+        rest.title = rest.title.split('(')[0]
+      }
       form.setFieldsValue({
         ...rest
       })

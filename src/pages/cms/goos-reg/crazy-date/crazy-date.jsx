@@ -49,12 +49,6 @@ const CrazyDate = () => {
       valueType: 'text',
     },
     {
-      title: '活动类型',
-      dataIndex: 'subtitle',
-      valueType: 'text',
-      search: false,
-    },
-    {
       title: '状态',
       dataIndex: 'status',
       filters: true,
@@ -113,6 +107,12 @@ const CrazyDate = () => {
     <>
     <ProTable
       rowKey="id"
+      postData={(data) => {
+        data.forEach((item) => 
+          item.title = item.title + item.subtitle
+        )
+        return data
+      }}
       options={false}
       columns={columns}
       actionRef={actionRef}
