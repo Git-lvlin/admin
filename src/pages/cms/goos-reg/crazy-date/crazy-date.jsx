@@ -16,7 +16,7 @@ const CrazyDate = () => {
   const [acid, setAcId] = useState({cmsId: 0});
 
   const getDetail = (data) => {
-    data && setDetailData(data);
+    data?setDetailData(data):setDetailData(false);
     setFormVisible(true);
   }
 
@@ -158,7 +158,7 @@ const CrazyDate = () => {
         <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 4) }}>
           批量删除
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail() }}>
           新建
         </Button>,
       ]}
