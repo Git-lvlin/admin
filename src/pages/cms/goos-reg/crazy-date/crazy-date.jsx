@@ -16,7 +16,7 @@ const CrazyDate = () => {
   const [acid, setAcId] = useState({cmsId: 0});
 
   const getDetail = (data) => {
-    data && setDetailData(data);
+    data?setDetailData(data):setDetailData(false);
     setFormVisible(true);
   }
 
@@ -47,12 +47,6 @@ const CrazyDate = () => {
       title: '活动标题',
       dataIndex: 'title',
       valueType: 'text',
-    },
-    {
-      title: '活动类型',
-      dataIndex: 'subtitle',
-      valueType: 'text',
-      search: false,
     },
     {
       title: '状态',
@@ -113,6 +107,12 @@ const CrazyDate = () => {
     <>
     <ProTable
       rowKey="id"
+      postData={(data) => {
+        data.forEach((item) => 
+          item.title = item.title + item.subtitle
+        )
+        return data
+      }}
       options={false}
       columns={columns}
       actionRef={actionRef}
@@ -164,7 +164,7 @@ const CrazyDate = () => {
         <Button key="button" icon={<MinusOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 4) }}>
           批量删除
         </Button>,
-        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { setFormVisible(true) }}>
+        <Button key="button" icon={<PlusOutlined />} type="primary" onClick={() => { getDetail() }}>
           新建
         </Button>,
       ]}

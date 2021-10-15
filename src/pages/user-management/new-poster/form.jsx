@@ -57,6 +57,7 @@ export default (props) => {
 
   return (
     <ModalForm
+      layout="horizontal"
       title={'上传'}
       onVisibleChange={setVisible}
       formRef={formRef}
@@ -90,7 +91,7 @@ export default (props) => {
       </ProForm.Group>
       <ProForm.Group>
         <Form.Item
-          label="添加海报图片"
+          label="上传海报"
           name="image"
           required
           rules={
@@ -99,33 +100,49 @@ export default (props) => {
               message: '请上传海报图片'
             }]
           }
-          tooltip={
-            <dl>
-              <dt>图片要求</dt>
-              <dd>大小：不超过2MB</dd>
-              <dd>尺寸：375px*676px</dd>
-              <dd>格式：png/jpg/gif</dd>
-            </dl>
-          }
         >
           <Upload multiple maxCount={1} />
         </Form.Item>
+        <div>
+          <dl>
+            <dd>图片要求</dd>
+            <dd>大小：不超过2MB</dd>
+            <dd>尺寸：750px*1352px</dd>
+            <dd>格式：png/jpg</dd>
+          </dl>
+        </div>
+      </ProForm.Group>
+      <ProForm.Group>
+        <div>
+          <p>上传图片示例：</p>
+          <p style={{width: 125,height: 225,position: 'relative'}}>
+            <img style={{width: '100%',height: '100%'}} src="https://uat-yeahgo.oss-cn-shenzhen.aliyuncs.com/goods/base/rc-upload-1632897787078-269.png?imgHeight=676&imgWidth=375" />
+            <div style={{width: '40px',height: '40px',position: 'absolute',bottom: 20,left: 42,border: '6px solid #fff',borderRadius: 6}}></div>
+          </p>
+        </div>
+        <div style={{color: 'red'}}>
+          <dl>
+            <dd>务必在海报中留出用户二维码位置:</dd>
+            <dd>1、二维码宽和高都为220px;</dd>
+            <dd>2、二维码居中，且距下边缘142px</dd>
+          </dl>
+        </div>
       </ProForm.Group>
       <ProFormRadio.Group
-          name="state"
-          label="是否上架"
-          initialValue={1}
-          options={[
-            {
-              label: '立即上架',
-              value: 1,
-            },
-            {
-              label: '暂不上架',
-              value: 0,
-            },
-          ]}
-        />
+        name="state"
+        label="是否上架"
+        initialValue={1}
+        options={[
+          {
+            label: '立即上架',
+            value: 1,
+          },
+          {
+            label: '暂不上架',
+            value: 0,
+          },
+        ]}
+      />
     </ModalForm>
   );
 };

@@ -23,7 +23,7 @@ export const adminList = async (params, options = {}) => {
 export const adminGroup = async (params, options = {}) => {
   return request('/auth/Group/adminGroup', {
     method: 'GET',
-    data: params,
+    params,
     ...options
   });
 }

@@ -32,7 +32,10 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData?.id) {
-      const { ...rest } = detailData;
+      const { subtitle ,...rest } = detailData;
+      if (rest.title.includes('(')) {
+        rest.title = rest.title.split('(')[0]
+      }
       form.setFieldsValue({
         ...rest
       })
@@ -61,11 +64,11 @@ export default (props) => {
     >
       <ProForm.Group>
         <ProFormText
-            name="title"
-            label="活动标题"
-            placeholder="请输入活动标题"
-            rules={[{ required: true, message: '请输入活动标题' }]}
-          />
+          name="title"
+          label="活动标题"
+          placeholder="请输入活动标题"
+          rules={[{ required: true, message: '请输入活动标题' }]}
+        />
       </ProForm.Group>
       <ProFormRadio.Group
           name="status"
