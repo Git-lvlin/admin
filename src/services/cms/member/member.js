@@ -103,6 +103,30 @@ export const tagSortModify = (params = {}, options = {}) => {
   });
 }
 
+export const cmsImageInfo = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsImageInfo', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const cmsImageAdd = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsImageAdd', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const cmsImageEdit = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsImageEdit', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const saveSortModify = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/wholesaleGoodsSortSub', {
     method: 'POST',
@@ -450,6 +474,14 @@ export const bannerSortTop = (params = {}, options = {}) => {
 
 export const homeClassCategorySecondCategory = (params = {}, options = {}) => {
   return request('/auth/goods/product/categorySecondCategory', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const homeClassificationSetSort = (params = {}, options = {}) => {
+  return request('/auth/goods/product/categorySetHomeSort', {
     method: 'POST',
     data: params,
     ...options
@@ -856,15 +888,15 @@ export const homeBannerList = async (params = {}, options = {}) => {
 }
 
 export const homeClassificationList = async (params = {}, options = {}) => {
-  const { current, pageSize, status, ...rest } = params;
+  const { current, pageSize, homeStatus, ...rest } = params;
 
   const data = {
     page: current,
     size: pageSize,
     ...rest
   }
-  if (status) {
-    data.status = Number(status);
+  if (homeStatus) {
+    data.homeStatus = Number(homeStatus);
   }
   const res = await request('/auth/goods/product/categorySearchHomeList', {
     method: 'POST',

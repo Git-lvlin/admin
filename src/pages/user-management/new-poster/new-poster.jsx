@@ -156,7 +156,7 @@ const NewPoster = () => {
         {
           data&&data.map((item) => 
             <span className={styles.itembox}>
-              <img className={styles.img} src={item.bgImage.url} />
+              {item.bgImage&&item.bgImage.url&&<img className={styles.img} src={item.bgImage.url} />}
               <p className={styles.title}>
                 <span>{item.title}</span>
                 <Button onClick={() => {upDown(item)}}>{item.state?'下架':'上架'}</Button>
