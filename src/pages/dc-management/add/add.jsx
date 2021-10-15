@@ -283,9 +283,6 @@ const EditableTable = () => {
         ...record,
         ...row
       };
-      if(newRowData.value && newRowData.value.indexOf('\\n') > -1) {
-        newRowData.value = newRowData.value.replace('\\n', '\n');
-      }
       if(isFrist) {
         newData.splice(index, 1, newRowData);
       }
@@ -351,7 +348,7 @@ const EditableTable = () => {
     let resultData = {};
     let isEmpty = false;
     const formData = await headForm.validateFields();
-    if (formData.platform&&formData.platform[0] == 0) {
+    if (formData.platform && formData.platform[0] == 0) {
       formData.platform = platformTypeAll
     }
     let platformData = '';
@@ -367,6 +364,11 @@ const EditableTable = () => {
     if(isEmpty) {
       message.error("请确认字段是否已全部填写");
       return ;
+    }
+    for(let key in obj) {
+      if(obj[key] && obj[key].indexOf('\\n') > -1) {
+        obj[key] = obj[key].replaceAll('\\n', '\n');
+      }
     }
     formData.data = obj;
     formData.define = define;
