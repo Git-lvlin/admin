@@ -7,6 +7,7 @@ import { history, connect } from 'umi';
 import { queryUserRecordList } from '@/services/sign-activity-management/packet-record-query-user-record-list';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import Detail from '@/pages/order-management/normal-order/detail';
 
 
 
@@ -15,6 +16,8 @@ export default (props) => {
     let id = props.location.query.id
     const [detailList,setDetailList]=useState()
     const [visit, setVisit] = useState(false)
+    const [detailVisible, setDetailVisible] = useState(false);
+    const [orderId,setOrderId]=useState()
     const columns= [
       {
         title: '序号',
@@ -107,7 +110,7 @@ export default (props) => {
                       <h4>{data.goodsInfo?.goodsName}</h4>
                       <span style={{color:'red',fontSize:'10px'}}>¥{data.goodsInfo?.salePrice/100}</span>
                       <p style={{fontSize:'10px'}}>SKU  {data.goodsInfo?.skuId}</p>
-                      <p style={{fontSize:'10px'}}>订单号：{data.goodsInfo?.orderId}</p>
+                      <p style={{fontSize:'10px'}}>订单号：<a onClick={() => {  setDetailVisible(true);setOrderId(data.goodsInfo?.orderId) }}>{data.goodsInfo?.orderId}</a></p>
                     </div>
                  </div>
         },
@@ -150,6 +153,13 @@ export default (props) => {
           }}
           columns={columns}
         />
+         {
+          detailVisible && <Detail
+          id={orderId}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+        }
         <Button style={{float:'right',margin:'20px 20px 0 0'}} type="default" onClick={() => history.goBack()}>
            返回
         </Button>
