@@ -4,12 +4,14 @@ import ProTable from '@ant-design/pro-table';
 import { getBlindboxIncomeList } from '@/services/blind-box-activity-management/blindbox-blindbox-get-lncome';
 import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
-const { TabPane } = Tabs
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 
 
 export default () => {
     const ref=useRef()
+    const [visit, setVisit] = useState(false)
     const columns= [
       {
         title: '序号',
@@ -90,6 +92,11 @@ export default () => {
         ],
       }, 
     ];
+    const getFieldValue = (searchConfig) => {
+      return {
+        ...searchConfig.form.getFieldsValue(),
+      }
+    }
     return (
       <PageContainer>
         <ProTable
@@ -103,6 +110,12 @@ export default () => {
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
+               <Export
+                change={(e) => { setVisit(e) }}
+                type={'bind-box-give-detail-export'}
+                conditions={getFieldValue(searchConfig)}
+              />,
+              <ExportHistory show={visit} setShow={setVisit} type={'bind-box-give-detail-export'}/>
             ],
           }}
           columns={columns}
