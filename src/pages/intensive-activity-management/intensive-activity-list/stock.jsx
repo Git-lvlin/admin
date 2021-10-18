@@ -67,15 +67,15 @@ export default (props) => {
       </Form.Item>
       <ProFormText
         label="增加库存数量"
-        placeholder="请输入增加的库存数量，1-999999之间的整数"
+        placeholder="请输入增加的库存数量，1-8000之间的整数"
         name="num"
         validateFirst
         rules={[
           { required: true, message: '请输入增加库存数量' },
           () => ({
             validator(_, value) {
-              if (!/^\d+$/g.test(value) || `${value}`.indexOf('.') !== -1 || value <= 0) {
-                return Promise.reject(new Error('请输入大于零的正整数'));
+              if (!/^\d+$/g.test(value) || `${value}`.indexOf('.') !== -1 || value <= 0 || value > 8000) {
+                return Promise.reject(new Error('请输入1-8000之间的整数'));
               }
               return Promise.resolve();
             },
