@@ -303,6 +303,18 @@ const TableList = () => {
       hideInTable: true,
     },
     {
+      title: '运营配置时间',
+      dataIndex: 'lastOperateTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+    },
+    {
+      title: '最近上架时间',
+      dataIndex: 'lastPutonTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
@@ -321,7 +333,7 @@ const TableList = () => {
 
   const getFieldValue = () => {
     if (formRef?.current?.getFieldsValue) {
-      const { current, pageSize, gcId = [], createTime, auditTime, ...rest } = formRef?.current?.getFieldsValue?.();
+      const { current, pageSize, gcId = [], createTime, auditTime, lastOperateTime, lastPutonTime, ...rest } = formRef?.current?.getFieldsValue?.();
 
       const obj = {};
 
@@ -333,6 +345,16 @@ const TableList = () => {
       if (auditTime) {
         obj.auditTimeStart = moment(auditTime[0]).unix();
         obj.auditTimeEnd = moment(auditTime[1]).unix();
+      }
+
+      if (lastOperateTime) {
+        obj.lastOperateTimeStart = moment(lastOperateTime[0]).unix();
+        obj.lastOperateTimeEnd = moment(lastOperateTime[1]).unix();
+      }
+
+      if (lastPutonTime) {
+        obj.lastPutonTimeStart = moment(lastPutonTime[0]).unix();
+        obj.lastPutonTimeEnd = moment(lastPutonTime[1]).unix();
       }
 
       return {
@@ -374,6 +396,7 @@ const TableList = () => {
           pageSize: 10,
         }}
         search={{
+          labelWidth: 140,
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button

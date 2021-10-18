@@ -43,3 +43,19 @@ export const updateWholesaleState = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const addWholesaleStock = (params = {}, options = {}) => {
+  return request('/auth/wholesale/index/addWholesaleStock', {
+    method: 'GET',
+    params,
+    ...options
+  });
+}
+
+export const getWholesaleOneSku = (params = {}, options = {}) => {
+  return request('/auth/wholesale/index/getWholesaleOneSku', {
+    method: 'GET',
+    params,
+    ...options
+  });
+}
