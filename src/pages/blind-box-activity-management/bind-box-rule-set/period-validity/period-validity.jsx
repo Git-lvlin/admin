@@ -16,7 +16,7 @@ export default (props)=>{
                     value: 1,
                 },
                 {
-                    label:'永久有效',
+                    label:'活动期限内有效',
                     value: 0,
                 }
             ]}

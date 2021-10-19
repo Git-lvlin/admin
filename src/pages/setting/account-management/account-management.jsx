@@ -93,7 +93,7 @@ const TableList = () => {
 
   useEffect(() => {
     adminGroup({
-      size: 999,
+      page_size: 999,
       page: 1,
     }).then(res => {
       if (res.code === 0) {
