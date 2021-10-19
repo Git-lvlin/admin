@@ -119,9 +119,7 @@ const TabList =props=> {
         showQuickJumper: true
       }}
       search={{
-        span: 5,
-        defaultCollapsed: false,
-        collapseRender: false
+        span: 5
       }}
     />
   )

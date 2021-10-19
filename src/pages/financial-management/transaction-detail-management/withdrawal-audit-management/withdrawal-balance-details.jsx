@@ -6,6 +6,7 @@ import { history, useLocation } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
 import { logPage } from '@/services/financial-management/yeahgo-virtual-account-management'
+import { tradeType } from '../../common-enum'
 
 const WithdrawalBalanceDetails = () =>{
   const {query} = useLocation()
@@ -28,31 +29,7 @@ const WithdrawalBalanceDetails = () =>{
       title: '交易类型',
       dataIndex: 'tradeType',
       valueType: 'select',
-      valueEnum: {
-        'goodsAmount': '货款入账',
-        'goodsAmountReturn': '货款回退',
-        'commission': '店主收益入账',
-        'commissionReturn': '店主收益回退',
-        'platformCommission': '平台收益入账',
-        'platformCommissionReturn': '平台收益回退',
-        'fee': '交易通道费',
-        'feeReturn': '交易通道费回退',
-        'recharge': '充值',
-        'giveOut': '划扣',
-        'withdraw': '提现',
-        'refundRecharge': '售后款入账',
-        'debt': '欠款入账',
-        'debtReturn': '欠款偿还',
-        'unfreeze': '解冻',
-        'freeze': '冻结',
-        'suggestCommission': '推荐店主收益入账',
-        'suggestCommissionReturn': '推荐店主收益回退',
-        'agentCompanyCommission': '经销商收益入账',
-        'agentCompanyCommissionReturn': '经销商收益回退',
-        'freight': '运费',
-        'freightReturn': '运费回退',
-        'yeahCardRecharge': '约卡充值'
-      }
+      valueEnum: tradeType
     },
     {
       title: '订单号',
