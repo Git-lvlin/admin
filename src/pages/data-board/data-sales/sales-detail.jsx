@@ -37,7 +37,7 @@ const SalesDetail = () => {
       title: '销售额（￥/元）',
       dataIndex: 'daySale',
       align: 'center',
-      render: (_) => amountTransform(_, '/')
+      render: (_) => amountTransform(Number(_), '/')
     },
     {
       title: '订单数',
