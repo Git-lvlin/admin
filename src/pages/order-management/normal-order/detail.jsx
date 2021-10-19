@@ -121,7 +121,13 @@ const Detail = (props) => {
                 </div>
                 <div className={styles.box}>
                   <div>红包</div>
-                  <div>-{amountTransform(detailData?.couponAmount, '/')}元{detailData?.orderType === 18 && '（签到红包）'}</div>
+                  <div>
+                    {
+                      detailData?.orderType === 17
+                        ? '盲盒全额抵扣'
+                        : `-${amountTransform(detailData?.couponAmount, '/')}元${detailData?.orderType === 18 ? '（签到红包）' : ''}`
+                    }
+                  </div>
                 </div>
                 <div className={styles.box}>
                   <div>用户实付</div>
