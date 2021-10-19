@@ -9,12 +9,21 @@ import { createExportTask } from '@/services/export-excel/export-template'
 const Export = ({ type, change, conditions }) => {
 
   const downExcel = () => {
-
-    let str;
+    const user = JSON.parse(localStorage.getItem('user'));
+    let str = {
+      operatorId: user.id,
+      operatorType: 2
+    };
     if (typeof conditions === 'function') {
-      str = JSON.stringify(conditions())
+      str = JSON.stringify({
+        ...conditions(),
+        ...str,
+      })
     } else {
-      str = JSON.stringify(conditions)
+      str = JSON.stringify({
+        ...conditions,
+        ...str,
+      })
     }
 
     createExportTask({

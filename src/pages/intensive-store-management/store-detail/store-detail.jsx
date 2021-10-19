@@ -43,7 +43,7 @@ const Detail = () => {
             <div style={{marginTop: 10}}>{detailData?.storeName}</div>
           </div>
           <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 120, display: 'inline-block' }}>
-            <Descriptions.Item label="店主昵称手机号">{`${detailData?.linkman}（${detailData.phone}）`}</Descriptions.Item>
+            <Descriptions.Item label="店主昵称手机号">{`${detailData?.linkman}（${detailData.memberPhone}）`}</Descriptions.Item>
             <Descriptions.Item label="保证金金额">{`¥${amountTransform(detailData?.deposit?.payAmount, '/') || ''}`}</Descriptions.Item>
             <Descriptions.Item label="店主性别">{detailData?.member?.gender?.desc}</Descriptions.Item>
             <Descriptions.Item label="缴纳保证金时间">{detailData?.deposit?.payTime}</Descriptions.Item>
