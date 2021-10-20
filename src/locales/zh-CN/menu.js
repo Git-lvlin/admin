@@ -55,6 +55,7 @@ export default {
   'menu.product-management.product-review': '商品审核',
   'menu.product-management.set-goods-list': '商品运营配置',
   'menu.product-management.product-category': '商品分类',
+  'menu.product-management.overrule-list': '驳回商品',
 
   'menu.setting': '设置',
   'menu.setting.account-management': '子账号管理',
