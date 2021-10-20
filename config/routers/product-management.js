@@ -53,5 +53,10 @@ export default {
       path: '/product-management/product-category',
       component: './product-management/product-category',
     },
+    {
+      name: 'overrule-list',
+      path: '/product-management/overrule-list',
+      component: './product-management/overrule-list',
+    },
   ]
 }

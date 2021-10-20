@@ -48,10 +48,24 @@ const TableList = () => {
       }
     },
     {
-      title: '绑定的运营商',
-      dataIndex: 'operationCompanyName',
+      title: '审核状态',
+      dataIndex: 'status',
       valueType: 'text',
       hideInSearch: true,
+    },
+    {
+      title: '审核状态',
+      dataIndex: 'operationIsBinded',
+      valueType: 'select',
+      hideInTable: true,
+      valueEnum: {
+        1: '已绑',
+        0: '未绑',
+      }
+    },
+    {
+      title: '操作',
+      valueType: 'option',
     },
   ];
 
