@@ -3,14 +3,32 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Card, Space, Table, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { getWholesaleList, getWholesaleDetail, getWholesaleSku, updateWholesaleState } from '@/services/intensive-activity-management/intensive-activity-list'
+import { getWholesaleList, getWholesaleDetail, getWholesaleSku, updateWholesaleState, getWholesaleOneSku } from '@/services/intensive-activity-management/intensive-activity-list'
 import { history } from 'umi';
 import { amountTransform } from '@/utils/utils'
-import Big from 'big.js';
+import Stock from './stock';
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false);
+  const [stockVisible, setStockVisible] = useState(false);
+  const [stockData, setStockData] = useState(null);
+  const [reload, setReload] = useState(null);
+
+  const setStock = (record) => {
+    getWholesaleOneSku({
+      wholesaleId: props.wholesaleId,
+      skuId: record.skuId
+    }).then(res => {
+      if (res.code === 0) {
+        setStockData({
+          ...res.data,
+          wsId: props.wholesaleId,
+        })
+        setStockVisible(true);
+      }
+    })
+  }
 
   const columns = [
     {
@@ -91,6 +109,18 @@ const SubTable = (props) => {
       dataIndex: 'totalMoney',
       render: (_) => amountTransform(_, '/')
     },
+    {
+      title: '操作',
+      dataIndex: 'option',
+      valueType: 'option',
+      render: (_, record) => {
+        return (
+          <Space>
+            {props.wholesaleStatusDesc !== '已结束' && props.wholesaleStatusDesc !== '已下架' && <a onClick={() => { setStock(record) }}>追加库存</a>}
+          </Space>
+        )
+      },
+    },
   ];
 
   useEffect(() => {
@@ -104,11 +134,17 @@ const SubTable = (props) => {
     }).finally(() => {
       setLoading(false);
     })
-  }, [])
+  }, [reload])
 
   return (
     <Spin spinning={loading}>
       <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
+      {stockVisible && <Stock
+        data={stockData}
+        visible={stockVisible}
+        setVisible={setStockVisible}
+        callback={() => { setReload(!reload) }}
+      />}
     </Spin>
   )
 };
@@ -247,7 +283,7 @@ const TableList = () => {
         rowKey="wholesaleId"
         options={false}
         request={getWholesaleList}
-        expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} /> }}
+        expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatusDesc={_.wholesaleStatusDesc} /> }}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
