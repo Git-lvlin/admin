@@ -71,7 +71,7 @@ const TransactionDetails = () => {
       case 'agentCompanyCommission':
         return (
           <>
-            <span className={styles.amount}>经销商收益: ¥{amountTransform(amount, '/')}</span>
+            <span className={styles.amount}>运营商收益: ¥{amountTransform(amount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
           </>
         )

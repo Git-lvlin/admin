@@ -51,9 +51,7 @@ const LoanDetailManagement = () =>{
       valueEnum: {
         'store': '社区店',
         'supplier': '商家',
-        'platform': '平台',
-        'agentStore': '内部店',
-        'agentCompany': '经销商'
+        'platform': '平台'
       }
     },
     {
@@ -61,26 +59,13 @@ const LoanDetailManagement = () =>{
       dataIndex: 'orderType',
       valueType: 'select',
       valueEnum: {
-        'second': '秒约',
-        'commandSalesOrder': '集约批发订单',
+        'second': '秒约订单',
         'dropShipping1688': '1688代发订单',
+        'commandSalesOrder': '集约批发订单',
         'commandCollect': '集约销售订单',
         'blindBox': '盲盒订单',
         'signIn': '签到订单'
-      },
-      hideInSearch: true
-    },
-    {
-      title: '订单类型',
-      dataIndex: 'orderType',
-      valueType: 'select',
-      valueEnum: {
-        'commandSalesOrder': '集约批发订单',
-        'commandCollect': '集约销售订单',
-        'second': '秒约订单',
-        'dropShipping1688': '1688代发订单',
-      },
-      hideInTable: true
+      }
     },
     {
       title: '订单号',
