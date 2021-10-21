@@ -192,6 +192,7 @@ export default {
 
   'menu.business-school': '商学院',
   'menu.business-school.article-list': '文章列表',
+  'menu.business-school.shopkeeper-disclose': '店主吐槽',
   'menu.business-school.article-category-list': '文章分类列表',
 
   'menu.community-management':'社区管理',
@@ -284,4 +285,11 @@ export default {
   'menu.import-export-configuration': '导入导出配置',
   'menu.import-export-configuration.export-configuration': '导出配置',
   'menu.import-export-configuration.import-configuration': '导入配置',
+
+
+  'menu.activity-management': '活动管理',
+  'menu.activity-management.everyday-red-packet-activity': '每日红包活动',
+  'menu.activity-management.everyday-red-packet-activity.activity-list': '活动列表',
+  'menu.activity-management.everyday-red-packet-activity.activity-list.everyday-packet-rule': '每日红包规则',
+  'menu.activity-management.everyday-red-packet-activity.red-packet-particulars': '红包明细',
 };

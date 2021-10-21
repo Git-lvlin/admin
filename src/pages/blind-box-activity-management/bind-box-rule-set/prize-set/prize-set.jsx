@@ -224,6 +224,15 @@ export default (props) => {
                       retailSupplyPrice: item.retailSupplyPrice,
                     })
                   })
+                  detailList?.skus.map(ele=>{
+                    arr.map(item=>{
+                      if(item.skuId==ele.skuId){
+                        item.id=ele.id
+                        delete item.add
+                      }
+                    })
+                  })
+                  console.log('arr',arr)
                   let arr2=_.uniqWith([...dataSource,...arr], _.isEqual)
                     setDataSource(arr2)
                 }}

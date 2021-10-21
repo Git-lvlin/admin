@@ -26,6 +26,7 @@ import dc from './routers/dc'
 import signActivityManagement from './routers/sign-activity-management'
 import BlindBoxActivityManagement from './routers/blind-box-activity-management'
 import importExportConfiguration from './routers/import-export-configuration'
+import ActivityManagement from './routers/activity-management'
 
 
 
@@ -97,6 +98,7 @@ const config = {
             signActivityManagement,
             BlindBoxActivityManagement,
             importExportConfiguration,
+            ActivityManagement,
             {
               component: '404',
             },
