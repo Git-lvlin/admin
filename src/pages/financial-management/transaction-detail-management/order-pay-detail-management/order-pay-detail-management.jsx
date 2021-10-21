@@ -34,16 +34,8 @@ const OrderPayDetailManagement = () =>{
       valueType: 'select',
       valueEnum: {
         'MONI_PAY': '模拟支付',
-        'ALI_PAY': '支付宝支付',
-        'WX_PAY': '微信支付',
-        'MINI_PRO_PAY': '微信小程序支付',
-        'UNION_PAY': '银联支付',
-        'YEAH_CARD_PAY': '约卡支付',
         'alipay': '汇付天下支付宝支付',
-        'wx_lite': '汇付天下微信小程序支付',
-        'union': '汇付天下银联支付',
-        'fast_pay': '快捷支付',
-        'alipay_qr': '支付宝正扫'
+        'wx_lite': '汇付天下微信小程序支付'
       }
     },
     {
@@ -68,9 +60,9 @@ const OrderPayDetailManagement = () =>{
       title: '订单类型',
       dataIndex: 'orderType',
       valueEnum: {
-        'second': '秒约',
-        'commandSalesOrder': '集约批发订单',
+        'second': '秒约订单',
         'dropShipping1688': '1688代发订单',
+        'commandSalesOrder': '集约批发订单',
         'commandCollect': '集约销售订单',
         'blindBox': '盲盒订单',
         'signIn': '签到订单'

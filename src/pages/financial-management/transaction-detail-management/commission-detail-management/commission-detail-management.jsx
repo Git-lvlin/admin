@@ -43,26 +43,11 @@ const CommissionDetailManagement = () =>{
       valueType: 'select',
       valueEnum: {
         'second': '秒约订单',
-        'commandSalesOrder': '集约批发订单',
-        'activeSalesOrder': '主动集约店主订单',
         'dropShipping1688': '1688代发订单',
+        'commandSalesOrder': '集约批发订单',
         'commandCollect': '集约销售订单',
-        'activeCollect': '主动集约C端订单',
-        'blindBox': '盲盒订单',
         'signIn': '签到订单'
-      },
-      hideInSearch: true
-    },
-    {
-      title: '订单类型',
-      dataIndex: 'orderType',
-      valueType: 'select',
-      valueEnum: {
-        'commandSalesOrder': '集约批发订单',
-        'second': '秒约订单',
-        'dropShipping1688': '1688代发订单',
-      },
-      hideInTable: true
+      }
     },
     {
       title: '订单号',
