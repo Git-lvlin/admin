@@ -247,11 +247,11 @@ const IntensiveActivityCreate = () => {
             }}
             className={styles.center}
           >
-            <ProFormText name="name" label="活动名称" width="md" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
+            <ProFormText name="name" label="活动名称" width="lg" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
             <ProFormDateTimeRangePicker
               name="wholesaleTime"
               label="活动时间"
-              width="md"
+              width="lg"
               rules={[{ required: true, message: '请选择活动时间' }]}
               fieldProps={{
                 // disabledDate: (currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() },
@@ -264,7 +264,7 @@ const IntensiveActivityCreate = () => {
             <ProFormDateTimePicker
               name="endTimeAdvancePayment"
               label="店主采购单下单截至时间"
-              width="md"
+              width="lg"
               rules={[{ required: true, message: '请选择店主采购单下单截至时间' }]}
               fieldProps={{
                 // disabledDate: (currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() },
@@ -294,7 +294,7 @@ const IntensiveActivityCreate = () => {
               <AddressMultiCascader
                 placeholder="请选择可参与集约活动的店铺所属省市区"
                 data={areaData}
-                style={{ width: '440px' }}
+                style={{ width: '640px' }}
                 pId={-1}
               // onCheck={() => {
               //   const data = window.yeahgo_area.filter(item => item.deep === 1);
