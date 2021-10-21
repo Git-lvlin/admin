@@ -165,7 +165,7 @@ const Detail = () => {
         'platform': '平台',
         'member': '会员',
         'agentStore': '代发店',
-        'agentCompany': '经销商'
+        'agentCompany': '运营商'
       }
     },
     {

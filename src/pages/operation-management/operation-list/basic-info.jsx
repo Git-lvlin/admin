@@ -242,8 +242,8 @@ export default (props) => {
         }}
       />
       <Form.Item
-        label="经销商所管辖区域"
-        rules={[{ required: true, message: '请选择经销商所管辖区域' }]}
+        label="运营商所管辖区域"
+        rules={[{ required: true, message: '请选择运营商所管辖区域' }]}
         name="address"
       >
         <AddressCascader changeOnSelect />
