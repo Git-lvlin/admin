@@ -38,3 +38,11 @@ export const refundAllRetailOrders = async (params = {}, options = {}) => {
   });
 }
 
+export const refundOrder = async (params = {}, options = {}) => {
+  return request('/auth/wholesale/storeOrder/refundOrder', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
