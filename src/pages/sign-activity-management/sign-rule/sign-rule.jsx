@@ -8,6 +8,7 @@ import { FormattedMessage, formatMessage } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from 'moment';
 import styles from './style.less'
+import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -84,116 +85,117 @@ export default (props) =>{
     const changeData=[
       {
         id:0,
-        changeValue:dataSource[0].changeValue1*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue1), '*')
       },
       {
         id:1,
-        changeValue:dataSource[0].changeValue2*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue2), '*')
       },
       {
         id:2,
-        changeValue:dataSource[0].changeValue3*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue3), '*')
       },
       {
         id:3,
-        changeValue:dataSource[0].changeValue4*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue4), '*')
       },
       {
         id:4,
-        changeValue:dataSource[0].changeValue5*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue5), '*')
       },
       {
         id:5,
-        changeValue:dataSource[0].changeValue6*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue6), '*')
       },
       {
         id:6,
-        changeValue:dataSource[0].changeValue7*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue7), '*')
       },
       {
         id:7,
-        changeValue:dataSource[0].changeValue8*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue8), '*')
       },
       {
         id:8,
-        changeValue:dataSource[0].changeValue9*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue9), '*')
       },
       {
         id:9,
-        changeValue:dataSource[0].changeValue10*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue10), '*')
       },
       {
         id:10,
-        changeValue:dataSource[0].changeValue11*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue11), '*')
       },
       {
         id:11,
-        changeValue:dataSource[0].changeValue12*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue12), '*')
       },
       {
         id:12,
-        changeValue:dataSource[0].changeValue13*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue13), '*')
       },
       {
         id:13,
-        changeValue:dataSource[0].changeValue14*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue14), '*')
       },
       {
         id:14,
-        changeValue:dataSource[0].changeValue15*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue15), '*')
       },
       {
         id:15,
-        changeValue:dataSource[1].changeValue1*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue1), '*')
       },
       {
         id:16,
-        changeValue:dataSource[1].changeValue2*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue2), '*')
       }, {
         id:17,
-        changeValue:dataSource[1].changeValue3*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue3), '*')
       }, {
         id:18,
-        changeValue:dataSource[1].changeValue4*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue4), '*')
       }, {
         id:19,
-        changeValue:dataSource[1].changeValue5*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue5), '*')
       }, {
         id:20,
-        changeValue:dataSource[1].changeValue6*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue6), '*')
       }, {
         id:21,
-        changeValue:dataSource[1].changeValue7*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue7), '*')
       }, {
         id:22,
-        changeValue:dataSource[1].changeValue8*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue8), '*')
       }, {
         id:23,
-        changeValue:dataSource[1].changeValue9*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue9), '*')
       }, {
         id:24,
-        changeValue:dataSource[1].changeValue10*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue10), '*')
       }, {
         id:25,
-        changeValue:dataSource[1].changeValue11*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue11), '*')
       }, {
         id:26,
-        changeValue:dataSource[1].changeValue12*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue12), '*')
       },
       {
         id:27,
-        changeValue:dataSource[1].changeValue13*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue13), '*')
       },
       {
         id:28,
-        changeValue:dataSource[1].changeValue14*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue14), '*')
       },
       {
         id:29,
-        changeValue:dataSource[1].changeValue15*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue15), '*')
       },
 
     ]
+
     values.status=1
     editSignRedPacketConfig({handler:user.username,changeIds:changeData,...values}).then(res=>{
       if(res.code==0){
@@ -214,7 +216,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -229,7 +230,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -243,7 +243,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -257,7 +256,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -271,7 +269,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -285,7 +282,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -299,7 +295,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -313,7 +308,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -327,7 +321,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -341,7 +334,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -355,7 +347,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -369,7 +360,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -383,7 +373,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -397,7 +386,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -412,7 +400,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
