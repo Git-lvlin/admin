@@ -8,7 +8,7 @@ import PrizeSet from './prize-set/prize-set'
 import Upload from '@/components/upload';
 import { saveActiveConfig } from '@/services/blind-box-activity-management/blindbox-save-active-config';
 import { getActiveConfigById } from '@/services/blind-box-activity-management/blindbox-get-active-config-list';
-import ProForm, { ProFormText, ProFormRadio,ProFormDateRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio,ProFormDateRangePicker,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import moment from 'moment';
 import styles from './style.less'
 import { PageContainer } from '@ant-design/pro-layout';
@@ -31,6 +31,7 @@ export default (props) => {
   const [detailList,setDetailList]=useState()
   const [form] = Form.useForm()
   const [falg,setFalg]=useState(true)
+  const [del,setDel]=useState('')
   let id = props.location.query.id
   useEffect(() => {
     if (id) {
@@ -127,24 +128,29 @@ export default (props) => {
           retailSupplyPrice: item.retailSupplyPrice,
         })
       })
-      
-      values.skus=arr.length>0&&arr||detailList?.skus
+      if(del){
+        values.skus=arr
+      }else{
+        values.skus=arr.length>0&&arr||detailList?.skus
+      }
       // values.skus.map(ele=>{
       //   sum+=parseInt(ele.probability)
       // })
     // if(sum<100||sum>100){
     //   message.error('商品中奖概率之和必须等于100')
     // }else{
-      if(arr.length==0){
+      if(values.skus.length==0){
         message.error('中奖商品不能为空');
       }else{
         saveActiveConfig(values).then(res=>{
           if (res.code == 0) {
             history.push('/blind-box-activity-management/blind-box-management-list')
             if(id){
+              setDel(false)
               message.success('编辑成功');
             }else{
               message.success('提交成功');
+              setDel(false)
             }
            
           }
@@ -228,7 +234,7 @@ export default (props) => {
             ]}
         />
         {/* 活动时间 */}
-        <ProFormDateRangePicker
+        <ProFormDateTimeRangePicker
             label='活动时间'
             rules={[{ required: true, message: '请选择活动时间' }]}
             name="dateRange"
@@ -295,6 +301,7 @@ export default (props) => {
         {/* 奖品设置 */}
         <PrizeSet detailList={detailList} id={id} falg={falg} callback={(val)=>{
           setDataSource(val)
+          setDel(true)
         }}/>
         
 
