@@ -234,7 +234,12 @@ export default (props) => {
         {
           onselect.length>0
            &&
-          <Form.Item label="文章详情" name="articleContent" readonly={detailData?.id&&detailData?.edtil} >
+          <Form.Item
+           label="文章详情"
+           name="articleContent"
+           readonly={detailData?.id&&detailData?.edtil}
+           rules={[{ required: true, message: '请设置文章详情!' }]} 
+          >
             <ReactQuill value={values} onChange={(value)=>setValues(value)}  modules={modules}/>
           </Form.Item>
         }
