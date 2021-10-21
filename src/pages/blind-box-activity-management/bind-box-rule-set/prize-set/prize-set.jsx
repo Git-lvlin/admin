@@ -98,7 +98,7 @@ export default (props) => {
       dataIndex: 'status',
       hideInSearch: true,
       renderFormItem: (_,r) => {
-      return <Switch checked={r.record.status}/>
+      return <Switch checked={_.entry.status}/>
       },
       render: (_,r) =>{
         return <p>
