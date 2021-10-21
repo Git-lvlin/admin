@@ -135,17 +135,22 @@ export default (props) => {
     // if(sum<100||sum>100){
     //   message.error('商品中奖概率之和必须等于100')
     // }else{
-      saveActiveConfig(values).then(res=>{
-        if (res.code == 0) {
-          history.push('/blind-box-activity-management/blind-box-management-list')
-          if(id){
-            message.success('编辑成功');
-          }else{
-            message.success('提交成功');
+      if(arr.length==0){
+        message.error('中奖商品不能为空');
+      }else{
+        saveActiveConfig(values).then(res=>{
+          if (res.code == 0) {
+            history.push('/blind-box-activity-management/blind-box-management-list')
+            if(id){
+              message.success('编辑成功');
+            }else{
+              message.success('提交成功');
+            }
+           
           }
-         
-        }
-      })
+        })
+      }
+
     // }
   }
 

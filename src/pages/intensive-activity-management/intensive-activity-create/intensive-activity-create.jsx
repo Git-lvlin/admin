@@ -6,19 +6,24 @@ import {
   ProFormCheckbox,
   ProFormDateTimeRangePicker,
   ProFormDateTimePicker,
-  ProFormDigit,
 } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
 import { Button, Result, message, Descriptions, Form } from 'antd';
 import EditTable from './edit-table';
 import styles from './index.less';
-import { addWholesale, getApplicableAreaForWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
-import { numFormat, digitUppercase } from '@/utils/utils'
+import { addWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
 import AddressMultiCascader from '@/components/address-multi-cascader'
+import Upload from '@/components/upload'
 import { history } from 'umi';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
-import Big from 'big.js'
+
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    {/* <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div> */}
+  </div>
+)
 
 const formItemLayout = {
   labelCol: { span: 10 },
@@ -205,17 +210,17 @@ const IntensiveActivityCreate = () => {
                   return false;
                 }
 
-                if (+item.totalStockNum % +item.batchNumber !== 0 ) {
+                if (+item.totalStockNum % +item.batchNumber !== 0) {
                   message.error(`sku:${item.skuId}集约总库存数量与集采箱柜单位量之间必须为倍数关系，请重新输入`);
                   return false;
                 }
 
-                if (+item.minNum % +item.batchNumber !== 0 ) {
+                if (+item.minNum % +item.batchNumber !== 0) {
                   message.error(`sku:${item.skuId}单次起订量与集采箱柜单位量之间必须为倍数关系，请重新输入`);
                   return false;
                 }
 
-                if (+item.maxNum % +item.batchNumber !== 0 ) {
+                if (+item.maxNum % +item.batchNumber !== 0) {
                   message.error(`sku:${item.skuId}单次限订量与集采箱柜单位量之间必须为倍数关系，请重新输入`);
                   return false;
                 }
@@ -247,11 +252,11 @@ const IntensiveActivityCreate = () => {
             }}
             className={styles.center}
           >
-            <ProFormText name="name" label="活动名称" width="md" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
+            <ProFormText name="name" label="活动名称" width="lg" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
             <ProFormDateTimeRangePicker
               name="wholesaleTime"
               label="活动时间"
-              width="md"
+              width="lg"
               rules={[{ required: true, message: '请选择活动时间' }]}
               fieldProps={{
                 // disabledDate: (currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() },
@@ -264,7 +269,7 @@ const IntensiveActivityCreate = () => {
             <ProFormDateTimePicker
               name="endTimeAdvancePayment"
               label="店主采购单下单截至时间"
-              width="md"
+              width="lg"
               rules={[{ required: true, message: '请选择店主采购单下单截至时间' }]}
               fieldProps={{
                 // disabledDate: (currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() },
@@ -294,7 +299,7 @@ const IntensiveActivityCreate = () => {
               <AddressMultiCascader
                 placeholder="请选择可参与集约活动的店铺所属省市区"
                 data={areaData}
-                style={{ width: '440px' }}
+                style={{ width: '640px' }}
                 pId={-1}
               // onCheck={() => {
               //   const data = window.yeahgo_area.filter(item => item.deep === 1);
@@ -303,6 +308,40 @@ const IntensiveActivityCreate = () => {
               //     'area': data.map(item => item.id)
               //   })
               // }}
+              />
+            </Form.Item>
+            <Form.Item
+              label="上传C端集约商品分享海报"
+              name="shareImg"
+              rules={[
+                { required: true, message: '请上传C端集约商品分享海报' },
+              ]}
+
+            >
+              <FromWrap
+                content={(value, onChange) => {
+                  return <>
+                    <div style={{ display: 'flex' }}>
+                      <div style={{ width: 105 }}>
+                        <Upload value={value} onChange={onChange} accept="image/png,image/jpg" dimension={{ width: 750, height: 1352 }} size={2048} />
+                      </div>
+                      <dl>
+                        <dd>大小：不超过2MB</dd>
+                        <dd>尺寸：750px X 1352px</dd>
+                        <dd>格式：png/jpg</dd>
+                      </dl>
+                    </div>
+                    <div className={styles.example}>
+                      <div style={{ width: 50 }}>示例:</div>
+                      <img src="https://dev-yeahgo.oss-cn-shenzhen.aliyuncs.com/admin/intensive-poster.png" width={150} />
+                      <dl>
+                        <dd>务必在海报中留出用户二维码位置：</dd>
+                        <dd>1、二维码宽和高都为220px；</dd>
+                        <dd>2、二维码右上角展示，距海报上边缘50px，距海报右边缘60px;</dd>
+                      </dl>
+                    </div>
+                  </>
+                }}
               />
             </Form.Item>
             {/* <ProFormDigit name="canRecoverPayTimes" label="可恢复支付次数" min={0} max={3} placeholder="输入范围0-3" rules={[{ required: true, message: '请输入可恢复支付次数' }]} /> */}

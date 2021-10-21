@@ -6,6 +6,8 @@ import { getBlindboxUseList } from '@/services/blind-box-activity-management/bli
 import { history, connect } from 'umi';
 import AuditModel from '../blind-box-employ-detail/audit-detail-model'
 import Detail from '@/pages/order-management/normal-order/detail';
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 
 
@@ -14,6 +16,7 @@ export default () => {
     const [detailList,setDetailList]=useState()
     const [detailVisible, setDetailVisible] = useState(false);
     const [orderId,setOrderId]=useState()
+    const [visit, setVisit] = useState(false)
     const columns= [
       {
         title: '序号',
@@ -164,6 +167,11 @@ export default () => {
       setDetailList(data)
       return data.records
     }
+    const getFieldValue = (searchConfig) => {
+      return {
+        ...searchConfig.form.getFieldsValue(),
+      }
+    }
     return (
       <PageContainer>
          <div style={{backgroundColor:'#fff',marginBottom:'20px'}}>
@@ -189,6 +197,12 @@ export default () => {
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
+               <Export
+                change={(e) => { setVisit(e) }}
+                type={'bind-box-use-detail-export'}
+                conditions={getFieldValue(searchConfig)}
+              />,
+              <ExportHistory show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
             ],
           }}
           columns={columns}

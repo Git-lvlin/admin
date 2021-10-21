@@ -25,16 +25,6 @@ const circulation=props=>{
             value: 2,
         }
     ]
-    // const options2=[
-    //     {
-    //         label:'按总数量发行',
-    //         value: 2,
-    //     },
-    //     {
-    //         label:'不限制',
-    //         value: 1,
-    //     }
-    // ]
     return(
         <>
          <ProFormRadio.Group
@@ -61,7 +51,7 @@ const circulation=props=>{
                                 <span>张</span>
                             </Space>
                             <p>
-                                优惠券发行总金额为
+                                红包发行总金额为
                                 <span className={styles.compute }>
                                     {
                                         pcType==1&&summoney*face1||
@@ -78,22 +68,6 @@ const circulation=props=>{
                             </p>
                         </div>
                   }
-                //   if(issueQuantityType==2){
-                //     return <div className={styles.unfold}>
-                //             <ProForm.Group>
-                //             <span>红包发行总数量为</span>
-                //                 <ProFormText 
-                //                     width={100}
-                //                     name="issueQuantity"
-                //                     placeholder="请输入"
-                //                     rules={[
-                //                         {validator: checkConfirm}
-                //                     ]} 
-                //                 />
-                //                 <span>张, 数量达标后活动结束</span>
-                //             </ProForm.Group>
-                //         </div>
-                //   }
               }}
               </ProFormDependency>
         </>

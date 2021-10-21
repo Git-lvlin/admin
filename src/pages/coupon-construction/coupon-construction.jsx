@@ -74,8 +74,6 @@ const couponConstruction = (props) => {
       usefulNum: parseInt(values.usefulNum),//用件数门槛
       freeDiscount: values.freeDiscount,//折扣
       maxFreeAmount: parseInt(values.maxFreeAmount),//最多优惠（单位分）
-      // freeAmountStart:parseInt(values.freeAmountStart),
-      // freeAmountEnd:parseInt(values.freeAmountEnd)
     }
     
     values.issueQuantity = parseInt(values.issueQuantity)//发行量
@@ -218,17 +216,20 @@ const couponConstruction = (props) => {
 
 
         {/* 每人限领 */}
-         {/* {
+         {
            type==3||DetailList.data?.issueType == 3 && id?
            <ProFormText
             width={120}
             label="每人限领"
-            name="limitQuantity"
             readonly
-            initialValue="1张/天"
+            name="limitQuantity"
+            fieldProps={{
+              value:'1张/天'
+            }}
+            initialValue="1"
            />
          :
-         <> */}
+         <>
           <ProFormRadio.Group
             name="limitType"
             label={<FormattedMessage id="formandbasic-form.each.limit" />}
@@ -254,13 +255,13 @@ const couponConstruction = (props) => {
                   );
               }}
             </ProFormDependency>
-         {/* </>
-         } */}
+         </>
+         }
         
 
         {/* 可领取时间 */}
         {
-          type == 1 || DetailList.data?.issueType == 1 && id ? 
+          type != 2 || DetailList.data?.issueType !=2 && id ? 
             <ProFormDateTimeRangePicker
               label='可领取时间'
               rules={[{ required: true, message: '请选择限领时间' }]}
@@ -280,30 +281,21 @@ const couponConstruction = (props) => {
             :null
         }
 
-         {/* 活动时间 */}
-         {/* {
-          type == 3 || DetailList.data?.issueType == 3 && id ? 
-            <ProFormDateTimeRangePicker
-              label='活动时间'
-              rules={[{ required: true, message: '请选择活动时间' }]}
-              name="dateRange"
-              fieldProps={{
-                disabledDate:(current)=>disabledDate(current)
-              }}
-              placeholder={[
-                formatMessage({
-                  id: 'formandbasic-form.placeholder.start',
-                }),
-                formatMessage({
-                  id: 'formandbasic-form.placeholder.end',
-                }),
-              ]}
-            />
-            :null
-        } */}
-
         {/* 有效期 */}
         <PeriodValidity  id={id} type={type}/>
+
+       {
+         type==3||DetailList.data?.issueType == 3 && id?
+          <ProFormText
+            width={120}
+            label="可领条件"
+            readonly
+            fieldProps={{
+              value:'每日首次下单成功'
+          }}
+        />
+        :null
+       }
         
 
         {/* 可领红包群体 */}
@@ -313,30 +305,16 @@ const couponConstruction = (props) => {
 
         {/* 使用范围 */}
         <UseScope id={id} type={type} choose={choose} form={form}/>
-
-        {/* 使用规则 */}
-          <ProFormTextArea
-            label={<FormattedMessage id="formandbasic-form.goal.label" />}
-            name="couponRule"
-            style={{ minHeight: 32, marginTop: 15 }}
-            placeholder='列如红包适用商品、使用限制等信息'
-            rules={[{ required: true, message: '请备注使用规则' }]}
-            rows={4}
-          />
-
-        {/* 活动规则 */}
-        {/* {
-            type==3||DetailList.data?.issueType == 3 && id?
-            <ProFormTextArea
-              label='活动规则'
-              name="couponActivityRule"
-              style={{ minHeight: 32, marginTop: 15 }}
-              placeholder='列如玩法规则、简单的用户协议'
-              rules={[{ required: true, message: '请备注活动规则' }]}
-              rows={4}
-            />:
-            null
-        } */}
+   
+        {/*使用说明 */}
+        <ProFormTextArea
+          label='使用说明'
+          name="couponRule"
+          style={{ minHeight: 32, marginTop: 15 }}
+          placeholder='列如红包适用商品、使用限制等信息'
+          rules={[{ required: true, message: '请备注使用规则' }]}
+          rows={4}
+        />
       </ProForm >
     </>
   );

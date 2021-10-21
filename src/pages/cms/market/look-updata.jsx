@@ -22,8 +22,11 @@ export default (props) => {
     if (detailDataz.id) {
       param.id = detailDataz.id
     }
-    param.actionUrl = `https://publicmobile-uat.yeahgo.com/web/market?spuId=${index.spuId}&skuId=${index.skuId}&orderType=${index.orderType}`
-    console.log('param', param)
+    if (index.spuId) {
+      param.actionUrl = `https://publicmobile-uat.yeahgo.com/web/market?spuId=${index.spuId}&skuId=${index.skuId}&orderType=${index.orderType}`
+    } else {
+      param.actionUrl = ''
+    }
     return new Promise((resolve, reject) => {
       merketDetailUpdata(param).then((res) => {
         if (res.code === 0) {

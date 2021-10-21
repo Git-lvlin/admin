@@ -47,8 +47,16 @@ export const spaceEdit = (params = {}, options = {}) => {
   });
 }
 
+export const homeActivityUpdata = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/activityIcon/saveOrUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const bannerAdd = (params = {}, options = {}) => {
-  return request('/auth/java-admin/cms/banner/saveOrUpdate', {
+  return request('/auth/java-admin/articleInfo/saveOrUpdateArticle', {
     method: 'POST',
     data: params,
     ...options
@@ -89,6 +97,30 @@ export const marketUpdata = (params = {}, options = {}) => {
 
 export const tagSortModify = (params = {}, options = {}) => {
   return request('/auth/activity/Goods/goodsTagSortSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const cmsImageInfo = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsImageInfo', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const cmsImageAdd = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsImageAdd', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const cmsImageEdit = (params = {}, options = {}) => {
+  return request('/auth/activity/Cms/cmsImageEdit', {
     method: 'POST',
     data: params,
     ...options
@@ -357,7 +389,7 @@ export const hotGoosOperation = (params = {}, options = {}) => {
 }
 
 export const articleOperation = (params = {}, options = {}) => {
-  return request('/auth/java-admin/articleType/saveOrUpdateArticleType', {
+  return request('/auth/java-admin/articleInfo/saveOrUpdateArticle', {
     method: 'POST',
     data: params,
     ...options
@@ -366,22 +398,23 @@ export const articleOperation = (params = {}, options = {}) => {
 
 export const findAdminArticleTypeList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
-  const data = {
-    // page: current,
-    // size: pageSize,
-    ...rest
-  }
   const res = await request('/auth/java-admin/articleType/findAdminArticleTypeList', {
     method: 'POST',
-    data,
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
     ...options
   });
+
   return {
-    data: res.data || [],
+    data: res.data,
     success: true,
-    total: res.data.total,
+    total: res.data.total
   }
 }
+
 
 export const delContestGoods = (params = {}, options = {}) => {
   return request(`/auth/go-spider-api/contestprice/auth/contestprice/DelContestGoods?id=${params.id}`, {
@@ -433,6 +466,47 @@ export const saveMoneySortTop = (params = {}, options = {}) => {
 
 export const bannerSortTop = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/banner/setTop', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+
+export const homeClassCategorySecondCategory = (params = {}, options = {}) => {
+  return request('/auth/goods/product/categorySecondCategory', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const homeClassificationSetSort = (params = {}, options = {}) => {
+  return request('/auth/goods/product/categorySetHomeSort', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const homeClassificationStatus = (params = {}, options = {}) => {
+  return request('/auth/goods/product/categorySetHomeStatus', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const homeClassificationSortTop = (params = {}, options = {}) => {
+  return request('/auth/goods/product/categorySetHomeStick', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const homeActivitySortTop = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/activityIcon/setTop', {
     method: 'POST',
     data: params,
     ...options
@@ -713,6 +787,14 @@ export const homePopupUpdate = (params = {}, options = {}) => {
   });
 }
 
+export const posterUpData = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/poster/saveOrUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const saveMoneyFormList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;
 
@@ -761,6 +843,27 @@ export const saveMoneyFormLists = async (params = {}, options = {}) => {
   }
 }
 
+export const homeActivityList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/cms/activityIcon/page', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
 export const homeBannerList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;
 
@@ -773,6 +876,30 @@ export const homeBannerList = async (params = {}, options = {}) => {
     data.status = Number(status);
   }
   const res = await request('/auth/java-admin/cms/banner/page', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const homeClassificationList = async (params = {}, options = {}) => {
+  const { current, pageSize, homeStatus, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  if (homeStatus) {
+    data.homeStatus = Number(homeStatus);
+  }
+  const res = await request('/auth/goods/product/categorySearchHomeList', {
     method: 'POST',
     data,
     ...options
@@ -845,6 +972,23 @@ export const posterList = async (params = {}, options = {}) => {
     success: true,
     total: res.data.total,
   }
+}
+
+export const posterListNew = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/cms/poster/findPage', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return res
 }
 
 export const marketList = async (params = {}, options = {}) => {

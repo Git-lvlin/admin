@@ -138,7 +138,6 @@ const afterSalesOrder = () => {
         params={{}}
         request={refundOrder}
         search={{
-          defaultCollapsed: false,
           optionRender: ({searchText, resetText}, {form}) => [
             <Button
               key="search"

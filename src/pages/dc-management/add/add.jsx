@@ -279,17 +279,21 @@ const EditableTable = () => {
       const isFrist = !record.preParent && !record.parent;
       const isSecond = !!record.preParent && !record.parent;
       const isThird = !!record.preParent && !!record.parent;
+      const newRowData = {
+        ...record,
+        ...row
+      };
       if(isFrist) {
-        newData.splice(index, 1, { ...record, ...row });
+        newData.splice(index, 1, newRowData);
       }
       if(isSecond) {
-        let preIdx = newData.findIndex((item) => record.preParent === item.key);
-        newData[preIdx].children.splice(index, 1, { ...record, ...row });
+        let preIdx = newData.findIndex((item) => record.preParent === item.key);l
+        newData[preIdx].children.splice(index, 1, newRowData);
       }
       if(isThird) {
         let preIdx = newData.findIndex((item) => record.preParent === item.key);
         let pIdx = newData[preIdx].children.findIndex((item) => record.parent === item.key);
-        newData[preIdx].children[pIdx].children.splice(index, 1, { ...record, ...row });
+        newData[preIdx].children[pIdx].children.splice(index, 1, newRowData);
       }
       setData(newData);
       setEditingKey('');
@@ -344,15 +348,15 @@ const EditableTable = () => {
     let resultData = {};
     let isEmpty = false;
     const formData = await headForm.validateFields();
-    if (formData.platform&&formData.platform[0] == 0) {
+    if (formData.platform && formData.platform[0] == 0) {
       formData.platform = platformTypeAll
     }
     let platformData = '';
     data.forEach(item => {
       if(!!item.name){
         resultData = itemToJson(item);
-          obj[item.name] = resultData.data;
-          define[item.name] = resultData.define;
+        obj[item.name] = resultData.data;
+        define[item.name] = resultData.define;
       } else {
         isEmpty = true
       }
@@ -360,6 +364,11 @@ const EditableTable = () => {
     if(isEmpty) {
       message.error("请确认字段是否已全部填写");
       return ;
+    }
+    for(let key in obj) {
+      if(obj[key] && obj[key].indexOf('\\n') > -1) {
+        obj[key] = obj[key].replaceAll('\\n', '\n');
+      }
     }
     formData.data = obj;
     formData.define = define;

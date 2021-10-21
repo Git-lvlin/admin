@@ -73,19 +73,6 @@ const BannerAdmin = () => {
       title: 'banner名称',
       dataIndex: 'title',
     },
-    // {
-    //   title: '适用平台',
-    //   dataIndex: 'useType',
-    //   valueType: 'text',
-    //   valueEnum: {
-    //     1: '全平台',
-    //     2: '手机端',
-    //     3: 'h5',
-    //     4: 'web网页',
-    //     5: '小程序',
-    //   },
-    //   search: false
-    // },
     {
       title: '跳转链接',
       dataIndex: 'actionUrl',
@@ -108,6 +95,7 @@ const BannerAdmin = () => {
         2: '集约',
         3: '个人中心',
         4: '社区店',
+        6: '秒杀爆品',
       }
     },
     {

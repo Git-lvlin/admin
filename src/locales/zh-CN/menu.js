@@ -17,6 +17,7 @@ export default {
   'menu.user-management.disable-user-list': '禁用列表',
   'menu.user-management.user-detail': '用户详情',
   'menu.user-management.user-relationship': '用户关系',
+  'menu.user-management.new-poster': '海报管理',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
@@ -54,6 +55,7 @@ export default {
   'menu.product-management.product-review': '商品审核',
   'menu.product-management.set-goods-list': '商品运营配置',
   'menu.product-management.product-category': '商品分类',
+  'menu.product-management.overrule-list': '驳回商品',
 
   'menu.setting': '设置',
   'menu.setting.account-management': '子账号管理',
@@ -67,6 +69,8 @@ export default {
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
   'menu.intensive-activity-management.intensive-remind-configuration': '集约提醒配置',
   'menu.intensive-activity-management.intensive-remind-statistics': '集约提醒统计',
+
+
 
 
 
@@ -130,8 +134,10 @@ export default {
   'menu.cms.goos-reg.hot-goos': '热销好货',
   'menu.cms.goos-reg.crazy-date': '限时秒杀',
   'menu.cms.goos-reg.save-money': '集约优选',
-  'menu.cms.goos-reg.strategy-today': '今日必约',
+  'menu.cms.goos-reg.strategy-today': '首页秒约爆品',
   'menu.cms.home-suspension': '首页悬浮窗',
+  'menu.cms.home-activity': '首页活动',
+  'menu.cms.home-classification': '首页分类管理',
   'menu.cms.express-news': '约购快报',
   'menu.cms.king-kong-district': '金刚区',
   'menu.cms.price-comparsion': '首页比价优选',
@@ -186,6 +192,7 @@ export default {
 
   'menu.business-school': '商学院',
   'menu.business-school.article-list': '文章列表',
+  'menu.business-school.shopkeeper-disclose': '店主吐槽',
   'menu.business-school.article-category-list': '文章分类列表',
 
   'menu.community-management':'社区管理',
@@ -235,8 +242,8 @@ export default {
   'menu.financial-management.transaction-detail-management.withdrawal-balance-details':'可提现余额明细',
   'menu.financial-management.transaction-detail-management.order-pay-detail-management':'订单支付明细管理',
   'menu.financial-management.transaction-detail-management.order-pay-detail':'订单支付详情',
-  'menu.financial-management.transaction-detail-management.bonus-detail-management':'提成明细管理',
-  'menu.financial-management.transaction-detail-management.commission-detail-management':'佣金明细管理',
+  'menu.financial-management.transaction-detail-management.bonus-detail-management':'店铺收益明细管理',
+  'menu.financial-management.transaction-detail-management.commission-detail-management':'平台收益明细管理',
   'menu.financial-management.transaction-detail-management.loan-detail-management':'货款明细管理',
   'menu.financial-management.transaction-detail-management.royalty-details':'明细详情',
   'menu.financial-management.transaction-detail-management.after-sales-order-details':'售后订单明细管理',
@@ -278,4 +285,11 @@ export default {
   'menu.import-export-configuration': '导入导出配置',
   'menu.import-export-configuration.export-configuration': '导出配置',
   'menu.import-export-configuration.import-configuration': '导入配置',
+
+
+  'menu.activity-management': '活动管理',
+  'menu.activity-management.everyday-red-packet-activity': '每日红包活动',
+  'menu.activity-management.everyday-red-packet-activity.activity-list': '活动列表',
+  'menu.activity-management.everyday-red-packet-activity.activity-list.everyday-packet-rule': '每日红包规则',
+  'menu.activity-management.everyday-red-packet-activity.red-packet-particulars': '红包明细',
 };

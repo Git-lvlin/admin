@@ -113,13 +113,14 @@ const AfterSalesOrderDetails = () =>{
       dataIndex: 'orderType',
       valueType: 'select',
       valueEnum: {
-        'normalOrder': '普通商品订单',
         'second': '秒约订单',
         'commandSalesOrder': '集约批发订单',
         'activeSalesOrder': '主动集约店主订单',
         'dropShipping1688': '1688代发订单',
         'commandCollect': '集约销售订单',
-        'activeCollect': '主动集约C端订单'
+        'activeCollect': '主动集约C端订单',
+        'blindBox': '盲盒订单',
+        'signIn': '签到订单'
       },
       hideInSearch: true
     },
@@ -128,9 +129,12 @@ const AfterSalesOrderDetails = () =>{
       dataIndex: 'orderType',
       valueType: 'select',
       valueEnum: {
+        'second': '秒约',
         'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
-        'second': '秒约订单'
+        'commandCollect': '集约销售订单',
+        'blindBox': '盲盒订单',
+        'signIn': '签到订单'
       },
       hideInTable: true
     },
