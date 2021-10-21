@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { message, Form } from 'antd';
+import { message, Form,Space} from 'antd';
 import ProForm, {
   DrawerForm,
   ProFormText,
@@ -7,57 +7,105 @@ import ProForm, {
   ProFormSelect,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { bannerAdd } from '@/services/cms/member/member';
-import ReactQuill from 'react-quill';
+import { bannerAdd,findAdminArticleTypeList } from '@/services/cms/member/member';
+import { adminArticleDetail } from '@/services/business-school/find-admin-article-list';
+import  ReactQuill,{ Quill }  from 'react-quill';
+import { history } from 'umi';
 import 'react-quill/dist/quill.snow.css';
 
 
 
-const waitTime = (values) => {
-  const { id, ...rest } = values
-  const param = {
-    ...rest
-  }
-  if (id) {
-    param.id = id
-  }
-  return new Promise((resolve) => {
-    bannerAdd(param).then((res) => {
-      if (res.code === 0) {
-        resolve(true);
-      }
-    })
 
-  });
+const formItemLayout = {
+  labelCol: { span: 3 },
+  wrapperCol: { span: 14 },
+  layout: {
+    labelCol: {
+      span: 4,
+    },
+    wrapperCol: {
+      span: 14,
+    },
+  }
 };
 
 
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, setVisible, onClose, visible,callback } = props;
   const formRef = useRef();
+  const [onselect,setOnselect]=useState([])
   const [form] = Form.useForm()
-  const [value, setValue] = useState('');
+  const [values, setValues] = useState('');
+
+  const onsubmit = (values) => {
+    const { ...rest } = values
+    const param = {
+      articleType:1,
+      ...rest
+    }
+    if (detailData?.id) {
+      param.articleTypeId = detailData?.id
+    }
+    return new Promise((resolve) => {
+      bannerAdd(param).then((res) => {
+        if (res.code === 0) {
+          message.success('提交成功');
+          resolve(true);
+          callback(true)
+        }
+      })
+  
+    });
+  };
 
   useEffect(() => {
-    console.log('value', value)
-    if (detailData) {
-      const { ...rest } = detailData;
-      form.setFieldsValue({
-        ...rest
+    if (detailData?.id) {
+      adminArticleDetail({id:detailData?.id}).then(res=>{
+        form.setFieldsValue({
+          ...res.data
+        })
       })
     }
+    findAdminArticleTypeList({}).then(res=>{
+      setOnselect(res.data.map(ele=>(
+        {label:ele.typeName,value:ele.id}
+      )))
+    })
   }, [form, detailData])
 
+  const modules={
+    toolbar:[
+      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+      ['blockquote', 'code-block'],
+      ['link', 'image','video'],
+  
+      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+      [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+      [{ 'direction': 'rtl' }],                         // text direction
+  
+      // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+  
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      [{ 'font': [] }],
+      [{ 'align': [] }],
+  
+      ['clean']                                         // remove formatting button
+  ]
+  }
   
 
   return (
     <DrawerForm
-      title={`${detailData ? '编辑' : '新建'}`}
+      title={`${detailData?.id ? detailData?.edtil?'详情':'编辑图文' : '新建图文'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
       form={form}
+      width={1500}
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
@@ -66,65 +114,85 @@ export default (props) => {
         }
       }}
       onFinish={async (values) => {
-        await waitTime(values);
-        message.success('提交成功');
+        await onsubmit(values);
         // 不返回不会关闭弹框
         return true;
       }}
+      {...formItemLayout}
     >
-      <ProForm.Group>
         <ProFormText 
-          width="sm"
-          name="title"
+          width="md"
+          name="articleTitle"
           label="标题"
-          rules={[{ required: true, message: '请输入banner名称' }]}  
+          placeholder="请输入文章标题"
+          rules={[{ required: true, message: '请输入文章标题' }]}
+          readonly={detailData?.id&&detailData?.edtil}
+          fieldProps={{
+            maxLength: 60,
+          }}
         />
-      </ProForm.Group>
-      <ProForm.Group>
+
         <ProFormText 
-          width="sm"
-          name="title"
-          label="昵称"
+          width="md"
+          name="authorNickName"
+          label="发布人昵称"
+          placeholder="请输入当前登录账户昵称"
+          rules={[{ required: true, message: '请输入当前登录账户昵称' }]}
+          readonly={detailData?.id&&detailData?.edtil}
+          fieldProps={{
+            maxLength: 20,
+          }}
         />
-      </ProForm.Group>
 
-
-      <ProForm.Group>
         <Form.Item
-          label="添加图片"
-          name="image"
+          label="封面图片"
+          name="coverPicture"
           required
           tooltip={
             <dl>
               <dt>图片要求</dt>
-              <dd>首页banner-351*100</dd>
-              <dd>集约页面banner-375*186</dd>
-              <dd>个人中心banner-375*65</dd>
-              <dd>社区店专享banner-375*150</dd>
+              <dd>1.图片大小500kb以内</dd>
+              <dd>2.图片尺寸为 360 x 100</dd>
+              <dd>3.图片格式png/jpg/gif</dd>
             </dl>
           }
+          extra="图片要求 1.图片大小500kb以内 2.图片尺寸为 360 x 100 3.图片格式png/jpg/gif"
+          readonly={detailData?.id&&detailData?.edtil} 
         >
-          <Upload multiple maxCount={1} accept="image/*" dimension="1:1" size={375} />
+          <Upload multiple dimension={{width:360,height:100}}  maxCount={1} accept="image/*"  size={1*1024/2} />
         </Form.Item>
-      </ProForm.Group>
-      <ProForm.Group>
+
         <ProFormSelect
-          name="location"
-          label="所属分类"
+          width="md"
+          name="storeType"
+          label="可展示店铺"
           valueEnum={{
-            1: '首页',
-            2: '集约',
-            3: '个人中心',
-            4: '社区店',
+            1: '所有店铺',
+            2: '社区店',
+            3: '内部店',
+            4: '自营店',
           }}
-          placeholder="选择位置"
-          rules={[{ required: true, message: '请选择位置!' }]}
+          placeholder="请选择可展示的店铺"
+          // rules={[{ required: true, message: '请选择店铺!' }]}
+          readonly={detailData?.id&&detailData?.edtil} 
         />
-      </ProForm.Group>
+        <ProFormSelect
+          width="md"
+          name="articleTypeId"
+          label="所属分类"
+          options = {onselect}
+          placeholder="请选择所属文章分类"
+          rules={[{ required: true, message: '请选择位置!' }]}
+          readonly={detailData?.id&&detailData?.edtil}
+          extra={detailData?.id&&detailData?.edtil?null:<a onClick={()=>{history.push('/business-school/article-category-list')}}>管理分类</a>}
+        />
+
+       
       <ProFormRadio.Group
-          name="state"
+          name="isTop"
           label="是否置顶"
           required
+          rules={[{ required: true, message: '请设置是否置顶!' }]}
           options={[
             {
               label: '置顶',
@@ -135,9 +203,11 @@ export default (props) => {
               value: 0,
             },
           ]}
+          readonly={detailData?.id&&detailData?.edtil} 
         />
+
       <ProFormRadio.Group
-          name="state"
+          name="isShow"
           label="状态"
           required
           options={[
@@ -150,25 +220,24 @@ export default (props) => {
               value: 0,
             },
           ]}
+          readonly={detailData?.id&&detailData?.edtil} 
         />
-      <ProForm.Group>
         <ProFormText 
-          width="sm"
-          name="sort"
+          width="md"
+          name="virtualClickNum"
           label="虚拟浏览量"
-          rules={[{ required: true, message: '请输入虚拟浏览量,8位以内整数' }]}  
+          placeholder="请输入虚拟浏览量，8位以内整数"
+          rules={[{ required: true, message: '请输入虚拟浏览量,8位以内整数' }]}
+          readonly={detailData?.id&&detailData?.edtil}  
         />
 
-      </ProForm.Group>
-      <ProForm.Group>
-        <ReactQuill theme="snow" value={value} onChange={setValue}/>
-      </ProForm.Group>
-
-        <ProFormText
-          name="id"
-          label="id"
-          hidden
-        />
+        {
+          onselect.length>0
+           &&
+          <Form.Item label="文章详情" name="articleContent" readonly={detailData?.id&&detailData?.edtil} >
+            <ReactQuill value={values} onChange={(value)=>setValues(value)}  modules={modules}/>
+          </Form.Item>
+        }
     </DrawerForm>
   );
 };

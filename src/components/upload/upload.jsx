@@ -11,7 +11,6 @@ const Upload = (props) => {
   const fileData = useRef([]);
 
   const beforeUpload = async (file) => {
-
     if (proportion) {
       if (proportion === 'banner') {
         message.error('请先选择位置!')

@@ -168,8 +168,9 @@ export default props => {
               {
                 detailData.issueType == 1 ?
                   '会员领取红包'
-                  : '系统发放红包'
-                  // :'每日红包'
+                  :detailData.issueType == 2 ? 
+                  '系统发放红包'
+                  :'每日红包'
               }
             </Form.Item>
             <Form.Item
@@ -195,10 +196,20 @@ export default props => {
              {
                 detailData.activityTimeType == 1 ?
                 <p>{detailData.activityStartTime + ' -- ' + detailData.activityEndTime}</p>
-                :<p>领红包{detailData.activityStartDay}天起，{detailData.activityEndDay}天内可用</p>
-                // : <p>领红包0天起，{detailData.activityEndHour}小时内可用</p>
+                :detailData.activityTimeType == 2 ?
+                <p>领红包{detailData.activityStartDay}天起，{detailData.activityEndDay}天内可用</p>
+                : <p>领红包0天起，{detailData.activityEndHour}小时内可用</p>
               }
             </Form.Item>
+
+            {
+              detailData.issueType == 3&&
+              <Form.Item
+                  label="可领条件"
+                >
+              <p>每日首次下单的用户</p>
+              </Form.Item>
+            }
 
             <Form.Item
               label="可领红包群体"
@@ -282,18 +293,6 @@ export default props => {
                 ))
                }
             </Form.Item>
-
-            {/* {
-              detailData.memberType == 3&&<Form.Item
-                label="活动说明"
-              >
-                {
-                detailData.couponActivityRule?.split('\n').map(ele=>(
-                  <span>{ele}</span>
-                ))
-                }
-              </Form.Item>
-            } */}
           </div>
 
             {

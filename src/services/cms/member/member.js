@@ -48,7 +48,7 @@ export const spaceEdit = (params = {}, options = {}) => {
 }
 
 export const bannerAdd = (params = {}, options = {}) => {
-  return request('/auth/java-admin/cms/banner/saveOrUpdate', {
+  return request('/auth/java-admin/articleInfo/saveOrUpdateArticle', {
     method: 'POST',
     data: params,
     ...options
@@ -357,7 +357,7 @@ export const hotGoosOperation = (params = {}, options = {}) => {
 }
 
 export const articleOperation = (params = {}, options = {}) => {
-  return request('/auth/java-admin/articleType/saveOrUpdateArticleType', {
+  return request('/auth/java-admin/articleInfo/saveOrUpdateArticle', {
     method: 'POST',
     data: params,
     ...options
@@ -366,22 +366,23 @@ export const articleOperation = (params = {}, options = {}) => {
 
 export const findAdminArticleTypeList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
-  const data = {
-    // page: current,
-    // size: pageSize,
-    ...rest
-  }
   const res = await request('/auth/java-admin/articleType/findAdminArticleTypeList', {
     method: 'POST',
-    data,
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
     ...options
   });
+
   return {
-    data: res.data || [],
+    data: res.data,
     success: true,
-    total: res.data.total,
+    total: res.data.total
   }
 }
+
 
 export const delContestGoods = (params = {}, options = {}) => {
   return request(`/auth/go-spider-api/contestprice/auth/contestprice/DelContestGoods?id=${params.id}`, {
