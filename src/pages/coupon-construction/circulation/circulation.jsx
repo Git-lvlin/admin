@@ -36,36 +36,6 @@ const circulation=props=>{
               {({ issueQuantityType }) => {
                   if(issueQuantityType==1) return null 
                   if(issueQuantityType==2){
-                      if(type==3||DetailList.data?.issueType == 3){
-                        return <div className={styles.unfold}>
-                                <ProForm.Group>
-                                <span>红包发行总数量为</span>
-                                    <ProFormText 
-                                        width={100}
-                                        name="issueQuantity"
-                                        placeholder="请输入"
-                                        fieldProps={{
-                                            onChange: (e) => sumMoney(e),
-                                        }}  
-                                        rules={[
-                                            {validator: checkConfirm}
-                                        ]} 
-                                    />
-                                    <span>张</span>
-                                </ProForm.Group>
-                                <p>
-                                优惠券发行总金额为
-                                <span className={styles.compute }>
-                                    {
-                                        pcType==1&&summoney*face1
-                                        ||
-                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*parseInt(DetailList.data?.couponAmountDisplay)
-                                    }
-                                </span>
-                                元
-                            </p>
-                            </div>
-                      }
                     return <div className={styles.unfold}>
                             <Space>
                                 <ProFormText 

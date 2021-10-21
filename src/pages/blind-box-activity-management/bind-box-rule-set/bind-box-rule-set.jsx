@@ -113,7 +113,6 @@ export default (props) => {
       }
       const arr = [];
       // let sum=0
-      console.log('dataSource',dataSource)
       dataSource.forEach(item => {
         arr.push({
           id: item.add?0:item.id,

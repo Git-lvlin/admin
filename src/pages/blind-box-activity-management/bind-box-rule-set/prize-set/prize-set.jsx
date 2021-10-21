@@ -232,7 +232,6 @@ export default (props) => {
                       }
                     })
                   })
-                  console.log('arr',arr)
                   let arr2=_.uniqWith([...dataSource,...arr], _.isEqual)
                     setDataSource(arr2)
                 }}

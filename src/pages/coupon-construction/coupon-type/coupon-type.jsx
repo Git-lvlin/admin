@@ -85,42 +85,6 @@ const couponType = (props) => {
                 {({ couponType }) => { 
                 if(!couponType) return null
                 if(couponType==1){
-                    if(type==3||DetailList.data?.issueType == 3){
-                        return <div className={styles.unfold}>
-                                <ProForm.Group>
-                                <span>使用门槛: 满</span>
-                                <ProFormText
-                                    width={100}
-                                    name="usefulAmount"
-                                    rules={[
-                                        {validator: checkConfirm}
-                                    ]}
-                                />
-                                <span>元， （填写0，则无使用门槛）</span>
-                                </ProForm.Group>
-                                <ProForm.Group>
-                                    <span>优惠内容：减免</span>
-                                    <ProFormText 
-                                        name="freeAmountStart"
-                                        fieldProps={{
-                                            onChange: (e) => onDiscounts(e)
-                                            }}
-                                        width={100}
-                                        rules={[
-                                            {validator: checkConfirm}
-                                        ]} 
-                                    />
-                                    <span>元</span>
-                                </ProForm.Group>
-                                <ProForm.Group>
-                                    <span>红包面值：</span>
-                                    <span className={styles.compute}>
-                                        {discounts||(parseInt(id) == id) && DetailList.data?.couponAmountDisplay}
-                                    </span> 
-                                    <span>元</span>
-                                </ProForm.Group>
-                            </div>
-                    }
                     return  <div className={styles.unfold}>
                                 <ProForm.Group>
                                 <span>使用门槛: 活动商品满</span>
