@@ -117,6 +117,7 @@ const IntensiveActivityCreate = () => {
         wholesaleEndTime: wholesaleTime[1],
         recoverPayTimeout: 0,
         canRecoverPayTimes: 0,
+        wholesaleFlowType: selectItem[0].wholesaleFlowType,
         ...rest,
       }
       setSubmitValue(params)

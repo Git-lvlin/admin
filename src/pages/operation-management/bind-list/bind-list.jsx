@@ -11,6 +11,7 @@ const TableList = () => {
   const formRef = useRef();
   const [visit, setVisit] = useState(false)
   const [bindVisible, setBindVisible] = useState(false)
+  const [selectItem, setSelectItem] = useState({})
 
   const columns = [
     {
@@ -79,7 +80,7 @@ const TableList = () => {
       render: (_, data) => {
         return data.lastApply?.auditStatus?.code !== 3 ? <>
           {data.status === '已绑' && <a>申请解绑</a>}
-          {data.status === '未绑' && <a>申请绑定</a>}
+          {data.status === '未绑' && <a onClick={() => { setSelectItem(data); setBindVisible(true) }}>申请绑定</a>}
         </> : '-'
       }
     },
@@ -95,6 +96,7 @@ const TableList = () => {
 
   return (
     <>
+      {bindVisible && <Bind data={selectItem} visible={bindVisible} setVisible={setBindVisible} />}
       <ProTable
         rowKey="id"
         options={false}
