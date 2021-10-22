@@ -1,9 +1,15 @@
 import React, { useState, useRef } from 'react';
-import { Button, Radio, Space } from 'antd';
+import { Button, Radio, Space, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { operationList } from '@/services/order-management/intensive-purchase-order';
-import Detail from './detail';
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+import {
+  ModalForm,
+  ProFormTextArea,
+} from '@ant-design/pro-form';
+
+const { confirm } = Modal;
 
 const BindAuditList = () => {
   const [detailVisible, setDetailVisible] = useState(false);
@@ -72,7 +78,41 @@ const BindAuditList = () => {
       render: (_, record) => {
         return (
           <Space>
-            <a onClick={() => { setSelectItem(record); setDetailVisible(true); }}>详情</a>
+            <a onClick={() => {
+              confirm({
+                title: '审核通过',
+                icon: <ExclamationCircleOutlined />,
+                content: '确认审核通过吗？',
+                onOk() {
+                  console.log('OK');
+                },
+              });
+            }}>通过</a>
+            <ModalForm
+              title="审核驳回"
+              width={500}
+              trigger={
+                <a>
+                  拒绝
+                </a>
+              }
+              modalProps={{
+                onCancel: () => console.log('run'),
+              }}
+              onFinish={async (values) => {
+                return true;
+              }}
+            >
+              <ProFormTextArea
+                label="驳回原因"
+                rules={[{ required: true, message: '请输入驳回原因' }]}
+                name="text"
+                placeholder="请输入驳回原因，50字以内"
+                fieldProps={{
+                  maxLength: 50
+                }}
+              />
+            </ModalForm>
           </Space>
         )
       },

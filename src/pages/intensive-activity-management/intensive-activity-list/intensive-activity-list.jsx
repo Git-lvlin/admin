@@ -48,6 +48,10 @@ const SubTable = (props) => {
       dataIndex: 'goodsName',
     },
     {
+      title: '上架状态',
+      dataIndex: 'goodsStateDesc',
+    },
+    {
       title: '供应商家ID',
       dataIndex: 'supplierId',
     },

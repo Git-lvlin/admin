@@ -1,14 +1,16 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { bindOperationPage } from '@/services/operation-management/bind-list'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import Bind from './bind';
 
 const TableList = () => {
   const actionRef = useRef();
   const formRef = useRef();
   const [visit, setVisit] = useState(false)
+  const [bindVisible, setBindVisible] = useState(false)
 
   const columns = [
     {
@@ -49,9 +51,17 @@ const TableList = () => {
     },
     {
       title: '审核状态',
-      dataIndex: 'status',
+      dataIndex: 'lastApply',
       valueType: 'text',
       hideInSearch: true,
+      render: (_) => {
+        return <>
+          {_?.auditStatus?.desc || '待提交'}
+          {_?.auditStatus?.code === 2 && <div>
+            <Tooltip title={_?.remark}><a>原因</a></Tooltip>
+          </div>}
+        </>
+      }
     },
     {
       title: '审核状态',
@@ -66,6 +76,12 @@ const TableList = () => {
     {
       title: '操作',
       valueType: 'option',
+      render: (_, data) => {
+        return data.lastApply?.auditStatus?.code !== 3 ? <>
+          {data.status === '已绑' && <a>申请解绑</a>}
+          {data.status === '未绑' && <a>申请绑定</a>}
+        </> : '-'
+      }
     },
   ];
 
