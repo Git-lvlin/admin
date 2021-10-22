@@ -18,3 +18,13 @@ export const bindOperationPage = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+
+export const bindingForAdmin = async (params = {}, options = {}) => {
+  return request('/auth/store/bindingOperationApply/bindingForAdmin', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
