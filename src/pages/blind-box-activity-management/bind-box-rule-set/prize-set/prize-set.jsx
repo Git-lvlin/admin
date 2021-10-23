@@ -8,17 +8,23 @@ import ProTable from '@ant-design/pro-table';
 const _ = require('lodash');
 
 
+
 export default (props) => {
-  const {callback,id,falg,detailList}=props
+  const {callback,id,falg,detailList,submi}=props
   const ref=useRef()
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
-//   const [editableKeys, setEditableRowKeys] = useState(() =>
-//   dataSource.map((item) => item.id),
-// );
-  const [cut,setCut]=useState(true)
-  // const [submi,setSubmi]=useState(0)
+  useEffect(()=>{
+    if(!falg){
+     setDataSource(detailList?.skus)
+     setEditableKeys(detailList?.skus.map(item => item.id))
+    }
+    if(submi){
+      setEditableKeys([])
+    }
+   
+  },[falg,submi])
 
   const columns= [
     {
@@ -66,7 +72,7 @@ export default (props) => {
     },
     {
       title: '可用库存',
-      dataIndex: 'sumNum',
+      dataIndex: 'baseStockNum',
       valueType: 'text',
       editable:false,
     },
@@ -78,7 +84,7 @@ export default (props) => {
       renderFormItem: (_,r) => {
         return  <InputNumber
                   min="0"
-                  max={_.entry.sumNum}
+                  max={_.entry.baseStockNum}
                   stringMode
                 />
         },
@@ -145,12 +151,6 @@ export default (props) => {
     setDataSource(arr) 
     callback(arr)
   }
-  useEffect(()=>{
-    if(!falg){
-     setDataSource(detailList?.skus)
-    }
-   
-  },[falg])
   return (
     <>
     <EditableProTable
@@ -158,7 +158,6 @@ export default (props) => {
         headerTitle="奖品设置"
         name="table"
         value={dataSource}
-        // onChange={setDataSource}
         recordCreatorProps={false}
         columns={columns}
         editable={{
@@ -182,32 +181,11 @@ export default (props) => {
               callback(recordList)
             // }
           },
-          // onChange: setEditableRowKeys,
         }}
         toolBarRender={()=>[
-            <>
-            {
-              cut?<Button type="primary" onClick={() => { 
-                setEditableKeys(dataSource.map(item => item.id))
-                setCut(false)
-              } 
-              }>编辑概率</Button>
-              :<Button type="primary" onClick={() => { 
-                // if(submi==100){
-                  setEditableKeys([])
-                  setCut(true)
-                // }else if(submi>100){
-                //   message.error('所有商品概率总和不能超过100%')
-                // }else if(submi==0){
-                //   setEditableKeys([])
-                //   setCut(true)
-                // }else if(submi!=0&&submi<100){
-                //   message.error('中奖概率之和必须=100')
-                // }
-              }}>保存</Button>
-            }
-            </>,
-            <Button type="primary" onClick={()=>setVisible(true)}>
+            <Button type="primary" onClick={()=>{
+              setVisible(true)
+            }}>
                 <PlusOutlined />
                 添加秒约商品
             </Button>,
@@ -230,7 +208,7 @@ export default (props) => {
                       skuId: item.skuId,
                       spuId: item.spuId,
                       stockNum: 0,
-                      sumNum:item.stockNum,
+                      baseStockNum:item.stockNum,
                       goodsName: item.goodsName,
                       imageUrl: item.imageUrl,
                       salePrice: item.salePrice,
@@ -238,15 +216,16 @@ export default (props) => {
                     })
                   })
                   detailList?.skus.map(ele=>{
-                    arr.map(item=>{
-                      if(item.skuId==ele.skuId){
-                        item.id=ele.id
-                        delete item.add
-                      }
-                    })
+                      arr.map(item=>{
+                        if(item.skuId==ele.skuId){
+                          item.id=ele.id
+                          delete item.add
+                        }
+                      })
                   })
                   let arr2=_.uniqWith([...dataSource,...arr], _.isEqual)
                     setDataSource(arr2)
+                    setEditableKeys(arr2.map(item => item.id))
                 }}
               />
             }
