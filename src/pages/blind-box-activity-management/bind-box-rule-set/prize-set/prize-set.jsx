@@ -14,8 +14,12 @@ export default (props) => {
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
+//   const [editableKeys, setEditableRowKeys] = useState(() =>
+//   dataSource.map((item) => item.id),
+// );
   const [cut,setCut]=useState(true)
   // const [submi,setSubmi]=useState(0)
+
   const columns= [
     {
       title: '序号',
@@ -59,6 +63,12 @@ export default (props) => {
       hideInSearch:true,
       editable:false,
        render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
+    },
+    {
+      title: '可用库存',
+      dataIndex: 'sumNum',
+      valueType: 'text',
+      editable:false,
     },
     {
       title: '奖品库存',
@@ -148,9 +158,11 @@ export default (props) => {
         headerTitle="奖品设置"
         name="table"
         value={dataSource}
+        // onChange={setDataSource}
         recordCreatorProps={false}
         columns={columns}
         editable={{
+          type: 'multiple',
           editableKeys,
           actionRender: (row, config, defaultDoms) => {
               return [defaultDoms.delete];
@@ -169,7 +181,8 @@ export default (props) => {
               setDataSource(recordList)
               callback(recordList)
             // }
-          }
+          },
+          // onChange: setEditableRowKeys,
         }}
         toolBarRender={()=>[
             <>

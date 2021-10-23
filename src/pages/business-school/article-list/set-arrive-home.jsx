@@ -5,6 +5,7 @@ import { settingRecommend,recommendArticleList } from '@/services/business-schoo
 
 
 
+
 export default (props) => {
   const { setVisible, visible,callback } = props;
   const formRef = useRef();
@@ -20,6 +21,7 @@ export default (props) => {
         {key:ele.id,title:ele.articleTitle,description:ele.isRecommend}
       )))
     })
+    
   }, [form])
 
 

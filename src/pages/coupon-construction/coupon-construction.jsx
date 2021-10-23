@@ -261,7 +261,7 @@ const couponConstruction = (props) => {
 
         {/* 可领取时间 */}
         {
-          type != 2 || DetailList.data?.issueType !=2 && id ? 
+          type == 1||type==3 || DetailList.data?.issueType ==1 && id||DetailList.data?.issueType ==3 && id ? 
             <ProFormDateTimeRangePicker
               label='可领取时间'
               rules={[{ required: true, message: '请选择限领时间' }]}

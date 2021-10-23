@@ -52,8 +52,11 @@ export default (props) => {
       articleType:2,
       ...rest
     }
+    if(detailData?.id&&detailData?.edtil){
+      return setVisible(false)
+    }
     if (detailData?.id) {
-      param.articleTypeId = detailData?.id
+      param.id = detailData?.id
     }
     return new Promise((resolve) => {
       bannerAdd(param).then((res) => {
@@ -66,6 +69,15 @@ export default (props) => {
   
     });
   };
+  const checkConfirm=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+        await reject('只能输入整数')
+    } else {
+        await resolve()
+    }
+    })
+}
 
   return (
     <DrawerForm
@@ -115,7 +127,7 @@ export default (props) => {
         <Form.Item
           label="封面图片"
           name="coverPicture"
-          required
+          rules={[{ required: true, message: '请上传图片!' }]}
           tooltip={
             <dl>
             <dt>图片要求</dt>
@@ -126,18 +138,30 @@ export default (props) => {
           }
           readonly={detailData?.id&&detailData?.edtil}  
         >
-          <Upload multiple dimension={{width:360,height:100}}  maxCount={1} accept="image/*"  size={1*1024/2} />
+          <Upload multiple dimension={{width:360,height:100}}  maxCount={1} accept="image/*"  size={(1*1024)/2} />
         </Form.Item>
 
         <ProFormSelect
           name="storeType"
           label="可展示店铺"
-          valueEnum={{
-            1: '所有店铺',
-            2: '社区店',
-            3: '内部店',
-            4: '自营店',
-          }}
+          options={[
+            {
+                value: 1,
+                label: '所有店铺',
+            },
+            {
+                value: 2,
+                label: '社区店',
+            },
+            {
+                value: 3,
+                label: '内部店',
+            },
+            {
+                value: 4,
+                label: '自营店',
+            },
+          ]}
           placeholder="请选择可展示的店铺"
           rules={[{ required: true, message: '请选择店铺!' }]}
           readonly={detailData?.id&&detailData?.edtil}  
@@ -146,7 +170,6 @@ export default (props) => {
       <ProFormRadio.Group
           name="isTop"
           label="是否置顶"
-          required
           rules={[{ required: true, message: '是否置顶!' }]}
           options={[
             {
@@ -160,20 +183,43 @@ export default (props) => {
           ]}
           readonly={detailData?.id&&detailData?.edtil}  
         />
+        
+       <ProFormRadio.Group
+          name="isShow"
+          label="状态"
+          rules={[{ required: true, message: '请设置是否显示隐藏!' }]}
+          options={[
+            {
+              label: '显示',
+              value: 1,
+            },
+            {
+              label: '隐藏',
+              value: 0,
+            },
+          ]}
+          readonly={detailData?.id&&detailData?.edtil} 
+        />
 
         <ProFormText 
           width="md"
           name="virtualClickNum"
           label="虚拟浏览量"
           placeholder="请输入虚拟浏览量，8位以内整数"
-          rules={[{ required: true, message: '请输入虚拟浏览量,8位以内整数' }]}  
+          rules={[
+            { required: true, message: '请输入虚拟浏览量,8位以内整数' },
+            {validator: checkConfirm}
+          ]}
+          fieldProps={{
+            maxLength: 8,
+          }}
           readonly={detailData?.id&&detailData?.edtil}  
         />
 
         <Form.Item
           label="上传视频"
           name="videoUrl"
-          required
+          rules={[{ required: true, message: '请上传视频!' }]}
           tooltip={
             <dl>
               <dt>视频要求</dt>

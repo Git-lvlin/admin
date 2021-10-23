@@ -31,6 +31,7 @@ const circulation=props=>{
                 name="issueQuantityType"
                 label={<FormattedMessage id="formandbasic-form.circulation" />}
                 options={options}
+                rules={[{ required: true, message: '请选择发行量' }]}
             />
               <ProFormDependency name={['issueQuantityType']}>
               {({ issueQuantityType }) => {

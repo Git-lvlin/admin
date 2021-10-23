@@ -41,7 +41,9 @@ export default props=>{
             await reject('必须大于0')
         }else if(value&&!/^[0-9]+(.[0-9]{0,1})?$/.test(value)){
             await reject('只能输入数字，最多输入一位小数')
-        } else {
+        }else if(value&&value>data.goodsSalePrice/100){
+            await reject('可用红包不可大于销售价')
+        }else {
             await resolve()
         }
         })
@@ -78,7 +80,7 @@ export default props=>{
             label="SPUID"
             readonly
             fieldProps={{
-                value:data.spuId
+                value:data?.spuId
             }}
         />
         <ProFormText
@@ -86,7 +88,7 @@ export default props=>{
             label="商品名称"
             readonly
             fieldProps={{
-                value:data.goodsName
+                value:data?.goodsName
             }}
         />
         <ProFormText
@@ -94,7 +96,7 @@ export default props=>{
             label="零售供货价"
             readonly
             fieldProps={{
-                value:`￥${data.retailSupplyPrice/100}`
+                value:`￥${data?.retailSupplyPrice/100}`
             }}
         />
         <ProFormText
@@ -102,7 +104,7 @@ export default props=>{
             label="销售价"
             readonly
             fieldProps={{
-                value:`￥${data.goodsSalePrice/100}`
+                value:`￥${data?.goodsSalePrice/100}`
             }}
         />
         <ProForm.Group>
@@ -110,10 +112,11 @@ export default props=>{
             <ProFormText
                 width={100}
                 name='destAmount'
-                rules={[
-                    { required: true, message: '请输入使用门槛' },
-                    {validator: checkConfirm}
-                ]} 
+                readonly
+                fieldProps={{
+                    value:'0'
+                }}
+                initialValue="0"
             />
             <span>元，（填写0，则无使用门槛）</span>
         </ProForm.Group>
@@ -129,6 +132,7 @@ export default props=>{
             />
             <span>元，（必须大于0，最多支持1位小数）</span>
         </ProForm.Group>
+        <p>最大不超过{data?.goodsSalePrice/100}</p>
         
     </ModalForm>
     )

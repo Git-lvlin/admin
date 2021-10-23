@@ -27,8 +27,8 @@ const formItemLayout = {
 };
 
 export default (props) => {
-  const [dataSource, setDataSource] = useState([]);
   const [detailList,setDetailList]=useState()
+  const [goosList,setGoosList]=useState()
   const [form] = Form.useForm()
   const [falg,setFalg]=useState(true)
   const [del,setDel]=useState('')
@@ -114,7 +114,7 @@ export default (props) => {
       }
       const arr = [];
       // let sum=0
-      dataSource.forEach(item => {
+      goosList.forEach(item => {
         arr.push({
           id: item.add?0:item.id,
           probability: item.probability,
@@ -122,6 +122,7 @@ export default (props) => {
           skuId: item.skuId,
           spuId: item.spuId,
           stockNum: item.stockNum,
+          baseStockNum:item.sumNum,
           goodsName: item.goodsName,
           imageUrl: item.imageUrl,
           salePrice: item.salePrice,
@@ -180,11 +181,15 @@ export default (props) => {
                        detailList?.status==1?
                        <div  style={{marginLeft:'250px'}}>
                        {
-                         falg?<Button type="primary"  onClick={()=>{setFalg(false)}}>
+                         falg?<Button type="primary"  onClick={()=>{
+                           setFalg(false)
+                          //  setEditableKeys(dataSource.map(item => item.id))
+                          }}>
                          编辑
                         </Button>
                         :<Button  type="primary" key="submit" onClick={() => {
                           props.form?.submit?.()
+                          // setEditableKeys([])
                         }}>
                           保存
                         </Button>
@@ -299,10 +304,15 @@ export default (props) => {
         </ProForm.Group>
 
         {/* 奖品设置 */}
-        <PrizeSet detailList={detailList} id={id} falg={falg} callback={(val)=>{
-          setDataSource(val)
-          setDel(true)
-        }}/>
+        <PrizeSet 
+          detailList={detailList} 
+          id={id} 
+          falg={falg} 
+          callback={(val)=>{
+            setGoosList(val)
+            setDel(true)
+          }}
+        />
         
 
         {/* 奖品预告 */}
