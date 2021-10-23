@@ -8,6 +8,7 @@ import { FormattedMessage, formatMessage } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from 'moment';
 import styles from './style.less'
+import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -45,7 +46,7 @@ export default (props) =>{
             data['typeId']=1
           })
           if(res.data?.fixRedPacketConfigResList.length<1){
-            for (let index = 0; index < 15; index++) {
+            for (let index = 0; index < 7; index++) {
               data[`changeValue${index+1}`]=' '
               data['typeId']=1
             }
@@ -58,7 +59,7 @@ export default (props) =>{
             data2['typeId']=2
           })
           if(res.data?.extraPacketConfigResList.length<1){
-            for (let index = 0; index < 15; index++) {
+            for (let index = 0; index < 7; index++) {
               data2[`changeValue${index+1}`]=' '
               data2['typeId']=2
             }
@@ -84,116 +85,57 @@ export default (props) =>{
     const changeData=[
       {
         id:0,
-        changeValue:dataSource[0].changeValue1*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue1), '*')
       },
       {
         id:1,
-        changeValue:dataSource[0].changeValue2*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue2), '*')
       },
       {
         id:2,
-        changeValue:dataSource[0].changeValue3*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue3), '*')
       },
       {
         id:3,
-        changeValue:dataSource[0].changeValue4*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue4), '*')
       },
       {
         id:4,
-        changeValue:dataSource[0].changeValue5*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue5), '*')
       },
       {
         id:5,
-        changeValue:dataSource[0].changeValue6*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue6), '*')
       },
       {
         id:6,
-        changeValue:dataSource[0].changeValue7*100
-      },
-      {
-        id:7,
-        changeValue:dataSource[0].changeValue8*100
-      },
-      {
-        id:8,
-        changeValue:dataSource[0].changeValue9*100
-      },
-      {
-        id:9,
-        changeValue:dataSource[0].changeValue10*100
-      },
-      {
-        id:10,
-        changeValue:dataSource[0].changeValue11*100
-      },
-      {
-        id:11,
-        changeValue:dataSource[0].changeValue12*100
-      },
-      {
-        id:12,
-        changeValue:dataSource[0].changeValue13*100
-      },
-      {
-        id:13,
-        changeValue:dataSource[0].changeValue14*100
-      },
-      {
-        id:14,
-        changeValue:dataSource[0].changeValue15*100
+        changeValue:amountTransform(parseFloat(dataSource[0].changeValue7), '*')
       },
       {
         id:15,
-        changeValue:dataSource[1].changeValue1*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue1), '*')
       },
       {
         id:16,
-        changeValue:dataSource[1].changeValue2*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue2), '*')
       }, {
         id:17,
-        changeValue:dataSource[1].changeValue3*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue3), '*')
       }, {
         id:18,
-        changeValue:dataSource[1].changeValue4*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue4), '*')
       }, {
         id:19,
-        changeValue:dataSource[1].changeValue5*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue5), '*')
       }, {
         id:20,
-        changeValue:dataSource[1].changeValue6*100
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue6), '*')
       }, {
         id:21,
-        changeValue:dataSource[1].changeValue7*100
-      }, {
-        id:22,
-        changeValue:dataSource[1].changeValue8*100
-      }, {
-        id:23,
-        changeValue:dataSource[1].changeValue9*100
-      }, {
-        id:24,
-        changeValue:dataSource[1].changeValue10*100
-      }, {
-        id:25,
-        changeValue:dataSource[1].changeValue11*100
-      }, {
-        id:26,
-        changeValue:dataSource[1].changeValue12*100
-      },
-      {
-        id:27,
-        changeValue:dataSource[1].changeValue13*100
-      },
-      {
-        id:28,
-        changeValue:dataSource[1].changeValue14*100
-      },
-      {
-        id:29,
-        changeValue:dataSource[1].changeValue15*100
-      },
-
+        changeValue:amountTransform(parseFloat(dataSource[1].changeValue7), '*')
+      }, 
     ]
+
     values.status=1
     editSignRedPacketConfig({handler:user.username,changeIds:changeData,...values}).then(res=>{
       if(res.code==0){
@@ -214,7 +156,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -229,7 +170,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -243,7 +183,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -257,7 +196,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -271,7 +209,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -285,7 +222,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -299,7 +235,6 @@ export default (props) =>{
       valueType: 'text',
       renderFormItem: (_,r) => {
         return  <InputNumber
-                  min="0.00000000000001"
                   precision='2'
                   stringMode
                 />
@@ -307,120 +242,7 @@ export default (props) =>{
       render: (_,r) =>{
         return <p>{_}</p>
       }
-    }, {
-      title: '第8天',
-      dataIndex: 'changeValue8',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  min="0.00000000000001"
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }, {
-      title: '第9天',
-      dataIndex: 'changeValue9',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  min="0.00000000000001"
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }, {
-      title: '第10天',
-      dataIndex: 'changeValue10',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  min="0.00000000000001"
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }, {
-      title: '第11天',
-      dataIndex: 'changeValue11',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  min="0.00000000000001"
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }, {
-      title: '第12天',
-      dataIndex: 'changeValue12',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  min="0.00000000000001"
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }, {
-      title: '第13天',
-      dataIndex: 'changeValue13',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  min="0.00000000000001"
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }, {
-      title: '第14天',
-      dataIndex: 'changeValue14',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  min="0.00000000000001"
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    },
-    {
-      title: '第15天',
-      dataIndex: 'changeValue15',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  min="0.00000000000001"
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }
+    }, 
   ];
   return (
     <PageContainer>
