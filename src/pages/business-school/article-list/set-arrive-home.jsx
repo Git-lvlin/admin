@@ -11,10 +11,6 @@ export default (props) => {
   const formRef = useRef();
   const [form] = Form.useForm()
   const [mockData,setMockData]=useState([])
-  const initialTargetKeys = mockData.filter(item => +item.key > 10).map(item => item.key);
-  const [targetKeys, setTargetKeys] = useState(initialTargetKeys);
-  const [selectedKeys, setSelectedKeys] = useState([]);
-
   useEffect(() => {
     recommendArticleList().then(res=>{
       setMockData(res.data.map(ele=>(
@@ -23,31 +19,33 @@ export default (props) => {
     })
     
   }, [form])
-
-
-    const onChange = (nextTargetKeys, direction, moveKeys) => {
-        setTargetKeys(nextTargetKeys);
-    };
-    
-    const onSelectChange = (sourceSelectedKeys, targetSelectedKeys) => {
-        setSelectedKeys([...sourceSelectedKeys, ...targetSelectedKeys]);
-    };
+  const initialTargetKeys = mockData.filter(item => item.description==1).map(item => item.key);
+  console.log('initialTargetKeys',initialTargetKeys)
+  const [targetKeys, setTargetKeys] = useState(initialTargetKeys);
+  const [selectedKeys, setSelectedKeys] = useState([]);
+  const onChange = (nextTargetKeys, direction, moveKeys) => {
+      setTargetKeys(nextTargetKeys);
+  };
   
-    const onsubmit = () => {
-      return new Promise((resolve,reject) => {
-        if(targetKeys.length<=6){
-          settingRecommend({ids:targetKeys}).then((res) => {
-            if (res.code === 0) {
-              resolve(true);
-              callback(true)
-            }
-          })
-        }else{
-          message.error('首页最多6篇')
-              reject(false);
-        }
-      });
-    };
+  const onSelectChange = (sourceSelectedKeys, targetSelectedKeys) => {
+      setSelectedKeys([...sourceSelectedKeys, ...targetSelectedKeys]);
+  };
+
+  const onsubmit = () => {
+    return new Promise((resolve,reject) => {
+      if(targetKeys.length<=6){
+        settingRecommend({ids:targetKeys}).then((res) => {
+          if (res.code === 0) {
+            resolve(true);
+            callback(true)
+          }
+        })
+      }else{
+        message.error('首页最多6篇')
+            reject(false);
+      }
+    });
+  };
 
   return (
     <ModalForm

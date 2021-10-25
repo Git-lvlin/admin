@@ -71,7 +71,7 @@ const ArticleList = (props) => {
     },
     {
       title: '发布人昵称',
-      dataIndex: 'authorName',
+      dataIndex: 'authorNickName',
       valueType: 'text',
     },
     {
@@ -99,7 +99,7 @@ const ArticleList = (props) => {
       search: false,
       render:(_,data)=>{
         return <>
-               <p>{data.authorNickName}</p>
+               <p>{data.authorName}</p>
                <p>{data.createTime}</p>
               </>
       }
