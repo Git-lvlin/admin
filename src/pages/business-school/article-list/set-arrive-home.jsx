@@ -11,17 +11,19 @@ export default (props) => {
   const formRef = useRef();
   const [form] = Form.useForm()
   const [mockData,setMockData]=useState([])
+  const [targetKeys, setTargetKeys] = useState([]);
   useEffect(() => {
     recommendArticleList().then(res=>{
       setMockData(res.data.map(ele=>(
         {key:ele.id,title:ele.articleTitle,description:ele.isRecommend}
       )))
+      if(res.code==0){
+        setTargetKeys(res.data.filter(item => item.isRecommend==1).map(item => item.id))
+      }
     })
     
   }, [form])
-  const initialTargetKeys = mockData.filter(item => item.description==1).map(item => item.key);
-  console.log('initialTargetKeys',initialTargetKeys)
-  const [targetKeys, setTargetKeys] = useState(initialTargetKeys);
+
   const [selectedKeys, setSelectedKeys] = useState([]);
   const onChange = (nextTargetKeys, direction, moveKeys) => {
       setTargetKeys(nextTargetKeys);
