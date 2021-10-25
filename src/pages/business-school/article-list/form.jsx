@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { message, Form,Space} from 'antd';
+import { message, Form,Space,Button} from 'antd';
 import ProForm, {
   DrawerForm,
   ProFormText,
@@ -144,6 +144,22 @@ export default (props) => {
           onClose();
         }
       }}
+      submitter={
+        {
+          render: (props, defaultDoms) => {
+            return [
+              <Button type="primary" key="submit" onClick={() => {
+                props.form?.submit?.()
+              }}>
+                提交
+              </Button>,
+              <Button type="default" onClick={() => setVisible(false)}>
+                返回
+              </Button>
+            ];
+          }
+        }
+      }
       onFinish={async (values) => {
         await onsubmit(values);
         // 不返回不会关闭弹框
@@ -253,6 +269,7 @@ export default (props) => {
               value: 0,
             },
           ]}
+          initialValue={1}
           readonly={detailData?.id&&detailData?.edtil} 
         />
 

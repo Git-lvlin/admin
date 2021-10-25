@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { message, Form } from 'antd';
+import React, { useRef, useEffect, useState} from 'react';
+import { message, Form,Button  } from 'antd';
 import ProForm, {
   DrawerForm,
   ProFormText,
@@ -108,6 +108,22 @@ export default (props) => {
         // 不返回不会关闭弹框
         return true;
       }}
+      submitter={
+        {
+          render: (props, defaultDoms) => {
+            return [
+              <Button type="primary" key="submit" onClick={() => {
+                props.form?.submit?.()
+              }}>
+                提交
+              </Button>,
+              <Button type="default" onClick={() => setVisible(false)}>
+                返回
+              </Button>
+            ];
+          }
+        }
+      }
       {...formItemLayout}
     >
         <ProFormText 
@@ -199,6 +215,7 @@ export default (props) => {
               value: 0,
             },
           ]}
+          initialValue={1}
           readonly={detailData?.id&&detailData?.edtil}  
         />
         

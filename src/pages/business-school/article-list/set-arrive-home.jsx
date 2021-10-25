@@ -51,7 +51,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={<p>设置展示到商学院首页<span style={{color:"#CACACA",fontSize:'10px'}}>将要展示到首页的文章加入右侧</span></p>}
+      title={<p>设置展示到店铺管理页<span style={{color:"#CACACA",fontSize:'10px'}}>将要展示到店铺管理页的文章加入右侧</span></p>}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}

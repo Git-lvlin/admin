@@ -65,7 +65,7 @@ const ArticleList = (props) => {
       title: '分类',
       dataIndex: 'articleTypeId',
       valueType: 'select',
-      hideInTable: type==2?true:false,
+      hideInTable: true,
       hideInSearch: type==2?true:false,
       valueEnum:onselect,
     },
