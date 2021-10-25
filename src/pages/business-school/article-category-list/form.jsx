@@ -5,6 +5,7 @@ import ProForm, {
   ProFormText,
   ProFormRadio,
 } from '@ant-design/pro-form';
+import { history } from 'umi';
 import { articleTypeDetail,articleTypeAdd } from '@/services/business-school/save-or-update-article-type';
 
 
@@ -91,7 +92,7 @@ const numMinLength=(rule, value, callback)=>{
               }}>
                 提交
               </Button>,
-              <Button type="default" onClick={() => history.goBack()}>
+              <Button type="default" onClick={() => setVisible(false)}>
                 返回
               </Button>
             ];
@@ -172,6 +173,7 @@ const numMinLength=(rule, value, callback)=>{
                   value: 0,
                 },
               ]}
+              initialValue={1}
             />
     </DrawerForm>
   );

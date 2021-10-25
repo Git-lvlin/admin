@@ -48,7 +48,6 @@ export default (props) =>{
   let id = props.location.query.id
  
   useEffect(() => {
-    console.log('dataSource',dataSource)
     if(!dataSource[0].couponIdOne){
       couponEverydaySelList({}).then(res=>{
         const data={}
@@ -57,23 +56,21 @@ export default (props) =>{
         ))
         setOnselect(data)
       })
-    }
-    if(dataSource[0].couponIdOne){
-      couponEverydaySelList({couponId:dataSource[0].couponIdOne}).then(res=>{
-        const data={}
-        res.data.map(ele=>(
-          data[ele.couponId]=ele.name
-        ))
-        setOnselect2(data)
-      })
-    }
-    if(dataSource[0].couponIdTwo){
+    }else if(dataSource[0].couponIdTwo){
       couponEverydaySelList({couponId:dataSource[0].couponIdTwo}).then(res=>{
         const data={}
         res.data.map(ele=>(
           data[ele.couponId]=ele.name
         ))
         setOnselect3(data)
+      })
+    }else if(dataSource[0].couponIdOne){
+      couponEverydaySelList({couponId:dataSource[0].couponIdOne}).then(res=>{
+        const data={}
+        res.data.map(ele=>(
+          data[ele.couponId]=ele.name
+        ))
+        setOnselect2(data)
       })
     }
 
@@ -98,7 +95,6 @@ export default (props) =>{
     }
   }, [falg,dataSource])
   const onsubmit=values=>{
-      console.log('values',values)
       values.activityStartTime = values.dateRange ? values.dateRange[0] : null
       values.activityEndTime= values.dateRange ? values.dateRange[1] : null
       delete values.dateRange
@@ -233,6 +229,7 @@ export default (props) =>{
               readonly={id&&falg}
           />
          <ProFormDateTimeRangePicker
+            width="md"
             label='活动时间'
             rules={[{ required: true, message: '请选择活动时间' }]}
             name="dateRange"
@@ -309,6 +306,7 @@ export default (props) =>{
               </Form.Item>
                 :
               <ProFormTextArea
+                width="md"
                 name="activityRule"
                 label="活动规则"
                 placeholder="列如玩法规则、红包有效期、简单的用户协议"
