@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { Form, Button, message } from 'antd';
+import { Form, message } from 'antd';
 import {
   DrawerForm,
 } from '@ant-design/pro-form';
-import { getCommonList } from '@/services/operation-management/operation-list'
-import { bindingForAdmin } from '@/services/operation-management/bind-list'
+import { unbindingForAdmin } from '@/services/operation-management/bind-list'
 import Upload from '@/components/upload';
 
 export default (props) => {
   const { setVisible, data, callback = () => { }, onClose = () => { } } = props;
   const [form] = Form.useForm();
-  const [selectItem, setSelectItem] = useState(null);
 
   const formItemLayout = {
     labelCol: { span: 4 },
@@ -27,18 +25,14 @@ export default (props) => {
   };
 
   const submit = (values) => {
-    if (!selectItem) {
-      message.error('请选择要绑定的运营商');
-      reject();
-    }
     return new Promise((resolve, reject) => {
       const userInfo = JSON.parse(window.localStorage.getItem('user'));
-      bindingForAdmin({
+      unbindingForAdmin({
         applyFromId: userInfo.id,
         applyFromName: userInfo.username,
         storeNo: data.storeNo,
-        operationId: selectItem.id,
-        operationName: selectItem.companyName,
+        operationId: data.operationId,
+        operationName: data.operationCompanyName,
         applyAttach: values.applyAttach,
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
@@ -52,36 +46,33 @@ export default (props) => {
   }
 
   const columns = [
-
     {
-      title: '运营商名称',
-      dataIndex: 'companyName',
+      title: '社区店名称',
+      dataIndex: 'storeName',
       valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入运营商名称'
-      },
     },
     {
-      title: '联系人',
-      dataIndex: 'companyUserName',
+      title: '社区店地址',
+      dataIndex: 'address',
       valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入联系人'
-      },
+      render: (_, a) => {
+        return `${Object.values(a.areaInfo).join('')}${_}`
+      }
     },
     {
-      title: '联系人手机号',
-      dataIndex: 'companyUserPhone',
+      title: '绑定的运营商',
+      dataIndex: 'operationCompanyName',
       valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入联系人手机号'
-      },
     },
   ];
 
+  useEffect(() => {
+
+  }, []);
+
   return (
     <DrawerForm
-      title={`绑定运营商`}
+      title={`解绑运营商`}
       onVisibleChange={setVisible}
       drawerProps={{
         forceRender: true,
@@ -93,8 +84,12 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        await submit(values);
-        return true;
+        try {
+          await submit(values);
+          return true;
+        } catch (error) {
+          console.log('error', error);
+        }
       }}
       visible
       {...formItemLayout}
@@ -102,53 +97,22 @@ export default (props) => {
       <ProTable
         rowKey="id"
         options={false}
-        request={getCommonList}
-        search={{
-          defaultCollapsed: false,
-          labelWidth: 130,
-          optionRender: ({ searchText, resetText }, { form }) => [
-            <Button
-              key="search"
-              type="primary"
-              onClick={() => {
-                form?.submit();
-              }}
-            >
-              {searchText}
-            </Button>,
-            <Button
-              key="rest"
-              onClick={() => {
-                form?.resetFields();
-              }}
-            >
-              {resetText}
-            </Button>,
-          ],
-        }}
+        dataSource={[data]}
+        search={false}
         columns={columns}
-        pagination={{
-          pageSize: 10,
-          showQuickJumper: true,
-        }}
-        tableAlertRender={false}
-        rowSelection={{
-          type: 'radio',
-          onSelect: (record) => {
-            setSelectItem(record)
-          },
-        }}
+        pagination={false}
       />
       <Form.Item
-        label="绑定审批文件上传"
+        label="解绑审批文件上传"
         name="applyAttach"
+        style={{ marginTop: 20 }}
         rules={[() => ({
           required: true,
           validator(_, value) {
             if (value && value.length > 0) {
               return Promise.resolve();
             }
-            return Promise.reject(new Error('请上传绑定审批文件上传'));
+            return Promise.reject(new Error('请上传解绑审批文件上传'));
           },
         })]}
       >

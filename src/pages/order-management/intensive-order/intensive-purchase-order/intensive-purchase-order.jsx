@@ -19,6 +19,10 @@ const TableList = () => {
 
   const columns = [
     {
+      title: '集约活动ID',
+      dataIndex: 'wsId',
+    },
+    {
       title: '采购单号',
       dataIndex: 'poNo',
     },

@@ -435,7 +435,7 @@ export default (props) => {
 
   return (
     <DrawerForm
-      title={`${detailData ? '编辑' : '新建'}商品`}
+      title={<>{`${detailData ? '编辑' : '新建'}商品`}<span style={{ color: 'red', fontSize: 12, marginLeft: 10 }}>{detailData?.alarmMsg}</span></>}
       onVisibleChange={setVisible}
       drawerProps={{
         forceRender: true,
@@ -762,7 +762,7 @@ export default (props) => {
                   />
                   <ProFormText
                     name="batchNumber"
-                    label="集采箱柜单位量"
+                    label="集采箱规单位量"
                     placeholder="请输入店主集约采购下单的加购倍数单位量，范围1-9999"
                     disabled
                   />
@@ -892,7 +892,6 @@ export default (props) => {
         label="单SKU起售数量"
         placeholder="请输入单SKU起售数量"
         rules={[{ required: true, message: '请输入单SKU起售数量' }]}
-        disabled
       />
       <ProFormText
         name="buyMaxNum"

@@ -235,7 +235,7 @@ export default function EditTable({ onSelect }) {
       editable: false,
     },
     {
-      title: '集采箱柜单位量',
+      title: '集采箱规单位量',
       dataIndex: 'batchNumber',
       valueType: 'text',
       hideInSearch: true,
