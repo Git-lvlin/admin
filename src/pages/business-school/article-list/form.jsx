@@ -204,23 +204,16 @@ export default (props) => {
           initialValue={'约购小助手'}
         />
 
-        <Form.Item
+       <Form.Item
           label="封面图片"
           name="coverPicture"
           rules={[{ required: true, message: '请上传图片!' }]}
-          tooltip={
-            <dl>
-              <dt>图片要求</dt>
-              <dd>1.图片大小500kb以内</dd>
-              <dd>2.图片尺寸为 360 x 100</dd>
-              <dd>3.图片格式png/jpg/gif</dd>
-            </dl>
-          }
           extra="图片要求 1.图片大小500kb以内 2.图片尺寸为 360 x 100 3.图片格式png/jpg/gif"
           readonly={detailData?.id&&detailData?.edtil} 
         >
           <Upload multiple dimension={{width:360,height:100}}   maxCount={1} accept="image/*"  size={(1*1024)/2} />
         </Form.Item>
+ 
 
         <ProFormSelect
           width="md"
@@ -311,16 +304,21 @@ export default (props) => {
 
         {
           onselect.length>0&&
+          <>
           <Form.Item
+            className={styles.box}
             label="文章详情"
           //  name="articleContent"
             readonly={detailData?.id&&detailData?.edtil}
             // rules={[{ required: true, message: '请设置文章详情!' }]} 
           >
-            <ReactQuill value={values1} onChange={(value)=>{
+            <ReactQuill value={values1}  onChange={(value)=>{
               setValues1(value)
             }}  modules={modules}/>
+            <div className={styles.mark}>*</div>
           </Form.Item>
+          
+          </>
         }
 
     </DrawerForm>
