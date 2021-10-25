@@ -61,7 +61,7 @@ export default (props) => {
     return new Promise((resolve) => {
       bannerAdd(param).then((res) => {
         if (res.code === 0) {
-          message.success('提交成功');
+          message.success(detailData?.id ?'编辑成功':'提交成功');
           resolve(true);
           callback(true)
         }

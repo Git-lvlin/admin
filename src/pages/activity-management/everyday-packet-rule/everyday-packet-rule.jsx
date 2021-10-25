@@ -160,22 +160,22 @@ export default (props) =>{
   const columns2 = [
     {
       title: '连续获得天数',
-      dataIndex: 'title',
+      dataIndex: 'title'
     },
     {
       title: '第1天',
       dataIndex: 'couponIdOne',
-      valueType: 'text',
+      valueType: 'text'
     },
     {
       title: '第2天',
       dataIndex: 'couponIdTwo',
-      valueType: 'text',
+      valueType: 'text'
     }, 
     {
       title: '第3天',
       dataIndex: 'couponIdThree',
-      valueType: 'text',
+      valueType: 'text'
     }
   ];
   // const disabledDate=(current)=>{
@@ -255,13 +255,13 @@ export default (props) =>{
             ]}
         />
           {
-            id?<ProTable
-                    toolBarRender={false}
-                    headerTitle="每日首单红包发放金额(元）"
-                    search={false}
-                    rowKey="id"
-                    columns={columns2}
-                    dataSource={detailList?.scopeList}
+            id?<EditableProTable
+                headerTitle="每日首单红包发放金额(元）"
+                rowKey="id"
+                // search={false}
+                columns={columns2}
+                value={detailList?.scopeList}
+                recordCreatorProps={false}
                 />
              :<EditableProTable
                 headerTitle="每日首单红包发放金额(元）"
@@ -282,10 +282,12 @@ export default (props) =>{
                   },
                   onChange: setEditableRowKeys,
                 }}
-                style={{marginBottom:'30px'}}
               />  
           }
-          <p className={styles.hint2}>提示：中断或连续3天获得了红包重新按第一天金额发放，每次领取的红包不累计，三天的红包金额只可按面值递增选择，不可以选择一样的面值。</p>
+          {
+            (!falg)||(!id)?<p className={styles.hint2}>提示：中断或连续3天获得了红包重新按第一天金额发放，每次领取的红包不累计，三天的红包金额只可按面值递增选择，不可以选择相同面值的红包，您必须先在运营后台“红包管理"中创建好”每日红包“类型的红包后，且创建的红包有效期必须大于活动有效期，这里才可以选择到创建的红包。</p>
+            :null
+          }
           <ProFormText
               width={120}
               label="领取条件"
