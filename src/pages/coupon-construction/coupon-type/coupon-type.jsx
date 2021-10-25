@@ -230,6 +230,7 @@ const couponType = (props) => {
                 <ProFormRadio.Group
                     name="issueQuantity"
                     label='发行量' 
+                    rules={[{ required: true, message: '请选择发行量' }]}
                     options={[
                         {
                         label: '不限量发放',

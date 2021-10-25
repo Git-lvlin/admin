@@ -1,16 +1,18 @@
 import request from '@/utils/request';
 
 export const findAdminArticleList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current, pageSize,articleTypeId,TypeId, ...rest } = params;
   const res = await request('/auth/java-admin/articleInfo/findAdminArticleList', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      articleTypeId:TypeId||params.articleTypeId,
       ...rest
     },
     ...options
   });
+
 
   return {
     data: res.data.records,

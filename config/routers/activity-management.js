@@ -12,16 +12,17 @@ export default {
               component: './activity-management/everyday-red-packet-activity/activity-list'
             },
             {
-                name: 'everyday-packet-rule',
-                path: '/activity-management/everyday-red-packet-activity/activity-list/everyday-packet-rule',
-                component: './activity-management/everyday-red-packet-activity/activity-list/everyday-packet-rule'
-            },
-            {
               name: 'red-packet-particulars',
               path: '/activity-management/everyday-red-packet-activity/red-packet-particulars',
               component: './activity-management/everyday-red-packet-activity/red-packet-particulars'
             },
           ]
+      },
+      {
+        name: 'everyday-packet-rule',
+        path: '/activity-management/everyday-packet-rule',
+        component: './activity-management/everyday-packet-rule',
+        hideInMenu: true
       }
     ]
   }

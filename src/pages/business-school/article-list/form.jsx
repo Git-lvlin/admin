@@ -36,32 +36,42 @@ export default (props) => {
   const formRef = useRef();
   const [onselect,setOnselect]=useState([])
   const [form] = Form.useForm()
-  const [values, setValues] = useState('');
+  const [values1, setValues1] = useState('');
 
   const onsubmit = (values) => {
     const { ...rest } = values
     const param = {
       articleType:1,
+      articleContent:values1,
       ...rest
     }
-    if (detailData?.id) {
-      param.articleTypeId = detailData?.id
+    if(detailData?.id&&detailData?.edtil){
+        return setVisible(false)
     }
-    return new Promise((resolve) => {
-      bannerAdd(param).then((res) => {
-        if (res.code === 0) {
-          message.success('提交成功');
-          resolve(true);
-          callback(true)
-        }
-      })
-  
-    });
+    if (detailData?.id&&detailData?.edit) {
+      param.id = detailData?.id
+    }
+    if(!values1){
+      message.error('请填写文章内容！！');
+      return false
+    }else{
+        bannerAdd(param).then((res) => {
+          if (res.code === 0) {
+            message.success(detailData?.id ?'编辑成功':'提交成功');
+            callback(true)
+            setVisible(false)
+          }
+        })
+    }
+
   };
 
   useEffect(() => {
     if (detailData?.id) {
       adminArticleDetail({id:detailData?.id}).then(res=>{
+        if(res.data.articleContent){
+          setValues1(res.data.articleContent)
+        }
         form.setFieldsValue({
           ...res.data
         })
@@ -73,6 +83,16 @@ export default (props) => {
       )))
     })
   }, [form, detailData])
+
+  const checkConfirm=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+        await reject('只能输入整数')
+    } else {
+        await resolve()
+    }
+    })
+}
 
   const modules={
     toolbar:[
@@ -116,7 +136,7 @@ export default (props) => {
       onFinish={async (values) => {
         await onsubmit(values);
         // 不返回不会关闭弹框
-        return true;
+        // return true;
       }}
       {...formItemLayout}
     >
@@ -147,7 +167,7 @@ export default (props) => {
         <Form.Item
           label="封面图片"
           name="coverPicture"
-          required
+          rules={[{ required: true, message: '请上传图片!' }]}
           tooltip={
             <dl>
               <dt>图片要求</dt>
@@ -159,21 +179,33 @@ export default (props) => {
           extra="图片要求 1.图片大小500kb以内 2.图片尺寸为 360 x 100 3.图片格式png/jpg/gif"
           readonly={detailData?.id&&detailData?.edtil} 
         >
-          <Upload multiple dimension={{width:360,height:100}}  maxCount={1} accept="image/*"  size={1*1024/2} />
+          <Upload multiple dimension={{width:360,height:100}}   maxCount={1} accept="image/*"  size={(1*1024)/2} />
         </Form.Item>
 
         <ProFormSelect
           width="md"
           name="storeType"
           label="可展示店铺"
-          valueEnum={{
-            1: '所有店铺',
-            2: '社区店',
-            3: '内部店',
-            4: '自营店',
-          }}
+          options={[
+            {
+                value: 1,
+                label: '所有店铺',
+            },
+            {
+                value: 2,
+                label: '社区店',
+            },
+            {
+                value: 3,
+                label: '内部店',
+            },
+            {
+                value: 4,
+                label: '自营店',
+            },
+          ]}
           placeholder="请选择可展示的店铺"
-          // rules={[{ required: true, message: '请选择店铺!' }]}
+          rules={[{ required: true, message: '请选择店铺!' }]}
           readonly={detailData?.id&&detailData?.edtil} 
         />
         <ProFormSelect
@@ -191,7 +223,6 @@ export default (props) => {
       <ProFormRadio.Group
           name="isTop"
           label="是否置顶"
-          required
           rules={[{ required: true, message: '请设置是否置顶!' }]}
           options={[
             {
@@ -209,7 +240,7 @@ export default (props) => {
       <ProFormRadio.Group
           name="isShow"
           label="状态"
-          required
+          rules={[{ required: true, message: '请设置是否显示隐藏!' }]}
           options={[
             {
               label: '显示',
@@ -227,22 +258,30 @@ export default (props) => {
           name="virtualClickNum"
           label="虚拟浏览量"
           placeholder="请输入虚拟浏览量，8位以内整数"
-          rules={[{ required: true, message: '请输入虚拟浏览量,8位以内整数' }]}
+          rules={[
+            { required: true, message: '请输入虚拟浏览量,8位以内整数' },
+            {validator: checkConfirm}
+          ]}
+          fieldProps={{
+            maxLength: 8,
+          }}
           readonly={detailData?.id&&detailData?.edtil}  
         />
 
         {
-          onselect.length>0
-           &&
+          onselect.length>0&&
           <Form.Item
-           label="文章详情"
-           name="articleContent"
-           readonly={detailData?.id&&detailData?.edtil}
-           rules={[{ required: true, message: '请设置文章详情!' }]} 
+            label="文章详情"
+          //  name="articleContent"
+            readonly={detailData?.id&&detailData?.edtil}
+            // rules={[{ required: true, message: '请设置文章详情!' }]} 
           >
-            <ReactQuill value={values} onChange={(value)=>setValues(value)}  modules={modules}/>
+            <ReactQuill value={values1} onChange={(value)=>{
+              setValues1(value)
+            }}  modules={modules}/>
           </Form.Item>
         }
+
     </DrawerForm>
   );
 };

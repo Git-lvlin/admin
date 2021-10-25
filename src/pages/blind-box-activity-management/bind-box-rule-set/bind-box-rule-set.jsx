@@ -27,8 +27,9 @@ const formItemLayout = {
 };
 
 export default (props) => {
-  const [dataSource, setDataSource] = useState([]);
   const [detailList,setDetailList]=useState()
+  const [goosList,setGoosList]=useState()
+  const [submi,setSubmi]=useState(false)
   const [form] = Form.useForm()
   const [falg,setFalg]=useState(true)
   const [del,setDel]=useState('')
@@ -87,6 +88,7 @@ export default (props) => {
     })
   }
   const onsubmit = (values) => {
+    try {
       values.id=id||0
       values.startTime=values.dateRange ?values.dateRange[0]:null
       values.endTime=values.dateRange ?values.dateRange[1]:null
@@ -114,7 +116,7 @@ export default (props) => {
       }
       const arr = [];
       // let sum=0
-      dataSource.forEach(item => {
+      goosList?.forEach(item => {
         arr.push({
           id: item.add?0:item.id,
           probability: item.probability,
@@ -122,6 +124,7 @@ export default (props) => {
           skuId: item.skuId,
           spuId: item.spuId,
           stockNum: item.stockNum,
+          baseStockNum:item.baseStockNum,
           goodsName: item.goodsName,
           imageUrl: item.imageUrl,
           salePrice: item.salePrice,
@@ -158,6 +161,10 @@ export default (props) => {
       }
 
     // }
+      
+    } catch (error) {
+      console.log('error',error)
+    }
   }
 
   const disabledDate=(current)=>{
@@ -180,11 +187,14 @@ export default (props) => {
                        detailList?.status==1?
                        <div  style={{marginLeft:'250px'}}>
                        {
-                         falg?<Button type="primary"  onClick={()=>{setFalg(false)}}>
+                         falg?<Button type="primary"  onClick={()=>{
+                           setFalg(false)
+                          }}>
                          编辑
                         </Button>
                         :<Button  type="primary" key="submit" onClick={() => {
                           props.form?.submit?.()
+                          setSubmi(true)
                         }}>
                           保存
                         </Button>
@@ -196,6 +206,7 @@ export default (props) => {
                   :
                     <Button style={{marginLeft:'250px'}} type="primary" key="submit" onClick={() => {
                       props.form?.submit?.()
+                      setSubmi(true)
                     }}>
                       保存
                     </Button>
@@ -299,10 +310,16 @@ export default (props) => {
         </ProForm.Group>
 
         {/* 奖品设置 */}
-        <PrizeSet detailList={detailList} id={id} falg={falg} callback={(val)=>{
-          setDataSource(val)
-          setDel(true)
-        }}/>
+        <PrizeSet
+          submi={submi}
+          detailList={detailList}
+          id={id} 
+          falg={falg} 
+          callback={(val)=>{
+            setGoosList(val)
+            setDel(true)
+          }}
+        />
         
 
         {/* 奖品预告 */}

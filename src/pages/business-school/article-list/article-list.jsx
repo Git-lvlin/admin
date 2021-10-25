@@ -1,6 +1,5 @@
 
 import React, { useRef, useState } from 'react';
-import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message,Tabs,Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -9,14 +8,13 @@ import Video from './video'
 import SetArriveHome from './set-arrive-home';
 import { findAdminArticleList } from '@/services/business-school/find-admin-article-list';
 import { findAdminArticleTypeList,articleTop,articleOperation } from '@/services/cms/member/member';
-import { ACTION_TYPE } from '@/utils/text';
 import { history,connect } from 'umi';
 import { useEffect } from 'react';
 import ShowHiddenTop from './show-hidden-top'
 const { TabPane } = Tabs
 
 const ArticleList = (props) => {
-  const { type }=props
+  const { type,articleTypeId }=props
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [homeVisible, setHomeVisible] = useState(false);
@@ -59,8 +57,8 @@ const ArticleList = (props) => {
     {
       title: '分类',
       dataIndex: 'articleTypeName',
-      valueType: 'select',
-      hideInTable: type,
+      valueType: 'text',
+      hideInTable: type==2?true:false,
       hideInSearch: true,
     },
     {
@@ -69,7 +67,7 @@ const ArticleList = (props) => {
       valueType: 'select',
       hideInTable: type==2?true:false,
       hideInSearch: type==2?true:false,
-      valueEnum:onselect
+      valueEnum:onselect,
     },
     {
       title: '发布人昵称',
@@ -95,10 +93,16 @@ const ArticleList = (props) => {
       search: false,
     },
     {
-      title: '创建人信息',
+      title: '创建信息',
       dataIndex: 'createId',
       valueType: 'number',
       search: false,
+      render:(_,data)=>{
+        return <>
+               <p>{data.authorNickName}</p>
+               <p>{data.createTime}</p>
+              </>
+      }
     },
     {
       title: '置顶',
@@ -172,12 +176,12 @@ const ArticleList = (props) => {
       columns={columns}
       actionRef={actionRef}
       params={
-        {articleType: type}
+        {
+          articleType: type,
+          TypeId:articleTypeId
+        }
       }
       request={findAdminArticleList}
-      pagination={{
-        pageSize: 10,
-      }}
       dateFormatter="string"
       toolBarRender={(_,record) => [
         <>
@@ -225,6 +229,7 @@ const ArticleList = (props) => {
 
 export default (props) =>{
   const [seleType,setSeleType]=useState(1)
+  const articleTypeId=props.location.query.articleTypeId
   return (
       <PageContainer>
         <Tabs
@@ -237,7 +242,7 @@ export default (props) =>{
         >
           <TabPane tab="图文文章" key="1">
             {
-              seleType==1&&<ArticleList type={1} />
+              seleType==1&&<ArticleList articleTypeId={articleTypeId} type={1} />
             }
           </TabPane>
           <TabPane tab="视频文章" key="2">

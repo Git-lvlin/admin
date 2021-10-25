@@ -48,6 +48,16 @@ export default (props) => {
     }
   }, [form,detailData])
 
+  const checkConfirm=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+        await reject('只能输入整数')
+    } else {
+        await resolve()
+    }
+    })
+}
+
   return (
     <DrawerForm
       title={detailData?.id?'编辑分类':'新建分类'}
@@ -88,10 +98,10 @@ export default (props) => {
         <ProFormText
             name="typeName"
             label="名称"
-            placeholder="请输入分类名称，2-6个字符"
-            rules={[{ required: true, message: '请输入分类名称，2-6个字符' }]}
+            placeholder="请输入分类名称，2-10个字符"
+            rules={[{ required: true, message: '请输入分类名称，2-10个字符' }]}
             fieldProps={{
-              maxLength: 6,
+              maxLength: 10,
             }}
           />
       
@@ -100,10 +110,10 @@ export default (props) => {
             name="sortNum"
             label="序号"
             placeholder="请输入展示数字序号，升序展示，正整数"
-            rules={[{ required: true, message: '请输入展示数字序号，升序展示，正整数' }]}
-            fieldProps={{
-              maxLength: 16,
-            }}
+            rules={[
+              { required: true, message: '请输入展示数字序号，升序展示，正整数' },
+              {validator: checkConfirm}
+            ]}
           />
       
       
@@ -116,22 +126,38 @@ export default (props) => {
               maxLength: 30,
             }}
           />
-      
-      <ProFormRadio.Group
-          name="isShow"
-          label="状态"
-          required
-          options={[
-            {
-              label: '开启',
-              value: 1,
-            },
-            {
-              label: '关闭',
-              value: 0,
-            },
-          ]}
-        />
+        <ProFormRadio.Group
+            name="isTop"
+            label="是否置顶"
+            required
+            rules={[{ required: true, message: '请设置是否置顶!' }]}
+            options={[
+              {
+                label: '置顶',
+                value: 1,
+              },
+              {
+                label: '不置顶',
+                value: 0,
+              },
+            ]}
+          />
+
+          <ProFormRadio.Group
+              name="isShow"
+              label="状态"
+              required
+              options={[
+                {
+                  label: '开启',
+                  value: 1,
+                },
+                {
+                  label: '关闭',
+                  value: 0,
+                },
+              ]}
+            />
     </DrawerForm>
   );
 };
