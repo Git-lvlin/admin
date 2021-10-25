@@ -57,6 +57,15 @@ export default (props) => {
     }
     })
 }
+const numMinLength=(rule, value, callback)=>{
+  return new Promise(async (resolve, reject) => {
+  if (value&&value.length<2) {
+      await reject('不少于2个字符')
+  } else {
+      await resolve()
+  }
+  })
+}
 
   return (
     <DrawerForm
@@ -99,7 +108,10 @@ export default (props) => {
             name="typeName"
             label="名称"
             placeholder="请输入分类名称，2-10个字符"
-            rules={[{ required: true, message: '请输入分类名称，2-10个字符' }]}
+            rules={[
+              { required: true, message: '请输入分类名称，2-10个字符' },
+              {validator: numMinLength}
+            ]}
             fieldProps={{
               maxLength: 10,
             }}
@@ -114,6 +126,9 @@ export default (props) => {
               { required: true, message: '请输入展示数字序号，升序展示，正整数' },
               {validator: checkConfirm}
             ]}
+            fieldProps={{
+              maxLength: 10,
+            }}
           />
       
       

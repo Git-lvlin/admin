@@ -112,15 +112,22 @@ export default () => {
         valueType: 'text',
         hideInSearch: true,
         render: (_, data)=>{
-          return <div style={{display:'flex'}}>
-                    <Image src={data.orderGoods.imageUrl} alt="" width='50px' height='50px' />
-                    <div style={{marginLeft:'10px'}}>
-                      <h5>{data.orderGoods.goodsName}</h5>
-                      <span style={{color:'red',fontSize:'10px'}}>销售价¥{data.orderGoods.salePrice/100}</span>
-                      <p style={{fontSize:'12px'}}>SKU  {data.orderGoods.skuId}</p>
-                      <p style={{fontSize:'12px'}}>订单号:<a onClick={() => {  setDetailVisible(true);setOrderId(data.orderGoods?.orderId) }}>{data.orderGoods.orderSn}</a></p>
-                    </div>
-                 </div>
+          console.log('data',data)
+          return <>
+                  {
+                    data.orderGoods.map(ele=>(
+                      <div style={{display:'flex'}}>
+                      <Image src={ele.imageUrl} alt="" width='50px' height='50px' />
+                      <div style={{marginLeft:'10px'}}>
+                        <h5>{ele.goodsName}</h5>
+                        <span style={{color:'red',fontSize:'10px'}}>销售价¥{ele.salePrice/100}</span>
+                        <p style={{fontSize:'12px'}}>SKU  {ele.skuId}</p>
+                        <p style={{fontSize:'12px'}}>订单号:<a onClick={() => {  setDetailVisible(true);setOrderId(data?.orderId) }}>{ele.orderSn}</a></p>
+                      </div>
+                   </div>
+                    ))
+                  }
+                 </>
         },
       }
     ];

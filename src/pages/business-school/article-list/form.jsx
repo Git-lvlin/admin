@@ -92,7 +92,18 @@ export default (props) => {
         await resolve()
     }
     })
-}
+  }
+
+  const numMinLength=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value&&value.length<4) {
+        await reject('不少于4个字符')
+    } else {
+        await resolve()
+    }
+    })
+  }
+  
 
   const modules={
     toolbar:[
@@ -145,9 +156,13 @@ export default (props) => {
           name="articleTitle"
           label="标题"
           placeholder="请输入文章标题"
-          rules={[{ required: true, message: '请输入文章标题' }]}
+          rules={[
+            { required: true, message: '请输入文章标题' },
+            {validator: numMinLength}
+          ]}
           readonly={detailData?.id&&detailData?.edtil}
           fieldProps={{
+            minLength:4,
             maxLength: 60,
           }}
         />
@@ -157,9 +172,13 @@ export default (props) => {
           name="authorNickName"
           label="发布人昵称"
           placeholder="请输入当前登录账户昵称"
-          rules={[{ required: true, message: '请输入当前登录账户昵称' }]}
+          rules={[
+            { required: true, message: '请输入当前登录账户昵称' },
+            {validator: numMinLength}
+          ]}
           readonly={detailData?.id&&detailData?.edtil}
           fieldProps={{
+            minLength:4,
             maxLength: 20,
           }}
         />

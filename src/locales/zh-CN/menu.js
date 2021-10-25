@@ -191,7 +191,7 @@ export default {
  
  
 
-  'menu.business-school': '商学院',
+  'menu.business-school': '学习社区管理',
   'menu.business-school.article-list': '文章列表',
   'menu.business-school.shopkeeper-disclose': '店主吐槽',
   'menu.business-school.article-category-list': '文章分类列表',
