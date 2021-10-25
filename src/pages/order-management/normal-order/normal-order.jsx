@@ -375,7 +375,7 @@ const TableList = () => {
                   {{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType] || '秒约')}订单</Tag>
+                  <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688', 17: '盲盒', 18: '签到' }[item.orderType] || '秒约')}订单</Tag>
                   {
                     item.relevant1688OrderId && <div>关联1688单号：{item.relevant1688OrderId}</div>
                   }

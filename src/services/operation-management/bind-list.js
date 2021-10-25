@@ -19,9 +19,16 @@ export const bindOperationPage = async (params = {}, options = {}) => {
   }
 }
 
-
 export const bindingForAdmin = async (params = {}, options = {}) => {
   return request('/auth/store/bindingOperationApply/bindingForAdmin', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const unbindingForAdmin = async (params = {}, options = {}) => {
+  return request('/auth/store/bindingOperationApply/unbindingForAdmin', {
     method: 'POST',
     data: params,
     ...options

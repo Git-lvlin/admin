@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { Button, Radio, Space, Modal } from 'antd';
+import { Button, Radio, Space, Modal, Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { operationList } from '@/services/order-management/intensive-purchase-order';
+import { bindingOperationApply, approve, refuse } from '@/services/operation-management/bind-audit-list';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import {
   ModalForm,
@@ -14,62 +14,84 @@ const { confirm } = Modal;
 const BindAuditList = () => {
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({});
-  const [params, setParams] = useState({ status: '' });
+  const [params, setParams] = useState({ auditStatus: 3 });
   const actionRef = useRef();
   const formRef = useRef();
+  const userInfo = JSON.parse(window.localStorage.getItem('user'));
 
   const columns = [
     {
       title: '社区店名称',
-      dataIndex: 'poNo',
+      dataIndex: 'storeName',
     },
     {
       title: '绑定运营商',
-      dataIndex: 'totalNum',
+      dataIndex: 'operationName',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '申请类别',
-      dataIndex: 'statusDesc',
+      dataIndex: ['applyType', 'desc'],
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '申请时间',
       dataIndex: 'createTime',
-      valueType: 'dateTimeRange',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '申请类别',
+      dataIndex: 'applyType',
+      valueEnum: {
+        1: '申请解绑',
+        2: '申请绑定',
+      },
       hideInTable: true,
     },
     {
       title: '申请人员',
-      dataIndex: 'createTime',
+      dataIndex: 'applyFromName',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '审批文件',
-      dataIndex: 'createTime',
+      dataIndex: 'applyAttach',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (text) => {
+        return text.map(item => (<div key={item} style={{ marginRight: 10, display: 'inline-block' }}><Image style={{ width: 50, height: 50 }} src={item} /></div>))
+      },
+    },
+    {
+      title: '原因备注',
+      dataIndex: 'applyRemark',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '审核时间',
-      dataIndex: 'createTime',
+      dataIndex: 'auditTime',
       valueType: 'text',
       hideInSearch: true,
+      hideInTable: params.auditStatus === 3,
     },
     {
       title: '审核人员',
-      dataIndex: 'createTime',
+      dataIndex: 'auditorName',
       valueType: 'text',
       hideInSearch: true,
+      hideInTable: params.auditStatus === 3,
     },
     {
       title: '审核意见',
-      dataIndex: 'createTime',
+      dataIndex: 'auditRemark',
       valueType: 'text',
       hideInSearch: true,
+      hideInTable: params.auditStatus === 3,
     },
     {
       title: '操作',
@@ -77,14 +99,23 @@ const BindAuditList = () => {
       valueType: 'option',
       render: (_, record) => {
         return (
-          <Space>
+          params.auditStatus === 3 && <Space>
             <a onClick={() => {
               confirm({
                 title: '审核通过',
                 icon: <ExclamationCircleOutlined />,
                 content: '确认审核通过吗？',
                 onOk() {
-                  console.log('OK');
+                  approve({
+                    applyId: record.applyId,
+                    auditorId: userInfo.id,
+                    auditorName: userInfo.username,
+                  }, { showSuccess: true })
+                    .then(res => {
+                      if (res.code === 0) {
+                        actionRef.current.reload();
+                      }
+                    })
                 },
               });
             }}>通过</a>
@@ -98,15 +129,27 @@ const BindAuditList = () => {
               }
               modalProps={{
                 onCancel: () => console.log('run'),
+                destroyOnClose: true,
               }}
               onFinish={async (values) => {
-                return true;
+                return refuse({
+                  applyId: record.applyId,
+                  auditorId: userInfo.id,
+                  auditorName: userInfo.username,
+                  auditRemark: values.auditRemark,
+                }, { showSuccess: true })
+                  .then(res => {
+                    if (res.code === 0) {
+                      actionRef.current.reload();
+                      return true;
+                    }
+                  })
               }}
             >
               <ProFormTextArea
                 label="驳回原因"
                 rules={[{ required: true, message: '请输入驳回原因' }]}
-                name="text"
+                name="auditRemark"
                 placeholder="请输入驳回原因，50字以内"
                 fieldProps={{
                   maxLength: 50
@@ -132,7 +175,7 @@ const BindAuditList = () => {
         actionRef={actionRef}
         formRef={formRef}
         params={params}
-        request={operationList}
+        request={bindingOperationApply}
         search={{
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [
@@ -161,11 +204,11 @@ const BindAuditList = () => {
             <Radio.Group
               optionType="button"
               buttonStyle="solid"
-              defaultValue={''}
+              defaultValue={3}
               options={[
                 {
                   label: '待审核',
-                  value: '',
+                  value: 3,
                 },
                 {
                   label: '审核通过',
@@ -178,7 +221,7 @@ const BindAuditList = () => {
               ]}
               onChange={(e) => {
                 setParams({
-                  status: e.target.value
+                  auditStatus: e.target.value
                 })
                 actionRef.current.reload();
               }}

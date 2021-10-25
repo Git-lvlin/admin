@@ -5,12 +5,14 @@ import { bindOperationPage } from '@/services/operation-management/bind-list'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import Bind from './bind';
+import Unbind from './unbind';
 
 const TableList = () => {
   const actionRef = useRef();
   const formRef = useRef();
   const [visit, setVisit] = useState(false)
   const [bindVisible, setBindVisible] = useState(false)
+  const [unbindVisible, setUnbindVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
 
   const columns = [
@@ -66,12 +68,14 @@ const TableList = () => {
     },
     {
       title: '审核状态',
-      dataIndex: 'operationIsBinded',
+      dataIndex: 'auditStatus',
       valueType: 'select',
       hideInTable: true,
       valueEnum: {
-        1: '已绑',
-        0: '未绑',
+        0: '待提交',
+        1: '审核通过',
+        2: '审核驳回',
+        3: '审核中'
       }
     },
     {
@@ -79,7 +83,7 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => {
         return data.lastApply?.auditStatus?.code !== 3 ? <>
-          {data.status === '已绑' && <a>申请解绑</a>}
+          {data.status === '已绑' && <a onClick={() => { setSelectItem(data); setUnbindVisible(true) }}>申请解绑</a>}
           {data.status === '未绑' && <a onClick={() => { setSelectItem(data); setBindVisible(true) }}>申请绑定</a>}
         </> : '-'
       }
@@ -96,7 +100,24 @@ const TableList = () => {
 
   return (
     <>
-      {bindVisible && <Bind data={selectItem} visible={bindVisible} setVisible={setBindVisible} />}
+      {bindVisible
+        &&
+        <Bind
+          data={selectItem}
+          visible={bindVisible}
+          setVisible={setBindVisible}
+          callback={() => { actionRef.current.reload() }}
+        />
+      }
+      {unbindVisible
+        &&
+        <Unbind
+          data={selectItem}
+          visible={bindVisible}
+          setVisible={setUnbindVisible}
+          callback={() => { actionRef.current.reload() }}
+        />
+      }
       <ProTable
         rowKey="id"
         options={false}

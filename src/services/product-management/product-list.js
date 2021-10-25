@@ -123,6 +123,13 @@ export const subAccountCheck = (params = {}, options = {}) => {
   });
 }
 
+export const getActivityRecord = (params = {}, options = {}) => {
+  return request('/auth/goods/product/getActivityRecord', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
 
 export const getTemplateList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;

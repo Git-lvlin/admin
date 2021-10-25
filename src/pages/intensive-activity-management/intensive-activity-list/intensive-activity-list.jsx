@@ -219,6 +219,12 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
+      title: '配送模式',
+      dataIndex: 'wholesaleFlowTypeDesc',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
       title: '可购买的会员等级',
       dataIndex: 'memberLevel',
       valueType: 'text',

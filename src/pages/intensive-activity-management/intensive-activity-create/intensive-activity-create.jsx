@@ -212,17 +212,17 @@ const IntensiveActivityCreate = () => {
                 }
 
                 if (+item.totalStockNum % +item.batchNumber !== 0) {
-                  message.error(`sku:${item.skuId}集约总库存数量与集采箱柜单位量之间必须为倍数关系，请重新输入`);
+                  message.error(`sku:${item.skuId}集约总库存数量与集采箱规单位量之间必须为倍数关系，请重新输入`);
                   return false;
                 }
 
                 if (+item.minNum % +item.batchNumber !== 0) {
-                  message.error(`sku:${item.skuId}单次起订量与集采箱柜单位量之间必须为倍数关系，请重新输入`);
+                  message.error(`sku:${item.skuId}单次起订量与集采箱规单位量之间必须为倍数关系，请重新输入`);
                   return false;
                 }
 
                 if (+item.maxNum % +item.batchNumber !== 0) {
-                  message.error(`sku:${item.skuId}单次限订量与集采箱柜单位量之间必须为倍数关系，请重新输入`);
+                  message.error(`sku:${item.skuId}单次限订量与集采箱规单位量之间必须为倍数关系，请重新输入`);
                   return false;
                 }
               }
@@ -280,6 +280,23 @@ const IntensiveActivityCreate = () => {
                 }
               }}
             />
+            <ProFormText
+              name="virtualSales"
+              label="本次集约虚拟销量"
+              width="lg"
+              placeholder="请输入集约虚拟销量"
+              validateFirst
+              rules={[
+                { required: true, message: '请输入集约虚拟销量' },
+                () => ({
+                  validator(_, value) {
+                    if (!/^\d+$/g.test(value) || `${value}`.indexOf('.') !== -1 || value <= 0 ) {
+                      return Promise.reject(new Error(`请输入大于零的正整数`));
+                    }
+                    return Promise.resolve();
+                  },
+                })
+              ]} />
             <ProFormCheckbox.Group value={'1'} label="可购买的社区店等级" disabled options={[{ label: '全部', value: 1 }]} />
             <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} />
             <Form.Item
