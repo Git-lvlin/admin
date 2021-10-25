@@ -11,6 +11,7 @@ import { bannerAdd,findAdminArticleTypeList } from '@/services/cms/member/member
 import { adminArticleDetail } from '@/services/business-school/find-admin-article-list';
 import  ReactQuill,{ Quill }  from 'react-quill';
 import { history } from 'umi';
+import styles from './style.less'
 import 'react-quill/dist/quill.snow.css';
 
 
@@ -98,7 +99,9 @@ export default (props) => {
     return new Promise(async (resolve, reject) => {
     if (value&&value.length<4) {
         await reject('不少于4个字符')
-    } else {
+    }else if (/[%&',;=?$\x22]/.test(value)) {
+      await reject('圈子名称不可以含特殊字符')
+    }else {
         await resolve()
     }
     })
@@ -144,6 +147,7 @@ export default (props) => {
           onClose();
         }
       }}
+      className={styles.article_list}
       submitter={
         {
           render: (props, defaultDoms) => {
@@ -197,6 +201,7 @@ export default (props) => {
             minLength:4,
             maxLength: 20,
           }}
+          initialValue={'约购小助手'}
         />
 
         <Form.Item

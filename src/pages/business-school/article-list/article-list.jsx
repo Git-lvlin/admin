@@ -44,7 +44,7 @@ const ArticleList = (props) => {
       title: '编号',
       dataIndex: 'id',
       valueType: 'text',
-      // search: false,
+      hideInSearch: true,
     },
     {
       title: '标题',
