@@ -71,7 +71,7 @@ const ArticleList = (props) => {
     },
     {
       title: '发布人昵称',
-      dataIndex: 'authorNickName',
+      dataIndex: 'authorName',
       valueType: 'text',
     },
     {
