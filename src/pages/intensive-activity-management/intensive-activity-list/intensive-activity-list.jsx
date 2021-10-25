@@ -48,6 +48,10 @@ const SubTable = (props) => {
       dataIndex: 'goodsName',
     },
     {
+      title: '上架状态',
+      dataIndex: 'goodsStateDesc',
+    },
+    {
       title: '供应商家ID',
       dataIndex: 'supplierId',
     },
@@ -211,6 +215,12 @@ const TableList = () => {
     {
       title: '可购买后销售的社区店等级',
       dataIndex: 'storeLevel',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '配送模式',
+      dataIndex: 'wholesaleFlowTypeDesc',
       valueType: 'text',
       hideInSearch: true,
     },

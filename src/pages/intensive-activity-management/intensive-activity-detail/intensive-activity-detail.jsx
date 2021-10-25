@@ -27,6 +27,10 @@ const columns = [
     width: 200,
   },
   {
+    title: '上架状态',
+    dataIndex: 'goodsStateDesc',
+  },
+  {
     title: '供应商家ID',
     dataIndex: 'supplierId',
   },

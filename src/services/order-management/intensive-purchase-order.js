@@ -21,6 +21,40 @@ export const operationList = async (params = {}, options = {}) => {
   }
 }
 
+export const purchaseInList = async (params = {}) => {
+  const res = await request('/auth/operation/stock/purchaseInList', {
+    method: 'POST',
+    params: {
+      ...params,
+      page: 1,
+      size: 999,
+    },
+  });
+
+  return {
+    data: res.data.records.records,
+    success: true,
+    total: res.data.total
+  }
+}
+
+export const dispatchOutList = async (params = {}) => {
+  const res = await request('/auth/operation/stock/dispatchOutList', {
+    method: 'POST',
+    params: {
+      ...params,
+      page: 1,
+      size: 999,
+    },
+  });
+
+  return {
+    data: res.data.records.records,
+    success: true,
+    total: res.data.total
+  }
+}
+
 export const detail = async (params = {}, options = {}) => {
   return request('/auth/operation/order/detail', {
     method: 'POST',
