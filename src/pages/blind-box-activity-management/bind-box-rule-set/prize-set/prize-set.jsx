@@ -219,12 +219,27 @@ export default (props) => {
                       arr.map(item=>{
                         if(item.skuId==ele.skuId){
                           item.id=ele.id
+                          item.stockNum=ele.stockNum
+                          item.probability=ele.probability
+                          item.status=ele.status
                           delete item.add
                         }
                       })
                   })
+                  if(!id&&falg){
+                    dataSource?.map(ele=>{
+                      arr.map(item=>{
+                        if(item.skuId==ele.skuId){
+                          item.stockNum=ele.stockNum
+                          item.probability=ele.probability
+                          item.status=ele.status
+                        }
+                      })
+                     })
+                  }
                   let arr2=_.uniqWith([...dataSource,...arr], _.isEqual)
                     setDataSource(arr2)
+                    callback(arr2)
                     setEditableKeys(arr2.map(item => item.id))
                 }}
               />
