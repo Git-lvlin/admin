@@ -341,7 +341,7 @@ const IntensiveActivityCreate = () => {
                   return <>
                     <div style={{ display: 'flex' }}>
                       <div style={{ width: 105 }}>
-                        <Upload value={value} onChange={onChange} accept="image/png,image/jpg" dimension={{ width: 750, height: 1352 }} size={2048} />
+                        <Upload value={value} onChange={onChange} accept=".png, .jpg, .jpeg" dimension={{ width: 750, height: 1352 }} size={2048} />
                       </div>
                       <dl>
                         <dd>大小：不超过2MB</dd>

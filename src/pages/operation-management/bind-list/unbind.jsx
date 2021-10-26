@@ -124,7 +124,7 @@ export default (props) => {
         })]}
       >
         <FromWrap
-          content={(value, onChange) => <Upload value={value} onChange={onChange} maxCount={50} accept="image/png,image/jpg" size={2048} />}
+          content={(value, onChange) => <Upload value={value} onChange={onChange} maxCount={50} accept=".png, .jpg, .jpeg" size={2048} />}
           right={() => {
             return (
               <dl>
