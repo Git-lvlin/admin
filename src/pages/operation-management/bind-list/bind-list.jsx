@@ -17,24 +17,24 @@ const TableList = () => {
 
   const columns = [
     {
-      title: '运营商名称',
-      dataIndex: 'operationName',
-      valueType: 'text',
-      hideInTable: true,
-    },
-    {
       title: '社区店名称',
       dataIndex: 'storeName',
       valueType: 'text',
     },
+    // {
+    //   title: '社区店地址',
+    //   dataIndex: 'address',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   render: (_, data) => {
+    //     return `${Object.values(data.areaInfo).join('')}${_}`
+    //   }
+    // },
     {
-      title: '社区店地址',
-      dataIndex: 'address',
+      title: '绑定的运营商',
+      dataIndex: 'operationCompanyName',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => {
-        return `${Object.values(data.areaInfo).join('')}${_}`
-      }
     },
     {
       title: '绑定状态',
