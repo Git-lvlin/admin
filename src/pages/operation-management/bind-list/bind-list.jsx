@@ -17,12 +17,6 @@ const TableList = () => {
 
   const columns = [
     {
-      title: '运营商名称',
-      dataIndex: 'operationName',
-      valueType: 'text',
-      hideInTable: true,
-    },
-    {
       title: '社区店名称',
       dataIndex: 'storeName',
       valueType: 'text',
@@ -35,6 +29,12 @@ const TableList = () => {
       render: (_, data) => {
         return `${Object.values(data.areaInfo).join('')}${_}`
       }
+    },
+    {
+      title: '绑定的运营商',
+      dataIndex: 'operationCompanyName',
+      valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '绑定状态',
@@ -61,23 +61,23 @@ const TableList = () => {
         return <>
           {_?.auditStatus?.desc || '待提交'}
           {_?.auditStatus?.code === 2 && <div>
-            <Tooltip title={_?.remark}><a>原因</a></Tooltip>
+            <Tooltip title={_?.auditRemark}><a>原因</a></Tooltip>
           </div>}
         </>
       }
     },
-    {
-      title: '审核状态',
-      dataIndex: 'auditStatus',
-      valueType: 'select',
-      hideInTable: true,
-      valueEnum: {
-        0: '待提交',
-        1: '审核通过',
-        2: '审核驳回',
-        3: '审核中'
-      }
-    },
+    // {
+    //   title: '审核状态',
+    //   dataIndex: 'auditStatus',
+    //   valueType: 'select',
+    //   hideInTable: true,
+    //   valueEnum: {
+    //     0: '待提交',
+    //     1: '审核通过',
+    //     2: '审核驳回',
+    //     3: '审核中'
+    //   }
+    // },
     {
       title: '操作',
       valueType: 'option',

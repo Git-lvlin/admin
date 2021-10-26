@@ -97,6 +97,7 @@ const BindAuditList = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      hideInTable: params.auditStatus !== 3,
       render: (_, record) => {
         return (
           params.auditStatus === 3 && <Space>

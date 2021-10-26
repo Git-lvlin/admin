@@ -54,6 +54,8 @@ const config = {
   targets: {
     ie: 11,
   },
+  mfsu: {},
+  webpack5:{},
   fastRefresh: {},
   // umi routes: https://umijs.org/docs/routing
   routes: [
