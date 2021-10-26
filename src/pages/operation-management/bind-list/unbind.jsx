@@ -7,6 +7,13 @@ import {
 import { unbindingForAdmin } from '@/services/operation-management/bind-list'
 import Upload from '@/components/upload';
 
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+  </div>
+)
+
 export default (props) => {
   const { setVisible, data, callback = () => { }, onClose = () => { } } = props;
   const [form] = Form.useForm();
@@ -116,10 +123,17 @@ export default (props) => {
           },
         })]}
       >
-        <Upload
-          multiple
-          maxCount={50}
-          accept="image/*"
+        <FromWrap
+          content={(value, onChange) => <Upload value={value} onChange={onChange} maxCount={50} accept="image/png,image/jpg" size={2048} />}
+          right={() => {
+            return (
+              <dl>
+                <dd>大小：不超过2MB</dd>
+                <dd>尺寸：不限</dd>
+                <dd>格式：png/jpg</dd>
+              </dl>
+            )
+          }}
         />
       </Form.Item>
     </DrawerForm>
