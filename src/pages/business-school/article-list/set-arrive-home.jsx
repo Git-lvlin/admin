@@ -1,10 +1,21 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { message, Form,Transfer } from 'antd';
-import ProForm, { ModalForm } from '@ant-design/pro-form';
+import ProForm, { ModalForm,ProFormRadio } from '@ant-design/pro-form';
 import { settingRecommend,recommendArticleList } from '@/services/business-school/find-admin-article-list';
 
 
-
+const formItemLayout = {
+  labelCol: { span: 3 },
+  wrapperCol: { span: 14 },
+  layout: {
+    labelCol: {
+      span: 4,
+    },
+    wrapperCol: {
+      span: 14,
+    },
+  }
+};
 
 export default (props) => {
   const { setVisible, visible,callback } = props;
@@ -12,8 +23,10 @@ export default (props) => {
   const [form] = Form.useForm()
   const [mockData,setMockData]=useState([])
   const [targetKeys, setTargetKeys] = useState([]);
+  const [formLayout, setFormLayout] = useState(2);
+  const [formLayout2, setFormLayout2] = useState(1);
   useEffect(() => {
-    recommendArticleList().then(res=>{
+    recommendArticleList({storeType:formLayout2==1?formLayout2:formLayout||2}).then(res=>{
       setMockData(res.data.map(ele=>(
         {key:ele.id,title:ele.articleTitle,description:ele.isRecommend}
       )))
@@ -22,7 +35,7 @@ export default (props) => {
       }
     })
     
-  }, [form])
+  }, [form,formLayout,formLayout2])
 
   const [selectedKeys, setSelectedKeys] = useState([]);
   const onChange = (nextTargetKeys, direction, moveKeys) => {
@@ -36,7 +49,7 @@ export default (props) => {
   const onsubmit = () => {
     return new Promise((resolve,reject) => {
       if(targetKeys.length<=6){
-        settingRecommend({ids:targetKeys}).then((res) => {
+        settingRecommend({ids:targetKeys,storeType:formLayout2==1?formLayout2:formLayout}).then((res) => {
           if (res.code === 0) {
             resolve(true);
             callback(true)
@@ -62,7 +75,56 @@ export default (props) => {
         // 不返回不会关闭弹框
         return true;
       }}
+      {...formItemLayout}
     >
+       <ProFormRadio.Group
+        style={{
+          margin: 16,
+        }}
+        label="文章展示性质"
+        radioType="button"
+        fieldProps={{
+          value: formLayout2,
+          onChange: (e) => setFormLayout2(e.target.value),
+        }}
+        options={[
+          {
+              label:'所有店都展示的文章',
+              value: 1,
+          },
+          {
+              label: '指定店铺才展示的文章',
+              value: 0,
+          }
+        ]}
+      />
+      {
+         formLayout2==0&&<ProFormRadio.Group
+               style={{
+                 margin: 16,
+               }}
+               label="设置店铺类型"
+               radioType="button"
+               fieldProps={{
+                 value: formLayout,
+                 onChange: (e) => setFormLayout(e.target.value),
+               }}
+               options={[
+                 {
+                     label:'社区店',
+                     value: 2,
+                 },
+                 {
+                     label: '内部店',
+                     value: 3,
+                 },
+                 {
+                     label: '自营店',
+                     value: 4,
+                 }
+             ]}
+           />
+      }
       <Transfer
         dataSource={mockData}
         titles={['文章列表', '首页文章']}

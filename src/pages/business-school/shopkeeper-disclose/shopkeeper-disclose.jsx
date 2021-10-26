@@ -79,6 +79,9 @@ export default (props) => {
                 ],
             }}
         />
+       <Button style={{float:'right',margin:'20px 20px 0 0'}} type="primary" onClick={() => history.goBack()}>
+           返回
+        </Button>
     </PageContainer>
   );
 };

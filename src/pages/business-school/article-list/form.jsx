@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { message, Form,Space,Button} from 'antd';
+import { message, Form,Space,Button,Modal} from 'antd';
 import ProForm, {
   DrawerForm,
   ProFormText,
@@ -13,6 +13,7 @@ import  ReactQuill,{ Quill }  from 'react-quill';
 import { history } from 'umi';
 import styles from './style.less'
 import 'react-quill/dist/quill.snow.css';
+// Quill.register('modules/imageDrop', ImageDrop);
 
 
 
@@ -32,14 +33,24 @@ const formItemLayout = {
 
 
 
+
+
 export default (props) => {
   const { detailData, setVisible, onClose, visible,callback } = props;
   const formRef = useRef();
+  const ref = useRef();
   const [onselect,setOnselect]=useState([])
   const [form] = Form.useForm()
   const [values1, setValues1] = useState('');
+  const FromWrap = ({ value, onChange, content, right }) => (
+    <div style={{ display: 'flex' }}>
+      <div>{content(value, onChange)}</div>
+      <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{detailData?.id&&detailData?.edtil?null:right(value)}</div>
+    </div>
+  )
 
   const onsubmit = (values) => {
+    console.log('values1',values1)
     const { ...rest } = values
     const param = {
       articleType:1,
@@ -106,30 +117,50 @@ export default (props) => {
     }
     })
   }
-  
-
   const modules={
-    toolbar:[
-      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      ['blockquote', 'code-block'],
-      ['link', 'image','video'],
-  
-      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-      [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-      [{ 'direction': 'rtl' }],                         // text direction
-  
-      // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-  
-      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-  
-      ['clean']                                         // remove formatting button
-  ]
+    toolbar:{
+      container:[
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+        ['link', 'image','video'],
+    
+        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
+    
+        // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+    
+        ['clean']                                         // remove formatting button
+      ],
+      // handlers: {
+      //   'image':()=>showUploadBox()
+      // },
+      // imageDrop: true,
   }
+  }
+
+  // const [uploadBoxVisible,setUploadBoxVisible]=useState()
+  // const showUploadBox=()=>{
+  //   setUploadBoxVisible(true)
+  // }
+
+
+// const imageHandler=(url)=>{
+//   console.log('ref',ref)
+//   let quill=ref?.current?.getEditor();//获取到编辑器本身
+//   console.log('quill',quill)
+//   // const cursorPosition =quill.getSelection().index;//获取当前光标位置
+//   // quill.insertEmbed(cursorPosition, "image",url, Quill.sources.USER);//插入图片
+//   // quill.setSelection(cursorPosition + 1);//光标位置加1
+// }
+ 
   
 
   return (
@@ -152,11 +183,15 @@ export default (props) => {
         {
           render: (props, defaultDoms) => {
             return [
-              <Button type="primary" key="submit" onClick={() => {
-                props.form?.submit?.()
-              }}>
-                提交
-              </Button>,
+             <>
+              {
+                detailData?.id&&detailData?.edtil?null:<Button type="primary" key="submit" onClick={() => {
+                  props.form?.submit?.()
+                }}>
+                  提交
+                </Button>
+              }
+             </>,
               <Button type="default" onClick={() => setVisible(false)}>
                 返回
               </Button>
@@ -208,10 +243,21 @@ export default (props) => {
           label="封面图片"
           name="coverPicture"
           rules={[{ required: true, message: '请上传图片!' }]}
-          extra="图片要求 1.图片大小500kb以内 2.图片尺寸为 360 x 100 3.图片格式png/jpg/gif"
           readonly={detailData?.id&&detailData?.edtil} 
         >
-          <Upload multiple dimension={{width:360,height:100}}   maxCount={1} accept="image/*"  size={(1*1024)/2} />
+          <FromWrap
+          content={(value, onChange) => <Upload multiple value={value} onChange={onChange}   maxCount={1} accept="image/*"  size={(1*1024)/2} />}
+          right={(value) => {
+            return (
+              <dl>
+                <dt>图片要求</dt>
+                <dd>1.图片大小500kb以内</dd>
+                <dd>2.建议尺寸为 720 x 200</dd>
+                <dd>3.图片格式png/jpg/gif</dd>
+              </dl>
+            )
+          }}
+        />
         </Form.Item>
  
 
@@ -241,6 +287,8 @@ export default (props) => {
           rules={[{ required: true, message: '请选择店铺!' }]}
           readonly={detailData?.id&&detailData?.edtil} 
         />
+
+  
         <ProFormSelect
           width="md"
           name="articleTypeId"
@@ -312,7 +360,7 @@ export default (props) => {
             readonly={detailData?.id&&detailData?.edtil}
             // rules={[{ required: true, message: '请设置文章详情!' }]} 
           >
-            <ReactQuill value={values1}  onChange={(value)=>{
+            <ReactQuill ref={ref} value={values1}  onChange={(value)=>{
               setValues1(value)
             }}  modules={modules}/>
             <div className={styles.mark}>*</div>
@@ -320,6 +368,20 @@ export default (props) => {
           
           </>
         }
+
+        {/* <Modal
+            title="上传图片"
+            visible={uploadBoxVisible}
+            onCancel={()=>setUploadBoxVisible(false)}
+            onOk={()=>setUploadBoxVisible(false)}
+            maskClosable={false}
+            width={500}
+        >
+              <Upload multiple onChange={(url)=>{
+                console.log('url',url)
+                imageHandler(url)
+                }}   maxCount={1} accept="image/*"  size={(1*1024)} />
+        </Modal> */}
 
     </DrawerForm>
   );
