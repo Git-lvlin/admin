@@ -13,7 +13,6 @@ import  ReactQuill,{ Quill }  from 'react-quill';
 import { history } from 'umi';
 import styles from './style.less'
 import 'react-quill/dist/quill.snow.css';
-// Quill.register('modules/imageDrop', ImageDrop);
 
 
 
@@ -50,11 +49,10 @@ export default (props) => {
   )
 
   const onsubmit = (values) => {
-    console.log('values1',values1)
     const { ...rest } = values
     const param = {
       articleType:1,
-      articleContent:values1,
+      articleContent:`<head><style>img{width:100% !important;}</style></head>${values1}`,
       ...rest
     }
     if(detailData?.id&&detailData?.edtil){
@@ -139,27 +137,8 @@ export default (props) => {
     
         ['clean']                                         // remove formatting button
       ],
-      // handlers: {
-      //   'image':()=>showUploadBox()
-      // },
-      // imageDrop: true,
   }
   }
-
-  // const [uploadBoxVisible,setUploadBoxVisible]=useState()
-  // const showUploadBox=()=>{
-  //   setUploadBoxVisible(true)
-  // }
-
-
-// const imageHandler=(url)=>{
-//   console.log('ref',ref)
-//   let quill=ref?.current?.getEditor();//获取到编辑器本身
-//   console.log('quill',quill)
-//   // const cursorPosition =quill.getSelection().index;//获取当前光标位置
-//   // quill.insertEmbed(cursorPosition, "image",url, Quill.sources.USER);//插入图片
-//   // quill.setSelection(cursorPosition + 1);//光标位置加1
-// }
  
   
 
@@ -360,7 +339,7 @@ export default (props) => {
             readonly={detailData?.id&&detailData?.edtil}
             // rules={[{ required: true, message: '请设置文章详情!' }]} 
           >
-            <ReactQuill ref={ref} value={values1}  onChange={(value)=>{
+            <ReactQuill  value={values1}  onChange={(value)=>{
               setValues1(value)
             }}  modules={modules}/>
             <div className={styles.mark}>*</div>
@@ -368,20 +347,6 @@ export default (props) => {
           
           </>
         }
-
-        {/* <Modal
-            title="上传图片"
-            visible={uploadBoxVisible}
-            onCancel={()=>setUploadBoxVisible(false)}
-            onOk={()=>setUploadBoxVisible(false)}
-            maskClosable={false}
-            width={500}
-        >
-              <Upload multiple onChange={(url)=>{
-                console.log('url',url)
-                imageHandler(url)
-                }}   maxCount={1} accept="image/*"  size={(1*1024)} />
-        </Modal> */}
 
     </DrawerForm>
   );
