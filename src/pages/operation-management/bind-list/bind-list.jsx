@@ -21,15 +21,15 @@ const TableList = () => {
       dataIndex: 'storeName',
       valueType: 'text',
     },
-    // {
-    //   title: '社区店地址',
-    //   dataIndex: 'address',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    //   render: (_, data) => {
-    //     return `${Object.values(data.areaInfo).join('')}${_}`
-    //   }
-    // },
+    {
+      title: '社区店地址',
+      dataIndex: 'address',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, data) => {
+        return `${Object.values(data.areaInfo).join('')}${_}`
+      }
+    },
     {
       title: '绑定的运营商',
       dataIndex: 'operationCompanyName',
