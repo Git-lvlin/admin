@@ -66,18 +66,18 @@ const TableList = () => {
         </>
       }
     },
-    {
-      title: '审核状态',
-      dataIndex: 'auditStatus',
-      valueType: 'select',
-      hideInTable: true,
-      valueEnum: {
-        0: '待提交',
-        1: '审核通过',
-        2: '审核驳回',
-        3: '审核中'
-      }
-    },
+    // {
+    //   title: '审核状态',
+    //   dataIndex: 'auditStatus',
+    //   valueType: 'select',
+    //   hideInTable: true,
+    //   valueEnum: {
+    //     0: '待提交',
+    //     1: '审核通过',
+    //     2: '审核驳回',
+    //     3: '审核中'
+    //   }
+    // },
     {
       title: '操作',
       valueType: 'option',
