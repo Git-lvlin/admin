@@ -55,6 +55,17 @@ const ArticleList = (props) => {
       },
     },
     {
+      title: '店类型',
+      dataIndex: 'storeType',
+      valueType: 'select',
+      valueEnum: {
+        1: '全部',
+        2: '社区店',
+        3: '内部店',
+        4: '直营店'
+      }
+    },
+    {
       title: '分类',
       dataIndex: 'articleTypeName',
       valueType: 'text',
