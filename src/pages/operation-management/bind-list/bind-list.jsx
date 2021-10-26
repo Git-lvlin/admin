@@ -61,7 +61,7 @@ const TableList = () => {
         return <>
           {_?.auditStatus?.desc || '待提交'}
           {_?.auditStatus?.code === 2 && <div>
-            <Tooltip title={_?.remark}><a>原因</a></Tooltip>
+            <Tooltip title={_?.auditRemark}><a>原因</a></Tooltip>
           </div>}
         </>
       }
