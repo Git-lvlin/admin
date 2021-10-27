@@ -9,6 +9,8 @@ import { findAdminDebunkList } from '@/services/business-school/find-admin-debun
 
 export default (props) => {
   let articleId = props.location.query.articleId
+  let articleTitle = props.location.query.articleTitle
+  let type = props.location.query.type
   const actionRef = useRef();
   const columns = [
     {
@@ -56,6 +58,9 @@ export default (props) => {
 
   return (
     <PageContainer>
+      <div style={{ marginBottom: 10, background: '#fff', padding: '10px 0 5px 10px' }}>
+        <p>{type==1?'【图文】':'【视频】'}{articleTitle} （编号：{articleId}）</p>
+      </div>
         <ProTable
             rowKey="id"
             options={false}
@@ -79,6 +84,9 @@ export default (props) => {
                 ],
             }}
         />
+       <Button style={{float:'right',margin:'20px 20px 0 0'}} type="primary" onClick={() => history.goBack()}>
+           返回
+        </Button>
     </PageContainer>
   );
 };

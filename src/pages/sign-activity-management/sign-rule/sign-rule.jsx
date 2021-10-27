@@ -158,6 +158,7 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{
@@ -172,6 +173,7 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{
@@ -185,6 +187,7 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{
@@ -198,6 +201,7 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{
@@ -211,6 +215,7 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{
@@ -224,6 +229,7 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{
@@ -237,6 +243,7 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{

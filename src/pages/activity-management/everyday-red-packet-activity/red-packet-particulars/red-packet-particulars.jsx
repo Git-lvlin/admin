@@ -4,6 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { couponEverydayLogList } from '@/services/activity-management/everyday-red-packet-activity';
 import { history, connect } from 'umi';
+import { amountTransform } from '@/utils/utils'
 import Detail from '@/pages/order-management/normal-order/detail';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -63,6 +64,7 @@ export default () => {
         dataIndex: 'freeAmount',
         valueType: 'text',
         hideInSearch:true,
+        render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
       },
       {
         title: '使用时间',
@@ -116,13 +118,13 @@ export default () => {
           return <>
                   {
                     data.orderGoods.map(ele=>(
-                      <div style={{display:'flex'}}>
-                      <Image src={ele.imageUrl} alt="" width='50px' height='50px' />
+                      <div style={{display:'flex',alignItems:'center'}}>
+                      <Image src={ele.imageUrl} alt="" width='80px' height='80px' />
                       <div style={{marginLeft:'10px'}}>
                         <h5>{ele.goodsName}</h5>
                         <span style={{color:'red',fontSize:'10px'}}>销售价¥{ele.salePrice/100}</span>
                         <p style={{fontSize:'12px'}}>SKU  {ele.skuId}</p>
-                        <p style={{fontSize:'12px'}}>订单号:<a onClick={() => {  setDetailVisible(true);setOrderId(data?.orderId) }}>{ele.orderSn}</a></p>
+                        <p style={{fontSize:'12px'}}>订单号:<a onClick={() => {  setDetailVisible(true);setOrderId(ele?.subOrderId) }}>{ele.orderSn}</a></p>
                       </div>
                    </div>
                     ))

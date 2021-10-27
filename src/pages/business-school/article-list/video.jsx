@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { message, Form } from 'antd';
+import React, { useRef, useEffect, useState} from 'react';
+import { message, Form,Button  } from 'antd';
 import ProForm, {
   DrawerForm,
   ProFormText,
@@ -28,11 +28,14 @@ const formItemLayout = {
   }
 };
 
+
 const numMinLength=(rule, value, callback)=>{
   return new Promise(async (resolve, reject) => {
   if (value&&value.length<4) {
       await reject('不少于4个字符')
-  } else {
+  }else if (/[%&',;=?$\x22]/.test(value)) {
+    await reject('圈子名称不可以含特殊字符')
+  }else {
       await resolve()
   }
   })
@@ -44,6 +47,13 @@ export default (props) => {
   const { detailData, setVisible, onClose, visible,callback } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
+
+  const FromWrap = ({ value, onChange, content, right }) => (
+    <div style={{ display: 'flex' }}>
+      <div>{content(value, onChange)}</div>
+      <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{detailData?.id&&detailData?.edtil?null:right(value)}</div>
+    </div>
+  )
 
   useEffect(() => {
     if(detailData?.id){
@@ -108,6 +118,26 @@ export default (props) => {
         // 不返回不会关闭弹框
         return true;
       }}
+      submitter={
+        {
+          render: (props, defaultDoms) => {
+            return [
+              <>
+                {
+                  detailData?.id&&detailData?.edtil?null:<Button type="primary" key="submit" onClick={() => {
+                    props.form?.submit?.()
+                  }}>
+                    提交
+                  </Button>
+                }
+              </>,
+              <Button type="default" onClick={() => setVisible(false)}>
+                返回
+              </Button>
+            ];
+          }
+        }
+      }
       {...formItemLayout}
     >
         <ProFormText 
@@ -139,24 +169,29 @@ export default (props) => {
           fieldProps={{
             minLength:4,
             maxLength: 20,
-          }}  
+          }}
+          initialValue={'约购小助手'}
         />
 
         <Form.Item
           label="封面图片"
           name="coverPicture"
           rules={[{ required: true, message: '请上传图片!' }]}
-          tooltip={
-            <dl>
-            <dt>图片要求</dt>
-            <dd>1.图片大小500kb以内</dd>
-            <dd>2.图片尺寸为 360 x 100</dd>
-            <dd>3.图片格式png/jpg/gif</dd>
-          </dl>
-          }
           readonly={detailData?.id&&detailData?.edtil}  
         >
-          <Upload multiple dimension={{width:360,height:100}}  maxCount={1} accept="image/*"  size={(1*1024)/2} />
+          <FromWrap
+            content={(value, onChange) => <Upload multiple value={value} onChange={onChange}   maxCount={1} accept="image/*"  size={(1*1024)/2} />}
+            right={(value) => {
+              return (
+                <dl>
+                  <dt>图片要求</dt>
+                  <dd>1.图片大小500kb以内</dd>
+                  <dd>2.建议尺寸为 720 x 200</dd>
+                  <dd>3.图片格式png/jpg/gif</dd>
+                </dl>
+              )
+            }}
+          />
         </Form.Item>
 
         <ProFormSelect
@@ -199,6 +234,7 @@ export default (props) => {
               value: 0,
             },
           ]}
+          initialValue={1}
           readonly={detailData?.id&&detailData?.edtil}  
         />
         
@@ -238,18 +274,22 @@ export default (props) => {
           label="上传视频"
           name="videoUrl"
           rules={[{ required: true, message: '请上传视频!' }]}
-          tooltip={
-            <dl>
-              <dt>视频要求</dt>
-              <dd>1.500MB以内</dd>
-              <dd>2.60分钟以内</dd>
-              <dd>3.mp4格式</dd>
-            </dl>
-          }
-          extra="视频要求 1.500MB以内 2.60分钟以内 3.mp4格式"
           readonly={detailData?.id&&detailData?.edtil}  
         >
-          <Upload multiple maxCount={1} size={500*1024}  accept="video/*" />
+          <FromWrap
+            content={(value, onChange) =>  <Upload multiple value={value} onChange={onChange} maxCount={1} size={500*1024}  accept="video/*" />}
+            right={(value) => {
+              return (
+                <dl>
+                  <dt>视频要求</dt>
+                  <dd>1.500MB以内</dd>
+                  <dd>2.60分钟以内</dd>
+                  <dd>3.mp4格式</dd>
+                </dl>
+              )
+            }}
+          />
+         
         </Form.Item>
 
     </DrawerForm>

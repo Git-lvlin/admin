@@ -44,7 +44,7 @@ const ArticleList = (props) => {
       title: '编号',
       dataIndex: 'id',
       valueType: 'text',
-      // search: false,
+      hideInSearch: true,
     },
     {
       title: '标题',
@@ -53,6 +53,17 @@ const ArticleList = (props) => {
       fieldProps: {
         maxLength:20
       },
+    },
+    {
+      title: '店类型',
+      dataIndex: 'storeType',
+      valueType: 'select',
+      valueEnum: {
+        1: '全部',
+        2: '社区店',
+        3: '内部店',
+        4: '直营店'
+      }
     },
     {
       title: '分类',
@@ -65,7 +76,7 @@ const ArticleList = (props) => {
       title: '分类',
       dataIndex: 'articleTypeId',
       valueType: 'select',
-      hideInTable: type==2?true:false,
+      hideInTable: true,
       hideInSearch: type==2?true:false,
       valueEnum:onselect,
     },
@@ -99,7 +110,7 @@ const ArticleList = (props) => {
       search: false,
       render:(_,data)=>{
         return <>
-               <p>{data.authorNickName}</p>
+               <p>{data.authorName}</p>
                <p>{data.createTime}</p>
               </>
       }
@@ -140,7 +151,7 @@ const ArticleList = (props) => {
       valueType: 'number',
       search: false,
       render:(text, record, _, action)=>[
-        <a onClick={()=>history.push('/business-school/article-list/shopkeeper-disclose?articleId='+record.id)}>{record.debunkNum}</a>
+        <a onClick={()=>history.push('/business-school/article-list/shopkeeper-disclose?articleId='+record.id+'&articleTitle='+record.articleTitle+'&type='+type)}>{record.debunkNum}</a>
       ],
     },
     {
