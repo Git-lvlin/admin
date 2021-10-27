@@ -29,7 +29,7 @@ const ArticleList = (props) => {
   }
 
   useEffect(()=>{
-    findAdminArticleTypeList({isShow:1}).then(res=>{
+    findAdminArticleTypeList({}).then(res=>{
       const data={}
       res.data?.map(ele=>(
         data[ele.id]=ele.typeName
