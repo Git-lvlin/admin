@@ -4,6 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { couponEverydayLogList } from '@/services/activity-management/everyday-red-packet-activity';
 import { history, connect } from 'umi';
+import { amountTransform } from '@/utils/utils'
 import Detail from '@/pages/order-management/normal-order/detail';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -63,6 +64,7 @@ export default () => {
         dataIndex: 'freeAmount',
         valueType: 'text',
         hideInSearch:true,
+        render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
       },
       {
         title: '使用时间',

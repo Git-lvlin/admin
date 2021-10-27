@@ -151,7 +151,7 @@ const ArticleList = (props) => {
       valueType: 'number',
       search: false,
       render:(text, record, _, action)=>[
-        <a onClick={()=>history.push('/business-school/article-list/shopkeeper-disclose?articleId='+record.id)}>{record.debunkNum}</a>
+        <a onClick={()=>history.push('/business-school/article-list/shopkeeper-disclose?articleId='+record.id+'&articleTitle='+record.articleTitle+'&type='+type)}>{record.debunkNum}</a>
       ],
     },
     {
