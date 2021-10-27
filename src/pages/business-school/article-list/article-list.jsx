@@ -18,7 +18,7 @@ const ArticleList = (props) => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [homeVisible, setHomeVisible] = useState(false);
-  const [detailData, setDetailData] = useState(false);
+  const [detailData, setDetailData] = useState(false)
   const [onselect,setOnselect]=useState([])
   const [showHideTop,setShowHideTop]=useState()
   const [visible, setVisible] = useState(false);
@@ -29,9 +29,9 @@ const ArticleList = (props) => {
   }
 
   useEffect(()=>{
-    findAdminArticleTypeList({}).then(res=>{
+    findAdminArticleTypeList({isShow:1}).then(res=>{
       const data={}
-      res.data.map(ele=>(
+      res.data?.map(ele=>(
         data[ele.id]=ele.typeName
       ))
       setOnselect(data)
@@ -51,7 +51,8 @@ const ArticleList = (props) => {
       dataIndex: 'articleTitle',
       valueType: 'text',
       fieldProps: {
-        maxLength:20
+        minLength:4,
+        maxLength:60
       },
     },
     {

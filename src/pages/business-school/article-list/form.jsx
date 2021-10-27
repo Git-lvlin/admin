@@ -87,8 +87,8 @@ export default (props) => {
         })
       })
     }
-    findAdminArticleTypeList({}).then(res=>{
-      setOnselect(res.data.map(ele=>(
+    findAdminArticleTypeList({isShow:1}).then(res=>{
+      setOnselect(res.data?.map(ele=>(
         {label:ele.typeName,value:ele.id}
       )))
     })
@@ -339,9 +339,7 @@ export default (props) => {
             readonly={detailData?.id&&detailData?.edtil}
             // rules={[{ required: true, message: '请设置文章详情!' }]} 
           >
-            <ReactQuill  value={values1}  onChange={(value)=>{
-              setValues1(value)
-            }}  modules={modules}/>
+            <ReactQuill  value={values1}  onChange={(value)=>{setValues1(value)}}  modules={modules}/>
             <div className={styles.mark}>*</div>
           </Form.Item>
           

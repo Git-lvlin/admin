@@ -5,7 +5,7 @@ import SelectProductModal from '@/components/select-product-modal'
 import { PlusOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import ProTable from '@ant-design/pro-table';
-const _ = require('lodash');
+import _ from 'lodash'
 
 
 

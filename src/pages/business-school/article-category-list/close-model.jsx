@@ -14,7 +14,7 @@ export default props=>{
                 :'确认置顶么？'
                 :formControl.isShow?
                 '确认关闭么？'
-                :'确认启用么？'
+                :'确认开启么？'
             }
             key="model2"
             onVisibleChange={setVisible}
@@ -54,8 +54,8 @@ export default props=>{
                  <p><span style={{color:'red'}}>取消后无法优先排序展示</span>，你还要继续吗？</p>
                  :<p><span style={{color:'red'}}>置顶后将优先排序展示</span>，你还要继续吗？</p>
                  :formControl.isShow?
-                 <p><span style={{color:'red'}}>关闭后店主无法查看</span>，你还要继续吗？</p>
-                 :<p><span style={{color:'red'}}>开启后店主即可查看</span>，你还要继续吗？</p>
+                 <p><span style={{color:'red'}}>关闭后用户端不再展示此分类及其下文章</span>，你还要继续吗？</p>
+                 :<p><span style={{color:'red'}}>开启后分类及其下文章都会在用户端展示</span>，你还要继续吗？</p>
             }
     </ModalForm>
     )
