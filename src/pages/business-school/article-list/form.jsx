@@ -87,7 +87,13 @@ export default (props) => {
         })
       })
     }
-    findAdminArticleTypeList({isShow:1}).then(res=>{
+    const params={
+      isShow:1
+    }
+    if(detailData?.id){
+      delete params.isShow
+    }
+    findAdminArticleTypeList(params).then(res=>{
       setOnselect(res.data?.map(ele=>(
         {label:ele.typeName,value:ele.id}
       )))
