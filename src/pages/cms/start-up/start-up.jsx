@@ -38,7 +38,7 @@ const HomePopup = () => {
   return (
     <PageContainer
       header={{
-        title: 'APP弹窗',
+        title: 'APP启动广告',
         ghost: true,
       }}
       footer={[
