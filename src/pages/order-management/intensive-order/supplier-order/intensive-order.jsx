@@ -6,13 +6,15 @@ import { history, useLocation } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from 'moment';
 import styles from './style.less';
-import { orderList, refundAllRetailOrders, getPurchaseOrderList } from '@/services/order-management/supplier-order';
+import { orderList, refundAllRetailOrders, getPurchaseOrderList, refundOrder } from '@/services/order-management/supplier-order';
 import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
 import Detail from './detail';
+import Auth from '@/components/auth';
+import { Popconfirm } from 'antd';
 
 const { confirm } = Modal;
 
@@ -386,6 +388,23 @@ const TableList = () => {
                   {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a> */}
                   <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
                   <div><a target="_blank" href={`/order-management/intensive-order/shopkeeper-order?objectId=${item.orderId}`}>查看零售订单</a></div>
+                  {orderType === 2 && <Auth name="wholesale/storeOrder/refundOrder">
+                    <Popconfirm
+                      title="确认操作?"
+                      onConfirm={()=>{
+                        refundOrder({
+                          orderId: item.orderId
+                        },{showSuccess: true})
+                          .then(res => {
+                            if (res.code === 0) {
+                              setSearch(search + 1)
+                            }
+                          })
+                      }}
+                    >
+                      <a>退款</a>
+                    </Popconfirm>
+                  </Auth>}
                 </div>
               </div>
 

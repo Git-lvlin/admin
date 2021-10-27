@@ -47,7 +47,7 @@ const WithdrawalAuditManagement = () => {
         'supplier': '商家',
         'platform': '平台',
         'agentStore': '内部店',
-        'agentCompany': '经销商'
+        'agentCompany': '运营商'
       }
     },
     {
