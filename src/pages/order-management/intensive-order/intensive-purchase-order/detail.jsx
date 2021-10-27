@@ -219,7 +219,8 @@ const Detail = (props) => {
             width: '100%',
           }}
           params={{
-            operationId: detailData?.operationId
+            operationId: detailData?.operationId,
+            poNo: detailData?.poNo
           }}
           columns={[
             {
@@ -254,7 +255,8 @@ const Detail = (props) => {
             width: '100%'
           }}
           params={{
-            operationId: detailData?.operationId
+            operationId: detailData?.operationId,
+            poNo: detailData?.poNo
           }}
           columns={[
             {
