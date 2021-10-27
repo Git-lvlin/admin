@@ -51,7 +51,8 @@ const ArticleList = (props) => {
       dataIndex: 'articleTitle',
       valueType: 'text',
       fieldProps: {
-        maxLength:20
+        minLength:4,
+        maxLength:60
       },
     },
     {

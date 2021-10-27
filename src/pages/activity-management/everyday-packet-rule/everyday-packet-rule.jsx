@@ -27,9 +27,6 @@ const formItemLayout = {
     {
       id:1,
       title:'当天红包金额',
-      couponIdOne:'',
-      couponIdTwo:'',
-      couponIdThree:''
     }
   ]
 
@@ -227,6 +224,9 @@ export default (props) =>{
               placeholder="输入活动名称"
               rules={[{ required: true, message: '请输入活动名称' }]}
               readonly={id&&falg}
+              fieldProps={{
+                maxLength:50
+              }}
           />
          <ProFormDateTimeRangePicker
             width="md"
@@ -314,6 +314,9 @@ export default (props) =>{
                   { required: true, message: '请输入活动规则' },
                 ]}
                 readonly={id&&falg}
+                fieldProps={{
+                 maxLength:1000
+                }}
             />
             }
 
