@@ -29,13 +29,7 @@ import importExportConfiguration from './routers/import-export-configuration'
 import ActivityManagement from './routers/activity-management'
 
 const { REACT_APP_ENV } = process.env;
-let test = {}
-if (process.env.NODE_ENV == 'development') {
-  test = {
-    webpack5: {},
-    mfsu: {},
-  }
-}
+
 const config = {
   hash: true,
   antd: {},
@@ -58,7 +52,8 @@ const config = {
   targets: {
     ie: 11,
   },
-  ...test,
+  webpack5: {},
+  mfsu: {},
   fastRefresh: {},
   // umi routes: https://umijs.org/docs/routing
   routes: [
