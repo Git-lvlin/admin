@@ -4,6 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { couponEverydayLogList } from '@/services/activity-management/everyday-red-packet-activity';
 import { history, connect } from 'umi';
+import { amountTransform } from '@/utils/utils'
 import Detail from '@/pages/order-management/normal-order/detail';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -27,6 +28,9 @@ export default () => {
         title: '活动名称',
         dataIndex: 'name',
         valueType: 'text',
+        render:(text, record, _, action)=>[
+          <a onClick={()=>history.push('/activity-management/everyday-packet-rule?id='+record.couponEverydayId)}>{record.name}</a>
+        ]
       },
       {
         title: '活动时间',
@@ -63,6 +67,7 @@ export default () => {
         dataIndex: 'freeAmount',
         valueType: 'text',
         hideInSearch:true,
+        render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
       },
       {
         title: '使用时间',
@@ -99,6 +104,12 @@ export default () => {
         dataIndex: 'sourceOrderSnDisplay',
         valueType: 'text',
         hideInSearch: true,
+        render: (_, data)=>{
+          return <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
+                  <p style={{fontSize:'12px'}}>订单号: </p>
+                  <p style={{fontSize:'12px'}}><a onClick={() => {  setDetailVisible(true);setOrderId(data?.orderId) }}>{data?.sourceOrderSn}</a></p>
+                 </div>
+        },
       },
       {
         title: '订单号',

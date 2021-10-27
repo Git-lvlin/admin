@@ -71,7 +71,7 @@ export default (props) => {
   const originData = useRef([])
 
   const formItemLayout = {
-    labelCol: { span: 2 },
+    labelCol: { span: 6},
     wrapperCol: { span: 14 },
     layout: {
       labelCol: {
