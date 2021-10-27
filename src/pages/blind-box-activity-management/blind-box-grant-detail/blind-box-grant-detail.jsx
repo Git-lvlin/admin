@@ -102,7 +102,7 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="签到红包发放明细"
+          headerTitle="盲盒机会发放明细"
           options={false}
           request={getBlindboxIncomeList}
           search={{

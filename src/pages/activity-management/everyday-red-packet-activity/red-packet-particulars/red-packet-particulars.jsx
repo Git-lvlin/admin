@@ -28,6 +28,9 @@ export default () => {
         title: '活动名称',
         dataIndex: 'name',
         valueType: 'text',
+        render:(text, record, _, action)=>[
+          <a onClick={()=>history.push('/activity-management/everyday-packet-rule?id='+record.couponEverydayId)}>{record.name}</a>
+        ]
       },
       {
         title: '活动时间',
@@ -101,6 +104,12 @@ export default () => {
         dataIndex: 'sourceOrderSnDisplay',
         valueType: 'text',
         hideInSearch: true,
+        render: (_, data)=>{
+          return <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
+                  <p style={{fontSize:'12px'}}>订单号: </p>
+                  <p style={{fontSize:'12px'}}><a onClick={() => {  setDetailVisible(true);setOrderId(data?.orderId) }}>{data?.sourceOrderSn}</a></p>
+                 </div>
+        },
       },
       {
         title: '订单号',
