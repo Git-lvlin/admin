@@ -51,8 +51,8 @@ const ArticleCategoryList = () => {
       valueType: 'text',
       render:(_,data)=>{
         return <>
-               <p>{data.authorName}</p>
-               <p>{data.createTime}</p>
+               <p>{data?.authorName}</p>
+               <p>{data?.createTime}</p>
               </>
       }
     },
@@ -70,7 +70,7 @@ const ArticleCategoryList = () => {
       dataIndex: 'articleNum',
       valueType: 'number',
       render:(text, record, _, action)=>[
-        <a onClick={()=>history.push(`/business-school/article-list?articleTypeId=${record.id}`)}>{record.articleNum}</a>
+        <a onClick={()=>history.push(`/business-school/article-list?articleTypeId=${record?.id}`)}>{record?.articleNum}</a>
       ],
     },
     {
@@ -81,17 +81,17 @@ const ArticleCategoryList = () => {
         return (
           <>
             {<a key="down" onClick={() => {
-              setFormControl({id:record?.id,isShow:record.isShow,hide:true})
+              setFormControl({id:record?.id,isShow:record?.isShow,hide:true})
               setVisible(true)
-              }}>{record.isShow?'关闭':'启用'}</a>}
+              }}>{record?.isShow?'关闭':'启用'}</a>}
             &nbsp;&nbsp;{<a key="editable" onClick={() => {
               setFormVisible(true)
               setDetailData(record)
               }}>编辑</a>}
             &nbsp;&nbsp;{<a key="top" onClick={() => {
-              setFormControl({id:record.id,isTop:record.isTop,top:true})
+              setFormControl({id:record?.id,isTop:record?.isTop,top:true})
               setVisible(true)
-              }}>{record.isTop?'取消置顶':'置顶'}</a>}
+              }}>{record?.isTop?'取消置顶':'置顶'}</a>}
           </>
         )
       }

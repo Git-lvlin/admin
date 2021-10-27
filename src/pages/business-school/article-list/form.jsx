@@ -87,8 +87,8 @@ export default (props) => {
         })
       })
     }
-    findAdminArticleTypeList({}).then(res=>{
-      setOnselect(res.data.map(ele=>(
+    findAdminArticleTypeList({isShow:1}).then(res=>{
+      setOnselect(res.data?.map(ele=>(
         {label:ele.typeName,value:ele.id}
       )))
     })
