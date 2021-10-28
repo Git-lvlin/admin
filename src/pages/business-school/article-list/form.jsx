@@ -40,7 +40,6 @@ export default (props) => {
   const ref = useRef();
   const [onselect,setOnselect]=useState([])
   const [form] = Form.useForm()
-  const [values1, setValues1] = useState('');
   const FromWrap = ({ value, onChange, content, right }) => (
     <div style={{ display: 'flex' }}>
       <div>{content(value, onChange)}</div>
@@ -49,10 +48,10 @@ export default (props) => {
   )
 
   const onsubmit = (values) => {
-    const { ...rest } = values
+    const {articleContent, ...rest } = values
     const param = {
       articleType:1,
-      articleContent:`<head><style>img{width:100% !important;}</style></head>${values1}`,
+      articleContent:`<head><style>img{width:100% !important;}</style></head>${articleContent}`,
       ...rest
     }
     if(detailData?.id&&detailData?.edtil){
@@ -61,7 +60,7 @@ export default (props) => {
     if (detailData?.id&&detailData?.edit) {
       param.id = detailData?.id
     }
-    if(!values1){
+    if(!articleContent){
       message.error('请填写文章内容！！');
       return false
     }else{
@@ -79,9 +78,6 @@ export default (props) => {
   useEffect(() => {
     if (detailData?.id) {
       adminArticleDetail({id:detailData?.id}).then(res=>{
-        if(res.data.articleContent){
-          setValues1(res.data.articleContent)
-        }
         form.setFieldsValue({
           ...res.data
         })
@@ -337,19 +333,17 @@ export default (props) => {
 
         {
           onselect.length>0&&
-          <>
-          <Form.Item
-            className={styles.box}
-            label="文章详情"
-          //  name="articleContent"
-            readonly={detailData?.id&&detailData?.edtil}
-            // rules={[{ required: true, message: '请设置文章详情!' }]} 
-          >
-            <ReactQuill  value={values1}  onChange={(value)=>{setValues1(value)}}  modules={modules}/>
+          <div  className={styles.box}>
+            <Form.Item
+              label="文章详情"
+              name="articleContent"
+              readonly={detailData?.id&&detailData?.edtil}
+              // rules={[{ required: true, message: '请设置文章详情!' }]} 
+            >
+              <ReactQuill  modules={modules}/>
+            </Form.Item>
             <div className={styles.mark}>*</div>
-          </Form.Item>
-          
-          </>
+          </div>
         }
 
     </DrawerForm>
