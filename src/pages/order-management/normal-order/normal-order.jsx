@@ -188,7 +188,14 @@ const TableList = () => {
         <ProFormSelect
           name="orderType"
           label="订单类型"
-          options={[{ value: 2, label: '秒约订单' }, { value: 3, label: '单约订单' }, { value: 4, label: '团约订单' }, { value: 11, label: '1688订单' }]}
+          options={[
+            { value: 2, label: '秒约订单' },
+            { value: 3, label: '单约订单' },
+            { value: 4, label: '团约订单' },
+            { value: 11, label: '1688订单' },
+            { value: 17, label: '盲盒活动订单' },
+            { value: 18, label: '签到活动订单' },
+          ]}
           fieldProps={{
             style: {
               marginBottom: 20,
@@ -358,7 +365,13 @@ const TableList = () => {
                   <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
                     <Descriptions.Item label="商品总金额">{amountTransform(item.goodsTotalAmount, '/')}元</Descriptions.Item>
                     <Descriptions.Item label="运费">+{amountTransform(item.shippingFeeAmount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="红包">-{amountTransform(item.couponAmount, '/')}元{item?.orderType === 18 && '（签到红包）'}</Descriptions.Item>
+                    <Descriptions.Item label="红包">
+                      {
+                        item?.orderType === 17
+                          ? '盲盒全额抵扣'
+                          : `-${amountTransform(item.couponAmount, '/')}元${item?.orderType === 18 ? '（签到红包）' : ''}`
+                      }
+                    </Descriptions.Item>
                     <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>
                   </Descriptions>
                 </div>
@@ -369,7 +382,7 @@ const TableList = () => {
                   {{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType] || '秒约')}订单</Tag>
+                  <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688', 17: '盲盒活动', 18: '签到活动' }[item.orderType] || '秒约')}订单</Tag>
                   {
                     item.relevant1688OrderId && <div>关联1688单号：{item.relevant1688OrderId}</div>
                   }

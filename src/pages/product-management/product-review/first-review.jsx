@@ -260,7 +260,7 @@ export default (props) => {
                   {amountTransform(goods.wholesaleSupplyPrice, '/')}
                 </Form.Item>
                 <Form.Item
-                  label="集采箱柜单位量"
+                  label="集采箱规单位量"
                 >
                   {goods.batchNumber}
                 </Form.Item>

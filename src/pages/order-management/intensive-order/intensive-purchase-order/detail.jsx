@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Drawer, Typography, Space, Button, Divider, Row, Col, Table, Modal, Steps } from 'antd';
-import { detail, expressInfo } from '@/services/order-management/intensive-purchase-order'
+import { detail, expressInfo, purchaseInList, dispatchOutList } from '@/services/order-management/intensive-purchase-order'
 import { amountTransform } from '@/utils/utils'
+import ProTable from '@ant-design/pro-table';
 import moment from 'moment';
+import styles from './detail.less';
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -105,6 +107,10 @@ const Detail = (props) => {
       title: '采购商品数量',
       dataIndex: 'totalNum',
     },
+    {
+      title: '状态',
+      dataIndex: 'status',
+    },
   ]
 
   const getDetail = () => {
@@ -167,11 +173,13 @@ const Detail = (props) => {
           </Space>
         </div>
       }
+      className={styles.page}
     >
       <Title style={{ marginBottom: -20 }} level={5}>基本信息</Title>
       <Divider />
       <Row gutter={[0, 16]}>
         <Col span={24}>采购单号：{detailData?.poNo}</Col>
+        <Col span={24}>集约活动ID：{detailData?.wsId}</Col>
         <Col span={24}>订单状态：{detailData?.statusDesc}</Col>
         <Col span={24}>创建时间：{detailData?.createTime}</Col>
       </Row>
@@ -179,6 +187,7 @@ const Detail = (props) => {
       <Title style={{ marginBottom: -20, marginTop: 30 }} level={5}>付款信息</Title>
       <Divider />
       <Row gutter={[0, 16]}>
+        <Col span={24}>收款方：{detailData?.supplierName}</Col >
         <Col span={24}>应付金额：{amountTransform(detailData?.orderAmount, '/')}元</Col >
         <Col span={24}>已付金额：{amountTransform(detailData?.paidAmount, '/')}元</Col>
         <Col span={24}>未付金额：{amountTransform(detailData?.unpaidAmount, '/')}元</Col>
@@ -197,6 +206,82 @@ const Detail = (props) => {
       <Divider />
       <Row gutter={[0, 16]}>
         <Table style={{ width: '100%' }} pagination={false} dataSource={[detailData]} columns={columns} />
+      </Row>
+
+      <Title style={{ marginBottom: -20, marginTop: 30 }} level={5}>入库信息</Title>
+      <Divider />
+      <Row gutter={[0, 16]}>
+        {detailData?.operationId && <ProTable
+          request={purchaseInList}
+          search={false}
+          options={false}
+          style={{
+            width: '100%',
+          }}
+          params={{
+            operationId: detailData?.operationId,
+            poNo: detailData?.poNo
+          }}
+          columns={[
+            {
+              title: '入库单号',
+              dataIndex: 'piNo'
+            },
+            {
+              title: '已入库数量',
+              dataIndex: 'realNum'
+            },
+            {
+              title: '操作时间',
+              dataIndex: 'createTime'
+            },
+            {
+              title: '操作人',
+              dataIndex: 'operateName'
+            },
+          ]}
+          pagination={false}
+        />}
+      </Row>
+
+      <Title style={{ marginBottom: -20, marginTop: 30 }} level={5}>出库信息</Title>
+      <Divider />
+      <Row gutter={[0, 16]}>
+        {detailData?.operationId && <ProTable
+          request={dispatchOutList}
+          search={false}
+          options={false}
+          style={{
+            width: '100%'
+          }}
+          params={{
+            operationId: detailData?.operationId,
+            poNo: detailData?.poNo
+          }}
+          columns={[
+            {
+              title: '出库单号',
+              dataIndex: 'doNo'
+            },
+            {
+              title: '来源单号',
+              dataIndex: 'orderId'
+            },
+            {
+              title: '已出库数量',
+              dataIndex: 'realNum'
+            },
+            {
+              title: '操作时间',
+              dataIndex: 'createTime'
+            },
+            {
+              title: '操作人',
+              dataIndex: 'operateName'
+            },
+          ]}
+          pagination={false}
+        />}
       </Row>
 
       <Title style={{ marginBottom: -20, marginTop: 30 }} level={5}>社区店采购订单列表</Title>

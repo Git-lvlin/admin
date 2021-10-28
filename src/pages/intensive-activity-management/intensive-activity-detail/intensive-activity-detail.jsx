@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Descriptions, Divider, Table, Row, Typography } from 'antd';
+import { Spin, Descriptions, Divider, Table, Row, Typography, Image } from 'antd';
 import { amountTransform } from '@/utils/utils'
 import { useParams } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -25,6 +25,10 @@ const columns = [
     title: '商品名称',
     dataIndex: 'goodsName',
     width: 200,
+  },
+  {
+    title: '上架状态',
+    dataIndex: 'goodsStateDesc',
   },
   {
     title: '供应商家ID',
@@ -92,7 +96,7 @@ const Detail = () => {
       if (res.code === 0) {
         setDetailData(res.data);
       }
-    }).finally(()=>{
+    }).finally(() => {
       setLoading(false);
     })
   }
@@ -128,6 +132,14 @@ const Detail = () => {
               <Descriptions.Item label="活动创建人">
                 {detailData?.wholesale?.createAdminName}
               </Descriptions.Item>
+              {detailData?.wholesale?.shareImg &&
+                <Descriptions.Item label="分享海报">
+                  <Image src={detailData?.wholesale?.shareImg} width={100} />
+                </Descriptions.Item>
+              }
+              <Descriptions.Item label="配送模式">
+                {detailData?.wholesale?.wholesaleFlowTypeDesc}
+              </Descriptions.Item>
               <Descriptions.Item label="创建时间">
                 {detailData?.wholesale?.createTime}
               </Descriptions.Item>
@@ -146,7 +158,7 @@ const Detail = () => {
           </Row>
         </div>
       </Spin>
-      
+
     </PageContainer>
   );
 };

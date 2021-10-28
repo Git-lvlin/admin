@@ -61,7 +61,7 @@ const TableList = () => {
         1: {
           text: '开启',
         },
-        2: {
+        0: {
           text: '禁用',
         },
       },

@@ -58,6 +58,7 @@ const TableList = () => {
   const [config, setConfig] = useState({});
   const [offShelfVisible, setOffShelfVisible] = useState(false);
   const [selectItemId, setSelectItemId] = useState(null);
+  const [alarmMsg, setAlarmMsg] = useState('');
   const actionRef = useRef();
   const formRef = useRef();
   const [visit, setVisit] = useState(false)
@@ -74,6 +75,18 @@ const TableList = () => {
         if (cb) {
           cb();
         }
+      }
+    })
+  }
+
+  const getActivityRecord = (record) => {
+    api.getActivityRecord({
+      spuId: record.spuId
+    }).then(res => {
+      if (res.code === 0) {
+        setAlarmMsg(res.data);
+        setSelectItemId(record.spuId);
+        setOffShelfVisible(true)
       }
     })
   }
@@ -303,6 +316,18 @@ const TableList = () => {
       hideInTable: true,
     },
     {
+      title: '运营配置时间',
+      dataIndex: 'lastOperateTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+    },
+    {
+      title: '最近上架时间',
+      dataIndex: 'lastPutonTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
@@ -310,7 +335,7 @@ const TableList = () => {
         const { goodsVerifyState, goodsState } = record;
         return (
           <>
-            {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { setSelectItemId(record.spuId); setOffShelfVisible(true) }}>下架</a>}
+            {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { getActivityRecord(record); }}>下架</a>}
             &nbsp;{(goodsVerifyState === 1 && goodsState === 0) && <a onClick={() => { onShelf(record.spuId) }}>上架</a>}
             &nbsp;<a onClick={() => { getDetail(record.spuId, () => { setFormVisible(true); }) }}>编辑</a>
           </>
@@ -321,7 +346,7 @@ const TableList = () => {
 
   const getFieldValue = () => {
     if (formRef?.current?.getFieldsValue) {
-      const { current, pageSize, gcId = [], createTime, auditTime, ...rest } = formRef?.current?.getFieldsValue?.();
+      const { current, pageSize, gcId = [], createTime, auditTime, lastOperateTime, lastPutonTime, ...rest } = formRef?.current?.getFieldsValue?.();
 
       const obj = {};
 
@@ -333,6 +358,16 @@ const TableList = () => {
       if (auditTime) {
         obj.auditTimeStart = moment(auditTime[0]).unix();
         obj.auditTimeEnd = moment(auditTime[1]).unix();
+      }
+
+      if (lastOperateTime) {
+        obj.lastOperateTimeStart = moment(lastOperateTime[0]).unix();
+        obj.lastOperateTimeEnd = moment(lastOperateTime[1]).unix();
+      }
+
+      if (lastPutonTime) {
+        obj.lastPutonTimeStart = moment(lastPutonTime[0]).unix();
+        obj.lastPutonTimeEnd = moment(lastPutonTime[1]).unix();
       }
 
       return {
@@ -374,6 +409,7 @@ const TableList = () => {
           pageSize: 10,
         }}
         search={{
+          labelWidth: 140,
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
@@ -415,6 +451,7 @@ const TableList = () => {
         visible={offShelfVisible}
         setVisible={setOffShelfVisible}
         callback={(text) => { offShelf(selectItemId, text) }}
+        alarmMsg={alarmMsg}
       />}
       {
         productDetailDrawerVisible &&
