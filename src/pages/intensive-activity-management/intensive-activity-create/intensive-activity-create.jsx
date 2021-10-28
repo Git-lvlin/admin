@@ -331,9 +331,9 @@ const IntensiveActivityCreate = () => {
             <Form.Item
               label="上传C端集约商品分享海报"
               name="shareImg"
-              rules={[
-                { required: true, message: '请上传C端集约商品分享海报' },
-              ]}
+              // rules={[
+              //   { required: true, message: '请上传C端集约商品分享海报' },
+              // ]}
 
             >
               <FromWrap
