@@ -14,12 +14,6 @@ export default (props) => {
   const actionRef = useRef();
   const columns = [
     {
-      title: '编号',
-      dataIndex: 'id',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
       title: '吐槽时间',
       key: 'dateTimeRange',
       dataIndex: 'createTime',
@@ -48,6 +42,7 @@ export default (props) => {
       dataIndex: 'content',
       valueType: 'number',
       search: false,
+      width:250,
     },
     {
       title: '提交时间',
@@ -74,7 +69,6 @@ export default (props) => {
             search={{
                 labelWidth: 'auto',
             }}
-            pagination={false}
             dateFormatter="string"
             headerTitle=""
             search={{
