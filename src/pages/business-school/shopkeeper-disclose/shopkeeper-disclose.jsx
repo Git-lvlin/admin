@@ -42,13 +42,13 @@ export default (props) => {
       dataIndex: 'content',
       valueType: 'number',
       search: false,
-      width:250,
     },
     {
       title: '提交时间',
       dataIndex: 'createTime',
       valueType: 'text',
       search: false,
+      width:150
     }
   ];
 
