@@ -29,7 +29,7 @@ const ArticleList = (props) => {
   }
 
   useEffect(()=>{
-    findAdminArticleTypeList({isShow:1}).then(res=>{
+    findAdminArticleTypeList({}).then(res=>{
       const data={}
       res.data?.map(ele=>(
         data[ele.id]=ele.typeName
@@ -193,6 +193,9 @@ const ArticleList = (props) => {
           TypeId:articleTypeId
         }
       }
+      pagination={{
+        pageSize: 10,
+      }}
       request={findAdminArticleList}
       dateFormatter="string"
       toolBarRender={(_,record) => [

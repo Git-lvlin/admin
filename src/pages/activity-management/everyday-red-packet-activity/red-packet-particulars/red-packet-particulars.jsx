@@ -107,7 +107,7 @@ export default () => {
         render: (_, data)=>{
           return <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
                   <p style={{fontSize:'12px'}}>订单号: </p>
-                  <p style={{fontSize:'12px'}}><a onClick={() => {  setDetailVisible(true);setOrderId(data?.orderId) }}>{data?.sourceOrderSn}</a></p>
+                  <p style={{fontSize:'12px'}}><a onClick={() => {  setDetailVisible(true);setOrderId(data?.sourceOrderSubId) }}>{data?.sourceOrderSn}</a></p>
                  </div>
         },
       },
@@ -123,7 +123,6 @@ export default () => {
         valueType: 'text',
         hideInSearch: true,
         render: (_, data)=>{
-          console.log('data',data)
           return <>
                   {
                     data.orderGoods.map(ele=>(
