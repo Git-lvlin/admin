@@ -47,7 +47,6 @@ export default (props) => {
   const { detailData, setVisible, onClose, visible,callback } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
-  const [duration,setDuration]=useState()
 
   const FromWrap = ({ value, onChange, content, right }) => (
     <div style={{ display: 'flex' }}>
@@ -75,7 +74,7 @@ export default (props) => {
       const s=parseInt(audio.duration % 60)
       const param = {
         articleType:2,
-        videoDuration:`${min}:${s}`,
+        videoDuration:`${min>=10?min:'0'+min}:${s>=10?s:'0'+s}`,
         ...rest
       }
       if(audio.duration>3600){
