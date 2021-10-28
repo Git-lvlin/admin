@@ -17,6 +17,7 @@ export default (props) => {
       title: '编号',
       dataIndex: 'articleId',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '吐槽时间',
