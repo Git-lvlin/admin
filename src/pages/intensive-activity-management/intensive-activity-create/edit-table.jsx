@@ -127,6 +127,7 @@ export default function EditTable({ onSelect }) {
       title: '配送模式',
       dataIndex: 'wholesaleFlowType',
       hideInSearch: true,
+      width: 145,
       renderFormItem: () => (<Radio.Group>
         <Radio value={1}>直发到店</Radio>
         <Radio value={2}>运营中心配送</Radio>
@@ -349,7 +350,7 @@ export default function EditTable({ onSelect }) {
         hasStock: 1,
         isGetWholesale: 1,
       }}
-      scroll={{ x: '120vw' }}
+      scroll={{ x: '130vw' }}
       controlled
       request={productList}
       search={{
