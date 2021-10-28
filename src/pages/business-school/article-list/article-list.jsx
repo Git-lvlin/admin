@@ -54,6 +54,7 @@ const ArticleList = (props) => {
         minLength:4,
         maxLength:60
       },
+      ellipsis:true
     },
     {
       title: '店类型',
