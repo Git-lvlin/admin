@@ -41,20 +41,14 @@ const ArticleList = (props) => {
 
   const columns = [
     {
-      title: '编号',
-      dataIndex: 'id',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
       title: '标题',
       dataIndex: 'articleTitle',
       valueType: 'text',
+      width:250,
       fieldProps: {
         minLength:4,
         maxLength:60
       },
-      ellipsis:true
     },
     {
       title: '店类型',
