@@ -15,7 +15,7 @@ export default (props) => {
   const columns = [
     {
       title: '编号',
-      dataIndex: 'articleId',
+      dataIndex: 'id',
       valueType: 'text',
       hideInSearch: true,
     },
