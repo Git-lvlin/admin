@@ -193,6 +193,9 @@ const ArticleList = (props) => {
           TypeId:articleTypeId
         }
       }
+      pagination={{
+        pageSize: 10,
+      }}
       request={findAdminArticleList}
       dateFormatter="string"
       toolBarRender={(_,record) => [
