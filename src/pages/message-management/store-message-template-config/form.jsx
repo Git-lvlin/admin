@@ -49,7 +49,8 @@ export default (props) => {
       templateTitle: data.templateTitle,
       templateCopywritingContent: data.templateCopywritingContent,
       pushType: data.pushType,
-      type: data.type
+      type: data.type,
+      popupConfigId: data.popupConfigId
     })
     return undefined
   }, [data, form])
