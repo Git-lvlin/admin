@@ -301,11 +301,6 @@ const TableList = () => {
         <Space>
           <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-detail/${data.wholesaleId}`) }}>详情</a>
           {
-            data.wholesaleStatusDesc === '待开始'
-            &&
-            <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>
-          }
-          {/* {
             (data.wholesaleStatus === 1 || data.wholesaleStatus === 2 || data.wholesaleStatus === 4 || data.wholesaleStatus === 5)
             &&
             <>
@@ -329,12 +324,17 @@ const TableList = () => {
                   },
                 });
               }}>终止店主和消费者集约</a>}
-              <a onClick={() => {
+              {data.wholesaleStatus !== 5 && <a onClick={() => {
                 setVisible(true);
                 setSelectItem(data);
-              }}>区域</a>
+              }}>区域</a>}
+              {
+                data.wholesaleStatusDesc === '待开始'
+                &&
+                <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>
+              }
             </>
-          } */}
+          }
         </Space>
       ),
     },
