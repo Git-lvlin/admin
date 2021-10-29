@@ -133,7 +133,7 @@ const SubTable = (props) => {
       render: (_, record) => {
         return (
           <Space>
-            {props.wholesaleStatusDesc !== '已结束' && props.wholesaleStatusDesc !== '已下架' && <a onClick={() => { setStock(record) }}>追加库存</a>}
+            {props.wholesaleStatus !== 3 && props.wholesaleStatus !== 0 && <a onClick={() => { setStock(record) }}>追加库存</a>}
           </Space>
         )
       },
@@ -293,6 +293,9 @@ const TableList = () => {
       dataIndex: 'wholesaleStatusDesc',
       valueType: 'text',
       hideInSearch: true,
+      render: (_) => {
+        return <div dangerouslySetInnerHTML={{ __html: _ }}></div>
+      }
     },
     {
       title: '操作',
@@ -330,7 +333,7 @@ const TableList = () => {
                 setSelectItem(data);
               }}>区域</a>}
               {
-                data.wholesaleStatusDesc === '待开始'
+                data.wholesaleStatus === 2
                 &&
                 <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>
               }
@@ -354,7 +357,7 @@ const TableList = () => {
           rowKey="wholesaleId"
           options={false}
           request={getWholesaleList}
-          expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatusDesc={_.wholesaleStatusDesc} /> }}
+          expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} /> }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,
