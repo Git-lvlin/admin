@@ -148,6 +148,11 @@ export default (props) => {
               {detailData?.goods?.totalStock}
             </Form.Item>
             <Form.Item
+              label="库存单位"
+            >
+              {detailData?.goods?.unit}
+            </Form.Item>
+            <Form.Item
               label="单SKU起售数量"
             >
               {detailData?.goods?.buyMinNum}
@@ -205,6 +210,11 @@ export default (props) => {
               label="可用库存"
             >
               {detailData?.goods?.totalStock}
+            </Form.Item>
+            <Form.Item
+              label="库存单位"
+            >
+              {detailData?.goods?.unit}
             </Form.Item>
             <Form.Item
               label="库存预警值"
