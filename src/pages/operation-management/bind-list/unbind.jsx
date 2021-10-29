@@ -62,8 +62,12 @@ export default (props) => {
       title: '社区店地址',
       dataIndex: 'address',
       valueType: 'text',
-      render: (_, a) => {
-        return `${Object.values(a.areaInfo).join('')}${_}`
+      render: (_, records) => {
+        return (
+          <>
+            {records?.areaInfo?.[records?.provinceId]}{records?.areaInfo?.[records?.cityId]}{records?.areaInfo?.[records?.regionId]}{_}
+          </>
+        )
       }
     },
     {

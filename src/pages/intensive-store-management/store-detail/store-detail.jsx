@@ -15,12 +15,15 @@ const Detail = () => {
   const [detailData, setDetailData] = useState({});
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
+  const getDetailRequest = () => {
     getDetail({
       storeNo: params.id
     }).then(res => {
       if (res.code === 0) {
-        setDetailData(res.data)
+        setDetailData({
+          ...res.data,
+          storeNo: params.id,
+        })
 
         var marker = new AMap.Marker({
           position: new AMap.LngLat(res.data.longitude, res.data.latitude),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
@@ -33,7 +36,10 @@ const Detail = () => {
         map.add(marker)
       }
     })
+  }
 
+  useEffect(() => {
+    getDetailRequest();
   }, [])
   return (
     <PageContainer>
@@ -60,7 +66,7 @@ const Detail = () => {
           <Title style={{ marginBottom: -10, marginTop: 100 }} level={5}>地址信息</Title>
           <Divider />
           <Descriptions labelStyle={{ textAlign: 'right', width: 120, display: 'inline-block' }}>
-            <Descriptions.Item label="所属地区">{detailData?.areaInfo && Object.values(detailData?.areaInfo).join('')}</Descriptions.Item>
+            <Descriptions.Item label="所属地区">{detailData?.areaInfo?.[detailData?.provinceId]}{detailData?.areaInfo?.[detailData?.cityId]}{detailData?.areaInfo?.[detailData?.regionId]}</Descriptions.Item>
             <Descriptions.Item label="详细地址">{detailData?.address}</Descriptions.Item>
             <Descriptions.Item label="门牌号">{detailData?.houseNumber}</Descriptions.Item>
             <Descriptions.Item label="经纬度">{detailData?.longitude}，{detailData?.latitude}</Descriptions.Item>
@@ -71,7 +77,7 @@ const Detail = () => {
           <Button type='primary' style={{ marginBottom: 20 }} onClick={() => { setVisible(true) }}>编辑</Button>
         </Auth>
         {
-          visible && <AddressEdit visible={visible} setVisible={setVisible} data={detailData} />
+          visible && <AddressEdit visible={visible} setVisible={setVisible} data={detailData} callback={getDetailRequest} />
         }
         <div id="container" style={{ width: '100%', height: 500 }}></div>
       </div>

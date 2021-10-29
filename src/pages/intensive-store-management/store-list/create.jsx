@@ -149,6 +149,10 @@ export default (props) => {
         }
         const autoComplete = new AMap.Autocomplete(autoOptions);
         autoComplete.search(addressText, function (status, result) {
+          // if (status === 'no_data') {
+          //   message.error('地图获取不到经纬度信息，请重新填写所在地区或详细地址');
+          //   return;
+          // }
           if (result.info === 'OK') {
             map.current.clearMap()
             map.current.setZoomAndCenter(20,[result.tips[0].location.lng, result.tips[0].location.lat])
