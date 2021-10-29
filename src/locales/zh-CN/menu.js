@@ -187,6 +187,7 @@ export default {
   'menu.message-management.audit': '审核',
   'menu.message-management.detail': '详情',
   'menu.message-management.stand-inside-letter-list': '站内信列表',
+  'menu.message-management.popup-template': 'APP内弹窗模板',
 
  
  
@@ -255,6 +256,7 @@ export default {
   'menu.financial-management.subsidy-summary-detail' : '补贴结算',
 
   'menu.data-board': '数据看板',
+  'menu.data-board.summary-of-data': '数据概述',
   'menu.data-board.data-preview': '数据预览',
   'menu.data-board.intensive-data-export': '集约数据导出',
   'menu.data-board.data-sales': '销售数据',
