@@ -7,3 +7,11 @@ export const getDetail = async (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const changeAreaInfo = async (params = {}, options = {}) => {
+  return request('/auth/store/memberShop/changeAreaInfo', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

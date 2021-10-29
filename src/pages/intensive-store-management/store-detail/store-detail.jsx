@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Descriptions, Divider, Row, Avatar, Typography } from 'antd';
+import { Descriptions, Divider, Row, Avatar, Typography, Button } from 'antd';
 import { getDetail } from '@/services/intensive-store-management/store-detail';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useParams } from 'umi';
 import { amountTransform } from '@/utils/utils'
+import Auth from '@/components/auth'
+import AddressEdit from './address-edit';
 
 
 const { Title } = Typography;
@@ -11,6 +13,7 @@ const { Title } = Typography;
 const Detail = () => {
   const params = useParams();
   const [detailData, setDetailData] = useState({});
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     getDetail({
@@ -30,7 +33,7 @@ const Detail = () => {
         map.add(marker)
       }
     })
-    
+
   }, [])
   return (
     <PageContainer>
@@ -40,7 +43,7 @@ const Detail = () => {
           <Divider />
           <div style={{ textAlign: 'center', marginRight: 40 }}>
             <Avatar size={100} src={detailData?.storeLogo} />
-            <div style={{marginTop: 10}}>{detailData?.storeName}</div>
+            <div style={{ marginTop: 10 }}>{detailData?.storeName}</div>
           </div>
           <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 120, display: 'inline-block' }}>
             <Descriptions.Item label="店主昵称手机号">{`${detailData?.linkman}（${detailData.memberPhone}）`}</Descriptions.Item>
@@ -64,7 +67,13 @@ const Detail = () => {
             <Descriptions.Item label="小区名称">{detailData?.memberShop?.communityName}</Descriptions.Item>
           </Descriptions>
         </Row>
-        <div id="container" style={{width: '100%', height: 500}}></div>
+        <Auth name="store/memberShop/changeAreaInfo">
+          <Button type='primary' style={{ marginBottom: 20 }} onClick={() => { setVisible(true) }}>编辑</Button>
+        </Auth>
+        {
+          visible && <AddressEdit visible={visible} setVisible={setVisible} data={detailData} />
+        }
+        <div id="container" style={{ width: '100%', height: 500 }}></div>
       </div>
     </PageContainer>
   )
