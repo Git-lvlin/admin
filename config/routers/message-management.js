@@ -43,6 +43,11 @@ export default {
       name: 'stand-inside-letter-list',
       path: '/message-management/stand-inside-letter-list',
       component: './message-management/stand-inside-letter-list'
+    },
+    {
+      name: 'popup-template',
+      path: '/message-management/popup-template',
+      component: './message-management/popup-template'
     }
   ]
 }
