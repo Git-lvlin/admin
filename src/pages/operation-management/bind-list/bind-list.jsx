@@ -1,22 +1,21 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { bindOperationPage } from '@/services/operation-management/bind-list'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import Bind from './bind';
+import Unbind from './unbind';
 
 const TableList = () => {
   const actionRef = useRef();
   const formRef = useRef();
   const [visit, setVisit] = useState(false)
+  const [bindVisible, setBindVisible] = useState(false)
+  const [unbindVisible, setUnbindVisible] = useState(false)
+  const [selectItem, setSelectItem] = useState({})
 
   const columns = [
-    {
-      title: '运营商名称',
-      dataIndex: 'operationName',
-      valueType: 'text',
-      hideInTable: true,
-    },
     {
       title: '社区店名称',
       dataIndex: 'storeName',
@@ -30,6 +29,12 @@ const TableList = () => {
       render: (_, data) => {
         return `${Object.values(data.areaInfo).join('')}${_}`
       }
+    },
+    {
+      title: '绑定的运营商',
+      dataIndex: 'operationCompanyName',
+      valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '绑定状态',
@@ -48,10 +53,40 @@ const TableList = () => {
       }
     },
     {
-      title: '绑定的运营商',
-      dataIndex: 'operationCompanyName',
+      title: '审核状态',
+      dataIndex: 'lastApply',
       valueType: 'text',
       hideInSearch: true,
+      render: (_) => {
+        return <>
+          {_?.auditStatus?.desc || '待提交'}
+          {_?.auditStatus?.code === 2 && <div>
+            <Tooltip title={_?.auditRemark}><a>原因</a></Tooltip>
+          </div>}
+        </>
+      }
+    },
+    // {
+    //   title: '审核状态',
+    //   dataIndex: 'auditStatus',
+    //   valueType: 'select',
+    //   hideInTable: true,
+    //   valueEnum: {
+    //     0: '待提交',
+    //     1: '审核通过',
+    //     2: '审核驳回',
+    //     3: '审核中'
+    //   }
+    // },
+    {
+      title: '操作',
+      valueType: 'option',
+      render: (_, data) => {
+        return data.lastApply?.auditStatus?.code !== 3 ? <>
+          {data.status === '已绑' && <a onClick={() => { setSelectItem(data); setUnbindVisible(true) }}>申请解绑</a>}
+          {data.status === '未绑' && <a onClick={() => { setSelectItem(data); setBindVisible(true) }}>申请绑定</a>}
+        </> : '-'
+      }
     },
   ];
 
@@ -65,6 +100,24 @@ const TableList = () => {
 
   return (
     <>
+      {bindVisible
+        &&
+        <Bind
+          data={selectItem}
+          visible={bindVisible}
+          setVisible={setBindVisible}
+          callback={() => { actionRef.current.reload() }}
+        />
+      }
+      {unbindVisible
+        &&
+        <Unbind
+          data={selectItem}
+          visible={bindVisible}
+          setVisible={setUnbindVisible}
+          callback={() => { actionRef.current.reload() }}
+        />
+      }
       <ProTable
         rowKey="id"
         options={false}

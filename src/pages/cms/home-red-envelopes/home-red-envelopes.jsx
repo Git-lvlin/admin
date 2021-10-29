@@ -48,7 +48,7 @@ const HomeRedEnvelopes = () => {
   return (
     <PageContainer
       header={{
-        title: 'APP弹窗',
+        title: 'APP首页新人红包弹窗',
         ghost: true,
       }}
       footer={[

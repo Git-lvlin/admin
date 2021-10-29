@@ -60,3 +60,27 @@ export const getWholesaleOneSku = (params = {}, options = {}) => {
   });
 }
 
+export const wholesaleStop = (params = {}, options = {}) => {
+  return request('/auth/wholesale/index/wholesaleStop', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const getWholesaleArea = (params = {}, options = {}) => {
+  return request('/auth/wholesale/index/getWholesaleArea', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+
+export const updateWholesaleArea = (params = {}, options = {}) => {
+  return request('/auth/wholesale/index/updateWholesaleArea', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

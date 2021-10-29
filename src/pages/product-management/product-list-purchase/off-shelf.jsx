@@ -6,7 +6,7 @@ import {
 } from '@ant-design/pro-form';
 
 export default (props) => {
-  const { visible, setVisible, callback } = props;
+  const { visible, setVisible, callback, alarmMsg='' } = props;
   const [form] = Form.useForm();
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -23,7 +23,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title="下架"
+      title={<>下架<span style={{ color: 'red', fontSize: 12, marginLeft: 10 }}>{alarmMsg}</span></>}
       modalProps={{
         onCancel: () => form.resetFields(),
       }}
