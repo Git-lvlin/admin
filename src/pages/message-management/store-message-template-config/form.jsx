@@ -49,7 +49,8 @@ export default (props) => {
       templateTitle: data.templateTitle,
       templateCopywritingContent: data.templateCopywritingContent,
       pushType: data.pushType,
-      type: data.type
+      type: data.type,
+      popupConfigId: data.popupConfigId
     })
     return undefined
   }, [data, form])
@@ -141,7 +142,6 @@ export default (props) => {
         width="md"
         valueType="select"
         options={popupSelect}
-        rules={[{required: true, message: '请选择弹窗模板'}]}
       />
     </ModalForm>
   )
