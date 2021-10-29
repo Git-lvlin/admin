@@ -28,6 +28,7 @@ export default (props) => {
   const [selectItem, setSelectItem] = useState([])
   const [form] = Form.useForm()
   const [show, setShow] = useState(false)
+  const [selectUrl, setSelectUrl] = useState(false)
 
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -66,6 +67,9 @@ export default (props) => {
 
   const selectType = e => {
     e === 1 ? setShow(false) : setShow(true)
+  }
+  const selectPlatform = e => {
+    e.target.value === 1 ? setSelectUrl(false) : setSelectUrl(true)
   }
 
   useEffect(() => {
@@ -133,34 +137,42 @@ export default (props) => {
         <ProForm.Item
           label="模板背景"
           name="backgroundImageUrl"
-          rules={[{message: '请上传模板背景', required: true}]}
+          tooltip={
+            <dl>
+              <dt>图片要求</dt>
+              <dd>图片大小不超过2MB</dd>
+              <dd>图片格式png/jpg</dd>
+            </dl>
+          }
         >
           <Upload
             code={222}
             multiple
             maxCount={1}
             accept="image/*"
+            size={2 * 1024}
           />
         </ProForm.Item>
         <ProFormText
           name="backgroundImageWidth"
           label="模板背景宽"
           width="md"
-          rules={[{ required: true, message: '请输入模板背景宽' }]}
           placeholder="请输入模板背景宽"
         />
         <ProFormText
           name="backgroundImageHeight"
           label="模板背景高"
           width="md"
-          rules={[{ required: true, message: '请输入模板背景高' }]}
           placeholder="请输入模板背景高"
         />
         <ProFormRadio.Group
           name="type"
           label="模板类型"
-          rules={[{ required: true, message: '请选择模板类型'}]}
           width="md"
+          rules={[{ required: true, message: '请选择模板类型' }]}
+          fieldProps={{
+            onChange: e => selectPlatform(e)
+          }}
           options={[
             {
               label: '原生',
@@ -176,28 +188,24 @@ export default (props) => {
           name="contentViewLeft"
           label="内容相对位置-左"
           width="md"
-          rules={[{ required: true, message: '请输入内容相对位置-左' }]}
           placeholder="请输入内容相对位置-左"
         />
         <ProFormText
           name="contentViewRight"
           label="内容相对位置-右"
           width="md"
-          rules={[{ required: true, message: '请输入内容相对位置-右' }]}
           placeholder="请输入内容相对位置-右"
         />
         <ProFormText
           name="contentViewTop"
           label="内容相对位置-上"
           width="md"
-          rules={[{ required: true, message: '请输入内容相对位置-上' }]}
           placeholder="请输入内容相对位置-上"
         />
         <ProFormText
           name="contentViewBottom"
           label="内容相对位置-下"
           width="md"
-          rules={[{ required: true, message: '请输入内容相对位置-下' }]}
           placeholder="请输入内容相对位置-下"
         />
         <ProFormSelect
@@ -235,7 +243,6 @@ export default (props) => {
         <ProFormText
           name="cancelBtnText"
           label="取消按钮文本"
-          rules={[{ required: true, message: '请输入取消按钮文本' }]}
           placeholder="请输入取消按钮文本"
         />
         <ProForm.Item
@@ -252,7 +259,6 @@ export default (props) => {
         <ProFormText
           name="confirmBtnText"
           label="确认按钮文本"
-          rules={[{ required: true, message: '请输入确认按钮文本' }]}
           placeholder="请输入确认按钮文本"
         />
         <ProForm.Item
@@ -269,15 +275,17 @@ export default (props) => {
         <ProFormText
           name="link"
           label="消息模板链接"
-          rules={[{ required: true, message: '请输入消息模板链接' }]}
           placeholder="请输入消息模板链接"
         />
-        <ProFormText
-          name="url"
-          label="H5模板url"
-          rules={[{ required: true, message: '请输入H5模板url' }]}
-          placeholder="请输入H5模板url"
-        />
+        {
+          selectUrl&&
+          <ProFormText
+            name="url"
+            label="H5模板url"
+            rules={[{ required: true, message: '请输入H5模板url' }]}
+            placeholder="请输入H5模板url"
+          />
+        }
       </div>
     </ModalForm>
   )
