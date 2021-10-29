@@ -3,6 +3,11 @@ export default {
   path: '/data-board',
   routes: [
     {
+      name: 'summary-of-data',
+      path: '/data-board/summary-of-data',
+      component: './data-board/summary-of-data'
+    },
+    {
       name: 'data-preview',
       path: '/data-board/data-preview',
       component: './data-board/data-preview'
