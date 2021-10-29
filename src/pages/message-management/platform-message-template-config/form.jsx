@@ -168,8 +168,7 @@ export default (props) => {
         label="弹窗模板"
         width="md"
         valueType="select"
-        options={popupSelect}
-        rules={[{required: true, message: '请选择弹窗模板'}]}
+        options={popupSelect} 
       />
     </ModalForm>
   )
