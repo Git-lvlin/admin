@@ -58,6 +58,8 @@ const TableList = () => {
   const [config, setConfig] = useState({});
   const [offShelfVisible, setOffShelfVisible] = useState(false);
   const [selectItemId, setSelectItemId] = useState(null);
+  const [alarmMsg, setAlarmMsg] = useState('');
+  
   const actionRef = useRef();
   const formRef = useRef();
   const [visit, setVisit] = useState(false)
@@ -72,6 +74,18 @@ const TableList = () => {
           settleType: 2,
         });
         setFormVisible(true);
+      }
+    })
+  }
+
+  const getActivityRecord = (record) => {
+    api.getActivityRecord({
+      spuId: record.spuId
+    }).then(res => {
+      if (res.code === 0) {
+        setAlarmMsg(res.data);
+        setSelectItemId(record.spuId);
+        setOffShelfVisible(true)
       }
     })
   }
@@ -320,7 +334,7 @@ const TableList = () => {
         const { goodsVerifyState, goodsState } = record;
         return (
           <>
-            {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { setSelectItemId(record.spuId); setOffShelfVisible(true) }}>下架</a>}
+            {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { getActivityRecord(record); }}>下架</a>}
             &nbsp;{(goodsVerifyState === 1 && goodsState === 0) && <a onClick={() => { onShelf(record.spuId) }}>上架</a>}
             &nbsp;<a onClick={() => { getDetail(record.spuId) }}>编辑</a>
           </>
@@ -436,6 +450,7 @@ const TableList = () => {
         visible={offShelfVisible}
         setVisible={setOffShelfVisible}
         callback={(text) => { offShelf(selectItemId, text) }}
+        alarmMsg={alarmMsg}
       />}
       {
         productDetailDrawerVisible &&

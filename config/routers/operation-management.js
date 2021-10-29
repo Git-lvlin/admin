@@ -53,5 +53,10 @@ export default {
       component: './operation-management/operation-account-info',
       hideInMenu: true,
     },
+    {
+      name: 'bind-audit-list',
+      path: '/operation-management/bind-audit-list',
+      component: './operation-management/bind-audit-list',
+    },
   ]
 }

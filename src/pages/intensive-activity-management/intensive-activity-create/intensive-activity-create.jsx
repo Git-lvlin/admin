@@ -6,19 +6,24 @@ import {
   ProFormCheckbox,
   ProFormDateTimeRangePicker,
   ProFormDateTimePicker,
-  ProFormDigit,
 } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
 import { Button, Result, message, Descriptions, Form } from 'antd';
 import EditTable from './edit-table';
 import styles from './index.less';
-import { addWholesale, getApplicableAreaForWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
-import { numFormat, digitUppercase } from '@/utils/utils'
+import { addWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
 import AddressMultiCascader from '@/components/address-multi-cascader'
+import Upload from '@/components/upload'
 import { history } from 'umi';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
-import Big from 'big.js'
+
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    {/* <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div> */}
+  </div>
+)
 
 const formItemLayout = {
   labelCol: { span: 10 },
@@ -112,6 +117,7 @@ const IntensiveActivityCreate = () => {
         wholesaleEndTime: wholesaleTime[1],
         recoverPayTimeout: 0,
         canRecoverPayTimes: 0,
+        wholesaleFlowType: selectItem[0].wholesaleFlowType,
         ...rest,
       }
       setSubmitValue(params)
@@ -205,18 +211,18 @@ const IntensiveActivityCreate = () => {
                   return false;
                 }
 
-                if (+item.totalStockNum % +item.batchNumber !== 0 ) {
-                  message.error(`sku:${item.skuId}集约总库存数量与集采箱柜单位量之间必须为倍数关系，请重新输入`);
+                if (+item.totalStockNum % +item.batchNumber !== 0) {
+                  message.error(`sku:${item.skuId}集约总库存数量与集采箱规单位量之间必须为倍数关系，请重新输入`);
                   return false;
                 }
 
-                if (+item.minNum % +item.batchNumber !== 0 ) {
-                  message.error(`sku:${item.skuId}单次起订量与集采箱柜单位量之间必须为倍数关系，请重新输入`);
+                if (+item.minNum % +item.batchNumber !== 0) {
+                  message.error(`sku:${item.skuId}单次起订量与集采箱规单位量之间必须为倍数关系，请重新输入`);
                   return false;
                 }
 
-                if (+item.maxNum % +item.batchNumber !== 0 ) {
-                  message.error(`sku:${item.skuId}单次限订量与集采箱柜单位量之间必须为倍数关系，请重新输入`);
+                if (+item.maxNum % +item.batchNumber !== 0) {
+                  message.error(`sku:${item.skuId}单次限订量与集采箱规单位量之间必须为倍数关系，请重新输入`);
                   return false;
                 }
               }
@@ -274,6 +280,23 @@ const IntensiveActivityCreate = () => {
                 }
               }}
             />
+            <ProFormText
+              name="virtualSales"
+              label="本次集约虚拟销量"
+              width="lg"
+              placeholder="请输入集约虚拟销量"
+              validateFirst
+              rules={[
+                { required: true, message: '请输入集约虚拟销量' },
+                () => ({
+                  validator(_, value) {
+                    if (!/^\d+$/g.test(value) || `${value}`.indexOf('.') !== -1 || value <= 0 ) {
+                      return Promise.reject(new Error(`请输入大于零的正整数`));
+                    }
+                    return Promise.resolve();
+                  },
+                })
+              ]} />
             <ProFormCheckbox.Group value={'1'} label="可购买的社区店等级" disabled options={[{ label: '全部', value: 1 }]} />
             <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} />
             <Form.Item
@@ -303,6 +326,40 @@ const IntensiveActivityCreate = () => {
               //     'area': data.map(item => item.id)
               //   })
               // }}
+              />
+            </Form.Item>
+            <Form.Item
+              label="上传C端集约商品分享海报"
+              name="shareImg"
+              rules={[
+                { required: true, message: '请上传C端集约商品分享海报' },
+              ]}
+
+            >
+              <FromWrap
+                content={(value, onChange) => {
+                  return <>
+                    <div style={{ display: 'flex' }}>
+                      <div style={{ width: 105 }}>
+                        <Upload value={value} onChange={onChange} accept=".png, .jpg, .jpeg" dimension={{ width: 750, height: 1352 }} size={2048} />
+                      </div>
+                      <dl>
+                        <dd>大小：不超过2MB</dd>
+                        <dd>尺寸：750px X 1352px</dd>
+                        <dd>格式：png/jpg</dd>
+                      </dl>
+                    </div>
+                    <div className={styles.example}>
+                      <div style={{ width: 50 }}>示例:</div>
+                      <img src="https://dev-yeahgo.oss-cn-shenzhen.aliyuncs.com/admin/intensive-poster.png" width={150} />
+                      <dl>
+                        <dd>务必在海报中留出用户二维码位置：</dd>
+                        <dd>1、二维码宽和高都为220px；</dd>
+                        <dd>2、二维码右上角展示，距海报上边缘50px，距海报右边缘60px;</dd>
+                      </dl>
+                    </div>
+                  </>
+                }}
               />
             </Form.Item>
             {/* <ProFormDigit name="canRecoverPayTimes" label="可恢复支付次数" min={0} max={3} placeholder="输入范围0-3" rules={[{ required: true, message: '请输入可恢复支付次数' }]} /> */}

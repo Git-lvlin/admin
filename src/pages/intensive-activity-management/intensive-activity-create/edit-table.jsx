@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Form, Tooltip, Input, message } from 'antd';
+import { Form, Tooltip, Input, message, Radio } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
@@ -124,6 +124,15 @@ export default function EditTable({ onSelect }) {
       editable: false,
     },
     {
+      title: '配送模式',
+      dataIndex: 'wholesaleFlowType',
+      hideInSearch: true,
+      renderFormItem: () => (<Radio.Group>
+        <Radio value={1}>直发到店</Radio>
+        <Radio value={2}>运营中心配送</Radio>
+      </Radio.Group>)
+    },
+    {
       title: '批发供货价(元)',
       dataIndex: 'wholesaleSupplyPrice',
       valueType: 'text',
@@ -226,7 +235,7 @@ export default function EditTable({ onSelect }) {
       editable: false,
     },
     {
-      title: '集采箱柜单位量',
+      title: '集采箱规单位量',
       dataIndex: 'batchNumber',
       valueType: 'text',
       hideInSearch: true,
@@ -269,6 +278,7 @@ export default function EditTable({ onSelect }) {
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
       profit: amountTransform(item.profit, '/'),
       totalPrice: item.salePrice > 0 ? +new Big(item.price).div(100).times(item.wholesaleMinNum || 10) : 0,
+      wholesaleFlowType: 1,
     }))
     setDataSource(arr)
     // return arr;

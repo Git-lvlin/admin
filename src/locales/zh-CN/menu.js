@@ -55,6 +55,7 @@ export default {
   'menu.product-management.product-review': '商品审核',
   'menu.product-management.set-goods-list': '商品运营配置',
   'menu.product-management.product-category': '商品分类',
+  'menu.product-management.overrule-list': '驳回商品',
 
   'menu.setting': '设置',
   'menu.setting.account-management': '子账号管理',
@@ -68,6 +69,8 @@ export default {
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
   'menu.intensive-activity-management.intensive-remind-configuration': '集约提醒配置',
   'menu.intensive-activity-management.intensive-remind-statistics': '集约提醒统计',
+
+
 
 
 
@@ -91,6 +94,7 @@ export default {
   'menu.operation-management.operation-sub-account': '运营商子账号',
   'menu.operation-management.operation-detail': '运营商详情',
   'menu.operation-management.operation-account-info': '运营商资金账户信息',
+  'menu.operation-management.bind-audit-list': '运营商绑定审核',
 
   'menu.asset-management': '资产管理',
   'menu.asset-management.settlement-profit-list': '结算分润列表',
@@ -188,8 +192,9 @@ export default {
  
  
 
-  'menu.business-school': '商学院',
+  'menu.business-school': '学习社区管理',
   'menu.business-school.article-list': '文章列表',
+  'menu.business-school.shopkeeper-disclose': '店主吐槽',
   'menu.business-school.article-category-list': '文章分类列表',
 
   'menu.community-management':'社区管理',
@@ -283,4 +288,11 @@ export default {
   'menu.import-export-configuration': '导入导出配置',
   'menu.import-export-configuration.export-configuration': '导出配置',
   'menu.import-export-configuration.import-configuration': '导入配置',
+
+
+  'menu.activity-management': '活动管理',
+  'menu.activity-management.everyday-red-packet-activity': '每日红包活动',
+  'menu.activity-management.everyday-red-packet-activity.activity-list': '活动列表',
+  'menu.activity-management.everyday-packet-rule': '每日首单红包规则设置',
+  'menu.activity-management.everyday-red-packet-activity.red-packet-particulars': '红包明细',
 };

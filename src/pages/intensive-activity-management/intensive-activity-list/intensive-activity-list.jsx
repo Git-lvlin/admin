@@ -1,12 +1,25 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card, Space, Table, Spin } from 'antd';
+import { Button, Card, Space, Table, Spin, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { getWholesaleList, getWholesaleDetail, getWholesaleSku, updateWholesaleState, getWholesaleOneSku } from '@/services/intensive-activity-management/intensive-activity-list'
+import {
+  getWholesaleList,
+  getWholesaleDetail,
+  getWholesaleSku,
+  updateWholesaleState,
+  getWholesaleOneSku,
+  wholesaleStop,
+} from '@/services/intensive-activity-management/intensive-activity-list'
 import { history } from 'umi';
 import { amountTransform } from '@/utils/utils'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 import Stock from './stock';
+import Area from './area';
+import style from './area.less';
+
+const { confirm } = Modal;
+
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -46,6 +59,10 @@ const SubTable = (props) => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
+    },
+    {
+      title: '上架状态',
+      dataIndex: 'goodsStateDesc',
     },
     {
       title: '供应商家ID',
@@ -152,7 +169,7 @@ const SubTable = (props) => {
 const TableList = () => {
   const [visible, setVisible] = useState(false);
   const [detailData, setDetailData] = useState(null)
-  // const [selectItem, setSelectItem] = useState(null);
+  const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
 
   const getDetail = (wholesaleId) => {
@@ -162,6 +179,17 @@ const TableList = () => {
       if (res.code === 0) {
         setVisible(true);
         setDetailData(res.data);
+      }
+    })
+  }
+
+  const wholesaleStopRequest = (wholesaleId, stopType) => {
+    wholesaleStop({
+      wholesaleId,
+      stopType,
+    }).then(res => {
+      if (res.code === 0) {
+        actionRef.current.reload();
       }
     })
   }
@@ -211,6 +239,12 @@ const TableList = () => {
     {
       title: '可购买后销售的社区店等级',
       dataIndex: 'storeLevel',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '配送模式',
+      dataIndex: 'wholesaleFlowTypeDesc',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -266,7 +300,41 @@ const TableList = () => {
       render: (_, data) => (
         <Space>
           <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-detail/${data.wholesaleId}`) }}>详情</a>
-          {data.wholesaleStatusDesc === '待开始' && <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>}
+          {
+            data.wholesaleStatusDesc === '待开始'
+            &&
+            <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>
+          }
+          {
+            (data.wholesaleStatus === 1 || data.wholesaleStatus === 2 || data.wholesaleStatus === 4 || data.wholesaleStatus === 5)
+            &&
+            <>
+              {data.wholesaleStatus !== 4 && data.wholesaleStatus !== 5 && <a onClick={() => {
+                confirm({
+                  title: '确定要终止集约活动店主下单么？',
+                  icon: <ExclamationCircleOutlined />,
+                  content: <div><span style={{ color: 'red' }}>终止后店主将无法采购</span>，你还要继续吗？</div>,
+                  onOk() {
+                    wholesaleStopRequest(data.wholesaleId, 1)
+                  },
+                });
+              }}>终止店主集约</a>}
+              {data.wholesaleStatus !== 5 && <a onClick={() => {
+                confirm({
+                  title: '确定要终止集约店主和消费者下单么？',
+                  icon: <ExclamationCircleOutlined />,
+                  content: <div><span style={{ color: 'red' }}>终止后店主和消费者将无法集约</span>，你还要继续吗？</div>,
+                  onOk() {
+                    wholesaleStopRequest(data.wholesaleId, 2)
+                  },
+                });
+              }}>终止店主和消费者集约</a>}
+              <a onClick={() => {
+                setVisible(true);
+                setSelectItem(data);
+              }}>区域</a>
+            </>
+          }
         </Space>
       ),
     },
@@ -274,29 +342,32 @@ const TableList = () => {
 
   return (
     <PageContainer>
-      <Card>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => { history.push('/intensive-activity-management/intensive-activity-create') }}>新建</Button>
-        </div>
-      </Card>
-      <ProTable
-        rowKey="wholesaleId"
-        options={false}
-        request={getWholesaleList}
-        expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatusDesc={_.wholesaleStatusDesc} /> }}
-        search={{
-          defaultCollapsed: false,
-          labelWidth: 100,
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
-          ],
-        }}
-        columns={columns}
-        actionRef={actionRef}
-        pagination={{
-          pageSize: 10,
-        }}
-      />
+      <div className={style.test}>
+        <Card>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button type="primary" icon={<PlusOutlined />} onClick={() => { history.push('/intensive-activity-management/intensive-activity-create') }}>新建</Button>
+          </div>
+        </Card>
+        {visible && <Area visible={visible} wsId={selectItem?.wholesaleId} setVisible={setVisible} />}
+        <ProTable
+          rowKey="wholesaleId"
+          options={false}
+          request={getWholesaleList}
+          expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatusDesc={_.wholesaleStatusDesc} /> }}
+          search={{
+            defaultCollapsed: false,
+            labelWidth: 100,
+            optionRender: (searchConfig, formProps, dom) => [
+              ...dom.reverse(),
+            ],
+          }}
+          columns={columns}
+          actionRef={actionRef}
+          pagination={{
+            pageSize: 10,
+          }}
+        />
+      </div>
     </PageContainer>
 
   );

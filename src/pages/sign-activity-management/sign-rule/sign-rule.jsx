@@ -46,7 +46,7 @@ export default (props) =>{
             data['typeId']=1
           })
           if(res.data?.fixRedPacketConfigResList.length<1){
-            for (let index = 0; index < 15; index++) {
+            for (let index = 0; index < 7; index++) {
               data[`changeValue${index+1}`]=' '
               data['typeId']=1
             }
@@ -59,7 +59,7 @@ export default (props) =>{
             data2['typeId']=2
           })
           if(res.data?.extraPacketConfigResList.length<1){
-            for (let index = 0; index < 15; index++) {
+            for (let index = 0; index < 7; index++) {
               data2[`changeValue${index+1}`]=' '
               data2['typeId']=2
             }
@@ -112,38 +112,6 @@ export default (props) =>{
         changeValue:amountTransform(parseFloat(dataSource[0].changeValue7), '*')
       },
       {
-        id:7,
-        changeValue:amountTransform(parseFloat(dataSource[0].changeValue8), '*')
-      },
-      {
-        id:8,
-        changeValue:amountTransform(parseFloat(dataSource[0].changeValue9), '*')
-      },
-      {
-        id:9,
-        changeValue:amountTransform(parseFloat(dataSource[0].changeValue10), '*')
-      },
-      {
-        id:10,
-        changeValue:amountTransform(parseFloat(dataSource[0].changeValue11), '*')
-      },
-      {
-        id:11,
-        changeValue:amountTransform(parseFloat(dataSource[0].changeValue12), '*')
-      },
-      {
-        id:12,
-        changeValue:amountTransform(parseFloat(dataSource[0].changeValue13), '*')
-      },
-      {
-        id:13,
-        changeValue:amountTransform(parseFloat(dataSource[0].changeValue14), '*')
-      },
-      {
-        id:14,
-        changeValue:amountTransform(parseFloat(dataSource[0].changeValue15), '*')
-      },
-      {
         id:15,
         changeValue:amountTransform(parseFloat(dataSource[1].changeValue1), '*')
       },
@@ -165,35 +133,7 @@ export default (props) =>{
       }, {
         id:21,
         changeValue:amountTransform(parseFloat(dataSource[1].changeValue7), '*')
-      }, {
-        id:22,
-        changeValue:amountTransform(parseFloat(dataSource[1].changeValue8), '*')
-      }, {
-        id:23,
-        changeValue:amountTransform(parseFloat(dataSource[1].changeValue9), '*')
-      }, {
-        id:24,
-        changeValue:amountTransform(parseFloat(dataSource[1].changeValue10), '*')
-      }, {
-        id:25,
-        changeValue:amountTransform(parseFloat(dataSource[1].changeValue11), '*')
-      }, {
-        id:26,
-        changeValue:amountTransform(parseFloat(dataSource[1].changeValue12), '*')
-      },
-      {
-        id:27,
-        changeValue:amountTransform(parseFloat(dataSource[1].changeValue13), '*')
-      },
-      {
-        id:28,
-        changeValue:amountTransform(parseFloat(dataSource[1].changeValue14), '*')
-      },
-      {
-        id:29,
-        changeValue:amountTransform(parseFloat(dataSource[1].changeValue15), '*')
-      },
-
+      }, 
     ]
 
     values.status=1
@@ -218,6 +158,7 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{
@@ -232,6 +173,7 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{
@@ -245,6 +187,7 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{
@@ -258,6 +201,7 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{
@@ -271,6 +215,7 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{
@@ -284,6 +229,7 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{
@@ -297,117 +243,13 @@ export default (props) =>{
         return  <InputNumber
                   precision='2'
                   stringMode
+                  min="0.00000000000001"
                 />
         },
       render: (_,r) =>{
         return <p>{_}</p>
       }
-    }, {
-      title: '第8天',
-      dataIndex: 'changeValue8',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }, {
-      title: '第9天',
-      dataIndex: 'changeValue9',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }, {
-      title: '第10天',
-      dataIndex: 'changeValue10',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }, {
-      title: '第11天',
-      dataIndex: 'changeValue11',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }, {
-      title: '第12天',
-      dataIndex: 'changeValue12',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }, {
-      title: '第13天',
-      dataIndex: 'changeValue13',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }, {
-      title: '第14天',
-      dataIndex: 'changeValue14',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    },
-    {
-      title: '第15天',
-      dataIndex: 'changeValue15',
-      valueType: 'text',
-      renderFormItem: (_,r) => {
-        return  <InputNumber
-                  precision='2'
-                  stringMode
-                />
-        },
-      render: (_,r) =>{
-        return <p>{_}</p>
-      }
-    }
+    }, 
   ];
   return (
     <PageContainer>

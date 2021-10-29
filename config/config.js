@@ -26,10 +26,10 @@ import dc from './routers/dc'
 import signActivityManagement from './routers/sign-activity-management'
 import BlindBoxActivityManagement from './routers/blind-box-activity-management'
 import importExportConfiguration from './routers/import-export-configuration'
-
-
+import ActivityManagement from './routers/activity-management'
 
 const { REACT_APP_ENV } = process.env;
+
 const config = {
   hash: true,
   antd: {},
@@ -49,10 +49,11 @@ const config = {
   dynamicImport: {
     loading: '@/components/PageLoading/index',
   },
-
   targets: {
     ie: 11,
   },
+  webpack5: {},
+  mfsu: {},
   fastRefresh: {},
   // umi routes: https://umijs.org/docs/routing
   routes: [
@@ -97,6 +98,7 @@ const config = {
             signActivityManagement,
             BlindBoxActivityManagement,
             importExportConfiguration,
+            ActivityManagement,
             {
               component: '404',
             },

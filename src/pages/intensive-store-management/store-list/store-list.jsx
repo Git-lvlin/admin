@@ -82,6 +82,14 @@ const StoreList = () => {
       hideInSearch: true,
     },
     {
+      title: '店主收件号',
+      dataIndex: 'memberPhone',
+      fieldProps: {
+        placeholder: '请输入店主收件手机号'
+      },
+      order: -1
+    },
+    {
       title: '集约任务',
       dataIndex: 'wholeTotal',
       valueType: 'text',
