@@ -121,6 +121,7 @@ export default (props) => {
           data={areaData}
           style={{ width: '640px' }}
           pId={-1}
+          preventOverflow
         />
       </Form.Item>
     </ModalForm >
