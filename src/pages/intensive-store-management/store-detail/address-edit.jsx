@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 import {
   DrawerForm,
   ProFormText,
 } from '@ant-design/pro-form';
 import AddressCascader from '@/components/address-cascader'
-import { storeAdd } from '@/services/intensive-store-management/store-list'
+import { changeAreaInfo } from '@/services/intensive-store-management/store-detail'
 
 
 export default (props) => {
@@ -30,20 +30,23 @@ export default (props) => {
 
   const submit = (values) => {
     return new Promise((resolve, reject) => {
-      const { area } = values;
+      const { area, ...rest } = values;
       let userInfo = window.localStorage.getItem('user');
       userInfo = userInfo && JSON.parse(userInfo)
-      storeAdd({
+      changeAreaInfo({
+        storeNo: data.storeNo,
+        optReason: '',
         provinceName: area[0].label,
         provinceId: area[0].value,
         cityName: area[1].label,
         cityId: area[1].value,
-        regionName: area[2].label,
-        regionId: area[2].value,
+        regionName: area[2]?.label,
+        regionId: area[2]?.value,
         longitude: location[0],
         latitude: location[1],
         optAdminId: userInfo.id,
         optAdminName: userInfo.username,
+        ...rest,
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
           resolve();
@@ -87,21 +90,23 @@ export default (props) => {
     });
     map.current.add(marker)
     setLocation([data.longitude, data.latitude])
-    const keys = Object.keys(data.areaInfo);
+    // const keys = Object.keys(data.areaInfo);
+    const areaData = [
+      {
+        label: data.areaInfo[data.provinceId],
+        value: data.provinceId,
+      }, {
+        label: data.areaInfo[data.cityId],
+        value: data.cityId,
+      },
+      {
+        label: data.areaInfo[data.regionId],
+        value: data.regionId,
+      }
+    ]
+
     form.setFieldsValue({
-      area: [
-        {
-          label: data.areaInfo[keys[0]],
-          value: +keys[0],
-        }, {
-          label: data.areaInfo[keys[1]],
-          value: +keys[1],
-        },
-        {
-          label: data.areaInfo[keys[2]],
-          value: +keys[2],
-        }
-      ],
+      area: areaData,
       address: data.address,
       houseNumber: data.houseNumber,
       communityName: data.memberShop.communityName
@@ -116,6 +121,10 @@ export default (props) => {
         }
         const autoComplete = new AMap.Autocomplete(autoOptions);
         autoComplete.search(addressText, function (status, result) {
+          // if (status === 'no_data') {
+          //   message.error('地图获取不到经纬度信息，请重新填写所在地区或详细地址');
+          //   return;
+          // }
           if (result.info === 'OK') {
             map.current.clearMap()
             map.current.setZoomAndCenter(20, [result.tips[0].location.lng, result.tips[0].location.lat])
