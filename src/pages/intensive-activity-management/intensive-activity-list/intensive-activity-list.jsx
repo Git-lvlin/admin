@@ -305,7 +305,7 @@ const TableList = () => {
             &&
             <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>
           }
-          {
+          {/* {
             (data.wholesaleStatus === 1 || data.wholesaleStatus === 2 || data.wholesaleStatus === 4 || data.wholesaleStatus === 5)
             &&
             <>
@@ -334,7 +334,7 @@ const TableList = () => {
                 setSelectItem(data);
               }}>区域</a>
             </>
-          }
+          } */}
         </Space>
       ),
     },

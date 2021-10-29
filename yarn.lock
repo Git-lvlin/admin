@@ -7943,19 +7943,6 @@ emittery@^0.7.1:
   resolved "https://registry.nlark.com/emittery/download/emittery-0.7.2.tgz?cache=0&sync_timestamp=1631379353966&other_urls=https%3A%2F%2Fregistry.nlark.com%2Femittery%2Fdownload%2Femittery-0.7.2.tgz#25595908e13af0f5674ab419396e2fb394cdfa82"
   integrity sha1-JVlZCOE68PVnSrQZOW4vs5TN+oI=
 
-emoji-data-css@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/emoji-data-css/-/emoji-data-css-1.0.1.tgz#4f95b48394b58571ed3284acfa709ea511875f8f"
-  integrity sha1-T5W0g5S1hXHtMoSs+nCepRGHX48=
-  dependencies:
-    clean-css "^3.4.20"
-    emoji-datasource "^2.4.4"
-
-emoji-datasource@^2.4.4:
-  version "2.4.4"
-  resolved "https://registry.yarnpkg.com/emoji-datasource/-/emoji-datasource-2.4.4.tgz#b97ac1896bc208ecf1833564a20687a5215d0389"
-  integrity sha1-uXrBiWvCCOzxgzVkogaHpSFdA4k=
-
 emoji-regex@^7.0.1:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"
@@ -14416,14 +14403,6 @@ quill-delta@^3.6.2:
     deep-equal "^1.0.1"
     extend "^3.0.2"
     fast-diff "1.1.2"
-
-quill-emoji@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/quill-emoji/-/quill-emoji-0.2.0.tgz#2d8b830cfd3389a408100f3b7de8d656da74d06f"
-  integrity sha512-0kqHKTFA9hk1Vf5g32KBm/NYZal6n9N/ATmk13Hka/XYsgrEIaShSR84B5VMB7bg5o9+TMeIzc+wey5OP7hv+A==
-  dependencies:
-    emoji-data-css "^1.0.1"
-    fuse.js "^3.3.0"
 
 quill@^1.3.7:
   version "1.3.7"
