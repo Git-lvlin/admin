@@ -4,6 +4,7 @@ import { getDetail } from '@/services/intensive-store-management/store-detail';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useParams } from 'umi';
 import { amountTransform } from '@/utils/utils'
+import Auth from '@/components/auth'
 import AddressEdit from './address-edit';
 
 
@@ -66,7 +67,9 @@ const Detail = () => {
             <Descriptions.Item label="小区名称">{detailData?.memberShop?.communityName}</Descriptions.Item>
           </Descriptions>
         </Row>
-        <Button type='primary' style={{ marginBottom: 20 }} onClick={() => { setVisible(true) }}>编辑</Button>
+        <Auth name="store/memberShop/changeAreaInfo">
+          <Button type='primary' style={{ marginBottom: 20 }} onClick={() => { setVisible(true) }}>编辑</Button>
+        </Auth>
         {
           visible && <AddressEdit visible={visible} setVisible={setVisible} data={detailData} />
         }
