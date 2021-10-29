@@ -111,12 +111,12 @@ export default () => {
                  </div>
         },
       },
-      {
-        title: '来源订单',
-        dataIndex: 'sourceOrderSn',
-        valueType: 'text',
-        hideInTable: true
-      },
+      // {
+      //   title: '来源订单',
+      //   dataIndex: 'sourceOrderSn',
+      //   valueType: 'text',
+      //   hideInTable: true
+      // },
       {
         title: '使用订单',
         dataIndex: 'orderGoods',
