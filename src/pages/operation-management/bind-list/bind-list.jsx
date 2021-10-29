@@ -27,7 +27,11 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => {
-        return `${Object.values(data.areaInfo).join('')}${_}`
+        return (
+          <>
+            {data?.areaInfo?.[data?.provinceId]}{data?.areaInfo?.[data?.cityId]}{data?.areaInfo?.[data?.regionId]}{_}
+          </>
+        )
       }
     },
     {
