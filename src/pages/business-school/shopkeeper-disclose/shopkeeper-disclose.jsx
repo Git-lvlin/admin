@@ -21,7 +21,7 @@ export default (props) => {
       hideInTable:true  
     },
     {
-      title: '店主手机号',
+      title: '手机号',
       dataIndex: 'phoneNum',
       valueType: 'text',
       render:(text, record, _, action)=>[
