@@ -112,7 +112,7 @@ export default () => {
         },
       },
       {
-        title: '订单号',
+        title: '来源订单',
         dataIndex: 'sourceOrderSn',
         valueType: 'text',
         hideInTable: true
