@@ -8,7 +8,7 @@ import PrizeSet from './prize-set/prize-set'
 import Upload from '@/components/upload';
 import { saveActiveConfig } from '@/services/blind-box-activity-management/blindbox-save-active-config';
 import { getActiveConfigById } from '@/services/blind-box-activity-management/blindbox-get-active-config-list';
-import ProForm, { ProFormText, ProFormRadio,ProFormDateRangePicker,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import moment from 'moment';
 import styles from './style.less'
 import { PageContainer } from '@ant-design/pro-layout';
