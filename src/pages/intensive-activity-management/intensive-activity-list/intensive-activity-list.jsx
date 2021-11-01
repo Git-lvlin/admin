@@ -133,7 +133,7 @@ const SubTable = (props) => {
       render: (_, record) => {
         return (
           <Space>
-            {props.wholesaleStatusDesc !== '已结束' && props.wholesaleStatusDesc !== '已下架' && <a onClick={() => { setStock(record) }}>追加库存</a>}
+            {props.wholesaleStatus !== 3 && props.wholesaleStatus !== 0 && <a onClick={() => { setStock(record) }}>追加库存</a>}
           </Space>
         )
       },
@@ -224,6 +224,7 @@ const TableList = () => {
       dataIndex: 'wholesaleIsOnline',
       valueType: 'select',
       valueEnum: {
+        0: '已下架',
         1: '待开始',
         2: '进行中',
         3: '已结束',
@@ -292,6 +293,9 @@ const TableList = () => {
       dataIndex: 'wholesaleStatusDesc',
       valueType: 'text',
       hideInSearch: true,
+      render: (_) => {
+        return <div dangerouslySetInnerHTML={{ __html: _ }}></div>
+      }
     },
     {
       title: '操作',
@@ -301,11 +305,6 @@ const TableList = () => {
         <Space>
           <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-detail/${data.wholesaleId}`) }}>详情</a>
           {
-            data.wholesaleStatusDesc === '待开始'
-            &&
-            <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>
-          }
-          {/* {
             (data.wholesaleStatus === 1 || data.wholesaleStatus === 2 || data.wholesaleStatus === 4 || data.wholesaleStatus === 5)
             &&
             <>
@@ -329,12 +328,17 @@ const TableList = () => {
                   },
                 });
               }}>终止店主和消费者集约</a>}
-              <a onClick={() => {
+              {data.wholesaleStatus !== 5 && <a onClick={() => {
                 setVisible(true);
                 setSelectItem(data);
-              }}>区域</a>
+              }}>区域</a>}
+              {
+                data.wholesaleStatus === 2
+                &&
+                <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>
+              }
             </>
-          } */}
+          }
         </Space>
       ),
     },
@@ -353,7 +357,7 @@ const TableList = () => {
           rowKey="wholesaleId"
           options={false}
           request={getWholesaleList}
-          expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatusDesc={_.wholesaleStatusDesc} /> }}
+          expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} /> }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,
