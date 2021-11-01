@@ -8,7 +8,7 @@ import PrizeSet from './prize-set/prize-set'
 import Upload from '@/components/upload';
 import { saveActiveConfig } from '@/services/blind-box-activity-management/blindbox-save-active-config';
 import { getActiveConfigById } from '@/services/blind-box-activity-management/blindbox-get-active-config-list';
-import ProForm, { ProFormText, ProFormRadio,ProFormDateRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import moment from 'moment';
 import styles from './style.less'
 import { PageContainer } from '@ant-design/pro-layout';
@@ -223,7 +223,7 @@ export default (props) => {
             ]}
         />
         {/* 活动时间 */}
-        <ProFormDateRangePicker
+        <ProFormDateTimeRangePicker
             label='活动时间'
             rules={[{ required: true, message: '请选择活动时间' }]}
             name="dateRange"
