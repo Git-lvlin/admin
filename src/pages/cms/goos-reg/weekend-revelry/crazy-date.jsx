@@ -4,7 +4,7 @@ import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import Edit from './form';
 import DetailList from './activity-form';
-import { crazyDateList, crazyActivityDel } from '@/services/cms/member/member';
+import { cmsWeekList, crazyActivityDel } from '@/services/cms/member/weekend-revelry';
 import { ACTION_TYPE } from '@/utils/text';
 
 const CrazyDate = () => {
@@ -116,7 +116,7 @@ const CrazyDate = () => {
       options={false}
       columns={columns}
       actionRef={actionRef}
-      request={crazyDateList}
+      request={cmsWeekList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项
