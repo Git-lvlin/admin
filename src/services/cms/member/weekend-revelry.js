@@ -1,3 +1,5 @@
+import request from '@/utils/request';
+
 export const cmsWeekList = async (params = {}, options = {}) => {
     const { current, pageSize, ...rest } = params;
     
