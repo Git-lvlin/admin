@@ -71,6 +71,7 @@ const Detail = () => {
             <Descriptions.Item label="门牌号">{detailData?.houseNumber}</Descriptions.Item>
             <Descriptions.Item label="经纬度">{detailData?.longitude}，{detailData?.latitude}</Descriptions.Item>
             <Descriptions.Item label="小区名称">{detailData?.memberShop?.communityName}</Descriptions.Item>
+            <Descriptions.Item label="收件手机号">{detailData?.phone}</Descriptions.Item>
           </Descriptions>
         </Row>
         <Auth name="store/memberShop/changeAreaInfo">
