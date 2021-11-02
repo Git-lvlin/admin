@@ -4,7 +4,7 @@ import ProForm, {
   ModalForm,
   ProFormText,
 } from '@ant-design/pro-form';
-import { crazyTagSort } from '@/services/cms/member/member';
+import { WeekCrazyTagSort } from '@/services/cms/member/weekend-revelry';
 
 export default (props) => {
   const { detailData, setVisible, setFlag, visible } = props;
@@ -22,7 +22,7 @@ export default (props) => {
       ]
     }
     return new Promise((resolve, reject) => {
-      crazyTagSort(param).then((res) => {
+      WeekCrazyTagSort(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
           resolve(true);

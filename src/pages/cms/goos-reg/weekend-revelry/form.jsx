@@ -6,7 +6,7 @@ import ProForm, {
   ProFormRadio,
 } from '@ant-design/pro-form';
 import CrazyAddActivityReg from '@/components/crazy-add-activity-reg';
-import { crazyActivityAdd } from '@/services/cms/member/member';
+import { cmsWeekSub } from '@/services/cms/member/weekend-revelry';
 
 export default (props) => {
   const { detailData, setVisible, setFlag, visible } = props;
@@ -19,7 +19,7 @@ export default (props) => {
       ...rest
     }
     return new Promise((resolve, reject) => {
-      crazyActivityAdd(param).then((res) => {
+      cmsWeekSub(param).then((res) => {
         if (res.code === 0) {
           setFlag(true);
           resolve(true);

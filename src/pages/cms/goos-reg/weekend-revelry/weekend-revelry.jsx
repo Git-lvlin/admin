@@ -4,8 +4,9 @@ import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import Edit from './form';
 import DetailList from './activity-form';
-import { cmsWeekList, crazyActivityDel } from '@/services/cms/member/weekend-revelry';
+import { cmsWeekList, cmsWeekStatusSub } from '@/services/cms/member/weekend-revelry';
 import { ACTION_TYPE } from '@/utils/text';
+import { PageContainer } from '@ant-design/pro-layout';
 
 const CrazyDate = () => {
   const actionRef = useRef();
@@ -21,7 +22,7 @@ const CrazyDate = () => {
   }
 
   const formControl = (data,type) => {
-    crazyActivityDel({ids: data,status: type}).then((res) => {
+    cmsWeekStatusSub({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);
         actionRef.current.reset();
@@ -104,7 +105,7 @@ const CrazyDate = () => {
   }
 
   return (
-    <>
+    <PageContainer>
     <ProTable
       rowKey="id"
       postData={(data) => {
@@ -180,7 +181,7 @@ const CrazyDate = () => {
       setVisible={setAct}
       acid={acid}
     />}
-    </>
+    </PageContainer>
   );
 };
 

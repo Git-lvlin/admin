@@ -1,3 +1,3 @@
-import CrazyDate from './crazy-date';
+import WeekendRevelry from './weekend-revelry';
 
-export default CrazyDate;
+export default WeekendRevelry;
