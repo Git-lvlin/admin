@@ -27,6 +27,11 @@ export default {
           component: './cms/goos-reg/crazy-date'
         },
         {
+          name: 'weekend-revelry',
+          path: '/cms/goos-reg/weekend-revelry',
+          component: './cms/goos-reg/weekend-revelry'
+        },
+        {
           name: 'save-money',
           path: '/cms/goos-reg/save-money',
           component: './cms/goos-reg/save-money',
