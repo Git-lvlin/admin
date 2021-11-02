@@ -53,7 +53,7 @@ const StoreList = () => {
       dataIndex: 'phone',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => <div><div>{data.memberPhone}</div><div>{data.linkman}</div></div>
+      render: (_, data) => <div><div>{data.memberPhone}</div><div>{data.nickname}</div></div>
     },
     {
       title: '店铺名称',
