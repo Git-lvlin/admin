@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { connect } from 'umi';
 import styles from '../style.less'
-import ProForm, { ProFormText, ProFormSelect,ProFormRadio,ProFormDependency,ProFormDigit } from '@ant-design/pro-form';
+import { Button } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import ProForm, { ProFormText, ProFormSelect,ProFormRadio,ProFormDependency,ProFormDigit,ModalForm } from '@ant-design/pro-form';
 
 export default (props) => {
     const {id,falg}=props
+    const [visible, setVisible] = useState(false);
     const checkConfirm=(rule, value, callback)=>{
         return new Promise(async (resolve, reject) => {
         if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
@@ -18,10 +20,10 @@ export default (props) => {
         <>
             <ProFormText
                 width={120}
-                label="开盲盒机会获取途径"
+                label='开盲盒机会获取途径'
                 readonly
                 fieldProps={{
-                    value:' '
+                    value:<a style={{color:'#000',fontWeight:'bolder'}} onClick={()=>setVisible(true)}><QuestionCircleOutlined /></a>
                  }}
             />
             <ProFormRadio.Group
@@ -239,6 +241,33 @@ export default (props) => {
               }}
             </ProFormDependency>
 
+            <ModalForm
+                key="model2"
+                onVisibleChange={setVisible}
+                visible={visible}
+                submitter={{
+                render: (props, defaultDoms) => {
+                    return [
+                        <Button  type="primary" key="submit" onClick={() => {
+                            props.form?.submit?.()
+                          }}>
+                            知道了
+                          </Button>
+                    ];
+                },
+                }}
+                onFinish={async (values) => {
+                    setVisible(false)   
+                    return true;
+                }}
+            >
+             <dl>
+                <dt>概率解释：</dt>
+                <dd>1、此概率为单用户当前途径获取的抽奖机会的抽奖概率，用来控制用户是否”中奖”，如果“未中奖”会直接提示用户”未中奖”，如果这里”已中奖”，则去判断每天中奖次数是否大于等于设置的最高次数，如果是则提示用户未中奖，如果小于最高次数，则从下方奖品库中根据填写的商品概率随机挑选商品。如果选中商品，则提示用户”中奖”，如果没有商品可挑，则提示用户”未中奖”。</dd>
+                <dd>2、下方奖品设置列表中的商品中奖概率总和加起来必须等于100，如果抽中奖品库存为0的商品也会提示用户未中奖。</dd>
+                <dd>3、示例：中奖概率设为20%;则抽奖盒子里有100个纸条，其中有20个写着中奖，80个写着未中奖，随机在这100个纸条里面抽取一个纸条，抽中 未中奖 的纸条则提示用户未中奖，抽中 中奖 的纸条且在今日总中奖次数没有超过设置的次数的情况下会去奖品库根据概率挑选奖品。</dd>
+            </dl>
+        </ModalForm>
         </>
     )
 }
