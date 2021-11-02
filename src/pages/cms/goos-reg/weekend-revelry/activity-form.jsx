@@ -2,7 +2,7 @@
 import ProTable from '@ant-design/pro-table';
 import React, { useRef, useEffect, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
-import { crazyGoodsList, crazyActivityGoodsDel } from '@/services/cms/member/member';
+import { cmsWeekGoodsList, cmsGoodsStatusSub } from '@/services/cms/member/weekend-revelry';
 import { Button, Space, message } from 'antd';
 import Edit from './goods-modal-form'
 import ReplaceForm from './replace-form';
@@ -32,7 +32,7 @@ const DetailList = (props) => {
   }
 
     const formControl = (data,type) => {
-    crazyActivityGoodsDel({ids: data,status: type}).then((res) => {
+    cmsGoodsStatusSub({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);
         actionRef.current.reset();
@@ -204,14 +204,14 @@ const DetailList = (props) => {
       options={false}
       columns={columns}
       actionRef={actionRef}
-      params={acid&&{cmsId:acid,verifyVersionId: verifyVersionId}}
+      params={acid&&{cmsWeekId:acid,verifyVersionId: verifyVersionId}}
       postData={(data) => {
         data.forEach(item => {
           item.goodsSalePrice = item.goodsSalePrice/100
         })
         return data
       }}
-      request={crazyGoodsList}
+      request={cmsWeekGoodsList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项

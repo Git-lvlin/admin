@@ -2,7 +2,9 @@ import React, { useRef, useState, useEffect  } from 'react';
 import { message, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm } from '@ant-design/pro-form';
-import { crazyActivityGoodsAddPT, todayAllGoodsList } from '@/services/cms/member/member';
+import {  todayAllGoodsList } from '@/services/cms/member/member';
+import { cmsWeekGoodsSub } from '@/services/cms/member/weekend-revelry';
+
 
 export default (props) => {
   const { detailData, setVisible, visible, setFlag, verifyVersionId } = props;
@@ -13,7 +15,7 @@ export default (props) => {
     const spuids = arr.map(item=>item.spuId)
     const { id, channel } = detailData
     const param = {
-      cmsId: id,
+      cmsWeekId: id,
       spuIds: spuids.toString(),
     }
     if (channel) {
@@ -23,7 +25,7 @@ export default (props) => {
       param.verifyVersionId = verifyVersionId
     }
     return new Promise((resolve, reject) => {
-      crazyActivityGoodsAddPT(param).then((res) => {
+      cmsWeekGoodsSub(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
           resolve(true);

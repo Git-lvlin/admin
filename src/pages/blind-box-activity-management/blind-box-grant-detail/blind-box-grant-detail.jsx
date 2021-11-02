@@ -93,8 +93,11 @@ export default () => {
       }, 
     ];
     const getFieldValue = (searchConfig) => {
+      const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
       return {
-        ...searchConfig.form.getFieldsValue(),
+        startTime1:dateTimeRange&&dateTimeRange[0],
+        startTime2:dateTimeRange&&dateTimeRange[1],
+        ...rest,
       }
     }
     return (
