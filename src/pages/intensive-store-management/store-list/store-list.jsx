@@ -41,7 +41,7 @@ const StoreList = () => {
     // },
     {
       title: '店主手机号',
-      dataIndex: 'phone',
+      dataIndex: 'memberPhone',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店主手机号'
@@ -83,7 +83,7 @@ const StoreList = () => {
     },
     {
       title: '店主收件号',
-      dataIndex: 'memberPhone',
+      dataIndex: 'phone',
       fieldProps: {
         placeholder: '请输入店主收件手机号'
       },
