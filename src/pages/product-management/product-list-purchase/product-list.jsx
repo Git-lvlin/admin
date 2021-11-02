@@ -431,10 +431,10 @@ const TableList = () => {
             <Export
               key="3"
               change={(e) => { setVisit(e) }}
-              type="goods-export"
+              type="goods-purchase-export"
               conditions={getFieldValue}
             />,
-            <ExportHistory key="4" show={visit} setShow={setVisit} type="goods-export" />,
+            <ExportHistory key="4" show={visit} setShow={setVisit} type="goods-purchase-export" />,
           ],
         }}
         columns={columns}

@@ -2,7 +2,8 @@ import request from '@/utils/request'
 
 // 创建导出任务
 export const createExportTask = async (params = {}, options = {}) => {
-  const res = await request('/auth/java-admin/exportTask/createExportTask', {
+  const { code } = params;
+  const res = await request(`/auth/java-admin/exportTask/createExportTask/${code}`, {
     method: 'POST',
     data: {
       ...params
@@ -17,7 +18,8 @@ export const createExportTask = async (params = {}, options = {}) => {
 
 // 导出任务分页查询
 export const findByWays = async (params = {}, options = {}) => {
-  const res = await request('/auth/java-admin/exportTask/findByWays', {
+  const { code } = params;
+  const res = await request(`/auth/java-admin/exportTask/findByWays/${code}`, {
     method: 'POST',
     data: {
       ...params

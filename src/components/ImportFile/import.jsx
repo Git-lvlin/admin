@@ -52,6 +52,7 @@ const Import = ({ code, change, operatorSource = 2 }) => {
           <Upload
             maxCount={1}
             code={206}
+            accept=".xlsx,.xls"
           />
         </ProForm.Item>
       </div>
