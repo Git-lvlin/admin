@@ -29,7 +29,10 @@ export default (props) => {
 
   const getAreaData = (v) => {
     const arr = [];
-    v?.forEach?.(item => {
+    if (v[0] === 0) {
+      return '';
+    }
+    v.forEach(item => {
       let deep = 0;
       let node = window.yeahgo_area.find(it => it.id === item);
       const nodeIds = [node.id];
@@ -52,6 +55,7 @@ export default (props) => {
   }
 
   const submit = (values) => {
+    console.log('values', getAreaData(values.allowArea))
     return new Promise((resolve, reject) => {
       updateWholesaleArea({
         wsId,
@@ -121,6 +125,7 @@ export default (props) => {
           data={areaData}
           style={{ width: '640px' }}
           pId={-1}
+          preventOverflow
         />
       </Form.Item>
     </ModalForm >

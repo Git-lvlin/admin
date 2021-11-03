@@ -355,7 +355,8 @@ export default (props) => {
         wholesaleFreight: amountTransform(goods.wholesaleFreight, '/'),
         wholesaleTaxRate: amountTransform(goods.wholesaleTaxRate),
         supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId,
-        batchNumber: goods.batchNumber
+        batchNumber: goods.batchNumber,
+        // unit: goods.unit,
       })
 
       if (freightTemplateId && freightTemplateName) {
@@ -653,6 +654,19 @@ export default (props) => {
         {({ isMultiSpec }) => {
           return isMultiSpec === 1 ?
             <>
+              {/* <ProFormText
+                name="unit"
+                label="库存单位"
+                placeholder="请输入基本库存单位,字母或汉字,不超过4个字符,默认为件"
+                validateFirst
+                fieldProps={{
+                  maxLength: 4,
+                }}
+                rules={[
+                  { required: true, message: '请输入库存单位' },
+                ]}
+                disabled
+              /> */}
               <ProFormText
                 name="specName1"
                 label="规格一"
@@ -864,6 +878,19 @@ export default (props) => {
                 rules={[{ required: true, message: '请输入可用库存数量' }]}
                 disabled
               />
+              {/* <ProFormText
+                name="unit"
+                label="库存单位"
+                placeholder="请输入基本库存单位,字母或汉字,不超过4个字符,默认为件"
+                validateFirst
+                fieldProps={{
+                  maxLength: 4,
+                }}
+                rules={[
+                  { required: true, message: '请输入库存单位' },
+                ]}
+                disabled
+              /> */}
               <ProFormText
                 name="stockAlarmNum"
                 label="库存预警值"
