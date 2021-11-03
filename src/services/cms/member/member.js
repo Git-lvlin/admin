@@ -56,7 +56,7 @@ export const homeActivityUpdata = (params = {}, options = {}) => {
 }
 
 export const bannerAdd = (params = {}, options = {}) => {
-  return request('/auth/java-admin/articleInfo/saveOrUpdateArticle', {
+  return request('/auth/java-admin/cms/banner/saveOrUpdate', {
     method: 'POST',
     data: params,
     ...options
