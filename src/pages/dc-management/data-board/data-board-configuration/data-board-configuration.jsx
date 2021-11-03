@@ -4,6 +4,7 @@ import { EditableProTable } from '@ant-design/pro-table';
 import { addConfig,updateConfig,findById,configTest,findFunctions } from '@/services/resource'
 import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import { FormattedMessage, formatMessage } from 'umi';
+import DiscountsModel from './discounts-model'
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import moment from 'moment';
@@ -352,7 +353,8 @@ export default (props) =>{
           {
             id&&edtil?
              <Form.Item
-              label="活动规则"
+              label="出参模板（FreeMarKer）"
+              rules={[{ required: true, message: '请填写模板' }]}
               >
               <pre className={styles.line_feed}>
                 {
