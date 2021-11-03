@@ -6,7 +6,7 @@ import { history } from 'umi';
 
 
 const formItemLayout = {
-    labelCol: { span: 3 },
+    labelCol: { span: 6},
     wrapperCol: { span: 14 },
     layout: {
       labelCol: {
@@ -19,41 +19,17 @@ const formItemLayout = {
   };
 
 export default props=>{
-    const {data,InterFace,boxref}=props
+    const {InterFace}=props
     const [visible, setVisible] = useState(false);
     const Termination=()=>{
         setVisible(true)
     }
-    const checkConfirm=(rule, value, callback)=>{
-        return new Promise(async (resolve, reject) => {
-        if (value&&value<0) {
-            await reject('必须大于等于0')
-        }else if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
-            await reject('只能输入整数')
-        }else {
-            await resolve()
-        }
-        })
-    }
-    const checkConfirm2=(rule, value, callback)=>{
-        return new Promise(async (resolve, reject) => {
-        if (value&&value<=0) {
-            await reject('必须大于0')
-        }else if(value&&!/^[0-9]+(.[0-9]{0,1})?$/.test(value)){
-            await reject('只能输入数字，最多输入一位小数')
-        }else if(value&&value>data.goodsSalePrice/100){
-            await reject('可用红包不可大于销售价')
-        }else {
-            await resolve()
-        }
-        })
-    }
     return (
         <ModalForm
-            title='满减金额设置'
+            title='测试结果验证'
             onVisibleChange={setVisible}
             visible={visible}
-            trigger={<a onClick={()=>Termination()}>设置优惠</a>}
+            trigger={<Button style={{marginLeft:'100px'}} type="primary" key="submit"  onClick={()=>Termination()}> 测试 </Button>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
@@ -62,78 +38,52 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                values.destAmount=values.destAmount*100
-                values.maxDeduction=values.maxDeduction*100
-                InterFace({spuId:data.spuId,...values}).then(res=>{
-                    if(res.code==0){
-                        setVisible(false)   
-                        boxref&&boxref.current?.reload()
-                        message.success('操作成功')
-                        return true;    
-                    }
-                })
+                setVisible(false) 
             }}
             {...formItemLayout}
         >
-        <ProFormText
-            width={100}
-            label="SPUID"
-            readonly
-            fieldProps={{
-                value:data?.spuId
+        <ProForm
+            onFinish={async (values)=>{
+                const {...rest}=values
+                const params={
+                    ...rest
+                }
+                InterFace(params).then(res=>{
+                    if(res.code==0){
+                        // setVisible(false)   
+                        // message.success('操作成功')
+                        // return true;    
+                    }
+                })
+            return true;
+            } }
+            {...formItemLayout} 
+            submitter={{
+            render: (props, doms) => {
+                return [
+                <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
+                    props.form?.submit?.()
+                }}>
+                    提交
+                </Button>
+                ];
+            }
             }}
-        />
+        >
         <ProFormText
-            width={100}
-            label="商品名称"
-            readonly
-            fieldProps={{
-                value:data?.goodsName
-            }}
+            width="md"
+            name="reportCode"
+            label="接口编码"
+            placeholder="输入接口编码"
+            rules={[{ required: true, message: '请输入接口编码' }]}
         />
-        <ProFormText
-            width={100}
-            label="零售供货价"
-            readonly
-            fieldProps={{
-                value:`￥${data?.retailSupplyPrice/100}`
-            }}
-        />
-        <ProFormText
-            width={100}
-            label="销售价"
-            readonly
-            fieldProps={{
-                value:`￥${data?.goodsSalePrice/100}`
-            }}
-        />
-        <ProForm.Group>
-            <span>使用门槛 : 满</span>
-            <ProFormText
-                width={100}
-                name='destAmount'
-                readonly
-                fieldProps={{
-                    value:'0'
-                }}
-                initialValue="0"
+         <ProFormTextArea
+            width="md"
+            name="responseTemplate"
+            label="请求参数"
+            placeholder="请输入"
             />
-            <span>元，（填写0，则无使用门槛）</span>
-        </ProForm.Group>
-        <ProForm.Group>
-            <span>可用红包 : </span>
-            <ProFormText
-                width={100}
-                name='maxDeduction'
-                rules={[
-                    { required: true, message: '请输入可用红包' },
-                    {validator: checkConfirm2}
-                ]} 
-            />
-            <span>元，（必须大于0，最多支持1位小数）</span>
-        </ProForm.Group>
-        <p>最大不超过{data?.goodsSalePrice/100}</p>
-        
+        </ProForm>
     </ModalForm>
     )
 }
