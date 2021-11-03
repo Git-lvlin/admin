@@ -14,11 +14,6 @@ export default (props) => {
   const actionRef = useRef();
   const columns = [
     {
-      title: '编号',
-      dataIndex: 'articleId',
-      valueType: 'text',
-    },
-    {
       title: '吐槽时间',
       key: 'dateTimeRange',
       dataIndex: 'createTime',
@@ -26,7 +21,7 @@ export default (props) => {
       hideInTable:true  
     },
     {
-      title: '店主手机号',
+      title: '手机号',
       dataIndex: 'phoneNum',
       valueType: 'text',
       render:(text, record, _, action)=>[
@@ -53,6 +48,7 @@ export default (props) => {
       dataIndex: 'createTime',
       valueType: 'text',
       search: false,
+      width:150
     }
   ];
 
@@ -73,7 +69,6 @@ export default (props) => {
             search={{
                 labelWidth: 'auto',
             }}
-            pagination={false}
             dateFormatter="string"
             headerTitle=""
             search={{

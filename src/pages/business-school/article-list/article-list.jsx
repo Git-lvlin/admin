@@ -41,15 +41,10 @@ const ArticleList = (props) => {
 
   const columns = [
     {
-      title: '编号',
-      dataIndex: 'id',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
       title: '标题',
       dataIndex: 'articleTitle',
       valueType: 'text',
+      width:250,
       fieldProps: {
         minLength:4,
         maxLength:60
@@ -64,7 +59,8 @@ const ArticleList = (props) => {
         2: '社区店',
         3: '内部店',
         4: '直营店'
-      }
+      },
+      width:80
     },
     {
       title: '分类',
@@ -72,6 +68,7 @@ const ArticleList = (props) => {
       valueType: 'text',
       hideInTable: type==2?true:false,
       hideInSearch: true,
+      width:130
     },
     {
       title: '分类',
@@ -79,12 +76,13 @@ const ArticleList = (props) => {
       valueType: 'select',
       hideInTable: true,
       hideInSearch: type==2?true:false,
-      valueEnum:onselect,
+      valueEnum:onselect
     },
     {
       title: '发布人昵称',
       dataIndex: 'authorNickName',
       valueType: 'text',
+      width:130
     },
     {
       title: '封面图片',
@@ -114,7 +112,8 @@ const ArticleList = (props) => {
                <p>{data.authorName}</p>
                <p>{data.createTime}</p>
               </>
-      }
+      },
+      width:150
     },
     {
       title: '置顶',
@@ -123,7 +122,8 @@ const ArticleList = (props) => {
       valueEnum: {
         0: '未置顶',
         1: '已置顶',
-      }
+      },
+      width:80
     },
     {
       title: '状态',
@@ -132,7 +132,8 @@ const ArticleList = (props) => {
       valueEnum: {
         0: '已隐藏',
         1: '已显示',
-      }
+      },
+      width:80
     },
     {
       title: '首页',

@@ -134,6 +134,7 @@ export default {
   'menu.cms.goos-reg.member': '秒约和店主模块',
   'menu.cms.goos-reg.hot-goos': '热销好货',
   'menu.cms.goos-reg.crazy-date': '限时秒杀',
+  'menu.cms.goos-reg.weekend-revelry': '周末大狂欢',
   'menu.cms.goos-reg.save-money': '集约优选',
   'menu.cms.goos-reg.strategy-today': '首页秒约爆品',
   'menu.cms.home-suspension': '首页悬浮窗',
@@ -163,6 +164,8 @@ export default {
   'menu.dc-management.add': '新增',
   'menu.dc-management.list': '资源位列表',
   'menu.dc-management.version': '资源位版本',
+  'menu.dc-management.data-board': '数据报表列表',
+  'menu.dc-management.data-board-configuration': '数据报表配置',
 
   'menu.coupon-management': '红包管理',
   'menu.coupon-management.coupon-list': '红包列表',

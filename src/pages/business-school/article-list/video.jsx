@@ -68,27 +68,41 @@ export default (props) => {
 
   const onsubmit = (values) => {
     const { ...rest } = values
-    const param = {
-      articleType:2,
-      ...rest
-    }
-    if(detailData?.id&&detailData?.edtil){
-      return setVisible(false)
-    }
-    if (detailData?.id) {
-      param.id = detailData?.id
-    }
-    return new Promise((resolve) => {
-      bannerAdd(param).then((res) => {
-        if (res.code === 0) {
-          message.success(detailData?.id ?'编辑成功':'提交成功');
-          resolve(true);
-          callback(true)
-        }
-      })
-  
+    var audio = new Audio(values.videoUrl)
+    audio.addEventListener("loadedmetadata", function (e) {
+      const min=parseInt(audio.duration/60)
+      const s=parseInt(audio.duration % 60)
+      const param = {
+        articleType:2,
+        videoDuration:`${min>=10?min:'0'+min}:${s>=10?s:'0'+s}`,
+        ...rest
+      }
+      if(audio.duration>3600){
+        message.error('上传视频必须在60分钟以内！！');
+        return false
+      }
+      if(detailData?.id&&detailData?.edtil){
+        return setVisible(false)
+      }
+      if (detailData?.id) {
+        param.id = detailData?.id
+      }
+      return new Promise((resolve) => {
+        bannerAdd(param).then((res) => {
+          if (res.code === 0) {
+            message.success(detailData?.id ?'编辑成功':'提交成功');
+            resolve(true);
+            callback(true)
+          }
+        })
+    
+      });
+      
     });
+
   };
+
+
   const checkConfirm=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
     if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {

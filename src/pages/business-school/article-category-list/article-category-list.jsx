@@ -43,7 +43,8 @@ const ArticleCategoryList = () => {
       valueEnum: {
         0: '未置顶',
         1: '已置顶',
-      }
+      },
+      width:80
     },
     {
       title: '创建信息',
@@ -54,7 +55,8 @@ const ArticleCategoryList = () => {
                <p>{data?.authorName}</p>
                <p>{data?.createTime}</p>
               </>
-      }
+      },
+      width:150,
     },
     {
       title: '状态',
@@ -63,7 +65,8 @@ const ArticleCategoryList = () => {
       valueEnum: {
         0: '已关闭',
         1: '已启用',
-      }
+      },
+      width:80
     },
     {
       title: '文章数量',

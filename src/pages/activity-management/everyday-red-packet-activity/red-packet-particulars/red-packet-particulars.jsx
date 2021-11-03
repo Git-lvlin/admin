@@ -111,12 +111,12 @@ export default () => {
                  </div>
         },
       },
-      {
-        title: '订单号',
-        dataIndex: 'sourceOrderSn',
-        valueType: 'text',
-        hideInTable: true
-      },
+      // {
+      //   title: '来源订单',
+      //   dataIndex: 'sourceOrderSn',
+      //   valueType: 'text',
+      //   hideInTable: true
+      // },
       {
         title: '使用订单',
         dataIndex: 'orderGoods',
@@ -142,8 +142,13 @@ export default () => {
       }
     ];
     const getFieldValue = (searchConfig) => {
+      const {dateTimeRange,dateTimeRange2,...rest}=searchConfig.form.getFieldsValue()
       return {
-        ...searchConfig.form.getFieldsValue(),
+        lqStartTime1:dateTimeRange&&dateTimeRange[0],
+        lqStartTime2:dateTimeRange&&dateTimeRange[1],
+        useStartTime1:dateTimeRange2&&dateTimeRange2[0],
+        useStartTime2:dateTimeRange2&&dateTimeRange2[1],
+        ...rest,
       }
     }
     return (
