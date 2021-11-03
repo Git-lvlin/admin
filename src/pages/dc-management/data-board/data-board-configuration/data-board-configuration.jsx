@@ -173,6 +173,7 @@ export default (props) =>{
           删除
         </a>,
       ],
+      hideInTable:id&&edtil?true:false,
     },
     {
       title: '数据类型（Value，Map，List，Page）',
@@ -212,8 +213,6 @@ export default (props) =>{
       },
     },
   ];
-  console.log('dataSource',dataSource)
-  console.log('editableKeys',editableKeys)
   return (
     <PageContainer>
       <ProForm
@@ -230,13 +229,9 @@ export default (props) =>{
             {
               edtil?null:
               <>
-              <Button style={{marginLeft:'100px'}} type="primary" key="submit" onClick={() => {
-                configTest({}).then(res=>{
-                  setDetailList(res.data)
-                })
-              }}>
-                测试
-              </Button>
+              <DiscountsModel 
+                InterFace={configTest}
+              />
               <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
                 props.form?.submit?.()
               }}>
@@ -273,6 +268,7 @@ export default (props) =>{
             columns={columns}
             name="table"
             rowKey="id"
+            controlled
             recordCreatorProps={id&&edtil?false:{
               newRecordType: 'dataSource',
               record: () => ({
@@ -283,7 +279,7 @@ export default (props) =>{
             onChange={setDataSource}
             editable={{
               type: 'multiple',
-              editableKeys,
+              editableKeys:id&&edtil?[]:editableKeys,
               actionRender: (row, config, defaultDoms) => {
                 return [defaultDoms.delete];
               },
@@ -307,11 +303,12 @@ export default (props) =>{
                 id: Date.now(),
               }),
             }}
+            controlled
             value={dataSource2}
             onChange={setDataSource2}
             editable={{
               type: 'multiple',
-              editableKeys:editableKeys2,
+              editableKeys:id&&edtil?[]:editableKeys2,
               actionRender: (row, config, defaultDoms) => {
                 return [defaultDoms.delete];
               },
@@ -335,11 +332,12 @@ export default (props) =>{
                 id: Date.now(),
               }),
             }}
+            controlled
             value={dataSource3}
             onChange={setDataSource3}
             editable={{
               type: 'multiple',
-              editableKeys:editableKeys3,
+              editableKeys:id&&edtil?[]:editableKeys3,
               actionRender: (row, config, defaultDoms) => {
                 return [defaultDoms.delete];
               },
