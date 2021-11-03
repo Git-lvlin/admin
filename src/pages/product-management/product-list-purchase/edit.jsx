@@ -341,7 +341,7 @@ export default (props) => {
         stockAlarmNum: goods.stockAlarmNum,
         freightTemplateId: +goods.freightTemplateId,
         // wholesaleMinNum: goods.wholesaleMinNum,
-        supportNoReasonReturn: goods.supportNoReasonReturn,
+        // supportNoReasonReturn: goods.supportNoReasonReturn,
         buyMinNum: goods.buyMinNum,
         buyMaxNum: goods.buyMaxNum,
         goodsRemark: goods.goodsRemark,
@@ -487,7 +487,7 @@ export default (props) => {
         isFreeFreight: 1,
         buyMinNum: 1,
         buyMaxNum: 200,
-        supportNoReasonReturn: 1,
+        // supportNoReasonReturn: 1,
         specValues1: [{}],
         specValues2: [{}],
       }}
@@ -955,7 +955,7 @@ export default (props) => {
         <FreightTemplateSelect labelInValue disabled />
       </Form.Item>}
 
-      <ProFormRadio.Group
+      {/* <ProFormRadio.Group
         name="supportNoReasonReturn"
         label="七天无理由退货"
         rules={[{ required: true }]}
@@ -970,7 +970,7 @@ export default (props) => {
           },
         ]}
         disabled
-      />
+      /> */}
       <ProFormTextArea
         name="goodsRemark"
         label="特殊说明"

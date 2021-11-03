@@ -185,11 +185,11 @@ export default (props) => {
         {{ 0: '不包邮', 1: '包邮', }[goods.isFreeFreight]}
       </Form.Item>
 
-      <Form.Item
+      {/* <Form.Item
         label="七天无理由退货"
       >
         {{ 0: '不支持', 1: '支持', }[goods.supportNoReasonReturn]}
-      </Form.Item>
+      </Form.Item> */}
 
       {goods.goodsRemark
         &&
