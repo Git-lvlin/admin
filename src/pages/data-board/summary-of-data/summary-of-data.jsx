@@ -6,25 +6,8 @@ import IndicatorsCard from './indicators-card'
 import RealTime from './real-time'
 
 const SummaryOfData = () => {
-  const [title, setTitle] = useState("支付金额")
-  const [dataSources, setDataSources] = useState({})
-  // const { loading, data } = useRequest(fakeChartData)
+  
   const [loading, setLoading] = useState(false)
-  const [selectDate, setSelectDate] = useState()
-
-  const getData = (e) => {
-    setTitle(e)
-  }
-
-  const isActive = (val) => {
-    if(!val) {
-      return ''
-    }
-    if(selectDate) {
-      return styles.currentDate
-    }
-    return ''
-  }
 
   const data = [
     {
@@ -59,31 +42,15 @@ const SummaryOfData = () => {
     },
   ]
 
-  const scale = {
-    temperature: { min: 0 },
-    city: {
-      formatter: v => {
-        return {
-          Tokyo: '今日',
-          London: '昨日'
-        }[v]
-      }
-    }
-  }
-
   return (
     <PageContainer title={false}>
       <RealTime 
         data={data}
-        scale={scale}
-        title={title}
-        getData={setTitle}
-      />
-      {/* <IndicatorsCard
-        isActive={isActive}
         loading={loading}
-        selectDate={setSelectDate}
-      /> */}
+      />
+      <IndicatorsCard
+        data={data}
+      />
     </PageContainer>
   )
 }

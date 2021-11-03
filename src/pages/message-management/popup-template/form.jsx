@@ -4,7 +4,8 @@ import ProForm,{
   ProFormRadio,
   ProFormText,
   ProFormSelect,
-  ProFormDatePicker
+  ProFormDatePicker,
+  ProFormTextArea
 } from '@ant-design/pro-form'
 import { Form, message } from 'antd'
 
@@ -100,7 +101,9 @@ export default (props) => {
       cancelBtnText: data.cancelBtnText,
       confirmBtnText: data.confirmBtnText,
       cancelImageUrl: data.cancelImageUrl,
-      confirmImageUrl: data.confirmImageUrl
+      confirmImageUrl: data.confirmImageUrl,
+      templateTitle: data.templateTitle,
+      templateContent: data.templateContent,
     })
     data?.expireType === 2 && setShow(true)
     return undefined
@@ -133,6 +136,18 @@ export default (props) => {
           width="md"
           rules={[{ required: true, message: '请输入模板名称' }]}
           placeholder="请输入模板名称"
+        />
+         <ProFormText
+          name="templateTitle"
+          label="弹窗标题"
+          width="md"
+          placeholder="请输入弹窗标题"
+        />
+         <ProFormTextArea
+          name="templateContent"
+          label="弹窗文案"
+          width="md"
+          placeholder="请输入弹窗文案"
         />
         <ProForm.Item
           label="模板背景"
@@ -213,6 +228,7 @@ export default (props) => {
           label="业务类型"
           options={selectItem}
           rules={[{ required: true, message: '请选择业务类型' }]}
+          readonly
         />
         <ProFormSelect
           name="expireType"
