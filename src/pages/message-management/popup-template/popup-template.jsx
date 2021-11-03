@@ -85,14 +85,14 @@ const PopupTemplate = () => {
                   >
                     重置
                   </Button>
-                  <Button
+                  {/* <Button
                     type="primary"
                     onClick={() => {
                       getDetail("新建")
                     }}
                   >
                     新建
-                  </Button>
+                  </Button> */}
                 </Space>
               </div>
             );
@@ -101,7 +101,7 @@ const PopupTemplate = () => {
       >
         <ProFormText
           name="name"
-          label="名称"
+          label="模板名称"
         />
       </ProForm>
       <Spin spinning={loading}>
