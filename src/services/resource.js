@@ -186,19 +186,15 @@ export const removeById = async (params, options = {}) => {
 
 //数据报表测试接口
 export const configTest = async (params, options = {}) => {
-  const {reportCode,...rest} = params;
+  const {reportCode,responseTemplate} = params;
   const res = await request(`/auth/java-admin/report/config/${reportCode}`, {
     method: 'POST',
-    data: {
-      ...rest
-    },  
+    data: JSON.parse(responseTemplate),  
     ...options
   });
 
   return {
-    code: res.code,
-    data: res.data.records,
-    success: res.success,
+    data: res
   }
 }
 
