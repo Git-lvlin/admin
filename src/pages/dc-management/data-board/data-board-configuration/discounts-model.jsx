@@ -1,6 +1,6 @@
 import React, { useState} from 'react';
 import ProForm,{ ModalForm,ProFormTextArea,ProFormText} from '@ant-design/pro-form';
-import { Button,message } from 'antd';
+import { Button,message,Form } from 'antd';
 import { history } from 'umi';
 
 
@@ -21,6 +21,7 @@ const formItemLayout = {
 export default props=>{
     const {InterFace}=props
     const [visible, setVisible] = useState(false);
+    const [detailList,setDetailList]=useState()
     const Termination=()=>{
         setVisible(true)
     }
@@ -29,7 +30,7 @@ export default props=>{
             title='测试结果验证'
             onVisibleChange={setVisible}
             visible={visible}
-            trigger={<Button style={{marginLeft:'100px'}} type="primary" key="submit"  onClick={()=>Termination()}> 测试 </Button>}
+            trigger={<Button style={{marginLeft:'150px'}} type="primary" key="submit"  onClick={()=>Termination()}> 测试 </Button>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
@@ -43,25 +44,27 @@ export default props=>{
             {...formItemLayout}
         >
         <ProForm
-            onFinish={async (values)=>{
-                const {...rest}=values
-                const params={
-                    ...rest
-                }
-                InterFace(params).then(res=>{
-                    if(res.code==0){
-                        // setVisible(false)   
-                        // message.success('操作成功')
-                        // return true;    
+            onFinish={(values)=>{
+                try {
+                    const {...rest}=values
+                    const pranams={
+                        responseTemplate:JSON.parse(values.responseTemplate),
+                        ...rest
                     }
-                })
+                    InterFace(pranams).then(res=>{
+                        setDetailList(res.data)   
+                    })
+                } catch (error) {
+                    message.error('请输入正确的JSON格式')
+                }
+               
             return true;
             } }
             {...formItemLayout} 
             submitter={{
             render: (props, doms) => {
                 return [
-                <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
+                <Button style={{marginLeft:'180px'}} type="primary" key="submit" onClick={() => {
                     props.form?.submit?.()
                 }}>
                     提交
@@ -78,11 +81,21 @@ export default props=>{
             rules={[{ required: true, message: '请输入接口编码' }]}
         />
          <ProFormTextArea
-            width="md"
             name="responseTemplate"
             label="请求参数"
             placeholder="请输入"
             />
+        {
+            detailList&&
+            <Form.Item
+                label="测试结果"
+                readonly
+            >
+                <pre>
+                    {JSON.stringify(detailList,null,'\t')}
+                </pre>
+            </Form.Item>
+        }
         </ProForm>
     </ModalForm>
     )
