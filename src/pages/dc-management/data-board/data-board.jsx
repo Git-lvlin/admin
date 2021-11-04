@@ -45,7 +45,7 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="活动列表"
+          headerTitle="数据报表"
           options={false}
           request={findByPage}
           toolBarRender={()=>[

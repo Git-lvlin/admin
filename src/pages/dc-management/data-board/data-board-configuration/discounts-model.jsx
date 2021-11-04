@@ -30,7 +30,7 @@ export default props=>{
             title='测试结果验证'
             onVisibleChange={setVisible}
             visible={visible}
-            trigger={<Button style={{marginLeft:'150px'}} type="primary" key="submit"  onClick={()=>Termination()}> 测试 </Button>}
+            trigger={<Button style={{marginLeft:'250px'}} type="primary" key="submit"  onClick={()=>Termination()}> 测试 </Button>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
