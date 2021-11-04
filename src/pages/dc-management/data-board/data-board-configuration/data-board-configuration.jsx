@@ -77,18 +77,26 @@ export default (props) =>{
     })
     if(id){
       findById({id:id}).then(res=>{
-        setBoardData(res.data)
-        if(edit){
-          setEditableRowKeys(res.data.requestFormatList.map((item,index) => index))
-          setEditableRowKeys2(res.data.sqlConfigs.map((item,index) => index))
-          setEditableRowKeys3(res.data.sensitiveFields.map((item,index) => index))
-        }
-        setDataSource(res.data.requestFormatList.map((ele,index)=>{return {id:index,...ele}}))
-        setDataSource2(res.data.sqlConfigs)
-        setDataSource3(res.data.sensitiveFields)
-        form.setFieldsValue({
-          ...res.data
-        })
+          setBoardData(res.data)
+          if(edit){
+            setEditableRowKeys(res.data?.requestFormatList?.map((item,index) => index))
+            setEditableRowKeys2(res.data?.sqlConfigs?.map((item,index) => index))
+            setEditableRowKeys3(res.data?.sensitiveFields?.map((item,index) => index))
+          }
+          setDataSource(res.data?.requestFormatList)
+          setDataSource2(res.data?.sqlConfigs.map(ele=>(
+            {
+              dataCode:ele.dataCode,
+              sql:ele.sql,
+              resultType:`${ele.resultType}`,
+              orderNo:ele.orderNo,
+              express:ele.express,
+              }
+            )))
+          setDataSource3(res.data?.sensitiveFields)
+          form.setFieldsValue({
+            ...res.data
+          })
       })
     }
   }, [])
@@ -100,27 +108,25 @@ export default (props) =>{
       sensitiveFields:dataSource3,
       ...rest
     }
-    if(dataSource.length==0){
+    if(dataSource?.length==0){
       delete params.requestFormatList
     }
-    if(dataSource2.length==0){
+    if(dataSource2?.length==0){
       delete params.sqlConfigs
     }
-    if(dataSource3.length==0){
+    if(dataSource3?.length==0){
       delete params.sensitiveFields
     }
     if(id){
       updateConfig({id:id,...params}).then(res=>{
         if(res.code==0){
           message.success('编辑成功');
-          history.push('/dc-management/data-board')
         }
       })
     }else{
       addConfig(params).then(res=>{
         if(res.code==0){
           message.success('添加成功');
-          history.push('/dc-management/data-board')
         }
       })
     }
@@ -197,7 +203,7 @@ export default (props) =>{
       dataIndex: 'resultType',
       valueType: 'select',
       valueEnum: {
-        1:'Value',
+        1: 'Value',
         2: 'Map',
         3: 'List',
         4: 'Page',
@@ -288,7 +294,12 @@ export default (props) =>{
               </Button>
               </>
             }
-            </>
+            </>,
+            <Button style={{marginLeft:'80px'}} type="default" key="submit" onClick={() => {
+              history.push('/dc-management/data-board')
+            }}>
+              返回
+            </Button>
             ];
           }
         }}
