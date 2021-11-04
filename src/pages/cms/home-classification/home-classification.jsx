@@ -8,6 +8,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { dateFormat } from '@/utils/utils';
 import Edit from './form';
 import ClassSort from './sort';
+import ContentVersionTab from '@/components/content-version-tab';
 import { homeClassificationList, homeClassificationSortTop, homeClassificationStatus, homeClassificationSetSort } from '@/services/cms/member/member';
 
 const HomeClassification = () => {
@@ -15,6 +16,7 @@ const HomeClassification = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [listData, setListData] = useState(null);
+  const [verifyVersionId, setVerifyVersionId] = useState(1);
   const getDetail = (data) => {
     setDetailData(data);
     setFormVisible(true);
@@ -34,7 +36,12 @@ const HomeClassification = () => {
   }
 
   const onChangeSwitch = ({id, homeStatus}) => {
-    homeClassificationStatus({id: id,status: homeStatus}).then((res) => {
+    const param = {
+      id: id,
+      status: homeStatus,
+      verifyVersionId: verifyVersionId
+    }
+    homeClassificationStatus(param).then((res) => {
       if (res.code === 0) {
         message.success(`切换状态成功`);
       }
@@ -149,15 +156,13 @@ const HomeClassification = () => {
   return (
     <PageContainer>
       <ProForm.Group>
-        <ProCard style={{display: 'flex',}}>
-          <Button type={'primary'} onClick={() => {}}>APP</Button>
-          <Button disabled onClick={() => {}}>小程序</Button>
-        </ProCard>
+        <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
       </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
+      params={{verifyVersionId: verifyVersionId}}
       request={homeClassificationList}
       postData={(data) => {
         setListData(data)
@@ -179,6 +184,7 @@ const HomeClassification = () => {
       visible={formVisible}
       setVisible={setFormVisible}
       onChangeSwitch={onChangeSwitch}
+      verifyVersionId={verifyVersionId}
       detailData={detailData}
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { actionRef.current.reload(); setDetailData(null) }}
