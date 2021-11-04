@@ -164,11 +164,11 @@ export const getAreaData = (v) => {
   return arr;
 }
 
-export function fixedZero(val) {
+export const fixedZero = (val) => {
   return val * 1 < 10 ? `0${val}` : val;
 }
 
-export function getTimeDistance(type) {
+export const getTimeDistance = (type) => {
   const oneDay = 1000 * 60 * 60 * 24;
   const now = new Date();
 
@@ -195,6 +195,21 @@ export function getTimeDistance(type) {
     return [moment(beginTime), moment(beginTime + (7 * oneDay - 1000))];
   }
 
+  if (type === 'last-week') {
+    let day = now.getDay();
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
+
+    if (day === 0) {
+      day = 6;
+    } else {
+      day -= 1;
+    }
+    const beginTime = now.getTime() - day * oneDay;
+    return [moment(beginTime).subtract(7, 'day'), moment(beginTime + (7 * oneDay - 1000)).subtract(7, 'day')];
+  }
+
   const year = now.getFullYear();
 
   if (type === 'month') {
@@ -205,6 +220,16 @@ export function getTimeDistance(type) {
     return [
       moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`),
       moment(moment(`${nextYear}-${fixedZero(nextMonth + 1)}-01 00:00:00`).valueOf() - 1000),
+    ];
+  }
+
+  if (type === 'last-month') {
+    const month = now.getMonth();
+    const nextDate = moment(now).add(1, 'months');
+    const nextYear = nextDate.year();
+    return [
+      moment(`${year}-${fixedZero(month)}-01 00:00:00`),
+      moment(moment(`${nextYear}-${fixedZero(month + 1)}-01 00:00:00`).valueOf() - 1000),
     ];
   }
 
