@@ -27,7 +27,7 @@ const HomeClassification = () => {
       message.error('关闭状态无法置顶')
       return
     }
-    homeClassificationSortTop({id:id}).then((res) => {
+    homeClassificationSortTop({id:id, verifyVersionId: verifyVersionId}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
         actionRef.current.reset();
@@ -54,7 +54,7 @@ const HomeClassification = () => {
     v.map((item, index) => {
       param[item.id]=index+1
     })
-    homeClassificationSetSort({sortList:param}).then((res) => {
+    homeClassificationSetSort({sortList:param, verifyVersionId: verifyVersionId}).then((res) => {
       if (res.code === 0) {
         message.success(`编辑排序成功`);
         actionRef.current.reset();
