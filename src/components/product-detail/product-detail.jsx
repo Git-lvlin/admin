@@ -147,11 +147,11 @@ export default (props) => {
             >
               {detailData?.goods?.totalStock}
             </Form.Item>
-            {/* <Form.Item
+            <Form.Item
               label="库存单位"
             >
               {detailData?.goods?.unit}
-            </Form.Item> */}
+            </Form.Item>
             <Form.Item
               label="单SKU起售数量"
             >
@@ -211,11 +211,11 @@ export default (props) => {
             >
               {detailData?.goods?.totalStock}
             </Form.Item>
-            {/* <Form.Item
+            <Form.Item
               label="库存单位"
             >
               {detailData?.goods?.unit}
-            </Form.Item> */}
+            </Form.Item>
             <Form.Item
               label="库存预警值"
             >

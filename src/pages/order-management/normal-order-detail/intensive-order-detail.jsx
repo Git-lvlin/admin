@@ -256,7 +256,7 @@ const OrderDetail = () => {
                         </div>
                         <div className={styles.box}>
                           <div>购买数量</div>
-                          <div>{item.skuNum}件</div>
+                          <div>{item.skuNum}{item.unit}</div>
                         </div>
                         <div className={styles.box}>
                           <div>小计</div>

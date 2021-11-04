@@ -198,11 +198,11 @@ const Detail = (props) => {
                         </div>
                         <div className={styles.box}>
                           <div>集约价</div>
-                          <div>{amountTransform(item.skuSalePrice, '/')}元{!!item.wholesaleFreight && `（含平均运费¥${amountTransform(item.wholesaleFreight, '/')}/件）`}</div>
+                          <div>{amountTransform(item.skuSalePrice, '/')}元{!!item.wholesaleFreight && `（含平均运费¥${amountTransform(item.wholesaleFreight, '/')}/${item.unit}）`}</div>
                         </div>
                         <div className={styles.box}>
                           <div>购买数量</div>
-                          <div>{item.skuNum}件</div>
+                          <div>{item.skuNum}{item.unit}</div>
                         </div>
                         <div className={styles.box}>
                           <div>小计</div>
