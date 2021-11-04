@@ -13,6 +13,7 @@ const HomeActivity = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
+  const [useType, setUseType] = useState(1);
   const getDetail = (data) => {
     if (data) {
       setDetailData(data);
@@ -126,15 +127,15 @@ const HomeActivity = () => {
     <PageContainer>
       <ProForm.Group>
         <ProCard style={{display: 'flex',}}>
-          <Button type={'primary'} onClick={() => {}}>APP</Button>
-          <Button disabled onClick={() => {}}>小程序</Button>
+          <Button type={useType==1?'primary':''} onClick={() => {setUseType(1)}}>APP</Button>
+          <Button type={useType==1?'':'primary'} onClick={() => {setUseType(2)}}>小程序</Button>
         </ProCard>
       </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
-      params={{useType: 1}}
+      params={{useType: useType}}
       request={homeActivityList}
       search={{
         labelWidth: 'auto',
@@ -154,6 +155,7 @@ const HomeActivity = () => {
       visible={formVisible}
       setVisible={setFormVisible}
       detailData={detailData}
+      useType={useType}
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { actionRef.current.reload(); setDetailData(null) }}
     />}
