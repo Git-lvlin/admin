@@ -84,6 +84,7 @@ export default props=>{
             name="responseTemplate"
             label="请求参数"
             placeholder="请输入"
+            rules={[{ required: true, message: '请输入请求参数' }]}
             />
         {
             detailList&&
