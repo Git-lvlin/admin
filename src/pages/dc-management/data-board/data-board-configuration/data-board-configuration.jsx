@@ -178,12 +178,12 @@ export default (props) =>{
     {
       title: '数据集编码',
       dataIndex: 'dataCode',
+      width:200
     },
     {
       title: 'SQL',
       dataIndex: 'sql',
       valueType: 'text',
-      width:400,
       renderFormItem: (_,r) => {
         return  <TextArea
                     name="sql"
@@ -197,6 +197,7 @@ export default (props) =>{
       title: '顺序',
       dataIndex: 'orderNo',
       valueType: 'text',
+      width:150
     },
     {
       title: '数据类型',
@@ -211,11 +212,13 @@ export default (props) =>{
       fieldProps: {
         placeholder: '请选择'
       },
+      width:200
     },
     {
       title: '表达式',
       dataIndex: 'express',
       valueType: 'text',
+      width:300
     },
     {
       title: '操作',
