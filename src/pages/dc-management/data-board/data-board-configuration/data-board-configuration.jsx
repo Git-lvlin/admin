@@ -91,6 +91,7 @@ export default (props) =>{
               resultType:`${ele.resultType}`,
               orderNo:ele.orderNo,
               express:ele.express,
+              remark:ele.remark
               }
             )))
           setDataSource3(res.data?.sensitiveFields)
@@ -197,7 +198,7 @@ export default (props) =>{
       title: '顺序',
       dataIndex: 'orderNo',
       valueType: 'text',
-      width:150
+      width:120
     },
     {
       title: '数据类型',
@@ -212,13 +213,19 @@ export default (props) =>{
       fieldProps: {
         placeholder: '请选择'
       },
-      width:200
+      width:150
     },
     {
       title: '表达式',
       dataIndex: 'express',
       valueType: 'text',
       width:300
+    },
+    {
+      title: '备注',
+      dataIndex: 'remark',
+      valueType: 'text',
+      width:120
     },
     {
       title: '操作',
