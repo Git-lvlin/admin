@@ -334,6 +334,7 @@ export default (props) => {
       initialValues={{
         bankAccountType: 1,
         bindBankSwitch: 1,
+        accountType: 1,
       }}
       {...formItemLayout}
       submitter={{
@@ -357,93 +358,144 @@ export default (props) => {
       <Divider />
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1 }}>
-          <Form.Item
-            label="企业地址"
-            name="addressInfo"
-            validateFirst
-            rules={[
-              () => ({
-                required: true,
-                validator(_, value = {}) {
-                  const { area, info } = value;
-                  if (area?.length === 0 || !area) {
-                    return Promise.reject(new Error('请选择企业所在地'));
-                  }
-
-                  if (!info?.replace(/\s/g, '')) {
-                    return Promise.reject(new Error('请输入企业详细地址'));
-                  }
-
-                  return Promise.resolve();
-                },
-              })]}
-          >
-            <Address disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
-          </Form.Item>
-          <Form.Item
-            label="统一社会信用码"
-            name="socialCreditInfo"
-            validateFirst
-            rules={[{ required: true },
-            () => ({
-              validator(_, value = {}) {
-                const { code, date } = value;
-                if (!code?.replace(/\s/g, '')) {
-                  return Promise.reject(new Error('请输入统一社会信用码'));
-                }
-                if (!date) {
-                  return Promise.reject(new Error('请选择统一社会信用证有效期'));
-                }
-                return Promise.resolve();
+          <ProFormRadio.Group
+            name="accountType"
+            label="开户类型"
+            rules={[{ required: true }]}
+            options={[
+              {
+                label: '企业',
+                value: 1,
               },
-            })]}
-          >
-            <SocialCreditInfo disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
-          </Form.Item>
-          <ProFormText
-            name="businessScope"
-            label="经营范围"
-            placeholder="请输入经营范围"
-            rules={[{ required: true, message: '请输入经营范围' }]}
-            disabled={detailData?.bankAccountInfo?.auditStatus === 1}
-          />
-          <Form.Item
-            label="法人姓名"
-            name="legalInfo"
-            validateFirst
-            rules={[
-              () => ({
-                required: true,
-                validator(_, value = {}) {
-                  const { code, date, userName } = value;
-                  if (!userName?.replace(/\s/g, '')) {
-                    return Promise.reject(new Error('请输入姓名'));
-                  }
-
-                  if (!code?.replace(/\s/g, '')) {
-                    return Promise.reject(new Error('请输入身份证号码'));
-                  }
-
-                  if (!date) {
-                    return Promise.reject(new Error('请选择身份证号码有效期'));
-                  }
-                  return Promise.resolve();
-                },
-              })
+              {
+                label: '个人',
+                value: 2,
+              },
             ]}
-          >
-            <LegalInfo disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
-          </Form.Item>
-          <ProFormText
-            name="legalPhone"
-            label="法人手机号"
-            placeholder="请输入法人手机号"
-            rules={[{ required: true, message: '请输入法人手机号' }]}
-            fieldProps={{
-              maxLength: 11,
-            }}
-            disabled={detailData?.bankAccountInfo?.auditStatus === 1}
+            extra={<span style={{ color: 'red' }}>开户成功后，开户类型不能更改，请谨慎操作</span>}
           />
+          <ProFormDependency name={['accountType']}>
+            {
+              (({ accountType }) => (
+                accountType === 1
+                  ?
+                  <>
+                    <Form.Item
+                      label="企业地址"
+                      name="addressInfo"
+                      validateFirst
+                      rules={[
+                        () => ({
+                          required: true,
+                          validator(_, value = {}) {
+                            const { area, info } = value;
+                            if (area?.length === 0 || !area) {
+                              return Promise.reject(new Error('请选择企业所在地'));
+                            }
+
+                            if (!info?.replace(/\s/g, '')) {
+                              return Promise.reject(new Error('请输入企业详细地址'));
+                            }
+
+                            return Promise.resolve();
+                          },
+                        })]}
+                    >
+                      <Address disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
+                    </Form.Item>
+                    <Form.Item
+                      label="统一社会信用码"
+                      name="socialCreditInfo"
+                      validateFirst
+                      rules={[{ required: true },
+                      () => ({
+                        validator(_, value = {}) {
+                          const { code, date } = value;
+                          if (!code?.replace(/\s/g, '')) {
+                            return Promise.reject(new Error('请输入统一社会信用码'));
+                          }
+                          if (!date) {
+                            return Promise.reject(new Error('请选择统一社会信用证有效期'));
+                          }
+                          return Promise.resolve();
+                        },
+                      })]}
+                    >
+                      <SocialCreditInfo disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
+                    </Form.Item>
+                    <ProFormText
+                      name="businessScope"
+                      label="经营范围"
+                      placeholder="请输入经营范围"
+                      rules={[{ required: true, message: '请输入经营范围' }]}
+                      disabled={detailData?.bankAccountInfo?.auditStatus === 1}
+                    />
+                    <Form.Item
+                      label="法人姓名"
+                      name="legalInfo"
+                      validateFirst
+                      rules={[
+                        () => ({
+                          required: true,
+                          validator(_, value = {}) {
+                            const { code, date, userName } = value;
+                            if (!userName?.replace(/\s/g, '')) {
+                              return Promise.reject(new Error('请输入姓名'));
+                            }
+
+                            if (!code?.replace(/\s/g, '')) {
+                              return Promise.reject(new Error('请输入身份证号码'));
+                            }
+
+                            if (!date) {
+                              return Promise.reject(new Error('请选择身份证号码有效期'));
+                            }
+                            return Promise.resolve();
+                          },
+                        })
+                      ]}
+                    >
+                      <LegalInfo disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
+                    </Form.Item>
+                    <ProFormText
+                      name="legalPhone"
+                      label="法人手机号"
+                      placeholder="请输入法人手机号"
+                      rules={[{ required: true, message: '请输入法人手机号' }]}
+                      fieldProps={{
+                        maxLength: 11,
+                      }}
+                      disabled={detailData?.bankAccountInfo?.auditStatus === 1}
+                    />
+                  </>
+                  :
+                  <>
+                    <ProFormText
+                      name="legalPhone"
+                      label="手机号"
+                      placeholder="请输入手机号"
+                      rules={[{ required: true, message: '请输入手机号' }]}
+                      disabled={detailData?.bankAccountInfo?.auditStatus === 1}
+                    />
+                    <ProFormText
+                      name="legalName"
+                      label="真实姓名"
+                      placeholder="请输入真实姓名"
+                      rules={[{ required: true, message: '请输入真实姓名' }]}
+                      disabled={detailData?.bankAccountInfo?.auditStatus === 1}
+                    />
+                    <ProFormText
+                      name="legalIdCardNo"
+                      label="身份证号"
+                      placeholder="请输入身份证号"
+                      rules={[{ required: true, message: '请输入身份证号' }]}
+                      disabled={detailData?.bankAccountInfo?.auditStatus === 1}
+                    />
+                  </>
+              ))
+            }
+          </ProFormDependency>
+
           <ProFormSelect
             label="绑卡状态"
             required
