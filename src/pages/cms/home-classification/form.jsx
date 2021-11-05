@@ -12,7 +12,7 @@ import ProCard from '@ant-design/pro-card';
 import { homeClassCategorySecondCategory } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible, onChangeSwitch } = props;
+  const { detailData, setVisible, onClose, visible, onChangeSwitch, verifyVersionId } = props;
   const formRef = useRef();
   const [list, setList] = useState()
   const [form] = Form.useForm();
@@ -24,7 +24,13 @@ export default (props) => {
   };
 
   useEffect(() => {
-    homeClassCategorySecondCategory({parentId:detailData.id}).then((res) => {
+    const param = {
+      parentId: detailData.id,
+    }
+    if (verifyVersionId) {
+      param.verifyVersionId = verifyVersionId
+    }
+    homeClassCategorySecondCategory(param).then((res) => {
       setList(res.data.records)
     })
   }, [])
