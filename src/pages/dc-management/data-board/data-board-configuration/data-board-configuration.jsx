@@ -86,7 +86,14 @@ export default (props) =>{
             setEditableRowKeys2(res.data?.sqlConfigs?.map((item,index) => index))
             setEditableRowKeys3(res.data?.responseFormatList?.map((item,index) => index))
           }
-          setDataSource(res.data?.requestFormatList)
+          setDataSource(res.data?.requestFormatList.map(ele=>({
+            destField:ele.destField,
+            express:ele.express,
+            format:ele.format,
+            functionName:ele.functionName,
+            sourceField:ele.sourceField,
+            isMandary:`${ele.isMandary}`,
+          })))
           setDataSource2(res.data?.sqlConfigs.map(ele=>(
             {
               dataCode:ele.dataCode,
