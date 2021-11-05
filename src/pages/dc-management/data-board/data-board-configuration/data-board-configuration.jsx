@@ -3,11 +3,8 @@ import { Input, Form, message,Button,InputNumber} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import { addConfig,updateConfig,findById,configTest,findFunctions } from '@/services/resource'
 import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
-import { FormattedMessage, formatMessage } from 'umi';
 import DiscountsModel from './discounts-model'
 import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
-import moment from 'moment';
 import { history,connect } from 'umi';
 import styles from './style.less'
 const { TextArea } = Input;
@@ -31,7 +28,9 @@ const formItemLayout = {
       sourceField:'',
       destField:'',
       functionName:'',
-      format:''
+      format:'',
+      express:'',
+      isMandary:''
     }
   ]
   const data2=[
@@ -41,14 +40,18 @@ const formItemLayout = {
       sql:'',
       orderNo:'',
       resultType:'',
-      express:''
+      express:'',
+      remark:''
     }
   ]
   const data3=[
     {
       id:1,
-      field:'',
-      encryptType:'',
+      sourceField:'',
+      destField:'',
+      functionName:'',
+      format:'',
+      express:''
     }
   ]
 
@@ -81,7 +84,7 @@ export default (props) =>{
           if(edit){
             setEditableRowKeys(res.data?.requestFormatList?.map((item,index) => index))
             setEditableRowKeys2(res.data?.sqlConfigs?.map((item,index) => index))
-            setEditableRowKeys3(res.data?.sensitiveFields?.map((item,index) => index))
+            setEditableRowKeys3(res.data?.responseFormatList?.map((item,index) => index))
           }
           setDataSource(res.data?.requestFormatList)
           setDataSource2(res.data?.sqlConfigs.map(ele=>(
@@ -94,7 +97,7 @@ export default (props) =>{
               remark:ele.remark
               }
             )))
-          setDataSource3(res.data?.sensitiveFields)
+          setDataSource3(res.data?.responseFormatList)
           form.setFieldsValue({
             ...res.data
           })
@@ -106,7 +109,7 @@ export default (props) =>{
     const params={
       requestFormatList:dataSource,
       sqlConfigs:dataSource2,
-      sensitiveFields:dataSource3,
+      responseFormatList:dataSource3,
       ...rest
     }
     if(dataSource?.length==0){
@@ -116,7 +119,7 @@ export default (props) =>{
       delete params.sqlConfigs
     }
     if(dataSource3?.length==0){
-      delete params.sensitiveFields
+      delete params.responseFormatList
     }
     if(id){
       updateConfig({id:id,...params}).then(res=>{
@@ -157,6 +160,25 @@ export default (props) =>{
       title: '格式串',
       dataIndex: 'format',
       valueType: 'text',
+    },
+    {
+      title: '条件',
+      dataIndex: 'express',
+      valueType: 'text',
+      width:300
+    },
+    {
+      title: '是否必填',
+      dataIndex: 'isMandary',
+      valueType: 'select',
+      valueEnum: {
+        false: '否',
+        true: '是',
+      },
+      fieldProps: {
+        placeholder: '请选择'
+      },
+      width:150
     },
     {
       title: '操作',
@@ -216,7 +238,7 @@ export default (props) =>{
       width:150
     },
     {
-      title: '表达式',
+      title: '条件',
       dataIndex: 'express',
       valueType: 'text',
       width:300
@@ -246,20 +268,33 @@ export default (props) =>{
   ];
   const columns3 = [
     {
-      title: '字段名',
-      dataIndex: 'field',
+      title: '源字段',
+      dataIndex: 'sourceField',
     },
     {
-      title: '脱敏类型',
-      dataIndex: 'encryptType',
+      title: '目标字段',
+      dataIndex: 'destField',
+      valueType: 'text',
+    },
+    {
+      title: '转换函数',
+      dataIndex: 'functionName',
       valueType: 'select',
-      valueEnum: {
-        1:'手机号码',
-        2: '身份证号',
-      },
+      valueEnum: onselect,
       fieldProps: {
         placeholder: '请选择'
       },
+    },
+     {
+      title: '格式串',
+      dataIndex: 'format',
+      valueType: 'text',
+    },
+    {
+      title: '条件',
+      dataIndex: 'express',
+      valueType: 'text',
+      width:300
     },
     {
       title: '操作',
@@ -392,7 +427,7 @@ export default (props) =>{
 
 
           <EditableProTable
-            headerTitle="脱敏设置"
+            headerTitle="出参格式化"
             columns={columns3}
             name="table"
             rowKey="id"
