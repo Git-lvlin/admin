@@ -39,7 +39,7 @@ const Detail = (props) => {
       render: (_) => amountTransform(_, '/'),
     },
     {
-      title: '待发货数量',
+      title: '已发货数量',
       dataIndex: 'goodsSkuNums',
     },
     {
