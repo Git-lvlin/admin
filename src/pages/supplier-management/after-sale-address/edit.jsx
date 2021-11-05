@@ -10,7 +10,7 @@ import { addressAdd, addressEdit } from '@/services/supplier-management/after-sa
 
 
 export default (props) => {
-  const { visible, setVisible, supplierId, detailData, callback } = props;
+  const { visible, setVisible, supplierId, detailData, callback, onClose } = props;
   const [form] = Form.useForm();
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -75,7 +75,7 @@ export default (props) => {
     <ModalForm
       title={`${detailData ? '编辑' : '新建'}售后地址`}
       modalProps={{
-        onCancel: () => form.resetFields(),
+        onCancel: () => { form.resetFields(); onClose()},
       }}
       onVisibleChange={setVisible}
       visible={visible}
