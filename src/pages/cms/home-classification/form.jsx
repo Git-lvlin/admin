@@ -71,9 +71,8 @@ export default (props) => {
                 fieldProps={{
                   style: {marginTop: 24},
                   defaultChecked:item.homeStatus?true:false,
-                  onChange: () => {
-                    item.homeStatus = item.homeStatus?0:1
-                    onChangeSwitch(item)
+                  onChange: (a) => {
+                    onChangeSwitch(a,item)
                   },
                 }}
               />
