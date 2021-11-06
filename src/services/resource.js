@@ -89,7 +89,6 @@ export async function inputVersionList(params) {
   });
 }
 
-
 //数据报表分页查询
 export const findByPage = async (params, options = {}) => {
   const {current, pageSize,...rest} = params;
@@ -215,3 +214,4 @@ export const findFunctions = async (params, options = {}) => {
     success: res.success,
   }
 }
+

@@ -7,7 +7,7 @@ import {
   Legend
 } from 'bizcharts'
 import ProCard, { CheckCard } from '@ant-design/pro-card'
-import { Space, Typography } from 'antd'
+import { Empty, Space, Typography } from 'antd'
 import { useRequest } from 'umi'
 
 import Yuan from '../components/Yuan'
@@ -26,9 +26,13 @@ const RealTime = () => {
   useEffect(() => {
     setLoading(true)
     briefCountDetail({code}).then(res=> {
-      const arr = res.data.map(item=> (
-        {timeName: item.timeName, countTime: item.countTime, value: Number(item.value)}
-      ))
+      const arr = res.data.map(item=> {
+        if(item) {
+          return {timeName: item?.timeName, countTime: item?.countTime, value: Number(item?.value)}
+        } else {
+          return false
+        }
+      })
       setLineData(arr)
     }).finally(()=> {
       setLoading(false)
@@ -49,7 +53,6 @@ const RealTime = () => {
       }
     }
   }
-
   return (
     <ProCard
       title="今日实时"
@@ -61,45 +64,49 @@ const RealTime = () => {
           style={{ height: 500 }}
           loading={loading}
         >
-          <Chart
-            scale={scale}
-            autoFit
-            height={440}
-            data={lineData}
-            interactions={['element-active']}
-            forceUpdate
-            padding={[80, 40, 60, 60]}
-          >
-            <Point
-              position="countTime*value"
-              color="timeName"
-              shape='circle' 
-            />
-            <Line 
-              shape="line"
-              position="countTime*value"
-              color="timeName"
-              label="value"
-            />
-            <Tooltip
-              shared
-              showCrosshairs
-            />
-            <Legend
-              position="top"
-              background={{
-                style: {
-                  fill: '#fff',
-                  stroke: '#fff'
-                }
-              }}
-              itemName={{
-                style: {
-                  fontSize: 16
-                }
-              }}
-            />
-          </Chart>
+          {
+            (lineData&&lineData?.[0]) ? 
+            <Chart
+              scale={scale}
+              autoFit
+              height={440}
+              data={lineData}
+              interactions={['element-active']}
+              forceUpdate
+              padding={[80, 40, 60, 60]}
+            >
+              <Point
+                position="countTime*value"
+                color="timeName"
+                shape='circle' 
+              />
+              <Line 
+                shape="line"
+                position="countTime*value"
+                color="timeName"
+                label="value"
+              />
+              <Tooltip
+                shared
+                showCrosshairs
+              />
+              <Legend
+                position="top"
+                background={{
+                  style: {
+                    fill: '#fff',
+                    stroke: '#fff'
+                  }
+                }}
+                itemName={{
+                  style: {
+                    fontSize: 16
+                  }
+                }}
+              />
+            </Chart>:
+            <Empty />
+          }
         </ProCard>
       </ProCard>
       <CheckCard.Group
@@ -143,7 +150,7 @@ const RealTime = () => {
                   <Space size={20}>
                     <Text>支付金额</Text>
                     <Title level={3}>
-                      ￥{amountTransform(data?.payAmount?.today, '/')}
+                      ￥<Yuan>{amountTransform(data?.payAmount?.today, '/')}</Yuan>
                     </Title>
                   </Space>
                 </Paragraph>
@@ -151,7 +158,7 @@ const RealTime = () => {
                   <Space size={20}>
                     <Text>昨日全天</Text>
                     <span>
-                      ￥{amountTransform(data?.payAmount?.yestoday, '/')}
+                      ￥<Yuan>{amountTransform(data?.payAmount?.yestoday, '/')}</Yuan>
                     </span>
                   </Space>
                 </Paragraph>
