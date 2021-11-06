@@ -1,0 +1,38 @@
+.pieTitle {
+  text-align: center;
+}
+
+.title {
+  font-size: 16px;
+  margin-right: 120px;
+  padding-left: 14px;
+}
+
+.salesExtra {
+  display: inline-block;
+  margin-right: 24px;
+  a {
+    margin-left: 24px;
+    color: rgba(0, 0, 0, 0.85);
+    &:hover {
+      color: #1890ff;
+    }
+    &.currentDate {
+      color: #1890ff;
+    }
+  }
+}
+
+@media screen and (max-width: 712px) {
+  .salesExtraWrap {
+    display: none;
+  }
+
+  .salesCard {
+    :global {
+      .ant-tabs-content {
+        padding-top: 30px;
+      }
+    }
+  }
+}
