@@ -45,7 +45,7 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '单位',
+      title: '库存单位',
       dataIndex: 'unit',
       valueType: 'text',
       hideInSearch: true,
