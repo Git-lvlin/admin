@@ -92,7 +92,7 @@ export default (props) =>{
             format:ele.format,
             functionName:ele.functionName,
             sourceField:ele.sourceField,
-            isMandary:`${ele.isMandary}`,
+            isMandary:ele.isMandary&&`${ele.isMandary}`,
           })))
           setDataSource2(res.data?.sqlConfigs.map(ele=>(
             {
@@ -142,8 +142,15 @@ export default (props) =>{
       })
     }
   }
-
- 
+  const checkConfirm = (rule, value, callback) => {
+    return new Promise(async (resolve, reject) => {
+      if (value&&!/[^\u4e00-\u9fa5]/.test(value)) {
+        await reject('不能输入汉字')
+      } else {
+        await resolve()
+      }
+    })
+  }
   const columns = [
     {
       title: '源字段',
@@ -362,7 +369,10 @@ export default (props) =>{
             name="reportCode"
             label="接口编码"
             placeholder="输入接口编码"
-            rules={[{ required: true, message: '请输入接口编码' }]}
+            rules={[
+              { required: true, message: '请输入接口编码' },
+              {validator: checkConfirm}
+            ]}
             readonly={id&&edtil}
           />
           <ProFormText
