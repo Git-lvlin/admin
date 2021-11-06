@@ -74,7 +74,7 @@ export default (props) =>{
     findFunctions({}).then(res=>{
       const data={}
       res.data.map((ele)=>(
-        data[ele.functionName]=ele.functionName
+        data[ele.functionName]=ele.name
       ))
       setOnselect(data)
     })
@@ -171,7 +171,7 @@ export default (props) =>{
       },
     },
      {
-      title: '格式串',
+      title: '转换参数',
       dataIndex: 'format',
       valueType: 'text',
     },
@@ -300,7 +300,7 @@ export default (props) =>{
       },
     },
      {
-      title: '格式串',
+      title: '转换参数',
       dataIndex: 'format',
       valueType: 'text',
     },
@@ -473,7 +473,7 @@ export default (props) =>{
           {
             id&&edtil?
              <Form.Item
-              label="出参模板（FreeMarKer）"
+              label="响应模板（FreeMarKer）"
               rules={[{ required: true, message: '请填写模板' }]}
               >
               <pre className={styles.line_feed}>
@@ -485,7 +485,7 @@ export default (props) =>{
            :
            <ProFormTextArea
               name="responseTemplate"
-              label="出参模板（FreeMarKer）"
+              label="响应模板（FreeMarKer）"
               rules={[{ required: true, message: '请填写模板' }]}
               placeholder="请输入"
               readonly={id&&edtil}
