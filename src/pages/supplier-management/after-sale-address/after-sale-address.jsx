@@ -29,7 +29,7 @@ const TableList = () => {
 
   const switchStatus = (data) => {
     confirm({
-      title: `${data.status===1?'禁用':'开启'}售后地址信息`,
+      title: `${data.status === 1 ? '禁用' : '开启'}售后地址信息`,
       icon: <ExclamationCircleOutlined />,
       content: `${data.contactName}(${data.address})`,
       onOk() {
@@ -144,7 +144,8 @@ const TableList = () => {
         setVisible={setFormVisible}
         supplierId={params?.id}
         detailData={detailData}
-        callback={() => { actionRef.current.reload() }}
+        callback={() => { actionRef.current.reload(); setDetailData(null) }}
+        onClose={() => { setDetailData(null) }}
       />
     </PageContainer>
   );

@@ -39,9 +39,13 @@ const Detail = (props) => {
       render: (_) => amountTransform(_, '/'),
     },
     {
-      title: '待发货数量',
+      title: '已发货数量',
       dataIndex: 'goodsSkuNums',
     },
+    {
+      title: '单位',
+      dataIndex: 'unit',
+    }
   ]);
 
   const getExpressInfo = (record) => {
@@ -149,6 +153,10 @@ const Detail = (props) => {
               title: '待发货数量',
               dataIndex: 'goodsSkuNums',
             },
+            {
+              title: '单位',
+              dataIndex: 'unit',
+            },
           ])
         }
       }
@@ -232,6 +240,10 @@ const Detail = (props) => {
               dataIndex: 'realNum'
             },
             {
+              title: '单位',
+              dataIndex: 'unit',
+            },
+            {
               title: '操作时间',
               dataIndex: 'createTime'
             },
@@ -270,6 +282,10 @@ const Detail = (props) => {
             {
               title: '已出库数量',
               dataIndex: 'realNum'
+            },
+            {
+              title: '单位',
+              dataIndex: 'unit',
             },
             {
               title: '操作时间',

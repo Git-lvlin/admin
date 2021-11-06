@@ -352,7 +352,7 @@ const TableList = () => {
                         <div className={styles.info}>
                           <div>{it.goodsName}</div>
                           <div>{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType] || '秒约')}价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
-                          <div>数量： <span>{it.skuNum}件</span></div>
+                          <div>数量： <span>{it.skuNum}{it.unit}</span></div>
                           <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
                           {isPurchase && <div>零售供货价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
                           {it.afterSalesStatus !== 0 && <Tag style={{ borderRadius: 10 }} color="#f59a23"><span style={{ color: '#fff' }}>{it.afterSalesStatusStr}</span></Tag>}

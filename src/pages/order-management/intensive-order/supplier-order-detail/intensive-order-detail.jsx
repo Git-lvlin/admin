@@ -225,15 +225,15 @@ const OrderDetail = () => {
                     </div>
                     <div className={styles.box}>
                       <div>秒约价</div>
-                      <div>{amountTransform(detailData?.sku?.price, '/')}元{detailData?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(detailData?.sku?.wholesaleFreight, '/')}/件）` : ''}</div>
+                      <div>{amountTransform(detailData?.sku?.price, '/')}元{detailData?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(detailData?.sku?.wholesaleFreight, '/')}/${detailData?.sku?.unit}）` : ''}</div>
                     </div>
                     <div className={styles.box}>
                       <div>预定数量</div>
-                      <div>{detailData?.sku?.totalNum}件</div>
+                      <div>{detailData?.sku?.totalNum}{detailData?.sku?.unit}</div>
                     </div>
                     <div className={styles.box}>
                       <div>实发数量</div>
-                      <div>{detailData?.sku?.actualSendNum}件</div>
+                      <div>{detailData?.sku?.actualSendNum}{detailData?.sku?.unit}</div>
                     </div>
                   </div>
                 </div>
