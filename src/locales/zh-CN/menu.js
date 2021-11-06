@@ -161,6 +161,8 @@ export default {
   'menu.dc-management.add': '新增',
   'menu.dc-management.list': '资源位列表',
   'menu.dc-management.version': '资源位版本',
+  'menu.dc-management.data-board': '数据报表列表',
+  'menu.dc-management.data-board-configuration': '数据报表配置',
 
   'menu.coupon-management': '红包管理',
   'menu.coupon-management.coupon-list': '红包列表',
