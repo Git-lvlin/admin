@@ -6,28 +6,23 @@ import {
 	Axis,
 	Coordinate,
 	getTheme,
+  Legend
 } from "bizcharts"
 
 import styles from './styles.less'
+import { amountTransform } from '@/utils/utils'
 
-const PieChart = ({}) => {
+const PieChart = ({data}) => {
 
-  const data = [
-    { item: "事例一", percent: 0.4 },
-    { item: "事例二", percent: 0.21 },
-    { item: "事例三", percent: 0.17 },
-    { item: "事例四", percent: 0.13 },
-    { item: "事例五", percent: 0.09 },
-  ];
   const colors = data.reduce((pre, cur, idx) => {
     pre[cur.item] = getTheme().colors10[idx]
     return pre
   }, {})
 
   const cols = {
-    percent: {
+    payRate: {
       formatter: (val) => {
-        val = val * 100 + "%"
+        val = amountTransform(val, '*') + "%"
         return val
       }
     }
@@ -37,7 +32,7 @@ const PieChart = ({}) => {
     <>
       <h3 className={styles.pieTitle}>商品分类支付占比</h3>
       <Chart 
-        height={400}
+        height={600}
         data={data}
         scale={cols}
         interactions={['element-active']}
@@ -47,20 +42,20 @@ const PieChart = ({}) => {
         <Tooltip showTitle={false} />
         <Axis visible={false} />
         <Interval
-          position="percent"
+          position="payRate"
           adjust="stack"
-          color="item"
+          color="gcName"
           style={{
             lineWidth: 1,
             stroke: "#fff"
           }}
           label={[
-            "item",
+            "gcName",
             (item) => {
               return {
                 offset: 20,
                 content: (data) => {
-                  return `${data.item}\n ${data.percent * 100}%`
+                  return `${data.gcName}\n ${amountTransform(data.payRate, '*')}%`
                 },
                 style: {
                   fill: colors[item]
@@ -68,6 +63,15 @@ const PieChart = ({}) => {
               }
             }
           ]}
+        />
+        <Legend
+          layout="horizontal"
+          padding={[60, 0, 0, 0]}
+          itemName={{
+            style: {
+              fontSize: 16
+            }
+          }}
         />
       </Chart>
     </>

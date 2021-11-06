@@ -28,7 +28,7 @@ export const briefCountDetail = async (params = {}, options = {}) => {
 
 // 核心指标
 export const coreData = async (params = {}, options = {}) => {
-  const res = await request('/auth//java-admin/report/config/coreData', {
+  const res = await request('/auth/java-admin/report/config/coreData', {
     method: 'POST',
     data: params,
     ...options

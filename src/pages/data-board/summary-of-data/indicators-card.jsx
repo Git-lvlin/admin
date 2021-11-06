@@ -11,6 +11,7 @@ const IndicatorsCard = () => {
   const [lineData, setLineData] = useState([])
   const [loading, setLoading] = useState(false)
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('week'))
+  const [code, setCode] = useState([])
 
   const selectDate = (type) => {
     setRangePickerValue(getTimeDistance(type))
@@ -45,7 +46,8 @@ const IndicatorsCard = () => {
     setLoading(true)
     coreData({
       startTime: moment(rangePickerValue[0]).format("YYYY-MM-DD"),
-      endTime: moment(rangePickerValue[1]).format("YYYY-MM-DD")
+      endTime: moment(rangePickerValue[1]).format("YYYY-MM-DD"),
+      code: code.join(',')
     }).then(res => {
       setLineData(res.data)
     }).finally(()=> {
@@ -54,7 +56,7 @@ const IndicatorsCard = () => {
     return () => {
       setLineData({})
     }
-  }, [rangePickerValue])
+  }, [rangePickerValue, code])
 
   const TitleSolt = {
     left: 
@@ -108,6 +110,7 @@ const IndicatorsCard = () => {
         scale={scale}
         data={lineData}
         loading={loading}
+        code={setCode}
       />
     </div>
   )

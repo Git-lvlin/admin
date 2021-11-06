@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CheckCard } from '@ant-design/pro-card'
 import { 
   Chart, 
@@ -15,27 +15,27 @@ import styles from './style.less'
 const ChartForm = ({
   scale,
   data, 
-  loading
+  loading,
+  code
 }) => {
-  const [lineData, setLineData] = useState(()=>(
-    data?.detail?.filter(item => (
-      item.reportName === "访问次数"
-    ))
-  ))
+  const [lineData, setLineData] = useState([])
+
+  useEffect(()=> {
+    setLineData(data)
+    return ()=> {
+      setLineData([])
+    }
+  }, [data])
+
+  const setVal = (value) => {
+    code(value)
+  }
 
   return (
     <>
       <CheckCard.Group
-        onChange={(value) => {
-          const arr = value.map(v=>(
-            data.detail.filter(item => (
-              item.reportName === v
-            ))
-          ))
-          setLineData(arr.flat())
-        }}
+        onChange={(value) => setVal(value)}
         multiple
-        // defaultValue="访问次数"
         loading={loading}
         size="small"
       >
@@ -46,8 +46,7 @@ const ChartForm = ({
             </div> 
           }
           description="访问次数"
-          value="访问次数"
-          defaultChecked
+          value="visitList"
         />
         <CheckCard 
           title={ 
@@ -56,7 +55,7 @@ const ChartForm = ({
             </div>
           }
           description="新增订单数"
-          value="新增订单数"
+          value="payOrderList"
         />
         <CheckCard
           title={
@@ -69,11 +68,11 @@ const ChartForm = ({
         <CheckCard 
           title={ 
             <div className={styles.title}>
-              <Yuan>{data?.count?.payAmount}</Yuan>
+              <Yuan>{Number(data?.count?.payAmount)}</Yuan>
             </div> 
           }
           description="支付金额"
-          value="支付金额"
+          value="payAmountList"
         />
         <CheckCard
           title={ 
@@ -82,7 +81,7 @@ const ChartForm = ({
             </div> 
           }
           description="下单支付用户数"
-          value="下单支付用户数"
+          value="payMemberList"
         />
         <CheckCard 
           title={ 
@@ -91,7 +90,7 @@ const ChartForm = ({
             </div> 
           }
           description="新增用户数"
-          value="新增用户数"
+          value="regMemberList"
         />
         <CheckCard 
           title={ 
@@ -100,20 +99,19 @@ const ChartForm = ({
             </div> 
           }
           description="访问用户数"
-          value="访问用户数"
+          value="visitMemberList"
         />
       </CheckCard.Group>
       {
-        (lineData&&lineData?.length !== 0)?
+        (lineData&&lineData?.detail?.length !== 0)?
         <Spin spinning={loading}>
           <Chart
             scale={scale}
             padding={[80, 20, 60, 60]}
             autoFit
             height={440}
-            data={lineData}
+            data={lineData.detail}
             interactions={['element-active']}
-            forceUpdate
           >
             <Point
               position="countTime*value"
