@@ -135,6 +135,8 @@ export default (props) => {
           bankAccountType,
           bankCardNo,
           bankAccountName,
+          accountType,
+          legalName,
         } = bankAccountInfo
         form.setFieldsValue({
           imageInfo: {
@@ -143,10 +145,17 @@ export default (props) => {
             bankCardFrontImg: bankCardFrontImg?.[0],
           },
           bankCode: bankCode ? { label: bankName, value: bankCode } : undefined,
-          bankAccountType: 1 || bankAccountType,
+          bankAccountType: bankAccountType || 1,
           bankCardNo,
-          bankAccountName: (1 || bankAccountType) === 1 ? detailData.companyName : bankAccountName,
+          bankAccountName: (bankAccountType || 1) === 1 ? detailData.companyName : bankAccountName,
         })
+
+        if (accountType === 2) {
+          form.setFieldsValue({
+            bankAccountName: legalName,
+            bankAccountType: 2,
+          })
+        }
       }
     }
   }, [form, detailData]);
@@ -212,6 +221,7 @@ export default (props) => {
             fieldProps={{
               onChange: bankAccountTypeChange
             }}
+            disabled={detailData?.bankAccountInfo?.accountType === 2}
           />
 
           <ProFormDependency name={['bankAccountType', 'bindBankSwitch']}>
@@ -219,7 +229,7 @@ export default (props) => {
               ({ bankAccountType, bindBankSwitch }) => (
                 <Form.Item
                   label={
-                    <div style={{ position: 'relative', top: 20 }}>
+                    <div style={{ height: 130 }}>
                       <div>开户资质文件</div>
                       <div>jpg/png格式</div>
                       <div>大小不超过2MB</div>
@@ -229,9 +239,14 @@ export default (props) => {
                   validateFirst
                   rules={[
                     () => ({
-                      required: true,
+                      required: detailData?.bankAccountInfo?.accountType !== 2,
                       validator(_, value = {}) {
                         const { bankLicenseImg, bankCardFrontImg, bankCardBackImg } = value;
+
+                        if (detailData?.bankAccountInfo?.accountType === 2 ) {
+                          return Promise.resolve();
+                        }
+
                         if (bindBankSwitch === 1) {
                           if (!bankLicenseImg && bankAccountType === 1) {
                             return Promise.reject(new Error('请上传开户银行许可证照'));
@@ -283,7 +298,7 @@ export default (props) => {
                   placeholder="请输入结算银行卡开户名"
                   rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
                   extra="银行账户类型为对公账户时，开户名为供应商家企业名称"
-                  disabled={bankAccountType === 1}
+                  disabled={bankAccountType === 1 || detailData?.bankAccountInfo?.accountType === 2}
                 />
               )
             }
