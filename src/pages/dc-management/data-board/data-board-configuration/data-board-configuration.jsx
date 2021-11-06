@@ -3,13 +3,11 @@ import { Input, Form, message,Button,InputNumber} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import { addConfig,updateConfig,findById,configTest,findFunctions } from '@/services/resource'
 import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
-import { FormattedMessage, formatMessage } from 'umi';
 import DiscountsModel from './discounts-model'
 import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
-import moment from 'moment';
 import { history,connect } from 'umi';
 import styles from './style.less'
+const { TextArea } = Input;
 
 const formItemLayout = {
   labelCol: { span:3 },
@@ -30,7 +28,9 @@ const formItemLayout = {
       sourceField:'',
       destField:'',
       functionName:'',
-      format:''
+      format:'',
+      express:'',
+      isMandary:''
     }
   ]
   const data2=[
@@ -40,14 +40,18 @@ const formItemLayout = {
       sql:'',
       orderNo:'',
       resultType:'',
-      express:''
+      express:'',
+      remark:''
     }
   ]
   const data3=[
     {
       id:1,
-      field:'',
-      encryptType:'',
+      sourceField:'',
+      destField:'',
+      functionName:'',
+      format:'',
+      express:''
     }
   ]
 
@@ -61,7 +65,6 @@ export default (props) =>{
   const [editableKeys3, setEditableRowKeys3] = useState(() =>data3.map((item) => item.id));
   const [onselect,setOnselect]=useState([])
   const [form] = Form.useForm();
-  const [detailList,setDetailList]=useState()
   const [boardData,setBoardData]=useState()
   let id = props.location.query.id
   let edtil = props.location.query.edtil
@@ -70,25 +73,41 @@ export default (props) =>{
   useEffect(() => {
     findFunctions({}).then(res=>{
       const data={}
-      res.data.map((ele,index)=>(
-        data[index+1]=ele.functionName
+      res.data.map((ele)=>(
+        data[ele.functionName]=ele.functionName
       ))
       setOnselect(data)
     })
     if(id){
       findById({id:id}).then(res=>{
-        setBoardData(res.data)
-        if(edit){
-          setEditableRowKeys(res.data.requestFormatList.map((item,index) => index))
-          setEditableRowKeys2(res.data.sqlConfigs.map((item,index) => index))
-          setEditableRowKeys3(res.data.sensitiveFields.map((item,index) => index))
-        }
-        setDataSource(res.data.requestFormatList.map((ele,index)=>{return {id:index,...ele}}))
-        setDataSource2(res.data.sqlConfigs)
-        setDataSource3(res.data.sensitiveFields)
-        form.setFieldsValue({
-          ...res.data
-        })
+          setBoardData(res.data)
+          if(edit){
+            setEditableRowKeys(res.data?.requestFormatList?.map((item,index) => index))
+            setEditableRowKeys2(res.data?.sqlConfigs?.map((item,index) => index))
+            setEditableRowKeys3(res.data?.responseFormatList?.map((item,index) => index))
+          }
+          setDataSource(res.data?.requestFormatList.map(ele=>({
+            destField:ele.destField,
+            express:ele.express,
+            format:ele.format,
+            functionName:ele.functionName,
+            sourceField:ele.sourceField,
+            isMandary:ele.isMandary&&`${ele.isMandary}`,
+          })))
+          setDataSource2(res.data?.sqlConfigs.map(ele=>(
+            {
+              dataCode:ele.dataCode,
+              sql:ele.sql,
+              resultType:`${ele.resultType}`,
+              orderNo:ele.orderNo,
+              express:ele.express,
+              remark:ele.remark
+              }
+            )))
+          setDataSource3(res.data?.responseFormatList)
+          form.setFieldsValue({
+            ...res.data
+          })
       })
     }
   }, [])
@@ -97,28 +116,41 @@ export default (props) =>{
     const params={
       requestFormatList:dataSource,
       sqlConfigs:dataSource2,
-      sensitiveFields:dataSource3,
+      responseFormatList:dataSource3,
       ...rest
     }
-    console.log('params',params)
+    if(dataSource?.length==0){
+      delete params.requestFormatList
+    }
+    if(dataSource2?.length==0){
+      delete params.sqlConfigs
+    }
+    if(dataSource3?.length==0){
+      delete params.responseFormatList
+    }
     if(id){
       updateConfig({id:id,...params}).then(res=>{
         if(res.code==0){
           message.success('编辑成功');
-          history.push('/dc-management/data-board')
         }
       })
     }else{
       addConfig(params).then(res=>{
         if(res.code==0){
           message.success('添加成功');
-          history.push('/dc-management/data-board')
         }
       })
     }
   }
-
- 
+  const checkConfirm = (rule, value, callback) => {
+    return new Promise(async (resolve, reject) => {
+      if (value&&!/[^\u4e00-\u9fa5]/.test(value)) {
+        await reject('不能输入汉字')
+      } else {
+        await resolve()
+      }
+    })
+  }
   const columns = [
     {
       title: '源字段',
@@ -142,22 +174,94 @@ export default (props) =>{
       title: '格式串',
       dataIndex: 'format',
       valueType: 'text',
-    }
+    },
+    {
+      title: '条件',
+      dataIndex: 'express',
+      valueType: 'text',
+      width:300
+    },
+    {
+      title: '是否必填',
+      dataIndex: 'isMandary',
+      valueType: 'select',
+      valueEnum: {
+        false: '否',
+        true: '是',
+      },
+      fieldProps: {
+        placeholder: '请选择'
+      },
+      width:150
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      width: 200,
+      render: (text, record, _, action) => [
+        <a
+          key="delete"
+          onClick={() => {
+            setDataSource(dataSource.filter((item) => item.id !== record.id));
+          }}
+        >
+          删除
+        </a>,
+      ],
+      hideInTable:id&&edtil?true:false,
+    },
   ];
   const columns2 = [
     {
       title: '数据集编码',
       dataIndex: 'dataCode',
+      width:200
     },
     {
       title: 'SQL',
       dataIndex: 'sql',
       valueType: 'text',
+      renderFormItem: (_,r) => {
+        return  <TextArea
+                    name="sql"
+                />
+        },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      }
     },
     {
       title: '顺序',
       dataIndex: 'orderNo',
       valueType: 'text',
+      width:120
+    },
+    {
+      title: '数据类型',
+      dataIndex: 'resultType',
+      valueType: 'select',
+      valueEnum: {
+        1: 'Value',
+        2: 'Map',
+        3: 'List',
+        4: 'Page',
+      },
+      fieldProps: {
+        placeholder: '请选择'
+      },
+      width:150
+    },
+    {
+      title: '条件',
+      dataIndex: 'express',
+      valueType: 'text',
+      width:300
+    },
+    {
+      title: '备注',
+      dataIndex: 'remark',
+      valueType: 'text',
+      width:120
     },
     {
       title: '操作',
@@ -173,47 +277,56 @@ export default (props) =>{
           删除
         </a>,
       ],
-    },
-    {
-      title: '数据类型（Value，Map，List，Page）',
-      dataIndex: 'resultType',
-      valueType: 'select',
-      valueEnum: {
-        1:'Value',
-        2: 'Map',
-        3: 'List',
-        4: 'Page',
-      },
-      fieldProps: {
-        placeholder: '请选择'
-      },
-    },
-    {
-      title: '表达式',
-      dataIndex: 'express',
-      valueType: 'text',
+      hideInTable:id&&edtil?true:false,
     },
   ];
   const columns3 = [
     {
-      title: '字段名',
-      dataIndex: 'field',
+      title: '源字段',
+      dataIndex: 'sourceField',
     },
     {
-      title: '脱敏类型',
-      dataIndex: 'encryptType',
+      title: '目标字段',
+      dataIndex: 'destField',
+      valueType: 'text',
+    },
+    {
+      title: '转换函数',
+      dataIndex: 'functionName',
       valueType: 'select',
-      valueEnum: {
-        1:'手机号码',
-        2: '身份证号',
-      },
+      valueEnum: onselect,
       fieldProps: {
         placeholder: '请选择'
       },
     },
+     {
+      title: '格式串',
+      dataIndex: 'format',
+      valueType: 'text',
+    },
+    {
+      title: '条件',
+      dataIndex: 'express',
+      valueType: 'text',
+      width:300
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      width: 200,
+      render: (text, record, _, action) => [
+        <a
+          key="delete"
+          onClick={() => {
+            setDataSource3(dataSource3.filter((item) => item.id !== record.id));
+          }}
+        >
+          删除
+        </a>,
+      ],
+      hideInTable:id&&edtil?true:false,
+    },
   ];
-  console.log('dataSource',dataSource)
-  console.log('editableKeys',editableKeys)
   return (
     <PageContainer>
       <ProForm
@@ -230,13 +343,9 @@ export default (props) =>{
             {
               edtil?null:
               <>
-              <Button style={{marginLeft:'100px'}} type="primary" key="submit" onClick={() => {
-                configTest({}).then(res=>{
-                  setDetailList(res.data)
-                })
-              }}>
-                测试
-              </Button>
+              <DiscountsModel 
+                InterFace={configTest}
+              />
               <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
                 props.form?.submit?.()
               }}>
@@ -244,19 +353,27 @@ export default (props) =>{
               </Button>
               </>
             }
-            </>
+            </>,
+            <Button style={{marginLeft:'80px'}} type="default" key="submit" onClick={() => {
+              history.push('/dc-management/data-board')
+            }}>
+              返回
+            </Button>
             ];
           }
         }}
         className={styles.data_board_configuration}
       >
         <ProFormText
-              width="md"
-              name="reportCode"
-              label="接口编码"
-              placeholder="输入接口编码"
-              rules={[{ required: true, message: '请输入接口编码' }]}
-              readonly={id&&edtil}
+            width="md"
+            name="reportCode"
+            label="接口编码"
+            placeholder="输入接口编码"
+            rules={[
+              { required: true, message: '请输入接口编码' },
+              {validator: checkConfirm}
+            ]}
+            readonly={id&&edtil}
           />
           <ProFormText
             width="md"
@@ -273,6 +390,7 @@ export default (props) =>{
             columns={columns}
             name="table"
             rowKey="id"
+            controlled
             recordCreatorProps={id&&edtil?false:{
               newRecordType: 'dataSource',
               record: () => ({
@@ -283,7 +401,7 @@ export default (props) =>{
             onChange={setDataSource}
             editable={{
               type: 'multiple',
-              editableKeys,
+              editableKeys:id&&edtil?[]:editableKeys,
               actionRender: (row, config, defaultDoms) => {
                 return [defaultDoms.delete];
               },
@@ -307,11 +425,12 @@ export default (props) =>{
                 id: Date.now(),
               }),
             }}
+            controlled
             value={dataSource2}
             onChange={setDataSource2}
             editable={{
               type: 'multiple',
-              editableKeys:editableKeys2,
+              editableKeys:id&&edtil?[]:editableKeys2,
               actionRender: (row, config, defaultDoms) => {
                 return [defaultDoms.delete];
               },
@@ -325,7 +444,7 @@ export default (props) =>{
 
 
           <EditableProTable
-            headerTitle="脱敏设置"
+            headerTitle="出参格式化"
             columns={columns3}
             name="table"
             rowKey="id"
@@ -335,11 +454,12 @@ export default (props) =>{
                 id: Date.now(),
               }),
             }}
+            controlled
             value={dataSource3}
             onChange={setDataSource3}
             editable={{
               type: 'multiple',
-              editableKeys:editableKeys3,
+              editableKeys:id&&edtil?[]:editableKeys3,
               actionRender: (row, config, defaultDoms) => {
                 return [defaultDoms.delete];
               },
@@ -364,24 +484,11 @@ export default (props) =>{
               </Form.Item>
            :
            <ProFormTextArea
-              width="md"
               name="responseTemplate"
               label="出参模板（FreeMarKer）"
               rules={[{ required: true, message: '请填写模板' }]}
               placeholder="请输入"
               readonly={id&&edtil}
-            />
-          }
-
-          {
-            detailList?.length>0&&
-            <ProFormText
-                width="md"
-                label="测试结果"
-                fieldProps={{
-                  value:detailList[0]?.nickName
-               }}
-               className={styles.hint}
             />
           }
       </ProForm>
