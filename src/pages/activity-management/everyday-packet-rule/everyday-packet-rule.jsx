@@ -306,7 +306,6 @@ export default (props) =>{
               </Form.Item>
                 :
               <ProFormTextArea
-                width="md"
                 name="activityRule"
                 label="活动规则"
                 placeholder="列如玩法规则、红包有效期、简单的用户协议"
