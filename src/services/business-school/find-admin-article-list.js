@@ -69,4 +69,15 @@ export const adminArticleDetail = async (params = {}, options = {}) => {
 
 
 
+export const saveOrUpdateArticle = (params = {}, options = {}) => {
+  return request('/auth/java-admin/articleInfo/saveOrUpdateArticle', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+
+
+
 
