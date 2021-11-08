@@ -40,6 +40,18 @@ export default (props) => {
       width={560}
       title={`${detailData.gcName}`}
       onVisibleChange={setVisible}
+      submitter={{
+        resetButtonProps: {
+          style: {
+            display: 'none',
+          },
+        },
+        submitButtonProps: {
+          style: {
+            display: 'none',
+          },
+        },
+      }}
       formRef={formRef}
       visible={visible}
       form={form}
