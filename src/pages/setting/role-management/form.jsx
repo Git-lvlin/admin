@@ -101,7 +101,7 @@ export default (props) => {
         groupId: data.id
       }).then(res => {
         if (res.code === 0) {
-          const originData = res.data;
+          const originData = originTreeData;
           const filterData = res.data.filter(item => !originData.some(it => it.pid === item.id))
           setSelectKeys(filterData.map(item => item.id));
         }

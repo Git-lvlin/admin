@@ -100,6 +100,11 @@ const ReturnGoods = props => {
       dataIndex: 'returnNum',
       align: 'center' 
     },
+    { 
+      title: '库存单位',
+      dataIndex: 'unit',
+      align: 'center' 
+    },
     {
       title: '小计',
       dataIndex: 'subtotal',

@@ -389,7 +389,7 @@ export const hotGoosOperation = (params = {}, options = {}) => {
 }
 
 export const articleOperation = (params = {}, options = {}) => {
-  return request('/auth/java-admin/articleInfo/saveOrUpdateArticle', {
+  return request('/auth/java-admin/articleType/saveOrUpdateArticleType', {
     method: 'POST',
     data: params,
     ...options
@@ -398,23 +398,22 @@ export const articleOperation = (params = {}, options = {}) => {
 
 export const findAdminArticleTypeList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
+  const data = {
+    // page: current,
+    // size: pageSize,
+    ...rest
+  }
   const res = await request('/auth/java-admin/articleType/findAdminArticleTypeList', {
     method: 'POST',
-    data: {
-      page: current,
-      size: pageSize,
-      ...rest
-    },
+    data,
     ...options
   });
-
   return {
-    data: res.data,
+    data: res.data || [],
     success: true,
-    total: res.data.total
+    total: res.data.total,
   }
 }
-
 
 export const delContestGoods = (params = {}, options = {}) => {
   return request(`/auth/go-spider-api/contestprice/auth/contestprice/DelContestGoods?id=${params.id}`, {

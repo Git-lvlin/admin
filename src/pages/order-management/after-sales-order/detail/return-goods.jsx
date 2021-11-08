@@ -99,6 +99,11 @@ const ReturnGoods = ({data}) => {
       dataIndex: 'returnNum',
       align: 'center' 
     },
+    { 
+      title: '单位',
+      dataIndex: 'unit',
+      align: 'center' 
+    },
     {
       title: '小计',
       dataIndex: 'subtotal',

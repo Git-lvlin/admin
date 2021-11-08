@@ -124,7 +124,7 @@ const TableList = () => {
           visible={formVisible}
           setVisible={setFormVisible}
           adminGroupList={adminGroupList}
-          callback={() => { actionRef.current.reload() }}
+          callback={() => { actionRef.current.reload(); setSelectItem(null) }}
           onClose={() => { setSelectItem(null) }}
           data={selectItem}
         />}
