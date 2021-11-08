@@ -19,8 +19,7 @@ const ProductData = () => {
   useEffect(()=> {
     timeGoodType({
       startTime: moment(rangePickerValue?.[0]).format("YYYY-MM-DD"),
-      endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD"),
-      orderType: 11
+      endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD")
     }).then(res=> {
       setGoodsClass(res?.data?.detailList)
       setPieData(res?.data?.payRateList)

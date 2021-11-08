@@ -14,7 +14,7 @@ import { amountTransform } from '@/utils/utils'
 
 const PieChart = ({data}) => {
 
-  const colors = data.reduce((pre, cur, idx) => {
+  const colors = data?.reduce((pre, cur, idx) => {
     pre[cur.item] = getTheme().colors10[idx]
     return pre
   }, {})
