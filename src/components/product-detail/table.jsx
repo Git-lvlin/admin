@@ -49,8 +49,8 @@ export default function EditTable(props) {
         hideInTable: goodsSaleType === 2,
       },
       {
-        title: '最低批发量',
-        dataIndex: 'wholesaleMinNum',
+        title: '集采箱规单位量',
+        dataIndex: 'batchNumber',
         editable: false,
         width: 130,
         hideInTable: goodsSaleType === 2,

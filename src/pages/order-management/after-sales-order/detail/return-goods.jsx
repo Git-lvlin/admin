@@ -59,7 +59,7 @@ const skipToOrderDetail = (type, id) => {
     break
     case 15:
     case 16:
-      history.push(`/order-management/intensive-order-detail/${id}`)
+      history.push(`/order-management/intensive-order/shopkeeper-order-detail/${id}`)
     break
     default:
       return ''

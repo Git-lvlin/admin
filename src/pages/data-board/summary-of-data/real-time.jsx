@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
   Chart, 
   Line, 
@@ -7,89 +7,139 @@ import {
   Legend
 } from 'bizcharts'
 import ProCard, { CheckCard } from '@ant-design/pro-card'
-import { Space, Typography } from 'antd'
+import { Empty, Space, Typography } from 'antd'
+import { useRequest } from 'umi'
 
 import Yuan from '../components/Yuan'
+import { briefCount, briefCountDetail } from '@/services/data-board/summary-of-data'
+import { amountTransform } from '@/utils/utils'
 
 const { Paragraph, Title, Text } = Typography
 
-const RealTime = ({
-  data,
-  loading
-}) => {
+const RealTime = () => {
   const [title, setTitle] = useState("支付金额")
+  const [lineData, setLineData] = useState({})
+  const [loading, setLoading] = useState(false)
+  const [code, setCode] = useState("payAmount")
+  const { data } = useRequest(briefCount)
+ 
+  useEffect(() => {
+    setLoading(true)
+    briefCountDetail({code}).then(res=> {
+      const arr = res.data.map(item=> {
+        if(item) {
+          return {timeName: item?.timeName, countTime: item?.countTime, value: Number(item?.value)}
+        } else {
+          return false
+        }
+      })
+      setLineData(arr)
+    }).finally(()=> {
+      setLoading(false)
+    })
+    return ()=> {
+      setLineData({})
+    }
+  }, [code])
 
   const scale = {
-    temperature: { min: 0 },
-    city: {
+    value: { min: 0 },
+    timeName: {
       formatter: v => {
         return {
-          Tokyo: '今日',
-          London: '昨日',
-          Test: '666'
+          昨日: '昨日',
+          今日: '今日'
         }[v]
       }
     }
   }
-
   return (
     <ProCard
       title="今日实时"
       headerBordered
     >
       <ProCard colSpan="50%">
-        <ProCard title={title} style={{ height: 500 }}>
-          <Chart
-            scale={scale}
-            autoFit
-            height={440}
-            data={data}
-            interactions={['element-active']}
-            forceUpdate
-            padding={[80, 20, 60, 40]}
-          >
-            <Point
-              position="month*temperature"
-              color="city"
-              shape='circle' 
-            />
-            <Line 
-              shape="line"
-              position="month*temperature"
-              color="city"
-              label="temperature"
-            />
-            <Tooltip
-              shared
-              showCrosshairs
-            />
-            <Legend
-              position="top"
-              background={{
-                style: {
-                  fill: '#fff',
-                  stroke: '#fff'
-                }
-              }}
-              itemName={{
-                style: {
-                  fontSize: 16
-                }
-              }}
-            />
-          </Chart>
+        <ProCard 
+          title={title}
+          style={{ height: 500 }}
+          loading={loading}
+        >
+          {
+            (lineData&&lineData?.[0]) ? 
+            <Chart
+              scale={scale}
+              autoFit
+              height={440}
+              data={lineData}
+              interactions={['element-active']}
+              forceUpdate
+              padding={[80, 40, 60, 60]}
+            >
+              <Point
+                position="countTime*value"
+                color="timeName"
+                shape='circle' 
+              />
+              <Line 
+                shape="line"
+                position="countTime*value"
+                color="timeName"
+                label="value"
+              />
+              <Tooltip
+                shared
+                showCrosshairs
+              />
+              <Legend
+                position="top"
+                background={{
+                  style: {
+                    fill: '#fff',
+                    stroke: '#fff'
+                  }
+                }}
+                itemName={{
+                  style: {
+                    fontSize: 16
+                  }
+                }}
+              />
+            </Chart>:
+            <Empty />
+          }
         </ProCard>
       </ProCard>
       <CheckCard.Group
         onChange={(value) => {
-          setTitle(value)
+          switch(value) {
+            case 'payAmount':
+              setCode(value)
+              return setTitle('支付金额')
+            case 'orderCode':
+              setCode(value)
+              return setTitle('支付订单数')
+            case 'orderMember':
+              setCode(value)
+              return setTitle('下单用户数')
+            case 'accessCount':
+              setCode(value)
+              return setTitle('访问用户数')
+            case 'registerMember':
+              setCode(value)
+              return setTitle('新增用户数')
+            case 'registerStore':
+              setCode(value)
+              return setTitle('新增店主数')
+            default :
+              setCode(value)
+              return setTitle('')
+          }
         }}
-        defaultValue="支付金额"
+        defaultValue="payAmount"
       >
         <ProCard 
           gutter={[36, 36]}
           wrap
-          loading={loading}
         >
           <CheckCard 
             style={{ width: "36%", height: 150 }}
@@ -100,7 +150,7 @@ const RealTime = ({
                   <Space size={20}>
                     <Text>支付金额</Text>
                     <Title level={3}>
-                      ￥<Yuan>{1234}</Yuan>
+                      ￥<Yuan>{amountTransform(data?.payAmount?.today, '/')}</Yuan>
                     </Title>
                   </Space>
                 </Paragraph>
@@ -108,13 +158,13 @@ const RealTime = ({
                   <Space size={20}>
                     <Text>昨日全天</Text>
                     <span>
-                      ￥<Yuan>{2234}</Yuan>
+                      ￥<Yuan>{amountTransform(data?.payAmount?.yestoday, '/')}</Yuan>
                     </span>
                   </Space>
                 </Paragraph>
               </>
             }
-            value="支付金额"
+            value={data?.payAmount?.code}
           />
           <CheckCard 
             style={{ width: "36%", height: 150 }}
@@ -125,19 +175,19 @@ const RealTime = ({
                   <Space size={20}>
                     <Text>支付订单数</Text>
                     <Title level={3}>
-                      <Yuan>2333</Yuan>
+                      <Yuan>{data?.orderCount?.today}</Yuan>
                     </Title>
                   </Space>
                 </Paragraph>
                 <Paragraph>
                   <Space size={20}>
                     <Text>昨日全天</Text>
-                    <Yuan>{6666}</Yuan>
+                    <Yuan>{data?.orderCount?.yestoday}</Yuan>
                   </Space>
                 </Paragraph>
               </>
             }
-            value="支付订单数"
+            value={ data?.orderCount?.code }
           />
           <CheckCard 
             style={{ width: "36%", height: 150 }}
@@ -148,19 +198,19 @@ const RealTime = ({
                   <Space size={20}>
                     <Text>下单用户数</Text>
                     <Title level={3}>
-                      <Yuan>{5555}</Yuan>
+                      <Yuan>{data?.orderMember?.today}</Yuan>
                     </Title>
                   </Space>
                 </Paragraph>
                 <Paragraph>
                   <Space size={20}>
                     <Text>昨日全天</Text>
-                    <Yuan>{24345}</Yuan>
+                    <Yuan>{data?.orderMember?.yestoday}</Yuan>
                   </Space>
                 </Paragraph>
               </>
             }
-            value="下单用户数"
+            value={data?.orderMember?.code}
           />
          <CheckCard 
             style={{ width: "36%", height: 150 }}
@@ -171,19 +221,19 @@ const RealTime = ({
                   <Space size={20}>
                     <Text>访问用户数</Text>
                     <Title level={3}>
-                      <Yuan>66677</Yuan>
+                      <Yuan>{data?.accessCount?.today}</Yuan>
                     </Title>
                   </Space>
                 </Paragraph>
                 <Paragraph>
                   <Space size={20}>
                     <Text>昨日全天</Text>
-                    <Yuan>{7777}</Yuan>
+                    <Yuan>{data?.accessCount?.yestoday}</Yuan>
                   </Space>
                 </Paragraph>
               </>
             }
-            value="访问用户数"
+            value={data?.accessCount?.code}
           />
           <CheckCard 
             style={{ width: "36%", height: 150 }}
@@ -194,19 +244,19 @@ const RealTime = ({
                   <Space size={20}>
                     <Text>新增用户数</Text>
                     <Title level={3}>
-                      <Yuan>{9999}</Yuan>
+                      <Yuan>{data?.registerMember?.today}</Yuan>
                     </Title>
                   </Space>
                 </Paragraph>
                 <Paragraph>
                   <Space size={20}>
                     <Text>昨日全天</Text>
-                    <Yuan>{11111}</Yuan>
+                    <Yuan>{data?.registerMember?.yestoday}</Yuan>
                   </Space>
                 </Paragraph>
               </>
             }
-            value="新增用户数"
+            value={data?.registerMember?.code}
           />
           <CheckCard 
             style={{ width: "36%", height: 150 }}
@@ -217,19 +267,19 @@ const RealTime = ({
                   <Space size={20}>
                     <Text>新增店主数</Text>
                     <Title level={3}>
-                      <Yuan>{8999}</Yuan>
+                      <Yuan>{data?.registerStore?.today}</Yuan>
                     </Title>
                   </Space>
                 </Paragraph>
                 <Paragraph>
                   <Space size={20}>
                     <Text>昨日全天</Text>
-                    <Yuan>{9827}</Yuan>
+                    <Yuan>{data?.registerStore?.yestoday}</Yuan>
                   </Space>
                 </Paragraph>
               </>
             }
-            value="新增店主数"
+            value={data?.registerStore?.code}
           />
         </ProCard>
       </CheckCard.Group>

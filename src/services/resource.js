@@ -89,7 +89,10 @@ export async function inputVersionList(params) {
   });
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> coderby
 //数据报表分页查询
 export const findByPage = async (params, options = {}) => {
   const {current, pageSize,...rest} = params;
@@ -186,6 +189,7 @@ export const removeById = async (params, options = {}) => {
 
 //数据报表测试接口
 export const configTest = async (params, options = {}) => {
+<<<<<<< HEAD
   const {current, pageSize,...rest} = params;
   const res = await request('/auth/java-admin/report/config/test3', {
     method: 'POST',
@@ -194,13 +198,23 @@ export const configTest = async (params, options = {}) => {
       size: pageSize,
       ...rest
     },  
+=======
+  const {reportCode,responseTemplate} = params;
+  const res = await request(`/auth/java-admin/report/config/${reportCode}`, {
+    method: 'POST',
+    data: JSON.parse(responseTemplate),  
+>>>>>>> coderby
     ...options
   });
 
   return {
+<<<<<<< HEAD
     code: res.code,
     data: res.data.records,
     success: res.success,
+=======
+    data: res
+>>>>>>> coderby
   }
 }
 
@@ -220,4 +234,9 @@ export const findFunctions = async (params, options = {}) => {
     data: res.data,
     success: res.success,
   }
+<<<<<<< HEAD
 }
+=======
+}
+
+>>>>>>> coderby

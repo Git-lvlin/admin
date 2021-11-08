@@ -1,6 +1,7 @@
 import numeral from 'numeral'
 
 const yuan = (val) => `${numeral(val).format('0,0')}`
+const num = (val) => `${numeral(val).format('0,0.00')}`
 
 export default class Yuan extends React.Component {
   main = null
@@ -16,8 +17,10 @@ export default class Yuan extends React.Component {
   renderToHtml = () => {
     const { children } = this.props
 
-    if (this.main) {
+    if (this.main&&Number.isInteger(children)) {
       this.main.innerHTML = yuan(children)
+    } else {
+      this.main.innerHTML = num(children)
     }
   };
 

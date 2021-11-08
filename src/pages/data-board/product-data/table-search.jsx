@@ -44,8 +44,7 @@ const TableSearch = ({
       }}
       layout="inline"
       onFinish={(v) => {
-        // TODO:type
-        // setSearch(search + 1)
+        
       }}
     >
       <h3 className={styles.title}>商品分类统计</h3>

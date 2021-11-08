@@ -82,19 +82,15 @@ export default () => {
             width="md"
             valueType="select"
             valueEnum={{
-              1: '优惠活动详情',
-              2: '优惠券-领券中'
+              1: '优惠活动详情'
             }}
             readonly
           />
-          { 
-            linkType===1 &&
-            <ProFormText
-              name="link"
-              label="活动网址"
-              readonly
-            />
-          }
+          <ProFormText
+            name="link"
+            label="活动网址"
+            readonly
+          />
         </>
       )
     } else if ( showTab == 2 ) {

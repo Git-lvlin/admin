@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import ProCard from '@ant-design/pro-card'
@@ -9,9 +9,26 @@ import TableSearch from './table-search'
 import { getTimeDistance } from '@/utils/utils'
 import styles from './styles.less'
 import GcCascader from '@/components/gc-cascader'
+import { timeGoodType } from '@/services/data-board/product-data'
 
 const ProductData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('yesterday'))
+  const [goodsClass, setGoodsClass] = useState([])
+  const [pieData, setPieData] = useState([])
+
+  useEffect(()=> {
+    timeGoodType({
+      startTime: moment(rangePickerValue?.[0]).format("YYYY-MM-DD"),
+      endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD")
+    }).then(res=> {
+      setGoodsClass(res?.data?.detailList)
+      setPieData(res?.data?.payRateList)
+    })
+    return ()=> {
+      setGoodsClass([])
+      setPieData([])
+    }
+  }, [rangePickerValue])
 
   const isActive = (type) => {
     if (!rangePickerValue) {
@@ -49,32 +66,32 @@ const ProductData = () => {
   const goodsCategory = [
     {
       title: '分类名称',
-      dataIndex: '',
+      dataIndex: 'gcName',
       align: 'center'
     },
     {
       title: '支付商品数量',
-      dataIndex: '',
+      dataIndex: 'payCount',
       align: 'center'
     },
     {
       title: '支付商品金额',
-      dataIndex: '',
+      dataIndex: 'payAmount',
       align: 'center'
     },
     {
       title: '退款商品数量',
-      dataIndex: '',
+      dataIndex: 'returnNum',
       align: 'center'
     },
     {
       title: '退款商品金额',
-      dataIndex: '',
+      dataIndex: 'returnAmount',
       align: 'center'
     },
     {
       title: '退款率',
-      dataIndex: '',
+      dataIndex: 'refundRate',
       align: 'center'
     }
   ]
@@ -177,8 +194,9 @@ const ProductData = () => {
       <ProCard split="vertical">
         <ProCard colSpan="70%" ghost>
           <ProTable
-            rowKey=""
+            rowKey="gcName"
             columns={goodsCategory}
+            dataSource={goodsClass}
             pagination={false}
             search={false}
             toolBarRender={false}
@@ -187,7 +205,7 @@ const ProductData = () => {
         <ProCard
           bordered
         >
-          <PieChart/>
+          <PieChart data={pieData}/>
         </ProCard>
       </ProCard>
       <ProTable

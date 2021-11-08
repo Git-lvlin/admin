@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 
 import ProTable from '@ant-design/pro-table'
@@ -9,240 +9,175 @@ import Yuan from '../components/Yuan'
 import LineChart from './line-chart'
 import RegionalOrderAnalysis from './regional-order-analysis'
 import styles from './styles.less'
+import { orderAnalysis, orderStatistical } from '@/services/data-board/order-analysis'
 
-const OrderAnalysis = () => {
-  const dateNow = moment(+new Date()).format('YYYY-MM-DD')
-  const [value, setValue] = useState(1)
+const dateNow = moment(+new Date()).format('YYYY-MM-DD')
+const date = (day) => {
+  if(day === 0) {
+    return dateNow
+  } else {
+    return moment().subtract(day, 'days').calendar().replaceAll('/', '-')
+  }
+}
 
-  const date = (day) => {
-    if(day === 0) {
-      return dateNow
-    } else {
-      return moment().subtract(day, 'days').calendar().replaceAll('/', '-')
+const SelectDate = ({
+  dateSelect,
+  setDateSelect
+}) => {
+  
+  const handleChange = (v)=> {
+    switch(v.target.value) {
+      case 0: 
+        setDateSelect(date(0))
+      break
+      case 7:
+        setDateSelect(date(7))
+      break
+      case 30:
+        setDateSelect(date(30))
+      break
+      case 90:
+        setDateSelect(date(90))
+      break
     }
   }
+  return (
+    <div className={styles.selectDate}>
+      <Space size={20}>
+        <Radio.Group
+          defaultValue={0}
+          buttonStyle="solid"
+          onChange= {
+            (e) => {
+              handleChange(e)
+            }
+          }
+        >
+          <Radio.Button value={0}>今日</Radio.Button>
+          <Radio.Button value={7}>近7天</Radio.Button>
+          <Radio.Button value={30}>近30天</Radio.Button>
+          <Radio.Button value={90}>近3个月</Radio.Button>
+        </Radio.Group>
+        <div className={styles.date}>
+          查询时间：{dateSelect} 至 {dateNow}
+        </div>
+      </Space>
+    </div>
+  )
+}
+
+const OrderAnalysis = () => {
+  const [value, setValue] = useState(1)
+  const [data, setData] = useState([])
+  const [tableData, setTableData] = useState([])
+  const [dateSelect, setDateSelect] = useState(date(0))
+  const [totalOrder, setTotalOrder] = useState(0)
+  const [totalAmount, setTotalAmount] = useState(0)
 
   const onChange = e => {
     setValue(e.target.value)
   }
 
-
-
-  const data = [
-    {
-      month: "Jan",
-      city: "Tokyo",
-      temperature: 7
-    },
-    {
-      month: "Jan",
-      city: "London",
-      temperature: 3.9
-    },
-    {
-      month: "Feb",
-      city: "Tokyo",
-      temperature: 6.9
-    },
-    {
-      month: "Feb",
-      city: "London",
-      temperature: 4.2
-    },
-    {
-      month: "Mar",
-      city: "Tokyo",
-      temperature: 9.5
-    },
-    {
-      month: "Mar",
-      city: "London",
-      temperature: 5.7
-    },
-    {
-      month: "Apr",
-      city: "Tokyo",
-      temperature: 14.5
-    },
-    {
-      month: "Apr",
-      city: "London",
-      temperature: 8.5
-    },
-    {
-      month: "May",
-      city: "Tokyo",
-      temperature: 18.4
-    },
-    {
-      month: "May",
-      city: "London",
-      temperature: 11.9
-    },
-    {
-      month: "Jun",
-      city: "Tokyo",
-      temperature: 21.5
-    },
-    {
-      month: "Jun",
-      city: "London",
-      temperature: 15.2
-    },
-    {
-      month: "Jul",
-      city: "Tokyo",
-      temperature: 25.2
-    },
-    {
-      month: "Jul",
-      city: "London",
-      temperature: 17
-    },
-    {
-      month: "Aug",
-      city: "Tokyo",
-      temperature: 26.5
-    },
-    {
-      month: "Aug",
-      city: "London",
-      temperature: 16.6
-    },
-    {
-      month: "Sep",
-      city: "Tokyo",
-      temperature: 23.3
-    },
-    {
-      month: "Sep",
-      city: "London",
-      temperature: 14.2
-    },
-    {
-      month: "Oct",
-      city: "Tokyo",
-      temperature: 18.3
-    },
-    {
-      month: "Oct",
-      city: "London",
-      temperature: 10.3
-    },
-    {
-      month: "Nov",
-      city: "Tokyo",
-      temperature: 13.9
-    },
-    {
-      month: "Nov",
-      city: "London",
-      temperature: 6.6
-    },
-    {
-      month: "Dec",
-      city: "Tokyo",
-      temperature: 9.6
-    },
-    {
-      month: "Dec",
-      city: "London",
-      temperature: 4.8
+  useEffect(() => {
+    orderAnalysis({
+      startTime: dateSelect, 
+      endTime: dateNow
+    }).then(res => {
+      if(res.success)  {
+        setTableData(res.data)
+        setTotalAmount(res?.data?.reduce((acc, curr) => (
+          acc + Number(curr.totalSales)
+        ), 0))
+        setTotalOrder(res?.data?.reduce((acc, curr) => (
+          acc + Number(curr.payCount)
+        ), 0))
+      }
+    })
+    return () => {
+      setTotalOrder(0)
+      setTotalAmount(0)
     }
-  ]
+  }, [dateSelect])
+
+  useEffect(() => {
+    orderStatistical({
+      startTime: dateSelect, 
+      endTime: dateNow,
+      type: value
+    }).then(res=> {
+      const arr = res.data.map(item=> {
+        if(item) {
+          return {reportName: item?.reportName, dateTime: item?.dateTime, value: Number(item?.value)}
+        } else {
+          return false
+        }
+      })
+      setData(arr)
+    })
+    return () => {
+      setData([])
+    }
+  }, [dateSelect, value])
   
   const scale = {
-    temperature: { min: 0 },
-    city: {
+    value: { min: 0 },
+    reportName: {
       formatter: v => {
         return {
-          London: '伦敦',
-          Tokyo: '东京'
+          1688: '1688订单',
+          C端集约订单: 'C端集约订单',
+          秒约订单: '秒约订单',
+          B端集约订单: 'B端集约订单'
         }[v]
       }
     }
   }
 
-  const SelectDate = () => {
-    const [dateSelect, setDateSelect] = useState(date(0))
-    const handleChange = (v)=> {
-      switch(v.target.value) {
-        case 0: 
-          setDateSelect(date(0))
-        break
-        case 7:
-          setDateSelect(date(7))
-        break
-        case 30:
-          setDateSelect(date(30))
-        break
-        case 90:
-          setDateSelect(date(90))
-        break
-      }
-    }
-    return (
-      <div className={styles.selectDate}>
-        <Space size={20}>
-          <Radio.Group
-            defaultValue={0}
-            buttonStyle="solid"
-            onChange= {
-              (e) => {
-                handleChange(e)
-              }
-            }
-          >
-            <Radio.Button value={0}>今日</Radio.Button>
-            <Radio.Button value={7}>近7天</Radio.Button>
-            <Radio.Button value={30}>近30天</Radio.Button>
-            <Radio.Button value={90}>近3个月</Radio.Button>
-          </Radio.Group>
-          <div className={styles.date}>
-            查询时间：{dateSelect} 至 {dateNow}
-          </div>
-        </Space>
-      </div>
-    )
-  }
-
   const columns = [
     {
       title: '订单类型',
-      dataIndex: '',
+      dataIndex: 'orderType',
+      valueType: 'select',
+      valueEnum: {
+        2:'秒约订单',
+        11: '1688订单',
+        15: 'C端集约订单',
+        99: 'B端集约订单'
+      },
       align: 'center'
     },
     {
       title: '支付订单数',
-      dataIndex: '',
+      dataIndex: 'payCount',
       align: 'center'
     },
     {
       title: '总交易额',
-      dataIndex: '',
+      dataIndex: 'totalSales',
       align: 'center'
-    },
+    }
   ]
   return (
     <PageContainer title={false}>
       <ProTable
-        rowKey=""
+        rowKey="orderType"
         columns={columns}
+        dataSource={tableData}
         bordered
         search={false}
         toolbar={{
           title: '订单趋势分析',
           settings: false,
-          subTitle: <SelectDate />
+          subTitle: <SelectDate setDateSelect={setDateSelect} dateSelect={dateSelect}/>
         }}
         tableRender={(_, dom) => (
           <>
             { dom }
             {
-              <Space className={styles.summary} size={80}>
-                <span>支付订单数：<Yuan>233333</Yuan></span>
-                <span>总交易额：<Yuan>666666666</Yuan></span>
-              </Space>
+              <div className={styles.summary}>
+                <span>支付订单数：<Yuan>{totalOrder}</Yuan></span>
+                <span>总交易额：<Yuan>{totalAmount}</Yuan></span>
+              </div>
             }
           </>
         )}

@@ -4,47 +4,56 @@ import {
   Line, 
   Point, 
   Tooltip, 
-  Legend
+  Legend,
+  Slider
 } from 'bizcharts'
+import { Empty } from 'antd'
 
 const LineChart = ({
   data,
   scale
 }) => {
   return (
-    <Chart
-      scale={scale}
-      padding={[30, 20, 60, 40]}
-      autoFit
-      height={440}
-      data={data}
-      interactions={['element-active']}
-      forceUpdate
-    >
-      <Point
-        position="month*temperature"
-        color="city"
-        shape='circle' 
-      />
-      <Line 
-        shape="line"
-        position="month*temperature"
-        color="city"
-        label="temperature"
-      />
-      <Tooltip
-        shared
-        showCrosshairs
-      />
-      <Legend
-        position="top-right"
-        itemName={{
-          style: {
-            fontSize: 16
-          }
-        }}
-      />
-    </Chart>
+    <>
+      {
+        data?.[0]?
+        <Chart
+          scale={scale}
+          padding={[80, 40, 60, 80]}
+          autoFit
+          height={440}
+          data={data}
+          interactions={['element-active']}
+          forceUpdate
+        >
+          <Point
+            position="dateTime*value"
+            color="reportName"
+            shape='circle' 
+          />
+          <Line 
+            shape="line"
+            position="dateTime*value"
+            color="reportName"
+            label="value"
+          />
+          <Tooltip
+            shared
+            showCrosshairs
+          />
+          <Legend
+            position="top-right"
+            itemName={{
+              style: {
+                fontSize: 16
+              }
+            }}
+          />
+          <Slider />
+        </Chart>:
+        <Empty/>
+      }
+    </>
   )
 }
 
