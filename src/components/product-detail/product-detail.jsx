@@ -147,6 +147,11 @@ export default (props) => {
             >
               {detailData?.goods?.totalStock}
             </Form.Item>
+            {/* <Form.Item
+              label="库存单位"
+            >
+              {detailData?.goods?.unit}
+            </Form.Item> */}
             <Form.Item
               label="单SKU起售数量"
             >
@@ -206,6 +211,11 @@ export default (props) => {
             >
               {detailData?.goods?.totalStock}
             </Form.Item>
+            {/* <Form.Item
+              label="库存单位"
+            >
+              {detailData?.goods?.unit}
+            </Form.Item> */}
             <Form.Item
               label="库存预警值"
             >
@@ -234,11 +244,11 @@ export default (props) => {
         >
           {detailData?.freightTemplateName}
         </Form.Item>}
-      <Form.Item
+      {/* <Form.Item
         label="七天无理由退货"
       >
         {{ 0: '不支持', 1: '支持', }[detailData?.goods?.supportNoReasonReturn]}
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item
         label="特殊说明"
       >

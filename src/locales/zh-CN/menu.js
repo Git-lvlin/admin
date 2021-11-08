@@ -161,6 +161,8 @@ export default {
   'menu.dc-management.add': '新增',
   'menu.dc-management.list': '资源位列表',
   'menu.dc-management.version': '资源位版本',
+  'menu.dc-management.data-board': '数据报表列表',
+  'menu.dc-management.data-board-configuration': '数据报表配置',
 
   'menu.coupon-management': '红包管理',
   'menu.coupon-management.coupon-list': '红包列表',
@@ -253,6 +255,9 @@ export default {
   'menu.financial-management.subsidy-summary-detail' : '补贴结算',
 
   'menu.data-board': '数据看板',
+  'menu.data-board.summary-of-data': '数据概述',
+  'menu.data-board.order-analysis': '订单分析',
+  'menu.data-board.product-data': '商品数据',
   'menu.data-board.data-preview': '数据预览',
   'menu.data-board.intensive-data-export': '集约数据导出',
   'menu.data-board.data-sales': '销售数据',

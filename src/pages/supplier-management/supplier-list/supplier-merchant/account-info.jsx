@@ -250,6 +250,7 @@ export default (props) => {
       const { bankAccountInfo } = detailData
       form.setFieldsValue({
         bindBankSwitch: bankAccountInfo?.bindBankSwitch,
+        bankAccountName: detailData.companyName,
       })
 
       if (bankAccountInfo) {
@@ -301,9 +302,9 @@ export default (props) => {
             bankCardFrontImg: bankCardFrontImg?.[0],
           },
           bankCode: bankCode ? { label: bankName, value: bankCode } : undefined,
-          bankAccountType: 1 || bankAccountType,
+          bankAccountType: bankAccountType || 1,
           bankCardNo,
-          bankAccountName: (1 || bankAccountType) === 1 ? detailData.companyName : bankAccountName,
+          bankAccountName: (bankAccountType || 1) === 1 ? detailData.companyName : bankAccountName,
         })
       }
     }
