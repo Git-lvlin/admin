@@ -47,7 +47,7 @@ const IndicatorsCard = () => {
     coreData({
       startTime: moment(rangePickerValue[0]).format("YYYY-MM-DD"),
       endTime: moment(rangePickerValue[1]).format("YYYY-MM-DD"),
-      code: code.join(',')
+      codes: code.join(',')
     }).then(res => {
       setLineData(res.data)
     }).finally(()=> {
