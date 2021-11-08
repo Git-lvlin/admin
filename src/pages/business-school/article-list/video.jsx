@@ -7,8 +7,7 @@ import ProForm, {
   ProFormSelect,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { bannerAdd } from '@/services/cms/member/member';
-import { adminArticleDetail } from '@/services/business-school/find-admin-article-list';
+import { saveOrUpdateArticle,adminArticleDetail } from '@/services/business-school/find-admin-article-list';
 import 'react-quill/dist/quill.snow.css';
 
 
@@ -88,7 +87,7 @@ export default (props) => {
         param.id = detailData?.id
       }
       return new Promise((resolve) => {
-        bannerAdd(param).then((res) => {
+        saveOrUpdateArticle(param).then((res) => {
           if (res.code === 0) {
             message.success(detailData?.id ?'编辑成功':'提交成功');
             resolve(true);
