@@ -202,7 +202,6 @@ export default (props) =>{
         <a
           key="delete"
           onClick={() => {
-            console.log('record',record)
             setDataSource(dataSource.filter((item) => item !== record));
           }}
         >
