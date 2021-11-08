@@ -43,7 +43,7 @@ const Detail = (props) => {
       dataIndex: 'goodsSkuNums',
     },
     {
-      title: '单位',
+      title: '库存单位',
       dataIndex: 'unit',
     }
   ]);
@@ -154,7 +154,7 @@ const Detail = (props) => {
               dataIndex: 'goodsSkuNums',
             },
             {
-              title: '单位',
+              title: '库存单位',
               dataIndex: 'unit',
             },
           ])
@@ -240,7 +240,7 @@ const Detail = (props) => {
               dataIndex: 'realNum'
             },
             {
-              title: '单位',
+              title: '库存单位',
               dataIndex: 'unit',
             },
             {
@@ -284,7 +284,7 @@ const Detail = (props) => {
               dataIndex: 'realNum'
             },
             {
-              title: '单位',
+              title: '库存单位',
               dataIndex: 'unit',
             },
             {

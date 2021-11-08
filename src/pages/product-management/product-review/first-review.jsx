@@ -282,7 +282,7 @@ export default (props) => {
       <Form.Item
         label={`${detailData.isMultiSpec === 0 ? '' : '总'}可用库存`}
       >
-        {goods.stockNum}
+        {detailData.isMultiSpec === 0 ? goods.stockNum : goods.totalStock}
       </Form.Item>
       <Form.Item
         label="库存单位"
