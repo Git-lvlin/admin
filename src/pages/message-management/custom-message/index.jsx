@@ -71,7 +71,8 @@ const Index = () => {
     },
     { 
       title: '消息模板-内容', 
-      dataIndex: 'content', 
+      dataIndex: 'content',
+      width: "20%",
       align: 'center' 
     },
     { 

@@ -3,21 +3,6 @@ export default {
   path: '/data-board',
   routes: [
     {
-      name: 'summary-of-data',
-      path: '/data-board/summary-of-data',
-      component: './data-board/summary-of-data'
-    },
-    {
-      name: 'order-analysis',
-      path: '/data-board/order-analysis',
-      component: './data-board/order-analysis'
-    },
-    {
-      name: 'product-data',
-      path: '/data-board/product-data',
-      component: './data-board/product-data'
-    },
-    {
       name: 'data-preview',
       path: '/data-board/data-preview',
       component: './data-board/data-preview'
