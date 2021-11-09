@@ -31,6 +31,30 @@ const UserRelationship = () => {
       search: false,
     },
     {
+      title: '渠道',
+      dataIndex: 'sourceType',
+      search: false,
+      valueEnum: {
+        0: '',
+        1: '商品分享',
+        2: '邀请新人',
+        3: '盲盒活动',
+        4: '签到活动',
+        5: '五星店主活动',
+        6: '周末大狂欢',
+      }
+    },
+    {
+      title: '是否签到',
+      dataIndex: 'inviteStatus',
+      search: false,
+      valueEnum: {
+        0: '',
+        1: '',
+        2: '已签到',
+      }
+    },
+    {
       title: '是否为社区店主',
       dataIndex: 'userType',
       valueType: 'text',
