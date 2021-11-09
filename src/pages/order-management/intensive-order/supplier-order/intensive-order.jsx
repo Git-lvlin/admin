@@ -357,7 +357,7 @@ const TableList = () => {
                     <div className={styles.info}>
                       <div>{item.sku.goodsName}</div>
                       <div>集约价：{amountTransform(item.sku.price, '/')}元{item?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(item?.sku?.wholesaleFreight, '/')}/件）` : ''}<time style={{ marginLeft: 20 }}>规格：{item.sku.skuName}</time></div>
-                      <div>数量： <span>{item.sku.totalNum}件</span></div>
+                      <div>数量： <span>{item.sku.totalNum}{item.sku.unit}</span></div>
                       <div>小计： <span>{amountTransform(item.sku.totalAmount, '/')}</span>元</div>
                       {isPurchase && <div>批发供货价： ¥{amountTransform(item.sku.wholesaleSupplyPrice, '/')}</div>}
                     </div>

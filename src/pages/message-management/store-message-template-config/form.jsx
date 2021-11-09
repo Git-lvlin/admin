@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   ModalForm,
   ProFormSelect,
@@ -12,6 +12,7 @@ import * as api from '@/services/message-management/message-template-config';
 export default (props) => {
   const { visible, setVisible, callback, onClose, data } = props
   const [form] = Form.useForm()
+  const [popupSelect, setPopupSelect] = useState([])
 
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -33,12 +34,23 @@ export default (props) => {
   }
 
   useEffect(() => {
+    api.popupConfigAll().then(res=>{
+      setPopupSelect(res.data.map(item => ({label: item.name, value: item.id})))
+    })
+    return ()=> {
+      setPopupSelect([])
+    }
+  }, [])
+  
+
+  useEffect(() => {
     data && form.setFieldsValue({
       name: data.name,
       templateTitle: data.templateTitle,
       templateCopywritingContent: data.templateCopywritingContent,
       pushType: data.pushType,
-      type: data.type
+      type: data.type,
+      popupConfigId: data.popupConfigId
     })
     return undefined
   }, [data, form])
@@ -123,6 +135,13 @@ export default (props) => {
           4: '小程序'
         }}
         readonly
+      />
+      <ProFormSelect
+        name="popupConfigId"
+        label="弹窗模板"
+        width="md"
+        valueType="select"
+        options={popupSelect}
       />
     </ModalForm>
   )

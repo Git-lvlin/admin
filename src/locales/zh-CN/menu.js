@@ -190,6 +190,7 @@ export default {
   'menu.message-management.audit': '审核',
   'menu.message-management.detail': '详情',
   'menu.message-management.stand-inside-letter-list': '站内信列表',
+  'menu.message-management.popup-template': 'APP内弹窗模板',
 
  
  
