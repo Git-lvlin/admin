@@ -71,7 +71,7 @@ const TransactionDetails = () => {
   const orderType = () => {
     if(query.accountId==='platform') {
       return {
-        'second': '秒约',
+        'second': '秒约订单',
         'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
         'commandCollect': '集约销售订单',
@@ -191,20 +191,18 @@ const TransactionDetails = () => {
             >
               {resetText}
             </Button>,
-            query.accountId==='platform'&&
             <Export
               change={(e)=> {setVisit(e)}}
               key="export" 
               type="financial-account-log-page-export"
               conditions={
                 {
-                  accountId: 'platform',
-                  accountType: 'platform',
+                  accountId: query.accountId,
+                  accountType: query.accountType,
                   ...form?.getFieldValue()
                 }
               }
             />,
-            query.accountId==='platform'&&
             <ExportHistory
               key="exportHistory"
               show={visit}
