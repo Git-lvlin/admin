@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Space, Tooltip } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/intensive-store-management/store-list';
@@ -13,7 +14,8 @@ import ExcelModal from './excel-modal'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 
-const StoreList = () => {
+const StoreList = (props) => {
+  const { storeType }=props
   const [formVisible, setFormVisible] = useState(false);
   const [createVisible, setCreateVisible] = useState(false);
   const [returnVisible, setReturnVisible] = useState(false);
@@ -87,7 +89,7 @@ const StoreList = () => {
       fieldProps: {
         placeholder: '请输入店主收件手机号'
       },
-      order: -1
+      order: 8
     },
     {
       title: '集约任务',
@@ -221,6 +223,18 @@ const StoreList = () => {
       hideInTable: true,
     },
     {
+      title: '保证金状态',
+      dataIndex: 'level',
+      valueType: 'select',
+      hideInSearch:storeType==1?true:false,
+      hideInTable: storeType==1?true:false,
+      valueEnum: {
+        0: '全部',
+        1: '已退保证金',
+        2: '未退保证金',
+      },
+    },
+    {
       title: '营业状态',
       dataIndex: ['status', 'desc'],
       valueType: 'text',
@@ -260,6 +274,29 @@ const StoreList = () => {
       },
     },
     {
+      key: 'status',
+      title: '集约任务',
+      dataIndex: 'status',
+      width: 100,
+      valueType: 'checkbox',
+      valueEnum: {
+        all: { text: '参与过集约任务', status: 'Default' },
+
+      },
+      hideInTable: true,
+    },
+    {
+      key: 'status',
+      title: '用户关系',
+      dataIndex: 'status',
+      width: 100,
+      valueType: 'checkbox',
+      valueEnum: {
+        all: { text: '已有直推用户', status: 'Default' }
+      },
+      hideInTable: true,
+    },
+    {
       title: '操作',
       dataIndex: '',
       valueType: 'option',
@@ -290,12 +327,15 @@ const StoreList = () => {
   }
 
   return (
-    <PageContainer>
+    <>
       <ProTable
         rowKey="id"
         options={false}
         actionRef={actionRef}
         formRef={formRef}
+        params={{
+          status:storeType
+        }}
         request={getStoreList}
         search={{
           defaultCollapsed: false,
@@ -370,8 +410,36 @@ const StoreList = () => {
         setVisible={setExcelVisible}
         callback={() => { actionRef.current.reload() }}
       />}
-    </PageContainer>
+    </>
   );
 };
 
-export default StoreList;
+
+const OverallStore = () => {
+  const [activeKey, setActiveKey] = useState('1')
+
+  return (
+    <PageContainer>
+      <ProCard
+        tabs={{
+          type: 'card',
+          activeKey,
+          onChange: setActiveKey
+        }}
+      >
+        <ProCard.TabPane key="1" tab="正常店铺">
+          {
+            activeKey==1&&<StoreList storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="2" tab="已注销店铺">
+          {
+            activeKey==2&&<StoreList storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+      </ProCard>
+    </PageContainer>
+  )
+}
+
+export default OverallStore;
