@@ -230,8 +230,8 @@ const StoreList = (props) => {
       hideInTable: true,
       valueEnum: {
         "2,5": '全部',
-        "5": '注销已退保证金',
-        "2": '注销未退保证金',
+        "5": '已退保证金',
+        "2": '未退保证金',
       },
     },
     {
