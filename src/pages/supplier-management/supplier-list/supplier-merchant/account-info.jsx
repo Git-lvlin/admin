@@ -685,7 +685,12 @@ export default (props) => {
                         label="结算银行卡开户名"
                         placeholder="请输入结算银行卡开户名"
                         rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
-                        extra="银行账户类型为对公账户时，开户名为供应商家企业名称"
+                        extra={
+                          <>
+                            {accountType === 2 && '银行账户类型为对公账户时，开户名为供应商家企业名称'}
+                            {accountType === 1 && bankAccountType === 1 && '银行账户类型为对公账户时：银行卡开户名为供应商企业名称；银行卡开户地址的省市区要与企业地址的省市区相同'}
+                          </>
+                        }
                         disabled={bankAccountType === 1 || detailData?.bankAccountInfo?.auditStatus === 1 || accountType === 2}
                       />
                     )

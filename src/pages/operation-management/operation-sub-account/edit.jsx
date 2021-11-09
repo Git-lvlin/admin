@@ -59,6 +59,7 @@ export default (props) => {
 
     roleList({
       accountId,
+      size: 999,
     }).then(res => {
       if (res.code === 0) {
         setRules(res.data.records.map(item => ({ label: item.title, value: item.id })))
