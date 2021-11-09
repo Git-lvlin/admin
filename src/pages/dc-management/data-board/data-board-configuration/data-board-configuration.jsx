@@ -74,7 +74,7 @@ export default (props) =>{
     findFunctions({}).then(res=>{
       const data={}
       res.data.map((ele)=>(
-        data[ele.functionName]=ele.functionName
+        data[ele.functionName]=ele.name
       ))
       setOnselect(data)
     })
@@ -144,8 +144,8 @@ export default (props) =>{
   }
   const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
-      if (value&&!/[^\u4e00-\u9fa5]/.test(value)) {
-        await reject('不能输入汉字')
+      if (value&&/[\u4E00-\u9FA5]/g.test(value)) {
+        await reject('编码不能输入汉字!')
       } else {
         await resolve()
       }
@@ -171,7 +171,7 @@ export default (props) =>{
       },
     },
      {
-      title: '格式串',
+      title: '转换参数',
       dataIndex: 'format',
       valueType: 'text',
     },
@@ -196,19 +196,20 @@ export default (props) =>{
     },
     {
       title: '操作',
-      valueType: 'option',
+      valueType: 'text',
       width: 200,
       render: (text, record, _, action) => [
         <a
           key="delete"
           onClick={() => {
-            setDataSource(dataSource.filter((item) => item.id !== record.id));
+            setDataSource(dataSource.filter((item) => item !== record));
           }}
         >
           删除
-        </a>,
+        </a>
       ],
       hideInTable:id&&edtil?true:false,
+      editable:false,
     },
   ];
   const columns2 = [
@@ -265,19 +266,20 @@ export default (props) =>{
     },
     {
       title: '操作',
-      valueType: 'option',
+      valueType: 'text',
       width: 200,
       render: (text, record, _, action) => [
         <a
           key="delete"
           onClick={() => {
-            setDataSource2(dataSource2.filter((item) => item.id !== record.id));
+            setDataSource2(dataSource2.filter((item) => item!== record));
           }}
         >
           删除
         </a>,
       ],
       hideInTable:id&&edtil?true:false,
+      editable:false,
     },
   ];
   const columns3 = [
@@ -300,7 +302,7 @@ export default (props) =>{
       },
     },
      {
-      title: '格式串',
+      title: '转换参数',
       dataIndex: 'format',
       valueType: 'text',
     },
@@ -312,19 +314,20 @@ export default (props) =>{
     },
     {
       title: '操作',
-      valueType: 'option',
+      valueType: 'text',
       width: 200,
       render: (text, record, _, action) => [
         <a
           key="delete"
           onClick={() => {
-            setDataSource3(dataSource3.filter((item) => item.id !== record.id));
+            setDataSource3(dataSource3.filter((item) => item!== record));
           }}
         >
           删除
         </a>,
       ],
       hideInTable:id&&edtil?true:false,
+      editable:false,
     },
   ];
   return (
@@ -473,7 +476,7 @@ export default (props) =>{
           {
             id&&edtil?
              <Form.Item
-              label="出参模板（FreeMarKer）"
+              label="响应模板（FreeMarKer）"
               rules={[{ required: true, message: '请填写模板' }]}
               >
               <pre className={styles.line_feed}>
@@ -485,7 +488,7 @@ export default (props) =>{
            :
            <ProFormTextArea
               name="responseTemplate"
-              label="出参模板（FreeMarKer）"
+              label="响应模板（FreeMarKer）"
               rules={[{ required: true, message: '请填写模板' }]}
               placeholder="请输入"
               readonly={id&&edtil}

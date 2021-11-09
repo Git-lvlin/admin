@@ -72,6 +72,8 @@ export default {
 
 
 
+
+
   'menu.supplier-management': '供应商家管理',
   'menu.supplier-management.supplier-list': '供应商家列表',
   'menu.supplier-management.audit-list': '供应商家审核',
@@ -132,6 +134,7 @@ export default {
   'menu.cms.goos-reg.member': '秒约和店主模块',
   'menu.cms.goos-reg.hot-goos': '热销好货',
   'menu.cms.goos-reg.crazy-date': '限时秒杀',
+  'menu.cms.goos-reg.weekend-revelry': '周末大狂欢',
   'menu.cms.goos-reg.save-money': '集约优选',
   'menu.cms.goos-reg.strategy-today': '首页秒约爆品',
   'menu.cms.home-suspension': '首页悬浮窗',
@@ -191,8 +194,9 @@ export default {
  
  
 
-  'menu.business-school': '商学院',
+  'menu.business-school': '学习社区管理',
   'menu.business-school.article-list': '文章列表',
+  'menu.business-school.shopkeeper-disclose': '店主吐槽',
   'menu.business-school.article-category-list': '文章分类列表',
 
   'menu.community-management':'社区管理',
@@ -288,4 +292,11 @@ export default {
   'menu.import-export-configuration': '导入导出配置',
   'menu.import-export-configuration.export-configuration': '导出配置',
   'menu.import-export-configuration.import-configuration': '导入配置',
+
+
+  'menu.activity-management': '活动管理',
+  'menu.activity-management.everyday-red-packet-activity': '每日红包活动',
+  'menu.activity-management.everyday-red-packet-activity.activity-list': '活动列表',
+  'menu.activity-management.everyday-packet-rule': '每日首单红包规则设置',
+  'menu.activity-management.everyday-red-packet-activity.red-packet-particulars': '红包明细',
 };
