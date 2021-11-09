@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
 	Chart,
 	Interval,
@@ -13,8 +13,14 @@ import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
 import { Empty } from 'antd'
 
-const PieChart = ({data}) => {
+const PieChart = ({data, payRate}) => {
 
+  if(payRate !== 0) {
+    data = data?.map(item=> ({payRate: Number(item.payCount) / payRate, ...item}))
+  } else {
+    data = data?.map(item=> ({payRate: 0, ...item}))
+  }
+ 
   const colors = data?.reduce((pre, cur, idx) => {
     pre[cur.item] = getTheme().colors10[idx]
     return pre
@@ -23,7 +29,7 @@ const PieChart = ({data}) => {
   const cols = {
     payRate: {
       formatter: (val) => {
-        val = amountTransform(Number(val), '*') + "%"
+        val = Math.round(amountTransform(Number(val), '*')) + "%"
         return val
       }
     }
@@ -40,6 +46,7 @@ const PieChart = ({data}) => {
           scale={cols}
           interactions={['element-active']}
           autoFit
+          padding={[40, 30, 20, 20]}
         >
           <Coordinate type="theta" radius={0.75} />
           <Tooltip showTitle={false} />
@@ -58,7 +65,7 @@ const PieChart = ({data}) => {
                 return {
                   offset: 20,
                   content: (data) => {
-                    return `${data.gcName}\n ${amountTransform(Number(data.payRate), '*')}%`
+                    return `${data.gcName}\n ${Math.round(amountTransform(Number(data.payRate), '*'))}%`
                   },
                   style: {
                     fill: colors[item]

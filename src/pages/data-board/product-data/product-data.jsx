@@ -10,12 +10,14 @@ import { getTimeDistance } from '@/utils/utils'
 import styles from './styles.less'
 import GcCascader from '@/components/gc-cascader'
 import { timeGoodType } from '@/services/data-board/product-data'
+import { amountTransform } from '@/utils/utils'
 
 const ProductData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('yesterday'))
   const [goodsData, setGoodsData] = useState([])
   const [pieData, setPieData] = useState([])
-  const [orderType, setOrderType] = useState(0)
+  const [payRate, setPayRate] = useState(0)
+  const [orderType, setOrderType] = useState("15")
   const [loading, setLoading] = useState(false)
 
   useEffect(()=> {
@@ -27,6 +29,7 @@ const ProductData = () => {
     }).then(res=> {
       setPieData(res?.data?.payRateList)
       setGoodsData(res?.data?.detailList)
+      setPayRate(Number(res?.data?.payRateList?.reduce((acc, cur) => acc + cur.payCount, 0)))
     }).finally(()=> {
       setLoading(false)
     })
@@ -83,7 +86,8 @@ const ProductData = () => {
     {
       title: '支付商品金额',
       dataIndex: 'payAmount',
-      align: 'center'
+      align: 'center',
+      render: (_) => amountTransform(Number(_), '/')
     },
     {
       title: '退款商品数量',
@@ -210,7 +214,7 @@ const ProductData = () => {
           />
         </ProCard>
         <ProCard>
-          <PieChart data={pieData} />
+          <PieChart data={pieData} payRate={payRate}/>
         </ProCard>
       </ProCard>
       <ProTable
