@@ -412,29 +412,31 @@ export default (props) => {
           <ProFormDependency name={['accountType']}>
             {
               ({ accountType }) => (
-                <Form.Item
-                  label={`${accountType === 1 ? '企业' : ''}地址`}
-                  name="addressInfo"
-                  validateFirst
-                  rules={[
-                    () => ({
-                      required: true,
-                      validator(_, value = {}) {
-                        const { area, info } = value;
-                        if (area?.length === 0 || !area) {
-                          return Promise.reject(new Error(`请选择${accountType === 1 ? '企业' : ''}所在地`));
-                        }
+                <>
+                  {accountType === 1 && <Form.Item
+                    label={`${accountType === 1 ? '企业' : ''}地址`}
+                    name="addressInfo"
+                    validateFirst
+                    rules={[
+                      () => ({
+                        required: true,
+                        validator(_, value = {}) {
+                          const { area, info } = value;
+                          if (area?.length === 0 || !area) {
+                            return Promise.reject(new Error(`请选择${accountType === 1 ? '企业' : ''}所在地`));
+                          }
 
-                        if (!info?.replace(/\s/g, '') && accountType === 1) {
-                          return Promise.reject(new Error(`请输入${accountType === 1 ? '企业' : ''}详细地址`));
-                        }
+                          if (!info?.replace(/\s/g, '') && accountType === 1) {
+                            return Promise.reject(new Error(`请输入${accountType === 1 ? '企业' : ''}详细地址`));
+                          }
 
-                        return Promise.resolve();
-                      },
-                    })]}
-                >
-                  <Address hideInfo={accountType === 2} disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
-                </Form.Item>
+                          return Promise.resolve();
+                        },
+                      })]}
+                  >
+                    <Address hideInfo={accountType === 2} disabled={detailData?.bankAccountInfo?.auditStatus === 1} />
+                  </Form.Item>}
+                </>
               )
             }
           </ProFormDependency>
