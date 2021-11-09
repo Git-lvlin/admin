@@ -29,7 +29,8 @@ const index = () => {
     { 
       title: '消息模板-内容', 
       dataIndex: 'templateCopywritingContent', 
-      align: 'center' 
+      align: 'center',
+      width: '30%'
     },
     { 
       title: '推送渠道',

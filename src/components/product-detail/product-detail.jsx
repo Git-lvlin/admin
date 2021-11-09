@@ -244,11 +244,11 @@ export default (props) => {
         >
           {detailData?.freightTemplateName}
         </Form.Item>}
-      <Form.Item
+      {/* <Form.Item
         label="七天无理由退货"
       >
         {{ 0: '不支持', 1: '支持', }[detailData?.goods?.supportNoReasonReturn]}
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item
         label="特殊说明"
       >

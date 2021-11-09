@@ -102,7 +102,7 @@ const Detail = (props) => {
               {detailData.companyUserPhone}
             </Form.Item>
             <Form.Item
-              label="经销商所管辖区域"
+              label="运营商所管辖区域"
             >
               {detailData.provinceName}{detailData.cityName}{detailData.areaName}
             </Form.Item>

@@ -301,11 +301,11 @@ export default (props) => {
         {goods.buyMaxNum}
       </Form.Item> */}
 
-      <Form.Item
+      {/* <Form.Item
         label="七天无理由退货"
       >
         {{ 0: '不支持', 1: '支持', }[goods.supportNoReasonReturn]}
-      </Form.Item>
+      </Form.Item> */}
 
       {goods.goodsRemark
         &&
