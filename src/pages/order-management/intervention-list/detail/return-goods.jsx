@@ -101,7 +101,7 @@ const ReturnGoods = props => {
       align: 'center' 
     },
     { 
-      title: '单位',
+      title: '库存单位',
       dataIndex: 'unit',
       align: 'center' 
     },
