@@ -35,7 +35,7 @@ const UserRelationship = () => {
       dataIndex: 'sourceType',
       search: false,
       valueEnum: {
-        0: '',
+        0: '-',
         1: '商品分享',
         2: '邀请新人',
         3: '盲盒活动',
@@ -49,8 +49,8 @@ const UserRelationship = () => {
       dataIndex: 'inviteStatus',
       search: false,
       valueEnum: {
-        0: '',
-        1: '',
+        0: '未签到',
+        1: '未签到',
         2: '已签到',
       }
     },
