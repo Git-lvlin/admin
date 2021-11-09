@@ -41,7 +41,7 @@ const StoreList = () => {
     // },
     {
       title: '店主手机号',
-      dataIndex: 'phone',
+      dataIndex: 'memberPhone',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店主手机号'
@@ -53,7 +53,7 @@ const StoreList = () => {
       dataIndex: 'phone',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => <div><div>{data.phone}</div><div>{data.linkman}</div></div>
+      render: (_, data) => <div><div>{data.memberPhone}</div><div>{data.nickname === data.memberPhone ? '' : data.nickname}</div></div>
     },
     {
       title: '店铺名称',
@@ -83,7 +83,7 @@ const StoreList = () => {
     },
     {
       title: '店主收件号',
-      dataIndex: 'memberPhone',
+      dataIndex: 'phone',
       fieldProps: {
         placeholder: '请输入店主收件手机号'
       },
