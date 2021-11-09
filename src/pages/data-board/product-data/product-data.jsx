@@ -13,23 +13,25 @@ import { timeGoodType } from '@/services/data-board/product-data'
 
 const ProductData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('yesterday'))
-  const [goodsClass, setGoodsClass] = useState([])
-  const [pieData, setPieData] = useState([])
+  const [goodsData, setGoodsData] = useState([])
+  const [orderType, setOrderType] = useState(0)
+  const [loading, setLoading] = useState(false)
 
   useEffect(()=> {
+    setLoading(true)
     timeGoodType({
       startTime: moment(rangePickerValue?.[0]).format("YYYY-MM-DD"),
       endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD"),
-      orderType: 11
+      orderType
     }).then(res=> {
-      setGoodsClass(res?.data?.detailList)
-      setPieData(res?.data?.payRateList)
+      setGoodsData(res?.data?.detailList)
+    }).finally(()=> {
+      setLoading(false)
     })
     return ()=> {
-      setGoodsClass([])
-      setPieData([])
+      setGoodsData([])
     }
-  }, [rangePickerValue])
+  }, [rangePickerValue, orderType])
 
   const isActive = (type) => {
     if (!rangePickerValue) {
@@ -191,22 +193,21 @@ const ProductData = () => {
         isActive={isActive}
         handleRangePickerChange={handleRangePickerChange}
         selectDate={selectDate}
+        selectType={setOrderType}
       />
-      <ProCard split="vertical">
+      <ProCard split="vertical" loading={loading}>
         <ProCard colSpan="70%" ghost>
           <ProTable
             rowKey="gcName"
             columns={goodsCategory}
-            dataSource={goodsClass}
+            dataSource={goodsData}
             pagination={false}
             search={false}
             toolBarRender={false}
           />
         </ProCard>
-        <ProCard
-          bordered
-        >
-          <PieChart data={pieData}/>
+        <ProCard>
+          <PieChart data={goodsData}/>
         </ProCard>
       </ProCard>
       <ProTable
