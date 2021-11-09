@@ -89,7 +89,7 @@ const StoreList = (props) => {
       fieldProps: {
         placeholder: '请输入店主收件手机号'
       },
-      order: 8
+      order: -1
     },
     {
       title: '集约任务',
@@ -224,21 +224,22 @@ const StoreList = (props) => {
     },
     {
       title: '保证金状态',
-      dataIndex: 'level',
+      dataIndex: 'status',
       valueType: 'select',
-      hideInSearch:storeType==1?true:false,
-      hideInTable: storeType==1?true:false,
+      hideInSearch:storeType=='normal',
+      hideInTable: true,
       valueEnum: {
-        0: '全部',
-        1: '已退保证金',
-        2: '未退保证金',
+        "2,5": '全部',
+        "5": '注销已退保证金',
+        "2": '注销未退保证金',
       },
     },
     {
-      title: '营业状态',
+      title: '保证金状态',
       dataIndex: ['status', 'desc'],
       valueType: 'text',
       hideInSearch: true,
+      hideInTable: storeType=='normal',
       render: (_, data) => {
         const { remark } = data;
         return (
@@ -253,12 +254,26 @@ const StoreList = (props) => {
       title: '营业状态',
       dataIndex: 'status',
       valueType: 'select',
+      hideInSearch:storeType=='cancelled',
       hideInTable: true,
       valueEnum: {
         1: '启用',
-        2: '注销',
         3: '关闭'
       },
+    },
+    {
+      title: '营业状态',
+      dataIndex: 'status',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType=='cancelled',
+      render: (_, data) => {
+        return (
+          <>
+            {_.desc}
+          </>
+        )
+      }
     },
     {
       title: '店铺等级',
@@ -273,29 +288,29 @@ const StoreList = (props) => {
         5: '五星店主',
       },
     },
-    {
-      key: 'status',
-      title: '集约任务',
-      dataIndex: 'status',
-      width: 100,
-      valueType: 'checkbox',
-      valueEnum: {
-        all: { text: '参与过集约任务', status: 'Default' },
+    // {
+    //   key: 'status',
+    //   title: '集约任务',
+    //   dataIndex: 'asdas',
+    //   width: 100,
+    //   valueType: 'checkbox',
+    //   valueEnum: {
+    //     all: { text: '参与过集约任务', status: 'Default' },
 
-      },
-      hideInTable: true,
-    },
-    {
-      key: 'status',
-      title: '用户关系',
-      dataIndex: 'status',
-      width: 100,
-      valueType: 'checkbox',
-      valueEnum: {
-        all: { text: '已有直推用户', status: 'Default' }
-      },
-      hideInTable: true,
-    },
+    //   },
+    //   hideInTable: true,
+    // },
+    // {
+    //   key: 'status',
+    //   title: '用户关系',
+    //   dataIndex: 'asdas',
+    //   width: 100,
+    //   valueType: 'checkbox',
+    //   valueEnum: {
+    //     all: { text: '已有直推用户', status: 'Default' }
+    //   },
+    //   hideInTable: true,
+    // },
     {
       title: '操作',
       dataIndex: '',
@@ -334,7 +349,7 @@ const StoreList = (props) => {
         actionRef={actionRef}
         formRef={formRef}
         params={{
-          status:storeType
+          operation:storeType
         }}
         request={getStoreList}
         search={{
@@ -416,7 +431,7 @@ const StoreList = (props) => {
 
 
 const OverallStore = () => {
-  const [activeKey, setActiveKey] = useState('1')
+  const [activeKey, setActiveKey] = useState('normal')
 
   return (
     <PageContainer>
@@ -427,14 +442,14 @@ const OverallStore = () => {
           onChange: setActiveKey
         }}
       >
-        <ProCard.TabPane key="1" tab="正常店铺">
+        <ProCard.TabPane key="normal" tab="正常店铺">
           {
-            activeKey==1&&<StoreList storeType={activeKey} />
+            activeKey=='normal'&&<StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="2" tab="已注销店铺">
+        <ProCard.TabPane key="cancelled" tab="已注销店铺">
           {
-            activeKey==2&&<StoreList storeType={activeKey} />
+            activeKey=='cancelled'&&<StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
       </ProCard>
