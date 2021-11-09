@@ -227,45 +227,51 @@ export default (props) => {
           <ProFormDependency name={['bankAccountType', 'bindBankSwitch']}>
             {
               ({ bankAccountType, bindBankSwitch }) => (
-                <Form.Item
-                  label={
-                    <div style={{ height: 130 }}>
-                      <div>开户资质文件</div>
-                      <div>jpg/png格式</div>
-                      <div>大小不超过2MB</div>
-                    </div>
+                <>
+                  {
+                    detailData?.bankAccountInfo?.accountType === 1
+                    &&
+                    <Form.Item
+                      label={
+                        <div style={{ height: 130 }}>
+                          <div>开户资质文件</div>
+                          <div>jpg/png格式</div>
+                          <div>大小不超过2MB</div>
+                        </div>
+                      }
+                      name="imageInfo"
+                      validateFirst
+                      rules={[
+                        () => ({
+                          required: detailData?.bankAccountInfo?.accountType !== 2,
+                          validator(_, value = {}) {
+                            const { bankLicenseImg, bankCardFrontImg, bankCardBackImg } = value;
+
+                            if (detailData?.bankAccountInfo?.accountType === 2) {
+                              return Promise.resolve();
+                            }
+
+                            if (bindBankSwitch === 1) {
+                              if (!bankLicenseImg && bankAccountType === 1) {
+                                return Promise.reject(new Error('请上传开户银行许可证照'));
+                              }
+                              if (!bankCardFrontImg && bankAccountType === 2) {
+                                return Promise.reject(new Error('请上传结算银行卡正面照'));
+                              }
+                              if (!bankCardBackImg && bankAccountType === 2) {
+                                return Promise.reject(new Error('请上传结算银行卡背面照'));
+                              }
+                            }
+
+                            return Promise.resolve();
+                          },
+                        })
+                      ]}
+                    >
+                      <ImageInfo bankAccountType={bankAccountType} bindBankSwitch={bindBankSwitch} />
+                    </Form.Item>
                   }
-                  name="imageInfo"
-                  validateFirst
-                  rules={[
-                    () => ({
-                      required: detailData?.bankAccountInfo?.accountType !== 2,
-                      validator(_, value = {}) {
-                        const { bankLicenseImg, bankCardFrontImg, bankCardBackImg } = value;
-
-                        if (detailData?.bankAccountInfo?.accountType === 2 ) {
-                          return Promise.resolve();
-                        }
-
-                        if (bindBankSwitch === 1) {
-                          if (!bankLicenseImg && bankAccountType === 1) {
-                            return Promise.reject(new Error('请上传开户银行许可证照'));
-                          }
-                          if (!bankCardFrontImg && bankAccountType === 2) {
-                            return Promise.reject(new Error('请上传结算银行卡正面照'));
-                          }
-                          if (!bankCardBackImg && bankAccountType === 2) {
-                            return Promise.reject(new Error('请上传结算银行卡背面照'));
-                          }
-                        }
-
-                        return Promise.resolve();
-                      },
-                    })
-                  ]}
-                >
-                  <ImageInfo bankAccountType={bankAccountType} bindBankSwitch={bindBankSwitch} />
-                </Form.Item>
+                </>
               )
             }
           </ProFormDependency>
@@ -297,7 +303,12 @@ export default (props) => {
                   label="结算银行卡开户名"
                   placeholder="请输入结算银行卡开户名"
                   rules={[{ required: true, message: '请输入结算银行卡开户名' }]}
-                  extra="银行账户类型为对公账户时，开户名为供应商家企业名称"
+                  extra={
+                    <>
+                      {detailData?.bankAccountInfo?.accountType === 2 && '银行账户类型为对公账户时，开户名为供应商家企业名称'}
+                      {detailData?.bankAccountInfo?.accountType === 1 && bankAccountType === 1 && '银行账户类型为对公账户时：银行卡开户名为供应商企业名称；银行卡开户地址的省市区要与企业地址的省市区相同'}
+                    </>
+                  }
                   disabled={bankAccountType === 1 || detailData?.bankAccountInfo?.accountType === 2}
                 />
               )
