@@ -7,8 +7,8 @@ import ProForm, {
   ProFormSelect,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { bannerAdd,findAdminArticleTypeList } from '@/services/cms/member/member';
-import { adminArticleDetail } from '@/services/business-school/find-admin-article-list';
+import { findAdminArticleTypeList } from '@/services/cms/member/member';
+import { adminArticleDetail,saveOrUpdateArticle } from '@/services/business-school/find-admin-article-list';
 import  ReactQuill,{ Quill }  from 'react-quill';
 import { history } from 'umi';
 import styles from './style.less'
@@ -64,7 +64,7 @@ export default (props) => {
       message.error('请填写文章内容！！');
       return false
     }else{
-        bannerAdd(param).then((res) => {
+      saveOrUpdateArticle(param).then((res) => {
           if (res.code === 0) {
             message.success(detailData?.id ?'编辑成功':'提交成功');
             callback(true)
