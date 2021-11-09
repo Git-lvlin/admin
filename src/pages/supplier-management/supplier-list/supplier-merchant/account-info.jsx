@@ -513,13 +513,13 @@ export default (props) => {
                   </>
                   :
                   <>
-                    <ProFormText
+                    {/* <ProFormText
                       name="legalPhone"
                       label="手机号"
                       placeholder="请输入手机号"
                       rules={[{ required: true, message: '请输入手机号' }]}
                       disabled={detailData?.bankAccountInfo?.auditStatus === 1}
-                    />
+                    /> */}
                     <ProFormText
                       name="legalName"
                       label="真实姓名"
@@ -591,59 +591,66 @@ export default (props) => {
           <ProFormDependency name={['bankAccountType', 'bindBankSwitch', 'accountType']}>
             {
               ({ bankAccountType, bindBankSwitch, accountType }) => (
-                <Form.Item
-                  label={
-                    <div style={{ height: 130, alignSelf: 'flex-start' }}>
-                      <div>开户资质文件</div>
-                      <div>jpg/png格式</div>
-                      <div>大小不超过2MB</div>
-                    </div>
+                <>
+                  {
+                    accountType === 1
+                    &&
+                    <Form.Item
+                      label={
+                        <div style={{ height: 130, alignSelf: 'flex-start' }}>
+                          <div>开户资质文件</div>
+                          <div>jpg/png格式</div>
+                          <div>大小不超过2MB</div>
+                        </div>
+                      }
+                      name="imageInfo"
+                      validateFirst
+                      rules={[
+                        () => ({
+                          required: accountType === 1,
+                          validator(_, value = {}) {
+                            const { businessLicense, idCardFrontImg, idCardBackImg, bankLicenseImg, bankCardFrontImg, bankCardBackImg } = value;
+
+                            if (accountType === 2) {
+                              return Promise.resolve();
+                            }
+
+                            if (!businessLicense) {
+                              return Promise.reject(new Error('请上传三合一证件照'));
+                            }
+                            if (!idCardFrontImg) {
+                              return Promise.reject(new Error('请上传法人身份证正面照'));
+                            }
+                            if (!idCardBackImg) {
+                              return Promise.reject(new Error('请上传法人身份证背面照'));
+                            }
+                            if (bindBankSwitch === 1) {
+                              if (!bankLicenseImg && bankAccountType === 1) {
+                                return Promise.reject(new Error('请上传开户银行许可证照'));
+                              }
+                              if (!bankCardFrontImg && bankAccountType === 2) {
+                                return Promise.reject(new Error('请上传结算银行卡正面照'));
+                              }
+                              if (!bankCardBackImg && bankAccountType === 2) {
+                                return Promise.reject(new Error('请上传结算银行卡背面照'));
+                              }
+                            }
+
+                            return Promise.resolve();
+                          },
+                        })
+                      ]}
+                    >
+                      <ImageInfo
+                        disabled={detailData?.bankAccountInfo?.auditStatus === 1}
+                        bankAccountType={bankAccountType}
+                        bindBankSwitch={bindBankSwitch}
+                        accountType={accountType}
+                      />
+                    </Form.Item>
                   }
-                  name="imageInfo"
-                  validateFirst
-                  rules={[
-                    () => ({
-                      required: accountType === 1,
-                      validator(_, value = {}) {
-                        const { businessLicense, idCardFrontImg, idCardBackImg, bankLicenseImg, bankCardFrontImg, bankCardBackImg } = value;
 
-                        if (accountType === 2) {
-                          return Promise.resolve();
-                        }
-
-                        if (!businessLicense) {
-                          return Promise.reject(new Error('请上传三合一证件照'));
-                        }
-                        if (!idCardFrontImg) {
-                          return Promise.reject(new Error('请上传法人身份证正面照'));
-                        }
-                        if (!idCardBackImg) {
-                          return Promise.reject(new Error('请上传法人身份证背面照'));
-                        }
-                        if (bindBankSwitch === 1) {
-                          if (!bankLicenseImg && bankAccountType === 1) {
-                            return Promise.reject(new Error('请上传开户银行许可证照'));
-                          }
-                          if (!bankCardFrontImg && bankAccountType === 2) {
-                            return Promise.reject(new Error('请上传结算银行卡正面照'));
-                          }
-                          if (!bankCardBackImg && bankAccountType === 2) {
-                            return Promise.reject(new Error('请上传结算银行卡背面照'));
-                          }
-                        }
-
-                        return Promise.resolve();
-                      },
-                    })
-                  ]}
-                >
-                  <ImageInfo
-                    disabled={detailData?.bankAccountInfo?.auditStatus === 1}
-                    bankAccountType={bankAccountType}
-                    bindBankSwitch={bindBankSwitch}
-                    accountType={accountType}
-                  />
-                </Form.Item>
+                </>
               )
             }
           </ProFormDependency>
