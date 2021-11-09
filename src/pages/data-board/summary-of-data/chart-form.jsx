@@ -129,7 +129,6 @@ const ChartForm = ({
               shape="line"
               position="countTime*value"
               color="reportName"
-              label="temperature"
             />
             <Tooltip
               shared

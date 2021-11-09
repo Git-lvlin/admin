@@ -18,6 +18,11 @@ export default {
       component: './data-board/product-data'
     },
     {
+      name: 'community-store-data',
+      path: '/data-board/community-store-data',
+      component: './data-board/community-store-data'
+    },
+    {
       name: 'data-preview',
       path: '/data-board/data-preview',
       component: './data-board/data-preview'

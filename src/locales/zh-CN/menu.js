@@ -257,6 +257,7 @@ export default {
   'menu.data-board.summary-of-data': '数据概述',
   'menu.data-board.order-analysis': '订单分析',
   'menu.data-board.product-data': '商品数据',
+  'menu.data-board.community-store-data': '社区店数据',
   'menu.data-board.data-preview': '数据预览',
   'menu.data-board.intensive-data-export': '集约数据导出',
   'menu.data-board.data-sales': '销售数据',

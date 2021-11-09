@@ -14,6 +14,7 @@ import { timeGoodType } from '@/services/data-board/product-data'
 const ProductData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('yesterday'))
   const [goodsData, setGoodsData] = useState([])
+  const [pieData, setPieData] = useState([])
   const [orderType, setOrderType] = useState(0)
   const [loading, setLoading] = useState(false)
 
@@ -24,12 +25,14 @@ const ProductData = () => {
       endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD"),
       orderType
     }).then(res=> {
+      setPieData(res?.data?.payRateList)
       setGoodsData(res?.data?.detailList)
     }).finally(()=> {
       setLoading(false)
     })
     return ()=> {
       setGoodsData([])
+      setPieData([])
     }
   }, [rangePickerValue, orderType])
 
@@ -207,7 +210,7 @@ const ProductData = () => {
           />
         </ProCard>
         <ProCard>
-          <PieChart data={goodsData}/>
+          <PieChart data={pieData} />
         </ProCard>
       </ProCard>
       <ProTable

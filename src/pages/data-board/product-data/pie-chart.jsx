@@ -14,29 +14,8 @@ import { amountTransform } from '@/utils/utils'
 import { Empty } from 'antd'
 
 const PieChart = ({data}) => {
-  const [paymentRatio, setPaymentRatio] = useState(0)
-  const [pieData, setPieData] = useState([])
 
-  useEffect(() => {
-    setPaymentRatio(data?.reduce((acc, curr) => (
-      acc + Number(curr.payCount)
-    ), 0))
-    let rateNum = 0
-    const arr = data?.map(item => {
-      if(paymentRatio !== 0) {
-        rateNum = item.payCount/paymentRatio
-      } else {
-        rateNum = 0
-      }
-      return {gcName: item.gcName, payCount: item.payCount, payRate: rateNum}
-    })
-    setPieData(arr)
-    return () => {
-      setPieData([])
-    }
-  }, [data])
-
-  const colors = pieData?.reduce((pre, cur, idx) => {
+  const colors = data?.reduce((pre, cur, idx) => {
     pre[cur.item] = getTheme().colors10[idx]
     return pre
   }, {})
@@ -44,7 +23,7 @@ const PieChart = ({data}) => {
   const cols = {
     payRate: {
       formatter: (val) => {
-        val = amountTransform(val, '*') + "%"
+        val = amountTransform(Number(val), '*') + "%"
         return val
       }
     }
@@ -54,10 +33,10 @@ const PieChart = ({data}) => {
     <>
       <h3 className={styles.pieTitle}>商品分类支付占比</h3>
       {
-        !!pieData?.[0]?
+        data?.[0]?
         <Chart 
-          height={600}
-          data={pieData}
+          height={400}
+          data={data}
           scale={cols}
           interactions={['element-active']}
           autoFit
@@ -79,7 +58,7 @@ const PieChart = ({data}) => {
                 return {
                   offset: 20,
                   content: (data) => {
-                    return `${data.gcName}\n ${data.payRate}%`
+                    return `${data.gcName}\n ${amountTransform(Number(data.payRate), '*')}%`
                   },
                   style: {
                     fill: colors[item]
