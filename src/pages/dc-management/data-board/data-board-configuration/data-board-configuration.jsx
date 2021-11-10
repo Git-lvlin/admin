@@ -92,7 +92,7 @@ export default (props) =>{
             format:ele.format,
             functionName:ele.functionName,
             sourceField:ele.sourceField,
-            isMandary:ele.isMandary&&`${ele.isMandary}`,
+            isMandary:`${ele.isMandary}`,
           })))
           setDataSource2(res.data?.sqlConfigs.map(ele=>(
             {
@@ -144,8 +144,8 @@ export default (props) =>{
   }
   const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
-      if (value&&/[\u4E00-\u9FA5]/g.test(value)) {
-        await reject('编码不能输入汉字!')
+      if (value&&!/[^\u4e00-\u9fa5]/.test(value)) {
+        await reject('不能输入汉字')
       } else {
         await resolve()
       }
@@ -202,6 +202,7 @@ export default (props) =>{
         <a
           key="delete"
           onClick={() => {
+            console.log('record',record)
             setDataSource(dataSource.filter((item) => item !== record));
           }}
         >

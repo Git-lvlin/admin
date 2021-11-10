@@ -257,8 +257,8 @@ const StoreList = (props) => {
       hideInSearch:storeType=='cancelled',
       hideInTable: true,
       valueEnum: {
-        1: '启用',
-        3: '关闭'
+        1: '已启用',
+        3: '已关闭'
       },
     },
     {
