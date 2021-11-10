@@ -214,4 +214,3 @@ export const findFunctions = async (params, options = {}) => {
     success: res.success,
   }
 }
-
