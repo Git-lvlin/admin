@@ -224,6 +224,16 @@ const TableList = () => {
       width: 80,
     },
     {
+      title: '开户类型',
+      dataIndex: 'accountType',
+      valueType: 'text',
+      hideInTable: true,
+      valueEnum: {
+        1: '企业',
+        2: '个人',
+      },
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
