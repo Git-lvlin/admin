@@ -58,7 +58,7 @@ const CommunityStoreData = () => {
     {
       title: '统计时间范围',
       dataIndex: '',
-      valueType: 'dateTimeRange',
+      valueType: 'dateRange',
       hideInTable: true
     },
     {
