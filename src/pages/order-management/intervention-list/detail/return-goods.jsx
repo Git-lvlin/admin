@@ -59,7 +59,7 @@ const skipToOrderDetail = (type, id) => {
     break
     case 15:
     case 16:
-      history.push(`/order-management/intensive-order-detail/${id}`)
+      history.push(`/order-management/intensive-order/shopkeeper-order-detail/${id}`)
     break
     default:
       return ''
@@ -98,6 +98,11 @@ const ReturnGoods = props => {
     { 
       title: '数量',
       dataIndex: 'returnNum',
+      align: 'center' 
+    },
+    { 
+      title: '库存单位',
+      dataIndex: 'unit',
       align: 'center' 
     },
     {

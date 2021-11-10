@@ -92,20 +92,14 @@ const Edit = props => {
               {
                 label: '优惠活动详情',
                 value: 1
-              },
-              {
-                label: '优惠券-领券中',
-                value: 2
               }
             ]}
           />
-          { 
-            linkType===1&&<ProFormText
-              name="link"
-              label="活动网址"
-              rules={[{ required: true, message: '请输入活动网址'}]}
-            />
-          }
+          <ProFormText
+            name="link"
+            label="活动网址"
+            rules={[{ required: true, message: '请输入活动网址'}]}
+          />
         </>
       )
     }else if( showTab == 2 ) {

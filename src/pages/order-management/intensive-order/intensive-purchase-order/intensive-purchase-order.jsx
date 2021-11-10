@@ -45,6 +45,12 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
+      title: '库存单位',
+      dataIndex: 'unit',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
       title: '状态',
       dataIndex: 'statusDesc',
       valueType: 'text',

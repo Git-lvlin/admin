@@ -13,6 +13,8 @@ export default (props) => {
   const { visible, setVisible, callback, onClose, data } = props
   const [form] = Form.useForm()
   const [targetRole, setTargetRole] = useState([])
+  const [popupSelect, setPopupSelect] = useState([])
+
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -34,13 +36,24 @@ export default (props) => {
   }
 
   useEffect(() => {
+    api.popupConfigAll().then(res=>{
+      setPopupSelect(res.data.map(item => ({label: item.name, value: item.id})))
+    })
+    return ()=> {
+      setPopupSelect([])
+    }
+  }, [])
+  
+
+  useEffect(() => {
     data && form.setFieldsValue({
       name: data.name,
       templateTitle: data.templateTitle,
       templateCopywritingContent: data.templateCopywritingContent,
       pushType: data.pushType,
       type: data.type,
-      targetRole: data.targetRole.join(',')
+      targetRole: data.targetRole.join(','),
+      popupConfigId: data.popupConfigId
     })
     return undefined
   }, [data, form])
@@ -150,6 +163,13 @@ export default (props) => {
           4: '小程序'
         }}
         readonly
+      />
+      <ProFormSelect
+        name="popupConfigId"
+        label="弹窗模板"
+        width="md"
+        valueType="select"
+        options={popupSelect} 
       />
     </ModalForm>
   )

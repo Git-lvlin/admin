@@ -72,6 +72,8 @@ export default {
 
 
 
+
+
   'menu.supplier-management': '供应商家管理',
   'menu.supplier-management.supplier-list': '供应商家列表',
   'menu.supplier-management.audit-list': '供应商家审核',
@@ -132,6 +134,7 @@ export default {
   'menu.cms.goos-reg.member': '秒约和店主模块',
   'menu.cms.goos-reg.hot-goos': '热销好货',
   'menu.cms.goos-reg.crazy-date': '限时秒杀',
+  'menu.cms.goos-reg.weekend-revelry': '周末大狂欢',
   'menu.cms.goos-reg.save-money': '集约优选',
   'menu.cms.goos-reg.strategy-today': '首页秒约爆品',
   'menu.cms.home-suspension': '首页悬浮窗',
@@ -161,6 +164,8 @@ export default {
   'menu.dc-management.add': '新增',
   'menu.dc-management.list': '资源位列表',
   'menu.dc-management.version': '资源位版本',
+  'menu.dc-management.data-board': '数据报表列表',
+  'menu.dc-management.data-board-configuration': '数据报表配置',
 
   'menu.coupon-management': '红包管理',
   'menu.coupon-management.coupon-list': '红包列表',
@@ -185,12 +190,14 @@ export default {
   'menu.message-management.audit': '审核',
   'menu.message-management.detail': '详情',
   'menu.message-management.stand-inside-letter-list': '站内信列表',
+  'menu.message-management.popup-template': 'APP内弹窗模板',
 
  
  
 
-  'menu.business-school': '商学院',
+  'menu.business-school': '学习社区管理',
   'menu.business-school.article-list': '文章列表',
+  'menu.business-school.shopkeeper-disclose': '店主吐槽',
   'menu.business-school.article-category-list': '文章分类列表',
 
   'menu.community-management':'社区管理',
@@ -252,6 +259,9 @@ export default {
   'menu.financial-management.subsidy-summary-detail' : '补贴结算',
 
   'menu.data-board': '数据看板',
+  'menu.data-board.summary-of-data': '数据概述',
+  'menu.data-board.order-analysis': '订单分析',
+  'menu.data-board.product-data': '商品数据',
   'menu.data-board.data-preview': '数据预览',
   'menu.data-board.intensive-data-export': '集约数据导出',
   'menu.data-board.data-sales': '销售数据',
@@ -283,4 +293,11 @@ export default {
   'menu.import-export-configuration': '导入导出配置',
   'menu.import-export-configuration.export-configuration': '导出配置',
   'menu.import-export-configuration.import-configuration': '导入配置',
+
+
+  'menu.activity-management': '活动管理',
+  'menu.activity-management.everyday-red-packet-activity': '每日红包活动',
+  'menu.activity-management.everyday-red-packet-activity.activity-list': '活动列表',
+  'menu.activity-management.everyday-packet-rule': '每日首单红包规则设置',
+  'menu.activity-management.everyday-red-packet-activity.red-packet-particulars': '红包明细',
 };

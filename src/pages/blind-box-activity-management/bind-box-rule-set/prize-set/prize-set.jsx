@@ -5,17 +5,27 @@ import SelectProductModal from '@/components/select-product-modal'
 import { PlusOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import ProTable from '@ant-design/pro-table';
-const _ = require('lodash');
+import _ from 'lodash'
+
 
 
 export default (props) => {
-  const {callback,id,falg,detailList}=props
+  const {callback,id,falg,detailList,submi}=props
   const ref=useRef()
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
-  const [cut,setCut]=useState(true)
-  // const [submi,setSubmi]=useState(0)
+  useEffect(()=>{
+    if(!falg){
+     setDataSource(detailList?.skus)
+     setEditableKeys(detailList?.skus.map(item => item.id))
+    }
+    if(submi){
+      setEditableKeys([])
+    }
+   
+  },[falg,submi])
+
   const columns= [
     {
       title: '序号',
@@ -61,6 +71,12 @@ export default (props) => {
        render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
     },
     {
+      title: '可用库存',
+      dataIndex: 'baseStockNum',
+      valueType: 'text',
+      editable:false,
+    },
+    {
       title: '奖品库存',
       dataIndex: 'stockNum',
       valueType: 'digit',
@@ -68,7 +84,7 @@ export default (props) => {
       renderFormItem: (_,r) => {
         return  <InputNumber
                   min="0"
-                  max={_.entry.sumNum}
+                  max={_.entry.baseStockNum}
                   stringMode
                 />
         },
@@ -135,12 +151,6 @@ export default (props) => {
     setDataSource(arr) 
     callback(arr)
   }
-  useEffect(()=>{
-    if(!falg){
-     setDataSource(detailList?.skus)
-    }
-   
-  },[falg])
   return (
     <>
     <EditableProTable
@@ -151,6 +161,7 @@ export default (props) => {
         recordCreatorProps={false}
         columns={columns}
         editable={{
+          type: 'multiple',
           editableKeys,
           actionRender: (row, config, defaultDoms) => {
               return [defaultDoms.delete];
@@ -169,32 +180,12 @@ export default (props) => {
               setDataSource(recordList)
               callback(recordList)
             // }
-          }
+          },
         }}
         toolBarRender={()=>[
-            <>
-            {
-              cut?<Button type="primary" onClick={() => { 
-                setEditableKeys(dataSource.map(item => item.id))
-                setCut(false)
-              } 
-              }>编辑概率</Button>
-              :<Button type="primary" onClick={() => { 
-                // if(submi==100){
-                  setEditableKeys([])
-                  setCut(true)
-                // }else if(submi>100){
-                //   message.error('所有商品概率总和不能超过100%')
-                // }else if(submi==0){
-                //   setEditableKeys([])
-                //   setCut(true)
-                // }else if(submi!=0&&submi<100){
-                //   message.error('中奖概率之和必须=100')
-                // }
-              }}>保存</Button>
-            }
-            </>,
-            <Button type="primary" onClick={()=>setVisible(true)}>
+            <Button type="primary" onClick={()=>{
+              setVisible(true)
+            }}>
                 <PlusOutlined />
                 添加秒约商品
             </Button>,
@@ -217,15 +208,39 @@ export default (props) => {
                       skuId: item.skuId,
                       spuId: item.spuId,
                       stockNum: 0,
-                      sumNum:item.stockNum,
+                      baseStockNum:item.stockNum,
                       goodsName: item.goodsName,
                       imageUrl: item.imageUrl,
                       salePrice: item.salePrice,
                       retailSupplyPrice: item.retailSupplyPrice,
                     })
                   })
+                  detailList?.skus.map(ele=>{
+                      arr.map(item=>{
+                        if(item.skuId==ele.skuId){
+                          item.id=ele.id
+                          item.stockNum=ele.stockNum
+                          item.probability=ele.probability
+                          item.status=ele.status
+                          delete item.add
+                        }
+                      })
+                  })
+                  if(!id&&falg){
+                    dataSource?.map(ele=>{
+                      arr.map(item=>{
+                        if(item.skuId==ele.skuId){
+                          item.stockNum=ele.stockNum
+                          item.probability=ele.probability
+                          item.status=ele.status
+                        }
+                      })
+                     })
+                  }
                   let arr2=_.uniqWith([...dataSource,...arr], _.isEqual)
                     setDataSource(arr2)
+                    callback(arr2)
+                    setEditableKeys(arr2.map(item => item.id))
                 }}
               />
             }

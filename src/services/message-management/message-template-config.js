@@ -151,3 +151,118 @@ export const standLetterList = async (params, options = {}) => {
     total: res.data.total
   }
 }
+
+// 弹窗配置列表
+export const popupList = async (params, options = {}) => {
+  const { current, pageSize, ...rest } = params
+  const res = await request('/auth/java-admin/message/popup/config/list', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data.records,
+    success: res.success,
+    total: res.data.total
+  }
+}
+
+// 弹窗配置详细
+export const popupGet = async (params, options = {}) => {
+  const { current, pageSize, ...rest } = params
+  const res = await request('/auth/java-admin/message/popup/config/get', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
+
+// 修改弹窗配置
+export const popupUpdate = async (params, options = {}) => {
+  const { current, pageSize, ...rest } = params
+  const res = await request('/auth/java-admin/message/popup/config/update', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    success: res.success
+  }
+}
+
+// 添加弹窗配置
+export const popupAdd = async (params, options = {}) => {
+  const { current, pageSize, ...rest } = params
+  const res = await request('/auth/java-admin/message/popup/config/add', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    success: res.success
+  }
+}
+
+// 获取弹窗业务类型列表
+export const popupBizTypeList = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/message/popup/bizType/list', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    success: res.success,
+    data: res.data
+  }
+}
+
+// 获取弹窗业务类型
+export const popupBizTypeGet = async (params, options = {}) => {
+  const { current, pageSize, ...rest } = params
+  const res = await request('/auth/java-admin/message/popup/bizType/get', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    success: res.success,
+    data: res.data,
+  }
+}
+
+// 所有弹窗配置
+export const popupConfigAll = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/message/popup/config/all', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    success: res.success,
+    data: res.data
+  }
+}

@@ -39,16 +39,8 @@ const AfterSalesOrderDetails = () =>{
       valueType: 'select',
       valueEnum: {
         'MONI_PAY': '模拟支付',
-        'ALI_PAY': '支付宝支付',
-        'WX_PAY': '微信支付',
-        'MINI_PRO_PAY': '微信小程序支付',
-        'UNION_PAY': '银联支付',
-        'YEAH_CARD_PAY': '约卡支付',
         'alipay': '汇付天下支付宝支付',
-        'wx_lite': '汇付天下微信小程序支付',
-        'union': '汇付天下银联支付',
-        'fast_pay': '快捷支付',
-        'alipay_qr': '支付宝正扫'
+        'wx_lite': '汇付天下微信小程序支付'
       }
     },
     {
@@ -56,43 +48,13 @@ const AfterSalesOrderDetails = () =>{
       dataIndex: 'tradeType',
       valueType: 'select',
       valueEnum: {
-        'goodsAmount': '货款入账',
         'goodsAmountReturn': '货款回退',
-        'commission': '提成入账',
-        'commissionReturn': '提成回退',
-        'platformCommission': '佣金收入',
-        'platformCommissionReturn': '佣金回退',
-        'fee': '代收交易费',
-        'feeReturn': '交易费回退',
-        'recharge': '充值',
-        'giveOut': '划扣',
-        'withdraw': '提现',
-        'refundRecharge': '售后款入账',
-        'debt': '欠款入账',
-        'debtReturn': '欠款偿还',
-        'unfreeze': '解冻',
-        'freeze': '冻结',
-        'suggestCommission': '推荐提成入账',
-        'suggestCommissionReturn': '推荐提成回退',
-        'agentCompanyCommission': '经销商佣金收入',
-        'agentCompanyCommissionReturn': '经销商佣金回退',
-        'freight': '运费',
-        'freightReturn': '运费回退',
-        'yeahCardRecharge': '约卡充值'
-      },
-      hideInSearch: true
-    },
-    {
-      title: '交易类型',
-      dataIndex: 'tradeType',
-      valueType: 'select',
-      valueEnum: {
-        'goodsAmountReturn': '货款回退',
-        'platformCommissionReturn': '佣金回退',
-        'commissionReturn': '提成回退',
-        'feeReturn': '交易费回退'
-      },
-      hideInTable: true
+        'platformCommissionReturn': '平台收益回退',
+        'commissionReturn': '店铺收益回退',
+        'suggestCommissionReturn': '店铺推荐收益回退',
+        'feeReturn': '交易通道费回退',
+        'agentCompanyCommissionReturn': '运营中心收益回退'
+      }
     },
     {
       title: '买家会员ID',
@@ -114,29 +76,12 @@ const AfterSalesOrderDetails = () =>{
       valueType: 'select',
       valueEnum: {
         'second': '秒约订单',
-        'commandSalesOrder': '集约批发订单',
-        'activeSalesOrder': '主动集约店主订单',
         'dropShipping1688': '1688代发订单',
-        'commandCollect': '集约销售订单',
-        'activeCollect': '主动集约C端订单',
-        'blindBox': '盲盒订单',
-        'signIn': '签到订单'
-      },
-      hideInSearch: true
-    },
-    {
-      title: '订单类型',
-      dataIndex: 'orderType',
-      valueType: 'select',
-      valueEnum: {
-        'second': '秒约',
         'commandSalesOrder': '集约批发订单',
-        'dropShipping1688': '1688代发订单',
         'commandCollect': '集约销售订单',
         'blindBox': '盲盒订单',
         'signIn': '签到订单'
-      },
-      hideInTable: true
+      }
     },
     {
       title: '关联订单号',

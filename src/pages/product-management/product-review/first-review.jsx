@@ -279,11 +279,16 @@ export default (props) => {
             </Form.Item>}
           </>
       }
-      {goods.stockNum && <Form.Item
-        label="总可用库存"
+      <Form.Item
+        label={`${detailData.isMultiSpec === 0 ? '' : '总'}可用库存`}
       >
-        {goods.stockNum}
-      </Form.Item>}
+        {detailData.isMultiSpec === 0 ? goods.stockNum : goods.totalStock}
+      </Form.Item>
+      <Form.Item
+        label="库存单位"
+      >
+        {goods.unit}
+      </Form.Item>
       <Form.Item
         label="单SKU起售数量"
       >
