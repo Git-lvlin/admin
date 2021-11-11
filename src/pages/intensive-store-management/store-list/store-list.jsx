@@ -332,6 +332,7 @@ const StoreList = (props) => {
     if (formRef?.current?.getFieldsValue) {
       const { current, pageSize, area = [], ...rest } = formRef?.current?.getFieldsValue?.();
       return {
+        operation:storeType,
         provinceId: area[0]?.value,
         cityId: area[1]?.value,
         regionId: area[2]?.value,

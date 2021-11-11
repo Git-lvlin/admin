@@ -4,7 +4,7 @@ import ProForm, {
   ModalForm,
   ProFormText,
 } from '@ant-design/pro-form';
-import { WeekCrazyTagSort } from '@/services/cms/member/weekend-revelry';
+import { updateSort } from '@/services/sign-activity-management/sign-red-packet-product';
 
 export default (props) => {
   const { detailData, setVisible, setFlag, visible } = props;
@@ -12,17 +12,14 @@ export default (props) => {
   const [form] = Form.useForm();
 
   const waitTime = (values) => {
-    const { id, sort } = values
+    const { skuId,spuId,productSort } = values
     const param = {
-      sortInfo:[
-        {
-          id:id,
-          sort: sort
-        }
-      ]
+        spuId:spuId,
+        skuId:skuId,
+        productSort: productSort
     }
     return new Promise((resolve, reject) => {
-      WeekCrazyTagSort(param).then((res) => {
+      updateSort(param).then((res) => {
         if (res.code === 0) {
           setFlag(true)
           resolve(true);
@@ -35,10 +32,11 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
-      const { id, sort } = detailData
+      const { spuId,skuId, productSort } = detailData
       form.setFieldsValue({
-        id,
-        sort
+        spuId,
+        skuId,
+        productSort
       })
     }
   }, [form, detailData])
@@ -66,20 +64,24 @@ export default (props) => {
       <ProForm.Group>
         <ProFormText
           width="sm"
-          name="sort"
+          name="productSort"
           label="排序"
           rules={[{ 
             required: true,
             message: '请输入排序序号(整数)',
             pattern: /^\+?[1-9][0-9]*$/
-        
         }]}  
         />
 
       </ProForm.Group>
         <ProFormText
-          name="id"
-          label="id"
+          name="spuId"
+          label="spuId"
+          hidden
+        />
+        <ProFormText
+          name="skuId"
+          label="skuId"
           hidden
         />
     </ModalForm>
