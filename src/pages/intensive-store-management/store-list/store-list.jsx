@@ -238,7 +238,7 @@ const StoreList = (props) => {
     },
     {
       title: '保证金状态',
-      dataIndex: 'depositStatus',
+      dataIndex: 'depositStatusDesc',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType=='cancelled',
@@ -269,7 +269,7 @@ const StoreList = (props) => {
     },
     {
       title: '保证金状态',
-      dataIndex: 'depositStatus',
+      dataIndex: 'depositStatusDesc',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType=='normal',

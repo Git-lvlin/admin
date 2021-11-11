@@ -193,25 +193,7 @@ export default (props) =>{
         placeholder: '请选择'
       },
       width:150
-    },
-    {
-      title: '操作',
-      valueType: 'text',
-      width: 200,
-      render: (text, record, _, action) => [
-        <a
-          key="delete"
-          onClick={() => {
-            console.log('record',record)
-            setDataSource(dataSource.filter((item) => item !== record));
-          }}
-        >
-          删除
-        </a>
-      ],
-      hideInTable:id&&edtil?true:false,
-      editable:false,
-    },
+    }
   ];
   const columns2 = [
     {
@@ -264,24 +246,7 @@ export default (props) =>{
       dataIndex: 'remark',
       valueType: 'text',
       width:120
-    },
-    {
-      title: '操作',
-      valueType: 'text',
-      width: 200,
-      render: (text, record, _, action) => [
-        <a
-          key="delete"
-          onClick={() => {
-            setDataSource2(dataSource2.filter((item) => item!== record));
-          }}
-        >
-          删除
-        </a>,
-      ],
-      hideInTable:id&&edtil?true:false,
-      editable:false,
-    },
+    }
   ];
   const columns3 = [
     {
@@ -312,24 +277,7 @@ export default (props) =>{
       dataIndex: 'express',
       valueType: 'text',
       width:300
-    },
-    {
-      title: '操作',
-      valueType: 'text',
-      width: 200,
-      render: (text, record, _, action) => [
-        <a
-          key="delete"
-          onClick={() => {
-            setDataSource3(dataSource3.filter((item) => item!== record));
-          }}
-        >
-          删除
-        </a>,
-      ],
-      hideInTable:id&&edtil?true:false,
-      editable:false,
-    },
+    }
   ];
   return (
     <PageContainer>
