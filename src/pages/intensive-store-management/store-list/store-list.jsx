@@ -246,7 +246,7 @@ const StoreList = (props) => {
         const { depositRefendList } = data;
         return (
           <>
-            {_}&nbsp;
+            <p>{_}</p>
             {depositRefendList && depositRefendList.map(ele=>{
               return <p>{amountTransform(parseInt(ele.refend_amount), '/').toFixed(2)}元（{ele.optAdminName}/{ele.refendTime}）</p>
             })}
@@ -277,7 +277,7 @@ const StoreList = (props) => {
         const { depositRefendList } = data;
         return (
           <>
-            {_}&nbsp;
+            <p>{_}</p>
             {depositRefendList && depositRefendList.map(ele=>{
               return <p>{amountTransform(parseInt(ele.refend_amount), '/').toFixed(2)}元（{ele.optAdminName}/{ele.refendTime}）</p>
             })}
@@ -348,14 +348,15 @@ const StoreList = (props) => {
     // },
     {
       title: '注销原因',
-      dataIndex: 'asdasd',
+      dataIndex: 'remark',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType=='normal',
       render: (_, data) => {
         return (
           <>
-            {_}
+            <p>{_}</p>
+            <p>（{data.updateTime}）</p>
           </>
         )
       }
