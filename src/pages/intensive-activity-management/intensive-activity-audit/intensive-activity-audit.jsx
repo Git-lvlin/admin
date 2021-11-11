@@ -2,21 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Card, Space, Table, Spin, Modal } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
 import {
   getWholesaleList,
-  getWholesaleDetail,
   getWholesaleSku,
-  updateWholesaleState,
-  getWholesaleOneSku,
-  wholesaleStop,
 } from '@/services/intensive-activity-management/intensive-activity-list'
 import { history } from 'umi';
 import { amountTransform } from '@/utils/utils'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
-import Stock from './stock';
-import Area from './area';
-import style from './area.less';
 
 const { confirm } = Modal;
 
@@ -24,24 +16,7 @@ const { confirm } = Modal;
 const SubTable = (props) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false);
-  const [stockVisible, setStockVisible] = useState(false);
-  const [stockData, setStockData] = useState(null);
-  const [reload, setReload] = useState(null);
 
-  const setStock = (record) => {
-    getWholesaleOneSku({
-      wholesaleId: props.wholesaleId,
-      skuId: record.skuId
-    }).then(res => {
-      if (res.code === 0) {
-        setStockData({
-          ...res.data,
-          wsId: props.wholesaleId,
-        })
-        setStockVisible(true);
-      }
-    })
-  }
 
   const columns = [
     {
@@ -68,17 +43,6 @@ const SubTable = (props) => {
       title: '供应商家ID',
       dataIndex: 'supplierId',
     },
-    // {
-    //   title: '结算类型',
-    //   dataIndex: 'settleType',
-    //   render: (_) => {
-    //     return {
-    //       0: '全部',
-    //       1: '佣金模式',
-    //       2: '底价模式'
-    //     }[_]
-    //   }
-    // },
     {
       title: '售价上浮比(%)',
       dataIndex: 'settlePercent',
@@ -125,19 +89,7 @@ const SubTable = (props) => {
       title: '集约全款金额',
       dataIndex: 'totalMoney',
       render: (_) => amountTransform(_, '/')
-    },
-    {
-      title: '操作',
-      dataIndex: 'option',
-      valueType: 'option',
-      render: (_, record) => {
-        return (
-          <Space>
-            {props.wholesaleStatus !== 3 && props.wholesaleStatus !== 0 && <a onClick={() => { setStock(record) }}>追加库存</a>}
-          </Space>
-        )
-      },
-    },
+    }
   ];
 
   useEffect(() => {
@@ -151,58 +103,17 @@ const SubTable = (props) => {
     }).finally(() => {
       setLoading(false);
     })
-  }, [reload])
+  }, [])
 
   return (
     <Spin spinning={loading}>
       <Table rowKey="id" columns={columns} dataSource={data} pagination={false} />
-      {stockVisible && <Stock
-        data={stockData}
-        visible={stockVisible}
-        setVisible={setStockVisible}
-        callback={() => { setReload(!reload) }}
-      />}
     </Spin>
   )
 };
 
 const TableList = () => {
-  const [visible, setVisible] = useState(false);
-  const [detailData, setDetailData] = useState(null)
-  const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
-
-  const getDetail = (wholesaleId) => {
-    getWholesaleDetail({
-      wholesaleId
-    }).then(res => {
-      if (res.code === 0) {
-        setVisible(true);
-        setDetailData(res.data);
-      }
-    })
-  }
-
-  const wholesaleStopRequest = (wholesaleId, stopType) => {
-    wholesaleStop({
-      wholesaleId,
-      stopType,
-    }).then(res => {
-      if (res.code === 0) {
-        actionRef.current.reload();
-      }
-    })
-  }
-
-  const update = (wholesaleId) => {
-    updateWholesaleState({
-      wholesaleId
-    }).then(res => {
-      if (res.code === 0) {
-        actionRef.current.reload();
-      }
-    })
-  }
 
   const columns = [
     {
@@ -219,14 +130,8 @@ const TableList = () => {
         placeholder: '请输入名称'
       }
     },
-    // {
-    //   title: '活动时间',
-    //   dataIndex: 'wholesaleTime',
-    //   valueType: 'dateRange',
-    //   hideInTable: true,
-    // },
     {
-      title: '可购买后销售的社区店等级',
+      title: '可购买后销售的会员店等级',
       dataIndex: 'storeLevel',
       valueType: 'text',
       hideInSearch: true,
@@ -237,19 +142,6 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
     },
-    // {
-    //   title: '可恢复支付次数',
-    //   dataIndex: 'canRecoverPayTimes',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    // },
-    // {
-    //   title: '每次恢复的支付时限(小时)',
-    //   dataIndex: 'recoverPayTimeout',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    //   render: (text) => +new Big(text).div(3600).toFixed(1)
-    // },
     {
       title: '活动时段',
       dataIndex: 'wholesaleStartTime',
@@ -272,7 +164,7 @@ const TableList = () => {
     },
     {
       title: '创建人',
-      dataIndex: 'wholesaleStartTime',
+      dataIndex: 'createAdminName',
       valueType: 'text',
     },
     {
@@ -284,26 +176,20 @@ const TableList = () => {
     },
     {
       title: '创建时间',
-      dataIndex: 'wholesaleStartTime',
+      dataIndex: 'createTime',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, records) => {
-        return (
-          <>
-            <div>{records.wholesaleStartTime}</div>
-            <div>{records.wholesaleEndTime}</div>
-          </>
-        )
-      }
     },
     {
       title: '状态',
-      dataIndex: 'wholesaleStatusDesc',
-      valueType: 'text',
+      dataIndex: 'wholesaleAuditStatus',
+      valueType: 'select',
       hideInSearch: true,
-      render: (_) => {
-        return <div dangerouslySetInnerHTML={{ __html: _ }}></div>
-      }
+      valueEnum: {
+        0: '待审核',
+        1: '审核通过',
+        2: '已拒绝'
+      },
     },
     {
       title: '操作',
@@ -311,7 +197,7 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-detail/${data.wholesaleId}`) }}>审核</a>
+          <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-audit/detail/${data.wholesaleId}`) }}>审核</a>
         </Space>
       ),
     },
@@ -319,8 +205,6 @@ const TableList = () => {
 
   return (
     <PageContainer>
-      <div className={style.test}>
-        {visible && <Area visible={visible} wsId={selectItem?.wholesaleId} setVisible={setVisible} />}
         <ProTable
           rowKey="wholesaleId"
           options={false}
@@ -339,7 +223,6 @@ const TableList = () => {
             pageSize: 10,
           }}
         />
-      </div>
     </PageContainer>
 
   );

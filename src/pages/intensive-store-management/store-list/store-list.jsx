@@ -13,6 +13,7 @@ import Return from './return';
 import ExcelModal from './excel-modal'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import { amountTransform } from '@/utils/utils'
 
 const StoreList = (props) => {
   const { storeType }=props
@@ -242,11 +243,13 @@ const StoreList = (props) => {
       hideInSearch: true,
       hideInTable: storeType=='cancelled',
       render: (_, data) => {
-        const { remark } = data;
+        const { depositRefendList } = data;
         return (
           <>
             {_}&nbsp;
-            {remark && <Tooltip title={remark}><QuestionCircleOutlined /></Tooltip>}
+            {depositRefendList && depositRefendList.map(ele=>{
+              return <p>{amountTransform(parseInt(ele.refend_amount), '/').toFixed(2)}元（{ele.optAdminName}/{ele.refendTime}）</p>
+            })}
           </>
         )
       }
@@ -271,11 +274,13 @@ const StoreList = (props) => {
       hideInSearch: true,
       hideInTable: storeType=='normal',
       render: (_, data) => {
-        const { remark } = data;
+        const { depositRefendList } = data;
         return (
           <>
             {_}&nbsp;
-            {remark && <Tooltip title={remark}><QuestionCircleOutlined /></Tooltip>}
+            {depositRefendList && depositRefendList.map(ele=>{
+              return <p>{amountTransform(parseInt(ele.refend_amount), '/').toFixed(2)}元（{ele.optAdminName}/{ele.refendTime}）</p>
+            })}
           </>
         )
       }
