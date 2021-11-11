@@ -20,6 +20,11 @@ export default {
       hideInMenu: true,
     },
     {
+      name: 'intensive-activity-audit',
+      path: '/intensive-activity-management/intensive-activity-audit',
+      component: './intensive-activity-management/intensive-activity-audit',
+    },
+    {
       name: 'intensive-remind-configuration',
       path: '/intensive-activity-management/intensive-remind-configuration',
       component: './intensive-activity-management/intensive-remind-configuration',

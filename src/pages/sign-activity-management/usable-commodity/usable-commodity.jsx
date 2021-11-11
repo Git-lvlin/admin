@@ -9,19 +9,21 @@ import { amountTransform } from '@/utils/utils'
 import { PlusOutlined } from '@ant-design/icons';
 import SelectProductModal from '@/components/select-product-modal'
 import DeleteModal from './delete-modal'
+import Modify from './edit';
 
 
 export default () => {
   const ref=useRef()
   const [visible, setVisible] = useState(false);
   const [selectedRowKeys,setSelectedRowKeys]=useState([])
+  const [flag, setFlag] = useState(false);
+  const [detailData, setDetailData] = useState(true);
+  const [popVisible, setPopVisible] = useState(false);
   const columns= [
     {
-      title: '序号',
-      dataIndex:'id',
-      valueType: 'borderIndex',
+      title: '排序序号',
+      dataIndex:'productSort',
       hideInSearch: true,
-      valueType: 'indexBorder'
     },
     {
       title: 'SPUID',
@@ -96,6 +98,7 @@ export default () => {
       key: 'option',
       valueType: 'option',
       render: (_, data) => [
+          <a onClick={() => {editPop(data)}}>排序</a>,
           <DiscountsModel 
             data={data}
             InterFace={productEdit}
@@ -119,7 +122,17 @@ export default () => {
           ref.current.reload()
         }
       })
-}
+  }
+  const editPop = (a) => {
+    setDetailData(a)
+    setPopVisible(true)
+  }
+  useEffect(() => {
+    if (flag) {
+      ref.current.reset()
+      setFlag(false)
+    }
+  }, [flag]);
   return (
     <PageContainer>
       <ProTable
@@ -191,6 +204,12 @@ export default () => {
         ]}
         columns={columns}
       />
+      {popVisible && <Modify
+        visible={popVisible}
+        setVisible={setPopVisible}
+        detailData={detailData}
+        setFlag={setFlag}
+      />}
       </PageContainer>
   );
 };
