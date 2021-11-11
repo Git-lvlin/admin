@@ -3,6 +3,12 @@ export default {
   name: 'dc-management',
   routes: [
     {
+      name: 'add',
+      path: '/dc-management/add',
+      component: './dc-management/add',
+      hideInMenu: true
+    },
+    {
       name: 'list',
       path: '/dc-management/list',
       component: './dc-management/list',
