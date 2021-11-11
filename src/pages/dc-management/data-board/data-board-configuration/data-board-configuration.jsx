@@ -92,7 +92,7 @@ export default (props) =>{
             format:ele.format,
             functionName:ele.functionName,
             sourceField:ele.sourceField,
-            isMandary:ele.isMandary&&`${ele.isMandary}`,
+            isMandary:`${ele.isMandary}`,
           })))
           setDataSource2(res.data?.sqlConfigs.map(ele=>(
             {
