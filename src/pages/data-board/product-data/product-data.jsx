@@ -9,26 +9,35 @@ import TableSearch from './table-search'
 import { getTimeDistance } from '@/utils/utils'
 import styles from './styles.less'
 import GcCascader from '@/components/gc-cascader'
-import { timeGoodType } from '@/services/data-board/product-data'
+import { timeGoodType, goodDetail } from '@/services/data-board/product-data'
+import { amountTransform } from '@/utils/utils'
 
 const ProductData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('yesterday'))
-  const [goodsClass, setGoodsClass] = useState([])
+  const [goodsData, setGoodsData] = useState([])
   const [pieData, setPieData] = useState([])
+  const [payRate, setPayRate] = useState(0)
+  const [orderType, setOrderType] = useState("15")
+  const [loading, setLoading] = useState(false)
 
   useEffect(()=> {
+    setLoading(true)
     timeGoodType({
       startTime: moment(rangePickerValue?.[0]).format("YYYY-MM-DD"),
-      endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD")
+      endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD"),
+      orderType
     }).then(res=> {
-      setGoodsClass(res?.data?.detailList)
       setPieData(res?.data?.payRateList)
+      setGoodsData(res?.data?.detailList)
+      setPayRate(Number(res?.data?.payRateList?.reduce((acc, cur) => acc + cur.payCount, 0)))
+    }).finally(()=> {
+      setLoading(false)
     })
     return ()=> {
-      setGoodsClass([])
+      setGoodsData([])
       setPieData([])
     }
-  }, [rangePickerValue])
+  }, [rangePickerValue, orderType])
 
   const isActive = (type) => {
     if (!rangePickerValue) {
@@ -77,7 +86,8 @@ const ProductData = () => {
     {
       title: '支付商品金额',
       dataIndex: 'payAmount',
-      align: 'center'
+      align: 'center',
+      render: (_) => amountTransform(Number(_), '/')
     },
     {
       title: '退款商品数量',
@@ -99,84 +109,92 @@ const ProductData = () => {
   const goodsDetail = [
     {
       title: '商品编码',
-      dataIndex: 'a',
+      dataIndex: 'spuId',
       align: 'center'
     },
     {
       title: '商品名称',
-      dataIndex: 'd',
-      align: 'center'
+      dataIndex: 'goodsName',
+      align: 'center',
+      width: '15%'
     },
     {
       title: '规格',
-      dataIndex: 'f',
+      dataIndex: 'skuName',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '商品复购率',
-      dataIndex: 'g',
+      dataIndex: 'againUCount',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '支付商品数',
-      dataIndex: 'h',
+      dataIndex: 'gCount',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '商品支付总金额',
-      dataIndex: 'j',
+      dataIndex: 'payAmount',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_) => `￥${amountTransform(Number(_), '/')}`
     },
     {
       title: '支付用户数',
-      dataIndex: 'k',
+      dataIndex: 'uCount',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '商品退款数',
-      dataIndex: 'v',
+      dataIndex: 'refundPayCount',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '商品退款总金额',
-      dataIndex: 'x',
+      dataIndex: 'refundAmount',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_) => `￥${amountTransform(Number(_), '/')}`
     },
     {
       title: '商品退款率',
-      dataIndex: 'z',
+      dataIndex: 'refundPayCount',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '商品类型',
-      dataIndex: 'l',
+      dataIndex: 'orderType',
       valueType: 'select',
       valueEnum: {
-        0: '秒约商品',
-        1: '集约商品',
-        2: '代发商品'
+        "2": '秒约商品',
+        "15": '集约商品',
+        "11": '代发商品'
       },
       align: 'center',
+      initialValue: "2",
+      fieldProps:{
+        allowClear: false
+      },
       hideInTable: true
     },
     {
       title: '统计时间范围',
-      dataIndex: 'i',
-      valueType: 'dateTimeRange',
+      dataIndex: 'date',
+      valueType: 'dateRange',
       align: 'center',
+      initialValue: getTimeDistance("week"),
       hideInTable: true
     },
     {
       title: '商品分类',
-      dataIndex: 'e',
+      dataIndex: 'gcId',
       renderFormItem: () => (<GcCascader />),
       align: 'center',
       hideInTable: true
@@ -190,27 +208,28 @@ const ProductData = () => {
         isActive={isActive}
         handleRangePickerChange={handleRangePickerChange}
         selectDate={selectDate}
+        selectType={setOrderType}
       />
-      <ProCard split="vertical">
+      <ProCard split="vertical" loading={loading}>
         <ProCard colSpan="70%" ghost>
           <ProTable
             rowKey="gcName"
             columns={goodsCategory}
-            dataSource={goodsClass}
+            dataSource={goodsData}
             pagination={false}
             search={false}
             toolBarRender={false}
           />
         </ProCard>
-        <ProCard
-          bordered
-        >
-          <PieChart data={pieData}/>
+        <ProCard>
+          <PieChart data={pieData} payRate={payRate}/>
         </ProCard>
       </ProCard>
       <ProTable
-        rowKey=""
+        rowKey="spuId"
         columns={goodsDetail}
+        params={{}}
+        request={goodDetail}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
