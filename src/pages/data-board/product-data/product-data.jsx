@@ -97,6 +97,7 @@ const ProductData = () => {
     {
       title: '退款商品金额',
       dataIndex: 'returnAmount',
+      render: (_) => amountTransform(Number(_), '/'),
       align: 'center'
     },
     {
@@ -107,6 +108,12 @@ const ProductData = () => {
   ]
 
   const goodsDetail = [
+    {
+      title: 'id',
+      dataIndex: 'id',
+      hideInSearch: true,
+      hideInTable: true
+    },
     {
       title: '商品编码',
       dataIndex: 'spuId',
@@ -126,13 +133,14 @@ const ProductData = () => {
     },
     {
       title: '商品复购率',
-      dataIndex: 'againUCount',
+      dataIndex: 'repeatRatio',
       align: 'center',
+      render: (_) => `${amountTransform(_, '*')}%`,
       hideInSearch: true
     },
     {
       title: '支付商品数',
-      dataIndex: 'gCount',
+      dataIndex: 'payNum',
       align: 'center',
       hideInSearch: true
     },
@@ -145,13 +153,13 @@ const ProductData = () => {
     },
     {
       title: '支付用户数',
-      dataIndex: 'uCount',
+      dataIndex: 'payMemberNum',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '商品退款数',
-      dataIndex: 'refundPayCount',
+      dataIndex: 'refundNum',
       align: 'center',
       hideInSearch: true
     },
@@ -164,8 +172,9 @@ const ProductData = () => {
     },
     {
       title: '商品退款率',
-      dataIndex: 'refundPayCount',
+      dataIndex: 'refundRatio',
       align: 'center',
+      render: (_) => `${amountTransform(_, '*')}%`,
       hideInSearch: true
     },
     {
@@ -225,23 +234,26 @@ const ProductData = () => {
           <PieChart data={pieData} payRate={payRate}/>
         </ProCard>
       </ProCard>
-      <ProTable
-        rowKey="spuId"
-        columns={goodsDetail}
-        params={{}}
-        request={goodDetail}
-        pagination={{
-          showQuickJumper: true,
-          pageSize: 10
-        }}
-        search={{
-          labelWidth: 120
-        }}
-        headerTitle="商品明细数据"
-        toolbar={{
-          settings: false
-        }}
-      />
+      <div className={styles.goodsTable}>
+        <ProTable
+          rowKey="id"
+          columns={goodsDetail}
+          params={{}}
+          postData={ v => v?.map((item, idx) => ({id: idx, ...item})) }
+          request={goodDetail}
+          pagination={{
+            showQuickJumper: true,
+            pageSize: 10
+          }}
+          search={{
+            labelWidth: 120
+          }}
+          headerTitle="商品明细数据"
+          toolbar={{
+            settings: false
+          }}
+        />
+      </div>
     </PageContainer>
   )
 }
