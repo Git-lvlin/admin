@@ -22,10 +22,8 @@ export default () => {
   const columns= [
     {
       title: '排序序号',
-      dataIndex:'id',
-      valueType: 'borderIndex',
+      dataIndex:'productSort',
       hideInSearch: true,
-      valueType: 'indexBorder'
     },
     {
       title: 'SPUID',
