@@ -568,7 +568,7 @@ export const SetHomePageGoodsDelSort = (params = {}, options = {}) => {
   });
 }
 export const hotSearchEdit = (params = {}, options = {}) => {
-  let url = `/auth/search/HotKeyword/updateHotKeyword/id/${params.id}`
+  let url = `/auth/search/HotKeyword/updateHotKeyword`
   if (!params.id) {
     url = '/auth/search/HotKeyword/addHotKeyword'
   }
