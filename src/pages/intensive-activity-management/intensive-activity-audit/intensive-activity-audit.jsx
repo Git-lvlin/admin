@@ -219,18 +219,6 @@ const TableList = () => {
         placeholder: '请输入名称'
       }
     },
-    {
-      title: '活动状态',
-      dataIndex: 'wholesaleIsOnline',
-      valueType: 'select',
-      valueEnum: {
-        0: '已下架',
-        1: '待开始',
-        2: '进行中',
-        3: '已结束',
-      },
-      hideInTable: true,
-    },
     // {
     //   title: '活动时间',
     //   dataIndex: 'wholesaleTime',
@@ -240,12 +228,6 @@ const TableList = () => {
     {
       title: '可购买后销售的社区店等级',
       dataIndex: 'storeLevel',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '配送模式',
-      dataIndex: 'wholesaleFlowTypeDesc',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -289,6 +271,32 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
+      title: '创建人',
+      dataIndex: 'wholesaleStartTime',
+      valueType: 'text',
+    },
+    {
+      title: '创建时间',
+      key: 'dateTimeRange',
+      dataIndex: 'createTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'wholesaleStartTime',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, records) => {
+        return (
+          <>
+            <div>{records.wholesaleStartTime}</div>
+            <div>{records.wholesaleEndTime}</div>
+          </>
+        )
+      }
+    },
+    {
       title: '状态',
       dataIndex: 'wholesaleStatusDesc',
       valueType: 'text',
@@ -312,11 +320,6 @@ const TableList = () => {
   return (
     <PageContainer>
       <div className={style.test}>
-        <Card>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button type="primary" icon={<PlusOutlined />} onClick={() => { history.push('/intensive-activity-management/intensive-activity-create') }}>新建</Button>
-          </div>
-        </Card>
         {visible && <Area visible={visible} wsId={selectItem?.wholesaleId} setVisible={setVisible} />}
         <ProTable
           rowKey="wholesaleId"

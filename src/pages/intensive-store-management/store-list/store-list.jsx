@@ -342,6 +342,20 @@ const StoreList = (props) => {
     //   hideInTable: true,
     // },
     {
+      title: '注销原因',
+      dataIndex: 'asdasd',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType=='normal',
+      render: (_, data) => {
+        return (
+          <>
+            {_}
+          </>
+        )
+      }
+    },
+    {
       title: '操作',
       dataIndex: '',
       valueType: 'option',
