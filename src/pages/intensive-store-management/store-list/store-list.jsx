@@ -224,19 +224,49 @@ const StoreList = (props) => {
     },
     {
       title: '保证金状态',
-      dataIndex: 'status',
+      dataIndex: 'depositStatus',
       valueType: 'select',
-      hideInSearch:storeType=='normal',
+      hideInSearch:storeType=='cancelled',
       hideInTable: true,
       valueEnum: {
-        "2,5": '全部',
-        "5": '已退保证金',
-        "2": '未退保证金',
+        "normal": '全部',
+        "11": '正常-已退部分保证金',
+        "12": '正常-已退全部保证金',
+        "13": '正常-未退保证金',
       },
     },
     {
       title: '保证金状态',
-      dataIndex: ['status', 'desc'],
+      dataIndex: 'depositStatus',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType=='cancelled',
+      render: (_, data) => {
+        const { remark } = data;
+        return (
+          <>
+            {_}&nbsp;
+            {remark && <Tooltip title={remark}><QuestionCircleOutlined /></Tooltip>}
+          </>
+        )
+      }
+    },
+    {
+      title: '保证金状态',
+      dataIndex: 'depositStatus',
+      valueType: 'select',
+      hideInSearch:storeType=='normal',
+      hideInTable: true,
+      valueEnum: {
+        "cancelled": '全部',
+        "20": '已注销-未退保证金',
+        "21": '已注销-已退全部保证金',
+        "22": '已注销-已退部分保证金',
+      },
+    },
+    {
+      title: '保证金状态',
+      dataIndex: 'depositStatus',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType=='normal',
