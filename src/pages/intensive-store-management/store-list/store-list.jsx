@@ -418,10 +418,10 @@ const StoreList = (props) => {
             <Export
               change={(e) => { setVisit(e) }}
               key="export"
-              type="community-shopkeeper-export"
+              type={storeType=='normal'?"community-shopkeeper-export":"community-shopkeeper-cancelled-export"}
               conditions={getFieldValue}
             />,
-            <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type="community-shopkeeper-export" />
+            <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType=='normal'?"community-shopkeeper-export":"community-shopkeeper-cancelled-export"} />
             // <Button
             //   key="new2"
             //   onClick={() => {
