@@ -12,9 +12,10 @@ import { Button, Result, message, Descriptions, Form } from 'antd';
 import EditTable from './edit-table';
 import styles from './index.less';
 import { addWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
+import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
 import AddressMultiCascader from '@/components/address-multi-cascader'
 import Upload from '@/components/upload'
-import { history } from 'umi';
+import { history, useParams } from 'umi';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
 
@@ -65,6 +66,44 @@ const IntensiveActivityCreate = () => {
   // const [uncheckableItemValues, setUncheckableItemValues] = useState([]);
   const [submitValue, setSubmitValue] = useState(null);
   const formRef = useRef();
+  const [detailData, setDetailData] = useState({})
+  const [loading, setLoading] = useState(true)
+  const params = useParams();
+
+  const getAreas = (areas = []) => {
+    const areaArr = [];
+    for (let index = 0; index < areas.length; index++) {
+      const refuseArea = areas[index];
+      if (refuseArea.areaId) {
+        areaArr.push(refuseArea.areaId)
+        continue;
+      }
+      if (refuseArea.cityId) {
+        areaArr.push(refuseArea.cityId)
+        continue;
+      }
+      areaArr.push(refuseArea.provinceId)
+    }
+    return areaArr;
+  }
+
+  const getDetail = () => {
+    getWholesaleDetail({
+      wholesaleId: params.id
+    }).then(res => {
+      if (res.code === 0) {
+        setDetailData(res.data);
+        const wholesaleInfo = res.data.wholesale
+        formRef.current.setFieldsValue({
+          ...wholesaleInfo,
+          wholesaleTime: [wholesaleInfo.wholesaleStartTime, wholesaleInfo.wholesaleEndTime],
+          area: getAreas(res.data.allowArea)
+        })
+      }
+    }).finally(() => {
+      setLoading(false);
+    })
+  }
 
   const getSubmitAreaData = (v) => {
     const arr = [];
@@ -96,7 +135,7 @@ const IntensiveActivityCreate = () => {
   const submit = (values) => {
     const { wholesaleTime, area, ...rest } = values;
     return new Promise((resolve, reject) => {
-      const params = {
+      const requestParams = {
         goodsInfos: selectItem.map(item => ({
           spuId: item.spuId,
           skuId: item.skuId,
@@ -119,9 +158,10 @@ const IntensiveActivityCreate = () => {
         canRecoverPayTimes: 0,
         wholesaleFlowType: selectItem[0].wholesaleFlowType,
         ...rest,
+        wsId: +params.id === 0 ? '' : params.id,
       }
-      setSubmitValue(params)
-      addWholesale(params).then(res => {
+      setSubmitValue(requestParams)
+      addWholesale(requestParams).then(res => {
         if (res.code === 0) {
           resolve()
         }
@@ -139,17 +179,22 @@ const IntensiveActivityCreate = () => {
 
   useEffect(() => {
     getUncheckableItemValues();
+    if (params.id && +params.id !== 0) {
+      getDetail()
+    } else {
+      setLoading(false);
+    }
   }, [])
 
   return (
     <PageContainer className={styles.page}>
       <ProCard style={{ width: '100%' }}>
         <StepsForm
-          formProps={{
-            validateMessages: {
-              required: '此项为必填项',
-            },
-          }}
+          // formProps={{
+          //   validateMessages: {
+          //     required: '此项为必填项',
+          //   },
+          // }}
           submitter={{
             render: (props) => {
               if (props.step === 0 || props.step === 1) {
@@ -231,7 +276,10 @@ const IntensiveActivityCreate = () => {
             }}
 
           >
-            <EditTable onSelect={setSelectItem} />
+            {
+              !loading &&
+              <EditTable onSelect={setSelectItem} sku={detailData?.sku?.[0]} wholesaleFlowType={detailData?.wholesale?.wholesaleFlowType} />
+            }
           </StepsForm.StepForm>
           <StepsForm.StepForm
             name="checkbox"
@@ -290,7 +338,7 @@ const IntensiveActivityCreate = () => {
                 { required: true, message: '请输入集约虚拟销量' },
                 () => ({
                   validator(_, value) {
-                    if (!/^\d+$/g.test(value) || `${value}`.indexOf('.') !== -1 || value <= 0 ) {
+                    if (!/^\d+$/g.test(value) || `${value}`.indexOf('.') !== -1 || value <= 0) {
                       return Promise.reject(new Error(`请输入大于零的正整数`));
                     }
                     return Promise.resolve();
@@ -331,9 +379,9 @@ const IntensiveActivityCreate = () => {
             <Form.Item
               label="上传C端集约商品分享海报"
               name="shareImg"
-              // rules={[
-              //   { required: true, message: '请上传C端集约商品分享海报' },
-              // ]}
+            // rules={[
+            //   { required: true, message: '请上传C端集约商品分享海报' },
+            // ]}
 
             >
               <FromWrap
@@ -377,7 +425,7 @@ const IntensiveActivityCreate = () => {
           >
             <Result
               status="success"
-              title="活动创建成功"
+              title={`活动${+params.id !== 0 ? '修改' : '创建'}成功`}
               subTitle={`活动将在${moment(submitValue?.wholesaleStartTime).fromNow(true)}后开始，请留意`}
             />
             {submitValue && <div
