@@ -15,10 +15,21 @@ export const operationsCenterRank = async (params = {}, options = {}) => {
 
 // 运营中心核心数据
 export const operationsCenterData = async (params = {}, options = {}) => {
-  // const { current=1, pageSize=10, time, area, ...rest } = params
+  const { current=1, pageSize=10, companyName, time, area, ...rest } = params
+  const arr = area?.map(item => item.value)
   const res = await request('/auth/java-admin/report/config/operationsCenterData', {
     method: 'POST',
-    data: params,
+    data: {
+      name: companyName,
+      page: current,
+      size: pageSize,
+      startTime: time?.[0],
+      endTime: time?.[1],
+      province: arr?.[0],
+      city: arr?.[1],
+      area: arr?.[2],
+      ...rest
+    },
     ...options
   })
   return {
