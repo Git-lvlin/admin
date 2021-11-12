@@ -2,12 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Card, Space, Table, Spin, Modal } from 'antd';
-import {
-  getWholesaleList,
-  getWholesaleSku,
-} from '@/services/intensive-activity-management/intensive-activity-list'
+import { getWholesaleSku } from '@/services/intensive-activity-management/intensive-activity-list'
 import { history } from 'umi';
 import { amountTransform } from '@/utils/utils'
+import { getWholesaleAuditList } from '@/services/intensive-activity-management/intensive-activity-audit'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 const { confirm } = Modal;
@@ -208,7 +206,10 @@ const TableList = () => {
         <ProTable
           rowKey="wholesaleId"
           options={false}
-          request={getWholesaleList}
+          params={{
+            wholesaleAuditStatus:0
+          }}
+          request={getWholesaleAuditList}
           expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} /> }}
           search={{
             defaultCollapsed: false,
