@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { 
@@ -19,6 +19,7 @@ import { amountTransform } from '@/utils/utils'
 
 const Detail = () => {
   const { query } = useLocation()
+  console.log(query.startTime);
 
   const dataColumns = () => {
     switch(query.type) {
@@ -123,6 +124,13 @@ const Detail = () => {
     }
   }
 
+  const startTime = () => {
+    return query?.startTime&&query?.startTime
+  }
+  const endTime = () => {
+    return query?.endTime&&query?.endTime
+  }
+
   return (
     <PageContainer title={false}>
       <div className={styles.tableDetail}> 
@@ -133,7 +141,7 @@ const Detail = () => {
       <ProTable
         rowKey='skuID'
         request={dataRequest()}
-        params={{supplierId: query.id}}
+        params={{supplierId: query.id, startTime: startTime(), endTime: endTime()}}
         pagination={{
           showQuickJumper: true,
           pageSize: 10

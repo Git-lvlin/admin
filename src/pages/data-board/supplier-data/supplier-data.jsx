@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { history } from 'umi'
+import moment from 'moment'
 
 import { supplierData } from '@/services/data-board/supplier-data'
 import Yuan from '../components/Yuan'
@@ -10,9 +11,13 @@ import { amountTransform } from '@/utils/utils'
 
 const SupplierData = () => {
   const [amount, setAmount] = useState(0)
+  const form = useRef()
 
   const skipToDeatil = (e, id, name) => {
-    history.push(`/data-board/supplier-data/detail?type=${e}&id=${id}&storeName=${name}`)
+    const { time } = form?.current?.getFieldsValue?.()
+    const startTime = time&&moment(time?.[0]).format('YYYY-MM-DD')
+    const endTime = time&&moment(time?.[1]).format('YYYY-MM-DD')
+    history.push(`/data-board/supplier-data/detail?type=${e}&id=${id}&storeName=${name}&startTime=${startTime}&endTime=${endTime}`)
   }
 
   const columns = [
@@ -72,6 +77,7 @@ const SupplierData = () => {
     <PageContainer title={false}>
       <ProTable
         rowKey="supplierId"
+        formRef={form}
         request={supplierData}
         params={{}}
         columns={columns}
