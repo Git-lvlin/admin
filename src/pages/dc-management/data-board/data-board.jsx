@@ -53,7 +53,6 @@ export default () => {
                 添加数据
             </Button>
         ]}
-          search={false}
           columns={columns}
         />
         </PageContainer>
