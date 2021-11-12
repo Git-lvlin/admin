@@ -202,12 +202,11 @@ export default (props) =>{
         <a
           key="delete"
           onClick={() => {
-            console.log('record',record)
-            setDataSource(dataSource.filter((item) => item !== record));
+            setDataSource(dataSource.filter((item) => item!== record));
           }}
         >
           删除
-        </a>
+        </a>,
       ],
       hideInTable:id&&edtil?true:false,
       editable:false,

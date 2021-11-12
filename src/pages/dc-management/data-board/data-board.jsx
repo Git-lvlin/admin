@@ -28,13 +28,13 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <DeleteModal 
-                boxref={ref} 
-                text={'确认要删除该条数据吗？'} 
-                InterFace={removeById}
-                id={record.id} 
-                title={'操作确认'}
-            />,
+            // <DeleteModal 
+            //     boxref={ref} 
+            //     text={'确认要删除该条数据吗？'} 
+            //     InterFace={removeById}
+            //     id={record.id} 
+            //     title={'操作确认'}
+            // />,
             <a onClick={()=>history.push('/dc-management/data-board/data-board-configuration?id='+record.id+'&edtil=true')}>查看详情</a>,
             <a onClick={()=>history.push('/dc-management/data-board/data-board-configuration?id='+record.id+'&edit=true')}>编辑</a>,
         ],

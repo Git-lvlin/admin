@@ -13,6 +13,7 @@ import Return from './return';
 import ExcelModal from './excel-modal'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import { amountTransform } from '@/utils/utils'
 
 const StoreList = (props) => {
   const { storeType }=props
@@ -237,16 +238,18 @@ const StoreList = (props) => {
     },
     {
       title: '保证金状态',
-      dataIndex: 'depositStatus',
+      dataIndex: 'depositStatusDesc',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType=='cancelled',
       render: (_, data) => {
-        const { remark } = data;
+        const { depositRefendList } = data;
         return (
           <>
-            {_}&nbsp;
-            {remark && <Tooltip title={remark}><QuestionCircleOutlined /></Tooltip>}
+            <p>{_}</p>
+            {depositRefendList && depositRefendList.map(ele=>{
+              return <p>{amountTransform(parseInt(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</p>
+            })}
           </>
         )
       }
@@ -266,16 +269,18 @@ const StoreList = (props) => {
     },
     {
       title: '保证金状态',
-      dataIndex: 'depositStatus',
+      dataIndex: 'depositStatusDesc',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType=='normal',
       render: (_, data) => {
-        const { remark } = data;
+        const { depositRefendList } = data;
         return (
           <>
-            {_}&nbsp;
-            {remark && <Tooltip title={remark}><QuestionCircleOutlined /></Tooltip>}
+            <p>{_}</p>
+            {depositRefendList && depositRefendList.map(ele=>{
+              return <p>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</p>
+            })}
           </>
         )
       }
@@ -343,14 +348,15 @@ const StoreList = (props) => {
     // },
     {
       title: '注销原因',
-      dataIndex: 'asdasd',
+      dataIndex: 'remark',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType=='normal',
       render: (_, data) => {
         return (
           <>
-            {_}
+            <p>{_}</p>
+            <p>（{data.updateTime}）</p>
           </>
         )
       }
@@ -399,24 +405,8 @@ const StoreList = (props) => {
         request={getStoreList}
         search={{
           defaultCollapsed: false,
-          optionRender: ({ searchText, resetText }, { form }) => [
-            <Button
-              key="search"
-              type="primary"
-              onClick={() => {
-                form?.submit();
-              }}
-            >
-              {searchText}
-            </Button>,
-            <Button
-              key="rest"
-              onClick={() => {
-                form?.resetFields();
-              }}
-            >
-              {resetText}
-            </Button>,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
             <Button
               key="new"
               onClick={() => {
