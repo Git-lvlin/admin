@@ -107,6 +107,7 @@ export const findByPage = async (params, options = {}) => {
     code: res.code,
     data: res.data.records,
     success: res.success,
+    total: res.data.total
   }
 }
 

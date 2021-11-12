@@ -160,11 +160,11 @@ export default {
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
 
-  'menu.dc-management': 'DC管理菜单',
+  'menu.dc-management': '开发者工具',
   'menu.dc-management.add': '新增',
-  'menu.dc-management.list': '资源位列表',
-  'menu.dc-management.version': '资源位版本',
-  'menu.dc-management.data-board': '数据报表列表',
+  'menu.dc-management.list': '资源位配置',
+  'menu.dc-management.version': '版本号管理',
+  'menu.dc-management.data-board': '数据看版配置',
   'menu.dc-management.data-board-configuration': '数据报表配置',
 
   'menu.coupon-management': '红包管理',
