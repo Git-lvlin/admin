@@ -7,25 +7,23 @@ import {
 } from "bizcharts"
 
 const BarChart = ({data}) => {
-
-  data.sort((a, b) => a.value - b.value)
   return (
     <Chart
       height={400}
       data={data}
       autoFit
-      padding={[40, 0, 20, 100]}
+      padding={[40, 0, 20, 60]}
       scale={{
-        value: {
+        population: {
           formatter: (v) => v
         }
       }}
     >
       <Coordinate transpose />
       <Interval 
-        position="storeName*value"
+        position="country*population"
         label={[
-          "value",
+          "population",
           ()=>({
             position: "middle",
             style: {

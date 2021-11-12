@@ -31,7 +31,8 @@ const message = (type, module) => {
     },
     { 
       title: '消息模板-内容', 
-      dataIndex: 'templateCopywritingContent', 
+      dataIndex: 'templateCopywritingContent',
+      width: '30%',
       align: 'center' 
     },
     { 
