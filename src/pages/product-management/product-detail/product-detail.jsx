@@ -284,19 +284,19 @@ export default () => {
           <Form.Item
             label="审核状态"
           >
-            {detailData?.goods.goodsVerifyStateDisplay}
+            {detailData?.goods?.goodsVerifyStateDisplay}{detailData?.auditStr}
           </Form.Item>
 
           <Form.Item
             label="上架状态"
           >
-            {detailData?.goods.goodsStateDisplay}
+            {detailData?.goods?.goodsStateDisplay}{detailData?.putOnStr}
           </Form.Item>
 
-          {detailData?.goods.goodsVerifyRemark && <Form.Item
-            label="原因"
+          {detailData?.goods?.goodsState === 0 && <Form.Item
+            label="下架原因"
           >
-            <span style={{ color: 'red' }}>{detailData?.goods.goodsVerifyRemark}</span>
+            <span style={{ color: 'red' }}>{detailData.goods.goodsVerifyRemark}</span>
           </Form.Item>}
           {/* 
           <ProFormSelect
