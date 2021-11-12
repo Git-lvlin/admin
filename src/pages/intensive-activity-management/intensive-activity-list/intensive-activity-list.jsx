@@ -289,6 +289,23 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
+      title: '创建人',
+      dataIndex: 'createAdminName',
+      valueType: 'text',
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+    },
+    {
       title: '状态',
       dataIndex: 'wholesaleStatusDesc',
       valueType: 'text',
@@ -303,6 +320,7 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
+          {data.wholesaleAuditStatus !== 1 && <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}`) }}>编辑</a>}
           <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-detail/${data.wholesaleId}`) }}>详情</a>
           {
             (data.wholesaleStatus === 1 || data.wholesaleStatus === 2 || data.wholesaleStatus === 4 || data.wholesaleStatus === 5)
@@ -349,7 +367,7 @@ const TableList = () => {
       <div className={style.test}>
         <Card>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button type="primary" icon={<PlusOutlined />} onClick={() => { history.push('/intensive-activity-management/intensive-activity-create') }}>新建</Button>
+            <Button type="primary" icon={<PlusOutlined />} onClick={() => { history.push('/intensive-activity-management/intensive-activity-create/0') }}>新建</Button>
           </div>
         </Card>
         {visible && <Area visible={visible} wsId={selectItem?.wholesaleId} setVisible={setVisible} />}

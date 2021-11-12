@@ -104,7 +104,7 @@ const StoreList = () => {
                 query: {
                   storeName: data.storeName,
                   phone: data.phone,
-                  linkman: data.linkman,
+                  linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
                   memberId: data.memberId,
                 }
               })
@@ -128,7 +128,7 @@ const StoreList = () => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
               }
             })
           }}>
@@ -152,7 +152,7 @@ const StoreList = () => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
               }
             })
           }}>{_}</a>
@@ -174,7 +174,7 @@ const StoreList = () => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
               }
             })
           }}>{_}</a>
@@ -196,7 +196,7 @@ const StoreList = () => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
                 memberId: data.memberId,
               }
             })
