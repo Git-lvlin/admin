@@ -248,7 +248,7 @@ const StoreList = (props) => {
           <>
             <p>{_}</p>
             {depositRefendList && depositRefendList.map(ele=>{
-              return <p>{amountTransform(parseInt(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</p>
+              return <p>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</p>
             })}
           </>
         )

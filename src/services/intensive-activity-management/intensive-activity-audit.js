@@ -2,13 +2,12 @@ import request from '@/utils/request';
 
 
 export const getWholesaleAuditList = async (params = {}, options = {}) => {
-  const { current, pageSize, wholesaleIsOnline,dateTimeRange, ...rest } = params;
+  const { current, pageSize,dateTimeRange, ...rest } = params;
   const res = await request('/auth/wholesale/index/getWholesaleAuditList', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
-      wholesaleIsOnline: +wholesaleIsOnline,
       createTimeStart:dateTimeRange&&dateTimeRange[0],
       createTimeEnd:dateTimeRange&&dateTimeRange[1],
       ...rest
