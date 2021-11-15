@@ -129,14 +129,8 @@ const TableList = () => {
       }
     },
     {
-      title: '可购买后销售的会员店等级',
-      dataIndex: 'storeLevel',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '可购买的会员等级',
-      dataIndex: 'memberLevel',
+      title: '配送模式',
+      dataIndex: 'wholesaleFlowTypeDesc',
       valueType: 'text',
       hideInSearch: true,
     },
