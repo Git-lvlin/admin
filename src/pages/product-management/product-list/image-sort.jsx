@@ -59,6 +59,10 @@ const ImageSort = ({ callback, data }) => {
       title="图片排序"
       modalProps={{
         width: 500,
+        destroyOnClose: true,
+        afterClose: () => {
+          setItems(data)
+        }
       }}
       trigger={
         <Button type="primary" >
