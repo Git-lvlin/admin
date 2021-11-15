@@ -105,7 +105,7 @@ const OrderAnalysis = () => {
       endTime: dateNow,
       type: value
     }).then(res=> {
-      const arr = res.data.map(item=> {
+      const arr = res?.data?.map(item=> {
         if(item) {
           return {reportName: item?.reportName, dateTime: item?.dateTime, value: Number(item?.value)}
         } else {
