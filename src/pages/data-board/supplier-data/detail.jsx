@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { 
@@ -16,100 +16,90 @@ import {
 } from '@/services/data-board/supplier-data'
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const Detail = () => {
   const { query } = useLocation()
-  console.log(query.startTime);
+  const form = useRef()
+  const [visit, setVisit] = useState(false)
 
-  const dataColumns = () => {
-    switch(query.type) {
-      case 'amount':
-      case 'sales':
-        return [
-          {
-            title: 'spuID',
-            dataIndex: 'spuId',
-            hideInSearch: true
-          },
-          {
-            title: 'skuID',
-            dataIndex: 'skuId',
-            hideInSearch: true
-          },
-          {
-            title: '图片',
-            dataIndex: 'imageUrl',
-            render: (_) => <Image width={80} height={80} src={_}/>,
-            hideInSearch: true
-          },
-          {
-            title: '商品名称',
-            dataIndex: 'goodsName',
-            hideInSearch: true,
-            width: '15%'
-          },
-          {
-            title: '可用库存',
-            dataIndex: 'stockNum',
-            hideInSearch: true
-          },
-          {
-            title: '上架状态',
-            dataIndex: 'goodsState',
-            hideInSearch: true,
-            render:(_) => {
-              return _ === 1 ? '下架' : '上架'
-            }
-          }
-        ]
-      case 'second':
-      case 'intensive':
-        return [
-          {
-            title: 'spuID',
-            dataIndex: 'spuId',
-            hideInSearch: true
-          },
-          {
-            title: 'skuID',
-            dataIndex: 'skuId',
-            hideInSearch: true
-          },
-          {
-            title: '图片',
-            dataIndex: 'imageUrl',
-            render: (_) => <Image width={80} height={80} src={_}/>,
-            hideInSearch: true
-          },
-          {
-            title: '商品名称',
-            dataIndex: 'goodsName',
-            width: '15%'
-          },
-          {
-            title: '可用库存',
-            dataIndex: 'stockNum',
-            hideInSearch: true
-          },
-          {
-            title: '订单总数（秒约）',
-            dataIndex: 'orderCount',
-            hideInSearch: true
-          },
-          {
-            title: '销量（秒约）',
-            dataIndex: 'saleNum',
-            hideInSearch: true
-          },
-          {
-            title: '销售总额（秒约）',
-            dataIndex: 'totalAmount',
-            hideInSearch: true,
-            render: (_) => amountTransform(Number(_), '/')
-          }
-        ]
+  const getFieldValue = () => {
+    const { ...rest } = form.current.getFieldsValue()
+    return {
+      supplierId: query.id,
+      startTime: query?.startTime,
+      endTime: query?.endTime,
+      ...rest
     }
   }
+
+  const columns = [
+    {
+      title: 'spuID',
+      dataIndex: 'spuId',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: 'skuID',
+      dataIndex: 'skuId',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: '图片',
+      dataIndex: 'imageUrl',
+      render: (_) => <Image width={80} height={80} src={_}/>,
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      hideInSearch: true,
+      width: '15%',
+      align: 'center'
+    },
+    {
+      title: '可用库存',
+      dataIndex: 'stockNum',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: '上架状态',
+      dataIndex: 'goodsState',
+      hideInSearch: true,
+      render:(_) => {
+        return _ === 1 ? '下架' : '上架'
+      },
+      align: 'center',
+      hideInTable: !(query.type !== 'second'&&query.type !== 'intensive')
+    },
+    {
+      title: '订单总数（秒约）',
+      dataIndex: 'orderCount',
+      hideInSearch: true,
+      align: 'center',
+      hideInTable: (query.type !== 'second'&&query.type !== 'intensive')
+    },
+    {
+      title: '销量（秒约）',
+      dataIndex: 'saleNum',
+      hideInSearch: true,
+      align: 'center',
+      hideInTable: (query.type !== 'second'&&query.type !== 'intensive')
+    },
+    {
+      title: '销售总额（秒约）',
+      dataIndex: 'totalAmount',
+      hideInSearch: true,
+      render: (_) => amountTransform(Number(_), '/'),
+      align: 'center',
+      hideInTable: (query.type !== 'second'&&query.type !== 'intensive')
+    }
+  ]
 
   const dataRequest = () => {
     switch(query.type) {
@@ -124,11 +114,17 @@ const Detail = () => {
     }
   }
 
-  const startTime = () => {
-    return query?.startTime&&query?.startTime
-  }
-  const endTime = () => {
-    return query?.endTime&&query?.endTime
+  const type = () => {
+    switch(query.type) {
+      case 'amount':
+        return 'supplier-goods-data-statistics-export'
+      case 'sales':
+        return 'supplier-sale-goods-data-statistics-export'
+      case 'second':
+        return 'supplier-secondsale-data-statistics-export'
+      case 'intensive':
+        return 'supplier-wholesale-data-statistics-export'
+    }
   }
 
   return (
@@ -137,18 +133,61 @@ const Detail = () => {
         <span>商家名称：{query.storeName}</span>
         <Button onClick={()=> history.goBack()}>返回</Button>
       </div>
-      <Divider/>
       <ProTable
         rowKey='skuID'
         request={dataRequest()}
-        params={{supplierId: query.id, startTime: startTime(), endTime: endTime()}}
+        params={{
+          supplierId: query.id,
+          startTime: query?.startTime,
+          endTime: query?.endTime
+        }}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
         }}
-        toolBarRender={false}
-        columns={dataColumns()}
-        search={!(query.type !== 'second'&&query.type !== 'intensive')}
+        toolbar={{
+          settings: false
+        }}
+        toolBarRender={
+          ()=> (query.type !== 'second'&&query.type !== 'intensive')&&
+          [
+            <Export
+              change={(e)=> {setVisit(e)}}
+              key="export" 
+              type={type()}
+              conditions={getFieldValue}
+            />,
+            <ExportHistory
+              key="export-history" 
+              show={visit} setShow={setVisit}
+              type={type()}
+            />
+          ]
+        }
+        columns={columns}
+        search={
+          !(query.type !== 'second'&&query.type !== 'intensive')&&
+          {
+            optionRender: (searchConfig, formProps, dom)=> {
+              return !(query.type !== 'second'&&query.type !== 'intensive')?
+              [
+                ...dom.reverse(),
+                <Export
+                  change={(e)=> {setVisit(e)}}
+                  key="export" 
+                  type={type()}
+                  conditions={getFieldValue}
+                />,
+                <ExportHistory
+                  key="export-history" 
+                  show={visit} setShow={setVisit}
+                  type={type()}
+                />
+              ]:
+              ''
+            }
+          }
+        }
       />
     </PageContainer>
   )
