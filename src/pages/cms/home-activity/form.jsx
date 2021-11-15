@@ -10,14 +10,15 @@ import Upload from '@/components/upload';
 import { homeActivityUpdata } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible } = props;
+  const { detailData, setVisible, onClose, visible, useType } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
   const waitTime = (values) => {
     const { id, ...rest } = values
     const param = {
-      ...rest
+      ...rest,
+      useType: useType
     }
     if (id) {
       param.id = id

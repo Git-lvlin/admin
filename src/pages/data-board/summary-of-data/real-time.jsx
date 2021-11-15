@@ -84,7 +84,6 @@ const RealTime = () => {
                 shape="line"
                 position="countTime*value"
                 color="timeName"
-                label="value"
               />
               <Tooltip
                 shared

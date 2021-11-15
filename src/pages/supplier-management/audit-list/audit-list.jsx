@@ -70,10 +70,15 @@ const TableList = () => {
       dataIndex: 'auditUser',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => <>
-        <div>{data.auditUser}</div>
-        <div>{data.auditTime > 0 && moment(data.moment).format('YYYY-MM-DD HH:mm:ss')}</div>
-      </>
+      render: (_, data) => {
+        if (data.accountType === 2) {
+          return '个人开户系统自动审核通过'
+        }
+        return <>
+          <div>{data.auditUser}</div>
+          <div>{data.auditTime > 0 && moment(data.moment).format('YYYY-MM-DD HH:mm:ss')}</div>
+        </>
+      }
     },
     {
       title: '审核开户状态',

@@ -10,7 +10,8 @@ const TableSearch = ({
   rangePickerValue,
   isActive,
   handleRangePickerChange,
-  selectDate
+  selectDate,
+  selectType
 }) => {
   return (
     <ProForm
@@ -44,7 +45,7 @@ const TableSearch = ({
       }}
       layout="inline"
       onFinish={(v) => {
-        
+        selectType(v.type)
       }}
     >
       <h3 className={styles.title}>商品分类统计</h3>
@@ -81,18 +82,22 @@ const TableSearch = ({
         name="type"
         label="商品类型"
         width="md"
+        initialValue="15"
+        proFieldProps={{
+          allowClear: false
+        }}
         options={[
           {
             label: '集约商品',
-            value: 1
+            value: '15'
           },
           {
             label: '秒约商品',
-            value: 2
+            value: '2'
           },
           {
             label: '代发商品',
-            value: 3
+            value: '11'
           }
         ]}
       />
