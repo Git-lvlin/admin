@@ -16,7 +16,8 @@ export const supplierData = async (params = {}, options = {}) => {
   })
   return {
     data: res.data,
-    success: res.success
+    success: res.success,
+    total: res.data.total
   }
 }
 
@@ -33,8 +34,9 @@ export const supplierGoodsData = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data,
-    success: res.success
+    data: res.data.records,
+    success: res.success,
+    total: res.data.total
   }
 }
 
@@ -51,8 +53,9 @@ export const supplierSecondSaleData = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data,
-    success: res.success
+    data: res.data.records,
+    success: res.success,
+    total: res.data.total
   }
 }
 
@@ -69,8 +72,9 @@ export const supplierSaleGoodsData = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data,
-    success: res.success
+    data: res.data.records,
+    success: res.success,
+    total: res.data.total
   }
 }
 
@@ -87,8 +91,9 @@ export const supplierWholesaleData = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data,
-    success: res.success
+    data: res.data.records,
+    success: res.success,
+    total: res.total
   }
 }
 

@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { 
-  Divider,
   Button,
   Image 
 } from 'antd'

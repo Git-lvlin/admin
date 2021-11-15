@@ -41,13 +41,14 @@ const CommunityStoreData = () => {
   }
 
   const getFieldValue = () => {
-    const { time, area, ...rest } = form.current.getFieldsValue()
+    const { time, area, storeName, ...rest } = form.current.getFieldsValue()
     return {
       startTime: time?.[0]?.format('YYYY-MM-DD'),
       endTime: time?.[1]?.format('YYYY-MM-DD'),
       province: area?.[0],
       city: area?.[1],
       area: area?.[2],
+      name: storeName,
       ...rest
     }
   }
