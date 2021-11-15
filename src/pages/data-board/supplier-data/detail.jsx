@@ -19,7 +19,6 @@ import { amountTransform } from '@/utils/utils'
 
 const Detail = () => {
   const { query } = useLocation()
-  console.log(query.startTime);
 
   const dataColumns = () => {
     switch(query.type) {
@@ -124,11 +123,12 @@ const Detail = () => {
     }
   }
 
-  const startTime = () => {
-    return query?.startTime&&query?.startTime
-  }
-  const endTime = () => {
-    return query?.endTime&&query?.endTime
+  const paramData = () => {
+    if(query.startTime !== 'undefined') {
+      return {supplierId: query.id, startTime: query.startTime, endTime: query.endTime}
+    } else {
+      return {supplierId: query.id}
+    }
   }
 
   return (
@@ -141,7 +141,7 @@ const Detail = () => {
       <ProTable
         rowKey='skuID'
         request={dataRequest()}
-        params={{supplierId: query.id, startTime: startTime(), endTime: endTime()}}
+        params={paramData()}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
