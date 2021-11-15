@@ -23,6 +23,21 @@ export default {
       component: './data-board/community-store-data'
     },
     {
+      name: 'operation-data',
+      path: '/data-board/operation-data',
+      component: './data-board/operation-data'
+    },
+    {
+      name: 'supplier-data',
+      path: '/data-board/supplier-data',
+      component: './data-board/supplier-data'
+    },
+    {
+      name: 'detail',
+      path: '/data-board/supplier-data/detail',
+      component: './data-board/supplier-data/detail'
+    },
+    {
       name: 'data-preview',
       path: '/data-board/data-preview',
       component: './data-board/data-preview'

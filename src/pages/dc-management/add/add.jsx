@@ -366,7 +366,7 @@ const EditableTable = () => {
       return ;
     }
     for(let key in obj) {
-      if(obj[key] && obj[key].indexOf('\\n') > -1) {
+      if(obj[key] && obj[key]?.indexOf?.('\\n') > -1) {
         obj[key] = obj[key].replaceAll('\\n', '\n');
       }
     }

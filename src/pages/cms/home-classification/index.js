@@ -1,3 +1,3 @@
-import HomeClassification from './Home-classification';
+import HomeClassification from './home-classification';
 
 export default HomeClassification;

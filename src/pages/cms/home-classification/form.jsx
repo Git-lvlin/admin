@@ -40,6 +40,18 @@ export default (props) => {
       width={560}
       title={`${detailData.gcName}`}
       onVisibleChange={setVisible}
+      submitter={{
+        resetButtonProps: {
+          style: {
+            display: 'none',
+          },
+        },
+        submitButtonProps: {
+          style: {
+            display: 'none',
+          },
+        },
+      }}
       formRef={formRef}
       visible={visible}
       form={form}
@@ -71,9 +83,8 @@ export default (props) => {
                 fieldProps={{
                   style: {marginTop: 24},
                   defaultChecked:item.homeStatus?true:false,
-                  onChange: () => {
-                    item.homeStatus = item.homeStatus?0:1
-                    onChangeSwitch(item)
+                  onChange: (a) => {
+                    onChangeSwitch(a,item)
                   },
                 }}
               />

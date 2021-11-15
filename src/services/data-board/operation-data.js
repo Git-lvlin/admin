@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-// 社区店销售排名
-export const communityStoreSalesRank = async (params = {}, options = {}) => {
-  const res = await request('/auth/java-admin/report/config/communityStoreSalesRank', {
+// 运营中心采购订单总量
+export const operationsCenterRank = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/config/operationsCenterRank', {
     method: 'POST',
     data: params,
     ...options
@@ -13,16 +13,16 @@ export const communityStoreSalesRank = async (params = {}, options = {}) => {
   }
 }
 
-// 社区店核心数据表
-export const communityStoreData = async (params = {}, options = {}) => {
-  const { current=1, pageSize=10, storeName, time, area, ...rest } = params
+// 运营中心核心数据
+export const operationsCenterData = async (params = {}, options = {}) => {
+  const { current=1, pageSize=10, companyName, time, area, ...rest } = params
   const arr = area?.map(item => item.value)
-  const res = await request('/auth/java-admin/report/config/communityStoreData', {
+  const res = await request('/auth/java-admin/report/config/operationsCenterData', {
     method: 'POST',
     data: {
+      name: companyName,
       page: current,
       size: pageSize,
-      name: storeName,
       startTime: time?.[0],
       endTime: time?.[1],
       province: arr?.[0],

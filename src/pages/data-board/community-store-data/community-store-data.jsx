@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import { Space, Radio } from 'antd'
 import moment from 'moment'
@@ -8,106 +8,123 @@ import BarChart from './bar-chart'
 import styles from './styles.less'
 import SelectDate from '../components/SelectDate'
 import AddressCascader from '@/components/address-cascader'
+import { communityStoreSalesRank, communityStoreData } from '@/services/data-board/community-store-data'
+import { amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const date = (day) => moment().subtract(day, 'days').calendar().replaceAll('/', '-')
+const dateNow = moment(+new Date()).format('YYYY-MM-DD')
 
 const CommunityStoreData = () => {
-  const [dateSelect, setDateSelect] = useState(date(0))
+  const [dateSelect, setDateSelect] = useState(date(7))
   const [value, setValue] = useState(1)
+  const [data, setData] = useState([])
+  const [visit, setVisit] = useState(false)
+  const form = useRef()
+
+  useEffect(() => {
+    communityStoreSalesRank({
+      startTime: dateSelect,
+      endTime: dateNow,
+      type: value
+    }).then(res => {
+      setData(res.data)
+    })
+    return () => {
+      setData([])
+    }
+  }, [dateSelect, value])
   
   const onChange = e => {
     setValue(e.target.value)
   }
 
-  const data = [
-    {
-      country: "中国",
-      population: 131744
-    },
-    {
-      country: "印度",
-      population: 104970
-    },
-    {
-      country: "美国",
-      population: 29034
-    },
-    {
-      country: "印尼",
-      population: 23489
-    },
-    {
-      country: "巴西",
-      population: 18203
+  const getFieldValue = () => {
+    const { time, area, ...rest } = form.current.getFieldsValue()
+    return {
+      startTime: time?.[0]?.format('YYYY-MM-DD'),
+      endTime: time?.[1]?.format('YYYY-MM-DD'),
+      province: area?.[0],
+      city: area?.[1],
+      area: area?.[2],
+      ...rest
     }
-  ]
-  data.sort((a, b) => a.population - b.population)
+  }
 
   const columns = [
     {
       title: '社区店名称',
-      dataIndex: '',
+      dataIndex: 'storeName',
       align: 'center'
     },
     {
       title: '地区范围',
-      dataIndex: '',
+      dataIndex: 'area',
       renderFormItem: () => (<AddressCascader />),
       hideInTable: true
     },
     {
       title: '统计时间范围',
-      dataIndex: '',
+      dataIndex: 'time',
       valueType: 'dateRange',
       hideInTable: true
     },
     {
       title: '采购订单数量',
-      dataIndex: '',
+      dataIndex: 'orderCt',
       hideInSearch: true,
-      align: true
+      align: 'center'
     },
     {
       title: '采购总金额',
-      dataIndex: '',
+      dataIndex: 'bSaleTotal',
       hideInSearch: true,
-      align: true
+      align: 'center'
     },
     {
-      title: '参与集约次数',
-      dataIndex: '',
+      title: '可参与集约活动的总数',
+      dataIndex: 'totalWsCt',
       hideInSearch: true,
-      align: true
+      align: 'center'
+    },
+    {
+      title: '已参与集约活动的次数',
+      dataIndex: 'wsCt',
+      hideInSearch: true,
+      align: 'center'
     },
     {
       title: '集约参与率',
-      dataIndex: '',
+      dataIndex: 'wsRat',
       hideInSearch: true,
-      align: true
+      align: 'center',
+      render: (_) => `${amountTransform(Number(_), '*')}%`
+
     },
     {
       title: 'C端销售订单数',
-      dataIndex: '',
+      dataIndex: 'cOrderCt',
       hideInSearch: true,
-      align: true
+      align: 'center'
     },
     {
       title: 'C端销售总金额',
-      dataIndex: '',
+      dataIndex: 'cSaleTotal',
       hideInSearch: true,
-      align: true
+      align: 'center'
     },
     {
       title: '成功邀请用户数量',
-      dataIndex: '',
+      dataIndex: 'invitUserCt',
       hideInSearch: true,
-      align: true
+      align: 'center'
     },
     {
       title: '成功邀请店主数量',
-      dataIndex: '',
+      dataIndex: 'invitStoreCt',
       hideInSearch: true,
-      align: true
+      align: 'center'
     }
   ]
 
@@ -115,8 +132,11 @@ const CommunityStoreData = () => {
     <PageContainer title={false}>
       <div className={styles.timeSearch}>
         <Space size={20}>
-          <h3>运营中心排名</h3>
-          <SelectDate setDateSelect={setDateSelect} dateSelect={dateSelect}/>
+          <h3>社区店销售排名</h3>
+          <SelectDate
+            setDateSelect={setDateSelect}
+            dateSelect={dateSelect}
+          />
         </Space>
       </div>
       <div className={styles.radioArea}>
@@ -125,26 +145,44 @@ const CommunityStoreData = () => {
           value={value}
           size="large"
         >
-          <Radio value={1}>社区店采购订单总量</Radio>
+          <Radio value={1}>采购订单总量</Radio>
           <Radio value={2}>总收益排名</Radio>
         </Radio.Group>
         <BarChart data={data} />
       </div>
-      <ProTable
-        rowKey=""
-        search={{
-          labelWidth: 120
-        }}
-        columns={columns}
-        request={{}}
-        params={{}}
-        toolbar={{
-          settings: false
-        }}
-        pagination={{
-          showQuickJumper: true
-        }}
-      />
+      <div className={styles.table}>
+        <ProTable
+          rowKey="storeName"
+          formRef={form}
+          search={{
+            labelWidth: 120,
+            optionRender: (searchConfig, formProps, dom) => [
+              ...dom.reverse(),
+              <Export
+                change={(e)=> {setVisit(e)}}
+                key="export" 
+                type="data-board-community-store-export"
+                conditions={getFieldValue}
+              />,
+              <ExportHistory 
+                key="export-history" 
+                show={visit} setShow={setVisit}
+                type="data-board-community-store-export"
+              />
+            ]
+          }}
+          columns={columns}
+          request={communityStoreData}
+          params={{}}
+          toolbar={{
+            settings: false
+          }}
+          pagination={{
+            showQuickJumper: true,
+            pageSize: 10
+          }}
+        />
+      </div>
     </PageContainer>
   )
 }

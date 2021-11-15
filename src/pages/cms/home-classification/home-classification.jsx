@@ -35,15 +35,16 @@ const HomeClassification = () => {
     })
   }
 
-  const onChangeSwitch = ({id, homeStatus}) => {
+  const onChangeSwitch = (indexStatus, item) => {
     const param = {
-      id: id,
-      status: homeStatus,
+      id: item.id,
+      status: indexStatus?1:0,
       verifyVersionId: verifyVersionId
     }
     homeClassificationStatus(param).then((res) => {
       if (res.code === 0) {
         message.success(`切换状态成功`);
+        actionRef.current.reset();
       }
     })
     
@@ -128,10 +129,9 @@ const HomeClassification = () => {
             name="homeStatus"
             fieldProps={{
               style: {marginTop: 24},
-              defaultChecked:_?true:false,
-              onChange: () => {
-                item.homeStatus = item.homeStatus?0:1
-                onChangeSwitch(item)
+              checked:_,
+              onChange: (indexData) => {
+                onChangeSwitch(indexData, item)
               },
             }}
           />
@@ -166,6 +166,9 @@ const HomeClassification = () => {
       request={homeClassificationList}
       postData={(data) => {
         setListData(data)
+        data.map(item=>{
+          return item.switchLoading = 0
+        })
         return data
       }}
       search={{

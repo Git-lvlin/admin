@@ -8,26 +8,24 @@ import {
 import { Empty } from 'antd'
 
 const BarChart = ({data}) => {
-
-  data.sort((a, b) => a.value - b.value)
   return (
     data?.[0]?
     <Chart
       height={400}
       data={data}
       autoFit
-      padding={[40, 0, 20, 100]}
+      padding={[40, 0, 20, 120]}
       scale={{
-        value: {
+        ct: {
           formatter: (v) => v
         }
       }}
     >
       <Coordinate transpose />
       <Interval 
-        position="storeName*value"
+        position="companyName*ct"
         label={[
-          "value",
+          "ct",
           ()=>({
             position: "middle",
             style: {
