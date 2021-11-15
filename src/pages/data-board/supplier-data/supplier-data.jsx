@@ -94,9 +94,9 @@ const SupplierData = () => {
         request={supplierData}
         params={{}}
         columns={columns}
-        postData={v => {
-          setAmount(v?.length)
-          return v
+        postData={(v) => {
+          setAmount(v.total)
+          return v.records
         }}
         pagination={{
           showQuickJumper: true,

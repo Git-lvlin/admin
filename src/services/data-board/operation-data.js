@@ -33,7 +33,8 @@ export const operationsCenterData = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data,
-    success: res.success
+    data: res.data.records,
+    success: res.success,
+    total: res.data.total
   }
 }
