@@ -47,11 +47,29 @@ const TableList = () => {
     }
   }
 
+  const getConditions = () => {
+    const { endTime, nickName, phoneNumber, startTime, subOrderSn, ...rest } = getFieldValue();
+
+    const obj = {
+      endCreateTime: endTime,
+      buyerNickname: nickName,
+      phone: phoneNumber,
+      startCreateTime: startTime,
+      orderSn: subOrderSn,
+      ...rest
+    }
+    return obj;
+  }
+
   useEffect(() => {
-    setLoading(true);
     form.setFieldsValue({
       objectId: location?.query?.objectId,
     })
+  }, [])
+
+  useEffect(() => {
+    setLoading(true);
+
     const { time, ...rest } = form.getFieldsValue();
     orderList({
       page,
@@ -105,7 +123,7 @@ const TableList = () => {
                   <Export
                     change={(e) => { setVisit(e) }}
                     type={`intensive-retail-user-order-export`}
-                    conditions={getFieldValue}
+                    conditions={getConditions}
                   />
                   <ExportHistory show={visit} setShow={setVisit} type={`intensive-retail-user-order-export`} />
                 </Space>
