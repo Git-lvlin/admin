@@ -64,9 +64,9 @@ export default (props) => {
       valueType: 'text',
       render: (_, records) => {
         return (
-          <>
-            {records?.areaInfo?.[records?.provinceId]}{records?.areaInfo?.[records?.cityId]}{records?.areaInfo?.[records?.regionId]}{_}
-          </>
+          <pre style={{ margin: 0, fontFamily: 'none' }}>
+            {records?.areaInfo?.[records?.provinceId]} {records?.areaInfo?.[records?.cityId]} {records?.areaInfo?.[records?.regionId]} {_} {records?.communityName} {records?.houseNumber}
+          </pre>
         )
       }
     },

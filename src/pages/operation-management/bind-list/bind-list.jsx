@@ -26,11 +26,11 @@ const TableList = () => {
       dataIndex: 'address',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => {
+      render: (_, records) => {
         return (
-          <>
-            {data?.areaInfo?.[data?.provinceId]}{data?.areaInfo?.[data?.cityId]}{data?.areaInfo?.[data?.regionId]}{_}
-          </>
+          <pre style={{ margin: 0, fontFamily: 'none' }}>
+            {records?.areaInfo?.[records?.provinceId]} {records?.areaInfo?.[records?.cityId]} {records?.areaInfo?.[records?.regionId]} {_} {records?.communityName} {records?.houseNumber}
+          </pre>
         )
       }
     },
