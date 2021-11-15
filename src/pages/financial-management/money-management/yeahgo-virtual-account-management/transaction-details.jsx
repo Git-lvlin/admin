@@ -126,7 +126,7 @@ const TransactionDetails = () => {
     },
     {
       title: '资金流水号',
-      dataIndex:'transactionId',
+      dataIndex:'transactionId'
     },
     {
       title: '交易时间',
@@ -140,15 +140,33 @@ const TransactionDetails = () => {
       hideInTable: true
     },
     {
+      title: '分账金额',
+      dataIndex: 'divideAmount',
+      render: (_) => amountTransform(Number(_), '/'),
+      hideInSearch: true
+    },
+    {
+      title: '手续费',
+      dataIndex: 'deductAmount',
+      render: (_) => amountTransform(Number(_), '/'),
+      hideInSearch: true
+    },
+    {
+      title: '其他扣款',
+      dataIndex: 'fee',
+      render: (_) => amountTransform(Number(_), '/'),
+      hideInSearch: true
+    },
+    {
       title: '交易金额',
       dataIndex: 'changeAmount',
-      render: (_) => amountTransform(_, '/'),
+      render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '交易后余额',
       dataIndex: 'balanceAmount',
-      render: (_) => amountTransform(_, '/'),
+      render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
