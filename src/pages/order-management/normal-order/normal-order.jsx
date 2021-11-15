@@ -28,6 +28,7 @@ const TableList = () => {
   const isPurchase = useLocation().pathname.includes('purchase')
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({});
+  const location = useLocation();
 
 
   const [form] = Form.useForm()
@@ -67,6 +68,12 @@ const TableList = () => {
       ...rest,
     }
   }
+
+  useEffect(() => {
+    form.setFieldsValue({
+      ...location?.query,
+    })
+  }, [])
 
   useEffect(() => {
     setLoading(true);
