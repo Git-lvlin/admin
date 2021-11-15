@@ -166,6 +166,9 @@ export default {
   'menu.dc-management.version': '版本号管理',
   'menu.dc-management.data-board': '数据看版配置',
   'menu.dc-management.data-board-configuration': '数据报表配置',
+  'menu.dc-management.import-export': '导入导出配置',
+  'menu.dc-management.import-export.export-configuration': '导出配置',
+  'menu.dc-management.import-export.import-configuration': '导入配置',
 
   'menu.coupon-management': '红包管理',
   'menu.coupon-management.coupon-list': '红包列表',
@@ -292,11 +295,6 @@ export default {
   'menu.blind-box-activity-management.blind-box-consume-detail': '使用明细',
   'menu.blind-box-activity-management.blind-box-employ-detail': '用户盲盒机会明细',
   'menu.blind-box-activity-management.bind-box-rule-set': '盲盒规则配置',
-
-  
-  'menu.import-export-configuration': '导入导出配置',
-  'menu.import-export-configuration.export-configuration': '导出配置',
-  'menu.import-export-configuration.import-configuration': '导入配置',
 
 
   'menu.activity-management': '活动管理',
