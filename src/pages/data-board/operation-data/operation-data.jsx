@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import { Space, Radio } from 'antd'
 import moment from 'moment'
@@ -9,6 +9,8 @@ import styles from './styles.less'
 import SelectDate from '../components/SelectDate'
 import AddressCascader from '@/components/address-cascader'
 import { operationsCenterData, operationsCenterRank } from '@/services/data-board/operation-data'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const date = (day) => moment().subtract(day, 'days').calendar().replaceAll('/', '-')
 const dateNow = moment(+new Date()).format('YYYY-MM-DD')
@@ -17,6 +19,21 @@ const OperationData = () => {
   const [dateSelect, setDateSelect] = useState(date(7))
   const [value, setValue] = useState(1)
   const [charData, setCharData] = useState([])
+  const [visit, setVisit] = useState(false)
+  const form = useRef()
+
+  const getFieldValue = () => {
+    const { time, area, storeName, ...rest } = form.current.getFieldsValue()
+    return {
+      startTime: time?.[0]?.format('YYYY-MM-DD'),
+      endTime: time?.[1]?.format('YYYY-MM-DD'),
+      province: area?.[0],
+      city: area?.[1],
+      area: area?.[2],
+      name: storeName,
+      ...rest
+    }
+  }
 
   useEffect(()=> {
     operationsCenterRank({
@@ -57,25 +74,25 @@ const OperationData = () => {
       title: '下属社区店数量',
       dataIndex: 'storeCt',
       hideInSearch: true,
-      align: true
+      align: 'center'
     },
     {
       title: '社区店采购订单总量',
       dataIndex: 'payCt',
       hideInSearch: true,
-      align: true
+      align: 'center'
     },
     {
       title: '社区店采购订单总额',
       dataIndex: 'payTotal',
       hideInSearch: true,
-      align: true
+      align: 'center'
     },
     {
       title: '总收益额',
       dataIndex: 'totalAll',
       hideInSearch: true,
-      align: true
+      align: 'center'
     }
   ]
 
@@ -100,8 +117,23 @@ const OperationData = () => {
       </div>
       <ProTable
         rowKey="companyName"
+        formRef={form}
         search={{
-          labelWidth: 120
+          labelWidth: 120,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+            <Export
+              change={(e)=> {setVisit(e)}}
+              key="export" 
+              type="data-board-operations-centers-export"
+              conditions={getFieldValue}
+            />,
+            <ExportHistory 
+              key="export-history" 
+              show={visit} setShow={setVisit}
+              type="data-board-operations-centers-export"
+            />
+          ]
         }}
         columns={columns}
         request={operationsCenterData}
@@ -110,7 +142,8 @@ const OperationData = () => {
           settings: false
         }}
         pagination={{
-          showQuickJumper: true
+          showQuickJumper: true,
+          pageSize: 10
         }}
       />
     </PageContainer>

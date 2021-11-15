@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import { Space, Radio } from 'antd'
 import moment from 'moment'
@@ -10,6 +10,8 @@ import SelectDate from '../components/SelectDate'
 import AddressCascader from '@/components/address-cascader'
 import { communityStoreSalesRank, communityStoreData } from '@/services/data-board/community-store-data'
 import { amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const date = (day) => moment().subtract(day, 'days').calendar().replaceAll('/', '-')
 const dateNow = moment(+new Date()).format('YYYY-MM-DD')
@@ -18,6 +20,8 @@ const CommunityStoreData = () => {
   const [dateSelect, setDateSelect] = useState(date(7))
   const [value, setValue] = useState(1)
   const [data, setData] = useState([])
+  const [visit, setVisit] = useState(false)
+  const form = useRef()
 
   useEffect(() => {
     communityStoreSalesRank({
@@ -34,6 +38,19 @@ const CommunityStoreData = () => {
   
   const onChange = e => {
     setValue(e.target.value)
+  }
+
+  const getFieldValue = () => {
+    const { time, area, storeName, ...rest } = form.current.getFieldsValue()
+    return {
+      startTime: time?.[0]?.format('YYYY-MM-DD'),
+      endTime: time?.[1]?.format('YYYY-MM-DD'),
+      province: area?.[0],
+      city: area?.[1],
+      area: area?.[2],
+      name: storeName,
+      ...rest
+    }
   }
 
   const columns = [
@@ -137,8 +154,23 @@ const CommunityStoreData = () => {
       <div className={styles.table}>
         <ProTable
           rowKey="storeName"
+          formRef={form}
           search={{
-            labelWidth: 120
+            labelWidth: 120,
+            optionRender: (searchConfig, formProps, dom) => [
+              ...dom.reverse(),
+              <Export
+                change={(e)=> {setVisit(e)}}
+                key="export" 
+                type="data-board-community-store-export"
+                conditions={getFieldValue}
+              />,
+              <ExportHistory 
+                key="export-history" 
+                show={visit} setShow={setVisit}
+                type="data-board-community-store-export"
+              />
+            ]
           }}
           columns={columns}
           request={communityStoreData}
