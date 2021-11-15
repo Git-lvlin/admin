@@ -147,13 +147,13 @@ const TransactionDetails = () => {
     },
     {
       title: '手续费',
-      dataIndex: 'deductAmount',
+      dataIndex: 'fee',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '其他扣款',
-      dataIndex: 'fee',
+      dataIndex: 'deductAmount',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
