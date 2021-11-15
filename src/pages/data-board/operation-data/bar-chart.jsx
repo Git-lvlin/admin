@@ -5,9 +5,11 @@ import {
 	Interval,
   Interaction
 } from "bizcharts"
+import { Empty } from 'antd'
 
 const BarChart = ({data}) => {
   return (
+    data?.[0]?
     <Chart
       height={400}
       data={data}
@@ -33,7 +35,8 @@ const BarChart = ({data}) => {
         ]}
       />
       <Interaction type="active-region" />
-    </Chart>
+    </Chart>:
+    <Empty/>
   )
 }
 
