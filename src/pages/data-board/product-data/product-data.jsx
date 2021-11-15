@@ -272,7 +272,7 @@ const ProductData = () => {
                 conditions={getFieldValue}
               />,
               <ExportHistory 
-                key="data-board-goods-detail-export" 
+                key="export-history" 
                 show={visit} setShow={setVisit}
                 type="data-board-goods-detail-export"
               />

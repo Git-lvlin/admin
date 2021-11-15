@@ -8,16 +8,29 @@ import { supplierData } from '@/services/data-board/supplier-data'
 import Yuan from '../components/Yuan'
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const SupplierData = () => {
   const [amount, setAmount] = useState(0)
   const form = useRef()
+  const [visit, setVisit] = useState(false)
+
+  const getFieldValue = () => {
+    const { time, ...rest } = form.current.getFieldsValue()
+    return {
+      startTime: time?.[0]?.format('YYYY-MM-DD'),
+      endTime: time?.[1]?.format('YYYY-MM-DD'),
+      ...rest
+    }
+  }
 
   const skipToDeatil = (e, id, name) => {
     const { time } = form?.current?.getFieldsValue?.()
     const startTime = time&&moment(time?.[0]).format('YYYY-MM-DD')
     const endTime = time&&moment(time?.[1]).format('YYYY-MM-DD')
-    history.push(`/data-board/supplier-data/detail?type=${e}&id=${id}&storeName=${name}&startTime=${startTime}&endTime=${endTime}`)
+    const date = time?`&startTime=${startTime}&endTime=${endTime}`: ''
+    history.push(`/data-board/supplier-data/detail?type=${e}&id=${id}&storeName=${name}${date}`)
   }
 
   const columns = [
@@ -90,7 +103,21 @@ const SupplierData = () => {
           pageSize: 10
         }}
         search={{
-          labelWidth: 120
+          labelWidth: 120,
+          optionRender: (searchConfig, formProps, dom)=> [
+            ...dom.reverse(),
+            <Export
+              change={(e)=> {setVisit(e)}}
+              key="export" 
+              type="supplier-data-statistics-export"
+              conditions={getFieldValue}
+            />,
+            <ExportHistory
+              key="export-history" 
+              show={visit} setShow={setVisit}
+              type="supplier-data-statistics-export"
+            />
+          ]
         }}
         toolbar={{
           settings: false
