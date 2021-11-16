@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card, Space, Table, Spin, Modal } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Button, Card, Space, Table, Spin, Modal, Tooltip } from 'antd';
+import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import {
   getWholesaleList,
   getWholesaleDetail,
@@ -310,7 +310,12 @@ const TableList = () => {
       dataIndex: 'wholesaleStatusDesc',
       valueType: 'text',
       hideInSearch: true,
-      render: (_) => {
+      render: (_,data) => {
+        
+        if (data.wholesaleAuditStatus === 2) {
+          return <>{_}<Tooltip title={data.rejectionReason}><QuestionCircleOutlined /></Tooltip></>
+        }
+
         return <div dangerouslySetInnerHTML={{ __html: _ }}></div>
       }
     },
