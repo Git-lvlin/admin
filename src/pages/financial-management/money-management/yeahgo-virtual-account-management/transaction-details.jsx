@@ -28,8 +28,12 @@ const TransactionDetails = () => {
         history.push(`/order-management/intensive-order/supplier-order-detail/${id}`)
       break
       default:
-        return ''
+        return  history.push(`/order-management/normal-order-detail/${id}`)
     }
+  }
+
+  const skipToOrderPay = (id) => {
+    history.push(`/financial-management/transaction-detail-management/order-pay-detail-management/detail/${id}`)
   }
 
   const transactionType = () =>{
@@ -122,7 +126,8 @@ const TransactionDetails = () => {
       title: '支付单号',
       dataIndex:'payNo',
       hideInSearch: query.accountId==='platformXinbao' ? true : false,
-      hideInTable: query.accountId==='platformXinbao' ? true : false
+      hideInTable: query.accountId==='platformXinbao' ? true : false,
+      render: (_, records)=> <a onClick={()=>skipToOrderPay(records.billNo)}>{_}</a>
     },
     {
       title: '资金流水号',
