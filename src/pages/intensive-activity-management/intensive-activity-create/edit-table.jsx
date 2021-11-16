@@ -290,6 +290,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
         ...arr[0],
         minNum: sku.minNum,
         maxNum: sku.maxNum,
+        totalStockNum: sku.totalStockNum,
         price: amountTransform(sku.price, '/'),
         // fixedPrice: amountTransform(sku.fixedPrice, '/'),
         // operationFixedPrice: amountTransform(sku.operationFixedPrice, '/'),
