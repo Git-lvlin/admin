@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Descriptions, Divider, Table, Row, Typography, Image,Button } from 'antd';
+import { Spin, Descriptions, Divider, Table, Row, Typography, Image,Button,Popover } from 'antd';
 import { amountTransform } from '@/utils/utils'
 import { useParams,history } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
 import { updateWholesaleAuditStatus } from '@/services/intensive-activity-management/intensive-activity-audit'
 import AuditModel from './audit-model'
+import PassModel from './pass-model'
+import moment from 'moment'
 
 
 const { Title } = Typography;
-
 const columns = [
   {
     title: 'spuID',
@@ -88,24 +89,26 @@ const columns = [
 const Detail = () => {
   const [detailData, setDetailData] = useState({})
   const [loading, setLoading] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [timeType, setTimeType] = useState();
   const params = useParams();
 
-  const getDetail = (wholesaleId) => {
-    setLoading(true);
-    getWholesaleDetail({
-      wholesaleId
-    }).then(res => {
-      if (res.code === 0) {
-        setDetailData(res.data);
-      }
-    }).finally(() => {
-      setLoading(false);
-    })
-  }
+const getDetail = (wholesaleId) => {
+  setLoading(true);
+  getWholesaleDetail({
+    wholesaleId
+  }).then(res => {
+    if (res.code === 0) {
+      setDetailData(res.data);
+    }
+  }).finally(() => {
+    setLoading(false);
+  })
+}
 
-  useEffect(() => {
-    getDetail(params?.id)
-  }, [])
+useEffect(() => {
+  getDetail(params?.id)
+}, [])
   return (
     <PageContainer>
       <Spin
@@ -159,14 +162,18 @@ const Detail = () => {
             </Descriptions>
           </Row>
           <Button style={{marginLeft:'400px'}} type="default"  onClick={()=>history.goBack()}>返回</Button>
-          <AuditModel
-            type={1}
-            label={'审核通过'}
-            text={'确认审核通过吗？'}
-            InterFace={updateWholesaleAuditStatus}
-            id={params?.id}
-            title={'请确认操作'}
-          />
+          <Button style={{marginLeft:'50px'}} onClick={()=>{ 
+            const data=moment().format("YYYY-MM-DD HH:mm:ss")
+            if(moment(data).isBefore(detailData?.wholesale?.wholesaleStartTime)){
+              setTimeType(1)
+            }else if(moment(detailData?.wholesale?.wholesaleEndTime).isBefore(data)){
+              setTimeType(2)
+            }
+            setVisible(true) 
+          }}  type="primary">审核通过</Button>
+          {
+            visible&&<PassModel visible={visible} wsId={params?.id} setVisible={setVisible} type={timeType} />
+          }
           <AuditModel
             type={2}
             label={'审核驳回'}
