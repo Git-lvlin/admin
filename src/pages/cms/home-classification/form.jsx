@@ -12,7 +12,7 @@ import ProCard from '@ant-design/pro-card';
 import { homeClassCategorySecondCategory } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible, onChangeSwitch } = props;
+  const { detailData, setVisible, onClose, visible, onChangeSwitch, verifyVersionId } = props;
   const formRef = useRef();
   const [list, setList] = useState()
   const [form] = Form.useForm();
@@ -24,7 +24,13 @@ export default (props) => {
   };
 
   useEffect(() => {
-    homeClassCategorySecondCategory({parentId:detailData.id}).then((res) => {
+    const param = {
+      parentId: detailData.id,
+    }
+    if (verifyVersionId) {
+      param.verifyVersionId = verifyVersionId
+    }
+    homeClassCategorySecondCategory(param).then((res) => {
       setList(res.data.records)
     })
   }, [])
@@ -34,6 +40,18 @@ export default (props) => {
       width={560}
       title={`${detailData.gcName}`}
       onVisibleChange={setVisible}
+      submitter={{
+        resetButtonProps: {
+          style: {
+            display: 'none',
+          },
+        },
+        submitButtonProps: {
+          style: {
+            display: 'none',
+          },
+        },
+      }}
       formRef={formRef}
       visible={visible}
       form={form}
@@ -65,9 +83,8 @@ export default (props) => {
                 fieldProps={{
                   style: {marginTop: 24},
                   defaultChecked:item.homeStatus?true:false,
-                  onChange: () => {
-                    item.homeStatus = item.homeStatus?0:1
-                    onChangeSwitch(item)
+                  onChange: (a) => {
+                    onChangeSwitch(a,item)
                   },
                 }}
               />
