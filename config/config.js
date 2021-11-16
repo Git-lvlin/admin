@@ -14,7 +14,7 @@ import intensiveStoreManagement from './routers/intensive-store-management'
 import singleContractActivityManagement from './routers/single-contract-activity-management'
 import groupContractActivityManagement from './routers/group-contract-activity-management'
 import couponManagement from './routers/coupon-management'
-import messageManagement from './routers/message-management';
+import messageManagement from './routers/message-management'
 import cms from './routers/cms'
 import businessSchool from './routers/business-school'
 import communityManagement from './routers/community-management'
@@ -25,7 +25,6 @@ import dataBoard from './routers/data-board'
 import dc from './routers/dc'
 import signActivityManagement from './routers/sign-activity-management'
 import BlindBoxActivityManagement from './routers/blind-box-activity-management'
-import importExportConfiguration from './routers/import-export-configuration'
 import ActivityManagement from './routers/activity-management'
 
 const { REACT_APP_ENV } = process.env;
@@ -97,7 +96,6 @@ const config = {
             dc,
             signActivityManagement,
             BlindBoxActivityManagement,
-            importExportConfiguration,
             ActivityManagement,
             {
               component: '404',

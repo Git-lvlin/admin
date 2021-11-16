@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import ProCard from '@ant-design/pro-card'
@@ -11,6 +11,8 @@ import styles from './styles.less'
 import GcCascader from '@/components/gc-cascader'
 import { timeGoodType, goodDetail } from '@/services/data-board/product-data'
 import { amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const ProductData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('yesterday'))
@@ -19,6 +21,8 @@ const ProductData = () => {
   const [payRate, setPayRate] = useState(0)
   const [orderType, setOrderType] = useState("15")
   const [loading, setLoading] = useState(false)
+  const [visit, setVisit] = useState(false)
+  const form = useRef()
 
   useEffect(()=> {
     setLoading(true)
@@ -210,6 +214,17 @@ const ProductData = () => {
     }
   ]
 
+  const getFieldValue = () => {
+    const { date, gcId, ...rest } = form.current.getFieldsValue()
+    return {
+      startTime: date?.[0]?.format('YYYY-MM-DD'),
+      endTime: date?.[1]?.format('YYYY-MM-DD'),
+      gcId1: gcId?.[0],
+      gcId2: gcId?.[1],
+      ...rest
+    }
+  }
+
   return (
     <PageContainer title={false}>
       <TableSearch 
@@ -238,6 +253,7 @@ const ProductData = () => {
         <ProTable
           rowKey="id"
           columns={goodsDetail}
+          formRef={form}
           params={{}}
           postData={ v => v?.map((item, idx) => ({id: idx, ...item})) }
           request={goodDetail}
@@ -246,7 +262,21 @@ const ProductData = () => {
             pageSize: 10
           }}
           search={{
-            labelWidth: 120
+            labelWidth: 120,
+            optionRender: (searchConfig, formProps, dom) => [
+              ...dom.reverse(),
+              <Export
+                change={(e)=> {setVisit(e)}}
+                key="export" 
+                type="data-board-goods-detail-export"
+                conditions={getFieldValue}
+              />,
+              <ExportHistory 
+                key="export-history" 
+                show={visit} setShow={setVisit}
+                type="data-board-goods-detail-export"
+              />
+            ]
           }}
           headerTitle="商品明细数据"
           toolbar={{

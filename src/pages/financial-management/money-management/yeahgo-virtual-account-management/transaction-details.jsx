@@ -28,8 +28,12 @@ const TransactionDetails = () => {
         history.push(`/order-management/intensive-order/supplier-order-detail/${id}`)
       break
       default:
-        return ''
+        return  history.push(`/order-management/normal-order-detail/${id}`)
     }
+  }
+
+  const skipToOrderPay = (id) => {
+    history.push(`/financial-management/transaction-detail-management/order-pay-detail-management/detail/${id}`)
   }
 
   const transactionType = () =>{
@@ -122,11 +126,12 @@ const TransactionDetails = () => {
       title: '支付单号',
       dataIndex:'payNo',
       hideInSearch: query.accountId==='platformXinbao' ? true : false,
-      hideInTable: query.accountId==='platformXinbao' ? true : false
+      hideInTable: query.accountId==='platformXinbao' ? true : false,
+      render: (_, records)=> <a onClick={()=>skipToOrderPay(records.billNo)}>{_}</a>
     },
     {
       title: '资金流水号',
-      dataIndex:'transactionId',
+      dataIndex:'transactionId'
     },
     {
       title: '交易时间',
@@ -140,15 +145,33 @@ const TransactionDetails = () => {
       hideInTable: true
     },
     {
+      title: '分账金额',
+      dataIndex: 'divideAmount',
+      render: (_) => amountTransform(Number(_), '/'),
+      hideInSearch: true
+    },
+    {
+      title: '手续费',
+      dataIndex: 'fee',
+      render: (_) => amountTransform(Number(_), '/'),
+      hideInSearch: true
+    },
+    {
+      title: '其他扣款',
+      dataIndex: 'deductAmount',
+      render: (_) => amountTransform(Number(_), '/'),
+      hideInSearch: true
+    },
+    {
       title: '交易金额',
       dataIndex: 'changeAmount',
-      render: (_) => amountTransform(_, '/'),
+      render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '交易后余额',
       dataIndex: 'balanceAmount',
-      render: (_) => amountTransform(_, '/'),
+      render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
