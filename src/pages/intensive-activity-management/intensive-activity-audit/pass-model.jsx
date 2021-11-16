@@ -1,8 +1,9 @@
 import React, { useState} from 'react';
 import { ModalForm,ProFormTextArea} from '@ant-design/pro-form';
-import { Button,message } from 'antd';
+import { Button,message,Space } from 'antd';
 import { updateWholesaleAuditStatus } from '@/services/intensive-activity-management/intensive-activity-audit'
 import { history } from 'umi';
+import { CheckCircleTwoTone,ExclamationCircleOutlined } from '@ant-design/icons'
 
 const formItemLayout = {
     labelCol: { span:4 },
@@ -21,14 +22,26 @@ export default props=>{
     const {visible, setVisible,wsId,type}=props
     return (
         <ModalForm
-            title='审核通过！'
+            title={<Space>
+                {
+                    type==1?
+                    <CheckCircleTwoTone twoToneColor="#52c41a" /> 
+                    :
+                    <ExclamationCircleOutlined style={{color:"#FAAD14"}} /> 
+                }
+                <span>审核通过！</span>
+                </Space>}
             key={wsId}
             onVisibleChange={setVisible}
             visible={visible}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
-                ...defaultDoms
+                <Button type="primary" key="submit" onClick={() => {
+                    props.form?.submit?.()
+                  }}>
+                    确定
+                  </Button>
                 ];
             },
             }}

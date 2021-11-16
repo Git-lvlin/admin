@@ -172,7 +172,7 @@ useEffect(() => {
             setVisible(true) 
           }}  type="primary">审核通过</Button>
           {
-            visible&&<PassModel visible={visible} wsId={params?.id} setVisible={setVisible} />
+            visible&&<PassModel visible={visible} wsId={params?.id} setVisible={setVisible} type={timeType} />
           }
           <AuditModel
             type={2}
