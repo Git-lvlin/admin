@@ -24,12 +24,10 @@ const Detail = () => {
   const [visit, setVisit] = useState(false)
 
   const getFieldValue = () => {
-    const { ...rest } = form.current.getFieldsValue()
     return {
       supplierId: query.id,
       startTime: query?.startTime,
-      endTime: query?.endTime,
-      ...rest
+      endTime: query?.endTime
     }
   }
 
@@ -154,7 +152,7 @@ const Detail = () => {
               change={(e)=> {setVisit(e)}}
               key="export" 
               type={type()}
-              conditions={getFieldValue}
+              conditions={getFieldValue()}
             />,
             <ExportHistory
               key="export-history" 
@@ -175,7 +173,7 @@ const Detail = () => {
                   change={(e)=> {setVisit(e)}}
                   key="export" 
                   type={type()}
-                  conditions={getFieldValue}
+                  conditions={getFieldValue()}
                 />,
                 <ExportHistory
                   key="export-history" 
