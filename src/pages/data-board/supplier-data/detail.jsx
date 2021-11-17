@@ -79,14 +79,28 @@ const Detail = () => {
       dataIndex: 'orderCount',
       hideInSearch: true,
       align: 'center',
-      hideInTable: (query.type !== 'second'&&query.type !== 'intensive')
+      hideInTable: (query.type !== 'second')
+    },
+    {
+      title: '订单总数（集约）',
+      dataIndex: 'orderCount',
+      hideInSearch: true,
+      align: 'center',
+      hideInTable: (query.type !== 'intensive')
     },
     {
       title: '销量（秒约）',
       dataIndex: 'saleNum',
       hideInSearch: true,
       align: 'center',
-      hideInTable: (query.type !== 'second'&&query.type !== 'intensive')
+      hideInTable: (query.type !== 'second')
+    },
+    {
+      title: '销量（集约）',
+      dataIndex: 'saleNum',
+      hideInSearch: true,
+      align: 'center',
+      hideInTable: (query.type !== 'intensive')
     },
     {
       title: '销售总额（秒约）',
@@ -94,7 +108,15 @@ const Detail = () => {
       hideInSearch: true,
       render: (_) => amountTransform(Number(_), '/'),
       align: 'center',
-      hideInTable: (query.type !== 'second'&&query.type !== 'intensive')
+      hideInTable: (query.type !== 'second')
+    },
+    {
+      title: '销售总额（集约）',
+      dataIndex: 'totalAmount',
+      hideInSearch: true,
+      render: (_) => amountTransform(Number(_), '/'),
+      align: 'center',
+      hideInTable: (query.type !== 'intensive')
     }
   ]
 
