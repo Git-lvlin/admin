@@ -310,10 +310,9 @@ const TableList = () => {
       dataIndex: 'wholesaleStatusDesc',
       valueType: 'text',
       hideInSearch: true,
-      render: (_,data) => {
-        
+      render: (_, data) => {
         if (data.wholesaleAuditStatus === 2) {
-          return <>{_}<Tooltip title={data.rejectionReason}><QuestionCircleOutlined /></Tooltip></>
+          return <>{_} <Tooltip title={data.rejectionReason}><QuestionCircleOutlined /></Tooltip></>
         }
 
         return <div dangerouslySetInnerHTML={{ __html: _ }}></div>
@@ -362,6 +361,7 @@ const TableList = () => {
               }
             </>
           }
+          <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}?type=1`) }}>复制活动</a>
         </Space>
       ),
     },
