@@ -229,6 +229,7 @@ const TransactionDetails = () => {
                 {
                   accountId: query.accountId,
                   accountType: query.accountType,
+                  amountType: query.amountType,
                   ...form?.getFieldValue()
                 }
               }
