@@ -147,7 +147,7 @@ const CommunityStoreData = () => {
           size="large"
         >
           <Radio value={1}>采购订单总量</Radio>
-          <Radio value={2}>总收益排名</Radio>
+          <Radio value={2}>采购金额</Radio>
         </Radio.Group>
         <BarChart data={data} />
       </div>
