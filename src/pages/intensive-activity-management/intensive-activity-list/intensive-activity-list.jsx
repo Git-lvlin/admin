@@ -237,24 +237,24 @@ const TableList = () => {
     //   valueType: 'dateRange',
     //   hideInTable: true,
     // },
-    {
-      title: '可购买后销售的社区店等级',
-      dataIndex: 'storeLevel',
-      valueType: 'text',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '可购买后销售的社区店等级',
+    //   dataIndex: 'storeLevel',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     {
       title: '配送模式',
       dataIndex: 'wholesaleFlowTypeDesc',
       valueType: 'text',
       hideInSearch: true,
     },
-    {
-      title: '可购买的会员等级',
-      dataIndex: 'memberLevel',
-      valueType: 'text',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '可购买的会员等级',
+    //   dataIndex: 'memberLevel',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     // {
     //   title: '可恢复支付次数',
     //   dataIndex: 'canRecoverPayTimes',
@@ -310,10 +310,9 @@ const TableList = () => {
       dataIndex: 'wholesaleStatusDesc',
       valueType: 'text',
       hideInSearch: true,
-      render: (_,data) => {
-        
+      render: (_, data) => {
         if (data.wholesaleAuditStatus === 2) {
-          return <>{_}<Tooltip title={data.rejectionReason}><QuestionCircleOutlined /></Tooltip></>
+          return <>{_} <Tooltip title={data.rejectionReason}><QuestionCircleOutlined /></Tooltip></>
         }
 
         return <div dangerouslySetInnerHTML={{ __html: _ }}></div>
@@ -362,6 +361,7 @@ const TableList = () => {
               }
             </>
           }
+          <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}?type=1`) }}>复制活动</a>
         </Space>
       ),
     },

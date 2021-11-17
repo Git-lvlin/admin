@@ -15,7 +15,7 @@ import { addWholesale } from '@/services/intensive-activity-management/intensive
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
 import AddressMultiCascader from '@/components/address-multi-cascader'
 import Upload from '@/components/upload'
-import { history, useParams } from 'umi';
+import { history, useParams, useLocation } from 'umi';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
 
@@ -69,7 +69,7 @@ const IntensiveActivityCreate = () => {
   const [detailData, setDetailData] = useState({})
   const [loading, setLoading] = useState(true)
   const params = useParams();
-
+  const location = useLocation();
   const getAreas = (areas = []) => {
     const areaArr = [];
     for (let index = 0; index < areas.length; index++) {
@@ -158,7 +158,7 @@ const IntensiveActivityCreate = () => {
         canRecoverPayTimes: 0,
         wholesaleFlowType: selectItem[0].wholesaleFlowType,
         ...rest,
-        wsId: +params.id === 0 ? '' : params.id,
+        wsId: (+params.id === 0 || +location.query?.type === 1) ? '' : params.id,
       }
       setSubmitValue(requestParams)
       addWholesale(requestParams).then(res => {
@@ -197,7 +197,7 @@ const IntensiveActivityCreate = () => {
           // }}
           submitter={{
             render: (props) => {
-              if (props.step === 0 || props.step === 1) {
+              if (props.step === 0) {
                 return (
                   <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                     <Button type="primary" onClick={() => props.onSubmit?.()}>
@@ -217,9 +217,10 @@ const IntensiveActivityCreate = () => {
           }}
         >
           <StepsForm.StepForm
-            name="base"
-            title="选择活动商品"
-            onFinish={() => {
+            name="checkbox"
+            title="选择活动商品确认活动参数"
+            onFinish={async (values) => {
+
               if (!selectItem.length) {
                 message.error('请选择活动商品');
                 return false;
@@ -272,19 +273,6 @@ const IntensiveActivityCreate = () => {
                 }
               }
 
-              return true;
-            }}
-
-          >
-            {
-              !loading &&
-              <EditTable onSelect={setSelectItem} sku={detailData?.sku?.[0]} wholesaleFlowType={detailData?.wholesale?.wholesaleFlowType} />
-            }
-          </StepsForm.StepForm>
-          <StepsForm.StepForm
-            name="checkbox"
-            title="确认活动参数"
-            onFinish={async (values) => {
               const { endTimeAdvancePayment, wholesaleTime } = values;
               if (endTimeAdvancePayment <= wholesaleTime[0] || endTimeAdvancePayment >= wholesaleTime[1]) {
                 message.error('店主采购单下单截止时间必须大于活动开始时间且小于截至时间');
@@ -301,6 +289,10 @@ const IntensiveActivityCreate = () => {
             }}
             className={styles.center}
           >
+            {
+              !loading &&
+              <EditTable onSelect={setSelectItem} sku={detailData?.sku?.[0]} wholesaleFlowType={detailData?.wholesale?.wholesaleFlowType} />
+            }
             <ProFormText name="name" label="活动名称" width="lg" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
             <ProFormDateTimeRangePicker
               name="wholesaleTime"
