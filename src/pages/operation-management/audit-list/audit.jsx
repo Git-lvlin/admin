@@ -113,7 +113,7 @@ const Detail = (props) => {
             </Form.Item>
           </div>
         </div>
-        <Title level={4}>供应商资金账户信息</Title>
+        <Title level={4}>运营商资金账户信息</Title>
         <div style={{ display: 'flex' }}>
           <div style={{ flex: 1 }}>
             <Form.Item
