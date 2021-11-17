@@ -69,7 +69,7 @@ const Detail = () => {
       dataIndex: 'goodsState',
       hideInSearch: true,
       render:(_) => {
-        return _ === 1 ? '下架' : '上架'
+        return _ === 0 ? '下架' : '上架'
       },
       align: 'center',
       hideInTable: !(query.type !== 'second'&&query.type !== 'intensive')
