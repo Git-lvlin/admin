@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card, Space, Table, Spin, Modal } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Button, Card, Space, Table, Spin, Modal, Tooltip } from 'antd';
+import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import {
   getWholesaleList,
   getWholesaleDetail,
@@ -10,6 +10,7 @@ import {
   updateWholesaleState,
   getWholesaleOneSku,
   wholesaleStop,
+  cancelWholesale,
 } from '@/services/intensive-activity-management/intensive-activity-list'
 import { history } from 'umi';
 import { amountTransform } from '@/utils/utils'
@@ -204,6 +205,24 @@ const TableList = () => {
     })
   }
 
+  const cancel = (wholesaleId) => {
+    confirm({
+      title: '请确认要终止活动',
+      icon: <ExclamationCircleOutlined />,
+      content: <div><span style={{ color: 'red' }}>终止后无法开启</span>，你还要继续吗？</div>,
+      onOk() {
+        cancelWholesale({
+          wsId: wholesaleId
+        }).then(res => {
+          if (res.code === 0) {
+            actionRef.current.reload();
+          }
+        })
+      },
+    });
+
+  }
+
   const columns = [
     {
       title: '活动编号',
@@ -231,30 +250,42 @@ const TableList = () => {
       },
       hideInTable: true,
     },
+    {
+      title: '审核状态',
+      dataIndex: 'wholesaleAuditStatus',
+      valueType: 'select',
+      valueEnum: {
+        0: '待审核',
+        1: '审核通过',
+        2: '审核拒绝',
+        3: '已取消',
+      },
+      hideInTable: true,
+    },
     // {
     //   title: '活动时间',
     //   dataIndex: 'wholesaleTime',
     //   valueType: 'dateRange',
     //   hideInTable: true,
     // },
-    {
-      title: '可购买后销售的社区店等级',
-      dataIndex: 'storeLevel',
-      valueType: 'text',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '可购买后销售的社区店等级',
+    //   dataIndex: 'storeLevel',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     {
       title: '配送模式',
       dataIndex: 'wholesaleFlowTypeDesc',
       valueType: 'text',
       hideInSearch: true,
     },
-    {
-      title: '可购买的会员等级',
-      dataIndex: 'memberLevel',
-      valueType: 'text',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '可购买的会员等级',
+    //   dataIndex: 'memberLevel',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     // {
     //   title: '可恢复支付次数',
     //   dataIndex: 'canRecoverPayTimes',
@@ -289,11 +320,32 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
+      title: '创建人',
+      dataIndex: 'createAdminName',
+      valueType: 'text',
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+    },
+    {
       title: '状态',
       dataIndex: 'wholesaleStatusDesc',
       valueType: 'text',
       hideInSearch: true,
-      render: (_) => {
+      render: (_, data) => {
+        if (data.wholesaleAuditStatus === 2) {
+          return <>{_} <Tooltip title={data.rejectionReason}><QuestionCircleOutlined /></Tooltip></>
+        }
+
         return <div dangerouslySetInnerHTML={{ __html: _ }}></div>
       }
     },
@@ -303,6 +355,7 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
+          {data.wholesaleAuditStatus !== 1 && <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}`) }}>编辑</a>}
           <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-detail/${data.wholesaleId}`) }}>详情</a>
           {
             (data.wholesaleStatus === 1 || data.wholesaleStatus === 2 || data.wholesaleStatus === 4 || data.wholesaleStatus === 5)
@@ -339,6 +392,12 @@ const TableList = () => {
               }
             </>
           }
+          {
+            data.wholesaleAuditStatus === 0
+            &&
+            <a onClick={() => { cancel(data.wholesaleId) }}>取消活动</a>
+          }
+          <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}?type=1`) }}>复制活动</a>
         </Space>
       ),
     },
@@ -349,7 +408,7 @@ const TableList = () => {
       <div className={style.test}>
         <Card>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button type="primary" icon={<PlusOutlined />} onClick={() => { history.push('/intensive-activity-management/intensive-activity-create') }}>新建</Button>
+            <Button type="primary" icon={<PlusOutlined />} onClick={() => { history.push('/intensive-activity-management/intensive-activity-create/0') }}>新建</Button>
           </div>
         </Card>
         {visible && <Area visible={visible} wsId={selectItem?.wholesaleId} setVisible={setVisible} />}

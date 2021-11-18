@@ -55,7 +55,6 @@ export default (props) => {
   }
 
   const submit = (values) => {
-    console.log('values', getAreaData(values.allowArea))
     return new Promise((resolve, reject) => {
       updateWholesaleArea({
         wsId,
