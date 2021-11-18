@@ -207,9 +207,11 @@ const TableList = () => {
 
   const cancel = (wholesaleId) => {
     confirm({
-      title: '请确认要终止活动',
+      title: '请确认要取消活动',
       icon: <ExclamationCircleOutlined />,
-      content: <div><span style={{ color: 'red' }}>终止后无法开启</span>，你还要继续吗？</div>,
+      content: <div><span style={{ color: 'red' }}>取消后无法开启</span>，你还要继续吗？</div>,
+      okText: '取消活动',
+      cancelText: '不取消',
       onOk() {
         cancelWholesale({
           wsId: wholesaleId
