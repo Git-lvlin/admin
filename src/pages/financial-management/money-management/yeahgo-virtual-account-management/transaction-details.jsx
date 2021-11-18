@@ -230,6 +230,8 @@ const TransactionDetails = () => {
                   accountId: query.accountId,
                   accountType: query.accountType,
                   amountType: query.amountType,
+                  begin: form?.getFieldValue().createTime?.[0],
+                  end: form?.getFieldValue().createTime?.[1],
                   ...form?.getFieldValue()
                 }
               }
