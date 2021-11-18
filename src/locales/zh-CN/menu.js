@@ -67,6 +67,8 @@ export default {
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
+  'menu.intensive-activity-management.intensive-activity-audit': '集约活动审核',
+  'menu.intensive-activity-management.intensive-activity-audit-detail': '活动审核详情',
   'menu.intensive-activity-management.intensive-remind-configuration': '集约提醒配置',
   'menu.intensive-activity-management.intensive-remind-statistics': '集约提醒统计',
 
@@ -166,6 +168,9 @@ export default {
   'menu.dc-management.version': '版本号管理',
   'menu.dc-management.data-board': '数据看版配置',
   'menu.dc-management.data-board-configuration': '数据报表配置',
+  'menu.dc-management.import-export': '导入导出配置',
+  'menu.dc-management.import-export.export-configuration': '导出配置',
+  'menu.dc-management.import-export.import-configuration': '导入配置',
 
   'menu.coupon-management': '红包管理',
   'menu.coupon-management.coupon-list': '红包列表',
@@ -292,11 +297,6 @@ export default {
   'menu.blind-box-activity-management.blind-box-consume-detail': '使用明细',
   'menu.blind-box-activity-management.blind-box-employ-detail': '用户盲盒机会明细',
   'menu.blind-box-activity-management.bind-box-rule-set': '盲盒规则配置',
-
-  
-  'menu.import-export-configuration': '导入导出配置',
-  'menu.import-export-configuration.export-configuration': '导出配置',
-  'menu.import-export-configuration.import-configuration': '导入配置',
 
 
   'menu.activity-management': '活动管理',
