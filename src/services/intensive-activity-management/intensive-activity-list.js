@@ -85,3 +85,11 @@ export const updateWholesaleArea = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const cancelWholesale = (params = {}, options = {}) => {
+  return request('/auth/wholesale/index/cancelWholesale', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
