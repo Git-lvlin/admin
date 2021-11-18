@@ -237,8 +237,9 @@ export default (props) => {
 
   const bankAccountTypeChange = (e) => {
     if (e.target.value === 1) {
+      const companyName = form.getFieldValue('companyName');
       form.setFieldsValue({
-        bankAccountName: detailData.companyName
+        bankAccountName: companyName
       })
     }
   }
@@ -252,7 +253,7 @@ export default (props) => {
       const { bankAccountInfo } = detailData
       form.setFieldsValue({
         bindBankSwitch: bankAccountInfo?.bindBankSwitch,
-        bankAccountName: detailData.companyName,
+        bankAccountName: bankAccountInfo?.companyName,
       })
 
       if (bankAccountInfo) {
@@ -278,6 +279,7 @@ export default (props) => {
           bankAccountType,
           bankCardNo,
           bankAccountName,
+          companyName,
         } = bankAccountInfo
         form.setFieldsValue({
           addressInfo: {
@@ -306,7 +308,7 @@ export default (props) => {
           bankCode: bankCode ? { label: bankName, value: bankCode } : undefined,
           bankAccountType: bankAccountType || 1,
           bankCardNo,
-          bankAccountName: (bankAccountType || 1) === 1 ? detailData.companyName : bankAccountName,
+          bankAccountName: (bankAccountType || 1) === 1 ? companyName : bankAccountName,
         })
       }
 
@@ -355,6 +357,24 @@ export default (props) => {
       <Divider />
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1 }}>
+          <ProFormText
+            name="companyName"
+            label="企业名称"
+            placeholder="请输入企业名称"
+            rules={[{ required: true, message: '请输入企业名称' }]}
+            fieldProps={{
+              maxLength: 30,
+              onChange: (e) => {
+                const bankAccountType = form.getFieldValue('bankAccountType');
+                if (bankAccountType === 1) {
+                  form.setFieldsValue({
+                    bankAccountName: e.target.value
+                  })
+                }
+              }
+            }}
+            disabled={setDisable()}
+          />
           <Form.Item
             label="企业地址"
             name="addressInfo"

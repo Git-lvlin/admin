@@ -27,6 +27,12 @@ const TableList = () => {
       }
     },
     {
+      title: '企业名称',
+      dataIndex: 'accountCompanyName',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
       title: '登录账号',
       dataIndex: 'accountName',
       valueType: 'text',
