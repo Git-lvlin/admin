@@ -97,6 +97,12 @@ export default (props) => {
         }}
       />
       <ProFormText
+        name="sort"
+        label="展示序号"
+        placeholder={'请输入在用户端的展示序号，升序展示，正整数'}
+        rules={[{ required: true, message: '请输入在用户端的展示序号，升序展示，正整数' }]}
+      />
+      <ProFormText
         name="amount"
         label="赠送新人红包金额"
         placeholder={'请输入新人红包金额，0-999整数'}
