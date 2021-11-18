@@ -309,6 +309,7 @@ export default (props) => {
           bankAccountType: bankAccountType || 1,
           bankCardNo,
           bankAccountName: (bankAccountType || 1) === 1 ? companyName : bankAccountName,
+          companyName,
         })
       }
 
