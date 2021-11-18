@@ -107,7 +107,7 @@ const StoreList = (props) => {
                 query: {
                   storeName: data.storeName,
                   phone: data.phone,
-                  linkman: data.linkman,
+                  linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
                   memberId: data.memberId,
                 }
               })
@@ -131,7 +131,7 @@ const StoreList = (props) => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
               }
             })
           }}>
@@ -155,7 +155,7 @@ const StoreList = (props) => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
               }
             })
           }}>{_}</a>
@@ -177,7 +177,7 @@ const StoreList = (props) => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
               }
             })
           }}>{_}</a>
@@ -199,7 +199,7 @@ const StoreList = (props) => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
                 memberId: data.memberId,
               }
             })

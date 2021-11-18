@@ -9,7 +9,7 @@ export default {
     },
     {
       name: 'intensive-activity-create',
-      path: '/intensive-activity-management/intensive-activity-create',
+      path: '/intensive-activity-management/intensive-activity-create/:id',
       component: './intensive-activity-management/intensive-activity-create',
       hideInMenu: true,
     },
