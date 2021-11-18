@@ -61,7 +61,7 @@ export default (props) => {
           '集约':2,
           '个人中心':3,
           '社区店':4,
-          '秒杀爆品':6,
+          '秒约爆品':6,
           '周末狂欢':7,
         }[detailData.location]
       }
@@ -90,7 +90,7 @@ export default (props) => {
         2: '集约',
         3: '个人中心',
         4: '社区店',
-        6: '秒杀爆品',
+        6: '秒约爆品',
         7: '周末狂欢',
       }[detailData.location]
       const { ...rest } = detailData;
@@ -130,7 +130,7 @@ export default (props) => {
             2: '集约',
             3: '个人中心',
             4: '社区店',
-            6: '秒杀爆品',
+            6: '秒约爆品',
             7: '周末狂欢',
           }}
           placeholder="选择位置"
@@ -171,7 +171,7 @@ export default (props) => {
             <dd>集约页面banner-375*168</dd>
             <dd>个人中心banner-351*65</dd>
             <dd>社区店专享banner-375*150</dd>
-            <dd>秒杀爆品banner-375*160</dd>
+            <dd>秒约爆品banner-375*160</dd>
             <dd>周末狂欢banner-375*160</dd>
           </dl>
         </div>
