@@ -78,6 +78,8 @@ const BannerAdmin = () => {
       dataIndex: 'actionUrl',
       valueType: 'text',
       search: false,
+      width: 600,
+      ellipsis: true,
     },
     {
       title: '添加时间',
