@@ -299,7 +299,7 @@ export default (props) => {
       <Form.Item
         label="创建时间"
       >
-        {detailData?.goods.createTimeDisplay}
+        {detailData?.goods?.createTimeDisplay}
       </Form.Item>
 
       <Form.Item
@@ -314,10 +314,10 @@ export default (props) => {
         {detailData?.goods?.goodsStateDisplay}{detailData?.putOnStr}
       </Form.Item>
 
-      {detailData?.goods?.goodsVerifyState !== 1 && <Form.Item
+      {detailData?.goods?.goodsState ===0 && <Form.Item
         label="下架原因"
       >
-        <span style={{ color: 'red' }}>{detailData.goods.goodsVerifyRemark}</span>
+        <span style={{ color: 'red' }}>{detailData?.goods?.goodsVerifyRemark}</span>
       </Form.Item>}
 
       {/* 

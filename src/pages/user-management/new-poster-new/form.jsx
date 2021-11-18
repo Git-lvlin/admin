@@ -30,7 +30,7 @@ const FromWrap = ({ value, onChange, content, right }) => (
 )
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible, refresh, setRefresh } = props;
+  const { detailData, setVisible, onClose, visible, refresh, setRefresh, type } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
@@ -38,6 +38,7 @@ export default (props) => {
     const { ...rest } = values
     const param = {
       ...rest,
+      type: type,
       version: 3,
     }
 
