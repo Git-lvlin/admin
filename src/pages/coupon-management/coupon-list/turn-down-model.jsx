@@ -4,11 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { couponVerifyList } from '@/services/coupon-management/coupon-audit';
 
 export default props=>{
-    const {id}=props
-    const [visible, setVisible] = useState(false);
-    const Additional=()=>{
-        setVisible(true)
-    }
+    const {id,turnVisible,setTurnVisible}=props
     const columns3= [
         {
           title: '审核时间',
@@ -40,9 +36,8 @@ export default props=>{
         <ModalForm
             title="审核详情"
             key={id}
-            onVisibleChange={setVisible}
-            visible={visible}
-            trigger={<a onClick={()=>Additional()}>驳回详情</a>}
+            onVisibleChange={setTurnVisible}
+            visible={turnVisible}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
@@ -51,7 +46,7 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                setVisible(false)
+              setTurnVisible(false)
             }}
         >
           <ProTable
