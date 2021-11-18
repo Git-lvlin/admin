@@ -177,6 +177,9 @@ const NewPoster = () => {
                   <span>上传</span>
                 </p>
                 <p>
+                  <span>排序序号{item.sort}</span>
+                </p>
+                <p>
                   {
                     item.state ? <span className={styles.green}>已上架</span>
                       : <div>
