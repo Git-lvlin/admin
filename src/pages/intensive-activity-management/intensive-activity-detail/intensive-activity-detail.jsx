@@ -183,7 +183,32 @@ const Detail = () => {
                 },
                 {
                   title: '说明',
-                  dataIndex: 'logMsg',
+                  dataIndex: 'logDesc',
+                  render: (_) => {
+                    return _.map(item => {
+                      if (item.type === 3) {
+                        return (
+                          <>
+                            <div>{item.actionRemark}</div>
+                            <div>新值：{item.actionAfter && <Image width={50} src={item.actionAfter} />}</div>
+                            <div>旧值：{item.actionBefore && <Image width={50} src={item.actionBefore} />}</div>
+                          </>
+                        )
+                      }
+
+                      if (item.type === 2) {
+                        return (
+                          <>
+                            <div>{item.actionRemark}</div>
+                            <div>新值：{item.actionAfter}</div>
+                            <div>旧值：{item.actionBefore}</div>
+                          </>
+                        )
+                      }
+
+                      return item.actionRemark
+                    })
+                  }
                 },
                 {
                   title: '操作时间',

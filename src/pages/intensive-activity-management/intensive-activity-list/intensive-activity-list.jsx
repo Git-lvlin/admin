@@ -10,6 +10,7 @@ import {
   updateWholesaleState,
   getWholesaleOneSku,
   wholesaleStop,
+  cancelWholesale,
 } from '@/services/intensive-activity-management/intensive-activity-list'
 import { history } from 'umi';
 import { amountTransform } from '@/utils/utils'
@@ -204,6 +205,24 @@ const TableList = () => {
     })
   }
 
+  const cancel = (wholesaleId) => {
+    confirm({
+      title: '请确认要终止活动',
+      icon: <ExclamationCircleOutlined />,
+      content: <div><span style={{ color: 'red' }}>终止后无法开启</span>，你还要继续吗？</div>,
+      onOk() {
+        cancelWholesale({
+          wsId: wholesaleId
+        }).then(res => {
+          if (res.code === 0) {
+            actionRef.current.reload();
+          }
+        })
+      },
+    });
+
+  }
+
   const columns = [
     {
       title: '活动编号',
@@ -228,6 +247,18 @@ const TableList = () => {
         1: '待开始',
         2: '进行中',
         3: '已结束',
+      },
+      hideInTable: true,
+    },
+    {
+      title: '审核状态',
+      dataIndex: 'wholesaleAuditStatus',
+      valueType: 'select',
+      valueEnum: {
+        0: '待审核',
+        1: '审核通过',
+        2: '审核拒绝',
+        3: '已取消',
       },
       hideInTable: true,
     },
@@ -360,6 +391,11 @@ const TableList = () => {
                 <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>
               }
             </>
+          }
+          {
+            data.wholesaleAuditStatus === 0
+            &&
+            <a onClick={() => { cancel(data.wholesaleId) }}>取消活动</a>
           }
           <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}?type=1`) }}>复制活动</a>
         </Space>
