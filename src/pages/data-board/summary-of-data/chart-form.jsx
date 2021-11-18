@@ -114,7 +114,6 @@ const ChartForm = ({
         <Spin spinning={loading}>
           <Chart
             scale={scale}
-            padding={[50, 20, 60, 80]}
             autoFit
             height={440}
             data={lineData}
