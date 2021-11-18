@@ -418,7 +418,7 @@ const IntensiveActivityCreate = () => {
             <Result
               status="success"
               title={`活动${+params.id !== 0 ? '修改' : '创建'}成功`}
-              subTitle={`活动将在${moment(submitValue?.wholesaleStartTime).fromNow(true)}后开始，请留意`}
+              subTitle={<div style={{color: '#000', fontSize: 20, fontWeight: 'bold'}}>活动已进入待审核状态，请提醒主管尽快审核</div>}
             />
             {submitValue && <div
               style={{
