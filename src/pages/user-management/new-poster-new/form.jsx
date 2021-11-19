@@ -30,7 +30,7 @@ const FromWrap = ({ value, onChange, content, right }) => (
 )
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible, refresh, setRefresh } = props;
+  const { detailData, setVisible, onClose, visible, refresh, setRefresh, type } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
@@ -38,6 +38,7 @@ export default (props) => {
     const { ...rest } = values
     const param = {
       ...rest,
+      type: type,
       version: 3,
     }
 
@@ -94,6 +95,12 @@ export default (props) => {
           maxLength: 8,
           minLength: 3,
         }}
+      />
+      <ProFormText
+        name="sort"
+        label="展示序号"
+        placeholder={'请输入在用户端的展示序号，升序展示，正整数'}
+        rules={[{ required: true, message: '请输入在用户端的展示序号，升序展示，正整数' }]}
       />
       <ProFormText
         name="amount"

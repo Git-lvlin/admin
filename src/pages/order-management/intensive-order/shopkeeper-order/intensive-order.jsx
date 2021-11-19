@@ -63,7 +63,7 @@ const TableList = () => {
 
   useEffect(() => {
     form.setFieldsValue({
-      objectId: location?.query?.objectId,
+      ...location?.query,
     })
   }, [])
 
