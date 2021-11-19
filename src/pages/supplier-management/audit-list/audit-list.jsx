@@ -27,6 +27,15 @@ const TableList = () => {
       }
     },
     {
+      title: '供应商家ID',
+      dataIndex: 'supplierId',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入供应商家ID'
+      },
+      hideInTable: true,
+    },
+    {
       title: '登录账号',
       dataIndex: 'accountName',
       valueType: 'text',
