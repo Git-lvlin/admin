@@ -29,7 +29,9 @@ const CommunityStoreData = () => {
       endTime: dateNow,
       type: value
     }).then(res => {
-      setData(res.data)
+      setData(res.data.map(item=>(
+        {companyName: item.companyName, value: Number(item.value)}
+      )))
     })
     return () => {
       setData([])
@@ -149,7 +151,7 @@ const CommunityStoreData = () => {
           <Radio value={1}>采购订单总量</Radio>
           <Radio value={2}>采购金额</Radio>
         </Radio.Group>
-        <BarChart data={data} />
+        <BarChart data={data}/>
       </div>
       <div className={styles.table}>
         <ProTable
