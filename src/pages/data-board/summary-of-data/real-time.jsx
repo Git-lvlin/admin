@@ -7,12 +7,14 @@ import {
   Legend
 } from 'bizcharts'
 import ProCard, { CheckCard } from '@ant-design/pro-card'
-import { Empty, Space, Typography } from 'antd'
+import { Empty, Space, Typography, Tooltip as Tp } from 'antd'
 import { useRequest } from 'umi'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import Yuan from '../components/Yuan'
 import { briefCount, briefCountDetail } from '@/services/data-board/summary-of-data'
 import { amountTransform } from '@/utils/utils'
+import styles from './style.less'
 
 const { Paragraph, Title, Text } = Typography
 
@@ -73,7 +75,6 @@ const RealTime = () => {
               data={lineData}
               interactions={['element-active']}
               forceUpdate
-              padding={[80, 40, 60, 60]}
             >
               <Point
                 position="countTime*value"
@@ -129,19 +130,16 @@ const RealTime = () => {
             case 'registerStore':
               setCode(value)
               return setTitle('新增店主数')
-            default :
-              setCode(value)
-              return setTitle('')
           }
         }}
-        defaultValue="payAmount"
+        value={code}
       >
         <ProCard 
           gutter={[36, 36]}
           wrap
         >
           <CheckCard 
-            style={{ width: "36%", height: 150 }}
+            style={{ width: "36%", height: 150, position: 'relative' }}
             bordered
             description={
               <>
@@ -152,6 +150,11 @@ const RealTime = () => {
                       ￥<Yuan>{amountTransform(data?.payAmount?.today, '/')}</Yuan>
                     </Title>
                   </Space>
+                  <div className={styles.checkCard}>
+                    <Tp title='当天所有已支付的订单总金额'>
+                      <QuestionCircleOutlined />
+                    </Tp>
+                  </div>
                 </Paragraph>
                 <Paragraph>
                   <Space size={20}>
@@ -166,7 +169,7 @@ const RealTime = () => {
             value={data?.payAmount?.code}
           />
           <CheckCard 
-            style={{ width: "36%", height: 150 }}
+            style={{ width: "36%", height: 150, position: 'relative' }}
             bordered
             description={
               <>
@@ -177,6 +180,11 @@ const RealTime = () => {
                       <Yuan>{data?.orderCount?.today}</Yuan>
                     </Title>
                   </Space>
+                  <div className={styles.checkCard}>
+                    <Tp title='当天所有已支付的订单总数'>
+                      <QuestionCircleOutlined />
+                    </Tp>
+                  </div>
                 </Paragraph>
                 <Paragraph>
                   <Space size={20}>
@@ -189,7 +197,7 @@ const RealTime = () => {
             value={ data?.orderCount?.code }
           />
           <CheckCard 
-            style={{ width: "36%", height: 150 }}
+            style={{ width: "36%", height: 150, position: 'relative' }}
             bordered
             description={
               <>
@@ -200,6 +208,11 @@ const RealTime = () => {
                       <Yuan>{data?.orderMember?.today}</Yuan>
                     </Title>
                   </Space>
+                  <div className={styles.checkCard}>
+                    <Tp title='当天所有支付成功的下单总人数'>
+                      <QuestionCircleOutlined />
+                    </Tp>
+                  </div>
                 </Paragraph>
                 <Paragraph>
                   <Space size={20}>
@@ -212,7 +225,7 @@ const RealTime = () => {
             value={data?.orderMember?.code}
           />
          <CheckCard 
-            style={{ width: "36%", height: 150 }}
+            style={{ width: "36%", height: 150, position: 'relative' }}
             bordered
             description={
               <>
@@ -223,6 +236,11 @@ const RealTime = () => {
                       <Yuan>{data?.accessCount?.today}</Yuan>
                     </Title>
                   </Space>
+                  <div className={styles.checkCard}>
+                    <Tp title='当天打开app进行访问的人数，每人只计算1次'>
+                      <QuestionCircleOutlined />
+                    </Tp>
+                  </div>
                 </Paragraph>
                 <Paragraph>
                   <Space size={20}>
@@ -235,7 +253,7 @@ const RealTime = () => {
             value={data?.accessCount?.code}
           />
           <CheckCard 
-            style={{ width: "36%", height: 150 }}
+            style={{ width: "36%", height: 150, position: 'relative' }}
             bordered
             description={
               <>
@@ -246,6 +264,11 @@ const RealTime = () => {
                       <Yuan>{data?.registerMember?.today}</Yuan>
                     </Title>
                   </Space>
+                  <div className={styles.checkCard}>
+                    <Tp title='当天注册成功的用户数'>
+                      <QuestionCircleOutlined />
+                    </Tp>
+                  </div>
                 </Paragraph>
                 <Paragraph>
                   <Space size={20}>
@@ -258,7 +281,7 @@ const RealTime = () => {
             value={data?.registerMember?.code}
           />
           <CheckCard 
-            style={{ width: "36%", height: 150 }}
+            style={{ width: "36%", height: 150, position: 'relative' }}
             bordered
             description={
               <>
@@ -269,6 +292,11 @@ const RealTime = () => {
                       <Yuan>{data?.registerStore?.today}</Yuan>
                     </Title>
                   </Space>
+                  <div className={styles.checkCard}>
+                    <Tp title='当天人工审核通过，开店成功的店主数'>
+                      <QuestionCircleOutlined />
+                    </Tp>
+                  </div>
                 </Paragraph>
                 <Paragraph>
                   <Space size={20}>
