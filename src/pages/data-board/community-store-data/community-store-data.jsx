@@ -30,7 +30,7 @@ const CommunityStoreData = () => {
       type: value
     }).then(res => {
       setData(res.data.map(item=>(
-        {companyName: item.companyName, value: Number(item.value)}
+        {storeName: item.storeName, value: Number(item.value)}
       )))
     })
     return () => {
