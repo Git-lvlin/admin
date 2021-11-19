@@ -9,6 +9,7 @@ import ProTable from '@ant-design/pro-table';
 import moment from 'moment';
 import { history,connect } from 'umi';
 import styles from './style.less'
+import EndModel from './end-model'
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -26,7 +27,7 @@ const formItemLayout = {
   const data=[
     {
       id:1,
-      title:'当天红包金额',
+      title:'每人奖励红包金额',
     }
   ]
 
@@ -42,6 +43,7 @@ export default (props) =>{
   const [falg,setFalg]=useState(true)
   const [form] = Form.useForm();
   const [detailList,setDetailList]=useState()
+  const [visible, setVisible] = useState(false);
   let id = props.location.query.id
  
   useEffect(() => {
@@ -119,12 +121,12 @@ export default (props) =>{
  
   const columns = [
     {
-      title: '连续获得天数',
+      title: '邀请人数',
       dataIndex: 'title',
       editable:false,
     },
     {
-      title: '第1天',
+      title: '累计推荐1-3人',
       dataIndex: 'couponIdOne',
       valueType: 'select',
       valueEnum: onselect,
@@ -133,7 +135,7 @@ export default (props) =>{
       },
     },
     {
-      title: '第2天',
+      title: '累计推荐4-9人',
       dataIndex: 'couponIdTwo',
       valueType: 'select',
       valueEnum: onselect2,
@@ -141,7 +143,7 @@ export default (props) =>{
         placeholder: '请选择'
       },
     }, {
-      title: '第3天',
+      title: '累计推荐10人以上',
       dataIndex: 'couponIdThree',
       valueType: 'select',
       valueEnum: onselect3,
@@ -152,21 +154,21 @@ export default (props) =>{
   ];
   const columns2 = [
     {
-      title: '连续获得天数',
+      title: '邀请人数',
       dataIndex: 'title'
     },
     {
-      title: '第1天',
+      title: '累计推荐1-3人',
       dataIndex: 'couponIdOne',
       valueType: 'text'
     },
     {
-      title: '第2天',
+      title: '累计推荐4-9人',
       dataIndex: 'couponIdTwo',
       valueType: 'text'
     }, 
     {
-      title: '第3天',
+      title: '累计推荐10人以上',
       dataIndex: 'couponIdThree',
       valueType: 'text'
     }
@@ -195,11 +197,16 @@ export default (props) =>{
                       <>
                         {
                           falg?<Button style={{marginLeft:'80px'}} type="primary" onClick={() => { setFalg(false) }}>编辑</Button>
-                          :<Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
-                            props.form?.submit?.()
-                          }}>
-                            保存
-                          </Button>
+                          :<>
+                            <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
+                              props.form?.submit?.()
+                            }}>
+                              保存
+                            </Button>
+                            <Button style={{margin:'30px'}} type="default" onClick={()=>setVisible(true)}>
+                              终止活动
+                            </Button>
+                          </>
                         }
                       </> 
                       :null
@@ -211,6 +218,7 @@ export default (props) =>{
                     保存
                   </Button>
                 }
+                <Button type="default" style={{marginLeft:'80px'}} onClick={() => { history.goBack() }}>返回</Button>
               </>  
             ];
           }
@@ -253,7 +261,7 @@ export default (props) =>{
         />
           {
             id?<EditableProTable
-                headerTitle="每日首单红包发放金额(元）"
+                headerTitle="奖励金额(元）"
                 rowKey="id"
                 // search={false}
                 columns={columns2}
@@ -261,7 +269,7 @@ export default (props) =>{
                 recordCreatorProps={false}
                 />
              :<EditableProTable
-                headerTitle="每日首单红包发放金额(元）"
+                headerTitle="奖励金额(元）"
                 columns={columns}
                 name="table"
                 rowKey="id"
@@ -282,17 +290,24 @@ export default (props) =>{
               />  
           }
           {
-            (!falg)||(!id)?<p className={styles.hint2}>提示：中断或连续3天获得了红包重新按第一天金额发放，每次领取的红包不累计，三天的红包金额只可按面值递增选择，不可以选择相同面值的红包，您必须先在运营后台“红包管理"中创建好”每日红包“类型的红包后，且创建的红包有效期必须大于活动有效期，这里才可以选择到创建的红包。</p>
+            (!falg)||(!id)?<p className={styles.hint2}>提示：您必须先在运营后台“红包管理"中创建好”分享领红包“类型的红包后，且创建的红包可领有效期必须大于活动有效期，这里才可以选择到创建的红包。</p>
             :null
           }
           <ProFormText
               width={120}
               label="领取条件"
               fieldProps={{
-                value: "每日首次下单成功"
+                value: "在活动中分享新用户注册成功时"
               }}
               readonly
             />
+            <ProFormText
+              width="md"
+              name="num"
+              label="最多可推荐人数"
+              readonly={id&&falg}
+              extra={'超出此人数，不再发放奖励'}
+          />
             {
               id&&falg?
                <Form.Item
@@ -319,34 +334,16 @@ export default (props) =>{
             />
             }
 
-            {
-              id&&<ProFormRadio.Group
-                  name="status"
-                  label="活动状态"
-                  options={[
-                      {
-                        label: '开启',
-                        value: 1
-                      },
-                      {
-                        label: '关闭',
-                        value: 2
-                      }
-                  ]}
-                  readonly={id&&falg}
-              />
-            }
-            {
-              id&&!falg? <p className={styles.hint}>提示：关闭活动后，不可再次开启,请谨慎操作</p>
-              :null
-            }
-
           {
             id&&falg?
             <p className={styles.back}>最近一次操作人：{detailList?.data?.adminName}     {detailList?.data?.updateTime}</p>
             :null
           }  
       </ProForm>
+
+      {
+        visible&&<EndModel visible={visible} setVisible={setVisible}  endId={id}/>
+      }
       </PageContainer>
   )
 }

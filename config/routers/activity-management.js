@@ -24,27 +24,27 @@ export default {
             }
           ]
       },
-      // {
-      //   name: 'share-red-packet-activity',
-      //   path: '/activity-management/share-red-packet-activity',
-      //   routes: [
-      //       {
-      //         name: 'activity-list',
-      //         path: '/activity-management/share-red-packet-activity/activity-list',
-      //         component: './activity-management/share-red-packet-activity/activity-list'
-      //       },
-      //       {
-      //         name: 'activity-data',
-      //         path: '/activity-management/share-red-packet-activity/activity-data',
-      //         component: './activity-management/share-red-packet-activity/activity-data'
-      //       },
-      //       {
-      //         name: 'share-packet-rule',
-      //         path: '/activity-management/share-red-packet-activity/share-packet-rule',
-      //         component: './activity-management/share-red-packet-activity/share-packet-rule',
-      //         hideInMenu: true
-      //       }
-      //     ]
-      // },
+      {
+        name: 'share-red-packet-activity',
+        path: '/activity-management/share-red-packet-activity',
+        routes: [
+            {
+              name: 'activity-list',
+              path: '/activity-management/share-red-packet-activity/activity-list',
+              component: './activity-management/share-red-packet-activity/activity-list'
+            },
+            {
+              name: 'activity-data',
+              path: '/activity-management/share-red-packet-activity/activity-data',
+              component: './activity-management/share-red-packet-activity/activity-data'
+            },
+            {
+              name: 'share-packet-rule',
+              path: '/activity-management/share-red-packet-activity/share-packet-rule',
+              component: './activity-management/share-red-packet-activity/share-packet-rule',
+              hideInMenu: true
+            }
+          ]
+      },
     ]
   }
