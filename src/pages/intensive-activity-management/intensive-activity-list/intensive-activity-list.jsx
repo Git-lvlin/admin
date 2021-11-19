@@ -134,7 +134,7 @@ const SubTable = (props) => {
       render: (_, record) => {
         return (
           <Space>
-            {(props.wholesaleStatus === 1 || props.wholesaleStatus === 2 || props.wholesaleAuditStatus === 0) && <a onClick={() => { setStock(record) }}>追加库存</a>}
+            {(props.wholesaleStatus === 1 || props.wholesaleStatus === 2) && <a onClick={() => { setStock(record) }}>追加库存</a>}
           </Space>
         )
       },
