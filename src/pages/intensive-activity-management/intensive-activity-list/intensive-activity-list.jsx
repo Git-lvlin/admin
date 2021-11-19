@@ -134,7 +134,7 @@ const SubTable = (props) => {
       render: (_, record) => {
         return (
           <Space>
-            {props.wholesaleStatus !== 3 && props.wholesaleStatus !== 0 && <a onClick={() => { setStock(record) }}>追加库存</a>}
+            {(props.wholesaleStatus === 1 || props.wholesaleStatus === 2) && <a onClick={() => { setStock(record) }}>追加库存</a>}
           </Space>
         )
       },
@@ -426,7 +426,7 @@ const TableList = () => {
           rowKey="wholesaleId"
           options={false}
           request={getWholesaleList}
-          expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} /> }}
+          expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} wholesaleAuditStatus={_.wholesaleAuditStatus} /> }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,
