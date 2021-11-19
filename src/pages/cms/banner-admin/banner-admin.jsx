@@ -78,6 +78,8 @@ const BannerAdmin = () => {
       dataIndex: 'actionUrl',
       valueType: 'text',
       search: false,
+      width: 600,
+      ellipsis: true,
     },
     {
       title: '添加时间',
@@ -95,7 +97,7 @@ const BannerAdmin = () => {
         2: '集约',
         3: '个人中心',
         4: '社区店',
-        6: '秒杀爆品',
+        6: '秒约爆品',
         7: '周末狂欢',
       }
     },
