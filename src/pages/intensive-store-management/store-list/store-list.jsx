@@ -80,6 +80,18 @@ const StoreList = (props) => {
     // },
     {
       title: '提货点所在地区',
+      dataIndex: '',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, details) => {
+        return (
+          <>
+            {details?.areaInfo?.[details?.provinceId]}{details?.areaInfo?.[details?.cityId]}{details?.areaInfo?.[details?.regionId]}
+          </>)
+      }
+    },
+    {
+      title: '提货点详细地址',
       dataIndex: 'address',
       valueType: 'text',
       hideInSearch: true,
