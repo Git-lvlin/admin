@@ -54,7 +54,7 @@ const Detail = () => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
-      hideInSearch: true,
+      hideInSearch: (query.type !== 'second'&&query.type !== 'intensive'),
       width: '15%',
       align: 'center'
     },
