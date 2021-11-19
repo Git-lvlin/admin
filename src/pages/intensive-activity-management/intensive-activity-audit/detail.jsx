@@ -105,7 +105,15 @@ const getDetail = (wholesaleId) => {
     setLoading(false);
   })
 }
-
+const auditPass=()=>{
+  const data=moment().format("YYYY-MM-DD HH:mm:ss")
+  if(moment(data).isBefore(detailData?.wholesale?.wholesaleStartTime)){
+    setTimeType(1)
+  }else if(moment(detailData?.wholesale?.wholesaleEndTime).isBefore(data)){
+    setTimeType(2)
+  }
+  setVisible(true) 
+}
 useEffect(() => {
   getDetail(params?.id)
 }, [])
@@ -162,20 +170,11 @@ useEffect(() => {
             </Descriptions>
           </Row>
           <Button style={{marginLeft:'400px'}} type="default"  onClick={()=>history.goBack()}>返回</Button>
-          <Button style={{marginLeft:'50px'}} onClick={()=>{ 
-            const data=moment().format("YYYY-MM-DD HH:mm:ss")
-            if(moment(data).isBefore(detailData?.wholesale?.wholesaleStartTime)){
-              setTimeType(1)
-            }else if(moment(detailData?.wholesale?.wholesaleEndTime).isBefore(data)){
-              setTimeType(2)
-            }
-            setVisible(true) 
-          }}  type="primary">审核通过</Button>
+          <Button style={{marginLeft:'50px'}} onClick={()=>auditPass()}  type="primary">审核通过</Button>
           {
             visible&&<PassModel visible={visible} wsId={params?.id} setVisible={setVisible} type={timeType} />
           }
           <AuditModel
-            type={2}
             label={'审核驳回'}
             InterFace={updateWholesaleAuditStatus}
             title={'请确认操作'}

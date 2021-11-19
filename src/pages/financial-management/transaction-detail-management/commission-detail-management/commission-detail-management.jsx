@@ -7,9 +7,12 @@ import { history } from 'umi'
 import { amountTransform } from '@/utils/utils'
 import { platformCommissionPage } from '@/services/financial-management/transaction-detail-management'
 import { Export, ExportHistory } from '@/pages/export-excel'
+import Detail from '../../common-popup/order-pay-detail-popup'
 
 // commission detail
 const CommissionDetailManagement = () =>{
+  const [detailVisible, setDetailVisible] = useState(false)
+  const [selectItem, setSelectItem] = useState({})
   const [visit, setVisit] = useState(false)
 
   const skipToDetail = data => {
@@ -55,7 +58,12 @@ const CommissionDetailManagement = () =>{
     },
     {
       title: '平台单号',
-      dataIndex: 'payNo'
+      dataIndex: 'payNo',
+      render: (_, records) => (
+        records?.orderNo?
+        <a onClick={() => { setSelectItem(records.orderNo); setDetailVisible(true); }}>{_}</a>:
+        <span>{_}</span>
+      )
     },
     {
       title: '资金流水号',
@@ -139,6 +147,14 @@ const CommissionDetailManagement = () =>{
         params={{}}
         request={platformCommissionPage}
       />
+      {
+        detailVisible &&
+        <Detail
+          id={selectItem}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
     </PageContainer>
   )
 }
