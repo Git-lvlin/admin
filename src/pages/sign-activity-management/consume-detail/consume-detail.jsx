@@ -7,6 +7,7 @@ import { queryConsumeList,getConsumeData } from '@/services/sign-activity-manage
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import Detail from '@/pages/order-management/normal-order/detail';
+import moment from 'moment';
 
 
 
@@ -104,8 +105,8 @@ export default () => {
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
       return {
-        beginTime:dateTimeRange&&dateTimeRange[0],
-        endTime:dateTimeRange&&dateTimeRange[1],
+        beginTime:moment(dateTimeRange&&dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+        endTime:moment(dateTimeRange&&dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
         ...rest,
       }
     }

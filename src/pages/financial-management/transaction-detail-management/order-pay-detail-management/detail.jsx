@@ -14,12 +14,12 @@ import './styles.less'
 const Detail = () => {
   const {id} = useParams()
   const [loading, setLoading] = useState(false)
-  const [info, setInfo] = useState({})
+  const [info, setInfo] = useState(null)
   const [payInfos, setPayInfos] = useState([])
-  const [data, setData] = useState({})
+  const [data, setData] = useState(null)
   const [down, setDown] = useState(false)
   const [isDown, setIsDown] = useState(false)
-  const [taskId, setTaskId] = useState('')
+  const [taskId, setTaskId] = useState(null)
   const [process, setProcess] = useState(0)
   const timer = useRef()
   useEffect(()=>{
@@ -50,7 +50,7 @@ const Detail = () => {
   }
 
   const getData = () => {
-    findById({
+    taskId&&findById({
       id: taskId
     }).then(res => {
       setProcess(res.data.process)
@@ -130,16 +130,16 @@ const Detail = () => {
 
   const DownExport = () => {
     if(isDown) {
-      return <a href={data.fileUrl}>下载</a>
+      return <a href={data?.fileUrl}>下载</a>
     } else if(process !== 100 && down){
       return (
         <div style={{ width: 170 }}>
           <Progress percent={process} size='small'/>
         </div>
       )
-    } else if(data.state === 3 && !down){
+    } else if(data?.state === 3 && !down){
       return (
-        <Tooltip title={data.exceptionDes}>
+        <Tooltip title={data?.exceptionDes}>
           <span className={styles.fail}>导出失败</span>
         </Tooltip>
       )
@@ -172,7 +172,7 @@ const Detail = () => {
     },
     {
       title: (_) => _.dataIndex ? '店铺提成比例' : '',
-      dataIndex: info.storeCommissionRatio ? 'storeCommissionRatio' : '',
+      dataIndex: info?.storeCommissionRatio ? 'storeCommissionRatio' : '',
       render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
     },
     {
@@ -222,11 +222,11 @@ const Detail = () => {
     },
     {
       title:(_)=> _.dataIndex === 'preCount' ? '预定数量' : '购买数量',
-      dataIndex: info.orderType === 'commandSalesOrder' ? 'preCount' : 'paidCount'
+      dataIndex: info?.orderType === 'commandSalesOrder' ? 'preCount' : 'paidCount'
     },
     {
       title: (_) => _.dataIndex ? '实际采购数量' : '',
-      dataIndex: info.orderType === 'commandSalesOrder' ? 'paidCount' : ''
+      dataIndex: info?.orderType === 'commandSalesOrder' ? 'paidCount' : ''
     },
     {
       title: '运费',
@@ -283,19 +283,23 @@ const Detail = () => {
         <>
           <Space size='large'>
             <span>{_}</span>
-            <Button 
-              onClick={
-                ()=> downTrade(records)
-              }
-              disabled={down}
-              type='primary'
-            >
-              {
-                down&&
-                <LoadingOutlined />
-              }
-              导出汇付交易单
-            </Button>
+            {
+              _?
+              <Button 
+                onClick={
+                  ()=> downTrade(records)
+                }
+                disabled={down}
+                type='primary'
+              >
+                {
+                  down&&
+                  <LoadingOutlined />
+                }
+                导出汇付交易单
+              </Button>:
+              '-'
+            }
             <DownExport />
           </Space>
         </>
@@ -348,8 +352,8 @@ const Detail = () => {
         dataSource={info}
       />
       {
-        info.skus &&
-        info.skus.map(item => (
+        info?.skus &&
+        info?.skus.map(item => (
           <CustomList data={item} key={item.skuId} columns={columns2}/>
         ))
       }

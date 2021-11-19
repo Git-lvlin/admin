@@ -245,7 +245,7 @@ const ProductData = () => {
             toolBarRender={false}
           />
         </ProCard>
-        <ProCard>
+        <ProCard colSpan="30%">
           <PieChart data={pieData} payRate={payRate}/>
         </ProCard>
       </ProCard>
