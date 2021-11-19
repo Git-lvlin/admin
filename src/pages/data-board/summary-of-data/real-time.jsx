@@ -130,12 +130,9 @@ const RealTime = () => {
             case 'registerStore':
               setCode(value)
               return setTitle('新增店主数')
-            default :
-              setCode(value)
-              return setTitle('')
           }
         }}
-        defaultValue="payAmount"
+        value={code}
       >
         <ProCard 
           gutter={[36, 36]}

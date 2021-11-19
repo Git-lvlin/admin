@@ -16,7 +16,8 @@ const ChartForm = ({
   scale,
   data, 
   loading,
-  code
+  code,
+  value
 }) => {
   const [lineData, setLineData] = useState([])
 
@@ -45,6 +46,7 @@ const ChartForm = ({
         multiple
         loading={loading}
         size="small"
+        value={value}
       >
         <CheckCard
           title={ 
