@@ -259,7 +259,7 @@ const TableList = () => {
       valueEnum: {
         0: '待审核',
         1: '审核通过',
-        2: '审核拒绝',
+        2: '已拒绝',
         3: '已取消',
       },
       hideInTable: true,
