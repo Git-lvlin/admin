@@ -339,15 +339,23 @@ const TableList = () => {
       hideInTable: true,
     },
     {
-      title: '状态',
+      title: '活动状态',
       dataIndex: 'wholesaleStatusDesc',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_) => {
+        return <div dangerouslySetInnerHTML={{ __html: _ }}></div>
+      }
+    },
+    {
+      title: '审核状态',
+      dataIndex: 'wholesaleAuditStatusDesc',
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => {
         if (data.wholesaleAuditStatus === 2) {
           return <>{_} <Tooltip title={data.rejectionReason}><QuestionCircleOutlined /></Tooltip></>
         }
-
         return <div dangerouslySetInnerHTML={{ __html: _ }}></div>
       }
     },
@@ -357,7 +365,7 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          {data.wholesaleAuditStatus !== 1 && <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}`) }}>编辑</a>}
+          {data.wholesaleAuditStatus !== 1 && data.wholesaleAuditStatus !== 3 && <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}`) }}>编辑</a>}
           <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-detail/${data.wholesaleId}`) }}>详情</a>
           {
             (data.wholesaleStatus === 1 || data.wholesaleStatus === 2 || data.wholesaleStatus === 4 || data.wholesaleStatus === 5)
@@ -431,6 +439,7 @@ const TableList = () => {
           pagination={{
             pageSize: 10,
           }}
+          scroll={{ x: '85vw' }}
         />
       </div>
     </PageContainer>
