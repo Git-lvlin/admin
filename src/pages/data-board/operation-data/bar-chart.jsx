@@ -14,18 +14,17 @@ const BarChart = ({data}) => {
       height={400}
       data={data}
       autoFit
-      padding={[40, 0, 20, 120]}
       scale={{
-        ct: {
+        value: {
           formatter: (v) => v
         }
       }}
     >
       <Coordinate transpose />
       <Interval 
-        position="companyName*ct"
+        position="companyName*value"
         label={[
-          "ct",
+          "value",
           ()=>({
             position: "middle",
             style: {
