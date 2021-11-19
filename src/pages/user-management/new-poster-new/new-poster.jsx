@@ -7,6 +7,7 @@ import Edit from './form';
 import Reason from './reason';
 import { posterListNew, posterUpData } from '@/services/cms/member/member';
 import styles from './style.less';
+import ProCard from '@ant-design/pro-card';
 
 const NewPoster = () => {
   const [form] = Form.useForm()
@@ -22,6 +23,7 @@ const NewPoster = () => {
   const [reasonData, setReasonData] = useState(false);
   const [search, setSearch] = useState(0)
   const [num, setNum] = useState(0)
+  const [tabType, setTabType] = useState(1); // 1个人中心，2秒杀活动，3周末大狂欢，4盲盒, 5推荐有礼
   const getDetail = () => {
     setFormVisible(true);
   }
@@ -73,6 +75,7 @@ const NewPoster = () => {
       page,
       size: pageSize,
       version: 3,
+      type: tabType,
       ...getFieldValue(),
     })
       .then(res => {
@@ -86,10 +89,17 @@ const NewPoster = () => {
       .finally(() => {
         setLoading(false);
       })
-  }, [page, pageSize, form, refresh, search])
+  }, [page, pageSize, form, refresh, search, tabType])
 
   return (
     <PageContainer>
+      <ProCard>
+        <Button type={tabType==1?'primary':''} onClick={() => setTabType(1)}>个人中心</Button>
+        <Button type={tabType==2?'primary':''} onClick={() => setTabType(2)}>秒杀活动</Button>
+        <Button type={tabType==3?'primary':''} onClick={() => setTabType(3)}>周末大狂欢</Button>
+        <Button type={tabType==4?'primary':''} onClick={() => setTabType(4)}>盲盒</Button>
+        <Button type={tabType==5?'primary':''} onClick={() => setTabType(5)}>推荐有礼</Button>
+      </ProCard>
       <ProForm
         form={form}
         style={{ backgroundColor: '#fff', padding: 20, paddingLeft: 42 }}
@@ -167,6 +177,9 @@ const NewPoster = () => {
                   <span>上传</span>
                 </p>
                 <p>
+                  <span>排序序号{item.sort}</span>
+                </p>
+                <p>
                   {
                     item.state ? <span className={styles.green}>已上架</span>
                       : <div>
@@ -193,6 +206,7 @@ const NewPoster = () => {
         setVisible={setFormVisible}
         detailData={detailData}
         setRefresh={setRefresh}
+        type={tabType}
         refresh={refresh}
         callback={() => { setDetailData(null) }}
         onClose={() => { setDetailData(null) }}
@@ -203,6 +217,7 @@ const NewPoster = () => {
         detailData={reasonData}
         setRefresh={setRefresh}
         refresh={refresh}
+        type={tabType}
         callback={() => { setRefresh(!refresh); setReasonData(null) }}
         onClose={() => { setReasonData(null) }}
       />}
