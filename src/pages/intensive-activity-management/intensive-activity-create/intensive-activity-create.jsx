@@ -320,7 +320,7 @@ const IntensiveActivityCreate = () => {
                 }
               }}
             />
-            <ProFormText
+            {/* <ProFormText
               name="virtualSales"
               label="本次集约虚拟销量"
               width="lg"
@@ -336,7 +336,7 @@ const IntensiveActivityCreate = () => {
                     return Promise.resolve();
                   },
                 })
-              ]} />
+              ]} /> */}
             <ProFormCheckbox.Group value={'1'} label="可购买的社区店等级" disabled options={[{ label: '全部', value: 1 }]} />
             <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} />
             <Form.Item
