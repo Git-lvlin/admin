@@ -164,12 +164,13 @@ export default props => {
             <Form.Item
               label="发行方式"
             >
-               {
+              {
                 detailData.issueType == 1 ?
                   '会员领取红包'
-                  :detailData.issueType == 2 ?
+                  :detailData.issueType == 2 ? 
                   '系统发放红包'
-                  :'每日红包'
+                  :detailData.issueType == 3 ? 
+                  '每日红包':'邀请好友红包'
               }
             </Form.Item>
             <Form.Item

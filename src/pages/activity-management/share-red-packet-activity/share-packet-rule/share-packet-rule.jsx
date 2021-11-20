@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Input, Form, message,Button,InputNumber} from 'antd';
+import { Input, Form, message,Button,InputNumber,Spin} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
-import { couponEverydaySub,couponEverydayEdit,couponEverydayDetail,couponEverydaySelList } from '@/services/activity-management/everyday-red-packet-activity';
+import { couponInviteSub,couponInviteEdit,couponInviteDetail,couponInviteSelList } from '@/services/activity-management/share-red-packet-activity';
 import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import { FormattedMessage, formatMessage } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -38,44 +38,23 @@ export default (props) =>{
     data.map((item) => item.id),
   );
   const [onselect,setOnselect]=useState([])
-  const [onselect2,setOnselect2]=useState([])
-  const [onselect3,setOnselect3]=useState([])
   const [falg,setFalg]=useState(true)
   const [form] = Form.useForm();
   const [detailList,setDetailList]=useState()
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   let id = props.location.query.id
  
   useEffect(() => {
-    if(!dataSource[0].couponIdOne){
-      couponEverydaySelList({}).then(res=>{
+      couponInviteSelList({}).then(res=>{
         const data={}
         res.data.map(ele=>(
           data[ele.couponId]=ele.name
         ))
         setOnselect(data)
       })
-    }else if(dataSource[0].couponIdTwo){
-      couponEverydaySelList({couponId:dataSource[0].couponIdTwo}).then(res=>{
-        const data={}
-        res.data.map(ele=>(
-          data[ele.couponId]=ele.name
-        ))
-        setOnselect3(data)
-      })
-    }else if(dataSource[0].couponIdOne){
-      couponEverydaySelList({couponId:dataSource[0].couponIdOne}).then(res=>{
-        const data={}
-        res.data.map(ele=>(
-          data[ele.couponId]=ele.name
-        ))
-        setOnselect2(data)
-      })
-    }
-
-
     if(id){
-    couponEverydayDetail({id:id}).then(res=>{
+      couponInviteDetail({id:id}).then(res=>{
       const list=[
         {
           id:1,
@@ -92,26 +71,26 @@ export default (props) =>{
       })
     })
     }
-  }, [falg,dataSource])
+  }, [falg,dataSource,loading])
   const onsubmit=values=>{
       values.activityStartTime = values.dateRange ? values.dateRange[0] : null
       values.activityEndTime= values.dateRange ? values.dateRange[1] : null
       delete values.dateRange
       if(id){
-        couponEverydayEdit({id:id,...values}).then(res=>{
+        couponInviteEdit({id:id,...values}).then(res=>{
           if(res.code==0){
             message.success('编辑成功');
-            history.push('/activity-management/everyday-red-packet-activity/activity-list')
+            history.push('/activity-management/share-red-packet-activity/activity-list')
           }
         })
       }else{
         values.couponIdOne=dataSource[0].couponIdOne
         values.couponIdTwo=dataSource[0].couponIdTwo
         values.couponIdThree=dataSource[0].couponIdThree
-        couponEverydaySub({...values}).then(res=>{
+        couponInviteSub({...values}).then(res=>{
           if(res.code==0){
             message.success('添加成功'); 
-            history.push('/activity-management/everyday-red-packet-activity/activity-list')
+            history.push('/activity-management/share-red-packet-activity/activity-list')
           }
         })
       }
@@ -138,7 +117,7 @@ export default (props) =>{
       title: '累计推荐4-9人',
       dataIndex: 'couponIdTwo',
       valueType: 'select',
-      valueEnum: onselect2,
+      valueEnum: onselect,
       fieldProps: {
         placeholder: '请选择'
       },
@@ -146,7 +125,7 @@ export default (props) =>{
       title: '累计推荐10人以上',
       dataIndex: 'couponIdThree',
       valueType: 'select',
-      valueEnum: onselect3,
+      valueEnum: onselect,
       fieldProps: {
         placeholder: '请选择'
       },
@@ -178,6 +157,7 @@ export default (props) =>{
   // }
   return (
     <PageContainer>
+      <Spin spinning={loading}>
       <ProForm
         form={form}
         onFinish={async (values)=>{
@@ -218,7 +198,7 @@ export default (props) =>{
                     保存
                   </Button>
                 }
-                <Button type="default" style={{marginLeft:'80px'}} onClick={() => { history.goBack() }}>返回</Button>
+                <Button type="default" style={{marginLeft:'80px'}} onClick={() => { history.push('/activity-management/share-red-packet-activity/activity-list') }}>返回</Button>
               </>  
             ];
           }
@@ -290,9 +270,19 @@ export default (props) =>{
               />  
           }
           {
-            (!falg)||(!id)?<p className={styles.hint2}>提示：您必须先在运营后台“红包管理"中创建好”分享领红包“类型的红包后，且创建的红包可领有效期必须大于活动有效期，这里才可以选择到创建的红包。</p>
+            !id?<p className={styles.hint2}>提示：您必须先在运营后台“红包管理"中创建好”分享领红包“类型的红包后，且创建的红包可领有效期必须大于活动有效期，这里才可以选择到创建的红包。</p>
             :null
           }
+          {
+            !id&&<ProFormText
+                    width="md"
+                    name="maxNum"
+                    label="最多可推荐人数"
+                    readonly={id&&falg}
+                    extra={'超出此人数，不再发放奖励'}
+                    style={{marginTop:'20px'}}
+                />
+            }
           <ProFormText
               width={120}
               label="领取条件"
@@ -301,13 +291,6 @@ export default (props) =>{
               }}
               readonly
             />
-            <ProFormText
-              width="md"
-              name="num"
-              label="最多可推荐人数"
-              readonly={id&&falg}
-              extra={'超出此人数，不再发放奖励'}
-          />
             {
               id&&falg?
                <Form.Item
@@ -333,16 +316,36 @@ export default (props) =>{
                 }}
             />
             }
+           {
+              id&&falg&&<ProFormRadio.Group
+                  name="status"
+                  label="活动状态"
+                  options={[
+                      {
+                        label: '开启',
+                        value: 1
+                      },
+                      {
+                        label: '关闭',
+                        value: 2
+                      }
+                  ]}
+                  readonly={id&&falg}
+              />
+            }
 
           {
             id&&falg?
             <p className={styles.back}>最近一次操作人：{detailList?.data?.adminName}     {detailList?.data?.updateTime}</p>
             :null
           }  
-      </ProForm>
-
+       </ProForm>
+      </Spin>
       {
-        visible&&<EndModel visible={visible} setVisible={setVisible}  endId={id}/>
+        visible&&<EndModel visible={visible} setVisible={setVisible}  endId={id} canBlack={(e)=>{
+          setLoading(e)
+          setFalg(true)
+        }}/>
       }
       </PageContainer>
   )

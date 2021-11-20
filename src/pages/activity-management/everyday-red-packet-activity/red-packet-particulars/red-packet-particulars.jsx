@@ -30,7 +30,7 @@ export default () => {
         dataIndex: 'name',
         valueType: 'text',
         render:(text, record, _, action)=>[
-          <a onClick={()=>history.push('/activity-management/everyday-packet-rule?id='+record.couponEverydayId)}>{record.name}</a>
+          <a onClick={()=>history.push('/activity-management/everyday-red-packet-activity/everyday-packet-rule?id='+record.couponEverydayId)}>{record.name}</a>
         ]
       },
       {

@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { couponEverydayLogList } from '@/services/activity-management/everyday-red-packet-activity';
+import { couponInviteLogList } from '@/services/activity-management/share-red-packet-activity';
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
 import Detail from '@/pages/order-management/normal-order/detail';
@@ -29,7 +29,7 @@ export default () => {
         dataIndex: 'name',
         valueType: 'text',
         render:(text, record, _, action)=>[
-          <a onClick={()=>history.push('/activity-management/everyday-packet-rule?id='+record.couponEverydayId)}>{record.name}</a>
+          <a onClick={()=>history.push('/activity-management/share-red-packet-activity/share-packet-rule?id='+record.couponInviteId)}>{record.name}</a>
         ]
       },
       {
@@ -51,7 +51,7 @@ export default () => {
       },
       {
         title: '被邀请用户',
-        dataIndex: 'memberMobileName',
+        dataIndex: 'inviteeMobile',
         valueType: 'text',
         hideInSearch:true,
       },
@@ -70,10 +70,10 @@ export default () => {
       },
       {
         title: '奖励红包',
-        dataIndex: 'freeAmount',
+        dataIndex: 'freeAmountDisplay',
         valueType: 'text',
         hideInSearch:true,
-        render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
+        // render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
       },
       {
         title: '红包码',
@@ -94,14 +94,6 @@ export default () => {
           },
         hideInSearch:true,
       },
-      // {
-      //   title: '红包使用时间',
-      //   key: 'dateTimeRange2',
-      //   dataIndex: 'actTime',
-      //   valueType: 'dateTimeRange',
-      //   hideInTable: true,
-      //   hideInSearch:true,
-      // },
       {
         title: '红包使用时间',
         dataIndex: 'actTime',  
@@ -134,10 +126,8 @@ export default () => {
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,dateTimeRange2,...rest}=searchConfig.form.getFieldsValue()
       return {
-        lqStartTime1:dateTimeRange&&dateTimeRange[0],
-        lqStartTime2:dateTimeRange&&dateTimeRange[1],
-        useStartTime1:dateTimeRange2&&dateTimeRange2[0],
-        useStartTime2:dateTimeRange2&&dateTimeRange2[1],
+        startTime1:dateTimeRange&&dateTimeRange[0],
+        startTime2:dateTimeRange&&dateTimeRange[1],
         ...rest,
       }
     }
@@ -148,7 +138,7 @@ export default () => {
           rowKey="id"
           headerTitle='活动数据明细'
           options={false}
-          request={couponEverydayLogList}
+          request={couponInviteLogList}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,

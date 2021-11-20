@@ -1,9 +1,11 @@
 import React, { useState} from 'react';
 import { ModalForm} from '@ant-design/pro-form';
-import { couponEnd } from '@/services/coupon-management/coupon-end';
+import { message } from 'antd';
+import { couponInviteEnd } from '@/services/activity-management/share-red-packet-activity';
+import { history,connect } from 'umi';
 
 export default props=>{
-    const {endId,visible,setVisible}=props
+    const {endId,visible,setVisible,canBlack}=props
 
     return (
         <ModalForm
@@ -19,10 +21,15 @@ export default props=>{
           },
           }}
           onFinish={async (values) => {
-          couponEnd({id:endId}).then(res=>{
+            couponInviteEnd({id:endId}).then(res=>{
             if(res.code==0){
-              // boxref.current.reload();
-              setVisible(false)
+              setVisible(false) 
+              canBlack(true)
+              setTimeout(()=>{
+                canBlack(false)
+              },1000)  
+              message.success('操作成功')
+              history.push('/activity-management/share-red-packet-activity/share-packet-rule?id='+endId)
               return true;
             }
           })

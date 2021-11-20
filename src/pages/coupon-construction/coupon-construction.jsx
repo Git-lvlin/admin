@@ -94,7 +94,7 @@ const couponConstruction = (props) => {
     values.limitStartTime = values.dateRange ? values.dateRange[0] : null,//可领取开始时间
     values.limitEndTime = values.dateRange ? values.dateRange[1] : null,//可领取结束时间
     values.limitQuantity = parseInt(values.limitQuantity)//限领数量
-    values.limitType=values.issueType==3?2:values.limitType//限领类型
+    values.limitType=values.issueType==3?2:values.issueType==4?1:values.limitType//限领类型
     values.issueQuantityType=values.issueType==2?1: values.issueQuantityType//发行量类型
   
     values.activityStartTime = values.dateTimeRange ? values.dateTimeRange[0] : null,//有效期开始时间
@@ -102,7 +102,7 @@ const couponConstruction = (props) => {
     values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
     values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
     values.useTypeInfoM = {//秒约商品详情信息
-      goodsType: type==3||DetaiIssueType == 3 && id?2:values.goodsType,
+      goodsType: type==3||DetaiIssueType == 3 && id||type==4||DetaiIssueType == 4 && id?2:values.goodsType,
       spuIds: UseScopeList.UseScopeObje.spuIds,
       classId: parseInt(UseScopeList.UseScopeObje.unit)
     }

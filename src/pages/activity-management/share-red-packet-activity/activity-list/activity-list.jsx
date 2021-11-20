@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { couponEverydayList } from '@/services/activity-management/everyday-red-packet-activity';
+import { couponInviteList } from '@/services/activity-management/share-red-packet-activity';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
@@ -67,7 +67,7 @@ export default () => {
           actionRef={ref}
           rowKey="id"
           options={false}
-          request={couponEverydayList}
+          request={couponInviteList}
           toolBarRender={()=>[
             <Button icon={<PlusOutlined />}  onClick={()=>history.push('/activity-management/share-red-packet-activity/share-packet-rule')} type="primary">
                 添加活动
