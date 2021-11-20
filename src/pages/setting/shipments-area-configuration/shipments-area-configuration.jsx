@@ -34,6 +34,7 @@ export default () => {
     const [form] = Form.useForm();
     const [position,setPosition]=useState()
     const [cityData,setCityData]=useState()
+    const [checkAll,setCheckAll]=useState()
     const columns= [
       {
         title: '省份',
@@ -131,6 +132,7 @@ export default () => {
     const postData = (data) => {
       const tips=`共 ${data.provinceNum} 个省份   ${data.cityNum} 个城市 ${data.districtNum} 个地区/县城  其中已启用地区/县城 ${data.openDistrictNum} 个 已禁用地区/县城 ${data.closeDistrictNum} 个`
       setTips(tips)
+      setCheckAll(data.isAll)
       form.setFieldsValue({
         isAll:data.isAll,
         lateDeliveryDesc:data.lateDeliveryDesc
@@ -191,42 +193,45 @@ export default () => {
               console.log('e',e)
               setPosition(e.target.value)
               if(e.target.value===1){
-                addLatedeliveryArea({lateDeliveryArea:[]})
+                addLatedeliveryArea({lateDeliveryArea:[],type:2}).then(res=>{
+                  if(res.code==0){
+                    ref.current.reload();
+                  }
+                })
+              }else{
+                addLatedeliveryArea({lateDeliveryArea:[],type:1}).then(res=>{
+                  if(res.code==0){
+                    ref.current.reload();
+                  }
+                })
               }
             },
             value:position
           }}
         />
-          {/* <ProFormDependency name={['isAll']}>
-          {({ isAll }) => {
-              if(isAll==1) return null
-              if(position==0||!isAll||isAll==0){
-                  return <> */}
-                      <AddressMultiCascader
-                          style={{ width: 130,marginLeft:'30px' }}
-                          value={selectKeys}
-                          placeholder="添加地区"
-                          renderValue={() => <span style={{ color: '#8e8e93' }}>添加地区</span>}
-                          renderExtraFooter={() => <div style={{ padding: 10, textAlign: 'right' }}><Button type="primary" onClick={() => { setArea() }}>确定</Button></div>}
-                          onChange={setSelectKeys}
-                          uncheckableItemValues={uncheckableItemValues}
-                          disabledItemValues={disabledItemValues}
-                          onClose={() => { setSelectKeys([]) }}
-                      />
-                      <ProTable
-                          actionRef={ref}
-                          rowKey="id"
-                          options={false}
-                          request={latedeliveryAreaIndex}
-                          toolBarRender={() => <div className="tips">{tips}</div>}
-                          search={false}
-                          columns={columns}
-                          postData={postData}
-                      />
-                      {/* </>
-              }
-          }}
-          </ProFormDependency> */}
+        <Space style={{display:checkAll==1?'none':'block'}}>
+            <AddressMultiCascader
+                style={{ width: 130,marginLeft:'30px' }}
+                value={selectKeys}
+                placeholder="添加地区"
+                renderValue={() => <span style={{ color: '#8e8e93' }}>添加地区</span>}
+                renderExtraFooter={() => <div style={{ padding: 10, textAlign: 'right' }}><Button type="primary" onClick={() => { setArea() }}>确定</Button></div>}
+                onChange={setSelectKeys}
+                uncheckableItemValues={uncheckableItemValues}
+                disabledItemValues={disabledItemValues}
+                onClose={() => { setSelectKeys([]) }}
+            />
+            <ProTable
+                actionRef={ref}
+                rowKey="id"
+                options={false}
+                request={latedeliveryAreaIndex}
+                toolBarRender={() => <div className="tips">{tips}</div>}
+                search={false}
+                columns={columns}
+                postData={postData}
+            />
+        </Space>
         </ProForm>
         {visible&&
           <DeleModel 
