@@ -2,13 +2,12 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { couponEverydayLogList } from '@/services/activity-management/everyday-red-packet-activity';
+import { couponInviteLogList } from '@/services/activity-management/share-red-packet-activity';
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
 import Detail from '@/pages/order-management/normal-order/detail';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
-import moment from 'moment';
 
 
 
@@ -30,7 +29,7 @@ export default () => {
         dataIndex: 'name',
         valueType: 'text',
         render:(text, record, _, action)=>[
-          <a onClick={()=>history.push('/activity-management/everyday-red-packet-activity/everyday-packet-rule?id='+record.couponEverydayId)}>{record.name}</a>
+          <a onClick={()=>history.push('/activity-management/share-red-packet-activity/share-packet-rule?id='+record.couponInviteId)}>{record.name}</a>
         ]
       },
       {
@@ -51,36 +50,30 @@ export default () => {
         hideInSearch:true,
       },
       {
-        title: '领取时间',
+        title: '被邀请用户',
+        dataIndex: 'inviteeMobile',
+        valueType: 'text',
+        hideInSearch:true,
+      },
+      {
+        title: '被邀请时间',
         key: 'dateTimeRange',
         dataIndex: 'createTime',
         valueType: 'dateTimeRange',
         hideInTable: true,
       },
       {
-        title: '领取时间',
+        title: '被邀请时间',
         dataIndex: 'createTime',
         valueType: 'text',
         hideInSearch:true,
       },
       {
-        title: '面值',
-        dataIndex: 'freeAmount',
+        title: '奖励红包',
+        dataIndex: 'freeAmountDisplay',
         valueType: 'text',
         hideInSearch:true,
-        render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
-      },
-      {
-        title: '使用时间',
-        key: 'dateTimeRange2',
-        dataIndex: 'actTime',
-        valueType: 'dateTimeRange',
-        hideInTable: true,
-      },
-      {
-        title: '使用时间',
-        dataIndex: 'actTime',  
-        hideInSearch:true
+        // render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
       },
       {
         title: '红包码',
@@ -99,25 +92,13 @@ export default () => {
           3: '已冻结',
           4: '已失效'
           },
+        hideInSearch:true,
       },
       {
-        title: '来源订单',
-        dataIndex: 'sourceOrderSnDisplay',
-        valueType: 'text',
-        hideInSearch: true,
-        render: (_, data)=>{
-          return <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
-                  <p style={{fontSize:'12px'}}>订单号: </p>
-                  <p style={{fontSize:'12px'}}><a onClick={() => {  setDetailVisible(true);setOrderId(data?.sourceOrderSubId) }}>{data?.sourceOrderSn}</a></p>
-                 </div>
-        },
+        title: '红包使用时间',
+        dataIndex: 'actTime',  
+        hideInSearch:true
       },
-      // {
-      //   title: '来源订单',
-      //   dataIndex: 'sourceOrderSn',
-      //   valueType: 'text',
-      //   hideInTable: true
-      // },
       {
         title: '使用订单',
         dataIndex: 'orderGoods',
@@ -145,10 +126,8 @@ export default () => {
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,dateTimeRange2,...rest}=searchConfig.form.getFieldsValue()
       return {
-        lqStartTime1:moment(dateTimeRange&&dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
-        lqStartTime2:moment(dateTimeRange&&dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
-        useStartTime1:moment(dateTimeRange2&&dateTimeRange2[0]).format('YYYY-MM-DD HH:mm:ss'),
-        useStartTime2:moment(dateTimeRange2&&dateTimeRange2[1]).format('YYYY-MM-DD HH:mm:ss'),
+        startTime1:dateTimeRange&&dateTimeRange[0],
+        startTime2:dateTimeRange&&dateTimeRange[1],
         ...rest,
       }
     }
@@ -157,9 +136,9 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle='每日红包明细'
+          headerTitle='活动数据明细'
           options={false}
-          request={couponEverydayLogList}
+          request={couponInviteLogList}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,
