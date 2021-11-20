@@ -38,7 +38,7 @@ const validity=(props)=>{
                     options={[
                         {
                             label:type==4||DetaiIssueType == 4 && id?'邀请好友红包':'每日红包' ,
-                            value: 3,
+                            value:type==4||DetaiIssueType == 4 && id?4:3,
                         }
                     ]}
                 />
@@ -87,7 +87,7 @@ const validity=(props)=>{
                     </div>
                     );
                 }
-                if (activityTimeType==3){
+                if (activityTimeType==3||activityTimeType==4){
                     return ( 
                         <div className={styles.unfold}>
                             <ProForm.Group>
