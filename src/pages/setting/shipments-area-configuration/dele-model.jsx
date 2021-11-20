@@ -19,7 +19,7 @@ const formItemLayout = {
   };
 
 export default props=>{
-    const {visible, setVisible,cityData}=props
+    const {visible, setVisible,cityData,tabelRef}=props
     return (
         <ModalForm
             title={<Space>
@@ -49,11 +49,12 @@ export default props=>{
             onFinish={async (values) => {
               updateLatedeliveryAreaStatus({
                   type:0,
-                  id: cityData.cityId,
+                  id: cityData.id,
                 }, { showSuccess: true })
                   .then(res => {
                     if (res.code === 0) {
-                        ref.current.reload();
+                      tabelRef&&tabelRef.current.reload();
+                      setVisible(false) 
                     }
                   })       
             }
