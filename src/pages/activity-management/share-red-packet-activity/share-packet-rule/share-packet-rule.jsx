@@ -302,11 +302,10 @@ export default (props) =>{
             />
           <Form.Item
             label="活动封面"
-            name="image"
-            readonly={id&&falg}
+            name="bannerImage"
           >
             <FromWrap
-              content={(value, onChange) => <Upload multiple value={value} onChange={onChange}   maxCount={1} accept="image/*"  proportion={{width: 50,height: 180,}} />}
+              content={(value, onChange) => <Upload multiple value={value} disabled={id&&falg} onChange={onChange}   maxCount={1} accept="image/*"  proportion={{width: 50,height: 180,}} />}
               right={(value) => {
                 return (
                   <dl>

@@ -8,6 +8,7 @@ import { amountTransform } from '@/utils/utils'
 import Detail from '@/pages/order-management/normal-order/detail';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import moment from 'moment';
 
 
 
@@ -126,8 +127,8 @@ export default () => {
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
       return {
-        startTime1:dateTimeRange&&dateTimeRange[0],
-        startTime2:dateTimeRange&&dateTimeRange[1],
+        startTime1:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+        startTime2:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
         ...rest,
       }
     }
@@ -146,10 +147,10 @@ export default () => {
                ...dom.reverse(),
                <Export
                 change={(e) => { setVisit(e) }}
-                type={'day-red-detail-export'}
+                type={'invitation-friend-red-packet-detail-export'}
                 conditions={getFieldValue(searchConfig)}
               />,
-              <ExportHistory show={visit} setShow={setVisit} type='day-red-detail-export'/>,
+              <ExportHistory show={visit} setShow={setVisit} type='invitation-friend-red-packet-detail-export'/>,
             ],
           }}
           columns={columns}
