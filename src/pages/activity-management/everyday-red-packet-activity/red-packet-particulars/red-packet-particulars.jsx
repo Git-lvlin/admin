@@ -145,10 +145,10 @@ export default () => {
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,dateTimeRange2,...rest}=searchConfig.form.getFieldsValue()
       return {
-        lqStartTime1:moment(dateTimeRange&&dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
-        lqStartTime2:moment(dateTimeRange&&dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
-        useStartTime1:moment(dateTimeRange2&&dateTimeRange2[0]).format('YYYY-MM-DD HH:mm:ss'),
-        useStartTime2:moment(dateTimeRange2&&dateTimeRange2[1]).format('YYYY-MM-DD HH:mm:ss'),
+        lqStartTime1:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+        lqStartTime2:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+        useStartTime1:dateTimeRange2&&moment(dateTimeRange2[0]).format('YYYY-MM-DD HH:mm:ss'),
+        useStartTime2:dateTimeRange2&&moment(dateTimeRange2[1]).format('YYYY-MM-DD HH:mm:ss'),
         ...rest,
       }
     }

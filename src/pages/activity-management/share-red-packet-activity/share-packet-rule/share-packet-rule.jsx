@@ -10,6 +10,7 @@ import moment from 'moment';
 import { history,connect } from 'umi';
 import styles from './style.less'
 import EndModel from './end-model'
+import Upload from '@/components/upload';
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -44,6 +45,12 @@ export default (props) =>{
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   let id = props.location.query.id
+  const FromWrap = ({ value, onChange, content, right }) => (
+    <div style={{ display: 'flex' }}>
+      <div>{content(value, onChange)}</div>
+      <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+    </div>
+  )
  
   useEffect(() => {
       couponInviteSelList({}).then(res=>{
@@ -176,9 +183,9 @@ export default (props) =>{
                       detailList?.data?.status==1?
                       <>
                         {
-                          falg?<Button style={{marginLeft:'80px'}} type="primary" onClick={() => { setFalg(false) }}>编辑</Button>
+                          falg?<Button style={{marginLeft:'100px'}} type="primary" onClick={() => { setFalg(false) }}>编辑</Button>
                           :<>
-                            <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
+                            <Button style={{margin:'100px'}} type="primary" key="submit" onClick={() => {
                               props.form?.submit?.()
                             }}>
                               保存
@@ -192,7 +199,7 @@ export default (props) =>{
                       :null
                     }
                   </>
-                  :<Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
+                  :<Button style={{margin:'100px'}} type="primary" key="submit" onClick={() => {
                     props.form?.submit?.()
                   }}>
                     保存
@@ -247,6 +254,7 @@ export default (props) =>{
                 columns={columns2}
                 value={detailList?.scopeList}
                 recordCreatorProps={false}
+                style={{marginLeft:'50px'}}
                 />
              :<EditableProTable
                 headerTitle="奖励金额(元）"
@@ -267,6 +275,7 @@ export default (props) =>{
                   },
                   onChange: setEditableRowKeys,
                 }}
+                style={{marginLeft:'50px'}}
               />  
           }
           {
@@ -291,7 +300,22 @@ export default (props) =>{
               }}
               readonly
             />
-            {
+          <Form.Item
+            label="活动封面"
+            name="bannerImage"
+          >
+            <FromWrap
+              content={(value, onChange) => <Upload multiple value={value} disabled={id&&falg} onChange={onChange}   maxCount={1} accept="image/*"  proportion={{width: 50,height: 180,}} />}
+              right={(value) => {
+                return (
+                  <dl>
+                    <dd>50 x 180</dd>
+                  </dl>
+                )
+              }}
+            />
+          </Form.Item>
+          {
               id&&falg?
                <Form.Item
                 label="活动规则"
@@ -315,24 +339,24 @@ export default (props) =>{
                  maxLength:1000
                 }}
             />
-            }
-           {
-              id&&falg&&<ProFormRadio.Group
-                  name="status"
-                  label="活动状态"
-                  options={[
-                      {
-                        label: '开启',
-                        value: 1
-                      },
-                      {
-                        label: '关闭',
-                        value: 2
-                      }
-                  ]}
-                  readonly={id&&falg}
+          }
+          {
+            id&&falg&&<ProFormRadio.Group
+                name="status"
+                label="活动状态"
+                options={[
+                    {
+                      label: '开启',
+                      value: 1
+                    },
+                    {
+                      label: '关闭',
+                      value: 2
+                    }
+                ]}
+                readonly={id&&falg}
               />
-            }
+          }
 
           {
             id&&falg?

@@ -194,8 +194,8 @@ export default (props) =>{
                       detailList?.data?.status==1?
                       <>
                         {
-                          falg?<Button style={{marginLeft:'80px'}} type="primary" onClick={() => { setFalg(false) }}>编辑</Button>
-                          :<Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
+                          falg?<Button style={{marginLeft:'100px'}} type="primary" onClick={() => { setFalg(false) }}>编辑</Button>
+                          :<Button style={{margin:'100px'}} type="primary" key="submit" onClick={() => {
                             props.form?.submit?.()
                           }}>
                             保存
@@ -205,7 +205,7 @@ export default (props) =>{
                       :null
                     }
                   </>
-                  :<Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
+                  :<Button style={{margin:'100px'}} type="primary" key="submit" onClick={() => {
                     props.form?.submit?.()
                   }}>
                     保存
@@ -259,6 +259,7 @@ export default (props) =>{
                 columns={columns2}
                 value={detailList?.scopeList}
                 recordCreatorProps={false}
+                style={{marginLeft:'50px'}}
                 />
              :<EditableProTable
                 headerTitle="每日首单红包发放金额(元）"
@@ -279,6 +280,7 @@ export default (props) =>{
                   },
                   onChange: setEditableRowKeys,
                 }}
+                style={{marginLeft:'50px'}}
               />  
           }
           {

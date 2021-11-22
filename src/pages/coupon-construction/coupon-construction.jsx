@@ -149,7 +149,7 @@ const couponConstruction = (props) => {
       couponEdit({ ...values, id: id }).then((res) => {
         if (res.code == 0) {
           history.push('/coupon-management/coupon-list')
-          message.success('提交成功');
+          message.success('编辑成功');
           dispatch({
             type: 'UseScopeList/fetchUseScopeList',
             payload: {
