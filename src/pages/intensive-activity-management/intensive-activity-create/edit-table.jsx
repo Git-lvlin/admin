@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
 import { Form, Tooltip, Input, message, Radio } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
@@ -10,12 +10,14 @@ import { amountTransform } from '@/utils/utils'
 import debounce from 'lodash/debounce';
 
 
-export default function EditTable({ onSelect }) {
+export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
-  // const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectData, setSelectData] = useState([]);
-  // const [form] = Form.useForm();
+  // const [isFirst, setIsFirst] = useState(true);
+  const isFirst = useRef(true);
+  const formRef = useRef();
 
   const columns = [
     {
@@ -74,7 +76,8 @@ export default function EditTable({ onSelect }) {
         placeholder: '请输入商品skuID',
         maxLength: 30,
       },
-      hideInTable: true
+      hideInTable: true,
+      initialValue: sku?.skuId,
     },
     {
       dataIndex: 'gcId',
@@ -98,7 +101,7 @@ export default function EditTable({ onSelect }) {
       dataIndex: 'skuId',
       valueType: 'text',
       hideInSearch: true,
-      editable: false
+      editable: false,
     },
     {
       title: '商品分类',
@@ -281,6 +284,34 @@ export default function EditTable({ onSelect }) {
       totalPrice: item.salePrice > 0 ? +new Big(item.price).div(100).times(item.wholesaleMinNum || 10) : 0,
       wholesaleFlowType: 1,
     }))
+    
+    if (isFirst.current && sku) {
+      arr[0] = {
+        ...arr[0],
+        minNum: sku.minNum,
+        maxNum: sku.maxNum,
+        totalStockNum: sku.totalStockNum,
+        price: amountTransform(sku.price, '/'),
+        // fixedPrice: amountTransform(sku.fixedPrice, '/'),
+        // operationFixedPrice: amountTransform(sku.operationFixedPrice, '/'),
+        settlePercent: amountTransform(sku.settlePercent),
+        wholesaleSupplyPrice: amountTransform(sku.wholesaleSupplyPrice, '/'),
+        profit: amountTransform(sku.profit, '/'),
+        totalPrice: sku.salePrice > 0 ? +new Big(sku.price).div(100).times(sku.minNum || 10) : 0,
+        wholesaleFlowType,
+      }
+      setSelectedRowKeys([sku.skuId])
+      setSelectData(arr);
+      onSelect(arr);
+      formRef.current.setFieldsValue({
+        skuId: '',
+      })
+    } else {
+      setSelectedRowKeys([])
+      setSelectData([]);
+      onSelect([]);
+    }
+    isFirst.current = false;
     setDataSource(arr)
     // return arr;
   }
@@ -331,13 +362,14 @@ export default function EditTable({ onSelect }) {
 
       productList(obj).then(res => {
         const skuData = res.data[0];
-        onSelect(getList(selectData, skuData, (arr) => { setSelectData(arr)}))
+        onSelect(getList(selectData, skuData, (arr) => { setSelectData(arr) }))
         setDataSource(getList(recordList, skuData))
       })
     };
 
     return debounce(loadData, 1000);
   }, [dataSource, selectData, onSelect]);
+
   return (
     <EditableProTable
       postData={postData}
@@ -353,6 +385,7 @@ export default function EditTable({ onSelect }) {
       scroll={{ x: '130vw' }}
       controlled
       request={productList}
+      formRef={formRef}
       search={{
         defaultCollapsed: false,
         optionRender: (searchConfig, formProps, dom) => [
@@ -360,7 +393,6 @@ export default function EditTable({ onSelect }) {
         ],
       }}
       editable={{
-        // form,
         editableKeys,
         onValuesChange: (record, recordList) => {
           debounceFetcher({ record, recordList })
@@ -374,7 +406,7 @@ export default function EditTable({ onSelect }) {
       rowSelection={{
         hideSelectAll: true,
         type: 'radio',
-        // selectedRowKeys,
+        selectedRowKeys,
         // onChange: (_, val) => {
         //   console.log('_', _);
         //   onSelect(val)
@@ -400,6 +432,7 @@ export default function EditTable({ onSelect }) {
           //   setSelectData(datas);
           //   onSelect(datas);
           // }
+          setSelectedRowKeys([record.skuId])
           setSelectData([record]);
           onSelect([record]);
         },

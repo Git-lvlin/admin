@@ -80,6 +80,18 @@ const StoreList = (props) => {
     // },
     {
       title: '提货点所在地区',
+      dataIndex: '',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, details) => {
+        return (
+          <>
+            {details?.areaInfo?.[details?.provinceId]}{details?.areaInfo?.[details?.cityId]}{details?.areaInfo?.[details?.regionId]}
+          </>)
+      }
+    },
+    {
+      title: '提货点详细地址',
       dataIndex: 'address',
       valueType: 'text',
       hideInSearch: true,
@@ -107,7 +119,7 @@ const StoreList = (props) => {
                 query: {
                   storeName: data.storeName,
                   phone: data.phone,
-                  linkman: data.linkman,
+                  linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
                   memberId: data.memberId,
                 }
               })
@@ -131,7 +143,7 @@ const StoreList = (props) => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
               }
             })
           }}>
@@ -155,7 +167,7 @@ const StoreList = (props) => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
               }
             })
           }}>{_}</a>
@@ -177,7 +189,7 @@ const StoreList = (props) => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
               }
             })
           }}>{_}</a>
@@ -199,7 +211,7 @@ const StoreList = (props) => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
                 memberId: data.memberId,
               }
             })
