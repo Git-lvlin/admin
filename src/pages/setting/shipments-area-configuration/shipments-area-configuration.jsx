@@ -37,9 +37,31 @@ export default () => {
       v?.forEach?.(item => {
         let deep = 0;
         let node = window.yeahgo_area.find(it => it.id === item);
+        console.log('node',node)
         const nodeIds = [node.id];
         const nodeNames = [node.name]
-        while (node.pid) {
+        // if(node.children){
+        //   let brr = []
+        //   const toTreeData = (data, pid = 0) => { 
+        //     data?.forEach(item => {
+        //         brr.push({
+        //             provinceId: pid,
+        //             cityId: item.deep == 2 ? item.id: 0,
+        //             districtId: item.deep == 3? item.id: 0,
+        //             name:item.name
+        //         })
+        //         toTreeData(item.children, item.pid)
+        //     })
+        //     console.log('brr',brr)
+        //     return brr
+                  
+        //   }
+  
+        //   toTreeData(node?.children,node?.id)
+        // }
+
+
+        while (node.pid) {//找父级
           deep += 1;
           node = window.yeahgo_area.find(it => it.id === node.pid);
           nodeIds.push(node.id);
@@ -47,11 +69,9 @@ export default () => {
         }
         arr.push({
           provinceId: nodeIds[deep],
-          provinceName: nodeNames[deep],
           cityId: deep > 0 ? nodeIds[deep - 1] : 0,
-          cityName: deep > 0 ? nodeNames[deep - 1] : '',
           districtId: deep > 1 ? nodeIds[deep - 2] : 0,
-          regionName: deep > 1 ? nodeNames[deep - 2] : '',
+          areaName: nodeNames.reverse().join('|')
         })
       })
     
@@ -81,7 +101,7 @@ export default () => {
         dataIndex: 'status',
         valueType: 'text',
         render: (_) => {
-          return <span style={{ color: _ === 1 ? 'green' : 'red' }}>{_ === 1 ? '启用' : '禁用'}</span>
+          return <span style={{ color: _ === 1 ? 'green' : 'red' }}>{_ === 1 ? '已启用' : '已禁用'}</span>
         },
         hideInSearch: true,
       },
@@ -133,7 +153,7 @@ export default () => {
         }
         console.log('getAreaData(selectKeys)',getAreaData(selectKeys))
         addLatedeliveryArea({
-          lateDeliveryArea: getAreaData(selectKeys).map(item => ({ ...item, areaName: item.provinceName+'|'+item.cityName+'|'+item.regionName })),
+          lateDeliveryArea: getAreaData(selectKeys),
           type:1
         }, { showSuccess: true }).then(res => {
           if (res.code === 0) {
@@ -249,6 +269,10 @@ export default () => {
                 search={false}
                 columns={columns}
                 postData={postData}
+                pagination={{
+                  pageSize: 10,
+                  showQuickJumper: true,
+                }}
             />
         </Space>
         </ProForm>
