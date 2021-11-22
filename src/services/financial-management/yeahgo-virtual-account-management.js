@@ -22,8 +22,8 @@ export const logPage = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      createTimeBegin: createTime&& createTime[0],
-      createTimeEnd: createTime&& createTime[1],
+      begin: createTime&& createTime[0],
+      end: createTime&& createTime[1],
       ...rest
     },
     ...options

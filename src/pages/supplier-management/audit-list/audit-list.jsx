@@ -27,6 +27,15 @@ const TableList = () => {
       }
     },
     {
+      title: '供应商家ID',
+      dataIndex: 'supplierId',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入供应商家ID'
+      },
+      hideInTable: true,
+    },
+    {
       title: '登录账号',
       dataIndex: 'accountName',
       valueType: 'text',
@@ -70,10 +79,15 @@ const TableList = () => {
       dataIndex: 'auditUser',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => <>
-        <div>{data.auditUser}</div>
-        <div>{data.auditTime > 0 && moment(data.moment).format('YYYY-MM-DD HH:mm:ss')}</div>
-      </>
+      render: (_, data) => {
+        if (data.accountType === 2) {
+          return '个人开户系统自动审核通过'
+        }
+        return <>
+          <div>{data.auditUser}</div>
+          <div>{data.auditTime > 0 && moment(data.moment).format('YYYY-MM-DD HH:mm:ss')}</div>
+        </>
+      }
     },
     {
       title: '审核开户状态',

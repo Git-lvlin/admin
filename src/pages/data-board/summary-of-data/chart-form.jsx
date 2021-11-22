@@ -16,12 +16,20 @@ const ChartForm = ({
   scale,
   data, 
   loading,
-  code
+  code,
+  value
 }) => {
   const [lineData, setLineData] = useState([])
 
   useEffect(()=> {
-    setLineData(data)
+    const arr = data?.detail?.map(item=> {
+      if(item) {
+        return {reportName: item?.reportName, countTime: item?.countTime, value: Number(item?.value)}
+      } else {
+        return false
+      }
+    })
+    setLineData(arr)
     return ()=> {
       setLineData([])
     }
@@ -38,6 +46,7 @@ const ChartForm = ({
         multiple
         loading={loading}
         size="small"
+        value={value}
       >
         <CheckCard
           title={ 
@@ -103,14 +112,13 @@ const ChartForm = ({
         />
       </CheckCard.Group>
       {
-        (lineData&&lineData?.detail?.length !== 0)?
+        (lineData&&lineData?.length !== 0)?
         <Spin spinning={loading}>
           <Chart
             scale={scale}
-            padding={[80, 20, 60, 60]}
             autoFit
             height={440}
-            data={lineData.detail}
+            data={lineData}
             interactions={['element-active']}
           >
             <Point
@@ -122,7 +130,6 @@ const ChartForm = ({
               shape="line"
               position="countTime*value"
               color="reportName"
-              label="temperature"
             />
             <Tooltip
               shared

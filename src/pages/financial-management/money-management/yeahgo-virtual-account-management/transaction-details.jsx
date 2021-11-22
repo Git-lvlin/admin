@@ -8,8 +8,11 @@ import { logPage } from '@/services/financial-management/yeahgo-virtual-account-
 import { amountTransform } from '@/utils/utils'
 import { Export,ExportHistory } from '@/pages/export-excel'
 import { tradeType } from '../../common-enum'
+import Detail from '../../common-popup/order-pay-detail-popup'
 
 const TransactionDetails = () => {
+  const [detailVisible, setDetailVisible] = useState(false)
+  const [selectItem, setSelectItem] = useState({})
   const {query} = useLocation()
   const [visit, setVisit] = useState(false)
   const actionform = useRef()
@@ -28,8 +31,12 @@ const TransactionDetails = () => {
         history.push(`/order-management/intensive-order/supplier-order-detail/${id}`)
       break
       default:
-        return ''
+        return  history.push(`/order-management/normal-order-detail/${id}`)
     }
+  }
+
+  const skipToOrderPay = (id) => {
+    history.push(`/financial-management/transaction-detail-management/order-pay-detail-management/detail/${id}`)
   }
 
   const transactionType = () =>{
@@ -71,7 +78,7 @@ const TransactionDetails = () => {
   const orderType = () => {
     if(query.accountId==='platform') {
       return {
-        'second': '秒约',
+        'second': '秒约订单',
         'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
         'commandCollect': '集约销售订单',
@@ -122,11 +129,16 @@ const TransactionDetails = () => {
       title: '支付单号',
       dataIndex:'payNo',
       hideInSearch: query.accountId==='platformXinbao' ? true : false,
-      hideInTable: query.accountId==='platformXinbao' ? true : false
+      hideInTable: query.accountId==='platformXinbao' ? true : false,
+      render: (_, records)=> (
+        records.orderId ? 
+        <a onClick={() => { setSelectItem(records.billNo); setDetailVisible(true); }}>{_}</a>:
+        <span>{_}</span>
+      )
     },
     {
       title: '资金流水号',
-      dataIndex:'transactionId',
+      dataIndex:'transactionId'
     },
     {
       title: '交易时间',
@@ -140,15 +152,33 @@ const TransactionDetails = () => {
       hideInTable: true
     },
     {
+      title: '分账金额',
+      dataIndex: 'divideAmount',
+      render: (_) => amountTransform(Number(_), '/'),
+      hideInSearch: true
+    },
+    {
+      title: '手续费',
+      dataIndex: 'fee',
+      render: (_) => amountTransform(Number(_), '/'),
+      hideInSearch: true
+    },
+    {
+      title: '其他扣款',
+      dataIndex: 'deductAmount',
+      render: (_) => amountTransform(Number(_), '/'),
+      hideInSearch: true
+    },
+    {
       title: '交易金额',
       dataIndex: 'changeAmount',
-      render: (_) => amountTransform(_, '/'),
+      render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '交易后余额',
       dataIndex: 'balanceAmount',
-      render: (_) => amountTransform(_, '/'),
+      render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
@@ -191,20 +221,21 @@ const TransactionDetails = () => {
             >
               {resetText}
             </Button>,
-            query.accountId==='platform'&&
             <Export
               change={(e)=> {setVisit(e)}}
               key="export" 
               type="financial-account-log-page-export"
               conditions={
                 {
-                  accountId: 'platform',
-                  accountType: 'platform',
+                  accountId: query.accountId,
+                  accountType: query.accountType,
+                  amountType: query.amountType,
+                  begin: form?.getFieldValue().createTime?.[0],
+                  end: form?.getFieldValue().createTime?.[1],
                   ...form?.getFieldValue()
                 }
               }
             />,
-            query.accountId==='platform'&&
             <ExportHistory
               key="exportHistory"
               show={visit}
@@ -214,6 +245,14 @@ const TransactionDetails = () => {
           ],
         }}
       />
+      {
+        detailVisible &&
+        <Detail
+          id={selectItem}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
     </PageContainer>
   )
 }
