@@ -307,24 +307,12 @@ export default props => {
             <Form.Item
               label="规则说明"
             >
-              {
-              detailData.couponRule?.split('\n').map(ele=>(
-                <span>{ele}</span>
-              ))
-              }
-            </Form.Item>
-
-            {/* {
-              detailData.memberType == 3&&<Form.Item
-                label="活动说明"
-              >
+               <pre className={styles.line_feed}>
                 {
-                detailData.couponActivityRule?.split('\n').map(ele=>(
-                  <span>{ele}</span>
-                ))
+                  detailData?.couponRule
                 }
-              </Form.Item>
-            } */}
+              </pre>
+            </Form.Item>
           </div>
         </Form>
       </Spin>
