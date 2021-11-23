@@ -5,42 +5,42 @@ import { getImageSize } from '@/utils/utils';
 import upload from '@/utils/upload'
 
 const Upload = (props) => {
-  const { value, onChange, code = 218, maxCount = 1, size, dimension, proportion, text = '上传', disabled = false, ...rest } = props;
+  const { value, onChange, code = 218, maxCount = 1, size, dimension, proportion, text = '上传', disabled = false, sort = false, ...rest } = props;
   const [fileList, setFileList] = useState([])
   const [loading, setLoading] = useState(false)
   const fileData = useRef([]);
 
   const beforeUpload = async (file) => {
-    if (proportion) {
-      if (proportion === 'banner') {
-        message.error('请先选择位置!')
-        return false;
-      }
-      const { width, height } = await getImageSize(file);
-      if (parseInt(proportion.width / proportion.height) === parseInt(width / height)) {
-        return true;
-      }
-      message.error('上传图片的大小不符合要求')
-      return false;
-    }
+    // if (proportion) {
+    //   if (proportion === 'banner') {
+    //     message.error('请先选择位置!')
+    //     return false;
+    //   }
+    //   const { width, height } = await getImageSize(file);
+    //   if (parseInt(proportion.width / proportion.height) === parseInt(width / height)) {
+    //     return true;
+    //   }
+    //   message.error('上传图片的大小不符合要求')
+    //   return false;
+    // }
 
-    if (size && file.size / 1024 > size) {
-      message.error('上传文件的大小不符合要求')
-      return false;
-    }
-    if (dimension) {
-      const { width, height } = await getImageSize(file);
+    // if (size && file.size / 1024 > size) {
+    //   message.error('上传文件的大小不符合要求')
+    //   return false;
+    // }
+    // if (dimension) {
+    //   const { width, height } = await getImageSize(file);
 
-      if (typeof dimension === 'string' && width !== height) {
-        message.error('上传图片的尺寸不符合要求')
-        return false;
-      }
+    //   if (typeof dimension === 'string' && width !== height) {
+    //     message.error('上传图片的尺寸不符合要求')
+    //     return false;
+    //   }
 
-      if (typeof dimension === 'object' && (width !== dimension.width || height !== dimension.height)) {
-        message.error('上传图片的尺寸不符合要求')
-        return false;
-      }
-    }
+    //   if (typeof dimension === 'object' && (width !== dimension.width || height !== dimension.height)) {
+    //     message.error('上传图片的尺寸不符合要求')
+    //     return false;
+    //   }
+    // }
     return true;
   }
 
@@ -51,15 +51,28 @@ const Upload = (props) => {
     return true;
   }
 
+  const imgSort = (files) => {
+    return files.sort((a, b) => {
+      a = a.url.replace(/.+\//, '').replace(/.{25}/, '');
+      b = b.url.replace(/.+\//, '').replace(/.{25}/, '');
+      return a.localeCompare(b);
+    })
+  }
+
   const customRequest = ({ file }) => {
     setLoading(true);
     upload(file, code)
       .then(res => {
-        const arr = [...fileData.current];
+        let arr = [...fileData.current];
         arr.push({
           ...file,
           url: res,
         })
+
+        if (sort) {
+          arr = imgSort(arr);
+        }
+
         fileData.current = arr;
         setFileList(fileData.current);
         onChange(maxCount === 1 ? res : arr.map(item => item.url))

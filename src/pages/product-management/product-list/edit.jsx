@@ -998,7 +998,7 @@ export default (props) => {
         })]}
       >
         <FromWrap
-          content={(value, onChange) => <Upload code={218} value={value} onChange={onChange} multiple maxCount={50} accept="image/*" dimension="1:1" size={1024} />}
+          content={(value, onChange) => <Upload sort={!!detailData} code={218} value={value} onChange={onChange} multiple maxCount={50} accept="image/*" dimension="1:1" size={1024} />}
           right={(value) => {
             return (
               <dl>
@@ -1018,7 +1018,7 @@ export default (props) => {
         name="detailImages"
         rules={[{ required: true, message: '请上传商品详情图片' }]}
       >
-        <Upload code={218} disabled multiple maxCount={10} accept="image/*" size={500 * 4} />
+        <Upload sort={!!detailData} code={218} disabled multiple maxCount={10} accept="image/*" size={500 * 4} />
       </Form.Item>
       {/* {detailData.advImages && <Form.Item
         label="商品横幅"

@@ -20,9 +20,15 @@ const gridItemStyles = {
   zIndex: 9999
 };
 
-const GridItem = SortableElement(({ value }) =>
+const GridItem = SortableElement(({ value, _index }) =>
   <div style={gridItemStyles}>
-    <Image src={value} width="100" height="100" />
+    <div style={{ position: 'relative' }}>
+      <Image src={value} width={100} height={100} />
+      <div style={{ position: 'absolute', top: 0, left: 0, background: 'rgba(0,0,0,0.8)', color: '#fff', padding: 2 }}>{_index + 1}</div>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, background: 'rgba(0,0,0,0.8)', color: '#fff', width: '100%' }}>
+        {decodeURIComponent(value.replace(/.+\//, '').replace(/.{25}/, '').replace(/\?.+/, ''))}
+      </div>
+    </div>
   </div>
 );
 
@@ -32,6 +38,7 @@ const Grid = SortableContainer(({ items }) =>
       <GridItem
         key={index}
         index={index}
+        _index={index}
         value={value}
       />
     )}
@@ -55,6 +62,10 @@ const ImageSort = ({ callback, data }) => {
       title="图片排序"
       modalProps={{
         width: 500,
+        destroyOnClose: true,
+        afterClose: () => {
+          setItems(data)
+        }
       }}
       trigger={
         <Button type="primary" >
@@ -66,10 +77,10 @@ const ImageSort = ({ callback, data }) => {
         return true;
       }}
     >
+      <div style={{ color: 'red', marginBottom: 10 }}>操作提示：拖动图片调整显示顺序</div>
       <Grid distance={1} items={items} onSortEnd={onSortEnd} axis="xy" />
     </ModalForm >
   )
 }
 
 export default ImageSort;
-
