@@ -6,7 +6,7 @@ export const latedeliveryAreaIndex = async (params = {}, options = {}) => {
     method: 'POST',
     data: {
       page: current,
-      size: pageSize,
+      pageSize: pageSize,
       ...rest
     },
     ...options

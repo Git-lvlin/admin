@@ -32,6 +32,7 @@ export default () => {
     const [position,setPosition]=useState()
     const [cityData,setCityData]=useState()
     const [checkAll,setCheckAll]=useState()
+    const [disabledItemValues, setDisabledItemValues] = useState([]);
     const getAreaData = (v) => {
       const arr = [];
       v?.forEach?.(item => {
@@ -47,15 +48,52 @@ export default () => {
         }
         arr.push({
           provinceId: nodeIds[deep],
-          provinceName: nodeNames[deep],
           cityId: deep > 0 ? nodeIds[deep - 1] : 0,
-          cityName: deep > 0 ? nodeNames[deep - 1] : '',
           districtId: deep > 1 ? nodeIds[deep - 2] : 0,
-          regionName: deep > 1 ? nodeNames[deep - 2] : '',
+          areaName: nodeNames.reverse().join('|')
         })
       })
     
       return arr;
+    }
+    const getAreaDatas = (v) => {
+      const arr = [];
+      const brr = []
+      v?.forEach?.(item => {
+        let deep = 0;
+        let node = window.yeahgo_area.find(it => it.id === item);
+        const nodeIds = [node.id];
+        const nodeNames = [node.name]
+        if(node.children){
+          const toTreeData = (data) => { 
+            data?.forEach(item => {
+              if(item.deep == 3){
+                brr.push(item.id)
+              }
+                toTreeData(item.children)
+            })  
+          }
+          toTreeData(node?.children)
+        }
+        while (node.pid) {//找父级
+          deep += 1;
+          node = window.yeahgo_area.find(it => it.id === node.pid);
+          nodeIds.push(node.id);
+          nodeNames.push(node.name);
+        }
+        arr.push({
+          provinceId: nodeIds[deep],
+          cityId: deep > 0 ? nodeIds[deep - 1] : 0,
+          districtId: deep > 1 ? nodeIds[deep - 2] : 0,
+          areaName: nodeNames.reverse().join('|')
+        })
+      })
+    if(brr.length){
+      return getAreaData(brr)
+    }else{
+      return arr;
+    }
+
     }
     const columns= [
       {
@@ -81,7 +119,7 @@ export default () => {
         dataIndex: 'status',
         valueType: 'text',
         render: (_) => {
-          return <span style={{ color: _ === 1 ? 'green' : 'red' }}>{_ === 1 ? '启用' : '禁用'}</span>
+          return <span style={{ color: _ === 1 ? 'green' : 'red' }}>{_ === 1 ? '已启用' : '已禁用'}</span>
         },
         hideInSearch: true,
       },
@@ -122,8 +160,11 @@ export default () => {
     const getUncheckableItemValues = () => {
         latedeliveryAreaIndex({
           page: 1,
-          size: 9999,
+          pageSize: 9999,
         }).then(res => {
+          const keys = res.data.records.map(item => item.districtId)
+          console.log('keys',keys)
+          setDisabledItemValues(keys)
         })
       }
     const setArea = () => {
@@ -131,9 +172,8 @@ export default () => {
           message.error('请选择要添加的区域')
           return;
         }
-        console.log('getAreaData(selectKeys)',getAreaData(selectKeys))
         addLatedeliveryArea({
-          lateDeliveryArea: getAreaData(selectKeys).map(item => ({ ...item, areaName: item.provinceName+'|'+item.cityName+'|'+item.regionName })),
+          lateDeliveryArea: getAreaDatas(selectKeys),
           type:1
         }, { showSuccess: true }).then(res => {
           if (res.code === 0) {
@@ -159,7 +199,10 @@ export default () => {
         lateDeliveryDesc:data.lateDeliveryDesc
       })
       return data.records;
-    } 
+    }
+    useEffect(() => {
+      getUncheckableItemValues();
+    }, [])
     return (
       <PageContainer>
         <div style={{ backgroundColor: '#fff', padding: 30 }}>
@@ -211,7 +254,6 @@ export default () => {
           ]}
           fieldProps={{
             onChange: (e) => {
-              console.log('e',e)
               setPosition(e.target.value)
               if(e.target.value===1){
                 addLatedeliveryArea({lateDeliveryArea:[],type:2}).then(res=>{
@@ -238,6 +280,7 @@ export default () => {
                 renderValue={() => <span style={{ color: '#8e8e93' }}>添加地区</span>}
                 renderExtraFooter={() => <div style={{ padding: 10, textAlign: 'right' }}><Button type="primary" onClick={() => { setArea() }}>确定</Button></div>}
                 onChange={setSelectKeys}
+                disabledItemValues={disabledItemValues}
                 onClose={() => { setSelectKeys([]) }}
             />
             <ProTable
@@ -249,6 +292,10 @@ export default () => {
                 search={false}
                 columns={columns}
                 postData={postData}
+                pagination={{
+                  pageSize: 10,
+                  showQuickJumper: true,
+                }}
             />
         </Space>
         </ProForm>
@@ -257,7 +304,8 @@ export default () => {
             visible={visible} 
             cityData={cityData}
             setVisible={setVisible}
-            tabelRef={ref} 
+            tabelRef={ref}
+            canback={()=>getUncheckableItemValues()}
           />
         }
     </PageContainer>

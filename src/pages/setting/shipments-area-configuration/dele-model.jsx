@@ -19,7 +19,7 @@ const formItemLayout = {
   };
 
 export default props=>{
-    const {visible, setVisible,cityData,tabelRef}=props
+    const {visible, setVisible,cityData,tabelRef,canback}=props
     return (
         <ModalForm
             title={<Space>
@@ -55,6 +55,7 @@ export default props=>{
                     if (res.code === 0) {
                       tabelRef&&tabelRef.current.reload();
                       setVisible(false) 
+                      canback()
                     }
                   })       
             }
