@@ -288,11 +288,11 @@ export default props => {
             <Form.Item
               label="规则说明"
             >
-               {
-                detailData.couponRule?.split('\n').map(ele=>(
-                  <span>{ele}</span>
-                ))
-               }
+              <pre className={styles.line_feed}>
+                {
+                  detailData?.couponRule
+                }
+              </pre>
             </Form.Item>
           </div>
 
