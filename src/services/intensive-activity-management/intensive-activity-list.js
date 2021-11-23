@@ -93,3 +93,11 @@ export const cancelWholesale = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const wholesaleEdit = (params = {}, options = {}) => {
+  return request('/auth/wholesale/index/wholesaleEdit', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
