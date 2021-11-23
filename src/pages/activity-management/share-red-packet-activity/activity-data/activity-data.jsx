@@ -54,7 +54,7 @@ export default () => {
         title: '被邀请用户',
         dataIndex: 'inviteeMobile',
         valueType: 'text',
-        hideInSearch:true,
+        hideInSearch:true
       },
       {
         title: '被邀请时间',
