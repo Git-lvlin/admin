@@ -25,6 +25,7 @@ const formItemLayout = {
 
 export default () => {
     const ref=useRef()
+    const formRef=useRef()
     const [tips, setTips] = useState('');
     const [selectKeys, setSelectKeys] = useState([]);
     const [visible, setVisible] = useState(false)
@@ -163,7 +164,6 @@ export default () => {
           pageSize: 9999,
         }).then(res => {
           const keys = res.data.records.map(item => item.districtId)
-          console.log('keys',keys)
           setDisabledItemValues(keys)
         })
       }
@@ -213,6 +213,7 @@ export default () => {
         <ProForm
             name="configuration"
             form={form}
+            formRef={formRef}
             onFinish={async (values) => {
                 await onsubmit(values);
                 return true;
@@ -234,8 +235,10 @@ export default () => {
             labelCol={5}
           />
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-            确定
+            <Button type="primary" onClick={()=>{
+              formRef?.current.submit()
+            }}>
+              确定
             </Button>
           </Form.Item>
         </Space>
