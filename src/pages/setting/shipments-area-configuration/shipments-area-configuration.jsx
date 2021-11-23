@@ -32,36 +32,15 @@ export default () => {
     const [position,setPosition]=useState()
     const [cityData,setCityData]=useState()
     const [checkAll,setCheckAll]=useState()
+    const [disabledItemValues, setDisabledItemValues] = useState([]);
     const getAreaData = (v) => {
       const arr = [];
       v?.forEach?.(item => {
         let deep = 0;
         let node = window.yeahgo_area.find(it => it.id === item);
-        console.log('node',node)
         const nodeIds = [node.id];
         const nodeNames = [node.name]
-        // if(node.children){
-        //   let brr = []
-        //   const toTreeData = (data, pid = 0) => { 
-        //     data?.forEach(item => {
-        //         brr.push({
-        //             provinceId: pid,
-        //             cityId: item.deep == 2 ? item.id: 0,
-        //             districtId: item.deep == 3? item.id: 0,
-        //             name:item.name
-        //         })
-        //         toTreeData(item.children, item.pid)
-        //     })
-        //     console.log('brr',brr)
-        //     return brr
-                  
-        //   }
-  
-        //   toTreeData(node?.children,node?.id)
-        // }
-
-
-        while (node.pid) {//找父级
+        while (node.pid) {
           deep += 1;
           node = window.yeahgo_area.find(it => it.id === node.pid);
           nodeIds.push(node.id);
@@ -76,6 +55,45 @@ export default () => {
       })
     
       return arr;
+    }
+    const getAreaDatas = (v) => {
+      const arr = [];
+      const brr = []
+      v?.forEach?.(item => {
+        let deep = 0;
+        let node = window.yeahgo_area.find(it => it.id === item);
+        const nodeIds = [node.id];
+        const nodeNames = [node.name]
+        if(node.children){
+          const toTreeData = (data) => { 
+            data?.forEach(item => {
+              if(item.deep == 3){
+                brr.push(item.id)
+              }
+                toTreeData(item.children)
+            })  
+          }
+          toTreeData(node?.children)
+        }
+        while (node.pid) {//找父级
+          deep += 1;
+          node = window.yeahgo_area.find(it => it.id === node.pid);
+          nodeIds.push(node.id);
+          nodeNames.push(node.name);
+        }
+        arr.push({
+          provinceId: nodeIds[deep],
+          cityId: deep > 0 ? nodeIds[deep - 1] : 0,
+          districtId: deep > 1 ? nodeIds[deep - 2] : 0,
+          areaName: nodeNames.reverse().join('|')
+        })
+      })
+    if(brr.length){
+      return getAreaData(brr)
+    }else{
+      return arr;
+    }
+
     }
     const columns= [
       {
@@ -142,8 +160,11 @@ export default () => {
     const getUncheckableItemValues = () => {
         latedeliveryAreaIndex({
           page: 1,
-          size: 9999,
+          pageSize: 9999,
         }).then(res => {
+          const keys = res.data.records.map(item => item.districtId)
+          console.log('keys',keys)
+          setDisabledItemValues(keys)
         })
       }
     const setArea = () => {
@@ -151,9 +172,8 @@ export default () => {
           message.error('请选择要添加的区域')
           return;
         }
-        console.log('getAreaData(selectKeys)',getAreaData(selectKeys))
         addLatedeliveryArea({
-          lateDeliveryArea: getAreaData(selectKeys),
+          lateDeliveryArea: getAreaDatas(selectKeys),
           type:1
         }, { showSuccess: true }).then(res => {
           if (res.code === 0) {
@@ -179,7 +199,10 @@ export default () => {
         lateDeliveryDesc:data.lateDeliveryDesc
       })
       return data.records;
-    } 
+    }
+    useEffect(() => {
+      getUncheckableItemValues();
+    }, [])
     return (
       <PageContainer>
         <div style={{ backgroundColor: '#fff', padding: 30 }}>
@@ -231,7 +254,6 @@ export default () => {
           ]}
           fieldProps={{
             onChange: (e) => {
-              console.log('e',e)
               setPosition(e.target.value)
               if(e.target.value===1){
                 addLatedeliveryArea({lateDeliveryArea:[],type:2}).then(res=>{
@@ -258,6 +280,7 @@ export default () => {
                 renderValue={() => <span style={{ color: '#8e8e93' }}>添加地区</span>}
                 renderExtraFooter={() => <div style={{ padding: 10, textAlign: 'right' }}><Button type="primary" onClick={() => { setArea() }}>确定</Button></div>}
                 onChange={setSelectKeys}
+                disabledItemValues={disabledItemValues}
                 onClose={() => { setSelectKeys([]) }}
             />
             <ProTable
@@ -281,7 +304,8 @@ export default () => {
             visible={visible} 
             cityData={cityData}
             setVisible={setVisible}
-            tabelRef={ref} 
+            tabelRef={ref}
+            canback={()=>getUncheckableItemValues()}
           />
         }
     </PageContainer>
