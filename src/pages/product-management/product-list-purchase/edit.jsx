@@ -1020,7 +1020,7 @@ export default (props) => {
         rules={[{ required: true, message: '请上传商品详情图片' }]}
       >
         <FromWrap
-          content={(value, onChange) => <Upload sort={!detailData} code={218} value={value} onChange={onChange} multiple maxCount={50} accept="image/*" size={1024 * 10} />}
+          content={(value, onChange) => <Upload sort={!detailData} code={218} value={value} onChange={onChange} disabled multiple maxCount={50} accept="image/*" size={1024 * 10} />}
           right={(value) => (
             <dl>
               {value?.length > 1 && <dd><ImageSort data={value} callback={(v) => { form.setFieldsValue({ detailImages: v }) }} /></dd>}
