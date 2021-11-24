@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Form, Divider, message, Button } from 'antd';
+import { Input, Form, Divider, message, Button,Space } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
 import CouponType from './coupon-type/coupon-type'
 import UseScope from './use-scope/use-scope'
@@ -11,6 +11,7 @@ import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormT
 import { history, connect } from 'umi';
 import moment from 'moment';
 import styles from './style.less'
+import IssueTypeModel from './issue-type-model'
 const FormItem = Form.Item;
 
 const formItemLayout = {
@@ -28,8 +29,11 @@ const formItemLayout = {
 
 const couponConstruction = (props) => {
   const { dispatch, DetailList, UseScopeList } = props
+  const DetaiIssueType=DetailList.data?.issueType
   const [choose, setChoose] = useState()
   const [submitType, setSubmitType] = useState()
+  const [publishType,setPublishType]=useState()
+  const [visible, setVisible] = useState(false);
   let id = props.location.query.id
   let type = props.location.query.type
   const [form] = Form.useForm()
@@ -50,7 +54,17 @@ const couponConstruction = (props) => {
         }
       })
     }
-  }, [])
+    //判断发行方式
+    if(type==1){
+      setPublishType('会员领取红包')
+    }else if(type==2){
+      setPublishType('系统发放红包')
+    }else if(type==3){
+      setPublishType('每日红包')
+    }else if(type==4){
+      setPublishType('邀请好友红包')
+    }
+  }, [type])
   //红包名称验证规则
   const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
@@ -66,7 +80,7 @@ const couponConstruction = (props) => {
   const onsubmit = (values) => {
     try {
     //发放类型
-    values.issueType = parseInt(type)|| id&&DetailList.data?.issueType
+    values.issueType = parseInt(type)|| id&&DetaiIssueType
     values.couponTypeInfo = {
       usefulAmount: parseInt(values.usefulAmount),//用价格门槛(单位分)
       freeAmount: parseInt(values.freeAmount),//优惠金额(单位分)
@@ -80,7 +94,7 @@ const couponConstruction = (props) => {
     values.limitStartTime = values.dateRange ? values.dateRange[0] : null,//可领取开始时间
     values.limitEndTime = values.dateRange ? values.dateRange[1] : null,//可领取结束时间
     values.limitQuantity = parseInt(values.limitQuantity)//限领数量
-    values.limitType=values.issueType==3?2:values.limitType//限领类型
+    values.limitType=values.issueType==3?2:values.issueType==4?1:values.limitType//限领类型
     values.issueQuantityType=values.issueType==2?1: values.issueQuantityType//发行量类型
   
     values.activityStartTime = values.dateTimeRange ? values.dateTimeRange[0] : null,//有效期开始时间
@@ -88,7 +102,7 @@ const couponConstruction = (props) => {
     values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
     values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
     values.useTypeInfoM = {//秒约商品详情信息
-      goodsType: type==3||DetailList.data?.issueType == 3 && id?2:values.goodsType,
+      goodsType: type==3||DetaiIssueType == 3 && id||type==4||DetaiIssueType == 4 && id?2:values.goodsType,
       spuIds: UseScopeList.UseScopeObje.spuIds,
       classId: parseInt(UseScopeList.UseScopeObje.unit)
     }
@@ -135,7 +149,7 @@ const couponConstruction = (props) => {
       couponEdit({ ...values, id: id }).then((res) => {
         if (res.code == 0) {
           history.push('/coupon-management/coupon-list')
-          message.success('提交成功');
+          message.success('编辑成功');
           dispatch({
             type: 'UseScopeList/fetchUseScopeList',
             payload: {
@@ -200,6 +214,19 @@ const couponConstruction = (props) => {
         className={styles.discountFrom}
       >
         <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>基本信息</span></h3>
+        {
+          !id&& <ProFormText
+          width="md"
+          name="couponName"
+          label='发行方式'
+          fieldProps={{
+            value:publishType
+          }}
+          readonly
+          extra={ <a onClick={()=>{setVisible(true)}}>修改红包类型</a>}
+        />
+        }
+
         {/* 红包名称 */}
         <ProFormText
           width="md"
@@ -217,7 +244,7 @@ const couponConstruction = (props) => {
 
         {/* 每人限领 */}
          {
-           type==3||DetailList.data?.issueType == 3 && id?
+           type==3||DetaiIssueType == 3 && id?
            <ProFormText
             width={120}
             label="每人限领"
@@ -228,40 +255,45 @@ const couponConstruction = (props) => {
             }}
             initialValue="1"
            />
-         :
-         <>
-          <ProFormRadio.Group
-            name="limitType"
-            label={<FormattedMessage id="formandbasic-form.each.limit" />}
-            rules={[{ required: true, message: '请选择限领方式' }]}
-            options={[
-              {
-                label: <FormattedMessage id="formandbasic-form.quota" />, value: 2
-              }]}
-          />
-            <ProFormDependency name={['limitType']}>
-              {({ limitType }) => {
-                  if (!limitType) return null;
-                  return ( 
-                    <div className={styles.unfold}>
-                      <ProForm.Group>
-                        <ProFormText
-                          width={120}
-                          name="limitQuantity"
-                        />
-                        <span><FormattedMessage id="formandbasic-form.zhang" /></span>
-                      </ProForm.Group>
-                  </div>
-                  );
-              }}
-            </ProFormDependency>
-         </>
+         :null
+         }
+
+         {
+           type==1||DetaiIssueType == 1 && id||type==2||DetaiIssueType == 2 && id?
+            <>
+            <ProFormRadio.Group
+              name="limitType"
+              label={<FormattedMessage id="formandbasic-form.each.limit" />}
+              rules={[{ required: true, message: '请选择限领方式' }]}
+              options={[
+                {
+                  label: <FormattedMessage id="formandbasic-form.quota" />, value: 2
+                }]}
+            />
+              <ProFormDependency name={['limitType']}>
+                {({ limitType }) => {
+                    if (!limitType) return null;
+                    return ( 
+                      <div className={styles.unfold}>
+                        <ProForm.Group>
+                          <ProFormText
+                            width={120}
+                            name="limitQuantity"
+                          />
+                          <span><FormattedMessage id="formandbasic-form.zhang" /></span>
+                        </ProForm.Group>
+                    </div>
+                    );
+                }}
+              </ProFormDependency>
+          </>
+          :null
          }
         
 
         {/* 可领取时间 */}
         {
-          type == 1||type==3 || DetailList.data?.issueType ==1 && id||DetailList.data?.issueType ==3 && id ? 
+          type != 2|| DetaiIssueType !=2 ? 
             <ProFormDateTimeRangePicker
               label='可领取时间'
               rules={[{ required: true, message: '请选择限领时间' }]}
@@ -285,7 +317,7 @@ const couponConstruction = (props) => {
         <PeriodValidity  id={id} type={type}/>
 
        {
-         type==3||DetailList.data?.issueType == 3 && id?
+         type==3||DetaiIssueType == 3 && id?
           <ProFormText
             width={120}
             label="可领条件"
@@ -296,7 +328,19 @@ const couponConstruction = (props) => {
         />
         :null
        }
-        
+       
+       {
+         type==4||DetaiIssueType == 4 && id?
+          <ProFormText
+            width={120}
+            label="可领条件"
+            readonly
+            fieldProps={{
+              value:'邀请好友'
+          }}
+        />
+        :null
+       }
 
         {/* 可领红包群体 */}
         <AssignCrowd id={id} type={type} callback={(current)=>setChoose(current)} />
@@ -315,6 +359,10 @@ const couponConstruction = (props) => {
           rules={[{ required: true, message: '请备注使用规则' }]}
           rows={4}
         />
+
+        {
+          visible&&<IssueTypeModel visible={visible} setVisible={setVisible} />
+        }
       </ProForm >
     </>
   );

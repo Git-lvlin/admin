@@ -18,6 +18,8 @@ const { TabPane } = Tabs
 
 const Message = (props) => {
   const {type,dispatch}=props
+  const [turnId,setTurnId]=useState()
+  const [turnVisible, setTurnVisible] = useState(false);
   const ref=useRef()
   const columns= [
     {
@@ -49,7 +51,8 @@ const Message = (props) => {
       valueEnum: {
         1: '会员领取红包',
         2: '系统发放红包',
-        3: '每日红包'
+        3: '每日红包',
+        4: '邀请好友红包'
       },
     },
     {
@@ -94,7 +97,7 @@ const Message = (props) => {
         }else if(data.couponVerifyStatus==2){
           return <>
             <p>审核驳回</p>
-            <TurnDownModel id={data.id}/>
+            <a onClick={()=>{setTurnId(data.id);setTurnVisible(true)}}>驳回详情</a>
           </>
         }else if(data.couponVerifyStatus==3){
           return <p>审核中</p>
@@ -251,6 +254,7 @@ const Message = (props) => {
   }
 
 return(
+  <>
     <ProTable
       actionRef={ref}
       rowKey="id"
@@ -274,6 +278,14 @@ return(
       }}
       columns={columns}
     />
+    {
+      turnVisible&&<TurnDownModel 
+      turnVisible={turnVisible} 
+      setTurnVisible={setTurnVisible} 
+      id={turnId}
+    />
+    }
+  </>
   );
 };
 
@@ -333,6 +345,10 @@ const TableList= (props) =>{
               {
                 label: '每日红包',
                 value: 3,
+              },
+              {
+                label: '邀请好友红包',
+                value: 4,
               }
             ]}
           />

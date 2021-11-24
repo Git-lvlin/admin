@@ -170,7 +170,8 @@ export default props => {
                   '会员领取红包'
                   :detailData.issueType == 2 ? 
                   '系统发放红包'
-                  :'每日红包'
+                  :detailData.issueType == 3 ? 
+                  '每日红包':'邀请好友红包'
               }
             </Form.Item>
             <Form.Item
@@ -287,11 +288,11 @@ export default props => {
             <Form.Item
               label="规则说明"
             >
-               {
-                detailData.couponRule?.split('\n').map(ele=>(
-                  <span>{ele}</span>
-                ))
-               }
+              <pre className={styles.line_feed}>
+                {
+                  detailData?.couponRule
+                }
+              </pre>
             </Form.Item>
           </div>
 

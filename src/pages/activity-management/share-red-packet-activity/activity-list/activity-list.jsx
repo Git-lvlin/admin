@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { couponEverydayList } from '@/services/activity-management/everyday-red-packet-activity';
+import { couponInviteList } from '@/services/activity-management/share-red-packet-activity';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
@@ -26,17 +26,17 @@ export default () => {
         }
       },
       {
-        title: '第一天首单红包',
+        title: '累计推荐1-3人',
         dataIndex: 'couponOneDisplay',
         valueType: 'text',
       },
       {
-        title: '第二天首单红包',
+        title: '累计推荐4-9人',
         dataIndex: 'couponTwoDisplay',
         valueType: 'text',
       },
       {
-        title: '第三天首单红包',
+        title: '累计推荐10人以上',
         dataIndex: 'couponThreeDisplay',
         valueType: 'text',
       },
@@ -57,7 +57,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a onClick={()=>history.push('/activity-management/everyday-red-packet-activity/everyday-packet-rule?id='+record.id)}>查看详情</a>
+            <a onClick={()=>history.push('/activity-management/share-red-packet-activity/share-packet-rule?id='+record.id)}>查看详情</a>
         ],
       }, 
     ];
@@ -66,11 +66,10 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="活动列表"
           options={false}
-          request={couponEverydayList}
+          request={couponInviteList}
           toolBarRender={()=>[
-            <Button icon={<PlusOutlined />}  onClick={()=>history.push('/activity-management/everyday-red-packet-activity/everyday-packet-rule')} type="primary">
+            <Button icon={<PlusOutlined />}  onClick={()=>history.push('/activity-management/share-red-packet-activity/share-packet-rule')} type="primary">
                 添加活动
             </Button>
         ]}
