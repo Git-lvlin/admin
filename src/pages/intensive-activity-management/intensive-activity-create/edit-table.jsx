@@ -343,7 +343,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       profit: amountTransform(item.profit, '/'),
       totalPrice: item.salePrice > 0 ? +new Big(item.price).div(100).times(item.wholesaleMinNum || 10) : 0,
       wholesaleFlowType: 1,
-      isEditSubsidy: [1],
+      isEditSubsidy: [],
       subsidy: {
         a: item.orderAmount > 0 ? amountTransform(item.orderAmount, '/') : '',
         b: item.subsidy > 0 ? amountTransform(item.subsidy, '/') : '',
@@ -424,7 +424,11 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
               settlePercent: amountTransform(skuData.settlePercent),
               price: amountTransform(skuData.price, '/'),
               profit: amountTransform(skuData.profit, '/'),
-              totalPrice: (skuData.price > 0 && record.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(record.minNum) : 0
+              totalPrice: (skuData.price > 0 && record.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(record.minNum) : 0,
+              subsidy: {
+                a: skuData.orderAmount ? amountTransform(skuData.orderAmount) : '',
+                b: skuData.subsidy ? amountTransform(skuData.subsidy) : ''
+              }
             }
             return data
           }
