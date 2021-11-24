@@ -58,5 +58,10 @@ export default {
       path: '/product-management/overrule-list',
       component: './product-management/overrule-list',
     },
+    {
+      name: 'product-evaluate',
+      path: '/product-management/product-evaluate',
+      component: './product-management/product-evaluate',
+    },
   ]
 }

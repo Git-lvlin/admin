@@ -9,7 +9,6 @@ import { checkAuditDynamicSwitch,updateAuditDynamicSwitch } from '@/services/com
 import AuditModel from './audit-model'
 import { history,connect } from 'umi';
 import { Space,Switch } from 'antd';
-import './style.less'
 const { TabPane } = Tabs
 
 
@@ -159,7 +158,6 @@ const Message = (props) => {
                type==0?
                <Form.Item
                 label="审核功能开关"
-                className='switchTop'
               >
                 <Switch  checked={check} onChange={(bol)=>{auditSwitch(bol) }}/>
               </Form.Item>
