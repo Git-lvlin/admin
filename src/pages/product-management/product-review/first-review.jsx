@@ -290,6 +290,11 @@ export default (props) => {
         {goods.unit}
       </Form.Item>
       <Form.Item
+        label="发货地"
+      >
+        {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+      </Form.Item>
+      <Form.Item
         label="单SKU起售数量"
       >
         {goods.buyMinNum}
