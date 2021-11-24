@@ -145,7 +145,7 @@ const Detail = () => {
               </Descriptions.Item>
               <Descriptions.Item label="可集约店铺区域">
                 <div>
-                  {detailData?.allowArea?.map?.(item => <div>{item.areaName}</div>)}
+                  {detailData?.allowArea?.map?.(item => (item.areaName)).join('，')}
                 </div>
               </Descriptions.Item>
               {/* <Descriptions.Item label="可恢复支付次数">
@@ -155,6 +155,67 @@ const Detail = () => {
             {detailData?.wholesale.recoverPayTimeout / 3600}小时
           </Descriptions.Item> */}
             </Descriptions>
+          </Row>
+
+          <Row>
+            <Title style={{ marginBottom: -10 }} level={5}>操作日志</Title>
+            <Divider />
+            <Table
+              style={{ width: '100%' }}
+              rowKey="time"
+              pagination={false}
+              dataSource={detailData?.logs || []}
+              columns={[
+                {
+                  title: '序号',
+                  dataIndex: '',
+                  render: (a, b, index) => {
+                    return detailData?.logs.length - index
+                  }
+                },
+                {
+                  title: '操作对象账户名称',
+                  dataIndex: 'operatorName',
+                },
+                {
+                  title: '操作项',
+                  dataIndex: 'typeName',
+                },
+                {
+                  title: '说明',
+                  dataIndex: 'logDesc',
+                  render: (_) => {
+                    return _.map(item => {
+                      if (item.type === 3) {
+                        return (
+                          <>
+                            <div>{item.actionRemark}</div>
+                            <div>新值：{item.actionAfter && <Image width={50} src={item.actionAfter} />}</div>
+                            <div>旧值：{item.actionBefore && <Image width={50} src={item.actionBefore} />}</div>
+                          </>
+                        )
+                      }
+
+                      if (item.type === 2) {
+                        return (
+                          <>
+                            <div>{item.actionRemark}</div>
+                            <div>新值：{item.actionAfter}</div>
+                            <div>旧值：{item.actionBefore}</div>
+                          </>
+                        )
+                      }
+
+                      return item.actionRemark
+                    })
+                  }
+                },
+                {
+                  title: '操作时间',
+                  dataIndex: 'time',
+                },
+              ]}
+            />
           </Row>
         </div>
       </Spin>
