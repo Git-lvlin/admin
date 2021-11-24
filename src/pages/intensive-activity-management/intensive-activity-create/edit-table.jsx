@@ -426,8 +426,8 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
               profit: amountTransform(skuData.profit, '/'),
               totalPrice: (skuData.price > 0 && record.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(record.minNum) : 0,
               subsidy: {
-                a: skuData.orderAmount ? amountTransform(skuData.orderAmount) : '',
-                b: skuData.subsidy ? amountTransform(skuData.subsidy) : ''
+                a: skuData.orderAmount ? amountTransform(skuData.orderAmount, '/') : '',
+                b: skuData.subsidy ? amountTransform(skuData.subsidy, '/') : ''
               }
             }
             return data
