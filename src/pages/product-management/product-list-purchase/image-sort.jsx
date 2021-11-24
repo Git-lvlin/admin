@@ -81,4 +81,3 @@ const ImageSort = ({ callback, data }) => {
 }
 
 export default ImageSort;
-
