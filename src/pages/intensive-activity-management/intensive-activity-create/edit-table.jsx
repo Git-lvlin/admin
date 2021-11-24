@@ -121,7 +121,8 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      render: (_, data) => `${data.gcId1Display}-${data.gcId2Display}`
+      render: (_, data) => `${data.gcId1Display}-${data.gcId2Display}`,
+      width: 100,
     },
     {
       title: '主图',
@@ -165,7 +166,8 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       dataIndex: 'marketPriceDisplay',
       valueType: 'text',
       hideInSearch: true,
-      editable: false
+      editable: false,
+      width: 120,
     },
     {
       title: '平均运费(元)',
@@ -181,6 +183,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      width: 100,
     },
     {
       title: '商品名称',
@@ -245,13 +248,15 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      width: 120,
     },
     {
       title: '是否指定配送补贴',
       dataIndex: 'isEditSubsidy',
       valueType: 'text',
       hideInSearch: true,
-      renderFormItem: () => <Checkbox.Group><Checkbox value={1}>指定配送补贴</Checkbox></Checkbox.Group>
+      renderFormItem: () => <Checkbox.Group><Checkbox value={1}>指定配送补贴</Checkbox></Checkbox.Group>,
+      width: 120,
     },
     {
       title: '运营中心配送费补贴',
@@ -295,6 +300,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      width: 100,
     },
     {
       title: '单次起订量',
@@ -316,7 +322,8 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      render: (_) => <span style={{ color: 'red' }}>{_}</span>
+      render: (_) => <span style={{ color: 'red' }}>{_}</span>,
+      width: 100,
     },
   ]
 
@@ -350,13 +357,18 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
         maxNum: sku.maxNum,
         totalStockNum: sku.totalStockNum,
         price: amountTransform(sku.price, '/'),
-        // fixedPrice: amountTransform(sku.fixedPrice, '/'),
-        // operationFixedPrice: amountTransform(sku.operationFixedPrice, '/'),
+        fixedPrice: amountTransform(sku.fixedPrice, '/'),
+        operationFixedPrice: amountTransform(sku.operationFixedPrice, '/'),
         settlePercent: amountTransform(sku.settlePercent),
         wholesaleSupplyPrice: amountTransform(sku.wholesaleSupplyPrice, '/'),
         profit: amountTransform(sku.profit, '/'),
         totalPrice: sku.salePrice > 0 ? +new Big(sku.price).div(100).times(sku.minNum || 10) : 0,
         wholesaleFlowType,
+        isEditSubsidy: sku.isEditSubsidy === 0 ? [] : [1],
+        subsidy: {
+          a: sku.orderAmount > 0 ? amountTransform(sku.orderAmount, '/') : '',
+          b: sku.subsidy > 0 ? amountTransform(sku.subsidy, '/') : '',
+        }
       }
       setSelectedRowKeys([sku.skuId])
       setSelectData(arr);
