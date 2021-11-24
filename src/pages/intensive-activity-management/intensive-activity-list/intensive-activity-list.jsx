@@ -17,6 +17,7 @@ import { amountTransform } from '@/utils/utils'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import Stock from './stock';
 import Area from './area';
+import TimeSet from './time-set';
 import style from './area.less';
 
 const { confirm } = Modal;
@@ -169,6 +170,7 @@ const SubTable = (props) => {
 
 const TableList = () => {
   const [visible, setVisible] = useState(false);
+  const [timeVisible, setTimeVisible] = useState(false);
   const [detailData, setDetailData] = useState(null)
   const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
@@ -320,6 +322,14 @@ const TableList = () => {
       dataIndex: 'endTimeAdvancePayment',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => {
+        return (
+          <>
+            <div dangerouslySetInnerHTML={{ __html: _ }}></div>
+            <div>{data.endTimeAdvancePaymentLogMsg}</div>
+          </>
+        )
+      }
     },
     {
       title: '创建人',
@@ -408,7 +418,11 @@ const TableList = () => {
             <a onClick={() => { cancel(data.wholesaleId) }}>取消活动</a>
           }
           <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}?type=1`) }}>复制活动</a>
-        </Space>
+          {data.wholesaleStatus === 1 && +new Date() < +new Date(data.endTimeAdvancePayment) && <a onClick={() => {
+            setTimeVisible(true);
+            setSelectItem(data);
+          }}> 重置店主采购下单截止时间</a>}
+        </Space >
       ),
     },
   ];
@@ -422,6 +436,7 @@ const TableList = () => {
           </div>
         </Card>
         {visible && <Area visible={visible} wsId={selectItem?.wholesaleId} setVisible={setVisible} />}
+        {timeVisible && <TimeSet visible={timeVisible} data={selectItem} setVisible={setTimeVisible} callback={() => { actionRef.current.reload() }} />}
         <ProTable
           rowKey="wholesaleId"
           options={false}
