@@ -222,6 +222,11 @@ export default (props) => {
               {detailData?.goods?.unit}
             </Form.Item>
             <Form.Item
+              label="发货地"
+            >
+              {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+            </Form.Item>
+            <Form.Item
               label="库存预警值"
             >
               {detailData?.goods?.stockAlarmNum}
