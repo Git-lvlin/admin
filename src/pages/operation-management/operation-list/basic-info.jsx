@@ -196,7 +196,6 @@ export default (props) => {
         fieldProps={{
           maxLength: 30,
         }}
-        disabled={detailData?.bankAccountInfo?.auditStatus === 1}
       />
       <ProFormText
         name="accountName"
