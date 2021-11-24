@@ -175,6 +175,7 @@ export default (props) => {
       detailImages: urlsTransform(detailImages),
       // advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl,
+      shipAddrs: detailData?.shipAddrs?.map?.(item => ({ shipId: item.shipId }))
     };
 
     if (isMultiSpec) {
