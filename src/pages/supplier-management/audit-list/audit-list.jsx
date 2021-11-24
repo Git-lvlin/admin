@@ -85,7 +85,7 @@ const TableList = () => {
         }
         return <>
           <div>{data.auditUser}</div>
-          <div>{data.auditTime > 0 && moment(data.moment).format('YYYY-MM-DD HH:mm:ss')}</div>
+          <div>{data.auditTime > 0 && moment(data.auditTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
         </>
       }
     },
