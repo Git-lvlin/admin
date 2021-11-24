@@ -322,8 +322,13 @@ const TableList = () => {
       dataIndex: 'endTimeAdvancePayment',
       valueType: 'text',
       hideInSearch: true,
-      render: (_) => {
-        return <div dangerouslySetInnerHTML={{ __html: _ }}></div>
+      render: (_, data) => {
+        return (
+          <>
+            <div dangerouslySetInnerHTML={{ __html: _ }}></div>
+            <div>{data.endTimeAdvancePaymentLogMsg}</div>
+          </>
+        )
       }
     },
     {
