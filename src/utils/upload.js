@@ -30,7 +30,7 @@ const upload = async (file, code) => {
     bucket: ossConfig.uploadInfo.bucket,
   })
   return new Promise((resolve) => {
-    client.put(`${ossConfig.uploadInfo.dir}/${file.uid}${file.name}`, file).then(res => {
+    client.put(`${ossConfig.uploadInfo.dir}/${file.uid}-y_g-${file.name}`, file).then(res => {
       if (file.type.indexOf('image') !== -1) {
         getImageSize(file).then(size => {
           resolve(`${res.url}?imgHeight=${size.height}&imgWidth=${size.width}`)

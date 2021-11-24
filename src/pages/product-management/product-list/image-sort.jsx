@@ -25,9 +25,6 @@ const GridItem = SortableElement(({ value, _index }) =>
     <div style={{ position: 'relative' }}>
       <Image src={value} width={100} height={100} />
       <div style={{ position: 'absolute', top: 0, left: 0, background: 'rgba(0,0,0,0.8)', color: '#fff', padding: 2 }}>{_index + 1}</div>
-      <div style={{ position: 'absolute', bottom: 0, left: 0, background: 'rgba(0,0,0,0.8)', color: '#fff', width: '100%' }}>
-        {decodeURIComponent(value.replace(/.+\//, '').replace(/.{25}/, '').replace(/\?.+/, ''))}
-      </div>
     </div>
   </div>
 );
