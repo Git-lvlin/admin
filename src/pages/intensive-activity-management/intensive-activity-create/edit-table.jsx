@@ -366,7 +366,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
         orderProfit: amountTransform(sku.orderProfit, '/'),
         totalPrice: sku.salePrice > 0 ? +new Big(sku.price).div(100).times(sku.minNum || 10) : 0,
         wholesaleFlowType,
-        isEditSubsidy: sku.isEditSubsidy === 0 ? [] : [1],
+        isEditSubsidy: sku.isEditSubsidy.length === 0 ? [] : [1],
         subsidy: {
           a: sku.orderAmount > 0 ? amountTransform(sku.orderAmount, '/') : '',
           b: sku.subsidy > 0 ? amountTransform(sku.subsidy, '/') : '',
