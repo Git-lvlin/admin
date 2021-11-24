@@ -5,6 +5,7 @@ import ProTable from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { userRelationShip } from '@/services/cms/member/member';
+import { history } from 'umi';
 const { Search } = Input;
 const UserRelationship = () => {
   const actionRef = useRef();
@@ -29,6 +30,48 @@ const UserRelationship = () => {
       title: '用户昵称',
       dataIndex: 'nickName',
       search: false,
+    },
+    {
+      title: '秒约订单数（单）',
+      dataIndex: 'secondOrderNum',
+      search: false,
+      render: (_, records) => {
+        return <a onClick={() => { history.push(`/order-management/normal-order?phone=${records?.subPhoneNumber}`) }}>{_}</a>
+      }
+    },
+    {
+      title: '1688订单数（单）',
+      dataIndex: 's1688OrderNum',
+      search: false,
+      render: (_, records) => {
+        console.log('records', records)
+        return <a onClick={() => { history.push(`/order-management/normal-order?phone=${records?.subPhoneNumber}`) }}>{_}</a>
+      }
+    },
+    {
+      title: 'c端集约数（单）',
+      dataIndex: 'togetherOrderNum',
+      search: false,
+      render: (_, records) => {
+        return <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order?phone=${records?.subPhoneNumber}`) }}>{_}</a>
+      }
+    },
+    {
+      title: '店铺状态',
+      dataIndex: 'storeStatus',
+      search: false,
+      valueEnum: {
+        0: '关闭',
+        1: '启用',
+      }
+    },
+    {
+      title: '店主采购订单数（单）',
+      dataIndex: 'purchaseOrderNum',
+      search: false,
+      render: (_, records) => {
+        return <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order?phone=${records?.subPhoneNumber}`) }}>{_}</a>
+      }
     },
     {
       title: '渠道',
