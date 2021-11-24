@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Form, Tooltip, Input, message, Radio } from 'antd';
+import { Form, Checkbox, Input, message, Radio } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
@@ -8,6 +8,16 @@ import { productList } from '@/services/intensive-activity-management/intensive-
 import Big from 'big.js';
 import { amountTransform } from '@/utils/utils'
 import debounce from 'lodash/debounce';
+
+const Subsidy = ({ value = {}, onChange, profit }) => {
+  return (
+    <>
+      <div>当订单金额达到 <Input onChange={(e) => { const obj = { ...value }; obj.a = e.target.value; onChange(obj) }} value={value.a} style={{ width: 100 }} /></div>
+      <div>实际盈亏为 {profit}元</div>
+      <div>补贴 <Input onChange={(e) => { const obj = { ...value }; obj.b = e.target.value; onChange(obj) }} value={value.b} style={{ width: 100 }} /></div>
+    </>
+  )
+}
 
 
 export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
@@ -67,7 +77,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
         placeholder: '请输入商品spuID',
         maxLength: 30,
       },
-      hideInTable: true
+      hideInTable: true,
     },
     {
       dataIndex: 'skuId',
@@ -95,6 +105,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      width: 80,
     },
     {
       title: 'skuID',
@@ -102,6 +113,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      width: 80,
     },
     {
       title: '商品分类',
@@ -109,7 +121,8 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      render: (_, data) => `${data.gcId1Display}-${data.gcId2Display}`
+      render: (_, data) => `${data.gcId1Display}-${data.gcId2Display}`,
+      width: 100,
     },
     {
       title: '主图',
@@ -117,6 +130,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      width: 80,
       render: (text) => <img src={text} width={50} height={50} />
     },
     {
@@ -125,37 +139,43 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      width: 100,
     },
     {
       title: '配送模式',
       dataIndex: 'wholesaleFlowType',
       hideInSearch: true,
       width: 145,
-      renderFormItem: () => (<Radio.Group>
-        <Radio value={1}>直发到店</Radio>
-        <Radio value={2}>运营中心配送</Radio>
-      </Radio.Group>)
+      renderFormItem: (_, { record }) => {
+        return (<Radio.Group>
+          <Radio value={1}>直发到店</Radio>
+          <Radio value={2}>运营中心配送</Radio>
+        </Radio.Group>)
+      }
     },
     {
       title: '批发供货价(元)',
       dataIndex: 'wholesaleSupplyPrice',
       valueType: 'text',
       hideInSearch: true,
-      editable: false
+      editable: false,
+      width: 120,
     },
     {
       title: '市场价(元)',
       dataIndex: 'marketPriceDisplay',
       valueType: 'text',
       hideInSearch: true,
-      editable: false
+      editable: false,
+      width: 120,
     },
     {
       title: '平均运费(元)',
       dataIndex: 'wholesaleFreight',
       valueType: 'text',
       hideInSearch: true,
-      editable: false
+      editable: false,
+      width: 120,
     },
     {
       title: '总库存',
@@ -163,6 +183,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      width: 100,
     },
     {
       title: '商品名称',
@@ -170,6 +191,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      width: 150,
     },
     // {
     //   title: '结算类型',
@@ -187,13 +209,15 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       dataIndex: 'totalStockNum',
       valueType: 'text',
       hideInSearch: true,
+      width: 110,
     },
     {
       title: '售价上浮比(%)',
       dataIndex: 'settlePercent',
       valueType: 'text',
       hideInSearch: true,
-      renderFormItem: () => <Input addonAfter="%" />
+      renderFormItem: () => <Input addonAfter="%" />,
+      width: 110,
       // formItemProps: {
       //   rules: [
       //     {
@@ -216,6 +240,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       dataIndex: 'price',
       valueType: 'text',
       hideInSearch: true,
+      width: 110,
     },
     {
       title: '实际盈亏(元)',
@@ -223,20 +248,51 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      width: 120,
+    },
+    {
+      title: '是否指定配送补贴',
+      dataIndex: 'isEditSubsidy',
+      valueType: 'text',
+      hideInSearch: true,
+      renderFormItem: () => <Checkbox.Group><Checkbox value={1}>指定配送补贴</Checkbox></Checkbox.Group>,
+      width: 120,
     },
     {
       title: '运营中心配送费补贴',
       dataIndex: 'operationFixedPrice',
       valueType: 'text',
       hideInSearch: true,
-      editable: false,
+      renderFormItem: (_, { record }) => {
+        if (record.isEditSubsidy.length) {
+          return <Input />
+        }
+        return record.operationFixedPrice
+      },
+      width: 110,
     },
     {
       title: '社区店配送费补贴',
       dataIndex: 'fixedPrice',
       valueType: 'text',
       hideInSearch: true,
-      editable: false,
+      renderFormItem: (_, { record }) => {
+        if (record.isEditSubsidy.length) {
+          return <Input />
+        }
+        return record.fixedPrice
+      },
+      width: 110,
+    },
+    {
+      title: '社区店特殊补贴',
+      dataIndex: 'subsidy',
+      valueType: 'text',
+      hideInSearch: true,
+      width: 250,
+      renderFormItem: (_, { record }) => {
+        return <Subsidy profit={record.profit} />
+      }
     },
     {
       title: '集采箱规单位量',
@@ -244,18 +300,21 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      width: 100,
     },
     {
       title: '单次起订量',
       dataIndex: 'minNum',
       valueType: 'text',
       hideInSearch: true,
+      width: 110,
     },
     {
       title: '单次限订量',
       dataIndex: 'maxNum',
       valueType: 'text',
       hideInSearch: true,
+      width: 110,
     },
     {
       title: '全款金额',
@@ -263,7 +322,8 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      render: (_) => <span style={{ color: 'red' }}>{_}</span>
+      render: (_) => <span style={{ color: 'red' }}>{_}</span>,
+      width: 100,
     },
   ]
 
@@ -283,8 +343,13 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       profit: amountTransform(item.profit, '/'),
       totalPrice: item.salePrice > 0 ? +new Big(item.price).div(100).times(item.wholesaleMinNum || 10) : 0,
       wholesaleFlowType: 1,
+      isEditSubsidy: [1],
+      subsidy: {
+        a: item.orderAmount > 0 ? amountTransform(item.orderAmount, '/') : '',
+        b: item.subsidy > 0 ? amountTransform(item.subsidy, '/') : '',
+      }
     }))
-    
+
     if (isFirst.current && sku) {
       arr[0] = {
         ...arr[0],
@@ -292,13 +357,18 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
         maxNum: sku.maxNum,
         totalStockNum: sku.totalStockNum,
         price: amountTransform(sku.price, '/'),
-        // fixedPrice: amountTransform(sku.fixedPrice, '/'),
-        // operationFixedPrice: amountTransform(sku.operationFixedPrice, '/'),
+        fixedPrice: amountTransform(sku.fixedPrice, '/'),
+        operationFixedPrice: amountTransform(sku.operationFixedPrice, '/'),
         settlePercent: amountTransform(sku.settlePercent),
         wholesaleSupplyPrice: amountTransform(sku.wholesaleSupplyPrice, '/'),
         profit: amountTransform(sku.profit, '/'),
         totalPrice: sku.salePrice > 0 ? +new Big(sku.price).div(100).times(sku.minNum || 10) : 0,
         wholesaleFlowType,
+        isEditSubsidy: sku.isEditSubsidy === 0 ? [] : [1],
+        subsidy: {
+          a: sku.orderAmount > 0 ? amountTransform(sku.orderAmount, '/') : '',
+          b: sku.subsidy > 0 ? amountTransform(sku.subsidy, '/') : '',
+        }
       }
       setSelectedRowKeys([sku.skuId])
       setSelectData(arr);
@@ -319,15 +389,21 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
   const debounceFetcher = useMemo(() => {
     const loadData = (value) => {
       const { recordList, record } = value;
-
       const findItem = dataSource.find(item => item.id === record.id);
       const obj = {
         skuId: record.skuId,
         fixedPrice: amountTransform(record.fixedPrice),
+        operationFixedPrice: amountTransform(record.operationFixedPrice),
         isGetWholesale: 1,
         priceScale: amountTransform(record.settlePercent, '/'),
-        price: amountTransform(record.price)
+        price: amountTransform(record.price),
       }
+
+      if (record.subsidy.a && record.subsidy.b) {
+        obj.orderAmount = record.subsidy.a ? amountTransform(record.subsidy.a) : '';
+        obj.subsidy = record.subsidy.b ? amountTransform(record.subsidy.b) : '';
+      }
+
       if (findItem.price !== record.price) {
         obj.price = amountTransform(record.price);
         obj.priceScale = -1;
