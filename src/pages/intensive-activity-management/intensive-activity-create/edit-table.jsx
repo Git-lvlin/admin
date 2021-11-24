@@ -9,11 +9,11 @@ import Big from 'big.js';
 import { amountTransform } from '@/utils/utils'
 import debounce from 'lodash/debounce';
 
-const Subsidy = ({ value = {}, onChange, profit }) => {
+const Subsidy = ({ value = {}, onChange, orderProfit }) => {
   return (
     <>
       <div>当订单金额达到 <Input onChange={(e) => { const obj = { ...value }; obj.a = e.target.value; onChange(obj) }} value={value.a} style={{ width: 100 }} /></div>
-      <div>实际盈亏为 {profit}元</div>
+      {orderProfit > 0 && <div>实际盈亏为 {orderProfit}元</div>}
       <div>补贴 <Input onChange={(e) => { const obj = { ...value }; obj.b = e.target.value; onChange(obj) }} value={value.b} style={{ width: 100 }} /></div>
     </>
   )
@@ -291,7 +291,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       hideInSearch: true,
       width: 250,
       renderFormItem: (_, { record }) => {
-        return <Subsidy profit={record.profit} />
+        return <Subsidy orderProfit={record.orderProfit} />
       }
     },
     {
@@ -341,6 +341,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       wholesaleFreight: amountTransform(item.wholesaleFreight, '/'),
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
       profit: amountTransform(item.profit, '/'),
+      orderProfit: amountTransform(item.orderProfit, '/'),
       totalPrice: item.salePrice > 0 ? +new Big(item.price).div(100).times(item.wholesaleMinNum || 10) : 0,
       wholesaleFlowType: 1,
       isEditSubsidy: [],
@@ -362,6 +363,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
         settlePercent: amountTransform(sku.settlePercent),
         wholesaleSupplyPrice: amountTransform(sku.wholesaleSupplyPrice, '/'),
         profit: amountTransform(sku.profit, '/'),
+        orderProfit: amountTransform(sku.orderProfit, '/'),
         totalPrice: sku.salePrice > 0 ? +new Big(sku.price).div(100).times(sku.minNum || 10) : 0,
         wholesaleFlowType,
         isEditSubsidy: sku.isEditSubsidy === 0 ? [] : [1],
@@ -392,16 +394,13 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
       const findItem = dataSource.find(item => item.id === record.id);
       const obj = {
         skuId: record.skuId,
-        fixedPrice: amountTransform(record.fixedPrice),
-        operationFixedPrice: amountTransform(record.operationFixedPrice),
+        fixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.fixedPrice) : 0,
+        operationFixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.operationFixedPrice) : 0,
         isGetWholesale: 1,
         priceScale: amountTransform(record.settlePercent, '/'),
         price: amountTransform(record.price),
-      }
-
-      if (record.subsidy.a && record.subsidy.b) {
-        obj.orderAmount = record.subsidy.a ? amountTransform(record.subsidy.a) : '';
-        obj.subsidy = record.subsidy.b ? amountTransform(record.subsidy.b) : '';
+        orderAmount: amountTransform(record.subsidy.a),
+        subsidy: amountTransform(record.subsidy.b)
       }
 
       if (findItem.price !== record.price) {
@@ -424,6 +423,7 @@ export default function EditTable({ onSelect, sku, wholesaleFlowType }) {
               settlePercent: amountTransform(skuData.settlePercent),
               price: amountTransform(skuData.price, '/'),
               profit: amountTransform(skuData.profit, '/'),
+              orderProfit: amountTransform(skuData.orderProfit, '/'),
               totalPrice: (skuData.price > 0 && record.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(record.minNum) : 0,
               subsidy: {
                 a: skuData.orderAmount ? amountTransform(skuData.orderAmount, '/') : '',
