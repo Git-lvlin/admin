@@ -763,6 +763,11 @@ export default (props) => {
                 ]}
                 disabled
               />
+              <Form.Item
+                label="发货地"
+              >
+                {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+              </Form.Item>
             </>
             :
             <>
@@ -898,6 +903,11 @@ export default (props) => {
                 ]}
                 disabled
               />
+              <Form.Item
+                label="发货地"
+              >
+                {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+              </Form.Item>
               <ProFormText
                 name="stockAlarmNum"
                 label="库存预警值"
