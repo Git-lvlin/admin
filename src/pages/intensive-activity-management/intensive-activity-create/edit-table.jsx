@@ -9,18 +9,23 @@ import Big from 'big.js';
 import { amountTransform } from '@/utils/utils'
 import debounce from 'lodash/debounce';
 
+const parseNum = (value) => {
+  let num = `${value}`;
+  if (!/^\d+\.?\d*$/.test(num)) {
+    return ''
+  }
+
+  if (`${num}`.indexOf('.') !== -1) {
+    const arr = num.split('.')
+    num = `${arr[0]}.${arr[1].slice(0, 2)}`
+  }
+
+  return num;
+}
+
 const CusInput = ({ value, onChange, ...rest }) => {
   const keyup = (e) => {
-    let num = `${e.target.value}`;
-    if (!/^\d+\.?\d*$/.test(num)) {
-      onChange('')
-    }
-
-    if (`${num}`.indexOf('.') !== -1) {
-      const arr = `${num}`.split('.')
-      num = `${arr[0]}.${arr[1].slice(0, 2)}`
-    }
-    onChange(num)
+    onChange(parseNum(e.target.value))
   }
   return <Input value={value} onChange={keyup} {...rest} />
 }
@@ -28,9 +33,9 @@ const CusInput = ({ value, onChange, ...rest }) => {
 const Subsidy = ({ value = {}, onChange, orderProfit }) => {
   return (
     <>
-      <div>当订单金额达到 <CusInput onChange={(e) => { const obj = { ...value }; obj.a = e.target.value; onChange(obj) }} value={value.a} style={{ width: 150 }} /></div>
+      <div>当订单金额达到 <CusInput onChange={(e) => { const obj = { ...value }; obj.a = e; onChange(obj) }} value={value.a} style={{ width: 150 }} /></div>
       {orderProfit !== 0 && <div>实际盈亏为 {orderProfit}元</div>}
-      <div>补贴 <CusInput onChange={(e) => { const obj = { ...value }; obj.b = e.target.value; onChange(obj) }} value={value.b} style={{ width: 150 }} /></div>
+      <div>补贴 <CusInput onChange={(e) => { const obj = { ...value }; obj.b = e; onChange(obj) }} value={value.b} style={{ width: 150 }} /></div>
     </>
   )
 }
