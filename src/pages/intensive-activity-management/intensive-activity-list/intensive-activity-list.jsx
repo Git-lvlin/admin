@@ -454,7 +454,7 @@ const TableList = () => {
           pagination={{
             pageSize: 10,
           }}
-          scroll={{ x: '85vw' }}
+          scroll={{ x: 'max-content' }}
         />
       </div>
     </PageContainer>
