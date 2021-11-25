@@ -12,9 +12,9 @@ import debounce from 'lodash/debounce';
 const Subsidy = ({ value = {}, onChange, orderProfit }) => {
   return (
     <>
-      <div>当订单金额达到 <Input onChange={(e) => { const obj = { ...value }; obj.a = e.target.value; onChange(obj) }} value={value.a} style={{ width: 100 }} /></div>
+      <div>当订单金额达到 <Input onChange={(e) => { const obj = { ...value }; obj.a = e.target.value; onChange(obj) }} value={value.a} style={{ width: 150 }} /></div>
       {orderProfit !== 0 && <div>实际盈亏为 {orderProfit}元</div>}
-      <div>补贴 <Input onChange={(e) => { const obj = { ...value }; obj.b = e.target.value; onChange(obj) }} value={value.b} style={{ width: 100 }} /></div>
+      <div>补贴 <Input onChange={(e) => { const obj = { ...value }; obj.b = e.target.value; onChange(obj) }} value={value.b} style={{ width: 150 }} /></div>
     </>
   )
 }
@@ -105,7 +105,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      width: 80,
     },
     {
       title: 'skuID',
@@ -113,7 +112,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      width: 80,
     },
     {
       title: '商品分类',
@@ -122,7 +120,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       hideInSearch: true,
       editable: false,
       render: (_, data) => `${data.gcId1Display}-${data.gcId2Display}`,
-      width: 100,
     },
     {
       title: '主图',
@@ -130,7 +127,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      width: 80,
       render: (text) => <img src={text} width={50} height={50} />
     },
     {
@@ -139,13 +135,11 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      width: 100,
     },
     {
       title: '配送模式',
       dataIndex: 'wholesaleFlowType',
       hideInSearch: true,
-      width: 145,
       renderFormItem: (_, { record }) => {
         return (<Radio.Group>
           <Radio value={1}>直发到店</Radio>
@@ -159,7 +153,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      width: 120,
     },
     {
       title: '市场价(元)',
@@ -167,7 +160,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      width: 120,
     },
     {
       title: '平均运费(元)',
@@ -175,7 +167,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      width: 120,
     },
     {
       title: '总库存',
@@ -183,7 +174,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      width: 100,
     },
     {
       title: '商品名称',
@@ -191,7 +181,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      width: 150,
+      width: 200,
     },
     // {
     //   title: '结算类型',
@@ -209,7 +199,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       dataIndex: 'totalStockNum',
       valueType: 'text',
       hideInSearch: true,
-      width: 110,
     },
     {
       title: '售价上浮比(%)',
@@ -217,7 +206,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       renderFormItem: () => <Input addonAfter="%" />,
-      width: 110,
       // formItemProps: {
       //   rules: [
       //     {
@@ -240,7 +228,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       dataIndex: 'price',
       valueType: 'text',
       hideInSearch: true,
-      width: 110,
     },
     {
       title: '实际盈亏(元)',
@@ -248,7 +235,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      width: 120,
     },
     {
       title: '是否指定配送补贴',
@@ -256,7 +242,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       renderFormItem: () => <Checkbox.Group><Checkbox value={1}>指定配送补贴</Checkbox></Checkbox.Group>,
-      width: 120,
     },
     {
       title: '运营中心配送费补贴',
@@ -269,7 +254,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         }
         return record.operationFixedPrice
       },
-      width: 110,
     },
     {
       title: '社区店配送费补贴',
@@ -282,7 +266,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         }
         return record.fixedPrice
       },
-      width: 110,
     },
     {
       title: '社区店特殊补贴',
@@ -300,21 +283,18 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      width: 100,
     },
     {
       title: '单次起订量',
       dataIndex: 'minNum',
       valueType: 'text',
       hideInSearch: true,
-      width: 110,
     },
     {
       title: '单次限订量',
       dataIndex: 'maxNum',
       valueType: 'text',
       hideInSearch: true,
-      width: 110,
     },
     {
       title: '全款金额',
@@ -323,7 +303,6 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       hideInSearch: true,
       editable: false,
       render: (_) => <span style={{ color: 'red' }}>{_}</span>,
-      width: 100,
     },
   ]
 
@@ -341,7 +320,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       wholesaleFreight: amountTransform(item.wholesaleFreight, '/'),
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
       profit: amountTransform(item.profit, '/'),
-      orderProfit: amountTransform(item.orderProfit, '/'),
+      orderProfit: 0,
       totalPrice: item.salePrice > 0 ? +new Big(item.price).div(100).times(item.wholesaleMinNum || 10) : 0,
       wholesaleFlowType: 1,
       isEditSubsidy: [],
@@ -363,13 +342,13 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         settlePercent: amountTransform(sku.settlePercent),
         wholesaleSupplyPrice: amountTransform(sku.wholesaleSupplyPrice, '/'),
         profit: amountTransform(sku.profit, '/'),
-        orderProfit: amountTransform(sku.orderProfit, '/'),
+        orderProfit: amountTransform(wholesale?.orderProfit, '/'),
         totalPrice: sku.salePrice > 0 ? +new Big(sku.price).div(100).times(sku.minNum || 10) : 0,
         wholesaleFlowType: wholesale?.wholesaleFlowType,
         isEditSubsidy: wholesale?.isEditSubsidy === 0 ? [] : [1],
         subsidy: {
-          a: sku.orderAmount > 0 ? amountTransform(sku.orderAmount, '/') : '',
-          b: sku.subsidy > 0 ? amountTransform(sku.subsidy, '/') : '',
+          a: wholesale?.orderAmount > 0 ? amountTransform(wholesale?.orderAmount, '/') : '',
+          b: wholesale?.subsidy > 0 ? amountTransform(wholesale.subsidy, '/') : '',
         }
       }
       setSelectedRowKeys([sku.skuId])
@@ -462,7 +441,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         hasStock: 1,
         isGetWholesale: 1,
       }}
-      scroll={{ x: '130vw' }}
+      scroll={{ x: 'max-content' }}
       controlled
       request={productList}
       formRef={formRef}
