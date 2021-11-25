@@ -72,7 +72,7 @@ const Detail = () => {
             <Descriptions.Item label="经纬度">{detailData?.longitude}，{detailData?.latitude}</Descriptions.Item>
             <Descriptions.Item label="小区名称">{detailData?.memberShop?.communityName}</Descriptions.Item>
             <Descriptions.Item label="收件手机号">{detailData?.phone}</Descriptions.Item>
-            <Descriptions.Item label="配送范围">{detailData?.deliveryCoverage?detailData?.deliveryCoverage/1000:'店主未配置'}</Descriptions.Item>
+            <Descriptions.Item label="配送范围">{detailData?.deliveryCoverage?detailData?.deliveryCoverage/1000+'km':'店主未配置'}</Descriptions.Item>
           </Descriptions>
         </Row>
         <Auth name="store/memberShop/changeAreaInfo">
