@@ -295,7 +295,7 @@ const IntensiveActivityCreate = () => {
           >
             {
               !loading &&
-              <EditTable onSelect={setSelectItem} sku={detailData?.sku?.[0]} wholesaleFlowType={detailData?.wholesale?.wholesaleFlowType} />
+              <EditTable onSelect={setSelectItem} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} />
             }
             <ProFormText name="name" label="活动名称" width="lg" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
             <ProFormDateTimeRangePicker
