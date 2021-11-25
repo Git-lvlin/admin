@@ -93,6 +93,13 @@ export default (props) => {
       }
     },
     {
+      title: '已消耗件数',
+      dataIndex: 'consumeNum',
+      valueType: 'text',
+      editable:false,
+      hideInTable:!id||!falg
+    },
+    {
       title: '中奖概率%',
       dataIndex: 'probability',
       valueType: 'digit',
