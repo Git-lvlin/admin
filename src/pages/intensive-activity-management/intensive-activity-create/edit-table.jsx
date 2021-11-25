@@ -13,7 +13,7 @@ const Subsidy = ({ value = {}, onChange, orderProfit }) => {
   return (
     <>
       <div>当订单金额达到 <Input onChange={(e) => { const obj = { ...value }; obj.a = e.target.value; onChange(obj) }} value={value.a} style={{ width: 100 }} /></div>
-      {orderProfit > 0 && <div>实际盈亏为 {orderProfit}元</div>}
+      {orderProfit !== 0 && <div>实际盈亏为 {orderProfit}元</div>}
       <div>补贴 <Input onChange={(e) => { const obj = { ...value }; obj.b = e.target.value; onChange(obj) }} value={value.b} style={{ width: 100 }} /></div>
     </>
   )
@@ -394,8 +394,8 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       const findItem = dataSource.find(item => item.id === record.id);
       const obj = {
         skuId: record.skuId,
-        fixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.fixedPrice) : 0,
-        operationFixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.operationFixedPrice) : 0,
+        fixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.fixedPrice) : '',
+        operationFixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.operationFixedPrice) : '',
         isGetWholesale: 1,
         priceScale: amountTransform(record.settlePercent, '/'),
         price: amountTransform(record.price),
