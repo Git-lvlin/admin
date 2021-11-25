@@ -394,8 +394,8 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       const findItem = dataSource.find(item => item.id === record.id);
       const obj = {
         skuId: record.skuId,
-        fixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.fixedPrice) : 0,
-        operationFixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.operationFixedPrice) : 0,
+        fixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.fixedPrice) : '',
+        operationFixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.operationFixedPrice) : '',
         isGetWholesale: 1,
         priceScale: amountTransform(record.settlePercent, '/'),
         price: amountTransform(record.price),
