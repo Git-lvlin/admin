@@ -40,6 +40,15 @@ const couponType = (props) => {
         }
         })
     }
+    const checkConfirm2=(rule, value, callback)=>{
+        return new Promise(async (resolve, reject) => {
+            if(value&&!/^[0-9]+(.[0-9]{0,2})?$/.test(value)){
+                await reject('只能输入数字，最多输入两位小数点')
+            } else {
+            await resolve()
+        }
+        })
+    }
     const checkDiscounts=(rule, value, callback)=>{
         return new Promise(async (resolve, reject) => {
         if(value&&value>=10){
@@ -113,7 +122,7 @@ const couponType = (props) => {
                                             }}
                                         width={100}
                                         rules={[
-                                            {validator: checkConfirm}
+                                            {validator: checkConfirm2}
                                         ]} 
                                     />
                                     <span>元</span>
@@ -175,7 +184,7 @@ const couponType = (props) => {
                                     width={100}
                                     name="maxFreeAmount"
                                     rules={[
-                                        {validator: checkConfirm}
+                                        {validator: checkConfirm2}
                                     ]}
                                     fieldProps={{
                                         onChange: (e) =>setMost(e.target.value)
@@ -215,7 +224,7 @@ const couponType = (props) => {
                                         }}
                                     width={100}
                                     rules={[
-                                        {validator: checkConfirm}
+                                        {validator: checkConfirm2}
                                     ]} 
                                 />
                                 <span>元</span>
