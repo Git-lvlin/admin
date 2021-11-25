@@ -155,11 +155,15 @@ export default props => {
               {detailData.couponAmountDisplay}
             </Form.Item>
 
-            <Form.Item
-              label="最高优惠"
-            >
-              {detailData.maxFreeAmount}元
-            </Form.Item>
+            {
+              detailData.issueType != 4&&            
+              <Form.Item
+                label="最高优惠"
+              >
+                {detailData.maxFreeAmount}元
+              </Form.Item>
+            }
+
 
             <Form.Item
               label="发行方式"
@@ -178,11 +182,14 @@ export default props => {
             >
               {detailData.issueQuantity}
             </Form.Item>
-            <Form.Item
-              label="每人限领"
-            >
-              {detailData.limitQuantity}
-            </Form.Item>
+            {
+              detailData.issueType != 4&&
+              <Form.Item
+                label="每人限领"
+              >
+                {detailData.limitQuantity}
+              </Form.Item>
+            }
             {
               detailData.limitStartTime&&<Form.Item
                 label="可领取时间"

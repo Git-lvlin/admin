@@ -127,11 +127,15 @@
    border-bottom: 1px solid #ccc;
    margin: 20px 0 30px 0;
   }
-  .box::before{
-    content: "*";
-    color: red;
-    position: absolute;
-    left: 120px;
+  .box{
+    position: relative;
+    .mark{
+      color: #FF7C7E;
+      position: absolute;
+      top:-1px;
+      left: -10px;
+      font-size: 20px;
+    }
   }
   .align_from{
     display:flex;
