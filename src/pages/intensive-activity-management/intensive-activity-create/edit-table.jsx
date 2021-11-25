@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Form, Checkbox, Input, message, Radio } from 'antd';
+import { Form, Checkbox, Input, message, Radio, InputNumber } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
@@ -9,12 +9,28 @@ import Big from 'big.js';
 import { amountTransform } from '@/utils/utils'
 import debounce from 'lodash/debounce';
 
+const CusInput = ({ value, onChange, ...rest }) => {
+  const keyup = (e) => {
+    let num = `${e.target.value}`;
+    if (!/^\d+\.?\d*$/.test(num)) {
+      onChange('')
+    }
+
+    if (`${num}`.indexOf('.') !== -1) {
+      const arr = `${num}`.split('.')
+      num = `${arr[0]}.${arr[1].slice(0, 2)}`
+    }
+    onChange(num)
+  }
+  return <Input value={value} onChange={keyup} {...rest} />
+}
+
 const Subsidy = ({ value = {}, onChange, orderProfit }) => {
   return (
     <>
-      <div>当订单金额达到 <Input onChange={(e) => { const obj = { ...value }; obj.a = e.target.value; onChange(obj) }} value={value.a} style={{ width: 150 }} /></div>
+      <div>当订单金额达到 <CusInput onChange={(e) => { const obj = { ...value }; obj.a = e.target.value; onChange(obj) }} value={value.a} style={{ width: 150 }} /></div>
       {orderProfit !== 0 && <div>实际盈亏为 {orderProfit}元</div>}
-      <div>补贴 <Input onChange={(e) => { const obj = { ...value }; obj.b = e.target.value; onChange(obj) }} value={value.b} style={{ width: 150 }} /></div>
+      <div>补贴 <CusInput onChange={(e) => { const obj = { ...value }; obj.b = e.target.value; onChange(obj) }} value={value.b} style={{ width: 150 }} /></div>
     </>
   )
 }
@@ -228,6 +244,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       dataIndex: 'price',
       valueType: 'text',
       hideInSearch: true,
+      renderFormItem: () => <CusInput />,
     },
     {
       title: '实际盈亏(元)',
@@ -250,7 +267,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       hideInSearch: true,
       renderFormItem: (_, { record }) => {
         if (record.isEditSubsidy.length) {
-          return <Input />
+          return <CusInput />
         }
         return record.operationFixedPrice
       },
@@ -262,7 +279,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       hideInSearch: true,
       renderFormItem: (_, { record }) => {
         if (record.isEditSubsidy.length) {
-          return <Input />
+          return <CusInput />
         }
         return record.fixedPrice
       },
