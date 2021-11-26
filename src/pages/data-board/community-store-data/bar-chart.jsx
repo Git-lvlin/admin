@@ -16,7 +16,6 @@ const BarChart = ({data}) => {
       height={400}
       data={data}
       autoFit
-      padding={[40, 0, 20, 100]}
       scale={{
         value: {
           formatter: (v) => v

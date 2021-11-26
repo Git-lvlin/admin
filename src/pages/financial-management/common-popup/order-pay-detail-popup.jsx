@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import { PageContainer } from '@ant-design/pro-layout'
-import { Button, Space, Progress } from 'antd'
+import { Button, Space, Progress, Drawer } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 
 import { amountTransform } from '@/utils/utils'
@@ -11,17 +9,17 @@ import { createExportTask, findById } from "@/services/export-excel/export-templ
 import styles from './styles.less'
 import './styles.less'
 
-const Detail = () => {
-  const {id} = useParams()
+const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState(null)
-  const [payInfos, setPayInfos] = useState([])
+  const [payInfos, setPayInfos] = useState([]) 
   const [data, setData] = useState(null)
   const [down, setDown] = useState(false)
   const [isDown, setIsDown] = useState(false)
   const [taskId, setTaskId] = useState(null)
   const [process, setProcess] = useState(0)
   const timer = useRef()
+
   useEffect(()=>{
     setLoading(true)
     orderPageDetail({orderNo: id}).then(res=> {
@@ -50,7 +48,7 @@ const Detail = () => {
   }
 
   const getData = () => {
-    taskId&&findById({
+    findById({
       id: taskId
     }).then(res => {
       setProcess(res.data.process)
@@ -61,7 +59,7 @@ const Detail = () => {
       }
     })
   }
-  
+
   useEffect(()=> {
     clearInterval(timer.current)
     if(down) {
@@ -122,10 +120,6 @@ const Detail = () => {
       default:
         return ''
     }
-  }
-
-  const back = () => {
-    history.goBack()
   }
 
   const DownExport = () => {
@@ -339,13 +333,26 @@ const Detail = () => {
   }
 
   return (
-    <PageContainer title={false}>
+    <Drawer
+      title="订单支付明细管理"
+      placement="right"
+      width={1400}
+      onClose={() => { setVisible(false) }}
+      visible={visible}
+      footer={
+        <div style={{ textAlign: 'right' }}>
+          <Space>
+            <Button onClick={() => { setVisible(false) }}>返回</Button>
+          </Space>
+        </div>
+      }
+    >
       <ProDescriptions
         loading={loading}
         column={2}
         columns={columns1}
         style={{
-          background:'#fff',
+          background: '#fff',
           padding: 20
         }}
         bordered
@@ -354,12 +361,12 @@ const Detail = () => {
       {
         info?.skus &&
         info?.skus.map(item => (
-          <CustomList data={item} key={item.skuId} columns={columns2}/>
+          <CustomList data={item} key={item.skuId} columns={columns2} />
         ))
       }
       {
-        payInfos?.map(item=> (
-          <CustomList data={item} key={item.stageName} columns={columns3}/>
+        payInfos?.map(item => (
+          <CustomList data={item} key={item.stageName} columns={columns3} />
         ))
       }
       <ProDescriptions
@@ -367,17 +374,14 @@ const Detail = () => {
         column={2}
         columns={columns4}
         style={{
-          background:'#fff',
+          background: '#fff',
           padding: 20
         }}
         bordered
         dataSource={info}
       />
-      <div style={{background: '#fff', padding: 20}}>
-        <Button type='primary' onClick={()=> back()}>返回</Button>
-      </div>
-    </PageContainer>
+    </Drawer>
   )
 }
 
-export default Detail
+export default OrderPayDetailPopup

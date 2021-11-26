@@ -105,7 +105,7 @@ const StoreReview = () => {
       hideInTable: true,
     },
     {
-      title: '审核状态',
+      title: '入驻状态',
       dataIndex: ['verifyStatus', 'code'],
       valueType: 'text',
       hideInSearch: true,
@@ -119,8 +119,7 @@ const StoreReview = () => {
           )
         }
         return {
-          0: '没有申请过',
-          1: '审核通过',
+          0: '全部',
           2: '审核不通过',
           3: '已缴保证金',
           4: '待缴保证金',
@@ -130,13 +129,12 @@ const StoreReview = () => {
       }
     },
     {
-      title: '审核状态',
+      title: '入驻状态',
       dataIndex: 'verifyStatus',
       valueType: 'text',
       hideInTable: true,
       valueEnum: {
-        0: '没有申请过',
-        1: '审核通过',
+        0: '全部',
         2: '审核不通过',
         3: '已缴保证金',
         4: '待缴保证金',

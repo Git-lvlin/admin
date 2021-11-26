@@ -29,5 +29,21 @@ export default {
       component: './dc-management/data-board/data-board-configuration',
       hideInMenu: true
     },
+    {
+      name: 'import-export',
+      path: '/dc-management/import-export',
+      routes: [
+        {
+          name: 'export-configuration',
+          path: '/dc-management/import-export/export-configuration',
+          component: './dc-management/import-export/export-configuration',
+        },
+        {
+          name: 'import-configuration',
+          path: '/dc-management/import-export/import-configuration',
+          component: './dc-management/import-export/import-configuration'
+        }
+      ]
+    }
   ]
 }
