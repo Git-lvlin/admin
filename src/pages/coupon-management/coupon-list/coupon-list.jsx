@@ -13,6 +13,7 @@ import TurnDownModel from './turn-down-model'
 import styles from './style.less'
 import { history,connect } from 'umi';
 import { useEffect } from 'react';
+import { amountTransform } from '@/utils/utils'
 const { TabPane } = Tabs
 
 
@@ -44,6 +45,9 @@ const Message = (props) => {
       title: '面值',
       dataIndex: 'couponAmountDisplay',
       hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{!isNaN(_)?Number(_).toFixed(2):_}</p>
+      }
     },
     {
       title: '发行方式',
@@ -58,8 +62,11 @@ const Message = (props) => {
     {
       title: '发行总金额（元）',
       dataIndex: 'issueAmount',
-      valueType: 'text',
+      valueType:'text',
       hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{!isNaN(_)?Number(_).toFixed(2):_}</p>
+      }
     },
     {
       title: '发行总数量（张）',

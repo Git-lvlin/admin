@@ -83,7 +83,7 @@ const couponConstruction = (props) => {
     values.issueType = parseInt(type)|| id&&DetaiIssueType
     values.couponTypeInfo = {
       usefulAmount: parseInt(values.usefulAmount),//用价格门槛(单位分)
-      freeAmount: parseInt(values.freeAmount),//优惠金额(单位分)
+      freeAmount: values.freeAmount,//优惠金额(单位分)
       unit: values.unit,//单位
       usefulNum: parseInt(values.usefulNum),//用件数门槛
       freeDiscount: values.freeDiscount,//折扣
@@ -358,6 +358,9 @@ const couponConstruction = (props) => {
           placeholder='列如红包适用商品、使用限制等信息'
           rules={[{ required: true, message: '请备注使用规则' }]}
           rows={4}
+          fieldProps={{
+            maxLength:1000
+          }}
         />
 
         {
