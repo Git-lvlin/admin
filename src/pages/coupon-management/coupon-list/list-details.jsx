@@ -152,7 +152,7 @@ export default props => {
             <Form.Item
               label="红包面值"
             >
-              {detailData.couponAmountDisplay}
+              {Number(detailData.couponAmountDisplay).toFixed(2)}
             </Form.Item>
 
             {
