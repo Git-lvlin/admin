@@ -36,7 +36,7 @@ const Message = (props) => {
     {
       title: '发行总金额（元）',
       dataIndex: 'issueAmount',
-      valueType: 'text',
+      valueType:'money',
       hideInSearch: true,
     },
     {
@@ -49,6 +49,7 @@ const Message = (props) => {
       title: '面额（元）',
       dataIndex: 'couponAmountDisplay',
       hideInSearch: true,
+      valueType:'money',
     },
     {
       title: '可领取时间',
