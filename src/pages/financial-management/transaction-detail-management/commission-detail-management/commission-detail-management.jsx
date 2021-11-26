@@ -91,12 +91,6 @@ const CommissionDetailManagement = () =>{
       dataIndex: 'createTime',
       valueType: 'dateRange',
       hideInTable: true
-    },
-    {
-      title: '操作',
-      dataIndex: 'optoion',
-      valueType: 'option',
-      render: (_, records)=> <a onClick={()=>{skipToDetail(records?.orderNo)}}>详情</a>
     }
   ]
   return (

@@ -49,46 +49,58 @@ const TransactionDetails = () => {
         return (
           <>
             <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
+            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'commission':
         return (
           <>
             <span className={styles.amount}>店主收益: ¥{amountTransform(amount, '/')}</span>
+            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'platformCommission':
         return (
           <>
             <span className={styles.amount}>平台收益: ¥{amountTransform(amount, '/')}</span>
+            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'suggestCommission':
         return (
           <>
             <span className={styles.amount}>上级推荐人收益: ¥{amountTransform(amount, '/')}</span>
+            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'agentCompanyCommission':
         return (
           <>
             <span className={styles.amount}>运营商收益: ¥{amountTransform(amount, '/')}</span>
+            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'freight':
         return (
           <>
             <span className={styles.amount}>运费: ¥{amountTransform(amount, '/')}</span>
+            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       default:
-        return ''
+        return '-'
     }
   }
   const columns1 = [
@@ -177,8 +189,9 @@ const TransactionDetails = () => {
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
-      title: '',
-      dataIndex: ''
+      title: '应付金额',
+      dataIndex: 'amount',
+      render: (_) => `${amountTransform(_, '/')}`
     }
   ]
 
@@ -196,11 +209,11 @@ const TransactionDetails = () => {
       dataIndex: 'payTpyeName'
     },
     {
-      title: '',
+      title: '应付金额',
       dataIndex: ''
     },
     {
-      title: '支付金额',
+      title: '实付金额',
       dataIndex: 'amount',
       render: (_)=> `¥${amountTransform(_, '/')}`
     },

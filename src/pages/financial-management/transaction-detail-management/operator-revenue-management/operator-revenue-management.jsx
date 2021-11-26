@@ -7,9 +7,12 @@ import { Button } from 'antd'
 import { amountTransform } from '@/utils/utils'
 import { operationCommissionPage } from '@/services/financial-management/operator-revenue-detail-management'
 import { Export, ExportHistory } from '@/pages/export-excel'
+import Detail from '../../common-popup/order-pay-detail-popup'
 
 const OperatorRevenueManagement = () =>{
   const [visit, setVisit] = useState(false)
+  const [detailVisible, setDetailVisible] = useState(false)
+  const [selectItem, setSelectItem] = useState({})
 
   const skipToDetail = data => {
     history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=operator`)
@@ -72,7 +75,12 @@ const OperatorRevenueManagement = () =>{
     },
     {
       title: '平台单号',
-      dataIndex: 'payNo'
+      dataIndex: 'payNo',
+      render: (_, records) => (
+        records?.orderNo?
+        <a onClick={() => { setSelectItem(records.orderNo); setDetailVisible(true); }}>{_}</a>:
+        <span>{_}</span>
+      )
     },
     {
       title: '资金流水号',
@@ -100,12 +108,6 @@ const OperatorRevenueManagement = () =>{
       dataIndex: 'createTime',
       valueType: 'dateRange',
       hideInTable: true
-    },
-    {
-      title: '操作',
-      dataIndex: 'option',
-      valueType: 'option',
-      render: (_, records)=> <a onClick={()=>{skipToDetail(records?.orderNo)}}>详情</a>
     }
   ]
   return (
@@ -156,6 +158,14 @@ const OperatorRevenueManagement = () =>{
         params={{}}
         request={operationCommissionPage}
       />
+      {
+        detailVisible &&
+        <Detail
+          id={selectItem}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
     </PageContainer>
   )
 }

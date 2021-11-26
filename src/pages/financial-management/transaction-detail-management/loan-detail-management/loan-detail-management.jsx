@@ -109,12 +109,6 @@ const LoanDetailManagement = () =>{
       dataIndex: 'createTime',
       valueType: 'dateRange',
       hideInTable: true
-    },
-    {
-      title: '操作',
-      dataIndex: 'option',
-      valueType: 'option',
-      render: (_, records)=> <a onClick={()=>{skipToDetail(records?.orderNo)}}>详情</a>
     }
   ]
   return (
