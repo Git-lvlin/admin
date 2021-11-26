@@ -316,28 +316,28 @@ export default (props) =>{
             />
           </Form.Item>
           {
-              id&&falg?
-               <Form.Item
-                label="活动规则"
-              >
-              <pre className={styles.line_feed}>
-                {
-                  detailList?.data?.activityRule
-                }
-              </pre>
-              </Form.Item>
-                :
-              <ProFormTextArea
-                name="activityRule"
-                label="活动规则"
-                placeholder="列如玩法规则、红包有效期、简单的用户协议"
-                rules={[
-                  { required: true, message: '请输入活动规则' },
-                ]}
-                readonly={id&&falg}
-                fieldProps={{
-                 maxLength:1000
-                }}
+            id&&falg?
+              <Form.Item
+              label="活动规则"
+            >
+            <pre className={styles.line_feed}>
+              {
+                detailList?.data?.activityRule
+              }
+            </pre>
+            </Form.Item>
+              :
+            <ProFormTextArea
+              name="activityRule"
+              label="活动规则"
+              placeholder="列如玩法规则、红包有效期、简单的用户协议"
+              rules={[
+                { required: true, message: '请输入活动规则' },
+              ]}
+              readonly={id&&falg}
+              fieldProps={{
+                maxLength:1000
+              }}
             />
           }
           {
