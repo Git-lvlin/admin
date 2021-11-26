@@ -305,11 +305,11 @@ export default (props) =>{
             name="bannerImage"
           >
             <FromWrap
-              content={(value, onChange) => <Upload multiple value={value} disabled={id&&falg} onChange={onChange}   maxCount={1} accept="image/*"  proportion={{width: 50,height: 180,}} />}
+              content={(value, onChange) => <Upload multiple value={value} disabled={id&&falg} onChange={onChange}   maxCount={1} accept="image/*"  proportion={{width: 670,height: 284,}} />}
               right={(value) => {
                 return (
                   <dl>
-                    <dd>50 x 180</dd>
+                    <dd>宽 670 x 高 284</dd>
                   </dl>
                 )
               }}
