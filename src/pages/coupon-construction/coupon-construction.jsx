@@ -358,6 +358,9 @@ const couponConstruction = (props) => {
           placeholder='列如红包适用商品、使用限制等信息'
           rules={[{ required: true, message: '请备注使用规则' }]}
           rows={4}
+          fieldProps={{
+            maxLength:1000
+          }}
         />
 
         {
