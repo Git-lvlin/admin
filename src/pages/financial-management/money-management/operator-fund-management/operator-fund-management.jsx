@@ -7,8 +7,7 @@ import { Space, message, Form, Button} from 'antd'
 import { history } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
-import { operationCommissionPage } from '@/services/financial-management/operator-fund-management'
-import { subtotal } from '@/services/financial-management/supplier-fund-management'
+import { platforms, enabledDisabledSubmit, subtotal } from '@/services/financial-management/supplier-fund-management'
 import styles from './styles.less'
 import { Export, ExportHistory } from '@/pages/export-excel'
 
@@ -98,20 +97,20 @@ const OperatorFundManagement = () => {
     },
     {
       title: '虚拟子账户',
-      dataIndex: 'accountSn'
+      dataIndex: 'sn'
     },
     {
       title: '注册手机',
-      dataIndex: 'accountMobile'
+      dataIndex: 'registMobile'
     },
     {
       title: '创建日期',
-      dataIndex: 'createTime',
+      dataIndex: 'registTime',
       hideInSearch: true
     },
     {
       title: '创建日期',
-      dataIndex: 'createTime',
+      dataIndex: 'registTime',
       hideInTable: true,
       valueType: 'dateRange'
     },
@@ -207,7 +206,7 @@ const OperatorFundManagement = () => {
         toolBarRender={false}
         columns={columns}
         params={{accountType: 'agentCompany'}}
-        request={operationCommissionPage}
+        request={platforms}
         search={{
           optionRender: ({searchText, resetText}, {form}) => [
             <Button
@@ -235,8 +234,8 @@ const OperatorFundManagement = () => {
               conditions={{
                 accountType: "agentCompany",
                 ...form?.getFieldValue(),
-                begin: form?.getFieldValue()?.createTime?.[0].format('YYYY-MM-DD'),
-                end: form?.getFieldValue()?.createTime?.[1].format('YYYY-MM-DD')
+                registTimeBegin: form?.getFieldValue()?.createTime?.[0].format('YYYY-MM-DD'),
+                registTimeEnd: form?.getFieldValue()?.createTime?.[1].format('YYYY-MM-DD')
               }}
             />,
             <ExportHistory
