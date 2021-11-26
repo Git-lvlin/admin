@@ -7,7 +7,8 @@ import {
   Tooltip, 
   Legend
 } from 'bizcharts'
-import { Empty, Spin } from 'antd'
+import { Empty, Spin, Tooltip as Tp, Space } from 'antd'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import Yuan from '../components/Yuan'
 import styles from './style.less'
@@ -54,7 +55,14 @@ const ChartForm = ({
               <Yuan>{data?.count?.accessTimes}</Yuan>
             </div> 
           }
-          description="访问次数"
+          description={
+            <Space>
+              <span>访问次数</span>
+              <Tp title="用户每次访问都计算在内">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
           value="visitList"
         />
         <CheckCard 
@@ -63,14 +71,28 @@ const ChartForm = ({
               <Yuan>{data?.count?.payOrder}</Yuan>
             </div>
           }
-          description="新增订单数"
+          description={
+            <Space>
+              <span>新增订单数</span>
+              <Tp title="新增加的支付订单">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
           value="payOrderList"
         />
         <CheckCard
           title={
             <div className={styles.title}>{data?.count?.conversionRate}</div> 
           }
-          description="访问-支付转化率"
+          description={
+            <Space>
+              <span>访问-支付转化率</span>
+              <Tp title="已支付订单数/总订单数（不含售后订单）">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
           value="conversionRate"
           disabled
         />
@@ -80,7 +102,14 @@ const ChartForm = ({
               <Yuan>{Number(data?.count?.payAmount)}</Yuan>
             </div> 
           }
-          description="支付金额"
+          description={
+            <Space>
+              <span>支付金额</span>
+              <Tp title="所有已支付的订单总金额">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
           value="payAmountList"
         />
         <CheckCard
@@ -89,7 +118,14 @@ const ChartForm = ({
               <Yuan>{data?.count?.payMember}</Yuan>
             </div> 
           }
-          description="下单支付用户数"
+          description={
+            <Space>
+              <span>下单支付用户数</span>
+              <Tp title="所有支付成功的下单总人数">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
           value="payMemberList"
         />
         <CheckCard 
@@ -98,7 +134,14 @@ const ChartForm = ({
               <Yuan>{data?.count?.regMember}</Yuan>
             </div> 
           }
-          description="新增用户数"
+          description={
+            <Space>
+              <span>新增用户数</span>
+              <Tp title="所有支付成功的下单总人数">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
           value="regMemberList"
         />
         <CheckCard 
@@ -107,7 +150,14 @@ const ChartForm = ({
               <Yuan>{data?.count?.accessMember}</Yuan>
             </div> 
           }
-          description="访问用户数"
+          description={
+            <Space>
+              <span>访客数</span>
+              <Tp title="打开app进行访问的人数，每人每天只算1次">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
           value="visitMemberList"
         />
       </CheckCard.Group>

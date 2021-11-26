@@ -1,5 +1,5 @@
 import React from 'react'
-import ProForm, { Tabs, ProFormSelect } from '@ant-design/pro-form'
+import ProForm, { ProFormSelect } from '@ant-design/pro-form'
 import { Space, Button, DatePicker } from 'antd'
 
 import styles from './styles.less'

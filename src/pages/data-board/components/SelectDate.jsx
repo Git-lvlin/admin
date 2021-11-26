@@ -1,29 +1,27 @@
 import React from 'react'
-import moment from 'moment'
-import { Space, Radio } from 'antd'
+import { Space, Radio, DatePicker } from 'antd'
 
 import styles from './style.less'
-
-const dateNow = moment(+new Date()).format('YYYY-MM-DD')
-const date = (day) => moment().subtract(day, 'days').calendar().replaceAll('/', '-')
+const { RangePicker } = DatePicker
 
 const SelectDate = ({
-  dateSelect,
-  setDateSelect
+  rangePickerValue,
+  handleRangePickerChange,
+  selectDate
 }) => {
   const handleChange = (v)=> {
     switch(v.target.value) {
       case 7:
-        setDateSelect(date(7))
+        selectDate('nearly-7-days')
       break
       case 15: 
-        setDateSelect(date(15))
+        selectDate('nearly-15-days')
       break
       case 30:
-        setDateSelect(date(30))
+        selectDate('nearly-a-month')
       break
       case 90:
-        setDateSelect(date(90))
+        selectDate('nearly-3-month')
       break
     }
   }
@@ -44,9 +42,14 @@ const SelectDate = ({
           <Radio.Button value={30}>近30天</Radio.Button>
           <Radio.Button value={90}>近3个月</Radio.Button>
         </Radio.Group>
-        <div className={styles.date}>
-          查询时间：{dateSelect} 至 {dateNow}
-        </div>
+        <RangePicker
+          value={rangePickerValue}
+          onChange={handleRangePickerChange}
+          style={{
+            width: 256,
+          }}
+          allowClear={false}
+        />
       </Space>
     </div>
   )

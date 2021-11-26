@@ -4,6 +4,7 @@ import { PageContainer } from '@ant-design/pro-layout'
 import IndicatorsCard from './indicators-card'
 import RealTime from './real-time'
 import DataOverview from './data-overview'
+import DailyDataOverview from './daily-data-overview'
 
 const SummaryOfData = () => {
 
@@ -12,6 +13,7 @@ const SummaryOfData = () => {
       <RealTime />
       <IndicatorsCard />
       <DataOverview />
+      <DailyDataOverview />
     </PageContainer>
   )
 }

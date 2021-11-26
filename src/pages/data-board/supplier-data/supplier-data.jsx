@@ -3,6 +3,8 @@ import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { history } from 'umi'
 import moment from 'moment'
+import { Space, Tooltip } from 'antd'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import { supplierData } from '@/services/data-board/supplier-data'
 import Yuan from '../components/Yuan'
@@ -52,14 +54,28 @@ const SupplierData = () => {
       hideInTable: true
     },
     {
-      title: '商品总数',
+      title: ()=>(
+        <Space>
+          <span>商品总数</span>
+          <Tooltip title="已通过审核的sku商品总数（含上架和下架的）">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
       dataIndex: 'spuNum',
       align: 'center',
       hideInSearch: true,
       render: (_, r) => <a onClick={()=>skipToDeatil('amount', r?.supplierId, r.supplierName)}>{_}</a>
     },
     {
-      title: '出售中商品数',
+      title: ()=>(
+        <Space>
+          <span>出售中商品数</span>
+          <Tooltip title="已通过审核的sku商品总数（只含上架状态的）">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
       dataIndex: 'spuSale',
       align: 'center',
       hideInSearch: true,
@@ -70,21 +86,35 @@ const SupplierData = () => {
       dataIndex: 'secondAmount',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => <a onClick={()=>skipToDeatil('second', r?.supplierId, r.supplierName)}>{amountTransform(Number(_), '/')}</a>
+      render: (_, r) => <a onClick={()=>skipToDeatil('second', r?.supplierId, r.supplierName)}>{amountTransform(Number(_), '/').toFixed(2)}</a>
     },{
       title: '集约销售总额（元）',
       dataIndex: 'wholesaleAmount',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => <a onClick={()=>skipToDeatil('intensive', r?.supplierId, r.supplierName)}>{amountTransform(Number(_), '/')}</a>
+      render: (_, r) => <a onClick={()=>skipToDeatil('intensive', r?.supplierId, r.supplierName)}>{amountTransform(Number(_), '/').toFixed(2)}</a>
     },
     {
       title: '总销售额(元)',
       dataIndex: 'totalAmount',
       align: 'center',
       hideInSearch: true,
-      render: (_) => amountTransform(Number(_), '/')
+      render: (_) => amountTransform(Number(_), '/').toFixed(2)
     },
+    {
+      title: ()=>(
+        <Space>
+          <span>总货款(元)</span>
+          <Tooltip title="含盲盒和红包补贴的金额，扣除手续费">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'totalPayment',
+      align: 'center',
+      hideInSearch: true,
+      render: (_) => amountTransform(Number(_), '/').toFixed(2)
+    }
   ]
   return (
     <PageContainer title={false}>

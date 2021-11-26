@@ -12,12 +12,11 @@ import { communityStoreSalesRank, communityStoreData } from '@/services/data-boa
 import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import { getTimeDistance } from '@/utils/utils'
 
-const date = (day) => moment().subtract(day, 'days').calendar().replaceAll('/', '-')
-const dateNow = moment(+new Date()).format('YYYY-MM-DD')
 
 const CommunityStoreData = () => {
-  const [dateSelect, setDateSelect] = useState(date(7))
+  const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
   const [value, setValue] = useState(1)
   const [data, setData] = useState([])
   const [visit, setVisit] = useState(false)
@@ -25,8 +24,8 @@ const CommunityStoreData = () => {
 
   useEffect(() => {
     communityStoreSalesRank({
-      startTime: dateSelect,
-      endTime: dateNow,
+      startTime: moment(rangePickerValue?.[0]).format("YYYY-MM-DD"),
+      endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD"),
       type: value
     }).then(res => {
       setData(res.data.map(item=>(
@@ -36,7 +35,7 @@ const CommunityStoreData = () => {
     return () => {
       setData([])
     }
-  }, [dateSelect, value])
+  }, [rangePickerValue, value])
   
   const onChange = e => {
     setValue(e.target.value)
@@ -53,6 +52,14 @@ const CommunityStoreData = () => {
       name: storeName,
       ...rest
     }
+  }
+
+  const selectDate = (type) => {
+    setRangePickerValue(getTimeDistance(type))
+  }
+
+  const handleRangePickerChange = (value) => {
+    setRangePickerValue(value)
   }
 
   const columns = [
@@ -137,8 +144,10 @@ const CommunityStoreData = () => {
         <Space size={20}>
           <h3>社区店销售排名</h3>
           <SelectDate
-            setDateSelect={setDateSelect}
-            dateSelect={dateSelect}
+            setDateSelect={setRangePickerValue}
+            selectDate={selectDate}
+            rangePickerValue={rangePickerValue}
+            handleRangePickerChange={handleRangePickerChange}
           />
         </Space>
       </div>

@@ -3,6 +3,8 @@ import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import ProCard from '@ant-design/pro-card'
 import moment from 'moment'
+import { QuestionCircleOutlined } from '@ant-design/icons'
+import { Space, Tooltip } from 'antd'
 
 import PieChart from './pie-chart'
 import TableSearch from './table-search'
@@ -83,12 +85,26 @@ const ProductData = () => {
       align: 'center'
     },
     {
-      title: '支付商品数量',
+      title: ()=>(
+        <Space>
+          <span>支付商品数量</span>
+          <Tooltip title="当前分类下有成交过的商品SKU数量">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
       dataIndex: 'payCount',
-      align: 'center'
+      align: 'center',
     },
     {
-      title: '支付商品金额',
+      title: ()=> (
+        <Space>
+          <span>支付商品金额</span>
+          <Tooltip title="当前分类下的商品，已支付商品金额总和">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
       dataIndex: 'payAmount',
       align: 'center',
       render: (_) => amountTransform(Number(_), '/')
@@ -136,7 +152,14 @@ const ProductData = () => {
       hideInSearch: true
     },
     {
-      title: '商品复购率',
+      title: ()=>(
+        <Space>
+          <span>商品复购率</span>
+          <Tooltip title="当前商品有没有人重复购买复购率=重复下单的人数/下单的总人数">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
       dataIndex: 'repeatRatio',
       align: 'center',
       render: (_) => `${amountTransform(_, '*')}%`,
