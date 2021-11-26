@@ -179,6 +179,57 @@ const OrderAnalysis = () => {
       ),
       dataIndex: 'totalSales',
       align: 'center'
+    },
+    {
+      title:  ()=>(
+        <Space>
+          <span>成交总额</span>
+          <Tooltip title="不含未支付订单，只统计已支付的">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'totalSales',
+      align: 'center'
+    },
+    {
+      title:  ()=>(
+        <Space>
+          <span>下单总人数</span>
+          <Tooltip title="含未支付订单">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'totalSales',
+      align: 'center'
+    },
+    {
+      title: '下单支付总人数',
+      dataIndex: 'totalSales',
+      align: 'center'
+    },
+    {
+      title:  ()=>(
+        <Space>
+          <span>成交平均单价</span>
+          <Tooltip title="成交总额/支付订单数">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'totalSales',
+      align: 'center'
+    },
+    {
+      title: '退款笔数',
+      dataIndex: 'totalSales',
+      align: 'center'
+    },
+    {
+      title: '退款总额',
+      dataIndex: 'totalSales',
+      align: 'center'
     }
   ]
 
@@ -206,7 +257,7 @@ const OrderAnalysis = () => {
             { dom }
             <div className={styles.summary}>
               <span>支付订单数：<Yuan>{totalOrder}</Yuan></span>
-              <span>总成交额：<Yuan>{totalAmount}</Yuan></span>
+              <span>成交总额：<Yuan>{totalAmount}</Yuan></span>
               <Tooltip title="4种订单类型的成交额总和">
                 <QuestionCircleOutlined />
               </Tooltip>
