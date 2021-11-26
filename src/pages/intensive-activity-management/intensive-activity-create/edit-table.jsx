@@ -1,7 +1,6 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Form, Checkbox, Input, message, Radio, InputNumber } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Checkbox, Input, Radio } from 'antd';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
@@ -30,16 +29,15 @@ const CusInput = ({ value, onChange, ...rest }) => {
   return <Input value={value} onChange={keyup} {...rest} />
 }
 
-const Subsidy = ({ value = {}, onChange, orderProfit }) => {
+const Subsidy = ({ value = {}, onChange, orderProfit, ...rest }) => {
   return (
     <>
-      <div>当订单金额达到 <CusInput onChange={(e) => { const obj = { ...value }; obj.a = e; onChange(obj) }} value={value.a} style={{ width: 150 }} /></div>
+      <div>当订单金额达到 <CusInput onChange={(e) => { const obj = { ...value }; obj.a = e; onChange(obj) }} value={value.a} style={{ width: 150 }} {...rest} /></div>
       {orderProfit !== 0 && <div>实际盈亏为 {orderProfit}元</div>}
-      <div>补贴 <CusInput onChange={(e) => { const obj = { ...value }; obj.b = e; onChange(obj) }} value={value.b} style={{ width: 150 }} /></div>
+      <div>补贴 <CusInput onChange={(e) => { const obj = { ...value }; obj.b = e; onChange(obj) }} value={value.b} style={{ width: 150 }} {...rest} /></div>
     </>
   )
 }
-
 
 export default function EditTable({ onSelect, sku, wholesale }) {
   const [editableKeys, setEditableKeys] = useState([])
@@ -49,6 +47,69 @@ export default function EditTable({ onSelect, sku, wholesale }) {
   // const [isFirst, setIsFirst] = useState(true);
   const isFirst = useRef(true);
   const formRef = useRef();
+
+
+  const debounceFetcher = useMemo(() => {
+    const loadData = (value) => {
+      const { recordList, record } = value;
+      const findItem = dataSource.find(item => item.id === record.id);
+      const obj = {
+        skuId: record.skuId,
+        fixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.fixedPrice) : '',
+        operationFixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.operationFixedPrice) : '',
+        isGetWholesale: 1,
+        priceScale: amountTransform(record.settlePercent, '/'),
+        price: amountTransform(record.price),
+        orderAmount: amountTransform(record.subsidy.a),
+        subsidy: amountTransform(record.subsidy.b)
+      }
+
+      if (findItem.price !== record.price) {
+        obj.price = amountTransform(record.price);
+        obj.priceScale = -1;
+      }
+
+      if (findItem.settlePercent !== record.settlePercent) {
+        obj.priceScale = amountTransform(record.settlePercent, '/');
+        delete obj.price;
+      }
+
+      const getList = (list, skuData, cb) => {
+        const arr = list.map(item => {
+          if (item.id === skuData.id) {
+            const data = {
+              ...record,
+              fixedPrice: amountTransform(skuData.fixedPrice, '/'),
+              operationFixedPrice: amountTransform(skuData.operationFixedPrice, '/'),
+              settlePercent: amountTransform(skuData.settlePercent),
+              price: amountTransform(skuData.price, '/'),
+              profit: amountTransform(skuData.profit, '/'),
+              orderProfit: amountTransform(skuData.orderProfit, '/'),
+              totalPrice: (skuData.price > 0 && record.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(record.minNum) : 0,
+              subsidy: {
+                a: skuData.orderAmount ? amountTransform(skuData.orderAmount, '/') : '',
+                b: skuData.subsidy ? amountTransform(skuData.subsidy, '/') : ''
+              }
+            }
+            return data
+          }
+          return item
+        })
+        if (cb) {
+          cb(arr);
+        }
+        return arr;
+      }
+
+      productList(obj).then(res => {
+        const skuData = res.data[0];
+        onSelect(getList(selectData, skuData, (arr) => { setSelectData(arr) }))
+        setDataSource(getList(recordList, skuData))
+      })
+    };
+
+    return debounce(loadData, 100);
+  }, [dataSource, selectData, onSelect]);
 
   const columns = [
     {
@@ -226,7 +287,9 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       dataIndex: 'settlePercent',
       valueType: 'text',
       hideInSearch: true,
-      renderFormItem: () => <Input addonAfter="%" />,
+      renderFormItem: (_, { record }) => <Input addonAfter="%" onBlur={() => {
+        debounceFetcher({ record, recordList: dataSource })
+      }} />,
       // formItemProps: {
       //   rules: [
       //     {
@@ -249,7 +312,9 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       dataIndex: 'price',
       valueType: 'text',
       hideInSearch: true,
-      renderFormItem: () => <CusInput />,
+      renderFormItem: (_, { record }) => <CusInput onBlur={() => {
+        debounceFetcher({ record, recordList: dataSource })
+      }} />,
     },
     {
       title: '实际盈亏(元)',
@@ -272,7 +337,9 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       hideInSearch: true,
       renderFormItem: (_, { record }) => {
         if (record.isEditSubsidy.length) {
-          return <CusInput />
+          return <CusInput onBlur={() => {
+            debounceFetcher({ record, recordList: dataSource })
+          }} />
         }
         return record.operationFixedPrice
       },
@@ -284,7 +351,9 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       hideInSearch: true,
       renderFormItem: (_, { record }) => {
         if (record.isEditSubsidy.length) {
-          return <CusInput />
+          return <CusInput onBlur={() => {
+            debounceFetcher({ record, recordList: dataSource })
+          }} />
         }
         return record.fixedPrice
       },
@@ -296,7 +365,9 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       hideInSearch: true,
       width: 250,
       renderFormItem: (_, { record }) => {
-        return <Subsidy orderProfit={record.orderProfit} />
+        return <Subsidy onBlur={() => {
+          debounceFetcher({ record, recordList: dataSource })
+        }} orderProfit={record.orderProfit} />
       }
     },
     {
@@ -311,12 +382,18 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       dataIndex: 'minNum',
       valueType: 'text',
       hideInSearch: true,
+      renderFormItem: (_, { record }) => <Input onBlur={() => {
+        debounceFetcher({ record, recordList: dataSource })
+      }} />,
     },
     {
       title: '单次限订量',
       dataIndex: 'maxNum',
       valueType: 'text',
       hideInSearch: true,
+      renderFormItem: (_, { record }) => <Input onBlur={() => {
+        debounceFetcher({ record, recordList: dataSource })
+      }} />,
     },
     {
       title: '全款金额',
@@ -389,67 +466,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
     // return arr;
   }
 
-  const debounceFetcher = useMemo(() => {
-    const loadData = (value) => {
-      const { recordList, record } = value;
-      const findItem = dataSource.find(item => item.id === record.id);
-      const obj = {
-        skuId: record.skuId,
-        fixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.fixedPrice) : '',
-        operationFixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.operationFixedPrice) : '',
-        isGetWholesale: 1,
-        priceScale: amountTransform(record.settlePercent, '/'),
-        price: amountTransform(record.price),
-        orderAmount: amountTransform(record.subsidy.a),
-        subsidy: amountTransform(record.subsidy.b)
-      }
 
-      if (findItem.price !== record.price) {
-        obj.price = amountTransform(record.price);
-        obj.priceScale = -1;
-      }
-
-      if (findItem.settlePercent !== record.settlePercent) {
-        obj.priceScale = amountTransform(record.settlePercent, '/');
-        delete obj.price;
-      }
-
-      const getList = (list, skuData, cb) => {
-        const arr = list.map(item => {
-          if (item.id === skuData.id) {
-            const data = {
-              ...record,
-              fixedPrice: amountTransform(skuData.fixedPrice, '/'),
-              operationFixedPrice: amountTransform(skuData.operationFixedPrice, '/'),
-              settlePercent: amountTransform(skuData.settlePercent),
-              price: amountTransform(skuData.price, '/'),
-              profit: amountTransform(skuData.profit, '/'),
-              orderProfit: amountTransform(skuData.orderProfit, '/'),
-              totalPrice: (skuData.price > 0 && record.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(record.minNum) : 0,
-              subsidy: {
-                a: skuData.orderAmount ? amountTransform(skuData.orderAmount, '/') : '',
-                b: skuData.subsidy ? amountTransform(skuData.subsidy, '/') : ''
-              }
-            }
-            return data
-          }
-          return item
-        })
-        if (cb) {
-          cb(arr);
-        }
-        return arr;
-      }
-
-      productList(obj).then(res => {
-        const skuData = res.data[0];
-        onSelect(getList(selectData, skuData, (arr) => { setSelectData(arr) }))
-        setDataSource(getList(recordList, skuData))
-      })
-    };
-
-    return debounce(loadData, 1000);
-  }, [dataSource, selectData, onSelect]);
 
   return (
     <EditableProTable
@@ -476,7 +493,14 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       editable={{
         editableKeys,
         onValuesChange: (record, recordList) => {
-          debounceFetcher({ record, recordList })
+          const findItem = dataSource.find(item => item.id === record.id);
+          if (findItem.isEditSubsidy.length !== record.isEditSubsidy.length) {
+            debounceFetcher({ record, recordList })
+          } else {
+            // onSelect([record])
+            // setDataSource(recordList)
+          }
+          
         }
       }}
       pagination={{
