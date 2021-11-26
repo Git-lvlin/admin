@@ -5,7 +5,12 @@ import { PageContainer } from '@ant-design/pro-layout'
 import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
-import { commissionDetail, platformCommissionDetail, goodsAmountDetail } from "@/services/financial-management/transaction-detail-management"
+import { 
+  commissionDetail, 
+  platformCommissionDetail, 
+  goodsAmountDetail, 
+  operationCommissionDetail
+} from "@/services/financial-management/transaction-detail-management"
 import './styles.less'
 import styles from './styles.less'
 
@@ -18,8 +23,8 @@ const TransactionDetails = () => {
 
   const apiMethod = query?.type === 'bonus' ? commissionDetail:
   (query?.type === 'commission') ? platformCommissionDetail:
-  (query?.type === 'loan') ? goodsAmountDetail : ''
-  
+  (query?.type === 'loan') ? goodsAmountDetail : 
+  (query?.type === 'operator') ? operationCommissionDetail : ''
   useEffect(()=>{
     setLoading(true)
     apiMethod({orderNo: id}).then(res=> {
