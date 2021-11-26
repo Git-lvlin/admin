@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
-import { Space, Radio } from 'antd'
+import { Space, Radio, Tooltip } from 'antd'
 import moment from 'moment'
 import ProTable from '@ant-design/pro-table'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import BarChart from './bar-chart'
 import styles from './styles.less'
@@ -11,12 +12,10 @@ import AddressCascader from '@/components/address-cascader'
 import { operationsCenterData, operationsCenterRank } from '@/services/data-board/operation-data'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
-
-const date = (day) => moment().subtract(day, 'days').calendar().replaceAll('/', '-')
-const dateNow = moment(+new Date()).format('YYYY-MM-DD')
+import { getTimeDistance } from '@/utils/utils'
 
 const OperationData = () => {
-  const [dateSelect, setDateSelect] = useState(date(7))
+  const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
   const [value, setValue] = useState(1)
   const [charData, setCharData] = useState([])
   const [visit, setVisit] = useState(false)
@@ -35,10 +34,14 @@ const OperationData = () => {
     }
   }
 
+  const selectDate = (type) => {
+    setRangePickerValue(getTimeDistance(type))
+  }
+
   useEffect(()=> {
     operationsCenterRank({
-      startTime: dateSelect,
-      endTime: dateNow,
+      startTime: moment(rangePickerValue?.[0]).format("YYYY-MM-DD"),
+      endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD"),
       type: value
     }).then(res=> {
       setCharData(res.data.map(item=>(
@@ -48,10 +51,14 @@ const OperationData = () => {
     return ()=> {
       setCharData([])
     }
-  }, [value, dateSelect])
+  }, [value, rangePickerValue])
   
   const onChange = e => {
     setValue(e.target.value)
+  }
+
+  const handleRangePickerChange = (value) => {
+    setRangePickerValue(value)
   }
 
   const columns = [
@@ -61,9 +68,22 @@ const OperationData = () => {
       align: 'center'
     },
     {
+      title: ()=>(
+        <Space>
+          <span>创建时间</span>
+          <Tooltip title='在平台进行创建账号的时间'>
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: '',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '地区范围',
       dataIndex: 'area',
-      renderFormItem: () => (<AddressCascader />),
+      renderFormItem: () => (<AddressCascader areaData={window.yeahgo_area.filter(item=>item.deep !== 3)} />),
       hideInTable: true
     },
     {
@@ -73,8 +93,28 @@ const OperationData = () => {
       hideInTable: true
     },
     {
-      title: '下属社区店数量',
+      title: ()=>(
+        <Space>
+          <span>下属社区店总数量</span>
+          <Tooltip title='已和运营中心进行绑定且社区店已通过审核的店主总数量'>
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
       dataIndex: 'storeCt',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: ()=>(
+        <Space>
+          <span>运营中心集约率</span>
+          <Tooltip title='下属社区店有下单的店主数/下属社区店总数量'>
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: '',
       hideInSearch: true,
       align: 'center'
     },
@@ -95,6 +135,18 @@ const OperationData = () => {
       dataIndex: 'totalAll',
       hideInSearch: true,
       align: 'center'
+    },
+    {
+      title: '佣金总收益',
+      dataIndex: '',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: '补贴总收益',
+      dataIndex: '',
+      hideInSearch: true,
+      align: 'center'
     }
   ]
 
@@ -103,7 +155,12 @@ const OperationData = () => {
       <div className={styles.timeSearch}>
         <Space size={20}>
           <h3>运营中心排名</h3>
-          <SelectDate setDateSelect={setDateSelect} dateSelect={dateSelect}/>
+          <SelectDate
+            setDateSelect={setRangePickerValue}
+            selectDate={selectDate}
+            rangePickerValue={rangePickerValue}
+            handleRangePickerChange={handleRangePickerChange}
+          />
         </Space>
       </div>
       <div className={styles.radioArea}>

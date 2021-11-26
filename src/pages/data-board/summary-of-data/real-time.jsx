@@ -4,7 +4,8 @@ import {
   Line, 
   Point, 
   Tooltip, 
-  Legend
+  Legend,
+  Axis
 } from 'bizcharts'
 import ProCard, { CheckCard } from '@ant-design/pro-card'
 import { Empty, Space, Typography, Tooltip as Tp } from 'antd'
@@ -20,6 +21,7 @@ const { Paragraph, Title, Text } = Typography
 
 const RealTime = () => {
   const [title, setTitle] = useState("支付金额")
+  const [unit, setUnit] = useState('单位：元')
   const [lineData, setLineData] = useState({})
   const [loading, setLoading] = useState(false)
   const [code, setCode] = useState("payAmount")
@@ -45,7 +47,10 @@ const RealTime = () => {
   }, [code])
 
   const scale = {
-    value: { min: 0 },
+    value: {
+      min: 0,
+      alias: unit
+    },
     timeName: {
       formatter: v => {
         return {
@@ -55,6 +60,18 @@ const RealTime = () => {
       }
     }
   }
+
+  const chartUnit = {
+    style: {
+      fontSize: 12,
+      textAlign: 'center',
+      fill: '#E66101'
+    },
+    position: 'end',
+    rotate: 0,
+		offset: 80
+  }
+
   return (
     <ProCard
       title="今日实时"
@@ -76,6 +93,10 @@ const RealTime = () => {
               interactions={['element-active']}
               forceUpdate
             >
+              <Axis
+                name="value"
+                title={chartUnit}
+              />
               <Point
                 position="countTime*value"
                 color="timeName"
@@ -114,22 +135,29 @@ const RealTime = () => {
           switch(value) {
             case 'payAmount':
               setCode(value)
-              return setTitle('支付金额')
+              setTitle('支付金额')
+              setUnit('单位：元')
+              break
             case 'orderCode':
               setCode(value)
-              return setTitle('支付订单数')
+              setTitle('支付订单数')
+              setUnit('单位：笔')
+              break
             case 'orderMember':
               setCode(value)
-              return setTitle('下单用户数')
-            case 'accessCount':
-              setCode(value)
-              return setTitle('访问用户数')
+              setUnit('单位：人')
+              setTitle('下单用户数')
+              break
             case 'registerMember':
               setCode(value)
-              return setTitle('新增用户数')
+              setUnit(' ')
+              setTitle('新增用户数')
+              break
             case 'registerStore':
               setCode(value)
-              return setTitle('新增店主数')
+              setUnit(' ')
+              setTitle('新增店主数')
+              break
           }
         }}
         value={code}
@@ -139,7 +167,7 @@ const RealTime = () => {
           wrap
         >
           <CheckCard 
-            style={{ width: "36%", height: 150, position: 'relative' }}
+            style={{ width: "36%", height: 110, position: 'relative' }}
             bordered
             description={
               <>
@@ -169,7 +197,7 @@ const RealTime = () => {
             value={data?.payAmount?.code}
           />
           <CheckCard 
-            style={{ width: "36%", height: 150, position: 'relative' }}
+            style={{ width: "36%", height: 110, position: 'relative' }}
             bordered
             description={
               <>
@@ -197,7 +225,7 @@ const RealTime = () => {
             value={ data?.orderCount?.code }
           />
           <CheckCard 
-            style={{ width: "36%", height: 150, position: 'relative' }}
+            style={{ width: "36%", height: 110, position: 'relative' }}
             bordered
             description={
               <>
@@ -225,13 +253,14 @@ const RealTime = () => {
             value={data?.orderMember?.code}
           />
          <CheckCard 
-            style={{ width: "36%", height: 150, position: 'relative' }}
+            style={{ width: "36%", height: 110, position: 'relative' }}
             bordered
+            disabled
             description={
               <>
                 <Paragraph>
                   <Space size={20}>
-                    <Text>访问用户数</Text>
+                    <Text>访客数</Text>
                     <Title level={3}>
                       <Yuan>{data?.accessCount?.today}</Yuan>
                     </Title>
@@ -253,7 +282,7 @@ const RealTime = () => {
             value={data?.accessCount?.code}
           />
           <CheckCard 
-            style={{ width: "36%", height: 150, position: 'relative' }}
+            style={{ width: "36%", height: 110, position: 'relative' }}
             bordered
             description={
               <>
@@ -281,7 +310,7 @@ const RealTime = () => {
             value={data?.registerMember?.code}
           />
           <CheckCard 
-            style={{ width: "36%", height: 150, position: 'relative' }}
+            style={{ width: "36%", height: 110, position: 'relative' }}
             bordered
             description={
               <>
@@ -301,6 +330,53 @@ const RealTime = () => {
                 <Paragraph>
                   <Space size={20}>
                     <Text>昨日全天</Text>
+                    <Yuan>{data?.registerStore?.yestoday}</Yuan>
+                  </Space>
+                </Paragraph>
+              </>
+            }
+            value={data?.registerStore?.code}
+          />
+          <CheckCard 
+            style={{ width: "36%", height: 110, position: 'relative' }}
+            bordered
+            disabled
+            description={
+              <>
+                <Paragraph>
+                  <Space size={20}>
+                    <Text>截止到今天累计用户数</Text>
+                    <Title level={3}>
+                      <Yuan>{data?.registerStore?.today}</Yuan>
+                    </Title>
+                  </Space>
+                </Paragraph>
+                <Paragraph>
+                  <Space size={20}>
+                    <Text>截止到昨日</Text>
+                    <Yuan>{data?.registerStore?.yestoday}</Yuan>
+                  </Space>
+                </Paragraph>
+              </>
+            }
+            value={data?.registerStore?.code}
+          />
+          <CheckCard 
+            style={{ width: "36%", height: 110, position: 'relative' }}
+            bordered
+            description={
+              <>
+                <Paragraph>
+                  <Space size={20}>
+                    <Text>截止到今天累计店主数</Text>
+                    <Title level={3}>
+                      <Yuan>{data?.registerStore?.today}</Yuan>
+                    </Title>
+                  </Space>
+                </Paragraph>
+                <Paragraph>
+                  <Space size={20}>
+                    <Text>截止到昨日</Text>
                     <Yuan>{data?.registerStore?.yestoday}</Yuan>
                   </Space>
                 </Paragraph>
