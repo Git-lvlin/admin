@@ -58,10 +58,20 @@ const BonusDetailManagement = () =>{
       dataIndex: 'accountMobile'
     },
     {
+      title: '交易类型',
+      dataIndex:'tradeType',
+      valueType: 'select',
+      valueEnum: {
+        'commission': '店主收益',
+        'suggestCommission': '推荐收益',
+      },
+    },
+    {
       title: '订单类型',
       dataIndex: 'orderType',
       valueType: 'select',
       valueEnum: {
+        'second': '秒约订单',
         'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
       }
