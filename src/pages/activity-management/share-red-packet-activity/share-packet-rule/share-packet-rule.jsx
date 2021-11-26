@@ -305,53 +305,61 @@ export default (props) =>{
             name="bannerImage"
           >
             <FromWrap
-              content={(value, onChange) => <Upload multiple value={value} disabled={id&&falg} onChange={onChange}   maxCount={1} accept="image/*"  proportion={{width: 50,height: 180,}} />}
+              content={(value, onChange) => <Upload multiple value={value} disabled={id&&falg} onChange={onChange}   maxCount={1} accept="image/*"  proportion={{width: 670,height: 284,}} />}
               right={(value) => {
                 return (
                   <dl>
-                    <dd>50 x 180</dd>
+                    <dd>宽 670 x 高 284</dd>
                   </dl>
                 )
               }}
             />
           </Form.Item>
           {
-              id&&falg?
-               <Form.Item
-                label="活动规则"
-              >
-              <pre className={styles.line_feed}>
-                {
-                  detailList?.data?.activityRule
-                }
-              </pre>
-              </Form.Item>
-                :
-              <ProFormTextArea
-                name="activityRule"
-                label="活动规则"
-                placeholder="列如玩法规则、红包有效期、简单的用户协议"
-                rules={[
-                  { required: true, message: '请输入活动规则' },
-                ]}
-                readonly={id&&falg}
-                fieldProps={{
-                 maxLength:1000
-                }}
+            id&&falg?
+              <Form.Item
+              label="活动规则"
+            >
+            <pre className={styles.line_feed}>
+              {
+                detailList?.data?.activityRule
+              }
+            </pre>
+            </Form.Item>
+              :
+            <ProFormTextArea
+              name="activityRule"
+              label="活动规则"
+              placeholder="列如玩法规则、红包有效期、简单的用户协议"
+              rules={[
+                { required: true, message: '请输入活动规则' },
+              ]}
+              readonly={id&&falg}
+              fieldProps={{
+                maxLength:1000
+              }}
             />
           }
           {
             id&&falg&&<ProFormRadio.Group
-                name="status"
+                name="activityStatus"
                 label="活动状态"
                 options={[
                     {
-                      label: '开启',
-                      value: 1
+                      label: '进行中',
+                      value: 2
                     },
                     {
-                      label: '关闭',
-                      value: 2
+                      label: '未开始',
+                      value: 3
+                    },
+                    {
+                      label: '已结束',
+                      value: 4
+                    },
+                    {
+                      label: '已终止',
+                      value: 5
                     }
                 ]}
                 readonly={id&&falg}
