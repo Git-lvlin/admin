@@ -342,16 +342,24 @@ export default (props) =>{
           }
           {
             id&&falg&&<ProFormRadio.Group
-                name="status"
+                name="activityStatus"
                 label="活动状态"
                 options={[
                     {
-                      label: '开启',
-                      value: 1
+                      label: '进行中',
+                      value: 2
                     },
                     {
-                      label: '关闭',
-                      value: 2
+                      label: '未开始',
+                      value: 3
+                    },
+                    {
+                      label: '已结束',
+                      value: 4
+                    },
+                    {
+                      label: '已终止',
+                      value: 5
                     }
                 ]}
                 readonly={id&&falg}
