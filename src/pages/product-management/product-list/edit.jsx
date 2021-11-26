@@ -359,6 +359,7 @@ export default (props) => {
         batchNumber: goods.batchNumber,
         unit: goods.unit,
         totalStock: goods.totalStock,
+        isDrainage: goods.isDrainage,
       })
 
       if (freightTemplateId && freightTemplateName) {
@@ -631,6 +632,27 @@ export default (props) => {
           onChange: settleTypeChange
         }}
       />
+      <ProFormDependency name={['goodsSaleType']}>
+        {
+          ({ goodsSaleType }) => {
+            return goodsSaleType !== 1 && <ProFormRadio.Group
+              name="isDrainage"
+              label="社区店主引流品"
+              rules={[{ required: true }]}
+              options={[
+                {
+                  label: '不设为引流品',
+                  value: 0,
+                },
+                {
+                  label: '设为仅对社区店主售卖的引流品',
+                  value: 1,
+                },
+              ]}
+            />
+          }
+        }
+      </ProFormDependency>
       <ProFormSelect
         name="supplierHelperId"
         label="供应商家顾问"

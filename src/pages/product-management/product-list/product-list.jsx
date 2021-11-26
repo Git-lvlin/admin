@@ -328,6 +328,16 @@ const TableList = () => {
       hideInTable: true,
     },
     {
+      title: '社区店主引流品',
+      dataIndex: 'isDrainage',
+      valueType: 'select',
+      valueEnum: {
+        0: '不是社区店引流品',
+        1: '社区店引流品'
+      },
+      hideInTable: true,
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',

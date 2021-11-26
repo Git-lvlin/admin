@@ -170,6 +170,7 @@ export default (props) => {
         wholesaleFreight: amountTransform(wholesaleFreight),
         wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
         goodsSaleType: detailData?.goods?.goodsSaleType,
+        isDrainage: detailData?.goods?.isDrainage,
       },
       primaryImages: urlsTransform(primaryImages),
       detailImages: urlsTransform(detailImages),
