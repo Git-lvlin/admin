@@ -36,7 +36,7 @@ const UserRelationship = () => {
       dataIndex: 'secondOrderNum',
       search: false,
       render: (_, records) => {
-        return <a onClick={() => { history.push(`/order-management/normal-order?phone=${records?.subPhoneNumber}`) }}>{_}</a>
+        return <a onClick={() => { history.push(`/order-management/normal-order?id=${records?.id}`) }}>{_}</a>
       }
     },
     {
@@ -45,7 +45,7 @@ const UserRelationship = () => {
       search: false,
       render: (_, records) => {
         console.log('records', records)
-        return <a onClick={() => { history.push(`/order-management/normal-order?phone=${records?.subPhoneNumber}`) }}>{_}</a>
+        return <a onClick={() => { history.push(`/order-management/normal-order?id=${records?.id}`) }}>{_}</a>
       }
     },
     {
@@ -53,7 +53,7 @@ const UserRelationship = () => {
       dataIndex: 'togetherOrderNum',
       search: false,
       render: (_, records) => {
-        return <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order?phone=${records?.subPhoneNumber}`) }}>{_}</a>
+        return <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order?id=${records?.id}`) }}>{_}</a>
       }
     },
     {
@@ -70,7 +70,7 @@ const UserRelationship = () => {
       dataIndex: 'purchaseOrderNum',
       search: false,
       render: (_, records) => {
-        return <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order?phone=${records?.subPhoneNumber}`) }}>{_}</a>
+        return <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order?id=${records?.id}`) }}>{_}</a>
       }
     },
     {
