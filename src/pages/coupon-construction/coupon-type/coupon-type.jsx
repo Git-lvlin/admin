@@ -5,8 +5,7 @@ import Circulation from '../circulation/circulation'
 import ProForm, { ProFormText, ProFormSelect,ProFormRadio,ProFormDependency } from '@ant-design/pro-form';
 
 const couponType = (props) => {
-    let { id,Discounts,type } = props
-    let { DetailList } = props
+    let { id,type,DetailList } = props
     const DetaiIssueType=DetailList.data?.issueType
     const [flag, setFlag] = useState()
     const [discounts, setDiscounts] = useState('');
