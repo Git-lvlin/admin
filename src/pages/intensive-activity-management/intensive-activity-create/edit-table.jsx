@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Checkbox, Input, Radio } from 'antd';
+import { Checkbox, Input, Radio, message } from 'antd';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
@@ -101,6 +101,10 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         return arr;
       }
 
+      onSelect([record])
+      setSelectData([record])
+      setDataSource(recordList)
+
       productList(obj).then(res => {
         const skuData = res.data[0];
         onSelect(getList(selectData, skuData, (arr) => { setSelectData(arr) }))
@@ -108,7 +112,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       })
     };
 
-    return debounce(loadData, 100);
+    return debounce(loadData, 10);
   }, [dataSource, selectData, onSelect]);
 
   const columns = [
@@ -281,6 +285,9 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       dataIndex: 'totalStockNum',
       valueType: 'text',
       hideInSearch: true,
+      renderFormItem: (_, { record }) => <Input onBlur={() => {
+        debounceFetcher({ record, recordList: dataSource })
+      }} />
     },
     {
       title: '售价上浮比(%)',
@@ -429,7 +436,11 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       }
     }))
 
-    if (isFirst.current && sku) {
+    if (data.length === 0) {
+      message.error('该商品不存在或已下架')
+    }
+
+    if (isFirst.current && sku && data.length) {
       arr[0] = {
         ...arr[0],
         minNum: sku.minNum,
