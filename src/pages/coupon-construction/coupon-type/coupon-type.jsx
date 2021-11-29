@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import styles from '../style.less'
 import Circulation from '../circulation/circulation'
 import ProForm, { ProFormText, ProFormSelect,ProFormRadio,ProFormDependency } from '@ant-design/pro-form';
-import { useEffect } from 'react';
 
 const couponType = (props) => {
     let { id,Discounts,type } = props
@@ -17,7 +16,6 @@ const couponType = (props) => {
     const [face1,setFace1]=useState()
     const [face3,setFace3]=useState()
     const [most,setMost]=useState()
-    const [fullSubtract,setFullSubtract]=useState()
     const onDiscounts = e => {
         setDiscounts(e.target.value)
         setFace1(e.target.value)
@@ -144,7 +142,6 @@ const couponType = (props) => {
                                 <ProFormText
                                     width={100}
                                     name={flag == 2 ? 'usefulNum' : 'usefulAmount'}
-                                    fieldProps={{ onChange: (val) => setFullSubtract(val.target.value) }}
                                     rules={[
                                         {validator: checkConfirm}
                                     ]} 
@@ -260,10 +257,7 @@ const couponType = (props) => {
                     face1={face1} 
                     face3={face3} 
                     most={most} 
-                    coupons={coupons} 
-                    fullSubtract={fullSubtract} 
                     pcType={position}
-                    type={type}
                 />
             }
         </>
