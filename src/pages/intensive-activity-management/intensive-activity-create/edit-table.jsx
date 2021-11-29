@@ -511,6 +511,12 @@ export default function EditTable({ onSelect, sku, wholesale }) {
             // onSelect([record])
             // setDataSource(recordList)
           }
+
+          if (findItem.wholesaleFlowType !== record.wholesaleFlowType) {
+            onSelect([record])
+            setSelectData([record])
+            setDataSource(recordList)
+          }
           
         }
       }}
