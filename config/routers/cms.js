@@ -133,6 +133,11 @@ export default {
       name: 'home-classification',
       path: '/cms/home-classification',
       component: './cms/home-classification',
+    },
+    {
+      name: 'goods-sort',
+      path: '/cms/goods-sort',
+      component: './cms/goods-sort',
     }
   ]
 }
