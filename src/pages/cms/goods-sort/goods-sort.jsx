@@ -76,7 +76,7 @@ const BannerAdmin = () => {
     }
     goodsSortTop(param).then((res) => {
       if (res.code === 0) {
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -88,8 +88,8 @@ const BannerAdmin = () => {
   const columns = [
     {
       title: '序号',
-      dataIndex: 'sort',
-      valueType: 'text',
+      // dataIndex: 'index',
+      valueType: 'indexBorder',
       search: false,
     },
     {
@@ -130,16 +130,16 @@ const BannerAdmin = () => {
     },
     {
       title: '采购序号',
-      dataIndex: 'sort',
+      dataIndex: 'index',
       search: false,
-      render: (_, record) => {
+      render: (_, record, index) => {
         // let node = renderPopup('排序');
         return <>
-          <a>{_}</a>&nbsp;
-          {record.sort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { doSort(record, 1, 'up') }}></Button>}
-          <Button icon={<ArrowDownOutlined />} onClick={() => { doSort(record, 1, 'up') }}></Button>&nbsp;
+          <a>{index+1}</a>&nbsp;
+          {record.sort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { doSort(record, 1, 'up', index+1) }}></Button>}
+          <Button icon={<ArrowDownOutlined />} onClick={() => { doSort(record, 1, 'up', index+1) }}></Button>&nbsp;
           {/* <a onClick={() => { editSort(record, 1) }}>排序</a>&nbsp; */}
-          <a onClick={() => { doSort(record, 1, 'top') }}>置顶</a>
+          <a onClick={() => { doSort(record, 1, 'top', index+1) }}>置顶</a>
         </>
       }
     },
@@ -150,10 +150,10 @@ const BannerAdmin = () => {
       render: (_, record) => {
         return <>
           <a>{_}</a>&nbsp;
-          {record.noticeSort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { doSort(record, 2, 'down') }}></Button>}
-          <Button icon={<ArrowDownOutlined />} onClick={() => { doSort(record, 2, 'down') }}></Button>&nbsp;
+          {record.noticeSort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { doSort(record, 2, 'down', index+1) }}></Button>}
+          <Button icon={<ArrowDownOutlined />} onClick={() => { doSort(record, 2, 'down', index+1) }}></Button>&nbsp;
           {/* <a onClick={() => { editSort(record, 2) }}>排序</a>&nbsp; */}
-          <a onClick={() => { doSort(record, 2, 'top') }}>置顶</a>
+          <a onClick={() => { doSort(record, 2, 'top', index+1) }}>置顶</a>
         </>
       }
     },
