@@ -14,7 +14,6 @@ export const couponSub = async (params, options = {}) => {
     },  
     ...options
   });
-  console.log('res',res)
 
   return {
     code: res.code,
