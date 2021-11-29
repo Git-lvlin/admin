@@ -6,7 +6,7 @@ import ProForm,{ProFormText,ProFormRadio,ProFormDependency} from '@ant-design/pr
 import { amountTransform } from '@/utils/utils'
 
 const circulation=props=>{
-    const { DetailList,face1,face3,most,coupons,fullSubtract,id,pcType,type}=props
+    const { DetailList,face1,face3,most,id,pcType}=props
     const [summoney,setSummoney] = useState(0);
     const sumMoney=e=>{
         setSummoney(e.target.value)
