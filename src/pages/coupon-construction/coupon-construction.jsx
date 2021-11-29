@@ -12,7 +12,6 @@ import { history, connect } from 'umi';
 import moment from 'moment';
 import styles from './style.less'
 import IssueTypeModel from './issue-type-model'
-const FormItem = Form.Item;
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -255,7 +254,7 @@ const couponConstruction = (props) => {
             }}
             initialValue="1"
            />
-         :null
+           :null
          }
 
          {
@@ -293,7 +292,7 @@ const couponConstruction = (props) => {
 
         {/* 可领取时间 */}
         {
-          type != 2|| DetaiIssueType !=2 ? 
+          type==1||DetaiIssueType == 1 && id||type==3||DetaiIssueType == 3 && id||type==4||DetaiIssueType == 4 && id?
             <ProFormDateTimeRangePicker
               label='可领取时间'
               rules={[{ required: true, message: '请选择限领时间' }]}

@@ -6,14 +6,13 @@ import { PageContainer } from '@ant-design/pro-layout';
 import XLSX from 'xlsx'
 import { couponList } from '@/services/coupon-management/coupon-list';
 import { couponDelSub,couponStatusSub } from '@/services/coupon-management/coupon-delsub';
-import { checkIssueTypeLog } from '@/services/coupon-management/coupon-checkIssue-typelog';
 import DeleteModal from '@/components/DeleteModal'
 import EndModel from './end-model'
 import TurnDownModel from './turn-down-model'
 import styles from './style.less'
 import { history,connect } from 'umi';
-import { useEffect } from 'react';
-import { amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 const { TabPane } = Tabs
 
 
@@ -21,6 +20,7 @@ const Message = (props) => {
   const {type,dispatch}=props
   const [turnId,setTurnId]=useState()
   const [turnVisible, setTurnVisible] = useState(false);
+  const [visit, setVisit] = useState(false)
   const ref=useRef()
   const columns= [
     {
@@ -203,61 +203,11 @@ const Message = (props) => {
     history.push(`/coupon-management/coupon-list/coupon-codebase?id=`+id);
   }
 
-  //导出
-  const exportExcel = (searchConfig) => {
-    couponList({couponVerifyStatus:type}).then(res => {
-        const data = res.data.map(item => {
-          const { ...rest } = item;
-          return {
-            ...rest
-          }
-        });
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet([
-          {
-            couponName: '红包名称',
-            couponType: '红包类型',
-            couponAmountDisplay:'面值',
-            issueType:'发行方式',
-            issueAmount: '发行总金额（元）',
-            issueQuantity: '发行总数量（张）',
-            limitStartTime:'可领取时间',
-            activityTimeDisplay:'有效期',
-            couponVerifyStatus: '审核状态',
-            couponStatus: type==4?'红包状态':null,
-            createTime: '创建时间',
-          },
-          ...data
-        ], {
-          header:type==4? [
-            'couponName',
-            'couponType',
-            'couponAmountDisplay',
-            'issueType',
-            'issueAmount',
-            'issueQuantity',
-            'activityTimeDisplay',
-            'limitStartTime',
-            'couponVerifyStatus',
-            'couponStatus',
-            'createTime'
-          ]: [
-            'couponName',
-            'couponType',
-            'couponAmountDisplay',
-            'issueType',
-            'issueAmount',
-            'issueQuantity',
-            'activityTimeDisplay',
-            'limitStartTime',
-            'couponVerifyStatus',
-            'createTime'
-          ],
-          skipHeader: true
-        });
-        XLSX.utils.book_append_sheet(wb, ws, "file");
-        XLSX.writeFile(wb, `${+new Date()}.xlsx`)
-    })
+  const getFieldValue = (searchConfig) => {
+    const {...rest}=searchConfig.form.getFieldsValue()
+    return {
+      ...rest,
+    }
   }
 
 return(
@@ -278,9 +228,12 @@ return(
         <Button onClick={()=>{ref.current.reload()}} key="refresh">
           刷新
         </Button>,
-        <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
-          导出数据
-        </Button>
+        <Export
+          change={(e) => { setVisit(e) }}
+          type={'red-packet-list-export'}
+          conditions={getFieldValue(searchConfig)}
+        />,
+        <ExportHistory show={visit} setShow={setVisit} type='red-packet-list-export'/>,
         ],
       }}
       columns={columns}
@@ -300,7 +253,6 @@ const TableList= (props) =>{
   const { dispatch }=props
   const [visible, setVisible] = useState(false);
   const [seleType,setSeleType]=useState(1)
-  const [isCreate,setIsCreate]=useState()
   return (
       <PageContainer>
         <ModalForm
@@ -313,11 +265,6 @@ const TableList= (props) =>{
             className={styles.addCouponBtn}
             onClick={() =>{
               setVisible(true)
-              // checkIssueTypeLog({}).then(res=>{
-              //   if(res.code==0){
-              //     setIsCreate(res.data.isCreate)
-              //   }
-              // })
             }}
           >
             新建红包
