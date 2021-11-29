@@ -56,14 +56,14 @@ const circulation=props=>{
                                 红包发行总金额为
                                 <span className={styles.compute }>
                                     {
-                                        pcType==1&&summoney*amountTransform(face1,'*')/100||
-                                        pcType==3&&summoney*amountTransform(face3,'*')/100||
-                                        pcType==2&&summoney*amountTransform(most,'*')/100||
-                                        pcType==2&&amountTransform(summoney*fullSubtract*coupons, '/')||
-                                        pcType==2&&amountTransform(summoney*parseInt(DetailList.data?.usefulAmount)*coupons, '/')||
-                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*amountTransform(DetailList.data?.couponAmountDisplay,'*')/100||
-                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*amountTransform(DetailList.data?.maxFreeAmount,'*')/100||
-                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*amountTransform(parseInt(DetailList.data?.freeDiscount), '/')*parseInt(DetailList.data?.usefulAmount)
+                                        pcType==1&&summoney*amountTransform(Number(face1),'*')/100||
+                                        pcType==3&&summoney*amountTransform(Number(face3),'*')/100||
+                                        pcType==2&&summoney*amountTransform(Number(most),'*')/100||
+                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*amountTransform(Number(face1),'*')/100||
+                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*amountTransform(Number(face3),'*')/100||
+                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*amountTransform(Number(DetailList.data?.freeAmount),'*')/100||
+                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*amountTransform(Number(most),'*')/100||
+                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*amountTransform(Number(DetailList.data?.maxFreeAmount),'*')/100
                                     }
                                 </span>
                                 元
