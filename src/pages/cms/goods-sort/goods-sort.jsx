@@ -1,60 +1,89 @@
 
 import React, { useRef, useState, useEffect } from 'react';
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { Button, message } from 'antd';
+import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
+import { Button, message, Popconfirm } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProCard from '@ant-design/pro-card';
-import { homeBannerList, homeBannerDel, bannerSortTop } from '@/services/cms/member/member';
-import { sort } from 'core-js/core/array';
-
+import { goodsSortList, goodsSortTop, goodsSortReset } from '@/services/cms/member/member';
+import { category } from '@/services/product-management/product-category';
 const BannerAdmin = () => {
   const actionRef = useRef();
-  const [formVisible, setFormVisible] = useState(false);
-  const [detailData, setDetailData] = useState(null);
-  const [useType, setUseType] = useState(1);
-  const getDetail = (data) => {
-    data && setDetailData(data);
-    setFormVisible(true);
-  }
+  // const [useType, setUseType] = useState(1);
+  const [sortValue, setSortValue] = useState(null);
+  // const [arr, setArr] = useState([]),
 
-  const top = (data) => {
-    bannerSortTop({id: data}).then((res) => {
+  // const renderPopup = () => (
+  //   <Popconfirm key="popconfirm" title={``} okText="确定" cancelText="取消">
+  //     <a>{text}</a>
+  //     <input value={sortValue} onChange={(v) => {setSortValue(v)}}></input>
+  //   </Popconfirm>
+  // );
+
+  // useEffect(() => {
+  //   category({ gcParentId: 0 }).then(res => {
+  //     console.log('res', res)
+  //   })
+  // }, [])
+
+  const sortReset = (type) => {
+    const param = {
+      type: type,
+      isHot: 0,
+    }
+    goodsSortReset(param).then((res) => {
       if (res.code === 0) {
-        message.success(`置顶成功`);
         actionRef.current.reset();
       }
     })
   }
 
-  const formControl = (ids, record) => {
-    if (record.selectedRows) {
-      let type = false
-      record.selectedRows.map((item) => {
-        if (!item.state) {
-          type=true
+  const doSort = (record, type, varieties) => {
+    const { wsSkuId, sort, noticeSort } = record;
+    let param = {}
+    switch(varieties) {
+      case 'top':
+        param = {
+          wsSkuId,
+          type,
+          sort: 1
         }
-      })
-      if (!type) {
-        message.error(`上线中无法删除！`);
-        return
-      }
+        break
+      case 'num':
+        param = {
+          wsSkuId,
+          type,
+          sort: sortValue
+        }
+        break
+      case 'left':
+        break
+      case 'right':
+        break
+      case 'up':
+        param = {
+          wsSkuId,
+          type,
+          sort: type==1?sort-1:noticeSort-1
+        }
+        break
+      case 'down':
+        param = {
+          wsSkuId,
+          type,
+          sort: type==1?sort+1:noticeSort+1
+        }
+        break
     }
-
-    homeBannerDel({ids: ids}).then((res) => {
+    goodsSortTop(param).then((res) => {
       if (res.code === 0) {
-        message.success(`删除成功`);
         actionRef.current.reset();
       }
     })
   }
 
-  useEffect(() => {
-    if (!formVisible) {
-      actionRef.current.reset();
-    }
-  }, [formVisible])
+  const editSort = (record, type) => {
+
+  }
 
   const columns = [
     {
@@ -65,73 +94,84 @@ const BannerAdmin = () => {
     },
     {
       title: 'spuID',
-      dataIndex: 'title',
+      dataIndex: 'spuId',
     },
     {
       title: 'skuID',
-      dataIndex: 'title',
+      dataIndex: 'skuId',
     },
     {
       title: '主图',
-      dataIndex: 'image',
+      dataIndex: 'imageUrl',
       render: (text) => <img src={text} width={50} height={50} />,
       search: false,
     },
     {
       title: '一级分类',
-      dataIndex: 'title',
-    },
-    {
-      title: '集约价',
-      dataIndex: 'title',
+      dataIndex: 'gcName1',
       search: false,
     },
     {
+      title: '集约价',
+      dataIndex: 'salePrice',
+      search: false,
+      render: (_) => {
+        return <>{_/100}</>
+      }
+    },
+    {
       title: '起订量',
-      dataIndex: 'title',
+      dataIndex: 'buyMinNum',
       search: false,
     },
     {
       title: '商品名称',
-      dataIndex: 'title',
+      dataIndex: 'goodsName',
     },
     {
       title: '采购序号',
       dataIndex: 'sort',
       search: false,
+      render: (_, record) => {
+        // let node = renderPopup('排序');
+        return <>
+          <a>{_}</a>&nbsp;
+          {record.sort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { doSort(record, 1, 'up') }}></Button>}
+          <Button icon={<ArrowDownOutlined />} onClick={() => { doSort(record, 1, 'up') }}></Button>&nbsp;
+          {/* <a onClick={() => { editSort(record, 1) }}>排序</a>&nbsp; */}
+          <a onClick={() => { doSort(record, 1, 'top') }}>置顶</a>
+        </>
+      }
     },
     {
       title: '提醒序号',
-      dataIndex: 'sort',
+      dataIndex: 'noticeSort',
       search: false,
-    },
-    {
-      title: '操作',
-      valueType: 'option',
-      dataIndex: 'option',
-      render: (text, record, _) => {
-        return (
-          <>
-            {record.state===1&&<a key="top" onClick={() => {top(record.id)}}>+添加到集约爆品区</a>}
-          </>
-        )
+      render: (_, record) => {
+        return <>
+          <a>{_}</a>&nbsp;
+          {record.noticeSort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { doSort(record, 2, 'down') }}></Button>}
+          <Button icon={<ArrowDownOutlined />} onClick={() => { doSort(record, 2, 'down') }}></Button>&nbsp;
+          {/* <a onClick={() => { editSort(record, 2) }}>排序</a>&nbsp; */}
+          <a onClick={() => { doSort(record, 2, 'top') }}>置顶</a>
+        </>
       }
     },
   ];
 
   return (
     <PageContainer>
-      <ProForm.Group>
+      {/* <ProForm.Group>
         <ProCard style={{display: 'flex',}}>
           <Button type={useType==1?'primary':''} onClick={() => {setUseType(1)}}>集约商品</Button>
           <Button type={useType==1?'':'primary'} onClick={() => {setUseType(2)}}>集约爆品区</Button>
         </ProCard>
-      </ProForm.Group>
+      </ProForm.Group> */}
     <ProTable
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
-      request={homeBannerList}
+      request={goodsSortList}
       search={{
         labelWidth: 'auto',
       }}
@@ -140,10 +180,10 @@ const BannerAdmin = () => {
       }}
       dateFormatter="string"
       toolBarRender={(_,record) => [
-        <Button key="button" type="primary" onClick={() => { sort(1) }}>
+        <Button key="button" type="primary" onClick={() => { sortReset(1) }}>
           按集约价升序排列采购列表
         </Button>,
-        <Button key="button" type="primary" onClick={() => { sort(2) }}>
+        <Button key="button" type="primary" onClick={() => { sortReset(2) }}>
           按集约价升序排列提醒列表
         </Button>,
       ]}
