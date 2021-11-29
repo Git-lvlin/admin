@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import styles from '../style.less'
 import Circulation from '../circulation/circulation'
 import ProForm, { ProFormText, ProFormSelect,ProFormRadio,ProFormDependency } from '@ant-design/pro-form';
+import { useEffect } from 'react';
 
 const couponType = (props) => {
     let { id,Discounts,type } = props
@@ -89,7 +90,7 @@ const couponType = (props) => {
                 fieldProps={{
                   onChange: (e) => setPosition(e.target.value),
                 }}
-                options={type==3||DetaiIssueType == 3||type==4||DetaiIssueType == 4 ?options2:options}
+                options={type==3||(parseInt(id) == id)&&DetaiIssueType == 3||type==4||(parseInt(id) == id)&&DetaiIssueType == 4 ?options2:options}
             />
             <ProFormDependency name={['couponType']}>
                 {({ couponType }) => { 
@@ -97,7 +98,7 @@ const couponType = (props) => {
                 if(couponType==1){
                     return  <div className={styles.unfold}>
                                 {
-                                    type==4||DetaiIssueType == 4?
+                                    type==4||(parseInt(id) == id)&&DetaiIssueType == 4?
                                     <span>使用门槛: 无使用门槛</span>
                                     :
                                     <ProForm.Group>
