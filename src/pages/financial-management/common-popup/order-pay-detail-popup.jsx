@@ -69,7 +69,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
     }
     return ()=> {
       clearInterval(timer.current)
-      setData({})
+      setData(null)
     }
   }, [taskId, down])
 
@@ -372,16 +372,14 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
 
   return (
     <Drawer
-      title="订单支付明细管理"
+      title="订单支付明细"
       placement="right"
       width={1400}
       onClose={() => { setVisible(false) }}
       visible={visible}
       footer={
         <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={() => { setVisible(false) }}>返回</Button>
-          </Space>
+          <Button onClick={() => { setVisible(false) }}>返回</Button>
         </div>
       }
     >
