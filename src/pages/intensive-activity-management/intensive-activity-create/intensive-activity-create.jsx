@@ -145,6 +145,7 @@ const IntensiveActivityCreate = () => {
           supplierId: item.supplierId,
           totalPrice: item.totalPrice,
           price: amountTransform(item.price),
+          operationFixedPrice: amountTransform(item.operationFixedPrice),
           wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice),
           fixedPrice: amountTransform(item.fixedPrice),
           settlePercent: amountTransform(item.settlePercent, '/'),
@@ -157,6 +158,9 @@ const IntensiveActivityCreate = () => {
         recoverPayTimeout: 0,
         canRecoverPayTimes: 0,
         wholesaleFlowType: selectItem[0].wholesaleFlowType,
+        isEditSubsidy: selectItem[0].isEditSubsidy.length,
+        orderAmount: selectItem[0].subsidy.a > 0 ? amountTransform(selectItem[0].subsidy.a) : '',
+        subsidy: selectItem[0].subsidy.b > 0 ? amountTransform(selectItem[0].subsidy.b) : '',
         ...rest,
         wsId: (+params.id === 0 || +location.query?.type === 1) ? '' : params.id,
       }
@@ -291,7 +295,7 @@ const IntensiveActivityCreate = () => {
           >
             {
               !loading &&
-              <EditTable onSelect={setSelectItem} sku={detailData?.sku?.[0]} wholesaleFlowType={detailData?.wholesale?.wholesaleFlowType} />
+              <EditTable onSelect={setSelectItem} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} />
             }
             <ProFormText name="name" label="活动名称" width="lg" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
             <ProFormDateTimeRangePicker
@@ -418,7 +422,7 @@ const IntensiveActivityCreate = () => {
             <Result
               status="success"
               title={`活动${+params.id !== 0 ? '修改' : '创建'}成功`}
-              subTitle={<div style={{color: '#000', fontSize: 20, fontWeight: 'bold'}}>活动已进入待审核状态，请提醒主管尽快审核</div>}
+              subTitle={<div style={{ color: '#000', fontSize: 20, fontWeight: 'bold' }}>活动已进入待审核状态，请提醒主管尽快审核</div>}
             />
             {submitValue && <div
               style={{
