@@ -5,6 +5,7 @@ import ProTable from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { userRelationShip } from '@/services/cms/member/member';
+import { history } from 'umi';
 const { Search } = Input;
 const UserRelationship = () => {
   const actionRef = useRef();
@@ -29,6 +30,73 @@ const UserRelationship = () => {
       title: '用户昵称',
       dataIndex: 'nickName',
       search: false,
+    },
+    {
+      title: '秒约订单数（单）',
+      dataIndex: 'secondOrderNum',
+      search: false,
+      render: (_, records) => {
+        return <a onClick={() => { history.push(`/order-management/normal-order?buyerId=${records?.id}&orderType=2`) }}>{_}</a>
+      }
+    },
+    {
+      title: '1688订单数（单）',
+      dataIndex: 's1688OrderNum',
+      search: false,
+      render: (_, records) => {
+        console.log('records', records)
+        return <a onClick={() => { history.push(`/order-management/normal-order?buyerId=${records?.id}&orderType=11`) }}>{_}</a>
+      }
+    },
+    {
+      title: 'c端集约数（单）',
+      dataIndex: 'togetherOrderNum',
+      search: false,
+      render: (_, records) => {
+        return <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order?buyerId=${records?.id}`) }}>{_}</a>
+      }
+    },
+    {
+      title: '店铺状态',
+      dataIndex: 'storeStatus',
+      search: false,
+      valueEnum: {
+        0: '-',
+        1: '启用',
+        3: '关闭'
+      }
+    },
+    {
+      title: '店主采购订单数（单）',
+      dataIndex: 'purchaseOrderNum',
+      search: false,
+      render: (_, records) => {
+        return <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order?memberId=${records?.id}`) }}>{_}</a>
+      }
+    },
+    {
+      title: '渠道',
+      dataIndex: 'sourceType',
+      search: false,
+      valueEnum: {
+        0: '-',
+        1: '商品分享',
+        2: '邀请新人',
+        3: '盲盒活动',
+        4: '签到活动',
+        5: '五星店主活动',
+        6: '周末大狂欢',
+      }
+    },
+    {
+      title: '是否签到',
+      dataIndex: 'inviteStatus',
+      search: false,
+      valueEnum: {
+        0: '未签到',
+        1: '未签到',
+        2: '已签到',
+      }
     },
     {
       title: '是否为社区店主',

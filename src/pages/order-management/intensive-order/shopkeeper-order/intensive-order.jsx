@@ -169,6 +169,15 @@ const TableList = () => {
           }}
         />
         <ProFormText
+          label="用户ID"
+          name="buyerId"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
+        <ProFormText
           name="storeName"
           label="所属商家"
           fieldProps={{
