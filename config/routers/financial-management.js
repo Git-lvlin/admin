@@ -33,6 +33,11 @@ export default {
           component: './financial-management/money-management/issuing-store-fund-management'
         },
         {
+          name: 'operator-fund-management',
+          path: '/financial-management/money-management/operator-fund-management',
+          component: './financial-management/money-management/operator-fund-management'
+        },
+        {
           name: 'payment-details',
           path: '/financial-management/money-management/payment-details',
           component: './financial-management/money-management/payment-details',
@@ -103,9 +108,9 @@ export default {
           component: './financial-management/transaction-detail-management/after-sales-order-details',
         },
         {
-          name: 'after-order-details',
-          path: '/financial-management/transaction-detail-management/after-sales-order-details/detail/:id',
-          component: './financial-management/transaction-detail-management/after-sales-order-details/detail',
+          name: 'operator-revenue-management',
+          path: '/financial-management/transaction-detail-management/operator-revenue-management',
+          component: './financial-management/transaction-detail-management/operator-revenue-management',
         }
       ]
     },
