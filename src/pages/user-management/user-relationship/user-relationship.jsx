@@ -36,7 +36,7 @@ const UserRelationship = () => {
       dataIndex: 'secondOrderNum',
       search: false,
       render: (_, records) => {
-        return <a onClick={() => { history.push(`/order-management/normal-order?buyerId=${records?.id}&orderType=2`) }}>{_}</a>
+        return <a href={`/order-management/normal-order?buyerId=${records?.id}&orderType=2`} target='_blank'>{_}</a>
       }
     },
     {
@@ -44,8 +44,7 @@ const UserRelationship = () => {
       dataIndex: 's1688OrderNum',
       search: false,
       render: (_, records) => {
-        console.log('records', records)
-        return <a onClick={() => { history.push(`/order-management/normal-order?buyerId=${records?.id}&orderType=11`) }}>{_}</a>
+        return <a href={`/order-management/normal-order?buyerId=${records?.id}&orderType=11`} target='_blank'>{_}</a>
       }
     },
     {
@@ -53,7 +52,7 @@ const UserRelationship = () => {
       dataIndex: 'togetherOrderNum',
       search: false,
       render: (_, records) => {
-        return <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order?buyerId=${records?.id}`) }}>{_}</a>
+        return <a href={`/order-management/intensive-order/shopkeeper-order?buyerId=${records?.id}`} target='_blank'>{_}</a>
       }
     },
     {
@@ -71,7 +70,7 @@ const UserRelationship = () => {
       dataIndex: 'purchaseOrderNum',
       search: false,
       render: (_, records) => {
-        return <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order?memberId=${records?.id}`) }}>{_}</a>
+        return <a href={`/order-management/intensive-order/supplier-order?memberId=${records?.id}`} target='_blank'>{_}</a>
       }
     },
     {
