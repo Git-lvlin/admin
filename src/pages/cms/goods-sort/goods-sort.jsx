@@ -94,7 +94,6 @@ const BannerAdmin = () => {
   const columns = [
     {
       title: '序号',
-      // dataIndex: 'index',
       valueType: 'indexBorder',
       search: false,
     },
@@ -138,9 +137,9 @@ const BannerAdmin = () => {
       title: '采购序号',
       dataIndex: 'sort',
       search: false,
-      render: (_, record, index) => {
+      render: (_, record) => {
         return <>
-          <a>{index+1}</a>&nbsp;
+          <a>{_}</a>&nbsp;
           {record.sort!==1&&<Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 1, 0 ) }}></Button>}
           <Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 1, 1) }}></Button>&nbsp;
           {/* <a onClick={() => { editSort(record, 1) }}>排序</a>&nbsp; */}
