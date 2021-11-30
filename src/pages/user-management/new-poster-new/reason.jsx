@@ -7,7 +7,7 @@ import ProForm, {
 import { posterUpData } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible, refresh, setRefresh } = props;
+  const { detailData, setVisible, onClose, visible, refresh, setRefresh, type } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
@@ -16,7 +16,8 @@ export default (props) => {
     const param = {
       ...rest,
       state: 0,
-      version: 3
+      version: 3,
+      type: type
     }
     return new Promise((resolve, reject) => {
       posterUpData(param).then((res) => {
