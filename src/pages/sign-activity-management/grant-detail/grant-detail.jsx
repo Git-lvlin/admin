@@ -6,6 +6,7 @@ import { history, connect } from 'umi';
 import { queryIssuanceList } from '@/services/sign-activity-management/packet-record-query-issuance-list';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import moment from 'moment';
 
 
 
@@ -87,8 +88,8 @@ export default () => {
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
       return {
-        beginTime:dateTimeRange&&dateTimeRange[0],
-        endTime:dateTimeRange&&dateTimeRange[1],
+        beginTime:moment(dateTimeRange&&dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+        endTime:moment(dateTimeRange&&dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
         ...rest,
       }
     }

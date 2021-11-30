@@ -170,11 +170,13 @@ export default (props) => {
         wholesaleFreight: amountTransform(wholesaleFreight),
         wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
         goodsSaleType: detailData?.goods?.goodsSaleType,
+        isDrainage: detailData?.goods?.isDrainage,
       },
       primaryImages: urlsTransform(primaryImages),
       detailImages: urlsTransform(detailImages),
       // advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl,
+      shipAddrs: detailData?.shipAddrs?.map?.(item => ({ shipId: item.shipId }))
     };
 
     if (isMultiSpec) {
@@ -762,6 +764,11 @@ export default (props) => {
                 ]}
                 disabled
               />
+              <Form.Item
+                label="发货地"
+              >
+                {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+              </Form.Item>
             </>
             :
             <>
@@ -897,6 +904,11 @@ export default (props) => {
                 ]}
                 disabled
               />
+              <Form.Item
+                label="发货地"
+              >
+                {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+              </Form.Item>
               <ProFormText
                 name="stockAlarmNum"
                 label="库存预警值"
@@ -999,7 +1011,7 @@ export default (props) => {
         })]}
       >
         <FromWrap
-          content={(value, onChange) => <Upload sort={!detailData} code={218} value={value} onChange={onChange} multiple maxCount={50} accept="image/*" dimension="1:1" size={1024} />}
+          content={(value, onChange) => <Upload code={218} value={value} onChange={onChange} multiple maxCount={50} accept="image/*" dimension="1:1" size={1024} />}
           right={(value) => {
             return (
               <dl>
@@ -1020,7 +1032,7 @@ export default (props) => {
         rules={[{ required: true, message: '请上传商品详情图片' }]}
       >
         <FromWrap
-          content={(value, onChange) => <Upload sort={!detailData} code={218} value={value} onChange={onChange} disabled multiple maxCount={50} accept="image/*" size={1024 * 10} />}
+          content={(value, onChange) => <Upload code={218} value={value} onChange={onChange} disabled multiple maxCount={50} accept="image/*" size={1024 * 10} />}
           right={(value) => (
             <dl>
               {value?.length > 1 && <dd><ImageSort data={value} callback={(v) => { form.setFieldsValue({ detailImages: v }) }} /></dd>}
@@ -1057,17 +1069,17 @@ export default (props) => {
         <Form.Item
           label="审核状态"
         >
-          {detailData.goods.goodsVerifyStateDisplay}
+          {detailData.goods.goodsVerifyStateDisplay} {detailData.auditStr}
         </Form.Item>
 
         <Form.Item
           label="上架状态"
         >
-          {detailData.goods.goodsStateDisplay}
+          {detailData.goods.goodsStateDisplay} {detailData.putOnStr}
         </Form.Item>
 
-        {detailData.goods.goodsVerifyRemark && <Form.Item
-          label="原因"
+        {detailData.goods.goodsState === 0 && <Form.Item
+          label="下架原因"
         >
           <span style={{ color: 'red' }}>{detailData.goods.goodsVerifyRemark}</span>
         </Form.Item>}

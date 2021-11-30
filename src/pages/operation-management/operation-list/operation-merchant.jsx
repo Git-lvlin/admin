@@ -102,6 +102,13 @@ const TableList = () => {
       width: 200,
     },
     {
+      title: '企业名称',
+      dataIndex: 'accountCompanyName',
+      valueType: 'text',
+      hideInSearch: true,
+      width: 200,
+    },
+    {
       title: '运营商ID',
       dataIndex: 'operationId',
       valueType: 'text',

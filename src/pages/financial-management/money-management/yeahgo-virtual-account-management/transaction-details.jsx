@@ -8,8 +8,11 @@ import { logPage } from '@/services/financial-management/yeahgo-virtual-account-
 import { amountTransform } from '@/utils/utils'
 import { Export,ExportHistory } from '@/pages/export-excel'
 import { tradeType } from '../../common-enum'
+import Detail from '../../common-popup/order-pay-detail-popup'
 
 const TransactionDetails = () => {
+  const [detailVisible, setDetailVisible] = useState(false)
+  const [selectItem, setSelectItem] = useState({})
   const {query} = useLocation()
   const [visit, setVisit] = useState(false)
   const actionform = useRef()
@@ -127,7 +130,11 @@ const TransactionDetails = () => {
       dataIndex:'payNo',
       hideInSearch: query.accountId==='platformXinbao' ? true : false,
       hideInTable: query.accountId==='platformXinbao' ? true : false,
-      render: (_, records)=> <a onClick={()=>skipToOrderPay(records.billNo)}>{_}</a>
+      render: (_, records)=> (
+        records.orderId ? 
+        <a onClick={() => { setSelectItem(records.billNo); setDetailVisible(true); }}>{_}</a>:
+        <span>{_}</span>
+      )
     },
     {
       title: '资金流水号',
@@ -222,6 +229,9 @@ const TransactionDetails = () => {
                 {
                   accountId: query.accountId,
                   accountType: query.accountType,
+                  amountType: query.amountType,
+                  begin: form?.getFieldValue().createTime?.[0],
+                  end: form?.getFieldValue().createTime?.[1],
                   ...form?.getFieldValue()
                 }
               }
@@ -235,6 +245,14 @@ const TransactionDetails = () => {
           ],
         }}
       />
+      {
+        detailVisible &&
+        <Detail
+          id={selectItem}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
     </PageContainer>
   )
 }

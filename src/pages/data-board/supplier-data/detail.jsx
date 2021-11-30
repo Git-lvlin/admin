@@ -20,16 +20,17 @@ import ExportHistory from '@/pages/export-excel/export-history'
 
 const Detail = () => {
   const { query } = useLocation()
-  const form = useRef()
   const [visit, setVisit] = useState(false)
+  const form = useRef()
 
   const getFieldValue = () => {
-    const { ...rest } = form.current.getFieldsValue()
+    const value = form?.current?.getFieldsValue()
+
     return {
       supplierId: query.id,
       startTime: query?.startTime,
       endTime: query?.endTime,
-      ...rest
+      ...value
     }
   }
 
@@ -56,7 +57,7 @@ const Detail = () => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
-      hideInSearch: true,
+      hideInSearch: (query.type !== 'second'&&query.type !== 'intensive'),
       width: '15%',
       align: 'center'
     },
@@ -71,7 +72,7 @@ const Detail = () => {
       dataIndex: 'goodsState',
       hideInSearch: true,
       render:(_) => {
-        return _ === 1 ? '下架' : '上架'
+        return _ === 0 ? '下架' : '上架'
       },
       align: 'center',
       hideInTable: !(query.type !== 'second'&&query.type !== 'intensive')
@@ -81,14 +82,28 @@ const Detail = () => {
       dataIndex: 'orderCount',
       hideInSearch: true,
       align: 'center',
-      hideInTable: (query.type !== 'second'&&query.type !== 'intensive')
+      hideInTable: (query.type !== 'second')
+    },
+    {
+      title: '订单总数（集约）',
+      dataIndex: 'orderCount',
+      hideInSearch: true,
+      align: 'center',
+      hideInTable: (query.type !== 'intensive')
     },
     {
       title: '销量（秒约）',
       dataIndex: 'saleNum',
       hideInSearch: true,
       align: 'center',
-      hideInTable: (query.type !== 'second'&&query.type !== 'intensive')
+      hideInTable: (query.type !== 'second')
+    },
+    {
+      title: '销量（集约）',
+      dataIndex: 'saleNum',
+      hideInSearch: true,
+      align: 'center',
+      hideInTable: (query.type !== 'intensive')
     },
     {
       title: '销售总额（秒约）',
@@ -96,7 +111,15 @@ const Detail = () => {
       hideInSearch: true,
       render: (_) => amountTransform(Number(_), '/'),
       align: 'center',
-      hideInTable: (query.type !== 'second'&&query.type !== 'intensive')
+      hideInTable: (query.type !== 'second')
+    },
+    {
+      title: '销售总额（集约）',
+      dataIndex: 'totalAmount',
+      hideInSearch: true,
+      render: (_) => amountTransform(Number(_), '/'),
+      align: 'center',
+      hideInTable: (query.type !== 'intensive')
     }
   ]
 
@@ -134,6 +157,7 @@ const Detail = () => {
       </div>
       <ProTable
         rowKey='skuID'
+        formRef={form}
         request={dataRequest()}
         params={{
           supplierId: query.id,
@@ -154,7 +178,7 @@ const Detail = () => {
               change={(e)=> {setVisit(e)}}
               key="export" 
               type={type()}
-              conditions={getFieldValue}
+              conditions={getFieldValue()}
             />,
             <ExportHistory
               key="export-history" 
@@ -175,7 +199,7 @@ const Detail = () => {
                   change={(e)=> {setVisit(e)}}
                   key="export" 
                   type={type()}
-                  conditions={getFieldValue}
+                  conditions={getFieldValue()}
                 />,
                 <ExportHistory
                   key="export-history" 
