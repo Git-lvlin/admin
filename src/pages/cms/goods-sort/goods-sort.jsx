@@ -136,7 +136,7 @@ const BannerAdmin = () => {
     },
     {
       title: '采购序号',
-      dataIndex: 'index',
+      dataIndex: 'sort',
       search: false,
       render: (_, record, index) => {
         return <>
