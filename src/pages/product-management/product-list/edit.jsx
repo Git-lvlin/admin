@@ -175,6 +175,7 @@ export default (props) => {
       detailImages: urlsTransform(detailImages),
       // advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl,
+      shipAddrs: detailData?.shipAddrs?.map?.(item => ({ shipId: item.shipId }))
     };
 
     if (isMultiSpec) {
@@ -784,6 +785,11 @@ export default (props) => {
                 ]}
                 disabled
               />
+              <Form.Item
+                label="发货地"
+              >
+                {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+              </Form.Item>
             </>
             :
             <>
@@ -919,6 +925,11 @@ export default (props) => {
                 ]}
                 disabled
               />
+              <Form.Item
+                label="发货地"
+              >
+                {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+              </Form.Item>
               <ProFormText
                 name="stockAlarmNum"
                 label="库存预警值"
@@ -1041,15 +1052,14 @@ export default (props) => {
         rules={[{ required: true, message: '请上传商品详情图片' }]}
       >
         <FromWrap
-          content={(value, onChange) => <Upload value={value} onChange={onChange} code={218} disabled multiple maxCount={10} accept="image/*" size={500 * 4} />}
-          right={(value) => {
-            return (
-              <dl>
-                {value?.length > 1 && <dd><ImageSort data={value} callback={(v) => { form.setFieldsValue({ detailImages: v }) }} /></dd>}
-              </dl>
-            )
-          }}
+          content={(value, onChange) => <Upload code={218} value={value} onChange={onChange} disabled multiple maxCount={50} accept="image/*" size={1024 * 10} />}
+          right={(value) => (
+            <dl>
+              {value?.length > 1 && <dd><ImageSort data={value} callback={(v) => { form.setFieldsValue({ detailImages: v }) }} /></dd>}
+            </dl>
+          )}
         />
+
       </Form.Item>
       {/* {detailData.advImages && <Form.Item
         label="商品横幅"

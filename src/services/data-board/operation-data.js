@@ -38,3 +38,16 @@ export const operationsCenterData = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+// 运营中心数据总览
+export const operationDataTotalView = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/config/operationDataTotalView', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}

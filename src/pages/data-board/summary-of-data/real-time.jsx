@@ -8,7 +8,7 @@ import {
   Axis
 } from 'bizcharts'
 import ProCard, { CheckCard } from '@ant-design/pro-card'
-import { Empty, Space, Typography, Tooltip as Tp } from 'antd'
+import { Empty, Space, Typography, Tooltip as Tp, Radio } from 'antd'
 import { useRequest } from 'umi'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 
@@ -25,12 +25,16 @@ const RealTime = () => {
   const [lineData, setLineData] = useState({})
   const [loading, setLoading] = useState(false)
   const [code, setCode] = useState("payAmount")
+  const [type, setType] = useState(1)
   const { data } = useRequest(briefCount)
  
   useEffect(() => {
     setLoading(true)
-    briefCountDetail({code}).then(res=> {
-      const arr = res.data.map(item=> {
+    briefCountDetail({
+      listType: type,
+      code
+    }).then(res=> {
+      const arr = res&&res.data.map(item=> {
         if(item) {
           return {timeName: item?.timeName, countTime: item?.countTime, value: Number(item?.value)}
         } else {
@@ -44,7 +48,11 @@ const RealTime = () => {
     return ()=> {
       setLineData({})
     }
-  }, [code])
+  }, [code, type])
+
+  const onChange = (e) => {
+    setType(e.target.value)
+  }
 
   const scale = {
     value: {
@@ -85,47 +93,58 @@ const RealTime = () => {
         >
           {
             (lineData&&lineData?.[0]) ? 
-            <Chart
-              scale={scale}
-              autoFit
-              height={440}
-              data={lineData}
-              interactions={['element-active']}
-              forceUpdate
-            >
-              <Axis
-                name="value"
-                title={chartUnit}
-              />
-              <Point
-                position="countTime*value"
-                color="timeName"
-                shape='circle' 
-              />
-              <Line 
-                shape="line"
-                position="countTime*value"
-                color="timeName"
-              />
-              <Tooltip
-                shared
-                showCrosshairs
-              />
-              <Legend
-                position="top"
-                background={{
-                  style: {
-                    fill: '#fff',
-                    stroke: '#fff'
-                  }
-                }}
-                itemName={{
-                  style: {
-                    fontSize: 16
-                  }
-                }}
-              />
-            </Chart>:
+            <>
+              <span>趋势图类型：</span>
+              <Radio.Group 
+                onChange={onChange}
+                value={type}
+                size="large"
+              >
+                <Radio value={1}>各时间点不相加</Radio>
+                <Radio value={2}>各时间点相加</Radio>
+              </Radio.Group>
+              <Chart
+                scale={scale}
+                autoFit
+                height={440}
+                data={lineData}
+                interactions={['element-active']}
+                forceUpdate
+              >
+                <Axis
+                  name="value"
+                  title={chartUnit}
+                />
+                <Point
+                  position="countTime*value"
+                  color="timeName"
+                  shape='circle' 
+                />
+                <Line 
+                  shape="line"
+                  position="countTime*value"
+                  color="timeName"
+                />
+                <Tooltip
+                  shared
+                  showCrosshairs
+                />
+                <Legend
+                  position="top"
+                  background={{
+                    style: {
+                      fill: '#fff',
+                      stroke: '#fff'
+                    }
+                  }}
+                  itemName={{
+                    style: {
+                      fontSize: 16
+                    }
+                  }}
+                />
+              </Chart>
+            </>:
             <Empty />
           }
         </ProCard>

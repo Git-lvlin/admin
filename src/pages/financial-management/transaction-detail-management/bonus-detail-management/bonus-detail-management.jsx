@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
-import { history } from 'umi'
 import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
@@ -14,10 +13,6 @@ const BonusDetailManagement = () =>{
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
   const [visit, setVisit] = useState(false)
-
-  const skipToDetail = data => {
-    history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=bonus`)
-  }
 
   const getFieldValue = (form) => {
     const { createTime, ...rest } = form.getFieldsValue()
@@ -58,10 +53,20 @@ const BonusDetailManagement = () =>{
       dataIndex: 'accountMobile'
     },
     {
+      title: '交易类型',
+      dataIndex:'tradeType',
+      valueType: 'select',
+      valueEnum: {
+        'commission': '店主收益',
+        'suggestCommission': '推荐收益',
+      },
+    },
+    {
       title: '订单类型',
       dataIndex: 'orderType',
       valueType: 'select',
       valueEnum: {
+        'second': '秒约订单',
         'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
       }
@@ -145,7 +150,7 @@ const BonusDetailManagement = () =>{
               setShow={setVisit}
               type="financial-trans-commission-page-export"
             />
-          ],
+          ]
         }}
         pagination={{
           pageSize: 10,

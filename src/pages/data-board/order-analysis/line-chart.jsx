@@ -4,8 +4,7 @@ import {
   Line, 
   Point, 
   Tooltip, 
-  Legend,
-  Slider
+  Legend
 } from 'bizcharts'
 import { Empty } from 'antd'
 
@@ -48,7 +47,6 @@ const LineChart = ({
               }
             }}
           />
-          <Slider />
         </Chart>:
         <Empty/>
       }

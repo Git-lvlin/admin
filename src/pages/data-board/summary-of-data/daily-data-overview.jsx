@@ -1,11 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ProTable from '@ant-design/pro-table'
 import moment from 'moment'
+import { Button } from 'antd'
 
 import Yuan from '../components/Yuan'
 import { dailyDataOverview } from '@/services/data-board/summary-of-data'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const DailyDataOverview = () => {
+  const [visit, setVisit] = useState(false)
+
+  const getFieldValue = (form) => {
+    const { dateTime, ...rest } = form.getFieldsValue()
+    return {
+      startTime: dateTime?.[0],
+      endTime: dateTime?.[1],
+      ...rest
+    }
+  }
 
   const columns = [
     {
@@ -240,6 +253,40 @@ const DailyDataOverview = () => {
       params={{}}
       headerTitle="每日数据概况"
       bordered
+      search={{
+        optionRender: ({searchText, resetText}, {form}) => [
+          <Button
+            key="search"
+            type="primary"
+            onClick={() => {
+              form?.submit()
+            }}
+          >
+            {searchText}
+          </Button>,
+          <Button
+            key="rest"
+            onClick={() => {
+              form?.resetFields()
+              form?.submit()
+            }}
+          >
+            {resetText}
+          </Button>,
+          <Export
+            change={(e)=> {setVisit(e)}}
+            key="export"
+            type="data-board-daily-data-overview"
+            conditions={getFieldValue(form)}
+          />,
+          <ExportHistory
+            key="exportHistory"
+            show={visit}
+            setShow={setVisit}
+            type="data-board-daily-data-overview"
+          />
+        ]
+      }}
       columns={columns}
       toolbar={{
         settings: false

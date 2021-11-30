@@ -32,6 +32,9 @@ const SelectDate = ({
       case 90:
         selectDate('nearly-3-month')
       break
+      case 180:
+        selectDate('nearly-6-month')
+      break
     }
   }
   return (
@@ -49,6 +52,7 @@ const SelectDate = ({
           <Radio.Button value={7}>近7天</Radio.Button>
           <Radio.Button value={30}>近30天</Radio.Button>
           <Radio.Button value={90}>近3个月</Radio.Button>
+          <Radio.Button value={180}>近6个月</Radio.Button>
         </Radio.Group>
         <RangePicker
           value={rangePickerValue}
@@ -83,10 +87,10 @@ const OrderAnalysis = () => {
       if(res.success)  {
         setTableData(res.data)
         setTotalAmount(res?.data?.reduce((acc, curr) => (
-          acc + Number(curr.totalSales)
+          acc + Number(curr.totalPay)
         ), 0))
         setTotalOrder(res?.data?.reduce((acc, curr) => (
-          acc + Number(curr.payCount)
+          acc + Number(curr.payOrdersNum)
         ), 0))
       }
     })
@@ -160,12 +164,12 @@ const OrderAnalysis = () => {
           </Tooltip>
         </Space>
       ),
-      dataIndex: '',
+      dataIndex: 'totalOrdersNum',
       align: 'center'
     },
     {
       title: '支付订单数',
-      dataIndex: 'payCount',
+      dataIndex: 'payOrdersNum',
       align: 'center'
     },
     {
@@ -177,7 +181,7 @@ const OrderAnalysis = () => {
           </Tooltip>
         </Space>
       ),
-      dataIndex: 'totalSales',
+      dataIndex: 'totalAmount',
       align: 'center'
     },
     {
@@ -189,7 +193,7 @@ const OrderAnalysis = () => {
           </Tooltip>
         </Space>
       ),
-      dataIndex: 'totalSales',
+      dataIndex: 'totalPay',
       align: 'center'
     },
     {
@@ -201,12 +205,12 @@ const OrderAnalysis = () => {
           </Tooltip>
         </Space>
       ),
-      dataIndex: 'totalSales',
+      dataIndex: 'orderUserNum',
       align: 'center'
     },
     {
       title: '下单支付总人数',
-      dataIndex: 'totalSales',
+      dataIndex: 'orderPayUserNum',
       align: 'center'
     },
     {
@@ -218,17 +222,17 @@ const OrderAnalysis = () => {
           </Tooltip>
         </Space>
       ),
-      dataIndex: 'totalSales',
+      dataIndex: 'averagePrice',
       align: 'center'
     },
     {
       title: '退款笔数',
-      dataIndex: 'totalSales',
+      dataIndex: 'refundNum',
       align: 'center'
     },
     {
       title: '退款总额',
-      dataIndex: 'totalSales',
+      dataIndex: 'refundAmount',
       align: 'center'
     }
   ]
@@ -272,7 +276,7 @@ const OrderAnalysis = () => {
           size="large"
         >
           <Radio value={1}>订单数</Radio>
-          <Radio value={2}>交易额</Radio>
+          <Radio value={2}>成交额</Radio>
         </Radio.Group>
         <LineChart 
           data={data}

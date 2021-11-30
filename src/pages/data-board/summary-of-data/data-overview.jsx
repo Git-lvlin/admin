@@ -98,8 +98,7 @@ const DataOverview = () => {
         {
           title: '集约参与率',
           dataIndex: 'wsRat',
-          align: 'center',
-          render: (_)=><Yuan>{_}</Yuan>
+          align: 'center'
         },
         {
           title: '单个店主集约贡献成交额（元）',
@@ -231,12 +230,15 @@ const DataOverview = () => {
                 <Export
                   change={(e)=> {setVisit(e)}}
                   key="export" 
-                  type="data-board-goods-detail-export"
+                  type="data-board-operationDaily-SummaryData"
+                  conditions={{
+                    type:"export"
+                  }}
                 />
                 <ExportHistory 
                   key="export-history" 
                   show={visit} setShow={setVisit}
-                  type="data-board-goods-detail-export"
+                  type="data-board-operationDaily-SummaryData"
                 />
               </Space>
             )

@@ -8,80 +8,7 @@ import { getWholesaleDetail } from '@/services/intensive-activity-management/int
 
 const { Title } = Typography;
 
-const columns = [
-  {
-    title: 'spuID',
-    dataIndex: 'spuId',
-  },
-  {
-    title: 'skuID',
-    dataIndex: 'skuId',
-  },
-  {
-    title: '规格',
-    dataIndex: 'skuNameDisplay',
-  },
-  {
-    title: '商品名称',
-    dataIndex: 'goodsName',
-    width: 200,
-  },
-  {
-    title: '上架状态',
-    dataIndex: 'goodsStateDesc',
-  },
-  {
-    title: '供应商家ID',
-    dataIndex: 'supplierId',
-  },
-  {
-    title: '售价上浮比(%)',
-    dataIndex: 'settlePercent',
-    render: (_) => `${amountTransform(_)}%`
-  },
-  {
-    title: '批发供货价(元)',
-    dataIndex: 'wholesaleSupplyPrice',
-    render: (_) => amountTransform(_, '/')
-  },
-  {
-    title: '市场价',
-    dataIndex: 'marketPrice',
-    render: (_) => amountTransform(_, '/')
-  },
-  {
-    title: '集约库存',
-    dataIndex: 'totalStockNum',
-  },
-  {
-    title: '集约价',
-    dataIndex: 'price',
-    render: (_) => amountTransform(_, '/')
-  },
-  {
-    title: '运营中心配送费补贴',
-    dataIndex: 'operationFixedPrice',
-    render: (_) => amountTransform(_, '/')
-  },
-  {
-    title: '社区店配送费补贴',
-    dataIndex: 'fixedPrice',
-    render: (_) => amountTransform(_, '/')
-  },
-  {
-    title: '单次起订量',
-    dataIndex: 'minNum',
-  },
-  {
-    title: '单次限订量',
-    dataIndex: 'maxNum',
-  },
-  {
-    title: '集约全款金额',
-    dataIndex: 'totalMoney',
-    render: (_) => amountTransform(_, '/')
-  },
-];
+
 
 const Detail = () => {
   const [detailData, setDetailData] = useState({})
@@ -101,6 +28,95 @@ const Detail = () => {
     })
   }
 
+  const columns = [
+    {
+      title: 'spuID',
+      dataIndex: 'spuId',
+    },
+    {
+      title: 'skuID',
+      dataIndex: 'skuId',
+    },
+    {
+      title: '规格',
+      dataIndex: 'skuNameDisplay',
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      width: 200,
+    },
+    {
+      title: '上架状态',
+      dataIndex: 'goodsStateDesc',
+    },
+    {
+      title: '供应商家ID',
+      dataIndex: 'supplierId',
+    },
+    {
+      title: '售价上浮比(%)',
+      dataIndex: 'settlePercent',
+      render: (_) => `${amountTransform(_)}%`
+    },
+    {
+      title: '批发供货价(元)',
+      dataIndex: 'wholesaleSupplyPrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '市场价',
+      dataIndex: 'marketPrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '集约库存',
+      dataIndex: 'totalStockNum',
+    },
+    {
+      title: '集约价',
+      dataIndex: 'price',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '是否指定配送补贴',
+      render: () => detailData?.wholesale?.isEditSubsidy === 0 ? '否' : '是',
+    },
+    {
+      title: '运营中心配送费补贴',
+      dataIndex: 'operationFixedPrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '社区店配送费补贴',
+      dataIndex: 'fixedPrice',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '社区店特殊补贴',
+      render: () => (
+        <>
+          <div>当订单金额达到 {detailData?.wholesale?.orderAmount / 100}元</div>
+          <div>实际盈亏为 {detailData?.wholesale?.orderProfit / 100}元</div>
+          <div>补贴 {detailData?.wholesale?.subsidy / 100}元</div>
+        </>
+      )
+    },
+    {
+      title: '单次起订量',
+      dataIndex: 'minNum',
+    },
+    {
+      title: '单次限订量',
+      dataIndex: 'maxNum',
+    },
+    {
+      title: '集约全款金额',
+      dataIndex: 'totalMoney',
+      render: (_) => amountTransform(_, '/')
+    },
+  ];
+
   useEffect(() => {
     getDetail(params?.id)
   }, [])
@@ -113,7 +129,7 @@ const Detail = () => {
           <Row>
             <Title style={{ marginBottom: -10 }} level={5}>活动商品</Title>
             <Divider />
-            <Table style={{ width: '100%' }} rowKey="skuId" pagination={false} dataSource={detailData.sku} columns={columns} />
+            <Table style={{ width: '100%' }} rowKey="skuId" pagination={false} dataSource={detailData.sku} columns={columns} scroll={{ x: 'max-content' }} />
           </Row>
 
           <Row style={{ marginTop: 50 }}>

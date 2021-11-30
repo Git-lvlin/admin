@@ -13,6 +13,7 @@ import { operationsCenterData, operationsCenterRank } from '@/services/data-boar
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import { getTimeDistance } from '@/utils/utils'
+import OperationDataOverview from './operation-data-overview'
 
 const OperationData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
@@ -95,7 +96,7 @@ const OperationData = () => {
     {
       title: ()=>(
         <Space>
-          <span>下属社区店总数量</span>
+          <span>已绑社区店数量</span>
           <Tooltip title='已和运营中心进行绑定且社区店已通过审核的店主总数量'>
             <QuestionCircleOutlined/>
           </Tooltip>
@@ -169,13 +170,31 @@ const OperationData = () => {
           value={value}
           size="large"
         >
-          <Radio value={1}>社区店采购订单总量</Radio>
-          <Radio value={2}>总收益排名</Radio>
+          <Radio value={1}>
+            <Space>
+              <span>社区店采购订单总量</span>
+              <Tooltip title='指参与集约活动下单并支付的订单数量总和(所有已绑定关系的社区店)'>
+                <QuestionCircleOutlined/>
+              </Tooltip>
+            </Space>
+          </Radio>
+          <Radio value={2}>
+            <Space>
+              <span>总收益排名</span>
+              <Tooltip title='从创建账号进行收益分账算起，某个时间段内获的收益总额'>
+                <QuestionCircleOutlined/>
+              </Tooltip>
+            </Space>
+          </Radio>
         </Radio.Group>
         <BarChart data={charData} />
       </div>
+      <OperationDataOverview/>
       <ProTable
         rowKey="companyName"
+        style={{
+          marginTop: 30
+        }}
         formRef={form}
         search={{
           labelWidth: 120,

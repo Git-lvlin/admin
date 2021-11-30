@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
-import { Space, Radio } from 'antd'
+import { Space, Radio, Tooltip } from 'antd'
 import moment from 'moment'
 import ProTable from '@ant-design/pro-table'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import BarChart from './bar-chart'
 import styles from './styles.less'
@@ -13,7 +14,7 @@ import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import { getTimeDistance } from '@/utils/utils'
-
+import CommunityStoreDataOverview from './community-store-data-overview'
 
 const CommunityStoreData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
@@ -81,7 +82,14 @@ const CommunityStoreData = () => {
       hideInTable: true
     },
     {
-      title: '采购订单数量',
+      title: ()=>(
+        <Space>
+          <span>采购订单数量</span>
+          <Tooltip title='指参与集约活动下单并支付的订单数量'>
+            <QuestionCircleOutlined />
+          </Tooltip>
+        </Space>
+      ),
       dataIndex: 'orderCt',
       hideInSearch: true,
       align: 'center'
@@ -93,7 +101,45 @@ const CommunityStoreData = () => {
       align: 'center'
     },
     {
-      title: '可参与集约活动的总数',
+      title: '收益总额',
+      dataIndex: 'totalAmount',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: '佣金总收益',
+      dataIndex: 'suggestCommission',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: ()=>(
+        <Space>
+          <span>推荐总收益</span>
+          <Tooltip title='包含推荐店主的业绩奖励和推荐的消费者购买了非集约商品的奖励'>
+            <QuestionCircleOutlined />
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'storeCommission',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: '补贴总收益',
+      dataIndex: 'storeDeliverFee',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: ()=>(
+        <Space>
+          <span>可参与集约活动的总数</span>
+          <Tooltip title='指平台目前所有正在进行中的集约活动数量'>
+            <QuestionCircleOutlined />
+          </Tooltip>
+        </Space>
+      ),
       dataIndex: 'totalWsCt',
       hideInSearch: true,
       align: 'center'
@@ -105,7 +151,14 @@ const CommunityStoreData = () => {
       align: 'center'
     },
     {
-      title: '集约参与率',
+      title: ()=>(
+        <Space>
+          <span>单店集约参与率</span>
+          <Tooltip title='已参与的次数/可参与集约活动的总数'>
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
       dataIndex: 'wsRat',
       hideInSearch: true,
       align: 'center',
@@ -125,13 +178,27 @@ const CommunityStoreData = () => {
       align: 'center'
     },
     {
-      title: '成功邀请用户数量',
+      title: ()=>(
+        <Space>
+          <span>成功邀请用户数量</span>
+          <Tooltip title='已绑定关系的用户数量'>
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
       dataIndex: 'invitUserCt',
       hideInSearch: true,
       align: 'center'
     },
     {
-      title: '成功邀请店主数量',
+      title: ()=>(
+        <Space>
+          <span>成功邀请店主数量</span>
+          <Tooltip title='成功邀请并已审核通过的店主数量（包含已注销的店主）'>
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
       dataIndex: 'invitStoreCt',
       hideInSearch: true,
       align: 'center'
@@ -162,6 +229,7 @@ const CommunityStoreData = () => {
         </Radio.Group>
         <BarChart data={data}/>
       </div>
+      <CommunityStoreDataOverview/>
       <div className={styles.table}>
         <ProTable
           rowKey="storeName"

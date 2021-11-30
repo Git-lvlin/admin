@@ -38,3 +38,16 @@ export const communityStoreData = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+// 社区店数据总览
+export const communityStoreDataOverview = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/config/communityStoreDataOverview', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
