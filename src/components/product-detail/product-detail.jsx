@@ -153,6 +153,11 @@ export default (props) => {
               {detailData?.goods?.unit}
             </Form.Item>
             <Form.Item
+              label="发货地"
+            >
+              {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+            </Form.Item>
+            <Form.Item
               label="单SKU起售数量"
             >
               {detailData?.goods?.buyMinNum}
@@ -215,6 +220,11 @@ export default (props) => {
               label="库存单位"
             >
               {detailData?.goods?.unit}
+            </Form.Item>
+            <Form.Item
+              label="发货地"
+            >
+              {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
             </Form.Item>
             <Form.Item
               label="库存预警值"

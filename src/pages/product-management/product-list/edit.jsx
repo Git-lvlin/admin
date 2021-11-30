@@ -175,6 +175,7 @@ export default (props) => {
       detailImages: urlsTransform(detailImages),
       // advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl,
+      shipAddrs: detailData?.shipAddrs?.map?.(item => ({ shipId: item.shipId }))
     };
 
     if (isMultiSpec) {
@@ -784,6 +785,11 @@ export default (props) => {
                 ]}
                 disabled
               />
+              <Form.Item
+                label="发货地"
+              >
+                {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+              </Form.Item>
             </>
             :
             <>
@@ -919,6 +925,11 @@ export default (props) => {
                 ]}
                 disabled
               />
+              <Form.Item
+                label="发货地"
+              >
+                {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+              </Form.Item>
               <ProFormText
                 name="stockAlarmNum"
                 label="库存预警值"
