@@ -36,7 +36,7 @@ const UserRelationship = () => {
       dataIndex: 'secondOrderNum',
       search: false,
       render: (_, records) => {
-        return <a onClick={() => { history.push(`/order-management/normal-order?id=${records?.id}`) }}>{_}</a>
+        return <a onClick={() => { history.push(`/order-management/normal-order?buyerId=${records?.id}&orderType=2`) }}>{_}</a>
       }
     },
     {
@@ -45,7 +45,7 @@ const UserRelationship = () => {
       search: false,
       render: (_, records) => {
         console.log('records', records)
-        return <a onClick={() => { history.push(`/order-management/normal-order?id=${records?.id}`) }}>{_}</a>
+        return <a onClick={() => { history.push(`/order-management/normal-order?buyerId=${records?.id}&orderType=11`) }}>{_}</a>
       }
     },
     {
@@ -53,7 +53,7 @@ const UserRelationship = () => {
       dataIndex: 'togetherOrderNum',
       search: false,
       render: (_, records) => {
-        return <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order?id=${records?.id}`) }}>{_}</a>
+        return <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order?buyerId=${records?.id}`) }}>{_}</a>
       }
     },
     {
@@ -61,8 +61,9 @@ const UserRelationship = () => {
       dataIndex: 'storeStatus',
       search: false,
       valueEnum: {
-        0: '关闭',
+        0: '-',
         1: '启用',
+        3: '关闭'
       }
     },
     {
@@ -70,7 +71,7 @@ const UserRelationship = () => {
       dataIndex: 'purchaseOrderNum',
       search: false,
       render: (_, records) => {
-        return <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order?id=${records?.id}`) }}>{_}</a>
+        return <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order?memberId=${records?.id}`) }}>{_}</a>
       }
     },
     {

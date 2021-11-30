@@ -78,6 +78,12 @@ const TableList = () => {
   }
 
   useEffect(() => {
+    form.setFieldsValue({
+      ...location?.query,
+    })
+  }, [])
+
+  useEffect(() => {
     setLoading(true);
     const apiMethod = isPurchase ? getPurchaseOrderList : orderList;
     apiMethod({
@@ -180,6 +186,15 @@ const TableList = () => {
         <ProFormText
           label="下单手机号"
           name="phoneNumber"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
+        <ProFormText
+          label="用户ID"
+          name="memberId"
           fieldProps={{
             style: {
               marginBottom: 20
