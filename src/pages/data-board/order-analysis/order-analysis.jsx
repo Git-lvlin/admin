@@ -27,9 +27,6 @@ const SelectDate = ({
   
   const handleChange = (v)=> {
     switch(v.target.value) {
-      case 0: 
-        setDateSelect(date(0))
-      break
       case 7:
         setDateSelect(date(7))
       break
@@ -45,7 +42,7 @@ const SelectDate = ({
     <div className={styles.selectDate}>
       <Space size={20}>
         <Radio.Group
-          defaultValue={0}
+          defaultValue={7}
           buttonStyle="solid"
           onChange= {
             (e) => {
@@ -53,7 +50,6 @@ const SelectDate = ({
             }
           }
         >
-          <Radio.Button value={0}>今日</Radio.Button>
           <Radio.Button value={7}>近7天</Radio.Button>
           <Radio.Button value={30}>近30天</Radio.Button>
           <Radio.Button value={90}>近3个月</Radio.Button>
@@ -70,7 +66,7 @@ const OrderAnalysis = () => {
   const [value, setValue] = useState(1)
   const [data, setData] = useState([])
   const [tableData, setTableData] = useState([])
-  const [dateSelect, setDateSelect] = useState(date(0))
+  const [dateSelect, setDateSelect] = useState(date(7))
   const [totalOrder, setTotalOrder] = useState(0)
   const [totalAmount, setTotalAmount] = useState(0)
 
@@ -105,7 +101,7 @@ const OrderAnalysis = () => {
       endTime: dateNow,
       type: value
     }).then(res=> {
-      const arr = res.data.map(item=> {
+      const arr = res?.data?.map(item=> {
         if(item) {
           return {reportName: item?.reportName, dateTime: item?.dateTime, value: Number(item?.value)}
         } else {

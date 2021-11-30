@@ -27,6 +27,12 @@ const TableList = () => {
       }
     },
     {
+      title: '企业名称',
+      dataIndex: 'accountCompanyName',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
       title: '登录账号',
       dataIndex: 'accountName',
       valueType: 'text',
@@ -72,7 +78,7 @@ const TableList = () => {
       hideInSearch: true,
       render: (_, data) => <>
         <div>{data.auditUser}</div>
-        <div>{data.auditTime > 0 && moment(data.moment).format('YYYY-MM-DD HH:mm:ss')}</div>
+        <div>{data.auditTime > 0 && moment(data.auditTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
       </>
     },
     {

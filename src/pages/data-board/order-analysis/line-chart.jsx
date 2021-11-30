@@ -35,7 +35,6 @@ const LineChart = ({
             shape="line"
             position="dateTime*value"
             color="reportName"
-            label="value"
           />
           <Tooltip
             shared

@@ -11,7 +11,7 @@ const IndicatorsCard = () => {
   const [lineData, setLineData] = useState([])
   const [loading, setLoading] = useState(false)
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('week'))
-  const [code, setCode] = useState([])
+  const [code, setCode] = useState(['visitList'])
 
   const selectDate = (type) => {
     setRangePickerValue(getTimeDistance(type))
@@ -111,6 +111,7 @@ const IndicatorsCard = () => {
         data={lineData}
         loading={loading}
         code={setCode}
+        value={code}
       />
     </div>
   )

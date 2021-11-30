@@ -8,6 +8,7 @@ import { amountTransform } from '@/utils/utils'
 import Detail from '@/pages/order-management/normal-order/detail';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import moment from 'moment';
 
 
 
@@ -144,10 +145,10 @@ export default () => {
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,dateTimeRange2,...rest}=searchConfig.form.getFieldsValue()
       return {
-        lqStartTime1:dateTimeRange&&dateTimeRange[0],
-        lqStartTime2:dateTimeRange&&dateTimeRange[1],
-        useStartTime1:dateTimeRange2&&dateTimeRange2[0],
-        useStartTime2:dateTimeRange2&&dateTimeRange2[1],
+        lqStartTime1:moment(dateTimeRange&&dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+        lqStartTime2:moment(dateTimeRange&&dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+        useStartTime1:moment(dateTimeRange2&&dateTimeRange2[0]).format('YYYY-MM-DD HH:mm:ss'),
+        useStartTime2:moment(dateTimeRange2&&dateTimeRange2[1]).format('YYYY-MM-DD HH:mm:ss'),
         ...rest,
       }
     }

@@ -92,7 +92,7 @@ export default (props) =>{
             format:ele.format,
             functionName:ele.functionName,
             sourceField:ele.sourceField,
-            isMandary:ele.isMandary&&`${ele.isMandary}`,
+            isMandary:`${ele.isMandary}`,
           })))
           setDataSource2(res.data?.sqlConfigs.map(ele=>(
             {
@@ -202,11 +202,11 @@ export default (props) =>{
         <a
           key="delete"
           onClick={() => {
-            setDataSource(dataSource.filter((item) => item !== record));
+            setDataSource(dataSource.filter((item) => item!== record));
           }}
         >
           删除
-        </a>
+        </a>,
       ],
       hideInTable:id&&edtil?true:false,
       editable:false,

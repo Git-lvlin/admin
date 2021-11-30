@@ -63,11 +63,14 @@ export default {
   'menu.setting.role-management': '角色管理',
   'menu.setting.authority-management': '权限管理',
   'menu.setting.password': '修改密码',
+  'menu.setting.shipments-area-configuration': '待发货区域配置',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
+  'menu.intensive-activity-management.intensive-activity-audit': '集约活动审核',
+  'menu.intensive-activity-management.intensive-activity-audit-detail': '活动审核详情',
   'menu.intensive-activity-management.intensive-remind-configuration': '集约提醒配置',
   'menu.intensive-activity-management.intensive-remind-statistics': '集约提醒统计',
 
@@ -161,12 +164,15 @@ export default {
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
 
-  'menu.dc-management': 'DC管理菜单',
+  'menu.dc-management': '开发者工具',
   'menu.dc-management.add': '新增',
-  'menu.dc-management.list': '资源位列表',
-  'menu.dc-management.version': '资源位版本',
-  'menu.dc-management.data-board': '数据报表列表',
+  'menu.dc-management.list': '资源位配置',
+  'menu.dc-management.version': '版本号管理',
+  'menu.dc-management.data-board': '数据看版配置',
   'menu.dc-management.data-board-configuration': '数据报表配置',
+  'menu.dc-management.import-export': '导入导出配置',
+  'menu.dc-management.import-export.export-configuration': '导出配置',
+  'menu.dc-management.import-export.import-configuration': '导入配置',
 
   'menu.coupon-management': '红包管理',
   'menu.coupon-management.coupon-list': '红包列表',
@@ -263,6 +269,10 @@ export default {
   'menu.data-board.summary-of-data': '数据概述',
   'menu.data-board.order-analysis': '订单分析',
   'menu.data-board.product-data': '商品数据',
+  'menu.data-board.community-store-data': '社区店数据',
+  'menu.data-board.operation-data': '运营中心数据',
+  'menu.data-board.supplier-data': '供应商数据',
+  'menu.data-board.detail': '供应商数据详情',
   'menu.data-board.data-preview': '数据预览',
   'menu.data-board.intensive-data-export': '集约数据导出',
   'menu.data-board.data-sales': '销售数据',
@@ -289,11 +299,6 @@ export default {
   'menu.blind-box-activity-management.blind-box-consume-detail': '使用明细',
   'menu.blind-box-activity-management.blind-box-employ-detail': '用户盲盒机会明细',
   'menu.blind-box-activity-management.bind-box-rule-set': '盲盒规则配置',
-
-  
-  'menu.import-export-configuration': '导入导出配置',
-  'menu.import-export-configuration.export-configuration': '导出配置',
-  'menu.import-export-configuration.import-configuration': '导入配置',
 
 
   'menu.activity-management': '活动管理',

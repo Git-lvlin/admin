@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Space, Tooltip } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/intensive-store-management/store-list';
@@ -12,8 +13,10 @@ import Return from './return';
 import ExcelModal from './excel-modal'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import { amountTransform } from '@/utils/utils'
 
-const StoreList = () => {
+const StoreList = (props) => {
+  const { storeType }=props
   const [formVisible, setFormVisible] = useState(false);
   const [createVisible, setCreateVisible] = useState(false);
   const [returnVisible, setReturnVisible] = useState(false);
@@ -77,6 +80,18 @@ const StoreList = () => {
     // },
     {
       title: '提货点所在地区',
+      dataIndex: '',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, details) => {
+        return (
+          <>
+            {details?.areaInfo?.[details?.provinceId]}{details?.areaInfo?.[details?.cityId]}{details?.areaInfo?.[details?.regionId]}
+          </>)
+      }
+    },
+    {
+      title: '提货点详细地址',
       dataIndex: 'address',
       valueType: 'text',
       hideInSearch: true,
@@ -104,7 +119,7 @@ const StoreList = () => {
                 query: {
                   storeName: data.storeName,
                   phone: data.phone,
-                  linkman: data.linkman,
+                  linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
                   memberId: data.memberId,
                 }
               })
@@ -128,7 +143,7 @@ const StoreList = () => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
               }
             })
           }}>
@@ -152,7 +167,7 @@ const StoreList = () => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
               }
             })
           }}>{_}</a>
@@ -174,7 +189,7 @@ const StoreList = () => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
               }
             })
           }}>{_}</a>
@@ -196,7 +211,7 @@ const StoreList = () => {
               query: {
                 storeName: data.storeName,
                 phone: data.phone,
-                linkman: data.linkman,
+                linkman: data.nickname === data.memberPhone ? '未设置昵称' : data.nickname,
                 memberId: data.memberId,
               }
             })
@@ -221,16 +236,63 @@ const StoreList = () => {
       hideInTable: true,
     },
     {
-      title: '营业状态',
-      dataIndex: ['status', 'desc'],
+      title: '保证金状态',
+      dataIndex: 'depositStatus',
+      valueType: 'select',
+      hideInSearch:storeType=='cancelled',
+      hideInTable: true,
+      valueEnum: {
+        "normal": '全部',
+        "11": '正常-已退部分保证金',
+        "12": '正常-已退全部保证金',
+        "13": '正常-未退保证金',
+      },
+    },
+    {
+      title: '保证金状态',
+      dataIndex: 'depositStatusDesc',
       valueType: 'text',
       hideInSearch: true,
+      hideInTable: storeType=='cancelled',
       render: (_, data) => {
-        const { remark } = data;
+        const { depositRefendList } = data;
         return (
           <>
-            {_}&nbsp;
-            {remark && <Tooltip title={remark}><QuestionCircleOutlined /></Tooltip>}
+            <p>{_}</p>
+            {depositRefendList && depositRefendList.map(ele=>{
+              return <p>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</p>
+            })}
+          </>
+        )
+      }
+    },
+    {
+      title: '保证金状态',
+      dataIndex: 'depositStatus',
+      valueType: 'select',
+      hideInSearch:storeType=='normal',
+      hideInTable: true,
+      valueEnum: {
+        "cancelled": '全部',
+        "20": '已注销-未退保证金',
+        "21": '已注销-已退全部保证金',
+        "22": '已注销-已退部分保证金',
+      },
+    },
+    {
+      title: '保证金状态',
+      dataIndex: 'depositStatusDesc',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType=='normal',
+      render: (_, data) => {
+        const { depositRefendList } = data;
+        return (
+          <>
+            <p>{_}</p>
+            {depositRefendList && depositRefendList.map(ele=>{
+              return <p>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</p>
+            })}
           </>
         )
       }
@@ -239,12 +301,26 @@ const StoreList = () => {
       title: '营业状态',
       dataIndex: 'status',
       valueType: 'select',
+      hideInSearch:storeType=='cancelled',
       hideInTable: true,
       valueEnum: {
-        1: '启用',
-        2: '注销',
-        3: '关闭'
+        1: '已启用',
+        3: '已关闭'
       },
+    },
+    {
+      title: '营业状态',
+      dataIndex: 'status',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType=='cancelled',
+      render: (_, data) => {
+        return (
+          <>
+            {_.desc}
+          </>
+        )
+      }
     },
     {
       title: '店铺等级',
@@ -258,6 +334,44 @@ const StoreList = () => {
         4: '四星店主',
         5: '五星店主',
       },
+    },
+    // {
+    //   key: 'status',
+    //   title: '集约任务',
+    //   dataIndex: 'asdas',
+    //   width: 100,
+    //   valueType: 'checkbox',
+    //   valueEnum: {
+    //     all: { text: '参与过集约任务', status: 'Default' },
+
+    //   },
+    //   hideInTable: true,
+    // },
+    // {
+    //   key: 'status',
+    //   title: '用户关系',
+    //   dataIndex: 'asdas',
+    //   width: 100,
+    //   valueType: 'checkbox',
+    //   valueEnum: {
+    //     all: { text: '已有直推用户', status: 'Default' }
+    //   },
+    //   hideInTable: true,
+    // },
+    {
+      title: '注销原因',
+      dataIndex: 'remark',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType=='normal',
+      render: (_, data) => {
+        return (
+          <>
+            <p>{_}</p>
+            <p>（{data.updateTime}）</p>
+          </>
+        )
+      }
     },
     {
       title: '操作',
@@ -280,6 +394,7 @@ const StoreList = () => {
     if (formRef?.current?.getFieldsValue) {
       const { current, pageSize, area = [], ...rest } = formRef?.current?.getFieldsValue?.();
       return {
+        operation:storeType,
         provinceId: area[0]?.value,
         cityId: area[1]?.value,
         regionId: area[2]?.value,
@@ -290,33 +405,20 @@ const StoreList = () => {
   }
 
   return (
-    <PageContainer>
+    <>
       <ProTable
         rowKey="id"
         options={false}
         actionRef={actionRef}
         formRef={formRef}
+        params={{
+          operation:storeType
+        }}
         request={getStoreList}
         search={{
           defaultCollapsed: false,
-          optionRender: ({ searchText, resetText }, { form }) => [
-            <Button
-              key="search"
-              type="primary"
-              onClick={() => {
-                form?.submit();
-              }}
-            >
-              {searchText}
-            </Button>,
-            <Button
-              key="rest"
-              onClick={() => {
-                form?.resetFields();
-              }}
-            >
-              {resetText}
-            </Button>,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
             <Button
               key="new"
               onClick={() => {
@@ -328,10 +430,10 @@ const StoreList = () => {
             <Export
               change={(e) => { setVisit(e) }}
               key="export"
-              type="community-shopkeeper-export"
+              type={storeType=='normal'?"community-shopkeeper-export":"community-shopkeeper-cancelled-export"}
               conditions={getFieldValue}
             />,
-            <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type="community-shopkeeper-export" />
+            <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType=='normal'?"community-shopkeeper-export":"community-shopkeeper-cancelled-export"} />
             // <Button
             //   key="new2"
             //   onClick={() => {
@@ -370,8 +472,36 @@ const StoreList = () => {
         setVisible={setExcelVisible}
         callback={() => { actionRef.current.reload() }}
       />}
-    </PageContainer>
+    </>
   );
 };
 
-export default StoreList;
+
+const OverallStore = () => {
+  const [activeKey, setActiveKey] = useState('normal')
+
+  return (
+    <PageContainer>
+      <ProCard
+        tabs={{
+          type: 'card',
+          activeKey,
+          onChange: setActiveKey
+        }}
+      >
+        <ProCard.TabPane key="normal" tab="正常店铺">
+          {
+            activeKey=='normal'&&<StoreList storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="cancelled" tab="已注销店铺">
+          {
+            activeKey=='cancelled'&&<StoreList storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+      </ProCard>
+    </PageContainer>
+  )
+}
+
+export default OverallStore;

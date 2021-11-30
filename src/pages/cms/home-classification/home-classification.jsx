@@ -8,6 +8,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { dateFormat } from '@/utils/utils';
 import Edit from './form';
 import ClassSort from './sort';
+import ContentVersionTab from '@/components/content-version-tab';
 import { homeClassificationList, homeClassificationSortTop, homeClassificationStatus, homeClassificationSetSort } from '@/services/cms/member/member';
 
 const HomeClassification = () => {
@@ -15,6 +16,7 @@ const HomeClassification = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [listData, setListData] = useState(null);
+  const [verifyVersionId, setVerifyVersionId] = useState(1);
   const getDetail = (data) => {
     setDetailData(data);
     setFormVisible(true);
@@ -25,7 +27,7 @@ const HomeClassification = () => {
       message.error('关闭状态无法置顶')
       return
     }
-    homeClassificationSortTop({id:id}).then((res) => {
+    homeClassificationSortTop({id:id, verifyVersionId: verifyVersionId}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
         actionRef.current.reset();
@@ -33,10 +35,16 @@ const HomeClassification = () => {
     })
   }
 
-  const onChangeSwitch = ({id, homeStatus}) => {
-    homeClassificationStatus({id: id,status: homeStatus}).then((res) => {
+  const onChangeSwitch = (indexStatus, item) => {
+    const param = {
+      id: item.id,
+      status: indexStatus?1:0,
+      verifyVersionId: verifyVersionId
+    }
+    homeClassificationStatus(param).then((res) => {
       if (res.code === 0) {
         message.success(`切换状态成功`);
+        actionRef.current.reset();
       }
     })
     
@@ -47,7 +55,7 @@ const HomeClassification = () => {
     v.map((item, index) => {
       param[item.id]=index+1
     })
-    homeClassificationSetSort({sortList:param}).then((res) => {
+    homeClassificationSetSort({sortList:param, verifyVersionId: verifyVersionId}).then((res) => {
       if (res.code === 0) {
         message.success(`编辑排序成功`);
         actionRef.current.reset();
@@ -121,10 +129,9 @@ const HomeClassification = () => {
             name="homeStatus"
             fieldProps={{
               style: {marginTop: 24},
-              defaultChecked:_?true:false,
-              onChange: () => {
-                item.homeStatus = item.homeStatus?0:1
-                onChangeSwitch(item)
+              checked:_,
+              onChange: (indexData) => {
+                onChangeSwitch(indexData, item)
               },
             }}
           />
@@ -149,18 +156,19 @@ const HomeClassification = () => {
   return (
     <PageContainer>
       <ProForm.Group>
-        <ProCard style={{display: 'flex',}}>
-          <Button type={'primary'} onClick={() => {}}>APP</Button>
-          <Button disabled onClick={() => {}}>小程序</Button>
-        </ProCard>
+        <ContentVersionTab setVerifyVersionId={setVerifyVersionId} />
       </ProForm.Group>
     <ProTable
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
+      params={{verifyVersionId: verifyVersionId}}
       request={homeClassificationList}
       postData={(data) => {
         setListData(data)
+        data.map(item=>{
+          return item.switchLoading = 0
+        })
         return data
       }}
       search={{
@@ -179,6 +187,7 @@ const HomeClassification = () => {
       visible={formVisible}
       setVisible={setFormVisible}
       onChangeSwitch={onChangeSwitch}
+      verifyVersionId={verifyVersionId}
       detailData={detailData}
       callback={() => { actionRef.current.reload(); setDetailData(null) }}
       onClose={() => { actionRef.current.reload(); setDetailData(null) }}
