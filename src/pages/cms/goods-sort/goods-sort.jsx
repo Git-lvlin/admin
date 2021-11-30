@@ -4,7 +4,7 @@ import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { Button, message, Popconfirm } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { goodsSortList, goodsSortTop, goodsSortReset } from '@/services/cms/member/member';
+import { goodsSortList, goodsSortTop, goodsSortReset, goodsMoveSort } from '@/services/cms/member/member';
 import { category } from '@/services/product-management/product-category';
 const BannerAdmin = () => {
   const actionRef = useRef();
@@ -25,6 +25,34 @@ const BannerAdmin = () => {
   //   })
   // }, [])
 
+  const moveSort = (record, type, moveUp) => {
+    const { wsSkuId } = record;
+    const param = {
+      wsSkuId,
+      type,
+      moveUp,
+    }
+    goodsMoveSort(param).then((res) => {
+      if (res.code === 0) {
+        actionRef.current.reload();
+      }
+    })
+  }
+
+  const top = (record, type) => {
+    const { wsSkuId } = record;
+    const param = {
+      wsSkuId,
+      type,
+      sort: 1
+    }
+    goodsSortTop(param).then((res) => {
+      if (res.code === 0) {
+        actionRef.current.reload();
+      }
+    })
+  }
+
   const sortReset = (type) => {
     const param = {
       type: type,
@@ -32,7 +60,7 @@ const BannerAdmin = () => {
     }
     goodsSortReset(param).then((res) => {
       if (res.code === 0) {
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -42,35 +70,13 @@ const BannerAdmin = () => {
     let param = {}
     switch(varieties) {
       case 'top':
-        param = {
-          wsSkuId,
-          type,
-          sort: 1
-        }
+
         break
       case 'num':
         param = {
           wsSkuId,
           type,
           sort: sortValue
-        }
-        break
-      case 'left':
-        break
-      case 'right':
-        break
-      case 'up':
-        param = {
-          wsSkuId,
-          type,
-          sort: type==1?sort-1:noticeSort-1
-        }
-        break
-      case 'down':
-        param = {
-          wsSkuId,
-          type,
-          sort: type==1?sort+1:noticeSort+1
         }
         break
     }
@@ -133,13 +139,12 @@ const BannerAdmin = () => {
       dataIndex: 'index',
       search: false,
       render: (_, record, index) => {
-        // let node = renderPopup('排序');
         return <>
           <a>{index+1}</a>&nbsp;
-          {record.sort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { doSort(record, 1, 'up', index+1) }}></Button>}
-          <Button icon={<ArrowDownOutlined />} onClick={() => { doSort(record, 1, 'up', index+1) }}></Button>&nbsp;
+          {record.sort!==1&&<Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 1, 0 ) }}></Button>}
+          <Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 1, 1) }}></Button>&nbsp;
           {/* <a onClick={() => { editSort(record, 1) }}>排序</a>&nbsp; */}
-          <a onClick={() => { doSort(record, 1, 'top', index+1) }}>置顶</a>
+          <a onClick={() => { top(record, 1) }}>置顶</a>
         </>
       }
     },
@@ -150,10 +155,10 @@ const BannerAdmin = () => {
       render: (_, record) => {
         return <>
           <a>{_}</a>&nbsp;
-          {record.noticeSort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { doSort(record, 2, 'down', index+1) }}></Button>}
-          <Button icon={<ArrowDownOutlined />} onClick={() => { doSort(record, 2, 'down', index+1) }}></Button>&nbsp;
+          {record.noticeSort!==1&&<Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 2, 0) }}></Button>}
+          <Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 2, 1) }}></Button>&nbsp;
           {/* <a onClick={() => { editSort(record, 2) }}>排序</a>&nbsp; */}
-          <a onClick={() => { doSort(record, 2, 'top', index+1) }}>置顶</a>
+          <a onClick={() => { top(record, 2) }}>置顶</a>
         </>
       }
     },

@@ -487,6 +487,14 @@ export const goodsSortReset = (params = {}, options = {}) => {
   });
 }
 
+export const goodsMoveSort = (params = {}, options = {}) => {
+  return request('/auth/wholesale/skuConfig/moveSort', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const homeClassCategorySecondCategory = (params = {}, options = {}) => {
   return request('/auth/goods/product/categorySecondCategory', {
     method: 'POST',
