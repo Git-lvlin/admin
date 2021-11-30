@@ -23,5 +23,10 @@ export default {
       component: './setting/password',
       hideInMenu: true,
     },
+    {
+      name: 'shipments-area-configuration',
+      path: '/setting/shipments-area-configuration',
+      component: './setting/shipments-area-configuration',
+    },
   ]
 }
