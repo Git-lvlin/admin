@@ -43,9 +43,6 @@ export default (props) => {
         rules={[{ required: true, message: '请输入驳回理由！' }]}
         name="text"
         placeholder="请输入驳回理由！"
-        fieldProps={{
-          maxLength: 30
-        }}
       />
     </ModalForm >
   );

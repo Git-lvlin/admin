@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Descriptions, Divider, Table, Row, Typography, Image } from 'antd';
+import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Popover } from 'antd';
 import { amountTransform } from '@/utils/utils'
-import { useParams } from 'umi';
+import { useParams, history } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
+import { updateWholesaleAuditStatus } from '@/services/intensive-activity-management/intensive-activity-audit'
+import AuditModel from './audit-model'
+import PassModel from './pass-model'
+import moment from 'moment'
 
 
 const { Title } = Typography;
 
 
-
 const Detail = () => {
   const [detailData, setDetailData] = useState({})
   const [loading, setLoading] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [timeType, setTimeType] = useState();
   const params = useParams();
 
   const getDetail = (wholesaleId) => {
@@ -26,6 +31,15 @@ const Detail = () => {
     }).finally(() => {
       setLoading(false);
     })
+  }
+  const auditPass = () => {
+    const data = moment().format("YYYY-MM-DD HH:mm:ss")
+    if (moment(data).isBefore(detailData?.wholesale?.wholesaleStartTime)) {
+      setTimeType(1)
+    } else if (moment(detailData?.wholesale?.wholesaleEndTime).isBefore(data)) {
+      setTimeType(2)
+    }
+    setVisible(true)
   }
 
   const columns = [
@@ -125,7 +139,7 @@ const Detail = () => {
       <Spin
         spinning={loading}
       >
-        <div style={{ backgroundColor: '#fff', padding: 20, paddingBottom: 100 }}>
+        <div style={{ backgroundColor: '#fff', padding: 20, paddingBottom: 50 }}>
           <Row>
             <Title style={{ marginBottom: -10 }} level={5}>活动商品</Title>
             <Divider />
@@ -141,7 +155,7 @@ const Detail = () => {
               <Descriptions.Item label="采购单下单截止时间">
                 {detailData?.wholesale?.endTimeAdvancePayment}
               </Descriptions.Item>
-              <Descriptions.Item label="可购买的社区店等级">{detailData?.wholesale?.storeLevel}</Descriptions.Item>
+              <Descriptions.Item label="可购买的会员店等级">{detailData?.wholesale?.storeLevel}</Descriptions.Item>
               <Descriptions.Item label="可购买的会员用户">
                 {detailData?.wholesale?.memberLevel}
               </Descriptions.Item>
@@ -172,67 +186,17 @@ const Detail = () => {
           </Descriptions.Item> */}
             </Descriptions>
           </Row>
-
-          <Row>
-            <Title style={{ marginBottom: -10 }} level={5}>操作日志</Title>
-            <Divider />
-            <Table
-              style={{ width: '100%' }}
-              rowKey="time"
-              pagination={false}
-              dataSource={detailData?.logs || []}
-              columns={[
-                {
-                  title: '序号',
-                  dataIndex: '',
-                  render: (a, b, index) => {
-                    return detailData?.logs.length - index
-                  }
-                },
-                {
-                  title: '操作对象账户名称',
-                  dataIndex: 'operatorName',
-                },
-                {
-                  title: '操作项',
-                  dataIndex: 'typeName',
-                },
-                {
-                  title: '说明',
-                  dataIndex: 'logDesc',
-                  render: (_) => {
-                    return _.map(item => {
-                      if (item.type === 3) {
-                        return (
-                          <>
-                            <div>{item.actionRemark}</div>
-                            <div>新值：{item.actionAfter && <Image width={50} src={item.actionAfter} />}</div>
-                            <div>旧值：{item.actionBefore && <Image width={50} src={item.actionBefore} />}</div>
-                          </>
-                        )
-                      }
-
-                      if (item.type === 2) {
-                        return (
-                          <>
-                            <div>{item.actionRemark}</div>
-                            <div>新值：{item.actionAfter}</div>
-                            <div>旧值：{item.actionBefore}</div>
-                          </>
-                        )
-                      }
-
-                      return item.actionRemark
-                    })
-                  }
-                },
-                {
-                  title: '操作时间',
-                  dataIndex: 'time',
-                },
-              ]}
-            />
-          </Row>
+          <Button style={{ marginLeft: '400px' }} type="default" onClick={() => history.goBack()}>返回</Button>
+          <Button style={{ marginLeft: '50px' }} onClick={() => auditPass()} type="primary">审核通过</Button>
+          {
+            visible && <PassModel visible={visible} wsId={params?.id} setVisible={setVisible} type={timeType} />
+          }
+          <AuditModel
+            label={'审核驳回'}
+            InterFace={updateWholesaleAuditStatus}
+            title={'请确认操作'}
+            id={params?.id}
+          />
         </div>
       </Spin>
 

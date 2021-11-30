@@ -9,7 +9,7 @@ export default {
     },
     {
       name: 'intensive-activity-create',
-      path: '/intensive-activity-management/intensive-activity-create',
+      path: '/intensive-activity-management/intensive-activity-create/:id',
       component: './intensive-activity-management/intensive-activity-create',
       hideInMenu: true,
     },
@@ -17,6 +17,17 @@ export default {
       name: 'intensive-activity-detail',
       path: '/intensive-activity-management/intensive-activity-detail/:id',
       component: './intensive-activity-management/intensive-activity-detail',
+      hideInMenu: true,
+    },
+    {
+      name: 'intensive-activity-audit',
+      path: '/intensive-activity-management/intensive-activity-audit',
+      component: './intensive-activity-management/intensive-activity-audit',
+    },
+    {
+      name: 'intensive-activity-audit-detail',
+      path: '/intensive-activity-management/intensive-activity-audit/detail/:id',
+      component: './intensive-activity-management/intensive-activity-audit/detail',
       hideInMenu: true,
     },
     {

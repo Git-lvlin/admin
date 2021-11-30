@@ -18,6 +18,7 @@ export default {
   'menu.user-management.user-detail': '用户详情',
   'menu.user-management.user-relationship': '用户关系',
   'menu.user-management.new-poster': '海报管理',
+  'menu.user-management.new-poster-new': '(新)海报管理',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
@@ -62,11 +63,14 @@ export default {
   'menu.setting.role-management': '角色管理',
   'menu.setting.authority-management': '权限管理',
   'menu.setting.password': '修改密码',
+  'menu.setting.shipments-area-configuration': '待发货区域配置',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
+  'menu.intensive-activity-management.intensive-activity-audit': '集约活动审核',
+  'menu.intensive-activity-management.intensive-activity-audit-detail': '活动审核详情',
   'menu.intensive-activity-management.intensive-remind-configuration': '集约提醒配置',
   'menu.intensive-activity-management.intensive-remind-statistics': '集约提醒统计',
 
@@ -257,7 +261,6 @@ export default {
   'menu.financial-management.transaction-detail-management.royalty-details':'明细详情',
   'menu.financial-management.transaction-detail-management.after-sales-order-details':'售后订单明细管理',
   'menu.financial-management.transaction-detail-management.operator-revenue-management':'运营商收益明细管理',
-  'menu.financial-management.transaction-detail-management.after-order-details':'售后订单详情',
   'menu.financial-management.transaction-allocation-management':'交易配置管理',
   'menu.financial-management.transaction-allocation-management.withdrawal-fee-config':'提现费配置',
   'menu.financial-management.subsidy-summary' : '优惠补贴',

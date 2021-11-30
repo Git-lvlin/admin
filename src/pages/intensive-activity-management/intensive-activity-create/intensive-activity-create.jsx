@@ -12,9 +12,10 @@ import { Button, Result, message, Descriptions, Form } from 'antd';
 import EditTable from './edit-table';
 import styles from './index.less';
 import { addWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
+import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
 import AddressMultiCascader from '@/components/address-multi-cascader'
 import Upload from '@/components/upload'
-import { history } from 'umi';
+import { history, useParams, useLocation } from 'umi';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
 
@@ -65,6 +66,44 @@ const IntensiveActivityCreate = () => {
   // const [uncheckableItemValues, setUncheckableItemValues] = useState([]);
   const [submitValue, setSubmitValue] = useState(null);
   const formRef = useRef();
+  const [detailData, setDetailData] = useState({})
+  const [loading, setLoading] = useState(true)
+  const params = useParams();
+  const location = useLocation();
+  const getAreas = (areas = []) => {
+    const areaArr = [];
+    for (let index = 0; index < areas.length; index++) {
+      const refuseArea = areas[index];
+      if (refuseArea.areaId) {
+        areaArr.push(refuseArea.areaId)
+        continue;
+      }
+      if (refuseArea.cityId) {
+        areaArr.push(refuseArea.cityId)
+        continue;
+      }
+      areaArr.push(refuseArea.provinceId)
+    }
+    return areaArr;
+  }
+
+  const getDetail = () => {
+    getWholesaleDetail({
+      wholesaleId: params.id
+    }).then(res => {
+      if (res.code === 0) {
+        setDetailData(res.data);
+        const wholesaleInfo = res.data.wholesale
+        formRef.current.setFieldsValue({
+          ...wholesaleInfo,
+          wholesaleTime: [wholesaleInfo.wholesaleStartTime, wholesaleInfo.wholesaleEndTime],
+          area: getAreas(res.data.allowArea)
+        })
+      }
+    }).finally(() => {
+      setLoading(false);
+    })
+  }
 
   const getSubmitAreaData = (v) => {
     const arr = [];
@@ -96,7 +135,7 @@ const IntensiveActivityCreate = () => {
   const submit = (values) => {
     const { wholesaleTime, area, ...rest } = values;
     return new Promise((resolve, reject) => {
-      const params = {
+      const requestParams = {
         goodsInfos: selectItem.map(item => ({
           spuId: item.spuId,
           skuId: item.skuId,
@@ -106,6 +145,7 @@ const IntensiveActivityCreate = () => {
           supplierId: item.supplierId,
           totalPrice: item.totalPrice,
           price: amountTransform(item.price),
+          operationFixedPrice: amountTransform(item.operationFixedPrice),
           wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice),
           fixedPrice: amountTransform(item.fixedPrice),
           settlePercent: amountTransform(item.settlePercent, '/'),
@@ -118,10 +158,14 @@ const IntensiveActivityCreate = () => {
         recoverPayTimeout: 0,
         canRecoverPayTimes: 0,
         wholesaleFlowType: selectItem[0].wholesaleFlowType,
+        isEditSubsidy: selectItem[0].isEditSubsidy.length,
+        orderAmount: selectItem[0].subsidy.a > 0 ? amountTransform(selectItem[0].subsidy.a) : '',
+        subsidy: selectItem[0].subsidy.b > 0 ? amountTransform(selectItem[0].subsidy.b) : '',
         ...rest,
+        wsId: (+params.id === 0 || +location.query?.type === 1) ? '' : params.id,
       }
-      setSubmitValue(params)
-      addWholesale(params).then(res => {
+      setSubmitValue(requestParams)
+      addWholesale(requestParams).then(res => {
         if (res.code === 0) {
           resolve()
         }
@@ -139,20 +183,25 @@ const IntensiveActivityCreate = () => {
 
   useEffect(() => {
     getUncheckableItemValues();
+    if (params.id && +params.id !== 0) {
+      getDetail()
+    } else {
+      setLoading(false);
+    }
   }, [])
 
   return (
     <PageContainer className={styles.page}>
       <ProCard style={{ width: '100%' }}>
         <StepsForm
-          formProps={{
-            validateMessages: {
-              required: '此项为必填项',
-            },
-          }}
+          // formProps={{
+          //   validateMessages: {
+          //     required: '此项为必填项',
+          //   },
+          // }}
           submitter={{
             render: (props) => {
-              if (props.step === 0 || props.step === 1) {
+              if (props.step === 0) {
                 return (
                   <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                     <Button type="primary" onClick={() => props.onSubmit?.()}>
@@ -172,9 +221,10 @@ const IntensiveActivityCreate = () => {
           }}
         >
           <StepsForm.StepForm
-            name="base"
-            title="选择活动商品"
-            onFinish={() => {
+            name="checkbox"
+            title="选择活动商品确认活动参数"
+            onFinish={async (values) => {
+
               if (!selectItem.length) {
                 message.error('请选择活动商品');
                 return false;
@@ -227,16 +277,6 @@ const IntensiveActivityCreate = () => {
                 }
               }
 
-              return true;
-            }}
-
-          >
-            <EditTable onSelect={setSelectItem} />
-          </StepsForm.StepForm>
-          <StepsForm.StepForm
-            name="checkbox"
-            title="确认活动参数"
-            onFinish={async (values) => {
               const { endTimeAdvancePayment, wholesaleTime } = values;
               if (endTimeAdvancePayment <= wholesaleTime[0] || endTimeAdvancePayment >= wholesaleTime[1]) {
                 message.error('店主采购单下单截止时间必须大于活动开始时间且小于截至时间');
@@ -253,6 +293,10 @@ const IntensiveActivityCreate = () => {
             }}
             className={styles.center}
           >
+            {
+              !loading &&
+              <EditTable onSelect={setSelectItem} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} />
+            }
             <ProFormText name="name" label="活动名称" width="lg" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
             <ProFormDateTimeRangePicker
               name="wholesaleTime"
@@ -280,7 +324,7 @@ const IntensiveActivityCreate = () => {
                 }
               }}
             />
-            <ProFormText
+            {/* <ProFormText
               name="virtualSales"
               label="本次集约虚拟销量"
               width="lg"
@@ -290,13 +334,13 @@ const IntensiveActivityCreate = () => {
                 { required: true, message: '请输入集约虚拟销量' },
                 () => ({
                   validator(_, value) {
-                    if (!/^\d+$/g.test(value) || `${value}`.indexOf('.') !== -1 || value <= 0 ) {
+                    if (!/^\d+$/g.test(value) || `${value}`.indexOf('.') !== -1 || value <= 0) {
                       return Promise.reject(new Error(`请输入大于零的正整数`));
                     }
                     return Promise.resolve();
                   },
                 })
-              ]} />
+              ]} /> */}
             <ProFormCheckbox.Group value={'1'} label="可购买的社区店等级" disabled options={[{ label: '全部', value: 1 }]} />
             <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} />
             <Form.Item
@@ -331,9 +375,9 @@ const IntensiveActivityCreate = () => {
             <Form.Item
               label="上传C端集约商品分享海报"
               name="shareImg"
-              // rules={[
-              //   { required: true, message: '请上传C端集约商品分享海报' },
-              // ]}
+            // rules={[
+            //   { required: true, message: '请上传C端集约商品分享海报' },
+            // ]}
 
             >
               <FromWrap
@@ -354,7 +398,7 @@ const IntensiveActivityCreate = () => {
                       <img src="https://dev-yeahgo.oss-cn-shenzhen.aliyuncs.com/admin/intensive-poster.png" width={150} />
                       <dl>
                         <dd>务必在海报中留出用户二维码位置：</dd>
-                        <dd>1、二维码宽和高都为220px；</dd>
+                        <dd>1、二维码宽和高都为148px；</dd>
                         <dd>2、二维码右上角展示，距海报上边缘50px，距海报右边缘60px;</dd>
                       </dl>
                     </div>
@@ -377,8 +421,8 @@ const IntensiveActivityCreate = () => {
           >
             <Result
               status="success"
-              title="活动创建成功"
-              subTitle={`活动将在${moment(submitValue?.wholesaleStartTime).fromNow(true)}后开始，请留意`}
+              title={`活动${+params.id !== 0 ? '修改' : '创建'}成功`}
+              subTitle={<div style={{ color: '#000', fontSize: 20, fontWeight: 'bold' }}>活动已进入待审核状态，请提醒主管尽快审核</div>}
             />
             {submitValue && <div
               style={{
