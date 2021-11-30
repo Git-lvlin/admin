@@ -394,7 +394,7 @@ const IntensiveActivityCreate = () => {
                       <img src="https://dev-yeahgo.oss-cn-shenzhen.aliyuncs.com/admin/intensive-poster.png" width={150} />
                       <dl>
                         <dd>务必在海报中留出用户二维码位置：</dd>
-                        <dd>1、二维码宽和高都为220px；</dd>
+                        <dd>1、二维码宽和高都为148px；</dd>
                         <dd>2、二维码右上角展示，距海报上边缘50px，距海报右边缘60px;</dd>
                       </dl>
                     </div>
