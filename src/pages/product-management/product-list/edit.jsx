@@ -359,6 +359,7 @@ export default (props) => {
         batchNumber: goods.batchNumber,
         unit: goods.unit,
         totalStock: goods.totalStock,
+        isDrainage: goods.isDrainage,
       })
 
       if (freightTemplateId && freightTemplateName) {
@@ -631,6 +632,27 @@ export default (props) => {
           onChange: settleTypeChange
         }}
       />
+      <ProFormDependency name={['goodsSaleType']}>
+        {
+          ({ goodsSaleType }) => {
+            return goodsSaleType !== 1 && <ProFormRadio.Group
+              name="isDrainage"
+              label="社区店主引流品"
+              rules={[{ required: true }]}
+              options={[
+                {
+                  label: '不设为引流品',
+                  value: 0,
+                },
+                {
+                  label: '设为仅对社区店主售卖的引流品',
+                  value: 1,
+                },
+              ]}
+            />
+          }
+        }
+      </ProFormDependency>
       <ProFormSelect
         name="supplierHelperId"
         label="供应商家顾问"
@@ -1029,7 +1051,16 @@ export default (props) => {
         name="detailImages"
         rules={[{ required: true, message: '请上传商品详情图片' }]}
       >
-        <Upload code={218} disabled multiple maxCount={10} accept="image/*" size={500 * 4} />
+        <FromWrap
+          content={(value, onChange) => <Upload value={value} onChange={onChange} code={218} disabled multiple maxCount={10} accept="image/*" size={500 * 4} />}
+          right={(value) => {
+            return (
+              <dl>
+                {value?.length > 1 && <dd><ImageSort data={value} callback={(v) => { form.setFieldsValue({ detailImages: v }) }} /></dd>}
+              </dl>
+            )
+          }}
+        />
       </Form.Item>
       {/* {detailData.advImages && <Form.Item
         label="商品横幅"
@@ -1059,17 +1090,17 @@ export default (props) => {
         <Form.Item
           label="审核状态"
         >
-          {detailData.goods.goodsVerifyStateDisplay}
+          {detailData.goods.goodsVerifyStateDisplay} {detailData.auditStr}
         </Form.Item>
 
         <Form.Item
           label="上架状态"
         >
-          {detailData.goods.goodsStateDisplay}
+          {detailData.goods.goodsStateDisplay} {detailData.putOnStr}
         </Form.Item>
 
-        {detailData.goods.goodsVerifyRemark && <Form.Item
-          label="原因"
+        {detailData.goods.goodsState === 0 && <Form.Item
+          label="下架原因"
         >
           <span style={{ color: 'red' }}>{detailData.goods.goodsVerifyRemark}</span>
         </Form.Item>}
