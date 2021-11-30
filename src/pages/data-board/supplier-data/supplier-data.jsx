@@ -116,8 +116,31 @@ const SupplierData = () => {
       render: (_) => amountTransform(Number(_), '/').toFixed(2)
     }
   ]
+  
   return (
     <PageContainer title={false}>
+      <div className={styles.timeSearch}>
+        <Space size={20}>
+          <h3>供应商销售排名</h3>
+          <SelectDate
+            setDateSelect={setRangePickerValue}
+            selectDate={selectDate}
+            rangePickerValue={rangePickerValue}
+            handleRangePickerChange={handleRangePickerChange}
+          />
+        </Space>
+      </div>
+      <div className={styles.radioArea}>
+        <Radio.Group 
+          onChange={onChange}
+          value={value}
+          size="large"
+        >
+          <Radio value={1}>秒约销售额</Radio>
+          <Radio value={2}>集约销售额</Radio>
+        </Radio.Group>
+        <BarChart data={data}/>
+      </div>
       <ProTable
         rowKey="supplierId"
         formRef={form}

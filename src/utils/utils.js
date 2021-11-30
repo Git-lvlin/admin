@@ -289,7 +289,7 @@ export const getTimeDistance = (type) => {
       return [moment(beginTime - (30 * oneDay - 1000)), moment(beginTime)];
     }
 
-    // 近30天
+    // 近3个月
     if (type === 'nearly-3-month') {
       let day = now.getDay();
       now.setHours(0);
@@ -304,6 +304,23 @@ export const getTimeDistance = (type) => {
   
       const beginTime = now.getTime();
       return [moment(beginTime - (90 * oneDay - 1000)), moment(beginTime)];
+    }
+
+     // 近6个月
+     if (type === 'nearly-6-month') {
+      let day = now.getDay();
+      now.setHours(0);
+      now.setMinutes(0);
+      now.setSeconds(0);
+  
+      if (day === 0) {
+        day = 6;
+      } else {
+        day -= 1;
+      }
+  
+      const beginTime = now.getTime();
+      return [moment(beginTime - (180 * oneDay - 1000)), moment(beginTime)];
     }
 
   // 本年

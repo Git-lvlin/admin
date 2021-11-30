@@ -57,8 +57,8 @@ const ChartForm = ({
           }
           description={
             <Space>
-              <span>访问次数</span>
-              <Tp title="用户每次访问都计算在内">
+              <span>访客数</span>
+              <Tp title="每人每天只算1次">
                 <QuestionCircleOutlined />
               </Tp>
             </Space>
@@ -73,8 +73,8 @@ const ChartForm = ({
           }
           description={
             <Space>
-              <span>新增订单数</span>
-              <Tp title="新增加的支付订单">
+              <span>访问次数</span>
+              <Tp title="用户每次访问都计算在内">
                 <QuestionCircleOutlined />
               </Tp>
             </Space>
@@ -87,8 +87,8 @@ const ChartForm = ({
           }
           description={
             <Space>
-              <span>访问-支付转化率</span>
-              <Tp title="已支付订单数/总订单数（不含售后订单）">
+              <span>新增用户数</span>
+              <Tp title="新增注册成功的用户数">
                 <QuestionCircleOutlined />
               </Tp>
             </Space>
@@ -104,8 +104,8 @@ const ChartForm = ({
           }
           description={
             <Space>
-              <span>支付金额</span>
-              <Tp title="所有已支付的订单总金额">
+              <span>新增订单数</span>
+              <Tp title="新增加的支付订单">
                 <QuestionCircleOutlined />
               </Tp>
             </Space>
@@ -136,8 +136,8 @@ const ChartForm = ({
           }
           description={
             <Space>
-              <span>新增用户数</span>
-              <Tp title="所有支付成功的下单总人数">
+              <span>支付金额</span>
+              <Tp title="所有已支付的订单总金额">
                 <QuestionCircleOutlined />
               </Tp>
             </Space>
@@ -152,8 +152,24 @@ const ChartForm = ({
           }
           description={
             <Space>
-              <span>访客数</span>
-              <Tp title="打开app进行访问的人数，每人每天只算1次">
+              <span>支付转化率</span>
+              <Tp title="已支付订单数/总订单数（不含售后订单）">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
+          value="visitMemberList"
+        />
+        <CheckCard 
+          title={ 
+            <div className={styles.title}>
+              xxx
+            </div> 
+          }
+          description={
+            <Space>
+              <span>GMV交易额</span>
+              <Tp title="包含拍下未支付订单金额">
                 <QuestionCircleOutlined />
               </Tp>
             </Space>

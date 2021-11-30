@@ -6,6 +6,7 @@ import moment from 'moment'
 import Histogram from './histogram'
 import styles from './styles.less'
 import { areaOrderAnalysis } from '@/services/data-board/order-analysis'
+import AddressCascader from '@/components/address-cascader'
 
 const now = new Date()
 const oneDay = 1000 * 60 * 60 * 24
@@ -29,11 +30,14 @@ const RegionalOrderAnalysis = () => {
   const [histogramValue, setHistogramValue] = useState(1)
   const [data, setData] = useState([])
   const [times, setTimes] = useState(theMonth().map(item=> moment(item).format("YYYY-MM-DD")))
+  const [area, setArea] = useState(null)
 
   useEffect(()=> {
     areaOrderAnalysis({
       startTime: times?.[0], 
       endTime: times?.[1], 
+      province_id: area?.[0].value,
+      city_id: area?.[1].value,
       type: histogramValue
     }).then(res => {
       if(res.success) {
@@ -50,7 +54,7 @@ const RegionalOrderAnalysis = () => {
     return () => {
       setData([])
     }
-  }, [histogramValue, times])
+  }, [histogramValue, times, area])
 
   const histogramChange = e => {
     setHistogramValue(e.target.value)
@@ -66,32 +70,31 @@ const RegionalOrderAnalysis = () => {
         submitter={{
           render: ({ form }) => {
             return (
-              <div>
-                <Space>
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      form?.submit()
-                    }}
-                  >
-                    查询
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      form?.resetFields()
-                      form?.submit()
-                    }}
-                  >
-                    重置
-                  </Button>
-                </Space>
-              </div>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    form?.submit()
+                  }}
+                >
+                  查询
+                </Button>
+                <Button
+                  onClick={() => {
+                    form?.resetFields()
+                    form?.submit()
+                  }}
+                >
+                  重置
+                </Button>
+              </Space>
             )
           }
         }}
         layout="inline"
         onFinish={(value) => {
           setTimes(value?.time)
+          setArea(value.area)
         }}
       >
         <h3 className={styles.title}>地区订单分析</h3>
@@ -100,6 +103,12 @@ const RegionalOrderAnalysis = () => {
           name="time"
           initialValue={times}
         />
+        <ProForm.Item
+          name="area"
+          label="地区范围"
+        >
+          <AddressCascader areaData={window.yeahgo_area.filter(item=>item.deep !== 3)}/>
+        </ProForm.Item>
       </ProForm>
       <div className={styles.radioArea}>
         <Radio.Group 
