@@ -471,6 +471,21 @@ export const bannerSortTop = (params = {}, options = {}) => {
   });
 }
 
+export const goodsSortTop = (params = {}, options = {}) => {
+  return request('/auth/wholesale/skuConfig/modifySort', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const goodsSortReset = (params = {}, options = {}) => {
+  return request('/auth/wholesale/skuConfig/resetSort', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
 
 export const homeClassCategorySecondCategory = (params = {}, options = {}) => {
   return request('/auth/goods/product/categorySecondCategory', {
@@ -875,6 +890,28 @@ export const homeBannerList = async (params = {}, options = {}) => {
     data.status = Number(status);
   }
   const res = await request('/auth/java-admin/cms/banner/page', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const goodsSortList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+
+  const res = await request('/auth/wholesale/skuConfig/getSortedList', {
     method: 'POST',
     data,
     ...options
