@@ -41,7 +41,9 @@ const OperationData = () => {
       endTime: dateNow,
       type: value
     }).then(res=> {
-      setCharData(res.data)
+      setCharData(res.data.map(item=>(
+        {companyName: item.companyName, value: Number(item.value)}
+      )))
     })
     return ()=> {
       setCharData([])

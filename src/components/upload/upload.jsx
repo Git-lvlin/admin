@@ -5,7 +5,7 @@ import { getImageSize } from '@/utils/utils';
 import upload from '@/utils/upload'
 
 const Upload = (props) => {
-  const { value, onChange, code = 218, maxCount = 1, size, dimension, proportion, text = '上传', disabled = false, ...rest } = props;
+  const { value, onChange, code = 218, maxCount = 1, size, dimension, proportion, text = '上传', disabled = false, sort = false, ...rest } = props;
   const [fileList, setFileList] = useState([])
   const [loading, setLoading] = useState(false)
   const fileData = useRef([]);
@@ -51,15 +51,28 @@ const Upload = (props) => {
     return true;
   }
 
+  const imgSort = (files) => {
+    return files.sort((a, b) => {
+      a = a.url.replace(/.+\//, '').replace(/.+?-y_g-/, '');
+      b = b.url.replace(/.+\//, '').replace(/.+?-y_g-/, '');
+      return a.localeCompare(b);
+    })
+  }
+
   const customRequest = ({ file }) => {
     setLoading(true);
     upload(file, code)
       .then(res => {
-        const arr = [...fileData.current];
+        let arr = [...fileData.current];
         arr.push({
           ...file,
           url: res,
         })
+
+        if (sort) {
+          arr = imgSort(arr);
+        }
+
         fileData.current = arr;
         setFileList(fileData.current);
         onChange(maxCount === 1 ? res : arr.map(item => item.url))

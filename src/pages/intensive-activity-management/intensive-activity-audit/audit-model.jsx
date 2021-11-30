@@ -17,7 +17,7 @@ const formItemLayout = {
   };
 
 export default props=>{
-    const {type,text,InterFace,title,label,id}=props
+    const {InterFace,title,label,id}=props
     const [visible, setVisible] = useState(false);
     const Termination=()=>{
         setVisible(true)
@@ -28,7 +28,7 @@ export default props=>{
             key={id}
             onVisibleChange={setVisible}
             visible={visible}
-            trigger={<Button style={{background:type==2?'red':'',color:'#fff',marginLeft:'50px'}} type={type==1?"primary":"default"}  onClick={()=>Termination()}>{label}</Button>}
+            trigger={<Button style={{background:'red',color:'#fff',marginLeft:'50px'}} type="default" onClick={()=>Termination()}>{label}</Button>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
@@ -37,20 +37,16 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                InterFace({wsId:id,type:type,...values},{ showSuccess: true }).then(res=>{
-                    if(res.code==0){
-                        setVisible(false)   
+                InterFace({wsId:id,type:2,...values},{ showSuccess: true }).then(res=>{
+                    if(res.code==0){  
                         history.goBack()
+                        setVisible(false) 
                         return true;    
                     }
                 })
             }}
             {...formItemLayout}
         >
-        {
-            type==1?
-            <p>{text}</p>
-            :
             <ProFormTextArea
                 width="md"
                 name="rejectionReason"
@@ -71,7 +67,6 @@ export default props=>{
                     }
                 ]}
             />
-        }
         
     </ModalForm>
     )

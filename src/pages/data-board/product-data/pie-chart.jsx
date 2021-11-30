@@ -46,7 +46,6 @@ const PieChart = ({data, payRate}) => {
           scale={cols}
           interactions={['element-active']}
           autoFit
-          padding={[40, 30, 20, 20]}
         >
           <Coordinate type="theta" radius={0.75} />
           <Tooltip showTitle={false} />

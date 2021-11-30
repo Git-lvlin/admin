@@ -18,6 +18,7 @@ export default {
   'menu.user-management.user-detail': '用户详情',
   'menu.user-management.user-relationship': '用户关系',
   'menu.user-management.new-poster': '海报管理',
+  'menu.user-management.new-poster-new': '(新)海报管理',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
@@ -62,6 +63,7 @@ export default {
   'menu.setting.role-management': '角色管理',
   'menu.setting.authority-management': '权限管理',
   'menu.setting.password': '修改密码',
+  'menu.setting.shipments-area-configuration': '待发货区域配置',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',

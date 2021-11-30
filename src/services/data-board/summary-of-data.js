@@ -38,3 +38,16 @@ export const coreData = async (params = {}, options = {}) => {
     success: res.success
   }
 }
+
+// 总数据
+export const sumData = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/config/sumData', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}

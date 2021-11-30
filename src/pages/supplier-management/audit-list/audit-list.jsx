@@ -27,6 +27,15 @@ const TableList = () => {
       }
     },
     {
+      title: '供应商家ID',
+      dataIndex: 'supplierId',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入供应商家ID'
+      },
+      hideInTable: true,
+    },
+    {
       title: '登录账号',
       dataIndex: 'accountName',
       valueType: 'text',
@@ -76,7 +85,7 @@ const TableList = () => {
         }
         return <>
           <div>{data.auditUser}</div>
-          <div>{data.auditTime > 0 && moment(data.moment).format('YYYY-MM-DD HH:mm:ss')}</div>
+          <div>{data.auditTime > 0 && moment(data.auditTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
         </>
       }
     },
