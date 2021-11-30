@@ -140,8 +140,8 @@ const BannerAdmin = () => {
       render: (_, record) => {
         return <>
           <a>{_}</a>&nbsp;
-          {record.sort!==1&&<Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 1, 0 ) }}></Button>}
-          <Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 1, 1) }}></Button>&nbsp;
+          <Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 1, 0 ) }}></Button>
+          {record.sort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 1, 1) }}></Button>}&nbsp;
           {/* <a onClick={() => { editSort(record, 1) }}>排序</a>&nbsp; */}
           <a onClick={() => { top(record, 1) }}>置顶</a>
         </>
@@ -154,8 +154,8 @@ const BannerAdmin = () => {
       render: (_, record) => {
         return <>
           <a>{_}</a>&nbsp;
-          {record.noticeSort!==1&&<Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 2, 0) }}></Button>}
-          <Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 2, 1) }}></Button>&nbsp;
+          <Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 2, 0) }}></Button>
+          {record.noticeSort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 2, 1) }}></Button>}&nbsp;
           {/* <a onClick={() => { editSort(record, 2) }}>排序</a>&nbsp; */}
           <a onClick={() => { top(record, 2) }}>置顶</a>
         </>
