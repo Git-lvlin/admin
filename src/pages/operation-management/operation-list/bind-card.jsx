@@ -123,7 +123,7 @@ export default (props) => {
       const { bankAccountInfo } = detailData
       form.setFieldsValue({
         bindBankSwitch: bankAccountInfo?.bindBankSwitch,
-        bankAccountName: detailData.companyName,
+        bankAccountName: bankAccountInfo?.companyName,
       })
 
       if (bankAccountInfo) {

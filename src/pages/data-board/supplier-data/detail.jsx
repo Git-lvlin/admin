@@ -20,14 +20,17 @@ import ExportHistory from '@/pages/export-excel/export-history'
 
 const Detail = () => {
   const { query } = useLocation()
-  const form = useRef()
   const [visit, setVisit] = useState(false)
+  const form = useRef()
 
   const getFieldValue = () => {
+    const value = form?.current?.getFieldsValue()
+
     return {
       supplierId: query.id,
       startTime: query?.startTime,
-      endTime: query?.endTime
+      endTime: query?.endTime,
+      ...value
     }
   }
 
@@ -54,7 +57,7 @@ const Detail = () => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
-      hideInSearch: true,
+      hideInSearch: (query.type !== 'second'&&query.type !== 'intensive'),
       width: '15%',
       align: 'center'
     },
@@ -154,6 +157,7 @@ const Detail = () => {
       </div>
       <ProTable
         rowKey='skuID'
+        formRef={form}
         request={dataRequest()}
         params={{
           supplierId: query.id,
