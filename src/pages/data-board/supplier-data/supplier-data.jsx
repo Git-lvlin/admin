@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { history } from 'umi'
 import moment from 'moment'
-import { Space, Tooltip } from 'antd'
+import { Space, Tooltip, Radio } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import { supplierData } from '@/services/data-board/supplier-data'
@@ -12,11 +12,15 @@ import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import SelectDate from '../components/SelectDate'
+import { getTimeDistance } from '@/utils/utils'
 
 const SupplierData = () => {
   const [amount, setAmount] = useState(0)
   const form = useRef()
   const [visit, setVisit] = useState(false)
+  const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
+  const [value, setValue] = useState(1)
 
   const getFieldValue = () => {
     const { time, ...rest } = form.current.getFieldsValue()
@@ -25,6 +29,18 @@ const SupplierData = () => {
       endTime: time?.[1]?.format('YYYY-MM-DD'),
       ...rest
     }
+  }
+
+  const selectDate = (type) => {
+    setRangePickerValue(getTimeDistance(type))
+  }
+
+  const handleRangePickerChange = (value) => {
+    setRangePickerValue(value)
+  }
+  
+  const onChange = e => {
+    setValue(e.target.value)
   }
 
   const skipToDeatil = (e, id, name) => {
@@ -139,10 +155,13 @@ const SupplierData = () => {
           <Radio value={1}>秒约销售额</Radio>
           <Radio value={2}>集约销售额</Radio>
         </Radio.Group>
-        <BarChart data={data}/>
+        {/* <BarChart data={data}/> */}
       </div>
       <ProTable
         rowKey="supplierId"
+        style={{
+          marginTop: 30
+        }}
         formRef={form}
         request={supplierData}
         params={{}}
