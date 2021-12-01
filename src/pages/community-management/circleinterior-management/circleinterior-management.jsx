@@ -32,7 +32,7 @@ export default props => {
             dataIndex: 'id',
             hideInSearch:true,
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/invitation-detail?id='+record.id+'&byid='+id+'&name='+name)}>{record.id}</a>
+                <a key='id' onClick={()=>history.push('/community-management/invitation-detail?id='+record.id+'&byid='+id+'&name='+name)}>{record.id}</a>
             ],
         },
         {
@@ -79,7 +79,7 @@ export default props => {
         {
             title: '操作',
             render: (text, record, _, action) => [
-                <Button style={{marginRight:'10px'}} onClick={()=>{
+                <Button key='eart' style={{marginRight:'10px'}} onClick={()=>{
                     if(record.banComment){
                         cancelBanDynamicComment({id:record.id}).then(res=>{
                             ref.current.reload()
@@ -90,7 +90,7 @@ export default props => {
                         }) 
                     }
                 }}>{record.banComment?'取消禁评':'禁评'}</Button>,
-                <Button style={{marginRight:'10px'}} onClick={()=>{
+                <Button key='turn' style={{marginRight:'10px'}} onClick={()=>{
                     if(record.banShare){
                         cancelBanShare({id:record.id}).then(res=>{
                             ref.current.reload()
@@ -108,6 +108,7 @@ export default props => {
                     text={'确认要删除所选内容吗？'} 
                     InterFace={dynamicDelete} 
                     title={'操作确认'}
+                    key='delete'
                 />
             ],
             hideInSearch: true,

@@ -231,7 +231,7 @@ export default props => {
               detailData.memberType == 2 ?
                 <ProTable
                   actionRef={ref}
-                  rowKey="id"
+                  rowKey="name"
                   options={false}
                   expandable={{ expandedRowRender: (_) => <SubTable name={_.name} /> }}
                   dataSource={[detailData.crowdList]}
@@ -272,7 +272,7 @@ export default props => {
                 <p className={styles.mark}>已选中<span>{detailData.spuInfo?.length}个</span>指定商品</p>
                 <ProTable
                   actionRef={ref}
-                  rowKey="id"
+                  rowKey="spuId"
                   options={false}
                   dataSource={detailData.spuInfo}
                   search={false}
@@ -308,7 +308,7 @@ export default props => {
                   <h3 className={styles.head}>审核信息</h3>
                   <ProTable
                     actionRef={ref}
-                    rowKey="id"
+                    rowKey="createTime"
                     options={false}
                     dataSource={detailData.verifyInfo}
                     search={false}

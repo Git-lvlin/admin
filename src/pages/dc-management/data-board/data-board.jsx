@@ -35,8 +35,8 @@ export default () => {
             //     id={record.id} 
             //     title={'操作确认'}
             // />,
-            <a onClick={()=>history.push('/dc-management/data-board/data-board-configuration?id='+record.id+'&edtil=true')}>查看详情</a>,
-            <a onClick={()=>history.push('/dc-management/data-board/data-board-configuration?id='+record.id+'&edit=true')}>编辑</a>,
+            <a key='detail' onClick={()=>history.push('/dc-management/data-board/data-board-configuration?id='+record.id+'&edtil=true')}>查看详情</a>,
+            <a key='edit' onClick={()=>history.push('/dc-management/data-board/data-board-configuration?id='+record.id+'&edit=true')}>编辑</a>,
         ],
       }, 
     ];
@@ -49,7 +49,7 @@ export default () => {
           options={false}
           request={findByPage}
           toolBarRender={()=>[
-            <Button icon={<PlusOutlined />}  onClick={()=>history.push('/dc-management/data-board/data-board-configuration')} type="primary">
+            <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/dc-management/data-board/data-board-configuration')} type="primary">
                 添加数据
             </Button>
         ]}

@@ -153,7 +153,7 @@ const ArticleList = (props) => {
       valueType: 'number',
       search: false,
       render:(text, record, _, action)=>[
-        <a onClick={()=>history.push('/business-school/article-list/shopkeeper-disclose?articleId='+record.id+'&articleTitle='+record.articleTitle+'&type='+type)}>{record.debunkNum}</a>
+        <a key='num' onClick={()=>history.push('/business-school/article-list/shopkeeper-disclose?articleId='+record.id+'&articleTitle='+record.articleTitle+'&type='+type)}>{record.debunkNum}</a>
       ],
     },
     {
@@ -202,12 +202,12 @@ const ArticleList = (props) => {
       toolBarRender={(_,record) => [
         <>
           {
-            type==1&&<Button key="button" type="primary" onClick={() => { setHomeVisible(true) }}>
+            type==1&&<Button key="setup" type="primary" onClick={() => { setHomeVisible(true) }}>
                       设置到店铺管理页
                     </Button>
           }
         </>,
-        <Button key="button" type="primary" onClick={() => { setFormVisible(true) }}>
+        <Button key="new" type="primary" onClick={() => { setFormVisible(true) }}>
           新建
         </Button>,
       ]}

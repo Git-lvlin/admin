@@ -266,7 +266,6 @@ const UserDetail=(props) => {
     },
   ];
   const postData=(data)=>{
-    console.log('data',data)
     setDetailList(data)
     return data.records
   }
