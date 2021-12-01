@@ -198,7 +198,7 @@ export default (props) => {
                        detailList?.status==1?
                        <div  style={{marginLeft:'250px'}}>
                        {
-                         falg?<Button type="primary"  onClick={()=>{
+                         falg?<Button key='edit' type="primary"  onClick={()=>{
                            setFalg(false)
                           }}>
                          编辑

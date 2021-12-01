@@ -192,13 +192,13 @@ const couponConstruction = (props) => {
                 }}>
                   保存
                 </Button>,
-                <Button type="primary" key="submit" onClick={() => {
+                <Button type="primary" key="submitaudit" onClick={() => {
                   props.form?.submit?.()
                   setSubmitType(3)
                 }}>
                   提交审核
                 </Button>,
-                <Button type="default" onClick={() => history.push('/coupon-management/coupon-list')}>
+                <Button type="default" key='goback' onClick={() => history.push('/coupon-management/coupon-list')}>
                   返回
                 </Button>
               ];

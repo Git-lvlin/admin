@@ -139,7 +139,7 @@ const Message = (props) => {
       valueType: 'option',
       width:200,
       render: (_, data) => [
-      <a key="a" onClick={()=>{ Examine(data.id) }}>
+      <a key="edit" onClick={()=>{ Examine(data.id) }}>
         {
           type==1?
           '编辑'
@@ -147,6 +147,7 @@ const Message = (props) => {
         }
       </a>,
       <DeleteModal
+        key='dele'
         record={data} 
         boxref={ref} 
         label1={'删除'}
@@ -155,7 +156,7 @@ const Message = (props) => {
         blok={type}
         title={'操作确认'}
       />,
-      <a key="a" onClick={()=>{ look(data.id)}}>
+      <a key="detail" onClick={()=>{ look(data.id)}}>
         {
           type==3||type==4?
           '查看'
@@ -163,6 +164,7 @@ const Message = (props) => {
         } 
       </a>,
        <DeleteModal
+        key='withdraw'
         record={data}
         label2={'撤回'}
         status={1}
@@ -172,8 +174,8 @@ const Message = (props) => {
         blok={type}
         title={'操作确认'}
       />,
-      <EndModel type={type} boxref={ref} data={data}/>,
-      <a key="a" onClick={()=>CodeLibrary(data.id)}>
+      <EndModel key='end' type={type} boxref={ref} data={data}/>,
+      <a key="code" onClick={()=>CodeLibrary(data.id)}>
         {
            type==4?
            '码库'
@@ -225,15 +227,16 @@ return(
         labelWidth: 100,
         optionRender: (searchConfig, formProps, dom) => [
           ...dom.reverse(),
-        <Button onClick={()=>{ref.current.reload()}} key="refresh">
+        <Button  onClick={()=>{ref.current.reload()}} key="refresh">
           刷新
         </Button>,
         <Export
+          key='export'
           change={(e) => { setVisit(e) }}
           type={'red-packet-list-export'}
           conditions={getFieldValue(searchConfig)}
         />,
-        <ExportHistory show={visit} setShow={setVisit} type='red-packet-list-export'/>,
+        <ExportHistory key='task' show={visit} setShow={setVisit} type='red-packet-list-export'/>,
         ],
       }}
       columns={columns}

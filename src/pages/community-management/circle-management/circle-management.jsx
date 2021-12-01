@@ -32,7 +32,7 @@ export default ()=> {
             dataIndex: 'name',
             valueType: 'text',
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/circle-management/circleInterior-management?id='+record.id+'&name='+record.name)}>{record.name}</a>
+                <a key='name' onClick={()=>history.push('/community-management/circle-management/circleInterior-management?id='+record.id+'&name='+record.name)}>{record.name}</a>
             ],
             hideInSearch:true   
         },
@@ -73,16 +73,16 @@ export default ()=> {
             dataIndex: 'order',
             valueType: 'text',
             render:(text, record, _, action)=>[
-                <a onClick={()=>sortOrderMove({id:record.id,type:'up'}).then(res=>{ref.current.reload()})}>上移</a>,
-                <span> / </span>,
-                <a onClick={()=>sortOrderMove({id:record.id,type:'down'}).then(res=>{ref.current.reload()})}>下移</a>
+                <a key='up' onClick={()=>sortOrderMove({id:record.id,type:'up'}).then(res=>{ref.current.reload()})}>上移</a>,
+                <span key='/'> / </span>,
+                <a key='down' onClick={()=>sortOrderMove({id:record.id,type:'down'}).then(res=>{ref.current.reload()})}>下移</a>
             ],
             hideInSearch:true
         },
         {
             title: '操作',
             render: (text, record, _, action) => [
-                <Button style={{marginRight:'10px'}} onClick={()=>{
+                <Button key='delete' style={{marginRight:'10px'}} onClick={()=>{
                     if(record.delete==2){
                         cancelHide({id:record.id}).then(res=>{
                             ref.current.reload();
@@ -96,7 +96,7 @@ export default ()=> {
                     record.delete?record.delete==1?'已删除':'取消隐藏':'隐藏'
                     }
                 </Button>,
-                <Button style={{marginRight:'10px'}} onClick={()=>{
+                <Button key='end' style={{marginRight:'10px'}} onClick={()=>{
                     if(record.banDynamic){
                         cancelBanDynamic({id:record.id}).then(res=>{
                             ref.current.reload();
@@ -107,7 +107,7 @@ export default ()=> {
                         })
                     }
                 }}>{record.banDynamic?'取消禁贴':'禁贴'}</Button>,
-                <Button style={{marginRight:'10px'}} onClick={()=>{
+                <Button key='sota' style={{marginRight:'10px'}} onClick={()=>{
                     if(record.banComment){
                         cancelBanDynamicComment({id:record.id}).then(res=>{
                             ref.current.reload();
@@ -118,7 +118,7 @@ export default ()=> {
                         })
                     }
                 }}>{record.banComment?'取消禁评':'禁评'}</Button>,
-                <Button onClick={()=>history.push('/community-management/circle-management/add-circle?id='+record.id)}>编辑</Button>,
+                <Button key='edit' onClick={()=>history.push('/community-management/circle-management/add-circle?id='+record.id)}>编辑</Button>,
 
             ],
             hideInSearch: true,

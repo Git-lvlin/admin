@@ -98,11 +98,12 @@ export default () => {
       key: 'option',
       valueType: 'option',
       render: (_, data) => [
-          <a onClick={() => {editPop(data)}}>排序</a>,
+          <a key='sort' onClick={() => {editPop(data)}}>排序</a>,
           <DiscountsModel 
             data={data}
             InterFace={productEdit}
             boxref={ref}
+            key='discounts'
           />,
           <DeleteModal 
             boxref={ref} 
@@ -110,6 +111,7 @@ export default () => {
             InterFace={productDelete}
             id={data.id} 
             title={'操作确认'}
+            key='delete'
         />
       ],
     },
@@ -156,7 +158,7 @@ export default () => {
           })
         }}
         toolBarRender={()=>[
-            <Button  onClick={()=>{
+            <Button key='off'  onClick={()=>{
               productUpdateStatus({ids:selectedRowKeys,status:false}).then(res=>{
                 if(res.code==0){
                   setSelectedRowKeys([])
@@ -167,7 +169,7 @@ export default () => {
             }} type="primary">
                 关闭选中商品
             </Button>, 
-            <Button  onClick={()=>{
+            <Button key='on'  onClick={()=>{
               productUpdateStatus({ids:selectedRowKeys,status:true}).then(res=>{
                 if(res.code==0){
                   setSelectedRowKeys([])
@@ -178,11 +180,12 @@ export default () => {
             }} type="primary">
                 开启选中商品
             </Button>,
-             <Button type="primary" onClick={()=>setVisible(true)}>
+             <Button key='add' type="primary" onClick={()=>setVisible(true)}>
                 <PlusOutlined />
                 添加秒约商品
             </Button>,
             <SelectProductModal 
+              key='addgoos'
               title={'添加秒约商品'}  
               visible={visible} 
               setVisible={setVisible} 
