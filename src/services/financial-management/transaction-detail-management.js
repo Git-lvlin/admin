@@ -234,3 +234,17 @@ export const refundDetail = async (params, options = {}) => {
     success: res?.success
   }
 }
+
+// 运营商收益明细管理详情
+export const operationCommissionDetail = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/financial/trans/operationCommissionDetail', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+
+  return {
+    data: res?.data,
+    success: res?.success
+  }
+}

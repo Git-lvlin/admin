@@ -18,6 +18,7 @@ export default {
   'menu.user-management.user-detail': '用户详情',
   'menu.user-management.user-relationship': '用户关系',
   'menu.user-management.new-poster': '海报管理',
+  'menu.user-management.new-poster-new': '(新)海报管理',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
@@ -62,6 +63,7 @@ export default {
   'menu.setting.role-management': '角色管理',
   'menu.setting.authority-management': '权限管理',
   'menu.setting.password': '修改密码',
+  'menu.setting.shipments-area-configuration': '待发货区域配置',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
@@ -244,6 +246,7 @@ export default {
   'menu.financial-management.money-management.supplier-fund-management':'供应商家资金管理',
   'menu.financial-management.money-management.member-store-fund-management':'社区店资金管理',
   'menu.financial-management.money-management.issuing-store-fund-management':'内部店资金管理',
+  'menu.financial-management.money-management.operator-fund-management':'运营商资金管理',
   'menu.financial-management.money-management.payment-details':'收支明细',
   'menu.financial-management.money-management.details':'详情',
   'menu.financial-management.transaction-detail-management':'交易明细管理',
@@ -257,7 +260,7 @@ export default {
   'menu.financial-management.transaction-detail-management.loan-detail-management':'货款明细管理',
   'menu.financial-management.transaction-detail-management.royalty-details':'明细详情',
   'menu.financial-management.transaction-detail-management.after-sales-order-details':'售后订单明细管理',
-  'menu.financial-management.transaction-detail-management.after-order-details':'售后订单详情',
+  'menu.financial-management.transaction-detail-management.operator-revenue-management':'运营商收益明细管理',
   'menu.financial-management.transaction-allocation-management':'交易配置管理',
   'menu.financial-management.transaction-allocation-management.withdrawal-fee-config':'提现费配置',
   'menu.financial-management.subsidy-summary' : '优惠补贴',

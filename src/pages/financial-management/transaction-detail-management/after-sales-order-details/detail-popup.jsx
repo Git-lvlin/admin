@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import { PageContainer } from '@ant-design/pro-layout'
-import { Button } from 'antd'
+import { Button, Drawer } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { refundDetail } from "@/services/financial-management/transaction-detail-management"
@@ -10,11 +8,10 @@ import './styles.less'
 import styles from './styles.less'
 import { tradeType } from '../../common-enum'
 
-const Detail = () => {
-  const {id} = useParams()
+const Detail = ({id, visible, setVisible}) => {
   const [loading, setLoading] = useState(false)
-  const [info, setInfo] = useState({})
-  const [data, setData] = useState({})
+  const [info, setInfo] = useState(null)
+  const [data, setData] = useState(null)
   const [payInfos, setPayInfos] = useState([])
   useEffect(()=>{
     setLoading(true)
@@ -28,16 +25,12 @@ const Detail = () => {
       setLoading(false)
     })
     return ()=>{
-      setInfo({})
+      setInfo(null)
       setData([])
-      setPayInfos({})
+      setPayInfos(null)
     }
   }, [])
-
-
-  const back = ()=> {
-    history.goBack()
-  }
+  
   const fashionableType =(data, amount, fee) =>{
     switch(data){
       case 'goodsAmount':
@@ -291,7 +284,18 @@ const Detail = () => {
   }
 
   return (
-    <PageContainer title={false}>
+    <Drawer 
+      title="售后订单支付明细"
+      placement="right"
+      width={1400}
+      visible={visible}
+      onClose={() => { setVisible(false) }}
+      footer={
+        <div style={{ textAlign: 'right' }}>
+          <Button onClick={() => { setVisible(false) }}>返回</Button>
+        </div>
+      }
+    >
       <ProDescriptions
         loading={loading}
         column={2}
@@ -330,10 +334,7 @@ const Detail = () => {
         bordered
         dataSource={info}
       />
-      <div style={{background: '#fff', padding: 20}}>
-        <Button type='primary' onClick={()=>{back()}}>返回</Button>
-      </div>
-    </PageContainer>
+    </Drawer>
   )
 }
 
