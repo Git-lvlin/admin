@@ -57,7 +57,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a onClick={()=>history.push('/activity-management/share-red-packet-activity/share-packet-rule?id='+record.id)}>查看详情</a>
+            <a key='detail' onClick={()=>history.push('/activity-management/share-red-packet-activity/share-packet-rule?id='+record.id)}>查看详情</a>
         ],
       }, 
     ];
@@ -69,7 +69,7 @@ export default () => {
           options={false}
           request={couponInviteList}
           toolBarRender={()=>[
-            <Button icon={<PlusOutlined />}  onClick={()=>history.push('/activity-management/share-red-packet-activity/share-packet-rule')} type="primary">
+            <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/activity-management/share-red-packet-activity/share-packet-rule')} type="primary">
                 添加活动
             </Button>
         ]}

@@ -60,6 +60,7 @@ export default props => {
                     text={'确认要删除所选评论吗？'} 
                     InterFace={deleteCommentOrReply} 
                     title={'操作确认'}
+                    key='delete'
                 />
             ],
             hideInSearch: true,
