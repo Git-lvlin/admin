@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect,ProFormCheckbox } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal, Tag } from 'antd';
 import { history, useLocation } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
@@ -95,6 +95,7 @@ const TableList = () => {
         setLoading(false);
       })
   }, [page, pageSize, orderType, form, search])
+
   return (
     <PageContainer>
       <ProForm
@@ -271,6 +272,24 @@ const TableList = () => {
                 }
               }}
             />
+            <ProFormCheckbox.Group
+              name="status"
+              label="订单状态"
+              options={[
+                {
+                  label: '待发货',
+                  value: 2
+                },
+                {
+                  label: '已发货',
+                  value: 3
+                },
+                {
+                  label: '已完成',
+                  value: 5
+                },
+              ]}
+            />
           </>
         }
       </ProForm>
@@ -337,7 +356,7 @@ const TableList = () => {
               {
                 isPurchase
                   ?
-                  <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}（ID:{item.supplierId}）{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                  <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}（ID:{item.supplierId} 总计出单数：25单）{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
                   :
                   <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}</div>
               }

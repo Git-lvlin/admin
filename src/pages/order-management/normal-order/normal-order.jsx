@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect,ProFormCheckbox } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Tag, Form } from 'antd';
 import { history, useLocation } from 'umi';
 import styles from './style.less';
@@ -275,6 +275,24 @@ const TableList = () => {
                 }
               }}
             />
+            <ProFormCheckbox.Group
+              name="status"
+              label="订单状态"
+              options={[
+                {
+                  label: '待发货',
+                  value: 2
+                },
+                {
+                  label: '已发货',
+                  value: 3
+                },
+                {
+                  label: '已完成',
+                  value: 5
+                },
+              ]}
+            />
           </>
         }
 
@@ -304,6 +322,10 @@ const TableList = () => {
             value: 3
           },
           {
+            label:'售后中',
+            value: 6
+          },
+          {
             label: '已完成',
             value: 4
           },
@@ -311,7 +333,8 @@ const TableList = () => {
             label: '已关闭',
             value: 5
           },
-        ]}
+        ]
+      }
       />
       <Spin
         spinning={loading}
@@ -337,7 +360,7 @@ const TableList = () => {
               {
                 isPurchase
                   ?
-                  <div className={styles.store_name}>供应商家名称：{item.supplierName}（ID:{item.supplierId}）{(item.supplierHelper === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                  <div className={styles.store_name}>供应商家名称：{item.supplierName}（ID:{item.supplierId} 总计出单数：25单）{(item.supplierHelper === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
                   :
                   <div className={styles.store_name}>供应商家ID：{item.supplierId}</div>
               }
@@ -386,7 +409,7 @@ const TableList = () => {
                   {item.status === 5 ? 0 : amountTransform(item.incomeAmount, '/')}元
                 </div> */}
                 <div style={{ textAlign: 'center' }}>
-                  {{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}
+                  {{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单',7:'售后中' }[item.status]}
                 </div>
                 <div style={{ textAlign: 'center' }}>
                   <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688', 17: '盲盒活动', 18: '签到活动' }[item.orderType] || '秒约')}订单</Tag>
