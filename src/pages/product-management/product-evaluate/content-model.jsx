@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { message, Form,Space,Button,Modal,List,Image,Divider} from 'antd';
+import { message, Form,Space,Button,Modal,List,Image,Divider,Avatar} from 'antd';
 import ProForm, {
   DrawerForm,
   ProFormText,
@@ -8,35 +8,26 @@ import ProForm, {
   ProFormTextArea
 } from '@ant-design/pro-form';
 import { history } from 'umi'
+import { findContent } from '@/services/product-management/product-evaluate';
 
 
 export default (props) => {
-  const { setVisible, visible } = props;
+  const { setVisible, visible,id } = props;
   const formRef = useRef();
   const ref = useRef();
   const [form] = Form.useForm()
+  const [dataList,setDataList]=useState()
 
   const onsubmit = (values) => {
   };
 
   useEffect(() => {
-
+    findContent({id:id}).then(res=>{
+     if(res.code==0){
+      setDataList(res.data)
+     }
+    })
   }, [])
-  const data = [
-    'Fender公司(还没有一个比较官方的中文名字，但大多数音乐人都习惯称其为“芬达”或“芬德”）于1946年建立，全称FenderMusical Instruments Corporation，在过去的50年中，Fender已经成为了美国的标志之一，Fender对现代音乐音色...',
-    'Fender公司(还没有一个比较官方的中文名字，但大多数音乐人都习惯称其为“芬达”或“芬德”）于1946年建立，全称FenderMusical Instruments Corporation，在过去的50年中，Fender已经成为了美国的标志之一，Fender对现代音乐音色...',
-    'Fender公司(还没有一个比较官方的中文名字，但大多数音乐人都习惯称其为“芬达”或“芬德”）于1946年建立，全称FenderMusical Instruments Corporation，在过去的50年中，Fender已经成为了美国的标志之一，Fender对现代音乐音色...',
-    'Fender公司(还没有一个比较官方的中文名字，但大多数音乐人都习惯称其为“芬达”或“芬德”）于1946年建立，全称FenderMusical Instruments Corporation，在过去的50年中，Fender已经成为了美国的标志之一，Fender对现代音乐音色...',
-    'Fender公司(还没有一个比较官方的中文名字，但大多数音乐人都习惯称其为“芬达”或“芬德”）于1946年建立，全称FenderMusical Instruments Corporation，在过去的50年中，Fender已经成为了美国的标志之一，Fender对现代音乐音色...',
-  ]
-  const data2 = [
-    'https://images.pexels.com/photos/9737563/pexels-photo-9737563.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://images.pexels.com/photos/9737563/pexels-photo-9737563.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://images.pexels.com/photos/9737563/pexels-photo-9737563.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://images.pexels.com/photos/9737563/pexels-photo-9737563.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://images.pexels.com/photos/9737563/pexels-photo-9737563.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-  ]
-  
   return (
     <DrawerForm
       onVisibleChange={setVisible}
@@ -66,15 +57,7 @@ export default (props) => {
         await onsubmit(values);
       }}
     >
-      <List
-        // bordered
-        dataSource={data}
-        renderItem={item => (
-          <List.Item>
-            {item}
-          </List.Item>
-        )}
-      />
+      <p>{dataList?.content}</p>
       <List
         grid={{
           gutter: 16,
@@ -85,7 +68,7 @@ export default (props) => {
           xl: 6,
           xxl: 3,
         }}
-        dataSource={data2}
+        dataSource={dataList?.imgs}
         renderItem={item => (
           <List.Item>
             <Image src={item}/>
@@ -93,10 +76,19 @@ export default (props) => {
         )}
       />
       <Divider />
-      <ProFormTextArea
-        name="remark"
-        label="回复"
-        placeholder="如您需要对此评价进行回复，请在此输入您要回复的内容。"
+      <List
+        header={<div>商家回复</div>}
+        dataSource={dataList?.applyList}
+        renderItem={item => (
+          <List.Item>
+            <List.Item.Meta
+              avatar={<Avatar src={dataList?.storeImg} />}
+              title={<p>{dataList?.storeName}</p>}
+              description={item.replyTime}
+            />
+            <Space style={{marginLeft:'20px'}}>{item.replyContent}</Space>
+          </List.Item>
+        )}
       />
     </DrawerForm>
   );

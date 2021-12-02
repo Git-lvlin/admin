@@ -7,72 +7,83 @@ import ContentModel from './content-model';
 import { ProFormSwitch} from '@ant-design/pro-form';
 import AuditModel from './audit-model'
 import styles from './style.less'
+import { findByways } from '@/services/product-management/product-evaluate';
+import { Space } from 'antd';
 const { TabPane } = Tabs
 
 const EvaluateList= (props) => {
+    const { type }=props
     const ref=useRef()
     const [visible,setVisible]=useState()
+    const [visiblePopup,setVisiblePopup]=useState()
+    const [commentId,setCommentId]=useState()
+    const [commentSkuId,setCommentSkuId]=useState()
     const columns = [
         {
             title: '用户ID',
-            dataIndex: 'spuid',
+            dataIndex: 'userId',
             hideInSearch: true,
         },
         {
             title: '用户头像',
-            dataIndex: 'images',
+            dataIndex: 'userImg',
             valueType: 'image',
             hideInSearch:true,
-            render:(_,data)=>{
-                return <Image src={data.images[0]} alt="" width='50px' height='50px' />
-            }
         },
         {
             title: '用户昵称',
-            dataIndex: 'userName',
+            dataIndex: 'nickName',
             valueType: 'text',
         },
         {
             title: '用户打分',
-            dataIndex: 'hitsNum',
+            dataIndex: 'score',
             valueType: 'text',
             hideInSearch: true,
         },
         {
             title: '评价内容',
-            dataIndex: 'likesNum',
+            dataIndex: 'content',
             valueType: 'text',
             hideInSearch: true,
             render:(text, record, _, action)=>[
-                <a onClick={()=>setVisible(true)}>{record.likesNum}</a>
+                <div key='content'>
+                  {
+                    record.content?
+                    <a key='link' onClick={()=>{setVisible(true);setCommentSkuId(record.id)}}>{record.content}</a>
+                    :
+                    <p key='null'>无</p>
+                  }
+                </div>
+
             ],
         },
         {
             title: '评价时间',
-            dataIndex: 'commentNum',
+            dataIndex: 'commentTime',
             valueType: 'text',
             hideInSearch: true,
         },
         {
             title: '订单编号',
-            dataIndex: 'commentNum',
+            dataIndex: 'orderId',
             valueType: 'text',
         },
         {
             title: '被评商品SKUid',
-            dataIndex: 'SKUid',
+            dataIndex: 'skuId',
             valueType: 'text',
             hideInSearch: true,
         },
         {
             title: '被评商家ID',
-            dataIndex: 'ID',
+            dataIndex: 'storeId',
             valueType: 'text',
             hideInSearch: true,
         },
         {
             title: '被评商家名称',
-            dataIndex: 'SKUid',
+            dataIndex: 'storeName',
             valueType: 'text',
         },
         {
@@ -80,30 +91,19 @@ const EvaluateList= (props) => {
             key: 'option',
             valueType: 'option',
             render: (_, data) => [
-                <AuditModel 
-                  record={data}
-                //   type={type} 
-                  state={1}  
-                  label={'通过'}  
-                  text={'确认要通过该帖子的发布吗？'} 
-                //   InterFace={auditDynamic} 
-                  title={'审核确认'}
-                  boxref={ref}
-                />,
-                <AuditModel 
-                  record={data}
-                //   type={type} 
-                  state={2}  
-                  label={'拒绝'}  
-                  text={'确认要拒绝该帖子的通过吗？'} 
-                //   InterFace={auditDynamic} 
-                  title={'审核确认'}
-                  boxref={ref}
-                />,
+              <div key='audit' style={{display:type==1?'block':'none'}}>
+                <a onClick={()=>passVerification(data,2)}>通过&nbsp;&nbsp;</a>
+                <a onClick={()=>passVerification(data,3)}>屏蔽</a>
+              </div>,
+              <a key='eadit' style={{display:type==2?'block':'none'}} onClick={()=>passVerification(data,3,false)}>修改</a>,
+              <a key='turn' style={{display:type==3?'block':'none'}} onClick={()=>passVerification(data,2,true)}>修改</a>
             ],
-            // hideInTable:type==0?false:true
           },
     ];
+  const passVerification=(data,type,status)=>{
+    setVisiblePopup(true)
+    setCommentId({id:data.id,state:type,status:status})
+  }
   const auditSwitch=(off)=>{
         // updateAuditDynamicSwitch({}).then(res=>{
         // })
@@ -114,7 +114,10 @@ const EvaluateList= (props) => {
             rowKey="id"
             options={false}
             actionRef={ref}
-            // request={adminList}
+            params={{
+              state:type
+            }}
+            request={findByways}
             search={{
                 defaultCollapsed: false,
                 labelWidth: 100,
@@ -125,6 +128,7 @@ const EvaluateList= (props) => {
                       fieldProps={{
                           onChange:(bol)=>auditSwitch(bol)
                       }}
+                      key='switch'
                     />,
                     ...dom.reverse()
                 ],
@@ -141,19 +145,30 @@ const EvaluateList= (props) => {
             <ContentModel
                 setVisible={setVisible}
                 visible={visible}
+                id={commentSkuId}
             />
+        }
+        {
+          visiblePopup&&
+          <AuditModel 
+            visiblePopup={visiblePopup}
+            setVisiblePopup={setVisiblePopup}
+            record={commentId}
+            boxref={ref}
+            type={type}
+        />
         }
     </>
   );
 };
 
 export default (props) =>{
-    const [seleType,setSeleType]=useState(0)
+    const [seleType,setSeleType]=useState(1)
     return (
       <PageContainer>
         <Tabs
           centered
-          defaultActiveKey="0"
+          defaultActiveKey="1"
           style={{
             background: '#fff',
             padding: 25
@@ -162,19 +177,19 @@ export default (props) =>{
             setSeleType(val)
           }}
         >
-          <TabPane tab="待处理" key="0">
-            {
-              seleType==0&&<EvaluateList type={0}/>
-            }
-          </TabPane>
-          <TabPane tab="已通过" key="1">
+          <TabPane tab="待处理" key="1">
             {
               seleType==1&&<EvaluateList type={1}/>
             }
           </TabPane>
-          <TabPane tab="已屏蔽" key="2">
+          <TabPane tab="已通过" key="2">
+            {
+              seleType==2&&<EvaluateList type={2}/>
+            }
+          </TabPane>
+          <TabPane tab="已屏蔽" key="3">
             { 
-              seleType==2&&<EvaluateList type={2}/> 
+              seleType==3&&<EvaluateList type={3}/> 
             }
           </TabPane>
         </Tabs>

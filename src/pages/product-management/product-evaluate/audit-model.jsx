@@ -1,22 +1,16 @@
 import React, { useState, useEffect,useRef } from 'react';
 import { ModalForm,ProFormTextArea} from '@ant-design/pro-form';
 import { Button,message } from 'antd';
+import { updGoodsComment } from '@/services/product-management/product-evaluate';
+import { Space } from 'antd';
 
 export default props=>{
-    const {record,type,text,InterFace,title,boxref,label,state,arrId}=props
-    const [byid,setByid]=useState()
-    const [visible, setVisible] = useState(false);
-    const Termination=(record)=>{
-        setByid(record&&record.id)
-        setVisible(true)
-    }
+    const {record,boxref,setVisiblePopup,visiblePopup,type}=props
     return (
         <ModalForm
-            title={title}
-            key={byid}
-            onVisibleChange={setVisible}
-            visible={visible}
-            trigger={<Button style={{background:state==1?'#2ecc71':'#f39c12',color:'#fff'}} onClick={()=>Termination(record)}>{type==0?label:null}</Button>}
+            title='操作确认'
+            onVisibleChange={setVisiblePopup}
+            visible={visiblePopup}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
@@ -25,45 +19,30 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                if(byid||arrId.length){
-                    InterFace({dynamicIds:arrId?arrId:[byid],state,refuseReason:values.refuseReason}).then(res=>{
+                updGoodsComment({id:record.id,state:record.state}).then(res=>{
                         if(res.code==0){
-                            setVisible(false)   
+                            setVisiblePopup(false)   
                             boxref&&boxref.current?.reload()
                             message.success('操作成功')
                             return true;
                         }
                     })
-                }else{
-                    message.error('请先选择帖子')
-                }
                 
             }}
         >
-        <p>{text}</p>
+        <p style={{display:type==1?'block':'none'}}>确认要执行此操作吗？</p>
         {
-            state==2?
-            <ProFormTextArea
-                width="md"
-                name="refuseReason"
-                label="原因"
-                rules={[
-                    {
-                        validator: (rule, value, callback) => {
-                            return new Promise(async (resolve, reject) => {
-                                if (value && value.length > 100) {
-                                    await reject('不能超过100个字符')
-                                } else {
-                                    await resolve()
-                                }
-                            })
-                        }
-                    }
-                ]}
-            />
-            :null
+            type!=1&&<>
+            {
+                record.status?
+                <p>确认要将本条评价修改为<span style={{color:'red'}}>通过状态</span>吗？</p>
+                :
+                <p>确认要将本条评价修改成<span style={{color:'red'}}>屏蔽状态</span>吗？</p>
+            }
+            </>
         }
-        
+
+
     </ModalForm>
     )
 }
