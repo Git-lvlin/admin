@@ -14,8 +14,8 @@ const DailyDataOverview = () => {
   const getFieldValue = (form) => {
     const { dateTime, ...rest } = form.getFieldsValue()
     return {
-      startTime: dateTime?.[0],
-      endTime: dateTime?.[1],
+      startTime: dateTime?.[0].format('YYYY-MM-DD'),
+      endTime: dateTime?.[1].format('YYYY-MM-DD'),
       ...rest
     }
   }
@@ -32,10 +32,6 @@ const DailyDataOverview = () => {
       dataIndex: 'dateTime',
       align: 'center',
       valueType: 'dateRange',
-      initialValue: [moment(+new Date()).format('YYYY-MM-DD'), moment(+new Date()).format('YYYY-MM-DD')],
-      fieldProps: {
-        
-      },
       hideInTable: true
     },
     {

@@ -5,6 +5,7 @@ import {
   Point, 
   Tooltip, 
   Legend,
+  Interval,
   Axis
 } from 'bizcharts'
 import ProCard, { CheckCard } from '@ant-design/pro-card'
@@ -22,7 +23,7 @@ const { Paragraph, Title, Text } = Typography
 const RealTime = () => {
   const [title, setTitle] = useState("支付金额")
   const [unit, setUnit] = useState('单位：元')
-  const [lineData, setLineData] = useState({})
+  const [lineData, setLineData] = useState(null)
   const [loading, setLoading] = useState(false)
   const [code, setCode] = useState("payAmount")
   const [type, setType] = useState(1)
@@ -46,7 +47,7 @@ const RealTime = () => {
       setLoading(false)
     })
     return ()=> {
-      setLineData({})
+      setLineData(null)
     }
   }, [code, type])
 
@@ -58,14 +59,6 @@ const RealTime = () => {
     value: {
       min: 0,
       alias: unit
-    },
-    timeName: {
-      formatter: v => {
-        return {
-          昨日: '昨日',
-          今日: '今日'
-        }[v]
-      }
     }
   }
 
@@ -94,56 +87,88 @@ const RealTime = () => {
           {
             (lineData&&lineData?.[0]) ? 
             <>
-              <span>趋势图类型：</span>
-              <Radio.Group 
-                onChange={onChange}
-                value={type}
-                size="large"
-              >
-                <Radio value={1}>各时间点不相加</Radio>
-                <Radio value={2}>各时间点相加</Radio>
-              </Radio.Group>
-              <Chart
-                scale={scale}
-                autoFit
-                height={440}
-                data={lineData}
-                interactions={['element-active']}
-                forceUpdate
-              >
-                <Axis
-                  name="value"
-                  title={chartUnit}
-                />
-                <Point
-                  position="countTime*value"
-                  color="timeName"
-                  shape='circle' 
-                />
-                <Line 
-                  shape="line"
-                  position="countTime*value"
-                  color="timeName"
-                />
-                <Tooltip
-                  shared
-                  showCrosshairs
-                />
-                <Legend
-                  position="top"
-                  background={{
-                    style: {
-                      fill: '#fff',
-                      stroke: '#fff'
-                    }
-                  }}
-                  itemName={{
-                    style: {
-                      fontSize: 16
-                    }
-                  }}
-                />
-              </Chart>
+              {
+                code === 'newUser' || code === 'newStore' ?
+                <Chart 
+                  height={400}
+                  padding="auto" 
+                  data={lineData} 
+                  autoFit
+                >
+                  <Interval
+                    adjust={[
+                    {
+                        type: 'dodge',
+                        marginRatio: 0,
+                      },
+                    ]}
+                    color="timeName"
+                    position="countTime*value"
+                    label={[
+                      "value",
+                      ()=>({
+                        position: "middle",
+                        style: {
+                          fill: "#fff"
+                        }
+                      })
+                    ]}
+                  />
+                  <Tooltip shared />
+                </Chart>:
+                <>
+                  <span>趋势图类型：</span>
+                  <Radio.Group 
+                    onChange={onChange}
+                    value={type}
+                    size="large"
+                  >
+                    <Radio value={1}>各时间点不相加</Radio>
+                    <Radio value={2}>各时间点相加</Radio>
+                  </Radio.Group>
+                  <Chart
+                    scale={scale}
+                    autoFit
+                    height={440}
+                    data={lineData}
+                    interactions={['element-active']}
+                    forceUpdate
+                  >
+                    <Axis
+                      name="value"
+                      title={chartUnit}
+                    />
+                    <Point
+                      position="countTime*value"
+                      color="timeName"
+                      shape='circle' 
+                    />
+                    <Line 
+                      shape="line"
+                      position="countTime*value"
+                      color="timeName"
+                    />
+                    <Tooltip
+                      shared
+                      showCrosshairs
+                    />
+                    <Legend
+                      position="top"
+                      background={{
+                        style: {
+                          fill: '#fff',
+                          stroke: '#fff'
+                        }
+                      }}
+                      itemName={{
+                        style: {
+                          fontSize: 16
+                        }
+                      }}
+                    />
+                  </Chart>
+                </>
+              }
             </>:
             <Empty />
           }
@@ -169,13 +194,23 @@ const RealTime = () => {
               break
             case 'registerMember':
               setCode(value)
-              setUnit(' ')
+              setUnit('单位：人')
               setTitle('新增用户数')
               break
             case 'registerStore':
               setCode(value)
-              setUnit(' ')
+              setUnit('单位：人')
               setTitle('新增店主数')
+              break
+            case 'newUser':
+              setCode('newUser')
+              setUnit('单位：人')
+              setTitle('截止到今日累计用户数')
+              break
+            case 'newStore':
+              setCode('newStore')
+              setUnit('单位：人')
+              setTitle('截止到今日累计店主数')
               break
           }
         }}
@@ -359,26 +394,25 @@ const RealTime = () => {
           <CheckCard 
             style={{ width: "36%", height: 110, position: 'relative' }}
             bordered
-            disabled
             description={
               <>
                 <Paragraph>
                   <Space size={20}>
                     <Text>截止到今天累计用户数</Text>
                     <Title level={3}>
-                      <Yuan>{data?.registerStore?.today}</Yuan>
+                      <Yuan>{data?.totalUser?.today}</Yuan>
                     </Title>
                   </Space>
                 </Paragraph>
                 <Paragraph>
                   <Space size={20}>
                     <Text>截止到昨日</Text>
-                    <Yuan>{data?.registerStore?.yestoday}</Yuan>
+                    <Yuan>{data?.totalUser?.yestoday}</Yuan>
                   </Space>
                 </Paragraph>
               </>
             }
-            value={data?.registerStore?.code}
+            value='newUser'
           />
           <CheckCard 
             style={{ width: "36%", height: 110, position: 'relative' }}
@@ -389,19 +423,19 @@ const RealTime = () => {
                   <Space size={20}>
                     <Text>截止到今天累计店主数</Text>
                     <Title level={3}>
-                      <Yuan>{data?.registerStore?.today}</Yuan>
+                      <Yuan>{data?.totalStore?.today}</Yuan>
                     </Title>
                   </Space>
                 </Paragraph>
                 <Paragraph>
                   <Space size={20}>
                     <Text>截止到昨日</Text>
-                    <Yuan>{data?.registerStore?.yestoday}</Yuan>
+                    <Yuan>{data?.totalStore?.yestoday}</Yuan>
                   </Space>
                 </Paragraph>
               </>
             }
-            value={data?.registerStore?.code}
+            value='newStore'
           />
         </ProCard>
       </CheckCard.Group>

@@ -6,7 +6,7 @@ import moment from 'moment'
 
 import styles from './styles.less'
 import Yuan from '../components/Yuan'
-import { operationDataTotalView } from '@/services/data-board/operation-data'
+import { supplierDataOverview } from '@/services/data-board/supplier-data'
 
 const { Text, Title } = Typography
 
@@ -45,7 +45,7 @@ const CardTitle = ({times, setTimes}) => (
       setTimes(value?.time)
     }}
   >
-    <h3 className={styles.title}>运营中心数据总览</h3>
+    <h3 className={styles.title}>供应商数据总览</h3>
     <ProFormDateRangePicker 
       label="时间范围"
       name="time"
@@ -54,7 +54,7 @@ const CardTitle = ({times, setTimes}) => (
   </ProForm>
 )
 
-const CommunityStoreDataOverview = () => {
+const SupplierDataOverview = () => {
   const dateNow = moment(+new Date()).format('YYYY-MM-DD')
   const startTimes = moment('20200101').format('YYYY-MM-DD')
   const [times, setTimes] = useState([startTimes, dateNow])
@@ -63,11 +63,11 @@ const CommunityStoreDataOverview = () => {
 
   useEffect(()=>{
     setLoading(true)
-    operationDataTotalView({
+    supplierDataOverview({
       startTime: times?.[0],
       endTime: times?.[1]
     }).then(res=> {
-      setData(res.data?.[0])
+      setData(res.data)
     }).finally(()=> {
       setLoading(false)
     })
@@ -84,21 +84,21 @@ const CommunityStoreDataOverview = () => {
         title={<CardTitle times={times} setTimes={setTimes}/>}
       >
         <ProCard bordered loading={loading}>
-          <Text>已创建的运营中心总数</Text>
+          <Text>未审核的供应商数量</Text>
           <Title level={3}>
-            <Yuan>{data?.totals}</Yuan>
+            <Yuan>{data?.notApprovedNum}</Yuan>
           </Title>
         </ProCard>
         <ProCard bordered loading={loading}>
-          <Text>已开户的运营中心数量</Text>
+          <Text>已审核未开户的供应商</Text>
           <Title level={3}>
-            <Yuan>{data?.openAccount}</Yuan>
+            <Yuan>{data?.approvedNotAccountNum}</Yuan>
           </Title>
         </ProCard>
         <ProCard bordered loading={loading}>
-          <Text>未开户的运营中心数量</Text>
+          <Text>已审核已开户的供应商</Text>
           <Title level={3}>
-            <Yuan>{data?.notAccount}</Yuan>
+            <Yuan>{data?.approvedOpenAccountNum}</Yuan>
           </Title>
         </ProCard>
       </ProCard>
@@ -106,4 +106,4 @@ const CommunityStoreDataOverview = () => {
   )
 }
 
-export default CommunityStoreDataOverview
+export default SupplierDataOverview

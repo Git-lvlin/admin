@@ -161,9 +161,7 @@ const CommunityStoreData = () => {
       ),
       dataIndex: 'wsRat',
       hideInSearch: true,
-      align: 'center',
-      render: (_) => `${amountTransform(Number(_), '*')}%`
-
+      align: 'center'
     },
     {
       title: 'C端销售订单数',
