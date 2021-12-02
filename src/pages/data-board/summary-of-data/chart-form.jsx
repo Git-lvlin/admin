@@ -11,6 +11,7 @@ import { Empty, Spin, Tooltip as Tp, Space } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import Yuan from '../components/Yuan'
+import { amountTransform } from '@/utils/utils'
 import styles from './style.less'
 
 const ChartForm = ({
@@ -18,7 +19,7 @@ const ChartForm = ({
   data, 
   loading,
   code,
-  value
+  setCode
 }) => {
   const [lineData, setLineData] = useState([])
 
@@ -36,23 +37,20 @@ const ChartForm = ({
     }
   }, [data])
 
-  const setVal = (value) => {
-    code(value)
-  }
-
   return (
     <>
       <CheckCard.Group
-        onChange={(value) => setVal(value)}
-        multiple
+        onChange={(v) => {
+          v!==undefined&&setCode(v)
+        }}
         loading={loading}
         size="small"
-        value={value}
+        value={code}
       >
         <CheckCard
           title={ 
             <div className={styles.title}>
-              <Yuan>{data?.count?.accessTimes}</Yuan>
+              <Yuan>{data?.count?.accessMember}</Yuan>
             </div> 
           }
           description={
@@ -63,12 +61,12 @@ const ChartForm = ({
               </Tp>
             </Space>
           }
-          value="visitList"
+          value="visitMemberList"
         />
         <CheckCard 
           title={ 
             <div className={styles.title}>
-              <Yuan>{data?.count?.payOrder}</Yuan>
+              <Yuan>{data?.count?.accessTimes}</Yuan>
             </div>
           }
           description={
@@ -79,11 +77,11 @@ const ChartForm = ({
               </Tp>
             </Space>
           }
-          value="payOrderList"
+          value="visitList"
         />
         <CheckCard
           title={
-            <div className={styles.title}>{data?.count?.conversionRate}</div> 
+            <div className={styles.title}>{data?.count?.regMember}</div> 
           }
           description={
             <Space>
@@ -93,13 +91,12 @@ const ChartForm = ({
               </Tp>
             </Space>
           }
-          value="conversionRate"
-          disabled
+          value="regMemberList"
         />
         <CheckCard 
           title={ 
             <div className={styles.title}>
-              <Yuan>{Number(data?.count?.payAmount)}</Yuan>
+              <Yuan>{Number(data?.count?.payOrder)}</Yuan>
             </div> 
           }
           description={
@@ -110,7 +107,7 @@ const ChartForm = ({
               </Tp>
             </Space>
           }
-          value="payAmountList"
+          value="payOrderList"
         />
         <CheckCard
           title={ 
@@ -131,7 +128,7 @@ const ChartForm = ({
         <CheckCard 
           title={ 
             <div className={styles.title}>
-              <Yuan>{data?.count?.regMember}</Yuan>
+              <Yuan>{data?.count?.payAmount}</Yuan>
             </div> 
           }
           description={
@@ -142,12 +139,12 @@ const ChartForm = ({
               </Tp>
             </Space>
           }
-          value="regMemberList"
+          value="payAmountList"
         />
         <CheckCard 
           title={ 
             <div className={styles.title}>
-              <Yuan>{data?.count?.accessMember}</Yuan>
+              {amountTransform(Number(data?.count?.payConversionRat), '*')}%
             </div> 
           }
           description={
@@ -158,12 +155,12 @@ const ChartForm = ({
               </Tp>
             </Space>
           }
-          value="visitMemberList"
+          disabled
         />
         <CheckCard 
           title={ 
             <div className={styles.title}>
-              xxx
+              <Yuan>{data?.count?.gmvAmount}</Yuan>
             </div> 
           }
           description={
@@ -174,7 +171,7 @@ const ChartForm = ({
               </Tp>
             </Space>
           }
-          value="visitMemberList"
+          value="gmvList"
         />
       </CheckCard.Group>
       {

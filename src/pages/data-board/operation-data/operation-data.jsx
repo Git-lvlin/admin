@@ -14,6 +14,7 @@ import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import { getTimeDistance } from '@/utils/utils'
 import OperationDataOverview from './operation-data-overview'
+import { amountTransform } from '@/utils/utils'
 
 const OperationData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
@@ -77,7 +78,7 @@ const OperationData = () => {
           </Tooltip>
         </Space>
       ),
-      dataIndex: '',
+      dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true
     },
@@ -115,9 +116,10 @@ const OperationData = () => {
           </Tooltip>
         </Space>
       ),
-      dataIndex: '',
+      dataIndex: 'wsRat',
       hideInSearch: true,
-      align: 'center'
+      align: 'center',
+      render: (_)=> amountTransform(Number(_), '*') + '%' 
     },
     {
       title: '社区店采购订单总量',
@@ -133,19 +135,19 @@ const OperationData = () => {
     },
     {
       title: '总收益额',
-      dataIndex: 'totalAll',
+      dataIndex: 'totalAmount',
       hideInSearch: true,
       align: 'center'
     },
     {
       title: '佣金总收益',
-      dataIndex: '',
+      dataIndex: 'agentCompanyCommission',
       hideInSearch: true,
       align: 'center'
     },
     {
       title: '补贴总收益',
-      dataIndex: '',
+      dataIndex: 'agentCompanyDeliverFee',
       hideInSearch: true,
       align: 'center'
     }

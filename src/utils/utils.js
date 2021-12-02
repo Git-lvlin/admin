@@ -230,11 +230,9 @@ export const getTimeDistance = (type) => {
   // 上个月
   if (type === 'last-month') {
     const month = now.getMonth();
-    const nextDate = moment(now).add(1, 'months');
-    const nextYear = nextDate.year();
     return [
       moment(`${year}-${fixedZero(month)}-01 00:00:00`),
-      moment(moment(`${nextYear}-${fixedZero(month + 1)}-01 00:00:00`).valueOf() - 1000),
+      moment(moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`).valueOf() - 1000),
     ];
   }
 

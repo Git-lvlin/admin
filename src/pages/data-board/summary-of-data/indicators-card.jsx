@@ -11,7 +11,7 @@ const IndicatorsCard = () => {
   const [lineData, setLineData] = useState([])
   const [loading, setLoading] = useState(false)
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('week'))
-  const [code, setCode] = useState(['visitList'])
+  const [code, setCode] = useState('visitMemberList')
 
   const selectDate = (type) => {
     setRangePickerValue(getTimeDistance(type))
@@ -47,7 +47,7 @@ const IndicatorsCard = () => {
     coreData({
       startTime: moment(rangePickerValue[0]).format("YYYY-MM-DD"),
       endTime: moment(rangePickerValue[1]).format("YYYY-MM-DD"),
-      codes: code.join(',')
+      codes: code
     }).then(res => {
       setLineData(res.data)
     }).finally(()=> {
@@ -82,16 +82,7 @@ const IndicatorsCard = () => {
   const scale = {
     value: { min: 0 },
     reportName: {
-      formatter: v => {
-        return {
-          访问次数: '访问次数',
-          新增订单数: '新增订单数',
-          支付金额: '支付金额',
-          下单支付用户数: '下单支付用户数',
-          新增用户数: '新增用户数',
-          访问用户数: '访问用户数'
-        }[v]
-      }
+      formatter: v => v
     }
   }
 
@@ -110,8 +101,8 @@ const IndicatorsCard = () => {
         scale={scale}
         data={lineData}
         loading={loading}
-        code={setCode}
-        value={code}
+        setCode={setCode}
+        code={code}
       />
     </div>
   )
