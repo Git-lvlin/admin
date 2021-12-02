@@ -322,10 +322,6 @@ const TableList = () => {
             value: 3
           },
           {
-            label:'售后中',
-            value: 6
-          },
-          {
             label: '已完成',
             value: 4
           },
