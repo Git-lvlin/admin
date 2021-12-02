@@ -38,6 +38,12 @@ const Detail = () => {
       dataIndex: 'skuId',
     },
     {
+      title: '商品分类',
+      dataIndex: 'retailSupplyPrice',
+      valueType: 'text',
+      render: (_, data) => `${data.gcId1Display}-${data.gcId2Display}`,
+    },
+    {
       title: '规格',
       dataIndex: 'skuNameDisplay',
     },
@@ -70,12 +76,22 @@ const Detail = () => {
       render: (_) => amountTransform(_, '/')
     },
     {
+      title: '平均运费(元)',
+      dataIndex: 'wholesaleFreight',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
       title: '集约库存',
       dataIndex: 'totalStockNum',
     },
     {
       title: '集约价',
       dataIndex: 'price',
+      
+    },
+    {
+      title: '实际盈亏(元)',
+      dataIndex: 'profit',
       render: (_) => amountTransform(_, '/')
     },
     {
@@ -101,6 +117,10 @@ const Detail = () => {
           <div>补贴 {detailData?.wholesale?.subsidy / 100}元</div>
         </>
       )
+    },
+    {
+      title: '集采箱规单位量',
+      dataIndex: 'batchNumber',
     },
     {
       title: '单次起订量',
