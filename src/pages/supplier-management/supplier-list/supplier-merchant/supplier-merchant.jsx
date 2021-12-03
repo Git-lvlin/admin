@@ -97,7 +97,6 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入供应商家名称'
       },
-      width: 200,
     },
     {
       title: '供应商家ID',
