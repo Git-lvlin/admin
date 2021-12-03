@@ -89,7 +89,6 @@ const TableList = () => {
       dataIndex: 'id',
       valueType: 'text',
       hideInSearch: true,
-      width: 70,
     },
     {
       title: '供应商家名称',
@@ -116,14 +115,12 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入登录账号'
       },
-      width: 200,
     },
     {
       title: '负责人',
       dataIndex: 'companyUserName',
       valueType: 'text',
       hideInSearch: true,
-      width: 200,
     },
     {
       title: '状态',
@@ -133,21 +130,18 @@ const TableList = () => {
         0: '禁用',
         1: '启用'
       },
-      width: 50,
     },
     {
       title: '创建人',
       dataIndex: 'createUser',
       valueType: 'text',
       hideInSearch: true,
-      width: 200,
     },
     {
       title: '创建时间',
       dataIndex: 'createTime',
       valueType: 'text',
       hideInSearch: true,
-      width: 150,
     },
     {
       title: '子账号',
@@ -157,7 +151,6 @@ const TableList = () => {
       render: (_, data) => {
         return <a onClick={() => { history.push(`/supplier-management/supplier-sub-account/${data.bindAccountId}`) }}>{_}</a>
       },
-      width: 80,
     },
     {
       title: '资金账户审核状态',
@@ -172,7 +165,6 @@ const TableList = () => {
         4: '待开户',
         5: '审核拒绝'
       },
-      width: 200,
       ellipsis: true,
     },
     {
@@ -199,7 +191,6 @@ const TableList = () => {
           </>
         )
       },
-      width: 400
     },
     {
       title: '绑卡状态',
@@ -221,7 +212,6 @@ const TableList = () => {
         }
 
       },
-      width: 80,
     },
     {
       title: '开户类型',
@@ -249,7 +239,6 @@ const TableList = () => {
           <a onClick={() => { setSelectItem(data); setIsModalVisible(true) }}>重置密码</a>
         </Space>
       ),
-      width: 350,
     },
   ];
 
@@ -269,9 +258,6 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={getCommonList}
-        style={{
-          minWidth: '1400px'
-        }}
         search={{
           defaultCollapsed: false,
           labelWidth: 130,
@@ -309,7 +295,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: '86vw' }}
+        scroll={{ x: 'max-content' }}
       />
       {basicInfoVisible && <BasicInfo
         visible={basicInfoVisible}
