@@ -35,6 +35,7 @@ const TableList = () => {
   const isPurchase = location.pathname.includes('purchase')
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({});
+  const [orderStatusType,setOrderStatusType]=useState()
 
   const pageChange = (a, b) => {
     setPage(a)
@@ -42,6 +43,7 @@ const TableList = () => {
   }
 
   const orderTypeChange = (e) => {
+    setOrderStatusType([])
     setOrderType(e.target.value)
     setPage(1)
   }
@@ -64,7 +66,7 @@ const TableList = () => {
   }
 
   const getFieldValue = () => {
-    const { time, ...rest } = form.getFieldsValue();
+    const { time,statusArr, ...rest } = form.getFieldsValue();
 
     return {
       status: orderType,
@@ -73,6 +75,7 @@ const TableList = () => {
       memberId: location?.query?.memberId,
       wsId: location?.query?.wsId,
       operatorSource: 2,
+      statusArr:orderType!==''?'':statusArr,
       ...rest,
     }
   }
@@ -273,15 +276,22 @@ const TableList = () => {
               }}
             />
             <ProFormCheckbox.Group
-              name="status"
+              name="statusArr"
               label="订单状态"
+              fieldProps={{
+                onChange:(val)=>{
+                  setOrderType('')
+                  setOrderStatusType(val)
+                },
+                value:orderStatusType
+              }}
               options={[
                 {
-                  label: '待发货',
+                  label: '已付尾款',
                   value: 2
                 },
                 {
-                  label: '已发货',
+                  label: '待收货',
                   value: 3
                 },
                 {
@@ -356,7 +366,7 @@ const TableList = () => {
               {
                 isPurchase
                   ?
-                  <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}（ID:{item.supplierId} 总计出单数：25单）{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                  <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}（ID:{item.supplierId} 总计出单数：{item.supplierOrderNums}单）{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
                   :
                   <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}</div>
               }
