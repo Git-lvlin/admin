@@ -1,14 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
 import { Form } from 'antd';
-import Upload from '@/components/upload';
-import styles from './edit-table.less';
-import debounce from 'lodash/debounce';
-import * as api from '@/services/product-management/product-list';
-import { amountTransform } from '@/utils/utils'
 
 export default function EditTable(props) {
-  const { tableHead, tableData, setTableData, settleType, goodsSaleType } = props;
+  const { tableHead, tableData, settleType, goodsSaleType, isSample } = props;
   const [columns, setColumns] = useState([])
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
@@ -22,7 +17,6 @@ export default function EditTable(props) {
           title: item,
           dataIndex: `spec${index + 1}`,
           editable: false,
-          width: 130,
         })
       }
     });
@@ -42,58 +36,75 @@ export default function EditTable(props) {
         dataIndex: 'retailSupplyPrice',
         editable: false,
         hideInTable: goodsSaleType === 1,
-        width: 130,
       },
       {
         title: '批发供货价(元)',
         dataIndex: 'wholesaleSupplyPrice',
         editable: false,
-        width: 130,
         hideInTable: goodsSaleType === 2,
       },
       {
         title: '集采箱规单位量',
         dataIndex: 'batchNumber',
-        width: 130,
         hideInTable: goodsSaleType === 2,
       },
       {
         title: '最低批发量',
         dataIndex: 'wholesaleMinNum',
         editable: false,
-        width: 130,
         hideInTable: goodsSaleType === 2,
       },
-
+      {
+        title: '样品供货价(元)',
+        dataIndex: 'sampleSupplyPrice',
+        hideInTable: isSample !== 1,
+      },
+      {
+        title: '样品起售量',
+        dataIndex: 'sampleMinNum',
+        hideInTable: isSample !== 1,
+      },
+      {
+        title: '样品限售量',
+        dataIndex: 'sampleMaxNum',
+        hideInTable: isSample !== 1,
+      },
+      {
+        title: '样品是否包邮',
+        dataIndex: 'sampleFreight',
+        hideInTable: isSample !== 1,
+        render: (_) => _ === 1 ? '包邮' : '不包邮',
+      },
+      {
+        title: '样品运费模板',
+        dataIndex: 'sampleFreightId',
+        render: (_) => _.label ? _.label : '_',
+        hideInTable: isSample !== 1,
+      },
       {
         title: '库存预警值',
         dataIndex: 'stockAlarmNum',
-        width: 90,
         editable: false,
       },
       {
         title: '可用库存',
         dataIndex: 'stockNum',
-        width: 90,
         editable: false,
       },
       {
         title: '平均运费(元)',
         dataIndex: 'wholesaleFreight',
-        width: 130,
         hideInTable: goodsSaleType === 2,
       },
       {
         title: '是否包邮',
         dataIndex: 'isFreeFreight',
-        width: 130,
         render: (_) => _ === 1 ? '包邮' : '不包邮',
         hideInTable: goodsSaleType === 1,
       },
       {
         title: '运费模板',
         dataIndex: 'freightTemplateId',
-        width: 130,
         render: (_) => _.label ? _.label : '_',
         hideInTable: goodsSaleType === 1,
       },
@@ -119,7 +130,7 @@ export default function EditTable(props) {
       columns={columns}
       rowKey="key"
       value={dataSource}
-      scroll={{ x: '70vw' }}
+      scroll={{ x: 'max-content' }}
       controlled
       editable={{
         editableKeys,
