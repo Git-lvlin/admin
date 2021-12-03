@@ -2,39 +2,38 @@ import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 
 import ProTable from '@ant-design/pro-table'
-import { Space, Radio } from 'antd'
+import { Space, Radio, DatePicker, Tooltip } from 'antd'
 import moment from 'moment'
 
 import Yuan from '../components/Yuan'
 import LineChart from './line-chart'
 import RegionalOrderAnalysis from './regional-order-analysis'
 import styles from './styles.less'
+import { getTimeDistance } from '@/utils/utils'
 import { orderAnalysis, orderStatistical } from '@/services/data-board/order-analysis'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 
-const dateNow = moment(+new Date()).format('YYYY-MM-DD')
-const date = (day) => {
-  if(day === 0) {
-    return dateNow
-  } else {
-    return moment().subtract(day, 'days').calendar().replaceAll('/', '-')
-  }
-}
+const { RangePicker } = DatePicker
 
 const SelectDate = ({
-  dateSelect,
-  setDateSelect
+  selectDate,
+  rangePickerValue,
+  handleRangePickerChange
 }) => {
   
   const handleChange = (v)=> {
     switch(v.target.value) {
       case 7:
-        setDateSelect(date(7))
+        selectDate('nearly-7-days')
       break
       case 30:
-        setDateSelect(date(30))
+        selectDate('nearly-a-month')
       break
       case 90:
-        setDateSelect(date(90))
+        selectDate('nearly-3-month')
+      break
+      case 180:
+        selectDate('nearly-6-month')
       break
     }
   }
@@ -53,10 +52,16 @@ const SelectDate = ({
           <Radio.Button value={7}>近7天</Radio.Button>
           <Radio.Button value={30}>近30天</Radio.Button>
           <Radio.Button value={90}>近3个月</Radio.Button>
+          <Radio.Button value={180}>近6个月</Radio.Button>
         </Radio.Group>
-        <div className={styles.date}>
-          查询时间：{dateSelect} 至 {dateNow}
-        </div>
+        <RangePicker
+          value={rangePickerValue}
+          onChange={handleRangePickerChange}
+          style={{
+            width: 256,
+          }}
+          allowClear={false}
+        />
       </Space>
     </div>
   )
@@ -66,9 +71,9 @@ const OrderAnalysis = () => {
   const [value, setValue] = useState(1)
   const [data, setData] = useState([])
   const [tableData, setTableData] = useState([])
-  const [dateSelect, setDateSelect] = useState(date(7))
   const [totalOrder, setTotalOrder] = useState(0)
   const [totalAmount, setTotalAmount] = useState(0)
+  const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
 
   const onChange = e => {
     setValue(e.target.value)
@@ -76,16 +81,16 @@ const OrderAnalysis = () => {
 
   useEffect(() => {
     orderAnalysis({
-      startTime: dateSelect, 
-      endTime: dateNow
+      startTime: moment(rangePickerValue?.[0]).format("YYYY-MM-DD"), 
+      endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD")
     }).then(res => {
       if(res.success)  {
         setTableData(res.data)
         setTotalAmount(res?.data?.reduce((acc, curr) => (
-          acc + Number(curr.totalSales)
+          acc + Number(curr.totalPay)
         ), 0))
         setTotalOrder(res?.data?.reduce((acc, curr) => (
-          acc + Number(curr.payCount)
+          acc + Number(curr.payOrdersNum)
         ), 0))
       }
     })
@@ -93,12 +98,12 @@ const OrderAnalysis = () => {
       setTotalOrder(0)
       setTotalAmount(0)
     }
-  }, [dateSelect])
+  }, [rangePickerValue])
 
   useEffect(() => {
     orderStatistical({
-      startTime: dateSelect, 
-      endTime: dateNow,
+      startTime: moment(rangePickerValue?.[0]).format("YYYY-MM-DD"), 
+      endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD"),
       type: value
     }).then(res=> {
       const arr = res?.data?.map(item=> {
@@ -113,7 +118,7 @@ const OrderAnalysis = () => {
     return () => {
       setData([])
     }
-  }, [dateSelect, value])
+  }, [rangePickerValue, value])
   
   const scale = {
     value: { min: 0 },
@@ -127,6 +132,14 @@ const OrderAnalysis = () => {
         }[v]
       }
     }
+  }
+
+  const selectDate = (type) => {
+    setRangePickerValue(getTimeDistance(type))
+  }
+
+  const handleRangePickerChange = (value) => {
+    setRangePickerValue(value)
   }
 
   const columns = [
@@ -143,16 +156,87 @@ const OrderAnalysis = () => {
       align: 'center'
     },
     {
-      title: '支付订单数',
-      dataIndex: 'payCount',
+      title: ()=>(
+        <Space>
+          <span>总订单数</span>
+          <Tooltip title="包含未支付订单，不含售后订单">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'totalOrdersNum',
       align: 'center'
     },
     {
-      title: '总交易额',
-      dataIndex: 'totalSales',
+      title: '支付订单数',
+      dataIndex: 'payOrdersNum',
+      align: 'center'
+    },
+    {
+      title:  ()=>(
+        <Space>
+          <span>交易总额</span>
+          <Tooltip title="包含未支付订单，不含售后订单">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'totalAmount',
+      align: 'center'
+    },
+    {
+      title:  ()=>(
+        <Space>
+          <span>成交总额</span>
+          <Tooltip title="不含未支付订单，只统计已支付的">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'totalPay',
+      align: 'center'
+    },
+    {
+      title:  ()=>(
+        <Space>
+          <span>下单总人数</span>
+          <Tooltip title="含未支付订单">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'orderUserNum',
+      align: 'center'
+    },
+    {
+      title: '下单支付总人数',
+      dataIndex: 'orderPayUserNum',
+      align: 'center'
+    },
+    {
+      title:  ()=>(
+        <Space>
+          <span>成交平均单价</span>
+          <Tooltip title="成交总额/支付订单数">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'averagePrice',
+      align: 'center'
+    },
+    {
+      title: '退款笔数',
+      dataIndex: 'refundNum',
+      align: 'center'
+    },
+    {
+      title: '退款总额',
+      dataIndex: 'refundAmount',
       align: 'center'
     }
   ]
+
   return (
     <PageContainer title={false}>
       <ProTable
@@ -164,17 +248,24 @@ const OrderAnalysis = () => {
         toolbar={{
           title: '订单趋势分析',
           settings: false,
-          subTitle: <SelectDate setDateSelect={setDateSelect} dateSelect={dateSelect}/>
+          subTitle: (
+            <SelectDate
+              selectDate={selectDate}
+              rangePickerValue={rangePickerValue}
+              handleRangePickerChange={handleRangePickerChange}
+            />
+          )
         }}
         tableRender={(_, dom) => (
           <>
             { dom }
-            {
-              <div className={styles.summary}>
-                <span>支付订单数：<Yuan>{totalOrder}</Yuan></span>
-                <span>总交易额：<Yuan>{totalAmount}</Yuan></span>
-              </div>
-            }
+            <div className={styles.summary}>
+              <span>支付订单数：<Yuan>{totalOrder}</Yuan></span>
+              <span>成交总额：<Yuan>{totalAmount}</Yuan></span>
+              <Tooltip title="4种订单类型的成交额总和">
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </div>
           </>
         )}
       />
@@ -185,7 +276,7 @@ const OrderAnalysis = () => {
           size="large"
         >
           <Radio value={1}>订单数</Radio>
-          <Radio value={2}>交易额</Radio>
+          <Radio value={2}>成交额</Radio>
         </Radio.Group>
         <LineChart 
           data={data}

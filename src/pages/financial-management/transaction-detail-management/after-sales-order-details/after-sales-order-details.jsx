@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
+import { history } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
 import { refundPage } from '@/services/financial-management/transaction-detail-management'
@@ -10,6 +11,10 @@ import Detail from './detail-popup'
 const AfterSalesOrderDetails = () =>{
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState(null)
+
+  const skipToDetails = data => {
+    history.push(`/financial-management/transaction-detail-management/after-sales-order-details/detail/${data}`)
+  }
 
   const columns = [
     {
@@ -110,6 +115,13 @@ const AfterSalesOrderDetails = () =>{
       title: '创建时间', 
       dataIndex: 'createTime',
       hideInSearch: true
+    },
+    {
+      title: '操作',
+      dataIndex: 'optoion',
+      valueType: 'option',
+      fixed: 'right',
+      render: (_, records)=> <a onClick={()=>{skipToDetails(records?.id)}}>详情</a>
     }
   ]
   return (

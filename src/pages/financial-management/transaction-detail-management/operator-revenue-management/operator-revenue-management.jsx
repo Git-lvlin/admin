@@ -15,7 +15,7 @@ const OperatorRevenueManagement = () =>{
   const [selectItem, setSelectItem] = useState({})
 
   const skipToDetail = data => {
-    history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=operator`)
+    history.push(``)
   }
 
   const getFieldValue = (form) => {
@@ -108,7 +108,14 @@ const OperatorRevenueManagement = () =>{
       dataIndex: 'createTime',
       valueType: 'dateRange',
       hideInTable: true
+    },
+    {
+      title: '操作',
+      dataIndex: 'option',
+      valueType: 'option',
+      render: (_, records)=> <a target='_blank' href={`/financial-management/transaction-detail-management/royalty-details/${records?.orderNo}?type=operator`}>详情</a>
     }
+
   ]
   return (
     <PageContainer title={false}>

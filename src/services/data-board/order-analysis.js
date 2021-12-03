@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 // 订单分析
 export const orderAnalysis = async (params = {}, options = {}) => {
-  const res = await request('/auth/java-admin/report/config/orderAnalysis', {
+  const res = await request('/auth/java-admin/report/config/orderTrendAnalysis', {
     method: 'POST',
     data: params,
     ...options

@@ -51,3 +51,37 @@ export const sumData = async (params = {}, options = {}) => {
     success: res.success
   }
 }
+
+// 数据总览
+export const operationDailySummaryData = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/config/operationDailySummaryData', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
+
+// 每日数据概况
+export const dailyDataOverview = async (params = {}, options = {}) => {
+  const { pageSize=10, current=1, dateTime, ...rest } = params
+  const res = await request('/auth/java-admin/report/config/dailyDataOverview', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      startTime: dateTime?.[0],
+      endTime: dateTime?.[1],
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data.records,
+    success: res.success,
+    total: res.data.total
+  }
+}

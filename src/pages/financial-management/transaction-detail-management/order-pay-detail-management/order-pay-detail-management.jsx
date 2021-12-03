@@ -107,8 +107,16 @@ const OrderPayDetailManagement = () =>{
       title: '支付时间',
       dataIndex: 'payTime',
       hideInSearch: true,
-      
+    },
+    {
+      title: '操作',
+      dataIndex: 'option',
+      width: 80,
+      valueType: 'option',
+      fixed: 'right',
+      render: (_, records)=> <a target='_blank' href={`/financial-management/transaction-detail-management/order-pay-detail-management/detail/${records?.orderNo}`}>详情</a>
     }
+
   ]
   return (
     <PageContainer title={false}>
