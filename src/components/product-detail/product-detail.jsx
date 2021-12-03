@@ -153,6 +153,11 @@ export default (props) => {
               {detailData?.goods?.unit}
             </Form.Item>
             <Form.Item
+              label="发货地"
+            >
+              {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+            </Form.Item>
+            <Form.Item
               label="单SKU起售数量"
             >
               {detailData?.goods?.buyMinNum}
@@ -215,6 +220,11 @@ export default (props) => {
               label="库存单位"
             >
               {detailData?.goods?.unit}
+            </Form.Item>
+            <Form.Item
+              label="发货地"
+            >
+              {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
             </Form.Item>
             <Form.Item
               label="库存预警值"
@@ -299,25 +309,25 @@ export default (props) => {
       <Form.Item
         label="创建时间"
       >
-        {detailData?.goods.createTimeDisplay}
+        {detailData?.goods?.createTimeDisplay}
       </Form.Item>
 
       <Form.Item
         label="审核状态"
       >
-        {detailData?.goods.goodsVerifyStateDisplay}
+        {detailData?.goods?.goodsVerifyStateDisplay}{detailData?.auditStr}
       </Form.Item>
 
       <Form.Item
         label="上架状态"
       >
-        {detailData?.goods.goodsStateDisplay}
+        {detailData?.goods?.goodsStateDisplay}{detailData?.putOnStr}
       </Form.Item>
 
-      {detailData?.goods.goodsVerifyRemark && <Form.Item
-        label="原因"
+      {detailData?.goods?.goodsState ===0 && <Form.Item
+        label="下架原因"
       >
-        <span style={{ color: 'red' }}>{detailData?.goods.goodsVerifyRemark}</span>
+        <span style={{ color: 'red' }}>{detailData?.goods?.goodsVerifyRemark}</span>
       </Form.Item>}
 
       {/* 

@@ -5,18 +5,17 @@ import { history } from 'umi'
 import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
-import { commissionPage } from '@/services/financial-management/transaction-detail-management'
+import { operationCommissionPage } from '@/services/financial-management/operator-revenue-detail-management'
 import { Export, ExportHistory } from '@/pages/export-excel'
 import Detail from '../../common-popup/order-pay-detail-popup'
 
-// bonus detail
-const BonusDetailManagement = () =>{
+const OperatorRevenueManagement = () =>{
+  const [visit, setVisit] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
-  const [visit, setVisit] = useState(false)
 
   const skipToDetail = data => {
-    history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=bonus`)
+    history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=operator`)
   }
 
   const getFieldValue = (form) => {
@@ -41,15 +40,6 @@ const BonusDetailManagement = () =>{
       valueType: 'indexBorder'
     },
     {
-      title: '受益方类型',
-      dataIndex: 'accountType',
-      valueType: 'select',
-      valueEnum: {
-        'store': '社区店',
-        'agentStore': '内部店'
-      }
-    },
-    {
       title: '受益方ID',
       dataIndex: 'accountId'
     },
@@ -58,12 +48,25 @@ const BonusDetailManagement = () =>{
       dataIndex: 'accountMobile'
     },
     {
+      title: '会员类型',
+      dataIndex: 'accountType',
+      valueType: 'select',
+      valueEnum: {
+        'agentCompany': '运营商',
+        'platform': '平台'
+      }
+    },
+    {
       title: '订单类型',
       dataIndex: 'orderType',
       valueType: 'select',
       valueEnum: {
-        'commandSalesOrder': '集约批发订单',
+        'second': '秒约订单',
         'dropShipping1688': '1688代发订单',
+        'commandSalesOrder': '集约批发订单',
+        'commandCollect': '集约销售订单',
+        'blindBox': '盲盒订单',
+        'signIn': '签到订单'
       }
     },
     {
@@ -136,14 +139,14 @@ const BonusDetailManagement = () =>{
             <Export
               change={(e)=> {setVisit(e)}}
               key="export"
-              type="financial-trans-commission-page-export"
+              type="financial-trans-goodsAmount-page-export"
               conditions={getFieldValue(form)}
             />,
             <ExportHistory
               key="exportHistory"
               show={visit}
               setShow={setVisit}
-              type="financial-trans-commission-page-export"
+              type="financial-trans-goodsAmount-page-export"
             />
           ],
         }}
@@ -153,7 +156,7 @@ const BonusDetailManagement = () =>{
           showQuickJumper: true
         }}
         params={{}}
-        request={commissionPage}
+        request={operationCommissionPage}
       />
       {
         detailVisible &&
@@ -167,4 +170,4 @@ const BonusDetailManagement = () =>{
   )
 }
 
-export default BonusDetailManagement
+export default OperatorRevenueManagement
