@@ -159,10 +159,11 @@ const OperationData = () => {
         <Space size={20}>
           <h3>运营中心排名</h3>
           <SelectDate
-            setDateSelect={setRangePickerValue}
             selectDate={selectDate}
             rangePickerValue={rangePickerValue}
             handleRangePickerChange={handleRangePickerChange}
+            code= {value === 1 ? 'data-board-operations-orderNum-export,' : 'data-board-operations-totalfee-export'}
+            type={value}
           />
         </Space>
       </div>
