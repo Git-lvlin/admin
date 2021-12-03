@@ -157,7 +157,7 @@ const Detail = () => {
             <Divider />
             <Descriptions labelStyle={{ textAlign: 'right', width: 150, display: 'inline-block' }}>
               <Descriptions.Item label="活动名称">{detailData?.wholesale?.name}</Descriptions.Item>
-              <Descriptions.Item label="活动时间"><span style={{ position: 'absolute', marginTop: -10 }}>{detailData?.wholesale?.wholesaleStartTime}<br />{detailData?.wholesale?.wholesaleEndTime}</span></Descriptions.Item>
+              <Descriptions.Item label="活动开始时间">{detailData?.wholesale?.wholesaleStartTime}</Descriptions.Item>
               <Descriptions.Item label="采购单下单截止时间">
                 {detailData?.wholesale?.endTimeAdvancePayment}
               </Descriptions.Item>
