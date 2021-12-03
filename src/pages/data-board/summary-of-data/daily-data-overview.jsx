@@ -122,7 +122,7 @@ const DailyDataOverview = () => {
           title: '当天集约参与率',
           dataIndex: 'wsRat',
           align: 'center',
-          render: (_)=><Yuan>{_}</Yuan>
+          render: (_)=> Number(_) > 0 ? <Yuan>{_}</Yuan> : '-'
         },
         {
           title: '单个店主集约贡献成交额（元）',
