@@ -1,35 +1,27 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, history, useLocation } from 'umi'
+import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@ant-design/pro-layout'
 import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
-import { 
-  commissionDetail, 
-  platformCommissionDetail, 
-  goodsAmountDetail, 
-  operationCommissionDetail
-} from "@/services/financial-management/transaction-detail-management"
+import { refundDetail } from "@/services/financial-management/transaction-detail-management"
 import './styles.less'
 import styles from './styles.less'
+import { tradeType } from '../../common-enum'
 
-const TransactionDetails = () => {
+const Detail = () => {
   const {id} = useParams()
-  const {query} = useLocation()
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState({})
+  const [data, setData] = useState({})
   const [payInfos, setPayInfos] = useState([])
-
-  const apiMethod = query?.type === 'bonus' ? commissionDetail:
-  (query?.type === 'commission') ? platformCommissionDetail:
-  (query?.type === 'loan') ? goodsAmountDetail : 
-  (query?.type === 'operator') ? operationCommissionDetail : ''
   useEffect(()=>{
     setLoading(true)
-    apiMethod({orderNo: id}).then(res=> {
+    refundDetail({id}).then(res=> {
       if(res.success) {
-        setInfo({...res?.data, ...res?.data?.info})
+        setInfo({...res?.data?.info, ...res?.data})
+        setData({...res?.data})
         setPayInfos(res?.data?.payInfos)
       }
     }).finally(()=> {
@@ -37,81 +29,119 @@ const TransactionDetails = () => {
     })
     return ()=>{
       setInfo({})
+      setData([])
       setPayInfos({})
     }
-  }, [id])
+  }, [])
+
+
   const back = ()=> {
     history.goBack()
   }
-  const fashionableType =(data, amount, fee, couponAmount, realAmount) =>{
+  const fashionableType =(data, amount, fee) =>{
     switch(data){
       case 'goodsAmount':
         return (
           <>
             <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
-            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'commission':
         return (
           <>
             <span className={styles.amount}>店主收益: ¥{amountTransform(amount, '/')}</span>
-            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'platformCommission':
         return (
           <>
             <span className={styles.amount}>平台收益: ¥{amountTransform(amount, '/')}</span>
-            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'suggestCommission':
         return (
           <>
             <span className={styles.amount}>上级推荐人收益: ¥{amountTransform(amount, '/')}</span>
-            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'agentCompanyCommission':
         return (
           <>
             <span className={styles.amount}>运营商收益: ¥{amountTransform(amount, '/')}</span>
-            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'freight':
         return (
           <>
             <span className={styles.amount}>运费: ¥{amountTransform(amount, '/')}</span>
-            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
             <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       default:
-        return '-'
+        return ''
+    }
+  }
+
+  const backCalculation= (data, amount, fee)=> {
+    switch(data){
+      case 'goodsAmount':
+        return (
+          <>
+            <span className={styles.amount}>货款回退: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'commission':
+        return (
+          <>
+            <span className={styles.amount}>店主收益回退: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'platformCommission':
+        return (
+          <>
+            <span className={styles.amount}>平台收益回退: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'suggestCommission':
+        return (
+          <>
+            <span className={styles.amount}>上级推荐人收益回退: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      case 'agentCompanyCommission':
+        return (
+          <>
+            <span className={styles.amount}>运营商收益回退: ¥{amountTransform(amount, '/')}</span>
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+          </>
+        )
+      default:
+        return ''
     }
   }
   const columns1 = [
     {
-      title: '订单号',
-      dataIndex: 'orderNo'
+      title: '售后订单号',
+      dataIndex: 'refundNo'
     },
     {
-      title: '订单类型',
-      dataIndex: 'orderType',
+      title: '交易类型',
+      dataIndex: 'tradeType',
       valueType: 'select',
+      valueEnum: tradeType
+    },
+    {
+      title: '关联订单类型',
+      dataIndex: 'orderType',
       valueEnum: {
         'second': '秒约',
         'commandSalesOrder': '集约批发订单',
@@ -122,79 +152,70 @@ const TransactionDetails = () => {
       }
     },
     {
-      title: '受益方会员类型',
-      dataIndex: 'accountTypeName'
+      title: '关联订单号',
+      dataIndex: 'orderNo'
     },
     {
-      title: (_) => _.dataIndex ? '店铺提成比例' : '',
-      dataIndex: info.storeCommissionRatio ? 'storeCommissionRatio' : '',
-      render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
-    },
-    {
-      title: '受益方会员信息',
-      dataIndex: 'accountMobile'
-    },
-    {
-      title: '虚拟子账户',
-      dataIndex: 'accountSn'
-    },
-    {
-      title: '买家会员类型',
-      dataIndex: 'buyerType'
+      title: '回退会员类型',
+      dataIndex: 'accountType',
+      valueType: 'select',
+      valueEnum: {
+        'store': '店铺',
+        'supplier': '供应商家',
+        'platform': '平台',
+        'member': '会员',
+        'agentStore': '代发店',
+        'agentCompany': '运营商'
+      }
     },
     {
       title: '',
       dataIndex: ''
     },
     {
-      title: '买家会员信息',
-      dataIndex: 'buyerMobile'
+      title: '回退会员信息',
+      dataIndex: 'sellerMobile'
+    },
+    {
+      title: '回退到账时间',
+      dataIndex: 'refundTime'
     },
     {
       title: '虚拟子账户',
+      dataIndex: 'sellerSn'
+    },
+    {
+      title: '支付渠道',
+      dataIndex: 'data',
+      render: ()=> '原路退回'
+    },
+    {
+      title: '买家手机号',
+      dataIndex: 'buyerMobile'
+    },
+    {
+      title: '买家会员ID',
       dataIndex: 'buyerSn'
     }
   ]
-
   const columns2 = [
     {
-      title: '商品名称',
-      dataIndex: 'goodsName'
-    },
-    {
-      title: '购买规格',
-      dataIndex: 'skuName'
-    },
-    {
-      title: '商品供货价',
-      dataIndex: 'supplyPrice',
+      title: '支付金额',
+      dataIndex: 'refundAmount',
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
-      title: '实际销售价',
-      dataIndex: 'salePrice',
-      render: (_) => `￥${amountTransform(_, '/')}`
-    },
-    {
-      title:(_)=> _.dataIndex === 'preCount' ? '预定数量' : '购买数量',
-      dataIndex: info.orderType === 'commandSalesOrder' ? 'preCount' : 'paidCount'
-    },
-    {
-      title: (_) => _.dataIndex ? '实际采购数量' : '',
-      dataIndex: info.orderType === 'commandSalesOrder' ? 'paidCount' : ''
-    },
-    {
-      title: '运费',
-      dataIndex: 'freight',
-      render: (_) => `￥${amountTransform(_, '/')}`
-    },
-    {
-      title: '应付金额',
-      dataIndex: 'amount',
-      render: (_) => `${amountTransform(_, '/')}`
+      title: '回退计算',
+      dataIndex: 'refundDivideInfos',
+      render: (_, data)=> {
+        if(data.returnDivideInfos) {
+          return data?.returnDivideInfos.map(item=> (
+            <div key={item?.type}>{backCalculation(item?.type, item?.amount, item?.fee)}</div>
+          ))
+        }
+      } 
     }
   ]
-
   const columns3 = [
     {
       title: '支付阶段',
@@ -209,24 +230,28 @@ const TransactionDetails = () => {
       dataIndex: 'payTpyeName'
     },
     {
-      title: '应付金额',
+      title: '',
       dataIndex: ''
     },
     {
-      title: '实付金额',
+      title: '支付金额',
       dataIndex: 'amount',
-      render: (_)=> `¥${amountTransform(_, '/')}`
+      render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
       title: '虚拟分账计算',
-      dataIndex: 'divideInfo',
-      render: (_, data)=> {
-        return data?.divideInfos.map(item=> (
-          <div key={item?.type}>
-            {fashionableType(item?.type, item?.amount, item?.fee, item?.couponAmount, item?.realAmount)}
-          </div>
-        ))
-      } 
+      dataIndex: 'divideInfos',
+      render: (_, data)=> (
+        <>
+          {
+            data?.divideInfos.map(item=> (
+              <div key={item?.type}>
+                {fashionableType(item?.type, item?.amount, item?.fee)}
+              </div>
+            ))
+          }
+        </>
+      ) 
     },
     {
       title: '支付单号',
@@ -247,12 +272,14 @@ const TransactionDetails = () => {
       dataIndex: 'platformFeeAccountSn'
     },
   ]
-  const CustomList = ({ data, columns }) => {
+
+  const CustomList = props=> {
+    const { data } = props
     return (
       <ProDescriptions
         loading={loading}
         column={2}
-        columns={columns}
+        columns={columns3}
         style={{
           background:'#fff',
           padding: 20
@@ -276,15 +303,20 @@ const TransactionDetails = () => {
         bordered
         dataSource={info}
       />
-      {
-        info.skus &&
-        info.skus.map(item => (
-          <CustomList data={item} key={item.skuId} columns={columns2}/>
-        ))
-      }
+      <ProDescriptions
+        loading={loading}
+        dataSource={data}
+        column={2}
+        columns={columns2}
+        style={{
+          background:'#fff',
+          padding: 20
+        }}
+        bordered
+      />
       {
         payInfos?.map(item=> (
-          <CustomList data={item} key={item.stageName} columns={columns3}/>
+          <CustomList data={item} key={item.stageName}/>
         ))
       }
       <ProDescriptions
@@ -305,4 +337,4 @@ const TransactionDetails = () => {
   )
 }
 
-export default TransactionDetails
+export default Detail
