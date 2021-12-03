@@ -19,6 +19,22 @@ export const findByways = async (params, options = {}) => {
   }
 }
 
+export const addCheck = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/comment/addCheck', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const check = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/comment/check', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const updGoodsComment = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/comment/updGoodsComment', {
     method: 'POST',
@@ -26,6 +42,7 @@ export const updGoodsComment = (params = {}, options = {}) => {
     ...options
   });
 }
+
 
 
 export const findContent = async (params, options = {}) => {

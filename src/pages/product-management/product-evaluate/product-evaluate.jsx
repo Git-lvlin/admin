@@ -1,13 +1,13 @@
-import React, { useRef,useState } from 'react';
+import React, { useRef,useState,useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { history } from 'umi';
-import { Button,Image,Tabs,Switch } from 'antd';
+import { Button,Image,Tabs,Switch,message } from 'antd';
 import ContentModel from './content-model';
 import { ProFormSwitch} from '@ant-design/pro-form';
 import AuditModel from './audit-model'
 import styles from './style.less'
-import { findByways } from '@/services/product-management/product-evaluate';
+import { findByways,addCheck,check } from '@/services/product-management/product-evaluate';
 import { Space } from 'antd';
 const { TabPane } = Tabs
 
@@ -18,6 +18,7 @@ const EvaluateList= (props) => {
     const [visiblePopup,setVisiblePopup]=useState()
     const [commentId,setCommentId]=useState()
     const [commentSkuId,setCommentSkuId]=useState()
+    const [pitch,setPitch]=useState()
     const columns = [
         {
             title: '用户ID',
@@ -105,9 +106,19 @@ const EvaluateList= (props) => {
     setCommentId({id:data.id,state:type,status:status})
   }
   const auditSwitch=(off)=>{
-        // updateAuditDynamicSwitch({}).then(res=>{
-        // })
+         setPitch(off)
+         addCheck({type:off?1:2}).then(res=>{
+           if(res.code==0){
+            ref.current?.reload()
+            message.success('操作成功')
+           }
+        })
     }
+  useEffect(()=>{
+    check({}).then(res=>{
+        setPitch(res.data)
+      })
+    },[])
   return (
       <>
         <ProTable
@@ -126,7 +137,8 @@ const EvaluateList= (props) => {
                       label="审核功能开关"
                       className='switchTop'
                       fieldProps={{
-                          onChange:(bol)=>auditSwitch(bol)
+                          onChange:(bol)=>auditSwitch(bol),
+                          checked:pitch
                       }}
                       key='switch'
                     />,
