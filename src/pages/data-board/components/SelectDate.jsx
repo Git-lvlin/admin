@@ -1,14 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Space, Radio, DatePicker } from 'antd'
 
 import styles from './style.less'
 const { RangePicker } = DatePicker
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const SelectDate = ({
   rangePickerValue,
   handleRangePickerChange,
-  selectDate
+  selectDate, 
+  code,
+  type
 }) => {
+  const [visit, setVisit] = useState(false)
+
+  const getFieldValue = () => {
+    return {
+      startTime: rangePickerValue?.[0].format('YYYY-MM-DD'),
+      endTime: rangePickerValue?.[1].format('YYYY-MM-DD'),
+      type
+    }
+  }
+
   const handleChange = (v)=> {
     switch(v.target.value) {
       case 7:
@@ -27,7 +41,7 @@ const SelectDate = ({
   }
   return (
     <div className={styles.selectDate}>
-      <Space size={20}>
+      <Space size={10}>
         <Radio.Group
           defaultValue={7}
           buttonStyle="solid"
@@ -49,6 +63,17 @@ const SelectDate = ({
             width: 256,
           }}
           allowClear={false}
+        />
+        <Export
+          change={(e)=> {setVisit(e)}}
+          key="export" 
+          type={code}
+          conditions={getFieldValue}
+        />
+        <ExportHistory 
+          key="export-history" 
+          show={visit} setShow={setVisit}
+          type={code}
         />
       </Space>
     </div>

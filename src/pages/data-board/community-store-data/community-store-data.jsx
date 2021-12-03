@@ -10,7 +10,6 @@ import styles from './styles.less'
 import SelectDate from '../components/SelectDate'
 import AddressCascader from '@/components/address-cascader'
 import { communityStoreSalesRank, communityStoreData } from '@/services/data-board/community-store-data'
-import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import { getTimeDistance } from '@/utils/utils'
@@ -67,7 +66,8 @@ const CommunityStoreData = () => {
     {
       title: '社区店名称',
       dataIndex: 'storeName',
-      align: 'center'
+      align: 'center',
+      width: '15%'
     },
     {
       title: '地区范围',
@@ -209,10 +209,11 @@ const CommunityStoreData = () => {
         <Space size={20}>
           <h3>社区店销售排名</h3>
           <SelectDate
-            setDateSelect={setRangePickerValue}
             selectDate={selectDate}
             rangePickerValue={rangePickerValue}
             handleRangePickerChange={handleRangePickerChange}
+            code={value === 1 ? 'data-board-community-orderNum-export' : 'data-board-community-orderAmount-export'}
+            type={value}
           />
         </Space>
       </div>
@@ -244,7 +245,8 @@ const CommunityStoreData = () => {
               />,
               <ExportHistory 
                 key="export-history" 
-                show={visit} setShow={setVisit}
+                show={visit}
+                setShow={setVisit}
                 type="data-board-community-store-export"
               />
             ]

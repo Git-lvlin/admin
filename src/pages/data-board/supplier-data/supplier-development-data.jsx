@@ -1,9 +1,22 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import ProTable from '@ant-design/pro-table'
 
 import { supplierDevelopmentData } from '@/services/data-board/supplier-data'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const SupplierDevelopmentData = () => {
+  const [visit, setVisit] = useState(false)
+  const form = useRef()
+
+  const getFieldValue = () => {
+    const { time, ...rest } = form.current.getFieldsValue()
+    return {
+      startTime: time?.[0]?.format('YYYY-MM-DD'),
+      endTime: time?.[1].format('YYYY-MM-DD'),
+      ...rest
+    }
+  }
 
   const columns =[
     {
@@ -62,6 +75,7 @@ const SupplierDevelopmentData = () => {
       columns={columns}
       request={supplierDevelopmentData}
       params={{}}
+      formRef={form}
       toolbar={{
         settings: false
       }}
@@ -69,6 +83,22 @@ const SupplierDevelopmentData = () => {
       pagination={{
         showQuickJumper: true,
         pageSize: 10
+      }}
+      search={{
+        optionRender: (searchConfig, formProps, dom)=>[
+          ...dom.reverse(),
+          <Export
+            change={(e)=> {setVisit(e)}}
+            key="export" 
+            type="data-board-supplier-development-data"
+            conditions={getFieldValue}
+          />,
+          <ExportHistory
+            key="export-history" 
+            show={visit} setShow={setVisit}
+            type="data-board-supplier-development-data"
+          />
+        ]
       }}
       style={{
         marginTop: 30

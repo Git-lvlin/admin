@@ -192,10 +192,11 @@ const SupplierData = () => {
         <Space size={20}>
           <h3>供应商销售排名</h3>
           <SelectDate
-            setDateSelect={setRangePickerValue}
             selectDate={selectDate}
             rangePickerValue={rangePickerValue}
             handleRangePickerChange={handleRangePickerChange}
+            code="data-board-supplier-sales-rank"
+            type={value}
           />
         </Space>
       </div>
