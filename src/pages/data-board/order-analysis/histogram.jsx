@@ -6,12 +6,13 @@ import {
   Interval,
   Slider
 } from "bizcharts"
+import { Empty } from 'antd'
 
 const Histogram = ({data}) => {
   return (
     <>
       {
-        data?.[0]&&
+        data?.[0]?
         <Chart
           height={400}
           padding="auto"
@@ -50,8 +51,8 @@ const Histogram = ({data}) => {
               }
             }}
           />
-          <Slider />
-        </Chart>
+        </Chart>:
+        <Empty/>
       }
     </>
   )

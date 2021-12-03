@@ -7,9 +7,11 @@ import {
   Tooltip, 
   Legend
 } from 'bizcharts'
-import { Empty, Spin } from 'antd'
+import { Empty, Spin, Tooltip as Tp, Space } from 'antd'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import Yuan from '../components/Yuan'
+import { amountTransform } from '@/utils/utils'
 import styles from './style.less'
 
 const ChartForm = ({
@@ -17,7 +19,7 @@ const ChartForm = ({
   data, 
   loading,
   code,
-  value
+  setCode
 }) => {
   const [lineData, setLineData] = useState([])
 
@@ -35,53 +37,77 @@ const ChartForm = ({
     }
   }, [data])
 
-  const setVal = (value) => {
-    code(value)
-  }
-
   return (
     <>
       <CheckCard.Group
-        onChange={(value) => setVal(value)}
-        multiple
+        onChange={(v) => {
+          v!==undefined&&setCode(v)
+        }}
         loading={loading}
         size="small"
-        value={value}
+        value={code}
       >
         <CheckCard
           title={ 
             <div className={styles.title}>
-              <Yuan>{data?.count?.accessTimes}</Yuan>
+              <Yuan>{data?.count?.accessMember}</Yuan>
             </div> 
           }
-          description="访问次数"
-          value="visitList"
+          description={
+            <Space>
+              <span>访客数</span>
+              <Tp title="每人每天只算1次">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
+          value="visitMemberList"
         />
         <CheckCard 
           title={ 
             <div className={styles.title}>
-              <Yuan>{data?.count?.payOrder}</Yuan>
+              <Yuan>{data?.count?.accessTimes}</Yuan>
             </div>
           }
-          description="新增订单数"
-          value="payOrderList"
+          description={
+            <Space>
+              <span>访问次数</span>
+              <Tp title="用户每次访问都计算在内">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
+          value="visitList"
         />
         <CheckCard
           title={
-            <div className={styles.title}>{data?.count?.conversionRate}</div> 
+            <div className={styles.title}>{data?.count?.regMember}</div> 
           }
-          description="访问-支付转化率"
-          value="conversionRate"
-          disabled
+          description={
+            <Space>
+              <span>新增用户数</span>
+              <Tp title="新增注册成功的用户数">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
+          value="regMemberList"
         />
         <CheckCard 
           title={ 
             <div className={styles.title}>
-              <Yuan>{Number(data?.count?.payAmount)}</Yuan>
+              <Yuan>{Number(data?.count?.payOrder)}</Yuan>
             </div> 
           }
-          description="支付金额"
-          value="payAmountList"
+          description={
+            <Space>
+              <span>新增订单数</span>
+              <Tp title="新增加的支付订单">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
+          value="payOrderList"
         />
         <CheckCard
           title={ 
@@ -89,26 +115,63 @@ const ChartForm = ({
               <Yuan>{data?.count?.payMember}</Yuan>
             </div> 
           }
-          description="下单支付用户数"
+          description={
+            <Space>
+              <span>下单支付用户数</span>
+              <Tp title="所有支付成功的下单总人数">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
           value="payMemberList"
         />
         <CheckCard 
           title={ 
             <div className={styles.title}>
-              <Yuan>{data?.count?.regMember}</Yuan>
+              <Yuan>{data?.count?.payAmount}</Yuan>
             </div> 
           }
-          description="新增用户数"
-          value="regMemberList"
+          description={
+            <Space>
+              <span>支付金额</span>
+              <Tp title="所有已支付的订单总金额">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
+          value="payAmountList"
         />
         <CheckCard 
           title={ 
             <div className={styles.title}>
-              <Yuan>{data?.count?.accessMember}</Yuan>
+              {amountTransform(Number(data?.count?.payConversionRat), '*')}%
             </div> 
           }
-          description="访问用户数"
-          value="visitMemberList"
+          description={
+            <Space>
+              <span>支付转化率</span>
+              <Tp title="已支付订单数/总订单数（不含售后订单）">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
+          disabled
+        />
+        <CheckCard 
+          title={ 
+            <div className={styles.title}>
+              <Yuan>{data?.count?.gmvAmount}</Yuan>
+            </div> 
+          }
+          description={
+            <Space>
+              <span>GMV交易额</span>
+              <Tp title="包含拍下未支付订单金额">
+                <QuestionCircleOutlined />
+              </Tp>
+            </Space>
+          }
+          value="gmvList"
         />
       </CheckCard.Group>
       {

@@ -8,7 +8,7 @@ export const operationsCenterRank = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data,
+    data: res.data.records,
     success: res.success
   }
 }
@@ -36,5 +36,18 @@ export const operationsCenterData = async (params = {}, options = {}) => {
     data: res.data.records,
     success: res.success,
     total: res.data.total
+  }
+}
+
+// 运营中心数据总览
+export const operationDataTotalView = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/config/operationDataTotalView', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
   }
 }
