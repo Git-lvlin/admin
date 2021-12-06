@@ -25,6 +25,7 @@ const DailyDataOverview = () => {
       title: '日期',
       dataIndex: 'dateTimes',
       align: 'center',
+      fixed: 'left',
       hideInSearch: true
     },
     {
@@ -287,6 +288,7 @@ const DailyDataOverview = () => {
       toolbar={{
         settings: false
       }}
+      scroll={{x: 3000}}
       pagination={{
         showQuickJumper: true,
         pageSize: 10
