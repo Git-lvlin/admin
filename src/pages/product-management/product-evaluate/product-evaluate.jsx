@@ -78,7 +78,7 @@ const EvaluateList= (props) => {
         },
         {
             title: '被评商家ID',
-            dataIndex: 'storeId',
+            dataIndex: 'supplierId',
             valueType: 'text',
             hideInSearch: true,
         },
@@ -205,7 +205,7 @@ export default (props) =>{
             }
           </TabPane>
         </Tabs>
-        <div style={{background:'#fff',padding:'25px'}}>
+        <div style={{background:'#fff',padding:'0 0 25px 25px'}}>
             <p>说明：</p>
             <p>1、用户没填写任何评价内容，只做评分的，不需要进行审核（直接通过）</p>
         </div>

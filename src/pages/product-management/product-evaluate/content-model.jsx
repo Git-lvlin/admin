@@ -9,6 +9,7 @@ import ProForm, {
 } from '@ant-design/pro-form';
 import { history } from 'umi'
 import { findContent } from '@/services/product-management/product-evaluate';
+import styles from './style.less'
 
 
 export default (props) => {
@@ -42,20 +43,14 @@ export default (props) => {
       submitter={
         {
           render: (props, defaultDoms) => {
-            return [
-              <Button type="primary" key="submit" onClick={() => {
-                  props.form?.submit?.()
-                }}>
-                  确认
-              </Button>
-
-            ];
+            return [];
           }
         }
       }
       onFinish={async (values) => {
         await onsubmit(values);
       }}
+      className={styles.content_model}
     >
       <p>{dataList?.content}</p>
       <List
@@ -80,13 +75,15 @@ export default (props) => {
         header={<div>商家回复</div>}
         dataSource={dataList?.applyList}
         renderItem={item => (
-          <List.Item>
+          <List.Item style={{display:'block'}}>
             <List.Item.Meta
               avatar={<Avatar src={dataList?.storeImg} />}
-              title={<p>{dataList?.storeName}</p>}
-              description={item.replyTime}
+              title={dataList?.storeName}
+              description={<span style={{fontSize:'10px'}}>{item.replyTime}</span>}
             />
-            <Space style={{marginLeft:'20px'}}>{item.replyContent}</Space>
+            <pre className={styles.line_feed}>
+              {item.replyContent}
+            </pre>
           </List.Item>
         )}
       />
