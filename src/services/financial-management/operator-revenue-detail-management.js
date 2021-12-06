@@ -8,8 +8,8 @@ export const operationCommissionPage = async (params, options= {}) => {
     data: {
       page: current,
       size: pageSize,
-      begin: createTime?.[0].format('YYYY-MM-DD'),
-      end: createTime?.[1].format('YYYY-MM-DD'),
+      begin: createTime?.[0],
+      end: createTime?.[1],
       ...rest
     },
     ...options
