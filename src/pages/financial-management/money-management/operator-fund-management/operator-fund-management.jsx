@@ -230,7 +230,7 @@ const OperatorFundManagement = () => {
             <Export
               change={(e)=> {setVisit(e)}}
               key="export"
-              type="financial-account-page-store-export"
+              type="financial-account-page-agentCompany-export"
               conditions={{
                 accountType: "agentCompany",
                 ...form?.getFieldValue(),
@@ -242,7 +242,7 @@ const OperatorFundManagement = () => {
               key="exportHistory"
               show={visit}
               setShow={setVisit}
-              type="financial-account-page-store-export"
+              type="financial-account-page-agentCompany-export"
             />
           ],
         }}
