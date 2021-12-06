@@ -46,19 +46,7 @@ const PaymentDetails = () => {
       title: '交易类型',
       dataIndex:'tradeType',
       valueType: 'select',
-      valueEnum: {
-        'goodsAmount': '货款',
-        'goodsAmountReturn': '货款回退',  
-        'commission': '店主收益',
-        'commissionReturn': '店主收益回退',
-        'suggestCommission': '推荐店主收益',
-        'suggestCommissionReturn': '推荐店主收益回退',
-        'deposit': '保证金',
-        'depositReturn': '保证金回退',
-        'unfreeze': '解冻',
-        'freeze': '冻结',
-        'withdraw': '提现',
-      },
+      valueEnum: tradeType,
       hideInTable: true
     },
     {
@@ -129,7 +117,8 @@ const PaymentDetails = () => {
     },
     {
       title: '交易描述',
-      dataIndex: 'description'
+      dataIndex: 'description',
+      hideInSearch: true
     }
   ]
   return (
