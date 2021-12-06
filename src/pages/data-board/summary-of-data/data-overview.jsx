@@ -200,6 +200,7 @@ const DataOverview = () => {
     {
       title: '平台',
       align: 'center',
+      fixed: 'right',
       children: [
         {
           title: '总成交额',
@@ -256,6 +257,7 @@ const DataOverview = () => {
         search={false}
         toolBarRender={false}
         pagination={false}
+        scroll={{x: 2500}}
       />
     </div>
   )
