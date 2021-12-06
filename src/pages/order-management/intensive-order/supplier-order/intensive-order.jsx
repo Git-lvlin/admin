@@ -126,6 +126,8 @@ const TableList = () => {
                   <Button
                     onClick={() => {
                       form?.resetFields();
+                      form?.submit();
+                      setOrderStatusType([])
                     }}
                   >
                     重置
