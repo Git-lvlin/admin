@@ -415,7 +415,7 @@ const TableList = () => {
                   {item.status === 5 ? 0 : amountTransform(item.incomeAmount, '/')}元
                 </div> */}
                 <div style={{ textAlign: 'center' }}>
-                  {{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单',7:'售后中' }[item.status]}
+                  {{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}
                 </div>
                 <div style={{ textAlign: 'center' }}>
                   <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688', 17: '盲盒活动', 18: '签到活动' }[item.orderType] || '秒约')}订单</Tag>
