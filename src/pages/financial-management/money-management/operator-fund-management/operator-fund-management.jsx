@@ -234,8 +234,8 @@ const OperatorFundManagement = () => {
               conditions={{
                 accountType: "agentCompany",
                 ...form?.getFieldValue(),
-                registTimeBegin: form?.getFieldValue()?.createTime?.[0].format('YYYY-MM-DD'),
-                registTimeEnd: form?.getFieldValue()?.createTime?.[1].format('YYYY-MM-DD')
+                settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
+                settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD')
               }}
             />,
             <ExportHistory
