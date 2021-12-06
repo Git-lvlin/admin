@@ -105,12 +105,12 @@ const OperatorFundManagement = () => {
     },
     {
       title: '创建日期',
-      dataIndex: 'registTime',
+      dataIndex: 'settleTime',
       hideInSearch: true
     },
     {
       title: '创建日期',
-      dataIndex: 'registTime',
+      dataIndex: 'settleTime',
       hideInTable: true,
       valueType: 'dateRange'
     },
