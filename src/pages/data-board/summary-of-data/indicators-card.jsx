@@ -12,6 +12,7 @@ const IndicatorsCard = () => {
   const [loading, setLoading] = useState(false)
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('week'))
   const [code, setCode] = useState('visitMemberList')
+  const [unit, setUnit] = useState('单位：人')
 
   const selectDate = (type) => {
     setRangePickerValue(getTimeDistance(type))
@@ -80,7 +81,10 @@ const IndicatorsCard = () => {
   }
 
   const scale = {
-    value: { min: 0 },
+    value: { 
+      min: 0,
+      alias: unit
+    },
     reportName: {
       formatter: v => v
     }
@@ -103,6 +107,7 @@ const IndicatorsCard = () => {
         loading={loading}
         setCode={setCode}
         code={code}
+        setUnit={setUnit}
       />
     </div>
   )

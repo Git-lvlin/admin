@@ -31,13 +31,13 @@ const RegionalOrderAnalysis = () => {
   const [data, setData] = useState([])
   const [times, setTimes] = useState(theMonth().map(item=> moment(item).format("YYYY-MM-DD")))
   const [area, setArea] = useState(null)
+  const [unit, setUnit] = useState('单位：单')
 
   useEffect(()=> {
     areaOrderAnalysis({
       startTime: times?.[0], 
       endTime: times?.[1], 
       province_id: area?.[0].value,
-      city_id: area?.[1].value,
       type: histogramValue
     }).then(res => {
       if(res.success) {
@@ -58,6 +58,11 @@ const RegionalOrderAnalysis = () => {
 
   const histogramChange = e => {
     setHistogramValue(e.target.value)
+    if(e.target.value === 1) {
+      setUnit('单位：单')
+    } else {
+      setUnit('单位：元')
+    }
   }
 
   return (
@@ -119,7 +124,10 @@ const RegionalOrderAnalysis = () => {
           <Radio value={1}>订单数</Radio>
           <Radio value={2}>交易额</Radio>
         </Radio.Group>
-        <Histogram data={data}/>
+        <Histogram
+          data={data} 
+          unit={unit}
+        />
       </div>
     </>
   )

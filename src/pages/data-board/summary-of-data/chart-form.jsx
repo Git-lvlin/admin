@@ -5,7 +5,8 @@ import {
   Line, 
   Point, 
   Tooltip, 
-  Legend
+  Legend,
+  Axis
 } from 'bizcharts'
 import { Empty, Spin, Tooltip as Tp, Space } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
@@ -19,7 +20,8 @@ const ChartForm = ({
   data, 
   loading,
   code,
-  setCode
+  setCode,
+  setUnit
 }) => {
   const [lineData, setLineData] = useState([])
 
@@ -37,11 +39,39 @@ const ChartForm = ({
     }
   }, [data])
 
+  const chartUnit = {
+    style: {
+      fontSize: 12,
+      textAlign: 'center',
+      fill: '#E66101'
+    },
+    position: 'end',
+    rotate: 0,
+		offset: 80
+  }
+
   return (
     <>
       <CheckCard.Group
         onChange={(v) => {
           v!==undefined&&setCode(v)
+          switch(v){
+            case 'visitMemberList':
+            case 'payMemberList':
+            case 'regMemberList':
+              setUnit('单位：人')
+              break
+            case 'visitList':
+              setUnit('单位：次')
+              break
+            case 'payOrderList':
+              setUnit('单位：单')
+              break
+            case 'payAmountList':
+            case 'gmvList':
+              setUnit('单位：元')
+              break
+          }
         }}
         loading={loading}
         size="small"
@@ -188,6 +218,10 @@ const ChartForm = ({
               position="countTime*value"
               color="reportName"
               shape='circle' 
+            />
+            <Axis
+              name='value'
+              title={chartUnit}
             />
             <Line 
               shape="line"
