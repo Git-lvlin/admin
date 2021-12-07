@@ -57,15 +57,6 @@ const UserRelationship = () => {
       }
     },
     {
-      title: '店铺状态',
-      dataIndex: 'storeStatus',
-      search: false,
-      valueEnum: {
-        0: '关闭',
-        1: '启用',
-      }
-    },
-    {
       title: '店主采购订单数（单）',
       dataIndex: 'purchaseOrderNum',
       search: false,
@@ -109,6 +100,15 @@ const UserRelationship = () => {
       valueEnum: {
         0: '不是',
         1: '是',
+      }
+    },
+    {
+      title: '店铺状态',
+      dataIndex: 'storeStatus',
+      search: false,
+      valueEnum: {
+        0: '关闭',
+        1: '启用',
       }
     },
     {
