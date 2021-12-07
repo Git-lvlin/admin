@@ -304,7 +304,7 @@ const TableList = () => {
     //   render: (text) => +new Big(text).div(3600).toFixed(1)
     // },
     {
-      title: '活动时段',
+      title: '活动开始时间',
       dataIndex: 'wholesaleStartTime',
       valueType: 'text',
       hideInSearch: true,
@@ -312,7 +312,6 @@ const TableList = () => {
         return (
           <>
             <div>{records.wholesaleStartTime}</div>
-            <div>{records.wholesaleEndTime}</div>
           </>
         )
       }
