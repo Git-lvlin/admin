@@ -515,7 +515,7 @@ export default (props) => {
               validateFirst
               extra={
                 <>
-                  <div><span>标题规范：【标签】/品牌+品名+规格+卖点</span><span style={{ marginLeft: 10 }}>举例：【买一送一】立白 全自动浓缩洗衣粉 900g*1桶 去渍亮白持久留香</span></div>
+                  <div><span>标题规范：【标签】/品牌+品名+规格+卖点</span><span style={{ marginLeft: 10 }}>举例：立白 全自动浓缩洗衣粉 900g*1桶 去渍亮白持久留香</span></div>
                   {goodsName?.length < 20 && <div style={{ color: 'orange' }}>商品标题过于简单，不利于搜索露出/不利于用户购买决策，请在标题中补充更多商品信息，包括但不限于商品规格、品牌、卖点等</div>}
                 </>
               }
