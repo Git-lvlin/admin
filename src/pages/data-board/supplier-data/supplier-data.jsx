@@ -24,6 +24,7 @@ const SupplierData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
   const [value, setValue] = useState(1)
   const [data, setData] = useState([])
+  const [unit, setUnit] = useState('单位：单')
 
   useEffect(() => {
     supplierSalesRank({
@@ -57,6 +58,11 @@ const SupplierData = () => {
   
   const onChange = e => {
     setValue(e.target.value)
+    if(e.target.value === 1) {
+      setUnit('单位：单')
+    } else {
+      setUnit('单位：元')
+    }
   }
 
   const skipToDeatil = (e, id, name, state) => {
@@ -205,11 +211,14 @@ const SupplierData = () => {
           onChange={onChange}
           value={value}
           size="large"
+          style={{
+            marginBottom: 20
+          }}
         >
           <Radio value={1}>秒约销售额</Radio>
           <Radio value={2}>集约销售额</Radio>
         </Radio.Group>
-        <BarChart data={data}/>
+        <BarChart data={data} unit={unit}/>
       </div>
       <SupplierDataOverview/>
       <SupplierDevelopmentData />
