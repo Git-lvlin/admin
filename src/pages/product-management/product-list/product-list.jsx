@@ -3,7 +3,8 @@ import { Button, Tooltip, Table, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import * as api from '@/services/product-management/product-list';
+import * as api1 from '@/services/product-management/product-list';
+import * as api2 from '@/services/product-management/product-list-purchase';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import ProductDetailDrawer from '@/components/product-detail-drawer'
@@ -14,11 +15,14 @@ import { amountTransform, typeTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import moment from 'moment';
+import { useLocation } from 'umi';
+
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false);
-
+  const isPurchase = useLocation().pathname.includes('purchase')
+  const api = isPurchase ? api2 : api1
   const columns = [
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
@@ -62,6 +66,8 @@ const TableList = () => {
   const actionRef = useRef();
   const formRef = useRef();
   const [visit, setVisit] = useState(false)
+  const isPurchase = useLocation().pathname.includes('purchase')
+  const api = isPurchase ? api2 : api1
 
   const getDetail = (id, cb) => {
     api.getDetail({
@@ -172,6 +178,18 @@ const TableList = () => {
       },
       // renderFormItem: () => <SupplierSelect />,
       hideInTable: true,
+      hideInSearch: isPurchase,
+    },
+    {
+      title: '供应商家',
+      dataIndex: 'supplierNameId',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入供应商家ID或名称'
+      },
+      // renderFormItem: () => <SupplierSelect />,
+      hideInTable: true,
+      hideInSearch: !isPurchase,
     },
     {
       title: '供货类型',

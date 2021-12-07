@@ -8,7 +8,7 @@ export const communityStoreSalesRank = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data,
+    data: res.data.records,
     success: res.success
   }
 }
@@ -36,5 +36,18 @@ export const communityStoreData = async (params = {}, options = {}) => {
     data: res.data.records,
     success: res.success,
     total: res.data.total
+  }
+}
+
+// 社区店数据总览
+export const communityStoreDataOverview = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/config/communityStoreDataOverview', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
   }
 }

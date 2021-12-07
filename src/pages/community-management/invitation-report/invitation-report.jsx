@@ -33,7 +33,7 @@ export default props => {
         dataIndex: 'count',
         valueType: 'text',
         render:(text, record, _, action)=>[
-          <a onClick={()=>history.push('/community-management/report-detail-list?id='+record.sourceId)}>{record.count}</a>
+          <a key='count' onClick={()=>history.push('/community-management/report-detail-list?id='+record.sourceId)}>{record.count}</a>
         ],
         hideInSearch:true
     },
@@ -58,6 +58,7 @@ export default props => {
       render: (text, record, _, action) => [
         <InvitationDetail 
           id={record.sourceId}
+          key='detail'
         />,
         <HandleModel 
           record={record} 
@@ -67,6 +68,7 @@ export default props => {
           InterFace={reportHandle} 
           title={'操作确认'}
           boxref={actionRef}
+          key='lose'
         />,
         <HandleModel 
           record={record} 
@@ -76,6 +78,7 @@ export default props => {
           InterFace={reportHandle} 
           title={'操作确认'}
           boxref={actionRef}
+          key='shield'
         />,
       ],
       hideInSearch: true,
@@ -101,7 +104,7 @@ export default props => {
         valueType: 'text',
         hideInSearch: true,
         render:(text, record, _, action)=>[
-          <a onClick={()=>history.push('/community-management/report-detail-list?id='+record.sourceId)}>{record.count}</a>
+          <a key='count' onClick={()=>history.push('/community-management/report-detail-list?id='+record.sourceId)}>{record.count}</a>
         ]
     },
     {
@@ -147,6 +150,7 @@ export default props => {
       render: (_,record) => [
         <InvitationDetail  
           id={record.sourceId}
+          key='detail'
         />
       ],
       hideInSearch: true,
@@ -181,6 +185,7 @@ export default props => {
                   InterFace={reportHandle} 
                   title={'操作确认'}
                   boxref={actionRef}
+                  key='lose'
                 />,
                 <HandleModel  
                   status={2}
@@ -190,6 +195,7 @@ export default props => {
                   InterFace={reportHandle} 
                   title={'操作确认'}
                   boxref={actionRef}
+                  key='shield'
                 />
               ],
             }}

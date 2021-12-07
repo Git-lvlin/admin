@@ -1,20 +1,43 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { history } from 'umi'
 import moment from 'moment'
+import { Space, Tooltip, Radio } from 'antd'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 
-import { supplierData } from '@/services/data-board/supplier-data'
+import { supplierData, supplierSalesRank } from '@/services/data-board/supplier-data'
 import Yuan from '../components/Yuan'
 import styles from './styles.less'
-import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import SelectDate from '../components/SelectDate'
+import { getTimeDistance } from '@/utils/utils'
+import BarChart from './bar-chart'
+import SupplierDataOverview from './supplier-data-overview'
+import SupplierDevelopmentData from './supplier-development-data'
 
 const SupplierData = () => {
   const [amount, setAmount] = useState(0)
   const form = useRef()
   const [visit, setVisit] = useState(false)
+  const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
+  const [value, setValue] = useState(1)
+  const [data, setData] = useState([])
+  const [unit, setUnit] = useState('单位：单')
+
+  useEffect(() => {
+    supplierSalesRank({
+      startTime: rangePickerValue?.[0].format('YYYY-MM-DD'),
+      endTime: rangePickerValue?.[1].format('YYYY-MM-DD'),
+      type: value
+    }).then(res=> {
+      setData(res.data)
+    })
+    return () => {
+      setData([])
+    };
+  }, [rangePickerValue, value])
 
   const getFieldValue = () => {
     const { time, ...rest } = form.current.getFieldsValue()
@@ -25,12 +48,30 @@ const SupplierData = () => {
     }
   }
 
-  const skipToDeatil = (e, id, name) => {
+  const selectDate = (type) => {
+    setRangePickerValue(getTimeDistance(type))
+  }
+
+  const handleRangePickerChange = (value) => {
+    setRangePickerValue(value)
+  }
+  
+  const onChange = e => {
+    setValue(e.target.value)
+    if(e.target.value === 1) {
+      setUnit('单位：单')
+    } else {
+      setUnit('单位：元')
+    }
+  }
+
+  const skipToDeatil = (e, id, name, state) => {
     const { time } = form?.current?.getFieldsValue?.()
     const startTime = time&&moment(time?.[0]).format('YYYY-MM-DD')
     const endTime = time&&moment(time?.[1]).format('YYYY-MM-DD')
     const date = time?`&startTime=${startTime}&endTime=${endTime}`: ''
-    history.push(`/data-board/supplier-data/detail?type=${e}&id=${id}&storeName=${name}${date}`)
+    const type = state?`&state=${state}`: ''
+    history.push(`/data-board/supplier-data/detail?type=${e}&id=${id}&storeName=${name}${date}${type}`)
   }
 
   const columns = [
@@ -52,44 +93,140 @@ const SupplierData = () => {
       hideInTable: true
     },
     {
-      title: '商品总数',
-      dataIndex: 'spuNum',
+      title: '已审核通过SPU数量',
+      dataIndex: 'approvedSpuNum',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => <a onClick={()=>skipToDeatil('amount', r?.supplierId, r.supplierName)}>{_}</a>
+      render: (_, r) => <a onClick={()=>skipToDeatil('amount', r?.supplierId, r.supplierName, 1)}>{_}</a>
     },
     {
-      title: '出售中商品数',
-      dataIndex: 'spuSale',
+      title: '已审核通过SKU数量',
+      dataIndex: 'approvedSkuNum',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => <a onClick={()=>skipToDeatil('sales', r?.supplierId, r.supplierName)}>{_}</a>
+      render: (_, r) => <a onClick={()=>skipToDeatil('amount', r?.supplierId, r.supplierName, 1)}>{_}</a>
+    },
+    {
+      title: '未审核通过SPU数量',
+      dataIndex: 'notApprovedSpuNum',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r) => <a onClick={()=>skipToDeatil('amount', r?.supplierId, r.supplierName, 0)}>{_}</a>
+    },{
+      title: '未审核通过SKU数量',
+      dataIndex: 'notApprovedSkuNum',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r) => <a onClick={()=>skipToDeatil('amount', r?.supplierId, r.supplierName, 0)}>{_}</a>
+    },
+    {
+      title: '上架中的SPU数量',
+      align: 'center',
+      hideInSearch: true,
+      children: [
+        {
+          title: '秒约',
+          dataIndex: 'secondSaleSpuNum',
+          align: 'center',
+          render: (_, r) => <a onClick={()=>skipToDeatil('sales', r?.supplierId, r.supplierName, 2)}>{_}</a>
+        },
+        {
+          title: '集约',
+          dataIndex: 'wholesaleSaleSpuNum',
+          align: 'center',
+          render: (_, r) => <a onClick={()=>skipToDeatil('sales', r?.supplierId, r.supplierName, 1)}>{_}</a>
+        }
+      ]
+    },
+    {
+      title: '上架中的SKU数量',
+      align: 'center',
+      hideInSearch: true,
+      children: [
+        {
+          title: '秒约',
+          dataIndex: 'secondSaleSkuNum',
+          align: 'center',
+          render: (_, r) => <a onClick={()=>skipToDeatil('sales', r?.supplierId, r.supplierName, 2)}>{_}</a>
+        },
+        {
+          title: '集约',
+          dataIndex: 'wholesaleSaleSkuNum',
+          align: 'center',
+          render: (_, r) => <a onClick={()=>skipToDeatil('sales', r?.supplierId, r.supplierName, 1)}>{_}</a>
+        }
+      ]
     },
     {
       title: '秒约销售总额(元)',
-      dataIndex: 'secondAmount',
+      dataIndex: 'secondAmountYuan',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => <a onClick={()=>skipToDeatil('second', r?.supplierId, r.supplierName)}>{amountTransform(Number(_), '/')}</a>
-    },{
-      title: '集约销售总额（元）',
-      dataIndex: 'wholesaleAmount',
+      render: (_, r) => <a onClick={()=>skipToDeatil('second', r?.supplierId, r.supplierName)}>{_}</a>
+    },
+    {
+      title: 'B端集约销售总额（元）',
+      dataIndex: 'wholesaleAmountYuan',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => <a onClick={()=>skipToDeatil('intensive', r?.supplierId, r.supplierName)}>{amountTransform(Number(_), '/')}</a>
+      render: (_, r) => <a onClick={()=>skipToDeatil('intensive', r?.supplierId, r.supplierName)}>{_}</a>
     },
     {
       title: '总销售额(元)',
-      dataIndex: 'totalAmount',
+      dataIndex: 'totalAmountYuan',
       align: 'center',
-      hideInSearch: true,
-      render: (_) => amountTransform(Number(_), '/')
+      hideInSearch: true
     },
+    {
+      title: ()=>(
+        <Space>
+          <span>总货款(元)</span>
+          <Tooltip title="含盲盒和红包补贴的金额，扣除手续费">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'totalPaymentYuan',
+      align: 'center',
+      hideInSearch: true
+    }
   ]
-  return (
+  
+  return (  
     <PageContainer title={false}>
+      <div className={styles.timeSearch}>
+        <Space size={20}>
+          <h3>供应商销售排名</h3>
+          <SelectDate
+            selectDate={selectDate}
+            rangePickerValue={rangePickerValue}
+            handleRangePickerChange={handleRangePickerChange}
+            code="data-board-supplier-sales-rank"
+            type={value}
+          />
+        </Space>
+      </div>
+      <div className={styles.radioArea}>
+        <Radio.Group 
+          onChange={onChange}
+          value={value}
+          size="large"
+          style={{
+            marginBottom: 20
+          }}
+        >
+          <Radio value={1}>秒约销售额</Radio>
+          <Radio value={2}>集约销售额</Radio>
+        </Radio.Group>
+        <BarChart data={data} unit={unit}/>
+      </div>
+      <SupplierDataOverview/>
+      <SupplierDevelopmentData />
       <ProTable
         rowKey="supplierId"
+        style={{
+          marginTop: 30
+        }}
         formRef={form}
         request={supplierData}
         params={{}}
@@ -98,6 +235,7 @@ const SupplierData = () => {
           setAmount(v.total)
           return v.records
         }}
+        bordered
         pagination={{
           showQuickJumper: true,
           pageSize: 10
@@ -125,7 +263,7 @@ const SupplierData = () => {
         tableRender={(_, dom) => (
           <>
             { dom }
-            {
+            { 
               <div className={styles.summary}>
                 <span>商家总数：<Yuan>{amount}</Yuan></span>
               </div>

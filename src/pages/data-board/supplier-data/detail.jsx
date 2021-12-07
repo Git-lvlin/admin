@@ -162,7 +162,8 @@ const Detail = () => {
         params={{
           supplierId: query.id,
           startTime: query?.startTime,
-          endTime: query?.endTime
+          endTime: query?.endTime,
+          type: query?.state
         }}
         pagination={{
           showQuickJumper: true,

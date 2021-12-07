@@ -122,7 +122,7 @@ export default props => {
           className={styles.couponFrom}
         >
           <h1><CaretRightFilled /> 查看详情</h1>
-          <Button className={styles.goback} type="default" onClick={() => history.goBack()}>返回</Button>
+          <Button className={styles.goback} key='goback' type="default" onClick={() => history.goBack()}>返回</Button>
           <div className={styles.msg}>
             <h3 className={styles.head}>基本信息</h3>
             <Form.Item
@@ -274,10 +274,10 @@ export default props => {
                   {
                     detailData.goodsType == 2 ?
                     <>
-                      <p className={styles.mark}>已选中<span>{detailData.spuInfo?.length}个</span>指定商品</p>
+                      <p key='assign' className={styles.mark}>已选中<span>{detailData.spuInfo?.length}个</span>指定商品</p>
                       <ProTable
                         actionRef={ref}
-                        rowKey="id"
+                        rowKey="spuId"
                         options={false}
                         dataSource={detailData.spuInfo}
                         search={false}
@@ -292,7 +292,7 @@ export default props => {
                   <p className={styles.mark}>已选中<span>{detailData.wsInfo?.length}个</span>集约活动。</p>
                   <ProTable
                     actionRef={ref}
-                    rowKey="id"
+                    rowKey="spuId"
                     options={false}
                     dataSource={detailData.wsInfo}
                     search={false}

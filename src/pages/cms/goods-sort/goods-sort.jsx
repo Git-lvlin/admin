@@ -1,24 +1,17 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
-import { Button, message, Popconfirm } from 'antd';
+import { Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { goodsSortList, goodsSortTop, goodsSortReset, goodsMoveSort } from '@/services/cms/member/member';
 import { category } from '@/services/product-management/product-category';
+import Edit from './form';
+
 const BannerAdmin = () => {
   const actionRef = useRef();
-  // const [useType, setUseType] = useState(1);
-  const [sortValue, setSortValue] = useState(null);
-  // const [arr, setArr] = useState([]),
-
-  // const renderPopup = () => (
-  //   <Popconfirm key="popconfirm" title={``} okText="确定" cancelText="取消">
-  //     <a>{text}</a>
-  //     <input value={sortValue} onChange={(v) => {setSortValue(v)}}></input>
-  //   </Popconfirm>
-  // );
-
+  const [formVisible, setFormVisible] = useState(false);
+  const [detailData, setDetailData] = useState(null);
   // useEffect(() => {
   //   category({ gcParentId: 0 }).then(res => {
   //     console.log('res', res)
@@ -65,30 +58,13 @@ const BannerAdmin = () => {
     })
   }
 
-  const doSort = (record, type, varieties) => {
-    const { wsSkuId, sort, noticeSort } = record;
-    let param = {}
-    switch(varieties) {
-      case 'top':
-
-        break
-      case 'num':
-        param = {
-          wsSkuId,
-          type,
-          sort: sortValue
-        }
-        break
-    }
-    goodsSortTop(param).then((res) => {
-      if (res.code === 0) {
-        actionRef.current.reload();
-      }
-    })
-  }
-
   const editSort = (record, type) => {
-
+    const data = {
+      ...record,
+      type,
+    }
+    setDetailData(data)
+    setFormVisible(true)
   }
 
   const columns = [
@@ -142,7 +118,7 @@ const BannerAdmin = () => {
           <a>{_}</a>&nbsp;
           <Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 1, 0 ) }}></Button>
           {record.sort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 1, 1) }}></Button>}&nbsp;
-          {/* <a onClick={() => { editSort(record, 1) }}>排序</a>&nbsp; */}
+          <a onClick={() => { editSort(record, 1) }}>排序</a>&nbsp;
           <a onClick={() => { top(record, 1) }}>置顶</a>
         </>
       }
@@ -156,7 +132,7 @@ const BannerAdmin = () => {
           <a>{_}</a>&nbsp;
           <Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 2, 0) }}></Button>
           {record.noticeSort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 2, 1) }}></Button>}&nbsp;
-          {/* <a onClick={() => { editSort(record, 2) }}>排序</a>&nbsp; */}
+          <a onClick={() => { editSort(record, 2) }}>排序</a>&nbsp;
           <a onClick={() => { top(record, 2) }}>置顶</a>
         </>
       }
@@ -165,33 +141,34 @@ const BannerAdmin = () => {
 
   return (
     <PageContainer>
-      {/* <ProForm.Group>
-        <ProCard style={{display: 'flex',}}>
-          <Button type={useType==1?'primary':''} onClick={() => {setUseType(1)}}>集约商品</Button>
-          <Button type={useType==1?'':'primary'} onClick={() => {setUseType(2)}}>集约爆品区</Button>
-        </ProCard>
-      </ProForm.Group> */}
-    <ProTable
-      rowKey="id"
-      columns={columns}
-      actionRef={actionRef}
-      request={goodsSortList}
-      search={{
-        labelWidth: 'auto',
-      }}
-      pagination={{
-        pageSize: 5,
-      }}
-      dateFormatter="string"
-      toolBarRender={(_,record) => [
-        <Button key="button" type="primary" onClick={() => { sortReset(1) }}>
-          按集约价升序排列采购列表
-        </Button>,
-        <Button key="button" type="primary" onClick={() => { sortReset(2) }}>
-          按集约价升序排列提醒列表
-        </Button>,
-      ]}
-    />
+      <ProTable
+        rowKey="id"
+        columns={columns}
+        actionRef={actionRef}
+        request={goodsSortList}
+        search={{
+          labelWidth: 'auto',
+        }}
+        pagination={{
+          pageSize: 5,
+        }}
+        dateFormatter="string"
+        toolBarRender={(_) => [
+          <Button key="button" type="primary" onClick={() => { sortReset(1) }}>
+            按集约价升序排列采购列表
+          </Button>,
+          <Button key="button" type="primary" onClick={() => { sortReset(2) }}>
+            按集约价升序排列提醒列表
+          </Button>,
+        ]}
+      />
+      {formVisible && <Edit
+        visible={formVisible}
+        setVisible={setFormVisible}
+        detailData={detailData}
+        callback={() => { actionRef.current.reload(); setDetailData(null) }}
+        onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+      />}
     </PageContainer>
   );
 };
