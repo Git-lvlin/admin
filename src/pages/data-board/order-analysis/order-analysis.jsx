@@ -73,10 +73,16 @@ const OrderAnalysis = () => {
   const [tableData, setTableData] = useState([])
   const [totalOrder, setTotalOrder] = useState(0)
   const [totalAmount, setTotalAmount] = useState(0)
+  const [unit, setUnit] = useState('单位：单')
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
 
   const onChange = e => {
     setValue(e.target.value)
+    if(e.target.value === 1) {
+      setUnit('单位：单')
+    } else {
+      setUnit('单位：元')
+    }
   }
 
   useEffect(() => {
@@ -121,7 +127,10 @@ const OrderAnalysis = () => {
   }, [rangePickerValue, value])
   
   const scale = {
-    value: { min: 0 },
+    value: { 
+      min: 0,
+      alias: unit
+    },
     reportName: {
       formatter: v => {
         return {
@@ -283,7 +292,7 @@ const OrderAnalysis = () => {
           scale={scale}
         />
       </div>
-      <RegionalOrderAnalysis />
+      <RegionalOrderAnalysis/>
     </PageContainer>
   )
 }

@@ -3,14 +3,27 @@ import {
 	Chart,
 	Coordinate,
 	Interval,
-  Interaction
+  Interaction,
+  Axis
 } from "bizcharts"
 import { Empty } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 
-const BarChart = ({data}) => {
+const BarChart = ({data, unit}) => {
   data?.sort((a, b)=> a.amount - b.amount)
+
+  const chartUnit = {
+    style: {
+      fontSize: 14,
+      textAlign: 'center',
+      fill: '#E66101'
+    },
+    position: 'end',
+    rotate: 0,
+		offset: 80
+  }
+
   return (
     data?.[0]?
     <Chart
@@ -20,9 +33,16 @@ const BarChart = ({data}) => {
       scale={{
         amount: {
           formatter: (v) => amountTransform(v, '/')
+        },
+        supplierName: {
+          alias: unit
         }
       }}
     >
+      <Axis
+        name='supplierName'
+        title={chartUnit}
+      />
       <Coordinate transpose />
       <Interval 
         position="supplierName*amount"

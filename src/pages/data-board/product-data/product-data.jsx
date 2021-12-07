@@ -306,7 +306,6 @@ const ProductData = () => {
       dataIndex: 'date',
       valueType: 'dateRange',
       align: 'center',
-      initialValue: getTimeDistance("week"),
       hideInTable: true
     },
     {
