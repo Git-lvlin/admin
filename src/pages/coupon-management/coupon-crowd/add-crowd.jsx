@@ -10,11 +10,21 @@ import ProCard from '@ant-design/pro-card';
 import { couponCrowdSub,couponCrowdDetail,couponCrowdEdit } from '@/services/crowd-management/coupon-crowd';
 import { history} from 'umi';
 import CrowdModel from './crowd-model'
-import {formatMessage,connect} from 'umi';
 import  './style.less'
 
 
-
+const formItemLayout = {
+  labelCol: { span: 2 },
+  wrapperCol: { span: 14 },
+  layout: {
+    labelCol: {
+      span: 10,
+    },
+    wrapperCol: {
+      span: 14,
+    },
+  }
+};
 
 export default (props) =>{
   const id = props.location.query.id
@@ -22,8 +32,8 @@ export default (props) =>{
   const [dataSource, setDataSource] = useState([]);
   const [falg1,setFalg1]=useState(false)
   const [falg2,setFalg2]=useState(false)
-  const [falg3,setFalg3]=useState(false)
   const [levelId,setLevelId]=useState()
+  const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
   const ref=useRef()
   const Callback=val=>{
@@ -40,14 +50,11 @@ export default (props) =>{
           }else if(ele.type==2){
             setFalg2(true)
           }
-          else if(ele.type==3){
-            setFalg3(true)
-          }
           arr.push({
             id:ele.crowdInfoId,
             state:ele.isContain,
-            title:ele.type==1?'会员等级':ele.type==2?'消费次数':'累计消费',
-            labels:ele.type==2?[ele.numStart,ele.numEnd]:ele.type==3&&[ele.moneyStart,ele.moneyEnd],
+            title:ele.type==1?'指定用户':'消费次数',
+            labels:[ele.numStart,ele.numEnd],
             userLevel:ele.userLevel,
             userLevelDisplay:ele.userLevelDisplay
           })
@@ -59,7 +66,7 @@ export default (props) =>{
   const onsubmit=values=>{
       try {
         dataSource.map(ele=>{
-          if(ele.title=='会员等级'){
+          if(ele.title=='指定用户'){
             values.userLevelInfo={
               isContain: ele.state||1,
               userLevel: levelId&&levelId.userLevel.toString()||ele.userLevel    
@@ -69,16 +76,6 @@ export default (props) =>{
               isContain: ele.state||1,
               numStart: ele.labels[0],
               numEnd: ele.labels[1],
-              // validTimeStart:ele.labels[2][0],
-              // validTimeEnd:ele.labels[2][1]
-            }
-          }else if(ele.title=='累计消费'){
-            values.consumeLjInfo={
-              isContain: ele.state||1,
-              moneyStart: ele.labels[0],
-              moneyEnd: ele.labels[1],
-              // validTimeStart:ele.labels[2][0],
-              // validTimeEnd:ele.labels[2][1]
             }
           }
         })
@@ -105,7 +102,6 @@ export default (props) =>{
     {
       title: '选项',
       dataIndex: 'title',
-      width: '30%',
       renderFormItem:(_,data)=>{
         return <p>{_.entry.title}</p>
       }
@@ -114,16 +110,17 @@ export default (props) =>{
       title: '范围',
       key: 'state',
       dataIndex: 'state',
+      valueType:'radio',
       valueEnum: {
         1: '包含',
         2: '不包含',
-      }
+      },
     },
     {
       title: '条件',
       dataIndex: 'labels',
       renderFormItem: (_, row) => {
-        if(_.entry.title=='会员等级'){
+        if(_.entry.title=='指定用户'){
               if(levelId){
                 return <>
                   <p className='grade'>{
@@ -132,53 +129,55 @@ export default (props) =>{
                       })
                     }
                   </p>
-                <CrowdModel Callback={Callback}/>
+                <Button onClick={()=>setVisible(true)}>选择用户</Button>
+                {
+                  visible&&<CrowdModel 
+                  visible={visible}
+                  title="选择用户"  
+                  setVisible={setVisible}  
+                  Callback={Callback}
+                />
+                }
                 </>
               }else{
-                return <CrowdModel Callback={Callback}/>
+                return <>
+                   <Button onClick={()=>setVisible(true)}>选择用户</Button>
+                    {
+                      visible&&<CrowdModel 
+                      visible={visible}
+                      title="选择用户" 
+                      setVisible={setVisible}  
+                      Callback={Callback}
+                    />
+                    }
+                </>
               }
         }else if(_.entry.title=='消费次数'){
         return <ProFormFieldSet>
                   <Input className='nums' suffix="次" /> 
                   至 
                   <Input className='nums' suffix="次" />
-                  {/* <ProFormDateRangePicker
-                    name='dateRange'
-                    placeholder={[
-                        formatMessage({id: 'formandbasic-form.placeholder.start'}),
-                        formatMessage({id: 'formandbasic-form.placeholder.end'}),
-                    ]}
-                /> */}
                 </ProFormFieldSet>;
         }
-        return <ProFormFieldSet> 
-                  <Input name='min' className='nums' suffix="元" />
-                  至 
-                  <Input name='max' className='nums' suffix="元" />
-                  {/* <ProFormDateRangePicker
-                    name='dateTimeRange'
-                    placeholder={[
-                        formatMessage({id: 'formandbasic-form.placeholder.start'}),
-                        formatMessage({id: 'formandbasic-form.placeholder.end'}),
-                    ]}
-                /> */}
-                </ProFormFieldSet>;
       },
       render: (_, row) =>{
-        if(row.title=='会员等级'){
-          return <p>{levelId?.userLevel.map(ele=>{
-            return <span>V{ele}等级、</span>
-          })||row.userLevelDisplay}</p>;
+        if(row.title=='指定用户'){
+          return <>
+            <Button onClick={()=>setVisible(true)}>查看用户</Button>
+            {
+              visible&&<CrowdModel 
+              visible={visible}
+              title="查看用户" 
+              setVisible={setVisible}  
+              Callback={Callback}
+            />
+            }
+          </>
           }else if(row.title=='消费次数'){
             return <>
                     <p>{row.labels[0]}次 至 {row.labels[1]}次</p>
-                    {/* <p>{row.labels[2][0]} 到 {row.labels[2][1]}</p> */}
                   </>;
           }
-            return <>
-                    <p>{row.labels[0]}元 至 {row.labels[1]}元</p>
-                    {/* <p>{row.labels[2][0]} 到 {row.labels[2][1]}</p> */}
-                  </>;
       }
     },
     {
@@ -189,13 +188,10 @@ export default (props) =>{
         <a
           key="delete"
           onClick={() => {
-            if(record.title=='会员等级'){
+            if(record.title=='指定用户'){
               setFalg1(false)
             }else if(record.title=='消费次数'){
               setFalg2(false)
-            }
-            else if(record.title=='累计消费'){
-              setFalg3(false)
             }
             setDataSource(dataSource.filter((item) => item.id !== record.id));
           }}
@@ -228,6 +224,7 @@ export default (props) =>{
             ];
           }
         }}
+        {...formItemLayout}
       >
         <ProCard
           title="基础设置"
@@ -266,11 +263,11 @@ export default (props) =>{
                 type={falg1?"primary":"default"}  
                 onClick={() => {
                   setFalg1(true)
-                  let falg=dataSource.some(ele=>ele.title=='会员等级')
+                  let falg=dataSource.some(ele=>ele.title=='指定用户')
                   if(dataSource.length==0||!falg){
                     ref.current?.addEditRecord?.({
                     id: '1',
-                    title: '会员等级',
+                    title: '指定用户',
                     });
                   }else{
                     message.error('已有该选项')
@@ -278,7 +275,7 @@ export default (props) =>{
                 }}
                 style={{margin:"20px 0 20px 50px"}}
                 >
-                  会员等级
+                  指定用户
             </Button>
             <h4 className='memberMsg'>会员消费情况</h4>
             <Button
@@ -298,23 +295,6 @@ export default (props) =>{
               }}
               >
                 消费次数
-            </Button>
-            <Button 
-              type={falg3?"primary":"default"}
-              style={{margin:"20px"}}
-              onClick={() => {
-                  setFalg3(true)
-                  let falg=dataSource.some(ele=>ele.title=='累计消费')
-                  if(dataSource.length==0||!falg){
-                    ref.current?.addEditRecord?.({
-                    id: '3',
-                    title: '累计消费',
-                    });
-                  }else{
-                    message.error('已有该选项')
-                  }
-              }}>
-                累计消费
             </Button>
         </ProCard>
         <ProCard
@@ -344,8 +324,6 @@ export default (props) =>{
                     setFalg1(false)
                   }else if(rowKey==2){
                     setFalg2(false)
-                  }else if(rowKey==3){
-                    setFalg3(false)
                   }
                 }
               }}

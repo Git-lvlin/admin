@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Input, Form, message,Button,InputNumber,Spin} from 'antd';
+import { Input, Form, message,Button,InputNumber,Spin,Space} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import { couponInviteSub,couponInviteEdit,couponInviteDetail,couponInviteSelList } from '@/services/activity-management/share-red-packet-activity';
 import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
@@ -44,6 +44,7 @@ export default (props) =>{
   const [detailList,setDetailList]=useState()
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [referrerNum,setReferrerNum]=useState()
   let id = props.location.query.id
   const FromWrap = ({ value, onChange, content, right }) => (
     <div style={{ display: 'flex' }}>
@@ -103,7 +104,15 @@ export default (props) =>{
       }
 
   }
-
+  function onChange1(value) {
+    console.log('changed1', value);
+  }
+  function onChange2(value) {
+    console.log('changed2', value);
+  }
+  function onChange3(value) {
+    console.log('changed3', value);
+  }
  
   const columns = [
     {
@@ -112,7 +121,13 @@ export default (props) =>{
       editable:false,
     },
     {
-      title: '累计推荐1-3人',
+      title: (
+        <Space>
+          <sapn>累计推荐1-</sapn>
+            <InputNumber min={1} onChange={onChange1}  style={{width:'60px'}}/>
+          <span>人</span>
+        </Space>
+      ),
       dataIndex: 'couponIdOne',
       valueType: 'select',
       valueEnum: onselect,
@@ -121,7 +136,13 @@ export default (props) =>{
       },
     },
     {
-      title: '累计推荐4-9人',
+      title:  (
+        <Space>
+          <sapn>累计推荐4-</sapn>
+            <InputNumber min={4} onChange={onChange2}  style={{width:'60px'}}/>
+          <span>人</span>
+        </Space>
+      ),
       dataIndex: 'couponIdTwo',
       valueType: 'select',
       valueEnum: onselect,
@@ -129,7 +150,13 @@ export default (props) =>{
         placeholder: '请选择'
       },
     }, {
-      title: '累计推荐10人以上',
+      title:  (
+        <Space>
+          <sapn>累计推荐</sapn>
+            <InputNumber min={1} onChange={onChange3} style={{width:'60px'}}/>
+          <span>人以上</span>
+        </Space>
+      ),
       dataIndex: 'couponIdThree',
       valueType: 'select',
       valueEnum: onselect,
