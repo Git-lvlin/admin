@@ -56,16 +56,6 @@ const UserRelationship = () => {
       }
     },
     {
-      title: '店铺状态',
-      dataIndex: 'storeStatus',
-      search: false,
-      valueEnum: {
-        0: '-',
-        1: '启用',
-        3: '关闭'
-      }
-    },
-    {
       title: '店主采购订单数（单）',
       dataIndex: 'purchaseOrderNum',
       search: false,
@@ -80,11 +70,15 @@ const UserRelationship = () => {
       valueEnum: {
         0: '-',
         1: '商品分享',
-        2: '邀请新人',
+        2: '邀请新人(好友)活动',
         3: '盲盒活动',
         4: '签到活动',
         5: '五星店主活动',
-        6: '周末大狂欢',
+        6: '周末大狂欢活动',
+        7: '新人专享活动',
+        8: '每日红包活动',
+        9: '秒杀活动',
+        10: '推荐有礼',
       }
     },
     {
@@ -105,6 +99,15 @@ const UserRelationship = () => {
       valueEnum: {
         0: '不是',
         1: '是',
+      }
+    },
+    {
+      title: '店铺状态',
+      dataIndex: 'storeStatus',
+      search: false,
+      valueEnum: {
+        0: '关闭',
+        1: '启用',
       }
     },
     {

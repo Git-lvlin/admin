@@ -205,7 +205,7 @@ export default (props) =>{
                     保存
                   </Button>
                 }
-                <Button type="default" style={{marginLeft:'80px'}} onClick={() => { history.push('/activity-management/share-red-packet-activity/activity-list') }}>返回</Button>
+                <Button type="default" style={{marginLeft:'80px'}} onClick={() => { history.goBack() }}>返回</Button>
               </>  
             ];
           }

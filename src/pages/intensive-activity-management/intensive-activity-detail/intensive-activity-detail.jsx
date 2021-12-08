@@ -38,6 +38,12 @@ const Detail = () => {
       dataIndex: 'skuId',
     },
     {
+      title: '商品分类',
+      dataIndex: 'retailSupplyPrice',
+      valueType: 'text',
+      render: (_, data) => `${data.gcId1Display}-${data.gcId2Display}`,
+    },
+    {
       title: '规格',
       dataIndex: 'skuNameDisplay',
     },
@@ -70,12 +76,22 @@ const Detail = () => {
       render: (_) => amountTransform(_, '/')
     },
     {
+      title: '平均运费(元)',
+      dataIndex: 'wholesaleFreight',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
       title: '集约库存',
       dataIndex: 'totalStockNum',
     },
     {
       title: '集约价',
       dataIndex: 'price',
+      
+    },
+    {
+      title: '实际盈亏(元)',
+      dataIndex: 'profit',
       render: (_) => amountTransform(_, '/')
     },
     {
@@ -101,6 +117,10 @@ const Detail = () => {
           <div>补贴 {detailData?.wholesale?.subsidy / 100}元</div>
         </>
       )
+    },
+    {
+      title: '集采箱规单位量',
+      dataIndex: 'batchNumber',
     },
     {
       title: '单次起订量',
@@ -137,7 +157,7 @@ const Detail = () => {
             <Divider />
             <Descriptions labelStyle={{ textAlign: 'right', width: 150, display: 'inline-block' }}>
               <Descriptions.Item label="活动名称">{detailData?.wholesale?.name}</Descriptions.Item>
-              <Descriptions.Item label="活动时间"><span style={{ position: 'absolute', marginTop: -10 }}>{detailData?.wholesale?.wholesaleStartTime}<br />{detailData?.wholesale?.wholesaleEndTime}</span></Descriptions.Item>
+              <Descriptions.Item label="活动开始时间">{detailData?.wholesale?.wholesaleStartTime}</Descriptions.Item>
               <Descriptions.Item label="采购单下单截止时间">
                 {detailData?.wholesale?.endTimeAdvancePayment}
               </Descriptions.Item>

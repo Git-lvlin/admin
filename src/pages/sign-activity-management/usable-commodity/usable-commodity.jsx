@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select,message,Table} from 'antd';
+import { Button,Tabs,Image,Form,Modal,Select,message,Table,Switch} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { productPage,productUpdateStatus,productDelete,productEdit,productAdd } from '@/services/sign-activity-management/sign-red-packet-product';
@@ -80,17 +80,11 @@ export default () => {
       render:(_,data) => {
         if(!data.deductionDesc){
           return <>
-            <ProFormSwitch disabled={!data.deductionDesc}/>
+            <Switch disabled={!data.deductionDesc}/>
             <p style={{fontSize:'10px',color:'#ccc'}}>请设置优惠</p>
           </>
         }
-        return <ProFormSwitch disabled={!data.deductionDesc}  name="Switch"
-          fieldProps={{
-            checked:data.status?true:false,
-            onChange:(bol)=>{onFF(bol,data)},
-          }
-        }
-        />
+        return <Switch disabled={!data.deductionDesc}  name="Switch" checked={data.status?true:false} onChange={(bol)=>{onFF(bol,data)}}/>
     },
     },
     {
