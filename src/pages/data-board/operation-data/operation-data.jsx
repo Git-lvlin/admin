@@ -21,6 +21,7 @@ const OperationData = () => {
   const [value, setValue] = useState(1)
   const [charData, setCharData] = useState([])
   const [visit, setVisit] = useState(false)
+  const [unit, setUnit] = useState('单位：单')
   const form = useRef()
 
   const getFieldValue = () => {
@@ -57,6 +58,11 @@ const OperationData = () => {
   
   const onChange = e => {
     setValue(e.target.value)
+    if(e.target.value === 1) {
+      setUnit('单位：单')
+    } else {
+      setUnit('单位：元')
+    }
   }
 
   const handleRangePickerChange = (value) => {
@@ -172,6 +178,9 @@ const OperationData = () => {
           onChange={onChange}
           value={value}
           size="large"
+          style={{
+            marginBottom: 20
+          }}
         >
           <Radio value={1}>
             <Space>
@@ -190,7 +199,7 @@ const OperationData = () => {
             </Space>
           </Radio>
         </Radio.Group>
-        <BarChart data={charData} />
+        <BarChart data={charData} unit={unit}/>
       </div>
       <OperationDataOverview/>
       <ProTable

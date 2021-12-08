@@ -49,8 +49,11 @@ const TransactionDetails = () => {
         return (
           <>
             <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
-            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+             {
+              couponAmount !== '0'&&
+              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+            }
+            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
             <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
@@ -58,8 +61,11 @@ const TransactionDetails = () => {
         return (
           <>
             <span className={styles.amount}>店主收益: ¥{amountTransform(amount, '/')}</span>
-            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+             {
+              couponAmount !== '0'&&
+              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+            }
+            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
             <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
@@ -67,8 +73,11 @@ const TransactionDetails = () => {
         return (
           <>
             <span className={styles.amount}>平台收益: ¥{amountTransform(amount, '/')}</span>
-            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+             {
+              couponAmount !== '0'&&
+              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+            }
+            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
             <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
@@ -76,8 +85,11 @@ const TransactionDetails = () => {
         return (
           <>
             <span className={styles.amount}>上级推荐人收益: ¥{amountTransform(amount, '/')}</span>
-            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+             {
+              couponAmount !== '0'&&
+              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+            }
+            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
             <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
@@ -85,8 +97,11 @@ const TransactionDetails = () => {
         return (
           <>
             <span className={styles.amount}>运营商收益: ¥{amountTransform(amount, '/')}</span>
-            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+             {
+              couponAmount !== '0'&&
+              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+            }
+            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
             <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
@@ -94,13 +109,16 @@ const TransactionDetails = () => {
         return (
           <>
             <span className={styles.amount}>运费: ¥{amountTransform(amount, '/')}</span>
-            <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            {
+              couponAmount !== '0'&&
+              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+            }
+            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
             <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       default:
-        return '-'
+        return ''
     }
   }
   const columns1 = [
@@ -168,30 +186,37 @@ const TransactionDetails = () => {
     {
       title: '商品供货价',
       dataIndex: 'supplyPrice',
-      render: (_) => `￥${amountTransform(_, '/')}`
+      render: (_) => `¥${amountTransform(_, '/')}`
     },
     {
       title: '实际销售价',
       dataIndex: 'salePrice',
-      render: (_) => `￥${amountTransform(_, '/')}`
+      render: (_) => `¥${amountTransform(_, '/')}`
     },
     {
       title:(_)=> _.dataIndex === 'preCount' ? '预定数量' : '购买数量',
       dataIndex: info.orderType === 'commandSalesOrder' ? 'preCount' : 'paidCount'
     },
     {
-      title: (_) => _.dataIndex ? '实际采购数量' : '',
-      dataIndex: info.orderType === 'commandSalesOrder' ? 'paidCount' : ''
+      title: (_) => _.dataIndex === 'couponAmount' ? '优惠金额' : '实际采购数量',
+      dataIndex: info.orderType === 'commandSalesOrder' ? 'paidCount' : 'couponAmount',
+      render: (_)=> {
+        if(info.orderType !== 'commandSalesOrder') {
+          return `¥${amountTransform(Number(_), '/')}`
+        } else {
+          return _
+        }
+      }
     },
     {
       title: '运费',
       dataIndex: 'freight',
-      render: (_) => `￥${amountTransform(_, '/')}`
+      render: (_) => `¥${amountTransform(_, '/')}`
     },
     {
       title: '应付金额',
       dataIndex: 'amount',
-      render: (_) => `${amountTransform(_, '/')}`
+      render: (_) => `¥${amountTransform(_, '/')}`
     }
   ]
 
@@ -209,13 +234,13 @@ const TransactionDetails = () => {
       dataIndex: 'payTpyeName'
     },
     {
-      title: '应付金额',
+      title: '',
       dataIndex: ''
     },
     {
       title: '实付金额',
       dataIndex: 'amount',
-      render: (_)=> `¥${amountTransform(_, '/')}`
+      render: (_, r)=> `¥${amountTransform((Number(_) - Number(r.couponAmount)), '/')}`
     },
     {
       title: '虚拟分账计算',
@@ -298,9 +323,9 @@ const TransactionDetails = () => {
         bordered
         dataSource={info}
       />
-      <div style={{background: '#fff', padding: 20}}>
+      {/* <div style={{background: '#fff', padding: 20}}>
         <Button type='primary' onClick={()=>{back()}}>返回</Button>
-      </div>
+      </div> */}
     </PageContainer>
   )
 }
