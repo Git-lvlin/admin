@@ -15,7 +15,6 @@ import SelectDate from '../components/SelectDate'
 import { getTimeDistance } from '@/utils/utils'
 import BarChart from './bar-chart'
 import SupplierDataOverview from './supplier-data-overview'
-import SupplierDevelopmentData from './supplier-development-data'
 
 const SupplierData = () => {
   const [amount, setAmount] = useState(0)
@@ -221,7 +220,6 @@ const SupplierData = () => {
         <BarChart data={data} unit={unit}/>
       </div>
       <SupplierDataOverview/>
-      <SupplierDevelopmentData />
       <ProTable
         rowKey="supplierId"
         style={{
