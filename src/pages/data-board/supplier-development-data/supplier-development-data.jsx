@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 import ProTable from '@ant-design/pro-table'
+import { PageContainer } from '@ant-design/pro-layout'
 
 import { supplierDevelopmentData } from '@/services/data-board/supplier-data'
 import Export from '@/pages/export-excel/export'
@@ -70,40 +71,42 @@ const SupplierDevelopmentData = () => {
     }
   ]
   return (
-    <ProTable
-      rowKey='operateId'
-      columns={columns}
-      request={supplierDevelopmentData}
-      params={{}}
-      formRef={form}
-      toolbar={{
-        settings: false
-      }}
-      headerTitle='供应商开发数据'
-      pagination={{
-        showQuickJumper: true,
-        pageSize: 10
-      }}
-      search={{
-        optionRender: (searchConfig, formProps, dom)=>[
-          ...dom.reverse(),
-          <Export
-            change={(e)=> {setVisit(e)}}
-            key="export" 
-            type="data-board-supplier-development-data"
-            conditions={getFieldValue}
-          />,
-          <ExportHistory
-            key="export-history" 
-            show={visit} setShow={setVisit}
-            type="data-board-supplier-development-data"
-          />
-        ]
-      }}
-      style={{
-        marginTop: 30
-      }}
-    />
+    <PageContainer title={false}>
+      <ProTable
+        rowKey='operateId'
+        columns={columns}
+        request={supplierDevelopmentData}
+        params={{}}
+        formRef={form}
+        toolbar={{
+          settings: false
+        }}
+        headerTitle='供应商开发数据'
+        pagination={{
+          showQuickJumper: true,
+          pageSize: 10
+        }}
+        search={{
+          optionRender: (searchConfig, formProps, dom)=>[
+            ...dom.reverse(),
+            <Export
+              change={(e)=> {setVisit(e)}}
+              key="export" 
+              type="data-board-supplier-development-data"
+              conditions={getFieldValue}
+            />,
+            <ExportHistory
+              key="export-history" 
+              show={visit} setShow={setVisit}
+              type="data-board-supplier-development-data"
+            />
+          ]
+        }}
+        style={{
+          marginTop: 30
+        }}
+      />
+    </PageContainer>
   )
 }
 
