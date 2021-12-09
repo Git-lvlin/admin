@@ -77,14 +77,15 @@ const SupplierData = () => {
     {
       title: '供应商ID',
       dataIndex: 'supplierId',
-      align: 'center'
-    },
-    {
-      title: '供应商名称',
-      dataIndex: 'supplierName',
       align: 'center',
-      width: '18%'
+      valueType: 'digit'
     },
+    // {
+    //   title: '供应商名称',
+    //   dataIndex: 'supplierName',
+    //   align: 'center',
+    //   width: '18%'
+    // },
     {
       title: '统计时间范围',
       dataIndex: 'time',

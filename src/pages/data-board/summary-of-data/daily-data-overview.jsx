@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import ProTable from '@ant-design/pro-table'
-import moment from 'moment'
 import { Button } from 'antd'
 
 import Yuan from '../components/Yuan'
@@ -193,7 +192,7 @@ const DailyDataOverview = () => {
         },
         {
           title: '当天退货退款合计金额',
-          dataIndex: 'cMiaoOrderNum',
+          dataIndex: 'refundsAmount',
           align: 'center',
           render: (_)=><Yuan>{_}</Yuan>
         },
