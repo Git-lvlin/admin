@@ -14,15 +14,11 @@ const OperatorRevenueManagement = () =>{
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
 
-  const skipToDetail = data => {
-    history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=operator`)
-  }
-
   const getFieldValue = (form) => {
     const { createTime, ...rest } = form.getFieldsValue()
     return {
-      begin: createTime?.[0]?.format('YYYY-MM-DD'),
-      end: createTime?.[1]?.format('YYYY-MM-DD'),
+      begin: createTime?.[0].format('YYYY-MM-DD'),
+      end: createTime?.[1].format('YYYY-MM-DD'),
       ...rest
     }
   }
@@ -108,7 +104,14 @@ const OperatorRevenueManagement = () =>{
       dataIndex: 'createTime',
       valueType: 'dateRange',
       hideInTable: true
+    },
+    {
+      title: '操作',
+      dataIndex: 'option',
+      valueType: 'option',
+      render: (_, records)=> <a target='_blank' href={`/financial-management/transaction-detail-management/royalty-details/${records?.orderNo}?type=operator`}>详情</a>
     }
+
   ]
   return (
     <PageContainer title={false}>
@@ -139,14 +142,14 @@ const OperatorRevenueManagement = () =>{
             <Export
               change={(e)=> {setVisit(e)}}
               key="export"
-              type="financial-trans-goodsAmount-page-export"
-              conditions={getFieldValue(form)}
+              type="financial-trans-agentCompanyCommission-page-export"
+              conditions={()=>getFieldValue(form)}
             />,
             <ExportHistory
               key="exportHistory"
               show={visit}
               setShow={setVisit}
-              type="financial-trans-goodsAmount-page-export"
+              type="financial-trans-agentCompanyCommission-page-export"
             />
           ],
         }}

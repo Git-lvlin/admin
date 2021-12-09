@@ -172,6 +172,7 @@ export const getTimeDistance = (type) => {
   const oneDay = 1000 * 60 * 60 * 24;
   const now = new Date();
 
+  // 昨天
   if (type === 'yesterday') {
     now.setHours(0);
     now.setMinutes(0);
@@ -179,6 +180,7 @@ export const getTimeDistance = (type) => {
     return [moment(now).subtract(1, 'day'), moment(now.getTime() + (oneDay - 1000)).subtract(1, 'day')];
   }
 
+  // 本星期
   if (type === 'week') {
     let day = now.getDay();
     now.setHours(0);
@@ -195,6 +197,7 @@ export const getTimeDistance = (type) => {
     return [moment(beginTime), moment(beginTime + (7 * oneDay - 1000))];
   }
 
+  // 上个星期
   if (type === 'last-week') {
     let day = now.getDay();
     now.setHours(0);
@@ -212,6 +215,7 @@ export const getTimeDistance = (type) => {
 
   const year = now.getFullYear();
 
+  // 本月
   if (type === 'month') {
     const month = now.getMonth();
     const nextDate = moment(now).add(1, 'months');
@@ -223,15 +227,100 @@ export const getTimeDistance = (type) => {
     ];
   }
 
+  // 上个月
   if (type === 'last-month') {
     const month = now.getMonth();
-    const nextDate = moment(now).add(1, 'months');
-    const nextYear = nextDate.year();
     return [
       moment(`${year}-${fixedZero(month)}-01 00:00:00`),
-      moment(moment(`${nextYear}-${fixedZero(month + 1)}-01 00:00:00`).valueOf() - 1000),
+      moment(moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`).valueOf() - 1000),
     ];
   }
 
+  // 近7天
+  if (type === 'nearly-7-days') {
+    let day = now.getDay();
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
+
+    if (day === 0) {
+      day = 6;
+    } else {
+      day -= 1;
+    }
+
+    const beginTime = now.getTime();
+    return [moment(beginTime - (7 * oneDay - 1000)), moment(beginTime)];
+  }
+
+   // 近15天
+   if (type === 'nearly-15-days') {
+    let day = now.getDay();
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
+
+    if (day === 0) {
+      day = 6;
+    } else {
+      day -= 1;
+    }
+
+    const beginTime = now.getTime();
+    return [moment(beginTime - (15 * oneDay - 1000)), moment(beginTime)];
+  }
+
+    // 近30天
+    if (type === 'nearly-a-month') {
+      let day = now.getDay();
+      now.setHours(0);
+      now.setMinutes(0);
+      now.setSeconds(0);
+  
+      if (day === 0) {
+        day = 6;
+      } else {
+        day -= 1;
+      }
+  
+      const beginTime = now.getTime();
+      return [moment(beginTime - (30 * oneDay - 1000)), moment(beginTime)];
+    }
+
+    // 近3个月
+    if (type === 'nearly-3-month') {
+      let day = now.getDay();
+      now.setHours(0);
+      now.setMinutes(0);
+      now.setSeconds(0);
+  
+      if (day === 0) {
+        day = 6;
+      } else {
+        day -= 1;
+      }
+  
+      const beginTime = now.getTime();
+      return [moment(beginTime - (90 * oneDay - 1000)), moment(beginTime)];
+    }
+
+     // 近6个月
+     if (type === 'nearly-6-month') {
+      let day = now.getDay();
+      now.setHours(0);
+      now.setMinutes(0);
+      now.setSeconds(0);
+  
+      if (day === 0) {
+        day = 6;
+      } else {
+        day -= 1;
+      }
+  
+      const beginTime = now.getTime();
+      return [moment(beginTime - (180 * oneDay - 1000)), moment(beginTime)];
+    }
+
+  // 本年
   return [moment(`${year}-01-01 00:00:00`), moment(`${year}-12-31 23:59:59`)];
 }

@@ -165,7 +165,7 @@ export default {
   'menu.cms.home-red-envelopes': 'app首页红包弹窗',
   'menu.cms.home-popup': 'app首页弹窗管理',
   'menu.cms.start-up': 'app启动广告配置',
-
+  'menu.cms.goods-sort': '集约商品展示配置',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
@@ -266,6 +266,7 @@ export default {
   'menu.financial-management.transaction-detail-management.loan-detail-management':'货款明细管理',
   'menu.financial-management.transaction-detail-management.royalty-details':'明细详情',
   'menu.financial-management.transaction-detail-management.after-sales-order-details':'售后订单明细管理',
+  'menu.financial-management.transaction-detail-management.after-order-details':'售后订单详情',
   'menu.financial-management.transaction-detail-management.operator-revenue-management':'运营商收益明细管理',
   'menu.financial-management.transaction-allocation-management':'交易配置管理',
   'menu.financial-management.transaction-allocation-management.withdrawal-fee-config':'提现费配置',
@@ -280,6 +281,7 @@ export default {
   'menu.data-board.operation-data': '运营中心数据',
   'menu.data-board.supplier-data': '供应商数据',
   'menu.data-board.detail': '供应商数据详情',
+  'menu.data-board.supplier-development-data': '供应商开发数据',
   'menu.data-board.data-preview': '数据预览',
   'menu.data-board.intensive-data-export': '集约数据导出',
   'menu.data-board.data-sales': '销售数据',

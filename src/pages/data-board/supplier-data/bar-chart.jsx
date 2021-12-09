@@ -8,8 +8,10 @@ import {
 } from "bizcharts"
 import { Empty } from 'antd'
 
+import { amountTransform } from '@/utils/utils'
+
 const BarChart = ({data, unit}) => {
-  data.sort((a, b) => a.value - b.value)
+  data?.sort((a, b)=> a.amount - b.amount)
 
   const chartUnit = {
     style: {
@@ -22,29 +24,30 @@ const BarChart = ({data, unit}) => {
 		offset: 80
   }
 
-  const scale = {
-    storeName: { 
-      alias: unit
-    }
-  }
-
   return (
     data?.[0]?
     <Chart
       height={400}
       data={data}
       autoFit
-      scale={scale}
+      scale={{
+        amount: {
+          formatter: (v) => amountTransform(v, '/')
+        },
+        supplierName: {
+          alias: unit
+        }
+      }}
     >
       <Axis
-        name='storeName'
+        name='supplierName'
         title={chartUnit}
       />
       <Coordinate transpose />
       <Interval 
-        position="storeName*value"
+        position="supplierName*amount"
         label={[
-          "value",
+          "amount",
           ()=>({
             position: "middle",
             style: {

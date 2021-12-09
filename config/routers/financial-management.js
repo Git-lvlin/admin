@@ -108,6 +108,11 @@ export default {
           component: './financial-management/transaction-detail-management/after-sales-order-details',
         },
         {
+          name: 'after-order-details',
+          path: '/financial-management/transaction-detail-management/after-sales-order-details/detail/:id',
+          component: './financial-management/transaction-detail-management/after-sales-order-details/detail',
+        },
+        {
           name: 'operator-revenue-management',
           path: '/financial-management/transaction-detail-management/operator-revenue-management',
           component: './financial-management/transaction-detail-management/operator-revenue-management',
