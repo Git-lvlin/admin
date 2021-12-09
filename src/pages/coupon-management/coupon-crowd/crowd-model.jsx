@@ -19,7 +19,7 @@ export default props=>{
           dataIndex: 'status',
           fieldProps:{
             placeholder:"用户手机号"
-          }
+          },
         },
         {
           title: '操作',
