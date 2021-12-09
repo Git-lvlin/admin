@@ -49,7 +49,13 @@ const DailyDataOverview = () => {
           title: '当天APP DAU',
           dataIndex: 'appDau',
           align: 'center',
-          render: (_)=><Yuan>{_}</Yuan>
+          render: (_)=> {
+            if(Number(_) > 0) {
+              return <Yuan>{_}</Yuan>
+            } else {
+              return '-'
+            }
+          }
         },
         {
           title: '当天店主申请数量',

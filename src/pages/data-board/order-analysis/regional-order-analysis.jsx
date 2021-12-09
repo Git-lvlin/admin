@@ -37,7 +37,8 @@ const RegionalOrderAnalysis = () => {
     areaOrderAnalysis({
       startTime: times?.[0], 
       endTime: times?.[1], 
-      province_id: area?.[0].value,
+      province_id: area?.[0]?.value,
+      city_id: area?.[1]?.value,
       type: histogramValue
     }).then(res => {
       if(res.success) {
