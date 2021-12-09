@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect,ProFormCheckbox } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Tag, Form } from 'antd';
 import { history, useLocation } from 'umi';
 import styles from './style.less';
@@ -29,6 +29,7 @@ const TableList = () => {
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({});
   const location = useLocation();
+  const [orderStatusType,setOrderStatusType]=useState()
 
 
   const [form] = Form.useForm()
@@ -40,6 +41,7 @@ const TableList = () => {
   }
 
   const orderTypeChange = (e) => {
+    setOrderStatusType([])
     setOrderType(e.target.value)
     setPage(1)
   }
@@ -59,12 +61,13 @@ const TableList = () => {
   }
 
   const getFieldValue = () => {
-    const { time, ...rest } = form.getFieldsValue();
+    const { time,orderStatusSet, ...rest } = form.getFieldsValue();
 
     return {
       orderStatus: orderType === 0 ? '' : orderType,
       startCreateTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
       endCreateTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
+      orderStatusSet:orderType !== 0 ?'':orderStatusSet,
       ...rest,
     }
   }
@@ -120,6 +123,8 @@ const TableList = () => {
                   <Button
                     onClick={() => {
                       form?.resetFields();
+                      form?.submit();
+                      setOrderStatusType([])
                     }}
                   >
                     重置
@@ -192,24 +197,6 @@ const TableList = () => {
             }
           }}
         /> */}
-        <ProFormSelect
-          name="orderType"
-          label="订单类型"
-          options={[
-            { value: 2, label: '秒约订单' },
-            { value: 3, label: '单约订单' },
-            { value: 4, label: '团约订单' },
-            { value: 11, label: '1688订单' },
-            { value: 17, label: '盲盒活动订单' },
-            { value: 18, label: '签到活动订单' },
-          ]}
-          fieldProps={{
-            style: {
-              marginBottom: 20,
-              width: 180,
-            }
-          }}
-        />
         {isPurchase && <ProFormSelect
           label="商家类型"
           name="businessType"
@@ -275,6 +262,31 @@ const TableList = () => {
                 }
               }}
             />
+            <ProFormCheckbox.Group
+              name="orderStatusSet"
+              label="订单状态"
+              fieldProps={{
+                onChange:(val)=>{
+                  setOrderType(0)
+                  setOrderStatusType(val)
+                },
+                value:orderStatusType
+              }}
+              options={[
+                {
+                  label: '待发货',
+                  value: 2
+                },
+                {
+                  label: '已发货',
+                  value: 3
+                },
+                {
+                  label: '已完成',
+                  value: 4
+                },
+              ]}
+            />
           </>
         }
 
@@ -311,7 +323,8 @@ const TableList = () => {
             label: '已关闭',
             value: 5
           },
-        ]}
+        ]
+      }
       />
       <Spin
         spinning={loading}
@@ -337,7 +350,7 @@ const TableList = () => {
               {
                 isPurchase
                   ?
-                  <div className={styles.store_name}>供应商家名称：{item.supplierName}（ID:{item.supplierId}）{(item.supplierHelper === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                  <div className={styles.store_name}>供应商家名称：{item.supplierName}（ID:{item.supplierId} 总计出单数：{item.orderCount}单）{(item.supplierHelper === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
                   :
                   <div className={styles.store_name}>供应商家ID：{item.supplierId}</div>
               }
@@ -358,10 +371,10 @@ const TableList = () => {
                         <img width="100" height="100" src={it.skuImageUrl} />
                         <div className={styles.info}>
                           <div>{it.goodsName}</div>
-                          <div>{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType] || '秒约')}价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
+                          <div>样品价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
                           <div>数量： <span>{it.skuNum}{it.unit}</span></div>
                           <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
-                          {isPurchase && <div>零售供货价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
+                          {isPurchase && <div>样品供货价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
                           {it.afterSalesStatus !== 0 && <Tag style={{ borderRadius: 10 }} color="#f59a23"><span style={{ color: '#fff' }}>{it.afterSalesStatusStr}</span></Tag>}
                         </div>
                       </div>
@@ -389,7 +402,7 @@ const TableList = () => {
                   {{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688', 17: '盲盒活动', 18: '签到活动' }[item.orderType] || '秒约')}订单</Tag>
+                  <Tag style={{ borderRadius: 10 }} color="#FB1C1C">样品订单</Tag>
                   {
                     item.relevant1688OrderId && <div>关联1688单号：{item.relevant1688OrderId}</div>
                   }
