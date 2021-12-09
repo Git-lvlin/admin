@@ -26,7 +26,6 @@ const ExportHistory = ({ show, setShow, type }) => {
   const [page, setPage] = useState(1)
   const [data, setData] = useState([])
   const [query, setQuery] = useState(0)
-  const [flge,setFlge]=useState(false)
   const timer = useRef()
   const timeOut = useRef()
   const awaitTime = 3 * 60 * 1000   //TimeOut await times
@@ -117,7 +116,6 @@ const cancelTaskCanbak=(id)=>{
     if(res.code==0){
       message.success('操作成功')
       getData()
-      setFlge(true)
     }
   })
 }
@@ -214,10 +212,10 @@ const cancelTaskCanbak=(id)=>{
                     <a href={item.fileUrl}>下载</a> :
                     <div className={styles.progress}>
                       {
-                        item?.state==1&&<a onClick={()=>{cancelTaskCanbak(item.id)}}>取消任务</a>
+                        item?.state===1&&<a className={styles.cancel_task} onClick={()=>{cancelTaskCanbak(item.id)}}>取消任务</a>
                       }
                       {
-                        flge||item.process!==100&&<Progress percent={item.process} size="small" />
+                        item.process!==100&&<Progress percent={item.process} size="small" />
                       }
                     </div>
                   }
