@@ -49,3 +49,21 @@ export const findById = async (params = {}, options = {}) => {
 }
 
 
+// 取消任务
+export const cancelTask = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/exportTask/cancelTask', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  });
+
+  return {
+    data: res.data,
+    success: res?.success,
+    code:res.code
+  }
+}
+
+
