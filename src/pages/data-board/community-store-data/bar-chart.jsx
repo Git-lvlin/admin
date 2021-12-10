@@ -23,7 +23,7 @@ const BarChart = ({data, unit}) => {
   }
 
   const scale = {
-    storeName: { 
+    value: { 
       alias: unit
     }
   }
@@ -37,7 +37,7 @@ const BarChart = ({data, unit}) => {
       scale={scale}
     >
       <Axis
-        name='storeName'
+        name='value'
         title={chartUnit}
       />
       <Coordinate transpose />

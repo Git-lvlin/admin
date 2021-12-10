@@ -250,7 +250,7 @@ const CommunityStoreData = () => {
                 change={(e)=> {setVisit(e)}}
                 key="export" 
                 type="data-board-community-store-export"
-                conditions={()=>getFieldValue}
+                conditions={getFieldValue}
               />,
               <ExportHistory 
                 key="export-history" 
