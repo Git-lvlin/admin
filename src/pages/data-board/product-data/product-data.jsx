@@ -151,7 +151,7 @@ const ProductData = () => {
     },
     {
       title: '商品编码',
-      dataIndex: 'spuId',
+      dataIndex: 'skuId',
       align: 'center'
     },
     {
