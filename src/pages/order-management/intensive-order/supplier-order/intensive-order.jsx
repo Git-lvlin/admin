@@ -75,7 +75,7 @@ const TableList = () => {
       memberId: location?.query?.memberId,
       wsId: location?.query?.wsId,
       operatorSource: 2,
-      statusArr:orderType!==''?'':statusArr,
+      statusArr:orderType!==''?[]:statusArr,
       ...rest,
     }
   }

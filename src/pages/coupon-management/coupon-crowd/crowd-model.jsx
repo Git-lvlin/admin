@@ -1,48 +1,31 @@
-import React, { useState,useRef } from 'react';
-import { ModalForm,ProFormCheckbox,} from '@ant-design/pro-form';
-import ProTable from '@ant-design/pro-table';
+import React, { useState } from 'react';
+import { ModalForm,ProFormCheckbox} from '@ant-design/pro-form';
 import { userLevelList } from '@/services/crowd-management/coupon-crowd';
 import { Button,message } from 'antd';
 
 export default props=>{
-    const {record,title,boxref,Callback,visible, setVisible}=props
-    const ref=useRef()
-    const columns= [
-        {
-          title: '头像',
-          dataIndex: 'name',
-          valueType: 'text',
-          hideInSearch: true,
-        },
-        {
-          title: '手机号',
-          dataIndex: 'status',
-          fieldProps:{
-            placeholder:"用户手机号"
-          },
-        },
-        {
-          title: '操作',
-          key: 'option',
-          width: 120,
-          valueType: 'option',
-          render: (_, data) => [
-           <a
-              key="dele"
-              onClick={()=>{
-              }}
-            >
-              删除
-          </a>,
-          ],
-        },
-        
-      ];
+    const {record,title,boxref,Callback}=props
+    const [byid,setByid]=useState()
+    const [leveData,setLeveData]=useState([])
+    const [visible, setVisible] = useState(false);
+    const Termination=(record)=>{
+        setByid(record&&record.id)
+        setVisible(true)
+        userLevelList({}).then(res=>{
+            const arr=res.data.map(ele=>(
+                {label:ele.name,value:ele.lv}
+            ))
+            setLeveData(arr)
+
+        })
+    }
     return (
         <ModalForm
             title={title}
+            key={byid}
             onVisibleChange={setVisible}
             visible={visible}
+            trigger={<Button type="primary" onClick={()=>Termination(record)}>选择等级</Button>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
@@ -57,35 +40,11 @@ export default props=>{
                 return true;
             }}
         >
-        <ProTable
-            actionRef={ref}
-            rowKey="id"
-            options={false}
-            //   request={couponCrowdList}
-            search={{
-            defaultCollapsed: false,
-            labelWidth: 100,
-            optionRender: ({searchText, resetText}, {form}) => [                                                   
-                <Button
-                key="search"
-                type="primary"
-                onClick={() => {
-                form?.submit()
-                }}
-                >
-                    {searchText}
-                </Button>
-            ],
-            }}
-            rowSelection={{
-                preserveSelectedRowKeys: true,
-                onChange: (_, val) => {
-                    
-                }
-            }}
-            columns={columns}
+        <ProFormCheckbox.Group      
+          name="userLevel"
+          label="选择等级"
+          options={leveData}
         />
-        </ModalForm>
+    </ModalForm>
     )
 }
-
