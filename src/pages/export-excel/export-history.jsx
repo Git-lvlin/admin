@@ -105,7 +105,7 @@ const ExportHistory = ({ show, setShow, type }) => {
       )
     } else if(state === 4) {
       return (
-        <div>导出取消</div>
+        <div className={styles.fail}>导出取消</div>
       )
     } else {
       return ''
