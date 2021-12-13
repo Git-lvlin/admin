@@ -44,7 +44,9 @@ export default (props) =>{
   const [detailList,setDetailList]=useState()
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [referrerNum,setReferrerNum]=useState()
+  const [referrerNum1,setReferrerNum1]=useState()
+  const [referrerNum2,setReferrerNum2]=useState()
+  const [referrerNum3,setReferrerNum3]=useState()
   let id = props.location.query.id
   const FromWrap = ({ value, onChange, content, right }) => (
     <div style={{ display: 'flex' }}>
@@ -81,9 +83,11 @@ export default (props) =>{
     }
   }, [falg,dataSource,loading])
   const onsubmit=values=>{
+     try {
       values.activityStartTime = values.dateRange ? values.dateRange[0] : null
       values.activityEndTime= values.dateRange ? values.dateRange[1] : null
       delete values.dateRange
+
       if(id){
         couponInviteEdit({id:id,...values}).then(res=>{
           if(res.code==0){
@@ -95,6 +99,10 @@ export default (props) =>{
         values.couponIdOne=dataSource[0].couponIdOne
         values.couponIdTwo=dataSource[0].couponIdTwo
         values.couponIdThree=dataSource[0].couponIdThree
+        values.inviteSecond=referrerNum1
+        values.inviteThird=parseInt(referrerNum1+1)
+        values.inviteFour=referrerNum2
+        values.inviteFive=parseInt(referrerNum2+1)
         couponInviteSub({...values}).then(res=>{
           if(res.code==0){
             message.success('添加成功'); 
@@ -102,16 +110,25 @@ export default (props) =>{
           }
         })
       }
+       
+     } catch (error) {
+       console.log('error',error)
+     }
 
   }
   function onChange1(value) {
     console.log('changed1', value);
+    setReferrerNum1(value)
   }
   function onChange2(value) {
     console.log('changed2', value);
+    setReferrerNum2(value)
+
   }
   function onChange3(value) {
     console.log('changed3', value);
+    setReferrerNum3(value)
+
   }
  
   const columns = [
@@ -138,8 +155,8 @@ export default (props) =>{
     {
       title:  (
         <Space>
-          <sapn>累计推荐4-</sapn>
-            <InputNumber min={4} onChange={onChange2}  style={{width:'60px'}}/>
+          <sapn>累计推荐{referrerNum1?Number(referrerNum1+1):null}-</sapn>
+            <InputNumber min={1} onChange={onChange2}  style={{width:'60px'}}/>
           <span>人</span>
         </Space>
       ),
@@ -153,7 +170,7 @@ export default (props) =>{
       title:  (
         <Space>
           <sapn>累计推荐</sapn>
-            <InputNumber min={1} onChange={onChange3} style={{width:'60px'}}/>
+            <InputNumber min={1} value={referrerNum2+1} disabled={true} style={{width:'60px'}}/>
           <span>人以上</span>
         </Space>
       ),
@@ -171,17 +188,17 @@ export default (props) =>{
       dataIndex: 'title'
     },
     {
-      title: '累计推荐1-3人',
+      title: `累计推荐1-${detailList?.data?.inviteSecond}人`,
       dataIndex: 'couponIdOne',
       valueType: 'text'
     },
     {
-      title: '累计推荐4-9人',
+      title: `累计推荐${detailList?.data?.inviteThird}-${detailList?.data?.inviteFour}人`,
       dataIndex: 'couponIdTwo',
       valueType: 'text'
     }, 
     {
-      title: '累计推荐10人以上',
+      title: `累计推荐${detailList?.data?.inviteFive}人以上`,
       dataIndex: 'couponIdThree',
       valueType: 'text'
     }
