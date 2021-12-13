@@ -141,7 +141,7 @@ const DataOverview = () => {
         },
         {
           title: ()=>(
-            <Tooltip title='下单已支付的店主人数/下单店主人数'>
+            <Tooltip title='下单已支付的店主人数/审核通过的店主总数'>
               集约参与率
             </Tooltip>
           ),
