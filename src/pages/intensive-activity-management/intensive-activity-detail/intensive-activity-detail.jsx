@@ -168,11 +168,18 @@ const Detail = () => {
               <Descriptions.Item label="活动创建人">
                 {detailData?.wholesale?.createAdminName}
               </Descriptions.Item>
-              {detailData?.wholesale?.shareImg &&
-                <Descriptions.Item label="分享海报">
-                  <Image src={detailData?.wholesale?.shareImg} width={100} />
-                </Descriptions.Item>
-              }
+              <Descriptions.Item label="实际盈亏(元)">
+                {detailData?.sku?.[0]?.profit / 100}
+              </Descriptions.Item>
+              <Descriptions.Item label="箱柜单位量">
+                {detailData?.sku?.[0]?.batchNumber}
+              </Descriptions.Item>
+              <Descriptions.Item label="平均运费">
+                {detailData?.sku?.[0]?.wholesaleFreight / 100}
+              </Descriptions.Item>
+              <Descriptions.Item label="商品分类">
+                {detailData?.sku?.[0]?.gcId1Display}-{detailData?.sku?.[0]?.gcId2Display}
+              </Descriptions.Item>
               <Descriptions.Item label="配送模式">
                 {detailData?.wholesale?.wholesaleFlowTypeDesc}
               </Descriptions.Item>
@@ -184,6 +191,14 @@ const Detail = () => {
                   {detailData?.allowArea?.map?.(item => (item.areaName)).join('，')}
                 </div>
               </Descriptions.Item>
+              <Descriptions.Item label="商品主图">
+                <Image src={detailData?.sku?.[0]?.goodsImageUrl} width={50} />
+              </Descriptions.Item>
+              {detailData?.wholesale?.shareImg &&
+                <Descriptions.Item label="分享海报">
+                  <Image src={detailData?.wholesale?.shareImg} width={100} />
+                </Descriptions.Item>
+              }
               {/* <Descriptions.Item label="可恢复支付次数">
             {detailData?.wholesale.canRecoverPayTimes}
           </Descriptions.Item>
