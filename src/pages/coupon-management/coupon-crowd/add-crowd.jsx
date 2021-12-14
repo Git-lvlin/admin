@@ -221,7 +221,7 @@ export default (props) =>{
               }}>
                 保存
               </Button>,
-              <Button type="default" key='goback' onClick={() => history.goBack()}>
+              <Button type="default" onClick={() => history.goBack()}>
                 返回
               </Button>
               
