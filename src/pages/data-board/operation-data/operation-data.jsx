@@ -103,7 +103,7 @@ const OperationData = () => {
     {
       title: ()=>(
         <Space>
-          <span>已绑社区店数量</span>
+          <span>绑定社区店数量</span>
           <Tooltip title='指定时间范围内和运营中心进行绑定且通过审核的店主数量'>
             <QuestionCircleOutlined/>
           </Tooltip>
@@ -117,7 +117,7 @@ const OperationData = () => {
       title: ()=>(
         <Space>
           <span>运营中心集约率</span>
-          <Tooltip title='社区店有下单的店主数/社区店总数量'>
+          <Tooltip title='有下单的店主数/店主总数量'>
             <QuestionCircleOutlined/>
           </Tooltip>
         </Space>

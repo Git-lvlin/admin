@@ -107,47 +107,32 @@ const CommunityStoreDataOverview = () => {
         headerBordered
         title={<CardTitle times={times} setTimes={setTimes}/>}
       >
-        <ProCard bordered loading={loading} style={{position: 'relative'}}>
+        <ProCard bordered loading={loading}>
           <Text>店主申请总数</Text>
           <Title level={3}>
             <Yuan>{data?.applyCommunityStoreNum}</Yuan>
           </Title>
-          <div className={styles.checkCard}>
-            <Tooltip title='已缴保证金即算'>
-              <QuestionCircleOutlined />
-            </Tooltip>
-          </div>
         </ProCard>
-        <ProCard bordered loading={loading} style={{position: 'relative'}}>
+        <ProCard bordered loading={loading}>
           <Text>已审核通过的店主总数</Text>
           <Title level={3}>
             <Yuan>{data?.passApplyNum}</Yuan>
           </Title>
-          <div className={styles.checkCard}>
-            <Tooltip title='已缴保证金，人工审核通过的社区店数量（不包含已注销的）'>
-              <QuestionCircleOutlined />
-            </Tooltip>
-          </div>
         </ProCard>
-        <ProCard bordered loading={loading} style={{position: 'relative'}}>
-          <Text>审核不通过的店主总数</Text>
+        <ProCard bordered loading={loading}>
+          <Text>未审核通过的店主总数</Text>
           <Title level={3}>
             <Yuan>{data?.notAuditStoreNum}</Yuan>
           </Title>
-          <div className={styles.checkCard}>
-            <Tooltip title='已缴保证金，人工审核未通过的社区店数量'>
-              <QuestionCircleOutlined />
-            </Tooltip>
-          </div>
         </ProCard>
         <ProCard bordered loading={loading}>
-          <Text>已注销，未退保证金店主数量</Text>
+          <Text>申请注销的店主总数</Text>
           <Title level={3}>
             <Yuan>{data?.applyStoreCancelNum}</Yuan>
           </Title>
         </ProCard>
         <ProCard bordered loading={loading}>
-          <Text>已注销，已退保证金店主数量</Text>
+          <Text>已注销的店主总数</Text>
           <Title level={3}>
             <Yuan>{data?.hasStoreCancelNum}</Yuan>
           </Title>

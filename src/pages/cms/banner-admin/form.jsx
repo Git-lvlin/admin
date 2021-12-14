@@ -167,7 +167,7 @@ export default (props) => {
         <div>
           <dl>
             <dt>图片要求</dt>
-            <dd>首页banner-351*100</dd>
+            <dd>首页banner-350*150</dd>
             <dd>集约页面banner-375*168</dd>
             <dd>个人中心banner-351*65</dd>
             <dd>社区店专享banner-375*150</dd>
