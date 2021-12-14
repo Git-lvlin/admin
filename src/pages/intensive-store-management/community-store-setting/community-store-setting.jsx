@@ -25,22 +25,28 @@ const formItemLayout = {
 export default (props) =>{
   const [form] = Form.useForm();
   const [kmNum,setKmNum]=useState()
-  // const [coverage,setCoverage]=useState()
   
   useEffect(() => {
     getMemberShopDeliveryCoverage({}).then(res=>{
-      console.log('res',res)
       form.setFieldsValue({
         defaultDeliveryCoverage:res.data?.settingValues?.defaultDeliveryCoverage/1000,
         outOffForbidden:res.data?.settingValues?.outOffForbidden===1?true:false,
-        switch:res.data?.settingValues?.switch==='off'?true:false
+        switch:res.data?.settingValues?.switch==='on'?true:false
       })
-      // setCoverage(res.data?.settingValues?.defaultDeliveryCoverage/1000)
     })
   }, [])
   const onsubmit=values=>{
      console.log('values',values)
-
+     const params={
+      switch:values.switch?'on':'off',
+      outOffForbidden:values.outOffForbidden?1:0,
+      defaultDeliveryCoverage:values.defaultDeliveryCoverage*1000
+     }
+    setMemberShopDeliveryCoverage(params).then(res=>{
+      if(res.code==0){
+        message.success('保存成功')
+      }
+    })
   }
  
   return (
@@ -52,28 +58,29 @@ export default (props) =>{
           return true;
          } }
          {...formItemLayout} 
-        submitter={false}
+        submitter={{
+          render: (props, doms) => {
+            return [
+              <Button style={{}} type="primary" key="submit" onClick={() => {
+                props.form?.submit?.()
+              }}>
+                保存
+              </Button>        
+            ];
+          }
+        }}
         className={styles.community_store}
       >
         <ProForm.Group>
           <span>默认社区店配送范围</span>
           {/* <Button className={styles.add_subtract} onClick={()=>setKmNum(6)}>-</Button> */}
-            {/* <Form.Item style={{margin:0}} name="defaultDeliveryCoverage"> */}
+            <Form.Item style={{margin:0}} name="defaultDeliveryCoverage">
               <InputNumber 
                 min={0.2} 
                 max={10}
-                addonBefore="+" 
-                addonAfter="$"
                 controls={true}
-                onChange={(val)=>{
-                  setMemberShopDeliveryCoverage({defaultDeliveryCoverage:val*1000}).then(res=>{
-                    if(res.code==0){
-                      console.log('res',res)
-                    }
-                  })
-                }}
               />
-            {/* </Form.Item> */}
+            </Form.Item>
             {/* <Button className={styles.add_subtract} onClick={()=>setKmNum(8)}>+</Button> */}
           <span>公里</span>
         </ProForm.Group>
