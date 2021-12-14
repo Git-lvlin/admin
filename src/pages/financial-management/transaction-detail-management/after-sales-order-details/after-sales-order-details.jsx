@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { history } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
 import { refundPage } from '@/services/financial-management/transaction-detail-management'
+import Detail from './detail-popup'
 
 // after sales order detail
 const AfterSalesOrderDetails = () =>{
+  const [detailVisible, setDetailVisible] = useState(false)
+  const [selectItem, setSelectItem] = useState(null)
 
   const skipToDetails = data => {
     history.push(`/financial-management/transaction-detail-management/after-sales-order-details/detail/${data}`)
@@ -89,9 +92,13 @@ const AfterSalesOrderDetails = () =>{
       
     },
     {
-      title: '支付单号',
+      title: '平台单号',
       dataIndex: 'payNo',
-      
+      render: (_, records) => (
+        records?.id?
+        <a onClick={() => { setSelectItem(records.id); setDetailVisible(true); }}>{_}</a>:
+        <span>{_}</span>
+      )
     },
     {
       title: '资金流水号',
@@ -107,8 +114,7 @@ const AfterSalesOrderDetails = () =>{
     {
       title: '创建时间', 
       dataIndex: 'createTime',
-      hideInSearch: true,
-      
+      hideInSearch: true
     },
     {
       title: '操作',
@@ -133,6 +139,14 @@ const AfterSalesOrderDetails = () =>{
         params={{}}
         request={refundPage}
       />
+      {
+        detailVisible &&
+        <Detail
+          id={selectItem}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
     </PageContainer>
   )
 }

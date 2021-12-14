@@ -1,16 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
-import { history } from 'umi'
+// import { history } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
 import { orderPage } from '@/services/financial-management/transaction-detail-management'
+import Detail from '../../common-popup/order-pay-detail-popup'
 
 // Order payment detail
 const OrderPayDetailManagement = () =>{
-  const skipToDetail = data=> {
-    history.push(`/financial-management/transaction-detail-management/order-pay-detail-management/detail/${data}`)
-  }
+  const [detailVisible, setDetailVisible] = useState(false)
+  const [selectItem, setSelectItem] = useState({})
+
+  // const skipToDetail = data=> {
+  //   history.push(`/financial-management/transaction-detail-management/order-pay-detail-management/detail/${data}`)
+  // }
   const columns = [
     {
       title: 'id',
@@ -74,9 +78,13 @@ const OrderPayDetailManagement = () =>{
       
     },
     {
-      title: '支付单号',
+      title: '平台单号',
       dataIndex: 'payNo',
-      
+      render: (_, records) => (
+        records?.orderNo?
+        <a onClick={() => { setSelectItem(records.orderNo); setDetailVisible(true); }}>{_}</a>:
+        <span>{_}</span>
+      )
     },
     {
       title: '资金流水号',
@@ -99,7 +107,6 @@ const OrderPayDetailManagement = () =>{
       title: '支付时间',
       dataIndex: 'payTime',
       hideInSearch: true,
-      
     },
     {
       title: '操作',
@@ -107,8 +114,9 @@ const OrderPayDetailManagement = () =>{
       width: 80,
       valueType: 'option',
       fixed: 'right',
-      render: (_, records)=> <a onClick={()=>{skipToDetail(records?.orderNo)}}>详情</a>
+      render: (_, records)=> <a target='_blank' href={`/financial-management/transaction-detail-management/order-pay-detail-management/detail/${records?.orderNo}`}>详情</a>
     }
+
   ]
   return (
     <PageContainer title={false}>
@@ -125,6 +133,14 @@ const OrderPayDetailManagement = () =>{
         params={{}}
         request={orderPage}
       />
+      {
+        detailVisible &&
+        <Detail
+          id={selectItem}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
     </PageContainer>
   )
 }

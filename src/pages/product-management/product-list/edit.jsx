@@ -175,6 +175,7 @@ export default (props) => {
       detailImages: urlsTransform(detailImages),
       // advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl,
+      shipAddrs: detailData?.shipAddrs?.map?.(item => ({ shipId: item.shipId }))
     };
 
     if (isMultiSpec) {
@@ -358,6 +359,7 @@ export default (props) => {
         batchNumber: goods.batchNumber,
         unit: goods.unit,
         totalStock: goods.totalStock,
+        isDrainage: goods.isDrainage,
       })
 
       if (freightTemplateId && freightTemplateName) {
@@ -503,26 +505,38 @@ export default (props) => {
           />
         }
       </div>
-      <ProFormText
-        name="goodsName"
-        label="商品名称"
-        placeholder="请输入商品名称"
-        rules={[
-          { required: true, message: '请输入商品名称' },
-          () => ({
-            validator(_, value) {
-              if (!value.replace(/\s/g, '') && value !== '') {
-                return Promise.reject(new Error('请输入商品名称'));
+      <ProFormDependency name={['goodsName']}>
+        {({ goodsName }) => {
+          return (
+            <ProFormText
+              name="goodsName"
+              label="商品名称"
+              placeholder="请输入商品名称"
+              validateFirst
+              extra={
+                <>
+                  <div><span>标题规范：【标签】/品牌+品名+规格+卖点</span><span style={{ marginLeft: 10 }}>举例：立白 全自动浓缩洗衣粉 900g*1桶 去渍亮白持久留香</span></div>
+                  {goodsName?.length < 20 && <div style={{ color: 'orange' }}>商品标题过于简单，不利于搜索露出/不利于用户购买决策，请在标题中补充更多商品信息，包括但不限于商品规格、品牌、卖点等</div>}
+                </>
               }
-              return Promise.resolve();
-            },
-          })
-        ]}
-        fieldProps={{
-          maxLength: 50,
+              rules={[
+                { required: true, message: '请输入商品名称' },
+                () => ({
+                  validator(_, value) {
+                    if (!value.replace(/\s/g, '')) {
+                      return Promise.reject(new Error('请输入商品名称'));
+                    }
+                    return Promise.resolve();
+                  },
+                })
+              ]}
+              fieldProps={{
+                maxLength: 50,
+              }}
+            />
+          )
         }}
-      // disabled
-      />
+      </ProFormDependency>
       {detailData?.goods?.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 && <ProFormText
         name="wholesaleFreight"
         label="平均运费(元)"
@@ -630,6 +644,27 @@ export default (props) => {
           onChange: settleTypeChange
         }}
       />
+      <ProFormDependency name={['goodsSaleType']}>
+        {
+          ({ goodsSaleType }) => {
+            return goodsSaleType !== 1 && <ProFormRadio.Group
+              name="isDrainage"
+              label="社区店主引流品"
+              rules={[{ required: true }]}
+              options={[
+                {
+                  label: '不设为引流品',
+                  value: 0,
+                },
+                {
+                  label: '设为仅对社区店主售卖的引流品',
+                  value: 1,
+                },
+              ]}
+            />
+          }
+        }
+      </ProFormDependency>
       <ProFormSelect
         name="supplierHelperId"
         label="供应商家顾问"
@@ -762,6 +797,11 @@ export default (props) => {
                 ]}
                 disabled
               />
+              <Form.Item
+                label="发货地"
+              >
+                {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+              </Form.Item>
             </>
             :
             <>
@@ -897,6 +937,11 @@ export default (props) => {
                 ]}
                 disabled
               />
+              <Form.Item
+                label="发货地"
+              >
+                {detailData?.shipAddrs?.map?.(item => item.shipName)?.join?.('、')}
+              </Form.Item>
               <ProFormText
                 name="stockAlarmNum"
                 label="库存预警值"
@@ -1018,7 +1063,15 @@ export default (props) => {
         name="detailImages"
         rules={[{ required: true, message: '请上传商品详情图片' }]}
       >
-        <Upload code={218} disabled multiple maxCount={10} accept="image/*" size={500 * 4} />
+        <FromWrap
+          content={(value, onChange) => <Upload code={218} value={value} onChange={onChange} disabled multiple maxCount={50} accept="image/*" size={1024 * 10} />}
+          right={(value) => (
+            <dl>
+              {value?.length > 1 && <dd><ImageSort data={value} callback={(v) => { form.setFieldsValue({ detailImages: v }) }} /></dd>}
+            </dl>
+          )}
+        />
+
       </Form.Item>
       {/* {detailData.advImages && <Form.Item
         label="商品横幅"
@@ -1048,17 +1101,17 @@ export default (props) => {
         <Form.Item
           label="审核状态"
         >
-          {detailData.goods.goodsVerifyStateDisplay}
+          {detailData.goods.goodsVerifyStateDisplay} {detailData.auditStr}
         </Form.Item>
 
         <Form.Item
           label="上架状态"
         >
-          {detailData.goods.goodsStateDisplay}
+          {detailData.goods.goodsStateDisplay} {detailData.putOnStr}
         </Form.Item>
 
-        {detailData.goods.goodsVerifyRemark && <Form.Item
-          label="原因"
+        {detailData.goods.goodsState === 0 && <Form.Item
+          label="下架原因"
         >
           <span style={{ color: 'red' }}>{detailData.goods.goodsVerifyRemark}</span>
         </Form.Item>}

@@ -3,6 +3,8 @@ import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import ProCard from '@ant-design/pro-card'
 import moment from 'moment'
+import { QuestionCircleOutlined } from '@ant-design/icons'
+import { Space, Tooltip } from 'antd'
 
 import PieChart from './pie-chart'
 import TableSearch from './table-search'
@@ -22,7 +24,10 @@ const ProductData = () => {
   const [orderType, setOrderType] = useState("15")
   const [loading, setLoading] = useState(false)
   const [visit, setVisit] = useState(false)
+  const [state, setState] = useState(0)
   const form = useRef()
+
+  const type = form.current?.getFieldsValue().orderType === '15'?'data-board-goods-detail-bc-export': 'data-board-goods-detail-c-export'
 
   useEffect(()=> {
     setLoading(true)
@@ -83,12 +88,38 @@ const ProductData = () => {
       align: 'center'
     },
     {
-      title: '支付商品数量',
+      title: ()=>(
+        <Space>
+          <span>支付商品数量</span>
+          <Tooltip title="当前分类下有成交过的商品SKU数量">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
       dataIndex: 'payCount',
       align: 'center'
     },
     {
-      title: '支付商品金额',
+      title: ()=>(
+        <Space>
+          <span>商品成交总数量</span>
+          <Tooltip title="所有已支付订单中成交的商品件数总和">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'goodsSumNum',
+      align: 'center'
+    },
+    {
+      title: ()=> (
+        <Space>
+          <span>支付商品金额</span>
+          <Tooltip title="当前分类下的商品，已支付商品金额总和">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
       dataIndex: 'payAmount',
       align: 'center',
       render: (_) => amountTransform(Number(_), '/')
@@ -120,7 +151,7 @@ const ProductData = () => {
     },
     {
       title: '商品编码',
-      dataIndex: 'spuId',
+      dataIndex: 'skuId',
       align: 'center'
     },
     {
@@ -136,49 +167,122 @@ const ProductData = () => {
       hideInSearch: true
     },
     {
-      title: '商品复购率',
-      dataIndex: 'repeatRatio',
+      title: ()=>(
+        <Space>
+          <span>商品复购率</span>
+          <Tooltip title="当前商品有没有人重复购买复购率=重复下单的人数/下单的总人数">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'exportRepeatRatio',
       align: 'center',
-      render: (_) => `${amountTransform(_, '*')}%`,
+      hideInTable: form.current?.getFieldsValue().orderType === "15",
       hideInSearch: true
     },
     {
-      title: '支付商品数',
-      dataIndex: 'payNum',
+      title: '商品成交总数量',
+      dataIndex: 'goodsSumNum',
       align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType === "15",
       hideInSearch: true
     },
     {
       title: '商品支付总金额',
-      dataIndex: 'payAmount',
+      dataIndex: 'exportPayAmount',
       align: 'center',
       hideInSearch: true,
-      render: (_) => `￥${amountTransform(Number(_), '/')}`
+      hideInTable: form.current?.getFieldsValue().orderType === "15",
+    },
+    {
+      title: '支付订单数',
+      dataIndex: 'payNum',
+      align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType === "15",
+      hideInSearch: true
     },
     {
       title: '支付用户数',
       dataIndex: 'payMemberNum',
       align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType === "15",
       hideInSearch: true
     },
     {
       title: '商品退款数',
       dataIndex: 'refundNum',
       align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType === "15",
       hideInSearch: true
     },
     {
       title: '商品退款总金额',
-      dataIndex: 'refundAmount',
+      dataIndex: 'exportRefundAmount',
       align: 'center',
       hideInSearch: true,
-      render: (_) => `￥${amountTransform(Number(_), '/')}`
+      hideInTable: form.current?.getFieldsValue().orderType === "15",
     },
     {
       title: '商品退款率',
-      dataIndex: 'refundRatio',
+      dataIndex: 'exportRefundRatio',
       align: 'center',
-      render: (_) => `${amountTransform(_, '*')}%`,
+      hideInTable: form.current?.getFieldsValue().orderType === "15",
+      hideInSearch: true
+    },
+    {
+      title: '店主集采下单人数',
+      dataIndex: 'bPayMemberNum',
+      align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType !== "15",
+      hideInSearch: true
+    },
+    {
+      title: '店主集采订单数',
+      dataIndex: 'bPayNum',
+      align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType !== "15",
+      hideInSearch: true
+    },
+    {
+      title: '店主集采总金额',
+      dataIndex: 'bExportPayAmount',
+      align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType !== "15",
+      hideInSearch: true
+    },
+    {
+      title: '店主复购率',
+      dataIndex: 'bExportRepeatRatio',
+      align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType !== "15",
+      hideInSearch: true
+    },
+    {
+      title: 'C端下单支付人数',
+      dataIndex: 'cPayMemberNum',
+      align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType !== "15",
+      hideInSearch: true
+    },
+    {
+      title: 'C端支付订单数',
+      dataIndex: 'cPayNum',
+      align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType !== "15",
+      hideInSearch: true
+    },
+    {
+      title: 'C端支付总金额',
+      dataIndex: 'cExportPayAmount',
+      align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType !== "15",
+      hideInSearch: true
+    },
+    {
+      title: 'C端复购率',
+      dataIndex: 'cExportRepeatRatio',
+      align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType !== "15",
       hideInSearch: true
     },
     {
@@ -188,7 +292,7 @@ const ProductData = () => {
       valueEnum: {
         "2": '秒约商品',
         "15": '集约商品',
-        "11": '代发商品'
+        "11": '1688商品'
       },
       align: 'center',
       initialValue: "2",
@@ -202,7 +306,6 @@ const ProductData = () => {
       dataIndex: 'date',
       valueType: 'dateRange',
       align: 'center',
-      initialValue: getTimeDistance("week"),
       hideInTable: true
     },
     {
@@ -261,6 +364,8 @@ const ProductData = () => {
             showQuickJumper: true,
             pageSize: 10
           }}
+          onSubmit= {()=>setState(state+1)}
+          onReset={()=>setState(state+1)}
           search={{
             labelWidth: 120,
             optionRender: (searchConfig, formProps, dom) => [
@@ -268,13 +373,13 @@ const ProductData = () => {
               <Export
                 change={(e)=> {setVisit(e)}}
                 key="export" 
-                type="data-board-goods-detail-export"
+                type={type}
                 conditions={getFieldValue}
               />,
               <ExportHistory 
                 key="export-history" 
                 show={visit} setShow={setVisit}
-                type="data-board-goods-detail-export"
+                type={type}
               />
             ]
           }}
