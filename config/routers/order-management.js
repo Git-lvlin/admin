@@ -69,6 +69,28 @@ export default {
       ]
     },
     {
+      name: 'sample-order',
+      path: '/order-management/sample-order',
+      component: './order-management/sample-order',
+    },
+    {
+      name: 'sample-order-purchase',
+      path: '/order-management/sample-order-purchase',
+      component: './order-management/sample-order',
+    },
+    {
+      name: 'sample-order-detail',
+      path: '/order-management/sample-order-detail/:id',
+      component: './order-management/sample-order-detail',
+      hideInMenu: true,
+    },
+    {
+      name: 'sample-order-detail-purchase',
+      path: '/order-management/sample-order-detail-purchase/:id',
+      component: './order-management/sample-order-detail',
+      hideInMenu: true,
+    },
+    {
       name: 'after-sales-order',
       path: '/order-management/after-sales-order',
       component: './order-management/after-sales-order'

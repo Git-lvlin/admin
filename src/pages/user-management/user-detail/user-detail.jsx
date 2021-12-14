@@ -92,6 +92,24 @@ const UserDetail = () => {
             <Descriptions.Item label="最近登录时间">
               {info?.loginTime}
             </Descriptions.Item>
+            <Descriptions.Item label="年龄">
+              {info?.loginTime}
+            </Descriptions.Item>
+            <Descriptions.Item label="职业">
+              {info?.loginTime}
+            </Descriptions.Item>
+            <Descriptions.Item label="学历">
+              {info?.loginTime}
+            </Descriptions.Item>
+            <Descriptions.Item label="地区">
+              {info?.loginTime}
+            </Descriptions.Item>
+            <Descriptions.Item label="收入水平">
+              {info?.loginTime}
+            </Descriptions.Item>
+            <Descriptions.Item label="关注的品类">
+              {info?.loginTime}
+            </Descriptions.Item>
           </Descriptions>
         </Row>
 
