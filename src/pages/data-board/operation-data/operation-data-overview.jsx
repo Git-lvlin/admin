@@ -56,6 +56,7 @@ const CardTitle = ({times, setTimes}) => {
         label="时间范围"
         name="time"
         initialValue={times}
+        allowClear={false}
       />
     </ProForm>
   )
