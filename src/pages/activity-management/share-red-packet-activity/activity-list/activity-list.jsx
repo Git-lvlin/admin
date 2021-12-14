@@ -26,17 +26,17 @@ export default () => {
         }
       },
       {
-        title: '累计推荐1-3人',
+        title: '阶梯一',
         dataIndex: 'couponOneDisplay',
         valueType: 'text',
       },
       {
-        title: '累计推荐4-9人',
+        title: '阶梯二',
         dataIndex: 'couponTwoDisplay',
         valueType: 'text',
       },
       {
-        title: '累计推荐10人以上',
+        title: '阶梯三',
         dataIndex: 'couponThreeDisplay',
         valueType: 'text',
       },
@@ -66,7 +66,6 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          options={false}
           request={couponInviteList}
           toolBarRender={()=>[
             <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/activity-management/share-red-packet-activity/share-packet-rule')} type="primary">
