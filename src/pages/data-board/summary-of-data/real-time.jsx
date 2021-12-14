@@ -426,7 +426,7 @@ const RealTime = () => {
               <>
                 <Paragraph>
                   <Space size={20}>
-                    <Text>截止到今天累计店主数</Text>
+                    <Text>截止到今天累计审核通过店主数</Text>
                     <Title level={3}>
                       <Yuan>{data?.totalStore?.today}</Yuan>
                     </Title>

@@ -77,14 +77,15 @@ const SupplierData = () => {
     {
       title: '供应商ID',
       dataIndex: 'supplierId',
-      align: 'center'
-    },
-    {
-      title: '供应商名称',
-      dataIndex: 'supplierName',
       align: 'center',
-      width: '18%'
+      valueType: 'digit'
     },
+    // {
+    //   title: '供应商名称',
+    //   dataIndex: 'supplierName',
+    //   align: 'center',
+    //   width: '18%'
+    // },
     {
       title: '统计时间范围',
       dataIndex: 'time',
@@ -180,7 +181,7 @@ const SupplierData = () => {
       title: ()=>(
         <Space>
           <span>总货款(元)</span>
-          <Tooltip title="含盲盒和红包补贴的金额，扣除手续费">
+          <Tooltip title="已扣除手续费，包含红包补贴的金额（不含盲盒订单）">
             <QuestionCircleOutlined/>
           </Tooltip>
         </Space>
