@@ -36,7 +36,6 @@ export default (props) =>{
     })
   }, [])
   const onsubmit=values=>{
-     console.log('values',values)
      const params={
       switch:values.switch?'on':'off',
       outOffForbidden:values.outOffForbidden?1:0,
