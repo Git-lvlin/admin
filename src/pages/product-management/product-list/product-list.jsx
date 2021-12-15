@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Tooltip, Table, Spin } from 'antd';
+import { Button, Tooltip, Table, Spin, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
@@ -379,13 +379,15 @@ const TableList = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => {
-        const { goodsVerifyState, goodsState } = record;
+        const { goodsVerifyState, goodsState, goodsSaleType } = record;
         return (
-          <>
+          <Space>
             {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { getActivityRecord(record); }}>下架</a>}
-            &nbsp;{(goodsVerifyState === 1 && goodsState === 0) && <a onClick={() => { onShelf(record.spuId) }}>上架</a>}
-            &nbsp;<a onClick={() => { getDetail(record.spuId, () => { setFormVisible(true); }) }}>编辑</a>
-          </>
+            {/* {(goodsVerifyState === 1 && goodsState === 1 && goodsSaleType !== 2) && <a onClick={() => { getActivityRecord(record); }}>从店铺下架</a>} */}
+            {/* {(goodsVerifyState === 1 && goodsState === 1 && goodsSaleType !== 2) && <a onClick={() => { getActivityRecord(record); }}>全网下架</a>} */}
+            {(goodsVerifyState === 1 && goodsState === 0) && <a onClick={() => { onShelf(record.spuId) }}>上架</a>}
+            <a onClick={() => { getDetail(record.spuId, () => { setFormVisible(true); }) }}>编辑</a>
+          </Space>
         )
       },
     },
