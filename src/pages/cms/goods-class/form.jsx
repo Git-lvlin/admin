@@ -3,23 +3,27 @@ import { message, Form } from 'antd';
 import ProForm, {
   ModalForm,
   ProFormText,
+  ProFormRadio,
 } from '@ant-design/pro-form';
-import { goodsSortTopOld } from '@/services/cms/member/member';
+import { goodsClassAdd, hideItem } from '@/services/cms/member/member';
 
 export default (props) => {
   const { detailData, setVisible, onClose, visible, callback } = props;
   const formRef = useRef();
+  const [title, setTitle] = useState('添加集约商品运营类目')
   const [form] = Form.useForm();
   const waitTime = (values) => {
-    const { sort, wsSkuId } = values;
-    const { type } = detailData;
+    const { id } = detailData;
+    const { categoryName, sort, isShow } = values;
+    let api = id?hideItem:goodsClassAdd;
     const param = {
-      wsSkuId: wsSkuId,
-      type: type,
+      id: id,
+      categoryName: categoryName,
+      isShow: isShow,
       sort: sort,
     }
     return new Promise((resolve, reject) => {
-      goodsSortTopOld(param).then((res) => {
+      api(param).then((res) => {
         if (res.code === 0) {
           callback();
           resolve(true);
@@ -31,7 +35,8 @@ export default (props) => {
   };
 
   useEffect(() => {
-    if (detailData) {
+    if (detailData?.id) {
+      setTitle('编辑')
       const { ...rest } = detailData;
       form.setFieldsValue({
         ...rest
@@ -41,7 +46,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={'编辑排序'}
+      title={title}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -62,14 +67,37 @@ export default (props) => {
       <ProForm.Group>
         <ProFormText
           width="sm"
-          name="sort"
-          label="排序"
+          name="categoryName"
+          label="类目名称"
           rules={[{ required: true, message: '请输入排序序号' }]}  
         />
       </ProForm.Group>
+      <ProForm.Group>
+        <ProFormText
+          width="sm"
+          name="sort"
+          label="显示序号"
+          rules={[{ required: true, message: '请输入排序序号' }]}  
+        />
+      </ProForm.Group>
+      <ProFormRadio.Group
+          name="isShow"
+          label="显示状态"
+          initialValue={1}
+          options={[
+            {
+              label: '显示',
+              value: 1,
+            },
+            {
+              label: '隐藏',
+              value: 0,
+            },
+          ]}
+        />
       <ProFormText
-        name="wsSkuId"
-        label="wsSkuId"
+        name="id"
+        label="id"
         hidden
       />
     </ModalForm>

@@ -160,6 +160,7 @@ export default {
   'menu.cms.home-popup': 'app首页弹窗管理',
   'menu.cms.start-up': 'app启动广告配置',
   'menu.cms.goods-sort': '集约商品展示配置',
+  'menu.cms.goods-class': '集约商品运营类目',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',

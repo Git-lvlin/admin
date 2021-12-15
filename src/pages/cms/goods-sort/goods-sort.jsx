@@ -116,7 +116,7 @@ const BannerAdmin = () => {
           <Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 0 ) }}></Button>
           {record.sort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 1) }}></Button>}&nbsp;
           <a onClick={() => { top(record, 1) }}>置顶</a>&nbsp;
-          <a onClick={() => { top(record, 0) }}>取消置顶</a>
+          {record.sortIsTop==1&&<a onClick={() => { top(record, 0) }}>取消置顶</a>}
         </>
       }
     },
@@ -130,7 +130,7 @@ const BannerAdmin = () => {
           <Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 0) }}></Button>
           {record.noticeSort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 1) }}></Button>}&nbsp;
           <a onClick={() => { top(record, 2) }}>置顶</a>&nbsp;
-          <a onClick={() => { top(record, 0) }}>取消置顶</a>
+          {record.noticeSortIsTop==1&&<a onClick={() => { top(record, 0) }}>取消置顶</a>}
         </>
       }
     },
