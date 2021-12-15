@@ -81,6 +81,9 @@ export default (props) => {
         callback();
         return true;
       }}
+      onChange={()=>{
+        form.validateFields()
+      }}
       initialValues={{
         gcShow: true,
       }}
@@ -166,7 +169,7 @@ export default (props) => {
                         if (!/^\d{1,6}$/.test(value)) {
                           return Promise.reject(new Error('请输入大于0小于999999的数字'));
                         }
-                        if (value >= virtualEnd && virtualEnd) {
+                        if (+value >= +virtualEnd && virtualEnd) {
                           return Promise.reject(new Error('销量取值范围不合理，请重填'));
                         }
                         return Promise.resolve();
@@ -181,10 +184,11 @@ export default (props) => {
                   rules={[
                     () => ({
                       validator(_, value) {
+                        
                         if (!/^\d{1,6}$/.test(value)) {
                           return Promise.reject(new Error('请输入大于0小于999999的数字'));
                         }
-                        if (value <= virtualStart && virtualStart) {
+                        if (+value <= +virtualStart && virtualStart) {
                           return Promise.reject(new Error('销量取值范围不合理，请重填'));
                         }
                         return Promise.resolve();
