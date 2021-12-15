@@ -161,7 +161,26 @@ const TableList = () => {
       hideInSearch: true,
       render: (_, record) => {
         return <a onClick={() => { setSelectItemId(record.spuId); setProductDetailDrawerVisible(true); }}>{_}</a>
-      }
+      },
+      width: 200,
+    },
+    {
+      title: '基础销量',
+      dataIndex: 'goodsVirtualSaleNum',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '秒约销量',
+      dataIndex: 'goodsSaleNum',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: 'B端集约销量',
+      dataIndex: 'goodsWsSaleNum',
+      valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '供应商家ID',
@@ -243,12 +262,12 @@ const TableList = () => {
     //   valueType: 'text',
     //   hideInSearch: true,
     // },
-    {
-      title: '销量',
-      dataIndex: 'goodsSaleNum',
-      valueType: 'text',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '销量',
+    //   dataIndex: 'goodsSaleNum',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     // {
     //   title: '审核状态',
     //   dataIndex: 'goodsVerifyState',
@@ -436,6 +455,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
+        scroll={{ x: 'max-content' }}
         search={{
           labelWidth: 140,
           defaultCollapsed: false,

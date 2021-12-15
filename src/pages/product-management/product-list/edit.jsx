@@ -391,6 +391,7 @@ export default (props) => {
         isDrainage: goods.isDrainage,
         isSample: goods.isSample,
         sampleFreight: goods.sampleFreight,
+        goodsVirtualSaleNum: goods.goodsVirtualSaleNum,
       })
 
       if (freightTemplateId && freightTemplateName) {
@@ -1090,6 +1091,11 @@ export default (props) => {
         name="buyMaxNum"
         label="单SKU单次最多零售购买数量"
         placeholder="请输入单SKU单次最多零售购买数量"
+      />
+      <ProFormText
+        name="goodsVirtualSaleNum"
+        label="基础销量"
+        placeholder="请输入基础销量"
       />
 
       {
