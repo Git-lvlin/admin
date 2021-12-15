@@ -472,7 +472,15 @@ export const bannerSortTop = (params = {}, options = {}) => {
 }
 
 export const goodsSortTop = (params = {}, options = {}) => {
-  return request('/auth/wholesale/skuConfig/modifySort', {
+  return request('/auth/wholesale/skuConfig/toTop', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const goodsSortTopCancel = (params = {}, options = {}) => {
+  return request('/auth/wholesale/skuConfig/cancelTop', {
     method: 'POST',
     data: params,
     ...options
