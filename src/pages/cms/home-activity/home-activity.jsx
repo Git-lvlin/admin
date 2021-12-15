@@ -99,6 +99,16 @@ const HomeActivity = () => {
       }
     },
     {
+      title: '展示对象',
+      dataIndex: 'customerType',
+      valueType: 'text',
+      search: false,
+      valueEnum: {
+        1: '所有用户',
+        2: '仅店主',
+      }
+    },
+    {
       title: '状态',
       dataIndex: 'state',
       valueType: 'text',

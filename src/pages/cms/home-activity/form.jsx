@@ -109,6 +109,75 @@ export default (props) => {
         />
 
       </ProForm.Group>
+      <ProFormRadio.Group
+          name="customerType"
+          label="展示对象"
+          initialValue={1}
+          options={[
+            {
+              label: '所有用户',
+              value: 1,
+            },
+            {
+              label: '仅店主',
+              value: 2,
+            },
+          ]}
+        />
+      <ProFormRadio.Group
+          name="actionUrlType"
+          label="类型"
+          initialValue={1}
+          options={[
+            {
+              label: '集约',
+              value: 1,
+            },
+            {
+              label: '个人中心',
+              value: 2,
+            },
+            {
+              label: '社区店',
+              value: 3,
+            },
+            {
+              label: '限时秒杀',
+              value: 4,
+            },
+            {
+              label: '秒约爆品',
+              value: 5,
+            },
+            {
+              label: '周末大狂欢',
+              value: 6,
+            },
+            {
+              label: '店主升星',
+              value: 7,
+            },
+            {
+              label: '自定义',
+              value: 8,
+            },
+          ]}
+        />
+      <ProFormRadio.Group
+          name="showType"
+          label="类型"
+          initialValue={1}
+          options={[
+            {
+              label: '固定展示',
+              value: 1,
+            },
+            {
+              label: '有集约内容才展示',
+              value: 2,
+            },
+          ]}
+        />
       <ProForm.Group>
         <ProFormText 
             width="sm"
