@@ -343,7 +343,6 @@ export default (props) =>{
             label="最多可推荐人数"
             readonly={!falg||id}
             extra={'超出此人数，不再发放奖励'}
-            style={{marginTop:'20px'}}
           />
           <ProFormText
               width={120}
