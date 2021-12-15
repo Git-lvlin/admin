@@ -68,6 +68,7 @@ const TableList = () => {
       startCreateTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
       endCreateTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
       orderStatusSet:orderType !== 0 ?[]:orderStatusSet,
+      orderType:22,
       ...rest,
     }
   }

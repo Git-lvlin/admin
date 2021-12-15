@@ -337,16 +337,13 @@ export default (props) =>{
             !id?<p className={styles.hint2}>提示：您必须先在运营后台“红包管理"中创建好”分享领红包“类型的红包后，且创建的红包可领有效期必须大于活动有效期，这里才可以选择到创建的红包。</p>
             :null
           }
-          {
-            !id&&<ProFormText
-                    width="md"
-                    name="maxNum"
-                    label="最多可推荐人数"
-                    readonly={id&&falg}
-                    extra={'超出此人数，不再发放奖励'}
-                    style={{marginTop:'20px'}}
-                />
-            }
+          <ProFormText
+            width="md"
+            name="maxNum"
+            label="最多可推荐人数"
+            readonly={!falg||id}
+            extra={'超出此人数，不再发放奖励'}
+          />
           <ProFormText
               width={120}
               label="领取条件"
