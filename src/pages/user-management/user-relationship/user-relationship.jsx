@@ -106,6 +106,7 @@ const UserRelationship = () => {
       dataIndex: 'storeStatus',
       search: false,
       valueEnum: {
+        0: '-/不是店主/无状态',
         1: '启用',
         2: '注销未退保证金',
         3: '关闭',
