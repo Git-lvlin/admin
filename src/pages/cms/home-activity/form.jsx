@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
   ModalForm,
   DrawerForm,
   ProFormText,
   ProFormRadio,
+  ProFormTextArea,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import { homeActivityUpdata } from '@/services/cms/member/member';
@@ -211,16 +212,21 @@ export default (props) => {
           options={showType?select1:select2}
         />
       <ProForm.Group>
-        <ProFormText 
-            width="sm"
+        <ProFormTextArea 
+            width="lg"
             name="actionUrl"
             fieldProps={{
-              value: href
+              value: href,
+              onChange: ({target}) => {
+                console.log(target.value)
+                setHref(target.value)
+              }
             }}
             label="跳转链接"
             rules={[{ required: false, message: '请输入跳转链接' }]}  
           />
       </ProForm.Group>
+      
       <ProFormRadio.Group
           name="state"
           label="活动状态"
