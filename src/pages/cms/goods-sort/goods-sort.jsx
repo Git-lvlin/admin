@@ -2,27 +2,24 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
+import ProForm from '@ant-design/pro-form';
+import ProCard from '@ant-design/pro-card';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { goodsSortList, goodsSortTop, goodsSortReset, goodsMoveSort } from '@/services/cms/member/member';
-import { category } from '@/services/product-management/product-category';
+import { goodsSortList, goodsSortTop, goodsSortTopCancel, goodsSortReset, goodsMoveSort } from '@/services/cms/member/member';
 import Edit from './form';
 
 const BannerAdmin = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
-  // useEffect(() => {
-  //   category({ gcParentId: 0 }).then(res => {
-  //     console.log('res', res)
-  //   })
-  // }, [])
+  const [useType, setUseType] = useState(1);
 
-  const moveSort = (record, type, moveUp) => {
+  const moveSort = (record, moveUp) => {
     const { wsSkuId } = record;
     const param = {
       wsSkuId,
-      type,
+      type: useType,
       moveUp,
     }
     goodsMoveSort(param).then((res) => {
@@ -34,21 +31,21 @@ const BannerAdmin = () => {
 
   const top = (record, type) => {
     const { wsSkuId } = record;
+    let api = type?goodsSortTop:goodsSortTopCancel
     const param = {
       wsSkuId,
-      type,
-      sort: 1
+      type: useType,
     }
-    goodsSortTop(param).then((res) => {
+    api(param).then((res) => {
       if (res.code === 0) {
         actionRef.current.reload();
       }
     })
   }
 
-  const sortReset = (type) => {
+  const sortReset = () => {
     const param = {
-      type: type,
+      type: useType,
       isHot: 0,
     }
     goodsSortReset(param).then((res) => {
@@ -109,31 +106,31 @@ const BannerAdmin = () => {
       title: '商品名称',
       dataIndex: 'goodsName',
     },
-    {
-      title: '采购序号',
+    useType==1&&{
+      title: '采购列表序号',
       dataIndex: 'sort',
       search: false,
       render: (_, record) => {
         return <>
-          <a>{_}</a>&nbsp;
-          <Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 1, 0 ) }}></Button>
-          {record.sort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 1, 1) }}></Button>}&nbsp;
-          <a onClick={() => { editSort(record, 1) }}>排序</a>&nbsp;
-          <a onClick={() => { top(record, 1) }}>置顶</a>
+          <a onClick={() => { editSort(record, 1) }}>设置序号</a>&nbsp;
+          <Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 0 ) }}></Button>
+          {record.sort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 1) }}></Button>}&nbsp;
+          <a onClick={() => { top(record, 1) }}>置顶</a>&nbsp;
+          {record.sortIsTop==1&&<a onClick={() => { top(record, 0) }}>取消置顶</a>}
         </>
       }
     },
-    {
-      title: '提醒序号',
+    useType==2&&{
+      title: '提醒列表序号设置',
       dataIndex: 'noticeSort',
       search: false,
       render: (_, record) => {
         return <>
-          <a>{_}</a>&nbsp;
-          <Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 2, 0) }}></Button>
-          {record.noticeSort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 2, 1) }}></Button>}&nbsp;
-          <a onClick={() => { editSort(record, 2) }}>排序</a>&nbsp;
-          <a onClick={() => { top(record, 2) }}>置顶</a>
+          <a onClick={() => { editSort(record, 2) }}>设置序号</a>&nbsp;
+          <Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 0) }}></Button>
+          {record.noticeSort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 1) }}></Button>}&nbsp;
+          <a onClick={() => { top(record, 2) }}>置顶</a>&nbsp;
+          {record.noticeSortIsTop==1&&<a onClick={() => { top(record, 0) }}>取消置顶</a>}
         </>
       }
     },
@@ -141,10 +138,17 @@ const BannerAdmin = () => {
 
   return (
     <PageContainer>
+      <ProForm.Group>
+        <ProCard style={{display: 'flex',}}>
+          <Button type={useType==1?'primary':''} onClick={() => {setUseType(1)}}>店主采购列表</Button>
+          <Button type={useType==1?'':'primary'} onClick={() => {setUseType(2)}}>集约板块提醒列表</Button>
+        </ProCard>
+      </ProForm.Group>
       <ProTable
         rowKey="id"
         columns={columns}
         actionRef={actionRef}
+        params={{type: useType}}
         request={goodsSortList}
         search={{
           labelWidth: 'auto',
@@ -153,14 +157,21 @@ const BannerAdmin = () => {
           pageSize: 5,
         }}
         dateFormatter="string"
-        toolBarRender={(_) => [
-          <Button key="button" type="primary" onClick={() => { sortReset(1) }}>
-            按集约价升序排列采购列表
-          </Button>,
-          <Button key="button" type="primary" onClick={() => { sortReset(2) }}>
-            按集约价升序排列提醒列表
-          </Button>,
-        ]}
+        toolBarRender={(_) => {
+          if (useType==1) {
+            return [
+              <Button key="button" type="primary" onClick={() => { sortReset(1) }}>
+                按集约价升序排列采购列表
+              </Button>
+            ]
+          } else {
+            return [
+            <Button key="button" type="primary" onClick={() => { sortReset(2) }}>
+              按集约价升序排列提醒列表
+            </Button>
+            ]
+          }
+        }}
       />
       {formVisible && <Edit
         visible={formVisible}

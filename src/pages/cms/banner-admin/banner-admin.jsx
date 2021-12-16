@@ -78,7 +78,7 @@ const BannerAdmin = () => {
       dataIndex: 'actionUrl',
       valueType: 'text',
       search: false,
-      width: 600,
+      width: 500,
       ellipsis: true,
     },
     {
@@ -129,6 +129,36 @@ const BannerAdmin = () => {
         1: '上架',
       }
     },
+    {
+      title: '展示对象',
+      dataIndex: 'customerType',
+      valueType: 'text',
+      search: false,
+      render: (_) => {
+        if (_!==1&&_!==2) {
+          return '所有用户'
+        } else {
+          return {
+            1: '所有用户',
+            2: '仅店主',
+          }[_]
+        }
+      }
+      // valueEnum: {
+      //   1: '所有用户',
+      //   2: '仅店主',
+      // }
+    },
+    // {
+    //   title: '类型',
+    //   dataIndex: 'showType',
+    //   valueType: 'text',
+    //   search: false,
+    //   valueEnum: {
+    //     1: '固定展示',
+    //     2: '有集约内容才展示',
+    //   }
+    // },
     {
       title: '操作',
       valueType: 'option',

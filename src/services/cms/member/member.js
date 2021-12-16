@@ -471,8 +471,32 @@ export const bannerSortTop = (params = {}, options = {}) => {
   });
 }
 
-export const goodsSortTop = (params = {}, options = {}) => {
+export const goodsSortTopOld = (params = {}, options = {}) => {
   return request('/auth/wholesale/skuConfig/modifySort', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const goodsClassAdd = (params = {}, options = {}) => {
+  return request('/auth/wholesale/SkuCategory/categoryAdd', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const goodsSortTop = (params = {}, options = {}) => {
+  return request('/auth/wholesale/skuConfig/toTop', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const goodsSortTopCancel = (params = {}, options = {}) => {
+  return request('/auth/wholesale/skuConfig/cancelTop', {
     method: 'POST',
     data: params,
     ...options
@@ -898,6 +922,44 @@ export const homeBannerList = async (params = {}, options = {}) => {
     data.status = Number(status);
   }
   const res = await request('/auth/java-admin/cms/banner/page', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const openSwitch = (params = {}, options = {}) => {
+  return request('/auth/wholesale/SkuCategory/categoryOpenSwitch', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const hideItem = (params = {}, options = {}) => {
+  return request('/auth/wholesale/SkuCategory/categoryEdit', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const goodsClassList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+
+  const res = await request('/auth/wholesale/SkuCategory/categoryAll', {
     method: 'POST',
     data,
     ...options
