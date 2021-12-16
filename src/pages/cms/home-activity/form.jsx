@@ -13,7 +13,34 @@ export default (props) => {
   const { detailData, setVisible, onClose, visible, useType } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
-
+  const [href, setHref] = useState('');
+  const [showType, setShowType] = useState(false);
+  const urlArr = [
+    '',
+    'https://www.yeahgo-uat.com/tab/index?index=2',
+    'https://www.yeahgo-uat.com/tab/index?index=4',
+    'https://www.yeahgo-uat.com/flutter/store/member/index',
+    'https://www.yeahgo-uat.com/tab/index?index=1',
+    'https://www.yeahgo-uat.com/home/spikeGoods',
+    'https://www.yeahgo-uat.com/home/spikeWeek',
+    'https://publicmobile-uat.yeahgo.com/web/five-star-qa?_authorizationRequired=1',
+  ];
+  const select1 = [
+    {
+      label: '固定展示',
+      value: 1,
+    },
+    {
+      label: '有集约内容才展示',
+      value: 2,
+    },
+  ]
+  const select2 = [
+    {
+      label: '固定展示',
+      value: 1,
+    }
+  ]
   const waitTime = (values) => {
     const { id, ...rest } = values
     const param = {
@@ -126,8 +153,22 @@ export default (props) => {
         />
       <ProFormRadio.Group
           name="actionUrlType"
-          label="类型"
-          initialValue={1}
+          label="url类型"
+          initialValue={8}
+          fieldProps={{
+            onChange:({target}) => {
+              if (target.value == 1) {
+                setShowType(true)
+              } else {
+                setShowType(false)
+              }
+              if (target.value == 8) {
+                setHref('')
+              } else {
+                setHref(urlArr[target.value])
+              }
+            }
+          }}
           options={[
             {
               label: '集约',
@@ -165,23 +206,17 @@ export default (props) => {
         />
       <ProFormRadio.Group
           name="showType"
-          label="类型"
+          label="展示类型"
           initialValue={1}
-          options={[
-            {
-              label: '固定展示',
-              value: 1,
-            },
-            {
-              label: '有集约内容才展示',
-              value: 2,
-            },
-          ]}
+          options={showType?select1:select2}
         />
       <ProForm.Group>
         <ProFormText 
             width="sm"
             name="actionUrl"
+            fieldProps={{
+              value: href
+            }}
             label="跳转链接"
             rules={[{ required: false, message: '请输入跳转链接' }]}  
           />
