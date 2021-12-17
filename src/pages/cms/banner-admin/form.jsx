@@ -50,8 +50,8 @@ export default (props) => {
       height: 150,
     },
     {
-      width: 375,
-      height: 168,
+      width: 750,
+      height: 170,
     },
     {
       width: 351,
@@ -197,7 +197,7 @@ export default (props) => {
           <dl>
             <dt>图片要求</dt>
             <dd>首页banner-350*150</dd>
-            <dd>集约页面banner-375*168</dd>
+            <dd>集约页面banner-750*170</dd>
             <dd>个人中心banner-351*65</dd>
             <dd>社区店专享banner-375*150</dd>
             <dd>秒约爆品banner-375*160</dd>
