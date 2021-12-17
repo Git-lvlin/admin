@@ -30,6 +30,8 @@ const TableList = () => {
   const [selectItem, setSelectItem] = useState({});
   const location = useLocation();
   const [orderStatusType,setOrderStatusType]=useState()
+  const [orderTypes, setOrderTypes] = useState(0)
+
 
 
   const [form] = Form.useForm()
@@ -68,6 +70,7 @@ const TableList = () => {
       startCreateTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
       endCreateTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
       orderStatusSet:orderType !== 0 ?[]:orderStatusSet,
+      orderTypes:orderTypes == 0 ?[2,3,4,11,17,18]:[orderTypes],
       ...rest,
     }
   }
@@ -221,6 +224,9 @@ const TableList = () => {
             style: {
               marginBottom: 20,
               width: 180,
+            },
+            onChange:(val)=>{
+              setOrderTypes(val)
             }
           }}
         />
