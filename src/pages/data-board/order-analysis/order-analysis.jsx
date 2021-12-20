@@ -245,7 +245,83 @@ const OrderAnalysis = () => {
       align: 'center'
     }
   ]
-
+  const detailColumns=[
+    {
+      title: '订单支付时间',
+      dataIndex: 'payOrdersNum',
+      align: 'center'
+    },
+    {
+      title: '订单ID',
+      dataIndex: 'refundNum',
+      align: 'center'
+    },
+    {
+      title: '订单金额',
+      dataIndex: 'refundAmount',
+      align: 'center'
+    },
+    {
+      title: '批发量',
+      dataIndex: 'refundAmount',
+      align: 'center'
+    },
+    {
+      title: 'C端集约交易金额',
+      dataIndex: 'refundAmount',
+      align: 'center'
+    },
+    {
+      title: 'C端订单售出件量',
+      dataIndex: 'refundAmount',
+      align: 'center'
+    },
+    {
+      title: '商品SKU',
+      dataIndex: 'refundAmount',
+      align: 'center'
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'refundAmount',
+      align: 'center'
+    },
+    {
+      title: '社区店铺号',
+      dataIndex: 'refundAmount',
+      align: 'center'
+    },
+    {
+      title: '社区店名称',
+      dataIndex: 'refundAmount',
+      align: 'center'
+    },
+    {
+      title: '订单运营中心ID',
+      dataIndex: 'refundAmount',
+      align: 'center'
+    },
+    {
+      title: '订单区域名称',
+      dataIndex: 'refundAmount',
+      align: 'center'
+    },
+    {
+      title: '订单区域对应的运营中心ID',
+      dataIndex: 'refundAmount',
+      align: 'center'
+    },
+    {
+      title: '订单区域对应的运营中心名称',
+      dataIndex: 'refundAmount',
+      align: 'center'
+    },
+    {
+      title: '区域表对应的名称',
+      dataIndex: 'refundAmount',
+      align: 'center'
+    },
+  ]
   return (
     <PageContainer title={false}>
       <ProTable
@@ -293,6 +369,13 @@ const OrderAnalysis = () => {
         />
       </div>
       <RegionalOrderAnalysis/>
+      <ProTable
+        rowKey="orderType"
+        columns={detailColumns}
+        options={false}
+        bordered
+        search={false}
+      />
     </PageContainer>
   )
 }
