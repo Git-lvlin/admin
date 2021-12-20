@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Button, Form, Input, message, Select, Tag } from 'antd';
+import { Button, Form, Input, message, Modal } from 'antd';
 import {
   DrawerForm,
   ProFormText,
@@ -10,7 +10,7 @@ import {
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload'
 import { uploadImageFormatConversion, amountTransform } from '@/utils/utils'
-import { EyeOutlined } from '@ant-design/icons';
+import { EyeOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import * as api1 from '@/services/product-management/product-list';
 import * as api2 from '@/services/product-management/product-list-purchase';
 import styles from './edit.less'
@@ -23,6 +23,9 @@ import ImageSort from './image-sort';
 import Look from '@/components/look';
 import FreightTemplateSelect from '@/components/freight-template-select'
 import { useLocation } from 'umi';
+import { preAccountCheck } from '@/services/product-management/product-list';
+
+const { confirm } = Modal
 
 const FromWrap = ({ value, onChange, content, right }) => (
   <div style={{ display: 'flex' }}>
@@ -37,6 +40,8 @@ export default (props) => {
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [salePriceProfitLoss, setSalePriceProfitLoss] = useState(null);
+  const [salePriceFloat, setSalePriceFloat] = useState(0);
+  const [preferential, setPreferential] = useState(0);
   const [lookVisible, setLookVisible] = useState(false);
   const [lookData, setLookData] = useState(false);
   const [form] = Form.useForm()
@@ -327,11 +332,42 @@ export default (props) => {
     })
   }
 
+  const preAccountCheckRequest = ({ skuId, salePrice, salePriceFloat, retailSupplyPrice, wholesaleTaxRate, cb }) => {
+    if (detailData.goods.goodsSaleType === 1) {
+      return;
+    }
+    preAccountCheck({
+      spuId: detailData.spuId,
+      skuId,
+      retailSupplyPrice,
+      wholesaleTaxRate,
+      salePrice,
+      salePriceFloat
+    }).then(res => {
+      if (res.code === 0) {
+        cb && cb(res.data[0])
+      } else {
+        cb && cb({ salePriceFloat: -1, preferential })
+      }
+    })
+  }
+
   const salePriceChange = useMemo(() => {
     const loadData = (e) => {
       subAccountCheck({
         salePrice: amountTransform(e.target.value)
       }, (data) => {
+        preAccountCheckRequest({
+          skuId: data.skuId,
+          salePrice: data.salePrice,
+          salePriceFloat: data.salePriceFloat,
+          retailSupplyPrice: detailData.goods.retailSupplyPrice,
+          wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
+          cb: (d) => {
+            setSalePriceFloat(d.salePriceFloat)
+            setPreferential(d.preferential)
+          }
+        })
         form.setFieldsValue({
           salePriceFloat: amountTransform(data.salePriceFloat),
         })
@@ -346,6 +382,17 @@ export default (props) => {
       subAccountCheck({
         salePriceFloat: amountTransform(e.target.value, '/')
       }, (data) => {
+        preAccountCheckRequest({
+          skuId: data.skuId,
+          salePrice: data.salePrice,
+          salePriceFloat: data.salePriceFloat,
+          retailSupplyPrice: detailData.goods.retailSupplyPrice,
+          wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
+          cb: (d) => {
+            setSalePriceFloat(d.salePriceFloat)
+            setPreferential(d.preferential)
+          }
+        })
         form.setFieldsValue({
           salePrice: amountTransform(data.salePrice, '/'),
         })
@@ -354,6 +401,75 @@ export default (props) => {
     }
     return debounce(loadData, 1000);
   }, [])
+
+  const submitConfirm = () => {
+    return new Promise((resolve, reject) => {
+      if (detailData.goods.goodsSaleType === 1) {
+        resolve()
+        return;
+      }
+
+      if (detailData.isMultiSpec === 0) {
+        if (salePriceFloat >= 0) {
+          resolve()
+          return;
+        }
+
+        if (preferential === 0) {
+          resolve()
+          return;
+        }
+
+        confirm({
+          icon: <ExclamationCircleOutlined />,
+          content: <span style={{ color: 'red' }}>秒约价导致平台亏损,确认要修改吗</span>,
+          onOk() {
+            resolve()
+          },
+          onCancel() {
+            reject()
+          },
+        });
+      } else {
+        if (tableData.length) {
+          const arr = [];
+          tableData.forEach(item => {
+            preAccountCheckRequest({
+              skuId: item.skuId,
+              salePrice: amountTransform(item.salePrice),
+              salePriceFloat: amountTransform(item.salePriceFloat, '/'),
+              retailSupplyPrice: amountTransform(item.retailSupplyPrice),
+              wholesaleTaxRate: amountTransform(item.wholesaleTaxRate, '/'),
+              cb: (data) => {
+                arr.push(data.salePriceFloat);
+                const flag = arr.some(v => v < 0)
+
+                if (arr.length === tableData.length) {
+                  if (flag) {
+                    confirm({
+                      icon: <ExclamationCircleOutlined />,
+                      content: <span style={{ color: 'red' }}>秒约价导致平台亏损,确认要修改吗</span>,
+                      onOk() {
+                        resolve()
+                      },
+                      onCancel() {
+                        reject()
+                      },
+                    });
+                  } else {
+                    resolve()
+                  }
+                }
+              }
+            })
+          })
+        } else {
+          resolve()
+        }
+      }
+
+    });
+  }
 
   useEffect(() => {
     if (detailData) {
@@ -477,6 +593,18 @@ export default (props) => {
           sampleMinNum: goods.sampleMinNum,
           sampleMaxNum: goods.sampleMaxNum,
         })
+
+        preAccountCheckRequest({
+          skuId: detailData.goods.skuId,
+          salePrice: detailData.goods.salePrice,
+          salePriceFloat: detailData.goods.salePriceFloat,
+          retailSupplyPrice: detailData.goods.retailSupplyPrice,
+          wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
+          cb: (d) => {
+            setSalePriceFloat(d.salePriceFloat)
+            setPreferential(d.preferential)
+          }
+        })
       }
     }
 
@@ -522,6 +650,7 @@ export default (props) => {
       form={form}
       onFinish={async (values) => {
         try {
+          await submitConfirm();
           await submit(values);
           return true;
         } catch (error) {
@@ -989,6 +1118,7 @@ export default (props) => {
                         },
                       })
                     ]}
+                    extra={salePriceFloat < 0 && <span style={{ color: 'red' }}>此秒约价导致平台亏损，请调高秒约价</span>}
                     disabled={detailData?.settleType === 1}
                     fieldProps={{
                       onChange: salePriceChange
@@ -1014,6 +1144,11 @@ export default (props) => {
                       onChange: salePriceFloatChange
                     }}
                   />
+                  {preferential !== 0 && <Form.Item
+                    label="已适用优惠券最大面额(元)"
+                  >
+                    {preferential / 100}
+                  </Form.Item>}
                   <Form.Item
                     label="秒约价实际盈亏"
                   >
