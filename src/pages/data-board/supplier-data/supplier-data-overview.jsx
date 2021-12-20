@@ -1,58 +1,63 @@
 import React, { useState, useEffect } from 'react'
 import ProForm, { ProFormDateRangePicker } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
-import { Space, Button, Typography } from 'antd'
+import { Typography } from 'antd'
 import moment from 'moment'
 
 import styles from './styles.less'
 import Yuan from '../components/Yuan'
 import { supplierDataOverview } from '@/services/data-board/supplier-data'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const { Text, Title } = Typography
 
-const CardTitle = ({times, setTimes}) => (
-  <ProForm
-    style={{ 
-      backgroundColor: '#fff', 
-      padding: 10,
-    }}
-    submitter={{
-      render: ({ form }) => {
-        return (
-          <Space>
-            <Button
-              type="primary"
-              onClick={() => {
-                form?.submit()
+const CardTitle = ({times, setTimes}) => {
+  const [visit, setVisit] = useState(false)
+
+  return (
+    <ProForm
+      style={{ 
+        backgroundColor: '#fff', 
+        padding: 10,
+      }}
+      submitter={{
+        render: (props, doms) => {
+          return [
+            ...doms.reverse(),
+            <Export
+              change={(e)=> {setVisit(e)}}
+              key="export" 
+              type="data-board-supplier-data-overview"
+              conditions={{
+                startTime: times?.[0],
+                endTime: times?.[1],
+                type: 'export'
               }}
-            >
-              查询
-            </Button>
-            <Button
-              onClick={() => {
-                form?.resetFields()
-                form?.submit()
-              }}
-            >
-              重置
-            </Button>
-          </Space>
-        )
-      }
-    }}
-    layout="inline"
-    onFinish={(value) => {
-      setTimes(value?.time)
-    }}
-  >
-    <h3 className={styles.title}>供应商数据总览</h3>
-    <ProFormDateRangePicker 
-      label="时间范围"
-      name="time"
-      initialValue={times}
-    />
-  </ProForm>
-)
+            />,
+            <ExportHistory 
+              key="export-history" 
+              show={visit} setShow={setVisit}
+              type="data-board-supplier-data-overview"
+            />
+          ]
+        }
+      }}
+      layout="inline"
+      onFinish={(value) => {
+        setTimes(value?.time)
+      }}
+    >
+      <h3 className={styles.title}>供应商数据总览</h3>
+      <ProFormDateRangePicker 
+        label="时间范围"
+        name="time"
+        initialValue={times}
+        allowClear={false}
+      />
+    </ProForm>
+  )
+}
 
 const SupplierDataOverview = () => {
   const dateNow = moment(+new Date()).format('YYYY-MM-DD')

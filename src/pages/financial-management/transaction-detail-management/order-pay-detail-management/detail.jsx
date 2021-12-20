@@ -75,7 +75,7 @@ const Detail = () => {
     }
   }, [taskId, down])
 
-  const fashionableType =(data, amount, fee) =>{
+  const fashionableType =(data, amount, fee, couponAmount, realAmount) =>{
     switch(data){
       case 'goodsAmount':
         return (

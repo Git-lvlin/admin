@@ -151,7 +151,7 @@ const ProductData = () => {
     },
     {
       title: '商品编码',
-      dataIndex: 'spuId',
+      dataIndex: 'skuId',
       align: 'center'
     },
     {
@@ -306,7 +306,6 @@ const ProductData = () => {
       dataIndex: 'date',
       valueType: 'dateRange',
       align: 'center',
-      initialValue: getTimeDistance("week"),
       hideInTable: true
     },
     {

@@ -282,6 +282,7 @@ export default (props) => {
         <Form.Item
           label="活动封面"
           name="imgUrl"
+          rules={[{ required: true, message: '请上传活动封面' }]}
         >
           <FromWrap
             content={(value, onChange) => <Upload multiple value={value} disabled={id&&falg} onChange={onChange}   maxCount={1} accept="image/*"  proportion={{width: 670,height: 284,}} />}

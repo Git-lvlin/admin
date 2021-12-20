@@ -105,12 +105,12 @@ const OperatorFundManagement = () => {
     },
     {
       title: '创建日期',
-      dataIndex: 'registTime',
+      dataIndex: 'settleTime',
       hideInSearch: true
     },
     {
       title: '创建日期',
-      dataIndex: 'registTime',
+      dataIndex: 'settleTime',
       hideInTable: true,
       valueType: 'dateRange'
     },
@@ -230,19 +230,19 @@ const OperatorFundManagement = () => {
             <Export
               change={(e)=> {setVisit(e)}}
               key="export"
-              type="financial-account-page-store-export"
+              type="financial-account-page-agentCompany-export"
               conditions={{
                 accountType: "agentCompany",
                 ...form?.getFieldValue(),
-                registTimeBegin: form?.getFieldValue()?.createTime?.[0].format('YYYY-MM-DD'),
-                registTimeEnd: form?.getFieldValue()?.createTime?.[1].format('YYYY-MM-DD')
+                settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
+                settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD')
               }}
             />,
             <ExportHistory
               key="exportHistory"
               show={visit}
               setShow={setVisit}
-              type="financial-account-page-store-export"
+              type="financial-account-page-agentCompany-export"
             />
           ],
         }}

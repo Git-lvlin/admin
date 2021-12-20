@@ -38,6 +38,11 @@ export default {
       component: './data-board/supplier-data/detail'
     },
     {
+      name: 'supplier-development-data',
+      path: '/data-board/supplier-development-data',
+      component: './data-board/supplier-development-data'
+    },
+    {
       name: 'data-preview',
       path: '/data-board/data-preview',
       component: './data-board/data-preview'
