@@ -513,7 +513,6 @@ const TableList = () => {
           ],
         }}
         columns={columns}
-        scroll={{ x: 'max-content' }}
       />
       {formVisible && <Edit
         visible={formVisible}
