@@ -50,7 +50,7 @@ const EvaluateList= (props) => {
                 <div className={styles.line_feed} key='content'>
                   {
                     record.content?
-                    <Tooltip title={record.content}>
+                    <Tooltip  placement="leftTop" title={record.content}>
                       <a key='link' onClick={()=>{setVisible(true);setCommentSkuId(record.id)}}>{record.content}</a>
                     </Tooltip>
                     :
