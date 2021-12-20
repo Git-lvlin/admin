@@ -96,6 +96,9 @@ export default (props) => {
       }
     }
   
+    if (!param.actionUrl && href) {
+      param.actionUrl = href
+    }
     if (verifyVersionId) {
       param.verifyVersionId = verifyVersionId
     }
@@ -114,6 +117,7 @@ export default (props) => {
   useEffect(() => {
     if (detailData) {
       setNowIndex(detailData.location)
+      setHref(detailData.actionUrl)
       detailData.location = {
         1: '首页',
         2: '集约',
