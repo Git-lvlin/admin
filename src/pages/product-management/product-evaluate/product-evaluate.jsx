@@ -2,7 +2,7 @@ import React, { useRef,useState,useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { history } from 'umi';
-import { Button,Image,Tabs,Switch,message } from 'antd';
+import { Button,Image,Tabs,Switch,message,Tooltip } from 'antd';
 import ContentModel from './content-model';
 import { ProFormSwitch} from '@ant-design/pro-form';
 import AuditModel from './audit-model'
@@ -46,12 +46,13 @@ const EvaluateList= (props) => {
             title: '评价内容',
             dataIndex: 'content',
             hideInSearch: true,
-            ellipsis:true,
             render:(text, record, _, action)=>[
-                <div key='content'>
+                <div className={styles.line_feed} key='content'>
                   {
                     record.content?
-                    <a key='link' onClick={()=>{setVisible(true);setCommentSkuId(record.id)}}>{record.content}</a>
+                    <Tooltip title={record.content}>
+                      <a key='link' onClick={()=>{setVisible(true);setCommentSkuId(record.id)}}>{record.content}</a>
+                    </Tooltip>
                     :
                     <p key='null'>无</p>
                   }
