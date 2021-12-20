@@ -45,8 +45,8 @@ const EvaluateList= (props) => {
         {
             title: '评价内容',
             dataIndex: 'content',
-            valueType: 'text',
             hideInSearch: true,
+            ellipsis:true,
             render:(text, record, _, action)=>[
                 <div key='content'>
                   {
