@@ -6,6 +6,7 @@ import ProForm, { ProFormSwitch } from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from './style.less'
 import './style.less'
+import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -28,6 +29,7 @@ export default (props) =>{
   
   useEffect(() => {
     getMemberShopDeliveryCoverage({}).then(res=>{
+      setKmNum(res.data?.settingValues?.defaultDeliveryCoverage/1000)
       form.setFieldsValue({
         defaultDeliveryCoverage:res.data?.settingValues?.defaultDeliveryCoverage/1000,
         outOffForbidden:res.data?.settingValues?.outOffForbidden===1?true:false,
@@ -39,7 +41,7 @@ export default (props) =>{
      const params={
       switch:values.switch?'on':'off',
       outOffForbidden:values.outOffForbidden?1:0,
-      defaultDeliveryCoverage:values.defaultDeliveryCoverage*1000
+      defaultDeliveryCoverage:kmNum*1000
      }
     setMemberShopDeliveryCoverage(params).then(res=>{
       if(res.code==0){
@@ -47,7 +49,6 @@ export default (props) =>{
       }
     })
   }
- 
   return (
     <PageContainer>
       <ProForm
@@ -72,15 +73,19 @@ export default (props) =>{
       >
         <ProForm.Group>
           <span>默认社区店配送范围</span>
-          {/* <Button className={styles.add_subtract} onClick={()=>setKmNum(6)}>-</Button> */}
-            <Form.Item style={{margin:0}} name="defaultDeliveryCoverage">
+          <span className={styles.add_subtract} onClick={()=>setKmNum((amountTransform(Number(kmNum),'*')-100)/100)}>-</span>
+            <Form.Item style={{margin:0}}>
               <InputNumber 
                 min={0.2} 
                 max={10}
+                onChange={(val)=>{
+                  setKmNum(val)
+                }}
+                value={kmNum}
                 controls={true}
               />
             </Form.Item>
-            {/* <Button className={styles.add_subtract} onClick={()=>setKmNum(8)}>+</Button> */}
+            <span className={styles.add_subtract} onClick={()=>setKmNum((amountTransform(Number(kmNum),'*')+100)/100)}>+</span>
           <span>公里</span>
         </ProForm.Group>
         <p className={styles.hint}>店主可手动修改自己店铺的配送范围，没有修改的店主默认用此处设置的配送范围</p>
