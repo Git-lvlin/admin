@@ -52,6 +52,8 @@ export default (props) => {
             retailSupplyPrice: amountTransform(item[1].retailSupplyPrice, '/'),
             wholesaleSupplyPrice: amountTransform(item[1].wholesaleSupplyPrice, '/'),
             wholesaleMinNum: item[1].wholesaleMinNum,
+            sampleSupplyPrice: item[1].sampleSupplyPrice / 100,
+            sampleSalePrice: item[1].sampleSalePrice / 100,
             salePriceFloat: amountTransform(item[1].salePriceFloat),
             salePriceProfitLoss: amountTransform(item[1].salePriceProfitLoss, '/'),
             // suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
@@ -119,6 +121,11 @@ export default (props) => {
       >
         {{ 0: '批发+零售', 1: '仅批发', 2: '仅零售' }[detailData?.goods.goodsSaleType]}
       </Form.Item>
+      {detailData?.goods.goodsSaleType !== 2 && <Form.Item
+        label="批发样品"
+      >
+        {{ 0: '不支持样品售卖', 1: '支持样品售卖' }[detailData?.goods.isSample]}
+      </Form.Item>}
       <Form.Item
         label="结算模式"
       >
@@ -141,7 +148,7 @@ export default (props) => {
         detailData?.isMultiSpec === 1
           ?
           <>
-            {!!tableData.length && <EditTable tableHead={tableHead} tableData={tableData} goodsSaleType={detailData?.goods?.goodsSaleType} settleType={detailData?.settleType} />}
+            {!!tableData.length && <EditTable isSample={detailData?.goods?.isSample} tableHead={tableHead} tableData={tableData} goodsSaleType={detailData?.goods?.goodsSaleType} settleType={detailData?.settleType} />}
             <Form.Item
               label="总可用库存"
             >
@@ -189,6 +196,42 @@ export default (props) => {
                 >
                   {detailData?.goods?.wholesaleMinNum}
                 </Form.Item>
+                {
+                  detailData?.goods?.isSample === 1
+                  &&
+                  <>
+                    <Form.Item
+                      label="样品供货价(元)"
+                    >
+                      {detailData?.goods?.sampleSupplyPrice / 100}
+                    </Form.Item>
+                    <Form.Item
+                      label="样品价(元)"
+                    >
+                      {detailData?.goods?.sampleSalePrice / 100}
+                    </Form.Item>
+                    <Form.Item
+                      label="样品起售量"
+                    >
+                      {detailData?.goods?.sampleMinNum}
+                    </Form.Item>
+                    <Form.Item
+                      label="样品限售量"
+                    >
+                      {detailData?.goods?.sampleMaxNum}
+                    </Form.Item>
+                    <Form.Item
+                      label="样品是否包邮"
+                    >
+                      {{ 0: '不包邮', 1: '包邮', }[detailData?.goods?.sampleFreight]}
+                    </Form.Item>
+                    {detailData?.goods?.sampleFreight === 0 && <Form.Item
+                      label="样品运费模板"
+                    >
+                      {detailData?.goods?.sampleFreightName}
+                    </Form.Item>}
+                  </>
+                }
               </>
             }
             {
