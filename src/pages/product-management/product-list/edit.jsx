@@ -1106,7 +1106,7 @@ export default (props) => {
                         },
                       })
                     ]}
-                    extra={salePriceFloat < 0 && <span style={{ color: 'red' }}>此秒约价导致平台亏损，请调高秒约价</span>}
+                    extra={salePriceFloat < 0 && preferential !== 0 && <span style={{ color: 'red' }}>此秒约价导致平台亏损，请调高秒约价</span>}
                     disabled={detailData?.settleType === 1}
                     fieldProps={{
                       onChange: salePriceChange
