@@ -189,6 +189,9 @@ export default function EditTable(props) {
         obj.salePriceFloat = amountTransform(record.salePriceFloat, '/');
       }
 
+      setDataSource(recordList)
+      setTableData(recordList)
+
       if (
         (findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat)
         && goodsSaleType !== 1
@@ -211,17 +214,10 @@ export default function EditTable(props) {
             })
             setDataSource(arr)
             setTableData(arr)
-          } else {
-            setDataSource(recordList)
-            setTableData(recordList)
           }
         })
-      } else {
-        setDataSource(recordList)
-        setTableData(recordList)
       }
     };
-
     return debounce(loadData, 1000);
   }, [dataSource, props]);
 
@@ -242,8 +238,6 @@ export default function EditTable(props) {
           return [defaultDoms.delete];
         },
         onValuesChange: (record, recordList) => {
-          setDataSource(recordList);
-          setTableData(recordList)
           debounceFetcher({ record, recordList })
         }
       }}
