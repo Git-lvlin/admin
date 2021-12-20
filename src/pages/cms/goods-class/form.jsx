@@ -19,7 +19,7 @@ export default (props) => {
       if (value && value.length < 2) {
         await reject('请填写自定义运营类目名称,2-12个汉字/字母')
       }
-      if (value.replace(/^[\u4e00-\u9fa5a-zA-Z]{1}$/)) {
+      if (value&&/[^a-zA-Z\u4e00-\u9fa5]+/g.test(value)) {
         await reject('请填写自定义运营类目名称,2-12个汉字/字母')
       }
       await resolve()
