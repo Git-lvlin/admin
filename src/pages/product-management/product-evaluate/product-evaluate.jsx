@@ -45,10 +45,9 @@ const EvaluateList= (props) => {
         {
             title: '评价内容',
             dataIndex: 'content',
-            valueType: 'text',
             hideInSearch: true,
             render:(text, record, _, action)=>[
-                <div key='content'>
+                <div  className={styles.line_feed} key='content'>
                   {
                     record.content?
                     <a key='link' onClick={()=>{setVisible(true);setCommentSkuId(record.id)}}>{record.content}</a>
