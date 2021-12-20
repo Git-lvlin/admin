@@ -220,11 +220,11 @@ export default (props) => {
           initialValue={1}
           options={[
             {
-              label: '所有用户',
+              label: '所有用户可见',
               value: 1,
             },
             {
-              label: '仅店主',
+              label: '仅店主可见',
               value: 2,
             },
           ]}
@@ -282,12 +282,6 @@ export default (props) => {
             },
           ]}
         />
-      <ProFormRadio.Group
-          name="showType"
-          label="展示类型"
-          initialValue={1}
-          options={showType?select1:select2}
-        />
       <ProForm.Group>
         <ProFormTextArea 
             width="lg"
@@ -303,6 +297,12 @@ export default (props) => {
             rules={[{ required: false, message: '请输入跳转链接' }]}  
           />
       </ProForm.Group>
+      <ProFormRadio.Group
+          name="showType"
+          label="展示类型"
+          initialValue={1}
+          options={showType?select1:select2}
+        />
       <ProFormRadio.Group
           name="state"
           label="上线/下架"

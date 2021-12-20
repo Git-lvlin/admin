@@ -3,6 +3,7 @@ import { message, Form } from 'antd';
 import ProForm, {
   ModalForm,
   ProFormText,
+  ProFormDigit,
   ProFormRadio,
 } from '@ant-design/pro-form';
 import { goodsClassAdd, hideItem } from '@/services/cms/member/member';
@@ -12,6 +13,19 @@ export default (props) => {
   const formRef = useRef();
   const [title, setTitle] = useState('添加集约商品运营类目')
   const [form] = Form.useForm();
+
+  const checkConfirm = (rule, value, callback) => {
+    return new Promise(async (resolve, reject) => {
+      if (value && value.length < 2) {
+        await reject('请填写自定义运营类目名称,2-12个汉字/字母')
+      }
+      if (value.replace(/^[\u4e00-\u9fa5a-zA-Z]{1}$/)) {
+        await reject('请填写自定义运营类目名称,2-12个汉字/字母')
+      }
+      await resolve()
+    })
+  }
+
   const waitTime = (values) => {
     const { id } = detailData;
     const { categoryName, sort, isShow } = values;
@@ -66,18 +80,23 @@ export default (props) => {
     >
       <ProForm.Group>
         <ProFormText
-          width="sm"
+          width="lg"
           name="categoryName"
           label="类目名称"
-          rules={[{ required: true, message: '请输入排序序号' }]}  
+          placeholder="请填写自定义运营类目名称,2-12个汉字/字母"
+          rules={[{ required: true, message: '请填写自定义运营类目名称,2-12个汉字/字母' }, {validator: checkConfirm}]}
+          fieldProps={{
+            maxLength: 12
+          }}
         />
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText
-          width="sm"
+        <ProFormDigit
+          width="lg"
           name="sort"
           label="显示序号"
-          rules={[{ required: true, message: '请输入排序序号' }]}  
+          placeholder="请填写显示序号,正整数"
+          rules={[{ required: true, message: '请填写显示序号,正整数' }]}  
         />
       </ProForm.Group>
       <ProFormRadio.Group
