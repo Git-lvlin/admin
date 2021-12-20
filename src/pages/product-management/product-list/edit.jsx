@@ -10,7 +10,7 @@ import {
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload'
 import { uploadImageFormatConversion, amountTransform } from '@/utils/utils'
-import { EyeOutlined } from '@ant-design/icons';
+import { EyeOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import * as api1 from '@/services/product-management/product-list';
 import * as api2 from '@/services/product-management/product-list-purchase';
 import styles from './edit.less'
