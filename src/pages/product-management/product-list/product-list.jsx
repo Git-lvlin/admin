@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Tooltip, Table, Spin } from 'antd';
+import { Button, Tooltip, Table, Spin, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
@@ -14,6 +14,8 @@ import { amountTransform, typeTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import moment from 'moment';
+import { changeStoreState } from '@/services/product-management/product-list';
+
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -57,7 +59,7 @@ const TableList = () => {
   const [detailData, setDetailData] = useState(null);
   const [config, setConfig] = useState({});
   const [offShelfVisible, setOffShelfVisible] = useState(false);
-  const [selectItemId, setSelectItemId] = useState(null);
+  const [selectItem, setSelectItem] = useState(null);
   const [alarmMsg, setAlarmMsg] = useState('');
   const actionRef = useRef();
   const formRef = useRef();
@@ -80,35 +82,49 @@ const TableList = () => {
   }
 
   const getActivityRecord = (record) => {
+
     api.getActivityRecord({
       spuId: record.spuId
     }).then(res => {
       if (res.code === 0) {
         setAlarmMsg(res.data);
-        setSelectItemId(record.spuId);
+        setSelectItem(record);
         setOffShelfVisible(true)
       }
     })
   }
 
-  const onShelf = (spuId) => {
-    api.onShelf({
-      spuId
-    }, { showSuccess: true }).then(res => {
+  const onShelf = ({ spuId, type }) => {
+    const apiMethod = type === 2 ? changeStoreState : api.onShelf
+    const params = type === 2 ? {
+      spuId,
+      storeGoodsState: 1
+    } : {
+      spuId,
+    }
+    apiMethod(params, { showSuccess: true }).then(res => {
       if (res.code === 0) {
         actionRef.current.reload();
+        setSelectItem(null);
       }
     })
   }
 
-  const offShelf = (spuId, goodsStateRemark) => {
-    api.offShelf({
-      spuId,
+  const offShelf = (goodsStateRemark) => {
+    const apiMethod = selectItem.type === 2 ? changeStoreState : api.offShelf
+    const params = selectItem.type === 2 ? {
+      spuId: selectItem.spuId,
       goodsStateRemark,
-    }, { showSuccess: true }).then(res => {
+      storeGoodsState: 0
+    } : {
+      spuId: selectItem.spuId,
+      goodsStateRemark,
+      changeStoreState: selectItem.type === 0 ? 0 : 1
+    }
+    apiMethod(params, { showSuccess: true }).then(res => {
       if (res.code === 0) {
         actionRef.current.reload();
-        setSelectItemId(null);
+        setSelectItem(null);
       }
     })
   }
@@ -154,8 +170,9 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, record) => {
-        return <a onClick={() => { setSelectItemId(record.spuId); setProductDetailDrawerVisible(true); }}>{_}</a>
-      }
+        return <a onClick={() => { setSelectItem(record); setProductDetailDrawerVisible(true); }}>{_}</a>
+      },
+      width: 200,
     },
     {
       title: '供应商家ID',
@@ -278,6 +295,13 @@ const TableList = () => {
       },
     },
     {
+      title: '店铺上架状态',
+      dataIndex: 'storeGoodsState',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_) => _ === 0 ? '下架' : '正常',
+    },
+    {
       title: '商品关键词',
       dataIndex: 'goodsKeywords',
       valueType: 'text',
@@ -342,15 +366,19 @@ const TableList = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => {
-        const { goodsVerifyState, goodsState } = record;
+        const { goodsVerifyState, goodsState, goodsSaleType, storeGoodsState } = record;
         return (
-          <>
-            {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { getActivityRecord(record); }}>下架</a>}
-            &nbsp;{(goodsVerifyState === 1 && goodsState === 0) && <a onClick={() => { onShelf(record.spuId) }}>上架</a>}
-            &nbsp;<a onClick={() => { getDetail(record.spuId, () => { setFormVisible(true); }) }}>编辑</a>
-          </>
+          <Space>
+            {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { getActivityRecord({ ...record, type: 1 }); }}>下架</a>}
+            {(goodsVerifyState === 1 && storeGoodsState === 1 && goodsSaleType !== 2) && <a onClick={() => { getActivityRecord({ ...record, type: 2 }); }}>从店铺下架</a>}
+            {(goodsVerifyState === 1 && (goodsState === 1 || storeGoodsState === 1) && goodsSaleType !== 2) && <a onClick={() => { getActivityRecord({ ...record, type: 3 }); }}>全网下架</a>}
+            {(goodsVerifyState === 1 && goodsState === 0) && <a onClick={() => { onShelf({ spuId: record.spuId, type: 1 }) }}>上架</a>}
+            {(goodsVerifyState === 1 && storeGoodsState === 0 && goodsSaleType !== 2) && <a onClick={() => { onShelf({ spuId: record.spuId, type: 2 }) }}>从店铺上架</a>}
+            <a onClick={() => { getDetail(record.spuId, () => { setFormVisible(true); }) }}>编辑</a>
+          </Space>
         )
       },
+      // fixed: 'right'
     },
   ];
 
@@ -449,6 +477,7 @@ const TableList = () => {
           ],
         }}
         columns={columns}
+        scroll={{ x: 'max-content' }}
       />
       {formVisible && <Edit
         visible={formVisible}
@@ -460,7 +489,7 @@ const TableList = () => {
       {offShelfVisible && <OffShelf
         visible={offShelfVisible}
         setVisible={setOffShelfVisible}
-        callback={(text) => { offShelf(selectItemId, text) }}
+        callback={(text) => { offShelf(text) }}
         alarmMsg={alarmMsg}
       />}
       {
@@ -468,7 +497,7 @@ const TableList = () => {
         <ProductDetailDrawer
           visible={productDetailDrawerVisible}
           setVisible={setProductDetailDrawerVisible}
-          spuId={selectItemId}
+          spuId={selectItem?.spuId}
         />
       }
 
