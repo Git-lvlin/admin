@@ -73,7 +73,7 @@ export default (props) =>{
       >
         <ProForm.Group>
           <span>默认社区店配送范围</span>
-          <sapn className={styles.add_subtract} onClick={()=>setKmNum((amountTransform(Number(kmNum),'*')-100)/100)}>-</sapn>
+          <span className={styles.add_subtract} onClick={()=>setKmNum((amountTransform(Number(kmNum),'*')-100)/100)}>-</span>
             <Form.Item style={{margin:0}}>
               <InputNumber 
                 min={0.2} 
@@ -85,7 +85,7 @@ export default (props) =>{
                 controls={true}
               />
             </Form.Item>
-            <sapn className={styles.add_subtract} onClick={()=>setKmNum((amountTransform(Number(kmNum),'*')+100)/100)}>+</sapn>
+            <span className={styles.add_subtract} onClick={()=>setKmNum((amountTransform(Number(kmNum),'*')+100)/100)}>+</span>
           <span>公里</span>
         </ProForm.Group>
         <p className={styles.hint}>店主可手动修改自己店铺的配送范围，没有修改的店主默认用此处设置的配送范围</p>
