@@ -106,10 +106,10 @@ const BannerAdmin = () => {
       title: '商品名称',
       dataIndex: 'goodsName',
     },
-    useType==1&&{
+    useType==1?{
       title: '采购列表序号',
       dataIndex: 'sort',
-      search: false,
+      hideInSearch: true,
       render: (_, record) => {
         return <>
           <a onClick={() => { editSort(record, 1) }}>设置序号</a>&nbsp;
@@ -119,11 +119,10 @@ const BannerAdmin = () => {
           {record.sortIsTop==1&&<a onClick={() => { top(record, 0) }}>取消置顶</a>}
         </>
       }
-    },
-    useType==2&&{
+    }:{
       title: '提醒列表序号设置',
       dataIndex: 'noticeSort',
-      search: false,
+      hideInSearch: true,
       render: (_, record) => {
         return <>
           <a onClick={() => { editSort(record, 2) }}>设置序号</a>&nbsp;
