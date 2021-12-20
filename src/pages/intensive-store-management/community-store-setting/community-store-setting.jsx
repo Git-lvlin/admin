@@ -31,7 +31,6 @@ export default (props) =>{
     getMemberShopDeliveryCoverage({}).then(res=>{
       setKmNum(res.data?.settingValues?.defaultDeliveryCoverage/1000)
       form.setFieldsValue({
-        defaultDeliveryCoverage:res.data?.settingValues?.defaultDeliveryCoverage/1000,
         outOffForbidden:res.data?.settingValues?.outOffForbidden===1?true:false,
         switch:res.data?.settingValues?.switch==='on'?true:false
       })
