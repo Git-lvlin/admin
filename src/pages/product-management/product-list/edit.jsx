@@ -157,9 +157,9 @@ export default (props) => {
         obj.freightTemplateName = freightTemplateIds.label;
       }
 
-      if (sampleFreightId) {
-        obj.sampleFreightId = sampleFreightId.value;
-        obj.sampleFreightName = sampleFreightId.label;
+      if (sampleFreightIds) {
+        obj.sampleFreightId = sampleFreightIds.value;
+        obj.sampleFreightName = sampleFreightIds.label;
       }
 
       if (sampleSupplyPrices) {
@@ -229,9 +229,9 @@ export default (props) => {
         obj.goods.wholesaleFreight = amountTransform(wholesaleFreight)
       }
 
-      if (freightTemplateId) {
-        obj.goods.freightTemplateId = freightTemplateId.value;
-        obj.goods.freightTemplateName = freightTemplateId.label;
+      if (sampleFreightId) {
+        obj.goods.sampleFreightId = sampleFreightId.value;
+        obj.goods.sampleFreightName = sampleFreightId.label;
       }
 
       if (sampleSupplyPrice) {
