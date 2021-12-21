@@ -6,13 +6,14 @@ import { goodsPage } from '@/services/intensive-store-management/product-managem
 import { useParams, useLocation, history } from 'umi';
 import { amountTransform, typeTransform } from '@/utils/utils'
 import GcCascader from '@/components/gc-cascader'
-import BrandSelect from '@/components/brand-select'
+import ProductDetailDrawer from '@/components/product-detail-drawer'
 
 
 const TableList = () => {
-
   const params = useParams();
   const location = useLocation();
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState(null);
 
   const columns = [
     {
@@ -30,7 +31,9 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入商品名称'
       },
-      render: (_, data) => <a onClick={() => { history.push(`/product-management/product-detail/${data.spuId}`) }}>{data.goodsName}</a>
+      render: (_, record) => {
+        return <a onClick={() => { setSelectItem(record); setProductDetailDrawerVisible(true); }}>{_}</a>
+      },
 
     },
     {
@@ -140,6 +143,14 @@ const TableList = () => {
       <div style={{ textAlign: 'center', marginTop: 30 }}>
         <Button onClick={() => { history.goBack() }}>返回</Button>
       </div>
+      {
+        productDetailDrawerVisible &&
+        <ProductDetailDrawer
+          visible={productDetailDrawerVisible}
+          setVisible={setProductDetailDrawerVisible}
+          spuId={selectItem?.spuId}
+        />
+      }
     </PageContainer>
 
   );

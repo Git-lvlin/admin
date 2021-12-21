@@ -84,6 +84,7 @@ export default (props) => {
       salePrice,
       marketPrice,
       freightTemplateId,
+      sampleFreightId,
       wholesaleFreight,
       wholesaleTaxRate,
       wholesaleSupplyPrice,
@@ -226,6 +227,11 @@ export default (props) => {
       if (detailData?.goods?.goodsSaleType !== 2) {
         obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
         obj.goods.wholesaleFreight = amountTransform(wholesaleFreight)
+      }
+
+      if (sampleFreightId) {
+        obj.goods.sampleFreightId = sampleFreightId.value;
+        obj.goods.sampleFreightName = sampleFreightId.label;
       }
 
       if (sampleSupplyPrice) {
@@ -594,17 +600,17 @@ export default (props) => {
           sampleMaxNum: goods.sampleMaxNum,
         })
 
-        preAccountCheckRequest({
-          skuId: detailData.goods.skuId,
-          salePrice: detailData.goods.salePrice,
-          salePriceFloat: detailData.goods.salePriceFloat,
-          retailSupplyPrice: detailData.goods.retailSupplyPrice,
-          wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
-          cb: (d) => {
-            setSalePriceFloat(d.salePriceFloat)
-            setPreferential(d.preferential)
-          }
-        })
+        // preAccountCheckRequest({
+        //   skuId: detailData.goods.skuId,
+        //   salePrice: detailData.goods.salePrice,
+        //   salePriceFloat: detailData.goods.salePriceFloat,
+        //   retailSupplyPrice: detailData.goods.retailSupplyPrice,
+        //   wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
+        //   cb: (d) => {
+        //     setSalePriceFloat(d.salePriceFloat)
+        //     setPreferential(d.preferential)
+        //   }
+        // })
       }
     }
 
@@ -1118,7 +1124,7 @@ export default (props) => {
                         },
                       })
                     ]}
-                    extra={salePriceFloat < 0 && <span style={{ color: 'red' }}>此秒约价导致平台亏损，请调高秒约价</span>}
+                    extra={salePriceFloat < 0 && preferential !== 0 && <span style={{ color: 'red' }}>此秒约价导致平台亏损，请调高秒约价</span>}
                     disabled={detailData?.settleType === 1}
                     fieldProps={{
                       onChange: salePriceChange
