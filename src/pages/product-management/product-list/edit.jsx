@@ -600,17 +600,17 @@ export default (props) => {
           sampleMaxNum: goods.sampleMaxNum,
         })
 
-        preAccountCheckRequest({
-          skuId: detailData.goods.skuId,
-          salePrice: detailData.goods.salePrice,
-          salePriceFloat: detailData.goods.salePriceFloat,
-          retailSupplyPrice: detailData.goods.retailSupplyPrice,
-          wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
-          cb: (d) => {
-            setSalePriceFloat(d.salePriceFloat)
-            setPreferential(d.preferential)
-          }
-        })
+        // preAccountCheckRequest({
+        //   skuId: detailData.goods.skuId,
+        //   salePrice: detailData.goods.salePrice,
+        //   salePriceFloat: detailData.goods.salePriceFloat,
+        //   retailSupplyPrice: detailData.goods.retailSupplyPrice,
+        //   wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
+        //   cb: (d) => {
+        //     setSalePriceFloat(d.salePriceFloat)
+        //     setPreferential(d.preferential)
+        //   }
+        // })
       }
     }
 
