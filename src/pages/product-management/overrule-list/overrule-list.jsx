@@ -125,6 +125,13 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
+      title: '批发样品',
+      dataIndex: 'isSample',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_) => _ === 1 ? '支持' : '不支持'
+    },
+    {
       title: '批发供货价(元)',
       dataIndex: 'wholesaleSupplyPriceRange',
       valueType: 'text',
