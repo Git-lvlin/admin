@@ -84,6 +84,7 @@ export default (props) => {
       salePrice,
       marketPrice,
       freightTemplateId,
+      sampleFreightId,
       wholesaleFreight,
       wholesaleTaxRate,
       wholesaleSupplyPrice,
@@ -156,9 +157,9 @@ export default (props) => {
         obj.freightTemplateName = freightTemplateIds.label;
       }
 
-      if (sampleFreightIds) {
-        obj.sampleFreightId = sampleFreightIds.value;
-        obj.sampleFreightName = sampleFreightIds.label;
+      if (sampleFreightId) {
+        obj.sampleFreightId = sampleFreightId.value;
+        obj.sampleFreightName = sampleFreightId.label;
       }
 
       if (sampleSupplyPrices) {
@@ -226,6 +227,11 @@ export default (props) => {
       if (detailData?.goods?.goodsSaleType !== 2) {
         obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
         obj.goods.wholesaleFreight = amountTransform(wholesaleFreight)
+      }
+
+      if (freightTemplateId) {
+        obj.goods.freightTemplateId = freightTemplateId.value;
+        obj.goods.freightTemplateName = freightTemplateId.label;
       }
 
       if (sampleSupplyPrice) {
