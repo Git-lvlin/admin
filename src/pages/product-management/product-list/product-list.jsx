@@ -124,7 +124,7 @@ const TableList = () => {
     } : {
       spuId: selectItem.spuId,
       goodsStateRemark,
-      changeStoreState: selectItem.type === 0 ? 0 : 1
+      changeStoreState: selectItem.type === 1 ? 0 : 1
     }
     apiMethod(params, { showSuccess: true }).then(res => {
       if (res.code === 0) {
