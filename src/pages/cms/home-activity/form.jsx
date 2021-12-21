@@ -51,7 +51,7 @@ export default (props) => {
     if (id) {
       param.id = id
     }
-  
+    param.actionUrl = href
     return new Promise((resolve, reject) => {
       homeActivityUpdata(param).then((res) => {
         if (res.code === 0) {
@@ -141,6 +141,7 @@ export default (props) => {
           name="customerType"
           label="展示对象"
           initialValue={1}
+          rules={[{ required: true, message: '请选择展示对象' }]}
           options={[
             {
               label: '所有用户',
@@ -156,6 +157,7 @@ export default (props) => {
           name="actionUrlType"
           label="url类型"
           initialValue={8}
+          rules={[{ required: false, message: '请选择url类型' }]}
           fieldProps={{
             onChange:({target}) => {
               if (target.value == 1) {
@@ -209,6 +211,7 @@ export default (props) => {
           name="showType"
           label="展示类型"
           initialValue={1}
+          rules={[{ required: true, message: '请选择展示类型' }]}
           options={showType?select1:select2}
         />
       <ProForm.Group>
