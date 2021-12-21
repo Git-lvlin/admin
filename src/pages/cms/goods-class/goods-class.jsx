@@ -16,7 +16,7 @@ const BannerAdmin = () => {
   const [swc, setSwc] = useState(false);
 
   const renderRemoveUser = (record) => (
-    <Popconfirm key="popconfirm" title={`确认隐藏吗?`} okText="是" onConfirm={() => { hide(record.id) }} cancelText="否">
+    <Popconfirm key="popconfirm" title={`你确认要将此运营类目在前端隐藏吗?`} okText="是" onConfirm={() => { hide(record.id) }} cancelText="否">
       <a>隐藏</a>
     </Popconfirm>
   );
