@@ -17,10 +17,10 @@ export default (props) => {
   const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
       if (value && value.length < 2) {
-        await reject('请填写自定义运营类目名称,2-12个汉字/字母')
+        await reject('请填写自定义运营类目名称，2-12个汉字/字母')
       }
       if (value&&/[^a-zA-Z\u4e00-\u9fa5]+/g.test(value)) {
-        await reject('请填写自定义运营类目名称,2-12个汉字/字母')
+        await reject('请填写自定义运营类目名称，2-12个汉字/字母')
       }
       await resolve()
     })
@@ -83,8 +83,8 @@ export default (props) => {
           width="lg"
           name="categoryName"
           label="类目名称"
-          placeholder="请填写自定义运营类目名称,2-12个汉字/字母"
-          rules={[{ required: true, message: '请填写自定义运营类目名称,2-12个汉字/字母' }, {validator: checkConfirm}]}
+          placeholder="请填写自定义运营类目名称，2-12个汉字/字母"
+          rules={[{ required: true, message: '请填写自定义运营类目名称，2-12个汉字/字母' }, {validator: checkConfirm}]}
           fieldProps={{
             maxLength: 12
           }}
@@ -95,8 +95,8 @@ export default (props) => {
           width="lg"
           name="sort"
           label="显示序号"
-          placeholder="请填写显示序号,正整数"
-          rules={[{ required: true, message: '请填写显示序号,正整数' }]}  
+          placeholder="请填写显示序号，正整数"
+          rules={[{ required: true, message: '请填写显示序号，正整数' }]}  
         />
       </ProForm.Group>
       <ProFormRadio.Group
