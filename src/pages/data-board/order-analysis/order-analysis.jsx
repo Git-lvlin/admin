@@ -415,6 +415,9 @@ const OrderAnalysis = () => {
             <ExportHistory key="history" show={visit} setShow={setVisit} type='data-board-order-analyis-wholesale-deatail-export'/>,
           ],
         }}
+        pagination={{
+          pageSize: 10,
+        }}
         style={{marginTop:'20px'}}
       />
     </PageContainer>
