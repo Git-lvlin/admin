@@ -118,6 +118,12 @@ export default (props) => {
     if (detailData) {
       setNowIndex(detailData.location)
       setHref(detailData.actionUrl)
+      if (!detailData.actionUrlType) {
+        detailData.actionUrlType = 8
+      }
+      if (detailData.actionUrlType == 1) {
+        setShowType(true)
+      }
       detailData.location = {
         1: '首页',
         2: '集约',
