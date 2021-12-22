@@ -38,3 +38,22 @@ export const areaOrderAnalysis = async (params = {}, options = {}) => {
     success: res.success
   }
 }
+
+// 集约订单明细
+export const wholeSaleOrderDetail = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/java-admin/report/config/wholeSaleOrderDetail', {
+    method: 'POST',
+    data:  {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data.records,
+    total:res.data.total,
+    success: res.success
+  }
+}
