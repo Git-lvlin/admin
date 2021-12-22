@@ -1,12 +1,12 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
-import { Button, message } from 'antd';
+import { Button, message, Space, Select } from 'antd';
 import ProForm from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { goodsSortList, goodsSortTop, goodsSortTopCancel, goodsSortReset, goodsMoveSort } from '@/services/cms/member/member';
+import { goodsSortList, goodsSortTop, goodsSortTopCancel, goodsSortReset, goodsMoveSort, pushClass, goodsClassList } from '@/services/cms/member/member';
 import Edit from './form';
 
 const BannerAdmin = () => {
@@ -14,6 +14,36 @@ const BannerAdmin = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [useType, setUseType] = useState(1);
+  const [goodsClass, setGoodsClass] = useState(null);
+  const [itemClass, setItemClass] = useState(null);
+
+  useEffect(() => {
+    goodsClassList().then((res) => {
+      setGoodsClass(res.data.map(item => ({ label: item.categoryName, value: item.id })))
+    })
+    return {}
+  }, [])
+
+  const ClassIndex = ({onChange}) => {
+    return <Select
+        placeholder="请选择运营类目"
+        options={goodsClass}
+        onChange={onChange}
+        allowClear
+      />
+  }
+
+  const push = (selectedRows) => {
+    const param = {
+      wsSkuIds: selectedRows.toString(),
+      wscId: itemClass,
+    }
+    pushClass(param).then((res) => {
+      console.log('push-res', res)
+      message.success('添加成功')
+      actionRef.current.reload();
+    })
+  }
 
   const moveSort = (record, moveUp) => {
     const { wsSkuId } = record;
@@ -41,6 +71,10 @@ const BannerAdmin = () => {
         actionRef.current.reload();
       }
     })
+  }
+
+  const changeHandle = (v) => {
+    setItemClass(v)
   }
 
   const sortReset = () => {
@@ -77,6 +111,12 @@ const BannerAdmin = () => {
     {
       title: 'skuID',
       dataIndex: 'skuId',
+    },
+    {
+      title: '运营分类',
+      hideInTable: true,
+      dataIndex: 'wscId',
+      renderFormItem: () => (<ClassIndex />)
     },
     {
       title: '主图',
@@ -144,7 +184,7 @@ const BannerAdmin = () => {
         </ProCard>
       </ProForm.Group>
       <ProTable
-        rowKey="id"
+        rowKey="wsSkuId"
         columns={columns}
         actionRef={actionRef}
         params={{type: useType}}
@@ -155,6 +195,41 @@ const BannerAdmin = () => {
         pagination={{
           pageSize: 5,
         }}
+        rowSelection={{
+          // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
+          // 注释该行则默认不显示下拉选项
+          // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
+        }}
+        tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
+          <Space size={24}>
+            <span>
+              已选 {selectedRowKeys.length} 项
+              <span>添加到</span>
+              <Select
+                placeholder="请选择运营类目"
+                options={goodsClass}
+                value={itemClass}
+                onChange={changeHandle}
+                allowClear
+              />
+              <a style={{ marginLeft: 8 }} onClick={() => {push(selectedRowKeys)}}>
+                确定
+              </a>
+            </span>
+            {/* <span>{`待发布: ${selectedRows.reduce(
+              (pre, item) => {
+                item.state === 0
+                if (item.state === 0) {
+                  return pre += 1
+                }
+                return pre
+              },0,)} 个`}</span>
+            <span>{`已发布: ${selectedRows.reduce(
+              (pre, item) => item.state && pre + 1,
+              0,
+            )} 个`}</span> */}
+          </Space>
+        )}
         dateFormatter="string"
         toolBarRender={(_) => {
           if (useType==1) {
