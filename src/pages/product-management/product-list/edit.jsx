@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Button, Form, Input, message, Modal } from 'antd';
 import {
   DrawerForm,
@@ -47,7 +47,7 @@ export default (props) => {
   const [form] = Form.useForm()
   const isPurchase = useLocation().pathname.includes('purchase')
   const api = isPurchase ? api2 : api1
-
+  const isLossMoney = useRef(false);
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -199,6 +199,7 @@ export default (props) => {
         wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
         goodsSaleType: detailData?.goods?.goodsSaleType,
       },
+      isLossMoney: isLossMoney.current ? 1 : 0,
       primaryImages: urlsTransform(primaryImages),
       detailImages: urlsTransform(detailImages),
       // advImages: advImages?.length ? urlsTransform(advImages) : null,
@@ -338,7 +339,7 @@ export default (props) => {
     })
   }
 
-  const preAccountCheckRequest = ({ skuId, salePrice, salePriceFloat, retailSupplyPrice, wholesaleTaxRate, cb }) => {
+  const preAccountCheckRequest = ({ skuId, salePrice, salePriceFloat, retailSupplyPrice, wholesaleTaxRate, cb, options= {} }) => {
     if (detailData.goods.goodsSaleType === 1) {
       return;
     }
@@ -349,7 +350,7 @@ export default (props) => {
       wholesaleTaxRate,
       salePrice,
       salePriceFloat
-    }).then(res => {
+    }, { ...options}).then(res => {
       if (res.code === 0) {
         cb && cb(res.data[0])
       } else {
@@ -409,6 +410,7 @@ export default (props) => {
   }, [])
 
   const submitConfirm = () => {
+    isLossMoney.current = false;
     return new Promise((resolve, reject) => {
       if (detailData.goods.goodsSaleType === 1) {
         resolve()
@@ -425,6 +427,8 @@ export default (props) => {
           resolve()
           return;
         }
+
+        isLossMoney.current = true
 
         confirm({
           icon: <ExclamationCircleOutlined />,
@@ -452,6 +456,7 @@ export default (props) => {
 
                 if (arr.length === tableData.length) {
                   if (flag) {
+                    isLossMoney.current = true
                     confirm({
                       icon: <ExclamationCircleOutlined />,
                       content: <span style={{ color: 'red' }}>秒约价导致平台亏损,确认要修改吗</span>,
@@ -600,17 +605,20 @@ export default (props) => {
           sampleMaxNum: goods.sampleMaxNum,
         })
 
-        // preAccountCheckRequest({
-        //   skuId: detailData.goods.skuId,
-        //   salePrice: detailData.goods.salePrice,
-        //   salePriceFloat: detailData.goods.salePriceFloat,
-        //   retailSupplyPrice: detailData.goods.retailSupplyPrice,
-        //   wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
-        //   cb: (d) => {
-        //     setSalePriceFloat(d.salePriceFloat)
-        //     setPreferential(d.preferential)
-        //   }
-        // })
+        preAccountCheckRequest({
+          skuId: detailData.goods.skuId,
+          salePrice: detailData.goods.salePrice,
+          salePriceFloat: detailData.goods.salePriceFloat,
+          retailSupplyPrice: detailData.goods.retailSupplyPrice,
+          wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
+          cb: (d) => {
+            setSalePriceFloat(d.salePriceFloat)
+            setPreferential(d.preferential)
+          },
+          options: {
+            showError: false,
+          }
+        })
       }
     }
 
