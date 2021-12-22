@@ -49,10 +49,10 @@ export default (props) => {
         relativeY: 162,
       },
       compositeXY: {
-        relativeX: 132,
-        relativeY: 495,
-        qrcodeWidth: 110,
-        qrcodeHeight: 110,
+        relativeX: 223,
+        relativeY: 583,
+        qrcodeWidth: 65,
+        qrcodeHeight: 65,
       },
     }
 
