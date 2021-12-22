@@ -950,6 +950,15 @@ export const hideItem = (params = {}, options = {}) => {
   });
 }
 
+
+export const pushClass = (params = {}, options = {}) => {
+  return request('/auth/wholesale/SkuConfig/modifyProCategory', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const goodsClassList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
 
