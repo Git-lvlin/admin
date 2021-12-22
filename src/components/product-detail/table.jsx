@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
 
 export default function EditTable(props) {
-  const { tableHead, tableData, goodsSaleType, settleType } = props;
+  const { tableHead, tableData, goodsSaleType, settleType, isSample } = props;
   const [columns, setColumns] = useState([])
 
   useEffect(() => {
@@ -61,6 +61,37 @@ export default function EditTable(props) {
         editable: false,
         width: 130,
         hideInTable: goodsSaleType === 2,
+      },
+      {
+        title: '样品供货价(元)',
+        dataIndex: 'sampleSupplyPrice',
+        hideInTable: isSample !== 1,
+      },
+      {
+        title: '样品价(元)',
+        dataIndex: 'sampleSalePrice',
+        hideInTable: isSample !== 1,
+      },
+      {
+        title: '样品起售量',
+        dataIndex: 'sampleMinNum',
+        hideInTable: isSample !== 1,
+      },
+      {
+        title: '样品限售量',
+        dataIndex: 'sampleMaxNum',
+        hideInTable: isSample !== 1,
+      },
+      {
+        title: '样品是否包邮',
+        dataIndex: 'sampleFreight',
+        hideInTable: isSample !== 1,
+        render: (_) => _ === 1 ? '包邮' : '不包邮',
+      },
+      {
+        title: '样品运费模板',
+        dataIndex: 'sampleFreightName',
+        hideInTable: isSample !== 1,
       },
       {
         title: '秒约价',
@@ -139,7 +170,7 @@ export default function EditTable(props) {
       // },
     ])
 
-  }, [tableHead, goodsSaleType, settleType])
+  }, [tableHead, goodsSaleType, settleType, isSample])
 
   return (
     <EditableProTable
@@ -149,7 +180,7 @@ export default function EditTable(props) {
       bordered
       style={{ marginBottom: 20 }}
       pagination={false}
-      scroll={{ x: '70vw' }}
+      scroll={{ x: 'max-content' }}
       recordCreatorProps={false}
     />
   )
