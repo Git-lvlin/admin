@@ -139,6 +139,14 @@ export const preAccountCheck = (params = {}, options = {}) => {
   });
 }
 
+export const preAccountShow = (params = {}, options = {}) => {
+  return request('/auth/goods/product/preAccountShow', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const getActivityRecord = (params = {}, options = {}) => {
   return request('/auth/goods/product/getActivityRecord', {
     method: 'POST',
