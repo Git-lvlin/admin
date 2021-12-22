@@ -23,7 +23,7 @@ import ImageSort from './image-sort';
 import Look from '@/components/look';
 import FreightTemplateSelect from '@/components/freight-template-select'
 import { useLocation } from 'umi';
-import { preAccountCheck } from '@/services/product-management/product-list';
+import { preAccountCheck, preAccountShow } from '@/services/product-management/product-list';
 
 const { confirm } = Modal
 
@@ -339,7 +339,7 @@ export default (props) => {
     })
   }
 
-  const preAccountCheckRequest = ({ skuId, salePrice, salePriceFloat, retailSupplyPrice, wholesaleTaxRate, cb, options= {} }) => {
+  const preAccountCheckRequest = ({ skuId, salePrice, salePriceFloat, retailSupplyPrice, wholesaleTaxRate, cb, options = {} }) => {
     if (detailData.goods.goodsSaleType === 1) {
       return;
     }
@@ -350,7 +350,7 @@ export default (props) => {
       wholesaleTaxRate,
       salePrice,
       salePriceFloat
-    }, { ...options}).then(res => {
+    }, { ...options }).then(res => {
       if (res.code === 0) {
         cb && cb(res.data[0])
       } else {
@@ -589,6 +589,15 @@ export default (props) => {
             specValue,
           }
         }))
+        preAccountShow({
+          spuId: detailData.spuId,
+        }, {
+          showError: false,
+        }).then(res => {
+          if (res.code === 0) {
+            setPreferential(res.data.saveMoney)
+          }
+        })
       } else {
         form.setFieldsValue({
           // wholesalePrice: amountTransform(goods.wholesalePrice, '/'),
@@ -968,6 +977,11 @@ export default (props) => {
               >
                 <Button disabled type="primary" onClick={() => { setFormModalVisible(true) }}>填写批量规格参数 生成规格配置表</Button>
               </Form.Item>
+              {preferential !== 0 && <Form.Item
+                label="已适用优惠券最大面额(元)"
+              >
+                {preferential / 100}
+              </Form.Item>}
               {!!tableData.length && <ProFormDependency name={['settleType']}>
                 {
                   ({ settleType }) => (
