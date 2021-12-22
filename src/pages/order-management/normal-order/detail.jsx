@@ -14,6 +14,16 @@ const Detail = (props) => {
   const [loading, setLoading] = useState(false);
   const [expressInfoState, setExpressInfoState] = useState([])
 
+  const getCurrent = () => {
+    let current = 0;
+    detailData?.nodeList?.forEach(item => {
+      if (item.eventTime) {
+        current += 1;
+      }
+    })
+    return current - 1;
+  }
+
   const getDetailData = () => {
     setLoading(true);
     const apiMethod = isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
@@ -49,12 +59,12 @@ const Detail = (props) => {
     >
       <Spin spinning={loading}>
         <div className={styles.order_detail}>
-          <Steps progressDot current={detailData.status - 1}>
-            <Step title="订单提交" description={<><div>{detailData.createTime}</div></>} />
-            <Step title="订单支付" description={<><div>{detailData.payTime}</div></>} />
-            <Step title="订单发货" description={<><div>{detailData.deliveryTime}</div></>} />
-            <Step title="订单收货" description={<><div>{detailData.receiveTime}</div></>} />
-            <Step title="订单完成" description={<><div>{detailData.receiveTime}</div></>} />
+          <Steps progressDot current={getCurrent()}>
+            {
+              detailData?.nodeList?.map(item => (
+                <Step title={item.event} description={<><div>{item.eventTime?.replace('T', ' ')}</div></>} />
+              ))
+            }
           </Steps>
           <div style={{ display: 'flex', marginTop: 30 }}>
             <div style={{ flex: 1, marginRight: 30 }}>
