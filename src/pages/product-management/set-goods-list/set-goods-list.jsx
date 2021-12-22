@@ -153,12 +153,14 @@ const TableList = () => {
       dataIndex: 'wholesaleSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => data.goodsSaleType === 2 ? '-' : _
     },
     {
       title: '零售供货价(元)',
       dataIndex: 'retailSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => data.goodsSaleType === 1 ? '-' : _
     },
     {
       title: '秒约价(元)',
