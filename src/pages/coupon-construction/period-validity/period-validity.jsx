@@ -7,6 +7,7 @@ import styles from '../style.less'
 
 const validity=(props)=>{
     let {id,DetailList,type}=props
+    const DetaiIssueType=DetailList.data?.issueType
     const disabledDate=(current)=>{
         return current && current < moment().startOf('day');
     }
@@ -29,15 +30,15 @@ const validity=(props)=>{
     return (
         <>
         {
-            type==3||DetailList.data?.issueType == 3 && id?
+            type==3||DetaiIssueType == 3 && id|| type==4||DetaiIssueType == 4 && id?
                 <ProFormRadio.Group
                     name="activityTimeType"
                     label={<FormattedMessage id="formandbasic-form.period.of.validity" />}
                     rules={[{ required: true, message: '请选择有效期限' }]}
                     options={[
                         {
-                            label: '每日红包',
-                            value: 3,
+                            label:type==4||DetaiIssueType == 4 && id?'邀请好友红包':'每日红包' ,
+                            value:type==4||DetaiIssueType == 4 && id?4:3,
                         }
                     ]}
                 />
@@ -46,7 +47,7 @@ const validity=(props)=>{
                     name="activityTimeType"
                     label={<FormattedMessage id="formandbasic-form.period.of.validity" />}
                     rules={[{ required: true, message: '请选择有效期限' }]}
-                    options={type==2||DetailList.data?.issueType == 2 && id?options2:options}
+                    options={type==2||DetaiIssueType == 2 && id?options2:options}
                 />
         }
         <ProFormDependency name={['activityTimeType']}>
@@ -86,7 +87,7 @@ const validity=(props)=>{
                     </div>
                     );
                 }
-                if (activityTimeType==3){
+                if (activityTimeType==3||activityTimeType==4){
                     return ( 
                         <div className={styles.unfold}>
                             <ProForm.Group>

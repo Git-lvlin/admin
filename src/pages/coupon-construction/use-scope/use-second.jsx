@@ -349,10 +349,10 @@ const useSecond=(props)=>{
     return(
         <Form.Item className={styles.unfold}>
             {
-                type==3||DetailList.data?.issueType == 3 && id ?
+                type==3||DetailList.data?.issueType == 3 && id || type==4||DetailList.data?.issueType == 4 && id?
                 <GoosModel 
                     dispatch={dispatch} 
-                    DetailList={DetailList} 
+                    DetailList={DetailList}
                     UseScopeList={UseScopeList}
                 />
             :

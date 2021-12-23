@@ -10,7 +10,7 @@ export default {
     {
       name: 'product-list-purchase',
       path: '/product-management/product-list-purchase',
-      component: './product-management/product-list-purchase',
+      component: './product-management/product-list',
     },
     {
       name: 'product-detail',

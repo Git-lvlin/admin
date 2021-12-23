@@ -194,8 +194,8 @@ export default (props) =>{
                       detailList?.data?.status==1?
                       <>
                         {
-                          falg?<Button style={{marginLeft:'80px'}} type="primary" onClick={() => { setFalg(false) }}>编辑</Button>
-                          :<Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
+                          falg?<Button style={{marginLeft:'100px'}} type="primary" onClick={() => { setFalg(false) }}>编辑</Button>
+                          :<Button style={{margin:'100px'}} type="primary" key="submit" onClick={() => {
                             props.form?.submit?.()
                           }}>
                             保存
@@ -205,7 +205,7 @@ export default (props) =>{
                       :null
                     }
                   </>
-                  :<Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
+                  :<Button style={{margin:'100px'}} type="primary" key="submit" onClick={() => {
                     props.form?.submit?.()
                   }}>
                     保存
@@ -228,29 +228,42 @@ export default (props) =>{
                 maxLength:50
               }}
           />
-         <ProFormDateTimeRangePicker
-            width="md"
-            label='活动时间'
-            rules={[{ required: true, message: '请选择活动时间' }]}
-            name="dateRange"
-            fieldProps={{
-              //  disabledDate:(current)=>disabledDate(current),
-               showTime:{
-                hideDisabledOptions: true,
-                defaultValue: [moment('00:00', 'HH:mm'), moment('11:59', 'HH:mm')],
-              },
-              format:"YYYY-MM-DD HH:mm"
-            }}
-            readonly={id&&falg}
-            placeholder={[
-            formatMessage({
-                id: 'formandbasic-form.placeholder.start',
-            }),
-            formatMessage({
-                id: 'formandbasic-form.placeholder.end',
-            }),
-            ]}
-        />
+          {
+            id&&falg?
+            <ProFormText
+              width="md"
+              name="dateRange"
+              label="活动时间"
+              rules={[{ required: true, message: '请选择活动时间' }]}
+              readonly
+              fieldProps={{
+                value:detailList?.data?.activityStartTime +' 至 '+detailList?.data?.activityEndTime
+              }}
+            />
+           : <ProFormDateTimeRangePicker
+              width="md"
+              label='活动时间'
+              rules={[{ required: true, message: '请选择活动时间' }]}
+              name="dateRange"
+              fieldProps={{
+                //  disabledDate:(current)=>disabledDate(current),
+                showTime:{
+                  hideDisabledOptions: true,
+                  defaultValue: [moment('00:00', 'HH:mm'), moment('11:59', 'HH:mm')],
+                },
+                format:"YYYY-MM-DD HH:mm"
+              }}
+              readonly={id&&falg}
+              placeholder={[
+              formatMessage({
+                  id: 'formandbasic-form.placeholder.start',
+              }),
+              formatMessage({
+                  id: 'formandbasic-form.placeholder.end',
+              }),
+              ]}
+          />
+          }
           {
             id?<EditableProTable
                 headerTitle="每日首单红包发放金额(元）"
@@ -259,6 +272,7 @@ export default (props) =>{
                 columns={columns2}
                 value={detailList?.scopeList}
                 recordCreatorProps={false}
+                style={{marginLeft:'50px'}}
                 />
              :<EditableProTable
                 headerTitle="每日首单红包发放金额(元）"
@@ -279,6 +293,7 @@ export default (props) =>{
                   },
                   onChange: setEditableRowKeys,
                 }}
+                style={{marginLeft:'50px'}}
               />  
           }
           {

@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Tooltip, Table, Spin } from 'antd';
+import { Button, Tooltip, Table, Spin, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import * as api from '@/services/product-management/product-list';
+import * as api1 from '@/services/product-management/product-list';
+import * as api2 from '@/services/product-management/product-list-purchase';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import ProductDetailDrawer from '@/components/product-detail-drawer'
@@ -14,11 +15,15 @@ import { amountTransform, typeTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import moment from 'moment';
+import { useLocation } from 'umi';
+import { changeStoreState } from '@/services/product-management/product-list';
+
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false);
-
+  const isPurchase = useLocation().pathname.includes('purchase')
+  const api = isPurchase ? api2 : api1
   const columns = [
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
@@ -57,11 +62,13 @@ const TableList = () => {
   const [detailData, setDetailData] = useState(null);
   const [config, setConfig] = useState({});
   const [offShelfVisible, setOffShelfVisible] = useState(false);
-  const [selectItemId, setSelectItemId] = useState(null);
+  const [selectItem, setSelectItem] = useState(null);
   const [alarmMsg, setAlarmMsg] = useState('');
   const actionRef = useRef();
   const formRef = useRef();
   const [visit, setVisit] = useState(false)
+  const isPurchase = useLocation().pathname.includes('purchase')
+  const api = isPurchase ? api2 : api1
 
   const getDetail = (id, cb) => {
     api.getDetail({
@@ -80,35 +87,49 @@ const TableList = () => {
   }
 
   const getActivityRecord = (record) => {
+
     api.getActivityRecord({
       spuId: record.spuId
     }).then(res => {
       if (res.code === 0) {
         setAlarmMsg(res.data);
-        setSelectItemId(record.spuId);
+        setSelectItem(record);
         setOffShelfVisible(true)
       }
     })
   }
 
-  const onShelf = (spuId) => {
-    api.onShelf({
-      spuId
-    }, { showSuccess: true }).then(res => {
+  const onShelf = ({ spuId, type }) => {
+    const apiMethod = type === 2 ? changeStoreState : api.onShelf
+    const params = type === 2 ? {
+      spuId,
+      storeGoodsState: 1
+    } : {
+      spuId,
+    }
+    apiMethod(params, { showSuccess: true }).then(res => {
       if (res.code === 0) {
         actionRef.current.reload();
+        setSelectItem(null);
       }
     })
   }
 
-  const offShelf = (spuId, goodsStateRemark) => {
-    api.offShelf({
-      spuId,
+  const offShelf = (goodsStateRemark) => {
+    const apiMethod = selectItem.type === 2 ? changeStoreState : api.offShelf
+    const params = selectItem.type === 2 ? {
+      spuId: selectItem.spuId,
       goodsStateRemark,
-    }, { showSuccess: true }).then(res => {
+      storeGoodsState: 0
+    } : {
+      spuId: selectItem.spuId,
+      goodsStateRemark,
+      changeStoreState: selectItem.type === 1 ? 0 : 1
+    }
+    apiMethod(params, { showSuccess: true }).then(res => {
       if (res.code === 0) {
         actionRef.current.reload();
-        setSelectItemId(null);
+        setSelectItem(null);
       }
     })
   }
@@ -154,8 +175,27 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, record) => {
-        return <a onClick={() => { setSelectItemId(record.spuId); setProductDetailDrawerVisible(true); }}>{_}</a>
-      }
+        return <a onClick={() => { setSelectItem(record); setProductDetailDrawerVisible(true); }}>{_}</a>
+      },
+      width: 200,
+    },
+    {
+      title: '基础销量',
+      dataIndex: 'goodsVirtualSaleNum',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '秒约销量',
+      dataIndex: 'goodsSaleNum',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: 'B端集约销量',
+      dataIndex: 'goodsWsSaleNum',
+      valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '供应商家ID',
@@ -172,6 +212,18 @@ const TableList = () => {
       },
       // renderFormItem: () => <SupplierSelect />,
       hideInTable: true,
+      hideInSearch: isPurchase,
+    },
+    {
+      title: '供应商家',
+      dataIndex: 'supplierNameId',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入供应商家ID或名称'
+      },
+      // renderFormItem: () => <SupplierSelect />,
+      hideInTable: true,
+      hideInSearch: !isPurchase,
     },
     {
       title: '供货类型',
@@ -188,16 +240,25 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
+      title: '批发样品',
+      dataIndex: 'isSample',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_) => _ === 0 ? '不支持' : '支持'
+    },
+    {
       title: '批发供货价(元)',
       dataIndex: 'wholesaleSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => data.goodsSaleType === 2 ? '-' : _
     },
     {
       title: '零售供货价(元)',
       dataIndex: 'retailSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, data) => data.goodsSaleType === 1 ? '-' : _
     },
     {
       title: '销售价',
@@ -225,12 +286,12 @@ const TableList = () => {
     //   valueType: 'text',
     //   hideInSearch: true,
     // },
-    {
-      title: '销量',
-      dataIndex: 'goodsSaleNum',
-      valueType: 'text',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '销量',
+    //   dataIndex: 'goodsSaleNum',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    // },
     // {
     //   title: '审核状态',
     //   dataIndex: 'goodsVerifyState',
@@ -276,6 +337,13 @@ const TableList = () => {
           </>
         )
       },
+    },
+    {
+      title: '店铺上架状态',
+      dataIndex: 'storeGoodsState',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_) => _ === 0 ? '下架' : '正常',
     },
     {
       title: '商品关键词',
@@ -342,15 +410,19 @@ const TableList = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => {
-        const { goodsVerifyState, goodsState } = record;
+        const { goodsVerifyState, goodsState, goodsSaleType, storeGoodsState } = record;
         return (
-          <>
-            {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { getActivityRecord(record); }}>下架</a>}
-            &nbsp;{(goodsVerifyState === 1 && goodsState === 0) && <a onClick={() => { onShelf(record.spuId) }}>上架</a>}
-            &nbsp;<a onClick={() => { getDetail(record.spuId, () => { setFormVisible(true); }) }}>编辑</a>
-          </>
+          <Space>
+            {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { getActivityRecord({ ...record, type: 1 }); }}>下架</a>}
+            {(goodsVerifyState === 1 && storeGoodsState === 1 && goodsSaleType !== 2) && <a onClick={() => { getActivityRecord({ ...record, type: 2 }); }}>从店铺下架</a>}
+            {(goodsVerifyState === 1 && (goodsState === 1 || storeGoodsState === 1) && goodsSaleType !== 2) && <a onClick={() => { getActivityRecord({ ...record, type: 3 }); }}>全网下架</a>}
+            {(goodsVerifyState === 1 && goodsState === 0) && <a onClick={() => { onShelf({ spuId: record.spuId, type: 1 }) }}>上架</a>}
+            {(goodsVerifyState === 1 && storeGoodsState === 0 && goodsSaleType !== 2) && <a onClick={() => { onShelf({ spuId: record.spuId, type: 2 }) }}>从店铺上架</a>}
+            <a onClick={() => { getDetail(record.spuId, () => { setFormVisible(true); }) }}>编辑</a>
+          </Space>
         )
       },
+      // fixed: 'right'
     },
   ];
 
@@ -418,6 +490,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
+        scroll={{ x: 'max-content' }}
         search={{
           labelWidth: 140,
           defaultCollapsed: false,
@@ -460,7 +533,7 @@ const TableList = () => {
       {offShelfVisible && <OffShelf
         visible={offShelfVisible}
         setVisible={setOffShelfVisible}
-        callback={(text) => { offShelf(selectItemId, text) }}
+        callback={(text) => { offShelf(text) }}
         alarmMsg={alarmMsg}
       />}
       {
@@ -468,7 +541,7 @@ const TableList = () => {
         <ProductDetailDrawer
           visible={productDetailDrawerVisible}
           setVisible={setProductDetailDrawerVisible}
-          spuId={selectItemId}
+          spuId={selectItem?.spuId}
         />
       }
 

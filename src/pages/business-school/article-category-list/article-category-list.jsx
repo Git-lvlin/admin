@@ -73,7 +73,7 @@ const ArticleCategoryList = () => {
       dataIndex: 'articleNum',
       valueType: 'number',
       render:(text, record, _, action)=>[
-        <a onClick={()=>history.push(`/business-school/article-list?articleTypeId=${record?.id}`)}>{record?.articleNum}</a>
+        <a key='num' onClick={()=>history.push(`/business-school/article-list?articleTypeId=${record?.id}`)}>{record?.articleNum}</a>
       ],
     },
     {
@@ -111,10 +111,9 @@ const ArticleCategoryList = () => {
         request={findAdminArticleTypeList}
         pagination={false}
         dateFormatter="string"
-        headerTitle=""
         search={false}
         toolBarRender={(_,record) => [
-          <Button key="button" type="primary" onClick={() => { 
+          <Button key="new" type="primary" onClick={() => { 
             setFormVisible(true) 
             setDetailData() 
           }}>
