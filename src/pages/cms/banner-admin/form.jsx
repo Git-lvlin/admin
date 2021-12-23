@@ -5,6 +5,7 @@ import ProForm, {
   ProFormText,
   ProFormRadio,
   ProFormSelect,
+  ProFormTextArea,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import { bannerAdd } from '@/services/cms/member/member';
@@ -14,6 +15,34 @@ export default (props) => {
   const formRef = useRef();
   const [form] = Form.useForm();
   const [nowIndex, setNowIndex] = useState(0);
+  const [href, setHref] = useState('');
+  const [showType, setShowType] = useState(false);
+  const urlArr = [
+    '',
+    'https://www.yeahgo-uat.com/tab/index?index=2',
+    'https://www.yeahgo-uat.com/tab/index?index=4',
+    'https://www.yeahgo-uat.com/flutter/store/member/index',
+    'https://www.yeahgo-uat.com/tab/index?index=1',
+    'https://www.yeahgo-uat.com/home/spikeGoods',
+    'https://www.yeahgo-uat.com/home/spikeWeek',
+    'https://publicmobile-uat.yeahgo.com/web/five-star-qa?_authorizationRequired=1',
+  ];
+  const select1 = [
+    {
+      label: '固定展示',
+      value: 1,
+    },
+    {
+      label: '有集约内容才展示',
+      value: 2,
+    },
+  ]
+  const select2 = [
+    {
+      label: '固定展示',
+      value: 1,
+    }
+  ]
   const picSize = [
     false,
     {
@@ -21,8 +50,8 @@ export default (props) => {
       height: 150,
     },
     {
-      width: 375,
-      height: 168,
+      width: 750,
+      height: 170,
     },
     {
       width: 351,
@@ -66,7 +95,7 @@ export default (props) => {
         }[detailData.location]
       }
     }
-  
+    param.actionUrl = href
     if (verifyVersionId) {
       param.verifyVersionId = verifyVersionId
     }
@@ -85,6 +114,13 @@ export default (props) => {
   useEffect(() => {
     if (detailData) {
       setNowIndex(detailData.location)
+      setHref(detailData.actionUrl)
+      if (!detailData.actionUrlType) {
+        detailData.actionUrlType = 8
+      }
+      if (detailData.actionUrlType == 1) {
+        setShowType(true)
+      }
       detailData.location = {
         1: '首页',
         2: '集约',
@@ -143,7 +179,7 @@ export default (props) => {
         />
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText 
+        <ProFormText
           width="sm"
           name="title"
           label="banner名称"
@@ -168,7 +204,7 @@ export default (props) => {
           <dl>
             <dt>图片要求</dt>
             <dd>首页banner-350*150</dd>
-            <dd>集约页面banner-375*168</dd>
+            <dd>集约页面banner-750*170</dd>
             <dd>个人中心banner-351*65</dd>
             <dd>社区店专享banner-375*150</dd>
             <dd>秒约爆品banner-375*160</dd>
@@ -185,14 +221,105 @@ export default (props) => {
         />
 
       </ProForm.Group>
+      <ProFormRadio.Group
+          name="customerType"
+          label="展示对象"
+          initialValue={1}
+          rules={[{ required: true, message: '请选择展示对象!' }]}
+          options={[
+            {
+              label: '所有用户可见',
+              value: 1,
+            },
+            {
+              label: '仅店主可见',
+              value: 2,
+            },
+          ]}
+        />
+      <ProFormRadio.Group
+          name="actionUrlType"
+          label="url类型"
+          initialValue={8}
+          rules={[{ required: false, message: '请选择url类型!' }]}
+          fieldProps={{
+            onChange:({target}) => {
+              if ((target.value == 1 && nowIndex == 2)||(target.value == 2 && nowIndex == 3)||(target.value == 3 && nowIndex == 4)||(target.value == 5 && nowIndex == 6)||target.value == 6 && nowIndex == 7) {
+                message.error('点击banner跳转去的页面不能与banner所在位置页面相同，请重新选中或此项置空')
+                form.setFieldsValue({
+                  actionUrlType: 8
+                })
+                return
+              }
+              if (target.value == 1) {
+                setShowType(true)
+              } else {
+                setShowType(false)
+              }
+              if (target.value == 8) {
+                setHref('')
+              } else {
+                setHref(urlArr[target.value])
+              }
+            }
+          }}
+          options={[
+            {
+              label: '集约',
+              value: 1,
+            },
+            {
+              label: '个人中心',
+              value: 2,
+            },
+            {
+              label: '社区店',
+              value: 3,
+            },
+            {
+              label: '限时秒杀',
+              value: 4,
+            },
+            {
+              label: '秒约爆品',
+              value: 5,
+            },
+            {
+              label: '周末大狂欢',
+              value: 6,
+            },
+            {
+              label: '店主升星',
+              value: 7,
+            },
+            {
+              label: '自定义',
+              value: 8,
+            },
+          ]}
+        />
       <ProForm.Group>
-        <ProFormText 
-            width="sm"
+        <ProFormTextArea 
+            width="lg"
             name="actionUrl"
+            fieldProps={{
+              value: href,
+              onChange: ({target}) => {
+                console.log(target.value)
+                setHref(target.value)
+              }
+            }}
             label="跳转链接"
             rules={[{ required: false, message: '请输入跳转链接' }]}  
           />
       </ProForm.Group>
+      <ProFormRadio.Group
+          name="showType"
+          label="展示类型"
+          initialValue={1}
+          rules={[{ required: true, message: '请选择展示类型!' }]}
+          options={showType?select1:select2}
+        />
       <ProFormRadio.Group
           name="state"
           label="上线/下架"
