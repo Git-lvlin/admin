@@ -1,19 +1,14 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, Image } from 'antd';
 import { EyeOutlined } from '@ant-design/icons'
 import {
   DrawerForm,
-  ProFormText,
-  ProFormRadio,
-  ProFormSelect,
   ProFormDependency,
 } from '@ant-design/pro-form';
 import Overrule from './overrule';
 import EditTable from './edit-table';
 import { amountTransform } from '@/utils/utils'
 import styles from './first-review.less'
-import * as api from '@/services/product-management/product-list';
-import debounce from 'lodash/debounce';
 import Look from './look';
 
 export default (props) => {
@@ -22,9 +17,7 @@ export default (props) => {
   const [tableData, setTableData] = useState([]);
   const [tableHead, setTableHead] = useState([]);
   const [form] = Form.useForm()
-  const [salePriceProfitLoss, setSalePriceProfitLoss] = useState(null);
   const [lookVisible, setLookVisible] = useState(false);
-  const type = useRef(0)
 
   const { goods } = detailData;
 
@@ -69,9 +62,11 @@ export default (props) => {
             salePriceFloat: amountTransform(item[1].salePriceFloat),
             salePriceProfitLoss: amountTransform(item[1].salePriceProfitLoss, '/'),
             wholesaleFreight: amountTransform(item[1].wholesaleFreight, '/'),
+            sampleSupplyPrice: amountTransform(item[1].sampleSupplyPrice, '/'),
             batchNumber: item[1].batchNumber,
             isFreeFreight: item[1].isFreeFreight,
-            freightTemplateId: item[1]?.freightTemplateName ? { label: item[1]?.freightTemplateName, value: item[1]?.freightTemplateId } : undefined,
+            freightTemplateId: item[1]?.freightTemplateId !== 0 ? { label: item[1]?.freightTemplateName, value: item[1]?.freightTemplateId } : undefined,
+            sampleFreightId: item[1]?.sampleFreightId !== 0 ? { label: item[1]?.sampleFreightName, value: item[1]?.sampleFreightId } : undefined,
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -79,13 +74,6 @@ export default (props) => {
           }
         }))
       }
-
-      form.setFieldsValue({
-        salePrice: amountTransform(detailData?.goods?.salePrice, '/'),
-        marketPrice: amountTransform(detailData?.goods?.marketPrice, '/'),
-        supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId,
-        salePriceFloat: amountTransform(detailData?.goods?.salePriceFloat),
-      })
     }
 
   }, [detailData]);
@@ -166,6 +154,11 @@ export default (props) => {
       >
         {{ 0: '批发+零售', 1: '仅批发', 2: '零售' }[goods.goodsSaleType]}
       </Form.Item>
+      {detailData?.goods?.goodsSaleType !== 2 && <Form.Item
+        label="批发样品"
+      >
+        {{ 0: '不支持样品售卖', 1: '支持样品售卖' }[goods.isSample]}
+      </Form.Item>}
 
       {detailData?.goods?.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 && <Form.Item
         label="平均运费(元)"
@@ -241,6 +234,7 @@ export default (props) => {
                         setTableData={setTableData}
                         wholesaleTaxRate={detailData?.goods?.wholesaleTaxRate}
                         goodsSaleType={detailData?.goods?.goodsSaleType}
+                        isSample={detailData?.goods?.isSample}
                       />}
                   </>
                 )
@@ -269,6 +263,37 @@ export default (props) => {
                 >
                   {goods.wholesaleMinNum}
                 </Form.Item>
+                {
+                  goods?.isSample === 1
+                  &&
+                  <>
+                    <Form.Item
+                      label="样品供货价(元)"
+                    >
+                      {amountTransform(goods.sampleSupplyPrice, '/')}
+                    </Form.Item>
+                    <Form.Item
+                      label="样品起售量"
+                    >
+                      {goods.sampleMinNum}
+                    </Form.Item>
+                    <Form.Item
+                      label="样品限售量"
+                    >
+                      {goods.sampleMaxNum}
+                    </Form.Item>
+                    <Form.Item
+                      label="样品是否包邮"
+                    >
+                      {{ 1: '包邮', 0: '不包邮' }[goods.sampleFreight]}
+                    </Form.Item>
+                    {goods.sampleFreight === 0 && <Form.Item
+                      label="样品运费模板"
+                    >
+                      {goods.sampleFreightName}
+                    </Form.Item>}
+                  </>
+                }
               </>
             }
 

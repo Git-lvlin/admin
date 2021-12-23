@@ -7,12 +7,14 @@ import { refundDetail } from "@/services/financial-management/transaction-detail
 import './styles.less'
 import styles from './styles.less'
 import { tradeType } from '../../common-enum'
+import { orderTypes } from '@/services/financial-management/common'
 
 const Detail = ({id, visible, setVisible}) => {
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState(null)
   const [data, setData] = useState(null)
   const [payInfos, setPayInfos] = useState([])
+  const [orderType, setOrderType] = useState(null)
   useEffect(()=>{
     setLoading(true)
     refundDetail({id}).then(res=> {
@@ -30,7 +32,16 @@ const Detail = ({id, visible, setVisible}) => {
       setPayInfos(null)
     }
   }, [])
-  
+
+  useEffect(() => {
+    orderTypes({}).then(res=> {
+      setOrderType(res.data)
+    })
+    return () => {
+      setOrderType(null)
+    }
+  }, [])
+
   const fashionableType =(data, amount, fee) =>{
     switch(data){
       case 'goodsAmount':
@@ -135,14 +146,7 @@ const Detail = ({id, visible, setVisible}) => {
     {
       title: '关联订单类型',
       dataIndex: 'orderType',
-      valueEnum: {
-        'second': '秒约',
-        'commandSalesOrder': '集约批发订单',
-        'dropShipping1688': '1688代发订单',
-        'commandCollect': '集约销售订单',
-        'blindBox': '盲盒订单',
-        'signIn': '签到订单'
-      }
+      valueEnum: orderType
     },
     {
       title: '关联订单号',

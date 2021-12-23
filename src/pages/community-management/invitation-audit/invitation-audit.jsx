@@ -9,7 +9,6 @@ import { checkAuditDynamicSwitch,updateAuditDynamicSwitch } from '@/services/com
 import AuditModel from './audit-model'
 import { history,connect } from 'umi';
 import { Space,Switch } from 'antd';
-import './style.less'
 const { TabPane } = Tabs
 
 
@@ -31,7 +30,7 @@ const Message = (props) => {
       valueType: 'text',
       hideInSearch:true,
       render:(text, record, _, action)=>[
-        <a onClick={()=>history.push('/community-management/invitation-detail?id='+record.id)}>{record.id}</a>
+        <a key='id' onClick={()=>history.push('/community-management/invitation-detail?id='+record.id)}>{record.id}</a>
     ],
     },
     {
@@ -107,6 +106,7 @@ const Message = (props) => {
             InterFace={auditDynamic} 
             title={'审核确认'}
             boxref={ref}
+            key='pass'
           />,
           <AuditModel 
             record={data}
@@ -117,6 +117,7 @@ const Message = (props) => {
             InterFace={auditDynamic} 
             title={'审核确认'}
             boxref={ref}
+            key='refuse'
           />,
       ],
       hideInTable:type==0?false:true
@@ -154,18 +155,17 @@ const Message = (props) => {
           defaultCollapsed: false,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
-           <> 
+           <div key='switch'> 
              {
                type==0?
                <Form.Item
                 label="审核功能开关"
-                className='switchTop'
               >
                 <Switch  checked={check} onChange={(bol)=>{auditSwitch(bol) }}/>
               </Form.Item>
               :null
              }
-           </>,
+           </div>,
              ...dom.reverse(),
           ],
         }}
@@ -180,6 +180,7 @@ const Message = (props) => {
             type={type}
             arrId={arrId}
             boxref={ref}
+            key='pass'
           />
           <AuditModel 
             type={type} 
@@ -190,6 +191,7 @@ const Message = (props) => {
             title={'审核确认'}
             arrId={arrId}
             boxref={ref}
+            key='refuse'
           />
           </Space>
         ]}
