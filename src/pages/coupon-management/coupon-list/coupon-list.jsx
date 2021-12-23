@@ -6,18 +6,21 @@ import { PageContainer } from '@ant-design/pro-layout';
 import XLSX from 'xlsx'
 import { couponList } from '@/services/coupon-management/coupon-list';
 import { couponDelSub,couponStatusSub } from '@/services/coupon-management/coupon-delsub';
-import { checkIssueTypeLog } from '@/services/coupon-management/coupon-checkIssue-typelog';
 import DeleteModal from '@/components/DeleteModal'
 import EndModel from './end-model'
 import TurnDownModel from './turn-down-model'
 import styles from './style.less'
 import { history,connect } from 'umi';
-import { useEffect } from 'react';
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 const { TabPane } = Tabs
 
 
 const Message = (props) => {
   const {type,dispatch}=props
+  const [turnId,setTurnId]=useState()
+  const [turnVisible, setTurnVisible] = useState(false);
+  const [visit, setVisit] = useState(false)
   const ref=useRef()
   const columns= [
     {
@@ -42,6 +45,9 @@ const Message = (props) => {
       title: '面值',
       dataIndex: 'couponAmountDisplay',
       hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{!isNaN(_)?Number(_).toFixed(2):_}</p>
+      }
     },
     {
       title: '发行方式',
@@ -49,14 +55,18 @@ const Message = (props) => {
       valueEnum: {
         1: '会员领取红包',
         2: '系统发放红包',
-        3: '每日红包'
+        3: '每日红包',
+        4: '邀请好友红包'
       },
     },
     {
       title: '发行总金额（元）',
       dataIndex: 'issueAmount',
-      valueType: 'text',
+      valueType:'text',
       hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{!isNaN(_)?Number(_).toFixed(2):_}</p>
+      }
     },
     {
       title: '发行总数量（张）',
@@ -94,7 +104,7 @@ const Message = (props) => {
         }else if(data.couponVerifyStatus==2){
           return <>
             <p>审核驳回</p>
-            <TurnDownModel id={data.id}/>
+            <a onClick={()=>{setTurnId(data.id);setTurnVisible(true)}}>驳回详情</a>
           </>
         }else if(data.couponVerifyStatus==3){
           return <p>审核中</p>
@@ -129,7 +139,7 @@ const Message = (props) => {
       valueType: 'option',
       width:200,
       render: (_, data) => [
-      <a key="a" onClick={()=>{ Examine(data.id) }}>
+      <a key="edit" onClick={()=>{ Examine(data.id) }}>
         {
           type==1?
           '编辑'
@@ -137,6 +147,7 @@ const Message = (props) => {
         }
       </a>,
       <DeleteModal
+        key='dele'
         record={data} 
         boxref={ref} 
         label1={'删除'}
@@ -145,7 +156,7 @@ const Message = (props) => {
         blok={type}
         title={'操作确认'}
       />,
-      <a key="a" onClick={()=>{ look(data.id)}}>
+      <a key="detail" onClick={()=>{ look(data.id)}}>
         {
           type==3||type==4?
           '查看'
@@ -153,6 +164,7 @@ const Message = (props) => {
         } 
       </a>,
        <DeleteModal
+        key='withdraw'
         record={data}
         label2={'撤回'}
         status={1}
@@ -162,8 +174,8 @@ const Message = (props) => {
         blok={type}
         title={'操作确认'}
       />,
-      <EndModel type={type} boxref={ref} data={data}/>,
-      <a key="a" onClick={()=>CodeLibrary(data.id)}>
+      <EndModel key='end' type={type} boxref={ref} data={data}/>,
+      <a key="code" onClick={()=>CodeLibrary(data.id)}>
         {
            type==4?
            '码库'
@@ -193,64 +205,15 @@ const Message = (props) => {
     history.push(`/coupon-management/coupon-list/coupon-codebase?id=`+id);
   }
 
-  //导出
-  const exportExcel = (searchConfig) => {
-    couponList({couponVerifyStatus:type}).then(res => {
-        const data = res.data.map(item => {
-          const { ...rest } = item;
-          return {
-            ...rest
-          }
-        });
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet([
-          {
-            couponName: '红包名称',
-            couponType: '红包类型',
-            couponAmountDisplay:'面值',
-            issueType:'发行方式',
-            issueAmount: '发行总金额（元）',
-            issueQuantity: '发行总数量（张）',
-            limitStartTime:'可领取时间',
-            activityTimeDisplay:'有效期',
-            couponVerifyStatus: '审核状态',
-            couponStatus: type==4?'红包状态':null,
-            createTime: '创建时间',
-          },
-          ...data
-        ], {
-          header:type==4? [
-            'couponName',
-            'couponType',
-            'couponAmountDisplay',
-            'issueType',
-            'issueAmount',
-            'issueQuantity',
-            'activityTimeDisplay',
-            'limitStartTime',
-            'couponVerifyStatus',
-            'couponStatus',
-            'createTime'
-          ]: [
-            'couponName',
-            'couponType',
-            'couponAmountDisplay',
-            'issueType',
-            'issueAmount',
-            'issueQuantity',
-            'activityTimeDisplay',
-            'limitStartTime',
-            'couponVerifyStatus',
-            'createTime'
-          ],
-          skipHeader: true
-        });
-        XLSX.utils.book_append_sheet(wb, ws, "file");
-        XLSX.writeFile(wb, `${+new Date()}.xlsx`)
-    })
+  const getFieldValue = (searchConfig) => {
+    const {...rest}=searchConfig.form.getFieldsValue()
+    return {
+      ...rest,
+    }
   }
 
 return(
+  <>
     <ProTable
       actionRef={ref}
       rowKey="id"
@@ -264,16 +227,28 @@ return(
         labelWidth: 100,
         optionRender: (searchConfig, formProps, dom) => [
           ...dom.reverse(),
-        <Button onClick={()=>{ref.current.reload()}} key="refresh">
+        <Button  onClick={()=>{ref.current.reload()}} key="refresh">
           刷新
         </Button>,
-        <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
-          导出数据
-        </Button>
+        <Export
+          key='export'
+          change={(e) => { setVisit(e) }}
+          type={'red-packet-list-export'}
+          conditions={getFieldValue(searchConfig)}
+        />,
+        <ExportHistory key='task' show={visit} setShow={setVisit} type='red-packet-list-export'/>,
         ],
       }}
       columns={columns}
     />
+    {
+      turnVisible&&<TurnDownModel 
+      turnVisible={turnVisible} 
+      setTurnVisible={setTurnVisible} 
+      id={turnId}
+    />
+    }
+  </>
   );
 };
 
@@ -281,7 +256,6 @@ const TableList= (props) =>{
   const { dispatch }=props
   const [visible, setVisible] = useState(false);
   const [seleType,setSeleType]=useState(1)
-  const [isCreate,setIsCreate]=useState()
   return (
       <PageContainer>
         <ModalForm
@@ -294,11 +268,6 @@ const TableList= (props) =>{
             className={styles.addCouponBtn}
             onClick={() =>{
               setVisible(true)
-              // checkIssueTypeLog({}).then(res=>{
-              //   if(res.code==0){
-              //     setIsCreate(res.data.isCreate)
-              //   }
-              // })
             }}
           >
             新建红包
@@ -333,6 +302,10 @@ const TableList= (props) =>{
               {
                 label: '每日红包',
                 value: 3,
+              },
+              {
+                label: '邀请好友红包',
+                value: 4,
               }
             ]}
           />

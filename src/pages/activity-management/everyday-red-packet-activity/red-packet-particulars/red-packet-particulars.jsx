@@ -30,7 +30,7 @@ export default () => {
         dataIndex: 'name',
         valueType: 'text',
         render:(text, record, _, action)=>[
-          <a onClick={()=>history.push('/activity-management/everyday-packet-rule?id='+record.couponEverydayId)}>{record.name}</a>
+          <a key='name' onClick={()=>history.push('/activity-management/everyday-red-packet-activity/everyday-packet-rule?id='+record.couponEverydayId)}>{record.name}</a>
         ]
       },
       {
@@ -126,8 +126,8 @@ export default () => {
         render: (_, data)=>{
           return <>
                   {
-                    data.orderGoods.map(ele=>(
-                      <div style={{display:'flex',alignItems:'center'}}>
+                    data.orderGoods.map((ele,index)=>(
+                    <div key={index} style={{display:'flex',alignItems:'center'}}>
                       <Image src={ele.imageUrl} alt="" width='80px' height='80px' />
                       <div style={{marginLeft:'10px'}}>
                         <h5>{ele.goodsName}</h5>
@@ -145,10 +145,10 @@ export default () => {
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,dateTimeRange2,...rest}=searchConfig.form.getFieldsValue()
       return {
-        lqStartTime1:moment(dateTimeRange&&dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
-        lqStartTime2:moment(dateTimeRange&&dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
-        useStartTime1:moment(dateTimeRange2&&dateTimeRange2[0]).format('YYYY-MM-DD HH:mm:ss'),
-        useStartTime2:moment(dateTimeRange2&&dateTimeRange2[1]).format('YYYY-MM-DD HH:mm:ss'),
+        lqStartTime1:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+        lqStartTime2:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+        useStartTime1:dateTimeRange2&&moment(dateTimeRange2[0]).format('YYYY-MM-DD HH:mm:ss'),
+        useStartTime2:dateTimeRange2&&moment(dateTimeRange2[1]).format('YYYY-MM-DD HH:mm:ss'),
         ...rest,
       }
     }
@@ -166,11 +166,12 @@ export default () => {
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
                <Export
+                key='export'
                 change={(e) => { setVisit(e) }}
                 type={'day-red-detail-export'}
                 conditions={getFieldValue(searchConfig)}
               />,
-              <ExportHistory show={visit} setShow={setVisit} type='day-red-detail-export'/>,
+              <ExportHistory key='task' show={visit} setShow={setVisit} type='day-red-detail-export'/>,
             ],
           }}
           columns={columns}

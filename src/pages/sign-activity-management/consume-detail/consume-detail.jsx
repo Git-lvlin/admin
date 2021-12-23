@@ -93,7 +93,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a onClick={()=>history.push('/sign-activity-management/user-detail?id='+record.memberId)}>查看此用户明细</a>
+            <a key='detail' onClick={()=>history.push('/sign-activity-management/user-detail?id='+record.memberId)}>查看此用户明细</a>
         ],
       }, 
     ];
@@ -135,11 +135,12 @@ export default () => {
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
                <Export
+               key='export'
                change={(e) => { setVisit(e) }}
                type={'red-packet-consume-detail-export'}
                conditions={getFieldValue(searchConfig)}
              />,
-             <ExportHistory show={visit} setShow={setVisit} type={'red-packet-consume-detail-export'} />,
+             <ExportHistory key='task' show={visit} setShow={setVisit} type={'red-packet-consume-detail-export'} />,
             ],
           }}
           columns={columns}

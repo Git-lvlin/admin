@@ -26,6 +26,13 @@ const formItemLayout = {
   }
 };
 
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+  </div>
+)
+
 export default (props) => {
   const [detailList,setDetailList]=useState()
   const [goosList,setGoosList]=useState()
@@ -55,6 +62,7 @@ export default (props) => {
           redeemEarlyDay:res.data.content?.redeemEarlyDay,
           maxPrizeNum:res.data.content?.maxPrizeNum,
           prizeNotice:res.data.content?.prizeNotice,
+          imgUrl:res.data.content?.imgUrl,
           dateRange: [ moment(res.data.startTime*1000).format('YYYY-MM-DD HH:mm:ss'), moment(res.data.endTime*1000).format('YYYY-MM-DD HH:mm:ss')],
           ...res.data
         })
@@ -190,7 +198,7 @@ export default (props) => {
                        detailList?.status==1?
                        <div  style={{marginLeft:'250px'}}>
                        {
-                         falg?<Button type="primary"  onClick={()=>{
+                         falg?<Button key='edit' type="primary"  onClick={()=>{
                            setFalg(false)
                           }}>
                          编辑
@@ -271,6 +279,22 @@ export default (props) => {
             }),
             ]}
         />
+        <Form.Item
+          label="活动封面"
+          name="imgUrl"
+          rules={[{ required: true, message: '请上传活动封面' }]}
+        >
+          <FromWrap
+            content={(value, onChange) => <Upload multiple value={value} disabled={id&&falg} onChange={onChange}   maxCount={1} accept="image/*"  proportion={{width: 670,height: 284,}} />}
+            right={(value) => {
+              return (
+                <dl>
+                  <dd>670 x 284</dd>
+                </dl>
+              )
+            }}
+          />
+        </Form.Item>
         <PeriodValidity id={id} falg={falg}/>
         <ProFormText
             width={120}
@@ -326,7 +350,7 @@ export default (props) => {
         
 
         {/* 奖品预告 */}
-        <Form.Item label="奖品预告（尺寸200x156）" className={styles.box}>
+        <Form.Item label={<div className={styles.box}><span className={styles.mark}>*</span>奖品预告（尺寸200x156）</div>}>
           {
             id&&falg?
             <List
@@ -390,7 +414,6 @@ export default (props) => {
             )}
           </Form.List>
           }
-         
           </Form.Item>
 
         {/* 活动规则 */}
