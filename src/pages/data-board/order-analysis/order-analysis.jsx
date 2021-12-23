@@ -423,6 +423,7 @@ const OrderAnalysis = () => {
       </div>
       <RegionalOrderAnalysis/>
       <ProTable
+        headerTitle="集约订单明细查询"
         rowKey="orderType"
         columns={detailColumns}
         options={false}
