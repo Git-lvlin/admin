@@ -4,7 +4,7 @@ import ProForm, {
   ModalForm,
   ProFormText,
 } from '@ant-design/pro-form';
-import { goodsSortTop } from '@/services/cms/member/member';
+import { goodsSortTopOld } from '@/services/cms/member/member';
 
 export default (props) => {
   const { detailData, setVisible, onClose, visible, callback } = props;
@@ -19,7 +19,7 @@ export default (props) => {
       sort: sort,
     }
     return new Promise((resolve, reject) => {
-      goodsSortTop(param).then((res) => {
+      goodsSortTopOld(param).then((res) => {
         if (res.code === 0) {
           callback();
           resolve(true);

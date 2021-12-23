@@ -35,11 +35,25 @@ export default (props) => {
   const [form] = Form.useForm();
 
   const waitTime = (values) => {
-    const { ...rest } = values
+    const { image, ...rest } = values
     const param = {
       ...rest,
+      image: image,
       type: type,
       version: 3,
+      bgImage: {
+        url: image,
+        width: 375,
+        height: 667,
+        relativeX: 34,
+        relativeY: 162,
+      },
+      compositeXY: {
+        relativeX: 223,
+        relativeY: 583,
+        qrcodeWidth: 65,
+        qrcodeHeight: 65,
+      },
     }
 
     return new Promise((resolve, reject) => {
@@ -102,7 +116,7 @@ export default (props) => {
         placeholder={'请输入在用户端的展示序号，升序展示，正整数'}
         rules={[{ required: true, message: '请输入在用户端的展示序号，升序展示，正整数' }]}
       />
-      <ProFormText
+      {/* <ProFormText
         name="amount"
         label="赠送新人红包金额"
         placeholder={'请输入新人红包金额，0-999整数'}
@@ -123,7 +137,7 @@ export default (props) => {
             },
           })
         ]}
-      />
+      /> */}
       <Form.Item
         label="上传海报"
         name="image"
@@ -140,19 +154,19 @@ export default (props) => {
             return <>
               <div style={{ display: 'flex' }}>
                 <div style={{ width: 105 }}>
-                  <Upload value={value} onChange={onChange} accept=".png, .jpg, .jpeg" dimension={{ width: 750, height: 1288 }} size={2 * 1024} />
+                  <Upload value={value} onChange={onChange} accept=".png, .jpg, .jpeg" proportion={{ width: 750, height: 1334 }} size={2 * 1024} />
                 </div>
                 <dl style={{ marginLeft: 10 }}>
                   <dd>图片要求</dd>
                   <dd>大小：不超过2MB</dd>
-                  <dd>尺寸：750px*1288px</dd>
+                  <dd>尺寸：750px*1334px</dd>
                   <dd>格式：png/jpg</dd>
                 </dl>
               </div>
               <div style={{ display: 'flex' }}>
                 <div>
                   <div>上传图片示例:</div>
-                  <img src="https://dev-yeahgo.oss-cn-shenzhen.aliyuncs.com/goods/base/rc-upload-1636707639268-3rc-upload-1636686989729-411%402x.png?imgHeight=1288&imgWidth=750" width={150} />
+                  <img src="http://dev-yeahgo.oss-cn-shenzhen.aliyuncs.com/goods/base/rc-upload-1639472285083-3-y_g-8172a6bc-c57a-40f1-acc2-302da71ff5e0.png?imgHeight=2001&imgWidth=1125" width={150} />
                 </div>
                 <ProFormDependency name={['image', 'amount']}>
                   {
@@ -163,26 +177,26 @@ export default (props) => {
                             <div>预览:</div>
                             <div style={{ position: 'relative' }}>
                               <div
-                                style={{
-                                  background: '#FFFFFF',
-                                  borderRadius: '0px 0px 16px 16px',
-                                  border: '1px solid #D04437',
-                                  position: 'absolute',
-                                  top: 0,
-                                  left: '50%',
-                                  transform: 'translateX(-50%) scale(0.2)',
-                                  width: 212,
-                                  height: 86,
-                                  display: 'flex',
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                  transformOrigin: 'center 0',
-                                }}
+                                // style={{
+                                //   background: '#FFFFFF',
+                                //   borderRadius: '0px 0px 16px 16px',
+                                //   border: '1px solid #D04437',
+                                //   position: 'absolute',
+                                //   top: 0,
+                                //   left: '50%',
+                                //   transform: 'translateX(-50%) scale(0.2)',
+                                //   width: 212,
+                                //   height: 86,
+                                //   display: 'flex',
+                                //   justifyContent: 'center',
+                                //   alignItems: 'center',
+                                //   transformOrigin: 'center 0',
+                                // }}
                               >
-                                <img width="146" src="https://dev-yeahgo.oss-cn-shenzhen.aliyuncs.com/admin/logo.png" />
+                                {/* <img width="146" src="https://dev-yeahgo.oss-cn-shenzhen.aliyuncs.com/admin/logo.png" /> */}
                               </div>
                               <img src={image} width={150} />
-                              <div style={{ width: 150, backgroundColor: '#fff', height: 42 }}>
+                              {/* <div style={{ width: 150, backgroundColor: '#fff', height: 42 }}>
                                 <div
                                   style={{
                                     width: 750,
@@ -203,7 +217,7 @@ export default (props) => {
                                     <div>新人红包</div>
                                   </div>}
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
                           </div>}
                         </>
