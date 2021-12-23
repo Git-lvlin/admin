@@ -342,11 +342,12 @@ export default (props) =>{
         submitter={{
           render: (props, doms) => {
             return [
-            <>
+            <div key='sub'>
             {
               edtil?null:
               <>
-              <DiscountsModel 
+              <DiscountsModel
+                key='discount' 
                 InterFace={configTest}
               />
               <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
@@ -356,8 +357,8 @@ export default (props) =>{
               </Button>
               </>
             }
-            </>,
-            <Button style={{marginLeft:'80px'}} type="default" key="submit" onClick={() => {
+            </div>,
+            <Button style={{marginLeft:'80px'}} type="default" key="goback" onClick={() => {
               history.push('/dc-management/data-board')
             }}>
               返回

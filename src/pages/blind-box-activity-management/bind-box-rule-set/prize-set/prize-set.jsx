@@ -93,6 +93,13 @@ export default (props) => {
       }
     },
     {
+      title: '已消耗件数',
+      dataIndex: 'consumeNum',
+      valueType: 'text',
+      editable:false,
+      hideInTable:!id||!falg
+    },
+    {
       title: '中奖概率%',
       dataIndex: 'probability',
       valueType: 'digit',
@@ -129,7 +136,7 @@ export default (props) => {
       valueType: 'text',
       render:(text, record, _, action)=>{
         return [
-          <a onClick={()=>delGoods(record.id)}>删除</a>
+          <a key='dele' onClick={()=>delGoods(record.id)}>删除</a>
       ]
       },
       editable:false,
@@ -183,7 +190,7 @@ export default (props) => {
           },
         }}
         toolBarRender={()=>[
-            <Button type="primary" onClick={()=>{
+            <Button key='add' type="primary" onClick={()=>{
               setVisible(true)
             }}>
                 <PlusOutlined />
@@ -191,7 +198,7 @@ export default (props) => {
             </Button>,
             <>
             {
-              visible&&<SelectProductModal 
+              visible&&<SelectProductModal
                 title={'添加秒约商品'}  
                 visible={visible} 
                 setVisible={setVisible}

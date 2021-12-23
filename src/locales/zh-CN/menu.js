@@ -33,6 +33,10 @@ export default {
   'menu.order-management.intensive-order.shopkeeper-order': '集约零售订单',
   'menu.order-management.intensive-order.supplier-order': '集约批发订单',
   'menu.order-management.intensive-order.supplier-order-purchase': '集约批发订单(采购)',
+  'menu.order-management.sample-order': '样品订单',
+  'menu.order-management.sample-order-purchase': '样品订单(采购)',
+  'menu.order-management.sample-order-detail': '订单详情',
+  'menu.order-management.sample-order-detail-purchase': '订单详情',
   'menu.order-management.after-sales-order': '售后订单',
   'menu.order-management.after-sales-order-details': '详请页',
   'menu.order-management.intensive-after-sale-orders': '集约售后订单',
@@ -119,6 +123,8 @@ export default {
   'menu.intensive-store-management.lvl-setup': '等级配置',
   'menu.intensive-store-management.lvl-commission': '等级佣金',
   'menu.intensive-store-management.shop-area': '可开店区域配置',
+  'menu.intensive-store-management.community-store-setting': '社区店设置',
+
 
   'menu.single-contract-activity-management': '单约活动管理',
   'menu.single-contract-activity-management.activity-list': '活动列表',
@@ -307,6 +313,10 @@ export default {
   'menu.activity-management': '活动管理',
   'menu.activity-management.everyday-red-packet-activity': '每日红包活动',
   'menu.activity-management.everyday-red-packet-activity.activity-list': '活动列表',
-  'menu.activity-management.everyday-packet-rule': '每日首单红包规则设置',
+  'menu.activity-management.everyday-red-packet-activity.everyday-packet-rule': '每日首单红包规则设置',
   'menu.activity-management.everyday-red-packet-activity.red-packet-particulars': '红包明细',
+  'menu.activity-management.share-red-packet-activity': '分享领红包活动',
+  'menu.activity-management.share-red-packet-activity.activity-list': '活动列表',
+  'menu.activity-management.share-red-packet-activity.share-packet-rule': '分享领红包活动规则设置',
+  'menu.activity-management.share-red-packet-activity.activity-data': '活动数据',
 };

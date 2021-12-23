@@ -3,9 +3,10 @@ import {FormattedMessage,connect} from 'umi';
 import styles from '../style.less'
 import { Space } from 'antd';
 import ProForm,{ProFormText,ProFormRadio,ProFormDependency} from '@ant-design/pro-form';
+import { amountTransform } from '@/utils/utils'
 
 const circulation=props=>{
-    const { DetailList,face1,face3,most,coupons,fullSubtract,id,pcType,type}=props
+    const { DetailList,face1,face3,most,id,pcType}=props
     const [summoney,setSummoney] = useState(0);
     const sumMoney=e=>{
         setSummoney(e.target.value)
@@ -55,14 +56,14 @@ const circulation=props=>{
                                 红包发行总金额为
                                 <span className={styles.compute }>
                                     {
-                                        pcType==1&&summoney*face1||
-                                        pcType==3&&summoney*face3||
-                                        pcType==2&&parseInt(summoney*most)||
-                                        pcType==2&&summoney*fullSubtract*coupons/100||
-                                        pcType==2&&summoney*parseInt(DetailList.data?.usefulAmount)*coupons/100||
-                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*parseInt(DetailList.data?.couponAmountDisplay)||
-                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*parseInt(DetailList.data?.maxFreeAmount)||
-                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*parseInt(DetailList.data?.freeDiscount)/100*parseInt(DetailList.data?.usefulAmount)
+                                        pcType==1&&summoney*amountTransform(Number(face1),'*')/100||
+                                        pcType==3&&summoney*amountTransform(Number(face3),'*')/100||
+                                        pcType==2&&summoney*amountTransform(Number(most),'*')/100||
+                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*amountTransform(Number(face1),'*')/100||
+                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*amountTransform(Number(face3),'*')/100||
+                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*amountTransform(Number(DetailList.data?.freeAmount),'*')/100||
+                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*amountTransform(Number(most),'*')/100||
+                                        (parseInt(id)==id)&&DetailList.data?.issueQuantity*amountTransform(Number(DetailList.data?.maxFreeAmount),'*')/100
                                     }
                                 </span>
                                 元
