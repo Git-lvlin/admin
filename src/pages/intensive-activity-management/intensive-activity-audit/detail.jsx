@@ -97,9 +97,9 @@ const Detail = () => {
       dataIndex: 'totalStockNum',
     },
     {
-      title: '集约价',
+      title: '集约价(元)',
       dataIndex: 'price',
-
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '实际盈亏(元)',
