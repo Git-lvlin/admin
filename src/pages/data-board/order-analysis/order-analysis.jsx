@@ -259,6 +259,13 @@ const OrderAnalysis = () => {
       }
     },
     {
+      title: '订单支付时间',
+      key: 'dateTimeRange',
+      dataIndex: 'orderPaytime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+    },
+    {
       title: '订单ID',
       dataIndex: 'orderID',
       align: 'center',
@@ -289,6 +296,12 @@ const OrderAnalysis = () => {
       hideInSearch:true
     },
     {
+      title: '商品SKU ID',
+      dataIndex: 'skuID',
+      align: 'center',
+      hideInTable:true
+    },
+    {
       title: '商品SKU',
       dataIndex: 'goodsSku',
       align: 'center',
@@ -298,7 +311,6 @@ const OrderAnalysis = () => {
       title: '商品名称',
       dataIndex: 'goodsName',
       align: 'center',
-      hideInSearch:true
     },
     {
       title: '社区店铺号',
@@ -307,10 +319,28 @@ const OrderAnalysis = () => {
       hideInSearch:true
     },
     {
+      title: '社区店ID',
+      dataIndex: 'storeID',
+      align: 'center',
+      hideInTable:true
+    },
+    {
+      title: '社区店名称',
+      dataIndex: 'storeName',
+      align: 'center',
+      hideInTable:true
+    },
+    {
       title: '社区店名称',
       dataIndex: 'communityStoreName',
       align: 'center',
       hideInSearch:true
+    },
+    {
+      title: '运营中心ID',
+      dataIndex: 'operationsID',
+      align: 'center',
+      hideInTable:true
     },
     {
       title: '订单运营中心ID',
@@ -319,33 +349,29 @@ const OrderAnalysis = () => {
       hideInSearch:true
     },
     {
-      title: '订单区域名称',
-      dataIndex: 'orderOreaName',
+      title: '运营中心名称',
+      dataIndex: 'operationsName',
       align: 'center',
-      hideInSearch:true
+      hideInTable:true
     },
     {
-      title: '订单区域对应的运营中心ID',
-      dataIndex: 'orderOreaOperationsID',
-      align: 'center',
-      hideInSearch:true
-    },
-    {
-      title: '订单区域对应的运营中心名称',
+      title: '订单运营中心名称',
       dataIndex: 'orderOperationsName',
       align: 'center',
       hideInSearch:true
     },
     {
-      title: '区域表对应的名称',
-      dataIndex: 'areaTableAreaName',
+      title: '订单区域名称',
+      dataIndex: 'orderOreaName',
       align: 'center',
       hideInSearch:true
-    },
+    }
   ]
   const getFieldValue = (searchConfig) => {
-    const {...rest}=searchConfig.form.getFieldsValue()
+    const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
     return {
+      startTime:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
@@ -406,6 +432,7 @@ const OrderAnalysis = () => {
           defaultCollapsed: false,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
              <Export
               change={(e) => { setVisit(e) }}
               type={'data-board-order-analyis-wholesale-deatail-export'}
