@@ -16,6 +16,7 @@ const BannerAdmin = () => {
   const [useType, setUseType] = useState(1);
   const [goodsClass, setGoodsClass] = useState(null);
   const [itemClass, setItemClass] = useState(null);
+  const [selected, setSelected] = useState(true);
 
   useEffect(() => {
     goodsClassList().then((res) => {
@@ -34,6 +35,10 @@ const BannerAdmin = () => {
   }
 
   const push = (selectedRows) => {
+    if (!selectedRows||!selectedRows.length) {
+      message.error('请先勾选')
+      return
+    }
     const param = {
       wsSkuIds: selectedRows.toString(),
       wscId: itemClass,
@@ -200,7 +205,14 @@ const BannerAdmin = () => {
           // 注释该行则默认不显示下拉选项
           // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
         }}
-        tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
+        alwaysShowAlert={true}
+        tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => {
+          if (selectedRowKeys.length) {
+            setSelected(false)
+          } else {
+            setSelected(true)
+          }
+          return(
           <Space size={24}>
             <span>
               已选 {selectedRowKeys.length} 项
@@ -229,7 +241,7 @@ const BannerAdmin = () => {
               0,
             )} 个`}</span> */}
           </Space>
-        )}
+        )}}
         dateFormatter="string"
         toolBarRender={(_) => {
           if (useType==1) {
@@ -247,6 +259,33 @@ const BannerAdmin = () => {
           }
         }}
       />
+      {selected&&<Space size={24} style={{position: 'absolute',top: 290, left: 60}}>
+        <span>
+          <span style={{marginRight: 20}}>添加到 </span>
+          <Select
+            placeholder="请选择运营类目"
+            options={goodsClass}
+            value={itemClass}
+            onChange={changeHandle}
+            allowClear
+          />
+          <a style={{ marginLeft: 8 }} onClick={() => {push()}}>
+            确定
+          </a>
+        </span>
+        {/* <span>{`待发布: ${selectedRows.reduce(
+          (pre, item) => {
+            item.state === 0
+            if (item.state === 0) {
+              return pre += 1
+            }
+            return pre
+          },0,)} 个`}</span>
+        <span>{`已发布: ${selectedRows.reduce(
+          (pre, item) => item.state && pre + 1,
+          0,
+        )} 个`}</span> */}
+      </Space>}
       {formVisible && <Edit
         visible={formVisible}
         setVisible={setFormVisible}
