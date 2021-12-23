@@ -107,6 +107,14 @@ export const offShelf = (params = {}, options = {}) => {
   });
 }
 
+export const changeStoreState = (params = {}, options = {}) => {
+  return request('/auth/goods/product/changeStoreState', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const listExport = (params = {}, options = {}) => {
   return request('/auth/goods/product/export', {
     method: 'POST',
@@ -117,6 +125,22 @@ export const listExport = (params = {}, options = {}) => {
 
 export const subAccountCheck = (params = {}, options = {}) => {
   return request('/auth/goods/product/subAccountCheck', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const preAccountCheck = (params = {}, options = {}) => {
+  return request('/auth/goods/product/preAccountCheck', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const preAccountShow = (params = {}, options = {}) => {
+  return request('/auth/goods/product/preAccountShow', {
     method: 'POST',
     data: params,
     ...options

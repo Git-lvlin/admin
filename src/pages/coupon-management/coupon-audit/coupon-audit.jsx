@@ -20,7 +20,7 @@ const Message = (props) => {
         placeholder: '请输入红包名称'
       },
       render:(text, record, _, action)=>[
-        <a onClick={()=>history.push('/coupon-management/coupon-list/list-details?id='+record.id)}>{record.couponName}</a>
+        <a key='likeName' onClick={()=>history.push('/coupon-management/coupon-list/list-details?id='+record.id)}>{record.couponName}</a>
     ],
     },
     {
@@ -36,8 +36,10 @@ const Message = (props) => {
     {
       title: '发行总金额（元）',
       dataIndex: 'issueAmount',
-      valueType: 'text',
       hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{!isNaN(_)?Number(_).toFixed(2):_}</p>
+      }
     },
     {
       title: '发行总数量（张）',
@@ -49,6 +51,9 @@ const Message = (props) => {
       title: '面额（元）',
       dataIndex: 'couponAmountDisplay',
       hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{!isNaN(_)?Number(_).toFixed(2):_}</p>
+      }
     },
     {
       title: '可领取时间',
@@ -86,7 +91,7 @@ const Message = (props) => {
       valueType: 'option',
       render: (_, data) => [
       <a
-        key="a"
+        key="audit"
         onClick={()=>{
           Examine(data.id)
         }}
@@ -98,7 +103,7 @@ const Message = (props) => {
         }
       </a>,
       <a
-        key="a"
+        key="detail"
         onClick={()=>Examine(data.id)}
       >
         {
@@ -130,7 +135,7 @@ const Message = (props) => {
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-          <Button onClick={()=>{ref.current.reload()}} key="refresh">
+          <Button  onClick={()=>{ref.current.reload()}} key="refresh">
             刷新
           </Button>
           ],

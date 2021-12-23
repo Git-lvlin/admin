@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { history } from 'umi'
@@ -8,24 +8,31 @@ import { amountTransform } from '@/utils/utils'
 import { operationCommissionPage } from '@/services/financial-management/operator-revenue-detail-management'
 import { Export, ExportHistory } from '@/pages/export-excel'
 import Detail from '../../common-popup/order-pay-detail-popup'
+import { orderTypes } from '@/services/financial-management/common'
 
 const OperatorRevenueManagement = () =>{
   const [visit, setVisit] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
-
-  const skipToDetail = data => {
-    history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=operator`)
-  }
+  const [orderType, setOrderType] = useState(null)
 
   const getFieldValue = (form) => {
     const { createTime, ...rest } = form.getFieldsValue()
     return {
-      begin: createTime?.[0]?.format('YYYY-MM-DD'),
-      end: createTime?.[1]?.format('YYYY-MM-DD'),
+      begin: createTime?.[0].format('YYYY-MM-DD'),
+      end: createTime?.[1].format('YYYY-MM-DD'),
       ...rest
     }
   }
+
+  useEffect(() => {
+    orderTypes({}).then(res=>{
+      setOrderType(res.data)
+    })
+    return () => {
+      setOrderType(null)
+    }
+  }, [])
 
   const columns = [
     {
@@ -60,14 +67,7 @@ const OperatorRevenueManagement = () =>{
       title: '订单类型',
       dataIndex: 'orderType',
       valueType: 'select',
-      valueEnum: {
-        'second': '秒约订单',
-        'dropShipping1688': '1688代发订单',
-        'commandSalesOrder': '集约批发订单',
-        'commandCollect': '集约销售订单',
-        'blindBox': '盲盒订单',
-        'signIn': '签到订单'
-      }
+      valueEnum: orderType
     },
     {
       title: '订单号',
@@ -108,7 +108,14 @@ const OperatorRevenueManagement = () =>{
       dataIndex: 'createTime',
       valueType: 'dateRange',
       hideInTable: true
+    },
+    {
+      title: '操作',
+      dataIndex: 'option',
+      valueType: 'option',
+      render: (_, records)=> <a target='_blank' href={`/financial-management/transaction-detail-management/royalty-details/${records?.orderNo}?type=operator`}>详情</a>
     }
+
   ]
   return (
     <PageContainer title={false}>
@@ -139,14 +146,14 @@ const OperatorRevenueManagement = () =>{
             <Export
               change={(e)=> {setVisit(e)}}
               key="export"
-              type="financial-trans-goodsAmount-page-export"
-              conditions={getFieldValue(form)}
+              type="financial-trans-agentCompanyCommission-page-export"
+              conditions={()=>getFieldValue(form)}
             />,
             <ExportHistory
               key="exportHistory"
               show={visit}
               setShow={setVisit}
-              type="financial-trans-goodsAmount-page-export"
+              type="financial-trans-agentCompanyCommission-page-export"
             />
           ],
         }}

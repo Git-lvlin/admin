@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useParams, history, useLocation } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@ant-design/pro-layout'
-import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { 
@@ -11,6 +10,7 @@ import {
   goodsAmountDetail, 
   operationCommissionDetail
 } from "@/services/financial-management/transaction-detail-management"
+import { orderTypes } from '@/services/financial-management/common'
 import './styles.less'
 import styles from './styles.less'
 
@@ -20,6 +20,16 @@ const TransactionDetails = () => {
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState({})
   const [payInfos, setPayInfos] = useState([])
+  const [orderType, setOrderType] = useState(null)
+
+  useEffect(() => {
+    orderTypes({}).then(res=>{
+      setOrderType(res.data)
+    })
+    return () => {
+      setOrderType(null)
+    }
+  }, [])
 
   const apiMethod = query?.type === 'bonus' ? commissionDetail:
   (query?.type === 'commission') ? platformCommissionDetail:
@@ -36,55 +46,85 @@ const TransactionDetails = () => {
       setLoading(false)
     })
     return ()=>{
-      setInfo({})
-      setPayInfos({})
+      setInfo(null)
+      setPayInfos([])
     }
   }, [id])
   const back = ()=> {
     history.goBack()
   }
-  const fashionableType =(data, amount, fee) =>{
+  const fashionableType =(data, amount, fee, couponAmount, realAmount) =>{
     switch(data){
       case 'goodsAmount':
         return (
           <>
             <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+             {
+              couponAmount !== '0'&&
+              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+            }
+            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'commission':
         return (
           <>
             <span className={styles.amount}>店主收益: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+             {
+              couponAmount !== '0'&&
+              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+            }
+            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'platformCommission':
         return (
           <>
             <span className={styles.amount}>平台收益: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+             {
+              couponAmount !== '0'&&
+              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+            }
+            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'suggestCommission':
         return (
           <>
             <span className={styles.amount}>上级推荐人收益: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+             {
+              couponAmount !== '0'&&
+              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+            }
+            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'agentCompanyCommission':
         return (
           <>
             <span className={styles.amount}>运营商收益: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+             {
+              couponAmount !== '0'&&
+              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+            }
+            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       case 'freight':
         return (
           <>
             <span className={styles.amount}>运费: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            {
+              couponAmount !== '0'&&
+              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+            }
+            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </>
         )
       default:
@@ -100,14 +140,7 @@ const TransactionDetails = () => {
       title: '订单类型',
       dataIndex: 'orderType',
       valueType: 'select',
-      valueEnum: {
-        'second': '秒约',
-        'commandSalesOrder': '集约批发订单',
-        'dropShipping1688': '1688代发订单',
-        'commandCollect': '集约销售订单',
-        'blindBox': '盲盒订单',
-        'signIn': '签到订单'
-      }
+      valueEnum: orderType
     },
     {
       title: '受益方会员类型',
@@ -115,7 +148,7 @@ const TransactionDetails = () => {
     },
     {
       title: (_) => _.dataIndex ? '店铺提成比例' : '',
-      dataIndex: info.storeCommissionRatio ? 'storeCommissionRatio' : '',
+      dataIndex: info?.storeCommissionRatio ? 'storeCommissionRatio' : '',
       render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
     },
     {
@@ -156,29 +189,37 @@ const TransactionDetails = () => {
     {
       title: '商品供货价',
       dataIndex: 'supplyPrice',
-      render: (_) => `￥${amountTransform(_, '/')}`
+      render: (_) => `¥${amountTransform(_, '/')}`
     },
     {
       title: '实际销售价',
       dataIndex: 'salePrice',
-      render: (_) => `￥${amountTransform(_, '/')}`
+      render: (_) => `¥${amountTransform(_, '/')}`
     },
     {
       title:(_)=> _.dataIndex === 'preCount' ? '预定数量' : '购买数量',
       dataIndex: info.orderType === 'commandSalesOrder' ? 'preCount' : 'paidCount'
     },
     {
-      title: (_) => _.dataIndex ? '实际采购数量' : '',
-      dataIndex: info.orderType === 'commandSalesOrder' ? 'paidCount' : ''
+      title: (_) => _.dataIndex === 'couponAmount' ? '优惠金额' : '实际采购数量',
+      dataIndex: info.orderType === 'commandSalesOrder' ? 'paidCount' : 'couponAmount',
+      render: (_)=> {
+        if(info.orderType !== 'commandSalesOrder') {
+          return `¥${amountTransform(Number(_), '/')}`
+        } else {
+          return _
+        }
+      }
     },
     {
       title: '运费',
       dataIndex: 'freight',
-      render: (_) => `￥${amountTransform(_, '/')}`
+      render: (_) => `¥${amountTransform(_, '/')}`
     },
     {
-      title: '',
-      dataIndex: ''
+      title: '应付金额',
+      dataIndex: 'amount',
+      render: (_) => `¥${amountTransform(_, '/')}`
     }
   ]
 
@@ -200,9 +241,9 @@ const TransactionDetails = () => {
       dataIndex: ''
     },
     {
-      title: '支付金额',
+      title: '实付金额',
       dataIndex: 'amount',
-      render: (_)=> `¥${amountTransform(_, '/')}`
+      render: (_, r)=> `¥${amountTransform((Number(_) - Number(r.couponAmount)), '/')}`
     },
     {
       title: '虚拟分账计算',
@@ -210,7 +251,7 @@ const TransactionDetails = () => {
       render: (_, data)=> {
         return data?.divideInfos.map(item=> (
           <div key={item?.type}>
-            {fashionableType(item?.type, item?.amount, item?.fee)}
+            {fashionableType(item?.type, item?.amount, item?.fee, item?.couponAmount, item?.realAmount)}
           </div>
         ))
       } 
@@ -285,9 +326,9 @@ const TransactionDetails = () => {
         bordered
         dataSource={info}
       />
-      <div style={{background: '#fff', padding: 20}}>
+      {/* <div style={{background: '#fff', padding: 20}}>
         <Button type='primary' onClick={()=>{back()}}>返回</Button>
-      </div>
+      </div> */}
     </PageContainer>
   )
 }

@@ -1,4 +1,4 @@
-export const tradeType = {
+export const tradeType =  {
   'goodsAmount': '货款',
   'goodsAmountReturn': '货款回退',
   'commission': '店主收益',

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Cascader } from 'antd';
 import { arrayToTree } from '@/utils/utils'
 
-const GcCascader = ({ value = [], onChange, fieldProps, ...rest }) => {
+const GcCascader = ({ value = [], onChange, fieldProps,areaData, ...rest }) => {
   const [data, setData] = useState([]);
 
   const changeHandle = (v, selectedOptions) => {
@@ -10,7 +10,7 @@ const GcCascader = ({ value = [], onChange, fieldProps, ...rest }) => {
   }
 
   useEffect(() => {
-    const arr = arrayToTree(window.yeahgo_area)
+    const arr = arrayToTree(areaData || window.yeahgo_area)
     let str = JSON.stringify(arr)
     str = str.replace(/name/g, 'label').replace(/id/g, 'value')
     setData(JSON.parse(str))

@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select,message,Table} from 'antd';
+import { Button,Tabs,Image,Form,Modal,Select,message,Table,Switch} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { productPage,productUpdateStatus,productDelete,productEdit,productAdd } from '@/services/sign-activity-management/sign-red-packet-product';
@@ -80,17 +80,11 @@ export default () => {
       render:(_,data) => {
         if(!data.deductionDesc){
           return <>
-            <ProFormSwitch disabled={!data.deductionDesc}/>
+            <Switch disabled={!data.deductionDesc}/>
             <p style={{fontSize:'10px',color:'#ccc'}}>请设置优惠</p>
           </>
         }
-        return <ProFormSwitch disabled={!data.deductionDesc}  name="Switch"
-          fieldProps={{
-            checked:data.status?true:false,
-            onChange:(bol)=>{onFF(bol,data)},
-          }
-        }
-        />
+        return <Switch disabled={!data.deductionDesc}  name="Switch" checked={data.status?true:false} onChange={(bol)=>{onFF(bol,data)}}/>
     },
     },
     {
@@ -98,11 +92,12 @@ export default () => {
       key: 'option',
       valueType: 'option',
       render: (_, data) => [
-          <a onClick={() => {editPop(data)}}>排序</a>,
+          <a key='sort' onClick={() => {editPop(data)}}>排序</a>,
           <DiscountsModel 
             data={data}
             InterFace={productEdit}
             boxref={ref}
+            key='discounts'
           />,
           <DeleteModal 
             boxref={ref} 
@@ -110,6 +105,7 @@ export default () => {
             InterFace={productDelete}
             id={data.id} 
             title={'操作确认'}
+            key='delete'
         />
       ],
     },
@@ -156,7 +152,7 @@ export default () => {
           })
         }}
         toolBarRender={()=>[
-            <Button  onClick={()=>{
+            <Button key='off'  onClick={()=>{
               productUpdateStatus({ids:selectedRowKeys,status:false}).then(res=>{
                 if(res.code==0){
                   setSelectedRowKeys([])
@@ -167,7 +163,7 @@ export default () => {
             }} type="primary">
                 关闭选中商品
             </Button>, 
-            <Button  onClick={()=>{
+            <Button key='on'  onClick={()=>{
               productUpdateStatus({ids:selectedRowKeys,status:true}).then(res=>{
                 if(res.code==0){
                   setSelectedRowKeys([])
@@ -178,11 +174,12 @@ export default () => {
             }} type="primary">
                 开启选中商品
             </Button>,
-             <Button type="primary" onClick={()=>setVisible(true)}>
+             <Button key='add' type="primary" onClick={()=>setVisible(true)}>
                 <PlusOutlined />
                 添加秒约商品
             </Button>,
             <SelectProductModal 
+              key='addgoos'
               title={'添加秒约商品'}  
               visible={visible} 
               setVisible={setVisible} 

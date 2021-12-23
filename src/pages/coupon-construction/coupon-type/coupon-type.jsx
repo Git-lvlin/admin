@@ -5,8 +5,8 @@ import Circulation from '../circulation/circulation'
 import ProForm, { ProFormText, ProFormSelect,ProFormRadio,ProFormDependency } from '@ant-design/pro-form';
 
 const couponType = (props) => {
-    let { id,Discounts,type } = props
-    let { DetailList } = props
+    let { id,type,DetailList } = props
+    const DetaiIssueType=DetailList.data?.issueType
     const [flag, setFlag] = useState()
     const [discounts, setDiscounts] = useState('');
     const [coupons, setCoupons] = useState('');
@@ -15,7 +15,6 @@ const couponType = (props) => {
     const [face1,setFace1]=useState()
     const [face3,setFace3]=useState()
     const [most,setMost]=useState()
-    const [fullSubtract,setFullSubtract]=useState()
     const onDiscounts = e => {
         setDiscounts(e.target.value)
         setFace1(e.target.value)
@@ -35,6 +34,15 @@ const couponType = (props) => {
         if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
             await reject('只能输入整数')
         } else {
+            await resolve()
+        }
+        })
+    }
+    const checkConfirm2=(rule, value, callback)=>{
+        return new Promise(async (resolve, reject) => {
+            if(value&&!/^[0-9]+(.[0-9]{0,2})?$/.test(value)){
+                await reject('只能输入数字，最多输入两位小数点')
+            } else {
             await resolve()
         }
         })
@@ -79,24 +87,30 @@ const couponType = (props) => {
                 fieldProps={{
                   onChange: (e) => setPosition(e.target.value),
                 }}
-                options={type==3||DetailList.data?.issueType == 3 ?options2:options}
+                options={type==3||(parseInt(id) == id)&&DetaiIssueType == 3||type==4||(parseInt(id) == id)&&DetaiIssueType == 4 ?options2:options}
             />
             <ProFormDependency name={['couponType']}>
                 {({ couponType }) => { 
                 if(!couponType) return null
                 if(couponType==1){
                     return  <div className={styles.unfold}>
-                                <ProForm.Group>
-                                <span>使用门槛: 活动商品满</span>
-                                <ProFormText
-                                    width={100}
-                                    name="usefulAmount"
-                                    rules={[
-                                        {validator: checkConfirm}
-                                    ]}
-                                />
-                                <span>元 （如果设置为0，则无使用门槛)</span>
-                                </ProForm.Group>
+                                {
+                                    type==4||(parseInt(id) == id)&&DetaiIssueType == 4?
+                                    <span>使用门槛: 无使用门槛</span>
+                                    :
+                                    <ProForm.Group>
+                                    <span>使用门槛: 活动商品满</span>
+                                    <ProFormText
+                                        width={100}
+                                        name="usefulAmount"
+                                        rules={[
+                                            {validator: checkConfirm}
+                                        ]}
+                                    />
+                                    <span>元 （如果设置为0，则无使用门槛)</span>
+                                    </ProForm.Group>
+                                }
+
                                 <ProForm.Group>
                                     <span>优惠内容 : 减免</span>
                                     <ProFormText 
@@ -106,7 +120,7 @@ const couponType = (props) => {
                                             }}
                                         width={100}
                                         rules={[
-                                            {validator: checkConfirm}
+                                            {validator: checkConfirm2}
                                         ]} 
                                     />
                                     <span>元</span>
@@ -127,7 +141,6 @@ const couponType = (props) => {
                                 <ProFormText
                                     width={100}
                                     name={flag == 2 ? 'usefulNum' : 'usefulAmount'}
-                                    fieldProps={{ onChange: (val) => setFullSubtract(val.target.value) }}
                                     rules={[
                                         {validator: checkConfirm}
                                     ]} 
@@ -168,7 +181,7 @@ const couponType = (props) => {
                                     width={100}
                                     name="maxFreeAmount"
                                     rules={[
-                                        {validator: checkConfirm}
+                                        {validator: checkConfirm2}
                                     ]}
                                     fieldProps={{
                                         onChange: (e) =>setMost(e.target.value)
@@ -208,7 +221,7 @@ const couponType = (props) => {
                                         }}
                                     width={100}
                                     rules={[
-                                        {validator: checkConfirm}
+                                        {validator: checkConfirm2}
                                     ]} 
                                 />
                                 <span>元</span>
@@ -226,7 +239,7 @@ const couponType = (props) => {
             </ProFormDependency>
             {/* 发行量 */}
             {
-            type == 2 || DetailList.data?.issueType == 2 && id?
+            type == 2 || DetaiIssueType == 2 && id?
                 <ProFormRadio.Group
                     name="issueQuantity"
                     label='发行量' 
@@ -243,10 +256,7 @@ const couponType = (props) => {
                     face1={face1} 
                     face3={face3} 
                     most={most} 
-                    coupons={coupons} 
-                    fullSubtract={fullSubtract} 
                     pcType={position}
-                    type={type}
                 />
             }
         </>

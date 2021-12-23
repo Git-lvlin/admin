@@ -1,15 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
+import { history } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
 import { refundPage } from '@/services/financial-management/transaction-detail-management'
 import Detail from './detail-popup'
+import { orderTypes } from '@/services/financial-management/common'
 
 // after sales order detail
 const AfterSalesOrderDetails = () =>{
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState(null)
+  const [orderType, setOrderType] = useState(null)
+
+  const skipToDetails = data => {
+    history.push(`/financial-management/transaction-detail-management/after-sales-order-details/detail/${data}`)
+  }
+
+  useEffect(() => {
+    orderTypes({}).then(res=> {
+      setOrderType(res.data)
+    })
+    return () => {
+      setOrderType(null)
+    }
+  }, [])
 
   const columns = [
     {
@@ -72,14 +88,7 @@ const AfterSalesOrderDetails = () =>{
       title: '订单类型',
       dataIndex: 'orderType',
       valueType: 'select',
-      valueEnum: {
-        'second': '秒约订单',
-        'dropShipping1688': '1688代发订单',
-        'commandSalesOrder': '集约批发订单',
-        'commandCollect': '集约销售订单',
-        'blindBox': '盲盒订单',
-        'signIn': '签到订单'
-      }
+      valueEnum: orderType
     },
     {
       title: '关联订单号',
@@ -110,6 +119,13 @@ const AfterSalesOrderDetails = () =>{
       title: '创建时间', 
       dataIndex: 'createTime',
       hideInSearch: true
+    },
+    {
+      title: '操作',
+      dataIndex: 'optoion',
+      valueType: 'option',
+      fixed: 'right',
+      render: (_, records)=> <a onClick={()=>{skipToDetails(records?.id)}}>详情</a>
     }
   ]
   return (

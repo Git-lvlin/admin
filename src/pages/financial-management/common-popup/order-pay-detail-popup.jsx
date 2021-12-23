@@ -8,6 +8,7 @@ import { orderPageDetail } from "@/services/financial-management/transaction-det
 import { createExportTask, findById } from "@/services/export-excel/export-template"
 import styles from './styles.less'
 import './styles.less'
+import { orderTypes } from '@/services/financial-management/common'
 
 const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
   const [loading, setLoading] = useState(false)
@@ -19,7 +20,17 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
   const [taskId, setTaskId] = useState(null)
   const [process, setProcess] = useState(0)
   const timer = useRef()
+  const [orderType, setOrderType] = useState(null)
 
+  useEffect(() => {
+    orderTypes({}).then(res => {
+      setOrderType(res.data)
+    })
+    return () => {
+      setOrderType(null)
+    }
+  }, [])
+  
   useEffect(()=>{
     setLoading(true)
     orderPageDetail({orderNo: id}).then(res=> {
@@ -181,14 +192,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
       title: '订单类型',
       dataIndex: 'orderType',
       valueType: 'select',
-      valueEnum: {
-        'second': '秒约',
-        'commandSalesOrder': '集约批发订单',
-        'dropShipping1688': '1688代发订单',
-        'commandCollect': '集约销售订单',
-        'blindBox': '盲盒订单',
-        'signIn': '签到订单'
-      }
+      valueEnum: orderType
     },
     {
       title: '买家会员类型',

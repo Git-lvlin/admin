@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
-import { history } from 'umi'
 import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { goodsAmountPage } from '@/services/financial-management/transaction-detail-management'
+import { orderTypes } from '@/services/financial-management/common'
 import { Export, ExportHistory } from '@/pages/export-excel'
 import Detail from '../../common-popup/order-pay-detail-popup'
 
@@ -13,10 +13,7 @@ const LoanDetailManagement = () =>{
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
   const [visit, setVisit] = useState(false)
-
-  const skipToDetail = data => {
-    history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=loan`)
-  }
+  const [orderType, setOrderType] = useState(null)
 
   const getFieldValue = (form) => {
     const { createTime, ...rest } = form.getFieldsValue()
@@ -26,6 +23,15 @@ const LoanDetailManagement = () =>{
       ...rest
     }
   }
+
+  useEffect(() => {
+    orderTypes({}).then(res=>{
+      setOrderType(res.data)
+    })
+    return () => {
+      setOrderType(null)
+    }
+  }, [])
 
   const columns = [
     {
@@ -61,14 +67,7 @@ const LoanDetailManagement = () =>{
       title: '订单类型',
       dataIndex: 'orderType',
       valueType: 'select',
-      valueEnum: {
-        'second': '秒约订单',
-        'dropShipping1688': '1688代发订单',
-        'commandSalesOrder': '集约批发订单',
-        'commandCollect': '集约销售订单',
-        'blindBox': '盲盒订单',
-        'signIn': '签到订单'
-      }
+      valueEnum: orderType
     },
     {
       title: '订单号',
@@ -114,8 +113,9 @@ const LoanDetailManagement = () =>{
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, records)=> <a onClick={()=>{skipToDetail(records?.orderNo)}}>详情</a>
+      render: (_, records)=> <a target='_blank' href={`/financial-management/transaction-detail-management/royalty-details/${records?.orderNo}?type=loan`}>详情</a>
     }
+
   ]
   return (
     <PageContainer title={false}>

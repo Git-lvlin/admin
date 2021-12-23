@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 // import { history } from 'umi'
@@ -6,11 +6,22 @@ import ProTable from '@ant-design/pro-table'
 import { amountTransform } from '@/utils/utils'
 import { orderPage } from '@/services/financial-management/transaction-detail-management'
 import Detail from '../../common-popup/order-pay-detail-popup'
+import { orderTypes } from '@/services/financial-management/common'
 
 // Order payment detail
 const OrderPayDetailManagement = () =>{
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
+  const [orderType, setOrderType] = useState(null)
+
+  useEffect(() => {
+    orderTypes({}).then(res => {
+      setOrderType(res.data)
+    })
+    return () => {
+      setOrderType(null)
+    }
+  }, [])
 
   // const skipToDetail = data=> {
   //   history.push(`/financial-management/transaction-detail-management/order-pay-detail-management/detail/${data}`)
@@ -63,14 +74,7 @@ const OrderPayDetailManagement = () =>{
     {
       title: '订单类型',
       dataIndex: 'orderType',
-      valueEnum: {
-        'second': '秒约订单',
-        'dropShipping1688': '1688代发订单',
-        'commandSalesOrder': '集约批发订单',
-        'commandCollect': '集约销售订单',
-        'blindBox': '盲盒订单',
-        'signIn': '签到订单'
-      }
+      valueEnum: orderType
     },
     {
       title: '订单号',
@@ -107,8 +111,16 @@ const OrderPayDetailManagement = () =>{
       title: '支付时间',
       dataIndex: 'payTime',
       hideInSearch: true,
-      
+    },
+    {
+      title: '操作',
+      dataIndex: 'option',
+      width: 80,
+      valueType: 'option',
+      fixed: 'right',
+      render: (_, records)=> <a target='_blank' href={`/financial-management/transaction-detail-management/order-pay-detail-management/detail/${records?.orderNo}`}>详情</a>
     }
+
   ]
   return (
     <PageContainer title={false}>

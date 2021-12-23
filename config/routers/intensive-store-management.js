@@ -84,5 +84,10 @@ export default {
       path: '/intensive-store-management/shop-area',
       component: './intensive-store-management/shop-area',
     },
+    {
+      name: 'community-store-setting',
+      path: '/intensive-store-management/community-store-setting',
+      component: './intensive-store-management/community-store-setting',
+    }
   ]
 }
