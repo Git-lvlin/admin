@@ -96,7 +96,7 @@ const IntensiveActivityCreate = () => {
         const wholesaleInfo = res.data.wholesale
         formRef.current.setFieldsValue({
           ...wholesaleInfo,
-          wholesaleTime: [wholesaleInfo.wholesaleStartTime, wholesaleInfo.wholesaleEndTime],
+          // wholesaleStartTime: wholesaleInfo.wholesaleStartTime,
           area: getAreas(res.data.allowArea)
         })
       }
@@ -153,8 +153,8 @@ const IntensiveActivityCreate = () => {
         allowArea: getSubmitAreaData(area),
         storeLevel: 'ALL',
         memberLevel: 'ALL',
-        wholesaleStartTime: wholesaleTime[0],
-        wholesaleEndTime: wholesaleTime[1],
+        // wholesaleStartTime: wholesaleTime[0],
+        // wholesaleEndTime: wholesaleTime[1],
         recoverPayTimeout: 0,
         canRecoverPayTimes: 0,
         wholesaleFlowType: selectItem[0].wholesaleFlowType,
@@ -277,11 +277,11 @@ const IntensiveActivityCreate = () => {
                 }
               }
 
-              const { endTimeAdvancePayment, wholesaleTime } = values;
-              if (endTimeAdvancePayment <= wholesaleTime[0] || endTimeAdvancePayment >= wholesaleTime[1]) {
-                message.error('店主采购单下单截止时间必须大于活动开始时间且小于截至时间');
-                return false;
-              }
+              // const { endTimeAdvancePayment, wholesaleStartTime } = values;
+              // if (endTimeAdvancePayment <= wholesaleStartTime) {
+              //   message.error('店主采购单下单截止时间必须大于活动开始时间且小于截至时间');
+              //   return false;
+              // }
               await submit(values);
               return true;
             }}
@@ -298,16 +298,16 @@ const IntensiveActivityCreate = () => {
               <EditTable onSelect={setSelectItem} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} />
             }
             <ProFormText name="name" label="活动名称" width="lg" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
-            <ProFormDateTimeRangePicker
-              name="wholesaleTime"
-              label="活动时间"
+            <ProFormDateTimePicker
+              name="wholesaleStartTime"
+              label="活动开始时间"
               width="lg"
-              rules={[{ required: true, message: '请选择活动时间' }]}
+              rules={[{ required: true, message: '请选择活动开始时间' }]}
               fieldProps={{
                 // disabledDate: (currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() },
                 // disabledTime: disabledRangeTime,
                 showTime: {
-                  defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('00:59:59', 'HH:mm:ss')]
+                  defaultValue: moment('00:00:00', 'HH:mm:ss')
                 }
               }}
             />
