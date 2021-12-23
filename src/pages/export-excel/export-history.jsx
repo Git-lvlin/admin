@@ -8,12 +8,13 @@ import {
   Spin, 
   Empty,
   Progress,
-  Drawer
+  Drawer,
+  message
 } from 'antd'
 import ProForm, { ProFormDateTimeRangePicker } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 
-import { findByWays } from '@/services/export-excel/export-template'
+import { findByWays,cancelTask } from '@/services/export-excel/export-template'
 import moment from 'moment'
 import styles from './styles.less'
 
@@ -97,20 +98,27 @@ const ExportHistory = ({ show, setShow, type }) => {
     } else if(state === 3) {
       return (
         <Tooltip key="history" title={desc}>
-          <div className={styles.fail}>
+          <div className={styles.fail} onMouseEnter={()=>clearInterval(timer.current)}>
             导出失败
           </div>
         </Tooltip>
       )
     } else if(state === 4) {
       return (
-        <div>导出取消</div>
+        <div className={styles.fail}>导出取消</div>
       )
     } else {
       return ''
     }
   }
-
+const cancelTaskCanbak=(id)=>{
+  cancelTask({id:id}).then(res=>{
+    if(res.code==0){
+      message.success('操作成功')
+      getData()
+    }
+  })
+}
   return (
     <>
       <Tooltip key="history" title="查看历史导出任务">
@@ -200,10 +208,15 @@ const ExportHistory = ({ show, setShow, type }) => {
                   <div className={styles.exportTime}>导出时间：{item.createTime}</div>
                   <div className={styles.exportName}>导出人：{item.createName}</div>
                   {
-                    item.process === 100 ?
+                    item?.state===2?
                     <a href={item.fileUrl}>下载</a> :
                     <div className={styles.progress}>
-                      <Progress percent={item.process} size="small" />
+                      {
+                        item?.state===1&&<a className={styles.cancel_task} onClick={()=>{cancelTaskCanbak(item.id)}}>取消任务</a>
+                      }
+                      {
+                        item.process!==100&&<Progress percent={item.process} size="small" />
+                      }
                     </div>
                   }
                 </div>

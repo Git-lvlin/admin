@@ -5,6 +5,7 @@ import { amountTransform } from '@/utils/utils'
 import ProDescriptions from '@ant-design/pro-descriptions';
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
 import styles from './detail.less';
+import { history } from 'umi'
 
 const { Step } = Steps;
 
@@ -217,7 +218,17 @@ const Detail = (props) => {
                         </div>
                         <div className={styles.box}>
                           <div>小计</div>
-                          <div>{amountTransform(item.totalAmount, '/')}元</div>
+                          <div>
+                            {amountTransform(item.totalAmount, '/')}元  
+                            {item.afterSalesStatus!==0&&
+                            <a 
+                            href={`/order-management/after-sales-order/detail/${item.afterSalesApplyId}`}
+                            target="_blank" 
+                            className={styles.after_sale}>
+                              {item.afterSalesStatusStr}
+                            </a>
+                            }</div>
+
                         </div>
                       </div>
                     </div>
