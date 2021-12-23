@@ -152,7 +152,15 @@ const ProductData = () => {
     {
       title: '商品编码',
       dataIndex: 'skuId',
-      align: 'center'
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '商品编码',
+      dataIndex: 'skuId',
+      align: 'center',
+      valueType: 'digit',
+      hideInTable: true
     },
     {
       title: '商品名称',
