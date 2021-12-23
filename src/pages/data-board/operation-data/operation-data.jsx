@@ -21,6 +21,7 @@ const OperationData = () => {
   const [value, setValue] = useState(1)
   const [charData, setCharData] = useState([])
   const [visit, setVisit] = useState(false)
+  const [unit, setUnit] = useState('单位：单')
   const form = useRef()
 
   const getFieldValue = () => {
@@ -57,6 +58,11 @@ const OperationData = () => {
   
   const onChange = e => {
     setValue(e.target.value)
+    if(e.target.value === 1) {
+      setUnit('单位：单')
+    } else {
+      setUnit('单位：元')
+    }
   }
 
   const handleRangePickerChange = (value) => {
@@ -97,8 +103,8 @@ const OperationData = () => {
     {
       title: ()=>(
         <Space>
-          <span>已绑社区店数量</span>
-          <Tooltip title='已和运营中心进行绑定且社区店已通过审核的店主总数量'>
+          <span>绑定社区店数量</span>
+          <Tooltip title='指定时间范围内和运营中心进行绑定且通过审核的店主数量'>
             <QuestionCircleOutlined/>
           </Tooltip>
         </Space>
@@ -111,7 +117,7 @@ const OperationData = () => {
       title: ()=>(
         <Space>
           <span>运营中心集约率</span>
-          <Tooltip title='下属社区店有下单的店主数/下属社区店总数量'>
+          <Tooltip title='有下单的店主数/店主总数量'>
             <QuestionCircleOutlined/>
           </Tooltip>
         </Space>
@@ -172,6 +178,9 @@ const OperationData = () => {
           onChange={onChange}
           value={value}
           size="large"
+          style={{
+            marginBottom: 20
+          }}
         >
           <Radio value={1}>
             <Space>
@@ -190,7 +199,7 @@ const OperationData = () => {
             </Space>
           </Radio>
         </Radio.Group>
-        <BarChart data={charData} />
+        <BarChart data={charData} unit={unit}/>
       </div>
       <OperationDataOverview/>
       <ProTable

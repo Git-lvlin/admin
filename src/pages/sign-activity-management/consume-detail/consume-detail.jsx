@@ -93,7 +93,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a onClick={()=>history.push('/sign-activity-management/user-detail?id='+record.memberId)}>查看此用户明细</a>
+            <a key='detail' onClick={()=>history.push('/sign-activity-management/user-detail?id='+record.memberId)}>查看此用户明细</a>
         ],
       }, 
     ];
@@ -105,8 +105,8 @@ export default () => {
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
       return {
-        beginTime:moment(dateTimeRange&&dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
-        endTime:moment(dateTimeRange&&dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+        beginTime:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+        endTime:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
         ...rest,
       }
     }
@@ -135,11 +135,12 @@ export default () => {
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
                <Export
+               key='export'
                change={(e) => { setVisit(e) }}
                type={'red-packet-consume-detail-export'}
                conditions={getFieldValue(searchConfig)}
              />,
-             <ExportHistory show={visit} setShow={setVisit} type={'red-packet-consume-detail-export'} />,
+             <ExportHistory key='task' show={visit} setShow={setVisit} type={'red-packet-consume-detail-export'} />,
             ],
           }}
           columns={columns}

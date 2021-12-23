@@ -45,7 +45,7 @@ const columns= [
       title:'操作',
       valueType:'text',
       render:(text, record, _, action)=>[
-        <Button onClick={()=>Termination(record)}>编辑</Button>,
+        <Button key='edit' onClick={()=>Termination(record)}>编辑</Button>,
        
       ],
       hideInSearch:true
@@ -54,7 +54,7 @@ const columns= [
   return (
       <PageContainer>
           <ProTable
-            rowKey="userId"
+            rowKey="id"
             options={false}
             params={{
               page:0,
@@ -69,7 +69,7 @@ const columns= [
               <Button type="primary" onClick={addPosition} key="refresh">
                 添加
               </Button>,
-              <AdvertisingModal title={'添加广告位'} visible={visible2} setVisible={setVisible2}  boxref={ref}/>
+              <AdvertisingModal key='add' title={'添加广告位'} visible={visible2} setVisible={setVisible2}  boxref={ref}/>
               ],
             }}
             toolBarRender={false}

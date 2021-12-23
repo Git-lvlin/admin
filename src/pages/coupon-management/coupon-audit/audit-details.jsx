@@ -153,14 +153,17 @@ export default props => {
             <Form.Item
               label="红包面值"
             >
-              {detailData.couponAmountDisplay}
+              {Number(detailData.couponAmountDisplay).toFixed(2)}
             </Form.Item>
 
-            <Form.Item
-              label="最高优惠"
-            >
-              {detailData.maxFreeAmount}元
-            </Form.Item>
+            {
+              detailData.issueType != 4&&            
+              <Form.Item
+                label="最高优惠"
+              >
+                {detailData.maxFreeAmount}元
+              </Form.Item>
+            }
             
             <Form.Item
               label="发行方式"
@@ -170,7 +173,8 @@ export default props => {
                   '会员领取红包'
                   :detailData.issueType == 2 ? 
                   '系统发放红包'
-                  :'每日红包'
+                  :detailData.issueType == 3 ? 
+                  '每日红包':'邀请好友红包'
               }
             </Form.Item>
             <Form.Item
@@ -178,11 +182,14 @@ export default props => {
             >
               {detailData.issueQuantity}
             </Form.Item>
-            <Form.Item
-              label="每人限领"
-            >
-              {detailData.limitQuantity}
-            </Form.Item>
+            {
+              detailData.issueType != 4&&
+              <Form.Item
+                label="每人限领"
+              >
+                {detailData.limitQuantity}
+              </Form.Item>
+            }
             {
               detailData.limitStartTime&&<Form.Item
                 label="可领取时间"
@@ -224,7 +231,7 @@ export default props => {
               detailData.memberType == 2 ?
                 <ProTable
                   actionRef={ref}
-                  rowKey="id"
+                  rowKey="name"
                   options={false}
                   expandable={{ expandedRowRender: (_) => <SubTable name={_.name} /> }}
                   dataSource={[detailData.crowdList]}
@@ -265,7 +272,7 @@ export default props => {
                 <p className={styles.mark}>已选中<span>{detailData.spuInfo?.length}个</span>指定商品</p>
                 <ProTable
                   actionRef={ref}
-                  rowKey="id"
+                  rowKey="spuId"
                   options={false}
                   dataSource={detailData.spuInfo}
                   search={false}
@@ -287,11 +294,11 @@ export default props => {
             <Form.Item
               label="规则说明"
             >
-               {
-                detailData.couponRule?.split('\n').map(ele=>(
-                  <span>{ele}</span>
-                ))
-               }
+              <pre className={styles.line_feed}>
+                {
+                  detailData?.couponRule
+                }
+              </pre>
             </Form.Item>
           </div>
 
@@ -301,7 +308,7 @@ export default props => {
                   <h3 className={styles.head}>审核信息</h3>
                   <ProTable
                     actionRef={ref}
-                    rowKey="id"
+                    rowKey="createTime"
                     options={false}
                     dataSource={detailData.verifyInfo}
                     search={false}

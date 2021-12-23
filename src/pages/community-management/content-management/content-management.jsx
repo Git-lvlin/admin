@@ -19,7 +19,7 @@ export default props => {
             title: '帖子ID',
             dataIndex: 'id',
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/invitation-detail?id='+record.id)}>{record.id}</a>
+                <a key='id' onClick={()=>history.push('/community-management/invitation-detail?id='+record.id)}>{record.id}</a>
             ],
             hideInSearch:true,
             ellipsis:true
@@ -105,7 +105,7 @@ export default props => {
             valueType: 'text',
             hideInSearch: true,
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/content-management/dynamic-list-likes?id='+record.id)}>{record.likesNum}</a>
+                <a key='likesnum' onClick={()=>history.push('/community-management/content-management/dynamic-list-likes?id='+record.id)}>{record.likesNum}</a>
             ],
         },
         {
@@ -114,7 +114,7 @@ export default props => {
             valueType: 'text',
             hideInSearch: true,
             render:(text, record, _, action)=>[
-                <a onClick={()=>history.push('/community-management/content-management/dynamic-comment-reply-list?id='+record.id)}>{record.commentNum}</a>
+                <a key='comment' onClick={()=>history.push('/community-management/content-management/dynamic-comment-reply-list?id='+record.id)}>{record.commentNum}</a>
             ],
         },
         {
@@ -127,7 +127,7 @@ export default props => {
             title: '操作',
             width: 350,
             render: (text, record, _, action) => [
-                <Button style={{marginRight:'10px'}} onClick={()=>{
+                <Button key='bear' style={{marginRight:'10px'}} onClick={()=>{
                     if(record.banComment){
                         cancelBanDynamicComment({id:record.id}).then(res=>{
                             ref.current.reload()
@@ -138,7 +138,7 @@ export default props => {
                         }) 
                     }
                 }}>{record.banComment?'取消禁评':'禁评'}</Button>,
-                <Button style={{marginRight:'10px'}} onClick={()=>{
+                <Button key='turn' style={{marginRight:'10px'}} onClick={()=>{
                     if(record.banShare){
                         cancelBanShare({id:record.id}).then(res=>{
                             ref.current.reload()
@@ -151,6 +151,7 @@ export default props => {
                     
                 }}>{record.banShare?'取消禁转':'禁转'}</Button>,
                 <DeleteModal 
+                    key='delete'
                     record={record}
                     boxref={ref}
                     text={'确认要删除所选帖子吗？'}

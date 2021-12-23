@@ -101,7 +101,8 @@ export default () => {
           3: '已获奖',
           4: '未获奖',
           5: '机会过期',
-          6: '官方回收'
+          6: '官方回收',
+          7: '已失效'
         },
         hideInTable:true
       },
@@ -159,7 +160,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-          <a onClick={()=>history.push('/blind-box-activity-management/blind-box-employ-detail?memberId='+record.memberId)}>查看此用户明细</a>
+          <a key='detail' onClick={()=>history.push('/blind-box-activity-management/blind-box-employ-detail?memberId='+record.memberId)}>查看此用户明细</a>
         ],
       }, 
     ];
@@ -201,11 +202,12 @@ export default () => {
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
                <Export
+                key='export'
                 change={(e) => { setVisit(e) }}
                 type={'bind-box-use-detail-export'}
                 conditions={getFieldValue(searchConfig)}
               />,
-              <ExportHistory show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
+              <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
             ],
           }}
           columns={columns}

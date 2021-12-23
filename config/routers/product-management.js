@@ -10,7 +10,7 @@ export default {
     {
       name: 'product-list-purchase',
       path: '/product-management/product-list-purchase',
-      component: './product-management/product-list-purchase',
+      component: './product-management/product-list',
     },
     {
       name: 'product-detail',
@@ -57,6 +57,11 @@ export default {
       name: 'overrule-list',
       path: '/product-management/overrule-list',
       component: './product-management/overrule-list',
+    },
+    {
+      name: 'product-evaluate',
+      path: '/product-management/product-evaluate',
+      component: './product-management/product-evaluate',
     },
   ]
 }

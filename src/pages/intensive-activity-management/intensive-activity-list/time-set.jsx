@@ -64,7 +64,7 @@ export default (props) => {
             if (curDate === nowDate) {
               return false;
             }
-            return curDate < nowDate || curDate > +moment(data.wholesaleEndTime).set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+            return curDate < nowDate
           },
           // disabledTime: disabledRangeTime,
           showTime: {

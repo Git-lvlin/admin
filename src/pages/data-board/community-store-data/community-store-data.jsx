@@ -20,6 +20,7 @@ const CommunityStoreData = () => {
   const [value, setValue] = useState(1)
   const [data, setData] = useState([])
   const [visit, setVisit] = useState(false)
+  const [unit, setUnit] = useState('单位： 单')
   const form = useRef()
 
   useEffect(() => {
@@ -39,6 +40,11 @@ const CommunityStoreData = () => {
   
   const onChange = e => {
     setValue(e.target.value)
+    if(e.target.value === 1) {
+      setUnit('单位：单')
+    } else {
+      setUnit('单位：元')
+    }
   }
 
   const getFieldValue = () => {
@@ -222,11 +228,14 @@ const CommunityStoreData = () => {
           onChange={onChange}
           value={value}
           size="large"
+          style={{
+            marginBottom: 30
+          }}
         >
           <Radio value={1}>采购订单总量</Radio>
           <Radio value={2}>采购金额</Radio>
         </Radio.Group>
-        <BarChart data={data}/>
+        <BarChart data={data} unit={unit}/>
       </div>
       <CommunityStoreDataOverview/>
       <div className={styles.table}>

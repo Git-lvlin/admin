@@ -124,8 +124,8 @@ export default props => {
               {detailData.content}
               <div className={styles.invitation_content}>
                 {
-                  detailData.images?.map(ele=>(
-                    <Image className={styles.detailimg}  width={100} height={100} src={ele} alt="" />
+                  detailData.images?.map((ele,index)=>(
+                    <Image key={index} className={styles.detailimg}  width={100} height={100} src={ele} alt="" />
                   ))
                 }
               </div>
@@ -153,7 +153,7 @@ export default props => {
               dataSource={commentList}
               renderItem={item => {
                 return <List.Item
-                key={item.title}
+                key={item.dynamicCommentId}
                 actions={[  
                   <ReplyModel 
                     dynamicCommentId={item.dynamicCommentId}
@@ -163,6 +163,7 @@ export default props => {
                     canback={(e)=>{
                       setLoading(e)
                     }}
+                    key='reply'
                   />
                 ]}
               >
@@ -176,8 +177,8 @@ export default props => {
                 </Space>
                 <div className={styles.reply} style={{display:item.replys.length>0?'block':'none'}}>
                       {
-                        item.replys.length>0&&item.replys.map((ele)=>(
-                          <div style={{display:'flex'}}>
+                        item.replys.length>0&&item.replys.map((ele,index)=>(
+                          <div key={index} style={{display:'flex'}}>
                             <p>{ele.userName}{ele.beUserName?<><span style={{color:'#ccc'}}> 回复 </span>${ele.beUserName} ：</>:' ： '}</p>
                             <p>{ele.content}</p>
                           </div>

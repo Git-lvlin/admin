@@ -3,25 +3,43 @@ import {
 	Chart,
 	Coordinate,
 	Interval,
-  Interaction
+  Interaction,
+  Axis
 } from "bizcharts"
 import { Empty } from 'antd'
 
-const BarChart = ({data}) => {
-
+const BarChart = ({data, unit}) => {
   data.sort((a, b) => a.value - b.value)
+
+  const chartUnit = {
+    style: {
+      fontSize: 14,
+      textAlign: 'center',
+      fill: '#E66101'
+    },
+    position: 'end',
+    rotate: 0,
+		offset: 80
+  }
+
+  const scale = {
+    value: { 
+      alias: unit
+    }
+  }
+
   return (
     data?.[0]?
     <Chart
       height={400}
       data={data}
       autoFit
-      scale={{
-        value: {
-          formatter: (v) => v
-        }
-      }}
+      scale={scale}
     >
+      <Axis
+        name='value'
+        title={chartUnit}
+      />
       <Coordinate transpose />
       <Interval 
         position="storeName*value"

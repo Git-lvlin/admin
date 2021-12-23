@@ -234,7 +234,7 @@ const onIpute=(res)=>{
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-            <Button  onClick={()=>{
+            <Button key='cancellation'  onClick={()=>{
               couponCodebaseEnd({ids:byid}).then(res=>{
                 if(res.code==0){
                   ref.current.reload();

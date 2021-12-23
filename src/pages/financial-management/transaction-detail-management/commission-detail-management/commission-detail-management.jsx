@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { Button } from 'antd'
@@ -7,12 +7,23 @@ import { amountTransform } from '@/utils/utils'
 import { platformCommissionPage } from '@/services/financial-management/transaction-detail-management'
 import { Export, ExportHistory } from '@/pages/export-excel'
 import Detail from '../../common-popup/order-pay-detail-popup'
+import { orderTypes } from '@/services/financial-management/common'
 
 // commission detail
 const CommissionDetailManagement = () =>{
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
   const [visit, setVisit] = useState(false)
+  const [orderType, setOrderType] = useState(null)
+
+  useEffect(() => {
+    orderTypes({}).then(res=>{
+      setOrderType(res.data)
+    })
+    return () => {
+      setOrderType(null)
+    }
+  }, [])
 
   const getFieldValue = (form) => {
     const { createTime, ...rest } = form.getFieldsValue()
@@ -39,13 +50,7 @@ const CommissionDetailManagement = () =>{
       title: '订单类型',
       dataIndex: 'orderType',
       valueType: 'select',
-      valueEnum: {
-        'second': '秒约订单',
-        'dropShipping1688': '1688代发订单',
-        'commandSalesOrder': '集约批发订单',
-        'commandCollect': '集约销售订单',
-        'signIn': '签到订单'
-      }
+      valueEnum: orderType
     },
     {
       title: '订单号',

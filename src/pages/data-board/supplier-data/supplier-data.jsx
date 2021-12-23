@@ -15,7 +15,6 @@ import SelectDate from '../components/SelectDate'
 import { getTimeDistance } from '@/utils/utils'
 import BarChart from './bar-chart'
 import SupplierDataOverview from './supplier-data-overview'
-import SupplierDevelopmentData from './supplier-development-data'
 
 const SupplierData = () => {
   const [amount, setAmount] = useState(0)
@@ -24,6 +23,7 @@ const SupplierData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
   const [value, setValue] = useState(1)
   const [data, setData] = useState([])
+  const [unit, setUnit] = useState('单位：单')
 
   useEffect(() => {
     supplierSalesRank({
@@ -57,6 +57,11 @@ const SupplierData = () => {
   
   const onChange = e => {
     setValue(e.target.value)
+    if(e.target.value === 1) {
+      setUnit('单位：单')
+    } else {
+      setUnit('单位：元')
+    }
   }
 
   const skipToDeatil = (e, id, name, state) => {
@@ -72,14 +77,22 @@ const SupplierData = () => {
     {
       title: '供应商ID',
       dataIndex: 'supplierId',
-      align: 'center'
+      align: 'center',
+      hideInSearch: true
     },
     {
-      title: '供应商名称',
-      dataIndex: 'supplierName',
+      title: '供应商ID',
+      dataIndex: 'supplierId',
       align: 'center',
-      width: '18%'
+      valueType: 'digit',
+      hideInTable: true
     },
+    // {
+    //   title: '供应商名称',
+    //   dataIndex: 'supplierName',
+    //   align: 'center',
+    //   width: '18%'
+    // },
     {
       title: '统计时间范围',
       dataIndex: 'time',
@@ -175,7 +188,7 @@ const SupplierData = () => {
       title: ()=>(
         <Space>
           <span>总货款(元)</span>
-          <Tooltip title="含盲盒和红包补贴的金额，扣除手续费">
+          <Tooltip title="已扣除手续费，包含红包补贴的金额（不含盲盒订单）">
             <QuestionCircleOutlined/>
           </Tooltip>
         </Space>
@@ -205,14 +218,16 @@ const SupplierData = () => {
           onChange={onChange}
           value={value}
           size="large"
+          style={{
+            marginBottom: 20
+          }}
         >
           <Radio value={1}>秒约销售额</Radio>
           <Radio value={2}>集约销售额</Radio>
         </Radio.Group>
-        <BarChart data={data}/>
+        <BarChart data={data} unit={unit}/>
       </div>
       <SupplierDataOverview/>
-      <SupplierDevelopmentData />
       <ProTable
         rowKey="supplierId"
         style={{
