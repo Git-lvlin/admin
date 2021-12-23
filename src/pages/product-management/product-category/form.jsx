@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { Form } from 'antd';
-import {
+import ProForm, {
   ModalForm,
   ProFormText,
   ProFormSwitch,
-  ProFormDigit
+  ProFormDigit,
+  ProFormDependency,
 } from '@ant-design/pro-form';
 import Big from 'big.js';
 import * as api from '@/services/product-management/product-category'
@@ -80,6 +81,9 @@ export default (props) => {
         callback();
         return true;
       }}
+      onChange={()=>{
+        form.validateFields()
+      }}
       initialValues={{
         gcShow: true,
       }}
@@ -149,6 +153,55 @@ export default (props) => {
         rules={[{ required: true, message: '请输入内部店佣金抽成' }]}
         extra={<><span style={{ color: 'red' }}>录入后固定不可编辑修改，谨慎操作</span><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
       />
+      <Form.Item
+        label="基础销量取值范围"
+      >
+        <ProFormDependency name={['virtualStart', 'virtualEnd']}>
+          {
+            ({ virtualStart, virtualEnd}) => (
+              <div style={{ display: 'flex' }}>
+                <ProFormText
+                  name="virtualStart"
+                  fieldProps={{ style: { width: 135 }, maxLength: 6 }}
+                  rules={[
+                    () => ({
+                      validator(_, value) {
+                        if (!/^\d{1,6}$/.test(value)) {
+                          return Promise.reject(new Error('请输入大于0小于999999的数字'));
+                        }
+                        if (+value >= +virtualEnd && virtualEnd) {
+                          return Promise.reject(new Error('销量取值范围不合理，请重填'));
+                        }
+                        return Promise.resolve();
+                      },
+                    })
+                  ]}
+                />
+                <span style={{ position: 'relative', top: 3 }}>&nbsp;到&nbsp;</span>
+                <ProFormText
+                  name="virtualEnd"
+                  fieldProps={{ style: { width: 135 }, maxLength: 6 }}
+                  rules={[
+                    () => ({
+                      validator(_, value) {
+                        
+                        if (!/^\d{1,6}$/.test(value)) {
+                          return Promise.reject(new Error('请输入大于0小于999999的数字'));
+                        }
+                        if (+value <= +virtualStart && virtualStart) {
+                          return Promise.reject(new Error('销量取值范围不合理，请重填'));
+                        }
+                        return Promise.resolve();
+                      },
+                    })
+                  ]}
+                />
+              </div>
+            )
+          }
+        </ProFormDependency>
+        
+      </Form.Item>
       <ProFormSwitch checkedChildren="开" unCheckedChildren="关" name="gcShow" label="状态" />
     </ModalForm >
   );
