@@ -59,3 +59,25 @@ export const wholeSaleOrderDetail = async (params = {}, options = {}) => {
     success: res.success
   }
 }
+
+
+// 集约订单明细-汇总
+export const wholeSaleOrderDetailSummary = async (params = {}, options = {}) => {
+  const { current, pageSize,dateTimeRange, ...rest } = params;
+  const res = await request('/auth/java-admin/report/config/wholeSaleOrderDetailSummary', {
+    method: 'POST',
+    data:  {
+      page: current,
+      size: pageSize,
+      startTime:dateTimeRange&&dateTimeRange[0],
+      endTime:dateTimeRange&&dateTimeRange[1],
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    code: res.code,
+    success: res.success
+  }
+}
