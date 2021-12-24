@@ -8,7 +8,7 @@ import * as api from '@/services/product-management/product-list';
 import { amountTransform } from '@/utils/utils'
 
 export default function EditTable(props) {
-  const { tableHead, tableData, setTableData, settleType, goodsSaleType } = props;
+  const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample } = props;
   const [columns, setColumns] = useState([])
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
@@ -22,7 +22,6 @@ export default function EditTable(props) {
           title: item,
           dataIndex: `spec${index + 1}`,
           editable: false,
-          width: 130,
         })
       }
     });
@@ -49,65 +48,89 @@ export default function EditTable(props) {
         dataIndex: 'retailSupplyPrice',
         editable: false,
         hideInTable: goodsSaleType === 1,
-        width: 130,
       },
       {
         title: '批发供货价(元)',
         dataIndex: 'wholesaleSupplyPrice',
         editable: false,
-        width: 130,
         hideInTable: goodsSaleType === 2,
       },
       {
         title: '集采箱规单位量',
         dataIndex: 'batchNumber',
         editable: false,
-        width: 130,
         hideInTable: goodsSaleType === 2,
       },
       {
         title: '最低批发量',
         dataIndex: 'wholesaleMinNum',
         editable: false,
-        width: 130,
         hideInTable: goodsSaleType === 2,
+      },
+      {
+        title: '样品供货价(元)',
+        dataIndex: 'sampleSupplyPrice',
+        hideInTable: isSample !== 1,
+      },
+      {
+        title: '样品价(元)',
+        dataIndex: 'sampleSalePrice',
+        hideInTable: isSample !== 1,
+      },
+      {
+        title: '样品起售量',
+        dataIndex: 'sampleMinNum',
+        hideInTable: isSample !== 1,
+      },
+      {
+        title: '样品限售量',
+        dataIndex: 'sampleMaxNum',
+        hideInTable: isSample !== 1,
+      },
+      {
+        title: '样品是否包邮',
+        dataIndex: 'sampleFreight',
+        hideInTable: isSample !== 1,
+        render: (_) => _ === 1 ? '包邮' : '不包邮',
+        editable: false,
+      },
+      {
+        title: '样品运费模板',
+        dataIndex: 'sampleFreightId',
+        render: (_) => _.label ? _.label : '_',
+        hideInTable: isSample !== 1,
+        editable: false,
       },
       {
         title: '秒约价',
         dataIndex: 'salePrice',
         editable: settleType === 2,
-        width: 130,
         hideInTable: goodsSaleType === 1,
       },
       {
         title: '秒约价上浮比例',
         dataIndex: 'salePriceFloat',
         hideInTable: goodsSaleType === 1,
-        width: 130,
       },
       {
         title: '秒约价实际盈亏',
         dataIndex: 'salePriceProfitLoss',
         editable: false,
         hideInTable: goodsSaleType === 1,
-        width: 130,
       },
       {
         title: '市场价',
         dataIndex: 'marketPrice',
-        width: 130,
       },
       {
         title: '库存预警值',
         dataIndex: 'stockAlarmNum',
         editable: false,
-        width: 130,
       },
       {
         title: '可用库存',
         dataIndex: 'stockNum',
         editable: false,
-        width: 130,
         // formItemProps: {
         //   rules: [{
         //     required: true,
@@ -119,14 +142,12 @@ export default function EditTable(props) {
       {
         title: '平均运费(元)',
         dataIndex: 'wholesaleFreight',
-        width: 130,
         hideInTable: goodsSaleType === 2,
         editable: false,
       },
       {
         title: '是否包邮',
         dataIndex: 'isFreeFreight',
-        width: 130,
         render: (_) => _ === 1 ? '包邮' : '不包邮',
         hideInTable: goodsSaleType === 1,
         editable: false,
@@ -134,7 +155,6 @@ export default function EditTable(props) {
       {
         title: '运费模板',
         dataIndex: 'freightTemplateId',
-        width: 130,
         render: (_) => _.label ? _.label : '_',
         hideInTable: goodsSaleType === 1,
         editable: false,
@@ -169,6 +189,9 @@ export default function EditTable(props) {
         obj.salePriceFloat = amountTransform(record.salePriceFloat, '/');
       }
 
+      setDataSource(recordList)
+      setTableData(recordList)
+
       if (
         (findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat)
         && goodsSaleType !== 1
@@ -191,17 +214,10 @@ export default function EditTable(props) {
             })
             setDataSource(arr)
             setTableData(arr)
-          } else {
-            setDataSource(recordList)
-            setTableData(recordList)
           }
         })
-      } else {
-        setDataSource(recordList)
-        setTableData(recordList)
       }
     };
-
     return debounce(loadData, 1000);
   }, [dataSource, props]);
 
@@ -222,13 +238,11 @@ export default function EditTable(props) {
           return [defaultDoms.delete];
         },
         onValuesChange: (record, recordList) => {
-          // setDataSource(recordList);
-          // setTableData(recordList)
           debounceFetcher({ record, recordList })
         }
       }}
       controlled
-      scroll={{ x: '70vw' }}
+      scroll={{ x: 'max-content' }}
       bordered
       recordCreatorProps={false}
       style={{ marginBottom: 20 }}

@@ -78,7 +78,14 @@ const SupplierData = () => {
       title: '供应商ID',
       dataIndex: 'supplierId',
       align: 'center',
-      valueType: 'digit'
+      hideInSearch: true
+    },
+    {
+      title: '供应商ID',
+      dataIndex: 'supplierId',
+      align: 'center',
+      valueType: 'digit',
+      hideInTable: true
     },
     // {
     //   title: '供应商名称',

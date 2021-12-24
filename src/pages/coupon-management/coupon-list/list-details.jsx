@@ -122,7 +122,7 @@ export default props => {
           className={styles.couponFrom}
         >
           <h1><CaretRightFilled /> 查看详情</h1>
-          <Button className={styles.goback} type="default" onClick={() => history.goBack()}>返回</Button>
+          <Button className={styles.goback} key='goback' type="default" onClick={() => history.goBack()}>返回</Button>
           <div className={styles.msg}>
             <h3 className={styles.head}>基本信息</h3>
             <Form.Item
@@ -152,24 +152,29 @@ export default props => {
             <Form.Item
               label="红包面值"
             >
-              {detailData.couponAmountDisplay}
+              {Number(detailData.couponAmountDisplay).toFixed(2)}
             </Form.Item>
 
-            <Form.Item
-              label="最高优惠"
-            >
-              {detailData.maxFreeAmount}元
-            </Form.Item>
+            {
+              detailData.issueType != 4&&            
+              <Form.Item
+                label="最高优惠"
+              >
+                {detailData.maxFreeAmount}元
+              </Form.Item>
+            }
+
 
             <Form.Item
               label="发行方式"
             >
-               {
+              {
                 detailData.issueType == 1 ?
                   '会员领取红包'
-                  :detailData.issueType == 2 ?
+                  :detailData.issueType == 2 ? 
                   '系统发放红包'
-                  :'每日红包'
+                  :detailData.issueType == 3 ? 
+                  '每日红包':'邀请好友红包'
               }
             </Form.Item>
             <Form.Item
@@ -177,11 +182,14 @@ export default props => {
             >
               {detailData.issueQuantity}
             </Form.Item>
-            <Form.Item
-              label="每人限领"
-            >
-              {detailData.limitQuantity}
-            </Form.Item>
+            {
+              detailData.issueType != 4&&
+              <Form.Item
+                label="每人限领"
+              >
+                {detailData.limitQuantity}
+              </Form.Item>
+            }
             {
               detailData.limitStartTime&&<Form.Item
                 label="可领取时间"
@@ -266,10 +274,10 @@ export default props => {
                   {
                     detailData.goodsType == 2 ?
                     <>
-                      <p className={styles.mark}>已选中<span>{detailData.spuInfo?.length}个</span>指定商品</p>
+                      <p key='assign' className={styles.mark}>已选中<span>{detailData.spuInfo?.length}个</span>指定商品</p>
                       <ProTable
                         actionRef={ref}
-                        rowKey="id"
+                        rowKey="spuId"
                         options={false}
                         dataSource={detailData.spuInfo}
                         search={false}
@@ -284,7 +292,7 @@ export default props => {
                   <p className={styles.mark}>已选中<span>{detailData.wsInfo?.length}个</span>集约活动。</p>
                   <ProTable
                     actionRef={ref}
-                    rowKey="id"
+                    rowKey="spuId"
                     options={false}
                     dataSource={detailData.wsInfo}
                     search={false}
@@ -306,24 +314,12 @@ export default props => {
             <Form.Item
               label="规则说明"
             >
-              {
-              detailData.couponRule?.split('\n').map(ele=>(
-                <span>{ele}</span>
-              ))
-              }
-            </Form.Item>
-
-            {/* {
-              detailData.memberType == 3&&<Form.Item
-                label="活动说明"
-              >
+               <pre className={styles.line_feed}>
                 {
-                detailData.couponActivityRule?.split('\n').map(ele=>(
-                  <span>{ele}</span>
-                ))
+                  detailData?.couponRule
                 }
-              </Form.Item>
-            } */}
+              </pre>
+            </Form.Item>
           </div>
         </Form>
       </Spin>

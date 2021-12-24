@@ -94,7 +94,7 @@ const TableList = () => {
         if (_ === 0) {
           return _;
         }
-        return <a onClick={() => { 
+        return <a key='2' onClick={() => { 
           history.push(`/daifa-store-management/list/consultant-product-list?spuId=${data.id}&storeNo=${data.storeNo}&storeName=${data.storeName}&wechatNo=${data.wechatNo}`) 
         }}>{_}</a>
       }
@@ -140,7 +140,7 @@ const TableList = () => {
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <Button key="out" type="primary" onClick={() => { setFormVisible(true) }}>新建</Button>,
-            <ExcelModel 
+            <ExcelModel key="dao"
               callback={() => { actionRef.current.reload()}}
             />
           ]

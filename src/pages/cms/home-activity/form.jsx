@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
   ModalForm,
   DrawerForm,
   ProFormText,
   ProFormRadio,
+  ProFormTextArea,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import { homeActivityUpdata } from '@/services/cms/member/member';
@@ -13,7 +14,34 @@ export default (props) => {
   const { detailData, setVisible, onClose, visible, useType } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
-
+  const [href, setHref] = useState('');
+  const [showType, setShowType] = useState(false);
+  const urlArr = [
+    '',
+    'https://www.yeahgo-uat.com/tab/index?index=2',
+    'https://www.yeahgo-uat.com/tab/index?index=4',
+    'https://www.yeahgo-uat.com/flutter/store/member/index',
+    'https://www.yeahgo-uat.com/tab/index?index=1',
+    'https://www.yeahgo-uat.com/home/spikeGoods',
+    'https://www.yeahgo-uat.com/home/spikeWeek',
+    'https://publicmobile-uat.yeahgo.com/web/five-star-qa?_authorizationRequired=1',
+  ];
+  const select1 = [
+    {
+      label: '固定展示',
+      value: 1,
+    },
+    {
+      label: '有集约内容才展示',
+      value: 2,
+    },
+  ]
+  const select2 = [
+    {
+      label: '固定展示',
+      value: 1,
+    }
+  ]
   const waitTime = (values) => {
     const { id, ...rest } = values
     const param = {
@@ -23,7 +51,7 @@ export default (props) => {
     if (id) {
       param.id = id
     }
-  
+    param.actionUrl = href
     return new Promise((resolve, reject) => {
       homeActivityUpdata(param).then((res) => {
         if (res.code === 0) {
@@ -38,7 +66,8 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
-      const { ...rest } = detailData;
+      const { actionUrl, ...rest } = detailData;
+      setHref(actionUrl)
       form.setFieldsValue({
         ...rest
       })
@@ -109,14 +138,99 @@ export default (props) => {
         />
 
       </ProForm.Group>
+      <ProFormRadio.Group
+          name="customerType"
+          label="展示对象"
+          initialValue={1}
+          rules={[{ required: true, message: '请选择展示对象' }]}
+          options={[
+            {
+              label: '所有用户',
+              value: 1,
+            },
+            {
+              label: '仅店主',
+              value: 2,
+            },
+          ]}
+        />
+      <ProFormRadio.Group
+          name="actionUrlType"
+          label="url类型"
+          initialValue={8}
+          rules={[{ required: false, message: '请选择url类型' }]}
+          fieldProps={{
+            onChange:({target}) => {
+              if (target.value == 1) {
+                setShowType(true)
+              } else {
+                setShowType(false)
+              }
+              if (target.value == 8) {
+                setHref('')
+              } else {
+                setHref(urlArr[target.value])
+              }
+            }
+          }}
+          options={[
+            {
+              label: '集约',
+              value: 1,
+            },
+            {
+              label: '个人中心',
+              value: 2,
+            },
+            {
+              label: '社区店',
+              value: 3,
+            },
+            {
+              label: '限时秒杀',
+              value: 4,
+            },
+            {
+              label: '秒约爆品',
+              value: 5,
+            },
+            {
+              label: '周末大狂欢',
+              value: 6,
+            },
+            {
+              label: '店主升星',
+              value: 7,
+            },
+            {
+              label: '自定义',
+              value: 8,
+            },
+          ]}
+        />
+      <ProFormRadio.Group
+          name="showType"
+          label="展示类型"
+          initialValue={1}
+          rules={[{ required: true, message: '请选择展示类型' }]}
+          options={showType?select1:select2}
+        />
       <ProForm.Group>
-        <ProFormText 
-            width="sm"
+        <ProFormTextArea 
+            width="lg"
             name="actionUrl"
+            fieldProps={{
+              value: href,
+              onChange: ({target}) => {
+                console.log(target.value)
+                setHref(target.value)
+              }
+            }}
             label="跳转链接"
             rules={[{ required: false, message: '请输入跳转链接' }]}  
           />
       </ProForm.Group>
+      
       <ProFormRadio.Group
           name="state"
           label="活动状态"

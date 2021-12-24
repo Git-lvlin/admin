@@ -6,12 +6,15 @@ import ProTable from '@ant-design/pro-table';
 import { orderPage } from '@/services/intensive-store-management/intensive-task';
 import { useParams, useLocation, history } from 'umi';
 import { amountTransform } from '@/utils/utils'
+import ProductDetailDrawer from '@/components/product-detail-drawer'
 
 
 const IntensiveTask = props => {
   const params = useParams();
   const location = useLocation();
   const [count, setCount] = useState(0)
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState(null);
 
   const columns = [
     {
@@ -41,7 +44,9 @@ const IntensiveTask = props => {
       title: '活动商品名称',
       dataIndex: 'goodsName',
       valueType: 'text',
-      render: (_, data) => <a onClick={() => { history.push(`/product-management/product-detail/${data?.spuId}`) }}>{data?.goodsName}</a>
+      render: (_, record) => {
+        return <a onClick={() => { setSelectItem(record); setProductDetailDrawerVisible(true); }}>{_}</a>
+      },
 
     },
     {
@@ -117,6 +122,14 @@ const IntensiveTask = props => {
       <div style={{ textAlign: 'center', marginTop: 30 }}>
         <Button onClick={() => { history.goBack() }}>返回</Button>
       </div>
+      {
+        productDetailDrawerVisible &&
+        <ProductDetailDrawer
+          visible={productDetailDrawerVisible}
+          setVisible={setProductDetailDrawerVisible}
+          spuId={selectItem?.spuId}
+        />
+      }
     </PageContainer>
   )
 }

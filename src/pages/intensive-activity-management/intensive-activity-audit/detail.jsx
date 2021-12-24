@@ -36,8 +36,6 @@ const Detail = () => {
     const data = moment().format("YYYY-MM-DD HH:mm:ss")
     if (moment(data).isBefore(detailData?.wholesale?.wholesaleStartTime)) {
       setTimeType(1)
-    } else if (moment(detailData?.wholesale?.wholesaleEndTime).isBefore(data)) {
-      setTimeType(2)
     }
     setVisible(true)
   }
@@ -50,6 +48,12 @@ const Detail = () => {
     {
       title: 'skuID',
       dataIndex: 'skuId',
+    },
+    {
+      title: '商品分类',
+      dataIndex: 'retailSupplyPrice',
+      valueType: 'text',
+      render: (_, data) => `${data.gcId1Display}-${data.gcId2Display}`,
     },
     {
       title: '规格',
@@ -84,12 +88,22 @@ const Detail = () => {
       render: (_) => amountTransform(_, '/')
     },
     {
+      title: '平均运费(元)',
+      dataIndex: 'wholesaleFreight',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
       title: '集约库存',
       dataIndex: 'totalStockNum',
     },
     {
-      title: '集约价',
+      title: '集约价(元)',
       dataIndex: 'price',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '实际盈亏(元)',
+      dataIndex: 'profit',
       render: (_) => amountTransform(_, '/')
     },
     {
@@ -115,6 +129,10 @@ const Detail = () => {
           <div>补贴 {detailData?.wholesale?.subsidy / 100}元</div>
         </>
       )
+    },
+    {
+      title: '集采箱规单位量',
+      dataIndex: 'batchNumber',
     },
     {
       title: '单次起订量',
@@ -151,22 +169,29 @@ const Detail = () => {
             <Divider />
             <Descriptions labelStyle={{ textAlign: 'right', width: 150, display: 'inline-block' }}>
               <Descriptions.Item label="活动名称">{detailData?.wholesale?.name}</Descriptions.Item>
-              <Descriptions.Item label="活动时间"><span style={{ position: 'absolute', marginTop: -10 }}>{detailData?.wholesale?.wholesaleStartTime}<br />{detailData?.wholesale?.wholesaleEndTime}</span></Descriptions.Item>
+              <Descriptions.Item label="活动开始时间">{detailData?.wholesale?.wholesaleStartTime}</Descriptions.Item>
               <Descriptions.Item label="采购单下单截止时间">
                 {detailData?.wholesale?.endTimeAdvancePayment}
               </Descriptions.Item>
-              <Descriptions.Item label="可购买的会员店等级">{detailData?.wholesale?.storeLevel}</Descriptions.Item>
+              <Descriptions.Item label="可购买的社区店等级">{detailData?.wholesale?.storeLevel}</Descriptions.Item>
               <Descriptions.Item label="可购买的会员用户">
                 {detailData?.wholesale?.memberLevel}
               </Descriptions.Item>
               <Descriptions.Item label="活动创建人">
                 {detailData?.wholesale?.createAdminName}
               </Descriptions.Item>
-              {detailData?.wholesale?.shareImg &&
-                <Descriptions.Item label="分享海报">
-                  <Image src={detailData?.wholesale?.shareImg} width={100} />
-                </Descriptions.Item>
-              }
+              <Descriptions.Item label="实际盈亏(元)">
+                {detailData?.sku?.[0]?.profit / 100}
+              </Descriptions.Item>
+              <Descriptions.Item label="箱柜单位量">
+                {detailData?.sku?.[0]?.batchNumber}
+              </Descriptions.Item>
+              <Descriptions.Item label="平均运费">
+                {detailData?.sku?.[0]?.wholesaleFreight / 100}
+              </Descriptions.Item>
+              <Descriptions.Item label="商品分类">
+                {detailData?.sku?.[0]?.gcId1Display}-{detailData?.sku?.[0]?.gcId2Display}
+              </Descriptions.Item>
               <Descriptions.Item label="配送模式">
                 {detailData?.wholesale?.wholesaleFlowTypeDesc}
               </Descriptions.Item>
@@ -178,6 +203,14 @@ const Detail = () => {
                   {detailData?.allowArea?.map?.(item => (item.areaName)).join('，')}
                 </div>
               </Descriptions.Item>
+              <Descriptions.Item label="商品主图">
+                <Image src={detailData?.sku?.[0]?.goodsImageUrl} width={50} />
+              </Descriptions.Item>
+              {detailData?.wholesale?.shareImg &&
+                <Descriptions.Item label="分享海报">
+                  <Image src={detailData?.wholesale?.shareImg} width={100} />
+                </Descriptions.Item>
+              }
               {/* <Descriptions.Item label="可恢复支付次数">
             {detailData?.wholesale.canRecoverPayTimes}
           </Descriptions.Item>

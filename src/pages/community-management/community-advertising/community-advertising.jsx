@@ -85,13 +85,14 @@ export default props => {
         {
             title: '操作',
             render: (text, record, _, action) => [
-              <Button style={{marginRight:'10px'}} onClick={()=>history.push('/community-management/community-advertising/add-advertising?id='+record.id)}>编辑</Button>,
+              <Button key='edit' style={{marginRight:'10px'}} onClick={()=>history.push('/community-management/community-advertising/add-advertising?id='+record.id)}>编辑</Button>,
               <DeleteModal 
                 record={record} 
                 boxref={ref} 
                 text={'确认要删除所选广告吗？'} 
                 InterFace={deleteById} 
                 title={'操作确认'}
+                key='detele'
               />
             ],
             hideInSearch: true,

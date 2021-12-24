@@ -12,21 +12,11 @@ const PaymentDetails = () => {
 
   const skipToOrder = (id, type)=> {
     switch(type) {
-      case 'normalOrder':
-      case 'second':
-      case 'dropShipping1688':
-      case 'signIn':
-      case 'blindBox':
-        history.push(`/order-management/normal-order-detail/${id}`)
-      break
       case 'commandSalesOrder':
-      case 'activeSalesOrder':
-      case 'commandCollect':
-      case 'activeCollect':
         history.push(`/order-management/intensive-order/supplier-order-detail/${id}`)
       break
       default:
-        return ''
+        return  history.push(`/order-management/normal-order-detail/${id}`)
     }
   }
 

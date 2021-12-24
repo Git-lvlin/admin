@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useParams, history, useLocation } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@ant-design/pro-layout'
-import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { 
@@ -11,6 +10,7 @@ import {
   goodsAmountDetail, 
   operationCommissionDetail
 } from "@/services/financial-management/transaction-detail-management"
+import { orderTypes } from '@/services/financial-management/common'
 import './styles.less'
 import styles from './styles.less'
 
@@ -20,6 +20,16 @@ const TransactionDetails = () => {
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState({})
   const [payInfos, setPayInfos] = useState([])
+  const [orderType, setOrderType] = useState(null)
+
+  useEffect(() => {
+    orderTypes({}).then(res=>{
+      setOrderType(res.data)
+    })
+    return () => {
+      setOrderType(null)
+    }
+  }, [])
 
   const apiMethod = query?.type === 'bonus' ? commissionDetail:
   (query?.type === 'commission') ? platformCommissionDetail:
@@ -36,8 +46,8 @@ const TransactionDetails = () => {
       setLoading(false)
     })
     return ()=>{
-      setInfo({})
-      setPayInfos({})
+      setInfo(null)
+      setPayInfos([])
     }
   }, [id])
   const back = ()=> {
@@ -130,14 +140,7 @@ const TransactionDetails = () => {
       title: '订单类型',
       dataIndex: 'orderType',
       valueType: 'select',
-      valueEnum: {
-        'second': '秒约',
-        'commandSalesOrder': '集约批发订单',
-        'dropShipping1688': '1688代发订单',
-        'commandCollect': '集约销售订单',
-        'blindBox': '盲盒订单',
-        'signIn': '签到订单'
-      }
+      valueEnum: orderType
     },
     {
       title: '受益方会员类型',
@@ -145,7 +148,7 @@ const TransactionDetails = () => {
     },
     {
       title: (_) => _.dataIndex ? '店铺提成比例' : '',
-      dataIndex: info.storeCommissionRatio ? 'storeCommissionRatio' : '',
+      dataIndex: info?.storeCommissionRatio ? 'storeCommissionRatio' : '',
       render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
     },
     {

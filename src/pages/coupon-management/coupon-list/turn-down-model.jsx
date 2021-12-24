@@ -2,13 +2,10 @@ import React, { useState} from 'react';
 import { ModalForm} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import { couponVerifyList } from '@/services/coupon-management/coupon-audit';
+import styles from './style.less'
 
 export default props=>{
-    const {id}=props
-    const [visible, setVisible] = useState(false);
-    const Additional=()=>{
-        setVisible(true)
-    }
+    const {id,turnVisible,setTurnVisible}=props
     const columns3= [
         {
           title: '审核时间',
@@ -21,18 +18,21 @@ export default props=>{
           valueType: 'text',
         },
         {
-            title: '审核结果',
-            dataIndex: 'status',
-            valueType: 'select',
-            valueEnum: {
-              3: '审核驳回',
-              4: '审核通过',
-            },
+          title: '审核结果',
+          dataIndex: 'status',
+          valueType: 'select',
+          valueEnum: {
+            3: '审核驳回',
+            4: '审核通过',
+          },
         },
         {
-            title: '审核意见',
-            dataIndex: 'content',
-            valueType: 'text'
+          title: '审核意见',
+          dataIndex: 'content',
+          valueType: 'text',
+          render:(_,data)=>{
+            return <pre className={styles.line_feed}>{_}</pre>
+          }
         },
       ];
      
@@ -40,9 +40,8 @@ export default props=>{
         <ModalForm
             title="审核详情"
             key={id}
-            onVisibleChange={setVisible}
-            visible={visible}
-            trigger={<a onClick={()=>Additional()}>驳回详情</a>}
+            onVisibleChange={setTurnVisible}
+            visible={turnVisible}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
@@ -51,7 +50,7 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                setVisible(false)
+              setTurnVisible(false)
             }}
         >
           <ProTable

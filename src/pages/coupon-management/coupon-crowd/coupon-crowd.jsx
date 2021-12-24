@@ -32,7 +32,7 @@ export default (props) =>{
       width: 120,
       valueType: 'option',
       render: (_, data) => [
-      <ProFormSwitch name="Switch"
+      <ProFormSwitch key='switch' name="Switch"
         fieldProps={{
           checked: data.status==2?true:false,
           onChange:(bol)=>{
@@ -54,7 +54,7 @@ export default (props) =>{
       }
       />,
       <a
-          key="a"
+          key="edit"
           onClick={()=>{
             Examine(data.id)
           }}
@@ -62,7 +62,7 @@ export default (props) =>{
           编辑
       </a>,
        <a
-          key="a"
+          key="dele"
           onClick={()=>{
             couponCrowdDel({id:data.id}).then(res=>{
               if(res.code==0){

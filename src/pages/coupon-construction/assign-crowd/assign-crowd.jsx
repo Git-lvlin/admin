@@ -10,6 +10,7 @@ import styles from '../style.less'
 
 const validity=(props)=>{
     let {id,DetailList,dispatch,UseScopeList,callback,type}=props
+    const DetaiIssueType=DetailList.data?.issueType
     const actionRef = useRef();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading,setLoading]=useState(true)
@@ -125,9 +126,9 @@ const validity=(props)=>{
         <>
          <ProFormRadio.Group
           name="memberType"
-          label={type == 2||DetailList.data?.issueType == 2 && id ? '发红包群体':'可领红包群体'}
+          label={type == 2||DetaiIssueType == 2 && id ? '发红包群体':'可领红包群体'}
           rules={[{ required: true, message: '请选择群体' }]}
-          options={type==3||DetailList.data?.issueType == 3 ?options2:options}
+          options={type==3||DetaiIssueType == 3 && id||type==4||DetaiIssueType == 4 && id ?options2:options}
           fieldProps={{
             onChange:(current)=>callback(current.target.value)
           }}
