@@ -66,7 +66,8 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
-      const { ...rest } = detailData;
+      const { actionUrl, ...rest } = detailData;
+      setHref(actionUrl)
       form.setFieldsValue({
         ...rest
       })
