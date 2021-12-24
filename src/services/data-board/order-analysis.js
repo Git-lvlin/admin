@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import moment from 'moment'
 
 // 订单分析
 export const orderAnalysis = async (params = {}, options = {}) => {
@@ -47,7 +48,7 @@ export const wholeSaleOrderDetail = async (params = {}, options = {}) => {
     data:  {
       page: current,
       size: pageSize,
-      startTime:dateTimeRange&&dateTimeRange[0],
+      startTime:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime:dateTimeRange&&dateTimeRange[1],
       ...rest
     },
@@ -69,8 +70,27 @@ export const wholeSaleOrderDetailSummary = async (params = {}, options = {}) => 
     data:  {
       page: current,
       size: pageSize,
-      startTime:dateTimeRange&&dateTimeRange[0],
-      endTime:dateTimeRange&&dateTimeRange[1],
+      startTime:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    code: res.code,
+    success: res.success
+  }
+}
+
+
+
+// 集约订单明细-子公司名单
+export const wholeSaleOrderSubCompany = async (params = {}, options = {}) => {
+  const { ...rest } = params;
+  const res = await request('/auth/java-admin/report/config/wholeSaleOrderSubCompany', {
+    method: 'POST',
+    data:  {
       ...rest
     },
     ...options
