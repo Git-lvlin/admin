@@ -6,7 +6,7 @@ import {
 
 import { createExportTask } from '@/services/export-excel/export-template'
 
-const Export = ({ type, change, conditions }) => {
+const Export = ({ type, change, conditions, text='导出' }) => {
 
   const downExcel = () => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -43,7 +43,7 @@ const Export = ({ type, change, conditions }) => {
     <ModalForm
       title={'导出规则'}
       trigger={
-        <Button type="primary">导出</Button>
+        <Button type="primary">{text}</Button>
       }
       width={500}
       submitter={{
