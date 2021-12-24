@@ -194,9 +194,9 @@ const StrategyToday = () => {
         return (
           <>
             {record.status===2&&<Button size="small" key="top" onClick={() => {top(record.id)}}>置顶</Button>}
+            <Button size="small" key="editable" onClick={() => {getDetail(record)}}>排序</Button>
             {record.status===2&&<Button size="small" key="down" onClick={() => {formControl(record.id, 1)}}>下线</Button>}
             {record.status===1&&<Button size="small" key="view" onClick={() => {formControl(record.id,2)}}>发布</Button>}
-            <Button size="small" key="editable" onClick={() => {getDetail(record)}}>排序</Button>
             {record.status===1&&<Button size="small" key="d" onClick={() => {formControl(record.id,4)}}>删除</Button>}
           </>
         )

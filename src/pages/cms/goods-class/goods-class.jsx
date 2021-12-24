@@ -1,7 +1,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
-import { Button, message } from 'antd';
+import { Button, message, Popconfirm } from 'antd';
 import ProForm, { ProFormSwitch, ProFormRadio, } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
 import ProTable from '@ant-design/pro-table';
@@ -14,6 +14,12 @@ const BannerAdmin = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [swc, setSwc] = useState(false);
+
+  const renderRemoveUser = (record) => (
+    <Popconfirm key="popconfirm" title={`你确认要将此运营类目在前端隐藏吗?`} okText="是" onConfirm={() => { hide(record.id) }} cancelText="否">
+      <a>隐藏</a>
+    </Popconfirm>
+  );
 
   useEffect(() => {
     openSwitch().then((res) => {
@@ -92,10 +98,8 @@ const BannerAdmin = () => {
       dataIndex: 'option',
       search: false,
       render: (_, record) => {
-        return <>
-          <a onClick={() => { edit(record) }}>编辑</a>&nbsp;
-          <a onClick={() => { hide(record.id) }}>隐藏</a>
-        </>
+        let node = renderRemoveUser(record)
+        return [<a onClick={() => { edit(record) }}>编辑</a>, record.isShow==1&&node]
       }
     },
   ];

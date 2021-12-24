@@ -51,7 +51,7 @@ export default (props) => {
     },
     {
       width: 375,
-      height: 168,
+      height: 160,
     },
     {
       width: 351,
@@ -95,7 +95,7 @@ export default (props) => {
         }[detailData.location]
       }
     }
-  
+    param.actionUrl = href
     if (verifyVersionId) {
       param.verifyVersionId = verifyVersionId
     }
@@ -114,6 +114,13 @@ export default (props) => {
   useEffect(() => {
     if (detailData) {
       setNowIndex(detailData.location)
+      setHref(detailData.actionUrl)
+      if (!detailData.actionUrlType) {
+        detailData.actionUrlType = 8
+      }
+      if (detailData.actionUrlType == 1) {
+        setShowType(true)
+      }
       detailData.location = {
         1: '首页',
         2: '集约',
@@ -172,7 +179,7 @@ export default (props) => {
         />
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText 
+        <ProFormText
           width="sm"
           name="title"
           label="banner名称"
@@ -197,7 +204,7 @@ export default (props) => {
           <dl>
             <dt>图片要求</dt>
             <dd>首页banner-350*150</dd>
-            <dd>集约页面banner-375*168</dd>
+            <dd>集约页面banner-375*160</dd>
             <dd>个人中心banner-351*65</dd>
             <dd>社区店专享banner-375*150</dd>
             <dd>秒约爆品banner-375*160</dd>
@@ -218,13 +225,14 @@ export default (props) => {
           name="customerType"
           label="展示对象"
           initialValue={1}
+          rules={[{ required: true, message: '请选择展示对象!' }]}
           options={[
             {
-              label: '所有用户',
+              label: '所有用户可见',
               value: 1,
             },
             {
-              label: '仅店主',
+              label: '仅店主可见',
               value: 2,
             },
           ]}
@@ -233,8 +241,16 @@ export default (props) => {
           name="actionUrlType"
           label="url类型"
           initialValue={8}
+          rules={[{ required: false, message: '请选择url类型!' }]}
           fieldProps={{
             onChange:({target}) => {
+              if ((target.value == 1 && nowIndex == 2)||(target.value == 2 && nowIndex == 3)||(target.value == 3 && nowIndex == 4)||(target.value == 5 && nowIndex == 6)||target.value == 6 && nowIndex == 7) {
+                message.error('点击banner跳转去的页面不能与banner所在位置页面相同，请重新选中或此项置空')
+                form.setFieldsValue({
+                  actionUrlType: 8
+                })
+                return
+              }
               if (target.value == 1) {
                 setShowType(true)
               } else {
@@ -282,12 +298,6 @@ export default (props) => {
             },
           ]}
         />
-      <ProFormRadio.Group
-          name="showType"
-          label="展示类型"
-          initialValue={1}
-          options={showType?select1:select2}
-        />
       <ProForm.Group>
         <ProFormTextArea 
             width="lg"
@@ -303,6 +313,13 @@ export default (props) => {
             rules={[{ required: false, message: '请输入跳转链接' }]}  
           />
       </ProForm.Group>
+      <ProFormRadio.Group
+          name="showType"
+          label="展示类型"
+          initialValue={1}
+          rules={[{ required: true, message: '请选择展示类型!' }]}
+          options={showType?select1:select2}
+        />
       <ProFormRadio.Group
           name="state"
           label="上线/下架"
