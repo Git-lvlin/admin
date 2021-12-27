@@ -138,6 +138,11 @@ export default {
       name: 'goods-sort',
       path: '/cms/goods-sort',
       component: './cms/goods-sort',
+    },
+    {
+      name: 'goods-class',
+      path: '/cms/goods-class',
+      component: './cms/goods-class',
     }
   ]
 }

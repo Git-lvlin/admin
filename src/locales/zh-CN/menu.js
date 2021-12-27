@@ -126,6 +126,7 @@ export default {
   'menu.intensive-store-management.lvl-commission': '等级佣金',
   'menu.intensive-store-management.shop-area': '可开店区域配置',
   'menu.intensive-store-management.community-store-setting': '社区店设置',
+  'menu.intensive-store-management.data-excel': '数据导出',
 
 
   'menu.single-contract-activity-management': '单约活动管理',
@@ -150,7 +151,7 @@ export default {
   'menu.cms.goos-reg.save-money': '集约优选',
   'menu.cms.goos-reg.strategy-today': '首页秒约爆品',
   'menu.cms.home-suspension': '首页悬浮窗',
-  'menu.cms.home-activity': '首页活动',
+  'menu.cms.home-activity': '首页活动图标',
   'menu.cms.home-classification': '首页分类管理',
   'menu.cms.express-news': '约购快报',
   'menu.cms.king-kong-district': '金刚区',
@@ -168,6 +169,7 @@ export default {
   'menu.cms.home-popup': 'app首页弹窗管理',
   'menu.cms.start-up': 'app启动广告配置',
   'menu.cms.goods-sort': '集约商品展示配置',
+  'menu.cms.goods-class': '集约商品运营类目',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
