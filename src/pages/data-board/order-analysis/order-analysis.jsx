@@ -513,15 +513,19 @@ const OrderAnalysis = () => {
         pagination={{
           pageSize: 10,
         }}
-        style={{marginTop:'20px'}}
+        style={{marginTop:'20px',background:'#fff'}}
         tableRender={(_, dom) => (
           <>
             { dom }
             <div className={styles.summary}>
-              <span>订单总金额：<Yuan>{amount?.[0]?.orderAmount}</Yuan></span>
-              <span>总批发量：<Yuan>{amount?.[0]?.wholesaleNum}</Yuan></span>
-              <span>C端集约交易总金额：<Yuan>{amount?.[0]?.cWholeTransactionAmount}</Yuan></span>
-              <span>C端订单售总出件量：<Yuan>{amount?.[0]?.cWholeSoldNum}</Yuan></span>
+              <div>
+                <span>订单总金额：<Yuan>{amount?.[0]?.orderAmount}</Yuan></span>
+                <span>总批发量：<Yuan>{amount?.[0]?.wholesaleNum}</Yuan></span>
+              </div>
+              <div>
+                <span>C端集约交易总金额：<Yuan>{amount?.[0]?.cWholeTransactionAmount}</Yuan></span>
+                <span>C端订单售总出件量：<Yuan>{amount?.[0]?.cWholeSoldNum}</Yuan></span>
+              </div>
             </div>
           </>
         )}
