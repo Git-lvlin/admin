@@ -14,7 +14,6 @@ let ossConfig = null;
 let codeTemp = null
 
 const upload = async (file, code) => {
-  console.log('file',file)
   if (code !== codeTemp) {
     ossConfig = null
   }
