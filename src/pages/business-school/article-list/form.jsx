@@ -57,7 +57,6 @@ export default (props) => {
 
   const onsubmit = (values) => {
     const {articleContent, ...rest } = values
-    console.log('articleContent',articleContent)
     const param = {
       articleType:1,
       articleContent:`<head><style>img{width:100% !important;}</style></head>${articleContent}`,
