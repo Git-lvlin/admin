@@ -15,6 +15,7 @@ import 'quill-emoji/dist/quill-emoji.css'
 import { history } from 'umi';
 import styles from './style.less'
 import 'react-quill/dist/quill.snow.css';
+import upload from '@/utils/upload'
 
 
 Quill.register({
@@ -127,26 +128,6 @@ export default (props) => {
   }
   const modules={
     toolbar:{
-      // container:[
-      //   ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      //   ['blockquote', 'code-block'],
-      //   ['link', 'image','video'],
-    
-      //   [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-      //   [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      //   [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-      //   [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-      //   [{ 'direction': 'rtl' }],                         // text direction
-    
-      //   // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-      //   [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-    
-      //   [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-      //   [{ 'font': [] }],
-      //   [{ 'align': [] }],
-    
-      //   ['clean']                                         // remove formatting button
-      // ],
       container:[
         [{ 'size': ['small', false, 'large', 'huge'] }], // custom dropdown
         [{ 'font': [] }],
@@ -165,7 +146,7 @@ export default (props) => {
         ['clean']
       ],
       handlers: {
-        image: imageHandler
+        image: ()=>imageHandler()
       }
     },
     'emoji-toolbar': true,
@@ -175,7 +156,7 @@ export default (props) => {
  
 
   const imageHandler = () => {
-    const quillEditor = ref.getEditor()
+    const quillEditor = ref.current?.getEditor()
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
     input.setAttribute('accept', 'image/*')
@@ -184,12 +165,9 @@ export default (props) => {
       const file = input.files[0]
       const formData = new FormData()
       formData.append('quill-image', file)
-      const res = await uploadFile(formData) 
-      const range = quillEditor.getSelection()
-      const link = res.data[0].url
-  
-      // this part the image is inserted
-      // by 'image' option below, you just have to put src(link) of img here. 
+      const code=218
+      const link=await upload(file,code)
+      const range = quillEditor?.getSelection()
       quillEditor.insertEmbed(range.index, 'image', link)
     }
   }
