@@ -68,7 +68,7 @@ const EvaluateList= (props) => {
         },
         {
             title: '订单编号',
-            dataIndex: 'orderId',
+            dataIndex: 'orderSn',
             valueType: 'text',
         },
         {
