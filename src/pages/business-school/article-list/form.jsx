@@ -10,11 +10,18 @@ import Upload from '@/components/upload';
 import { findAdminArticleTypeList } from '@/services/cms/member/member';
 import { adminArticleDetail,saveOrUpdateArticle } from '@/services/business-school/find-admin-article-list';
 import  ReactQuill,{ Quill }  from 'react-quill';
+import QuillEmoji from 'quill-emoji'
+import 'quill-emoji/dist/quill-emoji.css'
 import { history } from 'umi';
 import styles from './style.less'
 import 'react-quill/dist/quill.snow.css';
 
 
+Quill.register({
+  'modules/emoji-toolbar': QuillEmoji.ToolbarEmoji,
+  // 'modules/emoji-textarea': QuillEmoji.TextAreaEmoji,
+  'modules/emoji-shortname': QuillEmoji.ShortNameEmoji
+})
 
 
 const formItemLayout = {
@@ -49,6 +56,7 @@ export default (props) => {
 
   const onsubmit = (values) => {
     const {articleContent, ...rest } = values
+    console.log('articleContent',articleContent)
     const param = {
       articleType:1,
       articleContent:`<head><style>img{width:100% !important;}</style></head>${articleContent}`,
@@ -119,29 +127,72 @@ export default (props) => {
   }
   const modules={
     toolbar:{
+      // container:[
+      //   ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+      //   ['blockquote', 'code-block'],
+      //   ['link', 'image','video'],
+    
+      //   [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      //   [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      //   [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+      //   [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+      //   [{ 'direction': 'rtl' }],                         // text direction
+    
+      //   // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+      //   [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    
+      //   [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      //   [{ 'font': [] }],
+      //   [{ 'align': [] }],
+    
+      //   ['clean']                                         // remove formatting button
+      // ],
       container:[
-        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        ['blockquote', 'code-block'],
-        ['link', 'image','video'],
-    
-        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-        [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-        [{ 'direction': 'rtl' }],                         // text direction
-    
-        // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-    
-        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'size': ['small', false, 'large', 'huge'] }], // custom dropdown
         [{ 'font': [] }],
+        [{ 'header': 1 }, { 'header': 2 }],        // custom button values
+        ['bold', 'italic', 'underline', 'strike'],    // toggled buttons
         [{ 'align': [] }],
-    
-        ['clean']                                         // remove formatting button
+        [{ 'indent': '-1' }, { 'indent': '+1' }],     // outdent/indent
+        [{ 'direction': 'rtl' }],             // text direction
+        [{ 'script': 'sub' }, { 'script': 'super' }],   // superscript/subscript
+        ['blockquote', 'code-block'],
+      
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        [{ 'color': [] }, { 'background': [] }],
+        ['emoji', 'image', 'video', 'link'],
+      
+        ['clean']
       ],
-  }
+      handlers: {
+        image: imageHandler
+      }
+    },
+    'emoji-toolbar': true,
+    // 'emoji-textarea': true,
+    'emoji-shortname': true,
   }
  
+
+  const imageHandler = () => {
+    const quillEditor = ref.getEditor()
+    const input = document.createElement('input')
+    input.setAttribute('type', 'file')
+    input.setAttribute('accept', 'image/*')
+    input.click()
+    input.onchange = async () => {
+      const file = input.files[0]
+      const formData = new FormData()
+      formData.append('quill-image', file)
+      const res = await uploadFile(formData) 
+      const range = quillEditor.getSelection()
+      const link = res.data[0].url
+  
+      // this part the image is inserted
+      // by 'image' option below, you just have to put src(link) of img here. 
+      quillEditor.insertEmbed(range.index, 'image', link)
+    }
+  }
   
 
   return (
@@ -340,7 +391,7 @@ export default (props) => {
               readonly={detailData?.id&&detailData?.edtil}
               // rules={[{ required: true, message: '请设置文章详情!' }]} 
             >
-              <ReactQuill  modules={modules}/>
+              <ReactQuill  modules={modules} ref={ref}/>
             </Form.Item>
             <div className={styles.mark}>*</div>
           </div>
