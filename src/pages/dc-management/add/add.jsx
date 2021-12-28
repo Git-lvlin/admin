@@ -287,7 +287,7 @@ const EditableTable = () => {
         newData.splice(index, 1, newRowData);
       }
       if(isSecond) {
-        let preIdx = newData.findIndex((item) => record.preParent === item.key);l
+        let preIdx = newData.findIndex((item) => record.preParent === item.key);
         newData[preIdx].children.splice(index, 1, newRowData);
       }
       if(isThird) {
