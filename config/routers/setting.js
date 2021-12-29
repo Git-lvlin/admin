@@ -28,5 +28,10 @@ export default {
       path: '/setting/shipments-area-configuration',
       component: './setting/shipments-area-configuration',
     },
+    {
+      name: 'switch-setting',
+      path: '/setting/switch-setting',
+      component: './setting/switch-setting',
+    },
   ]
 }

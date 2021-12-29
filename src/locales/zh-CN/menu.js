@@ -70,6 +70,7 @@ export default {
   'menu.setting.authority-management': '权限管理',
   'menu.setting.password': '修改密码',
   'menu.setting.shipments-area-configuration': '待发货区域配置',
+  'menu.setting.switch-setting': '设置',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
@@ -79,6 +80,9 @@ export default {
   'menu.intensive-activity-management.intensive-activity-audit-detail': '活动审核详情',
   'menu.intensive-activity-management.intensive-remind-configuration': '集约提醒配置',
   'menu.intensive-activity-management.intensive-remind-statistics': '集约提醒统计',
+  'menu.intensive-activity-management.platfor-bonus-percentage': '平台额外奖励比例',
+  'menu.intensive-activity-management.platfor-bonus-percentage-audit': '平台额外奖励比例审核',
+
 
 
 
@@ -127,6 +131,8 @@ export default {
   'menu.intensive-store-management.shop-area': '可开店区域配置',
   'menu.intensive-store-management.community-store-setting': '社区店设置',
   'menu.intensive-store-management.data-excel': '数据导出',
+  'menu.intensive-store-management.cancel-reason': '注销原因',
+
 
 
   'menu.single-contract-activity-management': '单约活动管理',
