@@ -346,6 +346,21 @@ export default (props) => {
             ]}
           />
           <ProFormRadio.Group
+            name="isSendSms"
+            label="发送短信状态"
+            rules={[{ required: true }]}
+            options={[
+              {
+                label: '开启',
+                value: 1,
+              },
+              {
+                label: '关闭',
+                value: 2,
+              },
+            ]}
+          />
+          <ProFormRadio.Group
             name="accountSwitch"
             label="是否需要开户认证"
             rules={[{ required: true }]}
