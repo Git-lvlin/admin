@@ -218,7 +218,7 @@ const PlatforBonusPercentage = () => {
       <div className={styles.header}>
         <p>* 平台总额外奖励占商品盈利比例：90%</p>
       </div>
-      <div style={{ display: 'flex', width: '100%', justifyContent:'space-between' }}>
+      <div style={{ display: 'flex', width: '100%' }}>
         <List onClick={(id) => { setSelectId(id);console.log('id',id) }} check={check} remove={remove} />
         {selectId && <List parentId={selectId} check={check} remove={remove} />}
       </div>
