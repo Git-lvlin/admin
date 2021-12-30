@@ -24,6 +24,7 @@ const ProductData = () => {
   const [orderType, setOrderType] = useState("15")
   const [loading, setLoading] = useState(false)
   const [visit, setVisit] = useState(false)
+  const [value, setValue] = useState(1)
   const [state, setState] = useState(0)
   const form = useRef()
 
@@ -36,9 +37,9 @@ const ProductData = () => {
       endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD"),
       orderType
     }).then(res=> {
-      setPieData(res?.data?.payRateList)
+      setPieData(res?.data?.rateList)
       setGoodsData(res?.data?.detailList)
-      setPayRate(Number(res?.data?.payRateList?.reduce((acc, cur) => acc + cur.payCount, 0)))
+      setPayRate(Number(res?.data?.rateList?.reduce((acc, cur) => acc + cur.payCount, 0)))
     }).finally(()=> {
       setLoading(false)
     })
@@ -90,31 +91,36 @@ const ProductData = () => {
     {
       title: ()=>(
         <Space>
-          <span>支付商品数量</span>
+          <span>SPU数量</span>
           <Tooltip title="当前分类下有成交过的商品SKU数量">
             <QuestionCircleOutlined/>
           </Tooltip>
         </Space>
       ),
-      dataIndex: 'payCount',
+      dataIndex: 'spuCount',
       align: 'center'
     },
     {
       title: ()=>(
         <Space>
-          <span>商品成交总数量</span>
+          <span>SKU数量</span>
           <Tooltip title="所有已支付订单中成交的商品件数总和">
             <QuestionCircleOutlined/>
           </Tooltip>
         </Space>
       ),
-      dataIndex: 'goodsSumNum',
+      dataIndex: 'skuCount',
+      align: 'center'
+    },
+    {
+      title: '各类品SKU占比',
+      dataIndex: '',
       align: 'center'
     },
     {
       title: ()=> (
         <Space>
-          <span>支付商品金额</span>
+          <span>商品销售额</span>
           <Tooltip title="当前分类下的商品，已支付商品金额总和">
             <QuestionCircleOutlined/>
           </Tooltip>
@@ -125,8 +131,8 @@ const ProductData = () => {
       render: (_) => amountTransform(Number(_), '/')
     },
     {
-      title: '退款商品数量',
-      dataIndex: 'returnNum',
+      title: '各品类销售额占比',
+      dataIndex: '',
       align: 'center'
     },
     {
@@ -299,8 +305,7 @@ const ProductData = () => {
       valueType: 'select',
       valueEnum: {
         "2": '秒约商品',
-        "15": '集约商品',
-        "11": '1688商品'
+        "15": '集约商品'
       },
       align: 'center',
       initialValue: "2",
@@ -336,6 +341,10 @@ const ProductData = () => {
     }
   }
 
+  const change = (e) => {
+    setValue(e.target.value)
+  }
+
   return (
     <PageContainer title={false}>
       <TableSearch 
@@ -357,7 +366,12 @@ const ProductData = () => {
           />
         </ProCard>
         <ProCard colSpan="30%">
-          <PieChart data={pieData} payRate={payRate}/>
+          <PieChart
+            data={pieData}
+            payRate={payRate}
+            value={value}
+            onChange={change}
+          />
         </ProCard>
       </ProCard>
       <div className={styles.goodsTable}>

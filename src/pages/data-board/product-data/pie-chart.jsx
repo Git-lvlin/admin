@@ -8,12 +8,18 @@ import {
 	getTheme,
   Legend
 } from "bizcharts"
+import { Radio } from 'antd'
 
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
 import { Empty } from 'antd'
 
-const PieChart = ({data, payRate}) => {
+const PieChart = ({
+  data,
+  payRate,
+  value,
+  onChange
+}) => {
 
   if(payRate !== 0) {
     data = data?.map(item=> ({payRate: Number(item.payCount) / payRate, ...item}))
@@ -37,7 +43,15 @@ const PieChart = ({data, payRate}) => {
 
   return (
     <>
-      <h3 className={styles.pieTitle}>商品分类支付占比</h3>
+      <h3 className={styles.pieTitle}>商品分类占比</h3>
+      <Radio.Group 
+        onChange={(e)=>onChange(e)}
+        value={value}
+        size="large"
+      >
+        <Radio value={1}>订单数</Radio>
+        <Radio value={2}>成交额</Radio>
+      </Radio.Group>
       {
         data?.[0]?
         <Chart 

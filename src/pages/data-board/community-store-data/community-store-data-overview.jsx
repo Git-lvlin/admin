@@ -119,7 +119,7 @@ const CommunityStoreDataOverview = () => {
             <Yuan>{data?.passApplyNum}</Yuan>
           </Title>
         </ProCard>
-        <ProCard bordered loading={loading}>
+        {/* <ProCard bordered loading={loading}>
           <Text>未审核通过的店主总数</Text>
           <Title level={3}>
             <Yuan>{data?.notAuditStoreNum}</Yuan>
@@ -130,7 +130,7 @@ const CommunityStoreDataOverview = () => {
           <Title level={3}>
             <Yuan>{data?.applyStoreCancelNum}</Yuan>
           </Title>
-        </ProCard>
+        </ProCard> */}
         <ProCard bordered loading={loading}>
           <Text>已注销的店主总数</Text>
           <Title level={3}>
