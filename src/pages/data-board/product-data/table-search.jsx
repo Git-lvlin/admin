@@ -94,10 +94,6 @@ const TableSearch = ({
           {
             label: '秒约商品',
             value: '2'
-          },
-          {
-            label: '代发商品',
-            value: '11'
           }
         ]}
       />
