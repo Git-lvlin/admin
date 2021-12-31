@@ -7,8 +7,9 @@ import ProForm, {
   ProFormDependency,
   ModalForm
 } from '@ant-design/pro-form';
-import * as api from '@/services/product-management/product-category'
+import { categoryPercentAudit } from '@/services/intensive-activity-management/platfor-bonus-percentage-audit'
 import styles from './style.less'
+import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
     labelCol: { span: 5 },
@@ -24,20 +25,29 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible, callback,formDetail} = props;
-  useEffect(() => {
-  }, [])
+  const { visible, setVisible, callback,formDetail,onClose} = props;
+  const checkConfirm = (rule, value, callback) => {
+    return new Promise(async (resolve, reject) => {
+      if (value && value.length < 5) {
+        await reject('最小长度为5')
+      } else if (value&&/[%&',;=?$\x22]/.test(value)) {
+        await reject('不可以含特殊字符')
+      } else {
+        await resolve()
+      }
+    })
+  }
   return (
     <ModalForm
       title='请确认审核平台额外奖励占比设置  （商品分类：百货美食）'
       onVisibleChange={setVisible}
       visible={visible}
       width={1000}
-      drawerProps={{
+      modalProps={{
         forceRender: true,
         destroyOnClose: true,
-        onClose: () => {
-          setVisible(false)
+        onCancel: () => {
+          onClose();
         }
       }}
       submitter={{
@@ -48,6 +58,17 @@ export default (props) => {
         },
         }}
         onFinish={async (values) => {
+          const params={
+            id:formDetail?.id,
+            storeAuditPercent:formDetail?.storeAuditPercent,
+            ...values
+          }
+          categoryPercentAudit(params).then(res=>{
+            if(res.code==0){
+              setVisible(false)
+              callback(true)
+            }
+          })
         }}
       className={styles.audit_model}
       {...formItemLayout}
@@ -60,8 +81,8 @@ export default (props) => {
             // labelCol={6}
             fieldProps={{
                 value:<>
-                       <p className={styles.percent}>90%</p>
-                       <p>运营中心占平台额外奖励<span className={styles.percent}>10%</span></p>
+                       <p className={styles.percent}>{amountTransform(parseFloat(formDetail?.storeAuditPercent), '*')}%</p>
+                       <p>运营中心占平台额外奖励<span className={styles.percent}>{amountTransform(parseFloat(formDetail?.operationPercent), '*')}%</span></p>
                       </>
             }}
         />
@@ -73,13 +94,13 @@ export default (props) => {
             // labelCol={5}
             fieldProps={{
                 value:<>
-                       <p className={styles.award}>80%</p>
-                       <p>运营中心占平台额外奖励<span className={styles.award}>10%</span></p>
+                       <p className={styles.award}>{amountTransform(parseFloat(formDetail?.storePercent), '*')}%</p>
+                       <p>运营中心占平台额外奖励<span className={styles.award}>{amountTransform(parseFloat(formDetail?.operationPercent), '*')}%</span></p>
                       </>
             }}
         />
          <ProFormRadio.Group
-                name="couponType"
+                name="type"
                 label='审核结果'
                 rules={[{ required: true, message: '请审核' }]}
                 options={[
@@ -89,24 +110,25 @@ export default (props) => {
                     },
                     {
                         label: '拒绝',
-                        value: 0,
+                        value: 2,
                     },
                 ]}
-                initialValue={0}
             />
-         <ProFormDependency name={['couponType']}>
-                {({ couponType }) => { 
-                if(couponType) return null
-                if(couponType==0){
+         <ProFormDependency name={['type']}>
+                {({ type }) => { 
+                if(type==1) return null
+                if(type==2){
                     return   <ProFormTextArea
                                 label='拒绝理由'
-                                name="couponRule"
+                                name="rejectionReason"
                                 style={{ minHeight: 32, marginTop: 15 }}
                                 placeholder='请输入拒绝理由 5-200个字以内 汉字、大小字母和常见标点符号'
-                                rules={[{ required: true, message: '请输入拒绝理由' }]}
+                                rules={[
+                                  { required: true, message: '请输入拒绝理由' },
+                                  { validator: checkConfirm }
+                                ]}
                                 rows={4}
                                 fieldProps={{
-                                    minLength:5,
                                     maxLength:200
                                 }}
                             />
