@@ -517,7 +517,7 @@ const OrderAnalysis = () => {
         tableRender={(_, dom) => (
           <>
             { dom }
-            <div className={styles.summary}>
+            <div className={styles.intensive}>
               <div>
                 <span>订单总金额：<Yuan>{amount?.[0]?.orderAmount}</Yuan></span>
                 <span>总批发量：<Yuan>{amount?.[0]?.wholesaleNum}</Yuan></span>
