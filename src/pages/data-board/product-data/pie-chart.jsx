@@ -16,16 +16,9 @@ import { Empty } from 'antd'
 
 const PieChart = ({
   data,
-  payRate,
   value,
   onChange
 }) => {
-
-  if(payRate !== 0) {
-    data = data?.map(item=> ({payRate: Number(item.payCount) / payRate, ...item}))
-  } else {
-    data = data?.map(item=> ({payRate: 0, ...item}))
-  }
  
   const colors = data?.reduce((pre, cur, idx) => {
     pre[cur.item] = getTheme().colors10[idx]
@@ -33,7 +26,7 @@ const PieChart = ({
   }, {})
 
   const cols = {
-    payRate: {
+    rate: {
       formatter: (val) => {
         val = Math.round(amountTransform(Number(val), '*')) + "%"
         return val
@@ -49,23 +42,26 @@ const PieChart = ({
         value={value}
         size="large"
       >
-        <Radio value={1}>订单数</Radio>
-        <Radio value={2}>成交额</Radio>
+        <Radio value={'1'}>SKU占比</Radio>
+        <Radio value={'2'}>销售额占比</Radio>
       </Radio.Group>
       {
         data?.[0]?
         <Chart 
           height={400}
           data={data}
-          scale={cols}
           interactions={['element-active']}
           autoFit
+          scale={cols}
+          onGetG2Instance={ c => {
+            c.removeInteraction('legend-filter')
+          }}
         >
-          <Coordinate type="theta" radius={0.75} />
+          <Coordinate type="theta" radius={0.8} />
           <Tooltip showTitle={false} />
           <Axis visible={false} />
           <Interval
-            position="payRate"
+            position="rate"
             adjust="stack"
             color="gcName"
             style={{
@@ -77,9 +73,6 @@ const PieChart = ({
               (item) => {
                 return {
                   offset: 20,
-                  content: (data) => {
-                    return `${data.gcName}\n ${Math.round(amountTransform(Number(data.payRate), '*'))}%`
-                  },
                   style: {
                     fill: colors[item]
                   }
@@ -87,20 +80,13 @@ const PieChart = ({
               }
             ]}
           />
-          <Legend
-            layout="horizontal"
-            padding={[60, 0, 0, 0]}
-            itemName={{
-              style: {
-                fontSize: 16
-              }
-            }}
-          />
+          <Legend visible={false}/>
         </Chart>:
         <Empty/>
       }
     </>
   )
 }
+
 
 export default PieChart
