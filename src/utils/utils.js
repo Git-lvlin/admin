@@ -231,7 +231,7 @@ export const getTimeDistance = (type) => {
   if (type === 'last-month') {
     const month = now.getMonth();
     return [
-      moment(`${year}-${fixedZero(month)}-01 00:00:00`),
+      moment(`${year - 1}-${fixedZero(month + 1)}-01 00:00:00`),
       moment(moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`).valueOf() - 1000),
     ];
   }
