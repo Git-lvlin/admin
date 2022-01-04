@@ -46,5 +46,27 @@ export default {
             }
           ]
       },
+      {
+        name: 'spring-festival-build-building-activity',
+        path: '/activity-management/spring-festival-build-building-activity',
+        routes: [
+            {
+              name: 'spring-festival-list',
+              path: '/activity-management/spring-festival-build-building-activity/spring-festival-list',
+              component: './activity-management/spring-festival-build-building-activity/spring-festival-list'
+            },
+            // {
+            //   name: 'activity-data',
+            //   path: '/activity-management/spring-festival-build-building-activity/activity-data',
+            //   component: './activity-management/spring-festival-build-building-activity/activity-data'
+            // },
+            {
+              name: 'rule-configuration',
+              path: '/activity-management/spring-festival-build-building-activity/rule-configuration',
+              component: './activity-management/spring-festival-build-building-activity/rule-configuration',
+              hideInMenu: true
+            }
+          ]
+      },
     ]
   }

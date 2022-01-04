@@ -3,42 +3,40 @@ import { Form } from 'antd';
 import ProForm, {
   DrawerForm,
 } from '@ant-design/pro-form';
-import * as api from '@/services/product-management/product-category'
+import { categoryPercentLog } from '@/services/intensive-activity-management/platfor-bonus-percentage'
 import ProTable from '@ant-design/pro-table';
 
 export default (props) => {
-  const { visible, setVisible, callback, data, id, type} = props;
-  useEffect(() => {
-  }, [])
+  const { visible, setVisible, logId,onClose} = props;
   const columns= [
     {
         title: '序号',
-        dataIndex: 'spuId',
+        dataIndex: 'groupId',
     },
     {
         title: '操作角色',
-        dataIndex: 'goodsImageUrl', 
+        dataIndex: 'groupName', 
         valueType: 'text'
     },
     {
         title: '操作人名称',
-        dataIndex: 'goodsName',
+        dataIndex: 'operatorName',
         valueType: 'text',
         ellipsis:true
     },
     {
         title: '操作动作',
-        dataIndex: 'gcId1Display',
+        dataIndex: 'typeName',
         valueType: 'text',
     },
     {
         title: '操作说明',
-        dataIndex: 'brandName',
+        dataIndex: 'logMsg',
         valueType: 'text',
     },
     {
         title: '操作时间',
-        dataIndex: 'stockNum',
+        dataIndex: 'time',
     },
 ];
   return (
@@ -56,16 +54,19 @@ export default (props) => {
       }}
       submitter={{
         render: (props, defaultDoms) => {
-            return [];
+            return ([]);
         },
         }}
     >
       <ProTable
           toolBarRender={false}
           search={false}
-          rowKey="spuId"
+          rowKey="id"
+          params={{
+            id:logId
+          }}
           columns={columns}
-          // request={commonSpuList}
+          request={categoryPercentLog}
           pagination={{
             pageSize: 10,
             showQuickJumper: true,

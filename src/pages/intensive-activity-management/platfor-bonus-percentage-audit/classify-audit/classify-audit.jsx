@@ -1,72 +1,77 @@
 import React, { useEffect, useState,useRef } from 'react'
 import { Spin, Empty, Switch,Form } from 'antd'
-import * as api from '@/services/product-management/product-category'
+import { categoryAuditList } from '@/services/intensive-activity-management/platfor-bonus-percentage-audit'
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import Journal from './journal';
 import styles from './style.less'
 import ProTable from '@ant-design/pro-table';
 import AuditModel from './audit-model'
-import { audit } from 'rxjs';
+import { amountTransform } from '@/utils/utils'
 
 
-const List = (props) => {
+const Category = (props) => {
   const { parentId = 0, onClick = () => { }, check,audit } = props;
-  const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [auditVisible, setAuditVisible] = useState(false);
+  const [formDetail, setFormDetail] = useState({})
+  const [logId, setLogId] = useState({})
   const actionRef=useRef()
-  const [form] = Form.useForm();
-  const defaultData= [
-    {
-      id: 624748504,
-      imges:'https://images.pexels.com/photos/8642176/pexels-photo-8642176.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-      title: '乡村振兴',
-      ratio: 80,
-      state: '1',
-      explain: '店主：80%',
-    },
-    {
-      id: 624691229,
-      imges:'https://images.pexels.com/photos/10253213/pexels-photo-10253213.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-      title: '百货商品',
-      ratio: 90,
-      state: '2',
-      explain: '运营中心：20%',
-    },
-  ];
   const columns = [
     {
+      title: 'id',
+      dataIndex: 'id',
+      editable:false,
+      hideInTable:true
+    },
+    {
       title: '分类图片',
-      dataIndex: 'imges',
+      dataIndex: 'gcIcon',
       valueType: 'image',
       editable:false,
     },
     {
       title: '分类名称',
-      dataIndex: 'title',
+      dataIndex: 'gcName',
       editable:false,
       render: (_,r) =>{
-        return <p onClick={()=>onClick(r.id)}>{_}</p>
+        if(parentId){
+          return <p>{_}</p>
+        }else{
+          return <p style={{cursor:'pointer'}} onClick={()=>onClick(r.id)}>{_}</p>
+        }
       }
     },
     {
       title: '店主额外奖励占总额外奖励比例',
-      dataIndex: 'ratio',
-      valueType: 'percent'
+      dataIndex: 'storePercent',
+      valueType: 'text',
+      render: (_,r) =>{
+        return <p>{amountTransform(parseFloat(_), '*')}%</p>
+      }
     },
     {
       title: '额外奖励说明',
-      dataIndex: 'explain',
+      dataIndex: 'percentAuditStatusDesc',
       valueType: 'text',
       editable:false,
+      render:(_,r)=>{
+        return <>
+                <p>店主：{amountTransform(parseFloat(r?.storePercent), '*')}%</p>
+                <p>运营中心：{amountTransform(parseFloat(r?.operationPercent), '*')}%</p>
+               </>
+      }
     },
     {
       title: '更新状态',
-      dataIndex: 'state',
+      dataIndex: 'percentAuditStatus',
       valueType: 'select',
-      valueEnum: {
-        0: '全部',
-        1: '待审核(店主占90%)',
-        2: '审核拒绝(拒绝原因)',
-        3: '审核通过'
+      render: (_,r) =>{
+        return <>
+                <p>{r?.percentAuditStatus==0&&'未修改'}</p>
+                <p>{r?.percentAuditStatus==1&&'审核通过'}</p>
+                <p>{r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}</p>
+                <p>{r?.percentAuditStatus==3&&`待审核(店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%)}`}</p>
+               </>
       },
       editable:false
     },
@@ -74,22 +79,27 @@ const List = (props) => {
       title: '操作',
       valueType: 'option',
       render: (text, record, _, action) => [
-        <a
-          key="editable"
-          onClick={() => {
-           audit(record)
-          }}
-        >
-          审核
-        </a>,
-        <a  onClick={()=>check(record.id)}>日志</a>
+        <div key="audit">
+          {
+             record?.percentAuditStatus==3&&<a
+             key="editable"
+             onClick={() => {
+              setAuditVisible(true)
+              setFormDetail(record)
+             }}
+           >
+             审核
+           </a>
+          }
+        </div>,
+        <a key='log' onClick={()=>{
+          setLogId(record.id)
+          setVisible(true)
+        }}>日志</a>
       ],
     },
   ];
   return (
-    <Spin
-      spinning={loading}
-    >
       <div style={{ marginRight: 50 }}>
         <ProTable
           rowKey="id"
@@ -97,56 +107,42 @@ const List = (props) => {
           headerTitle={`${parentId?'二':'一'}级分类`}
           maxLength={5}
           columns={columns}
-          request={async () => ({
-            data: defaultData,
-            total: 3,
-            success: true,
-          })}
+          params={{
+            isPercentAudit:2,
+            gcParentId:parentId?parentId:0
+          }}
+          request={categoryAuditList}
           options={false}
           search={false}
-          style={{width:'800px'}}
-          pagination={{
-            pageSize: 10,
-        }}
+          style={{width:'800px',height:'600px',overflowY:'scroll',background:'#fff'}}
+          pagination={false}
       />
-      </div>
-    </Spin>
-  )
-}
-
-export default () => {
-  const [visible, setVisible] = useState(false);
-  const [auditVisible, setAuditVisible] = useState(false);
-  const [selectId, setSelectId] = useState(null);
-  const [formParams, setFormParams] = useState({})
-  const [formDetail , setFormDetail ] = useState({})
-
-  const check = (params) => {
-    setFormParams(params)
-    setVisible(true)
-  }
-
-  const audit = (detail) => {
-    setAuditVisible(true)
-    setFormDetail(detail)
-  }
-
-  return (
-    <>
-      <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-        <List onClick={(id) => { setSelectId(id);console.log('id',id) }} check={check} audit={audit} />
-        {selectId && <List parentId={selectId} check={check} audit={audit} />}
-      </div>
       {visible && <Journal
         visible={visible}
         setVisible={setVisible}
-        {...formParams}
+        logId={logId}
+        onClose={()=>{actionRef.current.reload();setLogId(null)}}
       />}
       {auditVisible && <AuditModel
         visible={auditVisible}
         setVisible={setAuditVisible}
-        {...formDetail}
+        formDetail={formDetail}
+        onClose={()=>{actionRef.current.reload();setFormDetail(null)}}
+        callback={()=>{actionRef.current.reload();setFormDetail(null)}}
       />}
+      </div>
+  )
+}
+
+export default () => {
+  const [selectId, setSelectId] = useState(null);
+  return (
+    <>
+      <div style={{ display: 'flex', width: '100%' }}>
+        <Category onClick={(id) => { setSelectId(id)}}/>
+        {selectId && <Category parentId={selectId}/>}
+      </div>
+
     </>
   )
 }

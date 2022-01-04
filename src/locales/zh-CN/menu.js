@@ -329,4 +329,7 @@ export default {
   'menu.activity-management.share-red-packet-activity.activity-list': '活动列表',
   'menu.activity-management.share-red-packet-activity.share-packet-rule': '分享领红包活动规则设置',
   'menu.activity-management.share-red-packet-activity.activity-data': '活动数据',
+  'menu.activity-management.spring-festival-build-building-activity': '新春盖楼活动',
+  'menu.activity-management.spring-festival-build-building-activity.spring-festival-list': '活动列表',
+  'menu.activity-management.spring-festival-build-building-activity.rule-configuration': '规则配置',
 };
