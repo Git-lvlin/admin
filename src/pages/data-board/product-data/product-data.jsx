@@ -11,7 +11,7 @@ import TableSearch from './table-search'
 import { getTimeDistance } from '@/utils/utils'
 import styles from './styles.less'
 import GcCascader from '@/components/gc-cascader'
-import { timeGoodType, goodDetail } from '@/services/data-board/product-data'
+import { timeGoodType, goodDetail, goodsRateData } from '@/services/data-board/product-data'
 import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -20,11 +20,10 @@ const ProductData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('yesterday'))
   const [goodsData, setGoodsData] = useState([])
   const [pieData, setPieData] = useState([])
-  const [payRate, setPayRate] = useState(0)
-  const [orderType, setOrderType] = useState("15")
+  const [orderType, setOrderType] = useState("1")
   const [loading, setLoading] = useState(false)
   const [visit, setVisit] = useState(false)
-  const [value, setValue] = useState(1)
+  const [value, setValue] = useState('1')
   const [state, setState] = useState(0)
   const form = useRef()
 
@@ -37,24 +36,35 @@ const ProductData = () => {
       endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD"),
       orderType
     }).then(res=> {
-      setPieData(res?.data?.rateList)
       setGoodsData(res?.data?.detailList)
-      setPayRate(Number(res?.data?.rateList?.reduce((acc, cur) => acc + cur.payCount, 0)))
     }).finally(()=> {
       setLoading(false)
     })
     return ()=> {
       setGoodsData([])
-      setPieData([])
     }
   }, [rangePickerValue, orderType])
+
+  useEffect(() => {
+    goodsRateData({
+      startTime: moment(rangePickerValue?.[0]).format("YYYY-MM-DD"),
+      endTime: moment(rangePickerValue?.[1]).format("YYYY-MM-DD"),
+      type: value,
+      orderType
+    }).then(res=>{
+      setPieData(res?.data)
+    })
+    return () => {
+      setPieData([])
+    }
+  }, [value, orderType, rangePickerValue])
 
   const isActive = (type) => {
     if (!rangePickerValue) {
       return ''
     }
 
-    const value = getTimeDistance(type);
+    const value = getTimeDistance(type)
 
     if (!value) {
       return ''
@@ -113,8 +123,18 @@ const ProductData = () => {
       align: 'center'
     },
     {
-      title: '各类品SKU占比',
-      dataIndex: '',
+      title: '各品类SKU占比',
+      dataIndex: 'skuRate',
+      align: 'center'
+    },
+    {
+      title: '成交SKU数',
+      dataIndex: 'paySkuCount',
+      align: 'center'
+    },
+    {
+      title: '成交SKU占比',
+      dataIndex: 'paySkuRatio',
       align: 'center'
     },
     {
@@ -128,12 +148,40 @@ const ProductData = () => {
       ),
       dataIndex: 'payAmount',
       align: 'center',
+      hideInTable: orderType === '15',
       render: (_) => amountTransform(Number(_), '/')
     },
     {
+      title: ()=> (
+        <Space>
+          <span>商品销售额</span>
+          <Tooltip title="当前分类下的商品，已支付商品金额总和">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      align: 'center',
+      hideInTable: orderType !== '15',
+      children: [
+        {
+          title: 'B端销售额',
+          dataIndex: 'bPayAmount',
+          align: 'center',
+          render: (_) => amountTransform(Number(_), '/')
+        },
+        {
+          title: 'C端销售额',
+          dataIndex: 'cPayAmount',
+          align: 'center',
+          render: (_) => amountTransform(Number(_), '/')
+        }
+      ]
+    },
+    {
       title: '各品类销售额占比',
-      dataIndex: '',
-      align: 'center'
+      align: 'center',
+      dataIndex: 'bPayRate',
+      hideInTable: orderType !== '15'
     },
     {
       title: '退款商品金额',
@@ -157,13 +205,13 @@ const ProductData = () => {
     },
     {
       title: '商品编码',
-      dataIndex: 'skuId',
+      dataIndex: 'spuId',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '商品编码',
-      dataIndex: 'skuId',
+      dataIndex: 'spuId',
       align: 'center',
       valueType: 'digit',
       hideInTable: true
@@ -173,12 +221,6 @@ const ProductData = () => {
       dataIndex: 'goodsName',
       align: 'center',
       width: '15%'
-    },
-    {
-      title: '规格',
-      dataIndex: 'skuName',
-      align: 'center',
-      hideInSearch: true
     },
     {
       title: ()=>(
@@ -360,6 +402,7 @@ const ProductData = () => {
             rowKey="gcName"
             columns={goodsCategory}
             dataSource={goodsData}
+            bordered
             pagination={false}
             search={false}
             toolBarRender={false}
@@ -368,7 +411,6 @@ const ProductData = () => {
         <ProCard colSpan="30%">
           <PieChart
             data={pieData}
-            payRate={payRate}
             value={value}
             onChange={change}
           />
