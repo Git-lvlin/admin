@@ -9,7 +9,7 @@ const { RangePicker } = DatePicker
 const TableSearch = ({
   rangePickerValue,
   isActive,
-  handleRangePickerChange,
+   handleRangePickerChange,
   selectDate,
   selectType
 }) => {
@@ -82,11 +82,15 @@ const TableSearch = ({
         name="type"
         label="商品类型"
         width="md"
-        initialValue="15"
+        initialValue="1"
         proFieldProps={{
           allowClear: false
         }}
         options={[
+          {
+            label: '全部商品',
+            value: '1'
+          },
           {
             label: '集约商品',
             value: '15'
@@ -94,10 +98,6 @@ const TableSearch = ({
           {
             label: '秒约商品',
             value: '2'
-          },
-          {
-            label: '代发商品',
-            value: '11'
           }
         ]}
       />
