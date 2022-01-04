@@ -241,7 +241,8 @@ export default (props) => {
         accountSwitch: 1,
         status: 1,
         defaultWholesaleTaxRate: 13,
-        warrantyRatio: 10
+        warrantyRatio: 10,
+        isSendSms: 2,
       }}
       {...formItemLayout}
     >
