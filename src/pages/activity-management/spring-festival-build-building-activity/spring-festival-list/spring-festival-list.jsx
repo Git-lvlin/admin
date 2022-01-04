@@ -2,10 +2,11 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { couponEverydayList } from '@/services/activity-management/everyday-red-packet-activity';
+import { getActiveConfigList } from '@/services/activity-management/spring-festival-build-building-activity';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
+import moment from 'moment'
 
 
 
@@ -19,10 +20,10 @@ export default () => {
       },
       {
         title: '活动时间',
-        dataIndex: 'activityStartTime',
+        dataIndex: 'startTime',
         valueType: 'text',
         render:(_,data)=>{
-          return <p>{data.activityStartTime} 至 {data.activityEndTime}</p>
+          return <p>{moment(data.startTime).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(data.endTime).format('YYYY-MM-DD HH:mm:ss')}</p>
         }
       },
       {
@@ -47,22 +48,15 @@ export default () => {
       },
       {
         title: '活动状态',
-        dataIndex: 'activityStatus',
-        valueType: 'select',
-        valueEnum: {
-          0: '全部',
-          2: '进行中',
-          3: '未开始',
-          4: '已结束',
-          5: '已删除',
-        }
+        dataIndex: 'statusDisplay',
+        valueType: 'text'
       },
       {
         title: '操作',
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a key='detail' onClick={()=>history.push('/activity-management/everyday-red-packet-activity/everyday-packet-rule?id='+record.id)}>查看详情</a>
+            <a key='detail' onClick={()=>history.push('/activity-management/spring-festival-build-building-activity/rule-configuration?id='+record.id)}>查看详情</a>
         ],
       }, 
     ];
@@ -73,7 +67,7 @@ export default () => {
           rowKey="id"
           headerTitle="活动列表"
           options={false}
-          request={couponEverydayList}
+          request={getActiveConfigList}
           toolBarRender={()=>[
             <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/activity-management/spring-festival-build-building-activity/rule-configuration')} type="primary">
                 添加活动
