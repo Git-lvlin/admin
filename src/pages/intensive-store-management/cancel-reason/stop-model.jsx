@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-import { Form,message } from 'antd';
+import { Form,message,  Button } from 'antd';
 import ProForm, {
-  ProFormTextArea,
-  ProFormRadio,
   ModalForm,
   ProFormText
 } from '@ant-design/pro-form';
 import { cancelReasonUpdate} from '@/services/intensive-store-management/cancel-reason';
+import { ExclamationCircleOutlined,QuestionCircleOutlined} from '@ant-design/icons';
 
 
 const formItemLayout = {
@@ -34,7 +33,7 @@ export default (props) => {
   }, [])
   return (
     <ModalForm
-      title='禁用操作'
+      title='确认提示'
       onVisibleChange={setVisible}
       visible={visible}
       width={1000}
@@ -49,7 +48,14 @@ export default (props) => {
       submitter={{
         render: (props, defaultDoms) => {
             return [
-            ...defaultDoms
+              <Button  key="cacnl" onClick={() =>{setVisible(false);onClose()}}>
+                  {formDetail?.status?.code==1?'暂不禁用':'暂不启用'}
+              </Button>,
+              <Button  type="primary" key="submit" onClick={() => {
+                  props.form?.submit?.()
+                }}>
+                  {formDetail?.status?.code==1?'确认禁用':'确认启用'}
+              </Button>
             ];
         },
         }}
@@ -65,7 +71,10 @@ export default (props) => {
         }}
       {...formItemLayout}
     >
-        <p>{formDetail?.status?.code==1?'确定禁用吗！！！':'确定启用吗！！！'}</p>
+        <p><QuestionCircleOutlined style={{color:'#FEA82F'}}/> {formDetail?.status?.code==1?`是否确定禁用注销原因：${formDetail?.reason} ？`:`是否确定启用注销原因：${formDetail?.reason} ？`}</p>
+        <p style={{color:'#999999',fontSize:'10px'}}> {formDetail?.status?.code==1?'确认后店主注销店铺选择原因时将没有此项，请确认！':'确认后店主注销店铺选择原因时将有此项，请确认！'}</p>
+        
+
         <ProFormText 
           width="md"
           name="id"

@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Input, Form, message,Button,InputNumber,Spin,Space,Descriptions, Badge} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
-import { couponInviteSub,couponInviteEdit,couponInviteDetail,couponInviteSelList } from '@/services/activity-management/share-red-packet-activity';
+import { saveBHActiveConfig,getActiveConfigById } from '@/services/activity-management/spring-festival-build-building-activity';
 import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDatePicker,ProFormSelect} from '@ant-design/pro-form';
 import { FormattedMessage, formatMessage } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -47,15 +47,15 @@ export default (props) =>{
   )
  
   useEffect(() => {
-      couponInviteSelList({}).then(res=>{
-        const data={}
-        res.data.map(ele=>(
-          data[ele.couponId]=ele.name
-        ))
-        setOnselect(data)
-      })
+      // couponInviteSelList({}).then(res=>{
+      //   const data={}
+      //   res.data.map(ele=>(
+      //     data[ele.couponId]=ele.name
+      //   ))
+      //   setOnselect(data)
+      // })
     if(id){
-      couponInviteDetail({id:id}).then(res=>{
+      getActiveConfigById({id:id}).then(res=>{
       const list=[
         {
           id:1,
@@ -67,7 +67,7 @@ export default (props) =>{
       ]
       setDetailList({data:res.data,scopeList:list})
       form.setFieldsValue({
-        dateRange: [res.data?.activityStartTime, res.data?.activityEndTime],
+        dateRange: [res.data?.startTime, res.data?.endTime],
         ...res.data
       })
     })
@@ -75,32 +75,108 @@ export default (props) =>{
   }, [falg,dataSource,loading])
   const onsubmit=values=>{
      try {
-      values.activityStartTime = values.dateRange ? values.dateRange[0] : null
-      values.activityEndTime= values.dateRange ? values.dateRange[1] : null
-      delete values.dateRange
-
-      if(id){
-        couponInviteEdit({id:id,...values}).then(res=>{
-          if(res.code==0){
-            message.success('编辑成功');
-            history.push('/activity-management/share-red-packet-activity/activity-list')
+       const params={
+        id:id?id:0,
+        startTime:values.dateRange ? values.dateRange[0] : null,
+        endTime:values.dateRange ? values.dateRange[1] : null,
+        name:values.name,
+        status:values.status,
+        moneyAll:values.moneyAll,
+        moneyDay:values.moneyDay,
+        sendPlayTime:values.sendPlayTime,
+        withdrawTime:values.withdrawTime,
+        validiteHour:values.validiteHour,
+        testNum:values.testNum,
+        imgUrl:values.imgUrl,
+        ruleText:values.ruleText,
+        virtualNum:values.virtualNum,
+        rewardsSet:{
+          luckyOne:{
+            prizeNum:'',
+            prizeMoney:'',
+            prizePhones:''
+          },
+          tiersSet:[
+            {
+            tierStart:3,
+            tierEnd:values.tierEnd1,
+            general:{
+              probability:values.general_probability1,
+              moneyRange:[values.general_moneyRange1_win1,values.general_moneyRange1_win2,values.general_moneyRange1_win3,values.general_moneyRange1_win4]
+            },
+            lucky:{
+              probability:values.lucky_probability1,
+              moneyRange:[values.lucky_moneyRange1_win1,values.lucky_moneyRange1_win2,values.lucky_moneyRange1_win3,values.lucky_moneyRange1_win4]
+            },
+            losing:{
+              probability:100-(values.general_probability1+values.lucky_probability1)
+            }
+          },
+          {
+            tierStart:10,
+            tierEnd:values.tierEnd2,
+            general:{
+              probability:values.general_probability2,
+              moneyRange:[values.general_moneyRange2_win1,values.general_moneyRange2_win2,values.general_moneyRange2_win3,values.general_moneyRange2_win4]
+            },
+            lucky:{
+              probability:values.lucky_probability2,
+              moneyRange:[values.lucky_moneyRange2_win1,values.lucky_moneyRange2_win2,values.lucky_moneyRange2_win3,values.lucky_moneyRange2_win4]
+            },
+            losing:{
+              probability:100-(values.general_probability2+values.lucky_probability2)
+            }
+          },
+          {
+            tierStart:16,
+            tierEnd:values.tierEnd3,
+            general:{
+              probability:values.general_probability3,
+              moneyRange:[values.general_moneyRange3_win1,values.general_moneyRange3_win2,values.general_moneyRange3_win3,values.general_moneyRange3_win4]
+            },
+            lucky:{
+              probability:values.lucky_probability3,
+              moneyRange:[values.lucky_moneyRange3_win1,values.lucky_moneyRange3_win2,values.lucky_moneyRange3_win3,values.lucky_moneyRange3_win4]
+            },
+            losing:{
+              probability:100-(values.general_probability3+values.lucky_probability3)
+            }
+          },
+          {
+            tierStart:21,
+            tierEnd:values.tierEnd4,
+            general:{
+              probability:values.general_probability4,
+              moneyRange:[values.general_moneyRange4_win1,values.general_moneyRange4_win2,values.general_moneyRange4_win3,values.general_moneyRange4_win4]
+            },
+            lucky:{
+              probability:values.lucky_probability4,
+              moneyRange:[values.lucky_moneyRange4_win1,values.lucky_moneyRange4_win2,values.lucky_moneyRange4_win3,values.lucky_moneyRange4_win4]
+            },
+            losing:{
+              probability:100-(values.general_probability4+values.lucky_probability4)
+            }
           }
-        })
-      }else{
-        values.couponIdOne=dataSource[0].couponIdOne
-        values.couponIdTwo=dataSource[0].couponIdTwo
-        values.couponIdThree=dataSource[0].couponIdThree
-        values.inviteSecond=referrerNum1
-        values.inviteThird=parseInt(referrerNum1+1)
-        values.inviteFour=referrerNum2
-        values.inviteFive=parseInt(referrerNum2+1)
-        couponInviteSub({...values}).then(res=>{
+        ]
+        },
+        accessGain:{
+          inviteFriends:{
+            inviteNum:values.inviteNum,
+            prizeNum:values.prizeNum
+          },
+          friendPlay:{
+            playerNum:values.playerNum,
+            prizeNum:values.prizeNum
+          }
+        }
+       }
+       console.log('params',params)
+        saveBHActiveConfig(params).then(res=>{
           if(res.code==0){
             message.success('添加成功'); 
-            history.push('/activity-management/share-red-packet-activity/activity-list')
+            history.push('/activity-management/spring-festival-build-building-activity/spring-festival-list')
           }
         })
-      }
        
      } catch (error) {
        console.log('error',error)
@@ -177,7 +253,7 @@ export default (props) =>{
               rules={[{ required: true, message: '请选择活动时间' }]}
               readonly
               fieldProps={{
-                value:detailList?.data?.activityStartTime +' 至 '+detailList?.data?.activityEndTime
+                value:detailList?.data?.startTime +' 至 '+detailList?.data?.endTime
               }}
             />  
           : <ProFormDateTimeRangePicker
@@ -216,7 +292,7 @@ export default (props) =>{
                     <Space>
                       <sapn>3-</sapn>
                       <Form.Item
-                        name="cen"
+                        name="tierEnd1"
                       >
                       <Input style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
@@ -227,7 +303,7 @@ export default (props) =>{
                     <Space>
                       <sapn>10-</sapn>
                       <Form.Item
-                        name="cen"
+                        name="tierEnd2"
                       >
                       <Input style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
@@ -238,7 +314,7 @@ export default (props) =>{
                     <Space>
                       <sapn>16-</sapn>
                       <Form.Item
-                        name="cen"
+                        name="tierEnd3"
                       >
                       <Input style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
@@ -249,7 +325,7 @@ export default (props) =>{
                   <Space>
                       <sapn>21-</sapn>
                       <Form.Item
-                        name="cen"
+                        name="tierEnd4"
                       >
                       <Input style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
@@ -263,7 +339,7 @@ export default (props) =>{
                     <Space>
                       <sapn>概率</sapn>
                       <Form.Item
-                        name="cen"
+                        name="general_probability1"
                       >
                       <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -271,22 +347,22 @@ export default (props) =>{
                     </Space>
                     <Space>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange1_win1"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange1_win2"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange1_win3"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange1_win4"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -296,7 +372,7 @@ export default (props) =>{
                     <Space>
                       <sapn>概率</sapn>
                       <Form.Item
-                        name="cen"
+                        name="general_probability2"
                       >
                       <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -304,22 +380,22 @@ export default (props) =>{
                     </Space>
                     <Space>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange2_win1"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange2_win2"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange2_win3"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange2_win4"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -329,7 +405,7 @@ export default (props) =>{
                     <Space>
                       <sapn>概率</sapn>
                       <Form.Item
-                        name="cen"
+                        name="general_probability3"
                       >
                       <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -337,22 +413,22 @@ export default (props) =>{
                     </Space>
                     <Space>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange3_win1"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange3_win2"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange3_win3"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange3_win4"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -362,7 +438,7 @@ export default (props) =>{
                     <Space>
                       <sapn>概率</sapn>
                       <Form.Item
-                        name="cen"
+                        name="general_probability4"
                       >
                       <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -370,22 +446,22 @@ export default (props) =>{
                     </Space>
                     <Space>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange4_win1"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange4_win2"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange4_win3"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="general_moneyRange4_win4"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -398,7 +474,7 @@ export default (props) =>{
                     <Space>
                       <sapn>概率</sapn>
                       <Form.Item
-                        name="cen"
+                        name="lucky_probability1"
                       >
                       <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -406,22 +482,22 @@ export default (props) =>{
                     </Space>
                     <Space>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange1_win1"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange1_win2"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange1_win3"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange1_win4"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -431,7 +507,7 @@ export default (props) =>{
                     <Space>
                       <sapn>概率</sapn>
                       <Form.Item
-                        name="cen"
+                        name="lucky_probability2"
                       >
                       <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -439,22 +515,22 @@ export default (props) =>{
                     </Space>
                     <Space>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange2_win1"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange2_win2"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange2_win3"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange2_win4"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -464,7 +540,7 @@ export default (props) =>{
                     <Space>
                       <sapn>概率</sapn>
                       <Form.Item
-                        name="cen"
+                        name="lucky_probability3"
                       >
                       <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -472,22 +548,22 @@ export default (props) =>{
                     </Space>
                     <Space>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange3_win1"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange3_win2"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange3_win3"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange3_win4"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -497,7 +573,7 @@ export default (props) =>{
                     <Space>
                       <sapn>概率</sapn>
                       <Form.Item
-                        name="cen"
+                        name="lucky_probability4"
                       >
                       <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -505,22 +581,22 @@ export default (props) =>{
                     </Space>
                     <Space>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange4_win1"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange4_win2"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange4_win3"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
-                        name="cen"
+                        name="lucky_moneyRange4_win4"
                       >
                        <Input style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
@@ -554,7 +630,7 @@ export default (props) =>{
           </ProCard>
           <ProFormText
             width="sm"
-            name="maxNum"
+            name="moneyAll"
             label="最高累计限额"
             rules={[{ required: true, message: '请输入' }]}
             readonly={!falg||id}
@@ -565,7 +641,7 @@ export default (props) =>{
           <ProFormText
             width="sm"
             label="每天限额"
-            name="maxNum"
+            name="moneyDay"
             readonly={!falg||id}
             rules={[{ required: true, message: '请输入' }]}
             fieldProps={{
@@ -574,7 +650,7 @@ export default (props) =>{
           />
           <ProFormText
             width="sm"
-            name="maxNum"
+            name="sendPlayTime"
             label="每人赠送游戏机会"
             readonly={!falg||id}
             rules={[{ required: true, message: '请输入' }]}
@@ -584,12 +660,12 @@ export default (props) =>{
             />
           <ProFormDatePicker
             label="能提现有效期"
-            name="expireTime"
+            name="withdrawTime"
             rules={[{ required: true, message: '请选择一个日期' }]}
           />
           <ProForm.Group>
           <ProFormSelect
-            name="signInNum"
+            name="inviteNum"
             initialValue={1}
             labelCol={3}
             width="sm"
@@ -625,7 +701,7 @@ export default (props) =>{
           />
           <span>奖励游戏机会</span>
           <ProFormSelect
-              name="signInNum"
+              name="prizeNum"
               initialValue={1}
               width="sm"
               // labelCol={3}
@@ -662,7 +738,7 @@ export default (props) =>{
         </ProForm.Group>
            <ProFormText
             width="sm"
-            name="maxNum"
+            name="validiteHour"
             label="获得机会有效期"
             readonly={!falg||id}
             rules={[{ required: true, message: '请输入' }]}
@@ -672,7 +748,7 @@ export default (props) =>{
             />
           <ProFormText
             width="sm"
-            name="maxNum"
+            name="testNum"
             label="试玩次数"
             readonly={!falg||id}
             rules={[{ required: true, message: '请输入' }]}
@@ -682,7 +758,7 @@ export default (props) =>{
             />
           <ProFormText
             width="lg"
-            name="maxNum"
+            name="prizeNum"
             label="被邀请人玩游戏"
             readonly={!falg||id}
             rules={[{ required: true, message: '请输入' }]}
@@ -693,7 +769,7 @@ export default (props) =>{
             />
           <ProFormText
             width="sm"
-            name="maxNum"
+            name="prizeNum"
             label="参与活动"
             // labelCol={3}
             readonly={!falg||id}
@@ -704,7 +780,7 @@ export default (props) =>{
             />
           <Form.Item
             label="活动封面"
-            name="bannerImage"
+            name="imgUrl"
             rules={[{ required: true, message: '请上传封面' }]}
           >
             <FromWrap
@@ -725,13 +801,13 @@ export default (props) =>{
             >
             <pre className={styles.line_feed}>
               {
-                detailList?.data?.activityRule
+                detailList?.data?.ruleText
               }
             </pre>
             </Form.Item>
               :
             <ProFormTextArea
-              name="activityRule"
+              name="ruleText"
               label="活动规则"
               placeholder="列如玩法规则、红包有效期、简单的用户协议"
               rules={[
@@ -745,25 +821,17 @@ export default (props) =>{
           }
           {
             id&&falg&&<ProFormRadio.Group
-                name="activityStatus"
+                name="status"
                 label="活动状态"
                 options={[
                     {
-                      label: '进行中',
-                      value: 2
+                      label: '开启',
+                      value: 1
                     },
                     {
-                      label: '未开始',
-                      value: 3
+                      label: '终止',
+                      value: 0
                     },
-                    {
-                      label: '已结束',
-                      value: 4
-                    },
-                    {
-                      label: '已终止',
-                      value: 5
-                    }
                 ]}
                 readonly={id&&falg}
               />
