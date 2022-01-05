@@ -45,7 +45,7 @@ export default (props) => {
       submitter={{
         render: (props, defaultDoms) => {
           return [
-              <Button  key="submit" onClick={() =>setVisible(false)}>
+              <Button  key="cacnl" onClick={() =>setVisible(false)}>
                   取消注销
               </Button>,
               <Button  type="primary" key="submit" onClick={() => {
@@ -56,7 +56,7 @@ export default (props) => {
               <Button  key="submit" onClick={() =>props.form?.submit?.()}>
                 强制注销
               </Button>,
-              <Button  type="primary" key="submit" onClick={() => {
+              <Button  type="primary" key="cacnl" onClick={() => {
                 setVisible(false)
                 }}>
                   暂不注销
