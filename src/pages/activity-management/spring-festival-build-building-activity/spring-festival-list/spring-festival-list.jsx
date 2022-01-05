@@ -7,6 +7,7 @@ import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-for
 import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
 import moment from 'moment'
+import { amountTransform } from '@/utils/utils'
 
 
 
@@ -27,25 +28,57 @@ export default () => {
         }
       },
       {
-        title: '1-9层',
-        dataIndex: 'couponOneDisplay',
+        title: '阶段一',
+        dataIndex: 'tiersSet',
         valueType: 'text',
+        render:(_,data)=>{
+          return <>
+                  <p>普惠奖概率{data?.tiersSet[0]?.general?.probability}%</p>
+                  <p>普惠奖奖励金：{data?.tiersSet[0]?.general?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
+                  <p>幸运奖概率{data?.tiersSet[0]?.lucky?.probability}%</p>
+                  <p>幸运奖奖励金：{data?.tiersSet[0]?.lucky?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
+                 </>
+        },
+        align: 'center'
       },
       {
-        title: '10-15层',
-        dataIndex: 'couponTwoDisplay',
+        title: '阶段二',
+        dataIndex: 'tiersSet',
         valueType: 'text',
+        render:(_,data)=>{
+          return <>
+                  <p>普惠奖概率{data?.tiersSet[0]?.general?.probability}%</p>
+                  <p>普惠奖奖励金：{data?.tiersSet[0]?.general?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
+                  <p>幸运奖概率{data?.tiersSet[0]?.lucky?.probability}%</p>
+                  <p>幸运奖奖励金：{data?.tiersSet[0]?.lucky?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
+                </>
+        },
+        align: 'center'
       },
-      {
-        title: '16-20层',
-        dataIndex: 'couponThreeDisplay',
-        valueType: 'text',
-      },
-      {
-        title: '21-49层',
-        dataIndex: 'couponThreeDisplay',
-        valueType: 'text',
-      },
+      // {
+      //   title: '阶段三',
+      //   dataIndex: 'tiersSet',
+      //   valueType: 'text',
+      //   render:(_,data)=>{
+      //     return <>
+      //             <p>概率60%</p>
+      //             <p>奖励金：0.68  ,  0.99  ,  0.66  ,  1.88</p>
+      //            </>
+      //   },
+      //   align: 'center'
+      // },
+      // {
+      //   title: '阶段四',
+      //   dataIndex: 'tiersSet',
+      //   valueType: 'text',
+      //   render:(_,data)=>{
+      //     return <>
+      //             <p>概率60%</p>
+      //             <p>奖励金：0.68  ,  0.99  ,  0.66  ,  1.88</p>
+      //            </>
+      //   },
+      //   align: 'center'
+      // },
       {
         title: '活动状态',
         dataIndex: 'statusDisplay',
@@ -60,6 +93,13 @@ export default () => {
         ],
       }, 
     ];
+    const postData=(data)=>{
+      const arr=data.map(item=>({
+        tiersSet:item?.content?.rewardsSet?.tiersSet,
+        ...item
+      }))
+      return arr
+    }
     return (
       <PageContainer>
         <ProTable
@@ -67,6 +107,7 @@ export default () => {
           rowKey="id"
           headerTitle="活动列表"
           options={false}
+          postData={postData}
           request={getActiveConfigList}
           toolBarRender={()=>[
             <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/activity-management/spring-festival-build-building-activity/rule-configuration')} type="primary">
