@@ -46,6 +46,26 @@ export default (props) => {
             const index = it.slice(0, 1)
             specValue[index] = it
           })
+
+          const obj = {
+            stage1: null,
+            stage2: null,
+          };
+          const ladderData = item[1]?.ladderData;
+          if (ladderData?.['1']) {
+            obj.stage1 = {
+              wsStart: ladderData['1'].wsStart,
+              wsEnd: ladderData['1'].wsEnd,
+              wsSupplyPrice: ladderData['1'].wsSupplyPrice / 100,
+            }
+
+            obj.stage2 = {
+              wsStart: ladderData['2'].wsStart,
+              wsEnd: ladderData['2'].wsEnd,
+              wsSupplyPrice: ladderData['2'].wsSupplyPrice / 100,
+            }
+          }
+
           return {
             ...item[1],
             code: item[0],
@@ -69,6 +89,7 @@ export default (props) => {
             spec1: specValuesMap[specDataKeys[0]],
             spec2: specValuesMap[specDataKeys[1]],
             specValue,
+            ...obj,
           }
         }))
       }
@@ -84,47 +105,47 @@ export default (props) => {
       <Form.Item
         label="商品名称"
       >
-        {detailData?.goods.goodsName}
+        {goods.goodsName}
       </Form.Item>
       <Form.Item
         label="发票税率(%)"
       >
-        {amountTransform(detailData?.goods.wholesaleTaxRate)}
+        {amountTransform(goods.wholesaleTaxRate)}
       </Form.Item>
       <Form.Item
         label="商品副标题"
       >
-        {detailData?.goods.goodsDesc}
+        {goods.goodsDesc}
       </Form.Item>
       <Form.Item
         label="搜索关键字"
       >
-        {detailData?.goods.goodsKeywords}
+        {goods.goodsKeywords}
       </Form.Item>
       <Form.Item
         label="商品品类"
       >
-        {`${detailData?.goods.gcId1Display}/${detailData?.goods.gcId2Display}`}
+        {`${goods.gcId1Display}/${goods.gcId2Display}`}
       </Form.Item>
       <Form.Item
         label="商品编号"
       >
-        {detailData?.goods.supplierSpuId}
+        {goods.supplierSpuId}
       </Form.Item>
       <Form.Item
         label="商品品牌"
       >
-        {detailData?.goods.brandIdDisplay}
+        {goods.brandIdDisplay}
       </Form.Item>
       <Form.Item
         label="供货类型"
       >
-        {{ 0: '批发+零售', 1: '仅批发', 2: '仅零售' }[detailData?.goods.goodsSaleType]}
+        {{ 0: '批发+零售', 1: '仅批发', 2: '仅零售' }[goods.goodsSaleType]}
       </Form.Item>
-      {detailData?.goods.goodsSaleType !== 2 && <Form.Item
+      {goods.goodsSaleType !== 2 && <Form.Item
         label="批发样品"
       >
-        {{ 0: '不支持样品售卖', 1: '支持样品售卖' }[detailData?.goods.isSample]}
+        {{ 0: '不支持样品售卖', 1: '支持样品售卖' }[goods.isSample]}
       </Form.Item>}
       <Form.Item
         label="结算模式"
@@ -137,27 +158,43 @@ export default (props) => {
         {{ 0: '单规格', 1: '多规格' }[detailData?.isMultiSpec]}
       </Form.Item>
       {
-        detailData?.goods?.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 &&
+        goods?.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 &&
         <Form.Item
           label="平均运费(元)"
         >
-          {amountTransform(detailData?.goods.wholesaleFreight, '/')}
+          {amountTransform(goods.wholesaleFreight, '/')}
         </Form.Item>
       }
       {
         detailData?.isMultiSpec === 1
           ?
           <>
-            {!!tableData.length && <EditTable isSample={detailData?.goods?.isSample} tableHead={tableHead} tableData={tableData} goodsSaleType={detailData?.goods?.goodsSaleType} settleType={detailData?.settleType} />}
+            {!!tableData.length &&
+              <EditTable
+                isSample={goods.isSample}
+                tableHead={tableHead}
+                tableData={tableData}
+                goodsSaleType={goods.goodsSaleType}
+                settleType={detailData.settleType}
+                unit={goods.unit}
+                wsUnit={goods.wsUnit}
+                ladderSwitch={detailData.ladderSwitch}
+              />
+            }
             <Form.Item
               label="总可用库存"
             >
-              {detailData?.goods?.totalStock}
+              {goods?.totalStock}
             </Form.Item>
             <Form.Item
-              label="库存单位"
+              label="商品单位"
             >
-              {detailData?.goods?.unit}
+              {goods.unit}
+            </Form.Item>
+            <Form.Item
+              label="集采商品单位"
+            >
+              {goods.wsUnit || '箱'}
             </Form.Item>
             <Form.Item
               label="发货地"
@@ -167,7 +204,7 @@ export default (props) => {
             <Form.Item
               label="单SKU起售数量"
             >
-              {detailData?.goods?.buyMinNum}
+              {goods?.buyMinNum}
             </Form.Item>
           </>
           :
@@ -175,94 +212,104 @@ export default (props) => {
             <Form.Item
               label="货号"
             >
-              {detailData?.goods?.supplierSkuId}
+              {goods?.supplierSkuId}
             </Form.Item>
 
             {
-              detailData?.goods?.goodsSaleType !== 2 &&
+              goods?.goodsSaleType !== 2 &&
               <>
                 <Form.Item
-                  label="批发供货价(元)"
+                  label="集采供货价(元)"
                 >
-                  {amountTransform(detailData?.goods?.wholesaleSupplyPrice, '/')}
+                  {amountTransform(goods.wholesaleSupplyPrice, '/')}
                 </Form.Item>
-                <Form.Item
-                  label="集采箱规单位量"
+                {!!detailData.ladderSwitch && <Form.Item
+                  label="集采阶梯优惠"
                 >
-                  {detailData?.goods?.batchNumber}
-                </Form.Item>
+                  {goods.ladderData && <>
+                    <div>采购{goods.ladderData['1'].wsStart}-{goods.ladderData['1'].wsEnd}{goods.unit}时，{goods.ladderData['1'].wsSupplyPrice / 100}元/{goods.unit}</div>
+                    {goods.batchNumber > 0 && <div>{goods.ladderData['1'].wsStart / goods.batchNumber}-{goods.ladderData['1'].wsEnd / goods.batchNumber}{goods.wsUnit || '箱'}时，{goods.ladderData['1'].wsSupplyPrice / 100 * goods.batchNumber}元/{goods.wsUnit || '箱'}</div>}
+                    <div>{+goods.ladderData['1'].wsEnd + 1}{goods.unit}及以上时，{goods.ladderData['2'].wsSupplyPrice / 100}元/{goods.unit}</div>
+                    {goods.batchNumber > 0 && <div>{(+goods.ladderData['1'].wsEnd + 1) / goods.batchNumber}{goods.wsUnit || '箱'}及以上时，{goods.ladderData['2'].wsSupplyPrice / 100 * goods.batchNumber}元/{goods.wsUnit || '箱'}</div>}
+                  </>}
+                </Form.Item>}
                 <Form.Item
                   label="最低批发量"
                 >
-                  {detailData?.goods?.wholesaleMinNum}
+                  {goods?.wholesaleMinNum}
                 </Form.Item>
                 {
-                  detailData?.goods?.isSample === 1
+                  goods?.isSample === 1
                   &&
                   <>
                     <Form.Item
                       label="样品供货价(元)"
                     >
-                      {detailData?.goods?.sampleSupplyPrice / 100}
+                      {goods?.sampleSupplyPrice / 100}
                     </Form.Item>
                     <Form.Item
                       label="样品价(元)"
                     >
-                      {detailData?.goods?.sampleSalePrice / 100}
+                      {goods?.sampleSalePrice / 100}
                     </Form.Item>
                     <Form.Item
                       label="样品起售量"
                     >
-                      {detailData?.goods?.sampleMinNum}
+                      {goods?.sampleMinNum}
                     </Form.Item>
                     <Form.Item
                       label="样品限售量"
                     >
-                      {detailData?.goods?.sampleMaxNum}
+                      {goods?.sampleMaxNum}
                     </Form.Item>
                     <Form.Item
                       label="样品是否包邮"
                     >
-                      {{ 0: '不包邮', 1: '包邮', }[detailData?.goods?.sampleFreight]}
+                      {{ 0: '不包邮', 1: '包邮', }[goods?.sampleFreight]}
                     </Form.Item>
-                    {detailData?.goods?.sampleFreight === 0 && <Form.Item
+                    {goods?.sampleFreight === 0 && <Form.Item
                       label="样品运费模板"
                     >
-                      {detailData?.goods?.sampleFreightName}
+                      {goods?.sampleFreightName}
                     </Form.Item>}
                   </>
                 }
               </>
             }
             {
-              detailData?.goods?.goodsSaleType !== 1 &&
+              goods?.goodsSaleType !== 1 &&
               <>
                 <Form.Item
-                  label="零售供货价(元)"
+                  label="一件代发供货价(元)"
                 >
-                  {amountTransform(detailData?.goods?.retailSupplyPrice, '/')}
+                  {amountTransform(goods?.retailSupplyPrice, '/')}
                 </Form.Item>
               </>
             }
             <Form.Item
               label="秒约价"
             >
-              {amountTransform(detailData?.goods?.salePrice, '/')}
+              {amountTransform(goods?.salePrice, '/')}
             </Form.Item>
             <Form.Item
               label="市场价"
             >
-              {amountTransform(detailData?.goods?.marketPrice, '/')}
+              {amountTransform(goods?.marketPrice, '/')}
             </Form.Item>
             <Form.Item
               label="可用库存"
             >
-              {detailData?.goods?.totalStock}
+              {goods?.totalStock}
             </Form.Item>
             <Form.Item
-              label="库存单位"
+              label="商品单位"
             >
-              {detailData?.goods?.unit}
+              {goods.unit}
+            </Form.Item>
+            <Form.Item
+              label="集采商品单位"
+            >
+              {goods.wsUnit || '箱'}
             </Form.Item>
             <Form.Item
               label="发货地"
@@ -272,26 +319,26 @@ export default (props) => {
             <Form.Item
               label="库存预警值"
             >
-              {detailData?.goods?.stockAlarmNum}
+              {goods?.stockAlarmNum}
             </Form.Item>
             <Form.Item
               label="单SKU起售数量"
             >
-              {detailData?.goods?.buyMinNum}
+              {goods?.buyMinNum}
             </Form.Item>
             <Form.Item
               label="单SKU单次最多零售购买数量"
             >
-              {detailData?.goods?.buyMaxNum}
+              {goods?.buyMaxNum}
             </Form.Item>
           </>
       }
-      {detailData?.goods?.goodsSaleType !== 1 && detailData?.isMultiSpec === 0 &&<Form.Item
+      {goods?.goodsSaleType !== 1 && detailData?.isMultiSpec === 0 && <Form.Item
         label="是否包邮"
       >
-        {{ 0: '不包邮', 1: '包邮', }[detailData?.goods?.isFreeFreight]}
+        {{ 0: '不包邮', 1: '包邮', }[goods?.isFreeFreight]}
       </Form.Item>}
-      {detailData?.goods?.goodsSaleType !== 1 && !detailData?.goods?.isFreeFreight && detailData?.isMultiSpec === 0 &&
+      {goods?.goodsSaleType !== 1 && !goods?.isFreeFreight && detailData?.isMultiSpec === 0 &&
         <Form.Item
           label="运费模板"
         >
@@ -300,12 +347,12 @@ export default (props) => {
       {/* <Form.Item
         label="七天无理由退货"
       >
-        {{ 0: '不支持', 1: '支持', }[detailData?.goods?.supportNoReasonReturn]}
+        {{ 0: '不支持', 1: '支持', }[goods?.supportNoReasonReturn]}
       </Form.Item> */}
       <Form.Item
         label="特殊说明"
       >
-        {detailData?.goods.goodsRemark}
+        {goods.goodsRemark}
       </Form.Item>
       <Form.Item
         label="商品主图"
@@ -352,25 +399,25 @@ export default (props) => {
       <Form.Item
         label="创建时间"
       >
-        {detailData?.goods?.createTimeDisplay}
+        {goods?.createTimeDisplay}
       </Form.Item>
 
       <Form.Item
         label="审核状态"
       >
-        {detailData?.goods?.goodsVerifyStateDisplay}{detailData?.auditStr}
+        {goods?.goodsVerifyStateDisplay}{detailData?.auditStr}
       </Form.Item>
 
       <Form.Item
         label="上架状态"
       >
-        {detailData?.goods?.goodsStateDisplay}{detailData?.putOnStr}
+        {goods?.goodsStateDisplay}{detailData?.putOnStr}
       </Form.Item>
 
-      {detailData?.goods?.goodsState ===0 && <Form.Item
+      {goods?.goodsState === 0 && <Form.Item
         label="下架原因"
       >
-        <span style={{ color: 'red' }}>{detailData?.goods?.goodsVerifyRemark}</span>
+        <span style={{ color: 'red' }}>{goods?.goodsVerifyRemark}</span>
       </Form.Item>}
 
       {/* 
