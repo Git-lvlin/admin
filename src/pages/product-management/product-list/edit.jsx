@@ -48,6 +48,10 @@ export default (props) => {
   const isPurchase = useLocation().pathname.includes('purchase')
   const api = isPurchase ? api2 : api1
   const isLossMoney = useRef(false);
+  let goods = {};
+  if (detailData) {
+    goods = detailData.goods;
+  }
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -134,14 +138,14 @@ export default (props) => {
       } = item;
       const obj = {};
 
-      if (detailData?.goods?.goodsSaleType !== 1) {
+      if (goods.goodsSaleType !== 1) {
         obj.retailSupplyPrice = amountTransform(retailSupplyPrices)
         obj.salePriceProfitLoss = amountTransform(salePriceProfitLosss)
         obj.salePrice = amountTransform(salePrices)
         obj.salePriceFloat = amountTransform(salePriceFloats, '/')
       }
 
-      if (detailData?.goods?.goodsSaleType !== 2) {
+      if (goods.goodsSaleType !== 2) {
         obj.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrices)
       }
 
@@ -197,7 +201,7 @@ export default (props) => {
         gcId2: gcId[1],
         wholesaleFreight: amountTransform(wholesaleFreight),
         wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
-        goodsSaleType: detailData?.goods?.goodsSaleType,
+        goodsSaleType: goods.goodsSaleType,
       },
       isLossMoney: isLossMoney.current ? 1 : 0,
       primaryImages: urlsTransform(primaryImages),
@@ -212,7 +216,7 @@ export default (props) => {
       obj.specValues = specValues;
       obj.specData = specData;
     } else {
-      if (detailData?.goods?.goodsSaleType !== 1) {
+      if (goods.goodsSaleType !== 1) {
         obj.goods.retailSupplyPrice = amountTransform(retailSupplyPrice);
         obj.goods.salePriceProfitLoss = amountTransform(salePriceProfitLoss);
         obj.goods.salePrice = amountTransform(salePrice);
@@ -225,7 +229,7 @@ export default (props) => {
         }
       }
 
-      if (detailData?.goods?.goodsSaleType !== 2) {
+      if (goods.goodsSaleType !== 2) {
         obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
         obj.goods.wholesaleFreight = amountTransform(wholesaleFreight)
       }
@@ -243,6 +247,7 @@ export default (props) => {
       }
 
       obj.goods.marketPrice = amountTransform(marketPrice);
+      obj.goods.ladderData = goods.ladderData;
 
       // if (retailSupplyPrice > salePrice || retailSupplyPrice > marketPrice) {
       //   message.error('秒约价和市场价不能小于供货价');
@@ -255,7 +260,7 @@ export default (props) => {
       obj.storeNo = detailData.storeNo
       obj.goodsFromType = detailData.goodsFromType
       obj.spuId = detailData.spuId
-      obj.goods.skuId = detailData.goods.skuId
+      obj.goods.skuId = goods.skuId
     }
 
     return new Promise((resolve, reject) => {
@@ -312,8 +317,6 @@ export default (props) => {
   }
 
   const settleTypeChange = (e) => {
-    const { goods } = detailData;
-
     if (e.target.value === 1) {
       form.setFieldsValue({
         salePrice: amountTransform(goods.retailSupplyPrice, '/'),
@@ -327,9 +330,9 @@ export default (props) => {
 
   const subAccountCheck = (params, cb) => {
     api.subAccountCheck({
-      skuId: detailData.goods.skuId,
-      retailSupplyPrice: detailData.goods.retailSupplyPrice,
-      wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
+      skuId: goods.skuId,
+      retailSupplyPrice: goods.retailSupplyPrice,
+      wholesaleTaxRate: goods.wholesaleTaxRate,
       // wholesaleTaxRate: 0.01,
       ...params,
     }).then(res => {
@@ -340,7 +343,7 @@ export default (props) => {
   }
 
   const preAccountCheckRequest = ({ skuId, salePrice, salePriceFloat, retailSupplyPrice, wholesaleTaxRate, cb, options = {} }) => {
-    if (detailData.goods.goodsSaleType === 1) {
+    if (goods.goodsSaleType === 1) {
       return;
     }
     preAccountCheck({
@@ -368,8 +371,8 @@ export default (props) => {
           skuId: data.skuId,
           salePrice: data.salePrice,
           salePriceFloat: data.salePriceFloat,
-          retailSupplyPrice: detailData.goods.retailSupplyPrice,
-          wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
+          retailSupplyPrice: goods.retailSupplyPrice,
+          wholesaleTaxRate: goods.wholesaleTaxRate,
           cb: (d) => {
             setSalePriceFloat(d.salePriceFloat)
             setPreferential(d.preferential)
@@ -393,8 +396,8 @@ export default (props) => {
           skuId: data.skuId,
           salePrice: data.salePrice,
           salePriceFloat: data.salePriceFloat,
-          retailSupplyPrice: detailData.goods.retailSupplyPrice,
-          wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
+          retailSupplyPrice: goods.retailSupplyPrice,
+          wholesaleTaxRate: goods.wholesaleTaxRate,
           cb: (d) => {
             setSalePriceFloat(d.salePriceFloat)
             setPreferential(d.preferential)
@@ -412,7 +415,7 @@ export default (props) => {
   const submitConfirm = () => {
     isLossMoney.current = false;
     return new Promise((resolve, reject) => {
-      if (detailData.goods.goodsSaleType === 1) {
+      if (goods.goodsSaleType === 1) {
         resolve()
         return;
       }
@@ -484,7 +487,7 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
-      const { goods, specName, specValues, specData, freightTemplateId, freightTemplateName, settleType } = detailData;
+      const { specName, specValues, specData, freightTemplateId, freightTemplateName, settleType } = detailData;
       form.setFieldsValue({
         goodsName: goods.goodsName,
         goodsDesc: goods.goodsDesc,
@@ -514,6 +517,7 @@ export default (props) => {
         supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId,
         batchNumber: goods.batchNumber,
         unit: goods.unit,
+        wsUnit: goods.wsUnit || '箱',
         totalStock: goods.totalStock,
         isDrainage: goods.isDrainage,
         isSample: goods.isSample,
@@ -563,6 +567,25 @@ export default (props) => {
             const index = it.slice(0, 1)
             specValue[index] = it
           })
+
+          const obj = {
+            stage1: null,
+            stage2: null,
+          };
+          const ladderData = item[1]?.ladderData;
+          if (ladderData?.['1']) {
+            obj.stage1 = {
+              wsStart: ladderData['1'].wsStart,
+              wsEnd: ladderData['1'].wsEnd,
+              wsSupplyPrice: ladderData['1'].wsSupplyPrice / 100,
+            }
+
+            obj.stage2 = {
+              wsStart: ladderData['2'].wsStart,
+              wsEnd: ladderData['2'].wsEnd,
+              wsSupplyPrice: ladderData['2'].wsSupplyPrice / 100,
+            }
+          }
           return {
             ...item[1],
             code: item[0],
@@ -587,6 +610,7 @@ export default (props) => {
             spec1: specValuesMap[specDataKeys[0]],
             spec2: specValuesMap[specDataKeys[1]],
             specValue,
+            ...obj,
           }
         }))
         preAccountShow({
@@ -615,11 +639,11 @@ export default (props) => {
         })
 
         preAccountCheckRequest({
-          skuId: detailData.goods.skuId,
-          salePrice: detailData.goods.salePrice,
-          salePriceFloat: detailData.goods.salePriceFloat,
-          retailSupplyPrice: detailData.goods.retailSupplyPrice,
-          wholesaleTaxRate: detailData.goods.wholesaleTaxRate,
+          skuId: goods.skuId,
+          salePrice: goods.salePrice,
+          salePriceFloat: goods.salePriceFloat,
+          retailSupplyPrice: goods.retailSupplyPrice,
+          wholesaleTaxRate: goods.wholesaleTaxRate,
           cb: (d) => {
             setSalePriceFloat(d.salePriceFloat)
             setPreferential(d.preferential)
@@ -690,6 +714,8 @@ export default (props) => {
         // supportNoReasonReturn: 1,
         specValues1: [{}],
         specValues2: [{}],
+        wsUnit: '箱',
+        unit: '件',
       }}
       {...formItemLayout}
     >
@@ -734,7 +760,7 @@ export default (props) => {
           )
         }}
       </ProFormDependency>
-      {detailData?.goods?.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 && <ProFormText
+      {goods.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 && <ProFormText
         name="wholesaleFreight"
         label="平均运费(元)"
         disabled
@@ -824,7 +850,7 @@ export default (props) => {
         disabled
       />
       {
-        detailData?.goods?.goodsSaleType !== 2 && <ProFormRadio.Group
+        goods.goodsSaleType !== 2 && <ProFormRadio.Group
           name="isSample"
           label="批发样品"
           rules={[{ required: true }]}
@@ -905,6 +931,22 @@ export default (props) => {
         {({ isMultiSpec }) => {
           return isMultiSpec === 1 ?
             <>
+              <ProFormSelect
+                name="unit"
+                label="商品单位"
+                fieldProps={{
+                  showSearch: true,
+                }}
+                disabled
+              />
+              <ProFormSelect
+                name="wsUnit"
+                label="集采商品单位"
+                fieldProps={{
+                  showSearch: true,
+                }}
+                disabled
+              />
               <ProFormText
                 name="specName1"
                 label="规格一"
@@ -992,9 +1034,12 @@ export default (props) => {
                           tableHead={tableHead}
                           tableData={tableData}
                           setTableData={setTableData}
-                          wholesaleTaxRate={detailData?.goods?.wholesaleTaxRate}
-                          goodsSaleType={detailData?.goods?.goodsSaleType}
-                          isSample={detailData?.goods?.isSample}
+                          wholesaleTaxRate={goods.wholesaleTaxRate}
+                          goodsSaleType={goods.goodsSaleType}
+                          isSample={goods.isSample}
+                          unit={goods.unit}
+                          wsUnit={goods.wsUnit}
+                          ladderSwitch={detailData?.ladderSwitch}
                         />}
                     </>
                   )
@@ -1003,19 +1048,6 @@ export default (props) => {
               <ProFormText
                 name="totalStock"
                 label="总可用库存"
-                disabled
-              />
-              <ProFormText
-                name="unit"
-                label="库存单位"
-                placeholder="请输入基本库存单位,字母或汉字,不超过4个字符,默认为件"
-                validateFirst
-                fieldProps={{
-                  maxLength: 4,
-                }}
-                rules={[
-                  { required: true, message: '请输入库存单位' },
-                ]}
                 disabled
               />
               <Form.Item
@@ -1032,7 +1064,7 @@ export default (props) => {
                 placeholder="请输入货号"
               />
               {
-                detailData?.goods?.goodsSaleType !== 2 &&
+                goods.goodsSaleType !== 2 &&
                 <>
                   <ProFormText
                     name="wholesaleSupplyPrice"
@@ -1041,21 +1073,38 @@ export default (props) => {
                     rules={[{ required: true, message: '请输入批发供货价' }]}
                     disabled
                   />
+                  {!!detailData?.ladderSwitch && <Form.Item
+                    label="集采阶梯优惠"
+                  >
+                    {goods.ladderData && <>
+                      <div>采购{goods.ladderData['1'].wsStart}-{goods.ladderData['1'].wsEnd}{goods.unit}时，{goods.ladderData['1'].wsSupplyPrice / 100}元/{goods.unit}</div>
+                      {goods.batchNumber > 0 && <div>{goods.ladderData['1'].wsStart / goods.batchNumber}-{goods.ladderData['1'].wsEnd / goods.batchNumber}{goods.wsUnit || '箱'}时，{goods.ladderData['1'].wsSupplyPrice / 100 * goods.batchNumber}元/{goods.wsUnit || '箱'}</div>}
+                      <div>{+goods.ladderData['1'].wsEnd + 1}{goods.unit}及以上时，{goods.ladderData['2'].wsSupplyPrice / 100}元/{goods.unit}</div>
+                      {goods.batchNumber > 0 && <div>{(+goods.ladderData['1'].wsEnd + 1) / goods.batchNumber}{goods.wsUnit || '箱'}及以上时，{goods.ladderData['2'].wsSupplyPrice / 100 * goods.batchNumber}元/{goods.wsUnit || '箱'}</div>}
+                    </>}
+                  </Form.Item>}
                   <ProFormText
                     name="batchNumber"
                     label="集采箱规单位量"
                     placeholder="请输入店主集约采购下单的加购倍数单位量，范围1-9999"
                     disabled
                   />
+                  <ProFormSelect
+                    name="wsUnit"
+                    label="集采商品单位"
+                    fieldProps={{
+                      showSearch: true,
+                    }}
+                    disabled
+                  />
                   <ProFormText
                     name="wholesaleMinNum"
                     label="最低批发量"
                     placeholder="请输入最低批发量"
-                    rules={[{ required: true, message: '请输入最低批发量' }]}
                     disabled
                   />
                   {
-                    detailData?.goods?.isSample === 1
+                    goods.isSample === 1
                     &&
                     <>
                       <ProFormText
@@ -1109,7 +1158,7 @@ export default (props) => {
                         ]}
                         disabled
                       />
-                      {detailData?.goods?.sampleFreight === 0 && <Form.Item
+                      {goods.sampleFreight === 0 && <Form.Item
                         name="sampleFreightId"
                         label="样品运费模板"
                         disabled
@@ -1121,7 +1170,7 @@ export default (props) => {
                 </>
               }
               {
-                detailData?.goods?.goodsSaleType !== 1 &&
+                goods.goodsSaleType !== 1 &&
                 <>
                   <ProFormText
                     name="retailSupplyPrice"
@@ -1180,7 +1229,7 @@ export default (props) => {
                   <Form.Item
                     label="秒约价实际盈亏"
                   >
-                    {salePriceProfitLoss || amountTransform(detailData?.goods?.salePriceProfitLoss, '/')}
+                    {salePriceProfitLoss || amountTransform(goods.salePriceProfitLoss, '/')}
                   </Form.Item>
                 </>
               }
@@ -1217,7 +1266,7 @@ export default (props) => {
               />
               <ProFormText
                 name="unit"
-                label="库存单位"
+                label="商品单位"
                 placeholder="请输入基本库存单位,字母或汉字,不超过4个字符,默认为件"
                 validateFirst
                 fieldProps={{
@@ -1274,7 +1323,7 @@ export default (props) => {
       />
 
       {
-        detailData?.goods?.goodsSaleType !== 1 && detailData?.isMultiSpec === 0 &&
+        goods.goodsSaleType !== 1 && detailData?.isMultiSpec === 0 &&
         <ProFormRadio.Group
           name="isFreeFreight"
           label="是否包邮"
@@ -1293,7 +1342,7 @@ export default (props) => {
         />
       }
 
-      {detailData?.goods?.goodsSaleType !== 1 && !detailData?.goods?.isFreeFreight && detailData?.isMultiSpec === 0 && <Form.Item
+      {goods.goodsSaleType !== 1 && !goods.isFreeFreight && detailData?.isMultiSpec === 0 && <Form.Item
         name="freightTemplateId"
         label="选择运费模板"
         rules={[{ required: true, message: '请选择运费模板' }]}
@@ -1391,25 +1440,25 @@ export default (props) => {
         <Form.Item
           label="创建时间"
         >
-          {detailData.goods.createTimeDisplay}
+          {goods.createTimeDisplay}
         </Form.Item>
 
         <Form.Item
           label="审核状态"
         >
-          {detailData.goods.goodsVerifyStateDisplay} {detailData.auditStr}
+          {goods.goodsVerifyStateDisplay} {detailData.auditStr}
         </Form.Item>
 
         <Form.Item
           label="上架状态"
         >
-          {detailData.goods.goodsStateDisplay} {detailData.putOnStr}
+          {goods.goodsStateDisplay} {detailData.putOnStr}
         </Form.Item>
 
-        {detailData.goods.goodsState === 0 && <Form.Item
+        {goods.goodsState === 0 && <Form.Item
           label="下架原因"
         >
-          <span style={{ color: 'red' }}>{detailData.goods.goodsVerifyRemark}</span>
+          <span style={{ color: 'red' }}>{goods.goodsVerifyRemark}</span>
         </Form.Item>}
       </>}
       {lookVisible && <Look

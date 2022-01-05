@@ -63,5 +63,10 @@ export default {
       path: '/product-management/product-evaluate',
       component: './product-management/product-evaluate',
     },
+    {
+      name: 'product-unit',
+      path: '/product-management/product-unit',
+      component: './product-management/product-unit',
+    },
   ]
 }
