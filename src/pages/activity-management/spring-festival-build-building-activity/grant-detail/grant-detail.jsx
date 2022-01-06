@@ -101,11 +101,11 @@ export default () => {
       }
     }
     return (
-      <PageContainer>
+      <PageContainer title="机会发放明细">
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="盲盒机会发放明细"
+          headerTitle="共搜索到 922 条数据"
           options={false}
           request={getBuildhouseIncomeList}
           search={{
