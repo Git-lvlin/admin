@@ -140,7 +140,7 @@ export default (props) =>{
     {
       title: (
         <Space>
-          <sapn>累计推荐1-</sapn>
+          <span>累计推荐1-</span>
             <InputNumber min={1} onChange={onChange1}  style={{width:'60px'}}/>
           <span>人</span>
         </Space>
@@ -155,7 +155,7 @@ export default (props) =>{
     {
       title:  (
         <Space>
-          <sapn>累计推荐{referrerNum1?Number(referrerNum1+1):null}-</sapn>
+          <span>累计推荐{referrerNum1?Number(referrerNum1+1):null}-</span>
             <InputNumber min={1} onChange={onChange2}  style={{width:'60px'}}/>
           <span>人</span>
         </Space>
@@ -169,7 +169,7 @@ export default (props) =>{
     }, {
       title:  (
         <Space>
-          <sapn>累计推荐</sapn>
+          <span>累计推荐</span>
             <InputNumber min={1} value={referrerNum2+1} disabled={true} style={{width:'60px'}}/>
           <span>人以上</span>
         </Space>
