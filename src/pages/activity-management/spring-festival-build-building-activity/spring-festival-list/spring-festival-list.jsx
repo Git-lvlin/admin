@@ -33,9 +33,9 @@ export default () => {
         valueType: 'text',
         render:(_,data)=>{
           return <>
-                  <p>普惠奖概率{data?.tiersSet[0]?.general?.probability}%</p>
+                  <p>{data?.tiersSet[0]?.tierStart}-{data?.tiersSet[0]?.tierEnd}层</p>
+                  <p>普惠奖概率{data?.tiersSet[0]?.general?.probability}% 幸运奖概率{data?.tiersSet[0]?.lucky?.probability}%</p>
                   <p>普惠奖奖励金：{data?.tiersSet[0]?.general?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
-                  <p>幸运奖概率{data?.tiersSet[0]?.lucky?.probability}%</p>
                   <p>幸运奖奖励金：{data?.tiersSet[0]?.lucky?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
                  </>
         },
@@ -47,38 +47,42 @@ export default () => {
         valueType: 'text',
         render:(_,data)=>{
           return <>
-                  <p>普惠奖概率{data?.tiersSet[0]?.general?.probability}%</p>
-                  <p>普惠奖奖励金：{data?.tiersSet[0]?.general?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
-                  <p>幸运奖概率{data?.tiersSet[0]?.lucky?.probability}%</p>
-                  <p>幸运奖奖励金：{data?.tiersSet[0]?.lucky?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
+                  <p>{data?.tiersSet[1]?.tierStart}-{data?.tiersSet[1]?.tierEnd}层</p>
+                  <p>普惠奖概率{data?.tiersSet[1]?.general?.probability}% 幸运奖概率{data?.tiersSet[1]?.lucky?.probability}%</p>
+                  <p>普惠奖奖励金：{data?.tiersSet[1]?.general?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
+                  <p>幸运奖奖励金：{data?.tiersSet[1]?.lucky?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
                 </>
         },
         align: 'center'
       },
-      // {
-      //   title: '阶段三',
-      //   dataIndex: 'tiersSet',
-      //   valueType: 'text',
-      //   render:(_,data)=>{
-      //     return <>
-      //             <p>概率60%</p>
-      //             <p>奖励金：0.68  ,  0.99  ,  0.66  ,  1.88</p>
-      //            </>
-      //   },
-      //   align: 'center'
-      // },
-      // {
-      //   title: '阶段四',
-      //   dataIndex: 'tiersSet',
-      //   valueType: 'text',
-      //   render:(_,data)=>{
-      //     return <>
-      //             <p>概率60%</p>
-      //             <p>奖励金：0.68  ,  0.99  ,  0.66  ,  1.88</p>
-      //            </>
-      //   },
-      //   align: 'center'
-      // },
+      {
+        title: '阶段三',
+        dataIndex: 'tiersSet',
+        valueType: 'text',
+        render:(_,data)=>{
+          return <>
+                  <p>{data?.tiersSet[2]?.tierStart}-{data?.tiersSet[2]?.tierEnd}层</p>
+                  <p>普惠奖概率{data?.tiersSet[2]?.general?.probability}% 幸运奖概率{data?.tiersSet[2]?.lucky?.probability}%</p>
+                  <p>普惠奖奖励金：{data?.tiersSet[2]?.general?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
+                  <p>幸运奖奖励金：{data?.tiersSet[2]?.lucky?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
+                </>
+        },
+        align: 'center'
+      },
+      {
+        title: '阶段四',
+        dataIndex: 'tiersSet',
+        valueType: 'text',
+        render:(_,data)=>{
+          return <>
+                  <p>{data?.tiersSet[3]?.tierStart}-{data?.tiersSet[3]?.tierEnd}层</p>
+                  <p>普惠奖概率{data?.tiersSet[3]?.general?.probability}% 幸运奖概率{data?.tiersSet[3]?.lucky?.probability}%</p>
+                  <p>普惠奖奖励金：{data?.tiersSet[3]?.general?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
+                  <p>幸运奖奖励金：{data?.tiersSet[3]?.lucky?.moneyRange.map(ele=>amountTransform(ele, '/')).toString()}</p>
+                </>
+        },
+        align: 'center'
+      },
       {
         title: '活动状态',
         dataIndex: 'statusDisplay',

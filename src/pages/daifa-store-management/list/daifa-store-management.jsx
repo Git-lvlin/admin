@@ -18,8 +18,15 @@ const TableList = () => {
   const [storeNo,setStoreNo]=useState()
   const [bankVisible,setBankVisible]=useState()
   const actionRef = useRef();
+  const [storeNoId,setStoreNoId]=useState()
+  
 
-  const switchStatus = (storeNo, type) => {
+  const switchStatus = (data, type) => {
+    const params={
+      data,
+      type
+    }
+    setStoreNoId(params)
     setVisible(true)
   }
 
@@ -82,6 +89,7 @@ const TableList = () => {
         0:'全部',
         1: '已启用',
         2: '已禁用',
+        3: '已注销'
       }
     },
     {
@@ -116,12 +124,23 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          <a onClick={() => { setBankVisible(true);setStoreNo(data.storeNo)}}>再次认证</a>
-          <a onClick={() => { setDetailVisible(true);setStoreNo(data.storeNo)}}>详情</a>
-          <a onClick={() => { getDetail(data.storeNo) }}>编辑</a>
-          <a onClick={() => { history.push(`/daifa-store-management/list/agent-shop-money?storeNo=${data.storeNo}&storeName=${data.storeName}&realname=${data.realname}&mobile=${data.mobile}`) }}>佣金明细</a>
-          <a onClick={() => { switchStatus(data.storeNo, 2) }}>强制注销店铺</a>
-          <a onClick={() => { switchStatus(data.storeNo, 1) }}>注销店铺</a>
+          {
+            data.status==3?
+            <>
+             <a onClick={() => { setDetailVisible(true);setStoreNo(data.storeNo)}}>详情</a>
+             <a onClick={() => { history.push(`/daifa-store-management/list/agent-shop-money?storeNo=${data.storeNo}&storeName=${data.storeName}&realname=${data.realname}&mobile=${data.mobile}`) }}>佣金明细</a>
+            </>
+            :
+            <>
+              <a onClick={() => { setBankVisible(true);setStoreNo(data.storeNo)}}>再次认证</a>
+              <a onClick={() => { setDetailVisible(true);setStoreNo(data.storeNo)}}>详情</a>
+              <a onClick={() => { getDetail(data.storeNo) }}>编辑</a>
+              <a onClick={() => { history.push(`/daifa-store-management/list/agent-shop-money?storeNo=${data.storeNo}&storeName=${data.storeName}&realname=${data.realname}&mobile=${data.mobile}`) }}>佣金明细</a>
+              <a onClick={() => { switchStatus(data, 1) }}>强制注销店铺</a>
+              <a onClick={() => { switchStatus(data, 2) }}>注销店铺</a>
+            </>
+          }
+
         </Space>
       ),
     },
@@ -157,7 +176,9 @@ const TableList = () => {
       {visible && <CancelModel
         visible={visible}
         setVisible={setVisible}
-        // id={formDetail}
+        storeNoId={storeNoId}
+        onClose={() => { actionRef.current.reload();  setStoreNoId(null) }}
+        callback={() => { actionRef.current.reload(); setStoreNoId(null) }}
       />}
       {detailVisible && <ListDetail
         visible={detailVisible}

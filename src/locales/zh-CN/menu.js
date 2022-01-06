@@ -332,4 +332,6 @@ export default {
   'menu.activity-management.spring-festival-build-building-activity': '新春盖楼活动',
   'menu.activity-management.spring-festival-build-building-activity.spring-festival-list': '活动列表',
   'menu.activity-management.spring-festival-build-building-activity.rule-configuration': '规则配置',
+  'menu.activity-management.spring-festival-build-building-activity.consume-detail': '使用明细',
+  'menu.activity-management.spring-festival-build-building-activity.grant-detail': '发放明细',
 };

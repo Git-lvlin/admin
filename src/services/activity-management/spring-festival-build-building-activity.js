@@ -37,24 +37,6 @@ export const saveBHActiveConfig = async (params = {}, options = {}) => {
     }
 }
 
-// export const couponInviteEdit = async (params = {}, options = {}) => {
-//     const { ...rest } = params;
-//     const res = await request('/auth/activity/CouponInvite/couponInviteEdit', {
-//     method: 'POST',
-//     data: {
-//         ...rest
-//     },
-//     ...options
-//     });
-
-//     return {
-//     data: res.data,
-//     success: true,
-//     code: res.code
-//     }
-// }
-
-
 export const getActiveConfigById = async (params = {}, options = {}) => {
     const { ...rest } = params;
     const res = await request('/auth/activity/buildHouse/getActiveConfigById', {
@@ -89,22 +71,22 @@ export const getActiveConfigById = async (params = {}, options = {}) => {
 //     }
 // }
 
-// export const couponInviteSelList = async (params = {}, options = {}) => {
-//     const { ...rest } = params;
-//     const res = await request('/auth/activity/CouponInvite/couponInviteSelList', {
-//     method: 'POST',
-//     data: {
-//         ...rest
-//     },
-//     ...options
-//     });
+export const getBuildhouseIncomeList = async (params = {}, options = {}) => {
+    const { ...rest } = params;
+    const res = await request('/auth/buildhouse/Buildhouse/getBuildhouseIncomeList', {
+    method: 'POST',
+    data: {
+        ...rest
+    },
+    ...options
+    });
 
-//     return {
-//     data: res.data,
-//     success: true,
-//     code: res.code
-//     }
-// }
+    return {
+    data: res.data,
+    success: true,
+    code: res.code
+    }
+}
 
 
 // export const couponInviteLogList = async (params = {}, options = {}) => {
