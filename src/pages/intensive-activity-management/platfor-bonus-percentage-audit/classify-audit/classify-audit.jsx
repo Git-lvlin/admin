@@ -10,7 +10,7 @@ import { amountTransform } from '@/utils/utils'
 
 
 const Category = (props) => {
-  const { parentId = 0, onClick = () => { }, check,audit } = props;
+  const { parentId = 0, onClick = () => { }} = props;
   const [visible, setVisible] = useState(false);
   const [auditVisible, setAuditVisible] = useState(false);
   const [formDetail, setFormDetail] = useState({})
@@ -20,19 +20,16 @@ const Category = (props) => {
     {
       title: 'id',
       dataIndex: 'id',
-      editable:false,
       hideInTable:true
     },
     {
       title: '分类图片',
       dataIndex: 'gcIcon',
       valueType: 'image',
-      editable:false,
     },
     {
       title: '分类名称',
       dataIndex: 'gcName',
-      editable:false,
       render: (_,r) =>{
         if(parentId){
           return <p>{_}</p>
@@ -53,7 +50,6 @@ const Category = (props) => {
       title: '额外奖励说明',
       dataIndex: 'percentAuditStatusDesc',
       valueType: 'text',
-      editable:false,
       render:(_,r)=>{
         return <>
                 <p>店主：{amountTransform(parseFloat(r?.storePercent), '*')}%</p>
@@ -72,8 +68,7 @@ const Category = (props) => {
                 <p>{r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}</p>
                 <p>{r?.percentAuditStatus==3&&`待审核(店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%)}`}</p>
                </>
-      },
-      editable:false
+      }
     },
     {
       title: '操作',

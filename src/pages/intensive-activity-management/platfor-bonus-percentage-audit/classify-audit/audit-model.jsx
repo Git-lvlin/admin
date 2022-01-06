@@ -39,7 +39,7 @@ export default (props) => {
   }
   return (
     <ModalForm
-      title='请确认审核平台额外奖励占比设置  （商品分类：百货美食）'
+      title={`请确认审核平台额外奖励占比设置  （商品分类：${formDetail?.gcName}）`}
       onVisibleChange={setVisible}
       visible={visible}
       width={1000}
