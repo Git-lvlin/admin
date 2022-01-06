@@ -69,7 +69,7 @@ export default (props) =>{
       const content=res.data.content
       setDetailList({data:res.data,scopeList:list})
       form.setFieldsValue({
-        dateRange: [res.data?.startTime, res.data?.endTime],
+        dateRange: [res.data?.startTime*1000, res.data?.endTime*1000],
         moneyAll:content.moneyAll,
         moneyDay:content.moneyDay,
         sendPlayTime:content.sendPlayTime,
@@ -364,7 +364,7 @@ export default (props) =>{
               rules={[{ required: true, message: '请选择活动时间' }]}
               readonly
               fieldProps={{
-                value:moment(detailList?.data?.startTime).format('YYYY-MM-DD HH:mm:ss')+' 至 '+moment(detailList?.data?.endTime).format('YYYY-MM-DD HH:mm:ss')
+                value:moment(detailList?.data?.startTime*1000).format('YYYY-MM-DD HH:mm:ss')+' 至 '+moment(detailList?.data?.endTime*1000).format('YYYY-MM-DD HH:mm:ss')
               }}
             />  
           : <ProFormDateTimeRangePicker
@@ -1100,7 +1100,7 @@ export default (props) =>{
 
           {
             id&&falg?
-            <p className={styles.back}>最近一次操作人：{detailList?.data?.lastEditor}     {moment(detailList?.data?.updateTime).format('YYYY-MM-DD HH:mm:ss')}</p>
+            <p className={styles.back}>最近一次操作人：{detailList?.data?.lastEditor}     {moment(detailList?.data?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
             :null
           }  
        </ProForm>
