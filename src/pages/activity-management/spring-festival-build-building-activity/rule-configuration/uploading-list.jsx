@@ -4,9 +4,11 @@ import { message,Form,List,Button } from 'antd';
 import { couponInviteEnd } from '@/services/activity-management/share-red-packet-activity';
 import { history,connect } from 'umi';
 import { PlusOutlined } from '@ant-design/icons';
+import { useEffect } from 'react';
 
 export default props=>{
-    const {endId,visible,setVisible,canBlack}=props
+    const {endId,visible,setVisible,canBlack,phones,falg}=props
+    const [form] = Form.useForm()
     const checkConfirm = (rule, value, callback) => {
         return new Promise(async (resolve, reject) => {
           if (value && !/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(value)) {
@@ -16,14 +18,26 @@ export default props=>{
           }
         })
       }
+    useEffect(()=>{
+      if(endId){
+        const prizeNotice=phones.split(',')
+        form.setFieldsValue({
+          prizeNotice:prizeNotice.map(ele=>({phone:ele}))
+        })
+      }
+    },[endId,phones])
     return (
         <ModalForm
-          title="上传白名单"
+          title={endId&&falg?'查看名单':'上传白名单'}
           key={endId}
+          form={form}
           onVisibleChange={setVisible}
           visible={visible}
           submitter={{
           render: (props, defaultDoms) => {
+            if(endId&&falg){
+              return []
+            }
               return [
               ...defaultDoms
               ];
@@ -40,6 +54,20 @@ export default props=>{
         }],
         }}
       >
+        {
+            endId&&falg?
+            <List
+              itemLayout="horizontal"
+              dataSource={phones.split(',').map(ele=>({phone:ele}))}
+              renderItem={item => (
+                <List.Item>
+                  <List.Item.Meta
+                    title={<p>{item.phone}</p>}
+                  />
+                </List.Item>
+              )}
+            />
+            :
         <Form.List name="prizeNotice">
             {(fields, { add, remove }) => (
               <>
@@ -83,6 +111,7 @@ export default props=>{
               </>
             )}
           </Form.List>
+        }
       </ModalForm>
     )
 }

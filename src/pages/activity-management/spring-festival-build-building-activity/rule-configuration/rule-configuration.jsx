@@ -1,8 +1,8 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Input, Form, message,Button,InputNumber,Spin,Space,Descriptions, Badge} from 'antd';
+import { Input, Form, message,Button,InputNumber,Spin,Space,DatePicker} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import { saveBHActiveConfig,getActiveConfigById } from '@/services/activity-management/spring-festival-build-building-activity';
-import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDatePicker,ProFormSelect} from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDateTimePicker,ProFormSelect} from '@ant-design/pro-form';
 import { FormattedMessage, formatMessage } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
@@ -73,7 +73,7 @@ export default (props) =>{
         moneyAll:content.moneyAll,
         moneyDay:content.moneyDay,
         sendPlayTime:content.sendPlayTime,
-        withdrawTime:moment(content.withdrawTime).valueOf(),
+        withdrawTime:content.withdrawTime,
         validiteHour:content.validiteHour,
         testNum:content.testNum,
         imgUrl:content.imgUrl,
@@ -337,7 +337,7 @@ export default (props) =>{
                     保存
                   </Button>
                 }
-                <Button type="default" style={{marginLeft:'80px'}} onClick={() => { history.goBack() }}>返回</Button>
+                <Button type="default" style={{marginLeft:'80px'}} onClick={() => { history.push('/activity-management/spring-festival-build-building-activity/spring-festival-list') }}>返回</Button>
               </>  
             ];
           }
@@ -390,15 +390,15 @@ export default (props) =>{
           />
           }
           <ProCard
-            title={<p><span style={{color:'red'}}>*</span> 奖励设置(元）</p>}
+            title={<p><span style={{color:'red'}}>*</span> 奖励设置（元）</p>}
             headerBordered
             split='horizontal'
             className={styles.list}
           >
             <ProCard split="horizontal">
               <ProCard split="horizontal">
-                <ProCard split='vertical'>
-                  <ProCard colSpan="110px" layout="center" style={{background:'#EFF0F4'}}>挑战楼层</ProCard>
+                <ProCard split='vertical' bordered style={{background:'#EFF0F4'}}>
+                  <ProCard colSpan="111px" layout="center" style={{background:'none'}}>挑战楼层</ProCard>
                   <ProCard layout="center">
                     <Space>
                       <span>3 -</span>
@@ -444,8 +444,8 @@ export default (props) =>{
                     </Space>
                   </ProCard>
                 </ProCard>
-                <ProCard split="vertical">
-                  <ProCard layout="center" style={{background:'#EFF0F4'}}>普惠奖</ProCard>
+                <ProCard split="vertical" bordered style={{background:'#EFF0F4'}}>
+                  <ProCard layout="center" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>普惠奖</ProCard>
                   <ProCard style={{width:'400px',textAlign:'center'}}>
                     <Space>
                       <span>概率</span>
@@ -579,8 +579,8 @@ export default (props) =>{
                     </Space>
                   </ProCard>
                 </ProCard>
-                <ProCard split="vertical">
-                  <ProCard layout="center" style={{background:'#EFF0F4'}}>幸运奖</ProCard>
+                <ProCard split="vertical" bordered style={{background:'#EFF0F4'}}>
+                  <ProCard layout="center" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>幸运奖</ProCard>
                   <ProCard style={{width:'400px',textAlign:'center'}}>
                     <Space>
                       <span>概率</span>
@@ -714,8 +714,8 @@ export default (props) =>{
                     </Space>
                   </ProCard>
                 </ProCard>
-                <ProCard split="vertical">
-                  <ProCard colSpan="110px" layout="center" style={{background:'#EFF0F4'}}>幸运大奖</ProCard>
+                <ProCard split="vertical" bordered style={{background:'#EFF0F4'}}>
+                  <ProCard colSpan="111px" layout="center" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>幸运大奖</ProCard>
                   <ProCard layout="center">
                     <Space>
                       <span>每天产生一名</span>
@@ -726,11 +726,11 @@ export default (props) =>{
                       </Form.Item>
                       <span>元，从给的店主名单中随机选已经中过幸运大奖的不会重复中此奖</span>
                     </Space>
-                    <Button style={{marginLeft:'200px'}} type="primary" onClick={()=>setListVisible(true)}>上传名单</Button>
+                    <Button style={{marginLeft:'200px'}} type="primary" onClick={()=>setListVisible(true)}>{id&&falg?'查看名单':'上传名单'}</Button>
                   </ProCard>
                 </ProCard>
-                <ProCard split="vertical">
-                  <ProCard layout="center" colSpan="110px" style={{background:'#EFF0F4'}}>未中奖</ProCard>
+                <ProCard split="vertical" bordered style={{background:'#EFF0F4'}}>
+                  <ProCard layout="center" colSpan="111px" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>未中奖</ProCard>
                   <ProCard layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.losing?.probability||(probability1&&probability2&&100-(parseInt(probability1)+parseInt(probability2)))}%</ProCard>
                   <ProCard layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.losing?.probability||(probability3&&probability4&&100-(parseInt(probability3)+parseInt(probability4)))}%</ProCard>
                   <ProCard layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.losing?.probability||(probability5&&probability6&&100-(parseInt(probability5)+parseInt(probability6)))}%</ProCard>
@@ -739,52 +739,88 @@ export default (props) =>{
               </ProCard>
             </ProCard>
           </ProCard>
+          {
+            id&&falg?
+            <ProFormText
+              width="sm"
+              name="moneyAll"
+              label="最高累计限额"
+              rules={[{ required: true, message: '请输入' }]}
+              readonly={id&&falg}
+              fieldProps={{
+                value:`${detailList?.data?.content?.moneyAll}元`
+              }}
+            />
+          :
           <ProFormText
             width="sm"
             name="moneyAll"
             label="最高累计限额"
             rules={[{ required: true, message: '请输入' }]}
-            readonly={id&&falg}
             fieldProps={{
               addonAfter:"元"
             }}
           />
-          <ProFormText
-            width="sm"
-            label="每天限额"
-            name="moneyDay"
-            readonly={id&&falg}
-            rules={[{ required: true, message: '请输入' }]}
-            fieldProps={{
-              addonAfter:"元"
-            }}
-          />
-          <ProFormText
-            width="sm"
-            name="sendPlayTime"
-            label="每人赠送游戏机会"
-            readonly={id&&falg}
-            rules={[{ required: true, message: '请输入' }]}
-            fieldProps={{
-              addonAfter:"次"
-            }}
-            />
-          <ProFormDatePicker
-            label="能提现有效期"
-            name="withdrawTime"
-            readonly={id&&falg}
-            rules={[{ required: true, message: '截止时间' }]}
-          />
+          }
           {
-            id&&falg?<ProFormText
-            width="sm"
-            name="inviteNum"
-            label="每邀请"
-            readonly={id&&falg}
-            rules={[{ required: true, message: '请输入' }]}
-            fieldProps={{
-              value:`${detailList?.data?.content?.accessGain?.inviteFriends?.inviteNum}个新用户奖励游戏机会${detailList?.data?.content?.accessGain?.inviteFriends?.prizeNum}次`
-            }}
+            id&&falg?
+            <ProFormText
+              width="sm"
+              label="每天限额"
+              name="moneyDay"
+              readonly={id&&falg}
+              rules={[{ required: true, message: '请输入' }]}
+              fieldProps={{
+                value:`${detailList?.data?.content?.moneyDay}元`
+              }}
+            />
+            :
+            <ProFormText
+              width="sm"
+              label="每天限额"
+              name="moneyDay"
+              rules={[{ required: true, message: '请输入' }]}
+              fieldProps={{
+                addonAfter:"元"
+              }}
+            />
+          }
+
+          {
+            id&&falg?
+            <ProFormText
+              width="sm"
+              name="sendPlayTime"
+              label="每人赠送游戏机会"
+              readonly={id&&falg}
+              rules={[{ required: true, message: '请输入' }]}
+              fieldProps={{
+                value:`${detailList?.data?.content?.sendPlayTime}次`
+                
+              }}
+            />
+            :
+            <ProFormText
+              width="sm"
+              name="sendPlayTime"
+              label="每人赠送游戏机会"
+              rules={[{ required: true, message: '请输入' }]}
+              fieldProps={{
+                addonAfter:"次"
+              }}
+            />
+          }
+          {
+            id&&falg?
+            <ProFormText
+              width="sm"
+              name="inviteNum"
+              label="每邀请"
+              readonly={id&&falg}
+              rules={[{ required: true, message: '请输入' }]}
+              fieldProps={{
+                value:`${detailList?.data?.content?.accessGain?.inviteFriends?.inviteNum}个新用户奖励游戏机会${detailList?.data?.content?.accessGain?.inviteFriends?.prizeNum}次`
+              }}
             />
             :
             <ProForm.Group>
@@ -829,110 +865,170 @@ export default (props) =>{
                         label: '8个新用户',
                     }
                 ]}
-                readonly={id&&falg}
               />
               <span>奖励游戏机会</span>
               <ProFormSelect
-                  name="prizeNum1"
-                  initialValue={1}
-                  width="sm"
-                  rules={[{ required: true, message: '请选择' }]}
-                  options={[
-                      {
-                          value: 1,
-                          label: '1次',
-                      },
-                      {
-                          value: 2,
-                          label: '2次',
-                      },
-                      {
-                          value: 3,
-                          label: '3次',
-                      },
-                      {
-                          value: 4,
-                          label: '4次',
-                      },
-                      {
-                          value: 5,
-                          label: '5次',
-                      },
-                      {
-                          value: 6,
-                          label: '6次',
-                      },
-                      {
-                          value: 8,
-                          label: '8次',
-                      },
-                      {
-                          value: 10,
-                          label: '10次',
-                      },
-                      {
-                          value: 12,
-                          label: '12次',
-                      },
-                      {
-                          value: 16,
-                          label: '16次',
-                      },
-                      {
-                          value: 20,
-                          label: '20次',
-                      },
-                      {
-                          value: 50,
-                          label: '50次',
-                      },
-                  ]}
-                  readonly={id&&falg}
+                name="prizeNum1"
+                initialValue={1}
+                width="sm"
+                rules={[{ required: true, message: '请选择' }]}
+                options={[
+                    {
+                        value: 1,
+                        label: '1次',
+                    },
+                    {
+                        value: 2,
+                        label: '2次',
+                    },
+                    {
+                        value: 3,
+                        label: '3次',
+                    },
+                    {
+                        value: 4,
+                        label: '4次',
+                    },
+                    {
+                        value: 5,
+                        label: '5次',
+                    },
+                    {
+                        value: 6,
+                        label: '6次',
+                    },
+                    {
+                        value: 8,
+                        label: '8次',
+                    },
+                    {
+                        value: 10,
+                        label: '10次',
+                    },
+                    {
+                        value: 12,
+                        label: '12次',
+                    },
+                    {
+                        value: 16,
+                        label: '16次',
+                    },
+                    {
+                        value: 20,
+                        label: '20次',
+                    },
+                    {
+                        value: 50,
+                        label: '50次',
+                    },
+                ]}
               />
             </ProForm.Group>
           }
+
+          <ProFormDateTimePicker
+            label="能提现有效期"
+            name="withdrawTime"
+            readonly={id&&falg}
+            rules={[{ required: true, message: '截止时间' }]}
+          />
           
-           <ProFormText
-            width="sm"
-            name="validiteHour"
-            label="获得机会有效期"
-            readonly={id&&falg}
-            rules={[{ required: true, message: '请输入' }]}
-            fieldProps={{
-              addonAfter:"小时"
-            }}
+          {
+            id&&falg?
+            <ProFormText
+              width="sm"
+              name="validiteHour"
+              label="获得机会有效期"
+              readonly={id&&falg}
+              rules={[{ required: true, message: '请输入' }]}
+              fieldProps={{
+                value:`${detailList?.data?.content?.validiteHour}小时`
+              }}
             />
-          <ProFormText
-            width="sm"
-            name="testNum"
-            label="试玩次数"
-            readonly={id&&falg}
-            rules={[{ required: true, message: '请输入' }]}
-            fieldProps={{
-              addonAfter:"次"
-            }}
+            :
+            <ProFormText
+              width="sm"
+              name="validiteHour"
+              label="获得机会有效期"
+              rules={[{ required: true, message: '请输入' }]}
+              fieldProps={{
+                addonAfter:"小时"
+              }}
             />
-          <ProFormText
-            width="lg"
-            name="playerNum"
-            label="被邀请人玩游戏"
-            readonly={id&&falg}
-            rules={[{ required: true, message: '请输入' }]}
-            fieldProps={{
-              addonBefore:'每有1个新用户参与游戏，奖励游戏机会',
-              addonAfter:"次"
-            }}
+          }
+          {
+            id&&falg?
+            <ProFormText
+              width="sm"
+              name="testNum"
+              label="试玩次数"
+              readonly={id&&falg}
+              rules={[{ required: true, message: '请输入' }]}
+              fieldProps={{
+                value:`${detailList?.data?.content?.testNum}次`
+              }}
             />
-          <ProFormText
-            width="sm"
-            name="prizeNum2"
-            label="参与活动"
-            readonly={id&&falg}
-            rules={[{ required: true, message: '请输入' }]}
-            fieldProps={{
-              addonAfter:"人数"
-            }}
+            : 
+            <ProFormText
+              width="sm"
+              name="testNum"
+              label="试玩次数"
+              rules={[{ required: true, message: '请输入' }]}
+              fieldProps={{
+                addonAfter:"次"
+              }}
             />
+          }
+         
+          {
+            id&&falg?
+            <ProFormText
+              width="lg"
+              name="playerNum"
+              label="被邀请人玩游戏"
+              readonly={id&&falg}
+              rules={[{ required: true, message: '请输入' }]}
+              fieldProps={{
+                value:`每有1个新用户参与游戏，奖励游戏机会${detailList?.data?.content?.accessGain?.friendPlay?.playerNum}次`
+              }}
+            />
+            :
+            <ProFormText
+              width="lg"
+              name="playerNum"
+              label="被邀请人玩游戏"
+              rules={[{ required: true, message: '请输入' }]}
+              fieldProps={{
+                addonBefore:'每有1个新用户参与游戏，奖励游戏机会',
+                addonAfter:"次"
+              }}
+            />
+          }
+          {
+            id&&falg?
+            <ProFormText
+              width="sm"
+              name="prizeNum2"
+              label="参与活动"
+              readonly={id&&falg}
+              rules={[{ required: true, message: '请输入' }]}
+              fieldProps={{
+                value:`${detailList?.data?.content?.accessGain?.friendPlay?.prizeNum}人数`
+              }}
+            />
+            :
+            <ProFormText
+              width="sm"
+              name="prizeNum2"
+              label="参与活动"
+              rules={[{ required: true, message: '请输入' }]}
+              fieldProps={{
+                addonAfter:"人数"
+              }}
+            />
+          }
+
+         
           <Form.Item
             label="活动封面"
             name="imgUrl"
@@ -952,7 +1048,11 @@ export default (props) =>{
           {
             id&&falg?
               <Form.Item
+              name="ruleText"
               label="活动规则"
+              rules={[
+                { required: true, message: '请输入活动规则' },
+              ]}
             >
             <pre className={styles.line_feed}>
               {
@@ -975,21 +1075,21 @@ export default (props) =>{
             />
           }
           <ProFormRadio.Group
-                name="status"
-                label="活动状态"
-                options={[
-                    {
-                      label: '开启',
-                      value: 1
-                    },
-                    {
-                      label: '终止',
-                      value: 0
-                    },
-                ]}
-                initialValue={1}
-                hidden
-              />
+            name="status"
+            label="活动状态"
+            options={[
+                {
+                  label: '开启',
+                  value: 1
+                },
+                {
+                  label: '终止',
+                  value: 0
+                },
+            ]}
+            initialValue={1}
+            hidden
+          />
           {
             id&&falg&&<ProFormText
                 name="statusStr"
@@ -1011,8 +1111,13 @@ export default (props) =>{
           setFalg(true)
         }}/>
       }
-       {
-        listVisible&&<UploadingList visible={listVisible} setVisible={setListVisible}  endId={id} canBlack={(val)=>{
+       {listVisible&&<UploadingList 
+        visible={listVisible} 
+        setVisible={setListVisible} 
+        phones={detailList?.data?.content?.rewardsSet?.luckyOne?.prizePhones}  
+        endId={id}
+        falg={falg} 
+        canBlack={(val)=>{
           setPhoneList(val)
         }}/>
       }

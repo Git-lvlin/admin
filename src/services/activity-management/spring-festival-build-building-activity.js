@@ -54,26 +54,9 @@ export const getActiveConfigById = async (params = {}, options = {}) => {
     }
 }
 
-// export const couponInviteEnd = async (params = {}, options = {}) => {
-//     const { ...rest } = params;
-//     const res = await request('/auth/activity/CouponInvite/couponInviteEnd', {
-//     method: 'POST',
-//     data: {
-//         ...rest
-//     },
-//     ...options
-//     });
-
-//     return {
-//     data: res.data,
-//     success: true,
-//     code: res.code
-//     }
-// }
-
-export const getBuildhouseIncomeList = async (params = {}, options = {}) => {
+export const changeStatus = async (params = {}, options = {}) => {
     const { ...rest } = params;
-    const res = await request('/auth/buildhouse/Buildhouse/getBuildhouseIncomeList', {
+    const res = await request('/auth/activity/buildHouse/changeStatus', {
     method: 'POST',
     data: {
         ...rest
@@ -86,6 +69,27 @@ export const getBuildhouseIncomeList = async (params = {}, options = {}) => {
     success: true,
     code: res.code
     }
+}
+
+export const getBuildhouseIncomeList = async (params = {}, options = {}) => {
+  const { current, pageSize,dateTimeRange, ...rest } = params;
+  const res = await request('/auth/buildhouse/Buildhouse/getBuildhouseIncomeList', {
+    method: 'POST',
+    data: {
+      page: current,
+      pageSize: pageSize,
+      startTime1:dateTimeRange&&dateTimeRange[0],
+      startTime2:dateTimeRange&&dateTimeRange[1],
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
+  }
 }
 
 
