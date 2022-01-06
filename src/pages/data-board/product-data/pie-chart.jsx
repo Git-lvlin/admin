@@ -28,7 +28,7 @@ const PieChart = ({
   const cols = {
     rate: {
       formatter: (val) => {
-        val = Math.round(amountTransform(Number(val), '*')) + "%"
+        val = amountTransform(Number(val).toFixed(2), '/') + "%"
         return val
       }
     }
