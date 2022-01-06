@@ -10,8 +10,10 @@ export default (props) => {
   const { visible, setVisible, logId,onClose} = props;
   const columns= [
     {
-        title: '序号',
-        dataIndex: 'groupId',
+      title: '序号',
+      dataIndex: 'id',
+      hideInSearch: true,
+      valueType: 'indexBorder'
     },
     {
         title: '操作角色',
