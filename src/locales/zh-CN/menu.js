@@ -62,6 +62,7 @@ export default {
   'menu.product-management.product-category': '商品分类',
   'menu.product-management.overrule-list': '驳回商品',
   'menu.product-management.product-evaluate': '商品评价',
+  'menu.product-management.product-unit': '商品单位',
 
 
   'menu.setting': '设置',
