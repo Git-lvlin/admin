@@ -1471,3 +1471,12 @@ export const getGoodsBindData = (params = {}, options = {}) => {
     ...options
   });
 }
+
+// 标签-排序操作
+export const tagSortSub = (params = {}, options = {}) => {
+  return request(`/auth/activity/Goods/tagSortSub`, {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
