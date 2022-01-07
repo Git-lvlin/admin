@@ -77,6 +77,21 @@ export default {
               component: './activity-management/spring-festival-build-building-activity/employ-detail',
               hideInMenu: true
             },
+            {
+              name: 'cash-advance-detail',
+              path: '/activity-management/spring-festival-build-building-activity/cash-advance-detail',
+              component: './activity-management/spring-festival-build-building-activity/cash-advance-detail',
+            },
+            {
+              name: 'ranking-data',
+              path: '/activity-management/spring-festival-build-building-activity/ranking-data',
+              component: './activity-management/spring-festival-build-building-activity/ranking-data',
+            },
+            {
+              name: 'binding-set',
+              path: '/activity-management/spring-festival-build-building-activity/binding-set',
+              component: './activity-management/spring-festival-build-building-activity/binding-set',
+            },
           ]
       },
     ]

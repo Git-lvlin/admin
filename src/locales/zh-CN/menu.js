@@ -334,4 +334,9 @@ export default {
   'menu.activity-management.spring-festival-build-building-activity.rule-configuration': '规则配置',
   'menu.activity-management.spring-festival-build-building-activity.consume-detail': '使用明细',
   'menu.activity-management.spring-festival-build-building-activity.grant-detail': '发放明细',
+  'menu.activity-management.spring-festival-build-building-activity.cash-advance-detail': '提现明细',
+  'menu.activity-management.spring-festival-build-building-activity.ranking-data': '排名数据',
+  'menu.activity-management.spring-festival-build-building-activity.binding-set': '提现绑定设置',
+
+
 };
