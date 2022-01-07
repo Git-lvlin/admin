@@ -31,7 +31,7 @@ export default () => {
     },
     {
       title: '集约活动',
-      dataIndex: 'wsNamec',
+      dataIndex: 'wsName',
       valueType: 'text',
       render: (_,r) =>{
         return <>
