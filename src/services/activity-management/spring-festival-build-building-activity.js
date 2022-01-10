@@ -215,8 +215,8 @@ export const inviteRankList = async (params = {}, options = {}) => {
   data: {
       page: current,
       size:pageSize,
-      startTime:dateTimeRange&&moment(dateTimeRange[0]).valueOf(),
-      endTime:dateTimeRange&&moment(dateTimeRange[1]).valueOf(),
+      startTime:dateTimeRange&&moment(dateTimeRange[0]).valueOf()/1000,
+      endTime:dateTimeRange&&moment(dateTimeRange[1]).valueOf()/1000,
       ...rest,
   },
   ...options
@@ -237,8 +237,8 @@ export const floorRankList = async (params = {}, options = {}) => {
   data: {
       page: current,
       size:pageSize,
-      startTime:dateTimeRange&&moment(dateTimeRange[0]).valueOf(),
-      endTime:dateTimeRange&&moment(dateTimeRange[1]).valueOf(),
+      startTime:dateTimeRange&&moment(dateTimeRange[0]).valueOf()/1000,
+      endTime:dateTimeRange&&moment(dateTimeRange[1]).valueOf()/1000,
       ...rest,
   },
   ...options

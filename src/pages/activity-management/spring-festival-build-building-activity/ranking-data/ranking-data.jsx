@@ -239,6 +239,10 @@ const InviteRegister=() => {
             ],
           }}
           columns={columns}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
         />
         {
           detailVisible && <Detail

@@ -121,6 +121,10 @@ export default () => {
               <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-give-list-export'}/>
             ],
           }}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
           columns={columns}
         />
         </PageContainer>
