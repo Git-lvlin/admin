@@ -66,6 +66,10 @@ export default () => {
             ],
           }}
           columns={columns}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
         />
         {visible && <BindingModel
         visible={visible}

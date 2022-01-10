@@ -126,6 +126,10 @@ const UserDetail=(props) => {
           ],
         }}
         columns={columns}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
       />
     </>
   );
@@ -233,6 +237,10 @@ const EmployDetail=(props) => {
           ],
         }}
         columns={columns}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
       />
     </>
   );

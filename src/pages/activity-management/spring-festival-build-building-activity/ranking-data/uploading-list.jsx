@@ -125,8 +125,8 @@ export default props=>{
                                     }else if(res?.data?.nickname){
                                       arr.push(res?.data?.nickname)
                                     }
-                                    console.log('arr',arr)
-                                    setNickname(arr)
+                                    const arr2=arr.filter((item) => item!== '')
+                                    setNickname(arr2)
                                   }
                                 })
                               },
