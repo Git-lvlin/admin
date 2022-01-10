@@ -19,7 +19,6 @@ import Stock from './stock';
 import Area from './area';
 import TimeSet from './time-set';
 import style from './area.less';
-import ListSort from './list-sort';
 
 const { confirm } = Modal;
 
@@ -175,7 +174,6 @@ const TableList = () => {
   const [detailData, setDetailData] = useState(null)
   const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
-  const [value, setValue] = useState(1)
 
   const getDetail = (wholesaleId) => {
     getWholesaleDetail({
@@ -227,10 +225,6 @@ const TableList = () => {
       },
     });
 
-  }
-
-  const onChange = (e) => {
-    setValue(e)
   }
 
   const columns = [
@@ -455,19 +449,11 @@ const TableList = () => {
             ],
           }}
           columns={columns}
-          params={{sortType: value}}
           actionRef={actionRef}
           pagination={{
             pageSize: 10,
           }}
           scroll={{ x: 'max-content' }}
-          headerTitle={
-            <ListSort 
-              actRef={actionRef} 
-              onChange={onChange}
-              value={value}
-            />
-          }
         />
       </div>
     </PageContainer>
