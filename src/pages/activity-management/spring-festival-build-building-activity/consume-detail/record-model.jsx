@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
-import { Form,Button,List } from 'antd';
+import { Form,Button,List,DatePicker } from 'antd';
 import ProForm, {
   ModalForm
 } from '@ant-design/pro-form';
-import { AgentShopDelete,accountDetail } from '@/services/daifa-store-management/list'
-import styles from './style.less'
-import { InfoCircleOutlined,QuestionCircleOutlined} from '@ant-design/icons';
+import { withdrawPage } from '@/services/activity-management/spring-festival-build-building-activity';
+import moment from 'moment'
 import { useState } from 'react';
 import { amountTransform } from '@/utils/utils'
 
@@ -25,13 +24,16 @@ const formItemLayout = {
  
 
 export default (props) => {
-  const { visible, setVisible, callback,storeNoId,onClose} = props;
-  const [amount,setAmount]=useState()
+  const { visible, setVisible, callback,recordId,onClose} = props;
+  const [withdraw,setWithdraw]=useState()
+  const [date,setDate]=useState()
   useEffect(()=>{
-    accountDetail({accountType:'agentStore',accountId:storeNoId?.data?.storeNo}).then(res=>{
-      setAmount(amountTransform(res.data?.commission, '*'))
+    withdrawPage({memberId:recordId?.memberId,date:moment(date).format('YYYY-MM')}).then(res=>{
+      if(res.code==0){
+        setWithdraw(res.data)
+      }
     })
-  },[])
+  },[date])
   return (
     <ModalForm
       title='提现记录：'
@@ -45,11 +47,10 @@ export default (props) => {
           onClose();
         }
       }}
-      className={styles.cancel_model}
       submitter={{
         render: (props, defaultDoms) => {
           return [
-                <Button  key="cancel" onClick={() =>setVisible(false)}>
+                <Button type="primary" key="cancel" onClick={() =>{setVisible(false);onClose()}}>
                  知道了
                 </Button>
           ];
@@ -59,13 +60,23 @@ export default (props) => {
         }}
       {...formItemLayout}
     >
+      <DatePicker onChange={(itme)=>setDate(itme)} picker="month" />
       <List
         size="small"
-        header={<div>Header</div>}
-        footer={<div>Footer</div>}
-        bordered
-        // dataSource={data}
-        renderItem={item => <List.Item>{item}</List.Item>}
+        dataSource={withdraw}
+        renderItem={item => 
+        <List.Item>
+          <p>
+          {item?.createTime} &nbsp;&nbsp;&nbsp; 提现至{{'alipay':'支付宝'}[item?.paymentMethod]}  &nbsp;&nbsp;&nbsp; {amountTransform(item?.amount, '/')}元 &nbsp;&nbsp;&nbsp; {{
+          'auditing':'待审核',
+          'waitPay':'待执行',
+          'paid':'已执行',
+          'arrived':'已到帐',
+          'unPass':'审核拒绝', 
+          'failure':'提现失败'
+        }[item?.status]}
+        </p>
+        </List.Item>}
       />
 
     </ModalForm >

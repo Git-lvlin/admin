@@ -38,7 +38,7 @@ export default () => {
         valueType: 'text',
       },
       {
-        title: '活动时间',
+        title: '使用时间',
         key: 'dateTimeRange',
         dataIndex: 'activityStartTime',
         valueType: 'dateTimeRange',
@@ -77,13 +77,9 @@ export default () => {
       },
       {
         title: '使用原因',
-        dataIndex: 'type',
+        dataIndex: 'typeDisplay',
         valueType: 'text',
         hideInSearch:true,
-        valueEnum: {
-          5:'盖楼游戏',
-          6:'机会过期', 
-        },
       },
       {
         title: '筛选',

@@ -96,7 +96,7 @@ const Category = (props) => {
                 <p>{r?.percentAuditStatus==0&&'未修改'}</p>
                 <p>{r?.percentAuditStatus==1&&'审核通过'}</p>
                 <p>{r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}</p>
-                <p>{r?.percentAuditStatus==3&&`待审核(店主占${r?.storeAuditPercent}%)}`}</p>
+                <p>{r?.percentAuditStatus==3&&`待审核(店主占${r?.storeAuditPercent}%)`}</p>
                </>
       },
       editable:false

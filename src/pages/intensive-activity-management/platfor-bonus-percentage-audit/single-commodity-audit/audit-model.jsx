@@ -30,7 +30,7 @@ export default (props) => {
     return new Promise(async (resolve, reject) => {
       if (value && value.length < 5) {
         await reject('最小长度为5')
-      } else if (value&&/[%&',;=?$\x22]/.test(value)) {
+      } else if (value&&/[%&'=?$\x22]/.test(value)) {
         await reject('不可以含特殊字符')
       } else {
         await resolve()
@@ -82,7 +82,7 @@ export default (props) => {
             fieldProps={{
                 value:<>
                        <p className={styles.percent}>{amountTransform(parseFloat(formDetail?.storeAuditPercent), '*')}%</p>
-                       <p>运营中心占平台额外奖励<span className={styles.percent}>{amountTransform(parseFloat(formDetail?.operationPercent), '*')}%</span></p>
+                       <p>运营中心占平台额外奖励<span className={styles.percent}>{amountTransform(parseFloat(formDetail?.operationAuditPercent), '*')}%</span></p>
                       </>
             }}
         />

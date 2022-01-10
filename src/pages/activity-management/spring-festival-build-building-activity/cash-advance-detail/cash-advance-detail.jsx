@@ -3,7 +3,7 @@ import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { withdrawPage } from '@/services/activity-management/spring-festival-build-building-activity';
 import { PageContainer } from '@ant-design/pro-layout';
-import { history,connect } from 'umi';
+import { amountTransform } from '@/utils/utils'
 
 
 
@@ -23,6 +23,12 @@ export default () => {
         valueType: 'text',
       },
       {
+        title: '用户手机号',
+        dataIndex: 'registMobile',
+        valueType: 'text',
+        hideInTable: true,
+      },
+      {
         title: '提现用户名',
         dataIndex: 'realName',
         valueType: 'text',
@@ -30,18 +36,32 @@ export default () => {
       {
         title: '提现银行机构',
         dataIndex: 'paymentMethod',
-        valueType: 'text',
+        valueType: 'select',
+        valueEnum: {
+          'alipay':'支付宝',
+        },
+        hideInSearch: true,
       },
       {
         title: '账户号码',
         dataIndex: 'withdrawAccount',
         valueType: 'text',
+        hideInSearch: true,
+      },
+      {
+        title: '银行账户',
+        dataIndex: 'withdrawAccount',
+        valueType: 'text',
+        hideInTable: true,
       },
       {
         title: '提现金额',
         dataIndex: 'amount',
         valueType: 'text',
         hideInSearch: true,
+        render:(_,data)=>{
+          return amountTransform(_, '/')
+        }
       },
       {
         title: '提现申请时间',
@@ -61,6 +81,9 @@ export default () => {
         dataIndex: 'fee',
         valueType: 'text',
         hideInSearch: true,
+        render:(_,data)=>{
+          return <p>{amountTransform(_, '/')}元</p>
+        }
       },
       {
         title: '提现状态',
@@ -82,7 +105,7 @@ export default () => {
         hideInSearch: true,
       },
       {
-        title: '提现到账结果时间',
+        title: '提现到账时间',
         key: 'dateTimeRange2',
         dataIndex: 'notifyTime',
         valueType: 'dateTimeRange',
