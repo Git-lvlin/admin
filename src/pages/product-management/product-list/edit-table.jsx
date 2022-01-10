@@ -8,7 +8,7 @@ import * as api from '@/services/product-management/product-list';
 import { amountTransform } from '@/utils/utils'
 
 export default function EditTable(props) {
-  const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample } = props;
+  const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample, unit, wsUnit, ladderSwitch } = props;
   const [columns, setColumns] = useState([])
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
@@ -44,13 +44,13 @@ export default function EditTable(props) {
       },
       ...arr,
       {
-        title: '零售供货价(元)',
+        title: `零售供货价(元/${unit})`,
         dataIndex: 'retailSupplyPrice',
         editable: false,
         hideInTable: goodsSaleType === 1,
       },
       {
-        title: '批发供货价(元)',
+        title: `批发供货价(元/${unit})`,
         dataIndex: 'wholesaleSupplyPrice',
         editable: false,
         hideInTable: goodsSaleType === 2,
@@ -68,12 +68,12 @@ export default function EditTable(props) {
         hideInTable: goodsSaleType === 2,
       },
       {
-        title: '样品供货价(元)',
+        title: `样品供货价(元/${unit})`,
         dataIndex: 'sampleSupplyPrice',
         hideInTable: isSample !== 1,
       },
       {
-        title: '样品价(元)',
+        title: `样品价(元/${unit})`,
         dataIndex: 'sampleSalePrice',
         hideInTable: isSample !== 1,
       },
@@ -158,6 +158,43 @@ export default function EditTable(props) {
         render: (_) => _.label ? _.label : '_',
         hideInTable: goodsSaleType === 1,
         editable: false,
+      },
+      {
+        title: '阶梯优惠',
+        dataIndex: 'stage1',
+        render: (_, record) => {
+          return _ !== '-' ? <>
+            <div div style={{ display: 'flex', marginBottom: 10, alignItems: 'center' }
+            }>
+              {_.wsStart}
+              —
+              {_.wsEnd}
+              {unit}时，
+              {_.wsSupplyPrice}元 / {unit}
+            </div >
+
+            {record.batchNumber > 1 && <div>{parseInt(_.wsStart / record.batchNumber, 10)}—{parseInt(_.wsEnd / record.batchNumber, 10)}{wsUnit}时，{_.wsSupplyPrice * record.batchNumber}元/{wsUnit}</div>}
+          </> : '-'
+        },
+        editable: false,
+        hideInTable: goodsSaleType === 2 || !ladderSwitch,
+      },
+      {
+        title: '最高阶梯优惠',
+        dataIndex: 'stage2',
+        render: (_, record) => {
+          return _ !== '-' ? <>
+            <div style={{ display: 'flex', marginBottom: 10, alignItems: 'center' }}>
+              {record.stage1.wsEnd + 1}
+              {unit}及以上时，
+              {_.wsSupplyPrice}元/{unit}
+            </div>
+
+            {record.batchNumber > 1 && <div>{parseInt((record.stage1.wsEnd + 1) / record.batchNumber, 10)}{wsUnit}及以上时，{_.wsSupplyPrice * record.batchNumber}元/{wsUnit}</div>}
+          </> : '-'
+        },
+        editable: false,
+        hideInTable: goodsSaleType === 2 || !ladderSwitch,
       },
       // {
       //   title: '操作',

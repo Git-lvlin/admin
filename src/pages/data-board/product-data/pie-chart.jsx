@@ -8,18 +8,17 @@ import {
 	getTheme,
   Legend
 } from "bizcharts"
+import { Radio } from 'antd'
 
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
 import { Empty } from 'antd'
 
-const PieChart = ({data, payRate}) => {
-
-  if(payRate !== 0) {
-    data = data?.map(item=> ({payRate: Number(item.payCount) / payRate, ...item}))
-  } else {
-    data = data?.map(item=> ({payRate: 0, ...item}))
-  }
+const PieChart = ({
+  data,
+  value,
+  onChange
+}) => {
  
   const colors = data?.reduce((pre, cur, idx) => {
     pre[cur.item] = getTheme().colors10[idx]
@@ -27,9 +26,9 @@ const PieChart = ({data, payRate}) => {
   }, {})
 
   const cols = {
-    payRate: {
+    rate: {
       formatter: (val) => {
-        val = Math.round(amountTransform(Number(val), '*')) + "%"
+        val = amountTransform(Number(val).toFixed(2), '/') + "%"
         return val
       }
     }
@@ -37,21 +36,32 @@ const PieChart = ({data, payRate}) => {
 
   return (
     <>
-      <h3 className={styles.pieTitle}>商品分类支付占比</h3>
+      <h3 className={styles.pieTitle}>商品分类占比</h3>
+      <Radio.Group 
+        onChange={(e)=>onChange(e)}
+        value={value}
+        size="large"
+      >
+        <Radio value={'1'}>SKU占比</Radio>
+        <Radio value={'2'}>销售额占比</Radio>
+      </Radio.Group>
       {
         data?.[0]?
         <Chart 
           height={400}
           data={data}
-          scale={cols}
           interactions={['element-active']}
           autoFit
+          scale={cols}
+          onGetG2Instance={ c => {
+            c.removeInteraction('legend-filter')
+          }}
         >
-          <Coordinate type="theta" radius={0.75} />
+          <Coordinate type="theta" radius={0.8} />
           <Tooltip showTitle={false} />
           <Axis visible={false} />
           <Interval
-            position="payRate"
+            position="rate"
             adjust="stack"
             color="gcName"
             style={{
@@ -63,9 +73,6 @@ const PieChart = ({data, payRate}) => {
               (item) => {
                 return {
                   offset: 20,
-                  content: (data) => {
-                    return `${data.gcName}\n ${Math.round(amountTransform(Number(data.payRate), '*'))}%`
-                  },
                   style: {
                     fill: colors[item]
                   }
@@ -73,20 +80,13 @@ const PieChart = ({data, payRate}) => {
               }
             ]}
           />
-          <Legend
-            layout="horizontal"
-            padding={[60, 0, 0, 0]}
-            itemName={{
-              style: {
-                fontSize: 16
-              }
-            }}
-          />
+          <Legend visible={false}/>
         </Chart>:
         <Empty/>
       }
     </>
   )
 }
+
 
 export default PieChart
