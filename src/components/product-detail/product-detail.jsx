@@ -162,7 +162,7 @@ export default (props) => {
         <Form.Item
           label="平均运费(元)"
         >
-          {amountTransform(goods.wholesaleFreight, '/')}
+          {amountTransform(goods.wholesaleFreight, '/')}元/{goods.unit}
         </Form.Item>
       }
       {
@@ -184,7 +184,7 @@ export default (props) => {
             <Form.Item
               label="总可用库存"
             >
-              {goods?.totalStock}
+              {goods?.totalStock}{goods.unit}
             </Form.Item>
             <Form.Item
               label="商品单位"
@@ -194,7 +194,7 @@ export default (props) => {
             <Form.Item
               label="集采商品单位"
             >
-              {goods.wsUnit || '箱'}
+              {goods.wsUnit}
             </Form.Item>
             <Form.Item
               label="发货地"
@@ -204,7 +204,7 @@ export default (props) => {
             <Form.Item
               label="单SKU起售数量"
             >
-              {goods?.buyMinNum}
+              {goods?.buyMinNum}{goods.unit}
             </Form.Item>
           </>
           :
@@ -221,22 +221,22 @@ export default (props) => {
                 <Form.Item
                   label="集采供货价(元)"
                 >
-                  {amountTransform(goods.wholesaleSupplyPrice, '/')}
+                  {amountTransform(goods.wholesaleSupplyPrice, '/')}元/{goods.unit}
                 </Form.Item>
                 {!!detailData.ladderSwitch && <Form.Item
                   label="集采阶梯优惠"
                 >
                   {goods.ladderData && <>
                     <div>采购{goods.ladderData['1'].wsStart}-{goods.ladderData['1'].wsEnd}{goods.unit}时，{goods.ladderData['1'].wsSupplyPrice / 100}元/{goods.unit}</div>
-                    {goods.batchNumber > 0 && <div>{goods.ladderData['1'].wsStart / goods.batchNumber}-{goods.ladderData['1'].wsEnd / goods.batchNumber}{goods.wsUnit || '箱'}时，{goods.ladderData['1'].wsSupplyPrice / 100 * goods.batchNumber}元/{goods.wsUnit || '箱'}</div>}
+                    {goods.batchNumber > 1 && <div>{goods.ladderData['1'].wsStart / goods.batchNumber}-{goods.ladderData['1'].wsEnd / goods.batchNumber}{goods.wsUnit || '箱'}时，{goods.ladderData['1'].wsSupplyPrice / 100 * goods.batchNumber}元/{goods.wsUnit || '箱'}</div>}
                     <div>{+goods.ladderData['1'].wsEnd + 1}{goods.unit}及以上时，{goods.ladderData['2'].wsSupplyPrice / 100}元/{goods.unit}</div>
-                    {goods.batchNumber > 0 && <div>{(+goods.ladderData['1'].wsEnd + 1) / goods.batchNumber}{goods.wsUnit || '箱'}及以上时，{goods.ladderData['2'].wsSupplyPrice / 100 * goods.batchNumber}元/{goods.wsUnit || '箱'}</div>}
+                    {goods.batchNumber > 1 && <div>{(+goods.ladderData['1'].wsEnd + 1) / goods.batchNumber}{goods.wsUnit || '箱'}及以上时，{goods.ladderData['2'].wsSupplyPrice / 100 * goods.batchNumber}元/{goods.wsUnit || '箱'}</div>}
                   </>}
                 </Form.Item>}
                 <Form.Item
                   label="最低批发量"
                 >
-                  {goods?.wholesaleMinNum}
+                  {goods?.wholesaleMinNum}{goods.unit}
                 </Form.Item>
                 {
                   goods?.isSample === 1
@@ -245,22 +245,22 @@ export default (props) => {
                     <Form.Item
                       label="样品供货价(元)"
                     >
-                      {goods?.sampleSupplyPrice / 100}
+                      {goods?.sampleSupplyPrice / 100}元/{goods.unit}
                     </Form.Item>
                     <Form.Item
                       label="样品价(元)"
                     >
-                      {goods?.sampleSalePrice / 100}
+                      {goods?.sampleSalePrice / 100}元/{goods.unit}
                     </Form.Item>
                     <Form.Item
                       label="样品起售量"
                     >
-                      {goods?.sampleMinNum}
+                      {goods?.sampleMinNum}{goods.unit}
                     </Form.Item>
                     <Form.Item
                       label="样品限售量"
                     >
-                      {goods?.sampleMaxNum}
+                      {goods?.sampleMaxNum}{goods.unit}
                     </Form.Item>
                     <Form.Item
                       label="样品是否包邮"
@@ -282,34 +282,34 @@ export default (props) => {
                 <Form.Item
                   label="一件代发供货价(元)"
                 >
-                  {amountTransform(goods?.retailSupplyPrice, '/')}
+                  {amountTransform(goods?.retailSupplyPrice, '/')}元/{goods.unit}
                 </Form.Item>
               </>
             }
             <Form.Item
               label="秒约价"
             >
-              {amountTransform(goods?.salePrice, '/')}
+              {amountTransform(goods?.salePrice, '/')}元/{goods.unit}
             </Form.Item>
             <Form.Item
               label="市场价"
             >
-              {amountTransform(goods?.marketPrice, '/')}
+              {amountTransform(goods?.marketPrice, '/')}元/{goods.unit}
             </Form.Item>
             <Form.Item
               label="可用库存"
             >
-              {goods?.totalStock}
+              {goods?.totalStock}{goods.unit}
             </Form.Item>
             <Form.Item
               label="商品单位"
             >
-              {goods.unit}
+              {goods.unit}{goods.unit}
             </Form.Item>
             <Form.Item
               label="集采商品单位"
             >
-              {goods.wsUnit || '箱'}
+              {goods.wsUnit}
             </Form.Item>
             <Form.Item
               label="发货地"
@@ -319,17 +319,17 @@ export default (props) => {
             <Form.Item
               label="库存预警值"
             >
-              {goods?.stockAlarmNum}
+              {goods?.stockAlarmNum}{goods.unit}
             </Form.Item>
             <Form.Item
               label="单SKU起售数量"
             >
-              {goods?.buyMinNum}
+              {goods?.buyMinNum}{goods.unit}
             </Form.Item>
             <Form.Item
               label="单SKU单次最多零售购买数量"
             >
-              {goods?.buyMaxNum}
+              {goods?.buyMaxNum}{goods.unit}
             </Form.Item>
           </>
       }
