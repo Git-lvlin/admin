@@ -148,7 +148,6 @@ export default () => {
         <ProTable
           actionRef={actionRef}
           rowKey="id"
-          headerTitle={`共搜索到 922 条数据`}
           options={false}
           request={getBuildhouseUseList}
           postData={postData}

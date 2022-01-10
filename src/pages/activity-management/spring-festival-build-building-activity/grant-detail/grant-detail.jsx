@@ -105,7 +105,6 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="共搜索到 922 条数据"
           options={false}
           request={getBuildhouseIncomeList}
           search={{
