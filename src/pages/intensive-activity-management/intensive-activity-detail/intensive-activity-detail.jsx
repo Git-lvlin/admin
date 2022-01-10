@@ -4,11 +4,9 @@ import { amountTransform } from '@/utils/utils'
 import { useParams } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
-
+import LadderDataEdit from '../intensive-activity-create/ladder-data-edit'
 
 const { Title } = Typography;
-
-
 
 const Detail = () => {
   const [detailData, setDetailData] = useState({})
@@ -66,32 +64,40 @@ const Detail = () => {
       render: (_) => `${amountTransform(_)}%`
     },
     {
-      title: '批发供货价(元)',
+      title: `批发供货价(元/${detailData?.sku?.[0]?.unit})`,
       dataIndex: 'wholesaleSupplyPrice',
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '市场价',
+      title: `市场价(元/${detailData?.sku?.[0]?.unit})`,
       dataIndex: 'marketPrice',
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '平均运费(元)',
+      title: `平均运费(元/${detailData?.sku?.[0]?.unit})`,
       dataIndex: 'wholesaleFreight',
       render: (_) => amountTransform(_, '/')
     },
     {
       title: '集约库存',
       dataIndex: 'totalStockNum',
+      render: (_, record) => {
+        return (
+          <>
+            <div>{_}{record.unit}</div>
+            {record.batchNumber > 1 && record.wsUnit && <div>({_ * record.batchNumber}){record.wsUnit}</div>}
+          </>
+        )
+      }
     },
     {
-      title: '集约价(元)',
+      title: `集约价(元/${detailData?.sku?.[0]?.unit})`,
       dataIndex: 'price',
       render: (_) => amountTransform(_, '/')
-      
+
     },
     {
-      title: '实际盈亏(元)',
+      title: `实际盈亏(元/${detailData?.sku?.[0]?.unit})`,
       dataIndex: 'profit',
       render: (_) => amountTransform(_, '/')
     },
@@ -109,27 +115,48 @@ const Detail = () => {
       dataIndex: 'fixedPrice',
       render: (_) => amountTransform(_, '/')
     },
-    {
-      title: '社区店特殊补贴',
-      render: () => (
-        <>
-          <div>当订单金额达到 {detailData?.wholesale?.orderAmount / 100}元</div>
-          <div>实际盈亏为 {detailData?.wholesale?.orderProfit / 100}元</div>
-          <div>补贴 {detailData?.wholesale?.subsidy / 100}元</div>
-        </>
-      )
-    },
+    // {
+    //   title: '社区店特殊补贴',
+    //   render: () => (
+    //     <>
+    //       <div>当订单金额达到 {detailData?.wholesale?.orderAmount / 100}元</div>
+    //       <div>实际盈亏为 {detailData?.wholesale?.orderProfit / 100}元</div>
+    //       <div>补贴 {detailData?.wholesale?.subsidy / 100}元</div>
+    //     </>
+    //   )
+    // },
     {
       title: '集采箱规单位量',
       dataIndex: 'batchNumber',
+      render: (_, record) => {
+        return (
+          <span>{_}{record.unit}{record.batchNumber > 1 && record.wsUnit && `/${record.wsUnit}`}</span>
+        )
+      }
     },
     {
       title: '单次起订量',
       dataIndex: 'minNum',
+      render: (_, record) => {
+        return (
+          <>
+            <div>{_}{record.unit}</div>
+            {record.batchNumber > 1 && record.wsUnit && <div>({_ * record.batchNumber}){record.wsUnit}</div>}
+          </>
+        )
+      }
     },
     {
       title: '单次限订量',
       dataIndex: 'maxNum',
+      render: (_, record) => {
+        return (
+          <>
+            <div>{_}{record.unit}</div>
+            {record.batchNumber > 1 && record.wsUnit && <div>({_ * record.batchNumber}){record.wsUnit}</div>}
+          </>
+        )
+      }
     },
     {
       title: '集约全款金额',
@@ -170,13 +197,13 @@ const Detail = () => {
                 {detailData?.wholesale?.createAdminName}
               </Descriptions.Item>
               <Descriptions.Item label="实际盈亏(元)">
-                {detailData?.sku?.[0]?.profit / 100}
+                {detailData?.sku?.[0]?.profit / 100}元/{detailData?.sku?.[0]?.unit}
               </Descriptions.Item>
               <Descriptions.Item label="箱柜单位量">
                 {detailData?.sku?.[0]?.batchNumber}
               </Descriptions.Item>
               <Descriptions.Item label="平均运费">
-                {detailData?.sku?.[0]?.wholesaleFreight / 100}
+                {detailData?.sku?.[0]?.wholesaleFreight / 100}元/{detailData?.sku?.[0]?.unit}
               </Descriptions.Item>
               <Descriptions.Item label="商品分类">
                 {detailData?.sku?.[0]?.gcId1Display}-{detailData?.sku?.[0]?.gcId2Display}
@@ -207,6 +234,26 @@ const Detail = () => {
             {detailData?.wholesale.recoverPayTimeout / 3600}小时
           </Descriptions.Item> */}
             </Descriptions>
+            {detailData?.wholesale?.isEditSubsidy === 1 &&
+              <div style={{ marginBottom: 20 }}>
+                当店主采购订单金额达到{detailData?.wholesale?.orderAmount / 100}元时，补贴社区店店主{detailData?.wholesale?.subsidy / 100}元/{detailData?.sku?.[0]?.unit}
+              </div>
+            }
+            {detailData?.wholesale?.isEditSubsidy === 2 && <LadderDataEdit
+              data={detailData?.sku?.[0]?.ladderSubsidy.map(item => (
+                {
+                  ...item,
+                  totalExtraScale: amountTransform(item.totalExtraScale),
+                  operationPercent: amountTransform(item.operationPercent),
+                  storePercent: amountTransform(item.storePercent),
+                }
+              ))}
+              batchNumber={detailData?.sku?.[0]?.batchNumber}
+              unit={detailData?.sku?.[0]?.unit}
+              wsUnit={detailData?.sku?.[0]?.wsUnit}
+              skuData={detailData?.sku?.[0]}
+              readOnly="1"
+            />}
           </Row>
 
           <Row>

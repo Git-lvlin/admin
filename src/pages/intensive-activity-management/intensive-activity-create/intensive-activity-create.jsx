@@ -4,7 +4,8 @@ import {
   StepsForm,
   ProFormText,
   ProFormCheckbox,
-  ProFormDateTimeRangePicker,
+  ProFormRadio,
+  ProFormDependency,
   ProFormDateTimePicker,
 } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
@@ -18,11 +19,11 @@ import Upload from '@/components/upload'
 import { history, useParams, useLocation } from 'umi';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
+import LadderDataEdit from './ladder-data-edit'
 
-const FromWrap = ({ value, onChange, content, right }) => (
+const FromWrap = ({ value, onChange, content }) => (
   <div style={{ display: 'flex' }}>
     <div>{content(value, onChange)}</div>
-    {/* <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div> */}
   </div>
 )
 
@@ -39,30 +40,31 @@ const formItemLayout = {
   }
 };
 
-function range(start, end) {
-  const result = [];
-  for (let i = start; i < end; i++) {
-    result.push(i);
-  }
-  return result;
-}
+// function range(start, end) {
+//   const result = [];
+//   for (let i = start; i < end; i++) {
+//     result.push(i);
+//   }
+//   return result;
+// }
 
-const disabledRangeTime = (_, type) => {
-  if (type === 'start') {
-    return {
-      disabledMinutes: () => range(1, 59),
-      disabledSeconds: () => range(1, 59),
-    };
-  }
-  return {
-    disabledMinutes: () => range(0, 59),
-    disabledSeconds: () => range(0, 59),
-  };
-}
+// const disabledRangeTime = (_, type) => {
+//   if (type === 'start') {
+//     return {
+//       disabledMinutes: () => range(1, 59),
+//       disabledSeconds: () => range(1, 59),
+//     };
+//   }
+//   return {
+//     disabledMinutes: () => range(0, 59),
+//     disabledSeconds: () => range(0, 59),
+//   };
+// }
 
 const IntensiveActivityCreate = () => {
   const [selectItem, setSelectItem] = useState([]);
   const [areaData, setAreaData] = useState([]);
+  const [ladderData, setLadderData] = useState([]);
   // const [uncheckableItemValues, setUncheckableItemValues] = useState([]);
   const [submitValue, setSubmitValue] = useState(null);
   const formRef = useRef();
@@ -96,6 +98,9 @@ const IntensiveActivityCreate = () => {
         const wholesaleInfo = res.data.wholesale
         formRef.current.setFieldsValue({
           ...wholesaleInfo,
+          ladderShowPercent: amountTransform(res.data.sku[0].ladderShowPercent),
+          orderAmount: amountTransform(wholesaleInfo.orderAmount),
+          subsidy: amountTransform(wholesaleInfo.subsidy),
           // wholesaleStartTime: wholesaleInfo.wholesaleStartTime,
           area: getAreas(res.data.allowArea)
         })
@@ -133,8 +138,26 @@ const IntensiveActivityCreate = () => {
   }
 
   const submit = (values) => {
-    const { wholesaleTime, area, ...rest } = values;
+    const { wholesaleTime, area, isEditSubsidy, orderAmount, subsidy, ladderShowPercent, ...rest } = values;
     return new Promise((resolve, reject) => {
+      const obj = {};
+      const goodsInfos = {};
+
+      if (isEditSubsidy === 1) {
+        obj.orderAmount = amountTransform(orderAmount)
+        obj.subsidy = amountTransform(subsidy)
+      }
+
+      if (isEditSubsidy === 2) {
+        goodsInfos.ladderData = ladderData.map(item => ({
+          ...item,
+          skuId: selectItem[0].skuId,
+          totalExtraScale: amountTransform(item.totalExtraScale, '/'),
+          operationPercent: amountTransform(item.operationPercent, '/'),
+          storePercent: amountTransform(item.storePercent, '/'),
+        }))
+        obj.ladderShowPercent = amountTransform(ladderShowPercent, '/');
+      }
       const requestParams = {
         goodsInfos: selectItem.map(item => ({
           spuId: item.spuId,
@@ -149,6 +172,7 @@ const IntensiveActivityCreate = () => {
           wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice),
           fixedPrice: amountTransform(item.fixedPrice),
           settlePercent: amountTransform(item.settlePercent, '/'),
+          ...goodsInfos,
         })),
         allowArea: getSubmitAreaData(area),
         storeLevel: 'ALL',
@@ -158,10 +182,9 @@ const IntensiveActivityCreate = () => {
         recoverPayTimeout: 0,
         canRecoverPayTimes: 0,
         wholesaleFlowType: selectItem[0].wholesaleFlowType,
-        isEditSubsidy: selectItem[0].isEditSubsidy.length,
-        orderAmount: selectItem[0].subsidy.a > 0 ? amountTransform(selectItem[0].subsidy.a) : '',
-        subsidy: selectItem[0].subsidy.b > 0 ? amountTransform(selectItem[0].subsidy.b) : '',
+        isEditSubsidy,
         ...rest,
+        ...obj,
         wsId: (+params.id === 0 || +location.query?.type === 1) ? '' : params.id,
       }
       setSubmitValue(requestParams)
@@ -189,6 +212,17 @@ const IntensiveActivityCreate = () => {
       setLoading(false);
     }
   }, [])
+
+  useEffect(() => {
+    setLadderData(selectItem?.[0]?.ladderData.map(item => (
+      {
+        ...item,
+        totalExtraScale: amountTransform(item.totalExtraScale),
+        operationPercent: amountTransform(item.operationPercent),
+        storePercent: amountTransform(item.storePercent),
+      }
+    )) || [])
+  }, [selectItem])
 
   return (
     <PageContainer className={styles.page}>
@@ -290,6 +324,8 @@ const IntensiveActivityCreate = () => {
             initialValues={{
               // canRecoverPayTimes: 1,
               // recoverPayTimeout: 3
+              isEditSubsidy: 0,
+              ladderShowPercent: 50,
             }}
             className={styles.center}
           >
@@ -324,23 +360,79 @@ const IntensiveActivityCreate = () => {
                 }
               }}
             />
-            {/* <ProFormText
-              name="virtualSales"
-              label="本次集约虚拟销量"
-              width="lg"
-              placeholder="请输入集约虚拟销量"
-              validateFirst
-              rules={[
-                { required: true, message: '请输入集约虚拟销量' },
-                () => ({
-                  validator(_, value) {
-                    if (!/^\d+$/g.test(value) || `${value}`.indexOf('.') !== -1 || value <= 0) {
-                      return Promise.reject(new Error(`请输入大于零的正整数`));
-                    }
-                    return Promise.resolve();
+            {!!selectItem.length && <>
+              <ProFormRadio.Group
+                label="平台额外奖励"
+                name="isEditSubsidy"
+                options={[
+                  {
+                    label: '不进行平台额外奖励',
+                    value: 0,
                   },
-                })
-              ]} /> */}
+                  {
+                    label: '按集采阶梯量奖励(社区店+运营中心)',
+                    value: 2,
+                  },
+                  {
+                    label: '按采购量奖励社区店',
+                    value: 1,
+                  }
+                ].filter((_, index) => !(selectItem[0].ladderData.length === 0 && index === 1))}
+              />
+              <ProFormDependency name={['isEditSubsidy']}>
+                {
+                  ({ isEditSubsidy }) => {
+                    return (
+                      <>
+                        {isEditSubsidy === 1 && <><ProFormText
+                          label=" "
+                          colon={false}
+                          fieldProps={{
+                            addonBefore: '当店主采购订单金额达到',
+                            addonAfter: '元时'
+                          }}
+                          name="orderAmount"
+                          width={400}
+                        />
+                          <ProFormText
+                            label=" "
+                            colon={false}
+                            fieldProps={{
+                              addonBefore: '补贴社区店店主',
+                              addonAfter: `元 / ${selectItem?.[0]?.unit}`
+                            }}
+                            name="subsidy"
+                            width={400}
+                          /></>}
+                        {
+                          isEditSubsidy === 2 && <>
+                            <LadderDataEdit
+                              data={ladderData || []}
+                              setData={setLadderData}
+                              batchNumber={selectItem?.[0]?.batchNumber}
+                              unit={selectItem?.[0]?.unit}
+                              wsUnit={selectItem?.[0]?.wsUnit}
+                              skuData={selectItem?.[0]}
+                            />
+                            <ProFormText
+                              label="前端奖励展示需完成量"
+                              fieldProps={{
+                                addonAfter: `%`
+                              }}
+                              extra={<span style={{ color: '#b38806' }}>总商品活动集约量达到最低阶梯量的此百分比时才在前端（此商品的列表、商品详情、下单页和待支付页面）展示奖励信息</span>}
+                              rules={[{ required: true, message: '请输入前端奖励展示需完成量' }]}
+                              name="ladderShowPercent"
+                              width="lg"
+                            />
+                          </>
+                        }
+                      </>
+                    )
+                  }
+                }
+              </ProFormDependency></>
+            }
+
             <ProFormCheckbox.Group value={'1'} label="可购买的社区店等级" disabled options={[{ label: '全部', value: 1 }]} />
             <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} />
             <Form.Item
