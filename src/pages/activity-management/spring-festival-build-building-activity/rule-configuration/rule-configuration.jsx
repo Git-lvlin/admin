@@ -146,8 +146,8 @@ export default (props) =>{
      try {
        const params={
         id:id?id:0,
-        startTime:values.dateRange ? moment(values.dateRange[0]).valueOf() : null,
-        endTime:values.dateRange ? moment(values.dateRange[1]).valueOf() : null,
+        startTime:values.dateRange ? moment(values.dateRange[0]).valueOf()/1000 : null,
+        endTime:values.dateRange ? moment(values.dateRange[1]).valueOf()/1000 : null,
         name:values.name,
         status:values.status,
         moneyAll:values.moneyAll,
