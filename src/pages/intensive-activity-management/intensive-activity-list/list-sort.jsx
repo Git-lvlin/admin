@@ -1,22 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Radio } from 'antd'
 
-// import { getWholesaleList } from '@/services/intensive-activity-management/intensive-activity-list'
-
 const ListSort = ({onChange, value}) => {
-  // const [value, setValue] = useState(1)
-  
-  // useEffect(() => {
-  //   getWholesaleList({
-  //     page: 1,
-  //     sortType: value
-  //   })
-  // }, [value])
-
-  // const onChange = (e) => {
-  //   setValue(e.target.value)
-  //   actRef?.current?.reload()
-  // }
 
   return (
     <div>
