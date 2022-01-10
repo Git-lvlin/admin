@@ -88,7 +88,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a key='detail' onClick={()=>history.push('/blind-box-activity-management/blind-box-employ-detail?memberId='+record.memberId)}>查看此用户明细</a>
+            <a key='detail' onClick={()=>history.push('/activity-management/spring-festival-build-building-activity/employ-detail?memberId='+record.memberId)}>查看此用户明细</a>
         ],
       }, 
     ];
@@ -116,10 +116,10 @@ export default () => {
                <Export
                 key='export'
                 change={(e) => { setVisit(e) }}
-                type={'bind-box-give-detail-export'}
+                type={'build-floor-give-list-export'}
                 conditions={getFieldValue(searchConfig)}
               />,
-              <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-give-detail-export'}/>
+              <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-give-list-export'}/>
             ],
           }}
           columns={columns}
