@@ -20,7 +20,7 @@ const Title = ({actRef}) => {
 
   return (
     <Space size={50}>
-      <h3>首页秒约爆品</h3>
+      <h4>首页秒约爆品</h4>
       <div>
         <span>排序方式：</span>
         <Radio.Group onChange={onChange} value={value}>
