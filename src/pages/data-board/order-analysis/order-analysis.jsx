@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 
 import ProTable from '@ant-design/pro-table'
-import { Space, Radio, DatePicker, Tooltip } from 'antd'
+import { Space, Radio, DatePicker, Tooltip,Button } from 'antd'
 import moment from 'moment'
 
 import Yuan from '../components/Yuan'
@@ -10,7 +10,7 @@ import LineChart from './line-chart'
 import RegionalOrderAnalysis from './regional-order-analysis'
 import styles from './styles.less'
 import { getTimeDistance } from '@/utils/utils'
-import { orderAnalysis, orderStatistical,wholeSaleOrderDetail } from '@/services/data-board/order-analysis'
+import { orderAnalysis, orderStatistical,wholeSaleOrderDetail,wholeSaleOrderDetailSummary,wholeSaleOrderSubCompany } from '@/services/data-board/order-analysis'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -78,6 +78,9 @@ const OrderAnalysis = () => {
   const [unit, setUnit] = useState('单位：单')
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
   const [visit, setVisit] = useState(false)
+  const [amount,setAmount]= useState()
+  const [company,setCompany]= useState()
+
 
   const onChange = e => {
     setValue(e.target.value)
@@ -365,16 +368,58 @@ const OrderAnalysis = () => {
       dataIndex: 'orderOreaName',
       align: 'center',
       hideInSearch:true
-    }
+    },
+    {
+      title: '集约活动编号',
+      dataIndex: 'wsID',
+      align: 'center',
+    },
+    {
+      title: '集约活动名称',
+      dataIndex: 'wsName',
+      align: 'center',
+    },
+    {
+      title: '运营中心归属子公司',
+      dataIndex: 'operationsSubCompanyName',
+      align: 'center',
+      hideInSearch:true,
+    },
+    {
+      title: '归属子公司',
+      dataIndex: 'operationsSubCompanyName',
+      align: 'center',
+      valueType:'select',
+      valueEnum: company,
+      hideInTable:true,
+    },
   ]
-  const getFieldValue = (searchConfig) => {
-    const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
+  const getFieldValue = (form) => {
+    const {dateTimeRange,...rest}=form.getFieldsValue()
     return {
       startTime:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
+  useEffect(()=>{
+    wholeSaleOrderDetailSummary({}).then(res=>{
+      if(res.code==0){
+        setAmount(res.data)
+      }
+    })
+    wholeSaleOrderSubCompany({}).then(res=>{
+      if(res.code==0){
+        console.log('res',res.data)
+        const obj={}
+        res.data.map(ele=>{
+          obj[ele.operationsSubCompanyName]=ele.operationsSubCompanyName
+        })
+        setCompany(obj)
+      }
+      
+    })
+  },[])
   return (
     <PageContainer title={false}>
       <ProTable
@@ -432,12 +477,34 @@ const OrderAnalysis = () => {
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
+          optionRender: ({searchText, resetText}, {form}) => [
+            <Button
+              key="search"
+              type="primary"
+              onClick={() => {
+                form?.submit()
+                wholeSaleOrderDetailSummary(form.getFieldsValue()).then(res=>{
+                  if(res.code==0){
+                    setAmount(res.data)
+                  }
+                })
+              }}
+            >
+              {searchText}
+            </Button>,
+            <Button
+              key="rest"
+              onClick={() => {
+                form?.resetFields()
+                form?.submit()
+              }}
+            >
+              {resetText}
+            </Button>,
              <Export
               change={(e) => { setVisit(e) }}
               type={'data-board-order-analyis-wholesale-deatail-export'}
-              conditions={getFieldValue(searchConfig)}
+              conditions={getFieldValue(form)}
               key="export"
             />,
             <ExportHistory key="history" show={visit} setShow={setVisit} type='data-board-order-analyis-wholesale-deatail-export'/>,
@@ -446,7 +513,22 @@ const OrderAnalysis = () => {
         pagination={{
           pageSize: 10,
         }}
-        style={{marginTop:'20px'}}
+        style={{marginTop:'20px',background:'#fff'}}
+        tableRender={(_, dom) => (
+          <>
+            { dom }
+            <div className={styles.intensive}>
+              <div>
+                <span>订单总金额：<Yuan>{amount?.[0]?.orderAmount}</Yuan></span>
+                <span>总批发量：<Yuan>{amount?.[0]?.wholesaleNum}</Yuan></span>
+              </div>
+              <div>
+                <span>C端集约交易总金额：<Yuan>{amount?.[0]?.cWholeTransactionAmount}</Yuan></span>
+                <span>C端订单售总出件量：<Yuan>{amount?.[0]?.cWholeSoldNum}</Yuan></span>
+              </div>
+            </div>
+          </>
+        )}
       />
     </PageContainer>
   )

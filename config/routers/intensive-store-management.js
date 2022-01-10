@@ -88,6 +88,11 @@ export default {
       name: 'community-store-setting',
       path: '/intensive-store-management/community-store-setting',
       component: './intensive-store-management/community-store-setting',
+    },
+    {
+      name: 'data-excel',
+      path: '/intensive-store-management/data-excel',
+      component: './intensive-store-management/data-excel',
     }
   ]
 }
