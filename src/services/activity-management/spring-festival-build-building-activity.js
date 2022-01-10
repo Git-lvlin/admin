@@ -315,3 +315,62 @@ export const withdrawPage = async (params = {}, options = {}) => {
   total: res.data.total
   }
 }
+
+
+
+export const findPage = async (params = {}, options = {}) => {
+  const { current, pageSize,dateTimeRange,dateTimeRange2,...rest } = params;
+  const res = await request('/auth/java-admin/purse/account/findPage', {
+  method: 'POST',
+  data: {
+      page: current,
+      size:pageSize,
+      ...rest,
+  },
+  ...options
+  });
+
+  return {
+  data: res.data.records,
+  success: true,
+  code: res.code,
+  total: res.data.total
+  }
+}
+
+
+
+export const bindingUpdate = async (params = {}, options = {}) => {
+  const { ...rest } = params;
+  const res = await request('/auth/java-admin/purse/accountActivity/bindingUpdate', {
+  method: 'POST',
+  data: {
+      ...rest,
+  },
+  ...options
+  });
+
+  return {
+  data: res.data,
+  success: true,
+  code: res.code,
+  }
+}
+
+
+export const accountBindLog = async (params = {}, options = {}) => {
+  const { ...rest } = params;
+  const res = await request('/auth/java-admin/purse/accountBindLog/findPage', {
+  method: 'POST',
+  data: {
+      ...rest,
+  },
+  ...options
+  });
+
+  return {
+  data: res.data.records,
+  success: true,
+  code: res.code,
+  }
+}

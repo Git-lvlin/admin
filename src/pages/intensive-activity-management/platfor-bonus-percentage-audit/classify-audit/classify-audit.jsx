@@ -3,7 +3,6 @@ import { Spin, Empty, Switch,Form } from 'antd'
 import { categoryAuditList } from '@/services/intensive-activity-management/platfor-bonus-percentage-audit'
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import Journal from './journal';
-import styles from './style.less'
 import ProTable from '@ant-design/pro-table';
 import AuditModel from './audit-model'
 import { amountTransform } from '@/utils/utils'
@@ -66,7 +65,7 @@ const Category = (props) => {
                 <p>{r?.percentAuditStatus==0&&'未修改'}</p>
                 <p>{r?.percentAuditStatus==1&&'审核通过'}</p>
                 <p>{r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}</p>
-                <p>{r?.percentAuditStatus==3&&`待审核(店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%)}`}</p>
+                <p>{r?.percentAuditStatus==3&&`待审核(店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%)`}</p>
                </>
       }
     },
