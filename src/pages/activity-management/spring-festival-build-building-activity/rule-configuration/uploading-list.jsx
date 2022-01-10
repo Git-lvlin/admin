@@ -108,6 +108,7 @@ export default props=>{
                 <Button icon={<PlusOutlined />} style={{ marginTop: 10,color:'#3986FF',border:'1px solid #3986FF' }} onClick={() => { add() }}>
                   添加
                 </Button>
+                <p style={{marginTop:'20px'}}>*手机号必须是注册过我们约购APP平台的</p>
               </>
             )}
           </Form.List>

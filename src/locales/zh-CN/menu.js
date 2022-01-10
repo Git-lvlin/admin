@@ -71,7 +71,7 @@ export default {
   'menu.setting.authority-management': '权限管理',
   'menu.setting.password': '修改密码',
   'menu.setting.shipments-area-configuration': '待发货区域配置',
-  'menu.setting.switch-setting': '设置',
+  'menu.setting.switch-setting': '阶梯优惠参数开关',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
@@ -335,4 +335,9 @@ export default {
   'menu.activity-management.spring-festival-build-building-activity.rule-configuration': '规则配置',
   'menu.activity-management.spring-festival-build-building-activity.consume-detail': '使用明细',
   'menu.activity-management.spring-festival-build-building-activity.grant-detail': '发放明细',
+  'menu.activity-management.spring-festival-build-building-activity.cash-advance-detail': '提现明细',
+  'menu.activity-management.spring-festival-build-building-activity.ranking-data': '排名数据',
+  'menu.activity-management.spring-festival-build-building-activity.binding-set': '提现绑定设置',
+
+
 };
