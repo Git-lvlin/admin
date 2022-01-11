@@ -5,11 +5,32 @@ import { amountTransform } from '@/utils/utils'
 import debounce from 'lodash/debounce';
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 
-const CusInput = ({ onChange, record, unit, readOnly, ...rest }) => {
+const CusInput = ({ onChange, record, unit, readOnly, editKey, setEditKey, data, onBlur, callback, ...rest }) => {
+  console.log('data', data);
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        社区店额外奖励占比：<Input className="red" disabled={readOnly} onChange={(e) => { onChange(e.target.value) }} style={{ width: 100 }} addonAfter={<span style={{ color: 'red' }}>%</span>} {...rest} />&nbsp;运营中心：<span style={{ color: 'red' }}>{record?.operationPercent}%</span>
+        社区店额外奖励占比：
+        <Input className="red" disabled={readOnly || !editKey.includes(+record?.tier)} onBlur={onBlur} onChange={(e) => { onChange(e.target.value) }} style={{ width: 100 }} addonAfter={<span style={{ color: 'red' }}>%</span>} {...rest} />
+        {!editKey.includes(+record?.tier) ?
+          <a
+            onClick={() => {
+              const arr = [...editKey]
+              arr.push(+record.tier)
+              setEditKey(arr);
+            }}>
+            修改
+          </a>
+          :
+          <a
+            onClick={() => {
+              setEditKey(editKey.filter(item => +item !== +record.tier));
+              onChange(data.ladderData[record.tier - 1].storePercent * 100)
+              callback(record.tier - 1, data.ladderData[record.tier - 1].storePercent * 100)
+            }}
+          >取消修改</a>
+        }
+        &nbsp;运营中心：<span style={{ color: 'red' }}>{record?.operationPercent}%</span>
       </div>
       <div>总额外奖励占多盈利<span style={{ color: 'red' }}>{record?.totalExtraScale}%</span>，总额外奖励金额<span style={{ color: 'red' }}>{record?.totalExtraSubsidy / 100}元/{unit}</span></div>
     </>
@@ -20,6 +41,7 @@ export default function EditTable({ data, setData, unit, wsUnit, batchNumber, sk
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
   const [columns, setColumns] = useState([]);
+  const [editKey, setEditKey] = useState([]);
   const formRef = useRef();
   const debounceFetcher = useMemo(() => {
     const loadData = (value) => {
@@ -92,9 +114,32 @@ export default function EditTable({ data, setData, unit, wsUnit, batchNumber, sk
         title: '平台对社区店额外奖励',
         dataIndex: 'storePercent',
         renderFormItem: (_, { record }) => {
-          return <CusInput record={record} unit={unit} readOnly={readOnly} onBlur={() => {
-            debounceFetcher({ record, recordList: dataSource })
-          }} />
+          return (
+            <CusInput
+              editKey={editKey}
+              data={skuData}
+              setEditKey={setEditKey}
+              record={record}
+              unit={unit}
+              readOnly={readOnly}
+              onBlur={() => {
+                debounceFetcher({ recordList: dataSource })
+              }}
+              callback={(i, v) => {
+                debounceFetcher({
+                  recordList: dataSource.map((item, index) => {
+                    if (index === i) {
+                      return {
+                        ...item,
+                        storePercent: v,
+                      }
+                    }
+                    return item
+                  })
+                })
+              }}
+            />
+          )
         },
       },
       {
@@ -114,7 +159,7 @@ export default function EditTable({ data, setData, unit, wsUnit, batchNumber, sk
     ])
     setDataSource(data);
     setEditableKeys(data.map(item => item.wsStart))
-  }, [data, unit, dataSource])
+  }, [data, unit, dataSource, editKey])
 
   return (
     <EditableProTable
@@ -131,7 +176,7 @@ export default function EditTable({ data, setData, unit, wsUnit, batchNumber, sk
         onValuesChange: (record, recordList) => {
           setData(recordList)
           setDataSource(recordList)
-        }
+        },
       }}
       title={() => {
         return (
