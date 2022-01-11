@@ -6,7 +6,6 @@ import debounce from 'lodash/debounce';
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 
 const CusInput = ({ onChange, record, unit, readOnly, editKey, setEditKey, data, onBlur, callback, ...rest }) => {
-  console.log('data', data);
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center' }}>

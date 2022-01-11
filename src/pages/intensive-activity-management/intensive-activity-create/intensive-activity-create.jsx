@@ -8,6 +8,7 @@ import {
   ProFormDependency,
   ProFormDateTimePicker,
 } from '@ant-design/pro-form';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import ProCard from '@ant-design/pro-card';
 import { Button, Result, message, Descriptions, Form } from 'antd';
 import EditTable from './edit-table';
@@ -20,6 +21,7 @@ import { history, useParams, useLocation } from 'umi';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
 import LadderDataEdit from './ladder-data-edit'
+import PriceExplanation from './price-explanation'
 
 const FromWrap = ({ value, onChange, content }) => (
   <div style={{ display: 'flex' }}>
@@ -364,6 +366,7 @@ const IntensiveActivityCreate = () => {
               <ProFormRadio.Group
                 label="平台额外奖励"
                 name="isEditSubsidy"
+                required
                 options={[
                   {
                     label: '不进行平台额外奖励',
@@ -414,6 +417,7 @@ const IntensiveActivityCreate = () => {
                               wsUnit={selectItem?.[0]?.wsUnit}
                               skuData={selectItem?.[0]}
                             />
+                            <div><InfoCircleOutlined />&nbsp;<PriceExplanation skuData={selectItem?.[0]} ladderData={ladderData} /></div>
                             <ProFormText
                               label="前端奖励展示需完成量"
                               fieldProps={{
