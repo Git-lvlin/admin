@@ -144,7 +144,6 @@ export default (props) =>{
         inviteNum:content?.accessGain?.inviteFriends?.inviteNum,
         prizeNum1:content?.accessGain?.inviteFriends?.prizeNum,
         prizeNum:content?.accessGain?.friendPlay?.prizeNum,
-        playerNum:content?.accessGain?.friendPlay?.playerNum,
         ...res.data
       })
     })
@@ -284,7 +283,7 @@ export default (props) =>{
           },
           friendPlay:{
             prizeNum:parseInt(values.prizeNum),
-            playerNum:values.playerNum,
+            playerNum:1,
             switch:1
           }
         }
@@ -1031,19 +1030,19 @@ export default (props) =>{
             id&&falg?
             <ProFormText
               width="sm"
-              name="playerNum"
-              label="参与活动"
+              name="virtualNum"
+              label="初始参与活动"
               readonly={id&&falg}
               rules={[{ required: true, message: '请输入' }]}
               fieldProps={{
-                value:`${detailList?.data?.content?.accessGain?.friendPlay?.playerNum}人数`
+                value:`${detailList?.data?.content?.virtualNum}人数`
               }}
             />
             :
             <ProFormText
               width="sm"
-              name="playerNum"
-              label="参与活动"
+              name="virtualNum"
+              label="初始参与活动"
               rules={[{ required: true, message: '请输入' }]}
               fieldProps={{
                 addonAfter:"人数"
