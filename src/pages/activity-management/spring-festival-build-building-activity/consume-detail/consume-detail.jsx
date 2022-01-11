@@ -2,20 +2,22 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { getBlindboxUseList } from '@/services/blind-box-activity-management/blindbox-get-use-list';
+import { getBuildhouseUseList } from '@/services/activity-management/spring-festival-build-building-activity';
 import { history, connect } from 'umi';
-import AuditModel from '../employ-detail/audit-detail-model'
-import Detail from '@/pages/order-management/normal-order/detail';
+import CancelModel from './cancel-model'
+import RecordModel from './record-model' 
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 
 
 
 export default () => {
-    const ref=useRef()
+    const actionRef=useRef()
     const [detailList,setDetailList]=useState()
-    const [detailVisible, setDetailVisible] = useState(false);
-    const [orderId,setOrderId]=useState()
+    const [visible, setVisible] = useState(false);
+    const [listVisible, setListVisible] = useState(false);
+    const [storeNoId,setStoreNoId]=useState()
+    const [recordId,setRecordId]=useState()
     const [visit, setVisit] = useState(false)
     const columns= [
       {
@@ -26,9 +28,21 @@ export default () => {
         valueType: 'indexBorder'
       },
       {
-        title: '活动名称',
-        dataIndex: 'name',
+        title: '用户名',
+        dataIndex: 'memberNicheng',
         valueType: 'text',
+      },
+      {
+        title: '用户手机号',
+        dataIndex: 'memberMobile',
+        valueType: 'text',
+      },
+      {
+        title: '使用时间',
+        key: 'dateTimeRange',
+        dataIndex: 'activityStartTime',
+        valueType: 'dateTimeRange',
+        hideInTable: true,
       },
       {
         title: '活动时间',
@@ -40,21 +54,9 @@ export default () => {
         }
       },
       {
-        title: '用户手机号',
-        dataIndex: 'memberMobile',
+        title: '活动名称',
+        dataIndex: 'name',
         valueType: 'text',
-      },
-      {
-        title: '用户名',
-        dataIndex: 'memberNicheng',
-        valueType: 'text',
-      },
-      {
-        title: '使用时间',
-        key: 'dateTimeRange',
-        dataIndex: 'createTime',
-        valueType: 'dateTimeRange',
-        hideInTable: true,
       },
       {
         title: '使用时间',
@@ -62,33 +64,22 @@ export default () => {
         hideInSearch:true
       },
       {
-        title: '使用次数',
+        title: '使用总次数',
         dataIndex: 'num',
         valueType: 'text',
         hideInSearch:true
       },
       {
-        title: '使用类型',
-        dataIndex: 'type',
+        title: '盖楼楼层',
+        dataIndex: 'floor',
         valueType: 'text',
-        hideInSearch:true,
-        render:(_,data)=>{
-          if(data.type==4){
-            return <p>开盲盒</p>
-          }else if(data.type==5){
-            return <p>机会过期</p>
-          }else if(data.type==6){
-            return  <AuditModel
-                      data={data}
-                      title={'回收原因'}
-                    />
-          }
-          }
+        hideInSearch:true
       },
       {
-        title: '机会编号',
-        dataIndex: 'code',
+        title: '使用原因',
+        dataIndex: 'typeDisplay',
         valueType: 'text',
+        hideInSearch:true,
       },
       {
         title: '筛选',
@@ -96,77 +87,49 @@ export default () => {
         valueType: 'select',
         valueEnum: {
           0: '全部',
-          1: '获奖已兑换',
-          2: '获奖未兑换',
-          3: '已获奖',
-          4: '未获奖',
-          5: '机会过期',
-          6: '官方回收',
-          7: '已失效'
+          1: '未获奖',
+          2: '已获奖',
+          3: '机会过期',
         },
         hideInTable:true
       },
       {
-        title: '获得奖品',
-        dataIndex: 'prizeInfo',
+        title: '机会编号',
+        dataIndex: 'code',
         valueType: 'text',
-        hideInSearch: true,
-        render: (_, data)=>{
-          if(data.type==5||data.type==6){
-            return null
-          }
-          if(data.prizeInfo?.prizeStatus==0){
-            return <p>未抽中</p>
-          }
-          return <div style={{display:'flex'}}>
-                    <Image src={data.prizeInfo.imageUrl} alt="" width='50px' height='50px' />
-                    <div style={{marginLeft:'10px'}}>
-                      <h5>{data.prizeInfo.goodsName}</h5>
-                      <span style={{color:'red',fontSize:'10px'}}>销售价¥{data.prizeInfo.salePrice/100}</span>
-                      <p style={{fontSize:'12px'}}>SKU  {data.prizeInfo.skuId}</p>
-                    </div>
-                 </div>
-        },
       },
       {
-        title: '兑换详情',
-        dataIndex: 'orderInfo',
+        title: '是否参与抽奖',
+        dataIndex: 'draw',
+        valueType: 'text',
+        hideInSearch:true,
+      },
+      {
+        title: '获得奖品',
+        dataIndex: 'prizeDisplay',
         valueType: 'text',
         hideInSearch: true,
-        render: (_, data)=>{
-          if(data.orderInfo.orderStatus==0){
-            return <>
-                    <p>未兑换</p>
-                    <p>过期时间：{data.orderInfo.expireTime}</p>
-                  </>
-          }else if(data.orderInfo.orderStatus==1){
-            return <p>兑换中</p>
-          }else if(data.orderInfo.orderStatus==2){
-            return  <>
-                    <p>已兑换</p>
-                    <p>订单号：</p>
-                    <a onClick={() => {  setDetailVisible(true);setOrderId(data.orderInfo?.orderId) }}>{data.orderInfo.orderSn}</a>
-                    </>
-          }else if(data.orderInfo.orderStatus==3){
-            return  <>
-                    <p>已失效</p>
-                    <p>过期时间：{data.orderInfo.expireTime}</p>
-                    </>
-          }
-        } 
       },
+      {
+        title: '提现记录',
+        valueType: 'option',
+        render:(text, record, _, action)=>[
+          <a onClick={()=>{setListVisible(true);setRecordId(record)}}>查看</a>
+        ],
+      }, 
       {
         title: '操作',
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-          <a key='detail' onClick={()=>history.push('/blind-box-activity-management/blind-box-employ-detail?memberId='+record.memberId)}>查看此用户明细</a>
+          <a key='detail' onClick={()=>history.push('/activity-management/spring-festival-build-building-activity/employ-detail?memberId='+record.memberId)}>查看此用户明细</a>,
+          <a onClick={()=>{setVisible(true);setStoreNoId(record)}}>{record?.isFreeze?'解冻该奖励':'冻结该奖励'}</a>
         ],
       }, 
     ];
     const postData=(data)=>{
       setDetailList(data)
-      return data.records
+      return data
     }
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
@@ -179,11 +142,10 @@ export default () => {
     return (
       <PageContainer>
         <ProTable
-          actionRef={ref}
+          actionRef={actionRef}
           rowKey="id"
-          headerTitle={`使用明细     剩余开盒总次数：${detailList?.restNum}        已开盒总次数：${detailList?.useNum}`}
           options={false}
-          request={getBlindboxUseList}
+          request={getBuildhouseUseList}
           postData={postData}
           search={{
             defaultCollapsed: false,
@@ -193,24 +155,32 @@ export default () => {
                <Export
                 key='export'
                 change={(e) => { setVisit(e) }}
-                type={'bind-box-use-detail-export'}
+                type={'build-floor-use-list-export'}
                 conditions={getFieldValue(searchConfig)}
               />,
-              <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
+              <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-use-list-export'}/>,
             ],
+          }}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
           }}
           columns={columns}
         />
-        {
-          detailVisible && <Detail
-          id={orderId}
-          visible={detailVisible}
-          setVisible={setDetailVisible}
-        />
-        }
-        <Button style={{float:'right',margin:'20px 20px 0 0'}} type="default" onClick={() => history.push('/blind-box-activity-management/blind-box-grant-detail')}>
-           返回
-        </Button>
+        {visible && <CancelModel
+          visible={visible}
+          setVisible={setVisible}
+          storeNoId={storeNoId}
+          onClose={() => { actionRef.current.reload();  setStoreNoId(null) }}
+          callback={() => { actionRef.current.reload(); setStoreNoId(null) }}
+        />}
+        {listVisible && <RecordModel
+          visible={listVisible}
+          setVisible={setListVisible}
+          recordId={recordId}
+          onClose={() => { actionRef.current.reload();  setRecordId(null) }}
+          callback={() => { actionRef.current.reload(); setRecordId(null) }}
+        />}
         </PageContainer>
     );
   };

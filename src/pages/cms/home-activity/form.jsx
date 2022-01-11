@@ -18,14 +18,15 @@ export default (props) => {
   const [showType, setShowType] = useState(false);
   const urlArr = [
     '',
-    'https://www.yeahgo-uat.com/tab/index?index=2',
-    'https://www.yeahgo-uat.com/tab/index?index=4',
-    'https://www.yeahgo-uat.com/flutter/store/member/index',
-    'https://www.yeahgo-uat.com/tab/index?index=1',
-    'https://www.yeahgo-uat.com/home/spikeGoods',
-    'https://www.yeahgo-uat.com/home/spikeWeek',
-    'https://publicmobile-uat.yeahgo.com/web/five-star-qa?_authorizationRequired=1',
+    `${APP_URL}/tab/index?index=2`,
+    `${APP_URL}/tab/index?index=4`,
+    `${APP_URL}/flutter/store/member/index`,
+    `${APP_URL}/tab/index?index=1`,
+    `${APP_URL}/home/spikeGoods`,
+    `${APP_URL}/home/spikeWeek`,
+    `${MARKET_URL}/web/five-star-qa?_authorizationRequired=1`,
   ];
+
   const select1 = [
     {
       label: '固定展示',
@@ -60,7 +61,7 @@ export default (props) => {
           reject(false);
         }
       })
-  
+
     });
   };
 
@@ -96,7 +97,7 @@ export default (props) => {
       }}
     >
       <ProForm.Group>
-        <ProFormText 
+        <ProFormText
           width="sm"
           name="title"
           label="活动标题"
@@ -134,123 +135,135 @@ export default (props) => {
           width="sm"
           name="sort"
           label="排序"
-          rules={[{ required: true, message: '请输入排序序号' }]}  
+          rules={[{ required: true, message: '请输入排序序号' }]}
         />
 
       </ProForm.Group>
       <ProFormRadio.Group
-          name="customerType"
-          label="展示对象"
-          initialValue={1}
-          rules={[{ required: true, message: '请选择展示对象' }]}
-          options={[
-            {
-              label: '所有用户',
-              value: 1,
-            },
-            {
-              label: '仅店主',
-              value: 2,
-            },
-          ]}
-        />
+        name="customerType"
+        label="展示对象"
+        initialValue={1}
+        rules={[{ required: true, message: '请选择展示对象' }]}
+        options={[
+          {
+            label: '所有用户',
+            value: 1,
+          },
+          {
+            label: '仅店主',
+            value: 2,
+          },
+        ]}
+      />
       <ProFormRadio.Group
-          name="actionUrlType"
-          label="url类型"
-          initialValue={8}
-          rules={[{ required: false, message: '请选择url类型' }]}
+        name="actionUrlType"
+        label="url类型"
+        initialValue={8}
+        rules={[{ required: false, message: '请选择url类型' }]}
+        fieldProps={{
+          onChange: ({ target }) => {
+            if (target.value == 1) {
+              setShowType(true)
+            } else {
+              setShowType(false)
+            }
+            if (target.value == 8) {
+              setHref('')
+            } else {
+              setHref(urlArr[target.value])
+            }
+          }
+        }}
+        options={[
+          {
+            label: '集约',
+            value: 1,
+          },
+          {
+            label: '个人中心',
+            value: 2,
+          },
+          {
+            label: '社区店',
+            value: 3,
+          },
+          {
+            label: '限时秒杀',
+            value: 4,
+          },
+          {
+            label: '秒约爆品',
+            value: 5,
+          },
+          {
+            label: '周末大狂欢',
+            value: 6,
+          },
+          {
+            label: '店主升星',
+            value: 7,
+          },
+          {
+            label: '自定义',
+            value: 8,
+          },
+        ]}
+      />
+      <ProFormRadio.Group
+        name="showType"
+        label="展示类型"
+        initialValue={1}
+        rules={[{ required: true, message: '请选择展示类型' }]}
+        options={showType ? select1 : select2}
+      />
+      <ProForm.Group>
+        <ProFormTextArea
+          width="lg"
+          name="actionUrl"
           fieldProps={{
-            onChange:({target}) => {
-              if (target.value == 1) {
-                setShowType(true)
-              } else {
-                setShowType(false)
-              }
-              if (target.value == 8) {
-                setHref('')
-              } else {
-                setHref(urlArr[target.value])
-              }
+            value: href,
+            onChange: ({ target }) => {
+              console.log(target.value)
+              setHref(target.value)
             }
           }}
-          options={[
-            {
-              label: '集约',
-              value: 1,
-            },
-            {
-              label: '个人中心',
-              value: 2,
-            },
-            {
-              label: '社区店',
-              value: 3,
-            },
-            {
-              label: '限时秒杀',
-              value: 4,
-            },
-            {
-              label: '秒约爆品',
-              value: 5,
-            },
-            {
-              label: '周末大狂欢',
-              value: 6,
-            },
-            {
-              label: '店主升星',
-              value: 7,
-            },
-            {
-              label: '自定义',
-              value: 8,
-            },
+          label="跳转链接"
+          validateFirst
+          rules={[
+            { required: false, message: '请输入跳转链接' },
+            () => ({
+              required: false,
+              validator(_, value) {
+                if (/\s/g.test(value)) {
+                  return Promise.reject(new Error('链接不能包含空格'));
+                }
+                return Promise.resolve();
+              },
+            })
           ]}
         />
-      <ProFormRadio.Group
-          name="showType"
-          label="展示类型"
-          initialValue={1}
-          rules={[{ required: true, message: '请选择展示类型' }]}
-          options={showType?select1:select2}
-        />
-      <ProForm.Group>
-        <ProFormTextArea 
-            width="lg"
-            name="actionUrl"
-            fieldProps={{
-              value: href,
-              onChange: ({target}) => {
-                console.log(target.value)
-                setHref(target.value)
-              }
-            }}
-            label="跳转链接"
-            rules={[{ required: false, message: '请输入跳转链接' }]}  
-          />
       </ProForm.Group>
-      
+
       <ProFormRadio.Group
-          name="state"
-          label="活动状态"
-          initialValue={0}
-          options={[
-            {
-              label: '启用',
-              value: 1,
-            },
-            {
-              label: '关闭',
-              value: 0,
-            },
-          ]}
-        />
-        <ProFormText
-          name="id"
-          label="id"
-          hidden
-        />
+        name="state"
+        label="活动状态"
+        initialValue={0}
+        options={[
+          {
+            label: '启用',
+            value: 1,
+          },
+          {
+            label: '关闭',
+            value: 0,
+          },
+        ]}
+      />
+      <ProFormText
+        name="id"
+        label="id"
+        hidden
+      />
     </ModalForm>
   );
 };

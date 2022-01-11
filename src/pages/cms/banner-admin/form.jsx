@@ -19,13 +19,13 @@ export default (props) => {
   const [showType, setShowType] = useState(false);
   const urlArr = [
     '',
-    'https://www.yeahgo-uat.com/tab/index?index=2',
-    'https://www.yeahgo-uat.com/tab/index?index=4',
-    'https://www.yeahgo-uat.com/flutter/store/member/index',
-    'https://www.yeahgo-uat.com/tab/index?index=1',
-    'https://www.yeahgo-uat.com/home/spikeGoods',
-    'https://www.yeahgo-uat.com/home/spikeWeek',
-    'https://publicmobile-uat.yeahgo.com/web/five-star-qa?_authorizationRequired=1',
+    `${APP_URL}/tab/index?index=2`,
+    `${APP_URL}/tab/index?index=4`,
+    `${APP_URL}/flutter/store/member/index`,
+    `${APP_URL}/tab/index?index=1`,
+    `${APP_URL}/home/spikeGoods`,
+    `${APP_URL}/home/spikeWeek`,
+    `${MARKET_URL}/web/five-star-qa?_authorizationRequired=1`,
   ];
   const select1 = [
     {
@@ -86,12 +86,12 @@ export default (props) => {
     if (detailData) {
       if (param.location.length > 1) {
         param.location = {
-          '首页':1,
-          '集约':2,
-          '个人中心':3,
-          '社区店':4,
-          '秒约爆品':6,
-          '周末狂欢':7,
+          '首页': 1,
+          '集约': 2,
+          '个人中心': 3,
+          '社区店': 4,
+          '秒约爆品': 6,
+          '周末狂欢': 7,
         }[detailData.location]
       }
     }
@@ -107,7 +107,7 @@ export default (props) => {
           reject(false);
         }
       })
-  
+
     });
   };
 
@@ -183,7 +183,7 @@ export default (props) => {
           width="sm"
           name="title"
           label="banner名称"
-          rules={[{ required: true, message: '请输入banner名称' }]}  
+          rules={[{ required: true, message: '请输入banner名称' }]}
         />
       </ProForm.Group>
       <ProForm.Group>
@@ -198,7 +198,7 @@ export default (props) => {
             }]
           }
         >
-          <Upload multiple maxCount={1} code={201} accept="image/*" proportion={picSize[nowIndex]||'banner'} />
+          <Upload multiple maxCount={1} code={201} accept="image/*" proportion={picSize[nowIndex] || 'banner'} />
         </Form.Item>
         <div>
           <dl>
@@ -217,129 +217,140 @@ export default (props) => {
           width="sm"
           name="sort"
           label="排序"
-          rules={[{ required: true, message: '请输入排序序号' }]}  
+          rules={[{ required: true, message: '请输入排序序号' }]}
         />
 
       </ProForm.Group>
       <ProFormRadio.Group
-          name="customerType"
-          label="展示对象"
-          initialValue={1}
-          rules={[{ required: true, message: '请选择展示对象!' }]}
-          options={[
-            {
-              label: '所有用户可见',
-              value: 1,
-            },
-            {
-              label: '仅店主可见',
-              value: 2,
-            },
-          ]}
-        />
+        name="customerType"
+        label="展示对象"
+        initialValue={1}
+        rules={[{ required: true, message: '请选择展示对象!' }]}
+        options={[
+          {
+            label: '所有用户可见',
+            value: 1,
+          },
+          {
+            label: '仅店主可见',
+            value: 2,
+          },
+        ]}
+      />
       <ProFormRadio.Group
-          name="actionUrlType"
-          label="url类型"
-          initialValue={8}
-          rules={[{ required: false, message: '请选择url类型!' }]}
+        name="actionUrlType"
+        label="url类型"
+        initialValue={8}
+        rules={[{ required: false, message: '请选择url类型!' }]}
+        fieldProps={{
+          onChange: ({ target }) => {
+            if ((target.value == 1 && nowIndex == 2) || (target.value == 2 && nowIndex == 3) || (target.value == 3 && nowIndex == 4) || (target.value == 5 && nowIndex == 6) || target.value == 6 && nowIndex == 7) {
+              message.error('点击banner跳转去的页面不能与banner所在位置页面相同，请重新选中或此项置空')
+              form.setFieldsValue({
+                actionUrlType: 8
+              })
+              return
+            }
+            if (target.value == 1) {
+              setShowType(true)
+            } else {
+              setShowType(false)
+            }
+            if (target.value == 8) {
+              setHref('')
+            } else {
+              setHref(urlArr[target.value])
+            }
+          }
+        }}
+        options={[
+          {
+            label: '集约',
+            value: 1,
+          },
+          {
+            label: '个人中心',
+            value: 2,
+          },
+          {
+            label: '社区店',
+            value: 3,
+          },
+          {
+            label: '限时秒杀',
+            value: 4,
+          },
+          {
+            label: '秒约爆品',
+            value: 5,
+          },
+          {
+            label: '周末大狂欢',
+            value: 6,
+          },
+          {
+            label: '店主升星',
+            value: 7,
+          },
+          {
+            label: '自定义',
+            value: 8,
+          },
+        ]}
+      />
+      <ProForm.Group>
+        <ProFormTextArea
+          width="lg"
+          name="actionUrl"
           fieldProps={{
-            onChange:({target}) => {
-              if ((target.value == 1 && nowIndex == 2)||(target.value == 2 && nowIndex == 3)||(target.value == 3 && nowIndex == 4)||(target.value == 5 && nowIndex == 6)||target.value == 6 && nowIndex == 7) {
-                message.error('点击banner跳转去的页面不能与banner所在位置页面相同，请重新选中或此项置空')
-                form.setFieldsValue({
-                  actionUrlType: 8
-                })
-                return
-              }
-              if (target.value == 1) {
-                setShowType(true)
-              } else {
-                setShowType(false)
-              }
-              if (target.value == 8) {
-                setHref('')
-              } else {
-                setHref(urlArr[target.value])
-              }
+            value: href,
+            onChange: ({ target }) => {
+              console.log(target.value)
+              setHref(target.value)
             }
           }}
-          options={[
-            {
-              label: '集约',
-              value: 1,
-            },
-            {
-              label: '个人中心',
-              value: 2,
-            },
-            {
-              label: '社区店',
-              value: 3,
-            },
-            {
-              label: '限时秒杀',
-              value: 4,
-            },
-            {
-              label: '秒约爆品',
-              value: 5,
-            },
-            {
-              label: '周末大狂欢',
-              value: 6,
-            },
-            {
-              label: '店主升星',
-              value: 7,
-            },
-            {
-              label: '自定义',
-              value: 8,
-            },
+          label="跳转链接"
+          validateFirst
+          rules={[
+            { required: false, message: '请输入跳转链接' },
+            () => ({
+              validator(_, value) {
+                if (/\s/g.test(value)) {
+                  return Promise.reject(new Error('链接不能包含空格'));
+                }
+                return Promise.resolve();
+              },
+            })
           ]}
         />
-      <ProForm.Group>
-        <ProFormTextArea 
-            width="lg"
-            name="actionUrl"
-            fieldProps={{
-              value: href,
-              onChange: ({target}) => {
-                console.log(target.value)
-                setHref(target.value)
-              }
-            }}
-            label="跳转链接"
-            rules={[{ required: false, message: '请输入跳转链接' }]}  
-          />
       </ProForm.Group>
       <ProFormRadio.Group
-          name="showType"
-          label="展示类型"
-          initialValue={1}
-          rules={[{ required: true, message: '请选择展示类型!' }]}
-          options={showType?select1:select2}
-        />
+        name="showType"
+        label="展示类型"
+        initialValue={1}
+        rules={[{ required: true, message: '请选择展示类型!' }]}
+        options={showType ? select1 : select2}
+      />
       <ProFormRadio.Group
-          name="state"
-          label="上线/下架"
-          initialValue={0}
-          options={[
-            {
-              label: '上线',
-              value: 1,
-            },
-            {
-              label: '下架',
-              value: 0,
-            },
-          ]}
-        />
-        <ProFormText
-          name="id"
-          label="id"
-          hidden
-        />
+        name="state"
+        label="上线/下架"
+        initialValue={0}
+        options={[
+          {
+            label: '上线',
+            value: 1,
+          },
+          {
+            label: '下架',
+            value: 0,
+          },
+        ]}
+      />
+      <ProFormText
+        name="id"
+        label="id"
+        hidden
+      />
     </DrawerForm>
   );
 };

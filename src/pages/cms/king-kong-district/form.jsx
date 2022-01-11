@@ -68,7 +68,7 @@ export default (props) => {
           width="sm"
           name="title"
           label="类目名称"
-          rules={[{ required: true, message: '请输入类目名称' }]}  
+          rules={[{ required: true, message: '请输入类目名称' }]}
         />
       </ProForm.Group>
       <ProForm.Group>
@@ -83,46 +83,58 @@ export default (props) => {
             </dl>
           }
         >
-          <Upload multiple maxCount={1} accept="image/*" proportion={{width:57,height:57}} />
+          <Upload multiple maxCount={1} accept="image/*" proportion={{ width: 57, height: 57 }} />
         </Form.Item>
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText 
+        <ProFormText
           width="sm"
           name="sort"
           label="排序"
-          rules={[{ required: true, message: '请输入排序序号' }]}  
+          rules={[{ required: true, message: '请输入排序序号' }]}
         />
 
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText 
-            width="sm"
-            name="actionUrl"
-            label="跳转链接"
-            rules={[{ required: false, message: '请输入跳转链接' }]}  
-          />
-      </ProForm.Group>
-      <ProFormRadio.Group
-          name="state"
-          label="上线/下架"
-          required
-          options={[
-            {
-              label: '上线',
-              value: 1,
-            },
-            {
-              label: '下架',
-              value: 0,
-            },
+        <ProFormText
+          width="sm"
+          name="actionUrl"
+          label="跳转链接"
+          validateFirst
+          rules={[
+            { required: false, message: '请输入跳转链接' },
+            () => ({
+              required: false,
+              validator(_, value) {
+                if (/\s/g.test(value)) {
+                  return Promise.reject(new Error('链接不能包含空格'));
+                }
+                return Promise.resolve();
+              },
+            })
           ]}
         />
-        <ProFormText
-          name="id"
-          label="id"
-          hidden
-        />
+      </ProForm.Group>
+      <ProFormRadio.Group
+        name="state"
+        label="上线/下架"
+        required
+        options={[
+          {
+            label: '上线',
+            value: 1,
+          },
+          {
+            label: '下架',
+            value: 0,
+          },
+        ]}
+      />
+      <ProFormText
+        name="id"
+        label="id"
+        hidden
+      />
     </DrawerForm>
   );
 };

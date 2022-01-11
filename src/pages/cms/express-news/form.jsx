@@ -61,49 +61,60 @@ export default (props) => {
       }}
     >
       <ProForm.Group>
-        <ProFormText 
+        <ProFormText
           width="sm"
           name="title"
           label="消息标题"
-          rules={[{ required: true, message: '请输入消息标题' }]}  
+          rules={[{ required: true, message: '请输入消息标题' }]}
         />
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText 
-            width="sm"
-            name="actionUrl"
-            label="跳转链接"
-            rules={[{ required: true, message: '请输入跳转链接' }]}  
-          />
+        <ProFormText
+          width="sm"
+          name="actionUrl"
+          label="跳转链接"
+          validateFirst
+          rules={[
+            { required: true, message: '请输入跳转链接' },
+            () => ({
+              validator(_, value) {
+                if (/\s/g.test(value)) {
+                  return Promise.reject(new Error('链接不能包含空格'));
+                }
+                return Promise.resolve();
+              },
+            })
+          ]}
+        />
       </ProForm.Group>
       <ProForm.Group>
         <ProFormDigit
           width="sm"
           name="sort"
           label="排序"
-          rules={[{ required: true, message: '请输入排序序号' }]}  
+          rules={[{ required: true, message: '请输入排序序号' }]}
         />
       </ProForm.Group>
       <ProFormRadio.Group
-          name="state"
-          label="上线/下架"
-          required
-          options={[
-            {
-              label: '上线',
-              value: 1,
-            },
-            {
-              label: '下架',
-              value: 0,
-            },
-          ]}
-        />
-        <ProFormText
-          name="id"
-          label="id"
-          hidden
-        />
+        name="state"
+        label="上线/下架"
+        required
+        options={[
+          {
+            label: '上线',
+            value: 1,
+          },
+          {
+            label: '下架',
+            value: 0,
+          },
+        ]}
+      />
+      <ProFormText
+        name="id"
+        label="id"
+        hidden
+      />
     </DrawerForm>
   );
 };

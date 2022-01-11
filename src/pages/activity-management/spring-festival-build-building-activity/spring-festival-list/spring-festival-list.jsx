@@ -24,7 +24,7 @@ export default () => {
         dataIndex: 'startTime',
         valueType: 'text',
         render:(_,data)=>{
-          return <p>{moment(data.startTime).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(data.endTime).format('YYYY-MM-DD HH:mm:ss')}</p>
+          return <p>{moment(data.startTime*1000).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(data.endTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
         }
       },
       {
@@ -120,6 +120,10 @@ export default () => {
         ]}
           search={false}
           columns={columns}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
         />
         </PageContainer>
     );
