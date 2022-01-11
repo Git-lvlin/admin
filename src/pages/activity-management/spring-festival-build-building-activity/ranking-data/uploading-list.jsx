@@ -60,6 +60,7 @@ export default props=>{
               setVirtualInvite(params).then(res=>{
                 if(res.code==0){
                   setVisible(false) 
+                  message.success('操作成功')
                 }
               })
           }}
@@ -121,10 +122,11 @@ export default props=>{
                                     const arr=[...nickname]
                                     if(arr[field.name]){
                                       arr[field.name]=res?.data?.nickname
-                                    }else{
+                                    }else if(res?.data?.nickname){
                                       arr.push(res?.data?.nickname)
                                     }
-                                    setNickname(arr)
+                                    const arr2=arr.filter((item) => item!== '')
+                                    setNickname(arr2)
                                   }
                                 })
                               },

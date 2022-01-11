@@ -9,6 +9,7 @@ import Detail from '@/pages/order-management/normal-order/detail';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import UploadingList from './uploading-list'
+import moment from 'moment'
 const { TabPane } = Tabs
 
 
@@ -39,32 +40,49 @@ const InviteRegister=() => {
       },
       {
         title: '活动时间',
+        key: 'dateTimeRange',
+        dataIndex: 'startTime',
+        valueType: 'dateTimeRange',
+        hideInTable: true,
+      },
+      {
+        title: '活动时间',
         dataIndex: 'startTime',
         valueType: 'text',
         hideInSearch:true,
         render:(_,data)=>{
-          return <p>{data.startTime} 至 {data.endTime}</p>
+          return <p>{moment(data.startTime*1000).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(data.endTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
         }
       },
       {
         title: '活动名称',
         dataIndex: 'name',
         valueType: 'text',
+        hideInSearch:true,
+      },
+      {
+        title: '邀请用户注册数',
+        dataIndex: 'inviteNums',
+        valueType: 'text',
+        hideInSearch:true,
       },
       {
         title: '邀请用户注册且游戏数',
         dataIndex: 'inviteGameNum',
         valueType: 'text',
+        hideInSearch:true,
       },
       {
         title: '邀请总排名',
         dataIndex: 'rank',
         valueType: 'text',
+        hideInSearch:true,
       },
       {
         title: '盖楼层数',
         dataIndex: 'floor',
         valueType: 'text',
+        hideInSearch:true,
       }
     ];
     const postData=(data)=>{
@@ -74,8 +92,8 @@ const InviteRegister=() => {
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
       return {
-        startTime1:dateTimeRange&&dateTimeRange[0],
-        startTime2:dateTimeRange&&dateTimeRange[1],
+        startTime:dateTimeRange&&dateTimeRange[0],
+        endTime:dateTimeRange&&dateTimeRange[1],
         ...rest,
       }
     }
@@ -84,7 +102,6 @@ const InviteRegister=() => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle={`共搜索到 922 条数据`}
           options={false}
           request={inviteRankList}
           postData={postData}
@@ -96,10 +113,10 @@ const InviteRegister=() => {
                <Export
                 key='export'
                 change={(e) => { setVisit(e) }}
-                type={'bind-box-use-detail-export'}
+                type={'build-floor-invite-list-export'}
                 conditions={getFieldValue(searchConfig)}
               />,
-              <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
+              <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-invite-list-export'}/>,
               <Button key='add' type="primary" onClick={()=>setListVisible(true)}>添加邀请用户排名</Button>
             ],
           }}
@@ -142,37 +159,49 @@ const InviteRegister=() => {
       },
       {
         title: '活动时间',
+        key: 'dateTimeRange',
+        dataIndex: 'startTime',
+        valueType: 'dateTimeRange',
+        hideInTable: true,
+      },
+      {
+        title: '活动时间',
         dataIndex: 'startTime',
         valueType: 'text',
         hideInSearch:true,
         render:(_,data)=>{
-          return <p>{data.startTime} 至 {data.endTime}</p>
+          return <p>{moment(data.startTime*1000).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(data.endTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
         }
       },
       {
         title: '活动名称',
         dataIndex: 'name',
         valueType: 'text',
+        hideInSearch: true,
       },
       {
         title: '盖楼层数',
         dataIndex: 'floor',
         valueType: 'text',
+        hideInSearch: true,
       },
       {
         title: '盖楼总排名',
         dataIndex: 'rank',
         valueType: 'text',
+        hideInSearch: true,
       },
       {
         title: '邀请用户注册数',
         dataIndex: 'inviteNums',
         valueType: 'text',
+        hideInSearch: true,
       },
       {
         title: '邀请用户注册且游戏',
         dataIndex: 'inviteGameNum',
         valueType: 'text',
+        hideInSearch: true,
       }
     ];
     const postData=(data)=>{
@@ -182,8 +211,8 @@ const InviteRegister=() => {
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
       return {
-        startTime1:dateTimeRange&&dateTimeRange[0],
-        startTime2:dateTimeRange&&dateTimeRange[1],
+        startTime:dateTimeRange&&dateTimeRange[0],
+        endTime:dateTimeRange&&dateTimeRange[1],
         ...rest,
       }
     }
@@ -192,7 +221,6 @@ const InviteRegister=() => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle={`共搜索到 922 条数据`}
           options={false}
           request={floorRankList}
           postData={postData}
@@ -204,13 +232,17 @@ const InviteRegister=() => {
                <Export
                 key='export'
                 change={(e) => { setVisit(e) }}
-                type={'bind-box-use-detail-export'}
+                type={'build-floor-rank-list-export'}
                 conditions={getFieldValue(searchConfig)}
               />,
-              <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>
+              <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-rank-list-export'}/>
             ],
           }}
           columns={columns}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
         />
         {
           detailVisible && <Detail
@@ -239,7 +271,7 @@ const InviteRegister=() => {
         <PageContainer>
         <div style={{backgroundColor:'#fff',marginBottom:'20px'}}>
             <Descriptions labelStyle={{fontWeight:'bold'}} column={10} layout="vertical" bordered>
-                <Descriptions.Item  label="参与总人数">{detailList?.ParticipationNums}  </Descriptions.Item>
+                <Descriptions.Item  label="参与总人数">{detailList?.participationNums}  </Descriptions.Item>
                 <Descriptions.Item  label="盖楼次数">{detailList?.buildHouseNums}  </Descriptions.Item>
                 <Descriptions.Item  label="抽奖次数">{detailList?.drawNums}  </Descriptions.Item>
                 <Descriptions.Item  label="已获奖人数">{detailList?.drawPrizeUsers}  </Descriptions.Item>

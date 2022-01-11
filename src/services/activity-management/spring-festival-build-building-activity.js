@@ -1,4 +1,6 @@
 import request from '@/utils/request';
+import moment from 'moment'
+
 
 export const getActiveConfigList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
@@ -102,7 +104,7 @@ export const getBlindboxIncomeDetail = async (params = {}, options = {}) => {
     method: 'POST',
     data: {
       page: current,
-      pageSize:pageSize,
+      size:pageSize,
       startTime1:dateTimeRange&&dateTimeRange[0],
       startTime2:dateTimeRange&&dateTimeRange[1],
       ...rest
@@ -124,7 +126,7 @@ export const getBuildhouseUseList = async (params = {}, options = {}) => {
     method: 'POST',
     data: {
       page: current,
-      size: pageSize,
+      pageSize: pageSize,
       startTime1:dateTimeRange&&dateTimeRange[0],
       startTime2:dateTimeRange&&dateTimeRange[1],
       ...rest
@@ -163,7 +165,7 @@ export const getBlindboxUseDetail = async (params = {}, options = {}) => {
   method: 'POST',
   data: {
       page: current,
-      pageSize:pageSize,
+      size:pageSize,
       startTime1:dateTimeRange&&dateTimeRange[0],
       startTime2:dateTimeRange&&dateTimeRange[1],
       ...rest,
@@ -212,9 +214,9 @@ export const inviteRankList = async (params = {}, options = {}) => {
   method: 'POST',
   data: {
       page: current,
-      pageSize:pageSize,
-      startTime1:dateTimeRange&&dateTimeRange[0],
-      startTime2:dateTimeRange&&dateTimeRange[1],
+      size:pageSize,
+      startTime:dateTimeRange&&moment(dateTimeRange[0]).valueOf()/1000,
+      endTime:dateTimeRange&&moment(dateTimeRange[1]).valueOf()/1000,
       ...rest,
   },
   ...options
@@ -234,9 +236,9 @@ export const floorRankList = async (params = {}, options = {}) => {
   method: 'POST',
   data: {
       page: current,
-      pageSize:pageSize,
-      startTime1:dateTimeRange&&dateTimeRange[0],
-      startTime2:dateTimeRange&&dateTimeRange[1],
+      size:pageSize,
+      startTime:dateTimeRange&&moment(dateTimeRange[0]).valueOf()/1000,
+      endTime:dateTimeRange&&moment(dateTimeRange[1]).valueOf()/1000,
       ...rest,
   },
   ...options
@@ -283,6 +285,91 @@ export const checkUserExist= async (params = {}, options = {}) => {
 
   return {
   data: res.data,
+  success: true,
+  code: res.code,
+  }
+}
+
+
+//提现
+export const withdrawPage = async (params = {}, options = {}) => {
+  const { current, pageSize,dateTimeRange,dateTimeRange2,...rest } = params;
+  const res = await request('/auth/java-admin/purse/accountActivity/withdrawPage', {
+  method: 'POST',
+  data: {
+      page: current,
+      size:pageSize,
+      applyTimeBegin:dateTimeRange&&dateTimeRange[0],
+      applyTimeEnd:dateTimeRange&&dateTimeRange[1],
+      arrivedTimeBegin:dateTimeRange2&&dateTimeRange2[0],
+      arrivedTimeEnd:dateTimeRange2&&dateTimeRange2[1],
+      ...rest,
+  },
+  ...options
+  });
+
+  return {
+  data: res.data.records,
+  success: true,
+  code: res.code,
+  total: res.data.total
+  }
+}
+
+
+
+export const findPage = async (params = {}, options = {}) => {
+  const { current, pageSize,dateTimeRange,dateTimeRange2,...rest } = params;
+  const res = await request('/auth/java-admin/purse/account/findPage', {
+  method: 'POST',
+  data: {
+      page: current,
+      size:pageSize,
+      ...rest,
+  },
+  ...options
+  });
+
+  return {
+  data: res.data.records,
+  success: true,
+  code: res.code,
+  total: res.data.total
+  }
+}
+
+
+
+export const bindingUpdate = async (params = {}, options = {}) => {
+  const { ...rest } = params;
+  const res = await request('/auth/java-admin/purse/accountActivity/bindingUpdate', {
+  method: 'POST',
+  data: {
+      ...rest,
+  },
+  ...options
+  });
+
+  return {
+  data: res.data,
+  success: true,
+  code: res.code,
+  }
+}
+
+
+export const accountBindLog = async (params = {}, options = {}) => {
+  const { ...rest } = params;
+  const res = await request('/auth/java-admin/purse/accountBindLog/findPage', {
+  method: 'POST',
+  data: {
+      ...rest,
+  },
+  ...options
+  });
+
+  return {
+  data: res.data.records,
   success: true,
   code: res.code,
   }

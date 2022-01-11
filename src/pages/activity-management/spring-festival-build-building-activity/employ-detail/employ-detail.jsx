@@ -126,10 +126,11 @@ const UserDetail=(props) => {
           ],
         }}
         columns={columns}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
       />
-      <Button style={{float:'right',margin:'20px 20px 0 0'}} type="default" onClick={() => history.goBack()}>
-           返回
-        </Button>
     </>
   );
 };
@@ -236,6 +237,10 @@ const EmployDetail=(props) => {
           ],
         }}
         columns={columns}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
       />
     </>
   );

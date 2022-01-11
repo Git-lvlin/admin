@@ -1,9 +1,9 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { getBuildhouseIncomeList } from '@/services/activity-management/spring-festival-build-building-activity';
+import { withdrawPage } from '@/services/activity-management/spring-festival-build-building-activity';
 import { PageContainer } from '@ant-design/pro-layout';
-import { history,connect } from 'umi';
+import { amountTransform } from '@/utils/utils'
 
 
 
@@ -19,75 +19,101 @@ export default () => {
       },
       {
         title: '提现单号',
-        dataIndex: 'id',
+        dataIndex: 'sn',
         valueType: 'text',
       },
       {
+        title: '用户手机号',
+        dataIndex: 'registMobile',
+        valueType: 'text',
+        hideInTable: true,
+      },
+      {
         title: '提现用户名',
-        dataIndex: 'name',
+        dataIndex: 'realName',
         valueType: 'text',
       },
       {
         title: '提现银行机构',
-        dataIndex: 'name',
-        valueType: 'text',
+        dataIndex: 'paymentMethod',
+        valueType: 'select',
+        valueEnum: {
+          'alipay':'支付宝',
+        },
+        hideInSearch: true,
       },
       {
         title: '账户号码',
-        dataIndex: 'name',
+        dataIndex: 'withdrawAccount',
         valueType: 'text',
+        hideInSearch: true,
+      },
+      {
+        title: '银行账户',
+        dataIndex: 'withdrawAccount',
+        valueType: 'text',
+        hideInTable: true,
       },
       {
         title: '提现金额',
-        dataIndex: 'name',
+        dataIndex: 'amount',
         valueType: 'text',
+        hideInSearch: true,
+        render:(_,data)=>{
+          return amountTransform(_, '/')
+        }
       },
       {
         title: '提现申请时间',
         key: 'dateTimeRange',
-        dataIndex: 'usefulTime',
+        dataIndex: 'createTime',
         valueType: 'dateTimeRange',
         hideInTable: true,
       },
       {
         title: '提现申请时间',
-        dataIndex: 'activityStartTime',
+        dataIndex: 'createTime',
         valueType: 'text',
         hideInSearch:true,
-        render:(_,data)=>{
-          return <p>{data.activityStartTime} 至 {data.activityEndTime}</p>
-        }
       },
       {
         title: '提现手续费',
-        dataIndex: 'name',
+        dataIndex: 'fee',
         valueType: 'text',
+        hideInSearch: true,
+        render:(_,data)=>{
+          return <p>{amountTransform(_, '/')}元</p>
+        }
       },
       {
         title: '提现状态',
-        dataIndex: 'type',
-        valueType: 'text',
+        dataIndex: 'status',
+        valueType: 'select',
         valueEnum: {
-          1:'连续签到',
-          2:'邀请好友', 
-          3:'订单消费'
+          'auditing':'待审核',
+          'waitPay':'待执行',
+          'paid':'已执行',
+          'arrived':'已到帐',
+          'unPass':'审核拒绝', 
+          'failure':'提现失败'
         },
       },
       {
         title: '失败原因',
-        dataIndex: 'name',
+        dataIndex: 'reason',
         valueType: 'text',
+        hideInSearch: true,
       },
       {
-        title: '提现到账结果时间',
-        key: 'dateTimeRange',
-        dataIndex: 'usefulTime',
+        title: '提现到账时间',
+        key: 'dateTimeRange2',
+        dataIndex: 'notifyTime',
         valueType: 'dateTimeRange',
         hideInTable: true,
       },
       {
         title: '提现到账结果时间',
-        dataIndex: 'usefulTime',
+        dataIndex: 'notifyTime',
         valueType: 'text',
         hideInSearch:true   
       }
@@ -97,9 +123,8 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="共搜索到 922 条数据"
           options={false}
-          request={getBuildhouseIncomeList}
+          request={withdrawPage}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,
@@ -108,6 +133,10 @@ export default () => {
             ],
           }}
           columns={columns}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
         />
         </PageContainer>
     );
