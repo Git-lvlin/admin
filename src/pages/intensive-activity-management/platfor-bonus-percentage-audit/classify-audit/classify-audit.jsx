@@ -16,6 +16,7 @@ const Category = (props) => {
   const [formDetail, setFormDetail] = useState({})
   const [logId, setLogId] = useState({})
   const actionRef=useRef()
+  const [rowKeys,setRowKeys]=useState()
   const columns = [
     {
       title: 'id',
@@ -30,13 +31,6 @@ const Category = (props) => {
     {
       title: '分类名称',
       dataIndex: 'gcName',
-      render: (_,r) =>{
-        if(parentId){
-          return <p>{_}</p>
-        }else{
-          return <p style={{cursor:'pointer'}} onClick={()=>onClick(r.id)}>{_}</p>
-        }
-      }
     },
     {
       title: '店主额外奖励占总额外奖励比例',
@@ -120,6 +114,23 @@ const Category = (props) => {
           search={false}
           style={{width:'850px',height:'600px',overflowY:'scroll',background:'#fff'}}
           pagination={false}
+          rowSelection={{
+            renderCell:()=>{
+              return null
+            },
+            type:'radio',
+            selectedRowKeys:[rowKeys],
+            
+          }}
+          tableAlertRender={false}
+          onRow={(record) => {
+            return {  
+              onClick: async () => {
+                await onClick(record.id)
+                setRowKeys(record.id)
+              },
+            };
+          }}
       />
       {visible && <Journal
         visible={visible}
