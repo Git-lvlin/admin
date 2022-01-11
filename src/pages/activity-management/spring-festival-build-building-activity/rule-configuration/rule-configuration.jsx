@@ -46,6 +46,9 @@ export default (props) =>{
   const [probability6,setProbability6]=useState()
   const [probability7,setProbability7]=useState()
   const [probability8,setProbability8]=useState()
+  const [tierEnd1,setTierEnd1]=useState()
+  const [tierEnd2,setTierEnd2]=useState()
+  const [tierEnd3,setTierEnd3]=useState()
   let id = props.location.query.id
   const FromWrap = ({ value, onChange, content, right }) => (
     <div style={{ display: 'flex' }}>
@@ -53,21 +56,23 @@ export default (props) =>{
       <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
     </div>
   )
+  const checkConfirm=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value&&value<=0) {
+        await reject('必须大于0')
+    }else if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+        await reject('只能输入整数')
+    }else {
+        await resolve()
+    }
+    })
+}
  
   useEffect(() => {
     if(id){
       getActiveConfigById({id:id}).then(res=>{
-      const list=[
-        {
-          id:1,
-          title:'当天红包金额',
-          couponIdOne:res.data.couponOneDisplay,
-          couponIdTwo:res.data.couponTwoDisplay,
-          couponIdThree:res.data.couponThreeDisplay
-        }
-      ]
       const content=res.data.content
-      setDetailList({data:res.data,scopeList:list})
+      setDetailList({data:res.data})
       form.setFieldsValue({
         dateRange: [res.data?.startTime*1000, res.data?.endTime*1000],
         moneyAll:content.moneyAll,
@@ -192,7 +197,7 @@ export default (props) =>{
             }
           },
           {
-            tierStart:10,
+            tierStart:parseInt(values.tierEnd1)+1,
             tierEnd:values.tierEnd2,
             general:{
               probability:values.general_probability2,
@@ -217,7 +222,7 @@ export default (props) =>{
             }
           },
           {
-            tierStart:16,
+            tierStart:parseInt(values.tierEnd2)+1,
             tierEnd:values.tierEnd3,
             general:{
               probability:values.general_probability3,
@@ -242,7 +247,7 @@ export default (props) =>{
             }
           },
           {
-            tierStart:21,
+            tierStart:parseInt(values.tierEnd3)+1,
             tierEnd:values.tierEnd4,
             general:{
               probability:values.general_probability4,
@@ -405,36 +410,36 @@ export default (props) =>{
                       <Form.Item
                         name="tierEnd1"
                       >
-                      <Input readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
+                      <Input onChange={(val)=>{setTierEnd1(val?.target?.value)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
                       <span>层</span>
                     </Space>
                   </ProCard>
                   <ProCard layout="center">
                     <Space>
-                      <span>10 -</span>
+                      <span>{tierEnd1&&parseInt(tierEnd1)+1||detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.tierStart} -</span>
                       <Form.Item
                         name="tierEnd2"
                       >
-                      <Input readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
+                      <Input onChange={(val)=>{setTierEnd2(val?.target?.value)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
                       <span>层</span>
                     </Space>
                   </ProCard>
                   <ProCard layout="center">
                     <Space>
-                      <span>16 -</span>
+                      <span>{tierEnd2&&parseInt(tierEnd2)+1||detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.tierStart} -</span>
                       <Form.Item
                         name="tierEnd3"
                       >
-                      <Input readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
+                      <Input onChange={(val)=>{setTierEnd3(val?.target?.value)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
                       <span>层</span>
                     </Space>
                   </ProCard>
                   <ProCard layout="center">
                   <Space>
-                      <span>21 -</span>
+                      <span>{tierEnd3&&parseInt(tierEnd3)+1||detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.tierStart} -</span>
                       <Form.Item
                         name="tierEnd4"
                       >
@@ -445,8 +450,8 @@ export default (props) =>{
                   </ProCard>
                 </ProCard>
                 <ProCard split="vertical" bordered style={{background:'#EFF0F4'}}>
-                  <ProCard layout="center" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>普惠奖</ProCard>
-                  <ProCard style={{width:'400px',textAlign:'center'}}>
+                  <ProCard colSpan="111px" layout="center" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>普惠奖</ProCard>
+                  <ProCard style={{textAlign:'center'}}>
                     <Space>
                       <span>概率</span>
                       <Form.Item
@@ -580,8 +585,8 @@ export default (props) =>{
                   </ProCard>
                 </ProCard>
                 <ProCard split="vertical" bordered style={{background:'#EFF0F4'}}>
-                  <ProCard layout="center" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>幸运奖</ProCard>
-                  <ProCard style={{width:'400px',textAlign:'center'}}>
+                  <ProCard colSpan="111px" layout="center" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>幸运奖</ProCard>
+                  <ProCard style={{textAlign:'center'}}>
                     <Space>
                       <span>概率</span>
                       <Form.Item
@@ -756,7 +761,10 @@ export default (props) =>{
             width="sm"
             name="moneyAll"
             label="最高累计限额"
-            rules={[{ required: true, message: '请输入' }]}
+            rules={[
+              { required: true, message: '请输入' },
+              {validator: checkConfirm}
+            ]}
             fieldProps={{
               addonAfter:"元"
             }}
@@ -779,7 +787,10 @@ export default (props) =>{
               width="sm"
               label="每天限额"
               name="moneyDay"
-              rules={[{ required: true, message: '请输入' }]}
+              rules={[
+                { required: true, message: '请输入' },
+                {validator: checkConfirm}
+              ]}
               fieldProps={{
                 addonAfter:"元"
               }}
@@ -804,7 +815,10 @@ export default (props) =>{
               width="sm"
               name="sendPlayTime"
               label="每人赠送游戏机会"
-              rules={[{ required: true, message: '请输入' }]}
+              rules={[
+                { required: true, message: '请输入' },
+                {validator: checkConfirm}
+              ]}
               fieldProps={{
                 addonAfter:"次"
               }}
