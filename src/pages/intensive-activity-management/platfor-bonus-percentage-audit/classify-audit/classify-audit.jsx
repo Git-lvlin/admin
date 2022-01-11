@@ -67,7 +67,8 @@ const Category = (props) => {
                 <p>{r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}</p>
                 <p>{r?.percentAuditStatus==3&&`待审核(店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%)`}</p>
                </>
-      }
+      },
+      ellipsis:true
     },
     {
       title: '操作',
@@ -108,7 +109,7 @@ const Category = (props) => {
           request={categoryAuditList}
           options={false}
           search={false}
-          style={{width:'800px',height:'600px',overflowY:'scroll',background:'#fff'}}
+          style={{width:'900px',height:'600px',overflowY:'scroll',background:'#fff'}}
           pagination={false}
       />
       {visible && <Journal
