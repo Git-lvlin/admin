@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
-import { getBlindboxIncomeDetail,getBlindboxUseDetail } from '@/services/activity-management/spring-festival-build-building-activity';
+import { getBuildhouseIncomeDetail,getBuildhouseUseDetail } from '@/services/activity-management/spring-festival-build-building-activity';
 import Detail from '@/pages/order-management/normal-order/detail';
 const { TabPane } = Tabs
 
@@ -116,7 +116,7 @@ const UserDetail=(props) => {
           memberId:memberId
         }}
         postData={postData}
-        request={getBlindboxIncomeDetail}
+        request={getBuildhouseIncomeDetail}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -222,7 +222,7 @@ const EmployDetail=(props) => {
         rowKey="id"
         headerTitle={`用户手机号:${detailList?.memberMobile}         用户名：${detailList?.memberNicheng}         剩余盖楼次数：${detailList?.restNum}        已使用次数：${detailList?.useNum}`}
         options={false}
-        request={getBlindboxUseDetail}
+        request={getBuildhouseUseDetail}
         postData={postData}
         params={{
           memberId:memberId

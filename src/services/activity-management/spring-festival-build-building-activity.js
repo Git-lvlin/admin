@@ -98,9 +98,9 @@ export const getBuildhouseIncomeList = async (params = {}, options = {}) => {
   }
 }
 
-export const getBlindboxIncomeDetail = async (params = {}, options = {}) => {
+export const getBuildhouseIncomeDetail = async (params = {}, options = {}) => {
   const { current, pageSize,dateTimeRange, ...rest } = params;
-  const res = await request('/auth/blindbox/Blindbox/getBlindboxIncomeDetail', {
+  const res = await request('/auth/buildhouse/Buildhouse/getBuildhouseIncomeDetail', {
     method: 'POST',
     data: {
       page: current,
@@ -159,9 +159,9 @@ export const buildhouseAccountSub = async (params = {}, options = {}) => {
 }
 
 
-export const getBlindboxUseDetail = async (params = {}, options = {}) => {
+export const getBuildhouseUseDetail = async (params = {}, options = {}) => {
   const { current, pageSize,dateTimeRange,...rest } = params;
-  const res = await request('/auth/blindbox/Blindbox/getBlindboxUseDetail', {
+  const res = await request('/auth/buildhouse/Buildhouse/getBuildhouseUseDetail', {
   method: 'POST',
   data: {
       page: current,

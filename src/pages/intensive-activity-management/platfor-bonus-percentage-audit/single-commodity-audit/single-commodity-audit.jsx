@@ -18,49 +18,27 @@ export default () => {
 
   const columns = [
     {
-      title: '活动商品',
-      dataIndex: 'goodsName',
+      title: '活动ID',
+      dataIndex: 'wsId',
       valueType: 'text',
-      render: (_,r) =>{
-        return <>
-                 <p>{_}</p>
-                 <p>spuId：{r.spuId}</p>
-                 <p>skuId：{r.skuId}</p>
-               </>
-      },
       align: 'center'
     },
     {
       title: '集约活动',
       dataIndex: 'wsName',
       valueType: 'text',
-      render: (_,r) =>{
-        return <>
-                 <p>{_}</p>
-                 <p>活动ID：{r.wsId}</p>
-               </>
-      },
       align: 'center'
     },
     {
-      title: '店主额外奖励占总额外奖励比例',
-      dataIndex: 'storePercent',
+      title: '商品名称',
+      dataIndex: 'goodsName',
       valueType: 'text',
-      render: (_,r) =>{
-        return <p>{amountTransform(parseFloat(_), '*')}%</p>
-      },
       align: 'center'
     },
     {
-      title: '额外奖励说明',
-      dataIndex: 'percentAuditStatusDesc',
+      title: '商品spuID',
+      dataIndex: 'spuId',
       valueType: 'text',
-      render:(_,r)=>{
-        return <>
-                <p>店主：{amountTransform(parseFloat(r?.storePercent), '*')}%</p>
-                <p>运营中心：{amountTransform(parseFloat(r?.operationPercent), '*')}%</p>
-               </>
-      },
       align: 'center'
     },
     {
