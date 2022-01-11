@@ -195,7 +195,7 @@ export default (props) =>{
               ]
             },
             losing:{
-              probability:100-(parseInt(values.general_probability1)+parseInt(values.lucky_probability1))
+              probability:(10000-amountTransform((parseFloat(values.general_probability1)+parseFloat(values.lucky_probability1), '*')))/100
             }
           },
           {
@@ -220,7 +220,7 @@ export default (props) =>{
               ]
             },
             losing:{
-              probability:100-(parseInt(values.general_probability2)+parseInt(values.lucky_probability2))
+              probability:(10000-amountTransform((parseFloat(values.general_probability2)+parseFloat(values.lucky_probability2), '*')))/100
             }
           },
           {
@@ -245,7 +245,7 @@ export default (props) =>{
               ]
             },
             losing:{
-              probability:100-(parseInt(values.general_probability3)+parseInt(values.lucky_probability3))
+              probability:(10000-amountTransform((parseFloat(values.general_probability3)+parseFloat(values.lucky_probability3), '*')))/100
             }
           },
           {
@@ -270,7 +270,7 @@ export default (props) =>{
               ]
             },
             losing:{
-              probability:100-(parseInt(values.general_probability4)+parseInt(values.lucky_probability4))
+              probability:(10000-amountTransform((parseFloat(values.general_probability4)+parseFloat(values.lucky_probability4), '*')))/100
             }
           }
         ]
@@ -414,7 +414,7 @@ export default (props) =>{
                       <Form.Item
                         name="tierEnd1"
                       >
-                      <Input onChange={(val)=>{setTierEnd1(val?.target?.value)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
+                      <InputNumber min="0" precision='0.0'   onChange={(val)=>{setTierEnd1(val)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
                       <span>层</span>
                     </Space>
@@ -425,7 +425,7 @@ export default (props) =>{
                       <Form.Item
                         name="tierEnd2"
                       >
-                      <Input onChange={(val)=>{setTierEnd2(val?.target?.value)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
+                      <InputNumber min="0" precision='0.0' onChange={(val)=>{setTierEnd2(val)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
                       <span>层</span>
                     </Space>
@@ -436,7 +436,7 @@ export default (props) =>{
                       <Form.Item
                         name="tierEnd3"
                       >
-                      <Input onChange={(val)=>{setTierEnd3(val?.target?.value)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
+                      <InputNumber min="0" precision='0.0' onChange={(val)=>{setTierEnd3(val)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
                       <span>层</span>
                     </Space>
@@ -447,7 +447,7 @@ export default (props) =>{
                       <Form.Item
                         name="tierEnd4"
                       >
-                      <Input readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
+                      <InputNumber min="0" precision='0.0' readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
                       <span>层</span>
                     </Space>
@@ -461,7 +461,7 @@ export default (props) =>{
                       <Form.Item
                         name="general_probability1"
                       >
-                       <Input readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability1(val.target.value)} style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability1(val)} style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <span>%</span>
                     </Space>
@@ -469,22 +469,22 @@ export default (props) =>{
                       <Form.Item
                         name="general_moneyRange1_win1"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="general_moneyRange1_win2"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="general_moneyRange1_win3"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="general_moneyRange1_win4"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                     </Space>
                   </ProCard>
@@ -494,7 +494,7 @@ export default (props) =>{
                       <Form.Item
                         name="general_probability2"
                       >
-                      <Input readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability3(val.target.value)} style={{width:'80px'}} placeholder="_________" bordered={false} />
+                      <InputNumber min="0" readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability3(val)} style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <span>%</span>
                     </Space>
@@ -502,22 +502,22 @@ export default (props) =>{
                       <Form.Item
                         name="general_moneyRange2_win1"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="general_moneyRange2_win2"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="general_moneyRange2_win3"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="general_moneyRange2_win4"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                     </Space>
                   </ProCard>
@@ -527,7 +527,7 @@ export default (props) =>{
                       <Form.Item
                         name="general_probability3"
                       >
-                      <Input readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability5(val.target.value)} style={{width:'80px'}} placeholder="_________" bordered={false} />
+                      <InputNumber min="0" readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability5(val)} style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <span>%</span>
                     </Space>
@@ -535,22 +535,22 @@ export default (props) =>{
                       <Form.Item
                         name="general_moneyRange3_win1"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="general_moneyRange3_win2"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="general_moneyRange3_win3"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="general_moneyRange3_win4"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                     </Space>
                   </ProCard>
@@ -560,7 +560,7 @@ export default (props) =>{
                       <Form.Item
                         name="general_probability4"
                       >
-                      <Input readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability7(val.target.value)} style={{width:'80px'}} placeholder="_________" bordered={false} />
+                      <InputNumber min="0" readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability7(val)} style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <span>%</span>
                     </Space>
@@ -568,22 +568,22 @@ export default (props) =>{
                       <Form.Item
                         name="general_moneyRange4_win1"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="general_moneyRange4_win2"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="general_moneyRange4_win3"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="general_moneyRange4_win4"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                     </Space>
                   </ProCard>
@@ -596,7 +596,7 @@ export default (props) =>{
                       <Form.Item
                         name="lucky_probability1"
                       >
-                      <Input readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability2(val.target.value)} style={{width:'80px'}} placeholder="_________" bordered={false} />
+                      <InputNumber min="0" readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability2(val)} style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <span>%</span>
                     </Space>
@@ -604,22 +604,22 @@ export default (props) =>{
                       <Form.Item
                         name="lucky_moneyRange1_win1"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="lucky_moneyRange1_win2"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="lucky_moneyRange1_win3"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="lucky_moneyRange1_win4"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                     </Space>
                   </ProCard>
@@ -629,7 +629,7 @@ export default (props) =>{
                       <Form.Item
                         name="lucky_probability2"
                       >
-                      <Input readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability4(val.target.value)} style={{width:'80px'}} placeholder="_________" bordered={false} />
+                      <InputNumber min="0" readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability4(val)} style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <span>%</span>
                     </Space>
@@ -637,22 +637,22 @@ export default (props) =>{
                       <Form.Item
                         name="lucky_moneyRange2_win1"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="lucky_moneyRange2_win2"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="lucky_moneyRange2_win3"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="lucky_moneyRange2_win4"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                     </Space>
                   </ProCard>
@@ -662,7 +662,7 @@ export default (props) =>{
                       <Form.Item
                         name="lucky_probability3"
                       >
-                      <Input readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability6(val.target.value)} style={{width:'80px'}} placeholder="_________" bordered={false} />
+                      <InputNumber min="0" readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability6(val)} style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <span>%</span>
                     </Space>
@@ -670,22 +670,22 @@ export default (props) =>{
                       <Form.Item
                         name="lucky_moneyRange3_win1"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="lucky_moneyRange3_win2"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="lucky_moneyRange3_win3"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="lucky_moneyRange3_win4"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                     </Space>
                   </ProCard>
@@ -695,7 +695,7 @@ export default (props) =>{
                       <Form.Item
                         name="lucky_probability4"
                       >
-                      <Input readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability8(val.target.value)} style={{width:'80px'}} placeholder="_________" bordered={false} />
+                      <InputNumber min="0" readonly={id&&falg?'readonly':false } onChange={(val)=>setProbability8(val)} style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <span>%</span>
                     </Space>
@@ -703,22 +703,22 @@ export default (props) =>{
                       <Form.Item
                         name="lucky_moneyRange4_win1"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="lucky_moneyRange4_win2"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="lucky_moneyRange4_win3"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                       <Form.Item
                         name="lucky_moneyRange4_win4"
                       >
-                       <Input readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
+                       <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'80px'}} placeholder="_________" bordered={false} />
                       </Form.Item>
                     </Space>
                   </ProCard>
@@ -731,7 +731,7 @@ export default (props) =>{
                       <Form.Item
                         name="prizeMoney"
                       >
-                      <Input readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
+                      <InputNumber min="0" readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
                       <span>元，从给的店主名单中随机选已经中过幸运大奖的不会重复中此奖</span>
                     </Space>
@@ -740,10 +740,30 @@ export default (props) =>{
                 </ProCard>
                 <ProCard split="vertical">
                   <ProCard colSpan="400px" bordered  layout="center" colSpan="111px" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>未中奖</ProCard>
-                  <ProCard colSpan="400px" bordered  layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.losing?.probability||(probability1&&probability2&&100-(parseInt(probability1)+parseInt(probability2)))}%</ProCard>
-                  <ProCard colSpan="400px" bordered  layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.losing?.probability||(probability3&&probability4&&100-(parseInt(probability3)+parseInt(probability4)))}%</ProCard>
-                  <ProCard colSpan="400px" bordered  layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.losing?.probability||(probability5&&probability6&&100-(parseInt(probability5)+parseInt(probability6)))}%</ProCard>
-                  <ProCard colSpan="400px" bordered  layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.losing?.probability||(probability7&&probability8&&100-(parseInt(probability7)+parseInt(probability8)))}%</ProCard>
+                  <ProCard colSpan="400px" bordered  layout="center">
+                    概率{
+                    detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.losing?.probability
+                    ||
+                    (probability1&&probability2&&(10000-amountTransform((parseFloat(probability1)+parseFloat(probability2)), '*')))/100
+                    }%</ProCard>
+                  <ProCard colSpan="400px" bordered  layout="center">
+                    概率{
+                    detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.losing?.probability
+                    ||
+                    (probability3&&probability4&&(10000-amountTransform((parseFloat(probability3)+parseFloat(probability4)), '*')))/100
+                    }%</ProCard>
+                  <ProCard colSpan="400px" bordered  layout="center">
+                    概率{
+                    detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.losing?.probability
+                    ||
+                    (probability5&&probability6&&(10000-amountTransform((parseFloat(probability5)+parseFloat(probability6)), '*')))/100
+                    }%</ProCard>
+                  <ProCard colSpan="400px" bordered  layout="center">
+                    概率{
+                    detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.losing?.probability
+                    ||
+                    (probability7&&probability8&&(10000-amountTransform((parseFloat(probability7)+parseFloat(probability8)), '*')))/100
+                    }%</ProCard>
                 </ProCard>
               </ProCard>
             </ProCard>
