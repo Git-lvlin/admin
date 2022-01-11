@@ -99,7 +99,8 @@ const Category = (props) => {
                 <p>{r?.percentAuditStatus==3&&`待审核(店主占${r?.storeAuditPercent}%)`}</p>
                </>
       },
-      editable:false
+      editable:false,
+      ellipsis:true
     },
     {
       title: '操作',
@@ -185,7 +186,24 @@ const Category = (props) => {
               >取消更新</a>
             ],
           }}
-          style={{width:'800px',height:'600px',overflowY:'scroll',background:'#fff'}}
+          style={{width:'900px',height:'600px',overflowY:'scroll',background:'#fff'}}
+          // rowSelection={{
+          //   renderCell:()=>{
+          //     return null
+          //   },
+          //   type:'radio',
+          //   selectedRowKeys:[2],
+            
+          // }}
+          // tableAlertRender={false}
+          // onRow={record => {
+          //   return {
+          //     onClick: event => {
+          //       console.log('asdas',event)
+          //     }, // 点击行
+          //   };
+          // }}
+      
       />
       {visible && <Journal
         visible={visible}
