@@ -66,7 +66,10 @@ export default (props) =>{
         await resolve()
     }
     })
-}
+  }
+  const disabledDate=(current)=>{
+    return current && current < moment().startOf('day');
+  }
  
   useEffect(() => {
     if(id){
@@ -140,8 +143,8 @@ export default (props) =>{
 
         inviteNum:content?.accessGain?.inviteFriends?.inviteNum,
         prizeNum1:content?.accessGain?.inviteFriends?.prizeNum,
+        prizeNum:content?.accessGain?.friendPlay?.prizeNum,
         playerNum:content?.accessGain?.friendPlay?.playerNum,
-        prizeNum2:content?.accessGain?.friendPlay?.prizeNum,
         ...res.data
       })
     })
@@ -280,8 +283,8 @@ export default (props) =>{
             switch:1
           },
           friendPlay:{
-            playerNum:parseInt(values.playerNum),
-            prizeNum:values.prizeNum2,
+            prizeNum:parseInt(values.prizeNum),
+            playerNum:values.playerNum,
             switch:1
           }
         }
@@ -378,6 +381,7 @@ export default (props) =>{
               rules={[{ required: true, message: '请选择活动时间' }]}
               name="dateRange"
               fieldProps={{
+                disabledDate:(current)=>disabledDate(current),
                 showTime:{
                   hideDisabledOptions: true,
                   defaultValue: [moment('00:00', 'HH:mm'), moment('11:59', 'HH:mm')],
@@ -394,6 +398,7 @@ export default (props) =>{
               ]}
           />
           }
+          <div style={{width:'100%',overflowX: 'auto'}}>
           <ProCard
             title={<p><span style={{color:'red'}}>*</span> 奖励设置（元）</p>}
             headerBordered
@@ -402,9 +407,9 @@ export default (props) =>{
           >
             <ProCard split="horizontal">
               <ProCard split="horizontal">
-                <ProCard split='vertical' bordered style={{background:'#EFF0F4'}}>
+                <ProCard split='vertical'>
                   <ProCard colSpan="111px" layout="center" style={{background:'none'}}>挑战楼层</ProCard>
-                  <ProCard layout="center">
+                  <ProCard colSpan="400px" bordered  layout="center">
                     <Space>
                       <span>3 -</span>
                       <Form.Item
@@ -415,7 +420,7 @@ export default (props) =>{
                       <span>层</span>
                     </Space>
                   </ProCard>
-                  <ProCard layout="center">
+                  <ProCard colSpan="400px" bordered  layout="center">
                     <Space>
                       <span>{tierEnd1&&parseInt(tierEnd1)+1||detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.tierStart} -</span>
                       <Form.Item
@@ -426,7 +431,7 @@ export default (props) =>{
                       <span>层</span>
                     </Space>
                   </ProCard>
-                  <ProCard layout="center">
+                  <ProCard colSpan="400px" bordered  layout="center">
                     <Space>
                       <span>{tierEnd2&&parseInt(tierEnd2)+1||detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.tierStart} -</span>
                       <Form.Item
@@ -437,7 +442,7 @@ export default (props) =>{
                       <span>层</span>
                     </Space>
                   </ProCard>
-                  <ProCard layout="center">
+                  <ProCard colSpan="400px" bordered layout="center">
                   <Space>
                       <span>{tierEnd3&&parseInt(tierEnd3)+1||detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.tierStart} -</span>
                       <Form.Item
@@ -449,9 +454,9 @@ export default (props) =>{
                     </Space>
                   </ProCard>
                 </ProCard>
-                <ProCard split="vertical" bordered style={{background:'#EFF0F4'}}>
+                <ProCard split="vertical">
                   <ProCard colSpan="111px" layout="center" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>普惠奖</ProCard>
-                  <ProCard style={{textAlign:'center'}}>
+                  <ProCard style={{textAlign:'center'}} bordered colSpan="400px">
                     <Space>
                       <span>概率</span>
                       <Form.Item
@@ -484,7 +489,7 @@ export default (props) =>{
                       </Form.Item>
                     </Space>
                   </ProCard>
-                  <ProCard style={{width:'400px',textAlign:'center'}}>
+                  <ProCard style={{textAlign:'center'}} bordered colSpan="400px">
                     <Space>
                       <span>概率</span>
                       <Form.Item
@@ -517,7 +522,7 @@ export default (props) =>{
                       </Form.Item>
                     </Space>
                   </ProCard>
-                  <ProCard style={{width:'400px',textAlign:'center'}}>
+                  <ProCard style={{textAlign:'center'}} bordered colSpan="400px">
                     <Space>
                       <span>概率</span>
                       <Form.Item
@@ -550,7 +555,7 @@ export default (props) =>{
                       </Form.Item>
                     </Space>
                   </ProCard>
-                  <ProCard style={{width:'400px',textAlign:'center'}}>
+                  <ProCard style={{textAlign:'center'}} bordered colSpan="400px">
                     <Space>
                       <span>概率</span>
                       <Form.Item
@@ -584,9 +589,9 @@ export default (props) =>{
                     </Space>
                   </ProCard>
                 </ProCard>
-                <ProCard split="vertical" bordered style={{background:'#EFF0F4'}}>
+                <ProCard split="vertical">
                   <ProCard colSpan="111px" layout="center" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>幸运奖</ProCard>
-                  <ProCard style={{textAlign:'center'}}>
+                  <ProCard style={{textAlign:'center'}} bordered colSpan="400px">
                     <Space>
                       <span>概率</span>
                       <Form.Item
@@ -619,7 +624,7 @@ export default (props) =>{
                       </Form.Item>
                     </Space>
                   </ProCard>
-                  <ProCard style={{width:'400px',textAlign:'center'}}>
+                  <ProCard style={{textAlign:'center'}} bordered colSpan="400px">
                     <Space>
                       <span>概率</span>
                       <Form.Item
@@ -652,7 +657,7 @@ export default (props) =>{
                       </Form.Item>
                     </Space>
                   </ProCard>
-                  <ProCard style={{width:'400px',textAlign:'center'}}>
+                  <ProCard style={{textAlign:'center'}} bordered colSpan="400px">
                     <Space>
                       <span>概率</span>
                       <Form.Item
@@ -685,7 +690,7 @@ export default (props) =>{
                       </Form.Item>
                     </Space>
                   </ProCard>
-                  <ProCard style={{width:'400px',textAlign:'center'}}>
+                  <ProCard style={{textAlign:'center'}} bordered colSpan="400px">
                     <Space>
                       <span>概率</span>
                       <Form.Item
@@ -719,9 +724,9 @@ export default (props) =>{
                     </Space>
                   </ProCard>
                 </ProCard>
-                <ProCard split="vertical" bordered style={{background:'#EFF0F4'}}>
+                <ProCard split="vertical">
                   <ProCard colSpan="111px" layout="center" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>幸运大奖</ProCard>
-                  <ProCard layout="center">
+                  <ProCard layout="center" bordered colSpan="1600px">
                     <Space>
                       <span>每天产生一名</span>
                       <Form.Item
@@ -734,16 +739,17 @@ export default (props) =>{
                     <Button style={{marginLeft:'200px'}} type="primary" onClick={()=>setListVisible(true)}>{id&&falg?'查看名单':'上传名单'}</Button>
                   </ProCard>
                 </ProCard>
-                <ProCard split="vertical" bordered style={{background:'#EFF0F4'}}>
-                  <ProCard layout="center" colSpan="111px" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>未中奖</ProCard>
-                  <ProCard layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.losing?.probability||(probability1&&probability2&&100-(parseInt(probability1)+parseInt(probability2)))}%</ProCard>
-                  <ProCard layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.losing?.probability||(probability3&&probability4&&100-(parseInt(probability3)+parseInt(probability4)))}%</ProCard>
-                  <ProCard layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.losing?.probability||(probability5&&probability6&&100-(parseInt(probability5)+parseInt(probability6)))}%</ProCard>
-                  <ProCard layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.losing?.probability||(probability7&&probability8&&100-(parseInt(probability7)+parseInt(probability8)))}%</ProCard>
+                <ProCard split="vertical">
+                  <ProCard colSpan="400px" bordered  layout="center" colSpan="111px" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>未中奖</ProCard>
+                  <ProCard colSpan="400px" bordered  layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.losing?.probability||(probability1&&probability2&&100-(parseInt(probability1)+parseInt(probability2)))}%</ProCard>
+                  <ProCard colSpan="400px" bordered  layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.losing?.probability||(probability3&&probability4&&100-(parseInt(probability3)+parseInt(probability4)))}%</ProCard>
+                  <ProCard colSpan="400px" bordered  layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.losing?.probability||(probability5&&probability6&&100-(parseInt(probability5)+parseInt(probability6)))}%</ProCard>
+                  <ProCard colSpan="400px" bordered  layout="center">概率{detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.losing?.probability||(probability7&&probability8&&100-(parseInt(probability7)+parseInt(probability8)))}%</ProCard>
                 </ProCard>
               </ProCard>
             </ProCard>
           </ProCard>
+          </div>
           {
             id&&falg?
             <ProFormText
@@ -945,6 +951,9 @@ export default (props) =>{
             name="withdrawTime"
             readonly={id&&falg}
             rules={[{ required: true, message: '截止时间' }]}
+            fieldProps={{
+              disabledDate:(current)=>disabledDate(current),
+            }}
           />
           
           {
@@ -998,18 +1007,18 @@ export default (props) =>{
             id&&falg?
             <ProFormText
               width="lg"
-              name="playerNum"
+              name="prizeNum"
               label="被邀请人玩游戏"
               readonly={id&&falg}
               rules={[{ required: true, message: '请输入' }]}
               fieldProps={{
-                value:`每有1个新用户参与游戏，奖励游戏机会${detailList?.data?.content?.accessGain?.friendPlay?.playerNum}次`
+                value:`每有1个新用户参与游戏，奖励游戏机会${detailList?.data?.content?.accessGain?.friendPlay?.prizeNum}次`
               }}
             />
             :
             <ProFormText
               width="lg"
-              name="playerNum"
+              name="prizeNum"
               label="被邀请人玩游戏"
               rules={[{ required: true, message: '请输入' }]}
               fieldProps={{
@@ -1022,18 +1031,18 @@ export default (props) =>{
             id&&falg?
             <ProFormText
               width="sm"
-              name="prizeNum2"
+              name="playerNum"
               label="参与活动"
               readonly={id&&falg}
               rules={[{ required: true, message: '请输入' }]}
               fieldProps={{
-                value:`${detailList?.data?.content?.accessGain?.friendPlay?.prizeNum}人数`
+                value:`${detailList?.data?.content?.accessGain?.friendPlay?.playerNum}人数`
               }}
             />
             :
             <ProFormText
               width="sm"
-              name="prizeNum2"
+              name="playerNum"
               label="参与活动"
               rules={[{ required: true, message: '请输入' }]}
               fieldProps={{

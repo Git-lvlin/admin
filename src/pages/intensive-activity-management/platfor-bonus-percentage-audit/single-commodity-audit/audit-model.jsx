@@ -12,7 +12,7 @@ import styles from './style.less'
 import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
-    labelCol: { span: 7 },
+    labelCol: { span:5 },
     wrapperCol: { span: 14 },
     layout: {
       labelCol: {
@@ -75,7 +75,7 @@ export default (props) => {
     >
         <ProFormText
             width={250}
-            label="设置商品的店主额外奖励占比"
+            label={<p>最低量 {formDetail?.ladderSubsidyModify[0]?.wsStart}件 时设置商品的<br/>店主额外奖励占比</p>}
             name="name"
             readonly={true}
             // labelCol={6}
@@ -88,7 +88,7 @@ export default (props) => {
         />
          <ProFormText
             width={250}
-            label="商品现有所属分类的店主额外奖励占比"
+            label={<p>最低量 {formDetail?.ladderSubsidyModify[1]?.wsStart}件 时设置商品的<br/>店主额外奖励占比</p>}
             name="name"
             readonly={true}
             // labelCol={5}
