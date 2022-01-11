@@ -1480,3 +1480,12 @@ export const tagSortSub = (params = {}, options = {}) => {
     ...options
   })
 }
+
+// 标签-排序信息
+export const tagSortInfo = (params = {}, options = {}) => {
+  return request(`/auth/activity/Goods/tagSortInfo`, {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
