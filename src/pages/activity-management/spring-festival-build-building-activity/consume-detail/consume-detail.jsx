@@ -90,6 +90,7 @@ export default () => {
           1: '未获奖',
           2: '已获奖',
           3: '机会过期',
+          6: '活动结束'
         },
         hideInTable:true
       },
