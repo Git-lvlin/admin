@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Space, Radio } from 'antd'
 
-import { tagSortSub } from '@/services/cms/member/member'
+import { tagSortSub, tagSortInfo } from '@/services/cms/member/member'
 
 const Title = ({actRef}) => {
   const [value, setValue] = useState(1)
@@ -13,8 +13,21 @@ const Title = ({actRef}) => {
     })
   }, [value])
 
-  const onChange = (e) => {
-    setValue(e.target.value)
+  useEffect(() => {
+    tagSortInfo({
+      tagType: 1
+    }).then(res => {
+      setValue(res?.data?.sortType)
+    })
+  }, [])
+
+  const randomSort = () => {
+    setValue(1)
+    actRef?.current?.reload()
+  }
+
+  const manualSort = () => {
+    setValue(2)
     actRef?.current?.reload()
   }
 
@@ -23,9 +36,13 @@ const Title = ({actRef}) => {
       <h4>热销好货</h4>
       <div>
         <span>排序方式：</span>
-        <Radio.Group onChange={onChange} value={value}>
-          <Radio value={1}>随机排序</Radio>
-          <Radio value={2}>手工排序</Radio>
+        <Radio.Group value={value}>
+          <Popconfirm title='确认要将排序方式变更为随机排序吗？' onConfirm={randomSort}>
+            <Radio value={1}>随机排序</Radio>
+          </Popconfirm>
+          <Popconfirm title='确认要将排序方式变更为手工排序吗？' onConfirm={manualSort}>
+            <Radio value={2}>手工排序</Radio>
+          </Popconfirm>
         </Radio.Group>
       </div>
     </Space>
