@@ -29,12 +29,11 @@ const UserDetail=(props) => {
     {
       title: '发放原因',
       dataIndex: 'type',
-      valueType: 'select',
-      hideInSearch:true,
+      valueType: 'text',
       valueEnum: {
-        1:'连续签到',
-        2:'邀请好友', 
-        3:'订单消费'
+        1:'原始机会3次',
+        2:'邀请好友注册', 
+        3:'邀请好友注册且游戏'
       },
     },
     {
@@ -158,12 +157,10 @@ const EmployDetail=(props) => {
       valueType: 'select',
       valueEnum: {
         0: '全部',
-        1: '获奖已兑换',
-        2: '获奖未兑换',
-        3: '已获奖',
-        4: '未获奖',
-        5: '机会过期',
-        6: '官方回收'
+        1: '未获奖',
+        2: '已获奖',
+        3: '机会过期',
+        6: '活动结束'
       },
       hideInTable:true
     },
@@ -175,6 +172,7 @@ const EmployDetail=(props) => {
       valueEnum: {
         5:'盖楼游戏',
         6:'机会过期', 
+        7:'活动结束'
       },
     },
     {

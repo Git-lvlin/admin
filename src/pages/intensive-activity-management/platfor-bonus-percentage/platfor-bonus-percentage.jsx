@@ -1,5 +1,5 @@
 import React, { useEffect, useState,useRef } from 'react'
-import { Spin, Empty, Switch,Form,InputNumber } from 'antd'
+import { Spin, Empty, Switch,Form,InputNumber,Tooltip } from 'antd'
 import { PageContainer } from '@ant-design/pro-layout';
 import { categoryList,updateCategoryPercent } from '@/services/intensive-activity-management/platfor-bonus-percentage'
 import Journal from './journal';
@@ -95,8 +95,16 @@ const Category = (props) => {
         return <>
                 <p>{r?.percentAuditStatus==0&&'未修改'}</p>
                 <p>{r?.percentAuditStatus==1&&'审核通过'}</p>
-                <p>{r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}</p>
-                <p>{r?.percentAuditStatus==3&&`待审核(店主占${r?.storeAuditPercent}%)`}</p>
+                <p className={styles.line_feed}>
+                  <Tooltip  placement="leftTop" title={r?.rejectionReason}>
+                    {r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}
+                  </Tooltip>
+                </p>
+                <p className={styles.line_feed}>
+                  <Tooltip  placement="leftTop" title={`（店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%）`}>
+                    {r?.percentAuditStatus==3&&`待审核（店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%）`}
+                  </Tooltip>
+                </p>
                </>
       },
       editable:false,

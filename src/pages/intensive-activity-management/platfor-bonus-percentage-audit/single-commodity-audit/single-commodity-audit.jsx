@@ -1,12 +1,13 @@
 
 import React, { useRef, useState } from 'react';
-import { Button, Space, message } from 'antd';
+import { Button, Space, message,Tooltip } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { history,connect } from 'umi';
 import { skuAuditList } from '@/services/intensive-activity-management/platfor-bonus-percentage-audit';
 import AuditModel from './audit-model'
 import Journal from './journal';
 import { amountTransform } from '@/utils/utils'
+import styles from './style.less'
 
 export default () => {
   const [visible, setVisible] = useState(false);
@@ -70,11 +71,18 @@ export default () => {
         return <>
                 <p>{r?.percentAuditStatus==0&&'未修改'}</p>
                 <p>{r?.percentAuditStatus==1&&'审核通过'}</p>
-                <p>{r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}</p>
-                <p>{r?.percentAuditStatus==3&&`待审核(店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%)}`}</p>
+                <p className={styles.line_feed}>
+                  <Tooltip  placement="leftTop" title={r?.rejectionReason}>
+                    {r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}
+                  </Tooltip>
+                </p>
+                <p className={styles.line_feed}>
+                  <Tooltip  placement="leftTop" title={`（店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%）`}>
+                    {r?.percentAuditStatus==3&&`待审核（店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%）`}
+                  </Tooltip>
+                </p>
                </>
       },
-      align: 'center'
     },
     {
       title: '操作',

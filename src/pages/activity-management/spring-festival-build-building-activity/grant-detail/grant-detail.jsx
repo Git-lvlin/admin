@@ -49,9 +49,9 @@ export default () => {
         dataIndex: 'type',
         valueType: 'text',
         valueEnum: {
-          1:'连续签到',
-          2:'邀请好友', 
-          3:'订单消费'
+          1:'原始机会3次',
+          2:'邀请好友注册', 
+          3:'邀请好友注册且游戏'
         },
       },
       {
