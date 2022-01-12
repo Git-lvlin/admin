@@ -304,7 +304,7 @@ export default (props) => {
             <Form.Item
               label="商品单位"
             >
-              {goods.unit}{goods.unit}
+              {goods.unit}
             </Form.Item>
             <Form.Item
               label="集采商品单位"
