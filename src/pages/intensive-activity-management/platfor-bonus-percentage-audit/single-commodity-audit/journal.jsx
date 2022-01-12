@@ -5,7 +5,6 @@ import ProForm, {
 } from '@ant-design/pro-form';
 import { skuPercentLog  } from '@/services/intensive-activity-management/platfor-bonus-percentage-audit'
 import ProTable from '@ant-design/pro-table';
-import { amountTransform } from '@/utils/utils'
 
 export default (props) => {
   const { visible, setVisible, logId,onClose} = props;
@@ -36,9 +35,6 @@ export default (props) => {
       title: '操作说明',
       dataIndex: 'logMsg',
       valueType: 'text',
-      render:(_,data)=>{
-        return <p>{isNaN(_)?_:`${amountTransform(_, '*')}%`}</p>
-      }
     },
     {
         title: '操作时间',

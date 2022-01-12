@@ -61,6 +61,7 @@ export default (props) => {
           const params={
             id:formDetail?.id,
             storeAuditPercent:formDetail?.storeAuditPercent,
+            ladderSubsidyModify:values.type==1&&formDetail?.ladderSubsidyModify,
             ...values
           }
           skuPercentAudit(params).then(res=>{
