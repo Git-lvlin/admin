@@ -301,6 +301,13 @@ export default (props) =>{
      }
 
   }
+  const limitDecimalsF =(value)=>{
+    return value&&parseInt(value)
+  };
+  // const limitDecimalsP =(value)=>{
+  //   let reg = /^(-)*(\d+)\.(\d\d).*$/;
+  //   return value.replace(/￥\s?|(,*)/g, '').replace(reg,'$1$2.$3');
+  // };
   return (
     <PageContainer>
       <Spin spinning={loading}>
@@ -414,7 +421,7 @@ export default (props) =>{
                       <Form.Item
                         name="tierEnd1"
                       >
-                      <InputNumber min="0"   precision={0}  onChange={(val)=>{setTierEnd1(val)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
+                      <InputNumber min="0" formatter={limitDecimalsF}  onChange={(val)=>{setTierEnd1(val)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
                       <span>层</span>
                     </Space>
@@ -425,7 +432,7 @@ export default (props) =>{
                       <Form.Item
                         name="tierEnd2"
                       >
-                      <InputNumber min="0" precision={0} onChange={(val)=>{setTierEnd2(val)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
+                      <InputNumber min="0" formatter={limitDecimalsF} onChange={(val)=>{setTierEnd2(val)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
                       <span>层</span>
                     </Space>
@@ -436,7 +443,7 @@ export default (props) =>{
                       <Form.Item
                         name="tierEnd3"
                       >
-                      <InputNumber min="0" precision={0} onChange={(val)=>{setTierEnd3(val)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
+                      <InputNumber min="0" formatter={limitDecimalsF} onChange={(val)=>{setTierEnd3(val)}} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
                       <span>层</span>
                     </Space>
@@ -447,7 +454,7 @@ export default (props) =>{
                       <Form.Item
                         name="tierEnd4"
                       >
-                      <InputNumber min="0" precision={0} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
+                      <InputNumber min="0" formatter={limitDecimalsF} readonly={id&&falg?'readonly':false } style={{width:'100px'}} placeholder="____________" bordered={false} />
                       </Form.Item>
                       <span>层</span>
                     </Space>
