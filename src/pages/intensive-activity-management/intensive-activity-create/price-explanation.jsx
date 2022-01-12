@@ -3,6 +3,9 @@ import {
   ModalForm,
 } from '@ant-design/pro-form';
 import { Typography, Row, Col, Table } from 'antd';
+import Big from 'big.js';
+
+Big.RM = 0;
 
 const { Title } = Typography;
 
@@ -44,7 +47,7 @@ const PriceExplanation = ({ skuData = {}, ladderData = [] }) => {
           return '';
         }
         return <>
-          <div>{record.wsStart / 100}元/{skuData.unit}</div>
+          <div>{record.wsSupplyPrice / 100}元/{skuData.unit}</div>
           {skuData.batchNumber > 1 && !!skuData.wsUnit && <div>({record.wsBatchSupplyPrice / 100}元/{skuData.wsUnit})</div>}
         </>
       }
@@ -192,14 +195,14 @@ const PriceExplanation = ({ skuData = {}, ladderData = [] }) => {
       }
       return {
         ...item,
-        c: item.wsStart * skuData.price / 100,
-        d: item.wsStart * skuData.wholesaleSupplyPrice / 100,
-        e: item.wsStart * item.wsSupplyPrice / 100,
-        f: (item.wsStart * skuData.price - item.wsStart * skuData.wholesaleSupplyPrice) / 100,
-        g: (item.wsStart * skuData.price - item.wsStart * item.wsSupplyPrice) / 100,
-        h: (skuData.wholesaleSupplyPrice - item.wsSupplyPrice) * item.wsStart / 100,
-        i: (skuData.price - item.wsSupplyPrice) / 100,
-        j: (skuData.wholesaleSupplyPrice - item.wsSupplyPrice) / 100,
+        c: +new Big(item.wsStart).times(skuData.price).toFixed(2),
+        d: +new Big(item.wsStart).times(skuData.wholesaleSupplyPrice).toFixed(2),
+        e: +new Big(item.wsStart).times(item.wsSupplyPrice / 100).toFixed(2),
+        f: +new Big(item.wsStart).times(skuData.price).minus(+new Big(item.wsStart).times(skuData.wholesaleSupplyPrice)).toFixed(2),
+        g: +new Big(item.wsStart).times(skuData.price).minus(+new Big(item.wsStart).times(item.wsSupplyPrice / 100)).toFixed(2),
+        h: +new Big(skuData.wholesaleSupplyPrice).minus(item.wsSupplyPrice / 100).times(item.wsStart).toFixed(2),
+        i: +new Big(skuData.price).minus(item.wsSupplyPrice / 100).toFixed(2),
+        j: +new Big(skuData.wholesaleSupplyPrice).minus(item.wsSupplyPrice / 100).toFixed(2),
       };
     }))
 

@@ -93,7 +93,8 @@ const IntensiveActivityCreate = () => {
 
   const getDetail = () => {
     getWholesaleDetail({
-      wholesaleId: params.id
+      wholesaleId: params.id,
+      view: +location.query?.type === 1 ? 1 : 0,
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data);
@@ -424,7 +425,17 @@ const IntensiveActivityCreate = () => {
                                 addonAfter: `%`
                               }}
                               extra={<span style={{ color: '#b38806' }}>总商品活动集约量达到最低阶梯量的此百分比时才在前端（此商品的列表、商品详情、下单页和待支付页面）展示奖励信息</span>}
-                              rules={[{ required: true, message: '请输入前端奖励展示需完成量' }]}
+                              rules={[
+                                { required: true, message: '请输入前端奖励展示需完成量' },
+                                () => ({
+                                  validator(_, value) {
+                                    if (!/^\d+$/g.test(value) || `${value}`.indexOf('.') !== -1 || value <= 0 || value > 99) {
+                                      return Promise.reject(new Error('请输入1-99之间的整数'));
+                                    }
+                                    return Promise.resolve();
+                                  },
+                                })
+                              ]}
                               name="ladderShowPercent"
                               width="lg"
                             />
