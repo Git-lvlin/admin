@@ -37,6 +37,10 @@ const Category = (props) => {
       dataIndex: 'storePercent',
       valueType: 'text',
       render: (_,r) =>{
+        if(r.percentAuditOstatus>=30){
+          // setRowKeys(r.id)
+          // onClick(r.id)
+        }
         return <p>{amountTransform(parseFloat(_), '*')}%</p>
       }
     },
