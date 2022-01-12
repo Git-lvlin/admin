@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Popover } from 'antd';
+import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams, history } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -9,6 +10,7 @@ import AuditModel from './audit-model'
 import PassModel from './pass-model'
 import moment from 'moment'
 import LadderDataEdit from '../intensive-activity-create/ladder-data-edit'
+import PriceExplanation from '../intensive-activity-create/price-explanation'
 
 const { Title } = Typography;
 
@@ -179,6 +181,28 @@ const Detail = () => {
     },
   ];
 
+  const getLadderData = () => {
+    return detailData?.sku?.[0]?.ladderSubsidy.map(item => (
+      {
+        ...item,
+        totalExtraScale: amountTransform(item.totalExtraScale),
+        operationPercent: amountTransform(item.operationPercent),
+        storePercent: amountTransform(item.storePercent),
+      }
+    ))
+  }
+
+  const getSkuData = () => {
+    return detailData?.sku.map(item => {
+      return {
+        ...item,
+        wholesaleSupplyPrice: item.wholesaleSupplyPrice / 100,
+        price: item.price / 100,
+        profit: item.profit / 100,
+      }
+    })[0]
+  }
+
   useEffect(() => {
     getDetail(params?.id)
   }, [])
@@ -253,21 +277,18 @@ const Detail = () => {
                 当店主采购订单金额达到{detailData?.wholesale?.orderAmount / 100}元时，补贴社区店店主{detailData?.wholesale?.subsidy / 100}元/{detailData?.sku?.[0]?.unit}
               </div>
             }
-            {detailData?.wholesale?.isEditSubsidy === 2 && <LadderDataEdit
-              data={detailData?.sku?.[0]?.ladderSubsidy.map(item => (
-                {
-                  ...item,
-                  totalExtraScale: amountTransform(item.totalExtraScale),
-                  operationPercent: amountTransform(item.operationPercent),
-                  storePercent: amountTransform(item.storePercent),
-                }
-              ))}
-              batchNumber={detailData?.sku?.[0]?.batchNumber}
-              unit={detailData?.sku?.[0]?.unit}
-              wsUnit={detailData?.sku?.[0]?.wsUnit}
-              skuData={detailData?.sku?.[0]}
-              readOnly="1"
-            />}
+            {detailData?.wholesale?.isEditSubsidy === 2 && <div>
+              <LadderDataEdit
+                data={getLadderData()}
+                batchNumber={detailData?.sku?.[0]?.batchNumber}
+                unit={detailData?.sku?.[0]?.unit}
+                wsUnit={detailData?.sku?.[0]?.wsUnit}
+                skuData={getSkuData()}
+                readOnly="1"
+              />
+              <div><InfoCircleOutlined />&nbsp;<PriceExplanation skuData={getSkuData()} ladderData={getLadderData()} /></div>
+              <div style={{ marginTop: 20 }}>前端奖励展示需完成量:{detailData?.sku?.[0]?.ladderShowPercent * 100}%</div>
+            </div>}
           </Row>
           <Button style={{ marginLeft: '400px' }} type="default" onClick={() => history.goBack()}>返回</Button>
           <Button style={{ marginLeft: '50px' }} onClick={() => auditPass()} type="primary">审核通过</Button>
