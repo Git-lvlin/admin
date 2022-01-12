@@ -31,7 +31,7 @@ const CusInput = ({ onChange, record, unit, readOnly, editKey, setEditKey, data,
         }</>}
         &nbsp;运营中心：<span style={{ color: 'red' }}>{record?.operationPercent}%</span>
       </div>
-      <div>总额外奖励占多盈利<span style={{ color: 'red' }}>{record?.totalExtraScale}%</span>，总额外奖励金额<span style={{ color: 'red' }}>{amountTransform(record?.totalExtraSubsidy, '/')}元/{unit}</span></div>
+      <div>总额外奖励占多盈利<span style={{ color: 'red' }}>{record?.totalExtraScale}%</span>，总额外奖励金额<span style={{ color: 'red' }}>{amountTransform(record?.totalExtraSubsidy, '/')}元</span></div>
     </>
   )
 }

@@ -175,6 +175,7 @@ const IntensiveActivityCreate = () => {
           wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice),
           fixedPrice: amountTransform(item.fixedPrice),
           settlePercent: amountTransform(item.settlePercent, '/'),
+          isAppointSubsidy: item.isAppointSubsidy.length === 0 ? 0 : 1,
           ...goodsInfos,
         })),
         allowArea: getSubmitAreaData(area),

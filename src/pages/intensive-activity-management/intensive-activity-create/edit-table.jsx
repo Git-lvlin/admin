@@ -106,7 +106,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
 
       productList(obj).then(res => {
         const skuData = res.data[0];
-        onSelect(getList(selectData, skuData, (arr) => { setSelectData(arr) }))
+        onSelect(getList([record], skuData, (arr) => { setSelectData(arr) }))
         setDataSource(getList(recordList, skuData))
       })
     };
@@ -329,41 +329,41 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       hideInSearch: true,
       editable: false,
     },
-    // {
-    //   title: '是否指定配送补贴',
-    //   dataIndex: 'isEditSubsidy',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    //   renderFormItem: () => <Checkbox.Group><Checkbox value={1}>指定配送补贴</Checkbox></Checkbox.Group>,
-    // },
-    // {
-    //   title: '运营中心配送费补贴',
-    //   dataIndex: 'operationFixedPrice',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    //   renderFormItem: (_, { record }) => {
-    //     if (record.isEditSubsidy.length) {
-    //       return <CusInput onBlur={() => {
-    //         debounceFetcher({ record, recordList: dataSource })
-    //       }} />
-    //     }
-    //     return record.operationFixedPrice
-    //   },
-    // },
-    // {
-    //   title: '社区店配送费补贴',
-    //   dataIndex: 'fixedPrice',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    //   renderFormItem: (_, { record }) => {
-    //     if (record.isEditSubsidy.length) {
-    //       return <CusInput onBlur={() => {
-    //         debounceFetcher({ record, recordList: dataSource })
-    //       }} />
-    //     }
-    //     return record.fixedPrice
-    //   },
-    // },
+    {
+      title: '是否指定配送补贴',
+      dataIndex: 'isAppointSubsidy',
+      valueType: 'text',
+      hideInSearch: true,
+      renderFormItem: () => <Checkbox.Group><Checkbox value={1}>指定配送补贴</Checkbox></Checkbox.Group>,
+    },
+    {
+      title: '运营中心配送费补贴',
+      dataIndex: 'operationFixedPrice',
+      valueType: 'text',
+      hideInSearch: true,
+      renderFormItem: (_, { record }) => {
+        if (record.isAppointSubsidy.length) {
+          return <CusInput onBlur={() => {
+            debounceFetcher({ record, recordList: dataSource })
+          }} />
+        }
+        return record.operationFixedPrice
+      },
+    },
+    {
+      title: '社区店配送费补贴',
+      dataIndex: 'fixedPrice',
+      valueType: 'text',
+      hideInSearch: true,
+      renderFormItem: (_, { record }) => {
+        if (record.isAppointSubsidy.length) {
+          return <CusInput onBlur={() => {
+            debounceFetcher({ record, recordList: dataSource })
+          }} />
+        }
+        return record.fixedPrice
+      },
+    },
     // {
     //   title: '社区店特殊补贴',
     //   dataIndex: 'subsidy',
@@ -428,7 +428,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       orderProfit: 0,
       totalPrice: item.salePrice > 0 ? +new Big(item.price).div(100).times(item.wholesaleMinNum || 10) : 0,
       wholesaleFlowType: 1,
-      // isEditSubsidy: [],
+      isAppointSubsidy: [],
       // subsidy: {
       //   a: item.orderAmount > 0 ? amountTransform(item.orderAmount, '/') : '',
       //   b: item.subsidy > 0 ? amountTransform(item.subsidy, '/') : '',
@@ -442,7 +442,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
     if (isFirst.current && sku && data.length) {
       arr[0] = {
         ...arr[0],
-        ladderData: sku.ladderSubsidy,
+        ladderData: sku.ladderSubsidy.length === 0 ? arr[0].ladderData : sku.ladderSubsidy,
         minNum: sku.minNum,
         maxNum: sku.maxNum,
         totalStockNum: sku.totalStockNum,
@@ -455,7 +455,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         orderProfit: amountTransform(wholesale?.orderProfit, '/'),
         totalPrice: sku.salePrice > 0 ? +new Big(sku.price).div(100).times(sku.minNum || 10) : 0,
         wholesaleFlowType: wholesale?.wholesaleFlowType,
-        // isEditSubsidy: wholesale?.isEditSubsidy === 0 ? [] : [1],
+        isAppointSubsidy: sku?.isAppointSubsidy === 0 ? [] : [1],
         // subsidy: {
         //   a: wholesale?.orderAmount > 0 ? amountTransform(wholesale?.orderAmount, '/') : '',
         //   b: wholesale?.subsidy > 0 ? amountTransform(wholesale.subsidy, '/') : '',
@@ -505,12 +505,9 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         editableKeys,
         onValuesChange: (record, recordList) => {
           const findItem = dataSource.find(item => item.id === record.id);
-          // if (findItem.isEditSubsidy.length !== record.isEditSubsidy.length) {
-          //   debounceFetcher({ record, recordList })
-          // } else {
-          //   // onSelect([record])
-          //   // setDataSource(recordList)
-          // }
+          if (findItem.isAppointSubsidy.length !== record.isAppointSubsidy.length) {
+            debounceFetcher({ record, recordList })
+          }
 
           if (findItem.wholesaleFlowType !== record.wholesaleFlowType) {
             onSelect([record])
