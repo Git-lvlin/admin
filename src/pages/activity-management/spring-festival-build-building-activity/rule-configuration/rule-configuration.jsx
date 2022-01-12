@@ -151,7 +151,7 @@ export default (props) =>{
   }, [falg,loading])
   const onsubmit=values=>{
      try {
-       const params={
+      const params={
         id:id?id:0,
         startTime:values.dateRange ? moment(values.dateRange[0]).valueOf()/1000 : null,
         endTime:values.dateRange ? moment(values.dateRange[1]).valueOf()/1000 : null,
@@ -195,7 +195,7 @@ export default (props) =>{
               ]
             },
             losing:{
-              probability:(10000-amountTransform((parseFloat(values.general_probability1)+parseFloat(values.lucky_probability1), '*')))/100
+              probability:(1-amountTransform(parseFloat(values.general_probability1)+parseFloat(values.lucky_probability1), '/'))*100
             }
           },
           {
@@ -220,7 +220,7 @@ export default (props) =>{
               ]
             },
             losing:{
-              probability:(10000-amountTransform((parseFloat(values.general_probability2)+parseFloat(values.lucky_probability2), '*')))/100
+              probability:(1-amountTransform(parseFloat(values.general_probability2)+parseFloat(values.lucky_probability2), '/'))*100
             }
           },
           {
@@ -245,7 +245,7 @@ export default (props) =>{
               ]
             },
             losing:{
-              probability:(10000-amountTransform((parseFloat(values.general_probability3)+parseFloat(values.lucky_probability3), '*')))/100
+              probability:(1-amountTransform(parseFloat(values.general_probability3)+parseFloat(values.lucky_probability3), '/'))*100
             }
           },
           {
@@ -270,7 +270,7 @@ export default (props) =>{
               ]
             },
             losing:{
-              probability:(10000-amountTransform((parseFloat(values.general_probability4)+parseFloat(values.lucky_probability4), '*')))/100
+              probability:(1-amountTransform(parseFloat(values.general_probability4)+parseFloat(values.lucky_probability4), '/'))*100
             }
           }
         ]
@@ -304,10 +304,6 @@ export default (props) =>{
   const limitDecimalsF =(value)=>{
     return value&&parseInt(value)
   };
-  // const limitDecimalsP =(value)=>{
-  //   let reg = /^(-)*(\d+)\.(\d\d).*$/;
-  //   return value.replace(/￥\s?|(,*)/g, '').replace(reg,'$1$2.$3');
-  // };
   return (
     <PageContainer>
       <Spin spinning={loading}>
@@ -749,27 +745,27 @@ export default (props) =>{
                   <ProCard colSpan="400px" bordered  layout="center" colSpan="111px" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>未中奖</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.losing?.probability
-                    ||
                     (probability1&&probability2&&(10000-amountTransform((parseFloat(probability1)+parseFloat(probability2)), '*')))/100
+                    ||
+                    detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.losing?.probability
                     }%</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.losing?.probability
-                    ||
                     (probability3&&probability4&&(10000-amountTransform((parseFloat(probability3)+parseFloat(probability4)), '*')))/100
+                    ||
+                    detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.losing?.probability
                     }%</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.losing?.probability
-                    ||
                     (probability5&&probability6&&(10000-amountTransform((parseFloat(probability5)+parseFloat(probability6)), '*')))/100
+                    ||
+                    detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.losing?.probability
                     }%</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.losing?.probability
-                    ||
                     (probability7&&probability8&&(10000-amountTransform((parseFloat(probability7)+parseFloat(probability8)), '*')))/100
+                    ||
+                    detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.losing?.probability
                     }%</ProCard>
                 </ProCard>
               </ProCard>
