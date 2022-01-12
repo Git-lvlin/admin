@@ -1,11 +1,8 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
-import { history,connect } from 'umi';
 import { getBuildhouseIncomeDetail,getBuildhouseUseDetail } from '@/services/activity-management/spring-festival-build-building-activity';
-import Detail from '@/pages/order-management/normal-order/detail';
 const { TabPane } = Tabs
 
 

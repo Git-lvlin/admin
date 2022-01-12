@@ -3,8 +3,6 @@ import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { statInfo,inviteRankList,floorRankList } from '@/services/activity-management/spring-festival-build-building-activity';
-import { history, connect } from 'umi';
-// import AuditModel from '../blind-box-employ-detail/audit-detail-model'
 import Detail from '@/pages/order-management/normal-order/detail';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
