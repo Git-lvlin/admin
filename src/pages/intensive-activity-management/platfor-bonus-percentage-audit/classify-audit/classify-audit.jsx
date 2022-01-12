@@ -10,7 +10,7 @@ import styles from './style.less'
 
 
 const Category = (props) => {
-  const { parentId = 0, onClick = () => { }} = props;
+  const { parentId = 0, onClick = () => { },Loading=()=>{}} = props;
   const [visible, setVisible] = useState(false);
   const [auditVisible, setAuditVisible] = useState(false);
   const [formDetail, setFormDetail] = useState({})
@@ -37,10 +37,6 @@ const Category = (props) => {
       dataIndex: 'storePercent',
       valueType: 'text',
       render: (_,r) =>{
-        if(r.percentAuditOstatus>=30){
-          // setRowKeys(r.id)
-          // onClick(r.id)
-        }
         return <p>{amountTransform(parseFloat(_), '*')}%</p>
       }
     },
@@ -101,6 +97,15 @@ const Category = (props) => {
       ],
     },
   ];
+  const postData=(data)=>{
+  const obj=data.find(ele=>ele?.hasAuditChildren==1)
+  console.log('obj',obj)
+  if(obj){
+      setRowKeys(obj.id)
+      onClick(obj.id)
+  }
+    return data
+  }
   return (
       <div style={{ marginRight: 50 }}>
         <ProTable
@@ -114,6 +119,7 @@ const Category = (props) => {
             gcParentId:parentId?parentId:0
           }}
           request={categoryAuditList}
+          postData={postData}
           options={false}
           search={false}
           style={{width:'850px',height:'600px',overflowY:'scroll',background:'#fff'}}
@@ -147,7 +153,7 @@ const Category = (props) => {
         setVisible={setAuditVisible}
         formDetail={formDetail}
         onClose={()=>{actionRef.current.reload();setFormDetail(null)}}
-        callback={()=>{actionRef.current.reload();setFormDetail(null)}}
+        callback={()=>{actionRef.current.reload();setFormDetail(null);Loading(true)}}
       />}
       </div>
   )
@@ -155,14 +161,26 @@ const Category = (props) => {
 
 export default () => {
   const [selectId, setSelectId] = useState(null);
+  const [loading, setLoading] = useState(false);
   return (
-    <>
+    <Spin
+     spinning={loading}
+    >
       <div style={{ display: 'flex', width: '100%' }}>
         <Category onClick={(id) => { setSelectId(id)}}/>
-        {selectId && <Category parentId={selectId}/>}
+        {selectId 
+        && 
+        <Category 
+          parentId={selectId} 
+          Loading={(val)=>{
+            setLoading(val);
+            setTimeout(()=>{setLoading(false)},500)
+            }
+          }/>
+        }
       </div>
 
-    </>
+    </Spin>
   )
 }
 

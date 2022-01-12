@@ -92,7 +92,7 @@ const UserDetail = () => {
             <Descriptions.Item label="最近登录时间">
               {info?.loginTime}
             </Descriptions.Item>
-            <Descriptions.Item label="年龄">
+            <Descriptions.Item label="出生日期">
               {info?.birthday}
             </Descriptions.Item>
             <Descriptions.Item label="职业">
@@ -102,7 +102,7 @@ const UserDetail = () => {
               {info?.education}
             </Descriptions.Item>
             <Descriptions.Item label="地区">
-              {info?.districtName}
+            {info?.cityName} {info?.districtName}
             </Descriptions.Item>
             <Descriptions.Item label="收入水平">
               {info?.incomes}
