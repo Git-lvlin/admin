@@ -2,11 +2,9 @@
 import React, { useRef, useState } from 'react';
 import { Button, Space, message,Tooltip } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { history,connect } from 'umi';
 import { skuAuditList } from '@/services/intensive-activity-management/platfor-bonus-percentage-audit';
 import AuditModel from './audit-model'
 import Journal from './journal';
-import { amountTransform } from '@/utils/utils'
 import styles from './style.less'
 
 export default () => {

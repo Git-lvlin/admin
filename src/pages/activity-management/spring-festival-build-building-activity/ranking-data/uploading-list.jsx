@@ -133,7 +133,7 @@ export default props=>{
                             }}
                             rules={[
                               { required: true, message: '请输入用户手机号' },
-                              // {validator: checkConfirm}
+                              { validator: checkConfirm}
                             ]}
                           />
                           <span>{nickname[field.name]}</span>

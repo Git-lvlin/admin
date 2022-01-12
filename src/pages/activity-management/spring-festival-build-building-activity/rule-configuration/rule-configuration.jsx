@@ -1,11 +1,9 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Input, Form, message,Button,InputNumber,Spin,Space,DatePicker} from 'antd';
-import { EditableProTable } from '@ant-design/pro-table';
 import { saveBHActiveConfig,getActiveConfigById } from '@/services/activity-management/spring-festival-build-building-activity';
 import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDateTimePicker,ProFormSelect} from '@ant-design/pro-form';
 import { FormattedMessage, formatMessage } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
 import moment from 'moment';
 import { history,connect } from 'umi';
 import styles from './style.less'
@@ -30,7 +28,6 @@ const formItemLayout = {
 
 
 export default (props) =>{
-  const [onselect,setOnselect]=useState([])
   const [falg,setFalg]=useState(true)
   const [form] = Form.useForm();
   const [detailList,setDetailList]=useState()
@@ -288,7 +285,6 @@ export default (props) =>{
           }
         }
        }
-       console.log('params',params)
         saveBHActiveConfig(params).then(res=>{
           if(res.code==0){
             message.success('添加成功'); 

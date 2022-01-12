@@ -1,12 +1,7 @@
 
 import React, { useRef, useState } from 'react';
 import { Button, Space, message,Tabs,Image } from 'antd';
-import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { findAdminArticleList } from '@/services/business-school/find-admin-article-list';
-import { findAdminArticleTypeList,articleTop,articleOperation } from '@/services/cms/member/member';
-import { history,connect } from 'umi';
-import { useEffect } from 'react';
 import ClassifyAudit from './classify-audit/classify-audit.jsx'
 import SingleCommodityAudit from './single-commodity-audit/single-commodity-audit.jsx'
 import styles from './style.less'

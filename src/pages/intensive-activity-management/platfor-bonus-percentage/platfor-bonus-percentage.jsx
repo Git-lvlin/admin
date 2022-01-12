@@ -166,7 +166,6 @@ const Category = (props) => {
                 onClick={()=>{
                   const obj={
                     ...row,
-                    // storePercent:amountTransform(parseFloat(config?.form?.getFieldValue()[row.id].storePercent), '/'),
                   }
                   config?.onSave(row.id,obj,row)
                   const Percent=amountTransform(parseFloat(config?.form?.getFieldValue()[row.id].storePercent), '/')
