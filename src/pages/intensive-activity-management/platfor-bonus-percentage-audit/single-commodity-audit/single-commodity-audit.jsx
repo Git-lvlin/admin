@@ -54,10 +54,8 @@ export default () => {
                     {r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}
                   </Tooltip>
                 </p>
-                <p className={styles.line_feed}>
-                  <Tooltip  placement="leftTop" title={`（店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%）`}>
-                    {r?.percentAuditStatus==3&&`待审核（店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%）`}
-                  </Tooltip>
+                <p>
+                    {r?.percentAuditStatus==3&&'待审核'}
                 </p>
                </>
       },
