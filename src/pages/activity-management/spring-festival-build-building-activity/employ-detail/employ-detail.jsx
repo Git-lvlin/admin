@@ -70,23 +70,12 @@ const UserDetail=(props) => {
       dataIndex: 'status',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data)=>{
-        if(data.status==1){
-          return  <AuditModel
-                    label={'回收'}
-                    InterFace={getBlindboxIncomeReclaim}
-                    id={data.id}
-                    title={'填写回收原因'}
-                    boxref={ref}
-                  />
-        }else if(data.status==2){
-          return <p>已使用</p>
-        }else if(data.status==3){
-          return <p>已回收</p>
-        }else if(data.status==4){
-          return <p>已过期</p>
-        }
-        },
+      valueEnum: {
+        1:'未使用',
+        2:'已使用', 
+        3:'已回收',
+        4:'已过期'
+      },
     },
   ];
   const postData=(data)=>{
