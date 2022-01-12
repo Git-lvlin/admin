@@ -37,18 +37,6 @@ const UserDetail=(props) => {
       },
     },
     {
-      title: '获得原因',
-      dataIndex: 'type',
-      valueType: 'select',
-      valueEnum: {
-        0: '全部',
-        1: '连续签到获得',
-        2: '邀请好友获得',
-        3: '订单消费获得'
-      },
-      hideInTable:true
-    },
-    {
       title: '发放时间',
       key: 'dateTimeRange',
       dataIndex: 'usefulTime',
@@ -153,14 +141,13 @@ const EmployDetail=(props) => {
     },
     {
       title: '使用原因',
-      dataIndex: 'expenditureType',
+      dataIndex: 'type',
       valueType: 'select',
       valueEnum: {
         0: '全部',
-        1: '未获奖',
-        2: '已获奖',
-        3: '机会过期',
-        6: '活动结束'
+        5:'盖楼游戏',
+        6:'机会过期', 
+        7:'活动结束'
       },
       hideInTable:true
     },
