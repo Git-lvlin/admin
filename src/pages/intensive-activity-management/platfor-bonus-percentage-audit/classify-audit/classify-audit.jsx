@@ -99,7 +99,6 @@ const Category = (props) => {
   ];
   const postData=(data)=>{
   const obj=data.find(ele=>ele?.hasAuditChildren==1)
-  console.log('obj',obj)
   if(obj){
       setRowKeys(obj.id)
       onClick(obj.id)

@@ -72,7 +72,6 @@ export default props=>{
             {(fields, { add, remove }) => (
               <>
                 <List
-                //   bordered
                   itemLayout="horizontal"
                 >
                   {fields.map((field) => {
