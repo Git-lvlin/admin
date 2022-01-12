@@ -119,7 +119,8 @@ const Detail = () => {
     },
     {
       title: '是否指定配送补贴',
-      render: () => detailData?.wholesale?.isEditSubsidy === 0 ? '否' : '是',
+      dataIndex: 'isAppointSubsidy',
+      render: (_) => _ === 0 ? '否' : '是',
     },
     {
       title: '运营中心配送费补贴',
@@ -274,7 +275,7 @@ const Detail = () => {
             </Descriptions>
             {detailData?.wholesale?.isEditSubsidy === 1 &&
               <div style={{ marginBottom: 20 }}>
-                当店主采购订单金额达到{detailData?.wholesale?.orderAmount / 100}元时，补贴社区店店主{detailData?.wholesale?.subsidy / 100}元/{detailData?.sku?.[0]?.unit}
+                当店主采购订单金额达到{detailData?.wholesale?.orderAmount / 100}元时，补贴社区店店主{detailData?.wholesale?.subsidy / 100}元
               </div>
             }
             {detailData?.wholesale?.isEditSubsidy === 2 && <div>
