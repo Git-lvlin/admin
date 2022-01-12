@@ -76,7 +76,7 @@ export default (props) => {
     >
         <ProFormText
             width={250}
-            label={<p>最低量 {formDetail?.ladderSubsidyModify[0]?.wsStart}件 时设置商品的<br/>店主额外奖励占比</p>}
+            label={<p>最低量 <span style={{color:'#2744FD'}}>{formDetail?.ladderSubsidyModify[0]?.wsStart}</span>件 时设置商品的<br/>店主额外奖励占比</p>}
             name="name"
             readonly={true}
             // labelCol={6}
@@ -89,7 +89,7 @@ export default (props) => {
         />
          <ProFormText
             width={250}
-            label={<p>最低量 {formDetail?.ladderSubsidyModify[1]?.wsStart}件 时设置商品的<br/>店主额外奖励占比</p>}
+            label={<p>最低量 <span style={{color:'#2744FD'}}>{formDetail?.ladderSubsidyModify[1]?.wsStart}</span>件 时设置商品的<br/>店主额外奖励占比</p>}
             name="name"
             readonly={true}
             // labelCol={5}
