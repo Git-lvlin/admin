@@ -195,7 +195,7 @@ export default (props) =>{
               ]
             },
             losing:{
-              probability:(1-amountTransform(parseFloat(values.general_probability1)+parseFloat(values.lucky_probability1), '/'))*100
+              probability:(10000-(amountTransform(Number(values.general_probability1),'*')+amountTransform(Number(values.lucky_probability1),'*')))/100
             }
           },
           {
@@ -220,7 +220,7 @@ export default (props) =>{
               ]
             },
             losing:{
-              probability:(1-amountTransform(parseFloat(values.general_probability2)+parseFloat(values.lucky_probability2), '/'))*100
+              probability:(10000-(amountTransform(Number(values.general_probability2),'*')+amountTransform(Number(values.lucky_probability2),'*')))/100
             }
           },
           {
@@ -245,7 +245,7 @@ export default (props) =>{
               ]
             },
             losing:{
-              probability:(1-amountTransform(parseFloat(values.general_probability3)+parseFloat(values.lucky_probability3), '/'))*100
+              probability:(10000-(amountTransform(Number(values.general_probability3),'*')+amountTransform(Number(values.lucky_probability3),'*')))/100
             }
           },
           {
@@ -270,7 +270,7 @@ export default (props) =>{
               ]
             },
             losing:{
-              probability:(1-amountTransform(parseFloat(values.general_probability4)+parseFloat(values.lucky_probability4), '/'))*100
+              probability:(10000-(amountTransform(Number(values.general_probability4),'*')+amountTransform(Number(values.lucky_probability4),'*')))/100
             }
           }
         ]
@@ -745,25 +745,25 @@ export default (props) =>{
                   <ProCard colSpan="400px" bordered  layout="center" colSpan="111px" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>未中奖</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    (probability1&&probability2&&(10000-amountTransform((parseFloat(probability1)+parseFloat(probability2)), '*')))/100
+                    (probability1&&probability2&&(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(probability2),'*')))/100)
                     ||
                     detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.losing?.probability
                     }%</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    (probability3&&probability4&&(10000-amountTransform((parseFloat(probability3)+parseFloat(probability4)), '*')))/100
+                    (probability3&&probability4&&(10000-(amountTransform(Number(probability3),'*')+amountTransform(Number(probability4),'*')))/100)
                     ||
                     detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.losing?.probability
                     }%</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    (probability5&&probability6&&(10000-amountTransform((parseFloat(probability5)+parseFloat(probability6)), '*')))/100
+                    (probability5&&probability6&&(10000-(amountTransform(Number(probability5),'*')+amountTransform(Number(probability6),'*')))/100)
                     ||
                     detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.losing?.probability
                     }%</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    (probability7&&probability8&&(10000-amountTransform((parseFloat(probability7)+parseFloat(probability8)), '*')))/100
+                    (probability7&&probability8&&(10000-(amountTransform(Number(probability7),'*')+amountTransform(Number(probability8),'*')))/100)
                     ||
                     detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.losing?.probability
                     }%</ProCard>
