@@ -10,7 +10,7 @@ import styles from './style.less'
 
 
 const Category = (props) => {
-  const { parentId = 0, onClick = () => { },Loading=()=>{}} = props;
+  const { parentId = 0, onClick = () => { },Loading=()=>{},loading} = props;
   const [visible, setVisible] = useState(false);
   const [auditVisible, setAuditVisible] = useState(false);
   const [formDetail, setFormDetail] = useState({})
@@ -116,7 +116,8 @@ const Category = (props) => {
           columns={columns}
           params={{
             isPercentAudit:2,
-            gcParentId:parentId?parentId:0
+            gcParentId:parentId?parentId:0,
+            loading:loading
           }}
           request={categoryAuditList}
           postData={postData}
@@ -163,24 +164,20 @@ export default () => {
   const [selectId, setSelectId] = useState(null);
   const [loading, setLoading] = useState(false);
   return (
-    <Spin
-     spinning={loading}
-    >
+    <>
       <div style={{ display: 'flex', width: '100%' }}>
-        <Category onClick={(id) => { setSelectId(id)}}/>
+        <Category onClick={(id) => { setSelectId(id)}} loading={loading}/>
         {selectId 
         && 
         <Category 
           parentId={selectId} 
           Loading={(val)=>{
             setLoading(val);
-            setTimeout(()=>{setLoading(false)},500)
             }
           }/>
         }
       </div>
-
-    </Spin>
+    </>
   )
 }
 
