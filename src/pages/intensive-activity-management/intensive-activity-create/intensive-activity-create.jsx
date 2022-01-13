@@ -102,8 +102,8 @@ const IntensiveActivityCreate = () => {
         formRef.current.setFieldsValue({
           ...wholesaleInfo,
           ladderShowPercent: amountTransform(res.data.sku[0].ladderShowPercent),
-          orderAmount: amountTransform(wholesaleInfo.orderAmount),
-          subsidy: amountTransform(wholesaleInfo.subsidy),
+          orderAmount: amountTransform(wholesaleInfo.orderAmount, '/'),
+          subsidy: amountTransform(wholesaleInfo.subsidy, '/'),
           // wholesaleStartTime: wholesaleInfo.wholesaleStartTime,
           area: getAreas(res.data.allowArea)
         })
