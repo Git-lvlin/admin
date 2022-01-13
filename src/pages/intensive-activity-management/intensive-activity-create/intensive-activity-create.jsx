@@ -404,7 +404,7 @@ const IntensiveActivityCreate = () => {
                             colon={false}
                             fieldProps={{
                               addonBefore: '补贴社区店店主',
-                              addonAfter: `元 / ${selectItem?.[0]?.unit}`
+                              addonAfter: `元`
                             }}
                             name="subsidy"
                             width={400}
