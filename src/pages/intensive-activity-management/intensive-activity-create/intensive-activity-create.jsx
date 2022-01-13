@@ -402,6 +402,18 @@ const IntensiveActivityCreate = () => {
                             addonBefore: '当店主采购订单金额达到',
                             addonAfter: '元时'
                           }}
+                          validateFirst
+                          rules={[
+                            { required: true, message: '请输入' },
+                            () => ({
+                              validator(_, value) {
+                                if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                                  return Promise.reject(new Error('请输入大于零的数字'));
+                                }
+                                return Promise.resolve();
+                              },
+                            })
+                          ]}
                           name="orderAmount"
                           width={400}
                         />
@@ -412,6 +424,18 @@ const IntensiveActivityCreate = () => {
                               addonBefore: '补贴社区店店主',
                               addonAfter: `元`
                             }}
+                            validateFirst
+                            rules={[
+                              { required: true, message: '请输入' },
+                              () => ({
+                                validator(_, value) {
+                                  if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                                    return Promise.reject(new Error('请输入大于零的数字'));
+                                  }
+                                  return Promise.resolve();
+                                },
+                              })
+                            ]}
                             name="subsidy"
                             width={400}
                           /></>}
