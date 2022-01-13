@@ -5,7 +5,7 @@ import ProTable from '@ant-design/pro-table'
 
 import { amountTransform } from '@/utils/utils'
 import { orderPage } from '@/services/financial-management/transaction-detail-management'
-import Detail from './order-pay-detail-popup'
+import Detail from '../../common-popup/order-pay-detail-popup'
 import { orderTypes } from '@/services/financial-management/common'
 
 // Order payment detail
