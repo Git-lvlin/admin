@@ -226,6 +226,12 @@ const IntensiveActivityCreate = () => {
         storePercent: amountTransform(item.storePercent),
       }
     )) || [])
+    const { isEditSubsidy } = formRef.current.getFieldsValue();
+    if (selectItem?.[0]?.ladderData?.length === 0 && isEditSubsidy === 2) {
+      formRef.current.setFieldsValue({
+        isEditSubsidy: 0
+      })
+    }
   }, [selectItem])
 
   return (
@@ -404,13 +410,13 @@ const IntensiveActivityCreate = () => {
                             colon={false}
                             fieldProps={{
                               addonBefore: '补贴社区店店主',
-                              addonAfter: `元 / ${selectItem?.[0]?.unit}`
+                              addonAfter: `元`
                             }}
                             name="subsidy"
                             width={400}
                           /></>}
                         {
-                          isEditSubsidy === 2 && <>
+                          isEditSubsidy === 2 && selectItem[0].ladderData.length !== 0 && <>
                             <LadderDataEdit
                               data={ladderData || []}
                               setData={setLadderData}

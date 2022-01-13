@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button } from 'antd';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Modal } from 'antd';
+import { InfoCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams, history } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
 import { updateWholesaleAuditStatus } from '@/services/intensive-activity-management/intensive-activity-audit'
+
 import AuditModel from './audit-model'
 import PassModel from './pass-model'
 import moment from 'moment'
@@ -35,11 +36,25 @@ const Detail = () => {
     })
   }
   const auditPass = () => {
-    const data = moment().format("YYYY-MM-DD HH:mm:ss")
-    if (moment(data).isBefore(detailData?.wholesale?.wholesaleStartTime)) {
-      setTimeType(1)
-    }
-    setVisible(true)
+    
+
+    Modal.confirm({
+      icon: <ExclamationCircleOutlined />,
+      content: '确认是否审核通过?',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        updateWholesaleAuditStatus({ wsId: params?.id, type: 1 }).then(res => {
+          if (res.code === 0) {
+            const data = moment().format("YYYY-MM-DD HH:mm:ss")
+            if (moment(data).isBefore(detailData?.wholesale?.wholesaleStartTime)) {
+              setTimeType(1)
+            }
+            setVisible(true)
+          }
+        })
+      }
+    })
   }
 
   const columns = [
@@ -292,7 +307,7 @@ const Detail = () => {
             </div>}
           </Row>
           <Button style={{ marginLeft: '400px' }} type="default" onClick={() => history.goBack()}>返回</Button>
-          <Button style={{ marginLeft: '50px' }} onClick={() => auditPass()} type="primary">审核通过</Button>
+          <Button style={{ marginLeft: '50px' }} onClick={() => { auditPass() }} type="primary">审核通过</Button>
           {
             visible && <PassModel visible={visible} wsId={params?.id} setVisible={setVisible} type={timeType} />
           }
