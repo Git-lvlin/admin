@@ -6,13 +6,12 @@ import debounce from 'lodash/debounce';
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 
 const CusInput = ({ onChange, record, unit, readOnly, editKey, setEditKey, data, onBlur, callback, ...rest }) => {
-  console.log('data', data);
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         社区店额外奖励占比：
         <Input className="red" disabled={readOnly || !editKey.includes(+record?.tier)} onBlur={onBlur} onChange={(e) => { onChange(e.target.value) }} style={{ width: 100 }} addonAfter={<span style={{ color: 'red' }}>%</span>} {...rest} />
-        {!editKey.includes(+record?.tier) ?
+        {!readOnly && <>{!editKey.includes(+record?.tier) ?
           <a
             onClick={() => {
               const arr = [...editKey]
@@ -25,14 +24,14 @@ const CusInput = ({ onChange, record, unit, readOnly, editKey, setEditKey, data,
           <a
             onClick={() => {
               setEditKey(editKey.filter(item => +item !== +record.tier));
-              onChange(data.ladderData[record.tier - 1].storePercent * 100)
-              callback(record.tier - 1, data.ladderData[record.tier - 1].storePercent * 100)
+              onChange(data.ladderData[record.tier - 1].gcstorePercent * 100)
+              callback(record.tier - 1, data.ladderData[record.tier - 1].gcstorePercent * 100)
             }}
           >取消修改</a>
-        }
+        }</>}
         &nbsp;运营中心：<span style={{ color: 'red' }}>{record?.operationPercent}%</span>
       </div>
-      <div>总额外奖励占多盈利<span style={{ color: 'red' }}>{record?.totalExtraScale}%</span>，总额外奖励金额<span style={{ color: 'red' }}>{record?.totalExtraSubsidy / 100}元/{unit}</span></div>
+      <div>总额外奖励占多盈利<span style={{ color: 'red' }}>{record?.totalExtraScale}%</span>，总额外奖励金额<span style={{ color: 'red' }}>{amountTransform(record?.totalExtraSubsidy, '/')}元</span></div>
     </>
   )
 }
@@ -160,7 +159,6 @@ export default function EditTable({ data, setData, unit, wsUnit, batchNumber, sk
     setDataSource(data);
     setEditableKeys(data.map(item => item.wsStart))
   }, [data, unit, dataSource, editKey])
-
   return (
     <EditableProTable
       columns={columns}

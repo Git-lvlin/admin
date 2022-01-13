@@ -15,6 +15,11 @@ export default () => {
     const ref=useRef()
     const columns= [
       {
+        title: 'id',
+        dataIndex: 'id',
+        valueType: 'text',
+      },
+      {
         title: '活动名称',
         dataIndex: 'name',
         valueType: 'text',

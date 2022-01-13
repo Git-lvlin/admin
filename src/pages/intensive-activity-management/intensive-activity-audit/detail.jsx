@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Popover } from 'antd';
+import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Modal } from 'antd';
+import { InfoCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams, history } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
 import { updateWholesaleAuditStatus } from '@/services/intensive-activity-management/intensive-activity-audit'
+
 import AuditModel from './audit-model'
 import PassModel from './pass-model'
 import moment from 'moment'
 import LadderDataEdit from '../intensive-activity-create/ladder-data-edit'
+import PriceExplanation from '../intensive-activity-create/price-explanation'
 
 const { Title } = Typography;
 
@@ -33,11 +36,25 @@ const Detail = () => {
     })
   }
   const auditPass = () => {
-    const data = moment().format("YYYY-MM-DD HH:mm:ss")
-    if (moment(data).isBefore(detailData?.wholesale?.wholesaleStartTime)) {
-      setTimeType(1)
-    }
-    setVisible(true)
+    
+
+    Modal.confirm({
+      icon: <ExclamationCircleOutlined />,
+      content: '确认是否审核通过?',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        updateWholesaleAuditStatus({ wsId: params?.id, type: 1 }).then(res => {
+          if (res.code === 0) {
+            const data = moment().format("YYYY-MM-DD HH:mm:ss")
+            if (moment(data).isBefore(detailData?.wholesale?.wholesaleStartTime)) {
+              setTimeType(1)
+            }
+            setVisible(true)
+          }
+        })
+      }
+    })
   }
 
   const columns = [
@@ -117,7 +134,8 @@ const Detail = () => {
     },
     {
       title: '是否指定配送补贴',
-      render: () => detailData?.wholesale?.isEditSubsidy === 0 ? '否' : '是',
+      dataIndex: 'isAppointSubsidy',
+      render: (_) => _ === 0 ? '否' : '是',
     },
     {
       title: '运营中心配送费补贴',
@@ -178,6 +196,28 @@ const Detail = () => {
       render: (_) => amountTransform(_, '/')
     },
   ];
+
+  const getLadderData = () => {
+    return detailData?.sku?.[0]?.ladderSubsidy.map(item => (
+      {
+        ...item,
+        totalExtraScale: amountTransform(item.totalExtraScale),
+        operationPercent: amountTransform(item.operationPercent),
+        storePercent: amountTransform(item.storePercent),
+      }
+    ))
+  }
+
+  const getSkuData = () => {
+    return detailData?.sku.map(item => {
+      return {
+        ...item,
+        wholesaleSupplyPrice: item.wholesaleSupplyPrice / 100,
+        price: item.price / 100,
+        profit: item.profit / 100,
+      }
+    })[0]
+  }
 
   useEffect(() => {
     getDetail(params?.id)
@@ -250,27 +290,24 @@ const Detail = () => {
             </Descriptions>
             {detailData?.wholesale?.isEditSubsidy === 1 &&
               <div style={{ marginBottom: 20 }}>
-                当店主采购订单金额达到{detailData?.wholesale?.orderAmount / 100}元时，补贴社区店店主{detailData?.wholesale?.subsidy / 100}元/{detailData?.sku?.[0]?.unit}
+                当店主采购订单金额达到{detailData?.wholesale?.orderAmount / 100}元时，补贴社区店店主{detailData?.wholesale?.subsidy / 100}元
               </div>
             }
-            {detailData?.wholesale?.isEditSubsidy === 2 && <LadderDataEdit
-              data={detailData?.sku?.[0]?.ladderSubsidy.map(item => (
-                {
-                  ...item,
-                  totalExtraScale: amountTransform(item.totalExtraScale),
-                  operationPercent: amountTransform(item.operationPercent),
-                  storePercent: amountTransform(item.storePercent),
-                }
-              ))}
-              batchNumber={detailData?.sku?.[0]?.batchNumber}
-              unit={detailData?.sku?.[0]?.unit}
-              wsUnit={detailData?.sku?.[0]?.wsUnit}
-              skuData={detailData?.sku?.[0]}
-              readOnly="1"
-            />}
+            {detailData?.wholesale?.isEditSubsidy === 2 && <div>
+              <LadderDataEdit
+                data={getLadderData()}
+                batchNumber={detailData?.sku?.[0]?.batchNumber}
+                unit={detailData?.sku?.[0]?.unit}
+                wsUnit={detailData?.sku?.[0]?.wsUnit}
+                skuData={getSkuData()}
+                readOnly="1"
+              />
+              <div><InfoCircleOutlined />&nbsp;<PriceExplanation skuData={getSkuData()} ladderData={getLadderData()} /></div>
+              <div style={{ marginTop: 20 }}>前端奖励展示需完成量:{detailData?.sku?.[0]?.ladderShowPercent * 100}%</div>
+            </div>}
           </Row>
           <Button style={{ marginLeft: '400px' }} type="default" onClick={() => history.goBack()}>返回</Button>
-          <Button style={{ marginLeft: '50px' }} onClick={() => auditPass()} type="primary">审核通过</Button>
+          <Button style={{ marginLeft: '50px' }} onClick={() => { auditPass() }} type="primary">审核通过</Button>
           {
             visible && <PassModel visible={visible} wsId={params?.id} setVisible={setVisible} type={timeType} />
           }

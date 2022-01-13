@@ -12,7 +12,7 @@ import styles from './style.less'
 import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
-    labelCol: { span: 7 },
+    labelCol: { span:5 },
     wrapperCol: { span: 14 },
     layout: {
       labelCol: {
@@ -61,6 +61,7 @@ export default (props) => {
           const params={
             id:formDetail?.id,
             storeAuditPercent:formDetail?.storeAuditPercent,
+            ladderSubsidyModify:values.type==1&&formDetail?.ladderSubsidyModify,
             ...values
           }
           skuPercentAudit(params).then(res=>{
@@ -73,22 +74,26 @@ export default (props) => {
       className={styles.audit_model}
       {...formItemLayout}
     >
+      {
+        formDetail?.ladderSubsidyModify.map(ele=>{
+          return <ProFormText
+                    width={250}
+                    label={<p>最低量 <span style={{color:'#2744FD'}}>{ele?.wsStart}{formDetail?.unit}</span> 时设置商品的<br/>店主额外奖励占比</p>}
+                    name="name"
+                    readonly={true}
+                    // labelCol={6}
+                    fieldProps={{
+                        value:<>
+                              <p className={styles.percent}>{amountTransform(parseFloat(ele?.storePercent), '*')}%</p>
+                              <p>运营中心占平台额外奖励<span className={styles.percent}>{amountTransform(parseFloat(ele?.operationPercent), '*')}%</span></p>
+                              </>
+                    }}
+                />
+        })
+      }
         <ProFormText
             width={250}
-            label="设置商品的店主额外奖励占比"
-            name="name"
-            readonly={true}
-            // labelCol={6}
-            fieldProps={{
-                value:<>
-                       <p className={styles.percent}>{amountTransform(parseFloat(formDetail?.storeAuditPercent), '*')}%</p>
-                       <p>运营中心占平台额外奖励<span className={styles.percent}>{amountTransform(parseFloat(formDetail?.operationAuditPercent), '*')}%</span></p>
-                      </>
-            }}
-        />
-         <ProFormText
-            width={250}
-            label="商品现有所属分类的店主额外奖励占比"
+            label={<p>商品现有所属分类的<br/>店主额外奖励占比</p>}
             name="name"
             readonly={true}
             // labelCol={5}

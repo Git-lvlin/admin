@@ -8,6 +8,7 @@ import {
   ProFormDependency,
   ProFormDateTimePicker,
 } from '@ant-design/pro-form';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import ProCard from '@ant-design/pro-card';
 import { Button, Result, message, Descriptions, Form } from 'antd';
 import EditTable from './edit-table';
@@ -20,6 +21,7 @@ import { history, useParams, useLocation } from 'umi';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
 import LadderDataEdit from './ladder-data-edit'
+import PriceExplanation from './price-explanation'
 
 const FromWrap = ({ value, onChange, content }) => (
   <div style={{ display: 'flex' }}>
@@ -91,7 +93,8 @@ const IntensiveActivityCreate = () => {
 
   const getDetail = () => {
     getWholesaleDetail({
-      wholesaleId: params.id
+      wholesaleId: params.id,
+      view: +location.query?.type === 1 ? 1 : 0,
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data);
@@ -172,6 +175,7 @@ const IntensiveActivityCreate = () => {
           wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice),
           fixedPrice: amountTransform(item.fixedPrice),
           settlePercent: amountTransform(item.settlePercent, '/'),
+          isAppointSubsidy: item.isAppointSubsidy.length === 0 ? 0 : 1,
           ...goodsInfos,
         })),
         allowArea: getSubmitAreaData(area),
@@ -222,6 +226,12 @@ const IntensiveActivityCreate = () => {
         storePercent: amountTransform(item.storePercent),
       }
     )) || [])
+    const { isEditSubsidy } = formRef.current.getFieldsValue();
+    if (selectItem?.[0]?.ladderData?.length === 0 && isEditSubsidy === 2) {
+      formRef.current.setFieldsValue({
+        isEditSubsidy: 0
+      })
+    }
   }, [selectItem])
 
   return (
@@ -364,6 +374,7 @@ const IntensiveActivityCreate = () => {
               <ProFormRadio.Group
                 label="平台额外奖励"
                 name="isEditSubsidy"
+                required
                 options={[
                   {
                     label: '不进行平台额外奖励',
@@ -399,13 +410,13 @@ const IntensiveActivityCreate = () => {
                             colon={false}
                             fieldProps={{
                               addonBefore: '补贴社区店店主',
-                              addonAfter: `元 / ${selectItem?.[0]?.unit}`
+                              addonAfter: `元`
                             }}
                             name="subsidy"
                             width={400}
                           /></>}
                         {
-                          isEditSubsidy === 2 && <>
+                          isEditSubsidy === 2 && selectItem[0].ladderData.length !== 0 && <>
                             <LadderDataEdit
                               data={ladderData || []}
                               setData={setLadderData}
@@ -414,13 +425,24 @@ const IntensiveActivityCreate = () => {
                               wsUnit={selectItem?.[0]?.wsUnit}
                               skuData={selectItem?.[0]}
                             />
+                            <div><InfoCircleOutlined />&nbsp;<PriceExplanation skuData={selectItem?.[0]} ladderData={ladderData} /></div>
                             <ProFormText
                               label="前端奖励展示需完成量"
                               fieldProps={{
                                 addonAfter: `%`
                               }}
                               extra={<span style={{ color: '#b38806' }}>总商品活动集约量达到最低阶梯量的此百分比时才在前端（此商品的列表、商品详情、下单页和待支付页面）展示奖励信息</span>}
-                              rules={[{ required: true, message: '请输入前端奖励展示需完成量' }]}
+                              rules={[
+                                { required: true, message: '请输入前端奖励展示需完成量' },
+                                () => ({
+                                  validator(_, value) {
+                                    if (!/^\d+$/g.test(value) || `${value}`.indexOf('.') !== -1 || value <= 0 || value > 99) {
+                                      return Promise.reject(new Error('请输入1-99之间的整数'));
+                                    }
+                                    return Promise.resolve();
+                                  },
+                                })
+                              ]}
                               name="ladderShowPercent"
                               width="lg"
                             />
