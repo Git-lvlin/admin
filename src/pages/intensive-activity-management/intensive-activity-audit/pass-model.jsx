@@ -1,7 +1,6 @@
 import React, { useState} from 'react';
 import { ModalForm,ProFormTextArea} from '@ant-design/pro-form';
 import { Button,message,Space } from 'antd';
-import { updateWholesaleAuditStatus } from '@/services/intensive-activity-management/intensive-activity-audit'
 import { history } from 'umi';
 import { CheckCircleTwoTone,ExclamationCircleOutlined } from '@ant-design/icons'
 
@@ -46,13 +45,10 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                updateWholesaleAuditStatus({wsId:wsId,type:1}).then(res=>{
-                    if(res.code==0){
-                        setVisible(false)   
-                        history.goBack()
-                        return true;
-                    }
-                })        
+                
+              setVisible(false)
+              history.goBack()
+              return true;        
             }
             }
             {...formItemLayout}

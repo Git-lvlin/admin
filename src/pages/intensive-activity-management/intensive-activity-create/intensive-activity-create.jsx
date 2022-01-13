@@ -226,6 +226,12 @@ const IntensiveActivityCreate = () => {
         storePercent: amountTransform(item.storePercent),
       }
     )) || [])
+    const { isEditSubsidy } = formRef.current.getFieldsValue();
+    if (selectItem?.[0]?.ladderData?.length === 0 && isEditSubsidy === 2) {
+      formRef.current.setFieldsValue({
+        isEditSubsidy: 0
+      })
+    }
   }, [selectItem])
 
   return (
@@ -410,7 +416,7 @@ const IntensiveActivityCreate = () => {
                             width={400}
                           /></>}
                         {
-                          isEditSubsidy === 2 && <>
+                          isEditSubsidy === 2 && selectItem[0].ladderData.length !== 0 && <>
                             <LadderDataEdit
                               data={ladderData || []}
                               setData={setLadderData}
