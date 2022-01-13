@@ -187,9 +187,9 @@ const TransactionDetails = () => {
       dataIndex: 'skuName'
     },
     {
-      title: '商品供货价',
-      dataIndex: 'supplyPrice',
-      render: (_) => `¥${amountTransform(_, '/')}`
+      title: (_)=> _.dataIndex === 'supplyPrice' ? '商品供货价' : '商品集约价',
+      dataIndex: info?.orderType === 'commandCollect' ? 'saleOrderPrice' : 'supplyPrice',
+      render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
       title: '实际销售价',
