@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Modal } from 'antd';
-import { InfoCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, ExclamationCircleOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams, history } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -36,7 +36,7 @@ const Detail = () => {
     })
   }
   const auditPass = () => {
-    
+
 
     Modal.confirm({
       icon: <ExclamationCircleOutlined />,
@@ -46,11 +46,42 @@ const Detail = () => {
       onOk: () => {
         updateWholesaleAuditStatus({ wsId: params?.id, type: 1 }).then(res => {
           if (res.code === 0) {
-            const data = moment().format("YYYY-MM-DD HH:mm:ss")
-            if (moment(data).isBefore(detailData?.wholesale?.wholesaleStartTime)) {
-              setTimeType(1)
+            if (res.data.isPass === 1) {
+              const data = moment().format("YYYY-MM-DD HH:mm:ss")
+              let type = 0
+              if (moment(data).isBefore(detailData?.wholesale?.wholesaleStartTime)) {
+                type = 1;
+              }
+              Modal.success({
+                title: '审核通过',
+                content: type === 1 ? '到达活动开始时间时开展活动！' : <div>
+                  <p>当前已过活动开始时间</p>
+                  <p>审核通过，活动立即开展！</p>
+                </div>,
+                okText: '确定通过',
+                onOk: () => {
+                  history.goBack()
+                }
+              });
+            } else {
+              Modal.confirm({
+                title: '活动信息异常',
+                icon: <CloseCircleOutlined style={{ color: 'red' }} />,
+                content: <>因<span style={{ color: 'red' }}>{res.data.msg}</span>，需审核驳回活动！</>,
+                okText: '驳回活动',
+                cancelText: '取消审核',
+                onOk: () => {
+                  updateWholesaleAuditStatus({ wsId: params?.id, type: 2, rejectionReason: res.data.msg })
+                    .then(r => {
+                      if (r.code === 0) {
+                        history.goBack()
+                      }
+                    })
+                }
+              });
             }
-            setVisible(true)
+
+            // setVisible(true)
           }
         })
       }
@@ -227,6 +258,7 @@ const Detail = () => {
       <Spin
         spinning={loading}
       >
+        <CheckCircleOutlined style={{ color: 'green' }} />
         <div style={{ backgroundColor: '#fff', padding: 20, paddingBottom: 50 }}>
           <Row>
             <Title style={{ marginBottom: -10 }} level={5}>活动商品</Title>
@@ -303,7 +335,8 @@ const Detail = () => {
                 readOnly="1"
               />
               <div><InfoCircleOutlined />&nbsp;<PriceExplanation skuData={getSkuData()} ladderData={getLadderData()} /></div>
-              <div style={{ marginTop: 20 }}>前端奖励展示需完成量:{detailData?.sku?.[0]?.ladderShowPercent * 100}%</div>
+              <div style={{ marginTop: 20 }}>前端奖励展示需完成量: {detailData?.sku?.[0]?.ladderShowPercent * 100}%</div>
+              <div style={{ marginTop: 20 }}>平台额外奖励占比审核状态: {detailData?.percentAuditStatusDesc}</div>
             </div>}
           </Row>
           <Button style={{ marginLeft: '400px' }} type="default" onClick={() => history.goBack()}>返回</Button>
