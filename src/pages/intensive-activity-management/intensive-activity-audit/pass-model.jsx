@@ -21,6 +21,7 @@ export default props=>{
     const {visible, setVisible,wsId,type}=props
     return (
         <ModalForm
+            width={400}
             title={<Space>
                 {
                     type==1?
