@@ -43,7 +43,7 @@ const Detail = () => {
       content: '确认是否审核通过?',
       okText: '确认',
       cancelText: '取消',
-      onOk: () => {
+      onOk: (close) => {
         updateWholesaleAuditStatus({ wsId: params?.id, type: 1 }).then(res => {
           if (res.code === 0) {
             if (res.data.isPass === 1) {
@@ -83,6 +83,7 @@ const Detail = () => {
 
             // setVisible(true)
           }
+          close();
         })
       }
     })
