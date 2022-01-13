@@ -64,6 +64,17 @@ export default (props) =>{
     }
     })
   }
+  const checkConfirm2=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value&&value<=0) {
+        await reject('必须大于0')
+    }else if (value&&value.length>0&&!/^[0-9]+([.]{1}[0-9]+){0,1}$/.test(value)&&value!=0) {
+        await reject('只能输入小数和整数')
+    }else {
+        await resolve()
+    }
+    })
+  }
   const disabledDate=(current)=>{
     return current && current < moment().startOf('day');
   }
@@ -995,7 +1006,10 @@ export default (props) =>{
               width="sm"
               name="validiteHour"
               label="获得机会有效期"
-              rules={[{ required: true, message: '请输入' }]}
+              rules={[
+                { required: true, message: '请输入' },
+                {validator: checkConfirm2}
+              ]}
               fieldProps={{
                 addonAfter:"小时"
               }}
@@ -1018,7 +1032,10 @@ export default (props) =>{
               width="sm"
               name="testNum"
               label="试玩次数"
-              rules={[{ required: true, message: '请输入' }]}
+              rules={[
+                { required: true, message: '请输入' },
+                {validator: checkConfirm}
+              ]}
               fieldProps={{
                 addonAfter:"次"
               }}
@@ -1042,7 +1059,10 @@ export default (props) =>{
               width="lg"
               name="prizeNum"
               label="被邀请人玩游戏"
-              rules={[{ required: true, message: '请输入' }]}
+              rules={[
+                { required: true, message: '请输入' },
+                {validator: checkConfirm}
+              ]}
               fieldProps={{
                 addonBefore:'每有1个新用户参与游戏，奖励游戏机会',
                 addonAfter:"次"
@@ -1066,7 +1086,10 @@ export default (props) =>{
               width="sm"
               name="virtualNum"
               label="初始参与活动"
-              rules={[{ required: true, message: '请输入' }]}
+              rules={[
+                { required: true, message: '请输入' },
+                {validator: checkConfirm}
+              ]}
               fieldProps={{
                 addonAfter:"人数"
               }}
