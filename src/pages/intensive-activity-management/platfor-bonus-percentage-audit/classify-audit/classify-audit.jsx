@@ -1,20 +1,22 @@
 import React, { useEffect, useState,useRef } from 'react'
-import { Spin, Empty, Switch,Form } from 'antd'
+import { Spin, Empty, Switch,Form,Tooltip } from 'antd'
 import { categoryAuditList } from '@/services/intensive-activity-management/platfor-bonus-percentage-audit'
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import Journal from './journal';
 import ProTable from '@ant-design/pro-table';
 import AuditModel from './audit-model'
 import { amountTransform } from '@/utils/utils'
+import styles from './style.less'
 
 
 const Category = (props) => {
-  const { parentId = 0, onClick = () => { }} = props;
+  const { parentId = 0, onClick = () => { },Loading=()=>{},loading} = props;
   const [visible, setVisible] = useState(false);
   const [auditVisible, setAuditVisible] = useState(false);
   const [formDetail, setFormDetail] = useState({})
   const [logId, setLogId] = useState({})
   const actionRef=useRef()
+  const [rowKeys,setRowKeys]=useState()
   const columns = [
     {
       title: 'id',
@@ -29,13 +31,6 @@ const Category = (props) => {
     {
       title: '分类名称',
       dataIndex: 'gcName',
-      render: (_,r) =>{
-        if(parentId){
-          return <p>{_}</p>
-        }else{
-          return <p style={{cursor:'pointer'}} onClick={()=>onClick(r.id)}>{_}</p>
-        }
-      }
     },
     {
       title: '店主额外奖励占总额外奖励比例',
@@ -64,8 +59,16 @@ const Category = (props) => {
         return <>
                 <p>{r?.percentAuditStatus==0&&'未修改'}</p>
                 <p>{r?.percentAuditStatus==1&&'审核通过'}</p>
-                <p>{r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}</p>
-                <p>{r?.percentAuditStatus==3&&`待审核(店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%)`}</p>
+                <p className={styles.line_feed}>
+                  <Tooltip  placement="leftTop" title={r?.rejectionReason}>
+                    {r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}
+                  </Tooltip>
+                </p>
+                <p className={styles.line_feed}>
+                  <Tooltip  placement="leftTop" title={`（店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%）`}>
+                    {r?.percentAuditStatus==3&&`待审核（店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%）`}
+                  </Tooltip>
+                </p>
                </>
       },
       ellipsis:true
@@ -94,6 +97,14 @@ const Category = (props) => {
       ],
     },
   ];
+  const postData=(data)=>{
+  const obj=data.find(ele=>ele?.hasAuditChildren==1)
+  if(obj){
+      setRowKeys(obj.id)
+      onClick(obj.id)
+  }
+    return data
+  }
   return (
       <div style={{ marginRight: 50 }}>
         <ProTable
@@ -104,13 +115,32 @@ const Category = (props) => {
           columns={columns}
           params={{
             isPercentAudit:2,
-            gcParentId:parentId?parentId:0
+            gcParentId:parentId?parentId:0,
+            loading:loading
           }}
           request={categoryAuditList}
+          postData={postData}
           options={false}
           search={false}
-          style={{width:'900px',height:'600px',overflowY:'scroll',background:'#fff'}}
+          style={{width:'850px',height:'600px',overflowY:'scroll',background:'#fff'}}
           pagination={false}
+          rowSelection={{
+            renderCell:()=>{
+              return null
+            },
+            type:'radio',
+            selectedRowKeys:[rowKeys],
+            
+          }}
+          tableAlertRender={false}
+          onRow={(record) => {
+            return {  
+              onClick: async () => {
+                await onClick(record.id)
+                setRowKeys(record.id)
+              },
+            };
+          }}
       />
       {visible && <Journal
         visible={visible}
@@ -123,7 +153,7 @@ const Category = (props) => {
         setVisible={setAuditVisible}
         formDetail={formDetail}
         onClose={()=>{actionRef.current.reload();setFormDetail(null)}}
-        callback={()=>{actionRef.current.reload();setFormDetail(null)}}
+        callback={()=>{actionRef.current.reload();setFormDetail(null);Loading(true)}}
       />}
       </div>
   )
@@ -131,13 +161,21 @@ const Category = (props) => {
 
 export default () => {
   const [selectId, setSelectId] = useState(null);
+  const [loading, setLoading] = useState(false);
   return (
     <>
       <div style={{ display: 'flex', width: '100%' }}>
-        <Category onClick={(id) => { setSelectId(id)}}/>
-        {selectId && <Category parentId={selectId}/>}
+        <Category onClick={(id) => { setSelectId(id)}} loading={loading}/>
+        {selectId 
+        && 
+        <Category 
+          parentId={selectId} 
+          Loading={(val)=>{
+            setLoading(val);
+            }
+          }/>
+        }
       </div>
-
     </>
   )
 }

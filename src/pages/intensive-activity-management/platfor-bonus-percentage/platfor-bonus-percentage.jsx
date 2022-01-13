@@ -1,5 +1,5 @@
 import React, { useEffect, useState,useRef } from 'react'
-import { Spin, Empty, Switch,Form,InputNumber } from 'antd'
+import { Spin, Empty, Switch,Form,InputNumber,Tooltip } from 'antd'
 import { PageContainer } from '@ant-design/pro-layout';
 import { categoryList,updateCategoryPercent } from '@/services/intensive-activity-management/platfor-bonus-percentage'
 import Journal from './journal';
@@ -16,6 +16,7 @@ const Category = (props) => {
   const [visible, setVisible] = useState(false);
   const [logId, setLogId] = useState()
   const [form] = Form.useForm();
+  const [rowKeys,setRowKeys]=useState()
   const FromWrap = ({ value, onChange, content, right }) => (
     <div>
       <div>{content(value, onChange)}</div>
@@ -39,13 +40,6 @@ const Category = (props) => {
       title: '分类名称',
       dataIndex: 'gcName',
       editable:false,
-      render: (_,r) =>{
-        if(parentId){
-          return <p>{_}</p>
-        }else{
-          return <p style={{cursor:'pointer'}} onClick={()=>onClick(r.id)}>{_}</p>
-        }
-      }
     },
     {
       title: '店主额外奖励占总额外奖励比例',
@@ -95,8 +89,16 @@ const Category = (props) => {
         return <>
                 <p>{r?.percentAuditStatus==0&&'未修改'}</p>
                 <p>{r?.percentAuditStatus==1&&'审核通过'}</p>
-                <p>{r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}</p>
-                <p>{r?.percentAuditStatus==3&&`待审核(店主占${r?.storeAuditPercent}%)`}</p>
+                <p className={styles.line_feed}>
+                  <Tooltip  placement="leftTop" title={r?.rejectionReason}>
+                    {r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}
+                  </Tooltip>
+                </p>
+                <p className={styles.line_feed}>
+                  <Tooltip  placement="leftTop" title={`（店主占${r?.storeAuditPercent}%）`}>
+                    {r?.percentAuditStatus==3&&`待审核（店主占${r?.storeAuditPercent}%）`}
+                  </Tooltip>
+                </p>
                </>
       },
       editable:false,
@@ -164,7 +166,6 @@ const Category = (props) => {
                 onClick={()=>{
                   const obj={
                     ...row,
-                    // storePercent:amountTransform(parseFloat(config?.form?.getFieldValue()[row.id].storePercent), '/'),
                   }
                   config?.onSave(row.id,obj,row)
                   const Percent=amountTransform(parseFloat(config?.form?.getFieldValue()[row.id].storePercent), '/')
@@ -187,22 +188,23 @@ const Category = (props) => {
             ],
           }}
           style={{width:'900px',height:'600px',overflowY:'scroll',background:'#fff'}}
-          // rowSelection={{
-          //   renderCell:()=>{
-          //     return null
-          //   },
-          //   type:'radio',
-          //   selectedRowKeys:[2],
+          rowSelection={{
+            renderCell:()=>{
+              return null
+            },
+            type:'radio',
+            selectedRowKeys:[rowKeys],
             
-          // }}
-          // tableAlertRender={false}
-          // onRow={record => {
-          //   return {
-          //     onClick: event => {
-          //       console.log('asdas',event)
-          //     }, // 点击行
-          //   };
-          // }}
+          }}
+          tableAlertRender={false}
+          onRow={(record) => {
+            return {  
+              onClick: async () => {
+                await onClick(record.id)
+                setRowKeys(record.id)
+              },
+            };
+          }}
       
       />
       {visible && <Journal

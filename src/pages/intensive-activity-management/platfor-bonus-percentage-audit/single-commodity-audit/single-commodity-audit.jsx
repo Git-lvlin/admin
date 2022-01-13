@@ -1,12 +1,11 @@
 
 import React, { useRef, useState } from 'react';
-import { Button, Space, message } from 'antd';
+import { Button, Space, message,Tooltip } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { history,connect } from 'umi';
 import { skuAuditList } from '@/services/intensive-activity-management/platfor-bonus-percentage-audit';
 import AuditModel from './audit-model'
 import Journal from './journal';
-import { amountTransform } from '@/utils/utils'
+import styles from './style.less'
 
 export default () => {
   const [visible, setVisible] = useState(false);
@@ -17,49 +16,27 @@ export default () => {
 
   const columns = [
     {
-      title: '活动商品',
-      dataIndex: 'goodsName',
+      title: '活动ID',
+      dataIndex: 'wsId',
       valueType: 'text',
-      render: (_,r) =>{
-        return <>
-                 <p>{_}</p>
-                 <p>spuId：{r.spuId}</p>
-                 <p>skuId：{r.skuId}</p>
-               </>
-      },
       align: 'center'
     },
     {
       title: '集约活动',
       dataIndex: 'wsName',
       valueType: 'text',
-      render: (_,r) =>{
-        return <>
-                 <p>{_}</p>
-                 <p>活动ID：{r.wsId}</p>
-               </>
-      },
       align: 'center'
     },
     {
-      title: '店主额外奖励占总额外奖励比例',
-      dataIndex: 'storePercent',
+      title: '商品名称',
+      dataIndex: 'goodsName',
       valueType: 'text',
-      render: (_,r) =>{
-        return <p>{amountTransform(parseFloat(_), '*')}%</p>
-      },
       align: 'center'
     },
     {
-      title: '额外奖励说明',
-      dataIndex: 'percentAuditStatusDesc',
+      title: '商品spuID',
+      dataIndex: 'spuId',
       valueType: 'text',
-      render:(_,r)=>{
-        return <>
-                <p>店主：{amountTransform(parseFloat(r?.storePercent), '*')}%</p>
-                <p>运营中心：{amountTransform(parseFloat(r?.operationPercent), '*')}%</p>
-               </>
-      },
       align: 'center'
     },
     {
@@ -70,11 +47,16 @@ export default () => {
         return <>
                 <p>{r?.percentAuditStatus==0&&'未修改'}</p>
                 <p>{r?.percentAuditStatus==1&&'审核通过'}</p>
-                <p>{r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}</p>
-                <p>{r?.percentAuditStatus==3&&`待审核(店主占${amountTransform(parseFloat(r?.storeAuditPercent), '*')}%)}`}</p>
+                <p className={styles.line_feed}>
+                  <Tooltip  placement="leftTop" title={r?.rejectionReason}>
+                    {r?.percentAuditStatus==2&&`审核拒绝（${r?.rejectionReason}）`}
+                  </Tooltip>
+                </p>
+                <p>
+                    {r?.percentAuditStatus==3&&'待审核'}
+                </p>
                </>
       },
-      align: 'center'
     },
     {
       title: '操作',

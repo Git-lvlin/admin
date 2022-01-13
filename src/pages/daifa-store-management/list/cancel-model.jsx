@@ -33,7 +33,7 @@ export default (props) => {
   const [amount,setAmount]=useState()
   useEffect(()=>{
     accountDetail({accountType:'agentStore',accountId:storeNoId?.data?.storeNo}).then(res=>{
-      setAmount(amountTransform(res.data?.commission, '*'))
+      setAmount(amountTransform(res.data?.commission, '/'))
     })
   },[])
   return (

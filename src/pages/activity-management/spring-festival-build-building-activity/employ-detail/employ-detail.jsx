@@ -1,11 +1,8 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
-import { history,connect } from 'umi';
-import { getBlindboxIncomeDetail,getBlindboxUseDetail } from '@/services/activity-management/spring-festival-build-building-activity';
-import Detail from '@/pages/order-management/normal-order/detail';
+import { getBuildhouseIncomeDetail,getBuildhouseUseDetail } from '@/services/activity-management/spring-festival-build-building-activity';
 const { TabPane } = Tabs
 
 
@@ -29,25 +26,12 @@ const UserDetail=(props) => {
     {
       title: '发放原因',
       dataIndex: 'type',
-      valueType: 'select',
-      hideInSearch:true,
+      valueType: 'text',
       valueEnum: {
-        1:'连续签到',
-        2:'邀请好友', 
-        3:'订单消费'
+        1:'原始机会3次',
+        2:'邀请好友注册', 
+        3:'邀请好友注册且游戏'
       },
-    },
-    {
-      title: '获得原因',
-      dataIndex: 'type',
-      valueType: 'select',
-      valueEnum: {
-        0: '全部',
-        1: '连续签到获得',
-        2: '邀请好友获得',
-        3: '订单消费获得'
-      },
-      hideInTable:true
     },
     {
       title: '发放时间',
@@ -83,23 +67,12 @@ const UserDetail=(props) => {
       dataIndex: 'status',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data)=>{
-        if(data.status==1){
-          return  <AuditModel
-                    label={'回收'}
-                    InterFace={getBlindboxIncomeReclaim}
-                    id={data.id}
-                    title={'填写回收原因'}
-                    boxref={ref}
-                  />
-        }else if(data.status==2){
-          return <p>已使用</p>
-        }else if(data.status==3){
-          return <p>已回收</p>
-        }else if(data.status==4){
-          return <p>已过期</p>
-        }
-        },
+      valueEnum: {
+        1:'未使用',
+        2:'已使用', 
+        3:'已回收',
+        4:'已过期'
+      },
     },
   ];
   const postData=(data)=>{
@@ -117,7 +90,7 @@ const UserDetail=(props) => {
           memberId:memberId
         }}
         postData={postData}
-        request={getBlindboxIncomeDetail}
+        request={getBuildhouseIncomeDetail}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -154,16 +127,13 @@ const EmployDetail=(props) => {
     },
     {
       title: '使用原因',
-      dataIndex: 'expenditureType',
+      dataIndex: 'type',
       valueType: 'select',
       valueEnum: {
         0: '全部',
-        1: '获奖已兑换',
-        2: '获奖未兑换',
-        3: '已获奖',
-        4: '未获奖',
-        5: '机会过期',
-        6: '官方回收'
+        5:'盖楼游戏',
+        6:'机会过期', 
+        7:'活动结束'
       },
       hideInTable:true
     },
@@ -175,6 +145,7 @@ const EmployDetail=(props) => {
       valueEnum: {
         5:'盖楼游戏',
         6:'机会过期', 
+        7:'活动结束'
       },
     },
     {
@@ -224,7 +195,7 @@ const EmployDetail=(props) => {
         rowKey="id"
         headerTitle={`用户手机号:${detailList?.memberMobile}         用户名：${detailList?.memberNicheng}         剩余盖楼次数：${detailList?.restNum}        已使用次数：${detailList?.useNum}`}
         options={false}
-        request={getBlindboxUseDetail}
+        request={getBuildhouseUseDetail}
         postData={postData}
         params={{
           memberId:memberId

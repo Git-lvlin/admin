@@ -72,7 +72,6 @@ export default props=>{
             {(fields, { add, remove }) => (
               <>
                 <List
-                //   bordered
                   itemLayout="horizontal"
                 >
                   {fields.map((field) => {
@@ -97,7 +96,7 @@ export default props=>{
                               maxLength:11
                             }}
                             rules={[
-                              { required: true, message: '请设置奖品预告' },
+                              { required: true, message: '请输入用户手机号' },
                               {validator: checkConfirm}
                             ]}
                           />
