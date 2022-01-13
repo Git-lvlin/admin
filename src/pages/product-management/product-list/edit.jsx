@@ -1082,7 +1082,7 @@ export default (props) => {
                       addonAfter: `/${goods.unit}`
                     }}
                   />
-                  {!!detailData.ladderSwitch && <Form.Item
+                  {!!detailData?.ladderSwitch && <Form.Item
                     label="集采阶梯优惠"
                   >
                     {goods.ladderData && <>
