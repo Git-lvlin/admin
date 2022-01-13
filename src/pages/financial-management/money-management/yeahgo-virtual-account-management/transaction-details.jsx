@@ -81,7 +81,7 @@ const TransactionDetails = () => {
         'second': '秒约订单',
         'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
-        'commandCollect': '集约销售订单',
+        'commandCollect': '集约零售订单',
         'blindBox': '盲盒订单',
         'signIn': '签到订单'
       }
