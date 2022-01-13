@@ -86,8 +86,8 @@ export default (props) =>{
       setDetailList({data:res.data})
       form.setFieldsValue({
         dateRange: [res.data?.startTime*1000, res.data?.endTime*1000],
-        moneyAll:content.moneyAll,
-        moneyDay:content.moneyDay,
+        moneyAll:amountTransform(content.moneyAll, '/'),
+        moneyDay:amountTransform(content.moneyDay, '/'),
         sendPlayTime:content.sendPlayTime,
         withdrawTime:content.withdrawTime*1000,
         validiteHour:content.validiteHour,
@@ -95,7 +95,7 @@ export default (props) =>{
         imgUrl:content.imgUrl,
         ruleText:content.ruleText,
         virtualNum:content.virtualNum,
-        prizeMoney:content?.rewardsSet?.luckyOne?.prizeMoney,
+        prizeMoney:amountTransform(content?.rewardsSet?.luckyOne?.prizeMoney, '/'),
         tierEnd1:content?.rewardsSet?.tiersSet?.[0]?.tierEnd,
         general_probability1:content?.rewardsSet?.tiersSet?.[0]?.general?.probability,
         general_moneyRange1_win1:amountTransform(content?.rewardsSet?.tiersSet?.[0]?.general?.moneyRange?.[0], '/'),
@@ -165,8 +165,8 @@ export default (props) =>{
         endTime:values.dateRange ? moment(values.dateRange[1]).valueOf()/1000 : null,
         name:values.name,
         status:values.status,
-        moneyAll:values.moneyAll,
-        moneyDay:values.moneyDay,
+        moneyAll:amountTransform(values.moneyAll, '*'),
+        moneyDay:amountTransform(values.moneyDay, '*'),
         sendPlayTime:values.sendPlayTime,
         withdrawTime:moment(values.withdrawTime).valueOf()/1000,
         validiteHour:values.validiteHour,
@@ -177,7 +177,7 @@ export default (props) =>{
         rewardsSet:{
           luckyOne:{
             prizeNum:1,
-            prizeMoney:values.prizeMoney,
+            prizeMoney:amountTransform(values.prizeMoney, '*'),
             prizePhones:phoneList||detailList?.data?.content?.rewardsSet?.luckyOne?.prizePhones
           },
           tiersSet:[
@@ -792,7 +792,7 @@ export default (props) =>{
               rules={[{ required: true, message: '请输入' }]}
               readonly={id&&falg}
               fieldProps={{
-                value:`${detailList?.data?.content?.moneyAll}元`
+                value:`${amountTransform(detailList?.data?.content?.moneyAll, '/')}元`
               }}
             />
           :
@@ -818,7 +818,7 @@ export default (props) =>{
               readonly={id&&falg}
               rules={[{ required: true, message: '请输入' }]}
               fieldProps={{
-                value:`${detailList?.data?.content?.moneyDay}元`
+                value:`${amountTransform(detailList?.data?.content?.moneyDay, '/')}元`
               }}
             />
             :
