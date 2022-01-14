@@ -36,8 +36,6 @@ const Detail = () => {
     })
   }
   const auditPass = () => {
-
-
     Modal.confirm({
       icon: <ExclamationCircleOutlined />,
       content: '确认是否审核通过?',
