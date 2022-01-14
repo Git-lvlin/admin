@@ -12,7 +12,8 @@ const { TabPane } = Tabs
 
 
 
-const InviteRegister=() => {
+const InviteRegister=(props) => {
+    const { canback } = props;
     const ref=useRef()
     const [onselect,setOnselect]=useState([])
     const [listVisible, setListVisible] = useState(false);
@@ -121,17 +122,21 @@ const InviteRegister=() => {
           search={{
             defaultCollapsed: false,
             labelWidth: 100,
-            optionRender: (searchConfig, formProps, dom) => [
-               ...dom.reverse(),
-               <Export
-                key='export'
-                change={(e) => { setVisit(e) }}
-                type={'build-floor-invite-list-export'}
-                conditions={getFieldValue(searchConfig)}
-              />,
-              <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-invite-list-export'}/>,
-              <Button key='add' type="primary" onClick={()=>setListVisible(true)}>添加邀请用户排名</Button>
-            ],
+            optionRender: (searchConfig, formProps, dom) =>{
+              const {activityId}=searchConfig.form.getFieldsValue()
+              canback(activityId)
+              return  [
+                ...dom.reverse(),
+                <Export
+                 key='export'
+                 change={(e) => { setVisit(e) }}
+                 type={'build-floor-invite-list-export'}
+                 conditions={getFieldValue(searchConfig)}
+               />,
+               <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-invite-list-export'}/>,
+               <Button key='add' type="primary" onClick={()=>setListVisible(true)}>添加邀请用户排名</Button>
+             ]
+            }
           }}
           columns={columns}
         />
@@ -148,12 +153,14 @@ const InviteRegister=() => {
 
 
 
-  const BuildBuilding=() => {
+  const BuildBuilding=(props) => {
+    const { canback } = props;
     const ref=useRef()
     const [detailList,setDetailList]=useState()
     const [detailVisible, setDetailVisible] = useState(false);
     const [orderId,setOrderId]=useState()
     const [visit, setVisit] = useState(false)
+    const [onselect,setOnselect]=useState([])
     const columns= [
       {
         title: '序号',
@@ -195,6 +202,13 @@ const InviteRegister=() => {
         hideInSearch: true,
       },
       {
+        title: '活动名称',
+        dataIndex: 'activityId',
+        valueType: 'select',
+        hideInTable: true,
+        valueEnum:onselect
+      },
+      {
         title: '盖楼层数',
         dataIndex: 'floor',
         valueType: 'text',
@@ -219,6 +233,16 @@ const InviteRegister=() => {
         hideInSearch: true,
       }
     ];
+    useEffect(()=>{
+      getActiveConfigList({page:1,size:100}).then(res=>{
+        const obj={}
+        res.data?.map(ele=>(
+          obj[ele.id]={text:ele.name,status:ele.id}
+        ))
+        console.log('obj',obj)
+        setOnselect(obj)
+      })
+    },[])
     const postData=(data)=>{
       setDetailList(data)
       return data
@@ -242,16 +266,20 @@ const InviteRegister=() => {
           search={{
             defaultCollapsed: false,
             labelWidth: 100,
-            optionRender: (searchConfig, formProps, dom) => [
-               ...dom.reverse(),
-               <Export
-                key='export'
-                change={(e) => { setVisit(e) }}
-                type={'build-floor-rank-list-export'}
-                conditions={getFieldValue(searchConfig)}
-              />,
-              <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-rank-list-export'}/>
-            ],
+            optionRender: (searchConfig, formProps, dom) =>{
+              const {activityId}=searchConfig.form.getFieldsValue()
+              canback(activityId)
+              return [
+                ...dom.reverse(),
+                <Export
+                 key='export'
+                 change={(e) => { setVisit(e) }}
+                 type={'build-floor-rank-list-export'}
+                 conditions={getFieldValue(searchConfig)}
+               />,
+               <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-rank-list-export'}/>
+             ]
+            }
           }}
           columns={columns}
           pagination={{
@@ -276,12 +304,12 @@ const InviteRegister=() => {
   export default (props) =>{
     const [seleType,setSeleType]=useState(1)
     const [detailList,setDetailList]=useState()
+    const [searchName,setSearchName]=useState()
     useEffect(()=>{
-        statInfo({}).then(res=>{
-            console.log('res',res)
+        statInfo({activityId:searchName}).then(res=>{
             setDetailList(res.data)
         })
-    },[])
+    },[searchName])
     return (
         <PageContainer>
         <div style={{backgroundColor:'#fff',marginBottom:'20px'}}>
@@ -308,12 +336,16 @@ const InviteRegister=() => {
           >
             <TabPane tab="邀请注册排名" key="1">
               {
-                seleType==1&&<InviteRegister/>
+                seleType==1&&<InviteRegister canback={(val)=>{
+                  setSearchName(val)
+                }}/>
               }
             </TabPane>
             <TabPane tab="盖楼排名" key="2">
               {
-                seleType==2&&<BuildBuilding/>
+                seleType==2&&<BuildBuilding  canback={(val)=>{
+                  setSearchName(val)
+                }}/>
               }
             </TabPane>
           </Tabs>
