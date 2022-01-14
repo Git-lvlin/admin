@@ -59,6 +59,14 @@ const SubTable = (props) => {
     {
       title: '集约库存',
       dataIndex: 'totalStockNum',
+      render: (_, record) => {
+        return (
+          <>
+            <div>{_}{record.unit}</div>
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
+          </>
+        )
+      }
     },
     {
       title: '集约价',
@@ -78,10 +86,26 @@ const SubTable = (props) => {
     {
       title: '单次起订量',
       dataIndex: 'minNum',
+      render: (_, record) => {
+        return (
+          <>
+            <div>{_}{record.unit}</div>
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
+          </>
+        )
+      }
     },
     {
       title: '单次限订量',
       dataIndex: 'maxNum',
+      render: (_, record) => {
+        return (
+          <>
+            <div>{_}{record.unit}</div>
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
+          </>
+        )
+      }
     },
     {
       title: '集约全款金额',
