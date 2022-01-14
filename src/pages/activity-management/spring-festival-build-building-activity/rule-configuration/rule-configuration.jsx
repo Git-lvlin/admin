@@ -311,6 +311,10 @@ export default (props) =>{
   const limitDecimalsF =(value)=>{
     return value&&parseInt(value)
   };
+  useEffect(()=>{
+      console.log('probability1',(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(probability2),'*')))/100)
+      console.log('probability2',(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(probability2),'*')))/100)
+  },[probability1,probability2])
   return (
     <PageContainer>
       <Spin spinning={loading}>
@@ -752,30 +756,30 @@ export default (props) =>{
                   <ProCard colSpan="400px" bordered  layout="center" colSpan="111px" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>未中奖</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    !isNaN(probability1)&&!isNaN(probability2)&&(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(probability2),'*')))/100||
-                    !isNaN(probability1)&&(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.lucky?.probability),'*')))/100||
-                    !isNaN(probability2)&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.general?.probability),'*')+amountTransform(Number(probability2),'*')))/100||
+                    typeof probability1=== 'number'&&typeof probability2=== 'number'&&(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(probability2),'*')))/100===0?'0': typeof probability1 === 'number'&&typeof probability2=== 'number'&&(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(probability2),'*')))/100||
+                    typeof probability1=== 'number'&&(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.lucky?.probability),'*')))/100||
+                    typeof probability2=== 'number'&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.general?.probability),'*')+amountTransform(Number(probability2),'*')))/100||
                     detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.losing?.probability
                     }%</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    !isNaN(probability3)&&!isNaN(probability4)&&(10000-(amountTransform(Number(probability3),'*')+amountTransform(Number(probability4),'*')))/100||
-                    !isNaN(probability3)&&(10000-(amountTransform(Number(probability3),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.lucky?.probability),'*')))/100||
-                    !isNaN(probability4)&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.general?.probability),'*')+amountTransform(Number(probability4),'*')))/100||
+                    typeof probability3=== 'number'&&typeof probability4=== 'number'&&(10000-(amountTransform(Number(probability3),'*')+amountTransform(Number(probability4),'*')))/100===0?'0':typeof probability3=== 'number'&&typeof probability4=== 'number'&&(10000-(amountTransform(Number(probability3),'*')+amountTransform(Number(probability4),'*')))/100||
+                    typeof probability3=== 'number'&&(10000-(amountTransform(Number(probability3),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.lucky?.probability),'*')))/100||
+                    typeof probability4=== 'number'&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.general?.probability),'*')+amountTransform(Number(probability4),'*')))/100||
                     detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.losing?.probability
                     }%</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                   !isNaN(probability5)&&!isNaN(probability6)&&(10000-(amountTransform(Number(probability5),'*')+amountTransform(Number(probability6),'*')))/100||
-                   !isNaN(probability5)&&(10000-(amountTransform(Number(probability5),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.lucky?.probability),'*')))/100||
-                   !isNaN(probability6)&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.general?.probability),'*')+amountTransform(Number(probability6),'*')))/100||
+                    typeof probability5=== 'number'&&typeof probability6=== 'number'&&(10000-(amountTransform(Number(probability5),'*')+amountTransform(Number(probability6),'*')))/100===0?'0':typeof probability5=== 'number'&&typeof probability6=== 'number'&&(10000-(amountTransform(Number(probability5),'*')+amountTransform(Number(probability6),'*')))/100||
+                    typeof probability5=== 'number'&&(10000-(amountTransform(Number(probability5),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.lucky?.probability),'*')))/100||
+                    typeof probability6=== 'number'&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.general?.probability),'*')+amountTransform(Number(probability6),'*')))/100||
                     detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.losing?.probability
                     }%</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    !isNaN(probability7)&&!isNaN(probability8)&&(10000-(amountTransform(Number(probability7),'*')+amountTransform(Number(probability8),'*')))/100||
-                    !isNaN(probability7)&&(10000-(amountTransform(Number(probability7),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.lucky?.probability),'*')))/100||
-                    !isNaN(probability8)&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.general?.probability),'*')+amountTransform(Number(probability8),'*')))/100||
+                    typeof probability7=== 'number'&&typeof probability8=== 'number'&&(10000-(amountTransform(Number(probability7),'*')+amountTransform(Number(probability8),'*')))/100===0?'0':typeof probability7=== 'number'&&typeof probability8=== 'number'&&(10000-(amountTransform(Number(probability7),'*')+amountTransform(Number(probability8),'*')))/100||
+                    typeof probability7=== 'number'&&(10000-(amountTransform(Number(probability7),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.lucky?.probability),'*')))/100||
+                    typeof probability8=== 'number'&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.general?.probability),'*')+amountTransform(Number(probability8),'*')))/100||
                     detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.losing?.probability
                     }%</ProCard>
                 </ProCard>
