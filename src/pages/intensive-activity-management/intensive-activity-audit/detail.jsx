@@ -146,7 +146,7 @@ const Detail = () => {
         return (
           <>
             <div>{_}{record.unit}</div>
-            {record.batchNumber > 1 && record.wsUnit && <div>({_ * record.batchNumber}){record.wsUnit}</div>}
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
           </>
         )
       }
@@ -203,7 +203,7 @@ const Detail = () => {
         return (
           <>
             <div>{_}{record.unit}</div>
-            {record.batchNumber > 1 && record.wsUnit && <div>({_ * record.batchNumber}){record.wsUnit}</div>}
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
           </>
         )
       }
@@ -215,7 +215,7 @@ const Detail = () => {
         return (
           <>
             <div>{_}{record.unit}</div>
-            {record.batchNumber > 1 && record.wsUnit && <div>({_ * record.batchNumber}){record.wsUnit}</div>}
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
           </>
         )
       }
