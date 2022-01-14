@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
+import Big from 'big.js';
 
+Big.RM = 2;
 export default function EditTable(props) {
   const { tableHead, tableData, goodsSaleType, settleType, isSample, unit, wsUnit, ladderSwitch } = props;
   const [columns, setColumns] = useState([])
@@ -162,7 +164,7 @@ export default function EditTable(props) {
               {_.wsSupplyPrice}元 / {unit}
             </div >
 
-            {record.batchNumber > 1 && <div>{parseInt(_.wsStart / record.batchNumber, 10)}—{parseInt(_.wsEnd / record.batchNumber, 10)}{wsUnit}时，{_.wsSupplyPrice * record.batchNumber}元/{wsUnit}</div>}
+            {record.batchNumber > 1 && <div>{parseInt(_.wsStart / record.batchNumber, 10)}—{parseInt(_.wsEnd / record.batchNumber, 10)}{wsUnit}时，{+new Big(_.wsSupplyPrice).times(record.batchNumber).toFixed(2)}元/{wsUnit}</div>}
           </> : '-'
         },
         hideInTable: goodsSaleType === 2 || !ladderSwitch,
@@ -178,7 +180,7 @@ export default function EditTable(props) {
               {_.wsSupplyPrice}元/{unit}
             </div>
 
-            {record.batchNumber > 1 && <div>{parseInt((record.stage1.wsEnd + 1) / record.batchNumber, 10)}{wsUnit}及以上时，{_.wsSupplyPrice * record.batchNumber}元/{wsUnit}</div>}
+            {record.batchNumber > 1 && <div>{parseInt((record.stage1.wsEnd + 1) / record.batchNumber, 10)}{wsUnit}及以上时，{+new Big(_.wsSupplyPrice).times(record.batchNumber).toFixed(2)}元/{wsUnit}</div>}
           </> : '-'
         },
         hideInTable: goodsSaleType === 2 || !ladderSwitch,

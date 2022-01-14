@@ -230,7 +230,7 @@ export default (props) => {
                     <div>采购{goods.ladderData['1'].wsStart}-{goods.ladderData['1'].wsEnd}{goods.unit}时，{goods.ladderData['1'].wsSupplyPrice / 100}元/{goods.unit}</div>
                     {goods.batchNumber > 1 && <div>{parseInt(goods.ladderData['1'].wsStart / goods.batchNumber, 10)}-{parseInt(goods.ladderData['1'].wsEnd / goods.batchNumber, 10)}{goods.wsUnit || '箱'}时，{goods.ladderData['1'].wsSupplyPrice * goods.batchNumber / 100}元/{goods.wsUnit || '箱'}</div>}
                     <div>{+goods.ladderData['1'].wsEnd + 1}{goods.unit}及以上时，{goods.ladderData['2'].wsSupplyPrice / 100}元/{goods.unit}</div>
-                    {goods.batchNumber > 1 && <div>{parseInt((+goods.ladderData['1'].wsEnd + 1) / goods.batchNumber, 10)}{goods.wsUnit || '箱'}及以上时，{parseInt(goods.ladderData['2'].wsSupplyPrice * goods.batchNumber / 100, 10)}元/{goods.wsUnit || '箱'}</div>}
+                    {goods.batchNumber > 1 && <div>{parseInt((+goods.ladderData['1'].wsEnd + 1) / goods.batchNumber, 10)}{goods.wsUnit || '箱'}及以上时，{goods.ladderData['2'].wsSupplyPrice * goods.batchNumber / 100}元/{goods.wsUnit || '箱'}</div>}
                   </>}
                 </Form.Item>}
                 <Form.Item
