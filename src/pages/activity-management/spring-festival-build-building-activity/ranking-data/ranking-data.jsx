@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { statInfo,inviteRankList,floorRankList } from '@/services/activity-management/spring-festival-build-building-activity';
+import { statInfo,inviteRankList,floorRankList,getActiveConfigList } from '@/services/activity-management/spring-festival-build-building-activity';
 import Detail from '@/pages/order-management/normal-order/detail';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -14,9 +14,8 @@ const { TabPane } = Tabs
 
 const InviteRegister=() => {
     const ref=useRef()
-    const [detailList,setDetailList]=useState()
+    const [onselect,setOnselect]=useState([])
     const [listVisible, setListVisible] = useState(false);
-    const [orderId,setOrderId]=useState()
     const [visit, setVisit] = useState(false)
     const columns= [
       {
@@ -59,6 +58,13 @@ const InviteRegister=() => {
         hideInSearch:true,
       },
       {
+        title: '活动名称',
+        dataIndex: 'activityId',
+        valueType: 'select',
+        hideInTable: true,
+        valueEnum:onselect
+      },
+      {
         title: '邀请用户注册数',
         dataIndex: 'inviteNums',
         valueType: 'text',
@@ -84,9 +90,18 @@ const InviteRegister=() => {
       }
     ];
     const postData=(data)=>{
-      setDetailList(data)
       return data
     }
+    useEffect(()=>{
+      getActiveConfigList({page:1,size:100}).then(res=>{
+        const obj={}
+        res.data?.map(ele=>(
+          obj[ele.id]={text:ele.name,status:ele.id}
+        ))
+        console.log('obj',obj)
+        setOnselect(obj)
+      })
+    },[])
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
       return {
@@ -99,7 +114,7 @@ const InviteRegister=() => {
       <>
         <ProTable
           actionRef={ref}
-          rowKey="id"
+          rowKey="activityId"
           options={false}
           request={inviteRankList}
           postData={postData}
@@ -122,7 +137,9 @@ const InviteRegister=() => {
         />
          {listVisible&&<UploadingList 
             visible={listVisible} 
-            setVisible={setListVisible}  
+            setVisible={setListVisible}
+            onClose={() => { ref.current.reload()}}
+            callback={() => { ref.current.reload()}}
             />
           }
         </>
