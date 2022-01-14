@@ -48,7 +48,7 @@ export default (props) => {
         }}
         onFinish={async (values) => {
           const params={
-            activityId:storeNoId?.id,
+            activityId:storeNoId?.configId,
             memberId:storeNoId?.memberId,
             isFreeze:storeNoId?.isFreeze?false:true,
           }
