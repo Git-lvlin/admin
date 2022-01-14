@@ -1,15 +1,16 @@
 import React, { useState} from 'react';
-import { ModalForm,ProFormText} from '@ant-design/pro-form';
+import { ModalForm,ProFormText,ProFormSelect} from '@ant-design/pro-form';
 import { message,Form,List,Button } from 'antd';
-import { setVirtualInvite,checkUserExist } from '@/services/activity-management/spring-festival-build-building-activity';
-import { history,connect } from 'umi';
+import { setVirtualInvite,checkUserExist,getActiveConfigList } from '@/services/activity-management/spring-festival-build-building-activity';
 import { PlusOutlined } from '@ant-design/icons';
 import { useEffect } from 'react';
 
 export default props=>{
-    const {endId,visible,setVisible,canBlack,phones,falg}=props
+    const {visible,setVisible,callback,onClose}=props
     const [form] = Form.useForm()
     const [nickname,setNickname]=useState([])
+    const [onselect,setOnselect]=useState([])
+    const [activityId,setActivityId]=useState()
     const checkConfirm = (rule, value, callback) => {
         return new Promise(async (resolve, reject) => {
           if (value && !/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(value)) {
@@ -29,25 +30,28 @@ export default props=>{
       })
     }
     useEffect(()=>{
-      if(endId){
-        const prizeNotice=phones.split(',')
-        form.setFieldsValue({
-          prizeNotice:prizeNotice.map(ele=>({phone:ele}))
-        })
-      }
-    },[endId,phones])
+      getActiveConfigList({page:1,size:100}).then(res=>{
+        setOnselect(res.data?.map(ele=>(
+          {label:ele.name,value:ele.id}
+        )))
+      })
+    },[])
     return (
         <ModalForm
           title='上传邀请用户排名：（仅计算邀请新用户注册APP）'
-          key={endId}
+          key='uplist'
           form={form}
           onVisibleChange={setVisible}
           visible={visible}
+          modalProps={{
+            forceRender: true,
+            destroyOnClose: true,
+            onCancel: () => {
+              onClose();
+            }
+          }}
           submitter={{
           render: (props, defaultDoms) => {
-            if(endId&&falg){
-              return []
-            }
               return [
               ...defaultDoms
               ];
@@ -55,11 +59,12 @@ export default props=>{
           }}
           onFinish={async (values) => {
               const params={
-                list:values.prizeNotice
+                list:values.prizeNotice.map(ele=>({activityId:activityId,...ele}))
               }
               setVirtualInvite(params).then(res=>{
                 if(res.code==0){
                   setVisible(false) 
+                  callback(true)
                   message.success('操作成功')
                 }
               })
@@ -71,20 +76,18 @@ export default props=>{
         }],
         }}
       >
-        {
-            endId&&falg?
-            <List
-              itemLayout="horizontal"
-              dataSource={phones.split(',').map(ele=>({phone:ele}))}
-              renderItem={item => (
-                <List.Item>
-                  <List.Item.Meta
-                    title={<p>{item.phone}</p>}
-                  />
-                </List.Item>
-              )}
-            />
-            :
+         <ProFormSelect
+          width="md"
+          name="activityId"
+          options = {onselect}
+          placeholder="选择活动"
+          fieldProps={{
+            onChange:(val)=>{
+              setActivityId(val)
+              console.log('val',val)
+            }
+          }}
+        />
         <Form.List name="prizeNotice">
             {(fields, { add, remove }) => (
               <>
@@ -157,7 +160,10 @@ export default props=>{
                             {...field}
                             name={[field.name, 'activityId']}
                             fieldKey={[field.fieldKey, 'activityId']}
-                            initialValue={'42'}
+                            fieldProps={{
+                              value:activityId
+                            }}
+                            // initialValue={activityId}
                             hidden
                           />
                           <span>人</span>
@@ -171,7 +177,6 @@ export default props=>{
               </>
             )}
           </Form.List>
-        }
         <p style={{marginTop:'20px'}}>*手机号必须是注册过我们约购APP平台的</p>
       </ModalForm>
     )
