@@ -116,7 +116,7 @@ export default () => {
         title: '提现记录',
         valueType: 'option',
         render:(text, record, _, action)=>[
-          <a onClick={()=>{setListVisible(true);setRecordId(record)}}>查看</a>
+          <a key="detail" onClick={()=>{setListVisible(true);setRecordId(record)}}>查看</a>
         ],
       }, 
       {
@@ -125,7 +125,7 @@ export default () => {
         valueType: 'option',
         render:(text, record, _, action)=>[
           <a key='detail' onClick={()=>history.push('/activity-management/spring-festival-build-building-activity/employ-detail?memberId='+record.memberId)}>查看此用户明细</a>,
-          <a onClick={()=>{setVisible(true);setStoreNoId(record)}}>{record?.isFreeze?'解冻该奖励':'冻结该奖励'}</a>
+          <a key='unfreeze' onClick={()=>{setVisible(true);setStoreNoId(record)}}>{record?.isFreeze?'解冻该奖励':'冻结该奖励'}</a>
         ],
       }, 
     ];

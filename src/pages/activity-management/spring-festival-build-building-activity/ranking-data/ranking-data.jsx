@@ -21,7 +21,7 @@ const InviteRegister=(props) => {
     const columns= [
       {
         title: '序号',
-        dataIndex:'id',
+        dataIndex:'uni',
         valueType: 'borderIndex',
         hideInSearch: true,
         valueType: 'indexBorder'
@@ -115,7 +115,7 @@ const InviteRegister=(props) => {
       <>
         <ProTable
           actionRef={ref}
-          rowKey="activityId"
+          rowKey="uni"
           options={false}
           request={inviteRankList}
           postData={postData}
@@ -164,7 +164,7 @@ const InviteRegister=(props) => {
     const columns= [
       {
         title: '序号',
-        dataIndex:'id',
+        dataIndex:'uni',
         valueType: 'borderIndex',
         hideInSearch: true,
         valueType: 'indexBorder'
@@ -259,7 +259,7 @@ const InviteRegister=(props) => {
       <>
         <ProTable
           actionRef={ref}
-          rowKey="id"
+          rowKey="uni"
           options={false}
           request={floorRankList}
           postData={postData}
