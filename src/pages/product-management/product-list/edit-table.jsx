@@ -180,7 +180,7 @@ export default function EditTable(props) {
           </> : '-'
         },
         editable: false,
-        hideInTable: goodsSaleType === 2 || !ladderSwitch,
+        hideInTable: goodsSaleType === 2,
       },
       {
         title: '最高阶梯优惠',
@@ -197,7 +197,7 @@ export default function EditTable(props) {
           </> : '-'
         },
         editable: false,
-        hideInTable: goodsSaleType === 2 || !ladderSwitch,
+        hideInTable: goodsSaleType === 2,
       },
       // {
       //   title: '操作',
