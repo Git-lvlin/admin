@@ -122,7 +122,7 @@ export default () => {
       <PageContainer>
         <ProTable
           actionRef={ref}
-          rowKey="id"
+          rowKey="sn"
           options={false}
           request={withdrawPage}
           search={{
