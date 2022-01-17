@@ -102,8 +102,8 @@ const IntensiveActivityCreate = () => {
         formRef.current.setFieldsValue({
           ...wholesaleInfo,
           ladderShowPercent: amountTransform(res.data.sku[0].ladderShowPercent),
-          orderAmount: amountTransform(wholesaleInfo.orderAmount),
-          subsidy: amountTransform(wholesaleInfo.subsidy),
+          orderAmount: amountTransform(wholesaleInfo.orderAmount, '/'),
+          subsidy: amountTransform(wholesaleInfo.subsidy, '/'),
           // wholesaleStartTime: wholesaleInfo.wholesaleStartTime,
           area: getAreas(res.data.allowArea)
         })
@@ -402,20 +402,21 @@ const IntensiveActivityCreate = () => {
                             addonBefore: '当店主采购订单金额达到',
                             addonAfter: '元时'
                           }}
+                          placeholder="0.01-9999999.99,保留2位小数"
                           validateFirst
                           rules={[
                             { required: true, message: '请输入' },
                             () => ({
                               validator(_, value) {
-                                if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                                  return Promise.reject(new Error('请输入大于零的数字'));
+                                if (!/^\d+\.?\d*$/g.test(value) || value <= 0 || value > 9999999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
+                                  return Promise.reject(new Error('请输入0.01-9999999.99,保留2位小数'));
                                 }
                                 return Promise.resolve();
                               },
                             })
                           ]}
                           name="orderAmount"
-                          width={400}
+                          width={470}
                         />
                           <ProFormText
                             label=" "
@@ -424,13 +425,14 @@ const IntensiveActivityCreate = () => {
                               addonBefore: '补贴社区店店主',
                               addonAfter: `元`
                             }}
+                            placeholder="0.01-9999999.99,保留2位小数"
                             validateFirst
                             rules={[
                               { required: true, message: '请输入' },
                               () => ({
                                 validator(_, value) {
-                                  if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                                    return Promise.reject(new Error('请输入大于零的数字'));
+                                  if (!/^\d+\.?\d*$/g.test(value) || value <= 0 || value > 9999999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
+                                    return Promise.reject(new Error('请输入0.01-9999999.99,保留2位小数'));
                                   }
                                   return Promise.resolve();
                                 },

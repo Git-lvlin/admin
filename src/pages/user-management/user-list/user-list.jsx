@@ -8,6 +8,7 @@ import moment from 'moment';
 import DisableModal from './disable-modal';
 import { userList } from '@/services/user-management/user-list';
 import { history, useLocation } from 'umi';
+import AddressCascader from '@/components/address-cascader';
 
 const sourceType = {
   1: 'vivo',
@@ -54,6 +55,17 @@ const TableList = () => {
     //   valueType: 'text',
     //   hideInSearch: true,
     // },
+    {
+      title: '地区',
+      dataIndex: 'provinceName',
+      hideInSearch: true,
+      render: (_, record) => <>{record.provinceName}&nbsp;{record.cityName}</>
+    },
+    {
+      title: '年龄',
+      dataIndex: 'age',
+      hideInSearch: true,
+    },
     {
       title: '是否开店',
       dataIndex: 'userType',
@@ -183,6 +195,12 @@ const TableList = () => {
         1: '是',
         0: '否'
       },
+    },
+    {
+      title: '地区',
+      dataIndex: 'area',
+      hideInTable: true,
+      renderFormItem: () => (<AddressCascader placeholder="请选择" changeOnSelect areaData={window.yeahgo_area.filter(item => item.deep !== 3)} />)
     },
     {
       title: '操作',

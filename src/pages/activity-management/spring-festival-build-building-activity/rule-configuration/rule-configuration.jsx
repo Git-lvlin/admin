@@ -86,8 +86,8 @@ export default (props) =>{
       setDetailList({data:res.data})
       form.setFieldsValue({
         dateRange: [res.data?.startTime*1000, res.data?.endTime*1000],
-        moneyAll:content.moneyAll,
-        moneyDay:content.moneyDay,
+        moneyAll:amountTransform(content.moneyAll, '/'),
+        moneyDay:amountTransform(content.moneyDay, '/'),
         sendPlayTime:content.sendPlayTime,
         withdrawTime:content.withdrawTime*1000,
         validiteHour:content.validiteHour,
@@ -95,7 +95,7 @@ export default (props) =>{
         imgUrl:content.imgUrl,
         ruleText:content.ruleText,
         virtualNum:content.virtualNum,
-        prizeMoney:content?.rewardsSet?.luckyOne?.prizeMoney,
+        prizeMoney:amountTransform(content?.rewardsSet?.luckyOne?.prizeMoney, '/'),
         tierEnd1:content?.rewardsSet?.tiersSet?.[0]?.tierEnd,
         general_probability1:content?.rewardsSet?.tiersSet?.[0]?.general?.probability,
         general_moneyRange1_win1:amountTransform(content?.rewardsSet?.tiersSet?.[0]?.general?.moneyRange?.[0], '/'),
@@ -165,8 +165,8 @@ export default (props) =>{
         endTime:values.dateRange ? moment(values.dateRange[1]).valueOf()/1000 : null,
         name:values.name,
         status:values.status,
-        moneyAll:values.moneyAll,
-        moneyDay:values.moneyDay,
+        moneyAll:amountTransform(values.moneyAll, '*'),
+        moneyDay:amountTransform(values.moneyDay, '*'),
         sendPlayTime:values.sendPlayTime,
         withdrawTime:moment(values.withdrawTime).valueOf()/1000,
         validiteHour:values.validiteHour,
@@ -177,7 +177,7 @@ export default (props) =>{
         rewardsSet:{
           luckyOne:{
             prizeNum:1,
-            prizeMoney:values.prizeMoney,
+            prizeMoney:amountTransform(values.prizeMoney, '*'),
             prizePhones:phoneList||detailList?.data?.content?.rewardsSet?.luckyOne?.prizePhones
           },
           tiersSet:[
@@ -752,30 +752,30 @@ export default (props) =>{
                   <ProCard colSpan="400px" bordered  layout="center" colSpan="111px" style={{background:'none',borderTop:'2px solid #E6E6E6'}}>未中奖</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    probability1&&probability2&&(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(probability2),'*')))/100||
-                    probability1&&(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.lucky?.probability),'*')))/100||
-                    probability2&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.general?.probability),'*')+amountTransform(Number(probability2),'*')))/100||
+                    typeof probability1=== 'number'&&typeof probability2=== 'number'&&(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(probability2),'*')))/100===0?'0': typeof probability1 === 'number'&&typeof probability2=== 'number'&&(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(probability2),'*')))/100||
+                    typeof probability1=== 'number'&&(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.lucky?.probability),'*')))/100||
+                    typeof probability2=== 'number'&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.general?.probability),'*')+amountTransform(Number(probability2),'*')))/100||
                     detailList?.data?.content?.rewardsSet?.tiersSet?.[0]?.losing?.probability
                     }%</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    probability3&&probability4&&(10000-(amountTransform(Number(probability3),'*')+amountTransform(Number(probability4),'*')))/100||
-                    probability3&&(10000-(amountTransform(Number(probability3),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.lucky?.probability),'*')))/100||
-                    probability4&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.general?.probability),'*')+amountTransform(Number(probability4),'*')))/100||
+                    typeof probability3=== 'number'&&typeof probability4=== 'number'&&(10000-(amountTransform(Number(probability3),'*')+amountTransform(Number(probability4),'*')))/100===0?'0':typeof probability3=== 'number'&&typeof probability4=== 'number'&&(10000-(amountTransform(Number(probability3),'*')+amountTransform(Number(probability4),'*')))/100||
+                    typeof probability3=== 'number'&&(10000-(amountTransform(Number(probability3),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.lucky?.probability),'*')))/100||
+                    typeof probability4=== 'number'&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.general?.probability),'*')+amountTransform(Number(probability4),'*')))/100||
                     detailList?.data?.content?.rewardsSet?.tiersSet?.[1]?.losing?.probability
                     }%</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                   probability5&&probability6&&(10000-(amountTransform(Number(probability5),'*')+amountTransform(Number(probability6),'*')))/100||
-                   probability5&&(10000-(amountTransform(Number(probability5),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.lucky?.probability),'*')))/100||
-                   probability6&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.general?.probability),'*')+amountTransform(Number(probability6),'*')))/100||
+                    typeof probability5=== 'number'&&typeof probability6=== 'number'&&(10000-(amountTransform(Number(probability5),'*')+amountTransform(Number(probability6),'*')))/100===0?'0':typeof probability5=== 'number'&&typeof probability6=== 'number'&&(10000-(amountTransform(Number(probability5),'*')+amountTransform(Number(probability6),'*')))/100||
+                    typeof probability5=== 'number'&&(10000-(amountTransform(Number(probability5),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.lucky?.probability),'*')))/100||
+                    typeof probability6=== 'number'&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.general?.probability),'*')+amountTransform(Number(probability6),'*')))/100||
                     detailList?.data?.content?.rewardsSet?.tiersSet?.[2]?.losing?.probability
                     }%</ProCard>
                   <ProCard colSpan="400px" bordered  layout="center">
                     概率{
-                    probability7&&probability8&&(10000-(amountTransform(Number(probability7),'*')+amountTransform(Number(probability8),'*')))/100||
-                    probability7&&(10000-(amountTransform(Number(probability7),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.lucky?.probability),'*')))/100||
-                    probability8&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.general?.probability),'*')+amountTransform(Number(probability8),'*')))/100||
+                    typeof probability7=== 'number'&&typeof probability8=== 'number'&&(10000-(amountTransform(Number(probability7),'*')+amountTransform(Number(probability8),'*')))/100===0?'0':typeof probability7=== 'number'&&typeof probability8=== 'number'&&(10000-(amountTransform(Number(probability7),'*')+amountTransform(Number(probability8),'*')))/100||
+                    typeof probability7=== 'number'&&(10000-(amountTransform(Number(probability7),'*')+amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.lucky?.probability),'*')))/100||
+                    typeof probability8=== 'number'&&(10000-(amountTransform(Number(detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.general?.probability),'*')+amountTransform(Number(probability8),'*')))/100||
                     detailList?.data?.content?.rewardsSet?.tiersSet?.[3]?.losing?.probability
                     }%</ProCard>
                 </ProCard>
@@ -792,7 +792,7 @@ export default (props) =>{
               rules={[{ required: true, message: '请输入' }]}
               readonly={id&&falg}
               fieldProps={{
-                value:`${detailList?.data?.content?.moneyAll}元`
+                value:`${amountTransform(detailList?.data?.content?.moneyAll, '/')}元`
               }}
             />
           :
@@ -818,7 +818,7 @@ export default (props) =>{
               readonly={id&&falg}
               rules={[{ required: true, message: '请输入' }]}
               fieldProps={{
-                value:`${detailList?.data?.content?.moneyDay}元`
+                value:`${amountTransform(detailList?.data?.content?.moneyDay, '/')}元`
               }}
             />
             :

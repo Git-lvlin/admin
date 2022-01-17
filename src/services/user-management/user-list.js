@@ -1,7 +1,15 @@
 import request from '@/utils/request';
 
 export const userList = async (params = {}, options = {}) => {
-  const { current, pageSize, loginTime, createTime, ...rest } = params;
+  const { current, pageSize, loginTime, createTime, area = [], ...rest } = params;
+  const obj = {}
+  if (area.length === 1) {
+    obj.provinceName = area[0].label
+  }
+  if (area.length === 2) {
+    obj.provinceName = area[0].label
+    obj.cityName = area[1].label
+  }
   const res = await request('/auth/java-admin/memberInfo/searchByMoreCondition', {
     method: 'POST',
     data: {
@@ -11,6 +19,7 @@ export const userList = async (params = {}, options = {}) => {
       loginEndTm: loginTime?.[1],
       registerStartTm: createTime?.[0],
       registerEndTm: createTime?.[1],
+      ...obj,
       ...rest
     },
     ...options
