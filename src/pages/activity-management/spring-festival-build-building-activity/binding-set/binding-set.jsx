@@ -52,7 +52,7 @@ export default () => {
       <PageContainer>
         <ProTable
           actionRef={ref}
-          rowKey="memberId"
+          rowKey="sn"
           options={false}
           request={findPage}
           search={{
