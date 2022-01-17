@@ -311,10 +311,6 @@ export default (props) =>{
   const limitDecimalsF =(value)=>{
     return value&&parseInt(value)
   };
-  useEffect(()=>{
-      console.log('probability1',(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(probability2),'*')))/100)
-      console.log('probability2',(10000-(amountTransform(Number(probability1),'*')+amountTransform(Number(probability2),'*')))/100)
-  },[probability1,probability2])
   return (
     <PageContainer>
       <Spin spinning={loading}>

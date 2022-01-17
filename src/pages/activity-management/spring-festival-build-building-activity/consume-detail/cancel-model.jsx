@@ -6,8 +6,6 @@ import ProForm, {
 import { buildhouseAccountSub } from '@/services/activity-management/spring-festival-build-building-activity';
 import styles from './style.less'
 import { CloseCircleFilled,ExclamationCircleFilled} from '@ant-design/icons';
-import { useState } from 'react';
-import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -50,7 +48,8 @@ export default (props) => {
           const params={
             activityId:storeNoId?.configId,
             memberId:storeNoId?.memberId,
-            isFreeze:storeNoId?.isFreeze?false:true,
+            isFreeze:storeNoId?.isFreeze?0:1,
+            chanceId:storeNoId?.id
           }
           buildhouseAccountSub(params).then(res=>{
             if(res.code==0){
