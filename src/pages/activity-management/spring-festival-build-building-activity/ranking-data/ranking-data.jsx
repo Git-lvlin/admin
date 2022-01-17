@@ -57,6 +57,7 @@ const InviteRegister=(props) => {
         dataIndex: 'name',
         valueType: 'text',
         hideInSearch:true,
+        ellipsis:'true'
       },
       {
         title: '活动名称',
@@ -99,7 +100,6 @@ const InviteRegister=(props) => {
         res.data?.map(ele=>(
           obj[ele.id]={text:ele.name,status:ele.id}
         ))
-        console.log('obj',obj)
         setOnselect(obj)
       })
     },[])
@@ -200,6 +200,7 @@ const InviteRegister=(props) => {
         dataIndex: 'name',
         valueType: 'text',
         hideInSearch: true,
+        ellipsis:'true'
       },
       {
         title: '活动名称',
@@ -239,7 +240,6 @@ const InviteRegister=(props) => {
         res.data?.map(ele=>(
           obj[ele.id]={text:ele.name,status:ele.id}
         ))
-        console.log('obj',obj)
         setOnselect(obj)
       })
     },[])

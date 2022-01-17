@@ -22,6 +22,7 @@ const UserDetail=(props) => {
       title: '活动名称',
       dataIndex: 'name',
       valueType: 'text',
+      ellipsis:'true'
     },
     {
       title: '发放原因',
@@ -124,6 +125,7 @@ const EmployDetail=(props) => {
       title: '活动名称',
       dataIndex: 'name',
       valueType: 'text',
+      ellipsis:'true'
     },
     {
       title: '使用原因',
