@@ -223,7 +223,7 @@ export default (props) => {
                 >
                   {amountTransform(goods.wholesaleSupplyPrice, '/')}元/{goods.unit}
                 </Form.Item>
-                {!!detailData.ladderSwitch && <Form.Item
+                <Form.Item
                   label="集采阶梯优惠"
                 >
                   {goods.ladderData && <>
@@ -232,7 +232,7 @@ export default (props) => {
                     <div>{+goods.ladderData['1'].wsEnd + 1}{goods.unit}及以上时，{goods.ladderData['2'].wsSupplyPrice / 100}元/{goods.unit}</div>
                     {goods.batchNumber > 1 && <div>{parseInt((+goods.ladderData['1'].wsEnd + 1) / goods.batchNumber, 10)}{goods.wsUnit || '箱'}及以上时，{goods.ladderData['2'].wsSupplyPrice * goods.batchNumber / 100}元/{goods.wsUnit || '箱'}</div>}
                   </>}
-                </Form.Item>}
+                </Form.Item>
                 <Form.Item
                   label="集采箱规单位量"
                 >
