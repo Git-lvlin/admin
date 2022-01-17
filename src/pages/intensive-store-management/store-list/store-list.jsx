@@ -7,16 +7,18 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { getStoreList } from '@/services/intensive-store-management/store-list';
 import { history } from 'umi';
 import AddressCascader from '@/components/address-cascader';
+import Auth from '@/components/auth';
 import Form from './form';
 import Create from './create';
 import Return from './return';
 import ExcelModal from './excel-modal'
+import GradeChange from './grade-change'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import { amountTransform } from '@/utils/utils'
 
 const StoreList = (props) => {
-  const { storeType }=props
+  const { storeType } = props
   const [formVisible, setFormVisible] = useState(false);
   const [createVisible, setCreateVisible] = useState(false);
   const [returnVisible, setReturnVisible] = useState(false);
@@ -239,7 +241,7 @@ const StoreList = (props) => {
       title: '保证金状态',
       dataIndex: 'depositStatus',
       valueType: 'select',
-      hideInSearch:storeType=='cancelled',
+      hideInSearch: storeType == 'cancelled',
       hideInTable: true,
       valueEnum: {
         "normal": '全部',
@@ -253,13 +255,13 @@ const StoreList = (props) => {
       dataIndex: 'depositStatusDesc',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType=='cancelled',
+      hideInTable: storeType == 'cancelled',
       render: (_, data) => {
         const { depositRefendList } = data;
         return (
           <>
             <p>{_}</p>
-            {depositRefendList && depositRefendList.map(ele=>{
+            {depositRefendList && depositRefendList.map(ele => {
               return <p>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</p>
             })}
           </>
@@ -270,7 +272,7 @@ const StoreList = (props) => {
       title: '保证金状态',
       dataIndex: 'depositStatus',
       valueType: 'select',
-      hideInSearch:storeType=='normal',
+      hideInSearch: storeType == 'normal',
       hideInTable: true,
       valueEnum: {
         "cancelled": '全部',
@@ -284,13 +286,13 @@ const StoreList = (props) => {
       dataIndex: 'depositStatusDesc',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType=='normal',
+      hideInTable: storeType == 'normal',
       render: (_, data) => {
         const { depositRefendList } = data;
         return (
           <>
             <p>{_}</p>
-            {depositRefendList && depositRefendList.map(ele=>{
+            {depositRefendList && depositRefendList.map(ele => {
               return <p>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</p>
             })}
           </>
@@ -301,7 +303,7 @@ const StoreList = (props) => {
       title: '营业状态',
       dataIndex: 'status',
       valueType: 'select',
-      hideInSearch:storeType=='cancelled',
+      hideInSearch: storeType == 'cancelled',
       hideInTable: true,
       valueEnum: {
         1: '已启用',
@@ -313,7 +315,7 @@ const StoreList = (props) => {
       dataIndex: 'status',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType=='cancelled',
+      hideInTable: storeType == 'cancelled',
       render: (_, data) => {
         return (
           <>
@@ -363,7 +365,7 @@ const StoreList = (props) => {
       dataIndex: 'remark',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType=='normal',
+      hideInTable: storeType == 'normal',
       render: (_, data) => {
         return (
           <>
@@ -385,6 +387,15 @@ const StoreList = (props) => {
           {data.status.code === 1 && <a onClick={() => { setSelectItem({ ...data, toStatus: 3 }); setFormVisible(true) }}>关闭</a>}
           {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 1 }); setFormVisible(true) }}>开启</a>}
           {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 2 }); setFormVisible(true) }}>注销</a>}
+          <Auth
+            name="store/member_shop/grade"
+          >
+            <GradeChange
+              callback={() => { actionRef.current.reload() }}
+              storeNo={data.storeNo}
+            />
+          </Auth>
+          
         </Space>
       )
     },
@@ -394,7 +405,7 @@ const StoreList = (props) => {
     if (formRef?.current?.getFieldsValue) {
       const { current, pageSize, area = [], ...rest } = formRef?.current?.getFieldsValue?.();
       return {
-        operation:storeType,
+        operation: storeType,
         provinceId: area[0]?.value,
         cityId: area[1]?.value,
         regionId: area[2]?.value,
@@ -412,9 +423,10 @@ const StoreList = (props) => {
         actionRef={actionRef}
         formRef={formRef}
         params={{
-          operation:storeType
+          operation: storeType
         }}
         request={getStoreList}
+        scroll={{ x: 'max-content' }}
         search={{
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [
@@ -430,10 +442,10 @@ const StoreList = (props) => {
             <Export
               change={(e) => { setVisit(e) }}
               key="export"
-              type={storeType=='normal'?"community-shopkeeper-export":"community-shopkeeper-cancelled-export"}
+              type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"}
               conditions={getFieldValue}
             />,
-            <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType=='normal'?"community-shopkeeper-export":"community-shopkeeper-cancelled-export"} />
+            <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"} />
             // <Button
             //   key="new2"
             //   onClick={() => {
@@ -491,12 +503,12 @@ const OverallStore = () => {
       >
         <ProCard.TabPane key="normal" tab="正常店铺">
           {
-            activeKey=='normal'&&<StoreList storeType={activeKey} />
+            activeKey == 'normal' && <StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
         <ProCard.TabPane key="cancelled" tab="已注销店铺">
           {
-            activeKey=='cancelled'&&<StoreList storeType={activeKey} />
+            activeKey == 'cancelled' && <StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
       </ProCard>
