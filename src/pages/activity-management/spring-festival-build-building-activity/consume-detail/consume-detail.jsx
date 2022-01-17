@@ -57,6 +57,7 @@ export default () => {
         title: '活动名称',
         dataIndex: 'name',
         valueType: 'text',
+        ellipsis:'true'
       },
       {
         title: '使用时间',
