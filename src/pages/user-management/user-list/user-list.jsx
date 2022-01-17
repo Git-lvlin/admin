@@ -59,7 +59,7 @@ const TableList = () => {
       title: '地区',
       dataIndex: 'provinceName',
       hideInSearch: true,
-      render: (_, record) => <>{record.provinceName}&nbsp;{record.cityName}</>
+      render: (_, record) => <>{record.provinceName}&nbsp;{record.cityName}&nbsp;{record.districtName}</>
     },
     {
       title: '年龄',
@@ -200,7 +200,7 @@ const TableList = () => {
       title: '地区',
       dataIndex: 'area',
       hideInTable: true,
-      renderFormItem: () => (<AddressCascader placeholder="请选择" changeOnSelect areaData={window.yeahgo_area.filter(item => item.deep !== 3)} />)
+      renderFormItem: () => (<AddressCascader placeholder="请选择" changeOnSelect />)
     },
     {
       title: '操作',

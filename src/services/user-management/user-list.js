@@ -10,6 +10,11 @@ export const userList = async (params = {}, options = {}) => {
     obj.provinceName = area[0].label
     obj.cityName = area[1].label
   }
+  if (area.length === 3) {
+    obj.provinceName = area[0].label
+    obj.cityName = area[1].label
+    obj.districtName = area[2].label
+  }
   const res = await request('/auth/java-admin/memberInfo/searchByMoreCondition', {
     method: 'POST',
     data: {
