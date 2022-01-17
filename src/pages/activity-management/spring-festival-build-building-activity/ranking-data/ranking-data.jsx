@@ -21,7 +21,7 @@ const InviteRegister=(props) => {
     const columns= [
       {
         title: '序号',
-        dataIndex:'uni',
+        dataIndex:'id',
         valueType: 'borderIndex',
         hideInSearch: true,
         valueType: 'indexBorder'
@@ -164,7 +164,7 @@ const InviteRegister=(props) => {
     const columns= [
       {
         title: '序号',
-        dataIndex:'uni',
+        dataIndex:'id',
         valueType: 'borderIndex',
         hideInSearch: true,
         valueType: 'indexBorder'
