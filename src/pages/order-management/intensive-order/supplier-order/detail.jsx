@@ -256,11 +256,11 @@ const Detail = (props) => {
                   <div className={styles.box_wrap}>
                     <div className={styles.box}>
                       <div>运营中心配送补贴</div>
-                      <div>{amountTransform(Number(detailData?.sku?.operationFixedPrice), '/')}元</div>
+                      <div>{amountTransform(Number(detailData?.sku?.operationFixedPrice), '/')}元/{detailData?.sku?.unit}</div>
                     </div>
                     <div className={styles.box}>
                       <div>社区店配送补贴</div>
-                      <div>{amountTransform(Number(detailData?.sku?.fixedPrice), '/')}元</div>
+                      <div>{amountTransform(Number(detailData?.sku?.fixedPrice), '/')}元/{detailData?.sku?.unit}</div>
                     </div>
                   </div>
                 </div>
@@ -269,11 +269,11 @@ const Detail = (props) => {
                   <div className={styles.box_wrap}>
                     <div className={styles.box}>
                       <div>运营中心额外奖励</div>
-                      <div>{amountTransform(Number(detailData?.sku?.ladderSubsidyOperationPrice), '/')}元</div>
+                      <div>{amountTransform(Number(detailData?.sku?.ladderSubsidyOperationPrice), '/')}元/{detailData?.sku?.unit}</div>
                     </div>
                     <div className={styles.box}>
                       <div>社区店额外奖励</div>
-                      <div>{amountTransform(Number(detailData?.sku?.ladderSubsidyStorePrice), '/')}元</div>
+                      <div>{amountTransform(Number(detailData?.sku?.ladderSubsidyStorePrice), '/')}元/{detailData?.sku?.unit}</div>
                     </div>
                   </div>
                 </div>
