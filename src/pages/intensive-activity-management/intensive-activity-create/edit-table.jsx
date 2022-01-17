@@ -29,22 +29,21 @@ const CusInput = ({ value, onChange, ...rest }) => {
   return <Input value={value} onChange={keyup} {...rest} />
 }
 
-const Subsidy = ({ value = {}, onChange, orderProfit, ...rest }) => {
-  return (
-    <>
-      <div>当订单金额达到 <CusInput onChange={(e) => { const obj = { ...value }; obj.a = e; onChange(obj) }} value={value.a} style={{ width: 150 }} {...rest} /></div>
-      {orderProfit !== 0 && <div>实际盈亏为 {orderProfit}元</div>}
-      <div>补贴 <CusInput onChange={(e) => { const obj = { ...value }; obj.b = e; onChange(obj) }} value={value.b} style={{ width: 150 }} {...rest} /></div>
-    </>
-  )
-}
+// const Subsidy = ({ value = {}, onChange, orderProfit, ...rest }) => {
+//   return (
+//     <>
+//       <div>当订单金额达到 <CusInput onChange={(e) => { const obj = { ...value }; obj.a = e; onChange(obj) }} value={value.a} style={{ width: 150 }} {...rest} /></div>
+//       {orderProfit !== 0 && <div>实际盈亏为 {orderProfit}元</div>}
+//       <div>补贴 <CusInput onChange={(e) => { const obj = { ...value }; obj.b = e; onChange(obj) }} value={value.b} style={{ width: 150 }} {...rest} /></div>
+//     </>
+//   )
+// }
 
 export default function EditTable({ onSelect, sku, wholesale }) {
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectData, setSelectData] = useState([]);
-  // const [isFirst, setIsFirst] = useState(true);
   const isFirst = useRef(true);
   const formRef = useRef();
 
@@ -55,13 +54,16 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       const findItem = dataSource.find(item => item.id === record.id);
       const obj = {
         skuId: record.skuId,
-        fixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.fixedPrice) : '',
-        operationFixedPrice: record.isEditSubsidy.length !== 0 ? amountTransform(record.operationFixedPrice) : '',
         isGetWholesale: 1,
         priceScale: amountTransform(record.settlePercent, '/'),
         price: amountTransform(record.price),
-        orderAmount: amountTransform(record.subsidy.a),
-        subsidy: amountTransform(record.subsidy.b)
+        // orderAmount: amountTransform(record.subsidy.a),
+        // subsidy: amountTransform(record.subsidy.b)
+      }
+
+      if (record.isAppointSubsidy.length) {
+        obj.fixedPrice = amountTransform(record.fixedPrice);
+        obj.operationFixedPrice = amountTransform(record.operationFixedPrice);
       }
 
       if (findItem.price !== record.price) {
@@ -86,10 +88,10 @@ export default function EditTable({ onSelect, sku, wholesale }) {
               profit: amountTransform(skuData.profit, '/'),
               orderProfit: amountTransform(skuData.orderProfit, '/'),
               totalPrice: (skuData.price > 0 && record.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(record.minNum) : 0,
-              subsidy: {
-                a: skuData.orderAmount ? amountTransform(skuData.orderAmount, '/') : '',
-                b: skuData.subsidy ? amountTransform(skuData.subsidy, '/') : ''
-              }
+              // subsidy: {
+              //   a: skuData.orderAmount ? amountTransform(skuData.orderAmount, '/') : '',
+              //   b: skuData.subsidy ? amountTransform(skuData.subsidy, '/') : ''
+              // }
             }
             return data
           }
@@ -107,7 +109,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
 
       productList(obj).then(res => {
         const skuData = res.data[0];
-        onSelect(getList(selectData, skuData, (arr) => { setSelectData(arr) }))
+        onSelect(getList([record], skuData, (arr) => { setSelectData(arr) }))
         setDataSource(getList(recordList, skuData))
       })
     };
@@ -332,7 +334,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
     },
     {
       title: '是否指定配送补贴',
-      dataIndex: 'isEditSubsidy',
+      dataIndex: 'isAppointSubsidy',
       valueType: 'text',
       hideInSearch: true,
       renderFormItem: () => <Checkbox.Group><Checkbox value={1}>指定配送补贴</Checkbox></Checkbox.Group>,
@@ -343,7 +345,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       renderFormItem: (_, { record }) => {
-        if (record.isEditSubsidy.length) {
+        if (record.isAppointSubsidy.length) {
           return <CusInput onBlur={() => {
             debounceFetcher({ record, recordList: dataSource })
           }} />
@@ -357,7 +359,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       renderFormItem: (_, { record }) => {
-        if (record.isEditSubsidy.length) {
+        if (record.isAppointSubsidy.length) {
           return <CusInput onBlur={() => {
             debounceFetcher({ record, recordList: dataSource })
           }} />
@@ -365,18 +367,18 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         return record.fixedPrice
       },
     },
-    {
-      title: '社区店特殊补贴',
-      dataIndex: 'subsidy',
-      valueType: 'text',
-      hideInSearch: true,
-      width: 250,
-      renderFormItem: (_, { record }) => {
-        return <Subsidy onBlur={() => {
-          debounceFetcher({ record, recordList: dataSource })
-        }} orderProfit={record.orderProfit} />
-      }
-    },
+    // {
+    //   title: '社区店特殊补贴',
+    //   dataIndex: 'subsidy',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   width: 250,
+    //   renderFormItem: (_, { record }) => {
+    //     return <Subsidy onBlur={() => {
+    //       debounceFetcher({ record, recordList: dataSource })
+    //     }} orderProfit={record.orderProfit} />
+    //   }
+    // },
     {
       title: '集采箱规单位量',
       dataIndex: 'batchNumber',
@@ -429,11 +431,11 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       orderProfit: 0,
       totalPrice: item.salePrice > 0 ? +new Big(item.price).div(100).times(item.wholesaleMinNum || 10) : 0,
       wholesaleFlowType: 1,
-      isEditSubsidy: [],
-      subsidy: {
-        a: item.orderAmount > 0 ? amountTransform(item.orderAmount, '/') : '',
-        b: item.subsidy > 0 ? amountTransform(item.subsidy, '/') : '',
-      }
+      isAppointSubsidy: [],
+      // subsidy: {
+      //   a: item.orderAmount > 0 ? amountTransform(item.orderAmount, '/') : '',
+      //   b: item.subsidy > 0 ? amountTransform(item.subsidy, '/') : '',
+      // }
     }))
 
     if (data.length === 0) {
@@ -443,6 +445,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
     if (isFirst.current && sku && data.length) {
       arr[0] = {
         ...arr[0],
+        ladderData: sku.ladderSubsidy.length === 0 ? arr[0].ladderData : sku.ladderSubsidy,
         minNum: sku.minNum,
         maxNum: sku.maxNum,
         totalStockNum: sku.totalStockNum,
@@ -455,11 +458,11 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         orderProfit: amountTransform(wholesale?.orderProfit, '/'),
         totalPrice: sku.salePrice > 0 ? +new Big(sku.price).div(100).times(sku.minNum || 10) : 0,
         wholesaleFlowType: wholesale?.wholesaleFlowType,
-        isEditSubsidy: wholesale?.isEditSubsidy === 0 ? [] : [1],
-        subsidy: {
-          a: wholesale?.orderAmount > 0 ? amountTransform(wholesale?.orderAmount, '/') : '',
-          b: wholesale?.subsidy > 0 ? amountTransform(wholesale.subsidy, '/') : '',
-        }
+        isAppointSubsidy: sku?.isAppointSubsidy === 0 ? [] : [1],
+        // subsidy: {
+        //   a: wholesale?.orderAmount > 0 ? amountTransform(wholesale?.orderAmount, '/') : '',
+        //   b: wholesale?.subsidy > 0 ? amountTransform(wholesale.subsidy, '/') : '',
+        // }
       }
       setSelectedRowKeys([sku.skuId])
       setSelectData(arr);
@@ -505,11 +508,8 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         editableKeys,
         onValuesChange: (record, recordList) => {
           const findItem = dataSource.find(item => item.id === record.id);
-          if (findItem.isEditSubsidy.length !== record.isEditSubsidy.length) {
+          if (findItem.isAppointSubsidy.length !== record.isAppointSubsidy.length) {
             debounceFetcher({ record, recordList })
-          } else {
-            // onSelect([record])
-            // setDataSource(recordList)
           }
 
           if (findItem.wholesaleFlowType !== record.wholesaleFlowType) {
@@ -517,7 +517,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
             setSelectData([record])
             setDataSource(recordList)
           }
-          
+
         }
       }}
       pagination={{

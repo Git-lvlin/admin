@@ -173,14 +173,15 @@ const TableList = () => {
     },
     {
       title: '状态',
-      dataIndex: 'wholesaleAuditStatus',
-      valueType: 'select',
+      dataIndex: 'wholesaleAuditStatusDesc',
+      valueType: 'text',
       hideInSearch: true,
-      valueEnum: {
-        0: '待审核',
-        1: '审核通过',
-        2: '已拒绝'
-      },
+      render: (_, data) => {
+        if (data.wholesaleAuditStatus === 2) {
+          return <>{_} <Tooltip title={data.rejectionReason}><QuestionCircleOutlined /></Tooltip></>
+        }
+        return <div dangerouslySetInnerHTML={{ __html: _ }}></div>
+      }
     },
     {
       title: '操作',

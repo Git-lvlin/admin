@@ -3,8 +3,8 @@ import request from '@/utils/request';
 export const productList = async (params, options = {}) => {
   const { current, pageSize, gcId = [], ...rest } = params;
   const res = await request('/auth/goods/product/skuList', {
-    method: 'GET',
-    params: {
+    method: 'POST',
+    data: {
       page: current,
       size: pageSize,
       gcId1: gcId[0],
