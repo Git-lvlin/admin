@@ -90,7 +90,7 @@ export default (props) =>{
         moneyDay:amountTransform(content.moneyDay, '/'),
         sendPlayTime:content.sendPlayTime,
         withdrawTime:content.withdrawTime*1000,
-        validiteHour:content.validiteHour,
+        validiteHour:24,
         testNum:content.testNum,
         imgUrl:content.imgUrl,
         ruleText:content.ruleText,
@@ -989,7 +989,7 @@ export default (props) =>{
             }}
           />
           
-          {
+          {/* {
             id&&falg?
             <ProFormText
               width="sm"
@@ -1001,7 +1001,7 @@ export default (props) =>{
                 value:`${detailList?.data?.content?.validiteHour}小时`
               }}
             />
-            :
+            : */}
             <ProFormText
               width="sm"
               name="validiteHour"
@@ -1013,8 +1013,10 @@ export default (props) =>{
               fieldProps={{
                 addonAfter:"小时"
               }}
+              initialValue={24}
+              hidden
             />
-          }
+          {/* } */}
           {
             id&&falg?
             <ProFormText
