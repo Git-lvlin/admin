@@ -257,7 +257,6 @@ const Detail = () => {
       <Spin
         spinning={loading}
       >
-        <CheckCircleOutlined style={{ color: 'green' }} />
         <div style={{ backgroundColor: '#fff', padding: 20, paddingBottom: 50 }}>
           <Row>
             <Title style={{ marginBottom: -10 }} level={5}>活动商品</Title>
