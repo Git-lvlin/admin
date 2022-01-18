@@ -257,7 +257,6 @@ const Detail = () => {
       <Spin
         spinning={loading}
       >
-        <CheckCircleOutlined style={{ color: 'green' }} />
         <div style={{ backgroundColor: '#fff', padding: 20, paddingBottom: 50 }}>
           <Row>
             <Title style={{ marginBottom: -10 }} level={5}>活动商品</Title>
@@ -319,36 +318,44 @@ const Detail = () => {
             {detailData?.wholesale.recoverPayTimeout / 3600}小时
           </Descriptions.Item> */}
             </Descriptions>
-            {detailData?.wholesale?.isEditSubsidy === 1 &&
-              <div style={{ marginBottom: 20 }}>
-                当店主采购订单金额达到{detailData?.wholesale?.orderAmount / 100}元时，补贴社区店店主{detailData?.wholesale?.subsidy / 100}元
-              </div>
-            }
-            {detailData?.wholesale?.isEditSubsidy === 2 && <div>
-              <LadderDataEdit
-                data={getLadderData()}
-                batchNumber={detailData?.sku?.[0]?.batchNumber}
-                unit={detailData?.sku?.[0]?.unit}
-                wsUnit={detailData?.sku?.[0]?.wsUnit}
-                skuData={getSkuData()}
-                readOnly="1"
-              />
-              <div><InfoCircleOutlined />&nbsp;<PriceExplanation skuData={getSkuData()} ladderData={getLadderData()} /></div>
-              <div style={{ marginTop: 20 }}>前端奖励展示需完成量: {detailData?.sku?.[0]?.ladderShowPercent * 100}%</div>
-              <div style={{ marginTop: 20 }}>平台额外奖励占比审核状态: {detailData?.percentAuditStatusDesc}</div>
-            </div>}
+            <div>
+              <div style={{ fontWeight: 'bold', marginBottom: 20 }}>平台额外奖励：{{ 0: '不进行平台额外奖励', 1: '按采购量奖励社区店', 2: '按集采阶梯量奖励(社区店+运营中心)' }[detailData?.wholesale?.isEditSubsidy]}</div>
+              {detailData?.wholesale?.isEditSubsidy === 1 &&
+                <div style={{ marginBottom: 20 }}>
+                  当店主采购订单金额达到{detailData?.wholesale?.orderAmount / 100}元时，补贴社区店店主{detailData?.wholesale?.subsidy / 100}元
+                </div>
+              }
+              {detailData?.wholesale?.isEditSubsidy === 2 && <div>
+                <LadderDataEdit
+                  data={getLadderData()}
+                  batchNumber={detailData?.sku?.[0]?.batchNumber}
+                  unit={detailData?.sku?.[0]?.unit}
+                  wsUnit={detailData?.sku?.[0]?.wsUnit}
+                  skuData={getSkuData()}
+                  readOnly="1"
+                />
+                <div><InfoCircleOutlined />&nbsp;<PriceExplanation skuData={getSkuData()} ladderData={getLadderData()} /></div>
+                <div style={{ marginTop: 20 }}>前端奖励展示需完成量: {detailData?.sku?.[0]?.ladderShowPercent * 100}%</div>
+                <div style={{ marginTop: 20, color: '#000' }}>
+                  平台额外奖励占比审核状态: <span style={{ color: { 1: 'green', 2: 'red' }[detailData.percentAuditStatus] }}>{detailData?.percentAuditStatusDesc}</span>
+                </div>
+              </div>}
+            </div>
           </Row>
-          <Button style={{ marginLeft: '400px' }} type="default" onClick={() => history.goBack()}>返回</Button>
-          <Button style={{ marginLeft: '50px' }} onClick={() => { auditPass() }} type="primary">审核通过</Button>
+          <div style={{ marginTop: 40, display: 'flex', justifyContent: 'center' }}>
+            <Button type="default" onClick={() => history.goBack()}>返回</Button>
+            <Button style={{ marginLeft: '50px' }} onClick={() => { auditPass() }} type="primary">审核通过</Button>
+            <AuditModel
+              label={'审核驳回'}
+              InterFace={updateWholesaleAuditStatus}
+              title={'请确认操作'}
+              id={params?.id}
+            />
+          </div>
           {
             visible && <PassModel visible={visible} wsId={params?.id} setVisible={setVisible} type={timeType} />
           }
-          <AuditModel
-            label={'审核驳回'}
-            InterFace={updateWholesaleAuditStatus}
-            title={'请确认操作'}
-            id={params?.id}
-          />
+
         </div>
       </Spin>
 

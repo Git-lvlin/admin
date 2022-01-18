@@ -348,7 +348,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       dataIndex: 'price',
       valueType: 'text',
       hideInSearch: true,
-      renderFormItem: (_, { record }) => <CusInput onBlur={() => {
+      renderFormItem: (_, { record }) => <CusInput addonAfter={`元/${record.unit}`} onBlur={() => {
         debounceFetcher({ record, recordList: dataSource })
       }} />,
     },
