@@ -16,6 +16,7 @@ import GradeChange from './grade-change'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import { amountTransform } from '@/utils/utils'
+import Detail from './detail';
 
 const StoreList = (props) => {
   const { storeType } = props
@@ -25,6 +26,7 @@ const StoreList = (props) => {
   const [excelVisible, setExcelVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
   const [visit, setVisit] = useState(false)
+  const [detailVisible, setDetailVisible] = useState(false);
   const actionRef = useRef();
   const formRef = useRef();
 
@@ -381,7 +383,7 @@ const StoreList = (props) => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          <a onClick={() => { history.push(`/intensive-store-management/store-detail/${data.storeNo}`) }}>详情</a>
+          <a onClick={() => { setSelectItem(data); setDetailVisible(true) }}>详情</a>
           {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 1 }); setReturnVisible(true) }}>线下退保证金登记</a>}
           {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 2 }); setReturnVisible(true) }}>线上原路退回保证金</a>}
           {data.status.code === 1 && <a onClick={() => { setSelectItem({ ...data, toStatus: 3 }); setFormVisible(true) }}>关闭</a>}
@@ -462,6 +464,14 @@ const StoreList = (props) => {
           pageSize: 10,
         }}
       />
+      {
+        detailVisible &&
+        <Detail
+          storeNo={selectItem?.storeNo}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
       {formVisible && <Form
         visible={formVisible}
         setVisible={setFormVisible}
