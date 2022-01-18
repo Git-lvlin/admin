@@ -47,12 +47,12 @@ const SubTable = (props) => {
       render: (_) => `${amountTransform(_)}%`
     },
     {
-      title: '批发供货价(元)',
+      title: `批发供货价(元/${data?.[0]?.unit})`,
       dataIndex: 'wholesaleSupplyPrice',
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '市场价',
+      title: `市场价(元/${data?.[0]?.unit})`,
       dataIndex: 'marketPrice',
       render: (_) => amountTransform(_, '/')
     },
@@ -69,7 +69,7 @@ const SubTable = (props) => {
       }
     },
     {
-      title: '集约价',
+      title: `集约价(元/${data?.[0]?.unit})`,
       dataIndex: 'price',
       render: (_) => amountTransform(_, '/')
     },
