@@ -185,7 +185,7 @@ const ProductData = () => {
     },
     {
       title: '退款商品金额',
-      dataIndex: 'returnAmount',
+      dataIndex: 'refundAmount',
       render: (_) => amountTransform(Number(_), '/'),
       align: 'center'
     },
