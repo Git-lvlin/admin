@@ -93,7 +93,7 @@ const Detail = ({ storeNo, visible, setVisible }) => {
               <Descriptions.Item label="配送范围">{detailData?.deliveryCoverage ? detailData?.deliveryCoverage / 1000 + 'km' : '店主未配置'}</Descriptions.Item>
             </Descriptions>
           </Row>
-          <Row>
+          {/* <Row>
             <Title style={{ marginBottom: -10, marginTop: 100 }} level={5}>审核认证资料</Title>
             <Divider />
             <Descriptions labelStyle={{ textAlign: 'right', width: 120, display: 'inline-block' }}>
@@ -109,7 +109,7 @@ const Detail = ({ storeNo, visible, setVisible }) => {
                 </Space>
               </Descriptions.Item>
             </Descriptions>
-          </Row>
+          </Row> */}
           <Auth name="store/memberShop/changeAreaInfo">
             <Button type='primary' style={{ marginBottom: 20 }} onClick={() => { setEdit(true) }}>编辑</Button>
           </Auth>
