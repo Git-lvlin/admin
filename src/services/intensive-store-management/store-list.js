@@ -61,3 +61,11 @@ export const backTrack = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const gradeChange = (params = {}, options = {}) => {
+  return request('/auth/store/member_shop/grade', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
