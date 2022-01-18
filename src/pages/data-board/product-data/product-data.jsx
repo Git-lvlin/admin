@@ -99,26 +99,12 @@ const ProductData = () => {
       align: 'center'
     },
     {
-      title: ()=>(
-        <Space>
-          <span>SPU数量</span>
-          <Tooltip title="当前分类下有成交过的商品SKU数量">
-            <QuestionCircleOutlined/>
-          </Tooltip>
-        </Space>
-      ),
+      title: 'SPU数量',
       dataIndex: 'spuCount',
       align: 'center'
     },
     {
-      title: ()=>(
-        <Space>
-          <span>SKU数量</span>
-          <Tooltip title="所有已支付订单中成交的商品件数总和">
-            <QuestionCircleOutlined/>
-          </Tooltip>
-        </Space>
-      ),
+      title: 'SKU数量',
       dataIndex: 'skuCount',
       align: 'center'
     },
