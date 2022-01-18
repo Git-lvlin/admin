@@ -35,7 +35,7 @@ const Address = ({ value, onChange, disabled }) => {
     <>
       <AddressCascader value={area} placeholder="请选择所在地区" disabled={disabled} onChange={handleProvinceChange} style={{ width: '100%' }} />
       <div style={{ marginTop: 10 }}>
-        <Input value={info} placeholder="请输入详细地址" value={info} disabled={disabled} onChange={onInfoChang} />
+        <Input value={info} placeholder="请输入详细地址" disabled={disabled} onChange={onInfoChang} />
       </div>
     </>
   )

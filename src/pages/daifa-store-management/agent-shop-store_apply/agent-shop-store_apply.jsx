@@ -3,14 +3,16 @@ import ProTable from '@ant-design/pro-table';
 import { Space } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { storeApplyList,storeApplyDetail } from '@/services/daifa-store-management/agent-shop-store_apply'
-import { history } from 'umi';
 import Edit from './edit';
+import StoreDetail from './store-apply-detail'
 
 const agentShopStoreApply = () => {
   const [formVisible, setFormVisible] = useState(false);
+  const [visible,setVisible]=useState()
   const [detailData, setDetailData] = useState(null);
   const [aplyId, setAplyId] = useState();
   const [vers,setVers]=useState();
+  const [apId,setApId]=useState()
   const actionRef = useRef();
 
   const getDetail = (id,vers) => {
@@ -113,7 +115,7 @@ const filterData=(res)=>{
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          <a onClick={() => { history.push(`/daifa-store-management/agent-shop-store_apply/store-apply-detail?applyId=${data.id}`) }}>详情</a>
+          <a onClick={() => {setVisible(true); setApId(data.id) }}>详情</a>
           {
             data.verifyStatus==3?null:<a onClick={() => { getDetail(data.id,data.verifyStatus) }}>编辑</a>
           }
@@ -149,7 +151,13 @@ const filterData=(res)=>{
         setVisible={setFormVisible}
         detailData={detailData}
         callback={() => { actionRef.current.reload(); setDetailData(null) }}
-        onClose={() => { setDetailData(null) }}
+        onClose={() => {actionRef.current.reload(); setDetailData(null) }}
+      />}
+       {visible && <StoreDetail
+        visible={visible}
+        setVisible={setVisible}
+        applyId={apId}
+        onClose={() => { actionRef.current.reload(); setApId(null) }}
       />}
      </PageContainer>
   );

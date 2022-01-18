@@ -46,5 +46,53 @@ export default {
             }
           ]
       },
+      {
+        name: 'spring-festival-build-building-activity',
+        path: '/activity-management/spring-festival-build-building-activity',
+        routes: [
+            {
+              name: 'spring-festival-list',
+              path: '/activity-management/spring-festival-build-building-activity/spring-festival-list',
+              component: './activity-management/spring-festival-build-building-activity/spring-festival-list'
+            },
+            {
+              name: 'rule-configuration',
+              path: '/activity-management/spring-festival-build-building-activity/rule-configuration',
+              component: './activity-management/spring-festival-build-building-activity/rule-configuration',
+              hideInMenu: true
+            },
+            {
+              name: 'consume-detail',
+              path: '/activity-management/spring-festival-build-building-activity/consume-detail',
+              component: './activity-management/spring-festival-build-building-activity/consume-detail'
+            },
+            {
+              name: 'grant-detail',
+              path: '/activity-management/spring-festival-build-building-activity/grant-detail',
+              component: './activity-management/spring-festival-build-building-activity/grant-detail'
+            },
+            {
+              name: 'employ-detail',
+              path: '/activity-management/spring-festival-build-building-activity/employ-detail',
+              component: './activity-management/spring-festival-build-building-activity/employ-detail',
+              hideInMenu: true
+            },
+            {
+              name: 'cash-advance-detail',
+              path: '/activity-management/spring-festival-build-building-activity/cash-advance-detail',
+              component: './activity-management/spring-festival-build-building-activity/cash-advance-detail',
+            },
+            {
+              name: 'ranking-data',
+              path: '/activity-management/spring-festival-build-building-activity/ranking-data',
+              component: './activity-management/spring-festival-build-building-activity/ranking-data',
+            },
+            {
+              name: 'binding-set',
+              path: '/activity-management/spring-festival-build-building-activity/binding-set',
+              component: './activity-management/spring-festival-build-building-activity/binding-set',
+            },
+          ]
+      },
     ]
   }

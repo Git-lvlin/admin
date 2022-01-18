@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
+import Big from 'big.js';
 
+Big.RM = 2;
 export default function EditTable(props) {
-  const { tableHead, tableData, goodsSaleType, settleType, isSample } = props;
+  const { tableHead, tableData, goodsSaleType, settleType, isSample, unit, wsUnit, ladderSwitch } = props;
   const [columns, setColumns] = useState([])
 
   useEffect(() => {
@@ -12,7 +14,6 @@ export default function EditTable(props) {
         arr.push({
           title: item,
           dataIndex: `spec${index + 1}`,
-          width: 130,
         })
       }
     });
@@ -35,31 +36,27 @@ export default function EditTable(props) {
       },
       ...arr,
       {
-        title: '零售供货价(元)',
+        title: '一件代发供货价(元)',
         dataIndex: 'retailSupplyPrice',
         editable: false,
         hideInTable: goodsSaleType === 1,
-        width: 130,
       },
       {
-        title: '批发供货价(元)',
+        title: '集采供货价(元)',
         dataIndex: 'wholesaleSupplyPrice',
         editable: false,
-        width: 130,
         hideInTable: goodsSaleType === 2,
       },
       {
         title: '集采箱规单位量',
         dataIndex: 'batchNumber',
         editable: false,
-        width: 130,
         hideInTable: goodsSaleType === 2,
       },
       {
         title: '最低批发量',
         dataIndex: 'wholesaleMinNum',
         editable: false,
-        width: 130,
         hideInTable: goodsSaleType === 2,
       },
       {
@@ -97,7 +94,6 @@ export default function EditTable(props) {
         title: '秒约价',
         dataIndex: 'salePrice',
         editable: settleType === 2,
-        width: 130,
         hideInTable: goodsSaleType === 1,
       },
       // {
@@ -116,19 +112,16 @@ export default function EditTable(props) {
       {
         title: '市场价',
         dataIndex: 'marketPrice',
-        width: 130,
       },
       {
         title: '库存预警值',
         dataIndex: 'stockAlarmNum',
         editable: false,
-        width: 130,
       },
       {
         title: '可用库存',
         dataIndex: 'stockNum',
         editable: false,
-        width: 130,
         // formItemProps: {
         //   rules: [{
         //     required: true,
@@ -140,14 +133,12 @@ export default function EditTable(props) {
       {
         title: '平均运费(元)',
         dataIndex: 'wholesaleFreight',
-        width: 130,
         hideInTable: goodsSaleType === 2,
         editable: false,
       },
       {
         title: '是否包邮',
         dataIndex: 'isFreeFreight',
-        width: 130,
         render: (_) => _ === 1 ? '包邮' : '不包邮',
         hideInTable: goodsSaleType === 1,
         editable: false,
@@ -155,10 +146,44 @@ export default function EditTable(props) {
       {
         title: '运费模板',
         dataIndex: 'freightTemplateId',
-        width: 130,
         render: (_) => _.label ? _.label : '_',
         hideInTable: goodsSaleType === 1,
         editable: false,
+      },
+      {
+        title: '阶梯优惠',
+        dataIndex: 'stage1',
+        render: (_, record) => {
+          return _ !== '-' ? <>
+            <div div style={{ display: 'flex', marginBottom: 10, alignItems: 'center' }
+            }>
+              {_.wsStart}
+              —
+              {_.wsEnd}
+              {unit}时，
+              {_.wsSupplyPrice}元 / {unit}
+            </div >
+
+            {record.batchNumber > 1 && <div>{parseInt(_.wsStart / record.batchNumber, 10)}—{parseInt(_.wsEnd / record.batchNumber, 10)}{wsUnit}时，{+new Big(_.wsSupplyPrice).times(record.batchNumber).toFixed(2)}元/{wsUnit}</div>}
+          </> : '-'
+        },
+        hideInTable: goodsSaleType === 2,
+      },
+      {
+        title: '最高阶梯优惠',
+        dataIndex: 'stage2',
+        render: (_, record) => {
+          return _ !== '-' ? <>
+            <div style={{ display: 'flex', marginBottom: 10, alignItems: 'center' }}>
+              {record.stage1.wsEnd + 1}
+              {unit}及以上时，
+              {_.wsSupplyPrice}元/{unit}
+            </div>
+
+            {record.batchNumber > 1 && <div>{parseInt((record.stage1.wsEnd + 1) / record.batchNumber, 10)}{wsUnit}及以上时，{+new Big(_.wsSupplyPrice).times(record.batchNumber).toFixed(2)}元/{wsUnit}</div>}
+          </> : '-'
+        },
+        hideInTable: goodsSaleType === 2,
       },
       // {
       //   title: '操作',
