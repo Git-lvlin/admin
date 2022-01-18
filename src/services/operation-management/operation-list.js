@@ -191,3 +191,11 @@ export const resetPwd = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const getSubsidiary = (params = {}, options = {}) => {
+  return request('/auth/operation/user/getSubsidiary', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
