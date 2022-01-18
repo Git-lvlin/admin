@@ -6,22 +6,28 @@ import { storeList, storeDetail } from '@/services/daifa-store-management/list'
 import { history } from 'umi';
 import ExcelModel from '@/components/ExcelModel'
 import Edit from './edit';
+import CancelModel from './cancel-model'
+import ListDetail from './list-detail'
+import BankEdit from './bank-edit'
 
 const TableList = () => {
-  const ref=useRef()
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [storeNo,setStoreNo]=useState()
+  const [bankVisible,setBankVisible]=useState()
   const actionRef = useRef();
+  const [storeNoId,setStoreNoId]=useState()
+  
 
-  const switchStatus = (storeNo, type) => {
-    // statusSwitch({
-    //   storeNo,
-    //   status:type
-    // }).then(res => {
-    //   if (res.code === 0) {
-    //     actionRef.current.reload();
-    //   }
-    // })
+  const switchStatus = (data, type) => {
+    const params={
+      data,
+      type
+    }
+    setStoreNoId(params)
+    setVisible(true)
   }
 
   const getDetail = (id) => {
@@ -83,6 +89,7 @@ const TableList = () => {
         0:'全部',
         1: '已启用',
         2: '已禁用',
+        3: '已注销'
       }
     },
     {
@@ -117,12 +124,23 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-            {/* {data.status === 1 && <a onClick={() => { switchStatus(data.storeNo, 2) }}>禁用</a>}
-            {data.status === 2 && <a onClick={() => { switchStatus(data.storeNo, 1) }}>启用</a>} */}
-          <a onClick={() => { history.push(`/daifa-store-management/list/bank-edit?storeNo=${data.storeNo}`) }}>再次认证</a>
-          <a onClick={() => { history.push(`/daifa-store-management/list/list-detail?storeNo=${data.storeNo}`) }}>详情</a>
-          <a onClick={() => { getDetail(data.storeNo) }}>编辑</a>
-          <a onClick={() => { history.push(`/daifa-store-management/list/agent-shop-money?storeNo=${data.storeNo}&storeName=${data.storeName}&realname=${data.realname}&mobile=${data.mobile}`) }}>佣金明细</a>
+          {
+            data.status==3?
+            <>
+             <a onClick={() => { setDetailVisible(true);setStoreNo(data.storeNo)}}>详情</a>
+             <a onClick={() => { history.push(`/daifa-store-management/list/agent-shop-money?storeNo=${data.storeNo}&storeName=${data.storeName}&realname=${data.realname}&mobile=${data.mobile}`) }}>佣金明细</a>
+            </>
+            :
+            <>
+              <a onClick={() => { setBankVisible(true);setStoreNo(data.storeNo)}}>再次认证</a>
+              <a onClick={() => { setDetailVisible(true);setStoreNo(data.storeNo)}}>详情</a>
+              <a onClick={() => { getDetail(data.storeNo) }}>编辑</a>
+              <a onClick={() => { history.push(`/daifa-store-management/list/agent-shop-money?storeNo=${data.storeNo}&storeName=${data.storeName}&realname=${data.realname}&mobile=${data.mobile}`) }}>佣金明细</a>
+              <a onClick={() => { switchStatus(data, 1) }}>强制注销店铺</a>
+              <a onClick={() => { switchStatus(data, 2) }}>注销店铺</a>
+            </>
+          }
+
         </Space>
       ),
     },
@@ -153,8 +171,28 @@ const TableList = () => {
         setVisible={setFormVisible}
         detailData={detailData}
         callback={() => { actionRef.current.reload(); setDetailData(null) }}
-        onClose={() => { setDetailData(null) }}
+        onClose={() => { actionRef.current.reload();  setDetailData(null) }}
       />}
+      {visible && <CancelModel
+        visible={visible}
+        setVisible={setVisible}
+        storeNoId={storeNoId}
+        onClose={() => { actionRef.current.reload();  setStoreNoId(null) }}
+        callback={() => { actionRef.current.reload(); setStoreNoId(null) }}
+      />}
+      {detailVisible && <ListDetail
+        visible={detailVisible}
+        setVisible={setDetailVisible}
+        storeNo={storeNo}
+        onClose={() => { actionRef.current.reload(); setStoreNo(null) }}
+      />}
+      {bankVisible && <BankEdit
+        visible={bankVisible}
+        setVisible={setBankVisible}
+        storeNo={storeNo}
+        onClose={() => { actionRef.current.reload(); setStoreNo(null) }}
+      />}
+      
     </PageContainer>
 
   );

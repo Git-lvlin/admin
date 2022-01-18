@@ -47,21 +47,29 @@ const SubTable = (props) => {
       render: (_) => `${amountTransform(_)}%`
     },
     {
-      title: '批发供货价(元)',
+      title: `批发供货价(元/${data?.[0]?.unit})`,
       dataIndex: 'wholesaleSupplyPrice',
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '市场价',
+      title: `市场价(元/${data?.[0]?.unit})`,
       dataIndex: 'marketPrice',
       render: (_) => amountTransform(_, '/')
     },
     {
       title: '集约库存',
       dataIndex: 'totalStockNum',
+      render: (_, record) => {
+        return (
+          <>
+            <div>{_}{record.unit}</div>
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
+          </>
+        )
+      }
     },
     {
-      title: '集约价',
+      title: `集约价(元/${data?.[0]?.unit})`,
       dataIndex: 'price',
       render: (_) => amountTransform(_, '/')
     },
@@ -78,10 +86,26 @@ const SubTable = (props) => {
     {
       title: '单次起订量',
       dataIndex: 'minNum',
+      render: (_, record) => {
+        return (
+          <>
+            <div>{_}{record.unit}</div>
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
+          </>
+        )
+      }
     },
     {
       title: '单次限订量',
       dataIndex: 'maxNum',
+      render: (_, record) => {
+        return (
+          <>
+            <div>{_}{record.unit}</div>
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
+          </>
+        )
+      }
     },
     {
       title: '集约全款金额',
@@ -173,14 +197,15 @@ const TableList = () => {
     },
     {
       title: '状态',
-      dataIndex: 'wholesaleAuditStatus',
-      valueType: 'select',
+      dataIndex: 'wholesaleAuditStatusDesc',
+      valueType: 'text',
       hideInSearch: true,
-      valueEnum: {
-        0: '待审核',
-        1: '审核通过',
-        2: '已拒绝'
-      },
+      render: (_, data) => {
+        if (data.wholesaleAuditStatus === 2) {
+          return <>{_} <Tooltip title={data.rejectionReason}><QuestionCircleOutlined /></Tooltip></>
+        }
+        return <div dangerouslySetInnerHTML={{ __html: _ }}></div>
+      }
     },
     {
       title: '操作',

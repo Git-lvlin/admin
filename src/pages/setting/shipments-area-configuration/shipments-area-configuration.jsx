@@ -255,6 +255,7 @@ export default () => {
               value: 1,
           },
           ]}
+          labelCol={2}
           fieldProps={{
             onChange: (e) => {
               setPosition(e.target.value)
