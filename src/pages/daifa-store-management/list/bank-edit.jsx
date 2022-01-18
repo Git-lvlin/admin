@@ -2,16 +2,29 @@ import React, { useState, useEffect} from 'react';
 import { Form, Button, message} from 'antd';
 import ProForm,{
   ProFormText,
-  ProFormSelect
+  ProFormSelect,
+  DrawerForm
 } from '@ant-design/pro-form';
-import { history } from 'umi';
 import Upload from '@/components/upload';
 import {  agent_bank_detail, storeList,agent_bank_edit,get_bank_data} from '@/services/daifa-store-management/list';
 import { getBanks } from '@/services/supplier-management/supplier-list';
 
+const formItemLayout = {
+  labelCol: { span: 5 },
+  wrapperCol: { span: 14 },
+  layout: {
+    labelCol: {
+      span: 10,
+    },
+    wrapperCol: {
+      span: 14,
+    },
+  }
+};
+
 
 export default (props) => {
-  const storeNo = props.location.query.storeNo
+  const {storeNo,setVisible,visible,onClose}=props
   const [form] = Form.useForm()
   const [detailData, setDetailData] = useState(null);
   const [bankData,setBankData]=useState([])
@@ -25,7 +38,8 @@ export default (props) => {
     agent_bank_edit({storeNo,...values}).then(res=>{
       if(res.code==0){
         message.success('编辑成功'); 
-        history.push('/daifa-store-management/list')
+        setVisible(false)
+        onClose()
       }
     })
   }
@@ -40,7 +54,18 @@ export default (props) => {
     })
   }, []);
   return (
-        <ProForm
+        <DrawerForm
+            title='再次认证'
+            visible={visible}
+            onVisibleChange={setVisible}
+            drawerProps={{
+              forceRender: true,
+              destroyOnClose: true,
+              width: 800,
+              onClose: () => {
+                onClose();
+              }
+            }}
             form={form}
             submitter={
             {
@@ -49,10 +74,9 @@ export default (props) => {
                     <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
                       提交
                     </Button>,
-                    <Button type="default" onClick={()=>history.goBack()}>
+                    <Button key="goback" type="default" onClick={()=>{setVisible(false);onClose()}}>
                       返回
-                    </Button>,
-                    
+                    </Button>  
                 ];
                 }
             }
@@ -62,7 +86,7 @@ export default (props) => {
             return true;
             }
             }
-            style={{ width: '1000px', margin: '0 auto' }}
+            {...formItemLayout}
         >
       <ProFormText
         name="storeName"
@@ -166,6 +190,6 @@ export default (props) => {
       >
         <Upload code={304}  multiple maxCount={1} accept="image/*" size={1 * 1024} />
       </Form.Item>
-    </ProForm>
+    </DrawerForm>
   );
 };
