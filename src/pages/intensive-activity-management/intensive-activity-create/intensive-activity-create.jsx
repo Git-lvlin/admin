@@ -487,7 +487,7 @@ const IntensiveActivityCreate = () => {
                               fieldProps={{
                                 addonAfter: `%`
                               }}
-                              extra={<span style={{ color: '#b38806' }}>总商品活动集约量达到最低阶梯量的此百分比时才在前端（此商品的列表、商品详情、下单页和待支付页面）展示奖励信息</span>}
+                              extra={<span style={{ color: '#b38806' }}>总商品活动集约量达到最低阶梯量的此百分比时才在前端（此商品的商品详情、下单页和待支付页面）展示奖励信息</span>}
                               rules={[
                                 { required: true, message: '请输入前端奖励展示需完成量' },
                                 () => ({
