@@ -223,13 +223,6 @@ const ProductData = () => {
       width: '15%'
     },
     {
-      title: '商品成交总数量',
-      dataIndex: 'goodsSumNum',
-      align: 'center',
-      hideInTable: form.current?.getFieldsValue().orderType === "15",
-      hideInSearch: true
-    },
-    {
       title: ()=>(
         <Space>
           <span>复购率（重复购买的用户数占总购买人数）</span>
@@ -244,11 +237,11 @@ const ProductData = () => {
       hideInSearch: true
     },
     {
-      title: '商品支付总金额',
-      dataIndex: 'exportPayAmount',
+      title: '购买用户数',
+      dataIndex: 'payMemberNum',
       align: 'center',
-      hideInSearch: true,
       hideInTable: form.current?.getFieldsValue().orderType === "15",
+      hideInSearch: true
     },
     {
       title: '支付订单数',
@@ -258,11 +251,18 @@ const ProductData = () => {
       hideInSearch: true
     },
     {
-      title: '支付用户数',
-      dataIndex: 'payMemberNum',
+      title: '销售量',
+      dataIndex: 'goodsSumNum',
       align: 'center',
       hideInTable: form.current?.getFieldsValue().orderType === "15",
       hideInSearch: true
+    },
+    {
+      title: '销售额',
+      dataIndex: 'exportPayAmount',
+      align: 'center',
+      hideInSearch: true,
+      hideInTable: form.current?.getFieldsValue().orderType === "15",
     },
     {
       title: '商品退款总金额',
