@@ -93,6 +93,11 @@ export default {
       name: 'data-excel',
       path: '/intensive-store-management/data-excel',
       component: './intensive-store-management/data-excel',
+    },
+    {
+      name: 'cancel-reason',
+      path: '/intensive-store-management/cancel-reason',
+      component: './intensive-store-management/cancel-reason',
     }
   ]
 }
