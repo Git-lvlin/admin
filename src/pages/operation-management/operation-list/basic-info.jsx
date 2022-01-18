@@ -4,8 +4,9 @@ import {
   DrawerForm,
   ProFormText,
   ProFormRadio,
+  ProFormSelect,
 } from '@ant-design/pro-form';
-import { operationAdd, operationEdit } from '@/services/operation-management/operation-list';
+import { operationAdd, operationEdit, getSubsidiary } from '@/services/operation-management/operation-list';
 import md5 from 'blueimp-md5';
 import AddressCascader from '@/components/address-cascader'
 
@@ -45,6 +46,7 @@ const Address = ({ value, onChange, disabled }) => {
 export default (props) => {
   const { visible, setVisible, detailData, callback = () => { }, onClose = () => { } } = props;
   const [form] = Form.useForm()
+  const [companyNameData, setCompanyNameData] = useState([])
 
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -78,10 +80,10 @@ export default (props) => {
         operationId: detailData?.operationId,
         provinceId: address[0].value,
         provinceName: address[0].label,
-        cityId: address?.[1]?.value??0,
-        cityName: address?.[1]?.label??null,
-        areaId: address?.[2]?.value??0,
-        areaName: address?.[2]?.label??null,
+        cityId: address?.[1]?.value ?? 0,
+        cityName: address?.[1]?.label ?? null,
+        areaId: address?.[2]?.value ?? 0,
+        areaName: address?.[2]?.label ?? null,
         contactName: companyUserName,
         contactPhone,
         attrProvinceId: addressInfo.area[0].value,
@@ -133,6 +135,7 @@ export default (props) => {
       }
       form.setFieldsValue({
         ...detailData,
+        subsidiaryId: detailData.subsidiaryId === 0 ? undefined : detailData.subsidiaryId,
         address,
       })
 
@@ -161,6 +164,15 @@ export default (props) => {
       }
     }
   }, [form, detailData]);
+
+  useEffect(() => {
+    getSubsidiary()
+      .then(res => {
+        if (res.code === 0) {
+          setCompanyNameData(res.data)
+        }
+      })
+  }, [])
 
   return (
     <DrawerForm
@@ -276,6 +288,13 @@ export default (props) => {
       >
         <Address />
       </Form.Item>
+      <ProFormSelect
+        label="所属分公司"
+        options={companyNameData.map(item => ({ label: item.companyName, value: item.id }))}
+        name="subsidiaryId"
+        rules={[{ required: true, message: '请选择所属分公司' }]}
+      />
+
       <ProFormRadio.Group
         name="status"
         label="状态"
