@@ -109,7 +109,7 @@ const SubTable = (props) => {
       }
     },
     {
-      title: `集约价(元${data?.[0]?.unit})`,
+      title: `集约价(元/${data?.[0]?.unit})`,
       dataIndex: 'price',
       render: (_) => amountTransform(_, '/')
     },
