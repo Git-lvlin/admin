@@ -57,7 +57,7 @@ const PieChart = ({
             c.removeInteraction('legend-filter')
           }}
         >
-          <Coordinate type="theta" radius={0.8} />
+          <Coordinate type="theta" radius={0.6} />
           <Tooltip showTitle={false} />
           <Axis visible={false} />
           <Interval
