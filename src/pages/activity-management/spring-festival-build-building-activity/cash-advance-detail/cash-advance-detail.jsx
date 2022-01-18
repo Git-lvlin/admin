@@ -60,7 +60,7 @@ export default () => {
         valueType: 'text',
         hideInSearch: true,
         render:(_,data)=>{
-          return amountTransform(_, '/')
+          return <p>{amountTransform(_, '/')}元</p>
         }
       },
       {
@@ -79,6 +79,24 @@ export default () => {
       {
         title: '提现手续费',
         dataIndex: 'fee',
+        valueType: 'text',
+        hideInSearch: true,
+        render:(_,data)=>{
+          return <p>{amountTransform(_, '/')}元</p>
+        }
+      },
+      {
+        title: '偶然所得税',
+        dataIndex: 'tax',
+        valueType: 'text',
+        hideInSearch: true,
+        render:(_,data)=>{
+          return <p>{amountTransform(_, '/')}元</p>
+        }
+      },
+      {
+        title: '实际到账金额',
+        dataIndex: 'realAmount',
         valueType: 'text',
         hideInSearch: true,
         render:(_,data)=>{

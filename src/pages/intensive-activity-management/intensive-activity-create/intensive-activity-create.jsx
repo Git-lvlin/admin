@@ -341,7 +341,15 @@ const IntensiveActivityCreate = () => {
           >
             {
               !loading &&
-              <EditTable onSelect={setSelectItem} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} />
+              <EditTable onSelect={(v)=>{
+                if (v?.[0]?.skuId === selectItem?.[0]?.skuId) {
+                  if (v?.[0]?.price !== selectItem?.[0]?.price || v?.[0]?.profit !== selectItem?.[0]?.profit) {
+                    setSelectItem(v)
+                  }
+                } else {
+                  setSelectItem(v)
+                }
+              }} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} />
             }
             <ProFormText name="name" label="活动名称" width="lg" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
             <ProFormDateTimePicker
