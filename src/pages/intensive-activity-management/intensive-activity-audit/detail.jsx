@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Popover } from 'antd';
+import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Modal } from 'antd';
+import { InfoCircleOutlined, ExclamationCircleOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams, history } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
 import { updateWholesaleAuditStatus } from '@/services/intensive-activity-management/intensive-activity-audit'
+
 import AuditModel from './audit-model'
 import PassModel from './pass-model'
 import moment from 'moment'
-
+import LadderDataEdit from '../intensive-activity-create/ladder-data-edit'
+import PriceExplanation from '../intensive-activity-create/price-explanation'
 
 const { Title } = Typography;
 
@@ -33,11 +36,55 @@ const Detail = () => {
     })
   }
   const auditPass = () => {
-    const data = moment().format("YYYY-MM-DD HH:mm:ss")
-    if (moment(data).isBefore(detailData?.wholesale?.wholesaleStartTime)) {
-      setTimeType(1)
-    }
-    setVisible(true)
+    Modal.confirm({
+      icon: <ExclamationCircleOutlined />,
+      content: '确认是否审核通过?',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: (close) => {
+        updateWholesaleAuditStatus({ wsId: params?.id, type: 1 }).then(res => {
+          if (res.code === 0) {
+            if (res.data.isPass === 1) {
+              const data = moment().format("YYYY-MM-DD HH:mm:ss")
+              let type = 0
+              if (moment(data).isBefore(detailData?.wholesale?.wholesaleStartTime)) {
+                type = 1;
+              }
+              Modal.success({
+                title: '审核通过',
+                content: type === 1 ? '到达活动开始时间时开展活动！' : <div>
+                  <p>当前已过活动开始时间</p>
+                  <p>审核通过，活动立即开展！</p>
+                </div>,
+                okText: '确定通过',
+                onOk: () => {
+                  history.goBack()
+                }
+              });
+            } else {
+              Modal.confirm({
+                title: '活动信息异常',
+                icon: <CloseCircleOutlined style={{ color: 'red' }} />,
+                content: <>因<span style={{ color: 'red' }}>{res.data.msg}</span>，需审核驳回活动！</>,
+                okText: '驳回活动',
+                cancelText: '取消审核',
+                onOk: () => {
+                  updateWholesaleAuditStatus({ wsId: params?.id, type: 2, rejectionReason: res.data.msg })
+                    .then(r => {
+                      if (r.code === 0) {
+                        history.goBack()
+                      }
+                    })
+                }
+              });
+            }
+
+            // setVisible(true)
+          }
+          close();
+        })
+      }
+    })
   }
 
   const columns = [
@@ -78,37 +125,47 @@ const Detail = () => {
       render: (_) => `${amountTransform(_)}%`
     },
     {
-      title: '批发供货价(元)',
+      title: `批发供货价(元/${detailData?.sku?.[0]?.unit})`,
       dataIndex: 'wholesaleSupplyPrice',
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '市场价',
+      title: `市场价(元/${detailData?.sku?.[0]?.unit})`,
       dataIndex: 'marketPrice',
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '平均运费(元)',
+      title: `平均运费(元/${detailData?.sku?.[0]?.unit})`,
       dataIndex: 'wholesaleFreight',
       render: (_) => amountTransform(_, '/')
     },
     {
       title: '集约库存',
       dataIndex: 'totalStockNum',
+      render: (_, record) => {
+        return (
+          <>
+            <div>{_}{record.unit}</div>
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
+          </>
+        )
+      }
     },
     {
-      title: '集约价(元)',
+      title: `集约价(元/${detailData?.sku?.[0]?.unit})`,
       dataIndex: 'price',
       render: (_) => amountTransform(_, '/')
+
     },
     {
-      title: '实际盈亏(元)',
+      title: `实际盈亏(元/${detailData?.sku?.[0]?.unit})`,
       dataIndex: 'profit',
       render: (_) => amountTransform(_, '/')
     },
     {
       title: '是否指定配送补贴',
-      render: () => detailData?.wholesale?.isEditSubsidy === 0 ? '否' : '是',
+      dataIndex: 'isAppointSubsidy',
+      render: (_) => _ === 0 ? '否' : '是',
     },
     {
       title: '运营中心配送费补贴',
@@ -120,27 +177,48 @@ const Detail = () => {
       dataIndex: 'fixedPrice',
       render: (_) => amountTransform(_, '/')
     },
-    {
-      title: '社区店特殊补贴',
-      render: () => (
-        <>
-          <div>当订单金额达到 {detailData?.wholesale?.orderAmount / 100}元</div>
-          <div>实际盈亏为 {detailData?.wholesale?.orderProfit / 100}元</div>
-          <div>补贴 {detailData?.wholesale?.subsidy / 100}元</div>
-        </>
-      )
-    },
+    // {
+    //   title: '社区店特殊补贴',
+    //   render: () => (
+    //     <>
+    //       <div>当订单金额达到 {detailData?.wholesale?.orderAmount / 100}元</div>
+    //       <div>实际盈亏为 {detailData?.wholesale?.orderProfit / 100}元</div>
+    //       <div>补贴 {detailData?.wholesale?.subsidy / 100}元</div>
+    //     </>
+    //   )
+    // },
     {
       title: '集采箱规单位量',
       dataIndex: 'batchNumber',
+      render: (_, record) => {
+        return (
+          <span>{_}{record.unit}{record.batchNumber > 1 && record.wsUnit && `/${record.wsUnit}`}</span>
+        )
+      }
     },
     {
       title: '单次起订量',
       dataIndex: 'minNum',
+      render: (_, record) => {
+        return (
+          <>
+            <div>{_}{record.unit}</div>
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
+          </>
+        )
+      }
     },
     {
       title: '单次限订量',
       dataIndex: 'maxNum',
+      render: (_, record) => {
+        return (
+          <>
+            <div>{_}{record.unit}</div>
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
+          </>
+        )
+      }
     },
     {
       title: '集约全款金额',
@@ -148,6 +226,28 @@ const Detail = () => {
       render: (_) => amountTransform(_, '/')
     },
   ];
+
+  const getLadderData = () => {
+    return detailData?.sku?.[0]?.ladderSubsidy.map(item => (
+      {
+        ...item,
+        totalExtraScale: amountTransform(item.totalExtraScale),
+        operationPercent: amountTransform(item.operationPercent),
+        storePercent: amountTransform(item.storePercent),
+      }
+    ))
+  }
+
+  const getSkuData = () => {
+    return detailData?.sku.map(item => {
+      return {
+        ...item,
+        wholesaleSupplyPrice: item.wholesaleSupplyPrice / 100,
+        price: item.price / 100,
+        profit: item.profit / 100,
+      }
+    })[0]
+  }
 
   useEffect(() => {
     getDetail(params?.id)
@@ -157,6 +257,7 @@ const Detail = () => {
       <Spin
         spinning={loading}
       >
+        <CheckCircleOutlined style={{ color: 'green' }} />
         <div style={{ backgroundColor: '#fff', padding: 20, paddingBottom: 50 }}>
           <Row>
             <Title style={{ marginBottom: -10 }} level={5}>活动商品</Title>
@@ -181,13 +282,13 @@ const Detail = () => {
                 {detailData?.wholesale?.createAdminName}
               </Descriptions.Item>
               <Descriptions.Item label="实际盈亏(元)">
-                {detailData?.sku?.[0]?.profit / 100}
+                {detailData?.sku?.[0]?.profit / 100}元/{detailData?.sku?.[0]?.unit}
               </Descriptions.Item>
               <Descriptions.Item label="箱柜单位量">
                 {detailData?.sku?.[0]?.batchNumber}
               </Descriptions.Item>
               <Descriptions.Item label="平均运费">
-                {detailData?.sku?.[0]?.wholesaleFreight / 100}
+                {detailData?.sku?.[0]?.wholesaleFreight / 100}元/{detailData?.sku?.[0]?.unit}
               </Descriptions.Item>
               <Descriptions.Item label="商品分类">
                 {detailData?.sku?.[0]?.gcId1Display}-{detailData?.sku?.[0]?.gcId2Display}
@@ -218,9 +319,27 @@ const Detail = () => {
             {detailData?.wholesale.recoverPayTimeout / 3600}小时
           </Descriptions.Item> */}
             </Descriptions>
+            {detailData?.wholesale?.isEditSubsidy === 1 &&
+              <div style={{ marginBottom: 20 }}>
+                当店主采购订单金额达到{detailData?.wholesale?.orderAmount / 100}元时，补贴社区店店主{detailData?.wholesale?.subsidy / 100}元
+              </div>
+            }
+            {detailData?.wholesale?.isEditSubsidy === 2 && <div>
+              <LadderDataEdit
+                data={getLadderData()}
+                batchNumber={detailData?.sku?.[0]?.batchNumber}
+                unit={detailData?.sku?.[0]?.unit}
+                wsUnit={detailData?.sku?.[0]?.wsUnit}
+                skuData={getSkuData()}
+                readOnly="1"
+              />
+              <div><InfoCircleOutlined />&nbsp;<PriceExplanation skuData={getSkuData()} ladderData={getLadderData()} /></div>
+              <div style={{ marginTop: 20 }}>前端奖励展示需完成量: {detailData?.sku?.[0]?.ladderShowPercent * 100}%</div>
+              <div style={{ marginTop: 20 }}>平台额外奖励占比审核状态: {detailData?.percentAuditStatusDesc}</div>
+            </div>}
           </Row>
           <Button style={{ marginLeft: '400px' }} type="default" onClick={() => history.goBack()}>返回</Button>
-          <Button style={{ marginLeft: '50px' }} onClick={() => auditPass()} type="primary">审核通过</Button>
+          <Button style={{ marginLeft: '50px' }} onClick={() => { auditPass() }} type="primary">审核通过</Button>
           {
             visible && <PassModel visible={visible} wsId={params?.id} setVisible={setVisible} type={timeType} />
           }
