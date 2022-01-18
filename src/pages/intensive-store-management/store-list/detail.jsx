@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Button, Drawer, Space, Spin, Row, Divider, Avatar, Descriptions } from 'antd';
+import { Typography, Button, Drawer, Space, Spin, Row, Divider, Avatar, Descriptions, Image } from 'antd';
 import { getDetail } from '@/services/intensive-store-management/store-detail';
 import { amountTransform } from '@/utils/utils'
 import Auth from '@/components/auth'
@@ -55,7 +55,7 @@ const Detail = ({ storeNo, visible, setVisible }) => {
       footer={
         <div style={{ textAlign: 'right' }}>
           <Space>
-            <Button onClick={() => { setVisible(false) }}>关闭</Button>
+            <Button onClick={() => { setVisible(false) }}>返回</Button>
           </Space>
         </div>
       }
@@ -91,6 +91,23 @@ const Detail = ({ storeNo, visible, setVisible }) => {
               <Descriptions.Item label="小区名称">{detailData?.memberShop?.communityName}</Descriptions.Item>
               <Descriptions.Item label="收件手机号">{detailData?.phone}</Descriptions.Item>
               <Descriptions.Item label="配送范围">{detailData?.deliveryCoverage ? detailData?.deliveryCoverage / 1000 + 'km' : '店主未配置'}</Descriptions.Item>
+            </Descriptions>
+          </Row>
+          <Row>
+            <Title style={{ marginBottom: -10, marginTop: 100 }} level={5}>审核认证资料</Title>
+            <Divider />
+            <Descriptions labelStyle={{ textAlign: 'right', width: 120, display: 'inline-block' }}>
+              <Descriptions.Item label="姓名">{detailData?.memberShop?.applyRow?.realname}</Descriptions.Item>
+              <Descriptions.Item label="身份证号码">{detailData?.memberShop?.applyRow?.idNumber}</Descriptions.Item>
+            </Descriptions>
+            <Descriptions labelStyle={{ textAlign: 'right', width: 120, display: 'inline-block' }}>
+              <Descriptions.Item label="审核资料文件">
+                <Space>
+                  <Image width={100} src={detailData?.memberShop?.applyRow?.idFront} />
+                  <Image width={100} src={detailData?.memberShop?.applyRow?.idBack} />
+                  <Image width={100} src={detailData?.memberShop?.applyRow?.idHandheld} />
+                </Space>
+              </Descriptions.Item>
             </Descriptions>
           </Row>
           <Auth name="store/memberShop/changeAreaInfo">
