@@ -13,7 +13,7 @@ import ProCard from '@ant-design/pro-card';
 import { Button, Result, message, Descriptions, Form } from 'antd';
 import EditTable from './edit-table';
 import styles from './index.less';
-import { addWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
+import { addWholesale, productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
 import AddressMultiCascader from '@/components/address-multi-cascader'
 import Upload from '@/components/upload'
@@ -341,15 +341,37 @@ const IntensiveActivityCreate = () => {
           >
             {
               !loading &&
-              <EditTable onSelect={(v)=>{
-                if (v?.[0]?.skuId === selectItem?.[0]?.skuId) {
-                  if (v?.[0]?.price !== selectItem?.[0]?.price || v?.[0]?.profit !== selectItem?.[0]?.profit) {
-                    setSelectItem(v)
-                  }
-                } else {
-                  setSelectItem(v)
-                }
-              }} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} />
+              <ProFormDependency name={['isEditSubsidy']}>
+                {({ isEditSubsidy }) => (
+                  <EditTable onSelect={(v) => {
+                    if (v?.[0]?.skuId === selectItem?.[0]?.skuId && isEditSubsidy === 2) {
+                      const skuData = v[0];
+                      const obj = {
+                        skuId: skuData.skuId,
+                        fixedPrice: amountTransform(skuData.fixedPrice),
+                        operationFixedPrice: amountTransform(skuData.operationFixedPrice),
+                        isGetWholesale: 1,
+                        priceScale: amountTransform(skuData.settlePercent, '/'),
+                        price: amountTransform(skuData.price),
+                        ladderData: ladderData.map(item => ({
+                          tier: item.tier,
+                          skuId: skuData.skuId,
+                          storePercent: amountTransform(item.storePercent, '/'),
+                        }))
+                      }
+
+
+                      productList(obj).then(res => {
+                        skuData.ladderData = res.data[0].ladderData
+                        setSelectItem([skuData])
+                      })
+                    } else {
+                      setSelectItem(v)
+                    }
+                  }} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} />
+                )}
+              </ProFormDependency>
+
             }
             <ProFormText name="name" label="活动名称" width="lg" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
             <ProFormDateTimePicker
