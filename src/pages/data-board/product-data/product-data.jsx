@@ -223,22 +223,22 @@ const ProductData = () => {
       width: '15%'
     },
     {
+      title: '商品成交总数量',
+      dataIndex: 'goodsSumNum',
+      align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType === "15",
+      hideInSearch: true
+    },
+    {
       title: ()=>(
         <Space>
-          <span>商品复购率</span>
+          <span>复购率（重复购买的用户数占总购买人数）</span>
           <Tooltip title="当前商品有没有人重复购买复购率=重复下单的人数/下单的总人数">
             <QuestionCircleOutlined/>
           </Tooltip>
         </Space>
       ),
       dataIndex: 'exportRepeatRatio',
-      align: 'center',
-      hideInTable: form.current?.getFieldsValue().orderType === "15",
-      hideInSearch: true
-    },
-    {
-      title: '商品成交总数量',
-      dataIndex: 'goodsSumNum',
       align: 'center',
       hideInTable: form.current?.getFieldsValue().orderType === "15",
       hideInSearch: true
@@ -265,13 +265,6 @@ const ProductData = () => {
       hideInSearch: true
     },
     {
-      title: '商品退款数',
-      dataIndex: 'refundNum',
-      align: 'center',
-      hideInTable: form.current?.getFieldsValue().orderType === "15",
-      hideInSearch: true
-    },
-    {
       title: '商品退款总金额',
       dataIndex: 'exportRefundAmount',
       align: 'center',
@@ -286,28 +279,28 @@ const ProductData = () => {
       hideInSearch: true
     },
     {
-      title: '店主集采下单人数',
+      title: 'b端集采下单人数',
       dataIndex: 'bPayMemberNum',
       align: 'center',
       hideInTable: form.current?.getFieldsValue().orderType !== "15",
       hideInSearch: true
     },
     {
-      title: '店主集采订单数',
+      title: 'b端集采订单数',
       dataIndex: 'bPayNum',
       align: 'center',
       hideInTable: form.current?.getFieldsValue().orderType !== "15",
       hideInSearch: true
     },
     {
-      title: '店主集采总金额',
+      title: 'b端集采总金额',
       dataIndex: 'bExportPayAmount',
       align: 'center',
       hideInTable: form.current?.getFieldsValue().orderType !== "15",
       hideInSearch: true
     },
     {
-      title: '店主复购率',
+      title: 'b端复购率',
       dataIndex: 'bExportRepeatRatio',
       align: 'center',
       hideInTable: form.current?.getFieldsValue().orderType !== "15",
@@ -447,7 +440,7 @@ const ProductData = () => {
               />
             ]
           }}
-          headerTitle="商品明细数据"
+          headerTitle="商品销售榜"
           toolbar={{
             settings: false
           }}
