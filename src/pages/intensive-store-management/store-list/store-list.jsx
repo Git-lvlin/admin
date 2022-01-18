@@ -17,6 +17,7 @@ import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import { amountTransform } from '@/utils/utils'
 import Detail from './detail';
+import AuditInfo from './audit-info';
 
 const StoreList = (props) => {
   const { storeType } = props
@@ -27,6 +28,7 @@ const StoreList = (props) => {
   const [selectItem, setSelectItem] = useState(null);
   const [visit, setVisit] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false);
+  const [auditInfoVisible, setAuditInfoVisible] = useState(false);
   const actionRef = useRef();
   const formRef = useRef();
 
@@ -389,6 +391,7 @@ const StoreList = (props) => {
           {data.status.code === 1 && <a onClick={() => { setSelectItem({ ...data, toStatus: 3 }); setFormVisible(true) }}>关闭</a>}
           {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 1 }); setFormVisible(true) }}>开启</a>}
           {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 2 }); setFormVisible(true) }}>注销</a>}
+          <a onClick={() => { setSelectItem(data); setAuditInfoVisible(true) }}>审核资料</a>
           <Auth
             name="store/member_shop/grade"
           >
@@ -464,6 +467,14 @@ const StoreList = (props) => {
           pageSize: 10,
         }}
       />
+      {
+        auditInfoVisible &&
+        <AuditInfo
+          storeNo={selectItem?.storeNo}
+          visible={auditInfoVisible}
+          setVisible={setAuditInfoVisible}
+        />
+      }
       {
         detailVisible &&
         <Detail
