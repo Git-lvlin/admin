@@ -30,3 +30,14 @@ export const deliverGoods = async (params = {}, options = {}) => {
   });
 }
 
+// 修改待发货的收货地址
+export const updateDeliveryInfo = async (params = {}, options = {}) => {
+  return request('/auth/java-admin/order/updateDeliveryInfo', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+    ...options
+  });
+}
+
