@@ -89,7 +89,7 @@ export default (props) =>{
         moneyAll:amountTransform(content.moneyAll, '/'),
         moneyDay:amountTransform(content.moneyDay, '/'),
         sendPlayTime:content.sendPlayTime,
-        withdrawTime:content.withdrawTime*1000,
+        withdrawTime:4102415999,
         validiteHour:24,
         testNum:content.testNum,
         imgUrl:content.imgUrl,
@@ -168,7 +168,7 @@ export default (props) =>{
         moneyAll:amountTransform(values.moneyAll, '*'),
         moneyDay:amountTransform(values.moneyDay, '*'),
         sendPlayTime:values.sendPlayTime,
-        withdrawTime:moment(values.withdrawTime).valueOf()/1000,
+        withdrawTime:values.withdrawTime,
         validiteHour:values.validiteHour,
         testNum:values.testNum,
         imgUrl:values.imgUrl,
@@ -296,12 +296,21 @@ export default (props) =>{
           }
         }
        }
+      if(id){
+        saveBHActiveConfig(params).then(res=>{
+          if(res.code==0){
+            message.success('编辑成功'); 
+            history.push('/activity-management/spring-festival-build-building-activity/spring-festival-list')
+          }
+        })
+      }else{
         saveBHActiveConfig(params).then(res=>{
           if(res.code==0){
             message.success('添加成功'); 
             history.push('/activity-management/spring-festival-build-building-activity/spring-festival-list')
           }
         })
+      }
        
      } catch (error) {
        console.log('error',error)
@@ -987,6 +996,8 @@ export default (props) =>{
             fieldProps={{
               disabledDate:(current)=>disabledDate(current),
             }}
+            hidden={true}
+            initialValue={4102415999}
           />
           
           {/* {
