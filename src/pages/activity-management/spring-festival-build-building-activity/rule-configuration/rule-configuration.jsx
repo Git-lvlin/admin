@@ -999,21 +999,7 @@ export default (props) =>{
             hidden={true}
             initialValue={4102415999}
           />
-          
-          {/* {
-            id&&falg?
-            <ProFormText
-              width="sm"
-              name="validiteHour"
-              label="获得机会有效期"
-              readonly={id&&falg}
-              rules={[{ required: true, message: '请输入' }]}
-              fieldProps={{
-                value:`${detailList?.data?.content?.validiteHour}小时`
-              }}
-            />
-            : */}
-            <ProFormText
+          <ProFormText
               width="sm"
               name="validiteHour"
               label="获得机会有效期"
@@ -1027,7 +1013,6 @@ export default (props) =>{
               initialValue={24}
               hidden
             />
-          {/* } */}
           {
             id&&falg?
             <ProFormText
