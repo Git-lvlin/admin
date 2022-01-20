@@ -344,7 +344,7 @@ const IntensiveActivityCreate = () => {
               <ProFormDependency name={['isEditSubsidy']}>
                 {({ isEditSubsidy }) => (
                   <EditTable onSelect={(v) => {
-                    if (v?.[0]?.skuId === selectItem?.[0]?.skuId && isEditSubsidy === 2) {
+                      if (v?.[0]?.skuId === selectItem?.[0]?.skuId && selectItem?.[0]?.skuId!==undefined && isEditSubsidy === 2) {
                       const skuData = v[0];
                       const obj = {
                         skuId: skuData.skuId,
