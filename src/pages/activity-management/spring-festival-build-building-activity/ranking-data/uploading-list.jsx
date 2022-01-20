@@ -84,7 +84,6 @@ export default props=>{
           fieldProps={{
             onChange:(val)=>{
               setActivityId(val)
-              console.log('val',val)
             }
           }}
         />
@@ -92,7 +91,6 @@ export default props=>{
             {(fields, { add, remove }) => (
               <>
                 <List
-                //   bordered
                   itemLayout="horizontal"
                 >
                   {fields.map((field) => {
@@ -163,7 +161,6 @@ export default props=>{
                             fieldProps={{
                               value:activityId
                             }}
-                            // initialValue={activityId}
                             hidden
                           />
                           <span>人</span>
