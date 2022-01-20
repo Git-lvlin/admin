@@ -1,7 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import { Form,Button,List } from 'antd';
 import ProForm, {
-  ProFormText,
   ModalForm
 } from '@ant-design/pro-form';
 import { accountBindLog} from '@/services/activity-management/spring-festival-build-building-activity';
