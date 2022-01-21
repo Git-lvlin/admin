@@ -50,7 +50,7 @@ export default () => {
         dataIndex: 'type',
         valueType: 'text',
         valueEnum: {
-          1:'原始机会3次',
+          1:'初始机会',
           2:'邀请好友注册', 
           3:'邀请好友注册且游戏'
         },
