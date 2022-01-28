@@ -1,5 +1,5 @@
 import React from 'react';
-import { message, Form, TreeSelect, List, Button } from 'antd';
+import { Form, TreeSelect, List, Button } from 'antd';
 import {
   DrawerForm,
   ProFormText,

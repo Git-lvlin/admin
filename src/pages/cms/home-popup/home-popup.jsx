@@ -135,6 +135,17 @@ const HomePopup = () => {
                 name="link"
                 label="跳转链接"
                 placeholder="请输入点击弹窗跳转的链接地址，不超过80个字符"
+                  rules={[
+                    () => ({
+                      required: false,
+                      validator(_, value) {
+                        if (/\s/g.test(value)) {
+                          return Promise.reject(new Error('链接不能包含空格'));
+                        }
+                        return Promise.resolve();
+                      },
+                    })
+                  ]}
               />
             </ProForm.Group>
             <ProFormRadio.Group

@@ -36,3 +36,16 @@ export const goodDetail = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+// 饼图数据
+export const goodsRateData = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/config/goodsRateData', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data.rateList,
+    success: res.success,
+  }
+}

@@ -213,7 +213,7 @@ export const getTimeDistance = (type) => {
     return [moment(beginTime).subtract(7, 'day'), moment(beginTime + (7 * oneDay - 1000)).subtract(7, 'day')];
   }
 
-  const year = now.getFullYear();
+  let year = now.getFullYear();
 
   // 本月
   if (type === 'month') {
@@ -230,10 +230,14 @@ export const getTimeDistance = (type) => {
   // 上个月
   if (type === 'last-month') {
     const month = now.getMonth();
+    const nextDate = moment(now).add(1, 'months');
+    const nextYear = nextDate.year();
+    year = month ? year : year - 1
+    const realMonth = month ? month + 1 : 12
     return [
-      moment(`${year}-${fixedZero(month)}-01 00:00:00`),
-      moment(moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`).valueOf() - 1000),
-    ];
+      moment(`${year}-${fixedZero(realMonth)}-01 00:00:00`),
+      moment(moment(`${nextYear}-${month === 0 ? 1 : month + 1}-01 00:00:00`).valueOf() - 1000),
+    ];  
   }
 
   // 近7天

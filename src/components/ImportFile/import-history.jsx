@@ -79,7 +79,6 @@ const ImportHistroy = ({ show, setShow, type }) => {
   }, [page, show])
   useEffect(() => {
     timeOut.current = setTimeout(() => {
-      console.log(1);
       clearInterval(timer.current)
     }, awaitTime)
     return () => {
