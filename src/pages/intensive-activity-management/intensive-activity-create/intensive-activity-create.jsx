@@ -13,7 +13,7 @@ import ProCard from '@ant-design/pro-card';
 import { Button, Result, message, Descriptions, Form } from 'antd';
 import EditTable from './edit-table';
 import styles from './index.less';
-import { addWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
+import { addWholesale, productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
 import AddressMultiCascader from '@/components/address-multi-cascader'
 import Upload from '@/components/upload'
@@ -341,7 +341,37 @@ const IntensiveActivityCreate = () => {
           >
             {
               !loading &&
-              <EditTable onSelect={setSelectItem} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} />
+              <ProFormDependency name={['isEditSubsidy']}>
+                {({ isEditSubsidy }) => (
+                  <EditTable onSelect={(v) => {
+                      if (v?.[0]?.skuId === selectItem?.[0]?.skuId && selectItem?.[0]?.skuId!==undefined && isEditSubsidy === 2) {
+                      const skuData = v[0];
+                      const obj = {
+                        skuId: skuData.skuId,
+                        fixedPrice: amountTransform(skuData.fixedPrice),
+                        operationFixedPrice: amountTransform(skuData.operationFixedPrice),
+                        isGetWholesale: 1,
+                        priceScale: amountTransform(skuData.settlePercent, '/'),
+                        price: amountTransform(skuData.price),
+                        ladderData: ladderData.map(item => ({
+                          tier: item.tier,
+                          skuId: skuData.skuId,
+                          storePercent: amountTransform(item.storePercent, '/'),
+                        }))
+                      }
+
+
+                      productList(obj).then(res => {
+                        skuData.ladderData = res.data[0].ladderData
+                        setSelectItem([skuData])
+                      })
+                    } else {
+                      setSelectItem(v)
+                    }
+                  }} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} />
+                )}
+              </ProFormDependency>
+
             }
             <ProFormText name="name" label="活动名称" width="lg" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
             <ProFormDateTimePicker
@@ -402,20 +432,21 @@ const IntensiveActivityCreate = () => {
                             addonBefore: '当店主采购订单金额达到',
                             addonAfter: '元时'
                           }}
+                          placeholder="0.01-9999999.99,保留2位小数"
                           validateFirst
                           rules={[
                             { required: true, message: '请输入' },
                             () => ({
                               validator(_, value) {
-                                if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                                  return Promise.reject(new Error('请输入大于零的数字'));
+                                if (!/^\d+\.?\d*$/g.test(value) || value <= 0 || value > 9999999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
+                                  return Promise.reject(new Error('请输入0.01-9999999.99,保留2位小数'));
                                 }
                                 return Promise.resolve();
                               },
                             })
                           ]}
                           name="orderAmount"
-                          width={400}
+                          width={470}
                         />
                           <ProFormText
                             label=" "
@@ -424,13 +455,14 @@ const IntensiveActivityCreate = () => {
                               addonBefore: '补贴社区店店主',
                               addonAfter: `元`
                             }}
+                            placeholder="0.01-9999999.99,保留2位小数"
                             validateFirst
                             rules={[
                               { required: true, message: '请输入' },
                               () => ({
                                 validator(_, value) {
-                                  if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                                    return Promise.reject(new Error('请输入大于零的数字'));
+                                  if (!/^\d+\.?\d*$/g.test(value) || value <= 0 || value > 9999999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
+                                    return Promise.reject(new Error('请输入0.01-9999999.99,保留2位小数'));
                                   }
                                   return Promise.resolve();
                                 },
@@ -455,7 +487,7 @@ const IntensiveActivityCreate = () => {
                               fieldProps={{
                                 addonAfter: `%`
                               }}
-                              extra={<span style={{ color: '#b38806' }}>总商品活动集约量达到最低阶梯量的此百分比时才在前端（此商品的列表、商品详情、下单页和待支付页面）展示奖励信息</span>}
+                              extra={<span style={{ color: '#b38806' }}>总商品活动集约量达到最低阶梯量的此百分比时才在前端（此商品的商品详情、下单页和待支付页面）展示奖励信息</span>}
                               rules={[
                                 { required: true, message: '请输入前端奖励展示需完成量' },
                                 () => ({

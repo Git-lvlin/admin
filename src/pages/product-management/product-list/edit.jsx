@@ -764,6 +764,9 @@ export default (props) => {
         name="wholesaleFreight"
         label="平均运费(元)"
         disabled
+        fieldProps={{
+          addonAfter: `/${goods.unit}`
+        }}
       />}
       <ProFormText
         name="wholesaleTaxRate"
@@ -1049,6 +1052,9 @@ export default (props) => {
                 name="totalStock"
                 label="总可用库存"
                 disabled
+                fieldProps={{
+                  addonAfter: `/${goods.unit}`
+                }}
               />
               <Form.Item
                 label="发货地"
@@ -1072,17 +1078,20 @@ export default (props) => {
                     placeholder="请输入批发供货价"
                     rules={[{ required: true, message: '请输入批发供货价' }]}
                     disabled
+                    fieldProps={{
+                      addonAfter: `/${goods.unit}`
+                    }}
                   />
-                  {!!detailData?.ladderSwitch && <Form.Item
+                  <Form.Item
                     label="集采阶梯优惠"
                   >
                     {goods.ladderData && <>
                       <div>采购{goods.ladderData['1'].wsStart}-{goods.ladderData['1'].wsEnd}{goods.unit}时，{goods.ladderData['1'].wsSupplyPrice / 100}元/{goods.unit}</div>
-                      {goods.batchNumber > 0 && <div>{goods.ladderData['1'].wsStart / goods.batchNumber}-{goods.ladderData['1'].wsEnd / goods.batchNumber}{goods.wsUnit || '箱'}时，{goods.ladderData['1'].wsSupplyPrice / 100 * goods.batchNumber}元/{goods.wsUnit || '箱'}</div>}
+                      {goods.batchNumber > 1 && <div>{parseInt(goods.ladderData['1'].wsStart / goods.batchNumber, 10)}-{parseInt(goods.ladderData['1'].wsEnd / goods.batchNumber, 10)}{goods.wsUnit || '箱'}时，{goods.ladderData['1'].wsSupplyPrice * goods.batchNumber / 100}元/{goods.wsUnit || '箱'}</div>}
                       <div>{+goods.ladderData['1'].wsEnd + 1}{goods.unit}及以上时，{goods.ladderData['2'].wsSupplyPrice / 100}元/{goods.unit}</div>
-                      {goods.batchNumber > 0 && <div>{(+goods.ladderData['1'].wsEnd + 1) / goods.batchNumber}{goods.wsUnit || '箱'}及以上时，{goods.ladderData['2'].wsSupplyPrice / 100 * goods.batchNumber}元/{goods.wsUnit || '箱'}</div>}
+                      {goods.batchNumber > 1 && <div>{parseInt((+goods.ladderData['1'].wsEnd + 1) / goods.batchNumber, 10)}{goods.wsUnit || '箱'}及以上时，{goods.ladderData['2'].wsSupplyPrice * goods.batchNumber / 100}元/{goods.wsUnit || '箱'}</div>}
                     </>}
-                  </Form.Item>}
+                  </Form.Item>
                   <ProFormText
                     name="batchNumber"
                     label="集采箱规单位量"
@@ -1112,12 +1121,18 @@ export default (props) => {
                         label="样品供货价(元)"
                         placeholder="请输入集采样品供货价,0.01-99999.99"
                         disabled
+                        fieldProps={{
+                          addonAfter: `/${goods.unit}`
+                        }}
                       />
                       <ProFormText
                         name="sampleSalePrice"
                         label="样品价(元)"
                         placeholder="大于等于(样品供货价*1.1),小于等于100倍样品供货价,保留2位小数"
                         validateFirst
+                        fieldProps={{
+                          addonAfter: `/${goods.unit}`
+                        }}
                         rules={[
                           { required: true, message: '请输入大于零的数字' },
                           () => ({
@@ -1135,6 +1150,9 @@ export default (props) => {
                         label="样品起售量"
                         placeholder="请输入集采样品起售量,1-999,默认为1"
                         disabled
+                        fieldProps={{
+                          addonAfter: `/${goods.unit}`
+                        }}
                       />
                       <ProFormText
                         name="sampleMaxNum"
@@ -1142,6 +1160,9 @@ export default (props) => {
                         placeholder="请输入集采样品限售量,1-999,大于等于起售量,默认为1"
                         disabled
                         extra="每次最多可购买数量"
+                        fieldProps={{
+                          addonAfter: `/${goods.unit}`
+                        }}
                       />
                       <ProFormRadio.Group
                         name="sampleFreight"
@@ -1178,6 +1199,9 @@ export default (props) => {
                     placeholder="请输入零售供货价"
                     rules={[{ required: true, message: '请输入零售供货价' }]}
                     disabled
+                    fieldProps={{
+                      addonAfter: `/${goods.unit}`
+                    }}
                   />
                   <ProFormText
                     name="salePrice"
@@ -1198,7 +1222,8 @@ export default (props) => {
                     extra={salePriceFloat < 0 && preferential !== 0 && <span style={{ color: 'red' }}>此秒约价导致平台亏损，请调高秒约价</span>}
                     disabled={detailData?.settleType === 1}
                     fieldProps={{
-                      onChange: salePriceChange
+                      onChange: salePriceChange,
+                      addonAfter: `/${goods.unit}`
                     }}
                   />
                   <ProFormText
@@ -1256,6 +1281,9 @@ export default (props) => {
                     },
                   })
                 ]}
+                fieldProps={{
+                  addonAfter: `/${goods.unit}`
+                }}
               />
               <ProFormText
                 name="stockNum"
@@ -1263,6 +1291,9 @@ export default (props) => {
                 placeholder="请输入可用库存"
                 rules={[{ required: true, message: '请输入可用库存数量' }]}
                 disabled
+                fieldProps={{
+                  addonAfter: `/${goods.unit}`
+                }}
               />
               <ProFormText
                 name="unit"
@@ -1287,6 +1318,9 @@ export default (props) => {
                 label="库存预警值"
                 placeholder="请输入数字 可用库存小于等于此值时提醒"
                 disabled
+                fieldProps={{
+                  addonAfter: `/${goods.unit}`
+                }}
               />
               {/* <ProFormText
                 name="wholesalePrice"
@@ -1310,16 +1344,25 @@ export default (props) => {
         label="单SKU起售数量"
         placeholder="请输入单SKU起售数量"
         rules={[{ required: true, message: '请输入单SKU起售数量' }]}
+        fieldProps={{
+          addonAfter: `/${goods.unit}`
+        }}
       />
       <ProFormText
         name="buyMaxNum"
         label="单SKU单次最多零售购买数量"
         placeholder="请输入单SKU单次最多零售购买数量"
+        fieldProps={{
+          addonAfter: `/${goods.unit}`
+        }}
       />
       <ProFormText
         name="goodsVirtualSaleNum"
         label="基础销量"
         placeholder="请输入基础销量"
+        fieldProps={{
+          addonAfter: `/${goods.unit}`
+        }}
       />
 
       {

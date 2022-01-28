@@ -6,6 +6,9 @@ import styles from './edit-table.less';
 import debounce from 'lodash/debounce';
 import * as api from '@/services/product-management/product-list';
 import { amountTransform } from '@/utils/utils'
+import Big from 'big.js';
+
+Big.RM = 2;
 
 export default function EditTable(props) {
   const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample, unit, wsUnit, ladderSwitch } = props;
@@ -173,11 +176,11 @@ export default function EditTable(props) {
               {_.wsSupplyPrice}元 / {unit}
             </div >
 
-            {record.batchNumber > 0 && <div>{parseInt(_.wsStart / record.batchNumber, 10)}—{parseInt(_.wsEnd / record.batchNumber, 10)}{wsUnit}时，{_.wsSupplyPrice * record.batchNumber}元/{wsUnit}</div>}
+            {record.batchNumber > 1 && <div>{parseInt(_.wsStart / record.batchNumber, 10)}—{parseInt(_.wsEnd / record.batchNumber, 10)}{wsUnit}时，{+new Big(_.wsSupplyPrice).times(record.batchNumber).toFixed(2)}元/{wsUnit}</div>}
           </> : '-'
         },
         editable: false,
-        hideInTable: goodsSaleType === 2 || !ladderSwitch,
+        hideInTable: goodsSaleType === 2,
       },
       {
         title: '最高阶梯优惠',
@@ -190,11 +193,11 @@ export default function EditTable(props) {
               {_.wsSupplyPrice}元/{unit}
             </div>
 
-            {record.batchNumber > 0 && <div>{parseInt((record.stage1.wsEnd + 1) / record.batchNumber, 10)}{wsUnit}及以上时，{_.wsSupplyPrice * record.batchNumber}元/{wsUnit}</div>}
+            {record.batchNumber > 1 && <div>{parseInt((record.stage1.wsEnd + 1) / record.batchNumber, 10)}{wsUnit}及以上时，{+new Big(_.wsSupplyPrice).times(record.batchNumber).toFixed(2)}元/{wsUnit}</div>}
           </> : '-'
         },
         editable: false,
-        hideInTable: goodsSaleType === 2 || !ladderSwitch,
+        hideInTable: goodsSaleType === 2,
       },
       // {
       //   title: '操作',
