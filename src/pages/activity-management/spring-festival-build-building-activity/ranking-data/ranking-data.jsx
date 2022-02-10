@@ -1,9 +1,8 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
+import { Button,Tabs,Descriptions} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { statInfo,inviteRankList,floorRankList,getActiveConfigList } from '@/services/activity-management/spring-festival-build-building-activity';
-import Detail from '@/pages/order-management/normal-order/detail';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import UploadingList from './uploading-list'
@@ -157,8 +156,6 @@ const InviteRegister=(props) => {
     const { canback } = props;
     const ref=useRef()
     const [detailList,setDetailList]=useState()
-    const [detailVisible, setDetailVisible] = useState(false);
-    const [orderId,setOrderId]=useState()
     const [visit, setVisit] = useState(false)
     const [onselect,setOnselect]=useState([])
     const columns= [
@@ -256,7 +253,6 @@ const InviteRegister=(props) => {
       }
     }
     return (
-      <>
         <ProTable
           actionRef={ref}
           rowKey="uni"
@@ -287,14 +283,6 @@ const InviteRegister=(props) => {
             showQuickJumper: true,
           }}
         />
-        {
-          detailVisible && <Detail
-          id={orderId}
-          visible={detailVisible}
-          setVisible={setDetailVisible}
-        />
-        }
-        </>
     );
   };
 
