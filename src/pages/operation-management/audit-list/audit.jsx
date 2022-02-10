@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Drawer, Typography, Form, Tree, Space, Image, Button } from 'antd';
-import { detailExt } from '@/services/operation-management/operation-list'
+import { Drawer, Typography, Form, Space, Image, Button } from 'antd';
+import { detailExt, getSubsidiary } from '@/services/operation-management/operation-list'
+
 import { auditAccount } from '@/services/operation-management/audit-list'
 import moment from 'moment';
 import Reject from './reject';
@@ -25,6 +26,7 @@ const Detail = (props) => {
   const { visible, setVisible, id, supId, callback } = props;
   const [detailData, setDetailData] = useState({});
   const [rejectVisible, setRejectVisible] = useState(false);
+  const [companyNameData, setCompanyNameData] = useState([])
 
   const getDetail = () => {
     detailExt({
@@ -54,6 +56,12 @@ const Detail = (props) => {
 
   useEffect(() => {
     getDetail();
+    getSubsidiary()
+      .then(res => {
+        if (res.code === 0) {
+          setCompanyNameData(res.data)
+        }
+      })
   }, [])
 
   return (
@@ -93,6 +101,11 @@ const Detail = (props) => {
               label="运营商联系人"
             >
               {detailData.companyUserName}
+            </Form.Item>
+            <Form.Item
+              label="所属分公司"
+            >
+              {companyNameData.find(v => v.id === detailData.subsidiaryId)?.companyName}
             </Form.Item>
           </div>
           <div style={{ flex: 1 }}>

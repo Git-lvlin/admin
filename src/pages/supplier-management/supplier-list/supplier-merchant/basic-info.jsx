@@ -7,12 +7,10 @@ import {
   ProFormSelect,
   ProFormDigit,
 } from '@ant-design/pro-form';
-import Upload from '@/components/upload';
 import { supplierAdd, supplierEdit, categoryAll, searchUniName } from '@/services/supplier-management/supplier-list';
 import md5 from 'blueimp-md5';
 import { arrayToTree } from '@/utils/utils'
 import FormModal from './form';
-import Big from 'big.js'
 
 const { Title } = Typography;
 
@@ -241,7 +239,8 @@ export default (props) => {
         accountSwitch: 1,
         status: 1,
         defaultWholesaleTaxRate: 13,
-        warrantyRatio: 10
+        warrantyRatio: 10,
+        isSendSms: 1,
       }}
       {...formItemLayout}
     >

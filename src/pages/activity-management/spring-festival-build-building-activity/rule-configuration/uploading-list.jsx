@@ -1,8 +1,6 @@
 import React, { useState} from 'react';
 import { ModalForm,ProFormText} from '@ant-design/pro-form';
 import { message,Form,List,Button } from 'antd';
-import { couponInviteEnd } from '@/services/activity-management/share-red-packet-activity';
-import { history,connect } from 'umi';
 import { PlusOutlined } from '@ant-design/icons';
 import { useEffect } from 'react';
 

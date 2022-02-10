@@ -88,7 +88,7 @@ const Detail = () => {
         return (
           <>
             <div>{_}{record.unit}</div>
-            {record.batchNumber > 1 && record.wsUnit && <div>({_ * record.batchNumber}){record.wsUnit}</div>}
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
           </>
         )
       }
@@ -145,7 +145,7 @@ const Detail = () => {
         return (
           <>
             <div>{_}{record.unit}</div>
-            {record.batchNumber > 1 && record.wsUnit && <div>({_ * record.batchNumber}){record.wsUnit}</div>}
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
           </>
         )
       }
@@ -157,7 +157,7 @@ const Detail = () => {
         return (
           <>
             <div>{_}{record.unit}</div>
-            {record.batchNumber > 1 && record.wsUnit && <div>({_ * record.batchNumber}){record.wsUnit}</div>}
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
           </>
         )
       }
@@ -260,23 +260,29 @@ const Detail = () => {
             {detailData?.wholesale.recoverPayTimeout / 3600}小时
           </Descriptions.Item> */}
             </Descriptions>
-            {detailData?.wholesale?.isEditSubsidy === 1 &&
-              <div style={{ marginBottom: 20 }}>
-                当店主采购订单金额达到{detailData?.wholesale?.orderAmount / 100}元时，补贴社区店店主{detailData?.wholesale?.subsidy / 100}元
-              </div>
-            }
-            {detailData?.wholesale?.isEditSubsidy === 2 && <div>
-              <LadderDataEdit
-                data={getLadderData()}
-                batchNumber={detailData?.sku?.[0]?.batchNumber}
-                unit={detailData?.sku?.[0]?.unit}
-                wsUnit={detailData?.sku?.[0]?.wsUnit}
-                skuData={getSkuData()}
-                readOnly="1"
-              />
-              <div><InfoCircleOutlined />&nbsp;<PriceExplanation skuData={getSkuData()} ladderData={getLadderData()} /></div>
-              <div style={{ marginTop: 20 }}>前端奖励展示需完成量:{detailData?.sku?.[0]?.ladderShowPercent * 100}%</div>
-            </div>}
+            <div>
+              <div style={{ fontWeight: 'bold', marginBottom: 20 }}>平台额外奖励：{{ 0: '不进行平台额外奖励', 1: '按采购量奖励社区店', 2: '按集采阶梯量奖励(社区店+运营中心)' }[detailData?.wholesale?.isEditSubsidy]}</div>
+              {detailData?.wholesale?.isEditSubsidy === 1 &&
+                <div style={{ marginBottom: 20 }}>
+                  当店主采购订单金额达到{detailData?.wholesale?.orderAmount / 100}元时，补贴社区店店主{detailData?.wholesale?.subsidy / 100}元
+                </div>
+              }
+              {detailData?.wholesale?.isEditSubsidy === 2 && <div>
+                <LadderDataEdit
+                  data={getLadderData()}
+                  batchNumber={detailData?.sku?.[0]?.batchNumber}
+                  unit={detailData?.sku?.[0]?.unit}
+                  wsUnit={detailData?.sku?.[0]?.wsUnit}
+                  skuData={getSkuData()}
+                  readOnly="1"
+                />
+                <div><InfoCircleOutlined />&nbsp;<PriceExplanation skuData={getSkuData()} ladderData={getLadderData()} /></div>
+                <div style={{ marginTop: 20 }}>前端奖励展示需完成量: {detailData?.sku?.[0]?.ladderShowPercent * 100}%</div>
+                <div style={{ marginTop: 20, color: '#000' }}>
+                  平台额外奖励占比审核状态: <span style={{ color: { 1: 'green', 2: 'red' }[detailData.percentAuditStatus] }}>{detailData?.percentAuditStatusDesc}</span>
+                </div>
+              </div>}
+            </div>
           </Row>
 
           <Row>

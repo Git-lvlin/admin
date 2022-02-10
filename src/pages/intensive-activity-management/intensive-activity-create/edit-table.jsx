@@ -29,6 +29,14 @@ const CusInput = ({ value, onChange, ...rest }) => {
   return <Input value={value} onChange={keyup} {...rest} />
 }
 
+const FormWrap = ({ value, onChange, children }) => {
+  return (
+    <>
+      {children({ value, onChange })}
+    </>
+  )
+}
+
 // const Subsidy = ({ value = {}, onChange, orderProfit, ...rest }) => {
 //   return (
 //     <>
@@ -262,6 +270,14 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      render: (_, record) => {
+        return (
+          <>
+            <div>{_}{record.unit}</div>
+            {record.batchNumber > 1 && !!record.wsUnit && <div>({parseInt(_ / record.batchNumber, 10)}{record.wsUnit})</div>}
+          </>
+        )
+      }
     },
     {
       title: '商品名称',
@@ -287,9 +303,20 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       dataIndex: 'totalStockNum',
       valueType: 'text',
       hideInSearch: true,
-      renderFormItem: (_, { record }) => <Input onBlur={() => {
-        debounceFetcher({ record, recordList: dataSource })
-      }} />
+      renderFormItem: (_, { record }) => {
+        return (
+          <FormWrap>
+            {({ value, onChange }) => (
+              <>
+                <Input addonAfter={record.unit} value={value} onChange={onChange} onBlur={() => {
+                  debounceFetcher({ record, recordList: dataSource })
+                }} />
+                {record.batchNumber > 1 && !!record.wsUnit && value / record.batchNumber >= 1 && <div>({parseInt(value / record.batchNumber, 10)}{record.wsUnit})</div>}
+              </>
+            )}
+          </FormWrap>
+        )
+      }
     },
     {
       title: '售价上浮比(%)',
@@ -321,7 +348,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       dataIndex: 'price',
       valueType: 'text',
       hideInSearch: true,
-      renderFormItem: (_, { record }) => <CusInput onBlur={() => {
+      renderFormItem: (_, { record }) => <CusInput addonAfter={`元/${record.unit}`} onBlur={() => {
         debounceFetcher({ record, recordList: dataSource })
       }} />,
     },
@@ -385,24 +412,49 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
+      render: (_, record) => {
+        return <span>{_}{record.unit}{!!record.wsUnit && `/${record.wsUnit}`}</span>
+      }
     },
     {
       title: '单次起订量',
       dataIndex: 'minNum',
       valueType: 'text',
       hideInSearch: true,
-      renderFormItem: (_, { record }) => <Input onBlur={() => {
-        debounceFetcher({ record, recordList: dataSource })
-      }} />,
+      renderFormItem: (_, { record }) => {
+        return (
+          <FormWrap>
+            {({ value, onChange }) => (
+              <>
+                <Input addonAfter={record.unit} value={value} onChange={onChange} onBlur={() => {
+                  debounceFetcher({ record, recordList: dataSource })
+                }} />
+                {record.batchNumber > 1 && !!record.wsUnit && value / record.batchNumber >= 1 && <div>({parseInt(value / record.batchNumber, 10)}{record.wsUnit})</div>}
+              </>
+            )}
+          </FormWrap>
+        )
+      }
     },
     {
       title: '单次限订量',
       dataIndex: 'maxNum',
       valueType: 'text',
       hideInSearch: true,
-      renderFormItem: (_, { record }) => <Input onBlur={() => {
-        debounceFetcher({ record, recordList: dataSource })
-      }} />,
+      renderFormItem: (_, { record }) => {
+        return (
+          <FormWrap>
+            {({ value, onChange }) => (
+              <>
+                <Input addonAfter={record.unit} value={value} onChange={onChange} onBlur={() => {
+                  debounceFetcher({ record, recordList: dataSource })
+                }} />
+                {record.batchNumber > 1 && !!record.wsUnit && value / record.batchNumber >= 1 && <div>({parseInt(value / record.batchNumber, 10)}{record.wsUnit})</div>}
+              </>
+            )}
+          </FormWrap>
+        )
+      }
     },
     {
       title: '全款金额',
