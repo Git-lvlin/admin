@@ -45,6 +45,7 @@ const IndicatorsCard = () => {
 
   useEffect(()=> {
     setLoading(true)
+    console.log(rangePickerValue[0]);
     coreData({
       startTime: moment(rangePickerValue[0]).format("YYYY-MM-DD"),
       endTime: moment(rangePickerValue[1]).format("YYYY-MM-DD"),

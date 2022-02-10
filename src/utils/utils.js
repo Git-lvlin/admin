@@ -231,11 +231,10 @@ export const getTimeDistance = (type) => {
   if (type === 'last-month') {
     const month = now.getMonth();
     const nextDate = moment(now).add(1, 'months');
-    const nextYear = nextDate.year();
-    year = month ? year : year - 1
-    const realMonth = month ? month + 1 : 12
+    const nextYear = month === 11 ?  now.getFullYear() : nextDate.year()
+    const lastMonthYear = month === 0 ?  now.getFullYear() - 1 : now.getFullYear()
     return [
-      moment(`${year}-${fixedZero(realMonth)}-01 00:00:00`),
+      moment(`${lastMonthYear}-${fixedZero(month ? month : 12)}-01 00:00:00`),
       moment(moment(`${nextYear}-${month === 0 ? 1 : month + 1}-01 00:00:00`).valueOf() - 1000),
     ];  
   }
