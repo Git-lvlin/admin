@@ -113,6 +113,7 @@ const TabList =props=> {
       params={{
         done
       }}
+      scroll={{ y: window.innerHeight - 350, scrollToFirstRowOnChange: true, }}
       request={interventionList}
       pagination={{
         hideOnSinglePage: true,

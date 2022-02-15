@@ -164,6 +164,7 @@ const HomeClassification = () => {
       actionRef={actionRef}
       params={{verifyVersionId: verifyVersionId}}
       request={homeClassificationList}
+      scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
       postData={(data) => {
         setListData(data)
         data.map(item=>{

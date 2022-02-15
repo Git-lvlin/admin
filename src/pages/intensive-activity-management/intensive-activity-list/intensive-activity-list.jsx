@@ -440,6 +440,7 @@ const TableList = () => {
           rowKey="wholesaleId"
           options={false}
           request={getWholesaleList}
+          scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
           expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} wholesaleAuditStatus={_.wholesaleAuditStatus} /> }}
           search={{
             defaultCollapsed: false,
@@ -453,7 +454,6 @@ const TableList = () => {
           pagination={{
             pageSize: 10,
           }}
-          scroll={{ x: 'max-content' }}
         />
       </div>
     </PageContainer>

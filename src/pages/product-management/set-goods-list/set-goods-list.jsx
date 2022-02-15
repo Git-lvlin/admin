@@ -331,6 +331,7 @@ const TableList = () => {
         params={{
           selectType: 1,
         }}
+        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
         request={setGoodsList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{

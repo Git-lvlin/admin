@@ -376,6 +376,7 @@ const TableList = () => {
             <ExportHistory key="5" show={visit} setShow={setVisit} type="goods-audit-export" />,
           ],
         }}
+        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
         columns={columns}
         pagination={{
           pageSize: 10,

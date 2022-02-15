@@ -202,6 +202,7 @@ const TableList = () => {
           params={{
             wholesaleAuditStatus:0
           }}
+          scroll={{ y: window.innerHeight - 350, scrollToFirstRowOnChange: true, }}
           request={getWholesaleAuditList}
           expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} /> }}
           search={{

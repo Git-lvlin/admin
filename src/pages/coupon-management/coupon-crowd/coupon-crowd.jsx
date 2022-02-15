@@ -29,7 +29,7 @@ export default (props) =>{
     {
       title: '操作',
       key: 'option',
-      width: 120,
+      width: 200,
       valueType: 'option',
       render: (_, data) => [
       <ProFormSwitch key='switch' name="Switch"
@@ -97,6 +97,7 @@ export default (props) =>{
             新建
         </Button>
       <ProTable
+          scroll={{ y: window.innerHeight - 450, scrollToFirstRowOnChange: true, }}
           actionRef={ref}
           rowKey="id"
           options={false}

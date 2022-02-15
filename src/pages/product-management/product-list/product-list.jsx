@@ -142,7 +142,9 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入商品SPU',
         maxLength: 12,
-      }
+      },
+      fixed: 'left',
+      width: 100,
     },
     {
       title: 'skuID',
@@ -159,6 +161,8 @@ const TableList = () => {
       dataIndex: 'goodsImageUrl',
       render: (text) => <img src={text} width={50} height={50} />,
       hideInSearch: true,
+      fixed: 'left',
+      width: 100,
     },
     {
       title: '商品名称',
@@ -178,6 +182,7 @@ const TableList = () => {
         return <a onClick={() => { setSelectItem(record); setProductDetailDrawerVisible(true); }}>{_}</a>
       },
       width: 200,
+      fixed: 'left',
     },
     {
       title: '基础销量',
@@ -196,12 +201,14 @@ const TableList = () => {
       dataIndex: 'goodsWsSaleNum',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '供应商家ID',
@@ -344,6 +351,7 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_) => _ === 0 ? '下架' : '正常',
+      width: 100,
     },
     {
       title: '商品关键词',
@@ -422,7 +430,8 @@ const TableList = () => {
           </Space>
         )
       },
-      // fixed: 'right'
+      width: 250,
+      fixed: 'right'
     },
   ];
 
@@ -472,11 +481,6 @@ const TableList = () => {
 
   return (
     <PageContainer>
-      {/* <Card>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button key="out" type="primary" icon={<PlusOutlined />} onClick={() => { setFormVisible(true) }}>新建</Button>
-        </div>
-      </Card> */}
       <ProTable
         rowKey="id"
         options={false}
@@ -490,7 +494,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: 'max-content' }}
+        scroll={{ x: '100vw', y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
         search={{
           labelWidth: 140,
           defaultCollapsed: false,

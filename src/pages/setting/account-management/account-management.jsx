@@ -118,6 +118,7 @@ const TableList = () => {
           defaultCollapsed: false,
         }}
         columns={columns}
+        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
       />
       {formVisible &&
         <Form

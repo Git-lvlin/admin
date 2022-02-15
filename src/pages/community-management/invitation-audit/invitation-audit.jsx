@@ -148,6 +148,7 @@ const Message = (props) => {
           auditStatus:type,
           status:type==0?4:0
         }}
+        scroll={{ y: window.innerHeight - 650, scrollToFirstRowOnChange: true, }}
         request={adminList}
         rowSelection={type==0?true:false}
         tableAlertOptionRender={onIpute}

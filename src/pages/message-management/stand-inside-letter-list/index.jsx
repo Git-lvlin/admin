@@ -49,9 +49,9 @@ const index = () => {
         toolBarRender={false}
         params={{toType: 4}}
         request={standLetterList}
+        scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
         pagination={{
           showQuickJumper: true,
-          hideOnSinglePage: true
         }}
       />
     </PageContainer>

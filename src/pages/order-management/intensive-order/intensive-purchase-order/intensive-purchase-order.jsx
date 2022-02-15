@@ -111,6 +111,7 @@ const TableList = () => {
           fullScreen: false,
           setting: false,
         }}
+        scroll={{ y: 'calc(100vh-350px)', scrollToFirstRowOnChange: true, }}
         actionRef={actionRef}
         formRef={formRef}
         params={params}

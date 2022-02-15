@@ -126,6 +126,7 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={bindOperationPage}
+        scroll={{ y: window.innerHeight - 450, scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           labelWidth: 130,

@@ -226,6 +226,7 @@ const TableList = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      width: 300,
       render: (_, data) => (
         <Space>
           {data.status === 1 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>禁用</a>}
@@ -257,6 +258,7 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={getCommonList}
+        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           labelWidth: 130,
@@ -294,7 +296,6 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: 'max-content' }}
       />
       {basicInfoVisible && <BasicInfo
         visible={basicInfoVisible}

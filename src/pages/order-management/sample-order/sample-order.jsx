@@ -345,7 +345,8 @@ const TableList = () => {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         }
-        {
+        <div style={{ height: 'calc(100vh - 550px)', overflowY: 'auto', marginBottom: 10 }}>
+          {
           data.map(item => (
             <div className={styles.list} key={item.id}>
               {
@@ -424,6 +425,8 @@ const TableList = () => {
             </div>
           ))
         }
+        </div>
+        
       </Spin>
       {
         detailVisible &&

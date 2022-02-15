@@ -149,7 +149,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: 'max-content' }}
+        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
       />
       {formVisible &&
         <Edit

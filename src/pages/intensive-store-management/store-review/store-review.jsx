@@ -173,6 +173,7 @@ const StoreReview = () => {
         actionRef={actionRef}
         formRef={formRef}
         request={getStoreList}
+        scroll={{ y: window.innerHeight - 450, scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [
