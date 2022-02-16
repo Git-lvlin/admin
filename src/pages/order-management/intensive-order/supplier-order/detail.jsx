@@ -247,6 +247,37 @@ const Detail = (props) => {
                   <div>{detailData?.receivingInfo?.remark}</div>
                 </div>
               </div>
+              <div className={`${styles.box_wrap} ${styles.margin_top}`}>
+                <div className={`${styles.box} ${styles.box_header}`}>
+                  补贴信息
+                </div>
+                <div className={styles.box}>
+                  <div>配送补贴</div>
+                  <div className={styles.box_wrap}>
+                    <div className={styles.box}>
+                      <div>运营中心配送补贴</div>
+                      <div>{amountTransform(Number(detailData?.sku?.operationFixedPrice), '/')}元/{detailData?.sku?.unit}</div>
+                    </div>
+                    <div className={styles.box}>
+                      <div>社区店配送补贴</div>
+                      <div>{amountTransform(Number(detailData?.sku?.fixedPrice), '/')}元/{detailData?.sku?.unit}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.box}>
+                  <div>额外奖励</div>
+                  <div className={styles.box_wrap}>
+                    <div className={styles.box}>
+                      <div>运营中心额外奖励</div>
+                      <div>{amountTransform(Number(detailData?.sku?.ladderSubsidyOperationPrice), '/')}元/{detailData?.sku?.unit}</div>
+                    </div>
+                    <div className={styles.box}>
+                      <div>社区店额外奖励</div>
+                      <div>{amountTransform(Number(detailData?.sku?.ladderSubsidyStorePrice), '/')}元/{detailData?.sku?.unit}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

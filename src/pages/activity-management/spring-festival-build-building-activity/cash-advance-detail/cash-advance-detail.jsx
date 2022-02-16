@@ -1,5 +1,4 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { withdrawPage } from '@/services/activity-management/spring-festival-build-building-activity';
 import { PageContainer } from '@ant-design/pro-layout';

@@ -174,12 +174,8 @@ const TableList = () => {
                   value: 2,
                 },
                 {
-                  label: '待配送',
+                  label: '已收货',
                   value: 3,
-                },
-                {
-                  label: '配送中',
-                  value: 4,
                 },
                 {
                   label: '已完成',

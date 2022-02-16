@@ -12,6 +12,7 @@ import ExportHistory from '@/pages/export-excel/export-history'
 import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
 import Detail from './detail';
+import EditAddress from './edit-address'
 
 
 const TableList = () => {
@@ -31,6 +32,8 @@ const TableList = () => {
   const location = useLocation();
   const [orderStatusType, setOrderStatusType] = useState()
   const [orderTypes, setOrderTypes] = useState(0)
+  const [addressVisible, setAddressVisible] = useState(false)
+  const [subOrderId, setSubOrderId] = useState(null)
 
 
 
@@ -443,6 +446,10 @@ const TableList = () => {
                     <span>收货人：{item.consignee}</span>
                     <span>电话：{item.phone}</span>
                     <span>地址：{item.address}</span>
+                    {
+                      (orderType === 1 || orderType === 2) &&
+                      <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true) }}>修改地址</Button>
+                    }
                   </Space>
                 </div>
               </div>
@@ -459,7 +466,16 @@ const TableList = () => {
           isPurchase={isPurchase}
         />
       }
-
+      {
+        addressVisible &&
+        <EditAddress
+          subOrderId={subOrderId}
+          setVisible={setAddressVisible}
+          visible={addressVisible}
+          setChange={setSearch}
+          change={search}
+        />
+      }
       <div
         className={styles.pagination}
       >

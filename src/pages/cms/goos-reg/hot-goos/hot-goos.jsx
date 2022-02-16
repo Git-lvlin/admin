@@ -11,6 +11,7 @@ import Modify from './edit';
 import { hotGoosList, hotGoosOperation, tagSortTop } from '@/services/cms/member/member';
 import { ACTION_TYPE } from '@/utils/text';
 import ContentVersionTab from '@/components/content-version-tab';
+import Title from './title'
 
 const HotGoos = () => {
   const actionRef = useRef();
@@ -181,7 +182,7 @@ const HotGoos = () => {
       render: (text, record, _) => {
         return (
           <>
-            {record.status===2&&<Button size="small" key="top" onClick={() => {top(record.id)}}>置顶</Button>}
+            {/* {record.status===2&&<Button size="small" key="top" onClick={() => {top(record.id)}}>置顶</Button>} */}
             {<Button size="small" key="editable" onClick={() => {getDetail(record)}}>排序</Button>}
             {record.status===2&&<Button size="small" key="down" onClick={() => {formControl(record.id, 1)}}>下线</Button>}
             {record.status===1&&<Button size="small" key="view" onClick={() => {formControl(record.id,2)}}>发布</Button>}
@@ -250,7 +251,7 @@ const HotGoos = () => {
         pageSize: 10,
       }}
       dateFormatter="string"
-      headerTitle="热销好货"
+      headerTitle={<Title actRef={actionRef}/>}
       toolBarRender={(_,record) => [
         <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 2) }}>
           批量发布

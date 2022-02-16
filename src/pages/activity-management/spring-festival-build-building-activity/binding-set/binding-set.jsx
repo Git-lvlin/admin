@@ -44,7 +44,7 @@ export default () => {
         valueType: 'option',
         render:(text, record, _, action)=>[
             <a key='detail' onClick={()=>{setVisible(true);setFormDetail(record)}}>编辑</a>,
-            <a onClick={()=>{setLogVisible(true);setFormDetail(record)}}>绑定记录</a>
+            <a key="binding" onClick={()=>{setLogVisible(true);setFormDetail(record)}}>绑定记录</a>
         ],
       }, 
     ];
@@ -69,20 +69,20 @@ export default () => {
             showQuickJumper: true,
           }}
         />
-      {visible && <BindingModel
-        visible={visible}
-        setVisible={setVisible}
-        formDetail={formDetail}
-        onClose={()=>{ref.current.reload();setFormDetail(null)}}
-        callback={()=>{ref.current.reload();setFormDetail(null)}}
-      />}
-       {logVisible && <BindinglogModel
-        visible={logVisible}
-        setVisible={setLogVisible}
-        formDetail={formDetail}
-        onClose={()=>{ref.current.reload();setFormDetail(null)}}
-        callback={()=>{ref.current.reload();setFormDetail(null)}}
-      />}
+        {visible && <BindingModel
+          visible={visible}
+          setVisible={setVisible}
+          formDetail={formDetail}
+          onClose={()=>{ref.current.reload();setFormDetail(null)}}
+          callback={()=>{ref.current.reload();setFormDetail(null)}}
+        />}
+        {logVisible && <BindinglogModel
+          visible={logVisible}
+          setVisible={setLogVisible}
+          formDetail={formDetail}
+          onClose={()=>{ref.current.reload();setFormDetail(null)}}
+          callback={()=>{ref.current.reload();setFormDetail(null)}}
+        />}
         </PageContainer>
     );
   };

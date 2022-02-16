@@ -35,6 +35,12 @@ const TableList = () => {
       }
     },
     {
+      title: '运营商名称',
+      dataIndex: 'operationName',
+      valueType: 'text',
+      hideInTable: true,
+    },
+    {
       title: '绑定的运营商',
       dataIndex: 'operationCompanyName',
       valueType: 'text',
