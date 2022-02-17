@@ -143,6 +143,11 @@ export default {
       name: 'goods-class',
       path: '/cms/goods-class',
       component: './cms/goods-class',
+    },
+    {
+      name: 'story',
+      path: '/cms/story',
+      component: './cms/story',
     }
   ]
 }
