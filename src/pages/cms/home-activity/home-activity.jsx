@@ -105,7 +105,9 @@ const HomeActivity = () => {
       search: false,
       valueEnum: {
         1: '所有用户',
-        2: '仅店主',
+        2: '全部店主',
+        3: '生鲜店主',
+        4: '普通店主',
       }
     },
     {

@@ -150,9 +150,17 @@ export default (props) => {
             value: 1,
           },
           {
-            label: '仅店主',
+            label: '全部店主可见',
             value: 2,
           },
+          {
+            label: '仅生鲜店主可见',
+            value: 3,
+          },
+          {
+            label: '仅普通店主可见',
+            value: 4,
+          }
         ]}
       />
       <ProFormRadio.Group
