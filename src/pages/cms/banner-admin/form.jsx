@@ -228,13 +228,21 @@ export default (props) => {
         rules={[{ required: true, message: '请选择展示对象!' }]}
         options={[
           {
-            label: '所有用户可见',
+            label: '所有用户',
             value: 1,
           },
           {
-            label: '仅店主可见',
+            label: '全部店主可见',
             value: 2,
           },
+          {
+            label: '仅生鲜店主可见',
+            value: 3,
+          },
+          {
+            label: '仅普通店主可见',
+            value: 4,
+          }
         ]}
       />
       <ProFormRadio.Group
