@@ -98,6 +98,11 @@ export default {
       name: 'cancel-reason',
       path: '/intensive-store-management/cancel-reason',
       component: './intensive-store-management/cancel-reason',
+    },
+    {
+      name: 'fresh-store-review',
+      path: '/intensive-store-management/fresh-store-review',
+      component: './intensive-store-management/fresh-store-review',
     }
   ]
 }

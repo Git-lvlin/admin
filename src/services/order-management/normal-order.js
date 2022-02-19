@@ -41,3 +41,13 @@ export const updateDeliveryInfo = async (params = {}, options = {}) => {
   });
 }
 
+// 待发货订单退款
+export const closeOrderAndRefund = async (params = {}, options = {}) => {
+  return request('/auth/java-admin/orderReturn/closeOrderAndRefund', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+    ...options
+  });
+}

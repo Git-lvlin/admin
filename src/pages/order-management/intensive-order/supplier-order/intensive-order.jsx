@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect,ProFormCheckbox } from '@ant-design/pro-form';
-import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal, Tag } from 'antd';
+import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal, Tag, Popconfirm } from 'antd';
 import { history, useLocation } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from 'moment';
@@ -14,7 +14,6 @@ import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
 import Detail from './detail';
 import Auth from '@/components/auth';
-import { Popconfirm } from 'antd';
 
 const { confirm } = Modal;
 
@@ -319,6 +318,29 @@ const TableList = () => {
             />
           </>
         }
+        {
+          !isPurchase&&
+          <ProFormSelect
+            label="订单类别"
+            name="businessType"
+            options={[
+              {
+                value: 1,
+                label: '普通订单'
+              },
+              {
+                value: 2,
+                label: '生鲜订单'
+              }
+            ]}
+            fieldProps={{
+              style: {
+                marginBottom: 20,
+                width: 180,
+              }
+            }}
+          />
+        }
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -380,6 +402,10 @@ const TableList = () => {
           data.map(item => (
             <div className={styles.list} key={item.id}>
               <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 10 }} color="#f59a23">{item.wholesaleFlowType === 1 ? '直发到店' : '运营中心配送'}</Tag>
+              {
+                item?.businessType === 2&&
+                <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 80, marginTop: 10 }} color='#58B138'>生鲜订单</Tag>
+              }
               {
                 isPurchase
                   ?

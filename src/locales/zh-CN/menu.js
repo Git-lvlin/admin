@@ -133,7 +133,7 @@ export default {
   'menu.intensive-store-management.community-store-setting': '社区店设置',
   'menu.intensive-store-management.data-excel': '数据导出',
   'menu.intensive-store-management.cancel-reason': '注销原因',
-
+  'menu.intensive-store-management.fresh-store-review': '生鲜店铺申请审核',
 
 
   'menu.single-contract-activity-management': '单约活动管理',
