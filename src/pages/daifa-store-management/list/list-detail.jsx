@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { history } from 'umi';
 import { Form, Spin, Tree,Button } from 'antd';
-import { storeApplyDetail } from '@/services/daifa-store-management/agent-shop-store_apply'
+import Upload from '@/components/upload';
+import { storeDetail } from '@/services/daifa-store-management/list'
 import { arrayToTree } from '@/utils/utils'
 import { categoryAll } from '@/services/common';
-import Upload from '@/components/upload';
 import moment from 'moment';
-
+import {
+  DrawerForm
+} from '@ant-design/pro-form';
 
 
 const formItemLayout = {
-  labelCol: { span: 10 },
+  labelCol: { span: 5 },
   wrapperCol: { span: 14 },
   layout: {
     labelCol: {
@@ -22,8 +24,8 @@ const formItemLayout = {
   }
 };
 
-const ListApplyDetail = props => {
-  let applyId = props.location.query.applyId
+export default props => {
+  const {storeNo,setVisible,visible,onClose}=props
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false);
   const [detailData, setDetailData] = useState({});
@@ -32,10 +34,10 @@ const ListApplyDetail = props => {
 
 
 
-  const getDetail = (applyId) => {
-    setLoading(true);
-    storeApplyDetail({
-      applyId
+  const getDetail = async (storeNo) => {
+   setLoading(true);
+   await storeDetail({
+      storeNo
     }).then(res => {
       if (res.code === 0) {
         const ids = [];
@@ -52,8 +54,8 @@ const ListApplyDetail = props => {
 
         categoryAll().then(res => {
           if (res.code === 0) {
-            const tree = arrayToTree(res.data.records.map(item =>{
-              if(ids.includes(item.id)){
+            const tree = arrayToTree(res.data.records.map(item => {
+              if (ids.includes(item.id)) {
                 return ({
                   ...item,
                   pid: item.gcParentId,
@@ -74,22 +76,50 @@ const ListApplyDetail = props => {
     }).finally(() => {
       setLoading(false);
     })
-
   }
 
   useEffect(() => {
-    getDetail(applyId)
+    getDetail(storeNo)
   }, [])
 
   return (
+    <DrawerForm
+      title='详情'
+      visible={visible}
+      onVisibleChange={setVisible}
+      drawerProps={{
+        forceRender: true,
+        destroyOnClose: true,
+        width: 800,
+        onClose: () => {
+          onClose();
+        }
+      }}
+      form={form}
+      submitter={
+        {
+          render: (props, defaultDoms) => {
+            return [
+              <Button type="default" onClick={() =>{ setVisible(false);onClose()}}>
+                返回
+              </Button>
+            ];
+          }
+        }
+      }
+      onFinish={async (values) => {
+      }}
+      {...formItemLayout}
+    >
       <Spin
         spinning={loading}
       >
-        <Form
-          form={form}
-          {...formItemLayout}
-          style={{ backgroundColor: '#fff', paddingTop: 50, paddingBottom: 100 }}
-        >
+          <Form.Item
+            label="店铺名称"
+          >
+            {detailData.storeName}
+          </Form.Item>
+
           <Form.Item
             label="店主姓名"
           >
@@ -103,16 +133,17 @@ const ListApplyDetail = props => {
           </Form.Item>
 
           <Form.Item
-            label="店铺名称"
+            label="账户结算银行"
           >
-            {detailData.storeName}
+            {detailData.bankName}
           </Form.Item>
 
           <Form.Item
-            label="店主微信号"
+            label="账户结算银行卡"
           >
-            {detailData.wechatNo}
+            {detailData.bankCard}
           </Form.Item>
+    
           <Form.Item
             label="身份证姓名正面照片"
             name="idFront"
@@ -123,14 +154,35 @@ const ListApplyDetail = props => {
             label="身份证国徽面照片"
             name="idBack"
           >
-            <Upload disabled={true}  multiple maxCount={1} accept="image/*" size={1 * 1024} />
+            <Upload disabled={true} multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
           <Form.Item
             label="手持身份证照片"
             name="idHandheld"
           >
-            <Upload disabled={true}  multiple maxCount={1} accept="image/*" size={1 * 1024} />
+            <Upload disabled={true} multiple maxCount={1} accept="image/*" size={1 * 1024} />
           </Form.Item>
+
+          <Form.Item
+            label="结算银行卡正面照"
+            name="bankFront"
+          >
+            <Upload disabled={true} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+          </Form.Item>
+
+          <Form.Item
+            label="结算银行卡背面照"
+            name="bankBack"
+          >
+            <Upload disabled={true} multiple maxCount={1} accept="image/*" size={1 * 1024} />
+          </Form.Item>
+
+          <Form.Item
+            label="店主微信号"
+          >
+            {detailData.wechatNo}
+          </Form.Item>
+
           <Form.Item
             label="店主内部岗位或身份"
           >
@@ -150,6 +202,9 @@ const ListApplyDetail = props => {
               treeData?
               <Tree
               checkable
+              style={{
+                width: '100%',
+              }}
               treeData={treeData}
               multiple
               height={200}
@@ -160,12 +215,13 @@ const ListApplyDetail = props => {
             />
             :'还没有选择主营商品类型'
             }
+            
           </Form.Item>
 
           <Form.Item
             label="状态"
           >
-            {detailData.status == 1 ? '已启用' : '已禁用'}
+            {detailData.status === 1 ? '已启用' : '已禁用'}
           </Form.Item>
 
           <Form.Item
@@ -179,16 +235,7 @@ const ListApplyDetail = props => {
           >
             {moment(detailData.createTime).format('YYYY-MM-DD HH:mm:ss')}
           </Form.Item>
-          <Form.Item
-            label=" "
-          >
-            <Button type="default" onClick={()=>history.goBack()}>返回</Button>
-          </Form.Item>
-
-        </Form>
-      </Spin>
+      </Spin> 
+    </DrawerForm>
   )
 }
-
-
-export default  ListApplyDetail

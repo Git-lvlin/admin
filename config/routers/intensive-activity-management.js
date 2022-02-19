@@ -39,6 +39,16 @@ export default {
       name: 'intensive-remind-statistics',
       path: '/intensive-activity-management/intensive-remind-statistics',
       component: './intensive-activity-management/intensive-remind-statistics',
+    },
+    {
+      name: 'platfor-bonus-percentage',
+      path: '/intensive-activity-management/platfor-bonus-percentage',
+      component: './intensive-activity-management/platfor-bonus-percentage',
+    },
+    {
+      name: 'platfor-bonus-percentage-audit',
+      path: '/intensive-activity-management/platfor-bonus-percentage-audit',
+      component: './intensive-activity-management/platfor-bonus-percentage-audit',
     }
   ]
 }
