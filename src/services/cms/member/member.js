@@ -71,6 +71,14 @@ export const verifyVersionEdit = (params = {}, options = {}) => {
   });
 }
 
+export const storyUpdata = (params = {}, options = {}) => {
+  return request('/auth/java-admin/storeStory/storeStoryUpdate', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const posterUpdata = (params = {}, options = {}) => {
   return request('/auth/java-admin/cms/poster/saveOrUpdate', {
     method: 'POST',
@@ -1063,6 +1071,27 @@ export const contentVersionList = async (params = {}, options = {}) => {
 
   return {
     data: res.data || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const storyList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/storeStory/storeStoryByWays', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
     success: true,
     total: res.data.total,
   }

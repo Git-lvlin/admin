@@ -1,17 +1,82 @@
 
-import React, { useRef, useState } from 'react';
-import { Input } from 'antd';
+import React, { useRef, useState, useEffect } from 'react';
+import { Button, message, Input } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
-import { userRelationShip } from '@/services/cms/member/member';
-import { history } from 'umi';
+import { userRelationShip, generateUpdata, getGenerteUrl } from '@/services/cms/member/member';
 const { Search } = Input;
 const UserRelationship = () => {
   const actionRef = useRef();
   const [phoneNumber, setPhoneNumber] = useState();
   const [indexData, setIndexData] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+  const [upDataIsOk, setUpDataIsOk] = useState(false);
+  const [initialData, setInitialData] = useState(null);
+  const [taskId, setTaskId] = useState(null);
+
+  useEffect(() => {
+    if (phoneNumber) {
+      getInitData()
+    }
+  }, [phoneNumber])
+
+  const getInitData = () => {
+    console.log('initialData', phoneNumber)
+    const json = {
+      phoneNumber: phoneNumber
+    }
+    const batchs = JSON.stringify(json);
+    console.log('batchs', batchs)
+    const timestamp = new Date().getTime();
+    const param = {
+      code: 'member-relation-export',
+      fileName: 'userRelationship' + timestamp + '.xlsx',
+      queryParamStr: batchs
+    }
+    generateUpdata(param).then((res) => {
+      console.log('generateUpdata-res', res)
+      if (res.code === 0) {
+        setTaskId(res?.data?.taskId)
+        setTimeout(() => {
+          setLoading(false)
+          setUpDataIsOk(true)
+        }, 2000)
+      } else {
+        setLoading(false)
+        message.error(res.msg)
+      }
+    })
+  }
+
+  const getEXT = () => {
+    if (taskId) {
+      getGenerteUrl({id: taskId}).then(({data}) => {
+        switch(data.state) {
+          case 0:
+            message.error('未开始')
+            break
+          case 1:
+            message.error('导出处理中')
+            break
+          case 2:
+            message.success('导出成功')
+            // message.success('导出成功,点击下载后将回到上一页')
+            window.open(data.fileUrl, "_blank");
+            // setTimeout(() => {
+            //   init()
+            // }, 3000);
+            break
+          case 3:
+            message.error('导出失败')
+            break
+        }
+      })
+    } else {
+      message.error('缺少参数taskId')
+    }
+  }
 
   const columns = [
     {
@@ -109,6 +174,22 @@ const UserRelationship = () => {
       }
     },
     {
+      title: '是否为生鲜店主',
+      dataIndex: 'memberShopType',
+      valueType: 'text',
+      search: false,
+      valueEnum: {
+        0: '不是',
+        1: '是',
+      }
+    },
+    {
+      title: '成为生鲜店主时间',
+      dataIndex: 'beFrTime',
+      valueType: 'text',
+      search: false,
+    },
+    {
       title: '注册时间',
       dataIndex: 'regTime',
       valueType: 'text',
@@ -154,6 +235,7 @@ const UserRelationship = () => {
       request={userRelationShip}
       postData={(data) => {
         setIndexData(data.memberInviteInfoDTO)
+        setInitialData(data.list.records)
         return data.list.records
       }}
       search={{
@@ -162,6 +244,11 @@ const UserRelationship = () => {
       pagination={{
         pageSize: 5,
       }}
+      toolBarRender={(_,record) => [
+        <Button key="button" type="primary" onClick={() => { getEXT() }}>
+          导出
+        </Button>,
+      ]}
       dateFormatter="string"
     />}
     </PageContainer>
