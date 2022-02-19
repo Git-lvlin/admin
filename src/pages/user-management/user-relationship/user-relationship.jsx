@@ -167,7 +167,6 @@ const UserRelationship = () => {
       }
     },
     {
-<<<<<<< HEAD
       title: '店铺状态',
       dataIndex: 'storeStatus',
       search: false,
@@ -180,7 +179,6 @@ const UserRelationship = () => {
       }
     },
     {
-=======
       title: '是否为生鲜店主',
       dataIndex: 'memberShopType',
       valueType: 'text',
@@ -197,7 +195,6 @@ const UserRelationship = () => {
       search: false,
     },
     {
->>>>>>> moon2.5
       title: '注册时间',
       dataIndex: 'regTime',
       valueType: 'text',
