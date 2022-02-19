@@ -307,10 +307,14 @@ const TableList = () => {
           !isPurchase&&
           <ProFormSelect
             label="订单类别"
-            name=""
+            name="businessType"
             options={[
               {
                 value: 1,
+                label: '普通订单'
+              },
+              {
+                value: 2,
                 label: '生鲜订单'
               }
             ]}
@@ -384,6 +388,7 @@ const TableList = () => {
             <div className={styles.list} key={item.id}>
               <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 10 }} color="#f59a23">{item.wholesaleFlowType === 1 ? '直发到店' : '运营中心配送'}</Tag>
               {
+                item?.businessType === 2&&
                 <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 80, marginTop: 10 }} color='#58B138'>生鲜订单</Tag>
               }
               {

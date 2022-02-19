@@ -93,6 +93,11 @@ export default {
       name: 'data-excel',
       path: '/intensive-store-management/data-excel',
       component: './intensive-store-management/data-excel',
+    },
+    {
+      name: 'fresh-store-review',
+      path: '/intensive-store-management/fresh-store-review',
+      component: './intensive-store-management/fresh-store-review',
     }
   ]
 }

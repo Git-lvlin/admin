@@ -227,10 +227,14 @@ const TableList = () => {
         />
         <ProFormSelect
           label="订单类别"
-          name=""
+          name="businessType"
           options={[
             {
               value: 1,
+              label: '普通订单'
+            },
+            {
+              value: 2,
               label: '生鲜订单'
             }
           ]}
@@ -296,7 +300,10 @@ const TableList = () => {
         {
           data.map(item => (
             <div className={styles.list} key={item.id}>
-              <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>生鲜订单</Tag>
+              {
+                item?.businessType === 2 &&
+                <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>生鲜订单</Tag>
+              }
               <div className={styles.store_name}>所属商家：{item.storeName}</div>
               <div className={styles.second}>
                 <Space size="large">
