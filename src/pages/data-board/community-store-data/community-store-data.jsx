@@ -14,6 +14,7 @@ import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import { getTimeDistance } from '@/utils/utils'
 import CommunityStoreDataOverview from './community-store-data-overview'
+import ServiceCharge from './service-charge'
 
 const CommunityStoreData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
@@ -78,7 +79,7 @@ const CommunityStoreData = () => {
     {
       title: '地区范围',
       dataIndex: 'area',
-      renderFormItem: () => (<AddressCascader />),
+      renderFormItem: () => (<AddressCascader changeOnSelect/>),
       hideInTable: true
     },
     {
@@ -272,6 +273,7 @@ const CommunityStoreData = () => {
           }}
         />
       </div>
+      <ServiceCharge/>
     </PageContainer>
   )
 }
