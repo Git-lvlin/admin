@@ -318,29 +318,26 @@ const TableList = () => {
             />
           </>
         }
-        {
-          !isPurchase&&
-          <ProFormSelect
-            label="订单类别"
-            name="businessType"
-            options={[
-              {
-                value: 1,
-                label: '普通订单'
-              },
-              {
-                value: 2,
-                label: '生鲜订单'
-              }
-            ]}
-            fieldProps={{
-              style: {
-                marginBottom: 20,
-                width: 180,
-              }
-            }}
-          />
-        }
+        <ProFormSelect
+          label="订单类别"
+          name="businessType"
+          options={[
+            {
+              value: 1,
+              label: '普通订单'
+            },
+            {
+              value: 2,
+              label: '生鲜订单'
+            }
+          ]}
+          fieldProps={{
+            style: {
+              marginBottom: 20,
+              width: 180,
+            }
+          }}
+        />
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
