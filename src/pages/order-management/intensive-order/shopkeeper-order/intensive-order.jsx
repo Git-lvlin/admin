@@ -327,7 +327,7 @@ const TableList = () => {
                 <div className={styles.goods_info}>
                   {
                     item.orderItemList.map(it => (
-                      <div key={it.orderId}>
+                      <div key={it.id}>
                         <img width="100" height="100" src={it.skuImageUrl} />
                         <div className={styles.info}>
                           <div>{it.goodsName}</div>
