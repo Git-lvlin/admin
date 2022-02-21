@@ -308,15 +308,11 @@ const TableList = () => {
         }
         {
           data.map(item => (
-<<<<<<< HEAD
-            <div className={styles.list} key={item.orderSn}>
-=======
             <div className={styles.list} key={item.id}>
               {
                 item?.businessType === 2 &&
                 <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>生鲜订单</Tag>
               }
->>>>>>> coderby
               <div className={styles.store_name}>所属商家：{item.storeName}</div>
               <div className={styles.second}>
                 <Space size="large">
