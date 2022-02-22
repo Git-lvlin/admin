@@ -134,20 +134,12 @@ const BannerAdmin = () => {
       dataIndex: 'customerType',
       valueType: 'text',
       search: false,
-      render: (_) => {
-        if (_!==1&&_!==2) {
-          return '所有用户'
-        } else {
-          return {
-            1: '所有用户',
-            2: '仅店主',
-          }[_]
-        }
+      valueEnum: {
+        1: '所有用户',
+        2: '全部店主',
+        3: '生鲜店主',
+        4: '普通店主',
       }
-      // valueEnum: {
-      //   1: '所有用户',
-      //   2: '仅店主',
-      // }
     },
     // {
     //   title: '类型',
