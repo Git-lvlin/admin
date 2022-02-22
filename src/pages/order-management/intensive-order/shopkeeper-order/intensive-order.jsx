@@ -116,6 +116,7 @@ const TableList = () => {
                   <Button
                     onClick={() => {
                       form?.resetFields();
+                      form?.submit();
                     }}
                   >
                     重置
@@ -236,14 +237,14 @@ const TableList = () => {
         />
         <ProFormSelect
           label="订单类别"
-          name="businessType"
+          name="subType"
           options={[
             {
-              value: 1,
+              value: 0,
               label: '普通订单'
             },
             {
-              value: 2,
+              value: 1,
               label: '生鲜订单'
             }
           ]}
@@ -310,7 +311,7 @@ const TableList = () => {
           data.map(item => (
             <div className={styles.list} key={item.id}>
               {
-                item?.businessType === 2 &&
+                item?.subType === 1 &&
                 <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>生鲜订单</Tag>
               }
               <div className={styles.store_name}>所属商家：{item.storeName}</div>
