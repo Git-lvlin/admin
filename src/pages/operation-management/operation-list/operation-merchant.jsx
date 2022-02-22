@@ -100,6 +100,12 @@ const TableList = () => {
       },
     },
     {
+      title: '运营中心编号',
+      dataIndex: 'storeNo',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
       title: '企业名称',
       dataIndex: 'accountCompanyName',
       valueType: 'text',

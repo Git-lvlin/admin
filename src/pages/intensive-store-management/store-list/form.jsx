@@ -5,8 +5,18 @@ import {
   ProFormRadio,
   ProFormTextArea,
   ProFormDependency,
+  ProFormText
 } from '@ant-design/pro-form';
 import { changeStatus } from '@/services/intensive-store-management/store-list';
+import Upload from '@/components/upload';
+import { amountTransform } from '@/utils/utils'
+
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+  </div>
+)
 
 export default (props) => {
   const { visible, setVisible, callback, data } = props;
@@ -59,7 +69,7 @@ export default (props) => {
       }}
       onVisibleChange={setVisible}
       visible={visible}
-      width={550}
+      width={650}
       form={form}
       onFinish={async (values) => {
         await submit(values);
@@ -74,6 +84,7 @@ export default (props) => {
       <ProFormRadio.Group
         name="toStatus"
         label="操作结果"
+        rules={[{ required: true, message: '请选择操作' }]}
         options={[
           {
             label: '开启',
@@ -87,11 +98,48 @@ export default (props) => {
             label: '注销',
             value: 2,
           },
+          {
+            label: '有余额注销',
+            value: 4,
+          },
         ]}
       />
       <ProFormDependency name={['toStatus']}>
         {({ toStatus }) => {
           return toStatus === 2 && <div style={{ color: 'red', marginLeft: 130, marginTop: '-25px', marginBottom: 20 }}>注销后不能再开启，请谨慎操作！</div>
+        }}
+      </ProFormDependency>
+
+      <ProFormDependency name={['toStatus']}>
+        {({ toStatus }) => {
+          return toStatus === 4 && <>
+            <ProFormText
+              width="sm"
+              label="当前账号余额"
+              readonly={true}
+              fieldProps={{
+                // value:`${amountTransform(detailList?.data?.content?.moneyAll, '/')}元`
+              }}
+            />
+            <Form.Item
+              label="附件"
+              name="imgUrl"
+              rules={[{ required: true, message: '请上传附件' }]}
+            >
+              <FromWrap
+                content={(value, onChange) => <Upload multiple value={value} onChange={onChange}   maxCount={9} accept="image/*"  size={10 * 1024} />}
+                right={(value) => {
+                  return (
+                    <dl>
+                      <dd>不超过9张图片</dd>
+                      <dd>每张小于10M</dd>
+                      <dd>还有余额的社区店注销时需上传注销申请审核通过的审批文件（需盖章）、与店主的沟通记录截图文件</dd>
+                    </dl>
+                  )
+                }}
+              />
+            </Form.Item>
+          </>
         }}
       </ProFormDependency>
 
