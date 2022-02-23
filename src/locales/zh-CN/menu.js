@@ -129,11 +129,13 @@ export default {
   'menu.intensive-store-management.lvl-rule': '等级规则配置',
   'menu.intensive-store-management.lvl-setup': '等级配置',
   'menu.intensive-store-management.lvl-commission': '等级佣金',
-  'menu.intensive-store-management.shop-area': '可开店区域配置',
+  'menu.intensive-store-management.shop-area': '开店区域和缴费',
   'menu.intensive-store-management.community-store-setting': '社区店设置',
   'menu.intensive-store-management.data-excel': '数据导出',
   'menu.intensive-store-management.cancel-reason': '注销原因',
   'menu.intensive-store-management.fresh-store-review': '生鲜店铺申请审核',
+  'menu.intensive-store-management.fresh-shop-configuration': '生鲜店铺配置',
+
 
 
   'menu.single-contract-activity-management': '单约活动管理',
@@ -340,6 +342,7 @@ export default {
   'menu.activity-management.spring-festival-build-building-activity.employ-detail': '查看用户明细',
   'menu.activity-management.spring-festival-build-building-activity.ranking-data': '排名数据',
   'menu.activity-management.spring-festival-build-building-activity.binding-set': '提现绑定设置',
+
 
 
 };

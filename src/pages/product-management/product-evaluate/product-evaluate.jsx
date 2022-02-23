@@ -9,6 +9,8 @@ import AuditModel from './audit-model'
 import styles from './style.less'
 import { findByways,addCheck,check } from '@/services/product-management/product-evaluate';
 import { Space } from 'antd';
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 const { TabPane } = Tabs
 
 const EvaluateList= (props) => {
@@ -19,17 +21,20 @@ const EvaluateList= (props) => {
     const [commentId,setCommentId]=useState()
     const [commentSkuId,setCommentSkuId]=useState()
     const [pitch,setPitch]=useState()
+    const [visit, setVisit] = useState(false)
     const columns = [
         {
             title: '用户ID',
             dataIndex: 'userId',
             hideInSearch: true,
+            hideInTable:type==3?true:false
         },
         {
             title: '用户头像',
             dataIndex: 'userImg',
             valueType: 'image',
             hideInSearch:true,
+            hideInTable:type==3?true:false
         },
         {
             title: '用户昵称',
@@ -37,10 +42,26 @@ const EvaluateList= (props) => {
             valueType: 'text',
         },
         {
-            title: '用户打分',
+            title: '用户评分',
             dataIndex: 'score',
             valueType: 'text',
             hideInSearch: true,
+            hideInTable:type==3?false:true
+        },
+        {
+            title: '用户评分',
+            dataIndex: 'score',
+            valueType: 'select',
+            hideInSearch: type==2?false:true,
+            hideInTable:type==3?true:false,
+            valueEnum: {
+              0: '请选择',
+              1: '1',
+              2: '2',
+              3: '3',
+              4: '4',
+              5: '5'
+              },
         },
         {
             title: '评价内容',
@@ -78,14 +99,28 @@ const EvaluateList= (props) => {
             hideInSearch: true,
         },
         {
+            title: '商品名称',
+            dataIndex: 'goodsName',
+            valueType: 'text',
+            hideInSearch: true,
+            hideInTable:type==2?false:true
+        },
+        {
             title: '被评商家ID',
             dataIndex: 'supplierId',
             valueType: 'text',
-            hideInSearch: true,
+            hideInSearch: type==2?false:true,
+        },
+        {
+            title: '被评商品名称',
+            dataIndex: 'goodsName',
+            valueType: 'text',
+            hideInSearch: type==2?false:true,
+            hideInTable: true
         },
         {
             title: '被评商家名称',
-            dataIndex: 'storeName',
+            dataIndex: 'companyName',
             valueType: 'text',
         },
         {
@@ -120,6 +155,13 @@ const EvaluateList= (props) => {
         setPitch(res.data)
       })
     },[])
+  const getFieldValue = (searchConfig) => {
+    const {...rest}=searchConfig.form.getFieldsValue()
+    return {
+      state:type,
+      ...rest,
+    }
+  }
   return (
       <>
         <ProTable
@@ -134,16 +176,28 @@ const EvaluateList= (props) => {
                 defaultCollapsed: false,
                 labelWidth: 100,
                 optionRender: (searchConfig, formProps, dom) => [
-                    <ProFormSwitch
-                      label="审核功能开关"
-                      className='switchTop'
-                      fieldProps={{
-                          onChange:(bol)=>auditSwitch(bol),
-                          checked:pitch
-                      }}
-                      key='switch'
-                    />,
-                    ...dom.reverse()
+                  <ProFormSwitch
+                    label="审核功能开关"
+                    className='switchTop'
+                    fieldProps={{
+                        onChange:(bol)=>auditSwitch(bol),
+                        checked:pitch
+                    }}
+                    key='switch'
+                  />,
+                  ...dom.reverse(),
+                  <div key="derive">
+                   {type==3&&<>
+                    <Export
+                       key='export'
+                       change={(e) => { setVisit(e) }}
+                       type={'data-goods-comment-export'}
+                       conditions={getFieldValue(searchConfig)}
+                     />,
+                     <ExportHistory key='task' show={visit} setShow={setVisit} type={'data-goods-comment-export'}/>
+                    </>
+                   }
+                  </div>
                 ],
             }}
             columns={columns}

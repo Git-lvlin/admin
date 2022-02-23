@@ -93,6 +93,6 @@ export default {
               component: './activity-management/spring-festival-build-building-activity/binding-set',
             },
           ]
-      },
+      }
     ]
   }

@@ -103,6 +103,11 @@ export default {
       name: 'fresh-store-review',
       path: '/intensive-store-management/fresh-store-review',
       component: './intensive-store-management/fresh-store-review',
+    },
+    {
+      name: 'fresh-shop-configuration',
+      path: '/intensive-store-management/fresh-shop-configuration',
+      component: './intensive-store-management/fresh-shop-configuration',
     }
   ]
 }
