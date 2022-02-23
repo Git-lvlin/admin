@@ -39,7 +39,15 @@ const ServiceCharge = () => {
     {
       title: '缴费时间',
       dataIndex: '',
-      align: 'center'
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '缴费时间',
+      dataIndex: '',
+      valueType: 'dateRange',
+      align: 'center',
+      hideInTable: true
     },
     {
       title: '缴费有效期',

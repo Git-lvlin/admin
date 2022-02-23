@@ -101,8 +101,7 @@ const TableList = () => {
     },
     {
       title: '运营中心编号',
-      dataIndex: 'storeNo',
-      valueType: 'text',
+      dataIndex: 'opNo',
       hideInSearch: true,
     },
     {

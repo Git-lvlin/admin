@@ -117,6 +117,16 @@ const Apply = ({visit, onVisibleChange, data, actRef}) => {
           </>
         }
       </ProForm.Item>
+      {
+        data?.details?.isOrdered === 0 &&
+        <ProForm.Item
+          name=""
+          label="礼包订单"
+        >
+          <div>订单号：{data?.details?.order?.orderSn}</div>
+          <div>订单状态：{data?.details?.order?.statusStr}</div>
+        </ProForm.Item>
+      }
       <ProFormRadio.Group
         name="result"
         label="审核结果"
@@ -196,7 +206,7 @@ const Detail = ({visit, onVisibleChange, id}) => {
   
   return (
     <ModalForm
-      title="审核生鲜店铺申请"
+      title="生鲜店铺详情"
       modalProps={{
         destroyOnClose: true
       }}
@@ -243,6 +253,13 @@ const Detail = ({visit, onVisibleChange, id}) => {
             <div>订单状态：{data?.details?.order?.statusStr}</div>
           </>
         }
+      </ProForm.Item>
+      <ProForm.Item
+        name=""
+        label="礼包订单"
+      >
+        <div>订单号：{data?.details?.order?.orderSn}</div>
+        <div>订单状态：{data?.details?.order?.statusStr}</div>
       </ProForm.Item>
       <ProFormRadio.Group
         name="result"
