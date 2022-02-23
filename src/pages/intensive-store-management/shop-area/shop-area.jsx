@@ -9,7 +9,7 @@ import { getAreaData } from '@/utils/utils'
 import AmendModel from './amend-model'
 import ProForm,{ ProFormText } from '@ant-design/pro-form';
 import ServiceCharge from './service-charge' 
-import Handicapped from './handicapped' 
+import Handicapped from './handicapped-person' 
 import { InfoCircleFilled } from '@ant-design/icons';
 const { TabPane } = Tabs
 
