@@ -199,7 +199,7 @@ const TableList = () => {
         params={{
           status: 0,
         }}
-        scroll={{ y: 'calc(100vh-350px)', scrollToFirstRowOnChange: true, }}
+        scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
         request={userList}
         actionRef={actionRef}
         search={{

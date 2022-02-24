@@ -137,7 +137,7 @@ const afterSalesOrder = () => {
         options={false}
         params={{}}
         request={refundOrder}
-        scroll={{ y: window.innerHeight - 350, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: window.innerHeight - 500, scrollToFirstRowOnChange: true, }}
         search={{
           optionRender: ({searchText, resetText}, {form}) => [
             <Button

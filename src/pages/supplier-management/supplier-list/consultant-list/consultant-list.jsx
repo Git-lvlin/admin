@@ -81,6 +81,7 @@ const TableList = () => {
       dataIndex: 'manageSupplierNum',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
       render: (_, data) => {
         if (_ === 0) {
           return _;
@@ -93,6 +94,7 @@ const TableList = () => {
       dataIndex: 'manageGoodsNum',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
       render: (_, data) => {
         if (_ === 0) {
           return _;
@@ -149,7 +151,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
       />
       {formVisible &&
         <Edit

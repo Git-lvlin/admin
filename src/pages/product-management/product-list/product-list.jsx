@@ -185,16 +185,36 @@ const TableList = () => {
       fixed: 'left',
     },
     {
+      title: '是否生鲜商品',
+      dataIndex: 'fresh',
+      valueType: 'text',
+      hideInTable: true,
+      valueEnum: {
+        1: '是',
+        0: '否'
+      }
+    },
+    {
+      title: '生鲜商品',
+      dataIndex: 'fresh',
+      valueType: 'text',
+      hideInSearch: true,
+      width: 100,
+      render: (_) => _ === 1 ? '是' : '否',
+    },
+    {
       title: '基础销量',
       dataIndex: 'goodsVirtualSaleNum',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '秒约销量',
       dataIndex: 'goodsSaleNum',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: 'B端集约销量',
@@ -251,21 +271,24 @@ const TableList = () => {
       dataIndex: 'isSample',
       valueType: 'text',
       hideInSearch: true,
-      render: (_) => _ === 0 ? '不支持' : '支持'
+      render: (_) => _ === 0 ? '不支持' : '支持',
+      width: 100,
     },
     {
       title: '批发供货价(元)',
       dataIndex: 'wholesaleSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => data.goodsSaleType === 2 ? '-' : _
+      render: (_, data) => data.goodsSaleType === 2 ? '-' : _,
+      width: 120,
     },
     {
       title: '零售供货价(元)',
       dataIndex: 'retailSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => data.goodsSaleType === 1 ? '-' : _
+      render: (_, data) => data.goodsSaleType === 1 ? '-' : _,
+      width: 120,
     },
     {
       title: '销售价',
@@ -494,7 +517,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: '100vw', y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
+        scroll={{ x: '110vw', y: window.innerHeight - 730, scrollToFirstRowOnChange: true, }}
         search={{
           labelWidth: 140,
           defaultCollapsed: false,

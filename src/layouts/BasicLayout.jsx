@@ -17,6 +17,7 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/logo.png';
 import { cacheUserAuths } from '@/services/common';
+import { TabLayout } from 'antd-pro-page-tabs';
 import './BasicLayout.less'
 
 const noMatch = (
@@ -178,7 +179,9 @@ const BasicLayout = (props) => {
           }}
         >
           <Authorized authority={authorized.authority} noMatch={noMatch}>
-            {children}
+            <TabLayout {...props}>
+              {children}
+            </TabLayout>
           </Authorized>
         </ProLayout>
       }

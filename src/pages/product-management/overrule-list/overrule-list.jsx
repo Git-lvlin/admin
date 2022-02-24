@@ -246,7 +246,7 @@ const TableList = () => {
           selectType: 1,
           goodsVerifyState: 2,
         }}
-        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
         actionRef={actionRef}
         formRef={formRef}
         request={api.rejectList}

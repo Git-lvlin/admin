@@ -258,7 +258,7 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={getCommonList}
-        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           labelWidth: 130,

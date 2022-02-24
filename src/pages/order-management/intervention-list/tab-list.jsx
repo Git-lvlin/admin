@@ -116,7 +116,7 @@ const TabList =props=> {
       scroll={{ y: window.innerHeight - 350, scrollToFirstRowOnChange: true, }}
       request={interventionList}
       pagination={{
-        hideOnSinglePage: true,
+        // hideOnSinglePage: true,
         showQuickJumper: true
       }}
       search={{

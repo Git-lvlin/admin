@@ -123,7 +123,7 @@ export default () => {
               <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-give-list-export'}/>
             ],
           }}
-          scroll={{ y: window.innerHeight - 450, scrollToFirstRowOnChange: true, }}
+          scroll={{ y: window.innerHeight - 500, scrollToFirstRowOnChange: true, }}
           pagination={{
             pageSize: 10,
             showQuickJumper: true,

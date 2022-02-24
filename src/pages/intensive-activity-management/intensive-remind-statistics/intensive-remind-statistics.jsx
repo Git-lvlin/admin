@@ -53,7 +53,7 @@ return(
       rowKey="id"
       options={false}
       request={remindStatisticsList}
-      scroll={{ y: window.innerHeight - 450, scrollToFirstRowOnChange: true, }}
+      scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
       search={{
         defaultCollapsed: false,
         labelWidth: 100,

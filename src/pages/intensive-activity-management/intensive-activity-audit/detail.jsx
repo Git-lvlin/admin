@@ -249,6 +249,19 @@ const Detail = () => {
     })[0]
   }
 
+  const parseShipAddr = (data) => {
+    const arr = [];
+
+    data.forEach(item => {
+      const provinceName = window.yeahgo_area.find(it => it.id === item.provinceId)?.name
+      const cityName = window.yeahgo_area.find(it => it.id === item.cityId)?.name
+      const areaName = window.yeahgo_area.find(it => it.id === item.areaId)?.name
+      arr.push(`${provinceName}${cityName}${areaName}`)
+    })
+
+    return arr.join('、')
+  }
+
   useEffect(() => {
     getDetail(params?.id)
   }, [])
@@ -303,6 +316,12 @@ const Detail = () => {
                   {detailData?.allowArea?.map?.(item => (item.areaName)).join('，')}
                 </div>
               </Descriptions.Item>
+              <Descriptions.Item label="消费者集约预售">
+                {{ 1: '开启', 0: '关闭' }[detailData?.wholesale?.preSale]}
+              </Descriptions.Item>
+              {!!detailData?.sku?.[0]?.shipAddr?.length && <Descriptions.Item label="商品发货地区">
+                {parseShipAddr(detailData?.sku?.[0]?.shipAddr)}
+              </Descriptions.Item>}
               <Descriptions.Item label="商品主图">
                 <Image src={detailData?.sku?.[0]?.goodsImageUrl} width={50} />
               </Descriptions.Item>

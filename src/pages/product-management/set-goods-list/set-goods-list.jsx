@@ -119,10 +119,29 @@ const TableList = () => {
       }
     },
     {
+      title: '是否生鲜商品',
+      dataIndex: 'fresh',
+      valueType: 'text',
+      hideInTable: true,
+      valueEnum: {
+        1: '是',
+        0: '否'
+      }
+    },
+    {
+      title: '生鲜商品',
+      dataIndex: 'fresh',
+      valueType: 'text',
+      hideInSearch: true,
+      width: 100,
+      render: (_) => _ === 1 ? '是' : '否',
+    },
+    {
       title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
+      width: 120,
     },
     {
       title: '供应商家ID',
@@ -153,14 +172,16 @@ const TableList = () => {
       dataIndex: 'wholesaleSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => data.goodsSaleType === 2 ? '-' : _
+      render: (_, data) => data.goodsSaleType === 2 ? '-' : _,
+      width: 120,
     },
     {
       title: '零售供货价(元)',
       dataIndex: 'retailSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => data.goodsSaleType === 1 ? '-' : _
+      render: (_, data) => data.goodsSaleType === 1 ? '-' : _,
+      width: 120,
     },
     {
       title: '秒约价(元)',
@@ -174,7 +195,8 @@ const TableList = () => {
         }
 
         return `${amountTransform(goodsSaleMinPrice, '/')}~${amountTransform(goodsSaleMaxPrice, '/')}`
-      }
+      },
+      width: 120,
     },
     {
       title: '可用库存',
@@ -331,10 +353,11 @@ const TableList = () => {
         params={{
           selectType: 1,
         }}
-        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
         request={setGoodsList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
+          labelWidth: 120,
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

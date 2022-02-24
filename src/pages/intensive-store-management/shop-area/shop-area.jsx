@@ -144,7 +144,7 @@ const ShopArea = () => {
         actionRef={actionRef}
         formRef={formRef}
         request={getApplicableArea}
-        scroll={{ y: window.innerHeight - 650, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
         toolBarRender={() => <div className="tips">{tips}</div>}
         search={{
           defaultCollapsed: false,

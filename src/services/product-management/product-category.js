@@ -47,3 +47,11 @@ export const categorySwitch = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const checkGcIdData = (params = {}, options = {}) => {
+  return request('/auth/goods/product/checkGcIdData', {
+    method: 'GET',
+    params,
+    ...options
+  });
+}

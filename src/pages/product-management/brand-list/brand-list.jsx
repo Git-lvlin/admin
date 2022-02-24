@@ -88,7 +88,7 @@ const TableList = () => {
         rowKey="brandId"
         options={false}
         request={api.brand}
-        scroll={{ y: window.innerHeight - 500, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: window.innerHeight - 520, scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,

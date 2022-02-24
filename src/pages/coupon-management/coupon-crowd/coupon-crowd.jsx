@@ -97,7 +97,7 @@ export default (props) =>{
             新建
         </Button>
       <ProTable
-          scroll={{ y: window.innerHeight - 450, scrollToFirstRowOnChange: true, }}
+          scroll={{ y: window.innerHeight - 500, scrollToFirstRowOnChange: true, }}
           actionRef={ref}
           rowKey="id"
           options={false}
