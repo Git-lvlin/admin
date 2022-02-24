@@ -4,7 +4,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import AddressMultiCascader from '@/components/address-multi-cascader'
 import AddressCascader from '@/components/address-cascader'
 import { Form,Button, message,Tabs,InputNumber,Space } from 'antd';
-import { getApplicableArea, setApplicableArea, changeApplicableArea } from '@/services/intensive-store-management/shop-area'
+import { getApplicableArea, setApplicableArea, changeApplicableArea,editApplicableAreaDeposit } from '@/services/intensive-store-management/shop-area'
 import { getAreaData } from '@/utils/utils'
 import AmendModel from './amend-model'
 import ProForm,{ ProFormText } from '@ant-design/pro-form';
@@ -84,11 +84,10 @@ const ShopArea = () => {
     },
     {
       title: '入驻保证金(元)',
-      dataIndex: 'storePercent',
+      dataIndex: 'deposit',
       valueType: 'text',
       hideInSearch: true,
       renderFormItem: (data,r) => {
-        // console.log('config',row.render)
         return <FromWrap
                 content={
                   (value, onChange) => 
@@ -104,8 +103,7 @@ const ShopArea = () => {
                 right={(value) => {
                   return (
                     <a onClick={()=>{
-                      // setEditableRowKeys([])
-                      setEarnestMoney(data)
+                      setEarnestMoney({data:data.entry,deposit:r.record?.deposit})
                       setVisible(true)
                     }}>确定</a>
                   )
@@ -115,14 +113,13 @@ const ShopArea = () => {
       render: (text, record, _, action) =>{
         return <FromWrap
                 content={
-                  (value, onChange) => 
+                  () => 
                   <InputNumber
                     min="0"
                     max="1000000"
                     precision='2'
-                    value={value}
+                    value={text}
                     disabled={true}
-                    onChange={onChange}
                     stringMode
                   />
                 }
@@ -185,7 +182,7 @@ const ShopArea = () => {
       page: 1,
       size: 9999,
     }).then(res => {
-      const keys = res.data.records.map(item => item.regionId)
+      const keys = res.data.records?.map(item => item.regionId)
       setDisabledItemValues(keys)
     })
   }
@@ -211,13 +208,22 @@ const ShopArea = () => {
     getUncheckableItemValues();
   }, [])
 
-  const onsubmit = (values) => {
-    // setLadderConfig(values).then(res=>{
-    //   if(res.code==0){
+  const onsubmit = (values,selectedRows) => {
+    const arr=selectedRows.map(ele=>({
+      provinceId:ele.provinceId,
+      cityId:ele.cityId,
+      regionId:ele.regionId,
+      deposit:values.deposit
+    }))
+    const params={
+      deposit_list:arr
+    }
+    editApplicableAreaDeposit(params).then(res=>{
+      if(res.code==0){
         message.success('配置成功')
         actionRef.current.reload()
-    //   }
-    // })
+      }
+    })
   }
   const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
@@ -276,7 +282,6 @@ const ShopArea = () => {
         }}
         postData={postData}
         rowSelection={{}}
-        tableAlertOptionRender={(res)=>{console.log('res.selectedRowKeys',res.selectedRowKeys)}}
         tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
           <Space size={24}>
             <span>
@@ -288,7 +293,7 @@ const ShopArea = () => {
               formRef={ref}
               submitter={false}
               onFinish={async (values) => {
-                  await onsubmit(values);
+                  await onsubmit(values,selectedRows);
                   onCleanSelected()
                   return true;
               }
@@ -297,7 +302,7 @@ const ShopArea = () => {
               <Space>
               <ProFormText
                 width="md"
-                name="name"
+                name="deposit"
                 label="设置入驻保证金为"
                 placeholder="0-100万之间数字，保留2位小数"
                 labelCol={5}
