@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { Input, Form, Divider, message, Button,Space } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
 import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
+import { getMemberShopDeformed,setMemberShopDeformed,getMemberShopDeformedLog } from '@/services/intensive-store-management/shop-area'
 import ProTable from '@ant-design/pro-table';
 import moment from 'moment';
 
@@ -21,8 +22,18 @@ const formItemLayout = {
 
 export default  () => {
   const [form] = Form.useForm()
+  const [formDatil,setFormDatil]=useState()
+  const actionRef = useRef();
   useEffect(() => {
-        form.setFieldsValue({})
+    getMemberShopDeformed({}).then(res=>{
+      if(res.code==0){
+        setFormDatil(res.data)
+        form.setFieldsValue({
+          depositAmount:res.data?.settingValues?.depositAmount,
+          serviceAmount:res.data?.settingValues?.serviceAmount
+        })
+      }
+    })
   }, [])
   const checkConfirm=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
@@ -36,45 +47,54 @@ export default  () => {
     })
   }
   const onsubmit = (values) => {
+    setMemberShopDeformed(values).then(res=>{
+      if(res.code==0){
+        message.success('缴费设置成功!')
+        actionRef.current.reload()
+      }
+    })
   }
   const columns= [
     {
       title: '操作时间',
-      dataIndex: 'dateRange',
+      dataIndex: 'createTime',
       valueType: 'text',
-      render:(_, data)=>{
-        return <p>{data.limitStartTime} 至 {data.limitEndTime}</p>
-      },
       hideInSearch: true,
       ellipsis:true
     },
     {
       title: '操作人',
-      dataIndex: 'couponName',
+      dataIndex: 'optAdminName',
       valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入红包名称'
-      },
     },
     {
       title: '保证金金额',
-      dataIndex: 'issueAmount',
+      dataIndex: 'depositAmount',
       valueType:'text',
       hideInSearch: true,
       render:(_,data)=>{
-        return <p>{!isNaN(_)?Number(_).toFixed(2):_}</p>
+        return <p>￥{_}</p>
       }
     },
     {
       title: '服务金金额',
-      dataIndex: 'issueQuantity',
+      dataIndex: 'serviceAmount',
       valueType: 'text',
       hideInSearch: true,
-      render:(_, data)=>{
-        return <p>{data.issueQuantity==-1?'不限量':data.issueQuantity}</p>
+      render:(_,data)=>{
+        return <p>￥{_}</p>
       }
     },   
   ];
+
+  const postData = (data) => {
+    const arr=data.map(ele=>({
+      ...ele,
+      depositAmount:ele.beforeValues?.depositAmount,
+      serviceAmount:ele.beforeValues?.serviceAmount
+    }))
+    return arr;
+  }
   return (
     <>
       <ProForm
@@ -99,10 +119,10 @@ export default  () => {
         }
         }
       >
-        <p style={{fontWeight:'bold'}}>残疾人入驻社区店缴费配置</p>
+        <p style={{fontWeight:'bold'}}>{formDatil?.settingDescribe}</p>
         <ProFormText
             width="md"
-            name="couponName"
+            name="depositAmount"
             label='保证金金额'
             rules={[
                 { validator: checkConfirm }
@@ -113,7 +133,7 @@ export default  () => {
         />
         <ProFormText
             width="md"
-            name="couponName"
+            name="serviceAmount"
             label='服务费金额'
             rules={[
                 { validator: checkConfirm }
@@ -127,8 +147,10 @@ export default  () => {
        headerTitle="操作日志"
        rowKey="id"
        options={false}
-       //   request={couponList}
+       actionRef={actionRef}
+       request={getMemberShopDeformedLog}
        search={false}
+       postData={postData}
        columns={columns}
        style={{marginTop:'20px'}}
     />

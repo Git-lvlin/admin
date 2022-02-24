@@ -181,26 +181,24 @@ const StoreList = (props) => {
     },
     {
       title: '所属运营中心',
-      dataIndex: 'address',
-      valueType: 'select',
+      dataIndex: 'operationCompanyName',
+      valueType: 'text',
       hideInTable: true,
       hideInSearch: storeType == 'freshStores',
-      valueEnum:{
-        0: '全部',
-        1: '运营中心名称1',
-        2: '运营中心名称2'
+      fieldProps: {
+        placeholder: '请输入运营中心名称'
       },
     },
     {
       title: '所属运营中心ID',
-      dataIndex: 'address',
+      dataIndex: 'operationId',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'freshStores'
     },
     {
       title: '所属运营中心名称',
-      dataIndex: 'address',
+      dataIndex: 'operationCompanyName',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'freshStores'
@@ -600,6 +598,7 @@ const StoreList = (props) => {
         setVisible={setFormVisible}
         data={selectItem}
         callback={() => { actionRef.current.reload() }}
+        onClose={()=>{ actionRef.current.reload();setSelectItem(null) }}
       />}
       {returnVisible && <Return
         visible={returnVisible}
