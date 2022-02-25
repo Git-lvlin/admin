@@ -57,7 +57,50 @@ export default {
       name: 'platfor-bonus-percentage-audit',
       path: '/intensive-activity-management/platfor-bonus-percentage-audit',
       component: './intensive-activity-management/platfor-bonus-percentage-audit',
-      wrappers: [RouteWatcher],
-    }
+    },
+    {
+      name: 'penny-activity',
+      path: '/intensive-activity-management/penny-activity',
+      routes: [
+          {
+            name: 'activity-list',
+            path: '/intensive-activity-management/penny-activity/activity-list',
+            component: './intensive-activity-management/penny-activity/activity-list'
+          },
+          {
+            name: 'added-activity',
+            path: '/intensive-activity-management/penny-activity/added-activity',
+            component: './intensive-activity-management/penny-activity/added-activity',
+            hideInMenu: true,
+          },
+          {
+            name: 'activity-commodity',
+            path: '/intensive-activity-management/penny-activity/activity-commodity',
+            component: './intensive-activity-management/penny-activity/activity-commodity'
+          },
+        ]
+    },
+    {
+      name: 'special-offer-acticity',
+      path: '/intensive-activity-management/special-offer-acticity',
+      routes: [
+          {
+            name: 'special-offer-acticity-list',
+            path: '/intensive-activity-management/special-offer-acticity/special-offer-acticity-list',
+            component: './intensive-activity-management/special-offer-acticity/special-offer-acticity-list'
+          },
+          {
+            name: 'add-activity',
+            path: '/intensive-activity-management/special-offer-acticity/add-activity',
+            component: './intensive-activity-management/special-offer-acticity/add-activity',
+            hideInMenu: true,
+          },
+          // {
+          //   name: 'activity-commodity',
+          //   path: '/intensive-activity-management/special-offer-acticity/activity-commodity',
+          //   component: './intensive-activity-management/special-offer-acticity/activity-commodity'
+          // },
+        ]
+    },
   ]
 }

@@ -138,8 +138,8 @@ export default () => {
         title: '操作',
         valueType: 'option',
         render: (_, data) => [
-          <a onClick={() => { changeStatus(data) }}>{data.status === 1 ? '禁用' : '启用'}</a>,
-          <a onClick={() => { deleteArea(data) }}>删除</a>
+          <a key='status' onClick={() => { changeStatus(data) }}>{data.status === 1 ? '禁用' : '启用'}</a>,
+          <a key='delete' onClick={() => { deleteArea(data) }}>删除</a>
         ]
       }, 
     ];

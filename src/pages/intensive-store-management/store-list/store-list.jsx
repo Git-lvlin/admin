@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Space, Tooltip } from 'antd';
+import { Button, Space, Tooltip,Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
@@ -18,9 +18,13 @@ import ExportHistory from '@/pages/export-excel/export-history'
 import { amountTransform } from '@/utils/utils'
 import Detail from './detail';
 import AuditInfo from './audit-info';
+import OrderDetail from '@/pages/order-management/normal-order/detail';
+import styles from './style.less'
+import ContentModel from './content-model';
 
 const StoreList = (props) => {
   const { storeType } = props
+  const [visible, setVisible] = useState(false);
   const [formVisible, setFormVisible] = useState(false);
   const [createVisible, setCreateVisible] = useState(false);
   const [returnVisible, setReturnVisible] = useState(false);
@@ -28,7 +32,10 @@ const StoreList = (props) => {
   const [selectItem, setSelectItem] = useState(null);
   const [visit, setVisit] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false);
+  const [orderVisible,setOrderVisible]=useState(false)
+  const [orderId,setOrderId]=useState()
   const [auditInfoVisible, setAuditInfoVisible] = useState(false);
+  const [attachmentImage,setAttachmentImage]=useState()
   const actionRef = useRef();
   const formRef = useRef();
 
@@ -49,6 +56,26 @@ const StoreList = (props) => {
     //   render: (_) => <img src={_} width="50" height="50" />
     // },
     {
+      title: '生鲜店铺编号',
+      dataIndex: 'storeNo',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入店铺编号'
+      },
+      hideInTable: storeType == 'freshStores',
+      hideInSearch: storeType == 'freshStores',
+    },
+    {
+      title: '店铺编号',
+      dataIndex: 'storeNo',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入店铺编号'
+      },
+      hideInTable: storeType == 'freshStores',
+      hideInSearch: storeType == 'freshStores',
+    },
+    {
       title: '店主手机号',
       dataIndex: 'memberPhone',
       valueType: 'text',
@@ -65,12 +92,22 @@ const StoreList = (props) => {
       render: (_, data) => <div><div>{data.memberPhone}</div><div>{data.nickname === data.memberPhone ? '' : data.nickname}</div></div>
     },
     {
+      title: '店主类型',
+      dataIndex: 'memberShopType',
+      valueType: 'text',
+      hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{_.desc}</p>
+      }
+    },
+    {
       title: '店铺名称',
       dataIndex: 'storeName',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店铺名称'
-      }
+      },
+      hideInTable: storeType == 'freshStores'
     },
     {
       title: '等级',
@@ -103,12 +140,78 @@ const StoreList = (props) => {
       hideInSearch: true,
     },
     {
+      title: '是否购买生鲜柜',
+      dataIndex: 'address',
+      valueType: 'select',
+      valueEnum:{
+        0: '全部',
+        1: '未购买',
+        2: '已购买'
+      },
+      hideInTable:true,
+      hideInSearch: storeType == 'freshStores',
+    },
+    {
+      title: '生鲜柜订单号',
+      dataIndex: 'address',
+      valueType: 'text',
+      hideInSearch: true,
+      render:(_,data)=>{
+        return <a onClick={()=>{setOrderVisible(true);setOrderId()}}>{_}</a>
+      },
+      hideInTable: storeType != 'freshStores'
+    },
+    {
+      title: '是否生鲜店铺',
+      dataIndex: 'memberShopType',
+      valueType: 'select',
+      hideInTable:true,
+      hideInSearch: storeType == 'freshStores',
+      valueEnum:{
+        0: '全部',
+        20: '生鲜店铺',
+        10: '非生鲜店铺'
+      },
+    },
+    {
+      title: '生鲜店铺状态',
+      // dataIndex: 'address',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType == 'freshStores'
+    },
+    {
+      title: '所属运营中心',
+      dataIndex: 'operationCompanyName',
+      valueType: 'text',
+      hideInTable: true,
+      hideInSearch: storeType == 'freshStores',
+      fieldProps: {
+        placeholder: '请输入运营中心名称'
+      },
+    },
+    {
+      title: '所属运营中心ID',
+      dataIndex: 'operationId',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType == 'freshStores'
+    },
+    {
+      title: '所属运营中心名称',
+      dataIndex: 'operationCompanyName',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType == 'freshStores'
+    },
+    {
       title: '店主收件号',
       dataIndex: 'phone',
       fieldProps: {
         placeholder: '请输入店主收件手机号'
       },
-      order: -1
+      order: -1,
+      hideInTable: storeType == 'freshStores'
     },
     {
       title: '集约任务',
@@ -134,7 +237,8 @@ const StoreList = (props) => {
             {_}
           </a>
           : _
-      }
+      },
+      hideInTable: storeType == 'freshStores'
     },
     {
       title: '店内订单',
@@ -159,7 +263,8 @@ const StoreList = (props) => {
           </a>
           :
           _
-      }
+      },
+      hideInTable: storeType == 'freshStores'
     },
     {
       title: '商品',
@@ -182,7 +287,8 @@ const StoreList = (props) => {
           }}>{_}</a>
           :
           _
-      }
+      },
+      hideInTable: storeType == 'freshStores'
     },
     {
       title: '订单用户',
@@ -205,7 +311,8 @@ const StoreList = (props) => {
           }}>{_}</a>
           :
           _
-      }
+      },
+      hideInTable: storeType == 'freshStores'
     },
     {
       title: '直推用户',
@@ -229,7 +336,8 @@ const StoreList = (props) => {
           }}>{_}</a>
           :
           _
-      }
+      },
+      hideInTable: storeType == 'freshStores'
     },
     {
       title: '所在地区',
@@ -250,7 +358,7 @@ const StoreList = (props) => {
       title: '保证金状态',
       dataIndex: 'depositStatus',
       valueType: 'select',
-      hideInSearch: storeType == 'cancelled',
+      hideInSearch: storeType == 'cancelled'||storeType == 'freshStores',
       hideInTable: true,
       valueEnum: {
         "normal": '全部',
@@ -264,7 +372,7 @@ const StoreList = (props) => {
       dataIndex: 'depositStatusDesc',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'cancelled',
+      hideInTable: storeType == 'cancelled'||storeType == 'freshStores',
       render: (_, data) => {
         const { depositRefendList } = data;
         return (
@@ -281,7 +389,7 @@ const StoreList = (props) => {
       title: '保证金状态',
       dataIndex: 'depositStatus',
       valueType: 'select',
-      hideInSearch: storeType == 'normal',
+      hideInSearch: storeType == 'normal'||storeType == 'freshStores',
       hideInTable: true,
       valueEnum: {
         "cancelled": '全部',
@@ -295,7 +403,7 @@ const StoreList = (props) => {
       dataIndex: 'depositStatusDesc',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'normal',
+      hideInTable: storeType == 'normal'||storeType == 'freshStores',
       render: (_, data) => {
         const { depositRefendList } = data;
         return (
@@ -374,14 +482,25 @@ const StoreList = (props) => {
       dataIndex: 'remark',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'normal',
+      hideInTable: storeType == 'normal'||storeType == 'freshStores',
       render: (_, data) => {
-        return (
-          <>
-            <p>{_}</p>
-            <p>（{data.updateTime}）</p>
-          </>
-        )
+        if(data?.cancelInfo?.balance){
+          return (
+            <>
+              <p>有余额注销</p>
+              <a onClick={() => {setVisible(true);setAttachmentImage(data?.cancelInfo?.attachList)}}>附件（点击查看）</a>
+              <p>注销时还剩余额：{data?.cancelInfo?.balance}元</p>
+              <p>理由：{data?.cancelInfo?.reason}</p>
+            </>
+          )
+        }else{
+          return (
+            <>
+              <p>{_}</p>
+              <p>（{data?.createTime}）</p>
+            </>
+          )
+        }
       }
     },
     {
@@ -409,7 +528,8 @@ const StoreList = (props) => {
           </Auth>
 
         </Space>
-      )
+      ),
+      hideInTable: storeType == 'freshStores',
     },
   ];
 
@@ -473,6 +593,7 @@ const StoreList = (props) => {
         pagination={{
           pageSize: 10,
         }}
+        className={styles.store_list}
       />
       {
         auditInfoVisible &&
@@ -495,6 +616,7 @@ const StoreList = (props) => {
         setVisible={setFormVisible}
         data={selectItem}
         callback={() => { actionRef.current.reload() }}
+        onClose={()=>{ actionRef.current.reload();setSelectItem(null) }}
       />}
       {returnVisible && <Return
         visible={returnVisible}
@@ -512,6 +634,18 @@ const StoreList = (props) => {
         setVisible={setExcelVisible}
         callback={() => { actionRef.current.reload() }}
       />}
+      {orderVisible && <OrderDetail
+        id={orderId}
+        visible={orderVisible}
+        setVisible={setOrderVisible}
+      />}
+      {visible&& <ContentModel
+        setVisible={setVisible}
+        visible={visible}
+        attachList={attachmentImage}
+        onClose={()=>{actionRef.current.reload();setAttachmentImage(null)}}
+      />
+      }
     </>
   );
 };
@@ -537,6 +671,11 @@ const OverallStore = () => {
         <ProCard.TabPane key="cancelled" tab="已注销店铺">
           {
             activeKey == 'cancelled' && <StoreList storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="freshStores" tab="已买生鲜柜店铺">
+          {
+            activeKey == 'freshStores' && <StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
       </ProCard>
