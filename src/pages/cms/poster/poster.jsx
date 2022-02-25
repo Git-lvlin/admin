@@ -86,6 +86,7 @@ const Poster = () => {
       search={{
         labelWidth: 'auto',
       }}
+      scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
       pagination={{
         pageSize: 9,
       }}

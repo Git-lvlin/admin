@@ -18,6 +18,8 @@ export default (props) => {
           ...res.data,
           settleType: 2,
         });
+      } else {
+        setVisible(false)
       }
     })
   }

@@ -307,65 +307,67 @@ const TableList = () => {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         }
-        {
-          data.map(item => (
-            <div className={styles.list} key={item.id}>
-              {
-                item?.subType === 1 &&
-                <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>生鲜订单</Tag>
-              }
-              <div className={styles.store_name}>所属商家：{item.storeName}</div>
-              <div className={styles.second}>
-                <Space size="large">
-                  <span>下单时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</span>
-                  <span>订单号：{item.orderSn}</span>
-                  <span>下单用户：{item.buyerName}</span>
-                  <span>用户手机号：{item.buyerPhone}</span>
-                </Space>
-              </div>
+        <div style={{ height: 'calc(100vh - 550px)', overflowY: 'auto', marginBottom: 10 }}>
+          {
+            data.map(item => (
+              <div className={styles.list} key={item.id}>
+                {
+                  item?.subType === 1 &&
+                  <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>生鲜订单</Tag>
+                }
+                <div className={styles.store_name}>所属商家：{item.storeName}</div>
+                <div className={styles.second}>
+                  <Space size="large">
+                    <span>下单时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</span>
+                    <span>订单号：{item.orderSn}</span>
+                    <span>下单用户：{item.buyerName}</span>
+                    <span>用户手机号：{item.buyerPhone}</span>
+                  </Space>
+                </div>
 
-              <div className={styles.body}>
-                <div className={styles.goods_info}>
-                  {
-                    item.orderItemList.map(it => (
-                      <div key={it.id}>
-                        <img width="100" height="100" src={it.skuImageUrl} />
-                        <div className={styles.info}>
-                          <div>{it.goodsName}</div>
-                          <div>集约价：{amountTransform(it.skuSalePrice, '/')}元{!!it.wholesaleFreight && `（含平均运费¥${amountTransform(it.wholesaleFreight, '/')}/${it.unit}）`}<time style={{ marginLeft: 20 }}>规格：{it.skuName}</time></div>
-                          <div>数量： <span>{it.skuNum}{it.unit}</span></div>
-                          <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
+                <div className={styles.body}>
+                  <div className={styles.goods_info}>
+                    {
+                      item.orderItemList.map(it => (
+                        <div key={it.id}>
+                          <img width="100" height="100" src={it.skuImageUrl} />
+                          <div className={styles.info}>
+                            <div>{it.goodsName}</div>
+                            <div>集约价：{amountTransform(it.skuSalePrice, '/')}元{!!it.wholesaleFreight && `（含平均运费¥${amountTransform(it.wholesaleFreight, '/')}/${it.unit}）`}<time style={{ marginLeft: 20 }}>规格：{it.skuName}</time></div>
+                            <div>数量： <span>{it.skuNum}{it.unit}</span></div>
+                            <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
+                          </div>
                         </div>
-                      </div>
-                    ))
-                  }
+                      ))
+                    }
+                  </div>
+                  <div>
+                    <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
+                      <Descriptions.Item label="商品总金额">{amountTransform(item.totalAmount, '/')}元（含运费）</Descriptions.Item>
+                      {/* <Descriptions.Item label="运费">+{amountTransform(item.sumOrder?.shippingFeeAmount, '/')}元</Descriptions.Item> */}
+                      <Descriptions.Item label="红包">-{amountTransform(item.sumOrder?.couponAmount, '/')}元</Descriptions.Item>
+                      <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>
+                    </Descriptions>
+                  </div>
+                  {/* <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div> */}
+                  <div style={{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单', 7: '待分享' }[item.status]}</div>
+                  <div style={{ textAlign: 'center' }}>
+                    {/* <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order-detail/${item.id}`) }}>详情</a> */}
+                    <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
+                  </div>
                 </div>
-                <div>
-                  <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
-                    <Descriptions.Item label="商品总金额">{amountTransform(item.totalAmount, '/')}元（含运费）</Descriptions.Item>
-                    {/* <Descriptions.Item label="运费">+{amountTransform(item.sumOrder?.shippingFeeAmount, '/')}元</Descriptions.Item> */}
-                    <Descriptions.Item label="红包">-{amountTransform(item.sumOrder?.couponAmount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>
-                  </Descriptions>
-                </div>
-                {/* <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div> */}
-                <div style={{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单', 7: '待分享' }[item.status]}</div>
-                <div style={{ textAlign: 'center' }}>
-                  {/* <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order-detail/${item.id}`) }}>详情</a> */}
-                  <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
-                </div>
-              </div>
 
-              <div className={styles.footer}>
-                <Space size="large">
-                  <span>收货人：{item.sumOrder?.consignee}</span>
-                  <span>电话：{item.sumOrder?.phone}</span>
-                  <span>地址：{item.sumOrder?.address}</span>
-                </Space>
+                <div className={styles.footer}>
+                  <Space size="large">
+                    <span>收货人：{item.sumOrder?.consignee}</span>
+                    <span>电话：{item.sumOrder?.phone}</span>
+                    <span>地址：{item.sumOrder?.address}</span>
+                  </Space>
+                </div>
               </div>
-            </div>
-          ))
-        }
+            ))
+          }
+        </div>
       </Spin>
 
       {

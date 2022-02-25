@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect,ProFormCheckbox } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect, ProFormCheckbox } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Tag, Form } from 'antd';
 import { history, useLocation } from 'umi';
 import styles from './style.less';
@@ -31,7 +31,7 @@ const TableList = () => {
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({});
   const location = useLocation();
-  const [orderStatusType,setOrderStatusType]=useState()
+  const [orderStatusType, setOrderStatusType] = useState()
   const [orderTypes, setOrderTypes] = useState(0)
   const [addressVisible, setAddressVisible] = useState(false)
   const [subOrderId, setSubOrderId] = useState(null)
@@ -68,14 +68,14 @@ const TableList = () => {
   }
 
   const getFieldValue = () => {
-    const { time,orderStatusSet, ...rest } = form.getFieldsValue();
+    const { time, orderStatusSet, ...rest } = form.getFieldsValue();
 
     return {
       orderStatus: orderType === 0 ? '' : orderType,
       startCreateTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
       endCreateTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
-      orderStatusSet:orderType !== 0 ?[]:orderStatusSet,
-      orderTypes:orderTypes == 0 ?[2,3,4,11,17,18]:[orderTypes],
+      orderStatusSet: orderType !== 0 ? [] : orderStatusSet,
+      orderTypes: orderTypes == 0 ? [2, 3, 4, 11, 17, 18] : [orderTypes],
       ...rest,
     }
   }
@@ -230,7 +230,7 @@ const TableList = () => {
               marginBottom: 20,
               width: 180,
             },
-            onChange:(val)=>{
+            onChange: (val) => {
               setOrderTypes(val)
             }
           }}
@@ -304,11 +304,11 @@ const TableList = () => {
               name="orderStatusSet"
               label="订单状态"
               fieldProps={{
-                onChange:(val)=>{
+                onChange: (val) => {
                   setOrderType(0)
                   setOrderStatusType(val)
                 },
-                value:orderStatusType
+                value: orderStatusType
               }}
               options={[
                 {
@@ -362,7 +362,7 @@ const TableList = () => {
             value: 5
           },
         ]
-      }
+        }
       />
       <Spin
         spinning={loading}
@@ -382,93 +382,95 @@ const TableList = () => {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         }
-        {
-          data.map(item => (
-            <div className={styles.list} key={item.id}>
-              {
-                isPurchase
-                  ?
-                  <div className={styles.store_name}>供应商家名称：{item.supplierName}（ID:{item.supplierId} 总计出单数：{item.orderCount}单）{(item.supplierHelper === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
-                  :
-                  <div className={styles.store_name}>供应商家ID：{item.supplierId}</div>
-              }
-              <div className={styles.second}>
-                <Space size="large">
-                  <span>下单时间：{item.createTime.replace('T', ' ')}</span>
-                  <span>订单号：{item.orderSn}</span>
-                  <span>下单用户：{item.buyerNickname}</span>
-                  <span>用户手机号：{item.buyerPhone}</span>
-                </Space>
-              </div>
+        <div style={{ height: window.innerHeight - 600, overflowY: 'auto', marginBottom: 10 }}>
+          {
+            data.map(item => (
+              <div className={styles.list} key={item.id}>
+                {
+                  isPurchase
+                    ?
+                    <div className={styles.store_name}>供应商家名称：{item.supplierName}（ID:{item.supplierId} 总计出单数：{item.orderCount}单）{(item.supplierHelper === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                    :
+                    <div className={styles.store_name}>供应商家ID：{item.supplierId}</div>
+                }
+                <div className={styles.second}>
+                  <Space size="large">
+                    <span>下单时间：{item.createTime.replace('T', ' ')}</span>
+                    <span>订单号：{item.orderSn}</span>
+                    <span>下单用户：{item.buyerNickname}</span>
+                    <span>用户手机号：{item.buyerPhone}</span>
+                  </Space>
+                </div>
 
-              <div className={styles.body}>
-                <div className={styles.goods_info}>
-                  {
-                    item.orderItem.map(it => (
-                      <div key={it.skuId}>
-                        <img width="100" height="100" src={it.skuImageUrl} />
-                        <div className={styles.info}>
-                          <div>{it.goodsName}</div>
-                          <div>{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType] || '秒约')}价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
-                          <div>数量： <span>{it.skuNum}{it.unit}</span></div>
-                          <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
-                          {isPurchase && <div>零售供货价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
-                          {it.afterSalesStatus !== 0 && <Tag style={{ borderRadius: 10 }} color="#f59a23"><span style={{ color: '#fff' }}>{it.afterSalesStatusStr}</span></Tag>}
+                <div className={styles.body}>
+                  <div className={styles.goods_info}>
+                    {
+                      item.orderItem.map(it => (
+                        <div key={it.skuId}>
+                          <img width="100" height="100" src={it.skuImageUrl} />
+                          <div className={styles.info}>
+                            <div>{it.goodsName}</div>
+                            <div>{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType] || '秒约')}价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
+                            <div>数量： <span>{it.skuNum}{it.unit}</span></div>
+                            <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
+                            {isPurchase && <div>零售供货价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
+                            {it.afterSalesStatus !== 0 && <Tag style={{ borderRadius: 10 }} color="#f59a23"><span style={{ color: '#fff' }}>{it.afterSalesStatusStr}</span></Tag>}
+                          </div>
                         </div>
-                      </div>
-                    ))
-                  }
-                </div>
-                <div>
-                  <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
-                    <Descriptions.Item label="商品总金额">{amountTransform(item.goodsTotalAmount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="运费">+{amountTransform(item.shippingFeeAmount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="红包">
-                      {
-                        item?.orderType === 17
-                          ? '盲盒全额抵扣'
-                          : `-${amountTransform(item.couponAmount, '/')}元${item?.orderType === 18 ? '（签到红包）' : ''}`
-                      }
-                    </Descriptions.Item>
-                    <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>
-                  </Descriptions>
-                </div>
-                {/* <div style={{ textAlign: 'center' }}>
+                      ))
+                    }
+                  </div>
+                  <div>
+                    <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
+                      <Descriptions.Item label="商品总金额">{amountTransform(item.goodsTotalAmount, '/')}元</Descriptions.Item>
+                      <Descriptions.Item label="运费">+{amountTransform(item.shippingFeeAmount, '/')}元</Descriptions.Item>
+                      <Descriptions.Item label="红包">
+                        {
+                          item?.orderType === 17
+                            ? '盲盒全额抵扣'
+                            : `-${amountTransform(item.couponAmount, '/')}元${item?.orderType === 18 ? '（签到红包）' : ''}`
+                        }
+                      </Descriptions.Item>
+                      <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>
+                    </Descriptions>
+                  </div>
+                  {/* <div style={{ textAlign: 'center' }}>
                   {item.status === 5 ? 0 : amountTransform(item.incomeAmount, '/')}元
                 </div> */}
-                <div style={{ textAlign: 'center' }}>
-                  {{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}
+                  <div style={{ textAlign: 'center' }}>
+                    {{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}
+                  </div>
+                  <div style={{ textAlign: 'center' }}>
+                    <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688', 17: '盲盒活动', 18: '签到活动' }[item.orderType] || '秒约')}订单</Tag>
+                    {
+                      item.relevant1688OrderId && <div>关联1688单号：{item.relevant1688OrderId}</div>
+                    }
+                  </div>
+                  <div style={{ textAlign: 'center' }}>
+                    {/* <a onClick={() => { history.push(`/order-management/normal-order-detail${isPurchase ? '-purchase' : ''}/${item.id}`) }}>详情</a> */}
+                    <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
+                  </div>
                 </div>
-                <div style={{ textAlign: 'center' }}>
-                  <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688', 17: '盲盒活动', 18: '签到活动' }[item.orderType] || '秒约')}订单</Tag>
-                  {
-                    item.relevant1688OrderId && <div>关联1688单号：{item.relevant1688OrderId}</div>
-                  }
-                </div>
-                <div style={{ textAlign: 'center' }}>
-                  {/* <a onClick={() => { history.push(`/order-management/normal-order-detail${isPurchase ? '-purchase' : ''}/${item.id}`) }}>详情</a> */}
-                  <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
-                </div>
-              </div>
 
-              <div className={styles.footer}>
-                <Space size="large">
-                  <span>收货人：{item.consignee}</span>
-                  <span>电话：{item.phone}</span>
-                  <span>地址：{item.address}</span>
-                  {
-                    (orderType === 1 || orderType === 2)&&
-                    <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true)}}>修改地址</Button>
-                  }
-                  {
-                    orderType === 2&&
-                    <Button onClick={() =>{ setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
-                  }
-                </Space>
+                <div className={styles.footer}>
+                  <Space size="large">
+                    <span>收货人：{item.consignee}</span>
+                    <span>电话：{item.phone}</span>
+                    <span>地址：{item.address}</span>
+                    {
+                      (orderType === 1 || orderType === 2) &&
+                      <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true) }}>修改地址</Button>
+                    }
+                    {
+                      orderType === 2 &&
+                      <Button onClick={() => { setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
+                    }
+                  </Space>
+                </div>
               </div>
-            </div>
-          ))
-        }
+            ))
+          }
+        </div>
       </Spin>
       {
         detailVisible &&
@@ -480,7 +482,7 @@ const TableList = () => {
         />
       }
       {
-        addressVisible&&
+        addressVisible &&
         <EditAddress
           subOrderId={subOrderId}
           setVisible={setAddressVisible}
@@ -490,7 +492,7 @@ const TableList = () => {
         />
       }
       {
-        orderVisible&&
+        orderVisible &&
         <CloseOrder
           subOrderId={subOrderId}
           setVisible={setOrderVisible}

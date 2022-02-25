@@ -115,6 +115,7 @@ const StoreList = (props) => {
       dataIndex: 'wholeTotal',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -140,6 +141,7 @@ const StoreList = (props) => {
       dataIndex: 'saleOrderTotal',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -164,6 +166,7 @@ const StoreList = (props) => {
       dataIndex: 'productTotal',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -186,6 +189,7 @@ const StoreList = (props) => {
       dataIndex: 'userTotal',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -208,6 +212,7 @@ const StoreList = (props) => {
       dataIndex: 'shopkeeperInvitedTotal',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -383,6 +388,8 @@ const StoreList = (props) => {
       title: '操作',
       dataIndex: '',
       valueType: 'option',
+      width: storeType == 'normal' ? 300 : 500,
+      fixed: 'right',
       render: (_, data) => (
         <Space>
           <a onClick={() => { setSelectItem(data); setDetailVisible(true) }}>详情</a>
@@ -400,7 +407,7 @@ const StoreList = (props) => {
               storeNo={data.storeNo}
             />
           </Auth>
-          
+
         </Space>
       )
     },
@@ -431,7 +438,7 @@ const StoreList = (props) => {
           operation: storeType
         }}
         request={getStoreList}
-        scroll={{ x: 'max-content' }}
+        scroll={{ x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [

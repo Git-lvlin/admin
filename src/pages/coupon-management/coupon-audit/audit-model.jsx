@@ -31,7 +31,8 @@ export default props=>{
                         setVisible(false)   
                         boxref&&boxref.current?.reload()
                         message.success('操作成功')
-                        history.goBack()
+                        window.history.back(); 
+                        setTimeout(() => { window.location.reload(); }, 200)
                         return true;    
                     }
                 })

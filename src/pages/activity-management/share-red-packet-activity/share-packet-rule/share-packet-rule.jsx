@@ -249,7 +249,7 @@ export default (props) =>{
                     保存
                   </Button>
                 }
-                <Button type="default" style={{marginLeft:'80px'}} onClick={() => { history.goBack() }}>返回</Button>
+                <Button type="default" style={{ marginLeft: '80px' }} onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
               </>  
             ];
           }

@@ -1,3 +1,6 @@
+const RouteWatcher = '@/components/PageTab/RouteWatcher';
+
+
 export default {
   path: '/order-management',
   name: 'order-management',
@@ -6,11 +9,13 @@ export default {
       name: 'normal-order',
       path: '/order-management/normal-order',
       component: './order-management/normal-order',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'normal-order-purchase',
       path: '/order-management/normal-order-purchase',
       component: './order-management/normal-order',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'normal-order-detail',
@@ -32,16 +37,19 @@ export default {
           name: 'intensive-purchase-order',
           path: '/order-management/intensive-order/intensive-purchase-order',
           component: './order-management/intensive-order/intensive-purchase-order',
+          wrappers: [RouteWatcher],
         },
         {
           name: 'supplier-order',
           path: '/order-management/intensive-order/supplier-order',
           component: './order-management/intensive-order/supplier-order',
+          wrappers: [RouteWatcher],
         },
         {
           name: 'supplier-order-purchase',
           path: '/order-management/intensive-order/supplier-order-purchase',
           component: './order-management/intensive-order/supplier-order',
+          wrappers: [RouteWatcher],
         },
         {
           name: 'supplier-order-detail',
@@ -59,6 +67,7 @@ export default {
           name: 'shopkeeper-order',
           path: '/order-management/intensive-order/shopkeeper-order',
           component: './order-management/intensive-order/shopkeeper-order',
+          wrappers: [RouteWatcher],
         },
         {
           name: 'shopkeeper-order-detail',
@@ -72,11 +81,13 @@ export default {
       name: 'sample-order',
       path: '/order-management/sample-order',
       component: './order-management/sample-order',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'sample-order-purchase',
       path: '/order-management/sample-order-purchase',
       component: './order-management/sample-order',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'sample-order-detail',
@@ -93,7 +104,8 @@ export default {
     {
       name: 'after-sales-order',
       path: '/order-management/after-sales-order',
-      component: './order-management/after-sales-order'
+      component: './order-management/after-sales-order',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'after-sales-order-details',
@@ -104,7 +116,8 @@ export default {
     {
       name: 'intensive-after-sale-orders',
       path: '/order-management/intensive-after-sale-orders',
-      component: './order-management/intensive-after-sale-orders'
+      component: './order-management/intensive-after-sale-orders',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'intensive-after-sale-orders-details',
@@ -115,7 +128,8 @@ export default {
     {
       name: 'intervention-list',
       path: '/order-management/intervention-list',
-      component: './order-management/intervention-list'
+      component: './order-management/intervention-list',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'details',
@@ -126,7 +140,8 @@ export default {
     {
       name: 'intensive-intervention-list',
       path: '/order-management/intensive-intervention-list',
-      component: './order-management/intensive-intervention-list'
+      component: './order-management/intensive-intervention-list',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'intensive-intervention-list-details',

@@ -1,3 +1,6 @@
+const RouteWatcher = '@/components/PageTab/RouteWatcher';
+
+
 export default {
   path: '/intensive-store-management',
   name: 'intensive-store-management',
@@ -6,6 +9,7 @@ export default {
       name: 'store-list',
       path: '/intensive-store-management/store-list',
       component: './intensive-store-management/store-list',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'store-detail',
@@ -47,6 +51,7 @@ export default {
       name: 'store-review',
       path: '/intensive-store-management/store-review',
       component: './intensive-store-management/store-review',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'store-review-detail',
@@ -68,41 +73,49 @@ export default {
       name: 'lvl-setup',
       path: '/intensive-store-management/lvl-setup',
       component: './intensive-store-management/lvl-setup',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'lvl-commission',
       path: '/intensive-store-management/lvl-commission',
       component: './intensive-store-management/lvl-commission',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'lvl-rule',
       path: '/intensive-store-management/lvl-rule',
       component: './intensive-store-management/lvl-rule',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'shop-area',
       path: '/intensive-store-management/shop-area',
       component: './intensive-store-management/shop-area',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'community-store-setting',
       path: '/intensive-store-management/community-store-setting',
       component: './intensive-store-management/community-store-setting',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'data-excel',
       path: '/intensive-store-management/data-excel',
       component: './intensive-store-management/data-excel',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'cancel-reason',
       path: '/intensive-store-management/cancel-reason',
       component: './intensive-store-management/cancel-reason',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'fresh-store-review',
       path: '/intensive-store-management/fresh-store-review',
       component: './intensive-store-management/fresh-store-review',
+      wrappers: [RouteWatcher],
     }
   ]
 }
