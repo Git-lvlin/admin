@@ -11,7 +11,7 @@ export default props=>{
             title={
                 <>
                 <ExclamationCircleFilled style={{color:'#FBB936'}}/>
-                <span> 确认要将{earnestMoney.data?.provinceName}省{earnestMoney.data?.cityName}市{earnestMoney.data?.regionName}社区店的入驻保证金调整为{earnestMoney.deposit||earnestMoney.data?.deposit}元么？</span>
+                <span> 确认要将{earnestMoney.data?.provinceName}{earnestMoney.data?.cityName}{earnestMoney.data?.regionName}社区店的入驻保证金调整为{earnestMoney.deposit||earnestMoney.data?.deposit}元么？</span>
                 </>
             }
             key="model2"

@@ -147,8 +147,6 @@ export default (props) => {
         label="操作结果"
         rules={[{ required: true, message: '请选择操作' }]}
         options={amount>0?options2:options}
-        // options={options2}
-
       />
       <ProFormDependency name={['toStatus']}>
         {({ toStatus }) => {

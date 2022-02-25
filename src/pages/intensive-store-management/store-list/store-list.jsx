@@ -20,6 +20,7 @@ import Detail from './detail';
 import AuditInfo from './audit-info';
 import OrderDetail from '@/pages/order-management/normal-order/detail';
 import styles from './style.less'
+import ContentModel from './content-model';
 
 const StoreList = (props) => {
   const { storeType } = props
@@ -478,13 +479,23 @@ const StoreList = (props) => {
       hideInSearch: true,
       hideInTable: storeType == 'normal'||storeType == 'freshStores',
       render: (_, data) => {
-        return (
-          <>
-            <p>{_}</p>
-            <a onClick={() => {setVisible(true);setAttachmentImage()}}>附件（点击查看）</a>
-            <p>（{data.updateTime}）</p>
-          </>
-        )
+        if(data?.cancelInfo?.balance){
+          return (
+            <>
+              <p>有余额注销</p>
+              <a onClick={() => {setVisible(true);setAttachmentImage(data?.cancelInfo?.attachList)}}>附件（点击查看）</a>
+              <p>注销时还剩余额：{data?.cancelInfo?.balance}元</p>
+              <p>理由：{data?.cancelInfo?.reason}</p>
+            </>
+          )
+        }else{
+          return (
+            <>
+              <p>{_}</p>
+              <p>（{data?.createTime}）</p>
+            </>
+          )
+        }
       }
     },
     {
@@ -621,17 +632,13 @@ const StoreList = (props) => {
         visible={orderVisible}
         setVisible={setOrderVisible}
       />}
-      <Image
-        width={200}
-        style={{ display: 'none' }}
-        preview={{
-          visible,
-          src: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-          onVisibleChange: value => {
-            setVisible(value);
-          },
-        }}
+      {visible&& <ContentModel
+        setVisible={setVisible}
+        visible={visible}
+        attachList={attachmentImage}
+        onClose={()=>{actionRef.current.reload();setAttachmentImage(null)}}
       />
+      }
     </>
   );
 };

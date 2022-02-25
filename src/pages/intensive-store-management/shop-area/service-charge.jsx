@@ -30,7 +30,7 @@ export default  () => {
     getMemberShopServicepoint({}).then(res=>{
       if(res.code==0){
         console.log('data',res.data)
-        setFormDatil(res.data?.settingValues)
+        setFormDatil(res.data)
         form.setFieldsValue({
           dateRange: [(res.data?.settingValues?.typtList?.limitTime?.timeQuantumNum?.start)*1000,(res.data?.settingValues?.typtList?.limitTime?.timeQuantumNum?.end)*1000],
           dateRange2: [(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.start)*1000,(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.end)*1000],
@@ -67,10 +67,10 @@ export default  () => {
   const onsubmit = (values) => {
     const params={
       currentType:values.currentType,
-      start:values.currentType==='limitTime'?moment(values.dateRange[0]).format('YYYY-MM-DD HH:mm:ss'):moment(values.dateRange2[0]).format('YYYY-MM-DD HH:mm:ss'),
-      end:values.currentType==='limitTime'?moment(values.dateRange[1]).format('YYYY-MM-DD HH:mm:ss'):moment(values.dateRange2[1]).format('YYYY-MM-DD HH:mm:ss'),
-      discount:values.currentType==='limitTime'?values.discount:values.discount2,
-      topNum:values.currentType==='limitTime'?'':values.topNum
+      start:values.currentType==='limit_time'?moment(values.dateRange[0]).format('YYYY-MM-DD HH:mm:ss'):moment(values.dateRange2[0]).format('YYYY-MM-DD HH:mm:ss'),
+      end:values.currentType==='limit_time'?moment(values.dateRange[1]).format('YYYY-MM-DD HH:mm:ss'):moment(values.dateRange2[1]).format('YYYY-MM-DD HH:mm:ss'),
+      discount:values.currentType==='limit_time'?values.discount:values.discount2,
+      topNum:values.currentType==='limit_time'?'':values.topNum,
     }
     setMemberShopServicepoint(params).then(res=>{
       if(res.code==0){
@@ -146,9 +146,6 @@ export default  () => {
       topNum:ele.beforeValues?.currentType=='limitTopNum'?ele.beforeValues?.typtList?.limitTopNum?.topNum:'',
       discount:ele.beforeValues?.currentType=='limitTopNum'?ele.beforeValues?.typtList?.limitTopNum?.discount:ele.beforeValues?.typtList?.limitTime?.discount,
       discountMoney:ele.beforeValues?.currentType=='limitTopNum'?ele.beforeValues?.typtList?.limitTopNum?.discountMoney:ele.beforeValues?.typtList?.limitTime?.discountMoney
-
-
-
     }))
     return arr;
   }
@@ -177,7 +174,7 @@ export default  () => {
         }
         }
       >
-        <p style={{fontWeight:'bold'}}>{formDatil?.deposit}{formDatil?.basePoint?.money}元 /{formDatil?.basePoint?.circleNum}{formDatil?.basePoint?.unit}</p>
+        <p style={{fontWeight:'bold'}}>{formDatil?.settingDescribe}{formDatil?.settingValues?.basePoint?.money}元 /{formDatil?.settingValues?.basePoint?.circleNum}{formDatil?.settingValues?.basePoint?.unit}</p>
 
         <ProFormRadio.Group
                 name="currentType"
@@ -185,11 +182,11 @@ export default  () => {
                 options={[
                     {
                         label: '限时折扣',
-                        value: 'limitTime'
+                        value: 'limit_time'
                     },
                     {
                         label: '限时前N名折扣',
-                        value: 'limitTopNum'
+                        value: 'limit_top_num'
                     }
                 ]}
                 fieldProps={{
@@ -197,12 +194,12 @@ export default  () => {
                     setCurrentType(val.target?.value)
                   }
                 }}
-                initialValue='limitTime'
+                initialValue='limit_time'
             />  
             <ProFormDependency name={['currentType']}>
                 {({ currentType }) => { 
                 if(!currentType) return null
-                if(currentType==='limitTime'){
+                if(currentType==='limit_time'){
                     return  <>
                         <ProFormDateTimeRangePicker
                             label='优惠时间段'
@@ -234,10 +231,10 @@ export default  () => {
                                 }
                             }}
                         />
-                        <p>优惠后社区店主需缴纳金额为：{calculate?formDatil?.basePoint?.money*calculate/10:formDatil?.basePoint?.money*formDatil?.typtList?.limitTime?.discount/10} 元</p>
+                        <p>优惠后社区店主需缴纳金额为：{calculate?formDatil?.settingValues?.basePoint?.money*calculate/10:formDatil?.settingValues?.basePoint?.money*formDatil?.settingValues?.typtList?.limitTime?.discount/10} 元</p>
                     </>
                 }
-                if(currentType==='limitTopNum'){
+                if(currentType==='limit_top_num'){
                     return <>
                         <ProFormDateTimeRangePicker
                             label='优惠时间段'
@@ -281,7 +278,7 @@ export default  () => {
                                 }
                             }}
                         />
-                        <p>优惠后社区店主需缴纳金额为：{calculate2?formDatil?.basePoint?.money*calculate2/10:formDatil?.basePoint?.money*formDatil?.typtList?.limitTopNum?.discount/10} 元</p>
+                        <p>优惠后社区店主需缴纳金额为：{calculate2?formDatil?.settingValues?.basePoint?.money*calculate2/10:formDatil?.settingValues?.basePoint?.money*formDatil?.settingValues?.typtList?.limitTopNum?.discount/10} 元</p>
                     </>
                 }
               }}
