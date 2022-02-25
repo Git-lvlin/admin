@@ -1,3 +1,6 @@
+const RouteWatcher = '@/components/PageTab/RouteWatcher';
+
+
 export default {
   path: '/operation-management',
   name: 'operation-management',
@@ -6,16 +9,19 @@ export default {
       name: 'operation-list',
       path: '/operation-management/operation-list',
       component: './operation-management/operation-list',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'audit-list',
       path: '/operation-management/audit-list',
       component: './operation-management/audit-list',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'bind-list',
       path: '/operation-management/bind-list',
       component: './operation-management/bind-list',
+      wrappers: [RouteWatcher],
     },
     // {
     //   name: 'consultant-product-list',
@@ -57,6 +63,7 @@ export default {
       name: 'bind-audit-list',
       path: '/operation-management/bind-audit-list',
       component: './operation-management/bind-audit-list',
+      wrappers: [RouteWatcher],
     },
   ]
 }

@@ -216,7 +216,7 @@ const OrderDetail = () => {
                 </div>
               </div>
               <Space style={{ marginTop: 30 }}>
-                <Button type="primary" onClick={() => { history.goBack() }}>返回</Button>
+                <Button type="primary" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
               </Space>
             </div>
           </div>

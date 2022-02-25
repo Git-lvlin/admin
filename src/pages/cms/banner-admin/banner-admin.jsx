@@ -176,6 +176,7 @@ const BannerAdmin = () => {
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
+      scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
       params={{verifyVersionId: verifyVersionId}}
       request={homeBannerList}
       rowSelection={{

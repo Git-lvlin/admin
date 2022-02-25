@@ -52,6 +52,7 @@ const UserDetail = () => {
   const { memberInfoToAdminResponse: info } = detailData;
 
   useEffect(() => {
+    console.log('useParams', params)
     getMemberDetail({
       id: params.id
     }).then(res => {

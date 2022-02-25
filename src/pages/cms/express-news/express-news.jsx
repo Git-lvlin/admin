@@ -142,6 +142,7 @@ const ExpressNews = () => {
         // 注释该行则默认不显示下拉选项
         // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
       }}
+      scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
       tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
         <Space size={24}>
           <span>

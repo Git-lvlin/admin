@@ -1,3 +1,5 @@
+const RouteWatcher = '@/components/PageTab/RouteWatcher';
+
 export default {
   path: '/user-management',
   name: 'user-management',
@@ -6,32 +8,38 @@ export default {
       name: 'user-list',
       path: '/user-management/user-list',
       component: './user-management/user-list',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'disable-user-list',
       path: '/user-management/disable-user-list',
       component: './user-management/disable-user-list',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'user-detail',
       path: '/user-management/user-detail/:id',
       component: './user-management/user-detail',
       hideInMenu: true,
+      // wrappers: [RouteWatcher],
     },
     {
       name: 'user-relationship',
       path: '/user-management/user-relationship',
       component: './user-management/user-relationship',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'new-poster',
       path: '/user-management/new-poster',
       component: './user-management/new-poster',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'new-poster-new',
       path: '/user-management/new-poster-new',
       component: './user-management/new-poster-new',
+      wrappers: [RouteWatcher],
     },
   ]
 }

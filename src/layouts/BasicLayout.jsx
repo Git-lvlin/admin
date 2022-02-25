@@ -17,6 +17,7 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/logo.png';
 import { cacheUserAuths } from '@/services/common';
+import { TabLayout } from 'antd-pro-page-tabs';
 import './BasicLayout.less'
 
 const noMatch = (
@@ -60,6 +61,12 @@ const noMatch = (
 //     ]}
 //   />
 // );
+
+const contextMenuLabels = {
+  closeTab: '关闭标签',
+  closeRightTabs: '关闭右侧标签',
+  closeAllTabs: '关闭所有标签'
+}
 
 const BasicLayout = (props) => {
   const {
@@ -178,7 +185,9 @@ const BasicLayout = (props) => {
           }}
         >
           <Authorized authority={authorized.authority} noMatch={noMatch}>
-            {children}
+            <TabLayout contextMenuLabels={contextMenuLabels} {...props}>
+              {children}
+            </TabLayout>
           </Authorized>
         </ProLayout>
       }

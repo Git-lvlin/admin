@@ -154,10 +154,29 @@ const TableList = () => {
       }
     },
     {
+      title: '是否生鲜商品',
+      dataIndex: 'fresh',
+      valueType: 'text',
+      hideInTable: true,
+      valueEnum: {
+        1: '是',
+        0: '否'
+      }
+    },
+    {
+      title: '生鲜商品',
+      dataIndex: 'fresh',
+      valueType: 'text',
+      hideInSearch: true,
+      width: 100,
+      render: (_) => _ === 1 ? '是' : '否',
+    },
+    {
       title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '供应商家ID',
@@ -188,14 +207,16 @@ const TableList = () => {
       dataIndex: 'wholesaleSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => data.goodsSaleType === 2 ? '-' : _
+      render: (_, data) => data.goodsSaleType === 2 ? '-' : _,
+      width: 120,
     },
     {
       title: '零售供货价(元)',
       dataIndex: 'retailSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => data.goodsSaleType === 1 ? '-' : _
+      render: (_, data) => data.goodsSaleType === 1 ? '-' : _,
+      width: 120,
     },
     {
       title: '销售价',
@@ -352,6 +373,7 @@ const TableList = () => {
         request={api.checkList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
+          labelWidth: 120,
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
@@ -376,6 +398,7 @@ const TableList = () => {
             <ExportHistory key="5" show={visit} setShow={setVisit} type="goods-audit-export" />,
           ],
         }}
+        scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
         columns={columns}
         pagination={{
           pageSize: 10,
