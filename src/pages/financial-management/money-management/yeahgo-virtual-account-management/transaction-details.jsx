@@ -55,7 +55,9 @@ const TransactionDetails = () => {
         'withdraw': '提现',
         'yeahCardRecharge': '约卡充值',
         'deposit': '保证金',
-        'depositReturn': '保证金回退'
+        'depositReturn': '保证金回退',
+        'chargeFeeCommission': '服务费收益',
+        'chargeFeeCommissionReturn': '服务费收益回退'
       }
     }else if(query.accountId==='platformFee'){
       return {
