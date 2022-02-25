@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { getActiveConfigList } from '@/services/intensive-activity-management/penny-activity';
+import { getActiveConfigList } from '@/services/intensive-activity-management/special-offer-acticity';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
@@ -34,41 +34,19 @@ export default () => {
         hideInSearch: true,
       },
       {
-        title: '每位店主总限量',
-        dataIndex: 'shoperLimitAll',
-        valueType: 'text',
-        hideInSearch: true,
-      },
-      {
-        title: '每位店主单次限量',
-        dataIndex: 'shoperLimitOnece',
-        valueType: 'text',
-        hideInSearch: true,
-      },
-      {
-        title: '消费者限量',
+        title: 'C端可购买数量（每人/每天）',
         dataIndex: 'buyerLimit',
         valueType: 'text',
         hideInSearch: true,
       },
       {
-        title: '参与活动的店铺',
-        dataIndex: 'joinShopType',
-        valueType: 'select',
-        valueEnum: {
-          1: '生鲜店铺',
-        },
+        title: 'C端可购买时间（每天）',
+        dataIndex: 'buyerStartTime',
+        valueType: 'text',
         hideInSearch: true,
-      },
-      {
-        title: '参与活动的消费者',
-        dataIndex: 'joinBuyerType',
-        valueType: 'select',
-        valueEnum: {
-          1: '全部消费者',
-          2: '从未下过单的消费者（新人）',
+        render:(_,data)=>{
+          return <p>{data.buyerStartTime} ~ {data.buyerEndTime}</p>
         },
-        hideInSearch: true,
       },
       {
         title: '参与活动的商品',
@@ -77,24 +55,6 @@ export default () => {
         render:(_,data)=>{
           return <a onClick={()=>{}}>{_}</a>
         },
-        hideInSearch: true,
-      },
-      {
-        title: '红包状态',
-        dataIndex: 'status',
-        valueType: 'select',
-        valueEnum: {
-          1: '未开始',
-          2: '进行中',
-          3: '已结束',
-          4: '已终止'
-        },
-        hideInTable:true
-      },
-      {
-        title: '状态',
-        dataIndex: 'statusDisplay',
-        valueType: 'text',
         hideInSearch: true,
       },
       {
@@ -110,12 +70,10 @@ export default () => {
     ];
     const postData=(data)=>{
       const arr=data.map(ele=>({
-        shoperLimitAll:ele.content?.shoperLimitAll,
-        shoperLimitOnece:ele.content?.shoperLimitOnece,
         buyerLimit:ele.content?.buyerLimit,
-        joinShopType:ele.content?.joinShopType,
-        joinBuyerType:ele.content?.joinBuyerType,
         goodsCount:ele.content?.goodsCount,
+        buyerStartTime:ele.content?.buyerStartTime,
+        buyerEndTime:ele.content?.buyerEndTime,
         ...ele
       }))
       return arr
@@ -133,17 +91,11 @@ export default () => {
           request={getActiveConfigList}
           postData={postData}
           toolBarRender={()=>[
-            <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/intensive-activity-management/penny-activity/added-activity')} type="primary">
+            <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/intensive-activity-management/special-offer-acticity/add-activity')} type="primary">
                 新建
             </Button>
         ]}
-        search={{
-          defaultCollapsed: false,
-          labelWidth: 100,
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
-          ],
-        }}
+        search={false}
           columns={columns}
           pagination={{
             pageSize: 10,

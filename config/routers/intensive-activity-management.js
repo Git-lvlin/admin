@@ -72,5 +72,27 @@ export default {
           },
         ]
     },
+    {
+      name: 'special-offer-acticity',
+      path: '/intensive-activity-management/special-offer-acticity',
+      routes: [
+          {
+            name: 'special-offer-acticity-list',
+            path: '/intensive-activity-management/special-offer-acticity/special-offer-acticity-list',
+            component: './intensive-activity-management/special-offer-acticity/special-offer-acticity-list'
+          },
+          {
+            name: 'add-activity',
+            path: '/intensive-activity-management/special-offer-acticity/add-activity',
+            component: './intensive-activity-management/special-offer-acticity/add-activity',
+            hideInMenu: true,
+          },
+          // {
+          //   name: 'activity-commodity',
+          //   path: '/intensive-activity-management/special-offer-acticity/activity-commodity',
+          //   component: './intensive-activity-management/special-offer-acticity/activity-commodity'
+          // },
+        ]
+    },
   ]
 }
