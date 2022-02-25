@@ -43,29 +43,34 @@ const SupplierDevelopmentData = () => {
       title: '开发供应商数量',
       dataIndex: 'supplierNum',
       align: 'center',
+      tip: '按【供应商创建后通过审核的时间】进行汇总',
       hideInSearch: true
     },
     {
       title: '集约商品审核通过数量（SPU）',
       dataIndex: 'wholesaleApprovedSpuNum',
       align: 'center',
+      tip: '按集约商品审核通过时间进行汇总',
       hideInSearch: true
     },
     {
       title: '集约商品审核未通过数量（SPU）',
       dataIndex: 'wholesaleNotApprovedSpuNum',
+      tip: '不受所选时间控制，只依据【未审核状态】进行汇总统计的数量',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '秒约商品审核通过数量（SPU）',
       dataIndex: 'secondApprovedSpuNum',
+      tip: '按秒约商品审核通过时间进行汇总',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '秒约商品审核未通过数量（SPU）',
       dataIndex: 'secondNotApprovedSpuNum',
+      tip: '不受所选时间控制，只依据【未审核状态】进行汇总统计的数量',
       align: 'center',
       hideInSearch: true
     }
@@ -87,6 +92,7 @@ const SupplierDevelopmentData = () => {
           pageSize: 10
         }}
         search={{
+          labelWidth: 120,
           optionRender: (searchConfig, formProps, dom)=>[
             ...dom.reverse(),
             <Export
