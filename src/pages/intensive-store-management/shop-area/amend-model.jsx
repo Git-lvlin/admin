@@ -1,8 +1,7 @@
 import React, { useState, useEffect,useRef } from 'react';
-import { Input, Form, Divider, message, Button,List, Space,Avatar } from 'antd';
+import { message } from 'antd';
 import { ModalForm} from '@ant-design/pro-form';
-import { saveOrUpdateArticleType,articleTypeAdd } from '@/services/business-school/save-or-update-article-type';
-import { articleTop } from '@/services/cms/member/member';
+import { editApplicableAreaDeposit } from '@/services/intensive-store-management/shop-area'
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 export default props=>{
@@ -12,7 +11,7 @@ export default props=>{
             title={
                 <>
                 <ExclamationCircleFilled style={{color:'#FBB936'}}/>
-                <span> 确认要将XXX省XXX市XXX社区店的入驻保证金调整为XXXX.XX元么？</span>
+                <span> 确认要将{earnestMoney.data?.provinceName}{earnestMoney.data?.cityName}{earnestMoney.data?.regionName}社区店的入驻保证金调整为{earnestMoney.deposit||earnestMoney.data?.deposit}元么？</span>
                 </>
             }
             key="model2"
@@ -32,7 +31,17 @@ export default props=>{
               },
             }}
             onFinish={async (values) => {
-                  articleTypeAdd({ id: earnestMoney.id,isTop: !earnestMoney.isTop}).then((res) => {
+              const params={
+                deposit_list:[
+                  {
+                    provinceId:earnestMoney.data?.provinceId,
+                    cityId:earnestMoney.data?.cityId,
+                    regionId:earnestMoney.data?.regionId,
+                    deposit:earnestMoney.deposit||earnestMoney.data?.deposit
+                  }
+                ]
+              }
+              editApplicableAreaDeposit(params).then((res) => {
                         if (res.code === 0) {
                           message.success(`设置保证金成功！`);
                           setVisible(false)
@@ -43,7 +52,7 @@ export default props=>{
                
             }
         >
-          <p><span style={{color:'red'}}>修改后入驻店铺需缴纳XXXX.xx元</span>，你还要继续吗？</p>
+          <p><span style={{color:'red'}}>修改后入驻店铺需缴纳{earnestMoney.deposit||earnestMoney.data?.deposit}元</span>，你还要继续吗？</p>
     </ModalForm>
     )
 }

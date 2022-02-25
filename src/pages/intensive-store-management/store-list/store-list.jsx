@@ -20,6 +20,7 @@ import Detail from './detail';
 import AuditInfo from './audit-info';
 import OrderDetail from '@/pages/order-management/normal-order/detail';
 import styles from './style.less'
+import ContentModel from './content-model';
 
 const StoreList = (props) => {
   const { storeType } = props
@@ -181,26 +182,24 @@ const StoreList = (props) => {
     },
     {
       title: '所属运营中心',
-      dataIndex: 'address',
-      valueType: 'select',
+      dataIndex: 'operationCompanyName',
+      valueType: 'text',
       hideInTable: true,
       hideInSearch: storeType == 'freshStores',
-      valueEnum:{
-        0: '全部',
-        1: '运营中心名称1',
-        2: '运营中心名称2'
+      fieldProps: {
+        placeholder: '请输入运营中心名称'
       },
     },
     {
       title: '所属运营中心ID',
-      dataIndex: 'address',
+      dataIndex: 'operationId',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'freshStores'
     },
     {
       title: '所属运营中心名称',
-      dataIndex: 'address',
+      dataIndex: 'operationCompanyName',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'freshStores'
@@ -480,13 +479,23 @@ const StoreList = (props) => {
       hideInSearch: true,
       hideInTable: storeType == 'normal'||storeType == 'freshStores',
       render: (_, data) => {
-        return (
-          <>
-            <p>{_}</p>
-            <a onClick={() => {setVisible(true);setAttachmentImage()}}>附件（点击查看）</a>
-            <p>（{data.updateTime}）</p>
-          </>
-        )
+        if(data?.cancelInfo?.balance){
+          return (
+            <>
+              <p>有余额注销</p>
+              <a onClick={() => {setVisible(true);setAttachmentImage(data?.cancelInfo?.attachList)}}>附件（点击查看）</a>
+              <p>注销时还剩余额：{data?.cancelInfo?.balance}元</p>
+              <p>理由：{data?.cancelInfo?.reason}</p>
+            </>
+          )
+        }else{
+          return (
+            <>
+              <p>{_}</p>
+              <p>（{data?.createTime}）</p>
+            </>
+          )
+        }
       }
     },
     {
@@ -600,6 +609,7 @@ const StoreList = (props) => {
         setVisible={setFormVisible}
         data={selectItem}
         callback={() => { actionRef.current.reload() }}
+        onClose={()=>{ actionRef.current.reload();setSelectItem(null) }}
       />}
       {returnVisible && <Return
         visible={returnVisible}
@@ -622,17 +632,13 @@ const StoreList = (props) => {
         visible={orderVisible}
         setVisible={setOrderVisible}
       />}
-      <Image
-        width={200}
-        style={{ display: 'none' }}
-        preview={{
-          visible,
-          src: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-          onVisibleChange: value => {
-            setVisible(value);
-          },
-        }}
+      {visible&& <ContentModel
+        setVisible={setVisible}
+        visible={visible}
+        attachList={attachmentImage}
+        onClose={()=>{actionRef.current.reload();setAttachmentImage(null)}}
       />
+      }
     </>
   );
 };

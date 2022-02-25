@@ -89,16 +89,19 @@ const ShopArea = () => {
       title: '省份',
       dataIndex: 'provinceName',
       valueType: 'text',
+      hideInSearch: true
     },
     {
       title: '城市',
       dataIndex: 'cityName',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '地区/县城',
       dataIndex: 'regionName',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '所在地区',
@@ -112,7 +115,18 @@ const ShopArea = () => {
       valueType: 'text',
       render: (_) => {
         return <span style={{ color: _ === 'on' ? 'green' : 'red' }}>{_ === 'on' ? '已启用' : '已禁用'}</span>
-      }
+      },
+      hideInSearch: true
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      valueType: 'select',
+      valueEnum: {
+        'on': '已启用',
+        'off': '已禁用'
+      },
+      hideInTable: true,
     },
     {
       title: '操作',
@@ -182,7 +196,12 @@ const ShopArea = () => {
         formRef={formRef}
         request={allowAreaList}
         toolBarRender={() => <div className="tips">{tips}</div>}
-        search={false}
+        search={{
+          defaultCollapsed: false,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+          ],
+        }}
         columns={columns}
         pagination={{
           pageSize: 10,
