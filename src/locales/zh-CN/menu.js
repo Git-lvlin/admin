@@ -87,6 +87,11 @@ export default {
   'menu.intensive-activity-management.penny-activity.activity-list': '活动列表',
   'menu.intensive-activity-management.penny-activity.added-activity': '新建活动',
   'menu.intensive-activity-management.penny-activity.activity-commodity': '活动商品',
+  'menu.intensive-activity-management.special-offer-acticity': '特价活动',
+  'menu.intensive-activity-management.special-offer-acticity.special-offer-acticity-list': '特价活动列表',
+  'menu.intensive-activity-management.special-offer-acticity.add-activity': '新建活动',
+
+
 
 
 

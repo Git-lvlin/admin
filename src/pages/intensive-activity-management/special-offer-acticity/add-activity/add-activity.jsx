@@ -8,7 +8,7 @@ import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
 import moment from 'moment';
 import styles from './style.less'
-import GoosSet from './goos-set'
+
 
 const formItemLayout = {
   labelCol: { span: 3 },
@@ -92,6 +92,49 @@ export default (props) => {
             { validator: checkConfirm }
           ]}
         />
+        
+        <ProFormDateTimeRangePicker
+            label='活动时间'
+            rules={[{ required: true, message: '请选择活动时间' }]}
+            name="dateRange"
+            fieldProps={{
+            disabledDate:(current)=>disabledDate(current)
+            }}
+            placeholder={[
+            formatMessage({
+                id: 'formandbasic-form.placeholder.start',
+            }),
+            formatMessage({
+                id: 'formandbasic-form.placeholder.end',
+            }),
+            ]}
+        />
+        <ProFormCheckbox.Group
+          name="joinShopType"
+          label="参与活动的店铺"
+          options={[
+            {
+              label: '生鲜店铺',
+              value: 1,
+            },
+          ]}
+          rules={[{ required: true, message: '请选择参与活动的店铺' }]}
+        />
+        <ProFormRadio.Group
+          name="joinBuyerType"
+          label="参与活动的消费者"
+          options={[
+            {
+              label: '全部消费者',
+              value: 1,
+            },
+            {
+              label: '从未下过单的消费者（新人）',
+              value: 2,
+            },
+          ]}
+          rules={[{ required: true, message: '请选择参与活动的消费者' }]}
+        />
 
         <ProFormText
           width="md"
@@ -144,57 +187,6 @@ export default (props) => {
             addonBefore:'需完成已有推广任务',
             addonAfter:"%",
           }}
-        />
-
-        <GoosSet
-          detailList={detailList}
-          id={id} 
-          falg={falg} 
-          callback={(val)=>{
-            setGoosList(val)
-          }}
-        />
-        <ProFormDateTimeRangePicker
-            label='活动时间'
-            rules={[{ required: true, message: '请选择活动时间' }]}
-            name="dateRange"
-            fieldProps={{
-            disabledDate:(current)=>disabledDate(current)
-            }}
-            placeholder={[
-            formatMessage({
-                id: 'formandbasic-form.placeholder.start',
-            }),
-            formatMessage({
-                id: 'formandbasic-form.placeholder.end',
-            }),
-            ]}
-        />
-        <ProFormCheckbox.Group
-          name="joinShopType"
-          label="参与活动的店铺"
-          options={[
-            {
-              label: '生鲜店铺',
-              value: 1,
-            },
-          ]}
-          rules={[{ required: true, message: '请选择参与活动的店铺' }]}
-        />
-         <ProFormRadio.Group
-          name="joinBuyerType"
-          label="参与活动的消费者"
-          options={[
-            {
-              label: '全部消费者',
-              value: 1,
-            },
-            {
-              label: '从未下过单的消费者（新人）',
-              value: 2,
-            },
-          ]}
-          rules={[{ required: true, message: '请选择参与活动的消费者' }]}
         />
         <ProFormTextArea
           label='活动规则'

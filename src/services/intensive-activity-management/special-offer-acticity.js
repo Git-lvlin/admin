@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export const getActiveConfigList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
-  const res = await request('/auth/activity/wsCent/getActiveConfigList', {
+  const res = await request('/auth/activity/wsDiscount/getActiveConfigList', {
     method: 'POST',
     data: {
       page: current,
@@ -19,9 +19,9 @@ export const getActiveConfigList = async (params = {}, options = {}) => {
   }
 }
 
-export const getActiveConfigById = async (params = {}, options = {}) => {
+export const saveWSDiscountActiveConfig = async (params = {}, options = {}) => {
     const { ...rest } = params;
-    const res = await request('/auth/activity/wsCent/getActiveConfigById', {
+    const res = await request('/auth/activity/wsDiscount/saveWSDiscountActiveConfig', {
     method: 'POST',
     data: {
         ...rest
