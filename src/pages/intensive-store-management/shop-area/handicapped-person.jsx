@@ -8,7 +8,7 @@ import ProTable from '@ant-design/pro-table';
 import moment from 'moment';
 
 const formItemLayout = {
-  labelCol: { span: 2 },
+  labelCol: { span: 1 },
   wrapperCol: { span: 14 },
   layout: {
     labelCol: {
@@ -68,7 +68,7 @@ export default  () => {
       valueType: 'text',
     },
     {
-      title: '保证金金额',
+      title: '原保证金金额',
       dataIndex: 'depositAmount',
       valueType:'text',
       hideInSearch: true,
@@ -77,7 +77,7 @@ export default  () => {
       }
     },
     {
-      title: '服务金金额',
+      title: '原服务金金额',
       dataIndex: 'serviceAmount',
       valueType: 'text',
       hideInSearch: true,
@@ -130,6 +130,7 @@ export default  () => {
             fieldProps={{
                 addonAfter:"元"
             }}
+            labelCol={2}
         />
         <ProFormText
             width="md"
@@ -141,6 +142,7 @@ export default  () => {
             fieldProps={{
                 addonAfter:"元/3年"
             }}
+            labelCol={2}
         />
       </ProForm >
       <ProTable
