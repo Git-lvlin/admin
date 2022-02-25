@@ -79,7 +79,7 @@ export default (props) => {
                 ],
             }}
         />
-       <Button style={{float:'right',margin:'20px 20px 0 0'}} type="primary" onClick={() => history.goBack()}>
+      <Button style={{ float: 'right', margin: '20px 20px 0 0' }} type="primary" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>
            返回
         </Button>
     </PageContainer>

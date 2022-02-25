@@ -271,7 +271,7 @@ const Detail = () => {
                 &&
                 <>
                   <Descriptions.Item label="仅参与1分钱活动">
-                    {{ 1: '是（仅参与1分钱集约活动）', 0: '不是（也参与正常集约活动）' }[detailData.wholesale.activityShowType]}
+                    {{ 1: '是（仅参与1分钱集约活动或特价集约活动）', 0: '不是（也参与正常集约活动）' }[detailData.wholesale.activityShowType]}
                   </Descriptions.Item>
                   <Descriptions.Item label="生鲜总分佣类型">
                     {{ 1: '特殊分佣（单独指定分佣）', 0: '正常分佣（按分类分佣）' }[detailData.wholesale.freshSpecial]}

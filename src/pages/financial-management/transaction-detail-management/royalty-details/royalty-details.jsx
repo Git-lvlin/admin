@@ -51,7 +51,8 @@ const TransactionDetails = () => {
     }
   }, [id])
   const back = ()=> {
-    history.goBack()
+    window.history.back();
+    setTimeout(() => { window.location.reload(); }, 200)
   }
   const fashionableType =(data, amount, fee, couponAmount, realAmount) =>{
     switch(data){

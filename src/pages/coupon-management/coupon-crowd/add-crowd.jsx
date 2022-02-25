@@ -221,7 +221,7 @@ export default (props) =>{
               }}>
                 保存
               </Button>,
-              <Button type="default" onClick={() => history.goBack()}>
+              <Button type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>
                 返回
               </Button>
               

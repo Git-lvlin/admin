@@ -164,7 +164,7 @@ const EmployDetail=(props) => {
           setVisible={setDetailVisible}
         />
         }
-        <Button style={{float:'right',margin:'20px 20px 0 0'}} type="default" onClick={() => history.goBack()}>
+        <Button style={{ float: 'right', margin: '20px 20px 0 0' }} type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>
            返回
         </Button>
       </>
@@ -290,7 +290,7 @@ const UserDetail=(props) => {
         }}
         columns={columns}
       />
-      <Button style={{float:'right',margin:'20px 20px 0 0'}} type="default" onClick={() => history.goBack()}>
+      <Button style={{ float: 'right', margin: '20px 20px 0 0' }} type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>
            返回
         </Button>
     </>

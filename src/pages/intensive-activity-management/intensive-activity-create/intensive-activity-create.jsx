@@ -437,7 +437,7 @@ const IntensiveActivityCreate = () => {
                   value: 0,
                 },
                 {
-                  label: '是（仅参与1分钱集约活动）',
+                  label: '是（仅参与1分钱集约活动或特价集约活动）',
                   value: 1,
                 },
               ]}
@@ -730,7 +730,8 @@ const IntensiveActivityCreate = () => {
             title="完成"
             {...formItemLayout}
             onFinish={() => {
-              history.push('/intensive-activity-management/intensive-activity-list')
+              // history.push('')
+              window.location.href = '/intensive-activity-management/intensive-activity-list'
               return true;
             }}
             className={styles.center}

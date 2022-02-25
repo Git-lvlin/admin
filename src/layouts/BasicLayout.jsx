@@ -62,6 +62,12 @@ const noMatch = (
 //   />
 // );
 
+const contextMenuLabels = {
+  closeTab: '关闭标签',
+  closeRightTabs: '关闭右侧标签',
+  closeAllTabs: '关闭所有标签'
+}
+
 const BasicLayout = (props) => {
   const {
     dispatch,
@@ -179,7 +185,7 @@ const BasicLayout = (props) => {
           }}
         >
           <Authorized authority={authorized.authority} noMatch={noMatch}>
-            <TabLayout {...props}>
+            <TabLayout contextMenuLabels={contextMenuLabels} {...props}>
               {children}
             </TabLayout>
           </Authorized>
