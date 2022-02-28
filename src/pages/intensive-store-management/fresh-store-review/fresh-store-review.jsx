@@ -40,6 +40,21 @@ const Apply = ({visit, onVisibleChange, data, actRef}) => {
     return undefined
   }, [data])
 
+  const orderStatus = (v) => {
+    switch(v) {
+      case 1: 
+        return '待付款'
+      case 2: 
+        return '代发货'
+      case 3: 
+        return '已发货'
+      case 4: 
+        return '已完成'
+      case 5: 
+        return '已关闭'
+    }
+  }
+
   const submitForm = (v) => {
     if(v?.result === 1) {
       approve({
@@ -113,18 +128,24 @@ const Apply = ({visit, onVisibleChange, data, actRef}) => {
           <>
             <div>已购买平台生鲜柜</div>
             <div>订单号：{data?.details?.order?.orderSn}</div>
-            <div>订单状态：{data?.details?.order?.statusStr}</div>
+            <div>订单状态：{orderStatus(data?.details?.order?.status)}</div>
           </>
         }
       </ProForm.Item>
       {
-        data?.details?.isOrdered === 0 &&
+        data?.details?.giftOrder?.isGiftOrdered === 1 ?
         <ProForm.Item
-          name=""
+          name="isGiftOrdered"
           label="礼包订单"
         >
-          <div>订单号：{data?.details?.order?.orderSn}</div>
-          <div>订单状态：{data?.details?.order?.statusStr}</div>
+          <div>订单号：{data?.details?.giftOrder?.orderSn}</div>
+          <div>订单状态：{orderStatus(data?.details?.giftOrder?.status)}</div>
+        </ProForm.Item>:
+          <ProForm.Item
+          name="isGiftOrdered"
+          label="礼包订单"
+        >
+          没有购买记录
         </ProForm.Item>
       }
       <ProFormRadio.Group
@@ -177,13 +198,30 @@ const Detail = ({visit, onVisibleChange, id}) => {
       applyId: data?.id,
       storeName: data?.storeName,
       storeAddress: data?.provinceName + data?.cityName + data?.regionName + data?.address,
+      optAdminName: data?.optAdminName,
       condition: data?.details?.isOrdered === 0 ? data?.details?.attachList : '',
       result: data?.verifyStatusCode,
       optAdminName: data?.optAdminName,
-      updateTime: data?.auditTime
+      auditTime: data?.auditTime,
+      isGiftOrdered: data?.details?.giftOrder?.isGiftOrdered
     })
     return undefined
   }, [data])
+
+  const orderStatus = (v) => {
+    switch(v) {
+      case 1: 
+        return '待付款'
+      case 2: 
+        return '代发货'
+      case 3: 
+        return '已发货'
+      case 4: 
+        return '已完成'
+      case 5: 
+        return '已关闭'
+    }
+  }
 
   const submitForm = (v) => {
     if(v?.result === 1) {
@@ -250,17 +288,26 @@ const Detail = ({visit, onVisibleChange, id}) => {
           <>
             <div>已购买平台生鲜柜</div>
             <div>订单号：{data?.details?.order?.orderSn}</div>
-            <div>订单状态：{data?.details?.order?.statusStr}</div>
+            <div>订单状态：{orderStatus(data?.details?.order?.status)}</div>
           </>
         }
       </ProForm.Item>
-      <ProForm.Item
-        name=""
-        label="礼包订单"
-      >
-        <div>订单号：{data?.details?.order?.orderSn}</div>
-        <div>订单状态：{data?.details?.order?.statusStr}</div>
-      </ProForm.Item>
+      {
+        data?.details?.giftOrder?.isGiftOrdered === 1 ?
+        <ProForm.Item
+          name="isGiftOrdered"
+          label="礼包订单"
+        >
+          <div>订单号：{data?.details?.giftOrder?.orderSn}</div>
+          <div>订单状态：{orderStatus(data?.details?.giftOrder?.status)}</div>
+        </ProForm.Item>:
+         <ProForm.Item
+          name="isGiftOrdered"
+          label="礼包订单"
+        >
+          没有购买记录
+        </ProForm.Item>
+      }
       <ProFormRadio.Group
         name="result"
         label="审核结果"
