@@ -17,7 +17,7 @@ export const timeGoodType = async (params = {}, options = {}) => {
 // 商品明细数据
 export const goodDetail = async (params = {}, options = {}) => {
   const { date, gcId, current=1, pageSize=10, ...rest } = params
-  const res = await request('/auth/java-admin/report/config/goodDetail', {
+  return await request('/auth/java-admin/report/config/goodDetail', {
     method: 'POST',
     data: {
       page: current,
@@ -30,11 +30,11 @@ export const goodDetail = async (params = {}, options = {}) => {
     },
     ...options
   })
-  return {
-    data: res.data.records,
-    success: res.success,
-    total: res.data.total
-  }
+  // return {
+  //   data: res.data.records,
+  //   success: res.success,
+  //   total: res.data.total
+  // }
 }
 
 // 饼图数据
@@ -48,4 +48,13 @@ export const goodsRateData = async (params = {}, options = {}) => {
     data: res.data.rateList,
     success: res.success,
   }
+}
+
+// 商品详情表格下面的统计数据
+export const bJoinRate = async (params = {}, options = {}) => {
+  return await request('/auth/java-admin/report/config/bJoinRate', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
 }

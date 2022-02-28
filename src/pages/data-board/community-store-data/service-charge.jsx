@@ -4,6 +4,8 @@ import ProTable from '@ant-design/pro-table'
 import AddressCascader from '@/components/address-cascader'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import { amountTransform } from '@/utils/utils'
+import { serviceFee } from '@/services/data-board/community-store-data'
 
 const ServiceCharge = () => {
   const [visit, setVisit] = useState(false)
@@ -14,20 +16,28 @@ const ServiceCharge = () => {
 
   const columns = [
     {
+      dataIndex: 'id',
+      hideInSearch: true,
+      hideInTable: true
+    }, 
+    {
       title: '社区店名称',
-      dataIndex: '',
+      dataIndex: 'storeName',
+      width: '20%',
       align: 'center'
     },
     {
       title: '店铺地址',
-      dataIndex: '',
+      dataIndex: 'fullAddress',
       align: 'center',
+      width: '20%',
       hideInSearch: true
     },
     {
       title: '缴费金额',
-      dataIndex: '',
+      dataIndex: 'serviceFee',
       align: 'center',
+      render: (_)=> amountTransform(_, '/'),
       hideInSearch: true
     },
     {
@@ -38,20 +48,20 @@ const ServiceCharge = () => {
     },
     {
       title: '缴费时间',
-      dataIndex: '',
+      dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '缴费时间',
-      dataIndex: '',
+      dataIndex: 'payTime',
       valueType: 'dateRange',
       align: 'center',
       hideInTable: true
     },
     {
       title: '缴费有效期',
-      dataIndex: '',
+      dataIndex: 'expireTime',
       align: 'center',
       hideInSearch: true
     }
@@ -59,10 +69,10 @@ const ServiceCharge = () => {
 
   return (
     <ProTable
-      rowKey=''
+      rowKey='id'
       columns={columns}
       params={{}}
-      request={''}
+      request={serviceFee}
       pagination={{
         showQuickJumper: true,
         pageSize: 10
@@ -70,6 +80,7 @@ const ServiceCharge = () => {
       toolbar={{
         settings: false
       }}
+      headerTitle="服务费统计"
       search={{
         labelWidth: 120,
         optionRender: (searchConfig, formProps, dom) => [
