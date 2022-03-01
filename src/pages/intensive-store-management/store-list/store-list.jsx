@@ -122,13 +122,15 @@ const StoreList = (props) => {
           <>
             {details?.areaInfo?.[details?.provinceId]}{details?.areaInfo?.[details?.cityId]}{details?.areaInfo?.[details?.regionId]}
           </>)
-      }
+      },
+      width:200
     },
     {
       title: '提货点详细地址',
       dataIndex: 'address',
       valueType: 'text',
       hideInSearch: true,
+      width:200
     },
     {
       title: '生鲜柜',
@@ -223,7 +225,8 @@ const StoreList = (props) => {
       dataIndex: 'operationCompanyName',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'freshStores'
+      hideInTable: storeType == 'freshStores',
+      width:200
     },
     {
       title: '店主收件号',
@@ -382,6 +385,7 @@ const StoreList = (props) => {
         "12": '正常-已退全部保证金',
         "13": '正常-未退保证金',
       },
+      width:200
     },
     {
       title: '保证金状态',
