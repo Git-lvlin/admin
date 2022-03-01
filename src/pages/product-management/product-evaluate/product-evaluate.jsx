@@ -33,6 +33,7 @@ const EvaluateList= (props) => {
             dataIndex: 'score',
             valueType: 'text',
             hideInSearch: true,
+            width:150
         },
         {
             title: '用户评分',
@@ -46,8 +47,7 @@ const EvaluateList= (props) => {
               3: '3',
               4: '4',
               5: '5'
-              },
-            width:200
+              }
         },
         {
             title: '评价内容',
@@ -83,6 +83,7 @@ const EvaluateList= (props) => {
             dataIndex: 'skuId',
             valueType: 'text',
             hideInSearch: true,
+            width:200
         },
         {
             title: '商品名称',
@@ -94,6 +95,7 @@ const EvaluateList= (props) => {
             title: '被评商家ID',
             dataIndex: 'supplierId',
             valueType: 'text',
+            width:150
         },
         {
             title: '被评商品名称',
