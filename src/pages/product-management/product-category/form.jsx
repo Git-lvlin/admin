@@ -360,11 +360,11 @@ export default (props) => {
                     tableAlertRender={false}
                   />
                 </Form.Item>
-                <Form.Item
+                {type ==='edit'&&<Form.Item
                   label='生鲜分类商品总分佣比例'
                 >
                   {data?.freshCommission}%
-                </Form.Item>
+                </Form.Item>}
               </div>
               :
               <>
