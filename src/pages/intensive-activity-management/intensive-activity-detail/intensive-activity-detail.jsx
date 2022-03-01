@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Descriptions, Divider, Table, Row, Typography, Image } from 'antd';
+import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Form } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams } from 'umi';
@@ -7,6 +7,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
 import LadderDataEdit from '../intensive-activity-create/ladder-data-edit'
 import PriceExplanation from '../intensive-activity-create/price-explanation'
+import FreshIncome from '../intensive-activity-create/fresh-income'
 
 
 const { Title } = Typography;
@@ -19,7 +20,8 @@ const Detail = () => {
   const getDetail = (wholesaleId) => {
     setLoading(true);
     getWholesaleDetail({
-      wholesaleId
+      wholesaleId,
+      view: 0,
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data);
@@ -191,6 +193,19 @@ const Detail = () => {
     })[0]
   }
 
+  const parseShipAddr = (data) => {
+    const arr = [];
+
+    data.forEach(item => {
+      const provinceName = window.yeahgo_area.find(it => it.id === item.provinceId)?.name
+      const cityName = window.yeahgo_area.find(it => it.id === item.cityId)?.name
+      const areaName = window.yeahgo_area.find(it => it.id === item.areaId)?.name
+      arr.push(`${provinceName}${cityName}${areaName}`)
+    })
+
+    return arr.join('、')
+  }
+
   useEffect(() => {
     getDetail(params?.id)
   }, [])
@@ -245,6 +260,31 @@ const Detail = () => {
                   {detailData?.allowArea?.map?.(item => (item.areaName)).join('，')}
                 </div>
               </Descriptions.Item>
+              <Descriptions.Item label="消费者集约预售">
+                {{ 1: '开启', 0: '关闭' }[detailData?.wholesale?.preSale]}
+              </Descriptions.Item>
+              {!!detailData?.sku?.[0]?.shipAddr?.length && <Descriptions.Item label="商品发货地区">
+                {parseShipAddr(detailData?.sku?.[0]?.shipAddr)}
+              </Descriptions.Item>}
+              {
+                detailData?.sku?.[0]?.fresh === 1
+                &&
+                <>
+                  <Descriptions.Item label="仅参与1分钱活动">
+                    {{ 1: '是（仅参与1分钱集约活动或特价集约活动）', 0: '不是（也参与正常集约活动）' }[detailData.wholesale.activityShowType]}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="生鲜总分佣类型">
+                    {{ 1: '特殊分佣（单独指定分佣）', 0: '正常分佣（按分类分佣）' }[detailData.wholesale.freshSpecial]}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="特殊总分佣比例">
+                    {
+                      detailData.wholesale.freshSpecial === 0
+                        ? `${detailData.sku[0].gcId1Display}  > ${detailData.sku[0].gcId2Display}  总分佣比：${amountTransform(detailData.sku[0].freshCommission)}%`
+                        : `总分佣比：${amountTransform(detailData.sku[0].freshCommission)}%`
+                    }
+                  </Descriptions.Item>
+                </>
+              }
               <Descriptions.Item label="商品主图">
                 <Image src={detailData?.sku?.[0]?.goodsImageUrl} width={50} />
               </Descriptions.Item>
@@ -261,6 +301,32 @@ const Detail = () => {
           </Descriptions.Item> */}
             </Descriptions>
             <div>
+              {
+                detailData?.sku?.[0]?.fresh === 1&&
+                <>
+                  <Form.Item
+                    label="生鲜商品的各方分佣比例"
+                  >
+                    <Table
+                      title={() => "以五星社区店为例"}
+                      columns={[
+                        { title: '社区店', dataIndex: 'shopCommission', render: (_) => `${amountTransform(_)}%` },
+                        { title: '运营中心', dataIndex: 'operateCommission', render: (_) => `${amountTransform(_)}%` },
+                        { title: '推荐人', dataIndex: 'referrerCommission', render: (_) => `${amountTransform(_)}%` },
+                        { title: '平台额外收益', dataIndex: 'platForm', render: (_) => `${amountTransform(_)}%` },
+                      ]}
+                      dataSource={[detailData.sku[0].freshData[0]]}
+                      pagination={false}
+                    />
+                  </Form.Item>
+
+                  <Form.Item
+                    label="预计生鲜食品的各方分佣金额"
+                  >
+                    <FreshIncome data={detailData.sku[0]} parse freshCommission={detailData.sku[0].freshCommission} />
+                  </Form.Item>
+                </>
+              }
               <div style={{ fontWeight: 'bold', marginBottom: 20 }}>平台额外奖励：{{ 0: '不进行平台额外奖励', 1: '按采购量奖励社区店', 2: '按集采阶梯量奖励(社区店+运营中心)' }[detailData?.wholesale?.isEditSubsidy]}</div>
               {detailData?.wholesale?.isEditSubsidy === 1 &&
                 <div style={{ marginBottom: 20 }}>

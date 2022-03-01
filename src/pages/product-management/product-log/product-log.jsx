@@ -198,6 +198,7 @@ const TableList = () => {
         params={{
           selectType: 1,
         }}
+        scroll={{ y: window.innerHeight - 570, scrollToFirstRowOnChange: true, }}
         request={api.logList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{

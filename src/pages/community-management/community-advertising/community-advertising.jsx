@@ -105,6 +105,7 @@ export default props => {
           options={false}
           actionRef={ref}
           request={adsenseAdminList}
+          scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
           search={{
               defaultCollapsed: false,
               labelWidth: 100,

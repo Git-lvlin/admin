@@ -217,7 +217,7 @@ const Detail = ()=> {
       >
         <Button 
           type='primary'
-          onClick={()=>{history.goBack()}}
+          onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}
           style={{
             marginLeft: 20
           }}

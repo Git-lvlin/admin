@@ -103,6 +103,7 @@ const HotSearch = () => {
         })
         return data
       }}
+      scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
       request={hotSearchList}
       search={{
         labelWidth: 'auto',

@@ -1,16 +1,44 @@
 .ul {
-  width: 400px;
+  width: 450px;
   padding: 0;
   position: relative;
   max-height: 500px;
   overflow: auto;
 }
 
+.th {
+  height: 40px;
+  line-height: 40px;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+
+  span:nth-of-type(1) {
+    width: 140px;
+    text-align: center;
+  }
+
+  .fresh {
+    width: 100px;
+    text-align: center;
+  }
+
+  .state {
+    flex: 1;
+    text-align: center;
+  }
+
+  .action {
+    flex: 1;
+    text-align: center;
+  }
+}
+
 .li {
   border-bottom: 1px solid #f0f0f0;
   list-style: none;
   background: #fff;
-  padding: 10px 20px;
+  padding: 10px 0 10px 20px;
   position: relative;
   display: flex;
   align-items: center;
@@ -20,7 +48,9 @@
   }
 
   .info {
-    margin-left: 15px;
+    // margin-left: 15px;
+    width: 100px;
+    text-align: center;
   }
 
   img {
@@ -28,10 +58,25 @@
     height: 50px;
     margin-right: 10px;
   }
+
+  a {
+    flex: 1;
+    text-align: center;
+  }
+
+  .action {
+    flex: 1;
+    text-align: center;
+  }
+
+  .state {
+    flex: 1;
+    text-align: center;
+  }
 }
 
 .header {
-  width: 400px;
+  width: 450px;
   height: 40px;
   line-height: 40px;
   background: #fff;
@@ -39,13 +84,6 @@
   padding: 0 20px;
 }
 
-.actions {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-}
 
-.test {
-  
-}
+
+.test {}

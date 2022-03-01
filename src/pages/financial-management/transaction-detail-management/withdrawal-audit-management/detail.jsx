@@ -158,9 +158,7 @@ const Detail = () => {
         return '状态错误'
     }
   }
-  const back = () => {
-    history.goBack()
-  }
+  const back = () => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }
   const skipToDetail = (e) => {
     history.push(`/financial-management/transaction-detail-management/withdrawal-audit-management/details?amountType=available&accountType=${e.accountType}&accountId=${e.accountId}`)
   }

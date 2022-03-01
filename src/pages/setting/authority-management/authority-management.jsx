@@ -137,7 +137,7 @@ const TableList = () => {
             rowKey="id"
             columns={columns}
             bordered={false}
-            scroll={{ x: 'max-content' }}
+            scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
             pagination={false}
           />
         </Spin>

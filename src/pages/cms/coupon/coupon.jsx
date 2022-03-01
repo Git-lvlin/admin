@@ -156,6 +156,7 @@ const Coupon = () => {
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
+      scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
       postData={(data) => {
         data.forEach(item => {
           item.freeAmount = item.freeAmount/100

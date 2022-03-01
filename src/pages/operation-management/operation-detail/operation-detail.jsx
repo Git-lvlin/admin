@@ -119,7 +119,7 @@ const SupplierDetail = () => {
             {detailData.createTime}
           </Form.Item>
           <div style={{ marginTop: 30, textAlign: 'center' }}>
-            <Button onClick={() => { history.goBack() }}>返回</Button>
+            <Button onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
           </div>
         </Form>
 

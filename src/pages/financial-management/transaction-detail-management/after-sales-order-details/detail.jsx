@@ -36,7 +36,8 @@ const Detail = () => {
 
 
   const back = ()=> {
-    history.goBack()
+    window.history.back()
+    setTimeout(() => { window.location.reload(); }, 200)
   }
   const fashionableType =(data, amount, fee) =>{
     switch(data){

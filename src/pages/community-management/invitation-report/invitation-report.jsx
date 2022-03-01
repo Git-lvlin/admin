@@ -174,6 +174,7 @@ export default props => {
             request={adminReportList}
             actionRef={actionRef}
             toolBarRender={false}
+            scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
             search={{
               optionRender: (searchConfig, formProps, dom) => [
                 ...dom.reverse(),
@@ -214,6 +215,7 @@ export default props => {
             params={{
               type:'1'
             }}
+            scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
             request={adminReportList}
             actionRef={actionRef}
             search={{

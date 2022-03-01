@@ -377,7 +377,8 @@ const EditableTable = () => {
       if(res.code === 200 || res.code === 0){
         message.success(`${!!resId ? "保存" : "添加"}成功`);
         if(history.action == "PUSH"){
-          history.goBack();
+          window.history.back();
+          setTimeout(() => { window.location.reload(); }, 200)
         } else {
           history.push("/dc-management/list");
         }
