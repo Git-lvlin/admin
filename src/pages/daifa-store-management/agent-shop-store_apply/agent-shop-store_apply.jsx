@@ -141,6 +141,7 @@ const filterData=(res)=>{
             ...dom.reverse(),
           ]
         }}
+        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
         columns={columns}
         actionRef={actionRef}
       />

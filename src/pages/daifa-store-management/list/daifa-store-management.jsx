@@ -152,6 +152,7 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={storeList}
+        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           labelWidth: 100,

@@ -124,6 +124,7 @@ const TableList = () => {
         params={{
           activityType: 4,
         }}
+        scroll={{ y: window.innerHeight - 650, scrollToFirstRowOnChange: true, }}
         request={ruleList}
         search={{
           defaultCollapsed: false,
