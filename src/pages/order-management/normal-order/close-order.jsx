@@ -21,7 +21,9 @@ const CloseOrder = ({
       showError: true
     }).then(res => {
       if(res.success) {
-        setChange(change+1)
+        setTimeout(()=>{
+          setChange(change+1)
+        }, 1000)
       }
     })
   }
