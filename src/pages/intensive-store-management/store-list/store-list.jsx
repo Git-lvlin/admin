@@ -89,7 +89,8 @@ const StoreList = (props) => {
       render:(_,data)=>{
         return <p>{_.desc}</p>
       },
-      hideInTable: storeType == 'freshStores'
+      hideInTable: storeType == 'freshStores',
+      width:200
     },
     {
       title: '店铺名称',
@@ -196,6 +197,7 @@ const StoreList = (props) => {
         "5": '取消申请',
         "6": '待审核'
       },
+      width:200
     },
     {
       title: '所属运营中心',
@@ -206,13 +208,15 @@ const StoreList = (props) => {
       fieldProps: {
         placeholder: '请输入运营中心名称'
       },
+      width:200
     },
     {
       title: '所属运营中心ID',
       dataIndex: 'operationId',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'freshStores'
+      hideInTable: storeType == 'freshStores',
+      width:200
     },
     {
       title: '所属运营中心名称',
