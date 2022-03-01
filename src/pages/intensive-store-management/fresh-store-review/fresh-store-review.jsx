@@ -135,14 +135,12 @@ const Apply = ({visit, onVisibleChange, data, actRef}) => {
       {
         data?.details?.giftOrder?.isGiftOrdered === 1 ?
         <ProForm.Item
-          name="isGiftOrdered"
           label="礼包订单"
         >
           <div>订单号：{data?.details?.giftOrder?.orderSn}</div>
           <div>订单状态：{orderStatus(data?.details?.giftOrder?.status)}</div>
         </ProForm.Item>:
-          <ProForm.Item
-          name="isGiftOrdered"
+        <ProForm.Item
           label="礼包订单"
         >
           没有购买记录
@@ -202,8 +200,7 @@ const Detail = ({visit, onVisibleChange, id}) => {
       condition: data?.details?.isOrdered === 0 ? data?.details?.attachList : '',
       result: data?.verifyStatusCode,
       optAdminName: data?.optAdminName,
-      auditTime: data?.auditTime,
-      isGiftOrdered: data?.details?.giftOrder?.isGiftOrdered
+      auditTime: data?.auditTime
     })
     return undefined
   }, [data])
@@ -295,14 +292,12 @@ const Detail = ({visit, onVisibleChange, id}) => {
       {
         data?.details?.giftOrder?.isGiftOrdered === 1 ?
         <ProForm.Item
-          name="isGiftOrdered"
           label="礼包订单"
         >
           <div>订单号：{data?.details?.giftOrder?.orderSn}</div>
           <div>订单状态：{orderStatus(data?.details?.giftOrder?.status)}</div>
         </ProForm.Item>:
          <ProForm.Item
-          name="isGiftOrdered"
           label="礼包订单"
         >
           没有购买记录
