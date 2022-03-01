@@ -43,6 +43,7 @@ export default (props) => {
             ruleText:res.data?.content?.ruleText,
             shoperLimitAll:res.data?.content?.shoperLimitAll,
             shoperLimitOnece:res.data?.content?.shoperLimitOnece,
+            price:res.data?.content?.price,
             ...res.data
           })
       })
