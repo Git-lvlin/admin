@@ -180,7 +180,7 @@ export default props => {
             <Form.Item
               label="发放数量"
             >
-              {detailData.issueQuantity}
+              {detailData.issueQuantity=='-1'?'不限量发放':detailData.issueQuantity}
             </Form.Item>
             {
               detailData.issueType != 4&&
