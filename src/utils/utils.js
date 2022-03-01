@@ -30,7 +30,7 @@ export const uploadImageFormatConversion = (imgArr, urlKey) => {
 }
 
 export const amountTransform = (amount, type = '*') => {
-  if (!amount) {
+  if (!amount || !/^[-]?[.\d]+$/.test(amount)) {
     return 0;
   }
 

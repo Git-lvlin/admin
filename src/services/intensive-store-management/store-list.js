@@ -22,6 +22,31 @@ export const getStoreList = async (params = {}, options = {}) => {
   }
 }
 
+export const applyConditionPage = async (params = {}, options = {}) => {
+  const { current, pageSize, area = [], ...rest } = params;
+  const res = await request('/auth/store/memberShop/applyConditionPage', {
+    method: 'GET',
+    params: {
+      page: current,
+      size: pageSize,
+      provinceId: area[0]?.value,
+      cityId: area[1]?.value,
+      regionId: area[2]?.value,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
+  }
+}
+
+
+
+
 export const changeStatus = (params = {}, options = {}) => {
   return request('/auth/store/memberShop/changeStatus', {
     method: 'POST',

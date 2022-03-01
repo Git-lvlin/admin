@@ -228,9 +228,7 @@ export default () => {
       }
     })
   }
-  const back = () => {
-    history.goBack()
-  }
+  const back = () => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }
   return (
     <PageContainer title={false}>
       <Spin spinning={loading}>

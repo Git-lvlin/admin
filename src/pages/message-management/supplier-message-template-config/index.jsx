@@ -68,10 +68,10 @@ const index = () => {
           actionRef={ actionRef }
           params={{toType: type, moduleType: module}}
           request={api.messageTemplateList}
+          scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
           pagination={{
             showQuickJumper: true,
             pageSize: 10,
-            hideOnSinglePage: true
           }}
         />
         <Form

@@ -89,7 +89,7 @@ const Order = () => {
       <Button
         type='primary'
         onClick={
-          ()=>{ history.goBack()}
+          () => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }
         }
       >
         返回

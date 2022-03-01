@@ -158,6 +158,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
+        scroll={{ y: window.innerHeight - 450, scrollToFirstRowOnChange: true, }}
       />
 
       {modalVisible &&

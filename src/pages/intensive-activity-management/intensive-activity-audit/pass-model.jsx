@@ -48,7 +48,8 @@ export default props=>{
             onFinish={async (values) => {
                 
               setVisible(false)
-              history.goBack()
+              window.history.back()
+              setTimeout(() => { window.location.reload(); }, 200)
               return true;        
             }
             }

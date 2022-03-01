@@ -1,3 +1,5 @@
+const RouteWatcher = '@/components/PageTab/RouteWatcher';
+
 export default {
   path: '/price-comparsion-management',
   name: 'price-comparsion-management',
@@ -6,6 +8,7 @@ export default {
       name: 'price-management',
       path: '/price-comparsion-management/price-management',
       component: './price-comparsion-management/price-management',
+      wrappers: [RouteWatcher],
     }
   ]
 }

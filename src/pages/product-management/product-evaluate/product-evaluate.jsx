@@ -24,19 +24,6 @@ const EvaluateList= (props) => {
     const [visit, setVisit] = useState(false)
     const columns = [
         {
-            title: '用户ID',
-            dataIndex: 'userId',
-            hideInSearch: true,
-            hideInTable:type==3?true:false
-        },
-        {
-            title: '用户头像',
-            dataIndex: 'userImg',
-            valueType: 'image',
-            hideInSearch:true,
-            hideInTable:type==3?true:false
-        },
-        {
             title: '用户昵称',
             dataIndex: 'nickName',
             valueType: 'text',
@@ -46,14 +33,13 @@ const EvaluateList= (props) => {
             dataIndex: 'score',
             valueType: 'text',
             hideInSearch: true,
-            hideInTable:type==3?false:true
+            width:150
         },
         {
             title: '用户评分',
             dataIndex: 'score',
             valueType: 'select',
-            hideInSearch: type==2?false:true,
-            hideInTable:type==3?true:false,
+            hideInTable:true,
             valueEnum: {
               0: '请选择',
               1: '1',
@@ -61,7 +47,7 @@ const EvaluateList= (props) => {
               3: '3',
               4: '4',
               5: '5'
-              },
+              }
         },
         {
             title: '评价内容',
@@ -97,25 +83,24 @@ const EvaluateList= (props) => {
             dataIndex: 'skuId',
             valueType: 'text',
             hideInSearch: true,
+            width:200
         },
         {
             title: '商品名称',
             dataIndex: 'goodsName',
             valueType: 'text',
             hideInSearch: true,
-            hideInTable:type==2?false:true
         },
         {
             title: '被评商家ID',
             dataIndex: 'supplierId',
             valueType: 'text',
-            hideInSearch: type==2?false:true,
+            width:150
         },
         {
             title: '被评商品名称',
             dataIndex: 'goodsName',
             valueType: 'text',
-            hideInSearch: type==2?false:true,
             hideInTable: true
         },
         {
@@ -171,23 +156,13 @@ const EvaluateList= (props) => {
             params={{
               state:type
             }}
+            scroll={{ y: window.innerHeight - 750, scrollToFirstRowOnChange: true, }}
             request={findByways}
             search={{
                 defaultCollapsed: false,
                 labelWidth: 100,
                 optionRender: (searchConfig, formProps, dom) => [
-                  <ProFormSwitch
-                    label="审核功能开关"
-                    className='switchTop'
-                    fieldProps={{
-                        onChange:(bol)=>auditSwitch(bol),
-                        checked:pitch
-                    }}
-                    key='switch'
-                  />,
                   ...dom.reverse(),
-                  <div key="derive">
-                   {type==3&&<>
                     <Export
                        key='export'
                        change={(e) => { setVisit(e) }}
@@ -195,11 +170,19 @@ const EvaluateList= (props) => {
                        conditions={getFieldValue(searchConfig)}
                      />,
                      <ExportHistory key='task' show={visit} setShow={setVisit} type={'data-goods-comment-export'}/>
-                    </>
-                   }
-                  </div>
                 ],
             }}
+            toolBarRender={() => [
+              <ProFormSwitch
+                label="审核功能开关"
+                className='switchTop'
+                fieldProps={{
+                    onChange:(bol)=>auditSwitch(bol),
+                    checked:pitch
+                }}
+                key='switch'
+              />
+            ]}
             columns={columns}
             pagination={{
                 pageSize: 10,

@@ -115,6 +115,7 @@ export default () => {
           headerTitle="盲盒活动列表"
           options={false}
           request={getActiveConfigList}
+          scroll={{ y: window.innerHeight - 570, scrollToFirstRowOnChange: true, }}
           toolBarRender={()=>[
             <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/blind-box-activity-management/bind-box-rule-set')} type="primary">
                 添加活动

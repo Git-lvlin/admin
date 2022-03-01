@@ -121,7 +121,7 @@ const TableList = () => {
         }}
       />
       <div style={{ textAlign: 'center', marginTop: 30 }}>
-        <Button onClick={() => { history.goBack() }}>返回</Button>
+        <Button onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
       </div>
     </PageContainer>
 

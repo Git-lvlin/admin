@@ -70,6 +70,7 @@ const TableList = () => {
         options={false}
         request={api.adminGroup}
         actionRef={actionRef}
+        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [
