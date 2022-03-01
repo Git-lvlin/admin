@@ -7,6 +7,7 @@ import { amountTransform } from '@/utils/utils'
 import ProTable from '@ant-design/pro-table';
 import { ModalForm,ProFormText } from '@ant-design/pro-form';
 import _ from 'lodash'
+import moment from 'moment';
 
 const formItemLayout = {
   labelCol: { span: 3 },
@@ -23,6 +24,7 @@ const formItemLayout = {
 
 const GoosModel=(props)=>{
   const {visible,setVisible,onClose,callback}=props
+  const [goosList,setGoosList]=useState()
   const actionRef = useRef();
   const columns = [
       {
@@ -55,7 +57,7 @@ const GoosModel=(props)=>{
       },
       {
           title: '选择集约活动',
-          dataIndex: 'brandName',
+          dataIndex: 'wholesaleStatus',
           valueType: 'select',
           hideInTable:true,
           valueEnum: {
@@ -66,7 +68,7 @@ const GoosModel=(props)=>{
       },
       {
           title: '集约活动状态',
-          dataIndex: 'wholesaleAuditStatus',
+          dataIndex: 'wholesaleStatusDesc',
           valueType: 'text',
           hideInSearch: true,
       },
@@ -83,6 +85,7 @@ const GoosModel=(props)=>{
       },
   ];
   const onsubmit = (values) => {
+    callback(goosList)
     setVisible(false)
   };
   return (
@@ -132,7 +135,7 @@ const GoosModel=(props)=>{
           rowSelection={{
               preserveSelectedRowKeys: true,
               onChange: (_, val) => {
-                  callback(val)
+                setGoosList(val)
               }
           }}
           pagination={{
@@ -169,17 +172,26 @@ export default (props) => {
       editable:false
     },
     {
-      title: 'SKUID',
+      title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'text',
       editable:false
     },
     {
       title: '基本信息',
-      dataIndex: 'text',
+      dataIndex: 'goodsName',
       valueType: 'text',
       hideInSearch:true,
-      editable:false
+      editable:false,
+      render:(_,data)=>{
+        return <div style={{display:'flex'}}>
+                <Image src={data.imageUrl} alt="" width='50px' height='50px' />
+                <div style={{marginLeft:'10px'}}>
+                  <p style={{fontSize:'14px'}}>{data.goodsName}</p>
+                  <p style={{fontSize:'12px'}}>规格：{data.skuName}</p>
+                </div>
+            </div>
+      }
     },
     {
       title: '集约活动名称',
@@ -198,41 +210,46 @@ export default (props) => {
     },
     {
       title: '集约活动时段',
-      dataIndex: 'time',
+      dataIndex: 'wholesaleStartTime',
       valueType: 'text',
       hideInSearch:true,
-      editable:false
+      editable:false,
+      render:(_,data)=>{
+        return <p>{moment(data.wholesaleStartTime*1000).format('YYYY-MM-DD HH:mm:ss')}-{moment(data.endTimeAdvancePayment*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
+      }
     },
     {
       title: '集约活动状态',
-      dataIndex: 'brandName',
-      valueType: 'select',
-      hideInTable:true,
-      valueEnum: {
-          0: '全部',
-          1: '待开始',
-          2: '进行中',
-      },
+      dataIndex: 'wholesaleStatusDesc',
+      valueType: 'text',
       editable:false
     },
     {
       title: '集约单次限量',
-      dataIndex: 'totalStockNum',
+      dataIndex: 'minNum',
       hideInSearch: true,
-      editable:false
+      editable:false,
+      render: (_,data)=> {
+        return <p>{data?.minNum} - {data?.maxNum}包</p>
+      },
     },
     {
       title: '集约价',
-      dataIndex: 'price',
+      dataIndex: 'intensivePrice',
       hideInSearch: true,
-      // render: (_)=> amountTransform(_, '/').toFixed(2),
+      render: (_)=> {
+        return <p>{amountTransform(_, '/').toFixed(2)}包</p>
+      },
       editable:false
     },
     {
       title: '集约库存',
       dataIndex: 'totalStockNum',
       hideInSearch: true,
-      editable:false
+      editable:false,
+      render: (_)=> {
+        return <p>{_}包</p>
+      },
     },
     {
       title: '活动价',
@@ -254,17 +271,22 @@ export default (props) => {
     },
     {
       title: '状态',
-      dataIndex: 'wholesaleAuditStatus',
+      dataIndex: 'status',
       valueType: 'text',
       hideInSearch: true,
-      editable:false
+      editable:false,
+      valueEnum: {
+        0: '已禁用',
+        1: '已启用',
+    },
     },
     {
       title: '操作',
       valueType: 'text',
       render:(text, record, _, action)=>{
         return [
-          <a key='dele' onClick={()=>delGoods(record.id)}>删除</a>
+          <a key='dele' onClick={()=>delGoods(record.id)}>删除</a>,
+          <a key='stop' onClick={()=>stopGoods(record.id)}>禁用</a>
       ]
       },
       editable:false,
@@ -286,6 +308,11 @@ export default (props) => {
     setDataSource(arr) 
     callback(arr)
   }
+
+  const stopGoods=val=>{
+
+  }
+
   return (
     <>
     <ProFormText
@@ -303,7 +330,7 @@ export default (props) => {
       readonly={true}
     />
     <EditableProTable
-        rowKey="id"
+        rowKey="skuId"
         name="table"
         value={dataSource}
         recordCreatorProps={false}
@@ -320,65 +347,57 @@ export default (props) => {
           },
         }}
         toolBarRender={()=>[
-            <p>共5款商品</p>,
-            <>
-            {
-              visible&&<GoosModel
-                title={'添加秒约商品'}  
-                visible={visible} 
-                setVisible={setVisible}
-                callback={(val)=>{
-                  const arr = [];
-                  val.forEach(item => {
-                    arr.push({
-                      id:item.id,
-                      status:false,
-                      add:true,
-                      probability: item.probability,
-                      skuId: item.skuId,
-                      spuId: item.spuId,
-                      stockNum: 0,
-                      baseStockNum:item.stockNum,
-                      goodsName: item.goodsName,
-                      imageUrl: item.imageUrl,
-                      salePrice: item.salePrice,
-                      retailSupplyPrice: item.retailSupplyPrice,
-                    })
-                  })
-                  detailList?.skus.map(ele=>{
-                      arr.map(item=>{
-                        if(item.skuId==ele.skuId){
-                          item.id=ele.id
-                          item.stockNum=ele.stockNum
-                          item.probability=ele.probability
-                          item.status=ele.status
-                          delete item.add
-                        }
-                      })
-                  })
-                  if(!id&&falg){
-                    dataSource?.map(ele=>{
-                      arr.map(item=>{
-                        if(item.skuId==ele.skuId){
-                          item.stockNum=ele.stockNum
-                          item.probability=ele.probability
-                          item.status=ele.status
-                        }
-                      })
-                     })
-                  }
-                  let arr2=_.uniqWith([...dataSource,...arr], _.isEqual)
-                    setDataSource(arr2)
-                    callback(arr2)
-                    setEditableKeys(arr2.map(item => item.id))
-                }}
-                onClose={()=>{}}
-              />
-            }
-            </>
+            <p>共{dataSource.length}款商品</p>
         ]}
         style={{marginBottom:'30px',display:id&&falg?'none':'block'}}
     />
+
+    {
+      visible&&<GoosModel
+        title={'添加秒约商品'}  
+        visible={visible} 
+        setVisible={setVisible}
+        callback={(val)=>{
+          console.log('val',val)
+          const arr = [];
+          val.forEach(item => {
+            arr.push({
+              ...item,
+              status:1,
+              intensivePrice:item.price,
+              price:0
+            })
+          })
+          // detailList?.skus.map(ele=>{
+          //     arr.map(item=>{
+          //       if(item.skuId==ele.skuId){
+          //         item.id=ele.id
+          //         item.stockNum=ele.stockNum
+          //         item.probability=ele.probability
+          //         item.status=ele.status
+          //         delete item.add
+          //       }
+          //     })
+          // })
+          // if(!id&&falg){
+          //   dataSource?.map(ele=>{
+          //     arr.map(item=>{
+          //       if(item.skuId==ele.skuId){
+          //         item.stockNum=ele.stockNum
+          //         item.probability=ele.probability
+          //         item.status=ele.status
+          //       }
+          //     })
+          //    })
+          // }
+          // let arr2=_.uniqWith([...dataSource,...arr], _.isEqual)
+          setDataSource(arr)
+          callback(arr)
+          setEditableKeys(arr.map(item => item.skuId))
+        }}
+        onClose={()=>{}}
+      />
+    }
 
     <ProTable
         toolBarRender={false}

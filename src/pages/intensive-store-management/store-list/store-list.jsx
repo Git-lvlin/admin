@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { PageContainer } from '@ant-design/pro-layout';
-import { getStoreList } from '@/services/intensive-store-management/store-list';
+import { getStoreList,applyConditionPage } from '@/services/intensive-store-management/store-list';
 import { history } from 'umi';
 import AddressCascader from '@/components/address-cascader';
 import Auth from '@/components/auth';
@@ -56,7 +56,7 @@ const StoreList = (props) => {
     //   render: (_) => <img src={_} width="50" height="50" />
     // },
     {
-      title: '生鲜店铺编号',
+      title: '店铺编号',
       dataIndex: 'storeNo',
       valueType: 'text',
       fieldProps: {
@@ -66,11 +66,11 @@ const StoreList = (props) => {
       hideInSearch: storeType == 'freshStores',
     },
     {
-      title: '店铺编号',
-      dataIndex: 'storeNo',
+      title: '生鲜店铺编号',
+      dataIndex: 'shopMemberAccount',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入店铺编号'
+        placeholder: '请输入生鲜店铺编号'
       },
       hideInTable: storeType == 'freshStores',
       hideInSearch: storeType == 'freshStores',
@@ -98,7 +98,8 @@ const StoreList = (props) => {
       hideInSearch: true,
       render:(_,data)=>{
         return <p>{_.desc}</p>
-      }
+      },
+      hideInTable: storeType == 'freshStores'
     },
     {
       title: '店铺名称',
@@ -106,8 +107,7 @@ const StoreList = (props) => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店铺名称'
-      },
-      hideInTable: storeType == 'freshStores'
+      }
     },
     {
       title: '等级',
@@ -140,24 +140,44 @@ const StoreList = (props) => {
       hideInSearch: true,
     },
     {
-      title: '是否购买生鲜柜',
-      dataIndex: 'address',
+      title: '生鲜柜',
+      dataIndex: 'isOrdered',
       valueType: 'select',
+      hideInSearch: storeType != 'freshStores',
+      hideInTable: true,
       valueEnum:{
-        0: '全部',
-        1: '未购买',
-        2: '已购买'
+        1: '已购买',
+        0: '未购买'
       },
-      hideInTable:true,
-      hideInSearch: storeType == 'freshStores',
     },
     {
       title: '生鲜柜订单号',
-      dataIndex: 'address',
+      dataIndex: 'isOrdered',
       valueType: 'text',
       hideInSearch: true,
       render:(_,data)=>{
-        return <a onClick={()=>{setOrderVisible(true);setOrderId()}}>{_}</a>
+        return <a onClick={()=>{setOrderVisible(true);setOrderId(data?.freshOrder?.id)}}>{data?.freshOrder?.orderSn}</a>
+      },
+      hideInTable: storeType != 'freshStores'
+    },
+    {
+      title: '开店必备礼包',
+      dataIndex: 'isGiftOrdered',
+      valueType: 'select',
+      hideInSearch: storeType != 'freshStores',
+      hideInTable: true,
+      valueEnum:{
+        1: '已购买',
+        0: '未购买'
+      },
+    },
+    {
+      title: '开店必备礼包',
+      dataIndex: 'isGiftOrdered',
+      valueType: 'text',
+      hideInSearch: true,
+      render:(_,data)=>{
+        return <a onClick={()=>{setOrderVisible(true);setOrderId(data?.giftOrder?.id)}}>{data?.giftOrder?.orderSn}</a>
       },
       hideInTable: storeType != 'freshStores'
     },
@@ -175,10 +195,17 @@ const StoreList = (props) => {
     },
     {
       title: '生鲜店铺状态',
-      // dataIndex: 'address',
+      dataIndex: 'verifyStatus',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'freshStores'
+      hideInTable: storeType == 'freshStores',
+      valueEnum: {
+        "0": '没有申请过',
+        "1": '审核通过',
+        "2": '审核不通过',
+        "5": '取消申请',
+        "6": '待审核'
+      },
     },
     {
       title: '所属运营中心',
@@ -358,7 +385,7 @@ const StoreList = (props) => {
       title: '保证金状态',
       dataIndex: 'depositStatus',
       valueType: 'select',
-      hideInSearch: storeType == 'cancelled'||storeType == 'freshStores',
+      hideInSearch: storeType == 'cancelled',
       hideInTable: true,
       valueEnum: {
         "normal": '全部',
@@ -490,7 +517,7 @@ const StoreList = (props) => {
               <p>有余额注销</p>
               <a onClick={() => {setVisible(true);setAttachmentImage(data?.cancelInfo?.attachList)}}>附件（点击查看）</a>
               <p>注销时还剩余额：{data?.cancelInfo?.balance}元</p>
-              <p>理由：{data?.cancelInfo?.reason}</p>
+              <pre className={styles.line_feed}>理由：{data?.cancelInfo?.reason}</pre>
             </>
           )
         }else{
@@ -547,6 +574,10 @@ const StoreList = (props) => {
     return {}
   }
 
+  const postData=(data)=>{
+    return data.map(ele=>({...ele,verifyStatus:ele?.freshApplyRow?.verifyStatus?.code}))
+  }
+
   return (
     <>
       <ProTable
@@ -557,7 +588,10 @@ const StoreList = (props) => {
         params={{
           operation: storeType
         }}
-        request={getStoreList}
+        postData={postData}
+        request={
+          storeType == 'freshStores'?applyConditionPage:getStoreList
+        }
         scroll={{ x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
@@ -673,7 +707,7 @@ const OverallStore = () => {
             activeKey == 'cancelled' && <StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="freshStores" tab="已买生鲜柜店铺">
+        <ProCard.TabPane key="freshStores" tab="已买生鲜柜或开店礼包店铺">
           {
             activeKey == 'freshStores' && <StoreList storeType={activeKey} />
           }
