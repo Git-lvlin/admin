@@ -102,7 +102,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/added-activity?id='+record.id)}>详情</a>,
+            <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/activity-detail?id='+record.id)}>详情</a>,
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/added-activity?id='+record.id)}>编辑</a>,
             <a key='detail' onClick={()=>{}}>终止</a>
         ],
