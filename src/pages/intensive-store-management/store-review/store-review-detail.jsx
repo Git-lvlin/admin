@@ -1,13 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Form, Spin, Space, Image, Button, message } from 'antd';
 import { storeDetail } from '@/services/intensive-store-management/store-review';
-import { useParams } from 'umi';
 import ProForm, { ProFormText, DrawerForm } from '@ant-design/pro-form';
 import AddressCascader from '@/components/address-cascader'
 import Upload from '@/components/upload';
 import RejectForm from './refuse';
 import { amountTransform } from '@/utils/utils'
-import { history } from 'umi';
 import { approve } from '@/services/intensive-store-management/store-review'
 
 
@@ -80,7 +78,6 @@ const ImageInfo = ({ value, onChange }) => {
 
 const Detail = (props) => {
   const { setVisible } = props;
-  const params = useParams();
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm()
@@ -90,7 +87,7 @@ const Detail = (props) => {
   const map = useRef();
 
   const submit = (values) => {
-    const { area, imageInfo, ...rest } = values;
+    const { area, imageInfo, serviceFee, ...rest } = values;
     return new Promise((resolve, reject) => {
       let userInfo = window.localStorage.getItem('user');
       userInfo = userInfo && JSON.parse(userInfo)
@@ -114,7 +111,8 @@ const Detail = (props) => {
         idHandheld: imageInfo.idHandheld,
         memberId: detailData.memberId,
         verifyStatus: detailData.verifyStatus.code,
-        deposit: detailData.deposit.length === 0 ? amountTransform(values.depositValue) : 0
+        deposit: detailData.deposit.length === 0 ? amountTransform(values.depositValue) : 0,
+        serviceFee: detailData.lastServiceFee.payAmount === 0 ? amountTransform(serviceFee) : 0,
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
           resolve()
@@ -232,21 +230,19 @@ const Detail = (props) => {
       submitter={{
         render: (props, doms) => {
           return (
-            <div style={{ textAlign: 'center', marginTop: 100 }}>
-              <Space>
-                <Button type="primary" onClick={() => props.form?.submit()}>
-                  通过
-                </Button>
-                <Button type="danger" onClick={() => {
-                  setRejectFormVisible(true);
-                }}>驳回</Button>
-                <Button onClick={() => {
-                  setVisible(false)
-                }}>
-                  返回
-                </Button>
-              </Space>
-            </div>
+            <Space>
+              <Button type="primary" onClick={() => props.form?.submit()}>
+                通过
+              </Button>
+              <Button type="danger" onClick={() => {
+                setRejectFormVisible(true);
+              }}>驳回</Button>
+              <Button onClick={() => {
+                setVisible(false)
+              }}>
+                返回
+              </Button>
+            </Space>
           )
         }
       }}
@@ -323,6 +319,25 @@ const Detail = (props) => {
         >
           <div id="container" style={{ width: 600, height: 300 }}></div>
         </Form.Item>
+        <Form.Item
+          label="必备礼包订单号"
+        >
+          {
+            detailData?.details?.giftOrder?.isGiftOrdered === 0 && <span style={{ color: 'red' }}>没有购买记录</span>
+          }
+        </Form.Item>
+        <Form.Item
+          label="申请类型"
+        >
+          {{ 10: '正常申请', 20: '绿色通道申请' }[detailData?.details?.applyType]}
+        </Form.Item>
+        {detailData?.details?.applyType===20&&<Form.Item
+          label="证明文件"
+        >
+          {
+            detailData?.details?.credentialList.map(item => (<Image width={50} height={50} src={item} key={item} />))
+          }
+        </Form.Item>}
         <ProFormText
           name="realname"
           label="姓名"
@@ -387,7 +402,7 @@ const Detail = (props) => {
           {detailData?.createTime}
         </Form.Item>
         {
-          detailData?.deposit?.payAmount
+          !!detailData?.deposit?.payAmount
           &&
           <>
             <Form.Item
@@ -412,6 +427,37 @@ const Detail = (props) => {
             width="md"
             fieldProps={{
               placeholder: '请输入保证金金额',
+              maxLength: 30,
+              suffix: '元'
+            }}
+          />
+        }
+        {
+          !!detailData?.lastServiceFee?.payAmount
+          &&
+          <>
+            <Form.Item
+              label="服务费金额"
+            >
+              ¥{amountTransform(detailData?.lastServiceFee?.payAmount, '/')}
+            </Form.Item>
+            <Form.Item
+              label="服务费缴纳时间"
+            >
+              {detailData?.lastServiceFee?.payTime}
+            </Form.Item>
+          </>
+        }
+        {
+          !detailData?.lastServiceFee?.payAmount
+          && <ProFormText
+            name="serviceFee"
+            label="服务费金额"
+            placeholder="请输入服务费金额"
+            rules={[{ required: true, message: '请输入服务费金额' }]}
+            width="md"
+            fieldProps={{
+              placeholder: '请输入服务费金额',
               maxLength: 30,
               suffix: '元'
             }}

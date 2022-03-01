@@ -232,6 +232,25 @@ const StoreList = (props) => {
       width:200
     },
     {
+      title: '申请类型',
+      dataIndex: 'applyType',
+      valueType: 'select',
+      valueEnum: {
+        10: '正常申请',
+        20: '绿色通道申请',
+      },
+      hideInTable: true,
+      order: -2,
+    },
+    {
+      title: '申请类型',
+      dataIndex: ['applyType', 'code'],
+      valueType: 'text',
+      width: 100,
+      render: (_) => _ === 10 ? '正常申请' : '绿色通道申请',
+      hideInSearch: true,
+    },
+    {
       title: '店主收件号',
       dataIndex: 'phone',
       fieldProps: {
@@ -531,6 +550,17 @@ const StoreList = (props) => {
           )
         }
       }
+    },
+    {
+      title: '改价记录',
+      dataIndex: 'isChangePrice',
+      valueType: 'select',
+      valueEnum: {
+        0: '没有改价记录',
+        1: '有改价记录',
+      },
+      hideInTable: true,
+      order: -1,
     },
     {
       title: '操作',
