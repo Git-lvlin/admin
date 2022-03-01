@@ -74,6 +74,12 @@ export default {
             hideInMenu: true,
           },
           {
+            name: 'activity-detail',
+            path: '/intensive-activity-management/penny-activity/activity-detail',
+            component: './intensive-activity-management/penny-activity/activity-detail',
+            hideInMenu: true,
+          },
+          {
             name: 'activity-commodity',
             path: '/intensive-activity-management/penny-activity/activity-commodity',
             component: './intensive-activity-management/penny-activity/activity-commodity'

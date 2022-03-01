@@ -56,16 +56,6 @@ const StoreList = (props) => {
     //   render: (_) => <img src={_} width="50" height="50" />
     // },
     {
-      title: '店铺编号',
-      dataIndex: 'storeNo',
-      valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入店铺编号'
-      },
-      hideInTable: storeType == 'freshStores',
-      hideInSearch: storeType == 'freshStores',
-    },
-    {
       title: '生鲜店铺编号',
       dataIndex: 'shopMemberAccount',
       valueType: 'text',
@@ -172,7 +162,7 @@ const StoreList = (props) => {
       },
     },
     {
-      title: '开店必备礼包',
+      title: '开店必备礼包订单号',
       dataIndex: 'isGiftOrdered',
       valueType: 'text',
       hideInSearch: true,
