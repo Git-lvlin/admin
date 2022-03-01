@@ -85,3 +85,17 @@ export const dailyDataOverview = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+// 每日数据总览
+export const sumDailyDataOverview = async (params = {}, options = {}) => {
+  const { date, ...rest } = params
+  return await request('/auth/java-admin/report/config/sumDailyDataOverview', {
+    method: 'POST',
+    data: {
+      startTime: date?.[0].format("YYYY-MM-DD"),
+      endTime: date?.[1].format("YYYY-MM-DD"),
+      ...rest
+    },
+    ...options
+  })
+}
