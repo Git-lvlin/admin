@@ -24,19 +24,6 @@ const EvaluateList= (props) => {
     const [visit, setVisit] = useState(false)
     const columns = [
         {
-            title: '用户ID',
-            dataIndex: 'userId',
-            hideInSearch: true,
-            hideInTable:type==3?true:false
-        },
-        {
-            title: '用户头像',
-            dataIndex: 'userImg',
-            valueType: 'image',
-            hideInSearch:true,
-            hideInTable:type==3?true:false
-        },
-        {
             title: '用户昵称',
             dataIndex: 'nickName',
             valueType: 'text',
@@ -46,14 +33,12 @@ const EvaluateList= (props) => {
             dataIndex: 'score',
             valueType: 'text',
             hideInSearch: true,
-            hideInTable:type==3?false:true
         },
         {
             title: '用户评分',
             dataIndex: 'score',
             valueType: 'select',
-            hideInSearch: type==2?false:true,
-            hideInTable:type==3?true:false,
+            hideInTable:true,
             valueEnum: {
               0: '请选择',
               1: '1',
@@ -103,19 +88,16 @@ const EvaluateList= (props) => {
             dataIndex: 'goodsName',
             valueType: 'text',
             hideInSearch: true,
-            hideInTable:type==2?false:true
         },
         {
             title: '被评商家ID',
             dataIndex: 'supplierId',
             valueType: 'text',
-            hideInSearch: type==2?false:true,
         },
         {
             title: '被评商品名称',
             dataIndex: 'goodsName',
             valueType: 'text',
-            hideInSearch: type==2?false:true,
             hideInTable: true
         },
         {
@@ -187,8 +169,6 @@ const EvaluateList= (props) => {
                     key='switch'
                   />,
                   ...dom.reverse(),
-                  <div key="derive">
-                   {type==3&&<>
                     <Export
                        key='export'
                        change={(e) => { setVisit(e) }}
@@ -196,9 +176,6 @@ const EvaluateList= (props) => {
                        conditions={getFieldValue(searchConfig)}
                      />,
                      <ExportHistory key='task' show={visit} setShow={setVisit} type={'data-goods-comment-export'}/>
-                    </>
-                   }
-                  </div>
                 ],
             }}
             columns={columns}
