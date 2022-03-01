@@ -64,6 +64,7 @@ const StoreList = (props) => {
       },
       hideInTable: storeType == 'freshStores',
       hideInSearch: storeType == 'freshStores',
+      width:200
     },
     {
       title: '店主手机号',
@@ -98,13 +99,15 @@ const StoreList = (props) => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店铺名称'
-      }
+      },
+      width:200
     },
     {
       title: '等级',
       dataIndex: ['level', 'levelName'],
       valueType: 'text',
       hideInSearch: true,
+      width:200
     },
     // {
     //   title: '积分',
@@ -390,7 +393,6 @@ const StoreList = (props) => {
         "12": '正常-已退全部保证金',
         "13": '正常-未退保证金',
       },
-      width:200
     },
     {
       title: '保证金状态',
@@ -408,7 +410,8 @@ const StoreList = (props) => {
             })}
           </>
         )
-      }
+      },
+      width:200
     },
     {
       title: '保证金状态',
@@ -464,7 +467,8 @@ const StoreList = (props) => {
             {_.desc}
           </>
         )
-      }
+      },
+      width:200
     },
     {
       title: '店铺等级',
