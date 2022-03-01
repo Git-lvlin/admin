@@ -47,6 +47,7 @@ const EvaluateList= (props) => {
               4: '4',
               5: '5'
               },
+            width:200
         },
         {
             title: '评价内容',
@@ -159,15 +160,6 @@ const EvaluateList= (props) => {
                 defaultCollapsed: false,
                 labelWidth: 100,
                 optionRender: (searchConfig, formProps, dom) => [
-                  <ProFormSwitch
-                    label="审核功能开关"
-                    className='switchTop'
-                    fieldProps={{
-                        onChange:(bol)=>auditSwitch(bol),
-                        checked:pitch
-                    }}
-                    key='switch'
-                  />,
                   ...dom.reverse(),
                     <Export
                        key='export'
@@ -178,6 +170,17 @@ const EvaluateList= (props) => {
                      <ExportHistory key='task' show={visit} setShow={setVisit} type={'data-goods-comment-export'}/>
                 ],
             }}
+            toolBarRender={() => [
+              <ProFormSwitch
+                label="审核功能开关"
+                className='switchTop'
+                fieldProps={{
+                    onChange:(bol)=>auditSwitch(bol),
+                    checked:pitch
+                }}
+                key='switch'
+              />
+            ]}
             columns={columns}
             pagination={{
                 pageSize: 10,
