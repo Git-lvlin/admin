@@ -15,6 +15,11 @@ export default {
       path: '/coupon-management/coupon-list/construction',
       component: './coupon-construction/coupon-construction',
       wrappers: [RouteWatcher],
+    },
+    {
+      name: 'coupon-construction',
+      path: '/coupon-management/coupon-construction',
+      component: './coupon-management/coupon-construction',
       hideInMenu: true,
     },
     {

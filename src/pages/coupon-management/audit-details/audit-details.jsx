@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { couponDetail } from '@/services/coupon-management/coupon-detail';
-import SubTable from '@/pages/coupon-construction/coupon-subtable'
+import { couponVerifyDetail, couponVerify } from '@/services/coupon-management/coupon-audit';
+import SubTable from '@/pages/coupon-management/coupon-construction/coupon-subtable'
 import { Divider, Form, Spin, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
+import AuditModel from './audit-model'
 import { amountTransform } from '@/utils/utils'
 import { history } from 'umi';
 import { CaretRightFilled } from '@ant-design/icons';
@@ -59,12 +60,13 @@ export default props => {
     {
       title: '供货价',
       dataIndex: 'retailSupplyPrice',
-      render: (_)=> amountTransform(_, '/').toFixed(2)
+      render: (_)=> amountTransform(_, '/').toFixed(2),
     },
     {
       title: '销售价',
       dataIndex: 'goodsSalePrice',
-      render: (_)=> amountTransform(_, '/').toFixed(2)
+      render: (_)=> amountTransform(_, '/').toFixed(2),
+
     },
     {
       title: '可用库存',
@@ -73,38 +75,34 @@ export default props => {
   ];
   const columns3 = [
     {
-      title: '活动编号',
-      dataIndex: 'wholesaleId',
+      title: '审核时间',
+      dataIndex: 'createTime',
       valueType: 'text',
     },
     {
-      title: '活动名称',
-      dataIndex: 'name',
+      title: '审核人员',
+      dataIndex: 'adminName',
       valueType: 'text',
     },
     {
-      title: '活动时段',
-      dataIndex: 'wholesaleEndTime',
-      valueType: 'text',
-      render: (_, data) => {
-        return <p>{data.wholesaleStartTime} 至 {data.wholesaleEndTime}</p>
-      }
+      title: '审核结果',
+      dataIndex: 'status',
+      valueType: 'select',
+      valueEnum: {
+        3: '审核驳回',
+        4: '审核通过',
+      },
     },
     {
-      title: '可购买的会员店等级',
-      dataIndex: 'storeLevel',
-      valueType: 'text'
-    },
-    {
-      title: '可购买的会员用户',
-      dataIndex: 'memberLevel',
+      title: '意见审核',
+      dataIndex: 'content',
       valueType: 'text'
     },
   ];
 
   useEffect(() => {
     setLoading(true);
-    couponDetail({ id }).then(res => {
+    couponVerifyDetail({ id }).then(res => {
       setDetailData(res.data)
     }).finally(() => {
       setLoading(false);
@@ -119,10 +117,11 @@ export default props => {
         <Form
           form={form}
           {...formItemLayout}
-          className={styles.couponFrom}
+          className={styles.audit_details}
         >
-          <h1><CaretRightFilled /> 查看详情</h1>
-          <Button className={styles.goback} key='goback' type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
+
+          <h1><CaretRightFilled /> 红包审核详情</h1>
+          <Button className={styles.goback} type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
           <div className={styles.msg}>
             <h3 className={styles.head}>基本信息</h3>
             <Form.Item
@@ -139,7 +138,8 @@ export default props => {
                   '满减红包'
                   : detailData.couponType == 2 ?
                     '折扣红包'
-                    : '立减红包'
+                    : detailData.couponType == 3 ?
+                      '立减红包' : null
               }
             </Form.Item>
 
@@ -163,8 +163,7 @@ export default props => {
                 {detailData.maxFreeAmount}元
               </Form.Item>
             }
-
-
+            
             <Form.Item
               label="发行方式"
             >
@@ -197,19 +196,18 @@ export default props => {
               {detailData.limitStartTime + ' -- ' + detailData.limitEndTime}
             </Form.Item>
             }
-            
             <Form.Item
               label="有效期"
             >
-              {
+             {
                 detailData.activityTimeType == 1 ?
                 <p>{detailData.activityStartTime + ' -- ' + detailData.activityEndTime}</p>
                 :detailData.activityTimeType == 2 ?
                 <p>领红包{detailData.activityStartDay}天起，{detailData.activityEndDay}天内可用</p>
                 : <p>领红包0天起，{detailData.activityEndHour}小时内可用</p>
               }
-              
             </Form.Item>
+
             {
               detailData.issueType == 3&&
               <Form.Item
@@ -225,15 +223,14 @@ export default props => {
               {
                 detailData.memberType == 1 ?
                   '全部会员'
-                  :detailData.memberType == 2? '指定用户群体':'新用户（未下过订单的用户）'
+                  : detailData.memberType == 2? '指定用户群体':'新用户（未下过订单的用户）'
               }
-
             </Form.Item>
             {
               detailData.memberType == 2 ?
                 <ProTable
                   actionRef={ref}
-                  rowKey="id"
+                  rowKey="name"
                   options={false}
                   expandable={{ expandedRowRender: (_) => <SubTable name={_.name} /> }}
                   dataSource={[detailData.crowdList]}
@@ -256,51 +253,33 @@ export default props => {
               }
             </Form.Item>
 
+            <Form.Item
+              label="商品范围"
+            >
+              {
+                detailData.goodsType == 1 ?
+                  '全部商品' :
+                  detailData.goodsType == 2 ?
+                    '指定商品' :
+                    detailData.goodsType == 3 ?
+                      '指定品类' : null
+              }
+            </Form.Item>
             {
-              detailData.useType == 1 ?
-                <>
-                  <Form.Item
-                    label="商品范围"
-                  >
-                    {
-                      detailData.goodsType == 1 ?
-                        '全部商品' :
-                        detailData.goodsType == 2 ?
-                          '指定商品' :
-                          detailData.goodsType == 3 ?
-                            '指定品类' : null
-                    }
-                  </Form.Item>
-                  {
-                    detailData.goodsType == 2 ?
-                    <>
-                      <p key='assign' className={styles.mark}>已选中<span>{detailData.spuInfo?.length}个</span>指定商品</p>
-                      <ProTable
-                        actionRef={ref}
-                        rowKey="spuId"
-                        options={false}
-                        dataSource={detailData.spuInfo}
-                        search={false}
-                        columns={columns2}
-                      />
-                    </>
-                      : null
-                  }
-
-                </>
-                : <>
-                  <p className={styles.mark}>已选中<span>{detailData.wsInfo?.length}个</span>集约活动。</p>
-                  <ProTable
-                    actionRef={ref}
-                    rowKey="spuId"
-                    options={false}
-                    dataSource={detailData.wsInfo}
-                    search={false}
-                    columns={columns3}
-                  />
-                </>
+              detailData.goodsType == 2 ?
+              <>
+                <p className={styles.mark}>已选中<span>{detailData.spuInfo?.length}个</span>指定商品</p>
+                <ProTable
+                  actionRef={ref}
+                  rowKey="spuId"
+                  options={false}
+                  dataSource={detailData.spuInfo}
+                  search={false}
+                  columns={columns2}
+                />
+              </>
+                : null
             }
-
             <Form.Item
               label="可用人群"
             >
@@ -314,13 +293,57 @@ export default props => {
             <Form.Item
               label="规则说明"
             >
-               <pre className={styles.line_feed}>
+              <pre className={styles.line_feed}>
                 {
                   detailData?.couponRule
                 }
               </pre>
             </Form.Item>
           </div>
+
+            {
+             detailData.verifyInfo && detailData.verifyInfo.length !=0 && detailData.verifyInfo[0].status ?
+                <div className={styles.msg}>
+                  <h3 className={styles.head}>审核信息</h3>
+                  <ProTable
+                    actionRef={ref}
+                    rowKey="createTime"
+                    options={false}
+                    dataSource={detailData.verifyInfo}
+                    search={false}
+                    columns={columns3}
+                  />
+                </div>
+                :
+                null
+            }
+
+          {
+            detailData.verifyInfo && detailData.verifyInfo.length !=0 && detailData.verifyInfo[0].status == 4 ?
+              null
+              : <>
+                <AuditModel
+                  type={1}
+                  status={4}
+                  label={'审核通过'}
+                  text={'确认审核通过吗？'}
+                  InterFace={couponVerify}
+                  id={id}
+                  title={'操作确认'}
+                  boxref={ref}
+                />
+                <AuditModel
+                  type={2}
+                  status={3}
+                  label={'驳回'}
+                  InterFace={couponVerify}
+                  title={'审核驳回'}
+                  id={id}
+                  boxref={ref}
+                />
+              </>
+          }
+
         </Form>
       </Spin>
 

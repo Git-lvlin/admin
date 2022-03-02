@@ -9,6 +9,7 @@ import { saveWSCentActiveConfig,getActiveConfigById } from '@/services/intensive
 import moment from 'moment';
 import styles from './style.less'
 import GoosSet from './goos-set'
+import { PageContainer } from '@ant-design/pro-layout';
 
 const formItemLayout = {
   labelCol: { span: 3 },
@@ -28,12 +29,14 @@ export default (props) => {
   const [falg,setFalg]=useState(true)
   const [goosList,setGoosList]=useState()
   const [visible, setVisible] = useState(false);
+  const [limitAll,setLimitAll]=useState()
   let id = props.location.query.id
   const [form] = Form.useForm()
   useEffect(() => {
     if (id) {
       getActiveConfigById({id}).then(res=>{
-        console.log('res',res)
+        console.log('res.data?.content?.goods',res.data?.content?.goods)
+        setDetailList(res.data?.content?.goods)
         form.setFieldsValue({
             dateRange: [moment(res.data?.startTime*1000).valueOf(), moment(res.data?.endTime*1000).valueOf()],
             buyerLimit:res.data?.content?.buyerLimit,
@@ -64,7 +67,7 @@ export default (props) => {
 
   const checkConfirm2=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
-    if (value&&value<1||value>999999) {
+    if (value&&parseInt(value)<1||parseInt(value)>999999) {
         await reject('1-999999之间整数')
     }else if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
         await reject('只能输入整数')
@@ -75,6 +78,20 @@ export default (props) => {
   }
 
   const checkConfirm3=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value&&parseInt(value)>parseInt(limitAll)) {
+      await reject('<=店主总限量')
+    }else if (value&&parseInt(value)>200) {
+      await reject('<=店主总限量')
+    }else if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+      await reject('只能输入整数')
+    }else {
+      await resolve()
+    }
+    })
+  }
+
+  const checkConfirm4=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
     if (value&&value<0||value>100) {
         await reject('0-100之间整数')
@@ -109,7 +126,7 @@ export default (props) => {
     return current && current < moment().startOf('day');
   }
   return (
-    <>
+    <PageContainer>
       <ProForm
         form={form}
         {...formItemLayout}
@@ -156,6 +173,7 @@ export default (props) => {
           fieldProps={{
             addonAfter:"元",
           }}
+          extra={<p style={{color:'#D8BC2C'}}>一键设置所有活动商品的活动价</p>}
         />
         <ProFormText
           width="md"
@@ -165,6 +183,11 @@ export default (props) => {
             { required: true, message: '请输入每位店主总限量' },
             { validator: checkConfirm2 }
           ]}
+          fieldProps={{
+            onChange:(e)=>{
+              setLimitAll(e.target.value)
+            }
+          }}
           initialValue={200}
         />
         <ProFormText
@@ -173,7 +196,7 @@ export default (props) => {
           label='每位店主单次限量'
           rules={[
             { required: true, message: '请输入每位店主单次限量' },
-            { validator: checkConfirm2 }
+            { validator: checkConfirm3 }
           ]}
           initialValue={50}
         />
@@ -183,7 +206,7 @@ export default (props) => {
           label='每位消费者限量'
           rules={[
             { required: true, message: '请输入每位消费者限量' },
-            { validator: checkConfirm2 }
+            { validator: checkConfirm3 }
           ]}
           initialValue={1}
         />
@@ -193,7 +216,7 @@ export default (props) => {
           label='店主再次参与活动条件'
           rules={[
             { required: true, message: '请输入店主再次参与活动条件' },
-            { validator: checkConfirm3 }
+            { validator: checkConfirm4 }
           ]}
           fieldProps={{
             addonBefore:'需完成已有推广任务',
@@ -264,6 +287,6 @@ export default (props) => {
           }}
         />
       </ProForm >
-    </>
+    </PageContainer>
   );
 };

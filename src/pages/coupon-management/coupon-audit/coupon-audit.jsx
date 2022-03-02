@@ -46,6 +46,9 @@ const Message = (props) => {
       dataIndex: 'issueQuantity',
       valueType: 'text',
       hideInSearch: true,
+      render:(_, data)=>{
+        return <p>{data.issueQuantity==-1?'不限量':data.issueQuantity}</p>
+      }
     },
     {
       title: '面额（元）',

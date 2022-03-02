@@ -175,7 +175,7 @@ export default (props) => {
               rules={[{ required: true, message: '请上传附件' }]}
             >
               <FromWrap
-                content={(value, onChange) => <Upload multiple value={value} onChange={onChange}   maxCount={9} accept="image/*"  size={10 * 1024} />}
+                content={(value, onChange) => <Upload  value={value} onChange={onChange}   maxCount={9} accept="image/*"  size={10 * 1024} />}
                 right={(value) => {
                   return (
                     <dl>
