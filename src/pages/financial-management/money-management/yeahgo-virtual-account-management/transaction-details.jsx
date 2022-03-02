@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import { useLocation, history } from "umi"
@@ -9,13 +9,24 @@ import { amountTransform } from '@/utils/utils'
 import { Export,ExportHistory } from '@/pages/export-excel'
 import { tradeType } from '../../common-enum'
 import Detail from '../../common-popup/order-pay-detail-popup'
+import { orderTypes } from '@/services/financial-management/common'
 
 const TransactionDetails = () => {
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
   const {query} = useLocation()
   const [visit, setVisit] = useState(false)
+  const [orderType, setOrderType] = useState(null)
   const actionform = useRef()
+
+  useEffect(() => {
+    orderTypes({}).then(res=>{
+      setOrderType(res.data)
+    })
+    return () => {
+      setOrderType(null)
+    }
+  }, [])
 
   const skipToOrder = (id, type)=> {
     switch(type) {
@@ -76,24 +87,13 @@ const TransactionDetails = () => {
       }
     }
   }
-
-  const orderType = () => {
-    if(query.accountId==='platform') {
-      return {
-        'second': '秒约订单',
-        'commandSalesOrder': '集约批发订单',
-        'dropShipping1688': '1688代发订单',
-        'commandCollect': '集约零售订单',
-        'blindBox': '盲盒订单',
-        'signIn': '签到订单'
-      }
-    }
-  }
+  
   const columns = [
     {
       title: '序号',
       dataIndex:'id',
       hideInSearch: true,
+      width: '3%',
       valueType: 'indexBorder'
     },
     {
@@ -101,12 +101,14 @@ const TransactionDetails = () => {
       dataIndex:'tradeType',
       valueType: 'select',
       valueEnum: transactionType(),
+      width: '5%',
       hideInTable: true
     },
     {
       title: '交易类型',
       dataIndex:'tradeType',
       valueType: 'select',
+      width: '5%',
       valueEnum: tradeType,
       hideInSearch: true
     },
@@ -114,13 +116,15 @@ const TransactionDetails = () => {
       title: '订单类型',
       dataIndex:'orderType',
       valueType: 'select',
-      valueEnum: orderType(),
+      valueEnum: orderType,
+      width: '5%',
       hideInSearch: query.accountId==='platform' ? false : true,
       hideInTable: query.accountId==='platform' ? false : true
     },
     {
       title: '订单号',
       dataIndex:'billNo',
+      width: '8%',
       render: (_, records) => (
         records.orderId ? 
         <a onClick={()=>skipToOrder(records.orderId, records.orderType)}>{_}</a>:
@@ -130,6 +134,7 @@ const TransactionDetails = () => {
     {
       title: '支付单号',
       dataIndex:'payNo',
+      width: '8%',
       hideInSearch: query.accountId==='platformXinbao' ? true : false,
       hideInTable: query.accountId==='platformXinbao' ? true : false,
       render: (_, records)=> (
@@ -140,11 +145,13 @@ const TransactionDetails = () => {
     },
     {
       title: '资金流水号',
-      dataIndex:'transactionId'
+      dataIndex:'transactionId',
+      width: '8%',
     },
     {
       title: '交易时间',
       dataIndex: 'createTime',
+      width: '7%',
       hideInSearch: true
     },
     {
@@ -157,34 +164,40 @@ const TransactionDetails = () => {
       title: '分账金额',
       dataIndex: 'divideAmount',
       render: (_) => amountTransform(Number(_), '/'),
+      width: '5%',
       hideInSearch: true
     },
     {
       title: '手续费',
       dataIndex: 'fee',
+      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '其他扣款',
       dataIndex: 'deductAmount',
+      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '交易金额',
       dataIndex: 'changeAmount',
+      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '交易后余额',
       dataIndex: 'balanceAmount',
+      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '交易描述',
+      width: '7%',
       dataIndex: 'description',
       hideInSearch: true
     }
