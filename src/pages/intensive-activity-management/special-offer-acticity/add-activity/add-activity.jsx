@@ -2,12 +2,13 @@ import React, { useState, useEffect,useRef } from 'react';
 import { Input, Form, Divider, message, Button,Space } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
 import ProTable from '@ant-design/pro-table';
-import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio } from '@ant-design/pro-form';
+import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,ProFormTimePicker } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 
 import { amountTransform } from '@/utils/utils'
 import moment from 'moment';
 import styles from './style.less'
+import GoosSet from './goos-set'
 
 
 const formItemLayout = {
@@ -109,6 +110,32 @@ export default (props) => {
             }),
             ]}
         />
+         <ProFormRadio.Group
+              name="limitType"
+              label='C端可购买数量'
+              rules={[{ required: true, message: '请选择限领方式' }]}
+              options={[
+                {
+                  label: <ProFormText  name="limitQuantity" fieldProps={{addonAfter:'每人/每天'}}/>, value: 1
+                },
+                {
+                  label: '不限', value: 2
+                }
+              ]}
+         />
+         <ProFormRadio.Group
+              name="limitType"
+              label='C端可购买时间'
+              rules={[{ required: true, message: '请选择限领方式' }]}
+              options={[
+                {
+                  label: <ProFormTimePicker.RangePicker name="timeRange" extra='（控件只可选24小时区间）'/>, value: 1
+                },
+                {
+                  label: '不限', value: 2
+                }
+              ]}
+        />
         <ProFormCheckbox.Group
           name="joinShopType"
           label="参与活动的店铺"
@@ -135,77 +162,15 @@ export default (props) => {
           ]}
           rules={[{ required: true, message: '请选择参与活动的消费者' }]}
         />
-
-        <ProFormText
-          width="md"
-          name="price"
-          label='活动价'
-          rules={[
-            { required: true, message: '请输入活动价' },
-            { validator: checkConfirm }
-          ]}
-          fieldProps={{
-            addonAfter:"元",
-          }}
-        />
-        <ProFormText
-          width="md"
-          name="shoperLimitAll"
-          label='每位店主总限量'
-          rules={[
-            { required: true, message: '请输入每位店主总限量' },
-            { validator: checkConfirm }
-          ]}
-        />
-        <ProFormText
-          width="md"
-          name="shoperLimitOnece"
-          label='每位店主单次限量'
-          rules={[
-            { required: true, message: '请输入每位店主单次限量' },
-            { validator: checkConfirm }
-          ]}
-        />
-        <ProFormText
-          width="md"
-          name="buyerLimit"
-          label='每位消费者限量'
-          rules={[
-            { required: true, message: '请输入每位消费者限量' },
-            { validator: checkConfirm }
-          ]}
-        />
-        <ProFormText
-          width="md"
-          name="joinAgainPercent"
-          label='店主再次参与活动条件'
-          rules={[
-            { required: true, message: '请输入店主再次参与活动条件' },
-            { validator: checkConfirm }
-          ]}
-          fieldProps={{
-            addonBefore:'需完成已有推广任务',
-            addonAfter:"%",
-          }}
-        />
-        <ProFormTextArea
-          label='活动规则'
-          name="ruleText"
-          style={{ minHeight: 32, marginTop: 15 }}
-          placeholder='请输入5-1000个字符'
-          rules={[{ required: true, message: '请备注使用规则' }]}
-          rows={4}
-          fieldProps={{
-            maxLength:1000
+         <GoosSet
+          detailList={detailList}
+          id={id} 
+          falg={falg} 
+          callback={(val)=>{
+            setGoosList(val)
           }}
         />
       </ProForm >
-      {visible&&<GoosModel 
-        visible={visible}
-        setVisible={setVisible}
-        onClose={()=>{setVisible(false)}}
-      />
-      }
     </>
   );
 };

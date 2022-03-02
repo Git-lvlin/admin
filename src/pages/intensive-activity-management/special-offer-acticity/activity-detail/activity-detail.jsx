@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getActiveConfigById } from '@/services/intensive-activity-management/penny-activity';
+import { getActiveConfigById } from '@/services/intensive-activity-management/special-offer-acticity';
 import { Divider, Form, Spin, Button,Image,InputNumber,Row,Col,Descriptions,Typography } from 'antd';
 import ProForm,{ ModalForm,ProFormRadio,ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
@@ -17,7 +17,7 @@ export default props => {
 
   useEffect(() => {
     if (id) {
-        getActiveConfigById({id}).then(res=>{
+      getActiveConfigById({id}).then(res=>{
           setDetailData(res.data)
       })
     }

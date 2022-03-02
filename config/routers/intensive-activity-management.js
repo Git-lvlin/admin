@@ -93,11 +93,11 @@ export default {
             component: './intensive-activity-management/special-offer-acticity/add-activity',
             hideInMenu: true,
           },
-          // {
-          //   name: 'activity-commodity',
-          //   path: '/intensive-activity-management/special-offer-acticity/activity-commodity',
-          //   component: './intensive-activity-management/special-offer-acticity/activity-commodity'
-          // },
+          {
+            name: 'activity-detail',
+            path: '/intensive-activity-management/special-offer-acticity/activity-detail',
+            component: './intensive-activity-management/special-offer-acticity/activity-detail'
+          },
         ]
     },
   ]

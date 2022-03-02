@@ -91,6 +91,7 @@ export default {
   'menu.intensive-activity-management.special-offer-acticity': '特价活动',
   'menu.intensive-activity-management.special-offer-acticity.special-offer-acticity-list': '特价活动列表',
   'menu.intensive-activity-management.special-offer-acticity.add-activity': '新建活动',
+  'menu.intensive-activity-management.special-offer-acticity.activity-detail': '特价活动详情',
 
 
 
