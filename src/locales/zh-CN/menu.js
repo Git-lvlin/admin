@@ -259,6 +259,7 @@ export default {
   'menu.financial-management':'财务管理',
   'menu.financial-management.money-management':'资金管理',
   'menu.financial-management.money-management.yeahgo-virtual-account-management':'约购虚拟户',
+  'menu.financial-management.money-management.yeahgo-virtual-account-management.transaction-details':'交易明细',
   'menu.financial-management.money-management.transaction-details':'交易明细',
   'menu.financial-management.money-management.supplier-fund-management':'供应商家资金管理',
   'menu.financial-management.money-management.member-store-fund-management':'社区店资金管理',

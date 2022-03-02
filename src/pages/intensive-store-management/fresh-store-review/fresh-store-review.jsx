@@ -12,6 +12,7 @@ import { Form, Space } from 'antd'
 import { freshApplyPage, approve, refuse, detail } from '@/services/intensive-store-management/fresh-store-review'
 import AddressCascader from '@/components/address-cascader'
 import Upload from '@/components/upload'
+import styles from './styles.less'
 
 const FormWrap = ({ value, onChange, content, top }) => (
   <div style={{ position:'relative' }}>
@@ -45,7 +46,7 @@ const Apply = ({visit, onVisibleChange, data, actRef}) => {
       case 1: 
         return '待付款'
       case 2: 
-        return '代发货'
+        return '待发货'
       case 3: 
         return '已发货'
       case 4: 
@@ -210,7 +211,7 @@ const Detail = ({visit, onVisibleChange, id}) => {
       case 1: 
         return '待付款'
       case 2: 
-        return '代发货'
+        return '待发货'
       case 3: 
         return '已发货'
       case 4: 
@@ -428,7 +429,11 @@ const FreshStoreReview = () => {
       render: (_, records) => {
         return (
           <Space>
-            <a onClick={() => {setModalVisit(true); setData(records)}}>审核</a>
+            {
+              records.verifyStatusCode === 6?
+              <a onClick={() => {setModalVisit(true); setData(records)}}>审核</a>:
+              <span className={styles.disabled}>审核</span>
+            }
             <a onClick={() => {setDetailVisit(true); setApplyId(records?.id)}}>详情</a>
           </Space>
         )
