@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { couponDetail } from '@/services/coupon-management/coupon-detail';
-import SubTable from '@/pages/coupon-construction/coupon-subtable'
+import SubTable from '@/pages/coupon-management/coupon-construction/coupon-subtable'
 import { Divider, Form, Spin, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { amountTransform } from '@/utils/utils'
@@ -119,7 +119,7 @@ export default props => {
         <Form
           form={form}
           {...formItemLayout}
-          className={styles.couponFrom}
+          className={styles.list_details}
         >
           <h1><CaretRightFilled /> 查看详情</h1>
           <Button className={styles.goback} key='goback' type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>

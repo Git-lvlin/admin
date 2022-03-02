@@ -207,7 +207,7 @@ export default {
 
   'menu.coupon-management': '红包管理',
   'menu.coupon-management.coupon-list': '红包列表',
-  'menu.coupon-management.construction':'新建红包',
+  'menu.coupon-management.coupon-construction':'新建红包',
   'menu.coupon-management.coupon-codebase':'码库',
   'menu.coupon-management.coupon-audit':'红包审核',
   'menu.coupon-management.audit-details':'审核详情',
