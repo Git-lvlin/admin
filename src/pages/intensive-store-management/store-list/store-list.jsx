@@ -244,7 +244,7 @@ const StoreList = (props) => {
     },
     {
       title: '申请类型',
-      dataIndex: ['applyType', 'code'],
+      dataIndex: storeType === 'freshStores' ?'applyType':['applyType', 'code'],
       valueType: 'text',
       width: 100,
       render: (_) => _ === 10 ? '正常申请' : '绿色通道申请',
