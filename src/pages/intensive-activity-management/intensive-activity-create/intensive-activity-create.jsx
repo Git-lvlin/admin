@@ -598,7 +598,7 @@ const IntensiveActivityCreate = () => {
                               ? <Form.Item
                                 label="总分佣比例"
                               >
-                                {selectItem[0].gcId1Display} > {selectItem[0].gcId2Display}：{amountTransform(selectItem[0].freshCommission)}%
+                                {selectItem[0].gcId1Display} &gt; {selectItem[0].gcId2Display}：{amountTransform(selectItem[0].freshCommission)}%
                               </Form.Item>
                               :
                               <ProFormText

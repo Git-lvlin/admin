@@ -79,9 +79,9 @@ const Detail = ({ storeNo, visible, setVisible }) => {
             <div style={{ flex: 1 }}>
               <Descriptions labelStyle={{ textAlign: 'right', width: 120, display: 'inline-block' }}>
                 <Descriptions.Item label="店主昵称手机号">{`${detailData?.member?.nickname === detailData.memberPhone ? '未设置昵称' : detailData?.member?.nickname}（${detailData.memberPhone}）`}</Descriptions.Item>
-                <Descriptions.Item label="保证金金额">{`¥${amountTransform(detailData?.deposit?.payAmount, '/')}`}</Descriptions.Item>
+                <Descriptions.Item label="剩余保证金金额">{`¥${amountTransform(detailData?.memberShop?.deposit, '/')}`}</Descriptions.Item>
                 {/* <Descriptions.Item label="店主性别">{detailData?.member?.gender?.desc}</Descriptions.Item> */}
-                <Descriptions.Item label="缴纳保证金时间">{detailData?.deposit?.payTime}</Descriptions.Item>
+                <Descriptions.Item label="缴纳保证金">¥{amountTransform(detailData?.deposit?.payAmount, '/')}（{detailData?.deposit?.payTime}）</Descriptions.Item>
                 <Descriptions.Item label="服务费金额">{`¥${amountTransform(detailData?.lastServiceFee?.payAmount, '/')}`}</Descriptions.Item>
                 <Descriptions.Item label="缴纳服务费时间">{detailData?.lastServiceFee?.payTime}</Descriptions.Item>
                 <Descriptions.Item label="入驻时间">{detailData?.createTime}</Descriptions.Item>
