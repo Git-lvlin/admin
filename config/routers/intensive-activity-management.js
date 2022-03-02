@@ -96,7 +96,8 @@ export default {
           {
             name: 'activity-detail',
             path: '/intensive-activity-management/special-offer-acticity/activity-detail',
-            component: './intensive-activity-management/special-offer-acticity/activity-detail'
+            component: './intensive-activity-management/special-offer-acticity/activity-detail',
+            hideInMenu: true,
           },
         ]
     },

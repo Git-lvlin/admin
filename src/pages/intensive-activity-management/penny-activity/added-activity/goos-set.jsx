@@ -148,21 +148,17 @@ const GoosModel=(props)=>{
 }
 
 export default (props) => {
-  const {callback,id,falg,detailList,submi}=props
+  const {callback,id,detailList}=props
   const ref=useRef()
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
   useEffect(()=>{
-    if(!falg){
-     setDataSource(detailList?.skus)
-     setEditableKeys(detailList?.skus.map(item => item.id))
-    }
-    if(submi){
-      setEditableKeys([])
-    }
-   
-  },[falg,submi])
+    if(id){
+     setDataSource(detailList)
+     setEditableKeys(detailList?.map(item => item.skuId))
+    }   
+  },[id,detailList])
 
   const columns= [
     {
@@ -215,7 +211,7 @@ export default (props) => {
       hideInSearch:true,
       editable:false,
       render:(_,data)=>{
-        return <p>{moment(data.wholesaleStartTime*1000).format('YYYY-MM-DD HH:mm:ss')}-{moment(data.endTimeAdvancePayment*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
+        return <p>{moment(data.wholesaleStartTime*1000).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(data.endTimeAdvancePayment*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
       }
     },
     {
@@ -235,7 +231,7 @@ export default (props) => {
     },
     {
       title: '集约价',
-      dataIndex: 'intensivePrice',
+      dataIndex: 'wsPrice',
       hideInSearch: true,
       render: (_)=> {
         return <p>{amountTransform(_, '/').toFixed(2)}包</p>
@@ -255,18 +251,20 @@ export default (props) => {
       title: '活动价',
       dataIndex: 'price',
       hideInSearch: true,
-      render: (text, record, _, action) =>{
+      renderFormItem: (_) =>{
         return <>
-                  <InputNumber
-                    min="0.01"
-                    max="99999.99"
-                    precision='2'
-                    value={text}
-                    stringMode
-                  />
-                  <p>元/包</p>
-               </>
-                }
+          <InputNumber
+            min="0.01"
+            max={amountTransform(_?.entry?.wsPrice, '/')}
+            precision='2'
+            stringMode
+          />
+          <p>元/包</p>
+      </>
+      },
+      render: (_,r) =>{
+        return <p>{_}%</p>
+      }
 
     },
     {
@@ -290,7 +288,6 @@ export default (props) => {
       ]
       },
       editable:false,
-      hideInTable:id&&falg
     }
   ]; 
   // 删除商品
@@ -342,14 +339,15 @@ export default (props) => {
               return [defaultDoms.delete];
           },
           onValuesChange: (record, recordList) => {
+            console.log('recordList',recordList)
               setDataSource(recordList)
               callback(recordList)
           },
         }}
         toolBarRender={()=>[
-            <p>共{dataSource.length}款商品</p>
+            <p>共{dataSource?.length}款商品</p>
         ]}
-        style={{marginBottom:'30px',display:id&&falg?'none':'block'}}
+        style={{marginBottom:'30px'}}
     />
 
     {
@@ -364,7 +362,7 @@ export default (props) => {
             arr.push({
               ...item,
               status:1,
-              intensivePrice:item.price,
+              wsPrice:item.price,
               price:0
             })
           })
@@ -398,15 +396,6 @@ export default (props) => {
         onClose={()=>{}}
       />
     }
-
-    <ProTable
-        toolBarRender={false}
-        search={false}
-        rowKey="skuId"
-        columns={columns}
-        dataSource={detailList?.skus}
-        style={{display:id&&falg?'block':'none'}}
-    />
     </>
     
   );

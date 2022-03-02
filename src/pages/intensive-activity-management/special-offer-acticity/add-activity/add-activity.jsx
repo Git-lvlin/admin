@@ -4,11 +4,11 @@ import { FormattedMessage, formatMessage } from 'umi';
 import ProTable from '@ant-design/pro-table';
 import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,ProFormTimePicker } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
-
 import { amountTransform } from '@/utils/utils'
 import moment from 'moment';
 import styles from './style.less'
 import GoosSet from './goos-set'
+import { PageContainer } from '@ant-design/pro-layout';
 
 
 const formItemLayout = {
@@ -60,7 +60,7 @@ export default (props) => {
     return current && current < moment().startOf('day');
   }
   return (
-    <>
+    <PageContainer>
       <ProForm
         form={form}
         {...formItemLayout}
@@ -68,7 +68,12 @@ export default (props) => {
           {
             render: (props, defaultDoms) => {
               return [
-                <Button style={{marginLeft:'250px'}} type="primary" key="submit" onClick={() => {
+                <Button style={{marginLeft:'100px'}} type="default" key="goback" onClick={() => {
+                  history.push('/intensive-activity-management/special-offer-acticity/special-offer-acticity-list')
+                }}>
+                  返回
+                </Button>,
+                <Button type="primary" key="submit" onClick={() => {
                   props.form?.submit?.()
                 }}>
                   确定
@@ -171,6 +176,6 @@ export default (props) => {
           }}
         />
       </ProForm >
-    </>
+    </PageContainer>
   );
 };

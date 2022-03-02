@@ -12,6 +12,7 @@ import { history, connect } from 'umi';
 import moment from 'moment';
 import styles from './style.less'
 import IssueTypeModel from './issue-type-model'
+import { PageContainer } from '@ant-design/pro-layout';
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -141,7 +142,7 @@ const couponConstruction = (props) => {
     return current && current < moment().startOf('day');
   }
   return (
-    <>
+    <PageContainer>
       <ProForm
         form={form}
         {...formItemLayout}
@@ -329,7 +330,7 @@ const couponConstruction = (props) => {
           visible&&<IssueTypeModel visible={visible} setVisible={setVisible} />
         }
       </ProForm >
-    </>
+    </PageContainer>
   );
 };
 

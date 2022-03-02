@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { couponVerifyDetail, couponVerify } from '@/services/coupon-management/coupon-audit';
-import SubTable from '@/pages/coupon-construction/coupon-subtable'
+import SubTable from '@/pages/coupon-management/coupon-construction/coupon-subtable'
 import { Divider, Form, Spin, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import AuditModel from './audit-model'
@@ -8,7 +8,6 @@ import { amountTransform } from '@/utils/utils'
 import { history } from 'umi';
 import { CaretRightFilled } from '@ant-design/icons';
 import styles from './style.less'
-import { arrayOf } from 'prop-types';
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -118,7 +117,7 @@ export default props => {
         <Form
           form={form}
           {...formItemLayout}
-          className={styles.couponFrom}
+          className={styles.audit_details}
         >
 
           <h1><CaretRightFilled /> 红包审核详情</h1>

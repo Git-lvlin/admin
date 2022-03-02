@@ -189,7 +189,7 @@ const Message = (props) => {
  
   //编辑
   const Examine=(id)=>{
-    history.push(`/coupon-management/coupon-list/construction?id=`+id);
+    history.push(`/coupon-management/coupon-construction?id=`+id);
     dispatch({
       type:'DetailList/fetchLookDetail',
       payload:{id:id}
@@ -287,7 +287,7 @@ const TableList= (props) =>{
             name="activityTimeType"
             fieldProps={{
               onChange: (e) =>{
-                  history.push('/coupon-management/coupon-list/construction?type='+e.target.value)
+                  history.push('/coupon-management/coupon-construction?type='+e.target.value)
               },
             }}
             options={[

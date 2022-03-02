@@ -8,9 +8,9 @@ export default {
       component: './coupon-management/coupon-list',
     },
     {
-      name: 'construction',
-      path: '/coupon-management/coupon-list/construction',
-      component: './coupon-construction/coupon-construction',
+      name: 'coupon-construction',
+      path: '/coupon-management/coupon-construction',
+      component: './coupon-management/coupon-construction',
       hideInMenu: true,
     },
     {
@@ -22,7 +22,7 @@ export default {
     {
       name: 'list-details',
       path: '/coupon-management/coupon-list/list-details',
-      component: './coupon-management/coupon-list/list-details',
+      component: './coupon-management/list-details',
       hideInMenu: true,
     },
     {
@@ -33,7 +33,7 @@ export default {
     {
       name: 'audit-details',
       path: '/coupon-management/coupon-audit/audit-details',
-      component: './coupon-management/coupon-audit/audit-details',
+      component: './coupon-management/audit-details',
       hideInMenu: true,
     },
     {
