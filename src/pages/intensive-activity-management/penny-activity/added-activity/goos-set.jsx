@@ -251,6 +251,7 @@ export default (props) => {
       title: '活动价',
       dataIndex: 'price',
       hideInSearch: true,
+      valueType: 'digit',
       renderFormItem: (_) =>{
         return <>
           <InputNumber
@@ -283,8 +284,8 @@ export default (props) => {
       valueType: 'text',
       render:(text, record, _, action)=>{
         return [
-          <a key='dele' onClick={()=>delGoods(record.id)}>删除</a>,
-          <a key='stop' onClick={()=>stopGoods(record.id)}>禁用</a>
+          <a key='dele' onClick={()=>delGoods(record.skuId)}>删除</a>,
+          <a key='stop' onClick={()=>stopGoods(record.skuId)}>禁用</a>
       ]
       },
       editable:false,
@@ -293,7 +294,7 @@ export default (props) => {
   // 删除商品
   const  delGoods=val=>{
     const arr=dataSource.filter(ele=>(
-          ele.id!=val
+          ele.skuId!=val
     ))
     // let sum=0
     // arr.map(ele=>{
@@ -307,7 +308,9 @@ export default (props) => {
   }
 
   const stopGoods=val=>{
-
+//     const arr=dataSource.map(ele=>(
+//       ele.skuId!=val
+// ))
   }
 
   return (
@@ -340,8 +343,8 @@ export default (props) => {
           },
           onValuesChange: (record, recordList) => {
             console.log('recordList',recordList)
-              setDataSource(recordList)
-              callback(recordList)
+            setDataSource(recordList)
+            callback(recordList)
           },
         }}
         toolBarRender={()=>[
