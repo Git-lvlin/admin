@@ -207,9 +207,14 @@ const Detail = () => {
       dataIndex: 'buyerType'
     },
     {
-      title: (_) => _.dataIndex ? '店铺提成比例' : '',
-      dataIndex: info?.storeCommissionRatio ? 'storeCommissionRatio' : '',
-      render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
+      title: (_) => _.dataIndex === 'storeCommissionRatio' ? '店铺提成比例' : _.dataIndex === 'relevanceActivity' ? '关联活动' : '',
+      dataIndex: info?.storeCommissionRatio ? 'storeCommissionRatio' : info?.activityTypeDesc ? 'relevanceActivity' : '',
+      render: (_) => info?.storeCommissionRatio ? 
+        <span>{amountTransform(_, '*')}%</span> : info?.activityTypeDesc?
+        <>
+          <div>活动类型：{info?.activityTypeDesc}</div>
+          <div>活动ID：{info?.activityId}</div>
+        </>: '',
     },
     {
       title: '买家会员信息',
@@ -252,8 +257,8 @@ const Detail = () => {
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
-      title: '实际销售价',
-      dataIndex: 'salePrice',
+      title: (_)=> _.dataIndex ==='salePrice' ? '实际销售价' : '商品集约价',
+      dataIndex: info?.orderType === 'wholesaleFresh' ? 'saleOrderPrice' : 'salePrice',
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {

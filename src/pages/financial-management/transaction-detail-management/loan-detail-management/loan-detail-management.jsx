@@ -76,6 +76,11 @@ const LoanDetailManagement = () =>{
       hideInSearch: true
     },
     {
+      title: '活动类型',
+      dataIndex: 'activityTypeDesc',
+      hideInSearch: true
+    },
+    {
       title: '订单号',
       dataIndex: 'orderNo'
     },
