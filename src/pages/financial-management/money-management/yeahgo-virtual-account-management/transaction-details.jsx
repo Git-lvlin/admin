@@ -11,6 +11,7 @@ import { tradeType } from '../../common-enum'
 import Detail from '../../common-popup/order-pay-detail-popup'
 
 const TransactionDetails = () => {
+  console.log('1111')
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
   const {query} = useLocation()
