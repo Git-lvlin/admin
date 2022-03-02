@@ -103,7 +103,7 @@ const Detail = () => {
       title: '商品分类',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
-      render: (_, data) => `${data.gcId1Display}-${data.gcId2Display}`,
+      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.fresh === 1 && <span style={{ color: 'green' }}>(生鲜)</span>}</>
     },
     {
       title: '规格',
@@ -307,6 +307,7 @@ const Detail = () => {
               </Descriptions.Item>
               <Descriptions.Item label="商品分类">
                 {detailData?.sku?.[0]?.gcId1Display}-{detailData?.sku?.[0]?.gcId2Display}
+                {detailData?.sku?.[0]?.fresh === 1 && <span style={{ color: 'green' }}>(生鲜)</span>}
               </Descriptions.Item>
               <Descriptions.Item label="配送模式">
                 {detailData?.wholesale?.wholesaleFlowTypeDesc}

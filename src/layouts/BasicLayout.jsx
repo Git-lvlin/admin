@@ -185,9 +185,11 @@ const BasicLayout = (props) => {
           }}
         >
           <Authorized authority={authorized.authority} noMatch={noMatch}>
-            <TabLayout contextMenuLabels={contextMenuLabels} {...props}>
-              {children}
-            </TabLayout>
+            <div className="page-wrap" style={{ padding: '20px' }}>
+              <TabLayout contextMenuLabels={contextMenuLabels} {...props}>
+                {children}
+              </TabLayout>
+            </div>
           </Authorized>
         </ProLayout>
       }

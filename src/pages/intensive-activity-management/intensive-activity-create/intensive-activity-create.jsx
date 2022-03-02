@@ -596,20 +596,20 @@ const IntensiveActivityCreate = () => {
                           {
                             freshSpecial === 0
                               ? <Form.Item
-                                label="特殊总分佣比例"
+                                label="总分佣比例"
                               >
-                                {selectItem[0].gcId1Display} > {selectItem[0].gcId2Display}   总分佣比：{amountTransform(selectItem[0].freshCommission)}%
+                                {selectItem[0].gcId1Display} > {selectItem[0].gcId2Display}  {amountTransform(selectItem[0].freshCommission)}%
                               </Form.Item>
                               :
                               <ProFormText
                                 name="freshCommission"
-                                label="特殊总分佣比例"
+                                label="总分佣比例"
                                 width={150}
                                 fieldProps={{ addonAfter: '%' }}
-                                placeholder="特殊总分佣比例"
+                                placeholder="总分佣比例"
                                 validateFirst
                                 rules={[
-                                  { required: true, message: '请输入特殊总分佣比例' },
+                                  { required: true, message: '请输入总分佣比例' },
                                   () => ({
                                     validator(_, value) {
                                       if (!/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/g.test(value) || value <= 0 || value > 100) {
