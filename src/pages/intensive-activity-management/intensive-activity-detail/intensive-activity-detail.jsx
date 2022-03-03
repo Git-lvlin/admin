@@ -280,8 +280,8 @@ const Detail = () => {
                   <Descriptions.Item label="特殊总分佣比例">
                     {
                       detailData.wholesale.freshSpecial === 0
-                        ? `${detailData.sku[0].gcId1Display}  > ${detailData.sku[0].gcId2Display}  总分佣比：${amountTransform(detailData.sku[0].freshCommission)}%`
-                        : `总分佣比：${amountTransform(detailData.sku[0].freshCommission)}%`
+                        ? `${detailData.sku[0].gcId1Display}  > ${detailData.sku[0].gcId2Display}：${amountTransform(detailData.sku[0].freshCommission)}%`
+                        : `${amountTransform(detailData.sku[0].freshCommission)}%`
                     }
                   </Descriptions.Item>
                 </>
