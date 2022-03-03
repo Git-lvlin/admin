@@ -63,14 +63,14 @@ const couponType = (props) => {
             label:'满减红包',
             value: 1,
         },
-        {
-            label: '折扣红包',
-            value: 2,
-        },
-        {
-            label: '立减红包',
-            value: 3,
-        }
+        // {
+        //     label: '折扣红包',
+        //     value: 2,
+        // },
+        // {
+        //     label: '立减红包',
+        //     value: 3,
+        // }
     ]
     const options2=[
         {
