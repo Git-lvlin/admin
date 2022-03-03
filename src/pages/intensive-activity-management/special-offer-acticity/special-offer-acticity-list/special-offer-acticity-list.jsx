@@ -52,9 +52,6 @@ export default () => {
         title: '参与活动的商品',
         dataIndex: 'goodsCount',
         valueType: 'text',
-        render:(_,data)=>{
-          return <a onClick={()=>{}}>{_}</a>
-        },
         hideInSearch: true,
       },
       {
@@ -83,7 +80,6 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="活动列表"
           options={false}
           params={{
             actCode:'wsCentActiveCode'
