@@ -85,7 +85,8 @@ const TransactionDetails = () => {
         'dropShipping1688': '1688代发订单',
         'commandCollect': '集约零售订单',
         'blindBox': '盲盒订单',
-        'signIn': '签到订单'
+        'signIn': '签到订单',
+        'settleChargeFee': '入驻服务费订单'
       }
     }
   }
@@ -133,7 +134,7 @@ const TransactionDetails = () => {
       hideInSearch: query.accountId==='platformXinbao' ? true : false,
       hideInTable: query.accountId==='platformXinbao' ? true : false,
       render: (_, records)=> (
-        records.orderId ? 
+        records.payNoJumpParam ? 
         <a onClick={() => { setSelectItem(records.billNo); setDetailVisible(true); }}>{_}</a>:
         <span>{_}</span>
       )
