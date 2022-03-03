@@ -25,12 +25,6 @@ export default props => {
 
   const columns= [
     {
-      title: 'spuID',
-      dataIndex: 'spuId',
-      valueType: 'text',
-      editable:false
-    },
-    {
       title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'text',
@@ -57,13 +51,6 @@ export default props => {
       dataIndex: 'name',
       valueType: 'text',
       ellipsis:true,
-      hideInSearch:true,
-      editable:false
-    },
-    {
-      title: '集约活动ID',
-      dataIndex: 'wsId',
-      valueType: 'text',
       hideInSearch:true,
       editable:false
     },
@@ -97,7 +84,7 @@ export default props => {
       dataIndex: 'wholesaleSupplyPrice',
       hideInSearch: true,
       render: (_)=> {
-        return <p>{amountTransform(_, '/').toFixed(2)}包</p>
+        return <p>{amountTransform(_, '/').toFixed(2)}元/包</p>
       },
       editable:false
     },
@@ -107,16 +94,13 @@ export default props => {
       hideInSearch: true,
       editable:false,
       render: (_)=> {
-        return <p>{_}元/包</p>
+        return <p>{_}包</p>
       },
     },
     {
-      title: '活动价',
+      title: '活动价（元/包）',
       dataIndex: 'price',
       hideInSearch: true,
-      render: (_) =>{
-        return <p>{_}元/包</p>
-    }
     }
   ]; 
   
@@ -150,13 +134,13 @@ export default props => {
             {detailData?.content?.buyerLimit}
             </Descriptions.Item>
             <Descriptions.Item label="店主再次参与活动条件">
-            {detailData?.content?.joinAgainPercent}
+            需完成已有推广任务 {amountTransform(detailData?.content?.joinAgainPercent,'*')}%
             </Descriptions.Item>
             <Descriptions.Item label="参与活动的店铺">
-            {detailData?.content?.joinShopType}
+            {{1:"生鲜店铺"}[detailData?.content?.joinShopType]}
             </Descriptions.Item>
             <Descriptions.Item label="参与活动的消费者">
-            {detailData?.content?.joinBuyerType}
+            {{1:'全部消费者',2:'从未下过单的消费者（新人）'}[detailData?.content?.joinBuyerType]}
             </Descriptions.Item>
             <Descriptions.Item label="活动创建人">
             {detailData?.lastEditor}

@@ -22,6 +22,13 @@ const formItemLayout = {
   }
 };
 
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex',flexDirection:'column' }}>
+    <div>{content(value, onChange)}</div>
+    <div>{right(value)}</div>
+  </div>
+)
+
 const GoosModel=(props)=>{
   const {visible,setVisible,onClose,callback}=props
   const [goosList,setGoosList]=useState()
@@ -30,10 +37,26 @@ const GoosModel=(props)=>{
       {
           title: 'spuID',
           dataIndex: 'spuId',
+          hideInSearch:true,
       },
       {
           title: 'skuID',
           dataIndex: 'skuId',
+          hideInSearch:true,
+      },
+      {
+          title: '商品分类',
+          dataIndex: 'gcName',
+          valueType: 'text',
+          ellipsis:true,
+          hideInSearch:true
+      },
+      {
+          title: '商品主图',
+          dataIndex: 'imageUrl',
+          valueType: 'image',
+          ellipsis:true,
+          hideInSearch:true
       },
       {
           title: '商品名称',
@@ -43,11 +66,22 @@ const GoosModel=(props)=>{
           hideInSearch:true
       },
       {
+          title: '商品规格',
+          dataIndex: 'skuName',
+          valueType: 'text',
+          ellipsis:true,
+          hideInSearch:true
+      },
+      {
+          title: '批发供货价',
+          dataIndex: 'price',
+          hideInSearch: true,
+      },
+      {
           title: '集约活动名称',
           dataIndex: 'name',
           valueType: 'text',
           ellipsis:true,
-          hideInSearch:true
       },
       {
           title: '集约活动ID',
@@ -56,7 +90,27 @@ const GoosModel=(props)=>{
           hideInSearch:true
       },
       {
-          title: '选择集约活动',
+          title: '活动开始时间',
+          dataIndex: 'wholesaleStartTime',
+          valueType: 'dateRange',
+          hideInTable:true,
+      },
+      {
+          title: '集约活动开始时间',
+          dataIndex: 'wholesaleStartTime',
+          valueType: 'text',
+          hideInSearch:true,
+          render:(_)=>{return <p>{moment(_*1000).format('YYYY-MM-DD HH:mm:ss')}</p>}
+      },
+      {
+          title: '采购单下单截止时间',
+          dataIndex: 'endTimeAdvancePayment',
+          valueType: 'text',
+          hideInSearch:true,
+          render:(_)=>{return <p>{moment(_*1000).format('YYYY-MM-DD HH:mm:ss')}</p>}
+      },
+      {
+          title: '活动状态',
           dataIndex: 'wholesaleStatus',
           valueType: 'select',
           hideInTable:true,
@@ -73,16 +127,26 @@ const GoosModel=(props)=>{
           hideInSearch: true,
       },
       {
-          title: '集约价(元)',
-          dataIndex: 'price',
-          hideInSearch: true,
-          render: (_)=> amountTransform(_, '/').toFixed(2)
-      },
-      {
           title: '集约库存',
           dataIndex: 'totalStockNum',
           hideInSearch: true,
       },
+      {
+          title: '集采箱规单位量',
+          dataIndex: 'batchNumber',
+          hideInSearch: true,
+          render:(_,data)=>{
+            return <p>{_}{data?.unit}/{data?.wsUnit}</p>
+          }
+      },
+      {
+          title: '单次起订量',
+          dataIndex: 'minNum',
+          hideInSearch: true,
+          render:(_,data)=>{
+            return <p>{_}/{data?.wsUnit}</p>
+          }
+    },
   ];
   const onsubmit = (values) => {
     callback(goosList)
@@ -148,50 +212,70 @@ const GoosModel=(props)=>{
 }
 
 export default (props) => {
-  const {callback,id,falg,detailList,submi}=props
+  const {callback,id,detailList}=props
   const ref=useRef()
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
   useEffect(()=>{
-    if(!falg){
-     setDataSource(detailList?.skus)
-     setEditableKeys(detailList?.skus.map(item => item.id))
-    }
-    if(submi){
-      setEditableKeys([])
-    }
-   
-  },[falg,submi])
+    if(id){
+      detailList&&setDataSource(detailList)
+     setEditableKeys(detailList?.map(item => item.skuId))
+    }   
+  },[id,detailList])
 
   const columns= [
     {
       title: 'spuID',
       dataIndex: 'spuId',
       valueType: 'text',
-      editable:false
+      editable:false,
+      hideInSearch:true,
     },
     {
       title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'text',
+      editable:false,
+      hideInSearch:true,
+    },
+    {
+      title: '商品分类',
+      dataIndex: 'gcName',
+      valueType: 'text',
+      ellipsis:true,
+      hideInSearch:true,
       editable:false
     },
     {
-      title: '基本信息',
+      title: '商品主图',
+      dataIndex: 'imageUrl',
+      valueType: 'image',
+      ellipsis:true,
+      hideInSearch:true,
+      editable:false
+    },
+    {
+      title: '商品名称',
       dataIndex: 'goodsName',
       valueType: 'text',
+      ellipsis:true,
       hideInSearch:true,
-      editable:false,
-      render:(_,data)=>{
-        return <div style={{display:'flex'}}>
-                <Image src={data.imageUrl} alt="" width='50px' height='50px' />
-                <div style={{marginLeft:'10px'}}>
-                  <p style={{fontSize:'14px'}}>{data.goodsName}</p>
-                  <p style={{fontSize:'12px'}}>规格：{data.skuName}</p>
-                </div>
-            </div>
-      }
+      editable:false
+    },
+    {
+      title: '商品规格',
+      dataIndex: 'skuName',
+      valueType: 'text',
+      ellipsis:true,
+      hideInSearch:true,
+      editable:false
+    },
+    {
+      title: '批发供货价',
+      dataIndex: 'price',
+      hideInSearch: true,
+      editable:false
     },
     {
       title: '集约活动名称',
@@ -209,38 +293,26 @@ export default (props) => {
       editable:false
     },
     {
-      title: '集约活动时段',
-      dataIndex: 'wholesaleStartTime',
-      valueType: 'text',
-      hideInSearch:true,
-      editable:false,
-      render:(_,data)=>{
-        return <p>{moment(data.wholesaleStartTime*1000).format('YYYY-MM-DD HH:mm:ss')}-{moment(data.endTimeAdvancePayment*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
-      }
-    },
-    {
       title: '集约活动状态',
       dataIndex: 'wholesaleStatusDesc',
       valueType: 'text',
       editable:false
     },
     {
-      title: '集约单次限量',
-      dataIndex: 'minNum',
-      hideInSearch: true,
+      title: '集约活动开始时间',
+      dataIndex: 'wholesaleStartTime',
+      valueType: 'text',
+      hideInSearch:true,
       editable:false,
-      render: (_,data)=> {
-        return <p>{data?.minNum} - {data?.maxNum}包</p>
-      },
+      render:(_)=>{return <p>{moment(_*1000).format('YYYY-MM-DD HH:mm:ss')}</p>}
     },
     {
-      title: '集约价',
-      dataIndex: 'intensivePrice',
-      hideInSearch: true,
-      render: (_)=> {
-        return <p>{amountTransform(_, '/').toFixed(2)}包</p>
-      },
-      editable:false
+      title: '采购单下单截止时间',
+      dataIndex: 'endTimeAdvancePayment',
+      valueType: 'text',
+      hideInSearch:true,
+      editable:false,
+      render:(_)=>{return <p>{moment(_*1000).format('YYYY-MM-DD HH:mm:ss')}</p>}
     },
     {
       title: '集约库存',
@@ -252,51 +324,68 @@ export default (props) => {
       },
     },
     {
+      title: '集采箱规单位量',
+      dataIndex: 'batchNumber',
+      hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{_}{data?.unit}/{data?.wsUnit}</p>
+      },
+      editable:false
+    },
+    {
+      title: '单次起订量',
+      dataIndex: 'minNum',
+      hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{_}/{data?.wsUnit}</p>
+      },
+      editable:false
+    },
+    {
+      title: '最大限购量',
+      dataIndex: 'maxNum',
+      hideInSearch: true,
+      valueType: 'text',
+    },
+    {
       title: '活动价',
       dataIndex: 'price',
       hideInSearch: true,
-      render: (text, record, _, action) =>{
-        return <>
-                  <InputNumber
-                    min="0.01"
-                    max="99999.99"
-                    precision='2'
-                    value={text}
-                    stringMode
-                  />
-                  <p>元/包</p>
-               </>
-                }
-
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      valueType: 'text',
-      hideInSearch: true,
-      editable:false,
-      valueEnum: {
-        0: '已禁用',
-        1: '已启用',
-    },
+      valueType: 'digit',
+      renderFormItem: (_) =>{
+        return <FromWrap
+        content={(value, onChange) =><InputNumber
+                  min="0.00"
+                  precision='2'
+                  stringMode
+                  value={value}
+                  onChange={onChange}
+                />
+        }
+        right={(value) =><p>元/盒</p>}
+        />
+      },
+      render: (_,r) =>{
+        return <p>{_}</p>
+      },
     },
     {
       title: '操作',
       valueType: 'text',
       render:(text, record, _, action)=>{
         return [
-          <a key='dele' onClick={()=>delGoods(record.id)}>删除</a>,
-          <a key='stop' onClick={()=>stopGoods(record.id)}>禁用</a>
+          <a key='dele' onClick={()=>delGoods(record.skuId)}>删除</a>,
+          <a key='stop' onClick={()=>stopGoods(record.skuId)}>禁用</a>,
+          <a key='start' onClick={()=>stopGoods(record.skuId)}>启用</a>
       ]
       },
       editable:false,
-      hideInTable:id&&falg
     }
   ]; 
   // 删除商品
   const  delGoods=val=>{
     const arr=dataSource.filter(ele=>(
-          ele.id!=val
+          ele.skuId!=val
     ))
     // let sum=0
     // arr.map(ele=>{
@@ -310,7 +399,9 @@ export default (props) => {
   }
 
   const stopGoods=val=>{
-
+//     const arr=dataSource.map(ele=>(
+//       ele.skuId!=val
+// ))
   }
 
   return (
@@ -319,7 +410,6 @@ export default (props) => {
       width="md"
       name="price"
       label='活动商品'
-      rules={[{ required: true, message: '请选择活动商品' }]}
       fieldProps={{
         value:<Button key='add' type="primary" onClick={()=>{
                 setVisible(true)
@@ -342,14 +432,14 @@ export default (props) => {
               return [defaultDoms.delete];
           },
           onValuesChange: (record, recordList) => {
-              setDataSource(recordList)
-              callback(recordList)
+            setDataSource(recordList)
+            callback(recordList)
           },
         }}
         toolBarRender={()=>[
-            <p>共{dataSource.length}款商品</p>
+            <p>共{dataSource?.length}款商品</p>
         ]}
-        style={{marginBottom:'30px',display:id&&falg?'none':'block'}}
+        style={{marginBottom:'30px'}}
     />
 
     {
@@ -364,7 +454,7 @@ export default (props) => {
             arr.push({
               ...item,
               status:1,
-              intensivePrice:item.price,
+              wsPrice:item.price,
               price:0
             })
           })
@@ -398,15 +488,6 @@ export default (props) => {
         onClose={()=>{}}
       />
     }
-
-    <ProTable
-        toolBarRender={false}
-        search={false}
-        rowKey="skuId"
-        columns={columns}
-        dataSource={detailList?.skus}
-        style={{display:id&&falg?'block':'none'}}
-    />
     </>
     
   );
