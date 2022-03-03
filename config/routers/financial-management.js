@@ -18,7 +18,7 @@ export default {
           name: 'transaction-details',
           path: '/financial-management/money-management/yeahgo-virtual-account-management/transaction-details',
           component: './financial-management/money-management/yeahgo-virtual-account-management/transaction-details',
-          wrappers: [RouteWatcher],
+          // wrappers: [RouteWatcher],
           hidenMenu: true
         },
         {
