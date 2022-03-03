@@ -66,6 +66,12 @@ const BonusDetailManagement = () =>{
         'suggestCommission': '推荐收益',
         'chargeFeeCommission': '服务费收益'
       },
+      hideInTable: true
+    },
+    {
+      title: '交易类型',
+      dataIndex: 'tradeTypeDesc',
+      hideInSearch: true
     },
     {
       title: '订单类型',
@@ -76,7 +82,13 @@ const BonusDetailManagement = () =>{
         'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
         'settleChargeFee': '入驻服务费订单'
-      }
+      },
+      hideInTable: true
+    },
+    {
+      title: '订单类型',
+      dataIndex: 'orderTypeDesc',
+      hideInSearch: true
     },
     {
       title: '订单号',
