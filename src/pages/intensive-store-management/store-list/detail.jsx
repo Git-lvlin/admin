@@ -55,7 +55,7 @@ const Detail = ({ storeNo, visible, setVisible }) => {
   return (
     <Drawer
       title="店铺详情"
-      width={1200}
+      width={1300}
       placement="right"
       onClose={() => { setVisible(false) }}
       visible={visible}
@@ -77,13 +77,15 @@ const Detail = ({ storeNo, visible, setVisible }) => {
               <div style={{ marginTop: 10 }}>{detailData?.storeName}</div>
             </div>
             <div style={{ flex: 1 }}>
-              <Descriptions labelStyle={{ textAlign: 'right', width: 120, display: 'inline-block' }}>
+              <Descriptions labelStyle={{ textAlign: 'right', width: 140, display: 'inline-block' }}>
                 <Descriptions.Item label="店主昵称手机号">{`${detailData?.member?.nickname === detailData.memberPhone ? '未设置昵称' : detailData?.member?.nickname}（${detailData.memberPhone}）`}</Descriptions.Item>
-                <Descriptions.Item label="保证金金额">{`¥${amountTransform(detailData?.deposit?.payAmount, '/')}`}</Descriptions.Item>
+                <Descriptions.Item label="剩余保证金金额">{`¥${amountTransform(detailData?.memberShop?.deposit, '/')}`}</Descriptions.Item>
                 {/* <Descriptions.Item label="店主性别">{detailData?.member?.gender?.desc}</Descriptions.Item> */}
-                <Descriptions.Item label="缴纳保证金时间">{detailData?.deposit?.payTime}</Descriptions.Item>
+                <Descriptions.Item label="缴纳保证金">¥{amountTransform(detailData?.deposit?.payAmount, '/')}（{detailData?.deposit?.payTime}）</Descriptions.Item>
+                <Descriptions.Item label="缴纳保证金支付方式">{detailData?.deposit?.payType?.desc}</Descriptions.Item>
                 <Descriptions.Item label="服务费金额">{`¥${amountTransform(detailData?.lastServiceFee?.payAmount, '/')}`}</Descriptions.Item>
                 <Descriptions.Item label="缴纳服务费时间">{detailData?.lastServiceFee?.payTime}</Descriptions.Item>
+                <Descriptions.Item label="缴纳服务费支付方式">{detailData?.lastServiceFee?.payType?.desc}</Descriptions.Item>
                 <Descriptions.Item label="入驻时间">{detailData?.createTime}</Descriptions.Item>
                 <Descriptions.Item label="注册时间">{detailData?.memberShop?.applyRow?.createTime}</Descriptions.Item>
                 <Descriptions.Item label="申请类型">{{ 10: '正常申请', 20: '绿色通道申请' }[detailData?.memberShop?.applyType?.code]}</Descriptions.Item>
