@@ -64,6 +64,7 @@ const BonusDetailManagement = () =>{
       valueEnum: {
         'commission': '店主收益',
         'suggestCommission': '推荐收益',
+        'chargeFeeCommission': '服务费收益'
       },
     },
     {
@@ -74,6 +75,7 @@ const BonusDetailManagement = () =>{
         'second': '秒约订单',
         'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
+        'settleChargeFee': '入驻服务费订单'
       }
     },
     {
