@@ -613,7 +613,7 @@ const IntensiveActivityCreate = () => {
                                   () => ({
                                     validator(_, value) {
                                       if (!/^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/g.test(value) || value > 50) {
-                                        return Promise.reject(new Error('请输入1-50之间的数字，最多两位小数'));
+                                        return Promise.reject(new Error('请输入0-50之间的数字，最多两位小数'));
                                       }
                                       return Promise.resolve();
                                     },
