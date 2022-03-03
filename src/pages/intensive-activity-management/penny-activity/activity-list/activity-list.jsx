@@ -2,16 +2,19 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { getActiveConfigList } from '@/services/intensive-activity-management/penny-activity';
+import { getActiveConfigList} from '@/services/intensive-activity-management/penny-activity';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
 import moment from 'moment'
+import EndModel from './end-model'
 
 
 
 export default () => {
     const ref=useRef()
+    const [visible, setVisible] = useState(false);
+    const [pennyId,setPennyId]=useState()
     const columns= [
       {
         title: '活动编号',
@@ -104,7 +107,12 @@ export default () => {
         render:(text, record, _, action)=>[
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/activity-detail?id='+record.id)}>详情</a>,
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/added-activity?id='+record.id)}>编辑</a>,
-            <a key='detail' onClick={()=>{}}>终止</a>
+            <div>
+              {
+                record.status!=0&&
+                <a key='detail' onClick={()=>{setPennyId(record.id);setVisible(true)}}>终止</a>
+              }
+            </div>
         ],
       }, 
     ];
@@ -150,6 +158,15 @@ export default () => {
             showQuickJumper: true,
           }}
         />
+        {
+          visible&&<EndModel 
+          visible={visible} 
+          setVisible={setVisible}  
+          pennyId={pennyId} 
+          canBlack={()=>{ref.current.reload();setPennyId(null)}}
+          onClose={()=>{ref.current.reload();setPennyId(null)}}
+          />
+        }
         </PageContainer>
     );
   };

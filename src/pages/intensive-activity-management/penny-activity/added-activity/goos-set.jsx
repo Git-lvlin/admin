@@ -22,6 +22,13 @@ const formItemLayout = {
   }
 };
 
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex',flexDirection:'column' }}>
+    <div>{content(value, onChange)}</div>
+    <div>{right(value)}</div>
+  </div>
+)
+
 const GoosModel=(props)=>{
   const {visible,setVisible,onClose,callback}=props
   const [goosList,setGoosList]=useState()
@@ -155,7 +162,7 @@ export default (props) => {
   const [visible, setVisible] = useState(false);
   useEffect(()=>{
     if(id){
-     setDataSource(detailList)
+      detailList&&setDataSource(detailList)
      setEditableKeys(detailList?.map(item => item.skuId))
     }   
   },[id,detailList])
@@ -253,15 +260,18 @@ export default (props) => {
       hideInSearch: true,
       valueType: 'digit',
       renderFormItem: (_) =>{
-        return <>
-          <InputNumber
-            min="0.01"
-            max={amountTransform(_?.entry?.wsPrice, '/')}
-            precision='2'
-            stringMode
-          />
-          <p>元/包</p>
-      </>
+        return <FromWrap
+        content={(value, onChange) =><InputNumber
+                  min="0.01"
+                  max={amountTransform(_?.entry?.wsPrice, '/')}
+                  precision='2'
+                  stringMode
+                  value={value}
+                  onChange={onChange}
+                />
+        }
+        right={(value) =><p>元/包</p>}
+        />
       },
       render: (_,r) =>{
         return <p>{_}%</p>
@@ -342,7 +352,6 @@ export default (props) => {
               return [defaultDoms.delete];
           },
           onValuesChange: (record, recordList) => {
-            console.log('recordList',recordList)
             setDataSource(recordList)
             callback(recordList)
           },

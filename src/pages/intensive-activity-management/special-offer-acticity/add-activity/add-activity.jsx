@@ -4,6 +4,7 @@ import { FormattedMessage, formatMessage } from 'umi';
 import ProTable from '@ant-design/pro-table';
 import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,ProFormTimePicker } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
+import { saveWSDiscountActiveConfig,getActiveConfigById } from '@/services/intensive-activity-management/special-offer-acticity';
 import { amountTransform } from '@/utils/utils'
 import moment from 'moment';
 import styles from './style.less'
@@ -33,27 +34,47 @@ export default (props) => {
   const [form] = Form.useForm()
   useEffect(() => {
     if (id) {
+      getActiveConfigById({id}).then(res=>{
+        setDetailList(res.data?.content?.goods)
         form.setFieldsValue({
-        //   dateRange: [moment(DetailList.data?.limitStartTime).valueOf(), moment(DetailList.data?.limitEndTime).valueOf()],
-        //   dateTimeRange: DetailList.data?.activityStartTime?[moment(DetailList.data?.activityStartTime).valueOf(), moment(DetailList.data?.activityEndTime).valueOf()]:null,
-        //   ...DetailList.data
-        })
+            dateRange: [moment(res.data?.startTime*1000).valueOf(), moment(res.data?.endTime*1000).valueOf()],
+            buyerLimit:res.data?.content?.buyerLimit,
+            joinAgainPercent:amountTransform(res.data?.content?.joinAgainPercent,'*'),
+            joinBuyerType:res.data?.content?.joinBuyerType,
+            joinShopType:[res.data?.content?.joinShopType],
+            ruleText:res.data?.content?.ruleText,
+            shoperLimitAll:res.data?.content?.shoperLimitAll,
+            shoperLimitOnece:res.data?.content?.shoperLimitOnece,
+            price:res.data?.content?.price,
+            ...res.data
+          })
+      })
     }
   }, [])
-  //红包名称验证规则
-  const checkConfirm = (rule, value, callback) => {
-    return new Promise(async (resolve, reject) => {
-      if (value && value.length > 50) {
-        await reject('红包名称不超过50个字符')
-      } else if (value&&/[^\u4e00-\u9fa5\0-9]/.test(value)) {
-        await reject('只能输入汉字')
-      } else {
-        await resolve()
-      }
-    })
-  }
   const onsubmit = (values) => {
-
+    try {
+      const parmas={
+        ...values,
+        id:id?id:0,
+        startTime:moment(values.dateRange[0]).valueOf(),
+        endTime:moment(values.dateRange[1]).valueOf(),
+        buyerStartTime:values.buyerTimeType==0?'00:00:00':values.timeRange[0],
+        buyerEndTime:values.buyerTimeTyp==0?'23:59:59':values.timeRange[1],
+        joinShopType:values.joinShopType[0],
+        joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
+        goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:ele.price,status:ele.status,buyLimit:ele.maxNum}))||detailList,
+        buyerLimit:buyerType==0?999999:buyerLimit,
+        status:1,
+      }
+      saveWSDiscountActiveConfig(parmas).then(res=>{
+        if(res.code==0){
+          message.success(id?'编辑成功':'添加成功'); 
+          history.push('/intensive-activity-management/special-offer-acticity/special-offer-acticity-list')
+        }
+      })
+    } catch (error) {
+      console.log('error',error)
+    }
   }
 
   const disabledDate=(current)=>{
@@ -93,53 +114,53 @@ export default (props) => {
           width="md"
           name="name"
           label='活动名称'
+          placeholder='请输入活动名称'
           rules={[
             { required: true, message: '请输入活动名称' },
-            { validator: checkConfirm }
           ]}
         />
         
         <ProFormDateTimeRangePicker
-            label='活动时间'
-            rules={[{ required: true, message: '请选择活动时间' }]}
-            name="dateRange"
-            fieldProps={{
-            disabledDate:(current)=>disabledDate(current)
-            }}
-            placeholder={[
-            formatMessage({
-                id: 'formandbasic-form.placeholder.start',
-            }),
-            formatMessage({
-                id: 'formandbasic-form.placeholder.end',
-            }),
-            ]}
+          label='活动时间'
+          rules={[{ required: true, message: '请选择活动时间' }]}
+          name="dateRange"
+          fieldProps={{
+          disabledDate:(current)=>disabledDate(current)
+          }}
+          placeholder={[
+          formatMessage({
+              id: 'formandbasic-form.placeholder.start',
+          }),
+          formatMessage({
+              id: 'formandbasic-form.placeholder.end',
+          }),
+          ]}
         />
-         <ProFormRadio.Group
-              name="limitType"
-              label='C端可购买数量'
-              rules={[{ required: true, message: '请选择限领方式' }]}
-              options={[
-                {
-                  label: <ProFormText  name="limitQuantity" fieldProps={{addonAfter:'每人/每天'}}/>, value: 1
-                },
-                {
-                  label: '不限', value: 2
-                }
-              ]}
+        <ProFormRadio.Group
+          name="buyerType"
+          label='C端可购买数量'
+          rules={[{ required: true, message: '请选择限领方式' }]}
+          options={[
+            {
+              label: <ProFormText  name="buyerLimit" fieldProps={{addonAfter:'每人/每天'}}/>, value: 1
+            },
+            {
+              label: '不限', value: 0
+            }
+          ]}
          />
-         <ProFormRadio.Group
-              name="limitType"
-              label='C端可购买时间'
-              rules={[{ required: true, message: '请选择限领方式' }]}
-              options={[
-                {
-                  label: <ProFormTimePicker.RangePicker name="timeRange" extra='（控件只可选24小时区间）'/>, value: 1
-                },
-                {
-                  label: '不限', value: 2
-                }
-              ]}
+        <ProFormRadio.Group
+          name="buyerTimeType"
+          label='C端可购买时间'
+          rules={[{ required: true, message: '请选择限领方式' }]}
+          options={[
+            {
+              label: <ProFormTimePicker.RangePicker name="timeRange" extra='（控件只可选24小时区间）'/>, value: 1
+            },
+            {
+              label: '不限', value: 0
+            }
+          ]}
         />
         <ProFormCheckbox.Group
           name="joinShopType"
@@ -170,7 +191,6 @@ export default (props) => {
          <GoosSet
           detailList={detailList}
           id={id} 
-          falg={falg} 
           callback={(val)=>{
             setGoosList(val)
           }}

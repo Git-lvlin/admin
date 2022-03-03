@@ -27,88 +27,111 @@ export default props => {
     {
       title: 'spuID',
       dataIndex: 'spuId',
-      valueType: 'text',
-      editable:false
     },
     {
       title: 'skuID',
       dataIndex: 'skuId',
-      valueType: 'text',
-      editable:false
     },
     {
-      title: '基本信息',
+      title: '商品分类',
+      dataIndex: 'gcName',
+      valueType: 'text',
+      ellipsis:true,
+      hideInSearch:true
+    },
+    {
+      title: '商品主图',
+      dataIndex: 'imageUrl',
+      valueType: 'image',
+      ellipsis:true,
+      hideInSearch:true
+    },
+    {
+      title: '商品名称',
       dataIndex: 'goodsName',
       valueType: 'text',
-      hideInSearch:true,
-      editable:false,
-      render:(_,data)=>{
-        return <div style={{display:'flex'}}>
-                <Image src={data.imageUrl} alt="" width='50px' height='50px' />
-                <div style={{marginLeft:'10px'}}>
-                  <p style={{fontSize:'14px'}}>{data.goodsName}</p>
-                  <p style={{fontSize:'12px'}}>规格：{data.skuName}</p>
-                </div>
-            </div>
-      }
+      ellipsis:true,
+      hideInSearch:true
+    },
+    {
+      title: '商品规格',
+      dataIndex: 'gcName',
+      valueType: 'text',
+      ellipsis:true,
+      hideInSearch:true
+    },
+    {
+      title: '批发供货价',
+      dataIndex: 'price',
+      hideInSearch: true,
     },
     {
       title: '集约活动名称',
       dataIndex: 'name',
       valueType: 'text',
       ellipsis:true,
-      hideInSearch:true,
-      editable:false
+      hideInSearch:true
     },
     {
       title: '集约活动ID',
       dataIndex: 'wsId',
       valueType: 'text',
-      hideInSearch:true,
-      editable:false
-    },
-    {
-      title: '集约活动时段',
-      dataIndex: 'wholesaleStartTime',
-      valueType: 'text',
-      hideInSearch:true,
-      editable:false,
-      render:(_,data)=>{
-        return <p>{moment(data.wholesaleStartTime*1000).format('YYYY-MM-DD HH:mm:ss')}-{moment(data.endTimeAdvancePayment*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
-      }
+      hideInSearch:true
     },
     {
       title: '集约活动状态',
       dataIndex: 'wholesaleStatusDesc',
       valueType: 'text',
-      editable:false
+      hideInSearch: true,
     },
     {
-      title: '集约单次限量',
-      dataIndex: 'minNum',
-      hideInSearch: true,
-      editable:false,
-      render: (_,data)=> {
-        return <p>{data?.minNum} - {data?.maxNum}包</p>
-      },
+      title: '集约活动开始时间',
+      dataIndex: 'wholesaleStartTime',
+      valueType: 'text',
+      hideInSearch:true
     },
     {
-      title: '集约价',
-      dataIndex: 'wholesaleSupplyPrice',
-      hideInSearch: true,
-      render: (_)=> {
-        return <p>{amountTransform(_, '/').toFixed(2)}包</p>
+      title: '采购单下单截止时间',
+      dataIndex: 'endTimeAdvancePayment',
+      valueType: 'text',
+      hideInSearch:true
+    },
+    {
+      title: '活动状态',
+      dataIndex: 'wholesaleStatus',
+      valueType: 'select',
+      hideInTable:true,
+      valueEnum: {
+          0: '全部',
+          1: '待开始',
+          2: '进行中',
       },
-      editable:false
     },
     {
       title: '集约库存',
       dataIndex: 'totalStockNum',
       hideInSearch: true,
-      editable:false,
-      render: (_)=> {
-        return <p>{_}元/包</p>
-      },
+    },
+    {
+      title: '集采箱规单位量',
+      dataIndex: 'batchNumber',
+      hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{_}{data?.unit}/{data?.wsUnit}</p>
+      }
+    },
+    {
+      title: '单次起订量',
+      dataIndex: 'minNum',
+      hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{_}/{data?.wsUnit}</p>
+      }
+    },
+    {
+      title: '最大限购量',
+      dataIndex: 'maxNum',
+      hideInSearch: true,
     },
     {
       title: '活动价',
