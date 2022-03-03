@@ -106,9 +106,7 @@ const TransactionDetails = () => {
     },
     {
       title: '交易类型',
-      dataIndex:'tradeType',
-      valueType: 'select',
-      valueEnum: tradeType,
+      dataIndex:'tradeTypeDesc',
       hideInSearch: true
     },
     {
@@ -117,6 +115,12 @@ const TransactionDetails = () => {
       valueType: 'select',
       valueEnum: orderType(),
       hideInSearch: query.accountId==='platform' ? false : true,
+      hideInTable: true
+    },
+    {
+      title: '订单类型',
+      dataIndex:'orderTypeDesc',
+      hideInSearch: true,
       hideInTable: query.accountId==='platform' ? false : true
     },
     {
