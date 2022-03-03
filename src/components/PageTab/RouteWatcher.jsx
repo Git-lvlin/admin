@@ -4,9 +4,10 @@ import { useIntl } from 'umi';
 
 export default (props) => {
   const intl = useIntl();
-  const { route } = props;
+  const { route,...rest } = props;
+  let routeName = route.name;
   if (route.path) {
-    route.name = intl.formatMessage({ id: `menu${route.path.replace(/\//g, '.')}` });
+    routeName = intl.formatMessage({ id: `menu${route.path.replace(/\//g, '.')}` });
   }
-  return <RouteWatcher {...props} />
+  return <RouteWatcher {...rest} route={{ ...route, name: routeName}} />
 }
