@@ -220,25 +220,6 @@ const Detail = ({visit, onVisibleChange, id}) => {
         return '已关闭'
     }
   }
-
-  const submitForm = (v) => {
-    if(v?.result === 1) {
-      approve({
-        applyId: v.applyId
-      },{
-        showSuccess: true,
-        showError: true
-      })
-    } else {
-      refuse({
-        applyId: v.applyId,
-        auditMsg: v.auditMsg
-      },{
-        showSuccess: true,
-        showError: true
-      })
-    }
-  }
   
   return (
     <ModalForm
@@ -251,10 +232,7 @@ const Detail = ({visit, onVisibleChange, id}) => {
       form={form}
       width={500}
       layout='horizontal'
-      onFinish={async (values) => {
-        await submitForm(values)
-        return true
-      }}
+      onFinish={() => true}
     >
       <ProFormText
         name="applyId"
