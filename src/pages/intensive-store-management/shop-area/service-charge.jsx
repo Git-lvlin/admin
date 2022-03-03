@@ -36,7 +36,8 @@ export default  () => {
           dateRange2: [(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.start)*1000,(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.end)*1000],
           discount:res.data?.settingValues?.typtList?.limitTime?.discount,
           discount2:res.data?.settingValues?.typtList?.limitTopNum?.discount,
-          topNum:res.data?.settingValues?.typtList?.limitTopNum?.topNum
+          topNum:res.data?.settingValues?.typtList?.limitTopNum?.topNum,
+          currentType:res.data?.settingValues?.currentType
         })
       }
     })
@@ -67,10 +68,10 @@ export default  () => {
   const onsubmit = (values) => {
     const params={
       currentType:values.currentType,
-      start:values.currentType==='limit_time'?moment(values.dateRange[0]).format('YYYY-MM-DD HH:mm:ss'):moment(values.dateRange2[0]).format('YYYY-MM-DD HH:mm:ss'),
-      end:values.currentType==='limit_time'?moment(values.dateRange[1]).format('YYYY-MM-DD HH:mm:ss'):moment(values.dateRange2[1]).format('YYYY-MM-DD HH:mm:ss'),
-      discount:values.currentType==='limit_time'?values.discount:values.discount2,
-      topNum:values.currentType==='limit_time'?'':values.topNum,
+      start:values.currentType==='limitTime'?moment(values.dateRange[0]).format('YYYY-MM-DD HH:mm:ss'):moment(values.dateRange2[0]).format('YYYY-MM-DD HH:mm:ss'),
+      end:values.currentType==='limitTime'?moment(values.dateRange[1]).format('YYYY-MM-DD HH:mm:ss'):moment(values.dateRange2[1]).format('YYYY-MM-DD HH:mm:ss'),
+      discount:values.currentType==='limitTime'?values.discount:values.discount2,
+      topNum:values.currentType==='limitTime'?'':values.topNum,
     }
     setMemberShopServicepoint(params).then(res=>{
       if(res.code==0){
@@ -182,11 +183,11 @@ export default  () => {
                 options={[
                     {
                         label: '限时折扣',
-                        value: 'limit_time'
+                        value: 'limitTime'
                     },
                     {
                         label: '限时前N名折扣',
-                        value: 'limit_top_num'
+                        value: 'limitTopNum'
                     }
                 ]}
                 fieldProps={{
@@ -194,12 +195,12 @@ export default  () => {
                     setCurrentType(val.target?.value)
                   }
                 }}
-                initialValue='limit_time'
+                initialValue='limitTime'
             />  
             <ProFormDependency name={['currentType']}>
                 {({ currentType }) => { 
                 if(!currentType) return null
-                if(currentType==='limit_time'){
+                if(currentType==='limitTime'){
                     return  <>
                         <ProFormDateTimeRangePicker
                             label='优惠时间段'
@@ -234,7 +235,7 @@ export default  () => {
                         <p>优惠后社区店主需缴纳金额为：{calculate?formDatil?.settingValues?.basePoint?.money*calculate/10:formDatil?.settingValues?.basePoint?.money*formDatil?.settingValues?.typtList?.limitTime?.discount/10} 元</p>
                     </>
                 }
-                if(currentType==='limit_top_num'){
+                if(currentType==='limitTopNum'){
                     return <>
                         <ProFormDateTimeRangePicker
                             label='优惠时间段'

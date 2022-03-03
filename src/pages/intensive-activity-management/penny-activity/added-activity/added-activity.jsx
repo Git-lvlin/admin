@@ -35,12 +35,11 @@ export default (props) => {
   useEffect(() => {
     if (id) {
       getActiveConfigById({id}).then(res=>{
-        console.log('res.data?.content?.goods',res.data?.content?.goods)
         setDetailList(res.data?.content?.goods)
         form.setFieldsValue({
             dateRange: [moment(res.data?.startTime*1000).valueOf(), moment(res.data?.endTime*1000).valueOf()],
             buyerLimit:res.data?.content?.buyerLimit,
-            joinAgainPercent:res.data?.content?.joinAgainPercent,
+            joinAgainPercent:amountTransform(res.data?.content?.joinAgainPercent,'*'),
             joinBuyerType:res.data?.content?.joinBuyerType,
             joinShopType:[res.data?.content?.joinShopType],
             ruleText:res.data?.content?.ruleText,
@@ -52,11 +51,21 @@ export default (props) => {
       })
     }
   }, [])
-  //红包名称验证规则
+  const activityName = (rule, value, callback) => {
+    return new Promise(async (resolve, reject) => {
+      if (value&&/[%&',;=?$\x22]/.test(value)) {
+        await reject('不可以含特殊字符')
+      } else {
+        await resolve()
+      }
+    })
+  }
   const checkConfirm=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
     if (value&&value<0.01||value>99999.99) {
         await reject('0.01-99999.99之间数字')
+    }else if (value&&`${value}`?.split?.('.')?.[1]?.length > 2) {
+      await reject('保留2位小数')
     }else if (value&&value.length>0&&!/^[0-9]+([.]{1}[0-9]+){0,1}$/.test(value)&&value!=0) {
         await reject('只能输入小数和整数')
     }else {
@@ -103,23 +112,33 @@ export default (props) => {
     })
   }
 
-  const onsubmit = (values) => {
-    const parmas={
-      ...values,
-      id:id?id:0,
-      startTime:moment(values.dateRange[0]).valueOf(),
-      endTime:moment(values.dateRange[1]).valueOf(),
-      joinShopType:values.joinShopType[0],
-      joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
-      goods:goosList.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:ele.price,status:ele.status})),
-      status:1,
+  const checkConfirm5=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value&&value.length<5) {
+        await reject('请输入5-1000个字符')
+    }else {
+        await resolve()
     }
-    saveWSCentActiveConfig(parmas).then(res=>{
-      if(res.code==0){
-        message.success(id?'编辑成功':'添加成功'); 
-        history.push('/intensive-activity-management/penny-activity/activity-list')
-      }
     })
+  }
+
+  const onsubmit = (values) => {
+      const parmas={
+        ...values,
+        id:id?id:0,
+        startTime:moment(values.dateRange[0]).valueOf(),
+        endTime:moment(values.dateRange[1]).valueOf(),
+        joinShopType:values.joinShopType[0],
+        joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
+        goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:ele.price,status:ele.status}))||detailList,
+        status:1,
+      }
+      saveWSCentActiveConfig(parmas).then(res=>{
+        if(res.code==0){
+          message.success(id?'编辑成功':'添加成功'); 
+          history.push('/intensive-activity-management/penny-activity/activity-list')
+        }
+      })
   }
 
   const disabledDate=(current)=>{
@@ -156,6 +175,7 @@ export default (props) => {
           label='活动名称'
           rules={[
             { required: true, message: '请输入活动名称' },
+            { validator: activityName }
           ]}
           fieldProps={{
             maxLength:20
@@ -280,7 +300,10 @@ export default (props) => {
           name="ruleText"
           style={{ minHeight: 32, marginTop: 15 }}
           placeholder='请输入5-1000个字符'
-          rules={[{ required: true, message: '请备注使用规则' }]}
+          rules={[
+            { required: true, message: '请备注使用规则' },
+            { validator: checkConfirm5 }
+          ]}
           rows={4}
           fieldProps={{
             maxLength:1000

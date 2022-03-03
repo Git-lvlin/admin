@@ -73,12 +73,16 @@ export const changeStatus = async (params = {}, options = {}) => {
 
 
 export const chooseWholesaleList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current, pageSize,wholesaleStartTime, ...rest } = params;
   const res = await request('/auth/wholesale/index/chooseWholesaleList', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      wholesaleStartTime:{
+        start:wholesaleStartTime[0],
+        end:wholesaleStartTime[1]
+      },
       ...rest
     },
     ...options

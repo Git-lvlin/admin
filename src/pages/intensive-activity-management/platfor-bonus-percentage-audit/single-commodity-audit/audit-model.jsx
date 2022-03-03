@@ -31,7 +31,7 @@ export default (props) => {
       if (value && value.length < 5) {
         await reject('最小长度为5')
       } else if (value&&/[%&'=?$\x22]/.test(value)) {
-        await reject('不可以含特殊字符')
+        await reject('不可以含')
       } else {
         await resolve()
       }

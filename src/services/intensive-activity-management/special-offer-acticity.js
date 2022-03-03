@@ -19,9 +19,27 @@ export const getActiveConfigList = async (params = {}, options = {}) => {
   }
 }
 
+export const saveWSDiscountActiveConfig = async (params = {}, options = {}) => {
+  const { ...rest } = params;
+  const res = await request('/auth/activity/wsDiscount/saveWSDiscountActiveConfig', {
+  method: 'POST',
+  data: {
+      ...rest
+  },
+  ...options
+  });
+
+  return {
+  data: res.data,
+  success: true,
+  code: res.code
+  }
+}
+
+
 export const getActiveConfigById = async (params = {}, options = {}) => {
     const { ...rest } = params;
-    const res = await request('/auth/activity/Service/admin/blindbox/getActiveConfigById', {
+    const res = await request('/auth/activity/wsDiscount/getActiveConfigById', {
     method: 'POST',
     data: {
         ...rest
