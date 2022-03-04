@@ -32,6 +32,16 @@ export default (props) => {
   const [visible, setVisible] = useState(false);
   let id = props.location.query.id
   const [form] = Form.useForm()
+
+  const checkConfirm5=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value&&value.length<5) {
+        await reject('请输入5-1000个字符')
+    }else {
+        await resolve()
+    }
+    })
+  }
   useEffect(() => {
     if (id) {
       getActiveConfigById({id}).then(res=>{
@@ -46,6 +56,9 @@ export default (props) => {
             shoperLimitAll:res.data?.content?.shoperLimitAll,
             shoperLimitOnece:res.data?.content?.shoperLimitOnece,
             price:res.data?.content?.price,
+            buyerType:res.data?.content?.buyerType,
+            buyerTimeType:res.data?.content?.buyerTimeType,
+            timeRange: [res.data?.content?.buyerStartTime, res.data?.content?.buyerEndTime],
             ...res.data
           })
       })
@@ -62,7 +75,7 @@ export default (props) => {
         buyerEndTime:values.buyerTimeTyp==0?'23:59:59':values.timeRange[1],
         joinShopType:values.joinShopType[0],
         joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
-        goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:ele.price,status:ele.status,buyLimit:ele.maxNum}))||detailList,
+        goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:amountTransform(ele.price,'*'),status:ele.status,buyLimit:ele.maxNum}))||detailList,
         buyerLimit:values.buyerType==0?999999:values.buyerLimit,
         status:1,
       }
@@ -194,6 +207,20 @@ export default (props) => {
           id={id} 
           callback={(val)=>{
             setGoosList(val)
+          }}
+        />
+         <ProFormTextArea
+          label='活动规则'
+          name="ruleText"
+          style={{ minHeight: 32, marginTop: 15 }}
+          placeholder='请输入5-1000个字符'
+          rules={[
+            { required: true, message: '请备注使用规则' },
+            { validator: checkConfirm5 }
+          ]}
+          rows={4}
+          fieldProps={{
+            maxLength:1000
           }}
         />
       </ProForm >

@@ -223,7 +223,10 @@ const StoreList = (props) => {
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'freshStores',
-      width:200
+      width:200,
+      render:(_,data)=>{
+        return <p>{_==0?'-':_}</p>
+      }
     },
     {
       title: '所属运营中心名称',
