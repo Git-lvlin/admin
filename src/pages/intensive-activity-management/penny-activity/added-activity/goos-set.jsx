@@ -31,9 +31,11 @@ const FromWrap = ({ value, onChange, content, right }) => (
 )
 
 const GoosModel=(props)=>{
-  const {visible,setVisible,onClose,callback}=props
+  const {visible,setVisible,onClose,callback,keyId}=props
   const [goosList,setGoosList]=useState()
+  const [dataList,setDataList]=useState([])
   const actionRef = useRef();
+  const [keys,setKeys]=useState()
   const columns = [
       {
           title: 'spuID',
@@ -93,9 +95,17 @@ const GoosModel=(props)=>{
       },
   ];
   const onsubmit = (values) => {
-    callback(goosList)
-    setVisible(false)
+      callback(goosList)
+      setVisible(false)
   };
+  useEffect(()=>{
+    setKeys(keyId.map(ele=>(ele.skuId)))
+  },[])
+  const postData=(data)=>{
+    dataList.push(...data)
+    setDataList(dataList)
+    return data
+  }
   return (
       <ModalForm
           onVisibleChange={setVisible}
@@ -139,15 +149,28 @@ const GoosModel=(props)=>{
                   ...dom.reverse(),
               ],
           }}
+          postData={postData}
           columns={columns}
           rowSelection={{
               preserveSelectedRowKeys: true,
               onChange: (_, val) => {
-                setGoosList(val)
-              }
+                const arr=[]
+                _.forEach(item=>{
+                 const obj=dataList.find(ele=>{
+                   return ele.skuId==item
+                  })
+                  if(obj){
+                    arr.push(obj)
+                  }
+
+                })
+                setGoosList(arr)
+                setKeys(_)
+              },
+              selectedRowKeys:keys
           }}
           pagination={{
-            pageSize: 10,
+            pageSize: 5,
             showQuickJumper: true,
           }}
       />
@@ -301,7 +324,7 @@ export default (props) => {
           <span key='stop'>
               {
                 record.status!=0&&
-                <a key='detail' onClick={()=>{setPennyId({skuId:record.skuId,type:2});setEndVisible(true)}}>终止</a>
+                <a key='detail' onClick={()=>{setPennyId({skuId:record.skuId,type:2});setEndVisible(true)}}>禁用</a>
               }
           </span>
       ]
@@ -347,6 +370,9 @@ export default (props) => {
             <p>共{dataSource?.length}款商品</p>
         ]}
         style={{marginBottom:'30px'}}
+        pagination={{
+          pageSize: 5
+        }}
     />
 
     {
@@ -355,7 +381,6 @@ export default (props) => {
         visible={visible} 
         setVisible={setVisible}
         callback={(val)=>{
-          console.log('val',val)
           const arr = [];
           val.forEach(item => {
             arr.push({
@@ -365,29 +390,11 @@ export default (props) => {
               price:0
             })
           })
-          console.log('arr',arr)
-          console.log('dataSource',dataSource)
-          if(id){
-            dataSource?.map(ele=>{
-              arr.map(item=>{
-                if(item.skuId==ele.skuId){
-                  return null
-                }
-              })
-             })
-            setDataSource(_.uniqWith([...dataSource,...arr], _.isEqual))
-            callback(_.uniqWith([...dataSource,...arr], _.isEqual))
-            setEditableKeys(_.uniqWith([...dataSource,...arr], _.isEqual).map(item => item.skuId))
-            console.log('2')
-          }else{
-            console.log('31')
-            setDataSource(_.uniqWith([...dataSource,...arr], _.isEqual))
-            callback(_.uniqWith([...dataSource,...arr], _.isEqual))
-            setEditableKeys(_.uniqWith([...dataSource,...arr], _.isEqual).map(item => item.skuId))
-          }
-
-
+          setDataSource(arr)
+          callback(arr)
+          setEditableKeys(arr.map(item => item.skuId))
         }}
+        keyId={dataSource}
         onClose={()=>{}}
       />
     }
