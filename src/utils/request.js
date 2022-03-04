@@ -122,7 +122,6 @@ const request = (url, options = {}) => {
     }, 1000)
     return null;
   }
-
   if (options.data && !options.noFilterParams) {
     // eslint-disable-next-line no-param-reassign
     options.data = paramsEmptyFilter(options.data)
