@@ -19,7 +19,7 @@ const Export = ({ type, change, conditions, title }) => {
 
     createExportTask({
       code: type,
-      fileName: type + +new Date() + '.xlsx',
+      fileName: '用户关系-查询的用户手机号码' + new Date() + '.xlsx',
       queryParamStr: str,
       // querydesc: ''
     }).then(res => {
