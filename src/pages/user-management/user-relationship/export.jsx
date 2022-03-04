@@ -16,10 +16,10 @@ const Export = ({ type, change, conditions, title }) => {
     } else {
       str = JSON.stringify(conditions)
     }
-
+    const timestamp = new Date().getTime();
     createExportTask({
       code: type,
-      fileName: '用户关系-查询的用户手机号码' + new Date() + '.xlsx',
+      fileName: '用户关系-查询的用户手机号码' + timestamp + '.xlsx',
       queryParamStr: str,
       // querydesc: ''
     }).then(res => {

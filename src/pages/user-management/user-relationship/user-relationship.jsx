@@ -18,11 +18,11 @@ const UserRelationship = () => {
   const [initialData, setInitialData] = useState(null);
   const [taskId, setTaskId] = useState(null);
   const [totalVisit, setTotalVisit] = useState(false)
-  useEffect(() => {
-    if (phoneNumber) {
-      getInitData()
-    }
-  }, [phoneNumber])
+  // useEffect(() => {
+  //   if (phoneNumber) {
+  //     getInitData()
+  //   }
+  // }, [phoneNumber])
 
   const getInitData = () => {
     console.log('initialData', phoneNumber)
