@@ -57,6 +57,7 @@ export default {
       name: 'platfor-bonus-percentage-audit',
       path: '/intensive-activity-management/platfor-bonus-percentage-audit',
       component: './intensive-activity-management/platfor-bonus-percentage-audit',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'penny-activity',
@@ -78,11 +79,6 @@ export default {
             path: '/intensive-activity-management/penny-activity/activity-detail',
             component: './intensive-activity-management/penny-activity/activity-detail',
             hideInMenu: true,
-          },
-          {
-            name: 'activity-commodity',
-            path: '/intensive-activity-management/penny-activity/activity-commodity',
-            component: './intensive-activity-management/penny-activity/activity-commodity'
           },
         ]
     },

@@ -77,9 +77,6 @@ export default () => {
         title: '参与活动的商品',
         dataIndex: 'goodsCount',
         valueType: 'text',
-        render:(_,data)=>{
-          return <a onClick={()=>{}}>{_}</a>
-        },
         hideInSearch: true,
       },
       {
@@ -107,7 +104,7 @@ export default () => {
         render:(text, record, _, action)=>[
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/activity-detail?id='+record.id)}>详情</a>,
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/added-activity?id='+record.id)}>编辑</a>,
-            <div>
+            <div key='stop'>
               {
                 record.status!=0&&
                 <a key='detail' onClick={()=>{setPennyId(record.id);setVisible(true)}}>终止</a>

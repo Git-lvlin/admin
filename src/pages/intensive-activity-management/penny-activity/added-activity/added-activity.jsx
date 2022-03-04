@@ -130,7 +130,7 @@ export default (props) => {
         endTime:moment(values.dateRange[1]).valueOf(),
         joinShopType:values.joinShopType[0],
         joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
-        goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:ele.price,status:ele.status}))||detailList,
+        goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:amountTransform(ele.price,'*'),status:ele.status}))||detailList,
         status:1,
       }
       saveWSCentActiveConfig(parmas).then(res=>{

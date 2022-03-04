@@ -121,6 +121,7 @@ export default {
       name: 'fresh-shop-configuration',
       path: '/intensive-store-management/fresh-shop-configuration',
       component: './intensive-store-management/fresh-shop-configuration',
+      wrappers: [RouteWatcher],
     }
   ]
 }

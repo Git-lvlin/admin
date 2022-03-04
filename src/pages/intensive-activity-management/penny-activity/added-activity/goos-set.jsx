@@ -8,6 +8,7 @@ import ProTable from '@ant-design/pro-table';
 import { ModalForm,ProFormText } from '@ant-design/pro-form';
 import _ from 'lodash'
 import moment from 'moment';
+import EndModel from './end-model'
 
 const formItemLayout = {
   labelCol: { span: 3 },
@@ -160,9 +161,11 @@ export default (props) => {
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
+  const [endVisible, setEndVisible] = useState(false);
+  const [pennyId,setPennyId]=useState()
   useEffect(()=>{
     if(id){
-      detailList&&setDataSource(detailList)
+      detailList&&setDataSource(detailList.map(ele=>({...ele,price:amountTransform(ele.price,'/')})))
      setEditableKeys(detailList?.map(item => item.skuId))
     }   
   },[id,detailList])
@@ -241,7 +244,7 @@ export default (props) => {
       dataIndex: 'wsPrice',
       hideInSearch: true,
       render: (_)=> {
-        return <p>{amountTransform(_, '/').toFixed(2)}包</p>
+        return <p>{amountTransform(_, '/').toFixed(2)}元/包</p>
       },
       editable:false
     },
@@ -294,34 +297,18 @@ export default (props) => {
       valueType: 'text',
       render:(text, record, _, action)=>{
         return [
-          <a key='dele' onClick={()=>delGoods(record.skuId)}>删除</a>,
-          <a key='stop' onClick={()=>stopGoods(record.skuId)}>禁用</a>
+          <a key='dele' onClick={()=>{setPennyId({skuId:record.skuId,type:1});setEndVisible(true)}}>删除&nbsp;&nbsp;</a>,
+          <span key='stop'>
+              {
+                record.status!=0&&
+                <a key='detail' onClick={()=>{setPennyId({skuId:record.skuId,type:2});setEndVisible(true)}}>终止</a>
+              }
+          </span>
       ]
       },
       editable:false,
     }
   ]; 
-  // 删除商品
-  const  delGoods=val=>{
-    const arr=dataSource.filter(ele=>(
-          ele.skuId!=val
-    ))
-    // let sum=0
-    // arr.map(ele=>{
-    //   if(ele.status){
-    //     sum+=parseInt(ele.probability)
-    //   }
-    // })
-    // setSubmi(sum)
-    setDataSource(arr) 
-    callback(arr)
-  }
-
-  const stopGoods=val=>{
-//     const arr=dataSource.map(ele=>(
-//       ele.skuId!=val
-// ))
-  }
 
   return (
     <>
@@ -329,7 +316,6 @@ export default (props) => {
       width="md"
       name="price"
       label='活动商品'
-      rules={[{ required: true, message: '请选择活动商品' }]}
       fieldProps={{
         value:<Button key='add' type="primary" onClick={()=>{
                 setVisible(true)
@@ -342,6 +328,7 @@ export default (props) => {
     <EditableProTable
         rowKey="skuId"
         name="table"
+        actionRef={ref}
         value={dataSource}
         recordCreatorProps={false}
         columns={columns}
@@ -378,36 +365,48 @@ export default (props) => {
               price:0
             })
           })
-          // detailList?.skus.map(ele=>{
-          //     arr.map(item=>{
-          //       if(item.skuId==ele.skuId){
-          //         item.id=ele.id
-          //         item.stockNum=ele.stockNum
-          //         item.probability=ele.probability
-          //         item.status=ele.status
-          //         delete item.add
-          //       }
-          //     })
-          // })
-          // if(!id&&falg){
-          //   dataSource?.map(ele=>{
-          //     arr.map(item=>{
-          //       if(item.skuId==ele.skuId){
-          //         item.stockNum=ele.stockNum
-          //         item.probability=ele.probability
-          //         item.status=ele.status
-          //       }
-          //     })
-          //    })
-          // }
-          // let arr2=_.uniqWith([...dataSource,...arr], _.isEqual)
-          setDataSource(arr)
-          callback(arr)
-          setEditableKeys(arr.map(item => item.skuId))
+          console.log('arr',arr)
+          console.log('dataSource',dataSource)
+          if(id){
+            dataSource?.map(ele=>{
+              arr.map(item=>{
+                if(item.skuId==ele.skuId){
+                  return null
+                }
+              })
+             })
+            setDataSource(_.uniqWith([...dataSource,...arr], _.isEqual))
+            callback(_.uniqWith([...dataSource,...arr], _.isEqual))
+            setEditableKeys(_.uniqWith([...dataSource,...arr], _.isEqual).map(item => item.skuId))
+            console.log('2')
+          }else{
+            console.log('31')
+            setDataSource(_.uniqWith([...dataSource,...arr], _.isEqual))
+            callback(_.uniqWith([...dataSource,...arr], _.isEqual))
+            setEditableKeys(_.uniqWith([...dataSource,...arr], _.isEqual).map(item => item.skuId))
+          }
+
+
         }}
         onClose={()=>{}}
       />
     }
+
+      {
+        endVisible&&<EndModel 
+        visible={endVisible} 
+        setVisible={setEndVisible}  
+        pennyId={pennyId} 
+        callback={(arr)=>{
+          ref.current.reload()
+          setPennyId(null)
+          setDataSource(arr) 
+          callback(arr)
+        }}
+        onClose={()=>{ref.current.reload();setPennyId(null)}}
+        dataSource={dataSource}
+        />
+      }
     </>
     
   );
