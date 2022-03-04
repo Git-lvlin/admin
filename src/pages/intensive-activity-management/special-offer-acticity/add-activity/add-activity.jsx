@@ -33,6 +33,26 @@ export default (props) => {
   let id = props.location.query.id
   const [form] = Form.useForm()
 
+  const activityName = (rule, value, callback) => {
+    return new Promise(async (resolve, reject) => {
+      if (value&&/[%&',;=?$\x22]/.test(value)) {
+        await reject('不可以含特殊字符')
+      } else {
+        await resolve()
+      }
+    })
+  }
+
+  const checkConfirm2=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+        await reject('只能输入整数')
+    }else {
+        await resolve()
+    }
+    })
+  }
+
   const checkConfirm5=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
     if (value&&value.length<5) {
@@ -48,7 +68,7 @@ export default (props) => {
         setDetailList(res.data?.content?.goods)
         form.setFieldsValue({
             dateRange: [moment(res.data?.startTime*1000).valueOf(), moment(res.data?.endTime*1000).valueOf()],
-            buyerLimit:res.data?.content?.buyerLimit,
+            buyerLimit:res.data?.content?.buyerLimit==999999?'':res.data?.content?.buyerLimit,
             joinAgainPercent:amountTransform(res.data?.content?.joinAgainPercent,'*'),
             joinBuyerType:res.data?.content?.joinBuyerType,
             joinShopType:[res.data?.content?.joinShopType],
@@ -58,7 +78,7 @@ export default (props) => {
             price:res.data?.content?.price,
             buyerType:res.data?.content?.buyerType,
             buyerTimeType:res.data?.content?.buyerTimeType,
-            timeRange: [res.data?.content?.buyerStartTime, res.data?.content?.buyerEndTime],
+            timeRange: res.data?.content?.buyerTimeType==0?[]:[moment(res.data?.content?.buyerStartTime, 'HH:mm:ss'),moment(res.data?.content?.buyerEndTime, 'HH:mm:ss') ],
             ...res.data
           })
       })
@@ -69,8 +89,8 @@ export default (props) => {
       const parmas={
         ...values,
         id:id?id:0,
-        startTime:moment(values.dateRange[0]).valueOf(),
-        endTime:moment(values.dateRange[1]).valueOf(),
+        startTime:moment(values.dateRange[0]).valueOf()/1000,
+        endTime:moment(values.dateRange[1]).valueOf()/1000,
         buyerStartTime:values.buyerTimeType==0?'00:00:00':values.timeRange[0],
         buyerEndTime:values.buyerTimeTyp==0?'23:59:59':values.timeRange[1],
         joinShopType:values.joinShopType[0],
@@ -103,16 +123,16 @@ export default (props) => {
           {
             render: (props, defaultDoms) => {
               return [
-                <Button style={{marginLeft:'100px'}} type="default" key="goback" onClick={() => {
-                  history.push('/intensive-activity-management/special-offer-acticity/special-offer-acticity-list')
-                }}>
-                  返回
-                </Button>,
-                <Button type="primary" key="submit" onClick={() => {
+                <Button style={{marginLeft:'100px'}} type="primary" key="submit" onClick={() => {
                   props.form?.submit?.()
                 }}>
                   确定
                 </Button>,
+                <Button  type="default" key="goback" onClick={() => {
+                  history.push('/intensive-activity-management/special-offer-acticity/special-offer-acticity-list')
+                }}>
+                  返回
+                </Button>
               ];
             }
           }
@@ -131,6 +151,7 @@ export default (props) => {
           placeholder='请输入活动名称'
           rules={[
             { required: true, message: '请输入活动名称' },
+            { validator: activityName }
           ]}
         />
         
@@ -153,10 +174,12 @@ export default (props) => {
         <ProFormRadio.Group
           name="buyerType"
           label='C端可购买数量'
-          rules={[{ required: true, message: '请选择限领方式' }]}
+          rules={[
+            { required: true, message: '请选择限领方式' }
+          ]}
           options={[
             {
-              label: <ProFormText  name="buyerLimit" fieldProps={{addonAfter:'每人/每天'}}/>, value: 1
+              label: <ProFormText   rules={[ { validator: checkConfirm2 }]}   name="buyerLimit" fieldProps={{addonAfter:'每人/每天'}}/>, value: 1
             },
             {
               label: '不限', value: 0

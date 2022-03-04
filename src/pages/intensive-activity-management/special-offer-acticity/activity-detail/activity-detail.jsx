@@ -64,6 +64,9 @@ export default props => {
       title: '批发供货价',
       dataIndex: 'wholesaleSupplyPrice',
       hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{amountTransform(_, '/')}元/{data?.wsUnit}</p>
+      }
     },
     {
       title: '集约活动名称',
@@ -128,7 +131,7 @@ export default props => {
       dataIndex: 'minNum',
       hideInSearch: true,
       render:(_,data)=>{
-        return <p>{_}/{data?.wsUnit}</p>
+        return <p>{_}{data?.wsUnit}</p>
       }
     },
     {
@@ -140,8 +143,8 @@ export default props => {
       title: '活动价',
       dataIndex: 'price',
       hideInSearch: true,
-      render: (_) =>{
-        return <p>{_}元/包</p>
+      render: (_,data) =>{
+        return <p>{amountTransform(_, '/')}元/{data?.wsUnit}</p>
     }
     }
   ]; 
@@ -173,7 +176,7 @@ export default props => {
                detailData?.content?.buyerType==0?
                <p>不限</p>
                :
-               <p>{detailData?.content?.buyerLimit} 每人/每天</p>
+               <p>{detailData?.content?.buyerLimit}{detailData?.content?.unit} 每人/每天</p>
              } 
             </Descriptions.Item>
             <Descriptions.Item label="C端可购买时间">
