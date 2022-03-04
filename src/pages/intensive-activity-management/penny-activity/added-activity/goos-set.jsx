@@ -320,11 +320,18 @@ export default (props) => {
       valueType: 'text',
       render:(text, record, _, action)=>{
         return [
-          <a key='dele' onClick={()=>{setPennyId({skuId:record.skuId,type:1});setEndVisible(true)}}>删除&nbsp;&nbsp;</a>,
+          <span key='dele'>
+            {
+              record.wholesaleStatusDesc=='待开始'&&
+              <a onClick={()=>{setPennyId({skuId:record.skuId,type:1});setEndVisible(true)}}>删除&nbsp;&nbsp;</a>
+            }
+          </span>,
           <span key='stop'>
               {
-                record.status!=0&&
+                record.status!=0?
                 <a key='detail' onClick={()=>{setPennyId({skuId:record.skuId,type:2});setEndVisible(true)}}>禁用</a>
+                :
+                <a key='start' onClick={()=>{setPennyId({skuId:record.skuId,type:3});setEndVisible(true)}}>启用</a>
               }
           </span>
       ]
@@ -338,7 +345,7 @@ export default (props) => {
     <ProFormText
       width="md"
       name="price"
-      label='活动商品'
+      label={<p><span style={{color:'red',fontSize:'15px'}}>* </span>活动商品</p>}
       fieldProps={{
         value:<Button key='add' type="primary" onClick={()=>{
                 setVisible(true)

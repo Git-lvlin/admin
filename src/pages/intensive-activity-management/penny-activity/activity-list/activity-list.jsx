@@ -80,14 +80,14 @@ export default () => {
         hideInSearch: true,
       },
       {
-        title: '红包状态',
-        dataIndex: 'status',
+        title: '活动状态',
+        dataIndex: 'actStatus',
         valueType: 'select',
         valueEnum: {
-          1: '未开始',
-          2: '进行中',
-          3: '已结束',
-          4: '已终止'
+          0: '已终止',
+          1: '进行中',
+          2: '未开始',
+          3: '已结束'
         },
         hideInTable:true
       },
@@ -130,7 +130,6 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="活动列表"
           options={false}
           params={{
             actCode:'wsCentActiveCode'
