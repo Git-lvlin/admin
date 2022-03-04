@@ -358,7 +358,7 @@ export default (props) =>{
               seleType==2&&<ServiceCharge/>
             }
           </TabPane>
-          <TabPane tab="残疾人缴费" key="3">
+          <TabPane tab="绿色通道缴费" key="3">
             {
               seleType==3&&<Handicapped/>
             }
