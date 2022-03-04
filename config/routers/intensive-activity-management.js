@@ -82,12 +82,6 @@ export default {
             component: './intensive-activity-management/penny-activity/activity-detail',
             hideInMenu: true,
           },
-          {
-            name: 'activity-commodity',
-            path: '/intensive-activity-management/penny-activity/activity-commodity',
-            component: './intensive-activity-management/penny-activity/activity-commodity',
-            wrappers: [RouteWatcher],
-          },
         ]
     },
     {

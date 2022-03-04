@@ -277,11 +277,11 @@ const Detail = () => {
                   <Descriptions.Item label="生鲜总分佣类型">
                     {{ 1: '特殊分佣（单独指定分佣）', 0: '正常分佣（按分类分佣）' }[detailData.wholesale.freshSpecial]}
                   </Descriptions.Item>
-                  <Descriptions.Item label="特殊总分佣比例">
+                  <Descriptions.Item label="总分佣比例">
                     {
                       detailData.wholesale.freshSpecial === 0
-                        ? `${detailData.sku[0].gcId1Display}  > ${detailData.sku[0].gcId2Display}  总分佣比：${amountTransform(detailData.sku[0].freshCommission)}%`
-                        : `总分佣比：${amountTransform(detailData.sku[0].freshCommission)}%`
+                        ? `${detailData.sku[0].gcId1Display}  > ${detailData.sku[0].gcId2Display}：${amountTransform(detailData.sku[0].freshCommission)}%`
+                        : `${amountTransform(detailData.sku[0].freshCommission)}%`
                     }
                   </Descriptions.Item>
                 </>

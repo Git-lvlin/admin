@@ -63,9 +63,10 @@ export default (props) => {
         joinShopType:values.joinShopType[0],
         joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
         goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:ele.price,status:ele.status,buyLimit:ele.maxNum}))||detailList,
-        buyerLimit:buyerType==0?999999:buyerLimit,
+        buyerLimit:values.buyerType==0?999999:values.buyerLimit,
         status:1,
       }
+      console.log('parmas',parmas)
       saveWSDiscountActiveConfig(parmas).then(res=>{
         if(res.code==0){
           message.success(id?'编辑成功':'添加成功'); 
