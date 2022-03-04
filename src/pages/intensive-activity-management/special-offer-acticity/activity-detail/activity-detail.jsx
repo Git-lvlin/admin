@@ -62,7 +62,7 @@ export default props => {
     },
     {
       title: '批发供货价',
-      dataIndex: 'price',
+      dataIndex: 'wholesaleSupplyPrice',
       hideInSearch: true,
     },
     {
@@ -88,13 +88,17 @@ export default props => {
       title: '集约活动开始时间',
       dataIndex: 'wholesaleStartTime',
       valueType: 'text',
-      hideInSearch:true
+      hideInSearch:true,
+      editable:false,
+      render:(_)=>{return <p>{moment(_*1000).format('YYYY-MM-DD HH:mm:ss')}</p>}
     },
     {
       title: '采购单下单截止时间',
       dataIndex: 'endTimeAdvancePayment',
       valueType: 'text',
-      hideInSearch:true
+      hideInSearch:true,
+      editable:false,
+      render:(_)=>{return <p>{moment(_*1000).format('YYYY-MM-DD HH:mm:ss')}</p>}
     },
     {
       title: '活动状态',
@@ -102,7 +106,6 @@ export default props => {
       valueType: 'select',
       hideInTable:true,
       valueEnum: {
-          0: '全部',
           1: '待开始',
           2: '进行中',
       },
@@ -165,26 +168,30 @@ export default props => {
             <Descriptions.Item label="活动时间">
                 {moment(detailData?.startTime*1000).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(detailData?.endTime*1000).format('YYYY-MM-DD HH:mm:ss')}
             </Descriptions.Item>
-            <Descriptions.Item label="每位店主总限量">
-              {detailData?.content?.shoperLimitAll}
+            <Descriptions.Item label="C端可购买数量">
+             {
+               detailData?.content?.buyerType==0?
+               <p>不限</p>
+               :
+               <p>{detailData?.content?.buyerLimit} 每人/每天</p>
+             } 
             </Descriptions.Item>
-            <Descriptions.Item label="每位店主单次限量">{detailData?.content?.shoperLimitOnece}</Descriptions.Item>
-            <Descriptions.Item label="每位消费者限量">
-            {detailData?.content?.buyerLimit}
-            </Descriptions.Item>
-            <Descriptions.Item label="店主再次参与活动条件">
-            {detailData?.content?.joinAgainPercent}
+            <Descriptions.Item label="C端可购买时间">
+            {
+               detailData?.content?.buyerTimeTyp==0?
+               <p>不限</p>
+               :
+               <p>{detailData?.content?.buyerStartTime}~{detailData?.content?.buyerEndTime}（每天）</p>
+             } 
+              {}
             </Descriptions.Item>
             <Descriptions.Item label="参与活动的店铺">
-            {detailData?.content?.joinShopType}
-            </Descriptions.Item>
-            <Descriptions.Item label="参与活动的消费者">
-            {detailData?.content?.joinBuyerType}
+            {{1:"生鲜店铺"}[detailData?.content?.joinShopType]}
             </Descriptions.Item>
             <Descriptions.Item label="活动创建人">
             {detailData?.lastEditor}
             </Descriptions.Item>
-            <Descriptions.Item label="创建时间">
+            <Descriptions.Item label="活动创建时间">
             {moment(detailData?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss')}
             </Descriptions.Item>
           </Descriptions>

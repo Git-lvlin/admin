@@ -77,20 +77,17 @@ export default () => {
         title: '参与活动的商品',
         dataIndex: 'goodsCount',
         valueType: 'text',
-        render:(_,data)=>{
-          return <a onClick={()=>{}}>{_}</a>
-        },
         hideInSearch: true,
       },
       {
-        title: '红包状态',
-        dataIndex: 'status',
+        title: '活动状态',
+        dataIndex: 'actStatus',
         valueType: 'select',
         valueEnum: {
-          1: '未开始',
-          2: '进行中',
-          3: '已结束',
-          4: '已终止'
+          0: '已终止',
+          1: '进行中',
+          2: '未开始',
+          3: '已结束'
         },
         hideInTable:true
       },
@@ -107,7 +104,7 @@ export default () => {
         render:(text, record, _, action)=>[
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/activity-detail?id='+record.id)}>详情</a>,
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/added-activity?id='+record.id)}>编辑</a>,
-            <div>
+            <div key='stop'>
               {
                 record.status!=0&&
                 <a key='detail' onClick={()=>{setPennyId(record.id);setVisible(true)}}>终止</a>
@@ -133,7 +130,6 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="活动列表"
           options={false}
           params={{
             actCode:'wsCentActiveCode'

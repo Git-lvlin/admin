@@ -154,7 +154,8 @@ const StoreList = (props) => {
       render:(_,data)=>{
         return <a onClick={()=>{setOrderVisible(true);setOrderId(data?.freshOrder?.id)}}>{data?.freshOrder?.orderSn}</a>
       },
-      hideInTable: storeType != 'freshStores'
+      hideInTable: storeType != 'freshStores',
+      width:200
     },
     {
       title: '开店必备礼包',
@@ -175,7 +176,8 @@ const StoreList = (props) => {
       render:(_,data)=>{
         return <a onClick={()=>{setOrderVisible(true);setOrderId(data?.giftOrder?.id)}}>{data?.giftOrder?.orderSn}</a>
       },
-      hideInTable: storeType != 'freshStores'
+      hideInTable: storeType != 'freshStores',
+      width:200
     },
     {
       title: '是否生鲜店铺',
@@ -221,7 +223,10 @@ const StoreList = (props) => {
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'freshStores',
-      width:200
+      width:200,
+      render:(_,data)=>{
+        return <p>{_==0?'-':_}</p>
+      }
     },
     {
       title: '所属运营中心名称',
@@ -240,6 +245,7 @@ const StoreList = (props) => {
         20: '绿色通道申请',
       },
       hideInTable: true,
+      hideInSearch: storeType == 'freshStores',
       order: -2,
     },
     {
@@ -249,6 +255,7 @@ const StoreList = (props) => {
       width: 100,
       render: (_) => _ === 10 ? '正常申请' : '绿色通道申请',
       hideInSearch: true,
+      hideInTable: storeType == 'freshStores',
     },
     {
       title: '店主收件号',
@@ -560,6 +567,7 @@ const StoreList = (props) => {
         1: '有改价记录',
       },
       hideInTable: true,
+      hideInSearch: storeType == 'freshStores',
       order: -1,
     },
     {
@@ -624,26 +632,36 @@ const StoreList = (props) => {
         request={
           storeType == 'freshStores'?applyConditionPage:getStoreList
         }
-        scroll={{  x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true,  }}
+        scroll={{ x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-            <Button
-              key="new"
-              onClick={() => {
-                setCreateVisible(true);
-              }}
-            >
-              新建
-            </Button>,
-            <Export
-              change={(e) => { setVisit(e) }}
-              key="export"
-              type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"}
-              conditions={getFieldValue}
-            />,
-            <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"} />
+            <div key="export">
+             {
+               storeType != 'freshStores'&&
+               <>
+                 <Button
+                  key="new"
+                  onClick={() => {
+                    setCreateVisible(true);
+                  }}
+                >
+                  新建
+                </Button>
+                &nbsp;&nbsp;
+                <Export
+                  change={(e) => { setVisit(e) }}
+                  key="export"
+                  type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"}
+                  conditions={getFieldValue}
+                />
+                &nbsp;&nbsp;
+                <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"} />
+               </>
+             }
+            </div>,
+            
             // <Button
             //   key="new2"
             //   onClick={() => {

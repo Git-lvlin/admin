@@ -3,7 +3,7 @@ import { couponVerifyDetail, couponVerify } from '@/services/coupon-management/c
 import SubTable from '@/pages/coupon-management/coupon-construction/coupon-subtable'
 import { Divider, Form, Spin, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import AuditModel from './audit-model'
+import AuditModel from '../coupon-audit/audit-model'
 import { amountTransform } from '@/utils/utils'
 import { history } from 'umi';
 import { CaretRightFilled } from '@ant-design/icons';
