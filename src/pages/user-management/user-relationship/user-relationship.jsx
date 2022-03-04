@@ -268,6 +268,7 @@ const UserRelationship = () => {
           type='member-relation-export'
           conditions={()=>getFieldValue()}
           title='导出'
+          phoneNumber={phoneNumber}
         />,
         <ExportHistory
           key='totalHistory'

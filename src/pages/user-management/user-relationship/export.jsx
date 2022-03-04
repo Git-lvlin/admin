@@ -6,7 +6,7 @@ import {
 
 import { createExportTask } from '@/services/export-excel/export-template'
 
-const Export = ({ type, change, conditions, title }) => {
+const Export = ({ type, change, conditions, title, phoneNumber }) => {
 
   const downExcel = () => {
 
@@ -16,10 +16,9 @@ const Export = ({ type, change, conditions, title }) => {
     } else {
       str = JSON.stringify(conditions)
     }
-    const timestamp = new Date().getTime();
     createExportTask({
       code: type,
-      fileName: '用户关系-查询的用户手机号码' + timestamp + '.xlsx',
+      fileName: '用户关系-' + phoneNumber + '.xlsx',
       queryParamStr: str,
       // querydesc: ''
     }).then(res => {
