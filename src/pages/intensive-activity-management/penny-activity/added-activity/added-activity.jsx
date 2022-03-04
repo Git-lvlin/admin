@@ -45,7 +45,7 @@ export default (props) => {
             ruleText:res.data?.content?.ruleText,
             shoperLimitAll:res.data?.content?.shoperLimitAll,
             shoperLimitOnece:res.data?.content?.shoperLimitOnece,
-            price:res.data?.content?.price,
+            price:amountTransform(res.data?.content?.price,'/'),
             ...res.data
           })
       })
@@ -131,6 +131,7 @@ export default (props) => {
         joinShopType:values.joinShopType[0],
         joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
         goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:amountTransform(ele.price,'*'),status:ele.status}))||detailList,
+        price:amountTransform(values.price,'*'),
         status:1,
       }
       saveWSCentActiveConfig(parmas).then(res=>{
