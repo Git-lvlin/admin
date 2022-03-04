@@ -1,10 +1,24 @@
 import React, { useRef, useState } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { PageContainer } from '@ant-design/pro-layout'
+import { QuestionCircleOutlined } from '@ant-design/icons'
+import { DatePicker, Tooltip } from 'antd'
 
 import { supplierDevelopmentData } from '@/services/data-board/supplier-data'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+
+const { RangePicker } = DatePicker
+
+const MDatePicker = ({ value, onChange }) => {
+  return (
+    <RangePicker 
+      value={value} 
+      onChange={onChange} 
+      picker="month"
+    />
+  )
+}
 
 const SupplierDevelopmentData = () => {
   const [visit, setVisit] = useState(false)
@@ -24,8 +38,8 @@ const SupplierDevelopmentData = () => {
       title: '时间范围',
       dataIndex: 'time',
       align: 'center',
-      valueType: 'dateRange',
-      hideInTable: true
+      hideInTable: true,
+      renderFormItem: () => <MDatePicker/>
     },
     {
       title: '采购账号ID',
@@ -43,34 +57,64 @@ const SupplierDevelopmentData = () => {
       title: '开发供应商数量',
       dataIndex: 'supplierNum',
       align: 'center',
-      tip: '按【供应商创建后通过审核的时间】进行汇总',
+      tooltip: {
+        icon: (
+          <Tooltip title='按【供应商创建后通过审核的时间】进行汇总'>
+            <QuestionCircleOutlined />
+          </Tooltip>
+        )
+      },
       hideInSearch: true
     },
     {
       title: '集约商品审核通过数量（SPU）',
       dataIndex: 'wholesaleApprovedSpuNum',
       align: 'center',
-      tip: '按集约商品审核通过时间进行汇总',
+      tooltip: {
+        icon: (
+          <Tooltip title='按集约商品审核通过时间进行汇总'>
+            <QuestionCircleOutlined />
+          </Tooltip>
+        )
+      },
       hideInSearch: true
     },
     {
       title: '集约商品审核未通过数量（SPU）',
       dataIndex: 'wholesaleNotApprovedSpuNum',
-      tip: '不受所选时间控制，只依据【未审核状态】进行汇总统计的数量',
+      tooltip: {
+        icon: (
+          <Tooltip title='不受所选时间控制，只依据【未审核状态】进行汇总统计的数量'>
+            <QuestionCircleOutlined />
+          </Tooltip>
+        )
+      },
       align: 'center',
       hideInSearch: true
     },
     {
       title: '秒约商品审核通过数量（SPU）',
       dataIndex: 'secondApprovedSpuNum',
-      tip: '按秒约商品审核通过时间进行汇总',
+      tooltip: {
+        icon: (
+          <Tooltip title='按秒约商品审核通过时间进行汇总'>
+            <QuestionCircleOutlined />
+          </Tooltip>
+        )
+      },
       align: 'center',
       hideInSearch: true
     },
     {
       title: '秒约商品审核未通过数量（SPU）',
       dataIndex: 'secondNotApprovedSpuNum',
-      tip: '不受所选时间控制，只依据【未审核状态】进行汇总统计的数量',
+      tooltip: {
+        icon: (
+          <Tooltip title='不受所选时间控制，只依据【未审核状态】进行汇总统计的数量'>
+            <QuestionCircleOutlined />
+          </Tooltip>
+        )
+      },
       align: 'center',
       hideInSearch: true
     }
