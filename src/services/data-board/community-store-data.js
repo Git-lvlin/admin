@@ -55,7 +55,7 @@ export const communityStoreDataOverview = async (params = {}, options = {}) => {
 // 社区店服务费统计
 export const serviceFee = async (params = {}, options = {}) => {
   const { payTime, area, ...rest } = params
-  const res = await request('/auth/store/serviceFee/page', {
+  return await request('/auth/store/serviceFee/page', {
     method: 'POST',
     data: {
       provinceId: area?.[0]?.value,
@@ -67,9 +67,4 @@ export const serviceFee = async (params = {}, options = {}) => {
     },
     ...options
   })
-  return {
-    data: res.data.records,
-    success: res.success,
-    total: res.data.total
-  }
 }
