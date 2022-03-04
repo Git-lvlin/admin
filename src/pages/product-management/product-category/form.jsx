@@ -1,67 +1,239 @@
-import React, { useEffect } from 'react';
-import { Form } from 'antd';
+import React, { useEffect, useState, useMemo } from 'react';
+import { Form, message } from 'antd';
 import ProForm, {
   ModalForm,
   ProFormText,
   ProFormSwitch,
-  ProFormDigit,
   ProFormDependency,
 } from '@ant-design/pro-form';
-import Big from 'big.js';
+// import { amountTransform } from '@/utils/utils'
+import { EditableProTable } from '@ant-design/pro-table';
+import debounce from 'lodash/debounce';
 import * as api from '@/services/product-management/product-category'
 import Upload from '@/components/upload'
+import styles from './form.less'
+
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+  </div>
+)
 
 export default (props) => {
-  const { visible, setVisible, callback, data, id, type } = props;
+  const { visible, setVisible, callback, data, id, type, selectItem, parentId } = props;
   const [form] = Form.useForm();
+  const [formRef] = Form.useForm();
+  const [dataSource] = useState([
+    { name: '五星店主', level: 5, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
+    { name: '四星店主', level: 4, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
+    { name: '三星店主', level: 3, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
+    { name: '二星店主', level: 2, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
+    { name: '一星店主', level: 1, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
+  ])
   const formItemLayout = {
     labelCol: { span: 6 },
-    wrapperCol: { span: 14 },
+    wrapperCol: { span: 18 },
     layout: {
       labelCol: {
         span: 4,
       },
       wrapperCol: {
-        span: 14,
+        span: 20,
       },
     }
   };
 
+  const columns = [
+    {
+      title: '社区店等级',
+      dataIndex: 'name',
+      valueType: 'text',
+      editable: false,
+    },
+    {
+      title: '社区店提成',
+      dataIndex: 'shopCommission',
+      valueType: 'text',
+      fieldProps: {
+        addonAfter: '%',
+      },
+      formItemProps: (_, record) => {
+        return {
+          rules: [
+            {
+              required: true,
+              whitespace: true,
+              message: '社区店提成是必填项',
+              transform: (v) => `${v}`
+            },
+            {
+              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
+              message: '社区店提成只能是数字，并且最多保留两位小数',
+              transform: (v) => `${v}`
+            },
+            {
+              message: '本行数据之和不能大于100%',
+              transform: (v) => `${v}`,
+              validator() {
+                if (record.entry.platForm >= 0) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error());
+              },
+            }
+          ],
+        }
+      },
+    },
+    {
+      title: '运营中心提成',
+      dataIndex: 'operateCommission',
+      valueType: 'text',
+      fieldProps: {
+        addonAfter: '%',
+      },
+      formItemProps: (_, record) => {
+        return {
+          rules: [
+            {
+              required: true,
+              whitespace: true,
+              message: '运营中心提成是必填项',
+              type: 'string',
+              transform: (v) => `${v}`
+            },
+            {
+              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
+              message: '运营中心提成只能是数字，并且最多保留两位小数',
+              type: 'string',
+              transform: (v) => `${v}`
+            },
+            {
+              message: '本行数据之和不能大于100%',
+              type: 'string',
+              validator() {
+                if (record.entry.platForm >= 0) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error());
+              },
+              transform: (v) => `${v}`
+            }
+          ],
+        }
+      },
+    },
+    {
+      title: '推荐人提成',
+      dataIndex: 'referrerCommission',
+      valueType: 'text',
+      fieldProps: {
+        addonAfter: '%',
+      },
+      formItemProps: (_, record) => {
+        return {
+          rules: [
+            {
+              required: true,
+              whitespace: true,
+              message: '推荐人提成是必填项',
+              type: 'string',
+              transform: (v) => `${v}`
+            },
+            {
+              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
+              message: '推荐人提成只能是数字，并且最多保留两位小数',
+              type: 'string',
+              transform: (v) => `${v}`
+            },
+            {
+              message: '本行数据之和不能大于100%',
+              type: 'string',
+              validator() {
+                if (record.entry.platForm >= 0) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error());
+              },
+              transform: (v) => `${v}`
+            }
+          ],
+        }
+      },
+    },
+    {
+      title: '平台额外收益',
+      dataIndex: 'platForm',
+      valueType: 'text',
+      render: (_) => `${_}%`,
+      editable: false,
+    },
+  ]
+
   const submit = (values) => {
     return new Promise((resolve, reject) => {
-      const apiMethod = type === 'add' ? api.categoryAdd : api.categoryEdit;
-      const { comPercent, innerPercent, gcShow, ...rest } = values;
-      const params = {
-        ...rest,
-        gcShow: gcShow ? 1 : 0,
-      }
+      formRef.validateFields()
+        .then(_ => {
+          const apiMethod = type === 'add' ? api.categoryAdd : api.categoryEdit;
+          const { fresh, gcShow, ...rest } = values;
+          const params = {
+            ...rest,
+            gcShow: gcShow ? 1 : 0,
+            fresh: fresh ? 1 : 0,
+          }
 
-      if (type === 'add') {
-        params.gcParentId = id
-        params.comPercent = comPercent
-        params.innerPercent = innerPercent
-      } else {
-        params.id = id;
-      }
+          if (type === 'add') {
+            params.gcParentId = id
+            // params.comPercent = comPercent
+            // params.innerPercent = innerPercent
+          } else {
+            params.id = id;
+            params.fresh = data.fresh;
+          }
 
-      apiMethod({
-        ...params,
-      }, { showSuccess: true, showError: true }).then(res => {
-        if (res.code === 0) {
-          resolve();
-        } else {
+          if (parentId !== 0) {
+            params.fresh = selectItem.fresh;
+          }
+
+          apiMethod({
+            ...params,
+          }, { showSuccess: true, showError: true }).then(res => {
+            if (res.code === 0) {
+              resolve();
+            } else {
+              reject();
+            }
+          })
+        })
+        .catch(_ => {
+          message.error(_.errorFields[0].errors[0])
           reject();
-        }
-      })
+        })
+
     });
   }
+
+  const debounceValidate = useMemo(() => {
+    const validate = () => {
+      formRef.validateFields()
+    };
+    return debounce(validate, 1000);
+  }, []);
 
   useEffect(() => {
     if (data) {
       form?.setFieldsValue({
         ...data,
-        comPercent: data.comPercentDisplay,
-        innerPercent: data.innerPercentDisplay,
+        // shopValue: data.shopValue.map(item => {
+        //   return {
+        //     ...item,
+        //     shopCommission: amountTransform(item.shopCommission),
+        //     operateCommission: amountTransform(item.operateCommission),
+        //     referrerCommission: amountTransform(item.referrerCommission),
+        //     platForm: amountTransform(item.platForm),
+        //   }
+        // }),
         gcShow: data.gcShow ? 1 : 0
       })
     }
@@ -74,18 +246,19 @@ export default (props) => {
       }}
       onVisibleChange={setVisible}
       visible={visible}
-      width={550}
+      width={1050}
       form={form}
       onFinish={async (values) => {
         await submit(values);
         callback();
         return true;
       }}
-      onChange={()=>{
-        form.validateFields()
+      onChange={() => {
+        // form.validateFields()
       }}
       initialValues={{
         gcShow: true,
+        shopValue: dataSource,
       }}
       {...formItemLayout}
     >
@@ -114,18 +287,102 @@ export default (props) => {
         label="分类图片"
         name="gcIcon"
         rules={[{ required: true, message: '请上传分类图片' }]}
-        tooltip={
-          <dl>
-            <dt>图片要求</dt>
-            <dd>1.图片大小100kb以内</dd>
-            <dd>2.图片比例1:1</dd>
-            <dd>3.图片格式png/jpg/gif</dd>
-          </dl>
-        }
       >
-        <Upload accept="image/*" dimension="1:1" size={100} code={216} />
+        <FromWrap
+          content={(value, onChange) => <Upload value={value} onChange={onChange} accept="image/*" dimension="1:1" size={100} code={216} />}
+          right={() => {
+            return (
+              <dl>
+                <dt>图片要求</dt>
+                <dd>1.图片大小100kb以内</dd>
+                <dd>2.图片比例1:1</dd>
+                <dd>3.图片格式png/jpg/gif</dd>
+              </dl>
+            )
+          }}
+        />
       </Form.Item>
-      <ProFormDigit
+      {
+        parentId !== 0
+          ?
+          <Form.Item
+            label='是否为生鲜类目'
+            colon={false}
+          >
+            {selectItem.fresh === 1 ? '是' : '否'}
+          </Form.Item>
+          :
+          <>
+            {type === 'add'
+              ? <ProFormSwitch
+                checkedChildren="是"
+                unCheckedChildren="否"
+                name="fresh"
+                label="是否为生鲜类目"
+                extra={<span style={{ color: 'red' }}>一经提交成功，后续不可修改</span>}
+              />
+              : <Form.Item
+                label='是否为生鲜类目'
+                colon={false}
+              >
+                {data.fresh === 1 ? '是' : '否'}
+              </Form.Item>
+            }
+          </>
+      }
+      <ProFormDependency name={['fresh']}>
+        {({ fresh }) => {
+          return (
+            (fresh || (parentId !== 0 && selectItem.fresh === 1))
+              ? <div className={styles.shopValue}>
+                <Form.Item
+                  label='生鲜商品集约各方的分佣比例'
+                  name="shopValue"
+                  rules={[{ required: true }]}
+                >
+                  <EditableProTable
+                    columns={columns}
+                    rowKey="level"
+                    value={dataSource}
+                    search={false}
+                    editable={{
+                      form: formRef,
+                      editableKeys: [1, 2, 3, 4, 5],
+                      onValuesChange: (record, recordList) => {
+                        form.setFieldsValue({
+                          shopValue: recordList.map(item => ({ ...item, platForm: 100 - item.shopCommission - item.operateCommission - item.referrerCommission }))
+                        })
+                        debounceValidate();
+                      }
+                    }}
+                    bordered
+                    recordCreatorProps={false}
+                    tableAlertRender={false}
+                  />
+                </Form.Item>
+                {type ==='edit'&&<Form.Item
+                  label='生鲜分类商品总分佣比例'
+                >
+                  {data?.freshCommission}%
+                </Form.Item>}
+              </div>
+              :
+              <>
+                {type === 'add' && <Form.Item
+                  label=' '
+                  colon={false}
+                >
+                  非生鲜分类的商品按集约店铺等级的佣金配置进行各方的提成分佣
+                </Form.Item>}
+              </>
+          )
+        }}
+      </ProFormDependency>
+
+
+
+
+      {/* <ProFormDigit
         placeholder="请输入佣金抽成"
         label="佣金抽成"
         name="comPercent"
@@ -152,17 +409,18 @@ export default (props) => {
         step
         rules={[{ required: true, message: '请输入内部店佣金抽成' }]}
         extra={<><span style={{ color: 'red' }}>录入后固定不可编辑修改，谨慎操作</span><span style={{ position: 'absolute', right: 30, top: 5 }}>%</span></>}
-      />
+      /> */}
       <Form.Item
         label="基础销量取值范围"
       >
         <ProFormDependency name={['virtualStart', 'virtualEnd']}>
           {
-            ({ virtualStart, virtualEnd}) => (
+            ({ virtualStart, virtualEnd }) => (
               <div style={{ display: 'flex' }}>
                 <ProFormText
                   name="virtualStart"
                   fieldProps={{ style: { width: 135 }, maxLength: 6 }}
+                  dependencies={['virtualEnd']}
                   rules={[
                     () => ({
                       validator(_, value) {
@@ -180,11 +438,12 @@ export default (props) => {
                 <span style={{ position: 'relative', top: 3 }}>&nbsp;到&nbsp;</span>
                 <ProFormText
                   name="virtualEnd"
+                  dependencies={['virtualStart']}
                   fieldProps={{ style: { width: 135 }, maxLength: 6 }}
                   rules={[
                     () => ({
                       validator(_, value) {
-                        
+
                         if (!/^\d{1,6}$/.test(value)) {
                           return Promise.reject(new Error('请输入大于0小于999999的数字'));
                         }
@@ -200,9 +459,9 @@ export default (props) => {
             )
           }
         </ProFormDependency>
-        
+
       </Form.Item>
-      <ProFormSwitch checkedChildren="开" unCheckedChildren="关" name="gcShow" label="状态" />
+      <ProFormSwitch checkedChildren="开" unCheckedChildren="关" name="gcShow" label="开启状态" />
     </ModalForm >
   );
 };

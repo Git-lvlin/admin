@@ -121,7 +121,7 @@ export default props => {
         >
 
           <h1><CaretRightFilled /> 红包审核详情</h1>
-          <Button className={styles.goback} type="default" onClick={() => history.goBack()}>返回</Button>
+          <Button className={styles.goback} type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
           <div className={styles.msg}>
             <h3 className={styles.head}>基本信息</h3>
             <Form.Item

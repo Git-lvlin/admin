@@ -120,7 +120,7 @@ export default props => {
           <Button type="primary" htmlType="submit">
             保存
           </Button>
-          <Button style={{marginLeft:'20px'}} type="default" onClick={()=>history.goBack()}>
+        <Button style={{ marginLeft: '20px' }} type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>
             返回
           </Button>
       </Form.Item>

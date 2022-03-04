@@ -119,6 +119,7 @@ export default () => {
           options={false}
           postData={postData}
           request={getActiveConfigList}
+          scroll={{ y: window.innerHeight - 450, scrollToFirstRowOnChange: true, }}
           toolBarRender={()=>[
             <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/activity-management/spring-festival-build-building-activity/rule-configuration')} type="primary">
                 添加活动

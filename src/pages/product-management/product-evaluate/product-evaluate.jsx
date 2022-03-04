@@ -156,6 +156,7 @@ const EvaluateList= (props) => {
             params={{
               state:type
             }}
+            scroll={{ y: window.innerHeight - 750, scrollToFirstRowOnChange: true, }}
             request={findByways}
             search={{
                 defaultCollapsed: false,

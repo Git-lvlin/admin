@@ -296,6 +296,7 @@ export default () => {
                 search={false}
                 columns={columns}
                 postData={postData}
+                scroll={{ y: window.innerHeight - 750, scrollToFirstRowOnChange: true, }}
                 pagination={{
                   pageSize: 10,
                   showQuickJumper: true,

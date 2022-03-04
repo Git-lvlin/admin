@@ -42,9 +42,7 @@ const Detail = () => {
       setConsultationRecord([])
     }
   }, [detail])
-  const handleBack = () => {
-    history.goBack()
-  }
+  const handleBack = () => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }
   return(
     <PageContainer title={false}>
       <Spin spinning={loading}>

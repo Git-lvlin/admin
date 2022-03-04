@@ -27,6 +27,10 @@ const SubTable = (props) => {
     // { title: '活动库存', dataIndex: 'activityStockNum' },
   ];
 
+  const a: string = 1;
+
+  console.log(a)
+
   useEffect(() => {
     setLoading(true);
     api.logList({
@@ -198,6 +202,7 @@ const TableList = () => {
         params={{
           selectType: 1,
         }}
+        scroll={{ y: window.innerHeight - 570, scrollToFirstRowOnChange: true, }}
         request={api.logList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{

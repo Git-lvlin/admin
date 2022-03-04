@@ -215,7 +215,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      render: (_, data) => `${data.gcId1Display}-${data.gcId2Display}`,
+      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.fresh === 1 && <span style={{ color: 'green' }}>(生鲜)</span>}</>,
     },
     {
       title: '主图',
@@ -238,7 +238,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       hideInSearch: true,
       renderFormItem: (_, { record }) => {
         return (<Radio.Group>
-          <Radio value={1}>直发到店</Radio>
+          <Radio value={1} disabled={record?.fresh === 1}>直发到店</Radio>
           <Radio value={2}>运营中心配送</Radio>
         </Radio.Group>)
       }
@@ -482,7 +482,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       profit: amountTransform(item.profit, '/'),
       orderProfit: 0,
       totalPrice: item.salePrice > 0 ? +new Big(item.price).div(100).times(item.wholesaleMinNum || 10) : 0,
-      wholesaleFlowType: 1,
+      wholesaleFlowType: item.fresh === 1 ? 2 : 1,
       isAppointSubsidy: [],
       // subsidy: {
       //   a: item.orderAmount > 0 ? amountTransform(item.orderAmount, '/') : '',

@@ -1,3 +1,5 @@
+const RouteWatcher = '@/components/PageTab/RouteWatcher';
+
 export default {
   path: '/single-contract-activity-management',
   name: 'single-contract-activity-management',
@@ -6,6 +8,7 @@ export default {
       name: 'activity-list',
       path: '/single-contract-activity-management/activity-list',
       component: './single-contract-activity-management/activity-list',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'activity-detail',

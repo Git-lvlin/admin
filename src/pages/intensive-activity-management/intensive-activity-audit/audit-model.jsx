@@ -39,7 +39,8 @@ export default props=>{
             onFinish={async (values) => {
                 InterFace({wsId:id,type:2,...values},{ showSuccess: true }).then(res=>{
                     if(res.code==0){  
-                        history.goBack()
+                        window.history.back()
+                        setTimeout(() => { window.location.reload(); }, 200)
                         setVisible(false) 
                         return true;    
                     }

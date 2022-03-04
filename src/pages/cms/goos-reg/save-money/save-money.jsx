@@ -170,6 +170,7 @@ const SaveMoney = () => {
       params={{
         verifyVersionId: verifyVersionId
       }}
+      scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
       request={saveMoneyList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

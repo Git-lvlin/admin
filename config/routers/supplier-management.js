@@ -1,3 +1,6 @@
+const RouteWatcher = '@/components/PageTab/RouteWatcher';
+
+
 export default {
   path: '/supplier-management',
   name: 'supplier-management',
@@ -6,11 +9,13 @@ export default {
       name: 'supplier-list',
       path: '/supplier-management/supplier-list',
       component: './supplier-management/supplier-list',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'audit-list',
       path: '/supplier-management/audit-list',
       component: './supplier-management/audit-list',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'consultant-product-list',

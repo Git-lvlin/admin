@@ -147,6 +147,7 @@ const Member = () => {
         params={{
           verifyVersionId: verifyVersionId
         }}
+        scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
         request={spaceInfoList}
         rowSelection={{}}
         tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (

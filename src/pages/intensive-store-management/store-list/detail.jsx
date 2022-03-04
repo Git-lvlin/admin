@@ -4,13 +4,20 @@ import { getDetail } from '@/services/intensive-store-management/store-detail';
 import { amountTransform } from '@/utils/utils'
 import Auth from '@/components/auth'
 import AddressEdit from './address-edit';
+import OrderDetail from '@/pages/order-management/normal-order/detail';
+
 
 const { Title } = Typography;
+
+const orderStatus = { 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭' };
 
 const Detail = ({ storeNo, visible, setVisible }) => {
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [orderDetailVisible, setOrderDetailVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState({});
+
   const getDetailRequest = () => {
     setLoading(true);
     getDetail({
@@ -48,7 +55,7 @@ const Detail = ({ storeNo, visible, setVisible }) => {
   return (
     <Drawer
       title="店铺详情"
-      width={1200}
+      width={1300}
       placement="right"
       onClose={() => { setVisible(false) }}
       visible={visible}
@@ -69,16 +76,61 @@ const Detail = ({ storeNo, visible, setVisible }) => {
               <Avatar size={100} src={detailData?.storeLogo} />
               <div style={{ marginTop: 10 }}>{detailData?.storeName}</div>
             </div>
-            <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 120, display: 'inline-block' }}>
-              <Descriptions.Item label="店主昵称手机号">{`${detailData?.member?.nickname === detailData.memberPhone ? '未设置昵称' : detailData?.member?.nickname}（${detailData.memberPhone}）`}</Descriptions.Item>
-              <Descriptions.Item label="保证金金额">{`¥${amountTransform(detailData?.deposit?.payAmount, '/') || ''}`}</Descriptions.Item>
-              {/* <Descriptions.Item label="店主性别">{detailData?.member?.gender?.desc}</Descriptions.Item> */}
-              <Descriptions.Item label="缴纳保证金时间">{detailData?.deposit?.payTime}</Descriptions.Item>
-              <Descriptions.Item label="入驻时间">{detailData?.createTime}</Descriptions.Item>
-              <Descriptions.Item label="注册时间">{detailData?.memberShop?.applyRow?.createTime}</Descriptions.Item>
-              {/* <Descriptions.Item label="微信账号">{detailData?.member?.wechatBindState?.desc}</Descriptions.Item> */}
-              {/* <Descriptions.Item label="最近登录时间">{}</Descriptions.Item> */}
-            </Descriptions>
+            <div style={{ flex: 1 }}>
+              <Descriptions labelStyle={{ textAlign: 'right', width: 140, display: 'inline-block' }}>
+                <Descriptions.Item label="店主昵称手机号">{`${detailData?.member?.nickname === detailData.memberPhone ? '未设置昵称' : detailData?.member?.nickname}（${detailData.memberPhone}）`}</Descriptions.Item>
+                <Descriptions.Item label="剩余保证金金额">{`¥${amountTransform(detailData?.memberShop?.deposit, '/')}`}</Descriptions.Item>
+                {/* <Descriptions.Item label="店主性别">{detailData?.member?.gender?.desc}</Descriptions.Item> */}
+                <Descriptions.Item label="缴纳保证金">¥{amountTransform(detailData?.deposit?.payAmount, '/')}（{detailData?.deposit?.payTime}）</Descriptions.Item>
+                <Descriptions.Item label="缴纳保证金支付方式">{detailData?.deposit?.payType?.desc}</Descriptions.Item>
+                <Descriptions.Item label="服务费金额">{`¥${amountTransform(detailData?.lastServiceFee?.payAmount, '/')}`}</Descriptions.Item>
+                <Descriptions.Item label="缴纳服务费时间">{detailData?.lastServiceFee?.payTime}</Descriptions.Item>
+                <Descriptions.Item label="缴纳服务费支付方式">{detailData?.lastServiceFee?.payType?.desc}</Descriptions.Item>
+                <Descriptions.Item label="入驻时间">{detailData?.createTime}</Descriptions.Item>
+                <Descriptions.Item label="注册时间">{detailData?.memberShop?.applyRow?.createTime}</Descriptions.Item>
+                <Descriptions.Item label="申请类型">{{ 10: '正常申请', 20: '绿色通道申请' }[detailData?.memberShop?.applyType?.code]}</Descriptions.Item>
+                {/* <Descriptions.Item label="微信账号">{detailData?.member?.wechatBindState?.desc}</Descriptions.Item> */}
+                {/* <Descriptions.Item label="最近登录时间">{}</Descriptions.Item> */}
+              </Descriptions>
+              {detailData?.memberShop?.applyType?.code === 20 &&
+                <div style={{ display: 'flex', marginBottom: 10 }}>
+                  <div>绿色通道证明文件</div>
+                  {
+                    detailData?.memberShop?.applyRow?.credentialList.map(item => (<Image width={50} height={50} src={item} key={item} />))
+                  }
+                </div>
+              }
+              <div style={{ display: 'flex', marginBottom: 10 }}>
+                <div>在平台购买生鲜柜的情况：</div>
+                {
+                  detailData?.freshApplyRow?.id === 0 && '未购买'
+                }
+                {
+                  detailData?.freshApplyRow?.id !== 0 &&
+                  <>购买生鲜柜订单号<a onClick={() => { setSelectItem({ id: detailData?.freshApplyRow?.details?.order?.id }); setOrderDetailVisible(true) }} >{detailData?.freshApplyRow?.details?.order?.orderSn}【{orderStatus[detailData?.freshApplyRow?.details?.order?.status]}】</a></>
+                }
+              </div>
+              <div style={{ display: 'flex', marginBottom: 10 }}>
+                <div>已有生鲜柜的情况：</div>
+                {
+                  !detailData?.freshApplyRow?.details?.attachList && '没有生鲜柜'
+                }
+                {
+                  detailData?.freshApplyRow?.details?.attachList?.length > 0 && <>已有生鲜柜图片{detailData?.freshApplyRow?.details?.attachList.map(item => (<Image width={50} height={50} src={item} key={item} />))}</>
+                }
+              </div>
+              <div style={{ display: 'flex', marginBottom: 10 }}>
+                <div>必备礼包订单号：</div>
+                {
+                  detailData?.memberShop?.giftOrder?.isGiftOrdered === 0
+                  && <span style={{ color: 'red' }}>没有购买记录 </span>
+                }
+                {
+                  detailData?.memberShop?.giftOrder?.isGiftOrdered === 1
+                  && <a onClick={() => { setSelectItem({ id: detailData?.memberShop?.giftOrder?.id }); setOrderDetailVisible(true) }}>{detailData?.memberShop?.giftOrder?.orderSn}【{orderStatus[detailData?.memberShop?.giftOrder?.status]}】 </a>
+                }
+              </div>
+            </div>
           </Row>
           <Row>
             <Title style={{ marginBottom: -10, marginTop: 100 }} level={5}>地址信息</Title>
@@ -119,6 +171,14 @@ const Detail = ({ storeNo, visible, setVisible }) => {
           <div id="container" style={{ width: '100%', height: 500 }}></div>
         </div>
       </Spin>
+      {
+        orderDetailVisible &&
+        <OrderDetail
+          id={selectItem?.id}
+          visible={orderDetailVisible}
+          setVisible={setOrderDetailVisible}
+        />
+      }
     </Drawer>
   )
 }

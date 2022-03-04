@@ -83,6 +83,7 @@ const ContentVersion = () => {
       search={false}
       pagination={false}
       dateFormatter="string"
+      scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
     />
     {formVisible && <Edit
       visible={formVisible}
