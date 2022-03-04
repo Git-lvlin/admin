@@ -259,8 +259,8 @@ const ShopArea = () => {
         actionRef={actionRef}
         formRef={formRef}
         request={getApplicableArea}
-        scroll={{ y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
         recordCreatorProps={false}
+        scroll={{ y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
         toolBarRender={() => <div className="tips">{tips}</div>}
         search={{
           defaultCollapsed: false,
@@ -358,7 +358,7 @@ export default (props) =>{
               seleType==2&&<ServiceCharge/>
             }
           </TabPane>
-          <TabPane tab="残疾人缴费" key="3">
+          <TabPane tab="绿色通道缴费" key="3">
             {
               seleType==3&&<Handicapped/>
             }

@@ -7,11 +7,14 @@ import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-for
 import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
 import moment from 'moment'
+import EndModel from './end-model'
 
 
 
 export default () => {
     const ref=useRef()
+    const [visible, setVisible] = useState(false);
+    const [pennyId,setPennyId]=useState()
     const columns= [
       {
         title: '活动编号',
@@ -61,7 +64,12 @@ export default () => {
         render:(text, record, _, action)=>[
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/special-offer-acticity/activity-detail?id='+record.id)}>详情</a>,
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/special-offer-acticity/add-activity?id='+record.id)}>编辑</a>,
-            <a key='detail' onClick={()=>{}}>终止</a>
+            <div key='stop'>
+            {
+              record.status!=0&&
+              <a key='detail' onClick={()=>{setPennyId(record.id);setVisible(true)}}>终止</a>
+            }
+          </div>
         ],
       }, 
     ];
@@ -98,6 +106,15 @@ export default () => {
             showQuickJumper: true,
           }}
         />
+         {
+          visible&&<EndModel 
+          visible={visible} 
+          setVisible={setVisible}  
+          pennyId={pennyId} 
+          canBlack={()=>{ref.current.reload();setPennyId(null)}}
+          onClose={()=>{ref.current.reload();setPennyId(null)}}
+          />
+        }
         </PageContainer>
     );
   };
