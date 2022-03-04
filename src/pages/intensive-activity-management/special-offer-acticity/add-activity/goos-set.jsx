@@ -24,7 +24,7 @@ const formItemLayout = {
 };
 
 const FromWrap = ({ value, onChange, content, right }) => (
-  <div style={{ display: 'flex',flexDirection:'column' }}>
+  <div style={{ display: 'flex',flexDirection:'column',alignItems:'center' }}>
     <div>{content(value, onChange)}</div>
     <div>{right(value)}</div>
   </div>
@@ -79,6 +79,9 @@ const GoosModel=(props)=>{
           title: '批发供货价',
           dataIndex: 'wholesaleSupplyPrice',
           hideInSearch: true,
+          render:(_,data)=>{
+            return <p>{amountTransform(_, '/')}</p>
+          }
       },
       {
           title: '集约活动名称',
@@ -301,7 +304,10 @@ export default (props) => {
       title: '批发供货价',
       dataIndex: 'wholesaleSupplyPrice',
       hideInSearch: true,
-      editable:false
+      editable:false,
+      render:(_,data)=>{
+        return <p>{amountTransform(_, '/')}</p>
+      }
     },
     {
       title: '集约活动名称',
@@ -371,7 +377,7 @@ export default (props) => {
       title: '最大限购量',
       dataIndex: 'maxNum',
       hideInSearch: true,
-      valueType: 'text',
+      valueType: 'digit',
     },
     {
       title: '活动价',
@@ -381,7 +387,7 @@ export default (props) => {
       renderFormItem: (_) =>{
         return <FromWrap
         content={(value, onChange) =><InputNumber
-                  min="0.00"
+                  min={amountTransform(_?.entry?.wholesaleSupplyPrice, '/')}
                   precision='2'
                   stringMode
                   value={value}
@@ -394,17 +400,6 @@ export default (props) => {
       render: (_,r) =>{
         return <p>{_}</p>
       },
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      valueType: 'text',
-      hideInSearch: true,
-      editable:false,
-      valueEnum: {
-        0: '已禁用',
-        1: '已启用',
-      }
     },
     {
       title: '操作',
