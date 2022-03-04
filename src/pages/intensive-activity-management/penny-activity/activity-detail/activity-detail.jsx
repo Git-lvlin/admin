@@ -101,6 +101,9 @@ export default props => {
       title: '活动价（元/包）',
       dataIndex: 'price',
       hideInSearch: true,
+      render: (_)=> {
+        return <p>{amountTransform(_, '/')}</p>
+      },
     }
   ]; 
   
@@ -117,6 +120,10 @@ export default props => {
             dataSource={detailData.content?.goods}
             search={false}
             columns={columns}
+            pagination={{
+              pageSize: 5,
+              showQuickJumper: true,
+            }}
             />
       </Row>
       <Title style={{ marginBottom: -10 }} level={5}>活动参数</Title>

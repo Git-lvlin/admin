@@ -64,7 +64,7 @@ export default () => {
         render:(text, record, _, action)=>[
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/special-offer-acticity/activity-detail?id='+record.id)}>详情</a>,
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/special-offer-acticity/add-activity?id='+record.id)}>编辑</a>,
-            <div>
+            <div key='stop'>
             {
               record.status!=0&&
               <a key='detail' onClick={()=>{setPennyId(record.id);setVisible(true)}}>终止</a>

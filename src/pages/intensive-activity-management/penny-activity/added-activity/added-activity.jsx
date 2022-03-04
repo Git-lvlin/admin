@@ -126,8 +126,8 @@ export default (props) => {
       const parmas={
         ...values,
         id:id?id:0,
-        startTime:moment(values.dateRange[0]).valueOf(),
-        endTime:moment(values.dateRange[1]).valueOf(),
+        startTime:moment(values.dateRange[0]).valueOf()/1000,
+        endTime:moment(values.dateRange[1]).valueOf()/1000,
         joinShopType:values.joinShopType[0],
         joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
         goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:amountTransform(ele.price,'*'),status:ele.status}))||detailList,
@@ -173,6 +173,7 @@ export default (props) => {
           width="md"
           name="name"
           label='活动名称'
+          placeholder='请输入活动名称'
           rules={[
             { required: true, message: '请输入活动名称' },
             { validator: activityName }
