@@ -432,7 +432,10 @@ const FreshStoreReview = () => {
         request={freshApplyPage}
         bordered
         search={{
-          labelWidth: 120
+          labelWidth: 120,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse()
+          ]
         }}
         toolbar={{
           settings: false
