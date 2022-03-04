@@ -374,8 +374,8 @@ export default (props) => {
       valueType: 'text',
       render:(text, record, _, action)=>{
         return [
-          <a key='dele' onClick={()=>delGoods(record.skuId)}>删除</a>,
-          <a key='stop' onClick={()=>stopGoods(record.skuId)}>禁用</a>,
+          <a key='dele' onClick={()=>delGoods(record.skuId)}>删除&nbsp;&nbsp;</a>,
+          <a key='stop' onClick={()=>stopGoods(record.skuId)}>禁用&nbsp;&nbsp;</a>,
           <a key='start' onClick={()=>stopGoods(record.skuId)}>启用</a>
       ]
       },
