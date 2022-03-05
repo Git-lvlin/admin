@@ -50,14 +50,16 @@ const GoosModel=(props)=>{
           dataIndex: 'goodsName',
           valueType: 'text',
           ellipsis:true,
-          hideInSearch:true
+          hideInSearch:true,
+          width:150
       },
       {
           title: '集约活动名称',
           dataIndex: 'name',
           valueType: 'text',
           ellipsis:true,
-          hideInSearch:true
+          hideInSearch:true,
+          width:200
       },
       {
           title: '集约活动ID',
@@ -278,8 +280,8 @@ export default (props) => {
       dataIndex: 'totalStockNum',
       hideInSearch: true,
       editable:false,
-      render: (_)=> {
-        return <p>{_}包</p>
+      render: (_,data)=> {
+        return <p>{_}{data?.unit}</p>
       },
     },
     {
