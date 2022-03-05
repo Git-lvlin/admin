@@ -50,14 +50,16 @@ const GoosModel=(props)=>{
           dataIndex: 'goodsName',
           valueType: 'text',
           ellipsis:true,
-          hideInSearch:true
+          hideInSearch:true,
+          width:150
       },
       {
           title: '集约活动名称',
           dataIndex: 'name',
           valueType: 'text',
           ellipsis:true,
-          hideInSearch:true
+          hideInSearch:true,
+          width:200
       },
       {
           title: '集约活动ID',
@@ -95,11 +97,13 @@ const GoosModel=(props)=>{
       },
   ];
   const onsubmit = (values) => {
-      callback(goosList)
-      setVisible(false)
+        if(goosList){
+          callback(goosList)
+        }
+        setVisible(false)
   };
   useEffect(()=>{
-    setKeys(keyId.map(ele=>(ele.skuId)))
+    setKeys(keyId.map(ele=>(ele.wsId)))
   },[])
   const postData=(data)=>{
     dataList.push(...data)
@@ -138,7 +142,7 @@ const GoosModel=(props)=>{
           {...formItemLayout}
       >
       <ProTable
-          rowKey="skuId"
+          rowKey="wsId"
           options={false}
           request={chooseWholesaleList}
           actionRef={actionRef}
@@ -157,7 +161,7 @@ const GoosModel=(props)=>{
                 const arr=[]
                 _.forEach(item=>{
                  const obj=dataList.find(ele=>{
-                   return ele.skuId==item
+                   return ele.wsId==item
                   })
                   if(obj){
                     arr.push(obj)
@@ -189,7 +193,7 @@ export default (props) => {
   useEffect(()=>{
     if(id){
       detailList&&setDataSource(detailList.map(ele=>({...ele,price:amountTransform(ele.price,'/')})))
-     setEditableKeys(detailList?.map(item => item.skuId))
+     setEditableKeys(detailList?.map(item => item.wsId))
     }   
   },[id,detailList])
 
@@ -259,15 +263,15 @@ export default (props) => {
       hideInSearch: true,
       editable:false,
       render: (_,data)=> {
-        return <p>{data?.minNum} - {data?.maxNum}包</p>
+        return <p>{data?.minNum} - {data?.maxNum}{data?.unit}</p>
       },
     },
     {
       title: '集约价',
       dataIndex: 'wsPrice',
       hideInSearch: true,
-      render: (_)=> {
-        return <p>{amountTransform(_, '/').toFixed(2)}元/包</p>
+      render: (_,data)=> {
+        return <p>{amountTransform(_, '/').toFixed(2)}元/{data?.unit}</p>
       },
       editable:false
     },
@@ -276,8 +280,8 @@ export default (props) => {
       dataIndex: 'totalStockNum',
       hideInSearch: true,
       editable:false,
-      render: (_)=> {
-        return <p>{_}包</p>
+      render: (_,data)=> {
+        return <p>{_}{data?.unit}</p>
       },
     },
     {
@@ -296,7 +300,7 @@ export default (props) => {
                   onChange={onChange}
                 />
         }
-        right={(value) =><p>元/包</p>}
+        right={(value) =><p>元/{_?.entry?.unit}</p>}
         />
       },
       render: (_,r) =>{
@@ -323,15 +327,15 @@ export default (props) => {
           <span key='dele'>
             {
               record.wholesaleStatusDesc=='待开始'&&
-              <a onClick={()=>{setPennyId({skuId:record.skuId,type:1});setEndVisible(true)}}>删除&nbsp;&nbsp;</a>
+              <a onClick={()=>{setPennyId({wsId:record.wsId,type:1});setEndVisible(true)}}>删除&nbsp;&nbsp;</a>
             }
           </span>,
           <span key='stop'>
               {
                 record.status!=0?
-                <a key='detail' onClick={()=>{setPennyId({skuId:record.skuId,type:2});setEndVisible(true)}}>禁用</a>
+                <a key='detail' onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
                 :
-                <a key='start' onClick={()=>{setPennyId({skuId:record.skuId,type:3});setEndVisible(true)}}>启用</a>
+                <a key='start' onClick={()=>{setPennyId({wsId:record.wsId,type:3});setEndVisible(true)}}>启用</a>
               }
           </span>
       ]
@@ -356,7 +360,7 @@ export default (props) => {
       readonly={true}
     />
     <EditableProTable
-        rowKey="skuId"
+        rowKey="wsId"
         name="table"
         actionRef={ref}
         value={dataSource}
@@ -399,7 +403,7 @@ export default (props) => {
           })
           setDataSource(arr)
           callback(arr)
-          setEditableKeys(arr.map(item => item.skuId))
+          setEditableKeys(arr.map(item => item.wsId))
         }}
         keyId={dataSource}
         onClose={()=>{}}
