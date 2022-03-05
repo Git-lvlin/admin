@@ -26,16 +26,16 @@ const formItemLayout = {
 
 export default (props) => {
   const [detailList,setDetailList]=useState()
-  const [falg,setFalg]=useState(true)
   const [goosList,setGoosList]=useState()
   const [visible, setVisible] = useState(false);
   const [limitAll,setLimitAll]=useState(200)
+  const [batchPrice,setBatchPrice]=useState()
   let id = props.location.query.id
   const [form] = Form.useForm()
   useEffect(() => {
     if (id) {
       getActiveConfigById({id}).then(res=>{
-        setDetailList(res.data?.content?.goods)
+        setDetailList(res.data)
         form.setFieldsValue({
             dateRange: [moment(res.data?.startTime*1000).valueOf(), moment(res.data?.endTime*1000).valueOf()],
             buyerLimit:res.data?.content?.buyerLimit,
@@ -192,6 +192,9 @@ export default (props) => {
           ]}
           fieldProps={{
             addonAfter:"元",
+            onChange:(e)=>{
+              setBatchPrice(e.target.value)
+            }
           }}
           extra={<p style={{color:'#D8BC2C'}}>一键设置所有活动商品的活动价</p>}
         />
@@ -248,7 +251,7 @@ export default (props) => {
         <GoosSet
           detailList={detailList}
           id={id} 
-          falg={falg} 
+          batchPrice={batchPrice}
           callback={(val)=>{
             setGoosList(val)
           }}
