@@ -106,7 +106,8 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入供应商家ID'
-      }
+      },
+      width: 100,
     },
     {
       title: '供货类型',

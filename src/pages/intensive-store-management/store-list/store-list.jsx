@@ -569,6 +569,7 @@ const StoreList = (props) => {
       hideInTable: true,
       hideInSearch: storeType == 'freshStores',
       order: -1,
+      hideInSearch: storeType == 'freshStores',
     },
     {
       title: '操作',
