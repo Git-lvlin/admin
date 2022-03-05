@@ -155,11 +155,13 @@ const GoosModel=(props)=>{
     },
   ];
   const onsubmit = (values) => {
-    callback(goosList)
+    if(goosList){
+      callback(goosList)
+    }
     setVisible(false)
   };
   useEffect(()=>{
-    setKeys(keyId.map(ele=>(ele.skuId)))
+    setKeys(keyId.map(ele=>(ele.wsId)))
   },[])
   const postData=(data)=>{
     dataList.push(...data)
@@ -198,7 +200,7 @@ const GoosModel=(props)=>{
           {...formItemLayout}
       >
       <ProTable
-          rowKey="skuId"
+          rowKey="wsId"
           options={false}
           request={chooseWholesaleList}
           actionRef={actionRef}
@@ -217,7 +219,7 @@ const GoosModel=(props)=>{
                 const arr=[]
                 _.forEach(item=>{
                  const obj=dataList.find(ele=>{
-                   return ele.skuId==item
+                   return ele.wsId==item
                   })
                   if(obj){
                     arr.push(obj)
@@ -249,7 +251,7 @@ export default (props) => {
   useEffect(()=>{
     if(id){
       detailList&&setDataSource(detailList.map(ele=>({...ele,price:amountTransform(ele.price,'/')})))
-     setEditableKeys(detailList?.map(item => item.skuId))
+     setEditableKeys(detailList?.map(item => item.wsId))
     }   
   },[id,detailList])
 
@@ -402,40 +404,44 @@ export default (props) => {
       },
     },
     {
+      title: '状态',
+      dataIndex: 'status',
+      valueType: 'text',
+      hideInSearch: true,
+      editable:false,
+      valueEnum: {
+        0: '已禁用',
+        1: '已启用',
+      }
+    },
+    {
       title: '操作',
       valueType: 'text',
       render:(text, record, _, action)=>{
         return [
-          <a style={{display:'block'}} key='dele' onClick={()=>{setPennyId({skuId:record.skuId,type:1});setEndVisible(true)}}>删除</a>,
-          <a style={{display:'block'}} key='detail' onClick={()=>{setPennyId({skuId:record.skuId,type:2});setEndVisible(true)}}>禁用</a>,
-          <a style={{display:'block'}} key='start' onClick={()=>{setPennyId({skuId:record.skuId,type:3});setEndVisible(true)}}>启用</a>
+          <a style={{display:'block'}} key='dele' onClick={()=>{setPennyId({wsId:record.wsId,type:1});setEndVisible(true)}}>删除</a>,
+          <div key='detail'>
+            {
+              record?.status==0?
+              <p style={{color:'#AAAAAA'}}>禁用</p>
+              :
+              <a style={{display:'block'}} key='detail' disable onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
+            }
+          </div>,
+          <div key='start'>
+           {
+             record?.status==1?
+             <p style={{color:'#AAAAAA'}}>启用</p>
+             :
+             <a style={{display:'block'}} key='start' onClick={()=>{setPennyId({wsId:record.wsId,type:3});setEndVisible(true)}}>启用</a>
+           }
+          </div>
+
       ]
       },
       editable:false,
     }
   ]; 
-  // 删除商品
-  const  delGoods=val=>{
-    const arr=dataSource.filter(ele=>(
-          ele.skuId!=val
-    ))
-    // let sum=0
-    // arr.map(ele=>{
-    //   if(ele.status){
-    //     sum+=parseInt(ele.probability)
-    //   }
-    // })
-    // setSubmi(sum)
-    setDataSource(arr) 
-    callback(arr)
-  }
-
-  const stopGoods=val=>{
-//     const arr=dataSource.map(ele=>(
-//       ele.skuId!=val
-// ))
-  }
-
   return (
     <>
     <ProFormText
@@ -452,7 +458,7 @@ export default (props) => {
       readonly={true}
     />
     <EditableProTable
-        rowKey="skuId"
+        rowKey="wsId"
         name="table"
         value={dataSource}
         actionRef={ref}
@@ -492,7 +498,7 @@ export default (props) => {
           })
           setDataSource(arr)
           callback(arr)
-          setEditableKeys(arr.map(item => item.skuId))
+          setEditableKeys(arr.map(item => item.wsId))
         }}
         onClose={()=>{}}
         keyId={dataSource}

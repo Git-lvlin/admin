@@ -149,10 +149,10 @@ export default props => {
             <Descriptions.Item label="参与活动的消费者">
             {{1:'全部消费者',2:'从未下过单的消费者（新人）'}[detailData?.content?.joinBuyerType]}
             </Descriptions.Item>
-            <Descriptions.Item label="活动创建人">
+            <Descriptions.Item label="最后一次操作人">
             {detailData?.lastEditor}
             </Descriptions.Item>
-            <Descriptions.Item label="创建时间">
+            <Descriptions.Item label="最近更新时间">
             {moment(detailData?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss')}
             </Descriptions.Item>
           </Descriptions>

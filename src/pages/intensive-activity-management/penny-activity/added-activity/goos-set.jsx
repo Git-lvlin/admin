@@ -261,15 +261,15 @@ export default (props) => {
       hideInSearch: true,
       editable:false,
       render: (_,data)=> {
-        return <p>{data?.minNum} - {data?.maxNum}包</p>
+        return <p>{data?.minNum} - {data?.maxNum}{data?.unit}</p>
       },
     },
     {
       title: '集约价',
       dataIndex: 'wsPrice',
       hideInSearch: true,
-      render: (_)=> {
-        return <p>{amountTransform(_, '/').toFixed(2)}元/包</p>
+      render: (_,data)=> {
+        return <p>{amountTransform(_, '/').toFixed(2)}元/{data?.unit}</p>
       },
       editable:false
     },
@@ -298,7 +298,7 @@ export default (props) => {
                   onChange={onChange}
                 />
         }
-        right={(value) =><p>元/包</p>}
+        right={(value) =><p>元/{_?.entry?.unit}</p>}
         />
       },
       render: (_,r) =>{

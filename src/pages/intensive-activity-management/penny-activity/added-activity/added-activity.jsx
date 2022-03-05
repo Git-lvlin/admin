@@ -29,7 +29,7 @@ export default (props) => {
   const [falg,setFalg]=useState(true)
   const [goosList,setGoosList]=useState()
   const [visible, setVisible] = useState(false);
-  const [limitAll,setLimitAll]=useState()
+  const [limitAll,setLimitAll]=useState(200)
   let id = props.location.query.id
   const [form] = Form.useForm()
   useEffect(() => {
@@ -89,9 +89,7 @@ export default (props) => {
   const checkConfirm3=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
     if (value&&parseInt(value)>parseInt(limitAll)) {
-      await reject('<=店主总限量')
-    }else if (value&&parseInt(value)>200) {
-      await reject('<=店主总限量')
+      await reject('小于等于店主总限量')
     }else if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
       await reject('只能输入整数')
     }else {
@@ -281,6 +279,7 @@ export default (props) => {
             },
           ]}
           rules={[{ required: true, message: '请选择参与活动的店铺' }]}
+          initialValue={[1]}
         />
          <ProFormRadio.Group
           name="joinBuyerType"
@@ -296,6 +295,7 @@ export default (props) => {
             },
           ]}
           rules={[{ required: true, message: '请选择参与活动的消费者' }]}
+          initialValue={1}
         />
         <ProFormTextArea
           label='活动规则'
