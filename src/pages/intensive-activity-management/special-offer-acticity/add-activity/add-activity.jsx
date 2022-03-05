@@ -92,7 +92,7 @@ export default (props) => {
         startTime:moment(values.dateRange[0]).valueOf()/1000,
         endTime:moment(values.dateRange[1]).valueOf()/1000,
         buyerStartTime:values.buyerTimeType==0?'00:00:00':values.timeRange[0],
-        buyerEndTime:values.buyerTimeTyp==0?'23:59:59':values.timeRange[1],
+        buyerEndTime:values.buyerTimeType==0?'23:59:59':values.timeRange[1],
         joinShopType:values.joinShopType[0],
         joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
         goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:amountTransform(ele.price,'*'),status:ele.status,buyLimit:ele.maxNum}))||detailList,
@@ -209,6 +209,7 @@ export default (props) => {
             },
           ]}
           rules={[{ required: true, message: '请选择参与活动的店铺' }]}
+          initialValue={[1]}
         />
         <ProFormRadio.Group
           name="joinBuyerType"
@@ -224,6 +225,7 @@ export default (props) => {
             },
           ]}
           rules={[{ required: true, message: '请选择参与活动的消费者' }]}
+          initialValue={1}
         />
          <GoosSet
           detailList={detailList}

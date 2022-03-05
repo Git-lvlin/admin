@@ -65,7 +65,7 @@ export default props => {
       dataIndex: 'wholesaleSupplyPrice',
       hideInSearch: true,
       render:(_,data)=>{
-        return <p>{amountTransform(_, '/')}元/{data?.wsUnit}</p>
+        return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
       }
     },
     {
@@ -131,7 +131,7 @@ export default props => {
       dataIndex: 'minNum',
       hideInSearch: true,
       render:(_,data)=>{
-        return <p>{_}{data?.wsUnit}</p>
+        return <p>{_}{data?.unit}</p>
       }
     },
     {
@@ -144,7 +144,7 @@ export default props => {
       dataIndex: 'price',
       hideInSearch: true,
       render: (_,data) =>{
-        return <p>{amountTransform(_, '/')}元/{data?.wsUnit}</p>
+        return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
     }
     }
   ]; 
@@ -181,8 +181,8 @@ export default props => {
             </Descriptions.Item>
             <Descriptions.Item label="C端可购买时间">
             {
-               detailData?.content?.buyerTimeTyp==0?
-               <p>不限</p>
+               detailData?.content?.buyerTimeType==0?
+               <p>{detailData?.content?.buyerStartTime}~{detailData?.content?.buyerEndTime}</p>
                :
                <p>{detailData?.content?.buyerStartTime}~{detailData?.content?.buyerEndTime}（每天）</p>
              } 
@@ -191,10 +191,10 @@ export default props => {
             <Descriptions.Item label="参与活动的店铺">
             {{1:"生鲜店铺"}[detailData?.content?.joinShopType]}
             </Descriptions.Item>
-            <Descriptions.Item label="活动创建人">
+            <Descriptions.Item label="活动最近一次操作人">
             {detailData?.lastEditor}
             </Descriptions.Item>
-            <Descriptions.Item label="活动创建时间">
+            <Descriptions.Item label="活动最近一次操作时间">
             {moment(detailData?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss')}
             </Descriptions.Item>
           </Descriptions>
