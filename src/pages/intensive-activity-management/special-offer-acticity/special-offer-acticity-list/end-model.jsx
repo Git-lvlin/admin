@@ -36,12 +36,12 @@ export default props=>{
           },
           }}
           onFinish={async (values) => {
-            changeStatus({id:pennyId,actCode:'wsCentActiveCode',status:0}).then(res=>{
+            changeStatus({id:pennyId}).then(res=>{
             if(res.code==0){
               setVisible(false) 
               canBlack(true) 
               message.success('操作成功')
-              history.push('/intensive-activity-management/penny-activity/activity-list')
+              history.push('/intensive-activity-management/special-offer-acticity/special-offer-acticity-list')
               return true;
             }
           })
