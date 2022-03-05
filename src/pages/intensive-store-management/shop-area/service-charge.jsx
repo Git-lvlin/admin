@@ -5,6 +5,7 @@ import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormT
 import { getMemberShopServicepoint,setMemberShopServicepoint,getMemberShopServicepointLog } from '@/services/intensive-store-management/shop-area'
 import ProTable from '@ant-design/pro-table';
 import moment from 'moment';
+import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
   labelCol: { span: 1 },
@@ -232,7 +233,12 @@ export default  () => {
                                 }
                             }}
                         />
-                        <p>优惠后社区店主需缴纳金额为：{calculate?formDatil?.settingValues?.basePoint?.money*calculate/10:formDatil?.settingValues?.basePoint?.money*formDatil?.settingValues?.typtList?.limitTime?.discount/10} 元</p>
+                        <p>优惠后社区店主需缴纳金额为：{
+                        calculate?
+                        amountTransform(amountTransform(formDatil?.settingValues?.basePoint?.money,'*')*amountTransform(calculate,'*'),'/')/1000
+                        :
+                        formDatil?.settingValues?.typtList?.limitTime?.discountMoney} 
+                        元</p>
                     </>
                 }
                 if(currentType==='limitTopNum'){
@@ -279,7 +285,12 @@ export default  () => {
                                 }
                             }}
                         />
-                        <p>优惠后社区店主需缴纳金额为：{calculate2?formDatil?.settingValues?.basePoint?.money*calculate2/10:formDatil?.settingValues?.basePoint?.money*formDatil?.settingValues?.typtList?.limitTopNum?.discount/10} 元</p>
+                        <p>优惠后社区店主需缴纳金额为：{
+                        calculate2?
+                        amountTransform(amountTransform(formDatil?.settingValues?.basePoint?.money,'*')*amountTransform(calculate2,'*'),'/')/1000
+                        :
+                        formDatil?.settingValues?.typtList?.limitTopNum?.discountMoney
+                        } 元</p>
                     </>
                 }
               }}
