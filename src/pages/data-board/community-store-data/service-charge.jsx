@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import ProTable from '@ant-design/pro-table'
 
 import AddressCascader from '@/components/address-cascader'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import { amountTransform } from '@/utils/utils'
-import { serviceFee } from '@/services/data-board/community-store-data'
+import { serviceFee, serviceFeeTotal } from '@/services/data-board/community-store-data'
 import styles from './styles.less'
 import Yuan from '../components/Yuan'
 
@@ -17,14 +17,29 @@ const ServiceCharge = () => {
 
   const form = useRef()
 
+  useEffect(()=> {
+    const { storeName, area, payTime, ...rest } = form?.current?.getFieldsValue()
+    serviceFeeTotal({
+      startTime: payTime&&payTime?.[0],
+      endTime: payTime&&payTime?.[1],
+      store_name: storeName,
+      province_name: area?.[0] && area?.[0]?.label,
+      city_name: area?.[1] && area?.[1]?.label,
+      region_name: area?.[2] && area?.[2]?.label,
+    }).then(res=>{
+      setTotalPay(res.data?.[0].ct)
+      setTotalAmount(res.data?.[0].payAmount)
+    })
+  }, [])
+
   const getFieldValue = () => {
     const {area, payTime, ...rest} = form?.current?.getFieldsValue()
     return {
-      provinceId: area?.[0] && area?.[0]?.value,
-      cityId: area?.[1] && area?.[1]?.value,
-      regionId: area?.[2] && area?.[2]?.value,
-      payStart: payTime?.[0],
-      payEnd: payTime?.[1],
+      province_name: area?.[0] && area?.[0]?.label,
+      city_name: area?.[1] && area?.[1]?.label,
+      region_name: area?.[2] && area?.[2]?.label,
+      startTime: payTime?.[0],
+      endTime: payTime?.[1],
       ...rest
     }
   }
@@ -43,14 +58,14 @@ const ServiceCharge = () => {
     },
     {
       title: '店铺地址',
-      dataIndex: 'fullAddress',
+      dataIndex: 'address',
       align: 'center',
       width: '20%',
       hideInSearch: true
     },
     {
       title: '缴费金额',
-      dataIndex: 'serviceFee',
+      dataIndex: 'payAmount',
       align: 'center',
       render: (_)=> amountTransform(_, '/'),
       hideInSearch: true
@@ -97,8 +112,6 @@ const ServiceCharge = () => {
         settings: false
       }}
       postData={(v)=> {
-        setTotalPay(v?.allServiceFee)
-        setTotalAmount(v?.allTotal)
         setTotal(v?.total)
         return v?.records
       }}
@@ -127,8 +140,8 @@ const ServiceCharge = () => {
           {
             totalPay !==0  &&
             <div className={styles.summary}>
-            <span>缴费总数（个）：<Yuan>{totalAmount}</Yuan></span>
-            <span>缴费总金额（元）：<Yuan>{amountTransform(totalPay, '/')}</Yuan></span>
+            <span>缴费总数（个）：<Yuan>{totalPay}</Yuan></span>
+            <span>缴费总金额（元）：<Yuan>{totalAmount}</Yuan></span>
           </div>
           }
         </>
