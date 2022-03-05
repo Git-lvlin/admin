@@ -38,8 +38,8 @@ const ServiceCharge = () => {
       province_name: area?.[0] && area?.[0]?.label,
       city_name: area?.[1] && area?.[1]?.label,
       region_name: area?.[2] && area?.[2]?.label,
-      startTime: payTime?.[0],
-      endTime: payTime?.[1],
+      startTime: payTime?.[0].format('YYYY-MM-DD'),
+      endTime: payTime?.[1].format('YYYY-MM-DD'),
       ...rest
     }
   }
