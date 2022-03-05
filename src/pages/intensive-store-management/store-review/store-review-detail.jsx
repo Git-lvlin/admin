@@ -134,22 +134,6 @@ const Detail = (props) => {
         setDetailData(res.data)
 
         const { details } = res.data;
-        setLocation([details.longitude, details.latitude]);
-        map.current = new AMap.Map('container', {
-          zoom: 20,
-          center: [details.longitude, details.latitude],
-        });
-        map.current.add(new AMap.Marker({
-          position: new AMap.LngLat(details.longitude, details.latitude),
-        }))
-        map.current.on('click', function (ev) {
-          map.current.clearMap()
-          const marker = new AMap.Marker({
-            position: new AMap.LngLat(ev.lnglat.lng, ev.lnglat.lat),
-          });
-          map.current.add(marker)
-          setLocation([ev.lnglat.lng, ev.lnglat.lat]);
-        });
 
         form.setFieldsValue({
           area: [
@@ -168,6 +152,25 @@ const Detail = (props) => {
           realname: details?.realname,
           idNumber: details?.idNumber,
         })
+
+        if (details.longitude && details.latitude) {
+          setLocation([details.longitude, details.latitude]);
+          map.current = new AMap.Map('container', {
+            zoom: 20,
+            center: [details.longitude, details.latitude],
+          });
+          map.current.add(new AMap.Marker({
+            position: new AMap.LngLat(details.longitude, details.latitude),
+          }))
+          map.current.on('click', function (ev) {
+            map.current.clearMap()
+            const marker = new AMap.Marker({
+              position: new AMap.LngLat(ev.lnglat.lng, ev.lnglat.lat),
+            });
+            map.current.add(marker)
+            setLocation([ev.lnglat.lng, ev.lnglat.lat]);
+          });
+        }
       }
     }).finally(() => {
       setLoading(false);
@@ -313,12 +316,12 @@ const Detail = (props) => {
           }}
           width="md"
         />
-        <Form.Item
+        {!!detailData?.details?.longitude&&<Form.Item
           label=" "
           colon={false}
         >
           <div id="container" style={{ width: 600, height: 300 }}></div>
-        </Form.Item>
+        </Form.Item>}
         <Form.Item
           label="必备礼包订单号"
         >
