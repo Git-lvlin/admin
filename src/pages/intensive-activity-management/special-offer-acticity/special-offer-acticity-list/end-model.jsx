@@ -36,7 +36,7 @@ export default props=>{
           },
           }}
           onFinish={async (values) => {
-            changeStatus({id:pennyId}).then(res=>{
+            changeStatus({id:pennyId,status:0}).then(res=>{
             if(res.code==0){
               setVisible(false) 
               canBlack(true) 

@@ -41,6 +41,9 @@ export default () => {
         dataIndex: 'buyerLimit',
         valueType: 'text',
         hideInSearch: true,
+        render:(_,data)=>{
+          return <p>{_==999999?'不限':_}</p>
+        }
       },
       {
         title: 'C端可购买时间（每天）',
