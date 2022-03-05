@@ -112,7 +112,7 @@ const Detail = (props) => {
         memberId: detailData.memberId,
         verifyStatus: detailData.verifyStatus.code,
         deposit: detailData.deposit.length === 0 ? amountTransform(values.depositValue) : 0,
-        serviceFee: detailData.lastServiceFee.payAmount === 0 ? amountTransform(serviceFee) : 0,
+        serviceFee: detailData.lastServiceFee.id ? detailData.lastServiceFee.payAmount : amountTransform(serviceFee),
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
           resolve()
@@ -331,7 +331,7 @@ const Detail = (props) => {
         >
           {{ 10: '正常申请', 20: '绿色通道申请' }[detailData?.details?.applyType]}
         </Form.Item>
-        {detailData?.details?.applyType===20&&<Form.Item
+        {detailData?.details?.applyType === 20 && <Form.Item
           label="证明文件"
         >
           {
@@ -433,7 +433,7 @@ const Detail = (props) => {
           />
         }
         {
-          !!detailData?.lastServiceFee?.payAmount
+          !!detailData?.lastServiceFee?.id
           &&
           <>
             <Form.Item
@@ -449,7 +449,7 @@ const Detail = (props) => {
           </>
         }
         {
-          !detailData?.lastServiceFee?.payAmount
+          detailData?.lastServiceFee?.id===0
           && <ProFormText
             name="serviceFee"
             label="服务费金额"

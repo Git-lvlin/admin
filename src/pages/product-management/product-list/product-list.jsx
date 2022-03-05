@@ -295,6 +295,7 @@ const TableList = () => {
       dataIndex: 'name',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, data) => {
         const { goodsSaleMinPrice, goodsSaleMaxPrice } = data;
         if (goodsSaleMinPrice === goodsSaleMaxPrice) {
@@ -335,6 +336,7 @@ const TableList = () => {
       dataIndex: 'goodsVerifyStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, record) => {
         const { goodsVerifyRemark, goodsVerifyState } = record;
         return (
@@ -358,6 +360,7 @@ const TableList = () => {
       dataIndex: 'goodsStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, record) => {
         const { goodsStateRemark, goodsState } = record;
         return (

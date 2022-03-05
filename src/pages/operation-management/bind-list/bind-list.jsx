@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button, Tooltip } from 'antd';
+import { PageContainer } from '@ant-design/pro-layout';
 import { bindOperationPage } from '@/services/operation-management/bind-list'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -109,7 +110,7 @@ const TableList = () => {
   }
 
   return (
-    <>
+    <PageContainer>
       {bindVisible
         &&
         <Bind
@@ -171,7 +172,7 @@ const TableList = () => {
           showQuickJumper: true,
         }}
       />
-    </>
+    </PageContainer>
 
   );
 };
