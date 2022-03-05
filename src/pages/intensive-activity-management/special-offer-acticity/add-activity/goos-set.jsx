@@ -419,7 +419,7 @@ export default (props) => {
               record?.status==0?
               <p style={{color:'#AAAAAA'}}>禁用</p>
               :
-              <a style={{display:'block'}} key='detail' disable onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
+              <a style={{display:'block'}} key='detail' onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
             }
           </div>,
           <div key='start'>
