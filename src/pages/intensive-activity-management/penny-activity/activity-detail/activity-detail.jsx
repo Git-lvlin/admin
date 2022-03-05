@@ -76,15 +76,15 @@ export default props => {
       hideInSearch: true,
       editable:false,
       render: (_,data)=> {
-        return <p>{data?.minNum} - {data?.maxNum}包</p>
+        return <p>{data?.minNum} - {data?.maxNum}{data?.unit}</p>
       },
     },
     {
       title: '集约价',
       dataIndex: 'wholesaleSupplyPrice',
       hideInSearch: true,
-      render: (_)=> {
-        return <p>{amountTransform(_, '/').toFixed(2)}元/包</p>
+      render: (_,data)=> {
+        return <p>{amountTransform(_, '/').toFixed(2)}元/{data?.unit}</p>
       },
       editable:false
     },
@@ -93,16 +93,16 @@ export default props => {
       dataIndex: 'totalStockNum',
       hideInSearch: true,
       editable:false,
-      render: (_)=> {
-        return <p>{_}包</p>
+      render: (_,data)=> {
+        return <p>{_}{data?.unit}</p>
       },
     },
     {
-      title: '活动价（元/包）',
+      title: '活动价',
       dataIndex: 'price',
       hideInSearch: true,
-      render: (_)=> {
-        return <p>{amountTransform(_, '/')}</p>
+      render: (_,data)=> {
+        return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
       },
     }
   ]; 
@@ -149,10 +149,10 @@ export default props => {
             <Descriptions.Item label="参与活动的消费者">
             {{1:'全部消费者',2:'从未下过单的消费者（新人）'}[detailData?.content?.joinBuyerType]}
             </Descriptions.Item>
-            <Descriptions.Item label="活动创建人">
+            <Descriptions.Item label="最近操作人">
             {detailData?.lastEditor}
             </Descriptions.Item>
-            <Descriptions.Item label="创建时间">
+            <Descriptions.Item label="最近操作时间">
             {moment(detailData?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss')}
             </Descriptions.Item>
           </Descriptions>

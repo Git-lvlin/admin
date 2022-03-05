@@ -36,19 +36,19 @@ export default props=>{
           onFinish={async (values) => {
             if(pennyId?.type==1){
               const arr=dataSource.filter(ele=>(
-                ele.skuId!=pennyId?.skuId
+                ele.wsId!=pennyId?.wsId
               ))
               callback(arr)
               setVisible(false)
             }else if(pennyId?.type==2){
               const arr=dataSource.map(ele=>(
-                {...ele,status:ele.skuId==pennyId?.skuId?0:ele.status}
+                {...ele,status:ele.wsId==pennyId?.wsId?0:ele.status}
               ))
               callback(arr)
               setVisible(false)
             }else{
               const arr=dataSource.map(ele=>(
-                {...ele,status:ele.skuId==pennyId?.skuId?1:ele.status}
+                {...ele,status:ele.wsId==pennyId?.wsId?1:ele.status}
               ))
               callback(arr)
               setVisible(false)
