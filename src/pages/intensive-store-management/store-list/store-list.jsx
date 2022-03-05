@@ -83,7 +83,7 @@ const StoreList = (props) => {
       render: (_, data) => <div><div>{data.memberPhone}</div><div>{data.nickname === data.memberPhone ? '' : data.nickname}</div></div>
     },
     {
-      title: '店主类型',
+      title: '店铺类型',
       dataIndex: 'memberShopType',
       valueType: 'text',
       hideInSearch: true,

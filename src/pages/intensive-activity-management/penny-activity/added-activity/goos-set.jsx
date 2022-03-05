@@ -183,7 +183,7 @@ const GoosModel=(props)=>{
 }
 
 export default (props) => {
-  const {callback,id,detailList}=props
+  const {callback,id,detailList,batchPrice}=props
   const ref=useRef()
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
@@ -192,8 +192,8 @@ export default (props) => {
   const [pennyId,setPennyId]=useState()
   useEffect(()=>{
     if(id){
-      detailList&&setDataSource(detailList.map(ele=>({...ele,price:amountTransform(ele.price,'/')})))
-     setEditableKeys(detailList?.map(item => item.wsId))
+      detailList?.content?.goods&&setDataSource(detailList?.content?.goods?.map(ele=>({...ele,price:amountTransform(ele.price,'/')})))
+     setEditableKeys(detailList?.content?.goods?.map(item => item.wsId))
     }   
   },[id,detailList])
 
@@ -326,8 +326,9 @@ export default (props) => {
         return [
           <span key='dele'>
             {
-              record.wholesaleStatusDesc=='待开始'&&
+              !id||detailList.underway==3?
               <a onClick={()=>{setPennyId({wsId:record.wsId,type:1});setEndVisible(true)}}>删除&nbsp;&nbsp;</a>
+              :null
             }
           </span>,
           <span key='stop'>
@@ -398,7 +399,7 @@ export default (props) => {
               ...item,
               status:1,
               wsPrice:item.price,
-              price:0
+              price:batchPrice?batchPrice:detailList?amountTransform(detailList?.content?.price,'/'):0
             })
           })
           setDataSource(arr)
