@@ -52,7 +52,7 @@ const GoosModel=(props)=>{
           dataIndex: 'gcName',
           valueType: 'text',
           ellipsis:true,
-          hideInSearch:true
+          hideInSearch:true,
       },
       {
           title: '商品主图',
@@ -80,7 +80,7 @@ const GoosModel=(props)=>{
           dataIndex: 'wholesaleSupplyPrice',
           hideInSearch: true,
           render:(_,data)=>{
-            return <p>{amountTransform(_, '/')}</p>
+            return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
           }
       },
       {
@@ -150,7 +150,7 @@ const GoosModel=(props)=>{
           dataIndex: 'minNum',
           hideInSearch: true,
           render:(_,data)=>{
-            return <p>{_}/{data?.wsUnit}</p>
+            return <p>{_}{data?.unit}</p>
           }
     },
   ];
@@ -211,6 +211,7 @@ const GoosModel=(props)=>{
                   ...dom.reverse(),
               ],
           }}
+          scroll={{ x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
           postData={postData}
           columns={columns}
           rowSelection={{
@@ -308,7 +309,7 @@ export default (props) => {
       hideInSearch: true,
       editable:false,
       render:(_,data)=>{
-        return <p>{amountTransform(_, '/')}</p>
+        return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
       }
     },
     {
@@ -317,7 +318,8 @@ export default (props) => {
       valueType: 'text',
       ellipsis:true,
       hideInSearch:true,
-      editable:false
+      editable:false,
+      width:150
     },
     {
       title: '集约活动ID',
@@ -330,7 +332,7 @@ export default (props) => {
       title: '集约活动状态',
       dataIndex: 'wholesaleStatusDesc',
       valueType: 'text',
-      editable:false
+      editable:false,
     },
     {
       title: '集约活动开始时间',
@@ -353,8 +355,8 @@ export default (props) => {
       dataIndex: 'totalStockNum',
       hideInSearch: true,
       editable:false,
-      render: (_)=> {
-        return <p>{_}包</p>
+      render: (_,data)=> {
+        return <p>{_}{data?.unit}</p>
       },
     },
     {
@@ -371,7 +373,7 @@ export default (props) => {
       dataIndex: 'minNum',
       hideInSearch: true,
       render:(_,data)=>{
-        return <p>{_}/{data?.wsUnit}</p>
+        return <p>{_}{data?.unit}</p>
       },
       editable:false
     },
@@ -380,6 +382,7 @@ export default (props) => {
       dataIndex: 'maxNum',
       hideInSearch: true,
       valueType: 'digit',
+      width:150
     },
     {
       title: '活动价',
@@ -392,27 +395,18 @@ export default (props) => {
                   min={amountTransform(_?.entry?.wholesaleSupplyPrice, '/')}
                   precision='2'
                   stringMode
+                  disabled={_?.entry?.wholesaleStatusDesc=='进行中'}
                   value={value}
                   onChange={onChange}
                 />
         }
-        right={(value) =><p>元/盒</p>}
+        right={(value) =><p>元/{_?.entry?.unit}</p>}
         />
       },
+      width:100,
       render: (_,r) =>{
         return <p>{_}</p>
       },
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      valueType: 'text',
-      hideInSearch: true,
-      editable:false,
-      valueEnum: {
-        0: '已禁用',
-        1: '已启用',
-      }
     },
     {
       title: '操作',
