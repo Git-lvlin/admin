@@ -67,21 +67,21 @@ export default {
             name: 'activity-list',
             path: '/intensive-activity-management/penny-activity/activity-list',
             component: './intensive-activity-management/penny-activity/activity-list',
-            wrappers: [RouteWatcher]
+            wrappers: [RouteWatcher],
           },
           {
             name: 'added-activity',
             path: '/intensive-activity-management/penny-activity/added-activity',
             component: './intensive-activity-management/penny-activity/added-activity',
             hideInMenu: true,
-            wrappers: [RouteWatcher]
+            wrappers: [RouteWatcher],
           },
           {
             name: 'activity-detail',
             path: '/intensive-activity-management/penny-activity/activity-detail',
             component: './intensive-activity-management/penny-activity/activity-detail',
             hideInMenu: true,
-            wrappers: [RouteWatcher]
+            wrappers: [RouteWatcher],
           },
         ]
     },
@@ -93,21 +93,21 @@ export default {
             name: 'special-offer-acticity-list',
             path: '/intensive-activity-management/special-offer-acticity/special-offer-acticity-list',
             component: './intensive-activity-management/special-offer-acticity/special-offer-acticity-list',
-            wrappers: [RouteWatcher]
+            wrappers: [RouteWatcher],
           },
           {
             name: 'add-activity',
             path: '/intensive-activity-management/special-offer-acticity/add-activity',
             component: './intensive-activity-management/special-offer-acticity/add-activity',
             hideInMenu: true,
-            wrappers: [RouteWatcher]
+            wrappers: [RouteWatcher],
           },
           {
             name: 'activity-detail',
             path: '/intensive-activity-management/special-offer-acticity/activity-detail',
             component: './intensive-activity-management/special-offer-acticity/activity-detail',
             hideInMenu: true,
-            wrappers: [RouteWatcher]
+            wrappers: [RouteWatcher],
           },
         ]
     },
