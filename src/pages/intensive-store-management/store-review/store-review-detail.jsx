@@ -153,24 +153,23 @@ const Detail = (props) => {
           idNumber: details?.idNumber,
         })
 
-        if (details.longitude && details.latitude) {
-          setLocation([details.longitude, details.latitude]);
-          map.current = new AMap.Map('container', {
-            zoom: 20,
-            center: [details.longitude, details.latitude],
+        setLocation([details.longitude || 0, details.latitude || 0]);
+        map.current = new AMap.Map('container', {
+          zoom: 20,
+          center: [details.longitude || 0, details.latitude || 0],
+        });
+        map.current.add(new AMap.Marker({
+          position: new AMap.LngLat(details.longitude || 0, details.latitude || 0),
+        }))
+        map.current.on('click', function (ev) {
+          map.current.clearMap()
+          const marker = new AMap.Marker({
+            position: new AMap.LngLat(ev.lnglat.lng, ev.lnglat.lat),
           });
-          map.current.add(new AMap.Marker({
-            position: new AMap.LngLat(details.longitude, details.latitude),
-          }))
-          map.current.on('click', function (ev) {
-            map.current.clearMap()
-            const marker = new AMap.Marker({
-              position: new AMap.LngLat(ev.lnglat.lng, ev.lnglat.lat),
-            });
-            map.current.add(marker)
-            setLocation([ev.lnglat.lng, ev.lnglat.lat]);
-          });
-        }
+          map.current.add(marker)
+          setLocation([ev.lnglat.lng, ev.lnglat.lat]);
+        });
+        setAddressText(`${details.provinceName}${details.cityName}${details.regionName}${details.address}`)
       }
     }).finally(() => {
       setLoading(false);
@@ -316,12 +315,12 @@ const Detail = (props) => {
           }}
           width="md"
         />
-        {!!detailData?.details?.longitude&&<Form.Item
+        <Form.Item
           label=" "
           colon={false}
         >
           <div id="container" style={{ width: 600, height: 300 }}></div>
-        </Form.Item>}
+        </Form.Item>
         <Form.Item
           label="必备礼包订单号"
         >
@@ -452,7 +451,7 @@ const Detail = (props) => {
           </>
         }
         {
-          detailData?.lastServiceFee?.id===0
+          detailData?.lastServiceFee?.id === 0
           && <ProFormText
             name="serviceFee"
             label="服务费金额"
