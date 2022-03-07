@@ -73,8 +73,8 @@ export default {
             name: 'added-activity',
             path: '/intensive-activity-management/penny-activity/added-activity',
             component: './intensive-activity-management/penny-activity/added-activity',
-            wrappers: [RouteWatcher],
             hideInMenu: true,
+            wrappers: [RouteWatcher],
           },
           {
             name: 'activity-detail',
