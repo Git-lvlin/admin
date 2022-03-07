@@ -7,6 +7,7 @@ import Upload from '@/components/upload';
 import RejectForm from './refuse';
 import { amountTransform } from '@/utils/utils'
 import { approve } from '@/services/intensive-store-management/store-review'
+import OrderDetail from '@/pages/order-management/normal-order/detail';
 
 
 const formItemLayout = {
@@ -76,6 +77,8 @@ const ImageInfo = ({ value, onChange }) => {
   )
 }
 
+const orderStatus = { 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭' };
+
 const Detail = (props) => {
   const { setVisible } = props;
   const [detailData, setDetailData] = useState({});
@@ -84,6 +87,8 @@ const Detail = (props) => {
   const [addressText, setAddressText] = useState('');
   const [location, setLocation] = useState([]);
   const [rejectFormVisible, setRejectFormVisible] = useState(false);
+  const [orderDetailVisible, setOrderDetailVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState({});
   const map = useRef();
 
   const submit = (values) => {
@@ -327,6 +332,10 @@ const Detail = (props) => {
           {
             detailData?.details?.giftOrder?.isGiftOrdered === 0 && <span style={{ color: 'red' }}>没有购买记录</span>
           }
+          {
+            detailData?.details?.giftOrder?.isGiftOrdered === 1
+            && <a onClick={() => { setSelectItem({ id: detailData?.details?.giftOrder?.id }); setOrderDetailVisible(true) }}>{detailData?.details?.giftOrder?.orderSn}【{orderStatus[detailData?.details?.giftOrder?.status]}】 </a>
+          }
         </Form.Item>
         <Form.Item
           label="申请类型"
@@ -463,6 +472,14 @@ const Detail = (props) => {
               maxLength: 30,
               suffix: '元'
             }}
+          />
+        }
+        {
+          orderDetailVisible &&
+          <OrderDetail
+            id={selectItem?.id}
+            visible={orderDetailVisible}
+            setVisible={setOrderDetailVisible}
           />
         }
       </Spin>
