@@ -17,20 +17,27 @@ const ServiceCharge = () => {
 
   const form = useRef()
 
+  const data = form?.current?.getFieldsValue()
+
   useEffect(()=> {
     const { storeName, area, payTime, ...rest } = form?.current?.getFieldsValue()
     serviceFeeTotal({
-      startTime: payTime&&payTime?.[0],
-      endTime: payTime&&payTime?.[1],
+      startTime: payTime&&payTime?.[0].format('YYYY-MM-DD'),
+      endTime: payTime&&payTime?.[1].format('YYYY-MM-DD'),
       store_name: storeName,
       province_name: area?.[0] && area?.[0]?.label,
       city_name: area?.[1] && area?.[1]?.label,
       region_name: area?.[2] && area?.[2]?.label,
+      ...rest
     }).then(res=>{
       setTotalPay(res.data?.[0].ct)
       setTotalAmount(res.data?.[0].payAmount)
     })
-  }, [])
+    return ()=>{
+      setTotalPay(0)
+      setTotalAmount(0)
+    }
+  }, [data?.payTime, data?.storeName, data?.area])
 
   const getFieldValue = () => {
     const {area, payTime, ...rest} = form?.current?.getFieldsValue()
@@ -67,7 +74,6 @@ const ServiceCharge = () => {
       title: '缴费金额',
       dataIndex: 'payAmount',
       align: 'center',
-      render: (_)=> amountTransform(_, '/'),
       hideInSearch: true
     },
     {
