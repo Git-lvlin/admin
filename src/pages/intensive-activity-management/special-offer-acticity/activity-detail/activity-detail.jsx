@@ -186,7 +186,6 @@ export default props => {
                :
                <p>{detailData?.content?.buyerStartTime}~{detailData?.content?.buyerEndTime}（每天）</p>
              } 
-              {}
             </Descriptions.Item>
             <Descriptions.Item label="参与活动的店铺">
             {{1:"生鲜店铺"}[detailData?.content?.joinShopType]}
