@@ -21,6 +21,12 @@ const FromWrap = ({ value, onChange, content, right }) => (
   </div>
 )
 
+const freshType = {
+  0: '非生鲜类目',
+  1: '精装生鲜类目',
+  2: '散装生鲜类目'
+}
+
 export default (props) => {
   const { visible, setVisible, callback, data, id, type, selectItem, parentId } = props;
   const [form] = Form.useForm();
@@ -200,10 +206,10 @@ export default (props) => {
               transform: (v) => `${v}`
             },
             {
-              message: '平台额外收益不能小于0',
+              message: '平台额外收益必须大于0',
               type: 'string',
               validator() {
-                if (record.entry.platForm >= 0) {
+                if (record.entry.platForm > 0) {
                   return Promise.resolve();
                 }
                 return Promise.reject(new Error());
@@ -238,10 +244,10 @@ export default (props) => {
               transform: (v) => `${v}`
             },
             {
-              message: '平台额外收益不能小于0',
+              message: '平台额外收益必须大于0',
               type: 'string',
               validator() {
-                if (record.entry.platForm >= 0) {
+                if (record.entry.platForm > 0) {
                   return Promise.resolve();
                 }
                 return Promise.reject(new Error());
@@ -266,7 +272,7 @@ export default (props) => {
       formRef.validateFields()
         .then(_ => {
           const apiMethod = type === 'add' ? api.categoryAdd : api.categoryEdit;
-          const { gcShow, ...rest } = values;
+          const { gcShow, shopValue, ...rest } = values;
           const params = {
             ...rest,
             gcShow: gcShow ? 1 : 0,
@@ -283,6 +289,12 @@ export default (props) => {
 
           if (parentId !== 0) {
             params.fresh = selectItem.fresh;
+          }
+
+          if (params.fresh === 2) {
+            params.commission = shopValue[0]
+          } else {
+            params.shopValue = shopValue;
           }
 
           apiMethod({
@@ -314,6 +326,7 @@ export default (props) => {
     if (data) {
       form?.setFieldsValue({
         ...data,
+        shopValue: data.fresh === 1 ? data.shopValue : [{ ...data.commission, level: 6 }],
         // shopValue: data.shopValue.map(item => {
         //   return {
         //     ...item,
@@ -396,10 +409,10 @@ export default (props) => {
         parentId !== 0
           ?
           <Form.Item
-            label='是否为生鲜类目'
+            label='生鲜类型'
             colon={false}
           >
-            {selectItem.fresh === 1 ? '是' : '否'}
+            {freshType[data.fresh]}
           </Form.Item>
           :
           <>
@@ -441,10 +454,10 @@ export default (props) => {
                 }}
               />
               : <Form.Item
-                label='是否为生鲜类目'
+                label='生鲜类型'
                 colon={false}
               >
-                {data.fresh === 0 ? '否' : '是'}
+                {freshType[data.fresh]}
               </Form.Item>
             }
           </>
