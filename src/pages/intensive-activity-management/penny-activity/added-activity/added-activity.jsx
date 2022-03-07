@@ -121,6 +121,28 @@ export default (props) => {
   }
 
   const onsubmit = (values) => {
+    if(id){
+      var max=detailList?.content?.goods[0].minNum
+      for (let index = 0; index < detailList?.content?.goods.length; index++) {
+          if(max<detailList?.content?.goods[index].minNum){
+            max=detailList?.content?.goods[index].minNum
+          }
+      }
+      if(values.shoperLimitOnece<max){
+        return message.error('每位店主单次限量不能小于集约单次限量的起订量！')
+      }
+    }else{
+      var max=goosList[0].minNum
+      for (let index = 0; index < goosList.length; index++) {
+          if(max<goosList[index].minNum){
+            max=goosList[index].minNum
+          }
+      }
+      if(values.shoperLimitOnece<max){
+        return message.error('每位店主单次限量不能小于集约单次限量的起订量！')
+      }
+    }
+
       const parmas={
         ...values,
         id:id?id:0,
