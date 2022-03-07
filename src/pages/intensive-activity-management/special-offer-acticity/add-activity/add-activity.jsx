@@ -99,7 +99,6 @@ export default (props) => {
         buyerLimit:values.buyerType==0?999999:values.buyerLimit,
         status:1,
       }
-      console.log('parmas',parmas)
       saveWSDiscountActiveConfig(parmas).then(res=>{
         if(res.code==0){
           message.success(id?'编辑成功':'添加成功'); 
@@ -142,7 +141,7 @@ export default (props) => {
             return true;
         }
         }
-        className={styles.discountFrom}
+        className={styles.add_activity}
       >
         <ProFormText
           width="md"

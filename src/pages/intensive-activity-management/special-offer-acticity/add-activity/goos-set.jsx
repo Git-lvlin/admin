@@ -419,7 +419,7 @@ export default (props) => {
               record?.status==0?
               <p style={{color:'#AAAAAA'}}>禁用</p>
               :
-              <a style={{display:'block'}} key='detail' disable onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
+              <a style={{display:'block'}} key='detail' onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
             }
           </div>,
           <div key='start'>
@@ -437,7 +437,7 @@ export default (props) => {
     }
   ]; 
   return (
-    <>
+  <>
     <ProFormText
       width="md"
       name="price"
@@ -499,21 +499,21 @@ export default (props) => {
       />
     }
     {
-        endVisible&&<EndModel 
-        visible={endVisible} 
-        setVisible={setEndVisible}  
-        pennyId={pennyId} 
-        callback={(arr)=>{
-          ref.current.reload()
-          setPennyId(null)
-          setDataSource(arr) 
-          callback(arr)
-        }}
-        onClose={()=>{ref.current.reload();setPennyId(null)}}
-        dataSource={dataSource}
-        />
-      }
-    </>
+      endVisible&&<EndModel 
+      visible={endVisible} 
+      setVisible={setEndVisible}  
+      pennyId={pennyId} 
+      callback={(arr)=>{
+        ref.current.reload()
+        setPennyId(null)
+        setDataSource(arr) 
+        callback(arr)
+      }}
+      onClose={()=>{ref.current.reload();setPennyId(null)}}
+      dataSource={dataSource}
+      />
+    }
+  </>
     
   );
 };

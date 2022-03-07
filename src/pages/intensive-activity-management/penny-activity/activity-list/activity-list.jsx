@@ -106,12 +106,12 @@ export default () => {
         valueType: 'option',
         render:(text, record, _, action)=>[
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/activity-detail?id='+record.id)}>详情</a>,
-            <>
+            <div key='editor'>
              {
                record.statusDisplay=='未开始'||record.statusDisplay=='进行中'?
-               <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/added-activity?id='+record.id)}>编辑</a>:null
+               <a  onClick={()=>history.push('/intensive-activity-management/penny-activity/added-activity?id='+record.id)}>编辑</a>:null
              }
-            </>,
+            </div>,
             <div key='stop' style={{display:record.statusDisplay=='已结束'?'none':'block'}}>
               {
                 record.status!=0&&
