@@ -20,7 +20,7 @@ const ServiceCharge = () => {
   const data = form?.current?.getFieldsValue()
 
   useEffect(()=> {
-    const { storeName, area, payTime, ...rest } = data
+    const { storeName, area, payTime, ...rest } = form?.current?.getFieldsValue()
     serviceFeeTotal({
       startTime: payTime&&payTime?.[0].format('YYYY-MM-DD'),
       endTime: payTime&&payTime?.[1].format('YYYY-MM-DD'),
