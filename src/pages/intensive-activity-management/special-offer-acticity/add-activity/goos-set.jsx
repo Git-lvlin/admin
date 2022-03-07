@@ -487,7 +487,7 @@ export default (props) => {
               ...item,
               status:1,
               wsPrice:item.price,
-              price:0
+              price:amountTransform(item.wholesaleSupplyPrice, '/')
             })
           })
           setDataSource(arr)
