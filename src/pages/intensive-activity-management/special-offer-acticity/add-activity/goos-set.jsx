@@ -437,7 +437,7 @@ export default (props) => {
     }
   ]; 
   return (
-    <>
+  <>
     <ProFormText
       width="md"
       name="price"
@@ -499,21 +499,21 @@ export default (props) => {
       />
     }
     {
-        endVisible&&<EndModel 
-        visible={endVisible} 
-        setVisible={setEndVisible}  
-        pennyId={pennyId} 
-        callback={(arr)=>{
-          ref.current.reload()
-          setPennyId(null)
-          setDataSource(arr) 
-          callback(arr)
-        }}
-        onClose={()=>{ref.current.reload();setPennyId(null)}}
-        dataSource={dataSource}
-        />
-      }
-    </>
+      endVisible&&<EndModel 
+      visible={endVisible} 
+      setVisible={setEndVisible}  
+      pennyId={pennyId} 
+      callback={(arr)=>{
+        ref.current.reload()
+        setPennyId(null)
+        setDataSource(arr) 
+        callback(arr)
+      }}
+      onClose={()=>{ref.current.reload();setPennyId(null)}}
+      dataSource={dataSource}
+      />
+    }
+  </>
     
   );
 };
