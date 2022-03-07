@@ -103,10 +103,10 @@ const Detail = ({ storeNo, visible, setVisible }) => {
               <div style={{ display: 'flex', marginBottom: 10 }}>
                 <div>在平台购买生鲜柜的情况：</div>
                 {
-                  detailData?.freshApplyRow?.id === 0 && '未购买'
+                  (detailData?.freshApplyRow?.id === 0 || detailData?.freshApplyRow?.details?.isOrdered === 0) && '未购买'
                 }
                 {
-                  detailData?.freshApplyRow?.id !== 0 &&
+                  detailData?.freshApplyRow?.details?.isOrdered === 1 &&
                   <>购买生鲜柜订单号<a onClick={() => { setSelectItem({ id: detailData?.freshApplyRow?.details?.order?.id }); setOrderDetailVisible(true) }} >{detailData?.freshApplyRow?.details?.order?.orderSn}【{orderStatus[detailData?.freshApplyRow?.details?.order?.status]}】</a></>
                 }
               </div>
