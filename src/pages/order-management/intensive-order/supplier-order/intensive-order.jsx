@@ -324,11 +324,15 @@ const TableList = () => {
           options={[
             {
               value: 1,
-              label: '普通订单'
+              label: '普适品'
             },
             {
               value: 2,
-              label: '生鲜订单'
+              label: '精装生鲜'
+            },
+            {
+              value: 3,
+              label: '散装生鲜'
             }
           ]}
           fieldProps={{
@@ -400,10 +404,7 @@ const TableList = () => {
           data.map(item => (
             <div className={styles.list} key={item.id}>
               <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 10 }} color="#f59a23">{item.wholesaleFlowType === 1 ? '直发到店' : '运营中心配送'}</Tag>
-              {
-                item?.businessType === 2&&
-                <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: item.wholesaleFlowType === 1 ? 80 : 110, marginTop: 10 }} color='#58B138'>生鲜订单</Tag>
-              }
+              <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: item.wholesaleFlowType === 1 ? 80 : 110, marginTop: 10 }} color='#58B138'>{item?.businessType !== 1 ? (item?.businessType === 2 ? '精装生鲜' : '散装生鲜'): '普适品'}</Tag>
               {
                 isPurchase
                   ?

@@ -241,11 +241,11 @@ const TableList = () => {
           options={[
             {
               value: 0,
-              label: '普通订单'
+              label: '普适品'
             },
             {
               value: 1,
-              label: '生鲜订单'
+              label: '精装生鲜'
             }
           ]}
           fieldProps={{
@@ -307,23 +307,19 @@ const TableList = () => {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         }
-        <div style={{ height: 'calc(100vh - 550px)', overflowY: 'auto', marginBottom: 10 }}>
-          {
-            data.map(item => (
-              <div className={styles.list} key={item.id}>
-                {
-                  item?.subType === 1 &&
-                  <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>生鲜订单</Tag>
-                }
-                <div className={styles.store_name}>所属商家：{item.storeName}</div>
-                <div className={styles.second}>
-                  <Space size="large">
-                    <span>下单时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</span>
-                    <span>订单号：{item.orderSn}</span>
-                    <span>下单用户：{item.buyerName}</span>
-                    <span>用户手机号：{item.buyerPhone}</span>
-                  </Space>
-                </div>
+        {
+          data.map(item => (
+            <div className={styles.list} key={item.id}>
+              <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>{item?.subType === 1 ? '精装生鲜' : '普适品'}</Tag>
+              <div className={styles.store_name}>所属商家：{item.storeName}</div>
+              <div className={styles.second}>
+                <Space size="large">
+                  <span>下单时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</span>
+                  <span>订单号：{item.orderSn}</span>
+                  <span>下单用户：{item.buyerName}</span>
+                  <span>用户手机号：{item.buyerPhone}</span>
+                </Space>
+              </div>
 
                 <div className={styles.body}>
                   <div className={styles.goods_info}>
