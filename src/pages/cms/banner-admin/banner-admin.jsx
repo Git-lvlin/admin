@@ -15,7 +15,11 @@ const BannerAdmin = () => {
   const [detailData, setDetailData] = useState(null);
   const [verifyVersionId, setVerifyVersionId] = useState(1);
   const getDetail = (data) => {
-    data && setDetailData(data);
+    if (data) {
+      setDetailData(data);
+    } else {
+      setDetailData(null);
+    }
     setFormVisible(true);
   }
 
