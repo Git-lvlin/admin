@@ -7,6 +7,7 @@ import Upload from '@/components/upload';
 import RejectForm from './refuse';
 import { amountTransform } from '@/utils/utils'
 import { approve } from '@/services/intensive-store-management/store-review'
+import OrderDetail from '@/pages/order-management/normal-order/detail';
 
 
 const formItemLayout = {
@@ -76,6 +77,8 @@ const ImageInfo = ({ value, onChange }) => {
   )
 }
 
+const orderStatus = { 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭' };
+
 const Detail = (props) => {
   const { setVisible } = props;
   const [detailData, setDetailData] = useState({});
@@ -84,6 +87,8 @@ const Detail = (props) => {
   const [addressText, setAddressText] = useState('');
   const [location, setLocation] = useState([]);
   const [rejectFormVisible, setRejectFormVisible] = useState(false);
+  const [orderDetailVisible, setOrderDetailVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState({});
   const map = useRef();
 
   const submit = (values) => {
@@ -153,24 +158,23 @@ const Detail = (props) => {
           idNumber: details?.idNumber,
         })
 
-        if (details.longitude && details.latitude) {
-          setLocation([details.longitude, details.latitude]);
-          map.current = new AMap.Map('container', {
-            zoom: 20,
-            center: [details.longitude, details.latitude],
+        setLocation([details.longitude || 0, details.latitude || 0]);
+        map.current = new AMap.Map('container', {
+          zoom: 20,
+          center: [details.longitude || 0, details.latitude || 0],
+        });
+        map.current.add(new AMap.Marker({
+          position: new AMap.LngLat(details.longitude || 0, details.latitude || 0),
+        }))
+        map.current.on('click', function (ev) {
+          map.current.clearMap()
+          const marker = new AMap.Marker({
+            position: new AMap.LngLat(ev.lnglat.lng, ev.lnglat.lat),
           });
-          map.current.add(new AMap.Marker({
-            position: new AMap.LngLat(details.longitude, details.latitude),
-          }))
-          map.current.on('click', function (ev) {
-            map.current.clearMap()
-            const marker = new AMap.Marker({
-              position: new AMap.LngLat(ev.lnglat.lng, ev.lnglat.lat),
-            });
-            map.current.add(marker)
-            setLocation([ev.lnglat.lng, ev.lnglat.lat]);
-          });
-        }
+          map.current.add(marker)
+          setLocation([ev.lnglat.lng, ev.lnglat.lat]);
+        });
+        setAddressText(`${details.provinceName}${details.cityName}${details.regionName}${details.address}`)
       }
     }).finally(() => {
       setLoading(false);
@@ -316,17 +320,21 @@ const Detail = (props) => {
           }}
           width="md"
         />
-        {!!detailData?.details?.longitude&&<Form.Item
+        <Form.Item
           label=" "
           colon={false}
         >
           <div id="container" style={{ width: 600, height: 300 }}></div>
-        </Form.Item>}
+        </Form.Item>
         <Form.Item
           label="必备礼包订单号"
         >
           {
             detailData?.details?.giftOrder?.isGiftOrdered === 0 && <span style={{ color: 'red' }}>没有购买记录</span>
+          }
+          {
+            detailData?.details?.giftOrder?.isGiftOrdered === 1
+            && <a onClick={() => { setSelectItem({ id: detailData?.details?.giftOrder?.id }); setOrderDetailVisible(true) }}>{detailData?.details?.giftOrder?.orderSn}【{orderStatus[detailData?.details?.giftOrder?.status]}】 </a>
           }
         </Form.Item>
         <Form.Item
@@ -452,7 +460,7 @@ const Detail = (props) => {
           </>
         }
         {
-          detailData?.lastServiceFee?.id===0
+          detailData?.lastServiceFee?.id === 0
           && <ProFormText
             name="serviceFee"
             label="服务费金额"
@@ -464,6 +472,14 @@ const Detail = (props) => {
               maxLength: 30,
               suffix: '元'
             }}
+          />
+        }
+        {
+          orderDetailVisible &&
+          <OrderDetail
+            id={selectItem?.id}
+            visible={orderDetailVisible}
+            setVisible={setOrderDetailVisible}
           />
         }
       </Spin>

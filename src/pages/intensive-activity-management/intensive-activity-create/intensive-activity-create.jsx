@@ -461,6 +461,7 @@ const IntensiveActivityCreate = () => {
               <ProFormRadio.Group
                 label="平台额外奖励"
                 name="isEditSubsidy"
+                disabled={selectItem[0].fresh !== 0}
                 required
                 options={[
                   {

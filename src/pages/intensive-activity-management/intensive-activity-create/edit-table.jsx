@@ -111,19 +111,24 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         return arr;
       }
 
-      onSelect([record])
-      setSelectData([record])
+      if (record.skuId === selectedRowKeys[0]) {
+        onSelect([record])
+        setSelectData([record])
+      }
+
       setDataSource(recordList)
 
       productList(obj).then(res => {
         const skuData = res.data[0];
-        onSelect(getList([record], skuData, (arr) => { setSelectData(arr) }))
+        if (record.skuId === selectedRowKeys[0]) {
+          onSelect(getList([record], skuData, (arr) => { setSelectData(arr) }))
+        }
         setDataSource(getList(recordList, skuData))
       })
     };
 
     return debounce(loadData, 10);
-  }, [dataSource, selectData, onSelect]);
+  }, [dataSource, selectData, onSelect, selectedRowKeys]);
 
   const columns = [
     {
@@ -364,7 +369,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       dataIndex: 'isAppointSubsidy',
       valueType: 'text',
       hideInSearch: true,
-      renderFormItem: () => <Checkbox.Group><Checkbox value={1}>指定配送补贴</Checkbox></Checkbox.Group>,
+      renderFormItem: (_, { record }) => <Checkbox.Group disabled={record?.fresh !== 0}><Checkbox value={1}>指定配送补贴</Checkbox></Checkbox.Group>,
     },
     {
       title: '运营中心配送费补贴',
@@ -481,7 +486,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
       profit: amountTransform(item.profit, '/'),
       orderProfit: 0,
-      totalPrice: item.salePrice > 0 ? +new Big(item.price).div(100).times(item.wholesaleMinNum || 10) : 0,
+      totalPrice: +new Big(item.price).div(100).times(item.wholesaleMinNum || 10),
       wholesaleFlowType: item.fresh === 1 ? 2 : 1,
       isAppointSubsidy: [],
       // subsidy: {
@@ -508,7 +513,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         wholesaleSupplyPrice: amountTransform(sku.wholesaleSupplyPrice, '/'),
         profit: amountTransform(sku.profit, '/'),
         orderProfit: amountTransform(wholesale?.orderProfit, '/'),
-        totalPrice: sku.salePrice > 0 ? +new Big(sku.price).div(100).times(sku.minNum || 10) : 0,
+        totalPrice: +new Big(sku.price).div(100).times(sku.minNum || 10),
         wholesaleFlowType: wholesale?.wholesaleFlowType,
         isAppointSubsidy: sku?.isAppointSubsidy === 0 ? [] : [1],
         // subsidy: {
