@@ -73,6 +73,7 @@ export default (props) => {
             joinBuyerType:res.data?.content?.joinBuyerType,
             joinShopType:[res.data?.content?.joinShopType],
             ruleText:res.data?.content?.ruleText,
+            ruleTextC:res.data?.content?.ruleTextC,
             shoperLimitAll:res.data?.content?.shoperLimitAll,
             shoperLimitOnece:res.data?.content?.shoperLimitOnece,
             price:res.data?.content?.price,
@@ -253,8 +254,22 @@ export default (props) => {
           }}
         />
          <ProFormTextArea
-          label='活动规则'
+          label='店主活动规则'
           name="ruleText"
+          style={{ minHeight: 32, marginTop: 15 }}
+          placeholder='请输入5-1000个字符'
+          rules={[
+            { required: true, message: '请备注使用规则' },
+            { validator: checkConfirm5 }
+          ]}
+          rows={4}
+          fieldProps={{
+            maxLength:1000
+          }}
+        />
+         <ProFormTextArea
+          label='消费者活动规则'
+          name="ruleTextC"
           style={{ minHeight: 32, marginTop: 15 }}
           placeholder='请输入5-1000个字符'
           rules={[

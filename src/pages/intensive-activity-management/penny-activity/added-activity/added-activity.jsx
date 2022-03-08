@@ -43,6 +43,7 @@ export default (props) => {
             joinBuyerType:res.data?.content?.joinBuyerType,
             joinShopType:[res.data?.content?.joinShopType],
             ruleText:res.data?.content?.ruleText,
+            ruleTextC:res.data?.content?.ruleTextC,
             shoperLimitAll:res.data?.content?.shoperLimitAll,
             shoperLimitOnece:res.data?.content?.shoperLimitOnece,
             price:amountTransform(res.data?.content?.price,'/'),
@@ -143,7 +144,7 @@ export default (props) => {
       }
     }
 
-      const parmas={
+  const parmas={
         ...values,
         id:id?id:0,
         startTime:moment(values.dateRange[0]).valueOf()/1000,
@@ -306,7 +307,7 @@ export default (props) => {
           rules={[{ required: true, message: '请选择参与活动的店铺' }]}
           initialValue={[1]}
         />
-         <ProFormRadio.Group
+        <ProFormRadio.Group
           name="joinBuyerType"
           label="参与活动的消费者"
           options={[
@@ -323,12 +324,27 @@ export default (props) => {
           initialValue={1}
         />
         <ProFormTextArea
-          label='活动规则'
+          label='店主活动规则'
           name="ruleText"
           style={{ minHeight: 32, marginTop: 15 }}
           placeholder='请输入5-1000个字符'
           rules={[
-            { required: true, message: '请备注使用规则' },
+            { required: true, message: '请备注店主活动规则' },
+            { validator: checkConfirm5 }
+          ]}
+          rows={4}
+          fieldProps={{
+            maxLength:1000
+          }}
+        />
+
+        <ProFormTextArea
+          label='消费者活动规则'
+          name="ruleTextC"
+          style={{ minHeight: 32, marginTop: 15 }}
+          placeholder='请输入5-1000个字符'
+          rules={[
+            { required: true, message: '请备注消费者活动规则' },
             { validator: checkConfirm5 }
           ]}
           rows={4}
