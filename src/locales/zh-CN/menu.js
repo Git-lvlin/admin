@@ -75,7 +75,9 @@ export default {
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
+  'menu.intensive-activity-management.intensive-bulk-activity-list': '散装集约活动列表',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
+  'menu.intensive-activity-management.intensive-bulk-activity-create': '散装集约活动新建',
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
   'menu.intensive-activity-management.intensive-activity-audit': '集约活动审核',
   'menu.intensive-activity-management.intensive-activity-audit-detail': '活动审核详情',

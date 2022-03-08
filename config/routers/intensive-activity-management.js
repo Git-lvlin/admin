@@ -12,9 +12,21 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'intensive-bulk-activity-list',
+      path: '/intensive-activity-management/intensive-bulk-activity-list',
+      component: './intensive-activity-management/intensive-bulk-activity-list',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'intensive-activity-create',
       path: '/intensive-activity-management/intensive-activity-create/:id',
       component: './intensive-activity-management/intensive-activity-create',
+      hideInMenu: true,
+    },
+    {
+      name: 'intensive-bulk-activity-create',
+      path: '/intensive-activity-management/intensive-bulk-activity-create/:id',
+      component: './intensive-activity-management/intensive-bulk-activity-create',
       hideInMenu: true,
     },
     {
