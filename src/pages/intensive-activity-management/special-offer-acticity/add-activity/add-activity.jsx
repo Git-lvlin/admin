@@ -2,7 +2,7 @@ import React, { useState, useEffect,useRef } from 'react';
 import { Input, Form, Divider, message, Button,Space } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
 import ProTable from '@ant-design/pro-table';
-import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,ProFormTimePicker } from '@ant-design/pro-form';
+import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,ProFormTimePicker,ProFormDependency } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import { saveWSDiscountActiveConfig,getActiveConfigById } from '@/services/intensive-activity-management/special-offer-acticity';
 import { amountTransform } from '@/utils/utils'
@@ -73,6 +73,7 @@ export default (props) => {
             joinBuyerType:res.data?.content?.joinBuyerType,
             joinShopType:[res.data?.content?.joinShopType],
             ruleText:res.data?.content?.ruleText,
+            ruleTextC:res.data?.content?.ruleTextC,
             shoperLimitAll:res.data?.content?.shoperLimitAll,
             shoperLimitOnece:res.data?.content?.shoperLimitOnece,
             price:res.data?.content?.price,
@@ -178,12 +179,23 @@ export default (props) => {
           ]}
           options={[
             {
-              label: <ProFormText   rules={[ { validator: checkConfirm2 }]}   name="buyerLimit" fieldProps={{addonAfter:'每人/每天'}}/>, value: 1
+              label: <ProFormDependency name={['buyerType']}>
+                {
+                  ({ buyerType }) => (
+                    <ProFormText 
+                      rules={[ { required: buyerType==0?false:true, message: '请填写购买数量' },{ validator: checkConfirm2 }]}   
+                      name="buyerLimit" 
+                      fieldProps={{addonAfter:'每人/每天'}}
+                    />
+                  )
+                }
+                </ProFormDependency> , value: 1
             },
             {
               label: '不限', value: 0
             }
           ]}
+          initialValue={1}
          />
         <ProFormRadio.Group
           name="buyerTimeType"
@@ -191,12 +203,20 @@ export default (props) => {
           rules={[{ required: true, message: '请选择限领方式' }]}
           options={[
             {
-              label: <ProFormTimePicker.RangePicker name="timeRange" extra='（控件只可选24小时区间）'/>, value: 1
+              label: <ProFormDependency name={['buyerTimeType']}>
+                {
+                  ({ buyerTimeType }) => (
+                   <ProFormTimePicker.RangePicker rules={[ { required:buyerTimeType==0?false:true, message: '请选择时间区间' }]} name="timeRange" extra='（控件只可选24小时区间）'/>
+                  )
+                }
+                </ProFormDependency>
+                , value: 1
             },
             {
               label: '不限', value: 0
             }
           ]}
+          initialValue={1}
         />
         <ProFormCheckbox.Group
           name="joinShopType"
@@ -234,8 +254,22 @@ export default (props) => {
           }}
         />
          <ProFormTextArea
-          label='活动规则'
+          label='店主活动规则'
           name="ruleText"
+          style={{ minHeight: 32, marginTop: 15 }}
+          placeholder='请输入5-1000个字符'
+          rules={[
+            { required: true, message: '请备注使用规则' },
+            { validator: checkConfirm5 }
+          ]}
+          rows={4}
+          fieldProps={{
+            maxLength:1000
+          }}
+        />
+         <ProFormTextArea
+          label='消费者活动规则'
+          name="ruleTextC"
           style={{ minHeight: 32, marginTop: 15 }}
           placeholder='请输入5-1000个字符'
           rules={[

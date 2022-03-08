@@ -111,19 +111,24 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         return arr;
       }
 
-      onSelect([record])
-      setSelectData([record])
+      if (record.skuId === selectedRowKeys[0]) {
+        onSelect([record])
+        setSelectData([record])
+      }
+
       setDataSource(recordList)
 
       productList(obj).then(res => {
         const skuData = res.data[0];
-        onSelect(getList([record], skuData, (arr) => { setSelectData(arr) }))
+        if (record.skuId === selectedRowKeys[0]) {
+          onSelect(getList([record], skuData, (arr) => { setSelectData(arr) }))
+        }
         setDataSource(getList(recordList, skuData))
       })
     };
 
     return debounce(loadData, 10);
-  }, [dataSource, selectData, onSelect]);
+  }, [dataSource, selectData, onSelect, selectedRowKeys]);
 
   const columns = [
     {
