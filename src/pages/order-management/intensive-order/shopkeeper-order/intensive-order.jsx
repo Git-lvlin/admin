@@ -241,11 +241,11 @@ const TableList = () => {
           options={[
             {
               value: 0,
-              label: '普通订单'
+              label: '普适品'
             },
             {
               value: 1,
-              label: '生鲜订单'
+              label: '精装生鲜'
             }
           ]}
           fieldProps={{
@@ -310,10 +310,7 @@ const TableList = () => {
         {
           data.map(item => (
             <div className={styles.list} key={item.id}>
-              {
-                item?.subType === 1 &&
-                <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>生鲜订单</Tag>
-              }
+              <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>{item?.subType === 1 ? '精装生鲜' : '普适品'}</Tag>
               <div className={styles.store_name}>所属商家：{item.storeName}</div>
               <div className={styles.second}>
                 <Space size="large">
