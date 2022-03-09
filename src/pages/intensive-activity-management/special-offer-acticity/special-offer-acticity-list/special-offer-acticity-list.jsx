@@ -61,7 +61,7 @@ export default () => {
         hideInSearch: true,
       },
       {
-        title: '状态',
+        title: '活动状态',
         dataIndex: 'statusDisplay',
         valueType: 'text',
         hideInSearch: true,
