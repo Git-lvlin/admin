@@ -200,6 +200,7 @@ const TableList = () => {
       dataIndex: 'fresh',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
       render: (_) => ({
         0: '非生鲜',
         1: '精装生鲜',
@@ -269,6 +270,7 @@ const TableList = () => {
       dataIndex: 'goodsSaleTypeDisplay',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '批发样品',
@@ -524,7 +526,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: '110vw', y: window.innerHeight - 730, scrollToFirstRowOnChange: true, }}
+        scroll={{ x: '100vw', y: window.innerHeight - 730, scrollToFirstRowOnChange: true, }}
         search={{
           labelWidth: 140,
           defaultCollapsed: false,
