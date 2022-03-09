@@ -647,8 +647,6 @@ const IntensiveActivityCreate = () => {
                     }
                   }
                 </ProFormDependency>
-
-
               </>
             }
 

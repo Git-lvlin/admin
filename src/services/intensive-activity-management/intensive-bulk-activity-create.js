@@ -22,7 +22,7 @@ export const productList = async (params, options = {}) => {
 }
 
 export const addWholesale = (params = {}, options = {}) => {
-  return request('/auth/wholesale/index/addWholesale', {
+  return request('/auth/wholesale/index/addBulkWholesale', {
     method: 'POST',
     data: params,
     ...options

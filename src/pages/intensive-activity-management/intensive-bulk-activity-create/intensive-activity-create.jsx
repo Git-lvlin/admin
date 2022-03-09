@@ -359,7 +359,7 @@ const IntensiveActivityCreate = () => {
               // recoverPayTimeout: 3
               isEditSubsidy: 0,
               ladderShowPercent: 50,
-              preSale: 1,
+              preSale: 2,
               // freshSpecial: 0,
               // freshCommission: 20,
               activityShowType: 0,
@@ -448,12 +448,9 @@ const IntensiveActivityCreate = () => {
               required
               options={[
                 {
-                  label: '开启（店主收货前可对消费者售卖）',
-                  value: 1,
-                },
-                {
-                  label: '关闭（店主收货后才能对消费者售卖）',
-                  value: 0,
+                  label: '不可售卖（店主采购后不对消费者售卖）',
+                  value: 2,
+                  disabled: true,
                 },
               ]}
             />
@@ -573,7 +570,7 @@ const IntensiveActivityCreate = () => {
               &&
               <>
                 <Form.Item
-                  label="生鲜商品的各方分佣比例"
+                  label="散装生鲜分佣比例"
                 >
                   <Table
                     // title={() => "以五星社区店为例"}
@@ -589,7 +586,7 @@ const IntensiveActivityCreate = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label="预计生鲜食品的各方分佣金额"
+                  label="预计散装生鲜各方分佣金额"
                 >
                   <FreshIncome data={selectItem?.[0]} />
                 </Form.Item>

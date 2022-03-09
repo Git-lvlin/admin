@@ -401,8 +401,8 @@ const TableList = () => {
       fixed: 'right',
       render: (_, data) => (
         <Space>
-          {data.wholesaleAuditStatus !== 1 && data.wholesaleAuditStatus !== 3 && <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}`) }}>编辑</a>}
-          <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-detail/${data.wholesaleId}`) }}>详情</a>
+          {data.wholesaleAuditStatus !== 1 && data.wholesaleAuditStatus !== 3 && <a onClick={() => { history.push(`/intensive-activity-management/intensive-bulk-activity-create/${data.wholesaleId}`) }}>编辑</a>}
+          <a onClick={() => { history.push(`/intensive-activity-management/intensive-bulk-activity-detail/${data.wholesaleId}`) }}>详情</a>
           {
             (data.wholesaleStatus === 1 || data.wholesaleStatus === 2 || data.wholesaleStatus === 4 || data.wholesaleStatus === 5)
             &&
@@ -443,7 +443,7 @@ const TableList = () => {
             &&
             <a onClick={() => { cancel(data.wholesaleId) }}>取消活动</a>
           }
-          <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}?type=1`) }}>复制活动</a>
+          <a onClick={() => { history.push(`/intensive-activity-management/intensive-bulk-activity-create/${data.wholesaleId}?type=1`) }}>复制活动</a>
           {data.wholesaleStatus === 1 && +new Date() < +new Date(data.endTimeAdvancePayment) && <a onClick={() => {
             setTimeVisible(true);
             setSelectItem(data);

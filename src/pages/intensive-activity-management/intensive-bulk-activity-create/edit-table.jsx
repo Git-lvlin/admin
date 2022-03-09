@@ -477,7 +477,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
       profit: amountTransform(item.profit, '/'),
       orderProfit: 0,
-      totalPrice: item.salePrice > 0 ? +new Big(item.price).div(100).times(item.wholesaleMinNum || 10) : 0,
+      totalPrice: +new Big(item.price).div(100).times(item.wholesaleMinNum || 10),
       wholesaleFlowType: 2,
       // isAppointSubsidy: [],
       // subsidy: {
@@ -485,6 +485,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       //   b: item.subsidy > 0 ? amountTransform(item.subsidy, '/') : '',
       // }
     }))
+
 
     if (data.length === 0) {
       message.error('该商品不存在或已下架')
@@ -504,7 +505,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         wholesaleSupplyPrice: amountTransform(sku.wholesaleSupplyPrice, '/'),
         profit: amountTransform(sku.profit, '/'),
         orderProfit: amountTransform(wholesale?.orderProfit, '/'),
-        totalPrice: sku.salePrice > 0 ? +new Big(sku.price).div(100).times(sku.minNum || 10) : 0,
+        totalPrice: +new Big(sku.price).div(100).times(sku.minNum || 10),
         wholesaleFlowType: 2,
         // isAppointSubsidy: sku?.isAppointSubsidy === 0 ? [] : [1],
         // subsidy: {
