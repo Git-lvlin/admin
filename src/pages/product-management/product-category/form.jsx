@@ -5,6 +5,7 @@ import ProForm, {
   ProFormText,
   ProFormSwitch,
   ProFormDependency,
+  ProFormRadio,
 } from '@ant-design/pro-form';
 // import { amountTransform } from '@/utils/utils'
 import { EditableProTable } from '@ant-design/pro-table';
@@ -20,6 +21,12 @@ const FromWrap = ({ value, onChange, content, right }) => (
   </div>
 )
 
+const freshType = {
+  0: '非生鲜类目',
+  1: '精装生鲜类目',
+  2: '散装生鲜类目'
+}
+
 export default (props) => {
   const { visible, setVisible, callback, data, id, type, selectItem, parentId } = props;
   const [form] = Form.useForm();
@@ -30,6 +37,9 @@ export default (props) => {
     { name: '三星店主', level: 3, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
     { name: '二星店主', level: 2, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
     { name: '一星店主', level: 1, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
+  ])
+  const [dataSource2] = useState([
+    { name: '一星店主', level: 6, operateCommission: 60, referrerCommission: 15, platForm: 35 },
   ])
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -171,16 +181,101 @@ export default (props) => {
     },
   ]
 
+  const columns2 = [
+    {
+      title: '运营中心提成',
+      dataIndex: 'operateCommission',
+      valueType: 'text',
+      fieldProps: {
+        addonAfter: '%',
+      },
+      formItemProps: (_, record) => {
+        return {
+          rules: [
+            {
+              required: true,
+              whitespace: true,
+              message: '运营中心提成是必填项',
+              type: 'string',
+              transform: (v) => `${v}`
+            },
+            {
+              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
+              message: '运营中心提成只能是数字，并且最多保留两位小数',
+              type: 'string',
+              transform: (v) => `${v}`
+            },
+            {
+              message: '平台额外收益必须大于0',
+              type: 'string',
+              validator() {
+                if (record.entry.platForm > 0) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error());
+              },
+              transform: (v) => `${v}`
+            }
+          ],
+        }
+      },
+    },
+    {
+      title: '推荐人提成',
+      dataIndex: 'referrerCommission',
+      valueType: 'text',
+      fieldProps: {
+        addonAfter: '%',
+      },
+      formItemProps: (_, record) => {
+        return {
+          rules: [
+            {
+              required: true,
+              whitespace: true,
+              message: '推荐人提成是必填项',
+              type: 'string',
+              transform: (v) => `${v}`
+            },
+            {
+              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
+              message: '推荐人提成只能是数字，并且最多保留两位小数',
+              type: 'string',
+              transform: (v) => `${v}`
+            },
+            {
+              message: '平台额外收益必须大于0',
+              type: 'string',
+              validator() {
+                if (record.entry.platForm > 0) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error());
+              },
+              transform: (v) => `${v}`
+            }
+          ],
+        }
+      },
+    },
+    {
+      title: '平台额外收益',
+      dataIndex: 'platForm',
+      valueType: 'text',
+      render: (_) => `${_}%`,
+      editable: false,
+    },
+  ]
+
   const submit = (values) => {
     return new Promise((resolve, reject) => {
       formRef.validateFields()
         .then(_ => {
           const apiMethod = type === 'add' ? api.categoryAdd : api.categoryEdit;
-          const { fresh, gcShow, ...rest } = values;
+          const { gcShow, shopValue, ...rest } = values;
           const params = {
             ...rest,
             gcShow: gcShow ? 1 : 0,
-            fresh: fresh ? 1 : 0,
           }
 
           if (type === 'add') {
@@ -194,6 +289,12 @@ export default (props) => {
 
           if (parentId !== 0) {
             params.fresh = selectItem.fresh;
+          }
+
+          if (params.fresh === 2) {
+            params.commission = shopValue[0]
+          } else {
+            params.shopValue = shopValue;
           }
 
           apiMethod({
@@ -225,6 +326,7 @@ export default (props) => {
     if (data) {
       form?.setFieldsValue({
         ...data,
+        shopValue: data.fresh === 1 ? data.shopValue : [{ ...data.commission, level: 6 }],
         // shopValue: data.shopValue.map(item => {
         //   return {
         //     ...item,
@@ -237,9 +339,15 @@ export default (props) => {
         gcShow: data.gcShow ? 1 : 0
       })
     } else {
-      form?.setFieldsValue({
-        shopValue: dataSource
-      })
+      if (selectItem.fresh === 2) {
+        form?.setFieldsValue({
+          shopValue: dataSource2
+        })
+      } else {
+        form?.setFieldsValue({
+          shopValue: dataSource
+        })
+      }
     }
   }, [form, data])
 
@@ -262,6 +370,7 @@ export default (props) => {
       }}
       initialValues={{
         gcShow: true,
+        fresh: 0,
         // shopValue: dataSource,
       }}
       {...formItemLayout}
@@ -310,26 +419,55 @@ export default (props) => {
         parentId !== 0
           ?
           <Form.Item
-            label='是否为生鲜类目'
+            label='生鲜类型'
             colon={false}
           >
-            {selectItem.fresh === 1 ? '是' : '否'}
+            {freshType[selectItem.fresh]}
           </Form.Item>
           :
           <>
             {type === 'add'
-              ? <ProFormSwitch
-                checkedChildren="是"
-                unCheckedChildren="否"
+              ?
+              <ProFormRadio.Group
                 name="fresh"
-                label="是否为生鲜类目"
+                label="生鲜类型"
+                rules={[{ required: true }]}
                 extra={<span style={{ color: 'red' }}>一经提交成功，后续不可修改</span>}
+                options={[
+                  {
+                    label: '非生鲜类目',
+                    value: 0,
+                  },
+                  {
+                    label: '精装生鲜类目',
+                    value: 1,
+                  },
+                  {
+                    label: '散装生鲜类目',
+                    value: 2,
+                  },
+                ]}
+                fieldProps={{
+                  onChange: (e) => {
+                    if (e.target.value === 1) {
+                      form.setFieldsValue({
+                        shopValue: dataSource
+                      })
+                    }
+
+                    if (e.target.value === 2) {
+                      form.setFieldsValue({
+                        shopValue: dataSource2
+                      })
+                    }
+                  }
+                }}
               />
               : <Form.Item
-                label='是否为生鲜类目'
+                label='生鲜类型'
                 colon={false}
               >
-                {data.fresh === 1 ? '是' : '否'}
+                {freshType[data.fresh]}
               </Form.Item>
             }
           </>
@@ -337,34 +475,63 @@ export default (props) => {
       <ProFormDependency name={['fresh']}>
         {({ fresh }) => {
           return (
-            (fresh || (parentId !== 0 && selectItem.fresh === 1))
+            (fresh || (parentId !== 0 && selectItem.fresh))
               ? <div className={styles.shopValue}>
-                <Form.Item
-                  label='生鲜商品集约各方的分佣比例'
-                  name="shopValue"
-                  rules={[{ required: true }]}
-                >
-                  <EditableProTable
-                    columns={columns}
-                    rowKey="level"
-                    // value={dataSource}
-                    search={false}
-                    editable={{
-                      form: formRef,
-                      editableKeys: [1, 2, 3, 4, 5],
-                      onValuesChange: (record, recordList) => {
-                        form.setFieldsValue({
-                          shopValue: recordList.map(item => ({ ...item, platForm: 100 - item.shopCommission - item.operateCommission - item.referrerCommission }))
-                        })
-                        debounceValidate();
-                      }
-                    }}
-                    // controlled
-                    bordered
-                    recordCreatorProps={false}
-                    tableAlertRender={false}
-                  />
-                </Form.Item>
+                {
+                  (fresh === 1 || selectItem.fresh===1)
+                    ?
+                    <Form.Item
+                      label='精装生鲜商品集约各方的分佣比例'
+                      name="shopValue"
+                      rules={[{ required: true }]}
+                    >
+                      <EditableProTable
+                        columns={columns}
+                        rowKey="level"
+                        // value={dataSource}
+                        search={false}
+                        editable={{
+                          form: formRef,
+                          editableKeys: [1, 2, 3, 4, 5],
+                          onValuesChange: (record, recordList) => {
+                            form.setFieldsValue({
+                              shopValue: recordList.map(item => ({ ...item, platForm: 100 - item.shopCommission - item.operateCommission - item.referrerCommission }))
+                            })
+                            debounceValidate();
+                          }
+                        }}
+                        bordered
+                        recordCreatorProps={false}
+                        tableAlertRender={false}
+                      />
+                    </Form.Item>
+                    :
+                    <Form.Item
+                      label='散装生鲜商品集约各方的分佣比例'
+                      name="shopValue"
+                      rules={[{ required: true }]}
+                    >
+                      <EditableProTable
+                        columns={columns2}
+                        rowKey="level"
+                        // value={dataSource2}
+                        search={false}
+                        editable={{
+                          form: formRef,
+                          editableKeys: [6],
+                          onValuesChange: (record, recordList) => {
+                            form.setFieldsValue({
+                              shopValue: recordList.map(item => ({ ...item, platForm: 100 - item.operateCommission - item.referrerCommission }))
+                            })
+                            debounceValidate();
+                          }
+                        }}
+                        bordered
+                        recordCreatorProps={false}
+                        tableAlertRender={false}
+                      />
+                    </Form.Item>
+                }
                 {type === 'edit' && <Form.Item
                   label='生鲜分类商品总分佣比例'
                 >
