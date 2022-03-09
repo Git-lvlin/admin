@@ -304,6 +304,7 @@ export default (props) => {
               value: 1,
             },
           ]}
+          disabled
           rules={[{ required: true, message: '请选择参与活动的店铺' }]}
           initialValue={[1]}
         />
