@@ -24,7 +24,7 @@ export default (props) => {
   const { visible, setVisible, callback, data, id, type, selectItem, parentId } = props;
   const [form] = Form.useForm();
   const [formRef] = Form.useForm();
-  const [dataSource] = useState([
+  const [dataSource, setDataSource] = useState([
     { name: '五星店主', level: 5, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
     { name: '四星店主', level: 4, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
     { name: '三星店主', level: 3, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
@@ -228,13 +228,17 @@ export default (props) => {
         // shopValue: data.shopValue.map(item => {
         //   return {
         //     ...item,
-        //     shopCommission: amountTransform(item.shopCommission),
-        //     operateCommission: amountTransform(item.operateCommission),
-        //     referrerCommission: amountTransform(item.referrerCommission),
-        //     platForm: amountTransform(item.platForm),
+        //     shopCommission: +item.shopCommission,
+        //     operateCommission: +item.operateCommission,
+        //     referrerCommission: +item.referrerCommission,
+        //     platForm: +item.platForm,
         //   }
         // }),
         gcShow: data.gcShow ? 1 : 0
+      })
+    } else {
+      form?.setFieldsValue({
+        shopValue: dataSource
       })
     }
   }, [form, data])
@@ -258,7 +262,7 @@ export default (props) => {
       }}
       initialValues={{
         gcShow: true,
-        shopValue: dataSource,
+        // shopValue: dataSource,
       }}
       {...formItemLayout}
     >
@@ -343,7 +347,7 @@ export default (props) => {
                   <EditableProTable
                     columns={columns}
                     rowKey="level"
-                    value={dataSource}
+                    // value={dataSource}
                     search={false}
                     editable={{
                       form: formRef,
@@ -355,12 +359,13 @@ export default (props) => {
                         debounceValidate();
                       }
                     }}
+                    // controlled
                     bordered
                     recordCreatorProps={false}
                     tableAlertRender={false}
                   />
                 </Form.Item>
-                {type ==='edit'&&<Form.Item
+                {type === 'edit' && <Form.Item
                   label='生鲜分类商品总分佣比例'
                 >
                   {data?.freshCommission}%
