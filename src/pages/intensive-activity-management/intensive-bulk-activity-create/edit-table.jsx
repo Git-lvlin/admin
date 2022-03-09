@@ -3,7 +3,7 @@ import { EditableProTable } from '@ant-design/pro-table';
 import { Checkbox, Input, Radio, message } from 'antd';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
-import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
+import { productList } from '@/services/intensive-activity-management/intensive-bulk-activity-create'
 import Big from 'big.js';
 import { amountTransform } from '@/utils/utils'
 import debounce from 'lodash/debounce';
@@ -69,10 +69,10 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         // subsidy: amountTransform(record.subsidy.b)
       }
 
-      if (record.isAppointSubsidy.length) {
-        obj.fixedPrice = amountTransform(record.fixedPrice);
-        obj.operationFixedPrice = amountTransform(record.operationFixedPrice);
-      }
+      // if (record.isAppointSubsidy.length) {
+      //   obj.fixedPrice = amountTransform(record.fixedPrice);
+      //   obj.operationFixedPrice = amountTransform(record.operationFixedPrice);
+      // }
 
       if (findItem.price !== record.price) {
         obj.price = amountTransform(record.price);
@@ -89,8 +89,8 @@ export default function EditTable({ onSelect, sku, wholesale }) {
           if (item.id === skuData.id) {
             const data = {
               ...record,
-              fixedPrice: amountTransform(skuData.fixedPrice, '/'),
-              operationFixedPrice: amountTransform(skuData.operationFixedPrice, '/'),
+              // fixedPrice: amountTransform(skuData.fixedPrice, '/'),
+              // operationFixedPrice: amountTransform(skuData.operationFixedPrice, '/'),
               settlePercent: amountTransform(skuData.settlePercent),
               price: amountTransform(skuData.price, '/'),
               profit: amountTransform(skuData.profit, '/'),
@@ -111,24 +111,19 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         return arr;
       }
 
-      if (record.skuId === selectedRowKeys[0]) {
-        onSelect([record])
-        setSelectData([record])
-      }
-
+      onSelect([record])
+      setSelectData([record])
       setDataSource(recordList)
 
       productList(obj).then(res => {
         const skuData = res.data[0];
-        if (record.skuId === selectedRowKeys[0]) {
-          onSelect(getList([record], skuData, (arr) => { setSelectData(arr) }))
-        }
+        onSelect(getList([record], skuData, (arr) => { setSelectData(arr) }))
         setDataSource(getList(recordList, skuData))
       })
     };
 
     return debounce(loadData, 10);
-  }, [dataSource, selectData, onSelect, selectedRowKeys]);
+  }, [dataSource, selectData, onSelect]);
 
   const columns = [
     {
@@ -241,12 +236,8 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       title: '配送模式',
       dataIndex: 'wholesaleFlowType',
       hideInSearch: true,
-      renderFormItem: (_, { record }) => {
-        return (<Radio.Group>
-          <Radio value={1} disabled={record?.fresh === 1}>直发到店</Radio>
-          <Radio value={2}>运营中心配送</Radio>
-        </Radio.Group>)
-      }
+      render: () => '运营中心配送',
+      editable: false,
     },
     {
       title: '批发供货价(元)',
@@ -313,10 +304,10 @@ export default function EditTable({ onSelect, sku, wholesale }) {
           <FormWrap>
             {({ value, onChange }) => (
               <>
-                <Input addonAfter={record.unit} value={value} onChange={onChange} onBlur={() => {
+                <Input addonAfter={record?.unit} value={value} onChange={onChange} onBlur={() => {
                   debounceFetcher({ record, recordList: dataSource })
                 }} />
-                {record.batchNumber > 1 && !!record.wsUnit && value / record.batchNumber >= 1 && <div>({parseInt(value / record.batchNumber, 10)}{record.wsUnit})</div>}
+                {record?.batchNumber > 1 && !!record?.wsUnit && value / record?.batchNumber >= 1 && <div>({parseInt(value / record?.batchNumber, 10)}{record?.wsUnit})</div>}
               </>
             )}
           </FormWrap>
@@ -364,41 +355,41 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       hideInSearch: true,
       editable: false,
     },
-    {
-      title: '是否指定配送补贴',
-      dataIndex: 'isAppointSubsidy',
-      valueType: 'text',
-      hideInSearch: true,
-      renderFormItem: (_, { record }) => <Checkbox.Group disabled={record?.fresh !== 0}><Checkbox value={1}>指定配送补贴</Checkbox></Checkbox.Group>,
-    },
-    {
-      title: '运营中心配送费补贴',
-      dataIndex: 'operationFixedPrice',
-      valueType: 'text',
-      hideInSearch: true,
-      renderFormItem: (_, { record }) => {
-        if (record.isAppointSubsidy.length) {
-          return <CusInput onBlur={() => {
-            debounceFetcher({ record, recordList: dataSource })
-          }} />
-        }
-        return record.operationFixedPrice
-      },
-    },
-    {
-      title: '社区店配送费补贴',
-      dataIndex: 'fixedPrice',
-      valueType: 'text',
-      hideInSearch: true,
-      renderFormItem: (_, { record }) => {
-        if (record.isAppointSubsidy.length) {
-          return <CusInput onBlur={() => {
-            debounceFetcher({ record, recordList: dataSource })
-          }} />
-        }
-        return record.fixedPrice
-      },
-    },
+    // {
+    //   title: '是否指定配送补贴',
+    //   dataIndex: 'isAppointSubsidy',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   renderFormItem: () => <Checkbox.Group><Checkbox value={1}>指定配送补贴</Checkbox></Checkbox.Group>,
+    // },
+    // {
+    //   title: '运营中心配送费补贴',
+    //   dataIndex: 'operationFixedPrice',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   renderFormItem: (_, { record }) => {
+    //     if (record.isAppointSubsidy.length) {
+    //       return <CusInput onBlur={() => {
+    //         debounceFetcher({ record, recordList: dataSource })
+    //       }} />
+    //     }
+    //     return record.operationFixedPrice
+    //   },
+    // },
+    // {
+    //   title: '社区店配送费补贴',
+    //   dataIndex: 'fixedPrice',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   renderFormItem: (_, { record }) => {
+    //     if (record.isAppointSubsidy.length) {
+    //       return <CusInput onBlur={() => {
+    //         debounceFetcher({ record, recordList: dataSource })
+    //       }} />
+    //     }
+    //     return record.fixedPrice
+    //   },
+    // },
     // {
     //   title: '社区店特殊补贴',
     //   dataIndex: 'subsidy',
@@ -479,21 +470,22 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       minNum: item.batchNumber,
       maxNum: 100,
       price: amountTransform(item.price, '/'),
-      fixedPrice: amountTransform(item.fixedPrice, '/'),
-      operationFixedPrice: amountTransform(item.operationFixedPrice, '/'),
+      // fixedPrice: amountTransform(item.fixedPrice, '/'),
+      // operationFixedPrice: amountTransform(item.operationFixedPrice, '/'),
       settlePercent: amountTransform(item.settlePercent),
       wholesaleFreight: amountTransform(item.wholesaleFreight, '/'),
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
       profit: amountTransform(item.profit, '/'),
       orderProfit: 0,
       totalPrice: +new Big(item.price).div(100).times(item.wholesaleMinNum || 10),
-      wholesaleFlowType: item.fresh === 1 ? 2 : 1,
-      isAppointSubsidy: [],
+      wholesaleFlowType: 2,
+      // isAppointSubsidy: [],
       // subsidy: {
       //   a: item.orderAmount > 0 ? amountTransform(item.orderAmount, '/') : '',
       //   b: item.subsidy > 0 ? amountTransform(item.subsidy, '/') : '',
       // }
     }))
+
 
     if (data.length === 0) {
       message.error('该商品不存在或已下架')
@@ -507,15 +499,15 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         maxNum: sku.maxNum,
         totalStockNum: sku.totalStockNum,
         price: amountTransform(sku.price, '/'),
-        fixedPrice: amountTransform(sku.fixedPrice, '/'),
-        operationFixedPrice: amountTransform(sku.operationFixedPrice, '/'),
+        // fixedPrice: amountTransform(sku.fixedPrice, '/'),
+        // operationFixedPrice: amountTransform(sku.operationFixedPrice, '/'),
         settlePercent: amountTransform(sku.settlePercent),
         wholesaleSupplyPrice: amountTransform(sku.wholesaleSupplyPrice, '/'),
         profit: amountTransform(sku.profit, '/'),
         orderProfit: amountTransform(wholesale?.orderProfit, '/'),
         totalPrice: +new Big(sku.price).div(100).times(sku.minNum || 10),
-        wholesaleFlowType: wholesale?.wholesaleFlowType,
-        isAppointSubsidy: sku?.isAppointSubsidy === 0 ? [] : [1],
+        wholesaleFlowType: 2,
+        // isAppointSubsidy: sku?.isAppointSubsidy === 0 ? [] : [1],
         // subsidy: {
         //   a: wholesale?.orderAmount > 0 ? amountTransform(wholesale?.orderAmount, '/') : '',
         //   b: wholesale?.subsidy > 0 ? amountTransform(wholesale.subsidy, '/') : '',
@@ -550,6 +542,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         goodsVerifyState: 1,
         hasStock: 1,
         isGetWholesale: 1,
+        fresh: 2,
       }}
       scroll={{ x: 'max-content' }}
       controlled
@@ -564,16 +557,16 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       editable={{
         editableKeys,
         onValuesChange: (record, recordList) => {
-          const findItem = dataSource.find(item => item.id === record.id);
-          if (findItem.isAppointSubsidy.length !== record.isAppointSubsidy.length) {
-            debounceFetcher({ record, recordList })
-          }
+          // const findItem = dataSource.find(item => item.id === record.id);
+          // if (findItem.isAppointSubsidy.length !== record.isAppointSubsidy.length) {
+          //   debounceFetcher({ record, recordList })
+          // }
 
-          if (findItem.wholesaleFlowType !== record.wholesaleFlowType) {
-            onSelect([record])
-            setSelectData([record])
-            setDataSource(recordList)
-          }
+          // if (findItem.wholesaleFlowType !== record.wholesaleFlowType) {
+          //   onSelect([record])
+          //   setSelectData([record])
+          //   setDataSource(recordList)
+          // }
 
         }
       }}

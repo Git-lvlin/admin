@@ -213,7 +213,7 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-audit/detail/${data.wholesaleId}`) }}>审核</a>
+          <a onClick={() => { history.push(`/intensive-activity-management/intensive${data.fresh===2?'-bulk':''}-activity-audit/detail/${data.wholesaleId}`) }}>审核</a>
         </Space>
       ),
     },
