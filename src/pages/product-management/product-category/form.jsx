@@ -339,9 +339,15 @@ export default (props) => {
         gcShow: data.gcShow ? 1 : 0
       })
     } else {
-      form?.setFieldsValue({
-        shopValue: dataSource
-      })
+      if (selectItem.fresh === 2) {
+        form?.setFieldsValue({
+          shopValue: dataSource2
+        })
+      } else {
+        form?.setFieldsValue({
+          shopValue: dataSource
+        })
+      }
     }
   }, [form, data])
 
@@ -416,7 +422,7 @@ export default (props) => {
             label='生鲜类型'
             colon={false}
           >
-            {freshType[data.fresh]}
+            {freshType[selectItem.fresh]}
           </Form.Item>
           :
           <>
@@ -472,7 +478,7 @@ export default (props) => {
             (fresh || (parentId !== 0 && selectItem.fresh))
               ? <div className={styles.shopValue}>
                 {
-                  fresh === 1
+                  (fresh === 1 || selectItem.fresh===1)
                     ?
                     <Form.Item
                       label='精装生鲜商品集约各方的分佣比例'
@@ -508,7 +514,7 @@ export default (props) => {
                       <EditableProTable
                         columns={columns2}
                         rowKey="level"
-                        value={dataSource2}
+                        // value={dataSource2}
                         search={false}
                         editable={{
                           form: formRef,

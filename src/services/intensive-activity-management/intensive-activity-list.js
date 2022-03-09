@@ -22,7 +22,7 @@ export const getWholesaleList = async (params = {}, options = {}) => {
 }
 
 export const getWholesaleDetail = (params = {}, options = {}) => {
-  return request('/auth/wholesale/index/getBulkWholesaleDetail', {
+  return request('/auth/wholesale/index/getWholesaleDetail', {
     method: 'GET',
     params,
     ...options

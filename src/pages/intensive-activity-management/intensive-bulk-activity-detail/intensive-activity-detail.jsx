@@ -4,7 +4,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
-import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
+import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-bulk-activity-list'
 import LadderDataEdit from '../intensive-activity-create/ladder-data-edit'
 import PriceExplanation from '../intensive-activity-create/price-explanation'
 import FreshIncome from '../intensive-bulk-activity-create/fresh-income'
