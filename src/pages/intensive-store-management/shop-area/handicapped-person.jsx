@@ -37,8 +37,8 @@ export default  () => {
   }, [])
   const checkConfirm=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
-    if (value&&value<1||value>100000){
-        await reject('只能输入1-10万之间的整数')
+    if (value&&value<0||value>100000){
+        await reject('只能输入0-10万之间的整数')
     }else if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
         await reject('只能输入整数')
     }else {

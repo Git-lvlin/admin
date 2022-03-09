@@ -154,13 +154,14 @@ const TableList = () => {
       }
     },
     {
-      title: '是否生鲜商品',
+      title: '生鲜类型',
       dataIndex: 'fresh',
       valueType: 'text',
       hideInTable: true,
       valueEnum: {
-        1: '是',
-        0: '否'
+        0: '非生鲜',
+        1: '精装生鲜',
+        2: '散装生鲜',
       }
     },
     {
@@ -168,8 +169,11 @@ const TableList = () => {
       dataIndex: 'fresh',
       valueType: 'text',
       hideInSearch: true,
-      width: 100,
-      render: (_) => _ === 1 ? '是' : '否',
+      render: (_) => ({
+        0: '非生鲜',
+        1: '精装生鲜',
+        2: '散装生鲜',
+      }[_]),
     },
     {
       title: '供应商家ID',
