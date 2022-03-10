@@ -98,6 +98,17 @@ export default props => {
       },
     },
     {
+      title: '状态',
+      dataIndex: 'status',
+      valueType: 'text',
+      hideInSearch: true,
+      editable:false,
+      valueEnum: {
+        0: '已禁用',
+        1: '已启用',
+      },
+    },
+    {
       title: '活动价',
       dataIndex: 'price',
       hideInSearch: true,

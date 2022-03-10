@@ -4,7 +4,7 @@ import { FormattedMessage, formatMessage } from 'umi';
 import ProTable from '@ant-design/pro-table';
 import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,ProFormTimePicker,ProFormDependency } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
-import { saveWSDiscountActiveConfig,getActiveConfigById,getActiveConfigList } from '@/services/intensive-activity-management/special-offer-acticity';
+import { saveWSDiscountActiveConfig,getActiveConfigById} from '@/services/intensive-activity-management/special-offer-acticity';
 import { amountTransform } from '@/utils/utils'
 import moment from 'moment';
 import styles from './style.less'
@@ -116,7 +116,7 @@ export default (props) => {
     return current && current < moment().startOf('day');
   }
   return (
-    <PageContainer>
+    <PageContainer title={id?'编辑活动':'新建活动'}>
       <ProForm
         form={form}
         {...formItemLayout}
