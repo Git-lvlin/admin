@@ -221,7 +221,7 @@ return(
       params={{
         couponVerifyStatus: type,
       }}
-      scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
+      scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
       request={couponList}
       search={{
         defaultCollapsed: false,
