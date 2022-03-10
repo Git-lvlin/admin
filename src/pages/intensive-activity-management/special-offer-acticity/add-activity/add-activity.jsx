@@ -103,7 +103,7 @@ export default (props) => {
       saveWSDiscountActiveConfig(parmas).then(res=>{
         if(res.code==0){
           message.success(id?'编辑成功':'添加成功'); 
-          history.push('/intensive-activity-management/special-offer-acticity/special-offer-acticity-list')
+          window.location.href='/intensive-activity-management/special-offer-acticity/special-offer-acticity-list'
         }
       })
     } catch (error) {
