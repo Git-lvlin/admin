@@ -245,7 +245,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
     },
     {
       title: (_)=> _.dataIndex === 'supplyPrice' ? '商品供货价' : '商品集约价',
-      dataIndex: (info?.orderType === 'commandCollect' || info?.orderType === 'commandFresh') ? 'saleOrderPrice' : 'supplyPrice',
+      dataIndex: (info?.orderType === 'commandCollect' || info?.orderType === 'collectFresh') ? 'saleOrderPrice' : 'supplyPrice',
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
