@@ -11,7 +11,7 @@ const FreshIncome = ({ data, parse = false }) => {
 
 
   useEffect(() => {
-    let price = data.price
+    let price = data.profit
     if (parse) {
       price = amountTransform(price, '/')
     }

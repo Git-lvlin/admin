@@ -7,6 +7,9 @@ import { productList } from '@/services/intensive-activity-management/intensive-
 import Big from 'big.js';
 import { amountTransform } from '@/utils/utils'
 import debounce from 'lodash/debounce';
+import styles from './edit-table.less';
+
+Big.RM = 0;
 
 const parseNum = (value) => {
   let num = `${value}`;
@@ -111,13 +114,17 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         return arr;
       }
 
-      onSelect([record])
-      setSelectData([record])
+      if (record.skuId === selectedRowKeys[0]) {
+        onSelect([record])
+        setSelectData([record])
+      }
       setDataSource(recordList)
 
       productList(obj).then(res => {
         const skuData = res.data[0];
-        onSelect(getList([record], skuData, (arr) => { setSelectData(arr) }))
+        if (record.skuId === selectedRowKeys[0]) {
+          onSelect(getList([record], skuData, (arr) => { setSelectData(arr) }))
+        }
         setDataSource(getList(recordList, skuData))
       })
     };
@@ -344,9 +351,23 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       dataIndex: 'price',
       valueType: 'text',
       hideInSearch: true,
-      renderFormItem: (_, { record }) => <CusInput addonAfter={`元/${record.unit}`} onBlur={() => {
-        debounceFetcher({ record, recordList: dataSource })
-      }} />,
+      renderFormItem: (_, { record }) => {
+        const price = +new Big(record.wholesaleSupplyPrice || 0).times(1.05).toFixed(2)
+        return (
+          <FormWrap>
+            {({ value, onChange }) => (
+              <>
+                <CusInput value={value} onChange={onChange} className={record.price < price ? styles.borderRed : ''} addonAfter={`元/${record.unit}`} onBlur={() => {
+                  debounceFetcher({ record, recordList: dataSource })
+                }} />
+                {record.price < price && <div style={{color: 'red'}}>集约价不能小于{price}元</div>}
+              </>
+            )}
+          </FormWrap>
+        )
+
+        
+      },
     },
     {
       title: '实际盈亏(元)',
