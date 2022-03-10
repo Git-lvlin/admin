@@ -199,14 +199,9 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
       dataIndex: 'buyerType'
     },
     {
-      title: (_) => _.dataIndex === 'storeCommissionRatio' ? '店铺提成比例' : _.dataIndex === 'relevanceActivity' ? '关联活动' : '',
-      dataIndex: info?.storeCommissionRatio ? 'storeCommissionRatio' : info?.activityTypeDesc ? 'relevanceActivity' : '',
-      render: (_) => info?.storeCommissionRatio ? 
-        <span>{amountTransform(_, '*')}%</span> : info?.activityTypeDesc?
-        <>
-          <div>活动类型：{info?.activityTypeDesc}</div>
-          <div>活动ID：{info?.activityId}</div>
-        </>: '',
+      title: (_) => _.dataIndex ? '店铺提成比例' : '',
+      dataIndex: info?.storeCommissionRatio ? 'storeCommissionRatio' : '',
+      render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
     },
     {
       title: '买家会员信息',
@@ -249,8 +244,8 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
-      title: '实际销售价',
-      dataIndex: 'salePrice',
+      title: info?.isWholesale ? '商品集约价' : '实际销售价',
+      dataIndex: 'salePrice', 
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
