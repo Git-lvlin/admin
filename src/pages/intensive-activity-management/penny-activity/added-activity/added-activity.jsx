@@ -5,7 +5,7 @@ import ProTable from '@ant-design/pro-table';
 import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
-import { saveWSCentActiveConfig,getActiveConfigById } from '@/services/intensive-activity-management/penny-activity';
+import { saveWSCentActiveConfig,getActiveConfigById,getActiveConfigList } from '@/services/intensive-activity-management/penny-activity';
 import moment from 'moment';
 import styles from './style.less'
 import GoosSet from './goos-set'
@@ -30,16 +30,16 @@ export default (props) => {
   const [visible, setVisible] = useState(false);
   const [limitAll,setLimitAll]=useState(200)
   const [batchPrice,setBatchPrice]=useState()
-  let {id,status} = props.location.query
+  let id= props.location.query.id
   const [form] = Form.useForm()
   useEffect(() => {
-    console.log('status',status)
     if (id) {
-      if(status=='已结束'||status=='已终止'){
-        message.error('活动已结束！'); 
-        window.location.href='/intensive-activity-management/penny-activity/activity-list'
-      }
       getActiveConfigById({id}).then(res=>{
+        if(res.data?.endTime<res.data?.time){
+          message.error('活动已结束！'); 
+          window.location.href='/intensive-activity-management/penny-activity/activity-list'
+          return false
+        }
         setDetailList(res.data)
         form.setFieldsValue({
             dateRange: [moment(res.data?.startTime*1000).valueOf(), moment(res.data?.endTime*1000).valueOf()],
