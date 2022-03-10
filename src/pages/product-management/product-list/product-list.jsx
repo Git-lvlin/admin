@@ -196,7 +196,7 @@ const TableList = () => {
       }
     },
     {
-      title: '生鲜商品',
+      title: '生鲜类型',
       dataIndex: 'fresh',
       valueType: 'text',
       hideInSearch: true,
