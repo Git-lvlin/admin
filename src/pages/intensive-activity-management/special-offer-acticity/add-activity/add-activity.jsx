@@ -4,7 +4,7 @@ import { FormattedMessage, formatMessage } from 'umi';
 import ProTable from '@ant-design/pro-table';
 import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,ProFormTimePicker,ProFormDependency } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
-import { saveWSDiscountActiveConfig,getActiveConfigById } from '@/services/intensive-activity-management/special-offer-acticity';
+import { saveWSDiscountActiveConfig,getActiveConfigById,getActiveConfigList } from '@/services/intensive-activity-management/special-offer-acticity';
 import { amountTransform } from '@/utils/utils'
 import moment from 'moment';
 import styles from './style.less'
@@ -30,7 +30,7 @@ export default (props) => {
   const [falg,setFalg]=useState(true)
   const [goosList,setGoosList]=useState()
   const [visible, setVisible] = useState(false);
-  let {id,status} = props.location.query
+  let id = props.location.query.id
   const [form] = Form.useForm()
 
   const activityName = (rule, value, callback) => {
@@ -64,11 +64,12 @@ export default (props) => {
   }
   useEffect(() => {
     if (id) {
-      if(status=='已结束'||status=='已终止'){
-        message.error('活动已结束！'); 
-        window.location.href='/intensive-activity-management/penny-activity/activity-list'
-      }
       getActiveConfigById({id}).then(res=>{
+        if(res.data?.endTime<res.data?.time){
+          message.error('活动已结束！'); 
+          window.location.href='/intensive-activity-management/special-offer-acticity/special-offer-acticity-list'
+          return false
+        }
         setDetailList(res.data?.content?.goods)
         form.setFieldsValue({
             dateRange: [moment(res.data?.startTime*1000).valueOf(), moment(res.data?.endTime*1000).valueOf()],
@@ -90,7 +91,6 @@ export default (props) => {
     }
   }, [])
   const onsubmit = (values) => {
-    try {
       const parmas={
         ...values,
         id:id?id:0,
@@ -110,9 +110,6 @@ export default (props) => {
           window.location.href='/intensive-activity-management/special-offer-acticity/special-offer-acticity-list'
         }
       })
-    } catch (error) {
-      console.log('error',error)
-    }
   }
 
   const disabledDate=(current)=>{

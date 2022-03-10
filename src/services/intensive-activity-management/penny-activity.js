@@ -50,7 +50,7 @@ export const getActiveConfigById = async (params = {}, options = {}) => {
   return {
   data: res.data,
   success: true,
-  code: res.code
+  code: res.code,
   }
 }
 
