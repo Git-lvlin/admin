@@ -617,6 +617,7 @@ const IntensiveActivityCreate = () => {
             >
               <AddressMultiCascader
                 placeholder="请选择可参与集约活动的店铺所属省市区"
+                placement="topStart"
                 data={areaData}
                 style={{ width: '640px' }}
                 pId={-1}
