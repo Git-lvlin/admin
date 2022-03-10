@@ -117,7 +117,7 @@ const CrazyDate = () => {
       options={false}
       columns={columns}
       actionRef={actionRef}
-      scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
+      scroll={{ y: Math.max(window.innerHeight - 400, 500), scrollToFirstRowOnChange: true, }}
       request={cmsWeekList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

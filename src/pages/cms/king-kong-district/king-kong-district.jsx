@@ -158,7 +158,7 @@ const KingKongDistrict = () => {
       params={{
         verifyVersionId: verifyVersionId
       }}
-      scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
+      scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
       request={kingKongDistrictList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

@@ -469,7 +469,7 @@ const StoreList = (props) => {
           operation: storeType
         }}
         request={getStoreList}
-        scroll={{ x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
+        scroll={{ x: '100vw', y: Math.max(window.innerHeight - 680, 500), scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [

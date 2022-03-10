@@ -99,6 +99,7 @@ const TableList = () => {
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '供应商家ID',
@@ -136,6 +137,7 @@ const TableList = () => {
       dataIndex: 'wholesaleSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
+      width: 120,
       render: (_, data) => data.goodsSaleType === 2 ? '-' : _
     },
     {
@@ -143,6 +145,7 @@ const TableList = () => {
       dataIndex: 'retailSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
+      width: 120,
       render: (_, data) => data.goodsSaleType === 1 ? '-' : _
     },
     {
@@ -246,7 +249,7 @@ const TableList = () => {
           selectType: 1,
           goodsVerifyState: 2,
         }}
-        scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
         actionRef={actionRef}
         formRef={formRef}
         request={api.rejectList}
