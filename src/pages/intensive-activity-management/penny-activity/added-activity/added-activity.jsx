@@ -5,7 +5,7 @@ import ProTable from '@ant-design/pro-table';
 import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
-import { saveWSCentActiveConfig,getActiveConfigById,getActiveConfigList } from '@/services/intensive-activity-management/penny-activity';
+import { saveWSCentActiveConfig,getActiveConfigById } from '@/services/intensive-activity-management/penny-activity';
 import moment from 'moment';
 import styles from './style.less'
 import GoosSet from './goos-set'
@@ -172,7 +172,7 @@ export default (props) => {
     return current && current < moment().startOf('day');
   }
   return (
-    <PageContainer>
+    <PageContainer title={id?'编辑活动':'新建活动'}>
       <ProForm
         form={form}
         {...formItemLayout}
