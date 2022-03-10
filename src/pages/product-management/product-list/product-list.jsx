@@ -526,7 +526,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: '100vw', y: window.innerHeight - 730, scrollToFirstRowOnChange: true, }}
+        scroll={{ x: '100vw', y: Math.max(window.innerHeight - 700, 500), scrollToFirstRowOnChange: true, }}
         search={{
           labelWidth: 140,
           defaultCollapsed: false,

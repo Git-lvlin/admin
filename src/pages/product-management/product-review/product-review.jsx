@@ -402,7 +402,7 @@ const TableList = () => {
             <ExportHistory key="5" show={visit} setShow={setVisit} type="goods-audit-export" />,
           ],
         }}
-        scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: Math.max(window.innerHeight - 570, 500), scrollToFirstRowOnChange: true, }}
         columns={columns}
         pagination={{
           pageSize: 10,
