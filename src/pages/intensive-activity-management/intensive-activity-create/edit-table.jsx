@@ -220,7 +220,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.fresh === 1 && <span style={{ color: 'green' }}>(生鲜)</span>}</>,
+      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.fresh === 1 && <span style={{ color: 'green' }}>(精装生鲜)</span>}</>,
     },
     {
       title: '主图',
