@@ -257,8 +257,8 @@ const Detail = () => {
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
-      title: (_)=> _.dataIndex ==='salePrice' ? '实际销售价' : '商品集约价',
-      dataIndex: info?.isWholesale ? 'saleOrderPrice' : 'salePrice',
+      title: (_)=> info?.isWholesale ? '商品集约价': '实际销售价',
+      dataIndex: 'salePrice', 
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {

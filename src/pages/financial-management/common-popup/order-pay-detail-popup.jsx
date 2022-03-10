@@ -199,9 +199,14 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
       dataIndex: 'buyerType'
     },
     {
-      title: (_) => _.dataIndex ? '店铺提成比例' : '',
-      dataIndex: info?.storeCommissionRatio ? 'storeCommissionRatio' : '',
-      render: (_) => _ ? <span>{amountTransform(_, '*')}%</span> : '',
+      title: (_) => _.dataIndex === 'storeCommissionRatio' ? '店铺提成比例' : _.dataIndex === 'relevanceActivity' ? '关联活动' : '',
+      dataIndex: info?.storeCommissionRatio ? 'storeCommissionRatio' : info?.activityTypeDesc ? 'relevanceActivity' : '',
+      render: (_) => info?.storeCommissionRatio ? 
+        <span>{amountTransform(_, '*')}%</span> : info?.activityTypeDesc?
+        <>
+          <div>活动类型：{info?.activityTypeDesc}</div>
+          <div>活动ID：{info?.activityId}</div>
+        </>: '',
     },
     {
       title: '买家会员信息',
@@ -240,12 +245,12 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
     },
     {
       title: (_)=> _.dataIndex === 'supplyPrice' ? '商品供货价' : '商品集约价',
-      dataIndex: (info?.orderType === 'commandCollect' || info?.orderType === 'collectFresh') ? 'saleOrderPrice' : 'supplyPrice',
+      dataIndex: (info?.orderType === 'commandCollect' || info?.orderType === 'commandFresh') ? 'saleOrderPrice' : 'supplyPrice',
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
-      title: (_)=> _.dataIndex ==='salePrice' ? '实际销售价' : '商品集约价',
-      dataIndex:  info?.isWholesale ? 'saleOrderPrice' : 'salePrice', 
+      title: (_)=> info?.isWholesale ? '商品集约价': '实际销售价',
+      dataIndex: 'salePrice', 
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
