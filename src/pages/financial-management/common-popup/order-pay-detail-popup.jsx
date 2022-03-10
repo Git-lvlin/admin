@@ -240,23 +240,23 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
     },
     {
       title: (_)=> _.dataIndex === 'supplyPrice' ? '商品供货价' : '商品集约价',
-      dataIndex: info?.orderType === 'commandCollect' ? 'saleOrderPrice' : 'supplyPrice',
+      dataIndex: (info?.orderType === 'commandCollect' || info?.orderType === 'commandFresh') ? 'saleOrderPrice' : 'supplyPrice',
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
-      title: info?.isWholesale ? '商品集约价' : '实际销售价',
-      dataIndex: 'salePrice', 
+      title: (_)=> _.dataIndex ==='salePrice' ? '实际销售价' : '商品集约价',
+      dataIndex:  info?.isWholesale ? 'saleOrderPrice' : 'salePrice', 
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
       title:(_)=> _.dataIndex === 'preCount' ? '预定数量' : '购买数量',
-      dataIndex: info?.orderType === 'commandSalesOrder' ? 'preCount' : 'paidCount'
+      dataIndex:  info?.isWholesale ? 'preCount' : 'paidCount'
     },
     {
       title: (_) => _.dataIndex === 'paidCount' ? '实际采购数量' : '优惠金额',
-      dataIndex: info?.orderType === 'commandSalesOrder' ? 'paidCount' : 'couponAmount',
+      dataIndex: info?.isWholesale ? 'paidCount' : 'couponAmount',
       render: (_) => {
-        if(info?.orderType !== 'commandSalesOrder') {
+        if(!info?.isWholesale) {
           return `￥${amountTransform(_, '/')}`
         } else {
           return _
