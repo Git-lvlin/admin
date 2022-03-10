@@ -30,10 +30,15 @@ export default (props) => {
   const [visible, setVisible] = useState(false);
   const [limitAll,setLimitAll]=useState(200)
   const [batchPrice,setBatchPrice]=useState()
-  let id = props.location.query.id
+  let {id,status} = props.location.query
   const [form] = Form.useForm()
   useEffect(() => {
+    console.log('status',status)
     if (id) {
+      if(status=='已结束'||status=='已终止'){
+        message.error('活动已结束！'); 
+        window.location.href='/intensive-activity-management/penny-activity/activity-list'
+      }
       getActiveConfigById({id}).then(res=>{
         setDetailList(res.data)
         form.setFieldsValue({

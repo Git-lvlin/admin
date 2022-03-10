@@ -30,7 +30,7 @@ export default (props) => {
   const [falg,setFalg]=useState(true)
   const [goosList,setGoosList]=useState()
   const [visible, setVisible] = useState(false);
-  let id = props.location.query.id
+  let {id,status} = props.location.query
   const [form] = Form.useForm()
 
   const activityName = (rule, value, callback) => {
@@ -64,6 +64,10 @@ export default (props) => {
   }
   useEffect(() => {
     if (id) {
+      if(status=='已结束'||status=='已终止'){
+        message.error('活动已结束！'); 
+        window.location.href='/intensive-activity-management/penny-activity/activity-list'
+      }
       getActiveConfigById({id}).then(res=>{
         setDetailList(res.data?.content?.goods)
         form.setFieldsValue({
