@@ -75,7 +75,7 @@ export default () => {
             <div key='editor'>
             {
               record.statusDisplay=='未开始'||record.statusDisplay=='进行中'?
-              <a  onClick={()=>history.push('/intensive-activity-management/special-offer-acticity/add-activity?id='+record.id+'&status='+record.statusDisplay)}>编辑</a>:null
+              <a  onClick={()=>history.push('/intensive-activity-management/special-offer-acticity/add-activity?id='+record.id)}>编辑</a>:null
             }
            </div>,
             <div key='stop' style={{display:record.statusDisplay=='已结束'?'none':'block'}}>
