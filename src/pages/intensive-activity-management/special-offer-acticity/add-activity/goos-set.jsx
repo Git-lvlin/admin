@@ -410,7 +410,7 @@ export default (props) => {
       renderFormItem: (_) =>{
         return <FromWrap
         content={(value, onChange) =><InputNumber
-                  min={amountTransform(_?.entry?.wholesaleSupplyPrice, '/')+amountTransform(_?.entry?.wholesaleFreight, '/')}
+                  min={amountTransform(_?.entry?.wholesaleSupplyPrice+_?.entry?.wholesaleFreight, '/')}
                   precision='2'
                   stringMode
                   value={value}
@@ -504,7 +504,7 @@ export default (props) => {
               ...item,
               status:1,
               wsPrice:item.price,
-              price:amountTransform(item.wholesaleSupplyPrice, '/')+amountTransform(item.wholesaleFreight, '/')
+              price:amountTransform(item.wholesaleSupplyPrice+item.wholesaleFreight, '/')
             })
           })
           setDataSource(arr)
@@ -513,7 +513,7 @@ export default (props) => {
         }}
         onClose={()=>{}}
         keyId={dataSource}
-        detailList={detailList}
+        detailList={detailList||[]}
       />
     }
     {
