@@ -98,7 +98,14 @@ const GoosModel=(props)=>{
   ];
   const onsubmit = (values) => {
         if(goosList){
-          callback(goosList)
+          console.log('detailList',detailList)
+          const arr=[]
+          detailList.map(ele=>{
+            if(ele?.wholesaleStatusDesc=='已结束'){
+              arr.push(ele)
+            }
+          })
+          callback([...goosList,...arr])
         }
         setVisible(false)
   };
