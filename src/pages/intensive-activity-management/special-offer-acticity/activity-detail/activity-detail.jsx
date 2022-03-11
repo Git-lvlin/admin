@@ -6,6 +6,7 @@ import ProTable from '@ant-design/pro-table';
 import { amountTransform } from '@/utils/utils'
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from 'moment'
+import styles from './style.less'
 const { Title } = Typography;
 
 
@@ -160,7 +161,7 @@ export default props => {
   
   return (
     <PageContainer>
-    <div style={{ background: '#fff', padding: 25 }}>
+    <div className={styles?.activity_detail}>
       <Row style={{ marginTop: 50 }}>
           <Title style={{ marginBottom: -10 }} level={5}>活动商品</Title>
           <Divider />
@@ -204,6 +205,16 @@ export default props => {
             </Descriptions.Item>
             <Descriptions.Item label="活动最近一次操作时间">
             {moment(detailData?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss')}
+            </Descriptions.Item>
+          </Descriptions>
+          <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 200, display: 'inline-block' }}>
+            <Descriptions.Item label="店主活动规则">
+              <pre className={styles.line_feed}>{detailData?.content?.ruleText}</pre>
+            </Descriptions.Item>
+          </Descriptions>
+          <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 200, display: 'inline-block' }}>
+            <Descriptions.Item label="消费者活动规则">
+              <pre className={styles.line_feed}>{detailData?.content?.ruleTextC}</pre>
             </Descriptions.Item>
           </Descriptions>
     </div>
