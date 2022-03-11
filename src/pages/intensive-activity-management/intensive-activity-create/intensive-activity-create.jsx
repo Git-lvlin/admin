@@ -359,7 +359,7 @@ const IntensiveActivityCreate = () => {
               // recoverPayTimeout: 3
               isEditSubsidy: 0,
               ladderShowPercent: 50,
-              preSale: 1,
+              preSale: 0,
               freshSpecial: 0,
               freshCommission: 20,
               activityShowType: 0,
