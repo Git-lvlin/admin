@@ -69,6 +69,15 @@ export default props => {
       }
     },
     {
+      title: '平均运费',
+      dataIndex: 'wholesaleFreight',
+      hideInSearch: true,
+      editable:false,
+      render:(_,data)=>{
+        return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
+      }
+    },
+    {
       title: '集约活动名称',
       dataIndex: 'name',
       valueType: 'text',
