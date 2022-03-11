@@ -155,7 +155,7 @@ const HomeActivity = () => {
       pagination={{
         pageSize: 5,
       }}
-      scroll={{ y: window.innerHeight - 500, scrollToFirstRowOnChange: true, }}
+      scroll={{ y: Math.max(window.innerHeight - 500, 500), scrollToFirstRowOnChange: true, }}
       dateFormatter="string"
       headerTitle="首页活动入口配置"
       toolBarRender={(_,record) => [

@@ -81,7 +81,7 @@ const GcCascader = ({ value, onChange, ...rest }) => {
       loadData={gcLoadData}
       displayRender={label => {
         if (label?.[0]?.props && label?.[1]?.props) {
-          return <span>{label[0].props.children[0]}/{label[1].props.children[0]}<span style={{ color: 'green' }}>({label[0].props.children[1].type === 1 ? '精装生鲜' : '散装生鲜'})</span></span>
+          return <span>{label[0].props.children[0]}/{label[1].props.children[0]}<span style={{ color: 'green' }}>({label[0].props.children[1].props.type === 1 ? '精装生鲜' : '散装生鲜'})</span></span>
         }
         return label.join('/')
       }}

@@ -130,7 +130,7 @@ const TableList = () => {
       }
     },
     {
-      title: '生鲜商品',
+      title: '生鲜类型',
       dataIndex: 'fresh',
       valueType: 'text',
       hideInSearch: true,
@@ -357,7 +357,7 @@ const TableList = () => {
         params={{
           selectType: 1,
         }}
-        scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
         request={setGoodsList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{

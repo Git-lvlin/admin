@@ -255,6 +255,15 @@ const IntensiveActivityCreate = () => {
         isEditSubsidy: 0
       })
     }
+    if (selectItem?.[0]?.fresh === 0) {
+      formRef.current.setFieldsValue({
+        preSale: 1
+      })
+    } else {
+      formRef.current.setFieldsValue({
+        preSale: 0
+      })
+    }
   }, [selectItem])
 
   return (
@@ -359,7 +368,7 @@ const IntensiveActivityCreate = () => {
               // recoverPayTimeout: 3
               isEditSubsidy: 0,
               ladderShowPercent: 50,
-              preSale: 1,
+              preSale: 0,
               freshSpecial: 0,
               freshCommission: 20,
               activityShowType: 0,

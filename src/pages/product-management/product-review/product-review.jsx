@@ -165,7 +165,7 @@ const TableList = () => {
       }
     },
     {
-      title: '生鲜商品',
+      title: '生鲜类型',
       dataIndex: 'fresh',
       valueType: 'text',
       hideInSearch: true,
@@ -402,7 +402,7 @@ const TableList = () => {
             <ExportHistory key="5" show={visit} setShow={setVisit} type="goods-audit-export" />,
           ],
         }}
-        scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: Math.max(window.innerHeight - 570, 500), scrollToFirstRowOnChange: true, }}
         columns={columns}
         pagination={{
           pageSize: 10,

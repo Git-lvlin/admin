@@ -39,7 +39,7 @@ export default (props) => {
     { name: '一星店主', level: 1, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
   ])
   const [dataSource2] = useState([
-    { name: '一星店主', level: 6, operateCommission: 60, referrerCommission: 15, platForm: 35 },
+    { name: '一星店主', level: 6, operateCommission: 60, referrerCommission: 15, platForm: 25 },
   ])
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -339,7 +339,7 @@ export default (props) => {
         gcShow: data.gcShow ? 1 : 0
       })
     } else {
-      if (selectItem.fresh === 2) {
+      if (selectItem?.fresh === 2) {
         form?.setFieldsValue({
           shopValue: dataSource2
         })
@@ -475,10 +475,10 @@ export default (props) => {
       <ProFormDependency name={['fresh']}>
         {({ fresh }) => {
           return (
-            (fresh || (parentId !== 0 && selectItem.fresh))
+            (fresh || (parentId !== 0 && selectItem?.fresh))
               ? <div className={styles.shopValue}>
                 {
-                  (fresh === 1 || selectItem.fresh===1)
+                  (fresh === 1 || selectItem?.fresh===1)
                     ?
                     <Form.Item
                       label='精装生鲜商品集约各方的分佣比例'

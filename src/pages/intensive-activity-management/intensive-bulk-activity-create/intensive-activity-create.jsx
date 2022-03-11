@@ -19,6 +19,7 @@ import AddressMultiCascader from '@/components/address-multi-cascader'
 import Upload from '@/components/upload'
 import { useParams, useLocation } from 'umi';
 import moment from 'moment'
+import Big from 'big.js';
 import { amountTransform } from '@/utils/utils'
 import LadderDataEdit from './ladder-data-edit'
 import PriceExplanation from './price-explanation'
@@ -299,6 +300,12 @@ const IntensiveActivityCreate = () => {
 
               for (let index = 0; index < selectItem.length; index++) {
                 const item = selectItem[index];
+
+                if (+item.price < +new Big(item.wholesaleSupplyPrice).times(1.05).toFixed(2)) {
+                  message.error(`sku:${item.skuId}集约价不能低于${+new Big(item.wholesaleSupplyPrice).times(1.05).toFixed(2)}`);
+                  return false;
+                }
+
                 if (!/^\d+$/g.test(item.totalStockNum) || +item.totalStockNum <= 0) {
                   message.error(`sku:${item.skuId}集约总库存只能是大于0的整数`);
                   return false;
@@ -428,17 +435,23 @@ const IntensiveActivityCreate = () => {
               }}
             />
             <ProFormRadio.Group
-              label="仅参与1分钱活动"
+              label="优惠集约类型"
               name="activityShowType"
               required
               options={[
                 {
-                  label: '不是（也参与正常集约活动）',
+                  label: '只参与正常集约活动',
                   value: 0,
                 },
                 {
-                  label: '是（仅参与1分钱集约活动或特价集约活动）',
+                  label: '只参与优惠集约活动',
                   value: 1,
+                  disabled: true,
+                },
+                {
+                  label: '同时参与正常集约活动和优惠集约活动',
+                  value: 2,
+                  disabled: true,
                 },
               ]}
             />
@@ -450,7 +463,6 @@ const IntensiveActivityCreate = () => {
                 {
                   label: '不可售卖（店主采购后不对消费者售卖）',
                   value: 2,
-                  disabled: true,
                 },
               ]}
             />
@@ -617,6 +629,7 @@ const IntensiveActivityCreate = () => {
             >
               <AddressMultiCascader
                 placeholder="请选择可参与集约活动的店铺所属省市区"
+                placement="topStart"
                 data={areaData}
                 style={{ width: '640px' }}
                 pId={-1}
