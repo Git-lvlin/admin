@@ -177,7 +177,7 @@ const TableList = () => {
           spuId={selectItem?.spuId}
         />
       }
-      <ModifyPriceLog id={selectItem?.id} visible={modifyPriceLogVisible} setVisible={setModifyPriceLogVisible} />
+      {modifyPriceLogVisible && <ModifyPriceLog id={selectItem?.id} visible={modifyPriceLogVisible} setVisible={setModifyPriceLogVisible} />}
     </PageContainer>
 
   );
