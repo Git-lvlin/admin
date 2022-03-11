@@ -513,7 +513,7 @@ export default (props) => {
         }}
         onClose={()=>{}}
         keyId={dataSource}
-        detailList={detailList}
+        detailList={detailList||[]}
       />
     }
     {
