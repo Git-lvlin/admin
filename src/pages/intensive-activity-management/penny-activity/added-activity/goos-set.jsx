@@ -98,13 +98,7 @@ const GoosModel=(props)=>{
   ];
   const onsubmit = (values) => {
     if(goosList){
-      const arr=[]
-      detailList?.map(ele=>{
-        if(ele?.wholesaleStatusDesc=='已结束'){
-          arr.push(ele)
-        }
-      })
-      callback([...goosList,...arr])
+      callback(goosList)
     }
     setVisible(false)
   };
@@ -166,7 +160,7 @@ const GoosModel=(props)=>{
               onChange: (_, val) => {
                 const arr=[]
                 _.forEach(item=>{
-                 const obj=dataList.find(ele=>{
+                 const obj=[...dataList,...detailList].find(ele=>{
                    return ele.wsId==item
                   })
                   if(obj){
@@ -416,7 +410,7 @@ export default (props) => {
           setEditableKeys(arr.map(item => item.wsId))
         }}
         keyId={dataSource}
-        detailList={detailList?.content?.goods}
+        detailList={detailList?.content?.goods||[]}
         onClose={()=>{}}
       />
     }
