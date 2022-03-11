@@ -31,7 +31,7 @@ const FromWrap = ({ value, onChange, content, right }) => (
 )
 
 const GoosModel=(props)=>{
-  const {visible,setVisible,onClose,callback,keyId}=props
+  const {visible,setVisible,onClose,callback,keyId,detailList}=props
   const [goosList,setGoosList]=useState()
   const [keys,setKeys]=useState()
   const [dataList,setDataList]=useState([])
@@ -228,7 +228,7 @@ const GoosModel=(props)=>{
               onChange: (_, val) => {
                 const arr=[]
                 _.forEach(item=>{
-                 const obj=dataList.find(ele=>{
+                 const obj=[...dataList,...detailList].find(ele=>{
                    return ele.wsId==item
                   })
                   if(obj){
@@ -514,6 +514,7 @@ export default (props) => {
         }}
         onClose={()=>{}}
         keyId={dataSource}
+        detailList={detailList}
       />
     }
     {
