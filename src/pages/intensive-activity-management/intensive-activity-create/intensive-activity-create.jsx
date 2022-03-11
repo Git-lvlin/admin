@@ -255,6 +255,15 @@ const IntensiveActivityCreate = () => {
         isEditSubsidy: 0
       })
     }
+    if (selectItem?.[0]?.fresh === 0) {
+      formRef.current.setFieldsValue({
+        preSale: 1
+      })
+    } else {
+      formRef.current.setFieldsValue({
+        preSale: 0
+      })
+    }
   }, [selectItem])
 
   return (
