@@ -413,7 +413,6 @@ export default (props) => {
                   min={amountTransform(_?.entry?.wholesaleSupplyPrice, '/')+amountTransform(_?.entry?.wholesaleFreight, '/')}
                   precision='2'
                   stringMode
-                  disabled={_?.entry?.wholesaleStatusDesc=='进行中'}
                   value={value}
                   onChange={onChange}
                 />
