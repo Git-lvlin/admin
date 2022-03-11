@@ -97,17 +97,16 @@ const GoosModel=(props)=>{
       },
   ];
   const onsubmit = (values) => {
-        if(goosList){
-          console.log('detailList',detailList)
-          const arr=[]
-          detailList.map(ele=>{
-            if(ele?.wholesaleStatusDesc=='已结束'){
-              arr.push(ele)
-            }
-          })
-          callback([...goosList,...arr])
+    if(goosList){
+      const arr=[]
+      detailList?.map(ele=>{
+        if(ele?.wholesaleStatusDesc=='已结束'){
+          arr.push(ele)
         }
-        setVisible(false)
+      })
+      callback([...goosList,...arr])
+    }
+    setVisible(false)
   };
   useEffect(()=>{
     setKeys(keyId.map(ele=>(ele.wsId)))

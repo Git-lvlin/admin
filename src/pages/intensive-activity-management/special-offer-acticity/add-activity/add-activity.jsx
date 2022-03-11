@@ -100,7 +100,15 @@ export default (props) => {
         buyerEndTime:values.buyerTimeType==0?'23:59:59':values.timeRange[1],
         joinShopType:values.joinShopType[0],
         joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
-        goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:amountTransform(ele.price,'*'),status:ele.status,buyLimit:ele.maxNum}))||detailList,
+        goods:goosList?.map(ele=>({
+          skuId:ele.skuId,
+          spuId:ele.spuId,
+          wsId:ele.wsId,
+          price:amountTransform(ele.price,'*'),
+          status:ele.status,
+          buyLimit:ele.maxNum,
+          wholesaleFreight:ele.wholesaleFreight
+        }))||detailList,
         buyerLimit:values.buyerType==0?999999:values.buyerLimit,
         status:1,
       }

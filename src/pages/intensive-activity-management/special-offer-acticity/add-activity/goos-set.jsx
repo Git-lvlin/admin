@@ -84,6 +84,15 @@ const GoosModel=(props)=>{
           }
       },
       {
+          title: '平均运费',
+          dataIndex: 'wholesaleFreight',
+          hideInSearch: true,
+          editable:false,
+          render:(_,data)=>{
+            return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
+        }
+      },
+      {
           title: '集约活动名称',
           dataIndex: 'name',
           valueType: 'text',
@@ -313,6 +322,15 @@ export default (props) => {
       }
     },
     {
+      title: '平均运费',
+      dataIndex: 'wholesaleFreight',
+      hideInSearch: true,
+      editable:false,
+      render:(_,data)=>{
+        return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
+      }
+    },
+    {
       title: '集约活动名称',
       dataIndex: 'name',
       valueType: 'text',
@@ -392,7 +410,7 @@ export default (props) => {
       renderFormItem: (_) =>{
         return <FromWrap
         content={(value, onChange) =><InputNumber
-                  min={amountTransform(_?.entry?.wholesaleSupplyPrice, '/')}
+                  min={amountTransform(_?.entry?.wholesaleSupplyPrice, '/')+amountTransform(_?.entry?.wholesaleFreight, '/')}
                   precision='2'
                   stringMode
                   disabled={_?.entry?.wholesaleStatusDesc=='进行中'}
@@ -487,7 +505,7 @@ export default (props) => {
               ...item,
               status:1,
               wsPrice:item.price,
-              price:amountTransform(item.wholesaleSupplyPrice, '/')
+              price:amountTransform(item.wholesaleSupplyPrice, '/')+amountTransform(item.wholesaleFreight, '/')
             })
           })
           setDataSource(arr)
