@@ -499,9 +499,6 @@ const IntensiveActivityCreate = () => {
                   <>
                     <ProFormText
                       label="售价上浮比"
-                      fieldProps={{
-                        addonAfter: `%`
-                      }}
                       validateFirst
                       rules={[
                         { required: true, message: '请输入' },
@@ -509,6 +506,7 @@ const IntensiveActivityCreate = () => {
                       name="settlePercent"
                       width={400}
                       fieldProps={{
+                        addonAfter: `%`,
                         onBlur: (e) => {
                           editTableRef.current.update({
                             ...selectItem[0],
@@ -520,14 +518,12 @@ const IntensiveActivityCreate = () => {
                     />
                     <ProFormText
                       label="集约价"
-                      fieldProps={{
-                        addonAfter: `元/${selectItem[0].unit}`
-                      }}
                       validateFirst
                       rules={[
                         { required: true, message: '请输入' },
                       ]}
                       fieldProps={{
+                        addonAfter: `元/${selectItem[0].unit}`,
                         onBlur: (e) => {
                           editTableRef.current.update({
                             ...selectItem[0],
@@ -546,7 +542,7 @@ const IntensiveActivityCreate = () => {
               <Form.Item
                 label="实际盈亏"
               >
-                {selectItem[0].profit}元
+                <span style={{color:selectItem[0].profit<0?'red':''}}>{selectItem[0].profit}元</span>
               </Form.Item>
               <ProFormRadio.Group
                 label="平台额外奖励"

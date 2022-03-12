@@ -474,7 +474,7 @@ const EditTable = ({ onSelect, sku, wholesale }, ref) => {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      render: (_) => <span style={{ color: 'red' }}>{_}</span>,
+      render: (_) => <span style={{ color: 'red' }}>{_}元</span>,
     },
   ]
 
