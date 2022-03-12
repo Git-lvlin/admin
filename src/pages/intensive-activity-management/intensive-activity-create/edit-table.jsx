@@ -593,6 +593,11 @@ const EditTable = ({ onSelect, sku, wholesale }, ref) => {
         hideSelectAll: true,
         type: 'radio',
         selectedRowKeys,
+        getCheckboxProps:(record)=>{
+          return {
+            disabled: record.fresh === 2,
+          }
+        },
         // onChange: (_, val) => {
         //   console.log('_', _);
         //   onSelect(val)
