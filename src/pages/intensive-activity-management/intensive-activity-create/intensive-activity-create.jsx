@@ -512,6 +512,7 @@ const IntensiveActivityCreate = () => {
                             ...selectItem[0],
                             settlePercent: e.target.value,
                             freshCommission3: freshCommission,
+                            freshCommission2: null,
                           })
                         }
                       }}
@@ -529,6 +530,7 @@ const IntensiveActivityCreate = () => {
                             ...selectItem[0],
                             price: e.target.value,
                             freshCommission2: freshCommission,
+                            freshCommission3: null,
                           })
                         }
                       }}
@@ -542,7 +544,7 @@ const IntensiveActivityCreate = () => {
               <Form.Item
                 label="实际盈亏"
               >
-                <span style={{color:selectItem[0].profit<0?'red':''}}>{selectItem[0].profit}元</span>
+                <span style={{ color: selectItem[0].profit < 0 ? 'red' : '' }}>{selectItem[0].profit}元</span>
               </Form.Item>
               <ProFormRadio.Group
                 label="平台额外奖励"
@@ -700,7 +702,8 @@ const IntensiveActivityCreate = () => {
                                     console.log('e.target.value', e.target.value);
                                     editTableRef.current.update({
                                       ...selectItem[0],
-                                      freshCommission2: e.target.value
+                                      freshCommission2: e.target.value,
+                                      freshCommission3: null,
                                     })
                                   }
                                 }}

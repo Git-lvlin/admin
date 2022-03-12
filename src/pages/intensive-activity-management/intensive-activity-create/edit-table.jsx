@@ -71,6 +71,8 @@ const EditTable = ({ onSelect, sku, wholesale }, ref) => {
       obj.operationFixedPrice = amountTransform(record.operationFixedPrice);
     }
 
+    console.log('findItem.price !== record.price', record)
+
     if (findItem.price !== record.price) {
       obj.price = amountTransform(record.price);
       obj.priceScale = -1;
