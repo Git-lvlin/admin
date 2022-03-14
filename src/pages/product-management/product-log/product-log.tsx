@@ -106,7 +106,8 @@ const TableList = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入供应商家ID'
-      }
+      },
+      width: 100,
     },
     {
       title: '供货类型',
@@ -202,7 +203,7 @@ const TableList = () => {
         params={{
           selectType: 1,
         }}
-        scroll={{ y: window.innerHeight - 570, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: Math.max(window.innerHeight - 570, 500), scrollToFirstRowOnChange: true, }}
         request={api.logList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{

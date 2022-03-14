@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, forwardRef, useImperativeHandle } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
 import { Checkbox, Input, Radio, message } from 'antd';
 import GcCascader from '@/components/gc-cascader'
@@ -47,7 +47,7 @@ const FormWrap = ({ value, onChange, children }) => {
 //   )
 // }
 
-export default function EditTable({ onSelect, sku, wholesale }) {
+const EditTable = ({ onSelect, sku, wholesale }, ref) => {
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -55,75 +55,98 @@ export default function EditTable({ onSelect, sku, wholesale }) {
   const isFirst = useRef(true);
   const formRef = useRef();
 
+  const update = (recordList, record) => {
+    const findItem = dataSource.find(item => item.id === record.id);
+    const obj = {
+      skuId: record.skuId,
+      isGetWholesale: 1,
+      priceScale: amountTransform(record.settlePercent, '/'),
+      price: amountTransform(record.price),
+      // orderAmount: amountTransform(record.subsidy.a),
+      // subsidy: amountTransform(record.subsidy.b)
+    }
+
+    if (record.isAppointSubsidy.length) {
+      obj.fixedPrice = amountTransform(record.fixedPrice);
+      obj.operationFixedPrice = amountTransform(record.operationFixedPrice);
+    }
+
+    console.log('findItem.price !== record.price', record)
+
+    if (findItem.price !== record.price) {
+      obj.price = amountTransform(record.price);
+      obj.priceScale = -1;
+    }
+
+    if (findItem.settlePercent !== record.settlePercent) {
+      obj.priceScale = amountTransform(record.settlePercent, '/');
+      delete obj.price;
+    }
+
+    if (record.freshCommission2) {
+      obj.freshCommission = amountTransform(record.freshCommission2, '/');
+      obj.price = amountTransform(record.price);
+    }
+
+    if (record.freshCommission3) {
+      obj.freshCommission = amountTransform(record.freshCommission3, '/');
+      obj.priceScale = amountTransform(record.settlePercent, '/');
+    }
+
+    const getList = (list, skuData, cb) => {
+      const arr = list.map(item => {
+        if (item.id === skuData.id) {
+          const data = {
+            ...record,
+            fixedPrice: amountTransform(skuData.fixedPrice, '/'),
+            operationFixedPrice: amountTransform(skuData.operationFixedPrice, '/'),
+            settlePercent: amountTransform(skuData.settlePercent),
+            price: amountTransform(skuData.price, '/'),
+            profit: amountTransform(skuData.profit, '/'),
+            orderProfit: amountTransform(skuData.orderProfit, '/'),
+            totalPrice: (skuData.price > 0 && record.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(record.minNum) : 0,
+            // subsidy: {
+            //   a: skuData.orderAmount ? amountTransform(skuData.orderAmount, '/') : '',
+            //   b: skuData.subsidy ? amountTransform(skuData.subsidy, '/') : ''
+            // }
+          }
+          return data
+        }
+        return item
+      })
+      if (cb) {
+        cb(arr);
+      }
+      return arr;
+    }
+
+    if (record.skuId === selectedRowKeys[0]) {
+      onSelect([record])
+      setSelectData([record])
+    }
+
+    setDataSource(recordList)
+
+    productList(obj).then(res => {
+      const skuData = res.data[0];
+      if (record.skuId === selectedRowKeys[0]) {
+        onSelect(getList([record], skuData, (arr) => { setSelectData(arr) }))
+      }
+      setDataSource(getList(recordList, skuData))
+    })
+  };
+
+  useImperativeHandle(ref, () => ({
+    update: (record) => { update(dataSource, record) }
+  }))
 
   const debounceFetcher = useMemo(() => {
     const loadData = (value) => {
       const { recordList, record } = value;
-      const findItem = dataSource.find(item => item.id === record.id);
-      const obj = {
-        skuId: record.skuId,
-        isGetWholesale: 1,
-        priceScale: amountTransform(record.settlePercent, '/'),
-        price: amountTransform(record.price),
-        // orderAmount: amountTransform(record.subsidy.a),
-        // subsidy: amountTransform(record.subsidy.b)
-      }
-
-      if (record.isAppointSubsidy.length) {
-        obj.fixedPrice = amountTransform(record.fixedPrice);
-        obj.operationFixedPrice = amountTransform(record.operationFixedPrice);
-      }
-
-      if (findItem.price !== record.price) {
-        obj.price = amountTransform(record.price);
-        obj.priceScale = -1;
-      }
-
-      if (findItem.settlePercent !== record.settlePercent) {
-        obj.priceScale = amountTransform(record.settlePercent, '/');
-        delete obj.price;
-      }
-
-      const getList = (list, skuData, cb) => {
-        const arr = list.map(item => {
-          if (item.id === skuData.id) {
-            const data = {
-              ...record,
-              fixedPrice: amountTransform(skuData.fixedPrice, '/'),
-              operationFixedPrice: amountTransform(skuData.operationFixedPrice, '/'),
-              settlePercent: amountTransform(skuData.settlePercent),
-              price: amountTransform(skuData.price, '/'),
-              profit: amountTransform(skuData.profit, '/'),
-              orderProfit: amountTransform(skuData.orderProfit, '/'),
-              totalPrice: (skuData.price > 0 && record.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(record.minNum) : 0,
-              // subsidy: {
-              //   a: skuData.orderAmount ? amountTransform(skuData.orderAmount, '/') : '',
-              //   b: skuData.subsidy ? amountTransform(skuData.subsidy, '/') : ''
-              // }
-            }
-            return data
-          }
-          return item
-        })
-        if (cb) {
-          cb(arr);
-        }
-        return arr;
-      }
-
-      onSelect([record])
-      setSelectData([record])
-      setDataSource(recordList)
-
-      productList(obj).then(res => {
-        const skuData = res.data[0];
-        onSelect(getList([record], skuData, (arr) => { setSelectData(arr) }))
-        setDataSource(getList(recordList, skuData))
-      })
-    };
-
+      update(recordList, record);
+    }
     return debounce(loadData, 10);
-  }, [dataSource, selectData, onSelect]);
+  }, [dataSource, selectData, onSelect, selectedRowKeys]);
 
   const columns = [
     {
@@ -215,7 +238,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.fresh === 1 && <span style={{ color: 'green' }}>(生鲜)</span>}</>,
+      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.fresh !== 0 && <span style={{ color: 'green' }}>({{ 1: '精装生鲜', 2: '散装生鲜' }[data.fresh]})</span>}</>,
     },
     {
       title: '主图',
@@ -243,27 +266,27 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         </Radio.Group>)
       }
     },
-    {
-      title: '批发供货价(元)',
-      dataIndex: 'wholesaleSupplyPrice',
-      valueType: 'text',
-      hideInSearch: true,
-      editable: false,
-    },
-    {
-      title: '市场价(元)',
-      dataIndex: 'marketPriceDisplay',
-      valueType: 'text',
-      hideInSearch: true,
-      editable: false,
-    },
-    {
-      title: '平均运费(元)',
-      dataIndex: 'wholesaleFreight',
-      valueType: 'text',
-      hideInSearch: true,
-      editable: false,
-    },
+    // {
+    //   title: '批发供货价(元)',
+    //   dataIndex: 'wholesaleSupplyPrice',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   editable: false,
+    // },
+    // {
+    //   title: '市场价(元)',
+    //   dataIndex: 'marketPriceDisplay',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   editable: false,
+    // },
+    // {
+    //   title: '平均运费(元)',
+    //   dataIndex: 'wholesaleFreight',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   editable: false,
+    // },
     {
       title: '总库存',
       dataIndex: 'stockNum',
@@ -308,7 +331,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
           <FormWrap>
             {({ value, onChange }) => (
               <>
-                <Input addonAfter={record.unit} value={value} onChange={onChange} onBlur={() => {
+                <Input style={{ width: 130 }} addonAfter={record.unit} value={value} onChange={onChange} onBlur={() => {
                   debounceFetcher({ record, recordList: dataSource })
                 }} />
                 {record.batchNumber > 1 && !!record.wsUnit && value / record.batchNumber >= 1 && <div>({parseInt(value / record.batchNumber, 10)}{record.wsUnit})</div>}
@@ -318,53 +341,44 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         )
       }
     },
-    {
-      title: '售价上浮比(%)',
-      dataIndex: 'settlePercent',
-      valueType: 'text',
-      hideInSearch: true,
-      renderFormItem: (_, { record }) => <Input addonAfter="%" onBlur={() => {
-        debounceFetcher({ record, recordList: dataSource })
-      }} />,
-      // formItemProps: {
-      //   rules: [
-      //     {
-      //       required: true,
-      //       whitespace: true,
-      //       message: '请输入集约分成比例',
-      //     },
-      //   ],
-      // }
-    },
-    {
-      title: (
-        <>
-          集约价
-          {/* <Tooltip placement="top" title="集约价最低=(批发供货价+配送费补贴) ÷（100%-集约分成比例-0.68%）">
-            <QuestionCircleOutlined style={{ marginLeft: 4 }} />
-          </Tooltip> */}
-        </>
-      ),
-      dataIndex: 'price',
-      valueType: 'text',
-      hideInSearch: true,
-      renderFormItem: (_, { record }) => <CusInput addonAfter={`元/${record.unit}`} onBlur={() => {
-        debounceFetcher({ record, recordList: dataSource })
-      }} />,
-    },
-    {
-      title: '实际盈亏(元)',
-      dataIndex: 'profit',
-      valueType: 'text',
-      hideInSearch: true,
-      editable: false,
-    },
+    // {
+    //   title: '售价上浮比(%)',
+    //   dataIndex: 'settlePercent',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   renderFormItem: (_, { record }) => <Input addonAfter="%" onBlur={() => {
+    //     debounceFetcher({ record, recordList: dataSource })
+    //   }} />,
+    // },
+    // {
+    //   title: (
+    //     <>
+    //       集约价
+    //       {/* <Tooltip placement="top" title="集约价最低=(批发供货价+配送费补贴) ÷（100%-集约分成比例-0.68%）">
+    //         <QuestionCircleOutlined style={{ marginLeft: 4 }} />
+    //       </Tooltip> */}
+    //     </>
+    //   ),
+    //   dataIndex: 'price',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   renderFormItem: (_, { record }) => <CusInput addonAfter={`元/${record.unit}`} onBlur={() => {
+    //     debounceFetcher({ record, recordList: dataSource })
+    //   }} />,
+    // },
+    // {
+    //   title: '实际盈亏(元)',
+    //   dataIndex: 'profit',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   editable: false,
+    // },
     {
       title: '是否指定配送补贴',
       dataIndex: 'isAppointSubsidy',
       valueType: 'text',
       hideInSearch: true,
-      renderFormItem: () => <Checkbox.Group><Checkbox value={1}>指定配送补贴</Checkbox></Checkbox.Group>,
+      renderFormItem: (_, { record }) => <Checkbox.Group disabled={record?.fresh !== 0}><Checkbox value={1}>指定配送补贴</Checkbox></Checkbox.Group>,
     },
     {
       title: '运营中心配送费补贴',
@@ -426,7 +440,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
           <FormWrap>
             {({ value, onChange }) => (
               <>
-                <Input addonAfter={record.unit} value={value} onChange={onChange} onBlur={() => {
+                <Input style={{ width: 130 }} addonAfter={record.unit} value={value} onChange={onChange} onBlur={() => {
                   debounceFetcher({ record, recordList: dataSource })
                 }} />
                 {record.batchNumber > 1 && !!record.wsUnit && value / record.batchNumber >= 1 && <div>({parseInt(value / record.batchNumber, 10)}{record.wsUnit})</div>}
@@ -446,7 +460,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
           <FormWrap>
             {({ value, onChange }) => (
               <>
-                <Input addonAfter={record.unit} value={value} onChange={onChange} onBlur={() => {
+                <Input style={{ width: 130 }} addonAfter={record.unit} value={value} onChange={onChange} onBlur={() => {
                   debounceFetcher({ record, recordList: dataSource })
                 }} />
                 {record.batchNumber > 1 && !!record.wsUnit && value / record.batchNumber >= 1 && <div>({parseInt(value / record.batchNumber, 10)}{record.wsUnit})</div>}
@@ -462,7 +476,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      render: (_) => <span style={{ color: 'red' }}>{_}</span>,
+      render: (_) => <span style={{ color: 'red' }}>{_}元</span>,
     },
   ]
 
@@ -481,7 +495,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
       profit: amountTransform(item.profit, '/'),
       orderProfit: 0,
-      totalPrice: item.salePrice > 0 ? +new Big(item.price).div(100).times(item.wholesaleMinNum || 10) : 0,
+      totalPrice: +new Big(item.price).div(100).times(item.wholesaleMinNum || 10),
       wholesaleFlowType: item.fresh === 1 ? 2 : 1,
       isAppointSubsidy: [],
       // subsidy: {
@@ -508,7 +522,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         wholesaleSupplyPrice: amountTransform(sku.wholesaleSupplyPrice, '/'),
         profit: amountTransform(sku.profit, '/'),
         orderProfit: amountTransform(wholesale?.orderProfit, '/'),
-        totalPrice: sku.salePrice > 0 ? +new Big(sku.price).div(100).times(sku.minNum || 10) : 0,
+        totalPrice: +new Big(sku.price).div(100).times(sku.minNum || 10),
         wholesaleFlowType: wholesale?.wholesaleFlowType,
         isAppointSubsidy: sku?.isAppointSubsidy === 0 ? [] : [1],
         // subsidy: {
@@ -581,6 +595,11 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         hideSelectAll: true,
         type: 'radio',
         selectedRowKeys,
+        getCheckboxProps:(record)=>{
+          return {
+            disabled: record.fresh === 2,
+          }
+        },
         // onChange: (_, val) => {
         //   console.log('_', _);
         //   onSelect(val)
@@ -619,3 +638,5 @@ export default function EditTable({ onSelect, sku, wholesale }) {
     />
   )
 }
+
+export default forwardRef(EditTable);

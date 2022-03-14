@@ -410,7 +410,6 @@ const OrderAnalysis = () => {
     })
     wholeSaleOrderSubCompany({}).then(res=>{
       if(res.code==0){
-        console.log('res',res.data)
         const obj={}
         res.data.map(ele=>{
           obj[ele.operationsSubCompanyName]=ele.operationsSubCompanyName

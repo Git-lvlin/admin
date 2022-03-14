@@ -75,10 +75,14 @@ export default {
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
+  'menu.intensive-activity-management.intensive-bulk-activity-list': '散装集约活动列表',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
+  'menu.intensive-activity-management.intensive-bulk-activity-create': '散装集约活动新建',
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
+  'menu.intensive-activity-management.intensive-bulk-activity-detail': '集约活动详情',
   'menu.intensive-activity-management.intensive-activity-audit': '集约活动审核',
   'menu.intensive-activity-management.intensive-activity-audit-detail': '活动审核详情',
+  'menu.intensive-activity-management.intensive-bulk-activity-audit-detail': '活动审核详情',
   'menu.intensive-activity-management.intensive-remind-configuration': '集约提醒配置',
   'menu.intensive-activity-management.intensive-remind-statistics': '集约提醒统计',
   'menu.intensive-activity-management.platfor-bonus-percentage': '平台额外奖励比例',
@@ -146,6 +150,7 @@ export default {
   'menu.intensive-store-management.cancel-reason': '注销原因',
   'menu.intensive-store-management.fresh-shop-configuration': '生鲜店铺配置',
 
+  'menu.intensive-store-management.fresh-store-review': '生鲜店铺申请审核',
 
 
   'menu.single-contract-activity-management': '单约活动管理',
@@ -271,6 +276,7 @@ export default {
   'menu.financial-management':'财务管理',
   'menu.financial-management.money-management':'资金管理',
   'menu.financial-management.money-management.yeahgo-virtual-account-management':'约购虚拟户',
+  'menu.financial-management.money-management.yeahgo-virtual-account-management.transaction-details':'交易明细',
   'menu.financial-management.money-management.transaction-details':'交易明细',
   'menu.financial-management.money-management.supplier-fund-management':'供应商家资金管理',
   'menu.financial-management.money-management.member-store-fund-management':'社区店资金管理',

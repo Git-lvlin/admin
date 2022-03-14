@@ -22,6 +22,7 @@ export default (props) => {
       title: '提醒次数',
       dataIndex: 'count',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '集约价(元)',
@@ -34,12 +35,14 @@ export default (props) => {
       dataIndex: 'orderNum',
       valueType: 'text',
       hideInSearch: true,
+      width: 130,
     },
     {
       title: '提醒产生采购单金额(元)',
       dataIndex: 'orderPay',
       valueType: 'text',
       hideInSearch: true,
+      width: 200,
       render: (_)=> amountTransform(_, '/').toFixed(2)
     }
     
@@ -53,7 +56,7 @@ return(
       rowKey="id"
       options={false}
       request={remindStatisticsList}
-      scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
+      scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
       search={{
         defaultCollapsed: false,
         labelWidth: 100,

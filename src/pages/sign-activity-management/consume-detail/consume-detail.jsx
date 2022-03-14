@@ -129,7 +129,7 @@ export default () => {
           headerTitle="签到红包消耗明细"
           options={false}
           request={queryConsumeList}
-          scroll={{ y: window.innerHeight - 650, scrollToFirstRowOnChange: true, }}
+          scroll={{ y: Math.max(window.innerHeight - 650, 500), scrollToFirstRowOnChange: true, }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,

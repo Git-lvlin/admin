@@ -12,15 +12,33 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'intensive-bulk-activity-list',
+      path: '/intensive-activity-management/intensive-bulk-activity-list',
+      component: './intensive-activity-management/intensive-bulk-activity-list',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'intensive-activity-create',
       path: '/intensive-activity-management/intensive-activity-create/:id',
       component: './intensive-activity-management/intensive-activity-create',
       hideInMenu: true,
     },
     {
+      name: 'intensive-bulk-activity-create',
+      path: '/intensive-activity-management/intensive-bulk-activity-create/:id',
+      component: './intensive-activity-management/intensive-bulk-activity-create',
+      hideInMenu: true,
+    },
+    {
       name: 'intensive-activity-detail',
       path: '/intensive-activity-management/intensive-activity-detail/:id',
       component: './intensive-activity-management/intensive-activity-detail',
+      hideInMenu: true,
+    },
+    {
+      name: 'intensive-bulk-activity-detail',
+      path: '/intensive-activity-management/intensive-bulk-activity-detail/:id',
+      component: './intensive-activity-management/intensive-bulk-activity-detail',
       hideInMenu: true,
     },
     {
@@ -33,6 +51,12 @@ export default {
       name: 'intensive-activity-audit-detail',
       path: '/intensive-activity-management/intensive-activity-audit/detail/:id',
       component: './intensive-activity-management/intensive-activity-audit/detail',
+      hideInMenu: true,
+    },
+    {
+      name: 'intensive-bulk-activity-audit-detail',
+      path: '/intensive-activity-management/intensive-bulk-activity-audit/detail/:id',
+      component: './intensive-activity-management/intensive-activity-audit/bulk-detail',
       hideInMenu: true,
     },
     {

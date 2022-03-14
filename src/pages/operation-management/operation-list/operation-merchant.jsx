@@ -100,6 +100,11 @@ const TableList = () => {
       },
     },
     {
+      title: '运营中心编号',
+      dataIndex: 'opNo',
+      hideInSearch: true,
+    },
+    {
       title: '企业名称',
       dataIndex: 'accountCompanyName',
       valueType: 'text',
@@ -255,7 +260,7 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={getCommonList}
-        scroll={{ y: window.innerHeight - 450, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           labelWidth: 130,

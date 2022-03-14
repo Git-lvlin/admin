@@ -13,6 +13,7 @@ import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
 import Detail from './detail';
 import EditAddress from './edit-address'
+import CloseOrder from './close-order'
 
 
 const TableList = () => {
@@ -34,6 +35,7 @@ const TableList = () => {
   const [orderTypes, setOrderTypes] = useState(0)
   const [addressVisible, setAddressVisible] = useState(false)
   const [subOrderId, setSubOrderId] = useState(null)
+  const [orderVisible, setOrderVisible] = useState(false)
 
 
 
@@ -371,7 +373,7 @@ const TableList = () => {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         }
-        <div style={{ height: window.innerHeight - 600, overflowY: 'auto', marginBottom: 10 }}>
+        <div style={{ height: Math.max(window.innerHeight - 570, 500), overflowY: 'auto', marginBottom: 10 }}>
           {
             data.map(item => (
               <div className={styles.list} key={item.id}>
@@ -447,8 +449,12 @@ const TableList = () => {
                     <span>电话：{item.phone}</span>
                     <span>地址：{item.address}</span>
                     {
-                      (orderType === 1 || orderType === 2) &&
-                      <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true) }}>修改地址</Button>
+                      (orderType === 1 || orderType === 2)&&
+                      <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true)}}>修改地址</Button>
+                    }
+                    {
+                      orderType === 2&&
+                      <Button onClick={() =>{ setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
                     }
                   </Space>
                 </div>
@@ -472,6 +478,16 @@ const TableList = () => {
           subOrderId={subOrderId}
           setVisible={setAddressVisible}
           visible={addressVisible}
+          setChange={setSearch}
+          change={search}
+        />
+      }
+      {
+        orderVisible&&
+        <CloseOrder
+          subOrderId={subOrderId}
+          setVisible={setOrderVisible}
+          visible={orderVisible}
           setChange={setSearch}
           change={search}
         />
