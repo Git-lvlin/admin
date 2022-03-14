@@ -148,8 +148,9 @@ export default {
   'menu.intensive-store-management.community-store-setting': '社区店设置',
   'menu.intensive-store-management.data-excel': '数据导出',
   'menu.intensive-store-management.cancel-reason': '注销原因',
-  'menu.intensive-store-management.fresh-shop-configuration': '生鲜店铺配置',
   'menu.intensive-store-management.fresh-store-review': '生鲜店铺申请审核',
+  'menu.intensive-store-management.fresh-shop-configuration': '生鲜店铺配置',
+
 
 
   'menu.single-contract-activity-management': '单约活动管理',
@@ -193,6 +194,7 @@ export default {
   'menu.cms.start-up': 'app启动广告配置',
   'menu.cms.goods-sort': '集约商品展示配置',
   'menu.cms.goods-class': '集约商品运营类目',
+  'menu.cms.story': '店主故事',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',

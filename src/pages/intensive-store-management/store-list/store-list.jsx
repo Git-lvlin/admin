@@ -629,7 +629,10 @@ const StoreList = (props) => {
         params={{
           operation: storeType
         }}
-        request={getStoreList}
+        postData={postData}
+        request={
+          storeType == 'freshStores'?applyConditionPage:getStoreList
+        }
         scroll={{ x: '100vw', y: Math.max(window.innerHeight - 680, 500), scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
