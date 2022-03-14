@@ -24,7 +24,9 @@ const BarChart = ({data, unit}) => {
 
   const scale = {
     value: { 
-      alias: unit
+      alias: unit,
+      // tickInterval: data.every(v => v.value === 1) ? 1 : ''
+      tickInterval: ' '
     }
   }
 

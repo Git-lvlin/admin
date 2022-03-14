@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { Button } from 'antd'
 
 import Yuan from '../components/Yuan'
-import { dailyDataOverview } from '@/services/data-board/summary-of-data'
+import { dailyDataOverview, sumDailyDataOverview } from '@/services/data-board/summary-of-data'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 
 const DailyDataOverview = () => {
   const [visit, setVisit] = useState(false)
+  const [data, setData] = useState([])
+  const [change, setChange] = useState(0)
+
+  const ref = useRef()
 
   const getFieldValue = (form) => {
     const { dateTime, ...rest } = form.getFieldsValue()
@@ -18,6 +22,18 @@ const DailyDataOverview = () => {
       ...rest
     }
   }
+
+  useEffect(() => {
+    const date = ref.current.getFieldsValue().dateTime
+    sumDailyDataOverview({
+      date
+    }).then(res => {
+      setData(res.data)
+    })
+    return () => {
+      setData([])
+    }
+  }, [change])
 
   const columns = [
     {
@@ -45,18 +61,18 @@ const DailyDataOverview = () => {
           align: 'center',
           render: (_)=><Yuan>{_}</Yuan>
         },
-        {
-          title: '当天APP DAU',
-          dataIndex: 'appDau',
-          align: 'center',
-          render: (_)=> {
-            if(Number(_) > 0) {
-              return <Yuan>{_}</Yuan>
-            } else {
-              return '-'
-            }
-          }
-        },
+        // {
+        //   title: '当天APP DAU',
+        //   dataIndex: 'appDau',
+        //   align: 'center',
+        //   render: (_)=> {
+        //     if(Number(_) > 0) {
+        //       return <Yuan>{_}</Yuan>
+        //     } else {
+        //       return '-'
+        //     }
+        //   }
+        // },
         {
           title: '当天店主申请数量',
           dataIndex: 'applyCommunityStoreNum',
@@ -124,12 +140,12 @@ const DailyDataOverview = () => {
           align: 'center',
           render: (_)=><Yuan>{_}</Yuan>
         },
-        {
-          title: '当天集约参与率',
-          dataIndex: 'wsRat',
-          align: 'center',
-          render: (_)=> Number(_) > 0 ? <Yuan>{_}</Yuan> : '-'
-        },
+        // {
+        //   title: '当天集约参与率',
+        //   dataIndex: 'wsRat',
+        //   align: 'center',
+        //   render: (_)=> Number(_) > 0 ? <Yuan>{_}</Yuan> : '-'
+        // },
         {
           title: '单个店主集约贡献成交额（元）',
           dataIndex: 'bAveragePay',
@@ -293,10 +309,103 @@ const DailyDataOverview = () => {
       toolbar={{
         settings: false
       }}
+      onSubmit={()=>{
+        setChange(change + 1)
+      }}
+      formRef={ref}
       scroll={{x: 3000}}
       pagination={{
         showQuickJumper: true,
         pageSize: 10
+      }}
+      summary={() => {
+        return (
+          <ProTable.Summary.Row align="center">
+            <ProTable.Summary.Cell index={0}>
+              合计
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.newAddCt}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.applyCommunityStoreNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.passApplyNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.notAuditStoreNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.storeCancelNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.storeCancelNumNotAudit}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.bTotalPay}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.bOrderNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.bOrderPayNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.bOrderStoreNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.bPayStoreNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.bAveragePay}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.cTotalPay}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.cOrderPayNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.cOrderNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.cWholesaleOrderUserNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.cWholesalePayUserNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.cAveragePay}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.cMiaoTotalPay}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.cMiaoOrderNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.completedNotAfterSaleAmount}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.refundsAmount}
+            </ProTable.Summary.Cell><ProTable.Summary.Cell>
+              {data?.[0]?.refundNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.cMiaoPayNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.cMiaoUserNum}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.cMiaoAveragePay}
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
+              {data?.[0]?.platformPayTotal}
+            </ProTable.Summary.Cell>
+          </ProTable.Summary.Row>
+        )
       }}
     />
   )

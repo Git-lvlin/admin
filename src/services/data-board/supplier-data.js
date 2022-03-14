@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import moment from 'moment'
 
 // 供应商数据
 export const supplierData = async (params = {}, options = {}) => {
@@ -130,8 +131,8 @@ export const supplierDevelopmentData = async (params = {}, options = {}) => {
   const res = await request('/auth/java-admin/report/config/supplierDevelopmentData', {
     method: 'POST',
     data: {
-      startTime: time?.[0],
-      endTime: time?.[1],
+      startTime: time?.[0] && moment(time?.[0]).format('YYYY-MM-01'),
+      endTime: time?.[1] && moment(time?.[1]).format('YYYY-MM-01'),
       page: current,
       size: pageSize,
       ...rest

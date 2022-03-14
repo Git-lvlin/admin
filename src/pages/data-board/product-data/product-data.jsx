@@ -11,7 +11,7 @@ import TableSearch from './table-search'
 import { getTimeDistance } from '@/utils/utils'
 import styles from './styles.less'
 import GcCascader from '@/components/gc-cascader'
-import { timeGoodType, goodDetail, goodsRateData } from '@/services/data-board/product-data'
+import { timeGoodType, goodDetail, goodsRateData, bJoinRate } from '@/services/data-board/product-data'
 import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -25,6 +25,9 @@ const ProductData = () => {
   const [visit, setVisit] = useState(false)
   const [value, setValue] = useState('1')
   const [state, setState] = useState(0)
+  const [shopkeeper, setShopkeeper] = useState(0)
+  const [ratio, setRatio] = useState('0')
+  const [goodsTotal, setGoodsTotal] = useState(0)
   const form = useRef()
 
   const type = form.current?.getFieldsValue().orderType === '15'?'data-board-goods-detail-bc-export': 'data-board-goods-detail-c-export'
@@ -58,6 +61,20 @@ const ProductData = () => {
       setPieData([])
     }
   }, [value, orderType, rangePickerValue])
+
+  useEffect(()=>{
+    const { date, gcId, ...rest } = form.current.getFieldsValue()
+    bJoinRate({
+      startTime: date?.[0].format("YYYY-MM-DD"),
+      endTime: date?.[1].format("YYYY-MM-DD"),
+      gcId1: gcId?.[0],
+      gcId2: gcId?.[1],
+      ...rest
+    }).then(res=>{
+      setShopkeeper(res?.data?.count?.sumbPayNum || 0)
+      setRatio(res?.data?.count?.allRatio || '0%')
+    })
+  }, [form?.current?.getFieldsValue()])
 
   const isActive = (type) => {
     if (!rangePickerValue) {
@@ -272,6 +289,13 @@ const ProductData = () => {
       hideInSearch: true
     },
     {
+      title: '单品集约参与率',
+      dataIndex: 'bJoinRatio',
+      align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType !== "15",
+      hideInSearch: true
+    },
+    {
       title: 'b端集采订单数',
       dataIndex: 'bPayNum',
       align: 'center',
@@ -401,12 +425,20 @@ const ProductData = () => {
           columns={goodsDetail}
           formRef={form}
           params={{}}
-          postData={ v => v?.map((item, idx) => ({id: idx, ...item})) }
+          postData={
+            v => {
+              setGoodsTotal(v.total || 0)
+              return v.records?.map((item, idx) => {
+                return {id: idx, ...item}
+              })
+            }
+          }
           request={goodDetail}
           pagination={{
-            showQuickJumper: true,
+            total: goodsTotal,
             pageSize: 10
           }}
+
           onSubmit= {()=>setState(state+1)}
           onReset={()=>setState(state+1)}
           search={{
@@ -429,6 +461,19 @@ const ProductData = () => {
           headerTitle="商品销售榜"
           toolbar={{
             settings: false
+          }}
+          tableRender={(_, dom) => {
+            return <>
+              { dom }
+              {
+                _.formRef?.current?.getFieldsValue()?.orderType === '15'&&
+                <div className={styles.summary}>
+                  <div>共<span>{shopkeeper}名</span>店主参与了集约</div>
+                  <div>共<span>{goodsTotal}款</span>商品</div>
+                  <div>集约总参与率为<span>{ratio}</span></div>
+                </div>
+              }
+            </>
           }}
         />
       </div>
