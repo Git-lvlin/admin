@@ -467,7 +467,7 @@ const TableList = () => {
           rowKey="wholesaleId"
           options={false}
           request={getWholesaleList}
-          scroll={{ x: '100vw', y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
+          scroll={{ x: '100vw', y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
           expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} wholesaleAuditStatus={_.wholesaleAuditStatus} /> }}
           search={{
             defaultCollapsed: false,

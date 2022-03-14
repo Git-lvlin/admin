@@ -569,6 +569,7 @@ const StoreList = (props) => {
       hideInTable: true,
       hideInSearch: storeType == 'freshStores',
       order: -1,
+      hideInSearch: storeType == 'freshStores',
     },
     {
       title: '操作',
@@ -628,11 +629,8 @@ const StoreList = (props) => {
         params={{
           operation: storeType
         }}
-        postData={postData}
-        request={
-          storeType == 'freshStores'?applyConditionPage:getStoreList
-        }
-        scroll={{ x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
+        request={getStoreList}
+        scroll={{ x: '100vw', y: Math.max(window.innerHeight - 680, 500), scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [

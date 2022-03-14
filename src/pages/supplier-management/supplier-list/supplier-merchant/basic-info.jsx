@@ -61,6 +61,11 @@ const CTree = (props) => {
         treeData={treeData}
         onCheck={onCheck}
         checkedKeys={selectKeys}
+        titleRender={({ gcName, fresh }) => {
+          return (
+            <>{gcName}{fresh !== 0 && <span style={{ color: 'green' }}>({{ 1: '精装生鲜', 2: '散装生鲜' }[fresh]})</span>}</>
+          )
+        }}
         {...rest}
       />
     </div>
