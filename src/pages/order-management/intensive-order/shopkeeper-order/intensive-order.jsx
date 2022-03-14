@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
-import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form } from 'antd';
+import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Tag } from 'antd';
 import { history, useLocation } from 'umi';
 import moment from 'moment';
 import styles from './style.less';
@@ -116,6 +116,7 @@ const TableList = () => {
                   <Button
                     onClick={() => {
                       form?.resetFields();
+                      form?.submit();
                     }}
                   >
                     重置
@@ -162,6 +163,15 @@ const TableList = () => {
         <ProFormText
           label="下单手机号"
           name="phoneNumber"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
+        <ProFormText
+          label="用户ID"
+          name="buyerId"
           fieldProps={{
             style: {
               marginBottom: 20
@@ -222,6 +232,26 @@ const TableList = () => {
           fieldProps={{
             style: {
               marginBottom: 20
+            }
+          }}
+        />
+        <ProFormSelect
+          label="订单类别"
+          name="subType"
+          options={[
+            {
+              value: 0,
+              label: '普适品'
+            },
+            {
+              value: 1,
+              label: '精装生鲜'
+            }
+          ]}
+          fieldProps={{
+            style: {
+              marginBottom: 20,
+              width: 180,
             }
           }}
         />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect,ProFormCheckbox } from '@ant-design/pro-form';
-import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal, Tag } from 'antd';
+import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal, Tag, Popconfirm } from 'antd';
 import { history, useLocation } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from 'moment';
@@ -14,7 +14,6 @@ import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
 import Detail from './detail';
 import Auth from '@/components/auth';
-import { Popconfirm } from 'antd';
 
 const { confirm } = Modal;
 
@@ -79,6 +78,12 @@ const TableList = () => {
       ...rest,
     }
   }
+
+  useEffect(() => {
+    form.setFieldsValue({
+      ...location?.query,
+    })
+  }, [])
 
   useEffect(() => {
     setLoading(true);
@@ -186,6 +191,15 @@ const TableList = () => {
         <ProFormText
           label="下单手机号"
           name="phoneNumber"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
+        <ProFormText
+          label="用户ID"
+          name="memberId"
           fieldProps={{
             style: {
               marginBottom: 20
@@ -304,6 +318,30 @@ const TableList = () => {
             />
           </>
         }
+        <ProFormSelect
+          label="订单类别"
+          name="businessType"
+          options={[
+            {
+              value: 1,
+              label: '普适品'
+            },
+            {
+              value: 2,
+              label: '精装生鲜'
+            },
+            {
+              value: 3,
+              label: '散装生鲜'
+            }
+          ]}
+          fieldProps={{
+            style: {
+              marginBottom: 20,
+              width: 180,
+            }
+          }}
+        />
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}

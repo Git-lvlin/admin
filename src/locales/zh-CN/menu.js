@@ -145,7 +145,7 @@ export default {
   'menu.intensive-store-management.data-excel': '数据导出',
   'menu.intensive-store-management.cancel-reason': '注销原因',
   'menu.intensive-store-management.fresh-shop-configuration': '生鲜店铺配置',
-
+  'menu.intensive-store-management.fresh-store-review': '生鲜店铺申请审核',
 
 
   'menu.single-contract-activity-management': '单约活动管理',
@@ -271,6 +271,7 @@ export default {
   'menu.financial-management':'财务管理',
   'menu.financial-management.money-management':'资金管理',
   'menu.financial-management.money-management.yeahgo-virtual-account-management':'约购虚拟户',
+  'menu.financial-management.money-management.yeahgo-virtual-account-management.transaction-details':'交易明细',
   'menu.financial-management.money-management.transaction-details':'交易明细',
   'menu.financial-management.money-management.supplier-fund-management':'供应商家资金管理',
   'menu.financial-management.money-management.member-store-fund-management':'社区店资金管理',
