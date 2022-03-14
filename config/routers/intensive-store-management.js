@@ -115,6 +115,12 @@ export default {
       path: '/intensive-store-management/cancel-reason',
       component: './intensive-store-management/cancel-reason',
       wrappers: [RouteWatcher],
+    },
+    {
+      name: 'fresh-shop-configuration',
+      path: '/intensive-store-management/fresh-shop-configuration',
+      component: './intensive-store-management/fresh-shop-configuration',
+      wrappers: [RouteWatcher],
     }
   ]
 }

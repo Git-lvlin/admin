@@ -12,6 +12,7 @@ import { history, connect } from 'umi';
 import moment from 'moment';
 import styles from './style.less'
 import IssueTypeModel from './issue-type-model'
+import { PageContainer } from '@ant-design/pro-layout';
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -77,75 +78,38 @@ const couponConstruction = (props) => {
     })
   }
   const onsubmit = (values) => {
-    try {
-    //发放类型
-    values.issueType = parseInt(type)|| id&&DetaiIssueType
-    values.couponTypeInfo = {
-      usefulAmount: parseInt(values.usefulAmount),//用价格门槛(单位分)
-      freeAmount: values.freeAmount,//优惠金额(单位分)
-      unit: values.unit,//单位
-      usefulNum: parseInt(values.usefulNum),//用件数门槛
-      freeDiscount: values.freeDiscount,//折扣
-      maxFreeAmount: values.maxFreeAmount,//最多优惠（单位分）
-    }
-    
-    values.issueQuantity = parseInt(values.issueQuantity)//发行量
-    values.limitStartTime = values.dateRange ? values.dateRange[0] : null,//可领取开始时间
-    values.limitEndTime = values.dateRange ? values.dateRange[1] : null,//可领取结束时间
-    values.limitQuantity = parseInt(values.limitQuantity)//限领数量
-    values.limitType=values.issueType==3?2:values.issueType==4?1:values.limitType//限领类型
-    values.issueQuantityType=values.issueType==2?1: values.issueQuantityType//发行量类型
-  
-    values.activityStartTime = values.dateTimeRange ? values.dateTimeRange[0] : null,//有效期开始时间
-    values.activityEndTime = values.dateTimeRange ? values.dateTimeRange[1] : null,//有效期结束时间
-    values.activityStartDay = parseInt(values.activityStartDay),//有效期开始天数
-    values.activityEndDay = parseInt(values.activityEndDay),//有效期结束天数
-    values.useTypeInfoM = {//秒约商品详情信息
-      goodsType: type==3||DetaiIssueType == 3 && id||type==4||DetaiIssueType == 4 && id?2:values.goodsType,
-      spuIds: UseScopeList.UseScopeObje.spuIds,
-      classId: parseInt(UseScopeList.UseScopeObje.unit)
-    }
-    //群体Id
-    values.couponCrowdId = UseScopeList.UseScopeObje.CrowdIds
-    values.memberType = parseInt(values.memberType)
-    //集约商品详情信息
-    // values.useTypeInfoJ = {
-    //   wholesaleType: values.wholesaleType,
-    //   wholesaleIds: UseScopeList.UseScopeObje.wholesaleIds
-    // }
-
-    if (values.memberType == 1) {
-      delete values.couponCrowdId
-    }
-  
-
-    if (values.goodsType == 1) {
-      delete values.useTypeInfoM.spuIds
-      delete values.useTypeInfoM.classId
-    } else if (values.goodsType == 2) {
-      delete values.useTypeInfoM.classId
-    } else if (values.goodsType == 3) {
-      delete values.useTypeInfoM.spuIds
-    }
-
-    if (values.useType == 1) {
-      // delete values.useTypeInfoJ
-    } else if (values.useType == 2) {
-      delete values.useTypeInfoM
-    }else if(values.useType==4){
-      delete values.useTypeInfoM
-      // delete values.useTypeInfoJ
-    }
-    // if (values.wholesaleType == 1) {
-    //   delete values.wholesaleIds
-    // }
-    //提交类型
-    values.couponVerifyStatus = submitType
-    } catch (error) {
-      console.log('error',error)
-    }
+      values.issueType=parseInt(type)|| id&&DetaiIssueType//发放类型
+      const parmas={
+        ...values,
+        couponTypeInfo : {
+          usefulAmount: parseInt(values.usefulAmount),//用价格门槛(单位分)
+          freeAmount: values.freeAmount,//优惠金额(单位分)
+          unit: values.unit,//单位
+          usefulNum: parseInt(values.usefulNum),//用件数门槛
+          freeDiscount: values.freeDiscount,//折扣
+          maxFreeAmount: values.maxFreeAmount,//最多优惠（单位分）
+        },
+        issueQuantity : parseInt(values.issueQuantity),//发行量
+        limitStartTime : values?.dateRange?.[0],//可领取开始时间
+        limitEndTime :  values?.dateRange?.[1],//可领取结束时间
+        limitQuantity : parseInt(values.limitQuantity),//限领数量
+        limitType : values.issueType==3?2:values.issueType==4?1:values.limitType,//限领类型
+        issueQuantityType : values.issueType==2?1: values.issueQuantityType,//发行量类型
+        activityStartTime :  values?.dateTimeRange?.[0],//有效期开始时间
+        activityEndTime :  values?.dateTimeRange?.[1],//有效期结束时间
+        activityStartDay : parseInt(values.activityStartDay),//有效期开始天数
+        activityEndDay : parseInt(values.activityEndDay),//有效期结束天数
+        useTypeInfoM : {//秒约商品详情信息
+          goodsType: type==3||DetaiIssueType == 3 && id||type==4||DetaiIssueType == 4 && id?2:values.goodsType,
+          spuIds: UseScopeList.UseScopeObje.spuIds,
+          classId: parseInt(UseScopeList.UseScopeObje.unit)
+        },
+        couponCrowdId : UseScopeList.UseScopeObje.CrowdIds,
+        memberType : parseInt(values.memberType),
+        couponVerifyStatus : submitType
+      }
     if (id) {
-      couponEdit({ ...values, id: id }).then((res) => {
+      couponEdit({ ...parmas, id: id }).then((res) => {
         if (res.code == 0) {
           history.push('/coupon-management/coupon-list')
           message.success('编辑成功');
@@ -158,7 +122,7 @@ const couponConstruction = (props) => {
         }
       })
     } else {
-      couponSub(values).then((res) => {
+      couponSub(parmas).then((res) => {
         if (res.code == 0) {
           history.push('/coupon-management/coupon-list')
           message.success('提交成功');
@@ -178,7 +142,7 @@ const couponConstruction = (props) => {
     return current && current < moment().startOf('day');
   }
   return (
-    <>
+    <PageContainer>
       <ProForm
         form={form}
         {...formItemLayout}
@@ -366,7 +330,7 @@ const couponConstruction = (props) => {
           visible&&<IssueTypeModel visible={visible} setVisible={setVisible} />
         }
       </ProForm >
-    </>
+    </PageContainer>
   );
 };
 

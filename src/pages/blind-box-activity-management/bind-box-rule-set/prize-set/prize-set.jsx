@@ -174,6 +174,7 @@ export default (props) => {
               return [defaultDoms.delete];
           },
           onValuesChange: (record, recordList) => {
+            console.log('recordList',recordList)
             // let sum=0
             // recordList.map(ele=>{
             //   if(ele.status){
