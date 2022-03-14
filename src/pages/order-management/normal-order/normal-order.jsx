@@ -13,6 +13,7 @@ import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
 import Detail from './detail';
 import EditAddress from './edit-address'
+import CloseOrder from './close-order'
 
 
 const TableList = () => {
@@ -34,6 +35,7 @@ const TableList = () => {
   const [orderTypes, setOrderTypes] = useState(0)
   const [addressVisible, setAddressVisible] = useState(false)
   const [subOrderId, setSubOrderId] = useState(null)
+  const [orderVisible, setOrderVisible] = useState(false)
 
 
 
@@ -449,6 +451,10 @@ const TableList = () => {
                     (orderType === 1 || orderType === 2)&&
                     <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true)}}>修改地址</Button>
                   }
+                  {
+                    orderType === 2&&
+                    <Button onClick={() =>{ setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
+                  }
                 </Space>
               </div>
             </div>
@@ -470,6 +476,16 @@ const TableList = () => {
           subOrderId={subOrderId}
           setVisible={setAddressVisible}
           visible={addressVisible}
+          setChange={setSearch}
+          change={search}
+        />
+      }
+      {
+        orderVisible&&
+        <CloseOrder
+          subOrderId={subOrderId}
+          setVisible={setOrderVisible}
+          visible={orderVisible}
           setChange={setSearch}
           change={search}
         />

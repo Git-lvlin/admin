@@ -77,9 +77,13 @@ const OrderPayDetailManagement = () =>{
       valueEnum: orderType
     },
     {
+      title: '活动类型',
+      dataIndex: 'activityTypeDesc',
+      hideInSearch: true
+    },
+    {
       title: '订单号',
-      dataIndex: 'orderNo',
-      
+      dataIndex: 'orderNo'
     },
     {
       title: '平台单号',

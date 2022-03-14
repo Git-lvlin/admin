@@ -23,5 +23,7 @@ export const tradeType =  {
   'freightReturn': '运费回退',
   'yeahCardRecharge': '约卡充值',
   'deposit': '保证金',
-  'depositReturn': '保证金回退'
+  'depositReturn': '保证金回退',
+  'chargeFeeCommission': '服务费收益',
+  'chargeFeeCommissionReturn': '服务费收益回退'
 }
