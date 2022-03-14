@@ -62,6 +62,7 @@ export default () => {
                ...dom.reverse()
             ],
           }}
+          scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
           columns={columns}
           pagination={{
             pageSize: 10,

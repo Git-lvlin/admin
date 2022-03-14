@@ -69,3 +69,11 @@ export const gradeChange = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const giftOrder = (params = {}, options = {}) => {
+  return request('/auth/store/memberShopApply/giftOrder', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Spin, Empty, Switch } from 'antd'
+import { Spin, Empty, Switch, Modal } from 'antd'
 import { PageContainer } from '@ant-design/pro-layout';
 import * as api from '@/services/product-management/product-category'
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import Form from './form';
 import styles from './style.less'
+
+const { confirm } = Modal
+
 
 const SortableItem = sortableElement(({ children }) => children);
 
@@ -13,7 +17,7 @@ const SortableContainer = sortableContainer(({ children }) => {
 });
 
 const List = (props) => {
-  const { parentId = 0, onClick = () => { }, edit, remove } = props;
+  const { parentId = 0, onClick = () => { }, edit, selectItem, } = props;
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [selectId, setSelectId] = useState(null);
@@ -31,7 +35,25 @@ const List = (props) => {
       })
   }
 
-  const toggleShow = (status, id) => {
+  const checkGcIdData = (id, gcName, cb) => {
+    api.checkGcIdData({
+      id
+    }).then(res => {
+      if (res.code === 0) {
+        confirm({
+          icon: <ExclamationCircleOutlined />,
+          title: `确定要关闭一级分类：${gcName} 么？`,
+          content: <><span style={{ color: 'red' }}>关闭后用户和商家都无法查看其下{res.data.childCount}个子分类和{res.data.spuCount}款商品信息</span>,你还要继续吗？</>,
+          okText: '继续',
+          onOk() {
+            cb && cb()
+          }
+        });
+      }
+    })
+  }
+
+  const categorySwitch = (status, id) => {
     setLoading(true);
     api.categorySwitch({
       gcShow: status ? 1 : 0,
@@ -52,6 +74,16 @@ const List = (props) => {
     }).finally(() => {
       setLoading(false);
     })
+  }
+
+  const toggleShow = (status, id, gcName) => {
+    if (parentId === 0 && !status) {
+      checkGcIdData(id, gcName, () => {
+        categorySwitch(status, id)
+      });
+    } else {
+      categorySwitch(status, id)
+    }
   }
 
 
@@ -84,10 +116,16 @@ const List = (props) => {
       <div style={{ marginRight: 50 }}>
         <div className={styles.header}>
           <a
-            onClick={() => { edit({ id: parentId, type: 'add', callback: () => { getData(); } }); }}
+            onClick={() => { edit({ selectItem, parentId, id: parentId, type: 'add', callback: () => { getData(); } }); }}
           >
             添加{parentId === 0 ? '一' : '二'}级分类
           </a>
+        </div>
+        <div className={styles.th}>
+          <span>分类名称</span>
+          {parentId === 0 && <span className={styles.fresh}>生鲜</span>}
+          <span className={styles.state}>状态</span>
+          <span className={styles.action}>操作</span>
         </div>
         {
           data.length ?
@@ -97,25 +135,27 @@ const List = (props) => {
                   <SortableItem key={item.id} index={index} >
                     <li
                       className={styles.li}
-                      onClick={() => { setSelectId(item.id); onClick(item.id) }}
-                      style={{ backgroundColor: (parentId === 0 && selectId === item.id) ? '#f0f0f0' : '#fff' }}>
+                      onClick={() => { setSelectId(item.id); onClick(item) }}
+                      style={{ backgroundColor: (parentId === 0 && selectId === item.id) ? '#f0f0f0' : '#fff' }}
+                    >
                       <img src={item.gcIcon} />
                       <div className={styles.gcName}>{item.gcName}</div>
-                      <div className={styles.info}>
-                        <div>佣金抽成：{item.comPercentDisplay ?? 0}%</div>
-                        <div>内部店抽成：{item.innerPercentDisplay ?? 0}%</div>
-                      </div>
-                      <div className={styles.actions}>
+                      {parentId === 0 && <div className={styles.info}>
+                        {item.fresh !== 0 ? '是' : '否'}
+                      </div>}
+                      <div
+                        className={styles.state}
+                      >
                         <Switch
-                          onClick={(checked, e) => { toggleShow(checked, item.id); e.stopPropagation(); }}
+                          onClick={(checked, e) => { toggleShow(checked, item.id, item.gcName); e.stopPropagation(); }}
                           checked={item.gcShow === 1}
                           checkedChildren="开"
                           unCheckedChildren="关"
                           style={{ marginRight: 10 }}
                         />
-                        <a onClick={(e) => { edit({ id: item.id, type: 'edit', data: item, callback: () => { getData(); } }); e.stopPropagation() }}>编辑</a>
-                        {/* &nbsp;<a>参数</a>
-                        &nbsp;<a style={{ color: 'red' }} onClick={(e) => { remove(item.id, () => { getData() }); e.stopPropagation() }}>删除</a> */}
+                      </div>
+                      <div className={styles.action}>
+                        <a onClick={(e) => { edit({ selectItem, id: item.id, parentId, type: 'edit', data: item, callback: () => { getData(); } }); e.stopPropagation() }}>编辑</a>
                       </div>
                     </li>
                   </SortableItem>
@@ -132,7 +172,7 @@ const List = (props) => {
 
 const ProductCategory = () => {
   const [visible, setVisible] = useState(false);
-  const [selectId, setSelectId] = useState(null);
+  const [selectItem, setSelectItem] = useState(null);
   const [formParams, setFormParams] = useState({})
 
   const edit = (params) => {
@@ -159,9 +199,9 @@ const ProductCategory = () => {
         setVisible={setVisible}
         {...formParams}
       />}
-      <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-        <List onClick={(id) => { setSelectId(id) }} edit={edit} remove={remove} />
-        {selectId && <List parentId={selectId} edit={edit} remove={remove} />}
+      <div style={{ display: 'flex', width: '100%', justifyContent: 'center', paddingTop: 30 }}>
+        <List onClick={(item) => { setSelectItem(item) }} edit={edit} remove={remove} />
+        {selectItem && <List selectItem={selectItem} parentId={selectItem.id} edit={edit} remove={remove} />}
       </div>
     </PageContainer>
   )

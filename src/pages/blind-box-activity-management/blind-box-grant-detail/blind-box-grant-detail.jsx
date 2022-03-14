@@ -108,6 +108,7 @@ export default () => {
           headerTitle="盲盒机会发放明细"
           options={false}
           request={getBlindboxIncomeList}
+          scroll={{ y: Math.max(window.innerHeight - 650, 500), scrollToFirstRowOnChange: true, }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,

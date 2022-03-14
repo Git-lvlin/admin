@@ -125,7 +125,7 @@ export default (props) => {
       <Form.Item
         label="商品品类"
       >
-        {`${goods.gcId1Display}/${goods.gcId2Display}`}
+        {`${goods.gcId1Display}/${goods.gcId2Display}`}{detailData.fresh !== 0 && <span style={{ color: 'green' }}>({{ 1: '精装生鲜', 2: '散装生鲜' }[detailData.fresh]})</span>}
       </Form.Item>
       <Form.Item
         label="商品编号"

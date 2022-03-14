@@ -117,7 +117,8 @@ const Detail = () => {
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
           resolve()
-          history.goBack();
+          window.history.back()
+          setTimeout(() => { window.location.reload(); }, 200)
         } else {
           reject()
         }
@@ -231,9 +232,7 @@ const Detail = () => {
                       通过
                     </Button>
                     <RejectForm id={detailData?.id} />
-                    <Button onClick={() => {
-                      history.goBack();
-                    }}>
+                    <Button onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>
                       返回
                     </Button>
                   </Space>

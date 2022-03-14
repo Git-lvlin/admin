@@ -197,6 +197,7 @@ const BannerAdmin = () => {
         search={{
           labelWidth: 'auto',
         }}
+        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
         pagination={{
           pageSize: 5,
         }}

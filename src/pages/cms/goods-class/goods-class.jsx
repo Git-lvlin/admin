@@ -137,6 +137,7 @@ const BannerAdmin = () => {
         pagination={{
           pageSize: 5,
         }}
+        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
         dateFormatter="string"
         toolBarRender={(_) => {
           return <Button key="button" type="primary" onClick={() => { build() }}>

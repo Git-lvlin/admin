@@ -59,7 +59,8 @@ const columns = [
     title: '供应商家ID',
     dataIndex: 'supplierId',
     align: 'center',
-    order: -1
+    order: -1,
+    width: 100,
   },
   {
     title: '申请时间',
@@ -102,6 +103,7 @@ const columns = [
       2: '退款退货'
     },
     align: 'center',
+    width: 100,
     order: 7
   },
   {
@@ -117,6 +119,7 @@ const columns = [
     valueEnum: sourceType,
     valueType: 'select',
     align: 'center',
+    width: 100,
     order: 6
   },
   {
@@ -137,6 +140,7 @@ const afterSalesOrder = () => {
         options={false}
         params={{}}
         request={refundOrder}
+        scroll={{ y: Math.max(window.innerHeight - 500, 500), scrollToFirstRowOnChange: true, }}
         search={{
           optionRender: ({searchText, resetText}, {form}) => [
             <Button

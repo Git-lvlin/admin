@@ -67,6 +67,7 @@ export default () => {
           actionRef={ref}
           rowKey="id"
           request={couponInviteList}
+          scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
           toolBarRender={()=>[
             <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/activity-management/share-red-packet-activity/share-packet-rule')} type="primary">
                 添加活动

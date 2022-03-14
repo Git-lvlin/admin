@@ -160,6 +160,7 @@ export default () => {
           headerTitle='每日红包明细'
           options={false}
           request={couponEverydayLogList}
+          scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,

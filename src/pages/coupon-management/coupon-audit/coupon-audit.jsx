@@ -129,6 +129,7 @@ const Message = (props) => {
         params={{
           couponVerifyStatus: type,
         }}
+        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
         request={couponList}
         search={{
           defaultCollapsed: false,

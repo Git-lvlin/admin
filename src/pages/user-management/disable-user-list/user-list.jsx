@@ -199,6 +199,7 @@ const TableList = () => {
         params={{
           status: 0,
         }}
+        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
         request={userList}
         actionRef={actionRef}
         search={{

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Modal } from 'antd';
+import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Modal, Form } from 'antd';
 import { InfoCircleOutlined, ExclamationCircleOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams, history } from 'umi';
@@ -12,6 +12,7 @@ import PassModel from './pass-model'
 import moment from 'moment'
 import LadderDataEdit from '../intensive-activity-create/ladder-data-edit'
 import PriceExplanation from '../intensive-activity-create/price-explanation'
+import FreshIncome from '../intensive-activity-create/fresh-income'
 
 const { Title } = Typography;
 
@@ -58,7 +59,8 @@ const Detail = () => {
                 </div>,
                 okText: '确定通过',
                 onOk: () => {
-                  history.goBack()
+                  window.history.back(); 
+                  setTimeout(() => { window.location.reload(); }, 200)
                 }
               });
             } else {
@@ -72,7 +74,8 @@ const Detail = () => {
                   updateWholesaleAuditStatus({ wsId: params?.id, type: 2, rejectionReason: res.data.msg })
                     .then(r => {
                       if (r.code === 0) {
-                        history.goBack()
+                        window.history.back(); 
+                        setTimeout(() => { window.location.reload(); }, 200)
                       }
                     })
                 }
@@ -100,7 +103,7 @@ const Detail = () => {
       title: '商品分类',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
-      render: (_, data) => `${data.gcId1Display}-${data.gcId2Display}`,
+      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.fresh === 1 && <span style={{ color: 'green' }}>(精装生鲜)</span>}</>
     },
     {
       title: '规格',
@@ -249,6 +252,19 @@ const Detail = () => {
     })[0]
   }
 
+  const parseShipAddr = (data) => {
+    const arr = [];
+
+    data.forEach(item => {
+      const provinceName = window.yeahgo_area.find(it => it.id === item.provinceId)?.name
+      const cityName = window.yeahgo_area.find(it => it.id === item.cityId)?.name
+      const areaName = window.yeahgo_area.find(it => it.id === item.areaId)?.name
+      arr.push(`${provinceName}${cityName}${areaName}`)
+    })
+
+    return arr.join('、')
+  }
+
   useEffect(() => {
     getDetail(params?.id)
   }, [])
@@ -291,6 +307,7 @@ const Detail = () => {
               </Descriptions.Item>
               <Descriptions.Item label="商品分类">
                 {detailData?.sku?.[0]?.gcId1Display}-{detailData?.sku?.[0]?.gcId2Display}
+                {detailData?.sku?.[0]?.fresh === 1 && <span style={{ color: 'green' }}>(生鲜)</span>}
               </Descriptions.Item>
               <Descriptions.Item label="配送模式">
                 {detailData?.wholesale?.wholesaleFlowTypeDesc}
@@ -303,6 +320,31 @@ const Detail = () => {
                   {detailData?.allowArea?.map?.(item => (item.areaName)).join('，')}
                 </div>
               </Descriptions.Item>
+              <Descriptions.Item label="消费者集约预售">
+                {{ 1: '开启', 0: '关闭' }[detailData?.wholesale?.preSale]}
+              </Descriptions.Item>
+              {!!detailData?.sku?.[0]?.shipAddr?.length && <Descriptions.Item label="商品发货地区">
+                {parseShipAddr(detailData?.sku?.[0]?.shipAddr)}
+              </Descriptions.Item>}
+              {
+                detailData?.sku?.[0]?.fresh === 1
+                &&
+                <>
+                  <Descriptions.Item label="仅参与1分钱活动">
+                    {{ 1: '是（仅参与1分钱集约活动或特价集约活动）', 0: '不是（也参与正常集约活动）' }[detailData.wholesale.activityShowType]}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="生鲜总分佣类型">
+                    {{ 1: '特殊分佣（单独指定分佣）', 0: '正常分佣（按分类分佣）' }[detailData.wholesale.freshSpecial]}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="总分佣比例">
+                    {
+                      detailData.wholesale.freshSpecial === 0
+                        ? `${detailData.sku[0].gcId1Display}  > ${detailData.sku[0].gcId2Display}：${amountTransform(detailData.sku[0].freshCommission)}%`
+                        : `${amountTransform(detailData.sku[0].freshCommission)}%`
+                    }
+                  </Descriptions.Item>
+                </>
+              }
               <Descriptions.Item label="商品主图">
                 <Image src={detailData?.sku?.[0]?.goodsImageUrl} width={50} />
               </Descriptions.Item>
@@ -319,6 +361,32 @@ const Detail = () => {
           </Descriptions.Item> */}
             </Descriptions>
             <div>
+              {
+                detailData?.sku?.[0]?.fresh === 1 &&
+                <>
+                  <Form.Item
+                    label="生鲜商品的各方分佣比例"
+                  >
+                    <Table
+                      title={() => "以五星社区店为例"}
+                      columns={[
+                        { title: '社区店', dataIndex: 'shopCommission', render: (_) => `${amountTransform(_)}%` },
+                        { title: '运营中心', dataIndex: 'operateCommission', render: (_) => `${amountTransform(_)}%` },
+                        { title: '推荐人', dataIndex: 'referrerCommission', render: (_) => `${amountTransform(_)}%` },
+                        { title: '平台额外收益', dataIndex: 'platForm', render: (_) => `${amountTransform(_)}%` },
+                      ]}
+                      dataSource={[detailData.sku[0].freshData[0]]}
+                      pagination={false}
+                    />
+                  </Form.Item>
+
+                  <Form.Item
+                    label="预计生鲜食品的各方分佣金额"
+                  >
+                    <FreshIncome data={detailData.sku[0]} parse freshCommission={detailData.sku[0].freshCommission} />
+                  </Form.Item>
+                </>
+              }
               <div style={{ fontWeight: 'bold', marginBottom: 20 }}>平台额外奖励：{{ 0: '不进行平台额外奖励', 1: '按采购量奖励社区店', 2: '按集采阶梯量奖励(社区店+运营中心)' }[detailData?.wholesale?.isEditSubsidy]}</div>
               {detailData?.wholesale?.isEditSubsidy === 1 &&
                 <div style={{ marginBottom: 20 }}>
@@ -343,7 +411,7 @@ const Detail = () => {
             </div>
           </Row>
           <div style={{ marginTop: 40, display: 'flex', justifyContent: 'center' }}>
-            <Button type="default" onClick={() => history.goBack()}>返回</Button>
+            <Button type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); },200) }}>返回</Button>
             <Button style={{ marginLeft: '50px' }} onClick={() => { auditPass() }} type="primary">审核通过</Button>
             <AuditModel
               label={'审核驳回'}

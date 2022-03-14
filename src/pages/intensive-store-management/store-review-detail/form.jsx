@@ -36,7 +36,8 @@ export default (props) => {
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
           resolve()
-          history.goBack();
+          window.history.back()
+          setTimeout(() => { window.location.reload(); }, 200)
         } else {
           reject()
         }

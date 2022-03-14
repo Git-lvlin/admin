@@ -13,14 +13,14 @@ export default (props) => {
   const [deposit, setDeposit] = useState({})
   const [form] = Form.useForm();
   const formItemLayout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 14 },
+    labelCol: { span: 4 },
+    wrapperCol: { span: 18 },
     layout: {
       labelCol: {
         span: 4,
       },
       wrapperCol: {
-        span: 14,
+        span: 18,
       },
     }
   };
@@ -63,7 +63,7 @@ export default (props) => {
       }}
       onVisibleChange={setVisible}
       visible={visible}
-      width={650}
+      width={700}
       form={form}
       onFinish={async (values) => {
         await submit(values);
@@ -81,7 +81,7 @@ export default (props) => {
       <Form.Item
         label="保证金缴纳状态"
       >
-        已交（￥{amountTransform(deposit?.payAmount, '/')}）  于 {deposit?.payTime} 缴纳
+        已交（￥{amountTransform(deposit?.payAmount, '/')}）  于 {deposit?.payTime} 缴纳 （缴纳支付方式：{deposit?.payType?.desc}）
         <div style={{ color: 'red' }}>{`${data?.type === 1 ? '已实际完成店铺保证金退款操作，确认无误后登记如下：' :'确认无误后线上原路退回如下：'}`}</div>
       </Form.Item>
 

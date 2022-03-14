@@ -23,7 +23,8 @@ const StoreReview = () => {
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店铺ID'
-      }
+      },
+      width: 80,
     },
     // {
     //   title: '店铺图片',
@@ -69,7 +70,27 @@ const StoreReview = () => {
       dataIndex: '',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, { details }) => details?.houseNumber
+      render: (_, { details }) => details?.houseNumber,
+      width: 120,
+    },
+    {
+      title: '申请类型',
+      dataIndex: 'applyType',
+      valueType: 'select',
+      valueEnum: {
+        10: '正常申请',
+        20: '绿色通道申请',
+      },
+      hideInTable: true,
+      order: -2,
+    },
+    {
+      title: '申请类型',
+      dataIndex: ['applyType', 'code'],
+      valueType: 'text',
+      width: 100,
+      render: (_) => _ === 10 ? '正常申请' : '绿色通道申请',
+      hideInSearch: true,
     },
     // {
     //   title: '提货店授权书',
@@ -173,6 +194,7 @@ const StoreReview = () => {
         actionRef={actionRef}
         formRef={formRef}
         request={getStoreList}
+        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [

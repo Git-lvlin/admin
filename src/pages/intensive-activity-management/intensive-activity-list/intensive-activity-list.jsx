@@ -257,6 +257,7 @@ const TableList = () => {
       dataIndex: 'wholesaleId',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
     },
     {
       title: '活动名称',
@@ -396,6 +397,8 @@ const TableList = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      width: 600,
+      fixed: 'right',
       render: (_, data) => (
         <Space>
           {data.wholesaleAuditStatus !== 1 && data.wholesaleAuditStatus !== 3 && <a onClick={() => { history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}`) }}>编辑</a>}
@@ -464,6 +467,7 @@ const TableList = () => {
           rowKey="wholesaleId"
           options={false}
           request={getWholesaleList}
+          scroll={{ x: '100vw', y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
           expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} wholesaleAuditStatus={_.wholesaleAuditStatus} /> }}
           search={{
             defaultCollapsed: false,
@@ -477,7 +481,6 @@ const TableList = () => {
           pagination={{
             pageSize: 10,
           }}
-          scroll={{ x: 'max-content' }}
         />
       </div>
     </PageContainer>

@@ -208,6 +208,7 @@ const HotGoos = () => {
         })
         return data
       }}
+      scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
       params={{tagCode:'hot_sale', verifyVersionId: verifyVersionId}}
       request={hotGoosList}
       rowSelection={{

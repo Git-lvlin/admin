@@ -230,6 +230,7 @@ const StrategyToday = () => {
         })
         return data
       }}
+      scroll={{ y: Math.max(window.innerHeight - 820, 500), scrollToFirstRowOnChange: true, }}
       request={hotGoosList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

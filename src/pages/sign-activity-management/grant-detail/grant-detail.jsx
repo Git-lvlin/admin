@@ -101,6 +101,7 @@ export default () => {
           headerTitle="签到红包发放明细"
           options={false}
           request={queryIssuanceList}
+          scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,

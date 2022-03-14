@@ -71,7 +71,8 @@ const TableList = () => {
       dataIndex: 'userType',
       valueType: 'text',
       hideInSearch: true,
-      render: (text) => text === 1 ? '是' : '否'
+      render: (text) => text === 1 ? '是' : '否',
+      width: 100,
     },
     {
       title: '手机号',
@@ -223,6 +224,7 @@ const TableList = () => {
         params={{
           status: 1,
         }}
+        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
         request={userList}
         actionRef={actionRef}
         search={{

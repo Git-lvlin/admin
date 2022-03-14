@@ -23,6 +23,7 @@ const TabList =props=> {
       title: '供应商家ID',
       dataIndex: 'supplierId',
       align: 'center',
+      width: 100,
       order: -1
     },
     {
@@ -113,9 +114,10 @@ const TabList =props=> {
       params={{
         done
       }}
+      scroll={{ y: Math.max(window.innerHeight - 350, 500), scrollToFirstRowOnChange: true, }}
       request={interventionList}
       pagination={{
-        hideOnSinglePage: true,
+        // hideOnSinglePage: true,
         showQuickJumper: true
       }}
       search={{

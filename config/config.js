@@ -11,15 +11,15 @@ import intensiveActivityManagement from './routers/intensive-activity-management
 import supplierManagement from './routers/supplier-management'
 import operationManagement from './routers/operation-management'
 import intensiveStoreManagement from './routers/intensive-store-management'
-import singleContractActivityManagement from './routers/single-contract-activity-management'
-import groupContractActivityManagement from './routers/group-contract-activity-management'
+// import singleContractActivityManagement from './routers/single-contract-activity-management'
+// import groupContractActivityManagement from './routers/group-contract-activity-management'
 import couponManagement from './routers/coupon-management'
 import messageManagement from './routers/message-management'
 import cms from './routers/cms'
 import businessSchool from './routers/business-school'
-import communityManagement from './routers/community-management'
+// import communityManagement from './routers/community-management'
 import DaifaStoreManagement from './routers/daifa-store-management'
-import pcm from './routers/price-comparsion-management'
+// import pcm from './routers/price-comparsion-management'
 import financialManagement from './routers/financial-management'
 import dataBoard from './routers/data-board'
 import dc from './routers/dc'
@@ -82,13 +82,13 @@ const config = {
             supplierManagement,
             operationManagement,
             intensiveStoreManagement,
-            singleContractActivityManagement,
-            groupContractActivityManagement,
+            // singleContractActivityManagement,
+            // groupContractActivityManagement,
             messageManagement,
             couponManagement,
             cms,
-            pcm,
-            communityManagement,
+            // pcm,
+            // communityManagement,
             DaifaStoreManagement,
             businessSchool,
             financialManagement,

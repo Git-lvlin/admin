@@ -140,6 +140,7 @@ export default () => {
           headerTitle='活动数据明细'
           options={false}
           request={couponInviteLogList}
+          scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,

@@ -76,6 +76,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
+        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
       />
       <Form
         visible={formVisible}

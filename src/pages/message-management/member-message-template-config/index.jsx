@@ -16,7 +16,8 @@ const message = (type, module) => {
     { 
       title: '消息编号',
       dataIndex: 'id',
-      valueType: 'indexBorder'
+      valueType: 'indexBorder',
+      width: 100,
     },
     { 
       title: '消息名称', 
@@ -72,10 +73,10 @@ const message = (type, module) => {
         actionRef={actionRef}
         params={{toType: type, moduleType: module}}
         request={api.messageTemplateList}
+        scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
         pagination={{
           showQuickJumper: true,
           pageSize: 10,
-          hideOnSinglePage: true
         }}
       />
       <PopForm

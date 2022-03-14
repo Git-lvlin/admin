@@ -70,6 +70,7 @@ export default () => {
         columns={columns}
         actionRef={actionRef}
         request={pageForAdmin}
+        scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
         search={{
             defaultCollapsed: false,
             labelWidth: 100,

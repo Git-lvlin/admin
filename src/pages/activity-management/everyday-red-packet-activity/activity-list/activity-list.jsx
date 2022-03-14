@@ -68,6 +68,7 @@ export default () => {
           rowKey="id"
           headerTitle="活动列表"
           options={false}
+          scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
           request={couponEverydayList}
           toolBarRender={()=>[
             <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/activity-management/everyday-red-packet-activity/everyday-packet-rule')} type="primary">

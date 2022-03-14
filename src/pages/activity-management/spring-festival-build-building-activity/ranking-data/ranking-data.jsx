@@ -118,6 +118,7 @@ const InviteRegister=(props) => {
           options={false}
           request={inviteRankList}
           postData={postData}
+          scroll={{ y: Math.max(window.innerHeight - 750, 500), scrollToFirstRowOnChange: true, }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,
