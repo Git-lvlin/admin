@@ -54,22 +54,29 @@ export const communityStoreDataOverview = async (params = {}, options = {}) => {
 
 // 社区店服务费统计
 export const serviceFee = async (params = {}, options = {}) => {
-  const { payTime, area, ...rest } = params
-  const res = await request('/auth/store/serviceFee/page', {
+  const { current, pageSize, payTime, area, storeName, ...rest } = params
+  return await request('/auth/java-admin/report/config/serviceFee', {
     method: 'POST',
     data: {
-      provinceId: area?.[0]?.value,
-      cityId: area?.[1]?.value,
-      regionId: area?.[2]?.value,
-      payStart: payTime?.[0],
-      payEnd: payTime?.[1],
+      page: current,
+      size: pageSize,
+      store_name: storeName && storeName,
+      province_name: area?.[0]?.label,
+      city_name: area?.[1]?.label,
+      region_name: area?.[2]?.label,
+      startTime: payTime?.[0],
+      endTime: payTime?.[1],
       ...rest
     },
     ...options
   })
-  return {
-    data: res.data.records,
-    success: res.success,
-    total: res.data.total
-  }
+}
+
+//服务费总计
+export const serviceFeeTotal = async (params = {}, options = {}) => {
+  return await request('/auth/java-admin/report/config/serviceFeeTotal', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
 }

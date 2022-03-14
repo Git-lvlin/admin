@@ -26,16 +26,21 @@ const formItemLayout = {
 
 export default (props) => {
   const [detailList,setDetailList]=useState()
-  const [falg,setFalg]=useState(true)
   const [goosList,setGoosList]=useState()
   const [visible, setVisible] = useState(false);
-  const [limitAll,setLimitAll]=useState()
-  let id = props.location.query.id
+  const [limitAll,setLimitAll]=useState(200)
+  const [batchPrice,setBatchPrice]=useState()
+  let id= props.location.query.id
   const [form] = Form.useForm()
   useEffect(() => {
     if (id) {
       getActiveConfigById({id}).then(res=>{
-        setDetailList(res.data?.content?.goods)
+        if(res.data?.endTime<res.data?.time){
+          message.error('活动已结束！'); 
+          window.location.href='/intensive-activity-management/penny-activity/activity-list'
+          return false
+        }
+        setDetailList(res.data)
         form.setFieldsValue({
             dateRange: [moment(res.data?.startTime*1000).valueOf(), moment(res.data?.endTime*1000).valueOf()],
             buyerLimit:res.data?.content?.buyerLimit,
@@ -43,9 +48,10 @@ export default (props) => {
             joinBuyerType:res.data?.content?.joinBuyerType,
             joinShopType:[res.data?.content?.joinShopType],
             ruleText:res.data?.content?.ruleText,
+            ruleTextC:res.data?.content?.ruleTextC,
             shoperLimitAll:res.data?.content?.shoperLimitAll,
             shoperLimitOnece:res.data?.content?.shoperLimitOnece,
-            price:res.data?.content?.price,
+            price:amountTransform(res.data?.content?.price,'/'),
             ...res.data
           })
       })
@@ -89,9 +95,7 @@ export default (props) => {
   const checkConfirm3=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
     if (value&&parseInt(value)>parseInt(limitAll)) {
-      await reject('<=店主总限量')
-    }else if (value&&parseInt(value)>200) {
-      await reject('<=店主总限量')
+      await reject('小于等于店主总限量')
     }else if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
       await reject('只能输入整数')
     }else {
@@ -123,20 +127,43 @@ export default (props) => {
   }
 
   const onsubmit = (values) => {
-      const parmas={
+    if(id){
+      var max=detailList?.content?.goods[0].minNum
+      for (let index = 0; index < detailList?.content?.goods.length; index++) {
+          if(max<detailList?.content?.goods[index].minNum){
+            max=detailList?.content?.goods[index].minNum
+          }
+      }
+      if(values.shoperLimitOnece<max){
+        return message.error('每位店主单次限量不能小于集约单次限量的起订量！')
+      }
+    }else{
+      var max=goosList[0].minNum
+      for (let index = 0; index < goosList.length; index++) {
+          if(max<goosList[index].minNum){
+            max=goosList[index].minNum
+          }
+      }
+      if(values.shoperLimitOnece<max){
+        return message.error('每位店主单次限量不能小于集约单次限量的起订量！')
+      }
+    }
+
+  const parmas={
         ...values,
         id:id?id:0,
-        startTime:moment(values.dateRange[0]).valueOf(),
-        endTime:moment(values.dateRange[1]).valueOf(),
+        startTime:moment(values.dateRange[0]).valueOf()/1000,
+        endTime:moment(values.dateRange[1]).valueOf()/1000,
         joinShopType:values.joinShopType[0],
         joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
-        goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:amountTransform(ele.price,'*'),status:ele.status}))||detailList,
+        goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:amountTransform(ele.price,'*'),status:ele.status}))||detailList?.content?.goods,
+        price:amountTransform(values.price,'*'),
         status:1,
       }
       saveWSCentActiveConfig(parmas).then(res=>{
         if(res.code==0){
           message.success(id?'编辑成功':'添加成功'); 
-          history.push('/intensive-activity-management/penny-activity/activity-list')
+          window.location.href='/intensive-activity-management/penny-activity/activity-list'
         }
       })
   }
@@ -145,7 +172,7 @@ export default (props) => {
     return current && current < moment().startOf('day');
   }
   return (
-    <PageContainer>
+    <PageContainer title={id?'编辑活动':'新建活动'}>
       <ProForm
         form={form}
         {...formItemLayout}
@@ -173,6 +200,7 @@ export default (props) => {
           width="md"
           name="name"
           label='活动名称'
+          placeholder='请输入活动名称'
           rules={[
             { required: true, message: '请输入活动名称' },
             { validator: activityName }
@@ -192,6 +220,9 @@ export default (props) => {
           ]}
           fieldProps={{
             addonAfter:"元",
+            onChange:(e)=>{
+              setBatchPrice(e.target.value)
+            }
           }}
           extra={<p style={{color:'#D8BC2C'}}>一键设置所有活动商品的活动价</p>}
         />
@@ -248,7 +279,7 @@ export default (props) => {
         <GoosSet
           detailList={detailList}
           id={id} 
-          falg={falg} 
+          batchPrice={batchPrice}
           callback={(val)=>{
             setGoosList(val)
           }}
@@ -278,9 +309,11 @@ export default (props) => {
               value: 1,
             },
           ]}
+          disabled
           rules={[{ required: true, message: '请选择参与活动的店铺' }]}
+          initialValue={[1]}
         />
-         <ProFormRadio.Group
+        <ProFormRadio.Group
           name="joinBuyerType"
           label="参与活动的消费者"
           options={[
@@ -294,14 +327,30 @@ export default (props) => {
             },
           ]}
           rules={[{ required: true, message: '请选择参与活动的消费者' }]}
+          initialValue={1}
         />
         <ProFormTextArea
-          label='活动规则'
+          label='店主活动规则'
           name="ruleText"
           style={{ minHeight: 32, marginTop: 15 }}
           placeholder='请输入5-1000个字符'
           rules={[
-            { required: true, message: '请备注使用规则' },
+            { required: true, message: '请备注店主活动规则' },
+            { validator: checkConfirm5 }
+          ]}
+          rows={4}
+          fieldProps={{
+            maxLength:1000
+          }}
+        />
+
+        <ProFormTextArea
+          label='消费者活动规则'
+          name="ruleTextC"
+          style={{ minHeight: 32, marginTop: 15 }}
+          placeholder='请输入5-1000个字符'
+          rules={[
+            { required: true, message: '请备注消费者活动规则' },
             { validator: checkConfirm5 }
           ]}
           rows={4}

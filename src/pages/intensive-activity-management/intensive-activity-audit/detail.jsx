@@ -103,7 +103,7 @@ const Detail = () => {
       title: '商品分类',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
-      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.fresh === 1 && <span style={{ color: 'green' }}>(生鲜)</span>}</>
+      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.fresh === 1 && <span style={{ color: 'green' }}>(精装生鲜)</span>}</>
     },
     {
       title: '规格',

@@ -31,7 +31,7 @@ const FromWrap = ({ value, onChange, content, right }) => (
 )
 
 const GoosModel=(props)=>{
-  const {visible,setVisible,onClose,callback,keyId}=props
+  const {visible,setVisible,onClose,callback,keyId,detailList}=props
   const [goosList,setGoosList]=useState()
   const [dataList,setDataList]=useState([])
   const actionRef = useRef();
@@ -50,14 +50,16 @@ const GoosModel=(props)=>{
           dataIndex: 'goodsName',
           valueType: 'text',
           ellipsis:true,
-          hideInSearch:true
+          hideInSearch:true,
+          width:150
       },
       {
           title: '集约活动名称',
           dataIndex: 'name',
           valueType: 'text',
           ellipsis:true,
-          hideInSearch:true
+          hideInSearch:true,
+          width:200
       },
       {
           title: '集约活动ID',
@@ -95,11 +97,13 @@ const GoosModel=(props)=>{
       },
   ];
   const onsubmit = (values) => {
+    if(goosList){
       callback(goosList)
-      setVisible(false)
+    }
+    setVisible(false)
   };
   useEffect(()=>{
-    setKeys(keyId.map(ele=>(ele.skuId)))
+    setKeys(keyId.map(ele=>(ele.wsId)))
   },[])
   const postData=(data)=>{
     dataList.push(...data)
@@ -138,7 +142,7 @@ const GoosModel=(props)=>{
           {...formItemLayout}
       >
       <ProTable
-          rowKey="skuId"
+          rowKey="wsId"
           options={false}
           request={chooseWholesaleList}
           actionRef={actionRef}
@@ -156,8 +160,8 @@ const GoosModel=(props)=>{
               onChange: (_, val) => {
                 const arr=[]
                 _.forEach(item=>{
-                 const obj=dataList.find(ele=>{
-                   return ele.skuId==item
+                 const obj=[...dataList,...detailList].find(ele=>{
+                   return ele.wsId==item
                   })
                   if(obj){
                     arr.push(obj)
@@ -167,6 +171,9 @@ const GoosModel=(props)=>{
                 setGoosList(arr)
                 setKeys(_)
               },
+              getCheckboxProps: (record) => ({
+                disabled:detailList?.map(ele=>(ele.wsId)).includes(record.wsId),
+              }),
               selectedRowKeys:keys
           }}
           pagination={{
@@ -179,7 +186,7 @@ const GoosModel=(props)=>{
 }
 
 export default (props) => {
-  const {callback,id,detailList}=props
+  const {callback,id,detailList,batchPrice}=props
   const ref=useRef()
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
@@ -188,8 +195,8 @@ export default (props) => {
   const [pennyId,setPennyId]=useState()
   useEffect(()=>{
     if(id){
-      detailList&&setDataSource(detailList.map(ele=>({...ele,price:amountTransform(ele.price,'/')})))
-     setEditableKeys(detailList?.map(item => item.skuId))
+      detailList?.content?.goods&&setDataSource(detailList?.content?.goods?.map(ele=>({...ele,price:amountTransform(ele.price,'/')})))
+     setEditableKeys(detailList?.content?.goods?.map(item => item.wsId))
     }   
   },[id,detailList])
 
@@ -259,15 +266,15 @@ export default (props) => {
       hideInSearch: true,
       editable:false,
       render: (_,data)=> {
-        return <p>{data?.minNum} - {data?.maxNum}包</p>
+        return <p>{data?.minNum} - {data?.maxNum}{data?.unit}</p>
       },
     },
     {
       title: '集约价',
       dataIndex: 'wsPrice',
       hideInSearch: true,
-      render: (_)=> {
-        return <p>{amountTransform(_, '/').toFixed(2)}元/包</p>
+      render: (_,data)=> {
+        return <p>{amountTransform(_, '/').toFixed(2)}元/{data?.unit}</p>
       },
       editable:false
     },
@@ -276,8 +283,8 @@ export default (props) => {
       dataIndex: 'totalStockNum',
       hideInSearch: true,
       editable:false,
-      render: (_)=> {
-        return <p>{_}包</p>
+      render: (_,data)=> {
+        return <p>{_}{data?.unit}</p>
       },
     },
     {
@@ -296,7 +303,7 @@ export default (props) => {
                   onChange={onChange}
                 />
         }
-        right={(value) =><p>元/包</p>}
+        right={(value) =><p>元/{_?.entry?.unit}</p>}
         />
       },
       render: (_,r) =>{
@@ -320,11 +327,19 @@ export default (props) => {
       valueType: 'text',
       render:(text, record, _, action)=>{
         return [
-          <a key='dele' onClick={()=>{setPennyId({skuId:record.skuId,type:1});setEndVisible(true)}}>删除&nbsp;&nbsp;</a>,
+          <span key='dele'>
+            {
+              !id||detailList.underway==3?
+              <a onClick={()=>{setPennyId({wsId:record.wsId,type:1});setEndVisible(true)}}>删除&nbsp;&nbsp;</a>
+              :null
+            }
+          </span>,
           <span key='stop'>
               {
-                record.status!=0&&
-                <a key='detail' onClick={()=>{setPennyId({skuId:record.skuId,type:2});setEndVisible(true)}}>禁用</a>
+                record.status!=0?
+                <a key='detail' onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
+                :
+                <a key='start' onClick={()=>{setPennyId({wsId:record.wsId,type:3});setEndVisible(true)}}>启用</a>
               }
           </span>
       ]
@@ -338,7 +353,7 @@ export default (props) => {
     <ProFormText
       width="md"
       name="price"
-      label='活动商品'
+      label={<p><span style={{color:'red',fontSize:'15px'}}>* </span>活动商品</p>}
       fieldProps={{
         value:<Button key='add' type="primary" onClick={()=>{
                 setVisible(true)
@@ -349,7 +364,7 @@ export default (props) => {
       readonly={true}
     />
     <EditableProTable
-        rowKey="skuId"
+        rowKey="wsId"
         name="table"
         actionRef={ref}
         value={dataSource}
@@ -387,14 +402,15 @@ export default (props) => {
               ...item,
               status:1,
               wsPrice:item.price,
-              price:0
+              price:batchPrice?batchPrice:detailList?amountTransform(detailList?.content?.price,'/'):0
             })
           })
           setDataSource(arr)
           callback(arr)
-          setEditableKeys(arr.map(item => item.skuId))
+          setEditableKeys(arr.map(item => item.wsId))
         }}
         keyId={dataSource}
+        detailList={detailList?.content?.goods||[]}
         onClose={()=>{}}
       />
     }

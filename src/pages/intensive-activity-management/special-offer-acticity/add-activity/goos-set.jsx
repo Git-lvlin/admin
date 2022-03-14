@@ -8,6 +8,7 @@ import ProTable from '@ant-design/pro-table';
 import { ModalForm,ProFormText } from '@ant-design/pro-form';
 import _ from 'lodash'
 import moment from 'moment';
+import EndModel from './end-model'
 
 const formItemLayout = {
   labelCol: { span: 3 },
@@ -23,15 +24,17 @@ const formItemLayout = {
 };
 
 const FromWrap = ({ value, onChange, content, right }) => (
-  <div style={{ display: 'flex',flexDirection:'column' }}>
+  <div style={{ display: 'flex',flexDirection:'column',alignItems:'center' }}>
     <div>{content(value, onChange)}</div>
     <div>{right(value)}</div>
   </div>
 )
 
 const GoosModel=(props)=>{
-  const {visible,setVisible,onClose,callback}=props
+  const {visible,setVisible,onClose,callback,keyId,detailList}=props
   const [goosList,setGoosList]=useState()
+  const [keys,setKeys]=useState()
+  const [dataList,setDataList]=useState([])
   const actionRef = useRef();
   const columns = [
       {
@@ -49,7 +52,7 @@ const GoosModel=(props)=>{
           dataIndex: 'gcName',
           valueType: 'text',
           ellipsis:true,
-          hideInSearch:true
+          hideInSearch:true,
       },
       {
           title: '商品主图',
@@ -74,8 +77,20 @@ const GoosModel=(props)=>{
       },
       {
           title: '批发供货价',
-          dataIndex: 'price',
+          dataIndex: 'wholesaleSupplyPrice',
           hideInSearch: true,
+          render:(_,data)=>{
+            return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
+          }
+      },
+      {
+          title: '平均运费',
+          dataIndex: 'wholesaleFreight',
+          hideInSearch: true,
+          editable:false,
+          render:(_,data)=>{
+            return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
+        }
       },
       {
           title: '集约活动名称',
@@ -144,14 +159,24 @@ const GoosModel=(props)=>{
           dataIndex: 'minNum',
           hideInSearch: true,
           render:(_,data)=>{
-            return <p>{_}/{data?.wsUnit}</p>
+            return <p>{_}{data?.unit}</p>
           }
     },
   ];
   const onsubmit = (values) => {
-    callback(goosList)
+    if(goosList){
+      callback(goosList)
+    }
     setVisible(false)
   };
+  useEffect(()=>{
+    setKeys(keyId.map(ele=>(ele.wsId)))
+  },[])
+  const postData=(data)=>{
+    dataList.push(...data)
+    setDataList(dataList)
+    return data
+  }
   return (
       <ModalForm
           onVisibleChange={setVisible}
@@ -184,7 +209,7 @@ const GoosModel=(props)=>{
           {...formItemLayout}
       >
       <ProTable
-          rowKey="skuId"
+          rowKey="wsId"
           options={false}
           request={chooseWholesaleList}
           actionRef={actionRef}
@@ -195,15 +220,29 @@ const GoosModel=(props)=>{
                   ...dom.reverse(),
               ],
           }}
+          scroll={{ x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
+          postData={postData}
           columns={columns}
           rowSelection={{
               preserveSelectedRowKeys: true,
               onChange: (_, val) => {
-                setGoosList(val)
-              }
+                const arr=[]
+                _.forEach(item=>{
+                 const obj=[...dataList,...detailList].find(ele=>{
+                   return ele.wsId==item
+                  })
+                  if(obj){
+                    arr.push(obj)
+                  }
+
+                })
+                setGoosList(arr)
+                setKeys(_)
+              },
+              selectedRowKeys:keys
           }}
           pagination={{
-            pageSize: 10,
+            pageSize: 5,
             showQuickJumper: true,
           }}
       />
@@ -217,10 +256,12 @@ export default (props) => {
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
+  const [endVisible, setEndVisible] = useState(false);
+  const [pennyId,setPennyId]=useState()
   useEffect(()=>{
     if(id){
-      detailList&&setDataSource(detailList)
-     setEditableKeys(detailList?.map(item => item.skuId))
+      detailList&&setDataSource(detailList.map(ele=>({...ele,price:amountTransform(ele.price,'/')})))
+     setEditableKeys(detailList?.map(item => item.wsId))
     }   
   },[id,detailList])
 
@@ -273,9 +314,21 @@ export default (props) => {
     },
     {
       title: '批发供货价',
-      dataIndex: 'price',
+      dataIndex: 'wholesaleSupplyPrice',
       hideInSearch: true,
-      editable:false
+      editable:false,
+      render:(_,data)=>{
+        return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
+      }
+    },
+    {
+      title: '平均运费',
+      dataIndex: 'wholesaleFreight',
+      hideInSearch: true,
+      editable:false,
+      render:(_,data)=>{
+        return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
+      }
     },
     {
       title: '集约活动名称',
@@ -283,7 +336,8 @@ export default (props) => {
       valueType: 'text',
       ellipsis:true,
       hideInSearch:true,
-      editable:false
+      editable:false,
+      width:150
     },
     {
       title: '集约活动ID',
@@ -296,7 +350,7 @@ export default (props) => {
       title: '集约活动状态',
       dataIndex: 'wholesaleStatusDesc',
       valueType: 'text',
-      editable:false
+      editable:false,
     },
     {
       title: '集约活动开始时间',
@@ -319,8 +373,8 @@ export default (props) => {
       dataIndex: 'totalStockNum',
       hideInSearch: true,
       editable:false,
-      render: (_)=> {
-        return <p>{_}包</p>
+      render: (_,data)=> {
+        return <p>{_}{data?.unit}</p>
       },
     },
     {
@@ -337,7 +391,7 @@ export default (props) => {
       dataIndex: 'minNum',
       hideInSearch: true,
       render:(_,data)=>{
-        return <p>{_}/{data?.wsUnit}</p>
+        return <p>{_}{data?.unit}</p>
       },
       editable:false
     },
@@ -345,7 +399,8 @@ export default (props) => {
       title: '最大限购量',
       dataIndex: 'maxNum',
       hideInSearch: true,
-      valueType: 'text',
+      valueType: 'digit',
+      width:150
     },
     {
       title: '活动价',
@@ -355,16 +410,17 @@ export default (props) => {
       renderFormItem: (_) =>{
         return <FromWrap
         content={(value, onChange) =><InputNumber
-                  min="0.00"
+                  min={amountTransform(_?.entry?.wholesaleSupplyPrice+_?.entry?.wholesaleFreight, '/')}
                   precision='2'
                   stringMode
                   value={value}
                   onChange={onChange}
                 />
         }
-        right={(value) =><p>元/盒</p>}
+        right={(value) =><p>元/{_?.entry?.unit}</p>}
         />
       },
+      width:100,
       render: (_,r) =>{
         return <p>{_}</p>
       },
@@ -374,42 +430,35 @@ export default (props) => {
       valueType: 'text',
       render:(text, record, _, action)=>{
         return [
-          <a key='dele' onClick={()=>delGoods(record.skuId)}>删除&nbsp;&nbsp;</a>,
-          <a key='stop' onClick={()=>stopGoods(record.skuId)}>禁用&nbsp;&nbsp;</a>,
-          <a key='start' onClick={()=>stopGoods(record.skuId)}>启用</a>
+          <a style={{display:'block'}} key='dele' onClick={()=>{setPennyId({wsId:record.wsId,type:1});setEndVisible(true)}}>删除</a>,
+          <div key='detail'>
+            {
+              record?.status==0?
+              <p style={{color:'#AAAAAA'}}>禁用</p>
+              :
+              <a style={{display:'block'}} key='detail' onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
+            }
+          </div>,
+          <div key='start'>
+           {
+             record?.status==1?
+             <p style={{color:'#AAAAAA'}}>启用</p>
+             :
+             <a style={{display:'block'}} key='start' onClick={()=>{setPennyId({wsId:record.wsId,type:3});setEndVisible(true)}}>启用</a>
+           }
+          </div>
+
       ]
       },
       editable:false,
     }
   ]; 
-  // 删除商品
-  const  delGoods=val=>{
-    const arr=dataSource.filter(ele=>(
-          ele.skuId!=val
-    ))
-    // let sum=0
-    // arr.map(ele=>{
-    //   if(ele.status){
-    //     sum+=parseInt(ele.probability)
-    //   }
-    // })
-    // setSubmi(sum)
-    setDataSource(arr) 
-    callback(arr)
-  }
-
-  const stopGoods=val=>{
-//     const arr=dataSource.map(ele=>(
-//       ele.skuId!=val
-// ))
-  }
-
   return (
-    <>
+  <>
     <ProFormText
       width="md"
       name="price"
-      label='活动商品'
+      label={<p><span style={{color:'red',fontSize:'15px'}}>* </span>活动商品</p>}
       fieldProps={{
         value:<Button key='add' type="primary" onClick={()=>{
                 setVisible(true)
@@ -420,9 +469,10 @@ export default (props) => {
       readonly={true}
     />
     <EditableProTable
-        rowKey="skuId"
+        rowKey="wsId"
         name="table"
         value={dataSource}
+        actionRef={ref}
         recordCreatorProps={false}
         columns={columns}
         editable={{
@@ -448,47 +498,40 @@ export default (props) => {
         visible={visible} 
         setVisible={setVisible}
         callback={(val)=>{
-          console.log('val',val)
           const arr = [];
           val.forEach(item => {
             arr.push({
               ...item,
               status:1,
               wsPrice:item.price,
-              price:0
+              price:amountTransform(item.wholesaleSupplyPrice+item.wholesaleFreight, '/')
             })
           })
-          // detailList?.skus.map(ele=>{
-          //     arr.map(item=>{
-          //       if(item.skuId==ele.skuId){
-          //         item.id=ele.id
-          //         item.stockNum=ele.stockNum
-          //         item.probability=ele.probability
-          //         item.status=ele.status
-          //         delete item.add
-          //       }
-          //     })
-          // })
-          // if(!id&&falg){
-          //   dataSource?.map(ele=>{
-          //     arr.map(item=>{
-          //       if(item.skuId==ele.skuId){
-          //         item.stockNum=ele.stockNum
-          //         item.probability=ele.probability
-          //         item.status=ele.status
-          //       }
-          //     })
-          //    })
-          // }
-          // let arr2=_.uniqWith([...dataSource,...arr], _.isEqual)
           setDataSource(arr)
           callback(arr)
-          setEditableKeys(arr.map(item => item.skuId))
+          setEditableKeys(arr.map(item => item.wsId))
         }}
         onClose={()=>{}}
+        keyId={dataSource}
+        detailList={detailList||[]}
       />
     }
-    </>
+    {
+      endVisible&&<EndModel 
+      visible={endVisible} 
+      setVisible={setEndVisible}  
+      pennyId={pennyId} 
+      callback={(arr)=>{
+        ref.current.reload()
+        setPennyId(null)
+        setDataSource(arr) 
+        callback(arr)
+      }}
+      onClose={()=>{ref.current.reload();setPennyId(null)}}
+      dataSource={dataSource}
+      />
+    }
+  </>
     
   );
 };

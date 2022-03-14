@@ -21,9 +21,19 @@ const FormWrap = ({ value, onChange, content, top }) => (
   </div>
 )
 
-const Apply = ({visit, onVisibleChange, data, actRef}) => {
+const Apply = ({visit, onVisibleChange, id, actRef}) => {
   const [checked, setChecked] = useState(0)
+  const [data, setData] = useState(null)
+
   const [form] = Form.useForm()
+
+  useEffect(()=>{
+    detail({applyId: id}).then(res => {
+      if(res?.success) {
+        setData(res.data)
+      }
+    })
+  }, [id])
   
   useEffect(()=>{
     data?.details?.isOrdered === 0 ?
@@ -409,7 +419,7 @@ const FreshStoreReview = () => {
           <Space>
             {
               records.verifyStatusCode === 6?
-              <a onClick={() => {setModalVisit(true); setData(records)}}>审核</a>:
+              <a onClick={() => {setModalVisit(true); setData(records?.id)}}>审核</a>:
               <span className={styles.disabled}>审核</span>
             }
             <a onClick={() => {setDetailVisit(true); setApplyId(records?.id)}}>详情</a>
@@ -432,7 +442,10 @@ const FreshStoreReview = () => {
         request={freshApplyPage}
         bordered
         search={{
-          labelWidth: 120
+          labelWidth: 120,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse()
+          ]
         }}
         toolbar={{
           settings: false
@@ -443,7 +456,7 @@ const FreshStoreReview = () => {
         <Apply
           visit={modalVisit}
           onVisibleChange={setModalVisit}
-          data={data}
+          id={data}
           actRef={actionRef}
         />
       }

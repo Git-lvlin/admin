@@ -241,11 +241,11 @@ const TableList = () => {
           options={[
             {
               value: 0,
-              label: '普通订单'
+              label: '普适品'
             },
             {
               value: 1,
-              label: '生鲜订单'
+              label: '精装生鲜'
             }
           ]}
           fieldProps={{
@@ -307,14 +307,11 @@ const TableList = () => {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         }
-        <div style={{ height: 'calc(100vh - 550px)', overflowY: 'auto', marginBottom: 10 }}>
+        <div style={{ height: Math.max(window.innerHeight - 550, 500), overflowY: 'auto', marginBottom: 10 }}>
           {
             data.map(item => (
               <div className={styles.list} key={item.id}>
-                {
-                  item?.subType === 1 &&
-                  <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>生鲜订单</Tag>
-                }
+                <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>{item?.subType === 1 ? '精装生鲜' : '普适品'}</Tag>
                 <div className={styles.store_name}>所属商家：{item.storeName}</div>
                 <div className={styles.second}>
                   <Space size="large">
@@ -329,15 +326,15 @@ const TableList = () => {
                   <div className={styles.goods_info}>
                     {
                       item.orderItemList.map(it => (
-                        <div key={it.id}>
-                          <img width="100" height="100" src={it.skuImageUrl} />
-                          <div className={styles.info}>
-                            <div>{it.goodsName}</div>
-                            <div>集约价：{amountTransform(it.skuSalePrice, '/')}元{!!it.wholesaleFreight && `（含平均运费¥${amountTransform(it.wholesaleFreight, '/')}/${it.unit}）`}<time style={{ marginLeft: 20 }}>规格：{it.skuName}</time></div>
-                            <div>数量： <span>{it.skuNum}{it.unit}</span></div>
-                            <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
-                          </div>
+                      <div key={it.id}>
+                        <img width="100" height="100" src={it.skuImageUrl} />
+                        <div className={styles.info}>
+                          <div>{it.goodsName}</div>
+                          <div>集约价：{amountTransform(it.skuSalePrice, '/')}元{!!it.wholesaleFreight && `（含平均运费¥${amountTransform(it.wholesaleFreight, '/')}/${it.unit}）`}<time style={{ marginLeft: 20 }}>规格：{it.skuName}</time></div>
+                          <div>数量： <span>{it.skuNum}{it.unit}</span></div>
+                          <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
                         </div>
+                      </div>
                       ))
                     }
                   </div>
@@ -349,8 +346,8 @@ const TableList = () => {
                       <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>
                     </Descriptions>
                   </div>
-                  {/* <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div> */}
-                  <div style={{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单', 7: '待分享' }[item.status]}</div>
+                  {/* <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div> */ }
+                  <div div style = {{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单', 7: '待分享' }[item.status]}</div>
                   <div style={{ textAlign: 'center' }}>
                     {/* <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order-detail/${item.id}`) }}>详情</a> */}
                     <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>

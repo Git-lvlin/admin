@@ -185,22 +185,27 @@ const TableList = () => {
       fixed: 'left',
     },
     {
-      title: '是否生鲜商品',
+      title: '生鲜类型',
       dataIndex: 'fresh',
       valueType: 'text',
       hideInTable: true,
       valueEnum: {
-        1: '是',
-        0: '否'
+        0: '非生鲜',
+        1: '精装生鲜',
+        2: '散装生鲜',
       }
     },
     {
-      title: '生鲜商品',
+      title: '生鲜类型',
       dataIndex: 'fresh',
       valueType: 'text',
       hideInSearch: true,
       width: 100,
-      render: (_) => _ === 1 ? '是' : '否',
+      render: (_) => ({
+        0: '非生鲜',
+        1: '精装生鲜',
+        2: '散装生鲜',
+      }[_]),
     },
     {
       title: '基础销量',
@@ -265,6 +270,7 @@ const TableList = () => {
       dataIndex: 'goodsSaleTypeDisplay',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '批发样品',
@@ -295,6 +301,7 @@ const TableList = () => {
       dataIndex: 'name',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, data) => {
         const { goodsSaleMinPrice, goodsSaleMaxPrice } = data;
         if (goodsSaleMinPrice === goodsSaleMaxPrice) {
@@ -335,6 +342,7 @@ const TableList = () => {
       dataIndex: 'goodsVerifyStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, record) => {
         const { goodsVerifyRemark, goodsVerifyState } = record;
         return (
@@ -358,6 +366,7 @@ const TableList = () => {
       dataIndex: 'goodsStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, record) => {
         const { goodsStateRemark, goodsState } = record;
         return (
@@ -517,7 +526,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: '110vw', y: window.innerHeight - 730, scrollToFirstRowOnChange: true, }}
+        scroll={{ x: '100vw', y: Math.max(window.innerHeight - 700, 500), scrollToFirstRowOnChange: true, }}
         search={{
           labelWidth: 140,
           defaultCollapsed: false,

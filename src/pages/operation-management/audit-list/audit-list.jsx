@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
 import { getAuditedList } from '@/services/operation-management/audit-list'
+import { PageContainer } from '@ant-design/pro-layout';
 import Audit from './audit';
 import moment from 'moment';
 
@@ -125,7 +126,7 @@ const TableList = () => {
   ];
 
   return (
-    <>
+    <PageContainer>
       <ProTable
         rowKey="operationId"
         options={false}
@@ -158,7 +159,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ y: window.innerHeight - 450, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
       />
 
       {modalVisible &&
@@ -170,7 +171,7 @@ const TableList = () => {
           callback={() => { actionRef.current.reload() }}
         />
       }
-    </>
+    </PageContainer>
 
   );
 };

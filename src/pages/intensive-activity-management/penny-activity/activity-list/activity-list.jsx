@@ -26,6 +26,9 @@ export default () => {
         title: '活动名称',
         dataIndex: 'name',
         valueType: 'text',
+        fieldProps: {
+          maxLength:50
+        }
       },
       {
         title: '活动时段',
@@ -80,14 +83,14 @@ export default () => {
         hideInSearch: true,
       },
       {
-        title: '红包状态',
-        dataIndex: 'status',
+        title: '活动状态',
+        dataIndex: 'actStatus',
         valueType: 'select',
         valueEnum: {
-          1: '未开始',
-          2: '进行中',
-          3: '已结束',
-          4: '已终止'
+          0: '已终止',
+          1: '进行中',
+          2: '待开始',
+          3: '已结束'
         },
         hideInTable:true
       },
@@ -103,8 +106,13 @@ export default () => {
         valueType: 'option',
         render:(text, record, _, action)=>[
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/activity-detail?id='+record.id)}>详情</a>,
-            <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/added-activity?id='+record.id)}>编辑</a>,
-            <div key='stop'>
+            <div key='editor'>
+             {
+               record.statusDisplay=='未开始'||record.statusDisplay=='进行中'?
+               <a  onClick={()=>history.push('/intensive-activity-management/penny-activity/added-activity?id='+record.id)}>编辑</a>:null
+             }
+            </div>,
+            <div key='stop' style={{display:record.statusDisplay=='已结束'?'none':'block'}}>
               {
                 record.status!=0&&
                 <a key='detail' onClick={()=>{setPennyId(record.id);setVisible(true)}}>终止</a>
@@ -130,7 +138,6 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="活动列表"
           options={false}
           params={{
             actCode:'wsCentActiveCode'

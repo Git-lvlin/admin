@@ -168,7 +168,46 @@ const ShopArea = () => {
       editable:false,
     },
   ];
-
+  const getAreaDatas = (v) => {
+    const arr = [];
+    const brr = []
+    v?.forEach?.(item => {
+      let deep = 0;
+      let node = window.yeahgo_area.find(it => it.id === item);
+      const nodeIds = [node.id];
+      const nodeNames = [node.name]
+      if(node.children){
+        const toTreeData = (data) => { 
+          data?.forEach(item => {
+            if(item.deep == 3){
+              brr.push(item.id)
+            }
+              toTreeData(item.children)
+          })  
+        }
+        toTreeData(node?.children)
+      }
+      while (node.pid) {//找父级
+        deep += 1;
+        node = window.yeahgo_area.find(it => it.id === node.pid);
+        nodeIds.push(node.id);
+        nodeNames.push(node.name);
+      }
+      arr.push({
+        provinceId: nodeIds[deep],
+        provinceName: nodeNames[deep],
+        cityId: deep > 0 ? nodeIds[deep - 1] : 0,
+        cityName: deep > 0 ? nodeNames[deep - 1] : '',
+        regionId: deep > 1 ? nodeIds[deep - 2] : 0,
+        regionName: deep > 1 ? nodeNames[deep - 2] : '',
+      })
+    })
+  if(brr.length){
+    return getAreaData(brr)
+  }else{
+    return arr;
+  }
+}
   const postData = (data) => {
     if (data.tips) {
       setTips(data.tips)
@@ -193,7 +232,7 @@ const ShopArea = () => {
       return;
     }
     setApplicableArea({
-      areas: getAreaData(selectKeys).map(item => ({ ...item, status: 'on' })),
+      areas: getAreaDatas(selectKeys).map((ele)=>({...ele,status:'on'})),
       append: true,
     }, { showSuccess: true }).then(res => {
       if (res.code === 0) {
@@ -241,14 +280,12 @@ const ShopArea = () => {
     <>
       <div style={{ backgroundColor: '#fff', padding: 30 }}>
         <AddressMultiCascader
-          style={{ width: 130 }}
+          style={{ width: 130,marginLeft:'30px' }}
           value={selectKeys}
           placeholder="添加地区"
           renderValue={() => <span style={{ color: '#8e8e93' }}>添加地区</span>}
-          cleanable={false}
           renderExtraFooter={() => <div style={{ padding: 10, textAlign: 'right' }}><Button type="primary" onClick={() => { setArea() }}>确定</Button></div>}
           onChange={setSelectKeys}
-          uncheckableItemValues={uncheckableItemValues}
           disabledItemValues={disabledItemValues}
           onClose={() => { setSelectKeys([]) }}
         />
@@ -260,7 +297,7 @@ const ShopArea = () => {
         formRef={formRef}
         request={getApplicableArea}
         recordCreatorProps={false}
-        scroll={{ y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: Math.max(window.innerHeight - 680, 500), scrollToFirstRowOnChange: true, }}
         toolBarRender={() => <div className="tips">{tips}</div>}
         search={{
           defaultCollapsed: false,
@@ -358,7 +395,7 @@ export default (props) =>{
               seleType==2&&<ServiceCharge/>
             }
           </TabPane>
-          <TabPane tab="残疾人缴费" key="3">
+          <TabPane tab="绿色通道缴费" key="3">
             {
               seleType==3&&<Handicapped/>
             }

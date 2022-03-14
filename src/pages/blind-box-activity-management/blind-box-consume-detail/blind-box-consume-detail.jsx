@@ -192,7 +192,7 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          scroll={{ y: window.innerHeight - 790, scrollToFirstRowOnChange: true, }}
+          scroll={{ y: Math.max(window.innerHeight - 790, 500), scrollToFirstRowOnChange: true, }}
           headerTitle={`使用明细     剩余开盒总次数：${detailList?.restNum}        已开盒总次数：${detailList?.useNum}`}
           options={false}
           request={getBlindboxUseList}

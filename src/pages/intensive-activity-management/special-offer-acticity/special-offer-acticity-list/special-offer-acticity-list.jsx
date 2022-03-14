@@ -41,6 +41,9 @@ export default () => {
         dataIndex: 'buyerLimit',
         valueType: 'text',
         hideInSearch: true,
+        render:(_,data)=>{
+          return <p>{_==999999?'不限':_}</p>
+        }
       },
       {
         title: 'C端可购买时间（每天）',
@@ -58,18 +61,29 @@ export default () => {
         hideInSearch: true,
       },
       {
+        title: '活动状态',
+        dataIndex: 'statusDisplay',
+        valueType: 'text',
+        hideInSearch: true,
+      },
+      {
         title: '操作',
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/special-offer-acticity/activity-detail?id='+record.id)}>详情</a>,
-            <a key='detail' onClick={()=>history.push('/intensive-activity-management/special-offer-acticity/add-activity?id='+record.id)}>编辑</a>,
-            <div>
+            <div key='editor'>
             {
-              record.status!=0&&
-              <a key='detail' onClick={()=>{setPennyId(record.id);setVisible(true)}}>终止</a>
+              record.statusDisplay=='未开始'||record.statusDisplay=='进行中'?
+              <a  onClick={()=>history.push('/intensive-activity-management/special-offer-acticity/add-activity?id='+record.id)}>编辑</a>:null
             }
-          </div>
+           </div>,
+            <div key='stop' style={{display:record.statusDisplay=='已结束'?'none':'block'}}>
+              {
+                record.status!=0&&
+                <a key='detail' onClick={()=>{setPennyId(record.id);setVisible(true)}}>终止</a>
+              }
+            </div>
         ],
       }, 
     ];

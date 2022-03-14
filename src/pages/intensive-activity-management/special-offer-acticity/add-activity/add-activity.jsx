@@ -2,9 +2,9 @@ import React, { useState, useEffect,useRef } from 'react';
 import { Input, Form, Divider, message, Button,Space } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
 import ProTable from '@ant-design/pro-table';
-import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,ProFormTimePicker } from '@ant-design/pro-form';
+import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,ProFormTimePicker,ProFormDependency } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
-import { saveWSDiscountActiveConfig,getActiveConfigById } from '@/services/intensive-activity-management/special-offer-acticity';
+import { saveWSDiscountActiveConfig,getActiveConfigById} from '@/services/intensive-activity-management/special-offer-acticity';
 import { amountTransform } from '@/utils/utils'
 import moment from 'moment';
 import styles from './style.less'
@@ -32,57 +32,99 @@ export default (props) => {
   const [visible, setVisible] = useState(false);
   let id = props.location.query.id
   const [form] = Form.useForm()
+
+  const activityName = (rule, value, callback) => {
+    return new Promise(async (resolve, reject) => {
+      if (value&&/[%&',;=?$\x22]/.test(value)) {
+        await reject('不可以含特殊字符')
+      } else {
+        await resolve()
+      }
+    })
+  }
+
+  const checkConfirm2=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+        await reject('只能输入整数')
+    }else {
+        await resolve()
+    }
+    })
+  }
+
+  const checkConfirm5=(rule, value, callback)=>{
+    return new Promise(async (resolve, reject) => {
+    if (value&&value.length<5) {
+        await reject('请输入5-1000个字符')
+    }else {
+        await resolve()
+    }
+    })
+  }
   useEffect(() => {
     if (id) {
       getActiveConfigById({id}).then(res=>{
+        if(res.data?.endTime<res.data?.time){
+          message.error('活动已结束！'); 
+          window.location.href='/intensive-activity-management/special-offer-acticity/special-offer-acticity-list'
+          return false
+        }
         setDetailList(res.data?.content?.goods)
         form.setFieldsValue({
             dateRange: [moment(res.data?.startTime*1000).valueOf(), moment(res.data?.endTime*1000).valueOf()],
-            buyerLimit:res.data?.content?.buyerLimit,
+            buyerLimit:res.data?.content?.buyerLimit==999999?'':res.data?.content?.buyerLimit,
             joinAgainPercent:amountTransform(res.data?.content?.joinAgainPercent,'*'),
             joinBuyerType:res.data?.content?.joinBuyerType,
             joinShopType:[res.data?.content?.joinShopType],
             ruleText:res.data?.content?.ruleText,
+            ruleTextC:res.data?.content?.ruleTextC,
             shoperLimitAll:res.data?.content?.shoperLimitAll,
             shoperLimitOnece:res.data?.content?.shoperLimitOnece,
             price:res.data?.content?.price,
+            buyerType:res.data?.content?.buyerType,
+            buyerTimeType:res.data?.content?.buyerTimeType,
+            timeRange: res.data?.content?.buyerTimeType==0?[]:[moment(res.data?.content?.buyerStartTime, 'HH:mm:ss'),moment(res.data?.content?.buyerEndTime, 'HH:mm:ss') ],
             ...res.data
           })
       })
     }
   }, [])
   const onsubmit = (values) => {
-    try {
       const parmas={
         ...values,
         id:id?id:0,
-        startTime:moment(values.dateRange[0]).valueOf(),
-        endTime:moment(values.dateRange[1]).valueOf(),
+        startTime:moment(values.dateRange[0]).valueOf()/1000,
+        endTime:moment(values.dateRange[1]).valueOf()/1000,
         buyerStartTime:values.buyerTimeType==0?'00:00:00':values.timeRange[0],
-        buyerEndTime:values.buyerTimeTyp==0?'23:59:59':values.timeRange[1],
+        buyerEndTime:values.buyerTimeType==0?'23:59:59':values.timeRange[1],
         joinShopType:values.joinShopType[0],
         joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
-        goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:ele.price,status:ele.status,buyLimit:ele.maxNum}))||detailList,
+        goods:goosList?.map(ele=>({
+          skuId:ele.skuId,
+          spuId:ele.spuId,
+          wsId:ele.wsId,
+          price:amountTransform(ele.price,'*'),
+          status:ele.status,
+          buyLimit:ele.maxNum,
+          wholesaleFreight:ele.wholesaleFreight
+        }))||detailList,
         buyerLimit:values.buyerType==0?999999:values.buyerLimit,
         status:1,
       }
-      console.log('parmas',parmas)
       saveWSDiscountActiveConfig(parmas).then(res=>{
         if(res.code==0){
           message.success(id?'编辑成功':'添加成功'); 
-          history.push('/intensive-activity-management/special-offer-acticity/special-offer-acticity-list')
+          window.location.href='/intensive-activity-management/special-offer-acticity/special-offer-acticity-list'
         }
       })
-    } catch (error) {
-      console.log('error',error)
-    }
   }
 
   const disabledDate=(current)=>{
     return current && current < moment().startOf('day');
   }
   return (
-    <PageContainer>
+    <PageContainer title={id?'编辑活动':'新建活动'}>
       <ProForm
         form={form}
         {...formItemLayout}
@@ -90,16 +132,16 @@ export default (props) => {
           {
             render: (props, defaultDoms) => {
               return [
-                <Button style={{marginLeft:'100px'}} type="default" key="goback" onClick={() => {
-                  history.push('/intensive-activity-management/special-offer-acticity/special-offer-acticity-list')
-                }}>
-                  返回
-                </Button>,
-                <Button type="primary" key="submit" onClick={() => {
+                <Button style={{marginLeft:'100px'}} type="primary" key="submit" onClick={() => {
                   props.form?.submit?.()
                 }}>
                   确定
                 </Button>,
+                <Button  type="default" key="goback" onClick={() => {
+                  history.push('/intensive-activity-management/special-offer-acticity/special-offer-acticity-list')
+                }}>
+                  返回
+                </Button>
               ];
             }
           }
@@ -109,7 +151,7 @@ export default (props) => {
             return true;
         }
         }
-        className={styles.discountFrom}
+        className={styles.add_activity}
       >
         <ProFormText
           width="md"
@@ -118,6 +160,7 @@ export default (props) => {
           placeholder='请输入活动名称'
           rules={[
             { required: true, message: '请输入活动名称' },
+            { validator: activityName }
           ]}
         />
         
@@ -140,15 +183,28 @@ export default (props) => {
         <ProFormRadio.Group
           name="buyerType"
           label='C端可购买数量'
-          rules={[{ required: true, message: '请选择限领方式' }]}
+          rules={[
+            { required: true, message: '请选择限领方式' }
+          ]}
           options={[
             {
-              label: <ProFormText  name="buyerLimit" fieldProps={{addonAfter:'每人/每天'}}/>, value: 1
+              label: <ProFormDependency name={['buyerType']}>
+                {
+                  ({ buyerType }) => (
+                    <ProFormText 
+                      rules={[ { required: buyerType==0?false:true, message: '请填写购买数量' },{ validator: checkConfirm2 }]}   
+                      name="buyerLimit" 
+                      fieldProps={{addonAfter:'每人/每天'}}
+                    />
+                  )
+                }
+                </ProFormDependency> , value: 1
             },
             {
               label: '不限', value: 0
             }
           ]}
+          initialValue={1}
          />
         <ProFormRadio.Group
           name="buyerTimeType"
@@ -156,12 +212,20 @@ export default (props) => {
           rules={[{ required: true, message: '请选择限领方式' }]}
           options={[
             {
-              label: <ProFormTimePicker.RangePicker name="timeRange" extra='（控件只可选24小时区间）'/>, value: 1
+              label: <ProFormDependency name={['buyerTimeType']}>
+                {
+                  ({ buyerTimeType }) => (
+                   <ProFormTimePicker.RangePicker rules={[ { required:buyerTimeType==0?false:true, message: '请选择时间区间' }]} name="timeRange" extra='（控件只可选24小时区间）'/>
+                  )
+                }
+                </ProFormDependency>
+                , value: 1
             },
             {
               label: '不限', value: 0
             }
           ]}
+          initialValue={1}
         />
         <ProFormCheckbox.Group
           name="joinShopType"
@@ -172,7 +236,9 @@ export default (props) => {
               value: 1,
             },
           ]}
+          disabled
           rules={[{ required: true, message: '请选择参与活动的店铺' }]}
+          initialValue={[1]}
         />
         <ProFormRadio.Group
           name="joinBuyerType"
@@ -188,12 +254,41 @@ export default (props) => {
             },
           ]}
           rules={[{ required: true, message: '请选择参与活动的消费者' }]}
+          initialValue={1}
         />
          <GoosSet
           detailList={detailList}
           id={id} 
           callback={(val)=>{
             setGoosList(val)
+          }}
+        />
+         <ProFormTextArea
+          label='店主活动规则'
+          name="ruleText"
+          style={{ minHeight: 32, marginTop: 15 }}
+          placeholder='请输入5-1000个字符'
+          rules={[
+            { required: true, message: '请备注使用规则' },
+            { validator: checkConfirm5 }
+          ]}
+          rows={4}
+          fieldProps={{
+            maxLength:1000
+          }}
+        />
+         <ProFormTextArea
+          label='消费者活动规则'
+          name="ruleTextC"
+          style={{ minHeight: 32, marginTop: 15 }}
+          placeholder='请输入5-1000个字符'
+          rules={[
+            { required: true, message: '请备注使用规则' },
+            { validator: checkConfirm5 }
+          ]}
+          rows={4}
+          fieldProps={{
+            maxLength:1000
           }}
         />
       </ProForm >

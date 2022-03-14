@@ -1,17 +1,53 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import ProTable from '@ant-design/pro-table'
 
 import AddressCascader from '@/components/address-cascader'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
-import { amountTransform } from '@/utils/utils'
-import { serviceFee } from '@/services/data-board/community-store-data'
+import { serviceFee, serviceFeeTotal } from '@/services/data-board/community-store-data'
+import styles from './styles.less'
+import Yuan from '../components/Yuan'
 
 const ServiceCharge = () => {
   const [visit, setVisit] = useState(false)
+  const [totalPay, setTotalPay] = useState(0)
+  const [totalAmount, setTotalAmount] = useState(0)
+  const [total, setTotal] = useState(0)
+
+  const form = useRef()
+
+  const data = form?.current?.getFieldsValue()
+
+  useEffect(()=> {
+    const { storeName, area, payTime, ...rest } = form?.current?.getFieldsValue()
+    serviceFeeTotal({
+      startTime: payTime&&payTime?.[0].format('YYYY-MM-DD'),
+      endTime: payTime&&payTime?.[1].format('YYYY-MM-DD'),
+      store_name: storeName,
+      province_name: area?.[0] && area?.[0]?.label,
+      city_name: area?.[1] && area?.[1]?.label,
+      region_name: area?.[2] && area?.[2]?.label,
+      ...rest
+    }).then(res=>{
+      setTotalPay(res.data?.[0].ct)
+      setTotalAmount(res.data?.[0].payAmount)
+    })
+    return ()=>{
+      setTotalPay(0)
+      setTotalAmount(0)
+    }
+  }, [data?.payTime, data?.storeName, data?.area])
 
   const getFieldValue = () => {
-
+    const {area, payTime, ...rest} = form?.current?.getFieldsValue()
+    return {
+      province_name: area?.[0] && area?.[0]?.label,
+      city_name: area?.[1] && area?.[1]?.label,
+      region_name: area?.[2] && area?.[2]?.label,
+      startTime: payTime?.[0].format('YYYY-MM-DD'),
+      endTime: payTime?.[1].format('YYYY-MM-DD'),
+      ...rest
+    }
   }
 
   const columns = [
@@ -28,16 +64,15 @@ const ServiceCharge = () => {
     },
     {
       title: '店铺地址',
-      dataIndex: 'fullAddress',
+      dataIndex: 'address',
       align: 'center',
       width: '20%',
       hideInSearch: true
     },
     {
       title: '缴费金额',
-      dataIndex: 'serviceFee',
+      dataIndex: 'payAmount',
       align: 'center',
-      render: (_)=> amountTransform(_, '/'),
       hideInSearch: true
     },
     {
@@ -72,13 +107,18 @@ const ServiceCharge = () => {
       rowKey='id'
       columns={columns}
       params={{}}
+      formRef={form}
       request={serviceFee}
       pagination={{
-        showQuickJumper: true,
+        total,
         pageSize: 10
       }}
       toolbar={{
         settings: false
+      }}
+      postData={(v)=> {
+        setTotal(v?.total)
+        return v?.records
       }}
       headerTitle="服务费统计"
       search={{
@@ -88,17 +128,29 @@ const ServiceCharge = () => {
           <Export
             change={(e)=> {setVisit(e)}}
             key="export" 
-            type=""
+            type="membershop-servicefee-export"
             conditions={getFieldValue}
           />,
           <ExportHistory 
             key="export-history" 
             show={visit}
             setShow={setVisit}
-            type=""
+            type="membershop-servicefee-export"
           />
         ]
       }}
+      tableRender={(_, dom) => (
+        <>
+          { dom }
+          {
+            totalPay !==0  &&
+            <div className={styles.summary}>
+            <span>缴费总数（个）：<Yuan>{totalPay}</Yuan></span>
+            <span>缴费总金额（元）：<Yuan>{totalAmount}</Yuan></span>
+          </div>
+          }
+        </>
+      )}
     />
   )
 }

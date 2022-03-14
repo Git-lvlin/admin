@@ -71,6 +71,7 @@ const IntensiveActivityCreate = () => {
   // const [uncheckableItemValues, setUncheckableItemValues] = useState([]);
   const [submitValue, setSubmitValue] = useState(null);
   const formRef = useRef();
+  const editTableRef = useRef();
   const [detailData, setDetailData] = useState({})
   const [loading, setLoading] = useState(true)
   const params = useParams();
@@ -255,6 +256,25 @@ const IntensiveActivityCreate = () => {
         isEditSubsidy: 0
       })
     }
+    if (selectItem?.[0]?.fresh === 0) {
+      formRef.current.setFieldsValue({
+        preSale: 1
+      })
+    } else {
+      formRef.current.setFieldsValue({
+        preSale: 0
+      })
+    }
+
+    if (selectItem.length) {
+      formRef.current.setFieldsValue({
+        settlePercent: selectItem[0].settlePercent,
+        price: selectItem[0].price
+      })
+    }
+
+    console.log('editTableRef', editTableRef);
+
   }, [selectItem])
 
   return (
@@ -359,7 +379,7 @@ const IntensiveActivityCreate = () => {
               // recoverPayTimeout: 3
               isEditSubsidy: 0,
               ladderShowPercent: 50,
-              preSale: 1,
+              preSale: 0,
               freshSpecial: 0,
               freshCommission: 20,
               activityShowType: 0,
@@ -395,7 +415,7 @@ const IntensiveActivityCreate = () => {
                     } else {
                       setSelectItem(v)
                     }
-                  }} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} />
+                  }} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} ref={editTableRef} />
                 )}
               </ProFormDependency>
 
@@ -457,10 +477,79 @@ const IntensiveActivityCreate = () => {
                 },
               ]}
             />
+
             {!!selectItem.length && <>
+              <Form.Item
+                label="批发供货价"
+              >
+                {selectItem[0].wholesaleSupplyPrice}元
+              </Form.Item>
+              <Form.Item
+                label="市场价"
+              >
+                {selectItem[0].marketPriceDisplay}元
+              </Form.Item>
+              <Form.Item
+                label="平均运费"
+              >
+                {selectItem[0].wholesaleFreight}元
+              </Form.Item>
+              <ProFormDependency name={['freshCommission']}>
+                {({ freshCommission }) => (
+                  <>
+                    <ProFormText
+                      label="售价上浮比"
+                      validateFirst
+                      rules={[
+                        { required: true, message: '请输入' },
+                      ]}
+                      name="settlePercent"
+                      width={400}
+                      fieldProps={{
+                        addonAfter: `%`,
+                        onBlur: (e) => {
+                          editTableRef.current.update({
+                            ...selectItem[0],
+                            settlePercent: e.target.value,
+                            freshCommission3: freshCommission,
+                            freshCommission2: null,
+                          })
+                        }
+                      }}
+                    />
+                    <ProFormText
+                      label="集约价"
+                      validateFirst
+                      rules={[
+                        { required: true, message: '请输入' },
+                      ]}
+                      fieldProps={{
+                        addonAfter: `元/${selectItem[0].unit}`,
+                        onBlur: (e) => {
+                          editTableRef.current.update({
+                            ...selectItem[0],
+                            price: e.target.value,
+                            freshCommission2: freshCommission,
+                            freshCommission3: null,
+                          })
+                        }
+                      }}
+                      name="price"
+                      width={400}
+                    />
+                  </>
+                )}
+              </ProFormDependency>
+
+              <Form.Item
+                label="实际盈亏"
+              >
+                <span style={{ color: selectItem[0].profit < 0 ? 'red' : '' }}>{selectItem[0].profit}元</span>
+              </Form.Item>
               <ProFormRadio.Group
                 label="平台额外奖励"
                 name="isEditSubsidy"
+                disabled={selectItem[0].fresh !== 0}
                 required
                 options={[
                   {
@@ -608,6 +697,16 @@ const IntensiveActivityCreate = () => {
                                 fieldProps={{ addonAfter: '%' }}
                                 placeholder="总分佣比例"
                                 validateFirst
+                                fieldProps={{
+                                  onBlur: (e) => {
+                                    console.log('e.target.value', e.target.value);
+                                    editTableRef.current.update({
+                                      ...selectItem[0],
+                                      freshCommission2: e.target.value,
+                                      freshCommission3: null,
+                                    })
+                                  }
+                                }}
                                 rules={[
                                   { required: true, message: '请输入总分佣比例' },
                                   () => ({
@@ -647,13 +746,11 @@ const IntensiveActivityCreate = () => {
                     }
                   }
                 </ProFormDependency>
-
-
               </>
             }
 
-            <ProFormCheckbox.Group value={'1'} label="可购买的社区店等级" disabled options={[{ label: '全部', value: 1 }]} />
-            <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} />
+            {/* <ProFormCheckbox.Group value={'1'} label="可购买的社区店等级" disabled options={[{ label: '全部', value: 1 }]} />
+            <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} /> */}
             {!!selectItem[0]?.shipAddr?.length && <Form.Item
               label="商品发货地区"
             >

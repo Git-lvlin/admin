@@ -136,7 +136,7 @@ export default () => {
         rowKey="id"
         headerTitle="签到红包可用商品配置"
         options={false}
-        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
         request={productPage}
         search={{
           defaultCollapsed: false,
