@@ -171,6 +171,12 @@ export default {
       path: '/cms/goods-class',
       component: './cms/goods-class',
       wrappers: [RouteWatcher],
+    },
+    {
+      name: 'story',
+      path: '/cms/story',
+      component: './cms/story',
+      wrappers: [RouteWatcher],
     }
   ]
 }

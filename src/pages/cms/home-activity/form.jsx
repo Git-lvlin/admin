@@ -18,14 +18,15 @@ export default (props) => {
   const [showType, setShowType] = useState(false);
   const urlArr = [
     '',
-    'https://www.yeahgo-uat.com/tab/index?index=2',
-    'https://www.yeahgo-uat.com/tab/index?index=4',
-    'https://www.yeahgo-uat.com/flutter/store/member/index',
-    'https://www.yeahgo-uat.com/tab/index?index=1',
-    'https://www.yeahgo-uat.com/home/spikeGoods',
-    'https://www.yeahgo-uat.com/home/spikeWeek',
-    'https://publicmobile-uat.yeahgo.com/web/five-star-qa?_authorizationRequired=1',
+    `${APP_URL}/tab/index?index=2`,
+    `${APP_URL}/tab/index?index=4`,
+    `${APP_URL}/flutter/store/member/index`,
+    `${APP_URL}/tab/index?index=1`,
+    `${APP_URL}/home/spikeGoods`,
+    `${APP_URL}/home/spikeWeek`,
+    `${MARKET_URL}/web/five-star-qa?_authorizationRequired=1`,
   ];
+
   const select1 = [
     {
       label: '固定展示',
@@ -149,9 +150,17 @@ export default (props) => {
             value: 1,
           },
           {
-            label: '仅店主',
+            label: '全部店主可见',
             value: 2,
           },
+          {
+            label: '仅生鲜店主可见',
+            value: 3,
+          },
+          {
+            label: '仅普通店主可见',
+            value: 4,
+          }
         ]}
       />
       <ProFormRadio.Group

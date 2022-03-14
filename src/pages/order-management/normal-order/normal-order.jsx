@@ -197,6 +197,15 @@ const TableList = () => {
             }
           }}
         />
+        <ProFormText
+          label="用户ID"
+          name="buyerId"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
         {/* <ProFormText
           label="所属商家"
           fieldProps={{
@@ -209,12 +218,12 @@ const TableList = () => {
           name="orderType"
           label="订单类型"
           options={[
-            { value: 2, label: '秒约订单' },
-            { value: 3, label: '单约订单' },
-            { value: 4, label: '团约订单' },
-            { value: 11, label: '1688订单' },
-            { value: 17, label: '盲盒活动订单' },
-            { value: 18, label: '签到活动订单' },
+            { value: '2', label: '秒约订单' },
+            { value: '3', label: '单约订单' },
+            { value: '4', label: '团约订单' },
+            { value: '11', label: '1688订单' },
+            { value: '17', label: '盲盒活动订单' },
+            { value: '18', label: '签到活动订单' },
           ]}
           fieldProps={{
             style: {
@@ -456,6 +465,10 @@ const TableList = () => {
                       orderType === 2&&
                       <Button onClick={() =>{ setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
                     }
+                    {
+                      orderType === 2 &&
+                      <Button onClick={() => { setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
+                    }
                   </Space>
                 </div>
               </div>
@@ -483,7 +496,7 @@ const TableList = () => {
         />
       }
       {
-        orderVisible&&
+        orderVisible &&
         <CloseOrder
           subOrderId={subOrderId}
           setVisible={setOrderVisible}
