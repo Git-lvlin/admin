@@ -29,16 +29,24 @@ const useScope=props => {
                         label:<FormattedMessage id="formandbasic-form.Secret.Garden" />,
                         value: 1,
                     },
-                    // {
-                    //     label: <FormattedMessage id="formandbasic-form.container.number" />,
-                    //     value: 2,
-                    // },
+                    {
+                        label: '生鲜商品',
+                        value: 2,
+                    },
                 ]} 
             />
-             {
+            {
                 position==1||(parseInt(id)==id )&&DetailList.data?.useType==1||choose==4?
                 <div style={{display:position==2?'none':'block'}}>
                   <UseSecond type={type} id={id} choose={choose} form={form}/>
+                </div>
+                :null
+            }
+
+            {
+                position==2||(parseInt(id)==id )&&DetailList.data?.useType==2||choose==4?
+                <div style={{display:position==1?'none':'block'}}>
+                  <UseCollect type={type} id={id} choose={choose} form={form}/>
                 </div>
                 :null
             }

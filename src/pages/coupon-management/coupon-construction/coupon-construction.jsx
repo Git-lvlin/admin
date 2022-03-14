@@ -12,7 +12,9 @@ import { history, connect } from 'umi';
 import moment from 'moment';
 import styles from './style.less'
 import IssueTypeModel from './issue-type-model'
+import AddressMultiCascader from '@/components/address-multi-cascader'
 import { PageContainer } from '@ant-design/pro-layout';
+import { getWholesaleArea } from '@/services/intensive-activity-management/intensive-activity-list'
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -34,6 +36,7 @@ const couponConstruction = (props) => {
   const [submitType, setSubmitType] = useState()
   const [publishType,setPublishType]=useState()
   const [visible, setVisible] = useState(false);
+  const [areaData, setAreaData] = useState([]);
   let id = props.location.query.id
   let type = props.location.query.type
   const [form] = Form.useForm()
@@ -63,6 +66,8 @@ const couponConstruction = (props) => {
       setPublishType('每日红包')
     }else if(type==4){
       setPublishType('邀请好友红包')
+    }else if(type==5){
+      setPublishType('生鲜板块新人红包')
     }
   }, [type])
   //红包名称验证规则
@@ -141,6 +146,17 @@ const couponConstruction = (props) => {
   const disabledDate=(current)=>{
     return current && current < moment().startOf('day');
   }
+  const getUncheckableItemValues = () => {
+    const data = JSON.parse(JSON.stringify(window.yeahgo_area))
+    data.unshift({ name: '全国', id: 0, pid: -1 })
+    setAreaData(data)
+  }
+
+  useEffect(() => {
+    getUncheckableItemValues();
+  }, [])
+
+
   return (
     <PageContainer>
       <ProForm
@@ -307,6 +323,24 @@ const couponConstruction = (props) => {
 
         {/* 可领红包群体 */}
         <AssignCrowd id={id} type={type} callback={(current)=>setChoose(current)} />
+
+        {
+          type==5||DetaiIssueType == 5 && id?
+          <ProForm.Item
+          name='allowArea'
+          label="可领红包区域"
+          rules={[{required: true, message: '请选择所在地区'}]}
+        >
+          <AddressMultiCascader
+            data={areaData}
+            style={{ width: '640px' }}
+            pId={-1}
+            preventOverflow
+          />
+        </ProForm.Item>
+        :null
+        }
+
 
         <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>使用设置</span></h3>
 

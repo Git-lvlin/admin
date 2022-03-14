@@ -24,6 +24,10 @@ const circulation=props=>{
         {
             label:<FormattedMessage id="formandbasic-form.issued.quantity" />,
             value: 2,
+        },
+        {
+            label:'不限制',
+            value: 2,
         }
     ]
     return(

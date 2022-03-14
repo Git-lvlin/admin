@@ -44,6 +44,10 @@ export default props=>{
             {
               label: '邀请好友红包',
               value: 4,
+            },
+            {
+              label: '生鲜板块新人红包',
+              value: 5,
             }
           ]}
         />
