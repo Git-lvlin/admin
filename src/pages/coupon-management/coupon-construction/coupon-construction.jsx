@@ -7,12 +7,14 @@ import PeriodValidity from './period-validity/period-validity'
 import AssignCrowd from './assign-crowd/assign-crowd'
 import { couponSub } from '@/services/coupon-construction/coupon-coupon-sub';
 import { couponEdit } from '@/services/coupon-construction/coupon-edit';
-import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect,DrawerForm } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import moment from 'moment';
 import styles from './style.less'
 import IssueTypeModel from './issue-type-model'
+import AddressMultiCascader from '@/components/address-multi-cascader'
 import { PageContainer } from '@ant-design/pro-layout';
+import { getWholesaleArea } from '@/services/intensive-activity-management/intensive-activity-list'
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -28,15 +30,24 @@ const formItemLayout = {
 };
 
 const couponConstruction = (props) => {
-  const { dispatch, DetailList, UseScopeList } = props
+  const { dispatch, DetailList, UseScopeList,setFormVisible,formVisible,onClose,callback,id,type } = props
   const DetaiIssueType=DetailList.data?.issueType
   const [choose, setChoose] = useState()
   const [submitType, setSubmitType] = useState()
   const [publishType,setPublishType]=useState()
   const [visible, setVisible] = useState(false);
-  let id = props.location.query.id
-  let type = props.location.query.type
+  const [areaData, setAreaData] = useState([]);
+  const [addType,setAddType]=useState(null)
+  const [types,setTyepes]=useState()
   const [form] = Form.useForm()
+  useEffect(()=>{
+    if(addType){
+      setTyepes(addType)
+    }else{
+      setTyepes(type)
+    }
+
+  },[type,addType])
   useEffect(() => {
     if (id) {
       setTimeout(() => {
@@ -55,16 +66,18 @@ const couponConstruction = (props) => {
       })
     }
     //判断发行方式
-    if(type==1){
+    if(types==1){
       setPublishType('会员领取红包')
-    }else if(type==2){
+    }else if(types==2){
       setPublishType('系统发放红包')
-    }else if(type==3){
+    }else if(types==3){
       setPublishType('每日红包')
-    }else if(type==4){
+    }else if(types==4){
       setPublishType('邀请好友红包')
+    }else if(types==5){
+      setPublishType('生鲜板块新人红包')
     }
-  }, [type])
+  }, [types])
   //红包名称验证规则
   const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
@@ -78,7 +91,7 @@ const couponConstruction = (props) => {
     })
   }
   const onsubmit = (values) => {
-      values.issueType=parseInt(type)|| id&&DetaiIssueType//发放类型
+      values.issueType=parseInt(types)|| id&&DetaiIssueType//发放类型
       const parmas={
         ...values,
         couponTypeInfo : {
@@ -100,7 +113,7 @@ const couponConstruction = (props) => {
         activityStartDay : parseInt(values.activityStartDay),//有效期开始天数
         activityEndDay : parseInt(values.activityEndDay),//有效期结束天数
         useTypeInfoM : {//秒约商品详情信息
-          goodsType: type==3||DetaiIssueType == 3 && id||type==4||DetaiIssueType == 4 && id?2:values.goodsType,
+          goodsType: types==3||DetaiIssueType == 3 && id||types==4||DetaiIssueType == 4 && id?2:values.goodsType,
           spuIds: UseScopeList.UseScopeObje.spuIds,
           classId: parseInt(UseScopeList.UseScopeObje.unit)
         },
@@ -111,7 +124,8 @@ const couponConstruction = (props) => {
     if (id) {
       couponEdit({ ...parmas, id: id }).then((res) => {
         if (res.code == 0) {
-          history.push('/coupon-management/coupon-list')
+          callback(true)
+          setFormVisible(false)
           message.success('编辑成功');
           dispatch({
             type: 'UseScopeList/fetchUseScopeList',
@@ -124,7 +138,8 @@ const couponConstruction = (props) => {
     } else {
       couponSub(parmas).then((res) => {
         if (res.code == 0) {
-          history.push('/coupon-management/coupon-list')
+          callback(true)
+          setFormVisible(false)
           message.success('提交成功');
           dispatch({
             type: 'UseScopeList/fetchUseScopeList',
@@ -141,11 +156,31 @@ const couponConstruction = (props) => {
   const disabledDate=(current)=>{
     return current && current < moment().startOf('day');
   }
+  const getUncheckableItemValues = () => {
+    const data = JSON.parse(JSON.stringify(window.yeahgo_area))
+    data.unshift({ name: '全国', id: 0, pid: -1 })
+    setAreaData(data)
+  }
+
+  useEffect(() => {
+    getUncheckableItemValues();
+  }, [])
+
+
   return (
-    <PageContainer>
-      <ProForm
+      <DrawerForm
+        title={id?'编辑活动':'新建活动'}
+        onVisibleChange={setFormVisible}
+        visible={formVisible}
         form={form}
-        {...formItemLayout}
+        width={1500}
+        drawerProps={{
+          forceRender: true,
+          destroyOnClose: true,
+          onClose: () => {
+            onClose();
+          }
+        }}
         submitter={
           {
             render: (props, defaultDoms) => {
@@ -162,7 +197,7 @@ const couponConstruction = (props) => {
                 }}>
                   提交审核
                 </Button>,
-                <Button type="default" key='goback' onClick={() => history.push('/coupon-management/coupon-list')}>
+                <Button type="default" key='goback' onClick={() => { onClose();setFormVisible(false)}}>
                   返回
                 </Button>
               ];
@@ -171,11 +206,11 @@ const couponConstruction = (props) => {
         }
         onFinish={async (values) => {
             await onsubmit(values);
-            return true;
         }
         }
         className={styles.discountFrom}
-      >
+      {...formItemLayout}
+    >
         <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>基本信息</span></h3>
         {
           !id&& <ProFormText
@@ -202,12 +237,12 @@ const couponConstruction = (props) => {
         />
 
         {/* 红包类型 */}
-        <CouponType id={id} type={type}/>
+        <CouponType id={id} type={types}/>
 
 
         {/* 每人限领 */}
          {
-           type==3||DetaiIssueType == 3 && id?
+           types==3||DetaiIssueType == 3 && id?
            <ProFormText
             width={120}
             label="每人限领"
@@ -222,7 +257,7 @@ const couponConstruction = (props) => {
          }
 
          {
-           type==1||DetaiIssueType == 1 && id||type==2||DetaiIssueType == 2 && id?
+           types==1||DetaiIssueType == 1 && id||types==2||DetaiIssueType == 2 && id?
             <>
             <ProFormRadio.Group
               name="limitType"
@@ -256,7 +291,7 @@ const couponConstruction = (props) => {
 
         {/* 可领取时间 */}
         {
-          type==1||DetaiIssueType == 1 && id||type==3||DetaiIssueType == 3 && id||type==4||DetaiIssueType == 4 && id?
+          types==1||DetaiIssueType == 1 && id||types==3||DetaiIssueType == 3 && id||types==4||DetaiIssueType == 4 && id?
             <ProFormDateTimeRangePicker
               label='可领取时间'
               rules={[{ required: true, message: '请选择限领时间' }]}
@@ -277,10 +312,10 @@ const couponConstruction = (props) => {
         }
 
         {/* 有效期 */}
-        <PeriodValidity  id={id} type={type}/>
+        <PeriodValidity  id={id} type={types}/>
 
        {
-         type==3||DetaiIssueType == 3 && id?
+         types==3||DetaiIssueType == 3 && id?
           <ProFormText
             width={120}
             label="可领条件"
@@ -293,7 +328,7 @@ const couponConstruction = (props) => {
        }
        
        {
-         type==4||DetaiIssueType == 4 && id?
+         types==4||DetaiIssueType == 4 && id?
           <ProFormText
             width={120}
             label="可领条件"
@@ -306,12 +341,30 @@ const couponConstruction = (props) => {
        }
 
         {/* 可领红包群体 */}
-        <AssignCrowd id={id} type={type} callback={(current)=>setChoose(current)} />
+        <AssignCrowd id={id} type={types} callback={(current)=>setChoose(current)} />
+
+        {
+          types==5||DetaiIssueType == 5 && id?
+          <ProForm.Item
+          name='allowArea'
+          label="可领红包区域"
+          rules={[{required: true, message: '请选择所在地区'}]}
+        >
+          <AddressMultiCascader
+            data={areaData}
+            style={{ width: '640px' }}
+            pId={-1}
+            preventOverflow
+          />
+        </ProForm.Item>
+        :null
+        }
+
 
         <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>使用设置</span></h3>
 
         {/* 使用范围 */}
-        <UseScope id={id} type={type} choose={choose} form={form}/>
+        <UseScope id={id} type={types} choose={choose} form={form}/>
    
         {/*使用说明 */}
         <ProFormTextArea
@@ -327,10 +380,13 @@ const couponConstruction = (props) => {
         />
 
         {
-          visible&&<IssueTypeModel visible={visible} setVisible={setVisible} />
+          visible&&<IssueTypeModel 
+          visible={visible} 
+          setVisible={setVisible} 
+          callback={(val)=>{setAddType(val)}}
+          />
         }
-      </ProForm >
-    </PageContainer>
+      </DrawerForm>
   );
 };
 

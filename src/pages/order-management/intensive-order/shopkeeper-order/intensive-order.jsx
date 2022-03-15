@@ -365,7 +365,6 @@ const TableList = () => {
             ))
           }
         </div>
-
       </Spin>
 
       {

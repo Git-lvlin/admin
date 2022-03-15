@@ -8,12 +8,14 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
 import moment from 'moment'
 import EndModel from './end-model'
+import AddedActivity from '../added-activity'
 
 
 
 export default () => {
     const ref=useRef()
     const [visible, setVisible] = useState(false);
+    const [formVisible, setFormVisible] = useState(false);
     const [pennyId,setPennyId]=useState()
     const columns= [
       {
@@ -109,7 +111,7 @@ export default () => {
             <div key='editor'>
              {
                record.statusDisplay=='未开始'||record.statusDisplay=='进行中'?
-               <a  onClick={()=>history.push('/intensive-activity-management/penny-activity/added-activity?id='+record.id)}>编辑</a>:null
+               <a  onClick={()=>{setPennyId(record.id);setFormVisible(true)}}>编辑</a>:null
              }
             </div>,
             <div key='stop' style={{display:record.statusDisplay=='已结束'?'none':'block'}}>
@@ -145,7 +147,7 @@ export default () => {
           request={getActiveConfigList}
           postData={postData}
           toolBarRender={()=>[
-            <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/intensive-activity-management/penny-activity/added-activity')} type="primary">
+            <Button key='add' icon={<PlusOutlined />}  onClick={()=>setFormVisible(true)} type="primary">
                 新建
             </Button>
         ]}
@@ -162,6 +164,13 @@ export default () => {
             showQuickJumper: true,
           }}
         />
+        {formVisible&& <AddedActivity
+          formVisible={formVisible}
+          setFormVisible={setFormVisible}
+          id={pennyId} 
+          callback={() => { ref.current.reload(); setPennyId(null) }}
+          onClose={() => { ref.current.reload(); setPennyId(null) }}
+        />}
         {
           visible&&<EndModel 
           visible={visible} 
