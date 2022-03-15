@@ -13,6 +13,9 @@ import debounce from 'lodash/debounce';
 import * as api from '@/services/product-management/product-category'
 import Upload from '@/components/upload'
 import styles from './form.less'
+import Big from 'big.js';
+
+Big.RM = 0;
 
 const FromWrap = ({ value, onChange, content, right }) => (
   <div style={{ display: 'flex' }}>
@@ -495,7 +498,7 @@ export default (props) => {
                           editableKeys: [1, 2, 3, 4, 5],
                           onValuesChange: (record, recordList) => {
                             form.setFieldsValue({
-                              shopValue: recordList.map(item => ({ ...item, platForm: 100 - item.shopCommission - item.operateCommission - item.referrerCommission }))
+                              shopValue: recordList.map(item => ({ ...item, platForm: +new Big(100).minus(item.shopCommission || 0).minus(item.operateCommission || 0).minus(item.referrerCommission) }))
                             })
                             debounceValidate();
                           }
