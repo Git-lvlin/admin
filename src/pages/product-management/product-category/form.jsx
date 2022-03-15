@@ -39,7 +39,7 @@ export default (props) => {
     { name: '一星店主', level: 1, shopCommission: 75, operateCommission: 23, referrerCommission: 2, platForm: 0 },
   ])
   const [dataSource2] = useState([
-    { name: '一星店主', level: 6, operateCommission: 60, referrerCommission: 15, platForm: 25 },
+    { name: '一星店主', level: 6, operateCommission: 45, referrerCommission: 3, platForm: 52 },
   ])
   const formItemLayout = {
     labelCol: { span: 6 },
