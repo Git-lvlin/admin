@@ -65,6 +65,7 @@ const TableList = () => {
       title: '年龄',
       dataIndex: 'age',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '是否开店',
