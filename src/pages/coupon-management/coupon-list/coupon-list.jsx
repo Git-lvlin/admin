@@ -13,6 +13,9 @@ import styles from './style.less'
 import { history,connect } from 'umi';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import CouponConstruction from '../coupon-construction'
+import ListDetails from '../list-details'
+import CouponCodebase from '../coupon-codebase'
 const { TabPane } = Tabs
 
 
@@ -21,6 +24,12 @@ const Message = (props) => {
   const [turnId,setTurnId]=useState()
   const [turnVisible, setTurnVisible] = useState(false);
   const [visit, setVisit] = useState(false)
+  const [visible, setVisible] = useState(false);
+  const [addType,setAddType]=useState()
+  const [pennyId,setPennyId]=useState()
+  const [formVisible, setFormVisible] = useState(false);
+  const [detailsVisible, setDetailVisible] = useState(false);
+  const [codeVisible, setCodeVisible] = useState(false);
   const ref=useRef()
   const columns= [
     {
@@ -189,7 +198,8 @@ const Message = (props) => {
  
   //编辑
   const Examine=(id)=>{
-    history.push(`/coupon-management/coupon-construction?id=`+id);
+    setPennyId(id)
+    setFormVisible(true)
     dispatch({
       type:'DetailList/fetchLookDetail',
       payload:{id:id}
@@ -197,12 +207,14 @@ const Message = (props) => {
   }
   //查看
   const look=(id)=>{
-    history.push(`/coupon-management/coupon-list/list-details?id=`+id);
+    setPennyId(id)
+    setDetailVisible(true)
   }
  
   // 跳转到码库
   const CodeLibrary=(id)=>{
-    history.push(`/coupon-management/coupon-list/coupon-codebase?id=`+id);
+    setPennyId(id)
+    setCodeVisible(true)
   }
 
   const getFieldValue = (searchConfig) => {
@@ -214,6 +226,59 @@ const Message = (props) => {
 
 return(
   <>
+    <ModalForm
+      title="新建红包"
+      onVisibleChange={setVisible}
+      visible={visible}
+      trigger={ <Button
+        key="primary"
+        type="primary"
+        className={styles.addCouponBtn}
+        onClick={() =>{
+          setVisible(true)
+        }}
+      >
+        新建红包
+      </Button>}
+      submitter={{
+      render: (props, defaultDoms) => {
+          return [
+          ...defaultDoms
+          ];
+      },
+      }}
+      onFinish={async (values) => {
+        setAddType(values.activityTimeType)
+        setFormVisible(true)
+        setVisible(false)
+      }}  
+    >
+      <ProFormRadio.Group
+        name="activityTimeType"
+        options={[
+          {
+            label: '会员领取红包',
+            value: 1,
+          },
+          {
+            label: '系统发放红包',
+            value: 2,
+          },
+          {
+            label: '每日红包',
+            value: 3,
+          },
+          {
+            label: '邀请好友红包',
+            value: 4,
+          },
+          {
+            label: '生鲜板块新人红包',
+            value: 5,
+          }
+        ]}
+      />
+    </ModalForm>
     <ProTable
       actionRef={ref}
       rowKey="id"
@@ -249,72 +314,37 @@ return(
       id={turnId}
     />
     }
+    {formVisible&& <CouponConstruction
+      formVisible={formVisible}
+      setFormVisible={setFormVisible}
+      id={pennyId} 
+      callback={() => { ref.current.reload(); setPennyId(null);setVisible(false);setAddType(null) }}
+      onClose={() => { ref.current.reload(); setPennyId(null);setVisible(false);setAddType(null) }}
+      type={addType}
+    />}
+    {detailsVisible&& <ListDetails
+      detailsVisible={detailsVisible}
+      setDetailVisible={setDetailVisible}
+      id={pennyId} 
+      callback={() => { ref.current.reload(); setPennyId(null);}}
+      onClose={() => { ref.current.reload(); setPennyId(null);}}
+    />}
+    {codeVisible&& <CouponCodebase
+      codeVisible={codeVisible}
+      setCodeVisible={setCodeVisible}
+      id={pennyId} 
+      callback={() => { ref.current.reload(); setPennyId(null);}}
+      onClose={() => { ref.current.reload(); setPennyId(null);}}
+    />}
   </>
   );
 };
 
 const TableList= (props) =>{
   const { dispatch }=props
-  const [visible, setVisible] = useState(false);
   const [seleType,setSeleType]=useState(1)
   return (
       <PageContainer>
-        <ModalForm
-          title="新建红包"
-          onVisibleChange={setVisible}
-          visible={visible}
-          trigger={ <Button
-            key="primary"
-            type="primary"
-            className={styles.addCouponBtn}
-            onClick={() =>{
-              setVisible(true)
-            }}
-          >
-            新建红包
-          </Button>}
-          submitter={{
-          render: (props, defaultDoms) => {
-              return [
-              ...defaultDoms
-              ];
-          },
-          }}
-          onFinish={async (values) => {
-            setVisible(false)
-          }}
-        >
-          <ProFormRadio.Group
-            name="activityTimeType"
-            fieldProps={{
-              onChange: (e) =>{
-                  history.push('/coupon-management/coupon-construction?type='+e.target.value)
-              },
-            }}
-            options={[
-              {
-                label: '会员领取红包',
-                value: 1,
-              },
-              {
-                label: '系统发放红包',
-                value: 2,
-              },
-              {
-                label: '每日红包',
-                value: 3,
-              },
-              {
-                label: '邀请好友红包',
-                value: 4,
-              },
-              {
-                label: '生鲜板块新人红包',
-                value: 5,
-              }
-            ]}
-          />
-        </ModalForm>
         <Tabs
           centered
           defaultActiveKey="1"

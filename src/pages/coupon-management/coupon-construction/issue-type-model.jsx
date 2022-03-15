@@ -4,7 +4,7 @@ import { couponEnd } from '@/services/coupon-management/coupon-end';
 import { history,connect } from 'umi';
 
 export default props=>{
-    const {visible,setVisible}=props
+    const {visible,setVisible,callback}=props
     return (
         <ModalForm
             title="修改红包类型"
@@ -25,7 +25,7 @@ export default props=>{
           name="activityTimeType"
           fieldProps={{
             onChange: (e) =>{
-                history.push('/coupon-management/coupon-list/construction?type='+e.target.value)
+                callback(e.target.value)
             },
           }}
           options={[

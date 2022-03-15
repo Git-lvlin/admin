@@ -5,12 +5,15 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { couponList } from '@/services/coupon-management/coupon-list';
 import styles from './style.less'
 import { history} from 'umi';
+import ListDetails from '../list-details'
 const { TabPane } = Tabs
 
 
 const Message = (props) => {
   const { type }=props
   const ref=useRef()
+  const [detailsVisible, setDetailVisible] = useState(false);
+  const [pennyId,setPennyId]=useState()
   const columns= [
     {
       title: '红包名称',
@@ -20,7 +23,7 @@ const Message = (props) => {
         placeholder: '请输入红包名称'
       },
       render:(text, record, _, action)=>[
-        <a key='likeName' onClick={()=>history.push('/coupon-management/coupon-list/list-details?id='+record.id)}>{record.couponName}</a>
+        <a key='likeName' onClick={()=>{setPennyId(record?.id);setDetailVisible(true)}}>{record.couponName}</a>
     ],
     },
     {
@@ -125,6 +128,7 @@ const Message = (props) => {
   }
 
   return (
+    <>
       <ProTable
         actionRef={ref}
         rowKey="id"
@@ -146,6 +150,14 @@ const Message = (props) => {
         }}
         columns={columns}
       />
+      {detailsVisible&& <ListDetails
+        detailsVisible={detailsVisible}
+        setDetailVisible={setDetailVisible}
+        id={pennyId} 
+        callback={() => { ref.current.reload(); setPennyId(null);}}
+        onClose={() => { ref.current.reload(); setPennyId(null);}}
+      />}
+  </>
   );
 };
 
