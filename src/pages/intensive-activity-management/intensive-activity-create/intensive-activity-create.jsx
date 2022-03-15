@@ -723,23 +723,27 @@ const IntensiveActivityCreate = () => {
                           <Form.Item
                             label="生鲜商品的各方分佣比例"
                           >
-                            <Table
-                              title={() => "以五星社区店为例"}
-                              columns={[
-                                { title: '社区店', dataIndex: 'shopCommission', render: (_) => `${amountTransform(_)}%` },
-                                { title: '运营中心', dataIndex: 'operateCommission', render: (_) => `${amountTransform(_)}%` },
-                                { title: '推荐人', dataIndex: 'referrerCommission', render: (_) => `${amountTransform(_)}%` },
-                                { title: '平台额外收益', dataIndex: 'platForm', render: (_) => `${amountTransform(_)}%` },
-                              ]}
-                              dataSource={[selectItem[0].freshData[0]]}
-                              pagination={false}
-                            />
+                            <div style={{marginTop: '-10px'}}>
+                              <Table
+                                title={() => "以五星社区店为例"}
+                                columns={[
+                                  { title: '社区店', dataIndex: 'shopCommission', render: (_) => `${amountTransform(_)}%` },
+                                  { title: '运营中心', dataIndex: 'operateCommission', render: (_) => `${amountTransform(_)}%` },
+                                  { title: '推荐人', dataIndex: 'referrerCommission', render: (_) => `${amountTransform(_)}%` },
+                                  { title: '平台额外收益', dataIndex: 'platForm', render: (_) => `${amountTransform(_)}%` },
+                                ]}
+                                dataSource={[selectItem[0].freshData[0]]}
+                                pagination={false}
+                              />
+                            </div>
                           </Form.Item>
 
                           <Form.Item
                             label="预计生鲜食品的各方分佣金额"
                           >
-                            <FreshIncome data={selectItem[0]} freshCommission={freshSpecial === 0 ? selectItem[0].freshCommission : amountTransform(freshCommission, '/')} />
+                            <div style={{marginTop: '-10px'}}>
+                                <FreshIncome data={selectItem[0]} freshCommission={freshSpecial === 0 ? selectItem[0].freshCommission : amountTransform(freshCommission, '/')} />
+                            </div>
                           </Form.Item>
                         </>
                       )
