@@ -32,11 +32,11 @@ export default (props) => {
   const [form] = Form.useForm();
   const [formRef] = Form.useForm();
   const [dataSource, setDataSource] = useState([
-    { name: '五星店主', level: 5, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
-    { name: '四星店主', level: 4, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
-    { name: '三星店主', level: 3, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
-    { name: '二星店主', level: 2, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
-    { name: '一星店主', level: 1, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
+    { name: '五星店主', level: 5, shopCommission: 75, operateCommission: 23, referrerCommission: 2, platForm: 0 },
+    { name: '四星店主', level: 4, shopCommission: 75, operateCommission: 23, referrerCommission: 2, platForm: 0 },
+    { name: '三星店主', level: 3, shopCommission: 75, operateCommission: 23, referrerCommission: 2, platForm: 0 },
+    { name: '二星店主', level: 2, shopCommission: 75, operateCommission: 23, referrerCommission: 2, platForm: 0 },
+    { name: '一星店主', level: 1, shopCommission: 75, operateCommission: 23, referrerCommission: 2, platForm: 0 },
   ])
   const [dataSource2] = useState([
     { name: '一星店主', level: 6, operateCommission: 60, referrerCommission: 15, platForm: 25 },
