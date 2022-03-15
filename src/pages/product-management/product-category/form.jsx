@@ -478,7 +478,7 @@ export default (props) => {
             (fresh || (parentId !== 0 && selectItem?.fresh))
               ? <div className={styles.shopValue}>
                 {
-                  (fresh === 1 || selectItem?.fresh===1)
+                  (fresh === 1 || selectItem?.fresh === 1)
                     ?
                     <Form.Item
                       label='精装生鲜商品集约各方的分佣比例'
@@ -532,7 +532,7 @@ export default (props) => {
                       />
                     </Form.Item>
                 }
-                {type === 'edit' && <Form.Item
+                {type === 'edit' && (fresh === 1 || selectItem?.fresh === 1) && <Form.Item
                   label='生鲜分类商品总分佣比例'
                 >
                   {data?.freshCommission}%
