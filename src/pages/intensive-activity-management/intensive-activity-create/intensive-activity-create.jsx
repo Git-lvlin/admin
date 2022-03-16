@@ -375,7 +375,7 @@ const IntensiveActivityCreate = () => {
               //   message.error('店主采购单下单截止时间必须大于活动开始时间且小于截至时间');
               //   return false;
               // }
-              // await submit(values);
+              await submit(values);
               return true;
             }}
             formRef={formRef}
