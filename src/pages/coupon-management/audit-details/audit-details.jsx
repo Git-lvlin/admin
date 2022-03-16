@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { couponVerifyDetail, couponVerify } from '@/services/coupon-management/coupon-audit';
+import { couponVerifyDetail } from '@/services/coupon-management/coupon-audit';
 import SubTable from '@/pages/coupon-management/coupon-construction/coupon-subtable'
 import { Divider, Form, Spin, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
@@ -7,7 +7,9 @@ import AuditModel from '../coupon-audit/audit-model'
 import { amountTransform } from '@/utils/utils'
 import { history } from 'umi';
 import { CaretRightFilled } from '@ant-design/icons';
+import { DrawerForm,ModalForm,ProFormTextArea } from '@ant-design/pro-form';
 import styles from './style.less'
+
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -26,10 +28,12 @@ const formItemLayout = {
 
 export default props => {
   const ref = useRef()
-  const id = props.location.query.id
+  const {setAuditVisible,auditVisible,onClose,callback,id}=props
   const [form] = Form.useForm()
   const [detailData, setDetailData] = useState([])
   const [loading, setLoading] = useState(false);
+  const [visible,setVisible]=useState(false)
+  const [statusType,setStatusType]=useState()
   const columns = [
     {
       title: '群体名称',
@@ -107,21 +111,43 @@ export default props => {
     }).finally(() => {
       setLoading(false);
     })
-  }, [])
+  }, [id])
 
   return (
     <>
       <Spin
         spinning={loading}
       >
-        <Form
+        <DrawerForm
+          title='红包审核详情'
+          onVisibleChange={setAuditVisible}
+          visible={auditVisible}
           form={form}
-          {...formItemLayout}
+          width={1200}
+          drawerProps={{
+            forceRender: true,
+            destroyOnClose: true,
+            onClose: () => {
+              onClose();
+            }
+          }}
+          submitter={
+            {
+              render: (props, defaultDoms) => {
+                return [
+                  <Button key='goback' type="default" onClick={() => {onClose();setAuditVisible(false)}}>返回</Button>
+                ];
+              }
+            }
+          }
+          onFinish={async (values) => {
+            onClose()
+            setAuditVisible(false)
+          }
+          }
           className={styles.audit_details}
-        >
-
-          <h1><CaretRightFilled /> 红包审核详情</h1>
-          <Button className={styles.goback} type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
+          {...formItemLayout}
+      >
           <div className={styles.msg}>
             <h3 className={styles.head}>基本信息</h3>
             <Form.Item
@@ -322,29 +348,39 @@ export default props => {
             detailData.verifyInfo && detailData.verifyInfo.length !=0 && detailData.verifyInfo[0].status == 4 ?
               null
               : <>
-                <AuditModel
-                  type={1}
-                  status={4}
-                  label={'审核通过'}
-                  text={'确认审核通过吗？'}
-                  InterFace={couponVerify}
+              <Button 
+                style={{marginLeft:'70px'}} 
+                type="primary"  
+                onClick={()=>{
+                  setStatusType(4)
+                  setVisible(true)
+                }}
+              >
+                审核通过
+              </Button>
+              <Button 
+                style={{marginLeft:'20px'}} 
+                type="default"  
+                onClick={()=>{
+                  setStatusType(3)
+                  setVisible(true)
+                }}
+                >
+                驳回
+              </Button>
+              {
+                visible&& <AuditModel
+                  visible={visible}
+                  setVisible={setVisible}
                   id={id}
-                  title={'操作确认'}
                   boxref={ref}
+                  status={statusType}
                 />
-                <AuditModel
-                  type={2}
-                  status={3}
-                  label={'驳回'}
-                  InterFace={couponVerify}
-                  title={'审核驳回'}
-                  id={id}
-                  boxref={ref}
-                />
+              }
               </>
           }
 
-        </Form>
+        </DrawerForm>    
       </Spin>
 
     </>
