@@ -6,6 +6,7 @@ import { couponList } from '@/services/coupon-management/coupon-list';
 import styles from './style.less'
 import { history} from 'umi';
 import ListDetails from '../list-details'
+import AuditDetails from '../audit-details'
 const { TabPane } = Tabs
 
 
@@ -13,6 +14,7 @@ const Message = (props) => {
   const { type }=props
   const ref=useRef()
   const [detailsVisible, setDetailVisible] = useState(false);
+  const [auditVisible, setAuditVisible] = useState(false);
   const [pennyId,setPennyId]=useState()
   const columns= [
     {
@@ -124,7 +126,8 @@ const Message = (props) => {
   ];
 
   const Examine=(id)=>{
-    history.push(`/coupon-management/coupon-audit/audit-details?id=`+id);
+    setPennyId(id)
+    setAuditVisible(true)
   }
 
   return (
@@ -157,6 +160,13 @@ const Message = (props) => {
         callback={() => { ref.current.reload(); setPennyId(null);}}
         onClose={() => { ref.current.reload(); setPennyId(null);}}
       />}
+      {auditVisible&& <AuditDetails
+        auditVisible={auditVisible}
+        setAuditVisible={setAuditVisible}
+        id={pennyId} 
+        callback={() => { ref.current.reload(); setPennyId(null);}}
+        onClose={() => { ref.current.reload(); setPennyId(null);}}
+    />}
   </>
   );
 };
