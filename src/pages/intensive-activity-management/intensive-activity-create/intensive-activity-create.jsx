@@ -713,34 +713,38 @@ const IntensiveActivityCreate = () => {
                                 {selectItem[0].gcId1Display} &gt; {selectItem[0].gcId2Display}：{amountTransform(selectItem[0].freshCommission)}%
                               </Form.Item>
                               :
-                              <ProFormText
-                                name="freshCommission"
-                                label="总分佣比例"
-                                width={150}
-                                fieldProps={{ addonAfter: '%' }}
-                                placeholder="总分佣比例"
-                                validateFirst
-                                fieldProps={{
-                                  onBlur: (e) => {
-                                    editTableRef.current.update({
-                                      ...selectItem[0],
-                                      freshCommission2: e.target.value,
-                                      freshCommission3: null,
+                              <div
+                                style={{ position: 'relative', zIndex: 1 }}
+                              >
+                                <ProFormText
+                                  name="freshCommission"
+                                  label="总分佣比例"
+                                  width={150}
+                                  fieldProps={{ addonAfter: '%' }}
+                                  placeholder="总分佣比例"
+                                  validateFirst
+                                  fieldProps={{
+                                    onBlur: (e) => {
+                                      editTableRef.current.update({
+                                        ...selectItem[0],
+                                        freshCommission2: e.target.value,
+                                        freshCommission3: null,
+                                      })
+                                    }
+                                  }}
+                                  rules={[
+                                    { required: true, message: '请输入总分佣比例' },
+                                    () => ({
+                                      validator(_, value) {
+                                        if (!/^((0)|([1-9][0-9]*))$/g.test(value) || value > 50) {
+                                          return Promise.reject(new Error('请输入0-50之间的正整数'));
+                                        }
+                                        return Promise.resolve();
+                                      },
                                     })
-                                  }
-                                }}
-                                rules={[
-                                  { required: true, message: '请输入总分佣比例' },
-                                  () => ({
-                                    validator(_, value) {
-                                      if (!/^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/g.test(value) || value > 50) {
-                                        return Promise.reject(new Error('请输入0-50之间的数字，最多两位小数'));
-                                      }
-                                      return Promise.resolve();
-                                    },
-                                  })
-                                ]}
-                              />
+                                  ]}
+                                />
+                              </div>
                           }
                           <Form.Item
                             label="生鲜商品的各方分佣比例"
