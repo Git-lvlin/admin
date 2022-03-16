@@ -81,8 +81,8 @@ export default (props) => {
               transform: (v) => `${v}`
             },
             {
-              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
-              message: '社区店提成只能是数字，并且最多保留两位小数',
+              pattern: /^((0)|([1-9][0-9]*))$/,
+              message: '社区店提成只能正整数',
               transform: (v) => `${v}`
             },
             {
@@ -117,8 +117,8 @@ export default (props) => {
               transform: (v) => `${v}`
             },
             {
-              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
-              message: '运营中心提成只能是数字，并且最多保留两位小数',
+              pattern: /^((0)|([1-9][0-9]*))$/,
+              message: '运营中心提成只能正整数',
               type: 'string',
               transform: (v) => `${v}`
             },
@@ -155,8 +155,8 @@ export default (props) => {
               transform: (v) => `${v}`
             },
             {
-              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
-              message: '推荐人提成只能是数字，并且最多保留两位小数',
+              pattern: /^((0)|([1-9][0-9]*))$/,
+              message: '推荐人提成只能正整数',
               type: 'string',
               transform: (v) => `${v}`
             },
@@ -203,8 +203,8 @@ export default (props) => {
               transform: (v) => `${v}`
             },
             {
-              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
-              message: '运营中心提成只能是数字，并且最多保留两位小数',
+              pattern: /^((0)|([1-9][0-9]*))$/,
+              message: '运营中心提成只能正整数',
               type: 'string',
               transform: (v) => `${v}`
             },
@@ -241,8 +241,8 @@ export default (props) => {
               transform: (v) => `${v}`
             },
             {
-              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
-              message: '推荐人提成只能是数字，并且最多保留两位小数',
+              pattern: /^((0)|([1-9][0-9]*))$/,
+              message: '推荐人提成只能正整数',
               type: 'string',
               transform: (v) => `${v}`
             },
