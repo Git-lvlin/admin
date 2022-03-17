@@ -161,7 +161,7 @@ export default (props) => {
             }
           }
           onFinish={async (values) => {
-            onClose()
+            callback(true)
             setVisible(false)
           }
           }

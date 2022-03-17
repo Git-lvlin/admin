@@ -55,8 +55,3 @@ npm test
 ## More
 
 You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
-
-1、红包审核详情修改成弹窗
-2、群体管理编辑修改
-3、签到红包管理发放明细修改成弹窗
-4、签到红包管理消耗明细修改成弹窗
