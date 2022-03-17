@@ -34,10 +34,10 @@ const upload = async (file, code) => {
     client.put(fileName, file).then(res => {
       if (file.type.indexOf('image') !== -1) {
         getImageSize(file).then(size => {
-          resolve(`${ossConfig.cdnUrl}/${fileName}?imgHeight=${size.height}&imgWidth=${size.width}`)
+          resolve(`${ossConfig.cdnUrl}/${res.name}?imgHeight=${size.height}&imgWidth=${size.width}`)
         })
       } else {
-        resolve(`${ossConfig.cdnUrl}/${fileName}`);
+        resolve(`${ossConfig.cdnUrl}/${res.name}`);
       }
     }).catch(err => {
       ossConfig = null;
