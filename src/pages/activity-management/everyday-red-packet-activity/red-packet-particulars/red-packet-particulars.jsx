@@ -9,6 +9,7 @@ import Detail from '@/pages/order-management/normal-order/detail';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import moment from 'moment';
+import EverydayRule from '../everyday-packet-rule'
 
 
 
@@ -17,6 +18,8 @@ export default () => {
     const [detailVisible, setDetailVisible] = useState(false);
     const [orderId,setOrderId]=useState()
     const [visit, setVisit] = useState(false)
+    const [visible,setVisible]=useState(false)
+    const [detailId,setDetailId]=useState()
     const columns= [
       {
         title: '序号',
@@ -30,7 +33,7 @@ export default () => {
         dataIndex: 'name',
         valueType: 'text',
         render:(text, record, _, action)=>[
-          <a key='name' onClick={()=>history.push('/activity-management/everyday-red-packet-activity/everyday-packet-rule?id='+record.couponEverydayId)}>{record.name}</a>
+          <a key='name' onClick={()=>{setVisible(true);setDetailId(record.couponEverydayId)}}>{record.name}</a>
         ]
       },
       {
@@ -183,6 +186,15 @@ export default () => {
           visible={detailVisible}
           setVisible={setDetailVisible}
         />
+        }
+        {
+          visible&&<EverydayRule
+          setVisible={setVisible}
+          visible={visible}
+          id={detailId} 
+          callback={() => { ref.current.reload(); setDetailId(null);}}
+          onClose={() => { ref.current.reload(); setDetailId(null);}}
+          />
         }
         </PageContainer>
     );

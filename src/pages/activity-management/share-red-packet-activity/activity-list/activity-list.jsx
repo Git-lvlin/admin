@@ -6,11 +6,14 @@ import { couponInviteList } from '@/services/activity-management/share-red-packe
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
+import ShareRule from '../share-packet-rule'
 
 
 
 export default () => {
     const ref=useRef()
+    const [visible,setVisible]=useState(false)
+    const [detailId,setDetailId]=useState()
     const columns= [
       {
         title: '活动名称',
@@ -57,7 +60,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a key='detail' onClick={()=>history.push('/activity-management/share-red-packet-activity/share-packet-rule?id='+record.id)}>查看详情</a>
+            <a key='detail' onClick={()=>{setVisible(true);setDetailId(record.id)}}>查看详情</a>
         ],
       }, 
     ];
@@ -69,13 +72,22 @@ export default () => {
           request={couponInviteList}
           scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
           toolBarRender={()=>[
-            <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/activity-management/share-red-packet-activity/share-packet-rule')} type="primary">
+            <Button key='add' icon={<PlusOutlined />}  onClick={()=>setVisible(true)} type="primary">
                 添加活动
             </Button>
         ]}
           search={false}
           columns={columns}
         />
+        {
+          visible&&<ShareRule
+          setDetailVisible={setVisible}
+          detailVisible={visible}
+          id={detailId} 
+          callback={() => { ref.current.reload(); setDetailId(null);}}
+          onClose={() => { ref.current.reload(); setDetailId(null);}}
+          />
+        }
         </PageContainer>
     );
   };
