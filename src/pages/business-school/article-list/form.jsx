@@ -167,6 +167,7 @@ export default (props) => {
       const code=218
       const link=await upload(file,code)
       const range = quillEditor?.getSelection()
+      console.log('link',link)
       quillEditor.insertEmbed(range.index, 'image', link)
     }
   }
