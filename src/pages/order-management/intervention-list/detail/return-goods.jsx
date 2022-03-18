@@ -26,7 +26,7 @@ const tableRow = props => {
   }
   return (
     <ProTable.Summary.Row>
-      <ProTable.Summary.Cell colSpan={7}>
+      <ProTable.Summary.Cell colSpan={8}>
         <div className={styles.summary}>
           <div className={styles.summaryItem}>
             售后原因：
