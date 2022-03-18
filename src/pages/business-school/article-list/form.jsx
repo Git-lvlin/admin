@@ -164,7 +164,7 @@ export default (props) => {
       const file = input.files[0]
       const formData = new FormData()
       formData.append('quill-image', file)
-      const code=218
+      const code=204
       const link=await upload(file,code)
       const range = quillEditor?.getSelection()
       console.log('link',link)
