@@ -28,28 +28,35 @@ const TransactionDetails = ({
   const isPurchase = useLocation().pathname.includes('purchase')
 
   const skipToOrder = (id, type)=> {
-    switch(type) {
-      case 'normalOrder':
-      case 'second':
-      case 'dropShipping1688':
-        setId(id)
-        setNormalOrderVisible(true)
-        // history.push(`/order-management/normal-order-detail/${id}`)
-      break
-      case 'commandSalesOrder':
-      case 'activeSalesOrder':
-      case 'commandCollect':
-      case 'activeCollect':
-        setId(id)
-        setShopkeeperOrderVisible(true)
-        // history.push(`/order-management/intensive-order/supplier-order-detail/${id}`)
-      break
-      default:
-        // history.push(`/order-management/normal-order-detail/${id}`)
-        setId(id)
-        setShopkeeperOrderVisible(true)
-      break
+    if(type) {
+      setId(id)
+      setShopkeeperOrderVisible(true)
+    } else {
+      setId(id)
+      setNormalOrderVisible(true)
     }
+    // switch(type) {
+    //   case 'normalOrder':
+    //   case 'second':
+    //   case 'dropShipping1688':
+    //     setId(id)
+    //     setNormalOrderVisible(true)
+    //     // history.push(`/order-management/normal-order-detail/${id}`)
+    //   break
+    //   case 'commandSalesOrder':
+    //   case 'activeSalesOrder':
+    //   case 'commandCollect':
+    //   case 'activeCollect':
+    //     setId(id)
+    //     setShopkeeperOrderVisible(true)
+    //     // history.push(`/order-management/intensive-order/supplier-order-detail/${id}`)
+    //   break
+    //   default:
+    //     // history.push(`/order-management/normal-order-detail/${id}`)
+    //     setId(id)
+    //     setShopkeeperOrderVisible(true)
+    //   break
+    // }
   }
 
   const skipToOrderPay = (id) => {
@@ -149,7 +156,7 @@ const TransactionDetails = ({
       width: '10%',
       render: (_, records) => (
         records.orderId ? 
-        <a onClick={()=>skipToOrder(records.orderId, records.orderType)}>{_}</a>:
+        <a onClick={()=>skipToOrder(records.orderId, records.isWholesale)}>{_}</a>:
         <span>{_}</span>
       )
     },

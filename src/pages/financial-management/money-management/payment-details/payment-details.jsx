@@ -17,16 +17,12 @@ const PaymentDetails = ({query, visible, setVisible}) => {
   const isPurchase = useLocation().pathname.includes('purchase')
 
   const skipToOrder = (id, type)=> {
-    switch(type) {
-      case 'commandSalesOrder':
-        setId(id)
-        setShopkeeperOrderVisible(true)
-        // history.push(`/order-management/intensive-order/supplier-order-detail/${id}`)
-      break
-      default:
-        setId(id)
-        setNormalOrderVisible(true)
-        // return  history.push(`/order-management/normal-order-detail/${id}`)
+    if(type) {
+      setId(id)
+      setShopkeeperOrderVisible(true)
+    } else {
+      setId(id)
+      setNormalOrderVisible(true)
     }
   }
 
@@ -65,7 +61,7 @@ const PaymentDetails = ({query, visible, setVisible}) => {
       width: '10%',
       render: (_, records)=> (
         records.orderId ? 
-        <a onClick={()=>skipToOrder(records.orderId, records.orderType)}>{_}</a>:
+        <a onClick={()=>skipToOrder(records.orderId, records.isWholesale)}>{_}</a>:
         <span>{_}</span>
       )
     },
