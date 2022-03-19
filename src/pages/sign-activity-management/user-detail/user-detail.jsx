@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
+import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch,DrawerForm} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
 import { history, connect } from 'umi';
 import { queryUserRecordList } from '@/services/sign-activity-management/packet-record-query-user-record-list';
@@ -9,11 +9,23 @@ import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import Detail from '@/pages/order-management/normal-order/detail';
 
+const formItemLayout = {
+  labelCol: { span: 2 },
+  wrapperCol: { span: 14 },
+  layout: {
+    labelCol: {
+      span: 10,
+    },
+    wrapperCol: {
+      span: 14,
+    },
+  }
+};
 
 
 export default (props) => {
+    const {setVisible,visible,onClose,callback,id}=props
     const ref=useRef()
-    let id = props.location.query.id
     const [detailList,setDetailList]=useState()
     const [visit, setVisit] = useState(false)
     const [detailVisible, setDetailVisible] = useState(false);
@@ -127,7 +139,34 @@ export default (props) => {
     }
   }
     return (
-      <PageContainer>
+        <DrawerForm
+          title='用户红包明细'
+          onVisibleChange={setVisible}
+          visible={visible}
+          width={1200}
+          drawerProps={{
+            forceRender: true,
+            destroyOnClose: true,
+            onClose: () => {
+              onClose();
+            }
+          }}
+          submitter={
+            {
+              render: (props, defaultDoms) => {
+                return [
+                  <Button key='goback' type="default" onClick={() => {onClose();setVisible(false)}}>返回</Button>
+                ];
+              }
+            }
+          }
+          onFinish={async (values) => {
+            callback(true)
+            setVisible(false)
+          }
+          }
+        {...formItemLayout}
+      >
         <ProTable
           actionRef={ref}
           rowKey="id"
@@ -160,9 +199,6 @@ export default (props) => {
           setVisible={setDetailVisible}
         />
         }
-        <Button style={{ float: 'right', margin: '20px 20px 0 0' }} type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>
-           返回
-        </Button>
-        </PageContainer>
+      </DrawerForm>
     );
   };

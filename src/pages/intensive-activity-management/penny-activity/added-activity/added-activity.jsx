@@ -2,7 +2,7 @@ import React, { useState, useEffect,useRef } from 'react';
 import { Input, Form, Divider, message, Button,Space } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
 import ProTable from '@ant-design/pro-table';
-import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio } from '@ant-design/pro-form';
+import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,DrawerForm } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
 import { saveWSCentActiveConfig,getActiveConfigById } from '@/services/intensive-activity-management/penny-activity';
@@ -25,19 +25,20 @@ const formItemLayout = {
 };
 
 export default (props) => {
+  const {setFormVisible,formVisible,onClose,callback,id}=props
   const [detailList,setDetailList]=useState()
   const [goosList,setGoosList]=useState()
   const [visible, setVisible] = useState(false);
   const [limitAll,setLimitAll]=useState(200)
   const [batchPrice,setBatchPrice]=useState()
-  let id= props.location.query.id
   const [form] = Form.useForm()
   useEffect(() => {
     if (id) {
       getActiveConfigById({id}).then(res=>{
         if(res.data?.endTime<res.data?.time){
           message.error('活动已结束！'); 
-          window.location.href='/intensive-activity-management/penny-activity/activity-list'
+          setFormVisible(false)
+          onClose()
           return false
         }
         setDetailList(res.data)
@@ -163,7 +164,8 @@ export default (props) => {
       saveWSCentActiveConfig(parmas).then(res=>{
         if(res.code==0){
           message.success(id?'编辑成功':'添加成功'); 
-          window.location.href='/intensive-activity-management/penny-activity/activity-list'
+          callback(true)
+          setFormVisible(false)
         }
       })
   }
@@ -172,10 +174,19 @@ export default (props) => {
     return current && current < moment().startOf('day');
   }
   return (
-    <PageContainer title={id?'编辑活动':'新建活动'}>
-      <ProForm
+      <DrawerForm
+        title={id?'编辑活动':'新建活动'}
+        onVisibleChange={setFormVisible}
+        visible={formVisible}
         form={form}
-        {...formItemLayout}
+        width={1500}
+        drawerProps={{
+          forceRender: true,
+          destroyOnClose: true,
+          onClose: () => {
+            onClose();
+          }
+        }}
         submitter={
           {
             render: (props, defaultDoms) => {
@@ -191,11 +202,11 @@ export default (props) => {
         }
         onFinish={async (values) => {
             await onsubmit(values);
-            return true;
         }
         }
         className={styles.added_activity}
-      >
+      {...formItemLayout}
+    >
         <ProFormText
           width="md"
           name="name"
@@ -358,7 +369,6 @@ export default (props) => {
             maxLength:1000
           }}
         />
-      </ProForm >
-    </PageContainer>
+      </DrawerForm>
   );
 };
