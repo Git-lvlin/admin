@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Input, Form, Divider, message, Button,Space } from 'antd';
-import { FormattedMessage, formatMessage } from 'umi';
+import { useState, useEffect } from 'react';
+import { Form, message, Button } from 'antd';
+import { formatMessage } from 'umi';
 import CouponType from './coupon-type/coupon-type'
 import UseScope from './use-scope/use-scope'
 import PeriodValidity from './period-validity/period-validity'
 import AssignCrowd from './assign-crowd/assign-crowd'
 import { couponSub } from '@/services/coupon-construction/coupon-coupon-sub';
 import { couponEdit } from '@/services/coupon-construction/coupon-edit';
-import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency} from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import moment from 'moment';
 import styles from './style.less'
@@ -66,7 +66,7 @@ const couponConstruction = (props) => {
     }
   }, [type])
   //红包名称验证规则
-  const checkConfirm = (rule, value, callback) => {
+  const checkConfirm = (value) => {
     return new Promise(async (resolve, reject) => {
       if (value && value.length > 50) {
         await reject('红包名称不超过50个字符')
@@ -77,6 +77,7 @@ const couponConstruction = (props) => {
       }
     })
   }
+  
   const onsubmit = (values) => {
       values.issueType=parseInt(type)|| id&&DetaiIssueType//发放类型
       const parmas={
@@ -194,7 +195,7 @@ const couponConstruction = (props) => {
         <ProFormText
           width="md"
           name="couponName"
-          label={<FormattedMessage id="formandbasic-form.title.label" />}
+          label='红包名称'
           rules={[
             { required: true, message: '请输入红包名称' },
             { validator: checkConfirm }
@@ -226,11 +227,11 @@ const couponConstruction = (props) => {
             <>
             <ProFormRadio.Group
               name="limitType"
-              label={<FormattedMessage id="formandbasic-form.each.limit" />}
+              label='每人限领'
               rules={[{ required: true, message: '请选择限领方式' }]}
               options={[
                 {
-                  label: <FormattedMessage id="formandbasic-form.quota" />, value: 2
+                  label: '限领', value: 2
                 }]}
             />
               <ProFormDependency name={['limitType']}>
@@ -243,7 +244,7 @@ const couponConstruction = (props) => {
                             width={120}
                             name="limitQuantity"
                           />
-                          <span><FormattedMessage id="formandbasic-form.zhang" /></span>
+                          <span>张</span>
                         </ProForm.Group>
                     </div>
                     );
