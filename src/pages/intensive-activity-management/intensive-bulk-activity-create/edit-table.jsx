@@ -222,7 +222,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.fresh === 1 && <span style={{ color: 'green' }}>(生鲜)</span>}</>,
+      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.fresh !== 0 && <span style={{ color: 'green' }}>({{ 1: '精装生鲜', 2: '散装生鲜' }[data.fresh]})</span>}</>,
     },
     {
       title: '主图',
@@ -352,7 +352,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       renderFormItem: (_, { record }) => {
-        const price = +new Big(record.wholesaleSupplyPrice || 0).times(1.05).toFixed(2)
+        const price = +new Big(+new Big(record.wholesaleSupplyPrice || 0).plus(record.wholesaleFreight || 0)).times(1.05).toFixed(2)
         return (
           <FormWrap>
             {({ value, onChange }) => (
@@ -360,13 +360,13 @@ export default function EditTable({ onSelect, sku, wholesale }) {
                 <CusInput value={value} onChange={onChange} className={record.price < price ? styles.borderRed : ''} addonAfter={`元/${record.unit}`} onBlur={() => {
                   debounceFetcher({ record, recordList: dataSource })
                 }} />
-                {record.price < price && <div style={{color: 'red'}}>集约价不能小于{price}元</div>}
+                {record.price < price && <div style={{ color: 'red' }}>集约价不能小于{price}元</div>}
               </>
             )}
           </FormWrap>
         )
 
-        
+
       },
     },
     {

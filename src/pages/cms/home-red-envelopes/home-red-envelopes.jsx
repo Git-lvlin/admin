@@ -32,13 +32,13 @@ const HomeRedEnvelopes = () => {
 
   const submit = (param) => {
     // 只有弹窗开启时才校验时间
-    if (param.status === 1) {
-      const now = new Date().getTime()
-      const old = (new Date(param.startTime)).getTime()
-      if (old <= now || (old - now) < 60 * 10 * 1000) {
-        return message.error('开始时间应最少距当前时间提前10分钟！');
-      }
-    }
+    // if (param.status === 1) {
+    //   const now = new Date().getTime()
+    //   const old = (new Date(param.startTime)).getTime()
+    //   if (old <= now || (old - now) < 60 * 10 * 1000) {
+    //     return message.error('开始时间应最少距当前时间提前10分钟！');
+    //   }
+    // }
     homePopupUpdate(param).then(res => {
       if (res.code === 0) {
         message.success('保存成功');

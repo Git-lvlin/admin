@@ -96,7 +96,7 @@ const Detail = ({ storeNo, visible, setVisible }) => {
                 <div style={{ display: 'flex', marginBottom: 10 }}>
                   <div>绿色通道证明文件</div>
                   {
-                    detailData?.memberShop?.applyRow?.credentialList.map(item => (<Image width={50} height={50} src={item} key={item} />))
+                    detailData?.memberShop?.applyRow?.credentialList.map(item => (<Image style={{marginRight: 10}} width={50} height={50} src={item} key={item} />))
                   }
                 </div>
               }
