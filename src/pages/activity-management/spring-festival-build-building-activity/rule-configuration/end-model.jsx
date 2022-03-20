@@ -29,7 +29,6 @@ export default props=>{
                 canBlack(false)
               },1000)  
               message.success('操作成功')
-              history.push('/activity-management/spring-festival-build-building-activity/rule-configuration?id='+endId)
               return true;
             }
           })
