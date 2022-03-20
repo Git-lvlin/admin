@@ -57,6 +57,19 @@ export default (props) => {
 
   const onsubmit = (values) => {
     const {articleContent, ...rest } = values
+    // var urlData =[]
+    // articleContent.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/g, function (match, capture) {
+    //   urlData.push(capture); // capture图片地址 img标签中src内容   match // img标签整体
+    // });
+    // console.log('urlData',urlData)
+    // urlData.map(async ele=>{
+    //   if(ele.split('')[ele.length-1]=='='){
+    //    const link=await base64toFile(ele)
+    //    return link
+    //   }
+    // })
+
+
     const param = {
       articleType:1,
       articleContent:`<head><style>img{width:100% !important;}</style></head>${articleContent}`,
@@ -125,6 +138,26 @@ export default (props) => {
     }
     })
   }
+
+    // 粘贴图片
+    // const customImgForPaste = async (node, delta) => {
+    //   console.log('delta',delta , node)
+      // delta.forEach(async (op) => {
+      //   console.log('op?.insert?.image',op?.insert?.image)
+      //   let file =await base64toFile(op?.insert?.image);
+      //   const formData = new FormData();
+      //   // formData.append('files', file);
+      //   // // 上传图片
+      //   // // 获取url
+      //   let quillEditor = ref?.current?.getEditor(); //获取到编辑器本身
+      //   // const cursorPosition = 99999; //粘贴的时候失去焦点拿不到光标位置
+      //   console.log('ref',quillEditor?.selection.savedRange.index,file)
+      //   const range = quillEditor?.selection.savedRange.index
+      //   // quillEditor.insertEmbed(range.index, 'image', file); //插入图片
+      //   // quillEditor.setSelection(range.index); //光标位置
+      // });
+    // };
+
   const modules={
     toolbar:{
       container:[
@@ -148,6 +181,15 @@ export default (props) => {
         image: ()=>imageHandler()
       }
     },
+    // clipboard: {
+    //   matchers: [
+    //     // 粘贴事件和setEditorContents有冲突报错，但在readOnly=true的时候可以正常使用
+    //     // 临时处理方式：需要setEditorContents的地方先将readOnly=true再使用，或者先去掉粘贴功能比如表单编辑的时候
+       
+    //     ['img', customImgForPaste],
+    //     // ['e=mc^2', (res,delta)=>{console.log('res',delta)}]
+    //   ],
+    // },
     'emoji-toolbar': true,
     // 'emoji-textarea': true,
     'emoji-shortname': true,
@@ -159,6 +201,7 @@ export default (props) => {
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
     input.setAttribute('accept', 'image/*')
+    input.setAttribute('multiple', 'multiple');
     input.click()
     input.onchange = async () => {
       const file = input.files[0]
@@ -167,11 +210,24 @@ export default (props) => {
       const code=204
       const link=await upload(file,code)
       const range = quillEditor?.getSelection()
-      console.log('link',link)
       quillEditor.insertEmbed(range.index, 'image', link)
     }
   }
-  
+
+
+// const  base64toFile=async (urlData) => {
+//     //去掉url的头，并转换为byte
+//     const bytes = window.atob(urlData.split(',')[1]);
+//     //处理异常,将ascii码小于0的转换为大于0
+//     const ab = new ArrayBuffer(bytes.length);
+//     const ia = new Uint8Array(ab);
+//     ia.forEach((i, index) => {
+//       ia[index] = bytes.charCodeAt(index);
+//     });
+//     const link=await upload(new Blob([ia], { type: urlData.split(',')[0].split(':')[1].split(';')[0] }),204)
+//     return link
+// };
+
 
   return (
     <DrawerForm
@@ -369,7 +425,7 @@ export default (props) => {
               readonly={detailData?.id&&detailData?.edtil}
               // rules={[{ required: true, message: '请设置文章详情!' }]} 
             >
-              <ReactQuill  modules={modules} ref={ref}/>
+              <ReactQuill   modules={modules} ref={ref}/>
             </Form.Item>
             <div className={styles.mark}>*</div>
           </div>
@@ -378,3 +434,4 @@ export default (props) => {
     </DrawerForm>
   );
 };
+
