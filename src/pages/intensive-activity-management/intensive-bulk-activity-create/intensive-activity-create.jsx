@@ -331,7 +331,7 @@ const IntensiveActivityCreate = () => {
                 }
 
                 if (+item.profit < 0) {
-                  message.error(`sku:${item.skuId}实际盈亏不能小于0`);
+                  message.error(`sku:${item.skuId}毛利盈亏不能小于0`);
                   return false;
                 }
 
