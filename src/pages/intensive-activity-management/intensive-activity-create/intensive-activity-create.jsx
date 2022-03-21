@@ -269,11 +269,17 @@ const IntensiveActivityCreate = () => {
     if (selectItem.length) {
       formRef.current.setFieldsValue({
         settlePercent: selectItem[0].settlePercent,
-        price: selectItem[0].price
+        price: selectItem[0].price,
       })
-    }
 
-    console.log('editTableRef', editTableRef);
+      const { freshSpecial } = formRef.current.getFieldsValue()
+
+      if (selectItem.length && freshSpecial === 0) {
+        formRef.current.setFieldsValue({
+          freshCommission: amountTransform(selectItem[0].freshCommission)
+        })
+      }
+    }
 
   }, [selectItem])
 
@@ -381,7 +387,7 @@ const IntensiveActivityCreate = () => {
               ladderShowPercent: 50,
               preSale: 0,
               freshSpecial: 0,
-              freshCommission: 20,
+              freshCommission: 30,
               activityShowType: 0,
             }}
             className={styles.center}
@@ -661,27 +667,44 @@ const IntensiveActivityCreate = () => {
               selectItem?.[0]?.fresh === 1
               &&
               <>
-                <ProFormRadio.Group
-                  label="生鲜总分佣类型"
-                  name="freshSpecial"
-                  required
-                  options={[
-                    {
-                      label: '正常分佣（按分类分佣）',
-                      value: 0,
-                    },
-
-                    {
-                      label: '特殊分佣（单独指定分佣）',
-                      value: 1,
-                    }
-                  ]}
-                />
                 <ProFormDependency name={['freshSpecial', 'freshCommission']}>
                   {
                     ({ freshSpecial, freshCommission }) => {
                       return (
                         <>
+                          <ProFormRadio.Group
+                            label="生鲜总分佣类型"
+                            name="freshSpecial"
+                            required
+                            options={[
+                              {
+                                label: '正常分佣（按分类分佣）',
+                                value: 0,
+                              },
+
+                              {
+                                label: '特殊分佣（单独指定分佣）',
+                                value: 1,
+                              }
+                            ]}
+                            fieldProps={{
+                              onChange: (e) => {
+                                if (e.target.value === 0) {
+                                  editTableRef.current.update({
+                                    ...selectItem[0],
+                                    freshCommission2: amountTransform(selectItem[0].freshCommission),
+                                    freshCommission3: null,
+                                  })
+                                } else {
+                                  editTableRef.current.update({
+                                    ...selectItem[0],
+                                    freshCommission2: freshCommission,
+                                    freshCommission3: null,
+                                  })
+                                }
+                              }
+                            }}
+                          />
                           {
                             freshSpecial === 0
                               ? <Form.Item
@@ -690,56 +713,63 @@ const IntensiveActivityCreate = () => {
                                 {selectItem[0].gcId1Display} &gt; {selectItem[0].gcId2Display}：{amountTransform(selectItem[0].freshCommission)}%
                               </Form.Item>
                               :
-                              <ProFormText
-                                name="freshCommission"
-                                label="总分佣比例"
-                                width={150}
-                                fieldProps={{ addonAfter: '%' }}
-                                placeholder="总分佣比例"
-                                validateFirst
-                                fieldProps={{
-                                  onBlur: (e) => {
-                                    console.log('e.target.value', e.target.value);
-                                    editTableRef.current.update({
-                                      ...selectItem[0],
-                                      freshCommission2: e.target.value,
-                                      freshCommission3: null,
+                              <div
+                                style={{ position: 'relative', zIndex: 1 }}
+                              >
+                                <ProFormText
+                                  name="freshCommission"
+                                  label="总分佣比例"
+                                  width={150}
+                                  fieldProps={{ addonAfter: '%' }}
+                                  placeholder="总分佣比例"
+                                  validateFirst
+                                  fieldProps={{
+                                    onBlur: (e) => {
+                                      editTableRef.current.update({
+                                        ...selectItem[0],
+                                        freshCommission2: e.target.value,
+                                        freshCommission3: null,
+                                      })
+                                    }
+                                  }}
+                                  rules={[
+                                    { required: true, message: '请输入总分佣比例' },
+                                    () => ({
+                                      validator(_, value) {
+                                        if (!/^((0)|([1-9][0-9]*))$/g.test(value) || value > 50) {
+                                          return Promise.reject(new Error('请输入0-50之间的正整数'));
+                                        }
+                                        return Promise.resolve();
+                                      },
                                     })
-                                  }
-                                }}
-                                rules={[
-                                  { required: true, message: '请输入总分佣比例' },
-                                  () => ({
-                                    validator(_, value) {
-                                      if (!/^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/g.test(value) || value > 50) {
-                                        return Promise.reject(new Error('请输入0-50之间的数字，最多两位小数'));
-                                      }
-                                      return Promise.resolve();
-                                    },
-                                  })
-                                ]}
-                              />
+                                  ]}
+                                />
+                              </div>
                           }
                           <Form.Item
                             label="生鲜商品的各方分佣比例"
                           >
-                            <Table
-                              title={() => "以五星社区店为例"}
-                              columns={[
-                                { title: '社区店', dataIndex: 'shopCommission', render: (_) => `${amountTransform(_)}%` },
-                                { title: '运营中心', dataIndex: 'operateCommission', render: (_) => `${amountTransform(_)}%` },
-                                { title: '推荐人', dataIndex: 'referrerCommission', render: (_) => `${amountTransform(_)}%` },
-                                { title: '平台额外收益', dataIndex: 'platForm', render: (_) => `${amountTransform(_)}%` },
-                              ]}
-                              dataSource={[selectItem[0].freshData[0]]}
-                              pagination={false}
-                            />
+                            <div style={{ marginTop: '-10px' }}>
+                              <Table
+                                title={() => "以五星社区店为例"}
+                                columns={[
+                                  { title: '社区店', dataIndex: 'shopCommission', render: (_) => `${amountTransform(_)}%` },
+                                  { title: '运营中心', dataIndex: 'operateCommission', render: (_) => `${amountTransform(_)}%` },
+                                  { title: '推荐人', dataIndex: 'referrerCommission', render: (_) => `${amountTransform(_)}%` },
+                                  { title: '平台额外收益', dataIndex: 'platForm', render: (_) => `${amountTransform(_)}%` },
+                                ]}
+                                dataSource={[selectItem[0].freshData[0]]}
+                                pagination={false}
+                              />
+                            </div>
                           </Form.Item>
 
                           <Form.Item
                             label="预计生鲜食品的各方分佣金额"
                           >
-                            <FreshIncome data={selectItem[0]} freshCommission={freshSpecial === 0 ? selectItem[0].freshCommission : amountTransform(freshCommission, '/')} />
+                            <div style={{ marginTop: '-10px' }}>
+                              <FreshIncome data={selectItem[0]} freshCommission={freshSpecial === 0 ? selectItem[0].freshCommission : amountTransform(freshCommission, '/')} />
+                            </div>
                           </Form.Item>
                         </>
                       )

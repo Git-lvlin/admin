@@ -301,8 +301,8 @@ const IntensiveActivityCreate = () => {
               for (let index = 0; index < selectItem.length; index++) {
                 const item = selectItem[index];
 
-                if (+item.price < +new Big(item.wholesaleSupplyPrice).times(1.05).toFixed(2)) {
-                  message.error(`sku:${item.skuId}集约价不能低于${+new Big(item.wholesaleSupplyPrice).times(1.05).toFixed(2)}`);
+                if (+item.price < +new Big(+new Big(item.wholesaleSupplyPrice || 0).plus(item.wholesaleFreight || 0)).times(1.05).toFixed(2)) {
+                  message.error(`sku:${item.skuId}集约价不能低于${+new Big(+new Big(item.wholesaleSupplyPrice || 0).plus(item.wholesaleFreight || 0)).times(1.05).toFixed(2)}`);
                   return false;
                 }
 
@@ -331,7 +331,7 @@ const IntensiveActivityCreate = () => {
                 }
 
                 if (+item.profit < 0) {
-                  message.error(`sku:${item.skuId}实际盈亏不能小于0`);
+                  message.error(`sku:${item.skuId}毛利盈亏不能小于0`);
                   return false;
                 }
 
