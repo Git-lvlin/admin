@@ -47,7 +47,7 @@ const FreshIncome = ({ data, parse = false }) => {
         dataSource={sourceData}
         pagination={false}
       />
-      <div>各方分佣金额 = 实际盈亏 * 各方分佣比例</div>
+      <div>各方分佣金额 = 毛利盈亏 * 各方分佣比例</div>
     </>
   )
 }
