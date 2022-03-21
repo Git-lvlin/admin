@@ -16,6 +16,7 @@ import { history } from 'umi';
 import styles from './style.less'
 import 'react-quill/dist/quill.snow.css';
 import upload from '@/utils/upload'
+import { now } from 'lodash';
 
 
 Quill.register({
@@ -54,12 +55,48 @@ export default (props) => {
       <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{detailData?.id&&detailData?.edtil?null:right(value)}</div>
     </div>
   )
+  const  base64toFile=async (urlData) => {
+    //去掉url的头，并转换为byte
+    const bytes = window.atob(urlData.split(',')[1]);
+    //处理异常,将ascii码小于0的转换为大于0
+    const ab = new ArrayBuffer(bytes.length);
+    const ia = new Uint8Array(ab);
+    ia.forEach((i, index) => {
+      ia[index] = bytes.charCodeAt(index);
+    });
+    //文件流转换成url路径
+    const link=await upload(new Blob([ia], { type: urlData.split(',')[0].split(':')[1].split(';')[0],name:+new Date() }),204)
+    return link
+};
 
-  const onsubmit = (values) => {
+  const onsubmit =async (values) => {
     const {articleContent, ...rest } = values
+    const urlData=[]
+    articleContent.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/g, async (match, capture) => {
+      urlData.push(capture)
+    });
+
+    const linkArr=[]
+    for (var value of urlData)  {
+      if(value.indexOf('base64')!= -1){
+        const str=await base64toFile(value)
+        linkArr.push({old:value.slice(-20),new:str})
+      }else{
+        linkArr.push({old:value.slice(-20),new:value})
+      }
+    }
+
+    const str=articleContent.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/g,(match, capture) => {
+      const link=linkArr.find(ele=>{
+        return capture.slice(-20)==ele.old
+      })
+      return `<img src=${link?.new}/>`
+    }
+    );
+
     const param = {
       articleType:1,
-      articleContent:`<head><style>img{width:100% !important;}</style></head>${articleContent}`,
+      articleContent:`<head><style>img{width:100% !important;}</style></head>${str}`,
       ...rest
     }
     if(detailData?.id&&detailData?.edtil){
@@ -125,6 +162,7 @@ export default (props) => {
     }
     })
   }
+
   const modules={
     toolbar:{
       container:[
@@ -159,6 +197,7 @@ export default (props) => {
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
     input.setAttribute('accept', 'image/*')
+    input.setAttribute('multiple', 'multiple');
     input.click()
     input.onchange = async () => {
       const file = input.files[0]
@@ -167,11 +206,9 @@ export default (props) => {
       const code=204
       const link=await upload(file,code)
       const range = quillEditor?.getSelection()
-      console.log('link',link)
       quillEditor.insertEmbed(range.index, 'image', link)
     }
   }
-  
 
   return (
     <DrawerForm
@@ -210,7 +247,11 @@ export default (props) => {
         }
       }
       onFinish={async (values) => {
-        await onsubmit(values);
+        try {
+          await onsubmit(values);
+        } catch (error) {
+          console.log('error',error)
+        }
         // 不返回不会关闭弹框
         // return true;
       }}
@@ -369,7 +410,7 @@ export default (props) => {
               readonly={detailData?.id&&detailData?.edtil}
               // rules={[{ required: true, message: '请设置文章详情!' }]} 
             >
-              <ReactQuill  modules={modules} ref={ref}/>
+              <ReactQuill   modules={modules} ref={ref}/>
             </Form.Item>
             <div className={styles.mark}>*</div>
           </div>
@@ -378,3 +419,4 @@ export default (props) => {
     </DrawerForm>
   );
 };
+
