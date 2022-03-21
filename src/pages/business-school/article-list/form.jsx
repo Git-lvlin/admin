@@ -54,20 +54,51 @@ export default (props) => {
       <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{detailData?.id&&detailData?.edtil?null:right(value)}</div>
     </div>
   )
+  const  base64toFile=async (urlData) => {
+    //去掉url的头，并转换为byte
+    const bytes = window.atob(urlData.split(',')[1]);
+    //处理异常,将ascii码小于0的转换为大于0
+    const ab = new ArrayBuffer(bytes.length);
+    const ia = new Uint8Array(ab);
+    ia.forEach((i, index) => {
+      ia[index] = bytes.charCodeAt(index);
+    });
+    //文件流转换成url路径
+    const link=await upload(new Blob([ia], { type: urlData.split(',')[0].split(':')[1].split(';')[0] }),204)
+    return link
+};
 
-  const onsubmit = (values) => {
+  const fn=(val)=>{
+    return new Promise((resolve,reject)=>{
+      let num=0
+      const str=val.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/g, (match, capture) => {
+        if(capture.indexOf('base64') != -1){// capture图片地址 img标签中src内容   match // img标签整体
+          const link=await base64toFile(capture)
+          console.log('link',link)
+          num++
+          return `<img src='${link}'/>`
+         }else{
+           console.log('capture',capture)
+          num++
+          return `<img src=${capture}/>`
+         }
+
+      });
+      setInterval(()=>{
+        if(num==4){
+          console.log('str',str)
+          resolve(str)
+         }
+      },2000)
+
+
+    })
+  }
+
+  const onsubmit =async (values) => {
     const {articleContent, ...rest } = values
-    // var urlData =[]
-    // articleContent.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/g, function (match, capture) {
-    //   urlData.push(capture); // capture图片地址 img标签中src内容   match // img标签整体
-    // });
-    // console.log('urlData',urlData)
-    // urlData.map(async ele=>{
-    //   if(ele.split('')[ele.length-1]=='='){
-    //    const link=await base64toFile(ele)
-    //    return link
-    //   }
-    // })
+    const str= await fn(articleContent)
+    console.log('str',str)
 
 
     const param = {
@@ -213,21 +244,6 @@ export default (props) => {
       quillEditor.insertEmbed(range.index, 'image', link)
     }
   }
-
-
-// const  base64toFile=async (urlData) => {
-//     //去掉url的头，并转换为byte
-//     const bytes = window.atob(urlData.split(',')[1]);
-//     //处理异常,将ascii码小于0的转换为大于0
-//     const ab = new ArrayBuffer(bytes.length);
-//     const ia = new Uint8Array(ab);
-//     ia.forEach((i, index) => {
-//       ia[index] = bytes.charCodeAt(index);
-//     });
-//     const link=await upload(new Blob([ia], { type: urlData.split(',')[0].split(':')[1].split(';')[0] }),204)
-//     return link
-// };
-
 
   return (
     <DrawerForm
