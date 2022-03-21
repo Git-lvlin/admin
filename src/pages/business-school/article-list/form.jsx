@@ -16,6 +16,7 @@ import { history } from 'umi';
 import styles from './style.less'
 import 'react-quill/dist/quill.snow.css';
 import upload from '@/utils/upload'
+import { now } from 'lodash';
 
 
 Quill.register({
@@ -64,46 +65,38 @@ export default (props) => {
       ia[index] = bytes.charCodeAt(index);
     });
     //文件流转换成url路径
-    const link=await upload(new Blob([ia], { type: urlData.split(',')[0].split(':')[1].split(';')[0] }),204)
+    const link=await upload(new Blob([ia], { type: urlData.split(',')[0].split(':')[1].split(';')[0],name:+new Date() }),204)
     return link
 };
 
-  const fn=(val)=>{
-    return new Promise((resolve,reject)=>{
-      let num=0
-      const str=val.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/g, (match, capture) => {
-        if(capture.indexOf('base64') != -1){// capture图片地址 img标签中src内容   match // img标签整体
-          const link=await base64toFile(capture)
-          console.log('link',link)
-          num++
-          return `<img src='${link}'/>`
-         }else{
-           console.log('capture',capture)
-          num++
-          return `<img src=${capture}/>`
-         }
-
-      });
-      setInterval(()=>{
-        if(num==4){
-          console.log('str',str)
-          resolve(str)
-         }
-      },2000)
-
-
-    })
-  }
-
   const onsubmit =async (values) => {
     const {articleContent, ...rest } = values
-    const str= await fn(articleContent)
-    console.log('str',str)
+    const urlData=[]
+    articleContent.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/g, async (match, capture) => {
+      urlData.push(capture)
+    });
 
+    const linkArr=[]
+    for (var value of urlData)  {
+      if(value.indexOf('base64')!= -1){
+        const str=await base64toFile(value)
+        linkArr.push({old:value.slice(-20),new:str})
+      }else{
+        linkArr.push({old:value.slice(-20),new:value})
+      }
+    }
+
+    const str=articleContent.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/g,(match, capture) => {
+      const link=linkArr.find(ele=>{
+        return capture.slice(-20)==ele.old
+      })
+      return `<img src=${link?.new}/>`
+    }
+    );
 
     const param = {
       articleType:1,
-      articleContent:`<head><style>img{width:100% !important;}</style></head>${articleContent}`,
+      articleContent:`<head><style>img{width:100% !important;}</style></head>${str}`,
       ...rest
     }
     if(detailData?.id&&detailData?.edtil){
@@ -170,25 +163,6 @@ export default (props) => {
     })
   }
 
-    // 粘贴图片
-    // const customImgForPaste = async (node, delta) => {
-    //   console.log('delta',delta , node)
-      // delta.forEach(async (op) => {
-      //   console.log('op?.insert?.image',op?.insert?.image)
-      //   let file =await base64toFile(op?.insert?.image);
-      //   const formData = new FormData();
-      //   // formData.append('files', file);
-      //   // // 上传图片
-      //   // // 获取url
-      //   let quillEditor = ref?.current?.getEditor(); //获取到编辑器本身
-      //   // const cursorPosition = 99999; //粘贴的时候失去焦点拿不到光标位置
-      //   console.log('ref',quillEditor?.selection.savedRange.index,file)
-      //   const range = quillEditor?.selection.savedRange.index
-      //   // quillEditor.insertEmbed(range.index, 'image', file); //插入图片
-      //   // quillEditor.setSelection(range.index); //光标位置
-      // });
-    // };
-
   const modules={
     toolbar:{
       container:[
@@ -212,15 +186,6 @@ export default (props) => {
         image: ()=>imageHandler()
       }
     },
-    // clipboard: {
-    //   matchers: [
-    //     // 粘贴事件和setEditorContents有冲突报错，但在readOnly=true的时候可以正常使用
-    //     // 临时处理方式：需要setEditorContents的地方先将readOnly=true再使用，或者先去掉粘贴功能比如表单编辑的时候
-       
-    //     ['img', customImgForPaste],
-    //     // ['e=mc^2', (res,delta)=>{console.log('res',delta)}]
-    //   ],
-    // },
     'emoji-toolbar': true,
     // 'emoji-textarea': true,
     'emoji-shortname': true,
@@ -282,7 +247,11 @@ export default (props) => {
         }
       }
       onFinish={async (values) => {
-        await onsubmit(values);
+        try {
+          await onsubmit(values);
+        } catch (error) {
+          console.log('error',error)
+        }
         // 不返回不会关闭弹框
         // return true;
       }}
