@@ -159,6 +159,7 @@ const couponConstruction = (props) => {
   const getUncheckableItemValues = () => {
     const data = JSON.parse(JSON.stringify(window.yeahgo_area))
     data.unshift({ name: '全国', id: 0, pid: -1 })
+    console.log('data'.data)
     setAreaData(data)
   }
 
@@ -211,14 +212,14 @@ const couponConstruction = (props) => {
         className={styles.discountFrom}
       {...formItemLayout}
     >
-        <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>基本信息</span></h3>
+        <p className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>基本信息</span></p>
         {
           !id&& <ProFormText
           width="md"
           name="couponName"
           label='发行方式'
           fieldProps={{
-            value:publishType
+            value:publishType,
           }}
           readonly
           extra={ <a onClick={()=>{setVisible(true)}}>修改红包类型</a>}
@@ -229,7 +230,7 @@ const couponConstruction = (props) => {
         <ProFormText
           width="md"
           name="couponName"
-          label={<FormattedMessage id="formandbasic-form.title.label" />}
+          label='红包名称'
           rules={[
             { required: true, message: '请输入红包名称' },
             { validator: checkConfirm }
@@ -261,11 +262,11 @@ const couponConstruction = (props) => {
             <>
             <ProFormRadio.Group
               name="limitType"
-              label={<FormattedMessage id="formandbasic-form.each.limit" />}
+              label='每人限领'
               rules={[{ required: true, message: '请选择限领方式' }]}
               options={[
                 {
-                  label: <FormattedMessage id="formandbasic-form.quota" />, value: 2
+                  label: '限领', value: 2
                 }]}
             />
               <ProFormDependency name={['limitType']}>
@@ -278,7 +279,7 @@ const couponConstruction = (props) => {
                             width={120}
                             name="limitQuantity"
                           />
-                          <span><FormattedMessage id="formandbasic-form.zhang" /></span>
+                          <span>张</span>
                         </ProForm.Group>
                     </div>
                     );
@@ -346,22 +347,22 @@ const couponConstruction = (props) => {
         {
           types==5||DetaiIssueType == 5 && id?
           <ProForm.Item
-          name='allowArea'
-          label="可领红包区域"
-          rules={[{required: true, message: '请选择所在地区'}]}
-        >
+            name='allowArea'
+            label="可领红包区域"
+            rules={[{required: true, message: '请选择所在地区'}]}
+          >
           <AddressMultiCascader
             data={areaData}
             style={{ width: '640px' }}
             pId={-1}
-            preventOverflow
+            placeholder="请选择可领取红包的用户区域"
           />
         </ProForm.Item>
         :null
         }
 
 
-        <h3 className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>使用设置</span></h3>
+        <p className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>使用设置</span></p>
 
         {/* 使用范围 */}
         <UseScope id={id} type={types} choose={choose} form={form}/>

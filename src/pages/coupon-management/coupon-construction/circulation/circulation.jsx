@@ -22,19 +22,19 @@ const circulation=props=>{
     }
     const options=[
         {
-            label:<FormattedMessage id="formandbasic-form.issued.quantity" />,
+            label:'按总数量发行',
             value: 2,
         },
         {
             label:'不限制',
-            value: 2,
+            value: -1,
         }
     ]
     return(
         <>
          <ProFormRadio.Group
                 name="issueQuantityType"
-                label={<FormattedMessage id="formandbasic-form.circulation" />}
+                label='发行量'
                 options={options}
                 rules={[{ required: true, message: '请选择发行量' }]}
             />

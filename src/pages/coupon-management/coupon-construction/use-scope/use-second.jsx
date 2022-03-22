@@ -1,6 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Form, Button, Modal,Select, message} from 'antd';
-import { FormattedMessage } from 'umi';
 import { ModalForm,ProFormSelect,ProFormRadio,ProFormDependency} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import styles from '../style.less'
@@ -359,7 +358,7 @@ const useSecond=(props)=>{
             <>
                 <ProFormRadio.Group
                     name="goodsType"
-                    label={<FormattedMessage id="formandbasic-form.commodity"/>}
+                    label='商品范围'
                     rules={[{ required: true, message: '请选择商品范围' }]}
                     fieldProps={{
                         onChange: (e) => setPosition(e.target.value),
@@ -367,16 +366,16 @@ const useSecond=(props)=>{
                     }}
                     options={[
                     {
-                        label:<FormattedMessage id="formandbasic-form.allGoods" />,
+                        label:'全部商品',
                         value: 1,
                         disabled:choose==4||(parseInt(id)==id )&&DetailList.data?.memberType==4
                     },
                     {
-                        label: <FormattedMessage id="formandbasic-form.assignGoods" />,
+                        label: '指定商品',
                         value: 2,
                     },
                     {
-                        label: <FormattedMessage id="formandbasic-form.assignClass" />,
+                        label: '指定品类',
                         value: 3,
                         disabled:choose==4||(parseInt(id)==id )&&DetailList.data?.memberType==4
                     },

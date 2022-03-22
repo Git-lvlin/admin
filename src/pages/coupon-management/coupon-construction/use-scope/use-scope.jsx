@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { FormattedMessage,connect } from 'umi';
+import { connect } from 'umi';
 import ProForm,{ ProFormRadio,ProFormDependency} from '@ant-design/pro-form';
 import UseCollect from './use-collect'
 import { Radio } from 'antd';
@@ -18,7 +18,7 @@ const useScope=props => {
         <>
            <ProFormRadio.Group
                 name="useType"
-                label={<FormattedMessage id="formandbasic-form.usable.range" />}
+                label='使用范围'
                 rules={[ { required: true, message: '请选择使用范围' }]}
                 fieldProps={{
                     onChange: (e) => setPosition(e.target.value),
@@ -26,7 +26,7 @@ const useScope=props => {
                 }}
                 options={[
                     {
-                        label:<FormattedMessage id="formandbasic-form.Secret.Garden" />,
+                        label:'秒约商品',
                         value: 1,
                     },
                     {
