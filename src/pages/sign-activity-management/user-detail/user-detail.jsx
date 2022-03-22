@@ -24,12 +24,12 @@ const formItemLayout = {
 
 
 export default (props) => {
-    const {setVisible,visible,onClose,callback,id}=props
     const ref=useRef()
     const [detailList,setDetailList]=useState()
     const [visit, setVisit] = useState(false)
     const [detailVisible, setDetailVisible] = useState(false);
     const [orderId,setOrderId]=useState()
+    const id=props.location.query.memberId
     const columns= [
       {
         title: '序号',
@@ -139,34 +139,7 @@ export default (props) => {
     }
   }
     return (
-        <DrawerForm
-          title='用户红包明细'
-          onVisibleChange={setVisible}
-          visible={visible}
-          width={1200}
-          drawerProps={{
-            forceRender: true,
-            destroyOnClose: true,
-            onClose: () => {
-              onClose();
-            }
-          }}
-          submitter={
-            {
-              render: (props, defaultDoms) => {
-                return [
-                  <Button key='goback' type="default" onClick={() => {onClose();setVisible(false)}}>返回</Button>
-                ];
-              }
-            }
-          }
-          onFinish={async (values) => {
-            callback(true)
-            setVisible(false)
-          }
-          }
-        {...formItemLayout}
-      >
+      <PageContainer>
         <ProTable
           actionRef={ref}
           rowKey="id"
@@ -190,6 +163,9 @@ export default (props) => {
              <ExportHistory show={visit} setShow={setVisit} type={'red-packet-user-detail-export'} />,
             ],
           }}
+          toolBarRender={(_,record) => [
+            <Button key='goback' type="default" onClick={() => {history.goBack()}}>返回</Button>
+          ]}
           columns={columns}
         />
          {
@@ -199,6 +175,6 @@ export default (props) => {
           setVisible={setDetailVisible}
         />
         }
-      </DrawerForm>
+        </PageContainer>
     );
   };
