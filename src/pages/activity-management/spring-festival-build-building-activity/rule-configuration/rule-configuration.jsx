@@ -873,6 +873,7 @@ export default (props) =>{
               width="sm"
               name="sendPlayTime"
               label="每人赠送游戏机会"
+              labelCol={2}   
               readonly={id&&falg}
               rules={[{ required: true, message: '请输入' }]}
               fieldProps={{
@@ -885,6 +886,7 @@ export default (props) =>{
               width="sm"
               name="sendPlayTime"
               label="每人赠送游戏机会"
+              labelCol={2}
               rules={[
                 { required: true, message: '请输入' },
                 {validator: checkConfirm}
@@ -1068,6 +1070,7 @@ export default (props) =>{
               width="lg"
               name="prizeNum"
               label="被邀请人玩游戏"
+              labelCol={2}
               readonly={id&&falg}
               rules={[{ required: true, message: '请输入' }]}
               fieldProps={{
@@ -1079,6 +1082,7 @@ export default (props) =>{
               width="lg"
               name="prizeNum"
               label="被邀请人玩游戏"
+              labelCol={2}
               rules={[
                 { required: true, message: '请输入' },
                 {validator: checkConfirm}
