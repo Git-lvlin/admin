@@ -149,9 +149,9 @@ export default (props) => {
         obj.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrices)
       }
 
-      if (wholesaleFreights) {
-        obj.wholesaleFreight = amountTransform(wholesaleFreights)
-      }
+      // if (wholesaleFreights) {
+      // }
+      obj.wholesaleFreight = amountTransform(wholesaleFreights)
 
       if (isFreeFreights || isFreeFreights === 0) {
         obj.isFreeFreight = isFreeFreights
