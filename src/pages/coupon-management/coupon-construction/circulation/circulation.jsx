@@ -25,10 +25,10 @@ const circulation=props=>{
             label:'按总数量发行',
             value: 2,
         },
-        {
-            label:'不限制',
-            value: -1,
-        }
+        // {
+        //     label:'不限制',
+        //     value: -1,
+        // }
     ]
     return(
         <>

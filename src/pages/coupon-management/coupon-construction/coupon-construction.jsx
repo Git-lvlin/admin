@@ -79,7 +79,7 @@ const couponConstruction = (props) => {
     }
   }, [types])
   //红包名称验证规则
-  const checkConfirm = (value) => {
+  const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
       if (value && value.length > 50) {
         await reject('红包名称不超过50个字符')
@@ -345,7 +345,7 @@ const couponConstruction = (props) => {
         {/* 可领红包群体 */}
         <AssignCrowd id={id} type={types} callback={(current)=>setChoose(current)} />
 
-        {
+        {/* {
           types==5||DetaiIssueType == 5 && id?
           <ProForm.Item
             name='allowArea'
@@ -360,7 +360,7 @@ const couponConstruction = (props) => {
           />
         </ProForm.Item>
         :null
-        }
+        } */}
 
 
         <p className={styles.head}><span style={{borderBottom:'5px solid #666666'}}>使用设置</span></p>
