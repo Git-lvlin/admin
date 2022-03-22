@@ -149,9 +149,9 @@ export default (props) => {
         obj.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrices)
       }
 
-      if (wholesaleFreights) {
-        obj.wholesaleFreight = amountTransform(wholesaleFreights)
-      }
+      // if (wholesaleFreights) {
+      // }
+      obj.wholesaleFreight = amountTransform(wholesaleFreights)
 
       if (isFreeFreights || isFreeFreights === 0) {
         obj.isFreeFreight = isFreeFreights
@@ -202,6 +202,7 @@ export default (props) => {
         wholesaleFreight: amountTransform(wholesaleFreight),
         wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
         goodsSaleType: goods.goodsSaleType,
+        skuName: goods.skuName,
       },
       isLossMoney: isLossMoney.current ? 1 : 0,
       primaryImages: urlsTransform(primaryImages),
@@ -1064,6 +1065,11 @@ export default (props) => {
             </>
             :
             <>
+              <Form.Item
+                label="规格名称"
+              >
+                {goods.skuName}
+              </Form.Item>
               <ProFormText
                 name="supplierSkuId"
                 label="货号"
