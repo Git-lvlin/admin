@@ -7,11 +7,16 @@ import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-for
 import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
 import DeleteModal from './delete-modal'
+import Configuration from './data-board-configuration'
 
 
 
 export default () => {
     const ref=useRef()
+    const [visible, setVisible] = useState(false);
+    const [userId, setUserId] = useState(false);
+    const [edtil,setEdtil]=useState(false)
+    const [edit,setEdit]=useState(false)
     const columns= [
       {
         title: '接口编码',
@@ -35,8 +40,8 @@ export default () => {
             //     id={record.id} 
             //     title={'操作确认'}
             // />,
-            <a key='detail' onClick={()=>history.push('/dc-management/data-board/data-board-configuration?id='+record.id+'&edtil=true')}>查看详情</a>,
-            <a key='edit' onClick={()=>history.push('/dc-management/data-board/data-board-configuration?id='+record.id+'&edit=true')}>编辑</a>,
+            <a key='detail' onClick={()=>{setVisible(true);setUserId(record.id);setEdtil(true);}}>查看详情</a>,
+            <a key='edit' onClick={()=>{setVisible(true);setUserId(record.id);setEdit(true);}}>编辑</a>,
         ],
       }, 
     ];
@@ -55,6 +60,15 @@ export default () => {
         ]}
           columns={columns}
         />
+        {visible&&<Configuration
+          visible={visible}
+          setVisible={setVisible}
+          id={userId}
+          edit={edit}
+          edtil={edtil} 
+          callback={() => { ref.current.reload(); setUserId(null);setEdit(null);setEdtil(null)}}
+          onClose={() => { ref.current.reload(); setUserId(null);setEdit(null);setEdtil(null)}}
+        />}
         </PageContainer>
     );
   };

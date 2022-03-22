@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Input, Form, message,Button,InputNumber} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import { couponEverydaySub,couponEverydayEdit,couponEverydayDetail,couponEverydaySelList } from '@/services/activity-management/everyday-red-packet-activity';
-import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect,DrawerForm } from '@ant-design/pro-form';
 import { FormattedMessage, formatMessage } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
@@ -32,6 +32,7 @@ const formItemLayout = {
 
 
 export default (props) =>{
+  const {setVisible,visible,onClose,callback,id}=props
   const [dataSource, setDataSource] = useState(() => data);
   const [editableKeys, setEditableRowKeys] = useState(() =>
     data.map((item) => item.id),
@@ -42,7 +43,6 @@ export default (props) =>{
   const [falg,setFalg]=useState(true)
   const [form] = Form.useForm();
   const [detailList,setDetailList]=useState()
-  let id = props.location.query.id
  
   useEffect(() => {
     if(!dataSource[0].couponIdOne){
@@ -99,7 +99,8 @@ export default (props) =>{
         couponEverydayEdit({id:id,...values}).then(res=>{
           if(res.code==0){
             message.success('编辑成功');
-            history.push('/activity-management/everyday-red-packet-activity/activity-list')
+            setVisible(false)
+            callback(true)
           }
         })
       }else{
@@ -109,7 +110,8 @@ export default (props) =>{
         couponEverydaySub({...values}).then(res=>{
           if(res.code==0){
             message.success('添加成功'); 
-            history.push('/activity-management/everyday-red-packet-activity/activity-list')
+            setVisible(false)
+            callback(true)
           }
         })
       }
@@ -175,14 +177,19 @@ export default (props) =>{
   //   return current && current < moment().startOf('day');
   // }
   return (
-    <PageContainer>
-      <ProForm
+      <DrawerForm
+        title={id?'详情':'每日首单红包规则设置'}
+        onVisibleChange={setVisible}
+        visible={visible}
+        width={1200}
         form={form}
-        onFinish={async (values)=>{
-            await  onsubmit(values);
-          return true;
-         } }
-         {...formItemLayout} 
+        drawerProps={{
+          forceRender: true,
+          destroyOnClose: true,
+          onClose: () => {
+            onClose();
+          }
+        }}
         submitter={{
           render: (props, doms) => {
             return [
@@ -194,8 +201,8 @@ export default (props) =>{
                       detailList?.data?.status==1?
                       <>
                         {
-                          falg?<Button style={{marginLeft:'100px'}} type="primary" onClick={() => { setFalg(false) }}>编辑</Button>
-                          :<Button style={{margin:'100px'}} type="primary" key="submit" onClick={() => {
+                          falg?<Button  type="primary" onClick={() => { setFalg(false) }}>编辑</Button>
+                          :<Button  type="primary" key="submit" onClick={() => {
                             props.form?.submit?.()
                           }}>
                             保存
@@ -205,7 +212,7 @@ export default (props) =>{
                       :null
                     }
                   </>
-                  :<Button style={{margin:'100px'}} type="primary" key="submit" onClick={() => {
+                  :<Button  type="primary" key="submit" onClick={() => {
                     props.form?.submit?.()
                   }}>
                     保存
@@ -215,7 +222,11 @@ export default (props) =>{
             ];
           }
         }}
+        onFinish={async (values)=>{
+          await  onsubmit(values);
+        }}
         className={styles.everyday_packet_rule}
+        {...formItemLayout}
       >
         <ProFormText
               width="md"
@@ -361,7 +372,6 @@ export default (props) =>{
             <p className={styles.back}>最近一次操作人：{detailList?.data?.adminName}     {detailList?.data?.updateTime}</p>
             :null
           }  
-      </ProForm>
-      </PageContainer>
+      </DrawerForm>
   )
 }

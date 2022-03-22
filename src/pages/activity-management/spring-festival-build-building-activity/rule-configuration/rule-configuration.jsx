@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Input, Form, message,Button,InputNumber,Spin,Space,DatePicker} from 'antd';
 import { saveBHActiveConfig,getActiveConfigById } from '@/services/activity-management/spring-festival-build-building-activity';
-import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDateTimePicker,ProFormSelect} from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDateTimePicker,ProFormSelect,DrawerForm} from '@ant-design/pro-form';
 import { FormattedMessage, formatMessage } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from 'moment';
@@ -28,6 +28,7 @@ const formItemLayout = {
 
 
 export default (props) =>{
+  const {setDetailVisible,detailVisible,onClose,callback,id}=props
   const [falg,setFalg]=useState(true)
   const [form] = Form.useForm();
   const [detailList,setDetailList]=useState()
@@ -46,7 +47,6 @@ export default (props) =>{
   const [tierEnd1,setTierEnd1]=useState()
   const [tierEnd2,setTierEnd2]=useState()
   const [tierEnd3,setTierEnd3]=useState()
-  let id = props.location.query.id
   const FromWrap = ({ value, onChange, content, right }) => (
     <div style={{ display: 'flex' }}>
       <div>{content(value, onChange)}</div>
@@ -300,14 +300,16 @@ export default (props) =>{
         saveBHActiveConfig(params).then(res=>{
           if(res.code==0){
             message.success('编辑成功'); 
-            history.push('/activity-management/spring-festival-build-building-activity/spring-festival-list')
+            setDetailVisible(false)
+            callback(true)
           }
         })
       }else{
         saveBHActiveConfig(params).then(res=>{
           if(res.code==0){
             message.success('添加成功'); 
-            history.push('/activity-management/spring-festival-build-building-activity/spring-festival-list')
+            setDetailVisible(false)
+            callback(true)
           }
         })
       }
@@ -323,13 +325,19 @@ export default (props) =>{
   return (
     <PageContainer>
       <Spin spinning={loading}>
-      <ProForm
+      <DrawerForm
+        title={id?'详情':'规则配置'}
+        onVisibleChange={setDetailVisible}
+        visible={detailVisible}
+        width={1400}
         form={form}
-        onFinish={async (values)=>{
-            await  onsubmit(values);
-          return true;
-         } }
-         {...formItemLayout} 
+        drawerProps={{
+          forceRender: true,
+          destroyOnClose: true,
+          onClose: () => {
+            onClose();
+          }
+        }}
         submitter={{
           render: (props, doms) => {
             return [
@@ -341,14 +349,14 @@ export default (props) =>{
                       detailList?.data?.status==1?
                       <>
                         {
-                          falg?<Button style={{marginLeft:'100px'}} type="primary" onClick={() => { setFalg(false) }}>编辑</Button>
+                          falg?<Button style={{marginRight:'10px'}} type="primary" onClick={() => { setFalg(false) }}>编辑</Button>
                           :<>
-                            <Button style={{margin:'100px'}} type="primary" key="submit" onClick={() => {
+                            <Button style={{marginRight:'10px'}} type="primary" key="submit" onClick={() => {
                               props.form?.submit?.()
                             }}>
                               保存
                             </Button>
-                            <Button style={{margin:'30px'}} type="default" onClick={()=>setVisible(true)}>
+                            <Button style={{marginRight:'10px'}} type="default" onClick={()=>setVisible(true)}>
                               终止活动
                             </Button>
                           </>
@@ -357,18 +365,32 @@ export default (props) =>{
                       :null
                     }
                   </>
-                  :<Button style={{margin:'100px'}} type="primary" key="submit" onClick={() => {
+                  :<Button style={{marginRight:'10px'}} type="primary" key="submit" onClick={() => {
                     props.form?.submit?.()
                   }}>
                     保存
                   </Button>
                 }
-                <Button type="default" style={{marginLeft:'80px'}} onClick={() => { history.push('/activity-management/spring-festival-build-building-activity/spring-festival-list') }}>返回</Button>
+                <Button type="default"  onClick={() => { setDetailVisible(false);onClose() }}>返回</Button>
               </>  
             ];
           }
         }}
+        onFinish={async (values)=>{
+          await  onsubmit(values);
+        }}
+        initialValues={{
+          prizeNotice:[{
+            imageUrl: '',
+            name: ''
+          }],
+          ruleItems: [{
+            imageUrl: '',
+            name: ''
+          }]
+        }}
         className={styles.rule_configuration}
+        {...formItemLayout}
       >
         <ProFormText
             width="md"
@@ -851,6 +873,7 @@ export default (props) =>{
               width="sm"
               name="sendPlayTime"
               label="每人赠送游戏机会"
+              labelCol={2}   
               readonly={id&&falg}
               rules={[{ required: true, message: '请输入' }]}
               fieldProps={{
@@ -863,6 +886,7 @@ export default (props) =>{
               width="sm"
               name="sendPlayTime"
               label="每人赠送游戏机会"
+              labelCol={2}
               rules={[
                 { required: true, message: '请输入' },
                 {validator: checkConfirm}
@@ -1046,6 +1070,7 @@ export default (props) =>{
               width="lg"
               name="prizeNum"
               label="被邀请人玩游戏"
+              labelCol={2}
               readonly={id&&falg}
               rules={[{ required: true, message: '请输入' }]}
               fieldProps={{
@@ -1057,6 +1082,7 @@ export default (props) =>{
               width="lg"
               name="prizeNum"
               label="被邀请人玩游戏"
+              labelCol={2}
               rules={[
                 { required: true, message: '请输入' },
                 {validator: checkConfirm}
@@ -1169,7 +1195,7 @@ export default (props) =>{
             <p className={styles.back}>最近一次操作人：{detailList?.data?.lastEditor}     {moment(detailList?.data?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
             :null
           }  
-       </ProForm>
+       </DrawerForm>
       </Spin>
       {
         visible&&<EndModel visible={visible} setVisible={setVisible}  endId={id} canBlack={(e)=>{

@@ -410,7 +410,7 @@ export default (props) => {
               readonly={detailData?.id&&detailData?.edtil}
               // rules={[{ required: true, message: '请设置文章详情!' }]} 
             >
-              <ReactQuill   modules={modules} ref={ref}/>
+              <ReactQuill modules={modules} ref={ref}/>
             </Form.Item>
             <div className={styles.mark}>*</div>
           </div>
@@ -419,4 +419,3 @@ export default (props) => {
     </DrawerForm>
   );
 };
-

@@ -2,9 +2,25 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { couponCcodebase,couponCodebaseEnd } from '@/services/coupon-management/coupon-codebase';
+import { DrawerForm} from '@ant-design/pro-form';
 import XLSX from 'xlsx'
 
+const formItemLayout = {
+  labelCol: { span: 2 },
+  wrapperCol: { span: 14 },
+  layout: {
+    labelCol: {
+      span: 10,
+    },
+    wrapperCol: {
+      span: 14,
+    },
+  }
+};
+
+
 export default props => {
+  const {setCodeVisible,codeVisible,onClose,callback,id}=props
   const ref=useRef()
   const [couponInfo,setCouponInfo]=useState([])
   const [libraryId,setLibraryId]=useState(1)
@@ -159,9 +175,8 @@ export default props => {
     
   ];
  useEffect(()=>{
-  let id=props.location.query.id
   setLibraryId(parseInt(id))
- },[])
+ },[id])
 //导出数据
 const exportExcel = (searchConfig) => {
   couponCcodebase({id:libraryId,...searchConfig.form.getFieldsValue()}).then(res => {
@@ -212,6 +227,39 @@ const onIpute=(res)=>{
 
   return (
     <>
+     <DrawerForm
+        title='码库'
+        onVisibleChange={setCodeVisible}
+        visible={codeVisible}
+        width={1500}
+        drawerProps={{
+          forceRender: true,
+          destroyOnClose: true,
+          onClose: () => {
+            onClose();
+          }
+        }}
+        submitter={
+          {
+            render: (props, defaultDoms) => {
+              return [
+                <Button style={{marginLeft:'250px'}} type="primary" key="submit" onClick={() => {
+                  props.form?.submit?.()
+                }}>
+                  确定
+                </Button>,
+                 <Button key='goback' type="default" onClick={() => {onClose();setCodeVisible(false)}}>返回</Button>
+              ];
+            }
+          }
+        }
+        onFinish={async (values) => {
+          onClose()
+          setCodeVisible(false)
+        }
+        }
+        {...formItemLayout}
+    >
      <ProTable
         toolBarRender={false}
         search={false}
@@ -251,6 +299,7 @@ const onIpute=(res)=>{
         rowSelection={{}}
         tableAlertOptionRender={onIpute}
       />
+      </DrawerForm>
       </>
   );
 };

@@ -1,23 +1,16 @@
 import React, { useState} from 'react';
 import { ModalForm,ProFormTextArea} from '@ant-design/pro-form';
+import {  couponVerify } from '@/services/coupon-management/coupon-audit';
 import { Button,message } from 'antd';
 import { history } from 'umi';
 
 export default props=>{
-    const {record,type,text,InterFace,title,boxref,label,status,id}=props
-    const [byid,setByid]=useState()
-    const [visible, setVisible] = useState(false);
-    const Termination=(record)=>{
-        setByid(record&&record.id)
-        setVisible(true)
-    }
+    const {visible,setVisible,boxref,status,id}=props
     return (
         <ModalForm
-            title={title}
-            key={byid}
+            title={status==3?'审核驳回':'操作确认'}
             onVisibleChange={setVisible}
             visible={visible}
-            trigger={<Button style={{marginLeft:type==1?'70px':'20px'}} type={type==1?"primary":"default"}  onClick={()=>Termination(record)}>{label}</Button>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
@@ -25,8 +18,9 @@ export default props=>{
                 ];
             },
             }}
+            style={{zIndex:'999'}}
             onFinish={async (values) => {
-                InterFace({id:id,status:status,content:values.content}).then(res=>{
+                couponVerify({id:id,status:status,content:values.content}).then(res=>{
                     if(res.code==0){
                         setVisible(false)   
                         boxref&&boxref.current?.reload()
@@ -38,7 +32,7 @@ export default props=>{
                 })
             }}
         >
-        <p>{text}</p>
+        <p>{status==4?'确认审核通过吗？':null}</p>
         {
             status==3?
             <ProFormTextArea

@@ -1,6 +1,7 @@
 import React, { useState} from 'react';
 import ProForm,{ ModalForm,ProFormTextArea,ProFormText} from '@ant-design/pro-form';
 import { Button,message,Form } from 'antd';
+import { configTest} from '@/services/resource'
 import { history } from 'umi';
 
 
@@ -19,8 +20,7 @@ const formItemLayout = {
   };
 
 export default props=>{
-    const {InterFace}=props
-    const [visible, setVisible] = useState(false);
+    const {visible,setVisible}=props
     const [detailList,setDetailList]=useState()
     const Termination=()=>{
         setVisible(true)
@@ -30,7 +30,6 @@ export default props=>{
             title='测试结果验证'
             onVisibleChange={setVisible}
             visible={visible}
-            trigger={<Button style={{marginLeft:'250px'}} type="primary" key="submit"  onClick={()=>Termination()}> 测试 </Button>}
             submitter={{
             render: (props, defaultDoms) => {
                 return [
@@ -51,7 +50,7 @@ export default props=>{
                         responseTemplate:JSON.parse(values.responseTemplate),
                         ...rest
                     }
-                    InterFace(pranams).then(res=>{
+                    configTest(pranams).then(res=>{
                         setDetailList(res.data)   
                     })
                 } catch (error) {

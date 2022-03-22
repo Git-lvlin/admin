@@ -8,10 +8,11 @@ import PrizeSet from './prize-set/prize-set'
 import Upload from '@/components/upload';
 import { saveActiveConfig } from '@/services/blind-box-activity-management/blindbox-save-active-config';
 import { getActiveConfigById } from '@/services/blind-box-activity-management/blindbox-get-active-config-list';
-import ProForm, { ProFormText, ProFormRadio,ProFormDateRangePicker,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio,ProFormDateRangePicker,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect,DrawerForm } from '@ant-design/pro-form';
 import moment from 'moment';
 import styles from './style.less'
 import { PageContainer } from '@ant-design/pro-layout';
+
 
 const formItemLayout = {
   labelCol: { span: 4 },
@@ -34,13 +35,13 @@ const FromWrap = ({ value, onChange, content, right }) => (
 )
 
 export default (props) => {
+  const {setVisible,visible,onClose,callback,id}=props
   const [detailList,setDetailList]=useState()
   const [goosList,setGoosList]=useState()
   const [submi,setSubmi]=useState(false)
   const [form] = Form.useForm()
   const [falg,setFalg]=useState(true)
   const [del,setDel]=useState('')
-  let id = props.location.query.id
   useEffect(() => {
     if (id) {
       getActiveConfigById({id:id}).then(res=>{
@@ -158,7 +159,8 @@ export default (props) => {
       }else{
         saveActiveConfig(values).then(res=>{
           if (res.code == 0) {
-            history.push('/blind-box-activity-management/blind-box-management-list')
+            setVisible(false)
+            callback(true)
             if(id){
               setDel(false)
               message.success('编辑成功');
@@ -183,9 +185,19 @@ export default (props) => {
   }
   return (
     <PageContainer>
-      <ProForm
+       <DrawerForm
+        title={id?'详情':'盲盒规则配置'}
+        onVisibleChange={setVisible}
+        visible={visible}
+        width={1400}
         form={form}
-        {...formItemLayout}
+        drawerProps={{
+          forceRender: true,
+          destroyOnClose: true,
+          onClose: () => {
+            onClose();
+          }
+        }}
         submitter={
           {
             render: (props, defaultDoms) => {
@@ -196,7 +208,7 @@ export default (props) => {
                   <>
                      {
                        detailList?.status==1?
-                       <div  style={{marginLeft:'250px'}}>
+                       <div>
                        {
                          falg?<Button key='edit' type="primary"  onClick={()=>{
                            setFalg(false)
@@ -215,7 +227,7 @@ export default (props) => {
                      }
                   </>
                   :
-                    <Button style={{marginLeft:'250px'}} type="primary" key="submit" onClick={() => {
+                    <Button type="primary" key="submit" onClick={() => {
                       props.form?.submit?.()
                       setSubmi(true)
                     }}>
@@ -227,12 +239,9 @@ export default (props) => {
             }
           }
         }
-        onFinish={async (values) => {
-            await onsubmit(values);
-            return true;
-        }
-        }
-        className={styles.bindBoxRuleSet}
+        onFinish={async (values)=>{
+          await  onsubmit(values);
+        }}
         initialValues={{
           prizeNotice:[{
             imageUrl: '',
@@ -243,6 +252,8 @@ export default (props) => {
             name: ''
           }]
         }}
+        className={styles.bindBoxRuleSet}
+        {...formItemLayout}
       >
         {/* 活动名称 */}
         <ProFormText
@@ -471,7 +482,7 @@ export default (props) => {
         id&&falg?null
         :<p className={styles.hint}>提示：关闭活动后，将清空用户的账户记录，请谨慎操作。</p>
       }
-      </ProForm >
+      </DrawerForm>
     </PageContainer>
   );
 };

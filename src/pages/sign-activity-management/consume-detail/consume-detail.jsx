@@ -93,7 +93,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a key='detail' onClick={()=>history.push('/sign-activity-management/user-detail?id='+record.memberId)}>查看此用户明细</a>
+            <a key='detail' onClick={()=>{history.push('/sign-activity-management/user-detail?memberId='+record.memberId)}}>查看此用户明细</a>
         ],
       }, 
     ];
