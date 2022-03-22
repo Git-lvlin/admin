@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Input, Form, message,Button,InputNumber} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import { addConfig,updateConfig,findById,configTest,findFunctions } from '@/services/resource'
-import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText,DrawerForm,ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import DiscountsModel from './discounts-model'
 import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
@@ -57,6 +57,7 @@ const formItemLayout = {
 
 
 export default (props) =>{
+  const {setVisible,visible,onClose,callback,id,edtil,edit}=props
   const [dataSource, setDataSource] = useState(data);
   const [dataSource2, setDataSource2] = useState(data2);
   const [dataSource3, setDataSource3] = useState(data3);
@@ -66,10 +67,7 @@ export default (props) =>{
   const [onselect,setOnselect]=useState([])
   const [form] = Form.useForm();
   const [boardData,setBoardData]=useState()
-  let id = props.location.query.id
-  let edtil = props.location.query.edtil
-  let edit = props.location.query.edit
- 
+  const [discountsvisible, setDiscountsVisible] = useState(false);
   useEffect(() => {
     findFunctions({}).then(res=>{
       const data={}
@@ -332,41 +330,56 @@ export default (props) =>{
   ];
   return (
     <PageContainer>
-      <ProForm
-        form={form}
-        onFinish={async (values)=>{
-            await  onsubmit(values);
-          return true;
-         } }
-         {...formItemLayout} 
-        submitter={{
-          render: (props, doms) => {
-            return [
-            <div key='sub'>
-            {
-              edtil?null:
-              <>
-              <DiscountsModel
-                key='discount' 
-                InterFace={configTest}
-              />
-              <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
-                props.form?.submit?.()
-              }}>
-                保存
-              </Button>
-              </>
+        <DrawerForm
+          title='数据报表配置'
+          form={form}
+          onVisibleChange={setVisible}
+          visible={visible}
+          width={1400}
+          drawerProps={{
+            forceRender: true,
+            destroyOnClose: true,
+            onClose: () => {
+              onClose();
             }
-            </div>,
-            <Button style={{marginLeft:'80px'}} type="default" key="goback" onClick={() => {
-              history.push('/dc-management/data-board')
-            }}>
-              返回
-            </Button>
-            ];
-          }
-        }}
-        className={styles.data_board_configuration}
+          }}
+          submitter={{
+            render: (props, doms) => {
+              return [
+              <div key='sub'>
+              {
+                edtil?null:
+                <>
+                <Button 
+                  style={{marginLeft:'250px'}} 
+                  type="primary"  
+                  key='discount' 
+                  onClick={()=>setDiscountsVisible(true)}
+                  > 
+                  测试 
+                </Button>
+                <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
+                  props.form?.submit?.()
+                }}>
+                  保存
+                </Button>
+                </>
+              }
+              </div>,
+              <Button style={{marginLeft:'80px'}} type="default" key="goback" onClick={() => {
+                setVisible(false)
+                onClose()
+              }}>
+                返回
+              </Button>
+              ];
+            }
+          }} 
+          onFinish={async (values)=>{
+           await  onsubmit(values);
+          }}
+          className={styles.data_board_configuration}
+        {...formItemLayout}
       >
         <ProFormText
             width="md"
@@ -495,7 +508,12 @@ export default (props) =>{
               readonly={id&&edtil}
             />
           }
-      </ProForm>
-      </PageContainer>
+          {discountsvisible&&<DiscountsModel
+            setVisible={setDiscountsVisible}
+            visible={discountsvisible}
+          />
+          }
+      </DrawerForm>
+    </PageContainer>
   )
 }

@@ -8,6 +8,7 @@ import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import Detail from '@/pages/order-management/normal-order/detail';
 import moment from 'moment';
+import UserDetail from '../user-detail'
 
 
 
@@ -17,6 +18,8 @@ export default () => {
     const [visit, setVisit] = useState(false)
     const [detailVisible, setDetailVisible] = useState(false);
     const [orderId,setOrderId]=useState()
+    const [visible, setVisible] = useState(false);
+    const [userId, setUserId] = useState(false);
     const columns= [
       {
         title: '序号',
@@ -93,7 +96,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a key='detail' onClick={()=>history.push('/sign-activity-management/user-detail?id='+record.memberId)}>查看此用户明细</a>
+            <a key='detail' onClick={()=>{setUserId(record.memberId);setVisible(true)}}>查看此用户明细</a>
         ],
       }, 
     ];
@@ -153,6 +156,13 @@ export default () => {
           setVisible={setDetailVisible}
         />
         }
+        {visible&&<UserDetail
+          visible={visible}
+          setVisible={setVisible}
+          id={userId} 
+          callback={() => { ref.current.reload(); setUserId(null);}}
+          onClose={() => { ref.current.reload(); setUserId(null);}}
+        />}
         </PageContainer>
     );
   };
