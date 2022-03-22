@@ -123,7 +123,7 @@ const List = (props) => {
         </div>
         <div className={styles.th}>
           <span>分类名称</span>
-          {parentId === 0 && <span className={styles.fresh}>生鲜</span>}
+          {parentId === 0 && <span className={styles.fresh}>生鲜类型</span>}
           <span className={styles.state}>状态</span>
           <span className={styles.action}>操作</span>
         </div>
@@ -141,7 +141,7 @@ const List = (props) => {
                       <img src={item.gcIcon} />
                       <div className={styles.gcName}>{item.gcName}</div>
                       {parentId === 0 && <div className={styles.info}>
-                        {item.fresh !== 0 ? '是' : '否'}
+                        {{ 0: '非生鲜类目', 1: '精装生鲜类目', 2: '散装生鲜类目' }[item.fresh]}
                       </div>}
                       <div
                         className={styles.state}
