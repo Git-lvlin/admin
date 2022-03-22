@@ -346,7 +346,7 @@ const Detail = (props) => {
           label="证明文件"
         >
           {
-            detailData?.details?.credentialList.map(item => (<Image width={50} height={50} src={item} key={item} />))
+            detailData?.details?.credentialList.map(item => (<Image style={{ marginRight: 10 }} width={50} height={50} src={item} key={item} />))
           }
         </Form.Item>}
         <ProFormText

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Input, Form, Divider, message, Button,Space } from 'antd';
-import { FormattedMessage, formatMessage } from 'umi';
+import { useState, useEffect } from 'react';
+import { Form, message, Button } from 'antd';
+import { formatMessage } from 'umi';
 import CouponType from './coupon-type/coupon-type'
 import UseScope from './use-scope/use-scope'
 import PeriodValidity from './period-validity/period-validity'
@@ -79,7 +79,7 @@ const couponConstruction = (props) => {
     }
   }, [types])
   //红包名称验证规则
-  const checkConfirm = (rule, value, callback) => {
+  const checkConfirm = (value) => {
     return new Promise(async (resolve, reject) => {
       if (value && value.length > 50) {
         await reject('红包名称不超过50个字符')
@@ -90,6 +90,7 @@ const couponConstruction = (props) => {
       }
     })
   }
+  
   const onsubmit = (values) => {
       values.issueType=parseInt(types)|| id&&DetaiIssueType//发放类型
       const parmas={

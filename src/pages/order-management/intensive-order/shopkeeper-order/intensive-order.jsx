@@ -307,7 +307,7 @@ const TableList = () => {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         }
-        <div style={{ height: Math.max(window.innerHeight - 550, 500), overflowY: 'auto', marginBottom: 10 }}>
+        <div style={{ marginBottom: 10 }}>
           {
             data.map(item => (
               <div className={styles.list} key={item.id}>
@@ -347,7 +347,7 @@ const TableList = () => {
                     </Descriptions>
                   </div>
                   {/* <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div> */ }
-                  <div div style = {{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单', 7: '待分享' }[item.status]}</div>
+                  <div style = {{ textAlign: 'center' }}>{{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单', 7: '待分享' }[item.status]}</div>
                   <div style={{ textAlign: 'center' }}>
                     {/* <a onClick={() => { history.push(`/order-management/intensive-order/shopkeeper-order-detail/${item.id}`) }}>详情</a> */}
                     <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
