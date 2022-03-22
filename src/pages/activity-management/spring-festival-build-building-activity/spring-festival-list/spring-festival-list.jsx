@@ -8,11 +8,14 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
+import RuleConfiguration from '../rule-configuration'
 
 
 
 export default () => {
     const ref=useRef()
+    const [visible,setVisible]=useState(false)
+    const [detailId,setDetailId]=useState()
     const columns= [
       {
         title: 'id',
@@ -99,7 +102,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a key='detail' onClick={()=>history.push('/activity-management/spring-festival-build-building-activity/rule-configuration?id='+record.id)}>查看详情</a>
+            <a key='detail' onClick={()=>{setVisible(true);setDetailId(record.id)}}>查看详情</a>
         ],
       }, 
     ];
@@ -121,7 +124,7 @@ export default () => {
           request={getActiveConfigList}
           scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
           toolBarRender={()=>[
-            <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/activity-management/spring-festival-build-building-activity/rule-configuration')} type="primary">
+            <Button key='add' icon={<PlusOutlined />}  onClick={()=>setVisible(true)} type="primary">
                 添加活动
             </Button>
         ]}
@@ -132,6 +135,15 @@ export default () => {
             showQuickJumper: true,
           }}
         />
+        {
+          visible&&<RuleConfiguration
+          setDetailVisible={setVisible}
+          detailVisible={visible}
+          id={detailId} 
+          callback={() => { ref.current.reload(); setDetailId(null);}}
+          onClose={() => { ref.current.reload(); setDetailId(null);}}
+          />
+        }
         </PageContainer>
     );
   };
