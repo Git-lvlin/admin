@@ -17,6 +17,7 @@ export default {
   'menu.user-management.disable-user-list': '禁用列表',
   'menu.user-management.user-detail': '用户详情',
   'menu.user-management.user-relationship': '用户关系',
+  'menu.user-management.user-feedback': '用户反馈',
   'menu.user-management.new-poster': '海报管理',
   'menu.user-management.new-poster-new': '(新)海报管理',
 

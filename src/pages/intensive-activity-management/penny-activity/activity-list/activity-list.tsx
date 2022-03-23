@@ -1,23 +1,41 @@
-import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
+import { useState, useRef } from 'react';
+import { Button} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import { getActiveConfigList} from '@/services/intensive-activity-management/penny-activity';
-import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@ant-design/pro-layout';
-import { history,connect } from 'umi';
+import { history } from 'umi';
 import moment from 'moment'
 import EndModel from './end-model'
 import AddedActivity from '../added-activity'
+import type { ProColumns,ActionType } from '@ant-design/pro-table';
 
+type activityItem={
+  id:number;
+  name:string;
+  startTime:number;
+  endTime:number;
+  shoperLimitAll:number;
+  buyerLimit:number;
+  joinShopType:number;
+  joinBuyerType:number;
+  goodsCount:number;
+  actStatus:number;
+  statusDisplay:string
+}
 
+// interface ItemProps {
+//   id:number;
+//   statusDisplay:string;
+//   status: number;
+// }
 
 export default () => {
-    const ref=useRef()
-    const [visible, setVisible] = useState(false);
-    const [formVisible, setFormVisible] = useState(false);
-    const [pennyId,setPennyId]=useState()
-    const columns= [
+    const ref=useRef<ActionType>()
+    const [visible, setVisible] = useState<boolean>(false);
+    const [formVisible, setFormVisible] = useState<boolean>(false);
+    const [pennyId,setPennyId]=useState<number>()
+    const columns:ProColumns<activityItem>[]= [
       {
         title: '活动编号',
         dataIndex: 'id',
@@ -106,7 +124,7 @@ export default () => {
         title: '操作',
         key: 'option',
         valueType: 'option',
-        render:(text, record, _, action)=>[
+        render:(text, record:any, _, action)=>[
             <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/activity-detail?id='+record.id)}>详情</a>,
             <div key='editor'>
              {
@@ -123,8 +141,8 @@ export default () => {
         ],
       }, 
     ];
-    const postData=(data)=>{
-      const arr=data.map(ele=>({
+    const postData=(data: any[])=>{
+      const arr=data.map((ele)=>({
         shoperLimitAll:ele.content?.shoperLimitAll,
         shoperLimitOnece:ele.content?.shoperLimitOnece,
         buyerLimit:ele.content?.buyerLimit,
@@ -137,7 +155,7 @@ export default () => {
     }
     return (
       <PageContainer>
-        <ProTable
+        <ProTable<activityItem>
           actionRef={ref}
           rowKey="id"
           options={false}
@@ -168,16 +186,16 @@ export default () => {
           formVisible={formVisible}
           setFormVisible={setFormVisible}
           id={pennyId} 
-          callback={() => { ref.current.reload(); setPennyId(null) }}
-          onClose={() => { ref.current.reload(); setPennyId(null) }}
+          callback={() => { ref.current&&ref.current.reload(); setPennyId(NaN) }}
+          onClose={() => { ref.current&&ref.current.reload(); setPennyId(NaN) }}
         />}
         {
           visible&&<EndModel 
           visible={visible} 
           setVisible={setVisible}  
           pennyId={pennyId} 
-          canBlack={()=>{ref.current.reload();setPennyId(null)}}
-          onClose={()=>{ref.current.reload();setPennyId(null)}}
+          canBlack={()=>{ref.current&&ref.current.reload();setPennyId(NaN)}}
+          onClose={()=>{ref.current&&ref.current.reload();setPennyId(NaN)}}
           />
         }
         </PageContainer>
