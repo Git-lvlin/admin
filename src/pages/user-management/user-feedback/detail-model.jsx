@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import { ModalForm} from '@ant-design/pro-form';
+import { ModalForm,ProFormTextArea} from '@ant-design/pro-form';
 import { Button, message,Typography,Descriptions, Space } from 'antd';
 import { feedbackReply,feedbackDetail} from '@/services/user-management/user-feedback';
 import { history,connect } from 'umi';
@@ -52,7 +52,7 @@ export default props=>{
         
           }}
       >
-        <Title style={{ marginBottom: -10 }} level={5}>时尚名称 2022-09-15 14:34</Title>
+        <p  level={5}>{detailData?.createName}} 2022-09-15 14:34</p>
           <Descriptions style={{ flex: 1 }}>
             <Descriptions.Item label="联系手机">{detailData?.mobile}</Descriptions.Item>
             <Descriptions.Item label="问题类型">
@@ -63,7 +63,7 @@ export default props=>{
             </Descriptions.Item>
             <Descriptions.Item label="APP版本">{detailData?.version}</Descriptions.Item>
             <Descriptions.Item label="状态">
-            {/* {{1: '待处理',2: '已处理'}}[{detailData?.status}] */}
+            {{1: '待处理',2: '已处理'}[detailData?.status]}
             </Descriptions.Item>
           </Descriptions>
           <Descriptions style={{ flex: 1 }}>
@@ -76,6 +76,15 @@ export default props=>{
               {detailData?.orderId}
             </Descriptions.Item>
           </Descriptions>
+          <p>回复：</p>
+          <ProFormTextArea 
+            width="xl" 
+            name="content" 
+            fieldProps={{
+              maxLength:500,
+              showCount:true
+            }} 
+          />
       </ModalForm>
     )
 }
