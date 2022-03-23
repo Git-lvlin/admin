@@ -3,6 +3,11 @@
 .bindBoxRuleSet{
   background-color: #fff;
   padding: 20px;
+  :global {
+    .ant-form-item-control-input-content {
+      max-width: none;
+    }
+  }
   .card {
     margin-bottom: 24px;
   }
@@ -97,6 +102,11 @@
     padding: 20px 20px 20px 250px;
     background: #F2F2F2;
     margin: 10px;
+    :global {
+      .ant-form-item-control-input-content {
+        max-width: none;
+      }
+    }
   }
   .activity_Layout{
     padding-left: 200px;

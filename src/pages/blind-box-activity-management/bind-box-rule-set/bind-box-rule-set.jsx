@@ -189,7 +189,7 @@ export default (props) => {
         title={id?'详情':'盲盒规则配置'}
         onVisibleChange={setVisible}
         visible={visible}
-        width={1400}
+        width={1500}
         form={form}
         drawerProps={{
           forceRender: true,
