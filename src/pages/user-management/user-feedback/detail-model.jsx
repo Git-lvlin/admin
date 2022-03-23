@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import { ModalForm,ProFormTextArea} from '@ant-design/pro-form';
-import { Button, message,Typography,Descriptions, Space } from 'antd';
+import { Button, message,Typography,Descriptions, Space,Image } from 'antd';
 import { feedbackReply,feedbackDetail} from '@/services/user-management/user-feedback';
 import { history,connect } from 'umi';
 import { ExclamationCircleFilled } from '@ant-design/icons';
@@ -52,7 +52,7 @@ export default props=>{
         
           }}
       >
-        <p  level={5}>{detailData?.createName}} 2022-09-15 14:34</p>
+        <p><Image src={detailData?.createIcon} height={50} width={50} /> {detailData?.createName} 2022-09-15 14:34</p>
           <Descriptions style={{ flex: 1 }}>
             <Descriptions.Item label="联系手机">{detailData?.mobile}</Descriptions.Item>
             <Descriptions.Item label="问题类型">
