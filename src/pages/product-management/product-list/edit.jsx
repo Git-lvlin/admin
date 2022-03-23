@@ -1325,7 +1325,7 @@ export default (props) => {
                 placeholder="请输入数字 可用库存小于等于此值时提醒"
                 disabled
                 fieldProps={{
-                  addonAfter: `/${goods.unit}`
+                  addonAfter: `${goods.unit}`
                 }}
               />
               {/* <ProFormText
@@ -1351,7 +1351,7 @@ export default (props) => {
         placeholder="请输入单SKU起售数量"
         rules={[{ required: true, message: '请输入单SKU起售数量' }]}
         fieldProps={{
-          addonAfter: `/${goods.unit}`
+          addonAfter: `${goods.unit}`
         }}
       />
       <ProFormText
@@ -1359,7 +1359,7 @@ export default (props) => {
         label="单SKU单次最多零售购买数量"
         placeholder="请输入单SKU单次最多零售购买数量"
         fieldProps={{
-          addonAfter: `/${goods.unit}`
+          addonAfter: `${goods.unit}`
         }}
       />
       <ProFormText
@@ -1367,7 +1367,7 @@ export default (props) => {
         label="基础销量"
         placeholder="请输入基础销量"
         fieldProps={{
-          addonAfter: `/${goods.unit}`
+          addonAfter: `${goods.unit}`
         }}
       />
 
