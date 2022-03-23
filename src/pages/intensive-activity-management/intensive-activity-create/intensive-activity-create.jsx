@@ -272,6 +272,8 @@ const IntensiveActivityCreate = () => {
         price: selectItem[0].price,
       })
 
+      formRef.current.validateFields(['price']);
+
       const { freshSpecial } = formRef.current.getFieldsValue()
 
       if (selectItem.length && freshSpecial === 0) {
@@ -500,8 +502,8 @@ const IntensiveActivityCreate = () => {
               >
                 {selectItem[0].wholesaleFreight}元
               </Form.Item>
-              <ProFormDependency name={['freshCommission']}>
-                {({ freshCommission }) => (
+              <ProFormDependency name={['freshCommission', 'price']}>
+                {({ freshCommission, price }) => (
                   <>
                     <ProFormText
                       label="售价上浮比"
@@ -528,6 +530,14 @@ const IntensiveActivityCreate = () => {
                       validateFirst
                       rules={[
                         { required: true, message: '请输入' },
+                        () => ({
+                          validator(_, value) {
+                            if (price > selectItem[0].marketPriceDisplay) {
+                              return Promise.reject(new Error('集约价不能大于市场价'));
+                            }
+                            return Promise.resolve();
+                          },
+                        })
                       ]}
                       fieldProps={{
                         addonAfter: `元/${selectItem[0].unit}`,

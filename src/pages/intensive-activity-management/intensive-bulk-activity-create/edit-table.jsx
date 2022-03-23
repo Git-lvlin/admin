@@ -361,6 +361,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
                   debounceFetcher({ record, recordList: dataSource })
                 }} />
                 {record.price < price && <div style={{ color: 'red' }}>集约价不能小于{price}元</div>}
+                {record.price > record.marketPriceDisplay && <div style={{ color: 'red' }}>集约价不能大于市场价</div>}
               </>
             )}
           </FormWrap>
