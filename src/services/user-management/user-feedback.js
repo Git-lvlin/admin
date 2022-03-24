@@ -25,7 +25,7 @@ export const feedbackDetail = (params = {}, options = {}) => {
       data: params,
       ...options
     });
-  }
+}
   
 export const feedbackReply = (params = {}, options = {}) => {
 return request('/auth/java-admin/public/feedback/reply', {
@@ -33,4 +33,12 @@ return request('/auth/java-admin/public/feedback/reply', {
     data: params,
     ...options
 });
+}
+
+export const selAllVersion = (params = {}, options = {}) => {
+  return request('/auth/java-admin/cms/appversion/selAllVersion', {
+      method: 'POST',
+      data: params,
+      ...options
+  });
 }
