@@ -72,6 +72,8 @@ const ExpressNews = () => {
       title: '跳转链接',
       dataIndex: 'actionUrl',
       valueType: 'text',
+      width: 400,
+      ellipsis: true,
       search: false,
     },
     {
