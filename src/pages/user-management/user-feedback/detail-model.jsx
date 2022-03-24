@@ -76,7 +76,7 @@ export default props=>{
           </Descriptions>
           <Descriptions contentStyle={{width:'300px'}}>
             <Descriptions.Item label="反馈内容">
-              <pre>{detailData?.content}</pre>
+              <pre className={styles.line_feed}>{detailData?.content}</pre>
             </Descriptions.Item>
           </Descriptions>
           <List

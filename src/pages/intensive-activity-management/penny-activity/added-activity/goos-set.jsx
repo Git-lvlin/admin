@@ -9,6 +9,7 @@ import { ModalForm,ProFormText } from '@ant-design/pro-form';
 import _ from 'lodash'
 import moment from 'moment';
 import EndModel from './end-model'
+import RepertoryModel from './repertory-model'
 
 const formItemLayout = {
   labelCol: { span: 3 },
@@ -24,7 +25,7 @@ const formItemLayout = {
 };
 
 const FromWrap = ({ value, onChange, content, right }) => (
-  <div style={{ display: 'flex',flexDirection:'column' }}>
+  <div style={{ display: 'flex',flexDirection:'column'}}>
     <div>{content(value, onChange)}</div>
     <div>{right(value)}</div>
   </div>
@@ -192,6 +193,7 @@ export default (props) => {
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
   const [endVisible, setEndVisible] = useState(false);
+  const [repertoryVisible,setRepertoryVisible]=useState(false)
   const [pennyId,setPennyId]=useState()
   useEffect(()=>{
     if(id){
@@ -288,6 +290,14 @@ export default (props) => {
       },
     },
     {
+      title: '活动库存',
+      dataIndex: 'totalStockNum',
+      hideInSearch: true,
+      render: (_,data)=> {
+        return <p>{_}{data?.unit}</p>
+      },
+    },
+    {
       title: '活动价',
       dataIndex: 'price',
       hideInSearch: true,
@@ -303,7 +313,7 @@ export default (props) => {
                   onChange={onChange}
                 />
         }
-        right={(value) =><p>元/{_?.entry?.unit}</p>}
+        right={(value) =><p style={{marginLeft:'10px'}}>元/{_?.entry?.unit}</p>}
         />
       },
       render: (_,r) =>{
@@ -341,7 +351,8 @@ export default (props) => {
                 :
                 <a key='start' onClick={()=>{setPennyId({wsId:record.wsId,type:3});setEndVisible(true)}}>启用</a>
               }
-          </span>
+          </span>,
+          <a key='start' onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑库存</a>
       ]
       },
       editable:false,
@@ -385,6 +396,7 @@ export default (props) => {
             <p>共{dataSource?.length}款商品</p>
         ]}
         style={{marginBottom:'30px'}}
+        // scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         pagination={{
           pageSize: 5
         }}
@@ -428,6 +440,15 @@ export default (props) => {
         }}
         onClose={()=>{ref.current.reload();setPennyId(null)}}
         dataSource={dataSource}
+        />
+      }
+      {
+        repertoryVisible&&<RepertoryModel
+        visible={repertoryVisible} 
+        setVisible={setRepertoryVisible}  
+        record={pennyId} 
+        callback={()=>{ref.current.reload();setPennyId(null)}}
+        onClose={()=>{ref.current.reload();setPennyId(null)}}
         />
       }
     </>
