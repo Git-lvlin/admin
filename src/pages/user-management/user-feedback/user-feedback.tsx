@@ -136,6 +136,9 @@ export default () => {
         dataIndex: 'version',
         valueType: 'text',
         hideInSearch: true,
+        render:(_)=>{
+          return <p>V{_}</p>
+        }
       },
       {
         title: 'APP版本',
