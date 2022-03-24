@@ -86,6 +86,8 @@ const Member = () => {
       title: '跳转链接',
       dataIndex: 'actionUrl',
       hideInSearch: true,
+      width: 400,
+      ellipsis: true,
     },
     {
       title: '状态',
