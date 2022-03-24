@@ -3,7 +3,7 @@ import { Button,Tabs,Image,Form,Modal,Select,message,Table,Switch} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { productPage,productUpdateStatus,productDelete,productEdit,productAdd } from '@/services/sign-activity-management/sign-red-packet-product';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import DiscountsModel from './discounts-model'
 import { amountTransform } from '@/utils/utils'
 import { PlusOutlined } from '@ant-design/icons';
@@ -136,7 +136,7 @@ export default () => {
         rowKey="id"
         headerTitle="签到红包可用商品配置"
         options={false}
-        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         request={productPage}
         search={{
           defaultCollapsed: false,

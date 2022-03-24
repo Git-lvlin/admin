@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { findPage } from '@/services/activity-management/spring-festival-build-building-activity';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import BindingModel from './binding-model'
 import BindinglogModel from './bindinglog-model'
 
@@ -62,7 +62,7 @@ export default () => {
                ...dom.reverse()
             ],
           }}
-          scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           columns={columns}
           pagination={{
             pageSize: 10,

@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { withdrawPage } from '@/services/activity-management/spring-festival-build-building-activity';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { amountTransform } from '@/utils/utils'
 
 
@@ -149,7 +149,7 @@ export default () => {
                ...dom.reverse()
             ],
           }}
-          scroll={{ y: Math.max(window.innerHeight - 650, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           columns={columns}
           pagination={{
             pageSize: 10,

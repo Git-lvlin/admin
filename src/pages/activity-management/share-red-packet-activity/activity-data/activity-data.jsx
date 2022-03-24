@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { couponInviteLogList } from '@/services/activity-management/share-red-packet-activity';
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
@@ -143,7 +143,7 @@ export default () => {
           headerTitle='活动数据明细'
           options={false}
           request={couponInviteLogList}
-          scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,

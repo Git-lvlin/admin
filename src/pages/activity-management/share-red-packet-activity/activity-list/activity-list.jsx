@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { couponInviteList } from '@/services/activity-management/share-red-packet-activity';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { history,connect } from 'umi';
 import ShareRule from '../share-packet-rule'
 
@@ -70,7 +70,7 @@ export default () => {
           actionRef={ref}
           rowKey="id"
           request={couponInviteList}
-          scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           toolBarRender={()=>[
             <Button key='add' icon={<PlusOutlined />}  onClick={()=>setVisible(true)} type="primary">
                 添加活动
