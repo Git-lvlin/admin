@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { feedbackList} from '@/services/user-management/user-feedback';
+import { feedbackList,selAllVersion} from '@/services/user-management/user-feedback';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Image,Space } from 'antd';
 import DetailModel from './detail-model'
@@ -26,6 +26,20 @@ export default () => {
     const ref=useRef<ActionType>()
     const [visible, setVisible] = useState<boolean>(false);
     const [detailId,setDetailId]=useState<number>()
+    const [onselect,setOnselect]=useState<{}>([])
+    useEffect(()=>{
+      selAllVersion({})?.then(res=>{
+        if(res.code==0){
+          const obj={}
+          res.data.map((ele:any,index:number)=>{
+            if(ele.name!=='0.0.0'){
+              obj[ele.name]=`V${ele.name}`
+            }
+          })
+          setOnselect(obj)
+        }
+      })
+    },[])
     const columns:ProColumns<activityItem>[]= [
       {
         title: '反馈用户',
@@ -59,10 +73,10 @@ export default () => {
         dataIndex: 'parentType',
         valueType: 'text',
         valueEnum: {
-          0: '全部类型',
-          1: '功能异常',
-          2: '客户投诉',
-          3: '使用建议'
+          '': '全部类型',
+          '功能异常': '功能异常',
+          '客户投诉': '客户投诉',
+          '使用建议': '使用建议'
         },
         hideInTable: true,
       },
@@ -92,15 +106,16 @@ export default () => {
         dataIndex: 'content',
         valueType: 'text',
         hideInSearch: true,
+        ellipsis:true
       },
       {
         title: '系统',
-        dataIndex: 'model',
+        dataIndex: 'platform',
         valueType: 'select',
         valueEnum: {
-          0: '所有系统',
-          1: 'IOS',
-          2: '安卓',
+          '': '所有系统',
+          'IOS': 'IOS',
+          'ANDROID': '安卓',
         },
         hideInTable: true,
       },
@@ -126,25 +141,17 @@ export default () => {
         title: 'APP版本',
         dataIndex: 'version',
         valueType: 'select',
-        valueEnum: {
-          0: 'V1.0',
-          1: 'V1.1',
-          2: 'V2.0',
-          3: 'V2.1',
-          4: 'V2.2',
-          5: 'V2.3',
-          6: 'V2.4',
-          7: 'V2.5',
-        },
+        valueEnum: onselect,
+        hideInTable: true,
       },
       {
         title: ' 状态',
         dataIndex: 'status',
         valueType: 'select',
         valueEnum: {
-          // 0: '全部状态',
+          '': '全部状态',
           0: '进行中',
-          2: '已处理',
+          1: '已处理',
         },
         hideInTable: true,
       },
@@ -152,14 +159,12 @@ export default () => {
         title: ' 状态',
         dataIndex: 'status',
         valueType: 'text',
-        valueEnum: {
-          0: '进行中',
-          1: '已处理',
-        },
         hideInSearch: true,
-        render:(_,data)=>{
+        render:(_)=>{
            if(_==0){
-             
+             return <p style={{color:'red'}}>进行中</p>
+           }else if(_==1){
+             return <p style={{color:'#999999'}}>已处理</p>
            }
         }
       },
@@ -172,18 +177,6 @@ export default () => {
         ],
       }, 
     ];
-    const postData=(data: any[])=>{
-    //   const arr=data.map((ele)=>({
-    //     shoperLimitAll:ele.content?.shoperLimitAll,
-    //     shoperLimitOnece:ele.content?.shoperLimitOnece,
-    //     buyerLimit:ele.content?.buyerLimit,
-    //     joinShopType:ele.content?.joinShopType,
-    //     joinBuyerType:ele.content?.joinBuyerType,
-    //     goodsCount:ele.content?.goodsCount,
-    //     ...ele
-    //   }))
-      return data
-    }
     return (
       <PageContainer>
         <ProTable<activityItem>
@@ -191,7 +184,6 @@ export default () => {
           rowKey="id"
           options={false}
           request={feedbackList}
-          postData={postData}
           search={{
           defaultCollapsed: false,
           labelWidth: 100,
