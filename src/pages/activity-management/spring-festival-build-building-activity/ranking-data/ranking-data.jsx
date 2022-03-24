@@ -139,6 +139,10 @@ const InviteRegister=(props) => {
             }
           }}
           columns={columns}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
         />
          {listVisible&&<UploadingList 
             visible={listVisible} 
