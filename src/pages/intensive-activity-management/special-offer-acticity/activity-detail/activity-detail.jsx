@@ -146,7 +146,7 @@ export default props => {
     },
     {
       title: '最大限购量',
-      dataIndex: 'maxNum',
+      dataIndex: 'buyLimit',
       hideInSearch: true,
     },
     {
