@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import { ModalForm,ProFormText,ProFormRadio} from '@ant-design/pro-form';
 import { Button, message } from 'antd';
 import { changeStatus } from '@/services/intensive-activity-management/penny-activity';
@@ -20,7 +20,9 @@ const formItemLayout = {
 
 export default props=>{
     const {record,visible,setVisible,callback,onClose}=props
+    useEffect(()=>{
 
+    },[])
     return (
         <ModalForm
           onVisibleChange={setVisible}
@@ -77,6 +79,11 @@ export default props=>{
             }
             ]}
 
+        />
+        <ProFormText
+          width="md"
+          name="name"
+          label='操作1分钱活动库存数量'
         />
         <ProFormText
           width="md"
