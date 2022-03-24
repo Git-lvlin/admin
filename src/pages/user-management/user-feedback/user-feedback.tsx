@@ -74,7 +74,7 @@ export default () => {
         render:(_,data)=>{
           return <>
             <p>{_}</p>
-            <p>{data['type']}</p>
+            <p style={{color:'red'}}>[{data['type']}]</p>
           </>
         }
       },
@@ -142,8 +142,8 @@ export default () => {
         dataIndex: 'status',
         valueType: 'select',
         valueEnum: {
-          0: '全部状态',
-          1: '待处理',
+          // 0: '全部状态',
+          0: '进行中',
           2: '已处理',
         },
         hideInTable: true,
@@ -151,12 +151,17 @@ export default () => {
       {
         title: ' 状态',
         dataIndex: 'status',
-        valueType: 'select',
+        valueType: 'text',
         valueEnum: {
-          1: '待处理',
-          2: '已处理',
+          0: '进行中',
+          1: '已处理',
         },
         hideInSearch: true,
+        render:(_,data)=>{
+           if(_==0){
+             
+           }
+        }
       },
       {
         title: '操作',

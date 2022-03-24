@@ -43,8 +43,8 @@ export default props=>{
           onFinish={async (values) => {
             feedbackReply({feedBackId:detailId,...values}).then(res=>{
             if(res.code==0){
-              setVisible(false) 
-              canBlack(true) 
+              // setVisible(false) 
+              // canBlack(true) 
               message.success('操作成功')
               return true;
             }
@@ -52,11 +52,11 @@ export default props=>{
         
           }}
       >
-        <p><Image src={detailData?.createIcon} height={50} width={50} /> {detailData?.createName} 2022-09-15 14:34</p>
+        <p><Image src={detailData?.createIcon} height={50} width={50} />&nbsp;&nbsp;{detailData?.createName} &nbsp;&nbsp;{detailData?.createTime}</p>
           <Descriptions style={{ flex: 1 }}>
             <Descriptions.Item label="联系手机">{detailData?.mobile}</Descriptions.Item>
             <Descriptions.Item label="问题类型">
-              <Space>{detailData?.parentType} {detailData?.type}</Space>
+              <Space>{detailData?.parentType} <span style={{color:'red'}}>[{detailData?.type}]</span></Space>
             </Descriptions.Item>
             <Descriptions.Item label="系统和型号">
               {detailData?.system} {detailData?.model}
