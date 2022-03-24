@@ -3,7 +3,7 @@ import { Button, Space, Tooltip,Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { getStoreList,applyConditionPage } from '@/services/intensive-store-management/store-list';
 import { history } from 'umi';
 import AddressCascader from '@/components/address-cascader';
@@ -633,7 +633,7 @@ const StoreList = (props) => {
         request={
           storeType == 'freshStores'?applyConditionPage:getStoreList
         }
-        scroll={{ x: '100vw', y: Math.max(window.innerHeight - 680, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [

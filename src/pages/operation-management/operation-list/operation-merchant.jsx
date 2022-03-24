@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { Button, Space, Modal } from 'antd';
 import { getCommonList, statusSwitch, detailExt, deloperation, resetPwd } from '@/services/operation-management/operation-list'
 import { history } from 'umi';
@@ -260,7 +260,7 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={getCommonList}
-        scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           labelWidth: 130,

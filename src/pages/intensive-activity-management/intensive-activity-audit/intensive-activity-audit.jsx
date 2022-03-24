@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { Button, Card, Space, Table, Spin, Modal } from 'antd';
 import { getWholesaleSku } from '@/services/intensive-activity-management/intensive-activity-list'
 import { history } from 'umi';
@@ -227,7 +227,7 @@ const TableList = () => {
           params={{
             wholesaleAuditStatus:0
           }}
-          scroll={{ y: Math.max(window.innerHeight - 350, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           request={getWholesaleAuditList}
           expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} /> }}
           search={{

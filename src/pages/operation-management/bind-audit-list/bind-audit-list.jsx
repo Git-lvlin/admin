@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Button, Radio, Space, Modal, Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { bindingOperationApply, approve, refuse } from '@/services/operation-management/bind-audit-list';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import {
@@ -173,7 +173,7 @@ const BindAuditList = () => {
           fullScreen: false,
           setting: false,
         }}
-        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         actionRef={actionRef}
         formRef={formRef}
         params={params}

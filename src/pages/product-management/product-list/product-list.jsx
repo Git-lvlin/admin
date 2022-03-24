@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Tooltip, Table, Spin, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import * as api1 from '@/services/product-management/product-list';
 import * as api2 from '@/services/product-management/product-list-purchase';
@@ -526,7 +526,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: '100vw', y: Math.max(window.innerHeight - 700, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
           labelWidth: 140,
           defaultCollapsed: false,

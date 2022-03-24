@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ProCard from '@ant-design/pro-card';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import SelectedProduct from './selected-product';
 import IndexProduct from './index-product';
 

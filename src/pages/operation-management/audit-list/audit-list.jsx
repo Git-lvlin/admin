@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
 import { getAuditedList } from '@/services/operation-management/audit-list'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Audit from './audit';
 import moment from 'moment';
 
@@ -159,7 +159,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       />
 
       {modalVisible &&

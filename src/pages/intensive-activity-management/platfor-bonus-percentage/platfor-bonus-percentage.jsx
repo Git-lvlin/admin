@@ -1,6 +1,6 @@
 import React, { useEffect, useState,useRef } from 'react'
 import { Spin, Empty, Switch,Form,InputNumber,Tooltip } from 'antd'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { categoryList,updateCategoryPercent } from '@/services/intensive-activity-management/platfor-bonus-percentage'
 import Journal from './journal';
 import styles from './style.less'

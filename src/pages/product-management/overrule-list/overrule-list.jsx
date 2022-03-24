@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Tooltip, Table, Spin } from 'antd';
+import { Button, Table, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { PageContainer } from '@/components/PageContainer';
 import * as api from '@/services/product-management/product-list';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
@@ -249,7 +248,7 @@ const TableList = () => {
           selectType: 1,
           goodsVerifyState: 2,
         }}
-        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         actionRef={actionRef}
         formRef={formRef}
         request={api.rejectList}

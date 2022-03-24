@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { amountTransform } from '@/utils/utils'
 import { remindStatisticsList } from '@/services/intensive-activity-management/intensive-remind-statistics';
 
@@ -56,7 +56,7 @@ return(
       rowKey="id"
       options={false}
       request={remindStatisticsList}
-      scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       search={{
         defaultCollapsed: false,
         labelWidth: 100,

@@ -6,7 +6,7 @@ import Edit from './form';
 import DetailList from './activity-form';
 import { cmsWeekList, cmsWeekStatusSub } from '@/services/cms/member/weekend-revelry';
 import { ACTION_TYPE } from '@/utils/text';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 
 const CrazyDate = () => {
   const actionRef = useRef();
@@ -117,7 +117,7 @@ const CrazyDate = () => {
       options={false}
       columns={columns}
       actionRef={actionRef}
-      scroll={{ y: Math.max(window.innerHeight - 400, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       request={cmsWeekList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

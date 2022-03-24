@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { Button, Card, Space, Table, Spin, Modal, Tooltip } from 'antd';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import {
@@ -467,7 +467,7 @@ const TableList = () => {
           rowKey="wholesaleId"
           options={false}
           request={getWholesaleList}
-          scroll={{ x: '100vw', y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} wholesaleAuditStatus={_.wholesaleAuditStatus} /> }}
           search={{
             defaultCollapsed: false,

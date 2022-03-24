@@ -3,7 +3,7 @@ import { Input, Form, message,Button,InputNumber,Spin,Space,Switch} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import { getMemberShopDeliveryCoverage,setMemberShopDeliveryCoverage } from '@/services/intensive-store-management/community-store-setting';
 import ProForm, { ProFormSwitch } from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import styles from './style.less'
 import './style.less'
 import { amountTransform } from '@/utils/utils'

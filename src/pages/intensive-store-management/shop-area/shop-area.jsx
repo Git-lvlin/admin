@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {ProTable,EditableProTable} from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import AddressMultiCascader from '@/components/address-multi-cascader'
 import AddressCascader from '@/components/address-cascader'
 import { Form,Button, message,Tabs,InputNumber,Space } from 'antd';
@@ -297,7 +297,7 @@ const ShopArea = () => {
         formRef={formRef}
         request={getApplicableArea}
         recordCreatorProps={false}
-        scroll={{ y: Math.max(window.innerHeight - 680, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         toolBarRender={() => <div className="tips">{tips}</div>}
         search={{
           defaultCollapsed: false,

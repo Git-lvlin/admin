@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Button, Radio, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { operationList } from '@/services/order-management/intensive-purchase-order';
 import moment from 'moment';
 import Export from '@/pages/export-excel/export'

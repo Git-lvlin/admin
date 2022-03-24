@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Table, Tooltip, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import * as api from '@/services/product-management/product-log';
 import GcCascader from '@/components/gc-cascader'
@@ -199,7 +199,7 @@ const TableList = () => {
         params={{
           selectType: 1,
         }}
-        scroll={{ y: Math.max(window.innerHeight - 570, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         request={api.logList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
