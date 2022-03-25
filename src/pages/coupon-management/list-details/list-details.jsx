@@ -6,6 +6,7 @@ import ProTable from '@ant-design/pro-table';
 import { amountTransform } from '@/utils/utils'
 import { history } from 'umi';
 import { CaretRightFilled } from '@ant-design/icons';
+import { DrawerForm} from '@ant-design/pro-form';
 import styles from './style.less'
 
 const formItemLayout = {
@@ -24,8 +25,8 @@ const formItemLayout = {
 
 
 export default props => {
+  const {setDetailVisible,detailsVisible,onClose,callback,id}=props
   const ref = useRef()
-  const id = props.location.query.id
   const [form] = Form.useForm()
   const [detailData, setDetailData] = useState([])
   const [loading, setLoading] = useState(false);
@@ -116,13 +117,41 @@ export default props => {
       <Spin
         spinning={loading}
       >
-        <Form
-          form={form}
-          {...formItemLayout}
-          className={styles.list_details}
-        >
-          <h1><CaretRightFilled /> 查看详情</h1>
-          <Button className={styles.goback} key='goback' type="default" onClick={() => history.goBack()}>返回</Button>
+      <DrawerForm
+        title='查看详情'
+        onVisibleChange={setDetailVisible}
+        visible={detailsVisible}
+        form={form}
+        width={1500}
+        drawerProps={{
+          forceRender: true,
+          destroyOnClose: true,
+          onClose: () => {
+            onClose();
+          }
+        }}
+        submitter={
+          {
+            render: (props, defaultDoms) => {
+              return [
+                <Button style={{marginLeft:'250px'}} type="primary" key="submit" onClick={() => {
+                  props.form?.submit?.()
+                }}>
+                  确定
+                </Button>,
+                 <Button key='goback' type="default" onClick={() => {onClose();setDetailVisible(false)}}>返回</Button>
+              ];
+            }
+          }
+        }
+        onFinish={async (values) => {
+          onClose()
+          setDetailVisible(false)
+        }
+        }
+        className={styles.list_details}
+      {...formItemLayout}
+    >
           <div className={styles.msg}>
             <h3 className={styles.head}>基本信息</h3>
             <Form.Item
@@ -321,7 +350,7 @@ export default props => {
               </pre>
             </Form.Item>
           </div>
-        </Form>
+        </DrawerForm>
       </Spin>
 
     </>

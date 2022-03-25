@@ -370,7 +370,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       },
     },
     {
-      title: '实际盈亏(元)',
+      title: '毛利盈亏(元)',
       dataIndex: 'profit',
       valueType: 'text',
       hideInSearch: true,

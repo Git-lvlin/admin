@@ -8,12 +8,16 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { history,connect } from 'umi';
 import moment from 'moment'
 import EndModel from './end-model'
+import AddActivity from '../add-activity'
+import ActivityDetail from '../activity-detail'
 
 
 
 export default () => {
     const ref=useRef()
     const [visible, setVisible] = useState(false);
+    const [formVisible, setFormVisible] = useState(false);
+    const [detailVisible,setDetailVisible]=useState(false)
     const [pennyId,setPennyId]=useState()
     const columns= [
       {
@@ -71,11 +75,11 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a key='detail' onClick={()=>history.push('/intensive-activity-management/special-offer-acticity/activity-detail?id='+record.id)}>详情</a>,
+            <a key='detail' onClick={()=>{setDetailVisible(true);setPennyId(record.id)}}>详情</a>,
             <div key='editor'>
             {
               record.statusDisplay=='未开始'||record.statusDisplay=='进行中'?
-              <a  onClick={()=>history.push('/intensive-activity-management/special-offer-acticity/add-activity?id='+record.id)}>编辑</a>:null
+              <a  onClick={()=>{setPennyId(record.id);setFormVisible(true)}}>编辑</a>:null
             }
            </div>,
             <div key='stop' style={{display:record.statusDisplay=='已结束'?'none':'block'}}>
@@ -109,7 +113,7 @@ export default () => {
           request={getActiveConfigList}
           postData={postData}
           toolBarRender={()=>[
-            <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/intensive-activity-management/special-offer-acticity/add-activity')} type="primary">
+            <Button key='add' icon={<PlusOutlined />}  onClick={()=>setFormVisible(true)} type="primary">
                 新建
             </Button>
         ]}
@@ -120,6 +124,13 @@ export default () => {
             showQuickJumper: true,
           }}
         />
+        {formVisible&& <AddActivity
+          formVisible={formVisible}
+          setFormVisible={setFormVisible}
+          id={pennyId} 
+          callback={() => { ref.current.reload(); setPennyId(null) }}
+          onClose={() => { ref.current.reload(); setPennyId(null) }}
+        />}
          {
           visible&&<EndModel 
           visible={visible} 
@@ -129,6 +140,13 @@ export default () => {
           onClose={()=>{ref.current.reload();setPennyId(null)}}
           />
         }
+        {detailVisible&& <ActivityDetail
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+          id={pennyId} 
+          callback={() => { ref.current.reload(); setPennyId(null) }}
+          onClose={() => { ref.current.reload(); setPennyId(null) }}
+        />}
         </PageContainer>
     );
   };

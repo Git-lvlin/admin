@@ -102,7 +102,7 @@ const Detail = () => {
 
     },
     {
-      title: `实际盈亏(元/${detailData?.sku?.[0]?.unit})`,
+      title: `毛利盈亏(元/${detailData?.sku?.[0]?.unit})`,
       dataIndex: 'profit',
       render: (_) => amountTransform(_, '/')
     },
@@ -237,7 +237,7 @@ const Detail = () => {
               <Descriptions.Item label="活动创建人">
                 {detailData?.wholesale?.createAdminName}
               </Descriptions.Item>
-              <Descriptions.Item label="实际盈亏(元)">
+              <Descriptions.Item label="毛利盈亏(元)">
                 {detailData?.sku?.[0]?.profit / 100}元/{detailData?.sku?.[0]?.unit}
               </Descriptions.Item>
               <Descriptions.Item label="箱柜单位量">

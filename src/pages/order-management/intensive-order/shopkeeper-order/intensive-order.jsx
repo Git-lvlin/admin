@@ -56,6 +56,7 @@ const TableList = () => {
       phone: phoneNumber,
       startCreateTime: startTime,
       orderSn: subOrderSn,
+      orderStatus: rest.status,
       ...rest
     }
     return obj;
@@ -307,7 +308,7 @@ const TableList = () => {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         }
-        <div style={{ height: Math.max(window.innerHeight - 550, 500), overflowY: 'auto', marginBottom: 10 }}>
+        <div style={{ marginBottom: 10 }}>
           {
             data.map(item => (
               <div className={styles.list} key={item.id}>
