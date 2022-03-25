@@ -465,10 +465,6 @@ const TableList = () => {
                       orderType === 2&&
                       <Button onClick={() =>{ setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
                     }
-                    {
-                      orderType === 2 &&
-                      <Button onClick={() => { setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
-                    }
                   </Space>
                 </div>
               </div>
