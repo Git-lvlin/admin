@@ -7,11 +7,14 @@ import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-for
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from 'moment';
 import { history,connect } from 'umi';
+import BindBoxSet from '../bind-box-rule-set'
 
 
 
 export default () => {
     const ref=useRef()
+    const [visible,setVisible]=useState(false)
+    const [detailId,setDetailId]=useState()
     const columns= [
       {
         title: 'id',
@@ -103,7 +106,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a key='detail' onClick={()=>history.push('/blind-box-activity-management/bind-box-rule-set?id='+record.id)}>查看详情</a>
+            <a key='detail' onClick={()=>{setVisible(true);setDetailId(record.id)}}>查看详情</a>
         ],
       }, 
     ];
@@ -115,14 +118,24 @@ export default () => {
           headerTitle="盲盒活动列表"
           options={false}
           request={getActiveConfigList}
+          scroll={{ y: Math.max(window.innerHeight - 570, 500), scrollToFirstRowOnChange: true, }}
           toolBarRender={()=>[
-            <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/blind-box-activity-management/bind-box-rule-set')} type="primary">
+            <Button key='add' icon={<PlusOutlined />}  onClick={()=>setVisible(true)} type="primary">
                 添加活动
             </Button>
         ]}
           search={false}
           columns={columns}
         />
+         {
+          visible&&<BindBoxSet
+          setVisible={setVisible}
+          visible={visible}
+          id={detailId} 
+          callback={() => { ref.current.reload(); setDetailId(null);}}
+          onClose={() => { ref.current.reload(); setDetailId(null);}}
+          />
+        }
         </PageContainer>
     );
   };

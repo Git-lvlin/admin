@@ -138,8 +138,8 @@ export default () => {
         title: '操作',
         valueType: 'option',
         render: (_, data) => [
-          <a onClick={() => { changeStatus(data) }}>{data.status === 1 ? '禁用' : '启用'}</a>,
-          <a onClick={() => { deleteArea(data) }}>删除</a>
+          <a key='status' onClick={() => { changeStatus(data) }}>{data.status === 1 ? '禁用' : '启用'}</a>,
+          <a key='delete' onClick={() => { deleteArea(data) }}>删除</a>
         ]
       }, 
     ];
@@ -255,6 +255,7 @@ export default () => {
               value: 1,
           },
           ]}
+          labelCol={2}
           fieldProps={{
             onChange: (e) => {
               setPosition(e.target.value)
@@ -295,6 +296,7 @@ export default () => {
                 search={false}
                 columns={columns}
                 postData={postData}
+                scroll={{ y: Math.max(window.innerHeight - 750, 500), scrollToFirstRowOnChange: true, }}
                 pagination={{
                   pageSize: 10,
                   showQuickJumper: true,

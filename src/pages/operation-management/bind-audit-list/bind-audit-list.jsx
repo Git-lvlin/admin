@@ -173,6 +173,7 @@ const BindAuditList = () => {
           fullScreen: false,
           setting: false,
         }}
+        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
         actionRef={actionRef}
         formRef={formRef}
         params={params}

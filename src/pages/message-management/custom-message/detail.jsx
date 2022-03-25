@@ -258,7 +258,7 @@ export default () => {
           <Button 
             type="default" 
             size='large'
-            onClick={()=>history.goBack()}
+            onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}
           >
             返回
           </Button>

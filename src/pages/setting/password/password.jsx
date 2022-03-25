@@ -38,7 +38,7 @@ const Password = () => {
                 <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
                   确定
                 </Button>
-                <Button key="goBack" onClick={() => history.goBack()}>
+                <Button key="goBack" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); },200) }}>
                   取消
                 </Button>
               </Space>
@@ -52,7 +52,8 @@ const Password = () => {
             passwdNew
           }, { showSuccess: true }).then(res => {
             if (res.code === 0) {
-              history.goBack();
+              window.history.back(); 
+              setTimeout(() => { window.location.reload(); }, 200)
             }
           })
         }}

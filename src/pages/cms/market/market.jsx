@@ -118,6 +118,7 @@ const BannerAdmin = () => {
       pagination={{
         pageSize: 5,
       }}
+      scroll={{ y: Math.max(window.innerHeight - 400, 500), scrollToFirstRowOnChange: true, }}
       dateFormatter="string"
       headerTitle="营销落地页资源配置管理"
       toolBarRender={(_,record) => [

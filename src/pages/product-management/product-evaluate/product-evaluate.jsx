@@ -9,6 +9,8 @@ import AuditModel from './audit-model'
 import styles from './style.less'
 import { findByways,addCheck,check } from '@/services/product-management/product-evaluate';
 import { Space } from 'antd';
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 const { TabPane } = Tabs
 
 const EvaluateList= (props) => {
@@ -19,28 +21,33 @@ const EvaluateList= (props) => {
     const [commentId,setCommentId]=useState()
     const [commentSkuId,setCommentSkuId]=useState()
     const [pitch,setPitch]=useState()
+    const [visit, setVisit] = useState(false)
     const columns = [
-        {
-            title: '用户ID',
-            dataIndex: 'userId',
-            hideInSearch: true,
-        },
-        {
-            title: '用户头像',
-            dataIndex: 'userImg',
-            valueType: 'image',
-            hideInSearch:true,
-        },
         {
             title: '用户昵称',
             dataIndex: 'nickName',
             valueType: 'text',
         },
         {
-            title: '用户打分',
+            title: '用户评分',
             dataIndex: 'score',
             valueType: 'text',
             hideInSearch: true,
+            width:150
+        },
+        {
+            title: '用户评分',
+            dataIndex: 'score',
+            valueType: 'select',
+            hideInTable:true,
+            valueEnum: {
+              0: '请选择',
+              1: '1',
+              2: '2',
+              3: '3',
+              4: '4',
+              5: '5'
+              }
         },
         {
             title: '评价内容',
@@ -68,7 +75,7 @@ const EvaluateList= (props) => {
         },
         {
             title: '订单编号',
-            dataIndex: 'orderId',
+            dataIndex: 'orderSn',
             valueType: 'text',
         },
         {
@@ -76,16 +83,29 @@ const EvaluateList= (props) => {
             dataIndex: 'skuId',
             valueType: 'text',
             hideInSearch: true,
+            width:200
+        },
+        {
+            title: '商品名称',
+            dataIndex: 'goodsName',
+            valueType: 'text',
+            hideInSearch: true,
         },
         {
             title: '被评商家ID',
             dataIndex: 'supplierId',
             valueType: 'text',
-            hideInSearch: true,
+            width:150
+        },
+        {
+            title: '被评商品名称',
+            dataIndex: 'goodsName',
+            valueType: 'text',
+            hideInTable: true
         },
         {
             title: '被评商家名称',
-            dataIndex: 'storeName',
+            dataIndex: 'companyName',
             valueType: 'text',
         },
         {
@@ -120,6 +140,13 @@ const EvaluateList= (props) => {
         setPitch(res.data)
       })
     },[])
+  const getFieldValue = (searchConfig) => {
+    const {...rest}=searchConfig.form.getFieldsValue()
+    return {
+      state:type,
+      ...rest,
+    }
+  }
   return (
       <>
         <ProTable
@@ -129,23 +156,33 @@ const EvaluateList= (props) => {
             params={{
               state:type
             }}
+            scroll={{ y: Math.max(window.innerHeight - 750, 500), scrollToFirstRowOnChange: true, }}
             request={findByways}
             search={{
                 defaultCollapsed: false,
                 labelWidth: 100,
                 optionRender: (searchConfig, formProps, dom) => [
-                    <ProFormSwitch
-                      label="审核功能开关"
-                      className='switchTop'
-                      fieldProps={{
-                          onChange:(bol)=>auditSwitch(bol),
-                          checked:pitch
-                      }}
-                      key='switch'
-                    />,
-                    ...dom.reverse()
+                  ...dom.reverse(),
+                    <Export
+                       key='export'
+                       change={(e) => { setVisit(e) }}
+                       type={'data-goods-comment-export'}
+                       conditions={getFieldValue(searchConfig)}
+                     />,
+                     <ExportHistory key='task' show={visit} setShow={setVisit} type={'data-goods-comment-export'}/>
                 ],
             }}
+            toolBarRender={() => [
+              <ProFormSwitch
+                label="审核功能开关"
+                className='switchTop'
+                fieldProps={{
+                    onChange:(bol)=>auditSwitch(bol),
+                    checked:pitch
+                }}
+                key='switch'
+              />
+            ]}
             columns={columns}
             pagination={{
                 pageSize: 10,

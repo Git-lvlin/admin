@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect,ProFormCheckbox } from '@ant-design/pro-form';
-import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal, Tag } from 'antd';
+import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal, Tag, Popconfirm } from 'antd';
 import { history, useLocation } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from 'moment';
@@ -14,7 +14,6 @@ import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
 import Detail from './detail';
 import Auth from '@/components/auth';
-import { Popconfirm } from 'antd';
 
 const { confirm } = Modal;
 
@@ -79,6 +78,12 @@ const TableList = () => {
       ...rest,
     }
   }
+
+  useEffect(() => {
+    form.setFieldsValue({
+      ...location?.query,
+    })
+  }, [])
 
   useEffect(() => {
     setLoading(true);
@@ -186,6 +191,15 @@ const TableList = () => {
         <ProFormText
           label="下单手机号"
           name="phoneNumber"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
+        <ProFormText
+          label="用户ID"
+          name="memberId"
           fieldProps={{
             style: {
               marginBottom: 20
@@ -304,6 +318,30 @@ const TableList = () => {
             />
           </>
         }
+        <ProFormSelect
+          label="订单类别"
+          name="businessType"
+          options={[
+            {
+              value: 1,
+              label: '普适品'
+            },
+            {
+              value: 2,
+              label: '精装生鲜'
+            },
+            {
+              value: 3,
+              label: '散装生鲜'
+            }
+          ]}
+          fieldProps={{
+            style: {
+              marginBottom: 20,
+              width: 180,
+            }
+          }}
+        />
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -361,10 +399,12 @@ const TableList = () => {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         }
+        <div style={{ marginBottom: 10 }}>
         {
           data.map(item => (
             <div className={styles.list} key={item.id}>
               <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 10 }} color="#f59a23">{item.wholesaleFlowType === 1 ? '直发到店' : '运营中心配送'}</Tag>
+              <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: item.wholesaleFlowType === 1 ? 80 : 110, marginTop: 10 }} color='#58B138'>{item?.businessType !== 1 ? (item?.businessType === 2 ? '精装生鲜' : '散装生鲜'): '普适品'}</Tag>
               {
                 isPurchase
                   ?
@@ -378,77 +418,80 @@ const TableList = () => {
                   <span>订单号：{item.orderId}</span>
                   <span>下单用户：{item.store.linkman}</span>
                   <span>用户手机号：{item.store.phone}</span>
+                  <span>下单店主ID：{item.storeNo}</span>
+                  <span>商品归属集约活动ID：{item.wsId}</span>
                 </Space>
               </div>
 
-              <div className={styles.body}>
-                <div className={styles.goods_info}>
-                  <div>
-                    <img width="100" height="100" src={item.sku.skuImageUrl} />
-                    <div className={styles.info}>
-                      <div>{item.sku.goodsName}</div>
-                      <div>集约价：{amountTransform(item.sku.price, '/')}元{item?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(item?.sku?.wholesaleFreight, '/')}/件）` : ''}<time style={{ marginLeft: 20 }}>规格：{item.sku.skuName}</time></div>
-                      <div>数量： <span>{item.sku.totalNum}{item.sku.unit}</span></div>
-                      <div>小计： <span>{amountTransform(item.sku.totalAmount, '/')}</span>元</div>
-                      {isPurchase && <div>批发供货价： ¥{amountTransform(item.sku.wholesaleSupplyPrice, '/')}</div>}
+                <div className={styles.body}>
+                  <div className={styles.goods_info}>
+                    <div>
+                      <img width="100" height="100" src={item.sku.skuImageUrl} />
+                      <div className={styles.info}>
+                        <div>{item.sku.goodsName}</div>
+                        <div>集约价：{amountTransform(item.sku.price, '/')}元{item?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(item?.sku?.wholesaleFreight, '/')}/件）` : ''}<time style={{ marginLeft: 20 }}>规格：{item.sku.skuName}</time></div>
+                        <div>数量： <span>{item.sku.totalNum}{item.sku.unit}</span></div>
+                        <div>小计： <span>{amountTransform(item.sku.totalAmount, '/')}</span>元</div>
+                        {isPurchase && <div>批发供货价： ¥{amountTransform(item.sku.wholesaleSupplyPrice, '/')}</div>}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div>
-                  <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
-                    <Descriptions.Item label="应付金额">{amountTransform(item.advance.amount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="红包">-{amountTransform(item.advance.couponAmount, '/')}元</Descriptions.Item>
-                    <Descriptions.Item label="用户实付">{amountTransform(item.advance.actualAmount, '/')}元</Descriptions.Item>
-                  </Descriptions>
-                </div>
-                <div>
-                  {item.final &&
+                  <div>
                     <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
-                      <Descriptions.Item label="应付金额">{amountTransform(item.final.amount, '/')}元（含运费）</Descriptions.Item>
-                      {/* <Descriptions.Item label="运费">+{amountTransform(item.final.shippingAmount, '/')}元</Descriptions.Item> */}
-                      <Descriptions.Item label="用户实付">{amountTransform(item.final.actualAmount, '/')}元</Descriptions.Item>
-                    </Descriptions>}
+                      <Descriptions.Item label="应付金额">{amountTransform(item.advance.amount, '/')}元</Descriptions.Item>
+                      <Descriptions.Item label="红包">-{amountTransform(item.advance.couponAmount, '/')}元</Descriptions.Item>
+                      <Descriptions.Item label="用户实付">{amountTransform(item.advance.actualAmount, '/')}元</Descriptions.Item>
+                    </Descriptions>
+                  </div>
+                  <div>
+                    {item.final &&
+                      <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
+                        <Descriptions.Item label="应付金额">{amountTransform(item.final.amount, '/')}元（含运费）</Descriptions.Item>
+                        {/* <Descriptions.Item label="运费">+{amountTransform(item.final.shippingAmount, '/')}元</Descriptions.Item> */}
+                        <Descriptions.Item label="用户实付">{amountTransform(item.final.actualAmount, '/')}元</Descriptions.Item>
+                      </Descriptions>}
+                  </div>
+                  <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div>
+                  <div style={{ textAlign: 'center' }}>
+                    {item.statusDesc}
+                    {item.refundAllRetailStatus === 1 && <div style={{ color: 'red' }}>已启动C端退款</div>}
+                  </div>
+                  <div style={{ textAlign: 'center' }}>
+                    {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId) }}>启动C端退款</a></div>}
+                    {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a> */}
+                    <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
+                    <div><a target="_blank" href={`/order-management/intensive-order/shopkeeper-order?objectId=${item.orderId}`}>查看零售订单</a></div>
+                    {orderType === 2 && <Auth name="wholesale/storeOrder/refundOrder">
+                      <Popconfirm
+                        title="确认操作?"
+                        onConfirm={() => {
+                          refundOrder({
+                            orderId: item.orderId
+                          }, { showSuccess: true })
+                            .then(res => {
+                              if (res.code === 0) {
+                                setSearch(search + 1)
+                              }
+                            })
+                        }}
+                      >
+                        <a>退款</a>
+                      </Popconfirm>
+                    </Auth>}
+                  </div>
                 </div>
-                <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div>
-                <div style={{ textAlign: 'center' }}>
-                  {item.statusDesc}
-                  {item.refundAllRetailStatus === 1 && <div style={{ color: 'red' }}>已启动C端退款</div>}
-                </div>
-                <div style={{ textAlign: 'center' }}>
-                  {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId) }}>启动C端退款</a></div>}
-                  {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a> */}
-                  <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
-                  <div><a target="_blank" href={`/order-management/intensive-order/shopkeeper-order?objectId=${item.orderId}`}>查看零售订单</a></div>
-                  {orderType === 2 && <Auth name="wholesale/storeOrder/refundOrder">
-                    <Popconfirm
-                      title="确认操作?"
-                      onConfirm={()=>{
-                        refundOrder({
-                          orderId: item.orderId
-                        },{showSuccess: true})
-                          .then(res => {
-                            if (res.code === 0) {
-                              setSearch(search + 1)
-                            }
-                          })
-                      }}
-                    >
-                      <a>退款</a>
-                    </Popconfirm>
-                  </Auth>}
-                </div>
-              </div>
 
-              <div className={styles.footer}>
-                <Space size="large">
-                  <span>收货人：{item.receivingInfo.receiptUser}</span>
-                  <span>电话：{item.receivingInfo.receiptPhone}</span>
-                  <span>地址：{item.receivingInfo.receiptAddress}</span>
-                </Space>
+                <div className={styles.footer}>
+                  <Space size="large">
+                    <span>收货人：{item.receivingInfo.receiptUser}</span>
+                    <span>电话：{item.receivingInfo.receiptPhone}</span>
+                    <span>地址：{item.receivingInfo.receiptAddress}</span>
+                  </Space>
+                </div>
               </div>
-            </div>
-          ))
-        }
+            ))
+          }
+        </div>
       </Spin>
 
       {

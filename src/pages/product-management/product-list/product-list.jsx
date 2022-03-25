@@ -142,7 +142,9 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入商品SPU',
         maxLength: 12,
-      }
+      },
+      fixed: 'left',
+      width: 100,
     },
     {
       title: 'skuID',
@@ -159,6 +161,8 @@ const TableList = () => {
       dataIndex: 'goodsImageUrl',
       render: (text) => <img src={text} width={50} height={50} />,
       hideInSearch: true,
+      fixed: 'left',
+      width: 100,
     },
     {
       title: '商品名称',
@@ -178,30 +182,58 @@ const TableList = () => {
         return <a onClick={() => { setSelectItem(record); setProductDetailDrawerVisible(true); }}>{_}</a>
       },
       width: 200,
+      fixed: 'left',
+    },
+    {
+      title: '生鲜类型',
+      dataIndex: 'fresh',
+      valueType: 'text',
+      hideInTable: true,
+      valueEnum: {
+        0: '非生鲜',
+        1: '精装生鲜',
+        2: '散装生鲜',
+      }
+    },
+    {
+      title: '生鲜类型',
+      dataIndex: 'fresh',
+      valueType: 'text',
+      hideInSearch: true,
+      width: 100,
+      render: (_) => ({
+        0: '非生鲜',
+        1: '精装生鲜',
+        2: '散装生鲜',
+      }[_]),
     },
     {
       title: '基础销量',
       dataIndex: 'goodsVirtualSaleNum',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '秒约销量',
       dataIndex: 'goodsSaleNum',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: 'B端集约销量',
       dataIndex: 'goodsWsSaleNum',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '供应商家ID',
@@ -238,33 +270,38 @@ const TableList = () => {
       dataIndex: 'goodsSaleTypeDisplay',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '批发样品',
       dataIndex: 'isSample',
       valueType: 'text',
       hideInSearch: true,
-      render: (_) => _ === 0 ? '不支持' : '支持'
+      render: (_) => _ === 0 ? '不支持' : '支持',
+      width: 100,
     },
     {
       title: '批发供货价(元)',
       dataIndex: 'wholesaleSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => data.goodsSaleType === 2 ? '-' : _
+      render: (_, data) => data.goodsSaleType === 2 ? '-' : _,
+      width: 120,
     },
     {
       title: '零售供货价(元)',
       dataIndex: 'retailSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => data.goodsSaleType === 1 ? '-' : _
+      render: (_, data) => data.goodsSaleType === 1 ? '-' : _,
+      width: 120,
     },
     {
       title: '销售价',
       dataIndex: 'name',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, data) => {
         const { goodsSaleMinPrice, goodsSaleMaxPrice } = data;
         if (goodsSaleMinPrice === goodsSaleMaxPrice) {
@@ -305,6 +342,7 @@ const TableList = () => {
       dataIndex: 'goodsVerifyStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, record) => {
         const { goodsVerifyRemark, goodsVerifyState } = record;
         return (
@@ -328,6 +366,7 @@ const TableList = () => {
       dataIndex: 'goodsStateDisplay',
       valueType: 'text',
       hideInSearch: true,
+      width: 80,
       render: (_, record) => {
         const { goodsStateRemark, goodsState } = record;
         return (
@@ -344,6 +383,7 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_) => _ === 0 ? '下架' : '正常',
+      width: 100,
     },
     {
       title: '商品关键词',
@@ -422,7 +462,8 @@ const TableList = () => {
           </Space>
         )
       },
-      // fixed: 'right'
+      width: 250,
+      fixed: 'right'
     },
   ];
 
@@ -472,11 +513,6 @@ const TableList = () => {
 
   return (
     <PageContainer>
-      {/* <Card>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button key="out" type="primary" icon={<PlusOutlined />} onClick={() => { setFormVisible(true) }}>新建</Button>
-        </div>
-      </Card> */}
       <ProTable
         rowKey="id"
         options={false}
@@ -490,7 +526,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: 'max-content' }}
+        scroll={{ x: '100vw', y: Math.max(window.innerHeight - 700, 500), scrollToFirstRowOnChange: true, }}
         search={{
           labelWidth: 140,
           defaultCollapsed: false,

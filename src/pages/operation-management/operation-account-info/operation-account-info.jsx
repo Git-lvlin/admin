@@ -123,7 +123,7 @@ const SupplierDetail = () => {
           </Form.Item>
 
           <div style={{textAlign: 'center', marginTop: 100}}>
-            <Button type="primary" onClick={() => { history.goBack() }}>返回</Button>
+            <Button type="primary" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
           </div>
         </Form>
 

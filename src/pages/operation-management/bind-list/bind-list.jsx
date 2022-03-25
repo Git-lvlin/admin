@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button, Tooltip } from 'antd';
+import { PageContainer } from '@ant-design/pro-layout';
 import { bindOperationPage } from '@/services/operation-management/bind-list'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -33,6 +34,12 @@ const TableList = () => {
           </pre>
         )
       }
+    },
+    {
+      title: '运营商名称',
+      dataIndex: 'operationName',
+      valueType: 'text',
+      hideInTable: true,
     },
     {
       title: '绑定的运营商',
@@ -103,7 +110,7 @@ const TableList = () => {
   }
 
   return (
-    <>
+    <PageContainer>
       {bindVisible
         &&
         <Bind
@@ -126,6 +133,7 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={bindOperationPage}
+        scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           labelWidth: 130,
@@ -164,7 +172,7 @@ const TableList = () => {
           showQuickJumper: true,
         }}
       />
-    </>
+    </PageContainer>
 
   );
 };

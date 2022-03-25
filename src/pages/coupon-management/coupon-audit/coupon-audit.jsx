@@ -5,12 +5,17 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { couponList } from '@/services/coupon-management/coupon-list';
 import styles from './style.less'
 import { history} from 'umi';
+import ListDetails from '../list-details'
+import AuditDetails from '../audit-details'
 const { TabPane } = Tabs
 
 
 const Message = (props) => {
   const { type }=props
   const ref=useRef()
+  const [detailsVisible, setDetailVisible] = useState(false);
+  const [auditVisible, setAuditVisible] = useState(false);
+  const [pennyId,setPennyId]=useState()
   const columns= [
     {
       title: '红包名称',
@@ -20,7 +25,7 @@ const Message = (props) => {
         placeholder: '请输入红包名称'
       },
       render:(text, record, _, action)=>[
-        <a key='likeName' onClick={()=>history.push('/coupon-management/coupon-list/list-details?id='+record.id)}>{record.couponName}</a>
+        <a key='likeName' onClick={()=>{setPennyId(record?.id);setDetailVisible(true)}}>{record.couponName}</a>
     ],
     },
     {
@@ -46,6 +51,9 @@ const Message = (props) => {
       dataIndex: 'issueQuantity',
       valueType: 'text',
       hideInSearch: true,
+      render:(_, data)=>{
+        return <p>{data.issueQuantity==-1?'不限量':data.issueQuantity}</p>
+      }
     },
     {
       title: '面额（元）',
@@ -118,10 +126,12 @@ const Message = (props) => {
   ];
 
   const Examine=(id)=>{
-    history.push(`/coupon-management/coupon-audit/audit-details?id=`+id);
+    setPennyId(id)
+    setAuditVisible(true)
   }
 
   return (
+    <>
       <ProTable
         actionRef={ref}
         rowKey="id"
@@ -129,6 +139,7 @@ const Message = (props) => {
         params={{
           couponVerifyStatus: type,
         }}
+        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
         request={couponList}
         search={{
           defaultCollapsed: false,
@@ -142,6 +153,21 @@ const Message = (props) => {
         }}
         columns={columns}
       />
+      {detailsVisible&& <ListDetails
+        detailsVisible={detailsVisible}
+        setDetailVisible={setDetailVisible}
+        id={pennyId} 
+        callback={() => { ref.current.reload(); setPennyId(null);}}
+        onClose={() => { ref.current.reload(); setPennyId(null);}}
+      />}
+      {auditVisible&& <AuditDetails
+        auditVisible={auditVisible}
+        setAuditVisible={setAuditVisible}
+        id={pennyId} 
+        callback={() => { ref.current.reload(); setPennyId(null);}}
+        onClose={() => { ref.current.reload(); setPennyId(null);}}
+    />}
+  </>
   );
 };
 

@@ -8,6 +8,7 @@ import moment from 'moment';
 import DisableModal from './disable-modal';
 import { userList } from '@/services/user-management/user-list';
 import { history, useLocation } from 'umi';
+import AddressCascader from '@/components/address-cascader';
 
 const sourceType = {
   1: 'vivo',
@@ -55,11 +56,24 @@ const TableList = () => {
     //   hideInSearch: true,
     // },
     {
+      title: '地区',
+      dataIndex: 'provinceName',
+      hideInSearch: true,
+      render: (_, record) => <>{record.provinceName}&nbsp;{record.cityName}&nbsp;{record.districtName}</>
+    },
+    {
+      title: '年龄',
+      dataIndex: 'age',
+      hideInSearch: true,
+      width: 100,
+    },
+    {
       title: '是否开店',
       dataIndex: 'userType',
       valueType: 'text',
       hideInSearch: true,
-      render: (text) => text === 1 ? '是' : '否'
+      render: (text) => text === 1 ? '是' : '否',
+      width: 100,
     },
     {
       title: '手机号',
@@ -185,6 +199,12 @@ const TableList = () => {
       },
     },
     {
+      title: '地区',
+      dataIndex: 'area',
+      hideInTable: true,
+      renderFormItem: () => (<AddressCascader placeholder="请选择" changeOnSelect />)
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
@@ -205,6 +225,7 @@ const TableList = () => {
         params={{
           status: 1,
         }}
+        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
         request={userList}
         actionRef={actionRef}
         search={{

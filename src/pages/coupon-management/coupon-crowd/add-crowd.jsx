@@ -4,7 +4,8 @@ import { EditableProTable } from '@ant-design/pro-table';
 import ProForm, {
     ProFormText,
     ProFormFieldSet,
-    ProFormDateRangePicker
+    ProFormDateRangePicker,
+    DrawerForm
   } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
 import { couponCrowdSub,couponCrowdDetail,couponCrowdEdit } from '@/services/crowd-management/coupon-crowd';
@@ -13,11 +14,22 @@ import CrowdModel from './crowd-model'
 import {formatMessage,connect} from 'umi';
 import  './style.less'
 
-
+const formItemLayout = {
+  labelCol: { span: 2 },
+  wrapperCol: { span: 14 },
+  layout: {
+    labelCol: {
+      span: 10,
+    },
+    wrapperCol: {
+      span: 14,
+    },
+  }
+};
 
 
 export default (props) =>{
-  const id = props.location.query.id
+  const {setVisible,visible,onClose,callback,id}=props
   const [editableKeys, setEditableRowKeys] = useState([]);
   const [dataSource, setDataSource] = useState([]);
   const [falg1,setFalg1]=useState(false)
@@ -88,14 +100,14 @@ export default (props) =>{
       if(id){
         couponCrowdEdit({...values,id:id}).then(res=>{
           if(res.code==0){
-            history.push('/coupon-management/coupon-crowd') 
-            message.success('操作成功')
+            setVisible(false)
+            message.success('编辑成功')
           }
         })
       }else{
         couponCrowdSub(values).then(res=>{
           if(res.code==0){
-            history.push('/coupon-management/coupon-crowd')
+            setVisible(false)
             message.success('操作成功')
           }
         })
@@ -207,27 +219,39 @@ export default (props) =>{
   ];
   return (
       <>
-      <ProForm
-        form={form}
-        onFinish={async (values)=>{
-            await  onsubmit(values);
-          return true;
-         } }
-        submitter={{
-          render: (props, doms) => {
-            return [
-              <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
-                props.form?.submit?.()
-              }}>
-                保存
-              </Button>,
-              <Button type="default" onClick={() => history.goBack()}>
-                返回
-              </Button>
-              
-            ];
+       <DrawerForm
+          title='群体管理配置'
+          onVisibleChange={setVisible}
+          visible={visible}
+          form={form}
+          width={1200}
+          drawerProps={{
+            forceRender: true,
+            destroyOnClose: true,
+            onClose: () => {
+              onClose();
+            }
+          }}
+          submitter={
+            {
+              render: (props, defaultDoms) => {
+                return [
+                  <Button style={{margin:'30px'}} type="primary" key="submit" onClick={() => {
+                    props.form?.submit?.()
+                  }}>
+                    保存
+                  </Button>,
+                  <Button type="default" onClick={() => {onClose();setVisible(false)}}>
+                    返回
+                  </Button>
+                ];
+              }
+            }
           }
-        }}
+          onFinish={async (values)=>{
+            await  onsubmit(values);
+          }}
+          {...formItemLayout}
       >
         <ProCard
           title="基础设置"
@@ -353,7 +377,7 @@ export default (props) =>{
               columns={columns}
             />
         </ProCard>
-      </ProForm>
+    </DrawerForm>
     </>
   )
 }

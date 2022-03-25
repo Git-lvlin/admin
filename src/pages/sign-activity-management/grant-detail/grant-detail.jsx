@@ -81,7 +81,7 @@ export default () => {
         key: 'option',
         valueType: 'option',
         render:(text, record, _, action)=>[
-            <a key='detail' onClick={()=>history.push('/sign-activity-management/user-detail?id='+record.memberId)}>查看此用户明细</a>
+            <a key='detail' onClick={()=>{history.push('/sign-activity-management/user-detail?memberId='+record.memberId)}}>查看此用户明细</a>
         ],
       }, 
     ];
@@ -101,6 +101,7 @@ export default () => {
           headerTitle="签到红包发放明细"
           options={false}
           request={queryIssuanceList}
+          scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,
@@ -117,6 +118,6 @@ export default () => {
           }}
           columns={columns}
         />
-        </PageContainer>
+      </PageContainer>
     );
   };

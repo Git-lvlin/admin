@@ -203,3 +203,35 @@ export const agent_bank_edit= async (params = {}, options = {}) => {
     success: true
   }
 }
+
+
+export const AgentShopDelete= async (params = {}, options = {}) => {
+  const res = await request('/auth/store/AgentShop/delete', {
+    method: 'POST',
+    data: {
+     ...params
+    },
+    ...options
+  });
+  return {
+    code:res.code,
+    data: res.data,
+    success: true
+  }
+}
+
+
+export const accountDetail= async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/financial/account/detail', {
+    method: 'POST',
+    data: {
+     ...params
+    },
+    ...options
+  });
+  return {
+    code:res.code,
+    data: res.data,
+    success: true
+  }
+}

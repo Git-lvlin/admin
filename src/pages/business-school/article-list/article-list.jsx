@@ -194,6 +194,7 @@ const ArticleList = (props) => {
           TypeId:articleTypeId
         }
       }
+      scroll={{ y: Math.max(window.innerHeight - 650, 500), scrollToFirstRowOnChange: true, }}
       pagination={{
         pageSize: 10,
       }}

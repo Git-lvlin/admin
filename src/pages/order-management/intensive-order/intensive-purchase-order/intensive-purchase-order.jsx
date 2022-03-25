@@ -21,6 +21,7 @@ const TableList = () => {
     {
       title: '集约活动ID',
       dataIndex: 'wsId',
+      width: 100,
     },
     {
       title: '采购单号',
@@ -43,12 +44,14 @@ const TableList = () => {
       dataIndex: 'totalNum',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '库存单位',
       dataIndex: 'unit',
       valueType: 'text',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '状态',
@@ -111,6 +114,7 @@ const TableList = () => {
           fullScreen: false,
           setting: false,
         }}
+        scroll={{ y: Math.max(window.innerHeight - 350, 500), scrollToFirstRowOnChange: true, }}
         actionRef={actionRef}
         formRef={formRef}
         params={params}
@@ -173,12 +177,8 @@ const TableList = () => {
                   value: 2,
                 },
                 {
-                  label: '待配送',
+                  label: '已收货',
                   value: 3,
-                },
-                {
-                  label: '配送中',
-                  value: 4,
                 },
                 {
                   label: '已完成',

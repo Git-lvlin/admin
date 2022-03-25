@@ -62,6 +62,7 @@ const columns= [
               sourceId:id,
               status:1,
             }}
+            scroll={{ y: window.innerHeight - 450, scrollToFirstRowOnChange: true, }}
             request={findAdsensePositionList}
             actionRef={ref}
             search={{

@@ -287,7 +287,7 @@ const EditableTable = () => {
         newData.splice(index, 1, newRowData);
       }
       if(isSecond) {
-        let preIdx = newData.findIndex((item) => record.preParent === item.key);l
+        let preIdx = newData.findIndex((item) => record.preParent === item.key);
         newData[preIdx].children.splice(index, 1, newRowData);
       }
       if(isThird) {
@@ -377,7 +377,8 @@ const EditableTable = () => {
       if(res.code === 200 || res.code === 0){
         message.success(`${!!resId ? "保存" : "添加"}成功`);
         if(history.action == "PUSH"){
-          history.goBack();
+          window.history.back();
+          setTimeout(() => { window.location.reload(); }, 200)
         } else {
           history.push("/dc-management/list");
         }

@@ -30,7 +30,7 @@ export const uploadImageFormatConversion = (imgArr, urlKey) => {
 }
 
 export const amountTransform = (amount, type = '*') => {
-  if (!amount) {
+  if (!amount || !/^[-]?[.\d]+$/.test(amount)) {
     return 0;
   }
 
@@ -213,7 +213,7 @@ export const getTimeDistance = (type) => {
     return [moment(beginTime).subtract(7, 'day'), moment(beginTime + (7 * oneDay - 1000)).subtract(7, 'day')];
   }
 
-  const year = now.getFullYear();
+  let year = now.getFullYear();
 
   // 本月
   if (type === 'month') {
@@ -230,10 +230,13 @@ export const getTimeDistance = (type) => {
   // 上个月
   if (type === 'last-month') {
     const month = now.getMonth();
+    const nextDate = moment(now).add(1, 'months');
+    const nextYear = month === 11 ?  now.getFullYear() : nextDate.year()
+    const lastMonthYear = month === 0 ?  now.getFullYear() - 1 : now.getFullYear()
     return [
-      moment(`${year}-${fixedZero(month)}-01 00:00:00`),
-      moment(moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`).valueOf() - 1000),
-    ];
+      moment(`${lastMonthYear}-${fixedZero(month ? month : 12)}-01 00:00:00`),
+      moment(moment(`${nextYear}-${month === 0 ? 1 : month + 1}-01 00:00:00`).valueOf() - 1000),
+    ];  
   }
 
   // 近7天

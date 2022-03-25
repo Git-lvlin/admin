@@ -122,7 +122,7 @@ export default props => {
           className={styles.couponFrom}
         >
           <h1><CaretRightFilled /> 查看详情</h1>
-          <Button className={styles.goback} key='goback' type="default" onClick={() => history.goBack()}>返回</Button>
+          <Button className={styles.goback} key='goback' type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
           <div className={styles.msg}>
             <h3 className={styles.head}>基本信息</h3>
             <Form.Item
@@ -180,7 +180,7 @@ export default props => {
             <Form.Item
               label="发放数量"
             >
-              {detailData.issueQuantity}
+              {detailData.issueQuantity=='-1'?'不限量发放':detailData.issueQuantity}
             </Form.Item>
             {
               detailData.issueType != 4&&

@@ -7,12 +7,10 @@ import {
   ProFormSelect,
   ProFormDigit,
 } from '@ant-design/pro-form';
-import Upload from '@/components/upload';
 import { supplierAdd, supplierEdit, categoryAll, searchUniName } from '@/services/supplier-management/supplier-list';
 import md5 from 'blueimp-md5';
 import { arrayToTree } from '@/utils/utils'
 import FormModal from './form';
-import Big from 'big.js'
 
 const { Title } = Typography;
 
@@ -63,6 +61,11 @@ const CTree = (props) => {
         treeData={treeData}
         onCheck={onCheck}
         checkedKeys={selectKeys}
+        titleRender={({ gcName, fresh }) => {
+          return (
+            <>{gcName}{fresh !== 0 && <span style={{ color: 'green' }}>({{ 1: '精装生鲜', 2: '散装生鲜' }[fresh]})</span>}</>
+          )
+        }}
         {...rest}
       />
     </div>
@@ -241,7 +244,8 @@ export default (props) => {
         accountSwitch: 1,
         status: 1,
         defaultWholesaleTaxRate: 13,
-        warrantyRatio: 10
+        warrantyRatio: 10,
+        isSendSms: 1,
       }}
       {...formItemLayout}
     >
@@ -342,6 +346,21 @@ export default (props) => {
               {
                 label: '禁用',
                 value: 0,
+              },
+            ]}
+          />
+          <ProFormRadio.Group
+            name="isSendSms"
+            label="发送短信状态"
+            rules={[{ required: true }]}
+            options={[
+              {
+                label: '开启',
+                value: 1,
+              },
+              {
+                label: '关闭',
+                value: 2,
               },
             ]}
           />

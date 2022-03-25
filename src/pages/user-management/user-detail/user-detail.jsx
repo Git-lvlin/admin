@@ -52,6 +52,7 @@ const UserDetail = () => {
   const { memberInfoToAdminResponse: info } = detailData;
 
   useEffect(() => {
+    console.log('useParams', params)
     getMemberDetail({
       id: params.id
     }).then(res => {
@@ -74,7 +75,7 @@ const UserDetail = () => {
             <Descriptions.Item label="下单手机号">{info?.phoneNumber}</Descriptions.Item>
             <Descriptions.Item label="注册来源">{sourceType[info?.sourceType]}</Descriptions.Item>
             <Descriptions.Item label="邀请码">
-              HG8J2W &nbsp;
+              {info?.inviteCode}
             </Descriptions.Item>
             <Descriptions.Item label="性别">{info?.gender === 1 ? '男' : '女'}</Descriptions.Item>
             <Descriptions.Item label="社区店主">
@@ -91,6 +92,24 @@ const UserDetail = () => {
             </Descriptions.Item> */}
             <Descriptions.Item label="最近登录时间">
               {info?.loginTime}
+            </Descriptions.Item>
+            <Descriptions.Item label="出生日期">
+              {info?.birthday}
+            </Descriptions.Item>
+            <Descriptions.Item label="职业">
+              {info?.job}
+            </Descriptions.Item>
+            <Descriptions.Item label="学历">
+              {info?.education}
+            </Descriptions.Item>
+            <Descriptions.Item label="地区">
+            {info?.provinceName} {info?.cityName} {info?.districtName}
+            </Descriptions.Item>
+            <Descriptions.Item label="收入水平">
+              {info?.incomes}
+            </Descriptions.Item>
+            <Descriptions.Item label="关注的品类">
+              {info?.categoryIds}
             </Descriptions.Item>
           </Descriptions>
         </Row>

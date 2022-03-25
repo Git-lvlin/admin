@@ -99,6 +99,18 @@ const HomeActivity = () => {
       }
     },
     {
+      title: '展示对象',
+      dataIndex: 'customerType',
+      valueType: 'text',
+      search: false,
+      valueEnum: {
+        1: '所有用户',
+        2: '全部店主',
+        3: '生鲜店主',
+        4: '普通店主',
+      }
+    },
+    {
       title: '状态',
       dataIndex: 'state',
       valueType: 'text',
@@ -143,6 +155,7 @@ const HomeActivity = () => {
       pagination={{
         pageSize: 5,
       }}
+      scroll={{ y: Math.max(window.innerHeight - 500, 500), scrollToFirstRowOnChange: true, }}
       dateFormatter="string"
       headerTitle="首页活动入口配置"
       toolBarRender={(_,record) => [

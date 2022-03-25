@@ -4,25 +4,29 @@ import {
   StepsForm,
   ProFormText,
   ProFormCheckbox,
-  ProFormDateTimeRangePicker,
+  ProFormRadio,
+  ProFormDependency,
   ProFormDateTimePicker,
 } from '@ant-design/pro-form';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import ProCard from '@ant-design/pro-card';
-import { Button, Result, message, Descriptions, Form } from 'antd';
+import { Button, Result, message, Descriptions, Form, Table } from 'antd';
 import EditTable from './edit-table';
 import styles from './index.less';
-import { addWholesale } from '@/services/intensive-activity-management/intensive-activity-create'
+import { addWholesale, productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
 import AddressMultiCascader from '@/components/address-multi-cascader'
 import Upload from '@/components/upload'
 import { history, useParams, useLocation } from 'umi';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
+import LadderDataEdit from './ladder-data-edit'
+import PriceExplanation from './price-explanation'
+import FreshIncome from './fresh-income'
 
-const FromWrap = ({ value, onChange, content, right }) => (
+const FromWrap = ({ value, onChange, content }) => (
   <div style={{ display: 'flex' }}>
     <div>{content(value, onChange)}</div>
-    {/* <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div> */}
   </div>
 )
 
@@ -39,33 +43,35 @@ const formItemLayout = {
   }
 };
 
-function range(start, end) {
-  const result = [];
-  for (let i = start; i < end; i++) {
-    result.push(i);
-  }
-  return result;
-}
+// function range(start, end) {
+//   const result = [];
+//   for (let i = start; i < end; i++) {
+//     result.push(i);
+//   }
+//   return result;
+// }
 
-const disabledRangeTime = (_, type) => {
-  if (type === 'start') {
-    return {
-      disabledMinutes: () => range(1, 59),
-      disabledSeconds: () => range(1, 59),
-    };
-  }
-  return {
-    disabledMinutes: () => range(0, 59),
-    disabledSeconds: () => range(0, 59),
-  };
-}
+// const disabledRangeTime = (_, type) => {
+//   if (type === 'start') {
+//     return {
+//       disabledMinutes: () => range(1, 59),
+//       disabledSeconds: () => range(1, 59),
+//     };
+//   }
+//   return {
+//     disabledMinutes: () => range(0, 59),
+//     disabledSeconds: () => range(0, 59),
+//   };
+// }
 
 const IntensiveActivityCreate = () => {
   const [selectItem, setSelectItem] = useState([]);
   const [areaData, setAreaData] = useState([]);
+  const [ladderData, setLadderData] = useState([]);
   // const [uncheckableItemValues, setUncheckableItemValues] = useState([]);
   const [submitValue, setSubmitValue] = useState(null);
   const formRef = useRef();
+  const editTableRef = useRef();
   const [detailData, setDetailData] = useState({})
   const [loading, setLoading] = useState(true)
   const params = useParams();
@@ -89,13 +95,18 @@ const IntensiveActivityCreate = () => {
 
   const getDetail = () => {
     getWholesaleDetail({
-      wholesaleId: params.id
+      wholesaleId: params.id,
+      view: +location.query?.type === 1 ? 1 : 0,
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data);
         const wholesaleInfo = res.data.wholesale
         formRef.current.setFieldsValue({
           ...wholesaleInfo,
+          ladderShowPercent: amountTransform(res.data.sku[0].ladderShowPercent),
+          freshCommission: amountTransform(res.data.sku[0].freshCommission),
+          orderAmount: amountTransform(wholesaleInfo.orderAmount, '/'),
+          subsidy: amountTransform(wholesaleInfo.subsidy, '/'),
           // wholesaleStartTime: wholesaleInfo.wholesaleStartTime,
           area: getAreas(res.data.allowArea)
         })
@@ -133,8 +144,33 @@ const IntensiveActivityCreate = () => {
   }
 
   const submit = (values) => {
-    const { wholesaleTime, area, ...rest } = values;
+    const { wholesaleTime, area, isEditSubsidy, orderAmount, subsidy, ladderShowPercent, freshSpecial, freshCommission, ...rest } = values;
     return new Promise((resolve, reject) => {
+      const obj = {};
+      const goodsInfos = {};
+
+      if (isEditSubsidy === 1) {
+        obj.orderAmount = amountTransform(orderAmount)
+        obj.subsidy = amountTransform(subsidy)
+      }
+
+      if (isEditSubsidy === 2) {
+        goodsInfos.ladderData = ladderData.map(item => ({
+          ...item,
+          skuId: selectItem[0].skuId,
+          totalExtraScale: amountTransform(item.totalExtraScale, '/'),
+          operationPercent: amountTransform(item.operationPercent, '/'),
+          storePercent: amountTransform(item.storePercent, '/'),
+        }))
+        obj.ladderShowPercent = amountTransform(ladderShowPercent, '/');
+      }
+
+      if (freshSpecial === 1) {
+        obj.freshCommission = amountTransform(freshCommission, '/')
+      } else {
+        obj.freshCommission = selectItem[0].freshCommission
+      }
+
       const requestParams = {
         goodsInfos: selectItem.map(item => ({
           spuId: item.spuId,
@@ -149,6 +185,8 @@ const IntensiveActivityCreate = () => {
           wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice),
           fixedPrice: amountTransform(item.fixedPrice),
           settlePercent: amountTransform(item.settlePercent, '/'),
+          isAppointSubsidy: item.isAppointSubsidy.length === 0 ? 0 : 1,
+          ...goodsInfos,
         })),
         allowArea: getSubmitAreaData(area),
         storeLevel: 'ALL',
@@ -158,10 +196,10 @@ const IntensiveActivityCreate = () => {
         recoverPayTimeout: 0,
         canRecoverPayTimes: 0,
         wholesaleFlowType: selectItem[0].wholesaleFlowType,
-        isEditSubsidy: selectItem[0].isEditSubsidy.length,
-        orderAmount: selectItem[0].subsidy.a > 0 ? amountTransform(selectItem[0].subsidy.a) : '',
-        subsidy: selectItem[0].subsidy.b > 0 ? amountTransform(selectItem[0].subsidy.b) : '',
+        isEditSubsidy,
+        freshSpecial,
         ...rest,
+        ...obj,
         wsId: (+params.id === 0 || +location.query?.type === 1) ? '' : params.id,
       }
       setSubmitValue(requestParams)
@@ -181,6 +219,19 @@ const IntensiveActivityCreate = () => {
     setAreaData(data)
   }
 
+  const parseShipAddr = (data) => {
+    const arr = [];
+
+    data.forEach(item => {
+      const provinceName = window.yeahgo_area.find(it => it.id === item.provinceId)?.name
+      const cityName = window.yeahgo_area.find(it => it.id === item.cityId)?.name
+      const areaName = window.yeahgo_area.find(it => it.id === item.areaId)?.name
+      arr.push(`${provinceName}${cityName}${areaName}`)
+    })
+
+    return arr.join('、')
+  }
+
   useEffect(() => {
     getUncheckableItemValues();
     if (params.id && +params.id !== 0) {
@@ -189,6 +240,48 @@ const IntensiveActivityCreate = () => {
       setLoading(false);
     }
   }, [])
+
+  useEffect(() => {
+    setLadderData(selectItem?.[0]?.ladderData.map(item => (
+      {
+        ...item,
+        totalExtraScale: amountTransform(item.totalExtraScale),
+        operationPercent: amountTransform(item.operationPercent),
+        storePercent: amountTransform(item.storePercent),
+      }
+    )) || [])
+    const { isEditSubsidy } = formRef.current.getFieldsValue();
+    if (selectItem?.[0]?.ladderData?.length === 0 && isEditSubsidy === 2) {
+      formRef.current.setFieldsValue({
+        isEditSubsidy: 0
+      })
+    }
+    if (selectItem?.[0]?.fresh === 0) {
+      formRef.current.setFieldsValue({
+        preSale: 1
+      })
+    } else {
+      formRef.current.setFieldsValue({
+        preSale: 0
+      })
+    }
+
+    if (selectItem.length) {
+      formRef.current.setFieldsValue({
+        settlePercent: selectItem[0].settlePercent,
+        price: selectItem[0].price,
+      })
+
+      const { freshSpecial } = formRef.current.getFieldsValue()
+
+      if (selectItem.length && freshSpecial === 0) {
+        formRef.current.setFieldsValue({
+          freshCommission: amountTransform(selectItem[0].freshCommission)
+        })
+      }
+    }
+
+  }, [selectItem])
 
   return (
     <PageContainer className={styles.page}>
@@ -290,12 +383,48 @@ const IntensiveActivityCreate = () => {
             initialValues={{
               // canRecoverPayTimes: 1,
               // recoverPayTimeout: 3
+              isEditSubsidy: 0,
+              ladderShowPercent: 50,
+              preSale: 0,
+              freshSpecial: 0,
+              freshCommission: 30,
+              activityShowType: 0,
             }}
             className={styles.center}
           >
             {
               !loading &&
-              <EditTable onSelect={setSelectItem} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} />
+              <ProFormDependency name={['isEditSubsidy']}>
+                {({ isEditSubsidy }) => (
+                  <EditTable onSelect={(v) => {
+                    if (v?.[0]?.skuId === selectItem?.[0]?.skuId && selectItem?.[0]?.skuId !== undefined && isEditSubsidy === 2) {
+                      const skuData = v[0];
+                      const obj = {
+                        skuId: skuData.skuId,
+                        fixedPrice: amountTransform(skuData.fixedPrice),
+                        operationFixedPrice: amountTransform(skuData.operationFixedPrice),
+                        isGetWholesale: 1,
+                        priceScale: amountTransform(skuData.settlePercent, '/'),
+                        price: amountTransform(skuData.price),
+                        ladderData: ladderData.map(item => ({
+                          tier: item.tier,
+                          skuId: skuData.skuId,
+                          storePercent: amountTransform(item.storePercent, '/'),
+                        }))
+                      }
+
+
+                      productList(obj).then(res => {
+                        skuData.ladderData = res.data[0].ladderData
+                        setSelectItem([skuData])
+                      })
+                    } else {
+                      setSelectItem(v)
+                    }
+                  }} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} ref={editTableRef} />
+                )}
+              </ProFormDependency>
+
             }
             <ProFormText name="name" label="活动名称" width="lg" placeholder="请输入活动名称" rules={[{ required: true, message: '请输入活动名称' }]} />
             <ProFormDateTimePicker
@@ -324,25 +453,339 @@ const IntensiveActivityCreate = () => {
                 }
               }}
             />
-            {/* <ProFormText
-              name="virtualSales"
-              label="本次集约虚拟销量"
-              width="lg"
-              placeholder="请输入集约虚拟销量"
-              validateFirst
-              rules={[
-                { required: true, message: '请输入集约虚拟销量' },
-                () => ({
-                  validator(_, value) {
-                    if (!/^\d+$/g.test(value) || `${value}`.indexOf('.') !== -1 || value <= 0) {
-                      return Promise.reject(new Error(`请输入大于零的正整数`));
-                    }
-                    return Promise.resolve();
+            <ProFormRadio.Group
+              label="仅参与1分钱活动"
+              name="activityShowType"
+              required
+              options={[
+                {
+                  label: '不是（也参与正常集约活动）',
+                  value: 0,
+                },
+                {
+                  label: '是（仅参与1分钱集约活动或特价集约活动）',
+                  value: 1,
+                },
+              ]}
+            />
+            <ProFormRadio.Group
+              label="消费者集约预售"
+              name="preSale"
+              required
+              options={[
+                {
+                  label: '开启（店主收货前可对消费者售卖）',
+                  value: 1,
+                },
+                {
+                  label: '关闭（店主收货后才能对消费者售卖）',
+                  value: 0,
+                },
+              ]}
+            />
+
+            {!!selectItem.length && <>
+              <Form.Item
+                label="批发供货价"
+              >
+                {selectItem[0].wholesaleSupplyPrice}元
+              </Form.Item>
+              <Form.Item
+                label="市场价"
+              >
+                {selectItem[0].marketPriceDisplay}元
+              </Form.Item>
+              <Form.Item
+                label="平均运费"
+              >
+                {selectItem[0].wholesaleFreight}元
+              </Form.Item>
+              <ProFormDependency name={['freshCommission']}>
+                {({ freshCommission }) => (
+                  <>
+                    <ProFormText
+                      label="售价上浮比"
+                      validateFirst
+                      rules={[
+                        { required: true, message: '请输入' },
+                      ]}
+                      name="settlePercent"
+                      width={400}
+                      fieldProps={{
+                        addonAfter: `%`,
+                        onBlur: (e) => {
+                          editTableRef.current.update({
+                            ...selectItem[0],
+                            settlePercent: e.target.value,
+                            freshCommission3: freshCommission,
+                            freshCommission2: null,
+                          })
+                        }
+                      }}
+                    />
+                    <ProFormText
+                      label="集约价"
+                      validateFirst
+                      rules={[
+                        { required: true, message: '请输入' },
+                      ]}
+                      fieldProps={{
+                        addonAfter: `元/${selectItem[0].unit}`,
+                        onBlur: (e) => {
+                          editTableRef.current.update({
+                            ...selectItem[0],
+                            price: e.target.value,
+                            freshCommission2: freshCommission,
+                            freshCommission3: null,
+                          })
+                        }
+                      }}
+                      name="price"
+                      width={400}
+                    />
+                  </>
+                )}
+              </ProFormDependency>
+
+              <Form.Item
+                label="实际盈亏"
+              >
+                <span style={{ color: selectItem[0].profit < 0 ? 'red' : '' }}>{selectItem[0].profit}元</span>
+              </Form.Item>
+              <ProFormRadio.Group
+                label="平台额外奖励"
+                name="isEditSubsidy"
+                disabled={selectItem[0].fresh !== 0}
+                required
+                options={[
+                  {
+                    label: '不进行平台额外奖励',
+                    value: 0,
                   },
-                })
-              ]} /> */}
-            <ProFormCheckbox.Group value={'1'} label="可购买的社区店等级" disabled options={[{ label: '全部', value: 1 }]} />
-            <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} />
+                  {
+                    label: '按集采阶梯量奖励(社区店+运营中心)',
+                    value: 2,
+                  },
+                  {
+                    label: '按采购量奖励社区店',
+                    value: 1,
+                  }
+                ].filter((_, index) => !(selectItem[0].ladderData.length === 0 && index === 1))}
+              />
+              <ProFormDependency name={['isEditSubsidy']}>
+                {
+                  ({ isEditSubsidy }) => {
+                    return (
+                      <>
+                        {isEditSubsidy === 1 && <><ProFormText
+                          label=" "
+                          colon={false}
+                          fieldProps={{
+                            addonBefore: '当店主采购订单金额达到',
+                            addonAfter: '元时'
+                          }}
+                          placeholder="0.01-9999999.99,保留2位小数"
+                          validateFirst
+                          rules={[
+                            { required: true, message: '请输入' },
+                            () => ({
+                              validator(_, value) {
+                                if (!/^\d+\.?\d*$/g.test(value) || value <= 0 || value > 9999999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
+                                  return Promise.reject(new Error('请输入0.01-9999999.99,保留2位小数'));
+                                }
+                                return Promise.resolve();
+                              },
+                            })
+                          ]}
+                          name="orderAmount"
+                          width={470}
+                        />
+                          <ProFormText
+                            label=" "
+                            colon={false}
+                            fieldProps={{
+                              addonBefore: '补贴社区店店主',
+                              addonAfter: `元`
+                            }}
+                            placeholder="0.01-9999999.99,保留2位小数"
+                            validateFirst
+                            rules={[
+                              { required: true, message: '请输入' },
+                              () => ({
+                                validator(_, value) {
+                                  if (!/^\d+\.?\d*$/g.test(value) || value <= 0 || value > 9999999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
+                                    return Promise.reject(new Error('请输入0.01-9999999.99,保留2位小数'));
+                                  }
+                                  return Promise.resolve();
+                                },
+                              })
+                            ]}
+                            name="subsidy"
+                            width={400}
+                          /></>}
+                        {
+                          isEditSubsidy === 2 && selectItem[0].ladderData.length !== 0 && <>
+                            <LadderDataEdit
+                              data={ladderData || []}
+                              setData={setLadderData}
+                              batchNumber={selectItem?.[0]?.batchNumber}
+                              unit={selectItem?.[0]?.unit}
+                              wsUnit={selectItem?.[0]?.wsUnit}
+                              skuData={selectItem?.[0]}
+                            />
+                            <div><InfoCircleOutlined />&nbsp;<PriceExplanation skuData={selectItem?.[0]} ladderData={ladderData} /></div>
+                            <ProFormText
+                              label="前端奖励展示需完成量"
+                              fieldProps={{
+                                addonAfter: `%`
+                              }}
+                              extra={<span style={{ color: '#b38806' }}>总商品活动集约量达到最低阶梯量的此百分比时才在前端（此商品的商品详情、下单页和待支付页面）展示奖励信息</span>}
+                              rules={[
+                                { required: true, message: '请输入前端奖励展示需完成量' },
+                                () => ({
+                                  validator(_, value) {
+                                    if (!/^\d+$/g.test(value) || `${value}`.indexOf('.') !== -1 || value <= 0 || value > 99) {
+                                      return Promise.reject(new Error('请输入1-99之间的整数'));
+                                    }
+                                    return Promise.resolve();
+                                  },
+                                })
+                              ]}
+                              name="ladderShowPercent"
+                              width="lg"
+                            />
+                          </>
+                        }
+                      </>
+                    )
+                  }
+                }
+              </ProFormDependency></>
+            }
+
+            {
+              selectItem?.[0]?.fresh === 1
+              &&
+              <>
+                <ProFormDependency name={['freshSpecial', 'freshCommission']}>
+                  {
+                    ({ freshSpecial, freshCommission }) => {
+                      return (
+                        <>
+                          <ProFormRadio.Group
+                            label="生鲜总分佣类型"
+                            name="freshSpecial"
+                            required
+                            options={[
+                              {
+                                label: '正常分佣（按分类分佣）',
+                                value: 0,
+                              },
+
+                              {
+                                label: '特殊分佣（单独指定分佣）',
+                                value: 1,
+                              }
+                            ]}
+                            fieldProps={{
+                              onChange: (e) => {
+                                if (e.target.value === 0) {
+                                  editTableRef.current.update({
+                                    ...selectItem[0],
+                                    freshCommission2: amountTransform(selectItem[0].freshCommission),
+                                    freshCommission3: null,
+                                  })
+                                } else {
+                                  editTableRef.current.update({
+                                    ...selectItem[0],
+                                    freshCommission2: freshCommission,
+                                    freshCommission3: null,
+                                  })
+                                }
+                              }
+                            }}
+                          />
+                          {
+                            freshSpecial === 0
+                              ? <Form.Item
+                                label="总分佣比例"
+                              >
+                                {selectItem[0].gcId1Display} &gt; {selectItem[0].gcId2Display}：{amountTransform(selectItem[0].freshCommission)}%
+                              </Form.Item>
+                              :
+                              <div
+                                style={{ position: 'relative', zIndex: 1 }}
+                              >
+                                <ProFormText
+                                  name="freshCommission"
+                                  label="总分佣比例"
+                                  width={150}
+                                  fieldProps={{ addonAfter: '%' }}
+                                  placeholder="总分佣比例"
+                                  validateFirst
+                                  fieldProps={{
+                                    onBlur: (e) => {
+                                      editTableRef.current.update({
+                                        ...selectItem[0],
+                                        freshCommission2: e.target.value,
+                                        freshCommission3: null,
+                                      })
+                                    }
+                                  }}
+                                  rules={[
+                                    { required: true, message: '请输入总分佣比例' },
+                                    () => ({
+                                      validator(_, value) {
+                                        if (!/^((0)|([1-9][0-9]*))$/g.test(value) || value > 50) {
+                                          return Promise.reject(new Error('请输入0-50之间的正整数'));
+                                        }
+                                        return Promise.resolve();
+                                      },
+                                    })
+                                  ]}
+                                />
+                              </div>
+                          }
+                          <Form.Item
+                            label="生鲜商品的各方分佣比例"
+                          >
+                            <div style={{ marginTop: '-10px' }}>
+                              <Table
+                                title={() => "以五星社区店为例"}
+                                columns={[
+                                  { title: '社区店', dataIndex: 'shopCommission', render: (_) => `${amountTransform(_)}%` },
+                                  { title: '运营中心', dataIndex: 'operateCommission', render: (_) => `${amountTransform(_)}%` },
+                                  { title: '推荐人', dataIndex: 'referrerCommission', render: (_) => `${amountTransform(_)}%` },
+                                  { title: '平台额外收益', dataIndex: 'platForm', render: (_) => `${amountTransform(_)}%` },
+                                ]}
+                                dataSource={[selectItem[0].freshData[0]]}
+                                pagination={false}
+                              />
+                            </div>
+                          </Form.Item>
+
+                          <Form.Item
+                            label="预计生鲜食品的各方分佣金额"
+                          >
+                            <div style={{ marginTop: '-10px' }}>
+                              <FreshIncome data={selectItem[0]} freshCommission={freshSpecial === 0 ? selectItem[0].freshCommission : amountTransform(freshCommission, '/')} />
+                            </div>
+                          </Form.Item>
+                        </>
+                      )
+                    }
+                  }
+                </ProFormDependency>
+              </>
+            }
+
+            {/* <ProFormCheckbox.Group value={'1'} label="可购买的社区店等级" disabled options={[{ label: '全部', value: 1 }]} />
+            <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} /> */}
+            {!!selectItem[0]?.shipAddr?.length && <Form.Item
+              label="商品发货地区"
+            >
+              {parseShipAddr(selectItem[0].shipAddr)}
+            </Form.Item>}
             <Form.Item
               label="可集约店铺区域"
               name="area"
@@ -414,7 +857,8 @@ const IntensiveActivityCreate = () => {
             title="完成"
             {...formItemLayout}
             onFinish={() => {
-              history.push('/intensive-activity-management/intensive-activity-list')
+              // history.push('')
+              window.location.href = '/intensive-activity-management/intensive-activity-list'
               return true;
             }}
             className={styles.center}
@@ -446,9 +890,9 @@ const IntensiveActivityCreate = () => {
               </Descriptions>
             </div>}
           </StepsForm.StepForm>
-        </StepsForm >
-      </ProCard >
-    </PageContainer >
+        </StepsForm>
+      </ProCard>
+    </PageContainer>
   )
 }
 

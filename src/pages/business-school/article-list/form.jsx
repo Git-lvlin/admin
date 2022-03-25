@@ -10,11 +10,20 @@ import Upload from '@/components/upload';
 import { findAdminArticleTypeList } from '@/services/cms/member/member';
 import { adminArticleDetail,saveOrUpdateArticle } from '@/services/business-school/find-admin-article-list';
 import  ReactQuill,{ Quill }  from 'react-quill';
+import QuillEmoji from 'quill-emoji'
+import 'quill-emoji/dist/quill-emoji.css'
 import { history } from 'umi';
 import styles from './style.less'
 import 'react-quill/dist/quill.snow.css';
+import upload from '@/utils/upload'
+import { now } from 'lodash';
 
 
+Quill.register({
+  'modules/emoji-toolbar': QuillEmoji.ToolbarEmoji,
+  // 'modules/emoji-textarea': QuillEmoji.TextAreaEmoji,
+  'modules/emoji-shortname': QuillEmoji.ShortNameEmoji
+})
 
 
 const formItemLayout = {
@@ -46,12 +55,48 @@ export default (props) => {
       <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{detailData?.id&&detailData?.edtil?null:right(value)}</div>
     </div>
   )
+  const  base64toFile=async (urlData) => {
+    //去掉url的头，并转换为byte
+    const bytes = window.atob(urlData.split(',')[1]);
+    //处理异常,将ascii码小于0的转换为大于0
+    const ab = new ArrayBuffer(bytes.length);
+    const ia = new Uint8Array(ab);
+    ia.forEach((i, index) => {
+      ia[index] = bytes.charCodeAt(index);
+    });
+    //文件流转换成url路径
+    const link=await upload(new Blob([ia], { type: urlData.split(',')[0].split(':')[1].split(';')[0],name:+new Date() }),204)
+    return link
+};
 
-  const onsubmit = (values) => {
+  const onsubmit =async (values) => {
     const {articleContent, ...rest } = values
+    const urlData=[]
+    articleContent.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/g, async (match, capture) => {
+      urlData.push(capture)
+    });
+
+    const linkArr=[]
+    for (var value of urlData)  {
+      if(value.indexOf('base64')!= -1){
+        const str=await base64toFile(value)
+        linkArr.push({old:value.slice(-20),new:str})
+      }else{
+        linkArr.push({old:value.slice(-20),new:value})
+      }
+    }
+
+    const str=articleContent.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/g,(match, capture) => {
+      const link=linkArr.find(ele=>{
+        return capture.slice(-20)==ele.old
+      })
+      return `<img src=${link?.new}/>`
+    }
+    );
+
     const param = {
       articleType:1,
-      articleContent:`<head><style>img{width:100% !important;}</style></head>${articleContent}`,
+      articleContent:`<head><style>img{width:100% !important;}</style></head>${str}`,
       ...rest
     }
     if(detailData?.id&&detailData?.edtil){
@@ -117,32 +162,53 @@ export default (props) => {
     }
     })
   }
+
   const modules={
     toolbar:{
       container:[
-        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        ['blockquote', 'code-block'],
-        ['link', 'image','video'],
-    
-        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-        [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-        [{ 'direction': 'rtl' }],                         // text direction
-    
-        // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-    
-        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'size': ['small', false, 'large', 'huge'] }], // custom dropdown
         [{ 'font': [] }],
+        [{ 'header': 1 }, { 'header': 2 }],        // custom button values
+        ['bold', 'italic', 'underline', 'strike'],    // toggled buttons
         [{ 'align': [] }],
-    
-        ['clean']                                         // remove formatting button
+        [{ 'indent': '-1' }, { 'indent': '+1' }],     // outdent/indent
+        [{ 'direction': 'rtl' }],             // text direction
+        [{ 'script': 'sub' }, { 'script': 'super' }],   // superscript/subscript
+        ['blockquote', 'code-block'],
+      
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        [{ 'color': [] }, { 'background': [] }],
+        ['emoji', 'image', 'video', 'link'],
+      
+        ['clean']
       ],
-  }
+      handlers: {
+        image: ()=>imageHandler()
+      }
+    },
+    'emoji-toolbar': true,
+    // 'emoji-textarea': true,
+    'emoji-shortname': true,
   }
  
-  
+
+  const imageHandler = () => {
+    const quillEditor = ref.current?.getEditor()
+    const input = document.createElement('input')
+    input.setAttribute('type', 'file')
+    input.setAttribute('accept', 'image/*')
+    input.setAttribute('multiple', 'multiple');
+    input.click()
+    input.onchange = async () => {
+      const file = input.files[0]
+      const formData = new FormData()
+      formData.append('quill-image', file)
+      const code=204
+      const link=await upload(file,code)
+      const range = quillEditor?.getSelection()
+      quillEditor.insertEmbed(range.index, 'image', link)
+    }
+  }
 
   return (
     <DrawerForm
@@ -181,7 +247,11 @@ export default (props) => {
         }
       }
       onFinish={async (values) => {
-        await onsubmit(values);
+        try {
+          await onsubmit(values);
+        } catch (error) {
+          console.log('error',error)
+        }
         // 不返回不会关闭弹框
         // return true;
       }}
@@ -340,7 +410,7 @@ export default (props) => {
               readonly={detailData?.id&&detailData?.edtil}
               // rules={[{ required: true, message: '请设置文章详情!' }]} 
             >
-              <ReactQuill  modules={modules}/>
+              <ReactQuill modules={modules} ref={ref}/>
             </Form.Item>
             <div className={styles.mark}>*</div>
           </div>

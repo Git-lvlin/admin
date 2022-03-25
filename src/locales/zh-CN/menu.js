@@ -62,6 +62,7 @@ export default {
   'menu.product-management.product-category': '商品分类',
   'menu.product-management.overrule-list': '驳回商品',
   'menu.product-management.product-evaluate': '商品评价',
+  'menu.product-management.product-unit': '商品单位',
 
 
   'menu.setting': '设置',
@@ -70,15 +71,34 @@ export default {
   'menu.setting.authority-management': '权限管理',
   'menu.setting.password': '修改密码',
   'menu.setting.shipments-area-configuration': '待发货区域配置',
+  'menu.setting.switch-setting': '阶梯优惠参数开关',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
+  'menu.intensive-activity-management.intensive-bulk-activity-list': '散装集约活动列表',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
+  'menu.intensive-activity-management.intensive-bulk-activity-create': '散装集约活动新建',
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
+  'menu.intensive-activity-management.intensive-bulk-activity-detail': '集约活动详情',
   'menu.intensive-activity-management.intensive-activity-audit': '集约活动审核',
   'menu.intensive-activity-management.intensive-activity-audit-detail': '活动审核详情',
+  'menu.intensive-activity-management.intensive-bulk-activity-audit-detail': '活动审核详情',
   'menu.intensive-activity-management.intensive-remind-configuration': '集约提醒配置',
   'menu.intensive-activity-management.intensive-remind-statistics': '集约提醒统计',
+  'menu.intensive-activity-management.platfor-bonus-percentage': '平台额外奖励比例',
+  'menu.intensive-activity-management.platfor-bonus-percentage-audit': '平台额外奖励比例审核',
+  'menu.intensive-activity-management.penny-activity': '一分钱活动',
+  'menu.intensive-activity-management.penny-activity.activity-list': '活动列表',
+  'menu.intensive-activity-management.penny-activity.added-activity': '新建活动',
+  'menu.intensive-activity-management.penny-activity.activity-detail': '活动详情',
+  'menu.intensive-activity-management.penny-activity.activity-commodity': '活动商品',
+  'menu.intensive-activity-management.special-offer-acticity': '特价活动',
+  'menu.intensive-activity-management.special-offer-acticity.special-offer-acticity-list': '特价活动列表',
+  'menu.intensive-activity-management.special-offer-acticity.add-activity': '新建活动',
+  'menu.intensive-activity-management.special-offer-acticity.activity-detail': '特价活动详情',
+
+
+
 
 
 
@@ -124,8 +144,13 @@ export default {
   'menu.intensive-store-management.lvl-rule': '等级规则配置',
   'menu.intensive-store-management.lvl-setup': '等级配置',
   'menu.intensive-store-management.lvl-commission': '等级佣金',
-  'menu.intensive-store-management.shop-area': '可开店区域配置',
+  'menu.intensive-store-management.shop-area': '开店区域和缴费',
   'menu.intensive-store-management.community-store-setting': '社区店设置',
+  'menu.intensive-store-management.data-excel': '数据导出',
+  'menu.intensive-store-management.cancel-reason': '注销原因',
+  'menu.intensive-store-management.fresh-store-review': '生鲜店铺申请审核',
+  'menu.intensive-store-management.fresh-shop-configuration': '生鲜店铺配置',
+
 
 
   'menu.single-contract-activity-management': '单约活动管理',
@@ -150,7 +175,7 @@ export default {
   'menu.cms.goos-reg.save-money': '集约优选',
   'menu.cms.goos-reg.strategy-today': '首页秒约爆品',
   'menu.cms.home-suspension': '首页悬浮窗',
-  'menu.cms.home-activity': '首页活动',
+  'menu.cms.home-activity': '首页活动图标',
   'menu.cms.home-classification': '首页分类管理',
   'menu.cms.express-news': '约购快报',
   'menu.cms.king-kong-district': '金刚区',
@@ -168,6 +193,8 @@ export default {
   'menu.cms.home-popup': 'app首页弹窗管理',
   'menu.cms.start-up': 'app启动广告配置',
   'menu.cms.goods-sort': '集约商品展示配置',
+  'menu.cms.goods-class': '集约商品运营类目',
+  'menu.cms.story': '店主故事',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
@@ -184,7 +211,7 @@ export default {
 
   'menu.coupon-management': '红包管理',
   'menu.coupon-management.coupon-list': '红包列表',
-  'menu.coupon-management.construction':'新建红包',
+  'menu.coupon-management.coupon-construction':'新建红包',
   'menu.coupon-management.coupon-codebase':'码库',
   'menu.coupon-management.coupon-audit':'红包审核',
   'menu.coupon-management.audit-details':'审核详情',
@@ -250,6 +277,7 @@ export default {
   'menu.financial-management':'财务管理',
   'menu.financial-management.money-management':'资金管理',
   'menu.financial-management.money-management.yeahgo-virtual-account-management':'约购虚拟户',
+  'menu.financial-management.money-management.yeahgo-virtual-account-management.transaction-details':'交易明细',
   'menu.financial-management.money-management.transaction-details':'交易明细',
   'menu.financial-management.money-management.supplier-fund-management':'供应商家资金管理',
   'menu.financial-management.money-management.member-store-fund-management':'社区店资金管理',
@@ -321,4 +349,16 @@ export default {
   'menu.activity-management.share-red-packet-activity.activity-list': '活动列表',
   'menu.activity-management.share-red-packet-activity.share-packet-rule': '分享领红包活动规则设置',
   'menu.activity-management.share-red-packet-activity.activity-data': '活动数据',
+  'menu.activity-management.spring-festival-build-building-activity': '新春盖楼活动',
+  'menu.activity-management.spring-festival-build-building-activity.spring-festival-list': '活动列表',
+  'menu.activity-management.spring-festival-build-building-activity.rule-configuration': '规则配置',
+  'menu.activity-management.spring-festival-build-building-activity.consume-detail': '使用明细',
+  'menu.activity-management.spring-festival-build-building-activity.grant-detail': '发放明细',
+  'menu.activity-management.spring-festival-build-building-activity.cash-advance-detail': '提现明细',
+  'menu.activity-management.spring-festival-build-building-activity.employ-detail': '查看用户明细',
+  'menu.activity-management.spring-festival-build-building-activity.ranking-data': '排名数据',
+  'menu.activity-management.spring-festival-build-building-activity.binding-set': '提现绑定设置',
+
+
+
 };

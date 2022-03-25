@@ -7,12 +7,14 @@ import { useParams, useLocation, history } from 'umi';
 import { amountTransform, typeTransform } from '@/utils/utils'
 import GcCascader from '@/components/gc-cascader'
 import ProductDetailDrawer from '@/components/product-detail-drawer'
+import ModifyPriceLog from './modify-price-log'
 
 
 const TableList = () => {
   const params = useParams();
   const location = useLocation();
   const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
+  const [modifyPriceLogVisible, setModifyPriceLogVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
 
   const columns = [
@@ -71,8 +73,15 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '售价',
+      title: '集约价',
       dataIndex: 'price',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '当前售价',
+      dataIndex: 'salePrice',
       valueType: 'text',
       hideInSearch: true,
       render: (_) => amountTransform(_, '/')
@@ -90,6 +99,13 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
+      title: '改价次数',
+      dataIndex: 'modifyPriceNums',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, record) => _ > 0 ? <a onClick={() => { setSelectItem(record); setModifyPriceLogVisible(true); }}>{_}</a> : _
+    },
+    {
       title: '展示状态',
       dataIndex: 'onlineStatus',
       valueType: 'select',
@@ -103,6 +119,15 @@ const TableList = () => {
       title: '商品分类',
       dataIndex: 'gcId',
       renderFormItem: () => (<GcCascader />),
+      hideInTable: true,
+    },
+    {
+      title: '改价记录',
+      dataIndex: 'isModifyPrice',
+      valueEnum: {
+        1: '有改价记录',
+        2: '没有改价记录'
+      },
       hideInTable: true,
     },
     // {
@@ -138,10 +163,11 @@ const TableList = () => {
         columns={columns}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
       />
       <div style={{ textAlign: 'center', marginTop: 30 }}>
-        <Button onClick={() => { history.goBack() }}>返回</Button>
+        <Button onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
       </div>
       {
         productDetailDrawerVisible &&
@@ -151,6 +177,7 @@ const TableList = () => {
           spuId={selectItem?.spuId}
         />
       }
+      {modifyPriceLogVisible && <ModifyPriceLog id={selectItem?.id} visible={modifyPriceLogVisible} setVisible={setModifyPriceLogVisible} />}
     </PageContainer>
 
   );

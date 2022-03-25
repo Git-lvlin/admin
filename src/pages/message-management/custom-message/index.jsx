@@ -187,10 +187,10 @@ const Index = () => {
         columns={columns}
         actionRef={actionRef}
         request={ customMessageList }
+        scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
         pagination={{
           showQuickJumper: true,
           pageSize: 10,
-          hideOnSinglePage: true
         }}
         search={false}
         toolBarRender={() => [

@@ -55,7 +55,9 @@ const TransactionDetails = () => {
         'withdraw': '提现',
         'yeahCardRecharge': '约卡充值',
         'deposit': '保证金',
-        'depositReturn': '保证金回退'
+        'depositReturn': '保证金回退',
+        'chargeFeeCommission': '服务费收益',
+        'chargeFeeCommissionReturn': '服务费收益回退'
       }
     }else if(query.accountId==='platformFee'){
       return {
@@ -81,9 +83,10 @@ const TransactionDetails = () => {
         'second': '秒约订单',
         'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
-        'commandCollect': '集约销售订单',
+        'commandCollect': '集约零售订单',
         'blindBox': '盲盒订单',
-        'signIn': '签到订单'
+        'signIn': '签到订单',
+        'settleChargeFee': '入驻服务费订单'
       }
     }
   }
@@ -103,9 +106,7 @@ const TransactionDetails = () => {
     },
     {
       title: '交易类型',
-      dataIndex:'tradeType',
-      valueType: 'select',
-      valueEnum: tradeType,
+      dataIndex:'tradeTypeDesc',
       hideInSearch: true
     },
     {
@@ -114,6 +115,12 @@ const TransactionDetails = () => {
       valueType: 'select',
       valueEnum: orderType(),
       hideInSearch: query.accountId==='platform' ? false : true,
+      hideInTable: true
+    },
+    {
+      title: '订单类型',
+      dataIndex:'orderTypeDesc',
+      hideInSearch: true,
       hideInTable: query.accountId==='platform' ? false : true
     },
     {
@@ -131,7 +138,7 @@ const TransactionDetails = () => {
       hideInSearch: query.accountId==='platformXinbao' ? true : false,
       hideInTable: query.accountId==='platformXinbao' ? true : false,
       render: (_, records)=> (
-        records.orderId ? 
+        records.payNoJumpParam ? 
         <a onClick={() => { setSelectItem(records.billNo); setDetailVisible(true); }}>{_}</a>:
         <span>{_}</span>
       )

@@ -50,7 +50,18 @@ const CommissionDetailManagement = () =>{
       title: '订单类型',
       dataIndex: 'orderType',
       valueType: 'select',
-      valueEnum: orderType
+      valueEnum: orderType,
+      hideInTable: true
+    },
+    {
+      title: '订单类型',
+      dataIndex: 'orderTypeDesc',
+      hideInSearch: true
+    },
+    {
+      title: '活动类型',
+      dataIndex: 'activityTypeDesc',
+      hideInSearch: true
     },
     {
       title: '订单号',

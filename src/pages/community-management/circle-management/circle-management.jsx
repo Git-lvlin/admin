@@ -130,6 +130,7 @@ export default ()=> {
             actionRef={ref}
             rowKey="id"
             toolBarRender={false}
+            scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
             search={{
                 defaultCollapsed: false,
                 labelWidth: 100,

@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Form, Spin, Space, Image, Button, message } from 'antd';
 import { storeDetail } from '@/services/intensive-store-management/store-review';
-import { useParams } from 'umi';
 import ProForm, { ProFormText, DrawerForm } from '@ant-design/pro-form';
 import AddressCascader from '@/components/address-cascader'
 import Upload from '@/components/upload';
 import RejectForm from './refuse';
 import { amountTransform } from '@/utils/utils'
-import { history } from 'umi';
 import { approve } from '@/services/intensive-store-management/store-review'
+import OrderDetail from '@/pages/order-management/normal-order/detail';
 
 
 const formItemLayout = {
@@ -78,19 +77,22 @@ const ImageInfo = ({ value, onChange }) => {
   )
 }
 
+const orderStatus = { 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭' };
+
 const Detail = (props) => {
   const { setVisible } = props;
-  const params = useParams();
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm()
   const [addressText, setAddressText] = useState('');
   const [location, setLocation] = useState([]);
   const [rejectFormVisible, setRejectFormVisible] = useState(false);
+  const [orderDetailVisible, setOrderDetailVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState({});
   const map = useRef();
 
   const submit = (values) => {
-    const { area, imageInfo, ...rest } = values;
+    const { area, imageInfo, serviceFee, ...rest } = values;
     return new Promise((resolve, reject) => {
       let userInfo = window.localStorage.getItem('user');
       userInfo = userInfo && JSON.parse(userInfo)
@@ -114,7 +116,8 @@ const Detail = (props) => {
         idHandheld: imageInfo.idHandheld,
         memberId: detailData.memberId,
         verifyStatus: detailData.verifyStatus.code,
-        deposit: detailData.deposit.length === 0 ? amountTransform(values.depositValue) : 0
+        deposit: detailData.deposit.length === 0 ? amountTransform(values.depositValue) : 0,
+        serviceFee: detailData.lastServiceFee.id ? detailData.lastServiceFee.payAmount : amountTransform(serviceFee),
       }, { showSuccess: true }).then(res => {
         if (res.code === 0) {
           resolve()
@@ -136,22 +139,6 @@ const Detail = (props) => {
         setDetailData(res.data)
 
         const { details } = res.data;
-        setLocation([details.longitude, details.latitude]);
-        map.current = new AMap.Map('container', {
-          zoom: 20,
-          center: [details.longitude, details.latitude],
-        });
-        map.current.add(new AMap.Marker({
-          position: new AMap.LngLat(details.longitude, details.latitude),
-        }))
-        map.current.on('click', function (ev) {
-          map.current.clearMap()
-          const marker = new AMap.Marker({
-            position: new AMap.LngLat(ev.lnglat.lng, ev.lnglat.lat),
-          });
-          map.current.add(marker)
-          setLocation([ev.lnglat.lng, ev.lnglat.lat]);
-        });
 
         form.setFieldsValue({
           area: [
@@ -170,6 +157,24 @@ const Detail = (props) => {
           realname: details?.realname,
           idNumber: details?.idNumber,
         })
+
+        setLocation([details.longitude || 0, details.latitude || 0]);
+        map.current = new AMap.Map('container', {
+          zoom: 20,
+          center: [details.longitude || 0, details.latitude || 0],
+        });
+        map.current.add(new AMap.Marker({
+          position: new AMap.LngLat(details.longitude || 0, details.latitude || 0),
+        }))
+        map.current.on('click', function (ev) {
+          map.current.clearMap()
+          const marker = new AMap.Marker({
+            position: new AMap.LngLat(ev.lnglat.lng, ev.lnglat.lat),
+          });
+          map.current.add(marker)
+          setLocation([ev.lnglat.lng, ev.lnglat.lat]);
+        });
+        setAddressText(`${details.provinceName}${details.cityName}${details.regionName}${details.address}`)
       }
     }).finally(() => {
       setLoading(false);
@@ -232,21 +237,19 @@ const Detail = (props) => {
       submitter={{
         render: (props, doms) => {
           return (
-            <div style={{ textAlign: 'center', marginTop: 100 }}>
-              <Space>
-                <Button type="primary" onClick={() => props.form?.submit()}>
-                  通过
-                </Button>
-                <Button type="danger" onClick={() => {
-                  setRejectFormVisible(true);
-                }}>驳回</Button>
-                <Button onClick={() => {
-                  setVisible(false)
-                }}>
-                  返回
-                </Button>
-              </Space>
-            </div>
+            <Space>
+              <Button type="primary" onClick={() => props.form?.submit()}>
+                通过
+              </Button>
+              <Button type="danger" onClick={() => {
+                setRejectFormVisible(true);
+              }}>驳回</Button>
+              <Button onClick={() => {
+                setVisible(false)
+              }}>
+                返回
+              </Button>
+            </Space>
           )
         }
       }}
@@ -323,6 +326,29 @@ const Detail = (props) => {
         >
           <div id="container" style={{ width: 600, height: 300 }}></div>
         </Form.Item>
+        <Form.Item
+          label="必备礼包订单号"
+        >
+          {
+            detailData?.details?.giftOrder?.isGiftOrdered === 0 && <span style={{ color: 'red' }}>没有购买记录</span>
+          }
+          {
+            detailData?.details?.giftOrder?.isGiftOrdered === 1
+            && <a onClick={() => { setSelectItem({ id: detailData?.details?.giftOrder?.id }); setOrderDetailVisible(true) }}>{detailData?.details?.giftOrder?.orderSn}【{orderStatus[detailData?.details?.giftOrder?.status]}】 </a>
+          }
+        </Form.Item>
+        <Form.Item
+          label="申请类型"
+        >
+          {{ 10: '正常申请', 20: '绿色通道申请' }[detailData?.details?.applyType]}
+        </Form.Item>
+        {detailData?.details?.applyType === 20 && <Form.Item
+          label="证明文件"
+        >
+          {
+            detailData?.details?.credentialList.map(item => (<Image style={{ marginRight: 10 }} width={50} height={50} src={item} key={item} />))
+          }
+        </Form.Item>}
         <ProFormText
           name="realname"
           label="姓名"
@@ -387,7 +413,7 @@ const Detail = (props) => {
           {detailData?.createTime}
         </Form.Item>
         {
-          detailData?.deposit?.payAmount
+          !!detailData?.deposit?.payAmount
           &&
           <>
             <Form.Item
@@ -415,6 +441,45 @@ const Detail = (props) => {
               maxLength: 30,
               suffix: '元'
             }}
+          />
+        }
+        {
+          !!detailData?.lastServiceFee?.id
+          &&
+          <>
+            <Form.Item
+              label="服务费金额"
+            >
+              ¥{amountTransform(detailData?.lastServiceFee?.payAmount, '/')}
+            </Form.Item>
+            <Form.Item
+              label="服务费缴纳时间"
+            >
+              {detailData?.lastServiceFee?.payTime}
+            </Form.Item>
+          </>
+        }
+        {
+          detailData?.lastServiceFee?.id === 0
+          && <ProFormText
+            name="serviceFee"
+            label="服务费金额"
+            placeholder="请输入服务费金额"
+            rules={[{ required: true, message: '请输入服务费金额' }]}
+            width="md"
+            fieldProps={{
+              placeholder: '请输入服务费金额',
+              maxLength: 30,
+              suffix: '元'
+            }}
+          />
+        }
+        {
+          orderDetailVisible &&
+          <OrderDetail
+            id={selectItem?.id}
+            visible={orderDetailVisible}
+            setVisible={setOrderDetailVisible}
           />
         }
       </Spin>

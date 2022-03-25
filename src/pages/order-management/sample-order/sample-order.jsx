@@ -12,6 +12,7 @@ import ExportHistory from '@/pages/export-excel/export-history'
 import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
 import Detail from './detail';
+import EditAddress from './edit-address'
 
 
 const TableList = () => {
@@ -30,6 +31,8 @@ const TableList = () => {
   const [selectItem, setSelectItem] = useState({});
   const location = useLocation();
   const [orderStatusType,setOrderStatusType]=useState()
+  const [addressVisible, setAddressVisible] = useState(false)
+  const [subOrderId, setSubOrderId] = useState(null)
 
 
   const [form] = Form.useForm()
@@ -132,20 +135,20 @@ const TableList = () => {
                   </Button>
                   <Export
                     change={(e) => { setVisit(e) }}
-                    type={`${isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`}
+                    type={`${isPurchase ? 'purchase-order-simple-export' : 'order-simple-export'}`}
                     conditions={getFieldValue}
                   />
-                  <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`} />
+                  <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-simple-export' : 'order-simple-export'}`} />
                   {
                     isPurchase
                     &&
                     <>
                       <Import
                         change={(e) => { setImportVisit(e) }}
-                        code="order_common_send_goods_import"
+                        code="order_simple_send_goods_import"
                         conditions={getFieldValue}
                       />
-                      <ImportHistory show={importVisit} setShow={setImportVisit} type="order_common_send_goods_import" />
+                      <ImportHistory show={importVisit} setShow={setImportVisit} type="order_simple_send_goods_import" />
                     </>
                   }
                 </Space>
@@ -345,7 +348,8 @@ const TableList = () => {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         }
-        {
+        <div style={{ marginBottom: 10 }}>
+          {
           data.map(item => (
             <div className={styles.list} key={item.id}>
               {
@@ -419,12 +423,28 @@ const TableList = () => {
                   <span>收货人：{item.consignee}</span>
                   <span>电话：{item.phone}</span>
                   <span>地址：{item.address}</span>
+                  {
+                    (orderType === 1 || orderType === 2)&&
+                    <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true)}}>修改地址</Button>
+                  }
                 </Space>
               </div>
             </div>
           ))
         }
+        </div>
+        
       </Spin>
+      {
+        addressVisible&&
+        <EditAddress
+          subOrderId={subOrderId}
+          setVisible={setAddressVisible}
+          visible={addressVisible}
+          setChange={setSearch}
+          change={search}
+        />
+      }
       {
         detailVisible &&
         <Detail

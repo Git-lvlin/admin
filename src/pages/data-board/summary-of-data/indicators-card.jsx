@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Tabs } from 'antd'
+import { Tabs, DatePicker } from 'antd'
 import moment from 'moment'
 
 import styles from './style.less'
 import ChartForm from './chart-form'
 import { coreData } from '@/services/data-board/summary-of-data'
 import { getTimeDistance } from '@/utils/utils'
+
+const { RangePicker } = DatePicker
 
 const IndicatorsCard = () => {
   const [lineData, setLineData] = useState([])
@@ -16,6 +18,10 @@ const IndicatorsCard = () => {
 
   const selectDate = (type) => {
     setRangePickerValue(getTimeDistance(type))
+  }
+
+  const handleRangePickerChange = (value) => {
+    setRangePickerValue(value)
   }
 
   const isActive = (type) => {
@@ -77,6 +83,14 @@ const IndicatorsCard = () => {
             上月
           </a>
         </div>
+        <RangePicker
+          value={rangePickerValue}
+          onChange={handleRangePickerChange}
+          style={{
+            width: 256,
+          }}
+          allowClear={false}
+        />
       </div>
   }
 

@@ -12,6 +12,8 @@ import { hotGoosList, hotGoosOperation, tagSortTop, cmsImageInfo } from '@/servi
 import ContentVersionTab from '@/components/content-version-tab';
 import ProForm from '@ant-design/pro-form';
 
+import Title from './title'
+
 const StrategyToday = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
@@ -193,10 +195,10 @@ const StrategyToday = () => {
       render: (text, record, _) => {
         return (
           <>
-            {record.status===2&&<Button size="small" key="top" onClick={() => {top(record.id)}}>置顶</Button>}
+            {/* {record.status===2&&<Button size="small" key="top" onClick={() => {top(record.id)}}>置顶</Button>} */}
+            <Button size="small" key="editable" onClick={() => {getDetail(record)}}>排序</Button>
             {record.status===2&&<Button size="small" key="down" onClick={() => {formControl(record.id, 1)}}>下线</Button>}
             {record.status===1&&<Button size="small" key="view" onClick={() => {formControl(record.id,2)}}>发布</Button>}
-            {record.status===1&&<Button size="small" key="editable" onClick={() => {getDetail(record)}}>排序</Button>}
             {record.status===1&&<Button size="small" key="d" onClick={() => {formControl(record.id,4)}}>删除</Button>}
           </>
         )
@@ -228,6 +230,7 @@ const StrategyToday = () => {
         })
         return data
       }}
+      scroll={{ y: Math.max(window.innerHeight - 820, 500), scrollToFirstRowOnChange: true, }}
       request={hotGoosList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
@@ -269,7 +272,7 @@ const StrategyToday = () => {
         pageSize: 10,
       }}
       dateFormatter="string"
-      headerTitle="首页秒约爆品"
+      headerTitle={<Title actRef={actionRef}/>}
       toolBarRender={(_,record) => [
         <Button key="button" icon={<PlayCircleOutlined />} type="primary" onClick={() => { formControl(record.selectedRowKeys.toString(), 2) }}>
           批量发布

@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Input, Form, message,Button,InputNumber,Spin,Space} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import { couponInviteSub,couponInviteEdit,couponInviteDetail,couponInviteSelList } from '@/services/activity-management/share-red-packet-activity';
-import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect,DrawerForm } from '@ant-design/pro-form';
 import { FormattedMessage, formatMessage } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
@@ -34,6 +34,7 @@ const formItemLayout = {
 
 
 export default (props) =>{
+  const {setDetailVisible,detailVisible,onClose,callback,id}=props
   const [dataSource, setDataSource] = useState(() => data);
   const [editableKeys, setEditableRowKeys] = useState(() =>
     data.map((item) => item.id),
@@ -47,7 +48,6 @@ export default (props) =>{
   const [referrerNum1,setReferrerNum1]=useState()
   const [referrerNum2,setReferrerNum2]=useState()
   const [referrerNum3,setReferrerNum3]=useState()
-  let id = props.location.query.id
   const FromWrap = ({ value, onChange, content, right }) => (
     <div style={{ display: 'flex' }}>
       <div>{content(value, onChange)}</div>
@@ -92,7 +92,8 @@ export default (props) =>{
         couponInviteEdit({id:id,...values}).then(res=>{
           if(res.code==0){
             message.success('编辑成功');
-            history.push('/activity-management/share-red-packet-activity/activity-list')
+            setDetailVisible(false)
+            callback(true)
           }
         })
       }else{
@@ -106,7 +107,8 @@ export default (props) =>{
         couponInviteSub({...values}).then(res=>{
           if(res.code==0){
             message.success('添加成功'); 
-            history.push('/activity-management/share-red-packet-activity/activity-list')
+            setDetailVisible(false)
+            callback(true)
           }
         })
       }
@@ -140,7 +142,7 @@ export default (props) =>{
     {
       title: (
         <Space>
-          <sapn>累计推荐1-</sapn>
+          <span>累计推荐1-</span>
             <InputNumber min={1} onChange={onChange1}  style={{width:'60px'}}/>
           <span>人</span>
         </Space>
@@ -155,7 +157,7 @@ export default (props) =>{
     {
       title:  (
         <Space>
-          <sapn>累计推荐{referrerNum1?Number(referrerNum1+1):null}-</sapn>
+          <span>累计推荐{referrerNum1?Number(referrerNum1+1):null}-</span>
             <InputNumber min={1} onChange={onChange2}  style={{width:'60px'}}/>
           <span>人</span>
         </Space>
@@ -169,7 +171,7 @@ export default (props) =>{
     }, {
       title:  (
         <Space>
-          <sapn>累计推荐</sapn>
+          <span>累计推荐</span>
             <InputNumber min={1} value={referrerNum2+1} disabled={true} style={{width:'60px'}}/>
           <span>人以上</span>
         </Space>
@@ -207,15 +209,21 @@ export default (props) =>{
   //   return current && current < moment().startOf('day');
   // }
   return (
-    <PageContainer>
+    <>
       <Spin spinning={loading}>
-      <ProForm
+      <DrawerForm
+        title={id?'详情':'分享领红包活动规则设置'}
+        onVisibleChange={setDetailVisible}
+        visible={detailVisible}
+        width={1400}
         form={form}
-        onFinish={async (values)=>{
-            await  onsubmit(values);
-          return true;
-         } }
-         {...formItemLayout} 
+        drawerProps={{
+          forceRender: true,
+          destroyOnClose: true,
+          onClose: () => {
+            onClose();
+          }
+        }}
         submitter={{
           render: (props, doms) => {
             return [
@@ -227,9 +235,9 @@ export default (props) =>{
                       detailList?.data?.status==1?
                       <>
                         {
-                          falg?<Button style={{marginLeft:'100px'}} type="primary" onClick={() => { setFalg(false) }}>编辑</Button>
+                          falg?<Button type="primary" onClick={() => { setFalg(false) }}>编辑</Button>
                           :<>
-                            <Button style={{margin:'100px'}} type="primary" key="submit" onClick={() => {
+                            <Button  type="primary" key="submit" onClick={() => {
                               props.form?.submit?.()
                             }}>
                               保存
@@ -243,18 +251,22 @@ export default (props) =>{
                       :null
                     }
                   </>
-                  :<Button style={{margin:'100px'}} type="primary" key="submit" onClick={() => {
+                  :<Button  type="primary" key="submit" onClick={() => {
                     props.form?.submit?.()
                   }}>
                     保存
                   </Button>
                 }
-                <Button type="default" style={{marginLeft:'80px'}} onClick={() => { history.goBack() }}>返回</Button>
+                <Button type="default" style={{ marginLeft: '80px' }} onClick={() => {setDetailVisible(false);onClose()}}>返回</Button>
               </>  
             ];
           }
         }}
+        onFinish={async (values)=>{
+          await  onsubmit(values);
+        }}
         className={styles.invite_packet_rule}
+        {...formItemLayout}
       >
         <ProFormText
               width="md"
@@ -422,8 +434,8 @@ export default (props) =>{
             id&&falg?
             <p className={styles.back}>最近一次操作人：{detailList?.data?.adminName}     {detailList?.data?.updateTime}</p>
             :null
-          }  
-       </ProForm>
+          }
+      </DrawerForm> 
       </Spin>
       {
         visible&&<EndModel visible={visible} setVisible={setVisible}  endId={id} canBlack={(e)=>{
@@ -431,6 +443,6 @@ export default (props) =>{
           setFalg(true)
         }}/>
       }
-      </PageContainer>
+      </>
   )
 }

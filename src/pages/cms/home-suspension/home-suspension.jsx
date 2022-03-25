@@ -120,6 +120,7 @@ const HomeSuspension = () => {
       params={{
         verifyVersionId: verifyVersionId
       }}
+      scroll={{ y: Math.max(window.innerHeight - 500, 500), scrollToFirstRowOnChange: true, }}
       request={homeSuspensionList}
       search={{
         labelWidth: 'auto',
