@@ -256,18 +256,6 @@ const IntensiveActivityCreate = () => {
         isEditSubsidy: 0
       })
     }
-    if (!detailData.sku) {
-      if (selectItem?.[0]?.fresh === 0) {
-        formRef.current.setFieldsValue({
-          preSale: 1
-        })
-      } else {
-        formRef.current.setFieldsValue({
-          preSale: 0
-        })
-      }
-    }
-    
 
     if (selectItem.length) {
       formRef.current.setFieldsValue({
@@ -401,32 +389,43 @@ const IntensiveActivityCreate = () => {
               !loading &&
               <ProFormDependency name={['isEditSubsidy']}>
                 {({ isEditSubsidy }) => (
-                  <EditTable onSelect={(v) => {
-                    if (v?.[0]?.skuId === selectItem?.[0]?.skuId && selectItem?.[0]?.skuId !== undefined && isEditSubsidy === 2) {
-                      const skuData = v[0];
-                      const obj = {
-                        skuId: skuData.skuId,
-                        fixedPrice: amountTransform(skuData.fixedPrice),
-                        operationFixedPrice: amountTransform(skuData.operationFixedPrice),
-                        isGetWholesale: 1,
-                        priceScale: amountTransform(skuData.settlePercent, '/'),
-                        price: amountTransform(skuData.price),
-                        ladderData: ladderData.map(item => ({
-                          tier: item.tier,
-                          skuId: skuData.skuId,
-                          storePercent: amountTransform(item.storePercent, '/'),
-                        }))
+                  <EditTable
+                    radioSelect={(v)=>{
+                      if (v?.[0]?.fresh === 0) {
+                        formRef.current.setFieldsValue({
+                          preSale: 1
+                        })
+                      } else {
+                        formRef.current.setFieldsValue({
+                          preSale: 0
+                        })
                       }
+                    }}
+                    onSelect={(v) => {
+                      if (v?.[0]?.skuId === selectItem?.[0]?.skuId && selectItem?.[0]?.skuId !== undefined && isEditSubsidy === 2) {
+                        const skuData = v[0];
+                        const obj = {
+                          skuId: skuData.skuId,
+                          fixedPrice: amountTransform(skuData.fixedPrice),
+                          operationFixedPrice: amountTransform(skuData.operationFixedPrice),
+                          isGetWholesale: 1,
+                          priceScale: amountTransform(skuData.settlePercent, '/'),
+                          price: amountTransform(skuData.price),
+                          ladderData: ladderData.map(item => ({
+                            tier: item.tier,
+                            skuId: skuData.skuId,
+                            storePercent: amountTransform(item.storePercent, '/'),
+                          }))
+                        }
 
-
-                      productList(obj).then(res => {
-                        skuData.ladderData = res.data[0].ladderData
-                        setSelectItem([skuData])
-                      })
-                    } else {
-                      setSelectItem(v)
-                    }
-                  }} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} ref={editTableRef} />
+                        productList(obj).then(res => {
+                          skuData.ladderData = res.data[0].ladderData
+                          setSelectItem([skuData])
+                        })
+                      } else {
+                        setSelectItem(v)
+                      }
+                    }} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} ref={editTableRef} />
                 )}
               </ProFormDependency>
 
