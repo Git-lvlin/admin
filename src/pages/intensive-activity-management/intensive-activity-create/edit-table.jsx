@@ -47,7 +47,7 @@ const FormWrap = ({ value, onChange, children }) => {
 //   )
 // }
 
-const EditTable = ({ onSelect, sku, wholesale }, ref) => {
+const EditTable = ({ onSelect, sku, wholesale, radioSelect }, ref) => {
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -626,6 +626,7 @@ const EditTable = ({ onSelect, sku, wholesale }, ref) => {
           setSelectedRowKeys([record.skuId])
           setSelectData([record]);
           onSelect([record]);
+          radioSelect([record])
         },
         fixed: true
       }}
