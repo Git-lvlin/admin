@@ -240,7 +240,6 @@ export default (props) => {
                             </div>
               }}
             </ProFormDependency>
-<<<<<<< HEAD
 
             {
                 visible&&<ModalForm
@@ -262,28 +261,6 @@ export default (props) => {
                         setVisible(false)   
                         return true;
                     }}
-=======
-            {
-                visible&&<ModalForm
-                key="model2"
-                onVisibleChange={setVisible}
-                visible={visible}
-                submitter={{
-                render: (props, defaultDoms) => {
-                    return [
-                        <Button  type="primary" key="submit" onClick={() => {
-                            props.form?.submit?.()
-                          }}>
-                            知道了
-                          </Button>
-                    ];
-                },
-                }}
-                onFinish={async (values) => {
-                    setVisible(false)   
-                    return true;
-                }}
->>>>>>> 16f3691449edb81406fcf310a9afff3fdb2de186
                 >
                 <dl>
                     <dt>概率解释：</dt>
@@ -291,14 +268,9 @@ export default (props) => {
                     <dd>2、下方奖品设置列表中的商品中奖概率总和加起来必须等于100，如果抽中奖品库存为0的商品也会提示用户未中奖。</dd>
                     <dd>3、示例：中奖概率设为20%;则抽奖盒子里有100个纸条，其中有20个写着中奖，80个写着未中奖，随机在这100个纸条里面抽取一个纸条，抽中 未中奖 的纸条则提示用户未中奖，抽中 中奖 的纸条且在今日总中奖次数没有超过设置的次数的情况下会去奖品库根据概率挑选奖品。</dd>
                 </dl>
-<<<<<<< HEAD
             </ModalForm>
             }
             
-=======
-                </ModalForm>
-            }
->>>>>>> 16f3691449edb81406fcf310a9afff3fdb2de186
         </>
     )
 }
