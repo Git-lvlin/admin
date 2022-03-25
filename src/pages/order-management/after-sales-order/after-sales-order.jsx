@@ -7,9 +7,6 @@ import { history } from 'umi'
 
 import { refundOrder } from '@/services/order-management/after-sales-order'
 import { amountTransform } from '@/utils/utils'
-// import Export from '@/pages/export-excel/export'
-// import ExportHistory from '@/pages/export-excel/export-history'
-
 
 const sourceType = {
   1: '待审核',
@@ -26,6 +23,7 @@ const columns = [
     dataIndex: 'orderSn',
     align: 'center',
     order: 9,
+    width: '7%',
     render: (_, records) => {
       return(
         <>
@@ -53,12 +51,14 @@ const columns = [
     title: '订单编号',
     dataIndex: 'subOrderSn',
     align: 'center',
+    width: '7%',
     order: 8
   },
   {
     title: '供应商家ID',
     dataIndex: 'supplierId',
     align: 'center',
+    width: '4%',
     order: -1,
     width: 100,
   },
@@ -67,37 +67,43 @@ const columns = [
     dataIndex: 'applyTime',
     valueType: 'dateTimeRange',
     align: 'center',
+    width: '7%',
     order: 5,
     render: (_, recodes) => moment(recodes?.applyTime).format('YYYY-MM-DD HH:mm:ss')
   },
   {
     title: '买家昵称',
     dataIndex: 'buyerNickname',
+    width: '10%',
     align: 'center',
     order: 4
   },
   {
     title: '买家手机号',
     dataIndex: 'buyerPhone',
+    width: '7%',
     align: 'center',
     order: 3
   },
   {
     title: '商家名称',
     dataIndex: 'storeName',
+    width: '7%',
     align: 'center',
-    order: 2,
+    order: 2
   },
   {
     title: '商家手机号',
     dataIndex: 'storePhone',
+    width: '5%',
     align: 'center',
-    order: 1,
+    order: 1
   },
   {
     title: '售后类型',
     dataIndex: 'afterSalesType',
     valueType: 'select',
+    width: '5%',
     valueEnum: {
       1: '仅退款',
       2: '退款退货'
@@ -109,6 +115,7 @@ const columns = [
   {
     title: '退款总金额（元）',
     dataIndex: 'returnAmount',
+    width: '10%',
     align: 'center',
     hideInSearch: true,
     render: (_) => amountTransform(_, '/').toFixed(2)
@@ -118,6 +125,7 @@ const columns = [
     dataIndex: 'status',
     valueEnum: sourceType,
     valueType: 'select',
+    width: '4%',
     align: 'center',
     width: 100,
     order: 6
@@ -125,6 +133,7 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'operation',
+    width: '6%',
     valueType: 'option',
     align: 'center',
     render: (_, record) => <a onClick={ ()=> {history.push(`/order-management/after-sales-order/detail/${record?.id}`)} }>查看详情</a>
@@ -160,14 +169,7 @@ const afterSalesOrder = () => {
               }}
             >
               {resetText}
-            </Button>,
-            // <Export
-            //   change={(e)=> {setVisit(e)}}
-            //   key="export" 
-            //   type="order-common-export"
-            //   conditions={form?.getFieldValue()}
-            // />,
-            // <ExportHistory key="exportHistory" show={visit} setShow={setVisit}/>
+            </Button>
           ],
         }}
         headerTitle="数据列表"
