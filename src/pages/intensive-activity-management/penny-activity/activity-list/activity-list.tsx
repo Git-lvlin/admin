@@ -9,6 +9,7 @@ import moment from 'moment'
 import EndModel from './end-model'
 import AddedActivity from '../added-activity'
 import type { ProColumns,ActionType } from '@ant-design/pro-table';
+import ActivityDetail from '../activity-detail'
 
 type activityItem={
   id:number;
@@ -35,6 +36,7 @@ export default () => {
     const [visible, setVisible] = useState<boolean>(false);
     const [formVisible, setFormVisible] = useState<boolean>(false);
     const [pennyId,setPennyId]=useState<number>()
+    const [detailVisible, setDetailVisible] = useState(false) 
     const columns:ProColumns<activityItem>[]= [
       {
         title: '活动编号',
@@ -124,8 +126,8 @@ export default () => {
         title: '操作',
         key: 'option',
         valueType: 'option',
-        render:(text, record:any, _, action)=>[
-            <a key='detail' onClick={()=>history.push('/intensive-activity-management/penny-activity/activity-detail?id='+record.id)}>详情</a>,
+        render:(text, record: any, _, action)=>[
+            <a key='detail' onClick={()=>{setDetailVisible(true);setPennyId(record.id)}}>详情</a>,
             <div key='editor'>
              {
                record.statusDisplay=='未开始'||record.statusDisplay=='进行中'?
@@ -198,6 +200,13 @@ export default () => {
           onClose={()=>{ref.current&&ref.current.reload();setPennyId(NaN)}}
           />
         }
+        {detailVisible&& <ActivityDetail
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+          id={pennyId} 
+          callback={() => { ref.current.reload(); setPennyId(null) }}
+          onClose={() => { ref.current.reload(); setPennyId(null) }}
+        />}
         </PageContainer>
     );
   };

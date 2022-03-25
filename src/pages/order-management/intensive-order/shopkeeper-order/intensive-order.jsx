@@ -56,6 +56,7 @@ const TableList = () => {
       phone: phoneNumber,
       startCreateTime: startTime,
       orderSn: subOrderSn,
+      orderStatus: rest.status,
       ...rest
     }
     return obj;
