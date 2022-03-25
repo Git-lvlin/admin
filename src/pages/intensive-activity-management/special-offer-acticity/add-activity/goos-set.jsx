@@ -220,7 +220,7 @@ const GoosModel=(props)=>{
                   ...dom.reverse(),
               ],
           }}
-          scroll={{ x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
+          scroll={{ x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true}}
           postData={postData}
           columns={columns}
           rowSelection={{
