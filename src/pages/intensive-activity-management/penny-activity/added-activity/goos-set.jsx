@@ -291,10 +291,28 @@ export default (props) => {
     },
     {
       title: '活动库存',
-      dataIndex: 'totalStockNum',
+      dataIndex: 'activityStockNum',
       hideInSearch: true,
+      editable:id?false:true,
+      renderFormItem: (_) =>{
+        return <InputNumber
+                  min={_?.entry?.minNum}
+                  max={_?.entry?.totalStockNum}
+                  precision='2'
+                  stringMode
+                  onChange={(val)=>{
+                    console.log('val',val)
+                    if(val%_?.entry?.batchNumber!==0){
+                      console.log('请输入箱规单位量整倍数')
+                    }
+                  }}
+                />
+      },
       render: (_,data)=> {
-        return <p>{_}{data?.unit}</p>
+        return <>
+               <p>总库存：100斤</p>
+               <p>（可用22斤/已售78斤）</p>
+               </>
       },
     },
     {
@@ -352,7 +370,11 @@ export default (props) => {
                 <a key='start' onClick={()=>{setPennyId({wsId:record.wsId,type:3});setEndVisible(true)}}>启用</a>
               }
           </span>,
-          <a key='start' onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑库存</a>
+          <span key='repertory'>
+            {
+              id?<a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑库存</a>:null
+            }
+          </span>
       ]
       },
       editable:false,

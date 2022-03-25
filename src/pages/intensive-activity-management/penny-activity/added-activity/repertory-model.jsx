@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import { ModalForm,ProFormText,ProFormRadio} from '@ant-design/pro-form';
+import { ModalForm,ProFormText,ProFormRadio,ProFormDependency} from '@ant-design/pro-form';
 import { Button, message } from 'antd';
 import { changeStatus } from '@/services/intensive-activity-management/penny-activity';
 import { history,connect } from 'umi';
@@ -78,13 +78,41 @@ export default props=>{
                 value: 2,
             }
             ]}
+            initialValue={1}
 
         />
-        <ProFormText
-          width="md"
-          name="name"
-          label='操作1分钱活动库存数量'
-        />
+        <ProFormDependency name={['goodsType']}>
+                {({ goodsType }) => {
+                    if (goodsType==1) return(
+                      <ProFormText
+                      width="md"
+                      name="name"
+                      label='操作1分钱活动库存数量'
+                      placeholder='请输入<=当前可用集约库存'
+                      fieldProps={{
+                        addonBefore:<span style={{cursor:'pointer'}} onClick={()=>{console.log('asdsa')}}>+</span>,
+                        addonAfter:'斤'
+                      }}
+                    />
+                    )
+                    if(goodsType==2){
+                      return(
+                        <ProFormText
+                          width="md"
+                          name="name"
+                          label='操作1分钱活动库存数量'
+                          placeholder='请输入<=当前可用活动库存且为箱规单位量整数倍'
+                          fieldProps={{
+                            addonBefore:<span style={{cursor:'pointer'}} onClick={()=>{console.log('asdsa')}}>-</span>,
+                            addonAfter:'斤'
+                          }}
+                        />
+                      )
+                    }
+                     
+                }}
+        </ProFormDependency>
+        
         <ProFormText
           width="md"
           name="name"
