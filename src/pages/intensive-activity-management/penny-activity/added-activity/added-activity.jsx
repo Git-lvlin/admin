@@ -140,10 +140,17 @@ export default (props) => {
       }
     }else{
       var max=goosList[0].minNum
+      var flage=false
       for (let index = 0; index < goosList.length; index++) {
           if(max<goosList[index].minNum){
             max=goosList[index].minNum
           }
+          if(goosList[index].activityStockNum%goosList[index].batchNumber!==0){
+            flage=true
+          }
+      }
+      if(flage){
+        return message.error('请输入箱规单位量整倍数')
       }
       if(values.shoperLimitOnece<max){
         return message.error('每位店主单次限量不能小于集约单次限量的起订量！')
@@ -157,7 +164,14 @@ export default (props) => {
         endTime:moment(values.dateRange[1]).valueOf()/1000,
         joinShopType:values.joinShopType[0],
         joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
-        goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:amountTransform(ele.price,'*'),status:ele.status}))||detailList?.content?.goods,
+        goods:goosList?.map(ele=>({
+          skuId:ele.skuId,
+          spuId:ele.spuId,
+          wsId:ele.wsId,
+          price:amountTransform(ele.price,'*'),
+          status:ele.status,
+          activityStockNum:ele.activityStockNum
+        }))||detailList?.content?.goods,
         price:amountTransform(values.price,'*'),
         status:1,
       }

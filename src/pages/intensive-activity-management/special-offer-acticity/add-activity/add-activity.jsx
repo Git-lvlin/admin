@@ -108,7 +108,8 @@ export default (props) => {
           price:amountTransform(ele.price,'*'),
           status:ele.status,
           buyLimit:ele.maxNum,
-          wholesaleFreight:ele.wholesaleFreight
+          wholesaleFreight:ele.wholesaleFreight,
+          activityStockNum:ele.activityStockNum
         }))||detailList,
         buyerLimit:values.buyerType==0?999999:values.buyerLimit,
         status:1,

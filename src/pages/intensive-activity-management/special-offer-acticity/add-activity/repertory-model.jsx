@@ -41,7 +41,7 @@ export default props=>{
     return (
         <ModalForm
           onVisibleChange={setVisible}
-          title={<p>编辑1分钱活动商品可用库存 <span style={{color:'#D8D8D8',fontSize:'10px'}}>{record?.goodsName}（spuID：{record?.spuId}/skuID：{record?.skuId}）</span></p>}
+          title={<p>编辑特价活动商品可用库存 <span style={{color:'#D8D8D8',fontSize:'10px'}}>{record?.goodsName}（spuID：{record?.spuId}/skuID：{record?.skuId}）</span></p>}
           visible={visible}
           form={form}
           modalProps={{
@@ -79,7 +79,7 @@ export default props=>{
         <ProFormText
           width="md"
           name="name"
-          label='当前1分钱活动可用库存'
+          label='当前特价活动可用库存'
           readonly
         />
         <ProFormRadio.Group
@@ -104,7 +104,7 @@ export default props=>{
                     if (goodsType==1) return(
                       <ProFormText
                         name="num"
-                        label='操作1分钱活动库存数量'
+                        label='操作特价活动库存数量'
                         placeholder='请输入<=当前可用集约库存且为箱规单位量整数倍'
                         fieldProps={{
                           addonBefore:<span style={{cursor:'pointer'}} onClick={()=>setKmNum((amountTransform(Number(kmNum),'*')+100)/100)}>+</span>,
@@ -121,7 +121,7 @@ export default props=>{
                       return(
                         <ProFormText
                           name="num"
-                          label='操作1分钱活动库存数量'
+                          label='操作特价活动库存数量'
                           placeholder='请输入<=当前可用活动库存且为箱规单位量整数倍'
                           fieldProps={{
                             addonBefore:<span style={{cursor:'pointer'}} onClick={()=>setKmNum((amountTransform(Number(kmNum),'*')-100)/100)}>-</span>,
@@ -142,7 +142,7 @@ export default props=>{
         <ProFormText
           width="md"
           name="name"
-          label='操作后1分钱活动可用库存'
+          label='操作后特价活动可用库存'
           readonly
         />
         <ProFormText

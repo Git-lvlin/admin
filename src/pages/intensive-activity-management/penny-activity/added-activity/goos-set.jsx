@@ -295,15 +295,13 @@ export default (props) => {
       hideInSearch: true,
       editable:id?false:true,
       renderFormItem: (_) =>{
-        return <InputNumber
+        return  <InputNumber
                   min={_?.entry?.minNum}
                   max={_?.entry?.totalStockNum}
-                  precision='2'
                   stringMode
                   onChange={(val)=>{
-                    console.log('val',val)
                     if(val%_?.entry?.batchNumber!==0){
-                      console.log('请输入箱规单位量整倍数')
+                      message.error('请输入箱规单位量整倍数')
                     }
                   }}
                 />
@@ -436,7 +434,8 @@ export default (props) => {
               ...item,
               status:1,
               wsPrice:item.price,
-              price:batchPrice?batchPrice:detailList?amountTransform(detailList?.content?.price,'/'):0
+              price:batchPrice?batchPrice:detailList?amountTransform(detailList?.content?.price,'/'):0,
+              activityStockNum:item.totalStockNum
             })
           })
           setDataSource(arr)
