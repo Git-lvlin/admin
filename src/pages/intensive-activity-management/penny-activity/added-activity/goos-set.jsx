@@ -160,7 +160,7 @@ const GoosModel=(props)=>{
               onChange: (_, val) => {
                 const arr=[]
                 _.forEach(item=>{
-                 const obj=[...dataList,...detailList].find(ele=>{
+                 const obj=[...detailList,...dataList].find(ele=>{
                    return ele.wsId==item
                   })
                   if(obj){
@@ -398,12 +398,20 @@ export default (props) => {
         callback={(val)=>{
           const arr = [];
           val.forEach(item => {
-            arr.push({
-              ...item,
-              status:1,
-              wsPrice:item.price,
-              price:batchPrice?batchPrice:detailList?amountTransform(detailList?.content?.price,'/'):0
-            })
+            if(item?.wsPrice){
+              arr.push({
+                ...item,
+                price:amountTransform(item.price,'/')
+              })
+            }else{
+              arr.push({
+                ...item,
+                status:1,
+                wsPrice:item.price,
+                price:batchPrice?batchPrice:detailList?amountTransform(detailList?.content?.price,'/'):0,
+                actStockNum:item.totalStockNum
+              })
+            }
           })
           setDataSource(arr)
           callback(arr)
