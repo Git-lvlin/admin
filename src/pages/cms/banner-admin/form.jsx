@@ -72,6 +72,10 @@ export default (props) => {
     {
       width: 375,
       height: 160,
+    },
+    {
+      width: 351,
+      height: 100,
     }
   ]
 
@@ -128,6 +132,7 @@ export default (props) => {
         4: '社区店',
         6: '秒约爆品',
         7: '周末狂欢',
+        8: '拼团',
       }[detailData.location]
       const { ...rest } = detailData;
       console.log('detailData', detailData)
@@ -168,6 +173,7 @@ export default (props) => {
             4: '社区店',
             6: '秒约爆品',
             7: '周末狂欢',
+            8: '拼团',
           }}
           placeholder="选择位置"
           rules={[{ required: true, message: '请选择位置!' }]}
@@ -209,6 +215,7 @@ export default (props) => {
             <dd>社区店专享banner-375*150</dd>
             <dd>秒约爆品banner-375*160</dd>
             <dd>周末狂欢banner-375*160</dd>
+            <dd>拼团banner-351*100</dd>
           </dl>
         </div>
       </ProForm.Group>
@@ -226,24 +233,29 @@ export default (props) => {
         label="展示对象"
         initialValue={1}
         rules={[{ required: true, message: '请选择展示对象!' }]}
-        options={[
-          {
+        options={nowIndex===8?
+          [{
             label: '所有用户',
             value: 1,
-          },
-          {
-            label: '全部店主可见',
-            value: 2,
-          },
-          {
-            label: '仅生鲜店主可见',
-            value: 3,
-          },
-          {
-            label: '仅普通店主可见',
-            value: 4,
-          }
-        ]}
+          }]
+          :[
+            {
+              label: '所有用户',
+              value: 1,
+            },
+            {
+              label: '全部店主可见',
+              value: 2,
+            },
+            {
+              label: '仅生鲜店主可见',
+              value: 3,
+            },
+            {
+              label: '仅普通店主可见',
+              value: 4,
+            }
+          ]}
       />
       <ProFormRadio.Group
         name="actionUrlType"
