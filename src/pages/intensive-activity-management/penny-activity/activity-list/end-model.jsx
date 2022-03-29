@@ -41,7 +41,6 @@ export default props=>{
               setVisible(false) 
               canBlack(true) 
               message.success('操作成功')
-              history.push('/intensive-activity-management/penny-activity/activity-list')
               return true;
             }
           })
