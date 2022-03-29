@@ -128,9 +128,11 @@ export default () => {
     const getFieldValue = (searchConfig) => {
         const {wholesaleStartTime,...rest}=searchConfig.form.getFieldsValue()
         return {
-          startTime1:wholesaleStartTime&&moment(wholesaleStartTime[0]).format('YYYY-MM-DD HH:mm:ss'),
-          startTime2:wholesaleStartTime&&moment(wholesaleStartTime[1]).format('YYYY-MM-DD HH:mm:ss'),
           ...rest,
+          wholesaleStartTime:{
+            start:wholesaleStartTime&&moment(wholesaleStartTime[0]).format('YYYY-MM-DD HH:mm:ss'),
+            end:wholesaleStartTime&&moment(wholesaleStartTime[1]).format('YYYY-MM-DD HH:mm:ss'),
+          }
         }
       }
     return (
