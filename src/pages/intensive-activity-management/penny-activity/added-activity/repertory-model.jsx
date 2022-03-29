@@ -150,6 +150,7 @@ export default props=>{
                     }}>+</span>,
                     addonAfter:record?.unit,
                   }}
+                  disabled={record?.totalStockNum==0}
                   rules={[{validator: checkConfirm}]}
                   extra={ record?.totalStockNum==0?<span style={{color:'red'}}>当前商品集约活动可用库存为0，不能追加活动库存</span>:null}
               />
@@ -168,6 +169,7 @@ export default props=>{
                       }}>-</span>,
                       addonAfter:record?.unit,
                     }}
+                    disabled={record?.actStockNum==0}
                     rules={[{validator: checkConfirm2}]}
                     extra={ record?.actStockNum==0?<span style={{color:'red'}}>当前商品1分钱活动可用库存为0，不能减少活动库存</span>:null}
                   />
