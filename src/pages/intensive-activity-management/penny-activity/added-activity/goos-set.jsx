@@ -432,7 +432,10 @@ export default (props) => {
           const arr = [];
           val.forEach(item => {
             if(item?.wsPrice){
-              arr.push({
+              const obj=dataSource.find(ele=>{
+                return ele.wsId==item?.wsId
+              })
+              obj?arr.push(obj):arr.push({
                 ...item,
                 price:amountTransform(item.price,'/')
               })
