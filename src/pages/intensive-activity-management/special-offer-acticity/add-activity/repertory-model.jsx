@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import { ModalForm,ProFormText,ProFormRadio,ProFormDependency} from '@ant-design/pro-form';
 import { Button, message,Form } from 'antd';
-import { changeStatus } from '@/services/intensive-activity-management/penny-activity';
+import { updateActStock } from '@/services/intensive-activity-management/special-offer-acticity';
 import { history,connect } from 'umi';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
@@ -18,26 +18,55 @@ const formItemLayout = {
       },
     }
   };
-const checkConfirm=(rule, value, callback)=>{
+
+export default props=>{
+    const {record,visible,setVisible,callback,id}=props
+    const [form] = Form.useForm()
+    const [kmNum,setKmNum]=useState(0)
+    const checkConfirm=(rule, value, callback)=>{
+      return new Promise(async (resolve, reject) => {
+      if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+          await reject('只能输入正整数')
+      }else if (value&&value>record?.totalStockNum) {
+        await reject('请输入小于等于当前可用集约库存')
+      }else if (value&&value<0) {
+        await reject('不能小于0')
+      }else {
+          await resolve()
+      }
+      })
+   }
+   const checkConfirm2=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
     if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
-        await reject('只能输入整数')
-    } else {
+        await reject('只能输入正整数')
+    }else if (value&&value>record?.actStockNum) {
+      await reject('请输入小于等于当前可用活动库存')
+    }else {
         await resolve()
     }
     })
-}
-
-export default props=>{
-    const {record,visible,setVisible,callback,onClose}=props
-    const [form] = Form.useForm()
-    const [kmNum,setKmNum]=useState()
+ }
     useEffect(()=>{
-      console.log('record',record)
       form.setFieldsValue({
-        ...record
+        ...record,
+        num:0
       })
     },[])
+   const onSubmit=(values)=>{
+     const parmas={
+       id:id,
+       skuId:record?.skuId,
+       wsId:record?.wsId,
+       changeStockNum:values.goodsType==1?values.num:-values.num
+     }
+     updateActStock(parmas).then(res=>{
+       if(res.code==0){
+        setVisible(false)
+        callback(true)
+       }
+     })
+   }
     return (
         <ModalForm
           onVisibleChange={setVisible}
@@ -47,26 +76,27 @@ export default props=>{
           modalProps={{
             forceRender: true,
             destroyOnClose: true,
-            onCancel: () => {
-              onClose();
-            }
           }}
           submitter={{
           render: (props, defaultDoms) => {
               return [
-              <Button  key="cacnl" onClick={() =>{setVisible(false);onClose()}}>
+              <Button  key="cacnl" onClick={() =>{setVisible(false)}}>
                   取消
               </Button>,
-              <Button  type="primary" key="submit" onClick={() => {
-                  props.form?.submit?.()
-                }}>
-                  确定
-              </Button>
+              <ProFormDependency name={['goodsType']}>
+                {({ goodsType }) => {
+                  return <Button disabled={goodsType==1&&record?.totalStockNum==0||goodsType==2&&record?.actStockNum==0} type="primary" key="submit" onClick={() => {
+                    props.form?.submit?.()
+                  }}>
+                    确定
+                  </Button>
+                }}
+              </ProFormDependency>
               ];
           },
           }}
           onFinish={async (values) => {
-            //   await 
+              await onSubmit(values) 
           }}
           {...formItemLayout}
       >
@@ -75,12 +105,18 @@ export default props=>{
           name="totalStockNum"
           label='当前集约活动可用库存'
           readonly
+          fieldProps={{
+            value:`${record?.totalStockNum}${record?.unit}`
+          }}
         />
         <ProFormText
           width="md"
-          name="name"
+          name="actStockNum"
           label='当前特价活动可用库存'
           readonly
+          fieldProps={{
+            value:`${record?.actStockNum}${record?.unit}`
+          }}
         />
         <ProFormRadio.Group
             name="goodsType"
@@ -89,7 +125,6 @@ export default props=>{
             {
                 label:'增加活动库存',
                 value: 1,
-                // disabled:choose==4||(parseInt(id)==id )&&DetailList.data?.memberType==4
             },
             {
                 label: '减少活动库存',
@@ -99,58 +134,80 @@ export default props=>{
             initialValue={1}
 
         />
-        <ProFormDependency name={['goodsType']}>
-                {({ goodsType }) => {
-                    if (goodsType==1) return(
-                      <ProFormText
-                        name="num"
-                        label='操作特价活动库存数量'
-                        placeholder='请输入<=当前可用集约库存且为箱规单位量整数倍'
-                        fieldProps={{
-                          addonBefore:<span style={{cursor:'pointer'}} onClick={()=>setKmNum((amountTransform(Number(kmNum),'*')+100)/100)}>+</span>,
-                          addonAfter:'斤',
-                          onChange:(val)=>{
-                            setKmNum(val)
-                          },
-                          value:kmNum
-                        }}
-                        rules={[{validator: checkConfirm}]}
-                    />
-                    )
-                    if(goodsType==2){
-                      return(
-                        <ProFormText
-                          name="num"
-                          label='操作特价活动库存数量'
-                          placeholder='请输入<=当前可用活动库存且为箱规单位量整数倍'
-                          fieldProps={{
-                            addonBefore:<span style={{cursor:'pointer'}} onClick={()=>setKmNum((amountTransform(Number(kmNum),'*')-100)/100)}>-</span>,
-                            addonAfter:'斤',
-                            onChange:(val)=>{
-                              setKmNum(val)
-                            },
-                            value:kmNum
-                          }}
-                          rules={[{validator: checkConfirm}]}
-                        />
-                      )
-                    }
-                     
-                }}
+        <ProFormDependency name={['goodsType','num']}>
+          {({ goodsType,num }) => {
+              if (goodsType==1) return(
+                <ProFormText
+                  name="num"
+                  label='操作特价活动库存数量'
+                  placeholder='请输入<=当前可用集约库存'
+                  fieldProps={{
+                    addonBefore:<span style={{cursor:'pointer'}} onClick={()=>{
+                      if(record?.totalStockNum!=0&&num>=0){
+                        form.setFieldsValue({num:(amountTransform(Number(num),'*')+100)/100})
+                      }
+                    }}>+</span>,
+                    addonAfter:record?.unit,
+                  }}
+                  rules={[{validator: checkConfirm}]}
+                  extra={ record?.totalStockNum==0?<span style={{color:'red'}}>当前集约活动可用库存为0，不能追加活动库存</span>:null}
+              />
+              )
+              if(goodsType==2){
+                return(
+                  <ProFormText
+                    name="num"
+                    label='操作特价活动库存数量'
+                    placeholder='请输入<=当前可用活动库存'
+                    fieldProps={{
+                      addonBefore:<span style={{cursor:'pointer'}} onClick={()=>{
+                        if(record?.actStockNum!=0&&num>0){
+                          form.setFieldsValue({num:(amountTransform(Number(num),'*')-100)/100})
+                        }
+                      }}>-</span>,
+                      addonAfter:record?.unit,
+                    }}
+                    rules={[{validator: checkConfirm2}]}
+                    extra={ record?.actStockNum==0?<span style={{color:'red'}}>当前特价活动可用库存为0，不能减少活动库存</span>:null}
+                  />
+                )
+              }
+                
+          }}
         </ProFormDependency>
-        
-        <ProFormText
-          width="md"
-          name="name"
-          label='操作后特价活动可用库存'
-          readonly
-        />
-        <ProFormText
-          width="md"
-          name="name"
-          label='操作后集约活动可用库存'
-          readonly
-        />
+
+
+        <ProFormDependency name={['num','goodsType']}>
+          {({ num,goodsType }) => {
+            return(
+              <ProFormText
+                width="md"
+                name="actStockNum"
+                label='操作后特价活动可用库存'
+                fieldProps={{
+                    value:`${goodsType==1?parseInt(record?.actStockNum)+parseInt(num):parseInt(record?.actStockNum)-parseInt(num)}${record?.unit}`
+                }}
+                readonly
+              />
+              ) 
+          }}
+        </ProFormDependency>
+
+        <ProFormDependency name={['num','goodsType']}>
+          {({ num,goodsType }) => {
+            return(
+              <ProFormText
+                width="md"
+                name="totalStockNum"
+                label='操作后集约活动可用库存'
+                fieldProps={{
+                    value:`${goodsType==1?parseInt(record?.totalStockNum)-parseInt(num):parseInt(record?.totalStockNum)+parseInt(num)}${record?.unit}`
+                }}
+                readonly
+              />
+              ) 
+          }}
+        </ProFormDependency>
       </ModalForm>
     )
 }

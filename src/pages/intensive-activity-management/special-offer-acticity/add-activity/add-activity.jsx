@@ -32,6 +32,7 @@ export default (props) => {
   const [goosList,setGoosList]=useState()
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm()
+  const [loading,setLoading]=useState(false)
 
   const activityName = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
@@ -90,7 +91,7 @@ export default (props) => {
           })
       })
     }
-  }, [])
+  }, [loading])
   const onsubmit = (values) => {
       const parmas={
         ...values,
@@ -274,6 +275,10 @@ export default (props) => {
           id={id} 
           callback={(val)=>{
             setGoosList(val)
+          }}
+          callLoading={()=>{
+            const time=+new Date()
+            setLoading(time)
           }}
         />
          <ProFormTextArea

@@ -6,7 +6,7 @@ import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProForm
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
 import { saveWSCentActiveConfig,getActiveConfigById } from '@/services/intensive-activity-management/penny-activity';
-import moment from 'moment';
+import moment, { now } from 'moment';
 import styles from './style.less'
 import GoosSet from './goos-set'
 import { PageContainer } from '@ant-design/pro-layout';
@@ -31,6 +31,7 @@ export default (props) => {
   const [visible, setVisible] = useState(false);
   const [limitAll,setLimitAll]=useState(200)
   const [batchPrice,setBatchPrice]=useState()
+  const [loading,setLoading]=useState(false)
   const [form] = Form.useForm()
   useEffect(() => {
     if (id) {
@@ -57,7 +58,7 @@ export default (props) => {
           })
       })
     }
-  }, [])
+  }, [loading])
   const activityName = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
       if (value&&/[%&',;=?$\x22]/.test(value)) {
@@ -145,7 +146,7 @@ export default (props) => {
           if(max<goosList[index].minNum){
             max=goosList[index].minNum
           }
-          if(goosList[index].activityStockNum%goosList[index].batchNumber!==0){
+          if(goosList[index].actStockNum%goosList[index].batchNumber!==0){
             flage=true
           }
       }
@@ -170,7 +171,7 @@ export default (props) => {
           wsId:ele.wsId,
           price:amountTransform(ele.price,'*'),
           status:ele.status,
-          activityStockNum:ele.activityStockNum
+          actStockNum:ele.actStockNum
         }))||detailList?.content?.goods,
         price:amountTransform(values.price,'*'),
         status:1,
@@ -307,6 +308,10 @@ export default (props) => {
           batchPrice={batchPrice}
           callback={(val)=>{
             setGoosList(val)
+          }}
+          callLoading={()=>{
+            const time=+new Date()
+            setLoading(time)
           }}
         />
         <ProFormDateTimeRangePicker

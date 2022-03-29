@@ -161,7 +161,7 @@ const GoosModel=(props)=>{
               onChange: (_, val) => {
                 const arr=[]
                 _.forEach(item=>{
-                 const obj=[...dataList,...detailList].find(ele=>{
+                 const obj=[...detailList,...dataList].find(ele=>{
                    return ele.wsId==item
                   })
                   if(obj){
@@ -187,7 +187,7 @@ const GoosModel=(props)=>{
 }
 
 export default (props) => {
-  const {callback,id,detailList,batchPrice}=props
+  const {callback,id,detailList,batchPrice,callLoading}=props
   const ref=useRef()
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
@@ -195,6 +195,7 @@ export default (props) => {
   const [endVisible, setEndVisible] = useState(false);
   const [repertoryVisible,setRepertoryVisible]=useState(false)
   const [pennyId,setPennyId]=useState()
+  const [falge,setFalge]=useState(false)
   useEffect(()=>{
     if(id){
       detailList?.content?.goods&&setDataSource(detailList?.content?.goods?.map(ele=>({...ele,price:amountTransform(ele.price,'/')})))
@@ -291,12 +292,12 @@ export default (props) => {
     },
     {
       title: '活动库存',
-      dataIndex: 'activityStockNum',
+      dataIndex: 'actStockNum',
       hideInSearch: true,
       editable:id?false:true,
       renderFormItem: (_) =>{
         return  <InputNumber
-                  min={_?.entry?.minNum}
+                  min={_?.entry?.totalStockNum==0?0:_?.entry?.minNum}
                   max={_?.entry?.totalStockNum}
                   stringMode
                   onChange={(val)=>{
@@ -308,8 +309,8 @@ export default (props) => {
       },
       render: (_,data)=> {
         return <>
-               <p>总库存：100斤</p>
-               <p>（可用22斤/已售78斤）</p>
+               <p>总库存：{data?.actTotalStockNum}{data?.unit}</p>
+               <p>（可用{data?.actStockNum}{data?.unit}）</p>
                </>
       },
     },
@@ -430,17 +431,26 @@ export default (props) => {
         callback={(val)=>{
           const arr = [];
           val.forEach(item => {
-            arr.push({
-              ...item,
-              status:1,
-              wsPrice:item.price,
-              price:batchPrice?batchPrice:detailList?amountTransform(detailList?.content?.price,'/'):0,
-              activityStockNum:item.totalStockNum
-            })
+            if(item?.wsPrice){
+              arr.push({
+                ...item,
+                price:amountTransform(item.price,'/')
+              })
+            }else{
+              arr.push({
+                ...item,
+                status:1,
+                wsPrice:item.price,
+                price:batchPrice?batchPrice:detailList?amountTransform(detailList?.content?.price,'/'):0,
+                actStockNum:item.totalStockNum
+              })
+            }
+
           })
           setDataSource(arr)
           callback(arr)
           setEditableKeys(arr.map(item => item.wsId))
+          // setFalge(true)
         }}
         keyId={dataSource}
         detailList={detailList?.content?.goods||[]}
@@ -467,9 +477,9 @@ export default (props) => {
         repertoryVisible&&<RepertoryModel
         visible={repertoryVisible} 
         setVisible={setRepertoryVisible}  
-        record={pennyId} 
-        callback={()=>{ref.current.reload();setPennyId(null)}}
-        onClose={()=>{ref.current.reload();setPennyId(null)}}
+        record={pennyId}
+        id={id} 
+        callback={()=>{callLoading(1);setPennyId(null)}}
         />
       }
     </>

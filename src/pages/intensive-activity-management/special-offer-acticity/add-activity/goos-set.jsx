@@ -252,7 +252,7 @@ const GoosModel=(props)=>{
 }
 
 export default (props) => {
-  const {callback,id,detailList}=props
+  const {callback,id,detailList,callLoading}=props
   const ref=useRef()
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
@@ -423,8 +423,8 @@ export default (props) => {
       },
       render: (_,data)=> {
         return <>
-               <p>总库存：100斤</p>
-               <p>（可用22斤/已售78斤）</p>
+               <p>总库存：{data?.actTotalStockNum}{data?.unit}</p>
+               <p>（可用{data?.actStockNum}{data?.unit}）</p>
                </>
       },
     },
@@ -567,9 +567,9 @@ export default (props) => {
       repertoryVisible&&<RepertoryModel
       visible={repertoryVisible} 
       setVisible={setRepertoryVisible}  
-      record={pennyId} 
-      callback={()=>{ref.current.reload();setPennyId(null)}}
-      onClose={()=>{ref.current.reload();setPennyId(null)}}
+      record={pennyId}
+      id={id}  
+      callback={()=>{callLoading(1);setPennyId(null)}}
       />
     }
   </>
