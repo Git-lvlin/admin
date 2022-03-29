@@ -1,8 +1,6 @@
 import { useState, useRef } from 'react';
-import { Button} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PlusOutlined } from '@ant-design/icons';
-import { getActiveConfigList} from '@/services/intensive-activity-management/penny-activity';
+import { exportList} from '@/services/intensive-activity-management/intensive-activity-profit-detail';
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from 'moment'
 import type { ProColumns,ActionType } from '@ant-design/pro-table';
@@ -10,171 +8,128 @@ import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 
 type activityItem={
-  id:number;
-  name:string;
-  startTime:number;
-  endTime:number;
-  shoperLimitAll:number;
-  buyerLimit:number;
-  joinShopType:number;
-  joinBuyerType:number;
-  goodsCount:number;
-  actStatus:number;
-  statusDisplay:string
+  wholesaleStartTime:number;
+  spuid:number;
+  skuid:number;
+  goodsName:string;
+  typeName:string;
+  skuName:number;
+  unit:string;
+  portion:number;
+  totalNum:number;
+  wholesaleSupplyPrice:number;
+  price:number;
+  beforeProfit:number;
+  agentCompanyCommission:number;
+  profit:number;
 }
-
-// interface ItemProps {
-//   id:number;
-//   statusDisplay:string;
-//   status: number;
-// }
 
 export default () => {
     const ref=useRef<ActionType>()
-    const [visible, setVisible] = useState<boolean>(false);
-    const [formVisible, setFormVisible] = useState<boolean>(false);
-    const [detailVisible,setDetailVisible]=useState<boolean>(false)
-    const [pennyId,setPennyId]=useState<number>()
     const [visit, setVisit] = useState<boolean>(false)
     const columns:ProColumns<activityItem>[]= [
       {
-        title: '活动编号',
-        dataIndex: 'id',
-        valueType: 'text',
-        hideInSearch: true,
-      },
-      {
-        title: '活动名称',
-        dataIndex: 'name',
-        valueType: 'text',
-        fieldProps: {
-          maxLength:50
-        }
+        title: '日期',
+        dataIndex: 'wholesaleStartTime',
+        valueType: 'dateTimeRange',
+        hideInTable:true
       },
       {
         title: '集约开始时间',
-        dataIndex: 'startTime',
+        dataIndex: 'wholesaleStartTime',
         valueType: 'text',
-        render:(_,data)=>{
-          return <p>{moment(data.startTime*1000).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(data.endTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
-        },
         hideInSearch: true,
       },
       {
         title: 'spuid',
-        dataIndex: 'shoperLimitAll',
+        dataIndex: 'spuId',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: 'skuid',
-        dataIndex: 'shoperLimitOnece',
+        dataIndex: 'skuId',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '商品名称',
-        dataIndex: 'buyerLimit',
+        dataIndex: 'goodsName',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '类型',
-        dataIndex: 'joinShopType',
-        valueType: 'select',
-        valueEnum: {
-          1: '生鲜店铺',
-        },
+        dataIndex: 'typeName',
+        valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '规格/箱规',
-        dataIndex: 'joinBuyerType',
-        valueType: 'select',
-        valueEnum: {
-          1: '全部消费者',
-          2: '从未下过单的消费者（新人）',
-        },
+        dataIndex: 'skuName',
+        valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '单位',
-        dataIndex: 'goodsCount',
+        dataIndex: 'unit',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '份数',
-        dataIndex: 'actStatus',
-        valueType: 'select',
-        valueEnum: {
-          0: '已终止',
-          1: '进行中',
-          2: '待开始',
-          3: '已结束'
-        },
-        hideInTable:true
+        dataIndex: 'portion',
+        valueType: 'text',
+        hideInSearch: true,
       },
       {
         title: '总数量',
-        dataIndex: 'statusDisplay',
+        dataIndex: 'totalNum',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '供货价',
-        dataIndex: 'statusDisplay',
+        dataIndex: 'wholesaleSupplyPrice',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '集约价',
-        dataIndex: 'statusDisplay',
+        dataIndex: 'price',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '店主起订量',
-        dataIndex: 'statusDisplay',
+        dataIndex: 'minNum',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '定价盈亏（元）',
-        dataIndex: 'statusDisplay',
+        dataIndex: 'beforeProfit',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '运营中心提成（元）',
-        dataIndex: 'statusDisplay',
+        dataIndex: 'agentCompanyCommission',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '平台净利润（元）',
-        dataIndex: 'statusDisplay',
+        dataIndex: 'profit',
         valueType: 'text',
         hideInSearch: true,
       },
     ];
-    const postData=(data: any[])=>{
-      const arr=data.map((ele)=>({
-        shoperLimitAll:ele.content?.shoperLimitAll,
-        shoperLimitOnece:ele.content?.shoperLimitOnece,
-        buyerLimit:ele.content?.buyerLimit,
-        joinShopType:ele.content?.joinShopType,
-        joinBuyerType:ele.content?.joinBuyerType,
-        goodsCount:ele.content?.goodsCount,
-        ...ele
-      }))
-      return arr
-    }
     const getFieldValue = (searchConfig) => {
-        const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
+        const {wholesaleStartTime,...rest}=searchConfig.form.getFieldsValue()
         return {
-          startTime1:dateTimeRange&&dateTimeRange[0],
-          startTime2:dateTimeRange&&dateTimeRange[1],
+          startTime1:wholesaleStartTime&&moment(wholesaleStartTime[0]).format('YYYY-MM-DD HH:mm:ss'),
+          startTime2:wholesaleStartTime&&moment(wholesaleStartTime[1]).format('YYYY-MM-DD HH:mm:ss'),
           ...rest,
         }
       }
@@ -182,13 +137,9 @@ export default () => {
       <PageContainer>
         <ProTable<activityItem>
           actionRef={ref}
-          rowKey="id"
+          rowKey="wsId"
           options={false}
-          params={{
-            actCode:'wsCentActiveCode'
-          }}
-          request={getActiveConfigList}
-          postData={postData}
+          request={exportList}
           search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -197,10 +148,10 @@ export default () => {
             <Export
                 key='export'
                 change={(e) => { setVisit(e) }}
-                type={'bind-box-use-detail-export'}
+                type={'intensive-activity-profit-detail-list-export'}
                 conditions={getFieldValue(searchConfig)}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'intensive-activity-profit-detail-list-export'}/>
         ],
         }}
           columns={columns}
