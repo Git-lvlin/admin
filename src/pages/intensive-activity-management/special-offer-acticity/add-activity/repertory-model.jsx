@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import { ModalForm,ProFormText,ProFormRadio,ProFormDependency} from '@ant-design/pro-form';
 import { Button, message,Form } from 'antd';
-import { updateActStock } from '@/services/intensive-activity-management/penny-activity';
+import { updateActStock } from '@/services/intensive-activity-management/special-offer-acticity';
 import { history,connect } from 'umi';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
@@ -48,7 +48,6 @@ export default props=>{
     })
  }
     useEffect(()=>{
-      console.log('record',record)
       form.setFieldsValue({
         ...record,
         num:0
@@ -71,7 +70,7 @@ export default props=>{
     return (
         <ModalForm
           onVisibleChange={setVisible}
-          title={<p>编辑1分钱活动商品可用库存 <span style={{color:'#D8D8D8',fontSize:'10px'}}>{record?.goodsName}（spuID：{record?.spuId}/skuID：{record?.skuId}）</span></p>}
+          title={<p>编辑特价活动商品可用库存 <span style={{color:'#D8D8D8',fontSize:'10px'}}>{record?.goodsName}（spuID：{record?.spuId}/skuID：{record?.skuId}）</span></p>}
           visible={visible}
           form={form}
           modalProps={{
@@ -113,7 +112,7 @@ export default props=>{
         <ProFormText
           width="md"
           name="actStockNum"
-          label='当前1分钱活动可用库存'
+          label='当前特价活动可用库存'
           readonly
           fieldProps={{
             value:`${record?.actStockNum}${record?.unit}`
@@ -140,7 +139,7 @@ export default props=>{
               if (goodsType==1) return(
                 <ProFormText
                   name="num"
-                  label='操作1分钱活动库存数量'
+                  label='操作特价活动库存数量'
                   placeholder='请输入<=当前可用集约库存'
                   fieldProps={{
                     addonBefore:<span style={{cursor:'pointer'}} onClick={()=>{
@@ -151,14 +150,14 @@ export default props=>{
                     addonAfter:record?.unit,
                   }}
                   rules={[{validator: checkConfirm}]}
-                  extra={ record?.totalStockNum==0?<span style={{color:'red'}}>当前商品集约活动可用库存为0，不能追加活动库存</span>:null}
+                  extra={ record?.totalStockNum==0?<span style={{color:'red'}}>当前集约活动可用库存为0，不能追加活动库存</span>:null}
               />
               )
               if(goodsType==2){
                 return(
                   <ProFormText
                     name="num"
-                    label='操作1分钱活动库存数量'
+                    label='操作特价活动库存数量'
                     placeholder='请输入<=当前可用活动库存'
                     fieldProps={{
                       addonBefore:<span style={{cursor:'pointer'}} onClick={()=>{
@@ -169,7 +168,7 @@ export default props=>{
                       addonAfter:record?.unit,
                     }}
                     rules={[{validator: checkConfirm2}]}
-                    extra={ record?.actStockNum==0?<span style={{color:'red'}}>当前商品1分钱活动可用库存为0，不能减少活动库存</span>:null}
+                    extra={ record?.actStockNum==0?<span style={{color:'red'}}>当前特价活动可用库存为0，不能减少活动库存</span>:null}
                   />
                 )
               }
@@ -184,7 +183,7 @@ export default props=>{
               <ProFormText
                 width="md"
                 name="actStockNum"
-                label='操作后1分钱活动可用库存'
+                label='操作后特价活动可用库存'
                 fieldProps={{
                     value:`${goodsType==1?parseInt(record?.actStockNum)+parseInt(num):parseInt(record?.actStockNum)-parseInt(num)}${record?.unit}`
                 }}

@@ -71,3 +71,21 @@ export const changeStatus = async (params = {}, options = {}) => {
   code: res.code
   }
 }
+
+
+export const updateActStock = async (params = {}, options = {}) => {
+  const { ...rest } = params;
+  const res = await request('/auth/activity/wsDiscount/updateActStock', {
+  method: 'POST',
+  data: {
+      ...rest
+  },
+  ...options
+  });
+
+  return {
+  data: res.data,
+  success: true,
+  code: res.code
+  }
+}

@@ -346,6 +346,10 @@ const TableList = () => {
             value: 1
           },
           {
+            label: '拼团中',
+            value: 6
+          },
+          {
             label: '待发货',
             value: 2
           },

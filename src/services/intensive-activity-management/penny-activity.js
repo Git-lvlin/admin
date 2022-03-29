@@ -96,3 +96,21 @@ export const chooseWholesaleList = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+
+export const updateActStock = async (params = {}, options = {}) => {
+  const { ...rest } = params;
+  const res = await request('/auth/activity/wsCent/updateActStock', {
+  method: 'POST',
+  data: {
+      ...rest
+  },
+  ...options
+  });
+
+  return {
+  data: res.data,
+  success: true,
+  code: res.code
+  }
+}
