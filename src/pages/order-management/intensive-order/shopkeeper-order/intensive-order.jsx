@@ -199,14 +199,18 @@ const TableList = () => {
         />
         <ProFormSelect
           label="活动订单"
-          name="businessType"
+          name="activityCode"
           options={[
             {
-              value: 1,
+              value: '',
+              label: '请选择'
+            },
+            {
+              value: 'wsCentActiveCode',
               label: '一分钱领菜活动'
             },
             {
-              value: 2,
+              value: 'wsDiscountActiveCode',
               label: '特价生鲜活动'
             },
           ]}
