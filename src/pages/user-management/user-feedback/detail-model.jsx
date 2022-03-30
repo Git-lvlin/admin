@@ -4,6 +4,7 @@ import { Button, message,Typography,Descriptions, Space,Image,List,Avatar } from
 import { feedbackReply,feedbackDetail} from '@/services/user-management/user-feedback';
 import { history,connect } from 'umi';
 import { ExclamationCircleFilled } from '@ant-design/icons';
+import { amountTransform } from '@/utils/utils'
 import styles from './style.less'
 const { Title } = Typography;
 
@@ -99,7 +100,7 @@ export default props=>{
                 <List.Item.Meta
                   avatar={<Avatar src={item?.skuImageUrl} />}
                   title={<p>{item?.goodsName}</p>}
-                  description={<Space><span style={{color:'red'}}>￥{detailData?.orderInfo?.payAmount}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{detailData?.orderInfo?.payTime}</span></Space>}
+                  description={<Space><span style={{color:'red'}}>￥{amountTransform(detailData?.orderInfo?.payAmount, '/').toFixed(2)}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{detailData?.orderInfo?.payTime}</span></Space>}
                 />
               </List.Item>
             )}

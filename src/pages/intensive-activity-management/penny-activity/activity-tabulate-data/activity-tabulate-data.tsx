@@ -32,7 +32,7 @@ export default () => {
   
   },[])
     return (
-      <PageContainer>
+      <PageContainer style={{background:'#fff'}}>
         <Descriptions labelStyle={{fontWeight:'bold'}} column={9} layout="vertical" bordered>
             <Descriptions.Item  label="采购店主数">{detailList?.totalMemberNum}  </Descriptions.Item>
             <Descriptions.Item  label="B端采购订单数">{detailList?.totalNum}  </Descriptions.Item>
