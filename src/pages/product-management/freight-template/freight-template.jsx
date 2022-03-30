@@ -89,7 +89,7 @@ const TableList = () => {
         options={false}
         request={postageList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 150,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

@@ -351,7 +351,7 @@ const TableList = () => {
            <a onClick={() => { onOutData(selectedRows) }}>导出数据</a>
         )}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button key="out" type="primary" onClick={onToAdd}>新建资源位</Button>,
             <Button

@@ -4,7 +4,7 @@ import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } 
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import ReplaceForm from './replace-form';
 import Modify from './edit';
@@ -208,7 +208,7 @@ const HotGoos = () => {
         })
         return data
       }}
-      scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       params={{tagCode:'hot_sale', verifyVersionId: verifyVersionId}}
       request={hotGoosList}
       rowSelection={{

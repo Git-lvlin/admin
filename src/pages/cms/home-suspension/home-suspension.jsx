@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import ContentVersionTab from '@/components/content-version-tab';
 import { homeSuspensionList, homeSuspensionDel } from '@/services/cms/member/member';
@@ -120,7 +120,7 @@ const HomeSuspension = () => {
       params={{
         verifyVersionId: verifyVersionId
       }}
-      scroll={{ y: Math.max(window.innerHeight - 500, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       request={homeSuspensionList}
       search={{
         labelWidth: 'auto',

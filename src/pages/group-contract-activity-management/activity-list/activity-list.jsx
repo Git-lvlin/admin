@@ -127,7 +127,7 @@ const TableList = () => {
         scroll={{ y: window.innerHeight - 650, scrollToFirstRowOnChange: true, }}
         request={ruleList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

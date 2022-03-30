@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { couponEverydayLogList } from '@/services/activity-management/everyday-red-packet-activity';
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
@@ -163,9 +163,9 @@ export default () => {
           headerTitle='每日红包明细'
           options={false}
           request={couponEverydayLogList}
-          scroll={{ x:'max-content', scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),

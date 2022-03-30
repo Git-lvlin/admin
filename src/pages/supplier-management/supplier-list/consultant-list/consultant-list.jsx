@@ -123,7 +123,7 @@ const TableList = () => {
         options={false}
         request={helperList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
@@ -151,7 +151,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       />
       {formVisible &&
         <Edit

@@ -36,16 +36,18 @@ export default function EditTable(props) {
       },
       ...arr,
       {
-        title: '一件代发供货价(元)',
+        title: '一件代发供货价',
         dataIndex: 'retailSupplyPrice',
         editable: false,
         hideInTable: goodsSaleType === 1,
+        render: _ => `${_}元/${unit}`
       },
       {
-        title: '集采供货价(元)',
+        title: '集采供货价',
         dataIndex: 'wholesaleSupplyPrice',
         editable: false,
         hideInTable: goodsSaleType === 2,
+        render: _ => `${_}元/${unit}`
       },
       {
         title: '集采箱规单位量',
@@ -58,26 +60,31 @@ export default function EditTable(props) {
         dataIndex: 'wholesaleMinNum',
         editable: false,
         hideInTable: goodsSaleType === 2,
+        render: _ => `${_}${unit}`
       },
       {
-        title: '样品供货价(元)',
+        title: '样品供货价',
         dataIndex: 'sampleSupplyPrice',
         hideInTable: isSample !== 1,
+        render: _ => `${_}元/${unit}`
       },
       {
-        title: '样品价(元)',
+        title: '样品价',
         dataIndex: 'sampleSalePrice',
         hideInTable: isSample !== 1,
+        render: _ => `${_}元/${unit}`
       },
       {
         title: '样品起售量',
         dataIndex: 'sampleMinNum',
         hideInTable: isSample !== 1,
+        render: _ => `${_}${unit}`
       },
       {
         title: '样品限售量',
         dataIndex: 'sampleMaxNum',
         hideInTable: isSample !== 1,
+        render: _ => `${_}${unit}`
       },
       {
         title: '样品是否包邮',
@@ -95,6 +102,7 @@ export default function EditTable(props) {
         dataIndex: 'salePrice',
         editable: settleType === 2,
         hideInTable: goodsSaleType === 1,
+        render: _ => `${_}元/${unit}`
       },
       // {
       //   title: '秒约价上浮比例',
@@ -112,16 +120,19 @@ export default function EditTable(props) {
       {
         title: '市场价',
         dataIndex: 'marketPrice',
+        render: _ => `${_}元/${unit}`
       },
       {
         title: '库存预警值',
         dataIndex: 'stockAlarmNum',
         editable: false,
+        render: _ => `${_}${unit}`
       },
       {
         title: '可用库存',
         dataIndex: 'stockNum',
         editable: false,
+        render: _ => `${_}${unit}`
         // formItemProps: {
         //   rules: [{
         //     required: true,
@@ -131,10 +142,11 @@ export default function EditTable(props) {
         // }
       },
       {
-        title: '平均运费(元)',
+        title: '平均运费',
         dataIndex: 'wholesaleFreight',
         hideInTable: goodsSaleType === 2,
         editable: false,
+        render: _ => `${_}元/${unit}`
       },
       {
         title: '是否包邮',

@@ -219,7 +219,7 @@ const TableList = () => {
         options={false}
         dataSource={data}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button key="out" type="primary" onClick={() => onToAdd() }>新建版本号</Button>,
           ],

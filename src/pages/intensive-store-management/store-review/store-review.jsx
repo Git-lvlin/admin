@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Button, Space, Image, Tooltip } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { getStoreList } from '@/services/intensive-store-management/store-review';
 import AddressCascader from '@/components/address-cascader';
 import { QuestionCircleOutlined } from '@ant-design/icons'
@@ -194,9 +194,9 @@ const StoreReview = () => {
         actionRef={actionRef}
         formRef={formRef}
         request={getStoreList}
-        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
               key="search"

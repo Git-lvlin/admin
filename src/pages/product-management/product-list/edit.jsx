@@ -1054,7 +1054,7 @@ export default (props) => {
                 label="总可用库存"
                 disabled
                 fieldProps={{
-                  addonAfter: `/${goods.unit}`
+                  addonAfter: `${goods.unit}`
                 }}
               />
               <Form.Item
@@ -1117,6 +1117,9 @@ export default (props) => {
                     label="最低批发量"
                     placeholder="请输入最低批发量"
                     disabled
+                    fieldProps={{
+                      addonAfter: `${goods.unit}`
+                    }}
                   />
                   {
                     goods.isSample === 1

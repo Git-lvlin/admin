@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { couponEverydayList } from '@/services/activity-management/everyday-red-packet-activity';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { history,connect } from 'umi';
 import EverydayRule from '../everyday-packet-rule'
 
@@ -71,7 +71,7 @@ export default () => {
           rowKey="id"
           headerTitle="活动列表"
           options={false}
-          scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           request={couponEverydayList}
           toolBarRender={()=>[
             <Button key='add' icon={<PlusOutlined />}  onClick={()=>setVisible(true)} type="primary">
