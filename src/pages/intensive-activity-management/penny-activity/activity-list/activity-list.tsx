@@ -10,6 +10,7 @@ import EndModel from './end-model'
 import AddedActivity from '../added-activity'
 import type { ProColumns,ActionType } from '@ant-design/pro-table';
 import ActivityDetail from '../activity-detail'
+import ActivityData from './activity-data'
 
 type activityItem={
   id:number;
@@ -36,6 +37,7 @@ export default () => {
     const [visible, setVisible] = useState<boolean>(false);
     const [formVisible, setFormVisible] = useState<boolean>(false);
     const [detailVisible,setDetailVisible]=useState<boolean>(false)
+    const [dataVisible,setDatalVisible]=useState<boolean>(false)
     const [pennyId,setPennyId]=useState<number>()
     const columns:ProColumns<activityItem>[]= [
       {
@@ -139,7 +141,8 @@ export default () => {
                 record.status!=0&&
                 <a key='detail' onClick={()=>{setPennyId(record.id);setVisible(true)}}>终止</a>
               }
-            </div>
+            </div>,
+            <a key='data' onClick={()=>{setDatalVisible(true);setPennyId(record)}}>查看数据</a>,
         ],
       }, 
     ];
@@ -204,6 +207,13 @@ export default () => {
           visible={detailVisible}
           setVisible={setDetailVisible}
           id={pennyId} 
+          callback={() => { ref.current&&ref.current.reload(); setPennyId(NaN) }}
+          onClose={() => { ref.current&&ref.current.reload(); setPennyId(NaN) }}
+        />}
+        {dataVisible&& <ActivityData
+          visible={dataVisible}
+          setVisible={setDatalVisible}
+          record={pennyId} 
           callback={() => { ref.current&&ref.current.reload(); setPennyId(NaN) }}
           onClose={() => { ref.current&&ref.current.reload(); setPennyId(NaN) }}
         />}

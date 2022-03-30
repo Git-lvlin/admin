@@ -294,9 +294,17 @@ export default (props) => {
       title: '活动库存',
       dataIndex: 'actStockNum',
       hideInSearch: true,
-      editable:id?false:true,
       renderFormItem: (_) =>{
-        return  <InputNumber
+        const obj=detailList?.content?.goods.find(ele=>{
+          return ele.wsId==_?.entry?.wsId
+        })
+        if(obj){
+          return  <>
+                  <p>总库存：{_?.entry?.actTotalStockNum}{_?.entry?.unit}</p>
+                  <p>（可用{_?.entry?.actStockNum}{_?.entry?.unit}）</p>
+                  </>
+        }else{
+          return <InputNumber
                   min={_?.entry?.totalStockNum==0?0:_?.entry?.minNum}
                   max={_?.entry?.totalStockNum}
                   stringMode
@@ -306,12 +314,10 @@ export default (props) => {
                     }
                   }}
                 />
+        }
       },
       render: (_,data)=> {
-        return <>
-               <p>总库存：{data?.actTotalStockNum}{data?.unit}</p>
-               <p>（可用{data?.actStockNum}{data?.unit}）</p>
-               </>
+        
       },
     },
     {
@@ -371,7 +377,9 @@ export default (props) => {
           </span>,
           <span key='repertory'>
             {
-              id?<a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑库存</a>:null
+              id&&detailList?.content?.goods.find(ele=>{return ele.wsId==record?.wsId})?
+              <a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑库存</a>
+              :null
             }
           </span>
       ]

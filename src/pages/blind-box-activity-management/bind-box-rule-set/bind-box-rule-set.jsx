@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SketchPicker,AlphaPicker,BlockPicker,ChromePicker,CirclePicker,CompactPicker,GithubPicker,HuePicker,MaterialPicker,PhotoshopPicker,SliderPicker,SwatchesPicker,TwitterPicker} from 'react-color';
+// import { SketchPicker,AlphaPicker,BlockPicker,ChromePicker,CirclePicker,CompactPicker,GithubPicker,HuePicker,MaterialPicker,PhotoshopPicker,SliderPicker,SwatchesPicker,TwitterPicker} from 'react-color';
 import { Input, Form, Divider, message, Button,List, Space,Avatar } from 'antd';
 import { FormattedMessage, formatMessage,history } from 'umi';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
@@ -307,7 +307,7 @@ export default (props) => {
             }}
           />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="活动主图"
           name="imgUrl"
           rules={[{ required: true, message: '请上传活动主图' }]}
@@ -322,14 +322,14 @@ export default (props) => {
               )
             }}
           />
-        </Form.Item>
-        <Form.Item
+        </Form.Item> */}
+        {/* <Form.Item
           label="活动背景色"
           name="color"
           rules={[{ required: true, message: '请选择背景色' }]}
         >
           <SketchPicker/>
-        </Form.Item>
+        </Form.Item> */}
         <PeriodValidity id={id} falg={falg}/>
         <ProFormText
             width={120}
