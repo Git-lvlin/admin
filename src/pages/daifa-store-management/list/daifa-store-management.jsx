@@ -154,7 +154,7 @@ const TableList = () => {
         request={storeList}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

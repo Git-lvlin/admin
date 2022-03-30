@@ -77,7 +77,7 @@ export default (props) => {
         options={false}
         request={addSelectCommonList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
           ],

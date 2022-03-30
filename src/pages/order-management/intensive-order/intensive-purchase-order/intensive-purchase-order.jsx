@@ -120,7 +120,7 @@ const TableList = () => {
         params={params}
         request={operationList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
               key="search"

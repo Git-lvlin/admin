@@ -272,7 +272,7 @@ const TableList = () => {
         request={manageProductSpu}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
               key="search"

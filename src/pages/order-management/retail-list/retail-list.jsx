@@ -87,7 +87,7 @@ const TableList = () => {
         rowKey="id"
         options={false}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100
         }}
         columns={columns}

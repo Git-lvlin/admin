@@ -563,7 +563,7 @@ const TableList = () => {
           scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} wholesaleAuditStatus={_.wholesaleAuditStatus} /> }}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
               ...dom.reverse(),

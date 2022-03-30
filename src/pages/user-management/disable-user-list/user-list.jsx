@@ -204,7 +204,7 @@ const TableList = () => {
         actionRef={actionRef}
         search={{
           labelWidth: 120,
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
               key="search"

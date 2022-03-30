@@ -64,7 +64,6 @@ const StoreList = (props) => {
       },
       hideInTable: storeType == 'freshStores',
       hideInSearch: storeType == 'freshStores',
-      width:200
     },
     {
       title: '店主手机号',
@@ -91,7 +90,6 @@ const StoreList = (props) => {
         return <p>{_.desc}</p>
       },
       hideInTable: storeType == 'freshStores',
-      width:200
     },
     {
       title: '店铺名称',
@@ -100,14 +98,12 @@ const StoreList = (props) => {
       fieldProps: {
         placeholder: '请输入店铺名称'
       },
-      width:200
     },
     {
       title: '等级',
       dataIndex: ['level', 'levelName'],
       valueType: 'text',
       hideInSearch: true,
-      width:200
     },
     // {
     //   title: '积分',
@@ -126,14 +122,12 @@ const StoreList = (props) => {
             {details?.areaInfo?.[details?.provinceId]}{details?.areaInfo?.[details?.cityId]}{details?.areaInfo?.[details?.regionId]}
           </>)
       },
-      width:200
     },
     {
       title: '提货点详细地址',
       dataIndex: 'address',
       valueType: 'text',
       hideInSearch: true,
-      width:200
     },
     {
       title: '生鲜柜',
@@ -155,7 +149,6 @@ const StoreList = (props) => {
         return <a onClick={()=>{setOrderVisible(true);setOrderId(data?.freshOrder?.id)}}>{data?.freshOrder?.orderSn}</a>
       },
       hideInTable: storeType != 'freshStores',
-      width:200
     },
     {
       title: '开店必备礼包',
@@ -177,7 +170,6 @@ const StoreList = (props) => {
         return <a onClick={()=>{setOrderVisible(true);setOrderId(data?.giftOrder?.id)}}>{data?.giftOrder?.orderSn}</a>
       },
       hideInTable: storeType != 'freshStores',
-      width:200
     },
     {
       title: '是否生鲜店铺',
@@ -204,7 +196,6 @@ const StoreList = (props) => {
         "5": '取消申请',
         "6": '待审核'
       },
-      width:200
     },
     {
       title: '所属运营中心',
@@ -215,7 +206,6 @@ const StoreList = (props) => {
       fieldProps: {
         placeholder: '请输入运营中心名称'
       },
-      width:200
     },
     {
       title: '所属运营中心ID',
@@ -223,7 +213,6 @@ const StoreList = (props) => {
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'freshStores',
-      width:200,
       render:(_,data)=>{
         return <p>{_==0?'-':_}</p>
       }
@@ -234,7 +223,6 @@ const StoreList = (props) => {
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'freshStores',
-      width:200
     },
     {
       title: '申请类型',
@@ -252,7 +240,6 @@ const StoreList = (props) => {
       title: '申请类型',
       dataIndex: storeType === 'freshStores' ?'applyType':['applyType', 'code'],
       valueType: 'text',
-      width: 100,
       render: (_) => _ === 10 ? '正常申请' : '绿色通道申请',
       hideInSearch: true,
       hideInTable: storeType == 'freshStores',
@@ -271,7 +258,6 @@ const StoreList = (props) => {
       dataIndex: 'wholeTotal',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -298,7 +284,6 @@ const StoreList = (props) => {
       dataIndex: 'saleOrderTotal',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -324,7 +309,6 @@ const StoreList = (props) => {
       dataIndex: 'productTotal',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -348,7 +332,6 @@ const StoreList = (props) => {
       dataIndex: 'userTotal',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -372,7 +355,6 @@ const StoreList = (props) => {
       dataIndex: 'shopkeeperInvitedTotal',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -437,7 +419,6 @@ const StoreList = (props) => {
           </>
         )
       },
-      width:200
     },
     {
       title: '保证金状态',
@@ -494,7 +475,6 @@ const StoreList = (props) => {
           </>
         )
       },
-      width:200
     },
     {
       title: '店铺等级',
@@ -635,7 +615,7 @@ const StoreList = (props) => {
         }
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <div key="export">

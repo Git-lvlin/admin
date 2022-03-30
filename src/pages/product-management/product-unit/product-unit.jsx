@@ -65,7 +65,7 @@ const TableList = () => {
         options={false}
         request={api.searchUnit}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

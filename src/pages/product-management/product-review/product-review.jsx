@@ -378,7 +378,7 @@ const TableList = () => {
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
           labelWidth: 120,
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <Button

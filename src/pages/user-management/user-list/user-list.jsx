@@ -229,7 +229,7 @@ const TableList = () => {
         request={userList}
         actionRef={actionRef}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

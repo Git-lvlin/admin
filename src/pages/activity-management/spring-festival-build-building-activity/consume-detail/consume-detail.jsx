@@ -150,7 +150,7 @@ export default () => {
           request={getBuildhouseUseList}
           postData={postData}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),

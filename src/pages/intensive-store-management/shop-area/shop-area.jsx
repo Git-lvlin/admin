@@ -300,7 +300,7 @@ const ShopArea = () => {
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         toolBarRender={() => <div className="tips">{tips}</div>}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
           ],

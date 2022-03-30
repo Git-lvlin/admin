@@ -308,6 +308,14 @@ const EditTable = ({ onSelect, sku, wholesale, radioSelect }, ref) => {
       editable: false,
       width: 200,
     },
+    {
+      title: '商品规格',
+      dataIndex: 'skuNameDisplay',
+      valueType: 'text',
+      hideInSearch: true,
+      editable: false,
+      width: 200,
+    },
     // {
     //   title: '结算类型',
     //   dataIndex: 'settleType',
@@ -563,7 +571,7 @@ const EditTable = ({ onSelect, sku, wholesale, radioSelect }, ref) => {
       request={productList}
       formRef={formRef}
       search={{
-        defaultCollapsed: false,
+        defaultCollapsed: true,
         optionRender: (searchConfig, formProps, dom) => [
           ...dom.reverse(),
         ],

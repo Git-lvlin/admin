@@ -203,7 +203,7 @@ const TableList = () => {
         request={api.logList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
           ],

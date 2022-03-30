@@ -54,7 +54,7 @@ const TableList = () => {
         }}
         request={manageSupplierList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button

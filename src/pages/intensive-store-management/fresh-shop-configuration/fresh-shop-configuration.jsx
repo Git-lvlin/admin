@@ -197,7 +197,7 @@ const ShopArea = () => {
         request={allowAreaList}
         toolBarRender={() => <div className="tips">{tips}</div>}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
           ],

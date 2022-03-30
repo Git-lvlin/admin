@@ -120,7 +120,7 @@ const TableList = ({skuId}) => {
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         request={singleGroupList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

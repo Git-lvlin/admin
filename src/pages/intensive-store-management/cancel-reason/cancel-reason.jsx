@@ -72,7 +72,7 @@ export default () => {
         request={pageForAdmin}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
             <Button type="primary"  onClick={()=>setVisible(true)} key="add">

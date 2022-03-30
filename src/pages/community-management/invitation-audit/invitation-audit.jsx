@@ -153,7 +153,7 @@ const Message = (props) => {
         rowSelection={type==0?true:false}
         tableAlertOptionRender={onIpute}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
            <div key='switch'> 

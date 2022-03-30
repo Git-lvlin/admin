@@ -123,7 +123,7 @@ const TableList = () => {
         options={false}
         request={helperList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button

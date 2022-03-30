@@ -120,7 +120,7 @@ const InviteRegister=(props) => {
           postData={postData}
           scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) =>{
               const {activityId}=searchConfig.form.getFieldsValue()
@@ -261,7 +261,7 @@ const InviteRegister=(props) => {
           request={floorRankList}
           postData={postData}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) =>{
               const {activityId}=searchConfig.form.getFieldsValue()

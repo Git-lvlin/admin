@@ -499,7 +499,7 @@ const TableList = () => {
             (data.wholesaleStatus === 1 || data.wholesaleStatus === 2 || data.wholesaleStatus === 4 || data.wholesaleStatus === 5)
             &&
             <>
-              {data.wholesaleStatus !== 4 && data.wholesaleStatus !== 5 && <a onClick={() => {
+              {/* {data.wholesaleStatus !== 4 && data.wholesaleStatus !== 5 && <a onClick={() => {
                 confirm({
                   title: '确定要终止集约活动店主下单么？',
                   icon: <ExclamationCircleOutlined />,
@@ -508,7 +508,7 @@ const TableList = () => {
                     wholesaleStopRequest(data.wholesaleId, 1)
                   },
                 });
-              }}>终止店主集约</a>}
+              }}>终止店主集约</a>} */}
               {/* {data.wholesaleStatus !== 5 && <a onClick={() => {
                 confirm({
                   title: '确定要终止集约店主和消费者下单么？',
@@ -519,7 +519,7 @@ const TableList = () => {
                   },
                 });
               }}>终止店主和消费者集约</a>} */}
-              {data.wholesaleStatus !== 5 && <a onClick={() => {
+              {/* {data.wholesaleStatus !== 5 && <a onClick={() => {
                 setVisible(true);
                 setSelectItem(data);
               }}>区域</a>}
@@ -527,7 +527,7 @@ const TableList = () => {
                 data.wholesaleStatus === 2
                 &&
                 <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>
-              }
+              } */}
             </>
           }
           {/* {
@@ -562,7 +562,7 @@ const TableList = () => {
           scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} wholesaleAuditStatus={_.wholesaleAuditStatus} /> }}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
               ...dom.reverse(),

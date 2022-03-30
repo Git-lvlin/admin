@@ -289,7 +289,7 @@ return(
       scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       request={couponList}
       search={{
-        defaultCollapsed: false,
+        defaultCollapsed: true,
         labelWidth: 100,
         optionRender: (searchConfig, formProps, dom) => [
           ...dom.reverse(),

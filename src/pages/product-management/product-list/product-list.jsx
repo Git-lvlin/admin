@@ -144,7 +144,7 @@ const TableList = () => {
         maxLength: 12,
       },
       fixed: 'left',
-      width: 100,
+      width: 50,
     },
     {
       title: 'skuID',
@@ -156,14 +156,14 @@ const TableList = () => {
       },
       hideInTable: true,
     },
-    {
-      title: '图片',
-      dataIndex: 'goodsImageUrl',
-      render: (text) => <img src={text} width={50} height={50} />,
-      hideInSearch: true,
-      fixed: 'left',
-      width: 100,
-    },
+    // {
+    //   title: '图片',
+    //   dataIndex: 'goodsImageUrl',
+    //   render: (text) => <img src={text} width={50} height={50} />,
+    //   hideInSearch: true,
+    //   fixed: 'left',
+    //   width: 100,
+    // },
     {
       title: '商品名称',
       dataIndex: 'goodsName',
@@ -174,12 +174,17 @@ const TableList = () => {
       hideInTable: true,
     },
     {
-      title: '商品名称',
+      title: '商品信息',
       dataIndex: 'goodsName',
       valueType: 'text',
       hideInSearch: true,
       render: (_, record) => {
-        return <a onClick={() => { setSelectItem(record); setProductDetailDrawerVisible(true); }}>{_}</a>
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img style={{marginRight: 5}} src={record.goodsImageUrl} width={50} height={50} />
+            <a onClick={() => { setSelectItem(record); setProductDetailDrawerVisible(true); }}>{record.goodsName}</a>
+          </div>
+        )
       },
       width: 200,
       fixed: 'left',
@@ -200,7 +205,6 @@ const TableList = () => {
       dataIndex: 'fresh',
       valueType: 'text',
       hideInSearch: true,
-      width: 100,
       render: (_) => ({
         0: '非生鲜',
         1: '精装生鲜',
@@ -212,28 +216,24 @@ const TableList = () => {
       dataIndex: 'goodsVirtualSaleNum',
       valueType: 'text',
       hideInSearch: true,
-      width: 100,
     },
     {
       title: '秒约销量',
       dataIndex: 'goodsSaleNum',
       valueType: 'text',
       hideInSearch: true,
-      width: 100,
     },
     {
       title: 'B端集约销量',
       dataIndex: 'goodsWsSaleNum',
       valueType: 'text',
       hideInSearch: true,
-      width: 100,
     },
     {
       title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
-      width: 100,
     },
     {
       title: '供应商家ID',
@@ -270,7 +270,6 @@ const TableList = () => {
       dataIndex: 'goodsSaleTypeDisplay',
       valueType: 'text',
       hideInSearch: true,
-      width: 100,
     },
     {
       title: '批发样品',
@@ -278,7 +277,6 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_) => _ === 0 ? '不支持' : '支持',
-      width: 100,
     },
     {
       title: '批发供货价(元)',
@@ -286,7 +284,6 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => data.goodsSaleType === 2 ? '-' : _,
-      width: 120,
     },
     {
       title: '零售供货价(元)',
@@ -294,7 +291,6 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => data.goodsSaleType === 1 ? '-' : _,
-      width: 120,
     },
     {
       title: '销售价',
@@ -342,7 +338,6 @@ const TableList = () => {
       dataIndex: 'goodsVerifyStateDisplay',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, record) => {
         const { goodsVerifyRemark, goodsVerifyState } = record;
         return (
@@ -366,7 +361,6 @@ const TableList = () => {
       dataIndex: 'goodsStateDisplay',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, record) => {
         const { goodsStateRemark, goodsState } = record;
         return (
@@ -383,7 +377,6 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_) => _ === 0 ? '下架' : '正常',
-      width: 100,
     },
     {
       title: '商品关键词',
@@ -529,7 +522,7 @@ const TableList = () => {
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
           labelWidth: 140,
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
               key="search"

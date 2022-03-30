@@ -101,7 +101,7 @@ export default (props) =>{
           expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
           request={couponCrowdList}
           search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [                                                   
               ...dom.reverse(),

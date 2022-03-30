@@ -139,7 +139,7 @@ export default () => {
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         request={productPage}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
              ...dom.reverse(),

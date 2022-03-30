@@ -132,7 +132,7 @@ const TableList = () => {
         options={false}
         request={getAuditedList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 130,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button

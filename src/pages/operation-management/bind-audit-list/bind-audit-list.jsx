@@ -179,7 +179,7 @@ const BindAuditList = () => {
         params={params}
         request={bindingOperationApply}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
               key="search"

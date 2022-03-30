@@ -115,7 +115,7 @@ const TableList = () => {
         request={api.adminList}
         actionRef={actionRef}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
         }}
         columns={columns}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
