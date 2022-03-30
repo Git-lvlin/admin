@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Button,Tabs} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { couponList } from '@/services/coupon-management/coupon-list';
 import styles from './style.less'
 import { history} from 'umi';
@@ -139,10 +139,10 @@ const Message = (props) => {
         params={{
           couponVerifyStatus: type,
         }}
-        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         request={couponList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

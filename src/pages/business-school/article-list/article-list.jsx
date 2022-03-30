@@ -2,7 +2,7 @@
 import React, { useRef, useState } from 'react';
 import { Button, Space, message,Tabs,Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import Video from './video'
 import SetArriveHome from './set-arrive-home';
@@ -194,7 +194,7 @@ const ArticleList = (props) => {
           TypeId:articleTypeId
         }
       }
-      scroll={{ y: Math.max(window.innerHeight - 650, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       pagination={{
         pageSize: 10,
       }}

@@ -197,7 +197,7 @@ const TableList = (props) => {
         dataSource={data}
         rowSelection={false}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
               key="search"

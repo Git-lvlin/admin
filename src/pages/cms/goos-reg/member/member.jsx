@@ -4,7 +4,7 @@ import { MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-des
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import Modaledit from './modal';
 import MemberReg from '@/components/member-reg';
@@ -147,7 +147,7 @@ const Member = () => {
         params={{
           verifyVersionId: verifyVersionId
         }}
-        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         request={spaceInfoList}
         rowSelection={{}}
         tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (

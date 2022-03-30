@@ -1,4 +1,4 @@
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table'
 import React, { useState } from 'react'
 import { Button } from 'antd'
@@ -146,7 +146,7 @@ const afterSalesOrder = () => {
         options={false}
         params={{}}
         request={refundOrder}
-        scroll={{ y: Math.max(window.innerHeight - 500, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content' , scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           optionRender: ({searchText, resetText}, {form}) => [

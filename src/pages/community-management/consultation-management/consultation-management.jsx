@@ -109,7 +109,7 @@ const exportExcel = (form) => {
         rowKey="ID"
         options={false}
         search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: ({ searchText, resetText },{ form }) => [
                 <Button

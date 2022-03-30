@@ -123,7 +123,7 @@ const TableList = () => {
         }}
         request={memberShopSaleOrder}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

@@ -47,7 +47,7 @@ const FormWrap = ({ value, onChange, children }) => {
 //   )
 // }
 
-const EditTable = ({ onSelect, sku, wholesale }, ref) => {
+const EditTable = ({ onSelect, sku, wholesale, radioSelect }, ref) => {
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -308,6 +308,14 @@ const EditTable = ({ onSelect, sku, wholesale }, ref) => {
       editable: false,
       width: 200,
     },
+    {
+      title: '商品规格',
+      dataIndex: 'skuNameDisplay',
+      valueType: 'text',
+      hideInSearch: true,
+      editable: false,
+      width: 200,
+    },
     // {
     //   title: '结算类型',
     //   dataIndex: 'settleType',
@@ -563,7 +571,7 @@ const EditTable = ({ onSelect, sku, wholesale }, ref) => {
       request={productList}
       formRef={formRef}
       search={{
-        defaultCollapsed: false,
+        defaultCollapsed: true,
         optionRender: (searchConfig, formProps, dom) => [
           ...dom.reverse(),
         ],
@@ -626,6 +634,7 @@ const EditTable = ({ onSelect, sku, wholesale }, ref) => {
           setSelectedRowKeys([record.skuId])
           setSelectData([record]);
           onSelect([record]);
+          radioSelect([record])
         },
         fixed: true
       }}

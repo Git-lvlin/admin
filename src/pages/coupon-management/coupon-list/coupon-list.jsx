@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Button,Tabs} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm,ProFormRadio} from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import XLSX from 'xlsx'
 import { couponList } from '@/services/coupon-management/coupon-list';
 import { couponDelSub,couponStatusSub } from '@/services/coupon-management/coupon-delsub';
@@ -286,10 +286,10 @@ return(
       params={{
         couponVerifyStatus: type,
       }}
-      scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       request={couponList}
       search={{
-        defaultCollapsed: false,
+        defaultCollapsed: true,
         labelWidth: 100,
         optionRender: (searchConfig, formProps, dom) => [
           ...dom.reverse(),

@@ -1,6 +1,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Button, message, Spin } from 'antd';
+import { PageContainer } from '@/components/PageContainer';
 import ProCard from '@ant-design/pro-card';
 import ProForm, {
   ProFormText,
@@ -113,37 +114,39 @@ const GenerateInvitationCode = () => {
   }
 
   return (
-    <ProCard>
-      {!upDataIsOk&&<Spin spinning={loading}>
-        <ProForm
-          {...formItemLayout}
-          layout={'horizontal'}
-          onFinish={async (values) => {
-            console.log(values);
-            await waitTime(values);
-            message.success('提交成功');
-          }}
-        >
-            <ProFormText
-              width="md"
-              name="number"
-              label="内测码个数"
-              tooltip="每个号码生成内测码个数"
-              placeholder="请输入每个号码生成内测码个数"
-            />
-            <ProFormTextArea
-              name="mobiles"
-              label="手机号"
-              tooltip="多个号码以逗号隔开"
-              placeholder="请输入手机号"
-              // fieldProps={inputTextAreaProps}
-            />
-        </ProForm>
-      </Spin>}
-      {upDataIsOk&&<Button onClick={() => {
-        upData()
-      }}>下载</Button>}
-    </ProCard>
+    <PageContainer>
+      <ProCard>
+        {!upDataIsOk&&<Spin spinning={loading}>
+          <ProForm
+            {...formItemLayout}
+            layout={'horizontal'}
+            onFinish={async (values) => {
+              console.log(values);
+              await waitTime(values);
+              message.success('提交成功');
+            }}
+          >
+              <ProFormText
+                width="md"
+                name="number"
+                label="内测码个数"
+                tooltip="每个号码生成内测码个数"
+                placeholder="请输入每个号码生成内测码个数"
+              />
+              <ProFormTextArea
+                name="mobiles"
+                label="手机号"
+                tooltip="多个号码以逗号隔开"
+                placeholder="请输入手机号"
+                // fieldProps={inputTextAreaProps}
+              />
+          </ProForm>
+        </Spin>}
+        {upDataIsOk&&<Button onClick={() => {
+          upData()
+        }}>下载</Button>}
+      </ProCard>
+    </PageContainer>
   );
 };
 

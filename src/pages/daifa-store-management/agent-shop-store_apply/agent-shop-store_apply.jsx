@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Space } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { storeApplyList,storeApplyDetail } from '@/services/daifa-store-management/agent-shop-store_apply'
 import Edit from './edit';
 import StoreDetail from './store-apply-detail'
@@ -135,13 +135,13 @@ const filterData=(res)=>{
         postData={filterData}
         request={storeApplyList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
           ]
         }}
-        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         columns={columns}
         actionRef={actionRef}
       />

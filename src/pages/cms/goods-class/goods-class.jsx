@@ -5,7 +5,7 @@ import { Button, message, Popconfirm } from 'antd';
 import ProForm, { ProFormSwitch, ProFormRadio, } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { goodsClassList, openSwitch, hideItem } from '@/services/cms/member/member';
 import Edit from './form';
 
@@ -137,7 +137,7 @@ const BannerAdmin = () => {
         pagination={{
           pageSize: 5,
         }}
-        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         dateFormatter="string"
         toolBarRender={(_) => {
           return <Button key="button" type="primary" onClick={() => { build() }}>

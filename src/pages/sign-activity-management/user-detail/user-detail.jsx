@@ -151,7 +151,7 @@ export default (props) => {
           }}
           postData={postData}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),

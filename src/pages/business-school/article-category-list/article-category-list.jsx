@@ -2,7 +2,7 @@
 import React, { useRef, useState } from 'react';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import { history,connect } from 'umi';
 import { findAdminArticleTypeList} from '@/services/cms/member/member';

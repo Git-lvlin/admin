@@ -306,6 +306,11 @@ const IntensiveActivityCreate = () => {
                   return false;
                 }
 
+                if (+item.price > +item.marketPriceDisplay) {
+                  message.error(`sku:${item.skuId}集约价不能大于市场价`);
+                  return false;
+                }
+
                 if (!/^\d+$/g.test(item.totalStockNum) || +item.totalStockNum <= 0) {
                   message.error(`sku:${item.skuId}集约总库存只能是大于0的整数`);
                   return false;

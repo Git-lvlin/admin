@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { withdrawPage } from '@/services/activity-management/spring-festival-build-building-activity';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { amountTransform } from '@/utils/utils'
 
 
@@ -143,13 +143,13 @@ export default () => {
           options={false}
           request={withdrawPage}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse()
             ],
           }}
-          scroll={{ x:'max-content', scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           columns={columns}
           pagination={{
             pageSize: 10,

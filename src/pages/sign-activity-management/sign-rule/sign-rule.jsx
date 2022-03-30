@@ -5,7 +5,7 @@ import ProCard from '@ant-design/pro-card';
 import { editSignRedPacketConfig,getSignRedPacketConfig } from '@/services/sign-activity-management/get-sign-red-packet-config';
 import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import { FormattedMessage, formatMessage } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import moment from 'moment';
 import styles from './style.less'
 import { amountTransform } from '@/utils/utils'

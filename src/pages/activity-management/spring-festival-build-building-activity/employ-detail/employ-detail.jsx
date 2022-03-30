@@ -94,7 +94,7 @@ const UserDetail=(props) => {
         postData={postData}
         request={getBuildhouseIncomeDetail}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
              ...dom.reverse(),
@@ -204,7 +204,7 @@ const EmployDetail=(props) => {
           memberId:memberId
         }}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
              ...dom.reverse(),

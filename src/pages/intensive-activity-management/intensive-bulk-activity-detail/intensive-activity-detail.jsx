@@ -56,6 +56,11 @@ const Detail = () => {
       width: 200,
     },
     {
+      title: '商品规格',
+      dataIndex: 'skuNameDisplay',
+      width: 200,
+    },
+    {
       title: '上架状态',
       dataIndex: 'goodsStateDesc',
     },
@@ -286,6 +291,9 @@ const Detail = () => {
                   </Descriptions.Item>
                 </>
               }
+              <Descriptions.Item label="集约可用库存">
+                {detailData?.sku?.[0]?.totalStockNum}{detailData?.sku?.[0]?.unit}{detailData?.sku?.[0]?.batchNumber > 1 ? `(${parseInt(detailData?.sku?.[0]?.totalStockNum / detailData?.sku?.[0]?.batchNumber, 10)}${detailData?.sku?.[0]?.wsUnit})` : ''}
+              </Descriptions.Item>
               <Descriptions.Item label="商品主图">
                 <Image src={detailData?.sku?.[0]?.goodsImageUrl} width={50} />
               </Descriptions.Item>
