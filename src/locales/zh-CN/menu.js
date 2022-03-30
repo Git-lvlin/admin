@@ -77,6 +77,7 @@ export default {
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
   'menu.intensive-activity-management.intensive-bulk-activity-list': '散装集约活动列表',
+  'menu.intensive-activity-management.intensive-activity-profit-detail': '集约活动利润明细',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
   'menu.intensive-activity-management.intensive-bulk-activity-create': '散装集约活动新建',
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
@@ -92,11 +93,12 @@ export default {
   'menu.intensive-activity-management.penny-activity.activity-list': '活动列表',
   'menu.intensive-activity-management.penny-activity.added-activity': '新建活动',
   'menu.intensive-activity-management.penny-activity.activity-detail': '活动详情',
-  'menu.intensive-activity-management.penny-activity.activity-commodity': '活动商品',
+  'menu.intensive-activity-management.penny-activity.activity-tabulate-data': '活动数据汇总',
   'menu.intensive-activity-management.special-offer-acticity': '特价活动',
   'menu.intensive-activity-management.special-offer-acticity.special-offer-acticity-list': '特价活动列表',
   'menu.intensive-activity-management.special-offer-acticity.add-activity': '新建活动',
   'menu.intensive-activity-management.special-offer-acticity.activity-detail': '特价活动详情',
+  'menu.intensive-activity-management.special-offer-acticity.activity-tabulate-data': '活动数据汇总',
 
 
 

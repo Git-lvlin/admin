@@ -10,7 +10,7 @@ import moment from 'moment'
 import EndModel from './end-model'
 import AddActivity from '../add-activity'
 import ActivityDetail from '../activity-detail'
-
+import ActivityData from './activity-data'
 
 
 export default () => {
@@ -18,6 +18,7 @@ export default () => {
     const [visible, setVisible] = useState(false);
     const [formVisible, setFormVisible] = useState(false);
     const [detailVisible,setDetailVisible]=useState(false)
+    const [dataVisible,setDatalVisible]=useState(false)
     const [pennyId,setPennyId]=useState()
     const columns= [
       {
@@ -87,7 +88,8 @@ export default () => {
                 record.status!=0&&
                 <a key='detail' onClick={()=>{setPennyId(record.id);setVisible(true)}}>终止</a>
               }
-            </div>
+            </div>,
+            <a key='data' onClick={()=>{setDatalVisible(true);setPennyId(record)}}>查看数据</a>
         ],
       }, 
     ];
@@ -144,6 +146,13 @@ export default () => {
           visible={detailVisible}
           setVisible={setDetailVisible}
           id={pennyId} 
+          callback={() => { ref.current.reload(); setPennyId(null) }}
+          onClose={() => { ref.current.reload(); setPennyId(null) }}
+        />}
+        {dataVisible&& <ActivityData
+          visible={dataVisible}
+          setVisible={setDatalVisible}
+          record={pennyId} 
           callback={() => { ref.current.reload(); setPennyId(null) }}
           onClose={() => { ref.current.reload(); setPennyId(null) }}
         />}

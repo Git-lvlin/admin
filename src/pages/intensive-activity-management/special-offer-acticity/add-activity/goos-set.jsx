@@ -9,6 +9,7 @@ import { ModalForm,ProFormText } from '@ant-design/pro-form';
 import _ from 'lodash'
 import moment from 'moment';
 import EndModel from './end-model'
+import RepertoryModel from './repertory-model'
 
 const formItemLayout = {
   labelCol: { span: 3 },
@@ -251,12 +252,13 @@ const GoosModel=(props)=>{
 }
 
 export default (props) => {
-  const {callback,id,detailList}=props
+  const {callback,id,detailList,callLoading}=props
   const ref=useRef()
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
   const [endVisible, setEndVisible] = useState(false);
+  const [repertoryVisible,setRepertoryVisible]=useState(false)
   const [pennyId,setPennyId]=useState()
   useEffect(()=>{
     if(id){
@@ -403,6 +405,34 @@ export default (props) => {
       width:150
     },
     {
+      title: '活动库存',
+      dataIndex: 'activityStockNum',
+      width:120,
+      hideInSearch: true,
+      renderFormItem: (_) =>{
+        const obj=detailList.find(ele=>{
+          return ele.wsId==_?.entry?.wsId
+        })
+        if(obj){
+          return  <>
+                  <p>总库存：{_?.entry?.actTotalStockNum}{_?.entry?.unit}</p>
+                  <p>（可用{_?.entry?.actStockNum}{_?.entry?.unit}）</p>
+                  </>
+        }else{
+          return <InputNumber
+                  min={_?.entry?.totalStockNum==0?0:_?.entry?.minNum}
+                  max={_?.entry?.totalStockNum}
+                  stringMode
+                  onChange={(val)=>{
+                    if(val%_?.entry?.batchNumber!==0){
+                      message.error('请输入箱规单位量整倍数')
+                    }
+                  }}
+                />
+        }
+      },
+    },
+    {
       title: '活动价',
       dataIndex: 'price',
       hideInSearch: true,
@@ -446,7 +476,14 @@ export default (props) => {
              :
              <a style={{display:'block'}} key='start' onClick={()=>{setPennyId({wsId:record.wsId,type:3});setEndVisible(true)}}>启用</a>
            }
-          </div>
+          </div>,
+          <div key='repertory'>
+           {
+             id&&detailList.find(ele=>{return ele.wsId==record?.wsId})?
+             <a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑<br/>库存</a>
+             :null
+           }
+         </div>
 
       ]
       },
@@ -504,7 +541,8 @@ export default (props) => {
               ...item,
               status:1,
               wsPrice:item.price,
-              price:amountTransform(item.wholesaleSupplyPrice+item.wholesaleFreight, '/')
+              price:amountTransform(item.wholesaleSupplyPrice+item.wholesaleFreight, '/'),
+              activityStockNum:item.totalStockNum
             })
           })
           setDataSource(arr)
@@ -529,6 +567,15 @@ export default (props) => {
       }}
       onClose={()=>{ref.current.reload();setPennyId(null)}}
       dataSource={dataSource}
+      />
+    }
+    {
+      repertoryVisible&&<RepertoryModel
+      visible={repertoryVisible} 
+      setVisible={setRepertoryVisible}  
+      record={pennyId}
+      id={id}  
+      callback={()=>{callLoading(1);setPennyId(null)}}
       />
     }
   </>
