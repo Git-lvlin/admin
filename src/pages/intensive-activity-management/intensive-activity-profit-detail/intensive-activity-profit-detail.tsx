@@ -124,6 +124,12 @@ export default () => {
         valueType: 'text',
         hideInSearch: true,
       },
+      {
+        title: '集约商品库存',
+        dataIndex: 'totalStockNum',
+        valueType: 'text',
+        hideInSearch: true,
+      },
     ];
     const getFieldValue = (searchConfig) => {
         const {wholesaleStartTime,...rest}=searchConfig.form.getFieldsValue()
