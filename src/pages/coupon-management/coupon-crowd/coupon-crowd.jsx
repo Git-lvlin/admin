@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import {ProFormSwitch} from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { couponCrowdList,couponCrowdStatusSub,couponCrowdDel } from '@/services/crowd-management/coupon-crowd';
 import { history} from 'umi';
 import SubTable from '@/pages/coupon-management/coupon-construction/coupon-subtable'
@@ -101,7 +101,7 @@ export default (props) =>{
           expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
           request={couponCrowdList}
           search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [                                                   
               ...dom.reverse(),

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Card } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { PlusOutlined } from '@ant-design/icons';
 import * as api from '@/services/setting/account-management';
 import Form from './form';
@@ -115,10 +115,10 @@ const TableList = () => {
         request={api.adminList}
         actionRef={actionRef}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
         }}
         columns={columns}
-        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       />
       {formVisible &&
         <Form

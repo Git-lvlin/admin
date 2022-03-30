@@ -474,7 +474,7 @@ const OrderAnalysis = () => {
         bordered
         request={wholeSaleOrderDetail}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: ({searchText, resetText}, {form}) => [
             <Button

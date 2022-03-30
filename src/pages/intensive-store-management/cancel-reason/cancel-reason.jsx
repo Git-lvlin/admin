@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { pageForAdmin,cancelReasonUpdate} from '@/services/intensive-store-management/cancel-reason';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import CancelModel from './cancel-model'
 import StopModel from './stop-model'
 import { useEffect } from 'react';
@@ -70,9 +70,9 @@ export default () => {
         columns={columns}
         actionRef={actionRef}
         request={pageForAdmin}
-        scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
             <Button type="primary"  onClick={()=>setVisible(true)} key="add">

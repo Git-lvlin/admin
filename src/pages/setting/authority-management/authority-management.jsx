@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Table, Spin } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 // import { PlusOutlined } from '@ant-design/icons';
 import * as api from '@/services/setting/authority-management';
 import NewRule from './new-rule';

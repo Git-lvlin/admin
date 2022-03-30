@@ -168,7 +168,7 @@ export default (props) => {
       {
         goods?.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 &&
         <Form.Item
-          label="平均运费(元)"
+          label="平均运费"
         >
           {amountTransform(goods.wholesaleFreight, '/')}元/{goods.unit}
         </Form.Item>
@@ -256,12 +256,12 @@ export default (props) => {
                   &&
                   <>
                     <Form.Item
-                      label="样品供货价(元)"
+                      label="样品供货价"
                     >
                       {goods?.sampleSupplyPrice / 100}元/{goods.unit}
                     </Form.Item>
                     <Form.Item
-                      label="样品价(元)"
+                      label="样品价"
                     >
                       {goods?.sampleSalePrice / 100}元/{goods.unit}
                     </Form.Item>
@@ -293,7 +293,7 @@ export default (props) => {
               goods?.goodsSaleType !== 1 &&
               <>
                 <Form.Item
-                  label="一件代发供货价(元)"
+                  label="一件代发供货价"
                 >
                   {amountTransform(goods?.retailSupplyPrice, '/')}元/{goods.unit}
                 </Form.Item>

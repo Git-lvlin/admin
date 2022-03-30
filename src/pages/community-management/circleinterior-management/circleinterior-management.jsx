@@ -127,7 +127,7 @@ export default props => {
             request={adminList}
             
             search={{
-                defaultCollapsed: false,
+                defaultCollapsed: true,
                 labelWidth: 100,
                 optionRender: (searchConfig, formProps, dom) => [
                     ...dom.reverse(),

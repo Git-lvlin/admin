@@ -132,7 +132,7 @@ export default ()=> {
             toolBarRender={false}
             scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
             search={{
-                defaultCollapsed: false,
+                defaultCollapsed: true,
                 labelWidth: 100,
                 optionRender: (searchConfig, formProps, dom) => [
                     <Button

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { EditableProTable } from '@ant-design/pro-table';
 import { brokerPage } from '@/services/intensive-store-management/lvl-commission'
 import { Button, DatePicker, Form, Space, message } from 'antd';
