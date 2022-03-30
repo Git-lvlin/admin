@@ -33,7 +33,7 @@ export default () => {
   },[])
     return (
       <PageContainer>
-        <Descriptions labelStyle={{fontWeight:'bold'}} column={7} layout="vertical" bordered>
+        <Descriptions labelStyle={{fontWeight:'bold'}} column={9} layout="vertical" bordered>
             <Descriptions.Item  label="采购店主数">{detailList?.totalMemberNum}  </Descriptions.Item>
             <Descriptions.Item  label="B端采购订单数">{detailList?.totalNum}  </Descriptions.Item>
             <Descriptions.Item  label="B端采购份数">{detailList?.restNum}  </Descriptions.Item>
