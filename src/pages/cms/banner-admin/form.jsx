@@ -96,6 +96,7 @@ export default (props) => {
           '社区店': 4,
           '秒约爆品': 6,
           '周末狂欢': 7,
+          '拼团': 8,
         }[detailData.location]
       }
     }
@@ -233,7 +234,7 @@ export default (props) => {
         label="展示对象"
         initialValue={1}
         rules={[{ required: true, message: '请选择展示对象!' }]}
-        options={nowIndex===8?
+        options={nowIndex==8?
           [{
             label: '所有用户',
             value: 1,
