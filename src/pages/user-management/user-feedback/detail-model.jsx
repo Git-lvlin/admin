@@ -74,25 +74,15 @@ export default props=>{
             {{0: <span style={{color:'red'}}>进行中</span>,1: <span style={{color:'#999999'}}>已处理</span>}[detailData?.status]}
             </Descriptions.Item>
           </Descriptions>
-          <Descriptions contentStyle={{width:'300px'}}>
-            <Descriptions.Item label="反馈内容">
-              <pre className={styles.line_feed}>{detailData?.content}</pre>
-            </Descriptions.Item>
-          </Descriptions>
+          <p style={{wordWrap:'break-word'}}>反馈内容：{detailData?.content}</p>
           <List
             grid={{
               gutter: 16,
-              xs: 1,
-              sm: 2,
-              md: 4,
-              lg: 4,
-              xl: 6,
-              xxl: 3,
             }}
             dataSource={detailData?.imgs}
             renderItem={item => (
               <List.Item>
-                <Image src={item}/>
+                <Image width={100} height={100} src={item}/>
               </List.Item>
             )}
           />
