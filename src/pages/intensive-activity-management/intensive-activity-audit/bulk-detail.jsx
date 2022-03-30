@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Modal, Form } from 'antd';
+import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Modal, Form, Drawer } from 'antd';
 import { InfoCircleOutlined, ExclamationCircleOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams, history } from 'umi';
@@ -17,7 +17,7 @@ import FreshIncome from '../intensive-bulk-activity-create/fresh-income'
 const { Title } = Typography;
 
 
-const Detail = () => {
+const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
   const [detailData, setDetailData] = useState({})
   const [loading, setLoading] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -59,8 +59,7 @@ const Detail = () => {
                 </div>,
                 okText: '确定通过',
                 onOk: () => {
-                  window.history.back(); 
-                  setTimeout(() => { window.location.reload(); }, 200)
+                  callback();
                 }
               });
             } else {
@@ -74,8 +73,7 @@ const Detail = () => {
                   updateWholesaleAuditStatus({ wsId: params?.id, type: 2, rejectionReason: res.data.msg })
                     .then(r => {
                       if (r.code === 0) {
-                        window.history.back(); 
-                        setTimeout(() => { window.location.reload(); }, 200)
+                        callback();
                       }
                     })
                 }
@@ -271,10 +269,16 @@ const Detail = () => {
   }
 
   useEffect(() => {
-    getDetail(params?.id)
+    getDetail(id)
   }, [])
   return (
-    <PageContainer>
+    <Drawer
+      title="活动审核"
+      width={1200}
+      placement="right"
+      onClose={() => { setDetailVisible(false) }}
+      visible={detailVisible}
+    >
       <Spin
         spinning={loading}
       >
@@ -419,23 +423,24 @@ const Detail = () => {
             </div>
           </Row>
           <div style={{ marginTop: 40, display: 'flex', justifyContent: 'center' }}>
-            <Button type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); },200) }}>返回</Button>
+            <Button type="default" onClick={() => { setDetailVisible(false) }}>返回</Button>
             <Button style={{ marginLeft: '50px' }} onClick={() => { auditPass() }} type="primary">审核通过</Button>
             <AuditModel
               label={'审核驳回'}
               InterFace={updateWholesaleAuditStatus}
               title={'请确认操作'}
-              id={params?.id}
+              id={id}
+              callback={() => { callback() }}
             />
           </div>
           {
-            visible && <PassModel visible={visible} wsId={params?.id} setVisible={setVisible} type={timeType} />
+            visible && <PassModel callback={() => { callback() }} visible={visible} wsId={id} setVisible={setVisible} type={timeType} />
           }
 
         </div>
       </Spin>
 
-    </PageContainer>
+    </Drawer>
   );
 };
 

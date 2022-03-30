@@ -7,8 +7,8 @@ import moment from 'moment';
 // import UserDetail from './user-detail';
 import DisableModal from './disable-modal';
 import { userList } from '@/services/user-management/user-list';
-import { history, useLocation } from 'umi';
 import AddressCascader from '@/components/address-cascader';
+import Detail from './detail';
 
 const sourceType = {
   1: 'vivo',
@@ -28,9 +28,9 @@ const sourceType = {
 
 const TableList = () => {
   const [visible, setVisible] = useState(false);
-  const [selectItem, setSelectItem] = useState(false);
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState({});
   const actionRef = useRef();
-  const location = useLocation();
   const columns = [
     {
       title: '昵称',
@@ -211,7 +211,7 @@ const TableList = () => {
       render: (_, data) => (
         <Space>
           <a onClick={() => { setSelectItem(data); setVisible(true) }}>禁用</a>
-          <a onClick={() => { history.push(`/user-management/user-detail/${data.id}`) }}>详情</a>
+          <a onClick={() => { setSelectItem(data); setDetailVisible(true) }}>详情</a>
         </Space>
       ),
     },
@@ -246,6 +246,14 @@ const TableList = () => {
         data={selectItem}
         callback={() => { actionRef.current.reload() }}
       />
+      {
+        detailVisible &&
+        <Detail
+          id={selectItem?.id}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
     </PageContainer>
 
   );
