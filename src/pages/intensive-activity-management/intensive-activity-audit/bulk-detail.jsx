@@ -22,7 +22,6 @@ const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
   const [loading, setLoading] = useState(false)
   const [visible, setVisible] = useState(false)
   const [timeType, setTimeType] = useState();
-  const params = useParams();
 
   const getDetail = (wholesaleId) => {
     setLoading(true);
@@ -43,7 +42,7 @@ const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
       okText: '确认',
       cancelText: '取消',
       onOk: (close) => {
-        updateWholesaleAuditStatus({ wsId: params?.id, type: 1 }).then(res => {
+        updateWholesaleAuditStatus({ wsId: id, type: 1 }).then(res => {
           if (res.code === 0) {
             if (res.data.isPass === 1) {
               const data = moment().format("YYYY-MM-DD HH:mm:ss")
@@ -70,7 +69,7 @@ const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
                 okText: '驳回活动',
                 cancelText: '取消审核',
                 onOk: () => {
-                  updateWholesaleAuditStatus({ wsId: params?.id, type: 2, rejectionReason: res.data.msg })
+                  updateWholesaleAuditStatus({ wsId: id, type: 2, rejectionReason: res.data.msg })
                     .then(r => {
                       if (r.code === 0) {
                         callback();
