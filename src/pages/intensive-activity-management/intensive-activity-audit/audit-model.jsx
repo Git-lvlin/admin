@@ -17,13 +17,14 @@ const formItemLayout = {
   };
 
 export default props=>{
-    const {InterFace,title,label,id}=props
+    const {InterFace,title,label,id,callback}=props
     const [visible, setVisible] = useState(false);
     const Termination=()=>{
         setVisible(true)
     }
     return (
         <ModalForm
+            style={{zIndex: 9999, position: 'fixed'}}
             title={title}
             key={id}
             onVisibleChange={setVisible}
@@ -39,9 +40,8 @@ export default props=>{
             onFinish={async (values) => {
                 InterFace({wsId:id,type:2,...values},{ showSuccess: true }).then(res=>{
                     if(res.code==0){  
-                        window.history.back()
-                        setTimeout(() => { window.location.reload(); }, 200)
                         setVisible(false) 
+                        callback()
                         return true;    
                     }
                 })
