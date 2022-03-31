@@ -26,6 +26,7 @@ import dc from './routers/dc'
 import signActivityManagement from './routers/sign-activity-management'
 import BlindBoxActivityManagement from './routers/blind-box-activity-management'
 import ActivityManagement from './routers/activity-management'
+import GroupActivitiesManagement from './routers/group-activities-management'
 
 const { REACT_APP_ENV } = process.env;
 
@@ -97,6 +98,7 @@ const config = {
             signActivityManagement,
             BlindBoxActivityManagement,
             ActivityManagement,
+            GroupActivitiesManagement,
             {
               component: '404',
             },

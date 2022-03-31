@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { history } from 'umi'
 import moment from 'moment'
 
 import { interventionList } from '@/services/order-management/intervention-list'
+import DrawerDetail from './detail'
 
-const TabList =props=> {
-  const { done } =props
+const TabList =({done})=> {
+  const [visible, setVisible] = useState(false)
+  const [id, setId] = useState()
+
   const columns =[
     {
       title: '售后编号',
@@ -99,12 +102,13 @@ const TabList =props=> {
       render:(_, data)=>{
         return (
           <>
-            <a onClick={()=>history.push(`/order-management/intervention-list/details/${data.id}`)}>查看详情</a>
+            <a onClick={()=>{setVisible(true); setId(data.id)}}>查看详情</a>
           </>
         )
       }
     },
   ]
+
   return (
     <ProTable
       rowKey='orderSn'
