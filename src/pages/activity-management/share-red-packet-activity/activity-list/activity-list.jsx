@@ -70,7 +70,7 @@ export default () => {
           actionRef={ref}
           rowKey="id"
           request={couponInviteList}
-          scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           toolBarRender={()=>[
             <Button key='add' icon={<PlusOutlined />}  onClick={()=>setVisible(true)} type="primary">
                 添加活动

@@ -346,6 +346,10 @@ const TableList = () => {
             value: 1
           },
           {
+            label: '拼团中',
+            value: 7
+          },
+          {
             label: '待发货',
             value: 2
           },
@@ -464,10 +468,6 @@ const TableList = () => {
                     {
                       orderType === 2&&
                       <Button onClick={() =>{ setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
-                    }
-                    {
-                      orderType === 2 &&
-                      <Button onClick={() => { setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
                     }
                   </Space>
                 </div>

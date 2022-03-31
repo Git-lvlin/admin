@@ -143,7 +143,7 @@ export default () => {
           headerTitle='活动数据明细'
           options={false}
           request={couponInviteLogList}
-          scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,
@@ -159,6 +159,10 @@ export default () => {
             ],
           }}
           columns={columns}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
         />
         {
           detailVisible && <Detail
