@@ -217,6 +217,7 @@ const IssuingStoreFundManagement = () => {
         toolBarRender={false}
         columns={columns}
         params={{accountType: 'agentStore'}}
+        scroll={{x: "max-content"}}
         request={platforms}
         search={{
           optionRender: ({searchText, resetText}, {form}) => [

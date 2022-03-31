@@ -214,6 +214,7 @@ const OperatorFundManagement = () => {
         columns={columns}
         params={{accountType: 'agentCompany'}}
         request={platforms}
+        scroll={{x: "max-content"}}
         search={{
           optionRender: ({searchText, resetText}, {form}) => [
             <Button

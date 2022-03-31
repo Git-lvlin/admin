@@ -203,6 +203,7 @@ const SupplierFundManagement = () => {
             setPage(e)
           }
         }}
+        scroll={{x: "max-content"}}
         rowKey='accountId'
         postData={
           (e)=>{

@@ -224,6 +224,7 @@ const MemberStoreFundManagement = () => {
             setPage(e)
           }
         }}
+        scroll={{x: "max-content"}}
         postData={
           (e)=>{
             setSearch(formRef.current?.getFieldsValue())

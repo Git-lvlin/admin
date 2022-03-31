@@ -223,6 +223,7 @@ const TransactionDetails = ({
           pageSize: 10,
           showQuickJumper: true
         }}
+        scroll={{x: "max-content"}}
         columns={columns}
         params={{...query}}
         request={logPage}
