@@ -127,10 +127,10 @@ export default props=>{
               >
                 <List.Item.Meta
                   title={
-                  <pre className={styles.line_feed}>
+                  <p style={{wordWrap:'break-word'}}>
                     客服回复：
                     {item?.content}
-                  </pre>
+                  </p>
                   }
                   description={<Space><span>回复人：{item?.createName}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>回复时间：{item?.createTime}</span></Space>}
                 />
