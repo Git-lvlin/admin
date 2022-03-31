@@ -360,5 +360,7 @@ export default {
   'menu.activity-management.spring-festival-build-building-activity.binding-set': '提现绑定设置',
 
 
+  'menu.group-activities-management': '拼团活动管理',
+  'menu.group-activities-management.activity-list': '活动列表',
 
 };
