@@ -76,18 +76,18 @@ export default () => {
         valueType: 'text',
         hideInSearch: true,
       },
-      {
-        title: '份数',
-        dataIndex: 'portion',
-        valueType: 'text',
-        hideInSearch: true,
-      },
-      {
-        title: '总数量',
-        dataIndex: 'totalNum',
-        valueType: 'text',
-        hideInSearch: true,
-      },
+      // {
+      //   title: '份数',
+      //   dataIndex: 'portion',
+      //   valueType: 'text',
+      //   hideInSearch: true,
+      // },
+      // {
+      //   title: '总数量',
+      //   dataIndex: 'totalNum',
+      //   valueType: 'text',
+      //   hideInSearch: true,
+      // },
       {
         title: '供货价',
         dataIndex: 'wholesaleSupplyPrice',
