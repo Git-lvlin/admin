@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Space, Tooltip,Image } from 'antd';
+import { Button, Space, Tooltip, Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { PageContainer } from '@/components/PageContainer';
-import { getStoreList,applyConditionPage } from '@/services/intensive-store-management/store-list';
+import { getStoreList, applyConditionPage } from '@/services/intensive-store-management/store-list';
 import { history } from 'umi';
 import AddressCascader from '@/components/address-cascader';
 import Auth from '@/components/auth';
@@ -32,10 +32,11 @@ const StoreList = (props) => {
   const [selectItem, setSelectItem] = useState(null);
   const [visit, setVisit] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false);
-  const [orderVisible,setOrderVisible]=useState(false)
-  const [orderId,setOrderId]=useState()
+  const [orderVisible, setOrderVisible] = useState(false)
+  const [orderId, setOrderId] = useState()
   const [auditInfoVisible, setAuditInfoVisible] = useState(false);
-  const [attachmentImage,setAttachmentImage]=useState()
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [attachmentImage, setAttachmentImage] = useState()
   const actionRef = useRef();
   const formRef = useRef();
 
@@ -86,8 +87,8 @@ const StoreList = (props) => {
       dataIndex: 'memberShopType',
       valueType: 'text',
       hideInSearch: true,
-      render:(_,data)=>{
-        return <p>{_.desc}</p>
+      render: (_, data) => {
+        return <div>{_.desc}</div>
       },
       hideInTable: storeType == 'freshStores',
     },
@@ -135,7 +136,7 @@ const StoreList = (props) => {
       valueType: 'select',
       hideInSearch: storeType != 'freshStores',
       hideInTable: true,
-      valueEnum:{
+      valueEnum: {
         1: '已购买',
         0: '未购买'
       },
@@ -145,8 +146,8 @@ const StoreList = (props) => {
       dataIndex: 'isOrdered',
       valueType: 'text',
       hideInSearch: true,
-      render:(_,data)=>{
-        return <a onClick={()=>{setOrderVisible(true);setOrderId(data?.freshOrder?.id)}}>{data?.freshOrder?.orderSn}</a>
+      render: (_, data) => {
+        return <a onClick={() => { setOrderVisible(true); setOrderId(data?.freshOrder?.id) }}>{data?.freshOrder?.orderSn}</a>
       },
       hideInTable: storeType != 'freshStores',
     },
@@ -156,7 +157,7 @@ const StoreList = (props) => {
       valueType: 'select',
       hideInSearch: storeType != 'freshStores',
       hideInTable: true,
-      valueEnum:{
+      valueEnum: {
         1: '已购买',
         0: '未购买'
       },
@@ -166,8 +167,8 @@ const StoreList = (props) => {
       dataIndex: 'isGiftOrdered',
       valueType: 'text',
       hideInSearch: true,
-      render:(_,data)=>{
-        return <a onClick={()=>{setOrderVisible(true);setOrderId(data?.giftOrder?.id)}}>{data?.giftOrder?.orderSn}</a>
+      render: (_, data) => {
+        return <a onClick={() => { setOrderVisible(true); setOrderId(data?.giftOrder?.id) }}>{data?.giftOrder?.orderSn}</a>
       },
       hideInTable: storeType != 'freshStores',
     },
@@ -175,9 +176,9 @@ const StoreList = (props) => {
       title: '是否生鲜店铺',
       dataIndex: 'memberShopType',
       valueType: 'select',
-      hideInTable:true,
+      hideInTable: true,
       hideInSearch: storeType == 'freshStores',
-      valueEnum:{
+      valueEnum: {
         0: '全部',
         20: '生鲜店铺',
         10: '非生鲜店铺'
@@ -213,8 +214,8 @@ const StoreList = (props) => {
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'freshStores',
-      render:(_,data)=>{
-        return <p>{_==0?'-':_}</p>
+      render: (_, data) => {
+        return <div>{_ == 0 ? '-' : _}</div>
       }
     },
     {
@@ -234,11 +235,10 @@ const StoreList = (props) => {
       },
       hideInTable: true,
       hideInSearch: storeType == 'freshStores',
-      order: -2,
     },
     {
       title: '申请类型',
-      dataIndex: storeType === 'freshStores' ?'applyType':['applyType', 'code'],
+      dataIndex: storeType === 'freshStores' ? 'applyType' : ['applyType', 'code'],
       valueType: 'text',
       render: (_) => _ === 10 ? '正常申请' : '绿色通道申请',
       hideInSearch: true,
@@ -250,7 +250,6 @@ const StoreList = (props) => {
       fieldProps: {
         placeholder: '请输入店主收件手机号'
       },
-      order: -1,
       hideInTable: storeType == 'freshStores'
     },
     {
@@ -407,14 +406,14 @@ const StoreList = (props) => {
       dataIndex: 'depositStatusDesc',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'cancelled'||storeType == 'freshStores',
+      hideInTable: storeType == 'cancelled' || storeType == 'freshStores',
       render: (_, data) => {
         const { depositRefendList } = data;
         return (
           <>
-            <p>{_}</p>
+            <div>{_}</div>
             {depositRefendList && depositRefendList.map(ele => {
-              return <p>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</p>
+              return <div>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</div>
             })}
           </>
         )
@@ -424,7 +423,7 @@ const StoreList = (props) => {
       title: '保证金状态',
       dataIndex: 'depositStatus',
       valueType: 'select',
-      hideInSearch: storeType == 'normal'||storeType == 'freshStores',
+      hideInSearch: storeType == 'normal' || storeType == 'freshStores',
       hideInTable: true,
       valueEnum: {
         "cancelled": '全部',
@@ -438,14 +437,32 @@ const StoreList = (props) => {
       dataIndex: 'depositStatusDesc',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'normal'||storeType == 'freshStores',
+      hideInTable: storeType == 'normal' || storeType == 'freshStores',
       render: (_, data) => {
         const { depositRefendList } = data;
         return (
           <>
-            <p>{_}</p>
+            <div>{_}</div>
+            {
+              depositRefendList?.[0]?.attach?.moneyCertificates &&
+              <div>
+                <a style={{color: 'red'}} onClick={() => { setPreviewVisible(true); }}>查看线下退款凭证</a>
+                <Image
+                  width={200}
+                  style={{ display: 'none' }}
+                  src={depositRefendList?.[0]?.attach?.moneyCertificates}
+                  preview={{
+                    visible: previewVisible,
+                    src: depositRefendList?.[0]?.attach?.moneyCertificates,
+                    onVisibleChange: value => {
+                      setPreviewVisible(value)
+                    },
+                  }}
+                />
+              </div>
+            }
             {depositRefendList && depositRefendList.map(ele => {
-              return <p>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</p>
+              return <div>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</div>
             })}
           </>
         )
@@ -517,18 +534,18 @@ const StoreList = (props) => {
       dataIndex: 'remark',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'normal'||storeType == 'freshStores',
+      hideInTable: storeType == 'normal' || storeType == 'freshStores',
       render: (_, data) => {
-        if(data?.cancelInfo?.balance){
+        if (data?.cancelInfo?.balance) {
           return (
             <>
               <p>有余额注销</p>
-              <a onClick={() => {setVisible(true);setAttachmentImage(data?.cancelInfo?.attachList)}}>附件（点击查看）</a>
+              <a onClick={() => { setVisible(true); setAttachmentImage(data?.cancelInfo?.attachList) }}>附件（点击查看）</a>
               <p>注销时还剩余额：{data?.cancelInfo?.balance}元</p>
               <pre className={styles.line_feed}>理由：{data?.cancelInfo?.reason}</pre>
             </>
           )
-        }else{
+        } else {
           return (
             <>
               <p>{_}</p>
@@ -548,8 +565,34 @@ const StoreList = (props) => {
       },
       hideInTable: true,
       hideInSearch: storeType == 'freshStores',
-      order: -1,
-      hideInSearch: storeType == 'freshStores',
+    },
+    {
+      title: '提交认证时间',
+      dataIndex: 'provideTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+      hideInSearch: storeType === 'freshStores'
+    },
+    {
+      title: '提交认证时间',
+      dataIndex: 'provideTime',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType === 'freshStores'
+    },
+    {
+      title: '审核通过时间',
+      dataIndex: 'auditTimeTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+      hideInSearch: storeType === 'freshStores'
+    },
+    {
+      title: '审核通过时间',
+      dataIndex: 'auditTimeTime',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType === 'freshStores'
     },
     {
       title: '操作',
@@ -595,8 +638,8 @@ const StoreList = (props) => {
     return {}
   }
 
-  const postData=(data)=>{
-    return data.map(ele=>({...ele,verifyStatus:ele?.freshApplyRow?.verifyStatus?.code}))
+  const postData = (data) => {
+    return data.map(ele => ({ ...ele, verifyStatus: ele?.freshApplyRow?.verifyStatus?.code }))
   }
 
   return (
@@ -611,7 +654,7 @@ const StoreList = (props) => {
         }}
         postData={postData}
         request={
-          storeType == 'freshStores'?applyConditionPage:getStoreList
+          storeType == 'freshStores' ? applyConditionPage : getStoreList
         }
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
@@ -619,30 +662,30 @@ const StoreList = (props) => {
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <div key="export">
-             {
-               storeType != 'freshStores'&&
-               <>
-                 <Button
-                  key="new"
-                  onClick={() => {
-                    setCreateVisible(true);
-                  }}
-                >
-                  新建
+              {
+                storeType != 'freshStores' &&
+                <>
+                  <Button
+                    key="new"
+                    onClick={() => {
+                      setCreateVisible(true);
+                    }}
+                  >
+                    新建
                 </Button>
                 &nbsp;&nbsp;
                 <Export
-                  change={(e) => { setVisit(e) }}
-                  key="export"
-                  type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"}
-                  conditions={getFieldValue}
-                />
+                    change={(e) => { setVisit(e) }}
+                    key="export"
+                    type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"}
+                    conditions={getFieldValue}
+                  />
                 &nbsp;&nbsp;
                 <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"} />
-               </>
-             }
+                </>
+              }
             </div>,
-            
+
             // <Button
             //   key="new2"
             //   onClick={() => {
@@ -681,7 +724,7 @@ const StoreList = (props) => {
         setVisible={setFormVisible}
         data={selectItem}
         callback={() => { actionRef.current.reload() }}
-        onClose={()=>{ actionRef.current.reload();setSelectItem(null) }}
+        onClose={() => { actionRef.current.reload(); setSelectItem(null) }}
       />}
       {returnVisible && <Return
         visible={returnVisible}
@@ -704,11 +747,11 @@ const StoreList = (props) => {
         visible={orderVisible}
         setVisible={setOrderVisible}
       />}
-      {visible&& <ContentModel
+      {visible && <ContentModel
         setVisible={setVisible}
         visible={visible}
         attachList={attachmentImage}
-        onClose={()=>{actionRef.current.reload();setAttachmentImage(null)}}
+        onClose={() => { actionRef.current.reload(); setAttachmentImage(null) }}
       />
       }
     </>

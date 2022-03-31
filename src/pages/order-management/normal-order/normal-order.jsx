@@ -118,7 +118,7 @@ const TableList = () => {
         submitter={{
           render: ({ form }, doms) => {
             return (
-              <div>
+              <div style={{marginBottom: 20}}>
                 <Space>
                   <Button
                     type="primary"
