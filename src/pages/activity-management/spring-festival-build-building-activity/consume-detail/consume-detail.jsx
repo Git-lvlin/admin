@@ -168,7 +168,7 @@ export default () => {
             showQuickJumper: true,
           }}
           columns={columns}
-          scroll={{ y: window.innerHeight - 500, scrollToFirstRowOnChange: true, }}
+          scroll={{ y: Math.max(window.innerHeight - 500, 500), scrollToFirstRowOnChange: true, }}
         />
         {visible && <CancelModel
           visible={visible}

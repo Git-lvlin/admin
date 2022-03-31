@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Card, Table, Tooltip, Spin } from 'antd';
+import { useState, useEffect } from 'react';
+import { Table, Tooltip, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
-import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import * as api from '@/services/product-management/product-log';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
@@ -26,10 +26,6 @@ const SubTable = (props) => {
     { title: '可用库存', dataIndex: 'stockNum' },
     // { title: '活动库存', dataIndex: 'activityStockNum' },
   ];
-
-  const a: string = 1;
-
-  console.log(a)
 
   useEffect(() => {
     setLoading(true);
@@ -203,7 +199,7 @@ const TableList = () => {
         params={{
           selectType: 1,
         }}
-        scroll={{ y: window.innerHeight - 570, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: Math.max(window.innerHeight - 570, 500), scrollToFirstRowOnChange: true, }}
         request={api.logList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{

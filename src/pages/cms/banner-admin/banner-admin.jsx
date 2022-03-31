@@ -15,7 +15,11 @@ const BannerAdmin = () => {
   const [detailData, setDetailData] = useState(null);
   const [verifyVersionId, setVerifyVersionId] = useState(1);
   const getDetail = (data) => {
-    data && setDetailData(data);
+    if (data) {
+      setDetailData(data);
+    } else {
+      setDetailData(null);
+    }
     setFormVisible(true);
   }
 
@@ -134,22 +138,12 @@ const BannerAdmin = () => {
       dataIndex: 'customerType',
       valueType: 'text',
       search: false,
-      render: (_) => {
-        if (_!==1&&_!==2) {
-          return '所有用户'
-        } else {
-          return {
-            1: '所有用户',
-            2: '全部店主',
-            3: '生鲜店主',
-            4: '普通店主',
-          }[_]
-        }
+      valueEnum: {
+        1: '所有用户',
+        2: '全部店主',
+        3: '生鲜店主',
+        4: '普通店主',
       }
-      // valueEnum: {
-      //   1: '所有用户',
-      //   2: '仅店主',
-      // }
     },
     // {
     //   title: '类型',
@@ -186,7 +180,7 @@ const BannerAdmin = () => {
       rowKey="id"
       columns={columns}
       actionRef={actionRef}
-      scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
+      scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
       params={{verifyVersionId: verifyVersionId}}
       request={homeBannerList}
       rowSelection={{

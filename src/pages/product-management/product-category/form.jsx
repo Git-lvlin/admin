@@ -13,6 +13,9 @@ import debounce from 'lodash/debounce';
 import * as api from '@/services/product-management/product-category'
 import Upload from '@/components/upload'
 import styles from './form.less'
+import Big from 'big.js';
+
+Big.RM = 0;
 
 const FromWrap = ({ value, onChange, content, right }) => (
   <div style={{ display: 'flex' }}>
@@ -32,14 +35,14 @@ export default (props) => {
   const [form] = Form.useForm();
   const [formRef] = Form.useForm();
   const [dataSource, setDataSource] = useState([
-    { name: '五星店主', level: 5, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
-    { name: '四星店主', level: 4, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
-    { name: '三星店主', level: 3, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
-    { name: '二星店主', level: 2, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
-    { name: '一星店主', level: 1, shopCommission: 60, operateCommission: 15, referrerCommission: 5, platForm: 20 },
+    { name: '五星店主', level: 5, shopCommission: 75, operateCommission: 23, referrerCommission: 2, platForm: 0 },
+    { name: '四星店主', level: 4, shopCommission: 75, operateCommission: 23, referrerCommission: 2, platForm: 0 },
+    { name: '三星店主', level: 3, shopCommission: 75, operateCommission: 23, referrerCommission: 2, platForm: 0 },
+    { name: '二星店主', level: 2, shopCommission: 75, operateCommission: 23, referrerCommission: 2, platForm: 0 },
+    { name: '一星店主', level: 1, shopCommission: 75, operateCommission: 23, referrerCommission: 2, platForm: 0 },
   ])
   const [dataSource2] = useState([
-    { name: '一星店主', level: 6, operateCommission: 60, referrerCommission: 15, platForm: 35 },
+    { name: '一星店主', level: 6, operateCommission: 45, referrerCommission: 3, platForm: 52 },
   ])
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -78,8 +81,8 @@ export default (props) => {
               transform: (v) => `${v}`
             },
             {
-              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
-              message: '社区店提成只能是数字，并且最多保留两位小数',
+              pattern: /^((0)|([1-9][0-9]*))$/,
+              message: '社区店提成只能正整数',
               transform: (v) => `${v}`
             },
             {
@@ -114,8 +117,8 @@ export default (props) => {
               transform: (v) => `${v}`
             },
             {
-              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
-              message: '运营中心提成只能是数字，并且最多保留两位小数',
+              pattern: /^((0)|([1-9][0-9]*))$/,
+              message: '运营中心提成只能正整数',
               type: 'string',
               transform: (v) => `${v}`
             },
@@ -152,8 +155,8 @@ export default (props) => {
               transform: (v) => `${v}`
             },
             {
-              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
-              message: '推荐人提成只能是数字，并且最多保留两位小数',
+              pattern: /^((0)|([1-9][0-9]*))$/,
+              message: '推荐人提成只能正整数',
               type: 'string',
               transform: (v) => `${v}`
             },
@@ -200,8 +203,8 @@ export default (props) => {
               transform: (v) => `${v}`
             },
             {
-              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
-              message: '运营中心提成只能是数字，并且最多保留两位小数',
+              pattern: /^((0)|([1-9][0-9]*))$/,
+              message: '运营中心提成只能正整数',
               type: 'string',
               transform: (v) => `${v}`
             },
@@ -238,8 +241,8 @@ export default (props) => {
               transform: (v) => `${v}`
             },
             {
-              pattern: /^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/,
-              message: '推荐人提成只能是数字，并且最多保留两位小数',
+              pattern: /^((0)|([1-9][0-9]*))$/,
+              message: '推荐人提成只能正整数',
               type: 'string',
               transform: (v) => `${v}`
             },
@@ -339,7 +342,7 @@ export default (props) => {
         gcShow: data.gcShow ? 1 : 0
       })
     } else {
-      if (selectItem.fresh === 2) {
+      if (selectItem?.fresh === 2) {
         form?.setFieldsValue({
           shopValue: dataSource2
         })
@@ -475,10 +478,10 @@ export default (props) => {
       <ProFormDependency name={['fresh']}>
         {({ fresh }) => {
           return (
-            (fresh || (parentId !== 0 && selectItem.fresh))
+            (fresh || (parentId !== 0 && selectItem?.fresh))
               ? <div className={styles.shopValue}>
                 {
-                  (fresh === 1 || selectItem.fresh===1)
+                  (fresh === 1 || selectItem?.fresh === 1)
                     ?
                     <Form.Item
                       label='精装生鲜商品集约各方的分佣比例'
@@ -495,7 +498,7 @@ export default (props) => {
                           editableKeys: [1, 2, 3, 4, 5],
                           onValuesChange: (record, recordList) => {
                             form.setFieldsValue({
-                              shopValue: recordList.map(item => ({ ...item, platForm: 100 - item.shopCommission - item.operateCommission - item.referrerCommission }))
+                              shopValue: recordList.map(item => ({ ...item, platForm: +new Big(100).minus(item.shopCommission || 0).minus(item.operateCommission || 0).minus(item.referrerCommission) }))
                             })
                             debounceValidate();
                           }
@@ -532,7 +535,7 @@ export default (props) => {
                       />
                     </Form.Item>
                 }
-                {type === 'edit' && <Form.Item
+                {type === 'edit' && (fresh === 1 || selectItem?.fresh === 1) && <Form.Item
                   label='生鲜分类商品总分佣比例'
                 >
                   {data?.freshCommission}%

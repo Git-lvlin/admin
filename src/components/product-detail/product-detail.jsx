@@ -158,6 +158,14 @@ export default (props) => {
         {{ 0: '单规格', 1: '多规格' }[detailData?.isMultiSpec]}
       </Form.Item>
       {
+        detailData.isMultiSpec === 0 &&
+        <Form.Item
+          label="规格名称"
+        >
+          {goods.skuName}
+        </Form.Item>
+      }
+      {
         goods?.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 &&
         <Form.Item
           label="平均运费(元)"

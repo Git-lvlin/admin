@@ -6,11 +6,14 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { couponCrowdList,couponCrowdStatusSub,couponCrowdDel } from '@/services/crowd-management/coupon-crowd';
 import { history} from 'umi';
 import SubTable from '@/pages/coupon-management/coupon-construction/coupon-subtable'
+import AddCrowd from './add-crowd'
 
 
 
 export default (props) =>{
   const ref=useRef()
+  const [visible,setVisible]=useState(false)
+  const [pennyId,setPennyId]=useState()
   const columns= [
     {
       title: '群体名称',
@@ -80,24 +83,18 @@ export default (props) =>{
  
   //编辑
   const Examine=(id)=>{
-    history.push(`/coupon-management/coupon-crowd/add-crowd?id=`+id);
+    setPennyId(id)
+    setVisible(true)
   }
   //新建
   const addcoupon=()=>{
-    history.push('/coupon-management/coupon-crowd/add-crowd');
+    setVisible(true)
   }
   return (
     <PageContainer>
-        <Button
-          key="primary"
-          type="primary"
-          style={{marginBottom:'20px'}}
-          onClick={addcoupon}
-        >
-            新建
-        </Button>
+     
       <ProTable
-          scroll={{ y: window.innerHeight - 500, scrollToFirstRowOnChange: true, }}
+          scroll={{ y: Math.max(window.innerHeight - 500, 500), scrollToFirstRowOnChange: true, }}
           actionRef={ref}
           rowKey="id"
           options={false}
@@ -111,7 +108,24 @@ export default (props) =>{
           ],
           }}
           columns={columns}
+          toolBarRender={() => [
+            <Button
+              key="primary"
+              type="primary"
+              style={{marginBottom:'20px'}}
+              onClick={addcoupon}
+            >
+                新建
+            </Button>
+          ]}
       />
+      {visible&& <AddCrowd
+        visible={visible}
+        setVisible={setVisible}
+        id={pennyId} 
+        callback={() => { ref.current.reload(); setPennyId(null);}}
+        onClose={() => { ref.current.reload(); setPennyId(null);}}
+      />}
     </PageContainer>
   )
 }

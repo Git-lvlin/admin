@@ -65,6 +65,7 @@ const TableList = () => {
       title: '年龄',
       dataIndex: 'age',
       hideInSearch: true,
+      width: 100,
     },
     {
       title: '是否开店',
@@ -224,7 +225,7 @@ const TableList = () => {
         params={{
           status: 1,
         }}
-        scroll={{ y: window.innerHeight - 600, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
         request={userList}
         actionRef={actionRef}
         search={{

@@ -33,7 +33,7 @@ const validity=(props)=>{
             type==3||DetaiIssueType == 3 && id|| type==4||DetaiIssueType == 4 && id?
                 <ProFormRadio.Group
                     name="activityTimeType"
-                    label={<FormattedMessage id="formandbasic-form.period.of.validity" />}
+                    label='有效期'
                     rules={[{ required: true, message: '请选择有效期限' }]}
                     options={[
                         {
@@ -45,7 +45,7 @@ const validity=(props)=>{
                 :
                 <ProFormRadio.Group
                     name="activityTimeType"
-                    label={<FormattedMessage id="formandbasic-form.period.of.validity" />}
+                    label='有效期'
                     rules={[{ required: true, message: '请选择有效期限' }]}
                     options={type==2||DetaiIssueType == 2 && id?options2:options}
                 />

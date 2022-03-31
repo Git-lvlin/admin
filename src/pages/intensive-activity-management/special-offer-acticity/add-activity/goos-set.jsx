@@ -31,7 +31,7 @@ const FromWrap = ({ value, onChange, content, right }) => (
 )
 
 const GoosModel=(props)=>{
-  const {visible,setVisible,onClose,callback,keyId}=props
+  const {visible,setVisible,onClose,callback,keyId,detailList}=props
   const [goosList,setGoosList]=useState()
   const [keys,setKeys]=useState()
   const [dataList,setDataList]=useState([])
@@ -82,6 +82,15 @@ const GoosModel=(props)=>{
           render:(_,data)=>{
             return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
           }
+      },
+      {
+          title: '平均运费',
+          dataIndex: 'wholesaleFreight',
+          hideInSearch: true,
+          editable:false,
+          render:(_,data)=>{
+            return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
+        }
       },
       {
           title: '集约活动名称',
@@ -211,7 +220,7 @@ const GoosModel=(props)=>{
                   ...dom.reverse(),
               ],
           }}
-          scroll={{ x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
+          scroll={{ x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true}}
           postData={postData}
           columns={columns}
           rowSelection={{
@@ -219,7 +228,7 @@ const GoosModel=(props)=>{
               onChange: (_, val) => {
                 const arr=[]
                 _.forEach(item=>{
-                 const obj=dataList.find(ele=>{
+                 const obj=[...dataList,...detailList].find(ele=>{
                    return ele.wsId==item
                   })
                   if(obj){
@@ -251,7 +260,7 @@ export default (props) => {
   const [pennyId,setPennyId]=useState()
   useEffect(()=>{
     if(id){
-      detailList&&setDataSource(detailList.map(ele=>({...ele,price:amountTransform(ele.price,'/')})))
+      detailList&&setDataSource(detailList.map(ele=>({...ele,price:amountTransform(ele.price,'/'),maxNum:ele.buyLimit})))
      setEditableKeys(detailList?.map(item => item.wsId))
     }   
   },[id,detailList])
@@ -306,6 +315,15 @@ export default (props) => {
     {
       title: '批发供货价',
       dataIndex: 'wholesaleSupplyPrice',
+      hideInSearch: true,
+      editable:false,
+      render:(_,data)=>{
+        return <p>{amountTransform(_, '/')}元/{data?.unit}</p>
+      }
+    },
+    {
+      title: '平均运费',
+      dataIndex: 'wholesaleFreight',
       hideInSearch: true,
       editable:false,
       render:(_,data)=>{
@@ -392,10 +410,9 @@ export default (props) => {
       renderFormItem: (_) =>{
         return <FromWrap
         content={(value, onChange) =><InputNumber
-                  min={amountTransform(_?.entry?.wholesaleSupplyPrice, '/')}
+                  min={amountTransform(_?.entry?.wholesaleSupplyPrice+_?.entry?.wholesaleFreight, '/')}
                   precision='2'
                   stringMode
-                  disabled={_?.entry?.wholesaleStatusDesc=='进行中'}
                   value={value}
                   onChange={onChange}
                 />
@@ -487,7 +504,7 @@ export default (props) => {
               ...item,
               status:1,
               wsPrice:item.price,
-              price:amountTransform(item.wholesaleSupplyPrice, '/')
+              price:amountTransform(item.wholesaleSupplyPrice+item.wholesaleFreight, '/')
             })
           })
           setDataSource(arr)
@@ -496,6 +513,7 @@ export default (props) => {
         }}
         onClose={()=>{}}
         keyId={dataSource}
+        detailList={detailList||[]}
       />
     }
     {

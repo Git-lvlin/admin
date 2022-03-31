@@ -9,6 +9,7 @@ export const productList = async (params, options = {}) => {
       size: pageSize,
       gcId1: gcId[0],
       gcId2: gcId[1],
+      NEGoodsSaleType: 1,
       ...rest
     },
     ...options

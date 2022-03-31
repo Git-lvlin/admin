@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getActiveConfigById } from '@/services/intensive-activity-management/penny-activity';
 import { Divider, Form, Spin, Button,Image,InputNumber,Row,Col,Descriptions,Typography } from 'antd';
-import ProForm,{ ModalForm,ProFormRadio,ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox} from '@ant-design/pro-form';
+import ProForm,{ ModalForm,ProFormRadio,ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,DrawerForm} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import { amountTransform } from '@/utils/utils'
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from 'moment'
+import styles from './style.less'
 const { Title } = Typography;
 
-
 export default props => {
+  const { visible, setVisible, callback,id,onClose} = props;
   const ref = useRef()
-  const id = props.location.query.id
   const [form] = Form.useForm()
   const [detailData, setDetailData] = useState([])
-
   useEffect(() => {
     if (id) {
         getActiveConfigById({id}).then(res=>{
@@ -98,6 +97,17 @@ export default props => {
       },
     },
     {
+      title: '状态',
+      dataIndex: 'status',
+      valueType: 'text',
+      hideInSearch: true,
+      editable:false,
+      valueEnum: {
+        0: '已禁用',
+        1: '已启用',
+      },
+    },
+    {
       title: '活动价',
       dataIndex: 'price',
       hideInSearch: true,
@@ -108,8 +118,30 @@ export default props => {
   ]; 
   
   return (
-    <PageContainer>
-    <div style={{ background: '#fff', padding: 25 }}>
+    <DrawerForm
+      onVisibleChange={setVisible}
+      title='活动详情'
+      visible={visible}
+      width={1500}
+      drawerProps={{
+        forceRender: true,
+        destroyOnClose: true,
+        onClose: () => {
+          onClose();
+        }
+      }}
+      submitter={{
+        render: (props, defaultDoms) => {
+          return [
+            ...defaultDoms
+          ];
+        },
+        }}
+        onFinish={async (values) => {
+          await setVisible(false);callback(true)
+        }}
+      className={styles?.activity_detail}
+    >
       <Row style={{ marginTop: 50 }}>
           <Title style={{ marginBottom: -10 }} level={5}>活动商品</Title>
           <Divider />
@@ -131,32 +163,41 @@ export default props => {
           <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 200, display: 'inline-block' }}>
             <Descriptions.Item label="活动名称">{detailData?.name}</Descriptions.Item>
             <Descriptions.Item label="活动时间">
-                {moment(detailData?.startTime*1000).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(detailData?.endTime*1000).format('YYYY-MM-DD HH:mm:ss')}
+              {moment(detailData?.startTime*1000).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(detailData?.endTime*1000).format('YYYY-MM-DD HH:mm:ss')}
             </Descriptions.Item>
             <Descriptions.Item label="每位店主总限量">
               {detailData?.content?.shoperLimitAll}
             </Descriptions.Item>
             <Descriptions.Item label="每位店主单次限量">{detailData?.content?.shoperLimitOnece}</Descriptions.Item>
             <Descriptions.Item label="每位消费者限量">
-            {detailData?.content?.buyerLimit}
+              {detailData?.content?.buyerLimit}
             </Descriptions.Item>
             <Descriptions.Item label="店主再次参与活动条件">
             需完成已有推广任务 {amountTransform(detailData?.content?.joinAgainPercent,'*')}%
             </Descriptions.Item>
             <Descriptions.Item label="参与活动的店铺">
-            {{1:"生鲜店铺"}[detailData?.content?.joinShopType]}
+              {{1:"生鲜店铺"}[detailData?.content?.joinShopType]}
             </Descriptions.Item>
             <Descriptions.Item label="参与活动的消费者">
-            {{1:'全部消费者',2:'从未下过单的消费者（新人）'}[detailData?.content?.joinBuyerType]}
+              {{1:'全部消费者',2:'从未下过单的消费者（新人）'}[detailData?.content?.joinBuyerType]}
             </Descriptions.Item>
             <Descriptions.Item label="最近操作人">
-            {detailData?.lastEditor}
+              {detailData?.lastEditor}
             </Descriptions.Item>
             <Descriptions.Item label="最近操作时间">
-            {moment(detailData?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss')}
+              {moment(detailData?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss')}
             </Descriptions.Item>
           </Descriptions>
-    </div>
-    </PageContainer>
+          <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 200, display: 'inline-block' }}>
+            <Descriptions.Item label="店主活动规则">
+              <pre className={styles.line_feed}>{detailData?.content?.ruleText}</pre>
+            </Descriptions.Item>
+          </Descriptions>
+          <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 200, display: 'inline-block' }}>
+            <Descriptions.Item label="消费者活动规则">
+              <pre className={styles.line_feed}>{detailData?.content?.ruleTextC}</pre>
+            </Descriptions.Item>
+          </Descriptions>
+    </DrawerForm>
   );
 };

@@ -71,6 +71,7 @@ const IntensiveActivityCreate = () => {
   // const [uncheckableItemValues, setUncheckableItemValues] = useState([]);
   const [submitValue, setSubmitValue] = useState(null);
   const formRef = useRef();
+  const editTableRef = useRef();
   const [detailData, setDetailData] = useState({})
   const [loading, setLoading] = useState(true)
   const params = useParams();
@@ -255,6 +256,31 @@ const IntensiveActivityCreate = () => {
         isEditSubsidy: 0
       })
     }
+    if (selectItem?.[0]?.fresh === 0) {
+      formRef.current.setFieldsValue({
+        preSale: 1
+      })
+    } else {
+      formRef.current.setFieldsValue({
+        preSale: 0
+      })
+    }
+
+    if (selectItem.length) {
+      formRef.current.setFieldsValue({
+        settlePercent: selectItem[0].settlePercent,
+        price: selectItem[0].price,
+      })
+
+      const { freshSpecial } = formRef.current.getFieldsValue()
+
+      if (selectItem.length && freshSpecial === 0) {
+        formRef.current.setFieldsValue({
+          freshCommission: amountTransform(selectItem[0].freshCommission)
+        })
+      }
+    }
+
   }, [selectItem])
 
   return (
@@ -359,9 +385,9 @@ const IntensiveActivityCreate = () => {
               // recoverPayTimeout: 3
               isEditSubsidy: 0,
               ladderShowPercent: 50,
-              preSale: 1,
+              preSale: 0,
               freshSpecial: 0,
-              freshCommission: 20,
+              freshCommission: 30,
               activityShowType: 0,
             }}
             className={styles.center}
@@ -395,7 +421,7 @@ const IntensiveActivityCreate = () => {
                     } else {
                       setSelectItem(v)
                     }
-                  }} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} />
+                  }} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} ref={editTableRef} />
                 )}
               </ProFormDependency>
 
@@ -457,7 +483,75 @@ const IntensiveActivityCreate = () => {
                 },
               ]}
             />
+
             {!!selectItem.length && <>
+              <Form.Item
+                label="批发供货价"
+              >
+                {selectItem[0].wholesaleSupplyPrice}元
+              </Form.Item>
+              <Form.Item
+                label="市场价"
+              >
+                {selectItem[0].marketPriceDisplay}元
+              </Form.Item>
+              <Form.Item
+                label="平均运费"
+              >
+                {selectItem[0].wholesaleFreight}元
+              </Form.Item>
+              <ProFormDependency name={['freshCommission']}>
+                {({ freshCommission }) => (
+                  <>
+                    <ProFormText
+                      label="售价上浮比"
+                      validateFirst
+                      rules={[
+                        { required: true, message: '请输入' },
+                      ]}
+                      name="settlePercent"
+                      width={400}
+                      fieldProps={{
+                        addonAfter: `%`,
+                        onBlur: (e) => {
+                          editTableRef.current.update({
+                            ...selectItem[0],
+                            settlePercent: e.target.value,
+                            freshCommission3: freshCommission,
+                            freshCommission2: null,
+                          })
+                        }
+                      }}
+                    />
+                    <ProFormText
+                      label="集约价"
+                      validateFirst
+                      rules={[
+                        { required: true, message: '请输入' },
+                      ]}
+                      fieldProps={{
+                        addonAfter: `元/${selectItem[0].unit}`,
+                        onBlur: (e) => {
+                          editTableRef.current.update({
+                            ...selectItem[0],
+                            price: e.target.value,
+                            freshCommission2: freshCommission,
+                            freshCommission3: null,
+                          })
+                        }
+                      }}
+                      name="price"
+                      width={400}
+                    />
+                  </>
+                )}
+              </ProFormDependency>
+
+              <Form.Item
+                label="实际盈亏"
+              >
+                <span style={{ color: selectItem[0].profit < 0 ? 'red' : '' }}>{selectItem[0].profit}元</span>
+              </Form.Item>
               <ProFormRadio.Group
                 label="平台额外奖励"
                 name="isEditSubsidy"
@@ -573,27 +667,44 @@ const IntensiveActivityCreate = () => {
               selectItem?.[0]?.fresh === 1
               &&
               <>
-                <ProFormRadio.Group
-                  label="生鲜总分佣类型"
-                  name="freshSpecial"
-                  required
-                  options={[
-                    {
-                      label: '正常分佣（按分类分佣）',
-                      value: 0,
-                    },
-
-                    {
-                      label: '特殊分佣（单独指定分佣）',
-                      value: 1,
-                    }
-                  ]}
-                />
                 <ProFormDependency name={['freshSpecial', 'freshCommission']}>
                   {
                     ({ freshSpecial, freshCommission }) => {
                       return (
                         <>
+                          <ProFormRadio.Group
+                            label="生鲜总分佣类型"
+                            name="freshSpecial"
+                            required
+                            options={[
+                              {
+                                label: '正常分佣（按分类分佣）',
+                                value: 0,
+                              },
+
+                              {
+                                label: '特殊分佣（单独指定分佣）',
+                                value: 1,
+                              }
+                            ]}
+                            fieldProps={{
+                              onChange: (e) => {
+                                if (e.target.value === 0) {
+                                  editTableRef.current.update({
+                                    ...selectItem[0],
+                                    freshCommission2: amountTransform(selectItem[0].freshCommission),
+                                    freshCommission3: null,
+                                  })
+                                } else {
+                                  editTableRef.current.update({
+                                    ...selectItem[0],
+                                    freshCommission2: freshCommission,
+                                    freshCommission3: null,
+                                  })
+                                }
+                              }
+                            }}
+                          />
                           {
                             freshSpecial === 0
                               ? <Form.Item
@@ -602,46 +713,63 @@ const IntensiveActivityCreate = () => {
                                 {selectItem[0].gcId1Display} &gt; {selectItem[0].gcId2Display}：{amountTransform(selectItem[0].freshCommission)}%
                               </Form.Item>
                               :
-                              <ProFormText
-                                name="freshCommission"
-                                label="总分佣比例"
-                                width={150}
-                                fieldProps={{ addonAfter: '%' }}
-                                placeholder="总分佣比例"
-                                validateFirst
-                                rules={[
-                                  { required: true, message: '请输入总分佣比例' },
-                                  () => ({
-                                    validator(_, value) {
-                                      if (!/^((0)|([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/g.test(value) || value > 50) {
-                                        return Promise.reject(new Error('请输入0-50之间的数字，最多两位小数'));
-                                      }
-                                      return Promise.resolve();
-                                    },
-                                  })
-                                ]}
-                              />
+                              <div
+                                style={{ position: 'relative', zIndex: 1 }}
+                              >
+                                <ProFormText
+                                  name="freshCommission"
+                                  label="总分佣比例"
+                                  width={150}
+                                  fieldProps={{ addonAfter: '%' }}
+                                  placeholder="总分佣比例"
+                                  validateFirst
+                                  fieldProps={{
+                                    onBlur: (e) => {
+                                      editTableRef.current.update({
+                                        ...selectItem[0],
+                                        freshCommission2: e.target.value,
+                                        freshCommission3: null,
+                                      })
+                                    }
+                                  }}
+                                  rules={[
+                                    { required: true, message: '请输入总分佣比例' },
+                                    () => ({
+                                      validator(_, value) {
+                                        if (!/^((0)|([1-9][0-9]*))$/g.test(value) || value > 50) {
+                                          return Promise.reject(new Error('请输入0-50之间的正整数'));
+                                        }
+                                        return Promise.resolve();
+                                      },
+                                    })
+                                  ]}
+                                />
+                              </div>
                           }
                           <Form.Item
                             label="生鲜商品的各方分佣比例"
                           >
-                            <Table
-                              title={() => "以五星社区店为例"}
-                              columns={[
-                                { title: '社区店', dataIndex: 'shopCommission', render: (_) => `${amountTransform(_)}%` },
-                                { title: '运营中心', dataIndex: 'operateCommission', render: (_) => `${amountTransform(_)}%` },
-                                { title: '推荐人', dataIndex: 'referrerCommission', render: (_) => `${amountTransform(_)}%` },
-                                { title: '平台额外收益', dataIndex: 'platForm', render: (_) => `${amountTransform(_)}%` },
-                              ]}
-                              dataSource={[selectItem[0].freshData[0]]}
-                              pagination={false}
-                            />
+                            <div style={{ marginTop: '-10px' }}>
+                              <Table
+                                title={() => "以五星社区店为例"}
+                                columns={[
+                                  { title: '社区店', dataIndex: 'shopCommission', render: (_) => `${amountTransform(_)}%` },
+                                  { title: '运营中心', dataIndex: 'operateCommission', render: (_) => `${amountTransform(_)}%` },
+                                  { title: '推荐人', dataIndex: 'referrerCommission', render: (_) => `${amountTransform(_)}%` },
+                                  { title: '平台额外收益', dataIndex: 'platForm', render: (_) => `${amountTransform(_)}%` },
+                                ]}
+                                dataSource={[selectItem[0].freshData[0]]}
+                                pagination={false}
+                              />
+                            </div>
                           </Form.Item>
 
                           <Form.Item
                             label="预计生鲜食品的各方分佣金额"
                           >
-                            <FreshIncome data={selectItem[0]} freshCommission={freshSpecial === 0 ? selectItem[0].freshCommission : amountTransform(freshCommission, '/')} />
+                            <div style={{ marginTop: '-10px' }}>
+                              <FreshIncome data={selectItem[0]} freshCommission={freshSpecial === 0 ? selectItem[0].freshCommission : amountTransform(freshCommission, '/')} />
+                            </div>
                           </Form.Item>
                         </>
                       )
@@ -651,8 +779,8 @@ const IntensiveActivityCreate = () => {
               </>
             }
 
-            <ProFormCheckbox.Group value={'1'} label="可购买的社区店等级" disabled options={[{ label: '全部', value: 1 }]} />
-            <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} />
+            {/* <ProFormCheckbox.Group value={'1'} label="可购买的社区店等级" disabled options={[{ label: '全部', value: 1 }]} />
+            <ProFormCheckbox.Group value={'1'} label="可购买的会员等级" disabled options={[{ label: '全部', value: 1 }]} /> */}
             {!!selectItem[0]?.shipAddr?.length && <Form.Item
               label="商品发货地区"
             >

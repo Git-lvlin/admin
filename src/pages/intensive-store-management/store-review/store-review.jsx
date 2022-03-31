@@ -142,8 +142,8 @@ const StoreReview = () => {
         return {
           0: '全部',
           2: '审核不通过',
-          3: '已缴保证金',
-          4: '待缴保证金',
+          3: '已缴费',
+          4: '待缴费',
           5: '取消申请',
           6: '待审核',
         }[_]
@@ -157,8 +157,8 @@ const StoreReview = () => {
       valueEnum: {
         0: '全部',
         2: '审核不通过',
-        3: '已缴保证金',
-        4: '待缴保证金',
+        3: '已缴费',
+        4: '待缴费',
         5: '取消申请',
         6: '待审核',
       }
@@ -194,7 +194,7 @@ const StoreReview = () => {
         actionRef={actionRef}
         formRef={formRef}
         request={getStoreList}
-        scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
+        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: false,
           optionRender: ({ searchText, resetText }, { form }) => [

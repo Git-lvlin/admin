@@ -31,7 +31,7 @@ const FromWrap = ({ value, onChange, content, right }) => (
 )
 
 const GoosModel=(props)=>{
-  const {visible,setVisible,onClose,callback,keyId}=props
+  const {visible,setVisible,onClose,callback,keyId,detailList}=props
   const [goosList,setGoosList]=useState()
   const [dataList,setDataList]=useState([])
   const actionRef = useRef();
@@ -97,10 +97,10 @@ const GoosModel=(props)=>{
       },
   ];
   const onsubmit = (values) => {
-        if(goosList){
-          callback(goosList)
-        }
-        setVisible(false)
+    if(goosList){
+      callback(goosList)
+    }
+    setVisible(false)
   };
   useEffect(()=>{
     setKeys(keyId.map(ele=>(ele.wsId)))
@@ -160,7 +160,7 @@ const GoosModel=(props)=>{
               onChange: (_, val) => {
                 const arr=[]
                 _.forEach(item=>{
-                 const obj=dataList.find(ele=>{
+                 const obj=[...dataList,...detailList].find(ele=>{
                    return ele.wsId==item
                   })
                   if(obj){
@@ -171,6 +171,9 @@ const GoosModel=(props)=>{
                 setGoosList(arr)
                 setKeys(_)
               },
+              getCheckboxProps: (record) => ({
+                disabled:detailList?.map(ele=>(ele.wsId)).includes(record.wsId),
+              }),
               selectedRowKeys:keys
           }}
           pagination={{
@@ -407,6 +410,7 @@ export default (props) => {
           setEditableKeys(arr.map(item => item.wsId))
         }}
         keyId={dataSource}
+        detailList={detailList?.content?.goods||[]}
         onClose={()=>{}}
       />
     }

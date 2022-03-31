@@ -2,9 +2,9 @@ import React, { useState, useEffect,useRef } from 'react';
 import { Input, Form, Divider, message, Button,Space } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
 import ProTable from '@ant-design/pro-table';
-import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,ProFormTimePicker,ProFormDependency } from '@ant-design/pro-form';
+import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,ProFormTimePicker,ProFormDependency,DrawerForm } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
-import { saveWSDiscountActiveConfig,getActiveConfigById,getActiveConfigList } from '@/services/intensive-activity-management/special-offer-acticity';
+import { saveWSDiscountActiveConfig,getActiveConfigById} from '@/services/intensive-activity-management/special-offer-acticity';
 import { amountTransform } from '@/utils/utils'
 import moment from 'moment';
 import styles from './style.less'
@@ -26,11 +26,11 @@ const formItemLayout = {
 };
 
 export default (props) => {
+  const {setFormVisible,formVisible,onClose,callback,id}=props
   const [detailList,setDetailList]=useState()
   const [falg,setFalg]=useState(true)
   const [goosList,setGoosList]=useState()
   const [visible, setVisible] = useState(false);
-  let id = props.location.query.id
   const [form] = Form.useForm()
 
   const activityName = (rule, value, callback) => {
@@ -67,7 +67,8 @@ export default (props) => {
       getActiveConfigById({id}).then(res=>{
         if(res.data?.endTime<res.data?.time){
           message.error('活动已结束！'); 
-          window.location.href='/intensive-activity-management/special-offer-acticity/special-offer-acticity-list'
+          setFormVisible(false)
+          onClose()
           return false
         }
         setDetailList(res.data?.content?.goods)
@@ -100,14 +101,23 @@ export default (props) => {
         buyerEndTime:values.buyerTimeType==0?'23:59:59':values.timeRange[1],
         joinShopType:values.joinShopType[0],
         joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
-        goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:amountTransform(ele.price,'*'),status:ele.status,buyLimit:ele.maxNum}))||detailList,
+        goods:goosList?.map(ele=>({
+          skuId:ele.skuId,
+          spuId:ele.spuId,
+          wsId:ele.wsId,
+          price:amountTransform(ele.price,'*'),
+          status:ele.status,
+          buyLimit:ele.maxNum,
+          wholesaleFreight:ele.wholesaleFreight
+        }))||detailList,
         buyerLimit:values.buyerType==0?999999:values.buyerLimit,
         status:1,
       }
       saveWSDiscountActiveConfig(parmas).then(res=>{
         if(res.code==0){
           message.success(id?'编辑成功':'添加成功'); 
-          window.location.href='/intensive-activity-management/special-offer-acticity/special-offer-acticity-list'
+          callback(true)
+          setFormVisible(false)
         }
       })
   }
@@ -116,10 +126,19 @@ export default (props) => {
     return current && current < moment().startOf('day');
   }
   return (
-    <PageContainer>
-      <ProForm
+      <DrawerForm
+        title={id?'编辑活动':'新建活动'}
+        onVisibleChange={setFormVisible}
+        visible={formVisible}
         form={form}
-        {...formItemLayout}
+        width={1500}
+        drawerProps={{
+          forceRender: true,
+          destroyOnClose: true,
+          onClose: () => {
+            onClose();
+          }
+        }}
         submitter={
           {
             render: (props, defaultDoms) => {
@@ -130,7 +149,8 @@ export default (props) => {
                   确定
                 </Button>,
                 <Button  type="default" key="goback" onClick={() => {
-                  history.push('/intensive-activity-management/special-offer-acticity/special-offer-acticity-list')
+                  setFormVisible(false)
+                  onClose()
                 }}>
                   返回
                 </Button>
@@ -140,10 +160,10 @@ export default (props) => {
         }
         onFinish={async (values) => {
             await onsubmit(values);
-            return true;
         }
         }
         className={styles.add_activity}
+        {...formItemLayout}
       >
         <ProFormText
           width="md"
@@ -283,7 +303,6 @@ export default (props) => {
             maxLength:1000
           }}
         />
-      </ProForm >
-    </PageContainer>
+      </DrawerForm>
   );
 };
