@@ -10,6 +10,8 @@ import { amountTransform } from '@/utils/utils'
 import { platforms, enabledDisabledSubmit, subtotal } from '@/services/financial-management/supplier-fund-management'
 import styles from './styles.less'
 import { Export,ExportHistory } from '@/pages/export-excel'
+import Detailed from '../payment-details'
+import Detail from '../details'
 
 const IssuingStoreFundManagement = () => {
   const actionRef = useRef()
@@ -19,6 +21,9 @@ const IssuingStoreFundManagement = () => {
   const [search, setSearch] = useState({})
   const [data, setData] = useState({})
   const [visit, setVisit] = useState(false)
+  const [detailedVisible, setDetailedVisible] = useState(false)
+  const [detailVisible, setDetailVisible] = useState(false)
+  const [query, setQuery] = useState(null)
 
   useEffect(()=> {
     subtotal({
@@ -35,10 +40,14 @@ const IssuingStoreFundManagement = () => {
   }, [search])
 
   const skipToDetail = ({accountType, accountId}) => {
-    history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
+    setQuery({accountType, accountId})
+    setDetailedVisible(true)
+    // history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
   }
   const toDetails = ({accountType, accountId}) => {
-    history.push(`/financial-management/money-management/details?accountType=${accountType}&accountId=${accountId}`)
+    setQuery({accountType, accountId})
+    setDetailVisible(true)
+    // history.push(`/financial-management/money-management/details?accountType=${accountType}&accountId=${accountId}`)
   }
 
   const disable = data =>{
@@ -208,6 +217,7 @@ const IssuingStoreFundManagement = () => {
         toolBarRender={false}
         columns={columns}
         params={{accountType: 'agentStore'}}
+        scroll={{x: "max-content"}}
         request={platforms}
         search={{
           optionRender: ({searchText, resetText}, {form}) => [
@@ -261,6 +271,22 @@ const IssuingStoreFundManagement = () => {
           </>
         )}
       />
+      {
+        detailedVisible &&
+        <Detailed
+          query={query}
+          visible={detailedVisible}
+          setVisible={setDetailedVisible}
+        />
+      }
+      {
+        detailVisible &&
+        <Detail
+          query={query}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
     </PageContainer>
   )
 }

@@ -456,7 +456,6 @@ export default (props) => {
                 actStockNum:item.totalStockNum
               })
             }
-
           })
           setDataSource(arr)
           callback(arr)

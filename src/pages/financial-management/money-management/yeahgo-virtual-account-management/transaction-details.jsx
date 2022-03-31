@@ -35,28 +35,6 @@ const TransactionDetails = ({
       setId(id)
       setNormalOrderVisible(true)
     }
-    // switch(type) {
-    //   case 'normalOrder':
-    //   case 'second':
-    //   case 'dropShipping1688':
-    //     setId(id)
-    //     setNormalOrderVisible(true)
-    //     // history.push(`/order-management/normal-order-detail/${id}`)
-    //   break
-    //   case 'commandSalesOrder':
-    //   case 'activeSalesOrder':
-    //   case 'commandCollect':
-    //   case 'activeCollect':
-    //     setId(id)
-    //     setShopkeeperOrderVisible(true)
-    //     // history.push(`/order-management/intensive-order/supplier-order-detail/${id}`)
-    //   break
-    //   default:
-    //     // history.push(`/order-management/normal-order-detail/${id}`)
-    //     setId(id)
-    //     setShopkeeperOrderVisible(true)
-    //   break
-    // }
   }
 
   const skipToOrderPay = (id) => {
@@ -245,6 +223,7 @@ const TransactionDetails = ({
           pageSize: 10,
           showQuickJumper: true
         }}
+        scroll={{x: "max-content"}}
         columns={columns}
         params={{...query}}
         request={logPage}

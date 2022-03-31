@@ -17,6 +17,7 @@ const PaymentDetails = ({query, visible, setVisible}) => {
   const isPurchase = useLocation().pathname.includes('purchase')
 
   const skipToOrder = (id, type)=> {
+    console.log(type)
     if(type) {
       setId(id)
       setShopkeeperOrderVisible(true)
@@ -144,6 +145,7 @@ const PaymentDetails = ({query, visible, setVisible}) => {
           pageSize: 10,
           showQuickJumper: true
         }}
+        scroll={{x: "max-content"}}
         columns={columns}
         params={{...query}}
         request={logPage}
