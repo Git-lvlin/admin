@@ -8,6 +8,7 @@ import { history } from 'umi'
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
 import { platforms, platformWithdraw, supplyChainWithdraw } from '@/services/financial-management/yeahgo-virtual-account-management'
+import Detail from './transaction-details'
 
 const WithdrawalModal = ({ val, change, update, type }) => {
   const withdrawal = (v) => {
@@ -88,7 +89,9 @@ const WithdrawalModal = ({ val, change, update, type }) => {
 const YeahgoVirtualAccountManagement = () => {
   const [account, setAccount] = useState({})
   const [loading, setLoading] = useState(false)
+  const [visable, setVisable] = useState(false)
   const [change, setChange] = useState(1)
+  const [query, setQuery] = useState(null)
 
   useEffect(() => {
     setLoading(true)
@@ -103,7 +106,9 @@ const YeahgoVirtualAccountManagement = () => {
 
   const skipToDetail = ({ accountType, accountId, amountType }) => {
     const type = !amountType ? '' : `amountType=${amountType}`
-    history.push(`/financial-management/money-management/yeahgo-virtual-account-management/transaction-details?accountType=${accountType}&accountId=${accountId}&${type}`)
+    // history.push(`/financial-management/money-management/yeahgo-virtual-account-management/transaction-details?accountType=${accountType}&accountId=${accountId}&${type}`)
+    setQuery({accountType, accountId, type})
+    setVisable(true)
   }
 
   return (
@@ -291,6 +296,15 @@ const YeahgoVirtualAccountManagement = () => {
           </div>
         </ProCard>
       </ProCard>
+      {
+        visable&&
+        <Detail
+          // id={selectItem}
+          visible={visable}
+          setVisible={setVisable}
+          query={query}
+        />
+      }
     </PageContainer>
   )
 }
