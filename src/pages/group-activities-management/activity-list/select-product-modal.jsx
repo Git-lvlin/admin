@@ -66,7 +66,7 @@ export default (props) => {
     {
       title: '商品分类',
       dataIndex: 'gcId',
-      renderFormItem: () => (<GcCascader />),
+      renderFormItem: () => (<GcCascader isFresh/>),
       hideInTable: true,
     },
     {
