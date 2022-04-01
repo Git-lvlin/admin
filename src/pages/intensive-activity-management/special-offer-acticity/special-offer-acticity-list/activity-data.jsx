@@ -5,7 +5,7 @@ import ProTable from '@ant-design/pro-table';
 import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,DrawerForm } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
-import { saveWSCentActiveConfig,getActiveConfigById } from '@/services/intensive-activity-management/penny-activity';
+import { saveWSCentActiveConfig,activityGoods } from '@/services/intensive-activity-management/penny-activity';
 import moment, { now } from 'moment';
 import { PageContainer } from '@ant-design/pro-layout';
 
@@ -32,13 +32,13 @@ export default (props) => {
   const columns= [
     {
       title: 'spuID',
-      dataIndex: 'spuID',
+      dataIndex: 'spuId',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: 'skuID',
-      dataIndex: 'skuID',
+      dataIndex: 'skuId',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -50,49 +50,49 @@ export default (props) => {
     },
     {
       title: '商品主图',
-      dataIndex: 'name',
-      valueType: 'text',
+      dataIndex: 'skuImageUrl',
+      valueType: 'image',
       hideInSearch: true,
     },
     {
       title: '商品名称',
-      dataIndex: 'name',
+      dataIndex: 'goodsName',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '商品规格',
-      dataIndex: 'name',
+      dataIndex: 'skuName',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '采购店主数',
-      dataIndex: 'shoperLimitAll',
+      dataIndex: 'procurementStorekeeperNum',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: 'B端采购订单数',
-      dataIndex: 'shoperLimitOnece',
+      dataIndex: 'bProcurementOrderNum',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: 'B端采购份数',
-      dataIndex: 'buyerLimit',
+      dataIndex: 'bProcurementNum',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: 'C端零售份数',
-      dataIndex: 'joinShopType',
+      dataIndex: 'cSaleNum',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: 'C端转化率',
-      dataIndex: 'goodsCount',
+      dataIndex: 'cTranslateRate',
       valueType: 'text',
       hideInSearch: true,
     }
@@ -162,11 +162,10 @@ export default (props) => {
         headerTitle="活动商品"
         rowKey="id"
         options={false}
-        // params={{
-        //     actCode:'wsCentActiveCode'
-        // }}
-        // request={getActiveConfigList}
-        // postData={postData}
+        params={{
+          activity_id:record?.id
+        }}
+        request={activityGoods}
         search={{
         defaultCollapsed: false,
         labelWidth: 100,

@@ -59,7 +59,7 @@ export default (props) => {
     },
     {
       title: '采购店主数',
-      dataIndex: 'shoperLimitAll',
+      dataIndex: 'procurementStorekeeperNum',
       valueType: 'text',
       hideInSearch: true,
     },
