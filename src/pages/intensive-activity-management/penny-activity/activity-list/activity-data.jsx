@@ -1,11 +1,11 @@
 import React, { useState, useEffect,useRef } from 'react';
-import { Input, Form, Divider, message, Button,Space,Descriptions } from 'antd';
+import { Input, Form, Divider, message, Button,Space,Descriptions,Image } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
 import ProTable from '@ant-design/pro-table';
 import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,DrawerForm } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
-import { saveWSCentActiveConfig,getActiveConfigById } from '@/services/intensive-activity-management/penny-activity';
+import { saveWSCentActiveConfig,activityGoods } from '@/services/intensive-activity-management/penny-activity';
 import moment, { now } from 'moment';
 import { PageContainer } from '@ant-design/pro-layout';
 
@@ -32,7 +32,7 @@ export default (props) => {
   const columns= [
     {
       title: 'skuID',
-      dataIndex: 'skuID',
+      dataIndex: 'skuId',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -44,9 +44,18 @@ export default (props) => {
     },
     {
       title: '基本信息',
-      dataIndex: 'name',
+      dataIndex: 'goodsName',
       valueType: 'text',
       hideInSearch: true,
+      render:(_,data)=>{
+        return <div style={{display:'flex'}}>
+                <Image src={data.skuImageUrl} alt="" width='50px' height='50px' />
+                <div style={{marginLeft:'10px'}}>
+                  <p style={{fontSize:'14px'}}>{data.goodsName}</p>
+                  <p style={{fontSize:'12px'}}>规格：{data.skuName}</p>
+                </div>
+            </div>
+      }
     },
     {
       title: '采购店主数',
@@ -56,41 +65,36 @@ export default (props) => {
     },
     {
       title: 'B端采购订单数',
-      dataIndex: 'shoperLimitOnece',
+      dataIndex: 'bProcurementOrderNum',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: 'B端采购份数',
-      dataIndex: 'buyerLimit',
+      dataIndex: 'bProcurementNum',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: 'C端零售份数',
-      dataIndex: 'joinShopType',
+      dataIndex: 'cSaleNum',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: 'C端转化率',
-      dataIndex: 'goodsCount',
+      dataIndex: 'cTranslateRate',
       valueType: 'text',
       hideInSearch: true,
     }
   ];
   useEffect(() => {
-    if (record?.id) {
-    //   getActiveConfigById({di:record?.id}).then(res=>{
-    //     if(res.data?.endTime<res.data?.time){
-    //       message.error('活动已结束！'); 
-    //       setFormVisible(false)
-    //       onClose()
-    //       return false
-    //     }
-    //     setDetailList(res.data)
+    // if (record?.id) {
+    //   activityGoods({activity_id:record?.id}).then(res=>{
+    //     console.log('res',res)
+    //     // setDetailList(res.data)
     //   })
-    }
+    // }
   }, [])
 
   const onsubmit = (values) => {
@@ -143,13 +147,12 @@ export default (props) => {
       <ProTable
         actionRef={ref}
         headerTitle="活动商品"
-        rowKey="id"
+        rowKey="skuId"
         options={false}
-        // params={{
-        //     actCode:'wsCentActiveCode'
-        // }}
-        // request={getActiveConfigList}
-        // postData={postData}
+        params={{
+          activity_id:record?.id
+        }}
+        request={activityGoods}
         search={{
         defaultCollapsed: false,
         labelWidth: 100,

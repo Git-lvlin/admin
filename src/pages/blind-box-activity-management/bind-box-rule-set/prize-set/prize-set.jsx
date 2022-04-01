@@ -182,9 +182,6 @@ const SelectProductModal=(props) => {
             setGoosList(arr)
             setKeys(_)
           },
-          // getCheckboxProps: (record) => ({
-          //   disabled:detailList?.map(ele=>(ele.id)).includes(record.id),
-          // }),
           selectedRowKeys:keys
       }}
       />
@@ -193,7 +190,7 @@ const SelectProductModal=(props) => {
 };
 
 export default (props) => {
-  const {callback,id,falg,detailList,submi}=props
+  const {callback,id,falg,detailList}=props
   const ref=useRef()
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
@@ -203,11 +200,7 @@ export default (props) => {
      setDataSource(detailList?.skus)
      setEditableKeys(detailList?.skus.map(item => item.id))
     }
-    if(submi){
-      setEditableKeys([])
-    }
-   
-  },[falg,submi])
+  },[falg])
 
   const columns= [
     {
@@ -334,7 +327,7 @@ export default (props) => {
     let sum=0
     arr.map(ele=>{
       if(ele.status){
-        sum+=amountTransform(amountTransform(sum, '*')+amountTransform(ele.probability, '*'),'/')
+        sum=amountTransform(amountTransform(sum, '*')+amountTransform(ele.probability, '*'),'/')
       }
     })
     setDataSource(arr) 
@@ -395,29 +388,6 @@ export default (props) => {
                       ...item
                     })
                   })
-                  // detailList?.skus.map(ele=>{
-                  //     arr.map(item=>{
-                  //       if(item.skuId==ele.skuId){
-                  //         item.id=ele.id
-                  //         item.stockNum=ele.stockNum
-                  //         item.probability=ele.probability
-                  //         item.status=ele.status
-                  //         delete item.add
-                  //       }
-                  //     })
-                  // })
-                  // if(!id&&falg){
-                  //   dataSource?.map(ele=>{
-                  //     arr.map(item=>{
-                  //       if(item.skuId==ele.skuId){
-                  //         item.stockNum=ele.stockNum
-                  //         item.probability=ele.probability
-                  //         item.status=ele.status
-                  //       }
-                  //     })
-                  //    })
-                  // }
-                  // let arr2=_.uniqWith([...dataSource,...arr], _.isEqual)
                     setDataSource(arr)
                     callback(arr)
                     setEditableKeys(arr.map(item => item.id))

@@ -74,7 +74,6 @@ export const changeStatus = async (params = {}, options = {}) => {
 
 export const chooseWholesaleList = async (params = {}, options = {}) => {
   const { current, pageSize,wholesaleStartTime, ...rest } = params;
-  console.log('wholesaleStartTime',wholesaleStartTime)
   const res = await request('/auth/wholesale/index/chooseWholesaleList', {
     method: 'POST',
     data: {
@@ -112,5 +111,28 @@ export const updateActStock = async (params = {}, options = {}) => {
   data: res.data,
   success: true,
   code: res.code
+  }
+}
+
+
+export const activityGoods = async (params = {}, options = {}) => {
+  const { current, pageSize,wholesaleStartTime, ...rest } = params;
+  const res = await request('/auth/java-admin/report/config/activityGoods', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest,
+      startTime:wholesaleStartTime?.[0],
+      endTime:wholesaleStartTime?.[1]
+
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
   }
 }
