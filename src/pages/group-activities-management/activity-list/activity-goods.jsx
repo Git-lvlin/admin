@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { PageContainer } from '@ant-design/pro-layout'
-import { ruleGoodsList, ruleStatInfo } from '@/services/single-contract-activity-management/activity-product'
+import { ruleGoodsList, ruleStatInfo, ruleGoodsSortTop } from '@/services/single-contract-activity-management/activity-product'
 import { Drawer, Space } from 'antd'
 import { dateFormat, amountTransform } from '@/utils/utils'
 import ProductDetailDrawer from '@/components/product-detail-drawer'
@@ -19,6 +19,10 @@ const TableList = ({onClose, visible, id}) => {
   const [groupState, setGroupState] = useState(1)
 
   const actionRef = useRef() 
+  
+  const toTop = (ruleGoodsId) => {
+    ruleGoodsSortTop({ruleGoodsId},{ showSuccess: true })
+  }
 
   const statInfo = [
     {
@@ -177,7 +181,10 @@ const TableList = ({onClose, visible, id}) => {
     {
       title: '操作',
       valueType: 'option',
-      render: (_, record)=> <a onClick={() => {setEditStockVisible(true); setStockData(record)}}>编辑库存</a>,
+      render: (_, record)=> [
+        <a key="1" onClick={()=> {toTop(record.ruleGoodsId)}}>置顶</a>,
+        <a key="2" onClick={() => {setEditStockVisible(true); setStockData(record)}}>编辑库存</a>
+      ],
       fixed: 'right'
     }
   ]

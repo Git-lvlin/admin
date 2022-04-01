@@ -115,6 +115,7 @@ export default (props) => {
         columns={columns}
         rowKey="skuId"
         options={false}
+        scroll={{y: 400}}
         request={productList}
         params={{
           goodsState: 1,
@@ -124,7 +125,6 @@ export default (props) => {
           apolloConfig:apolloConfig?apolloConfig:''
         }}
         search={{
-          defaultCollapsed: false,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

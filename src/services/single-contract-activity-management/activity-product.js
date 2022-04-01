@@ -42,3 +42,12 @@ export const ruleSkuStockSub = async (params = {}, options = {}) => {
     ...options
   })
 }
+
+// 活动商品置顶
+export const ruleGoodsSortTop = async (params = {}, options = {}) => {
+  return await request('/auth/activity/Rule/ruleGoodsSortTop', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}

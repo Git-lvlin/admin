@@ -186,7 +186,7 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        width: 1500,
+        width: 1200,
         onClose: () => {
           onClose();
         }
