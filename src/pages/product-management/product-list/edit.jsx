@@ -1103,6 +1103,9 @@ export default (props) => {
                     label="集采箱规单位量"
                     placeholder="请输入店主集约采购下单的加购倍数单位量，范围1-9999"
                     disabled
+                    fieldProps={{
+                      addonAfter: `${goods.unit}/${goods.wsUnit}`
+                    }}
                   />
                   <ProFormSelect
                     name="wsUnit"

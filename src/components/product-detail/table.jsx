@@ -54,6 +54,7 @@ export default function EditTable(props) {
         dataIndex: 'batchNumber',
         editable: false,
         hideInTable: goodsSaleType === 2,
+        render: _ => `${_}${unit}/${wsUnit}`
       },
       {
         title: '最低批发量',
