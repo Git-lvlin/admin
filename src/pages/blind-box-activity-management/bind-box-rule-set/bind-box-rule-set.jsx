@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import { SketchPicker,AlphaPicker,BlockPicker,ChromePicker,CirclePicker,CompactPicker,GithubPicker,HuePicker,MaterialPicker,PhotoshopPicker,SliderPicker,SwatchesPicker,TwitterPicker} from 'react-color';
 import { Input, Form, Divider, message, Button,List, Space,Avatar } from 'antd';
 import { FormattedMessage, formatMessage,history } from 'umi';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
@@ -9,10 +8,11 @@ import PrizeSet from './prize-set/prize-set'
 import Upload from '@/components/upload';
 import { saveActiveConfig } from '@/services/blind-box-activity-management/blindbox-save-active-config';
 import { getActiveConfigById } from '@/services/blind-box-activity-management/blindbox-get-active-config-list';
-import ProForm, { ProFormText, ProFormRadio,ProFormDateRangePicker,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect,DrawerForm } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio,ProFormDateRangePicker,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect,DrawerForm,ProFormDigit } from '@ant-design/pro-form';
 import moment from 'moment';
 import styles from './style.less'
 import { PageContainer } from '@ant-design/pro-layout';
+import { amountTransform } from '@/utils/utils'
 
 
 const formItemLayout = {
@@ -40,6 +40,7 @@ export default (props) => {
   const [detailList,setDetailList]=useState()
   const [goosList,setGoosList]=useState()
   const [submi,setSubmi]=useState(false)
+  const [goosProb,setGoosProb]=useState()
   const [form] = Form.useForm()
   const [falg,setFalg]=useState(true)
   const [del,setDel]=useState('')
@@ -51,13 +52,17 @@ export default (props) => {
           switch1:res.data.content?.accessGain.inviteFriends.switch,
           switch2:res.data.content?.accessGain.signIn.switch,
           switch3:res.data.content?.accessGain.orderConsume.switch,
+          switch4:res.data.content?.accessGain.shopperConsume.switch,
           probability1:res.data.content?.accessGain.inviteFriends.probability,
           probability2:res.data.content?.accessGain.signIn.probability,
           probability3:res.data.content?.accessGain.orderConsume.probability,
+          probability4:res.data.content?.accessGain.shopperConsume.probability,
           inviteNum:res.data.content?.accessGain.inviteFriends.inviteNum,
           signInNum:res.data.content?.accessGain.signIn.signInNum,
           consumeNum:res.data.content?.accessGain.orderConsume.consumeNum,
+          consumeNum2:amountTransform(res.data.content?.accessGain.shopperConsume.consumePrice, '/'),
           dayGainMax:res.data.content?.accessGain.inviteFriends.dayGainMax,
+          dayMaxNum:res.data.content?.accessGain.shopperConsume.dayMaxNum,
           ruleText:res.data.content?.ruleText,
           validiteType:res.data.content?.validiteType,
           validiteHour:res.data.content?.validiteHour,
@@ -66,6 +71,10 @@ export default (props) => {
           prizeNotice:res.data.content?.prizeNotice,
           imgUrl:res.data.content?.imgUrl,
           dateRange: [ moment(res.data.startTime*1000).format('YYYY-MM-DD HH:mm:ss'), moment(res.data.endTime*1000).format('YYYY-MM-DD HH:mm:ss')],
+          appTips:res.data.content?.appTips,
+          prob:res.data?.skus?.reduce((prev, cur)=>{
+            return `${amountTransform(10000-amountTransform(prev?.probability, '*')-amountTransform(cur?.probability, '*'),'/')}%`
+          },[]),
           ...res.data
         })
       })
@@ -102,36 +111,11 @@ export default (props) => {
   }
   const onsubmit = (values) => {
     try {
-      values.id=id||0
-      values.startTime=values.dateRange ?values.dateRange[0]:null
-      values.endTime=values.dateRange ?values.dateRange[1]:null
-      values.validiteHour=values.validiteType?values.validiteHour:0
-      values.accessGain={
-        inviteFriends:{
-          switch:values.switch1,
-          inviteNum:values.inviteNum,
-          prizeNum:1,
-          dayGainMax:values.dayGainMax,
-          probability:values.probability1
-        },
-        signIn:{
-          switch:values.switch2,
-          signInNum:values.signInNum,
-          prizeNum:1,
-          probability:values.probability2
-        },
-        orderConsume:{
-          switch:values.switch3,
-          consumeNum:values.consumeNum,
-          prizeNum:1,
-          probability:values.probability3
-        }
-      }
       const arr = [];
-      // let sum=0
+      let sum=0
       goosList?.forEach(item => {
         arr.push({
-          id: item.add?0:item.id,
+          id: item.id==item.skuId?0:item.id,
           probability: item.probability,
           status: item.status?1:0,
           skuId: item.skuId,
@@ -149,16 +133,53 @@ export default (props) => {
       }else{
         values.skus=arr.length>0&&arr||detailList?.skus
       }
-      // values.skus.map(ele=>{
-      //   sum+=parseInt(ele.probability)
-      // })
-    // if(sum<100||sum>100){
-    //   message.error('商品中奖概率之和必须等于100')
+      values.skus.map(ele=>{
+        sum+=amountTransform(amountTransform(sum, '*')+amountTransform(ele.probability, '*'),'/')
+      })
+    // if(sum>100){
+    //   message.error('商品中奖概率之和不能大于100')
     // }else{
       if(values.skus.length==0){
         message.error('中奖商品不能为空');
       }else{
-        saveActiveConfig(values).then(res=>{
+        const params={
+          ...values,
+          id:id||0,
+          startTime:values.dateRange ?values.dateRange[0]:null,
+          endTime:values.dateRange ?values.dateRange[1]:null,
+          validiteHour:values.validiteType?values.validiteHour:0,
+          accessGain:{
+            inviteFriends:{
+              switch:values.switch1,
+              inviteNum:values.inviteNum,
+              prizeNum:1,
+              dayGainMax:values.dayGainMax,
+              probability:values.probability1
+            },
+            signIn:{
+              switch:values.switch2,
+              signInNum:values.signInNum,
+              prizeNum:1,
+              probability:values.probability2
+            },
+            orderConsume:{
+              switch:values.switch3,
+              consumeNum:values.consumeNum,
+              prizeNum:1,
+              probability:values.probability3
+            },
+            shopperConsume:{
+              switch:values.switch4,
+              consumeNum:1,
+              consumePrice:amountTransform(values.consumeNum2, '*'),
+              prizeNum:1,
+              probability:values.probability4,
+              dayMaxNum:values.dayMaxNum,
+            }
+          },
+          skus:values.skus,
+        }
+        saveActiveConfig(params).then(res=>{
           if (res.code == 0) {
             setVisible(false)
             callback(true)
@@ -185,7 +206,6 @@ export default (props) => {
     return current && current < moment().startOf('day');
   }
   return (
-    <PageContainer>
        <DrawerForm
         title={id?'详情':'盲盒规则配置'}
         onVisibleChange={setVisible}
@@ -258,13 +278,13 @@ export default (props) => {
       >
         {/* 活动名称 */}
         <ProFormText
-            width={250}
-            label="活动名称"
-            placeholder="输入活动名称"
+            width={300}
+            label="活动主题"
+            placeholder="输入活动主题"
             name="name"
             readonly={id&&falg}
             rules={[
-              { required: true, message: '请输入活动名称' },
+              { required: true, message: '请输入活动主题' },
             ]}
         />
         {/* 活动时间 */}
@@ -307,33 +327,10 @@ export default (props) => {
             }}
           />
         </Form.Item>
-        {/* <Form.Item
-          label="活动主图"
-          name="imgUrl"
-          rules={[{ required: true, message: '请上传活动主图' }]}
-        >
-          <FromWrap
-            content={(value, onChange) => <Upload multiple value={value} disabled={id&&falg} onChange={onChange}   maxCount={1} accept="image/*"  proportion={{width: 670,height: 284,}} />}
-            right={(value) => {
-              return (
-                <dl>
-                  <dd>670 x 284</dd>
-                </dl>
-              )
-            }}
-          />
-        </Form.Item> */}
-        {/* <Form.Item
-          label="活动背景色"
-          name="color"
-          rules={[{ required: true, message: '请选择背景色' }]}
-        >
-          <SketchPicker/>
-        </Form.Item> */}
         <PeriodValidity id={id} falg={falg}/>
         <ProFormText
             width={120}
-            label="盲盒中奖后兑奖有效期"
+            label={<><span style={{color:'#FF7E7E',fontSize:'20px',marginTop:'5px'}}>*&nbsp;</span>盲盒中奖后兑奖有效期</>}
             readonly
             fieldProps={{
               value:' '
@@ -358,7 +355,7 @@ export default (props) => {
 
         {/* 中奖次数 */}
         <ProForm.Group>
-            <span className={styles.back}>每天可中奖最高总次数</span>
+            <span className={styles.back}><span style={{color:'#FF7E7E',fontSize:'20px',marginTop:'5px'}}>*&nbsp;</span>每天可中奖最高总次数</span>
             <ProFormText 
                 name="maxPrizeNum"
                 width={100}
@@ -371,21 +368,32 @@ export default (props) => {
             <span>次，当天总计达到此中奖次数，后面的人不再中奖</span>
         </ProForm.Group>
 
+
         {/* 奖品设置 */}
         <PrizeSet
           submi={submi}
           detailList={detailList}
           id={id} 
           falg={falg} 
-          callback={(val)=>{
-            setGoosList(val)
+          callback={(recordList,sum)=>{
+            setGoosProb(sum)
+            setGoosList(recordList)
             setDel(true)
           }}
         />
         
+        <ProFormText
+          width={300}
+          name="prob"
+          label={ <><span style={{color:'#FF7E7E',fontSize:'20px',marginTop:'5px'}}>*&nbsp;</span>谢谢参与概率</>}
+          readonly={true}
+          fieldProps={{
+            value:goosProb&&`${amountTransform(10000-amountTransform(goosProb, '*'),'/')}%`
+          }}
+        />
 
         {/* 奖品预告 */}
-        <Form.Item label={<div className={styles.box}><span className={styles.mark}>*</span>奖品预告（尺寸200x156）</div>}>
+        <Form.Item label={<><span style={{color:'#FF7E7E',fontSize:'20px',marginTop:'5px'}}>*&nbsp;</span>奖品预告（尺寸200x156）</>}>
           {
             id&&falg?
             <List
@@ -451,11 +459,20 @@ export default (props) => {
           }
           </Form.Item>
 
+        <ProFormText 
+          label='活动提示'
+          name="appTips"
+          width={300}
+          readonly={id&&falg}
+          placeholder="展示在前端的一句话提示"
+          rules={[{ required: true, message: '请填写活动提示' }]}
+        />
+
         {/* 活动规则 */}
         {
           id&&falg?
           <Form.Item
-            label="活动规则"
+            label={<><span style={{color:'#FF7E7E',fontSize:'20px',marginTop:'5px'}}>*&nbsp;</span>活动规则</>}
           >
           <pre className={styles.line_feed}>
             {
@@ -507,7 +524,6 @@ export default (props) => {
         :<p className={styles.hint}>提示：关闭活动后，将清空用户的账户记录，请谨慎操作。</p>
       }
       </DrawerForm>
-    </PageContainer>
   );
 };
 
