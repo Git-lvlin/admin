@@ -72,9 +72,14 @@ export default (props) => {
           imgUrl:res.data.content?.imgUrl,
           dateRange: [ moment(res.data.startTime*1000).format('YYYY-MM-DD HH:mm:ss'), moment(res.data.endTime*1000).format('YYYY-MM-DD HH:mm:ss')],
           appTips:res.data.content?.appTips,
-          prob:res.data?.skus?.reduce((prev, cur)=>{
-            return `${amountTransform(10000-amountTransform(prev?.probability, '*')-amountTransform(cur?.probability, '*'),'/')}%`
-          },[]),
+          prob:res.data?.skus?.reduce((prev, cur,index)=>{
+            if(index>=1){
+              return `${amountTransform(10000-amountTransform(prev?.probability, '*')-amountTransform(cur?.probability, '*'),'/')}%`
+            }else{
+              return `${amountTransform(10000-amountTransform(cur?.probability, '*'),'/')}%`
+            }
+
+          }),
           ...res.data
         })
       })
@@ -462,10 +467,13 @@ export default (props) => {
         <ProFormText 
           label='活动提示'
           name="appTips"
-          width={300}
+          // width={300}
           readonly={id&&falg}
           placeholder="展示在前端的一句话提示"
           rules={[{ required: true, message: '请填写活动提示' }]}
+          fieldProps={{
+            maxLength:40
+          }}
         />
 
         {/* 活动规则 */}

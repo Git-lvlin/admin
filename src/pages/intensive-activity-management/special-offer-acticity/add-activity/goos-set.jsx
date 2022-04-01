@@ -410,7 +410,7 @@ export default (props) => {
       width:120,
       hideInSearch: true,
       renderFormItem: (_) =>{
-        const obj=detailList.find(ele=>{
+        const obj=detailList?.find(ele=>{
           return ele.wsId==_?.entry?.wsId
         })
         if(obj){
@@ -479,7 +479,7 @@ export default (props) => {
           </div>,
           <div key='repertory'>
            {
-             id&&detailList.find(ele=>{return ele.wsId==record?.wsId})?
+             id&&detailList?.find(ele=>{return ele.wsId==record?.wsId})?
              <a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑<br/>库存</a>
              :null
            }
