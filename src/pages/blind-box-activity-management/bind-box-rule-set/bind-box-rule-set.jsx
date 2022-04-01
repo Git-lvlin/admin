@@ -115,7 +115,7 @@ export default (props) => {
       let sum=0
       goosList?.forEach(item => {
         arr.push({
-          id: item.add?0:item.id,
+          id: item.id==item.skuId?0:item.id,
           probability: item.probability,
           status: item.status?1:0,
           skuId: item.skuId,
@@ -133,7 +133,6 @@ export default (props) => {
       }else{
         values.skus=arr.length>0&&arr||detailList?.skus
       }
-      console.log('values.skus',values.skus)
       values.skus.map(ele=>{
         sum+=amountTransform(amountTransform(sum, '*')+amountTransform(ele.probability, '*'),'/')
       })
