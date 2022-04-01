@@ -7,20 +7,28 @@ import {
 import { refunded, backTrack } from '@/services/intensive-store-management/store-list';
 import { getDetail } from '@/services/intensive-store-management/store-detail';
 import { amountTransform } from '@/utils/utils'
+import Upload from '@/components/upload'
+
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+  </div>
+)
 
 export default (props) => {
   const { visible, setVisible, callback, data } = props;
   const [deposit, setDeposit] = useState({})
   const [form] = Form.useForm();
   const formItemLayout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 18 },
+    labelCol: { span: 6 },
+    wrapperCol: { span: 16 },
     layout: {
       labelCol: {
-        span: 4,
+        span: 6,
       },
       wrapperCol: {
-        span: 18,
+        span: 16,
       },
     }
   };
@@ -30,7 +38,14 @@ export default (props) => {
       let userInfo = window.localStorage.getItem('user');
       userInfo = userInfo && JSON.parse(userInfo);
       const apiMethod = data.type === 1 ? refunded : backTrack
+      const obj = {};
+
+      if (values.moneyCertificates) {
+        obj.moneyCertificates = [values.moneyCertificates]
+      }
+
       apiMethod({
+        ...obj,
         applyId: data.applyId,
         refendAmount: amountTransform(values.refendAmount),
         remark: values.remark,
@@ -63,7 +78,7 @@ export default (props) => {
       }}
       onVisibleChange={setVisible}
       visible={visible}
-      width={700}
+      width={800}
       form={form}
       onFinish={async (values) => {
         await submit(values);
@@ -82,8 +97,26 @@ export default (props) => {
         label="保证金缴纳状态"
       >
         已交（￥{amountTransform(deposit?.payAmount, '/')}）  于 {deposit?.payTime} 缴纳 （缴纳支付方式：{deposit?.payType?.desc}）
-        <div style={{ color: 'red' }}>{`${data?.type === 1 ? '已实际完成店铺保证金退款操作，确认无误后登记如下：' :'确认无误后线上原路退回如下：'}`}</div>
+        <div style={{ color: 'red' }}>{`${data?.type === 1 ? '已实际完成店铺保证金退款操作，确认无误后登记如下：' : '确认无误后线上原路退回如下：'}`}</div>
       </Form.Item>
+
+      {data?.type === 1 && <Form.Item
+        label="退款凭证"
+        name="moneyCertificates"
+      >
+        <FromWrap
+          content={(value, onChange) => <Upload value={value} onChange={onChange} accept="image/*" size={5 * 1024} />}
+          right={() => {
+            return (
+              <dl>
+                <dt>图片要求</dt>
+                <dd>1.图片大小5MB以内</dd>
+                <dd>2.图片格式jpg/gif/png</dd>
+              </dl>
+            )
+          }}
+        />
+      </Form.Item>}
 
       <Form.Item
         name="refendAmount"

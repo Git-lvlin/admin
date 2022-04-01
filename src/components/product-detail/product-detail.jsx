@@ -244,7 +244,7 @@ export default (props) => {
                 <Form.Item
                   label="集采箱规单位量"
                 >
-                  {goods.batchNumber}
+                  {goods.batchNumber}{goods.unit}/{goods.wsUnit}
                 </Form.Item>
                 <Form.Item
                   label="最低批发量"

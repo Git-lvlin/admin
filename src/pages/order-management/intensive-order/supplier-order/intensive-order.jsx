@@ -118,7 +118,7 @@ const TableList = () => {
         submitter={{
           render: ({ form }, doms) => {
             return (
-              <div>
+              <div style={{ marginBottom: 20}}>
                 <Space>
                   <Button
                     type="primary"
@@ -366,6 +366,15 @@ const TableList = () => {
             style: {
               marginBottom: 20,
               width: 180,
+            }
+          }}
+        />
+        <ProFormText
+          name="wsId"
+          label="集约活动ID"
+          fieldProps={{
+            style: {
+              marginBottom: 20
             }
           }}
         />

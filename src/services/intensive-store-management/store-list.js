@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 export const getStoreList = async (params = {}, options = {}) => {
-  const { current, pageSize, area = [], ...rest } = params;
+  const { current, pageSize, area = [], provideTime = [], auditTime = [], ...rest } = params;
   const res = await request('/auth/store/memberShop/page', {
     method: 'GET',
     params: {
@@ -10,6 +10,10 @@ export const getStoreList = async (params = {}, options = {}) => {
       provinceId: area[0]?.value,
       cityId: area[1]?.value,
       regionId: area[2]?.value,
+      provideTimeStart: provideTime[0],
+      provideTimeEnd: provideTime[1],
+      auditTimeStart: auditTime[0],
+      auditTimeEnd: auditTime[1],
       ...rest
     },
     ...options
