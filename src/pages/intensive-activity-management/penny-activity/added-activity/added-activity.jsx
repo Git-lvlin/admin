@@ -42,6 +42,7 @@ export default (props) => {
           onClose()
           return false
         }
+        setLimitAll(res.data?.content?.shoperLimitAll)
         setDetailList(res.data)
         form.setFieldsValue({
             dateRange: [moment(res.data?.startTime*1000).valueOf(), moment(res.data?.endTime*1000).valueOf()],
