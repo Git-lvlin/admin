@@ -425,7 +425,6 @@ export default (props) => {
             <p>共{dataSource?.length}款商品</p>
         ]}
         style={{marginBottom:'30px'}}
-        // scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         pagination={{
           pageSize: 5
         }}
@@ -461,7 +460,6 @@ export default (props) => {
           setDataSource(arr)
           callback(arr)
           setEditableKeys(arr.map(item => item.wsId))
-          // setFalge(true)
         }}
         keyId={dataSource}
         detailList={detailList?.content?.goods||[]}
