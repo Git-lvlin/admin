@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Cascader } from 'antd';
 import { category } from '@/services/product-management/product-category';
 
-const GcCascader = ({ value, onChange, ...rest }) => {
+const GcCascader = ({ value, onChange, isFresh, ...rest }) => {
   const [gcData, setGcData] = useState([]);
   const gcLoadData = (selectedOptions) => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
-    category({ gcParentId: targetOption.value })
+    category({ gcParentId: targetOption.value, isFresh })
       .then(res => {
         targetOption.loading = false;
         targetOption.children = res.data.records.map(item => ({
@@ -27,7 +27,7 @@ const GcCascader = ({ value, onChange, ...rest }) => {
   useEffect(() => {
     if (value) {
       const [gcId1] = value
-      category({ gcParentId: 0 })
+      category({ gcParentId: 0, isFresh })
         .then(res => {
           if (res.code === 0) {
             const gcId = gcId1
@@ -39,7 +39,7 @@ const GcCascader = ({ value, onChange, ...rest }) => {
             }));
             setGcData(data)
 
-            category({ gcParentId: gcId })
+            category({ gcParentId: gcId, isFresh })
               .then(res2 => {
                 if (res2.code === 0 && data[index]) {
                   data[index].children = res2.data.records.map(item => ({
@@ -54,7 +54,7 @@ const GcCascader = ({ value, onChange, ...rest }) => {
           }
         })
     } else {
-      category({ gcParentId: 0 })
+      category({ gcParentId: 0, isFresh })
         .then(res => {
           if (res.code === 0) {
             const data = res.data.records.map(item => ({
