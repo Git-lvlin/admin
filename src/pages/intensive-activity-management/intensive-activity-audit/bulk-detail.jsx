@@ -164,7 +164,7 @@ const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
     },
     {
       title: `毛利盈亏(元/${detailData?.sku?.[0]?.unit})`,
-      dataIndex: 'profit',
+      dataIndex: 'beforeProfit',
       render: (_) => amountTransform(_, '/')
     },
     // {
@@ -249,7 +249,7 @@ const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
         ...item,
         wholesaleSupplyPrice: item.wholesaleSupplyPrice / 100,
         price: item.price / 100,
-        profit: item.profit / 100,
+        beforeProfit: item.beforeProfit / 100,
       }
     })[0]
   }
@@ -305,7 +305,7 @@ const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
                 {detailData?.wholesale?.createAdminName}
               </Descriptions.Item>
               <Descriptions.Item label="毛利盈亏(元)">
-                {detailData?.sku?.[0]?.profit / 100}元/{detailData?.sku?.[0]?.unit}
+                {detailData?.sku?.[0]?.beforeProfit / 100}元/{detailData?.sku?.[0]?.unit}
               </Descriptions.Item>
               <Descriptions.Item label="箱柜单位量">
                 {detailData?.sku?.[0]?.batchNumber}

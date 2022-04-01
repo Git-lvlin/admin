@@ -335,7 +335,7 @@ const IntensiveActivityCreate = () => {
                   return false;
                 }
 
-                if (+item.profit < 0) {
+                if (+item.beforeProfit < 0) {
                   message.error(`sku:${item.skuId}毛利盈亏不能小于0`);
                   return false;
                 }

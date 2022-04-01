@@ -181,7 +181,7 @@ export default function EditTable({ data, setData, unit, wsUnit, batchNumber, sk
           <Row gutter={100}>
             <Col>固定集采供货价：{skuData?.wholesaleSupplyPrice} 元 / {unit}</Col>
             <Col>集约价：{skuData?.price} 元 / {unit}</Col>
-            <Col>盈利金额：{skuData?.profit} 元 / {unit}</Col>
+            <Col>盈利金额：{skuData?.beforeProfit} 元 / {unit}</Col>
           </Row>
         )
       }}

@@ -232,7 +232,7 @@ const PriceExplanation = ({ skuData = {}, ladderData = [] }) => {
       <Row gutter={100}>
         <Col>固定集采供货价：{skuData.wholesaleSupplyPrice} 元 / {skuData.unit}</Col>
         <Col>集约价：{skuData.price} 元 / {skuData.unit}</Col>
-        <Col>盈利金额：{skuData.profit} 元 / {skuData.unit}</Col>
+        <Col>盈利金额：{skuData.beforeProfit} 元 / {skuData.unit}</Col>
       </Row>
       <Title style={{ marginTop: 10 }} level={5}>阶梯供货优惠盈利信息</Title>
       <Table scroll={{ x: 'max-content' }} columns={columns} dataSource={dataSource} pagination={false} />
