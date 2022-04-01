@@ -73,13 +73,8 @@ export default (props) => {
           dateRange: [ moment(res.data.startTime*1000).format('YYYY-MM-DD HH:mm:ss'), moment(res.data.endTime*1000).format('YYYY-MM-DD HH:mm:ss')],
           appTips:res.data.content?.appTips,
           prob:res.data?.skus?.reduce((prev, cur,index)=>{
-            if(index>=1){
               return `${amountTransform(10000-amountTransform(prev?.probability, '*')-amountTransform(cur?.probability, '*'),'/')}%`
-            }else{
-              return `${amountTransform(10000-amountTransform(cur?.probability, '*'),'/')}%`
-            }
-
-          }),
+          },[res.data?.skus[0]?.probability]),
           ...res.data
         })
       })

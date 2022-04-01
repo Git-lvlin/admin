@@ -406,7 +406,7 @@ export default (props) => {
     },
     {
       title: '活动库存',
-      dataIndex: 'activityStockNum',
+      dataIndex: 'actStockNum',
       width:120,
       hideInSearch: true,
       renderFormItem: (_) =>{
@@ -542,7 +542,7 @@ export default (props) => {
               status:1,
               wsPrice:item.price,
               price:amountTransform(item.wholesaleSupplyPrice+item.wholesaleFreight, '/'),
-              activityStockNum:item.totalStockNum
+              actStockNum:item.totalStockNum
             })
           })
           setDataSource(arr)
