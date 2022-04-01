@@ -94,7 +94,7 @@ export default (props) =>{
     <PageContainer>
      
       <ProTable
-          scroll={{ y: Math.max(window.innerHeight - 500, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           actionRef={ref}
           rowKey="id"
           options={false}
