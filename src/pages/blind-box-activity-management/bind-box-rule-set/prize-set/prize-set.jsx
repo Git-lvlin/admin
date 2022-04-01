@@ -391,9 +391,6 @@ export default (props) => {
                   const arr = [];
                   val.forEach(item => {
                     arr.push({
-                      id:item.id,
-                      status:false,
-                      add:true,
                       stockNum: 0,
                       ...item
                     })
