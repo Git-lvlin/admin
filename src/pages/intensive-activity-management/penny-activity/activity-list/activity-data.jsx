@@ -96,7 +96,8 @@ export default (props) => {
     const params={
       activityId:record?.id,
       startTime:time?.[0]&&moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      endTime:time?.[1]&&moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss')
+      endTime:time?.[1]&&moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      activityCode:'wsCentActiveCode'
     }
     activityData(params).then(res=>{
       setDetailList(res.data[0])
