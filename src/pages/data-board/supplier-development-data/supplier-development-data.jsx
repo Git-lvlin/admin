@@ -3,7 +3,6 @@ import ProTable from '@ant-design/pro-table'
 import { PageContainer } from '@ant-design/pro-layout'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { DatePicker, Tooltip } from 'antd'
-import moment from 'moment';
 
 import { supplierDevelopmentData } from '@/services/data-board/supplier-data'
 import Export from '@/pages/export-excel/export'
