@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
-import { Tooltip } from 'antd'
+import { Tooltip, Space } from 'antd'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FC } from 'react'
@@ -167,14 +167,15 @@ const CancelAduit: FC = () => {
       title: '操作',
       valueType: 'option',
       align: 'center',
+      fixed: 'right',
       render: (_, data)=> (
-        <>
+        <Space size={20}>
           <a key="1" onClick={()=> {setSelectItem(data.storeNo); setDetailVisible(true)}}>详情</a>
           {
             data.verifyStatus === 6 &&
             <a key="2" onClick={()=> {setData(data); setAduitVisible(true)}}>审核</a>
           }
-        </>
+        </Space>
       )
     }
   ]
