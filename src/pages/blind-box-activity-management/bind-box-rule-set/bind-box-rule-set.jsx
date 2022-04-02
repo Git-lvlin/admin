@@ -39,7 +39,6 @@ export default (props) => {
   const {setVisible,visible,onClose,callback,id}=props
   const [detailList,setDetailList]=useState()
   const [goosList,setGoosList]=useState()
-  const [submi,setSubmi]=useState(false)
   const [goosProb,setGoosProb]=useState()
   const [form] = Form.useForm()
   const [falg,setFalg]=useState(true)
@@ -48,6 +47,12 @@ export default (props) => {
     if (id) {
       getActiveConfigById({id:id}).then(res=>{
         setDetailList(res.data)
+        let sum=0
+        res.data?.skus?.map(ele=>{
+          if(ele.status){
+            sum=amountTransform(amountTransform(sum, '*')+amountTransform(ele.probability, '*'),'/')
+          }
+        })
         form.setFieldsValue({
           switch1:res.data.content?.accessGain.inviteFriends.switch,
           switch2:res.data.content?.accessGain.signIn.switch,
@@ -72,9 +77,7 @@ export default (props) => {
           imgUrl:res.data.content?.imgUrl,
           dateRange: [ moment(res.data.startTime*1000).format('YYYY-MM-DD HH:mm:ss'), moment(res.data.endTime*1000).format('YYYY-MM-DD HH:mm:ss')],
           appTips:res.data.content?.appTips,
-          prob:res.data?.skus?.reduce((prev, cur)=>{
-            return `${amountTransform(10000-amountTransform(prev?.probability, '*')-amountTransform(cur?.probability, '*'),'/')}%`
-          },[]),
+          prob:`${amountTransform(10000-amountTransform(sum, '*'),'/')}%`,
           ...res.data
         })
       })
@@ -134,11 +137,13 @@ export default (props) => {
         values.skus=arr.length>0&&arr||detailList?.skus
       }
       values.skus.map(ele=>{
-        sum+=amountTransform(amountTransform(sum, '*')+amountTransform(ele.probability, '*'),'/')
+        if(ele.status){
+          sum=amountTransform(amountTransform(sum, '*')+amountTransform(ele.probability, '*'),'/')
+        }
       })
-    // if(sum>100){
-    //   message.error('商品中奖概率之和不能大于100')
-    // }else{
+    if(sum>100){
+      message.error('商品中奖概率之和不能大于100')
+    }else{
       if(values.skus.length==0){
         message.error('中奖商品不能为空');
       }else{
@@ -195,7 +200,7 @@ export default (props) => {
         })
       }
 
-    // }
+    }
       
     } catch (error) {
       console.log('error',error)
@@ -238,7 +243,6 @@ export default (props) => {
                         </Button>
                         :<Button  type="primary" key="submit" onClick={() => {
                           props.form?.submit?.()
-                          setSubmi(true)
                         }}>
                           保存
                         </Button>
@@ -250,7 +254,6 @@ export default (props) => {
                   :
                     <Button type="primary" key="submit" onClick={() => {
                       props.form?.submit?.()
-                      setSubmi(true)
                     }}>
                       保存
                     </Button>
@@ -371,7 +374,6 @@ export default (props) => {
 
         {/* 奖品设置 */}
         <PrizeSet
-          submi={submi}
           detailList={detailList}
           id={id} 
           falg={falg} 
@@ -462,10 +464,13 @@ export default (props) => {
         <ProFormText 
           label='活动提示'
           name="appTips"
-          width={300}
+          // width={300}
           readonly={id&&falg}
           placeholder="展示在前端的一句话提示"
           rules={[{ required: true, message: '请填写活动提示' }]}
+          fieldProps={{
+            maxLength:40
+          }}
         />
 
         {/* 活动规则 */}
