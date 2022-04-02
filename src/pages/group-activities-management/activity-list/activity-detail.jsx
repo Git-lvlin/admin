@@ -56,8 +56,7 @@ const ActivityDetail = ({visible, onClose, id}) => {
     {
       title: '库存',
       dataIndex: 'stockNum',
-      valueType: 'text',
-      width: '3%'
+      valueType: 'text'
     },
     {
       title: '单约价',
@@ -117,11 +116,6 @@ const ActivityDetail = ({visible, onClose, id}) => {
           {moment(detailData.activityEndTime * 1000).format('YYYY-MM-DD HH:mm:ss')}
         </Form.Item>
         <Form.Item
-          label="拼约人数"
-        >
-          {detailData.groupNum}人
-        </Form.Item>
-        <Form.Item
           label="拼约时长"
         >
           {detailData.groupTime}小时
@@ -142,6 +136,7 @@ const ActivityDetail = ({visible, onClose, id}) => {
             dataSource={detailData.goodsList}
             columns={columns}
             pagination={false}
+            scroll={{x: 'max-content'}}
           />
         </Form.Item>
         <Form.Item

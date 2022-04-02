@@ -56,7 +56,7 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
     {
       title: '开团时间',
       dataIndex: 'createGroupTime',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       hideInTable: true,
     },
     {
@@ -98,20 +98,20 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
       title: '参团时间',
       dataIndex: 'joinGroupTime',
       hideInTable: true,
-      valueType: 'dateRange'
+      valueType: 'dateTimeRange'
     },
     {
       title: '成团时间',
       dataIndex: 'finishGroupTime',
       hideInTable: true,
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       hideInSearch: groupState === 3
     },
     {
       title: '失败时间',
       dataIndex: 'finishGroupTime',
       hideInTable: true,
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       hideInSearch: groupState === 1
     }
   ]
@@ -149,6 +149,7 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
           groupState,
           skuId: data.skuId
         }}
+        dateFormatter="string"
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         request={singleGroupList}
         search={{

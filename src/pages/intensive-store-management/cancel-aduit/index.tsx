@@ -35,12 +35,12 @@ const CancelAduit: FC = () => {
     },
     {
       title: '店铺ID',
-      dataIndex: 'storeId',
+      dataIndex: 'storeNo',
       align: 'center',
     },
     {
       title: '店主手机号',
-      dataIndex: 'memberPhone',
+      dataIndex: 'phone',
       align: 'center',
     },
     {
@@ -122,7 +122,7 @@ const CancelAduit: FC = () => {
       align: 'center',
       valueType: 'select',
       valueEnum: {
-        "normal": '全部',
+        " ": '全部',
         "11": '正常-已退部分保证金',
         "12": '正常-已退全部保证金',
         "13": '正常-未退保证金',
@@ -146,7 +146,6 @@ const CancelAduit: FC = () => {
       align: 'center',
       valueType: 'select',
       valueEnum: {
-        0: '没有申请过',
         1: '审核通过',
         2: '审核不通过',
         5: '取消申请',
@@ -198,7 +197,7 @@ const CancelAduit: FC = () => {
   return (
     <PageContainer title={false}>
       <ProTable
-        rowKey="applyId"
+        rowKey="storeNo"
         columns={columns}
         request={memberShopCancel}
         params={{}}
