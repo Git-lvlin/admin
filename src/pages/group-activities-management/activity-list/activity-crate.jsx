@@ -339,7 +339,7 @@ export default (props) => {
       >
         <Space style={{ marginBottom: 10 }}>
           <Button type="primary" onClick={() => { setFormVisible(true) }}>选择活动商品</Button>
-          <Button type="primary" disabled={selectedRowKeys.length === 0} onClick={() => { batchCancel() }}>批量取消</Button>
+          <Button type="primary" disabled={selectedRowKeys.length === 0} onClick={() => { batchCancel() }}>批量取消</Button> 
         </Space>
         {
           !!tableData.length &&
@@ -384,13 +384,12 @@ export default (props) => {
           visible={formVisible}
           setVisible={setFormVisible}
           callback={(v) => {
+            console.log(v)
             setTableData(v.map(item => {
-              return {
-                ...item,
-                activityPrice: amountTransform(item.retailSupplyPrice, '/')
-              }
+              return { ...item }
             }))
           }}
+          skuId={tableData}
         />
       }
     </DrawerForm>
