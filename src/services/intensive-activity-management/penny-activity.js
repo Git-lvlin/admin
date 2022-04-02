@@ -136,3 +136,42 @@ export const activityGoods = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+
+export const activityData = async (params = {}, options = {}) => {
+  const { current, pageSize,...rest } = params;
+  const res = await request('/auth/java-admin/report/config/activityData', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest,
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
+  }
+}
+
+
+export const activityDataSum = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/java-admin/report/config/activityDataSum', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest,
+    },
+    ...options
+  });
+
+  return {
+    data: res.data,
+    success: true,
+  }
+}

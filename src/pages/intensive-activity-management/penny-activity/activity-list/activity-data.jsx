@@ -5,7 +5,7 @@ import ProTable from '@ant-design/pro-table';
 import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,DrawerForm } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
-import { saveWSCentActiveConfig,activityGoods } from '@/services/intensive-activity-management/penny-activity';
+import { activityData,activityGoods } from '@/services/intensive-activity-management/penny-activity';
 import moment, { now } from 'moment';
 import { PageContainer } from '@ant-design/pro-layout';
 
@@ -28,6 +28,7 @@ export default (props) => {
   const [goosList,setGoosList]=useState()
   const [loading,setLoading]=useState(false)
   const [form] = Form.useForm()
+  const [time,setTime]=useState()
   const ref=useRef()
   const columns= [
     {
@@ -86,16 +87,22 @@ export default (props) => {
       dataIndex: 'cTranslateRate',
       valueType: 'text',
       hideInSearch: true,
+      render:(_)=>{
+        return `${amountTransform(parseFloat(_),'*')}%`
+      }
     }
   ];
   useEffect(() => {
-    // if (record?.id) {
-    //   activityGoods({activity_id:record?.id}).then(res=>{
-    //     console.log('res',res)
-    //     // setDetailList(res.data)
-    //   })
-    // }
-  }, [])
+    const params={
+      activityId:record?.id,
+      startTime:time?.[0]&&moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:time?.[1]&&moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss')
+    }
+    activityData(params).then(res=>{
+      setDetailList(res.data[0])
+    })
+
+  }, [time])
 
   const onsubmit = (values) => {
     setVisible(false)
@@ -137,12 +144,12 @@ export default (props) => {
       {...formItemLayout}
     >
       <Descriptions title="活动数据" labelStyle={{fontWeight:'bold'}} column={9} layout="vertical" bordered>
-        <Descriptions.Item  label="采购店主数">{detailList?.totalMemberNum}  </Descriptions.Item>
-        <Descriptions.Item  label="B端采购订单数">{detailList?.totalNum}  </Descriptions.Item>
-        <Descriptions.Item  label="B端采购份数">{detailList?.restNum}  </Descriptions.Item>
-        <Descriptions.Item  label="C端零售份数">{detailList?.useNum}  </Descriptions.Item>
-        <Descriptions.Item  label="零售新用户数">{detailList?.reclaimNum}  </Descriptions.Item>
-        <Descriptions.Item  label="C端转化率">{detailList?.prizeNum}  </Descriptions.Item>
+        <Descriptions.Item  label="采购店主数">{detailList?.procurementStorekeeperNum}  </Descriptions.Item>
+        <Descriptions.Item  label="B端采购订单数">{detailList?.bProcurementOrderNum}  </Descriptions.Item>
+        <Descriptions.Item  label="B端采购份数">{detailList?.bProcurementNum}  </Descriptions.Item>
+        <Descriptions.Item  label="C端零售份数">{detailList?.cSaleNum}  </Descriptions.Item>
+        <Descriptions.Item  label="零售新用户数">{detailList?.cSaleNewUser}  </Descriptions.Item>
+        <Descriptions.Item  label="C端转化率">{amountTransform(parseFloat(detailList?.cTranslateRate),'*')}%</Descriptions.Item>
       </Descriptions>
       <ProTable
         actionRef={ref}
@@ -157,8 +164,11 @@ export default (props) => {
         defaultCollapsed: false,
         labelWidth: 100,
         optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
+            ...dom.reverse()
         ],
+        }}
+        onSubmit={(val)=>{
+          setTime(val?.wholesaleStartTime)
         }}
         columns={columns}
         pagination={{
