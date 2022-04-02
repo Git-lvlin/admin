@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProCard from '@ant-design/pro-card';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { Drawer, Space } from 'antd';
+import { Drawer, Space, Spin, Table } from 'antd';
 import { singleGroupList, groupMemberList } from '@/services/single-contract-activity-management/group-detail'
 
 const SubTable = (props) => {
@@ -37,7 +37,6 @@ const SubTable = (props) => {
 }
 
 const TableList = ({data, visible, onClose, id, groupState, info}) => {
-  console.log(data, info)
 
   const columns = [
     {
@@ -57,7 +56,7 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
     {
       title: '开团时间',
       dataIndex: 'createGroupTime',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       hideInTable: true,
     },
     {
@@ -99,21 +98,21 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
       title: '参团时间',
       dataIndex: 'joinGroupTime',
       hideInTable: true,
-      valueType: 'dateRange'
+      valueType: 'dateTimeRange'
     },
     {
       title: '成团时间',
-      dataIndex: 'createGroupTime',
+      dataIndex: 'finishGroupTime',
       hideInTable: true,
-      valueType: 'dateRange',
-      hideInSearch: groupState === 2 || groupState === 3
+      valueType: 'dateTimeRange',
+      hideInSearch: groupState === 3
     },
     {
       title: '失败时间',
       dataIndex: 'finishGroupTime',
       hideInTable: true,
-      valueType: 'dateRange',
-      hideInSearch: groupState === 2 || groupState === 1
+      valueType: 'dateTimeRange',
+      hideInSearch: groupState === 1
     }
   ]
   
@@ -150,6 +149,7 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
           groupState,
           skuId: data.skuId
         }}
+        dateFormatter="string"
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         request={singleGroupList}
         search={{

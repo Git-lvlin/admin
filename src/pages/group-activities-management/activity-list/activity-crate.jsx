@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Form, Button, Space } from 'antd'
+import React, { useState, useEffect, useRef } from 'react'
+import { Form, Button, Space, message } from 'antd'
 import { EditableProTable } from '@ant-design/pro-table'
 import moment from 'moment'
 import {
@@ -10,6 +10,7 @@ import {
   ProFormCheckbox,
   ProFormTextArea,
   ProFormDateTimeRangePicker,
+  ProFormSelect
 } from '@ant-design/pro-form'
 
 import { amountTransform } from '@/utils/utils'
@@ -23,6 +24,10 @@ export default (props) => {
   const [excelVisible, setExcelVisible] = useState(false)
   const [tableData, setTableData] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
+  const [defaultGroupNum, setDefaultGroupNum] = useState(0)
+
+
+  const [formRef] = Form.useForm()
 
   const cancel = (id) => {
     setTableData(tableData.filter(item => item.id !== id))
@@ -38,8 +43,7 @@ export default (props) => {
       title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'text',
-      editable: false,
-      width: 60,
+      editable: false
     },
     {
       title: '基本信息',
@@ -59,23 +63,20 @@ export default (props) => {
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       editable: false,
-      render: (_) => _ > 0 ? amountTransform(_, '/') : 0,
-      width: 80,
+      render: (_) => _ > 0 ? amountTransform(_, '/') : 0
     },
     {
       title: '秒约价（元）',
       dataIndex: 'salePrice',
       valueType: 'text',
       editable: false,
-      render: (_) => _ > 0 ? amountTransform(_, '/') : 0,
-      width: 80,
+      render: (_) => _ > 0 ? amountTransform(_, '/') : 0
     },
     {
       title: '可用库存',
       dataIndex: 'stockNum',
       valueType: 'text',
-      editable: false,
-      width: 80,
+      editable: false
     },
     {
       title: '拼团价（元）',
@@ -84,7 +85,7 @@ export default (props) => {
       editable: (_, data) => {
         return data.settleType !== 1
       },
-      width: 100
+      render: (_) => _ > 0 ? amountTransform(_, '/') : 0
     },
     {
       title: '拼团库存',
@@ -97,21 +98,33 @@ export default (props) => {
             message: '拼团库存只能输入正整数'
           }
         ]
-      },
-      width: 100,
+      }
+    },
+    {
+      title: '成团人数',
+      dataIndex: 'defaultGroupNum',
+      valueType: 'select',
+      valueEnum: {
+        2: 2,
+        3: 3,
+        4: 4,
+        5: 5,
+        6: 6,
+        7: 7,
+        8: 8,
+        9: 9
+      }
     },
     {
       title: '限新人参团',
       dataIndex: 'memberType',
-      valueType: 'switch',
-      width: 100,
+      valueType: 'switch'
     },
     {
       title: '操作',
       valueType: 'options',
       render: (_, data) => <a onClick={() => { cancel(data.id) }}>取消参加</a>,
-      editable: false,
-      width: 80
+      editable: false
     },
   ];
 
@@ -129,10 +142,24 @@ export default (props) => {
     }
   };
 
+
   const submit = (values) => {
     const { activityTime, checkbox, ...rest } = values
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? ruleEdit : ruleSub
+      for (let i = 0; i < tableData.length; i++) {
+        const reg = /^((0)|([1-9][0-9]*))$/
+        if (!reg.test(tableData[i].activityStockNumEdit)) {
+          message.error('拼团库存只能输入正整数')
+          reject()
+          return
+        }
+        if(!detailData && tableData[i].activityStockNumEdit > (parseFloat(tableData[i].stockNum/2))) {
+          message.error('拼团库存需要小于商品库存50%')
+          reject()
+          return
+        }
+      }
       apiMethod({
         id: detailData?.id,
         activityStartTime: moment(activityTime[0]).unix(),
@@ -144,12 +171,13 @@ export default (props) => {
             spuId: item.spuId,
             skuId: item.skuId,
             settleType: item.settleType,
-            retailSupplyPrice: amountTransform(item.retailSupplyPrice, '/'),
+            retailSupplyPrice: item.retailSupplyPrice,
             activityPrice: amountTransform(item.activityPrice, '*'),
             stockNum: item.stockNum,
             activityStockNum: +item.activityStockNumEdit,
             defaultGroupNum: item.defaultGroupNum,
-            memberType
+            memberType,
+            salePrice: item.salePrice
           }
         }),
         ...rest,
@@ -161,8 +189,14 @@ export default (props) => {
           reject();
         }
       })
-    });
+    })
   }
+
+  useEffect(() => {
+    setTableData(tableData.map(item => (
+      { ...item, defaultGroupNum: +defaultGroupNum }
+    )))
+  }, [defaultGroupNum])
 
   useEffect(() => {
     if (detailData) {
@@ -193,8 +227,12 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        await submit(values);
-        return true;
+        try {
+          await submit(values);
+          return true;
+        } catch (error) {
+          console.log(error)
+        }
       }}
       visible={visible}
       initialValues={{
@@ -220,15 +258,22 @@ export default (props) => {
         width="md"
       />
 
-      <ProFormDigit
-        placeholder="请输入拼约人数"
-        label="拼约人数"
-        name="groupNum"
-        min={1}
-        max={99999}
-        step
+      <ProFormSelect
+        placeholder="请选择拼约人数"
+        label="成团人数"
+        name="defaultGroupNum"
+        valueEnum={{
+          2: 2,
+          3: 3,
+          4: 4,
+          5: 5,
+          6: 6,
+          7: 7,
+          8: 8,
+          9: 9
+        }}
         rules={[
-          { required: true, message: '请输入拼约人数' },
+          { required: true, message: '请选择成团人数' },
           () => ({
             validator(_, value) {
               if (`${value}`.indexOf('.') !== -1) {
@@ -238,8 +283,11 @@ export default (props) => {
             },
           })
         ]}
-        extra={<><span style={{ position: 'absolute', left: 280, top: 5 }}>人</span></>}
+        extra={<><Button disabled type='default' style={{ position: 'absolute', left: 325, top: 0, cursor: 'default' }}>人</Button></>}
         width="md"
+        fieldProps={{
+          onChange: e => setDefaultGroupNum(e)
+        }}
       />
 
       <ProFormDigit
@@ -281,7 +329,7 @@ export default (props) => {
         extra={
           <>
             <div>开启虚拟成团后，当拼约时长到期时，对人数未满的团，系统将会模拟匿名买家凑满人数，使该团成团，开启以提高成团率</div>
-            <div style={{color: 'rgb(234, 154, 0)'}}>限新人参团的商品固定不开启虚拟成团</div>
+            <div style={{ color: 'rgb(234, 154, 0)' }}>限新人参团的商品固定不开启虚拟成团</div>
           </>
         }
       />
@@ -300,7 +348,8 @@ export default (props) => {
               value={tableData}
               columns={columns}
               pagination={false}
-              scroll={{ y: 300 }}
+              controlled
+              scroll={{ x: 'max-content' }}
               rowKey="id"
               rowSelection={{
                 selectedRowKeys,
@@ -330,7 +379,7 @@ export default (props) => {
       />
 
       {
-        formVisible && 
+        formVisible &&
         <SelectProductModal
           visible={formVisible}
           setVisible={setFormVisible}
