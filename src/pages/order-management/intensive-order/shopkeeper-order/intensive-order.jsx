@@ -329,7 +329,7 @@ const TableList = () => {
                     <span>订单号：{item.orderSn}</span>
                     <span>下单用户：{item.buyerName}</span>
                     <span>用户手机号：{item.buyerPhone}</span>
-                    <span>商品归属集约活动ID：{item.wsId}</span>
+                    <span>商品归属集约活动ID：{item.orderItemList[0].wsId}</span>
                   </Space>
                 </div>
 
