@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ModalForm } from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import GcCascader from '@/components/gc-cascader'
@@ -7,7 +7,7 @@ import { productList } from '@/services/intensive-activity-management/intensive-
 import SupplierSelect from '@/components/supplier-select'
 
 export default (props) => {
-  const { visible, setVisible, callback,hideAll, title = '选择活动商品',goodsSaleType, apolloConfig} = props;
+  const { visible, setVisible, callback,hideAll, title = '选择活动商品',goodsSaleType, apolloConfig, skuId} = props
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectItems, setSelectItems] = useState([]);
 
@@ -23,6 +23,15 @@ export default (props) => {
       },
     }
   };
+
+
+  useEffect(()=> {
+    setSelectItems(skuId)
+    setSelectedRowKeys(skuId.map(item => {
+      return item.skuId
+    }))
+    return undefined
+  }, [])
 
 
   const columns = [
