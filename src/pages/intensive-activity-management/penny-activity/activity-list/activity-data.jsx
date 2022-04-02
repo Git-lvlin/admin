@@ -158,7 +158,7 @@ export default (props) => {
         rowKey="skuId"
         options={false}
         params={{
-          activity_id:record?.id
+          activityId:record?.id
         }}
         request={activityGoods}
         search={{
