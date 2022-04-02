@@ -406,11 +406,11 @@ export default (props) => {
     },
     {
       title: '活动库存',
-      dataIndex: 'activityStockNum',
+      dataIndex: 'actStockNum',
       width:120,
       hideInSearch: true,
       renderFormItem: (_) =>{
-        const obj=detailList.find(ele=>{
+        const obj=detailList?.find(ele=>{
           return ele.wsId==_?.entry?.wsId
         })
         if(obj){
@@ -479,7 +479,7 @@ export default (props) => {
           </div>,
           <div key='repertory'>
            {
-             id&&detailList.find(ele=>{return ele.wsId==record?.wsId})?
+             id&&detailList?.find(ele=>{return ele.wsId==record?.wsId})?
              <a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑<br/>库存</a>
              :null
            }
@@ -542,7 +542,7 @@ export default (props) => {
               status:1,
               wsPrice:item.price,
               price:amountTransform(item.wholesaleSupplyPrice+item.wholesaleFreight, '/'),
-              activityStockNum:item.totalStockNum
+              actStockNum:item.totalStockNum
             })
           })
           setDataSource(arr)

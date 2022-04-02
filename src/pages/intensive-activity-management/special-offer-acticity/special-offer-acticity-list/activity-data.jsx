@@ -5,7 +5,7 @@ import ProTable from '@ant-design/pro-table';
 import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,ProFormRadio,DrawerForm } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
-import { saveWSCentActiveConfig,getActiveConfigById } from '@/services/intensive-activity-management/penny-activity';
+import { activityData,activityGoods } from '@/services/intensive-activity-management/penny-activity';
 import moment, { now } from 'moment';
 import { PageContainer } from '@ant-design/pro-layout';
 
@@ -27,18 +27,19 @@ export default (props) => {
   const [detailList,setDetailList]=useState()
   const [goosList,setGoosList]=useState()
   const [loading,setLoading]=useState(false)
+  const [time,setTime]=useState()
   const [form] = Form.useForm()
   const ref=useRef()
   const columns= [
     {
       title: 'spuID',
-      dataIndex: 'spuID',
+      dataIndex: 'spuId',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: 'skuID',
-      dataIndex: 'skuID',
+      dataIndex: 'skuId',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -50,66 +51,67 @@ export default (props) => {
     },
     {
       title: '商品主图',
-      dataIndex: 'name',
-      valueType: 'text',
+      dataIndex: 'skuImageUrl',
+      valueType: 'image',
       hideInSearch: true,
     },
     {
       title: '商品名称',
-      dataIndex: 'name',
+      dataIndex: 'goodsName',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '商品规格',
-      dataIndex: 'name',
+      dataIndex: 'skuName',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '采购店主数',
-      dataIndex: 'shoperLimitAll',
+      dataIndex: 'procurementStorekeeperNum',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: 'B端采购订单数',
-      dataIndex: 'shoperLimitOnece',
+      dataIndex: 'bProcurementOrderNum',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: 'B端采购份数',
-      dataIndex: 'buyerLimit',
+      dataIndex: 'bProcurementNum',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: 'C端零售份数',
-      dataIndex: 'joinShopType',
+      dataIndex: 'cSaleNum',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: 'C端转化率',
-      dataIndex: 'goodsCount',
+      dataIndex: 'cTranslateRate',
       valueType: 'text',
       hideInSearch: true,
+      render:(_)=>{
+        return `${amountTransform(parseFloat(_),'*').toFixed(2)}%`
+      }
     }
   ];
   useEffect(() => {
-    if (record?.id) {
-    //   getActiveConfigById({di:record?.id}).then(res=>{
-    //     if(res.data?.endTime<res.data?.time){
-    //       message.error('活动已结束！'); 
-    //       setFormVisible(false)
-    //       onClose()
-    //       return false
-    //     }
-    //     setDetailList(res.data)
-    //   })
+    const params={
+      activityId:record?.id,
+      startTime:time?.[0]&&moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:time?.[1]&&moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss')
     }
-  }, [])
+    activityData(params).then(res=>{
+      setDetailList(res.data[0])
+    })
+
+  }, [time])
 
   const onsubmit = (values) => {
     setVisible(false)
@@ -151,28 +153,30 @@ export default (props) => {
       {...formItemLayout}
     >
       <Descriptions title="活动数据" labelStyle={{fontWeight:'bold'}} column={9} layout="vertical" bordered>
-        <Descriptions.Item  label="采购店主数">{detailList?.totalMemberNum}  </Descriptions.Item>
-        <Descriptions.Item  label="B端采购订单数">{detailList?.totalNum}  </Descriptions.Item>
-        <Descriptions.Item  label="B端采购份数">{detailList?.restNum}  </Descriptions.Item>
-        <Descriptions.Item  label="C端零售份数">{detailList?.useNum}  </Descriptions.Item>
-        <Descriptions.Item  label="C端转化率">{detailList?.prizeNum}  </Descriptions.Item>
+        <Descriptions.Item  label="采购店主数">{detailList?.procurementStorekeeperNum}  </Descriptions.Item>
+        <Descriptions.Item  label="B端采购订单数">{detailList?.bProcurementOrderNum}  </Descriptions.Item>
+        <Descriptions.Item  label="B端采购份数">{detailList?.bProcurementNum}  </Descriptions.Item>
+        <Descriptions.Item  label="C端零售份数">{detailList?.cSaleNum}  </Descriptions.Item>
+        <Descriptions.Item  label="C端转化率">{amountTransform(parseFloat(detailList?.cTranslateRate),'*').toFixed(2)}%</Descriptions.Item>
       </Descriptions>
       <ProTable
         actionRef={ref}
         headerTitle="活动商品"
         rowKey="id"
         options={false}
-        // params={{
-        //     actCode:'wsCentActiveCode'
-        // }}
-        // request={getActiveConfigList}
-        // postData={postData}
+        params={{
+          activity_id:record?.id
+        }}
+        request={activityGoods}
         search={{
         defaultCollapsed: false,
         labelWidth: 100,
         optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
         ],
+        }}
+        onSubmit={(val)=>{
+          setTime(val?.wholesaleStartTime)
         }}
         columns={columns}
         pagination={{

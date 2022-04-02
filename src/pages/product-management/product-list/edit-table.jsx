@@ -65,6 +65,7 @@ export default function EditTable(props) {
         dataIndex: 'batchNumber',
         editable: false,
         hideInTable: goodsSaleType === 2,
+        render: _ => `${_}${unit}/${wsUnit}`
       },
       {
         title: '最低批发量',
@@ -120,7 +121,9 @@ export default function EditTable(props) {
         dataIndex: 'salePrice',
         editable: settleType === 2,
         hideInTable: goodsSaleType === 1,
-        render: _ => `${_}元/${unit}`
+        fieldProps: {
+          addonAfter: `元/${unit}`
+        }
       },
       {
         title: '秒约价上浮比例',
@@ -137,7 +140,9 @@ export default function EditTable(props) {
       {
         title: '市场价',
         dataIndex: 'marketPrice',
-        render: _ => `${_}元/${unit}`
+        fieldProps: {
+          addonAfter: `元/${unit}`
+        }
       },
       {
         title: '库存预警值',

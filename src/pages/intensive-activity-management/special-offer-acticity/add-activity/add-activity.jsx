@@ -110,7 +110,7 @@ export default (props) => {
           status:ele.status,
           buyLimit:ele.maxNum,
           wholesaleFreight:ele.wholesaleFreight,
-          activityStockNum:ele.activityStockNum
+          actStockNum:ele.actStockNum
         }))||detailList,
         buyerLimit:values.buyerType==0?999999:values.buyerLimit,
         status:1,

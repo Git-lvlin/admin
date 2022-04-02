@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Tooltip, Table, Spin, Space } from 'antd';
+import { Button, Tooltip, Table, Spin, Space, Menu, Dropdown } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
@@ -132,6 +132,42 @@ const TableList = () => {
         setSelectItem(null);
       }
     })
+  }
+
+  const handleMenuClick = ({ key }, record) => {
+    const { goodsVerifyState, goodsState, goodsSaleType, storeGoodsState } = record;
+    if (key === '1') {
+      getActivityRecord({ ...record, type: 1 });
+    }
+    if (key === '2') {
+      getActivityRecord({ ...record, type: 2 });
+    }
+
+    if (key === '3') {
+      getActivityRecord({ ...record, type: 3 });
+    }
+
+    if (key === '4') {
+      onShelf({ spuId: record.spuId, type: 1 })
+    }
+
+    if (key === '5') {
+      onShelf({ spuId: record.spuId, type: 2 })
+    }
+    
+  }
+
+  const menu = (data) => {
+    const { goodsVerifyState, goodsState, goodsSaleType, storeGoodsState } = data;
+    return (
+      <Menu onClick={(e) => { handleMenuClick(e, data) }}>
+        {(goodsVerifyState === 1 && goodsState === 1) && <Menu.Item key="1">下架</Menu.Item>}
+        {(goodsVerifyState === 1 && storeGoodsState === 1 && goodsSaleType !== 2) && <Menu.Item key="2">从店铺下架</Menu.Item>}
+        {(goodsVerifyState === 1 && (goodsState === 1 || storeGoodsState === 1) && goodsSaleType !== 2) && <Menu.Item key="3">全网下架</Menu.Item>}
+        {(goodsVerifyState === 1 && goodsState === 0) && <Menu.Item key="4">上架</Menu.Item>}
+        {(goodsVerifyState === 1 && storeGoodsState === 0 && goodsSaleType !== 2) && <Menu.Item key="5">从店铺上架</Menu.Item>}
+      </Menu>
+    )
   }
 
   const columns = [
@@ -443,19 +479,12 @@ const TableList = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => {
-        const { goodsVerifyState, goodsState, goodsSaleType, storeGoodsState } = record;
+        // const { goodsVerifyState, goodsState, goodsSaleType, storeGoodsState } = record;
         return (
-          <Space>
-            {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { getActivityRecord({ ...record, type: 1 }); }}>下架</a>}
-            {(goodsVerifyState === 1 && storeGoodsState === 1 && goodsSaleType !== 2) && <a onClick={() => { getActivityRecord({ ...record, type: 2 }); }}>从店铺下架</a>}
-            {(goodsVerifyState === 1 && (goodsState === 1 || storeGoodsState === 1) && goodsSaleType !== 2) && <a onClick={() => { getActivityRecord({ ...record, type: 3 }); }}>全网下架</a>}
-            {(goodsVerifyState === 1 && goodsState === 0) && <a onClick={() => { onShelf({ spuId: record.spuId, type: 1 }) }}>上架</a>}
-            {(goodsVerifyState === 1 && storeGoodsState === 0 && goodsSaleType !== 2) && <a onClick={() => { onShelf({ spuId: record.spuId, type: 2 }) }}>从店铺上架</a>}
-            <a onClick={() => { getDetail(record.spuId, () => { setFormVisible(true); }) }}>编辑</a>
-          </Space>
+          <Dropdown.Button onClick={() => { getDetail(record.spuId, () => { setFormVisible(true); }) }} overlay={() => { return menu(record) }}>编辑</Dropdown.Button>
         )
       },
-      width: 250,
+      width: 100,
       fixed: 'right'
     },
   ];

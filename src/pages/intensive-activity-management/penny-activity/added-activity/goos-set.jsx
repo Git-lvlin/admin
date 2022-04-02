@@ -295,7 +295,7 @@ export default (props) => {
       dataIndex: 'actStockNum',
       hideInSearch: true,
       renderFormItem: (_) =>{
-        const obj=detailList?.content?.goods.find(ele=>{
+        const obj=detailList?.content?.goods?.find(ele=>{
           return ele.wsId==_?.entry?.wsId
         })
         if(obj){
@@ -377,7 +377,7 @@ export default (props) => {
           </span>,
           <span key='repertory'>
             {
-              id&&detailList?.content?.goods.find(ele=>{return ele.wsId==record?.wsId})?
+              id&&detailList?.content?.goods?.find(ele=>{return ele.wsId==record?.wsId})?
               <a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑库存</a>
               :null
             }
@@ -425,7 +425,6 @@ export default (props) => {
             <p>共{dataSource?.length}款商品</p>
         ]}
         style={{marginBottom:'30px'}}
-        // scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         pagination={{
           pageSize: 5
         }}
@@ -460,7 +459,6 @@ export default (props) => {
           setDataSource(arr)
           callback(arr)
           setEditableKeys(arr.map(item => item.wsId))
-          // setFalge(true)
         }}
         keyId={dataSource}
         detailList={detailList?.content?.goods||[]}

@@ -118,7 +118,7 @@ const TableList = () => {
         submitter={{
           render: ({ form }, doms) => {
             return (
-              <div>
+              <div style={{ marginBottom: 20}}>
                 <Space>
                   <Button
                     type="primary"
@@ -369,6 +369,15 @@ const TableList = () => {
             }
           }}
         />
+        <ProFormText
+          name="wsId"
+          label="集约活动ID"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -426,7 +435,7 @@ const TableList = () => {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         }
-        <div style={{ height: Math.max(window.innerHeight - 550, 500), overflowY: 'auto', marginBottom: 10 }}>
+        <div style={{ marginBottom: 10 }}>
           {
             data.map(item => (
               <div className={styles.list} key={item.id}>
