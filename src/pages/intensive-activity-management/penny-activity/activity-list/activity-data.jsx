@@ -88,7 +88,7 @@ export default (props) => {
       valueType: 'text',
       hideInSearch: true,
       render:(_)=>{
-        return `${amountTransform(parseFloat(_),'*')}%`
+        return `${amountTransform(parseFloat(_),'*').toFixed(2)}%`
       }
     }
   ];
@@ -149,7 +149,7 @@ export default (props) => {
         <Descriptions.Item  label="B端采购份数">{detailList?.bProcurementNum}  </Descriptions.Item>
         <Descriptions.Item  label="C端零售份数">{detailList?.cSaleNum}  </Descriptions.Item>
         <Descriptions.Item  label="零售新用户数">{detailList?.cSaleNewUser}  </Descriptions.Item>
-        <Descriptions.Item  label="C端转化率">{amountTransform(parseFloat(detailList?.cTranslateRate),'*')}%</Descriptions.Item>
+        <Descriptions.Item  label="C端转化率">{amountTransform(parseFloat(detailList?.cTranslateRate),'*').toFixed(2)}%</Descriptions.Item>
       </Descriptions>
       <ProTable
         actionRef={ref}
