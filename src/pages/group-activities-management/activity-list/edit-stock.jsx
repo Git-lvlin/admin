@@ -110,7 +110,7 @@ const EditStock = (props) => {
       layout='horizontal'
       {...formItemLayout}
     >
-      <ProForm.Item label="当前商品可用库存">
+      <ProForm.Item label="当前商品可用库存（秒约）">
         {data.stockNum}
       </ProForm.Item>
       <ProForm.Item label="当前拼团活动可用库存">
@@ -136,7 +136,7 @@ const EditStock = (props) => {
         }}
       />
       <ProFormText
-        label="操作拼团活动库存数量"
+        label="操作拼团活动库存数量（秒约）"
         name="newActivityStockNum"
         fieldProps={{
           onChange: (e) => setActivityStock(e.target.value),

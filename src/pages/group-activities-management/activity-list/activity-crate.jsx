@@ -50,6 +50,7 @@ export default (props) => {
       dataIndex: 'goodsName',
       valueType: 'text',
       editable: false,
+      width: 200,
       render: (_, data) => (
         <div style={{ display: 'flex' }}>
           <img width="50" height="50" src={data.imageUrl || data.goodsImageUrl} />
@@ -83,7 +84,8 @@ export default (props) => {
       valueType: 'digit',
       editable: (_, data) => {
         return data.settleType !== 1
-      }
+      },
+      render: (_) => _ > 0 ? amountTransform(_, '/') : 0
     },
     {
       title: '拼团库存',
@@ -103,14 +105,14 @@ export default (props) => {
       dataIndex: 'defaultGroupNum',
       valueType: 'select',
       valueEnum: {
-        2: '2',
-        3: '3',
-        4: '4',
-        5: '5',
-        6: '6',
-        7: '7',
-        8: '8',
-        9: '9'
+        2: 2,
+        3: 3,
+        4: 4,
+        5: 5,
+        6: 6,
+        7: 7,
+        8: 8,
+        9: 9
       }
     },
     {
@@ -140,52 +142,61 @@ export default (props) => {
     }
   };
 
-  useEffect(()=>{
-    setTableData(tableData.map(item => (
-      { ...item, defaultGroupNum: +defaultGroupNum }
-    )))
-  }, [defaultGroupNum])
 
   const submit = (values) => {
     const { activityTime, checkbox, ...rest } = values
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? ruleEdit : ruleSub
-      formRef.validateFields().then(_ => {
-        apiMethod({
-          id: detailData?.id,
-          activityStartTime: moment(activityTime[0]).unix(),
-          activityEndTime: moment(activityTime[1]).unix(),
-          activityType: 3,
-          goodsInfo: tableData.map(item => {
-            const memberType = item.memberType ? '1' : '0'
-            return {
-              spuId: item.spuId,
-              skuId: item.skuId,
-              settleType: item.settleType,
-              retailSupplyPrice: amountTransform(item.retailSupplyPrice, '/'),
-              activityPrice: amountTransform(item.activityPrice, '*'),
-              stockNum: item.stockNum,
-              activityStockNum: +item.activityStockNumEdit,
-              defaultGroupNum: item.defaultGroupNum,
-              memberType,
-              salePrice: item.salePrice
-            }
-          }),
-          ...rest,
-        }, { showSuccess: true }).then(res => {
-          if (res.code === 0) {
-            resolve();
-            callback();
-          } else {
-            reject();
+      for (let i = 0; i < tableData.length; i++) {
+        const reg = /^((0)|([1-9][0-9]*))$/
+        if (!reg.test(tableData[i].activityStockNumEdit)) {
+          message.error('拼团库存只能输入正整数')
+          reject()
+          return
+        }
+        if(!detailData && tableData[i].activityStockNumEdit > (parseFloat(tableData[i].stockNum/2))) {
+          message.error('拼团库存需要小于商品库存50%')
+          reject()
+          return
+        }
+      }
+      apiMethod({
+        id: detailData?.id,
+        activityStartTime: moment(activityTime[0]).unix(),
+        activityEndTime: moment(activityTime[1]).unix(),
+        activityType: 3,
+        goodsInfo: tableData.map(item => {
+          const memberType = item.memberType ? '1' : '0'
+          return {
+            spuId: item.spuId,
+            skuId: item.skuId,
+            settleType: item.settleType,
+            retailSupplyPrice: item.retailSupplyPrice,
+            activityPrice: amountTransform(item.activityPrice, '*'),
+            stockNum: item.stockNum,
+            activityStockNum: +item.activityStockNumEdit,
+            defaultGroupNum: item.defaultGroupNum,
+            memberType,
+            salePrice: item.salePrice
           }
-        })
-      }).catch(_ => {
-        message.error(_.errorFields[0].errors[0])
-        reject()
+        }),
+        ...rest,
+      }, { showSuccess: true }).then(res => {
+        if (res.code === 0) {
+          resolve();
+          callback();
+        } else {
+          reject();
+        }
       })
     })
   }
+
+  useEffect(() => {
+    setTableData(tableData.map(item => (
+      { ...item, defaultGroupNum: +defaultGroupNum }
+    )))
+  }, [defaultGroupNum])
 
   useEffect(() => {
     if (detailData) {
@@ -252,14 +263,14 @@ export default (props) => {
         label="成团人数"
         name="defaultGroupNum"
         valueEnum={{
-          2: '2',
-          3: '3',
-          4: '4',
-          5: '5',
-          6: '6',
-          7: '7',
-          8: '8',
-          9: '9'
+          2: 2,
+          3: 3,
+          4: 4,
+          5: 5,
+          6: 6,
+          7: 7,
+          8: 8,
+          9: 9
         }}
         rules={[
           { required: true, message: '请选择成团人数' },
@@ -276,7 +287,7 @@ export default (props) => {
         width="md"
         fieldProps={{
           onChange: e => setDefaultGroupNum(e)
-        }}  
+        }}
       />
 
       <ProFormDigit
@@ -318,7 +329,7 @@ export default (props) => {
         extra={
           <>
             <div>开启虚拟成团后，当拼约时长到期时，对人数未满的团，系统将会模拟匿名买家凑满人数，使该团成团，开启以提高成团率</div>
-            <div style={{color: 'rgb(234, 154, 0)'}}>限新人参团的商品固定不开启虚拟成团</div>
+            <div style={{ color: 'rgb(234, 154, 0)' }}>限新人参团的商品固定不开启虚拟成团</div>
           </>
         }
       />
@@ -347,7 +358,6 @@ export default (props) => {
                 }
               }}
               editable={{
-                form: formRef,
                 editableKeys: tableData.map(item => item.id),
                 onValuesChange: (record, recordList) => {
                   setTableData(recordList);
@@ -369,7 +379,7 @@ export default (props) => {
       />
 
       {
-        formVisible && 
+        formVisible &&
         <SelectProductModal
           visible={formVisible}
           setVisible={setFormVisible}
