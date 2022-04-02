@@ -81,15 +81,6 @@ const TableList: FC = () => {
       )
     },
     {
-      title: '拼约人数',
-      dataIndex: 'groupNum',
-      width: '5%',
-      valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入拼约人数'
-      }
-    },
-    {
       title: '拼约时长(小时)',
       dataIndex: 'groupTime',
       width: '5%',
@@ -115,7 +106,7 @@ const TableList: FC = () => {
         1: '待开始',
         2: '进行中',
         3: '已结束',
-        4: '已中止'
+        4: '已终止'
       }
     },
     {
@@ -139,7 +130,7 @@ const TableList: FC = () => {
               okText="确认终止"
               cancelText="取消"
             >
-              <a>中止</a>
+              <a>终止</a>
             </Popconfirm>
           }
         </Space>
