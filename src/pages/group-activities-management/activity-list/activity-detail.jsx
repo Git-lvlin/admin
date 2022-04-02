@@ -71,6 +71,11 @@ const ActivityDetail = ({visible, onClose, id}) => {
       valueType: 'text'
     },
     {
+      title: '成团人数',
+      dataIndex: 'defaultGroupNum',
+      valueType: 'text'
+    },
+    {
       title: '限新人参团',
       dataIndex: 'memberType',
       valueType: 'select',

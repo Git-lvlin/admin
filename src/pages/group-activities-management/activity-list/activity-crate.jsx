@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Form, Button, Space } from 'antd'
+import React, { useState, useEffect, useRef } from 'react'
+import { Form, Button, Space, message } from 'antd'
 import { EditableProTable } from '@ant-design/pro-table'
 import moment from 'moment'
 import {
@@ -10,6 +10,7 @@ import {
   ProFormCheckbox,
   ProFormTextArea,
   ProFormDateTimeRangePicker,
+  ProFormSelect
 } from '@ant-design/pro-form'
 
 import { amountTransform } from '@/utils/utils'
@@ -23,6 +24,10 @@ export default (props) => {
   const [excelVisible, setExcelVisible] = useState(false)
   const [tableData, setTableData] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
+  const [defaultGroupNum, setDefaultGroupNum] = useState(0)
+
+
+  const [formRef] = Form.useForm()
 
   const cancel = (id) => {
     setTableData(tableData.filter(item => item.id !== id))
@@ -38,15 +43,13 @@ export default (props) => {
       title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'text',
-      editable: false,
-      width: 60,
+      editable: false
     },
     {
       title: '基本信息',
       dataIndex: 'goodsName',
       valueType: 'text',
       editable: false,
-      width: 200,
       render: (_, data) => (
         <div style={{ display: 'flex' }}>
           <img width="50" height="50" src={data.imageUrl || data.goodsImageUrl} />
@@ -59,23 +62,20 @@ export default (props) => {
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       editable: false,
-      render: (_) => _ > 0 ? amountTransform(_, '/') : 0,
-      width: 80,
+      render: (_) => _ > 0 ? amountTransform(_, '/') : 0
     },
     {
       title: '秒约价（元）',
       dataIndex: 'salePrice',
       valueType: 'text',
       editable: false,
-      render: (_) => _ > 0 ? amountTransform(_, '/') : 0,
-      width: 80,
+      render: (_) => _ > 0 ? amountTransform(_, '/') : 0
     },
     {
       title: '可用库存',
       dataIndex: 'stockNum',
       valueType: 'text',
-      editable: false,
-      width: 80,
+      editable: false
     },
     {
       title: '拼团价（元）',
@@ -83,8 +83,7 @@ export default (props) => {
       valueType: 'digit',
       editable: (_, data) => {
         return data.settleType !== 1
-      },
-      width: 100
+      }
     },
     {
       title: '拼团库存',
@@ -97,21 +96,33 @@ export default (props) => {
             message: '拼团库存只能输入正整数'
           }
         ]
-      },
-      width: 100,
+      }
+    },
+    {
+      title: '成团人数',
+      dataIndex: 'defaultGroupNum',
+      valueType: 'select',
+      valueEnum: {
+        2: '2',
+        3: '3',
+        4: '4',
+        5: '5',
+        6: '6',
+        7: '7',
+        8: '8',
+        9: '9'
+      }
     },
     {
       title: '限新人参团',
       dataIndex: 'memberType',
-      valueType: 'switch',
-      width: 100,
+      valueType: 'switch'
     },
     {
       title: '操作',
       valueType: 'options',
       render: (_, data) => <a onClick={() => { cancel(data.id) }}>取消参加</a>,
-      editable: false,
-      width: 80
+      editable: false
     },
   ];
 
@@ -129,39 +140,51 @@ export default (props) => {
     }
   };
 
+  useEffect(()=>{
+    setTableData(tableData.map(item => (
+      { ...item, defaultGroupNum: +defaultGroupNum }
+    )))
+  }, [defaultGroupNum])
+
   const submit = (values) => {
     const { activityTime, checkbox, ...rest } = values
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? ruleEdit : ruleSub
-      apiMethod({
-        id: detailData?.id,
-        activityStartTime: moment(activityTime[0]).unix(),
-        activityEndTime: moment(activityTime[1]).unix(),
-        activityType: 3,
-        goodsInfo: tableData.map(item => {
-          const memberType = item.memberType ? '1' : '0'
-          return {
-            spuId: item.spuId,
-            skuId: item.skuId,
-            settleType: item.settleType,
-            retailSupplyPrice: amountTransform(item.retailSupplyPrice, '/'),
-            activityPrice: amountTransform(item.activityPrice, '*'),
-            stockNum: item.stockNum,
-            activityStockNum: +item.activityStockNumEdit,
-            defaultGroupNum: item.defaultGroupNum,
-            memberType
+      formRef.validateFields().then(_ => {
+        apiMethod({
+          id: detailData?.id,
+          activityStartTime: moment(activityTime[0]).unix(),
+          activityEndTime: moment(activityTime[1]).unix(),
+          activityType: 3,
+          goodsInfo: tableData.map(item => {
+            const memberType = item.memberType ? '1' : '0'
+            return {
+              spuId: item.spuId,
+              skuId: item.skuId,
+              settleType: item.settleType,
+              retailSupplyPrice: amountTransform(item.retailSupplyPrice, '/'),
+              activityPrice: amountTransform(item.activityPrice, '*'),
+              stockNum: item.stockNum,
+              activityStockNum: +item.activityStockNumEdit,
+              defaultGroupNum: item.defaultGroupNum,
+              memberType,
+              salePrice: item.salePrice
+            }
+          }),
+          ...rest,
+        }, { showSuccess: true }).then(res => {
+          if (res.code === 0) {
+            resolve();
+            callback();
+          } else {
+            reject();
           }
-        }),
-        ...rest,
-      }, { showSuccess: true }).then(res => {
-        if (res.code === 0) {
-          resolve();
-          callback();
-        } else {
-          reject();
-        }
+        })
+      }).catch(_ => {
+        message.error(_.errorFields[0].errors[0])
+        reject()
       })
-    });
+    })
   }
 
   useEffect(() => {
@@ -193,8 +216,12 @@ export default (props) => {
       }}
       form={form}
       onFinish={async (values) => {
-        await submit(values);
-        return true;
+        try {
+          await submit(values);
+          return true;
+        } catch (error) {
+          console.log(error)
+        }
       }}
       visible={visible}
       initialValues={{
@@ -220,15 +247,22 @@ export default (props) => {
         width="md"
       />
 
-      <ProFormDigit
-        placeholder="请输入拼约人数"
-        label="拼约人数"
-        name="groupNum"
-        min={1}
-        max={99999}
-        step
+      <ProFormSelect
+        placeholder="请选择拼约人数"
+        label="成团人数"
+        name="defaultGroupNum"
+        valueEnum={{
+          2: '2',
+          3: '3',
+          4: '4',
+          5: '5',
+          6: '6',
+          7: '7',
+          8: '8',
+          9: '9'
+        }}
         rules={[
-          { required: true, message: '请输入拼约人数' },
+          { required: true, message: '请选择成团人数' },
           () => ({
             validator(_, value) {
               if (`${value}`.indexOf('.') !== -1) {
@@ -238,8 +272,11 @@ export default (props) => {
             },
           })
         ]}
-        extra={<><span style={{ position: 'absolute', left: 280, top: 5 }}>人</span></>}
+        extra={<><Button disabled type='default' style={{ position: 'absolute', left: 325, top: 0, cursor: 'default' }}>人</Button></>}
         width="md"
+        fieldProps={{
+          onChange: e => setDefaultGroupNum(e)
+        }}  
       />
 
       <ProFormDigit
@@ -300,7 +337,8 @@ export default (props) => {
               value={tableData}
               columns={columns}
               pagination={false}
-              scroll={{ y: 300 }}
+              controlled
+              scroll={{ x: 'max-content' }}
               rowKey="id"
               rowSelection={{
                 selectedRowKeys,
@@ -309,6 +347,7 @@ export default (props) => {
                 }
               }}
               editable={{
+                form: formRef,
                 editableKeys: tableData.map(item => item.id),
                 onValuesChange: (record, recordList) => {
                   setTableData(recordList);
