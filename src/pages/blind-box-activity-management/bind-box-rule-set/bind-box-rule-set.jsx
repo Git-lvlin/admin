@@ -11,7 +11,7 @@ import { getActiveConfigById } from '@/services/blind-box-activity-management/bl
 import ProForm, { ProFormText, ProFormRadio,ProFormDateRangePicker,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect,DrawerForm } from '@ant-design/pro-form';
 import moment from 'moment';
 import styles from './style.less'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 
 
 const formItemLayout = {

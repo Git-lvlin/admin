@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button, Table, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import XLSX from 'xlsx'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import * as api from '@/services/product-management/product-list';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'

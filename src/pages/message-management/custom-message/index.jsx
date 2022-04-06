@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table'
 import { PlusOutlined } from '@ant-design/icons'
 import { customMessageList, customMessageDetail, customMessageAuditIm } from '@/services/message-management/message-template-config'

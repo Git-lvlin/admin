@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ProCard from '@ant-design/pro-card'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import { useLocation, history } from 'umi'
 import { Button } from 'antd'
 

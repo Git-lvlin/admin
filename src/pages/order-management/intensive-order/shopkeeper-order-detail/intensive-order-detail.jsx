@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { Steps, Space, Button, Modal, Spin } from 'antd';
 import { useParams } from 'umi';
 import { findAdminOrderDetail } from '@/services/order-management/normal-order-detail';

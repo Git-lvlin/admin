@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 // import { Button } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons'
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { memberShopResults } from '@/services/intensive-store-management/assessment-reward';
 import { amountTransform } from '@/utils/utils'
 import Form from './form';

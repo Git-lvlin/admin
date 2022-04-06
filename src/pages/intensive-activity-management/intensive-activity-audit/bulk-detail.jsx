@@ -3,7 +3,7 @@ import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Mod
 import { InfoCircleOutlined, ExclamationCircleOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams, history } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-bulk-activity-list'
 import { updateWholesaleAuditStatus } from '@/services/intensive-activity-management/intensive-activity-audit'
 

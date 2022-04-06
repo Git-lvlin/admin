@@ -142,6 +142,7 @@ const afterSalesOrder = () => {
         request={refundOrder}
         scroll={{ x: 'max-content' , scrollToFirstRowOnChange: true, }}
         search={{
+          defaultCollapsed: true,
           optionRender: ({searchText, resetText}, {form}) => [
             <Button
               key="search"

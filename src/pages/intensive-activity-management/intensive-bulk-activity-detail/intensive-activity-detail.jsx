@@ -3,7 +3,7 @@ import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Form } from
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-bulk-activity-list'
 import LadderDataEdit from '../intensive-activity-create/ladder-data-edit'
 import PriceExplanation from '../intensive-activity-create/price-explanation'

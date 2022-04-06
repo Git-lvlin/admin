@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Drawer, Form, Input, Button, message, Typography } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { addVersion, getVersionList, getVersion, updateVersion } from '@/services/resource'
 import css from './index.less'
 
