@@ -46,7 +46,7 @@ export default (props) => {
     {
       title: '日期',
       dataIndex: 'wholesaleStartTime',
-      valueType: 'dateTimeRange',
+      valueType: 'dateRange',
       hideInTable:true
     },
     {
@@ -104,8 +104,8 @@ export default (props) => {
   useEffect(() => {
     const params={
       activityId:`${record?.id}`,
-      startTime:time?.[0]?moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'):moment().subtract(1, 'years').format('YYYY-MM-DD HH:mm:ss'),
-      endTime:time?.[1]?moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'):moment(+new Date()).format('YYYY-MM-DD HH:mm:ss'),
+      startTime:time?.[0]?moment(time?.[0]).format('YYYY-MM-DD'):moment().subtract(1, 'years').format('YYYY-MM-DD'),
+      endTime:time?.[1]?moment(time?.[1]).format('YYYY-MM-DD'):moment(+new Date()).format('YYYY-MM-DD'),
       activityCode:'wsDiscountActiveCode'
     }
     activityData(params).then(res=>{
@@ -173,11 +173,11 @@ export default (props) => {
         }}
         request={activityGoods}
         search={{
-        defaultCollapsed: false,
-        labelWidth: 100,
-        optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
-        ],
+          defaultCollapsed: false,
+          labelWidth: 100,
+          optionRender: (searchConfig, formProps, dom) => [
+              ...dom.reverse(),
+          ],
         }}
         onSubmit={(val)=>{
           setTime(val?.wholesaleStartTime)

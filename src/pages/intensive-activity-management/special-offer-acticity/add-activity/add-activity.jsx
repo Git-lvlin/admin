@@ -93,6 +93,28 @@ export default (props) => {
     }
   }, [loading])
   const onsubmit = (values) => {
+    if(id){
+      let arr=goosList||detailList
+      let stockNum=false
+      for (let index = 0; index < arr.length; index++) {
+          if(arr[index]?.actStockNum==0){
+            stockNum=true
+          }
+      }
+      if(stockNum){
+        return message.error('活动库存为零！')
+      }
+    }else{
+      let stockNum=false
+      for (let index = 0; index < goosList?.length; index++) {
+          if(goosList[index]?.actStockNum==0){
+            stockNum=true
+          }
+      }
+      if(stockNum){
+        return message.error('活动库存为零！')
+      }
+    }
       const parmas={
         ...values,
         id:id?id:0,
