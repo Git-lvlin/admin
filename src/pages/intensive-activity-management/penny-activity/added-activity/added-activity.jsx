@@ -131,24 +131,36 @@ export default (props) => {
 
   const onsubmit = (values) => {
     if(id){
-      var max=detailList?.content?.goods[0].minNum
-      for (let index = 0; index < detailList?.content?.goods.length; index++) {
-          if(max<detailList?.content?.goods[index].minNum){
-            max=detailList?.content?.goods[index].minNum
+      let arr=goosList||detailList?.content?.goods
+      var max=arr[0]?.minNum
+      let stockNum=false
+      for (let index = 0; index < arr.length; index++) {
+          if(max<arr[index]?.minNum){
+            max=arr[index]?.minNum
           }
+          if(arr[index]?.actStockNum==0){
+            stockNum=true
+          }
+      }
+      if(stockNum){
+        return message.error('活动库存为零！')
       }
       if(values.shoperLimitOnece<max){
         return message.error('每位店主单次限量不能小于集约单次限量的起订量！')
       }
     }else{
-      var max=goosList[0].minNum
+      var max=goosList[0]?.minNum
       var flage=false
+      let stockNum=false
       for (let index = 0; index < goosList.length; index++) {
-          if(max<goosList[index].minNum){
-            max=goosList[index].minNum
+          if(max<goosList[index]?.minNum){
+            max=goosList[index]?.minNum
           }
-          if(goosList[index].actStockNum%goosList[index].batchNumber!==0){
+          if(goosList[index]?.actStockNum%goosList[index]?.batchNumber!==0){
             flage=true
+          }
+          if(goosList[index]?.actStockNum==0){
+            stockNum=true
           }
       }
       if(flage){
@@ -156,6 +168,9 @@ export default (props) => {
       }
       if(values.shoperLimitOnece<max){
         return message.error('每位店主单次限量不能小于集约单次限量的起订量！')
+      }
+      if(stockNum){
+        return message.error('活动库存为零！')
       }
     }
 
