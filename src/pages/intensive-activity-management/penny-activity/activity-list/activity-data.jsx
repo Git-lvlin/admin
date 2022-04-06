@@ -40,8 +40,8 @@ export default (props) => {
     {
       title: '日期',
       dataIndex: 'wholesaleStartTime',
-      valueType: 'dateTimeRange',
-      hideInTable:true
+      valueType: 'dateRange',
+      hideInTable:true,
     },
     {
       title: '基本信息',
@@ -95,8 +95,8 @@ export default (props) => {
   useEffect(() => {
     const params={
       activityId:`${record?.id}`,
-      startTime:time?.[0]?moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'):moment().subtract(1, 'years').format('YYYY-MM-DD HH:mm:ss'),
-      endTime:time?.[1]?moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'):moment(+new Date()).format('YYYY-MM-DD HH:mm:ss'),
+      startTime:time?.wholesaleStartTime?.[0]?moment(time?.wholesaleStartTime?.[0]).format('YYYY-MM-DD'):moment(record?.startTime*1000).format('YYYY-MM-DD'),
+      endTime:time?.wholesaleStartTime?.[1]?moment(time?.wholesaleStartTime?.[1]).format('YYYY-MM-DD'):moment(record?.endTime*1000).format('YYYY-MM-DD'),
       activityCode:'wsCentActiveCode'
     }
     activityData(params).then(res=>{
@@ -146,14 +146,6 @@ export default (props) => {
         }
       {...formItemLayout}
     >
-      <Descriptions title="活动数据" labelStyle={{fontWeight:'bold'}} column={9} layout="vertical" bordered>
-        <Descriptions.Item  label="采购店主数">{detailList?.procurementStorekeeperNum}  </Descriptions.Item>
-        <Descriptions.Item  label="B端采购订单数">{detailList?.bProcurementOrderNum}  </Descriptions.Item>
-        <Descriptions.Item  label="B端采购份数">{detailList?.bProcurementNum}  </Descriptions.Item>
-        <Descriptions.Item  label="C端零售份数">{detailList?.cSaleNum}  </Descriptions.Item>
-        <Descriptions.Item  label="零售新用户数">{detailList?.cSaleNewUser}  </Descriptions.Item>
-        <Descriptions.Item  label="C端转化率">{amountTransform(parseFloat(detailList?.cTranslateRate),'*').toFixed(2)}%</Descriptions.Item>
-      </Descriptions>
       <ProTable
         actionRef={ref}
         headerTitle="活动商品"
@@ -165,14 +157,24 @@ export default (props) => {
         }}
         request={activityGoods}
         search={{
-        defaultCollapsed: false,
-        labelWidth: 100,
-        optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse()
-        ],
+          defaultCollapsed: false,
+          labelWidth: 100,
+          optionRender: (searchConfig, formProps, dom) => [
+              ...dom.reverse()
+          ],
         }}
+        tableExtraRender={(_, data) => (
+          <Descriptions title="活动数据" labelStyle={{fontWeight:'bold'}} column={9} layout="vertical" bordered>
+            <Descriptions.Item  label="采购店主数">{detailList?.procurementStorekeeperNum}  </Descriptions.Item>
+            <Descriptions.Item  label="B端采购订单数">{detailList?.bProcurementOrderNum}  </Descriptions.Item>
+            <Descriptions.Item  label="B端采购份数">{detailList?.bProcurementNum}  </Descriptions.Item>
+            <Descriptions.Item  label="C端零售份数">{detailList?.cSaleNum}  </Descriptions.Item>
+            <Descriptions.Item  label="零售新用户数">{detailList?.cSaleNewUser}  </Descriptions.Item>
+            <Descriptions.Item  label="C端转化率">{amountTransform(parseFloat(detailList?.cTranslateRate),'*').toFixed(2)}%</Descriptions.Item>
+          </Descriptions>
+        )}
         onSubmit={(val)=>{
-          setTime(val?.wholesaleStartTime)
+          setTime(val)
         }}
         columns={columns}
         pagination={{

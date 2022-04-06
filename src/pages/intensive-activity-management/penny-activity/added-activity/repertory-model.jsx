@@ -48,7 +48,6 @@ export default props=>{
     })
  }
     useEffect(()=>{
-      console.log('record',record)
       form.setFieldsValue({
         ...record,
         num:0

@@ -85,7 +85,6 @@ export default (props) => {
                                 <ProForm.Group>
                                 <span>此任务每天最高可获得</span>
                                 <ProFormText
-                                    width={100}
                                     name="dayGainMax"
                                     readonly={id}
                                     rules={[
@@ -318,7 +317,6 @@ export default (props) => {
                                 <ProForm.Group>
                                     <span>此任务每天最高可获得</span>
                                     <ProFormText
-                                        width={100}
                                         name="dayMaxNum"
                                         readonly={id}
                                         rules={[
