@@ -32,8 +32,8 @@ export default () => {
             <Descriptions.Item  label="C端零售份数">{detailList?.cSaleNum}  </Descriptions.Item>
             <Descriptions.Item  label="零售新用户数">{detailList?.cSaleNewUser}  </Descriptions.Item>
             <Descriptions.Item  label="C端转化率">{amountTransform(parseFloat(detailList?.cTranslateRate),'*').toFixed(2)}%</Descriptions.Item>
-            <Descriptions.Item  label="活动分享人数">{detailList?.activityShareUserNum||'-'}  </Descriptions.Item>
-            <Descriptions.Item  label="活动分享次数">{detailList?.activityShareTimes||'-'}  </Descriptions.Item>
+            {/* <Descriptions.Item  label="活动分享人数">{detailList?.activityShareUserNum||'-'}  </Descriptions.Item>
+            <Descriptions.Item  label="活动分享次数">{detailList?.activityShareTimes||'-'}  </Descriptions.Item> */}
             <Descriptions.Item  label="受邀注册数（绑定关系）">{detailList?.inviteRegisterNum}  </Descriptions.Item>
         </Descriptions>
       </PageContainer>
