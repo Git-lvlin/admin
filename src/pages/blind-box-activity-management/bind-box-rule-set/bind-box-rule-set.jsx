@@ -83,17 +83,16 @@ export default (props) => {
       })
     } 
   }, [])
-  const checkConfirm = (rule, value, callback) => {
+  const checkConfirm=(rule, value, callback)=>{
+    console.log('dasd',value)
     return new Promise(async (resolve, reject) => {
-      if (value && value.length > 50) {
-        await reject('红包名称不超过50个字符')
-      } else if (value&&/[^\u4e00-\u9fa5\0-9]/.test(value)) {
-        await reject('只能输入汉字')
-      } else {
+    if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+        await reject('只能输入整数')
+    } else {
         await resolve()
-      }
+    }
     })
-  }
+}
   const checkConfirm2 = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
       if (value && value.length > 1000) {
