@@ -84,7 +84,6 @@ export default (props) => {
     } 
   }, [])
   const checkConfirm=(rule, value, callback)=>{
-    console.log('dasd',value)
     return new Promise(async (resolve, reject) => {
     if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
         await reject('只能输入整数')
@@ -345,7 +344,10 @@ export default (props) => {
                 width={120}
                 name="redeemEarlyDay"
                 readonly={id} 
-                rules={[{ required: true, message: '请设置兑奖有效期' }]}
+                rules={[
+                  {validator: checkConfirm},
+                  { required: true, message: '请设置兑奖有效期' }
+                ]}
             />
             <span>天内有效</span>
             </ProForm.Group>
@@ -361,11 +363,11 @@ export default (props) => {
             <ProFormText 
                 name="maxPrizeNum"
                 width={100}
-                rules={[
-                    {validator: checkConfirm}
-                ]} 
                 readonly={id&&falg}
-                rules={[{ required: true, message: '请设置中奖次数' }]}
+                rules={[
+                  {validator: checkConfirm},
+                  { required: true, message: '请设置中奖次数' }
+                ]}
             />
             <span>次，当天总计达到此中奖次数，后面的人不再中奖</span>
         </ProForm.Group>
