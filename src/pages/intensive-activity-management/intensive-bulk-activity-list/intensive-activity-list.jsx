@@ -488,58 +488,11 @@ const TableList = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      // width: 600,
+      width: 110,
       fixed: 'right',
       render: (_, data) => (
         <Space>
           <Dropdown.Button onClick={(e) => { handleButtonClick(e, data) }} overlay={() => { return menu(data) }}>详情</Dropdown.Button>
-          {/* {data.wholesaleAuditStatus !== 1 && data.wholesaleAuditStatus !== 3 && <a onClick={() => { history.push(`/intensive-activity-management/intensive-bulk-activity-create/${data.wholesaleId}`) }}>编辑</a>}
-          <a onClick={() => { history.push(`/intensive-activity-management/intensive-bulk-activity-detail/${data.wholesaleId}`) }}>详情</a> */}
-          {
-            (data.wholesaleStatus === 1 || data.wholesaleStatus === 2 || data.wholesaleStatus === 4 || data.wholesaleStatus === 5)
-            &&
-            <>
-              {/* {data.wholesaleStatus !== 4 && data.wholesaleStatus !== 5 && <a onClick={() => {
-                confirm({
-                  title: '确定要终止集约活动店主下单么？',
-                  icon: <ExclamationCircleOutlined />,
-                  content: <div><span style={{ color: 'red' }}>终止后店主将无法采购</span>，你还要继续吗？</div>,
-                  onOk() {
-                    wholesaleStopRequest(data.wholesaleId, 1)
-                  },
-                });
-              }}>终止店主集约</a>} */}
-              {/* {data.wholesaleStatus !== 5 && <a onClick={() => {
-                confirm({
-                  title: '确定要终止集约店主和消费者下单么？',
-                  icon: <ExclamationCircleOutlined />,
-                  content: <div><span style={{ color: 'red' }}>终止后店主和消费者将无法集约</span>，你还要继续吗？</div>,
-                  onOk() {
-                    wholesaleStopRequest(data.wholesaleId, 2)
-                  },
-                });
-              }}>终止店主和消费者集约</a>} */}
-              {/* {data.wholesaleStatus !== 5 && <a onClick={() => {
-                setVisible(true);
-                setSelectItem(data);
-              }}>区域</a>}
-              {
-                data.wholesaleStatus === 2
-                &&
-                <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>
-              } */}
-            </>
-          }
-          {/* {
-            data.wholesaleAuditStatus === 0
-            &&
-            <a onClick={() => { cancel(data.wholesaleId) }}>取消活动</a>
-          }
-          <a onClick={() => { history.push(`/intensive-activity-management/intensive-bulk-activity-create/${data.wholesaleId}?type=1`) }}>复制活动</a>
-          {data.wholesaleStatus === 1 && +new Date() < +new Date(data.endTimeAdvancePayment) && <a onClick={() => {
-            setTimeVisible(true);
-            setSelectItem(data);
-          }}> 重置店主采购下单截止时间</a>} */}
         </Space >
       ),
     },

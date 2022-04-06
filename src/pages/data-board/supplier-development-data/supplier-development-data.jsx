@@ -12,10 +12,25 @@ const { RangePicker } = DatePicker
 
 const MDatePicker = ({ value, onChange }) => {
   return (
-    <RangePicker 
-      value={value} 
-      onChange={onChange} 
+    <RangePicker
+      value={value}
+      onChange={(v) => {
+        if (v) {
+          onChange([v[0].startOf('month'), v[1].endOf('month')])
+        } else {
+          onChange(v)
+        }
+      }}
+      onCalendarChange={(v)=>{
+        if (v?.[0]) {
+          onChange([v[0].startOf('month')])
+        }
+        if (v?.[1]){
+          onChange([v[0].startOf('month'), v[1].endOf('month')])
+        }
+      }}
       picker="month"
+      format={'YYYY-MM-DD'}
     />
   )
 }
@@ -33,13 +48,13 @@ const SupplierDevelopmentData = () => {
     }
   }
 
-  const columns =[
+  const columns = [
     {
       title: '时间范围',
       dataIndex: 'time',
       align: 'center',
       hideInTable: true,
-      renderFormItem: () => <MDatePicker/>
+      renderFormItem: () => <MDatePicker />
     },
     {
       title: '采购账号ID',
@@ -137,16 +152,16 @@ const SupplierDevelopmentData = () => {
         }}
         search={{
           labelWidth: 120,
-          optionRender: (searchConfig, formProps, dom)=>[
+          optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <Export
-              change={(e)=> {setVisit(e)}}
-              key="export" 
+              change={(e) => { setVisit(e) }}
+              key="export"
               type="data-board-supplier-development-data"
               conditions={getFieldValue}
             />,
             <ExportHistory
-              key="export-history" 
+              key="export-history"
               show={visit} setShow={setVisit}
               type="data-board-supplier-development-data"
             />
