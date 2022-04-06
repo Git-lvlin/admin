@@ -104,8 +104,8 @@ export default (props) => {
   useEffect(() => {
     const params={
       activityId:`${record?.id}`,
-      startTime:time?.[0]&&moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      endTime:time?.[1]&&moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      startTime:time?.[0]?moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'):moment().subtract(1, 'years').format('YYYY-MM-DD HH:mm:ss'),
+      endTime:time?.[1]?moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'):moment(+new Date()).format('YYYY-MM-DD HH:mm:ss'),
       activityCode:'wsDiscountActiveCode'
     }
     activityData(params).then(res=>{
