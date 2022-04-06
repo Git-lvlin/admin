@@ -3,7 +3,7 @@ import { Button} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import { getActiveConfigList} from '@/services/intensive-activity-management/penny-activity';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import moment from 'moment'
 import EndModel from './end-model'
 import AddedActivity from '../added-activity'
