@@ -3,6 +3,7 @@ import styles from '../style.less'
 import { Button } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import ProForm, { ProFormText, ProFormSelect,ProFormRadio,ProFormDependency,ProFormDigit,ModalForm } from '@ant-design/pro-form';
+import Big from 'big.js'
 
 export default (props) => {
     const {id,falg}=props
@@ -97,10 +98,12 @@ export default (props) => {
                                     <span>中奖概率</span>
                                     <ProFormDigit
                                         name="probability1"
+                                        fieldProps={{
+                                            formatter: value => value ? +new Big(value).toFixed(2) : value
+                                        }}
                                         min={1}
                                         max={100}
                                         rules={[
-                                            {validator: checkConfirm},
                                             { required: true, message: '请设置中奖概率' }
                                         ]}
                                         readonly={id&&falg}
@@ -167,9 +170,11 @@ export default (props) => {
                                         min={1}
                                         max={100}
                                         rules={[
-                                            {validator: checkConfirm},
                                             { required: true, message: '请设置中奖概率' }
                                         ]}
+                                        fieldProps={{
+                                            formatter: value => value ? +new Big(value).toFixed(2) : value
+                                        }}
                                         readonly={id&&falg}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
@@ -230,10 +235,12 @@ export default (props) => {
                                         min={1}
                                         max={100}
                                         rules={[
-                                            {validator: checkConfirm},
                                             { required: true, message: '请设置中奖概率' }
                                         ]}
                                         readonly={id&&falg}
+                                        fieldProps={{
+                                            formatter: value => value ? +new Big(value).toFixed(2) : value
+                                        }}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
@@ -298,9 +305,11 @@ export default (props) => {
                                         min={1}
                                         max={100}
                                         rules={[
-                                            {validator: checkConfirm},
                                             { required: true, message: '请设置中奖概率' }
                                         ]}
+                                        fieldProps={{
+                                            formatter: value => value ? +new Big(value).toFixed(2) : value
+                                        }}
                                         readonly={id&&falg}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
