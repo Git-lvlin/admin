@@ -87,11 +87,11 @@ export default (props) => {
                                 <ProFormText
                                     width={100}
                                     name="dayGainMax"
-                                    rules={[
-                                        {validator: checkConfirm}
-                                    ]}
                                     readonly={id}
-                                    rules={[{ required: true, message: '请设置获得次数' }]}
+                                    rules={[
+                                        {validator: checkConfirm},
+                                        { required: true, message: '请设置获得次数' }
+                                    ]}
                                 />
                                 <span>次</span>
                                 </ProForm.Group>
@@ -320,11 +320,11 @@ export default (props) => {
                                     <ProFormText
                                         width={100}
                                         name="dayMaxNum"
-                                        rules={[
-                                            {validator: checkConfirm}
-                                        ]}
                                         readonly={id}
-                                        rules={[{ required: true, message: '请设置获得次数' }]}
+                                        rules={[
+                                            {validator: checkConfirm},
+                                            { required: true, message: '请设置获得次数' }
+                                        ]}
                                     />
                                     <span>次</span>
                                 </ProForm.Group>
