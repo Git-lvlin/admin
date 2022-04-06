@@ -149,7 +149,6 @@ const Aduit: FC<aduitProps> = ({visible, setVisible, data, callback})=> {
             <Form.Item
               label="附件"
               name="attachList"
-              rules={[{ required: true, message: '请上传附件' }]}
             >
               <FromWrap
                 content={(value, onChange) => <Upload  value={value} onChange={onChange}   maxCount={9} accept="image/*"  size={3 * 1024} />}

@@ -10,5 +10,11 @@ export default {
       component: './group-activities-management/activity-list',
       wrappers: [RouteWatcher]
     },
+    {
+      name: 'activity-data',
+      path: '/group-activities-management/activity-data',
+      component: './group-activities-management/activity-data',
+      wrappers: [RouteWatcher]
+    },
   ]
 }

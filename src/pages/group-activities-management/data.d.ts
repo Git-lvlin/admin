@@ -11,3 +11,7 @@ export type TableListItem = {
   virtualType: number
   activityStatus: number
 }
+
+export type GroupDataItem = {
+  
+}
