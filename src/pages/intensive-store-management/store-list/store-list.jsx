@@ -582,14 +582,14 @@ const StoreList = (props) => {
     },
     {
       title: '审核通过时间',
-      dataIndex: 'auditTimeTime',
+      dataIndex: 'auditTime',
       valueType: 'dateTimeRange',
       hideInTable: true,
       hideInSearch: storeType === 'freshStores'
     },
     {
       title: '审核通过时间',
-      dataIndex: 'auditTimeTime',
+      dataIndex: 'auditTime',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType === 'freshStores'
