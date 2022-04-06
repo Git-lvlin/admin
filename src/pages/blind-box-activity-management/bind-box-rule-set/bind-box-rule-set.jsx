@@ -330,7 +330,6 @@ export default (props) => {
         </Form.Item>
         <PeriodValidity id={id} falg={falg}/>
         <ProFormText
-            width={120}
             label={<><span style={{color:'#FF7E7E',fontSize:'20px',marginTop:'5px'}}>*&nbsp;</span>盲盒中奖后兑奖有效期</>}
             readonly
             fieldProps={{
@@ -341,7 +340,6 @@ export default (props) => {
             <ProForm.Group>
             <span>中奖后</span>
             <ProFormText
-                width={120}
                 name="redeemEarlyDay"
                 readonly={id} 
                 rules={[
@@ -362,7 +360,6 @@ export default (props) => {
             <span className={styles.back}><span style={{color:'#FF7E7E',fontSize:'20px',marginTop:'5px'}}>*&nbsp;</span>每天可中奖最高总次数</span>
             <ProFormText 
                 name="maxPrizeNum"
-                width={100}
                 readonly={id&&falg}
                 rules={[
                   {validator: checkConfirm},
