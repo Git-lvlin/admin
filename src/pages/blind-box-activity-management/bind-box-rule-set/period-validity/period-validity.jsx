@@ -40,11 +40,11 @@ export default (props)=>{
                         <ProForm.Group>
                             <span>获得机会</span>  
                             <ProFormText
-                                width={100}
                                 name="validiteHour"
                                 readonly={id} 
                                 rules={[
-                                    {validator: checkConfirm}
+                                    {validator: checkConfirm},
+                                    { required: true, message: '请填写时间' }
                                 ]}
                             />
                             <span>小时内可用</span>
