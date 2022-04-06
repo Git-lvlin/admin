@@ -208,7 +208,7 @@ export default (props) => {
       setTableData(detailData.goodsList.map(item => ({
         ...item,
         activityStockNumEdit: item.activityStockNum,
-        activityPrice: amountTransform(item.activityPrice, '/'),
+        activityPrice: amountTransform(item.activityPrice, '/')
       })))
     }
   }, [form, detailData]);
@@ -339,7 +339,7 @@ export default (props) => {
       >
         <Space style={{ marginBottom: 10 }}>
           <Button type="primary" onClick={() => { setFormVisible(true) }}>选择活动商品</Button>
-          <Button type="primary" disabled={selectedRowKeys.length === 0} onClick={() => { batchCancel() }}>批量取消</Button>
+          <Button type="primary" disabled={selectedRowKeys.length === 0} onClick={() => { batchCancel() }}>批量取消</Button> 
         </Space>
         {
           !!tableData.length &&
@@ -385,12 +385,10 @@ export default (props) => {
           setVisible={setFormVisible}
           callback={(v) => {
             setTableData(v.map(item => {
-              return {
-                ...item,
-                activityPrice: amountTransform(item.retailSupplyPrice, '/')
-              }
+              return { ...item }
             }))
           }}
+          skuData={tableData}
         />
       }
     </DrawerForm>
