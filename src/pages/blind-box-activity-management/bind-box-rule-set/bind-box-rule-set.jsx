@@ -83,17 +83,15 @@ export default (props) => {
       })
     } 
   }, [])
-  const checkConfirm = (rule, value, callback) => {
+  const checkConfirm=(rule, value, callback)=>{
     return new Promise(async (resolve, reject) => {
-      if (value && value.length > 50) {
-        await reject('红包名称不超过50个字符')
-      } else if (value&&/[^\u4e00-\u9fa5\0-9]/.test(value)) {
-        await reject('只能输入汉字')
-      } else {
+    if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+        await reject('只能输入整数')
+    } else {
         await resolve()
-      }
+    }
     })
-  }
+}
   const checkConfirm2 = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
       if (value && value.length > 1000) {
@@ -346,7 +344,10 @@ export default (props) => {
                 width={120}
                 name="redeemEarlyDay"
                 readonly={id} 
-                rules={[{ required: true, message: '请设置兑奖有效期' }]}
+                rules={[
+                  {validator: checkConfirm},
+                  { required: true, message: '请设置兑奖有效期' }
+                ]}
             />
             <span>天内有效</span>
             </ProForm.Group>
@@ -362,11 +363,11 @@ export default (props) => {
             <ProFormText 
                 name="maxPrizeNum"
                 width={100}
-                rules={[
-                    {validator: checkConfirm}
-                ]} 
                 readonly={id&&falg}
-                rules={[{ required: true, message: '请设置中奖次数' }]}
+                rules={[
+                  {validator: checkConfirm},
+                  { required: true, message: '请设置中奖次数' }
+                ]}
             />
             <span>次，当天总计达到此中奖次数，后面的人不再中奖</span>
         </ProForm.Group>

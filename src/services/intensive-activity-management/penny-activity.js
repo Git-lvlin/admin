@@ -153,7 +153,7 @@ export const activityData = async (params = {}, options = {}) => {
   return {
     data: res.data.records,
     success: true,
-    total: res.data.total
+    code: res.code
   }
 }
 

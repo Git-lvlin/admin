@@ -4,6 +4,15 @@ import styles from '../style.less'
 
 export default (props)=>{
     const {id,falg}=props
+    const checkConfirm=(rule, value, callback)=>{
+        return new Promise(async (resolve, reject) => {
+        if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
+            await reject('只能输入整数')
+        } else {
+            await resolve()
+        }
+        })
+    }
     return (
         <>
         <ProFormRadio.Group
@@ -34,6 +43,9 @@ export default (props)=>{
                                 width={100}
                                 name="validiteHour"
                                 readonly={id} 
+                                rules={[
+                                    {validator: checkConfirm}
+                                ]}
                             />
                             <span>小时内可用</span>
                         </ProForm.Group>

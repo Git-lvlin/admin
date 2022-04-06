@@ -94,13 +94,15 @@ export default (props) => {
   ];
   useEffect(() => {
     const params={
-      activityId:record?.id,
-      startTime:time?.[0]&&moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      endTime:time?.[1]&&moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      activityId:`${record?.id}`,
+      startTime:time?.[0]?moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'):moment().subtract(1, 'years').format('YYYY-MM-DD HH:mm:ss'),
+      endTime:time?.[1]?moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'):moment(+new Date()).format('YYYY-MM-DD HH:mm:ss'),
       activityCode:'wsCentActiveCode'
     }
     activityData(params).then(res=>{
-      setDetailList(res.data[0])
+      if(res.code==0){
+        setDetailList(res.data[0])
+      }
     })
 
   }, [time])
@@ -158,7 +160,8 @@ export default (props) => {
         rowKey="skuId"
         options={false}
         params={{
-          activityId:record?.id
+          activityId:`${record?.id}`,
+          activityCode:'wsCentActiveCode'
         }}
         request={activityGoods}
         search={{
