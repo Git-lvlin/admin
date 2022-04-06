@@ -124,7 +124,8 @@ export default (props) => {
       title: '操作',
       valueType: 'options',
       render: (_, data) => <a onClick={() => { cancel(data.id) }}>取消参加</a>,
-      editable: false
+      editable: false,
+      fixed: 'right'
     },
   ];
 
