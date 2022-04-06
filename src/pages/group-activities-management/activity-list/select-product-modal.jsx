@@ -10,6 +10,7 @@ export default (props) => {
   const { visible, setVisible, callback,hideAll, title = '选择活动商品',goodsSaleType, apolloConfig, skuData} = props
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectItems, setSelectItems] = useState([]);
+  const [goodsData, setGoodsData] = useState([])
 
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -135,6 +136,12 @@ export default (props) => {
             ...dom.reverse(),
           ],
         }}
+        postData={v => {
+          const arr = [...goodsData]
+          arr.push(...v)
+          setGoodsData(arr)
+          return v
+        }}
         pagination={{
           pageSize: 10,
         }}
@@ -142,14 +149,14 @@ export default (props) => {
           hideSelectAll: hideAll || false,
           selectedRowKeys,
           preserveSelectedRowKeys: true,
-          onChange: (_, val) => {
-            let arr = skuData && val.map(item => {
-              return {
-                ...item,
-                ...skuData.find(res=> res?.skuId === item?.skuId)
-              }
-            })
-            arr = skuData.concat(_.map(res => val.find(data => res === data?.skuId))?.filter(Boolean))
+          onChange: _ => {
+            const arr = []
+            _.forEach(item => {
+              const obj = [...skuData, ...goodsData].find(ele => {
+                return ele.skuId === item
+               })
+               obj && arr.push(obj)
+             })
             setSelectItems(arr || [])
             setSelectedRowKeys(_)
           }
