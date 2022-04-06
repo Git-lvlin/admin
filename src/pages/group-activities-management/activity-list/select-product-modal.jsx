@@ -7,7 +7,7 @@ import { productList } from '@/services/intensive-activity-management/intensive-
 import SupplierSelect from '@/components/supplier-select'
 
 export default (props) => {
-  const { visible, setVisible, callback,hideAll, title = '选择活动商品',goodsSaleType, apolloConfig, skuId} = props
+  const { visible, setVisible, callback,hideAll, title = '选择活动商品',goodsSaleType, apolloConfig, skuData} = props
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectItems, setSelectItems] = useState([]);
 
@@ -24,13 +24,9 @@ export default (props) => {
     }
   };
 
-
   useEffect(()=> {
-    setSelectItems(skuId)
-    setSelectedRowKeys(skuId.map(item => {
-      return item.skuId
-    }))
-    return undefined
+    setSelectItems(skuData)
+    setSelectedRowKeys(skuData.map(item => item.skuId))
   }, [])
 
 
@@ -143,12 +139,19 @@ export default (props) => {
           pageSize: 10,
         }}
         rowSelection={{
-          hideSelectAll:hideAll||false,
+          hideSelectAll: hideAll || false,
           selectedRowKeys,
           preserveSelectedRowKeys: true,
           onChange: (_, val) => {
-            setSelectItems(val);
-            setSelectedRowKeys(_);
+            let arr = skuData && val.map(item => {
+              return {
+                ...item,
+                ...skuData.find(res=> res?.skuId === item?.skuId)
+              }
+            })
+            arr = skuData.concat(_.map(res => val.find(data => res === data?.skuId))?.filter(Boolean))
+            setSelectItems(arr || [])
+            setSelectedRowKeys(_)
           }
         }}
       />

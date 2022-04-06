@@ -208,7 +208,7 @@ export default (props) => {
       setTableData(detailData.goodsList.map(item => ({
         ...item,
         activityStockNumEdit: item.activityStockNum,
-        activityPrice: amountTransform(item.activityPrice, '/'),
+        activityPrice: amountTransform(item.activityPrice, '/')
       })))
     }
   }, [form, detailData]);
@@ -384,12 +384,11 @@ export default (props) => {
           visible={formVisible}
           setVisible={setFormVisible}
           callback={(v) => {
-            console.log(v)
             setTableData(v.map(item => {
               return { ...item }
             }))
           }}
-          skuId={tableData}
+          skuData={tableData}
         />
       }
     </DrawerForm>
