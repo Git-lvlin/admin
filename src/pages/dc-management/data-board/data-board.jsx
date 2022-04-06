@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { findByPage,removeById } from '@/services/resource'
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { history,connect } from 'umi';
 import DeleteModal from './delete-modal'
 import Configuration from './data-board-configuration'

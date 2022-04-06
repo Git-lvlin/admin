@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Space, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { shopkeeperInvited } from '@/services/intensive-store-management/shopkeeper-user';
 import { useParams, useLocation, history } from 'umi';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';

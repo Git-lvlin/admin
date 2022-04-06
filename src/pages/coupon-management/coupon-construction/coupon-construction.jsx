@@ -13,7 +13,7 @@ import moment from 'moment';
 import styles from './style.less'
 import IssueTypeModel from './issue-type-model'
 import AddressMultiCascader from '@/components/address-multi-cascader'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { getWholesaleArea } from '@/services/intensive-activity-management/intensive-activity-list'
 
 const formItemLayout = {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, history, useLocation } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 
 import { amountTransform } from '@/utils/utils'
 import { 

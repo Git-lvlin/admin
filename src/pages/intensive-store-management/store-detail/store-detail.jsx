@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Descriptions, Divider, Row, Avatar, Typography, Button } from 'antd';
 import { getDetail } from '@/services/intensive-store-management/store-detail';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { useParams } from 'umi';
 import { amountTransform } from '@/utils/utils'
 import Auth from '@/components/auth'

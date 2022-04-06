@@ -1,4 +1,4 @@
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import { Tabs } from 'antd'
 
 import TabList from './tab-list'

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Space, Table, Spin } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { useParams, useLocation } from 'umi';
 import { multiGroupList, groupMemberList } from '@/services/single-contract-activity-management/group-detail'
 

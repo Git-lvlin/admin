@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons'
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { gradeList } from '@/services/intensive-store-management/grade-index';
 import { amountTransform } from '@/utils/utils'
 import Form from './form';
