@@ -168,6 +168,7 @@ const CancelAduit: FC = () => {
       valueType: 'option',
       align: 'center',
       fixed: 'right',
+      width: '100px',
       render: (_, data)=> (
         <Space size={20}>
           <a key="1" onClick={()=> {setSelectItem(data.storeNo); setDetailVisible(true)}}>详情</a>
@@ -198,7 +199,7 @@ const CancelAduit: FC = () => {
   return (
     <PageContainer title={false}>
       <ProTable
-        rowKey="storeNo"
+        rowKey="applyId"
         columns={columns}
         request={memberShopCancel}
         params={{}}
