@@ -12,7 +12,7 @@ export default {
     },
     {
       name: 'shopkeeper-disclose',
-      path: '/business-school/article-list/shopkeeper-disclose',
+      path: '/business-school/shopkeeper-disclose',
       component: './business-school/shopkeeper-disclose',
       wrappers: [RouteWatcher],
       hideInMenu: true
