@@ -109,7 +109,9 @@ export default (props) => {
       activityCode:'wsDiscountActiveCode'
     }
     activityData(params).then(res=>{
-      setDetailList(res.data[0])
+      if(res.code==0){
+        setDetailList(res.data[0])
+      }
     })
 
   }, [time])
