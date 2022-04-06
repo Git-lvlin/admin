@@ -127,6 +127,18 @@ export default props => {
       title: '集约库存',
       dataIndex: 'totalStockNum',
       hideInSearch: true,
+      render: (_,data)=> {
+        return <p>{_}{data?.unit}</p>
+      },
+    },
+    {
+      title: '活动库存',
+      dataIndex: 'actStockNum',
+      hideInSearch: true,
+      editable:false,
+      render: (_,data)=> {
+        return <p>{_}{data?.unit}</p>
+      },
     },
     {
       title: '集采箱规单位量',

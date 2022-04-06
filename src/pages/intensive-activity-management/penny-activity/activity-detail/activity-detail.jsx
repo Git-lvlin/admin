@@ -97,6 +97,15 @@ export default props => {
       },
     },
     {
+      title: '活动库存',
+      dataIndex: 'actStockNum',
+      hideInSearch: true,
+      editable:false,
+      render: (_,data)=> {
+        return <p>{_}{data?.unit}</p>
+      },
+    },
+    {
       title: '状态',
       dataIndex: 'status',
       valueType: 'text',
