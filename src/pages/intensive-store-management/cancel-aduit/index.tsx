@@ -40,7 +40,7 @@ const CancelAduit: FC = () => {
     },
     {
       title: '店主手机号',
-      dataIndex: 'phone',
+      dataIndex: 'memberPhone',
       align: 'center',
     },
     {
@@ -113,7 +113,9 @@ const CancelAduit: FC = () => {
       valueType: 'select',
       valueEnum: {
         1: '已启用',
-        3: '已关闭'
+        2: '注销未退保证金',
+        3: '已关闭',
+        5: '注销已退保证金'
       }
     },
     {
@@ -122,15 +124,18 @@ const CancelAduit: FC = () => {
       align: 'center',
       valueType: 'select',
       valueEnum: {
-        " ": '全部',
-        "11": '正常-已退部分保证金',
-        "12": '正常-已退全部保证金',
-        "13": '正常-未退保证金',
+        0: '全部',
+        11: '正常-已退部分保证金',
+        12: '正常-已退全部保证金',
+        13: '正常-未退保证金',
+        20: '注销未退保证金',
+        21: '注销已退全部保证金',
+        22: '注销已退部分保证金'
       },
     },
     {
       title: '注销原因',
-      dataIndex: 'auditMsg',
+      dataIndex: 'reason',
       align: 'center',
       hideInSearch: true
     },
@@ -190,7 +195,8 @@ const CancelAduit: FC = () => {
           freshVerifyStatus: ele.freshVerifyStatus?.code,
           shopMemberStatus: ele.shopMemberStatus?.code,
           depositStatus: ele.depositStatus?.code,
-          verifyStatus: ele.verifyStatus?.code
+          verifyStatus: ele.verifyStatus?.code,
+          reason: ele.details?.reason
         }
       )
     })

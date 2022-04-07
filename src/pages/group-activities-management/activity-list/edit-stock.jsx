@@ -111,10 +111,10 @@ const EditStock = (props) => {
       {...formItemLayout}
     >
       <ProForm.Item label="当前商品可用库存（秒约）">
-        {data.stockNum}
+        {data.stockNum}{data.unit}
       </ProForm.Item>
       <ProForm.Item label="当前拼团活动可用库存">
-        {data.activityStockNum}
+        {data.activityStockNum}{data.unit}
       </ProForm.Item>
       <ProFormRadio.Group
         name="actionType"
@@ -169,10 +169,10 @@ const EditStock = (props) => {
           return (
             <>
               <ProForm.Item label="操作后拼团活动可用库存">
-                {optionActivityStock(newActivityStockNum)}
+                {optionActivityStock(newActivityStockNum)}{data.unit}
               </ProForm.Item>
               <ProForm.Item label="操作后商品可用库存">
-                {optionStock(newActivityStockNum)}
+                {optionStock(newActivityStockNum)}{data.unit}
               </ProForm.Item>
             </>
           )
