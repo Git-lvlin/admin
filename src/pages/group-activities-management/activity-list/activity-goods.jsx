@@ -117,7 +117,7 @@ const TableList = ({onClose, visible, id}) => {
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '拼约价（元）',
+      title: '拼团价（元）',
       dataIndex: 'activityPrice',
       valueType: 'text',
       hideInSearch: true,
