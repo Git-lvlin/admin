@@ -187,7 +187,7 @@ export default (props) => {
             activityPrice: amountTransform(item.activityPrice, '*'),
             stockNum: item.stockNum,
             activityStockNum: +item.activityStockNumEdit,
-            defaultGroupNum: item.defaultGroupNum || defaultGroupNum,
+            defaultGroupNum: item.defaultGroupNum || parseInt(defaultGroupNum),
             memberType,
             salePrice: item.salePrice,
             marketPrice: item.marketPrice
