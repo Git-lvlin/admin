@@ -105,14 +105,14 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
       dataIndex: 'finishGroupTime',
       hideInTable: true,
       valueType: 'dateTimeRange',
-      hideInSearch: groupState === 3
+      hideInSearch: groupState === 3 || groupState === 2
     },
     {
       title: '失败时间',
       dataIndex: 'finishGroupTime',
       hideInTable: true,
       valueType: 'dateTimeRange',
-      hideInSearch: groupState === 1
+      hideInSearch: groupState === 1 || groupState === 2
     }
   ]
   
