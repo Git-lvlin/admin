@@ -6,6 +6,7 @@ import ProDescriptions from '@ant-design/pro-descriptions';
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
 import styles from './detail.less';
 import { history } from 'umi'
+import DrawerDetail from '../after-sales-order/detail'
 
 const { Step } = Steps;
 
@@ -14,6 +15,8 @@ const Detail = (props) => {
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
   const [expressInfoState, setExpressInfoState] = useState([])
+  const [afterSaleVisible, setAfterSaleVisible] = useState(false)
+  const [afterSaleId, setId] = useState()
 
   const getCurrent = () => {
     let current = 0;
@@ -209,7 +212,7 @@ const Detail = (props) => {
                           <div>{item.skuName}</div>
                         </div>
                         <div className={styles.box}>
-                          <div>{({ 2: '秒约', 3: '单约', 4: '团约' }[detailData.orderType] || '秒约')}价</div>
+                          <div>{({ 2: '秒约', 3: '拼团', 4: '团约' }[detailData.orderType] || '秒约')}价</div>
                           <div>{amountTransform(item.skuSalePrice, '/')}元</div>
                         </div>
                         <div className={styles.box}>
@@ -222,8 +225,7 @@ const Detail = (props) => {
                             {amountTransform(item.totalAmount, '/')}元  
                             {item.afterSalesStatus!==0&&
                             <a 
-                            href={`/order-management/after-sales-order/detail/${item.afterSalesApplyId}`}
-                            target="_blank" 
+                            onClick={()=>{setId(item.afterSalesApplyId);setAfterSaleVisible(true)}}
                             className={styles.after_sale}>
                               {item.afterSalesStatusStr}
                             </a>
@@ -261,6 +263,14 @@ const Detail = (props) => {
           </Steps>
         </Modal>
       </Spin>
+      {
+        afterSaleVisible&&
+        <DrawerDetail
+          visible={afterSaleVisible}
+          setVisible={setAfterSaleVisible}
+          id={afterSaleId}
+        />
+      }
     </Drawer>
   )
 }
