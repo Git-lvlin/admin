@@ -285,7 +285,7 @@ export default (props) => {
         extra={
           <>
             <Button disabled type='default' style={{ position: 'absolute', left: 325, top: 0, cursor: 'default' }}>人</Button>
-            <span style={{ position: 'absolute', top: 32, color: 'rgb(234, 154, 0)' }}>一键设置所有活动商品的成团人数</span>
+            <span style={{ color: 'rgb(234, 154, 0)' }}>一键设置所有活动商品的成团人数</span>
           </>
         }
         width="md"
