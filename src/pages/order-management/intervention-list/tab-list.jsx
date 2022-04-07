@@ -110,24 +110,34 @@ const TabList =({done})=> {
   ]
 
   return (
-    <ProTable
-      rowKey='orderSn'
-      columns={columns}
-      headerTitle="数据列表"
-      options={false}
-      params={{
-        done
-      }}
-      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
-      request={interventionList}
-      pagination={{
-        // hideOnSinglePage: true,
-        showQuickJumper: true
-      }}
-      search={{
-        span: 5
-      }}
-    />
+    <>
+      <ProTable
+        rowKey='orderSn'
+        columns={columns}
+        headerTitle="数据列表"
+        options={false}x
+        params={{
+          done
+        }}
+        scroll={{ y: Math.max(window.innerHeight - 350, 500), scrollToFirstRowOnChange: true, }}
+        request={interventionList}
+        pagination={{
+          showQuickJumper: true
+        }}
+        search={{
+          defaultCollapsed: false,
+          span: 5
+        }}
+      />
+      {
+        visible&&
+        <DrawerDetail
+          visible={visible}
+          setVisible={setVisible}
+          id={id}
+        />
+      }
+    </>  
   )
 }
 
