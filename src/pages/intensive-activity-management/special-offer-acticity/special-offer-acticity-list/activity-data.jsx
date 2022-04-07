@@ -106,7 +106,6 @@ export default (props) => {
       activityId:`${record?.id}`,
       startTime:time?.wholesaleStartTime?.[0]?moment(time?.wholesaleStartTime?.[0]).format('YYYY-MM-DD'):moment(record?.startTime*1000).format('YYYY-MM-DD'),
       endTime:time?.wholesaleStartTime?.[1]?moment(time?.wholesaleStartTime?.[1]).format('YYYY-MM-DD'):moment(record?.endTime*1000).format('YYYY-MM-DD'),
-      activityCode:'wsDiscountActiveCode'
     }
     activityData(params).then(res=>{
       if(res.code==0){
@@ -162,8 +161,7 @@ export default (props) => {
         rowKey="id"
         options={false}
         params={{
-          activityId:`${record?.id}`,
-          activityCode:'wsDiscountActiveCode'
+          activityId:`${record?.id}`
         }}
         request={activityGoods}
         search={{
