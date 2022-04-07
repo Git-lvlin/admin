@@ -26,8 +26,18 @@ export default (props) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [defaultGroupNum, setDefaultGroupNum] = useState(0)
 
-
   const [formRef] = Form.useForm()
+
+  const GroupNumEnum = {
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 5,
+    6: 6,
+    7: 7,
+    8: 8,
+    9: 9
+  }
 
   const cancel = (id) => {
     setTableData(tableData.filter(item => item.id !== id))
@@ -111,15 +121,9 @@ export default (props) => {
       title: '成团人数',
       dataIndex: 'defaultGroupNum',
       valueType: 'select',
-      valueEnum: {
-        2: 2,
-        3: 3,
-        4: 4,
-        5: 5,
-        6: 6,
-        7: 7,
-        8: 8,
-        9: 9
+      valueEnum: GroupNumEnum,
+      fieldProps: {
+        defaultValue: defaultGroupNum
       }
     },
     {
@@ -162,7 +166,7 @@ export default (props) => {
           reject()
           return
         }
-        if(!detailData && tableData[i].activityStockNumEdit > (parseFloat(tableData[i].stockNum/2))) {
+        if (!detailData && tableData[i].activityStockNumEdit > (parseFloat(tableData[i].stockNum / 2))) {
           message.error('拼团库存需要小于商品库存50%')
           reject()
           return
@@ -202,13 +206,8 @@ export default (props) => {
   }
 
   useEffect(() => {
-    setTableData(tableData.map(item => (
-      { ...item, defaultGroupNum: +defaultGroupNum }
-    )))
-  }, [defaultGroupNum])
-
-  useEffect(() => {
     if (detailData) {
+      setDefaultGroupNum(detailData.defaultGroupNum)
       form.setFieldsValue({
         activityTime: [detailData.activityStartTime * 1000, detailData.activityEndTime * 1000],
         ...detailData,
@@ -271,16 +270,7 @@ export default (props) => {
         placeholder="请选择拼约人数"
         label="成团人数"
         name="defaultGroupNum"
-        valueEnum={{
-          2: 2,
-          3: 3,
-          4: 4,
-          5: 5,
-          6: 6,
-          7: 7,
-          8: 8,
-          9: 9
-        }}
+        valueEnum={ GroupNumEnum }
         rules={[
           { required: true, message: '请选择成团人数' },
           () => ({
@@ -292,7 +282,12 @@ export default (props) => {
             },
           })
         ]}
-        extra={<><Button disabled type='default' style={{ position: 'absolute', left: 325, top: 0, cursor: 'default' }}>人</Button></>}
+        extra={
+          <>
+            <Button disabled type='default' style={{ position: 'absolute', left: 325, top: 0, cursor: 'default' }}>人</Button>
+            <span style={{ position: 'absolute', top: 32, color: 'rgb(234, 154, 0)' }}>一键设置所有活动商品的成团人数</span>
+          </>
+        }
         width="md"
         fieldProps={{
           onChange: e => setDefaultGroupNum(e)
@@ -348,7 +343,7 @@ export default (props) => {
       >
         <Space style={{ marginBottom: 10 }}>
           <Button type="primary" onClick={() => { setFormVisible(true) }}>选择活动商品</Button>
-          <Button type="primary" disabled={selectedRowKeys.length === 0} onClick={() => { batchCancel() }}>批量取消</Button> 
+          <Button type="primary" disabled={selectedRowKeys.length === 0} onClick={() => { batchCancel() }}>批量取消</Button>
         </Space>
         {
           !!tableData.length &&
