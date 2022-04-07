@@ -24,6 +24,9 @@ export type TableListItem = {
   depositStatus?: {
     code?: string
   }
+  details?: {
+    reason: string
+  }
   auditMsg?: string
   verifyStatus?: {
     code?: number
