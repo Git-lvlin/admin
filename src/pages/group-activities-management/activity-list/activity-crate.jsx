@@ -381,6 +381,20 @@ export default (props) => {
         label="活动规则"
         placeholder="请输入活动规则"
         width="md"
+        fieldProps={{
+          showCount: true,
+          maxLength: 2000
+        }}
+        rules={[
+          () => ({
+            validator(_, value) {
+              if (value.length < 5) {
+                return Promise.reject(new Error('请输入5-2000个字符'))
+              }
+              return Promise.resolve()
+            },
+          })
+        ]}
       />
 
       {

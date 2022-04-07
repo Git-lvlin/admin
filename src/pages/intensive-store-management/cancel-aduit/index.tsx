@@ -113,10 +113,23 @@ const CancelAduit: FC = () => {
       valueType: 'select',
       valueEnum: {
         1: '已启用',
-        2: '注销未退保证金',
+        2: '注销',
         3: '已关闭',
-        5: '注销已退保证金'
-      }
+        5: '注销'
+      },
+      hideInSearch: true
+    },
+    {
+      title: '营业状态',
+      dataIndex: 'shopMemberStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        1: '已启用',
+        3: '已关闭',
+        'cancel': '注销'
+      },
+      hideInTable: true
     },
     {
       title: '保证金状态',
