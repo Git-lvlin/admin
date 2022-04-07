@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import { Button, Space, Progress } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 

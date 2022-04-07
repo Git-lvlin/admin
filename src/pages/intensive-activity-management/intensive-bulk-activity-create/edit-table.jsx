@@ -290,6 +290,14 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       editable: false,
       width: 200,
     },
+    {
+      title: '规格信息',
+      dataIndex: 'skuNameDisplay',
+      valueType: 'text',
+      hideInSearch: true,
+      editable: false,
+      width: 200,
+    },
     // {
     //   title: '结算类型',
     //   dataIndex: 'settleType',
@@ -361,6 +369,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
                   debounceFetcher({ record, recordList: dataSource })
                 }} />
                 {record.price < price && <div style={{ color: 'red' }}>集约价不能小于{price}元</div>}
+                {record.price > record.marketPriceDisplay && <div style={{ color: 'red' }}>集约价不能大于市场价</div>}
               </>
             )}
           </FormWrap>
@@ -570,7 +579,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       request={productList}
       formRef={formRef}
       search={{
-        defaultCollapsed: false,
+        defaultCollapsed: true,
         optionRender: (searchConfig, formProps, dom) => [
           ...dom.reverse(),
         ],

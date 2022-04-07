@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table'
 import * as api from '@/services/message-management/message-template-config'
 import PopForm from './form'
@@ -73,7 +73,7 @@ const message = (type, module) => {
         actionRef={actionRef}
         params={{toType: type, moduleType: module}}
         request={api.messageTemplateList}
-        scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         pagination={{
           showQuickJumper: true,
           pageSize: 10,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import OrderDetail from './order-detail';
 import { orderList } from '@/services/order-management/retail-list';
 import { Table } from 'antd';
@@ -87,7 +87,7 @@ const TableList = () => {
         rowKey="id"
         options={false}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100
         }}
         columns={columns}

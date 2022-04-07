@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { getBuildhouseIncomeList } from '@/services/activity-management/spring-festival-build-building-activity';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { history,connect } from 'umi';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -110,7 +110,7 @@ export default () => {
           options={false}
           request={getBuildhouseIncomeList}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
@@ -123,7 +123,7 @@ export default () => {
               <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-give-list-export'}/>
             ],
           }}
-          scroll={{ y: Math.max(window.innerHeight - 500, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           pagination={{
             pageSize: 10,
             showQuickJumper: true,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Form, Spin, Space, Image, Button } from 'antd';
 import { storeDetail } from '@/services/intensive-store-management/store-review';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { useParams } from 'umi';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
 import AddressCascader from '@/components/address-cascader'

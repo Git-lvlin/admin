@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { adminList } from '@/services/community-management/dynamic-admin-list';
 import { auditDynamic } from '@/services/community-management/dynamic-audit-dynamic';
 import { checkAuditDynamicSwitch,updateAuditDynamicSwitch } from '@/services/community-management/dynamic-audit-switch';
@@ -153,7 +153,7 @@ const Message = (props) => {
         rowSelection={type==0?true:false}
         tableAlertOptionRender={onIpute}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
            <div key='switch'> 

@@ -1,5 +1,5 @@
 import React, { useState,useRef } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table';
 import { adsenseAdminList } from '@/services/community-management/adsense-admin-list';
 import { deleteById } from '@/services/community-management/adsense-delete-byid';
@@ -107,7 +107,7 @@ export default props => {
           request={adsenseAdminList}
           scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
           search={{
-              defaultCollapsed: false,
+              defaultCollapsed: true,
               labelWidth: 100,
               optionRender: (searchConfig, formProps, dom) => [
                   ...dom.reverse(),

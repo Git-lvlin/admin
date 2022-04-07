@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { Steps, Space, Button, Modal, Spin } from 'antd';
 import { useParams, history, useLocation } from 'umi';
 import { findAdminOrderDetail, deliverGoods, expressInfo, expressInfoYlbb, findAdminOrderDetail2 } from '@/services/order-management/normal-order-detail';
@@ -251,7 +251,7 @@ const OrderDetail = () => {
                           <div>{item.skuName}</div>
                         </div>
                         <div className={styles.box}>
-                          <div>{({ 2: '秒约', 3: '单约', 4: '团约' }[detailData.orderType] || '秒约')}价</div>
+                          <div>{({ 2: '秒约', 3: '拼团', 4: '团约' }[detailData.orderType] || '秒约')}价</div>
                           <div>{amountTransform(item.skuSalePrice, '/')}元</div>
                         </div>
                         <div className={styles.box}>

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button, Space } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { storeList, storeDetail } from '@/services/daifa-store-management/list'
 import { history } from 'umi';
 import ExcelModel from '@/components/ExcelModel'
@@ -152,9 +152,9 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={storeList}
-        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

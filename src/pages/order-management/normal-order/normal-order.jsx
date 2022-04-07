@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect, ProFormCheckbox } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Tag, Form } from 'antd';
 import { history, useLocation } from 'umi';
@@ -118,7 +118,7 @@ const TableList = () => {
         submitter={{
           render: ({ form }, doms) => {
             return (
-              <div>
+              <div style={{marginBottom: 20}}>
                 <Space>
                   <Button
                     type="primary"
@@ -219,8 +219,8 @@ const TableList = () => {
           label="订单类型"
           options={[
             { value: '2', label: '秒约订单' },
-            { value: '3', label: '单约订单' },
-            { value: '4', label: '团约订单' },
+            { value: '3', label: '拼团订单' },
+            // { value: '4', label: '团约订单' },
             { value: '11', label: '1688订单' },
             { value: '17', label: '盲盒活动订单' },
             { value: '18', label: '签到活动订单' },
@@ -414,7 +414,7 @@ const TableList = () => {
                           <img width="100" height="100" src={it.skuImageUrl} />
                           <div className={styles.info}>
                             <div>{it.goodsName}</div>
-                            <div>{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688' }[item.orderType] || '秒约')}价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
+                            <div>{({ 2: '秒约', 3: '拼团', 4: '团约', 11: '1688' }[item.orderType] || '秒约')}价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
                             <div>数量： <span>{it.skuNum}{it.unit}</span></div>
                             <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
                             {isPurchase && <div>零售供货价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
@@ -445,7 +445,7 @@ const TableList = () => {
                     {{ 1: '待付款', 2: '待发货', 3: '已发货', 4: '已完成', 5: '已关闭', 6: '无效订单' }[item.status]}
                   </div>
                   <div style={{ textAlign: 'center' }}>
-                    <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '单约', 4: '团约', 11: '1688', 17: '盲盒活动', 18: '签到活动' }[item.orderType] || '秒约')}订单</Tag>
+                    <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '拼团', 4: '团约', 11: '1688', 17: '盲盒活动', 18: '签到活动' }[item.orderType] || '秒约')}订单</Tag>
                     {
                       item.relevant1688OrderId && <div>关联1688单号：{item.relevant1688OrderId}</div>
                     }

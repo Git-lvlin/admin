@@ -5,6 +5,7 @@ import ProForm, {
 } from '@ant-design/pro-form'
 import { Button, Form, Image, Spin, Drawer } from 'antd'
 import { customMessageDetail } from '@/services/message-management/message-template-config'
+import { PageContainer } from '@/components/PageContainer';
 import 'react-quill/dist/quill.snow.css'
 import ReactQuill from 'react-quill'
 

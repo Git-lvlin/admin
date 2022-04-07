@@ -1,5 +1,5 @@
 import React from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table'
 import { standLetterList } from '@/services/message-management/message-template-config'
 

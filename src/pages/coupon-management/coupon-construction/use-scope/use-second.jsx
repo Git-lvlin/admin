@@ -178,7 +178,7 @@ const GoosModel=(props)=>{
                     request={commonSpuList}
                     actionRef={actionRef}
                     search={{
-                        defaultCollapsed: false,
+                        defaultCollapsed: true,
                         labelWidth: 100,
                         optionRender: (searchConfig, formProps, dom) => [
                             ...dom.reverse(),

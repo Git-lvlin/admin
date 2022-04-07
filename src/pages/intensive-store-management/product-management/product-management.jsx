@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Space, Button } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { goodsPage } from '@/services/intensive-store-management/product-management';
 import { useParams, useLocation, history } from 'umi';
 import { amountTransform, typeTransform } from '@/utils/utils'
@@ -154,7 +154,7 @@ const TableList = () => {
         }}
         request={goodsPage}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

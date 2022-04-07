@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect,ProFormCheckbox } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal, Tag, Popconfirm } from 'antd';
 import { history, useLocation } from 'umi';
@@ -118,7 +118,7 @@ const TableList = () => {
         submitter={{
           render: ({ form }, doms) => {
             return (
-              <div>
+              <div style={{ marginBottom: 20}}>
                 <Space>
                   <Button
                     type="primary"
@@ -369,6 +369,15 @@ const TableList = () => {
             }
           }}
         />
+        <ProFormText
+          name="wsId"
+          label="集约活动ID"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -426,29 +435,29 @@ const TableList = () => {
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         }
-        <div style={{ height: window.innerHeight - 600, overflowY: 'auto', marginBottom: 10 }}>
-        {
-          data.map(item => (
-            <div className={styles.list} key={item.id}>
-              <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 10 }} color="#f59a23">{item.wholesaleFlowType === 1 ? '直发到店' : '运营中心配送'}</Tag>
-              <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: item.wholesaleFlowType === 1 ? 80 : 110, marginTop: 10 }} color='#58B138'>{item?.businessType !== 1 ? (item?.businessType === 2 ? '精装生鲜' : '散装生鲜'): '普适品'}</Tag>
-              {
-                isPurchase
-                  ?
-                  <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}（ID:{item.supplierId} 总计出单数：{item.supplierOrderNums}单）{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
-                  :
-                  <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}</div>
-              }
-              <div className={styles.second}>
-                <Space size="large">
-                  <span>下单时间：{moment(item.createTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>
-                  <span>订单号：{item.orderId}</span>
-                  <span>下单用户：{item.store.linkman}</span>
-                  <span>用户手机号：{item.store.phone}</span>
-                  <span>下单店主ID：{item.storeNo}</span>
-                  <span>商品归属集约活动ID：{item.wsId}</span>
-                </Space>
-              </div>
+        <div style={{ marginBottom: 10 }}>
+          {
+            data.map(item => (
+              <div className={styles.list} key={item.id}>
+                <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 10 }} color="#f59a23">{item.wholesaleFlowType === 1 ? '直发到店' : '运营中心配送'}</Tag>
+                <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: item.wholesaleFlowType === 1 ? 80 : 110, marginTop: 10 }} color='#58B138'>{item?.businessType !== 1 ? (item?.businessType === 2 ? '精装生鲜' : '散装生鲜'): '普适品'}</Tag>
+                {
+                  isPurchase
+                    ?
+                    <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}（ID:{item.supplierId} 总计出单数：{item.supplierOrderNums}单）{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                    :
+                    <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}</div>
+                }
+                <div className={styles.second}>
+                  <Space size="large">
+                    <span>下单时间：{moment(item.createTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>
+                    <span>订单号：{item.orderId}</span>
+                    <span>下单用户：{item.store.linkman}</span>
+                    <span>用户手机号：{item.store.phone}</span>
+                    <span>下单店主ID：{item.storeNo}</span>
+                    <span>商品归属集约活动ID：{item.wsId}</span>
+                  </Space>
+                </div>
 
                 <div className={styles.body}>
                   <div className={styles.goods_info}>

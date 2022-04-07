@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { history, connect } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { queryConsumeList,getConsumeData } from '@/services/sign-activity-management/packet-record-query-consume-list';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -129,9 +129,9 @@ export default () => {
           headerTitle="签到红包消耗明细"
           options={false}
           request={queryConsumeList}
-          scroll={{ y: Math.max(window.innerHeight - 650, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
