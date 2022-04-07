@@ -124,7 +124,7 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
     >
       <div style={{ marginBottom: 10, padding: 10 }}>
         <Space size="middle">
-          <span style={{width: "260px", display: "inline-block"}}>{data.goodsName}</span>
+          <span style={{maxWidth: "260px", display: "inline-block"}}>{data.goodsName}</span>
           <span>skuID:{data.skuId}</span>
           <span>({info.activityName}</span>
           <span>{info.activityStartTime}~{info.activityEndTime}</span>
@@ -133,11 +133,10 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
           <span>{info.groupNum}人团</span>
           <span>
             {{
-              1: '待开始',
-              2: '进行中',
-              3: '已结束',
-              4: '已中止'
-            }[info.activityStatus]}
+              2: '拼团中',
+              1: '已成团',
+              3: '已失败'
+            }[groupState]}
           </span>
         </Space>
       </div>

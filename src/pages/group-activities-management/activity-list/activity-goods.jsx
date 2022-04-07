@@ -135,7 +135,7 @@ const TableList = ({onClose, visible, id}) => {
       hideInSearch: true,
     },
     {
-      title: '已拼数量(件)',
+      title: '已拼数量',
       dataIndex: 'skuGroupNum',
       valueType: 'text',
       hideInSearch: true
@@ -198,7 +198,7 @@ const TableList = ({onClose, visible, id}) => {
       width={1200}
     >
       <div style={{ marginBottom: 10, background: '#fff', padding: 10 }}>
-        <Space size="large">
+        <Space size="middle">
           <span>{info.activityName}</span>
           <span>{info.activityStartTime}~{info.activityEndTime}</span>
           {info.virtualType === 2 && <span>虚拟成团</span>}
@@ -206,12 +206,12 @@ const TableList = ({onClose, visible, id}) => {
             1: '待开始',
             2: '进行中',
             3: '已结束',
-            4: '已中止'
+            4: '已终止'
           }[info.activityStatus]}</span>
         </Space>
       </div>
       <ProTable
-        rowKey="skuId"
+        rowKey="activitySkuNum"
         options={false}
         search={false}
         pagination={false}
@@ -223,7 +223,7 @@ const TableList = ({onClose, visible, id}) => {
         actionRef={actionRef}
       />
       <ProTable
-        rowKey="spuId"
+        rowKey="skuId"
         options={false}
         params={{ id }}
         postData={(data) => {
