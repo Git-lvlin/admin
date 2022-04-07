@@ -1,11 +1,18 @@
 import request from '@/utils/request';
 
-export const category = (params = {}, options = {}) => {
-  return request('/auth/goods/product/category', {
+export const category = async (params = {}, options = {}) => {
+  const { isFresh, ...rest } = params
+  let res = await request('/auth/goods/product/category', {
     method: 'POST',
-    data: params,
+    data: {
+      ...rest
+    },
     ...options
   });
+  if(isFresh) {
+    res.data.records = res.data.records.filter(item => item.fresh === 0)
+  }
+  return res
 }
 
 export const categoryAdd = (params = {}, options = {}) => {

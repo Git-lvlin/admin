@@ -49,7 +49,7 @@ export const wholeSaleOrderDetail = async (params = {}, options = {}) => {
       page: current,
       size: pageSize,
       startTime:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
-      endTime:dateTimeRange&&dateTimeRange[1],
+      endTime:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest
     },
     ...options
