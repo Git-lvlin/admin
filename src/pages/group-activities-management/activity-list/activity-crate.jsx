@@ -73,6 +73,13 @@ export default (props) => {
       render: (_) => _ > 0 ? amountTransform(_, '/') : 0
     },
     {
+      title: '市场价（元）',
+      dataIndex: 'marketPrice',
+      valueType: 'text',
+      editable: false,
+      render: (_) => _ > 0 ? amountTransform(_, '/') : 0
+    },
+    {
       title: '可用库存',
       dataIndex: 'stockNum',
       valueType: 'text',
@@ -178,7 +185,8 @@ export default (props) => {
             activityStockNum: +item.activityStockNumEdit,
             defaultGroupNum: item.defaultGroupNum,
             memberType,
-            salePrice: item.salePrice
+            salePrice: item.salePrice,
+            marketPrice: item.marketPrice
           }
         }),
         ...rest,
