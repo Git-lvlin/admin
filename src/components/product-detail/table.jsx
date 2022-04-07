@@ -20,6 +20,10 @@ export default function EditTable(props) {
 
     setColumns([
       {
+        title: 'skuID',
+        dataIndex: 'skuId',
+      },
+      {
         title: '规格图片',
         dataIndex: 'imageUrl',
         editable: false,
