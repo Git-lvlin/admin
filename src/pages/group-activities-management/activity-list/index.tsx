@@ -139,7 +139,7 @@ const TableList: FC = () => {
   ] 
 
   return (
-    <PageContainer>
+    <PageContainer title={false}>
       <Card>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button key="out" type="primary" icon={<PlusOutlined />} onClick={() => { setVisible(true) }}>新建</Button>
