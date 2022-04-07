@@ -5,8 +5,8 @@ import { Image } from 'antd'
 import { history, useLocation } from 'umi'
 
 import styles from './styles.less'
-import NormalOrderDetail from '../normal-order-detail'
-import ShopkeeperOrderDetail from '../shopkeeper-order-detail'
+import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
+import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/shopkeeper-order/detail'
 
 const tableRow = props => {
   const imageArr = () => {
@@ -40,7 +40,7 @@ const tableRow = props => {
             <div className={styles.summaryItemTxt}>售后凭证：</div>
             <div className={styles.summaryItemPic}>
               <Image.PreviewGroup>
-                { imageArr() }
+                { imageArr() }  
               </Image.PreviewGroup>
             </div>
           </div>
