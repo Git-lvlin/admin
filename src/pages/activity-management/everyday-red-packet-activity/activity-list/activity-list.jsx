@@ -69,7 +69,6 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="活动列表"
           options={false}
           scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           request={couponEverydayList}

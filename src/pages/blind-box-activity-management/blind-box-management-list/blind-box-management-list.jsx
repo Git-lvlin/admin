@@ -115,7 +115,6 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="盲盒活动列表"
           options={false}
           request={getActiveConfigList}
           scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}

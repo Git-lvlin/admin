@@ -112,7 +112,7 @@ const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
       width: 200,
     },
     {
-      title: '商品规格',
+      title: '规格信息',
       dataIndex: 'skuNameDisplay',
       width: 200,
     },
