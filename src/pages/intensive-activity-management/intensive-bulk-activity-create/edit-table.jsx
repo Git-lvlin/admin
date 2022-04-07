@@ -291,7 +291,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       width: 200,
     },
     {
-      title: '商品规格',
+      title: '规格信息',
       dataIndex: 'skuNameDisplay',
       valueType: 'text',
       hideInSearch: true,
