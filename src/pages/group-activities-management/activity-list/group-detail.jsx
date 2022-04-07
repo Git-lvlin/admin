@@ -13,7 +13,7 @@ const SubTable = (props) => {
     { title: '参团用户手机号', dataIndex: 'joinMemberPhone' },
     { title: '参团时间', dataIndex: 'createTime' },
     { title: '支付状态', dataIndex: 'payStatus' },
-    { title: '拼约商品数量', dataIndex: 'goodsNum' },
+    { title: '拼团商品数量', dataIndex: 'goodsNum' },
   ];
 
   useEffect(() => {

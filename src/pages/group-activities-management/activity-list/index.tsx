@@ -81,7 +81,7 @@ const TableList: FC = () => {
       )
     },
     {
-      title: '拼约时长(小时)',
+      title: '拼团时长(小时)',
       dataIndex: 'groupTime',
       width: '5%',
       valueType: 'text',
