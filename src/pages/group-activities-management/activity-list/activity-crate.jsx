@@ -267,7 +267,7 @@ export default (props) => {
       />
 
       <ProFormSelect
-        placeholder="请选择拼约人数"
+        placeholder="请选择拼团人数"
         label="成团人数"
         name="defaultGroupNum"
         valueEnum={ GroupNumEnum }
@@ -296,13 +296,13 @@ export default (props) => {
 
       <ProFormDigit
         placeholder="请输入1-96之间的整数"
-        label="拼约时长"
+        label="拼团时长"
         name="groupTime"
         min={1}
         max={96}
         step
         rules={[
-          { required: true, message: '请输入拼约时长' },
+          { required: true, message: '请输入拼团时长' },
           () => ({
             validator(_, value) {
               if (`${value}`.indexOf('.') !== -1) {
@@ -332,7 +332,7 @@ export default (props) => {
         ]}
         extra={
           <>
-            <div>开启虚拟成团后，当拼约时长到期时，对人数未满的团，系统将会模拟匿名买家凑满人数，使该团成团，开启以提高成团率</div>
+            <div>开启虚拟成团后，当拼团时长到期时，对人数未满的团，系统将会模拟匿名买家凑满人数，使该团成团，开启以提高成团率</div>
             <div style={{ color: 'rgb(234, 154, 0)' }}>限新人参团的商品固定不开启虚拟成团</div>
           </>
         }
