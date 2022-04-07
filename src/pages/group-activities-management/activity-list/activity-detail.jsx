@@ -59,13 +59,13 @@ const ActivityDetail = ({visible, onClose, id}) => {
       valueType: 'text'
     },
     {
-      title: '单约价',
+      title: '拼团价',
       dataIndex: 'activityPrice',
       valueType: 'text',
       render: (_) => _ > 0 ? amountTransform(_, '/') : 0,
     },
     {
-      title: '单约库存',
+      title: '拼团库存',
       dataIndex: 'activityStockNum',
       valueType: 'text'
     },

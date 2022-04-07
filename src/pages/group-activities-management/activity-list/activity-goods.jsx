@@ -20,8 +20,12 @@ const TableList = ({onClose, visible, id}) => {
 
   const actionRef = useRef() 
   
-  const toTop = (ruleGoodsId) => {
-    ruleGoodsSortTop({ruleGoodsId},{ showSuccess: true })
+  const toTop = (ruleGoodsId, actionRef) => {
+    ruleGoodsSortTop({ruleGoodsId},{ showSuccess: true }).then(res=> {
+      if(res.code === 0) {
+        actionRef.current?.reload()
+      }
+    })
   }
 
   const statInfo = [
@@ -91,9 +95,6 @@ const TableList = ({onClose, visible, id}) => {
       dataIndex: 'goodsName',
       valueType: 'text',
       width: '15%',
-      fieldProps: {
-        placeholder: '请输入商品名称'
-      },
       render: (_, r)=> <a onClick={()=> {setProductDetailDrawerVisible(true); setSpuId(r.spuId)}}>{_}</a>
     },
     {
@@ -182,7 +183,7 @@ const TableList = ({onClose, visible, id}) => {
       title: '操作',
       valueType: 'option',
       render: (_, record)=> [
-        <a key="1" onClick={()=> {toTop(record.ruleGoodsId)}}>置顶</a>,
+        <a key="1" onClick={()=> {toTop(record.ruleGoodsId, actionRef)}}>置顶</a>,
         <a key="2" onClick={() => {setEditStockVisible(true); setStockData(record)}}>编辑库存</a>
       ],
       fixed: 'right'
@@ -210,7 +211,7 @@ const TableList = ({onClose, visible, id}) => {
         </Space>
       </div>
       <ProTable
-        rowKey="activitySkuNum"
+        rowKey="skuId"
         options={false}
         search={false}
         pagination={false}

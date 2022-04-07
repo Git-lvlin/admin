@@ -348,7 +348,9 @@ export default (props) => {
             <EditableProTable
               value={tableData}
               columns={columns}
-              pagination={false}
+              pagination={{
+                pageSize: 5
+              }}
               controlled
               scroll={{ x: 'max-content' }}
               rowKey="id"
@@ -367,7 +369,6 @@ export default (props) => {
               recordCreatorProps={false}
               tableAlertRender={false}
             />
-            {`共${tableData.length}条`}
           </>
 
         }
