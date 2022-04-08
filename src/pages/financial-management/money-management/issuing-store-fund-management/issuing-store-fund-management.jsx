@@ -42,12 +42,10 @@ const IssuingStoreFundManagement = () => {
   const skipToDetail = ({accountType, accountId}) => {
     setQuery({accountType, accountId})
     setDetailedVisible(true)
-    // history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
   }
   const toDetails = ({accountType, accountId}) => {
     setQuery({accountType, accountId})
     setDetailVisible(true)
-    // history.push(`/financial-management/money-management/details?accountType=${accountType}&accountId=${accountId}`)
   }
 
   const disable = data =>{

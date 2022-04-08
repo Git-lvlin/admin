@@ -115,6 +115,7 @@ const CancelAduit: FC = () => {
         1: '已启用',
         2: '注销',
         3: '已关闭',
+        4: '待开户',
         5: '注销'
       },
       hideInSearch: true
@@ -127,6 +128,7 @@ const CancelAduit: FC = () => {
       valueEnum: {
         1: '已启用',
         3: '已关闭',
+        4: '待开户',
         'cancel': '注销'
       },
       hideInTable: true
