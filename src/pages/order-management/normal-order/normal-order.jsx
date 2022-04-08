@@ -231,7 +231,7 @@ const TableList = () => {
               width: 180,
             },
             onChange: (val) => {
-              setOrderTypes(val)
+              setOrderTypes(val || 0)
             }
           }}
         />
