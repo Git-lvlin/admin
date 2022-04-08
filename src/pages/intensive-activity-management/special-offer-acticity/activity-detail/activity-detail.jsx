@@ -44,7 +44,6 @@ export default props => {
       title: '商品主图',
       dataIndex: 'imageUrl',
       valueType: 'image',
-      ellipsis:true,
       hideInSearch:true
     },
     {
