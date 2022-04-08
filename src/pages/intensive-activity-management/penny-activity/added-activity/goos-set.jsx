@@ -316,9 +316,7 @@ export default (props) => {
                 />
         }
       },
-      render: (_,data)=> {
-        
-      },
+      fixed: 'right'
     },
     {
       title: '活动价',
@@ -341,8 +339,8 @@ export default (props) => {
       },
       render: (_,r) =>{
         return <p>{_}%</p>
-      }
-
+      },
+      fixed: 'right'
     },
     {
       title: '状态',
@@ -353,11 +351,11 @@ export default (props) => {
       valueEnum: {
         0: '已禁用',
         1: '已启用',
-    },
+      },
     },
     {
       title: '操作',
-      valueType: 'text',
+      valueType: 'option',
       render:(text, record, _, action)=>{
         return [
           <span key='dele'>
@@ -367,7 +365,7 @@ export default (props) => {
               :null
             }
           </span>,
-          <span key='stop'>
+          <span key='stop' style={{display:record?.wholesaleStatus==0?'none':'block'}}>
               {
                 record.status!=0?
                 <a key='detail' onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
@@ -377,7 +375,7 @@ export default (props) => {
           </span>,
           <span key='repertory'>
             {
-              id&&detailList?.content?.goods?.find(ele=>{return ele.wsId==record?.wsId})?
+              id&&detailList?.content?.goods?.find(ele=>{return ele.wsId==record?.wsId})&&record?.wholesaleStatus!==0?
               <a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑库存</a>
               :null
             }
@@ -385,6 +383,7 @@ export default (props) => {
       ]
       },
       editable:false,
+      fixed: 'right'
     }
   ]; 
 
@@ -428,6 +427,7 @@ export default (props) => {
         pagination={{
           pageSize: 5
         }}
+        scroll={{x: 'max-content'}}
     />
 
     {
