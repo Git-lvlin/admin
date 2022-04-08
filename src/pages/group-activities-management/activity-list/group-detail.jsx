@@ -9,11 +9,28 @@ const SubTable = (props) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false);
   const columns = [
-    { title: '序号', dataIndex: 'index', render: (_, $, index) => data.length - index },
-    { title: '参团用户手机号', dataIndex: 'joinMemberPhone' },
-    { title: '参团时间', dataIndex: 'createTime' },
-    { title: '支付状态', dataIndex: 'payStatus' },
-    { title: '拼团商品数量', dataIndex: 'goodsNum' },
+    { 
+      title: '序号', 
+      dataIndex: 'index', 
+      render: (_, $, index) => data.length - index
+    },
+    { 
+      title: '参团用户手机号',
+      dataIndex: 'joinMemberPhone',
+      render: (_, r) => <span>{_}{r.type === 1 && `（团长）`}</span>
+    },
+    { 
+      title: '参团时间',
+      dataIndex: 'createTime' 
+    },
+    { 
+      title: '支付状态',
+      dataIndex: 'payStatus'
+    },
+    { 
+      title: '拼团商品数量', 
+      dataIndex: 'goodsNum' 
+    },
   ];
 
   useEffect(() => {
@@ -49,9 +66,7 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
       title: '团长手机号',
       dataIndex: 'groupMemberPhone',
       valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入请输入会员手机号'
-      }
+      hideInTable: true
     },
     {
       title: '开团时间',
@@ -74,12 +89,6 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
     {
       title: '剩余时间（小时）',
       dataIndex: 'remainTime',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '支付状态',
-      dataIndex: 'payStatus',
       valueType: 'text',
       hideInSearch: true,
     },
