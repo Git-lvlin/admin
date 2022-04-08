@@ -25,7 +25,7 @@ const formItemLayout = {
 };
 
 const FromWrap = ({ value, onChange, content, right }) => (
-  <div style={{ display: 'flex',flexDirection:'column',alignItems:'center' }}>
+  <div style={{ display: 'flex',flexDirection:'column'}}>
     <div>{content(value, onChange)}</div>
     <div>{right(value)}</div>
   </div>
@@ -402,12 +402,11 @@ export default (props) => {
       dataIndex: 'maxNum',
       hideInSearch: true,
       valueType: 'digit',
-      width:150
+      fixed: 'right'
     },
     {
       title: '活动库存',
       dataIndex: 'actStockNum',
-      width:120,
       hideInSearch: true,
       renderFormItem: (_) =>{
         const obj=detailList?.find(ele=>{
@@ -431,6 +430,7 @@ export default (props) => {
                 />
         }
       },
+      fixed: 'right'
     },
     {
       title: '活动价',
@@ -450,36 +450,36 @@ export default (props) => {
         right={(value) =><p>元/{_?.entry?.unit}</p>}
         />
       },
-      width:100,
       render: (_,r) =>{
         return <p>{_}</p>
       },
+      fixed: 'right'
     },
     {
       title: '操作',
-      valueType: 'text',
+      valueType: 'option',
       render:(text, record, _, action)=>{
         return [
           <a style={{display:'block'}} key='dele' onClick={()=>{setPennyId({wsId:record.wsId,type:1});setEndVisible(true)}}>删除</a>,
-          <div key='detail'>
+          <div key='detail' style={{display:record?.wholesaleStatus==0?'none':'block'}}>
             {
               record?.status==0?
-              <p style={{color:'#AAAAAA'}}>禁用</p>
+              <a style={{color:'#AAAAAA',display:'block'}}>禁用</a>
               :
               <a style={{display:'block'}} key='detail' onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
             }
           </div>,
-          <div key='start'>
+          <div key='start' style={{display:record?.wholesaleStatus==0?'none':'block'}}>
            {
              record?.status==1?
-             <p style={{color:'#AAAAAA'}}>启用</p>
+             <a style={{color:'#AAAAAA',display:'block'}}>启用</a>
              :
              <a style={{display:'block'}} key='start' onClick={()=>{setPennyId({wsId:record.wsId,type:3});setEndVisible(true)}}>启用</a>
            }
           </div>,
           <div key='repertory'>
            {
-             id&&detailList?.find(ele=>{return ele.wsId==record?.wsId})?
+             id&&detailList?.find(ele=>{return ele.wsId==record?.wsId})&&record?.wholesaleStatus!==0?
              <a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑<br/>库存</a>
              :null
            }
@@ -488,6 +488,7 @@ export default (props) => {
       ]
       },
       editable:false,
+      fixed: 'right'
     }
   ]; 
   return (
@@ -527,6 +528,7 @@ export default (props) => {
             <p>共{dataSource?.length}款商品</p>
         ]}
         style={{marginBottom:'30px'}}
+        scroll={{x: 'max-content'}}
     />
 
     {

@@ -96,20 +96,34 @@ export default (props) => {
     if(id){
       let arr=goosList||detailList
       let stockNum=false
+      var flage=false
       for (let index = 0; index < arr.length; index++) {
           if(arr[index]?.actStockNum==0){
             stockNum=true
+          }
+          if(arr[index]?.actStockNum%arr[index]?.batchNumber!==0){
+            flage=true
           }
       }
       if(stockNum){
         return message.error('活动库存为零！')
       }
+      if(flage){
+        return message.error('请输入箱规单位量整倍数')
+      }
     }else{
       let stockNum=false
+      var flage=false
       for (let index = 0; index < goosList?.length; index++) {
           if(goosList[index]?.actStockNum==0){
             stockNum=true
           }
+          if(goosList[index]?.actStockNum%goosList[index]?.batchNumber!==0){
+            flage=true
+          }
+      }
+      if(flage){
+        return message.error('请输入箱规单位量整倍数')
       }
       if(stockNum){
         return message.error('活动库存为零！')

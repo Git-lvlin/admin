@@ -165,6 +165,7 @@ export default props => {
               pageSize: 5,
               showQuickJumper: true,
             }}
+            scroll={{x: 'max-content'}}
             />
       </Row>
       <Title style={{ marginBottom: -10 }} level={5}>活动参数</Title>
