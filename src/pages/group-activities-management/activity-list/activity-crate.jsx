@@ -10,7 +10,7 @@ import {
   ProFormCheckbox,
   ProFormTextArea,
   ProFormDateTimeRangePicker,
-  ProFormSelect
+  ProFormSelect,
 } from '@ant-design/pro-form'
 
 import { amountTransform } from '@/utils/utils'
@@ -24,7 +24,7 @@ export default (props) => {
   const [excelVisible, setExcelVisible] = useState(false)
   const [tableData, setTableData] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
-  const [defaultGroupNum, setDefaultGroupNum] = useState(0)
+  const [defaultGroupNum, setDefaultGroupNum] = useState()
 
   const [formRef] = Form.useForm()
 
@@ -187,7 +187,7 @@ export default (props) => {
             activityPrice: amountTransform(item.activityPrice, '*'),
             stockNum: item.stockNum,
             activityStockNum: +item.activityStockNumEdit,
-            defaultGroupNum: item.defaultGroupNum || parseInt(defaultGroupNum),
+            defaultGroupNum: +item.defaultGroupNum || +defaultGroupNum,
             memberType,
             salePrice: item.salePrice,
             marketPrice: item.marketPrice
@@ -215,7 +215,7 @@ export default (props) => {
 
       setTableData(detailData.goodsList.map(item => ({
         ...item,
-        activityStockNumEdit: item.activityStockNum,
+        activityStockNumEdit: +item.activityStockNum,
         activityPrice: amountTransform(item.activityPrice, '/')
       })))
     }
@@ -354,7 +354,6 @@ export default (props) => {
               pagination={{
                 pageSize: 5
               }}
-              controlled
               scroll={{ x: 'max-content' }}
               rowKey="id"
               rowSelection={{
