@@ -9,8 +9,8 @@ import { amountTransform } from '@/utils/utils'
 import { Export,ExportHistory } from '@/pages/export-excel'
 import { tradeType } from '../../common-enum'
 import Detail from '../../common-popup/order-pay-detail-popup'
-import NormalOrderDetail from '../../common-popup/normal-order-detail'
-import ShopkeeperOrderDetail from '../../common-popup/shopkeeper-order-detail'
+import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
+import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/shopkeeper-order/detail'
 
 const TransactionDetails = ({
   visible,

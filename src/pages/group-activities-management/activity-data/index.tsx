@@ -1,82 +1,106 @@
+import { useState, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 
 import type { FC } from 'react'
 import type { ProColumns } from '@ant-design/pro-table'
+import type { FormInstance } from 'antd'
 import type { GroupDataItem } from '../data'
 
+import { togetherGroupData } from '@/services/group-activities-management/activity-data'
+import { amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const GroupData: FC = () => {
+  const [visit, setVisit] = useState<boolean>(false)
+  const form = useRef<FormInstance>()
 
   const columns: ProColumns<GroupDataItem>[] = [
     {
       title: '活动ID',
-      dataIndex: '',
+      dataIndex: 'acivtyId',
       align: 'center'
     },
     {
       title: '活动时间',
-      dataIndex: '',
+      dataIndex: 'activityTime',
       hideInSearch: true,
-      align: 'center'
+      align: 'center',
+      render: (_, r) => (
+        <pre>{r.activityTime}</pre>
+      )
     },
     {
       title: '活动名称',
-      dataIndex: '',
-      align: 'center'
+      dataIndex: 'activityName',
+      align: 'center',
+      width: '20%'
     },
     {
       title: '开团人数',
-      dataIndex: '',
+      dataIndex: 'openGroupUsersNum',
       hideInSearch: true,
       align: 'center'
     },
     {
       title: '参团人数',
-      dataIndex: '',
+      dataIndex: 'togetherGroupUsersNum',
       hideInSearch: true,
       align: 'center'
     },
     {
       title: '拼团订单数',
-      dataIndex: '',
+      dataIndex: 'togetherGroupOrderNums',
       hideInSearch: true,
       align: 'center'
     },
     {
       title: '成团订单数',
-      dataIndex: '',
+      dataIndex: 'successGroupNums',
       hideInSearch: true,
       align: 'center'
     },
     {
       title: '成团失败订单数',
-      dataIndex: '',
+      dataIndex: 'failesGroupNums',
       hideInSearch: true,
       align: 'center'
     },
     {
       title: '成交金额',
-      dataIndex: '',
+      dataIndex: 'payAmpout',
       hideInSearch: true,
-      align: 'center'
+      align: 'center',
+      render: (_, r) => amountTransform(r.payAmpout, '/')
     }
   ]
 
   return (
     <PageContainer title={false}>
       <ProTable
-        rowKey=''
+        rowKey='acivtyId'
         columns={columns}
-        // request={}
+        request={togetherGroupData}
         params={{}}
+        formRef={form}
         pagination={{
-          showQuickJumper: true,
           pageSize: 10
         }}
         toolBarRender={false}
         search={{
           optionRender: (searchConfig, formProps, dom) => [
+            <Export
+              change={(e: boolean) => { setVisit(e) }}
+              key="export"
+              type="activity-group-order-data-export"
+              conditions={{...form.current?.getFieldsValue()}}
+            />,
+          <ExportHistory
+            key="export-history"
+            show={visit} setShow={setVisit}
+            type="activity-group-order-data-export"
+          />,
             ...dom.reverse()
           ]
         }}
