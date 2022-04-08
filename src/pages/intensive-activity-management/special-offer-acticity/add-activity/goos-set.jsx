@@ -461,7 +461,7 @@ export default (props) => {
       render:(text, record, _, action)=>{
         return [
           <a style={{display:'block'}} key='dele' onClick={()=>{setPennyId({wsId:record.wsId,type:1});setEndVisible(true)}}>删除</a>,
-          <div key='detail' style={{display:record?.wholesaleStatus==0?'none':'block'}}>
+          <div key='detail' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
             {
               record?.status==0?
               <a style={{color:'#AAAAAA',display:'block'}}>禁用</a>
@@ -469,7 +469,7 @@ export default (props) => {
               <a style={{display:'block'}} key='detail' onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
             }
           </div>,
-          <div key='start' style={{display:record?.wholesaleStatus==0?'none':'block'}}>
+          <div key='start' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
            {
              record?.status==1?
              <a style={{color:'#AAAAAA',display:'block'}}>启用</a>
@@ -477,9 +477,9 @@ export default (props) => {
              <a style={{display:'block'}} key='start' onClick={()=>{setPennyId({wsId:record.wsId,type:3});setEndVisible(true)}}>启用</a>
            }
           </div>,
-          <div key='repertory'>
+          <div key='repertory' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
            {
-             id&&detailList?.find(ele=>{return ele.wsId==record?.wsId})&&record?.wholesaleStatus!==0?
+             id&&detailList?.find(ele=>{return ele.wsId==record?.wsId})?
              <a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑<br/>库存</a>
              :null
            }
