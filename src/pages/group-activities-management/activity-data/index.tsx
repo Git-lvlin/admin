@@ -72,7 +72,7 @@ const GroupData: FC = () => {
       dataIndex: 'payAmpout',
       hideInSearch: true,
       align: 'center',
-      render: (_, r) => amountTransform(r.payAmpout, '/')
+      render: (_, r) => amountTransform(r.payAmpout, '/').toFixed(2)
     }
   ]
 
