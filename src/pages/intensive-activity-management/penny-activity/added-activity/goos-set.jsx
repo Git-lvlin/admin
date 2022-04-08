@@ -365,7 +365,7 @@ export default (props) => {
               :null
             }
           </span>,
-          <span key='stop' style={{display:record?.wholesaleStatus==0?'none':'block'}}>
+          <span key='stop' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
               {
                 record.status!=0?
                 <a key='detail' onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
@@ -373,9 +373,9 @@ export default (props) => {
                 <a key='start' onClick={()=>{setPennyId({wsId:record.wsId,type:3});setEndVisible(true)}}>启用</a>
               }
           </span>,
-          <span key='repertory'>
+          <span key='repertory' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
             {
-              id&&detailList?.content?.goods?.find(ele=>{return ele.wsId==record?.wsId})&&record?.wholesaleStatus!==0?
+              id&&detailList?.content?.goods?.find(ele=>{return ele.wsId==record?.wsId})?
               <a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑库存</a>
               :null
             }
