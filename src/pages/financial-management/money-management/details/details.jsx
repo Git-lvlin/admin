@@ -55,7 +55,6 @@ const Details = ({visible, setVisible, query}) => {
   const skipToDetail = ({accountType, accountId}) => {
     setPaymentQuery({accountType, accountId})
     setPaymentVisible(true)
-    // history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
   }
 
   return (

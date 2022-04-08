@@ -13,5 +13,15 @@ export type TableListItem = {
 }
 
 export type GroupDataItem = {
-  
+  acivtyId: number
+  activityEndTime: number
+  activityName: string
+  activityStartTime: number
+  failesGroupNums: number
+  openGroupUsersNum: number
+  successGroupNums: number
+  togetherGroupOrderNums: number
+  togetherGroupUsersNum: number
+  payAmpout: number
+  activityTime: string
 }
