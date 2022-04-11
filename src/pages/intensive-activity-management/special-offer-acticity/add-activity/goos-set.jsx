@@ -547,7 +547,9 @@ export default (props) => {
               status:1,
               wsPrice:item.price,
               price:amountTransform(item.wholesaleSupplyPrice+item.wholesaleFreight, '/'),
-              actStockNum:item.totalStockNum
+              actStockNum:item.totalStockNum,
+              gcName1:item.gcName.split('-')?.[0],
+              gcName2:item.gcName.split('-')?.[1]
             })
           })
           setDataSource(arr)
