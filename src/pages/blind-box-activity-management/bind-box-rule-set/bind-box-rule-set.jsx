@@ -39,7 +39,6 @@ export default (props) => {
   const {setVisible,visible,onClose,callback,id}=props
   const [detailList,setDetailList]=useState()
   const [goosList,setGoosList]=useState()
-  const [goosProb,setGoosProb]=useState()
   const [form] = Form.useForm()
   const [falg,setFalg]=useState(true)
   const [del,setDel]=useState('')
@@ -376,7 +375,9 @@ export default (props) => {
           id={id} 
           falg={falg} 
           callback={(recordList,sum)=>{
-            setGoosProb(sum)
+            form.setFieldsValue({
+              prob:`${amountTransform(10000-amountTransform(sum, '*'),'/')}%`
+            })
             setGoosList(recordList)
             setDel(true)
           }}
@@ -387,9 +388,6 @@ export default (props) => {
           name="prob"
           label={ <><span style={{color:'#FF7E7E',fontSize:'20px',marginTop:'5px'}}>*&nbsp;</span>谢谢参与概率</>}
           readonly={true}
-          fieldProps={{
-            value:goosProb&&`${amountTransform(10000-amountTransform(goosProb, '*'),'/')}%`
-          }}
         />
 
         {/* 奖品预告 */}
