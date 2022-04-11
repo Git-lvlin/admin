@@ -90,7 +90,7 @@ export default {
   'menu.intensive-activity-management.platfor-bonus-percentage': '平台额外奖励比例',
   'menu.intensive-activity-management.platfor-bonus-percentage-audit': '平台额外奖励比例审核',
   'menu.intensive-activity-management.penny-activity': '一分钱活动',
-  'menu.intensive-activity-management.penny-activity.activity-list': '活动列表',
+  'menu.intensive-activity-management.penny-activity.activity-list': '一分钱活动列表',
   'menu.intensive-activity-management.penny-activity.added-activity': '新建活动',
   'menu.intensive-activity-management.penny-activity.activity-detail': '活动详情',
   'menu.intensive-activity-management.penny-activity.activity-tabulate-data': '活动数据汇总',

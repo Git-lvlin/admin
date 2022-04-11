@@ -119,7 +119,7 @@ export default () => {
                 key='export'
                 change={(e) => { setVisit(e) }}
                 type={'bind-box-give-detail-export'}
-                conditions={getFieldValue(searchConfig)}
+                conditions={()=>{return getFieldValue(searchConfig)}}
               />,
               <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-give-detail-export'}/>
             ],
