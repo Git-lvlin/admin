@@ -24,13 +24,13 @@ export default  () => {
   const [formDatil,setFormDatil]=useState()
   const [form] = Form.useForm()
   const actionRef = useRef();
+  const ref=useRef()
   const [currentType,setCurrentType]=useState()
   const [calculate,setCalculate]=useState()
   const [calculate2,setCalculate2]=useState()
   useEffect(() => {
     getMemberShopServicepoint({}).then(res=>{
       if(res.code==0){
-        console.log('data',res.data)
         setFormDatil(res.data)
         form.setFieldsValue({
           dateRange: [(res.data?.settingValues?.typtList?.limitTime?.timeQuantumNum?.start)*1000,(res.data?.settingValues?.typtList?.limitTime?.timeQuantumNum?.end)*1000],
@@ -152,6 +152,29 @@ export default  () => {
     return arr;
   }
 
+  const timeColumns= [
+    {
+      title: '平台服务费（元）',
+      dataIndex: 'optAdminName',
+    },
+    {
+      title: '约购运营中心（元）',
+      dataIndex: 'currentType',
+    },
+    {
+      title: '直推人（元）',
+      dataIndex: 'timeQuantumStr',
+    },
+    {
+      title: '健康事业部（元）',
+      dataIndex: 'topNum',
+    },
+    {
+      title: '备注',
+      dataIndex: 'discount',
+    },  
+  ];
+
   return (
     <>
       <ProForm
@@ -243,7 +266,15 @@ export default  () => {
                 }
                 if(currentType==='limitTopNum'){
                     return <>
-                        <ProFormDateTimeRangePicker
+                        <ProTable
+                          actionRef={ref}
+                          rowKey="id"
+                          options={false}
+                          // request={couponEverydayList}
+                          search={false}
+                          columns={timeColumns}
+                        />
+                        {/* <ProFormDateTimeRangePicker
                             label='优惠时间段'
                             name="dateRange2"
                             fieldProps={{
@@ -290,7 +321,7 @@ export default  () => {
                         amountTransform(amountTransform(formDatil?.settingValues?.basePoint?.money,'*')*amountTransform(calculate2,'*'),'/')/1000
                         :
                         formDatil?.settingValues?.typtList?.limitTopNum?.discountMoney
-                        } 元</p>
+                        } 元</p> */}
                     </>
                 }
               }}
