@@ -186,7 +186,8 @@ const TableList = ({onClose, visible, id}) => {
         <a key="1" onClick={()=> {toTop(record.ruleGoodsId, actionRef)}}>置顶</a>,
         <a key="2" onClick={() => {setEditStockVisible(true); setStockData(record)}}>编辑库存</a>
       ],
-      fixed: 'right'
+      fixed: 'right',
+      hideInTable: info.activityStatus === 3 || info.activityStatus === 4
     }
   ]
 
