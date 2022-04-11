@@ -16,6 +16,10 @@ const GroupData: FC = () => {
   const [visit, setVisit] = useState<boolean>(false)
   const form = useRef<FormInstance>()
 
+  const getValues = () => {
+    return {...form.current?.getFieldsValue()}
+  }
+
   const columns: ProColumns<GroupDataItem>[] = [
     {
       title: '活动ID',
@@ -94,7 +98,7 @@ const GroupData: FC = () => {
               change={(e: boolean) => { setVisit(e) }}
               key="export"
               type="activity-group-order-data-export"
-              conditions={{...form.current?.getFieldsValue()}}
+              conditions={getValues}
             />,
           <ExportHistory
             key="export-history"

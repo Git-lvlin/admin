@@ -141,7 +141,7 @@ const CommissionDetailManagement = () =>{
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-trans-platformCommission-page-export"
-              conditions={getFieldValue(form)}
+              conditions={() => getFieldValue(form)}
             />,
             <ExportHistory
               key="exportHistory"

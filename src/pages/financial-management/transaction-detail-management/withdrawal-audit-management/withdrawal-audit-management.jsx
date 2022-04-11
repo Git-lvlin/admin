@@ -163,7 +163,7 @@ const WithdrawalAuditManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-withdraw-page-export"
-              conditions={getFieldValue(form)}
+              conditions={() => getFieldValue(form)}
             />,
             <ExportHistory
               key="exportHistory" 

@@ -179,7 +179,7 @@ const Detail = () => {
               change={(e)=> {setVisit(e)}}
               key="export" 
               type={type()}
-              conditions={getFieldValue()}
+              conditions={getFieldValue}
             />,
             <ExportHistory
               key="export-history" 
@@ -200,7 +200,7 @@ const Detail = () => {
                   change={(e)=> {setVisit(e)}}
                   key="export" 
                   type={type()}
-                  conditions={getFieldValue()}
+                  conditions={getFieldValue}
                 />,
                 <ExportHistory
                   key="export-history" 
