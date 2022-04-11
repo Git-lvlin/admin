@@ -36,10 +36,14 @@ export default  () => {
           ...ele,
           id:index,
           money:ele?.basePoint?.money,
+          circleNum:`${ele?.basePoint?.circleNum}${ele?.basePoint?.unit}`,
+          min:ele?.userLimit?.min,
+          max:ele?.userLimit?.max
         }))
         setRulelistData(data)
         form.setFieldsValue({
           dateRange: [(res.data?.settingValues?.typtList?.limitTime?.timeQuantumNum?.start)*1000,(res.data?.settingValues?.typtList?.limitTime?.timeQuantumNum?.end)*1000],
+          dateRange2: [(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.start)*1000,(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.end)*1000],
           discount:res.data?.settingValues?.typtList?.limitTime?.discount,
           currentType:res.data?.settingValues?.currentType
         })
@@ -72,9 +76,10 @@ export default  () => {
   const onsubmit = (values) => {
     const params={
       currentType:values.currentType,
-      start:moment(values.dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
-      end:moment(values.dateRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+      start:values.currentType==='limitTime'?moment(values.dateRange[0]).format('YYYY-MM-DD HH:mm:ss'):moment(values.dateRange2[0]).format('YYYY-MM-DD HH:mm:ss'),
+      end:values.currentType==='limitTime'?moment(values.dateRange[1]).format('YYYY-MM-DD HH:mm:ss'):moment(values.dateRange2[1]).format('YYYY-MM-DD HH:mm:ss'),
       discount:values.discount,
+      rulelist:values.currentType==='limitTime'?'':formDatil?.settingValues?.typtList?.limitTopNum?.rulelist
     }
     setMemberShopServicepoint(params).then(res=>{
       if(res.code==0){
@@ -117,16 +122,17 @@ export default  () => {
       ellipsis:true
     },
     {
-      title: '原优惠限量',
-      dataIndex: 'topNum',
-    },
-    {
       title: '原优惠折扣',
       dataIndex: 'discount',
       valueType:'text',
       hideInSearch: true,
       render:(_,data)=>{
-        return <p>{_}折</p>
+        if(!isNaN(_)){
+          return <p>{_}折</p>
+        }else{
+          return <p>-</p>
+        }
+
       }
     },
     {
@@ -135,7 +141,11 @@ export default  () => {
       valueType: 'text',
       hideInSearch: true,
       render:(_,data)=>{
-        return <p>￥{_}</p>
+        if(!isNaN(_)){
+          return <p>￥{_}</p>
+        }else{
+          return <p>-</p>
+        }
       }
     },   
   ];
@@ -147,9 +157,8 @@ export default  () => {
       `${ele.beforeValues?.typtList?.limitTime?.timeQuantumStr?.start} 至 ${ele.beforeValues?.typtList?.limitTime?.timeQuantumStr?.end}`
       :
       `${ele.beforeValues?.typtList?.limitTopNum?.timeQuantumStr?.start} 至 ${ele.beforeValues?.typtList?.limitTopNum?.timeQuantumStr?.end}`,
-      topNum:ele.beforeValues?.currentType=='limitTopNum'?ele.beforeValues?.typtList?.limitTopNum?.topNum:'',
-      discount:ele.beforeValues?.currentType=='limitTopNum'?ele.beforeValues?.typtList?.limitTopNum?.discount:ele.beforeValues?.typtList?.limitTime?.discount,
-      discountMoney:ele.beforeValues?.currentType=='limitTopNum'?ele.beforeValues?.typtList?.limitTopNum?.discountMoney:ele.beforeValues?.typtList?.limitTime?.discountMoney
+      discount:ele.beforeValues?.currentType=='limitTopNum'?'':ele.beforeValues?.typtList?.limitTime?.discount,
+      discountMoney:ele.beforeValues?.currentType=='limitTopNum'?'':ele.beforeValues?.typtList?.limitTime?.discountMoney
     }))
     return arr;
   }
@@ -157,32 +166,34 @@ export default  () => {
   const timeColumns= [
     {
       title: '平台服务期限',
-      dataIndex: 'money',
+      dataIndex: 'circleNum',
     },
     {
       title: '平台服务费（元）',
       dataIndex: 'money',
     },
     {
-      title: '约购运营中心（元）',
-      dataIndex: 'profitSupplier',
-    },
-    {
-      title: '直推人（元）',
-      dataIndex: 'profitDirect',
-    },
-    {
-      title: '健康事业部（元）',
-      dataIndex: 'profitHealth',
-    },
-    {
-      title: '备注',
-      dataIndex: 'discount',
+      title: '收费优惠条件',
+      dataIndex: 'min',
+      render:(_,data)=>{
+        if(data?.max&&_){
+          return <p>{_}-{data?.max}名</p>
+        }else if(_){
+          return <p>前{_}名</p>
+        }else if(data?.max){
+          return <p>{data?.max}以上</p>
+        }
+
+      }
     },  
   ];
 
   const timeColumns2= [
     {
+      title: '平台服务期限',
+      dataIndex: 'circleNum',
+    },
+    {
       title: '平台服务费（元）',
       dataIndex: 'money',
     },
@@ -198,10 +209,6 @@ export default  () => {
       title: '健康事业部（元）',
       dataIndex: 'profitHealth',
     },
-    {
-      title: '备注',
-      dataIndex: 'discount',
-    },  
   ];
 
   return (
@@ -295,6 +302,23 @@ export default  () => {
                 }
                 if(currentType==='limitTopNum'){
                     return <>
+                        <ProFormDateTimeRangePicker
+                            label='优惠时间段'
+                            name="dateRange2"
+                            fieldProps={{
+                                disabledDate:(current)=>disabledDate(current)
+                            }}
+                            placeholder={[
+                                formatMessage({
+                                id: 'formandbasic-form.placeholder.start',
+                                }),
+                                formatMessage({
+                                id: 'formandbasic-form.placeholder.end',
+                                }),
+                            ]}
+                            labelCol={2}
+                        />
+
                         <ProTable
                           actionRef={ref}
                           rowKey="id"
@@ -306,10 +330,11 @@ export default  () => {
                         <ProTable
                           actionRef={ref}
                           rowKey="id"
+                          headerTitle="不同服务费对应不同角色的分成金额"
                           options={false}
                           dataSource={rulelistdata}
                           search={false}
-                          columns={timeColumns}
+                          columns={timeColumns2}
                         />
                     </>
                 }
