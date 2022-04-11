@@ -27,7 +27,6 @@ export default  () => {
   const ref=useRef()
   const [currentType,setCurrentType]=useState()
   const [calculate,setCalculate]=useState()
-  const [calculate2,setCalculate2]=useState()
   const [rulelistdata, setRulelistData] = useState([])
   useEffect(() => {
     getMemberShopServicepoint({}).then(res=>{
@@ -41,10 +40,7 @@ export default  () => {
         setRulelistData(data)
         form.setFieldsValue({
           dateRange: [(res.data?.settingValues?.typtList?.limitTime?.timeQuantumNum?.start)*1000,(res.data?.settingValues?.typtList?.limitTime?.timeQuantumNum?.end)*1000],
-          dateRange2: [(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.start)*1000,(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.end)*1000],
           discount:res.data?.settingValues?.typtList?.limitTime?.discount,
-          discount2:res.data?.settingValues?.typtList?.limitTopNum?.discount,
-          topNum:res.data?.settingValues?.typtList?.limitTopNum?.topNum,
           currentType:res.data?.settingValues?.currentType
         })
       }
@@ -76,10 +72,9 @@ export default  () => {
   const onsubmit = (values) => {
     const params={
       currentType:values.currentType,
-      start:values.currentType==='limitTime'?moment(values.dateRange[0]).format('YYYY-MM-DD HH:mm:ss'):moment(values.dateRange2[0]).format('YYYY-MM-DD HH:mm:ss'),
-      end:values.currentType==='limitTime'?moment(values.dateRange[1]).format('YYYY-MM-DD HH:mm:ss'):moment(values.dateRange2[1]).format('YYYY-MM-DD HH:mm:ss'),
-      discount:values.currentType==='limitTime'?values.discount:values.discount2,
-      topNum:values.currentType==='limitTime'?'':values.topNum,
+      start:moment(values.dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+      end:moment(values.dateRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+      discount:values.discount,
     }
     setMemberShopServicepoint(params).then(res=>{
       if(res.code==0){
@@ -161,12 +156,16 @@ export default  () => {
 
   const timeColumns= [
     {
+      title: '平台服务期限',
+      dataIndex: 'money',
+    },
+    {
       title: '平台服务费（元）',
       dataIndex: 'money',
     },
     {
       title: '约购运营中心（元）',
-      dataIndex: 'profitHealth',
+      dataIndex: 'profitSupplier',
     },
     {
       title: '直推人（元）',
@@ -174,7 +173,30 @@ export default  () => {
     },
     {
       title: '健康事业部（元）',
-      dataIndex: 'topNum',
+      dataIndex: 'profitHealth',
+    },
+    {
+      title: '备注',
+      dataIndex: 'discount',
+    },  
+  ];
+
+  const timeColumns2= [
+    {
+      title: '平台服务费（元）',
+      dataIndex: 'money',
+    },
+    {
+      title: '约购运营中心（元）',
+      dataIndex: 'profitSupplier',
+    },
+    {
+      title: '直推人（元）',
+      dataIndex: 'profitDirect',
+    },
+    {
+      title: '健康事业部（元）',
+      dataIndex: 'profitHealth',
     },
     {
       title: '备注',
@@ -281,54 +303,14 @@ export default  () => {
                           search={false}
                           columns={timeColumns}
                         />
-                        {/* <ProFormDateTimeRangePicker
-                            label='优惠时间段'
-                            name="dateRange2"
-                            fieldProps={{
-                                disabledDate:(current)=>disabledDate(current)
-                            }}
-                            placeholder={[
-                                formatMessage({
-                                id: 'formandbasic-form.placeholder.start',
-                                }),
-                                formatMessage({
-                                id: 'formandbasic-form.placeholder.end',
-                                }),
-                            ]}
-                            labelCol={2}
+                        <ProTable
+                          actionRef={ref}
+                          rowKey="id"
+                          options={false}
+                          dataSource={rulelistdata}
+                          search={false}
+                          columns={timeColumns}
                         />
-                        <ProFormText
-                            width="md"
-                            name="topNum"
-                            label='优惠限量'
-                            rules={[
-                                { validator: checkConfirm2 }
-                            ]}
-                            fieldProps={{
-                                addonBefore:'前',
-                                addonAfter:"名"
-                            }}
-                        />
-                        <ProFormText
-                            width="md"
-                            name="discount2"
-                            label='优惠折扣'
-                            rules={[
-                                { validator: checkConfirm }
-                            ]}
-                            fieldProps={{
-                                addonAfter:"折",
-                                onChange:(val)=>{
-                                  setCalculate2(val.target?.value)
-                                }
-                            }}
-                        />
-                        <p>优惠后社区店主需缴纳金额为：{
-                        calculate2?
-                        amountTransform(amountTransform(formDatil?.settingValues?.basePoint?.money,'*')*amountTransform(calculate2,'*'),'/')/1000
-                        :
-                        formDatil?.settingValues?.typtList?.limitTopNum?.discountMoney
-                        } 元</p> */}
                     </>
                 }
               }}
