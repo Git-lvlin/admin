@@ -168,7 +168,7 @@ const BonusDetailManagement = () =>{
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-trans-commission-page-export"
-              conditions={getFieldValue(form)}
+              conditions={() => getFieldValue(form)}
             />,
             <ExportHistory
               key="exportHistory"

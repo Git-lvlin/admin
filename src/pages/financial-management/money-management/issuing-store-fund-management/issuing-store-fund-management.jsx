@@ -65,6 +65,15 @@ const IssuingStoreFundManagement = () => {
     })
   }
 
+  const getValues = (form) => {
+    return {
+      accountType: "agentStore",
+      ...form?.getFieldValue(),
+      registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
+      registTimeEnd: form?.getFieldValue()?.registTime?.[1].format('YYYY-MM-DD')
+    }
+  }
+
   const PopModal = props => {
     const {accountType, accountId} = props
     return(
@@ -193,6 +202,7 @@ const IssuingStoreFundManagement = () => {
       )
     }
   ]
+
   return (
     <PageContainer title={false}>
       <ProTable
@@ -241,12 +251,7 @@ const IssuingStoreFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-agentStore-export"
-              conditions={{
-                accountType: "agentStore",
-                ...form?.getFieldValue(),
-                registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
-                registTimeEnd: form?.getFieldValue()?.registTime?.[1].format('YYYY-MM-DD')
-              }}
+              conditions={() => getValues(form)}
             />,
             <ExportHistory
               key="exportHistory" 
