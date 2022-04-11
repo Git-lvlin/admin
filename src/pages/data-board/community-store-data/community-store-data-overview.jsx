@@ -16,6 +16,14 @@ const { Text, Title } = Typography
 
 const CardTitle = ({times, setTimes}) => {
   const [visit, setVisit] = useState(false)
+
+  const getValues = () => {
+    return {
+      startTime: times?.[0],
+      endTime: times?.[1],
+      type: 'export'
+    }
+  }
   
   return (
     <ProForm
@@ -47,11 +55,7 @@ const CardTitle = ({times, setTimes}) => {
                 change={(e)=> {setVisit(e)}}
                 key="export" 
                 type="data-board-community-store-data-overview"
-                conditions={{
-                  startTime: times?.[0],
-                  endTime: times?.[1],
-                  type: 'export'
-                }}
+                conditions={getValues}
               />
               <ExportHistory 
                 key="export-history" 
@@ -119,18 +123,6 @@ const CommunityStoreDataOverview = () => {
             <Yuan>{data?.passApplyNum}</Yuan>
           </Title>
         </ProCard>
-        {/* <ProCard bordered loading={loading}>
-          <Text>未审核通过的店主总数</Text>
-          <Title level={3}>
-            <Yuan>{data?.notAuditStoreNum}</Yuan>
-          </Title>
-        </ProCard>
-        <ProCard bordered loading={loading}>
-          <Text>申请注销的店主总数</Text>
-          <Title level={3}>
-            <Yuan>{data?.applyStoreCancelNum}</Yuan>
-          </Title>
-        </ProCard> */}
         <ProCard bordered loading={loading}>
           <Text>已注销的店主总数</Text>
           <Title level={3}>

@@ -12,6 +12,12 @@ import ExportHistory from '@/pages/export-excel/export-history'
 const DataOverview = () => {
   const [visit, setVisit] = useState(false)
 
+  const getValues = () => {
+    return {
+      type:"export"
+    }
+  }
+
   const columns = [
     {
       title: '用户数据',
@@ -340,9 +346,7 @@ const DataOverview = () => {
                   change={(e)=> {setVisit(e)}}
                   key="export" 
                   type="data-board-operationDaily-SummaryData"
-                  conditions={{
-                    type:"export"
-                  }}
+                  conditions={getValues}
                 />
                 <ExportHistory 
                   key="export-history" 

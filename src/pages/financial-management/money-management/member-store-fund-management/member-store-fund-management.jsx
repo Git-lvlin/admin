@@ -66,6 +66,17 @@ const MemberStoreFundManagement = () => {
     })
   }
 
+  const getValues = (form) => {
+    return {
+      accountType: "store",
+      ...form?.getFieldValue(),
+      settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
+      settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD'),
+      registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
+      registTimeEnd: form?.getFieldValue()?.registTime?.[1].format('YYYY-MM-DD')
+    }
+  }
+
   const PopModal = props => {
     const {accountType, accountId} = props
     return(
@@ -93,6 +104,7 @@ const MemberStoreFundManagement = () => {
       </ModalForm>
     )
   }
+
   const columns = [
     {
       title: '序号',
@@ -259,14 +271,7 @@ const MemberStoreFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-store-export"
-              conditions={{
-                accountType: "store",
-                ...form?.getFieldValue(),
-                settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
-                settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD'),
-                registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
-                registTimeEnd: form?.getFieldValue()?.registTime?.[1].format('YYYY-MM-DD')
-              }}
+              conditions={() => getValues(form)}
             />,
             <ExportHistory
               key="exportHistory"

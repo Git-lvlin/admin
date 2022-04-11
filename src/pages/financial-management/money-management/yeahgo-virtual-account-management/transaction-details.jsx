@@ -92,6 +92,18 @@ const TransactionDetails = ({
       }
     }
   }
+
+  const getValues = (form) => {
+    return {
+      accountId: query.accountId,
+      accountType: query.accountType,
+      amountType: query.amountType,
+      begin: form?.getFieldValue().createTime?.[0],
+      end: form?.getFieldValue().createTime?.[1],
+      ...form?.getFieldValue()
+    }
+  }
+
   const columns = [
     {
       title: '序号',
@@ -209,6 +221,7 @@ const TransactionDetails = ({
       hideInSearch: true
     }
   ]
+
   return (
     <Drawer
       visible={visible}
@@ -253,16 +266,7 @@ const TransactionDetails = ({
               change={(e)=> {setVisit(e)}}
               key="export" 
               type="financial-account-log-page-export"
-              conditions={
-                {
-                  accountId: query.accountId,
-                  accountType: query.accountType,
-                  amountType: query.amountType,
-                  begin: form?.getFieldValue().createTime?.[0],
-                  end: form?.getFieldValue().createTime?.[1],
-                  ...form?.getFieldValue()
-                }
-              }
+              conditions={()=> getValues(form)}
             />,
             <ExportHistory
               key="exportHistory"
