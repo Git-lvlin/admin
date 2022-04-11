@@ -549,6 +549,11 @@ const StoreList = (props) => {
           return (
             <>
               <p>{_}</p>
+              <>
+              {
+                data?.cancelInfo?.attachList.length>0&&<a onClick={() => {setVisible(true);setAttachmentImage(data?.cancelInfo?.attachList)}}>附件（点击查看）</a>
+              }
+              </>
               <p>（{data?.createTime}）</p>
             </>
           )
@@ -675,11 +680,11 @@ const StoreList = (props) => {
                 </Button>
                 &nbsp;&nbsp;
                 <Export
-                    change={(e) => { setVisit(e) }}
-                    key="export"
-                    type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"}
-                    conditions={getFieldValue}
-                  />
+                  change={(e) => { setVisit(e) }}
+                  key="export"
+                  type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"}
+                  conditions={()=>{return getFieldValue(searchConfig)}}
+                />
                 &nbsp;&nbsp;
                 <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"} />
                 </>
