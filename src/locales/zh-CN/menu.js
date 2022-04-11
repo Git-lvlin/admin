@@ -365,7 +365,7 @@ export default {
 
 
   'menu.group-activities-management': '拼团活动管理',
-  'menu.group-activities-management.activity-list': '活动列表',
+  'menu.group-activities-management.activity-list': '拼团活动列表',
   'menu.group-activities-management.activity-data': '拼团数据',
 
 };
