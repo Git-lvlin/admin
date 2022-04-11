@@ -28,10 +28,17 @@ export default  () => {
   const [currentType,setCurrentType]=useState()
   const [calculate,setCalculate]=useState()
   const [calculate2,setCalculate2]=useState()
+  const [rulelistdata, setRulelistData] = useState([])
   useEffect(() => {
     getMemberShopServicepoint({}).then(res=>{
       if(res.code==0){
         setFormDatil(res.data)
+        const data=res?.data?.settingValues?.typtList?.limitTopNum?.rulelist.map((ele,index)=>({
+          ...ele,
+          id:index,
+          money:ele?.basePoint?.money,
+        }))
+        setRulelistData(data)
         form.setFieldsValue({
           dateRange: [(res.data?.settingValues?.typtList?.limitTime?.timeQuantumNum?.start)*1000,(res.data?.settingValues?.typtList?.limitTime?.timeQuantumNum?.end)*1000],
           dateRange2: [(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.start)*1000,(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.end)*1000],
@@ -155,15 +162,15 @@ export default  () => {
   const timeColumns= [
     {
       title: '平台服务费（元）',
-      dataIndex: 'optAdminName',
+      dataIndex: 'money',
     },
     {
       title: '约购运营中心（元）',
-      dataIndex: 'currentType',
+      dataIndex: 'profitHealth',
     },
     {
       title: '直推人（元）',
-      dataIndex: 'timeQuantumStr',
+      dataIndex: 'profitDirect',
     },
     {
       title: '健康事业部（元）',
@@ -270,7 +277,7 @@ export default  () => {
                           actionRef={ref}
                           rowKey="id"
                           options={false}
-                          // request={couponEverydayList}
+                          dataSource={rulelistdata}
                           search={false}
                           columns={timeColumns}
                         />
