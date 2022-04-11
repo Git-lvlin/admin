@@ -21,7 +21,7 @@ const Export = ({ type, change, conditions, text='导出' }) => {
         ...str,
       }))
     } else {
-      str = JSON.stringify(({
+      str = JSON.stringify(paramsEmptyFilter({
         ...conditions,
         ...str,
       }))
