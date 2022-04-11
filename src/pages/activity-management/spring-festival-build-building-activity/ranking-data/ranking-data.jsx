@@ -131,7 +131,7 @@ const InviteRegister=(props) => {
                  key='export'
                  change={(e) => { setVisit(e) }}
                  type={'build-floor-invite-list-export'}
-                 conditions={getFieldValue(searchConfig)}
+                 conditions={()=>{return getFieldValue(searchConfig)}}
                />,
                <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-invite-list-export'}/>,
                <Button key='add' type="primary" onClick={()=>setListVisible(true)}>添加邀请用户排名</Button>
@@ -276,7 +276,7 @@ const InviteRegister=(props) => {
                  key='export'
                  change={(e) => { setVisit(e) }}
                  type={'build-floor-rank-list-export'}
-                 conditions={getFieldValue(searchConfig)}
+                 conditions={()=>{return getFieldValue(searchConfig)}}
                />,
                <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-rank-list-export'}/>
              ]

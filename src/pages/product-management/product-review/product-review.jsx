@@ -397,7 +397,7 @@ const TableList = () => {
               key="4"
               change={(e) => { setVisit(e) }}
               type="goods-audit-export"
-              conditions={getFieldValue}
+              conditions={()=>{return getFieldValue(searchConfig)}}
             />,
             <ExportHistory key="5" show={visit} setShow={setVisit} type="goods-audit-export" />,
           ],

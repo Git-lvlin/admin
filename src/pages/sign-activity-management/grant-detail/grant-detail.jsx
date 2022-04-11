@@ -111,7 +111,7 @@ export default () => {
                key='export'
                change={(e) => { setVisit(e) }}
                type={'red-packet-give-detail-export'}
-               conditions={getFieldValue(searchConfig)}
+               conditions={()=>{return getFieldValue(searchConfig)}}
              />,
              <ExportHistory key='task' show={visit} setShow={setVisit} type={'red-packet-give-detail-export'} />,
             ],

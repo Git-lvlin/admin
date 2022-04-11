@@ -158,7 +158,7 @@ export default (props) => {
                <Export
                change={(e) => { setVisit(e) }}
                type={'red-packet-user-detail-export'}
-               conditions={getFieldValue(searchConfig)}
+               conditions={()=>{return getFieldValue(searchConfig)}}
              />,
              <ExportHistory show={visit} setShow={setVisit} type={'red-packet-user-detail-export'} />,
             ],
