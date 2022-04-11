@@ -35,10 +35,13 @@ export default props => {
     },
     {
       title: '商品分类',
-      dataIndex: 'gcName',
+      dataIndex: 'gcName1',
       valueType: 'text',
       ellipsis:true,
-      hideInSearch:true
+      hideInSearch:true,
+      render:(_,data)=>{
+        return <p>{_}-{data?.gcName2}</p>
+      }
     },
     {
       title: '商品主图',

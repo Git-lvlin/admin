@@ -548,8 +548,8 @@ export default (props) => {
               wsPrice:item.price,
               price:amountTransform(item.wholesaleSupplyPrice+item.wholesaleFreight, '/'),
               actStockNum:item.totalStockNum,
-              gcName1:item.gcName.split('-')?.[0],
-              gcName2:item.gcName.split('-')?.[1]
+              gcName1:item?.gcName1?item?.gcName1:item.gcName.split('-')?.[0],
+              gcName2:item?.gcName2?item?.gcName2:item.gcName.split('-')?.[1]
             })
           })
           setDataSource(arr)
