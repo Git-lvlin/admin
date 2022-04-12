@@ -332,6 +332,7 @@ export default  () => {
                           dataSource={rulelistdata}
                           search={false}
                           columns={timeColumns}
+                          pagination={false}
                         />
                         <ProTable
                           actionRef={ref}
@@ -341,6 +342,7 @@ export default  () => {
                           dataSource={rulelistdata}
                           search={false}
                           columns={timeColumns2}
+                          pagination={false}
                         />
                     </>
                 }
