@@ -462,7 +462,7 @@ export default (props) => {
       valueType: 'option',
       render:(text, record, _, action)=>{
         return [
-          <a style={{display:record?.wholesaleStatus==1&&id?'none':'block'}} key='dele' onClick={()=>{setPennyId({wsId:record.wsId,type:1});setEndVisible(true)}}>删除</a>,
+          <a style={{display:id?'none':'block'}} key='dele' onClick={()=>{setPennyId({wsId:record.wsId,type:1});setEndVisible(true)}}>删除</a>,
           <div key='detail' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
             {
               record?.status==0?

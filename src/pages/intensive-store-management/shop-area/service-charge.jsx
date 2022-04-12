@@ -43,7 +43,8 @@ export default  () => {
         setRulelistData(data)
         form.setFieldsValue({
           dateRange: [(res.data?.settingValues?.typtList?.limitTime?.timeQuantumNum?.start)*1000,(res.data?.settingValues?.typtList?.limitTime?.timeQuantumNum?.end)*1000],
-          dateRange2: [(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.start)*1000,(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.end)*1000],
+          // dateRange2: [(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.start)*1000,(res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.end)*1000],
+          dateRange2: `${moment((res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.start)*1000).format('YYYY-MM-DD HH:mm:ss')} -- ${moment((res.data?.settingValues?.typtList?.limitTopNum?.timeQuantumNum?.end)*1000).format('YYYY-MM-DD HH:mm:ss')}`,
           discount:res.data?.settingValues?.typtList?.limitTime?.discount,
           currentType:res.data?.settingValues?.currentType
         })
@@ -176,14 +177,10 @@ export default  () => {
       title: '收费优惠条件',
       dataIndex: 'min',
       render:(_,data)=>{
-        if(data?.max&&_){
-          return <p>{_}-{data?.max}名</p>
-        }else if(_){
-          return <p>前{_}名</p>
-        }else if(data?.max){
-          return <p>{data?.max}以上</p>
+        if(data?.id==3){
+         return <p>{_}名及以后</p>
         }
-
+         return <p>{_}-{data?.max}名</p>
       }
     },  
   ];
@@ -220,11 +217,11 @@ export default  () => {
           {
             render: (props, defaultDoms) => {
               return [
-                <Button style={{width:'150px',marginTop:'20px'}} type="primary" key="submit" onClick={() => {
-                  props.form?.submit?.()
-                }}>
-                  修改
-                </Button>
+                // <Button style={{width:'150px',marginTop:'20px'}} type="primary" key="submit" onClick={() => {
+                //   props.form?.submit?.()
+                // }}>
+                //   修改
+                // </Button>
               ];
             }
           }
@@ -255,7 +252,8 @@ export default  () => {
                     setCurrentType(val.target?.value)
                   }
                 }}
-                initialValue='limitTime'
+                hidden={true}
+                initialValue='limitTopNum'
             />  
             <ProFormDependency name={['currentType']}>
                 {({ currentType }) => { 
@@ -302,7 +300,7 @@ export default  () => {
                 }
                 if(currentType==='limitTopNum'){
                     return <>
-                        <ProFormDateTimeRangePicker
+                        {/* <ProFormDateTimeRangePicker
                             label='优惠时间段'
                             name="dateRange2"
                             fieldProps={{
@@ -316,7 +314,15 @@ export default  () => {
                                 id: 'formandbasic-form.placeholder.end',
                                 }),
                             ]}
+                            readonly={true}
                             labelCol={2}
+                        /> */}
+                        <ProFormText
+                          width="md"
+                          name="dateRange2"
+                          label="优惠时间段"
+                          readonly
+                          labelCol={2}
                         />
 
                         <ProTable
@@ -341,7 +347,7 @@ export default  () => {
               }}
             </ProFormDependency>
       </ProForm >
-      <ProTable
+      {/* <ProTable
        headerTitle="操作日志"
        rowKey="id"
        options={false}
@@ -351,7 +357,7 @@ export default  () => {
        search={false}
        columns={columns}
        style={{marginTop:'20px'}}
-    />
+    /> */}
     </>
   );
 };
