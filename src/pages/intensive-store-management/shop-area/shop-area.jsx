@@ -401,9 +401,9 @@ export default (props) =>{
             }
           </TabPane>
         </Tabs>
-        <div style={{ backgroundColor: '#fff', padding: 30, display: 'flex' }}>
+        {/* <div style={{ backgroundColor: '#fff', padding: 30, display: 'flex' }}>
           设置后立即生效，只对生效后新申请的店铺有效！
-        </div>
+        </div> */}
       </PageContainer>
   )
 }
