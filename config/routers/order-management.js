@@ -120,6 +120,12 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'stockout-apply',
+      path: '/order-management/stockout-apply',
+      component: './order-management/stockout-apply',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'after-sales-order-details',
       path: '/order-management/after-sales-order/detail/:id',
       component: './order-management/after-sales-order/detail',
