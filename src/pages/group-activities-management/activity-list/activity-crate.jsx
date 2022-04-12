@@ -53,7 +53,9 @@ export default (props) => {
       title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'text',
-      editable: false
+      editable: false,
+      fixed: 'left',
+      width: 'md'
     },
     {
       title: '基本信息',
@@ -136,7 +138,8 @@ export default (props) => {
       valueType: 'options',
       render: (_, data) => <a onClick={() => { cancel(data.id) }}>取消参加</a>,
       editable: false,
-      fixed: 'right'
+      fixed: 'right',
+      width: 'md'
     },
   ];
 
@@ -167,7 +170,7 @@ export default (props) => {
           return
         }
         if (!detailData && tableData[i].activityStockNumEdit > (parseFloat(tableData[i].stockNum / 2))) {
-          message.error('拼团库存需要小于商品库存50%')
+          message.error(`skuId:${tableData[i].skuId}拼团库存需要小于商品库存50%`)
           reject()
           return
         }
