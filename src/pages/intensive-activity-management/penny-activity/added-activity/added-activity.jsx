@@ -135,12 +135,34 @@ export default (props) => {
       var max=arr[0]?.minNum
       let stockNum=false
       var flage=false
+
+      var result = [];//追加的数据
+      for(var i = 0; i < goosList?.length; i++){
+          var obj = goosList[i];
+          var num = obj.wsId;
+          var isExist = false;
+          for(var j = 0; j < detailList?.content?.goods?.length; j++){
+              var aj = detailList?.content?.goods[j];
+              var n = aj.wsId;
+              if(n == num){
+                  isExist = true;
+                  break;
+              }
+          }
+          if(!isExist){
+              result.push(obj);
+          }
+      }
+
+      for (let index = 0; index < result?.length; index++) {
+        if(result[index]?.actStockNum==0){
+          stockNum=true
+        }
+      }
+
       for (let index = 0; index < arr.length; index++) {
           if(max<arr[index]?.minNum){
             max=arr[index]?.minNum
-          }
-          if(arr[index]?.actStockNum==0){
-            stockNum=true
           }
           if(arr[index]?.actStockNum%arr[index]?.batchNumber!==0){
             flage=true
