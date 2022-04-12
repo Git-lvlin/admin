@@ -76,6 +76,7 @@ export default {
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
   'menu.intensive-activity-management.intensive-bulk-activity-list': '散装集约活动列表',
+  'menu.intensive-activity-management.intensive-activity-profit-detail': '集约活动利润明细',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
   'menu.intensive-activity-management.intensive-bulk-activity-create': '散装集约活动新建',
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',

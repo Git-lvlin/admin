@@ -54,7 +54,7 @@ export default () => {
           options={false}
           request={findByPage}
           toolBarRender={()=>[
-            <Button key='add' icon={<PlusOutlined />}  onClick={()=>history.push('/dc-management/data-board/data-board-configuration')} type="primary">
+            <Button key='add' icon={<PlusOutlined />}  onClick={()=>setVisible(true)} type="primary">
                 添加数据
             </Button>
         ]}

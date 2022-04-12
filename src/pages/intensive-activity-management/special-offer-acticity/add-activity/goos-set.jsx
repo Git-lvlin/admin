@@ -220,7 +220,7 @@ const GoosModel=(props)=>{
                   ...dom.reverse(),
               ],
           }}
-          scroll={{ x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true, }}
+          scroll={{ x: '100vw', y: window.innerHeight - 680, scrollToFirstRowOnChange: true}}
           postData={postData}
           columns={columns}
           rowSelection={{
@@ -260,7 +260,7 @@ export default (props) => {
   const [pennyId,setPennyId]=useState()
   useEffect(()=>{
     if(id){
-      detailList&&setDataSource(detailList.map(ele=>({...ele,price:amountTransform(ele.price,'/')})))
+      detailList&&setDataSource(detailList.map(ele=>({...ele,price:amountTransform(ele.price,'/'),maxNum:ele.buyLimit})))
      setEditableKeys(detailList?.map(item => item.wsId))
     }   
   },[id,detailList])

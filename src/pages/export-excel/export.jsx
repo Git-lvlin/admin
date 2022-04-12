@@ -3,7 +3,7 @@ import {
   Button,
   message,
 } from 'antd'
-import { paramsEmptyFilter } from '@/utils/utils.js'
+import { paramsEmptyFilter } from '@/utils/utils'
 
 import { createExportTask } from '@/services/export-excel/export-template'
 

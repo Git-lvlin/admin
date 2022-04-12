@@ -18,6 +18,12 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'intensive-activity-profit-detail',
+      path: '/intensive-activity-management/intensive-activity-profit-detail',
+      component: './intensive-activity-management/intensive-activity-profit-detail',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'intensive-activity-create',
       path: '/intensive-activity-management/intensive-activity-create/:id',
       component: './intensive-activity-management/intensive-activity-create',

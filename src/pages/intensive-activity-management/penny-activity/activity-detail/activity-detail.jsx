@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getActiveConfigById } from '@/services/intensive-activity-management/penny-activity';
 import { Divider, Form, Spin, Button,Image,InputNumber,Row,Col,Descriptions,Typography } from 'antd';
-import ProForm,{ ModalForm,ProFormRadio,ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox} from '@ant-design/pro-form';
+import ProForm,{ ModalForm,ProFormRadio,ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,DrawerForm} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import { amountTransform } from '@/utils/utils'
 import { PageContainer } from '@/components/PageContainer';
@@ -9,13 +9,11 @@ import moment from 'moment'
 import styles from './style.less'
 const { Title } = Typography;
 
-
 export default props => {
+  const { visible, setVisible, callback,id,onClose} = props;
   const ref = useRef()
-  const id = props.location.query.id
   const [form] = Form.useForm()
   const [detailData, setDetailData] = useState([])
-
   useEffect(() => {
     if (id) {
         getActiveConfigById({id}).then(res=>{
@@ -120,8 +118,30 @@ export default props => {
   ]; 
   
   return (
-    <PageContainer>
-    <div className={styles?.activity_detail}>
+    <DrawerForm
+      onVisibleChange={setVisible}
+      title='活动详情'
+      visible={visible}
+      width={1500}
+      drawerProps={{
+        forceRender: true,
+        destroyOnClose: true,
+        onClose: () => {
+          onClose();
+        }
+      }}
+      submitter={{
+        render: (props, defaultDoms) => {
+          return [
+            ...defaultDoms
+          ];
+        },
+        }}
+        onFinish={async (values) => {
+          await setVisible(false);callback(true)
+        }}
+      className={styles?.activity_detail}
+    >
       <Row style={{ marginTop: 50 }}>
           <Title style={{ marginBottom: -10 }} level={5}>活动商品</Title>
           <Divider />
@@ -178,7 +198,6 @@ export default props => {
               <pre className={styles.line_feed}>{detailData?.content?.ruleTextC}</pre>
             </Descriptions.Item>
           </Descriptions>
-    </div>
-    </PageContainer>
+    </DrawerForm>
   );
 };
