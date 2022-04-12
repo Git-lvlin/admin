@@ -49,7 +49,7 @@ const ArticleList = (props) => {
     }
 
     if (key === '3') {
-      getDetail({id:record.id,edtil:true})
+      getDetail({id:record.id,edit:true})
     }
   }
 
@@ -57,7 +57,7 @@ const ArticleList = (props) => {
     <Menu onClick={(e) => { handleMenuClick(e, record) }}>
       <Menu.Item key="1">{record.isTop?'取消置顶':'置顶'}</Menu.Item>
       <Menu.Item key="2">{record.isShow?'隐藏':'显示'}</Menu.Item>
-      <Menu.Item key="3">详情</Menu.Item>
+      <Menu.Item key="3">编辑</Menu.Item>
     </Menu>
   )
 
@@ -189,7 +189,7 @@ const ArticleList = (props) => {
       render: (text, record, _, action) => {
         return (
           <Space>
-            <Dropdown.Button onClick={(e) => { getDetail({id:record.id,edit:true}) }} overlay={() => { return menu(record) }}>编辑</Dropdown.Button>
+            <Dropdown.Button onClick={(e) => { getDetail({id:record.id,edtil:true}) }} overlay={() => { return menu(record) }}>详情</Dropdown.Button>
           </Space >
 
         )
