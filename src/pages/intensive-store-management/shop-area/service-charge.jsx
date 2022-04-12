@@ -195,11 +195,11 @@ export default  () => {
       dataIndex: 'money',
     },
     {
-      title: '约购运营中心（元）',
+      title: '直推人（元）',
       dataIndex: 'profitSupplier',
     },
     {
-      title: '直推人（元）',
+      title: '约购运营中心（元）',
       dataIndex: 'profitDirect',
     },
     {
