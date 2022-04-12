@@ -27,7 +27,7 @@ export default props=>{
             }}
             onFinish={async (values) => {
                 if(showHideTop.hide){
-                    articleOperation({id: showHideTop.id,isShow: !showHideTop.isShow}).then((res) => {
+                      articleTop({id: showHideTop.id,isShow: !showHideTop.isShow}).then((res) => {
                         if (res.code === 0) {
                           message.success(`操作成功`);
                           boxref.current.reset();
