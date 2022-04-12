@@ -1,6 +1,6 @@
 
 import React, { useRef, useState } from 'react';
-import { Button, Space, message,Tabs,Image } from 'antd';
+import { Button, Space, message,Tabs,Image,Dropdown,Menu} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
@@ -38,6 +38,30 @@ const ArticleList = (props) => {
     })
       
   },[])
+  const handleMenuClick = ({ key }, record) => {
+    if (key === '1') {
+      setShowHideTop({id:record.id,isTop:record.isTop,top:true})
+      setVisible(true)
+    }
+    if (key === '2') {
+      setShowHideTop({id:record.id,isShow:record.isShow,hide:true})
+      setVisible(true)
+    }
+
+    if (key === '3') {
+      getDetail({id:record.id,edtil:true})
+    }
+  }
+
+  const menu = (record) => (
+    <Menu onClick={(e) => { handleMenuClick(e, record) }}>
+      <Menu.Item key="1">{record.isTop?'取消置顶':'置顶'}</Menu.Item>
+      <Menu.Item key="2">{record.isShow?'隐藏':'显示'}</Menu.Item>
+      <Menu.Item key="3">详情</Menu.Item>
+    </Menu>
+  )
+
+
 
   const columns = [
     {
@@ -164,18 +188,10 @@ const ArticleList = (props) => {
       fixed: 'right',
       render: (text, record, _, action) => {
         return (
-          <>
-            {<a key="top" onClick={() => {
-              setShowHideTop({id:record.id,isTop:record.isTop,top:true})
-              setVisible(true)
-              }}>{record.isTop?'取消置顶':'置顶'}</a>}
-            &nbsp;&nbsp;{<a key="down" onClick={() => {
-              setShowHideTop({id:record.id,isShow:record.isShow,hide:true})
-              setVisible(true)
-              }}>{record.isShow?'隐藏':'显示'}</a>}
-            &nbsp;&nbsp;{<a key="view" onClick={() => {getDetail({id:record.id,edtil:true})}}>详情</a>}
-            &nbsp;&nbsp;{<a key="editable" onClick={() => {getDetail({id:record.id,edit:true})}}>编辑</a>}
-          </>
+          <Space>
+            <Dropdown.Button onClick={(e) => { getDetail({id:record.id,edit:true}) }} overlay={() => { return menu(record) }}>编辑</Dropdown.Button>
+          </Space >
+
         )
       }
     },
