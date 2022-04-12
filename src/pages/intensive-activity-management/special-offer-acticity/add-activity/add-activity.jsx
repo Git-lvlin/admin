@@ -95,16 +95,38 @@ export default (props) => {
   const onsubmit = (values) => {
     if(id){
       let arr=goosList||detailList
+      var result = [];//追加的数据
+      for(var i = 0; i < goosList?.length; i++){
+          var obj = goosList[i];
+          var num = obj.wsId;
+          var isExist = false;
+          for(var j = 0; j < detailList?.length; j++){
+              var aj = detailList[j];
+              var n = aj.wsId;
+              if(n == num){
+                  isExist = true;
+                  break;
+              }
+          }
+          if(!isExist){
+              result.push(obj);
+          }
+      }
+
       let stockNum=false
       var flage=false
-      for (let index = 0; index < arr.length; index++) {
-          if(arr[index]?.actStockNum==0){
-            stockNum=true
-          }
+      for (let index = 0; index < arr?.length; index++) {
           if(arr[index]?.actStockNum%arr[index]?.batchNumber!==0){
             flage=true
           }
       }
+
+      for (let index = 0; index < result?.length; index++) {
+        if(result[index]?.actStockNum==0){
+          stockNum=true
+        }
+      }
+
       if(stockNum){
         return message.error('活动库存为零！')
       }
