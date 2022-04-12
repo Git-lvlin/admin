@@ -387,7 +387,7 @@ export default (props) => {
         name="activeRule"
         label="活动规则"
         placeholder="请输入活动规则"
-        width="md"
+        width={500}
         fieldProps={{
           showCount: true,
           maxLength: 2000
