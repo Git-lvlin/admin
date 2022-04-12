@@ -164,8 +164,13 @@ export default (props) => {
       const apiMethod = detailData ? ruleEdit : ruleSub
       for (let i = 0; i < tableData.length; i++) {
         const reg = /^((0)|([1-9][0-9]*))$/
+        if (tableData[i].activityStockNumEdit === '') {
+          message.error(`请输入（skuId:${tableData[i].skuId}）拼团库存`)
+          reject()
+          return
+        }
         if (!reg.test(tableData[i].activityStockNumEdit)) {
-          message.error('拼团库存只能输入正整数')
+          message.error(`skuId:${tableData[i].skuId}拼团库存只能输入正整数`)
           reject()
           return
         }
