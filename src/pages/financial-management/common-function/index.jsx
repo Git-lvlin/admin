@@ -95,21 +95,6 @@ export const fashionableType = (data, amount, fee, couponAmount, realAmount) =>{
           }
         </Space>
       )
-    case 'fee':
-      return (
-        <Space size={10}>
-          <span>手续费: ¥{amountTransform(amount, '/')}</span>
-          {
-            (couponAmount !== '0' && couponAmount)&&
-            <span>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
-          }
-          <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          { 
-            (realAmount !== '0' && realAmount)&&
-            <span>到账金额: ¥{amountTransform(realAmount, '/')}</span>
-          }
-        </Space>
-      )
     default:
       return ''
   }
