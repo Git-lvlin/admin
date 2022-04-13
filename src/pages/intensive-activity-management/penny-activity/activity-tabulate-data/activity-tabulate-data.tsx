@@ -24,7 +24,7 @@ export default () => {
       })
   },[])
     return (
-      <PageContainer style={{background:'#fff'}}>
+      <PageContainer style={{background:'#fff'}} title=" ">
         <Descriptions labelStyle={{fontWeight:'bold'}} column={9} layout="vertical" bordered>
             <Descriptions.Item  label="采购店主数">{detailList?.procurementStorekeeperNum}  </Descriptions.Item>
             <Descriptions.Item  label="B端采购订单数">{detailList?.bProcurementOrderNum}  </Descriptions.Item>

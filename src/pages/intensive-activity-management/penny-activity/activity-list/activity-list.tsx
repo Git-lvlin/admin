@@ -153,7 +153,7 @@ export default () => {
       return arr
     }
     return (
-      <PageContainer>
+      <PageContainer title=" ">
         <ProTable<activityItem>
           actionRef={ref}
           rowKey="id"
