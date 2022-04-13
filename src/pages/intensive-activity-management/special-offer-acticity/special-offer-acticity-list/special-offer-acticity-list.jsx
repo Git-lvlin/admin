@@ -104,7 +104,7 @@ export default () => {
       return arr
     }
     return (
-      <PageContainer>
+      <PageContainer title=" ">
         <ProTable
           actionRef={ref}
           rowKey="id"

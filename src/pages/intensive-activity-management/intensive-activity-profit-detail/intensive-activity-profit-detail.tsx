@@ -142,7 +142,7 @@ export default () => {
         }
       }
     return (
-      <PageContainer>
+      <PageContainer title=" ">
         <ProTable<activityItem>
           actionRef={ref}
           rowKey="wsId"
