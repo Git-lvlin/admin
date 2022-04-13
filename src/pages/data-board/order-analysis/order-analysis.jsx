@@ -503,7 +503,7 @@ const OrderAnalysis = () => {
              <Export
               change={(e) => { setVisit(e) }}
               type={'data-board-order-analyis-wholesale-deatail-export'}
-              conditions={getFieldValue(form)}
+              conditions={()=>getFieldValue(form)}
               key="export"
             />,
             <ExportHistory key="history" show={visit} setShow={setVisit} type='data-board-order-analyis-wholesale-deatail-export'/>,

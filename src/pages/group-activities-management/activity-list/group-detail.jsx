@@ -9,11 +9,28 @@ const SubTable = (props) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false);
   const columns = [
-    { title: '序号', dataIndex: 'index', render: (_, $, index) => data.length - index },
-    { title: '参团用户手机号', dataIndex: 'joinMemberPhone' },
-    { title: '参团时间', dataIndex: 'createTime' },
-    { title: '支付状态', dataIndex: 'payStatus' },
-    { title: '拼约商品数量', dataIndex: 'goodsNum' },
+    { 
+      title: '序号', 
+      dataIndex: 'index', 
+      render: (_, $, index) => data.length - index
+    },
+    { 
+      title: '参团用户手机号',
+      dataIndex: 'joinMemberPhone',
+      render: (_, r) => <span>{_}{r.type === 1 && `（团长）`}</span>
+    },
+    { 
+      title: '参团时间',
+      dataIndex: 'createTime' 
+    },
+    { 
+      title: '支付状态',
+      dataIndex: 'payStatus'
+    },
+    { 
+      title: '拼团商品数量', 
+      dataIndex: 'goodsNum' 
+    },
   ];
 
   useEffect(() => {
@@ -49,9 +66,7 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
       title: '团长手机号',
       dataIndex: 'groupMemberPhone',
       valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入请输入会员手机号'
-      }
+      hideInTable: true
     },
     {
       title: '开团时间',
@@ -74,12 +89,6 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
     {
       title: '剩余时间（小时）',
       dataIndex: 'remainTime',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '支付状态',
-      dataIndex: 'payStatus',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -124,7 +133,7 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
     >
       <div style={{ marginBottom: 10, padding: 10 }}>
         <Space size="middle">
-          <span style={{width: "260px", display: "inline-block"}}>{data.goodsName}</span>
+          <span style={{maxWidth: "260px", display: "inline-block"}}>{data.goodsName}</span>
           <span>skuID:{data.skuId}</span>
           <span>({info.activityName}</span>
           <span>{info.activityStartTime}~{info.activityEndTime}</span>
@@ -133,11 +142,10 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
           <span>{info.groupNum}人团</span>
           <span>
             {{
-              1: '待开始',
-              2: '进行中',
-              3: '已结束',
-              4: '已中止'
-            }[info.activityStatus]}
+              2: '拼团中',
+              1: '已成团',
+              3: '已失败'
+            }[groupState]}
           </span>
         </Space>
       </div>

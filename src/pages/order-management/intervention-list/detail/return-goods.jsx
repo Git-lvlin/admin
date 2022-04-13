@@ -5,8 +5,8 @@ import { Image } from 'antd'
 import { history, useLocation } from 'umi'
 
 import styles from './styles.less'
-import NormalOrderDetail from '../normal-order-detail'
-import ShopkeeperOrderDetail from '../shopkeeper-order-detail'
+import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
+import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/shopkeeper-order/detail'
 
 const tableRow = props => {
   const imageArr = () => {
@@ -55,8 +55,6 @@ const ReturnGoods = ({ data }) => {
   const [shopkeeperOrderVisible, setShopkeeperOrderVisible] = useState(false)
   const [id, setId] = useState()
 
-  const isPurchase = useLocation().pathname.includes('purchase')
-
   const dataSource = Array.isArray(data) ? [] : [data]
 
   const skipToOrderDetail = (type, id) => {
@@ -68,13 +66,11 @@ const ReturnGoods = ({ data }) => {
       case 11:
         setId(id)
         setNormalOrderVisible(true)
-        // history.push(`/order-management/normal-order-detail/${id}`)
       break
       case 15:
       case 16:
         setId(id)
         setShopkeeperOrderVisible(true)
-        // history.push(`/order-management/intensive-order/shopkeeper-order-detail/${id}`)
       break
       default:
         return ''
@@ -167,7 +163,6 @@ const ReturnGoods = ({ data }) => {
           id={id}
           visible={normalOrderVisible}
           setVisible={setNormalOrderVisible}
-          isPurchase={isPurchase}
         />
       }
       {

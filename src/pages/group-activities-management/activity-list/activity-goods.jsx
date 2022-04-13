@@ -117,7 +117,7 @@ const TableList = ({onClose, visible, id}) => {
       render: (_) => amountTransform(_, '/')
     },
     {
-      title: '拼约价（元）',
+      title: '拼团价（元）',
       dataIndex: 'activityPrice',
       valueType: 'text',
       hideInSearch: true,
@@ -135,7 +135,7 @@ const TableList = ({onClose, visible, id}) => {
       hideInSearch: true,
     },
     {
-      title: '已拼数量(件)',
+      title: '已拼数量',
       dataIndex: 'skuGroupNum',
       valueType: 'text',
       hideInSearch: true
@@ -186,7 +186,8 @@ const TableList = ({onClose, visible, id}) => {
         <a key="1" onClick={()=> {toTop(record.ruleGoodsId, actionRef)}}>置顶</a>,
         <a key="2" onClick={() => {setEditStockVisible(true); setStockData(record)}}>编辑库存</a>
       ],
-      fixed: 'right'
+      fixed: 'right',
+      hideInTable: info.activityStatus === 3 || info.activityStatus === 4
     }
   ]
 
@@ -198,7 +199,7 @@ const TableList = ({onClose, visible, id}) => {
       width={1200}
     >
       <div style={{ marginBottom: 10, background: '#fff', padding: 10 }}>
-        <Space size="large">
+        <Space size="middle">
           <span>{info.activityName}</span>
           <span>{info.activityStartTime}~{info.activityEndTime}</span>
           {info.virtualType === 2 && <span>虚拟成团</span>}
@@ -206,12 +207,12 @@ const TableList = ({onClose, visible, id}) => {
             1: '待开始',
             2: '进行中',
             3: '已结束',
-            4: '已中止'
+            4: '已终止'
           }[info.activityStatus]}</span>
         </Space>
       </div>
       <ProTable
-        rowKey="skuId"
+        rowKey="activitySkuNum"
         options={false}
         search={false}
         pagination={false}
@@ -223,7 +224,7 @@ const TableList = ({onClose, visible, id}) => {
         actionRef={actionRef}
       />
       <ProTable
-        rowKey="spuId"
+        rowKey="skuId"
         options={false}
         params={{ id }}
         postData={(data) => {

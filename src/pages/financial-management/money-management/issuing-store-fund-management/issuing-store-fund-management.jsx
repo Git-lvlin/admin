@@ -42,12 +42,10 @@ const IssuingStoreFundManagement = () => {
   const skipToDetail = ({accountType, accountId}) => {
     setQuery({accountType, accountId})
     setDetailedVisible(true)
-    // history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
   }
   const toDetails = ({accountType, accountId}) => {
     setQuery({accountType, accountId})
     setDetailVisible(true)
-    // history.push(`/financial-management/money-management/details?accountType=${accountType}&accountId=${accountId}`)
   }
 
   const disable = data =>{
@@ -65,6 +63,15 @@ const IssuingStoreFundManagement = () => {
         message.success('操作成功')
       }
     })
+  }
+
+  const getValues = (form) => {
+    return {
+      accountType: "agentStore",
+      ...form?.getFieldValue(),
+      registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
+      registTimeEnd: form?.getFieldValue()?.registTime?.[1].format('YYYY-MM-DD')
+    }
   }
 
   const PopModal = props => {
@@ -195,6 +202,7 @@ const IssuingStoreFundManagement = () => {
       )
     }
   ]
+
   return (
     <PageContainer title={false}>
       <ProTable
@@ -243,12 +251,7 @@ const IssuingStoreFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-agentStore-export"
-              conditions={{
-                accountType: "agentStore",
-                ...form?.getFieldValue(),
-                registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
-                registTimeEnd: form?.getFieldValue()?.registTime?.[1].format('YYYY-MM-DD')
-              }}
+              conditions={() => getValues(form)}
             />,
             <ExportHistory
               key="exportHistory" 

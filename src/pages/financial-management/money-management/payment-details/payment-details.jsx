@@ -7,15 +7,13 @@ import { Drawer } from 'antd'
 import { logPage } from '@/services/financial-management/yeahgo-virtual-account-management'
 import { amountTransform } from '@/utils/utils'
 import { tradeType } from '../../common-enum'
-import NormalOrderDetail from '../../common-popup/normal-order-detail'
-import ShopkeeperOrderDetail from '../../common-popup/shopkeeper-order-detail'
+import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
+import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/shopkeeper-order/detail'
 
 const PaymentDetails = ({query, visible, setVisible}) => {
   const [normalOrderVisible, setNormalOrderVisible] = useState(false)
   const [shopkeeperOrderVisible, setShopkeeperOrderVisible] = useState(false)
   const [id, setId] = useState()
-
-  const isPurchase = useLocation().pathname.includes('purchase')
 
   const skipToOrder = (id, type)=> {
     console.log(type)
@@ -160,7 +158,6 @@ const PaymentDetails = ({query, visible, setVisible}) => {
           id={id}
           visible={normalOrderVisible}
           setVisible={setNormalOrderVisible}
-          isPurchase={isPurchase}
         />
       }
       {

@@ -10,7 +10,7 @@ import {
   ProFormCheckbox,
   ProFormTextArea,
   ProFormDateTimeRangePicker,
-  ProFormSelect
+  ProFormSelect,
 } from '@ant-design/pro-form'
 
 import { amountTransform } from '@/utils/utils'
@@ -24,7 +24,7 @@ export default (props) => {
   const [excelVisible, setExcelVisible] = useState(false)
   const [tableData, setTableData] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
-  const [defaultGroupNum, setDefaultGroupNum] = useState(0)
+  const [defaultGroupNum, setDefaultGroupNum] = useState()
 
   const [formRef] = Form.useForm()
 
@@ -53,7 +53,9 @@ export default (props) => {
       title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'text',
-      editable: false
+      editable: false,
+      fixed: 'left',
+      width: 'md'
     },
     {
       title: '基本信息',
@@ -136,7 +138,8 @@ export default (props) => {
       valueType: 'options',
       render: (_, data) => <a onClick={() => { cancel(data.id) }}>取消参加</a>,
       editable: false,
-      fixed: 'right'
+      fixed: 'right',
+      width: 'md'
     },
   ];
 
@@ -161,13 +164,18 @@ export default (props) => {
       const apiMethod = detailData ? ruleEdit : ruleSub
       for (let i = 0; i < tableData.length; i++) {
         const reg = /^((0)|([1-9][0-9]*))$/
+        if (tableData[i].activityStockNumEdit === '') {
+          message.error(`请输入（skuId:${tableData[i].skuId}）拼团库存`)
+          reject()
+          return
+        }
         if (!reg.test(tableData[i].activityStockNumEdit)) {
-          message.error('拼团库存只能输入正整数')
+          message.error(`skuId:${tableData[i].skuId}拼团库存只能输入正整数`)
           reject()
           return
         }
         if (!detailData && tableData[i].activityStockNumEdit > (parseFloat(tableData[i].stockNum / 2))) {
-          message.error('拼团库存需要小于商品库存50%')
+          message.error(`skuId:${tableData[i].skuId}拼团库存需要小于商品库存50%`)
           reject()
           return
         }
@@ -187,7 +195,7 @@ export default (props) => {
             activityPrice: amountTransform(item.activityPrice, '*'),
             stockNum: item.stockNum,
             activityStockNum: +item.activityStockNumEdit,
-            defaultGroupNum: item.defaultGroupNum,
+            defaultGroupNum: +item.defaultGroupNum || +defaultGroupNum,
             memberType,
             salePrice: item.salePrice,
             marketPrice: item.marketPrice
@@ -215,7 +223,7 @@ export default (props) => {
 
       setTableData(detailData.goodsList.map(item => ({
         ...item,
-        activityStockNumEdit: item.activityStockNum,
+        activityStockNumEdit: +item.activityStockNum,
         activityPrice: amountTransform(item.activityPrice, '/')
       })))
     }
@@ -267,7 +275,7 @@ export default (props) => {
       />
 
       <ProFormSelect
-        placeholder="请选择拼约人数"
+        placeholder="请选择拼团人数"
         label="成团人数"
         name="defaultGroupNum"
         valueEnum={ GroupNumEnum }
@@ -285,7 +293,7 @@ export default (props) => {
         extra={
           <>
             <Button disabled type='default' style={{ position: 'absolute', left: 325, top: 0, cursor: 'default' }}>人</Button>
-            <span style={{ position: 'absolute', top: 32, color: 'rgb(234, 154, 0)' }}>一键设置所有活动商品的成团人数</span>
+            <span style={{ color: 'rgb(234, 154, 0)' }}>一键设置所有活动商品的成团人数</span>
           </>
         }
         width="md"
@@ -296,13 +304,13 @@ export default (props) => {
 
       <ProFormDigit
         placeholder="请输入1-96之间的整数"
-        label="拼约时长"
+        label="拼团时长"
         name="groupTime"
         min={1}
         max={96}
         step
         rules={[
-          { required: true, message: '请输入拼约时长' },
+          { required: true, message: '请输入拼团时长' },
           () => ({
             validator(_, value) {
               if (`${value}`.indexOf('.') !== -1) {
@@ -332,7 +340,7 @@ export default (props) => {
         ]}
         extra={
           <>
-            <div>开启虚拟成团后，当拼约时长到期时，对人数未满的团，系统将会模拟匿名买家凑满人数，使该团成团，开启以提高成团率</div>
+            <div>开启虚拟成团后，当拼团时长到期时，对人数未满的团，系统将会模拟匿名买家凑满人数，使该团成团，开启以提高成团率</div>
             <div style={{ color: 'rgb(234, 154, 0)' }}>限新人参团的商品固定不开启虚拟成团</div>
           </>
         }
@@ -354,7 +362,6 @@ export default (props) => {
               pagination={{
                 pageSize: 5
               }}
-              controlled
               scroll={{ x: 'max-content' }}
               rowKey="id"
               rowSelection={{
@@ -380,7 +387,21 @@ export default (props) => {
         name="activeRule"
         label="活动规则"
         placeholder="请输入活动规则"
-        width="md"
+        width={500}
+        fieldProps={{
+          showCount: true,
+          maxLength: 2000
+        }}
+        rules={[
+          () => ({
+            validator(_, value) {
+              if (value.length < 5) {
+                return Promise.reject(new Error('请输入5-2000个字符'))
+              }
+              return Promise.resolve()
+            },
+          })
+        ]}
       />
 
       {
