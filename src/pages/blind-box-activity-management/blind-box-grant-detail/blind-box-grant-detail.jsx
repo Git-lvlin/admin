@@ -51,7 +51,8 @@ export default () => {
         valueEnum: {
           1:'连续签到',
           2:'邀请好友', 
-          3:'订单消费'
+          3:'订单消费',
+          7:'采购订单'
         },
       },
       {
@@ -108,7 +109,7 @@ export default () => {
           headerTitle="盲盒机会发放明细"
           options={false}
           request={getBlindboxIncomeList}
-          scroll={{ y: Math.max(window.innerHeight - 650, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x:'max-content', scrollToFirstRowOnChange: true, }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,
@@ -118,10 +119,14 @@ export default () => {
                 key='export'
                 change={(e) => { setVisit(e) }}
                 type={'bind-box-give-detail-export'}
-                conditions={getFieldValue(searchConfig)}
+                conditions={()=>{return getFieldValue(searchConfig)}}
               />,
               <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-give-detail-export'}/>
             ],
+          }}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
           }}
           columns={columns}
         />

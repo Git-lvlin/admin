@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { history } from 'umi'
 import moment from 'moment'
 
 import { interventionList } from '@/services/order-management/intervention-list'
+import DrawerDetail from './detail'
 
-const TabList =props=> {
-  const { done } =props
+const TabList =({done})=> {
+  const [visible, setVisible] = useState(false)
+  const [id, setId] = useState()
+
   const columns =[
     {
       title: '售后编号',
@@ -99,31 +102,42 @@ const TabList =props=> {
       render:(_, data)=>{
         return (
           <>
-            <a onClick={()=>history.push(`/order-management/intervention-list/details/${data.id}`)}>查看详情</a>
+            <a onClick={()=>{setVisible(true); setId(data.id)}}>查看详情</a>
           </>
         )
       }
     },
   ]
+
   return (
-    <ProTable
-      rowKey='orderSn'
-      columns={columns}
-      headerTitle="数据列表"
-      options={false}
-      params={{
-        done
-      }}
-      scroll={{ y: Math.max(window.innerHeight - 350, 500), scrollToFirstRowOnChange: true, }}
-      request={interventionList}
-      pagination={{
-        // hideOnSinglePage: true,
-        showQuickJumper: true
-      }}
-      search={{
-        span: 5
-      }}
-    />
+    <>
+      <ProTable
+        rowKey='orderSn'
+        columns={columns}
+        headerTitle="数据列表"
+        options={false}x
+        params={{
+          done
+        }}
+        scroll={{ y: Math.max(window.innerHeight - 350, 500), scrollToFirstRowOnChange: true, }}
+        request={interventionList}
+        pagination={{
+          showQuickJumper: true
+        }}
+        search={{
+          defaultCollapsed: false,
+          span: 5
+        }}
+      />
+      {
+        visible&&
+        <DrawerDetail
+          visible={visible}
+          setVisible={setVisible}
+          id={id}
+        />
+      }
+    </>  
   )
 }
 

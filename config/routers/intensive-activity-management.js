@@ -113,6 +113,11 @@ export default {
             hideInMenu: true,
             wrappers: [RouteWatcher],
           },
+          {
+            name: 'activity-tabulate-data',
+            path: '/intensive-activity-management/penny-activity/activity-tabulate-data',
+            component: './intensive-activity-management/penny-activity/activity-tabulate-data',
+          },
         ]
     },
     {
@@ -138,6 +143,11 @@ export default {
             component: './intensive-activity-management/special-offer-acticity/activity-detail',
             hideInMenu: true,
             wrappers: [RouteWatcher],
+          },
+          {
+            name: 'activity-tabulate-data',
+            path: '/intensive-activity-management/special-offer-acticity/activity-tabulate-data',
+            component: './intensive-activity-management/special-offer-acticity/activity-tabulate-data',
           },
         ]
     },

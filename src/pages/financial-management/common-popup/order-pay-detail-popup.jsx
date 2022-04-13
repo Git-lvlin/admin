@@ -158,6 +158,18 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
             <span>到账金额: ¥{amountTransform(realAmount, '/')}</span>
           </Space>
         )
+      case 'fee':
+        return (
+          <Space size={10}>
+            <span>手续费: ¥{amountTransform(amount, '/')}</span>
+            {
+              couponAmount !== '0'&&
+              <span>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+            }
+            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+            <span>到账金额: ¥{amountTransform(realAmount, '/')}</span>
+          </Space>
+        )
       default:
         return ''
     }

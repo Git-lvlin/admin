@@ -252,6 +252,33 @@ const TableList = () => {
             showTime: true,
           }}
         />
+        {
+          !isPurchase&&<ProFormSelect
+          label="活动订单"
+          name="activityCode"
+          options={[
+            {
+              value: '',
+              label: '请选择'
+            },
+            {
+              value: 'wsCentActiveCode',
+              label: '一分钱领菜活动'
+            },
+            {
+              value: 'wsDiscountActiveCode',
+              label: '特价生鲜活动'
+            },
+          ]}
+          fieldProps={{
+            style: {
+              marginBottom: 20,
+              width: 180,
+            }
+          }}
+        />
+        }
+        
         <ProFormText
           name="receiptUser"
           label="收件人"

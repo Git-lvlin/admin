@@ -6,7 +6,7 @@ import ProForm, { ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProForm
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
 import { saveWSCentActiveConfig,getActiveConfigById } from '@/services/intensive-activity-management/penny-activity';
-import moment from 'moment';
+import moment, { now } from 'moment';
 import styles from './style.less'
 import GoosSet from './goos-set'
 import { PageContainer } from '@ant-design/pro-layout';
@@ -31,6 +31,7 @@ export default (props) => {
   const [visible, setVisible] = useState(false);
   const [limitAll,setLimitAll]=useState(200)
   const [batchPrice,setBatchPrice]=useState()
+  const [loading,setLoading]=useState(false)
   const [form] = Form.useForm()
   useEffect(() => {
     if (id) {
@@ -41,6 +42,7 @@ export default (props) => {
           onClose()
           return false
         }
+        setLimitAll(res.data?.content?.shoperLimitAll)
         setDetailList(res.data)
         form.setFieldsValue({
             dateRange: [moment(res.data?.startTime*1000).valueOf(), moment(res.data?.endTime*1000).valueOf()],
@@ -57,7 +59,7 @@ export default (props) => {
           })
       })
     }
-  }, [])
+  }, [loading])
   const activityName = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
       if (value&&/[%&',;=?$\x22]/.test(value)) {
@@ -129,24 +131,75 @@ export default (props) => {
 
   const onsubmit = (values) => {
     if(id){
-      var max=detailList?.content?.goods[0].minNum
-      for (let index = 0; index < detailList?.content?.goods.length; index++) {
-          if(max<detailList?.content?.goods[index].minNum){
-            max=detailList?.content?.goods[index].minNum
+      let arr=goosList||detailList?.content?.goods
+      var max=arr[0]?.minNum
+      let stockNum=false
+      var flage=false
+
+      var result = [];//追加的数据
+      for(var i = 0; i < goosList?.length; i++){
+          var obj = goosList[i];
+          var num = obj.wsId;
+          var isExist = false;
+          for(var j = 0; j < detailList?.content?.goods?.length; j++){
+              var aj = detailList?.content?.goods[j];
+              var n = aj.wsId;
+              if(n == num){
+                  isExist = true;
+                  break;
+              }
           }
+          if(!isExist){
+              result.push(obj);
+          }
+      }
+
+      for (let index = 0; index < result?.length; index++) {
+        if(result[index]?.actStockNum==0){
+          stockNum=true
+        }
+      }
+
+      for (let index = 0; index < arr.length; index++) {
+          if(max<arr[index]?.minNum){
+            max=arr[index]?.minNum
+          }
+          if(arr[index]?.actStockNum%arr[index]?.batchNumber!==0){
+            flage=true
+          }
+      }
+      if(stockNum){
+        return message.error('活动库存为零！')
       }
       if(values.shoperLimitOnece<max){
         return message.error('每位店主单次限量不能小于集约单次限量的起订量！')
+      }
+      if(flage){
+        return message.error('请输入箱规单位量整倍数')
       }
     }else{
-      var max=goosList[0].minNum
+      var max=goosList[0]?.minNum
+      var flage=false
+      let stockNum=false
       for (let index = 0; index < goosList.length; index++) {
-          if(max<goosList[index].minNum){
-            max=goosList[index].minNum
+          if(max<goosList[index]?.minNum){
+            max=goosList[index]?.minNum
           }
+          if(goosList[index]?.actStockNum%goosList[index]?.batchNumber!==0){
+            flage=true
+          }
+          if(goosList[index]?.actStockNum==0){
+            stockNum=true
+          }
+      }
+      if(flage){
+        return message.error('请输入箱规单位量整倍数')
       }
       if(values.shoperLimitOnece<max){
         return message.error('每位店主单次限量不能小于集约单次限量的起订量！')
+      }
+      if(stockNum){
+        return message.error('活动库存为零！')
       }
     }
 
@@ -157,7 +210,14 @@ export default (props) => {
         endTime:moment(values.dateRange[1]).valueOf()/1000,
         joinShopType:values.joinShopType[0],
         joinAgainPercent:amountTransform(values.joinAgainPercent,'/'),
-        goods:goosList?.map(ele=>({skuId:ele.skuId,spuId:ele.spuId,wsId:ele.wsId,price:amountTransform(ele.price,'*'),status:ele.status}))||detailList?.content?.goods,
+        goods:goosList?.map(ele=>({
+          skuId:ele.skuId,
+          spuId:ele.spuId,
+          wsId:ele.wsId,
+          price:amountTransform(ele.price,'*'),
+          status:ele.status,
+          actStockNum:ele.actStockNum
+        }))||detailList?.content?.goods,
         price:amountTransform(values.price,'*'),
         status:1,
       }
@@ -293,6 +353,10 @@ export default (props) => {
           batchPrice={batchPrice}
           callback={(val)=>{
             setGoosList(val)
+          }}
+          callLoading={()=>{
+            const time=+new Date()
+            setLoading(time)
           }}
         />
         <ProFormDateTimeRangePicker

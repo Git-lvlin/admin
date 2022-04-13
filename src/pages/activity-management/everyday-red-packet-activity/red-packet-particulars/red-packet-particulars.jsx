@@ -163,7 +163,7 @@ export default () => {
           headerTitle='每日红包明细'
           options={false}
           request={couponEverydayLogList}
-          scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x:'max-content', scrollToFirstRowOnChange: true, }}
           search={{
             defaultCollapsed: false,
             labelWidth: 100,
@@ -173,12 +173,17 @@ export default () => {
                 key='export'
                 change={(e) => { setVisit(e) }}
                 type={'day-red-detail-export'}
-                conditions={getFieldValue(searchConfig)}
+                conditions={()=>{return getFieldValue(searchConfig)}}
               />,
               <ExportHistory key='task' show={visit} setShow={setVisit} type='day-red-detail-export'/>,
             ],
           }}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
           columns={columns}
+          
         />
         {
           detailVisible && <Detail

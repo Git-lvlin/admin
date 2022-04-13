@@ -10,6 +10,8 @@ import { amountTransform } from '@/utils/utils'
 import { platforms, enabledDisabledSubmit, subtotal } from '@/services/financial-management/supplier-fund-management'
 import styles from './styles.less'
 import { Export,ExportHistory } from '@/pages/export-excel'
+import Detailed from '../payment-details'
+import Detail from '../details'
 
 const SupplierFundManagement = () => {
   const actionRef = useRef()
@@ -19,6 +21,9 @@ const SupplierFundManagement = () => {
   const [search, setSearch] = useState({})
   const [data, setData] = useState({})
   const [visit, setVisit] = useState(false)
+  const [detailedVisible, setDetailedVisible] = useState(false)
+  const [detailVisible, setDetailVisible] = useState(false)
+  const [query, setQuery] = useState(null)
 
   useEffect(()=> {
     subtotal({
@@ -35,10 +40,12 @@ const SupplierFundManagement = () => {
   }, [search])
 
   const skipToDetail = ({accountType, accountId}) => {
-    history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
+    setQuery({accountType, accountId})
+    setDetailedVisible(true)
   }
   const toDetails = ({accountType, accountId}) => {
-    history.push(`/financial-management/money-management/details?accountType=${accountType}&accountId=${accountId}`)
+    setQuery({accountType, accountId})
+    setDetailVisible(true)
   }
   const disable = data =>{
     enabledDisabledSubmit({...data}).then(res=> {
@@ -196,6 +203,7 @@ const SupplierFundManagement = () => {
             setPage(e)
           }
         }}
+        scroll={{x: "max-content"}}
         rowKey='accountId'
         postData={
           (e)=>{
@@ -260,6 +268,22 @@ const SupplierFundManagement = () => {
           </>
         )}
       />
+      {
+        detailedVisible &&
+        <Detailed
+          query={query}
+          visible={detailedVisible}
+          setVisible={setDetailedVisible}
+        />
+      }
+      {
+        detailVisible &&
+        <Detail
+          query={query}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
     </PageContainer>
   )
 }

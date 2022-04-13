@@ -158,7 +158,7 @@ export default () => {
                 key='export'
                 change={(e) => { setVisit(e) }}
                 type={'build-floor-use-list-export'}
-                conditions={getFieldValue(searchConfig)}
+                conditions={()=>{return getFieldValue(searchConfig)}}
               />,
               <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-use-list-export'}/>,
             ],

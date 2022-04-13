@@ -3,11 +3,13 @@ import styles from '../style.less'
 import { Button } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import ProForm, { ProFormText, ProFormSelect,ProFormRadio,ProFormDependency,ProFormDigit,ModalForm } from '@ant-design/pro-form';
+import Big from 'big.js'
 
 export default (props) => {
     const {id,falg}=props
     const [visible, setVisible] = useState(false);
     const checkConfirm=(rule, value, callback)=>{
+        console.log('dasd',value)
         return new Promise(async (resolve, reject) => {
         if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
             await reject('只能输入整数')
@@ -20,7 +22,7 @@ export default (props) => {
         <>
             <ProFormText
                 width={120}
-                label='开盲盒机会获取途径'
+                label={<><span style={{color:'#FF7E7E',fontSize:'20px',marginTop:'5px'}}>*&nbsp;</span>开盲盒机会获取途径</>}
                 readonly
                 fieldProps={{
                     value:<a style={{color:'#000',fontWeight:'bolder'}} onClick={()=>setVisible(true)}><QuestionCircleOutlined /></a>
@@ -83,13 +85,12 @@ export default (props) => {
                                 <ProForm.Group>
                                 <span>此任务每天最高可获得</span>
                                 <ProFormText
-                                    width={100}
                                     name="dayGainMax"
-                                    rules={[
-                                        {validator: checkConfirm}
-                                    ]}
                                     readonly={id}
-                                    rules={[{ required: true, message: '请设置获得次数' }]}
+                                    rules={[
+                                        {validator: checkConfirm},
+                                        { required: true, message: '请设置获得次数' }
+                                    ]}
                                 />
                                 <span>次</span>
                                 </ProForm.Group>
@@ -97,10 +98,12 @@ export default (props) => {
                                     <span>中奖概率</span>
                                     <ProFormDigit
                                         name="probability1"
+                                        fieldProps={{
+                                            formatter: value => value ? +new Big(value).toFixed(2) : value
+                                        }}
                                         min={1}
                                         max={100}
                                         rules={[
-                                            {validator: checkConfirm},
                                             { required: true, message: '请设置中奖概率' }
                                         ]}
                                         readonly={id&&falg}
@@ -167,9 +170,11 @@ export default (props) => {
                                         min={1}
                                         max={100}
                                         rules={[
-                                            {validator: checkConfirm},
                                             { required: true, message: '请设置中奖概率' }
                                         ]}
+                                        fieldProps={{
+                                            formatter: value => value ? +new Big(value).toFixed(2) : value
+                                        }}
                                         readonly={id&&falg}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
@@ -204,22 +209,22 @@ export default (props) => {
                                             value: 1,
                                             label: '每日首次消费1笔获得1次',
                                         },
-                                        {
-                                            value: 2,
-                                            label: '每日首次消费2笔获得1次',
-                                        },
-                                        {
-                                            value: 3,
-                                            label: '每日首次消费3笔获得1次',
-                                        },
-                                        {
-                                            value: 4,
-                                            label: '每日首次消费4笔获得1次',
-                                        },
-                                        {
-                                            value: 5,
-                                            label: '每日首次消费5笔获得1次',
-                                        }
+                                        // {
+                                        //     value: 2,
+                                        //     label: '每日首次消费2笔获得1次',
+                                        // },
+                                        // {
+                                        //     value: 3,
+                                        //     label: '每日首次消费3笔获得1次',
+                                        // },
+                                        // {
+                                        //     value: 4,
+                                        //     label: '每日首次消费4笔获得1次',
+                                        // },
+                                        // {
+                                        //     value: 5,
+                                        //     label: '每日首次消费5笔获得1次',
+                                        // }
                                     ]}
                                     readonly={id}
                                 />
@@ -230,36 +235,121 @@ export default (props) => {
                                         min={1}
                                         max={100}
                                         rules={[
-                                            {validator: checkConfirm},
                                             { required: true, message: '请设置中奖概率' }
                                         ]}
                                         readonly={id&&falg}
+                                        fieldProps={{
+                                            formatter: value => value ? +new Big(value).toFixed(2) : value
+                                        }}
                                     />
                                     <span>%，大于等于0，小于100的最多两位小数，必填。</span>
                                 </ProForm.Group>
                             </div>
               }}
             </ProFormDependency>
+
+            <ProFormRadio.Group
+                name="switch4"
+                label='4、社区店主消费'
+                options={[
+                    {
+                        label:'开启',
+                        value: 1,
+                    },
+                    {
+                        label: '关闭',
+                        value: 0,
+                    }
+                ]}
+                readonly={id&&falg}
+                rules={[{ required: true, message: '请设置社区店主消费状态' }]}
+            />
+            <ProFormDependency name={['switch4']}>
+                {({ switch4 }) => { 
+                    return  <div className={styles.unfold}>
+                                <ProFormSelect
+                                    name="consumeNum2"
+                                    initialValue={30}
+                                    options={[
+                                        {
+                                            value: 30,
+                                            label: '每日采购1笔大于等于30元的订单，获得1次机会',
+                                        },
+                                        {
+                                            value: 50,
+                                            label: '每日采购1笔大于等于50元的订单，获得1次机会',
+                                        },
+                                        {
+                                            value: 80,
+                                            label: '每日采购1笔大于等于80元的订单，获得1次机会',
+                                        },
+                                        {
+                                            value: 100,
+                                            label: '每日采购1笔大于等于100元的订单，获得1次机会',
+                                        },
+                                        {
+                                            value: 300,
+                                            label: '每日采购1笔大于等于300元的订单，获得1次机会',
+                                        },
+                                        {
+                                            value: 500,
+                                            label: '每日采购1笔大于等于500元的订单，获得1次机会',
+                                        }
+                                    ]}
+                                    readonly={id}
+                                />
+                                <ProForm.Group>
+                                    <span>中奖概率</span>
+                                    <ProFormDigit
+                                        name="probability4"
+                                        min={1}
+                                        max={100}
+                                        rules={[
+                                            { required: true, message: '请设置中奖概率' }
+                                        ]}
+                                        fieldProps={{
+                                            formatter: value => value ? +new Big(value).toFixed(2) : value
+                                        }}
+                                        readonly={id&&falg}
+                                    />
+                                    <span>%，大于等于0，小于100的最多两位小数，必填。</span>
+                                </ProForm.Group>
+                                <ProForm.Group>
+                                    <span>此任务每天最高可获得</span>
+                                    <ProFormText
+                                        name="dayMaxNum"
+                                        readonly={id}
+                                        rules={[
+                                            {validator: checkConfirm},
+                                            { required: true, message: '请设置获得次数' }
+                                        ]}
+                                    />
+                                    <span>次</span>
+                                </ProForm.Group>
+                            </div>
+              }}
+            </ProFormDependency>
+
             {
                 visible&&<ModalForm
-                key="model2"
-                onVisibleChange={setVisible}
-                visible={visible}
-                submitter={{
-                render: (props, defaultDoms) => {
-                    return [
-                        <Button  type="primary" key="submit" onClick={() => {
-                            props.form?.submit?.()
-                          }}>
-                            知道了
-                          </Button>
-                    ];
-                },
-                }}
-                onFinish={async (values) => {
-                    setVisible(false)   
-                    return true;
-                }}
+                    key="model2"
+                    onVisibleChange={setVisible}
+                    visible={visible}
+                    submitter={{
+                    render: (props, defaultDoms) => {
+                        return [
+                            <Button  type="primary" key="submit" onClick={() => {
+                                props.form?.submit?.()
+                            }}>
+                                知道了
+                            </Button>
+                        ];
+                    },
+                    }}
+                    onFinish={async (values) => {
+                        setVisible(false)   
+                        return true;
+                    }}
                 >
                 <dl>
                     <dt>概率解释：</dt>
@@ -267,8 +357,9 @@ export default (props) => {
                     <dd>2、下方奖品设置列表中的商品中奖概率总和加起来必须等于100，如果抽中奖品库存为0的商品也会提示用户未中奖。</dd>
                     <dd>3、示例：中奖概率设为20%;则抽奖盒子里有100个纸条，其中有20个写着中奖，80个写着未中奖，随机在这100个纸条里面抽取一个纸条，抽中 未中奖 的纸条则提示用户未中奖，抽中 中奖 的纸条且在今日总中奖次数没有超过设置的次数的情况下会去奖品库根据概率挑选奖品。</dd>
                 </dl>
-                </ModalForm>
+            </ModalForm>
             }
+            
         </>
     )
 }

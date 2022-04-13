@@ -122,6 +122,12 @@ export default {
       path: '/intensive-store-management/fresh-shop-configuration',
       component: './intensive-store-management/fresh-shop-configuration',
       wrappers: [RouteWatcher],
+    },
+    {
+      name: 'cancel-aduit',
+      path: '/intensive-store-management/cancel-aduit',
+      component: './intensive-store-management/cancel-aduit',
+      wrappers: [RouteWatcher],
     }
   ]
 }

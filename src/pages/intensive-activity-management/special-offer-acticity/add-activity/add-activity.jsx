@@ -32,6 +32,7 @@ export default (props) => {
   const [goosList,setGoosList]=useState()
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm()
+  const [loading,setLoading]=useState(false)
 
   const activityName = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
@@ -90,8 +91,66 @@ export default (props) => {
           })
       })
     }
-  }, [])
+  }, [loading])
   const onsubmit = (values) => {
+    if(id){
+      let arr=goosList||detailList
+      var result = [];//追加的数据
+      for(var i = 0; i < goosList?.length; i++){
+          var obj = goosList[i];
+          var num = obj.wsId;
+          var isExist = false;
+          for(var j = 0; j < detailList?.length; j++){
+              var aj = detailList[j];
+              var n = aj.wsId;
+              if(n == num){
+                  isExist = true;
+                  break;
+              }
+          }
+          if(!isExist){
+              result.push(obj);
+          }
+      }
+
+      let stockNum=false
+      var flage=false
+      for (let index = 0; index < arr?.length; index++) {
+          if(arr[index]?.actStockNum%arr[index]?.batchNumber!==0){
+            flage=true
+          }
+      }
+
+      for (let index = 0; index < result?.length; index++) {
+        if(result[index]?.actStockNum==0){
+          stockNum=true
+        }
+      }
+
+      if(stockNum){
+        return message.error('活动库存为零！')
+      }
+      if(flage){
+        return message.error('请输入箱规单位量整倍数')
+      }
+    }else{
+      let stockNum=false
+      var flage=false
+      for (let index = 0; index < goosList?.length; index++) {
+          if(goosList[index]?.actStockNum==0){
+            stockNum=true
+          }
+          if(goosList[index]?.actStockNum%goosList[index]?.batchNumber!==0){
+            flage=true
+          }
+      }
+      if(flage){
+        return message.error('请输入箱规单位量整倍数')
+      }
+      if(stockNum){
+        return message.error('活动库存为零！')
+      }
+    }
       const parmas={
         ...values,
         id:id?id:0,
@@ -108,7 +167,8 @@ export default (props) => {
           price:amountTransform(ele.price,'*'),
           status:ele.status,
           buyLimit:ele.maxNum,
-          wholesaleFreight:ele.wholesaleFreight
+          wholesaleFreight:ele.wholesaleFreight,
+          actStockNum:ele.actStockNum
         }))||detailList,
         buyerLimit:values.buyerType==0?999999:values.buyerLimit,
         status:1,
@@ -273,6 +333,10 @@ export default (props) => {
           id={id} 
           callback={(val)=>{
             setGoosList(val)
+          }}
+          callLoading={()=>{
+            const time=+new Date()
+            setLoading(time)
           }}
         />
          <ProFormTextArea

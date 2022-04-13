@@ -167,7 +167,7 @@ const EvaluateList= (props) => {
                        key='export'
                        change={(e) => { setVisit(e) }}
                        type={'data-goods-comment-export'}
-                       conditions={getFieldValue(searchConfig)}
+                       conditions={()=>{return getFieldValue(searchConfig)}}
                      />,
                      <ExportHistory key='task' show={visit} setShow={setVisit} type={'data-goods-comment-export'}/>
                 ],
