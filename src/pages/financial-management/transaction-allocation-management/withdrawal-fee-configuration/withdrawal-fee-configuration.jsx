@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ProForm, { ProFormSelect, ProFormDigit } from '@ant-design/pro-form'
 import { Input, message, Form, Spin } from 'antd'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 
 import { withdrawConfigDetail, withdrawConfigUpdate } from '@/services/financial-management/withdrawal-fee-configuration'
 import { amountTransform } from '@/utils/utils'

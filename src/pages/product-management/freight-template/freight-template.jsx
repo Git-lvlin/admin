@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { Button, Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { postageList, postageDetail } from '@/services/product-management/freight-template';
@@ -89,7 +89,7 @@ const TableList = () => {
         options={false}
         request={postageList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 150,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

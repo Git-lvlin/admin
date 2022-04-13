@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table';
 import { Button } from 'antd';
 
@@ -109,7 +109,7 @@ const exportExcel = (form) => {
         rowKey="ID"
         options={false}
         search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: ({ searchText, resetText },{ form }) => [
                 <Button

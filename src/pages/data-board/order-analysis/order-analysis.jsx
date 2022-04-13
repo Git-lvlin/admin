@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 
 import ProTable from '@ant-design/pro-table'
 import { Space, Radio, DatePicker, Tooltip,Button } from 'antd'
@@ -474,7 +474,7 @@ const OrderAnalysis = () => {
         bordered
         request={wholeSaleOrderDetail}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: ({searchText, resetText}, {form}) => [
             <Button

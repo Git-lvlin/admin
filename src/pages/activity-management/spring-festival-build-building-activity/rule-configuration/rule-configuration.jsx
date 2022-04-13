@@ -3,7 +3,7 @@ import { Input, Form, message,Button,InputNumber,Spin,Space,DatePicker} from 'an
 import { saveBHActiveConfig,getActiveConfigById } from '@/services/activity-management/spring-festival-build-building-activity';
 import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDateTimePicker,ProFormSelect,DrawerForm} from '@ant-design/pro-form';
 import { FormattedMessage, formatMessage } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import moment from 'moment';
 import { history,connect } from 'umi';
 import styles from './style.less'

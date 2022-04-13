@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import {
   StepsForm,
   ProFormText,
@@ -256,21 +256,14 @@ const IntensiveActivityCreate = () => {
         isEditSubsidy: 0
       })
     }
-    if (selectItem?.[0]?.fresh === 0) {
-      formRef.current.setFieldsValue({
-        preSale: 1
-      })
-    } else {
-      formRef.current.setFieldsValue({
-        preSale: 0
-      })
-    }
 
     if (selectItem.length) {
       formRef.current.setFieldsValue({
         settlePercent: selectItem[0].settlePercent,
         price: selectItem[0].price,
       })
+
+      formRef.current.validateFields(['price']);
 
       const { freshSpecial } = formRef.current.getFieldsValue()
 
@@ -396,32 +389,43 @@ const IntensiveActivityCreate = () => {
               !loading &&
               <ProFormDependency name={['isEditSubsidy']}>
                 {({ isEditSubsidy }) => (
-                  <EditTable onSelect={(v) => {
-                    if (v?.[0]?.skuId === selectItem?.[0]?.skuId && selectItem?.[0]?.skuId !== undefined && isEditSubsidy === 2) {
-                      const skuData = v[0];
-                      const obj = {
-                        skuId: skuData.skuId,
-                        fixedPrice: amountTransform(skuData.fixedPrice),
-                        operationFixedPrice: amountTransform(skuData.operationFixedPrice),
-                        isGetWholesale: 1,
-                        priceScale: amountTransform(skuData.settlePercent, '/'),
-                        price: amountTransform(skuData.price),
-                        ladderData: ladderData.map(item => ({
-                          tier: item.tier,
-                          skuId: skuData.skuId,
-                          storePercent: amountTransform(item.storePercent, '/'),
-                        }))
+                  <EditTable
+                    radioSelect={(v)=>{
+                      if (v?.[0]?.fresh === 0) {
+                        formRef.current.setFieldsValue({
+                          preSale: 1
+                        })
+                      } else {
+                        formRef.current.setFieldsValue({
+                          preSale: 0
+                        })
                       }
+                    }}
+                    onSelect={(v) => {
+                      if (v?.[0]?.skuId === selectItem?.[0]?.skuId && selectItem?.[0]?.skuId !== undefined && isEditSubsidy === 2) {
+                        const skuData = v[0];
+                        const obj = {
+                          skuId: skuData.skuId,
+                          fixedPrice: amountTransform(skuData.fixedPrice),
+                          operationFixedPrice: amountTransform(skuData.operationFixedPrice),
+                          isGetWholesale: 1,
+                          priceScale: amountTransform(skuData.settlePercent, '/'),
+                          price: amountTransform(skuData.price),
+                          ladderData: ladderData.map(item => ({
+                            tier: item.tier,
+                            skuId: skuData.skuId,
+                            storePercent: amountTransform(item.storePercent, '/'),
+                          }))
+                        }
 
-
-                      productList(obj).then(res => {
-                        skuData.ladderData = res.data[0].ladderData
-                        setSelectItem([skuData])
-                      })
-                    } else {
-                      setSelectItem(v)
-                    }
-                  }} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} ref={editTableRef} />
+                        productList(obj).then(res => {
+                          skuData.ladderData = res.data[0].ladderData
+                          setSelectItem([skuData])
+                        })
+                      } else {
+                        setSelectItem(v)
+                      }
+                    }} sku={detailData?.sku?.[0]} wholesale={detailData?.wholesale} ref={editTableRef} />
                 )}
               </ProFormDependency>
 
@@ -500,8 +504,8 @@ const IntensiveActivityCreate = () => {
               >
                 {selectItem[0].wholesaleFreight}元
               </Form.Item>
-              <ProFormDependency name={['freshCommission']}>
-                {({ freshCommission }) => (
+              <ProFormDependency name={['freshCommission', 'price']}>
+                {({ freshCommission, price }) => (
                   <>
                     <ProFormText
                       label="售价上浮比"
@@ -528,6 +532,14 @@ const IntensiveActivityCreate = () => {
                       validateFirst
                       rules={[
                         { required: true, message: '请输入' },
+                        () => ({
+                          validator(_, value) {
+                            if (+price > +selectItem[0].marketPriceDisplay) {
+                              return Promise.reject(new Error('集约价不能大于市场价'));
+                            }
+                            return Promise.resolve();
+                          },
+                        })
                       ]}
                       fieldProps={{
                         addonAfter: `元/${selectItem[0].unit}`,

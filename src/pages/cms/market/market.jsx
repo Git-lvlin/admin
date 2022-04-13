@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import Look from './look';
 import { marketList, marketDel } from '@/services/cms/member/member';
@@ -118,7 +118,7 @@ const BannerAdmin = () => {
       pagination={{
         pageSize: 5,
       }}
-      scroll={{ y: Math.max(window.innerHeight - 400, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       dateFormatter="string"
       headerTitle="营销落地页资源配置管理"
       toolBarRender={(_,record) => [

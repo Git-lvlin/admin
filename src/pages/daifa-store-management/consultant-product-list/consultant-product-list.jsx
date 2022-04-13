@@ -194,7 +194,7 @@ const consultantProductList = props => {
         }}
         expandable={{ expandedRowRender: (_) => <SubTable spuId={_.spuId} storeNo={_.storeNo} /> }}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

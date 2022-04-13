@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { Button, Card, Space, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
 import { addressList, addressDetail, addressSwitch, addressSetDefault } from '@/services/operation-management/after-sale-address'

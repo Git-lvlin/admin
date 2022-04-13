@@ -4,7 +4,7 @@ import { message, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm, { ProFormSwitch } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { dateFormat } from '@/utils/utils';
 import Edit from './form';
 import ClassSort from './sort';
@@ -164,7 +164,7 @@ const HomeClassification = () => {
       actionRef={actionRef}
       params={{verifyVersionId: verifyVersionId}}
       request={homeClassificationList}
-      scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       postData={(data) => {
         setListData(data)
         data.map(item=>{

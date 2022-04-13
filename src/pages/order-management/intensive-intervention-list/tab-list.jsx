@@ -102,7 +102,7 @@ const TabList =({done})=> {
       }}
       search={{
         span: 5,
-        defaultCollapsed: false,
+        defaultCollapsed: true,
         collapseRender: false
       }}
     />

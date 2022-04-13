@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { Button, Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import * as api from '@/services/product-management/product-unit';
@@ -65,7 +65,7 @@ const TableList = () => {
         options={false}
         request={api.searchUnit}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
@@ -76,7 +76,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       />
       <Form
         visible={formVisible}

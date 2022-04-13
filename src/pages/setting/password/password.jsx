@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Form, Button, Space } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProForm, { ProFormText, ProFormDependency } from '@ant-design/pro-form';
 import { changePwd } from '@/services/setting/password';
 import { history } from 'umi';

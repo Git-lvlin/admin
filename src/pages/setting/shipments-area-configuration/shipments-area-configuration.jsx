@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import AddressMultiCascader from '@/components/address-multi-cascader'
 import { latedeliveryAreaIndex,addLateDeliveryDesc,addLatedeliveryArea,updateLatedeliveryAreaStatus } from '@/services/setting/shipments-area-configuration'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProForm, { ProFormText, ProFormRadio,ProFormDependency } from '@ant-design/pro-form';
 import { history,connect } from 'umi';
 import DeleModel from './dele-model'
@@ -296,7 +296,7 @@ export default () => {
                 search={false}
                 columns={columns}
                 postData={postData}
-                scroll={{ y: Math.max(window.innerHeight - 750, 500), scrollToFirstRowOnChange: true, }}
+                scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
                 pagination={{
                   pageSize: 10,
                   showQuickJumper: true,

@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { getActiveConfigList } from '@/services/blind-box-activity-management/blindbox-get-active-config-list';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import moment from 'moment';
 import { history,connect } from 'umi';
 import BindBoxSet from '../bind-box-rule-set'
@@ -124,10 +124,9 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="盲盒活动列表"
           options={false}
           request={getActiveConfigList}
-          scroll={{ y: Math.max(window.innerHeight - 570, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           toolBarRender={()=>[
             <Button key='add' icon={<PlusOutlined />}  onClick={()=>setVisible(true)} type="primary">
                 添加活动

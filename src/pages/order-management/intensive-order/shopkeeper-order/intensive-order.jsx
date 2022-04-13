@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Tag } from 'antd';
 import { history, useLocation } from 'umi';
@@ -104,7 +104,7 @@ const TableList = () => {
         submitter={{
           render: ({ form }, doms) => {
             return (
-              <div>
+              <div style={{marginBottom: 20}}>
                 <Space>
                   <Button
                     type="primary"
@@ -280,6 +280,15 @@ const TableList = () => {
             }
           }}
         />
+        <ProFormText
+          name="wsId"
+          label="集约活动ID"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -344,6 +353,7 @@ const TableList = () => {
                     <span>订单号：{item.orderSn}</span>
                     <span>下单用户：{item.buyerName}</span>
                     <span>用户手机号：{item.buyerPhone}</span>
+                    <span>商品归属集约活动ID：{item.orderItemList[0].wsId}</span>
                   </Space>
                 </div>
 

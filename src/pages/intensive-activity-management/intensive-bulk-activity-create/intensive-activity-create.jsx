@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import {
   StepsForm,
   ProFormText,
@@ -303,6 +303,11 @@ const IntensiveActivityCreate = () => {
 
                 if (+item.price < +new Big(+new Big(item.wholesaleSupplyPrice || 0).plus(item.wholesaleFreight || 0)).times(1.05).toFixed(2)) {
                   message.error(`sku:${item.skuId}集约价不能低于${+new Big(+new Big(item.wholesaleSupplyPrice || 0).plus(item.wholesaleFreight || 0)).times(1.05).toFixed(2)}`);
+                  return false;
+                }
+
+                if (+item.price > +item.marketPriceDisplay) {
+                  message.error(`sku:${item.skuId}集约价不能大于市场价`);
                   return false;
                 }
 

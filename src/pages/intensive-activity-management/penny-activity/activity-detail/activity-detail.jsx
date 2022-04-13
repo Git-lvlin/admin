@@ -4,7 +4,7 @@ import { Divider, Form, Spin, Button,Image,InputNumber,Row,Col,Descriptions,Typo
 import ProForm,{ ModalForm,ProFormRadio,ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,DrawerForm} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import { amountTransform } from '@/utils/utils'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import moment from 'moment'
 import styles from './style.less'
 const { Title } = Typography;

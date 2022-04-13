@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect,ProFormCheckbox } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal, Tag, Popconfirm } from 'antd';
 import { history, useLocation } from 'umi';
@@ -118,7 +118,7 @@ const TableList = () => {
         submitter={{
           render: ({ form }, doms) => {
             return (
-              <div>
+              <div style={{ marginBottom: 20}}>
                 <Space>
                   <Button
                     type="primary"
@@ -366,6 +366,15 @@ const TableList = () => {
             style: {
               marginBottom: 20,
               width: 180,
+            }
+          }}
+        />
+        <ProFormText
+          name="wsId"
+          label="集约活动ID"
+          fieldProps={{
+            style: {
+              marginBottom: 20
             }
           }}
         />

@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Space, Tooltip,Image } from 'antd';
+import { Button, Space, Tooltip, Image, Menu, Dropdown } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
-import { PageContainer } from '@ant-design/pro-layout';
-import { getStoreList,applyConditionPage } from '@/services/intensive-store-management/store-list';
+import { PageContainer } from '@/components/PageContainer';
+import { getStoreList, applyConditionPage } from '@/services/intensive-store-management/store-list';
 import { history } from 'umi';
 import AddressCascader from '@/components/address-cascader';
-import Auth from '@/components/auth';
+import { getAuth } from '@/components/auth';
 import Form from './form';
 import Create from './create';
 import Return from './return';
@@ -32,12 +32,67 @@ const StoreList = (props) => {
   const [selectItem, setSelectItem] = useState(null);
   const [visit, setVisit] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false);
-  const [orderVisible,setOrderVisible]=useState(false)
-  const [orderId,setOrderId]=useState()
+  const [orderVisible, setOrderVisible] = useState(false)
+  const [orderId, setOrderId] = useState()
   const [auditInfoVisible, setAuditInfoVisible] = useState(false);
-  const [attachmentImage,setAttachmentImage]=useState()
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [gradeChangeVisible, setGradeChangeVisible] = useState(false);
+  const [attachmentImage, setAttachmentImage] = useState()
   const actionRef = useRef();
   const formRef = useRef();
+
+  const handleMenuClick = ({ key }, data) => {
+    if (key === '1') {
+      setSelectItem({ ...data, type: 1 })
+      setReturnVisible(true)
+    }
+    if (key === '2') {
+      setSelectItem({ ...data, type: 2 })
+      setReturnVisible(true)
+    }
+
+    if (key === '3') {
+      setSelectItem({ ...data, toStatus: 3 })
+      setFormVisible(true)
+    }
+
+    if (key === '4') {
+      setSelectItem({ ...data, toStatus: 1 })
+      setFormVisible(true)
+    }
+
+    if (key === '5') {
+      setSelectItem({ ...data, toStatus: 2 })
+      setFormVisible(true)
+    }
+
+    if (key === '6') {
+      setSelectItem(data)
+      setAuditInfoVisible(true)
+    }
+
+    if (key === '7') {
+      setSelectItem(data)
+      setGradeChangeVisible(true)
+    }
+
+  }
+
+  const menu = (data) => {
+    return (
+      <Menu onClick={(e) => { handleMenuClick(e, data) }}>
+        {data.status.code === 2 && <Menu.Item key="1">线下退保证金登记</Menu.Item>}
+        {data.status.code === 2 && <Menu.Item key="2">线上原路退回保证金</Menu.Item>}
+        {data.status.code === 1 && <Menu.Item key="3">关闭</Menu.Item>}
+        {data.status.code === 3 && <Menu.Item key="4">开启</Menu.Item>}
+        {data.status.code === 3 && <Menu.Item key="5">注销</Menu.Item>}
+        <Menu.Item key="6">审核资料</Menu.Item>
+        {getAuth('store/member_shop/grade') && <Menu.Item key="7">
+          店铺等级调整
+          </Menu.Item>}
+      </Menu>
+    )
+  }
 
   const columns = [
     {
@@ -64,7 +119,6 @@ const StoreList = (props) => {
       },
       hideInTable: storeType == 'freshStores',
       hideInSearch: storeType == 'freshStores',
-      width:200
     },
     {
       title: '店主手机号',
@@ -87,11 +141,10 @@ const StoreList = (props) => {
       dataIndex: 'memberShopType',
       valueType: 'text',
       hideInSearch: true,
-      render:(_,data)=>{
-        return <p>{_.desc}</p>
+      render: (_, data) => {
+        return <div>{_.desc}</div>
       },
       hideInTable: storeType == 'freshStores',
-      width:200
     },
     {
       title: '店铺名称',
@@ -100,14 +153,12 @@ const StoreList = (props) => {
       fieldProps: {
         placeholder: '请输入店铺名称'
       },
-      width:200
     },
     {
       title: '等级',
       dataIndex: ['level', 'levelName'],
       valueType: 'text',
       hideInSearch: true,
-      width:200
     },
     // {
     //   title: '积分',
@@ -126,14 +177,12 @@ const StoreList = (props) => {
             {details?.areaInfo?.[details?.provinceId]}{details?.areaInfo?.[details?.cityId]}{details?.areaInfo?.[details?.regionId]}
           </>)
       },
-      width:200
     },
     {
       title: '提货点详细地址',
       dataIndex: 'address',
       valueType: 'text',
       hideInSearch: true,
-      width:200
     },
     {
       title: '生鲜柜',
@@ -141,7 +190,7 @@ const StoreList = (props) => {
       valueType: 'select',
       hideInSearch: storeType != 'freshStores',
       hideInTable: true,
-      valueEnum:{
+      valueEnum: {
         1: '已购买',
         0: '未购买'
       },
@@ -151,11 +200,10 @@ const StoreList = (props) => {
       dataIndex: 'isOrdered',
       valueType: 'text',
       hideInSearch: true,
-      render:(_,data)=>{
-        return <a onClick={()=>{setOrderVisible(true);setOrderId(data?.freshOrder?.id)}}>{data?.freshOrder?.orderSn}</a>
+      render: (_, data) => {
+        return <a onClick={() => { setOrderVisible(true); setOrderId(data?.freshOrder?.id) }}>{data?.freshOrder?.orderSn}</a>
       },
       hideInTable: storeType != 'freshStores',
-      width:200
     },
     {
       title: '开店必备礼包',
@@ -163,7 +211,7 @@ const StoreList = (props) => {
       valueType: 'select',
       hideInSearch: storeType != 'freshStores',
       hideInTable: true,
-      valueEnum:{
+      valueEnum: {
         1: '已购买',
         0: '未购买'
       },
@@ -173,19 +221,18 @@ const StoreList = (props) => {
       dataIndex: 'isGiftOrdered',
       valueType: 'text',
       hideInSearch: true,
-      render:(_,data)=>{
-        return <a onClick={()=>{setOrderVisible(true);setOrderId(data?.giftOrder?.id)}}>{data?.giftOrder?.orderSn}</a>
+      render: (_, data) => {
+        return <a onClick={() => { setOrderVisible(true); setOrderId(data?.giftOrder?.id) }}>{data?.giftOrder?.orderSn}</a>
       },
       hideInTable: storeType != 'freshStores',
-      width:200
     },
     {
       title: '是否生鲜店铺',
       dataIndex: 'memberShopType',
       valueType: 'select',
-      hideInTable:true,
+      hideInTable: true,
       hideInSearch: storeType == 'freshStores',
-      valueEnum:{
+      valueEnum: {
         0: '全部',
         20: '生鲜店铺',
         10: '非生鲜店铺'
@@ -204,7 +251,6 @@ const StoreList = (props) => {
         "5": '取消申请',
         "6": '待审核'
       },
-      width:200
     },
     {
       title: '所属运营中心',
@@ -215,7 +261,6 @@ const StoreList = (props) => {
       fieldProps: {
         placeholder: '请输入运营中心名称'
       },
-      width:200
     },
     {
       title: '所属运营中心ID',
@@ -223,9 +268,8 @@ const StoreList = (props) => {
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'freshStores',
-      width:200,
-      render:(_,data)=>{
-        return <p>{_==0?'-':_}</p>
+      render: (_, data) => {
+        return <div>{_ == 0 ? '-' : _}</div>
       }
     },
     {
@@ -234,7 +278,6 @@ const StoreList = (props) => {
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'freshStores',
-      width:200
     },
     {
       title: '申请类型',
@@ -246,13 +289,11 @@ const StoreList = (props) => {
       },
       hideInTable: true,
       hideInSearch: storeType == 'freshStores',
-      order: -2,
     },
     {
       title: '申请类型',
-      dataIndex: storeType === 'freshStores' ?'applyType':['applyType', 'code'],
+      dataIndex: storeType === 'freshStores' ? 'applyType' : ['applyType', 'code'],
       valueType: 'text',
-      width: 100,
       render: (_) => _ === 10 ? '正常申请' : '绿色通道申请',
       hideInSearch: true,
       hideInTable: storeType == 'freshStores',
@@ -263,7 +304,6 @@ const StoreList = (props) => {
       fieldProps: {
         placeholder: '请输入店主收件手机号'
       },
-      order: -1,
       hideInTable: storeType == 'freshStores'
     },
     {
@@ -271,7 +311,6 @@ const StoreList = (props) => {
       dataIndex: 'wholeTotal',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -298,7 +337,6 @@ const StoreList = (props) => {
       dataIndex: 'saleOrderTotal',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -324,7 +362,6 @@ const StoreList = (props) => {
       dataIndex: 'productTotal',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -348,7 +385,6 @@ const StoreList = (props) => {
       dataIndex: 'userTotal',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -372,7 +408,6 @@ const StoreList = (props) => {
       dataIndex: 'shopkeeperInvitedTotal',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, data) => {
         return _ > 0
           ?
@@ -425,25 +460,24 @@ const StoreList = (props) => {
       dataIndex: 'depositStatusDesc',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'cancelled'||storeType == 'freshStores',
+      hideInTable: storeType == 'cancelled' || storeType == 'freshStores',
       render: (_, data) => {
         const { depositRefendList } = data;
         return (
           <>
-            <p>{_}</p>
+            <div>{_}</div>
             {depositRefendList && depositRefendList.map(ele => {
-              return <p>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</p>
+              return <div>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</div>
             })}
           </>
         )
       },
-      width:200
     },
     {
       title: '保证金状态',
       dataIndex: 'depositStatus',
       valueType: 'select',
-      hideInSearch: storeType == 'normal'||storeType == 'freshStores',
+      hideInSearch: storeType == 'normal' || storeType == 'freshStores',
       hideInTable: true,
       valueEnum: {
         "cancelled": '全部',
@@ -457,14 +491,32 @@ const StoreList = (props) => {
       dataIndex: 'depositStatusDesc',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'normal'||storeType == 'freshStores',
+      hideInTable: storeType == 'normal' || storeType == 'freshStores',
       render: (_, data) => {
         const { depositRefendList } = data;
         return (
           <>
-            <p>{_}</p>
+            <div>{_}</div>
+            {
+              depositRefendList?.[0]?.attach?.moneyCertificates &&
+              <div>
+                <a style={{ color: 'red' }} onClick={() => { setPreviewVisible(true); }}>查看线下退款凭证</a>
+                <Image
+                  width={200}
+                  style={{ display: 'none' }}
+                  src={depositRefendList?.[0]?.attach?.moneyCertificates}
+                  preview={{
+                    visible: previewVisible,
+                    src: depositRefendList?.[0]?.attach?.moneyCertificates,
+                    onVisibleChange: value => {
+                      setPreviewVisible(value)
+                    },
+                  }}
+                />
+              </div>
+            }
             {depositRefendList && depositRefendList.map(ele => {
-              return <p>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</p>
+              return <div>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</div>
             })}
           </>
         )
@@ -494,7 +546,6 @@ const StoreList = (props) => {
           </>
         )
       },
-      width:200
     },
     {
       title: '店铺等级',
@@ -537,18 +588,18 @@ const StoreList = (props) => {
       dataIndex: 'remark',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'normal'||storeType == 'freshStores',
+      hideInTable: storeType == 'normal' || storeType == 'freshStores',
       render: (_, data) => {
-        if(data?.cancelInfo?.balance){
+        if (data?.cancelInfo?.balance) {
           return (
             <>
               <p>有余额注销</p>
-              <a onClick={() => {setVisible(true);setAttachmentImage(data?.cancelInfo?.attachList)}}>附件（点击查看）</a>
+              <a onClick={() => { setVisible(true); setAttachmentImage(data?.cancelInfo?.attachList) }}>附件（点击查看）</a>
               <p>注销时还剩余额：{data?.cancelInfo?.balance}元</p>
               <pre className={styles.line_feed}>理由：{data?.cancelInfo?.reason}</pre>
             </>
           )
-        }else{
+        } else {
           return (
             <>
               <p>{_}</p>
@@ -573,32 +624,59 @@ const StoreList = (props) => {
       },
       hideInTable: true,
       hideInSearch: storeType == 'freshStores',
-      order: -1,
-      hideInSearch: storeType == 'freshStores',
+    },
+    {
+      title: '提交认证时间',
+      dataIndex: 'provideTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+      hideInSearch: storeType === 'freshStores'
+    },
+    {
+      title: '提交认证时间',
+      dataIndex: 'provideTime',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType === 'freshStores'
+    },
+    {
+      title: '审核通过时间',
+      dataIndex: 'auditTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+      hideInSearch: storeType === 'freshStores'
+    },
+    {
+      title: '审核通过时间',
+      dataIndex: 'auditTime',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType === 'freshStores'
     },
     {
       title: '操作',
       dataIndex: '',
       valueType: 'option',
-      width: storeType == 'normal' ? 300 : 500,
+      width: 100,
       fixed: 'right',
       render: (_, data) => (
         <Space>
-          <a onClick={() => { setSelectItem(data); setDetailVisible(true) }}>详情</a>
-          {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 1 }); setReturnVisible(true) }}>线下退保证金登记</a>}
-          {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 2 }); setReturnVisible(true) }}>线上原路退回保证金</a>}
-          {data.status.code === 1 && <a onClick={() => { setSelectItem({ ...data, toStatus: 3 }); setFormVisible(true) }}>关闭</a>}
-          {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 1 }); setFormVisible(true) }}>开启</a>}
-          {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 2 }); setFormVisible(true) }}>注销</a>}
-          <a onClick={() => { setSelectItem(data); setAuditInfoVisible(true) }}>审核资料</a>
-          <Auth
+          <Dropdown.Button onClick={() => { setSelectItem(data); setDetailVisible(true) }} overlay={() => { return menu(data) }}>详情</Dropdown.Button>
+          {/* <a onClick={() => { setSelectItem(data); setDetailVisible(true) }}>详情</a> */}
+          {/* {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 1 }); setReturnVisible(true) }}>线下退保证金登记</a>} */}
+          {/* {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 2 }); setReturnVisible(true) }}>线上原路退回保证金</a>} */}
+          {/* {data.status.code === 1 && <a onClick={() => { setSelectItem({ ...data, toStatus: 3 }); setFormVisible(true) }}>关闭</a>} */}
+          {/* {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 1 }); setFormVisible(true) }}>开启</a>} */}
+          {/* {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 2 }); setFormVisible(true) }}>注销</a>} */}
+          {/* <a onClick={() => { setSelectItem(data); setAuditInfoVisible(true) }}>审核资料</a> */}
+          {/* <Auth
             name="store/member_shop/grade"
           >
             <GradeChange
               callback={() => { actionRef.current.reload() }}
               storeNo={data.storeNo}
             />
-          </Auth>
+          </Auth> */}
 
         </Space>
       ),
@@ -620,8 +698,8 @@ const StoreList = (props) => {
     return {}
   }
 
-  const postData=(data)=>{
-    return data.map(ele=>({...ele,verifyStatus:ele?.freshApplyRow?.verifyStatus?.code}))
+  const postData = (data) => {
+    return data.map(ele => ({ ...ele, verifyStatus: ele?.freshApplyRow?.verifyStatus?.code }))
   }
 
   return (
@@ -636,24 +714,24 @@ const StoreList = (props) => {
         }}
         postData={postData}
         request={
-          storeType == 'freshStores'?applyConditionPage:getStoreList
+          storeType == 'freshStores' ? applyConditionPage : getStoreList
         }
-        scroll={{ x: '100vw', y: Math.max(window.innerHeight - 680, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <div key="export">
-             {
-               storeType != 'freshStores'&&
-               <>
-                 <Button
-                  key="new"
-                  onClick={() => {
-                    setCreateVisible(true);
-                  }}
-                >
-                  新建
+              {
+                storeType != 'freshStores' &&
+                <>
+                  <Button
+                    key="new"
+                    onClick={() => {
+                      setCreateVisible(true);
+                    }}
+                  >
+                    新建
                 </Button>
                 &nbsp;&nbsp;
                 <Export
@@ -664,10 +742,10 @@ const StoreList = (props) => {
                 />
                 &nbsp;&nbsp;
                 <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"} />
-               </>
-             }
+                </>
+              }
             </div>,
-            
+
             // <Button
             //   key="new2"
             //   onClick={() => {
@@ -706,7 +784,7 @@ const StoreList = (props) => {
         setVisible={setFormVisible}
         data={selectItem}
         callback={() => { actionRef.current.reload() }}
-        onClose={()=>{ actionRef.current.reload();setSelectItem(null) }}
+        onClose={() => { actionRef.current.reload(); setSelectItem(null) }}
       />}
       {returnVisible && <Return
         visible={returnVisible}
@@ -729,12 +807,20 @@ const StoreList = (props) => {
         visible={orderVisible}
         setVisible={setOrderVisible}
       />}
-      {visible&& <ContentModel
+      {visible && <ContentModel
         setVisible={setVisible}
         visible={visible}
         attachList={attachmentImage}
-        onClose={()=>{actionRef.current.reload();setAttachmentImage(null)}}
+        onClose={() => { actionRef.current.reload(); setAttachmentImage(null) }}
       />
+      }
+      {gradeChangeVisible &&
+        <GradeChange
+          callback={() => { actionRef.current.reload() }}
+          storeNo={selectItem.storeNo}
+          visible={gradeChangeVisible}
+          setVisible={setGradeChangeVisible}
+        />
       }
     </>
   );

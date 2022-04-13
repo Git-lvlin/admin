@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Card } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { PlusOutlined } from '@ant-design/icons';
 import * as api from '@/services/setting/role-management';
 import Form from './form';
@@ -70,9 +70,9 @@ const TableList = () => {
         options={false}
         request={api.adminGroup}
         actionRef={actionRef}
-        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
               key="search"
