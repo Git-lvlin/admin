@@ -5,10 +5,8 @@ import { getActiveConfigList} from '@/services/intensive-activity-management/pen
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from 'moment'
 import type { ProColumns,ActionType } from '@ant-design/pro-table';
-import { Button } from 'antd';
-import Export from '@/pages/export-excel/export'
-import ExportHistory from '@/pages/export-excel/export-history'
-// import ActivityDetail from '../activity-detail'
+import { Button, Space } from 'antd';
+import AddApply from './add-apply'
 
 
 type activityItem={
@@ -41,27 +39,29 @@ const PurchaseList=(props:propertys)=> {
     const [visit, setVisit] = useState<boolean>(false)
     const columns:ProColumns<activityItem>[]= [
       {
-        title: '采购单号',
+        title: '申请编号',
         dataIndex: 'id',
         valueType: 'text',
-        hideInTable: true,
       },
       {
-        title: '订单类型',
+        title: '关联集约采购单号',
         dataIndex: 'id',
         valueType: 'text',
         hideInSearch: true,
+        render:(_,data)=>{
+          return <a onClick={()=>{}}>{_}</a>
+        }
       },
       {
         title: '集约活动编号',
         dataIndex: 'id',
         valueType: 'text',
-        hideInSearch: true,
       },
       {
-        title: '收货方',
+        title: '集约采购单号',
         dataIndex: 'id',
         valueType: 'text',
+        hideInTable:true
       },
       {
         title: '采购商品',
@@ -72,31 +72,28 @@ const PurchaseList=(props:propertys)=> {
         title: '库存单位',
         dataIndex: 'ggoid',
         valueType: 'text',
+        hideInSearch: true,
       },
       {
         title: '采购数量',
         dataIndex: 'id',
         valueType: 'text',
+        hideInSearch: true,
       },
       {
-        title: '采购总金额',
+        title: '缺货数量',
         dataIndex: 'name',
-        valueType: 'text',
-      },
-      {
-        title: '订单状态',
-        dataIndex: 'shoperLimitAll',
         valueType: 'text',
         hideInSearch: true,
       },
       {
-        title: '创建时间',
+        title: '申请时间',
         dataIndex: 'startTime',
         valueType: 'dateTimeRange',
         hideInTable: true,
       },
       {
-        title: '创建时间',
+        title: '申请时间',
         dataIndex: 'startTime',
         valueType: 'text',
         render:(_,data)=>{
@@ -109,7 +106,25 @@ const PurchaseList=(props:propertys)=> {
         key: 'option',
         valueType: 'option',
         render:(text, record:any, _, action)=>[
-            <a key='detail' onClick={()=>{setDetailVisible(true);setPennyId(record.id)}}>详情</a>,
+            <Space key='detail'>
+              {
+               storeType=='submitted'||storeType=='acknowledged'?<a onClick={()=>{setDetailVisible(true);setPennyId(record.id)}}>查看详情</a>:null
+             }
+            </Space>,
+            <Space key='apply'>
+             {
+               storeType=='submitted'&&<a  onClick={()=>{setDetailVisible(true);setPennyId(record.id)}}>撤销申请</a>
+             }
+            </Space>,
+            <Space key="option">
+              {
+                storeType=='undone'&&<>
+                  <a key='apply' onClick={()=>{setDetailVisible(true);setPennyId(record.id)}}>编辑</a>
+                  <a key='apply' onClick={()=>{setDetailVisible(true);setPennyId(record.id)}}>删除</a>
+                </>
+              }
+            </Space>,
+
         ],
       }, 
     ];
@@ -148,14 +163,7 @@ const PurchaseList=(props:propertys)=> {
           defaultCollapsed: false,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
-            <Export
-              key='export'
-              change={(e) => { setVisit(e) }}
-              type={'build-floor-invite-list-export'}
-              conditions={()=>{return getFieldValue(searchConfig)}}
-            />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'build-floor-invite-list-export'}/>,
+            ...dom.reverse()
           ],
           }}
           columns={columns}
@@ -163,7 +171,6 @@ const PurchaseList=(props:propertys)=> {
             pageSize: 10,
             showQuickJumper: true,
           }}
-          rowSelection={{}}
         />
         // {/* {detailVisible&& <ActivityDetail
         //   visible={detailVisible}
@@ -178,9 +185,12 @@ const PurchaseList=(props:propertys)=> {
 
   export default ()=>{
       const [activeKey, setActiveKey] = useState('submitted')
+      const [visible, setVisible] = useState<boolean>(false)
       return (
-        <PageContainer>
-         <Button key="button" type="primary">新建申请</Button>
+        <PageContainer title=" ">
+        <div style={{background:'#fff',padding:'20px'}}>
+          <Button onClick={()=>{setVisible(true)}} key="button" type="primary">新建申请</Button>
+        </div>
         <ProCard
           tabs={{
             type: 'card',
@@ -204,6 +214,12 @@ const PurchaseList=(props:propertys)=> {
             }
           </ProCard.TabPane>
         </ProCard>
+        {visible&& <AddApply
+          visible={visible}
+          setVisible={setVisible}
+          callback={() => {  }}
+          onClose={() => {  }}
+        />}
       </PageContainer>
       )
   } 
