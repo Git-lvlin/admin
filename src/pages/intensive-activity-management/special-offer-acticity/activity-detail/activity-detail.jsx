@@ -35,16 +35,18 @@ export default props => {
     },
     {
       title: '商品分类',
-      dataIndex: 'gcName',
+      dataIndex: 'gcName1',
       valueType: 'text',
       ellipsis:true,
-      hideInSearch:true
+      hideInSearch:true,
+      render:(_,data)=>{
+        return <p>{_}-{data?.gcName2}</p>
+      }
     },
     {
       title: '商品主图',
       dataIndex: 'imageUrl',
       valueType: 'image',
-      ellipsis:true,
       hideInSearch:true
     },
     {
@@ -206,6 +208,7 @@ export default props => {
             dataSource={detailData.content?.goods}
             search={false}
             columns={columns}
+            scroll={{x: 'max-content'}}
             />
       </Row>
       <Title style={{ marginBottom: -10 }} level={5}>活动参数</Title>

@@ -29,7 +29,6 @@ export default props=>{
                 canBlack(false)
               },1000)  
               message.success('操作成功')
-              history.push('/activity-management/share-red-packet-activity/share-packet-rule?id='+endId)
               return true;
             }
           })

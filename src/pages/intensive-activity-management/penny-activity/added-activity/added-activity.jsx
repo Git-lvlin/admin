@@ -134,12 +134,38 @@ export default (props) => {
       let arr=goosList||detailList?.content?.goods
       var max=arr[0]?.minNum
       let stockNum=false
+      var flage=false
+
+      var result = [];//追加的数据
+      for(var i = 0; i < goosList?.length; i++){
+          var obj = goosList[i];
+          var num = obj.wsId;
+          var isExist = false;
+          for(var j = 0; j < detailList?.content?.goods?.length; j++){
+              var aj = detailList?.content?.goods[j];
+              var n = aj.wsId;
+              if(n == num){
+                  isExist = true;
+                  break;
+              }
+          }
+          if(!isExist){
+              result.push(obj);
+          }
+      }
+
+      for (let index = 0; index < result?.length; index++) {
+        if(result[index]?.actStockNum==0){
+          stockNum=true
+        }
+      }
+
       for (let index = 0; index < arr.length; index++) {
           if(max<arr[index]?.minNum){
             max=arr[index]?.minNum
           }
-          if(arr[index]?.actStockNum==0){
-            stockNum=true
+          if(arr[index]?.actStockNum%arr[index]?.batchNumber!==0){
+            flage=true
           }
       }
       if(stockNum){
@@ -147,6 +173,9 @@ export default (props) => {
       }
       if(values.shoperLimitOnece<max){
         return message.error('每位店主单次限量不能小于集约单次限量的起订量！')
+      }
+      if(flage){
+        return message.error('请输入箱规单位量整倍数')
       }
     }else{
       var max=goosList[0]?.minNum

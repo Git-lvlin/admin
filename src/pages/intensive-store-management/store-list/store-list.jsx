@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Space, Tooltip, Image } from 'antd';
+import { Button, Space, Tooltip, Image, Menu, Dropdown } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
@@ -7,7 +7,7 @@ import { PageContainer } from '@/components/PageContainer';
 import { getStoreList, applyConditionPage } from '@/services/intensive-store-management/store-list';
 import { history } from 'umi';
 import AddressCascader from '@/components/address-cascader';
-import Auth from '@/components/auth';
+import { getAuth } from '@/components/auth';
 import Form from './form';
 import Create from './create';
 import Return from './return';
@@ -36,9 +36,63 @@ const StoreList = (props) => {
   const [orderId, setOrderId] = useState()
   const [auditInfoVisible, setAuditInfoVisible] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
+  const [gradeChangeVisible, setGradeChangeVisible] = useState(false);
   const [attachmentImage, setAttachmentImage] = useState()
   const actionRef = useRef();
   const formRef = useRef();
+
+  const handleMenuClick = ({ key }, data) => {
+    if (key === '1') {
+      setSelectItem({ ...data, type: 1 })
+      setReturnVisible(true)
+    }
+    if (key === '2') {
+      setSelectItem({ ...data, type: 2 })
+      setReturnVisible(true)
+    }
+
+    if (key === '3') {
+      setSelectItem({ ...data, toStatus: 3 })
+      setFormVisible(true)
+    }
+
+    if (key === '4') {
+      setSelectItem({ ...data, toStatus: 1 })
+      setFormVisible(true)
+    }
+
+    if (key === '5') {
+      setSelectItem({ ...data, toStatus: 2 })
+      setFormVisible(true)
+    }
+
+    if (key === '6') {
+      setSelectItem(data)
+      setAuditInfoVisible(true)
+    }
+
+    if (key === '7') {
+      setSelectItem(data)
+      setGradeChangeVisible(true)
+    }
+
+  }
+
+  const menu = (data) => {
+    return (
+      <Menu onClick={(e) => { handleMenuClick(e, data) }}>
+        {data.status.code === 2 && <Menu.Item key="1">线下退保证金登记</Menu.Item>}
+        {data.status.code === 2 && <Menu.Item key="2">线上原路退回保证金</Menu.Item>}
+        {data.status.code === 1 && <Menu.Item key="3">关闭</Menu.Item>}
+        {data.status.code === 3 && <Menu.Item key="4">开启</Menu.Item>}
+        {data.status.code === 3 && <Menu.Item key="5">注销</Menu.Item>}
+        <Menu.Item key="6">审核资料</Menu.Item>
+        {getAuth('store/member_shop/grade') && <Menu.Item key="7">
+          店铺等级调整
+          </Menu.Item>}
+      </Menu>
+    )
+  }
 
   const columns = [
     {
@@ -446,7 +500,7 @@ const StoreList = (props) => {
             {
               depositRefendList?.[0]?.attach?.moneyCertificates &&
               <div>
-                <a style={{color: 'red'}} onClick={() => { setPreviewVisible(true); }}>查看线下退款凭证</a>
+                <a style={{ color: 'red' }} onClick={() => { setPreviewVisible(true); }}>查看线下退款凭证</a>
                 <Image
                   width={200}
                   style={{ display: 'none' }}
@@ -549,6 +603,11 @@ const StoreList = (props) => {
           return (
             <>
               <p>{_}</p>
+              <>
+              {
+                data?.cancelInfo?.attachList.length>0&&<a onClick={() => {setVisible(true);setAttachmentImage(data?.cancelInfo?.attachList)}}>附件（点击查看）</a>
+              }
+              </>
               <p>（{data?.createTime}）</p>
             </>
           )
@@ -598,25 +657,26 @@ const StoreList = (props) => {
       title: '操作',
       dataIndex: '',
       valueType: 'option',
-      width: storeType == 'normal' ? 300 : 500,
+      width: 100,
       fixed: 'right',
       render: (_, data) => (
         <Space>
-          <a onClick={() => { setSelectItem(data); setDetailVisible(true) }}>详情</a>
-          {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 1 }); setReturnVisible(true) }}>线下退保证金登记</a>}
-          {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 2 }); setReturnVisible(true) }}>线上原路退回保证金</a>}
-          {data.status.code === 1 && <a onClick={() => { setSelectItem({ ...data, toStatus: 3 }); setFormVisible(true) }}>关闭</a>}
-          {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 1 }); setFormVisible(true) }}>开启</a>}
-          {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 2 }); setFormVisible(true) }}>注销</a>}
-          <a onClick={() => { setSelectItem(data); setAuditInfoVisible(true) }}>审核资料</a>
-          <Auth
+          <Dropdown.Button onClick={() => { setSelectItem(data); setDetailVisible(true) }} overlay={() => { return menu(data) }}>详情</Dropdown.Button>
+          {/* <a onClick={() => { setSelectItem(data); setDetailVisible(true) }}>详情</a> */}
+          {/* {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 1 }); setReturnVisible(true) }}>线下退保证金登记</a>} */}
+          {/* {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 2 }); setReturnVisible(true) }}>线上原路退回保证金</a>} */}
+          {/* {data.status.code === 1 && <a onClick={() => { setSelectItem({ ...data, toStatus: 3 }); setFormVisible(true) }}>关闭</a>} */}
+          {/* {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 1 }); setFormVisible(true) }}>开启</a>} */}
+          {/* {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 2 }); setFormVisible(true) }}>注销</a>} */}
+          {/* <a onClick={() => { setSelectItem(data); setAuditInfoVisible(true) }}>审核资料</a> */}
+          {/* <Auth
             name="store/member_shop/grade"
           >
             <GradeChange
               callback={() => { actionRef.current.reload() }}
               storeNo={data.storeNo}
             />
-          </Auth>
+          </Auth> */}
 
         </Space>
       ),
@@ -675,11 +735,11 @@ const StoreList = (props) => {
                 </Button>
                 &nbsp;&nbsp;
                 <Export
-                    change={(e) => { setVisit(e) }}
-                    key="export"
-                    type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"}
-                    conditions={getFieldValue}
-                  />
+                  change={(e) => { setVisit(e) }}
+                  key="export"
+                  type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"}
+                  conditions={()=>{return getFieldValue(searchConfig)}}
+                />
                 &nbsp;&nbsp;
                 <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"} />
                 </>
@@ -753,6 +813,14 @@ const StoreList = (props) => {
         attachList={attachmentImage}
         onClose={() => { actionRef.current.reload(); setAttachmentImage(null) }}
       />
+      }
+      {gradeChangeVisible &&
+        <GradeChange
+          callback={() => { actionRef.current.reload() }}
+          storeNo={selectItem.storeNo}
+          visible={gradeChangeVisible}
+          setVisible={setGradeChangeVisible}
+        />
       }
     </>
   );

@@ -95,21 +95,57 @@ export default (props) => {
   const onsubmit = (values) => {
     if(id){
       let arr=goosList||detailList
-      let stockNum=false
-      for (let index = 0; index < arr.length; index++) {
-          if(arr[index]?.actStockNum==0){
-            stockNum=true
+      var result = [];//追加的数据
+      for(var i = 0; i < goosList?.length; i++){
+          var obj = goosList[i];
+          var num = obj.wsId;
+          var isExist = false;
+          for(var j = 0; j < detailList?.length; j++){
+              var aj = detailList[j];
+              var n = aj.wsId;
+              if(n == num){
+                  isExist = true;
+                  break;
+              }
+          }
+          if(!isExist){
+              result.push(obj);
           }
       }
+
+      let stockNum=false
+      var flage=false
+      for (let index = 0; index < arr?.length; index++) {
+          if(arr[index]?.actStockNum%arr[index]?.batchNumber!==0){
+            flage=true
+          }
+      }
+
+      for (let index = 0; index < result?.length; index++) {
+        if(result[index]?.actStockNum==0){
+          stockNum=true
+        }
+      }
+
       if(stockNum){
         return message.error('活动库存为零！')
       }
+      if(flage){
+        return message.error('请输入箱规单位量整倍数')
+      }
     }else{
       let stockNum=false
+      var flage=false
       for (let index = 0; index < goosList?.length; index++) {
           if(goosList[index]?.actStockNum==0){
             stockNum=true
           }
+          if(goosList[index]?.actStockNum%goosList[index]?.batchNumber!==0){
+            flage=true
+          }
+      }
+      if(flage){
+        return message.error('请输入箱规单位量整倍数')
       }
       if(stockNum){
         return message.error('活动库存为零！')

@@ -25,7 +25,7 @@ const formItemLayout = {
 };
 
 const FromWrap = ({ value, onChange, content, right }) => (
-  <div style={{ display: 'flex',flexDirection:'column',alignItems:'center' }}>
+  <div style={{ display: 'flex',flexDirection:'column'}}>
     <div>{content(value, onChange)}</div>
     <div>{right(value)}</div>
   </div>
@@ -59,7 +59,6 @@ const GoosModel=(props)=>{
           title: '商品主图',
           dataIndex: 'imageUrl',
           valueType: 'image',
-          ellipsis:true,
           hideInSearch:true
       },
       {
@@ -284,17 +283,19 @@ export default (props) => {
     },
     {
       title: '商品分类',
-      dataIndex: 'gcName',
+      dataIndex: 'gcName1',
       valueType: 'text',
       ellipsis:true,
       hideInSearch:true,
-      editable:false
+      editable:false,
+      render:(_,data)=>{
+        return <p>{_}-{data?.gcName2}</p>
+      }
     },
     {
       title: '商品主图',
       dataIndex: 'imageUrl',
       valueType: 'image',
-      ellipsis:true,
       hideInSearch:true,
       editable:false
     },
@@ -402,12 +403,11 @@ export default (props) => {
       dataIndex: 'maxNum',
       hideInSearch: true,
       valueType: 'digit',
-      width:150
+      fixed: 'right'
     },
     {
       title: '活动库存',
       dataIndex: 'actStockNum',
-      width:120,
       hideInSearch: true,
       renderFormItem: (_) =>{
         const obj=detailList?.find(ele=>{
@@ -431,6 +431,7 @@ export default (props) => {
                 />
         }
       },
+      fixed: 'right'
     },
     {
       title: '活动价',
@@ -450,34 +451,34 @@ export default (props) => {
         right={(value) =><p>元/{_?.entry?.unit}</p>}
         />
       },
-      width:100,
       render: (_,r) =>{
         return <p>{_}</p>
       },
+      fixed: 'right'
     },
     {
       title: '操作',
-      valueType: 'text',
+      valueType: 'option',
       render:(text, record, _, action)=>{
         return [
-          <a style={{display:'block'}} key='dele' onClick={()=>{setPennyId({wsId:record.wsId,type:1});setEndVisible(true)}}>删除</a>,
-          <div key='detail'>
+          <a style={{display:id?'none':'block'}} key='dele' onClick={()=>{setPennyId({wsId:record.wsId,type:1});setEndVisible(true)}}>删除</a>,
+          <div key='detail' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
             {
               record?.status==0?
-              <p style={{color:'#AAAAAA'}}>禁用</p>
+              <a style={{color:'#AAAAAA',display:'block'}}>禁用</a>
               :
               <a style={{display:'block'}} key='detail' onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
             }
           </div>,
-          <div key='start'>
+          <div key='start' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
            {
              record?.status==1?
-             <p style={{color:'#AAAAAA'}}>启用</p>
+             <a style={{color:'#AAAAAA',display:'block'}}>启用</a>
              :
              <a style={{display:'block'}} key='start' onClick={()=>{setPennyId({wsId:record.wsId,type:3});setEndVisible(true)}}>启用</a>
            }
           </div>,
-          <div key='repertory'>
+          <div key='repertory' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
            {
              id&&detailList?.find(ele=>{return ele.wsId==record?.wsId})?
              <a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑<br/>库存</a>
@@ -488,6 +489,7 @@ export default (props) => {
       ]
       },
       editable:false,
+      fixed: 'right'
     }
   ]; 
   return (
@@ -527,6 +529,7 @@ export default (props) => {
             <p>共{dataSource?.length}款商品</p>
         ]}
         style={{marginBottom:'30px'}}
+        scroll={{x: 'max-content'}}
     />
 
     {
@@ -542,7 +545,9 @@ export default (props) => {
               status:1,
               wsPrice:item.price,
               price:amountTransform(item.wholesaleSupplyPrice+item.wholesaleFreight, '/'),
-              actStockNum:item.totalStockNum
+              actStockNum:item.totalStockNum,
+              gcName1:item?.gcName1?item?.gcName1:item.gcName.split('-')?.[0],
+              gcName2:item?.gcName2?item?.gcName2:item.gcName.split('-')?.[1]
             })
           })
           setDataSource(arr)

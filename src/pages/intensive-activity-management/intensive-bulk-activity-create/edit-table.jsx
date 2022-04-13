@@ -368,8 +368,8 @@ export default function EditTable({ onSelect, sku, wholesale }) {
                 <CusInput value={value} onChange={onChange} className={record.price < price ? styles.borderRed : ''} addonAfter={`元/${record.unit}`} onBlur={() => {
                   debounceFetcher({ record, recordList: dataSource })
                 }} />
-                {record.price < price && <div style={{ color: 'red' }}>集约价不能小于{price}元</div>}
-                {record.price > record.marketPriceDisplay && <div style={{ color: 'red' }}>集约价不能大于市场价</div>}
+                {+record.price < +price && <div style={{ color: 'red' }}>集约价不能小于{price}元</div>}
+                {+record.price > +record.marketPriceDisplay && <div style={{ color: 'red' }}>集约价不能大于市场价</div>}
               </>
             )}
           </FormWrap>

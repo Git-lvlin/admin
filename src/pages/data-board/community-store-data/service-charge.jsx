@@ -129,7 +129,7 @@ const ServiceCharge = () => {
             change={(e)=> {setVisit(e)}}
             key="export" 
             type="membershop-servicefee-export"
-            conditions={getFieldValue}
+            conditions={()=>{return getFieldValue(searchConfig)}}
           />,
           <ExportHistory 
             key="export-history" 
