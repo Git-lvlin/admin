@@ -196,11 +196,11 @@ export default  () => {
     },
     {
       title: '直推人（元）',
-      dataIndex: 'profitSupplier',
+      dataIndex: 'profitDirect',
     },
     {
       title: '约购运营中心（元）',
-      dataIndex: 'profitDirect',
+      dataIndex: 'profitSupplier',
     },
     {
       title: '健康事业部（元）',
