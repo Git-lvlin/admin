@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { amountTransform } from '@/utils/utils'
 import { Image } from 'antd'
-import { history } from 'umi'
+import { history, useLocation } from 'umi'
 
 import styles from './styles.less'
+import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
+import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/shopkeeper-order/detail'
 
 const tableRow = props => {
   const imageArr = () => {
@@ -24,7 +26,7 @@ const tableRow = props => {
   }
   return (
     <ProTable.Summary.Row>
-      <ProTable.Summary.Cell colSpan={7}>
+      <ProTable.Summary.Cell colSpan={8}>
         <div className={styles.summary}>
           <div className={styles.summaryItem}>
             售后原因：
@@ -38,7 +40,7 @@ const tableRow = props => {
             <div className={styles.summaryItemTxt}>售后凭证：</div>
             <div className={styles.summaryItemPic}>
               <Image.PreviewGroup>
-                { imageArr() }
+                { imageArr() }  
               </Image.PreviewGroup>
             </div>
           </div>
@@ -48,26 +50,38 @@ const tableRow = props => {
   )
 }
 
-const skipToOrderDetail = (type, id) => {
-  switch(type){
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 11:
-      history.push(`/order-management/normal-order-detail/${id}`)
-    break
-    case 15:
-    case 16:
-      history.push(`/order-management/intensive-order/shopkeeper-order-detail/${id}`)
-    break
-    default:
-      return ''
-  }
-}
-
 const ReturnGoods = ({data}) => {
+  const [normalOrderVisible, setNormalOrderVisible] = useState(false)
+  const [shopkeeperOrderVisible, setShopkeeperOrderVisible] = useState(false)
+  const [id, setId] = useState()
+  
+  const isPurchase = useLocation().pathname.includes('purchase')
+
   const dataSource = Array.isArray(data) ? [] : [data]
+
+
+  const skipToOrderDetail = (type, id) => {
+    switch(type){
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 11:
+        setId(id)
+        setNormalOrderVisible(true)
+        // history.push(`/order-management/normal-order-detail/${id}`)
+      break
+      case 15:
+      case 16:
+        setId(id)
+        setShopkeeperOrderVisible(true)
+        // history.push(`/order-management/intensive-order/shopkeeper-order-detail/${id}`)
+      break
+      default:
+        return ''
+    }
+  }
+
   const columns = [
     {
       title: '商品信息',
@@ -136,17 +150,36 @@ const ReturnGoods = ({data}) => {
   ]
 
   return (
-    <ProTable
-      rowKey="orderItemId"
-      pagination={false}
-      columns={columns}
-      bordered
-      options={false}
-      headerTitle="订单商品"
-      search={false}
-      dataSource={dataSource}
-      summary={tableRow}
-    />
+    <>
+      <ProTable
+        rowKey="orderItemId"
+        pagination={false}
+        columns={columns}
+        bordered
+        options={false}
+        headerTitle="订单商品"
+        search={false}
+        dataSource={dataSource}
+        summary={tableRow}
+      />
+      {
+        normalOrderVisible &&
+        <NormalOrderDetail
+          id={id}
+          visible={normalOrderVisible}
+          setVisible={setNormalOrderVisible}
+          isPurchase={isPurchase}
+        />
+      }
+      {
+        shopkeeperOrderVisible &&
+        <ShopkeeperOrderDetail
+          id={id}
+          visible={shopkeeperOrderVisible}
+          setVisible={setShopkeeperOrderVisible}
+        />
+      }
+    </>
   )
 }
 

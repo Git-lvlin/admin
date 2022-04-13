@@ -6,11 +6,16 @@ import { customMessageList, customMessageDetail, customMessageAuditIm } from '@/
 import { history } from 'umi'
 import { Space, Button, Tooltip, Popconfirm, message } from 'antd'
 import Edit from './edit'
+import Detail from './detail'
+import Audit from './audit'
 import '../styles.less'
 
 const Index = () => {
   const [formVisible, setFormVisible] = useState(false)
+  const [visible, setVisible] = useState(false)
   const [detailData, setDetailData] = useState(null)
+  const [auditVisible, setAuditVisible] = useState(false)
+  const [id, setId] = useState('')
   const actionRef = useRef()
 
   const getDetail = id => {
@@ -168,10 +173,10 @@ const Index = () => {
       render: (_, data) => {
         return(
           <Space>
-            { data.status == 1 && <a onClick={()=>history.push(`/message-management/custom-message/audit/${data?.id}`)}>审核</a>}
+            { data.status == 1 && <a onClick={()=>{setAuditVisible(true); setId(data.id)}}>审核</a>}
             { data.status == 2 && <PopConfirm id={data?.id} />}
             { (data.status == 0 || data.status == 3) && <a onClick={()=>getDetail(data?.id)}>编辑</a>}
-            <a onClick={()=>{history.push(`/message-management/custom-message/detail/${data?.id}`)}}>详情</a>
+            <a onClick={()=>{setVisible(true); setId(data.id)}}>详情</a>
           </Space>
         )
       }
@@ -211,6 +216,24 @@ const Index = () => {
           onClose={() => {
             setDetailData(null)
             setFormVisible(false)
+          }}
+        />
+      }
+      { visible &&
+        <Detail
+          visible={visible}
+          setVisible={setVisible}
+          id={id}
+        />
+      }
+      { auditVisible &&
+        <Audit
+          visible={auditVisible}
+          setVisible={setAuditVisible}
+          id={id}
+          callback={() => { 
+            actionRef.current.reload()
+            setDetailData(null) 
           }}
         />
       }

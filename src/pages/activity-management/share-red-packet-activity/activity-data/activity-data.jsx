@@ -153,12 +153,16 @@ export default () => {
                 key='export'
                 change={(e) => { setVisit(e) }}
                 type={'invitation-friend-red-packet-detail-export'}
-                conditions={getFieldValue(searchConfig)}
+                conditions={()=>{return getFieldValue(searchConfig)}}
               />,
               <ExportHistory key='task' show={visit} setShow={setVisit} type='invitation-friend-red-packet-detail-export'/>,
             ],
           }}
           columns={columns}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
         />
         {
           detailVisible && <Detail

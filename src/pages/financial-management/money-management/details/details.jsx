@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react'
 import ProCard from '@ant-design/pro-card'
 import { PageContainer } from '@/components/PageContainer';
 import { useLocation, history } from 'umi'
-import { Button } from 'antd'
+import { Button, Drawer } from 'antd'
 
 import { detail } from '@/services/financial-management/supplier-fund-management'
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
+import PaymentDetails from '../payment-details'
 
-const Details = () => {
-  const { query } = useLocation()
+const Details = ({visible, setVisible, query}) => {
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(false)
+  const [paymentVisible, setPaymentVisible] = useState(false)
+  const [paymentQuery, setPaymentQuery] = useState(null)
 
   useEffect(()=>{
     setLoading(true)
@@ -51,11 +53,18 @@ const Details = () => {
   }
 
   const skipToDetail = ({accountType, accountId}) => {
-    history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
+    setPaymentQuery({accountType, accountId})
+    setPaymentVisible(true)
+    // history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
   }
 
   return (
-    <PageContainer title={false}>
+    <Drawer
+      visible={visible}
+      onClose={()=>{setVisible(false)}}
+      width={1200}
+      closable={false}
+    >
       <ProCard
         gutter={[16, 16]} 
         bordered
@@ -141,7 +150,15 @@ const Details = () => {
           </div>
         </ProCard>
       </ProCard>
-    </PageContainer>
+      {
+        paymentVisible&&
+        <PaymentDetails
+          query={paymentQuery}
+          visible={paymentVisible}
+          setVisible={setPaymentVisible}
+        />
+      }
+    </Drawer>
   )
 }
 

@@ -13,8 +13,7 @@ import ReturnSingle from './return-single'
 import NegotiationHistory from './negotiation-history'
 import styles from './styles.less'
 
-const interventioListDetail = () => {
-  const { id } = useParams()
+const interventioListDetail = ({id, setVisible, visible}) => {
   const [detail, setDetail] = useState([])
   const [DTO, setDTO] = useState([])
   const [consultationRecord, setConsultationRecord] = useState([])
@@ -45,9 +44,14 @@ const interventioListDetail = () => {
       setConsultationRecord([])
     }
   }, [DTO])
-  const handleBack = () => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }
+
   return(
-    <PageContainer title={false}>
+    <Drawer
+      title={false}
+      visible={visible}
+      onClose={()=>{setVisible(false)}}
+      width={1200}
+    >
       <Spin spinning={loading}>
         <InterventionDetailStatus 
           orderId={detail?.orderSn}
@@ -87,17 +91,8 @@ const interventioListDetail = () => {
           <Empty className={styles.empty}/>:
           <NegotiationHistory data={consultationRecord}/>
         }
-        <div className={styles.btn}>
-          <Button
-            type='primary'
-            size='large'
-            onClick={handleBack}
-          >
-            返回
-          </Button>
-        </div>
       </Spin>
-    </PageContainer>
+    </Drawer>
   )
 }
 

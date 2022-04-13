@@ -53,7 +53,7 @@ export default (props) => {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer title="店主吐槽">
       <div style={{ marginBottom: 10, background: '#fff', padding: '10px 0 5px 10px' }}>
         <p>{type==1?'【图文】':'【视频】'}{articleTitle} （编号：{articleId}）</p>
       </div>
