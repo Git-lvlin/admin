@@ -41,8 +41,6 @@ export default {
   'menu.order-management.after-sales-order': '售后订单',
   'menu.order-management.after-sales-order-details': '详请页',
   'menu.order-management.intensive-refund-order': '集约退款订单',
-  'menu.order-management.intensive-purchase-order': '集约采购订单',
-  'menu.order-management.stockout-apply': '缺货申请',
   'menu.order-management.intensive-after-sale-orders': '集约售后订单',
   'menu.order-management.intensive-after-sale-orders-details': '详请页',
   'menu.order-management.intensive-order.supplier-order-detail': '订单详情',
