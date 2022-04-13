@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteWatcher } from 'antd-pro-page-tabs';
+import { RouteWatcher } from '@/components/antd-pro-page-tabs';
 import { useIntl } from 'umi';
 
 export default (props) => {

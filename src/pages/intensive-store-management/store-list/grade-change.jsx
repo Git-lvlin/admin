@@ -6,7 +6,7 @@ import {
 } from '@ant-design/pro-form';
 import { gradeChange } from '@/services/intensive-store-management/store-list'
 
-export default ({ storeNo, callback}) => {
+export default ({ storeNo, callback, visible, setVisible}) => {
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
@@ -40,13 +40,18 @@ export default ({ storeNo, callback}) => {
     <ModalForm
       title="店铺等级调整"
       modalProps={{
+        onCancel: () => {
+          setVisible(false)
+        }
       }}
       width={500}
       onFinish={async (values) => {
         await submit(values);
+        setVisible(false)
         return true;
       }}
-      trigger={<a>店铺等级调整</a>}
+      visible={visible}
+      // trigger={trigger}
       {...formItemLayout}
     >
       <ProFormSelect

@@ -30,6 +30,12 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'user-feedback',
+      path: '/user-management/user-feedback',
+      component: './user-management/user-feedback',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'new-poster',
       path: '/user-management/new-poster',
       component: './user-management/new-poster',

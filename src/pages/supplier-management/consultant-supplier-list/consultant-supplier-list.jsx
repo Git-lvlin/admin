@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { Button, Space } from 'antd';
 import { useParams } from 'umi';
 import { manageSupplierList } from '@/services/supplier-management/consultant-supplier-list';
@@ -54,7 +54,7 @@ const TableList = () => {
         }}
         request={manageSupplierList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button

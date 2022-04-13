@@ -3,7 +3,7 @@ import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Form } from
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-activity-list'
 import LadderDataEdit from '../intensive-activity-create/ladder-data-edit'
 import PriceExplanation from '../intensive-activity-create/price-explanation'
@@ -53,6 +53,11 @@ const Detail = () => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
+      width: 200,
+    },
+    {
+      title: '规格信息',
+      dataIndex: 'skuNameDisplay',
       width: 200,
     },
     {
@@ -286,6 +291,9 @@ const Detail = () => {
                   </Descriptions.Item>
                 </>
               }
+              <Descriptions.Item label="集约可用库存">
+                {detailData?.sku?.[0]?.totalStockNum}{detailData?.sku?.[0]?.unit}{detailData?.sku?.[0]?.batchNumber > 1 ? `(${parseInt(detailData?.sku?.[0]?.totalStockNum / detailData?.sku?.[0]?.batchNumber, 10)}${detailData?.sku?.[0]?.wsUnit})` : ''}
+              </Descriptions.Item>
               <Descriptions.Item label="商品主图">
                 <Image src={detailData?.sku?.[0]?.goodsImageUrl} width={50} />
               </Descriptions.Item>
@@ -303,12 +311,12 @@ const Detail = () => {
             </Descriptions>
             <div>
               {
-                detailData?.sku?.[0]?.fresh === 1&&
+                detailData?.sku?.[0]?.fresh === 1 &&
                 <>
                   <Form.Item
                     label="生鲜商品的各方分佣比例"
                   >
-                    <div style={{marginTop: '-10px'}}>
+                    <div style={{ marginTop: '-10px' }}>
                       <Table
                         title={() => "以五星社区店为例"}
                         columns={[

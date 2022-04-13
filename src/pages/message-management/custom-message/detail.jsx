@@ -3,18 +3,16 @@ import ProForm, {
   ProFormSelect,
   ProFormText
 } from '@ant-design/pro-form'
-import { Button, Form, Image, Spin } from 'antd'
-import { useParams, history } from 'umi'
+import { Button, Form, Image, Spin, Drawer } from 'antd'
 import { customMessageDetail } from '@/services/message-management/message-template-config'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import 'react-quill/dist/quill.snow.css'
 import ReactQuill from 'react-quill'
 
 import styles from './styles.less'
 
-export default () => {
+export default ({visible, setVisible, id}) => {
   const [form] = Form.useForm()
-  const { id } = useParams()
   const [data, setData] = useState({})
   const [showTab, setShowTab] = useState(1)
   const [linkType, setLinkType] = useState(1)
@@ -179,7 +177,11 @@ export default () => {
   }, [])
 
   return (
-    <PageContainer title={false}>
+    <Drawer
+      visible={visible}
+      onClose={()=>setVisible(false)}
+      width={1200}
+    >
       <Spin spinning={loading}>
         <ProForm
           className={styles.proForm}
@@ -254,16 +256,7 @@ export default () => {
           />
           <DynamicProForm />
         </ProForm>
-        <div className={styles.formlabel}>
-          <Button 
-            type="default" 
-            size='large'
-            onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}
-          >
-            返回
-          </Button>
-        </div>
       </Spin>
-    </PageContainer>
+    </Drawer>
   )
 }

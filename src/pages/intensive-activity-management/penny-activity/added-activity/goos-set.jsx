@@ -9,6 +9,7 @@ import { ModalForm,ProFormText } from '@ant-design/pro-form';
 import _ from 'lodash'
 import moment from 'moment';
 import EndModel from './end-model'
+import RepertoryModel from './repertory-model'
 
 const formItemLayout = {
   labelCol: { span: 3 },
@@ -24,7 +25,7 @@ const formItemLayout = {
 };
 
 const FromWrap = ({ value, onChange, content, right }) => (
-  <div style={{ display: 'flex',flexDirection:'column' }}>
+  <div style={{ display: 'flex',flexDirection:'column'}}>
     <div>{content(value, onChange)}</div>
     <div>{right(value)}</div>
   </div>
@@ -147,7 +148,7 @@ const GoosModel=(props)=>{
           request={chooseWholesaleList}
           actionRef={actionRef}
           search={{
-              defaultCollapsed: false,
+              defaultCollapsed: true,
               labelWidth: 100,
               optionRender: (searchConfig, formProps, dom) => [
                   ...dom.reverse(),
@@ -186,13 +187,15 @@ const GoosModel=(props)=>{
 }
 
 export default (props) => {
-  const {callback,id,detailList,batchPrice}=props
+  const {callback,id,detailList,batchPrice,callLoading}=props
   const ref=useRef()
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
   const [endVisible, setEndVisible] = useState(false);
+  const [repertoryVisible,setRepertoryVisible]=useState(false)
   const [pennyId,setPennyId]=useState()
+  const [falge,setFalge]=useState(false)
   useEffect(()=>{
     if(id){
       detailList?.content?.goods&&setDataSource(detailList?.content?.goods?.map(ele=>({...ele,price:amountTransform(ele.price,'/')})))
@@ -288,6 +291,34 @@ export default (props) => {
       },
     },
     {
+      title: '活动库存',
+      dataIndex: 'actStockNum',
+      hideInSearch: true,
+      renderFormItem: (_) =>{
+        const obj=detailList?.content?.goods?.find(ele=>{
+          return ele.wsId==_?.entry?.wsId
+        })
+        if(obj){
+          return  <>
+                  <p>总库存：{_?.entry?.actTotalStockNum}{_?.entry?.unit}</p>
+                  <p>（可用{_?.entry?.actStockNum}{_?.entry?.unit}）</p>
+                  </>
+        }else{
+          return <InputNumber
+                  min={_?.entry?.totalStockNum==0?0:_?.entry?.minNum}
+                  max={_?.entry?.totalStockNum}
+                  stringMode
+                  onChange={(val)=>{
+                    if(val%_?.entry?.batchNumber!==0){
+                      message.error('请输入箱规单位量整倍数')
+                    }
+                  }}
+                />
+        }
+      },
+      fixed: 'right'
+    },
+    {
       title: '活动价',
       dataIndex: 'price',
       hideInSearch: true,
@@ -303,13 +334,13 @@ export default (props) => {
                   onChange={onChange}
                 />
         }
-        right={(value) =><p>元/{_?.entry?.unit}</p>}
+        right={(value) =><p style={{marginLeft:'10px'}}>元/{_?.entry?.unit}</p>}
         />
       },
       render: (_,r) =>{
         return <p>{_}%</p>
-      }
-
+      },
+      fixed: 'right'
     },
     {
       title: '状态',
@@ -320,11 +351,11 @@ export default (props) => {
       valueEnum: {
         0: '已禁用',
         1: '已启用',
-    },
+      },
     },
     {
       title: '操作',
-      valueType: 'text',
+      valueType: 'option',
       render:(text, record, _, action)=>{
         return [
           <span key='dele'>
@@ -334,17 +365,25 @@ export default (props) => {
               :null
             }
           </span>,
-          <span key='stop'>
+          <span key='stop' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
               {
                 record.status!=0?
                 <a key='detail' onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
                 :
                 <a key='start' onClick={()=>{setPennyId({wsId:record.wsId,type:3});setEndVisible(true)}}>启用</a>
               }
+          </span>,
+          <span key='repertory' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
+            {
+              id&&detailList?.content?.goods?.find(ele=>{return ele.wsId==record?.wsId})?
+              <a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑库存</a>
+              :null
+            }
           </span>
       ]
       },
       editable:false,
+      fixed: 'right'
     }
   ]; 
 
@@ -388,6 +427,7 @@ export default (props) => {
         pagination={{
           pageSize: 5
         }}
+        scroll={{x: 'max-content'}}
     />
 
     {
@@ -439,6 +479,15 @@ export default (props) => {
         }}
         onClose={()=>{ref.current.reload();setPennyId(null)}}
         dataSource={dataSource}
+        />
+      }
+      {
+        repertoryVisible&&<RepertoryModel
+        visible={repertoryVisible} 
+        setVisible={setRepertoryVisible}  
+        record={pennyId}
+        id={id} 
+        callback={()=>{callLoading(1);setPennyId(null)}}
         />
       }
     </>

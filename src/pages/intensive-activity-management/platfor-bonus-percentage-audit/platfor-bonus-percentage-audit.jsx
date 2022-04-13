@@ -1,7 +1,7 @@
 
 import React, { useRef, useState } from 'react';
 import { Button, Space, message,Tabs,Image } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ClassifyAudit from './classify-audit/classify-audit.jsx'
 import SingleCommodityAudit from './single-commodity-audit/single-commodity-audit.jsx'
 import styles from './style.less'

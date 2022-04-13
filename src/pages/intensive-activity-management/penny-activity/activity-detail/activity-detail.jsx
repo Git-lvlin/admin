@@ -4,7 +4,7 @@ import { Divider, Form, Spin, Button,Image,InputNumber,Row,Col,Descriptions,Typo
 import ProForm,{ ModalForm,ProFormRadio,ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,DrawerForm} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import { amountTransform } from '@/utils/utils'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import moment from 'moment'
 import styles from './style.less'
 const { Title } = Typography;
@@ -97,6 +97,15 @@ export default props => {
       },
     },
     {
+      title: '活动库存',
+      dataIndex: 'actStockNum',
+      hideInSearch: true,
+      editable:false,
+      render: (_,data)=> {
+        return <p>{_}{data?.unit}</p>
+      },
+    },
+    {
       title: '状态',
       dataIndex: 'status',
       valueType: 'text',
@@ -156,6 +165,7 @@ export default props => {
               pageSize: 5,
               showQuickJumper: true,
             }}
+            scroll={{x: 'max-content'}}
             />
       </Row>
       <Title style={{ marginBottom: -10 }} level={5}>活动参数</Title>

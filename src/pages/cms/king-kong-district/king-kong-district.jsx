@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import ContentVersionTab from '@/components/content-version-tab';
 import { kingKongDistrictList, kongKongDistrictDel, kongKongModifyType, kingKongTop } from '@/services/cms/member/member';
@@ -158,7 +158,7 @@ const KingKongDistrict = () => {
       params={{
         verifyVersionId: verifyVersionId
       }}
-      scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       request={kingKongDistrictList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

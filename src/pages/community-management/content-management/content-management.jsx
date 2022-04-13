@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table';
 import { adminList } from '@/services/community-management/dynamic-admin-list';
 import { banDynamicComment } from '@/services/community-management/dynamic-ban-dynamic-comment';
@@ -171,7 +171,7 @@ export default props => {
             request={adminList}
             scroll={{ y: window.innerHeight - 550, scrollToFirstRowOnChange: true, }}
             search={{
-                defaultCollapsed: false,
+                defaultCollapsed: true,
                 labelWidth: 100,
                 optionRender: (searchConfig, formProps, dom) => [
                     ...dom.reverse(),

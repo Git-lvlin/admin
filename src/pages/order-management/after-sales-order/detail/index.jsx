@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
-import { Spin, Button, Empty } from 'antd'
-import { useParams, history } from 'umi'
+import { Spin, Empty, Drawer } from 'antd'
 
 import { refundOrderDetail, findReturnRecord } from '@/services/order-management/after-sales-order'
 import OrderDetailStatus from './order-detail-status'
@@ -11,8 +9,8 @@ import ReturnInformation from './return-information'
 import NegotiationHistory from './negotiation-history'
 import styles from './styles.less'
 
-const Detail = () => {
-  const {id} = useParams()
+const Detail = ({id, visible, setVisible }) => {
+
   const [orderDetail, setOrderDetail] = useState([])
   const [consultationRecord, setConsultationRecord] = useState([])
   const [loading, setLoading] = useState(false)
@@ -39,9 +37,13 @@ const Detail = () => {
     }
   }, [orderDetail])
 
-  const handleBack = () => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }
   return (
-    <PageContainer title={false}>
+    <Drawer
+      visible={visible}
+      onClose={()=>setVisible(false)}
+      title={false}
+      width={1200}
+    >
        <Spin spinning={loading}>
         <OrderDetailStatus 
           orderSn={orderDetail?.orderSn}
@@ -61,17 +63,8 @@ const Detail = () => {
           <Empty className={styles.empty}/>:
           <NegotiationHistory data={consultationRecord}/>
         }
-        <div className={styles.btn}>
-          <Button
-            type='primary'
-            size='large'
-            onClick={handleBack}
-          >
-            返回
-          </Button>
-        </div>
        </Spin>
-    </PageContainer>
+    </Drawer>
   )
 }
 export default Detail

@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import { homeActivityList, homeActivitySortTop } from '@/services/cms/member/member';
 import ProCard from '@ant-design/pro-card';
@@ -155,7 +155,7 @@ const HomeActivity = () => {
       pagination={{
         pageSize: 5,
       }}
-      scroll={{ y: Math.max(window.innerHeight - 500, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       dateFormatter="string"
       headerTitle="首页活动入口配置"
       toolBarRender={(_,record) => [

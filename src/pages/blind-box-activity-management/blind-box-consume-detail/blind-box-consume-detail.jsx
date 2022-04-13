@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { getBlindboxUseList } from '@/services/blind-box-activity-management/blindbox-get-use-list';
 import { history, connect } from 'umi';
 import AuditModel from '../blind-box-employ-detail/audit-detail-model'
@@ -192,13 +192,13 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          scroll={{ y: Math.max(window.innerHeight - 790, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           headerTitle={`使用明细     剩余开盒总次数：${detailList?.restNum}        已开盒总次数：${detailList?.useNum}`}
           options={false}
           request={getBlindboxUseList}
           postData={postData}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
@@ -206,10 +206,14 @@ export default () => {
                 key='export'
                 change={(e) => { setVisit(e) }}
                 type={'bind-box-use-detail-export'}
-                conditions={getFieldValue(searchConfig)}
+                conditions={()=>{return getFieldValue(searchConfig)}}
               />,
               <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
             ],
+          }}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
           }}
           columns={columns}
         />

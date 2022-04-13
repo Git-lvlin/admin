@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { Button, Space, Modal } from 'antd';
+import { Button, Space, Modal, Menu, Dropdown } from 'antd';
 import { getCommonList, statusSwitch, detailExt, delSupplier, resetPwd } from '@/services/supplier-management/supplier-list'
 import { history } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
@@ -81,6 +81,48 @@ const TableList = () => {
         setSelectItem(null)
       }
     })
+  }
+
+  const handleMenuClick = ({ key }, data) => {
+    if (key === '1') {
+      setSelectItem(data)
+      setDisableModalVisible(true)
+    }
+    if (key === '2') {
+      setSelectItem(data)
+      setDisableModalVisible(true)
+    }
+
+    if (key === '3') {
+      getDetail(data.id, 2)
+    }
+
+    if (key === '4') {
+      deleteSup(data.id)
+    }
+
+    if (key === '5') {
+      history.push(`/supplier-management/after-sale-address/${data.id}`)
+    }
+
+    if (key === '6') {
+      setSelectItem(data)
+      setIsModalVisible(true)
+    }
+
+  }
+
+  const menu = (data) => {
+    return (
+      <Menu onClick={(e) => { handleMenuClick(e, data) }}>
+        {data.status === 1 && <Menu.Item key="1">禁用</Menu.Item>}
+        {data.status === 0 && <Menu.Item key="2">启用</Menu.Item>}
+        {data.accountSwitch === 1 && <Menu.Item key="3">开户信息</Menu.Item>}
+        {data.isAllowDel === 1 && <Menu.Item key="4">删除</Menu.Item>}
+        <Menu.Item key="5">售后地址</Menu.Item>
+        <Menu.Item key="6">重置密码</Menu.Item>
+      </Menu>
+    )
   }
 
   const columns = [
@@ -226,17 +268,18 @@ const TableList = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      width: 300,
+      width: 120,
       render: (_, data) => (
         <Space>
-          {data.status === 1 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>禁用</a>}
-          {data.status === 0 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>启用</a>}
+          <Dropdown.Button onClick={() => { getDetail(data.id, 1) }} overlay={() => { return menu(data) }}>基本信息</Dropdown.Button>
+          {/* {data.status === 1 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>禁用</a>} */}
+          {/* {data.status === 0 && <a onClick={() => { setSelectItem(data); setDisableModalVisible(true) }}>启用</a>} */}
           {/* <a onClick={() => { history.push(`/supplier-management/supplier-detail/${data.id}`) }}>详情</a> */}
-          <a onClick={() => { getDetail(data.id, 1) }}>基本信息</a>
-          {data.accountSwitch === 1 && <a onClick={() => { getDetail(data.id, 2) }}>开户信息</a>}
-          {data.isAllowDel === 1 && <a onClick={() => { deleteSup(data.id) }}>删除</a>}
-          <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>售后地址</a>
-          <a onClick={() => { setSelectItem(data); setIsModalVisible(true) }}>重置密码</a>
+          {/* <a onClick={() => { getDetail(data.id, 1) }}>基本信息</a> */}
+          {/* {data.accountSwitch === 1 && <a onClick={() => { getDetail(data.id, 2) }}>开户信息</a>} */}
+          {/* {data.isAllowDel === 1 && <a onClick={() => { deleteSup(data.id) }}>删除</a>} */}
+          {/* <a onClick={() => { history.push(`/supplier-management/after-sale-address/${data.id}`) }}>售后地址</a>
+          <a onClick={() => { setSelectItem(data); setIsModalVisible(true) }}>重置密码</a> */}
         </Space>
       ),
     },
@@ -258,9 +301,9 @@ const TableList = () => {
         rowKey="id"
         options={false}
         request={getCommonList}
-        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 130,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button

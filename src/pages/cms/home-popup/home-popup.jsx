@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Button, Form, message } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProCard from '@ant-design/pro-card';
 import Upload from '@/components/upload';
 import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormRadio } from '@ant-design/pro-form';
@@ -48,7 +48,7 @@ const HomePopup = () => {
   return (
     <PageContainer
       header={{
-        title: 'APP首页弹窗',
+        title: null,
         ghost: true,
       }}
       footer={[

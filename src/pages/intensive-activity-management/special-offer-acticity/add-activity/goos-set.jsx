@@ -9,6 +9,7 @@ import { ModalForm,ProFormText } from '@ant-design/pro-form';
 import _ from 'lodash'
 import moment from 'moment';
 import EndModel from './end-model'
+import RepertoryModel from './repertory-model'
 
 const formItemLayout = {
   labelCol: { span: 3 },
@@ -24,7 +25,7 @@ const formItemLayout = {
 };
 
 const FromWrap = ({ value, onChange, content, right }) => (
-  <div style={{ display: 'flex',flexDirection:'column',alignItems:'center' }}>
+  <div style={{ display: 'flex',flexDirection:'column'}}>
     <div>{content(value, onChange)}</div>
     <div>{right(value)}</div>
   </div>
@@ -58,7 +59,6 @@ const GoosModel=(props)=>{
           title: '商品主图',
           dataIndex: 'imageUrl',
           valueType: 'image',
-          ellipsis:true,
           hideInSearch:true
       },
       {
@@ -214,7 +214,7 @@ const GoosModel=(props)=>{
           request={chooseWholesaleList}
           actionRef={actionRef}
           search={{
-              defaultCollapsed: false,
+              defaultCollapsed: true,
               labelWidth: 100,
               optionRender: (searchConfig, formProps, dom) => [
                   ...dom.reverse(),
@@ -251,12 +251,13 @@ const GoosModel=(props)=>{
 }
 
 export default (props) => {
-  const {callback,id,detailList}=props
+  const {callback,id,detailList,callLoading}=props
   const ref=useRef()
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
   const [endVisible, setEndVisible] = useState(false);
+  const [repertoryVisible,setRepertoryVisible]=useState(false)
   const [pennyId,setPennyId]=useState()
   useEffect(()=>{
     if(id){
@@ -282,17 +283,19 @@ export default (props) => {
     },
     {
       title: '商品分类',
-      dataIndex: 'gcName',
+      dataIndex: 'gcName1',
       valueType: 'text',
       ellipsis:true,
       hideInSearch:true,
-      editable:false
+      editable:false,
+      render:(_,data)=>{
+        return <p>{_}-{data?.gcName2}</p>
+      }
     },
     {
       title: '商品主图',
       dataIndex: 'imageUrl',
       valueType: 'image',
-      ellipsis:true,
       hideInSearch:true,
       editable:false
     },
@@ -400,7 +403,35 @@ export default (props) => {
       dataIndex: 'maxNum',
       hideInSearch: true,
       valueType: 'digit',
-      width:150
+      fixed: 'right'
+    },
+    {
+      title: '活动库存',
+      dataIndex: 'actStockNum',
+      hideInSearch: true,
+      renderFormItem: (_) =>{
+        const obj=detailList?.find(ele=>{
+          return ele.wsId==_?.entry?.wsId
+        })
+        if(obj){
+          return  <>
+                  <p>总库存：{_?.entry?.actTotalStockNum}{_?.entry?.unit}</p>
+                  <p>（可用{_?.entry?.actStockNum}{_?.entry?.unit}）</p>
+                  </>
+        }else{
+          return <InputNumber
+                  min={_?.entry?.totalStockNum==0?0:_?.entry?.minNum}
+                  max={_?.entry?.totalStockNum}
+                  stringMode
+                  onChange={(val)=>{
+                    if(val%_?.entry?.batchNumber!==0){
+                      message.error('请输入箱规单位量整倍数')
+                    }
+                  }}
+                />
+        }
+      },
+      fixed: 'right'
     },
     {
       title: '活动价',
@@ -420,37 +451,45 @@ export default (props) => {
         right={(value) =><p>元/{_?.entry?.unit}</p>}
         />
       },
-      width:100,
       render: (_,r) =>{
         return <p>{_}</p>
       },
+      fixed: 'right'
     },
     {
       title: '操作',
-      valueType: 'text',
+      valueType: 'option',
       render:(text, record, _, action)=>{
         return [
-          <a style={{display:'block'}} key='dele' onClick={()=>{setPennyId({wsId:record.wsId,type:1});setEndVisible(true)}}>删除</a>,
-          <div key='detail'>
+          <a style={{display:id?'none':'block'}} key='dele' onClick={()=>{setPennyId({wsId:record.wsId,type:1});setEndVisible(true)}}>删除</a>,
+          <div key='detail' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
             {
               record?.status==0?
-              <p style={{color:'#AAAAAA'}}>禁用</p>
+              <a style={{color:'#AAAAAA',display:'block'}}>禁用</a>
               :
               <a style={{display:'block'}} key='detail' onClick={()=>{setPennyId({wsId:record.wsId,type:2});setEndVisible(true)}}>禁用</a>
             }
           </div>,
-          <div key='start'>
+          <div key='start' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
            {
              record?.status==1?
-             <p style={{color:'#AAAAAA'}}>启用</p>
+             <a style={{color:'#AAAAAA',display:'block'}}>启用</a>
              :
              <a style={{display:'block'}} key='start' onClick={()=>{setPennyId({wsId:record.wsId,type:3});setEndVisible(true)}}>启用</a>
            }
-          </div>
+          </div>,
+          <div key='repertory' style={{display:record?.wholesaleStatus==0||record?.wholesaleStatus==3?'none':'block'}}>
+           {
+             id&&detailList?.find(ele=>{return ele.wsId==record?.wsId})?
+             <a key='start' style={{display:'block'}} onClick={()=>{setPennyId(record);setRepertoryVisible(true)}}>编辑<br/>库存</a>
+             :null
+           }
+         </div>
 
       ]
       },
       editable:false,
+      fixed: 'right'
     }
   ]; 
   return (
@@ -490,6 +529,7 @@ export default (props) => {
             <p>共{dataSource?.length}款商品</p>
         ]}
         style={{marginBottom:'30px'}}
+        scroll={{x: 'max-content'}}
     />
 
     {
@@ -504,7 +544,10 @@ export default (props) => {
               ...item,
               status:1,
               wsPrice:item.price,
-              price:amountTransform(item.wholesaleSupplyPrice+item.wholesaleFreight, '/')
+              price:amountTransform(item.wholesaleSupplyPrice+item.wholesaleFreight, '/'),
+              actStockNum:item.totalStockNum,
+              gcName1:item?.gcName1?item?.gcName1:item.gcName.split('-')?.[0],
+              gcName2:item?.gcName2?item?.gcName2:item.gcName.split('-')?.[1]
             })
           })
           setDataSource(arr)
@@ -529,6 +572,15 @@ export default (props) => {
       }}
       onClose={()=>{ref.current.reload();setPennyId(null)}}
       dataSource={dataSource}
+      />
+    }
+    {
+      repertoryVisible&&<RepertoryModel
+      visible={repertoryVisible} 
+      setVisible={setRepertoryVisible}  
+      record={pennyId}
+      id={id}  
+      callback={()=>{callLoading(1);setPennyId(null)}}
       />
     }
   </>

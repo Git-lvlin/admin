@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { ruleGoodsList } from '@/services/single-contract-activity-management/activity-product';
 import { useParams, history } from 'umi';
 import { dateFormat, amountTransform } from '@/utils/utils';
@@ -132,7 +132,7 @@ const TableList = () => {
         }}
         request={ruleGoodsList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

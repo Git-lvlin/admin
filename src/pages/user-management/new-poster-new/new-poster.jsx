@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Space, Pagination, Spin } from 'antd';
 import ProForm, { ProFormText, ProFormSelect } from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import Reason from './reason';
 import { posterListNew, posterUpData } from '@/services/cms/member/member';

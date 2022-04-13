@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { history,connect } from 'umi';
 import { getBlindboxUseDetail } from '@/services/blind-box-activity-management/blindbox-get-use-list';
 import { getBlindboxIncomeDetail,getBlindboxIncomeReclaim } from '@/services/blind-box-activity-management/blindbox-blindbox-get-lncome';
@@ -149,7 +149,7 @@ const EmployDetail=(props) => {
             memberId:memberId
           }}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
@@ -197,7 +197,8 @@ const UserDetail=(props) => {
       valueEnum: {
         1:'连续签到',
         2:'邀请好友', 
-        3:'订单消费'
+        3:'订单消费',
+        7:'采购订单'
       },
     },
     {
@@ -208,7 +209,8 @@ const UserDetail=(props) => {
         0: '全部',
         1: '连续签到获得',
         2: '邀请好友获得',
-        3: '订单消费获得'
+        3: '订单消费获得',
+        7: '采购订单获得'
       },
       hideInTable:true
     },
@@ -282,7 +284,7 @@ const UserDetail=(props) => {
         postData={postData}
         request={getBlindboxIncomeDetail}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
              ...dom.reverse(),

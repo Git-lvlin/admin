@@ -20,7 +20,7 @@ const formItemLayout = {
   };
   const FromWrap = ({ value, onChange, content, right }) => (
     <div style={{ display: 'flex' }}>
-      <div>{content(value, onChange)}</div>
+      <div style={{marginLeft:'35px'}}>{content(value, onChange)}</div>
       <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
     </div>
   )

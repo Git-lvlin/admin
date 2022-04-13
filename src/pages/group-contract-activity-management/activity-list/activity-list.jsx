@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { Button, Card, Space } from 'antd';
 import { history } from 'umi';
 import { PlusOutlined } from '@ant-design/icons';
@@ -127,7 +127,7 @@ const TableList = () => {
         scroll={{ y: window.innerHeight - 650, scrollToFirstRowOnChange: true, }}
         request={ruleList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

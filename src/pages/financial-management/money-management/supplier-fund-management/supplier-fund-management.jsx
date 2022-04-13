@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@ant-design/pro-table'
 import { ModalForm } from '@ant-design/pro-form'
 import { ProFormTextArea } from '@ant-design/pro-form'
@@ -10,6 +10,8 @@ import { amountTransform } from '@/utils/utils'
 import { platforms, enabledDisabledSubmit, subtotal } from '@/services/financial-management/supplier-fund-management'
 import styles from './styles.less'
 import { Export,ExportHistory } from '@/pages/export-excel'
+import Detailed from '../payment-details'
+import Detail from '../details'
 
 const SupplierFundManagement = () => {
   const actionRef = useRef()
@@ -19,6 +21,9 @@ const SupplierFundManagement = () => {
   const [search, setSearch] = useState({})
   const [data, setData] = useState({})
   const [visit, setVisit] = useState(false)
+  const [detailedVisible, setDetailedVisible] = useState(false)
+  const [detailVisible, setDetailVisible] = useState(false)
+  const [query, setQuery] = useState(null)
 
   useEffect(()=> {
     subtotal({
@@ -35,10 +40,12 @@ const SupplierFundManagement = () => {
   }, [search])
 
   const skipToDetail = ({accountType, accountId}) => {
-    history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
+    setQuery({accountType, accountId})
+    setDetailedVisible(true)
   }
   const toDetails = ({accountType, accountId}) => {
-    history.push(`/financial-management/money-management/details?accountType=${accountType}&accountId=${accountId}`)
+    setQuery({accountType, accountId})
+    setDetailVisible(true)
   }
   const disable = data =>{
     enabledDisabledSubmit({...data}).then(res=> {
@@ -55,6 +62,15 @@ const SupplierFundManagement = () => {
         message.success('操作成功')
       }
     })
+  }
+
+  const getValues = (form) => {
+    return {
+      accountType: "supplier", 
+      ...form?.getFieldValue(),
+      settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
+      settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD')
+    }
   }
   
   const PopModal = props => {
@@ -185,6 +201,7 @@ const SupplierFundManagement = () => {
       )
     }
   ]
+  
   return (
     <PageContainer title={false}>
       <ProTable
@@ -196,6 +213,7 @@ const SupplierFundManagement = () => {
             setPage(e)
           }
         }}
+        scroll={{x: "max-content"}}
         rowKey='accountId'
         postData={
           (e)=>{
@@ -232,12 +250,7 @@ const SupplierFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-supplier-export"
-              conditions={{
-                accountType: "supplier", 
-                ...form?.getFieldValue(),
-                settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
-                settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD')
-              }}
+              conditions={()=> getValues(form)}
             />,
             <ExportHistory
               key="exportHistory" 
@@ -260,6 +273,22 @@ const SupplierFundManagement = () => {
           </>
         )}
       />
+      {
+        detailedVisible &&
+        <Detailed
+          query={query}
+          visible={detailedVisible}
+          setVisible={setDetailedVisible}
+        />
+      }
+      {
+        detailVisible &&
+        <Detail
+          query={query}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
     </PageContainer>
   )
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect,useRef } from 'react';
 import { Form, message, Button, Space,Spin} from 'antd';
 import { remindSetConfig,remindGetConfig } from '@/services/intensive-activity-management/intensive-remind-configuration';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProForm, { ProFormText} from '@ant-design/pro-form';
 import styles from './style.less'
 
