@@ -54,7 +54,8 @@ const Export = ({ type, change, conditions, text='导出' }) => {
         }
       }}
       modalProps={{
-        destroyOnClose: true
+        destroyOnClose: true,
+        zIndex: 99999
       }}
       onFinish={async () => {
         await downExcel()
