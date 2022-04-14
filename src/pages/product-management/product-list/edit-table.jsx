@@ -72,7 +72,7 @@ export default function EditTable(props) {
         dataIndex: 'wholesaleMinNum',
         editable: false,
         hideInTable: goodsSaleType === 2,
-        render: _ => `${_}元/${unit}`
+        render: _ => `${_}${unit}`
       },
       {
         title: `样品供货价`,
