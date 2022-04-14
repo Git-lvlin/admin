@@ -44,12 +44,10 @@ const MemberStoreFundManagement = () => {
   const skipToDetail = ({accountType, accountId}) => {
     setQuery({accountType, accountId})
     setDetailedVisible(true)
-    // history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
   }
   const toDetails = ({accountType, accountId}) => {
     setQuery({accountType, accountId})
     setDetailVisible(true)
-    // history.push(`/financial-management/money-management/details?accountType=${accountType}&accountId=${accountId}`)
   }
   const disable = data =>{
     enabledDisabledSubmit({...data}).then(res=> {
@@ -66,6 +64,17 @@ const MemberStoreFundManagement = () => {
         message.success('操作成功')
       }
     })
+  }
+
+  const getValues = (form) => {
+    return {
+      accountType: "store",
+      ...form?.getFieldValue(),
+      settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
+      settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD'),
+      registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
+      registTimeEnd: form?.getFieldValue()?.registTime?.[1].format('YYYY-MM-DD')
+    }
   }
 
   const PopModal = props => {
@@ -95,6 +104,7 @@ const MemberStoreFundManagement = () => {
       </ModalForm>
     )
   }
+
   const columns = [
     {
       title: '序号',
@@ -261,14 +271,7 @@ const MemberStoreFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-store-export"
-              conditions={{
-                accountType: "store",
-                ...form?.getFieldValue(),
-                settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
-                settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD'),
-                registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
-                registTimeEnd: form?.getFieldValue()?.registTime?.[1].format('YYYY-MM-DD')
-              }}
+              conditions={() => getValues(form)}
             />,
             <ExportHistory
               key="exportHistory"

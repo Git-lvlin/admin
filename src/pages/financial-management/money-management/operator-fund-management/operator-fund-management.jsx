@@ -64,6 +64,15 @@ const OperatorFundManagement = () => {
     })
   }
 
+  const getValues = (form) => {
+    return {
+      accountType: "agentCompany",
+      ...form?.getFieldValue(),
+      settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
+      settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD')
+    }
+  }
+
   const PopModal = props => {
     const {accountType, accountId} = props
     return(
@@ -91,6 +100,7 @@ const OperatorFundManagement = () => {
       </ModalForm>
     )
   }
+
   const columns = [
     {
       title: '序号',
@@ -239,12 +249,7 @@ const OperatorFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-agentCompany-export"
-              conditions={{
-                accountType: "agentCompany",
-                ...form?.getFieldValue(),
-                settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
-                settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD')
-              }}
+              conditions={() => getValues(form)}
             />,
             <ExportHistory
               key="exportHistory"

@@ -436,28 +436,28 @@ const TableList = () => {
           </div>
         }
         <div style={{ marginBottom: 10 }}>
-        {
-          data.map(item => (
-            <div className={styles.list} key={item.id}>
-              <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 10 }} color="#f59a23">{item.wholesaleFlowType === 1 ? '直发到店' : '运营中心配送'}</Tag>
-              <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: item.wholesaleFlowType === 1 ? 80 : 110, marginTop: 10 }} color='#58B138'>{item?.businessType !== 1 ? (item?.businessType === 2 ? '精装生鲜' : '散装生鲜'): '普适品'}</Tag>
-              {
-                isPurchase
-                  ?
-                  <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}（ID:{item.supplierId} 总计出单数：{item.supplierOrderNums}单）{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
-                  :
-                  <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}</div>
-              }
-              <div className={styles.second}>
-                <Space size="large">
-                  <span>下单时间：{moment(item.createTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>
-                  <span>订单号：{item.orderId}</span>
-                  <span>下单用户：{item.store.linkman}</span>
-                  <span>用户手机号：{item.store.phone}</span>
-                  <span>下单店主ID：{item.storeNo}</span>
-                  <span>商品归属集约活动ID：{item.wsId}</span>
-                </Space>
-              </div>
+          {
+            data.map(item => (
+              <div className={styles.list} key={item.id}>
+                <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 10 }} color="#f59a23">{item.wholesaleFlowType === 1 ? '直发到店' : '运营中心配送'}</Tag>
+                <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: item.wholesaleFlowType === 1 ? 80 : 110, marginTop: 10 }} color='#58B138'>{item?.businessType !== 1 ? (item?.businessType === 2 ? '精装生鲜' : '散装生鲜'): '普适品'}</Tag>
+                {
+                  isPurchase
+                    ?
+                    <div className={styles.store_name}>供应商家名称：{item.supplier.companyName}（ID:{item.supplierId} 总计出单数：{item.supplierOrderNums}单）{(item.isAgent === 1 && isPurchase) && <Tag style={{ borderRadius: 10, marginLeft: 10 }} color="#f59a23">代运营</Tag>}</div>
+                    :
+                    <div className={styles.store_name}>供应商家ID：{item.supplier.supplierId}</div>
+                }
+                <div className={styles.second}>
+                  <Space size="large">
+                    <span>下单时间：{moment(item.createTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>
+                    <span>订单号：{item.orderId}</span>
+                    <span>下单用户：{item.store.linkman}</span>
+                    <span>用户手机号：{item.store.phone}</span>
+                    <span>下单店主ID：{item.storeNo}</span>
+                    <span>商品归属集约活动ID：{item.wsId}</span>
+                  </Space>
+                </div>
 
                 <div className={styles.body}>
                   <div className={styles.goods_info}>

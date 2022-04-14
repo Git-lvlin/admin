@@ -158,7 +158,7 @@ const LoanDetailManagement = () =>{
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-trans-goodsAmount-page-export"
-              conditions={getFieldValue(form)}
+              conditions={() => getFieldValue(form)}
             />,
             <ExportHistory
               key="exportHistory"
