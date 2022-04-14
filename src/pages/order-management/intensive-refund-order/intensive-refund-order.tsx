@@ -4,7 +4,9 @@ import { getActiveConfigList} from '@/services/intensive-activity-management/pen
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from 'moment'
 import type { ProColumns,ActionType } from '@ant-design/pro-table';
-// import ActivityDetail from '../activity-detail'
+import DrawerDetail from './detail'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 
 type activityItem={
@@ -24,11 +26,9 @@ type activityItem={
 
 export default () => {
     const ref=useRef<ActionType>()
-    const [visible, setVisible] = useState<boolean>(false);
-    const [formVisible, setFormVisible] = useState<boolean>(false);
     const [detailVisible,setDetailVisible]=useState<boolean>(false)
-    const [dataVisible,setDatalVisible]=useState<boolean>(false)
     const [pennyId,setPennyId]=useState<number>()
+    const [visit, setVisit] = useState<boolean>(false)
     const columns:ProColumns<activityItem>[]= [
       {
         title: '售后编号',
@@ -121,6 +121,16 @@ export default () => {
       }))
       return arr
     }
+    const getFieldValue = (searchConfig) => {
+      const {dateTimeRange,dateTimeRange2,...rest}=searchConfig.form.getFieldsValue()
+      return {
+        lqStartTime1:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+        lqStartTime2:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+        useStartTime1:dateTimeRange2&&moment(dateTimeRange2[0]).format('YYYY-MM-DD HH:mm:ss'),
+        useStartTime2:dateTimeRange2&&moment(dateTimeRange2[1]).format('YYYY-MM-DD HH:mm:ss'),
+        ...rest,
+      }
+    }
     return (
       <PageContainer>
         <ProTable<activityItem>
@@ -138,6 +148,13 @@ export default () => {
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
+            <Export
+                key='export'
+                change={(e) => { setVisit(e) }}
+                type={'day-red-detail-export'}
+                conditions={()=>{return getFieldValue(searchConfig)}}
+              />,
+              <ExportHistory key='task' show={visit} setShow={setVisit} type='day-red-detail-export'/>,
           ],
           }}
           columns={columns}
@@ -146,13 +163,13 @@ export default () => {
             showQuickJumper: true,
           }}
         />
-        {/* {detailVisible&& <ActivityDetail
+        {detailVisible&& <DrawerDetail
           visible={detailVisible}
           setVisible={setDetailVisible}
           id={pennyId} 
           callback={() => { ref.current&&ref.current.reload(); setPennyId(NaN) }}
           onClose={() => { ref.current&&ref.current.reload(); setPennyId(NaN) }}
-        />} */}
+        />}
         </PageContainer>
     );
   };
