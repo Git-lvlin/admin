@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card, Space, Table, Spin, Modal, Tooltip } from 'antd';
+import { PageContainer } from '@/components/PageContainer';
+import { Button, Card, Space, Table, Spin, Modal, Tooltip, Menu, Dropdown } from 'antd';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import {
   getWholesaleList,
@@ -251,6 +251,97 @@ const TableList = () => {
 
   }
 
+  const handleMenuClick = ({ key }, data) => {
+    if (key === '1') {
+      history.push(`/intensive-activity-management/intensive-bulk-activity-create/${data.wholesaleId}`)
+    }
+    if (key === '2') {
+      confirm({
+        title: '确定要终止集约活动店主下单么？',
+        icon: <ExclamationCircleOutlined />,
+        content: <div><span style={{ color: 'red' }}>终止后店主将无法采购</span>，你还要继续吗？</div>,
+        onOk() {
+          wholesaleStopRequest(data.wholesaleId, 1)
+        },
+      });
+    }
+
+    if (key === '3') {
+      confirm({
+        title: '确定要终止集约店主和消费者下单么？',
+        icon: <ExclamationCircleOutlined />,
+        content: <div><span style={{ color: 'red' }}>终止后店主和消费者将无法集约</span>，你还要继续吗？</div>,
+        onOk() {
+          wholesaleStopRequest(data.wholesaleId, 2)
+        },
+      });
+    }
+
+    if (key === '4') {
+      setVisible(true);
+      setSelectItem(data);
+    }
+
+    if (key === '5') {
+      update(data.wholesaleId)
+    }
+
+    if (key === '6') {
+      cancel(data.wholesaleId)
+    }
+
+    if (key === '7') {
+      history.push(`/intensive-activity-management/intensive-bulk-activity-create/${data.wholesaleId}?type=1`)
+    }
+
+    if (key === '8') {
+      setTimeVisible(true);
+      setSelectItem(data);
+    }
+  }
+
+  const handleButtonClick = (_, data) => {
+    history.push(`/intensive-activity-management/intensive-bulk-activity-detail/${data.wholesaleId}`)
+  }
+
+  const menu = (data) => (
+    <Menu onClick={(e) => { handleMenuClick(e, data) }}>
+      {data.wholesaleAuditStatus !== 1 && data.wholesaleAuditStatus !== 3 && <Menu.Item key="1">编辑</Menu.Item>}
+      {
+        (data.wholesaleStatus === 1 || data.wholesaleStatus === 2 || data.wholesaleStatus === 4 || data.wholesaleStatus === 5)
+        &&
+        <>
+          {
+            data.wholesaleStatus !== 4 && data.wholesaleStatus !== 5 && <Menu.Item key="2">终止店主集约</Menu.Item>
+          }
+          {
+            data.wholesaleStatus !== 5
+            &&
+            <>
+              {/* <Menu.Item key="3">终止店主和消费者集约</Menu.Item> */}
+              <Menu.Item key="4">区域</Menu.Item>
+            </>
+          }
+          {
+            data.wholesaleStatus === 2
+            &&
+            <Menu.Item key="5"><span style={{ color: 'red' }}>终止</span></Menu.Item>
+          }
+        </>
+      }
+      {
+        data.wholesaleAuditStatus === 0
+        &&
+        <Menu.Item key="6">取消活动</Menu.Item>
+      }
+      <Menu.Item key="7">复制活动</Menu.Item>
+      {
+        data.wholesaleStatus === 1 && +new Date() < +new Date(data.endTimeAdvancePayment)
+        && <Menu.Item key="8">重置店主采购下单截止时间</Menu.Item>
+      }
+    </Menu>
+  )
+
   const columns = [
     {
       title: '活动编号',
@@ -397,57 +488,11 @@ const TableList = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      width: 600,
+      width: 110,
       fixed: 'right',
       render: (_, data) => (
         <Space>
-          {data.wholesaleAuditStatus !== 1 && data.wholesaleAuditStatus !== 3 && <a onClick={() => { history.push(`/intensive-activity-management/intensive-bulk-activity-create/${data.wholesaleId}`) }}>编辑</a>}
-          <a onClick={() => { history.push(`/intensive-activity-management/intensive-bulk-activity-detail/${data.wholesaleId}`) }}>详情</a>
-          {
-            (data.wholesaleStatus === 1 || data.wholesaleStatus === 2 || data.wholesaleStatus === 4 || data.wholesaleStatus === 5)
-            &&
-            <>
-              {data.wholesaleStatus !== 4 && data.wholesaleStatus !== 5 && <a onClick={() => {
-                confirm({
-                  title: '确定要终止集约活动店主下单么？',
-                  icon: <ExclamationCircleOutlined />,
-                  content: <div><span style={{ color: 'red' }}>终止后店主将无法采购</span>，你还要继续吗？</div>,
-                  onOk() {
-                    wholesaleStopRequest(data.wholesaleId, 1)
-                  },
-                });
-              }}>终止店主集约</a>}
-              {/* {data.wholesaleStatus !== 5 && <a onClick={() => {
-                confirm({
-                  title: '确定要终止集约店主和消费者下单么？',
-                  icon: <ExclamationCircleOutlined />,
-                  content: <div><span style={{ color: 'red' }}>终止后店主和消费者将无法集约</span>，你还要继续吗？</div>,
-                  onOk() {
-                    wholesaleStopRequest(data.wholesaleId, 2)
-                  },
-                });
-              }}>终止店主和消费者集约</a>} */}
-              {data.wholesaleStatus !== 5 && <a onClick={() => {
-                setVisible(true);
-                setSelectItem(data);
-              }}>区域</a>}
-              {
-                data.wholesaleStatus === 2
-                &&
-                <a style={{ color: 'red' }} onClick={() => { update(data.wholesaleId) }}>终止</a>
-              }
-            </>
-          }
-          {
-            data.wholesaleAuditStatus === 0
-            &&
-            <a onClick={() => { cancel(data.wholesaleId) }}>取消活动</a>
-          }
-          <a onClick={() => { history.push(`/intensive-activity-management/intensive-bulk-activity-create/${data.wholesaleId}?type=1`) }}>复制活动</a>
-          {data.wholesaleStatus === 1 && +new Date() < +new Date(data.endTimeAdvancePayment) && <a onClick={() => {
-            setTimeVisible(true);
-            setSelectItem(data);
-          }}> 重置店主采购下单截止时间</a>}
+          <Dropdown.Button onClick={(e) => { handleButtonClick(e, data) }} overlay={() => { return menu(data) }}>详情</Dropdown.Button>
         </Space >
       ),
     },
@@ -467,10 +512,10 @@ const TableList = () => {
           rowKey="wholesaleId"
           options={false}
           request={getWholesaleList}
-          scroll={{ x: '100vw', y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} wholesaleAuditStatus={_.wholesaleAuditStatus} /> }}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
               ...dom.reverse(),

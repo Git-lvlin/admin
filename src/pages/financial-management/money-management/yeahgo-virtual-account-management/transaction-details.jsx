@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-// import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table'
 import { useLocation, history } from "umi"
 import { Button, Drawer } from 'antd'
@@ -9,8 +9,8 @@ import { amountTransform } from '@/utils/utils'
 import { Export,ExportHistory } from '@/pages/export-excel'
 import { tradeType } from '../../common-enum'
 import Detail from '../../common-popup/order-pay-detail-popup'
-import NormalOrderDetail from '../../common-popup/normal-order-detail'
-import ShopkeeperOrderDetail from '../../common-popup/shopkeeper-order-detail'
+import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
+import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/shopkeeper-order/detail'
 
 const TransactionDetails = ({
   visible,
@@ -92,6 +92,18 @@ const TransactionDetails = ({
       }
     }
   }
+
+  const getValues = (form) => {
+    return {
+      accountId: query.accountId,
+      accountType: query.accountType,
+      amountType: query.amountType,
+      begin: form?.getFieldValue().createTime?.[0],
+      end: form?.getFieldValue().createTime?.[1],
+      ...form?.getFieldValue()
+    }
+  }
+
   const columns = [
     {
       title: '序号',
@@ -209,6 +221,7 @@ const TransactionDetails = ({
       hideInSearch: true
     }
   ]
+
   return (
     <Drawer
       visible={visible}
@@ -253,16 +266,7 @@ const TransactionDetails = ({
               change={(e)=> {setVisit(e)}}
               key="export" 
               type="financial-account-log-page-export"
-              conditions={
-                {
-                  accountId: query.accountId,
-                  accountType: query.accountType,
-                  amountType: query.amountType,
-                  begin: form?.getFieldValue().createTime?.[0],
-                  end: form?.getFieldValue().createTime?.[1],
-                  ...form?.getFieldValue()
-                }
-              }
+              conditions={()=> getValues(form)}
             />,
             <ExportHistory
               key="exportHistory"

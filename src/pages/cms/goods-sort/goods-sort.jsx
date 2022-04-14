@@ -5,7 +5,7 @@ import { Button, message, Space, Select } from 'antd';
 import ProForm from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { goodsSortList, goodsSortTop, goodsSortTopCancel, goodsSortReset, goodsMoveSort, pushClass, goodsClassList } from '@/services/cms/member/member';
 import Edit from './form';
 
@@ -197,7 +197,7 @@ const BannerAdmin = () => {
         search={{
           labelWidth: 'auto',
         }}
-        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         pagination={{
           pageSize: 5,
         }}

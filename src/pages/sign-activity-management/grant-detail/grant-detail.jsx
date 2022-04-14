@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { history, connect } from 'umi';
 import { queryIssuanceList } from '@/services/sign-activity-management/packet-record-query-issuance-list';
 import Export from '@/pages/export-excel/export'
@@ -101,9 +101,9 @@ export default () => {
           headerTitle="签到红包发放明细"
           options={false}
           request={queryIssuanceList}
-          scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),

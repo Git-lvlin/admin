@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Input, Popconfirm, Form, Typography, Select, Divider, message, Button } from 'antd';
 import { history, useLocation } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { attrType, platformTypeAll } from '@/constants/index'
 import { addRes, getResDetail, updateRes, getVersionAllList } from '@/services/resource'
 import { objToArr, itemToJson } from '@/utils/tojson'

@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { Button, Card, Space, Table, Spin, Modal } from 'antd';
 import { getWholesaleSku } from '@/services/intensive-activity-management/intensive-activity-list'
 import { history } from 'umi';
 import { amountTransform } from '@/utils/utils'
 import { getWholesaleAuditList } from '@/services/intensive-activity-management/intensive-activity-audit'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
+import Detail from './detail';
+import BulkDetail from './bulk-detail';
 
 const { confirm } = Modal;
 
@@ -136,6 +138,9 @@ const SubTable = (props) => {
 
 const TableList = () => {
   const actionRef = useRef();
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [bulkDetailVisible, setBulkDetailVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState({});
 
   const columns = [
     {
@@ -213,7 +218,16 @@ const TableList = () => {
       valueType: 'option',
       render: (_, data) => (
         <Space>
-          <a onClick={() => { history.push(`/intensive-activity-management/intensive${data.fresh===2?'-bulk':''}-activity-audit/detail/${data.wholesaleId}`) }}>审核</a>
+          <a onClick={() => {
+            setSelectItem(data);
+            if (data.fresh === 2) {
+              setBulkDetailVisible(true)
+            } else {
+              setDetailVisible(true);
+            }
+          }}>
+            审核
+          </a>
         </Space>
       ),
     },
@@ -221,28 +235,46 @@ const TableList = () => {
 
   return (
     <PageContainer>
-        <ProTable
-          rowKey="wholesaleId"
-          options={false}
-          params={{
-            wholesaleAuditStatus:0
-          }}
-          scroll={{ y: Math.max(window.innerHeight - 350, 500), scrollToFirstRowOnChange: true, }}
-          request={getWholesaleAuditList}
-          expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} /> }}
-          search={{
-            defaultCollapsed: false,
-            labelWidth: 100,
-            optionRender: (searchConfig, formProps, dom) => [
-              ...dom.reverse(),
-            ],
-          }}
-          columns={columns}
-          actionRef={actionRef}
-          pagination={{
-            pageSize: 10,
-          }}
+      <ProTable
+        rowKey="wholesaleId"
+        options={false}
+        params={{
+          wholesaleAuditStatus: 0
+        }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
+        request={getWholesaleAuditList}
+        expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} /> }}
+        search={{
+          defaultCollapsed: true,
+          labelWidth: 100,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+          ],
+        }}
+        columns={columns}
+        actionRef={actionRef}
+        pagination={{
+          pageSize: 10,
+        }}
+      />
+      {
+        detailVisible &&
+        <Detail
+          id={selectItem?.id}
+          detailVisible={detailVisible}
+          setDetailVisible={setDetailVisible}
+          callback={() => { setSelectItem(null); setDetailVisible(false); actionRef.current.reload() }}
         />
+      }
+      {
+        bulkDetailVisible &&
+        <BulkDetail
+          id={selectItem?.id}
+          detailVisible={bulkDetailVisible}
+          setDetailVisible={setBulkDetailVisible}
+          callback={() => { setSelectItem(null); setBulkDetailVisible(false); actionRef.current.reload() }}
+        />
+      }
     </PageContainer>
 
   );

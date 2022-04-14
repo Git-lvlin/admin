@@ -9,7 +9,7 @@ import { amountTransform } from '@/utils/utils'
 import moment from 'moment';
 import styles from './style.less'
 import GoosSet from './goos-set'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 
 
 const formItemLayout = {

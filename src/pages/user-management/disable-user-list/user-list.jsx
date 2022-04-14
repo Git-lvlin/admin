@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Button, Space } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
 import moment from 'moment';
 // import UserDetail from './user-detail';
@@ -199,12 +199,12 @@ const TableList = () => {
         params={{
           status: 0,
         }}
-        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ scrollToFirstRowOnChange: true }}
         request={userList}
         actionRef={actionRef}
         search={{
           labelWidth: 120,
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
               key="search"

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
-import { Spin, Empty, Button, Drawer } from 'antd'
-import { useParams, history } from 'umi'
+import { Spin, Empty, Drawer } from 'antd'
 
 import {interventionListDetail, findReturnRecord} from '@/services/order-management/intervention-list'
 import InterventionDetailStatus from './intervention-detail-status'

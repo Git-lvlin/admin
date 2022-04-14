@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Table, Tooltip, Spin, message, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import * as api from '@/services/product-management/product-review'
 import GcCascader from '@/components/gc-cascader'
@@ -378,7 +378,7 @@ const TableList = () => {
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
           labelWidth: 120,
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <Button
@@ -402,7 +402,7 @@ const TableList = () => {
             <ExportHistory key="5" show={visit} setShow={setVisit} type="goods-audit-export" />,
           ],
         }}
-        scroll={{ y: Math.max(window.innerHeight - 570, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         columns={columns}
         pagination={{
           pageSize: 10,

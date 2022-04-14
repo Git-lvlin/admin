@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ProCard from '@ant-design/pro-card'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import { useLocation, history } from 'umi'
 import { Button, Drawer } from 'antd'
 
@@ -55,7 +55,6 @@ const Details = ({visible, setVisible, query}) => {
   const skipToDetail = ({accountType, accountId}) => {
     setPaymentQuery({accountType, accountId})
     setPaymentVisible(true)
-    // history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
   }
 
   return (

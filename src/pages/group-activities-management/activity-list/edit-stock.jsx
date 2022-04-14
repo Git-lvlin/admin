@@ -146,7 +146,7 @@ const EditStock = (props) => {
         width="md"
         placeholder={checked === 1 ? "请输入<=当前商品拼团可用库存" : "请输入<=当前可用库存"}
         rules={[
-          { required: true, message: '请输入拼约人数' },
+          { required: true, message: '请输入拼团人数' },
           () => ({
             validator(_, value) {
               const reg = /^[1-9]\d*$/

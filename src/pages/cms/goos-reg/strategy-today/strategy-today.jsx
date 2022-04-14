@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message, Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import Img from './up-img';
 import Modify from './edit';
@@ -230,7 +230,7 @@ const StrategyToday = () => {
         })
         return data
       }}
-      scroll={{ y: Math.max(window.innerHeight - 820, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       request={hotGoosList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

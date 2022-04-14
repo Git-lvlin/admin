@@ -3,6 +3,7 @@ import {
   Button,
   message,
 } from 'antd'
+import { paramsEmptyFilter } from '@/utils/utils'
 
 import { createExportTask } from '@/services/export-excel/export-template'
 
@@ -15,15 +16,15 @@ const Export = ({ type, change, conditions, text='导出' }) => {
       operatorType: 2
     };
     if (typeof conditions === 'function') {
-      str = JSON.stringify({
+      str = JSON.stringify(paramsEmptyFilter({
         ...conditions(),
         ...str,
-      })
+      }))
     } else {
-      str = JSON.stringify({
+      str = JSON.stringify(paramsEmptyFilter({
         ...conditions,
         ...str,
-      })
+      }))
     }
 
     createExportTask({
@@ -53,7 +54,8 @@ const Export = ({ type, change, conditions, text='导出' }) => {
         }
       }}
       modalProps={{
-        destroyOnClose: true
+        destroyOnClose: true,
+        zIndex: 99999
       }}
       onFinish={async () => {
         await downExcel()

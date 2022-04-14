@@ -1,11 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { Button, Space, Image, Tooltip } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { getStoreList } from '@/services/intensive-store-management/store-review';
 import AddressCascader from '@/components/address-cascader';
 import { QuestionCircleOutlined } from '@ant-design/icons'
-import { history } from 'umi';
 import Form from './form';
 import Drawer from './store-review-detail';
 
@@ -82,7 +81,6 @@ const StoreReview = () => {
         20: '绿色通道申请',
       },
       hideInTable: true,
-      order: -2,
     },
     {
       title: '申请类型',
@@ -176,6 +174,18 @@ const StoreReview = () => {
       hideInTable: true,
     },
     {
+      title: '提交认证时间',
+      dataIndex: 'provideTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+    },
+    {
+      title: '提交认证时间',
+      dataIndex: 'provideTime',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
       title: '操作',
       dataIndex: ['verifyStatus', 'code'],
       valueType: 'text',
@@ -194,9 +204,10 @@ const StoreReview = () => {
         actionRef={actionRef}
         formRef={formRef}
         request={getStoreList}
-        scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
-          defaultCollapsed: false,
+          labelWidth: 120,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
               key="search"

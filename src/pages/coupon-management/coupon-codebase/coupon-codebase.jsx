@@ -278,7 +278,7 @@ const onIpute=(res)=>{
         postData={filterData}
         request={couponCcodebase}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

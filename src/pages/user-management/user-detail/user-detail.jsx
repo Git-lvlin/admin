@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Drawer, Descriptions, Divider, Table, Row, Avatar, Typography } from 'antd';
 import { getMemberDetail } from '@/services/user-management/user-list';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { useParams } from 'umi';
 
 

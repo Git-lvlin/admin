@@ -116,7 +116,7 @@ const ActivityDetail = ({visible, onClose, id}) => {
           {moment(detailData.activityEndTime * 1000).format('YYYY-MM-DD HH:mm:ss')}
         </Form.Item>
         <Form.Item
-          label="拼约时长"
+          label="拼团时长"
         >
           {detailData.groupTime}小时
         </Form.Item>

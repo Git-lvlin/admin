@@ -4,7 +4,7 @@ import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } 
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import Modify from './edit';
 import Edits from './forms';
@@ -170,7 +170,7 @@ const SaveMoney = () => {
       params={{
         verifyVersionId: verifyVersionId
       }}
-      scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       request={saveMoneyList}
       rowSelection={{
         // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

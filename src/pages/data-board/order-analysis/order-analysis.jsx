@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 
 import ProTable from '@ant-design/pro-table'
 import { Space, Radio, DatePicker, Tooltip,Button } from 'antd'
@@ -474,7 +474,7 @@ const OrderAnalysis = () => {
         bordered
         request={wholeSaleOrderDetail}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: ({searchText, resetText}, {form}) => [
             <Button
@@ -503,7 +503,7 @@ const OrderAnalysis = () => {
              <Export
               change={(e) => { setVisit(e) }}
               type={'data-board-order-analyis-wholesale-deatail-export'}
-              conditions={getFieldValue(form)}
+              conditions={()=>getFieldValue(form)}
               key="export"
             />,
             <ExportHistory key="history" show={visit} setShow={setVisit} type='data-board-order-analyis-wholesale-deatail-export'/>,

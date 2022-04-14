@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import { expressNewsList, expressNewsDel, expressNewsDown, expressNewsTop } from '@/services/cms/member/member';
 
@@ -72,6 +72,8 @@ const ExpressNews = () => {
       title: '跳转链接',
       dataIndex: 'actionUrl',
       valueType: 'text',
+      width: 400,
+      ellipsis: true,
       search: false,
     },
     {
@@ -142,7 +144,7 @@ const ExpressNews = () => {
         // 注释该行则默认不显示下拉选项
         // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
       }}
-      scroll={{ y: Math.max(window.innerHeight - 400, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
         <Space size={24}>
           <span>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Tooltip, Table, Spin, Space } from 'antd';
+import { Button, Tooltip, Table, Spin, Space, Menu, Dropdown } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import * as api1 from '@/services/product-management/product-list';
 import * as api2 from '@/services/product-management/product-list-purchase';
@@ -134,6 +134,42 @@ const TableList = () => {
     })
   }
 
+  const handleMenuClick = ({ key }, record) => {
+    const { goodsVerifyState, goodsState, goodsSaleType, storeGoodsState } = record;
+    if (key === '1') {
+      getActivityRecord({ ...record, type: 1 });
+    }
+    if (key === '2') {
+      getActivityRecord({ ...record, type: 2 });
+    }
+
+    if (key === '3') {
+      getActivityRecord({ ...record, type: 3 });
+    }
+
+    if (key === '4') {
+      onShelf({ spuId: record.spuId, type: 1 })
+    }
+
+    if (key === '5') {
+      onShelf({ spuId: record.spuId, type: 2 })
+    }
+    
+  }
+
+  const menu = (data) => {
+    const { goodsVerifyState, goodsState, goodsSaleType, storeGoodsState } = data;
+    return (
+      <Menu onClick={(e) => { handleMenuClick(e, data) }}>
+        {(goodsVerifyState === 1 && goodsState === 1) && <Menu.Item key="1">下架</Menu.Item>}
+        {(goodsVerifyState === 1 && storeGoodsState === 1 && goodsSaleType !== 2) && <Menu.Item key="2">从店铺下架</Menu.Item>}
+        {(goodsVerifyState === 1 && (goodsState === 1 || storeGoodsState === 1) && goodsSaleType !== 2) && <Menu.Item key="3">全网下架</Menu.Item>}
+        {(goodsVerifyState === 1 && goodsState === 0) && <Menu.Item key="4">上架</Menu.Item>}
+        {(goodsVerifyState === 1 && storeGoodsState === 0 && goodsSaleType !== 2) && <Menu.Item key="5">从店铺上架</Menu.Item>}
+      </Menu>
+    )
+  }
+
   const columns = [
     {
       title: 'spuID',
@@ -144,7 +180,7 @@ const TableList = () => {
         maxLength: 12,
       },
       fixed: 'left',
-      width: 100,
+      width: 50,
     },
     {
       title: 'skuID',
@@ -156,14 +192,14 @@ const TableList = () => {
       },
       hideInTable: true,
     },
-    {
-      title: '图片',
-      dataIndex: 'goodsImageUrl',
-      render: (text) => <img src={text} width={50} height={50} />,
-      hideInSearch: true,
-      fixed: 'left',
-      width: 100,
-    },
+    // {
+    //   title: '图片',
+    //   dataIndex: 'goodsImageUrl',
+    //   render: (text) => <img src={text} width={50} height={50} />,
+    //   hideInSearch: true,
+    //   fixed: 'left',
+    //   width: 100,
+    // },
     {
       title: '商品名称',
       dataIndex: 'goodsName',
@@ -174,12 +210,17 @@ const TableList = () => {
       hideInTable: true,
     },
     {
-      title: '商品名称',
+      title: '商品信息',
       dataIndex: 'goodsName',
       valueType: 'text',
       hideInSearch: true,
       render: (_, record) => {
-        return <a onClick={() => { setSelectItem(record); setProductDetailDrawerVisible(true); }}>{_}</a>
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img style={{marginRight: 5}} src={record.goodsImageUrl} width={50} height={50} />
+            <a onClick={() => { setSelectItem(record); setProductDetailDrawerVisible(true); }}>{record.goodsName}</a>
+          </div>
+        )
       },
       width: 200,
       fixed: 'left',
@@ -200,7 +241,6 @@ const TableList = () => {
       dataIndex: 'fresh',
       valueType: 'text',
       hideInSearch: true,
-      width: 100,
       render: (_) => ({
         0: '非生鲜',
         1: '精装生鲜',
@@ -212,28 +252,24 @@ const TableList = () => {
       dataIndex: 'goodsVirtualSaleNum',
       valueType: 'text',
       hideInSearch: true,
-      width: 100,
     },
     {
       title: '秒约销量',
       dataIndex: 'goodsSaleNum',
       valueType: 'text',
       hideInSearch: true,
-      width: 100,
     },
     {
       title: 'B端集约销量',
       dataIndex: 'goodsWsSaleNum',
       valueType: 'text',
       hideInSearch: true,
-      width: 100,
     },
     {
       title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
-      width: 100,
     },
     {
       title: '供应商家ID',
@@ -270,7 +306,6 @@ const TableList = () => {
       dataIndex: 'goodsSaleTypeDisplay',
       valueType: 'text',
       hideInSearch: true,
-      width: 100,
     },
     {
       title: '批发样品',
@@ -278,7 +313,6 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_) => _ === 0 ? '不支持' : '支持',
-      width: 100,
     },
     {
       title: '批发供货价(元)',
@@ -286,7 +320,6 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => data.goodsSaleType === 2 ? '-' : _,
-      width: 120,
     },
     {
       title: '零售供货价(元)',
@@ -294,7 +327,6 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => data.goodsSaleType === 1 ? '-' : _,
-      width: 120,
     },
     {
       title: '销售价',
@@ -342,7 +374,6 @@ const TableList = () => {
       dataIndex: 'goodsVerifyStateDisplay',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, record) => {
         const { goodsVerifyRemark, goodsVerifyState } = record;
         return (
@@ -366,7 +397,6 @@ const TableList = () => {
       dataIndex: 'goodsStateDisplay',
       valueType: 'text',
       hideInSearch: true,
-      width: 80,
       render: (_, record) => {
         const { goodsStateRemark, goodsState } = record;
         return (
@@ -383,7 +413,6 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_) => _ === 0 ? '下架' : '正常',
-      width: 100,
     },
     {
       title: '商品关键词',
@@ -450,19 +479,12 @@ const TableList = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => {
-        const { goodsVerifyState, goodsState, goodsSaleType, storeGoodsState } = record;
+        // const { goodsVerifyState, goodsState, goodsSaleType, storeGoodsState } = record;
         return (
-          <Space>
-            {(goodsVerifyState === 1 && goodsState === 1) && <a onClick={() => { getActivityRecord({ ...record, type: 1 }); }}>下架</a>}
-            {(goodsVerifyState === 1 && storeGoodsState === 1 && goodsSaleType !== 2) && <a onClick={() => { getActivityRecord({ ...record, type: 2 }); }}>从店铺下架</a>}
-            {(goodsVerifyState === 1 && (goodsState === 1 || storeGoodsState === 1) && goodsSaleType !== 2) && <a onClick={() => { getActivityRecord({ ...record, type: 3 }); }}>全网下架</a>}
-            {(goodsVerifyState === 1 && goodsState === 0) && <a onClick={() => { onShelf({ spuId: record.spuId, type: 1 }) }}>上架</a>}
-            {(goodsVerifyState === 1 && storeGoodsState === 0 && goodsSaleType !== 2) && <a onClick={() => { onShelf({ spuId: record.spuId, type: 2 }) }}>从店铺上架</a>}
-            <a onClick={() => { getDetail(record.spuId, () => { setFormVisible(true); }) }}>编辑</a>
-          </Space>
+          <Dropdown.Button onClick={() => { getDetail(record.spuId, () => { setFormVisible(true); }) }} overlay={() => { return menu(record) }}>编辑</Dropdown.Button>
         )
       },
-      width: 250,
+      width: 100,
       fixed: 'right'
     },
   ];
@@ -526,10 +548,10 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
-        scroll={{ x: '100vw', y: Math.max(window.innerHeight - 700, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
           labelWidth: 140,
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
               key="search"
@@ -552,7 +574,7 @@ const TableList = () => {
               key="3"
               change={(e) => { setVisit(e) }}
               type="goods-export"
-              conditions={()=>{return getFieldValue(searchConfig)}}
+              conditions={()=>{return getFieldValue()}}
             />,
             <ExportHistory key="4" show={visit} setShow={setVisit} type="goods-export" />,
           ],

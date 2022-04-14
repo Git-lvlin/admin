@@ -111,7 +111,7 @@ export default (props) => {
         options={false}
         request={getCommonList}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 130,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button
