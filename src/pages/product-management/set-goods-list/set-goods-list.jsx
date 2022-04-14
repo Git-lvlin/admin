@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Table, Tooltip, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import * as api from '@/services/product-management/product-review'
 import { setGoodsList } from '@/services/product-management/set-goods-list'
 import GcCascader from '@/components/gc-cascader'
@@ -357,19 +357,19 @@ const TableList = () => {
         params={{
           selectType: 1,
         }}
-        scroll={{ y: Math.max(window.innerHeight - 600, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         request={setGoodsList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         search={{
           labelWidth: 120,
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <Export
               key="4"
               change={(e) => { setVisit(e) }}
               type="goods-operate-export"
-              conditions={getFieldValue}
+              conditions={()=>{return getFieldValue(searchConfig)}}
             />,
             <ExportHistory key="5" show={visit} setShow={setVisit} type="goods-operate-export" />,
           ],

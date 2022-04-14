@@ -295,7 +295,7 @@ const DailyDataOverview = () => {
             change={(e)=> {setVisit(e)}}
             key="export"
             type="data-board-daily-data-overview"
-            conditions={getFieldValue(form)}
+            conditions={()=> getFieldValue(form)}
           />,
           <ExportHistory
             key="exportHistory"

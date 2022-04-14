@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Form, Image, Spin } from 'antd';
 import { EyeOutlined } from '@ant-design/icons'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import EditTable from './table';
 import { amountTransform } from '@/utils/utils'
 import { useParams, history } from 'umi';

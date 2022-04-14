@@ -4,7 +4,7 @@ import { Divider, Form, Spin, Button,Image,InputNumber,Row,Col,Descriptions,Typo
 import ProForm,{ DrawerForm,ProFormRadio,ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 import { amountTransform } from '@/utils/utils'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import moment from 'moment'
 import styles from './style.less'
 const { Title } = Typography;
@@ -35,16 +35,18 @@ export default props => {
     },
     {
       title: '商品分类',
-      dataIndex: 'gcName',
+      dataIndex: 'gcName1',
       valueType: 'text',
       ellipsis:true,
-      hideInSearch:true
+      hideInSearch:true,
+      render:(_,data)=>{
+        return <p>{_}-{data?.gcName2}</p>
+      }
     },
     {
       title: '商品主图',
       dataIndex: 'imageUrl',
       valueType: 'image',
-      ellipsis:true,
       hideInSearch:true
     },
     {
@@ -127,6 +129,18 @@ export default props => {
       title: '集约库存',
       dataIndex: 'totalStockNum',
       hideInSearch: true,
+      render: (_,data)=> {
+        return <p>{_}{data?.unit}</p>
+      },
+    },
+    {
+      title: '活动库存',
+      dataIndex: 'actStockNum',
+      hideInSearch: true,
+      editable:false,
+      render: (_,data)=> {
+        return <p>{_}{data?.unit}</p>
+      },
     },
     {
       title: '集采箱规单位量',
@@ -194,6 +208,7 @@ export default props => {
             dataSource={detailData.content?.goods}
             search={false}
             columns={columns}
+            scroll={{x: 'max-content'}}
             />
       </Row>
       <Title style={{ marginBottom: -10 }} level={5}>活动参数</Title>

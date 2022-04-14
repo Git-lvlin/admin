@@ -18,6 +18,12 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'intensive-activity-profit-detail',
+      path: '/intensive-activity-management/intensive-activity-profit-detail',
+      component: './intensive-activity-management/intensive-activity-profit-detail',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'intensive-activity-create',
       path: '/intensive-activity-management/intensive-activity-create/:id',
       component: './intensive-activity-management/intensive-activity-create',
@@ -107,6 +113,11 @@ export default {
             hideInMenu: true,
             wrappers: [RouteWatcher],
           },
+          {
+            name: 'activity-tabulate-data',
+            path: '/intensive-activity-management/penny-activity/activity-tabulate-data',
+            component: './intensive-activity-management/penny-activity/activity-tabulate-data',
+          },
         ]
     },
     {
@@ -132,6 +143,11 @@ export default {
             component: './intensive-activity-management/special-offer-acticity/activity-detail',
             hideInMenu: true,
             wrappers: [RouteWatcher],
+          },
+          {
+            name: 'activity-tabulate-data',
+            path: '/intensive-activity-management/special-offer-acticity/activity-tabulate-data',
+            component: './intensive-activity-management/special-offer-acticity/activity-tabulate-data',
           },
         ]
     },

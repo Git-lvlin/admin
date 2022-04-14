@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table'
 import { history } from 'umi'
 import { Button } from 'antd'
@@ -163,7 +163,7 @@ const WithdrawalAuditManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-withdraw-page-export"
-              conditions={getFieldValue(form)}
+              conditions={() => getFieldValue(form)}
             />,
             <ExportHistory
               key="exportHistory" 

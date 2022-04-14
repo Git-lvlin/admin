@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import { Space, Radio, Tooltip } from 'antd'
 import moment from 'moment'
 import ProTable from '@ant-design/pro-table'
@@ -251,7 +251,7 @@ const CommunityStoreData = () => {
                 change={(e)=> {setVisit(e)}}
                 key="export" 
                 type="data-board-community-store-export"
-                conditions={getFieldValue}
+                conditions={()=>{return getFieldValue(searchConfig)}}
               />,
               <ExportHistory 
                 key="export-history" 

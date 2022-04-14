@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, history, useLocation } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 
 import { amountTransform } from '@/utils/utils'
 import { 
@@ -13,6 +13,7 @@ import {
 import { orderTypes } from '@/services/financial-management/common'
 import './styles.less'
 import styles from './styles.less'
+import { fashionableType } from '../../common-function'
 
 const TransactionDetails = () => {
   const {id} = useParams()
@@ -50,88 +51,7 @@ const TransactionDetails = () => {
       setPayInfos([])
     }
   }, [id])
-  const back = ()=> {
-    window.history.back();
-    setTimeout(() => { window.location.reload(); }, 200)
-  }
-  const fashionableType =(data, amount, fee, couponAmount, realAmount) =>{
-    switch(data){
-      case 'goodsAmount':
-        return (
-          <>
-            <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
-             {
-              couponAmount !== '0'&&
-              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
-            }
-            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
-            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
-          </>
-        )
-      case 'commission':
-        return (
-          <>
-            <span className={styles.amount}>店主收益: ¥{amountTransform(amount, '/')}</span>
-             {
-              couponAmount !== '0'&&
-              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
-            }
-            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
-            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
-          </>
-        )
-      case 'platformCommission':
-        return (
-          <>
-            <span className={styles.amount}>平台收益: ¥{amountTransform(amount, '/')}</span>
-             {
-              couponAmount !== '0'&&
-              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
-            }
-            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
-            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
-          </>
-        )
-      case 'suggestCommission':
-        return (
-          <>
-            <span className={styles.amount}>上级推荐人收益: ¥{amountTransform(amount, '/')}</span>
-             {
-              couponAmount !== '0'&&
-              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
-            }
-            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
-            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
-          </>
-        )
-      case 'agentCompanyCommission':
-        return (
-          <>
-            <span className={styles.amount}>运营商收益: ¥{amountTransform(amount, '/')}</span>
-             {
-              couponAmount !== '0'&&
-              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
-            }
-            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
-            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
-          </>
-        )
-      case 'freight':
-        return (
-          <>
-            <span className={styles.amount}>运费: ¥{amountTransform(amount, '/')}</span>
-            {
-              couponAmount !== '0'&&
-              <span className={styles.amount}>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
-            }
-            <span className={styles.amount}>交易通道费: ¥{amountTransform(fee, '/')}</span>
-            <span className={styles.amount}>到账金额: ¥{amountTransform(realAmount, '/')}</span>
-          </>
-        )
-      default:
-        return ''
-    }
-  }
+
   const columns1 = [
     {
       title: '订单号',
@@ -327,9 +247,6 @@ const TransactionDetails = () => {
         bordered
         dataSource={info}
       />
-      {/* <div style={{background: '#fff', padding: 20}}>
-        <Button type='primary' onClick={()=>{back()}}>返回</Button>
-      </div> */}
     </PageContainer>
   )
 }

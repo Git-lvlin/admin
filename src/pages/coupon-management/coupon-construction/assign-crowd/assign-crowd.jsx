@@ -155,7 +155,7 @@ const validity=(props)=>{
                                     actionRef={actionRef}
                                     expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
                                     search={{
-                                        defaultCollapsed: false,
+                                        defaultCollapsed: true,
                                         labelWidth: 100,
                                         optionRender: (searchConfig, formProps, dom) => [
                                             ...dom.reverse(),

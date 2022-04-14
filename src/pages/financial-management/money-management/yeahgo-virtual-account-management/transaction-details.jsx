@@ -1,37 +1,39 @@
 import React, { useState, useRef } from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table'
 import { useLocation, history } from "umi"
-import { Button } from 'antd'
+import { Button, Drawer } from 'antd'
 
 import { logPage } from '@/services/financial-management/yeahgo-virtual-account-management'
 import { amountTransform } from '@/utils/utils'
 import { Export,ExportHistory } from '@/pages/export-excel'
 import { tradeType } from '../../common-enum'
 import Detail from '../../common-popup/order-pay-detail-popup'
+import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
+import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/shopkeeper-order/detail'
 
-const TransactionDetails = () => {
+const TransactionDetails = ({
+  visible,
+  setVisible,
+  query
+}) => {
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
-  const {query} = useLocation()
+  const [normalOrderVisible, setNormalOrderVisible] = useState(false)
+  const [shopkeeperOrderVisible, setShopkeeperOrderVisible] = useState(false)
+  const [id, setId] = useState()
   const [visit, setVisit] = useState(false)
   const actionform = useRef()
 
+  const isPurchase = useLocation().pathname.includes('purchase')
+
   const skipToOrder = (id, type)=> {
-    switch(type) {
-      case 'normalOrder':
-      case 'second':
-      case 'dropShipping1688':
-        history.push(`/order-management/normal-order-detail/${id}`)
-      break
-      case 'commandSalesOrder':
-      case 'activeSalesOrder':
-      case 'commandCollect':
-      case 'activeCollect':
-        history.push(`/order-management/intensive-order/supplier-order-detail/${id}`)
-      break
-      default:
-        return  history.push(`/order-management/normal-order-detail/${id}`)
+    if(type) {
+      setId(id)
+      setShopkeeperOrderVisible(true)
+    } else {
+      setId(id)
+      setNormalOrderVisible(true)
     }
   }
 
@@ -90,10 +92,23 @@ const TransactionDetails = () => {
       }
     }
   }
+
+  const getValues = (form) => {
+    return {
+      accountId: query.accountId,
+      accountType: query.accountType,
+      amountType: query.amountType,
+      begin: form?.getFieldValue().createTime?.[0],
+      end: form?.getFieldValue().createTime?.[1],
+      ...form?.getFieldValue()
+    }
+  }
+
   const columns = [
     {
       title: '序号',
       dataIndex:'id',
+      width: '4%',
       hideInSearch: true,
       valueType: 'indexBorder'
     },
@@ -107,6 +122,7 @@ const TransactionDetails = () => {
     {
       title: '交易类型',
       dataIndex:'tradeTypeDesc',
+      width: '7%',
       hideInSearch: true
     },
     {
@@ -121,20 +137,23 @@ const TransactionDetails = () => {
       title: '订单类型',
       dataIndex:'orderTypeDesc',
       hideInSearch: true,
+      width: '7%',
       hideInTable: query.accountId==='platform' ? false : true
     },
     {
       title: '订单号',
       dataIndex:'billNo',
+      width: '10%',
       render: (_, records) => (
         records.orderId ? 
-        <a onClick={()=>skipToOrder(records.orderId, records.orderType)}>{_}</a>:
+        <a onClick={()=>skipToOrder(records.orderId, records.isWholesale)}>{_}</a>:
         <span>{_}</span>
       )
     },
     {
       title: '支付单号',
       dataIndex:'payNo',
+      width: '10%',
       hideInSearch: query.accountId==='platformXinbao' ? true : false,
       hideInTable: query.accountId==='platformXinbao' ? true : false,
       render: (_, records)=> (
@@ -145,11 +164,13 @@ const TransactionDetails = () => {
     },
     {
       title: '资金流水号',
-      dataIndex:'transactionId'
+      dataIndex:'transactionId',
+      width: '10%'
     },
     {
       title: '交易时间',
       dataIndex: 'createTime',
+      width: '10%',
       hideInSearch: true
     },
     {
@@ -161,41 +182,52 @@ const TransactionDetails = () => {
     {
       title: '分账金额',
       dataIndex: 'divideAmount',
+      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '手续费',
       dataIndex: 'fee',
+      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '其他扣款',
       dataIndex: 'deductAmount',
+      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '交易金额',
       dataIndex: 'changeAmount',
+      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '交易后余额',
       dataIndex: 'balanceAmount',
+      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '交易描述',
       dataIndex: 'description',
+      width: '5%',
       hideInSearch: true
     }
   ]
+
   return (
-    <PageContainer title={false}>
+    <Drawer
+      visible={visible}
+      onClose={()=>{setVisible(false)}}
+      width={1400}
+    >
       <ProTable
         rowKey='id'
         toolBarRender={false}
@@ -204,11 +236,13 @@ const TransactionDetails = () => {
           pageSize: 10,
           showQuickJumper: true
         }}
+        scroll={{x: "max-content"}}
         columns={columns}
         params={{...query}}
         request={logPage}
         actionRef={actionform}
         search={{
+          defaultCollapsed: false,
           optionRender: ({searchText, resetText}, {form}) => [
             <Button
               key="search"
@@ -232,16 +266,7 @@ const TransactionDetails = () => {
               change={(e)=> {setVisit(e)}}
               key="export" 
               type="financial-account-log-page-export"
-              conditions={
-                {
-                  accountId: query.accountId,
-                  accountType: query.accountType,
-                  amountType: query.amountType,
-                  begin: form?.getFieldValue().createTime?.[0],
-                  end: form?.getFieldValue().createTime?.[1],
-                  ...form?.getFieldValue()
-                }
-              }
+              conditions={()=> getValues(form)}
             />,
             <ExportHistory
               key="exportHistory"
@@ -260,7 +285,24 @@ const TransactionDetails = () => {
           setVisible={setDetailVisible}
         />
       }
-    </PageContainer>
+      {
+        normalOrderVisible &&
+        <NormalOrderDetail
+          id={id}
+          visible={normalOrderVisible}
+          setVisible={setNormalOrderVisible}
+          isPurchase={isPurchase}
+        />
+      }
+      {
+        shopkeeperOrderVisible &&
+        <ShopkeeperOrderDetail
+          id={id}
+          visible={shopkeeperOrderVisible}
+          setVisible={setShopkeeperOrderVisible}
+        />
+      }
+    </Drawer>
   )
 }
 

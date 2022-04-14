@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { getBuildhouseIncomeDetail,getBuildhouseUseDetail } from '@/services/activity-management/spring-festival-build-building-activity';
 const { TabPane } = Tabs
 
@@ -94,7 +94,7 @@ const UserDetail=(props) => {
         postData={postData}
         request={getBuildhouseIncomeDetail}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
              ...dom.reverse(),
@@ -204,7 +204,7 @@ const EmployDetail=(props) => {
           memberId:memberId
         }}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
              ...dom.reverse(),

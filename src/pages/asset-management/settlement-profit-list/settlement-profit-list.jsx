@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Spin, Empty } from 'antd'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import * as api from '@/services/product-management/product-category'
 import Form from './form';
 import styles from './style.less'

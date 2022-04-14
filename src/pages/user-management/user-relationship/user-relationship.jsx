@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Button, message, Input } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { userRelationShip, generateUpdata, getGenerteUrl } from '@/services/cms/member/member';
 import Export from './export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -235,7 +235,7 @@ const UserRelationship = () => {
             enterButton={'查询'} />
         </ProForm.Group>
         <ProForm.Group>
-            &nbsp;&nbsp;手机号码：{indexData?.phoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人手机号：{indexData?.invitePhoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;是否为社区店主：{indexData?.userType?'是':'不是'}
+            &nbsp;&nbsp;手机号码：{indexData?.phoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人手机号：{indexData?.invitePhoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;是否为生鲜店主：{indexData?.memberShopType?'是':'不是'}&nbsp;&nbsp;&nbsp;&nbsp;是否为社区店主：{indexData?.userType?'是':'不是'}
           </ProForm.Group>
           <ProForm.Group>
             &nbsp;&nbsp;用户昵称：{indexData?.nickName}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人昵称：{indexData?.inviteNickName}&nbsp;&nbsp;&nbsp;&nbsp;邀请成功的好友数量（位）：{indexData?.inviteCount}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Spin, Empty, Switch, Modal } from 'antd'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import * as api from '@/services/product-management/product-category'
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import { ExclamationCircleOutlined } from '@ant-design/icons';

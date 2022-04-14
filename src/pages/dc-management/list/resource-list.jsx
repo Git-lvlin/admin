@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { history } from 'umi';
 import { Divider, Button, message, Typography, Table, Space, Modal, Input, Popconfirm } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { getResList, getDeleteRes, getVersionAllList, inputVersionList } from '@/services/resource'
 import { platformType, platformTypeSearch } from '@/constants/index'
 import { isJsonString } from '@/utils/tojson'
@@ -351,7 +351,7 @@ const TableList = () => {
            <a onClick={() => { onOutData(selectedRows) }}>导出数据</a>
         )}
         search={{
-          defaultCollapsed: false,
+          defaultCollapsed: true,
           optionRender: ({ searchText, resetText }, { form }) => [
             <Button key="out" type="primary" onClick={onToAdd}>新建资源位</Button>,
             <Button

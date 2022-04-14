@@ -159,7 +159,7 @@ export default props => {
             actionRef={actionRef}
             toolBarRender={false}
             search={{
-              defaultCollapsed: false,
+              defaultCollapsed: true,
               labelWidth: 100,
               optionRender: (searchConfig, formProps, dom) => [
                 ...dom.reverse(),
@@ -203,7 +203,7 @@ export default props => {
             request={adminReportList}
             actionRef={actionRef}
             search={{
-                defaultCollapsed: false,
+                defaultCollapsed: true,
                 labelWidth: 100,
                 optionRender: (searchConfig, formProps, dom) => [
                     ...dom.reverse(),

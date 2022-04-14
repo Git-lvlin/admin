@@ -3,7 +3,7 @@ import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Form } from
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-bulk-activity-list'
 import LadderDataEdit from '../intensive-activity-create/ladder-data-edit'
 import PriceExplanation from '../intensive-activity-create/price-explanation'
@@ -56,6 +56,11 @@ const Detail = () => {
       width: 200,
     },
     {
+      title: '规格信息',
+      dataIndex: 'skuNameDisplay',
+      width: 200,
+    },
+    {
       title: '上架状态',
       dataIndex: 'goodsStateDesc',
     },
@@ -103,7 +108,7 @@ const Detail = () => {
     },
     {
       title: `毛利盈亏(元/${detailData?.sku?.[0]?.unit})`,
-      dataIndex: 'profit',
+      dataIndex: 'beforeProfit',
       render: (_) => amountTransform(_, '/')
     },
     // {
@@ -188,7 +193,7 @@ const Detail = () => {
         ...item,
         wholesaleSupplyPrice: item.wholesaleSupplyPrice / 100,
         price: item.price / 100,
-        profit: item.profit / 100,
+        beforeProfit: item.beforeProfit / 100,
       }
     })[0]
   }
@@ -238,7 +243,7 @@ const Detail = () => {
                 {detailData?.wholesale?.createAdminName}
               </Descriptions.Item>
               <Descriptions.Item label="毛利盈亏(元)">
-                {detailData?.sku?.[0]?.profit / 100}元/{detailData?.sku?.[0]?.unit}
+                {detailData?.sku?.[0]?.beforeProfit / 100}元/{detailData?.sku?.[0]?.unit}
               </Descriptions.Item>
               <Descriptions.Item label="箱柜单位量">
                 {detailData?.sku?.[0]?.batchNumber}
@@ -286,6 +291,9 @@ const Detail = () => {
                   </Descriptions.Item>
                 </>
               }
+              <Descriptions.Item label="集约可用库存">
+                {detailData?.sku?.[0]?.totalStockNum}{detailData?.sku?.[0]?.unit}{detailData?.sku?.[0]?.batchNumber > 1 ? `(${parseInt(detailData?.sku?.[0]?.totalStockNum / detailData?.sku?.[0]?.batchNumber, 10)}${detailData?.sku?.[0]?.wsUnit})` : ''}
+              </Descriptions.Item>
               <Descriptions.Item label="商品主图">
                 <Image src={detailData?.sku?.[0]?.goodsImageUrl} width={50} />
               </Descriptions.Item>

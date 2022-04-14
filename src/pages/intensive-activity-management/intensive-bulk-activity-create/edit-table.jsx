@@ -96,7 +96,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
               // operationFixedPrice: amountTransform(skuData.operationFixedPrice, '/'),
               settlePercent: amountTransform(skuData.settlePercent),
               price: amountTransform(skuData.price, '/'),
-              profit: amountTransform(skuData.profit, '/'),
+              beforeProfit: amountTransform(skuData.beforeProfit, '/'),
               orderProfit: amountTransform(skuData.orderProfit, '/'),
               totalPrice: (skuData.price > 0 && record.maxNum > 0) ? +new Big(amountTransform(skuData.price, '/')).times(record.minNum) : 0,
               // subsidy: {
@@ -290,6 +290,14 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       editable: false,
       width: 200,
     },
+    {
+      title: '规格信息',
+      dataIndex: 'skuNameDisplay',
+      valueType: 'text',
+      hideInSearch: true,
+      editable: false,
+      width: 200,
+    },
     // {
     //   title: '结算类型',
     //   dataIndex: 'settleType',
@@ -360,7 +368,8 @@ export default function EditTable({ onSelect, sku, wholesale }) {
                 <CusInput value={value} onChange={onChange} className={record.price < price ? styles.borderRed : ''} addonAfter={`元/${record.unit}`} onBlur={() => {
                   debounceFetcher({ record, recordList: dataSource })
                 }} />
-                {record.price < price && <div style={{ color: 'red' }}>集约价不能小于{price}元</div>}
+                {+record.price < +price && <div style={{ color: 'red' }}>集约价不能小于{price}元</div>}
+                {+record.price > +record.marketPriceDisplay && <div style={{ color: 'red' }}>集约价不能大于市场价</div>}
               </>
             )}
           </FormWrap>
@@ -371,7 +380,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
     },
     {
       title: '毛利盈亏(元)',
-      dataIndex: 'profit',
+      dataIndex: 'beforeProfit',
       valueType: 'text',
       hideInSearch: true,
       editable: false,
@@ -496,7 +505,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       settlePercent: amountTransform(item.settlePercent),
       wholesaleFreight: amountTransform(item.wholesaleFreight, '/'),
       wholesaleSupplyPrice: amountTransform(item.wholesaleSupplyPrice, '/'),
-      profit: amountTransform(item.profit, '/'),
+      beforeProfit: amountTransform(item.beforeProfit, '/'),
       orderProfit: 0,
       totalPrice: +new Big(item.price).div(100).times(item.wholesaleMinNum || 10),
       wholesaleFlowType: 2,
@@ -524,7 +533,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
         // operationFixedPrice: amountTransform(sku.operationFixedPrice, '/'),
         settlePercent: amountTransform(sku.settlePercent),
         wholesaleSupplyPrice: amountTransform(sku.wholesaleSupplyPrice, '/'),
-        profit: amountTransform(sku.profit, '/'),
+        beforeProfit: amountTransform(sku.beforeProfit, '/'),
         orderProfit: amountTransform(wholesale?.orderProfit, '/'),
         totalPrice: +new Big(sku.price).div(100).times(sku.minNum || 10),
         wholesaleFlowType: 2,
@@ -570,7 +579,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       request={productList}
       formRef={formRef}
       search={{
-        defaultCollapsed: false,
+        defaultCollapsed: true,
         optionRender: (searchConfig, formProps, dom) => [
           ...dom.reverse(),
         ],

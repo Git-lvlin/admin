@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { getActiveConfigList } from '@/services/activity-management/spring-festival-build-building-activity';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { history,connect } from 'umi';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
@@ -26,7 +26,8 @@ export default () => {
         title: '活动名称',
         dataIndex: 'name',
         valueType: 'text',
-        ellipsis:'true'
+        ellipsis:'true',
+        width: 100,
       },
       {
         title: '活动时间',
@@ -118,11 +119,10 @@ export default () => {
         <ProTable
           actionRef={ref}
           rowKey="id"
-          headerTitle="活动列表"
           options={false}
           postData={postData}
           request={getActiveConfigList}
-          scroll={{ y: Math.max(window.innerHeight - 450, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           toolBarRender={()=>[
             <Button key='add' icon={<PlusOutlined />}  onClick={()=>setVisible(true)} type="primary">
                 添加活动

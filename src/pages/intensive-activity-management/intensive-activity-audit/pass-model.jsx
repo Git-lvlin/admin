@@ -18,7 +18,7 @@ const formItemLayout = {
   };
 
 export default props=>{
-    const {visible, setVisible,wsId,type}=props
+    const {visible, setVisible,wsId,type,callback}=props
     return (
         <ModalForm
             width={400}
@@ -48,8 +48,7 @@ export default props=>{
             onFinish={async (values) => {
                 
               setVisible(false)
-              window.history.back()
-              setTimeout(() => { window.location.reload(); }, 200)
+              callback()
               return true;        
             }
             }

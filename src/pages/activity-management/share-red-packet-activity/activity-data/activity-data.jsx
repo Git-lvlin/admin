@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { couponInviteLogList } from '@/services/activity-management/share-red-packet-activity';
 import { history, connect } from 'umi';
 import { amountTransform } from '@/utils/utils'
@@ -143,9 +143,9 @@ export default () => {
           headerTitle='活动数据明细'
           options={false}
           request={couponInviteLogList}
-          scroll={{ y: Math.max(window.innerHeight - 550, 500), scrollToFirstRowOnChange: true, }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           search={{
-            defaultCollapsed: false,
+            defaultCollapsed: true,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
@@ -153,12 +153,16 @@ export default () => {
                 key='export'
                 change={(e) => { setVisit(e) }}
                 type={'invitation-friend-red-packet-detail-export'}
-                conditions={getFieldValue(searchConfig)}
+                conditions={()=>{return getFieldValue(searchConfig)}}
               />,
               <ExportHistory key='task' show={visit} setShow={setVisit} type='invitation-friend-red-packet-detail-export'/>,
             ],
           }}
           columns={columns}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
         />
         {
           detailVisible && <Detail

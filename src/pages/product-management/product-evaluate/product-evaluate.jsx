@@ -1,5 +1,5 @@
 import React, { useRef,useState,useEffect } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table';
 import { history } from 'umi';
 import { Button,Image,Tabs,Switch,message,Tooltip } from 'antd';
@@ -156,10 +156,10 @@ const EvaluateList= (props) => {
             params={{
               state:type
             }}
-            scroll={{ y: Math.max(window.innerHeight - 750, 500), scrollToFirstRowOnChange: true, }}
+            scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
             request={findByways}
             search={{
-                defaultCollapsed: false,
+                defaultCollapsed: true,
                 labelWidth: 100,
                 optionRender: (searchConfig, formProps, dom) => [
                   ...dom.reverse(),
@@ -167,7 +167,7 @@ const EvaluateList= (props) => {
                        key='export'
                        change={(e) => { setVisit(e) }}
                        type={'data-goods-comment-export'}
-                       conditions={getFieldValue(searchConfig)}
+                       conditions={()=>{return getFieldValue(searchConfig)}}
                      />,
                      <ExportHistory key='task' show={visit} setShow={setVisit} type={'data-goods-comment-export'}/>
                 ],

@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import { contentVersionList, cententVersionStatus } from '@/services/cms/member/member';
 
@@ -83,7 +83,7 @@ const ContentVersion = () => {
       search={false}
       pagination={false}
       dateFormatter="string"
-      scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
     />
     {formVisible && <Edit
       visible={formVisible}

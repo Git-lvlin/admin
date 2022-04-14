@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import { posterList, posterDel } from '@/services/cms/member/member';
 
@@ -86,7 +86,7 @@ const Poster = () => {
       search={{
         labelWidth: 'auto',
       }}
-      scroll={{ y: Math.max(window.innerHeight - 400, 500), scrollToFirstRowOnChange: true, }}
+      scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       pagination={{
         pageSize: 9,
       }}

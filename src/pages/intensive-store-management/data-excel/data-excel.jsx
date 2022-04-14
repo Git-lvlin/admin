@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 
 const Detail = () => {
   const [visit, setVisit] = useState(false)

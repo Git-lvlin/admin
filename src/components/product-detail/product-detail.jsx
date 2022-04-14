@@ -6,7 +6,7 @@ import styles from './edit.less'
 import { EyeOutlined } from '@ant-design/icons'
 
 export default (props) => {
-  const { detailData } = props;
+  const { detailData, review } = props;
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
 
@@ -79,7 +79,7 @@ export default (props) => {
             // suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
             // wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
             salePrice: amountTransform((detailData.settleType === 1 || detailData.settleType === 0) ? item[1].retailSupplyPrice : item[1].salePrice, '/'),
-            marketPrice: amountTransform(item[1].marketPrice || item[1].retailSupplyPrice, '/'),
+            marketPrice: amountTransform(item[1].marketPrice, '/'),
             wholesaleFreight: amountTransform(item[1].wholesaleFreight, '/'),
             batchNumber: item[1].batchNumber,
             isFreeFreight: item[1].isFreeFreight,
@@ -168,7 +168,7 @@ export default (props) => {
       {
         goods?.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 &&
         <Form.Item
-          label="平均运费(元)"
+          label="平均运费"
         >
           {amountTransform(goods.wholesaleFreight, '/')}元/{goods.unit}
         </Form.Item>
@@ -187,6 +187,7 @@ export default (props) => {
                 unit={goods.unit}
                 wsUnit={goods.wsUnit}
                 ladderSwitch={detailData.ladderSwitch}
+                review={review}
               />
             }
             <Form.Item
@@ -244,7 +245,7 @@ export default (props) => {
                 <Form.Item
                   label="集采箱规单位量"
                 >
-                  {goods.batchNumber}
+                  {goods.batchNumber}{goods.unit}/{goods.wsUnit}
                 </Form.Item>
                 <Form.Item
                   label="最低批发量"
@@ -256,12 +257,12 @@ export default (props) => {
                   &&
                   <>
                     <Form.Item
-                      label="样品供货价(元)"
+                      label="样品供货价"
                     >
                       {goods?.sampleSupplyPrice / 100}元/{goods.unit}
                     </Form.Item>
                     <Form.Item
-                      label="样品价(元)"
+                      label="样品价"
                     >
                       {goods?.sampleSalePrice / 100}元/{goods.unit}
                     </Form.Item>
@@ -293,7 +294,7 @@ export default (props) => {
               goods?.goodsSaleType !== 1 &&
               <>
                 <Form.Item
-                  label="一件代发供货价(元)"
+                  label="一件代发供货价"
                 >
                   {amountTransform(goods?.retailSupplyPrice, '/')}元/{goods.unit}
                 </Form.Item>
@@ -304,11 +305,12 @@ export default (props) => {
             >
               {amountTransform(goods?.salePrice, '/')}元/{goods.unit}
             </Form.Item>
-            <Form.Item
-              label="市场价"
-            >
-              {amountTransform(goods?.marketPrice, '/')}元/{goods.unit}
-            </Form.Item>
+            {!review &&
+              <Form.Item
+                label="市场价"
+              >
+                {amountTransform(goods?.marketPrice, '/')}元/{goods.unit}
+              </Form.Item>}
             <Form.Item
               label="可用库存"
             >

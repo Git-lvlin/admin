@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table'
 import { Button } from 'antd'
 import { history } from 'umi'
@@ -168,7 +168,7 @@ const BonusDetailManagement = () =>{
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-trans-commission-page-export"
-              conditions={getFieldValue(form)}
+              conditions={() => getFieldValue(form)}
             />,
             <ExportHistory
               key="exportHistory"

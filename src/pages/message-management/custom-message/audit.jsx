@@ -11,24 +11,23 @@ import {
   Image, 
   Spin, 
   message,
-  DatePicker
+  DatePicker,
+  Drawer
 } from 'antd'
-import { useParams, history } from 'umi'
 import { 
   customMessageDetail, 
   customMessageAudit,
   customMessageAuditIm,
   customMessageAuditTim
  } from '@/services/message-management/message-template-config'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import 'react-quill/dist/quill.snow.css'
 import ReactQuill from 'react-quill'
 
 import styles from './styles.less'
 
-export default () => {
+export default ({visible, setVisible, id, callback}) => {
   const [form] = Form.useForm()
-  const { id } = useParams()
   const [data, setData] = useState({})
   const [showTab, setShowTab] = useState(1)
   const [linkType, setLinkType] = useState(1)
@@ -200,7 +199,8 @@ export default () => {
     customMessageAudit({id, status: 2}).then(res=>{
       if(res.success){
         message.success('审核通过')
-        back()
+        setVisible(false)
+        callback()
       }
     })
   }
@@ -208,7 +208,8 @@ export default () => {
     customMessageAuditIm({id}).then(res=>{
       if(res.success){
         message.success('审核通过')
-        back()
+        setVisible(false)
+        callback()
       }
     })
   }
@@ -216,7 +217,8 @@ export default () => {
     customMessageAuditTim({id, ...val}).then(res=>{
       if(res.success){
         message.success('审核通过')
-        back()
+        setVisible(false)
+        callback()
       }
     })
   }
@@ -224,13 +226,18 @@ export default () => {
     customMessageAudit({id, status: 3, ...val}).then(res=>{
       if(res.success){
         message.success('审核驳回')
-        back()
+        setVisible(false)
+        callback()
       }
     })
   }
-  const back = () => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }
+  // const back = () => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }
   return (
-    <PageContainer title={false}>
+    <Drawer
+      visible={visible}
+      onClose={()=>setVisible(false)}
+      width={1000}
+    >
       <Spin spinning={loading}>
         <ProForm
           className={styles.proForm}
@@ -324,6 +331,9 @@ export default () => {
             width={400}
             title="设置定时推送时间"
             layout="inline"
+            modalProps={{
+              zIndex: 1001
+            }}
             trigger={
               <Button 
                 size='large'
@@ -348,6 +358,9 @@ export default () => {
             width={400}
             title="请确认操作"
             layout="inline"
+            modalProps={{
+              zIndex: 1001
+            }}
             trigger={
               <Button 
                 size='large'
@@ -371,15 +384,8 @@ export default () => {
               }}
             />
           </ModalForm>
-          <Button 
-            type="default" 
-            size='large'
-            onClick={()=>back()}
-          >
-            返回
-          </Button>
         </div>
       </Spin>
-    </PageContainer>
+    </Drawer>
   )
 }

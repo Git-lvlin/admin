@@ -2,7 +2,7 @@
 import React, { useRef, useState } from 'react';
 import { Button, Space, message,Image } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { history,connect } from 'umi';
 import { findAdminDebunkList } from '@/services/business-school/find-admin-debunk-list';
 
@@ -53,7 +53,7 @@ export default (props) => {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer title="店主吐槽">
       <div style={{ marginBottom: 10, background: '#fff', padding: '10px 0 5px 10px' }}>
         <p>{type==1?'【图文】':'【视频】'}{articleTitle} （编号：{articleId}）</p>
       </div>
@@ -72,7 +72,7 @@ export default (props) => {
             dateFormatter="string"
             headerTitle=""
             search={{
-                defaultCollapsed: false,
+                defaultCollapsed: true,
                 labelWidth: 100,
                 optionRender: (searchConfig, formProps, dom) => [
                 ...dom.reverse(),

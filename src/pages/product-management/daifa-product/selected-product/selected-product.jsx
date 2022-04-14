@@ -7,7 +7,7 @@ import { amountTransform } from '@/utils/utils';
 import Edit from './form';
 // import Pop from './pop';
 import Big from 'big.js';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProCard from '@ant-design/pro-card';
 const { Search } = Input;
 const SubTable = (props) => {
