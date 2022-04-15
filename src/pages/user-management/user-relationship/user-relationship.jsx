@@ -99,6 +99,9 @@ const UserRelationship = () => {
       dataIndex: 'subPhoneNumber',
       valueType: 'digit',
       hideInTable: true,
+      fieldProps: {
+        controls: false,
+      }
     },
     {
       title: '用户昵称',
@@ -257,7 +260,9 @@ const UserRelationship = () => {
           setInitialData(data.list.records)
           return data.list.records
         }}
-        search={false}
+        search={{
+          labelWidth: 'auto',
+        }}
         pagination={{
           pageSize: 5,
         }}
