@@ -368,7 +368,23 @@ export default (props) => {
             <span>次，当天总计达到此中奖次数，后面的人不再中奖</span>
         </ProForm.Group>
 
-
+        <ProFormRadio.Group
+          name="switch1"
+          label='是否开启指定中奖人'
+          options={[
+              {
+                  label:'开启（对奖品指定中奖人）',
+                  value: 1,
+              },
+              {
+                  label: '关闭（所有奖品不指定中奖人）',
+                  value: 0,
+              }
+          ]}
+          readonly={id&&falg}
+          rules={[{ required: true, message: '请设置邀请状态' }]}
+          extra={<p style={{color:'#8D8D8D'}}>开启后，指定了中奖人的奖品只能被指定人中奖，其他人无法中奖</p>}
+        />
         {/* 奖品设置 */}
         <PrizeSet
           detailList={detailList}

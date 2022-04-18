@@ -9,6 +9,8 @@ import BrandSelect from '@/components/brand-select'
 import GcCascader from '@/components/gc-cascader'
 import { ModalForm } from '@ant-design/pro-form';
 import _ from 'lodash'
+import UploadingList from './uploading-list'
+import AddCashModel from './add-cash-model'
 
 
 
@@ -195,6 +197,8 @@ export default (props) => {
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
+  const [cashVisible, setCashVisible] = useState(false);
+  const [listVisible, setListVisible] = useState(false);
   useEffect(()=>{
     if(!falg){
      setDataSource(detailList?.skus)
@@ -312,7 +316,8 @@ export default (props) => {
       valueType: 'text',
       render:(text, record, _, action)=>{
         return [
-          <a key='dele' onClick={()=>delGoods(record.id)}>删除</a>
+          <a key='dele' onClick={()=>delGoods(record.id)}>删除&nbsp;&nbsp;</a>,
+          <a key='assign' onClick={()=>designate(record.id)}>指定中奖人</a>
       ]
       },
       editable:false,
@@ -332,6 +337,10 @@ export default (props) => {
     })
     setDataSource(arr) 
     callback(arr,sum)
+  }
+
+  const designate=val=>{
+    setListVisible(true)
   }
   return (
     <>
@@ -364,6 +373,12 @@ export default (props) => {
           },
         }}
         toolBarRender={()=>[
+            <Button key='addCash' type="primary" onClick={()=>{
+              setCashVisible(true)
+            }}>
+                <PlusOutlined />
+                添加现金红包
+            </Button>,
             <Button key='add' type="primary" onClick={()=>{
               setVisible(true)
             }}>
@@ -407,6 +422,25 @@ export default (props) => {
       dataSource={detailList?.skus}
       style={{display:id&&falg?'block':'none'}}
     />
+    {listVisible&&<UploadingList 
+      visible={listVisible} 
+      setVisible={setListVisible} 
+      phones={detailList?.data?.content?.rewardsSet?.luckyOne?.prizePhones}  
+      endId={id}
+      falg={falg} 
+      callback={(val)=>{
+        setPhoneList(val)
+      }}/>
+    }
+    {cashVisible&&<AddCashModel 
+      visible={cashVisible} 
+      setVisible={setCashVisible}   
+      id={id}
+      falg={falg} 
+      callback={(val)=>{
+        setPhoneList(val)
+      }}/>
+    }
     </>
     
   );
