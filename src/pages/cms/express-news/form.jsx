@@ -116,11 +116,7 @@ export default (props) => {
         required
         options={[
           {
-            label: '首页',
-            value: 1,
-          },
-          {
-            label: '社区',
+            label: '店铺',
             value: 2,
           },
         ]}
