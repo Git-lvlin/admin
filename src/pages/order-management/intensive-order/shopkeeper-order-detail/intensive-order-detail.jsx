@@ -12,12 +12,6 @@ import styles from './style.less';
 
 const { Step } = Steps;
 
-const payType = {
-  1: '支付宝',
-  2: '微信',
-  3: '银联',
-}
-
 const OrderDetail = () => {
   const params = useParams();
   const [detailData, setDetailData] = useState({});

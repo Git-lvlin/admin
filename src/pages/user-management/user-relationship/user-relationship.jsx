@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Button, message, Input } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
+import ProCard from '@ant-design/pro-card';
 import { PageContainer } from '@/components/PageContainer';
 import { userRelationShip, generateUpdata, getGenerteUrl } from '@/services/cms/member/member';
 import Export from './export'
@@ -98,6 +99,9 @@ const UserRelationship = () => {
       dataIndex: 'subPhoneNumber',
       valueType: 'digit',
       hideInTable: true,
+      fieldProps: {
+        controls: false,
+      }
     },
     {
       title: '用户昵称',
@@ -219,66 +223,70 @@ const UserRelationship = () => {
 
   return (
     <PageContainer>
+      <ProCard>
         <ProForm.Group>
           <Search
             style={
               {
                 width: 300,
-                marginBottom: 20,
                 marginLeft: 24,
+                marginTop: 20,
+                marginBottom: 20,
               }
             }
             placeholder="请输入用户手机号码"
             onSearch={(value) => {
               setPhoneNumber(Number(value))
+              setIndexData('');
             }}
             enterButton={'查询'} />
         </ProForm.Group>
         <ProForm.Group>
-            &nbsp;&nbsp;手机号码：{indexData?.phoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人手机号：{indexData?.invitePhoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;是否为生鲜店主：{indexData?.memberShopType?'是':'不是'}&nbsp;&nbsp;&nbsp;&nbsp;是否为社区店主：{indexData?.userType?'是':'不是'}
-          </ProForm.Group>
-          <ProForm.Group>
-            &nbsp;&nbsp;用户昵称：{indexData?.nickName}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人昵称：{indexData?.inviteNickName}&nbsp;&nbsp;&nbsp;&nbsp;邀请成功的好友数量（位）：{indexData?.inviteCount}
-          </ProForm.Group>
-    {phoneNumber&&<ProTable
-      style={{paddingTop: 100}}
-      rowKey="id"
-      columns={columns}
-      actionRef={actionRef}
-      params={phoneNumber&&{phoneNumber: phoneNumber}}
-      request={userRelationShip}
-      postData={(data) => {
-        setIndexData(data.memberInviteInfoDTO)
-        setInitialData(data.list.records)
-        return data.list.records
-      }}
-      search={{
-        labelWidth: 'auto',
-      }}
-      pagination={{
-        pageSize: 5,
-      }}
-      toolBarRender={(_,record) => [
-        // <Button key="button" type="primary" onClick={() => { getEXT() }}>
-        //   导出
-        // </Button>,
-        <Export
-          key='total'
-          change={(e) => { setTotalVisit(e) }}
-          type='member-relation-export'
-          conditions={()=>getFieldValue()}
-          title='导出'
-          phoneNumber={phoneNumber}
-        />,
-        <ExportHistory
-          key='totalHistory'
-          show={totalVisit}
-          setShow={setTotalVisit}
-          type='member-relation-export'
-        />
-      ]}
-      dateFormatter="string"
-    />}
+          &nbsp;&nbsp;手机号码：{indexData?.phoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人手机号：{indexData?.invitePhoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;是否为生鲜店主：{indexData?.memberShopType ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;是否为社区店主：{indexData?.userType ? '是' : '不是'}
+        </ProForm.Group>
+        <ProForm.Group>
+          &nbsp;&nbsp;用户昵称：{indexData?.nickName}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人昵称：{indexData?.inviteNickName}&nbsp;&nbsp;&nbsp;&nbsp;邀请成功的好友数量（位）：{indexData?.inviteCount}
+        </ProForm.Group>
+      </ProCard>
+
+      {!!phoneNumber && <ProTable
+        rowKey="id"
+        columns={columns}
+        actionRef={actionRef}
+        params={phoneNumber && { phoneNumber: phoneNumber }}
+        request={userRelationShip}
+        postData={(data) => {
+          setIndexData(data.memberInviteInfoDTO)
+          setInitialData(data.list.records)
+          return data.list.records
+        }}
+        search={{
+          labelWidth: 'auto',
+        }}
+        pagination={{
+          pageSize: 5,
+        }}
+        toolBarRender={(_, record) => [
+          // <Button key="button" type="primary" onClick={() => { getEXT() }}>
+          //   导出
+          // </Button>,
+          <Export
+            key='total'
+            change={(e) => { setTotalVisit(e) }}
+            type='member-relation-export'
+            conditions={() => getFieldValue()}
+            title='导出'
+            phoneNumber={phoneNumber}
+          />,
+          <ExportHistory
+            key='totalHistory'
+            show={totalVisit}
+            setShow={setTotalVisit}
+            type='member-relation-export'
+          />
+        ]}
+        dateFormatter="string"
+      />}
     </PageContainer>
   );
 };
