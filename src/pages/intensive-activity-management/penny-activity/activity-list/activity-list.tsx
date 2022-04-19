@@ -3,13 +3,9 @@ import { Button} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import { getActiveConfigList} from '@/services/intensive-activity-management/penny-activity';
-<<<<<<< HEAD
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@/components/PageContainer';
 import { history,connect } from 'umi';
-=======
-import { PageContainer } from '@/components/PageContainer';
->>>>>>> 5936599cc85c39d58ab412f3d6f0337c5b76f039
 import moment from 'moment'
 import EndModel from './end-model'
 import AddedActivity from '../added-activity'
