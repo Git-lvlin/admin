@@ -10,7 +10,7 @@ import { Empty } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 
-const BarChart = ({data, unit}) => {
+const BarChart = ({data}) => {
   data?.sort((a, b)=> a.amount - b.amount)
 
   const chartUnit = {
@@ -18,10 +18,7 @@ const BarChart = ({data, unit}) => {
       fontSize: 14,
       textAlign: 'center',
       fill: '#E66101'
-    },
-    position: 'end',
-    rotate: 0,
-		offset: 80
+    }
   }
 
   return (
@@ -33,14 +30,10 @@ const BarChart = ({data, unit}) => {
       scale={{
         amount: {
           formatter: (v) => amountTransform(v, '/')
-        },
-        supplierId: {
-          alias: unit
         }
       }}
     >
       <Axis
-        name='supplierId'
         title={chartUnit}
       />
       <Coordinate transpose />
