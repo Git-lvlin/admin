@@ -34,20 +34,20 @@ const BarChart = ({data, unit}) => {
         amount: {
           formatter: (v) => amountTransform(v, '/')
         },
-        supplierName: {
+        supplierId: {
           alias: unit
         }
       }}
     >
       <Axis
-        name='supplierName'
+        name='supplierId'
         title={chartUnit}
       />
       <Coordinate transpose />
       <Interval 
-        position="supplierName*amount"
+        position="supplierId*金额"
         label={[
-          "amount",
+          "金额",
           ()=>({
             position: "middle",
             style: {

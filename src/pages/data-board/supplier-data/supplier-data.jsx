@@ -31,7 +31,7 @@ const SupplierData = () => {
       endTime: rangePickerValue?.[1].format('YYYY-MM-DD'),
       type: value
     }).then(res=> {
-      setData(res.data)
+      setData(res.data.map(res => ({...res, supplierId: `${res.supplierId}`, 金额: res.amount})))
     })
     return () => {
       setData([])
@@ -87,12 +87,6 @@ const SupplierData = () => {
       valueType: 'digit',
       hideInTable: true
     },
-    // {
-    //   title: '供应商名称',
-    //   dataIndex: 'supplierName',
-    //   align: 'center',
-    //   width: '18%'
-    // },
     {
       title: '统计时间范围',
       dataIndex: 'time',
