@@ -110,6 +110,44 @@ export default (props) => {
           },
         ]}
       />
+      <ProFormRadio.Group
+        name="location"
+        label="位置"
+        required
+        options={[
+          {
+            label: '首页',
+            value: 1,
+          },
+          {
+            label: '社区',
+            value: 2,
+          },
+        ]}
+      />
+      <ProFormRadio.Group
+        name="type"
+        label="跳转类型"
+        required
+        options={[
+          {
+            label: '无链接',
+            value: 1,
+          },
+          {
+            label: '商品详情',
+            value: 2,
+          },
+          {
+            label: '活动页面',
+            value: 3,
+          },
+          {
+            label: '图片',
+            value: 4,
+          },
+        ]}
+      />
       <ProFormText
         name="id"
         label="id"
