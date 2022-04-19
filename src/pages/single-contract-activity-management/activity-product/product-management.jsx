@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { ruleGoodsList } from '@/services/single-contract-activity-management/activity-product';
 import { useParams, history } from 'umi';
 import { Space } from 'antd';

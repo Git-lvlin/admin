@@ -8,6 +8,7 @@ import './styles.less'
 import styles from './styles.less'
 import { tradeType } from '../../common-enum'
 import { orderTypes } from '@/services/financial-management/common'
+import { fashionableType, backCalculation } from '../../common-function'
 
 const Detail = ({id, visible, setVisible}) => {
   const [loading, setLoading] = useState(false)
@@ -42,96 +43,6 @@ const Detail = ({id, visible, setVisible}) => {
     }
   }, [])
 
-  const fashionableType =(data, amount, fee) =>{
-    switch(data){
-      case 'goodsAmount':
-        return (
-          <>
-            <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'commission':
-        return (
-          <>
-            <span className={styles.amount}>店主收益: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'platformCommission':
-        return (
-          <>
-            <span className={styles.amount}>平台收益: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'suggestCommission':
-        return (
-          <>
-            <span className={styles.amount}>上级推荐人收益: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'agentCompanyCommission':
-        return (
-          <>
-            <span className={styles.amount}>运营商收益: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'freight':
-        return (
-          <>
-            <span className={styles.amount}>运费: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      default:
-        return ''
-    }
-  }
-
-  const backCalculation= (data, amount, fee)=> {
-    switch(data){
-      case 'goodsAmount':
-        return (
-          <>
-            <span className={styles.amount}>货款回退: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'commission':
-        return (
-          <>
-            <span className={styles.amount}>店主收益回退: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'platformCommission':
-        return (
-          <>
-            <span className={styles.amount}>平台收益回退: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'suggestCommission':
-        return (
-          <>
-            <span className={styles.amount}>上级推荐人收益回退: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'agentCompanyCommission':
-        return (
-          <>
-            <span className={styles.amount}>运营商收益回退: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      default:
-        return ''
-    }
-  }
   const columns1 = [
     {
       title: '售后订单号',

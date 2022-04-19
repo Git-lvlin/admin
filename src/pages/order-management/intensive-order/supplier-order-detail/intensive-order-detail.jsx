@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { Steps, Space, Button, Modal, Spin } from 'antd';
 import { useParams } from 'umi';
 import { getSupplierOrderDetail, modifyShip, expressInfo, getPurchaseOrderDetail } from '@/services/order-management/supplier-order-detail';
@@ -18,7 +18,11 @@ const payType = {
   2: '微信',
   3: '小程序',
   4: '银联',
-  5: '钱包支付'
+  5: '钱包支付',
+  6: '支付宝',
+  7: '微信',
+  8: '银联',
+  9: '快捷支付'
 }
 
 const OrderDetail = () => {

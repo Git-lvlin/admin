@@ -77,6 +77,7 @@ export default {
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
   'menu.intensive-activity-management.intensive-bulk-activity-list': '散装集约活动列表',
+  'menu.intensive-activity-management.intensive-activity-profit-detail': '集约活动利润明细',
   'menu.intensive-activity-management.intensive-activity-create': '集约活动新建',
   'menu.intensive-activity-management.intensive-bulk-activity-create': '散装集约活动新建',
   'menu.intensive-activity-management.intensive-activity-detail': '集约活动详情',
@@ -89,14 +90,15 @@ export default {
   'menu.intensive-activity-management.platfor-bonus-percentage': '平台额外奖励比例',
   'menu.intensive-activity-management.platfor-bonus-percentage-audit': '平台额外奖励比例审核',
   'menu.intensive-activity-management.penny-activity': '一分钱活动',
-  'menu.intensive-activity-management.penny-activity.activity-list': '活动列表',
+  'menu.intensive-activity-management.penny-activity.activity-list': '一分钱活动列表',
   'menu.intensive-activity-management.penny-activity.added-activity': '新建活动',
   'menu.intensive-activity-management.penny-activity.activity-detail': '活动详情',
-  'menu.intensive-activity-management.penny-activity.activity-commodity': '活动商品',
+  'menu.intensive-activity-management.penny-activity.activity-tabulate-data': '活动数据汇总',
   'menu.intensive-activity-management.special-offer-acticity': '特价活动',
   'menu.intensive-activity-management.special-offer-acticity.special-offer-acticity-list': '特价活动列表',
   'menu.intensive-activity-management.special-offer-acticity.add-activity': '新建活动',
   'menu.intensive-activity-management.special-offer-acticity.activity-detail': '特价活动详情',
+  'menu.intensive-activity-management.special-offer-acticity.activity-tabulate-data': '活动数据汇总',
 
 
 
@@ -138,7 +140,7 @@ export default {
   'menu.intensive-store-management.product-management': '商品管理',
   'menu.intensive-store-management.shop-user': '店铺用户',
   'menu.intensive-store-management.shopkeeper-user': '直推用户',
-  'menu.intensive-store-management.store-review': '店铺审核',
+  'menu.intensive-store-management.store-review': '入驻审核',
   'menu.intensive-store-management.store-review-detail': '店铺审核详情',
   'menu.intensive-store-management.grade-index': '等级权益',
   'menu.intensive-store-management.assessment-reward': '指标考核',
@@ -151,6 +153,7 @@ export default {
   'menu.intensive-store-management.cancel-reason': '注销原因',
   'menu.intensive-store-management.fresh-store-review': '生鲜店铺申请审核',
   'menu.intensive-store-management.fresh-shop-configuration': '生鲜店铺配置',
+  'menu.intensive-store-management.cancel-aduit': '注销审核',
 
 
 
@@ -361,5 +364,8 @@ export default {
   'menu.activity-management.spring-festival-build-building-activity.binding-set': '提现绑定设置',
 
 
+  'menu.group-activities-management': '拼团活动管理',
+  'menu.group-activities-management.activity-list': '拼团活动列表',
+  'menu.group-activities-management.activity-data': '拼团数据',
 
 };

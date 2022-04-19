@@ -4,7 +4,7 @@ import { EditableProTable } from '@ant-design/pro-table';
 import { couponInviteSub,couponInviteEdit,couponInviteDetail,couponInviteSelList } from '@/services/activity-management/share-red-packet-activity';
 import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect,DrawerForm } from '@ant-design/pro-form';
 import { FormattedMessage, formatMessage } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table';
 import moment from 'moment';
 import { history,connect } from 'umi';

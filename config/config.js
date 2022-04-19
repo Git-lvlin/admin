@@ -11,8 +11,8 @@ import intensiveActivityManagement from './routers/intensive-activity-management
 import supplierManagement from './routers/supplier-management'
 import operationManagement from './routers/operation-management'
 import intensiveStoreManagement from './routers/intensive-store-management'
-// import singleContractActivityManagement from './routers/single-contract-activity-management'
-// import groupContractActivityManagement from './routers/group-contract-activity-management'
+import singleContractActivityManagement from './routers/single-contract-activity-management'
+import groupContractActivityManagement from './routers/group-contract-activity-management'
 import couponManagement from './routers/coupon-management'
 import messageManagement from './routers/message-management'
 import cms from './routers/cms'
@@ -26,6 +26,7 @@ import dc from './routers/dc'
 import signActivityManagement from './routers/sign-activity-management'
 import BlindBoxActivityManagement from './routers/blind-box-activity-management'
 import ActivityManagement from './routers/activity-management'
+import GroupActivitiesManagement from './routers/group-activities-management'
 
 const { REACT_APP_ENV } = process.env;
 
@@ -82,8 +83,8 @@ const config = {
             supplierManagement,
             operationManagement,
             intensiveStoreManagement,
-            // singleContractActivityManagement,
-            // groupContractActivityManagement,
+            singleContractActivityManagement,
+            groupContractActivityManagement,
             messageManagement,
             couponManagement,
             cms,
@@ -97,6 +98,7 @@ const config = {
             signActivityManagement,
             BlindBoxActivityManagement,
             ActivityManagement,
+            GroupActivitiesManagement,
             {
               component: '404',
             },

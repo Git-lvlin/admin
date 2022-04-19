@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import { useParams, history } from 'umi'
 import {
   Button,

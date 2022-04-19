@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import {
   StepsForm,
   ProFormText,
@@ -335,7 +335,7 @@ const IntensiveActivityCreate = () => {
                   return false;
                 }
 
-                if (+item.profit < 0) {
+                if (+item.beforeProfit < 0) {
                   message.error(`sku:${item.skuId}毛利盈亏不能小于0`);
                   return false;
                 }

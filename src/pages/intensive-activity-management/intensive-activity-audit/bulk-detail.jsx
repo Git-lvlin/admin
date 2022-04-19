@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Modal, Form } from 'antd';
+import { Spin, Descriptions, Divider, Table, Row, Typography, Image, Button, Modal, Form, Drawer } from 'antd';
 import { InfoCircleOutlined, ExclamationCircleOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import { useParams, history } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { getWholesaleDetail } from '@/services/intensive-activity-management/intensive-bulk-activity-list'
 import { updateWholesaleAuditStatus } from '@/services/intensive-activity-management/intensive-activity-audit'
 
@@ -17,12 +17,11 @@ import FreshIncome from '../intensive-bulk-activity-create/fresh-income'
 const { Title } = Typography;
 
 
-const Detail = () => {
+const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
   const [detailData, setDetailData] = useState({})
   const [loading, setLoading] = useState(false)
   const [visible, setVisible] = useState(false)
   const [timeType, setTimeType] = useState();
-  const params = useParams();
 
   const getDetail = (wholesaleId) => {
     setLoading(true);
@@ -43,7 +42,7 @@ const Detail = () => {
       okText: '确认',
       cancelText: '取消',
       onOk: (close) => {
-        updateWholesaleAuditStatus({ wsId: params?.id, type: 1 }).then(res => {
+        updateWholesaleAuditStatus({ wsId: id, type: 1 }).then(res => {
           if (res.code === 0) {
             if (res.data.isPass === 1) {
               const data = moment().format("YYYY-MM-DD HH:mm:ss")
@@ -59,8 +58,7 @@ const Detail = () => {
                 </div>,
                 okText: '确定通过',
                 onOk: () => {
-                  window.history.back(); 
-                  setTimeout(() => { window.location.reload(); }, 200)
+                  callback();
                 }
               });
             } else {
@@ -71,11 +69,10 @@ const Detail = () => {
                 okText: '驳回活动',
                 cancelText: '取消审核',
                 onOk: () => {
-                  updateWholesaleAuditStatus({ wsId: params?.id, type: 2, rejectionReason: res.data.msg })
+                  updateWholesaleAuditStatus({ wsId: id, type: 2, rejectionReason: res.data.msg })
                     .then(r => {
                       if (r.code === 0) {
-                        window.history.back(); 
-                        setTimeout(() => { window.location.reload(); }, 200)
+                        callback();
                       }
                     })
                 }
@@ -115,7 +112,7 @@ const Detail = () => {
       width: 200,
     },
     {
-      title: '商品规格',
+      title: '规格信息',
       dataIndex: 'skuNameDisplay',
       width: 200,
     },
@@ -167,7 +164,7 @@ const Detail = () => {
     },
     {
       title: `毛利盈亏(元/${detailData?.sku?.[0]?.unit})`,
-      dataIndex: 'profit',
+      dataIndex: 'beforeProfit',
       render: (_) => amountTransform(_, '/')
     },
     // {
@@ -252,7 +249,7 @@ const Detail = () => {
         ...item,
         wholesaleSupplyPrice: item.wholesaleSupplyPrice / 100,
         price: item.price / 100,
-        profit: item.profit / 100,
+        beforeProfit: item.beforeProfit / 100,
       }
     })[0]
   }
@@ -271,10 +268,16 @@ const Detail = () => {
   }
 
   useEffect(() => {
-    getDetail(params?.id)
+    getDetail(id)
   }, [])
   return (
-    <PageContainer>
+    <Drawer
+      title="活动审核"
+      width={1200}
+      placement="right"
+      onClose={() => { setDetailVisible(false) }}
+      visible={detailVisible}
+    >
       <Spin
         spinning={loading}
       >
@@ -302,7 +305,7 @@ const Detail = () => {
                 {detailData?.wholesale?.createAdminName}
               </Descriptions.Item>
               <Descriptions.Item label="毛利盈亏(元)">
-                {detailData?.sku?.[0]?.profit / 100}元/{detailData?.sku?.[0]?.unit}
+                {detailData?.sku?.[0]?.beforeProfit / 100}元/{detailData?.sku?.[0]?.unit}
               </Descriptions.Item>
               <Descriptions.Item label="箱柜单位量">
                 {detailData?.sku?.[0]?.batchNumber}
@@ -419,23 +422,24 @@ const Detail = () => {
             </div>
           </Row>
           <div style={{ marginTop: 40, display: 'flex', justifyContent: 'center' }}>
-            <Button type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); },200) }}>返回</Button>
+            <Button type="default" onClick={() => { setDetailVisible(false) }}>返回</Button>
             <Button style={{ marginLeft: '50px' }} onClick={() => { auditPass() }} type="primary">审核通过</Button>
             <AuditModel
               label={'审核驳回'}
               InterFace={updateWholesaleAuditStatus}
               title={'请确认操作'}
-              id={params?.id}
+              id={id}
+              callback={() => { callback() }}
             />
           </div>
           {
-            visible && <PassModel visible={visible} wsId={params?.id} setVisible={setVisible} type={timeType} />
+            visible && <PassModel callback={() => { callback() }} visible={visible} wsId={id} setVisible={setVisible} type={timeType} />
           }
 
         </div>
       </Spin>
 
-    </PageContainer>
+    </Drawer>
   );
 };
 

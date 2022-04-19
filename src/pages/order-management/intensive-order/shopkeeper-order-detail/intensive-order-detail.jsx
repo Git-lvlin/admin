@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { Steps, Space, Button, Modal, Spin } from 'antd';
 import { useParams } from 'umi';
 import { findAdminOrderDetail } from '@/services/order-management/normal-order-detail';
@@ -11,12 +11,6 @@ import { history } from 'umi';
 import styles from './style.less';
 
 const { Step } = Steps;
-
-const payType = {
-  1: '支付宝',
-  2: '微信',
-  3: '银联',
-}
 
 const OrderDetail = () => {
   const params = useParams();

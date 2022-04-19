@@ -10,6 +10,8 @@ import { amountTransform } from '@/utils/utils'
 import { platforms, enabledDisabledSubmit, subtotal } from '@/services/financial-management/supplier-fund-management'
 import styles from './styles.less'
 import { Export,ExportHistory } from '@/pages/export-excel'
+import Detailed from '../payment-details'
+import Detail from '../details'
 
 const IssuingStoreFundManagement = () => {
   const actionRef = useRef()
@@ -19,6 +21,9 @@ const IssuingStoreFundManagement = () => {
   const [search, setSearch] = useState({})
   const [data, setData] = useState({})
   const [visit, setVisit] = useState(false)
+  const [detailedVisible, setDetailedVisible] = useState(false)
+  const [detailVisible, setDetailVisible] = useState(false)
+  const [query, setQuery] = useState(null)
 
   useEffect(()=> {
     subtotal({
@@ -35,10 +40,12 @@ const IssuingStoreFundManagement = () => {
   }, [search])
 
   const skipToDetail = ({accountType, accountId}) => {
-    history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
+    setQuery({accountType, accountId})
+    setDetailedVisible(true)
   }
   const toDetails = ({accountType, accountId}) => {
-    history.push(`/financial-management/money-management/details?accountType=${accountType}&accountId=${accountId}`)
+    setQuery({accountType, accountId})
+    setDetailVisible(true)
   }
 
   const disable = data =>{
@@ -56,6 +63,15 @@ const IssuingStoreFundManagement = () => {
         message.success('操作成功')
       }
     })
+  }
+
+  const getValues = (form) => {
+    return {
+      accountType: "agentStore",
+      ...form?.getFieldValue(),
+      registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
+      registTimeEnd: form?.getFieldValue()?.registTime?.[1].format('YYYY-MM-DD')
+    }
   }
 
   const PopModal = props => {
@@ -186,6 +202,7 @@ const IssuingStoreFundManagement = () => {
       )
     }
   ]
+
   return (
     <PageContainer title={false}>
       <ProTable
@@ -208,6 +225,7 @@ const IssuingStoreFundManagement = () => {
         toolBarRender={false}
         columns={columns}
         params={{accountType: 'agentStore'}}
+        scroll={{x: "max-content"}}
         request={platforms}
         search={{
           optionRender: ({searchText, resetText}, {form}) => [
@@ -233,12 +251,7 @@ const IssuingStoreFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-agentStore-export"
-              conditions={{
-                accountType: "agentStore",
-                ...form?.getFieldValue(),
-                registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
-                registTimeEnd: form?.getFieldValue()?.registTime?.[1].format('YYYY-MM-DD')
-              }}
+              conditions={() => getValues(form)}
             />,
             <ExportHistory
               key="exportHistory" 
@@ -261,6 +274,22 @@ const IssuingStoreFundManagement = () => {
           </>
         )}
       />
+      {
+        detailedVisible &&
+        <Detailed
+          query={query}
+          visible={detailedVisible}
+          setVisible={setDetailedVisible}
+        />
+      }
+      {
+        detailVisible &&
+        <Detail
+          query={query}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
     </PageContainer>
   )
 }

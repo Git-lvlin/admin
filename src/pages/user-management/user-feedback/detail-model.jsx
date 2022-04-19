@@ -4,6 +4,7 @@ import { Button, message,Typography,Descriptions, Space,Image,List,Avatar } from
 import { feedbackReply,feedbackDetail} from '@/services/user-management/user-feedback';
 import { history,connect } from 'umi';
 import { ExclamationCircleFilled } from '@ant-design/icons';
+import { amountTransform } from '@/utils/utils'
 import styles from './style.less'
 const { Title } = Typography;
 
@@ -74,25 +75,15 @@ export default props=>{
             {{0: <span style={{color:'red'}}>进行中</span>,1: <span style={{color:'#999999'}}>已处理</span>}[detailData?.status]}
             </Descriptions.Item>
           </Descriptions>
-          <Descriptions contentStyle={{width:'300px'}}>
-            <Descriptions.Item label="反馈内容">
-              <pre className={styles.line_feed}>{detailData?.content}</pre>
-            </Descriptions.Item>
-          </Descriptions>
+          <p style={{wordWrap:'break-word'}}>反馈内容：{detailData?.content}</p>
           <List
             grid={{
               gutter: 16,
-              xs: 1,
-              sm: 2,
-              md: 4,
-              lg: 4,
-              xl: 6,
-              xxl: 3,
             }}
             dataSource={detailData?.imgs}
             renderItem={item => (
               <List.Item>
-                <Image src={item}/>
+                <Image width={100} height={100} src={item}/>
               </List.Item>
             )}
           />
@@ -109,7 +100,7 @@ export default props=>{
                 <List.Item.Meta
                   avatar={<Avatar src={item?.skuImageUrl} />}
                   title={<p>{item?.goodsName}</p>}
-                  description={<Space><span style={{color:'red'}}>￥{detailData?.orderInfo?.payAmount}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{detailData?.orderInfo?.payTime}</span></Space>}
+                  description={<Space><span style={{color:'red'}}>￥{amountTransform(detailData?.orderInfo?.payAmount, '/').toFixed(2)}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{detailData?.orderInfo?.payTime}</span></Space>}
                 />
               </List.Item>
             )}
@@ -119,6 +110,7 @@ export default props=>{
               <p>回复：</p>
               <ProFormTextArea 
                 name="content" 
+                rules={[{ required: true, message: '请输入回复内容' }]}
                 fieldProps={{
                   maxLength:500,
                   showCount:true
@@ -136,10 +128,10 @@ export default props=>{
               >
                 <List.Item.Meta
                   title={
-                  <pre className={styles.line_feed}>
+                  <p style={{wordWrap:'break-word'}}>
                     客服回复：
                     {item?.content}
-                  </pre>
+                  </p>
                   }
                   description={<Space><span>回复人：{item?.createName}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>回复时间：{item?.createTime}</span></Space>}
                 />

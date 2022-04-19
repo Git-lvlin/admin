@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { PageContainer } from '@/components/PageContainer';
+import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@ant-design/pro-table'
 import { ModalForm } from '@ant-design/pro-form'
 import { ProFormTextArea } from '@ant-design/pro-form'
@@ -42,12 +42,10 @@ const SupplierFundManagement = () => {
   const skipToDetail = ({accountType, accountId}) => {
     setQuery({accountType, accountId})
     setDetailedVisible(true)
-    // history.push(`/financial-management/money-management/payment-details?accountType=${accountType}&accountId=${accountId}`)
   }
   const toDetails = ({accountType, accountId}) => {
     setQuery({accountType, accountId})
     setDetailVisible(true)
-    // history.push(`/financial-management/money-management/details?accountType=${accountType}&accountId=${accountId}`)
   }
   const disable = data =>{
     enabledDisabledSubmit({...data}).then(res=> {
@@ -64,6 +62,15 @@ const SupplierFundManagement = () => {
         message.success('操作成功')
       }
     })
+  }
+
+  const getValues = (form) => {
+    return {
+      accountType: "supplier", 
+      ...form?.getFieldValue(),
+      settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
+      settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD')
+    }
   }
   
   const PopModal = props => {
@@ -194,6 +201,7 @@ const SupplierFundManagement = () => {
       )
     }
   ]
+  
   return (
     <PageContainer title={false}>
       <ProTable
@@ -205,6 +213,7 @@ const SupplierFundManagement = () => {
             setPage(e)
           }
         }}
+        scroll={{x: "max-content"}}
         rowKey='accountId'
         postData={
           (e)=>{
@@ -241,12 +250,7 @@ const SupplierFundManagement = () => {
               change={(e)=> {setVisit(e)}}
               key="export"
               type="financial-account-page-supplier-export"
-              conditions={{
-                accountType: "supplier", 
-                ...form?.getFieldValue(),
-                settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
-                settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD')
-              }}
+              conditions={()=> getValues(form)}
             />,
             <ExportHistory
               key="exportHistory" 

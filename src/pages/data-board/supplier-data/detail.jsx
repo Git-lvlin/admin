@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table'
 import { 
   Button,
@@ -179,7 +179,7 @@ const Detail = () => {
               change={(e)=> {setVisit(e)}}
               key="export" 
               type={type()}
-              conditions={getFieldValue()}
+              conditions={getFieldValue}
             />,
             <ExportHistory
               key="export-history" 
@@ -200,7 +200,7 @@ const Detail = () => {
                   change={(e)=> {setVisit(e)}}
                   key="export" 
                   type={type()}
-                  conditions={getFieldValue()}
+                  conditions={getFieldValue}
                 />,
                 <ExportHistory
                   key="export-history" 

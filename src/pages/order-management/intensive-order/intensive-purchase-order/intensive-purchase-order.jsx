@@ -114,7 +114,7 @@ const TableList = () => {
           fullScreen: false,
           setting: false,
         }}
-        scroll={{ y: Math.max(window.innerHeight - 350, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         actionRef={actionRef}
         formRef={formRef}
         params={params}

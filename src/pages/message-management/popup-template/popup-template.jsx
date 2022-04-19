@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Form, Space, Pagination, Spin } from 'antd'
 import ProForm, { ProFormText } from '@ant-design/pro-form'
-import { PageContainer } from '@ant-design/pro-layout'
+import { PageContainer } from '@/components/PageContainer';
 
 import { popupList } from '@/services/message-management/message-template-config'
 import styles from './style.less'

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import {
   StepsForm,
   ProFormText,
@@ -534,7 +534,7 @@ const IntensiveActivityCreate = () => {
                         { required: true, message: '请输入' },
                         () => ({
                           validator(_, value) {
-                            if (price > selectItem[0].marketPriceDisplay) {
+                            if (+price > +selectItem[0].marketPriceDisplay) {
                               return Promise.reject(new Error('集约价不能大于市场价'));
                             }
                             return Promise.resolve();

@@ -4,7 +4,7 @@ import { EditableProTable } from '@ant-design/pro-table';
 import { addConfig,updateConfig,findById,configTest,findFunctions } from '@/services/resource'
 import ProForm, { ProFormText,DrawerForm,ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import DiscountsModel from './discounts-model'
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { history,connect } from 'umi';
 import styles from './style.less'
 const { TextArea } = Input;

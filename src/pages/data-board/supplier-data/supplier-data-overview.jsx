@@ -15,6 +15,14 @@ const { Text, Title } = Typography
 const CardTitle = ({times, setTimes}) => {
   const [visit, setVisit] = useState(false)
 
+  const getValues = () => {
+    return {
+      startTime: times?.[0],
+      endTime: times?.[1],
+      type: 'export'
+    }
+  }
+
   return (
     <ProForm
       style={{ 
@@ -29,11 +37,7 @@ const CardTitle = ({times, setTimes}) => {
               change={(e)=> {setVisit(e)}}
               key="export" 
               type="data-board-supplier-data-overview"
-              conditions={{
-                startTime: times?.[0],
-                endTime: times?.[1],
-                type: 'export'
-              }}
+              conditions={getValues}
             />,
             <ExportHistory 
               key="export-history" 

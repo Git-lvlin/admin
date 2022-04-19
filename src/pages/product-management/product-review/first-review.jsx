@@ -125,7 +125,7 @@ export default (props) => {
       }}
       {...formItemLayout}
     >
-      <ProductDetail detailData={detailData} />
+      <ProductDetail detailData={detailData} review />
       {overruleVisible && <Overrule
         visible={overruleVisible}
         setVisible={setOverruleVisible}

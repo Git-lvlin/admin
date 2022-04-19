@@ -2,7 +2,7 @@ import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch,DrawerForm} from '@ant-design/pro-form';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@/components/PageContainer';
 import { history, connect } from 'umi';
 import { queryUserRecordList } from '@/services/sign-activity-management/packet-record-query-user-record-list';
 import Export from '@/pages/export-excel/export'
@@ -158,7 +158,7 @@ export default (props) => {
                <Export
                change={(e) => { setVisit(e) }}
                type={'red-packet-user-detail-export'}
-               conditions={getFieldValue(searchConfig)}
+               conditions={()=>{return getFieldValue(searchConfig)}}
              />,
              <ExportHistory show={visit} setShow={setVisit} type={'red-packet-user-detail-export'} />,
             ],

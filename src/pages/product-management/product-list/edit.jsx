@@ -600,7 +600,7 @@ export default (props) => {
             // suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
             // wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
             salePrice: amountTransform((settleType === 1 || settleType === 0) ? item[1].retailSupplyPrice : item[1].salePrice, '/'),
-            marketPrice: amountTransform(item[1].marketPrice || item[1].retailSupplyPrice, '/'),
+            marketPrice: amountTransform(item[1].marketPrice, '/'),
             wholesaleFreight: amountTransform(item[1].wholesaleFreight, '/'),
             // batchNumber: item[1].batchNumber,
             // isFreeFreight: item[1].isFreeFreight,
@@ -631,7 +631,7 @@ export default (props) => {
           sampleSalePrice: amountTransform(goods.sampleSalePrice, '/'),
           // suggestedRetailPrice: amountTransform(goods.suggestedRetailPrice, '/'),
           salePrice: amountTransform((settleType === 1 || settleType === 0) ? goods.retailSupplyPrice : goods.salePrice, '/'),
-          marketPrice: amountTransform(goods.marketPrice || goods.retailSupplyPrice, '/'),
+          marketPrice: amountTransform(goods.marketPrice, '/'),
           wholesaleSupplyPrice: amountTransform(goods.wholesaleSupplyPrice, '/'),
           wholesaleMinNum: goods.wholesaleMinNum,
           salePriceFloat: amountTransform(goods.salePriceFloat),
@@ -1103,6 +1103,9 @@ export default (props) => {
                     label="集采箱规单位量"
                     placeholder="请输入店主集约采购下单的加购倍数单位量，范围1-9999"
                     disabled
+                    fieldProps={{
+                      addonAfter: `${goods.unit}/${goods.wsUnit}`
+                    }}
                   />
                   <ProFormSelect
                     name="wsUnit"

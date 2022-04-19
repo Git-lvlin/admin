@@ -4,7 +4,7 @@ import Big from 'big.js';
 
 Big.RM = 2;
 export default function EditTable(props) {
-  const { tableHead, tableData, goodsSaleType, settleType, isSample, unit, wsUnit, ladderSwitch } = props;
+  const { tableHead, tableData, goodsSaleType, settleType, isSample, unit, wsUnit, review, ladderSwitch } = props;
   const [columns, setColumns] = useState([])
 
   useEffect(() => {
@@ -19,6 +19,10 @@ export default function EditTable(props) {
     });
 
     setColumns([
+      {
+        title: 'skuID',
+        dataIndex: 'skuId',
+      },
       {
         title: '规格图片',
         dataIndex: 'imageUrl',
@@ -54,6 +58,7 @@ export default function EditTable(props) {
         dataIndex: 'batchNumber',
         editable: false,
         hideInTable: goodsSaleType === 2,
+        render: _ => `${_}${unit}/${wsUnit}`
       },
       {
         title: '最低批发量',
@@ -120,7 +125,8 @@ export default function EditTable(props) {
       {
         title: '市场价',
         dataIndex: 'marketPrice',
-        render: _ => `${_}元/${unit}`
+        render: _ => `${_}元/${unit}`,
+        hideInTable: review,
       },
       {
         title: '库存预警值',
