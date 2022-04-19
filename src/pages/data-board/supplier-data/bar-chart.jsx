@@ -13,14 +13,6 @@ import { amountTransform } from '@/utils/utils'
 const BarChart = ({data}) => {
   data?.sort((a, b)=> a.amount - b.amount)
 
-  const chartUnit = {
-    style: {
-      fontSize: 14,
-      textAlign: 'center',
-      fill: '#E66101'
-    }
-  }
-
   return (
     data?.[0]?
     <Chart
@@ -28,14 +20,11 @@ const BarChart = ({data}) => {
       data={data}
       autoFit
       scale={{
-        amount: {
+        金额: {
           formatter: (v) => amountTransform(v, '/')
         }
       }}
     >
-      <Axis
-        title={chartUnit}
-      />
       <Coordinate transpose />
       <Interval 
         position="supplierId*金额"
