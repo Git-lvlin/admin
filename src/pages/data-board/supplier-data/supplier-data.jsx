@@ -23,15 +23,14 @@ const SupplierData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('nearly-7-days'))
   const [value, setValue] = useState(1)
   const [data, setData] = useState([])
-  const [unit, setUnit] = useState('单位：单')
-
+  
   useEffect(() => {
     supplierSalesRank({
       startTime: rangePickerValue?.[0].format('YYYY-MM-DD'),
       endTime: rangePickerValue?.[1].format('YYYY-MM-DD'),
       type: value
     }).then(res=> {
-      setData(res.data)
+      setData(res.data.map(res => ({...res, supplierId: `供应商ID：${res.supplierId}`, 金额: res.amount})))
     })
     return () => {
       setData([])
@@ -57,11 +56,6 @@ const SupplierData = () => {
   
   const onChange = e => {
     setValue(e.target.value)
-    if(e.target.value === 1) {
-      setUnit('单位：单')
-    } else {
-      setUnit('单位：元')
-    }
   }
 
   const skipToDeatil = (e, id, name, state) => {
@@ -87,12 +81,6 @@ const SupplierData = () => {
       valueType: 'digit',
       hideInTable: true
     },
-    // {
-    //   title: '供应商名称',
-    //   dataIndex: 'supplierName',
-    //   align: 'center',
-    //   width: '18%'
-    // },
     {
       title: '统计时间范围',
       dataIndex: 'time',
@@ -225,7 +213,7 @@ const SupplierData = () => {
           <Radio value={1}>秒约销售额</Radio>
           <Radio value={2}>集约销售额</Radio>
         </Radio.Group>
-        <BarChart data={data} unit={unit}/>
+        <BarChart data={data}/>
       </div>
       <SupplierDataOverview/>
       <ProTable
