@@ -5,10 +5,24 @@ import { PlusOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
 import ProTable from '@ant-design/pro-table';
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
-import { ModalForm,ProFormText,ProFormDigit } from '@ant-design/pro-form';
+import ProForm, { ModalForm,ProFormText,ProFormDigit } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import Big from 'big.js'
 
+
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+  </div>
+)
+
+const FromWrap2 = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div style={{marginLeft:'135px'}}>{content(value, onChange)}</div>
+    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+  </div>
+)
 
 
 export default (props) => {
@@ -76,31 +90,46 @@ export default (props) => {
           maxLength:20
         }}
       />
-      <ProFormDigit
-        width={300}
-        name="salePrice"
-        label="面额"
-        fieldProps={{
-          formatter: value => value ? +new Big(value).toFixed(2) : value,
-        }}
-        min={0.01}
-        max={99999.99}
-        rules={[
-          { required: true, message: '请输入面额' },
-        ]}
+      <FromWrap2
+        content={(value, onChange) => <ProFormDigit
+          width={300}
+          name="salePrice"
+          label="面额"
+          fieldProps={{
+            formatter: value => value ? +new Big(value).toFixed(2) : value,
+          }}
+          min={0.01}
+          max={99999.99}
+          labelCol={12}
+          rules={[
+            { required: true, message: '请输入面额' },
+          ]}
+        />}
+        right={(value) =><p>元</p>}
       />
       <Form.Item
           label="图片"
           name="imageUrl"
           rules={[{ required: true, message: '请上传图片' }]}
         >
-           <Upload multiple maxCount={1} dimension="1:1" accept="image/*"/>
-        </Form.Item>
+          <FromWrap
+            content={(value, onChange) => <Upload multiple value={value} onChange={onChange} dimension="1:1" size={1 * 500} maxCount={1} accept="image/*"/>}
+            right={(value) => {
+              return (
+                <dl style={{color:'#999999'}}>
+                  <dd>尺寸：1:1矩形</dd>
+                  <dd>格式：jpg/png/gif</dd>
+                  <dd>大小：500KB以内</dd>
+                </dl>
+              )
+            }}
+          />
+      </Form.Item>
       <ProFormDigit
         width={300}
         label="库存数"
         placeholder="输入库存数"
-        name="baseStockNum"
+        name="stockNum"
         fieldProps={{
           formatter: value => value ? +new Big(value).toFixed(0) : value
         }}
