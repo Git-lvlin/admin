@@ -21,10 +21,10 @@ export default props=>{
       }
     useEffect(()=>{
       if(endId){
-        setNickname(phones?.split(','))
-        const prizeNotice=phones?.split(',')
+        setNickname(dataSource.length>0&&dataSource?.find(ele=>ele.id==designateId)?.assignPhones?.split(',')||phones?.split(','))
+        const prizeNotice=dataSource.length>0&&dataSource?.find(ele=>ele.id==designateId)?.assignPhones?.split(',')||phones?.split(',')
         form.setFieldsValue({
-          prizeNotice:prizeNotice?.map(ele=>({phone:ele}))
+          prizeNotice:prizeNotice?.map(ele=>({phone:ele}))||[{phone: ''}]
         })
       }else{
         const prizeNotice=dataSource.length>0&&dataSource?.find(ele=>ele.id==designateId)?.assignPhones?.split(',')
@@ -86,13 +86,13 @@ export default props=>{
                           fieldProps={{
                             style: {
                               width: 328,
-                              border:nickname[field.name]=='查询不到此用户'?'2px solid red':nickname[field.name]?'2px solid #68E11C':''
+                              border:nickname&&nickname[field.name]=='查询不到此用户'?'2px solid red':nickname&&nickname[field.name]?'2px solid #68E11C':''
                             },
                             maxLength:11,
                             onChange:(val)=>{
                               checkUserExist({phone:val.target?.value}).then(res=>{
                               if(res.code==0){
-                                const arr=[...nickname]
+                                const arr=nickname?[...nickname]:[]
                                 if(arr[field.name]){
                                   arr[field.name]=res?.data?.nickname
                                 }else if(res?.data?.nickname){
@@ -111,7 +111,7 @@ export default props=>{
                             { validator: checkConfirm}
                           ]}
                         />
-                        <span>{nickname[field.name]}</span>
+                        <span>{nickname&&nickname[field.name]}</span>
                       </List.Item>
                     )
                   })}
