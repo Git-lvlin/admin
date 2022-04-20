@@ -114,9 +114,8 @@ export default (props) => {
       const arr = [];
       let sum=0
       goosList?.forEach(item => {
-        console.log('item',item)
         arr.push({
-          id: item.id==item.skuId||item.skuId==0?0:item.id,
+          id: item.id==item.skuId||`${item.id}`.length>10?0:item.id,
           probability:item.assignType?0:item.probability,
           status: item.status?1:0,
           skuId: item.skuId,
