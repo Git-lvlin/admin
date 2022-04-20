@@ -48,7 +48,7 @@ export default (props) => {
         setDetailList(res.data)
         let sum=0
         res.data?.skus?.map(ele=>{
-          if(ele.status){
+          if(ele.status&&!ele.assignType){
             sum=amountTransform(amountTransform(sum, '*')+amountTransform(ele.probability, '*'),'/')
           }
         })
@@ -115,8 +115,8 @@ export default (props) => {
       let sum=0
       goosList?.forEach(item => {
         arr.push({
-          id: item.id==item.skuId?0:item.id,
-          probability: item.probability,
+          id: item.id==item.skuId||item.skuId==0?0:item.id,
+          probability:item.assignType?0:item.probability,
           status: item.status?1:0,
           skuId: item.skuId,
           spuId: item.spuId,
@@ -126,6 +126,9 @@ export default (props) => {
           imageUrl: item.imageUrl,
           salePrice: item.salePrice,
           retailSupplyPrice: item.retailSupplyPrice,
+          assignPhones:item.assignPhones,
+          goodsType:item.goodsType,
+          assignType:item.assignType
         })
       })
       if(del){
@@ -134,7 +137,7 @@ export default (props) => {
         values.skus=arr.length>0&&arr||detailList?.skus
       }
       values.skus.map(ele=>{
-        if(ele.status){
+        if(ele.status&&!ele.assignType){
           sum=amountTransform(amountTransform(sum, '*')+amountTransform(ele.probability, '*'),'/')
         }
       })
@@ -368,23 +371,6 @@ export default (props) => {
             <span>次，当天总计达到此中奖次数，后面的人不再中奖</span>
         </ProForm.Group>
 
-        <ProFormRadio.Group
-          name="switch1"
-          label='是否开启指定中奖人'
-          options={[
-              {
-                  label:'开启（对奖品指定中奖人）',
-                  value: 1,
-              },
-              {
-                  label: '关闭（所有奖品不指定中奖人）',
-                  value: 0,
-              }
-          ]}
-          readonly={id&&falg}
-          rules={[{ required: true, message: '请设置邀请状态' }]}
-          extra={<p style={{color:'#8D8D8D'}}>开启后，指定了中奖人的奖品只能被指定人中奖，其他人无法中奖</p>}
-        />
         {/* 奖品设置 */}
         <PrizeSet
           detailList={detailList}

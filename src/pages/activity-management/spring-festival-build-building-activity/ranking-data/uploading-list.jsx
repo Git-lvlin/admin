@@ -100,7 +100,7 @@ export default props=>{
                         extra={fields.length !== 1 &&
                           <Button style={{ marginLeft: 10, width: 80,color:'#D9001B',border:'1px solid #D9001B' }} onClick={() => {
                              remove(field.name) 
-                             const arr=nickname.splice(field.name-1,1)
+                             const arr=nickname.filter((ele,index)=>index!=field.name)
                              setNickname(arr)
                           }} danger>
                             删除
@@ -125,6 +125,8 @@ export default props=>{
                                       arr[field.name]=res?.data?.nickname
                                     }else if(res?.data?.nickname){
                                       arr.push(res?.data?.nickname)
+                                    }else{
+                                      arr.push('查询不到此用户')
                                     }
                                     const arr2=arr.filter((item) => item!== '')
                                     setNickname(arr2)

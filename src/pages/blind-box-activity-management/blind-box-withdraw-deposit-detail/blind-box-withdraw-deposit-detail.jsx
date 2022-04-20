@@ -142,6 +142,9 @@ export default () => {
           rowKey="sn"
           options={false}
           request={withdrawPage}
+          params={{
+            activityType:1
+          }}
           search={{
             defaultCollapsed: true,
             labelWidth: 100,

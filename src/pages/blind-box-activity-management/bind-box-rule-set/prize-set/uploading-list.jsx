@@ -2,11 +2,14 @@ import React, { useState} from 'react';
 import { ModalForm,ProFormText} from '@ant-design/pro-form';
 import { message,Form,List,Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { checkUserExist } from '@/services/activity-management/spring-festival-build-building-activity';
 import { useEffect } from 'react';
+import { P } from '@antv/g2plot';
 
 export default props=>{
-    const {endId,visible,setVisible,callback,phones,falg}=props
+    const {endId,visible,setVisible,callback,phones,falg,dataSource,designateId}=props
     const [form] = Form.useForm()
+    const [nickname,setNickname]=useState([])
     const checkConfirm = (rule, value, callback) => {
         return new Promise(async (resolve, reject) => {
           if (value && !/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(value)) {
@@ -18,9 +21,15 @@ export default props=>{
       }
     useEffect(()=>{
       if(endId){
-        const prizeNotice=phones.split(',')
+        setNickname(phones?.split(','))
+        const prizeNotice=phones?.split(',')
         form.setFieldsValue({
-          prizeNotice:prizeNotice.map(ele=>({phone:ele}))
+          prizeNotice:prizeNotice?.map(ele=>({phone:ele}))
+        })
+      }else{
+        const prizeNotice=dataSource.length>0&&dataSource?.find(ele=>ele.id==designateId)?.assignPhones?.split(',')
+        form.setFieldsValue({
+          prizeNotice:prizeNotice?.map(ele=>({phone:ele}))||[{phone: ''}]
         })
       }
     },[endId,phones])
@@ -33,13 +42,10 @@ export default props=>{
           visible={visible}
           submitter={{
           render: (props, defaultDoms) => {
-            if(endId&&falg){
-              return []
-            }
-              return [
-              <p style={{color:'#DD9616',margin:'1px 220px 0 0',}}>从给的手机号中随机选1名中奖，已经中过此奖的不会重复中此奖</p>,
-              ...defaultDoms
-              ];
+            return [
+            <p style={{color:'#DD9616',margin:'1px 220px 0 0',}}>从给的手机号中随机选1名中奖，已经中过此奖的不会重复中此奖</p>,
+            ...defaultDoms
+            ];
           },
           }}
           onFinish={async (values) => {
@@ -47,27 +53,7 @@ export default props=>{
               callback(prizePhones)
               setVisible(false) 
           }}
-        initialValues={{
-        prizeNotice:[{
-            phone: ''
-        }],
-        }}
       >
-        {
-            endId&&falg?
-            <List
-              itemLayout="horizontal"
-              dataSource={phones.split(',').map(ele=>({phone:ele}))}
-              renderItem={item => (
-                <List.Item>
-                  <List.Item.Meta
-                    title={<p>{item.phone}</p>}
-                  />
-                </List.Item>
-              )}
-            />
-            :
-        <>
         <p style={{display:'block'}}>请输入指定中奖人的手机号码</p>
         <Form.List name="prizeNotice">
             {(fields, { add, remove }) => (
@@ -76,11 +62,18 @@ export default props=>{
                   itemLayout="horizontal"
                 >
                   {fields.map((field) => {
+                    console.log('field.name',field.name)
+                    console.log('nickname',nickname)
                     return (
                       <List.Item
                         key={field.key}
                         extra={fields.length !== 1 &&
-                          <Button style={{ marginLeft: 10, width: 80,color:'#D9001B',border:'1px solid #D9001B' }} onClick={() => { remove(field.name) }} danger>
+                          <Button style={{ marginLeft: 10, width: 80,color:'#D9001B',border:'1px solid #D9001B' }} onClick={() => {
+                            console.log('field.name',field.name)
+                             remove(field.name) 
+                             const arr=nickname.filter((ele,index)=>index!=field.name)
+                             setNickname(arr)
+                             }} danger>
                             删除
                           </Button>}
                       > 
@@ -92,15 +85,33 @@ export default props=>{
                           key="2"
                           fieldProps={{
                             style: {
-                              width: 328
+                              width: 328,
+                              border:nickname[field.name]=='查询不到此用户'?'2px solid red':nickname[field.name]?'2px solid #68E11C':''
                             },
-                            maxLength:11
+                            maxLength:11,
+                            onChange:(val)=>{
+                              checkUserExist({phone:val.target?.value}).then(res=>{
+                              if(res.code==0){
+                                const arr=[...nickname]
+                                if(arr[field.name]){
+                                  arr[field.name]=res?.data?.nickname
+                                }else if(res?.data?.nickname){
+                                  arr.push(res?.data?.nickname)
+                                }else{
+                                  arr.push('查询不到此用户')
+                                }
+                                const arr2=arr.filter((item) => item!== '')
+                                setNickname(arr2)
+                              }
+                            })
+                           },
                           }}
                           rules={[
                             { required: true, message: '请输入用户手机号' },
-                            {validator: checkConfirm}
+                            { validator: checkConfirm}
                           ]}
                         />
+                        <span>{nickname[field.name]}</span>
                       </List.Item>
                     )
                   })}
@@ -112,8 +123,6 @@ export default props=>{
               </>
             )}
           </Form.List>
-          </>
-        }
       </ModalForm>
     )
 }
