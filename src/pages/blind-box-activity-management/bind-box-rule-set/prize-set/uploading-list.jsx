@@ -27,6 +27,7 @@ export default props=>{
           prizeNotice:prizeNotice?.map(ele=>({phone:ele}))||[{phone: ''}]
         })
       }else{
+        setNickname(dataSource.length>0&&dataSource?.find(ele=>ele.id==designateId)?.assignPhones?.split(','))
         const prizeNotice=dataSource.length>0&&dataSource?.find(ele=>ele.id==designateId)?.assignPhones?.split(',')
         form.setFieldsValue({
           prizeNotice:prizeNotice?.map(ele=>({phone:ele}))||[{phone: ''}]

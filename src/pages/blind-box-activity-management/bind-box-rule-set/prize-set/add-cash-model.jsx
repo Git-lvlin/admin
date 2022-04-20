@@ -28,7 +28,6 @@ export default (props) => {
 
 
   const onsubmit = (values) => {
-    console.log('dataSource',dataSource)
     var flage=false
     for (let index = 0; index < dataSource.length; index++) {
       if(dataSource[index]?.skuId==0&&dataSource[index]?.salePrice==amountTransform(values.salePrice, '*')){

@@ -327,7 +327,7 @@ export default (props) => {
       dataIndex: 'assignType',
       hideInSearch: true,
       renderFormItem: (_,r) => {
-      return <Switch checked={_.entry.assignType}/>
+      return <Switch disabled checked={_.entry.assignType}/>
       },
       render: (_,r) =>{
         return <p>
@@ -484,6 +484,7 @@ export default (props) => {
         const arr2=[...dataSource,{...val,skuId:0,spuId: 0,id:+new Date(),goodsType:2,salePrice:amountTransform(val?.salePrice, '*')}]
         setDataSource(arr2)
         setEditableKeys(arr2.map(item=>item.id))
+        callback(arr2)
         // setCashProps({...val,skuId:0,spuId: 0,id:+new Date(),goodsType:2,salePrice:amountTransform(val?.salePrice, '*')})
       }}/>
     }
