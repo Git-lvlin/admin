@@ -153,7 +153,7 @@ interface propertys{
       <>
         <ProTable<activityItem>
           actionRef={ref}
-          rowKey="id"
+          rowKey="poNo"
           options={false}
           headerTitle="数据列表"
           request={getAuditList}

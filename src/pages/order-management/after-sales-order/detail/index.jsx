@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Spin, Empty, Drawer } from 'antd'
 
-import { refundOrderDetail, findReturnRecord } from '@/services/order-management/after-sales-order'
+import { refundOrderDetail, findReturnRecord,getRefundStoreOrderDetail } from '@/services/order-management/after-sales-order'
 import OrderDetailStatus from './order-detail-status'
 import BasicInformation from './basic-information'
 import ReturnGoods from './return-goods'
@@ -37,6 +37,14 @@ const Detail = ({id, visible, setVisible }) => {
       setConsultationRecord([])
     }
   }, [orderDetail])
+
+  useEffect(()=>{
+    getRefundStoreOrderDetail({trSn:id}).then(res => {
+      console.log('res',res)
+    }).finally(()=>{
+      setLoading(false)
+    })
+  },[])
 
   return (
     <Drawer
