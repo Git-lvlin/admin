@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Form,Button,Descriptions,Typography,Divider,Image } from 'antd'
 import { DrawerForm,ProFormRadio,ProFormTextArea} from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
-import type { ProColumns,ActionType } from '@ant-design/pro-table';
+import type { ProColumns } from '@ant-design/pro-table';
 import { getAuditInfo,operationRefundAudit } from '@/services/order-management/intensive-refund-order'
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
@@ -116,7 +116,7 @@ type AuditRecord={
 
   return (
     <DrawerForm
-      title='缺货单详情'
+      title={storeType==2?'缺货单详情':'集约缺货处理单'}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -156,7 +156,12 @@ type AuditRecord={
         <Descriptions.Item  label="集约活动ID">{orderDetail?.baseInfo?.wsId}  </Descriptions.Item>
         <Descriptions.Item  label="供应商ID">{orderDetail?.baseInfo?.supplierId}  </Descriptions.Item>
         <Descriptions.Item  label="供应商名称">{orderDetail?.baseInfo?.supplierName}  </Descriptions.Item>
-        <Descriptions.Item  label="采购商品"><Image src={orderDetail?.baseInfo?.imageUrl} width={50} height={50}/>{orderDetail?.baseInfo?.goodsName}  </Descriptions.Item>
+        <Descriptions.Item  label="采购商品">
+         <div style={{display:'flex',alignItems:'center'}}>
+          <Image src={orderDetail?.baseInfo?.imageUrl} width={50} height={50}/>
+          <p style={{marginLeft:'10px'}}>{orderDetail?.baseInfo?.goodsName} </p>
+         </div> 
+        </Descriptions.Item>
         <Descriptions.Item  label="库存单位">{orderDetail?.baseInfo?.unit}  </Descriptions.Item>
         <Descriptions.Item  label="采购数量">{orderDetail?.baseInfo?.totalNum}  </Descriptions.Item>
         <Descriptions.Item  label="缺货数量"><span style={{color:'red'}}>{orderDetail?.baseInfo?.returnNum}</span></Descriptions.Item>

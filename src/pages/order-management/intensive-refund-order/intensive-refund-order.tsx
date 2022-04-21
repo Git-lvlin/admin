@@ -45,16 +45,16 @@ interface propertys{
     const [auditType,setAuditType]=useState<number>()
     const columns:ProColumns<activityItem>[]= [
       {
-        title: '售后编号',
-        dataIndex: 'id',
-        valueType: 'text',
-        hideInTable: true,
-      },
-      {
-        title: '缺货退款编号',
+        title: '缺货单号',
         dataIndex: 'orSn',
         valueType: 'text',
-        hideInSearch: true,
+        hideInTable: true
+      },
+      {
+        title: '缺货退款单号',
+        dataIndex: 'orSn',
+        valueType: 'text',
+        hideInSearch: true
       },
       {
         title: '集约采购单号',
@@ -62,14 +62,22 @@ interface propertys{
         valueType: 'text',
       },
       {
+        title: '供应商ID',
+        dataIndex: 'supplierId',
+        valueType: 'text',
+        hideInTable: true,
+      },
+      {
         title: '供应商名称',
         dataIndex: 'supplierName',
         valueType: 'text',
+        hideInSearch: true,
       },
       {
         title: '运营中心名称',
         dataIndex: 'operationName',
         valueType: 'text',
+        hideInSearch: true,
       },
       {
         title: '商品名称',
