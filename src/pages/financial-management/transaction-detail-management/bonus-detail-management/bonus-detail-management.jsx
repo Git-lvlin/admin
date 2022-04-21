@@ -1,23 +1,21 @@
 import React, { useState } from 'react'
-import { PageContainer } from '@/components/PageContainer';
+import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@ant-design/pro-table'
 import { Button } from 'antd'
-import { history } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
 import { commissionPage } from '@/services/financial-management/transaction-detail-management'
 import { Export, ExportHistory } from '@/pages/export-excel'
 import Detail from '../../common-popup/order-pay-detail-popup'
+import RoyaltyDetails from "../royalty-details"
 
 // bonus detail
 const BonusDetailManagement = () =>{
   const [detailVisible, setDetailVisible] = useState(false)
+  const [royaltyVisible, setRoyaltyVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
   const [visit, setVisit] = useState(false)
-
-  const skipToDetail = data => {
-    history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=bonus`)
-  }
+  const [type, setType] = useState('')
 
   const getFieldValue = (form) => {
     const { createTime, ...rest } = form.getFieldsValue()
@@ -134,7 +132,7 @@ const BonusDetailManagement = () =>{
       title: '操作',
       dataIndex: 'optoion',
       valueType: 'option',
-      render: (_, records)=> <a target='_blank' href={`/financial-management/transaction-detail-management/royalty-details/${records?.orderNo}?type=bonus`}>详情</a>
+      render: (_, records)=> <a onClick={()=> {setRoyaltyVisible(true); setSelectItem(records?.orderNo); setType('bonus')}}>详情</a>
     }
 
   ]
@@ -192,6 +190,17 @@ const BonusDetailManagement = () =>{
           id={selectItem}
           visible={detailVisible}
           setVisible={setDetailVisible}
+          title='店铺收益明细'
+        />
+      }
+      {
+        royaltyVisible &&
+        <RoyaltyDetails
+          id={selectItem}
+          visible={royaltyVisible}
+          setVisible={setRoyaltyVisible}
+          title='店铺收益明细'
+          type={type}
         />
       }
     </PageContainer>
