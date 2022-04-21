@@ -69,11 +69,11 @@ export const findReturnRecord = async (params={}, options={}) => {
 
 // 缺货单信息
 export const getRefundStoreOrderDetail = async (params = {}, options = {}) => {
-  const { id } = params
+  const { ...rest } = params
   const res = await request('/auth/wholesale/orderRefund/getRefundStoreOrderDetail', {
     method: 'POST',
     data: {
-      id
+      ...rest
     },
     ...options
   })
