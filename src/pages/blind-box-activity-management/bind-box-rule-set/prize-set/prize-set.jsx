@@ -263,6 +263,13 @@ export default (props) => {
       dataIndex: 'baseStockNum',
       valueType: 'text',
       editable:false,
+      render:(_,data)=>{
+        if(data?.skuId==0){
+          return <p>-</p>
+        }else{
+          return <p>{_}</p>
+        }
+      }
     },
     {
       title: '奖品库存',

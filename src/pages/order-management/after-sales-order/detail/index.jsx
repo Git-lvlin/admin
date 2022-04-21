@@ -7,7 +7,7 @@ import BasicInformation from './basic-information'
 import ReturnGoods from './return-goods'
 import ReturnInformation from './return-information'
 import NegotiationHistory from './negotiation-history'
-// import WantSlipsMessage from './want-slips-message'
+import WantSlipsMessage from './want-slips-message'
 import styles from './styles.less'
 
 const Detail = ({id, visible, setVisible }) => {
@@ -53,7 +53,7 @@ const Detail = ({id, visible, setVisible }) => {
         />
         <BasicInformation data={orderDetail}/>
         <ReturnGoods data={orderDetail}/>
-        {/* <WantSlipsMessage data={orderDetail}/> */}
+        <WantSlipsMessage data={orderDetail}/>
         <ReturnInformation
           data={orderDetail}
           status={orderDetail?.afterSalesType}

@@ -7,7 +7,7 @@ const WantSlipsMessage = ({data}) => {
   const columns = [
     {
       title: '缺货退款单号',
-      dataIndex: 'orSn'
+      dataIndex: 'trSn'
     },
     {
       title: '关联集约采购单号',
@@ -15,7 +15,7 @@ const WantSlipsMessage = ({data}) => {
     },
     {
       title: '集约活动ID',
-      dataIndex: 'wsId'
+      dataIndex: 'supplierId'
     },
     {
       title: '申请时间',
