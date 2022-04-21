@@ -23,7 +23,7 @@ export default () => {
       },
       {
         title: '用户手机号',
-        dataIndex: 'registMobile',
+        dataIndex: 'withdrawAccount',
         valueType: 'text',
         hideInTable: true,
       },
