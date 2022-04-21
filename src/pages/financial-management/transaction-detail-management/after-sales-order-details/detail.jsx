@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, history } from 'umi'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import { PageContainer } from '@/components/PageContainer';
-import { Button } from 'antd'
+import { Button, Drawer } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { refundDetail } from "@/services/financial-management/transaction-detail-management"
 import './styles.less'
 import styles from './styles.less'
 import { tradeType } from '../../common-enum'
+import { fashionableType, backCalculation } from '../../common-function'
+import { orderTypes } from '@/services/financial-management/common'
 
-const Detail = () => {
-  const {id} = useParams()
+const Detail = ({id, setVisible, visible}) => {
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState({})
   const [data, setData] = useState({})
   const [payInfos, setPayInfos] = useState([])
+  const [orderType, setOrderType] = useState(null)
+
   useEffect(()=>{
     setLoading(true)
     refundDetail({id}).then(res=> {
@@ -34,101 +35,15 @@ const Detail = () => {
     }
   }, [])
 
-
-  const back = ()=> {
-    window.history.back()
-    setTimeout(() => { window.location.reload(); }, 200)
-  }
-  const fashionableType =(data, amount, fee) =>{
-    switch(data){
-      case 'goodsAmount':
-        return (
-          <>
-            <span className={styles.amount}>货款: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'commission':
-        return (
-          <>
-            <span className={styles.amount}>店主收益: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'platformCommission':
-        return (
-          <>
-            <span className={styles.amount}>平台收益: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'suggestCommission':
-        return (
-          <>
-            <span className={styles.amount}>上级推荐人收益: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'agentCompanyCommission':
-        return (
-          <>
-            <span className={styles.amount}>运营商收益: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'freight':
-        return (
-          <>
-            <span className={styles.amount}>运费: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      default:
-        return ''
+  useEffect(() => {
+    orderTypes({}).then(res=> {
+      setOrderType(res.data)
+    })
+    return () => {
+      setOrderType(null)
     }
-  }
+  }, [])
 
-  const backCalculation= (data, amount, fee)=> {
-    switch(data){
-      case 'goodsAmount':
-        return (
-          <>
-            <span className={styles.amount}>货款回退: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'commission':
-        return (
-          <>
-            <span className={styles.amount}>店主收益回退: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'platformCommission':
-        return (
-          <>
-            <span className={styles.amount}>平台收益回退: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'suggestCommission':
-        return (
-          <>
-            <span className={styles.amount}>上级推荐人收益回退: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      case 'agentCompanyCommission':
-        return (
-          <>
-            <span className={styles.amount}>运营商收益回退: ¥{amountTransform(amount, '/')}</span>
-            <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
-          </>
-        )
-      default:
-        return ''
-    }
-  }
   const columns1 = [
     {
       title: '售后订单号',
@@ -143,14 +58,7 @@ const Detail = () => {
     {
       title: '关联订单类型',
       dataIndex: 'orderType',
-      valueEnum: {
-        'second': '秒约',
-        'commandSalesOrder': '集约批发订单',
-        'dropShipping1688': '1688代发订单',
-        'commandCollect': '集约零售订单',
-        'blindBox': '盲盒订单',
-        'signIn': '签到订单'
-      }
+      valueEnum: orderType
     },
     {
       title: '关联订单号',
@@ -171,7 +79,8 @@ const Detail = () => {
     },
     {
       title: '',
-      dataIndex: ''
+      dataIndex: '',
+      render: () => ''
     },
     {
       title: '回退会员信息',
@@ -211,7 +120,7 @@ const Detail = () => {
       render: (_, data)=> {
         if(data.returnDivideInfos) {
           return data?.returnDivideInfos.map(item=> (
-            <div key={item?.type}>{backCalculation(item?.type, item?.amount, item?.fee)}</div>
+            <div key={item?.type}>{backCalculation(item?.typeName, item?.amount, item?.fee)}</div>
           ))
         }
       } 
@@ -232,7 +141,8 @@ const Detail = () => {
     },
     {
       title: '',
-      dataIndex: ''
+      dataIndex: '',
+      render: () => ''
     },
     {
       title: '支付金额',
@@ -247,7 +157,7 @@ const Detail = () => {
           {
             data?.divideInfos.map(item=> (
               <div key={item?.type}>
-                {fashionableType(item?.type, item?.amount, item?.fee)}
+                {fashionableType(item?.typeName, item?.amount, item?.fee)}
               </div>
             ))
           }
@@ -292,7 +202,18 @@ const Detail = () => {
   }
 
   return (
-    <PageContainer title={false}>
+    <Drawer
+      title='售后订单明细'
+      placement="right"
+      width={1400}
+      onClose={() => { setVisible(false) }}
+      visible={visible}
+      footer={
+        <div style={{ textAlign: 'right' }}>
+          <Button onClick={() => { setVisible(false) }}>返回</Button>
+        </div>
+      }
+    >
       <ProDescriptions
         loading={loading}
         column={2}
@@ -331,10 +252,7 @@ const Detail = () => {
         bordered
         dataSource={info}
       />
-      <div style={{background: '#fff', padding: 20}}>
-        <Button type='primary' onClick={()=>{back()}}>返回</Button>
-      </div>
-    </PageContainer>
+    </Drawer>
   )
 }
 

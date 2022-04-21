@@ -8,6 +8,7 @@ import { platformCommissionPage } from '@/services/financial-management/transact
 import { Export, ExportHistory } from '@/pages/export-excel'
 import Detail from '../../common-popup/order-pay-detail-popup'
 import { orderTypes } from '@/services/financial-management/common'
+import RoyaltyDetails from "../royalty-details"
 
 // commission detail
 const CommissionDetailManagement = () =>{
@@ -15,6 +16,8 @@ const CommissionDetailManagement = () =>{
   const [selectItem, setSelectItem] = useState({})
   const [visit, setVisit] = useState(false)
   const [orderType, setOrderType] = useState(null)
+  const [type, setType] = useState('')
+  const [royaltyVisible, setRoyaltyVisible] = useState(false)
 
   useEffect(() => {
     orderTypes({}).then(res=>{
@@ -107,7 +110,7 @@ const CommissionDetailManagement = () =>{
       title: '操作',
       dataIndex: 'optoion',
       valueType: 'option',
-      render: (_, records)=> <a target='_blank' href={`/financial-management/transaction-detail-management/royalty-details/${records?.orderNo}?type=commission`}>详情</a>
+      render: (_, records)=> <a onClick={()=> {setRoyaltyVisible(true); setSelectItem(records?.orderNo); setType('commission')}}>详情</a>
     }
 
   ]
@@ -165,6 +168,16 @@ const CommissionDetailManagement = () =>{
           id={selectItem}
           visible={detailVisible}
           setVisible={setDetailVisible}
+        />
+      }
+      {
+        royaltyVisible &&
+        <RoyaltyDetails
+          id={selectItem}
+          visible={royaltyVisible}
+          setVisible={setRoyaltyVisible}
+          title='平台收益明细'
+          type={type}
         />
       }
     </PageContainer>

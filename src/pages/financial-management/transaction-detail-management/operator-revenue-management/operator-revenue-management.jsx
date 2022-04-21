@@ -9,12 +9,15 @@ import { operationCommissionPage } from '@/services/financial-management/operato
 import { Export, ExportHistory } from '@/pages/export-excel'
 import Detail from '../../common-popup/order-pay-detail-popup'
 import { orderTypes } from '@/services/financial-management/common'
+import RoyaltyDetails from "../royalty-details"
 
 const OperatorRevenueManagement = () =>{
   const [visit, setVisit] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false)
+  const [royaltyVisible, setRoyaltyVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
   const [orderType, setOrderType] = useState(null)
+  const [type, setType] = useState('')
 
   const getFieldValue = (form) => {
     const { createTime, ...rest } = form.getFieldsValue()
@@ -119,7 +122,7 @@ const OperatorRevenueManagement = () =>{
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, records)=> <a target='_blank' href={`/financial-management/transaction-detail-management/royalty-details/${records?.orderNo}?type=operator`}>详情</a>
+      render: (_, records)=> <a onClick={()=> {setRoyaltyVisible(true); setSelectItem(records?.orderNo); setType('operator')}}>详情</a>
     }
 
   ]
@@ -177,6 +180,16 @@ const OperatorRevenueManagement = () =>{
           id={selectItem}
           visible={detailVisible}
           setVisible={setDetailVisible}
+        />
+      }
+      {
+        royaltyVisible &&
+        <RoyaltyDetails
+          id={selectItem}
+          visible={royaltyVisible}
+          setVisible={setRoyaltyVisible}
+          title='运营商收益明细'
+          type={type}
         />
       }
     </PageContainer>
