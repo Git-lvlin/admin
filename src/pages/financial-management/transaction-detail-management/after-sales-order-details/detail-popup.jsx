@@ -78,7 +78,8 @@ const Detail = ({id, visible, setVisible}) => {
     },
     {
       title: '',
-      dataIndex: ''
+      dataIndex: '',
+      render: ()=> ''
     },
     {
       title: '回退会员信息',
@@ -118,7 +119,7 @@ const Detail = ({id, visible, setVisible}) => {
       render: (_, data)=> {
         if(data.returnDivideInfos) {
           return data?.returnDivideInfos.map(item=> (
-            <div key={item?.type}>{backCalculation(item?.type, item?.amount, item?.fee)}</div>
+            <div key={item?.type}>{backCalculation(item?.typeName, item?.amount, item?.fee)}</div>
           ))
         }
       } 
@@ -139,7 +140,8 @@ const Detail = ({id, visible, setVisible}) => {
     },
     {
       title: '',
-      dataIndex: ''
+      dataIndex: '',
+      render: ()=> ''
     },
     {
       title: '支付金额',
@@ -154,7 +156,7 @@ const Detail = ({id, visible, setVisible}) => {
           {
             data?.divideInfos.map(item=> (
               <div key={item?.type}>
-                {fashionableType(item?.type, item?.amount, item?.fee)}
+                {fashionableType(item?.typeName, item?.amount, item?.fee)}
               </div>
             ))
           }
