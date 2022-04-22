@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { amountTransform } from '@/utils/utils'
 import { Image } from 'antd'
+import { history, useLocation } from 'umi';
 
 import styles from './styles.less'
-import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
-import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/shopkeeper-order/detail'
+import Detail from '@/pages/order-management/intensive-order/supplier-order/detail'
 
 const tableRow = props => {
   const imageArr = () => {
@@ -50,32 +50,11 @@ const tableRow = props => {
 }
 
 const ReturnGoods = ({data}) => {
-  const [normalOrderVisible, setNormalOrderVisible] = useState(false)
-  const [shopkeeperOrderVisible, setShopkeeperOrderVisible] = useState(false)
+  const [visible, setVisible] = useState(false)
   const [id, setId] = useState()
-
+  const location = useLocation();
+  const isPurchase = location.pathname.includes('purchase')
   const dataSource = Array.isArray(data) ? [] : [data]
-
-
-  const skipToOrderDetail = (type, id) => {
-    switch(type){
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-      case 11:
-        setId(id)
-        setNormalOrderVisible(true)
-      break
-      case 15:
-      case 16:
-        setId(id)
-        setShopkeeperOrderVisible(true)
-      break
-      default:
-        return ''
-    }
-  }
 
   const columns = [
     {
@@ -137,7 +116,7 @@ const ReturnGoods = ({data}) => {
       render: (_, records) => (
         <>
           <div>{{0:'待支付',1:'已付预付款',2:'已付尾款/待发货',3:'待收货',4:'会员店已收货(暂时没有用)',5:'订单完成',6:'订单关闭'}[_]}</div>
-          <a onClick={()=>skipToOrderDetail(records?.orderType, records?.orderId)}>查看订单详情</a>
+          <a onClick={()=>{setVisible(true);setId(records?.orderId)}}>查看订单详情</a>
         </>
       )
     },
@@ -162,21 +141,12 @@ const ReturnGoods = ({data}) => {
         dataSource={dataSource}
         summary={tableRow}
       />
-      {
-        normalOrderVisible &&
-        <NormalOrderDetail
-          id={id}
-          visible={normalOrderVisible}
-          setVisible={setNormalOrderVisible}
-        />
-      }
-      {
-        shopkeeperOrderVisible &&
-        <ShopkeeperOrderDetail
-          id={id}
-          visible={shopkeeperOrderVisible}
-          setVisible={setShopkeeperOrderVisible}
-        />
+      {visible &&<Detail
+        id={id}
+        visible={visible}
+        setVisible={setVisible}
+        isPurchase={isPurchase}
+      />
       }
     </>
   )
