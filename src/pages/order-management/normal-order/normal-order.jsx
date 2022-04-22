@@ -224,6 +224,9 @@ const TableList = () => {
             { value: '11', label: '1688订单' },
             { value: '17', label: '盲盒活动订单' },
             { value: '18', label: '签到活动订单' },
+            { value: '666', label: '氢原子购买订单' },
+            { value: '888', label: '氢原子押金订单' },
+            { value: '999', label: '氢原子启动订单' },
           ]}
           fieldProps={{
             style: {
