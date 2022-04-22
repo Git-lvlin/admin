@@ -277,12 +277,19 @@ export default (props) => {
       valueType: 'digit',
       hideInSearch:true,
       renderFormItem: (_,r) => {
-        return  <InputNumber
+        if(_.entry?.skuId==0){
+          return  <InputNumber
                   min="0"
-                  max={_.entry.baseStockNum}
                   stringMode
                 />
-        },
+        }else{
+          return  <InputNumber
+          min="0"
+          max={_.entry?.baseStockNum}
+          stringMode
+        />
+        }
+      },
       render: (_,r) =>{
         return <p>{_}</p>
       }

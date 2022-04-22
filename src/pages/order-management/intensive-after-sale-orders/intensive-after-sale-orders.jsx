@@ -128,32 +128,15 @@ const afterSalesOrder = () => {
         request={getRefundStoreOrderList}
         actionRef={actionRef}
         search={{
-          optionRender: ({searchText, resetText}, {form}) => [
-            <Button
-              key="search"
-              type="primary"
-              onClick={() => {
-                form?.submit()
-              }}
-            >
-              {searchText}
-            </Button>,
-            <Button
-              key="rest"
-              onClick={() => {
-                form?.resetFields()
-                form?.submit()
-              }}
-            >
-              {resetText}
-            </Button>,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'bind-box-give-detail-export'}
+              type={'intensive_after_sales_order_export'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-give-detail-export'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'intensive_after_sales_order_export'}/>
           ]
         }}
         headerTitle="数据列表"
@@ -164,9 +147,7 @@ const afterSalesOrder = () => {
           pageSize: 10
         }}
       />
-       {
-        visible&&
-        <DrawerDetail
+       {visible&&<DrawerDetail
           visible={visible}
           setVisible={setVisible}
           id={id}
