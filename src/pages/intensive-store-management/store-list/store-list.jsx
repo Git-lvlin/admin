@@ -605,7 +605,7 @@ const StoreList = (props) => {
               <p>{_}</p>
               <>
                 {
-                  data?.cancelInfo?.attachList.length > 0 && <a onClick={() => { setVisible(true); setAttachmentImage(data?.cancelInfo?.attachList) }}>附件（点击查看）</a>
+                  data?.cancelInfo?.attachList?.length > 0 && <a onClick={() => { setVisible(true); setAttachmentImage(data?.cancelInfo?.attachList) }}>附件（点击查看）</a>
                 }
               </>
               <p>（{data?.createTime}）</p>
