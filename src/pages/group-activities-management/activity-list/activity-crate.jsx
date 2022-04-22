@@ -41,6 +41,7 @@ export default (props) => {
   const [tableData, setTableData] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [defaultGroupNum, setDefaultGroupNum] = useState()
+  const [ num, setNum ] = useState()
 
   const [formRef] = Form.useForm()
 
@@ -133,6 +134,15 @@ export default (props) => {
             message: '拼团库存只能输入正整数'
           }
         ]
+      },
+      fieldProps: {
+        onChange: (e)=>{
+          if(e > 10) {
+            setNum(10)
+          } else {
+            setNum(e)
+          }
+        }
       }
     },
     {
@@ -248,6 +258,13 @@ export default (props) => {
       })
     })
   }
+
+  useEffect(() => {
+    setTableData(tableData.map(item => ({
+      ...item,
+      limitNum: num
+    })))
+  }, [num])
 
   useEffect(() => {
     if (detailData) {
