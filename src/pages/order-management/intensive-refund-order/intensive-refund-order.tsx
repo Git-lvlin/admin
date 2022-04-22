@@ -10,6 +10,7 @@ import DrawerDetail from './detail'
 import ProCard from '@ant-design/pro-card';
 import { Button,Popconfirm } from 'antd';
 import OpinionReason from './opinion-reason'
+import { amountTransform } from '@/utils/utils'
 
 
 type activityItem={
@@ -45,16 +46,9 @@ interface propertys{
     const [auditType,setAuditType]=useState<number>()
     const columns:ProColumns<activityItem>[]= [
       {
-        title: '缺货单号',
+        title: '缺货单编号',
         dataIndex: 'orSn',
         valueType: 'text',
-        hideInTable: true
-      },
-      {
-        title: '缺货退款单号',
-        dataIndex: 'orSn',
-        valueType: 'text',
-        hideInSearch: true
       },
       {
         title: '集约采购单号',
@@ -62,16 +56,9 @@ interface propertys{
         valueType: 'text',
       },
       {
-        title: '供应商ID',
-        dataIndex: 'supplierId',
-        valueType: 'text',
-        hideInTable: true,
-      },
-      {
         title: '供应商名称',
         dataIndex: 'supplierName',
         valueType: 'text',
-        hideInSearch: true,
       },
       {
         title: '运营中心名称',
@@ -107,6 +94,9 @@ interface propertys{
         dataIndex: 'refundMoney',
         valueType: 'text',
         hideInSearch: true,
+        render:(_)=>{
+          return <p>{amountTransform(_,'/').toFixed(2)}</p>
+        }
       },
       {
         title: '创建时间',
@@ -153,7 +143,7 @@ interface propertys{
       <>
         <ProTable<activityItem>
           actionRef={ref}
-          rowKey="id"
+          rowKey="poNo"
           options={false}
           headerTitle="数据列表"
           request={getAuditList}

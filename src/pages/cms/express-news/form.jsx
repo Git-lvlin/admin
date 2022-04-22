@@ -59,6 +59,9 @@ export default (props) => {
         // 不返回不会关闭弹框
         return true;
       }}
+      initialValues={{
+        location: 2
+      }}
     >
       <ProForm.Group>
         <ProFormText
