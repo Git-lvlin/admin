@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Spin, Empty, Drawer } from 'antd'
 
-import { refundOrderDetail, findReturnRecord } from '@/services/order-management/after-sales-order'
+import { refundOrderDetail, findReturnRecord,getRefundStoreOrderDetail } from '@/services/order-management/after-sales-order'
 import OrderDetailStatus from './order-detail-status'
 import BasicInformation from './basic-information'
 import ReturnGoods from './return-goods'
 import ReturnInformation from './return-information'
 import NegotiationHistory from './negotiation-history'
-import WantSlipsMessage from './want-slips-message'
 import styles from './styles.less'
 
 const Detail = ({id, visible, setVisible }) => {
@@ -53,7 +52,6 @@ const Detail = ({id, visible, setVisible }) => {
         />
         <BasicInformation data={orderDetail}/>
         <ReturnGoods data={orderDetail}/>
-        <WantSlipsMessage data={orderDetail}/>
         <ReturnInformation
           data={orderDetail}
           status={orderDetail?.afterSalesType}
