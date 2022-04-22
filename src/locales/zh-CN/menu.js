@@ -40,7 +40,7 @@ export default {
   'menu.order-management.sample-order-detail-purchase': '订单详情',
   'menu.order-management.after-sales-order': '售后订单',
   'menu.order-management.after-sales-order-details': '详请页',
-  'menu.order-management.intensive-refund-order': '集约缺货单处理',
+  'menu.order-management.intensive-refund-order': '集约缺货单',
   'menu.order-management.intensive-after-sale-orders': '集约售后订单',
   'menu.order-management.intensive-after-sale-orders-details': '详请页',
   'menu.order-management.intensive-order.supplier-order-detail': '订单详情',
