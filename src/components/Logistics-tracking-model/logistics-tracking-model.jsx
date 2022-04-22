@@ -1,13 +1,19 @@
 import React, { useState} from 'react';
 import { ModalForm} from '@ant-design/pro-form';
 
-import { Timeline } from 'antd';
+import { Timeline, message } from 'antd';
 
 export default props=>{
     const {record,title,byid}=props
     const [visible, setVisible] = useState(false);
     const Termination=(record)=>{
-        setVisible(true)
+        if (record.length === 0) {
+            setVisible(false)
+            message.error('运单号错误')
+        } else {
+            setVisible(true)
+        }
+        
     }
     return (
         <ModalForm
