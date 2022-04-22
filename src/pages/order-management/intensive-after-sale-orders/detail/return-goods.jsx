@@ -92,12 +92,6 @@ const ReturnGoods = ({data}) => {
       dataIndex: 'unit',
       align: 'center' 
     },
-    {
-      title: '实付金额',
-      dataIndex: 'payAmount',
-      align: 'center',
-      render: (_) => `¥${amountTransform(Number(_), '/').toFixed(2)}`
-    },
     { 
       title: '退款数量',
       dataIndex: 'returnNum',
@@ -119,12 +113,6 @@ const ReturnGoods = ({data}) => {
           <a onClick={()=>{setVisible(true);setId(records?.orderId)}}>查看订单详情</a>
         </>
       )
-    },
-    {
-      title: '应退金额',
-      dataIndex: 'returnAmount',
-      align: 'center',
-      render: (_) => `¥${amountTransform(Number(_), '/').toFixed(2)}`
     }
   ]
 
