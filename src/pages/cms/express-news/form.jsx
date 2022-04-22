@@ -59,6 +59,9 @@ export default (props) => {
         // 不返回不会关闭弹框
         return true;
       }}
+      initialValues={{
+        location: 2
+      }}
     >
       <ProForm.Group>
         <ProFormText
@@ -107,6 +110,40 @@ export default (props) => {
           {
             label: '下架',
             value: 0,
+          },
+        ]}
+      />
+      <ProFormRadio.Group
+        name="location"
+        label="位置"
+        required
+        options={[
+          {
+            label: '店铺',
+            value: 2,
+          },
+        ]}
+      />
+      <ProFormRadio.Group
+        name="type"
+        label="跳转类型"
+        required
+        options={[
+          {
+            label: '无链接',
+            value: 1,
+          },
+          {
+            label: '商品详情',
+            value: 2,
+          },
+          {
+            label: '活动页面',
+            value: 3,
+          },
+          {
+            label: '图片',
+            value: 4,
           },
         ]}
       />
