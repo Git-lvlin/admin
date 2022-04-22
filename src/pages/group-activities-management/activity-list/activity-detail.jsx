@@ -82,6 +82,11 @@ const ActivityDetail = ({visible, onClose, id}) => {
         1: '是',
         0: '否'
       }
+    },
+    {
+      title: '每人限量',
+      dataIndex: 'limitNum',
+      valueType: 'text'
     }
   ]
 
