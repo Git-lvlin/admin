@@ -212,7 +212,7 @@ const TransactionDetails = (props) => {
     },
     {
       title: `${goodsInfoTitleSupply[info?.orderType] || '商品供货价'}`,
-      dataIndex: `${goodsInfoDataIndexSupply[info?.orderType]}`|| 'supplyPrice',
+      dataIndex: `${goodsInfoDataIndexSupply[info?.orderType] || 'supplyPrice'}`,
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {

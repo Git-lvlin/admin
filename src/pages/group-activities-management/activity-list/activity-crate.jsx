@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Form, Button, Space, message } from 'antd'
+import { Form, Button, Space, message, InputNumber, Popover } from 'antd'
 import { EditableProTable } from '@ant-design/pro-table'
 import moment from 'moment'
 import {
@@ -17,6 +17,22 @@ import { amountTransform } from '@/utils/utils'
 import { ruleSub, ruleEdit } from '@/services/single-contract-activity-management/activity-list'
 import SelectProductModal from './select-product-modal'
 import Upload from '@/components/upload'
+
+const LimitNumInput = ({value, onChange, data}) => {
+  return (
+    <>
+      <InputNumber
+        min={1} 
+        max={999}
+        setp={1}
+        value={value}
+        onChange={(e)=> onChange(e)}
+      />
+      <div>起售量：{data?.buyMinNum}</div>
+      <div>运营单次限量：{data?.buyMaxNum}</div>
+    </>
+  )
+}
 
 export default (props) => {
   const { visible, setVisible, detailData, callback, onClose = () => { } } = props
@@ -134,6 +150,19 @@ export default (props) => {
       valueType: 'switch'
     },
     {
+      title: '每人限量',
+      dataIndex: 'limitNum',
+      formItemProps: {
+        rules: [
+          {
+            pattern: /^((0)|([1-9][0-9]*))$/,
+            message: '每人限量只能输入正整数'
+          }
+        ]
+      },
+      renderFormItem: (_, r) => <LimitNumInput data={r.record}/>
+    },
+    {
       title: '操作',
       valueType: 'options',
       render: (_, data) => <a onClick={() => { cancel(data.id) }}>取消参加</a>,
@@ -164,6 +193,7 @@ export default (props) => {
       const apiMethod = detailData ? ruleEdit : ruleSub
       for (let i = 0; i < tableData.length; i++) {
         const reg = /^((0)|([1-9][0-9]*))$/
+        console.log(tableData[i].limitNum);
         if (tableData[i].activityStockNumEdit === '') {
           message.error(`请输入（skuId:${tableData[i].skuId}）拼团库存`)
           reject()
@@ -176,6 +206,11 @@ export default (props) => {
         }
         if (!detailData && tableData[i].activityStockNumEdit > (parseFloat(tableData[i].stockNum / 2))) {
           message.error(`skuId:${tableData[i].skuId}拼团库存需要小于商品库存50%`)
+          reject()
+          return
+        }
+        if (!reg.test(tableData[i].limitNum)) {
+          message.error(`skuId:${tableData[i].skuId}每人限量只能输入正整数`)
           reject()
           return
         }
@@ -198,7 +233,8 @@ export default (props) => {
             defaultGroupNum: +item.defaultGroupNum || +defaultGroupNum,
             memberType,
             salePrice: item.salePrice,
-            marketPrice: item.marketPrice
+            marketPrice: item.marketPrice,
+            limitNum: item.limitNum
           }
         }),
         ...rest,
@@ -227,7 +263,7 @@ export default (props) => {
         activityPrice: amountTransform(item.activityPrice, '/')
       })))
     }
-  }, [form, detailData]);
+  }, [form, detailData])
 
   return (
     <DrawerForm
@@ -370,11 +406,12 @@ export default (props) => {
                   setSelectedRowKeys(_);
                 }
               }}
+              controlled
               editable={{
                 editableKeys: tableData.map(item => item.id),
                 onValuesChange: (record, recordList) => {
-                  setTableData(recordList);
-                },
+                  setTableData(recordList)
+                }
               }}
               recordCreatorProps={false}
               tableAlertRender={false}
