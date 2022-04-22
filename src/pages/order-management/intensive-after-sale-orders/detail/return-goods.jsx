@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { amountTransform } from '@/utils/utils'
 import { Image } from 'antd'
 
 import styles from './styles.less'
+import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
+import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/shopkeeper-order/detail'
 
 const tableRow = props => {
   const imageArr = () => {
-    const imgUrl = props[0]?.returnVoucher?.split(',')
+    const imgUrl = props[0]?.imageUrl?.split(',')
     return imgUrl?.map(url => {
       if(url) {
         return(
@@ -23,21 +25,21 @@ const tableRow = props => {
   }
   return (
     <ProTable.Summary.Row>
-      <ProTable.Summary.Cell colSpan={6}>
+      <ProTable.Summary.Cell colSpan={8}>
         <div className={styles.summary}>
           <div className={styles.summaryItem}>
-            退货原因：
-            <span className={styles.summaryItemText}>{props[0]?.returnReason}</span>
+            售后原因：
+            <span className={styles.summaryItemText}>商家库存不足</span>
           </div>
           <div className={styles.summaryItem}>
-            退货描述：
-            <span className={styles.summaryItemText}>{props[0]?.returnDesc}</span>
+            售后描述：
+            <span className={styles.summaryItemText}>{props[0]?.description}</span>
           </div>
           <div className={styles.summaryImg}>
-            <div className={styles.summaryItemTxt}>退货凭证：</div>
+            <div className={styles.summaryItemTxt}>售后凭证：</div>
             <div className={styles.summaryItemPic}>
               <Image.PreviewGroup>
-                { imageArr() }
+                { imageArr() }  
               </Image.PreviewGroup>
             </div>
           </div>
@@ -48,11 +50,37 @@ const tableRow = props => {
 }
 
 const ReturnGoods = ({data}) => {
+  const [normalOrderVisible, setNormalOrderVisible] = useState(false)
+  const [shopkeeperOrderVisible, setShopkeeperOrderVisible] = useState(false)
+  const [id, setId] = useState()
+
   const dataSource = Array.isArray(data) ? [] : [data]
+
+
+  const skipToOrderDetail = (type, id) => {
+    switch(type){
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 11:
+        setId(id)
+        setNormalOrderVisible(true)
+      break
+      case 15:
+      case 16:
+        setId(id)
+        setShopkeeperOrderVisible(true)
+      break
+      default:
+        return ''
+    }
+  }
+
   const columns = [
     {
       title: '商品信息',
-      dataIndex: 'goodsInfo',
+      dataIndex: 'goodsName',
       align: 'center',
       width: 450,
       render: (_, records) => (
@@ -60,46 +88,97 @@ const ReturnGoods = ({data}) => {
           <Image
             width={80}
             height={80}
-            src={records?.goodsImgUrl}
+            src={records?.imageUrl}
           />
           <div className={styles.goodsContent}>
             <div>{records?.goodsName}</div>
-            <div className={styles.skuName}>{records?.goodsSkuName}</div>
+            <div className={styles.skuName}>{records?.skuName}</div>
           </div>
         </div>
       )
     },
     {
       title: '单价',
-      dataIndex: 'goodsPrice',
+      dataIndex: 'price',
       align: 'center',
       render: (_) => `¥${amountTransform(Number(_), '/').toFixed(2)}`
     },
     { 
-      title: '退货数量',
-      dataIndex: 'goodsRefundNum',
+      title: '数量',
+      dataIndex: 'totalNum',
+      align: 'center' 
+    },
+    { 
+      title: '单位',
+      dataIndex: 'unit',
+      align: 'center' 
+    },
+    {
+      title: '实付金额',
+      dataIndex: 'payAmount',
+      align: 'center',
+      render: (_) => `¥${amountTransform(Number(_), '/').toFixed(2)}`
+    },
+    { 
+      title: '退款数量',
+      dataIndex: 'returnNum',
       align: 'center' 
     },
     {
       title: '应退金额',
-      dataIndex: 'goodsRefundAmount',
+      dataIndex: 'refundMoney',
+      align: 'center',
+      render: (_) => `¥${amountTransform(Number(_), '/').toFixed(2)}`
+    },
+    {
+      title: '订单状态',
+      dataIndex: 'status',
+      align: 'center',
+      render: (_, records) => (
+        <>
+          <div>{{0:'待支付',1:'已付预付款',2:'已付尾款/待发货',3:'待收货',4:'会员店已收货(暂时没有用)',5:'订单完成',6:'订单关闭'}[_]}</div>
+          <a onClick={()=>skipToOrderDetail(records?.orderType, records?.orderId)}>查看订单详情</a>
+        </>
+      )
+    },
+    {
+      title: '应退金额',
+      dataIndex: 'returnAmount',
       align: 'center',
       render: (_) => `¥${amountTransform(Number(_), '/').toFixed(2)}`
     }
   ]
 
   return (
-    <ProTable
-      rowKey="goodsRefundNum"
-      pagination={false}
-      columns={columns}
-      bordered
-      options={false}
-      headerTitle="退货商品"
-      search={false}
-      dataSource={dataSource}
-      summary={tableRow}
-    />
+    <>
+      <ProTable
+        rowKey="orderItemId"
+        pagination={false}
+        columns={columns}
+        bordered
+        options={false}
+        headerTitle="订单商品"
+        search={false}
+        dataSource={dataSource}
+        summary={tableRow}
+      />
+      {
+        normalOrderVisible &&
+        <NormalOrderDetail
+          id={id}
+          visible={normalOrderVisible}
+          setVisible={setNormalOrderVisible}
+        />
+      }
+      {
+        shopkeeperOrderVisible &&
+        <ShopkeeperOrderDetail
+          id={id}
+          visible={shopkeeperOrderVisible}
+          setVisible={setShopkeeperOrderVisible}
+        />
+      }
+    </>
   )
 }
 
