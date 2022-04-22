@@ -173,6 +173,11 @@ export default (props) => {
       renderFormItem: (_, r) => <LimitNumInput data={r.record}/>
     },
     {
+      dataIndex: 'buyMinNum',
+      hideInTable: true,
+      hideInSearch: true
+    },
+    {
       title: '操作',
       valueType: 'options',
       render: (_, data) => <a onClick={() => { cancel(data.id) }}>取消参加</a>,
@@ -244,7 +249,8 @@ export default (props) => {
             memberType,
             salePrice: item.salePrice,
             marketPrice: item.marketPrice,
-            limitNum: item.limitNum
+            limitNum: item.limitNum,
+            buyMinNum: item.buyMinNum
           }
         }),
         ...rest,
