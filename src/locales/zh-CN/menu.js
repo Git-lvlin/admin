@@ -40,6 +40,7 @@ export default {
   'menu.order-management.sample-order-detail-purchase': '订单详情',
   'menu.order-management.after-sales-order': '售后订单',
   'menu.order-management.after-sales-order-details': '详请页',
+  'menu.order-management.intensive-refund-order': '集约缺货单',
   'menu.order-management.intensive-after-sale-orders': '集约售后订单',
   'menu.order-management.intensive-after-sale-orders-details': '详请页',
   'menu.order-management.intensive-order.supplier-order-detail': '订单详情',
@@ -342,6 +343,8 @@ export default {
   'menu.blind-box-activity-management.blind-box-consume-detail': '使用明细',
   'menu.blind-box-activity-management.blind-box-employ-detail': '用户盲盒机会明细',
   'menu.blind-box-activity-management.bind-box-rule-set': '盲盒规则配置',
+  'menu.blind-box-activity-management.blind-box-withdraw-deposit-detail': '提现明细',
+
 
 
   'menu.activity-management': '活动管理',

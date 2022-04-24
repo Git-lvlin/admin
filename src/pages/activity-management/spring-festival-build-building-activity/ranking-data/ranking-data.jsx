@@ -156,8 +156,7 @@ const InviteRegister=(props) => {
   };
 
 
-
-  const BuildBuilding=(props) => {
+const BuildBuilding=(props) => {
     const { canback } = props;
     const ref=useRef()
     const [detailList,setDetailList]=useState()
@@ -290,9 +289,6 @@ const InviteRegister=(props) => {
         />
     );
   };
-
-
-
 
   export default (props) =>{
     const [seleType,setSeleType]=useState(1)

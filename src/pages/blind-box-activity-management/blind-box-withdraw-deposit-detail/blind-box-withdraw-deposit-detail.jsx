@@ -143,7 +143,7 @@ export default () => {
           options={false}
           request={withdrawPage}
           params={{
-            activityType:0
+            activityType:1
           }}
           search={{
             defaultCollapsed: true,
