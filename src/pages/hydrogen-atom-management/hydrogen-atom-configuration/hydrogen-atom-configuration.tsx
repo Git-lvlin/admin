@@ -1,19 +1,27 @@
 import { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { getQyzBuyConfig,personDivide,aboutMachine,againRentChange} from '@/services/hydrogen-atom-management/hydrogen-atom-configuration';
+import { getQyzBuyConfig,
+  personDivide,
+  aboutMachine,
+  againRentChange,
+  updateByCode,
+  againRentNoticeTime,
+  againRentNoticeContent,
+  supplyRentNoticeTime,
+  supplyRentNoticeConten
+} from '@/services/hydrogen-atom-management/hydrogen-atom-configuration';
 import { PageContainer } from '@/components/PageContainer';
-import { Divider, Form, Spin, Button,Image,InputNumber,Row,Col,Descriptions,Typography } from 'antd';
+import { Divider, Form, Button,Descriptions,message,Select } from 'antd';
 import type { ProColumns,ActionType } from '@ant-design/pro-table';
 import ProForm, {
   ProFormText,
-  ProFormDateRangePicker,
   ProFormSelect,
-  ProFormMoney,
-  ProFormDigit,
-  ProFormTreeSelect,
+  ProFormTimePicker
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
 import moment from 'moment'
+import ConfirmModel from './confirm-model'
+const { Option } = Select;
 
 type activityItem={
     id:number;
@@ -25,6 +33,19 @@ type activityItem={
     cityAgentCommission: number;
 }
 
+const formItemLayout = {
+  labelCol: { span: 7 },
+  wrapperCol: { span: 14 },
+  layout: {
+    labelCol: {
+      span: 10,
+    },
+    wrapperCol: {
+      span: 14,
+    },
+  }
+};
+
 
 
 
@@ -35,7 +56,17 @@ export default () => {
     const [rent,setRent]=useState()
     const [rentDetail,setRentDetail]=useState()
     const formRef=useRef()
+    const formRef2=useRef()
+    const formRef3=useRef()
+    const formRef4=useRef()
+    const formRef5=useRef()
     const [form] = Form.useForm()
+    const [form2] = Form.useForm()
+    const [form3] = Form.useForm()
+    const [form4] = Form.useForm()
+    const [form5] = Form.useForm()
+    const [visible, setVisible] = useState(false);
+    const [paramsType,setParamsType]=useState()
     useEffect(()=>{
       getQyzBuyConfig({}).then(res=>{
         const data=[
@@ -58,14 +89,46 @@ export default () => {
       })
 
       againRentChange({}).then(res=>{
-        console.log('res',JSON.parse(res.data?.value))
         const datail=JSON.parse(res.data?.value)
         form.setFieldsValue({
-          momth:datail?.afterMonth?.momth,
+          month:datail?.afterMonth?.month,
           arrive:amountTransform(datail?.afterMonth?.arrive,'/'),
           rentCheap:amountTransform(datail?.afterMonth?.rentCheap,'/'),
           arrive2:amountTransform(datail?.other?.arrive,'/'),
           rentCheap2:amountTransform(datail?.other?.rentCheap,'/'),
+          code:res.data?.code
+        })
+      })
+
+      againRentNoticeTime({}).then(res=>{
+        const datail=JSON.parse(res.data?.value)
+        form2.setFieldsValue({
+          days:datail?.days.split(','),
+          time:moment(datail?.time, 'HH:mm:ss'),
+          code:res.data?.code
+        })
+      })
+
+      againRentNoticeContent({}).then(res=>{
+        form3.setFieldsValue({
+          value:res.data?.value,
+          code:res.data?.code
+        })
+      })
+      
+      supplyRentNoticeTime({}).then(res=>{
+        const datail=JSON.parse(res.data?.value)
+        form4.setFieldsValue({
+          days:datail?.days.split(','),
+          time:moment(datail?.time, 'HH:mm:ss'),
+          code:res.data?.code
+        })
+      })
+
+      supplyRentNoticeConten({}).then(res=>{
+        form5.setFieldsValue({
+          value:res.data?.value,
+          code:res.data?.code
         })
       })
     },[])
@@ -128,9 +191,31 @@ export default () => {
         }
       }
     ];
+    const content =()=>{
+      const children=[]
+      for (let index = 1; index < 31; index++) {
+        if(`${index}`.length==1){
+          children.push(<span style={{}} key={index}>{`0${index}`}</span>)
+        }else{
+          children.push(<span key={index}>{index}</span>)
+        }
+        
+      }
+      return children
+    }
+    const tagRender=(props)=>{
+      const { label, value, closable, onClose } = props;
+      return (
+        <p
+          style={{ marginRight: 3 }}
+        >
+         每月 {label}日
+        </p>
+      );
+    }
     return (
       <PageContainer title=" ">
-        <div style={{background:'#fff',padding:'20px'}}>
+        <div style={{background:'#fff',padding:'50px'}}>
         <ProTable<activityItem>
           actionRef={ref}
           rowKey="id"
@@ -160,48 +245,42 @@ export default () => {
           style={{marginBottom:'50px'}}
         />
 
-        <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 400, display: 'inline-block' }}>
-            <Descriptions.Item label="扫码启动使用机器需支付金额">{amountTransform(rentDetail?.startMoney,'/').toFixed(2)}元</Descriptions.Item>
-            <Descriptions.Item label="对应使用时长">
-              {rentDetail?.useTime}分钟。使用机器支付的费用不分成，固定结算到平台账户
+        <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 200, display: 'inline-block' }}>
+            <Descriptions.Item label="扫码启动使用机器需支付金额">
+              {amountTransform(rentDetail?.startMoney,'/').toFixed(2)}元，对应使用时长{rentDetail?.useTime}分钟。使用机器支付的费用不分成，固定结算到平台账户
             </Descriptions.Item>
             <Descriptions.Item label="氢原子机器押金金额">
               {amountTransform(rentDetail?.deposit,'/').toFixed(2)}元
             </Descriptions.Item>
-            <Descriptions.Item label="氢原子机器首次缴租最低缴租天数">{rentDetail?.firstRentDay}天</Descriptions.Item>
+            <Descriptions.Item labelStyle={{ textAlign: 'right', width: 230, display: 'inline-block' }} label="氢原子机器首次缴租最低缴租天数">{rentDetail?.firstRentDay}天</Descriptions.Item>
             <Descriptions.Item label="氢原子机器租金金额">
-              {amountTransform(rentDetail?.monthRentMoney,'/').toFixed(2)}元 / 月
+              {amountTransform(rentDetail?.monthRentMoney,'/').toFixed(2)}元 / 月，{(rentDetail?.monthRentMoney/moment().daysInMonth()).toFixed(2)}元 / 天（四舍五入）
             </Descriptions.Item>
-            <Descriptions.Item label="氢原子机器首次启用后免租期天数">
+            <Descriptions.Item labelStyle={{ textAlign: 'right', width: 230, display: 'inline-block' }} label="氢原子机器首次启用后免租期天数">
               {rentDetail?.firstFreeRentDay}天
             </Descriptions.Item>
             <Descriptions.Item label="氢原子机器自动确认收货时间">
               {rentDetail?.autoConfirmTime}天
             </Descriptions.Item>
-            <Descriptions.Item label="氢原子机器租赁时租金可逾期天数（租约逾期至停用天数）">
+            <Descriptions.Item labelStyle={{ textAlign: 'right', width: 400, display: 'inline-block' }} label="氢原子机器租赁时租金可逾期天数（租约逾期至停用天数）">
               {rentDetail?.exceedStopDay}天
             </Descriptions.Item>
         </Descriptions>
 
         <ProForm<{
-          momth: number;
+          month: number;
           arrive: number;
           rentCheap: number;
           arrive2: number;
           rentCheap2: number;
             }>
           onFinish={async (values) => {
-            // await 
+            setVisible(true)
+            setParamsType(values)
           }}
           submitter={{
             render: (props, defaultDoms) => {
-                return [
-                <Button  type="primary" key="submit" onClick={() => {
-                    props.form?.submit?.()
-                  }}>
-                    确认
-                </Button>
-                ];
+                return [];
             },
             }}
           formRef={formRef}
@@ -245,12 +324,11 @@ export default () => {
                   label: '9',
                 }        
               ]}
-              name="momth"
+              name="month"
+              rules={[{ required: true, message: '请选择月份' }]}
             />
             <p>月内：</p>
           </ProForm.Group>
-
-
 
           <ProForm.Group>
             <p>上月集约金额达到</p>
@@ -261,6 +339,17 @@ export default () => {
               fieldProps={{
                 addonAfter:'元'
               }}
+              rules={[
+                { required: true, message: '请输入要求的金额' },
+                () => ({
+                  validator(_, value) {
+                    if (!/^\d+\.?\d*$/g.test(value) || value < 0 || value > 999999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
+                      return Promise.reject(new Error('请输入0.00-999999.99,保留2位小数'));
+                    }
+                    return Promise.resolve();
+                  },
+                })
+              ]}
             />
             <p>时，缴租租金优惠</p>
             <ProFormText
@@ -270,6 +359,7 @@ export default () => {
               fieldProps={{
                 addonAfter:'元'
               }}
+              rules={[{ required: true, message: '请输入金额' }]}
             />
             <p>（服务费）</p>
           </ProForm.Group>
@@ -285,6 +375,17 @@ export default () => {
               fieldProps={{
                 addonAfter:'元'
               }}
+              rules={[
+                { required: true, message: '请输入要求的金额' },
+                () => ({
+                  validator(_, value) {
+                    if (!/^\d+\.?\d*$/g.test(value) || value <0 || value > 999999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
+                      return Promise.reject(new Error('请输入0.00-999999.99,保留2位小数'));
+                    }
+                    return Promise.resolve();
+                  },
+                })
+              ]}
             />
             <p>时，缴租租金优惠</p>
             <ProFormText
@@ -294,10 +395,244 @@ export default () => {
               fieldProps={{
                 addonAfter:'元'
               }}
+              rules={[{ required: true, message: '请输入金额' }]}
             />
             <p>（服务费）</p>
+            <ProFormText
+              name='code'
+              hidden
+            />
+            <Form.Item>
+            <Button type="primary" onClick={()=>{
+              formRef?.current.submit()
+            }}>
+              确定
+            </Button>
+          </Form.Item>
           </ProForm.Group>
         </ProForm>
+
+        <Divider style={{ margin: '20px 0' }} />
+
+        <ProForm<{
+          days:[],
+          time:string
+            }>
+          onFinish={async (values) => {
+            setVisible(true)
+            setParamsType(values)
+          }}
+          submitter={{
+            render: (props, defaultDoms) => {
+                return [];
+            },
+            }}
+          form={form2}
+          formRef={formRef2}
+          {...formItemLayout}
+        >
+          <ProForm.Group>
+            <Form.Item labelCol={6} name='days' label="提醒续租通知日期" rules={[{ required: true, message: '请输入提醒续租通知日期' }]}>
+              <Select
+                mode="multiple"
+                allowClear
+                style={{ width: '400px' }}
+                placeholder="请选择提醒的通知日期"
+                tagRender={tagRender}
+                dropdownRender={menu => (
+                  <>
+                    {menu}
+                    <Divider style={{ margin: '8px 0' }} />
+                    <a style={{margin:'0 10px 0 280px'}}>清空</a>
+                    <Button type="primary">确认</Button>
+                  </>
+                )}
+              >
+                {content()}
+              </Select>
+            </Form.Item>
+            <ProFormTimePicker width={200} name="time"/>
+            <Form.Item>
+            <ProFormText
+              name='code'
+              hidden
+            />
+            <Button type="primary" onClick={()=>{
+              formRef2?.current.submit()
+            }}>
+              确定
+            </Button>
+          </Form.Item>
+          </ProForm.Group>
+        </ProForm>
+
+        <ProForm<{
+            value:string
+          }>
+          onFinish={async (values) => {
+            setVisible(true)
+            setParamsType(values)
+          }}
+          submitter={{
+            render: (props, defaultDoms) => {
+                return [];
+            },
+            }}
+          form={form3}
+          formRef={formRef3}
+          {...formItemLayout}
+        >
+          <ProForm.Group>
+            <ProFormText
+              name='value'
+              width={600}
+              label="提醒续租通知文案"
+              placeholder="请输入通知店主续租消息的文案，6-200个字符"
+              rules={[
+                { required: true, message: '请输入提醒续租通知文案' },
+                () => ({
+                  validator(_, value) {
+                    if (value&&value.length<6) {
+                      return Promise.reject(new Error('请输入6-200个字符'));
+                    }
+                    return Promise.resolve();
+                  },
+                })
+              ]}
+              fieldProps={{
+                maxLength:200
+              }}
+              labelCol={5}
+              extra={<p>此处设置站内信文案，<span style={{color:'#DBD0AC'}}>$(参数名)样式为消息参数不可拆散或修改</span></p>}
+            />
+            <ProFormText
+              name='code'
+              hidden
+            />
+            <Form.Item>
+            <Button type="primary" onClick={()=>{
+              formRef3?.current.submit()
+            }}>
+              确定
+            </Button>
+          </Form.Item>
+          </ProForm.Group>
+        </ProForm>
+
+        <Divider style={{ margin: '20px 0' }} />
+
+        <ProForm<{
+          days:[],
+          time:string
+            }>
+          onFinish={async (values) => {
+            setVisible(true)
+            setParamsType(values)
+          }}
+          submitter={{
+            render: (props, defaultDoms) => {
+                return [];
+            },
+            }}
+          form={form4}
+          formRef={formRef4}
+          {...formItemLayout}
+        >
+          <ProForm.Group>
+            <Form.Item labelCol={6} name='days' label="提醒补租通知日期" rules={[{ required: true, message: '请输入提醒补租通知日期' }]}>
+              <Select
+                mode="multiple"
+                allowClear
+                style={{ width: '400px' }}
+                placeholder="请选择提醒的通知日期"
+                tagRender={tagRender}
+                dropdownRender={menu => (
+                  <>
+                    {menu}
+                    <Divider style={{ margin: '8px 0' }} />
+                    <a style={{margin:'0 10px 0 280px'}}>清空</a>
+                    <Button type="primary">确认</Button>
+                  </>
+                )}
+              >
+                {content()}
+              </Select>
+            </Form.Item>
+            <ProFormTimePicker width={200} name="time"/>
+            <ProFormText
+              name='code'
+              hidden
+            />
+            <Form.Item>
+            <Button type="primary" onClick={()=>{
+              formRef4?.current.submit()
+            }}>
+              确定
+            </Button>
+          </Form.Item>
+          </ProForm.Group>
+        </ProForm>
+
+        <ProForm<{
+          value:string
+            }>
+          onFinish={async (values) => {
+            setVisible(true)
+            setParamsType(values)
+          }}
+          submitter={{
+            render: (props, defaultDoms) => {
+                return [];
+            },
+            }}
+          form={form5}
+          formRef={formRef5}
+          {...formItemLayout}
+        >
+          <ProForm.Group>
+            <ProFormText
+              name='value'
+              width={600}
+              label="提醒补租通知文案"
+              placeholder="请输入通知店主补租消息的文案，6-200个字符"
+              rules={[
+                { required: true, message: '请输入提醒补租通知文案' },
+                () => ({
+                  validator(_, value) {
+                    if (value&&value.length<6) {
+                      return Promise.reject(new Error('请输入6-200个字符'));
+                    }
+                    return Promise.resolve();
+                  },
+                })
+              ]}
+              fieldProps={{
+                maxLength:200
+              }}
+              labelCol={5}
+              extra={<p>此处设置站内信文案，<span style={{color:'#DBD0AC'}}>$(参数名)样式为消息参数不可拆散或修改</span></p>}
+            />
+            <ProFormText
+              name='code'
+              hidden
+            />
+            <Form.Item>
+            <Button type="primary" onClick={()=>{
+              formRef5?.current.submit()
+            }}>
+              确定
+            </Button>
+          </Form.Item>
+          </ProForm.Group>
+        </ProForm>
+
+      {visible && <ConfirmModel
+        visible={visible}
+        setVisible={setVisible}
+        paramsType={paramsType}
+        callback={()=>{ setParamsType(null)}}
+        onClose={() =>{ setParamsType(null)}}
+      />}
         </div>
       </PageContainer>
 
@@ -305,3 +640,5 @@ export default () => {
     
     );
   };
+
+

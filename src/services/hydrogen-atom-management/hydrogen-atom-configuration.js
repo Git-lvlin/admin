@@ -55,10 +55,97 @@ export const aboutMachine = async (params = {}, options = {}) => {
 
 
 
-//租赁_氢原子租金款的各个角色提成比例
+//查看续租租金变动配置
 export const againRentChange = async (params = {}, options = {}) => {
   const { ...rest } = params
   const res = await request('/auth/java-admin/bizConfig/findByCode/AGAIN_RENT_CHANGE', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}
+
+//修改续租租金变动配置接口
+export const updateByCode = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/bizConfig/updateByCode', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}
+
+//查看提醒续租通知日期
+export const againRentNoticeTime = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/bizConfig/findByCode/AGAIN_RENT_NOTICE_TIME', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}
+
+//查看提醒续租通知文案
+export const againRentNoticeContent = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/bizConfig/findByCode/AGAIN_RENT_NOTICE_CONTENT', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}
+
+
+//查看提醒补租通知日期
+export const supplyRentNoticeTime = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/bizConfig/findByCode/SUPPLY_RENT_NOTICE_TIME', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}
+
+
+//查看提醒续租通知文案
+export const supplyRentNoticeConten = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/bizConfig/findByCode/SUPPLY_RENT_NOTICE_CONTENT', {
     method: 'POST',
     data: {
       ...rest
