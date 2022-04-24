@@ -16,7 +16,18 @@ const GoosModel=(props)=>{
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [spuIdsArr,setSpuIdsArr]=useState([])
     const [loading,setLoading]=useState(true)
+    const [onselect,setOnselect]=useState([])
     const [spuIds,setSpuIds]=useState('')
+    //商品分类
+    useEffect(()=>{
+        classList({gcParentId:0}).then(res=>{
+           if(res.code==0){
+            setOnselect(res.data.map(ele=>(
+                {label:ele.gcName,value:ele.id}
+            )))
+           }
+        })
+    },[])
     const columns = [
         {
             title: 'spuID',
