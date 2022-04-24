@@ -36,10 +36,29 @@ export const personDivide = async (params = {}, options = {}) => {
 }
 
 
-//租赁_氢原子租金款的各个角色提成比例
+//租赁_氢原子租金款的各个角色提成详情
 export const aboutMachine = async (params = {}, options = {}) => {
   const { ...rest } = params
   const res = await request('/auth/java-admin/bizConfig/findByCode/ABOUT_MACHINE', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}
+
+
+
+//租赁_氢原子租金款的各个角色提成比例
+export const againRentChange = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/bizConfig/findByCode/AGAIN_RENT_CHANGE', {
     method: 'POST',
     data: {
       ...rest

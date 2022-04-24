@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { getQyzBuyConfig,personDivide,aboutMachine} from '@/services/hydrogen-atom-management/hydrogen-atom-configuration';
+import { getQyzBuyConfig,personDivide,aboutMachine,againRentChange} from '@/services/hydrogen-atom-management/hydrogen-atom-configuration';
 import { PageContainer } from '@/components/PageContainer';
 import { Divider, Form, Spin, Button,Image,InputNumber,Row,Col,Descriptions,Typography } from 'antd';
 import type { ProColumns,ActionType } from '@ant-design/pro-table';
@@ -35,9 +35,9 @@ export default () => {
     const [rent,setRent]=useState()
     const [rentDetail,setRentDetail]=useState()
     const formRef=useRef()
+    const [form] = Form.useForm()
     useEffect(()=>{
       getQyzBuyConfig({}).then(res=>{
-        console.log('res',res)
         const data=[
           {id:1,commission:'直推人',describe:'直接推荐人，以约购社区推荐关系计算，社区店主才有',DividedAmount:res.data?.suggestCommission },
           {id:2,commission:'运营中心',describe:'平台运营中心，以区/县为单位',DividedAmount:res.data?.agentCompanyCommission },
@@ -47,13 +47,26 @@ export default () => {
         ]
         setDataDetail(data)
       })
+
       personDivide({}).then(res=>{
         setDataList(JSON.parse(res.data?.value).records)
         setRent(JSON.parse(res.data?.value).rent)
       })
+
       aboutMachine({}).then(res=>{
-        console.log('res',res)
         setRentDetail(JSON.parse(res.data?.value))
+      })
+
+      againRentChange({}).then(res=>{
+        console.log('res',JSON.parse(res.data?.value))
+        const datail=JSON.parse(res.data?.value)
+        form.setFieldsValue({
+          momth:datail?.afterMonth?.momth,
+          arrive:amountTransform(datail?.afterMonth?.arrive,'/'),
+          rentCheap:amountTransform(datail?.afterMonth?.rentCheap,'/'),
+          arrive2:amountTransform(datail?.other?.arrive,'/'),
+          rentCheap2:amountTransform(datail?.other?.rentCheap,'/'),
+        })
       })
     },[])
     const columns:ProColumns<activityItem>[]= [
@@ -117,7 +130,7 @@ export default () => {
     ];
     return (
       <PageContainer title=" ">
-        <div style={{background:'#fff'}}>
+        <div style={{background:'#fff',padding:'20px'}}>
         <ProTable<activityItem>
           actionRef={ref}
           rowKey="id"
@@ -130,6 +143,7 @@ export default () => {
           columns={columns}
           pagination={false}
           dataSource={dataDetail}
+          style={{marginBottom:'50px'}}
         />
         <ProTable<activityItem>
           actionRef={ref}
@@ -143,9 +157,10 @@ export default () => {
           columns={columns2}
           pagination={false}
           dataSource={dataList}
+          style={{marginBottom:'50px'}}
         />
 
-        <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 300, display: 'inline-block' }}>
+        <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 400, display: 'inline-block' }}>
             <Descriptions.Item label="扫码启动使用机器需支付金额">{amountTransform(rentDetail?.startMoney,'/').toFixed(2)}元</Descriptions.Item>
             <Descriptions.Item label="对应使用时长">
               {rentDetail?.useTime}分钟。使用机器支付的费用不分成，固定结算到平台账户
@@ -169,14 +184,28 @@ export default () => {
         </Descriptions>
 
         <ProForm<{
-          name: string;
-          company?: string;
-          useMode?: string;
+          momth: number;
+          arrive: number;
+          rentCheap: number;
+          arrive2: number;
+          rentCheap2: number;
             }>
           onFinish={async (values) => {
             // await 
           }}
+          submitter={{
+            render: (props, defaultDoms) => {
+                return [
+                <Button  type="primary" key="submit" onClick={() => {
+                    props.form?.submit?.()
+                  }}>
+                    确认
+                </Button>
+                ];
+            },
+            }}
           formRef={formRef}
+          form={form}
         >
           <ProForm.Group>
             <p>*第2次缴租金优惠配置：从机器过免租期往后的</p>
@@ -184,39 +213,39 @@ export default () => {
               width="xs"
               options={[
                 {
-                  value: '2',
+                  value: 2,
                   label: '2',
                 },
                 {
-                  value: '3',
+                  value: 3,
                   label: '3',
                 },
                 {
-                  value: '4',
+                  value: 4,
                   label: '4',
                 },
                 {
-                  value: '5',
+                  value: 5,
                   label: '5',
                 },
                 {
-                  value: '6',
+                  value: 6,
                   label: '6',
                 },
                 {
-                  value: '7',
+                  value: 7,
                   label: '7',
                 },
                 {
-                  value: '8',
+                  value: 8,
                   label: '8',
                 },
                 {
-                  value: '9',
+                  value: 9,
                   label: '9',
                 }        
               ]}
-              name="unusedMode"
+              name="momth"
             />
             <p>月内：</p>
           </ProForm.Group>
@@ -226,7 +255,7 @@ export default () => {
           <ProForm.Group>
             <p>上月集约金额达到</p>
             <ProFormText
-              name='sd'
+              name='arrive'
               width="md"
               placeholder="请输入要求的金额"
               fieldProps={{
@@ -235,7 +264,7 @@ export default () => {
             />
             <p>时，缴租租金优惠</p>
             <ProFormText
-              name='sd'
+              name='rentCheap'
               width="md"
               placeholder="请输入金额"
               fieldProps={{
@@ -250,7 +279,7 @@ export default () => {
           <ProForm.Group>
             <p>上月集约金额达到</p>
             <ProFormText
-              name='sd'
+              name='arrive2'
               width="md"
               placeholder="请输入要求的金额"
               fieldProps={{
@@ -259,7 +288,7 @@ export default () => {
             />
             <p>时，缴租租金优惠</p>
             <ProFormText
-              name='sd'
+              name='rentCheap2'
               width="md"
               placeholder="请输入金额"
               fieldProps={{
