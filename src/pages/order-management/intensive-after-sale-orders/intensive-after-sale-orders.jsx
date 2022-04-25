@@ -108,6 +108,13 @@ const afterSalesOrder = () => {
       hideInSearch: true
     },
     {
+      title: '备注',
+      dataIndex: 'refundMessage',
+      valueType: 'text',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '操作',
       dataIndex: 'operation',
       valueType: 'option',
