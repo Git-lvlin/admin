@@ -76,7 +76,11 @@ export default (props) => {
     {
       width: 351,
       height: 100,
-    }
+    },
+    {
+      width: 351,
+      height: 100,
+    },
   ]
 
   const waitTime = (values) => {
@@ -96,7 +100,7 @@ export default (props) => {
           '社区店': 4,
           '秒约爆品': 6,
           '周末狂欢': 7,
-          '拼团': 8,
+          '拼团': 9,
         }[detailData.location]
       }
     }
@@ -133,7 +137,7 @@ export default (props) => {
         4: '社区店',
         6: '秒约爆品',
         7: '周末狂欢',
-        8: '拼团',
+        9: '拼团',
       }[detailData.location]
       const { ...rest } = detailData;
       console.log('detailData', detailData)
@@ -174,7 +178,7 @@ export default (props) => {
             4: '社区店',
             6: '秒约爆品',
             7: '周末狂欢',
-            8: '拼团',
+            9: '拼团',
           }}
           placeholder="选择位置"
           rules={[{ required: true, message: '请选择位置!' }]}
