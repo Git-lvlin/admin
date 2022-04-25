@@ -100,7 +100,9 @@ const afterSalesOrder = () => {
       valueType: 'select',
       valueEnum: {
         1: '待退款',
-        2: '退款完成',
+        2: '退款中',
+        3: '退款完成',
+        4: '退款失败',
         6: '已取消',
       },
       hideInSearch: true
