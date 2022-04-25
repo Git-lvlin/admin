@@ -52,6 +52,7 @@ const formItemLayout = {
 export default () => {
     const ref=useRef<ActionType>()
     const [dataDetail,setDataDetail]=useState()
+    const [detail,setDetail]=useState()
     const [dataList,setDataList]=useState()
     const [rent,setRent]=useState()
     const [rentDetail,setRentDetail]=useState()
@@ -69,67 +70,84 @@ export default () => {
     const [paramsType,setParamsType]=useState()
     useEffect(()=>{
       getQyzBuyConfig({}).then(res=>{
-        const data=[
-          {id:1,commission:'直推人',describe:'直接推荐人，以约购社区推荐关系计算，社区店主才有',DividedAmount:res.data?.suggestCommission },
-          {id:2,commission:'运营中心',describe:'平台运营中心，以区/县为单位',DividedAmount:res.data?.agentCompanyCommission },
-          {id:3,commission:'汇能健康事业部',describe:'以省为单位的实体',DividedAmount:res.data?.businessDeptCommission },
-          {id:4,commission:'汇智能通省加盟商',describe:'简称‘省代’',DividedAmount:res.data?.provinceAgentCommission },
-          {id:5,commission:'汇智能通市加盟商',describe:'简称‘市代’',DividedAmount:res.data?.cityAgentCommission },
-        ]
-        setDataDetail(data)
+        if(res.code==0){
+          const data=[
+            {id:1,commission:'直推人',describe:'直接推荐人，以约购社区推荐关系计算，社区店主才有',DividedAmount:res.data?.suggestCommission },
+            {id:2,commission:'运营中心',describe:'平台运营中心，以区/县为单位',DividedAmount:res.data?.agentCompanyCommission },
+            {id:3,commission:'汇能健康事业部',describe:'以省为单位的实体',DividedAmount:res.data?.businessDeptCommission },
+            {id:4,commission:'汇智能通省加盟商',describe:'简称‘省代’',DividedAmount:res.data?.provinceAgentCommission },
+            {id:5,commission:'汇智能通市加盟商',describe:'简称‘市代’',DividedAmount:res.data?.cityAgentCommission },
+          ]
+          setDataDetail(data)
+          setDetail(res.data)
+        }
       })
 
       personDivide({}).then(res=>{
-        setDataList(JSON.parse(res.data?.value).records)
-        setRent(JSON.parse(res.data?.value).rent)
+        if(res.code==0){
+          setDataList(JSON.parse(res.data?.value).records)
+          setRent(JSON.parse(res.data?.value).rent)
+        }
       })
 
       aboutMachine({}).then(res=>{
-        setRentDetail(JSON.parse(res.data?.value))
+        if(res.code==0){
+          setRentDetail(JSON.parse(res.data?.value))
+        }
       })
 
       againRentChange({}).then(res=>{
-        const datail=JSON.parse(res.data?.value)
-        form.setFieldsValue({
-          month:datail?.afterMonth?.month,
-          arrive:amountTransform(datail?.afterMonth?.arrive,'/'),
-          rentCheap:amountTransform(datail?.afterMonth?.rentCheap,'/'),
-          arrive2:amountTransform(datail?.other?.arrive,'/'),
-          rentCheap2:amountTransform(datail?.other?.rentCheap,'/'),
-          code:res.data?.code
-        })
+        if(res.code==0){
+          const datail=JSON.parse(res.data?.value)
+          form.setFieldsValue({
+            month:datail?.afterMonth?.month,
+            arrive:amountTransform(datail?.afterMonth?.arrive,'/'),
+            rentCheap:amountTransform(datail?.afterMonth?.rentCheap,'/'),
+            arrive2:amountTransform(datail?.other?.arrive,'/'),
+            rentCheap2:amountTransform(datail?.other?.rentCheap,'/'),
+            code:res.data?.code
+          })
+        }
       })
 
       againRentNoticeTime({}).then(res=>{
-        const datail=JSON.parse(res.data?.value)
-        form2.setFieldsValue({
-          days:datail?.days.split(','),
-          time:moment(datail?.time, 'HH:mm:ss'),
-          code:res.data?.code
-        })
+        if(res.code==0){
+          const datail=JSON.parse(res.data?.value)
+          form2.setFieldsValue({
+            days:datail?.days.split(','),
+            time:moment(datail?.time, 'HH:mm:ss'),
+            code:res.data?.code
+          })
+        }
       })
 
       againRentNoticeContent({}).then(res=>{
-        form3.setFieldsValue({
-          value:res.data?.value,
-          code:res.data?.code
-        })
+        if(res.code==0){
+          form3.setFieldsValue({
+            value:res.data?.value,
+            code:res.data?.code
+          })
+        }
       })
       
       supplyRentNoticeTime({}).then(res=>{
-        const datail=JSON.parse(res.data?.value)
-        form4.setFieldsValue({
-          days:datail?.days.split(','),
-          time:moment(datail?.time, 'HH:mm:ss'),
-          code:res.data?.code
-        })
+        if(res.code==0){
+          const datail=JSON.parse(res.data?.value)
+          form4.setFieldsValue({
+            days:datail?.days.split(','),
+            time:moment(datail?.time, 'HH:mm:ss'),
+            code:res.data?.code
+          })
+        }
       })
 
       supplyRentNoticeConten({}).then(res=>{
-        form5.setFieldsValue({
-          value:res.data?.value,
-          code:res.data?.code
-        })
+        if(res.code==0){
+          form5.setFieldsValue({
+            value:res.data?.value,
+            code:res.data?.code
+          })
+        }
       })
     },[])
     const columns:ProColumns<activityItem>[]= [
@@ -222,7 +240,7 @@ export default () => {
           options={false}
           headerTitle="购买_氢原子交易款的各个角色分成"
           toolBarRender={()=>[
-            <p>交易款金额：68000.00元</p>
+            <p>交易款金额：{amountTransform(detail?.salePrice,'/').toFixed(2)}元</p>
           ]}
           search={false}
           columns={columns}
@@ -247,7 +265,7 @@ export default () => {
 
         <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 200, display: 'inline-block' }}>
             <Descriptions.Item label="扫码启动使用机器需支付金额">
-              {amountTransform(rentDetail?.startMoney,'/').toFixed(2)}元，对应使用时长{rentDetail?.useTime}分钟。使用机器支付的费用不分成，固定结算到平台账户
+              {amountTransform(rentDetail?.startMoney,'/').toFixed(2)}元，对应使用时长：{rentDetail?.useTime}分钟。使用机器支付的费用不分成，固定结算到平台账户
             </Descriptions.Item>
             <Descriptions.Item label="氢原子机器押金金额">
               {amountTransform(rentDetail?.deposit,'/').toFixed(2)}元
@@ -257,15 +275,19 @@ export default () => {
               {amountTransform(rentDetail?.monthRentMoney,'/').toFixed(2)}元 / 月，{(rentDetail?.monthRentMoney/moment().daysInMonth()).toFixed(2)}元 / 天（四舍五入）
             </Descriptions.Item>
             <Descriptions.Item labelStyle={{ textAlign: 'right', width: 230, display: 'inline-block' }} label="氢原子机器首次启用后免租期天数">
-              {rentDetail?.firstFreeRentDay}天
+              <p>{rentDetail?.firstFreeRentDay}天</p>
+              <p style={{color:'#FBB336'}}>（从机器激活的次日算起）</p>
             </Descriptions.Item>
             <Descriptions.Item label="氢原子机器自动确认收货时间">
               {rentDetail?.autoConfirmTime}天
             </Descriptions.Item>
             <Descriptions.Item labelStyle={{ textAlign: 'right', width: 400, display: 'inline-block' }} label="氢原子机器租赁时租金可逾期天数（租约逾期至停用天数）">
               {rentDetail?.exceedStopDay}天
+              <p style={{color:'#FBB336'}}>（从机器租约到期日的次日算起）</p>
             </Descriptions.Item>
         </Descriptions>
+
+        <Divider style={{ margin: '20px 0' }} />
 
         <ProForm<{
           month: number;
@@ -287,7 +309,7 @@ export default () => {
           form={form}
         >
           <ProForm.Group>
-            <p>*第2次缴租金优惠配置：从机器过免租期往后的</p>
+            <p><span style={{color:'#FF4D99',fontSize:'20px'}}>*</span>第2次缴租金优惠配置：从机器过免租期往后的</p>
             <ProFormSelect
               width="xs"
               options={[
@@ -327,7 +349,8 @@ export default () => {
               name="month"
               rules={[{ required: true, message: '请选择月份' }]}
             />
-            <p>月内：</p>
+            <p>月内： </p>
+            <p style={{color:'#FBB336'}}>（实际缴租时先增加优惠金额，然后再按照配置优惠）</p>
           </ProForm.Group>
 
           <ProForm.Group>
@@ -343,7 +366,7 @@ export default () => {
                 { required: true, message: '请输入要求的金额' },
                 () => ({
                   validator(_, value) {
-                    if (!/^\d+\.?\d*$/g.test(value) || value < 0 || value > 999999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
+                    if (value&&!/^\d+\.?\d*$/g.test(value) || value < 0 || value > 999999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
                       return Promise.reject(new Error('请输入0.00-999999.99,保留2位小数'));
                     }
                     return Promise.resolve();
@@ -360,6 +383,7 @@ export default () => {
                 addonAfter:'元'
               }}
               rules={[{ required: true, message: '请输入金额' }]}
+              extra={<span style={{color:'#FBB336'}}>此部分不参与分成</span>}
             />
             <p>（服务费）</p>
           </ProForm.Group>
@@ -379,7 +403,7 @@ export default () => {
                 { required: true, message: '请输入要求的金额' },
                 () => ({
                   validator(_, value) {
-                    if (!/^\d+\.?\d*$/g.test(value) || value <0 || value > 999999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
+                    if (value&&!/^\d+\.?\d*$/g.test(value) || value <0 || value > 999999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
                       return Promise.reject(new Error('请输入0.00-999999.99,保留2位小数'));
                     }
                     return Promise.resolve();
@@ -396,6 +420,7 @@ export default () => {
                 addonAfter:'元'
               }}
               rules={[{ required: true, message: '请输入金额' }]}
+              extra={<span style={{color:'#FBB336'}}>此部分不参与分成</span>}
             />
             <p>（服务费）</p>
             <ProFormText
@@ -626,13 +651,17 @@ export default () => {
           </ProForm.Group>
         </ProForm>
 
-      {visible && <ConfirmModel
-        visible={visible}
-        setVisible={setVisible}
-        paramsType={paramsType}
-        callback={()=>{ setParamsType(null)}}
-        onClose={() =>{ setParamsType(null)}}
-      />}
+        <Divider style={{ margin: '20px 0' }} />
+
+        <p style={{color:'#F8A618',fontWeight:'bold'}}>所有设置完成，立即生效！</p>
+
+        {visible && <ConfirmModel
+          visible={visible}
+          setVisible={setVisible}
+          paramsType={paramsType}
+          callback={()=>{ setParamsType(null)}}
+          onClose={() =>{ setParamsType(null)}}
+        />}
         </div>
       </PageContainer>
 
