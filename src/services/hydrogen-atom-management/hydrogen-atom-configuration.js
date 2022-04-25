@@ -158,3 +158,56 @@ export const supplyRentNoticeConten = async (params = {}, options = {}) => {
     code: res.code
   }
 }
+
+//查看首次交租
+export const firestRent = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/bizConfig/findByCode/FIREST_RENT', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}
+
+
+//查看购买发货
+export const buySend = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/bizConfig/findByCode/BUY_SEND', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}
+
+
+//查看租赁发货
+export const rentSend = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/bizConfig/findByCode/RENT_SEND', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}

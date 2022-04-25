@@ -76,7 +76,11 @@ export default (props) => {
     {
       width: 351,
       height: 100,
-    }
+    },
+    {
+      width: 351,
+      height: 100,
+    },
   ]
 
   const waitTime = (values) => {
