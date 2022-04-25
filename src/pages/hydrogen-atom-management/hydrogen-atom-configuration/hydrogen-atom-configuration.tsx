@@ -71,8 +71,8 @@ const Configuration=(props) => {
             {id:1,commission:'直推人',describe:'直接推荐人，以约购社区推荐关系计算，社区店主才有',DividedAmount:res.data?.suggestCommission },
             {id:2,commission:'运营中心',describe:'平台运营中心，以区/县为单位',DividedAmount:res.data?.agentCompanyCommission },
             {id:3,commission:'汇能健康事业部',describe:'以省为单位的实体',DividedAmount:res.data?.businessDeptCommission },
-            {id:4,commission:'汇智能通省加盟商',describe:'简称‘省代’',DividedAmount:res.data?.provinceAgentCommission },
-            {id:5,commission:'汇智能通市加盟商',describe:'简称‘市代’',DividedAmount:res.data?.cityAgentCommission },
+            {id:4,commission:'汇智能通省加盟商',describe:'简称 ‘省代’',DividedAmount:res.data?.provinceAgentCommission },
+            {id:5,commission:'汇智能通市加盟商',describe:'简称 ‘市代’',DividedAmount:res.data?.cityAgentCommission },
           ]
           setDataDetail(data)
           setDetail(res.data)
@@ -768,12 +768,12 @@ const MessageNotification=(props) => {
         {...formItemLayout}
       >
         <ProFormText
-          label="提醒时间"
+          label="通知时间"
           labelCol={1}
           width={400}
           name='remindTime'
           readonly
-          rules={[{ required: true, message: '请输入提醒时间' }]}
+          rules={[{ required: true, message: '请输入通知时间' }]}
         />
         <ProFormText
           name='content'
@@ -805,12 +805,12 @@ const MessageNotification=(props) => {
         {...formItemLayout}
       >
         <ProFormText
-          label="提醒时间"
+          label="通知时间"
           labelCol={1}
           width={400}
           name='remindTime'
           readonly
-          rules={[{ required: true, message: '请输入提醒时间' }]}
+          rules={[{ required: true, message: '请输入通知时间' }]}
         />
         <ProFormText
           name='content'
