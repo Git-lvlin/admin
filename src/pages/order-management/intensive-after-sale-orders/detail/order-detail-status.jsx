@@ -7,7 +7,11 @@ const AfterState = ({ stage }) => {
       case 1:
         return '待退款'
       case 2:
+        return '退款中'
+      case 3:
         return '退款完成'
+      case 4:
+        return '退款失败'
       case 6:
         return '已取消'
     }
