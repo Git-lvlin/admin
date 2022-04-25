@@ -371,4 +371,7 @@ export default {
   'menu.group-activities-management.activity-list': '拼团活动列表',
   'menu.group-activities-management.activity-data': '拼团数据',
 
+  'menu.hydrogen-atom-management': '氢原子',
+  'menu.hydrogen-atom-management.hydrogen-atom-configuration': '配置',
+
 };
