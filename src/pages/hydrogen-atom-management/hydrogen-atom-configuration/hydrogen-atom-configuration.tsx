@@ -8,7 +8,10 @@ import { getQyzBuyConfig,
   againRentNoticeTime,
   againRentNoticeContent,
   supplyRentNoticeTime,
-  supplyRentNoticeConten
+  supplyRentNoticeConten,
+  firestRent,
+  buySend,
+  rentSend
 } from '@/services/hydrogen-atom-management/hydrogen-atom-configuration';
 import { PageContainer } from '@/components/PageContainer';
 import { Divider, Form, Button,Descriptions,message,Select,Typography } from 'antd';
@@ -403,10 +406,16 @@ const MessageNotification=(props) => {
   const formRef3=useRef()
   const formRef4=useRef()
   const formRef5=useRef()
+  const formRef6=useRef()
+  const formRef7=useRef()
+  const formRef8=useRef()
   const [form2] = Form.useForm()
   const [form3] = Form.useForm()
   const [form4] = Form.useForm()
   const [form5] = Form.useForm()
+  const [form6] = Form.useForm()
+  const [form7] = Form.useForm()
+  const [form8] = Form.useForm()
   const [visible, setVisible] = useState(false);
   const [paramsType,setParamsType]=useState()
   useEffect(()=>{
@@ -446,6 +455,36 @@ const MessageNotification=(props) => {
         form5.setFieldsValue({
           value:res.data?.value,
           code:res.data?.code
+        })
+      }
+    })
+
+    firestRent({}).then(res=>{
+      if(res.code==0){
+        const datail=JSON.parse(res.data?.value)
+        form6.setFieldsValue({
+          remindTime:datail?.remindTime,
+          content:datail?.content
+        })
+      }
+    })
+
+    buySend({}).then(res=>{
+      if(res.code==0){
+        const datail=JSON.parse(res.data?.value)
+        form7.setFieldsValue({
+          remindTime:datail?.remindTime,
+          content:datail?.content
+        })
+      }
+    })
+
+    rentSend({}).then(res=>{
+      if(res.code==0){
+        const datail=JSON.parse(res.data?.value)
+        form8.setFieldsValue({
+          remindTime:datail?.remindTime,
+          content:datail?.content
         })
       }
     })
@@ -687,20 +726,20 @@ const MessageNotification=(props) => {
               return [];
           },
           }}
-        form={form4}
-        formRef={formRef4}
+        form={form6}
+        formRef={formRef6}
         {...formItemLayout}
       >
         <ProFormText
           label="提醒时间"
           labelCol={1}
           width={400}
-          name='days'
+          name='remindTime'
           readonly
           rules={[{ required: true, message: '请输入提醒时间' }]}
         />
         <ProFormText
-          name='value'
+          name='content'
           width={800}
           label="通知文案"
           rules={[{ required: true, message: '请输入通知文案' }]}
@@ -724,20 +763,20 @@ const MessageNotification=(props) => {
               return [];
           },
           }}
-        form={form4}
-        formRef={formRef4}
+        form={form7}
+        formRef={formRef7}
         {...formItemLayout}
       >
         <ProFormText
           label="提醒时间"
           labelCol={1}
           width={400}
-          name='days'
+          name='remindTime'
           readonly
           rules={[{ required: true, message: '请输入提醒时间' }]}
         />
         <ProFormText
-          name='value'
+          name='content'
           width={800}
           label="通知文案"
           rules={[{ required: true, message: '请输入通知文案' }]}
@@ -761,20 +800,20 @@ const MessageNotification=(props) => {
               return [];
           },
           }}
-        form={form4}
-        formRef={formRef4}
+        form={form8}
+        formRef={formRef8}
         {...formItemLayout}
       >
         <ProFormText
           label="提醒时间"
           labelCol={1}
           width={400}
-          name='days'
+          name='remindTime'
           readonly
           rules={[{ required: true, message: '请输入提醒时间' }]}
         />
         <ProFormText
-          name='value'
+          name='content'
           width={800}
           label="通知文案"
           rules={[{ required: true, message: '请输入通知文案' }]}
