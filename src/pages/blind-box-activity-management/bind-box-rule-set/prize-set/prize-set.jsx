@@ -337,11 +337,11 @@ export default (props) => {
       }
     },
     {
-      title: '指定中奖人开关状态',
+      title: '指定中奖人状态',
       dataIndex: 'assignType',
       hideInSearch: true,
       renderFormItem: (_,r) => {
-      return <Switch disabled checked={_.entry.assignType}/>
+      return <Switch checked={_.entry.assignType}/>
       },
       render: (_,r) =>{
         return <p>
