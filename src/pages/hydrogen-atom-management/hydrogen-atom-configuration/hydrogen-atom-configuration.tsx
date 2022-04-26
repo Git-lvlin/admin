@@ -19,7 +19,8 @@ import type { ProColumns,ActionType } from '@ant-design/pro-table';
 import ProForm, {
   ProFormText,
   ProFormSelect,
-  ProFormTimePicker
+  ProFormTimePicker,
+  ProFormCheckbox
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
 import moment from 'moment'
@@ -418,6 +419,7 @@ const MessageNotification=(props) => {
   const [form8] = Form.useForm()
   const [visible, setVisible] = useState(false);
   const [paramsType,setParamsType]=useState()
+  const [onselect,setOnselect]=useState([])
   useEffect(()=>{
     againRentNoticeTime({}).then(res=>{
       if(res.code==0){
@@ -644,6 +646,25 @@ const MessageNotification=(props) => {
             </Select>
           </Form.Item>
           <ProFormTimePicker width={200} name="time"/>
+          <ProFormCheckbox.Group
+            name="joinShopType"
+            options={[
+              {
+                label: '给客服发送短信和站内信',
+                value: 1,
+              },
+            ]}
+            initialValue={[1]}
+          />
+          <ProFormText
+            name='value'
+            placeholder='接收短信的手机号码'
+          />
+          <ProFormSelect
+            name="unit"
+            // options = {onselect}
+            placeholder="选择接收站内信管理员"
+          />
           <ProFormText
             name='code'
             hidden
@@ -674,12 +695,34 @@ const MessageNotification=(props) => {
         formRef={formRef5}
         {...formItemLayout}
       >
+        <ProFormText
+          name='value'
+          width={800}
+          label="用户通知文案"
+          placeholder="请输入通知店主补租消息的文案，6-200个字符"
+          rules={[
+            { required: true, message: '请输入通知文案' },
+            () => ({
+              validator(_, value) {
+                if (value&&value.length<6) {
+                  return Promise.reject(new Error('请输入6-200个字符'));
+                }
+                return Promise.resolve();
+              },
+            })
+          ]}
+          fieldProps={{
+            maxLength:200
+          }}
+          labelCol={5}
+          extra={<p>此处设置站内信文案，<span style={{color:'#DBD0AC'}}>$(参数名)样式为消息参数不可拆散或修改</span></p>}
+        />
         <ProForm.Group>
           <ProFormText
             name='value'
             width={800}
-            label="通知文案"
-            placeholder="请输入通知店主补租消息的文案，6-200个字符"
+            label="客服通知文案"
+            placeholder="请输入通知客服需店主补租消息的文案，6-200个字符"
             rules={[
               { required: true, message: '请输入通知文案' },
               () => ({
