@@ -10,7 +10,7 @@ import { Export,ExportHistory } from '@/pages/export-excel'
 import { tradeType } from '../../common-enum'
 import Detail from '../../common-popup/order-pay-detail-popup'
 import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
-import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/shopkeeper-order/detail'
+import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/supplier-order/detail'
 
 const TransactionDetails = ({
   visible,
