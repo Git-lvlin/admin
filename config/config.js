@@ -11,8 +11,8 @@ import intensiveActivityManagement from './routers/intensive-activity-management
 import supplierManagement from './routers/supplier-management'
 import operationManagement from './routers/operation-management'
 import intensiveStoreManagement from './routers/intensive-store-management'
-import singleContractActivityManagement from './routers/single-contract-activity-management'
-import groupContractActivityManagement from './routers/group-contract-activity-management'
+// import singleContractActivityManagement from './routers/single-contract-activity-management'
+// import groupContractActivityManagement from './routers/group-contract-activity-management'
 import couponManagement from './routers/coupon-management'
 import messageManagement from './routers/message-management'
 import cms from './routers/cms'
@@ -84,8 +84,8 @@ const config = {
             supplierManagement,
             operationManagement,
             intensiveStoreManagement,
-            singleContractActivityManagement,
-            groupContractActivityManagement,
+            // singleContractActivityManagement,
+            // groupContractActivityManagement,
             messageManagement,
             couponManagement,
             cms,

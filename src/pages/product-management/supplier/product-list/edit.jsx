@@ -524,6 +524,7 @@ export default (props) => {
         isSample: goods.isSample,
         sampleFreight: goods.sampleFreight,
         goodsVirtualSaleNum: goods.goodsVirtualSaleNum,
+        showOn: goods.showOn,
       })
 
       if (freightTemplateId && freightTemplateName) {
@@ -717,6 +718,7 @@ export default (props) => {
         specValues2: [{}],
         wsUnit: '箱',
         unit: '件',
+        showOn: 4,
       }}
       {...formItemLayout}
     >
@@ -1429,6 +1431,51 @@ export default (props) => {
           placeholder: ''
         }}
       />
+      <ProFormDependency name={['goodsSaleType']}>
+        {({ goodsSaleType })=>{
+          const showOnA = [{
+            label: '仅秒约商品详情显示',
+            value: 1,
+          }]
+          const showOnB = [{
+            label: '仅集约商品详情显示',
+            value: 2,
+          }]
+          const showOn = [
+            {
+              label: '所有商品详情页都展示',
+              value: 3,
+            },
+            {
+              label: '所有商品详情页不展示',
+              value: 4,
+            },
+          ]
+          let showOnOptions = []
+
+          if (goodsSaleType === 0) {
+            showOnOptions = [...showOnA, ...showOnB, ...showOn]
+          }
+
+          if (goodsSaleType === 1) {
+            showOnOptions = [...showOnB, ...showOn]
+          }
+
+          if (goodsSaleType === 2) {
+            showOnOptions = [...showOnA, ...showOn]
+          }
+
+          return (
+            <ProFormRadio.Group
+              name="showOn"
+              label="特殊说明展示状态"
+              rules={[{ required: true }]}
+              options={showOnOptions}
+            />
+          )
+        }}
+      </ProFormDependency>
+      
       <Form.Item
         label="商品主图"
         name="primaryImages"
