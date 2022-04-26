@@ -48,11 +48,11 @@ export default () => {
       },
       {
         title: '盲盒机会有效期',
-        dataIndex: 'maxPrizeNum',
+        dataIndex: 'validiteHour',
         valueType: 'text',
         hideInSearch:true,
         render:(_,data)=>{
-          return <p>{data?.content?.maxPrizeNum}</p>
+          return <p>{_}小时</p>
         }
       },
       // {
@@ -119,6 +119,9 @@ export default () => {
         ],
       }, 
     ];
+    const postData=(data)=>{
+      return data.map(ele=>({...ele,validiteHour:ele?.content?.validiteHour}))
+    }
     return (
       <PageContainer>
         <ProTable
@@ -132,6 +135,7 @@ export default () => {
                 添加活动
             </Button>
         ]}
+          postData={postData}
           search={false}
           columns={columns}
         />
