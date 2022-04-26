@@ -220,7 +220,7 @@ const Configuration=(props) => {
             </Descriptions.Item>
             <Descriptions.Item labelStyle={{ textAlign: 'right', width: 230, display: 'inline-block' }} label="氢原子机器首次缴租最低缴租天数">{rentDetail?.firstRentDay}天</Descriptions.Item>
             <Descriptions.Item label="氢原子机器租金金额">
-              {amountTransform(rentDetail?.monthRentMoney,'/').toFixed(2)}元 / 月，{((rentDetail?.monthRentMoney/moment().daysInMonth()).toFixed(2))/100}元 / 天（四舍五入）
+              {amountTransform(rentDetail?.monthRentMoney,'/').toFixed(2)}元 / 月，{(((rentDetail?.monthRentMoney/moment().daysInMonth()))/100).toFixed(2)}元 / 天（四舍五入）
             </Descriptions.Item>
             <Descriptions.Item labelStyle={{ textAlign: 'right', width: 230, display: 'inline-block' }} label="氢原子机器首次启用后免租期天数">
               <p>{rentDetail?.firstFreeRentDay}天</p>
@@ -970,7 +970,7 @@ const MessageNotification=(props) => {
         />
       </ProForm>
       <Divider style={{ margin: '0 0 20px 0' }} />
-      <p style={{color:'#F8A618',fontWeight:'bold'}}>所有设置完成，立即生效！</p>
+      <p style={{color:'#F8A618',fontWeight:'bold'}}>设置完成，立即生效！</p>
       {visible && <ConfirmModel
         visible={visible}
         setVisible={setVisible}
