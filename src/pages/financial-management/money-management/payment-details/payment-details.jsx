@@ -8,7 +8,7 @@ import { logPage } from '@/services/financial-management/yeahgo-virtual-account-
 import { amountTransform } from '@/utils/utils'
 import { tradeType } from '../../common-enum'
 import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
-import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/shopkeeper-order/detail'
+import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/supplier-order/detail'
 
 const PaymentDetails = ({query, visible, setVisible}) => {
   const [normalOrderVisible, setNormalOrderVisible] = useState(false)
