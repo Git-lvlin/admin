@@ -1,0 +1,217 @@
+import { useState } from "react"
+import { PageContainer } from "@ant-design/pro-layout"
+import ProDescriptions from "@ant-design/pro-descriptions"
+import ProTable from "@ant-design/pro-table"
+import { Image } from "antd"
+
+import type { ProColumns } from "@ant-design/pro-table"
+import type { ProDescriptionsItemProps } from "@ant-design/pro-descriptions"
+import type { DescriptionsProps, TableProps } from "./data"
+
+import { findMemberDeviceTotal, findMemberDevicePage } from "@/services/hydrogen-atom-management/transaction-data"
+import DevicesDetail from "../components/devices-detail"
+
+export default function TransactionData () {
+  const [devicesVisible, setDevicesVisible] = useState<boolean>(false)
+  const [type, setType] = useState<number>(0)
+  const [memberId, setMemberId] = useState<string>()
+  const [memberPhone, setMemberPhone] = useState<string>()
+
+  const descriptionsColumns: ProDescriptionsItemProps<DescriptionsProps>[] = [
+    {
+      title: '销售用户数',
+      dataIndex: 'payImeiUserSum'
+    },
+    {
+      title: '租赁用户数',
+      dataIndex: 'leaseImeiUserSum'
+    },
+    {
+      title: '销售产品数',
+      dataIndex: 'payImeiSum'
+    },
+    {
+      title: '销售总金额',
+      dataIndex: 'payOrderAmount'
+    },
+    {
+      title: '租赁产品数',
+      dataIndex: 'leaseImeiSum'
+    },
+    {
+      title: '租赁总押金',
+      dataIndex: 'leaseOrderAmount'
+    },
+    {
+      title: '租赁产品占比',
+      dataIndex: 'leaseImeiScale'
+    },
+    {
+      title: '租赁用户占比',
+      dataIndex: 'leaseImeiUserScale'
+    },
+    {
+      title: '产品总启用次数',
+      dataIndex: 'startSum',
+      render: (_, r)=> r.startSum
+    },
+    {
+      title: '已启用产品数',
+      dataIndex: 'startImeiSum',
+      render: (_, r)=> r.startImeiSum
+    },
+    {
+      title: '产品总启用付费金额',
+      dataIndex: 'scanAmountSum'
+    },
+    {
+      title: '产品总启用时长(h)',
+      dataIndex: 'scanTimeSum'
+    },
+    {
+      title: '已缴租产品数',
+      dataIndex: 'doneLeaseImeiSum'
+    },
+    {
+      title: '产品总缴租天数',
+      dataIndex: 'leaseDaySum'
+    },
+    {
+      title: '租赁总缴租金额',
+      dataIndex: 'leaseAmountSum'
+    },
+    {
+      title: '租赁总缴租次数',
+      dataIndex: 'leasePaySum'
+    }
+  ]
+
+  const tableColumns: ProColumns<TableProps>[] = [
+    {
+      title: '手机号码',
+      dataIndex: 'memberPhone',
+      align: 'center'
+    },
+    {
+      title: '头像',
+      dataIndex: 'icon',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r) => <Image width={80} height={80} src={r.icon}/>
+    },
+    {
+      title: '昵称',
+      dataIndex: 'nickName',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '是否为社区店主',
+      dataIndex: 'userType',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r) => r.userType === 1 ? '是' : '否'
+    },
+    {
+      title: '社区店ID',
+      dataIndex: 'storeNo',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '社区店名称',
+      dataIndex: 'storeName',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '购买产品数',
+      dataIndex: 'payImeiSum',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r)=> {
+        if(r.payImeiSum > 0) {
+          return <a onClick={()=>{ setDevicesVisible(true); setType(2); setMemberId(r.memberId); setMemberPhone(r.memberPhone) }}>{_}</a>
+        } else {
+          return _
+        }
+      }
+    },
+    {
+      title: '租赁产品数',
+      dataIndex: 'leaseImeiSum',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r)=> {
+        if(r.leaseImeiSum > 0) {
+          return <a onClick={()=>{ setDevicesVisible(true); setType(1); setMemberId(r.memberId); setMemberPhone(r.memberPhone) }}>{_}</a>
+        } else {
+          return _
+        }
+      }
+    },
+    {
+      title: '总缴租次数',
+      dataIndex: 'leasePaySum',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r)=> {
+        if(r.leasePaySum > 0) {
+          return <a onClick={()=>{ setDevicesVisible(true); setType(3); setMemberId(r.memberId); setMemberPhone(r.memberPhone) }}>{_}</a>
+        } else {
+          return _
+        }
+      }
+    },
+    {
+      title: '总启动次数',
+      dataIndex: 'startSum',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r)=> {
+        if(r.startSum > 0) {
+          return <a onClick={()=>{ setDevicesVisible(true); setType(4); setMemberId(r.memberId); setMemberPhone(r.memberPhone) }}>{_}</a>
+        } else {
+          return _
+        }
+      }
+    }
+  ]
+
+  return (
+    <PageContainer title={false}>
+      <ProDescriptions<DescriptionsProps>
+        column={8}
+        bordered
+        layout='vertical'
+        columns={descriptionsColumns}
+        request={findMemberDeviceTotal}
+      />
+      <ProTable<TableProps>
+        rowKey="storeNo"
+        columns={tableColumns}
+        request={findMemberDevicePage}
+        columnEmptyText={false}
+        pagination={{
+          pageSize: 10
+        }}
+        options={false}
+        search={{
+          optionRender: (searchConfig, props, dom)=> [
+            ...dom.reverse()
+          ]
+        }}
+      />
+      {
+        devicesVisible&&
+        <DevicesDetail
+          visible={devicesVisible}
+          setVisible={setDevicesVisible}
+          type={type}
+          memberId={memberId}
+          memberPhone={memberPhone}
+        />
+      }
+    </PageContainer>
+  )
+}
