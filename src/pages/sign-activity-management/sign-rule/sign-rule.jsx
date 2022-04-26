@@ -283,7 +283,6 @@ export default (props) =>{
         <EditableProTable
             rowKey="typeId"
             headerTitle="签到红包金额设置(元）"
-            name="table"
             value={dataSource}
             recordCreatorProps={false}
             columns={columns}

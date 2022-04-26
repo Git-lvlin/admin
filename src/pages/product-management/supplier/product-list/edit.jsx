@@ -524,6 +524,7 @@ export default (props) => {
         isSample: goods.isSample,
         sampleFreight: goods.sampleFreight,
         goodsVirtualSaleNum: goods.goodsVirtualSaleNum,
+        showOn: goods.showOn,
       })
 
       if (freightTemplateId && freightTemplateName) {
@@ -717,6 +718,7 @@ export default (props) => {
         specValues2: [{}],
         wsUnit: '箱',
         unit: '件',
+        showOn: 4,
       }}
       {...formItemLayout}
     >
@@ -1433,20 +1435,20 @@ export default (props) => {
         {({ goodsSaleType })=>{
           const showOnA = [{
             label: '仅秒约商品详情显示',
-            value: 2,
+            value: 1,
           }]
           const showOnB = [{
             label: '仅集约商品详情显示',
-            value: 3,
+            value: 2,
           }]
           const showOn = [
             {
               label: '所有商品详情页都展示',
-              value: 1,
+              value: 3,
             },
             {
               label: '所有商品详情页不展示',
-              value: 0,
+              value: 4,
             },
           ]
           let showOnOptions = []
