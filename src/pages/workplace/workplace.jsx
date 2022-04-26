@@ -18,7 +18,7 @@ const WorkPlace = () => {
           </div>
         </ProCard>
         <ProCard colSpan="148px">
-          <div className={style.card} onClick={() => { history.push('/product-management/product-list') }}>
+          <div className={style.card} onClick={() => { history.push('/product-management/supplier/product-list') }}>
             <div>
               <img />
             </div>
