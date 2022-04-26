@@ -6,6 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import * as api from '@/services/setting/account-management';
 import Form from './form';
 import { adminGroup } from '@/services/setting/account-management'
+import moment from 'moment'
 
 const typeTransform = (array) => {
   if (!Array.isArray(array)) {
@@ -78,6 +79,19 @@ const TableList = () => {
       dataIndex: 'createTime',
       valueType: 'text',
       hideInSearch: true,
+    },
+    {
+      title: '登录次数',
+      dataIndex: 'loginnum',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '最近登录时间',
+      dataIndex: 'logintime',
+      valueType: 'text',
+      hideInSearch: true,
+      render: _ => moment(_ * 1000).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       title: '操作',
