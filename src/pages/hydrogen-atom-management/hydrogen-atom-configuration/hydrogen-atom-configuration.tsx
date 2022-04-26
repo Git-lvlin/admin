@@ -11,7 +11,9 @@ import { getQyzBuyConfig,
   supplyRentNoticeConten,
   firestRent,
   buySend,
-  rentSend
+  rentSend,
+  serviceOrManagerNotice,
+  serviceNoticeContent
 } from '@/services/hydrogen-atom-management/hydrogen-atom-configuration';
 import * as api from '@/services/setting/account-management';
 import { PageContainer } from '@/components/PageContainer';
@@ -421,6 +423,8 @@ const MessageNotification=(props) => {
   const formRef6=useRef()
   const formRef7=useRef()
   const formRef8=useRef()
+  const formRef9=useRef()
+  const formRef10=useRef()
   const [form2] = Form.useForm()
   const [form3] = Form.useForm()
   const [form4] = Form.useForm()
@@ -428,6 +432,8 @@ const MessageNotification=(props) => {
   const [form6] = Form.useForm()
   const [form7] = Form.useForm()
   const [form8] = Form.useForm()
+  const [form9] = Form.useForm()
+  const [form10] = Form.useForm()
   const [visible, setVisible] = useState(false);
   const [paramsType,setParamsType]=useState()
   const [onselect,setOnselect]=useState([])
@@ -505,6 +511,26 @@ const MessageNotification=(props) => {
         form8.setFieldsValue({
           remindTime:datail?.remindTime,
           content:datail?.content
+        })
+      }
+    })
+
+    serviceOrManagerNotice({}).then(res=>{
+      if(res.code==0){
+        const datail=JSON.parse(res.data?.value)
+        form9.setFieldsValue({
+          phone:datail?.phone,
+          managerId:parseInt(datail?.managerId),
+          code:res.data?.code
+        })
+      }
+    })
+
+    serviceNoticeContent({}).then(res=>{
+      if(res.code==0){
+        form10.setFieldsValue({
+          value:res.data?.value,
+          code:res.data?.code
         })
       }
     })
@@ -691,13 +717,13 @@ const MessageNotification=(props) => {
               return [];
           },
           }}
-        form={form4}
-        formRef={formRef4}
+        form={form9}
+        formRef={formRef9}
         {...formItemLayout}
       >
         <ProForm.Group>
           <ProFormText
-            name='value'
+            name='phone'
             label='通知客服'
             placeholder='接收用户欠租金通知短信的手机号码'
             rules={[
@@ -708,7 +734,7 @@ const MessageNotification=(props) => {
             labelCol={5}
           />
           <ProFormSelect
-            name="unit"
+            name="managerId"
             options = {onselect}
             placeholder="选择接收用户欠租金站内信的管理员"
             width={300}
@@ -719,7 +745,7 @@ const MessageNotification=(props) => {
           />
           <Form.Item>
           <Button type="primary" style={{ marginLeft:'170px' }} onClick={()=>{
-            formRef4?.current.submit()
+            formRef9?.current.submit()
           }}>
             确定
           </Button>
@@ -792,8 +818,8 @@ const MessageNotification=(props) => {
               return [];
           },
           }}
-        form={form5}
-        formRef={formRef5}
+        form={form10}
+        formRef={formRef10}
         {...formItemLayout}
       >
         <ProForm.Group>
@@ -825,7 +851,7 @@ const MessageNotification=(props) => {
           />
           <Form.Item>
           <Button type="primary" onClick={()=>{
-            formRef5?.current.submit()
+            formRef10?.current.submit()
           }}>
             确定
           </Button>
