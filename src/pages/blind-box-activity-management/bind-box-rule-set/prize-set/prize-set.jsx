@@ -318,6 +318,9 @@ export default (props) => {
                 />
         },
       render: (_,r) =>{
+        if(r?.assignType){
+          return <p>-</p>
+        }
         return <p>{_}%</p>
       }
     },
