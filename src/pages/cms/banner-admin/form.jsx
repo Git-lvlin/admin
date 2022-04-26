@@ -8,6 +8,7 @@ import ProForm, {
   ProFormTextArea,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
+import CheckBox from '@/components/checkbox';
 import { bannerAdd } from '@/services/cms/member/member';
 
 export default (props) => {
@@ -76,7 +77,11 @@ export default (props) => {
     {
       width: 351,
       height: 100,
-    }
+    },
+    {
+      width: 351,
+      height: 100,
+    },
   ]
 
   const waitTime = (values) => {
@@ -96,7 +101,7 @@ export default (props) => {
           '社区店': 4,
           '秒约爆品': 6,
           '周末狂欢': 7,
-          '拼团': 8,
+          '拼团': 9,
         }[detailData.location]
       }
     }
@@ -133,7 +138,7 @@ export default (props) => {
         4: '社区店',
         6: '秒约爆品',
         7: '周末狂欢',
-        8: '拼团',
+        9: '拼团',
       }[detailData.location]
       const { ...rest } = detailData;
       console.log('detailData', detailData)
@@ -174,7 +179,7 @@ export default (props) => {
             4: '社区店',
             6: '秒约爆品',
             7: '周末狂欢',
-            8: '拼团',
+            9: '拼团',
           }}
           placeholder="选择位置"
           rules={[{ required: true, message: '请选择位置!' }]}
@@ -234,12 +239,12 @@ export default (props) => {
         label="展示对象"
         initialValue={1}
         rules={[{ required: true, message: '请选择展示对象!' }]}
-        options={nowIndex==8?
+        options={nowIndex == 8 ?
           [{
             label: '所有用户',
             value: 1,
           }]
-          :[
+          : [
             {
               label: '所有用户',
               value: 1,
@@ -352,6 +357,19 @@ export default (props) => {
         rules={[{ required: true, message: '请选择展示类型!' }]}
         options={showType ? select1 : select2}
       />
+      {/* <Form.Item
+        name="test"
+      >
+        <CheckBox
+          options={[{
+            label: '安卓',
+            value: '1',
+          }, {
+            label: '苹果',
+            value: '2',
+          }]}
+        />
+      </Form.Item> */}
       <ProFormRadio.Group
         name="state"
         label="上线/下架"

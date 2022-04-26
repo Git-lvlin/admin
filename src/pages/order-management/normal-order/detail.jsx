@@ -173,6 +173,15 @@ const Detail = (props) => {
                       >
                         {ele.shippingCode}
                       </ProDescriptions.Item>
+                      {
+                        detailData.subType==3|| detailData.subType==4?
+                        <ProDescriptions.Item
+                          label="机器ID"
+                        >
+                          {detailData.deviceId}
+                        </ProDescriptions.Item>
+                        :null
+                      }
                       <ProDescriptions.Item
                         label="物流进度"
                       >
