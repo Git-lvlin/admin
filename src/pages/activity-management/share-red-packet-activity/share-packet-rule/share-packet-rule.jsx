@@ -326,7 +326,6 @@ export default (props) =>{
              :<EditableProTable
                 headerTitle="奖励金额(元）"
                 columns={columns}
-                name="table"
                 rowKey="id"
                 recordCreatorProps={false}
                 value={dataSource}

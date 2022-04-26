@@ -35,17 +35,17 @@ export default {
       component: './user-management/user-feedback',
       wrappers: [RouteWatcher],
     },
-    {
-      name: 'new-poster',
-      path: '/user-management/new-poster',
-      component: './user-management/new-poster',
-      wrappers: [RouteWatcher],
-    },
-    {
-      name: 'new-poster-new',
-      path: '/user-management/new-poster-new',
-      component: './user-management/new-poster-new',
-      wrappers: [RouteWatcher],
-    },
+    // {
+    //   name: 'new-poster',
+    //   path: '/user-management/new-poster',
+    //   component: './user-management/new-poster',
+    //   wrappers: [RouteWatcher],
+    // },
+    // {
+    //   name: 'new-poster-new',
+    //   path: '/user-management/new-poster-new',
+    //   component: './user-management/new-poster-new',
+    //   wrappers: [RouteWatcher],
+    // },
   ]
 }

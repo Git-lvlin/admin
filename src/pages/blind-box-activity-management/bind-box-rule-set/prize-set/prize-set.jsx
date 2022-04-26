@@ -389,7 +389,6 @@ export default (props) => {
     <EditableProTable
         rowKey="id"
         headerTitle="奖品设置"
-        name="table"
         value={dataSource}
         recordCreatorProps={false}
         columns={columns}
