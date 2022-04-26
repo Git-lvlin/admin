@@ -30,9 +30,7 @@ const Detail = ({id, visible, setVisible }) => {
       width={1200}
     >
        <Spin spinning={loading}>
-        <OrderDetailStatus 
-          orderSn={orderDetail?.trSn}
-          status={orderDetail?.status}
+        <OrderDetailStatus data={orderDetail}
         />
         <BasicInformation data={orderDetail?.order}/>
         <ReturnGoods data={{...orderDetail?.order,returnNum:orderDetail?.returnNum,refundMoney:orderDetail?.refundMoney,orderId:orderDetail?.orderId}}/>

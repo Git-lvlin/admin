@@ -27,6 +27,7 @@ import signActivityManagement from './routers/sign-activity-management'
 import BlindBoxActivityManagement from './routers/blind-box-activity-management'
 import ActivityManagement from './routers/activity-management'
 import GroupActivitiesManagement from './routers/group-activities-management'
+import HydrogenAtomManagement from './routers/hydrogen-atom-management'
 
 const { REACT_APP_ENV } = process.env;
 
@@ -99,6 +100,7 @@ const config = {
             BlindBoxActivityManagement,
             ActivityManagement,
             GroupActivitiesManagement,
+            HydrogenAtomManagement,
             {
               component: '404',
             },
