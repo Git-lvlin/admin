@@ -105,12 +105,12 @@ export default props=>{
                                 if(arr[field.name]){
                                   arr[field.name]=res?.data?.nickname
                                   if(!arr[field.name]){
-                                    arr.push('查询不到此用户')
+                                    arr[field.name]='查询不到此用户'
                                   }
                                 }else if(res?.data?.nickname){
-                                  arr.push(res?.data?.nickname)
+                                  arr[field.name]=res?.data?.nickname
                                 }else{
-                                  arr.push('查询不到此用户')
+                                  arr[field.name]='查询不到此用户'
                                 }
                                 const arr2=arr.filter((item) => item!== '')
                                 setNickname(arr2)
