@@ -102,7 +102,8 @@ function ReferralCommission () {
       title: '总提成金额(元)',
       dataIndex: 'totalAccount',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '总产品数',
