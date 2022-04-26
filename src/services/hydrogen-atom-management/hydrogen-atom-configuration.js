@@ -211,3 +211,38 @@ export const rentSend = async (params = {}, options = {}) => {
     code: res.code
   }
 }
+
+
+//查看客服或者管理员通知配置
+export const serviceOrManagerNotice = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/bizConfig/findByCode/SERVICE_OR_MANAGER_NOTICE', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}
+
+//查看客服或者管理员通知配置
+export const serviceNoticeContent = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/bizConfig/findByCode/SERVICE_NOTICE_CONTENT', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}

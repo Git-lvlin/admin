@@ -44,7 +44,16 @@ export default (props) => {
       )
      }else if(v=='SUPPLY_RENT_NOTICE_CONTENT'){
       return paramsType.value
-    }
+     }else if(v=='SERVICE_OR_MANAGER_NOTICE'){
+      return JSON.stringify(
+       {
+         phone:paramsType.phone,
+         managerId:paramsType.managerId
+       }
+     )
+     }else if(v=='SERVICE_NOTICE_CONTENT'){
+      return paramsType.value
+     }
   }
   return (
     <ModalForm

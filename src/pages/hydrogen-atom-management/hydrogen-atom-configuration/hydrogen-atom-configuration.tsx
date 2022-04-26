@@ -11,15 +11,19 @@ import { getQyzBuyConfig,
   supplyRentNoticeConten,
   firestRent,
   buySend,
-  rentSend
+  rentSend,
+  serviceOrManagerNotice,
+  serviceNoticeContent
 } from '@/services/hydrogen-atom-management/hydrogen-atom-configuration';
+import * as api from '@/services/setting/account-management';
 import { PageContainer } from '@/components/PageContainer';
 import { Divider, Form, Button,Descriptions,message,Select,Typography } from 'antd';
 import type { ProColumns,ActionType } from '@ant-design/pro-table';
 import ProForm, {
   ProFormText,
   ProFormSelect,
-  ProFormTimePicker
+  ProFormTimePicker,
+  ProFormCheckbox
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
 import moment from 'moment'
@@ -49,6 +53,16 @@ const formItemLayout = {
     },
   }
 };
+
+const checkConfirm = (rule, value, callback) => {
+  return new Promise(async (resolve, reject) => {
+    if (value && !/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(value)) {
+      await reject('请输入正确的手机号')
+    }else {
+      await resolve()
+    }
+  })
+}
 
 
 
@@ -409,6 +423,8 @@ const MessageNotification=(props) => {
   const formRef6=useRef()
   const formRef7=useRef()
   const formRef8=useRef()
+  const formRef9=useRef()
+  const formRef10=useRef()
   const [form2] = Form.useForm()
   const [form3] = Form.useForm()
   const [form4] = Form.useForm()
@@ -416,8 +432,18 @@ const MessageNotification=(props) => {
   const [form6] = Form.useForm()
   const [form7] = Form.useForm()
   const [form8] = Form.useForm()
+  const [form9] = Form.useForm()
+  const [form10] = Form.useForm()
   const [visible, setVisible] = useState(false);
   const [paramsType,setParamsType]=useState()
+  const [onselect,setOnselect]=useState([])
+  useEffect(()=>{
+    api.adminList({status:1}).then(res=>{
+      setOnselect(res.data?.map(ele=>(
+        {label:ele.nickname,value:ele.id}
+      )))
+    })
+  },[])
   useEffect(()=>{
     againRentNoticeTime({}).then(res=>{
       if(res.code==0){
@@ -485,6 +511,26 @@ const MessageNotification=(props) => {
         form8.setFieldsValue({
           remindTime:datail?.remindTime,
           content:datail?.content
+        })
+      }
+    })
+
+    serviceOrManagerNotice({}).then(res=>{
+      if(res.code==0){
+        const datail=JSON.parse(res.data?.value)
+        form9.setFieldsValue({
+          phone:datail?.phone,
+          managerId:parseInt(datail?.managerId),
+          code:res.data?.code
+        })
+      }
+    })
+
+    serviceNoticeContent({}).then(res=>{
+      if(res.code==0){
+        form10.setFieldsValue({
+          value:res.data?.value,
+          code:res.data?.code
         })
       }
     })
@@ -657,7 +703,56 @@ const MessageNotification=(props) => {
         </Form.Item>
         </ProForm.Group>
       </ProForm>
-
+      <Divider style={{ margin: '0 0 20px 0' }} />
+      <ProForm<{
+        days:[],
+        time:string
+          }>
+        onFinish={async (values) => {
+          setVisible(true)
+          setParamsType(values)
+        }}
+        submitter={{
+          render: (props, defaultDoms) => {
+              return [];
+          },
+          }}
+        form={form9}
+        formRef={formRef9}
+        {...formItemLayout}
+      >
+        <ProForm.Group>
+          <ProFormText
+            name='phone'
+            label='通知客服'
+            placeholder='接收用户欠租金通知短信的手机号码'
+            rules={[
+              { required: true, message: '请输入手机号码' },
+              { validator: checkConfirm}
+            ]}
+            width={300}
+            labelCol={5}
+          />
+          <ProFormSelect
+            name="managerId"
+            options = {onselect}
+            placeholder="选择接收用户欠租金站内信的管理员"
+            width={300}
+          />
+          <ProFormText
+            name='code'
+            hidden
+          />
+          <Form.Item>
+          <Button type="primary" style={{ marginLeft:'170px' }} onClick={()=>{
+            formRef9?.current.submit()
+          }}>
+            确定
+          </Button>
+        </Form.Item>
+        </ProForm.Group>
+      </ProForm>
+      <Divider style={{ margin: '0 0 20px 0' }} />
       <ProForm<{
         value:string
           }>
@@ -677,8 +772,8 @@ const MessageNotification=(props) => {
         <ProForm.Group>
           <ProFormText
             name='value'
-            width={800}
-            label="通知文案"
+            width={775}
+            label="用户通知文案"
             placeholder="请输入通知店主补租消息的文案，6-200个字符"
             rules={[
               { required: true, message: '请输入通知文案' },
@@ -710,7 +805,59 @@ const MessageNotification=(props) => {
         </Form.Item>
         </ProForm.Group>
       </ProForm>
-
+      <Divider style={{ margin: '0 0 20px 0' }} />
+      <ProForm<{
+        value:string
+          }>
+        onFinish={async (values) => {
+          setVisible(true)
+          setParamsType(values)
+        }}
+        submitter={{
+          render: (props, defaultDoms) => {
+              return [];
+          },
+          }}
+        form={form10}
+        formRef={formRef10}
+        {...formItemLayout}
+      >
+        <ProForm.Group>
+          <ProFormText
+            name='value'
+            width={775}
+            label="客服通知文案"
+            placeholder="请输入通知客服需店主补租消息的文案，6-200个字符"
+            rules={[
+              { required: true, message: '请输入通知文案' },
+              () => ({
+                validator(_, value) {
+                  if (value&&value.length<6) {
+                    return Promise.reject(new Error('请输入6-200个字符'));
+                  }
+                  return Promise.resolve();
+                },
+              })
+            ]}
+            fieldProps={{
+              maxLength:200
+            }}
+            labelCol={5}
+            extra={<p>此处设置站内信文案，<span style={{color:'#DBD0AC'}}>$(参数名)样式为消息参数不可拆散或修改</span></p>}
+          />
+          <ProFormText
+            name='code'
+            hidden
+          />
+          <Form.Item>
+          <Button type="primary" onClick={()=>{
+            formRef10?.current.submit()
+          }}>
+            确定
+          </Button>
+        </Form.Item>
+        </ProForm.Group>
+      </ProForm>
       <Divider style={{ margin: '0 0 20px 0' }} />
       <Title style={{ marginBottom: 10 }} level={5}>首次交租</Title>
       <ProForm<{
@@ -861,6 +1008,4 @@ const MessageNotification=(props) => {
       </ProCard>
     </PageContainer>
     )
-} 
-
-
+}
