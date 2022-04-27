@@ -38,7 +38,8 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
       occupationMode: type
     },
     3: !showTitle ? {
-      memberId
+      memberId,
+      flag: true
     }: 
     {
       memberDeviceId: memberId
@@ -68,8 +69,6 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
   useEffect(()=>{
     setLoad(true)
     api?.(params[type]).then(res => {
-      console.log(res);
-      
       setLoad(false)
       setData(res.data.records)
       setPageTotal(res.data.total)

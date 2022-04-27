@@ -188,7 +188,7 @@ export default function TransactionData () {
         request={findMemberDeviceTotal}
       />
       <ProTable<TableProps>
-        rowKey="storeNo"
+        rowKey="memberId"
         columns={tableColumns}
         request={findMemberDevicePage}
         columnEmptyText={false}
