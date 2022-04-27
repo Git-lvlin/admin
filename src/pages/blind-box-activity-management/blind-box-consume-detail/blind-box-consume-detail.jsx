@@ -118,6 +118,15 @@ export default () => {
           if(data.prizeInfo?.prizeStatus==0){
             return <p>未抽中</p>
           }
+          if(data.prizeInfo?.goodsType==2){
+            return <div style={{display:'flex'}}>
+                    <Image src={data.prizeInfo.imageUrl} alt="" width='50px' height='50px' />
+                    <div style={{marginLeft:'10px'}}>
+                      <h5>{data.prizeInfo.goodsName}</h5>
+                      <span style={{color:'red',fontSize:'10px'}}>面额：{data.prizeInfo.salePrice/100}元</span>
+                    </div>
+                  </div>
+          }
           return <div style={{display:'flex'}}>
                     <Image src={data.prizeInfo.imageUrl} alt="" width='50px' height='50px' />
                     <div style={{marginLeft:'10px'}}>
@@ -141,7 +150,13 @@ export default () => {
                   </>
           }else if(data.orderInfo.orderStatus==1){
             return <p>兑换中</p>
-          }else if(data.orderInfo.orderStatus==2){
+          }else if(data.prizeInfo?.goodsType==2){
+            return  <>
+                    <p>已提现</p>
+                    <p>提现单号：</p>
+                    <a onClick={() => {  history.push('/blind-box-activity-management/blind-box-withdraw-deposit-detail?sn='+data.orderInfo.orderSn) }}>{data.orderInfo.orderSn}</a>
+                    </>
+          }else if(data.prizeInfo.goodsType==1&&data.orderInfo.orderStatus==2){
             return  <>
                     <p>已兑换</p>
                     <p>订单号：</p>
