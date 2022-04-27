@@ -274,6 +274,9 @@ const Edit = props => {
         destroyOnClose: true,
         onClose: ()=> onClose()
       }}
+      initialValues={{
+        pushType: ['1']
+      }}
       form={form}
       submitter={{
         render: () => {
@@ -395,7 +398,8 @@ const Edit = props => {
         options={[
           {
             value: '1',
-            label: '站内信'
+            label: '站内信',
+            disabled: true,
           },
           {
             value: '2',
