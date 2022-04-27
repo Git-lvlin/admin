@@ -250,24 +250,14 @@ const Detail = (props) => {
                   <div>买家留言</div>
                   <div>{detailData?.note}</div>
                 </div>
-                {/* <div className={styles.box}>
+                {
+                  detailData?.contractUrl&&<div className={styles.box}>
                   <div>租赁合同</div>
                   <div>
-                    <a onClick={() => { setPreviewVisible(true); }}>点击查看</a>
-                    <Image
-                      width={200}
-                      style={{ display: 'none' }}
-                      src='https://images.pexels.com/photos/7737885/pexels-photo-7737885.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
-                      preview={{
-                        visible: previewVisible,
-                        src: 'https://images.pexels.com/photos/7737885/pexels-photo-7737885.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                        onVisibleChange: value => {
-                          setPreviewVisible(value)
-                        },
-                      }}
-                    />
-                    </div>
-                </div> */}
+                    <a href={detailData?.contractUrl} target="_blank">点击查看</a>
+                  </div>
+                </div>
+                }
               </div>
             </div>
           </div>
