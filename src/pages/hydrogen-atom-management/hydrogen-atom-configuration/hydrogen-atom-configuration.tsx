@@ -440,7 +440,7 @@ const MessageNotification=(props) => {
   useEffect(()=>{
     api.adminList({status:1}).then(res=>{
       setOnselect(res.data?.map(ele=>(
-        {label:ele.nickname,value:ele.id}
+        {label:ele.nickname,value:ele.targetId}
       )))
     })
   },[])
@@ -520,7 +520,7 @@ const MessageNotification=(props) => {
         const datail=JSON.parse(res.data?.value)
         form9.setFieldsValue({
           phone:datail?.phone,
-          managerId:parseInt(datail?.managerId),
+          managerId:datail?.managerId,
           code:res.data?.code
         })
       }
