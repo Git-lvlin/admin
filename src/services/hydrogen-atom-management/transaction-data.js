@@ -62,7 +62,7 @@ export const devices = async (params = {}, options = {}) => {
 
 // 租赁订单明细
 export const findOrderRecordList = async (params = {}, options = {}) => {
-  const { current = 1, pageSize = 10, ...rest } = params
+  const { current = 1, pageSize = 10, flag, ...rest } = params
   const res = await request('/auth/java-admin/iot/leaseOrder/findOrderRecordList', {
     method: 'POST',
     data: {
@@ -72,15 +72,18 @@ export const findOrderRecordList = async (params = {}, options = {}) => {
     },
     ...options
   })
-  const findStatistics = await request('/auth/java-admin/iot/leaseOrder/findStatistics', {
-    method: 'POST',
-    data: params,
-    showError: false
-  })
+  let findStatistics = {}
+  if(flag) {
+    findStatistics = await request('/auth/java-admin/iot/leaseOrder/findStatistics', {
+      method: 'POST',
+      data: params,
+      ...options
+    })
+  }
   return {
     data:{
       ...res.data,
-      ...findStatistics.data
+      ...findStatistics?.data
     },
     success: res.success,
     total: res.data.total
