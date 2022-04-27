@@ -143,29 +143,29 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'home-suspension',
+      path: '/cms/home-suspension',
+      component: './cms/home-suspension',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'generate-invitation-code',
       path: '/cms/generate-invitation-code',
       component: './cms/generate-invitation-code',
       wrappers: [RouteWatcher],
     },
-    // {
-    //   name: 'home-suspension',
-    //   path: '/cms/home-suspension',
-    //   component: './cms/home-suspension',
-    //   wrappers: [RouteWatcher],
-    // },
     {
       name: 'express-news',
       path: '/cms/express-news',
       component: './cms/express-news',
       wrappers: [RouteWatcher],
     },
-    {
-      name: 'king-kong-district',
-      path: '/cms/king-kong-district',
-      component: './cms/king-kong-district',
-      wrappers: [RouteWatcher],
-    },
+    // {
+    //   name: 'king-kong-district',
+    //   path: '/cms/king-kong-district',
+    //   component: './cms/king-kong-district',
+    //   wrappers: [RouteWatcher],
+    // },
     // {
     //   name: 'price-comparsion',
     //   path: '/cms/price-comparsion',
