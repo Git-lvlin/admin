@@ -72,14 +72,11 @@ export const findOrderRecordList = async (params = {}, options = {}) => {
     },
     ...options
   })
-  let findStatistics = {}
-  if(flag) {
-    findStatistics = await request('/auth/java-admin/iot/leaseOrder/findStatistics', {
-      method: 'POST',
-      data: params,
-      ...options
-    })
-  }
+  const findStatistics = flag && await request('/auth/java-admin/iot/leaseOrder/findStatistics', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
   return {
     data:{
       ...res.data,
