@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from "@ant-design/pro-table"
-import { Button, Dropdown, Menu, Image } from "antd"
+import { Button, Dropdown, Menu } from "antd"
 import { EllipsisOutlined } from "@ant-design/icons"
-
+import { history } from "umi"
 
 import type { ProColumns, ActionType } from "@ant-design/pro-table"
 import type { EquipmentItem } from "./data"
@@ -16,9 +16,7 @@ import DevicesDetail from "../components/devices-detail"
 
 export default function EquipmentManagement() {
   const [blockUpVisible, setBlockUpVisible] = useState<boolean>(false)
-  const [showImage, setShowImage] = useState<boolean>(false)
   const [showDivide, setShowDivide] = useState<boolean>(false)
-  const [imageSrc, setImageSrc] = useState<string>()
   const [imei, setImei] = useState<string>()
   const [id, setId] = useState<string>()
   const [type, setType] = useState<number>(0)
@@ -35,14 +33,8 @@ export default function EquipmentManagement() {
       <Menu>
         {
           data?.occupationMode === 1&&
-          <Menu.Item 
-            onClick={()=> {
-              setShowImage(true)
-              setImageSrc(data?.contractUrl)
-            }}
-            key="1"
-          >
-            协议
+          <Menu.Item key="1">
+            <a href={data?.contractUrl} target='blank'>协议</a>
           </Menu.Item>
         }
         <Menu.Item
@@ -343,17 +335,6 @@ export default function EquipmentManagement() {
           showTitle={showTitle}
         />
       }
-      <Image
-        width={200}
-        style={{ display: 'none' }}
-        preview={{
-          visible: showImage,
-          src: imageSrc,
-          onVisibleChange: value => {
-            setShowImage(value)
-          }
-        }}
-      />
     </PageContainer>
   )
 }
