@@ -125,7 +125,7 @@ export const queryMyCommissionDetail = async (params = {}, options = {}) => {
 
 // 操作日志
 export const findOptionLog = async (params = {}, options = {}) => {
-  const res = await request('/auth/java-admin/device/findOptionLog', {
+  const res = await request('/auth/java-admin/device/findOpLog', {
     method: 'POST',
     data: params,
     ...options
