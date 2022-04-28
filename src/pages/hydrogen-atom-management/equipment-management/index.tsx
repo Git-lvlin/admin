@@ -3,7 +3,6 @@ import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from "@ant-design/pro-table"
 import { Button, Dropdown, Menu } from "antd"
 import { EllipsisOutlined } from "@ant-design/icons"
-import { history } from "umi"
 
 import type { ProColumns, ActionType } from "@ant-design/pro-table"
 import type { EquipmentItem } from "./data"
