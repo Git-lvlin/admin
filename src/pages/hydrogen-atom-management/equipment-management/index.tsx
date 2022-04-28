@@ -33,7 +33,7 @@ export default function EquipmentManagement() {
         {
           data?.occupationMode === 1&&
           <Menu.Item key="1">
-            <a href={data?.contractUrl} target='blank'>协议</a>
+            <a href={data?.contractUrl} target='blank'>合同</a>
           </Menu.Item>
         }
         <Menu.Item
@@ -100,8 +100,7 @@ export default function EquipmentManagement() {
       valueEnum: {
         0: '解绑',
         1: '绑定'
-      },
-      hideInSearch: true
+      }
     },
     {
       title: '交易类型',
@@ -206,7 +205,7 @@ export default function EquipmentManagement() {
               ()=> {
                 setDevicesVisible(true)
                 setType(4)
-                setMemberId(r?.id)
+                setMemberId(r?.imei)
                 setMemberPhone(r?.memberPhone)
                 setShowTitle(true)
               }

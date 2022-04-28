@@ -174,14 +174,14 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
         <div key={idx}>
           <div className={styles.cardList}>
             <div>金额：{amountTransform(item.orderAmount, '/')}元</div>
-            <div>支付方式：{item.payType}</div>
+            <div>支付方式：{item.payTypeStr}</div>
           </div>
           <div className={styles.cardListContent}>
-            <div>启动时长：{item.deviceUseTime}</div>
+            <div>启动时长：{item.deviceUseTime}分钟</div>
             <div>时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</div>
           </div>
           <div className={styles.cardListContent}>
-            <div>机器ID：{item.imei}</div>
+            <div>机器ID：{item.deviceImei}</div>
             <div>支付编号：{item.orderSn}</div>
           </div>
           <Divider style={{margin: '10px 0 24px 0'}}/>
