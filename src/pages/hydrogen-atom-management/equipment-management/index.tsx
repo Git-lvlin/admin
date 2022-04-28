@@ -38,7 +38,7 @@ export default function EquipmentManagement() {
           <Menu.Item 
             onClick={()=> {
               setShowImage(true)
-              setImageSrc('')
+              setImageSrc(data?.contractUrl)
             }}
             key="1"
           >
