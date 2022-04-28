@@ -79,7 +79,10 @@ const BonusDetailManagement = () =>{
         'second': '秒约订单',
         'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
-        'settleChargeFee': '入驻服务费订单'
+        'settleChargeFee': '入驻服务费订单',
+        'wholesaleFresh': '集约批发-生鲜订单',
+        'hydrogenRent': '氢原子租金订单',
+        'hydrogen': '氢原子销售订单'
       },
       hideInTable: true
     },
