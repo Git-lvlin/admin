@@ -196,11 +196,11 @@ export default () => {
     }
     
     return (
-        <div style={{background:'#fff',padding:'50px'}}>
+    <div style={{background:'#fff',padding:'50px'}}>
         <Title style={{ marginBottom: 10 }} level={5}>续租</Title>
         <ProForm<{
-          days:[],
-          time:string,
+          days:[];
+          time:string;
           code:string
             }>
           onFinish={async (values) => {
@@ -242,9 +242,8 @@ export default () => {
           </Form.Item>
           </ProForm.Group>
         </ProForm>
-  
         <ProForm<{
-            value:string,
+            value:string;
             code:string
           }>
           onFinish={async (values) => {
@@ -296,12 +295,11 @@ export default () => {
           </Form.Item>
           </ProForm.Group>
         </ProForm>
-  
         <Divider style={{ margin: '0 0 20px 0' }} />
         <Title style={{ marginBottom: 10 }} level={5}>欠费补租</Title>
         <ProForm<{
-          days:[],
-          time:string,
+          days:[];
+          time:string;
           code:string
             }>
           onFinish={async (values) => {
@@ -345,9 +343,9 @@ export default () => {
         </ProForm>
         <Divider style={{ margin: '0 0 20px 0' }} />
         <ProForm<{
-          phone:string,
-          time:string,
-          managerId:string,
+          phone:string;
+          time:string;
+          managerId:string;
           code:string
             }>
           onFinish={async (values) => {
@@ -396,7 +394,7 @@ export default () => {
         </ProForm>
         <Divider style={{ margin: '0 0 20px 0' }} />
         <ProForm<{
-          value:string,
+          value:string;
           code:string
             }>
           onFinish={async (values) => {
@@ -450,7 +448,7 @@ export default () => {
         </ProForm>
         <Divider style={{ margin: '0 0 20px 0' }} />
         <ProForm<{
-          value:string,
+          value:string;
           code:string
             }>
           onFinish={async (values) => {
@@ -505,7 +503,7 @@ export default () => {
         <Divider style={{ margin: '0 0 20px 0' }} />
         <Title style={{ marginBottom: 10 }} level={5}>首次交租</Title>
         <ProForm<{
-          remindTime:string,
+          remindTime:string;
           content:string
             }>
           onFinish={async (values) => {
@@ -542,7 +540,7 @@ export default () => {
         <Divider style={{ margin: '0 0 20px 0' }} />
         <Title style={{ marginBottom: 10 }} level={5}>购买发货</Title>
         <ProForm<{
-          remindTime:string,
+          remindTime:string;
           content:string
             }>
           onFinish={async (values) => {
@@ -579,7 +577,7 @@ export default () => {
         <Divider style={{ margin: '0 0 20px 0' }} />
         <Title style={{ marginBottom: 10 }} level={5}>租赁发货</Title>
         <ProForm<{
-          remindTime:string,
+          remindTime:string;
           content:string
             }>
           onFinish={async (values) => {
@@ -622,6 +620,6 @@ export default () => {
           callback={()=>{ setParamsType(null)}}
           onClose={() =>{ setParamsType(null)}}
         />}
-        </div>
+    </div>
     );
-  };
+};
