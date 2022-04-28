@@ -75,7 +75,7 @@ export default () => {
     const [paramsType,setParamsType]=useState()
     const [onselect,setOnselect]=useState([])
     useEffect(()=>{
-      api.adminList({status:1}).then(res=>{
+      api.adminList({status:1,size:1000}).then(res=>{
         setOnselect(res.data?.map((ele:selectItem)=>(
           {label:ele.nickname,value:ele.targetId}
         )))
