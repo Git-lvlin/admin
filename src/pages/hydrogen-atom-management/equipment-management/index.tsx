@@ -33,7 +33,11 @@ export default function EquipmentManagement() {
         {
           data?.occupationMode === 1&&
           <Menu.Item key="1">
-            <a href={data?.contractUrl} target='blank'>合同</a>
+            {
+              data?.contractUrl?
+              <a href={data?.contractUrl} target='blank'>合同</a>:
+              '未签合同'
+            }
           </Menu.Item>
         }
         <Menu.Item
