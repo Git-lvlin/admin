@@ -63,7 +63,7 @@ const DivideDetail: FC<PropsDivide> = (props) => {
             <div className={styles.btn}>
               <a
                 key="1"
-                onClick={() =>  history.push('/hydrogen-atom-management/hydrogen-atom-configuration')}
+                onClick={() => {setVisible(false); history.push('/hydrogen-atom-management/hydrogen-atom-configuration')}}
               >
                 查看分成配置
               </a>
