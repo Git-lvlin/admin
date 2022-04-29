@@ -228,7 +228,7 @@ export default () => {
                 {content()}
               </Select>
             </Form.Item>
-            <ProFormTimePicker width={200} name="time"/>
+            <ProFormTimePicker width={200} name="time" fieldProps={{format:"HH:mm"}}/>
             <Form.Item>
             <ProFormText
               name='code'
@@ -327,7 +327,7 @@ export default () => {
                 {content()}
               </Select>
             </Form.Item>
-            <ProFormTimePicker width={200} name="time"/>
+            <ProFormTimePicker width={200} name="time" fieldProps={{format:"HH:mm"}}/>
             <ProFormText
               name='code'
               hidden
