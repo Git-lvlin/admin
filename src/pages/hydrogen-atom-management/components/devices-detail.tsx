@@ -232,7 +232,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
       visible={visible}
       onClose={()=>setVisible(false)}
       title={objTitle[type]}
-      width={450}
+      width={500}
       destroyOnClose={true}
     >
       <Spin delay={500} spinning={load}>
