@@ -165,7 +165,7 @@ export default function EquipmentManagement() {
       dataIndex: 'leaseStatus',
       valueType: 'select',
       valueEnum: {
-        0: '无租期',
+        0: ' ',
         1: '免租期',
         2: '租期中',
         3: '已逾期'
