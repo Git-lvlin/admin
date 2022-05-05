@@ -165,12 +165,25 @@ export default function EquipmentManagement() {
       dataIndex: 'leaseStatus',
       valueType: 'select',
       valueEnum: {
-        0: ' ',
         1: '免租期',
         2: '租期中',
         3: '已逾期'
       },
-      align: 'center'
+      align: 'center',
+      hideInTable: true
+    },
+    {
+      title: '租约状态',
+      dataIndex: 'leaseStatus',
+      valueType: 'select',
+      valueEnum: {
+        0: '-',
+        1: '免租期',
+        2: '租期中',
+        3: '已逾期'
+      },
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '累计缴租',
