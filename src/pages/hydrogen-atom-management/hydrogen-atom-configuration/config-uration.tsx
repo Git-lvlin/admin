@@ -186,7 +186,7 @@ export default () => {
             </Descriptions.Item>
             <Descriptions.Item labelStyle={{ textAlign: 'right', width: 230, display: 'inline-block' }} label="氢原子机器首次缴租最低缴租天数">{rentDetail?.firstRentDay}天</Descriptions.Item>
             <Descriptions.Item label="氢原子机器租金金额">
-              {amountTransform(rentDetail?.monthRentMoney,'/').toFixed(2)}元 / 月，{(((rentDetail?.monthRentMoney/moment().daysInMonth()))/100).toFixed(2)}元 / 天（四舍五入）
+              {amountTransform(rentDetail?.monthRentMoney,'/').toFixed(2)}元 / 月，固定按1月30天计算{((rentDetail?.monthRentMoney/30)/100).toFixed(2)}元 / 天（四舍五入）
             </Descriptions.Item>
             <Descriptions.Item labelStyle={{ textAlign: 'right', width: 230, display: 'inline-block' }} label="氢原子机器首次启用后免租期天数">
               <p>{rentDetail?.firstFreeRentDay}天</p>
@@ -196,8 +196,14 @@ export default () => {
               {rentDetail?.autoConfirmTime}天
             </Descriptions.Item>
             <Descriptions.Item labelStyle={{ textAlign: 'right', width: 400, display: 'inline-block' }} label="氢原子机器租赁时租金可逾期天数（租约逾期至停用天数）">
-              {rentDetail?.exceedStopDay}天
-              <p style={{color:'#FBB336'}}>（从机器租约到期日的次日算起）</p>
+              <ProFormText
+                readonly
+                fieldProps={{
+                  value:rentDetail?.exceedStopDay
+                }}
+              />
+              天
+              <p style={{color:'#FBB336'}}>（从机器租约到期日的次日算起（除首次缴租外,指定续租可缴租时段即为可逾期天数：每月1日-3日））</p>
             </Descriptions.Item>
         </Descriptions>
 
@@ -223,7 +229,7 @@ export default () => {
           form={form}
         >
           <ProForm.Group>
-            <p><span style={{color:'#FF4D99',fontSize:'20px'}}>*</span>第2次缴租金优惠配置：从机器过免租期往后的</p>
+            <p><span style={{color:'#FF4D99',fontSize:'20px'}}>*</span>租赁店主集约业绩考核：缴纳第</p>
             <ProFormSelect
               width="xs"
               options={[
@@ -263,12 +269,11 @@ export default () => {
               name="month"
               rules={[{ required: true, message: '请选择月份' }]}
             />
-            <p>月内： </p>
-            <p style={{color:'#FBB336'}}>（实际缴租时先增加优惠金额，然后再按照配置优惠）</p>
+            <p>个整月管理费时： </p>
           </ProForm.Group>
 
           <ProForm.Group>
-            <p>上月集约金额达到</p>
+            <p>最近3个整月任意1月集约金额未达到</p>
             <ProFormText
               name='arrive'
               width="md"
@@ -288,7 +293,7 @@ export default () => {
                 })
               ]}
             />
-            <p>时，缴租租金优惠</p>
+            <p>时，需额外缴纳</p>
             <ProFormText
               name='rentCheap'
               width="md"
@@ -309,10 +314,10 @@ export default () => {
               ]}
               extra={<span style={{color:'#FBB336'}}>此部分不参与分成</span>}
             />
-            <p>（服务费）</p>
+            <p>额外管理费</p>
           </ProForm.Group>
 
-          <p>其他时间：</p>
+          <p>第  4  个整月之后缴纳管理费时：</p>
 
           <ProForm.Group>
             <p>上月集约金额达到</p>
@@ -335,7 +340,7 @@ export default () => {
                 })
               ]}
             />
-            <p>时，缴租租金优惠</p>
+            <p>时，需额外缴纳</p>
             <ProFormText
               name='rentCheap2'
               width="md"
@@ -356,7 +361,7 @@ export default () => {
               ]}
               extra={<span style={{color:'#FBB336'}}>此部分不参与分成</span>}
             />
-            <p>（服务费）</p>
+            <p>额外管理费</p>
             <ProFormText
               name='code'
               hidden
@@ -370,6 +375,7 @@ export default () => {
           </Form.Item>
           </ProForm.Group>
         </ProForm>
+        <p style={{color:'#F8A618',fontWeight:'bold'}}>说明：在 4 个整月前缴管理费不进行集约业绩考核</p>
         {visible && <ConfirmModel
           visible={visible}
           setVisible={setVisible}
