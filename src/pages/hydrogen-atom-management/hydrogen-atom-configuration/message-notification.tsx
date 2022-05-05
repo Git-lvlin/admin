@@ -224,6 +224,7 @@ export default () => {
                 style={{ width: '400px' }}
                 placeholder="请选择提醒的通知时间"
                 tagRender={tagRender}
+                disabled
               >
                 {content()}
               </Select>
@@ -296,7 +297,7 @@ export default () => {
           </ProForm.Group>
         </ProForm>
         <Divider style={{ margin: '0 0 20px 0' }} />
-        <Title style={{ marginBottom: 10 }} level={5}>欠费补租</Title>
+        <Title style={{ marginBottom: 10 }} level={5}>从未缴租时欠费补租</Title>
         <ProForm<{
           days:[];
           time:string;
@@ -316,7 +317,7 @@ export default () => {
           {...formItemLayout}
         >
           <ProForm.Group>
-            <Form.Item labelCol={6} name='days' label="通知时间" rules={[{ required: true, message: '请输入通知时间' }]}>
+            <Form.Item labelCol={6} name='days' label="通知时间 : 逾期后第" rules={[{ required: true, message: '请输入通知时间' }]}>
               <Select
                 mode="multiple"
                 allowClear
@@ -327,6 +328,7 @@ export default () => {
                 {content()}
               </Select>
             </Form.Item>
+            <p>天</p>
             <ProFormTimePicker width={200} name="time" fieldProps={{format:"HH:mm"}}/>
             <ProFormText
               name='code'
