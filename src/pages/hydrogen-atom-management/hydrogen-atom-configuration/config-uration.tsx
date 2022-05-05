@@ -24,6 +24,7 @@ type activityItem={
     businessDeptCommission: number;
     provinceAgentCommission: number;
     cityAgentCommission: number;
+    divideExplain: string
 }
 
 type buyConfigItem={
@@ -277,17 +278,20 @@ export default () => {
                   label: '9',
                 }        
               ]}
+              initialValue={4}
               name="month"
+              disabled
               rules={[{ required: true, message: '请选择月份' }]}
             />
             <p>个整月管理费时： </p>
           </ProForm.Group>
           <ProForm.Group>
-            <ProFormDependency name={['month']}>
+            {/* <ProFormDependency name={['month']}>
                   {({ month }) => { 
                       return <p>最近{parseInt(month-1)}个整月任意1月集约金额未达到</p>
                 }}
-            </ProFormDependency>
+            </ProFormDependency> */}
+            <p>最近3个整月任意1月集约金额未达到</p>
             <ProFormText
               name='arrive'
               width="md"
@@ -330,11 +334,12 @@ export default () => {
             />
             <p>额外管理费</p>
           </ProForm.Group>
-            <ProFormDependency name={['month']}>
+            {/* <ProFormDependency name={['month']}>
                   {({ month }) => { 
                       return <p>第  {month}  个整月之后缴纳管理费时：</p>
                 }}
-            </ProFormDependency>
+            </ProFormDependency> */}
+            <p>第  5  个整月之后缴纳管理费时：</p>
           <ProForm.Group>
             <p>上月集约金额达到</p>
             <ProFormText
