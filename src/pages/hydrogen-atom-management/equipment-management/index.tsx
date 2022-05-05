@@ -33,7 +33,11 @@ export default function EquipmentManagement() {
         {
           data?.occupationMode === 1&&
           <Menu.Item key="1">
-            <a href={data?.contractUrl} target='blank'>合同</a>
+            {
+              data?.contractUrl?
+              <a href={data?.contractUrl} target='blank'>合同</a>:
+              '未签合同'
+            }
           </Menu.Item>
         }
         <Menu.Item
@@ -161,12 +165,25 @@ export default function EquipmentManagement() {
       dataIndex: 'leaseStatus',
       valueType: 'select',
       valueEnum: {
-        0: '无租期',
         1: '免租期',
         2: '租期中',
         3: '已逾期'
       },
-      align: 'center'
+      align: 'center',
+      hideInTable: true
+    },
+    {
+      title: '租约状态',
+      dataIndex: 'leaseStatus',
+      valueType: 'select',
+      valueEnum: {
+        0: '-',
+        1: '免租期',
+        2: '租期中',
+        3: '已逾期'
+      },
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '累计缴租',
