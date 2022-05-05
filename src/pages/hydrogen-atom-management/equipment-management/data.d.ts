@@ -20,6 +20,7 @@ export type EquipmentItem = {
 	storeNo: string;
 	leaseStatus: string;
 	contractUrl: string;
+	bindStatus: number;
 }
 
 export type ModalFormProps = {

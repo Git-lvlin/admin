@@ -40,18 +40,21 @@ export default function EquipmentManagement() {
             }
           </Menu.Item>
         }
-        <Menu.Item
-          key="2"
-          onClick={()=>{ 
-            setShowDivide(true)
-            setId(data?.id)
-            setImei(data?.imei)
-            setUser(data?.memberPhone)
-            setType(data?.occupationMode)
-          }}
-        >
+        {
+          data?.bindStatus !== 0 &&
+          <Menu.Item
+            key="2"
+            onClick={()=>{ 
+              setShowDivide(true)
+              setId(data?.id)
+              setImei(data?.imei)
+              setUser(data?.memberPhone)
+              setType(data?.occupationMode)
+            }}
+          >
             分成
           </Menu.Item>
+        }
         <Menu.Item
           key="3"
           onClick={()=>{
@@ -274,7 +277,7 @@ export default function EquipmentManagement() {
                   setType(2)
                   setMemberPhone(r?.memberPhone)
                 }}
-                disabled={r?.status === 0 || r?.status === 1}
+                disabled={ !r?.status || r?.status === 0 || r?.status === 1}
               >
                 启用
               </Button> ||
