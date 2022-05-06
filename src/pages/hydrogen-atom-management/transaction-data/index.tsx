@@ -10,6 +10,7 @@ import type { DescriptionsProps, TableProps } from "./data"
 
 import { findMemberDeviceTotal, findMemberDevicePage } from "@/services/hydrogen-atom-management/transaction-data"
 import DevicesDetail from "../components/devices-detail"
+import { getPageQuery } from "@/utils/utils"
 
 export default function TransactionData () {
   const [devicesVisible, setDevicesVisible] = useState<boolean>(false)
@@ -90,7 +91,17 @@ export default function TransactionData () {
     {
       title: '手机号码',
       dataIndex: 'memberPhone',
-      align: 'center'
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      dataIndex: 'memberPhone',
+      align: 'center',
+      fieldProps: {
+        placeholder: '请输入手机号码或社区店ID'
+      },
+      initialValue: getPageQuery().memberPhone,
+      hideInTable: true
     },
     {
       title: '头像',
