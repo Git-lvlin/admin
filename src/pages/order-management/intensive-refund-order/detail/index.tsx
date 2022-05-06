@@ -82,7 +82,7 @@ type AuditRecord={
   const columns2:ProColumns<AuditRecord>[]= [
     {
       title: '审核人员账号',
-      dataIndex: 'operateId',
+      dataIndex: 'operateName',
       valueType: 'text',
     },
     {
