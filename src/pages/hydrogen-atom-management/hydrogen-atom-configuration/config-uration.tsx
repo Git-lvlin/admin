@@ -13,7 +13,6 @@ import ProForm, {
   ProFormDependency
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
-import moment from 'moment'
 import ConfirmModel from './confirm-model'
 
 type activityItem={
@@ -389,7 +388,7 @@ export default () => {
             />
             <Form.Item>
             <Button type="primary" onClick={()=>{
-              formRef?.current.submit()
+              formRef?.current?.submit()
             }}>
               确定
             </Button>
