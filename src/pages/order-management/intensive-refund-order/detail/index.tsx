@@ -86,12 +86,6 @@ type AuditRecord={
       valueType: 'text',
     },
     {
-      title: '审核人员名称',
-      dataIndex: 'operateName',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
       title: '审核时间',
       dataIndex: 'createTime',
       valueType: 'text',
