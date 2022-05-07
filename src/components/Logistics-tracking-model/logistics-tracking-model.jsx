@@ -37,7 +37,7 @@ export default props=>{
             <Timeline>
             {
                 record&&record.map(ele=>{
-                return  <Timeline.Item>
+                return  <Timeline.Item key={ele.time}>
                             <p>{ele.content}</p>
                             <p style={{color:"#C7C7C7"}}>{ele.time}</p>
                         </Timeline.Item>
