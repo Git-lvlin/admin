@@ -185,7 +185,7 @@ const SaveMoney = () => {
               取消选择
             </a>
           </span>
-          <span>{`待发布: ${selectedRows.reduce(
+          <span>{`待发布: ${selectedRows?.reduce(
               (pre, item) => {
                 if (item.status === 1) {
                   return pre += 1
@@ -194,7 +194,7 @@ const SaveMoney = () => {
               },
               0,
             )} 个`}</span>
-            <span>{`已发布: ${selectedRows.reduce(
+            <span>{`已发布: ${selectedRows?.reduce(
               (pre, item) => {
                 if(item.status === 2) {
                   return pre += 1
