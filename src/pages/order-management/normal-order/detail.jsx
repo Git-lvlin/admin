@@ -67,7 +67,7 @@ const Detail = (props) => {
           <Steps progressDot current={getCurrent()}>
             {
               detailData?.nodeList?.map(item => (
-                <Step title={item.event} description={<><div>{item.eventTime?.replace('T', ' ')}</div></>} />
+                <Step key={item.event} title={item.event} description={<><div>{item.eventTime?.replace('T', ' ')}</div></>} />
               ))
             }
           </Steps>
@@ -163,7 +163,7 @@ const Detail = (props) => {
                 </div>
                 {
                   detailData.logisticsList && detailData.logisticsList.map((ele, idx) => (
-                    <ProDescriptions style={{ padding: '20px' }} column={2} title={"包裹" + parseInt(idx + 1)}>
+                    <ProDescriptions key={ele.id} style={{ padding: '20px' }} column={2} title={"包裹" + parseInt(idx + 1)}>
                       <ProDescriptions.Item
                         label="快递公司"
                       >
