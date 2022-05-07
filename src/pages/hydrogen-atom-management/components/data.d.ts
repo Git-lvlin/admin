@@ -5,6 +5,7 @@ export type PropsDevices = {
   memberId?: string
   memberPhone?: string
   showTitle?: boolean
+  imei?: string
 }
 
 export type PropsData = {
@@ -26,6 +27,8 @@ export type PropsData = {
   bindPhone: string
   opType: number
   createRole: string
+  nickName: string
+  remark: string
 }
 
 export type PropsStatistics = {

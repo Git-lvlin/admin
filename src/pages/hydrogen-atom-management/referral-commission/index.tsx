@@ -1,20 +1,23 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from "@ant-design/pro-table"
 
 import type { ProColumns } from "@ant-design/pro-table"
 import type { PropsTable, PropsExpand, PropsExpandTable } from "./data"
 import type { FC } from 'react'
+import type { FormInstance } from "@ant-design/pro-form"
 
 import { queryStatisticsCommissionList } from "@/services/hydrogen-atom-management/referral-commission"
 import { amountTransform } from '@/utils/utils'
 import DevicesDetail from "../components/devices-detail"
+import Export from "@/components/export"
 
 function ReferralCommission () {
   const [devicesVisible, setDevicesVisible] = useState<boolean>(false)
   const [type, setType] = useState<number>(0)
   const [memberId, setMemberId] = useState<string>()
   const [memberPhone, setMemberPhone] = useState<string>()
+  const  form = useRef<FormInstance>()
 
   const Expandable: FC<PropsExpandTable> = ({data}) => {
     
@@ -150,6 +153,19 @@ function ReferralCommission () {
       title: '被推荐人手机',
       dataIndex: 'buyMobile',
       hideInTable: true
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      align: 'center',
+      render: (_, r) => (
+        <Export
+          type='queryMyCommissionSubListExport'
+          conditions={{pMemId: r?.pMemId}}
+          slot={<a>导出</a>}
+          slotHistory={e => <a onClick={e}>···</a>}
+        />
+      )
     }
   ]
 
@@ -160,6 +176,7 @@ function ReferralCommission () {
         columns={columns}
         request={queryStatisticsCommissionList}
         options={false}
+        formRef={form}
         pagination={{
           pageSize: 10,
           showQuickJumper: true
@@ -167,7 +184,12 @@ function ReferralCommission () {
         search={{
           labelWidth: 'auto',
           optionRender: (searchConfig, props, dom)=> [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export
+              type='queryStatisticsCommissionListExport'
+              conditions={{...form.current?.getFieldsValue()}}
+              key='export'
+            />
           ]
         }}
         expandable={{expandedRowRender: (r: PropsTable)=> <Expandable data={r.subs}/>}}

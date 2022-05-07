@@ -18,9 +18,10 @@ export type EquipmentItem = {
 	startSum: number;
 	status: number;
 	storeNo: string;
-	leaseStatus: string;
+	leaseStatus: number;
 	contractUrl: string;
 	bindStatus: number;
+	leaseDeadline: string;
 }
 
 export type ModalFormProps = {
@@ -31,6 +32,8 @@ export type ModalFormProps = {
 	refs: MutableRefObject<ActionType>
 	user?: string
 	phone?: string
+	status?: number
+	expire?: string
 }
 
 export type PropsDivide = {
@@ -40,4 +43,16 @@ export type PropsDivide = {
 	imei?: string
 	user?: string
 	type: number
+}
+
+export type OptProps = {
+	remark?: string
+	packageType?: number
+	amount?: number
+}
+
+export type ModificationProps = {
+	visible: boolean
+	setVisible: React.Dispatch<React.SetStateAction<boolean>>
+	imei?: string
 }
