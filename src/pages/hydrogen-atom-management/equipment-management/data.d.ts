@@ -48,7 +48,8 @@ export type PropsDivide = {
 export type OptProps = {
 	remark?: string
 	packageType?: number
-	amount?: number
+	amount?: number,
+	useTime?: string
 }
 
 export type ModificationProps = {
