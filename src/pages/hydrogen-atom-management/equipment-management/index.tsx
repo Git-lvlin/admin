@@ -118,8 +118,8 @@ export default function EquipmentManagement() {
   const getFieldsValue = () => {
     const { createTime, ...rest } = form.current?.getFieldsValue()
     return {
-      tradeStartTime: createTime?.[0],
-      tradeEndTime: createTime?.[1],
+      tradeStartTime: createTime?.[0].format('YYYY-MM-DD HH:mm:ss'),
+      tradeEndTime: createTime?.[1].format('YYYY-MM-DD HH:mm:ss'),
       ...rest
     }
   }

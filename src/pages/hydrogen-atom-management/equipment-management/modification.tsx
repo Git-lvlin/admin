@@ -9,12 +9,24 @@ import type{ FC } from "react"
 import { ModificationProps, OptProps } from "./data"
 
 import styles from "./styles.less"
+import { updateUseTime } from '@/services/hydrogen-atom-management/equipment-management'
 
 const Modification: FC<ModificationProps> = (props) => {
   const { visible, setVisible, imei } = props
 
   const submit = (v: OptProps) => {
-    
+    new Promise((resolve, reject) => {
+      updateUseTime({
+        imei,
+        useTime: v.useTime
+      }).then(res => {
+        if(res.success) {
+          resolve('')
+        } else {
+          reject()
+        }
+      })
+    })
   }
 
   const formItemLayout = {
@@ -43,7 +55,7 @@ const Modification: FC<ModificationProps> = (props) => {
       <ProForm.Item label='当前单次使用时长'>{  }</ProForm.Item>
       <ProFormDigit
         label='更新后单次使用时长'
-        name=''
+        name='useTime'
         width='sm'
         rules={[{
           required: true,
