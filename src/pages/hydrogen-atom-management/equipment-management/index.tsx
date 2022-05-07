@@ -36,7 +36,6 @@ export default function EquipmentManagement() {
   const form = useRef<FormInstance>()
 
   const menu = (data: EquipmentItem) => {
-    
     return (
       <Menu>
         {
@@ -106,6 +105,7 @@ export default function EquipmentManagement() {
               setPayFeeVisible(true)
               setImei(data?.imei)
               setExpire(data?.leaseDeadline)
+              setMemberPhone(data?.memberPhone)
             }}
           >
             开启缴费入口
@@ -404,6 +404,7 @@ export default function EquipmentManagement() {
           id={imei}
           refs={actRef}
           expire={expire}
+          phone={memberPhone}
         />
       }
       {

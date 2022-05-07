@@ -47,7 +47,7 @@ export type PropsDivide = {
 
 export type OptProps = {
 	remark?: string
-	packageType?: number
+	type?: number
 	amount?: number,
 	useTime?: string
 }
@@ -56,4 +56,13 @@ export type ModificationProps = {
 	visible: boolean
 	setVisible: React.Dispatch<React.SetStateAction<boolean>>
 	imei?: string
+}
+
+export type InfoProps = {
+	useTime?: string
+	amount?: number
+	dayAmount?: number
+	deadlineDate: string
+	nowDate: string
+	sumDay: number
 }

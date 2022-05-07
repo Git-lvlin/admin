@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import ProForm, { 
   ModalForm,
   ProFormTextArea
@@ -6,13 +7,22 @@ import { ExclamationCircleOutlined } from "@ant-design/icons"
 import moment from 'moment'
 
 import type{ FC } from "react"
-import type { ModalFormProps, OptProps } from "./data"
+import type { ModalFormProps, OptProps, InfoProps } from "./data"
 
 import styles from './styles.less'
-import { opt } from '@/services/hydrogen-atom-management/equipment-management'
+import { opt, findMachinePay } from '@/services/hydrogen-atom-management/equipment-management'
 
 const BlockUp: FC<ModalFormProps> = (props) => {
   const { visible, setVisible, id, type, refs, user, phone, status, expire } = props
+  const [info, setInfo] = useState<InfoProps>()
+
+  useEffect(()=> {
+    findMachinePay({
+      imei: id
+    }).then(res => {
+      setInfo(res.data)
+    })
+  }, [])
   
   const submit = (v: OptProps) => {
     new Promise((resolve, reject) => {
@@ -20,9 +30,7 @@ const BlockUp: FC<ModalFormProps> = (props) => {
         imei: id,
         type,
         phone,
-        remark: v.remark,
-        packageType: v.packageType,
-        amount: v.amount
+        remark: v.remark
       },
       {
         showSuccess: true,
@@ -65,7 +73,14 @@ const BlockUp: FC<ModalFormProps> = (props) => {
             <ExclamationCircleOutlined/>
             是否确定{type === 1 ? '停用' : '启用'}机器
           </div>
-          <div className={styles.text}>{type === 1 ? '停用' : '启用'}后机器{type === 1 ? '将无法运营' : '即可正常使用'}</div>
+          {
+            status !== 3 &&
+            <div className={styles.text}>{type === 1 ? '停用' : '启用'}后机器{type === 1 ? '将无法运营' : '即可正常使用'}</div>
+          }
+          {
+            status === 3 &&
+            <div className={styles.overdue}>此操作为逾期店主免费开启使用至月底，若要逾期店主缴费才能使用请开启缴费入口（当前操作后店主即可正常使用机器）</div>
+          }
           <ProFormTextArea
             label={type === 1 ? '停用理由' : '启用说明'}
             name="remark"
@@ -115,8 +130,11 @@ const BlockUp: FC<ModalFormProps> = (props) => {
           }
           {
             (status === 3 && type === 2)&&
-            <ProForm.Item label='启用后租期截止日期'>
-              11
+            <ProForm.Item 
+              label='启用后租期截止日期'
+              extra={<span>{info?.nowDate}——{info?.deadlineDate}共{info?.sumDay}天</span>}
+            >
+              {info?.deadlineDate}（即日起至月底 ）
             </ProForm.Item>
           }
         </>:

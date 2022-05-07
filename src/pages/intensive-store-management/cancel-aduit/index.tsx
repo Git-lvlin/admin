@@ -190,11 +190,11 @@ const CancelAduit: FC = () => {
       fixed: 'right',
       width: '100px',
       render: (_, data)=> (
-        <Space size={20}>
-          <a key="1" onClick={()=> {setSelectItem(data.storeNo); setDetailVisible(true)}}>详情</a>
+        <Space size='small'>
+          <a onClick={()=> {setSelectItem(data.storeNo); setDetailVisible(true)}}>详情</a>
           {
             data.verifyStatus === 6 &&
-            <a key="2" onClick={()=> {setData(data); setAduitVisible(true)}}>审核</a>
+            <a onClick={()=> {setData(data); setAduitVisible(true)}}>审核</a>
           }
         </Space>
       )
