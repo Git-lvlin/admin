@@ -10,7 +10,7 @@ import styles from "./styles.less"
 import { amountTransform } from "@/utils/utils"
 
 const DevicesDetail: FC<PropsDevices> = (props) => {
-  const {visible, setVisible, type, memberId, memberPhone, showTitle} = props
+  const {visible, setVisible, type, memberId, memberPhone, showTitle, imei} = props
 
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number>(10)
@@ -48,7 +48,8 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
       occupantId: memberId
     }:
     {
-      deviceImei: memberId
+      occupantId: memberId,
+      deviceImei: imei
     },
     5: {
       buyId: memberId
@@ -215,11 +216,14 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
         <div key={idx}>
           <div className={styles.cardList}>
             <div>操作动作：{options[item.opType]}</div>
-            <div>操作人：{item.createRole}</div>
+            <div>操作人：{item.nickName}（{item.createRole}）</div>
           </div>
           <div className={styles.cardListContent}>
             <div>被绑手机：{item.bindPhone}</div>
             <div>操作时间：{item.createTime}</div>
+          </div>
+          <div className={styles.cardListContent}>
+            <div>操作说明：{item.remark}</div>
           </div>
           <Divider style={{margin: '10px 0 24px 0'}}/>
         </div>

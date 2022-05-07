@@ -6,7 +6,6 @@ import ProForm, {
   ProFormDependency
 } from '@ant-design/pro-form'
 import { Form } from 'antd'
-import { history } from "umi"
 
 import type { FC } from 'react'
 import type { aduitProps, formWrapData } from './data'
