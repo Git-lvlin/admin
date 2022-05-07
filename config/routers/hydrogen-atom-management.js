@@ -10,5 +10,11 @@ export default {
         component: './hydrogen-atom-management/hydrogen-atom-configuration',
         wrappers: [RouteWatcher],
       },
+      {
+        name: 'hydrogen-atom-start-recording',
+        path: '/hydrogen-atom-management/hydrogen-atom-start-recording',
+        component: './hydrogen-atom-management/hydrogen-atom-start-recording',
+        wrappers: [RouteWatcher],
+      },
     ]
   }
