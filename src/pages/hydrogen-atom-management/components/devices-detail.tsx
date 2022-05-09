@@ -93,7 +93,77 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
     2: '解绑',
     3: '激活',
     4: '启动',
-    5: '禁用'
+    5: '禁用',
+    6: '开启缴费入口',
+    7: '修改使用时长'
+  }
+
+  const androidStatus = {
+    0: '无租期',
+    1: '免租期',
+    2: '租期中',
+    3: '已逾期'
+  }
+
+  const extraRecords = (type: number, data: PropsData, item: PropsData) => {
+    
+    switch(type) {
+      case 2:
+        return (
+          <div className={styles.cardListContent}>
+            <div></div>
+            <div>当前租期截止日：{data?.leaseDeadline}</div>
+          </div>
+        )
+      case 3:
+        return (
+          <div className={styles.cardListContent}>
+            <div>启用说明：{item?.remark}</div>
+            <div>租期状态：{androidStatus[data?.leaseStatus]}</div>
+            {
+              data?.leaseStatus === 3 &&
+              <div>租期截止日：{data?.leaseDeadline}</div>
+            }
+          </div>
+        )
+      case 4:
+        return (
+          <div className={styles.cardListContent}>
+            <div>缴费金额：{data?.orderAmount}</div>
+            <div>支付方式：{data?.payType}</div>
+            <div>支付单号：{data?.orderSn}</div>
+          </div>
+        )
+      case 5:
+        return (
+          <div className={styles.cardListContent}>
+            <div>停用理由：{item?.remark}</div>
+            <div>租期状态：{androidStatus[data?.leaseStatus]}</div>
+          </div>
+        )
+      case 6:
+        return (
+          <>
+            <div className={styles.cardListContent}>
+              <div>开启说明：{item?.remark}</div>
+              <div>当前租期截止时间：{data?.leaseDeadline}</div>
+            </div>
+            <div className={styles.cardListContent}>
+              <div>指定缴费金额：{data?.amount}</div>
+              <div>缴费后租期截止日：{data?.deadlineDate}</div>
+            </div>
+          </>
+        )
+      case 7:
+        return (
+          <div className={styles.cardListContent}>
+            <div>当前单次使用时长：{data?.nowUseTime}</div>
+            <div>更新后单次使用时长：{data?.updUseTime}</div>
+          </div>
+        )
+      default:
+        return ''
+    }
   }
 
   useEffect(()=>{
@@ -241,22 +311,31 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
       ))
     ),
     6: (
-      data?.map((item, idx) => (
-        <div key={idx}>
-          <div className={styles.cardList}>
-            <div>操作动作：{options[item.opType]}</div>
-            <div>操作人：{item.nickName}（{item.createRole}）</div>
+      data?.map((item, idx) => {
+        return (
+          <div key={idx}>
+            <div className={styles.cardList}>
+              <div>操作动作：{options[item.opType]}</div>
+              <div>操作人：{item.nickName}（{item.createRole}）</div>
+            </div>
+            <div className={styles.cardListContent}>
+              <div>被绑手机：{item.bindPhone}</div>
+              <div>操作时间：{item.createTime}</div>
+            </div>
+            {
+              item.opType !== 1 &&
+              <div className={styles.cardList}>
+                <div>额外记录</div>
+              </div>
+            }
+            {
+              item.opType !== 1 &&
+              extraRecords(item?.opType, JSON.parse(item.extraRecord), item)
+            }
+            <Divider style={{margin: '10px 0 24px 0'}}/>
           </div>
-          <div className={styles.cardListContent}>
-            <div>被绑手机：{item.bindPhone}</div>
-            <div>操作时间：{item.createTime}</div>
-          </div>
-          <div className={styles.cardListContent}>
-            <div>额外记录：{item.remark}</div>
-          </div>
-          <Divider style={{margin: '10px 0 24px 0'}}/>
-        </div>
-      ))
+        )
+      })
     )
   }
 

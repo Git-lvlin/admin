@@ -164,6 +164,7 @@ function ReferralCommission () {
           conditions={{pMemId: r?.pMemId}}
           slot={<a>导出</a>}
           slotHistory={e => <a onClick={e}>···</a>}
+          fileName={`${r.pMobile}的推荐人列表`}
         />
       )
     }

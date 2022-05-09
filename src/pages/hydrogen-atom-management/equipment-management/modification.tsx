@@ -12,7 +12,7 @@ import styles from "./styles.less"
 import { updateUseTime, findUseTime } from '@/services/hydrogen-atom-management/equipment-management'
 
 const Modification: FC<ModificationProps> = (props) => {
-  const { visible, setVisible, imei } = props
+  const { visible, setVisible, imei, phone } = props
   const [info, setInfo] = useState<InfoProps>()
 
   useEffect(()=> {
@@ -25,7 +25,11 @@ const Modification: FC<ModificationProps> = (props) => {
     new Promise((resolve, reject) => {
       updateUseTime({
         imei,
-        useTime: v.useTime
+        useTime: v.useTime,
+        nowUseTime: info?.useTime,
+        phone
+      },{
+        showSuccess: true
       }).then(res => {
         if(res.success) {
           resolve('')
@@ -64,13 +68,17 @@ const Modification: FC<ModificationProps> = (props) => {
         label='更新后单次使用时长'
         name='useTime'
         width='sm'
-        rules={[{
-          required: true,
-          message: '请输入期望单次使用时长'
-        }]}
+        rules={
+          [{
+            required: true,
+            message: '请输入期望单次使用时长'
+          }]
+        }
         fieldProps={{
           placeholder: '请输入期望单次使用时长',
           step: 1,
+          max: 600,
+          min: 1,
           addonAfter: '分钟'
         }}
         

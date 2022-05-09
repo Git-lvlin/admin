@@ -5,6 +5,7 @@ export type ExprotProps = {
   text?: string
   slot?: React.ReactChild
   slotHistory?: (v: React.DOMAttributes)=> React.ReactChild
+  fileName?: string
 }
 
 export type ExportHistoryProps = {
