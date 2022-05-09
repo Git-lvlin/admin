@@ -93,6 +93,7 @@ export default function EquipmentManagement() {
           onClick={()=> {
             setModificationVisible(true)
             setImei(data?.imei)
+            setMemberPhone(data?.memberPhone)
           }}
         >
           修改使用时长
@@ -413,6 +414,7 @@ export default function EquipmentManagement() {
           visible={modificationVisible}
           setVisible={setModificationVisible}
           imei={imei}
+          phone={memberPhone}
         />
       }
     </PageContainer>

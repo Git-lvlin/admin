@@ -29,6 +29,13 @@ export type PropsData = {
   createRole: string
   nickName: string
   remark: string
+  extraRecord: string
+  leaseDeadline: string
+  leaseStatus: number
+  amount: string
+  deadlineDate: string
+  nowUseTime: string
+  updUseTime: string
 }
 
 export type PropsStatistics = {
