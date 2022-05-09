@@ -56,6 +56,7 @@ export type ModificationProps = {
 	visible: boolean
 	setVisible: React.Dispatch<React.SetStateAction<boolean>>
 	imei?: string
+	phone?: string
 }
 
 export type InfoProps = {

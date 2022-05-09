@@ -89,7 +89,8 @@ export default function TransactionData () {
     },
     {
       title: '产品总缴租天数',
-      dataIndex: 'leaseDaySum'
+      dataIndex: 'leaseDaySum',
+      render: (_) => _
     },
     {
       title: '租赁总缴租金额',
