@@ -38,7 +38,13 @@ export type PropsStatistics = {
   dateDoc: string
   sumAmount: number
   totalDriverCount: number
+}
 
+export type StartUpTimeProps = {
+  imei?: string
+  pageTotal?: number
+  memberId?: string
+  memberPhone?: string
 }
 
 

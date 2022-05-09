@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import ProForm, { 
   ModalForm,
   ProFormRadio,
@@ -10,17 +10,41 @@ import { Button } from "antd"
 import moment from 'moment'
 
 import type{ FC } from "react"
-import type { ModalFormProps, OptProps } from "./data"
+import type { ModalFormProps, OptProps, InfoProps } from "./data"
 
 import styles from './styles.less'
+import { findMachinePay, afterPaymentSetting } from '@/services/hydrogen-atom-management/equipment-management'
+import { amountTransform } from "@/utils/utils"
 
 const PayFee: FC<ModalFormProps> = (props) => {
-  const { visible, setVisible, id, refs, expire } = props
+  const { visible, setVisible, id, refs, expire, phone } = props
   const [checked, setChecked] = useState()
+  const [info, setInfo] = useState<InfoProps>()
+
+  useEffect(()=> {
+    findMachinePay({
+      imei: id
+    }).then(res => {
+      setInfo(res.data)
+    })
+  }, [])
   
   const submit = (v: OptProps) => {
     new Promise((resolve, reject) => {
-     
+      afterPaymentSetting({
+        imei: id,
+        remark: v.remark,
+        type: v.type,
+        amount: amountTransform(v.amount, '*'),
+        phone
+      }).then(res => {
+        if(res.success) {
+          refs.current?.reload()
+          resolve('')
+        }else {
+          reject()
+        }
+      })
     })
   }
 
@@ -96,7 +120,7 @@ const PayFee: FC<ModalFormProps> = (props) => {
           </ProForm.Item>
           <ProFormRadio.Group
             label="再展示缴费入口"
-            name="packageType"
+            name="type"
             layout="vertical"
             fieldProps={{
               onChange: (e)=> {
@@ -125,6 +149,7 @@ const PayFee: FC<ModalFormProps> = (props) => {
               label='缴费金额'
               name='amount'
               width='md'
+              initialValue={info?.amount}
               fieldProps={{
                 step: 0.01,
                 min: 0.01,
@@ -135,13 +160,16 @@ const PayFee: FC<ModalFormProps> = (props) => {
               rules={[{
                 required: true
               }]}
-              extra={<span>默认配置：{}元/天</span>}
+              extra={<span>默认配置：{info?.dayAmount}元/天</span>}
             />
           }
           {
             checked === 3 &&
-            <ProForm.Item label='缴费后租期截止日'>
-              11
+            <ProForm.Item 
+              label='缴费后租期截止日'
+              extra={<span>{info?.nowDate}——{info?.deadlineDate}共{info?.sumDay}天</span>}
+            >
+              {info?.deadlineDate}（即日起至月底 ）
             </ProForm.Item>
           }
         </>
