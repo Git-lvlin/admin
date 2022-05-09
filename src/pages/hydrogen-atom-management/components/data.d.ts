@@ -44,6 +44,7 @@ export type StartUpTimeProps = {
   imei?: string
   pageTotal?: number
   memberId?: string
+  memberPhone?: string
 }
 
 

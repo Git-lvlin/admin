@@ -24,6 +24,20 @@ const StartUpTime:FC<StartUpTimeProps> = ({imei, pageTotal, memberId}) => {
   )
 }
 
+const OrderRecord:FC<StartUpTimeProps> = ({imei, memberId, memberPhone}) => {
+  return (
+    <>
+       <span>缴租明细（用户：{memberPhone}机器ID：{imei}）</span>
+        <Export
+          type='iot-lease-order-record'
+          slot={<a>导出</a>}
+          slotHistory={(e)=><a onClick={e}>···</a>}
+          conditions={{memberDeviceId: memberId}}
+        />
+    </>
+  )
+}
+
 const DevicesDetail: FC<PropsDevices> = (props) => {
   const {visible, setVisible, type, memberId, memberPhone, showTitle, imei} = props
 
@@ -100,8 +114,8 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
   const objTitle = {
     1: `租赁明细（用户:${memberPhone}）`,
     2: `购买明细（用户:${memberPhone}）`,
-    3: `缴租明细（用户:${memberPhone}）`,
-    4: !showTitle ? `（用户:${memberPhone}）`: <StartUpTime imei={imei} pageTotal={pageTotal} memberId={memberId}/>,
+    3: !showTitle ? `缴租明细（用户:${memberPhone}）`: <OrderRecord imei={imei} memberId={memberId} memberPhone={memberPhone}/>,
+    4: !showTitle ? `启动明细（用户:${memberPhone}）`: <StartUpTime imei={imei} pageTotal={pageTotal} memberId={memberId}/>,
     5: `提成明细（用户:${memberPhone}）`,
     6: `操作日志 （机器ID：${memberId}操作：${pageTotal}次）`
   }
