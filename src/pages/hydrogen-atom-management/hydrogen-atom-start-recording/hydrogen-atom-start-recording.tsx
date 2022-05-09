@@ -42,7 +42,8 @@ export default () => {
       valueType: 'text',
       fieldProps:{
         placeholder:'请输入机器ID'
-      }
+      },
+      order:5
     },
     {
       title: '交易类型',
@@ -50,9 +51,11 @@ export default () => {
       valueType: 'select',
       hideInTable: true,
       valueEnum:{
+          '': "全部",
           1: '租赁',
           2: '购买'
-      }
+      },
+      order:4
     },
     {
       title: '交易类型',
@@ -70,7 +73,8 @@ export default () => {
       valueType: 'text',
       fieldProps:{
         placeholder:'请输入用户手机'
-      }
+      },
+      order:6
     },
     {
       title: '社区店主',
@@ -78,9 +82,11 @@ export default () => {
       valueType: 'select',
       hideInTable: true,
       valueEnum:{
+        "": "全部",
         false: "否",
         true: '是'
-      }
+      },
+      order:1
     },
     {
       title: '社区店主',
@@ -98,19 +104,21 @@ export default () => {
       valueType: 'text',
       fieldProps:{
         placeholder:'请输入店铺ID'
-      }
+      },
+      order:3
     },
-    {
-      title: '社区店店铺名称',
-      dataIndex: 'storeName',
-      valueType: 'text',
-      hideInSearch: true
-    },
+    // {
+    //   title: '社区店店铺名称',
+    //   dataIndex: 'storeName',
+    //   valueType: 'text',
+    //   hideInSearch: true
+    // },
     {
       title: '启动时间',
       dataIndex: 'dateTimeRange',
       valueType: 'dateTimeRange',
-      hideInTable: true
+      hideInTable: true,
+      order:2
     },
     {
       title: '启动时间',
