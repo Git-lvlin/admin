@@ -30,15 +30,18 @@ export default function TransactionData () {
   const descriptionsColumns: ProDescriptionsItemProps<DescriptionsProps>[] = [
     {
       title: '销售用户数',
-      dataIndex: 'payImeiUserSum'
+      dataIndex: 'payImeiUserSum',
+      render: (_) => _
     },
     {
       title: '租赁用户数',
-      dataIndex: 'leaseImeiUserSum'
+      dataIndex: 'leaseImeiUserSum',
+      render: (_) => _
     },
     {
       title: '销售产品数',
-      dataIndex: 'payImeiSum'
+      dataIndex: 'payImeiSum',
+      render: (_) => _
     },
     {
       title: '销售总金额',
@@ -46,7 +49,8 @@ export default function TransactionData () {
     },
     {
       title: '租赁产品数',
-      dataIndex: 'leaseImeiSum'
+      dataIndex: 'leaseImeiSum',
+      render: (_) => _
     },
     {
       title: '租赁总押金',
@@ -63,12 +67,12 @@ export default function TransactionData () {
     {
       title: '产品总启用次数',
       dataIndex: 'startSum',
-      render: (_, r)=> r.startSum
+      render: (_)=> _
     },
     {
       title: '已启用产品数',
       dataIndex: 'startImeiSum',
-      render: (_, r)=> r.startImeiSum
+      render: (_)=> _
     },
     {
       title: '产品总启用付费金额',
@@ -80,7 +84,8 @@ export default function TransactionData () {
     },
     {
       title: '已缴租产品数',
-      dataIndex: 'doneLeaseImeiSum'
+      dataIndex: 'doneLeaseImeiSum',
+      render: (_) => _
     },
     {
       title: '产品总缴租天数',
@@ -92,23 +97,28 @@ export default function TransactionData () {
     },
     {
       title: '租赁总缴租次数',
-      dataIndex: 'leasePaySum'
+      dataIndex: 'leasePaySum',
+      render: (_) => _
     },
     {
       title: '已启用用户数',
-      dataIndex: 'scanImeiUserSum'
+      dataIndex: 'scanImeiUserSum',
+      render: (_) => _
     },
     {
       title: '已启用店主数',
-      dataIndex: 'scanImeiStoreSum'
+      dataIndex: 'scanImeiStoreSum',
+      render: (_) => _
     },
     {
       title: '已缴租店主数',
-      dataIndex: 'leaseStoreSum'
+      dataIndex: 'leaseStoreSum',
+      render: (_) => _
     },
     {
       title: '获得提成店主数',
-      dataIndex: 'commissionStoreSum'
+      dataIndex: 'commissionStoreSum',
+      render: (_) => _
     },
     {
       title: '店主总提成金额',
@@ -116,11 +126,12 @@ export default function TransactionData () {
     },
     {
       title: '交额外管理费总金额',
-      dataIndex: ''
+      dataIndex: 'serviceFee'
     },
     {
       title: '交额外管理费店主数',
-      dataIndex: 'serviceFee'
+      dataIndex: 'serviceStoreSum',
+      render: (_) => _
     },
      {
       title: '启动产品占比',
