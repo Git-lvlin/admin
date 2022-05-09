@@ -13,7 +13,6 @@ import ProForm, {
   ProFormDependency
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
-import moment from 'moment'
 import ConfirmModel from './confirm-model'
 
 type activityItem={
@@ -24,6 +23,7 @@ type activityItem={
     businessDeptCommission: number;
     provinceAgentCommission: number;
     cityAgentCommission: number;
+    divideExplain: string
 }
 
 type buyConfigItem={
@@ -31,6 +31,7 @@ type buyConfigItem={
     commission: string;
     describe: string;
     DividedAmount: number;
+    IntoThat: string
 }
 
 
@@ -49,11 +50,12 @@ export default () => {
       getQyzBuyConfig({}).then(res=>{
         if(res.code==0){
           const data=[
-            {id:1,commission:'直推人',describe:'直接推荐人，以约购社区推荐关系计算，社区店主才有',DividedAmount:res.data?.suggestCommission },
-            {id:2,commission:'运营中心',describe:'平台运营中心，以区/县为单位',DividedAmount:res.data?.agentCompanyCommission },
-            {id:3,commission:'汇能健康事业部',describe:'以省为单位的实体',DividedAmount:res.data?.businessDeptCommission },
-            {id:4,commission:'汇智能通省加盟商',describe:'简称 ‘省代’',DividedAmount:res.data?.provinceAgentCommission },
-            {id:5,commission:'汇智能通市加盟商',describe:'简称 ‘市代’',DividedAmount:res.data?.cityAgentCommission },
+            {id:0,commission:'供应商',describe:'帅博公司',DividedAmount:res.data?.suggestCommission,IntoThat:'通道手续费 0.65%' },
+            {id:1,commission:'直推人',describe:'直接推荐人，以约购社区推荐关系计算，社区店主才有',DividedAmount:res.data?.suggestCommission,IntoThat:'提现时扣 7% 提现手续费' },
+            {id:2,commission:'运营中心',describe:'平台运营中心，以区/县为单位',DividedAmount:res.data?.agentCompanyCommission,IntoThat:'线上对公结算'  },
+            {id:3,commission:'汇能健康事业部（平台代收）',describe:'以省为单位的实体',DividedAmount:res.data?.businessDeptCommission,IntoThat:'线下结算时扣除 7% 手续费'  },
+            {id:4,commission:'汇智能通省加盟商（平台代收）',describe:'简称 ‘省代’',DividedAmount:res.data?.provinceAgentCommission,IntoThat:'线下结算'  },
+            {id:5,commission:'汇智能通市加盟商（平台代收）',describe:'简称 ‘市代’',DividedAmount:res.data?.cityAgentCommission,IntoThat:'线下结算'  },
           ]
           setDataDetail(data)
           setDetail(res.data)
@@ -114,6 +116,12 @@ export default () => {
         render:(_)=>{
           return <p>{amountTransform(_,'/').toFixed(2)}</p>
         }
+      },
+      {
+        title: '分成说明',
+        dataIndex: 'IntoThat',
+        valueType: 'text',
+        hideInSearch: true,
       }
     ];
 
@@ -144,6 +152,12 @@ export default () => {
         render:(_)=>{
           return <p>{amountTransform(_,'/').toFixed(2)}</p>
         }
+      },
+      {
+        title: '分成说明',
+        dataIndex: 'divideExplain',
+        valueType: 'text',
+        hideInSearch: true,
       }
     ];
     return (
@@ -263,17 +277,20 @@ export default () => {
                   label: '9',
                 }        
               ]}
+              initialValue={4}
               name="month"
+              disabled
               rules={[{ required: true, message: '请选择月份' }]}
             />
             <p>个整月管理费时： </p>
           </ProForm.Group>
           <ProForm.Group>
-            <ProFormDependency name={['month']}>
+            {/* <ProFormDependency name={['month']}>
                   {({ month }) => { 
                       return <p>最近{parseInt(month-1)}个整月任意1月集约金额未达到</p>
                 }}
-            </ProFormDependency>
+            </ProFormDependency> */}
+            <p>最近3个整月任意1月集约金额未达到</p>
             <ProFormText
               name='arrive'
               width="md"
@@ -316,11 +333,12 @@ export default () => {
             />
             <p>额外管理费</p>
           </ProForm.Group>
-            <ProFormDependency name={['month']}>
+            {/* <ProFormDependency name={['month']}>
                   {({ month }) => { 
                       return <p>第  {month}  个整月之后缴纳管理费时：</p>
                 }}
-            </ProFormDependency>
+            </ProFormDependency> */}
+            <p>第  5  个整月之后缴纳管理费时：</p>
           <ProForm.Group>
             <p>上月集约金额达到</p>
             <ProFormText
@@ -370,7 +388,7 @@ export default () => {
             />
             <Form.Item>
             <Button type="primary" onClick={()=>{
-              formRef?.current.submit()
+              formRef?.current?.submit()
             }}>
               确定
             </Button>

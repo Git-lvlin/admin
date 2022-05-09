@@ -381,5 +381,6 @@ export default {
   'menu.hydrogen-atom-management.equipment-management': '机器管理',
   'menu.hydrogen-atom-management.transaction-data': '交易数据',
   'menu.hydrogen-atom-management.referral-commission': '推荐提成',
+  'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
 
 };
