@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProDescriptions from "@ant-design/pro-descriptions"
 import ProTable from "@ant-design/pro-table"
@@ -6,16 +6,26 @@ import { Image } from "antd"
 
 import type { ProColumns } from "@ant-design/pro-table"
 import type { ProDescriptionsItemProps } from "@ant-design/pro-descriptions"
+import type { FormInstance } from "@ant-design/pro-form"
 import type { DescriptionsProps, TableProps } from "./data"
 
 import { findMemberDeviceTotal, findMemberDevicePage } from "@/services/hydrogen-atom-management/transaction-data"
 import DevicesDetail from "../components/devices-detail"
+import { getPageQuery } from "@/utils/utils"
+import Export from "@/components/export"
 
 export default function TransactionData () {
   const [devicesVisible, setDevicesVisible] = useState<boolean>(false)
   const [type, setType] = useState<number>(0)
   const [memberId, setMemberId] = useState<string>()
   const [memberPhone, setMemberPhone] = useState<string>()
+  const form = useRef<FormInstance>()
+
+  const getFieldValue = () => {
+    return {
+      ...form.current?.getFieldsValue()
+    }
+  }
 
   const descriptionsColumns: ProDescriptionsItemProps<DescriptionsProps>[] = [
     {
@@ -83,6 +93,38 @@ export default function TransactionData () {
     {
       title: '租赁总缴租次数',
       dataIndex: 'leasePaySum'
+    },
+    {
+      title: '已启用用户数',
+      dataIndex: 'scanImeiUserSum'
+    },
+    {
+      title: '已启用店主数',
+      dataIndex: 'scanImeiStoreSum'
+    },
+    {
+      title: '已缴租店主数',
+      dataIndex: 'leaseStoreSum'
+    },
+    {
+      title: '获得提成店主数',
+      dataIndex: 'commissionStoreSum'
+    },
+    {
+      title: '店主总提成金额',
+      dataIndex: 'commissionSum'
+    },
+    {
+      title: '交额外管理费总金额',
+      dataIndex: ''
+    },
+    {
+      title: '交额外管理费店主数',
+      dataIndex: 'serviceFee'
+    },
+     {
+      title: '启动产品占比',
+      dataIndex: 'startImeiSumScale'
     }
   ]
 
@@ -90,7 +132,17 @@ export default function TransactionData () {
     {
       title: '手机号码',
       dataIndex: 'memberPhone',
-      align: 'center'
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      dataIndex: 'memberPhone',
+      align: 'center',
+      fieldProps: {
+        placeholder: '请输入手机号码或社区店ID'
+      },
+      initialValue: getPageQuery().memberPhone,
+      hideInTable: true
     },
     {
       title: '头像',
@@ -192,13 +244,19 @@ export default function TransactionData () {
         columns={tableColumns}
         request={findMemberDevicePage}
         columnEmptyText={false}
+        formRef={form}
         pagination={{
           pageSize: 10
         }}
         options={false}
         search={{
           optionRender: (searchConfig, props, dom)=> [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export
+              key="1"
+              type='imei_member_data_list_export'
+              conditions={getFieldValue}
+            />
           ]
         }}
       />

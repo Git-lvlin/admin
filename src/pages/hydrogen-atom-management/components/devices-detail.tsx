@@ -3,14 +3,43 @@ import { Drawer, Pagination, Spin, Empty, Divider } from "antd"
 import moment from "moment"
 
 import type { FC } from "react"
-import type { PropsDevices, PropsData, PropsStatistics } from "./data"
+import type { PropsDevices, PropsData, PropsStatistics, StartUpTimeProps } from "./data"
 
 import { devices, consumerOrder, findOrderRecordList, queryMyCommissionDetail, findOptionLog } from "@/services/hydrogen-atom-management/transaction-data"
 import styles from "./styles.less"
 import { amountTransform } from "@/utils/utils"
+import Export from "@/components/export"
+
+const StartUpTime:FC<StartUpTimeProps> = ({imei, pageTotal, memberId}) => {
+  return (
+    <>
+       <span>启动明细（机器ID：{imei}启用：{pageTotal}次）</span>
+        <Export
+          type='queryIotConsumerOrderDetailExport'
+          slot={<a>导出</a>}
+          slotHistory={(e)=><a onClick={e}>···</a>}
+          conditions={{occupantId: memberId, deviceImei: imei}}
+        />
+    </>
+  )
+}
+
+const OrderRecord:FC<StartUpTimeProps> = ({imei, memberId, memberPhone}) => {
+  return (
+    <>
+       <span>缴租明细（用户：{memberPhone}机器ID：{imei}）</span>
+        <Export
+          type='iot-lease-order-record'
+          slot={<a>导出</a>}
+          slotHistory={(e)=><a onClick={e}>···</a>}
+          conditions={{memberDeviceId: memberId}}
+        />
+    </>
+  )
+}
 
 const DevicesDetail: FC<PropsDevices> = (props) => {
-  const {visible, setVisible, type, memberId, memberPhone, showTitle} = props
+  const {visible, setVisible, type, memberId, memberPhone, showTitle, imei} = props
 
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number>(10)
@@ -48,7 +77,8 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
       occupantId: memberId
     }:
     {
-      deviceImei: memberId
+      occupantId: memberId,
+      deviceImei: imei
     },
     5: {
       buyId: memberId
@@ -84,8 +114,8 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
   const objTitle = {
     1: `租赁明细（用户:${memberPhone}）`,
     2: `购买明细（用户:${memberPhone}）`,
-    3: `缴租明细（用户:${memberPhone}）`,
-    4: `启动明细（用户:${memberPhone}）`,
+    3: !showTitle ? `缴租明细（用户:${memberPhone}）`: <OrderRecord imei={imei} memberId={memberId} memberPhone={memberPhone}/>,
+    4: !showTitle ? `启动明细（用户:${memberPhone}）`: <StartUpTime imei={imei} pageTotal={pageTotal} memberId={memberId}/>,
     5: `提成明细（用户:${memberPhone}）`,
     6: `操作日志 （机器ID：${memberId}操作：${pageTotal}次）`
   }
@@ -215,11 +245,14 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
         <div key={idx}>
           <div className={styles.cardList}>
             <div>操作动作：{options[item.opType]}</div>
-            <div>操作人：{item.createRole}</div>
+            <div>操作人：{item.nickName}（{item.createRole}）</div>
           </div>
           <div className={styles.cardListContent}>
             <div>被绑手机：{item.bindPhone}</div>
             <div>操作时间：{item.createTime}</div>
+          </div>
+          <div className={styles.cardListContent}>
+            <div>额外记录：{item.remark}</div>
           </div>
           <Divider style={{margin: '10px 0 24px 0'}}/>
         </div>

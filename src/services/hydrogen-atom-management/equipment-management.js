@@ -46,3 +46,55 @@ export const divideCommissions = async (params = {}, options = {}) => {
     success: res.success
   }
 }
+
+// 修改机器单次使用时长
+export const updateUseTime = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/iot/member/updateUseTime', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
+
+// 开启缴费入口
+export const afterPaymentSetting = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/iot/device/after-payment-setting', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
+
+// 查询缴费入口和启用入口信息
+export const findMachinePay = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/iot/member/findMachinePay', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
+
+// 查询机器单次使用时长
+export const findUseTime = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/iot/member/findUseTime', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}

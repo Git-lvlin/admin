@@ -6,16 +6,22 @@ import { EllipsisOutlined } from "@ant-design/icons"
 
 import type { ProColumns, ActionType } from "@ant-design/pro-table"
 import type { EquipmentItem } from "./data"
+import type { FormInstance } from "@ant-design/pro-form"
 
 import { findDevicePage } from '@/services/hydrogen-atom-management/equipment-management'
 import { amountTransform } from '@/utils/utils'
 import BlockUp from "./block-up"
 import DivideDetail from "./divide-detail"
 import DevicesDetail from "../components/devices-detail"
+import PayFee from "./pay-fee"
+import Modification from "./modification"
+import Export from "@/components/export"
 
 export default function EquipmentManagement() {
   const [blockUpVisible, setBlockUpVisible] = useState<boolean>(false)
+  const [payFeeVisible, setPayFeeVisible] = useState<boolean>(false)
   const [showDivide, setShowDivide] = useState<boolean>(false)
+  const [modificationVisible, setModificationVisible] = useState<boolean>(false)
   const [imei, setImei] = useState<string>()
   const [id, setId] = useState<string>()
   const [type, setType] = useState<number>(0)
@@ -24,10 +30,12 @@ export default function EquipmentManagement() {
   const [memberId, setMemberId] = useState<string>()
   const [memberPhone, setMemberPhone] = useState<string>()
   const [showTitle, setShowTitle] = useState<boolean>()
+  const [status, setStatus] = useState<number>()
+  const [expire, setExpire] = useState<string>()
   const actRef = useRef<ActionType>()
+  const form = useRef<FormInstance>()
 
   const menu = (data: EquipmentItem) => {
-    
     return (
       <Menu>
         {
@@ -67,7 +75,7 @@ export default function EquipmentManagement() {
           操作日志
         </Menu.Item>
         {
-          data?.status === 3&&
+          data?.status === 3 &&
           <Menu.Item
             key="4"
             onClick={()=> {
@@ -80,21 +88,43 @@ export default function EquipmentManagement() {
             解绑
           </Menu.Item>
         }
+        <Menu.Item
+          key="5"
+          onClick={()=> {
+            setModificationVisible(true)
+            setImei(data?.imei)
+          }}
+        >
+          修改使用时长
+        </Menu.Item>
         {
-          data?.status === 0 &&
-          <Menu.Item key="5" disabled>绑定</Menu.Item>
+          (data?.status === 3 && data?.leaseStatus === 3) &&
+          <Menu.Item
+            key="6"
+            onClick={()=> {
+              setPayFeeVisible(true)
+              setImei(data?.imei)
+              setExpire(data?.leaseDeadline)
+              setMemberPhone(data?.memberPhone)
+            }}
+          >
+            开启缴费入口
+          </Menu.Item>
         }
       </Menu>
     )
   }
 
+  const getFieldsValue = () => {
+    const { createTime, ...rest } = form.current?.getFieldsValue()
+    return {
+      tradeStartTime: createTime?.[0].format('YYYY-MM-DD HH:mm:ss'),
+      tradeEndTime: createTime?.[1].format('YYYY-MM-DD HH:mm:ss'),
+      ...rest
+    }
+  }
+
   const columns: ProColumns<EquipmentItem>[] = [
-    {
-      title: 'id',
-      dataIndex: 'id',
-      hideInSearch: true,
-      hideInTable: true
-    },
     {
       title: '机器ID',
       dataIndex: 'imei',
@@ -225,9 +255,10 @@ export default function EquipmentManagement() {
               ()=> {
                 setDevicesVisible(true)
                 setType(4)
-                setMemberId(r?.imei)
+                setMemberId(r?.memberId)
                 setMemberPhone(r?.memberPhone)
                 setShowTitle(true)
+                setImei(r?.imei)
               }
             }>
               {_}
@@ -276,6 +307,8 @@ export default function EquipmentManagement() {
                   setImei(r?.imei) 
                   setType(2)
                   setMemberPhone(r?.memberPhone)
+                  setStatus(r?.leaseStatus)
+                  setExpire(r?.leaseDeadline)
                 }}
                 disabled={ !r?.status || r?.status === 0 || r?.status === 1}
               >
@@ -305,6 +338,7 @@ export default function EquipmentManagement() {
       <ProTable<EquipmentItem>
         rowKey='imei'
         columns={columns}
+        params={{}}
         request={findDevicePage}
         actionRef={actRef}
         options={false}
@@ -312,10 +346,16 @@ export default function EquipmentManagement() {
           pageSize: 10,
           showQuickJumper: true
         }}
+        formRef={form}
         search={{
           labelWidth: 100,
           optionRender: (searchConfig, props, dom)=> [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export
+              key='1'
+              type='imei_list_export'
+              conditions={getFieldsValue}
+            />
           ]
         }}
       />
@@ -329,6 +369,8 @@ export default function EquipmentManagement() {
           refs={actRef}
           user={user}
           phone={memberPhone}
+          status={status}
+          expire={expire}
         />
       }
       {
@@ -351,6 +393,26 @@ export default function EquipmentManagement() {
           memberId={memberId}
           memberPhone={memberPhone}
           showTitle={showTitle}
+          imei={imei}
+        />
+      }
+      {
+        payFeeVisible&&
+        <PayFee
+          visible={payFeeVisible}
+          setVisible={setPayFeeVisible}
+          id={imei}
+          refs={actRef}
+          expire={expire}
+          phone={memberPhone}
+        />
+      }
+      {
+        modificationVisible&&
+        <Modification
+          visible={modificationVisible}
+          setVisible={setModificationVisible}
+          imei={imei}
         />
       }
     </PageContainer>

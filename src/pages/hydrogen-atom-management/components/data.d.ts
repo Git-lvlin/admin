@@ -5,6 +5,7 @@ export type PropsDevices = {
   memberId?: string
   memberPhone?: string
   showTitle?: boolean
+  imei?: string
 }
 
 export type PropsData = {
@@ -26,6 +27,8 @@ export type PropsData = {
   bindPhone: string
   opType: number
   createRole: string
+  nickName: string
+  remark: string
 }
 
 export type PropsStatistics = {
@@ -35,7 +38,13 @@ export type PropsStatistics = {
   dateDoc: string
   sumAmount: number
   totalDriverCount: number
+}
 
+export type StartUpTimeProps = {
+  imei?: string
+  pageTotal?: number
+  memberId?: string
+  memberPhone?: string
 }
 
 
