@@ -509,7 +509,6 @@ export default (props) => {
     />
     <EditableProTable
         rowKey="wsId"
-        name="table"
         value={dataSource}
         actionRef={ref}
         recordCreatorProps={false}
