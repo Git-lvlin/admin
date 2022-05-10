@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import ProForm, { 
   ModalForm,
   ProFormRadio,
@@ -11,6 +11,7 @@ import moment from 'moment'
 
 import type{ FC } from "react"
 import type { ModalFormProps, OptProps, InfoProps } from "./data"
+import type { FormInstance } from "antd"
 
 import styles from './styles.less'
 import { findMachinePay, afterPaymentSetting } from '@/services/hydrogen-atom-management/equipment-management'
@@ -18,8 +19,9 @@ import { amountTransform } from "@/utils/utils"
 
 const PayFee: FC<ModalFormProps> = (props) => {
   const { visible, setVisible, id, refs, expire, phone } = props
-  const [checked, setChecked] = useState()
+  const [checked, setChecked] = useState<number>()
   const [info, setInfo] = useState<InfoProps>()
+  const form = useRef<FormInstance>()
 
   useEffect(()=> {
     findMachinePay({
@@ -28,6 +30,15 @@ const PayFee: FC<ModalFormProps> = (props) => {
       setInfo(res.data)
     })
   }, [])
+
+  useEffect(()=> {
+    setChecked(info?.packageType)
+    form.current?.setFieldsValue({
+      remark: info?.remark,
+      type: info?.packageType,
+      amount: amountTransform(info?.amount, '/')
+    })
+  }, [info])
   
   const submit = (v: OptProps) => {
     new Promise((resolve, reject) => {
@@ -60,6 +71,7 @@ const PayFee: FC<ModalFormProps> = (props) => {
         submit(values)
         return true
       }}
+      formRef={form}
       layout='horizontal'
       onVisibleChange={setVisible}
       title='确认提示'
@@ -89,6 +101,7 @@ const PayFee: FC<ModalFormProps> = (props) => {
             label='开启说明'
             name="remark"
             width='md'
+            validateFirst
             fieldProps={{
               showCount: true,
               maxLength: 50,
@@ -104,7 +117,7 @@ const PayFee: FC<ModalFormProps> = (props) => {
                     return Promise.reject(new Error('请输入5-50个字符'))
                   }
                   return Promise.resolve()
-                },
+                }
               })
             ]}
           />
@@ -127,7 +140,6 @@ const PayFee: FC<ModalFormProps> = (props) => {
                 setChecked(e.target.value)
               }
             }}
-            initialValue={1}
             options={[
               {
                 label: '按配置缴费，已逾期时段的管理费都需交齐',
@@ -149,7 +161,7 @@ const PayFee: FC<ModalFormProps> = (props) => {
               label='缴费金额'
               name='amount'
               width='md'
-              initialValue={info?.amount}
+              // initialValue={amountTransform(info?.amount, '/')}
               fieldProps={{
                 step: 0.01,
                 min: 0.01,
@@ -160,7 +172,7 @@ const PayFee: FC<ModalFormProps> = (props) => {
               rules={[{
                 required: true
               }]}
-              extra={<span>默认配置：{info?.dayAmount}元/天</span>}
+              extra={<span>默认配置：{amountTransform(info?.dayAmount, '/')}元/天</span>}
             />
           }
           {

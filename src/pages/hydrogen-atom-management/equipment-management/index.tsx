@@ -322,6 +322,7 @@ export default function EquipmentManagement() {
                   setImei(r?.imei) 
                   setType(1)
                   setMemberPhone(r?.memberPhone)
+                  setStatus(r?.leaseStatus)
                 }}
               >
                 停用
