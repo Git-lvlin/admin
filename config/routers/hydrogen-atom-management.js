@@ -11,6 +11,24 @@ export default {
         wrappers: [RouteWatcher],
       },
       {
+        name: 'equipment-management',
+        path: '/hydrogen-atom-management/equipment-management',
+        component: './hydrogen-atom-management/equipment-management',
+        wrappers: [RouteWatcher],
+      },
+      {
+        name: 'transaction-data',
+        path: '/hydrogen-atom-management/transaction-data',
+        component: './hydrogen-atom-management/transaction-data',
+        wrappers: [RouteWatcher],
+      },
+      {
+        name: 'referral-commission',
+        path: '/hydrogen-atom-management/referral-commission',
+        component: './hydrogen-atom-management/referral-commission',
+        wrappers: [RouteWatcher],
+      },
+      {
         name: 'hydrogen-atom-start-recording',
         path: '/hydrogen-atom-management/hydrogen-atom-start-recording',
         component: './hydrogen-atom-management/hydrogen-atom-start-recording',

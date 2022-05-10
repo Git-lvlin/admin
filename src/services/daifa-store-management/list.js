@@ -235,3 +235,18 @@ export const accountDetail= async (params = {}, options = {}) => {
     success: true
   }
 }
+
+export const memberShopCancelDetail= async (params = {}, options = {}) => {
+  const res = await request('/auth/store/memberShopCancel/detail', {
+    method: 'POST',
+    data: {
+     ...params
+    },
+    ...options
+  });
+  return {
+    code:res.code,
+    data: res.data,
+    success: true
+  }
+}
