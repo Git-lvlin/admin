@@ -29,8 +29,8 @@ export default (props) => {
      }else if(v=='AGAIN_RENT_NOTICE_TIME'){
        return JSON.stringify(
         {
-          days:paramsType.days.toString(),
-          time:paramsType.time
+          times:paramsType.times,
+          cron:paramsType.cron
         }
       )
      }else if(v=='AGAIN_RENT_NOTICE_CONTENT'){
