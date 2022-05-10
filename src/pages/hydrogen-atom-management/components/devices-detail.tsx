@@ -3,7 +3,7 @@ import { Drawer, Pagination, Spin, Empty, Divider } from "antd"
 import moment from "moment"
 
 import type { FC } from "react"
-import type { PropsDevices, PropsData, PropsStatistics, StartUpTimeProps } from "./data"
+import type { PropsDevices, PropsData, PropsStatistics, StartUpTimeProps, ExtraRecordsProps } from "./data"
 
 import { devices, consumerOrder, findOrderRecordList, queryMyCommissionDetail, findOptionLog } from "@/services/hydrogen-atom-management/transaction-data"
 import styles from "./styles.less"
@@ -118,8 +118,8 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
     9: '快捷支付'
   }
 
-  const extraRecords = (type: number, data: PropsData, item: PropsData) => {
-    
+  const ExtraRecords: FC<ExtraRecordsProps> = ({type, item}) => {
+    const data = JSON.parse(item.extraRecord) 
     switch(type) {
       case 2:
         return (
@@ -175,7 +175,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
           </div>
         )
       default:
-        return ''
+        return null
     }
   }
 
@@ -343,7 +343,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
             }
             {
               item.opType !== 1 &&
-              extraRecords(item?.opType, JSON.parse(item.extraRecord), item)
+              <ExtraRecords item={item} type={item?.opType}/>
             }
             <Divider style={{margin: '10px 0 24px 0'}}/>
           </div>
