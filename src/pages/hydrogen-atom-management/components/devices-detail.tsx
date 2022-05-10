@@ -105,6 +105,19 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
     3: '已逾期'
   }
 
+  const orderPay = {
+    0: '模拟支付',
+    1: '支付宝',
+    2: '微信',
+    3: '小程序',
+    4: '银联',
+    5: '钱包支付',
+    6: '支付宝',
+    7: '微信',
+    8: '银联',
+    9: '快捷支付'
+  }
+
   const extraRecords = (type: number, data: PropsData, item: PropsData) => {
     
     switch(type) {
@@ -130,7 +143,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
         return (
           <div className={styles.cardListContent}>
             <div>缴费金额：{data?.orderAmount}</div>
-            <div>支付方式：{data?.payType}</div>
+            <div>支付方式：{orderPay[data?.payType]}</div>
             <div>支付单号：{data?.orderSn}</div>
           </div>
         )
