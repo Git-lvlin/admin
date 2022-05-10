@@ -54,5 +54,9 @@ export type StartUpTimeProps = {
   memberPhone?: string
 }
 
+export type ExtraRecordsProps = {
+  type: number
+  item: PropsData
+}
 
 
