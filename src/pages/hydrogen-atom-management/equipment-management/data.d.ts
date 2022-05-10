@@ -63,7 +63,9 @@ export type InfoProps = {
 	useTime?: string
 	amount?: number
 	dayAmount?: number
-	deadlineDate: string
-	nowDate: string
-	sumDay: number
+	deadlineDate?: string
+	nowDate?: string
+	sumDay?: number
+	remark?: string
+	packageType?: number
 }
