@@ -340,7 +340,7 @@ export default () => {
             </ProFormDependency> */}
             <p>第  5  个整月之后缴纳管理费时：</p>
           <ProForm.Group>
-            <p>上月集约金额达到</p>
+            <p>上月集约金额未达到</p>
             <ProFormText
               name='arrive2'
               width="md"
