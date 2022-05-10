@@ -161,7 +161,6 @@ const PayFee: FC<ModalFormProps> = (props) => {
               label='缴费金额'
               name='amount'
               width='md'
-              // initialValue={amountTransform(info?.amount, '/')}
               fieldProps={{
                 step: 0.01,
                 min: 0.01,
