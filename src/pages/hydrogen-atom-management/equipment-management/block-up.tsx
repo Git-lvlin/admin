@@ -10,18 +10,21 @@ import type{ FC } from "react"
 import type { ModalFormProps, OptProps, InfoProps } from "./data"
 
 import styles from './styles.less'
-import { opt, findMachinePay } from '@/services/hydrogen-atom-management/equipment-management'
+import { opt, findStartPage } from '@/services/hydrogen-atom-management/equipment-management'
 
 const BlockUp: FC<ModalFormProps> = (props) => {
   const { visible, setVisible, id, type, refs, user, phone, status, expire } = props
   const [info, setInfo] = useState<InfoProps>()
 
   useEffect(()=> {
-    findMachinePay({
+    findStartPage({
       imei: id
     }).then(res => {
       setInfo(res.data)
     })
+    return ()=> {
+      setInfo({})
+    }
   }, [])
   
   const submit = (v: OptProps) => {
@@ -78,7 +81,7 @@ const BlockUp: FC<ModalFormProps> = (props) => {
             <div className={styles.text}>{type === 1 ? '停用' : '启用'}后机器{type === 1 ? '将无法运营' : '即可正常使用'}</div>
           }
           {
-            status === 3 &&
+            (status === 3 && type === 2) &&
             <div className={styles.overdue}>此操作为逾期店主免费开启使用至月底，若要逾期店主缴费才能使用请开启缴费入口（当前操作后店主即可正常使用机器）</div>
           }
           <ProFormTextArea
@@ -90,6 +93,7 @@ const BlockUp: FC<ModalFormProps> = (props) => {
               maxLength: 50,
               placeholder: `请输入${type === 1 ? '停用' : '启用'}用户机器使用的理由，5-50个字符`
             }}
+            validateFirst
             rules={[
               { 
                 required: true

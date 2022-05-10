@@ -42,7 +42,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
   const {visible, setVisible, type, memberId, memberPhone, showTitle, imei} = props
 
   const [page, setPage] = useState<number>(1)
-  const [pageSize, setPageSize] = useState<number>(10)
+  const [pageSize, setPageSize] = useState<number | undefined>(10)
   const [pageTotal, setPageTotal] = useState<number>(0)
   const [load, setLoad] = useState<boolean>(false)
   const [data, setData] = useState<PropsData[]>([])
@@ -142,7 +142,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
       case 4:
         return (
           <div className={styles.cardListContent}>
-            <div>缴费金额：{data?.orderAmount}</div>
+            <div>缴费金额：{amountTransform(data?.orderAmount, '/')}</div>
             <div>支付方式：{orderPay[data?.payType]}</div>
             <div>支付单号：{data?.orderSn}</div>
           </div>
@@ -162,7 +162,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
               <div>当前租期截止时间：{data?.leaseDeadline}</div>
             </div>
             <div className={styles.cardListContent}>
-              <div>指定缴费金额：{data?.amount}</div>
+              <div>指定缴费金额：{amountTransform(data?.amount, '/')}</div>
               <div>缴费后租期截止日：{data?.deadlineDate}</div>
             </div>
           </>
@@ -181,15 +181,19 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
 
   useEffect(()=>{
     setLoad(true)
-    api?.(params[type]).then(res => {
+    api?.({
+      ...params[type],
+      page,
+      size: pageSize
+    }).then(res => {
       setLoad(false)
       setData(res.data.records)
       setPageTotal(res.data.total)
       setStatistics(res.data)
     })
-  }, [])
+  }, [pageSize, page])
 
-  const pageChange = (a: number, b: number) => {
+  const pageChange = (a: number, b?: number) => {
     setPage(a)
     setPageSize(b)
   }
@@ -226,7 +230,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
     5: (
       <>
         <span>总金额：{amountTransform(statistics?.sumAmount, '/')}</span>
-        <span>总产品：{statistics?.totalDriverCount}</span>
+        <span>总记录：{statistics?.totalDriverCount}条</span>
       </>
     ),
     6: ''
@@ -357,7 +361,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
       visible={visible}
       onClose={()=>setVisible(false)}
       title={objTitle[type]}
-      width={500}
+      width={700}
       destroyOnClose={true}
     >
       <Spin delay={500} spinning={load}>
@@ -380,10 +384,10 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
         <div className={styles.pagination}>
           <Pagination
             total={pageTotal}
-            showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`}
+            showTotal={(total, range) => `第${range[0]}-${range[1]}条/总共${total}条`}
             pageSize={pageSize}
             current={page}
-            onChange={()=>pageChange}
+            onChange={pageChange}
           />
         </div>
       }

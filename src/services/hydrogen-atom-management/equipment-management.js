@@ -73,7 +73,20 @@ export const afterPaymentSetting = async (params = {}, options = {}) => {
   }
 }
 
-// 查询缴费入口和启用入口信息
+// 查询启用入口
+export const findStartPage = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/iot/member/findStartPage', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
+
+// 查询缴费入口
 export const findMachinePay = async (params = {}, options = {}) => {
   const res = await request('/auth/java-admin/iot/member/findMachinePay', {
     method: 'POST',
