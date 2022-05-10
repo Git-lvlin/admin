@@ -148,6 +148,30 @@ const BlockUp: FC<ModalFormProps> = (props) => {
             是否确定解除绑定用户{user}机器ID({id})
           </div>
           <div className={styles.text}>解除绑定后将无法管理机器！！！</div>
+          <ProFormTextArea
+            label="解绑理由"
+            name="remark"
+            width='md'
+            fieldProps={{
+              showCount: true,
+              maxLength: 50,
+              placeholder: `请输入解绑用户机器使用的理由，5-50个字符`
+            }}
+            validateFirst
+            rules={[
+              { 
+                required: true
+              },
+              () => ({
+                validator(_, value) {
+                  if (value.length < 5) {
+                    return Promise.reject(new Error(`请输入5-50个字符`))
+                  }
+                  return Promise.resolve()
+                },
+              })
+            ]}
+          />
         </>
       }
     </ModalForm>
