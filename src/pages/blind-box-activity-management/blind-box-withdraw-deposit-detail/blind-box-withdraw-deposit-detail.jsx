@@ -6,8 +6,9 @@ import { amountTransform } from '@/utils/utils'
 
 
 
-export default () => {
+export default (props) => {
     const ref=useRef()
+    let sn = props.location.query.sn
     const columns= [
       {
         title: '序号',
@@ -143,7 +144,8 @@ export default () => {
           options={false}
           request={withdrawPage}
           params={{
-            activityType:0
+            activityType:1,
+            sn:sn
           }}
           search={{
             defaultCollapsed: true,

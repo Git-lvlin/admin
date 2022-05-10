@@ -108,6 +108,12 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'intensive-refund-order',
+      path: '/order-management/intensive-refund-order',
+      component: './order-management/intensive-refund-order',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'after-sales-order-details',
       path: '/order-management/after-sales-order/detail/:id',
       component: './order-management/after-sales-order/detail',
