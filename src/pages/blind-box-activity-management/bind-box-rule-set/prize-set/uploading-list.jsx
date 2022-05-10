@@ -50,9 +50,20 @@ export default props=>{
           },
           }}
           onFinish={async (values) => {
-              const prizePhones=values.prizeNotice.map(ele=>(ele.phone)).toString()
-              callback(prizePhones)
-              setVisible(false) 
+              let flage=false
+              for (let index = 0; index < nickname.length; index++) {
+                    if(nickname[index]=='查询不到此用户'){
+                      flage=true
+                    }
+              }
+              if(flage){
+                message.error('手机号必须是注册过我们约购APP平台的')
+              }else{
+                const prizePhones=values.prizeNotice.map(ele=>(ele.phone)).toString()
+                callback(prizePhones)
+                setVisible(false) 
+              }
+
           }}
       >
         <p style={{display:'block'}}>请输入指定中奖人的手机号码</p>
@@ -63,14 +74,11 @@ export default props=>{
                   itemLayout="horizontal"
                 >
                   {fields.map((field) => {
-                    console.log('field.name',field.name)
-                    console.log('nickname',nickname)
                     return (
                       <List.Item
                         key={field.key}
                         extra={fields.length !== 1 &&
                           <Button style={{ marginLeft: 10, width: 80,color:'#D9001B',border:'1px solid #D9001B' }} onClick={() => {
-                            console.log('field.name',field.name)
                              remove(field.name) 
                              const arr=nickname.filter((ele,index)=>index!=field.name)
                              setNickname(arr)
@@ -87,19 +95,22 @@ export default props=>{
                           fieldProps={{
                             style: {
                               width: 328,
-                              border:nickname&&nickname[field.name]=='查询不到此用户'?'2px solid red':nickname&&nickname[field.name]?'2px solid #68E11C':''
+                              border:nickname&&nickname.length&&nickname[field.name]=='查询不到此用户'?'2px solid red':nickname&&nickname.length&&nickname[field.name]?'2px solid #68E11C':''
                             },
                             maxLength:11,
                             onChange:(val)=>{
                               checkUserExist({phone:val.target?.value}).then(res=>{
                               if(res.code==0){
-                                const arr=nickname?[...nickname]:[]
+                                const arr=nickname&&nickname.length?[...nickname]:[]
                                 if(arr[field.name]){
                                   arr[field.name]=res?.data?.nickname
+                                  if(!arr[field.name]){
+                                    arr[field.name]='查询不到此用户'
+                                  }
                                 }else if(res?.data?.nickname){
-                                  arr.push(res?.data?.nickname)
+                                  arr[field.name]=res?.data?.nickname
                                 }else{
-                                  arr.push('查询不到此用户')
+                                  arr[field.name]='查询不到此用户'
                                 }
                                 const arr2=arr.filter((item) => item!== '')
                                 setNickname(arr2)

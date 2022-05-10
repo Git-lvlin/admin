@@ -11,6 +11,7 @@ import { ModalForm } from '@ant-design/pro-form';
 import _ from 'lodash'
 import UploadingList from './uploading-list'
 import AddCashModel from './add-cash-model'
+import AssignModel from './assign-model'
 
 
 
@@ -205,6 +206,7 @@ export default (props) => {
   const [visible, setVisible] = useState(false);
   const [cashVisible, setCashVisible] = useState(false);
   const [listVisible, setListVisible] = useState(false);
+  const [assignVisible, setAssignVisible] = useState(false);
   const [cashProps,setCashProps]=useState()
   const [designateId,setDesignateId]=useState()
   useEffect(()=>{
@@ -318,6 +320,9 @@ export default (props) => {
                 />
         },
       render: (_,r) =>{
+        if(r?.assignType){
+          return <p>-</p>
+        }
         return <p>{_}%</p>
       }
     },
@@ -337,11 +342,11 @@ export default (props) => {
       }
     },
     {
-      title: '指定中奖人开关状态',
+      title: '指定中奖人状态',
       dataIndex: 'assignType',
       hideInSearch: true,
       renderFormItem: (_,r) => {
-      return <Switch disabled checked={_.entry.assignType}/>
+      return <Switch checked={_.entry.assignType}/>
       },
       render: (_,r) =>{
         return <p>
@@ -351,6 +356,19 @@ export default (props) => {
       </p>
       },
       align: 'center'
+    },
+    {
+      title: '指定中奖人',
+      dataIndex: 'assignPhones',
+      hideInSearch: true,
+      render: (_,r) =>{
+        if(_.length>1){
+          return <a onClick={()=>{setDesignateId(r.id);setAssignVisible(true)}}>查看</a>
+        }
+        return <p>无</p>
+      },
+      align: 'center',
+      hideInTable:id&&!falg
     },
     {
       title: '操作',
@@ -501,6 +519,15 @@ export default (props) => {
         // setCashProps({...val,skuId:0,spuId: 0,id:+new Date(),goodsType:2,salePrice:amountTransform(val?.salePrice, '*')})
       }}/>
     }
+    {assignVisible && <AssignModel
+      visible={assignVisible}
+      setVisible={setAssignVisible}
+      phones={detailList?.skus.find(ele=>{
+        return ele.id==designateId
+      })?.assignPhones} 
+      onClose={()=>{setDesignateId(null)}}
+      callback={()=>{setDesignateId(null)}}
+    />}
     </>
     
   );

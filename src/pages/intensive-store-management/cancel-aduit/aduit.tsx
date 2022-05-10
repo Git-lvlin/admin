@@ -12,12 +12,12 @@ import type { aduitProps, formWrapData } from './data'
 
 import { amountTransform } from '@/utils/utils'
 import Upload from '@/components/upload'
-import { accountDetail } from '@/services/daifa-store-management/list'
+import { memberShopCancelDetail } from '@/services/daifa-store-management/list'
 import { refuse, approve } from '@/services/intensive-store-management/cancel-aduit'
 
 const Aduit: FC<aduitProps> = ({visible, setVisible, data, callback})=> {
-
-  const [amount, setAmount] = useState(0)
+  const [amount, setAmount] = useState<number>()
+  const [deviceStatus, setDeviceStatus] = useState<number>(0)
   const [form] = Form.useForm()
 
   const formItemLayout = {
@@ -26,9 +26,14 @@ const Aduit: FC<aduitProps> = ({visible, setVisible, data, callback})=> {
   }
 
   useEffect(()=> {
-    accountDetail({ accountType: 'store', accountId: data?.storeNo }).then(res => {
-      setAmount(amountTransform(res.data?.total, '/'))
+    memberShopCancelDetail({ storeNo: data?.storeNo }).then(res => {
+      setAmount(amountTransform(res.data?.totalBalance, '/'))
+      setDeviceStatus(res.data?.deviceStatus)
     })
+    return () => {
+      setAmount(0)
+      setDeviceStatus(0)
+    }
   },[])
 
   const checkConfirm = ({value}: {value:string}) => {
@@ -79,6 +84,11 @@ const Aduit: FC<aduitProps> = ({visible, setVisible, data, callback})=> {
     })
   }
 
+  const orderState = {
+    1: <a onClick={()=> { setVisible(false)}} href={`/hydrogen-atom-management/transaction-data?memberPhone=${data.memberPhone}`} target='blank'>绑定氢原子机器</a>,
+    2: <a onClick={()=> { setVisible(false)}} href={`/order-management/normal-order?orderType=666&phone=${data.memberPhone}`} target='blank'>待发货的氢原子订单</a>
+  }
+
   return (
     <ModalForm
       title={`请确认审核店铺注销申请操作（店铺ID：${data.storeId}）`}
@@ -102,7 +112,14 @@ const Aduit: FC<aduitProps> = ({visible, setVisible, data, callback})=> {
         <div>{data.provinceName}{data.cityName}{data.regionName}</div>
         <div>{data.address}</div>
       </ProForm.Item>
-      <ProForm.Item label="当前店主账号余额">{amount}元</ProForm.Item>
+      <ProForm.Item 
+        label="当前店主账号余额"
+        extra={
+          (deviceStatus === 1 ||deviceStatus===2) && <span style={{ color: 'red' }}>当前店主有{orderState[deviceStatus]}，建议注销申请审核拒绝！</span>
+        }
+      >
+        {amount}元
+      </ProForm.Item>
       <ProFormRadio.Group
         name="toStatus"
         label="操作结果"
@@ -123,6 +140,8 @@ const Aduit: FC<aduitProps> = ({visible, setVisible, data, callback})=> {
         {({ toStatus }) => {
           if(toStatus === 2){
             return <div style={{ color: 'red', marginLeft: 130, marginTop: '-25px', marginBottom: 20 }}>注销后不能再开启，请谨慎操作！</div>
+          } else {
+            return  ''
           }
         }}
       </ProFormDependency>
@@ -135,7 +154,7 @@ const Aduit: FC<aduitProps> = ({visible, setVisible, data, callback})=> {
             placeholder="请输入 5-20个字符"
             rules={[
               { required: true, message: '请输入理由' },
-              {validator: checkConfirm}
+              { validator: checkConfirm}
             ]}
             fieldProps={{
               maxLength:20,

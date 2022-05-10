@@ -376,4 +376,11 @@ export default {
   'menu.group-activities-management.activity-list': '拼团活动列表',
   'menu.group-activities-management.activity-data': '拼团数据',
 
+  'menu.hydrogen-atom-management': '氢原子',
+  'menu.hydrogen-atom-management.hydrogen-atom-configuration': '配置',
+  'menu.hydrogen-atom-management.equipment-management': '机器管理',
+  'menu.hydrogen-atom-management.transaction-data': '交易数据',
+  'menu.hydrogen-atom-management.referral-commission': '推荐提成',
+  'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
+
 };

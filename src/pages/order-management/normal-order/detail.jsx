@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Drawer, Space, Button, Modal, Steps, Spin } from 'antd';
+import { Drawer, Space, Button, Modal, Steps, Spin,Image } from 'antd';
 import { findAdminOrderDetail, findAdminOrderDetail2 } from '@/services/order-management/normal-order-detail';
 import { amountTransform } from '@/utils/utils'
 import ProDescriptions from '@ant-design/pro-descriptions';
@@ -17,6 +17,7 @@ const Detail = (props) => {
   const [expressInfoState, setExpressInfoState] = useState([])
   const [afterSaleVisible, setAfterSaleVisible] = useState(false)
   const [afterSaleId, setId] = useState()
+  const [previewVisible, setPreviewVisible] = useState(false);
 
   const getCurrent = () => {
     let current = 0;
@@ -173,6 +174,15 @@ const Detail = (props) => {
                       >
                         {ele.shippingCode}
                       </ProDescriptions.Item>
+                      {
+                        detailData.subType==3|| detailData.subType==4?
+                        <ProDescriptions.Item
+                          label="机器ID"
+                        >
+                          {detailData.deviceId}
+                        </ProDescriptions.Item>
+                        :null
+                      }
                       <ProDescriptions.Item
                         label="物流进度"
                       >
@@ -240,6 +250,14 @@ const Detail = (props) => {
                   <div>买家留言</div>
                   <div>{detailData?.note}</div>
                 </div>
+                {
+                  detailData?.contractUrl&&<div className={styles.box}>
+                  <div>租赁合同</div>
+                  <div>
+                    <a href={detailData?.contractUrl} target="_blank">点击查看</a>
+                  </div>
+                </div>
+                }
               </div>
             </div>
           </div>
