@@ -9,6 +9,9 @@ import BrandSelect from '@/components/brand-select'
 import GcCascader from '@/components/gc-cascader'
 import { ModalForm } from '@ant-design/pro-form';
 import _ from 'lodash'
+import UploadingList from './uploading-list'
+import AddCashModel from './add-cash-model'
+import AssignModel from './assign-model'
 
 
 
@@ -121,7 +124,13 @@ const SelectProductModal=(props) => {
     setVisible(false)
   };
   useEffect(()=>{
-    setKeys(keyId.map(ele=>(ele.skuId)))
+    const arr=[]
+    keyId.map(ele=>{
+      if(ele.skuId){
+        arr.push(ele.skuId)
+      }
+    })
+    setKeys(arr)
   },[])
   const postData=(data)=>{
     dataList.push(...data)
@@ -195,6 +204,11 @@ export default (props) => {
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableKeys] = useState([])
   const [visible, setVisible] = useState(false);
+  const [cashVisible, setCashVisible] = useState(false);
+  const [listVisible, setListVisible] = useState(false);
+  const [assignVisible, setAssignVisible] = useState(false);
+  const [cashProps,setCashProps]=useState()
+  const [designateId,setDesignateId]=useState()
   useEffect(()=>{
     if(!falg){
      setDataSource(detailList?.skus)
@@ -251,6 +265,13 @@ export default (props) => {
       dataIndex: 'baseStockNum',
       valueType: 'text',
       editable:false,
+      render:(_,data)=>{
+        if(data?.skuId==0){
+          return <p>-</p>
+        }else{
+          return <p>{_}</p>
+        }
+      }
     },
     {
       title: '奖品库存',
@@ -258,12 +279,19 @@ export default (props) => {
       valueType: 'digit',
       hideInSearch:true,
       renderFormItem: (_,r) => {
-        return  <InputNumber
+        if(_.entry?.skuId==0){
+          return  <InputNumber
                   min="0"
-                  max={_.entry.baseStockNum}
                   stringMode
                 />
-        },
+        }else{
+          return  <InputNumber
+          min="0"
+          max={_.entry?.baseStockNum}
+          stringMode
+        />
+        }
+      },
       render: (_,r) =>{
         return <p>{_}</p>
       }
@@ -281,6 +309,9 @@ export default (props) => {
       valueType: 'digit',
       hideInSearch: true,
       renderFormItem: (_,r) => {
+        if(r?.record?.assignType){
+          return <p>-</p>
+        }
         return  <InputNumber
                   min="0"
                   max="100"
@@ -289,6 +320,9 @@ export default (props) => {
                 />
         },
       render: (_,r) =>{
+        if(r?.assignType){
+          return <p>-</p>
+        }
         return <p>{_}%</p>
       }
     },
@@ -308,11 +342,41 @@ export default (props) => {
       }
     },
     {
+      title: '指定中奖人状态',
+      dataIndex: 'assignType',
+      hideInSearch: true,
+      renderFormItem: (_,r) => {
+      return <Switch checked={_.entry.assignType}/>
+      },
+      render: (_,r) =>{
+        return <p>
+        {
+          r.assignType?'开启':'关闭'
+        }
+      </p>
+      },
+      align: 'center'
+    },
+    {
+      title: '指定中奖人',
+      dataIndex: 'assignPhones',
+      hideInSearch: true,
+      render: (_,r) =>{
+        if(_.length>1){
+          return <a onClick={()=>{setDesignateId(r.id);setAssignVisible(true)}}>查看</a>
+        }
+        return <p>无</p>
+      },
+      align: 'center',
+      hideInTable:id&&!falg
+    },
+    {
       title: '操作',
       valueType: 'text',
       render:(text, record, _, action)=>{
         return [
-          <a key='dele' onClick={()=>delGoods(record.id)}>删除</a>
+          <a key='dele' style={{display:'block'}} onClick={()=>delGoods(record.id)}>删除</a>,
+          <a key='assign' onClick={()=>designate(record.id)}>指定中奖人</a>
       ]
       },
       editable:false,
@@ -333,6 +397,11 @@ export default (props) => {
     setDataSource(arr) 
     callback(arr,sum)
   }
+
+  const designate=val=>{
+    setListVisible(true)
+    setDesignateId(val)
+  }
   return (
     <>
     <EditableProTable
@@ -351,7 +420,7 @@ export default (props) => {
           onValuesChange: (record, recordList) => {
             let sum=0
             recordList.map(ele=>{
-              if(ele.status){
+              if(ele.status&&!ele.assignType){
                 sum=amountTransform(amountTransform(sum, '*')+amountTransform(ele.probability, '*'),'/')
               }
             })
@@ -364,6 +433,12 @@ export default (props) => {
           },
         }}
         toolBarRender={()=>[
+            <Button key='addCash' type="primary" onClick={()=>{
+              setCashVisible(true)
+            }}>
+                <PlusOutlined />
+                添加现金红包
+            </Button>,
             <Button key='add' type="primary" onClick={()=>{
               setVisible(true)
             }}>
@@ -381,10 +456,11 @@ export default (props) => {
                 keyId={dataSource}
                 detailList={detailList?.skus||[]}
                 callback={(val)=>{
-                  const arr = [];
+                  const arr = dataSource.length>0?dataSource.filter(ele=>ele.skuId==0):[];
                   val.forEach(item => {
                     arr.push({
                       stockNum: 0,
+                      goodsType:1,
                       ...item
                     })
                   })
@@ -407,6 +483,52 @@ export default (props) => {
       dataSource={detailList?.skus}
       style={{display:id&&falg?'block':'none'}}
     />
+    {listVisible&&<UploadingList 
+      visible={listVisible} 
+      setVisible={setListVisible} 
+      phones={detailList?.skus.find(ele=>{
+        return ele.id==designateId
+      })?.assignPhones}  
+      falg={falg}
+      dataSource={dataSource}
+      endId={id}
+      designateId={designateId} 
+      callback={(val)=>{
+        const arr=dataSource.map(ele=>{
+          if(ele.id==designateId){
+            return {...ele,assignPhones:val}
+          }else{
+            return {...ele}
+          }
+        })
+        setDataSource(arr)
+        callback(arr)
+        setDesignateId(null)
+      }}/>
+    }
+    {cashVisible&&<AddCashModel 
+      visible={cashVisible} 
+      setVisible={setCashVisible}   
+      id={id}
+      falg={falg}
+      dataSource={dataSource} 
+      callback={(val)=>{
+        const arr2=[...dataSource,{...val,skuId:0,spuId: 0,id:+new Date(),goodsType:2,salePrice:amountTransform(val?.salePrice, '*')}]
+        setDataSource(arr2)
+        setEditableKeys(arr2.map(item=>item.id))
+        callback(arr2)
+        // setCashProps({...val,skuId:0,spuId: 0,id:+new Date(),goodsType:2,salePrice:amountTransform(val?.salePrice, '*')})
+      }}/>
+    }
+    {assignVisible && <AssignModel
+      visible={assignVisible}
+      setVisible={setAssignVisible}
+      phones={detailList?.skus.find(ele=>{
+        return ele.id==designateId
+      })?.assignPhones} 
+      onClose={()=>{setDesignateId(null)}}
+      callback={()=>{setDesignateId(null)}}
+    />}
     </>
     
   );

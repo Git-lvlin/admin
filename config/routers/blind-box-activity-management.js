@@ -35,6 +35,12 @@ export default {
         component: './blind-box-activity-management/bind-box-rule-set',
         wrappers: [RouteWatcher],
         hideInMenu: true
+      },
+      {
+        name: 'blind-box-withdraw-deposit-detail',
+        path: '/blind-box-activity-management/blind-box-withdraw-deposit-detail',
+        component: './blind-box-activity-management/blind-box-withdraw-deposit-detail',
+        wrappers: [RouteWatcher],
       }
     ]
   }

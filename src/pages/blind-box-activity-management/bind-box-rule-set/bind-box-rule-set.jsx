@@ -48,7 +48,7 @@ export default (props) => {
         setDetailList(res.data)
         let sum=0
         res.data?.skus?.map(ele=>{
-          if(ele.status){
+          if(ele.status&&!ele.assignType){
             sum=amountTransform(amountTransform(sum, '*')+amountTransform(ele.probability, '*'),'/')
           }
         })
@@ -115,8 +115,8 @@ export default (props) => {
       let sum=0
       goosList?.forEach(item => {
         arr.push({
-          id: item.id==item.skuId?0:item.id,
-          probability: item.probability,
+          id: item.id==item.skuId||`${item.id}`.length>10?0:item.id,
+          probability:item.assignType?0:item.probability,
           status: item.status?1:0,
           skuId: item.skuId,
           spuId: item.spuId,
@@ -126,6 +126,9 @@ export default (props) => {
           imageUrl: item.imageUrl,
           salePrice: item.salePrice,
           retailSupplyPrice: item.retailSupplyPrice,
+          assignPhones:item.assignPhones,
+          goodsType:item.goodsType,
+          assignType:item.assignType
         })
       })
       if(del){
@@ -134,7 +137,7 @@ export default (props) => {
         values.skus=arr.length>0&&arr||detailList?.skus
       }
       values.skus.map(ele=>{
-        if(ele.status){
+        if(ele.status&&!ele.assignType){
           sum=amountTransform(amountTransform(sum, '*')+amountTransform(ele.probability, '*'),'/')
         }
       })
@@ -367,7 +370,6 @@ export default (props) => {
             />
             <span>次，当天总计达到此中奖次数，后面的人不再中奖</span>
         </ProForm.Group>
-
 
         {/* 奖品设置 */}
         <PrizeSet

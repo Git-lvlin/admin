@@ -7,24 +7,31 @@ const BasicInformation = ({data}) => {
   const columns = [
     {
       title: '买家ID',
-      dataIndex: 'userId',
-      render: (_, records)=> records?.buyer?.storeNo
+      dataIndex: 'storeNo'
     },
     {
       title: '买家昵称',
-      dataIndex: 'userNickname',
-      render: (_, records)=> records?.buyer?.storeName
+      dataIndex: 'storeName'
     },
     {
       title: '买家手机号',
-      dataIndex: 'buyerPhone',
-      render: (_, records)=> records?.buyer?.storePhone
+      dataIndex: 'memberPhone'
     },
     {
-      title: '供应商家ID',
-      dataIndex: 'supplierId',
-      render: (_, records)=> records?.business?.businessId
-    }
+      title: '商家ID',
+      dataIndex: 'supplierId'
+    },
+    {
+      title: '商家名称',
+      dataIndex: 'goodsName'
+    },
+    {
+      title: '商家手机号',
+      dataIndex: 'storePhone',
+      render:(_,data)=>{
+        return <p>-</p>
+      },
+    },
   ]
   return (
     <ProDescriptions
