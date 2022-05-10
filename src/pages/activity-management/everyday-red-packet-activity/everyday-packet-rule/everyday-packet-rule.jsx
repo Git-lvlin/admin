@@ -288,7 +288,6 @@ export default (props) =>{
              :<EditableProTable
                 headerTitle="每日首单红包发放金额(元）"
                 columns={columns}
-                name="table"
                 rowKey="id"
                 recordCreatorProps={false}
                 value={dataSource}
