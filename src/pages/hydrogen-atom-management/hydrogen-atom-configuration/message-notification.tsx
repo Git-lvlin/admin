@@ -86,9 +86,9 @@ export default () => {
         if(res.code==0){
           const datail=JSON.parse(res.data?.value)
           form2.setFieldsValue({
-            days:datail?.days.split(','),
-            time:moment(datail?.time, 'HH:mm:ss'),
-            code:res.data?.code
+            times:datail?.times,
+            code:res.data?.code,
+            cron:datail?.cron
           })
         }
       })
@@ -216,33 +216,31 @@ export default () => {
           formRef={formRef2}
           {...formItemLayout}
         >
-          <ProForm.Group>
-            <Form.Item labelCol={6} name='days' label="通知时间" rules={[{ required: true, message: '请输入通知时间' }]}>
-              <Select
-                mode="multiple"
-                allowClear
-                style={{ width: '400px' }}
-                placeholder="请选择提醒的通知时间"
-                tagRender={tagRender}
-                disabled
-              >
-                {content()}
-              </Select>
-            </Form.Item>
-            <ProFormTimePicker width={200} name="time" fieldProps={{format:"HH:mm"}}/>
-            <Form.Item>
+            <ProFormText
+              labelCol={1}
+              width={400}
+              readonly
+              name='times'
+              label="通知时间"
+              rules={[{ required: true, message: '请输入通知时间' }]}
+            />
             <ProFormText
               name='code'
               hidden
             />
-            <Button type="primary" style={{ marginLeft:'200px' }} onClick={()=>{
-              formRef2?.current.submit()
-            }}>
-              确定
-            </Button>
-          </Form.Item>
-          </ProForm.Group>
+             <ProFormText
+              name='cron'
+              hidden
+            />
+            <Form.Item>
+              <Button type="primary" style={{ marginLeft:'940px' }} onClick={()=>{
+                formRef2?.current.submit()
+              }}>
+                确定
+              </Button>
+            </Form.Item>
         </ProForm>
+        <Divider style={{ margin: '0 0 20px 0' }} />
         <ProForm<{
             value:string;
             code:string
