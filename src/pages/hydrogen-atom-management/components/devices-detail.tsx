@@ -341,12 +341,6 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
             </div>
             {
               item.opType !== 1 &&
-              <div className={styles.cardList}>
-                <div>额外记录</div>
-              </div>
-            }
-            {
-              item.opType !== 1 &&
               <ExtraRecords item={item} type={item?.opType}/>
             }
             <Divider style={{margin: '10px 0 24px 0'}}/>
