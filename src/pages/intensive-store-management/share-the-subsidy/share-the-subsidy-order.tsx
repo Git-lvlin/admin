@@ -70,7 +70,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
       fieldProps:{
         placeholder:'请输入订单编号'
       }, 
-      order:1,
+      order:6,
       render:(_)=>{
         return <a onClick={()=>{}}>{_}</a>
       }
@@ -79,7 +79,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
       title: '商品名称',
       dataIndex: 'memberPhone',
       valueType: 'text',
-      order:3,
+      order:4,
       render:(_)=>{
           return <a onClick={()=>{}}>{_}</a>
       }
@@ -101,7 +101,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
       fieldProps:{
         placeholder:'请输入商品skuID'
       },
-      order:2
+      order:5
     },
     {
       title: '商品skuID',
@@ -132,7 +132,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
         placeholder:'请输入会员手机号'
       }, 
       hideInTable: true,
-      order:6
+      order:1
     },
     {
       title: '买家手机号',
@@ -147,7 +147,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
       title: '下单时间',
       dataIndex: 'dateTimeRange',
       valueType: 'dateTimeRange',
-      order:1
+      order:2
     },
     {
       title: '补贴状态',
@@ -160,7 +160,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
           2: '已结算',
           3: '失效'
       },
-      order:4
+      order:3
     },
     {
       title: '补贴状态',
