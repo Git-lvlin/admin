@@ -344,7 +344,7 @@ export default () => {
               hidden
             />
             <Form.Item>
-            <Button type="primary" style={{ marginLeft:'170px' }} onClick={()=>{
+            <Button type="primary" style={{ marginLeft:'100px' }} onClick={()=>{
               formRef4?.current.submit()
             }}>
               确定
