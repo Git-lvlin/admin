@@ -7,7 +7,7 @@ const WantSlipsMessage = ({data}) => {
   const columns = [
     {
       title: '缺货退款单号',
-      dataIndex: 'trSn'
+      dataIndex: 'orSn'
     },
     {
       title: '关联集约采购单号',
