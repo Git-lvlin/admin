@@ -124,7 +124,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
       case 2:
         return (
           <div className={styles.cardListContent}>
-            <div></div>
+            <div>解绑理由：{item?.remark}</div>
             <div>当前租期截止日：{data?.leaseDeadline}</div>
           </div>
         )
