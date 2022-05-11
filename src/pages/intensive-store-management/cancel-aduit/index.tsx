@@ -80,7 +80,7 @@ const CancelAduit: FC = () => {
       title: '所在地区',
       dataIndex: 'area',
       hideInTable: true,
-      renderFormItem: () => (<AddressCascader changeOnSelect />)
+      renderFormItem: () => (<AddressCascader changeOnSelect/>)
     },
     {
       title: '提货点详细地址',
