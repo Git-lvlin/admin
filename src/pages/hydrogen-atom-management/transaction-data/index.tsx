@@ -144,16 +144,13 @@ export default function TransactionData () {
     {
       title: '手机号码',
       dataIndex: 'memberPhone',
-      align: 'center',
-      hideInSearch: true
+      align: 'center'
     },
     {
-      dataIndex: 'memberPhone',
+      title: '店主ID',
+      dataIndex: 'memberId',
       align: 'center',
-      fieldProps: {
-        placeholder: '请输入手机号码或社区店ID'
-      },
-      initialValue: getPageQuery().memberPhone,
+      initialValue: getPageQuery().memberId,
       hideInTable: true
     },
     {
@@ -179,8 +176,7 @@ export default function TransactionData () {
     {
       title: '社区店ID',
       dataIndex: 'storeNo',
-      align: 'center',
-      hideInSearch: true
+      align: 'center'
     },
     {
       title: '社区店名称',
