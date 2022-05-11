@@ -160,6 +160,7 @@ export default {
 
 
 
+
   'menu.single-contract-activity-management': '单约活动管理',
   'menu.single-contract-activity-management.activity-list': '活动列表',
   'menu.single-contract-activity-management.activity-detail': '活动详情',
