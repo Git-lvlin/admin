@@ -105,9 +105,7 @@ const YeahgoVirtualAccountManagement = () => {
   }, [])
 
   const skipToDetail = ({ accountType, accountId, amountType }) => {
-    const type = !amountType ? '' : `amountType=${amountType}`
-    // history.push(`/financial-management/money-management/yeahgo-virtual-account-management/transaction-details?accountType=${accountType}&accountId=${accountId}&${type}`)
-    setQuery({accountType, accountId, type})
+    setQuery({accountType, accountId, amountType})
     setVisable(true)
   }
 

@@ -157,7 +157,7 @@ export default () => {
                 key='export'
                 change={(e) => { setVisit(e) }}
                 type={'intensive-activity-profit-detail-list-export'}
-                conditions={getFieldValue(searchConfig)}
+                conditions={()=>{return getFieldValue(searchConfig)}}
             />,
             <ExportHistory key='task' show={visit} setShow={setVisit} type={'intensive-activity-profit-detail-list-export'}/>
         ],
