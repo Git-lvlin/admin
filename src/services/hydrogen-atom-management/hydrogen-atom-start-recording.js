@@ -17,6 +17,7 @@ export const consumerOrderPage = async (params = {}, options = {}) => {
   return {
     data: res.data.records,
     success: res.success,
-    code: res.code
+    code: res.code,
+    total: res.data.total
   }
 }

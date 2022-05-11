@@ -185,14 +185,25 @@ export default () => {
       return children
     }
     const tagRender=(props:{label:string})=>{
-      const { label } = props;
-      return (
-        <p
-          style={{ marginRight: 3 }}
-        >
-          每月 {label}日
-        </p>
-      );
+      const { label,value } = props;
+      if(value<10){
+        return (
+          <p
+            style={{ marginRight: 3 }}
+          >
+             {value}、
+          </p>
+        );
+      }else{
+        return (
+          <p
+            style={{ marginRight: 3 }}
+          >
+             {label}、
+          </p>
+        );
+      }
+
     }
     
     return (

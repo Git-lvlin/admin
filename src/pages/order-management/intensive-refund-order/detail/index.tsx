@@ -64,7 +64,7 @@ type AuditRecord={
     },
     {
       title: '店主订单号',
-      dataIndex: 'shopMemberAccount',
+      dataIndex: 'orderId',
       valueType: 'text',
     },
     {
