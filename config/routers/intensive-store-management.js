@@ -112,6 +112,12 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'cancel-aduit',
+      path: '/intensive-store-management/cancel-aduit',
+      component: './intensive-store-management/cancel-aduit',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'fresh-store-review',
       path: '/intensive-store-management/fresh-store-review',
       component: './intensive-store-management/fresh-store-review',
@@ -123,11 +129,5 @@ export default {
       component: './intensive-store-management/fresh-shop-configuration',
       wrappers: [RouteWatcher],
     },
-    {
-      name: 'cancel-aduit',
-      path: '/intensive-store-management/cancel-aduit',
-      component: './intensive-store-management/cancel-aduit',
-      wrappers: [RouteWatcher],
-    }
   ]
 }

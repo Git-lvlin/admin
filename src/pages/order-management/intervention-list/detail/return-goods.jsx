@@ -6,7 +6,7 @@ import { history, useLocation } from 'umi'
 
 import styles from './styles.less'
 import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
-import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/shopkeeper-order/detail'
+import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/supplier-order/detail'
 
 const tableRow = props => {
   const imageArr = () => {

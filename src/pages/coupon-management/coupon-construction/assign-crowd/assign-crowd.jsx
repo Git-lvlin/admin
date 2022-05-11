@@ -50,7 +50,7 @@ const validity=(props)=>{
                 dispatch({
                     type:'UseScopeList/fetchCrowdIdsArr',
                     payload:{
-                        CrowdIdsArr:DetailList.data&&DetailList.data?.crowdList.length==0?[]:[DetailList.data?.crowdList]
+                        CrowdIdsArr:DetailList.data&&DetailList.data?.crowdList?.length==0?[]:[DetailList.data?.crowdList]
                     }
                 })
             }
@@ -98,7 +98,7 @@ const validity=(props)=>{
      const onIpute=(res)=>{
        setCrowdIds(res.selectedRowKeys.toString())
        setCrowdIdsArr(res.selectedRows)
-       if(res.selectedRows.length>1){
+       if(res.selectedRows?.length>1){
         message.error('只能选择一个商品');
        }
     }
@@ -153,7 +153,7 @@ const validity=(props)=>{
                                     style={{display:loading?'block':'none'}}
                                     request={couponCrowdList}
                                     actionRef={actionRef}
-                                    expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
+                                    expandable={{ expandedRowRender: (_) => <SubTable name={_?.name}/> }}
                                     search={{
                                         defaultCollapsed: true,
                                         labelWidth: 100,
@@ -168,11 +168,11 @@ const validity=(props)=>{
                             </Modal>
                             <ProTable
                                 toolBarRender={false}
-                                expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
+                                expandable={{ expandedRowRender: (_) => <SubTable name={_?.name}/> }}
                                 search={false}
                                 rowKey="spuId"
                                 columns={columns2}
-                                dataSource={UseScopeList.UseScopeObje.CrowdIdsArr}
+                                dataSource={UseScopeList?.UseScopeObje?.CrowdIdsArr}
                                 style={{display:isModalVisible?'none':'block'}}
                             />
                         </div>

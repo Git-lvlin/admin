@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ProCard from '@ant-design/pro-card';
 import { PageContainer } from '@/components/PageContainer';
 import { history } from 'umi';
@@ -18,7 +18,7 @@ const WorkPlace = () => {
           </div>
         </ProCard>
         <ProCard colSpan="148px">
-          <div className={style.card} onClick={() => { history.push('/product-management/product-list') }}>
+          <div className={style.card} onClick={() => { history.push('/product-management/supplier/product-list') }}>
             <div>
               <img />
             </div>
@@ -27,8 +27,7 @@ const WorkPlace = () => {
         </ProCard>
       </ProCard.Group>
     </PageContainer>
-
   );
 };
 
-export default WorkPlace;
+export default WorkPlace

@@ -52,11 +52,11 @@ export default {
       component: './message-management/stand-inside-letter-list',
       wrappers: [RouteWatcher],
     },
-    {
-      name: 'popup-template',
-      path: '/message-management/popup-template',
-      component: './message-management/popup-template',
-      wrappers: [RouteWatcher],
-    }
+    // {
+    //   name: 'popup-template',
+    //   path: '/message-management/popup-template',
+    //   component: './message-management/popup-template',
+    //   wrappers: [RouteWatcher],
+    // }
   ]
 }

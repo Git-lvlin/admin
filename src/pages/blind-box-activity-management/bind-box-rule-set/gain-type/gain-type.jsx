@@ -9,7 +9,6 @@ export default (props) => {
     const {id,falg}=props
     const [visible, setVisible] = useState(false);
     const checkConfirm=(rule, value, callback)=>{
-        console.log('dasd',value)
         return new Promise(async (resolve, reject) => {
         if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
             await reject('只能输入整数')
