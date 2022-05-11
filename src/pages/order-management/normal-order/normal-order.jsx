@@ -132,6 +132,7 @@ const TableList = () => {
                     onClick={() => {
                       form?.resetFields();
                       form?.submit();
+                      setOrderTypes(0)
                       setOrderStatusType([])
                     }}
                   >
