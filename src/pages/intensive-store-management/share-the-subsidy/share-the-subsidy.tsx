@@ -41,7 +41,7 @@ export default () => {
       valueType: 'select',
       hideInSearch : true,
       render:(_)=>{
-          return <a onClick={()=>{setOrderVisible(true);setSubOrderId()}}>{_}</a>
+          return <a onClick={()=>{setOrderVisible(true);setSubOrderId()}}>{_}234234</a>
       }
     },
     {
@@ -129,7 +129,7 @@ export default () => {
           id={subOrderId}
           visible={orderVisible}
           setVisible={setOrderVisible}
-          isPurchase={isPurchase}
+          onClose={()=>{ref?.current?.reload();setSubOrderId(null)}}
         />
       }
   </PageContainer>

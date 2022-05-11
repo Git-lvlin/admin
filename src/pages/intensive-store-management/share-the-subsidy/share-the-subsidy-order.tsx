@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react"
-import ProForm, { 
-  ModalForm,
-  ProFormTextArea
+import { 
+  DrawerForm,
 } from '@ant-design/pro-form'
-import { ExclamationCircleOutlined } from "@ant-design/icons"
+import { Button } from 'antd';
 import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
 import ProTable,{ ProColumns } from '@ant-design/pro-table';
@@ -11,8 +10,22 @@ import type{ FC } from "react"
 import type { ModalFormProps, OptProps, InfoProps,SubsidyOrderItem } from "./data"
 import { opt, findStartPage } from '@/services/hydrogen-atom-management/equipment-management'
 
+
+const formItemLayout = {
+    labelCol: { span: 7 },
+    wrapperCol: { span: 14 },
+    layout: {
+      labelCol: {
+        span: 10,
+      },
+      wrapperCol: {
+        span: 14,
+      },
+    }
+  };
+
 const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
-  const { visible, setVisible, id, type, refs, user, phone, status, expire } = props
+  const { visible, setVisible, id, type, refs, phone, onClose } = props
   const [info, setInfo] = useState<InfoProps>()
 
   useEffect(()=> {
@@ -126,6 +139,9 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
       dataIndex: 'text',
       valueType: 'text',
       hideInSearch: true,
+      render:(_)=>{
+        return <a onClick={()=>{}}>{_}</a>
+      }
     },
     {
       title: '下单时间',
@@ -139,6 +155,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
       valueType: 'text',
       hideInTable: true,
       valueEnum:{
+          0: '全部',
           1: '待结算',
           2: '已结算',
           3: '失效'
@@ -177,7 +194,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
   ];
 
   return (
-    <ModalForm
+    <DrawerForm
       visible={visible}
       onFinish={async (values) => {
         submit(values)
@@ -185,8 +202,27 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
       }}
       layout='horizontal'
       onVisibleChange={setVisible}
-      title='确认提示'
-      width={550}
+      drawerProps={{
+        forceRender: true,
+        destroyOnClose: true,
+        onClose: () => {
+          onClose();
+        }
+      }}
+      title={<p>中粮创芯店   总补贴3618.63元（分享订单：78单   分享订单金额：702318.62元   分享用户：53名）</p>}
+      {...formItemLayout}
+      width={1000}
+      submitter={
+        {
+          render: (props, defaultDoms) => {
+            return [
+              <Button type="default" onClick={() => {setVisible(false);onClose()}}>
+                返回
+              </Button>
+            ];
+          }
+        }
+      }
     >
         <ProTable<SubsidyOrderItem>
           rowKey="id"
@@ -205,7 +241,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
             showQuickJumper: true,
           }}
         />
-    </ModalForm>
+    </DrawerForm>
   )
 }
 

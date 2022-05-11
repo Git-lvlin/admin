@@ -53,6 +53,7 @@ export type ModalFormProps = {
 	phone?: string
 	status?: number
 	expire?: string
+	onclose?: function
 }
 
 export type PropsDivide = {
