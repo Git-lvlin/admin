@@ -4755,7 +4755,11 @@ antd-mobile@^2.3.1:
 
 antd@4.19.5:
   version "4.19.5"
+<<<<<<< HEAD
   resolved "https://registry.npmmirror.com/antd/-/antd-4.19.5.tgz#38d08f3e1391a7a69c2ca76f50968bb12ec2ac93"
+=======
+  resolved "https://registry.yarnpkg.com/antd/-/antd-4.19.5.tgz#38d08f3e1391a7a69c2ca76f50968bb12ec2ac93"
+>>>>>>> setup_ts
   integrity sha512-C4H/VJqlVO5iMvHZyiV27R8SbPs4jsOKCGPhDXIHUry/RnUCbMmVeQaPRfUIxSI1NbqDflsuQfevPtz1svyIlg==
   dependencies:
     "@ant-design/colors" "^6.0.0"
@@ -14712,7 +14716,11 @@ rc-dropdown@^3.2.0:
 
 rc-dropdown@~3.3.2:
   version "3.3.3"
+<<<<<<< HEAD
   resolved "https://registry.npmmirror.com/rc-dropdown/-/rc-dropdown-3.3.3.tgz#17ba32ebd066ae397b00e9e4d570c7c21daed88f"
+=======
+  resolved "https://registry.yarnpkg.com/rc-dropdown/-/rc-dropdown-3.3.3.tgz#17ba32ebd066ae397b00e9e4d570c7c21daed88f"
+>>>>>>> setup_ts
   integrity sha512-UNe68VpvtrpU0CS4jh5hD4iGqzi4Pdp7uOya6+H3QIEZxe7K+Xs11BNjZm6W4MaL0jTmzUj+bxvnq5bP3rRoVQ==
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -14731,7 +14739,11 @@ rc-field-form@~1.20.0:
 
 rc-field-form@~1.25.0:
   version "1.25.2"
+<<<<<<< HEAD
   resolved "https://registry.npmmirror.com/rc-field-form/-/rc-field-form-1.25.2.tgz#de418194b7aca2f1b6e0e059edd97b5cf624f68a"
+=======
+  resolved "https://registry.yarnpkg.com/rc-field-form/-/rc-field-form-1.25.2.tgz#de418194b7aca2f1b6e0e059edd97b5cf624f68a"
+>>>>>>> setup_ts
   integrity sha512-FXGScWibDlwIlKY15T1YOA7VTtMJwqxxXdDjHB56ZNx7wGbE4vK+Fe2zcymyakGZD0ej8NUP5LGr7qBVWaVpUQ==
   dependencies:
     "@babel/runtime" "^7.8.4"
@@ -15028,7 +15040,7 @@ rc-select@~14.0.0-alpha.23, rc-select@~14.0.0-alpha.8:
 
 rc-select@~14.0.2:
   version "14.0.6"
-  resolved "https://registry.npmmirror.com/rc-select/-/rc-select-14.0.6.tgz#93be0b185a9d66dc84795e079121f0f65310d8bf"
+  resolved "https://registry.yarnpkg.com/rc-select/-/rc-select-14.0.6.tgz#93be0b185a9d66dc84795e079121f0f65310d8bf"
   integrity sha512-HMb2BwfTvBxMmIWTR/afP4bcRJLbVKFSBW/VFfL5Z+kdV2XlrYdlliK2uHY7pRRvW16PPGwmOwGfV+eoulPINw==
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -15041,7 +15053,7 @@ rc-select@~14.0.2:
 
 rc-slider@~10.0.0-alpha.4:
   version "10.0.0"
-  resolved "https://registry.npmmirror.com/rc-slider/-/rc-slider-10.0.0.tgz#8ffe1dd3c8799c9d1f81ac808976f18af3dca206"
+  resolved "https://registry.yarnpkg.com/rc-slider/-/rc-slider-10.0.0.tgz#8ffe1dd3c8799c9d1f81ac808976f18af3dca206"
   integrity sha512-Bk54UIKWW4wyhHcL8ehAxt+wX+n69dscnHTX6Uv0FMxSke/TGrlkZz1LSIWblCpfE2zr/dwR2Ca8nZGk3U+Tbg==
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -15115,7 +15127,11 @@ rc-table@~7.13.0:
 
 rc-table@~7.23.0:
   version "7.23.2"
+<<<<<<< HEAD
   resolved "https://registry.npmmirror.com/rc-table/-/rc-table-7.23.2.tgz#f6f906e8fafb05ddbfdd69d450feb875ce260a7b"
+=======
+  resolved "https://registry.yarnpkg.com/rc-table/-/rc-table-7.23.2.tgz#f6f906e8fafb05ddbfdd69d450feb875ce260a7b"
+>>>>>>> setup_ts
   integrity sha512-opc2IBJOetsPSdNI+u1Lh9yY4Ks+EMgo1oJzZN+yIV4fRcgP81tHtxdPOVvXPFI4rUMO8CKnmHbGPU7jxMRAeg==
   dependencies:
     "@babel/runtime" "^7.10.1"
