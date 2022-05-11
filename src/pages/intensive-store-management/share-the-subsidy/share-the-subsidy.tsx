@@ -72,7 +72,7 @@ export default () => {
       fieldProps:{
         placeholder:'请输入店铺名称'
       }, 
-      order:3
+      order:1
     },
     {
       title: '社区店ID',
@@ -81,7 +81,7 @@ export default () => {
       fieldProps:{
         placeholder:'请输入店铺ID'
       }, 
-      order:1
+      order:3
     },
     {
       title: '提货点地区',
