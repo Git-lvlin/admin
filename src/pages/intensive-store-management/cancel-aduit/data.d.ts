@@ -32,6 +32,7 @@ export type TableListItem = {
     code?: number
   }
   createTime?: string
+  memberId?: string
 }
 
 export type aduitProps = {
