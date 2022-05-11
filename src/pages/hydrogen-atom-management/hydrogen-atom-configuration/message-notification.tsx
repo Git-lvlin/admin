@@ -190,7 +190,7 @@ export default () => {
         <p
           style={{ marginRight: 3 }}
         >
-          每月 {label}日
+           {label}日、
         </p>
       );
     }
