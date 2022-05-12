@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { 
   DrawerForm,
 } from '@ant-design/pro-form'
 import { Button } from 'antd';
-import moment from 'moment'
 import { amountTransform } from '@/utils/utils'
 import ProTable,{ ProColumns } from '@ant-design/pro-table';
 import type{ FC } from "react"
-import type { ModalFormProps, OptProps, InfoProps,SubsidyOrderItem } from "./data"
-import { opt, findStartPage } from '@/services/hydrogen-atom-management/equipment-management'
+import type { ModalFormProps,SubsidyOrderItem } from "./data"
+import { storeShareCommissionItem } from '@/services/intensive-store-management/share-the-subsidy'
+import Detail from '@/pages/order-management/normal-order/detail';
+import { useLocation } from 'umi';
+import ProductDetailDrawer from '@/components/product-detail-drawer'
+import UserDetail from '@/pages/user-management/user-list/detail';
 
 
 const formItemLayout = {
@@ -25,77 +28,45 @@ const formItemLayout = {
   };
 
 const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
-  const { visible, setVisible, id, type, refs, phone, onClose } = props
-  const [info, setInfo] = useState<InfoProps>()
-
-  useEffect(()=> {
-    findStartPage({
-      imei: id
-    }).then(res => {
-      setInfo(res.data)
-    })
-    return ()=> {
-      setInfo({})
-    }
-  }, [])
-  
-  const submit = (v: OptProps) => {
-    new Promise((resolve, reject) => {
-      opt({
-        imei: id,
-        type,
-        phone,
-        remark: v.remark
-      },
-      {
-        showSuccess: true,
-        showError: true
-      }
-      ).then(res => {
-        if(res.success) {
-          refs.current?.reload()
-          resolve('')
-        }else {
-          reject()
-        }
-      })
-    })
-  }
-
+  const { visible, setVisible, orderDetail, onClose } = props
+  const [subOrderId, setSubOrderId] = useState(null)
+  const [orderVisible, setOrderVisible] = useState(false)
+  const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState<SubsidyOrderItem>();
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [buyerMobileItem, setBuyerMobileItem] = useState<SubsidyOrderItem>();
+  const isPurchase = useLocation().pathname.includes('purchase') 
   const columns:ProColumns<SubsidyOrderItem>[]= [
     {
       title: '订单编号',
-      dataIndex: 'memberPhone',
+      dataIndex: 'orderNo',
       valueType: 'text',
       fieldProps:{
         placeholder:'请输入订单编号'
       }, 
       order:6,
-      render:(_)=>{
-        return <a onClick={()=>{}}>{_}</a>
+      render:(_,data)=>{
+        return <a onClick={()=>{setOrderVisible(true);setSubOrderId(data?.orderId)}}>{_}</a>
       }
     },
     {
       title: '商品名称',
-      dataIndex: 'memberPhone',
+      dataIndex: 'goodsName',
       valueType: 'text',
       order:4,
-      render:(_)=>{
-          return <a onClick={()=>{}}>{_}</a>
+      render:(_,data)=>{
+          return <a onClick={() => { setSelectItem(data); setProductDetailDrawerVisible(true); }}>{_}</a>
       }
     },
     {
       title: '商品spuID',
-      dataIndex: 'isShopkeeper',
-      valueType: 'select',
+      dataIndex: 'spuId',
+      valueType: 'text',
       hideInSearch : true,
-      render:(_)=>{
-        return <a onClick={()=>{setOrderVisible(true);setSubOrderId()}}>{_}</a>
-      }
     },
     {
       title: 'skuID',
-      dataIndex: 'skuID',
+      dataIndex: 'skuId',
       valueType: 'text',
       hideInTable :true,
       fieldProps:{
@@ -105,28 +76,28 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
     },
     {
       title: '商品skuID',
-      dataIndex: 'isShopkeeper',
-      valueType: 'select',
+      dataIndex: 'skuId',
+      valueType: 'text',
       hideInSearch: true,
-       render:(_)=>{
-        return <a onClick={()=>{setOrderVisible(true);setSubOrderId()}}>{_}</a>
-      }
     },
     {
       title: '商品数量',
-      dataIndex: 'storeNo',
+      dataIndex: 'quantity',
       valueType: 'text',
       hideInSearch : true,
     },
     {
       title: '订单金额',
-      dataIndex: 'storeName',
+      dataIndex: 'orderAmount',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      render:(_,data)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '下单手机号',
-      dataIndex: 'text',
+      dataIndex: 'buyerMobile',
       valueType: 'text',
       fieldProps:{
         placeholder:'请输入会员手机号'
@@ -136,22 +107,29 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
     },
     {
       title: '买家手机号',
-      dataIndex: 'text',
+      dataIndex: 'buyerMobile',
       valueType: 'text',
       hideInSearch: true,
-      render:(_)=>{
-        return <a onClick={()=>{}}>{_}</a>
+      render:(_,data)=>{
+        return <a onClick={() => { setBuyerMobileItem(data); setDetailVisible(true) }}>{_}</a>
       }
     },
     {
       title: '下单时间',
       dataIndex: 'dateTimeRange',
       valueType: 'dateTimeRange',
+      hideInTable: true,
       order:2
     },
     {
+      title: '下单时间',
+      dataIndex: 'orderTime',
+      valueType: 'text',
+      hideInSearch: true
+    },
+    {
       title: '补贴状态',
-      dataIndex: 'deviceUseTime',
+      dataIndex: 'status',
       valueType: 'text',
       hideInTable: true,
       valueEnum:{
@@ -164,31 +142,33 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
     },
     {
       title: '补贴状态',
-      dataIndex: 'deviceUseTime',
+      dataIndex: 'statusDesc',
       valueType: 'text',
       hideInSearch: true,
-      valueEnum:{
-        1: '待结算',
-        2: '已结算',
-        3: <>
-            <p>失效</p>
-            <span style={{color:'#F0924F'}}>买家已退款</span>
-            </>
-      },
+      render:(_,data)=>{
+        if(data?.refundDesc){
+          return <>
+                  <p>{_}</p>
+                  <span style={{color:'#F0924F'}}>{data?.refundDesc}</span>
+                 </>
+        }else{
+          return <p>{_}</p>
+        }
+      }
     },
     {
       title: '补贴金额',
-      dataIndex: 'deviceUseTime',
+      dataIndex: 'commission',
       valueType: 'text',
       hideInSearch: true,
       render:(_)=>{
-          return amountTransform(_,'/')
+          return amountTransform(_,'/').toFixed(2)
       }
     },
     {
       title: '支付时间',
-      dataIndex: 'dateTimeRange',
-      valueType: 'dateTimeRange',
+      dataIndex: 'payTime',
+      valueType: 'text',
       hideInSearch: true
     }
   ];
@@ -197,8 +177,6 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
     <DrawerForm
       visible={visible}
       onFinish={async (values) => {
-        submit(values)
-        return true
       }}
       layout='horizontal'
       onVisibleChange={setVisible}
@@ -209,9 +187,9 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
           onClose();
         }
       }}
-      title={<p>中粮创芯店   总补贴3618.63元（分享订单：78单   分享订单金额：702318.62元   分享用户：53名）</p>}
+      title={<p>{orderDetail?.storeName}   总补贴{amountTransform(orderDetail?.totalShareCommission,'/')}元（分享订单：{orderDetail?.sumOrderCount}单   分享订单金额：{amountTransform(orderDetail?.totalShareOrderAmount,'/')}元   分享用户：{orderDetail?.buyerCount}名）</p>}
       {...formItemLayout}
-      width={1000}
+      width={1400}
       submitter={
         {
           render: (props, defaultDoms) => {
@@ -224,23 +202,51 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
         }
       }
     >
-        <ProTable<SubsidyOrderItem>
-          rowKey="id"
-          options={false}
-        //   request={consumerOrderPage}
-          search={{
-          defaultCollapsed: false,
-          labelWidth: 100,
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse()
-          ],
-          }}
-          columns={columns}
-          pagination={{
-            pageSize: 10,
-            showQuickJumper: true,
-          }}
+      <ProTable<SubsidyOrderItem>
+        rowKey="id"
+        options={false}
+        params={{
+          storeNo:orderDetail?.storeNo
+        }}
+        request={storeShareCommissionItem}
+        search={{
+        defaultCollapsed: false,
+        labelWidth: 100,
+        optionRender: (searchConfig, formProps, dom) => [
+          ...dom.reverse()
+        ],
+        }}
+        columns={columns}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
+      />
+      {
+        orderVisible &&
+        <Detail
+          id={subOrderId}
+          visible={orderVisible}
+          setVisible={setOrderVisible}
+          isPurchase={isPurchase}
         />
+      }
+      {
+        productDetailDrawerVisible &&
+        <ProductDetailDrawer
+          visible={productDetailDrawerVisible}
+          setVisible={setProductDetailDrawerVisible}
+          spuId={selectItem?.spuId}
+        />
+      }
+       {
+        detailVisible &&
+        <UserDetail
+          id={buyerMobileItem?.memberId}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
     </DrawerForm>
   )
 }

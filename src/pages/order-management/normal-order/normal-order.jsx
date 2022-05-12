@@ -228,6 +228,7 @@ const TableList = () => {
             { value: '666', label: '氢原子购买订单' },
             { value: '888', label: '氢原子押金订单' },
             { value: '999', label: '氢原子启动订单' },
+            { value: '205', label: '分享订单' },
           ]}
           fieldProps={{
             style: {
@@ -451,7 +452,7 @@ const TableList = () => {
                   <div style={{ textAlign: 'center' }}>
                     {
                       item.subType?<Tag style={{ borderRadius: 10,marginTop:'10px' }} color="#f59a23">{({ 4:'氢原子购买',3:'氢原子押金',2:'氢原子启动' }[item.subType])}订单</Tag>
-                      : <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '拼团', 4: '团约', 11: '1688', 17: '盲盒活动', 18: '签到活动',666:'氢原子购买订单',888:'氢原子押金订单',999:'氢原子启动订单' }[item.orderType] || '秒约')}订单</Tag>
+                      : <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '拼团', 4: '团约', 11: '1688', 17: '盲盒活动', 18: '签到活动',666:'氢原子购买订单',888:'氢原子押金订单',999:'氢原子启动订单',205:'分享订单'}[item.orderType] || '秒约')}订单</Tag>
                     }
                     {
                       item.relevant1688OrderId && <div>关联1688单号：{item.relevant1688OrderId}</div>

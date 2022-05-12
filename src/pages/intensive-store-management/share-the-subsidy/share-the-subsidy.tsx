@@ -1,27 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import ProTable from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
-import { consumerOrderPage } from '@/services/hydrogen-atom-management/hydrogen-atom-start-recording'
-import moment from 'moment'
+import { storeShareCommission } from '@/services/intensive-store-management/share-the-subsidy'
 import { amountTransform } from '@/utils/utils'
 import { PageContainer } from '@ant-design/pro-layout';
-import Export from '@/pages/export-excel/export'
-import { useLocation } from 'umi';
+// import Export from '@/pages/export-excel/export'
 import type { ConsumerOrderPage } from "./data"
-import ExportHistory from '@/pages/export-excel/export-history'
+// import ExportHistory from '@/pages/export-excel/export-history'
 import ShareTheSubsidyOrder from './share-the-subsidy-order';
 
 
 export default () => {
-  const [visit, setVisit] = useState<boolean>(false)
-  const [subOrderId, setSubOrderId] = useState(null)
-  const [orderVisible, setOrderVisible] = useState(false)
-  const isPurchase = useLocation().pathname.includes('purchase')
+  // const [visit, setVisit] = useState<boolean>(false)
+  const [orderVisible, setOrderVisible] = useState<boolean>(false)
+  const [orderDetail,setOrderDetail]=useState<ConsumerOrderPage>()
   const ref=useRef()
   const columns:ProColumns<ConsumerOrderPage>[]= [
     {
       title: '分享人手机',
-      dataIndex: 'memberPhone',
+      dataIndex: 'storeMobile',
       valueType: 'text',
       fieldProps:{
         placeholder:'请输入用户手机'
@@ -31,43 +28,43 @@ export default () => {
     },
     {
       title: '店主手机',
-      dataIndex: 'memberPhone',
+      dataIndex: 'storeMobile',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '总补贴金额（元）',
-      dataIndex: 'isShopkeeper',
-      valueType: 'select',
+      dataIndex: 'totalShareCommission',
+      valueType: 'text',
       hideInSearch : true,
-      render:(_)=>{
-          return <a onClick={()=>{setOrderVisible(true);setSubOrderId()}}>{_}234234</a>
+      render:(_,data)=>{
+          return <a onClick={()=>{setOrderVisible(true);setOrderDetail(data)}}>{amountTransform(_,'/').toFixed(2)}</a>
       }
     },
     {
       title: '总分享订单金额（元）',
-      dataIndex: 'isShopkeeper',
-      valueType: 'select',
+      dataIndex: 'totalShareOrderAmount',
+      valueType: 'text',
       hideInSearch: true,
-       render:(_)=>{
-          return <a onClick={()=>{setOrderVisible(true);setSubOrderId()}}>{_}</a>
+      render:(_,data)=>{
+          return <a onClick={()=>{setOrderVisible(true);setOrderDetail(data)}}>{amountTransform(_,'/').toFixed(2)}</a>
       }
     },
     {
       title: '总订单数',
-      dataIndex: 'storeNo',
+      dataIndex: 'sumOrderCount',
       valueType: 'text',
       hideInSearch : true,
     },
     {
       title: '最近交易时间',
-      dataIndex: 'storeName',
+      dataIndex: 'lastCommissionTime',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '店铺名称',
-      dataIndex: 'text',
+      dataIndex: 'storeName',
       valueType: 'text',
       fieldProps:{
         placeholder:'请输入店铺名称'
@@ -76,7 +73,7 @@ export default () => {
     },
     {
       title: '社区店ID',
-      dataIndex: 'createTime',
+      dataIndex: 'storeNo',
       valueType: 'text',
       fieldProps:{
         placeholder:'请输入店铺ID'
@@ -85,36 +82,36 @@ export default () => {
     },
     {
       title: '提货点地区',
-      dataIndex: 'deviceUseTime',
+      dataIndex: 'district',
       valueType: 'text',
       hideInSearch: true
     }
   ];
-  const getFieldValue = (searchConfig) => {
-    const {...rest}=searchConfig.form.getFieldsValue()
-    return {
-      ...rest,
-    }
-  }
+  // const getFieldValue = (searchConfig) => {
+  //   const {...rest}=searchConfig.form.getFieldsValue()
+  //   return {
+  //     ...rest,
+  //   }
+  // }
   return (
     <PageContainer>
         <ProTable<ConsumerOrderPage>
           actionRef={ref}
-          rowKey="id"
+          rowKey="storeNo"
           options={false}
-          request={consumerOrderPage}
+          request={storeShareCommission}
           search={{
           defaultCollapsed: false,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-            <Export
-                key='export'
-                change={(e) => { setVisit(e) }}
-                type={'queryIotConsumerOrderExport'}
-                conditions={()=>{return getFieldValue(searchConfig)}}
-              />,
-              <ExportHistory key='task' show={visit} setShow={setVisit} type='queryIotConsumerOrderExport'/>,
+            // <Export
+            //     key='export'
+            //     change={(e) => { setVisit(e) }}
+            //     type={'queryIotConsumerOrderExport'}
+            //     conditions={()=>{return getFieldValue(searchConfig)}}
+            //   />,
+            // <ExportHistory key='task' show={visit} setShow={setVisit} type='queryIotConsumerOrderExport'/>,
           ],
           }}
           columns={columns}
@@ -126,10 +123,10 @@ export default () => {
         {
         orderVisible &&
         <ShareTheSubsidyOrder
-          id={subOrderId}
+          orderDetail={orderDetail}
           visible={orderVisible}
           setVisible={setOrderVisible}
-          onClose={()=>{ref?.current?.reload();setSubOrderId(null)}}
+          onClose={()=>{ref?.current?.reload();setOrderDetail(null)}}
         />
       }
   </PageContainer>
