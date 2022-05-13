@@ -43,7 +43,7 @@ const ProfitTable = ({ value, form, callback }) => {
     },
     {
       title: '平台毛利占比',
-      dataIndex: 'tOperateScale',
+      dataIndex: 'tPlatformScale',
       valueType: 'text',
       fieldProps: {
         addonAfter: '%',
@@ -78,7 +78,7 @@ const ProfitTable = ({ value, form, callback }) => {
     },
     {
       title: '运营中心占比',
-      dataIndex: 'tPlatformScale',
+      dataIndex: 'tOperateScale',
       valueType: 'text',
       render: (_) => `${_}%`,
       editable: false,
@@ -113,7 +113,7 @@ const ProfitTable = ({ value, form, callback }) => {
             arr = recordList.map(item => {
               return {
                 ...item,
-                tOperateScale: +new Big(100).minus(item.tSupplierScale).minus(item.tPlatformScale).minus(item.tStoreScale).toFixed(2)
+                tPlatformScale: +new Big(100).minus(item.tSupplierScale).minus(item.tOperateScale).minus(item.tStoreScale).toFixed(2)
               }
             })
             

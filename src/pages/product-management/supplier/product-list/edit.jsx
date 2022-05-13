@@ -480,8 +480,8 @@ export default (props) => {
           form.setFieldsValue({
             profit: [{
               tStoreScale: '',
-              tOperateScale: '',
-              tPlatformScale: amountTransform(goods.tPlatformScale),
+              tPlatformScale: '',
+              tOperateScale: amountTransform(goods.tPlatformScale),
               tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(amountTransform(data.salePrice, '/')).times(100).toFixed(2),
               e: 100,
               key: 1,
@@ -695,8 +695,8 @@ export default (props) => {
             spec2: specValuesMap[specDataKeys[1]],
             specValue,
             tStoreScale: amountTransform(item[1].tStoreScale) || '',
-            tOperateScale: amountTransform(item[1].tOperateScale) || '',
-            tPlatformScale: amountTransform(PlatformScale),
+            tPlatformScale: amountTransform(item[1].tPlatformScale) || '',
+            tOperateScale: amountTransform(PlatformScale),
             tSupplierScale: item[1].salePrice ? +new Big(amountTransform(item[1].retailSupplyPrice, '/')).div(amountTransform(item[1].salePrice, '/')).times(100).toFixed(2) : '',
             ...obj,
           }
@@ -730,8 +730,8 @@ export default (props) => {
           form.setFieldsValue({
             profit: [{
               tStoreScale: amountTransform(goods.tStoreScale) || '',
-              tOperateScale: amountTransform(goods.tOperateScale) || '',
-              tPlatformScale: amountTransform(PlatformScale),
+              tPlatformScale: amountTransform(goods.tPlatformScale) || '',
+              tOperateScale: amountTransform(PlatformScale),
               tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(amountTransform(goods.salePrice, '/')).times(100).toFixed(2),
               e: 100,
               key: 1,
@@ -1049,8 +1049,8 @@ export default (props) => {
                       form.setFieldsValue({
                         profit: [{
                           tStoreScale: '',
-                          tOperateScale: '',
-                          tPlatformScale: amountTransform(PlatformScale),
+                          tPlatformScale: '',
+                          tOperateScale: amountTransform(PlatformScale),
                           tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(salePrice || 0).times(100).toFixed(2),
                           e: 100,
                           key: 1,
@@ -1064,8 +1064,8 @@ export default (props) => {
                           return {
                             ...item,
                             tStoreScale: item.tStoreScale || '',
-                            tOperateScale: item.tOperateScale || '',
-                            tPlatformScale: amountTransform(PlatformScale),
+                            tPlatformScale: item.tPlatformScale || '',
+                            tOperateScale: amountTransform(PlatformScale),
                             tSupplierScale: +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2),
                           }
                         }
@@ -1215,7 +1215,6 @@ export default (props) => {
                           unit={goods.unit}
                           wsUnit={goods.wsUnit}
                           ladderSwitch={detailData?.ladderSwitch}
-                          gcId2={goods.gcId2}
                         />}
                     </>
                   )
