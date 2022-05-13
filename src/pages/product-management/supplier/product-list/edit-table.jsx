@@ -276,8 +276,18 @@ export default function EditTable(props) {
         retailSupplyPrice: amountTransform(findItem.retailSupplyPrice),
         wholesaleTaxRate: props.wholesaleTaxRate,
       }
-      if (findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat || findItem.tStoreScale !== record.tStoreScale) {
+      if (findItem.salePrice !== record.salePrice || findItem.tOperateScale !== record.tOperateScale || findItem.tStoreScale !== record.tStoreScale) {
         obj.salePrice = amountTransform(record.salePrice);
+
+        recordList = recordList.map(item => {
+          if (item.skuId === findItem.skuId) {
+            return {
+              ...item,
+              tSupplierScale: +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2)
+            }
+          }
+          return item;
+        })
       }
 
       if (findItem.salePriceFloat !== record.salePriceFloat) {
@@ -288,23 +298,30 @@ export default function EditTable(props) {
         obj.tStoreScale = amountTransform(record.tStoreScale, '/')
         obj.tOperateScale = amountTransform(record.tOperateScale, '/')
         obj.tPlatformScale = amountTransform(record.tPlatformScale, '/')
-        if (record.tStoreScale === '' || record.tOperateScale === '') {
-          if (record.tStoreScale !== recordList.tStoreScale) {
-            recordList = recordList.map(item => {
+        if (record.tStoreScale !== findItem.tStoreScale) {
+          recordList = recordList.map(item => {
+            if (item.skuId === findItem.skuId) {
               return {
                 ...item,
                 tOperateScale: +new Big(100).minus(item.tSupplierScale).minus(item.tPlatformScale).minus(item.tStoreScale || 0).toFixed(2)
               }
-            })
+            }
 
-          } else {
-            recordList = recordList.map(item => {
+            return item;
+            
+          })
+        }
+
+        if (record.tOperateScale !== findItem.tOperateScale) {
+          recordList = recordList.map(item => {
+            if (item.skuId === findItem.skuId) {
               return {
                 ...item,
                 tStoreScale: +new Big(100).minus(item.tSupplierScale).minus(item.tPlatformScale).minus(item.tOperateScale || 0).toFixed(2)
               }
-            })
-          }
+            }
+            return item;
+          })
         }
       }
 

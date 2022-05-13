@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Button, Form, Input, message, Modal } from 'antd';
+import { Button, Form, Input, message, Modal, Table } from 'antd';
 import {
   DrawerForm,
   ProFormText,
@@ -48,7 +48,9 @@ export default (props) => {
   const [tableData, setTableData] = useState([]);
   const [salePriceProfitLoss, setSalePriceProfitLoss] = useState(null);
   const [salePriceFloat, setSalePriceFloat] = useState(0);
+  const [platformGain, setPlatformGain] = useState(0);
   const [operateGain, setOperateGain] = useState(0);
+  const [storeGain, setStoreGain] = useState(0);
   const [preferential, setPreferential] = useState(0);
   const [lookVisible, setLookVisible] = useState(false);
   const [lookData, setLookData] = useState(false);
@@ -157,6 +159,13 @@ export default (props) => {
 
       if (goods.goodsSaleType !== 2) {
         obj.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrices)
+      }
+
+      if (operateType === 2) {
+        obj.tStoreScale = amountTransform(item.tStoreScale, '/')
+        obj.tOperateScale = amountTransform(item.tOperateScale, '/')
+        obj.tPlatformScale = amountTransform(item.tPlatformScale, '/')
+        obj.tSupplierScale = amountTransform(item.tSupplierScale, '/')
       }
 
       // if (wholesaleFreights) {
@@ -403,7 +412,6 @@ export default (props) => {
             key: 1,
           }]
         })
-        return;
       }
 
       subAccountCheck({
@@ -425,7 +433,9 @@ export default (props) => {
           salePriceFloat: amountTransform(data.salePriceFloat),
         })
         setSalePriceProfitLoss(amountTransform(data.salePriceProfitLoss, '/'))
-        setOperateGain(amountTransform(data.operateGain, '/'))
+        setPlatformGain(amountTransform(data.tPlatformGain, '/'))
+        setStoreGain(amountTransform(data.tStoreGain, '/'))
+        setOperateGain(amountTransform(data.tOperateGain, '/'))
         if (data.id) {
           form.setFieldsValue({
             profit: [{
@@ -463,7 +473,9 @@ export default (props) => {
           salePrice: amountTransform(data.salePrice, '/'),
         })
         setSalePriceProfitLoss(amountTransform(data.salePriceProfitLoss, '/'))
-        setOperateGain(amountTransform(data.operateGain, '/'))
+        setPlatformGain(amountTransform(data.tPlatformGain, '/'))
+        setStoreGain(amountTransform(data.tStoreGain, '/'))
+        setOperateGain(amountTransform(data.tOperateGain, '/'))
         if (operateType === 2 && !profit) {
           form.setFieldsValue({
             profit: [{
@@ -685,7 +697,7 @@ export default (props) => {
             tStoreScale: amountTransform(item[1].tStoreScale) || '',
             tOperateScale: amountTransform(item[1].tOperateScale) || '',
             tPlatformScale: amountTransform(PlatformScale),
-            tSupplierScale: +new Big(amountTransform(item[1].retailSupplyPrice, '/')).div(amountTransform(item[1].salePrice, '/')).times(100).toFixed(2),
+            tSupplierScale: item[1].salePrice ? +new Big(amountTransform(item[1].retailSupplyPrice, '/')).div(amountTransform(item[1].salePrice, '/')).times(100).toFixed(2) : '',
             ...obj,
           }
         }))
@@ -727,7 +739,9 @@ export default (props) => {
           })
         }
 
-        setOperateGain(amountTransform(goods.operateGain, '/'))
+        setPlatformGain(amountTransform(goods.tPlatformGain, '/'))
+        setStoreGain(amountTransform(goods.tStoreGain, '/'))
+        setOperateGain(amountTransform(goods.tOperateGain, '/'))
         setSalePriceProfitLoss(amountTransform(goods.salePriceProfitLoss, '/'))
 
         preAccountCheckRequest({
@@ -1011,9 +1025,9 @@ export default (props) => {
           }
         }
       </ProFormDependency>
-      <ProFormDependency name={['isDrainage', 'goodsSaleType', 'salePrice']}>
+      <ProFormDependency name={['isDrainage', 'goodsSaleType', 'salePrice', 'isMultiSpec']}>
         {
-          ({ isDrainage, goodsSaleType, salePrice }) => {
+          ({ isDrainage, goodsSaleType, salePrice, isMultiSpec }) => {
             return (isDrainage !== 1 && goodsSaleType !== 1) && <ProFormRadio.Group
               name="operateType"
               label="运营类型"
@@ -1030,17 +1044,34 @@ export default (props) => {
               ]}
               fieldProps={{
                 onChange: (e) => {
-                  if (e.target.value === 2 && salePrice !== 0) {
-                    form.setFieldsValue({
-                      profit: [{
-                        tStoreScale: '',
-                        tOperateScale: '',
-                        tPlatformScale: amountTransform(PlatformScale),
-                        tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(salePrice || 0).times(100).toFixed(2),
-                        e: 100,
-                        key: 1,
-                      }]
-                    })
+                  if (e.target.value === 2) {
+                    if (isMultiSpec === 0 && salePrice !== 0) {
+                      form.setFieldsValue({
+                        profit: [{
+                          tStoreScale: '',
+                          tOperateScale: '',
+                          tPlatformScale: amountTransform(PlatformScale),
+                          tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(salePrice || 0).times(100).toFixed(2),
+                          e: 100,
+                          key: 1,
+                        }]
+                      })
+                    }
+
+                    if (isMultiSpec === 1) {
+                      setTableData(tableData.map(item => {
+                        if (item.salePrice) {
+                          return {
+                            ...item,
+                            tStoreScale: item.tStoreScale || '',
+                            tOperateScale: item.tOperateScale || '',
+                            tPlatformScale: amountTransform(PlatformScale),
+                            tSupplierScale: +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2),
+                          }
+                        }
+                        return item
+                      }))
+                    }
                   }
                 },
               }}
@@ -1405,20 +1436,27 @@ export default (props) => {
                               ]}
                               fieldProps={{
                                 onChange: (e) => { salePriceFloatChange(e, operateType, null) },
+                                addonAfter: `%`
                               }}
                             />
-                            <Form.Item
-                              label={`${operateType === 2 ? '分享补贴价实际盈亏' : '秒约价实际盈亏'}`}
-                            >
-                              {salePriceProfitLoss}
-                            </Form.Item>
+                            
                             {operateType === 2
-                              &&
+                              ?
                               <>
                                 <Form.Item
-                                  label="预计店主补贴金额"
+                                  label="分享补贴价平台毛利"
                                 >
-                                  {operateGain}
+                                  {platformGain}元/{goods.unit}
+                                </Form.Item>
+                                <Form.Item
+                                  label="店主补贴金额"
+                                >
+                                  {storeGain}元/{goods.unit}
+                                </Form.Item>
+                                <Form.Item
+                                  label="运营中心分成金额"
+                                >
+                                  {operateGain}元/{goods.unit}
                                 </Form.Item>
                                 <Form.Item
                                   label="分润比例"
@@ -1432,7 +1470,14 @@ export default (props) => {
                                     }}
                                   />
                                 </Form.Item>
-                              </>}
+                              </>
+                              :
+                              <Form.Item
+                                label={`秒约价实际盈亏`}
+                              >
+                                {salePriceProfitLoss}元/{goods.unit}
+                              </Form.Item>
+                            }
                           </>
                         )
                       }

@@ -126,8 +126,6 @@ const ProfitTable = ({ value, form, callback }) => {
             })
           }
 
-          console.log('arr', arr);
-
           form.setFieldsValue({
             test: arr
           })
