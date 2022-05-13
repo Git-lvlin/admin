@@ -16,6 +16,7 @@ import AddressMultiCascader from '@/components/address-multi-cascader'
 import { PageContainer } from '@/components/PageContainer';
 import { getWholesaleArea } from '@/services/intensive-activity-management/intensive-activity-list'
 import { flatMap } from 'lodash';
+import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -94,16 +95,6 @@ const couponConstruction = (props) => {
   }
   
   const onsubmit = (values) => {
-    var flage=false
-    for (let index = 0; index < UseScopeList.UseScopeObje.spuIdsArr.length; index++) {
-      if(UseScopeList.UseScopeObje.spuIdsArr[index]?.salePriceProfitLoss<values?.freeAmount){
-        flage=true
-      }
-    }
-    if(flage){
-      return message.error('商品盈亏小于优惠券设定的面值，请删除后再提交')
-    }
-      
       values.issueType=parseInt(types)|| id&&DetaiIssueType//发放类型
       const parmas={
         ...values,
