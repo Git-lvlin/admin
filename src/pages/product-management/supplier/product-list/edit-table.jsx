@@ -151,12 +151,12 @@ export default function EditTable(props) {
       },
       {
         title: '分享补贴平台毛利占比',
-        dataIndex: 'tOperateScale',
+        dataIndex: 'tPlatformScale',
         hideInTable: operateType !== 2,
       },
       {
         title: '分享补贴运营中心占比',
-        dataIndex: 'tPlatformScale',
+        dataIndex: 'tOperateScale',
         editable: false,
         hideInTable: operateType !== 2,
         render: _ => `${_}%`,
@@ -303,7 +303,7 @@ export default function EditTable(props) {
             if (item.skuId === findItem.skuId) {
               return {
                 ...item,
-                tOperateScale: +new Big(100).minus(item.tSupplierScale).minus(item.tPlatformScale).minus(item.tStoreScale || 0).toFixed(2)
+                tPlatformScale: +new Big(100).minus(item.tSupplierScale).minus(item.tOperateScale).minus(item.tStoreScale || 0).toFixed(2)
               }
             }
 
@@ -312,7 +312,7 @@ export default function EditTable(props) {
           })
         }
 
-        if (record.tOperateScale !== findItem.tOperateScale) {
+        if (record.tPlatformScale !== findItem.tPlatformScale) {
           recordList = recordList.map(item => {
             if (item.skuId === findItem.skuId) {
               return {
@@ -329,7 +329,7 @@ export default function EditTable(props) {
       setTableData(recordList)
 
       if (
-        (findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat || findItem.tStoreScale !== record.tStoreScale || findItem.tOperateScale !== record.tOperateScale)
+        (findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat || findItem.tStoreScale !== record.tStoreScale || findItem.tPlatformScale !== record.tPlatformScale)
         && goodsSaleType !== 1
         && (record.salePrice !== '' && record.salePriceFloat !== '')
       ) {
@@ -349,7 +349,7 @@ export default function EditTable(props) {
                   data = {
                     ...data,
                     tStoreScale: '',
-                    tOperateScale: '',
+                    tPlatformScale: '',
                     tSupplierScale: +new Big(amountTransform(data.retailSupplyPrice, '/')).div(data.salePrice).times(100).toFixed(2)
                   }
                 }

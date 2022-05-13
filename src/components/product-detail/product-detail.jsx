@@ -301,7 +301,7 @@ export default (props) => {
               </>
             }
             <Form.Item
-              label="秒约价"
+              label={`${goods?.operateType === 2 ? '分享补贴价' :'"秒约价"'}`}
             >
               {amountTransform(goods?.salePrice, '/')}元/{goods.unit}
             </Form.Item>
