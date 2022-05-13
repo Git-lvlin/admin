@@ -26,7 +26,6 @@ const GoosModel=(props)=>{
             )))
            }
         })
-        setRowKeys(UseScopeList.UseScopeObje.spuIds)
     },[])
     const columns = [
         {
