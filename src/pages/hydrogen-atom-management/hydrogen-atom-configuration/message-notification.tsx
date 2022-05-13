@@ -207,7 +207,7 @@ export default () => {
     }
     
     return (
-    <div style={{background:'#fff',padding:'50px'}}>
+    <div style={{background:'#fff',padding:'0 20px'}}>
         <Title style={{ marginBottom: 10 }} level={5}>续租</Title>
         <ProForm<{
           days:[];
@@ -226,10 +226,9 @@ export default () => {
           form={form2}
           formRef={formRef2}
           {...formItemLayout}
-        >
+        ><ProForm.Group>
             <ProFormText
-              labelCol={1}
-              width={400}
+              wrapperCol={20}
               readonly
               name='times'
               label="通知时间"
@@ -244,12 +243,13 @@ export default () => {
               hidden
             />
             <Form.Item>
-              <Button type="primary" style={{ marginLeft:'940px' }} onClick={()=>{
+              <Button type="primary" style={{ marginLeft:'595px' }} onClick={()=>{
                 formRef2?.current.submit()
               }}>
                 确定
               </Button>
             </Form.Item>
+          </ProForm.Group>
         </ProForm>
         <Divider style={{ margin: '0 0 20px 0' }} />
         <ProForm<{
@@ -344,7 +344,7 @@ export default () => {
               hidden
             />
             <Form.Item>
-            <Button type="primary" style={{ marginLeft:'100px' }} onClick={()=>{
+            <Button type="primary" style={{ marginLeft:'55px' }} onClick={()=>{
               formRef4?.current.submit()
             }}>
               确定

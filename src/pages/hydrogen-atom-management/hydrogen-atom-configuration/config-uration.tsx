@@ -162,7 +162,7 @@ export default () => {
       }
     ];
     return (
-        <div style={{background:'#fff',padding:'50px'}}>
+        <div style={{background:'#fff',padding:'0 20px'}}>
         <ProTable<activityItem>
           actionRef={ref}
           rowKey="id"
@@ -175,7 +175,7 @@ export default () => {
           columns={columns}
           pagination={false}
           dataSource={dataDetail}
-          style={{marginBottom:'50px'}}
+          style={{marginBottom:'30px'}}
         />
         <ProTable<activityItem>
           actionRef={ref}
@@ -189,7 +189,7 @@ export default () => {
           columns={columns2}
           pagination={false}
           dataSource={dataList}
-          style={{marginBottom:'50px'}}
+          style={{marginBottom:'30px'}}
         />
         <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right',  display: 'inline-block' }}>
         <Descriptions.Item label="扫码启动使用机器需支付金额">
@@ -211,7 +211,7 @@ export default () => {
             <Descriptions.Item label="氢原子机器自动确认收货时间">
               {rentDetail?.autoConfirmTime}天
             </Descriptions.Item>
-            <Descriptions.Item labelStyle={{ textAlign: 'right', width: 400, display: 'inline-block' }} label="氢原子机器租赁时租金可逾期天数（租约逾期至停用天数）">
+            <Descriptions.Item labelStyle={{ textAlign: 'right', width: 380, display: 'inline-block' }} label="氢原子机器租赁时租金可逾期天数（租约逾期至停用天数）">
               <ProFormText
                 readonly
                 fieldProps={{
@@ -223,7 +223,7 @@ export default () => {
             </Descriptions.Item>
         </Descriptions>
 
-        <Divider style={{ margin: '20px 0' }} />
+        <Divider style={{ margin: '10px 0' }} />
 
         <ProForm<{
           month: number;
