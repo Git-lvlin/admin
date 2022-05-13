@@ -4,14 +4,14 @@ import type { ProColumns } from '@ant-design/pro-table';
 import { storeShareCommission } from '@/services/intensive-store-management/share-the-subsidy'
 import { amountTransform } from '@/utils/utils'
 import { PageContainer } from '@ant-design/pro-layout';
-// import Export from '@/pages/export-excel/export'
+import Export from '@/pages/export-excel/export'
 import type { ConsumerOrderPage } from "./data"
-// import ExportHistory from '@/pages/export-excel/export-history'
+import ExportHistory from '@/pages/export-excel/export-history'
 import ShareTheSubsidyOrder from './share-the-subsidy-order';
 
 
 export default () => {
-  // const [visit, setVisit] = useState<boolean>(false)
+  const [visit, setVisit] = useState<boolean>(false)
   const [orderVisible, setOrderVisible] = useState<boolean>(false)
   const [orderDetail,setOrderDetail]=useState<ConsumerOrderPage>()
   const ref=useRef()
@@ -87,12 +87,12 @@ export default () => {
       hideInSearch: true
     }
   ];
-  // const getFieldValue = (searchConfig) => {
-  //   const {...rest}=searchConfig.form.getFieldsValue()
-  //   return {
-  //     ...rest,
-  //   }
-  // }
+  const getFieldValue = (searchConfig) => {
+    const {...rest}=searchConfig.form.getFieldsValue()
+    return {
+      ...rest,
+    }
+  }
   return (
     <PageContainer>
         <ProTable<ConsumerOrderPage>
@@ -105,13 +105,13 @@ export default () => {
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-            // <Export
-            //     key='export'
-            //     change={(e) => { setVisit(e) }}
-            //     type={'queryIotConsumerOrderExport'}
-            //     conditions={()=>{return getFieldValue(searchConfig)}}
-            //   />,
-            // <ExportHistory key='task' show={visit} setShow={setVisit} type='queryIotConsumerOrderExport'/>,
+            <Export
+                key='export'
+                change={(e) => { setVisit(e) }}
+                type={'financial-storeShare-commission-export'}
+                conditions={()=>{return getFieldValue(searchConfig)}}
+              />,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type='financial-storeShare-commission-export'/>,
           ],
           }}
           columns={columns}

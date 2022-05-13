@@ -16,15 +16,7 @@ import UserDetail from '@/pages/user-management/user-list/detail';
 
 const formItemLayout = {
     labelCol: { span: 7 },
-    wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
+    wrapperCol: { span: 14 }
   };
 
 const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
@@ -194,7 +186,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
         {
           render: (props, defaultDoms) => {
             return [
-              <Button type="default" onClick={() => {setVisible(false);onClose()}}>
+              <Button key='GoBack' type="default" onClick={() => {setVisible(false);onClose()}}>
                 返回
               </Button>
             ];
@@ -203,7 +195,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
       }
     >
       <ProTable<SubsidyOrderItem>
-        rowKey="id"
+        rowKey="orderId"
         options={false}
         params={{
           storeNo:orderDetail?.storeNo
