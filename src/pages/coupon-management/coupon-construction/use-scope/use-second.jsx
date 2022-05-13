@@ -26,6 +26,7 @@ const GoosModel=(props)=>{
             )))
            }
         })
+        setRowKeys(UseScopeList.UseScopeObje.spuIds)
     },[])
     const columns = [
         {
@@ -75,7 +76,7 @@ const GoosModel=(props)=>{
         },
         {
             title: '平台盈亏',
-            dataIndex: 'goodsSalePrice',
+            dataIndex: 'salePriceProfitLoss',
             render: (_)=> amountTransform(_, '/').toFixed(2),
             hideInSearch: true,
         },
@@ -112,7 +113,7 @@ const GoosModel=(props)=>{
         },
         {
             title: '平台盈亏',
-            dataIndex: 'goodsSalePrice',
+            dataIndex: 'salePriceProfitLoss',
             render: (_)=> amountTransform(_, '/').toFixed(2)
         },
         {
