@@ -24,6 +24,11 @@ import Look from '@/components/look';
 import FreightTemplateSelect from '@/components/freight-template-select'
 import { useLocation } from 'umi';
 import { preAccountCheck, preAccountShow } from '@/services/product-management/product-list';
+import ProfitTable from './profit-table';
+import Big from 'big.js';
+
+Big.RM = 2;
+
 
 const { confirm } = Modal
 
@@ -34,6 +39,8 @@ const FromWrap = ({ value, onChange, content, right }) => (
   </div>
 )
 
+const PlatformScale = 0.0005
+
 export default (props) => {
   const { visible, setVisible, detailData, callback, onClose } = props;
   const [formModalVisible, setFormModalVisible] = useState(false);
@@ -41,6 +48,7 @@ export default (props) => {
   const [tableData, setTableData] = useState([]);
   const [salePriceProfitLoss, setSalePriceProfitLoss] = useState(null);
   const [salePriceFloat, setSalePriceFloat] = useState(0);
+  const [operateGain, setOperateGain] = useState(0);
   const [preferential, setPreferential] = useState(0);
   const [lookVisible, setLookVisible] = useState(false);
   const [lookData, setLookData] = useState(false);
@@ -54,7 +62,7 @@ export default (props) => {
   }
   const formItemLayout = {
     labelCol: { span: 6 },
-    wrapperCol: { span: 14 },
+    wrapperCol: { span: 16 },
     layout: {
       labelCol: {
         span: 4,
@@ -97,6 +105,8 @@ export default (props) => {
       isFreeFreight,
       sampleSalePrice,
       sampleSupplyPrice,
+      operateType,
+      profit,
       ...rest } = values;
     const { specValues1, specValues2 } = form.getFieldsValue(['specValues1', 'specValues2']);
     const specName = {};
@@ -203,6 +213,7 @@ export default (props) => {
         wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
         goodsSaleType: goods.goodsSaleType,
         skuName: goods.skuName,
+        operateType,
       },
       isLossMoney: isLossMoney.current ? 1 : 0,
       primaryImages: urlsTransform(primaryImages),
@@ -249,6 +260,13 @@ export default (props) => {
 
       obj.goods.marketPrice = amountTransform(marketPrice);
       obj.goods.ladderData = goods.ladderData;
+
+      if (operateType === 2) {
+        obj.goods.tStoreScale = amountTransform(profit[0].tStoreScale, '/')
+        obj.goods.tOperateScale = amountTransform(profit[0].tOperateScale, '/')
+        obj.goods.tPlatformScale = amountTransform(profit[0].tPlatformScale, '/')
+        obj.goods.tSupplierScale = amountTransform(profit[0].tSupplierScale, '/')
+      }
 
       // if (retailSupplyPrice > salePrice || retailSupplyPrice > marketPrice) {
       //   message.error('秒约价和市场价不能小于供货价');
@@ -364,9 +382,33 @@ export default (props) => {
   }
 
   const salePriceChange = useMemo(() => {
-    const loadData = (e) => {
+    const loadData = (e, operateType, profit) => {
+      let obj = {};
+      if (operateType === 2 && profit) {
+        obj = {
+          tStoreScale: amountTransform(profit.tStoreScale, '/'),
+          tOperateScale: amountTransform(profit.tOperateScale, '/'),
+          tPlatformScale: amountTransform(profit.tPlatformScale, '/'),
+        }
+      }
+
+      if (operateType === 2 && !profit) {
+        form.setFieldsValue({
+          profit: [{
+            tStoreScale: '',
+            tOperateScale: '',
+            tPlatformScale: amountTransform(PlatformScale),
+            tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(+e.target.value).times(100).toFixed(2),
+            e: 100,
+            key: 1,
+          }]
+        })
+        return;
+      }
+
       subAccountCheck({
-        salePrice: amountTransform(e.target.value)
+        salePrice: amountTransform(e.target.value),
+        ...obj,
       }, (data) => {
         preAccountCheckRequest({
           skuId: data.skuId,
@@ -383,15 +425,28 @@ export default (props) => {
           salePriceFloat: amountTransform(data.salePriceFloat),
         })
         setSalePriceProfitLoss(amountTransform(data.salePriceProfitLoss, '/'))
+        setOperateGain(amountTransform(data.operateGain, '/'))
+        if (data.id) {
+          form.setFieldsValue({
+            profit: [{
+              tStoreScale: amountTransform(data.tStoreScale),
+              tOperateScale: amountTransform(data.tOperateScale),
+              tPlatformScale: amountTransform(data.tPlatformScale),
+              tSupplierScale: amountTransform(data.tSupplierScale),
+              e: 100,
+              key: 1,
+            }]
+          })
+        }
       })
     }
     return debounce(loadData, 500);
   }, [])
 
   const salePriceFloatChange = useMemo(() => {
-    const loadData = (e) => {
+    const loadData = (e, operateType, profit) => {
       subAccountCheck({
-        salePriceFloat: amountTransform(e.target.value, '/')
+        salePriceFloat: amountTransform(e.target.value, '/'),
       }, (data) => {
         preAccountCheckRequest({
           skuId: data.skuId,
@@ -408,6 +463,19 @@ export default (props) => {
           salePrice: amountTransform(data.salePrice, '/'),
         })
         setSalePriceProfitLoss(amountTransform(data.salePriceProfitLoss, '/'))
+        setOperateGain(amountTransform(data.operateGain, '/'))
+        if (operateType === 2 && !profit) {
+          form.setFieldsValue({
+            profit: [{
+              tStoreScale: '',
+              tOperateScale: '',
+              tPlatformScale: amountTransform(goods.tPlatformScale),
+              tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(amountTransform(data.salePrice, '/')).times(100).toFixed(2),
+              e: 100,
+              key: 1,
+            }]
+          })
+        }
       })
     }
     return debounce(loadData, 1000);
@@ -525,6 +593,7 @@ export default (props) => {
         sampleFreight: goods.sampleFreight,
         goodsVirtualSaleNum: goods.goodsVirtualSaleNum,
         showOn: goods.showOn,
+        operateType: goods.operateType,
       })
 
       if (freightTemplateId && freightTemplateName) {
@@ -603,6 +672,7 @@ export default (props) => {
             salePrice: amountTransform((settleType === 1 || settleType === 0) ? item[1].retailSupplyPrice : item[1].salePrice, '/'),
             marketPrice: amountTransform(item[1].marketPrice, '/'),
             wholesaleFreight: amountTransform(item[1].wholesaleFreight, '/'),
+            operateGain: amountTransform(item[1].operateGain, '/'),
             // batchNumber: item[1].batchNumber,
             // isFreeFreight: item[1].isFreeFreight,
             freightTemplateId: item[1]?.freightTemplateId !== 0 ? { label: item[1]?.freightTemplateName, value: item[1]?.freightTemplateId } : undefined,
@@ -612,6 +682,10 @@ export default (props) => {
             spec1: specValuesMap[specDataKeys[0]],
             spec2: specValuesMap[specDataKeys[1]],
             specValue,
+            tStoreScale: amountTransform(item[1].tStoreScale) || '',
+            tOperateScale: amountTransform(item[1].tOperateScale) || '',
+            tPlatformScale: amountTransform(PlatformScale),
+            tSupplierScale: +new Big(amountTransform(item[1].retailSupplyPrice, '/')).div(amountTransform(item[1].salePrice, '/')).times(100).toFixed(2),
             ...obj,
           }
         }))
@@ -639,6 +713,22 @@ export default (props) => {
           sampleMinNum: goods.sampleMinNum,
           sampleMaxNum: goods.sampleMaxNum,
         })
+
+        if (goods.salePrice) {
+          form.setFieldsValue({
+            profit: [{
+              tStoreScale: amountTransform(goods.tStoreScale) || '',
+              tOperateScale: amountTransform(goods.tOperateScale) || '',
+              tPlatformScale: amountTransform(PlatformScale),
+              tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(amountTransform(goods.salePrice, '/')).times(100).toFixed(2),
+              e: 100,
+              key: 1,
+            }]
+          })
+        }
+
+        setOperateGain(amountTransform(goods.operateGain, '/'))
+        setSalePriceProfitLoss(amountTransform(goods.salePriceProfitLoss, '/'))
 
         preAccountCheckRequest({
           skuId: goods.skuId,
@@ -908,10 +998,57 @@ export default (props) => {
                   value: 1,
                 },
               ]}
+              fieldProps={{
+                onChange: (e) => {
+                  if (e.target.value === 1) {
+                    form.setFieldsValue({
+                      operateType: 1,
+                    })
+                  }
+                },
+              }}
             />
           }
         }
       </ProFormDependency>
+      <ProFormDependency name={['isDrainage', 'goodsSaleType', 'salePrice']}>
+        {
+          ({ isDrainage, goodsSaleType, salePrice }) => {
+            return (isDrainage !== 1 && goodsSaleType !== 1) && <ProFormRadio.Group
+              name="operateType"
+              label="运营类型"
+              rules={[{ required: true }]}
+              options={[
+                {
+                  label: '秒约',
+                  value: 1,
+                },
+                {
+                  label: '分享补贴',
+                  value: 2,
+                },
+              ]}
+              fieldProps={{
+                onChange: (e) => {
+                  if (e.target.value === 2 && salePrice !== 0) {
+                    form.setFieldsValue({
+                      profit: [{
+                        tStoreScale: '',
+                        tOperateScale: '',
+                        tPlatformScale: amountTransform(PlatformScale),
+                        tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(salePrice || 0).times(100).toFixed(2),
+                        e: 100,
+                        key: 1,
+                      }]
+                    })
+                  }
+                },
+              }}
+            />
+          }
+        }
+      </ProFormDependency>
+
       <ProFormSelect
         name="supplierHelperId"
         label="供应商家顾问"
@@ -1030,12 +1167,13 @@ export default (props) => {
               >
                 {preferential / 100}
               </Form.Item>}
-              {!!tableData.length && <ProFormDependency name={['settleType']}>
+              {!!tableData.length && <ProFormDependency name={['settleType', 'operateType']}>
                 {
-                  ({ settleType }) => (
+                  ({ settleType, operateType }) => (
                     <>
                       {!!tableData.length &&
                         <EditTable
+                          operateType={operateType}
                           settleType={settleType}
                           tableHead={tableHead}
                           tableData={tableData}
@@ -1046,6 +1184,7 @@ export default (props) => {
                           unit={goods.unit}
                           wsUnit={goods.wsUnit}
                           ladderSwitch={detailData?.ladderSwitch}
+                          gcId2={goods.gcId2}
                         />}
                     </>
                   )
@@ -1217,59 +1356,93 @@ export default (props) => {
                       addonAfter: `元/${goods.unit}`
                     }}
                   />
-                  <ProFormText
-                    name="salePrice"
-                    label="秒约价"
-                    placeholder="请输入秒约价"
-                    validateFirst
-                    rules={[
-                      { required: true, message: '请输入秒约价' },
-                      () => ({
-                        validator(_, value) {
-                          if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                            return Promise.reject(new Error('请输入大于零的数字'));
-                          }
-                          return Promise.resolve();
-                        },
-                      })
-                    ]}
-                    extra={salePriceFloat < 0 && preferential !== 0 && <span style={{ color: 'red' }}>此秒约价导致平台亏损，请调高秒约价</span>}
-                    disabled={detailData?.settleType === 1}
-                    fieldProps={{
-                      onChange: salePriceChange,
-                      addonAfter: `元/${goods.unit}`
-                    }}
-                  />
-                  <ProFormText
-                    name="salePriceFloat"
-                    label="秒约价上浮比例"
-                    placeholder="秒约价上浮比例"
-                    validateFirst
-                    rules={[
-                      { required: true, message: '请输入秒约价上浮比例' },
-                      () => ({
-                        validator(_, value) {
-                          if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
-                            return Promise.reject(new Error('请输入大于零的数字'));
-                          }
-                          return Promise.resolve();
-                        },
-                      })
-                    ]}
-                    fieldProps={{
-                      onChange: salePriceFloatChange
-                    }}
-                  />
+                  <ProFormDependency name={['operateType', 'profit', 'salePrice']}>
+                    {
+                      ({ operateType, profit, salePrice }) => {
+                        return (
+                          <>
+                            <ProFormText
+                              name="salePrice"
+                              label={`${operateType === 2 ? '分享补贴价' : '秒约价'}`}
+                              placeholder={`请输入${operateType === 2 ? '分享补贴价' : '秒约价'}`}
+                              validateFirst
+                              rules={[
+                                { required: true, message: `请输入${operateType === 2 ? '分享补贴价' : '秒约价'}` },
+                                () => ({
+                                  validator(_, value) {
+                                    if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                                      return Promise.reject(new Error('请输入大于零的数字'));
+                                    }
+                                    return Promise.resolve();
+                                  },
+                                })
+                              ]}
+                              extra={<>
+                                {salePriceFloat < 0 && preferential !== 0 && <div style={{ color: 'red' }}>{`此${operateType === 2 ? '分享补贴价' : '秒约价'}导致平台亏损，请调高${operateType === 2 ? '分享补贴价' : '秒约价'}`}</div>}
+                                {operateType === 2 && <span style={{ color: 'orange' }}>分享补贴价不得低于零售供货价 / 94%</span>}
+                              </>}
+                              disabled={detailData?.settleType === 1}
+                              fieldProps={{
+                                onChange: (e) => { salePriceChange(e, operateType, null) },
+                                addonAfter: `元/${goods.unit}`
+                              }}
+                            />
+                            <ProFormText
+                              name="salePriceFloat"
+                              label={`${operateType === 2 ? '分享补贴上浮比例' : '秒约价上浮比例'}`}
+                              placeholder={`${operateType === 2 ? '分享补贴上浮比例' : '秒约价上浮比例'}`}
+                              validateFirst
+                              rules={[
+                                { required: true, message: `请输入${operateType === 2 ? '分享补贴上浮比例' : '秒约价上浮比例'}` },
+                                () => ({
+                                  validator(_, value) {
+                                    if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                                      return Promise.reject(new Error('请输入大于零的数字'));
+                                    }
+                                    return Promise.resolve();
+                                  },
+                                })
+                              ]}
+                              fieldProps={{
+                                onChange: (e) => { salePriceFloatChange(e, operateType, null) },
+                              }}
+                            />
+                            <Form.Item
+                              label={`${operateType === 2 ? '分享补贴价实际盈亏' : '秒约价实际盈亏'}`}
+                            >
+                              {salePriceProfitLoss}
+                            </Form.Item>
+                            {operateType === 2
+                              &&
+                              <>
+                                <Form.Item
+                                  label="预计店主补贴金额"
+                                >
+                                  {operateGain}
+                                </Form.Item>
+                                <Form.Item
+                                  label="分润比例"
+                                  required
+                                  name="profit"
+                                >
+                                  <ProfitTable
+                                    form={form}
+                                    callback={(v) => {
+                                      salePriceChange({ target: { value: salePrice } }, operateType, v[0])
+                                    }}
+                                  />
+                                </Form.Item>
+                              </>}
+                          </>
+                        )
+                      }
+                    }
+                  </ProFormDependency>
                   {preferential !== 0 && <Form.Item
                     label="已适用优惠券最大面额(元)"
                   >
                     {preferential / 100}
                   </Form.Item>}
-                  <Form.Item
-                    label="秒约价实际盈亏"
-                  >
-                    {salePriceProfitLoss || amountTransform(goods.salePriceProfitLoss, '/')}
-                  </Form.Item>
                 </>
               }
 
@@ -1432,7 +1605,7 @@ export default (props) => {
         }}
       />
       <ProFormDependency name={['goodsSaleType']}>
-        {({ goodsSaleType })=>{
+        {({ goodsSaleType }) => {
           const showOnA = [{
             label: '仅秒约商品详情显示',
             value: 1,
@@ -1475,7 +1648,7 @@ export default (props) => {
           )
         }}
       </ProFormDependency>
-      
+
       <Form.Item
         label="商品主图"
         name="primaryImages"
