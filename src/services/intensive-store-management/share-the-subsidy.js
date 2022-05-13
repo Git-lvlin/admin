@@ -13,7 +13,7 @@ export const storeShareCommission = async (params = {}, options = {}) => {
   });
 
   return {
-    data: res.data||[],
+    data: res.data.records,
     success: true,
     total: res.data.total
   }
@@ -34,7 +34,7 @@ export const storeShareCommissionItem = async (params = {}, options = {}) => {
   });
 
   return {
-    data: res.data||[],
+    data: res.data.records,
     success: true,
     total: res.data.total
   }
