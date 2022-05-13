@@ -275,8 +275,9 @@ export default function EditTable(props) {
         skuId: findItem.skuId,
         retailSupplyPrice: amountTransform(findItem.retailSupplyPrice),
         wholesaleTaxRate: props.wholesaleTaxRate,
+        operateType,
       }
-      if (findItem.salePrice !== record.salePrice || findItem.tOperateScale !== record.tOperateScale || findItem.tStoreScale !== record.tStoreScale) {
+      if (findItem.salePrice !== record.salePrice || findItem.tPlatformScale !== record.tPlatformScale || findItem.tStoreScale !== record.tStoreScale) {
         obj.salePrice = amountTransform(record.salePrice);
 
         recordList = recordList.map(item => {

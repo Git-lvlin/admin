@@ -39,7 +39,7 @@ const FromWrap = ({ value, onChange, content, right }) => (
   </div>
 )
 
-const PlatformScale = 0.0005
+const PlatformScale = 0.005
 
 export default (props) => {
   const { visible, setVisible, detailData, callback, onClose } = props;
@@ -370,7 +370,7 @@ export default (props) => {
     })
   }
 
-  const preAccountCheckRequest = ({ skuId, salePrice, salePriceFloat, retailSupplyPrice, wholesaleTaxRate, cb, options = {} }) => {
+  const preAccountCheckRequest = ({ operateType, skuId, salePrice, salePriceFloat, retailSupplyPrice, wholesaleTaxRate, cb, options = {} }) => {
     if (goods.goodsSaleType === 1) {
       return;
     }
@@ -380,7 +380,8 @@ export default (props) => {
       retailSupplyPrice,
       wholesaleTaxRate,
       salePrice,
-      salePriceFloat
+      salePriceFloat,
+      operateType
     }, { ...options }).then(res => {
       if (res.code === 0) {
         cb && cb(res.data[0])
@@ -416,6 +417,7 @@ export default (props) => {
 
       subAccountCheck({
         salePrice: amountTransform(e.target.value),
+        operateType,
         ...obj,
       }, (data) => {
         preAccountCheckRequest({
@@ -424,6 +426,7 @@ export default (props) => {
           salePriceFloat: data.salePriceFloat,
           retailSupplyPrice: goods.retailSupplyPrice,
           wholesaleTaxRate: goods.wholesaleTaxRate,
+          operateType,
           cb: (d) => {
             setSalePriceFloat(d.salePriceFloat)
             setPreferential(d.preferential)
@@ -457,8 +460,10 @@ export default (props) => {
     const loadData = (e, operateType, profit) => {
       subAccountCheck({
         salePriceFloat: amountTransform(e.target.value, '/'),
+        operateType,
       }, (data) => {
         preAccountCheckRequest({
+          operateType,
           skuId: data.skuId,
           salePrice: data.salePrice,
           salePriceFloat: data.salePriceFloat,
@@ -493,7 +498,7 @@ export default (props) => {
     return debounce(loadData, 1000);
   }, [])
 
-  const submitConfirm = () => {
+  const submitConfirm = ({ operateType }) => {
     isLossMoney.current = false;
     return new Promise((resolve, reject) => {
       if (goods.goodsSaleType === 1) {
@@ -529,6 +534,7 @@ export default (props) => {
           const arr = [];
           tableData.forEach(item => {
             preAccountCheckRequest({
+              operateType,
               skuId: item.skuId,
               salePrice: amountTransform(item.salePrice),
               salePriceFloat: amountTransform(item.salePriceFloat, '/'),
@@ -803,7 +809,7 @@ export default (props) => {
       form={form}
       onFinish={async (values) => {
         try {
-          await submitConfirm();
+          await submitConfirm(values);
           await submit(values);
           return true;
         } catch (error) {
@@ -1438,7 +1444,7 @@ export default (props) => {
                                 addonAfter: `%`
                               }}
                             />
-                            
+
                             {operateType === 2
                               ?
                               <>
