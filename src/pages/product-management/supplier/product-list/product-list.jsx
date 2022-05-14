@@ -589,16 +589,16 @@ const TableList = () => {
             <ExportHistory key="4" show={visit} setShow={setVisit} type="goods-export" />
           ],
         }}
-        toolBarRender={()=>[
-          <Export
-          key="5"
-          change={(e) => { setVisit(e) }}
-          type="goods-export"
-          conditions={()=>{return getFieldValue()}}
-          text="分享补贴点击统计导出"
-        />,
-        <ExportHistory key="6" show={visit} setShow={setVisit} type="goods-export" />
-        ]}
+        // toolBarRender={()=>[
+        //   <Export
+        //   key="5"
+        //   change={(e) => { setVisit(e) }}
+        //   type="goods-export"
+        //   conditions={()=>{return getFieldValue()}}
+        //   text="分享补贴点击统计导出"
+        // />,
+        // <ExportHistory key="6" show={visit} setShow={setVisit} type="goods-export" />
+        // ]}
         columns={columns}
       />
       {formVisible && <Edit
