@@ -148,11 +148,18 @@ export default function EditTable(props) {
         title: '分享补贴店主占比',
         dataIndex: 'tStoreScale',
         hideInTable: operateType !== 2,
+        fieldProps: {
+          addonAfter: '%',
+        }
       },
       {
         title: '分享补贴平台毛利占比',
         dataIndex: 'tPlatformScale',
         hideInTable: operateType !== 2,
+        fieldProps: {
+          addonAfter: '%',
+          placeholder: '不低于5%'
+        },
       },
       {
         title: '分享补贴运营中心占比',
@@ -291,7 +298,7 @@ export default function EditTable(props) {
             return item;
           })
         }
-        
+
       }
 
       if (findItem.salePriceFloat !== record.salePriceFloat) {
@@ -305,23 +312,27 @@ export default function EditTable(props) {
         if (record.tStoreScale !== findItem.tStoreScale) {
           recordList = recordList.map(item => {
             if (item.skuId === findItem.skuId) {
+              const s = +new Big(100).minus(item.tSupplierScale).minus(item.tOperateScale).minus(item.tStoreScale || 0).toFixed(2)
+              obj.tPlatformScale = amountTransform(s, '/')
               return {
                 ...item,
-                tPlatformScale: +new Big(100).minus(item.tSupplierScale).minus(item.tOperateScale).minus(item.tStoreScale || 0).toFixed(2)
+                tPlatformScale: s
               }
             }
 
             return item;
-            
+
           })
         }
 
         if (record.tPlatformScale !== findItem.tPlatformScale) {
           recordList = recordList.map(item => {
             if (item.skuId === findItem.skuId) {
+              const s = +new Big(100).minus(item.tSupplierScale).minus(item.tPlatformScale).minus(item.tOperateScale || 0).toFixed(2);
+              obj.tStoreScale = amountTransform(s, '/')
               return {
                 ...item,
-                tStoreScale: +new Big(100).minus(item.tSupplierScale).minus(item.tPlatformScale).minus(item.tOperateScale || 0).toFixed(2)
+                tStoreScale: s
               }
             }
             return item;
