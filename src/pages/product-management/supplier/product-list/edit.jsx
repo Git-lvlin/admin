@@ -406,8 +406,8 @@ export default (props) => {
         form.setFieldsValue({
           profit: [{
             tStoreScale: '',
-            tOperateScale: '',
-            tPlatformScale: amountTransform(PlatformScale),
+            tPlatformScale: '',
+            tOperateScale: amountTransform(PlatformScale),
             tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(+e.target.value).times(100).toFixed(2),
             e: 100,
             key: 1,
@@ -486,7 +486,7 @@ export default (props) => {
             profit: [{
               tStoreScale: '',
               tPlatformScale: '',
-              tOperateScale: amountTransform(goods.tPlatformScale),
+              tOperateScale: amountTransform(goods.tOperateScale),
               tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(amountTransform(data.salePrice, '/')).times(100).toFixed(2),
               e: 100,
               key: 1,
@@ -1414,8 +1414,8 @@ export default (props) => {
                                 })
                               ]}
                               extra={<>
+                                {operateType === 2 && <span style={{ color: 'orange' }}>分享补贴价不得低于{+new Big(amountTransform(goods.retailSupplyPrice, '/')).div(0.94).toFixed(2)}元(零售供货价 / 94%)</span>}
                                 {salePriceFloat < 0 && preferential !== 0 && <div style={{ color: 'red' }}>{`此${operateType === 2 ? '分享补贴价' : '秒约价'}导致平台亏损，请调高${operateType === 2 ? '分享补贴价' : '秒约价'}`}</div>}
-                                {operateType === 2 && <span style={{ color: 'orange' }}>分享补贴价不得低于零售供货价 / 94%</span>}
                               </>}
                               disabled={detailData?.settleType === 1}
                               fieldProps={{
@@ -1449,6 +1449,18 @@ export default (props) => {
                               ?
                               <>
                                 <Form.Item
+                                  label="分润比例"
+                                  required
+                                  name="profit"
+                                >
+                                  <ProfitTable
+                                    form={form}
+                                    callback={(v) => {
+                                      salePriceChange({ target: { value: salePrice } }, operateType, v[0])
+                                    }}
+                                  />
+                                </Form.Item>
+                                <Form.Item
                                   label="分享补贴价平台毛利"
                                 >
                                   {platformGain}元/{goods.unit}
@@ -1462,18 +1474,6 @@ export default (props) => {
                                   label="运营中心分成金额"
                                 >
                                   {operateGain}元/{goods.unit}
-                                </Form.Item>
-                                <Form.Item
-                                  label="分润比例"
-                                  required
-                                  name="profit"
-                                >
-                                  <ProfitTable
-                                    form={form}
-                                    callback={(v) => {
-                                      salePriceChange({ target: { value: salePrice } }, operateType, v[0])
-                                    }}
-                                  />
                                 </Form.Item>
                               </>
                               :
