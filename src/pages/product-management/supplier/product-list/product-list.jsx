@@ -475,17 +475,6 @@ const TableList = () => {
       hideInTable: true,
     },
     {
-      title: '运营类型',
-      dataIndex: 'isDrainage',
-      valueType: 'select',
-      valueEnum: {
-        0: '全部',
-        1: '秒约',
-        2: '分享补贴'
-      },
-      hideInTable: true,
-    },
-    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
