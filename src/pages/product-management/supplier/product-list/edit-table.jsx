@@ -131,14 +131,14 @@ export default function EditTable(props) {
         hideInTable: goodsSaleType === 1,
       },
       {
-        title: `${operateType === 2 ? '分享补贴价实际盈亏' : '秒约价实际盈亏'}`,
+        title: `${operateType === 2 ? '分享补贴价平台毛利' : '秒约价实际盈亏'}`,
         dataIndex: 'salePriceProfitLoss',
         editable: false,
         hideInTable: goodsSaleType === 1,
         render: _ => `${_}元/${unit}`
       },
       {
-        title: '预计店主补贴金额',
+        title: '店主补贴金额',
         dataIndex: 'operateGain',
         editable: false,
         hideInTable: operateType !== 2,
