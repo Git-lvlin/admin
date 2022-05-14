@@ -81,6 +81,9 @@ export default (props) => {
             salePrice: amountTransform((detailData.settleType === 1 || detailData.settleType === 0) ? item[1].retailSupplyPrice : item[1].salePrice, '/'),
             marketPrice: amountTransform(item[1].marketPrice, '/'),
             wholesaleFreight: amountTransform(item[1].wholesaleFreight, '/'),
+            tOperateGain: amountTransform(item[1].tOperateGain, '/'),
+            tPlatformGain: amountTransform(item[1].tPlatformGain, '/'),
+            tStoreGain: amountTransform(item[1].tStoreGain, '/'),
             batchNumber: item[1].batchNumber,
             isFreeFreight: item[1].isFreeFreight,
             freightTemplateId: item[1]?.freightTemplateName ? { label: item[1]?.freightTemplateName, value: item[1]?.freightTemplateId } : undefined,
@@ -188,6 +191,7 @@ export default (props) => {
                 wsUnit={goods.wsUnit}
                 ladderSwitch={detailData.ladderSwitch}
                 review={review}
+                operateType={goods?.operateType}
               />
             }
             <Form.Item
@@ -301,10 +305,31 @@ export default (props) => {
               </>
             }
             <Form.Item
-              label="秒约价"
+              label={`${goods?.operateType === 2 ? '分享补贴价' :'秒约价'}`}
             >
               {amountTransform(goods?.salePrice, '/')}元/{goods.unit}
             </Form.Item>
+            {
+              goods?.operateType === 2
+              &&
+              <>
+                <Form.Item
+                  label="分享补贴价平台毛利"
+                >
+                  {amountTransform(goods?.tPlatformGain, '/')}元/{goods.unit}
+                </Form.Item>
+                <Form.Item
+                  label="店主补贴金额"
+                >
+                  {amountTransform(goods?.tStoreGain, '/')}元/{goods.unit}
+                </Form.Item>
+                <Form.Item
+                  label="运营中心分成金额"
+                >
+                  {amountTransform(goods?.tOperateGain, '/')}元/{goods.unit}
+                </Form.Item>
+              </>
+            }
             {!review &&
               <Form.Item
                 label="市场价"

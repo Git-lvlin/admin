@@ -6,7 +6,6 @@ import styles from '../style.less'
 import { amountTransform } from '@/utils/utils'
 import {commonSpuList}  from '@/services/coupon-construction/coupon-common-spu-list';
 import {classList} from '@/services/coupon-construction/coupon-class-list'
-import BrandSelect from '@/components/brand-select'
 import { connect } from 'umi';
 
 
@@ -30,8 +29,8 @@ const GoosModel=(props)=>{
     },[])
     const columns = [
         {
-            title: 'spuID',
-            dataIndex: 'spuId',
+            title: 'skuID',
+            dataIndex: 'skuId',
         },
         {
             title: '商品图片',
@@ -64,34 +63,27 @@ const GoosModel=(props)=>{
             hideInSearch:true
         },
         {
-            title: '商品品牌',
-            dataIndex: 'brandName',
-            valueType: 'text',
-            hideInSearch: true,
-        },
-        {
-            title: '商品品牌',
-            dataIndex: 'brandId',
-            renderFormItem: () => (<BrandSelect />),
-            hideInTable: true,
-        },
-        {
             title: '可用库存',
             dataIndex: 'stockNum',
             hideInSearch: true,
-
         },
         {
             title: '销售价',
             dataIndex: 'goodsSalePrice',
             hideInSearch: true,
             render: (_)=> amountTransform(_, '/').toFixed(2)
-        }
+        },
+        {
+            title: '平台盈亏',
+            dataIndex: 'salePriceProfitLoss',
+            render: (_)=> amountTransform(_, '/').toFixed(2),
+            hideInSearch: true,
+        },
     ];
     const columns3= [
         {
-            title: 'spuID',
-            dataIndex: 'spuId',
+            title: 'skuID',
+            dataIndex: 'skuId',
         },
         {
             title: '商品图片',
@@ -110,17 +102,17 @@ const GoosModel=(props)=>{
             valueType: 'text',
         },
         {
-            title: '商品品牌',
-            dataIndex: 'brandName',
-            valueType: 'text',
-        },
-        {
             title: '可用库存',
             dataIndex: 'stockNum',
         },
         {
             title: '销售价',
             dataIndex: 'goodsSalePrice',
+            render: (_)=> amountTransform(_, '/').toFixed(2)
+        },
+        {
+            title: '平台盈亏',
+            dataIndex: 'salePriceProfitLoss',
             render: (_)=> amountTransform(_, '/').toFixed(2)
         },
         {

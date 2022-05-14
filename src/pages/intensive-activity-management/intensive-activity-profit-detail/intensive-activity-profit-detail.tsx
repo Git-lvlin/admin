@@ -6,6 +6,7 @@ import moment from 'moment'
 import type { ProColumns,ActionType } from '@ant-design/pro-table';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import ProCard from '@ant-design/pro-card';
 
 type activityItem={
   wholesaleStartTime:number;
@@ -24,7 +25,8 @@ type activityItem={
   profit:number;
 }
 
-export default () => {
+const IntensiveActivityProfitDetail=(props:{type:string}) => {
+    const { type }=props 
     const ref=useRef<ActionType>()
     const [visit, setVisit] = useState<boolean>(false)
     const columns:ProColumns<activityItem>[]= [
@@ -35,8 +37,20 @@ export default () => {
         hideInTable:true
       },
       {
+        title: '集约活动编号',
+        dataIndex: 'wsId',
+        valueType: 'text',
+        hideInSearch: true,
+      },
+      {
         title: '集约开始时间',
         dataIndex: 'wholesaleStartTime',
+        valueType: 'text',
+        hideInSearch: true,
+      },
+      {
+        title: '店主截止下单时间',
+        dataIndex: 'endTimeAdvancePayment',
         valueType: 'text',
         hideInSearch: true,
       },
@@ -55,6 +69,12 @@ export default () => {
       {
         title: '商品名称',
         dataIndex: 'goodsName',
+        valueType: 'text',
+        hideInSearch: true,
+      },
+      {
+        title: '分类',
+        dataIndex: 'gcName',
         valueType: 'text',
         hideInSearch: true,
       },
@@ -135,6 +155,7 @@ export default () => {
         const {wholesaleStartTime,...rest}=searchConfig.form.getFieldsValue()
         return {
           ...rest,
+          type:parseInt(type),
           wholesaleStartTime:{
             start:wholesaleStartTime&&moment(wholesaleStartTime[0]).format('YYYY-MM-DD HH:mm:ss'),
             end:wholesaleStartTime&&moment(wholesaleStartTime[1]).format('YYYY-MM-DD HH:mm:ss'),
@@ -142,12 +163,14 @@ export default () => {
         }
       }
     return (
-      <PageContainer title=" ">
         <ProTable<activityItem>
           actionRef={ref}
           rowKey="wsId"
           options={false}
           request={exportList}
+          params={{
+            type:parseInt(type)
+          }}
           search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -168,6 +191,32 @@ export default () => {
             showQuickJumper: true,
           }}
         />
-        </PageContainer>
     );
   };
+
+
+  export default ()=>{
+    const [activeKey, setActiveKey] = useState<string>('1')
+    return (
+      <PageContainer title=" ">
+      <ProCard
+        tabs={{
+          type: 'card',
+          activeKey,
+          onChange: setActiveKey
+        }}
+      >
+        <ProCard.TabPane key="1" tab="生鲜商品">
+          {
+            activeKey == '1' && <IntensiveActivityProfitDetail type={activeKey}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="0" tab="非生鲜商品">
+          {
+            activeKey == '0' && <IntensiveActivityProfitDetail type={activeKey}/>
+          }
+        </ProCard.TabPane>
+      </ProCard>
+    </PageContainer>
+    )
+  }

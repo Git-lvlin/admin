@@ -50,12 +50,13 @@ export default () => {
       getQyzBuyConfig({}).then(res=>{
         if(res.code==0){
           const data=[
-            {id:0,commission:'供应商',describe:'帅博公司',DividedAmount:res.data?.suggestCommission,IntoThat:'通道手续费 0.65%' },
+            {id:0,commission:'供应商',describe:'帅博公司',DividedAmount:res.data?.retailSupplyPrice,IntoThat:'通道手续费 0.65%' },
             {id:1,commission:'直推人',describe:'直接推荐人，以约购社区推荐关系计算，社区店主才有',DividedAmount:res.data?.suggestCommission,IntoThat:'提现时扣 7% 提现手续费' },
             {id:2,commission:'运营中心',describe:'平台运营中心，以区/县为单位',DividedAmount:res.data?.agentCompanyCommission,IntoThat:'线上对公结算'  },
             {id:3,commission:'汇能健康事业部（平台代收）',describe:'以省为单位的实体',DividedAmount:res.data?.businessDeptCommission,IntoThat:'线下结算时扣除 7% 手续费'  },
             {id:4,commission:'汇智能通省加盟商（平台代收）',describe:'简称 ‘省代’',DividedAmount:res.data?.provinceAgentCommission,IntoThat:'线下结算'  },
             {id:5,commission:'汇智能通市加盟商（平台代收）',describe:'简称 ‘市代’',DividedAmount:res.data?.cityAgentCommission,IntoThat:'线下结算'  },
+            {id:6,commission:'平台',describe:' ',DividedAmount:res.data?.platformCommission,IntoThat:'其他对象分成后余下部分'  },
           ]
           setDataDetail(data)
           setDetail(res.data)
@@ -161,7 +162,7 @@ export default () => {
       }
     ];
     return (
-        <div style={{background:'#fff',padding:'50px'}}>
+        <div style={{background:'#fff',padding:'0 20px'}}>
         <ProTable<activityItem>
           actionRef={ref}
           rowKey="id"
@@ -174,7 +175,7 @@ export default () => {
           columns={columns}
           pagination={false}
           dataSource={dataDetail}
-          style={{marginBottom:'50px'}}
+          style={{marginBottom:'30px'}}
         />
         <ProTable<activityItem>
           actionRef={ref}
@@ -188,7 +189,7 @@ export default () => {
           columns={columns2}
           pagination={false}
           dataSource={dataList}
-          style={{marginBottom:'50px'}}
+          style={{marginBottom:'30px'}}
         />
         <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right',  display: 'inline-block' }}>
         <Descriptions.Item label="扫码启动使用机器需支付金额">
@@ -210,7 +211,7 @@ export default () => {
             <Descriptions.Item label="氢原子机器自动确认收货时间">
               {rentDetail?.autoConfirmTime}天
             </Descriptions.Item>
-            <Descriptions.Item labelStyle={{ textAlign: 'right', width: 400, display: 'inline-block' }} label="氢原子机器租赁时租金可逾期天数（租约逾期至停用天数）">
+            <Descriptions.Item labelStyle={{ textAlign: 'right', width: 380, display: 'inline-block' }} label="氢原子机器租赁时租金可逾期天数（租约逾期至停用天数）">
               <ProFormText
                 readonly
                 fieldProps={{
@@ -222,7 +223,7 @@ export default () => {
             </Descriptions.Item>
         </Descriptions>
 
-        <Divider style={{ margin: '20px 0' }} />
+        <Divider style={{ margin: '10px 0' }} />
 
         <ProForm<{
           month: number;

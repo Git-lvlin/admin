@@ -4,7 +4,7 @@ import Big from 'big.js';
 
 Big.RM = 2;
 export default function EditTable(props) {
-  const { tableHead, tableData, goodsSaleType, settleType, isSample, unit, wsUnit, review, ladderSwitch } = props;
+  const { tableHead, tableData, goodsSaleType, settleType, isSample, unit, wsUnit, review, ladderSwitch, operateType } = props;
   const [columns, setColumns] = useState([])
 
   useEffect(() => {
@@ -103,10 +103,27 @@ export default function EditTable(props) {
         hideInTable: isSample !== 1,
       },
       {
-        title: '秒约价',
+        title: `${operateType === 2 ?'分享补贴价':'秒约价'}`,
         dataIndex: 'salePrice',
-        editable: settleType === 2,
         hideInTable: goodsSaleType === 1,
+        render: _ => `${_}元/${unit}`
+      },
+      {
+        title: `分享补贴价平台毛利`,
+        dataIndex: 'tPlatformGain',
+        hideInTable: operateType !== 2,
+        render: _ => `${_}元/${unit}`
+      },
+      {
+        title: `店主补贴金额`,
+        dataIndex: 'tStoreGain',
+        hideInTable: operateType !== 2,
+        render: _ => `${_}元/${unit}`
+      },
+      {
+        title: `运营中心分成金额`,
+        dataIndex: 'tOperateGain',
+        hideInTable: operateType !== 2,
         render: _ => `${_}元/${unit}`
       },
       // {

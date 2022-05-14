@@ -157,7 +157,7 @@ export default {
   'menu.intensive-store-management.fresh-store-review': '生鲜店铺申请审核',
   'menu.intensive-store-management.fresh-shop-configuration': '生鲜店铺配置',
   'menu.intensive-store-management.cancel-aduit': '注销审核',
-
+  'menu.intensive-store-management.share-the-subsidy': '分享补贴',
 
 
 
