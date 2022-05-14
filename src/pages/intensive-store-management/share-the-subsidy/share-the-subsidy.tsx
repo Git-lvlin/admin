@@ -94,7 +94,7 @@ export default () => {
     }
   }
   return (
-    <PageContainer>
+    <PageContainer title=' '>
         <ProTable<ConsumerOrderPage>
           actionRef={ref}
           rowKey="storeNo"
