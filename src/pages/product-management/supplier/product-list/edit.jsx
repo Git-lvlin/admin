@@ -1069,8 +1069,8 @@ export default (props) => {
                         if (item.salePrice) {
                           return {
                             ...item,
-                            tStoreScale: item.tStoreScale || '',
-                            tPlatformScale: item.tPlatformScale || '',
+                            tStoreScale: '',
+                            tPlatformScale: '',
                             tOperateScale: amountTransform(PlatformScale),
                             tSupplierScale: +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2),
                           }

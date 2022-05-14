@@ -280,15 +280,18 @@ export default function EditTable(props) {
       if (findItem.salePrice !== record.salePrice || findItem.tPlatformScale !== record.tPlatformScale || findItem.tStoreScale !== record.tStoreScale) {
         obj.salePrice = amountTransform(record.salePrice);
 
-        recordList = recordList.map(item => {
-          if (item.skuId === findItem.skuId) {
-            return {
-              ...item,
-              tSupplierScale: +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2)
+        if (findItem.salePrice !== record.salePrice) {
+          recordList = recordList.map(item => {
+            if (item.skuId === findItem.skuId) {
+              return {
+                ...item,
+                tSupplierScale: +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2)
+              }
             }
-          }
-          return item;
-        })
+            return item;
+          })
+        }
+        
       }
 
       if (findItem.salePriceFloat !== record.salePriceFloat) {
