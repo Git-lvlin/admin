@@ -475,6 +475,17 @@ const TableList = () => {
       hideInTable: true,
     },
     {
+      title: '运营类型',
+      dataIndex: 'isDrainage',
+      valueType: 'select',
+      valueEnum: {
+        0: '全部',
+        1: '秒约',
+        2: '分享补贴'
+      },
+      hideInTable: true,
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
@@ -576,9 +587,19 @@ const TableList = () => {
               type="goods-export"
               conditions={()=>{return getFieldValue()}}
             />,
-            <ExportHistory key="4" show={visit} setShow={setVisit} type="goods-export" />,
+            <ExportHistory key="4" show={visit} setShow={setVisit} type="goods-export" />
           ],
         }}
+        toolBarRender={()=>[
+          <Export
+          key="5"
+          change={(e) => { setVisit(e) }}
+          type="goods-export"
+          conditions={()=>{return getFieldValue()}}
+          text="分享补贴点击统计导出"
+        />,
+        <ExportHistory key="6" show={visit} setShow={setVisit} type="goods-export" />
+        ]}
         columns={columns}
       />
       {formVisible && <Edit
