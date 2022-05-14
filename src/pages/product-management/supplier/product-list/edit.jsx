@@ -486,7 +486,7 @@ export default (props) => {
             profit: [{
               tStoreScale: '',
               tPlatformScale: '',
-              tOperateScale: amountTransform(goods.tOperateScale),
+              tOperateScale: amountTransform(PlatformScale),
               tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(amountTransform(data.salePrice, '/')).times(100).toFixed(2),
               e: 100,
               key: 1,
@@ -1419,7 +1419,7 @@ export default (props) => {
                               </>}
                               disabled={detailData?.settleType === 1}
                               fieldProps={{
-                                onChange: (e) => { salePriceChange(e, operateType, null) },
+                                onBlur: (e) => { salePriceChange(e, operateType, null) },
                                 addonAfter: `元/${goods.unit}`
                               }}
                             />
@@ -1440,7 +1440,7 @@ export default (props) => {
                                 })
                               ]}
                               fieldProps={{
-                                onChange: (e) => { salePriceFloatChange(e, operateType, null) },
+                                onBlur: (e) => { salePriceFloatChange(e, operateType, null) },
                                 addonAfter: `%`
                               }}
                             />
