@@ -476,10 +476,9 @@ const TableList = () => {
     },
     {
       title: '运营类型',
-      dataIndex: 'isDrainage',
+      dataIndex: 'operateType',
       valueType: 'select',
       valueEnum: {
-        0: '全部',
         1: '秒约',
         2: '分享补贴'
       },
