@@ -103,28 +103,63 @@ export default function EditTable(props) {
         hideInTable: isSample !== 1,
       },
       {
-        title: `${operateType === 2 ?'分享补贴价':'秒约价'}`,
+        title: `${operateType === 2 ? '分享补贴价' : '秒约价'}`,
         dataIndex: 'salePrice',
+        editable: settleType === 2,
+        hideInTable: goodsSaleType === 1,
+        fieldProps: {
+          addonAfter: `元/${unit}`
+        }
+      },
+      {
+        title: `${operateType === 2 ? '分享补贴价上浮比例' : '秒约价上浮比例'}`,
+        dataIndex: 'salePriceFloat',
+        hideInTable: goodsSaleType === 1,
+      },
+      {
+        title: `${operateType === 2 ? '分享补贴价平台毛利' : '秒约价实际盈亏'}`,
+        dataIndex: 'salePriceProfitLoss',
+        editable: false,
         hideInTable: goodsSaleType === 1,
         render: _ => `${_}元/${unit}`
       },
       {
-        title: `分享补贴价平台毛利`,
-        dataIndex: 'tPlatformGain',
+        title: '店主补贴金额',
+        dataIndex: 'operateGain',
+        editable: false,
         hideInTable: operateType !== 2,
         render: _ => `${_}元/${unit}`
       },
       {
-        title: `店主补贴金额`,
-        dataIndex: 'tStoreGain',
+        title: '分享补贴店主占比',
+        dataIndex: 'tStoreScale',
         hideInTable: operateType !== 2,
-        render: _ => `${_}元/${unit}`
+        fieldProps: {
+          addonAfter: '%',
+        }
       },
       {
-        title: `运营中心分成金额`,
-        dataIndex: 'tOperateGain',
+        title: '分享补贴平台毛利占比',
+        dataIndex: 'tPlatformScale',
         hideInTable: operateType !== 2,
-        render: _ => `${_}元/${unit}`
+        fieldProps: {
+          addonAfter: '%',
+          placeholder: '不低于5%'
+        },
+      },
+      {
+        title: '分享补贴运营中心占比',
+        dataIndex: 'tOperateScale',
+        editable: false,
+        hideInTable: operateType !== 2,
+        render: _ => `${_}%`,
+      },
+      {
+        title: '分享补贴供应商占比',
+        dataIndex: 'tSupplierScale',
+        editable: false,
+        hideInTable: operateType !== 2,
+        render: _ => `${_}%`,
       },
       // {
       //   title: '秒约价上浮比例',
