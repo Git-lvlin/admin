@@ -305,6 +305,27 @@ export default (props) => {
             >
               {amountTransform(goods?.salePrice, '/')}元/{goods.unit}
             </Form.Item>
+            {
+              goods?.operateType === 2
+              &&
+              <>
+                <Form.Item
+                  label="分享补贴价平台毛利"
+                >
+                  {amountTransform(goods?.tPlatformGain, '/')}元/{goods.unit}
+                </Form.Item>
+                <Form.Item
+                  label="店主补贴金额"
+                >
+                  {amountTransform(goods?.tStoreGain, '/')}元/{goods.unit}
+                </Form.Item>
+                <Form.Item
+                  label="运营中心分成金额"
+                >
+                  {amountTransform(goods?.tOperateGain, '/')}元/{goods.unit}
+                </Form.Item>
+              </>
+            }
             {!review &&
               <Form.Item
                 label="市场价"

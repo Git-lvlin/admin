@@ -572,6 +572,61 @@ export default (props) => {
     });
   }
 
+  const shareProfitCheck = ({ operateType, profit, salePrice }) => {
+    return new Promise((resolve, reject) => {
+      if (goods.goodsSaleType === 1) {
+        resolve()
+        return;
+      }
+
+      if (operateType === 2) {
+        if (detailData.isMultiSpec === 0) {
+          const { tStoreScale, tPlatformScale } = profit[0]
+          const retailSupplyPrice = + new Big(amountTransform(goods.retailSupplyPrice, '/')).div(0.94).toFixed(2)
+
+          if (+salePrice < retailSupplyPrice) {
+            message.error(`分享补贴价必须大于${retailSupplyPrice}`)
+          }
+
+          if (+tStoreScale<0.01) {
+            message.error('店主补贴占比必须大于等于0.01%')
+            reject()
+            return
+          }
+          if (+tPlatformScale < 5) {
+            message.error('平台毛利占比必须大于等于5%')
+            reject()
+            return
+          }
+        } else {
+          if (tableData.length) {
+            for (let index = 0; index < tableData.length; index++) {
+              const retailSupplyPrice = + new Big(tableData[index].retailSupplyPrice).div(0.94).toFixed(2)
+
+              if (+tableData[index].salePrice < retailSupplyPrice) {
+                message.error(`分享补贴价必须大于${retailSupplyPrice}`)
+                reject()
+                return
+              }
+              if (+tableData[index].tStoreScale < 0.01) {
+                message.error('店主补贴占比必须大于等于0.01%')
+                reject()
+                return
+              }
+              if (+tableData[index].tPlatformScale < 5) {
+                message.error('平台毛利占比必须大于等于5%')
+                reject()
+                return
+              }
+            }
+          }
+        }
+      }
+
+      resolve()
+    });
+  }
+
   useEffect(() => {
     if (detailData) {
       const { specName, specValues, specData, freightTemplateId, freightTemplateName, settleType } = detailData;
@@ -810,6 +865,7 @@ export default (props) => {
       onFinish={async (values) => {
         try {
           await submitConfirm(values);
+          await shareProfitCheck(values);
           await submit(values);
           return true;
         } catch (error) {
@@ -1419,7 +1475,7 @@ export default (props) => {
                               </>}
                               disabled={detailData?.settleType === 1}
                               fieldProps={{
-                                onBlur: (e) => { salePriceChange(e, operateType, null) },
+                                onChange: (e) => { salePriceChange(e, operateType, null) },
                                 addonAfter: `元/${goods.unit}`
                               }}
                             />
@@ -1440,7 +1496,7 @@ export default (props) => {
                                 })
                               ]}
                               fieldProps={{
-                                onBlur: (e) => { salePriceFloatChange(e, operateType, null) },
+                                onChange: (e) => { salePriceFloatChange(e, operateType, null) },
                                 addonAfter: `%`
                               }}
                             />
