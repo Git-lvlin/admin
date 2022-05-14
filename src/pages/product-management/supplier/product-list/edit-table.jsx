@@ -292,6 +292,8 @@ export default function EditTable(props) {
             if (item.skuId === findItem.skuId) {
               return {
                 ...item,
+                tStoreScale: '',
+                tPlatformScale: '',
                 tSupplierScale: +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2)
               }
             }

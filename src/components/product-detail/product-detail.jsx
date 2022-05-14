@@ -81,6 +81,9 @@ export default (props) => {
             salePrice: amountTransform((detailData.settleType === 1 || detailData.settleType === 0) ? item[1].retailSupplyPrice : item[1].salePrice, '/'),
             marketPrice: amountTransform(item[1].marketPrice, '/'),
             wholesaleFreight: amountTransform(item[1].wholesaleFreight, '/'),
+            tOperateGain: amountTransform(item[1].tOperateGain, '/'),
+            tPlatformGain: amountTransform(item[1].tPlatformGain, '/'),
+            tStoreGain: amountTransform(item[1].tStoreGain, '/'),
             batchNumber: item[1].batchNumber,
             isFreeFreight: item[1].isFreeFreight,
             freightTemplateId: item[1]?.freightTemplateName ? { label: item[1]?.freightTemplateName, value: item[1]?.freightTemplateId } : undefined,
@@ -188,6 +191,7 @@ export default (props) => {
                 wsUnit={goods.wsUnit}
                 ladderSwitch={detailData.ladderSwitch}
                 review={review}
+                operateType={goods?.operateType}
               />
             }
             <Form.Item
