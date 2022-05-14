@@ -17,7 +17,7 @@ export default () => {
   const ref=useRef()
   const columns:ProColumns<ConsumerOrderPage>[]= [
     {
-      title: '分享人手机',
+      title: '店主手机',
       dataIndex: 'storeMobile',
       valueType: 'text',
       fieldProps:{
