@@ -51,12 +51,6 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
       }
     },
     {
-      title: '商品spuID',
-      dataIndex: 'spuId',
-      valueType: 'text',
-      hideInSearch : true,
-    },
-    {
       title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'text',
@@ -67,13 +61,13 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
       order:5
     },
     {
-      title: '商品skuID',
+      title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '商品数量',
+      title: '数量',
       dataIndex: 'quantity',
       valueType: 'text',
       hideInSearch : true,
@@ -208,6 +202,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
           ...dom.reverse()
         ],
         }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         columns={columns}
         pagination={{
           pageSize: 10,
