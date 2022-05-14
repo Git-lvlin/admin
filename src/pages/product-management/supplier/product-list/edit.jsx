@@ -582,7 +582,7 @@ export default (props) => {
       if (operateType === 2) {
         if (detailData.isMultiSpec === 0) {
           const { tStoreScale, tPlatformScale } = profit[0]
-          const retailSupplyPrice = + new Big(amountTransform(goods.retailSupplyPrice, '/')).div(0.94).toFixed(2)
+          const retailSupplyPrice = +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(0.94).toFixed(2)
 
           if (+salePrice < retailSupplyPrice) {
             message.error(`分享补贴价必须大于${retailSupplyPrice}`)
@@ -601,7 +601,7 @@ export default (props) => {
         } else {
           if (tableData.length) {
             for (let index = 0; index < tableData.length; index++) {
-              const retailSupplyPrice = + new Big(tableData[index].retailSupplyPrice).div(0.94).toFixed(2)
+              const retailSupplyPrice = +new Big(tableData[index].retailSupplyPrice).div(0.94).toFixed(2)
 
               if (+tableData[index].salePrice < retailSupplyPrice) {
                 message.error(`分享补贴价必须大于${retailSupplyPrice}`)

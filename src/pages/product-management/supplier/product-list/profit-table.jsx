@@ -49,7 +49,7 @@ const ProfitTable = ({ value, form, callback }) => {
       title: '合计',
       dataIndex: 'e',
       valueType: 'text',
-      render: (_) => `${_}%`,
+      render: (_, r) => `${+new Big(r.tStoreScale || 0).plus(r.tPlatformScale || 0).plus(r.tOperateScale || 0).plus(r.tSupplierScale || 0)}%`,
       editable: false,
     },
   ]
@@ -61,7 +61,7 @@ const ProfitTable = ({ value, form, callback }) => {
         arr = recordList.map(item => {
           return {
             ...item,
-            tPlatformScale: +new Big(100).minus(item.tSupplierScale).minus(item.tOperateScale).minus(item.tStoreScale).toFixed(2)
+            tPlatformScale: +new Big(100).minus(item.tSupplierScale).minus(item.tOperateScale).minus(item.tStoreScale || 0).toFixed(2)
           }
         })
 
@@ -69,7 +69,7 @@ const ProfitTable = ({ value, form, callback }) => {
         arr = recordList.map(item => {
           return {
             ...item,
-            tStoreScale: +new Big(100).minus(item.tSupplierScale).minus(item.tPlatformScale).minus(item.tOperateScale).toFixed(2)
+            tStoreScale: +new Big(100).minus(item.tSupplierScale).minus(item.tPlatformScale || 0).minus(item.tOperateScale).toFixed(2)
           }
         })
       }
@@ -93,7 +93,7 @@ const ProfitTable = ({ value, form, callback }) => {
         editableKeys: [1],
         onValuesChange: (record, recordList) => {
           debounceFetcher(record, recordList)
-          
+
         }
       }}
       controlled
