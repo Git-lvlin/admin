@@ -16,6 +16,7 @@ import AddressMultiCascader from '@/components/address-multi-cascader'
 import { PageContainer } from '@/components/PageContainer';
 import { getWholesaleArea } from '@/services/intensive-activity-management/intensive-activity-list'
 import { flatMap } from 'lodash';
+import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
   labelCol: { span: 2 },

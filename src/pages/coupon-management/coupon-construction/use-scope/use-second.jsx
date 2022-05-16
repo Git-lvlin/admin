@@ -29,8 +29,13 @@ const GoosModel=(props)=>{
     },[])
     const columns = [
         {
+            title: 'spuID',
+            dataIndex: 'spuId',
+        },
+        {
             title: 'skuID',
             dataIndex: 'skuId',
+            hideInSearch: true
         },
         {
             title: '商品图片',
@@ -75,7 +80,7 @@ const GoosModel=(props)=>{
         },
         {
             title: '平台盈亏',
-            dataIndex: 'goodsSalePrice',
+            dataIndex: 'salePriceProfitLoss',
             render: (_)=> amountTransform(_, '/').toFixed(2),
             hideInSearch: true,
         },
@@ -112,7 +117,7 @@ const GoosModel=(props)=>{
         },
         {
             title: '平台盈亏',
-            dataIndex: 'goodsSalePrice',
+            dataIndex: 'salePriceProfitLoss',
             render: (_)=> amountTransform(_, '/').toFixed(2)
         },
         {

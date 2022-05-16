@@ -102,7 +102,7 @@ const validity=(props)=>{
         message.error('只能选择一个商品');
        }
     }
-    const options=[
+    const options=type==2||DetaiIssueType == 2 && id?[
         {
           label: '全部用户',
           value: 1,
@@ -115,10 +115,23 @@ const validity=(props)=>{
           label: '新用户（未下过订单的用户）',
           value: 4,
         },
-        // {
-        //   label: <><p>生鲜新用户</p><p>（未下过C端生鲜订单的用户）</p></>,
-        //   value: 5,
-        // },
+        {
+          label: '全部社区店主',
+          value: 5,
+        },
+      ]:[
+        {
+          label: '全部用户',
+          value: 1,
+        },
+        {
+          label: '指定群体用户',
+          value: 2,
+        },
+        {
+          label: '新用户（未下过订单的用户）',
+          value: 4,
+        }
       ]
     const options2=[
     {
