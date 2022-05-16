@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { PageContainer } from '@/components/PageContainer';
+import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@ant-design/pro-table'
 
 import { amountTransform } from '@/utils/utils'
