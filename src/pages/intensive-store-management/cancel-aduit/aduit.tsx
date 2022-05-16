@@ -85,8 +85,8 @@ const Aduit: FC<aduitProps> = ({visible, setVisible, data, callback})=> {
   }
 
   const orderState = {
-    1: <a onClick={()=> { setVisible(false)}} href={`/hydrogen-atom-management/transaction-data?memberPhone=${data.memberPhone}`} target='blank'>绑定氢原子机器</a>,
-    2: <a onClick={()=> { setVisible(false)}} href={`/order-management/normal-order?orderType=666&phone=${data.memberPhone}`} target='blank'>待发货的氢原子订单</a>
+    1: <a onClick={()=> { setVisible(false)}} href={`/hydrogen-atom-management/transaction-data?memberId=${data.memberId}`} target='blank'>绑定氢原子机器</a>,
+    2: <a onClick={()=> { setVisible(false)}} href={`/order-management/normal-order?orderType=888&buyerId=${data.memberId}`} target='blank'>待发货的氢原子订单</a>
   }
 
   return (
@@ -115,7 +115,7 @@ const Aduit: FC<aduitProps> = ({visible, setVisible, data, callback})=> {
       <ProForm.Item 
         label="当前店主账号余额"
         extra={
-          (deviceStatus === 1 ||deviceStatus===2) && <span style={{ color: 'red' }}>当前店主有{orderState[deviceStatus]}，建议注销申请审核拒绝！</span>
+          (deviceStatus === 1 || deviceStatus===2) && <span style={{ color: 'red' }}>当前店主有{orderState[deviceStatus]}，建议注销申请审核拒绝！</span>
         }
       >
         {amount}元

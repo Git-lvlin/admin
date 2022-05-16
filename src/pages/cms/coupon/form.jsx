@@ -78,7 +78,7 @@ export default (props) => {
   const waitTime = (values) => {
     let couponInfo = []
     const len = arr.length
-    for(let i=0;i<len;i++) {
+    for (let i = 0; i < len; i++) {
       couponInfo.push({
         couponId: arr[i],
         sort: 100
@@ -97,7 +97,7 @@ export default (props) => {
           reject(false)
         }
       })
-  
+
     });
   };
 
@@ -127,9 +127,9 @@ export default (props) => {
       }}
     >
       <ProForm.Group
-          style={{
-            paddingLeft: 24
-          }}>
+        style={{
+          paddingLeft: 24
+        }}>
         <ProFormSelect
 
           name="couponSpaceId"
@@ -142,53 +142,56 @@ export default (props) => {
           rules={[{ required: true, message: '请选择位置!' }]}
         />
       </ProForm.Group>
-<ProTable
-      rowKey="id"
-      options={false}
-      columns={columns}
-      postData={(data) => {
-        data.forEach(item => {
-          item.freeAmount = item.freeAmount/100
-          if (item.freeAmount === 0) {
-            item.freeAmount = ''
+      <ProTable
+        rowKey="id"
+        options={false}
+        columns={columns}
+        postData={(data) => {
+          data.forEach(item => {
+            item.freeAmount = item.freeAmount / 100
+            if (item.freeAmount === 0) {
+              item.freeAmount = ''
+            }
+            if (item.freeDiscount === 0) {
+              item.freeDiscount = ''
+            }
+          })
+          return data
+        }}
+        params={{
+          couponStatus: 2,
+          couponVerifyStatus: 4,
+          issueType: 1,
+        }}
+        request={couponAddList}
+        rowSelection={{
+          onChange: (selectedRowKeys) => {
+            setArr(selectedRowKeys)
           }
-          if (item.freeDiscount === 0) {
-            item.freeDiscount = ''
-          }
-        })
-        return data
-      }}
-      params={{
-        couponStatus: 2,
-        couponVerifyStatus: 4,
-        issueType: 1,
-      }}
-      request={couponAddList}
-      rowSelection={{
-        // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
-        // 注释该行则默认不显示下拉选项
-        // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
-      }}
-      tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
-        <Space size={24}>
-          <span>
-            已选 {selectedRowKeys.length} 项
-            <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
-              取消选择
-            </a>
-          </span>
-        </Space>
-      )}
-      tableAlertOptionRender={(a) => {
-        setArr(a.selectedRowKeys)
-      }}
-      search={{
-        labelWidth: 'auto',
-      }}
-      pagination={{
-        pageSize: 10,
-      }}
-    />
+        }}
+        tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
+          <Space size={24}>
+            <span>
+              已选 {selectedRowKeys.length} 项
+              <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
+                取消选择
+              </a>
+            </span>
+          </Space>
+        )}
+        // tableAlertOptionRender={(a) => {
+        //   console.log('a', a)
+        //   if (!arr) {
+        //     setArr(a.selectedRowKeys)
+        //   }
+        // }}
+        search={{
+          labelWidth: 'auto',
+        }}
+        pagination={{
+          pageSize: 10,
+        }}
+      />
     </ModalForm>
   );
 };
