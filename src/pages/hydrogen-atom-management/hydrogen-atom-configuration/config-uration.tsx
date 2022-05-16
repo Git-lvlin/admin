@@ -9,39 +9,20 @@ import { Divider, Form, Button, Descriptions } from 'antd';
 import type { ProColumns,ActionType } from '@ant-design/pro-table';
 import ProForm, {
   ProFormText,
-  ProFormSelect,
-  ProFormDependency
+  ProFormSelect
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
 import ConfirmModel from './confirm-model'
-
-type activityItem={
-    id:number;
-    buyType: number;
-    suggestCommission: number;
-    agentCompanyCommission: number;
-    businessDeptCommission: number;
-    provinceAgentCommission: number;
-    cityAgentCommission: number;
-    divideExplain: string
-}
-
-type buyConfigItem={
-    id:number;
-    commission: string;
-    describe: string;
-    DividedAmount: number;
-    IntoThat: string
-}
+import type { activityItem,buyConfigItem,detailItem,rentDetailItem } from './data'
 
 
 export default () => {
     const ref=useRef<ActionType>()
-    const [dataDetail,setDataDetail]=useState<buyConfigItem>()
-    const [detail,setDetail]=useState()
+    const [dataDetail,setDataDetail]=useState<buyConfigItem[]>([])
+    const [detail,setDetail]=useState<detailItem>()
     const [dataList,setDataList]=useState()
     const [rent,setRent]=useState()
-    const [rentDetail,setRentDetail]=useState()
+    const [rentDetail,setRentDetail]=useState<rentDetailItem>()
     const formRef=useRef()
     const [form] = Form.useForm()
     const [visible, setVisible] = useState(false);
