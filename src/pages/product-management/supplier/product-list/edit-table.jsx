@@ -227,7 +227,7 @@ export default function EditTable(props) {
         dataIndex: 'stage1',
         render: (_, record) => {
           return _ !== '-' ? <>
-            <div div style={{ display: 'flex', marginBottom: 10, alignItems: 'center' }
+            <div style={{ display: 'flex', marginBottom: 10, alignItems: 'center' }
             }>
               {_.wsStart}
               —
@@ -235,7 +235,6 @@ export default function EditTable(props) {
               {unit}时，
               {_.wsSupplyPrice}元 / {unit}
             </div >
-
             {record.batchNumber > 1 && <div>{parseInt(_.wsStart / record.batchNumber, 10)}—{parseInt(_.wsEnd / record.batchNumber, 10)}{wsUnit}时，{+new Big(_.wsSupplyPrice).times(record.batchNumber).toFixed(2)}元/{wsUnit}</div>}
           </> : '-'
         },
@@ -252,7 +251,6 @@ export default function EditTable(props) {
               {unit}及以上时，
               {_.wsSupplyPrice}元/{unit}
             </div>
-
             {record.batchNumber > 1 && <div>{parseInt((record.stage1.wsEnd + 1) / record.batchNumber, 10)}{wsUnit}及以上时，{+new Big(_.wsSupplyPrice).times(record.batchNumber).toFixed(2)}元/{wsUnit}</div>}
           </> : '-'
         },
