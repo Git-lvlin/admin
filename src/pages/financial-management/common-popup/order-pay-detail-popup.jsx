@@ -11,7 +11,7 @@ import './styles.less'
 import { orderTypes } from '@/services/financial-management/common'
 import { fashionableType } from '../common-function'
 
-const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
+const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState(null)
   const [payInfos, setPayInfos] = useState([]) 
@@ -20,8 +20,111 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
   const [isDown, setIsDown] = useState(false)
   const [taskId, setTaskId] = useState(null)
   const [process, setProcess] = useState(0)
-  const timer = useRef()
   const [orderType, setOrderType] = useState(null)
+  const timer = useRef()
+
+  const orderInfoTitle = {
+    'commandSalesOrder': '提成比例',
+    'hydrogen': '提成比例',
+    'hydrogenRent': '提成比例', 
+    'wholesaleFresh': '提成比例',
+    'wholesaleSeckill': '关联活动'
+  }
+
+  const orderInfoDataIndex = {
+    'commandSalesOrder': 'storeCommissionRatio',
+    'hydrogen': 'commissionScaleDesc',
+    'hydrogenRent': 'commissionScaleDesc', 
+    'wholesaleFresh': 'storeCommissionRatio',
+    'wholesaleSeckill': 'relevanceActivity'
+  }
+
+  const orderInfoRender = (_) => {
+    return (
+      {
+        'commandSalesOrder': `￥${amountTransform(_, '/')}%`,
+        'hydrogen': _,
+        'hydrogenRent': _,
+        'wholesaleFresh': `￥${amountTransform(_, '/')}%`, 
+        'wholesaleSeckill': (
+          <>
+            <div>活动类型：{info?.activityTypeDesc}</div>
+            <div>活动ID：{info?.activityId}</div>
+          </>
+        )
+      }[info?.orderType] || ''
+    )
+  }
+
+  const goodsInfoTitleSupply = {
+    'commandCollect':'商品集约价', 
+    'collectFresh': '商品集约价', 
+    'hydrogenDeposit': '商品押金', 
+    'hydrogenBoot': '商品启动价', 
+    'hydrogenRent': '商品租金'
+  }
+
+  const goodsInfoDataIndexSupply = {
+    'commandCollect': 'saleOrderPrice',
+    'collectFresh': 'saleOrderPrice'
+  }
+  
+  const goodsInfoTitleActual = {
+    'wholesaleBulk': '商品集约价', 
+    'hydrogenRent': '实际租金', 
+    'wholesaleFresh': '商品集约价', 
+    'commandSalesOrder': '商品集约价', 
+    'wholesaleSeckill': '商品集约价'
+  }
+
+  const goodsInfoTitleBuy = {
+    'wholesaleBulk': '预定数量', 
+    'hydrogenRent': '租金期限', 
+    'wholesaleFresh': '预定数量', 
+    'commandSalesOrder': '预定数量', 
+    'wholesaleSeckill': '预定数量'
+  }
+
+  const goodsInfoDataIndexBuy = {
+    'wholesaleBulk': 'preCount.', 
+    'hydrogenRent': 'rentExpire', 
+    'wholesaleFresh': 'preCount', 
+    'commandSalesOrder': 'preCount', 
+    'wholesaleSeckill': 'preCount'
+  }
+
+  const goodsInfoTitleDiscounts = {
+    'wholesaleBulk': '实际采购数量', 
+    'wholesaleFresh': '实际采购数量', 
+    'commandSalesOrder': '实际采购数量', 
+    'wholesaleSeckill': '实际采购数量'
+  }
+
+  const goodsInfoDataIndexDiscounts = {
+    'wholesaleBulk': 'paidCount', 
+    'wholesaleFresh': 'paidCount', 
+    'commandSalesOrder': 'paidCount', 
+    'wholesaleSeckill': 'paidCount'
+  }
+
+  const goodsInfoRender = (_) => {
+    return (
+      {
+        'wholesaleBulk': _, 
+        'wholesaleFresh': _, 
+        'commandSalesOrder': _, 
+        'wholesaleSeckill': _
+      }[info?.orderType] || `￥${amountTransform(_, '/')}`
+    )
+  }
+
+  const goodsInfoTitleFreight = {
+    'hydrogenRent': '额外租金'
+  }
+
+  const goodsInfoDataIndexFreight = {
+    'hydrogenRent': 'addedRent'
+  }
 
   useEffect(() => {
     orderTypes({}).then(res => {
@@ -105,7 +208,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
     }
   }
 
-  const columns1 = [
+  const orderInfo = [
     {
       title: '订单号',
       dataIndex: 'orderNo'
@@ -121,14 +224,9 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
       dataIndex: 'buyerType'
     },
     {
-      title: (_) => _.dataIndex === 'storeCommissionRatio' ? '店铺提成比例' : _.dataIndex === 'relevanceActivity' ? '关联活动' : '',
-      dataIndex: info?.storeCommissionRatio ? 'storeCommissionRatio' : info?.activityTypeDesc ? 'relevanceActivity' : '',
-      render: (_) => info?.storeCommissionRatio ? 
-        <span>{amountTransform(_, '*')}%</span> : info?.activityTypeDesc?
-        <>
-          <div>活动类型：{info?.activityTypeDesc}</div>
-          <div>活动ID：{info?.activityId}</div>
-        </>: '',
+      title: `${orderInfoTitle[info?.orderType] || ''}`,
+      dataIndex: `${orderInfoDataIndex[info?.orderType] || ''}`,
+      render: (_) => orderInfoRender(_),
     },
     {
       title: '买家会员信息',
@@ -144,7 +242,8 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
     },
     {
       title: '',
-      dataIndex: ''
+      dataIndex: '',
+      render: () => ''
     },
     {
       title: '卖家会员信息',
@@ -156,7 +255,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
     }
   ]
 
-  const columns2 = [
+  const goodsInfo = [
     {
       title: '商品名称',
       dataIndex: 'goodsName'
@@ -166,33 +265,27 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
       dataIndex: 'skuName'
     },
     {
-      title: (_)=> _.dataIndex === 'supplyPrice' ? '商品供货价' : '商品集约价',
-      dataIndex: (info?.orderType === 'commandCollect' || info?.orderType === 'collectFresh') ? 'saleOrderPrice' : 'supplyPrice',
+      title: `${goodsInfoTitleSupply[info?.orderType] || '商品供货价'}`,
+      dataIndex: `${goodsInfoDataIndexSupply[info?.orderType] || 'supplyPrice'}`,
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
-      title: (_)=> info?.isWholesale ? '商品集约价': '实际销售价',
+      title: `${goodsInfoTitleActual[info?.orderType] || '实际销售价'}`,
       dataIndex: 'salePrice', 
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
-      title:(_)=> _.dataIndex === 'preCount' ? '预定数量' : '购买数量',
-      dataIndex:  info?.isWholesale ? 'preCount' : 'paidCount'
+      title: `${goodsInfoTitleBuy[info?.orderType] || '购买数量'}`,
+      dataIndex: `${goodsInfoDataIndexBuy[info?.orderType] || 'paidCount'}`
     },
     {
-      title: (_) => _.dataIndex === 'paidCount' ? '实际采购数量' : '优惠金额',
-      dataIndex: info?.isWholesale ? 'paidCount' : 'couponAmount',
-      render: (_) => {
-        if(!info?.isWholesale) {
-          return `￥${amountTransform(_, '/')}`
-        } else {
-          return _
-        }
-      }
+      title: `${goodsInfoTitleDiscounts[info?.orderType] || '优惠金额'}`,
+      dataIndex: `${goodsInfoDataIndexDiscounts[info?.orderType] || 'couponAmount'}`,
+      render: (_) => goodsInfoRender(_)
     },
     {
-      title: '运费',
-      dataIndex: 'freight',
+      title: `${goodsInfoTitleFreight [info?.orderType] || '运费'}`,
+      dataIndex: `${goodsInfoDataIndexFreight [info?.orderType] || 'freight'}`,
       render: (_) => `￥${amountTransform(_, '/')}`
     },
     {
@@ -202,7 +295,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
     }
   ]
 
-  const columns3 = [
+  const payInfo = [
     {
       title: '支付阶段',
       dataIndex: 'stageName'
@@ -217,7 +310,8 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
     },
     {
       title: '',
-      dataIndex: ''
+      dataIndex: '',
+      render: ()=> ''
     },
     {
       title: '实付金额',
@@ -232,7 +326,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
           {
             data?.divideInfos?.map(item=> (
               <div key={item?.type}>
-                {fashionableType(item?.type, item?.amount, item?.fee, item?.couponAmount, item?.realAmount)}
+                {fashionableType(item?.typeName, item?.amount, item?.fee, item?.couponAmount, item?.realAmount)}
               </div>
             ))
           }
@@ -274,7 +368,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
     }
   ]
 
-  const columns4 = [
+  const account = [
     {
       title: '汇能虚拟户（佣金户）',
       dataIndex: 'platformAccountSn'
@@ -303,7 +397,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
 
   return (
     <Drawer
-      title="订单支付明细"
+      title={title || "订单支付明细"}
       placement="right"
       width={1400}
       onClose={() => { setVisible(false) }}
@@ -317,7 +411,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
       <ProDescriptions
         loading={loading}
         column={2}
-        columns={columns1}
+        columns={orderInfo}
         style={{
           background: '#fff',
           padding: 20
@@ -328,18 +422,18 @@ const OrderPayDetailPopup = ({ id, visible, setVisible }) => {
       {
         info?.skus &&
         info?.skus.map(item => (
-          <CustomList data={item} key={item.skuId} columns={columns2} />
+          <CustomList data={item} key={item.skuId} columns={goodsInfo} />
         ))
       }
       {
         payInfos?.map(item => (
-          <CustomList data={item} key={item.stageName} columns={columns3} />
+          <CustomList data={item} key={item.stageName} columns={payInfo} />
         ))
       }
       <ProDescriptions
         loading={loading}
         column={2}
-        columns={columns4}
+        columns={account}
         style={{
           background: '#fff',
           padding: 20

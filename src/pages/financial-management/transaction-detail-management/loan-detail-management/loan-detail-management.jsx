@@ -8,12 +8,15 @@ import { goodsAmountPage } from '@/services/financial-management/transaction-det
 import { orderTypes } from '@/services/financial-management/common'
 import { Export, ExportHistory } from '@/pages/export-excel'
 import Detail from '../../common-popup/order-pay-detail-popup'
+import RoyaltyDetails from "../royalty-details"
 
 const LoanDetailManagement = () =>{
   const [detailVisible, setDetailVisible] = useState(false)
+  const [royaltyVisible, setRoyaltyVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
   const [visit, setVisit] = useState(false)
   const [orderType, setOrderType] = useState(null)
+  const [type, setType] = useState('')
 
   const getFieldValue = (form) => {
     const { createTime, ...rest } = form.getFieldsValue()
@@ -124,7 +127,7 @@ const LoanDetailManagement = () =>{
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, records)=> <a target='_blank' href={`/financial-management/transaction-detail-management/royalty-details/${records?.orderNo}?type=loan`}>详情</a>
+      render: (_, records)=> <a onClick={()=> {setRoyaltyVisible(true); setSelectItem(records?.orderNo); setType('loan')}}>详情</a>
     }
 
   ]
@@ -182,6 +185,16 @@ const LoanDetailManagement = () =>{
           id={selectItem}
           visible={detailVisible}
           setVisible={setDetailVisible}
+        />
+      }
+      {
+        royaltyVisible &&
+        <RoyaltyDetails
+          id={selectItem}
+          visible={royaltyVisible}
+          setVisible={setRoyaltyVisible}
+          title='货款明细'
+          type={type}
         />
       }
     </PageContainer>
