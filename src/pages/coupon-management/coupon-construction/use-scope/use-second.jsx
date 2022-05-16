@@ -29,8 +29,13 @@ const GoosModel=(props)=>{
     },[])
     const columns = [
         {
+            title: 'spuID',
+            dataIndex: 'spuId',
+        },
+        {
             title: 'skuID',
             dataIndex: 'skuId',
+            hideInSearch: true
         },
         {
             title: '商品图片',
