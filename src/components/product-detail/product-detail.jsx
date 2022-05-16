@@ -84,6 +84,7 @@ export default (props) => {
             tOperateGain: amountTransform(item[1].tOperateGain, '/'),
             tPlatformGain: amountTransform(item[1].tPlatformGain, '/'),
             tStoreGain: amountTransform(item[1].tStoreGain, '/'),
+            operateGain: amountTransform(item[1].operateGain, '/'),
             tStoreScale: amountTransform(item[1].tStoreScale),
             tPlatformScale: amountTransform(item[1].tPlatformScale),
             tOperateScale: amountTransform(item[1].tOperateScale),
