@@ -25,5 +25,6 @@ export const tradeType =  {
   'deposit': '保证金',
   'depositReturn': '保证金回退',
   'chargeFeeCommission': '服务费收益',
-  'chargeFeeCommissionReturn': '服务费收益回退'
+  'chargeFeeCommissionReturn': '服务费收益回退',
+  'shareCommission': '店铺分享收益'
 }
