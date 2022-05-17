@@ -36,7 +36,6 @@ export default function EquipmentManagement() {
   const form = useRef<FormInstance>()
 
   const menu = (data: EquipmentItem) => {
-    
     return (
       <Menu>
         {
@@ -94,6 +93,7 @@ export default function EquipmentManagement() {
           onClick={()=> {
             setModificationVisible(true)
             setImei(data?.imei)
+            setMemberPhone(data?.memberPhone)
           }}
         >
           修改使用时长
@@ -106,6 +106,7 @@ export default function EquipmentManagement() {
               setPayFeeVisible(true)
               setImei(data?.imei)
               setExpire(data?.leaseDeadline)
+              setMemberPhone(data?.memberPhone)
             }}
           >
             开启缴费入口
@@ -321,6 +322,7 @@ export default function EquipmentManagement() {
                   setImei(r?.imei) 
                   setType(1)
                   setMemberPhone(r?.memberPhone)
+                  setStatus(r?.leaseStatus)
                 }}
               >
                 停用
@@ -404,6 +406,7 @@ export default function EquipmentManagement() {
           id={imei}
           refs={actRef}
           expire={expire}
+          phone={memberPhone}
         />
       }
       {
@@ -412,6 +415,7 @@ export default function EquipmentManagement() {
           visible={modificationVisible}
           setVisible={setModificationVisible}
           imei={imei}
+          phone={memberPhone}
         />
       }
     </PageContainer>

@@ -246,7 +246,7 @@ const cancelTaskCanbak=(id: number)=>{
   )
 }
 
-const Export: FC<ExprotProps> = ({ type, conditions, text='导出', slot, slotHistory }) => {
+const Export: FC<ExprotProps> = ({ type, conditions, text='导出', slot, slotHistory, fileName }) => {
   const [visible, setVisible] = useState(false)
 
   const downExcel = () => {
@@ -271,7 +271,7 @@ const Export: FC<ExprotProps> = ({ type, conditions, text='导出', slot, slotHi
 
     createExportTask({
       code: type,
-      fileName: type + +new Date() + '.xlsx',
+      fileName: fileName + '.xlsx' || type + +new Date() + '.xlsx',
       queryParamStr: data
     }).then(res => {
       if (res?.success) {

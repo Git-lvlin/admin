@@ -29,6 +29,13 @@ export type PropsData = {
   createRole: string
   nickName: string
   remark: string
+  extraRecord: string
+  leaseDeadline: string
+  leaseStatus: number
+  amount: string
+  deadlineDate: string
+  nowUseTime: string
+  updUseTime: string
 }
 
 export type PropsStatistics = {
@@ -38,8 +45,18 @@ export type PropsStatistics = {
   dateDoc: string
   sumAmount: number
   totalDriverCount: number
-
 }
 
+export type StartUpTimeProps = {
+  imei?: string
+  pageTotal?: number
+  memberId?: string
+  memberPhone?: string
+}
+
+export type ExtraRecordsProps = {
+  type: number
+  item: PropsData
+}
 
 

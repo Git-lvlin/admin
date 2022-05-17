@@ -86,9 +86,9 @@ export default () => {
         if(res.code==0){
           const datail=JSON.parse(res.data?.value)
           form2.setFieldsValue({
-            days:datail?.days.split(','),
-            time:moment(datail?.time, 'HH:mm:ss'),
-            code:res.data?.code
+            times:datail?.times,
+            code:res.data?.code,
+            cron:datail?.cron
           })
         }
       })
@@ -185,18 +185,29 @@ export default () => {
       return children
     }
     const tagRender=(props:{label:string})=>{
-      const { label } = props;
-      return (
-        <p
-          style={{ marginRight: 3 }}
-        >
-          每月 {label}日
-        </p>
-      );
+      const { label,value } = props;
+      if(value<10){
+        return (
+          <p
+            style={{ marginRight: 3 }}
+          >
+             {value}、
+          </p>
+        );
+      }else{
+        return (
+          <p
+            style={{ marginRight: 3 }}
+          >
+             {label}、
+          </p>
+        );
+      }
+
     }
     
     return (
-    <div style={{background:'#fff',padding:'50px'}}>
+    <div style={{background:'#fff',padding:'0 20px'}}>
         <Title style={{ marginBottom: 10 }} level={5}>续租</Title>
         <ProForm<{
           days:[];
@@ -215,34 +226,32 @@ export default () => {
           form={form2}
           formRef={formRef2}
           {...formItemLayout}
-        >
-          <ProForm.Group>
-            <Form.Item labelCol={6} name='days' label="通知时间" rules={[{ required: true, message: '请输入通知时间' }]}>
-              <Select
-                mode="multiple"
-                allowClear
-                style={{ width: '400px' }}
-                placeholder="请选择提醒的通知时间"
-                tagRender={tagRender}
-                disabled
-              >
-                {content()}
-              </Select>
-            </Form.Item>
-            <ProFormTimePicker width={200} name="time" fieldProps={{format:"HH:mm"}}/>
-            <Form.Item>
+        ><ProForm.Group>
+            <ProFormText
+              wrapperCol={20}
+              readonly
+              name='times'
+              label="通知时间"
+              rules={[{ required: true, message: '请输入通知时间' }]}
+            />
             <ProFormText
               name='code'
               hidden
             />
-            <Button type="primary" style={{ marginLeft:'200px' }} onClick={()=>{
-              formRef2?.current.submit()
-            }}>
-              确定
-            </Button>
-          </Form.Item>
+             <ProFormText
+              name='cron'
+              hidden
+            />
+            <Form.Item>
+              <Button type="primary" style={{ marginLeft:'595px' }} onClick={()=>{
+                formRef2?.current.submit()
+              }}>
+                确定
+              </Button>
+            </Form.Item>
           </ProForm.Group>
         </ProForm>
+        <Divider style={{ margin: '0 0 20px 0' }} />
         <ProForm<{
             value:string;
             code:string
@@ -335,7 +344,7 @@ export default () => {
               hidden
             />
             <Form.Item>
-            <Button type="primary" style={{ marginLeft:'170px' }} onClick={()=>{
+            <Button type="primary" style={{ marginLeft:'55px' }} onClick={()=>{
               formRef4?.current.submit()
             }}>
               确定

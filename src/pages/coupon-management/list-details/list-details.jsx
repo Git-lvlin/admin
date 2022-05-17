@@ -254,7 +254,9 @@ export default props => {
               {
                 detailData.memberType == 1 ?
                   '全部会员'
-                  :detailData.memberType == 2? '指定用户群体':'新用户（未下过订单的用户）'
+                  :detailData.memberType == 2? '指定用户群体':
+                  detailData.memberType == 5? '全部社区店主':
+                  '新用户（未下过订单的用户）'
               }
 
             </Form.Item>

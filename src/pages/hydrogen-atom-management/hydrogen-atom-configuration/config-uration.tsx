@@ -9,39 +9,20 @@ import { Divider, Form, Button, Descriptions } from 'antd';
 import type { ProColumns,ActionType } from '@ant-design/pro-table';
 import ProForm, {
   ProFormText,
-  ProFormSelect,
-  ProFormDependency
+  ProFormSelect
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
 import ConfirmModel from './confirm-model'
-
-type activityItem={
-    id:number;
-    buyType: number;
-    suggestCommission: number;
-    agentCompanyCommission: number;
-    businessDeptCommission: number;
-    provinceAgentCommission: number;
-    cityAgentCommission: number;
-    divideExplain: string
-}
-
-type buyConfigItem={
-    id:number;
-    commission: string;
-    describe: string;
-    DividedAmount: number;
-    IntoThat: string
-}
+import type { activityItem,buyConfigItem,detailItem,rentDetailItem } from './data'
 
 
 export default () => {
     const ref=useRef<ActionType>()
-    const [dataDetail,setDataDetail]=useState<buyConfigItem>()
-    const [detail,setDetail]=useState()
+    const [dataDetail,setDataDetail]=useState<buyConfigItem[]>([])
+    const [detail,setDetail]=useState<detailItem>()
     const [dataList,setDataList]=useState()
     const [rent,setRent]=useState()
-    const [rentDetail,setRentDetail]=useState()
+    const [rentDetail,setRentDetail]=useState<rentDetailItem>()
     const formRef=useRef()
     const [form] = Form.useForm()
     const [visible, setVisible] = useState(false);
@@ -50,12 +31,13 @@ export default () => {
       getQyzBuyConfig({}).then(res=>{
         if(res.code==0){
           const data=[
-            {id:0,commission:'供应商',describe:'帅博公司',DividedAmount:res.data?.suggestCommission,IntoThat:'通道手续费 0.65%' },
+            {id:0,commission:'供应商',describe:'帅博公司',DividedAmount:res.data?.retailSupplyPrice,IntoThat:'通道手续费 0.65%' },
             {id:1,commission:'直推人',describe:'直接推荐人，以约购社区推荐关系计算，社区店主才有',DividedAmount:res.data?.suggestCommission,IntoThat:'提现时扣 7% 提现手续费' },
             {id:2,commission:'运营中心',describe:'平台运营中心，以区/县为单位',DividedAmount:res.data?.agentCompanyCommission,IntoThat:'线上对公结算'  },
             {id:3,commission:'汇能健康事业部（平台代收）',describe:'以省为单位的实体',DividedAmount:res.data?.businessDeptCommission,IntoThat:'线下结算时扣除 7% 手续费'  },
             {id:4,commission:'汇智能通省加盟商（平台代收）',describe:'简称 ‘省代’',DividedAmount:res.data?.provinceAgentCommission,IntoThat:'线下结算'  },
             {id:5,commission:'汇智能通市加盟商（平台代收）',describe:'简称 ‘市代’',DividedAmount:res.data?.cityAgentCommission,IntoThat:'线下结算'  },
+            {id:6,commission:'平台',describe:' ',DividedAmount:res.data?.platformCommission,IntoThat:'其他对象分成后余下部分'  },
           ]
           setDataDetail(data)
           setDetail(res.data)
@@ -161,7 +143,7 @@ export default () => {
       }
     ];
     return (
-        <div style={{background:'#fff',padding:'50px'}}>
+        <div style={{background:'#fff',padding:'0 20px'}}>
         <ProTable<activityItem>
           actionRef={ref}
           rowKey="id"
@@ -174,7 +156,7 @@ export default () => {
           columns={columns}
           pagination={false}
           dataSource={dataDetail}
-          style={{marginBottom:'50px'}}
+          style={{marginBottom:'30px'}}
         />
         <ProTable<activityItem>
           actionRef={ref}
@@ -188,7 +170,7 @@ export default () => {
           columns={columns2}
           pagination={false}
           dataSource={dataList}
-          style={{marginBottom:'50px'}}
+          style={{marginBottom:'30px'}}
         />
         <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right',  display: 'inline-block' }}>
         <Descriptions.Item label="扫码启动使用机器需支付金额">
@@ -210,7 +192,7 @@ export default () => {
             <Descriptions.Item label="氢原子机器自动确认收货时间">
               {rentDetail?.autoConfirmTime}天
             </Descriptions.Item>
-            <Descriptions.Item labelStyle={{ textAlign: 'right', width: 400, display: 'inline-block' }} label="氢原子机器租赁时租金可逾期天数（租约逾期至停用天数）">
+            <Descriptions.Item labelStyle={{ textAlign: 'right', width: 380, display: 'inline-block' }} label="氢原子机器租赁时租金可逾期天数（租约逾期至停用天数）">
               <ProFormText
                 readonly
                 fieldProps={{
@@ -222,7 +204,7 @@ export default () => {
             </Descriptions.Item>
         </Descriptions>
 
-        <Divider style={{ margin: '20px 0' }} />
+        <Divider style={{ margin: '10px 0' }} />
 
         <ProForm<{
           month: number;
@@ -340,7 +322,7 @@ export default () => {
             </ProFormDependency> */}
             <p>第  5  个整月之后缴纳管理费时：</p>
           <ProForm.Group>
-            <p>上月集约金额达到</p>
+            <p>上月集约金额未达到</p>
             <ProFormText
               name='arrive2'
               width="md"

@@ -23,7 +23,7 @@
   }
 }
 
-.radioArea {
+.chartArea {
   background: #fff;
   padding: 20px 40px;
 }
@@ -50,4 +50,20 @@
     }
   }
   pointer-events:none
+}
+
+.pieTitle {
+  text-align: center;
+  font-size: 16px;
+}
+
+.tabBar {
+  height: 46px;
+  margin-left: 10px;
+  font-size: 20px;
+  :global {
+    .ant-tabs-tab + .ant-tabs-tab {
+      margin: 0;
+    }
+  }
 }
