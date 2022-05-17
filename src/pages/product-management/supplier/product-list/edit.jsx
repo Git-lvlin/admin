@@ -746,6 +746,7 @@ export default (props) => {
             marketPrice: amountTransform(item[1].marketPrice, '/'),
             wholesaleFreight: amountTransform(item[1].wholesaleFreight, '/'),
             operateGain: amountTransform(item[1].operateGain, '/'),
+            tPlatformGain: amountTransform(item[1].tPlatformGain, '/'),
             // batchNumber: item[1].batchNumber,
             // isFreeFreight: item[1].isFreeFreight,
             freightTemplateId: item[1]?.freightTemplateId !== 0 ? { label: item[1]?.freightTemplateName, value: item[1]?.freightTemplateId } : undefined,
@@ -1520,6 +1521,11 @@ export default (props) => {
                                   label="分享补贴价平台毛利"
                                 >
                                   {platformGain}元/{goods.unit}
+                                </Form.Item>
+                                <Form.Item
+                                  label="分享补贴价平台盈亏"
+                                >
+                                  {salePriceProfitLoss}元/{goods.unit}
                                 </Form.Item>
                                 <Form.Item
                                   label="店主补贴金额"

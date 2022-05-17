@@ -361,7 +361,7 @@ const Edit = props => {
         placeholder="请输入内容"
         rules={[{ required: true, message: '请输入内容'}]}
         fieldProps={{
-          maxLength: 50,
+          maxLength: 200,
           showCount: true
         }}
       />
