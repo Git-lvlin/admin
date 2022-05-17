@@ -1517,7 +1517,7 @@ export default (props) => {
                                   />
                                 </Form.Item>
                                 <Form.Item
-                                  label="分享补贴价平台毛利"
+                                  label="分享补贴价平台盈亏"
                                 >
                                   {platformGain}元/{goods.unit}
                                 </Form.Item>
