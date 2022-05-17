@@ -63,8 +63,8 @@ export default (props) => {
     goods = detailData.goods;
   }
   const formItemLayout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 16 },
+    labelCol: { span: 4 },
+    wrapperCol: { span: 18 },
     layout: {
       labelCol: {
         span: 4,
@@ -588,7 +588,7 @@ export default (props) => {
             message.error(`分享补贴价必须大于${retailSupplyPrice}`)
           }
 
-          if (+tStoreScale<0.01) {
+          if (+tStoreScale < 0.01) {
             message.error('店主补贴占比必须大于等于0.01%')
             reject()
             return
@@ -831,7 +831,7 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        width: 1200,
+        width: Math.max(1200, window.innerWidth - 300),
         className: styles.drawer_form,
         onClose: () => {
           onClose();
