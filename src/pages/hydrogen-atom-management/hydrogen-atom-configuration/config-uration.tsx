@@ -9,11 +9,12 @@ import { Divider, Form, Button, Descriptions } from 'antd';
 import type { ProColumns,ActionType } from '@ant-design/pro-table';
 import ProForm, {
   ProFormText,
-  ProFormSelect
+  ProFormSelect,
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
 import ConfirmModel from './confirm-model'
-import type { activityItem,buyConfigItem,detailItem,rentDetailItem } from './data'
+import type { ProFormInstance } from '@ant-design/pro-form';
+import type { activityItem,buyConfigItem,detailItem,rentDetailItem,paramsTypeItem } from './data'
 
 
 export default () => {
@@ -23,10 +24,10 @@ export default () => {
     const [dataList,setDataList]=useState()
     const [rent,setRent]=useState()
     const [rentDetail,setRentDetail]=useState<rentDetailItem>()
-    const formRef=useRef()
+    const formRef=useRef<ProFormInstance>()
     const [form] = Form.useForm()
     const [visible, setVisible] = useState(false);
-    const [paramsType,setParamsType]=useState()
+    const [paramsType,setParamsType]=useState<paramsTypeItem>()
     useEffect(()=>{
       getQyzBuyConfig({}).then(res=>{
         if(res.code==0){

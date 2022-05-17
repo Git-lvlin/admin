@@ -88,7 +88,6 @@ export default (props) => {
             value:await handleChange(paramsType.code)
           }
           await  updateByCode(params).then(res=>{
-              console.log('res.code',res.code)
               if(res.code==0){
                 message.success('更新成功！')
                 setVisible(false)
