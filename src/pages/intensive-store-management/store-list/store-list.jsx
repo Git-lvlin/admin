@@ -640,18 +640,25 @@ const StoreList = (props) => {
       hideInTable: storeType === 'freshStores'
     },
     {
-      title: '审核通过时间',
+      title: '申请审核通过时间',
       dataIndex: 'auditTime',
       valueType: 'dateTimeRange',
       hideInTable: true,
       hideInSearch: storeType === 'freshStores'
     },
     {
-      title: '审核通过时间',
+      title: '申请审核通过时间',
       dataIndex: 'auditTime',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType === 'freshStores'
+    },
+    {
+      title: '注销时间',
+      dataIndex: 'cancleTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+      hideInSearch: storeType !== 'cancelled'
     },
     {
       title: '操作',
