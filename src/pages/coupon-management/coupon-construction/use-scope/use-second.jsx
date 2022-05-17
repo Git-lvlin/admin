@@ -373,20 +373,20 @@ const useSecond=(props)=>{
                         value:choose==4?2:position||(parseInt(id)==id )&&DetailList.data?.goodsType
                     }}
                     options={[
-                    {
-                        label:'全部商品',
-                        value: 1,
-                        disabled:choose==4||(parseInt(id)==id )&&DetailList.data?.memberType==4
-                    },
+                    // {
+                    //     label:'全部商品',
+                    //     value: 1,
+                    //     disabled:choose==4||(parseInt(id)==id )&&DetailList.data?.memberType==4
+                    // },
                     {
                         label: '指定商品',
                         value: 2,
                     },
-                    {
-                        label: '指定品类',
-                        value: 3,
-                        disabled:choose==4||(parseInt(id)==id )&&DetailList.data?.memberType==4
-                    },
+                    // {
+                    //     label: '指定品类',
+                    //     value: 3,
+                    //     disabled:choose==4||(parseInt(id)==id )&&DetailList.data?.memberType==4
+                    // },
                     ]}
 
                 />
