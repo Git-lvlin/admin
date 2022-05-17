@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 export const getStoreList = async (params = {}, options = {}) => {
-  const { current, pageSize, area = [], provideTime = [], auditTime = [], ...rest } = params;
+  const { current, pageSize, area = [], provideTime = [], auditTime = [], cancleTime=[], ...rest } = params;
   const res = await request('/auth/store/memberShop/page', {
     method: 'GET',
     params: {
@@ -14,6 +14,8 @@ export const getStoreList = async (params = {}, options = {}) => {
       provideTimeEnd: provideTime[1],
       auditTimeStart: auditTime[0],
       auditTimeEnd: auditTime[1],
+      cancleTimeStart: cancleTime[0],
+      cancleTimeEnd: cancleTime[1],
       ...rest
     },
     ...options

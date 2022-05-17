@@ -138,6 +138,13 @@ export default function EditTable(props) {
         render: _ => `${_}元/${unit}`
       },
       {
+        title: `分享补贴价平台毛利`,
+        dataIndex: 'tPlatformGain',
+        editable: false,
+        hideInTable: operateType !== 2,
+        render: _ => `${_}元/${unit}`
+      },
+      {
         title: '店主补贴金额',
         dataIndex: 'operateGain',
         editable: false,

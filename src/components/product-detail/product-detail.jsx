@@ -324,7 +324,7 @@ export default (props) => {
               &&
               <>
                 <Form.Item
-                  label="分享补贴价平台盈亏"
+                  label="分享补贴价平台毛利"
                 >
                   {amountTransform(goods?.tPlatformGain, '/')}元/{goods.unit}
                 </Form.Item>
