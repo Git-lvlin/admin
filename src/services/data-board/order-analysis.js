@@ -14,7 +14,7 @@ export const orderAnalysis = async (params = {}, options = {}) => {
   }
 }
 
-// 订单统计
+// 订单统计 - 趋势图指标 - 折线图
 export const orderStatistical = async (params = {}, options = {}) => {
   const res = await request('/auth/java-admin/report/config/orderStatistical', {
     method: 'POST',
@@ -23,6 +23,58 @@ export const orderStatistical = async (params = {}, options = {}) => {
   })
   return {
     data: res.data,
+    success: res.success
+  }
+}
+
+// 订单分析 - 趋势图指标 - 饼状图
+export const orderChart = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/config/orderChart', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
+
+// 订单分析 - 指标数据分析
+export const indexDataDetail = async (params = {}, options = {}) => {
+  const { dateTimeRange, ...rest } = params;
+  const res = await request('/auth/java-admin/report/config/indexDataDetail', {
+    method: 'POST',
+    data:  {
+      startTime: dateTimeRange[0]?.format('YYYY-MM-DD HH:mm:ss'),
+      endTime: dateTimeRange[1]?.format('YYYY-MM-DD HH:mm:ss'),
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
+
+// 订单分析 - 已支付订单明细
+export const payOrderDetailQuery = async (params = {}, options = {}) => {
+  const { current, pageSize, orderPaytime, ...rest } = params
+  const res = await request('/auth/java-admin/report/config/payOrderDetailQuery', {
+    method: 'POST',
+    data:  {
+      page: current,
+      size: pageSize,
+      startTime: orderPaytime?.[0],
+      endTime: orderPaytime?.[1],
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data.records,
+    total:res.data.total,
     success: res.success
   }
 }

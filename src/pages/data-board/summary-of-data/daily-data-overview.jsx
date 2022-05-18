@@ -389,7 +389,8 @@ const DailyDataOverview = () => {
             </ProTable.Summary.Cell>
             <ProTable.Summary.Cell>
               {data?.[0]?.refundsAmount}
-            </ProTable.Summary.Cell><ProTable.Summary.Cell>
+            </ProTable.Summary.Cell>
+            <ProTable.Summary.Cell>
               {data?.[0]?.refundNum}
             </ProTable.Summary.Cell>
             <ProTable.Summary.Cell>
