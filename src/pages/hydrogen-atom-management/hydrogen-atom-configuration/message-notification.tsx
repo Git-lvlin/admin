@@ -17,8 +17,10 @@ import ProForm, {
   ProFormSelect,
   ProFormTimePicker
 } from '@ant-design/pro-form';
+import type { ProFormInstance } from '@ant-design/pro-form';
 import moment from 'moment'
 import ConfirmModel from './confirm-model'
+import type { selectItem,paramsItem } from './data'
 const { Option } = Select;
 const { Title } = Typography;
 
@@ -45,23 +47,16 @@ return new Promise(async (resolve, reject) => {
 })
 }
   
-type selectItem={
-nickname: string;
-targetId: string;
-}
-
-
-
 export default () => {
-    const formRef2=useRef()
-    const formRef3=useRef()
-    const formRef4=useRef()
-    const formRef5=useRef()
-    const formRef6=useRef()
-    const formRef7=useRef()
-    const formRef8=useRef()
-    const formRef9=useRef()
-    const formRef10=useRef()
+    const formRef2=useRef<ProFormInstance>()
+    const formRef3=useRef<ProFormInstance>()
+    const formRef4=useRef<ProFormInstance>()
+    const formRef5=useRef<ProFormInstance>()
+    const formRef6=useRef<ProFormInstance>()
+    const formRef7=useRef<ProFormInstance>()
+    const formRef8=useRef<ProFormInstance>()
+    const formRef9=useRef<ProFormInstance>()
+    const formRef10=useRef<ProFormInstance>()
     const [form2] = Form.useForm()
     const [form3] = Form.useForm()
     const [form4] = Form.useForm()
@@ -72,7 +67,7 @@ export default () => {
     const [form9] = Form.useForm()
     const [form10] = Form.useForm()
     const [visible, setVisible] = useState(false);
-    const [paramsType,setParamsType]=useState()
+    const [paramsType,setParamsType]=useState<paramsItem>()
     const [onselect,setOnselect]=useState([])
     useEffect(()=>{
       api.adminList({status:1,size:1000}).then(res=>{
@@ -184,7 +179,7 @@ export default () => {
       }
       return children
     }
-    const tagRender=(props:{label:string})=>{
+    const tagRender=(props:{label:string,value:number})=>{
       const { label,value } = props;
       if(value<10){
         return (
@@ -210,10 +205,10 @@ export default () => {
     <div style={{background:'#fff',padding:'0 20px'}}>
         <Title style={{ marginBottom: 10 }} level={5}>续租</Title>
         <ProForm<{
-          days:[];
-          time:string;
-          code:string
-            }>
+          times:string,
+          code:string,
+          cron:string
+        }>
           onFinish={async (values) => {
             setVisible(true)
             setParamsType(values)
