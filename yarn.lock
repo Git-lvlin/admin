@@ -51,7 +51,7 @@
 
 "@ant-design/pro-card@1.20.3":
   version "1.20.3"
-  resolved "https://registry.npmmirror.com/@ant-design/pro-card/-/pro-card-1.20.3.tgz#7be73ffec0a08422de0892951208431710fadc3d"
+  resolved "https://registry.yarnpkg.com/@ant-design/pro-card/-/pro-card-1.20.3.tgz#7be73ffec0a08422de0892951208431710fadc3d"
   integrity sha512-S0UlS3rHccPAU0K7VZduFowdTzghqEt4OpFRxMRaN+wNiyH/f8H5qukKPcv5BMRzb4EKsNqtrGX/vNNqnKxhXw==
   dependencies:
     "@ant-design/icons" "^4.2.1"
@@ -136,7 +136,7 @@
 
 "@ant-design/pro-field@1.34.9":
   version "1.34.9"
-  resolved "https://registry.npmmirror.com/@ant-design/pro-field/-/pro-field-1.34.9.tgz#4b034f4ffd37a485d93136e5a82ce8ec47d7365a"
+  resolved "https://registry.yarnpkg.com/@ant-design/pro-field/-/pro-field-1.34.9.tgz#4b034f4ffd37a485d93136e5a82ce8ec47d7365a"
   integrity sha512-HSBtg2iR8iKFg0TY5sy44cv2wLmCLNyX27dvK2gGk2l9o9zjLFSKfq09xDvIUoufi+eqcdSWLJoAq6T+OBZdYg==
   dependencies:
     "@ant-design/icons" "^4.2.1"
@@ -169,7 +169,7 @@
 
 "@ant-design/pro-form@1.67.2":
   version "1.67.2"
-  resolved "https://registry.npmmirror.com/@ant-design/pro-form/-/pro-form-1.67.2.tgz#788fd2df49c8e2f5a473ad05e1bd4da435a84dcd"
+  resolved "https://registry.yarnpkg.com/@ant-design/pro-form/-/pro-form-1.67.2.tgz#788fd2df49c8e2f5a473ad05e1bd4da435a84dcd"
   integrity sha512-6iglcitRpgbGArnRp8++TUXaxKT7tO9ECruNUunOy35XnzTY1TI8f0zbuY/J5ZSm5Yvv1VUSLh89OFnnbdmvyw==
   dependencies:
     "@ant-design/icons" "^4.2.1"
@@ -222,7 +222,7 @@
 
 "@ant-design/pro-provider@1.6.4":
   version "1.6.4"
-  resolved "https://registry.npmmirror.com/@ant-design/pro-provider/-/pro-provider-1.6.4.tgz#91010f16c1180e93000443a26dc2790709c0bbf3"
+  resolved "https://registry.yarnpkg.com/@ant-design/pro-provider/-/pro-provider-1.6.4.tgz#91010f16c1180e93000443a26dc2790709c0bbf3"
   integrity sha512-UbvzaOb2hES2/HcaON74xFxDf+6nN0jjPwzRlfRlDhQFld3xMhM2LNTzPCmZhx7jb7G7GbVaOQFdff5dylQzmg==
   dependencies:
     "@babel/runtime" "^7.16.3"
@@ -238,7 +238,7 @@
 
 "@ant-design/pro-table@2.74.2":
   version "2.74.2"
-  resolved "https://registry.npmmirror.com/@ant-design/pro-table/-/pro-table-2.74.2.tgz#37cea584f1441f0cd9d711302d1a8535e0e73d13"
+  resolved "https://registry.yarnpkg.com/@ant-design/pro-table/-/pro-table-2.74.2.tgz#37cea584f1441f0cd9d711302d1a8535e0e73d13"
   integrity sha512-O8VFuCEfw+gv+Tc6r+UbiqHedTV9YsA95x9EeWDEqp3zv1lXRScecAEMmTt9Fh44HGIzHkYl7/n7R22GhHWXYw==
   dependencies:
     "@ant-design/icons" "^4.1.0"
@@ -284,7 +284,7 @@
 
 "@ant-design/pro-utils@1.41.1":
   version "1.41.1"
-  resolved "https://registry.npmmirror.com/@ant-design/pro-utils/-/pro-utils-1.41.1.tgz#0b2886c5d24d3b78a3ef6370a6b68c5e0602658d"
+  resolved "https://registry.yarnpkg.com/@ant-design/pro-utils/-/pro-utils-1.41.1.tgz#0b2886c5d24d3b78a3ef6370a6b68c5e0602658d"
   integrity sha512-TOmk+p6otElb2AQzZGv5SerEngG0qvc2Q01IPn8ziHZ3kQ2CuCYi39nDo3nelIod3mbBpOKbvtkKry9oTHofpg==
   dependencies:
     "@ant-design/icons" "^4.3.0"
@@ -4765,14 +4765,9 @@ antd-mobile@^2.3.1:
     rmc-tabs "~1.2.0"
     rmc-tooltip "~1.0.0"
 
-<<<<<<< HEAD
 antd@4.19.5:
   version "4.19.5"
-<<<<<<< HEAD
-  resolved "https://registry.npmmirror.com/antd/-/antd-4.19.5.tgz#38d08f3e1391a7a69c2ca76f50968bb12ec2ac93"
-=======
   resolved "https://registry.yarnpkg.com/antd/-/antd-4.19.5.tgz#38d08f3e1391a7a69c2ca76f50968bb12ec2ac93"
->>>>>>> setup_ts
   integrity sha512-C4H/VJqlVO5iMvHZyiV27R8SbPs4jsOKCGPhDXIHUry/RnUCbMmVeQaPRfUIxSI1NbqDflsuQfevPtz1svyIlg==
   dependencies:
     "@ant-design/colors" "^6.0.0"
@@ -4819,8 +4814,6 @@ antd@4.19.5:
     rc-util "^5.19.3"
     scroll-into-view-if-needed "^2.2.25"
 
-=======
->>>>>>> coderby
 antd@^4.1.2, antd@^4.1.3:
   version "4.14.0"
   resolved "https://registry.yarnpkg.com/antd/-/antd-4.14.0.tgz#954c4554b33e764215dd09d378f61b81f5682558"
@@ -4869,58 +4862,6 @@ antd@^4.1.2, antd@^4.1.3:
     scroll-into-view-if-needed "^2.2.25"
     warning "^4.0.3"
 
-<<<<<<< HEAD
-=======
-antd@^4.19.5:
-  version "4.19.5"
-  resolved "https://registry.npmmirror.com/antd/-/antd-4.19.5.tgz#38d08f3e1391a7a69c2ca76f50968bb12ec2ac93"
-  integrity sha512-C4H/VJqlVO5iMvHZyiV27R8SbPs4jsOKCGPhDXIHUry/RnUCbMmVeQaPRfUIxSI1NbqDflsuQfevPtz1svyIlg==
-  dependencies:
-    "@ant-design/colors" "^6.0.0"
-    "@ant-design/icons" "^4.7.0"
-    "@ant-design/react-slick" "~0.28.1"
-    "@babel/runtime" "^7.12.5"
-    "@ctrl/tinycolor" "^3.4.0"
-    classnames "^2.2.6"
-    copy-to-clipboard "^3.2.0"
-    lodash "^4.17.21"
-    memoize-one "^6.0.0"
-    moment "^2.25.3"
-    rc-cascader "~3.2.1"
-    rc-checkbox "~2.3.0"
-    rc-collapse "~3.1.0"
-    rc-dialog "~8.6.0"
-    rc-drawer "~4.4.2"
-    rc-dropdown "~3.3.2"
-    rc-field-form "~1.25.0"
-    rc-image "~5.2.5"
-    rc-input "~0.0.1-alpha.5"
-    rc-input-number "~7.3.0"
-    rc-mentions "~1.6.1"
-    rc-menu "~9.3.2"
-    rc-motion "^2.4.4"
-    rc-notification "~4.5.7"
-    rc-pagination "~3.1.9"
-    rc-picker "~2.6.4"
-    rc-progress "~3.2.1"
-    rc-rate "~2.9.0"
-    rc-resize-observer "^1.2.0"
-    rc-select "~14.0.2"
-    rc-slider "~10.0.0-alpha.4"
-    rc-steps "~4.1.0"
-    rc-switch "~3.2.0"
-    rc-table "~7.23.0"
-    rc-tabs "~11.10.0"
-    rc-textarea "~0.3.0"
-    rc-tooltip "~5.1.1"
-    rc-tree "~5.4.3"
-    rc-tree-select "~5.1.1"
-    rc-trigger "^5.2.10"
-    rc-upload "~4.3.0"
-    rc-util "^5.19.3"
-    scroll-into-view-if-needed "^2.2.25"
-
->>>>>>> coderby
 any-promise@^1.0.0, any-promise@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/any-promise/-/any-promise-1.3.0.tgz#abc6afeedcea52e809cdc0376aed3ce39635d17f"
@@ -14783,15 +14724,7 @@ rc-dropdown@^3.2.0:
 
 rc-dropdown@~3.3.2:
   version "3.3.3"
-<<<<<<< HEAD
-<<<<<<< HEAD
-  resolved "https://registry.npmmirror.com/rc-dropdown/-/rc-dropdown-3.3.3.tgz#17ba32ebd066ae397b00e9e4d570c7c21daed88f"
-=======
   resolved "https://registry.yarnpkg.com/rc-dropdown/-/rc-dropdown-3.3.3.tgz#17ba32ebd066ae397b00e9e4d570c7c21daed88f"
->>>>>>> setup_ts
-=======
-  resolved "https://registry.npmmirror.com/rc-dropdown/-/rc-dropdown-3.3.3.tgz#17ba32ebd066ae397b00e9e4d570c7c21daed88f"
->>>>>>> coderby
   integrity sha512-UNe68VpvtrpU0CS4jh5hD4iGqzi4Pdp7uOya6+H3QIEZxe7K+Xs11BNjZm6W4MaL0jTmzUj+bxvnq5bP3rRoVQ==
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -14810,15 +14743,7 @@ rc-field-form@~1.20.0:
 
 rc-field-form@~1.25.0:
   version "1.25.2"
-<<<<<<< HEAD
-<<<<<<< HEAD
-  resolved "https://registry.npmmirror.com/rc-field-form/-/rc-field-form-1.25.2.tgz#de418194b7aca2f1b6e0e059edd97b5cf624f68a"
-=======
   resolved "https://registry.yarnpkg.com/rc-field-form/-/rc-field-form-1.25.2.tgz#de418194b7aca2f1b6e0e059edd97b5cf624f68a"
->>>>>>> setup_ts
-=======
-  resolved "https://registry.npmmirror.com/rc-field-form/-/rc-field-form-1.25.2.tgz#de418194b7aca2f1b6e0e059edd97b5cf624f68a"
->>>>>>> coderby
   integrity sha512-FXGScWibDlwIlKY15T1YOA7VTtMJwqxxXdDjHB56ZNx7wGbE4vK+Fe2zcymyakGZD0ej8NUP5LGr7qBVWaVpUQ==
   dependencies:
     "@babel/runtime" "^7.8.4"
@@ -15018,15 +14943,9 @@ rc-picker@~2.5.10:
     shallowequal "^1.1.0"
 
 rc-picker@~2.6.4:
-<<<<<<< HEAD
   version "2.6.8"
   resolved "https://registry.npmmirror.com/rc-picker/-/rc-picker-2.6.8.tgz#eff71e13d836953a4c7439c958228b5108f92c22"
   integrity sha512-j14N2nxcx4PAw7LviwLKIJG4cEAlCFhcHI/7pz+Ps43Df7UrSIWt/QGJgPAWz38Z6jrjsgMcyVHVccpL09gDDA==
-=======
-  version "2.6.9"
-  resolved "https://registry.npmmirror.com/rc-picker/-/rc-picker-2.6.9.tgz#2f2f82c5340adbe3b30875a25e015c120eb88c9c"
-  integrity sha512-yH3UYXCADf7REtOAB5cwe1cyFKtB0p204RCN8JdZGG4uuSOZ1IPTkk/GJS6HOpxspZeJCLGzzajuQMDwck9dsw==
->>>>>>> coderby
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.1"
@@ -15121,11 +15040,7 @@ rc-select@~14.0.0-alpha.23, rc-select@~14.0.0-alpha.8:
 
 rc-select@~14.0.2:
   version "14.0.6"
-<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/rc-select/-/rc-select-14.0.6.tgz#93be0b185a9d66dc84795e079121f0f65310d8bf"
-=======
-  resolved "https://registry.npmmirror.com/rc-select/-/rc-select-14.0.6.tgz#93be0b185a9d66dc84795e079121f0f65310d8bf"
->>>>>>> coderby
   integrity sha512-HMb2BwfTvBxMmIWTR/afP4bcRJLbVKFSBW/VFfL5Z+kdV2XlrYdlliK2uHY7pRRvW16PPGwmOwGfV+eoulPINw==
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -15138,11 +15053,7 @@ rc-select@~14.0.2:
 
 rc-slider@~10.0.0-alpha.4:
   version "10.0.0"
-<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/rc-slider/-/rc-slider-10.0.0.tgz#8ffe1dd3c8799c9d1f81ac808976f18af3dca206"
-=======
-  resolved "https://registry.npmmirror.com/rc-slider/-/rc-slider-10.0.0.tgz#8ffe1dd3c8799c9d1f81ac808976f18af3dca206"
->>>>>>> coderby
   integrity sha512-Bk54UIKWW4wyhHcL8ehAxt+wX+n69dscnHTX6Uv0FMxSke/TGrlkZz1LSIWblCpfE2zr/dwR2Ca8nZGk3U+Tbg==
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -15216,15 +15127,7 @@ rc-table@~7.13.0:
 
 rc-table@~7.23.0:
   version "7.23.2"
-<<<<<<< HEAD
-<<<<<<< HEAD
-  resolved "https://registry.npmmirror.com/rc-table/-/rc-table-7.23.2.tgz#f6f906e8fafb05ddbfdd69d450feb875ce260a7b"
-=======
   resolved "https://registry.yarnpkg.com/rc-table/-/rc-table-7.23.2.tgz#f6f906e8fafb05ddbfdd69d450feb875ce260a7b"
->>>>>>> setup_ts
-=======
-  resolved "https://registry.npmmirror.com/rc-table/-/rc-table-7.23.2.tgz#f6f906e8fafb05ddbfdd69d450feb875ce260a7b"
->>>>>>> coderby
   integrity sha512-opc2IBJOetsPSdNI+u1Lh9yY4Ks+EMgo1oJzZN+yIV4fRcgP81tHtxdPOVvXPFI4rUMO8CKnmHbGPU7jxMRAeg==
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -15428,15 +15331,9 @@ rc-util@^5.12.0, rc-util@^5.14.0, rc-util@^5.15.0, rc-util@^5.16.1, rc-util@^5.1
     shallowequal "^1.1.0"
 
 rc-util@^5.17.0, rc-util@^5.19.3:
-<<<<<<< HEAD
   version "5.21.2"
   resolved "https://registry.npmmirror.com/rc-util/-/rc-util-5.21.2.tgz#fa23277ba84e5561af2febdca64de3fc2b3e1528"
   integrity sha512-QuuZ2tKMScGtxSx3rLzgPGGDZm/np7phMqA7OcDidSf44abvSk+AdtdD7ZvQPvCEtdC6nCSI5tEVnUaYjjD9/w==
-=======
-  version "5.21.4"
-  resolved "https://registry.npmmirror.com/rc-util/-/rc-util-5.21.4.tgz#61e24ad297f679ca0796b618a3ef30eca959d904"
-  integrity sha512-rq11ap3NnOIdywFhcMQ9J7DXRJJ1c1Id1Hvr/1Dphr+5X75ERJBJybuh779DdurP4LJQqAhT6Aie0AjrBc5Vqw==
->>>>>>> coderby
   dependencies:
     "@babel/runtime" "^7.12.5"
     react-is "^16.12.0"
@@ -17910,11 +17807,7 @@ swr@^1.1.0-beta.0:
 
 swr@^1.2.0:
   version "1.3.0"
-<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/swr/-/swr-1.3.0.tgz#c6531866a35b4db37b38b72c45a63171faf9f4e8"
-=======
-  resolved "https://registry.npmmirror.com/swr/-/swr-1.3.0.tgz#c6531866a35b4db37b38b72c45a63171faf9f4e8"
->>>>>>> coderby
   integrity sha512-dkghQrOl2ORX9HYrMDtPa7LTVHJjCTeZoB1dqTbnnEDlSvN8JEKpYIYurDfvbQFUUS8Cg8PceFVZNkW0KNNYPw==
 
 sylvanas@^0.4.0:
@@ -18756,11 +18649,7 @@ use-media-antd-query@^1.0.6:
 
 use-media-antd-query@^1.1.0:
   version "1.1.0"
-<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/use-media-antd-query/-/use-media-antd-query-1.1.0.tgz#f083ad7e292c1c0261b6bbfaac0edc3e0920d85d"
-=======
-  resolved "https://registry.npmmirror.com/use-media-antd-query/-/use-media-antd-query-1.1.0.tgz#f083ad7e292c1c0261b6bbfaac0edc3e0920d85d"
->>>>>>> coderby
   integrity sha512-B6kKZwNV4R+l4Rl11sWO7HqOay9alzs1Vp1b4YJqjz33YxbltBCZtt/yxXxkXN9rc1S7OeEL/GbwC30Wmqhw6Q==
 
 use-subscription@1.5.1:
