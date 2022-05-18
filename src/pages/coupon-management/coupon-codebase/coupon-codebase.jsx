@@ -178,45 +178,45 @@ export default props => {
   setLibraryId(parseInt(id))
  },[id])
 //导出数据
-const exportExcel = (searchConfig) => {
-  couponCcodebase({id:libraryId,...searchConfig.form.getFieldsValue()}).then(res => {
-    if (res.code === 0) {
-      const data = res.data.memberCouponList.records.map(item => {
-        const { ...rest } = item;
-        return {
-          ...rest,
-        }
-      });
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.json_to_sheet([
-        {
-          memberCouponCode: '红包码',
-          memberNicheng: '领取会员昵称',
-          memberMobile: '会员手机号',
-          createTime: '领取时间',
-          actTime: '使用时间',
-          orderSn: '订单编号',
-          status: '红包状态',
-        },
-        ...data
-      ], {
-        header: [
-          'memberCouponCode',
-          'memberNicheng',
-          'memberMobile',
-          'createTime',
-          'actTime',
-          'orderSn',
-          'status'
-        ],
-        skipHeader: true
-      });
-      XLSX.utils.book_append_sheet(wb, ws, "file");
-      XLSX.writeFile(wb, `${+new Date()}.xlsx`)
+// const exportExcel = (searchConfig) => {
+//   couponCcodebase({id:libraryId,...searchConfig.form.getFieldsValue()}).then(res => {
+//     if (res.code === 0) {
+//       const data = res.data.memberCouponList.records.map(item => {
+//         const { ...rest } = item;
+//         return {
+//           ...rest,
+//         }
+//       });
+//       const wb = XLSX.utils.book_new();
+//       const ws = XLSX.utils.json_to_sheet([
+//         {
+//           memberCouponCode: '红包码',
+//           memberNicheng: '领取会员昵称',
+//           memberMobile: '会员手机号',
+//           createTime: '领取时间',
+//           actTime: '使用时间',
+//           orderSn: '订单编号',
+//           status: '红包状态',
+//         },
+//         ...data
+//       ], {
+//         header: [
+//           'memberCouponCode',
+//           'memberNicheng',
+//           'memberMobile',
+//           'createTime',
+//           'actTime',
+//           'orderSn',
+//           'status'
+//         ],
+//         skipHeader: true
+//       });
+//       XLSX.utils.book_append_sheet(wb, ws, "file");
+//       XLSX.writeFile(wb, `${+new Date()}.xlsx`)
 
-    }
-  })
-}
+//     }
+//   })
+// }
 const filterData=(res)=>{
   setCouponInfo([res.couponInfo])
   return res.memberCouponList.records
@@ -290,9 +290,9 @@ const onIpute=(res)=>{
                 }
               })
             }}>作废</Button>,
-            <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
-              导出数据
-            </Button>
+            // <Button onClick={()=>{exportExcel(searchConfig)}} key="out">
+            //   导出数据
+            // </Button>
           ],
         }}
         columns={columns2}

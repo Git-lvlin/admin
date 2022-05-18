@@ -5,7 +5,7 @@ import { Button,message } from 'antd';
 import { history } from 'umi';
 
 export default props=>{
-    const {visible,setVisible,boxref,status,id}=props
+    const {visible,setVisible,status,id,callback}=props
     return (
         <ModalForm
             title={status==3?'审核驳回':'操作确认'}
@@ -22,12 +22,9 @@ export default props=>{
             onFinish={async (values) => {
                 couponVerify({id:id,status:status,content:values.content}).then(res=>{
                     if(res.code==0){
-                        setVisible(false)   
-                        boxref&&boxref.current?.reload()
-                        message.success('操作成功')
-                        window.history.back(); 
-                        setTimeout(() => { window.location.reload(); }, 200)
-                        return true;    
+                        setVisible(false)
+                        callback(true)  
+                        message.success('操作成功') 
                     }
                 })
             }}
