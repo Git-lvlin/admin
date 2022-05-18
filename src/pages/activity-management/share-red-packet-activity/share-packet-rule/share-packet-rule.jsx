@@ -242,7 +242,7 @@ export default (props) =>{
                             }}>
                               保存
                             </Button>
-                            <Button style={{margin:'30px'}} type="default" onClick={()=>setVisible(true)}>
+                            <Button style={{marginLeft:'30px'}} type="default" onClick={()=>setVisible(true)}>
                               终止活动
                             </Button>
                           </>

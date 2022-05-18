@@ -42,7 +42,6 @@ const couponConstruction = (props) => {
   const [addType,setAddType]=useState(null)
   const [types,setTyepes]=useState()
   const [form] = Form.useForm()
-  const [falg,setFalg]=useState(0)
   useEffect(()=>{
     if(addType){
       setTyepes(addType)
@@ -80,7 +79,7 @@ const couponConstruction = (props) => {
     }else if(types==5){
       setPublishType('生鲜板块新人红包')
     }
-  }, [types,falg])
+  }, [types])
   //红包名称验证规则
   const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
@@ -130,7 +129,8 @@ const couponConstruction = (props) => {
         if (res.code == 0) {
           if(submitType==3){
             message.success('编辑成功');
-            setFalg(1)
+            callback(true)
+            setFormVisible(false)
             dispatch({
               type: 'DetailList/fetchLookDetail',
               payload: {
@@ -207,16 +207,12 @@ const couponConstruction = (props) => {
                 }}>
                   保存
                 </Button>,
-                <>
-                {
-                 DetailList.data?.couponVerifyStatus==3?null:<Button type="primary" key="submitaudit" onClick={() => {
-                    props.form?.submit?.()
-                    setSubmitType(3)
-                  }}>
-                    提交审核
-                  </Button>
-                }
-                </>,
+                <Button type="primary" key="submitaudit" onClick={() => {
+                  props.form?.submit?.()
+                  setSubmitType(3)
+                }}>
+                  提交审核
+                </Button>,
                 <Button type="default" key='goback' onClick={() => { onClose();setFormVisible(false)}}>
                   返回
                 </Button>
