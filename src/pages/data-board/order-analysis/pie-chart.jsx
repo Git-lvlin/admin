@@ -3,69 +3,55 @@ import {
 	Chart,
 	Interval,
 	Tooltip,
-	Axis,
 	Coordinate,
 	getTheme,
   Legend
 } from "bizcharts"
-import { Radio } from 'antd'
 
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
 
-const PieChart = ({data}) => {
+const PieChart = ({data, dataType}) => {
  
   const colors = data?.reduce((pre, cur, idx) => {
-    pre[cur.item] = getTheme().colors10[idx]
+    pre[cur.reportName] = getTheme().colors10[idx]
     return pre
   }, {})
 
   const cols = {
-    rate: {
+    value: {
       formatter: (val) => {
-        val = amountTransform(Number(val).toFixed(2), '/') + "%"
+        val = amountTransform(Number(val).toFixed(2), '*') + "%"
         return val
       }
     }
   }
 
+  const filterPie = (v) => {
+    return v !== 0
+  }
+
   return (
     <>
-      <h3 className={styles.pieTitle}>各类订单的总成交额占比</h3>
-      <Chart 
-        height={400}
-        data={data}
-        interactions={['element-active']}
+      <h3 className={styles.pieTitle}>各类订单的{dataType}占比</h3>
+      <Chart
+        placeholder={false} 
+        height={500} 
+        padding={50}
         autoFit
+        data={data}
         scale={cols}
-        onGetG2Instance={ c => {
-          c.removeInteraction('legend-filter')
-        }}
+        interactions={['element-active']}
+        filter={{value: (v)=> filterPie(v)}}
       >
-        <Coordinate type="theta" radius={0.6} />
-        <Tooltip showTitle={false} />
-        <Axis visible={false} />
+        <Coordinate type="theta" innerRadius={0.75} />
         <Interval
-          position="rate"
+          position="value"
           adjust="stack"
-          color="gcName"
-          style={{
-            lineWidth: 1,
-            stroke: "#fff"
-          }}
-          label={[
-            "gcName",
-            (item) => {
-              return {
-                offset: 20,
-                style: {
-                  fill: colors[item]
-                }
-              }
-            }
-          ]}
+          color="reportName"
+          label={['reportName', {offset: 40}]}
         />
-        <Legend visible={false}/>
+        <Legend position="right-top"/>
       </Chart>
     </>
   )
