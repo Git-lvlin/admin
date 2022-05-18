@@ -37,6 +37,7 @@ const CheckBox: React.FC<CheckboxProps> = ({
 
   useEffect(() => {
     setCheckAll(value.length === options.length)
+    setCheckedList(value)
   }, [value, options])
 
   return (
