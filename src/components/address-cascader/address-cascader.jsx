@@ -5,7 +5,7 @@ import { arrayToTree } from '@/utils/utils'
 const GcCascader = ({ value = [], onChange, fieldProps,areaData, ...rest }) => {
   const [data, setData] = useState([]);
 
-  const changeHandle = (v, selectedOptions) => {
+  const changeHandle = (v, selectedOptions = []) => {
     onChange(selectedOptions.map(item => ({ label: item.label, value: item.value })))
   }
 
