@@ -102,7 +102,7 @@ const ExportHistory: FC<ExportHistoryProps> = ({ show, setShow, type, slot }) =>
       )
     } else if(state === 3) {
       return (
-        <Tooltip key="history" title={desc}>
+        <Tooltip title={desc} zIndex={999999999}>
           <div className={styles.fail} onMouseEnter={()=>clearInterval(timer.current)}>
             导出失败
           </div>

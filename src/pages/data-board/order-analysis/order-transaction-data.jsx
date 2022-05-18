@@ -13,8 +13,8 @@ const OrderTransactionData = ({timeSelect, time, status}) => {
       return false
     } else {
       orderAnalysis({
-        startTime: time?.[0].format('YYYY-MM-DD HH:mm:ss'), 
-        endTime: time?.[1].format('YYYY-MM-DD HH:mm:ss')
+        startTime: time[0]?.format('YYYY-MM-DD HH:mm:ss'), 
+        endTime: time[1]?.format('YYYY-MM-DD HH:mm:ss')
       }).then(res => {
         if(res.success) setTableData(res.data)
       })
