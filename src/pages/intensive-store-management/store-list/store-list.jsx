@@ -89,7 +89,7 @@ const StoreList = (props) => {
         <Menu.Item key="6">审核资料</Menu.Item>
         {getAuth('store/member_shop/grade') && <Menu.Item key="7">
           店铺等级调整
-          </Menu.Item>}
+        </Menu.Item>}
       </Menu>
     )
   }
@@ -516,7 +516,7 @@ const StoreList = (props) => {
               </div>
             }
             {depositRefendList && depositRefendList.map(ele => {
-              return <div>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</div>
+              return <div>{{ 1: '线下退', 2: '线上退' }[ele.refendType]}{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</div>
             })}
           </>
         )
@@ -597,6 +597,7 @@ const StoreList = (props) => {
               <a onClick={() => { setVisible(true); setAttachmentImage(data?.cancelInfo?.attachList) }}>附件（点击查看）</a>
               <p>注销时还剩余额：{data?.cancelInfo?.balance}元</p>
               <pre className={styles.line_feed}>理由：{data?.cancelInfo?.reason}</pre>
+              <p>（{data?.cancleTime}）</p>
             </>
           )
         } else {
@@ -604,9 +605,9 @@ const StoreList = (props) => {
             <>
               <p>{_}</p>
               <>
-              {
-                data?.cancelInfo?.attachList.length>0&&<a onClick={() => {setVisible(true);setAttachmentImage(data?.cancelInfo?.attachList)}}>附件（点击查看）</a>
-              }
+                {
+                  data?.cancelInfo?.attachList?.length > 0 && <a onClick={() => { setVisible(true); setAttachmentImage(data?.cancelInfo?.attachList) }}>附件（点击查看）</a>
+                }
               </>
               <p>（{data?.createTime}）</p>
             </>
@@ -640,18 +641,25 @@ const StoreList = (props) => {
       hideInTable: storeType === 'freshStores'
     },
     {
-      title: '审核通过时间',
+      title: '申请审核通过时间',
       dataIndex: 'auditTime',
       valueType: 'dateTimeRange',
       hideInTable: true,
       hideInSearch: storeType === 'freshStores'
     },
     {
-      title: '审核通过时间',
+      title: '申请审核通过时间',
       dataIndex: 'auditTime',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType === 'freshStores'
+    },
+    {
+      title: '注销时间',
+      dataIndex: 'cancleTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+      hideInSearch: storeType !== 'cancelled'
     },
     {
       title: '操作',
@@ -732,16 +740,16 @@ const StoreList = (props) => {
                     }}
                   >
                     新建
-                </Button>
-                &nbsp;&nbsp;
-                <Export
-                  change={(e) => { setVisit(e) }}
-                  key="export"
-                  type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"}
-                  conditions={()=>{return getFieldValue(searchConfig)}}
-                />
-                &nbsp;&nbsp;
-                <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"} />
+                  </Button>
+                  &nbsp;&nbsp;
+                  <Export
+                    change={(e) => { setVisit(e) }}
+                    key="export"
+                    type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"}
+                    conditions={() => { return getFieldValue(searchConfig) }}
+                  />
+                  &nbsp;&nbsp;
+                  <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"} />
                 </>
               }
             </div>,

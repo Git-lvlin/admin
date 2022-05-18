@@ -153,7 +153,7 @@ const ExpressNews = () => {
               取消选择
             </a>
           </span>
-          <span>{`待发布: ${selectedRows.reduce(
+          <span>{`待发布: ${selectedRows?.reduce(
             (pre, item) => {
               item.state === 0
               if (item.state === 0) {
@@ -161,7 +161,7 @@ const ExpressNews = () => {
               }
               return pre
             },0,)} 个`}</span>
-          <span>{`已发布: ${selectedRows.reduce(
+          <span>{`已发布: ${selectedRows?.reduce(
             (pre, item) => item.state && pre + 1,
             0,
           )} 个`}</span>

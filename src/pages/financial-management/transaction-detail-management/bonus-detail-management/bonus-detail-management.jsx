@@ -62,7 +62,8 @@ const BonusDetailManagement = () =>{
       valueEnum: {
         'commission': '店主收益',
         'suggestCommission': '推荐收益',
-        'chargeFeeCommission': '服务费收益'
+        'chargeFeeCommission': '服务费收益',
+        'shareCommission': '店铺分享收益'
       },
       hideInTable: true
     },
@@ -82,7 +83,8 @@ const BonusDetailManagement = () =>{
         'settleChargeFee': '入驻服务费订单',
         'wholesaleFresh': '集约批发-生鲜订单',
         'hydrogenRent': '氢原子租金订单',
-        'hydrogen': '氢原子销售订单'
+        'hydrogen': '氢原子销售订单',
+        'storeShare': '分享订单'
       },
       hideInTable: true
     },

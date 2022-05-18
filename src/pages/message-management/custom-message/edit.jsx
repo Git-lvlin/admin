@@ -214,12 +214,12 @@ const Edit = props => {
     setShowTab(e.target.value)
   }
   const draft = (values) => {
-    let { ...rest } = values.getFieldsValue()
+    const { pushType,...rest } = values.getFieldsValue()
     let params = {}
     if(rest.type == 1) {
-      params = {...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 0, pushType:1}
+      params = {...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 0, pushType: pushType.join(',')}
     } else {
-      params = {...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.detailContent}, status: 0, pushType:1}
+      params = {...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.detailContent}, status: 0, pushType: pushType.join(',')}
     }
     customMessageAdd(params).then(res=>{
       if(res?.success) {
@@ -232,12 +232,12 @@ const Edit = props => {
     })
   }
   const submit = values => {
-    let { ...rest } = values.getFieldsValue()
+    const { pushType,...rest } = values.getFieldsValue()
     let params = {}
     if(rest.type == 1) {
-      params = {...rest, link:{ type: rest?.linkType, link: rest?.link }, status: 1, pushType:1, id:detailData?.id}
+      params = { ...rest, link: { type: rest?.linkType, link: rest?.link }, status: 1, pushType: pushType.join(','), id:detailData?.id}
     } else {
-      params = {...rest, detail: {title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.detailContent}, status: 1, pushType:1, id:detailData?.id}
+      params = { ...rest, detail: { title: rest?.detailTitle, img: rest?.detailcCover, content: rest?.detailContent }, status: 1, pushType: pushType.join(','), id:detailData?.id}
     }
     apiMethods(params).then(res=>{
       if(res?.success) {
@@ -273,6 +273,9 @@ const Edit = props => {
         forceRender: true,
         destroyOnClose: true,
         onClose: ()=> onClose()
+      }}
+      initialValues={{
+        pushType: ['1']
       }}
       form={form}
       submitter={{
@@ -358,7 +361,7 @@ const Edit = props => {
         placeholder="请输入内容"
         rules={[{ required: true, message: '请输入内容'}]}
         fieldProps={{
-          maxLength: 50,
+          maxLength: 200,
           showCount: true
         }}
       />
@@ -388,16 +391,29 @@ const Edit = props => {
         name="pushType"
         label="推送渠道"
         rules={[{ required: true, message: '请选择推送渠道'}]}
-        initialValue={1}
         width="md"
-        valueType="select"
-        readonly
-        valueEnum={{
-          1: '站内信',
-          2: '推送消息',
-          3: '短信',
-          4: '小程序'
+        fieldProps={{
+          mode:'multiple'
         }}
+        options={[
+          {
+            value: '1',
+            label: '站内信',
+            disabled: true,
+          },
+          {
+            value: '2',
+            label: '推送消息'
+          },
+          // {
+          //   label: 3,
+          //   value: '短信'
+          // },
+          // {
+          //   label: 4,
+          //   value: '小程序'
+          // },
+        ]}
       />
        <ProFormRadio.Group
         name="targetType"

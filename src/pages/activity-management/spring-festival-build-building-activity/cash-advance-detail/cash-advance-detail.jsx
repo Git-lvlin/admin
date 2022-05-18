@@ -23,7 +23,7 @@ export default () => {
       },
       {
         title: '用户手机号',
-        dataIndex: 'registMobile',
+        dataIndex: 'withdrawAccount',
         valueType: 'text',
         hideInTable: true,
       },
@@ -142,6 +142,9 @@ export default () => {
           rowKey="sn"
           options={false}
           request={withdrawPage}
+          params={{
+            activityType:0
+          }}
           search={{
             defaultCollapsed: true,
             labelWidth: 100,

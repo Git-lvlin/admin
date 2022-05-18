@@ -1,9 +1,9 @@
 import request from '@/utils/request';
 
 // 售后订单
-export const refundOrder = async (params = {}, options = {}) => {
+export const getRefundStoreOrderList = async (params = {}, options = {}) => {
   const { current, pageSize, applyTime, ...rest } = params
-  const res = await request('/auth/wholesale/orderReturn/index', {
+  const res = await request('/auth/wholesale/orderRefund/getRefundStoreOrderList', {
     method: 'POST',
     data: {
       page: current,
@@ -21,8 +21,8 @@ export const refundOrder = async (params = {}, options = {}) => {
   }
 }
 // 订单详情
-export const refundOrderDetail = async (params = {}, options = {}) => {
-  const res = await request('/auth/wholesale/orderReturn/detail', {
+export const getRefundStoreOrderDetail = async (params = {}, options = {}) => {
+  const res = await request('/auth/wholesale/orderRefund/getRefundStoreOrderDetail', {
     method: 'POST',
     data: {
       ...params
@@ -31,35 +31,8 @@ export const refundOrderDetail = async (params = {}, options = {}) => {
   })
   return {
      data: res.data,
-     success: true
+     success: true,
+     code: res.code
   }
 }
 
-// 查询物流信息
-export const expressInfo = async (params={}, options={}) => {
-  const res = await request('/auth/express/express/expressInfo', {
-    method: 'POST',
-    data: {
-      ...params
-    },
-    ...options
-  })
-  return {
-    data: res?.data,
-    success: res?.success
-  }
-}
-// 订单协商记录
-export const findReturnRecord = async (params={}, options={}) => {
-  const res = await request('/auth/wholesale/orderReturn/consultationRecord', {
-    method: 'POST',
-    data: {
-      ...params
-    },
-    ...options
-  })
-  return {
-    data: res?.data,
-    success: res?.success
-  }
-}

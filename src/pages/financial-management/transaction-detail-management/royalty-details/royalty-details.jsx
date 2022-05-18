@@ -26,7 +26,8 @@ const TransactionDetails = (props) => {
     'hydrogen': '提成比例',
     'hydrogenRent': '提成比例', 
     'wholesaleFresh': '提成比例',
-    'wholesaleSeckill': '关联活动'
+    'wholesaleSeckill': '关联活动',
+    'storeShare': '提成比例'
   }
 
   const orderInfoDataIndex = {
@@ -34,7 +35,8 @@ const TransactionDetails = (props) => {
     'hydrogen': 'commissionScaleDesc',
     'hydrogenRent': 'commissionScaleDesc', 
     'wholesaleFresh': 'storeCommissionRatio',
-    'wholesaleSeckill': 'relevanceActivity'
+    'wholesaleSeckill': 'relevanceActivity',
+    'storeShare': 'commissionScaleDesc'
   }
 
   const orderInfoRender = (_) => {
@@ -49,7 +51,8 @@ const TransactionDetails = (props) => {
             <div>活动类型：{info?.activityTypeDesc}</div>
             <div>活动ID：{info?.activityId}</div>
           </>
-        )
+        ),
+        'storeShare': _
       }[info?.orderType] || ''
     )
   }

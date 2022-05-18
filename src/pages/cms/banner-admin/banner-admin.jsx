@@ -103,7 +103,7 @@ const BannerAdmin = () => {
         4: '社区店',
         6: '秒约爆品',
         7: '周末狂欢',
-        8: '拼团',
+        9: '拼团',
       }
     },
     {
@@ -162,11 +162,11 @@ const BannerAdmin = () => {
       dataIndex: 'option',
       render: (text, record, _) => {
         return (
-          <>
+          <Space>
             {record.state===1&&<a key="top" onClick={() => {top(record.id)}}>置顶</a>}
-            &nbsp;&nbsp;{<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
-            &nbsp;&nbsp;{record.state===0&&<a key="d" onClick={() => {formControl([record.id],record)}}>删除</a>}
-          </>
+            {<a key="editable" onClick={() => {getDetail(record)}}>编辑</a>}
+            {record.state===0&&<a key="d" onClick={() => {formControl([record.id],record)}}>删除</a>}
+          </Space>
         )
       }
     },
@@ -197,7 +197,7 @@ const BannerAdmin = () => {
               取消选择
             </a>
           </span>
-          <span>{`待发布: ${selectedRows.reduce(
+          <span>{`待发布: ${selectedRows?.reduce(
             (pre, item) => {
               item.state === 0
               if (item.state === 0) {
@@ -205,7 +205,7 @@ const BannerAdmin = () => {
               }
               return pre
             },0,)} 个`}</span>
-          <span>{`已发布: ${selectedRows.reduce(
+          <span>{`已发布: ${selectedRows?.reduce(
             (pre, item) => item.state && pre + 1,
             0,
           )} 个`}</span>

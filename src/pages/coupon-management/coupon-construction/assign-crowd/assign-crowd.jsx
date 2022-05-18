@@ -50,7 +50,7 @@ const validity=(props)=>{
                 dispatch({
                     type:'UseScopeList/fetchCrowdIdsArr',
                     payload:{
-                        CrowdIdsArr:DetailList.data&&DetailList.data?.crowdList.length==0?[]:[DetailList.data?.crowdList]
+                        CrowdIdsArr:DetailList.data&&DetailList.data?.crowdList?.length==0?[]:[DetailList.data?.crowdList]
                     }
                 })
             }
@@ -98,11 +98,11 @@ const validity=(props)=>{
      const onIpute=(res)=>{
        setCrowdIds(res.selectedRowKeys.toString())
        setCrowdIdsArr(res.selectedRows)
-       if(res.selectedRows.length>1){
+       if(res.selectedRows?.length>1){
         message.error('只能选择一个商品');
        }
     }
-    const options=[
+    const options=type==2||DetaiIssueType == 2 && id?[
         {
           label: '全部用户',
           value: 1,
@@ -115,10 +115,23 @@ const validity=(props)=>{
           label: '新用户（未下过订单的用户）',
           value: 4,
         },
-        // {
-        //   label: <><p>生鲜新用户</p><p>（未下过C端生鲜订单的用户）</p></>,
-        //   value: 5,
-        // },
+        {
+          label: '全部社区店主',
+          value: 5,
+        },
+      ]:[
+        {
+          label: '全部用户',
+          value: 1,
+        },
+        {
+          label: '指定群体用户',
+          value: 2,
+        },
+        {
+          label: '新用户（未下过订单的用户）',
+          value: 4,
+        }
       ]
     const options2=[
     {
@@ -153,7 +166,7 @@ const validity=(props)=>{
                                     style={{display:loading?'block':'none'}}
                                     request={couponCrowdList}
                                     actionRef={actionRef}
-                                    expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
+                                    expandable={{ expandedRowRender: (_) => <SubTable name={_?.name}/> }}
                                     search={{
                                         defaultCollapsed: true,
                                         labelWidth: 100,
@@ -168,11 +181,11 @@ const validity=(props)=>{
                             </Modal>
                             <ProTable
                                 toolBarRender={false}
-                                expandable={{ expandedRowRender: (_) => <SubTable name={_.name}/> }}
+                                expandable={{ expandedRowRender: (_) => <SubTable name={_?.name}/> }}
                                 search={false}
                                 rowKey="spuId"
                                 columns={columns2}
-                                dataSource={UseScopeList.UseScopeObje.CrowdIdsArr}
+                                dataSource={UseScopeList?.UseScopeObje?.CrowdIdsArr}
                                 style={{display:isModalVisible?'none':'block'}}
                             />
                         </div>

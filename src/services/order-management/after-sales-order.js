@@ -64,3 +64,22 @@ export const findReturnRecord = async (params={}, options={}) => {
     success: res?.success
   }
 }
+
+
+
+// 缺货单信息
+export const getRefundStoreOrderDetail = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/wholesale/orderRefund/getRefundStoreOrderDetail', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+     data: res.data,
+     success: true,
+     code: res.code
+  }
+}

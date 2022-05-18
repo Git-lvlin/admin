@@ -405,7 +405,6 @@ export default (props) =>{
           <EditableProTable
             headerTitle="入参格式化"
             columns={columns}
-            name="table"
             rowKey="id"
             controlled
             recordCreatorProps={id&&edtil?false:{
@@ -434,7 +433,6 @@ export default (props) =>{
           <EditableProTable
             headerTitle="SQL配置"
             columns={columns2}
-            name="table"
             rowKey="id"
             recordCreatorProps={id&&edtil?false:{
               newRecordType: 'dataSource',
@@ -463,7 +461,6 @@ export default (props) =>{
           <EditableProTable
             headerTitle="出参格式化"
             columns={columns3}
-            name="table"
             rowKey="id"
             recordCreatorProps={id&&edtil?false:{
               newRecordType: 'dataSource',

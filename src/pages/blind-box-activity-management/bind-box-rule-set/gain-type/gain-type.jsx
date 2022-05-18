@@ -9,7 +9,6 @@ export default (props) => {
     const {id,falg}=props
     const [visible, setVisible] = useState(false);
     const checkConfirm=(rule, value, callback)=>{
-        console.log('dasd',value)
         return new Promise(async (resolve, reject) => {
         if (value&&value.length>0&&!/^[0-9]*[1-9][0-9]*$/.test(value)&&value!=0) {
             await reject('只能输入整数')
@@ -209,22 +208,22 @@ export default (props) => {
                                             value: 1,
                                             label: '每日首次消费1笔获得1次',
                                         },
-                                        // {
-                                        //     value: 2,
-                                        //     label: '每日首次消费2笔获得1次',
-                                        // },
-                                        // {
-                                        //     value: 3,
-                                        //     label: '每日首次消费3笔获得1次',
-                                        // },
-                                        // {
-                                        //     value: 4,
-                                        //     label: '每日首次消费4笔获得1次',
-                                        // },
-                                        // {
-                                        //     value: 5,
-                                        //     label: '每日首次消费5笔获得1次',
-                                        // }
+                                        {
+                                            value: 2,
+                                            label: '每日首次消费2笔获得1次',
+                                        },
+                                        {
+                                            value: 3,
+                                            label: '每日首次消费3笔获得1次',
+                                        },
+                                        {
+                                            value: 4,
+                                            label: '每日首次消费4笔获得1次',
+                                        },
+                                        {
+                                            value: 5,
+                                            label: '每日首次消费5笔获得1次',
+                                        }
                                     ]}
                                     readonly={id}
                                 />

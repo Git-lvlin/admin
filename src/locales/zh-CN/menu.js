@@ -40,6 +40,7 @@ export default {
   'menu.order-management.sample-order-detail-purchase': '订单详情',
   'menu.order-management.after-sales-order': '售后订单',
   'menu.order-management.after-sales-order-details': '详请页',
+  'menu.order-management.intensive-refund-order': '集约缺货单',
   'menu.order-management.intensive-after-sale-orders': '集约售后订单',
   'menu.order-management.intensive-after-sale-orders-details': '详请页',
   'menu.order-management.intensive-order.supplier-order-detail': '订单详情',
@@ -51,19 +52,21 @@ export default {
   'menu.order-management.intensive-intervention-list-details': '集约售后详情',
 
   'menu.product-management': '商品管理',
+  'menu.product-management.supplier': '供应商商品',
+  'menu.product-management.public': '商品公共属性',
   'menu.product-management.daifa-product': '代发商品',
-  'menu.product-management.product-list': '商品列表',
-  'menu.product-management.product-list-purchase': '商品列表(采购)',
+  'menu.product-management.supplier.product-list': '商品列表',
+  'menu.product-management.supplier.product-list-purchase': '商品列表(采购)',
   'menu.product-management.product-detail': '商品详情',
-  'menu.product-management.brand-list': '品牌列表',
-  'menu.product-management.product-log': '商品日志',
+  'menu.product-management.public.brand-list': '品牌列表',
+  'menu.product-management.supplier.product-log': '商品日志',
   'menu.product-management.freight-template': '运费模板',
-  'menu.product-management.product-review': '商品审核',
-  'menu.product-management.set-goods-list': '商品运营配置',
-  'menu.product-management.product-category': '商品分类',
-  'menu.product-management.overrule-list': '驳回商品',
-  'menu.product-management.product-evaluate': '商品评价',
-  'menu.product-management.product-unit': '商品单位',
+  'menu.product-management.supplier.product-review': '商品审核',
+  'menu.product-management.supplier.set-goods-list': '商品运营配置',
+  'menu.product-management.public.product-category': '商品分类',
+  'menu.product-management.supplier.overrule-list': '驳回商品',
+  'menu.product-management.supplier.product-evaluate': '商品评价',
+  'menu.product-management.public.product-unit': '商品单位',
 
 
   'menu.setting': '设置',
@@ -140,7 +143,7 @@ export default {
   'menu.intensive-store-management.product-management': '商品管理',
   'menu.intensive-store-management.shop-user': '店铺用户',
   'menu.intensive-store-management.shopkeeper-user': '直推用户',
-  'menu.intensive-store-management.store-review': '入驻审核',
+  'menu.intensive-store-management.store-review': '店铺审核',
   'menu.intensive-store-management.store-review-detail': '店铺审核详情',
   'menu.intensive-store-management.grade-index': '等级权益',
   'menu.intensive-store-management.assessment-reward': '指标考核',
@@ -154,6 +157,8 @@ export default {
   'menu.intensive-store-management.fresh-store-review': '生鲜店铺申请审核',
   'menu.intensive-store-management.fresh-shop-configuration': '生鲜店铺配置',
   'menu.intensive-store-management.cancel-aduit': '注销审核',
+  'menu.intensive-store-management.share-the-subsidy': '分享补贴',
+
 
 
 
@@ -191,11 +196,14 @@ export default {
   'menu.cms.hot-search': '热门搜索关键词',
   'menu.cms.market': '营销资源管理',
   'menu.cms.poster': '海报管理',
+  'menu.cms.new-poster': '新海报管理',
   'menu.cms.content-version': '版本配置管理',
   'menu.cms.generate-invitation-code': '生成邀请码',
-  'menu.cms.home-red-envelopes': 'app首页红包弹窗',
-  'menu.cms.home-popup': 'app首页弹窗管理',
-  'menu.cms.start-up': 'app启动广告配置',
+  'menu.cms.popup': '启动弹窗管理',
+  'menu.cms.popup.home-red-envelopes': 'APP首页红包弹窗',
+  'menu.cms.popup.home-popup': 'APP首页弹窗管理',
+  'menu.cms.popup.start-up': 'APP启动广告配置',
+  'menu.cms.popup.popup-template': 'APP内弹窗模板',
   'menu.cms.goods-sort': '集约商品展示配置',
   'menu.cms.goods-class': '集约商品运营类目',
   'menu.cms.story': '店主故事',
@@ -342,6 +350,8 @@ export default {
   'menu.blind-box-activity-management.blind-box-consume-detail': '使用明细',
   'menu.blind-box-activity-management.blind-box-employ-detail': '用户盲盒机会明细',
   'menu.blind-box-activity-management.bind-box-rule-set': '盲盒规则配置',
+  'menu.blind-box-activity-management.blind-box-withdraw-deposit-detail': '提现明细',
+
 
 
   'menu.activity-management': '活动管理',
@@ -367,5 +377,12 @@ export default {
   'menu.group-activities-management': '拼团活动管理',
   'menu.group-activities-management.activity-list': '拼团活动列表',
   'menu.group-activities-management.activity-data': '拼团数据',
+
+  'menu.hydrogen-atom-management': '氢原子',
+  'menu.hydrogen-atom-management.hydrogen-atom-configuration': '配置',
+  'menu.hydrogen-atom-management.equipment-management': '机器管理',
+  'menu.hydrogen-atom-management.transaction-data': '交易数据',
+  'menu.hydrogen-atom-management.referral-commission': '推荐提成',
+  'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
 
 };

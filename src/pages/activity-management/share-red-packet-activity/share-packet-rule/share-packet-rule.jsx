@@ -242,7 +242,7 @@ export default (props) =>{
                             }}>
                               保存
                             </Button>
-                            <Button style={{margin:'30px'}} type="default" onClick={()=>setVisible(true)}>
+                            <Button style={{marginLeft:'30px'}} type="default" onClick={()=>setVisible(true)}>
                               终止活动
                             </Button>
                           </>
@@ -326,7 +326,6 @@ export default (props) =>{
              :<EditableProTable
                 headerTitle="奖励金额(元）"
                 columns={columns}
-                name="table"
                 rowKey="id"
                 recordCreatorProps={false}
                 value={dataSource}
