@@ -97,7 +97,7 @@ const QueryPaidOrderDetails = () => {
     },
     {
       title: '关联的运营中心',
-      dataIndex: 'operationsName',
+      dataIndex: 'orderOperationsName',
       align: 'center',
       hideInSearch: true
     },
@@ -183,6 +183,7 @@ const QueryPaidOrderDetails = () => {
         optionRender: (searchConfig, props, dom)=> [
           ...dom.reverse(),
           <Export
+            key="export"
             type="paydOrderDetail"
             conditions={getFieldsValue}
           />
