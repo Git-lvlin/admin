@@ -89,7 +89,7 @@ export default (props) => {
   const waitTime = (values) => {
     const { id, channelType, ...rest } = values
     const param = {
-      channelType: channelType.length === 2 ? [0] : channelType,
+      channelType: channelType.length === 4 ? [0] : channelType,
       ...rest
     }
     if (id) {
@@ -146,7 +146,7 @@ export default (props) => {
       const { channelType, ...rest } = detailData;
       console.log('detailData', detailData)
       form.setFieldsValue({
-        channelType: channelType[0] === 0 ? [1, 2] : channelType,
+        channelType: channelType[0] === 0 ? [1, 2, 5, 6] : channelType,
         ...rest
       })
     }
@@ -179,7 +179,7 @@ export default (props) => {
       }}
       initialValues={{
         version: '0.0.0',
-        channelType: [1, 2],
+        channelType: [1, 2, 5, 6],
       }}
     >
       <ProForm.Group>
@@ -378,13 +378,24 @@ export default (props) => {
       >
         <CheckBox
           checkAllText="全部平台"
-          options={[{
-            label: '安卓',
-            value: 2,
-          }, {
-            label: '苹果',
-            value: 1,
-          }]}
+          options={[
+            {
+              label: '安卓',
+              value: 2,
+            },
+            {
+              label: '苹果',
+              value: 1,
+            },
+            {
+              label: '小程序',
+              value: 5,
+            },
+            {
+              label: 'h5',
+              value: 6,
+            },
+          ]}
         />
       </Form.Item>
       <ProFormRadio.Group
