@@ -150,10 +150,12 @@ export default (props) => {
         ...rest
       })
     }
+    const arr = [{ label: '全部版本', value: '0.0.0' }]
+    setVersions(arr)
     selAllVersion()
       .then(res => {
         if (res.code === 0) {
-          setVersions([{ label: '全部版本', value: '0.0.0' }, ...res.data.map(item => ({ label: `V${item.name}及后续版本`, value: item.name }))])
+          setVersions([...arr, ...res.data.map(item => ({ label: `V${item.name}及后续版本`, value: item.name }))])
         }
       })
   }, [form, detailData])
