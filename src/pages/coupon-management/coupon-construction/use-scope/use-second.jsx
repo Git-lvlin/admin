@@ -6,7 +6,6 @@ import styles from '../style.less'
 import { amountTransform } from '@/utils/utils'
 import {commonSpuList}  from '@/services/coupon-construction/coupon-common-spu-list';
 import {classList} from '@/services/coupon-construction/coupon-class-list'
-import BrandSelect from '@/components/brand-select'
 import { connect } from 'umi';
 
 
@@ -16,11 +15,27 @@ const GoosModel=(props)=>{
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [spuIdsArr,setSpuIdsArr]=useState([])
     const [loading,setLoading]=useState(true)
+    const [onselect,setOnselect]=useState([])
     const [spuIds,setSpuIds]=useState('')
+    //商品分类
+    useEffect(()=>{
+        classList({gcParentId:0}).then(res=>{
+           if(res.code==0){
+            setOnselect(res.data.map(ele=>(
+                {label:ele.gcName,value:ele.id}
+            )))
+           }
+        })
+    },[])
     const columns = [
         {
             title: 'spuID',
             dataIndex: 'spuId',
+        },
+        {
+            title: 'skuID',
+            dataIndex: 'skuId',
+            hideInSearch: true
         },
         {
             title: '商品图片',
@@ -53,34 +68,27 @@ const GoosModel=(props)=>{
             hideInSearch:true
         },
         {
-            title: '商品品牌',
-            dataIndex: 'brandName',
-            valueType: 'text',
-            hideInSearch: true,
-        },
-        {
-            title: '商品品牌',
-            dataIndex: 'brandId',
-            renderFormItem: () => (<BrandSelect />),
-            hideInTable: true,
-        },
-        {
             title: '可用库存',
             dataIndex: 'stockNum',
             hideInSearch: true,
-
         },
         {
             title: '销售价',
             dataIndex: 'goodsSalePrice',
             hideInSearch: true,
             render: (_)=> amountTransform(_, '/').toFixed(2)
-        }
+        },
+        {
+            title: '平台盈亏',
+            dataIndex: 'salePriceProfitLoss',
+            render: (_)=> amountTransform(_, '/').toFixed(2),
+            hideInSearch: true,
+        },
     ];
     const columns3= [
         {
-            title: 'spuID',
-            dataIndex: 'spuId',
+            title: 'skuID',
+            dataIndex: 'skuId',
         },
         {
             title: '商品图片',
@@ -99,17 +107,17 @@ const GoosModel=(props)=>{
             valueType: 'text',
         },
         {
-            title: '商品品牌',
-            dataIndex: 'brandName',
-            valueType: 'text',
-        },
-        {
             title: '可用库存',
             dataIndex: 'stockNum',
         },
         {
             title: '销售价',
             dataIndex: 'goodsSalePrice',
+            render: (_)=> amountTransform(_, '/').toFixed(2)
+        },
+        {
+            title: '平台盈亏',
+            dataIndex: 'salePriceProfitLoss',
             render: (_)=> amountTransform(_, '/').toFixed(2)
         },
         {
@@ -365,20 +373,20 @@ const useSecond=(props)=>{
                         value:choose==4?2:position||(parseInt(id)==id )&&DetailList.data?.goodsType
                     }}
                     options={[
-                    {
-                        label:'全部商品',
-                        value: 1,
-                        disabled:choose==4||(parseInt(id)==id )&&DetailList.data?.memberType==4
-                    },
+                    // {
+                    //     label:'全部商品',
+                    //     value: 1,
+                    //     disabled:choose==4||(parseInt(id)==id )&&DetailList.data?.memberType==4
+                    // },
                     {
                         label: '指定商品',
                         value: 2,
                     },
-                    {
-                        label: '指定品类',
-                        value: 3,
-                        disabled:choose==4||(parseInt(id)==id )&&DetailList.data?.memberType==4
-                    },
+                    // {
+                    //     label: '指定品类',
+                    //     value: 3,
+                    //     disabled:choose==4||(parseInt(id)==id )&&DetailList.data?.memberType==4
+                    // },
                     ]}
 
                 />

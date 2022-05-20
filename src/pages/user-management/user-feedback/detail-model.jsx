@@ -110,6 +110,7 @@ export default props=>{
               <p>回复：</p>
               <ProFormTextArea 
                 name="content" 
+                rules={[{ required: true, message: '请输入回复内容' }]}
                 fieldProps={{
                   maxLength:500,
                   showCount:true

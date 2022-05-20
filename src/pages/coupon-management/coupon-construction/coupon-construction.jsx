@@ -15,6 +15,8 @@ import IssueTypeModel from './issue-type-model'
 import AddressMultiCascader from '@/components/address-multi-cascader'
 import { PageContainer } from '@/components/PageContainer';
 import { getWholesaleArea } from '@/services/intensive-activity-management/intensive-activity-list'
+import { flatMap } from 'lodash';
+import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -125,9 +127,21 @@ const couponConstruction = (props) => {
     if (id) {
       couponEdit({ ...parmas, id: id }).then((res) => {
         if (res.code == 0) {
-          callback(true)
-          setFormVisible(false)
-          message.success('编辑成功');
+          if(submitType==3){
+            message.success('编辑成功');
+            callback(true)
+            setFormVisible(false)
+            dispatch({
+              type: 'DetailList/fetchLookDetail',
+              payload: {
+                id
+              }
+            })
+          }else{
+            callback(true)
+            setFormVisible(false)
+            message.success('编辑成功');
+          }
           dispatch({
             type: 'UseScopeList/fetchUseScopeList',
             payload: {

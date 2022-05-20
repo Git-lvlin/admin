@@ -11,7 +11,7 @@ import Big from 'big.js';
 Big.RM = 2;
 
 export default function EditTable(props) {
-  const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample, unit, wsUnit, ladderSwitch } = props;
+  const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample, unit, wsUnit, ladderSwitch, operateType } = props;
   const [columns, setColumns] = useState([])
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
@@ -117,7 +117,7 @@ export default function EditTable(props) {
         editable: false,
       },
       {
-        title: '秒约价',
+        title: `${operateType === 2 ? '分享补贴价' : '秒约价'}`,
         dataIndex: 'salePrice',
         editable: settleType === 2,
         hideInTable: goodsSaleType === 1,
@@ -126,16 +126,61 @@ export default function EditTable(props) {
         }
       },
       {
-        title: '秒约价上浮比例',
+        title: `${operateType === 2 ? '分享补贴价上浮比例' : '秒约价上浮比例'}`,
         dataIndex: 'salePriceFloat',
         hideInTable: goodsSaleType === 1,
       },
       {
-        title: '秒约价实际盈亏',
+        title: `${operateType === 2 ? '分享补贴价平台盈亏' : '秒约价实际盈亏'}`,
         dataIndex: 'salePriceProfitLoss',
         editable: false,
         hideInTable: goodsSaleType === 1,
         render: _ => `${_}元/${unit}`
+      },
+      {
+        title: `分享补贴价平台毛利`,
+        dataIndex: 'tPlatformGain',
+        editable: false,
+        hideInTable: operateType !== 2,
+        render: _ => `${_}元/${unit}`
+      },
+      {
+        title: '店主补贴金额',
+        dataIndex: 'operateGain',
+        editable: false,
+        hideInTable: operateType !== 2,
+        render: _ => `${_}元/${unit}`
+      },
+      {
+        title: '分享补贴店主占比',
+        dataIndex: 'tStoreScale',
+        hideInTable: operateType !== 2,
+        fieldProps: {
+          addonAfter: '%',
+        }
+      },
+      {
+        title: '分享补贴平台毛利占比',
+        dataIndex: 'tPlatformScale',
+        hideInTable: operateType !== 2,
+        fieldProps: {
+          addonAfter: '%',
+          placeholder: '不低于5%'
+        },
+      },
+      {
+        title: '分享补贴运营中心占比',
+        dataIndex: 'tOperateScale',
+        editable: false,
+        hideInTable: operateType !== 2,
+        render: _ => `${_}%`,
+      },
+      {
+        title: '分享补贴供应商占比',
+        dataIndex: 'tSupplierScale',
+        editable: false,
+        hideInTable: operateType !== 2,
+        render: _ => `${_}%`,
       },
       {
         title: '市场价',
@@ -189,7 +234,7 @@ export default function EditTable(props) {
         dataIndex: 'stage1',
         render: (_, record) => {
           return _ !== '-' ? <>
-            <div div style={{ display: 'flex', marginBottom: 10, alignItems: 'center' }
+            <div style={{ display: 'flex', marginBottom: 10, alignItems: 'center' }
             }>
               {_.wsStart}
               —
@@ -197,7 +242,6 @@ export default function EditTable(props) {
               {unit}时，
               {_.wsSupplyPrice}元 / {unit}
             </div >
-
             {record.batchNumber > 1 && <div>{parseInt(_.wsStart / record.batchNumber, 10)}—{parseInt(_.wsEnd / record.batchNumber, 10)}{wsUnit}时，{+new Big(_.wsSupplyPrice).times(record.batchNumber).toFixed(2)}元/{wsUnit}</div>}
           </> : '-'
         },
@@ -214,7 +258,6 @@ export default function EditTable(props) {
               {unit}及以上时，
               {_.wsSupplyPrice}元/{unit}
             </div>
-
             {record.batchNumber > 1 && <div>{parseInt((record.stage1.wsEnd + 1) / record.batchNumber, 10)}{wsUnit}及以上时，{+new Big(_.wsSupplyPrice).times(record.batchNumber).toFixed(2)}元/{wsUnit}</div>}
           </> : '-'
         },
@@ -231,31 +274,84 @@ export default function EditTable(props) {
       // },
     ])
 
-  }, [tableHead, settleType])
+  }, [tableHead, settleType, operateType])
 
   const debounceFetcher = useMemo(() => {
     const loadData = (value) => {
-      const { recordList, record } = value;
+      const { record } = value;
+
+      let { recordList } = value
 
       const findItem = dataSource.find(item => item.skuId === record.skuId);
       const obj = {
         skuId: findItem.skuId,
         retailSupplyPrice: amountTransform(findItem.retailSupplyPrice),
         wholesaleTaxRate: props.wholesaleTaxRate,
+        operateType,
       }
-      if (findItem.salePrice !== record.salePrice) {
+      if (findItem.salePrice !== record.salePrice || findItem.tPlatformScale !== record.tPlatformScale || findItem.tStoreScale !== record.tStoreScale) {
         obj.salePrice = amountTransform(record.salePrice);
+
+        if (findItem.salePrice !== record.salePrice) {
+          recordList = recordList.map(item => {
+            if (item.skuId === findItem.skuId) {
+              return {
+                ...item,
+                tStoreScale: '',
+                tPlatformScale: '',
+                tSupplierScale: +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2)
+              }
+            }
+            return item;
+          })
+        }
+
       }
 
       if (findItem.salePriceFloat !== record.salePriceFloat) {
         obj.salePriceFloat = amountTransform(record.salePriceFloat, '/');
       }
 
+      if (operateType === 2) {
+        obj.tStoreScale = amountTransform(record.tStoreScale, '/')
+        obj.tOperateScale = amountTransform(record.tOperateScale, '/')
+        obj.tPlatformScale = amountTransform(record.tPlatformScale, '/')
+        if (record.tStoreScale !== findItem.tStoreScale) {
+          recordList = recordList.map(item => {
+            if (item.skuId === findItem.skuId) {
+              const s = +new Big(100).minus(item.tSupplierScale).minus(item.tOperateScale).minus(item.tStoreScale || 0).toFixed(2)
+              obj.tPlatformScale = amountTransform(s, '/')
+              return {
+                ...item,
+                tPlatformScale: s
+              }
+            }
+
+            return item;
+
+          })
+        }
+
+        if (record.tPlatformScale !== findItem.tPlatformScale) {
+          recordList = recordList.map(item => {
+            if (item.skuId === findItem.skuId) {
+              const s = +new Big(100).minus(item.tSupplierScale).minus(item.tPlatformScale).minus(item.tOperateScale || 0).toFixed(2);
+              obj.tStoreScale = amountTransform(s, '/')
+              return {
+                ...item,
+                tStoreScale: s
+              }
+            }
+            return item;
+          })
+        }
+      }
+
       setDataSource(recordList)
       setTableData(recordList)
 
       if (
-        (findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat)
+        (findItem.salePrice !== record.salePrice || findItem.salePriceFloat !== record.salePriceFloat || findItem.tStoreScale !== record.tStoreScale || findItem.tPlatformScale !== record.tPlatformScale)
         && goodsSaleType !== 1
         && (record.salePrice !== '' && record.salePriceFloat !== '')
       ) {
@@ -264,11 +360,20 @@ export default function EditTable(props) {
             const skuData = res.data[0];
             const arr = recordList.map(item => {
               if (item.skuId === record.skuId) {
-                const data = {
+                let data = {
                   ...item,
                   salePrice: amountTransform(skuData.salePrice, '/'),
                   salePriceProfitLoss: amountTransform(skuData.salePriceProfitLoss, '/'),
                   salePriceFloat: amountTransform(skuData.salePriceFloat),
+                }
+
+                if (findItem.salePriceFloat !== record.salePriceFloat) {
+                  data = {
+                    ...data,
+                    tStoreScale: '',
+                    tPlatformScale: '',
+                    tSupplierScale: +new Big(amountTransform(data.retailSupplyPrice, '/')).div(data.salePrice).times(100).toFixed(2)
+                  }
                 }
                 return data
               }
@@ -281,7 +386,7 @@ export default function EditTable(props) {
       }
     };
     return debounce(loadData, 1000);
-  }, [dataSource, props]);
+  }, [dataSource, props, operateType]);
 
 
   useEffect(() => {

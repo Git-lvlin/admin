@@ -91,11 +91,6 @@ export default {
           wrappers: [RouteWatcher],
         },
         {
-          name: 'order-pay-detail',
-          path: '/financial-management/transaction-detail-management/order-pay-detail-management/detail/:id',
-          component: './financial-management/transaction-detail-management/order-pay-detail-management/detail',
-        },
-        {
           name: 'bonus-detail-management',
           path: '/financial-management/transaction-detail-management/bonus-detail-management',
           component: './financial-management/transaction-detail-management/bonus-detail-management',

@@ -404,7 +404,6 @@ export default (props) => {
     />
     <EditableProTable
         rowKey="wsId"
-        name="table"
         actionRef={ref}
         value={dataSource}
         recordCreatorProps={false}
