@@ -842,7 +842,8 @@ export default (props) => {
       submitter={{
         render: (props, defaultDoms) => {
           return [
-            ...defaultDoms,
+            defaultDoms[0],
+            detailData?.alarmMsg ? null : defaultDoms[1],
             <Button
               key="look"
               onClick={(_) => {
