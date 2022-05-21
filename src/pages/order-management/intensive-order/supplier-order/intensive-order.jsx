@@ -14,6 +14,7 @@ import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
 import Detail from './detail';
 import Auth from '@/components/auth';
+import EditAddress from './edit-address'
 
 const { confirm } = Modal;
 
@@ -35,6 +36,8 @@ const TableList = () => {
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({});
   const [orderStatusType,setOrderStatusType]=useState()
+  const [subOrderId, setSubOrderId] = useState(null)
+  const [addressVisible, setAddressVisible] = useState(false)
 
   const pageChange = (a, b) => {
     setPage(a)
@@ -525,6 +528,10 @@ const TableList = () => {
                     <span>收货人：{item.receivingInfo.receiptUser}</span>
                     <span>电话：{item.receivingInfo.receiptPhone}</span>
                     <span>地址：{item.receivingInfo.receiptAddress}</span>
+                    {
+                      (orderType === 1 || orderType === 2)&&
+                      <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true)}}>修改地址</Button>
+                    }
                   </Space>
                 </div>
               </div>
@@ -540,6 +547,17 @@ const TableList = () => {
           visible={detailVisible}
           setVisible={setDetailVisible}
           isPurchase={isPurchase}
+        />
+      }
+
+      {
+        addressVisible &&
+        <EditAddress
+          subOrderId={subOrderId}
+          setVisible={setAddressVisible}
+          visible={addressVisible}
+          setChange={setSearch}
+          change={search}
         />
       }
 

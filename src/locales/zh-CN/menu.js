@@ -20,6 +20,8 @@ export default {
   'menu.user-management.user-feedback': '用户反馈',
   'menu.user-management.new-poster': '海报管理',
   'menu.user-management.new-poster-new': '(新)海报管理',
+  'menu.user-management.cancellation-application-record': '注销申请记录',
+  'menu.user-management.logout-list': '注销列表',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
