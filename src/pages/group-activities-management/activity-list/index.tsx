@@ -98,6 +98,16 @@ const TableList: FC = () => {
       }
     },
     {
+      title: '虚拟开团状态',
+      width: '10%',
+      dataIndex: 'virtualOpenGroup',
+      valueType: 'text',
+      valueEnum: {
+        2: '开启',
+        1: '不开启'
+      }
+    },
+    {
       title: '状态',
       width: '5%',
       dataIndex: 'activityStatus',
@@ -118,8 +128,8 @@ const TableList: FC = () => {
         <Space>
           <a onClick={() => { setGoodsVisible(true); setId(data.id) }}>活动商品</a>
           <a onClick={() => { setDetailVisible(true); setId(data.id) }}>详情</a>
-          {data.activityStatus === 1
-            &&
+          {
+            (data.activityStatus === 1 || data.activityStatus === 2)&&
             <a onClick={() => { getDetail(data.id) }}>编辑</a>
           }
           {(data.activityStatus === 2 || data.activityStatus === 1)
