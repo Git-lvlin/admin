@@ -142,9 +142,11 @@ export default (props) => {
         title: '提现审核确认',
         key: 'option',
         valueType: 'option',
-        render:(text, record, _, action)=>[
-            <a key='detail' onClick={()=>{setVisible(true);setSnId(record.sn)}}>审核</a>
-        ],
+        render:(text, record, _, action)=>{
+          if(record.status=='auditing'){
+            return <a key='detail' onClick={()=>{setVisible(true);setSnId(record.sn)}}>审核</a>
+          }
+        }
       },
     ];
     return (
@@ -185,8 +187,8 @@ export default (props) => {
             accountActivityAudit(params).then(res=>{
               if(res.code==0){
                 setVisible(false)
-                callback(true)
-                ref.current.record();setSnId(null)
+                ref.current.reload()
+                setSnId(null)
               }
             })
 
@@ -200,8 +202,8 @@ export default (props) => {
             accountActivityAudit(params).then(res=>{
               if(res.code==0){
                 setVisible(false)
-                callback(true)
-                ref.current.record();setSnId(null)
+                ref.current.reload()
+                setSnId(null)
               }
             })
           }}
