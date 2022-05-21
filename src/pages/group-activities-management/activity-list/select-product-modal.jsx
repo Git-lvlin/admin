@@ -7,7 +7,7 @@ import { productList } from '@/services/intensive-activity-management/intensive-
 import SupplierSelect from '@/components/supplier-select'
 
 export default (props) => {
-  const { visible, setVisible, callback,hideAll, title = '选择活动商品',goodsSaleType, apolloConfig, skuData} = props
+  const { visible, setVisible, callback,hideAll, title = '选择活动商品',goodsSaleType, apolloConfig, skuData, flag, detailData} = props
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectItems, setSelectItems] = useState([]);
   const [goodsData, setGoodsData] = useState([])
@@ -146,6 +146,11 @@ export default (props) => {
           pageSize: 10,
         }}
         rowSelection={{
+          getCheckboxProps: (r)=>{
+            return {
+              disabled: flag ? detailData.goodsList.find(item => item.skuId === r.id) : false
+            }
+          },
           hideSelectAll: hideAll || false,
           selectedRowKeys,
           preserveSelectedRowKeys: true,

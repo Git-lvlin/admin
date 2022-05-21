@@ -66,3 +66,12 @@ export const ruleGoodsExportTemplate = async (params = {}, options = {}) => {
     ...options
   });
 }
+
+// 拼团中活动商品编辑
+export const ruleGoodsEdit = async (params = {}, options = {}) => {
+  return request('/auth/activity/Rule/ruleGoodsEdit', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
