@@ -25,6 +25,11 @@ const ActivityDetail = ({visible, onClose, id}) => {
 
   const columns = [
     {
+      title: 'spuID',
+      dataIndex: 'spuId',
+      valueType: 'text',
+    },
+    {
       title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'text',
@@ -129,6 +134,11 @@ const ActivityDetail = ({visible, onClose, id}) => {
           label="虚拟成团状态"
         >
           {detailData.virtualType === 2 ? '开启' : '不开启'}
+        </Form.Item>
+        <Form.Item
+          label="虚拟开团状态"
+        >
+          {detailData.virtualOpenGroup === 2 ? '开启' : '不开启'}
         </Form.Item>
         <Form.Item
           label="活动商品"

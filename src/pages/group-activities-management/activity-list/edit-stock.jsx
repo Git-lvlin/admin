@@ -4,11 +4,12 @@ import ProForm, {
   ProFormText,
   ProFormRadio,
   ProFormDependency,
-  ProFormDigit
+  ProFormDigit,
+  ProFormSelect
 } from '@ant-design/pro-form'
 
 import styles from './styles.less'
-import { ruleSkuStockSub } from '@/services/single-contract-activity-management/activity-product'
+import { ruleSkuStockSub, ruleSkuList } from '@/services/single-contract-activity-management/activity-product'
 
 const EditTitle = ({goodsName, spuId, skuId}) => {
   return (
@@ -24,15 +25,19 @@ const EditStock = (props) => {
 
   const [checked, setChecked] = useState(2)
   const [activityStock, setActivityStock] = useState(0)
+  const [options, setOptions] = useState()
+  const [stockNum, setStockNum] = useState(0)
+  const [activityStockNum, setActivityStockNum] = useState(0)
+  const [selectData, setSelectData] = useState()
 
   const optionActivityStock = (num = 0) => {
     if(isNaN(num)) {
       num = 0
     }
     if(checked === 2) {
-      return (parseInt(data.activityStockNum) + (parseInt(num) || 0))
+      return (parseInt(activityStockNum) + (parseInt(num) || 0))
     } else {
-      return (data.activityStockNum - num)
+      return (activityStockNum - num)
     }
   }
 
@@ -41,11 +46,25 @@ const EditStock = (props) => {
       num = 0
     }
     if(checked === 1) {
-      return (parseInt(data.stockNum) + (parseInt(num) || 0))
+      return (parseInt(stockNum) + (parseInt(num) || 0))
     } else {
-      return (data.stockNum - num)
+      return (stockNum - num)
     }
   }
+
+  useEffect(()=>{
+    ruleSkuList({
+      id,
+      spuId: data.spuId
+    }).then(res =>{
+      setSelectData(res.data.records)
+      const obj = {}
+      res.data.records.map(item=> {
+        obj[item.skuId] = item.skuName
+      })
+      setOptions(obj)
+    })
+  }, [id, data])
 
   const submit = () => {
     return new Promise((resolve, reject) => {
@@ -55,9 +74,9 @@ const EditStock = (props) => {
             ruleId: id,
             activityType: data.activityType,
             skuId: data.skuId,
-            stockNum: data.stockNum,
+            stockNum: stockNum,
             actionType: checked,
-            oldActivityStockNum: data.activityStockNum,
+            oldActivityStockNum: activityStockNum,
             newActivityStockNum: activityStock
           }
         ]
@@ -110,11 +129,25 @@ const EditStock = (props) => {
       layout='horizontal'
       {...formItemLayout}
     >
+      <ProFormSelect
+        name="skuId"
+        label="选择要编辑的规格"
+        valueEnum={options}
+        width="md"
+        fieldProps={{
+          allowClear: false,
+          onChange: (e) => {
+            const arr = selectData.filter(item => item.skuId == e)
+            setStockNum(arr[0].stockNum)
+            setActivityStockNum(arr[0].activityStockNum)
+          }
+        }}
+      />
       <ProForm.Item label="当前商品可用库存（秒约）">
-        {data.stockNum}{data.unit}
+        {stockNum}{data.unit}
       </ProForm.Item>
       <ProForm.Item label="当前拼团活动可用库存">
-        {data.activityStockNum}{data.unit}
+        {activityStockNum}{data.unit}
       </ProForm.Item>
       <ProFormRadio.Group
         name="actionType"

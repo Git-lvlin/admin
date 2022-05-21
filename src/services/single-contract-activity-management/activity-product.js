@@ -51,3 +51,21 @@ export const ruleGoodsSortTop = async (params = {}, options = {}) => {
     ...options
   })
 }
+
+// 拼约商品sku列表
+export const ruleSkuList = async (params = {}, options = {}) => {
+  return await request('/auth/activity/Rule/ruleSkuList', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
+
+// 活动商品上下架
+export const ruleGoodsStateSub = async (params = {}, options = {}) => {
+  return await request('/auth/activity/Rule/ruleGoodsStateSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
