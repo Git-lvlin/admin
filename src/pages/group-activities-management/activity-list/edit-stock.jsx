@@ -11,11 +11,11 @@ import ProForm, {
 import styles from './styles.less'
 import { ruleSkuStockSub, ruleSkuList } from '@/services/single-contract-activity-management/activity-product'
 
-const EditTitle = ({goodsName, spuId, skuId}) => {
+const EditTitle = ({goodsName, spuId}) => {
   return (
     <>
       <span className={styles.title}>编辑活动库存</span>
-      <span className={styles.subhead}>{`${goodsName}（spuID：${spuId}/skuID：${skuId}）`}</span>
+      <span className={styles.subhead}>{`${goodsName}（spuID：${spuId}）`}</span>
     </>
   )
 }
@@ -29,6 +29,7 @@ const EditStock = (props) => {
   const [stockNum, setStockNum] = useState(0)
   const [activityStockNum, setActivityStockNum] = useState(0)
   const [selectData, setSelectData] = useState()
+  const [skuId, setSkuId] = useState()
 
   const optionActivityStock = (num = 0) => {
     if(isNaN(num)) {
@@ -73,7 +74,7 @@ const EditStock = (props) => {
           {
             ruleId: id,
             activityType: data.activityType,
-            skuId: data.skuId,
+            skuId: skuId,
             stockNum: stockNum,
             actionType: checked,
             oldActivityStockNum: activityStockNum,
@@ -113,7 +114,6 @@ const EditStock = (props) => {
         <EditTitle
           goodsName={data.goodsName}
           spuId={data.spuId}
-          skuId={data.skuId}
         />
       }
       onVisibleChange={onClose}
@@ -140,6 +140,7 @@ const EditStock = (props) => {
             const arr = selectData.filter(item => item.skuId == e)
             setStockNum(arr[0].stockNum)
             setActivityStockNum(arr[0].activityStockNum)
+            setSkuId(e)
           }
         }}
       />
@@ -177,6 +178,7 @@ const EditStock = (props) => {
           addonAfter: `${data.unit}`
         }}
         width="md"
+        validateFirst
         placeholder={checked === 1 ? "请输入<=当前商品拼团可用库存" : "请输入<=当前可用库存"}
         rules={[
           { required: true, message: '请输入拼团人数' },
