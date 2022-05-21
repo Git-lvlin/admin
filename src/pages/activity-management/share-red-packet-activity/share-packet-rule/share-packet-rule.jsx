@@ -119,18 +119,13 @@ export default (props) =>{
 
   }
   function onChange1(value) {
-    console.log('changed1', value);
     setReferrerNum1(value)
   }
   function onChange2(value) {
-    console.log('changed2', value);
     setReferrerNum2(value)
-
   }
   function onChange3(value) {
-    console.log('changed3', value);
     setReferrerNum3(value)
-
   }
  
   const columns = [

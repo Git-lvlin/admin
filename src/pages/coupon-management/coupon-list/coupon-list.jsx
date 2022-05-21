@@ -91,7 +91,11 @@ const Message = (props) => {
       dataIndex: 'dateRange',
       valueType: 'text',
       render:(_, data)=>{
-        return <p>{data.limitStartTime} 至 {data.limitEndTime}</p>
+        if(data.limitStartTime){
+          return <p>{data.limitStartTime} 至 {data.limitEndTime}</p>
+        }else{
+          return '-'
+        }
       },
       hideInSearch: true,
       ellipsis:true
