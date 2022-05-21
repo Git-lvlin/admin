@@ -105,7 +105,7 @@ const TableList = ({onClose, visible, id}) => {
         1: '上架'
       },
       hideInSearch: true,
-      hideInTable: info.activityStatus !== 2
+      hideInTable: info.activityStatus === 3 || info.activityStatus === 4
     },
     {
       title: '供应商ID',
@@ -170,10 +170,7 @@ const TableList = ({onClose, visible, id}) => {
         <Space size="middle">
           <a onClick={()=> {toTop(record.ruleGoodsId, actionRef)}}>置顶</a>
           <a onClick={() => {setEditStockVisible(true); setStockData(record)}}>编辑库存</a>
-          { 
-            info.activityStatus === 2 &&
-            <a onClick={() => {setStockData(record); setPutawaySoldOut(true) }}>{`从活动${record.goodsState === 1 ? '下' : '上'}架`}</a>
-          }
+          <a onClick={() => {setStockData(record); setPutawaySoldOut(true) }}>{`从活动${record.goodsState === 1 ? '下' : '上'}架`}</a>
         </Space>
       ),
       fixed: 'right',
