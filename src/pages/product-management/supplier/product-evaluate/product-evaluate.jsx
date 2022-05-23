@@ -7,7 +7,7 @@ import ContentModel from './content-model';
 import { ProFormSwitch} from '@ant-design/pro-form';
 import AuditModel from './audit-model'
 import styles from './style.less'
-import { findByways,addCheck,check } from '@/services/product-management/product-evaluate';
+import { findByways,addCheck,check,findPageVirtual } from '@/services/product-management/product-evaluate';
 import { Space } from 'antd';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -223,7 +223,6 @@ const ImportEvaluate= (props) => {
   const { type }= props
   const ref= useRef()
   const [visible, setVisible]= useState()
-  const [visiblePopup, setVisiblePopup]= useState()
   const [visibleEvaluate, setVisibleEvaluate]= useState()
   const [commentId, setCommentId]= useState()
   const [commentSkuId, setCommentSkuId]= useState()
@@ -279,7 +278,7 @@ const ImportEvaluate= (props) => {
       },
       {
         title: '评价星级',
-        dataIndex: 'orderSn',
+        dataIndex: 'score',
         valueType: 'text',
         hideInSearch: true
       },
@@ -294,15 +293,11 @@ const ImportEvaluate= (props) => {
         key: 'option',
         valueType: 'option',
         render: (_, data) => [
-          <a key='eadit'  onClick={()=>{setVisibleEvaluate(true);setProductId()}}>编辑</a>,
-          <a key='delete' onClick={()=>{setVisibleDelete(true);setProductId()}}>删除</a>
+          <a key='eadit'  onClick={()=>{setVisibleEvaluate(true);setProductId(data?.id)}}>编辑</a>,
+          <a key='delete' onClick={()=>{setVisibleDelete(true);setProductId(data?.id)}}>删除</a>
         ],
       },
   ];
-const passVerification=(data,type,status)=>{
-  setVisiblePopup(true)
-  setCommentId({id:data.id,state:type,status:status})
-}
 const auditSwitch=(off)=>{
        setPitch(off)
        addCheck({type:off?1:2}).then(res=>{
@@ -331,11 +326,8 @@ return (
         rowKey="id"
         options={false}
         actionRef={ref}
-        params={{
-          state:type
-        }}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
-        request={findByways}
+        request={findPageVirtual}
         search={{
             defaultCollapsed: true,
             labelWidth: 100,
@@ -344,14 +336,14 @@ return (
             ],
         }}
         toolBarRender={() => [
-          <Button type="primary" onClick={()=>{setVisibleEvaluate(true)}}>新增评价</Button>,
+          <Button type="primary" onClick={()=>{setVisibleEvaluate(true)}} style={{background:'red',border:'1px solid red'}}>新增评价</Button>,
           <Import
             change={(e) => { setImportVisit(e) }}
-            code="order_common_send_goods_import"
+            code="virtual-comment-import-template"
             conditions={getFieldValue}
           />,
-          <ImportHistory show={importVisit} setShow={setImportVisit} type="order_common_send_goods_import" />,
-          <a href=''>下载exce模板</a>
+          <ImportHistory show={importVisit} setShow={setImportVisit} type="virtual-comment-import-template" />,
+          <a href='https://pro-yeahgo.oss-cn-shenzhen.aliyuncs.com/file/template/virtual-comment-export-template.xlsx'>下载exce模板</a>
         ]}
         columns={columns}
         pagination={{
@@ -376,17 +368,8 @@ return (
             onClose={() => { ref.current.reload(); setProductId(null) }}
         />
       }
-      {visiblePopup&&
-        <AuditModel 
-          visiblePopup={visiblePopup}
-          setVisiblePopup={setVisiblePopup}
-          record={commentId}
-          boxref={ref}
-          type={type}
-      />
-      }
       {visibleDelete&&
-        <AuditModel 
+        <DeleteModel 
           visible={visibleDelete}
           setVisible={setVisibleDelete}
           id={productId}
