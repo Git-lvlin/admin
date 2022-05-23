@@ -7,10 +7,14 @@ import ContentModel from './content-model';
 import { ProFormSwitch} from '@ant-design/pro-form';
 import AuditModel from './audit-model'
 import styles from './style.less'
-import { findByways,addCheck,check } from '@/services/product-management/product-evaluate';
+import { findByways,addCheck,check,findPageVirtual } from '@/services/product-management/product-evaluate';
 import { Space } from 'antd';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import ImportHistory from '@/components/ImportFile/import-history'
+import Import from '@/components/ImportFile/import'
+import GoosEvaluate from './goos-evaluate'
+import DeleteModel from './delete-model'
 const { TabPane } = Tabs
 
 const EvaluateList= (props) => {
@@ -191,6 +195,10 @@ const EvaluateList= (props) => {
             className={styles.product_evaluate}
 
         />
+        <div style={{background:'#fff',padding:'25px 0 25px 25px'}}>
+          <p>说明：</p>
+          <p>1、用户没填写任何评价内容，只做评分的，不需要进行审核（直接通过）</p>
+        </div>
          {visible&&
             <ContentModel
                 setVisible={setVisible}
@@ -210,6 +218,167 @@ const EvaluateList= (props) => {
         }
     </>
   );
+};
+const ImportEvaluate= (props) => {
+  const { type }= props
+  const ref= useRef()
+  const [visible, setVisible]= useState()
+  const [visibleEvaluate, setVisibleEvaluate]= useState()
+  const [commentId, setCommentId]= useState()
+  const [commentSkuId, setCommentSkuId]= useState()
+  const [pitch, setPitch]= useState()
+  const [importVisit, setImportVisit] = useState(false)
+  const [visibleDelete, setVisibleDelete] = useState(false)
+  const [productId, setProductId]= useState()
+  const columns = [
+      {
+        title: '序号',
+        dataIndex:'id',
+        valueType: 'borderIndex',
+        hideInSearch: true,
+        valueType: 'indexBorder'
+      },
+      {
+        title: '被评商品SPUid',
+        dataIndex: 'spuId',
+        valueType: 'text',
+        hideInSearch: true,
+        width:200
+      },
+      {
+        title: '被评商品SKUid',
+        dataIndex: 'skuId',
+        valueType: 'text',
+        width:200,
+        order:2
+      },
+      {
+        title: '被评商品名称',
+        dataIndex: 'goodsName',
+        valueType: 'text',
+        order:1
+      },
+      {
+        title: '评价内容',
+        dataIndex: 'content',
+        hideInSearch: true,
+        render:(text, record, _, action)=>[
+            <div className={styles.line_feed} key='content'>
+              {
+                record.content?
+                <Tooltip  placement="leftTop" title={record.content}>
+                  <a key='link' onClick={()=>{setVisible(true);setCommentSkuId(record.id)}}>{record.content}</a>
+                </Tooltip>
+                :
+                <p key='null'>无</p>
+              }
+            </div>
+
+        ],
+      },
+      {
+        title: '评价星级',
+        dataIndex: 'score',
+        valueType: 'text',
+        hideInSearch: true
+      },
+      {
+        title: '创建评价时间',
+        dataIndex: 'commentTime',
+        valueType: 'text',
+        hideInSearch: true,
+      },
+      {
+        title: '操作',
+        key: 'option',
+        valueType: 'option',
+        render: (_, data) => [
+          <a key='eadit'  onClick={()=>{setVisibleEvaluate(true);setProductId(data?.id)}}>编辑</a>,
+          <a key='delete' onClick={()=>{setVisibleDelete(true);setProductId(data?.id)}}>删除</a>
+        ],
+      },
+  ];
+const auditSwitch=(off)=>{
+       setPitch(off)
+       addCheck({type:off?1:2}).then(res=>{
+         if(res.code==0){
+          ref.current?.reload()
+          message.success('操作成功')
+         }
+      })
+  }
+useEffect(()=>{
+  check({}).then(res=>{
+      setPitch(res.data)
+    })
+  },[])
+const getFieldValue = (searchConfig) => {
+  const {...rest}=searchConfig.form.getFieldsValue()
+  return {
+    state:type,
+    ...rest,
+  }
+}
+return (
+    <>
+      <ProTable
+        headerTitle="数据列表"
+        rowKey="id"
+        options={false}
+        actionRef={ref}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
+        request={findPageVirtual}
+        search={{
+            defaultCollapsed: true,
+            labelWidth: 100,
+            optionRender: (searchConfig, formProps, dom) => [
+              ...dom.reverse()
+            ],
+        }}
+        toolBarRender={() => [
+          <Button type="primary" onClick={()=>{setVisibleEvaluate(true)}} style={{background:'red',border:'1px solid red'}}>新增评价</Button>,
+          <Import
+            change={(e) => { setImportVisit(e) }}
+            code="virtual-comment-import-template"
+            conditions={getFieldValue}
+          />,
+          <ImportHistory show={importVisit} setShow={setImportVisit} type="virtual-comment-import-template" />,
+          <a href='https://pro-yeahgo.oss-cn-shenzhen.aliyuncs.com/file/template/virtual-comment-export-template.xlsx'>下载exce模板</a>
+        ]}
+        columns={columns}
+        pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+        }}
+        className={styles.product_evaluate}
+      />
+      {visible&&
+        <ContentModel
+            setVisible={setVisible}
+            visible={visible}
+            id={commentSkuId}
+        />
+      }
+      {visibleEvaluate&&
+        <GoosEvaluate
+            setVisible={setVisibleEvaluate}
+            visible={visibleEvaluate}
+            id={productId}
+            callback={() => { ref.current.reload(); setProductId(null) }}
+            onClose={() => { ref.current.reload(); setProductId(null) }}
+        />
+      }
+      {visibleDelete&&
+        <DeleteModel 
+          visible={visibleDelete}
+          setVisible={setVisibleDelete}
+          id={productId}
+          callback={() => { ref.current.reload(); setProductId(null) }}
+          onClose={() => { ref.current.reload(); setProductId(null) }}
+      />
+      }
+  </>
+);
 };
 
 export default (props) =>{
@@ -242,11 +411,12 @@ export default (props) =>{
               seleType==3&&<EvaluateList type={3}/> 
             }
           </TabPane>
+          <TabPane tab="评价导入" key="4">
+            { 
+              seleType==4&&<ImportEvaluate type={4}/> 
+            }
+          </TabPane>
         </Tabs>
-        <div style={{background:'#fff',padding:'0 0 25px 25px'}}>
-            <p>说明：</p>
-            <p>1、用户没填写任何评价内容，只做评分的，不需要进行审核（直接通过）</p>
-        </div>
       </PageContainer>
     )
   }

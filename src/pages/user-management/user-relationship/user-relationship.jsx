@@ -101,6 +101,9 @@ const UserRelationship = () => {
       hideInTable: true,
       fieldProps: {
         controls: false,
+      },
+      render:(_,data)=>{
+        return <p>{_}</p>
       }
     },
     {
