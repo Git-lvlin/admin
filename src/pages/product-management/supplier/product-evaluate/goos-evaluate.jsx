@@ -8,7 +8,7 @@ import ProForm, {
   ProFormTextArea
 } from '@ant-design/pro-form';
 import { history } from 'umi'
-import { findContent } from '@/services/product-management/product-evaluate';
+import { addVirtual,findVirtual } from '@/services/product-management/product-evaluate';
 import styles from './style.less'
 import Upload from '@/components/upload';
 
@@ -40,15 +40,24 @@ export default (props) => {
   const [dataList,setDataList]=useState()
 
   const onsubmit = (values) => {
-    
+    addVirtual(values).then(res=>{
+      if(res.code==0){
+        setVisible(false)
+        callback()
+      }
+    })
   };
 
   useEffect(() => {
-    findContent({id:id}).then(res=>{
-     if(res.code==0){
-      setDataList(res.data)
-     }
-    })
+    if(id){
+      findVirtual({id:id}).then(res=>{
+        if(res.code==0){
+          form.setFieldsValue({
+            ...res.data
+          })
+        }
+       })
+    }
   }, [])
   return (
     <DrawerForm
@@ -59,6 +68,9 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
+        onClose:()=>{
+          onClose()
+        }
       }}
       submitter={{
           render: (props, defaultDoms) => {
@@ -78,37 +90,35 @@ export default (props) => {
         label="用户昵称"
         placeholder="输入用户昵称"
         rules={[{ required: true, message: '请输入用户昵称' }]}
-        readonly={id&&falg}
         fieldProps={{
         maxLength:50
         }}
         />
     <ProFormText
         width="md"
-        name="name"
+        name="spuId"
         label="被评商品SPUid"
         placeholder="输入被评商品SPUid"
         rules={[{ required: true, message: '请输入被评商品SPUid' }]}
-        readonly={id&&falg}
         fieldProps={{
         maxLength:50
         }}
      />
      <ProFormText
         width="md"
-        name="name"
+        name="skuId"
         label="被评商品SKUid"
         placeholder="输入被评商品SKUid"
         rules={[{ required: true, message: '请输入被评商品SKUid' }]}
-        readonly={id&&falg}
         fieldProps={{
         maxLength:50
         }}
      />
      <ProFormSelect
-        name="inviteNum"
-        initialValue={1}
+        name="score"
+        initialValue={5}
         label="评分星级"
+        rules={[{ required: true, message: '请选择评分' }]}
         options={[
             {
                 value: 1,
@@ -131,22 +141,21 @@ export default (props) => {
                 label: '五星',
             }
         ]}
-        readonly={id}
       />
      <ProFormTextArea
         label='评价内容'
-        name="couponRule"
+        name="content"
         style={{ minHeight: 32, marginTop: 15 }}
         placeholder='0/500'
         rules={[{ required: true, message: '请输入评价内容' }]}
         rows={4}
         fieldProps={{
-        maxLength:500
+          maxLength:500
         }}
       />
       <Form.Item
         label="评价照片"
-        name="bannerImage"
+        name="imgs"
         >
         <FromWrap
             content={(value, onChange) => <Upload multiple value={value} onChange={onChange} size={5*1024}   maxCount={9} accept="image/*"  proportion={{width: 670,height: 284,}} />}

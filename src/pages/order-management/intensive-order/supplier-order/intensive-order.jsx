@@ -530,7 +530,7 @@ const TableList = () => {
                     <span>地址：{item.receivingInfo.receiptAddress}</span>
                     {
                       (orderType === 1 || orderType === 2)&&
-                      <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true)}}>修改地址</Button>
+                      <Button onClick={() => { setSubOrderId(item.orderId); setAddressVisible(true)}}>修改地址</Button>
                     }
                   </Space>
                 </div>

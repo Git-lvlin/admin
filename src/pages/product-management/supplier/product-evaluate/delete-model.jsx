@@ -1,11 +1,11 @@
 import React, { useState, useEffect,useRef } from 'react';
 import { ModalForm,ProFormTextArea} from '@ant-design/pro-form';
 import { Button,message } from 'antd';
-import { updGoodsComment } from '@/services/product-management/product-evaluate';
+import { deleteVirtual } from '@/services/product-management/product-evaluate';
 import { Space } from 'antd';
 
 export default props=>{
-    const {setVisible,visible,callback,onClose}=props
+    const {setVisible,visible,callback,onClose,id}=props
     return (
         <ModalForm
             title='操作确认'
@@ -19,12 +19,11 @@ export default props=>{
             },
             }}
             onFinish={async (values) => {
-                updGoodsComment({id:record.id,state:record.state}).then(res=>{
+                deleteVirtual({id}).then(res=>{
                         if(res.code==0){
-                            setVisiblePopup(false)   
-                            boxref&&boxref.current?.reload()
+                            setVisible(false) 
+                            callback()  
                             message.success('操作成功')
-                            return true;
                         }
                     })
                 

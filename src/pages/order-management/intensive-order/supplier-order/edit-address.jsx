@@ -4,7 +4,7 @@ import ProForm, {
   ProFormText,
 } from '@ant-design/pro-form'
 
-import { updateDeliveryInfo } from '@/services/order-management/normal-order'
+import { modifyAddress } from '@/services/order-management/supplier-order';
 import AddressCascader from '@/components/address-cascader'
 
 const EditAddress = ({
@@ -17,17 +17,15 @@ const EditAddress = ({
 
   const submitAddress = (v) => {
     return new Promise((resolve, reject)=>{
-      updateDeliveryInfo(
+      modifyAddress(
         {
-          subOrderId,
-          consignee: v.consignee,
-          phone: v.phone,
-          address: v.address,
+          orderId:subOrderId,
+          receiptUser: v.receiptUser,
+          receiptPhone: v.receiptPhone,
+          receiptAddress: v.receiptAddress,
           provinceId: v.area?.[0].value,
-          provinceName: v.area?.[0].label,
           cityId: v.area?.[1].value,
-          cityName: v.area?.[1].label,
-          districtName: v.area?.[2].label
+          areaId: v.area?.[2].value
         },
         {
           showSuccess: true,
@@ -59,12 +57,12 @@ const EditAddress = ({
       layout='horizontal'
     >
       <ProFormText
-        name='consignee'
+        name='receiptUser'
         label='收货人'
         rules={[{required: true, message: '请输入收货人'}]}
       />
       <ProFormText
-        name='phone'
+        name='receiptPhone'
         label='电话'
         rules={[{required: true, message: '请输入电话'}]}
       />
@@ -76,7 +74,7 @@ const EditAddress = ({
         <AddressCascader/>
       </ProForm.Item>
       <ProFormText
-        name='address'
+        name='receiptAddress'
         label='详细地址'
         rules={[{required: true, message: '请输入详细地址'}]}
       />
