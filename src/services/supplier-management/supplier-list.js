@@ -199,3 +199,11 @@ export const searchUniName = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const getContractList = (params = {}, options = {}) => {
+  return request('/auth/supplier/contract/getList', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

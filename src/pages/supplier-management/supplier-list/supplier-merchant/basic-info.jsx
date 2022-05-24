@@ -7,7 +7,7 @@ import {
   ProFormSelect,
   ProFormDigit,
 } from '@ant-design/pro-form';
-import { supplierAdd, supplierEdit, categoryAll, searchUniName } from '@/services/supplier-management/supplier-list';
+import { supplierAdd, supplierEdit, categoryAll, searchUniName, getContractList } from '@/services/supplier-management/supplier-list';
 import md5 from 'blueimp-md5';
 import { arrayToTree } from '@/utils/utils'
 import FormModal from './form';
@@ -78,6 +78,7 @@ export default (props) => {
   const [formVisible, setFormVisible] = useState(false)
   const [selectData, setSelectData] = useState([]);
   const [treeData, setTreeData] = useState([])
+  const [contractList, setContractList] = useState([])
   const [selectKeys, setSelectKeys] = useState([]);
   const originData = useRef([])
 
@@ -200,6 +201,16 @@ export default (props) => {
         }
       })
       setSelectKeys(ids)
+    } else {
+      getContractList({
+        page: 1,
+        size: 9999
+      })
+        .then(res => {
+          if (res.code === 0) {
+            setContractList(res.data.records.map(item => ({ label: item.name, value: item.id })))
+          }
+        })
     }
     categoryAll()
       .then(res => {
@@ -253,6 +264,17 @@ export default (props) => {
       <Divider />
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1 }}>
+          {!detailData&&<ProFormSelect
+            name="gasaga"
+            label="签电子合同供应商"
+            fieldProps={{
+              allowClear: false,
+              showSearch: true,
+              optionFilterProp: 'label',
+              placeholder: '请输入已签电子合同的供应商名称或名称给关键字'
+            }}
+            options={contractList}
+          />}
           <ProFormText
             name="companyName"
             label="供应商家名称"
