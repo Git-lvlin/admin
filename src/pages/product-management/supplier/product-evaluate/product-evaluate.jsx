@@ -338,7 +338,10 @@ return (
         toolBarRender={() => [
           <Button type="primary" onClick={()=>{setVisibleEvaluate(true)}} style={{background:'red',border:'1px solid red'}}>新增评价</Button>,
           <Import
-            change={(e) => { setImportVisit(e) }}
+            change={(e) => { 
+              setImportVisit(e)
+              ref.current.reload() 
+            }}
             code="virtual-comment-import-template"
             conditions={getFieldValue}
           />,
