@@ -365,6 +365,8 @@ export default function EditTable(props) {
                   salePrice: amountTransform(skuData.salePrice, '/'),
                   salePriceProfitLoss: amountTransform(skuData.salePriceProfitLoss, '/'),
                   salePriceFloat: amountTransform(skuData.salePriceFloat),
+                  tPlatformGain: amountTransform(skuData.tPlatformGain, '/'),
+                  operateGain: amountTransform(skuData.operateGain, '/'),
                 }
 
                 if (findItem.salePriceFloat !== record.salePriceFloat) {
