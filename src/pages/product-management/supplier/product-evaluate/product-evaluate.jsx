@@ -389,7 +389,6 @@ export default (props) =>{
     return (
       <PageContainer>
         <Tabs
-          centered
           defaultActiveKey="1"
           style={{
             background: '#fff',

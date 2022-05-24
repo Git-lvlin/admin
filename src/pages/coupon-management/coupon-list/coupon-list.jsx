@@ -350,7 +350,6 @@ const TableList= (props) =>{
   return (
       <PageContainer>
         <Tabs
-          centered
           defaultActiveKey="1"
           className={styles.cuoponTabs}
           onChange={(val)=>{
