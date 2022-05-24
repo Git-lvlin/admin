@@ -8,7 +8,7 @@ import ProForm, {
   ProFormTextArea
 } from '@ant-design/pro-form';
 import { history } from 'umi'
-import { addVirtual,findVirtual } from '@/services/product-management/product-evaluate';
+import { addVirtual,findVirtual,updateVirtual } from '@/services/product-management/product-evaluate';
 import styles from './style.less'
 import Upload from '@/components/upload';
 
@@ -40,12 +40,23 @@ export default (props) => {
   const [dataList,setDataList]=useState()
 
   const onsubmit = (values) => {
-    addVirtual(values).then(res=>{
-      if(res.code==0){
-        setVisible(false)
-        callback()
-      }
-    })
+    if(id){
+      updateVirtual(values).then(res=>{
+        if(res.code==0){
+          setVisible(false)
+          callback()
+          message.success('编辑成功')
+        }
+      })
+    }else{
+      addVirtual(values).then(res=>{
+        if(res.code==0){
+          setVisible(false)
+          callback()
+          message.success('保存成功')
+        }
+      })
+    }
   };
 
   useEffect(() => {
@@ -73,9 +84,9 @@ export default (props) => {
         }
       }}
       submitter={{
-          render: (props, defaultDoms) => {
+          render: (form) => {
             return [
-              <Button type='primary' key='submit' onClick={()=>{}}>保存</Button>
+              <Button type='primary' key='submit' onClick={()=>{form?.submit()}}>保存</Button>
             ]
           }
       }}
@@ -86,13 +97,15 @@ export default (props) => {
     >
     <ProFormText
         width="md"
-        name="name"
+        name="nickName"
         label="用户昵称"
         placeholder="输入用户昵称"
-        rules={[{ required: true, message: '请输入用户昵称' }]}
+        // rules={[{ required: true, message: '请输入用户昵称' }]}
+        readonly
         fieldProps={{
-        maxLength:50
+         maxLength:50
         }}
+        initialValue="系统自动生成的虚拟用户"
         />
     <ProFormText
         width="md"
@@ -158,7 +171,7 @@ export default (props) => {
         name="imgs"
         >
         <FromWrap
-            content={(value, onChange) => <Upload multiple value={value} onChange={onChange} size={5*1024}   maxCount={9} accept="image/*"  proportion={{width: 670,height: 284,}} />}
+            content={(value, onChange) => <Upload multiple value={value} onChange={onChange} size={5*1024}   maxCount={9} accept="image/*"/>}
             right={(value) => {
             return (
                 <dl>
@@ -168,6 +181,11 @@ export default (props) => {
             }}
         />
        </Form.Item>
+      <ProFormText
+        width="md"
+        name="id"
+        hidden
+     />
     </DrawerForm>
   );
 };
