@@ -100,8 +100,8 @@ export default (props) => {
         name="nickName"
         label="用户昵称"
         placeholder="输入用户昵称"
-        // rules={[{ required: true, message: '请输入用户昵称' }]}
-        readonly
+        rules={[{ required: id?true:false, message: '请输入用户昵称' }]}
+        readonly={!id}
         fieldProps={{
          maxLength:50
         }}
