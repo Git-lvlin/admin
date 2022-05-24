@@ -98,7 +98,6 @@ const Index = () => {
       }}
     >
       <Tabs
-        centered
         defaultActiveKey="1"
         style={{
           background: '#fff',
