@@ -177,8 +177,8 @@ export default  () => {
       title: '收费优惠条件',
       dataIndex: 'min',
       render:(_,data)=>{
-        if(data?.id==3){
-         return <p>{_}名及以后</p>
+        if(data?.id==2){
+         return <p>{_}名及以上</p>
         }
          return <p>{_}-{data?.max}名</p>
       }
