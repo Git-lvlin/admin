@@ -177,6 +177,7 @@ export default {
 
   'menu.cms': 'CMS',
   'menu.cms.banner-admin': 'banner管理',
+  'menu.cms.thematic-event-management': '专题活动管理',
   'menu.cms.goos-reg': '商品区域',
   'menu.cms.goos-reg.member': '秒约和店主模块',
   'menu.cms.goos-reg.hot-goos': '热销好货',

@@ -11,6 +11,12 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'thematic-event-management',
+      path: '/cms/thematic-event-management',
+      component: './cms/thematic-event-management',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'home-activity',
       path: '/cms/home-activity',
       component: './cms/home-activity',
