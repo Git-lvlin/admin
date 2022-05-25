@@ -124,7 +124,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
       case 2:
         return (
           <div className={styles.cardListContent}>
-            <div></div>
+            <div>解绑理由：{item?.remark}</div>
             <div>当前租期截止日：{data?.leaseDeadline}</div>
           </div>
         )
@@ -339,12 +339,6 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
               <div>被绑手机：{item.bindPhone}</div>
               <div>操作时间：{item.createTime}</div>
             </div>
-            {
-              item.opType !== 1 &&
-              <div className={styles.cardList}>
-                <div>额外记录</div>
-              </div>
-            }
             {
               item.opType !== 1 &&
               <ExtraRecords item={item} type={item?.opType}/>

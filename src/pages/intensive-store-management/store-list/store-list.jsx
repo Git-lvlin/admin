@@ -597,6 +597,7 @@ const StoreList = (props) => {
               <a onClick={() => { setVisible(true); setAttachmentImage(data?.cancelInfo?.attachList) }}>附件（点击查看）</a>
               <p>注销时还剩余额：{data?.cancelInfo?.balance}元</p>
               <pre className={styles.line_feed}>理由：{data?.cancelInfo?.reason}</pre>
+              <p>（{data?.cancleTime}）</p>
             </>
           )
         } else {
@@ -640,18 +641,25 @@ const StoreList = (props) => {
       hideInTable: storeType === 'freshStores'
     },
     {
-      title: '审核通过时间',
+      title: '申请审核通过时间',
       dataIndex: 'auditTime',
       valueType: 'dateTimeRange',
       hideInTable: true,
       hideInSearch: storeType === 'freshStores'
     },
     {
-      title: '审核通过时间',
+      title: '申请审核通过时间',
       dataIndex: 'auditTime',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType === 'freshStores'
+    },
+    {
+      title: '注销时间',
+      dataIndex: 'cancleTime',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
+      hideInSearch: storeType !== 'cancelled'
     },
     {
       title: '操作',

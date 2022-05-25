@@ -1,23 +1,21 @@
 import React, { useState } from 'react'
-import { PageContainer } from '@/components/PageContainer';
+import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@ant-design/pro-table'
 import { Button } from 'antd'
-import { history } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
 import { commissionPage } from '@/services/financial-management/transaction-detail-management'
 import { Export, ExportHistory } from '@/pages/export-excel'
 import Detail from '../../common-popup/order-pay-detail-popup'
+import RoyaltyDetails from "../royalty-details"
 
 // bonus detail
 const BonusDetailManagement = () =>{
   const [detailVisible, setDetailVisible] = useState(false)
+  const [royaltyVisible, setRoyaltyVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
   const [visit, setVisit] = useState(false)
-
-  const skipToDetail = data => {
-    history.push(`/financial-management/transaction-detail-management/royalty-details/${data}?type=bonus`)
-  }
+  const [type, setType] = useState('')
 
   const getFieldValue = (form) => {
     const { createTime, ...rest } = form.getFieldsValue()
@@ -64,7 +62,8 @@ const BonusDetailManagement = () =>{
       valueEnum: {
         'commission': '店主收益',
         'suggestCommission': '推荐收益',
-        'chargeFeeCommission': '服务费收益'
+        'chargeFeeCommission': '服务费收益',
+        'shareCommission': '店铺分享收益'
       },
       hideInTable: true
     },
@@ -81,7 +80,11 @@ const BonusDetailManagement = () =>{
         'second': '秒约订单',
         'commandSalesOrder': '集约批发订单',
         'dropShipping1688': '1688代发订单',
-        'settleChargeFee': '入驻服务费订单'
+        'settleChargeFee': '入驻服务费订单',
+        'wholesaleFresh': '集约批发-生鲜订单',
+        'hydrogenRent': '氢原子租金订单',
+        'hydrogen': '氢原子销售订单',
+        'storeShare': '分享订单'
       },
       hideInTable: true
     },
@@ -134,7 +137,7 @@ const BonusDetailManagement = () =>{
       title: '操作',
       dataIndex: 'optoion',
       valueType: 'option',
-      render: (_, records)=> <a target='_blank' href={`/financial-management/transaction-detail-management/royalty-details/${records?.orderNo}?type=bonus`}>详情</a>
+      render: (_, records)=> <a onClick={()=> {setRoyaltyVisible(true); setSelectItem(records?.orderNo); setType('bonus')}}>详情</a>
     }
 
   ]
@@ -192,6 +195,17 @@ const BonusDetailManagement = () =>{
           id={selectItem}
           visible={detailVisible}
           setVisible={setDetailVisible}
+          title='店铺收益明细'
+        />
+      }
+      {
+        royaltyVisible &&
+        <RoyaltyDetails
+          id={selectItem}
+          visible={royaltyVisible}
+          setVisible={setRoyaltyVisible}
+          title='店铺收益明细'
+          type={type}
         />
       }
     </PageContainer>
