@@ -232,7 +232,7 @@ export default  () => {
         }
         }
       >
-        <p style={{fontWeight:'bold'}}>{formDatil?.settingDescribe}{formDatil?.settingValues?.basePoint?.money}元 /{formDatil?.settingValues?.basePoint?.circleNum}{formDatil?.settingValues?.basePoint?.unit}</p>
+        <p style={{fontWeight:'bold'}}>{formDatil?.settingDescribe}{formDatil?.settingValues?.basePoint?.money}元 /{formDatil?.settingValues?.basePoint?.unit}</p>
 
         <ProFormRadio.Group
                 name="currentType"
