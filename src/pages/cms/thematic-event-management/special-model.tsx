@@ -9,7 +9,15 @@ import { amountTransform } from '@/utils/utils'
 import { PageContainer } from '@ant-design/pro-layout';
 import { useLocation } from 'umi';
 import Detail from '@/pages/user-management/user-list/detail';
-import { DrawerForm,ProFormText,ProFormDateTimeRangePicker,ProFormDependency } from '@ant-design/pro-form';
+import { SketchPicker } from 'react-color';
+import ProForm, { 
+  DrawerForm,
+  ProFormText,
+  ProFormDateTimeRangePicker,
+  ProFormDependency,
+  ProFormSwitch,
+  ProFormRadio 
+} from '@ant-design/pro-form';
 import styles from './style.less'
 import Associated0Goods from './associated0-goods'
 import Upload from '@/components/upload';
@@ -38,8 +46,9 @@ const formItemLayout = {
 export default props=>{
     const {visible, setVisible, callback,id,onClose}=props;
     const [form] = Form.useForm();
+    const [picture,setPicture]=useState<number>()
     const onSubmit=(values)=>{
-
+      console.log('values',values)
     }
     const disabledDate=(current)=>{
         return current && current < moment().startOf('day');
@@ -100,26 +109,26 @@ export default props=>{
             <div className={styles?.border_box}>
               <Title style={{ marginBottom: 10 }} level={5}>组件设置</Title>
               <div className={styles?.topic_page}>
-                 <header className={styles?.header} onClick={()=>{form.setFieldsValue({setPicture:true})}}>
+                 <header className={styles?.header} onClick={()=>{setPicture(1)}}>
                      <p>点击配置图片</p>
-                     <Button>倒计时控件</Button>
+                     <Button onClick={(e)=>{setPicture(2);e.stopPropagation()}}>倒计时控件</Button>
                  </header>
-                 <figure className={styles?.figure}>
+                 <figure className={styles?.figure} onClick={()=>{setPicture(3)}}>
                      副标题图    
                  </figure>
-                 <aside className={styles?.aside}>
+                 <aside className={styles?.aside} onClick={()=>{setPicture(5)}}>
                     <section className={styles?.section}>
                         <Skeleton.Image /> 
                         <div className={styles?.section_goos}>
                             <p>商品名称商品名称<br/>商品名称</p>
-                            <figure className={styles?.figure}> 价格标签 </figure>
+                            <figure className={styles?.figure} onClick={(e)=>{setPicture(4);e.stopPropagation()}}> 价格标签 </figure>
                         </div>
                     </section>
                     <article className={styles?.article}>
                     <div className={styles?.article_goos}>
                         <Skeleton.Image />
                         <p>商品名称商品名称<br/>商品名称</p>
-                        <Button> 价格标签 </Button></div>
+                        <Button onClick={(e)=>{setPicture(4);e.stopPropagation()}}> 价格标签 </Button></div>
                     <div  className={styles?.article_goos}>
                         <Skeleton.Image />
                         <p>商品名称商品名称<br/>商品名称...</p>
@@ -130,12 +139,33 @@ export default props=>{
             </div>
             <div className={styles?.border_box}>
               <Title style={{ marginBottom: 10 }} level={5}>头图</Title>
-              <ProFormDependency name={['setPicture']}>
-              {({ setPicture }) => { 
-                if(setPicture){
-                    return   <Form.Item
-                    label="活动封面"
-                    name="bannerImage"
+                <Form.Item
+                  label="选择图片"
+                  name="bannerImage1"
+                  style={{display:picture==1?'block':'none'}}
+                >
+                    <FromWrap
+                      content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024}   maxCount={1} accept="image/*" />}
+                      right={(value) => {
+                        return (
+                          <dl>
+                            <dd>支持jpg/png，2M以内</dd>
+                          </dl>
+                        )
+                      }}
+                    />
+                </Form.Item>
+                <div style={{display:picture==2?'block':'none'}}>
+                  <ProFormSwitch name="switch1" label="开关控制" />
+                  <ProForm.Group label='控件位置'>
+
+                  </ProForm.Group>
+                </div>
+                <div style={{display:picture==3?'block':'none'}}>
+                  <ProFormSwitch name="switch2" label="开关控制" />
+                    <Form.Item
+                    label="选择图片"
+                    name="bannerImage2"
                   >
                     <FromWrap
                       content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024}   maxCount={1} accept="image/*" />}
@@ -148,9 +178,50 @@ export default props=>{
                       }}
                     />
                   </Form.Item>
-                }
-              }}
-              </ProFormDependency>
+                </div>
+                <div style={{display:picture==4?'block':'none'}}>
+                  <ProFormRadio.Group
+                    name="radio-vertical"
+                    layout="vertical"
+                    label="标签样式"
+                    options={[
+                      {
+                        label: '风格1：明黄箭头',
+                        value: 1,
+                      },
+                      {
+                        label: '风格2：大红',
+                        value: 2,
+                      },
+                      {
+                        label: '风格3：3C电子风',
+                        value: 3,
+                      },
+                      {
+                        label: '风格4：黄色圆角',
+                        value: 4,
+                      },
+                    ]}
+                  />
+              </div>
+              <div style={{display:picture==5?'block':'none'}}>
+                  <ProFormRadio.Group
+                    name="radio-vertical"
+                    layout="horizontal"
+                    label="展示形式"
+                    options={[
+                      {
+                        label: '一行一个',
+                        value: 1,
+                      },
+                      {
+                        label: '一行两个',
+                        value: 2,
+                      }
+                    ]}
+                  />
+                  <SketchPicker />
+              </div>
             </div>
           </div>
           <Associated0Goods/>
