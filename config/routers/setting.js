@@ -41,5 +41,11 @@ export default {
       component: './setting/switch-setting',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'contract-management',
+      path: '/setting/contract-management',
+      component: './setting/contract-management',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

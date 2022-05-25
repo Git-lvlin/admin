@@ -5,7 +5,7 @@ import { getImageSize } from '@/utils/utils';
 import upload from '@/utils/upload'
 
 const Upload = (props) => {
-  const { value, onChange, code = 218, maxCount = 1, size, dimension, proportion, text = '上传', disabled = false, sort = false, ...rest } = props;
+  const { value, onChange, code = 218, maxCount = 1, size, dimension, proportion, text = '上传', disabled = false, sort = false, isPDF = false, ...rest } = props;
   const [fileList, setFileList] = useState([])
   const [loading, setLoading] = useState(false)
   const fileData = useRef([]);
@@ -40,6 +40,10 @@ const Upload = (props) => {
         message.error('上传图片的尺寸不符合要求')
         return false;
       }
+    }
+    if(isPDF && file.type !== 'application/pdf') {
+      message.error('上传文件的格式不符合要求')
+      return false;
     }
     return true;
   }

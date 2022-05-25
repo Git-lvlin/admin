@@ -76,6 +76,7 @@ export default {
   'menu.setting.password': '修改密码',
   'menu.setting.shipments-area-configuration': '待发货区域配置',
   'menu.setting.switch-setting': '阶梯优惠参数开关',
+  'menu.setting.contract-management': '合同管理',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
@@ -384,5 +385,8 @@ export default {
   'menu.hydrogen-atom-management.transaction-data': '交易数据',
   'menu.hydrogen-atom-management.referral-commission': '推荐提成',
   'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
+
+  'menu.buried-point': '埋点数据看板',
+  'menu.buried-point.incident-analysts': '事件分析',
 
 };
