@@ -4,16 +4,23 @@ import type { ProColumns } from '@ant-design/pro-table';
 import { consumerOrderPage } from '@/services/hydrogen-atom-management/hydrogen-atom-start-recording'
 import moment from 'moment'
 import { formatMessage } from 'umi';
-import { Button, Space, Typography,Image,Skeleton } from 'antd'
+import { Button, Space, Typography,Image,Skeleton,Form } from 'antd'
 import { amountTransform } from '@/utils/utils'
 import { PageContainer } from '@ant-design/pro-layout';
 import { useLocation } from 'umi';
 import Detail from '@/pages/user-management/user-list/detail';
-import { DrawerForm,ProFormText,ProFormDateTimeRangePicker } from '@ant-design/pro-form';
+import { DrawerForm,ProFormText,ProFormDateTimeRangePicker,ProFormDependency } from '@ant-design/pro-form';
 import styles from './style.less'
 import Associated0Goods from './associated0-goods'
-import { Header } from 'rsuite';
+import Upload from '@/components/upload';
 const { Title } = Typography;
+
+const FromWrap = ({ value, onChange, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+  </div>
+)
 
 const formItemLayout = {
     labelCol: { span: 5 },
@@ -30,6 +37,7 @@ const formItemLayout = {
 
 export default props=>{
     const {visible, setVisible, callback,id,onClose}=props;
+    const [form] = Form.useForm();
     const onSubmit=(values)=>{
 
     }
@@ -42,6 +50,7 @@ export default props=>{
             title='活动详情'
             visible={visible}
             width={1500}
+            form={form}
             drawerProps={{
             forceRender: true,
             destroyOnClose: true,
@@ -91,7 +100,7 @@ export default props=>{
             <div className={styles?.border_box}>
               <Title style={{ marginBottom: 10 }} level={5}>组件设置</Title>
               <div className={styles?.topic_page}>
-                 <header className={styles?.header}>
+                 <header className={styles?.header} onClick={()=>{form.setFieldsValue({setPicture:true})}}>
                      <p>点击配置图片</p>
                      <Button>倒计时控件</Button>
                  </header>
@@ -121,6 +130,27 @@ export default props=>{
             </div>
             <div className={styles?.border_box}>
               <Title style={{ marginBottom: 10 }} level={5}>头图</Title>
+              <ProFormDependency name={['setPicture']}>
+              {({ setPicture }) => { 
+                if(setPicture){
+                    return   <Form.Item
+                    label="活动封面"
+                    name="bannerImage"
+                  >
+                    <FromWrap
+                      content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024}   maxCount={1} accept="image/*" />}
+                      right={(value) => {
+                        return (
+                          <dl>
+                            <dd>支持jpg/png，2M以内</dd>
+                          </dl>
+                        )
+                      }}
+                    />
+                  </Form.Item>
+                }
+              }}
+              </ProFormDependency>
             </div>
           </div>
           <Associated0Goods/>
