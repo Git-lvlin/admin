@@ -176,7 +176,6 @@ export default (props) =>{
   return (
     <PageContainer>
       <Tabs
-        centered
         defaultActiveKey="1"
         className={styles.auditTabs}
         onChange={(val)=>{

@@ -378,7 +378,6 @@ export default (props) =>{
   return (
       <PageContainer>
         <Tabs
-          centered
           defaultActiveKey="1"
           style={{backgroundColor:"#fff",padding:'25px'}}
           onChange={(val)=>{

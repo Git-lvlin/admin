@@ -20,6 +20,8 @@ export default {
   'menu.user-management.user-feedback': '用户反馈',
   'menu.user-management.new-poster': '海报管理',
   'menu.user-management.new-poster-new': '(新)海报管理',
+  'menu.user-management.cancellation-application-record': '注销申请记录',
+  'menu.user-management.logout-list': '注销列表',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
@@ -177,6 +179,7 @@ export default {
 
   'menu.cms': 'CMS',
   'menu.cms.banner-admin': 'banner管理',
+  'menu.cms.thematic-event-management': '专题活动管理',
   'menu.cms.goos-reg': '商品区域',
   'menu.cms.goos-reg.member': '秒约和店主模块',
   'menu.cms.goos-reg.hot-goos': '热销好货',

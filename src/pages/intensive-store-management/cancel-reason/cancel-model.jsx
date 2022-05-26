@@ -87,41 +87,56 @@ export default (props) => {
         }}
       {...formItemLayout}
     >
-        <ProFormTextArea
-          label='注销原因'
-          name="reason"
-          style={{ minHeight: 32, marginTop: 15 }}
-          placeholder='请输入3-30个汉字、字母、数字或字符'
-          rules={[
-            { required: true, message: '请输入注销原因' },
-            { validator: checkConfirm }
-          ]}
-          rows={4}
-          fieldProps={{
-              maxLength:30
-          }}
-        />
-        <ProFormRadio.Group
-          name="status"
-          label='状态'
-          rules={[{ required: true, message: '是否启用' }]}
-          options={[
-              {
-                  label:'启用',
-                  value: 1,
-              },
-              {
-                  label: '禁用',
-                  value: 2,
-              },
-          ]}
-        />
-        <ProFormText 
-          width="md"
-          name="id"
-          label="id"
-          hidden
-        />
+      <ProFormRadio.Group
+        name="status"
+        label='注销对象'
+        rules={[{ required: true, message: '请选择注销对象' }]}
+        options={[
+            {
+                label:'集约社区店铺',
+                value: 1,
+            },
+            {
+                label: '用户',
+                value: 2,
+            },
+        ]}
+      />
+      <ProFormTextArea
+        label='注销原因'
+        name="reason"
+        style={{ minHeight: 32, marginTop: 15 }}
+        placeholder='请输入3-30个汉字、字母、数字或字符'
+        rules={[
+          { required: true, message: '请输入注销原因' },
+          { validator: checkConfirm }
+        ]}
+        rows={4}
+        fieldProps={{
+            maxLength:30
+        }}
+      />
+      <ProFormRadio.Group
+        name="status"
+        label='状态'
+        rules={[{ required: true, message: '是否启用' }]}
+        options={[
+            {
+                label:'启用',
+                value: 1,
+            },
+            {
+                label: '禁用',
+                value: 2,
+            },
+        ]}
+      />
+      <ProFormText 
+        width="md"
+        name="id"
+        label="id"
+        hidden
+      />
     </ModalForm >
   );
 };
