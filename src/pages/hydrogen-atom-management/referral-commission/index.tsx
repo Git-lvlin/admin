@@ -28,6 +28,16 @@ function ReferralCommission () {
         align: 'center'
       },
       {
+        title: '佣金类型',
+        dataIndex: 'commissionType',
+        align: 'center',
+        valueType: 'select',
+        valueEnum: {
+          1: '购买收益',
+          2: '租金收益'
+        }
+      },
+      {
         title: '提成金额(元)',
         dataIndex: 'amount',
         align: 'center',
