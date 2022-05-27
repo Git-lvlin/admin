@@ -1518,3 +1518,11 @@ export const tagSortInfo = (params = {}, options = {}) => {
     ...options
   })
 }
+
+export const selAllVersion = (params = {}, options = {}) => {
+  return request(`/auth/java-admin/cms/appversion/selectAppVersion`, {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
