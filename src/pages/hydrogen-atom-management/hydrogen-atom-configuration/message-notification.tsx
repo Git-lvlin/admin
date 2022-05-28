@@ -81,7 +81,7 @@ export default () => {
         if(res.code==0){
           const datail=JSON.parse(res.data?.value)
           form2.setFieldsValue({
-            times:datail?.times,
+            times:`每月：${datail?.times}`,
             code:res.data?.code,
             cron:datail?.cron
           })
@@ -224,6 +224,7 @@ export default () => {
         ><ProForm.Group>
             <ProFormText
               wrapperCol={20}
+              labelCol={5}
               readonly
               name='times'
               label="通知时间"
@@ -238,7 +239,7 @@ export default () => {
               hidden
             />
             <Form.Item>
-              <Button type="primary" style={{ marginLeft:'595px' }} onClick={()=>{
+              <Button type="primary" style={{ marginLeft:'480px' }} onClick={()=>{
                 formRef2?.current.submit()
               }}>
                 确定

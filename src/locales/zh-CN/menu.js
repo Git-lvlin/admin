@@ -387,4 +387,8 @@ export default {
   'menu.hydrogen-atom-management.referral-commission': '推荐提成',
   'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
 
+  'menu.office-management': '办事处管理',
+  'menu.office-management.office-management-list': '办事处管理列表',
+  'menu.office-management.office-achievements': '办事处业绩',
+
 };
