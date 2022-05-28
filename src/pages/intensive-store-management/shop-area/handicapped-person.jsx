@@ -140,7 +140,7 @@ export default  () => {
                 { validator: checkConfirm }
             ]}
             fieldProps={{
-              addonAfter: `元/${formDatil?.settingValues?.circleNum}${formDatil?.settingValues?.unit}`
+              addonAfter: `元/${formDatil?.settingValues?.unit}`
           }}
             labelCol={2}
         />
