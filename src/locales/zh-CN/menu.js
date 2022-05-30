@@ -391,5 +391,9 @@ export default {
 
   'menu.buried-point': '埋点数据看板',
   'menu.buried-point.incident-analysts': '事件分析',
+  
+  'menu.office-management': '办事处管理',
+  'menu.office-management.office-management-list': '办事处管理列表',
+  'menu.office-management.office-achievements': '办事处业绩',
 
 };

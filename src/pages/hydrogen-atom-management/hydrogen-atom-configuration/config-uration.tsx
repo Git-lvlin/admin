@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
-import { getQyzBuyConfig,
-  personDivide,
+import { 
+  buyPersonDivide,
+  rentPersonDivide,
   aboutMachine,
   againRentChange,
+  scanMachine
 } from '@/services/hydrogen-atom-management/hydrogen-atom-configuration';
 import { Divider, Form, Button, Descriptions } from 'antd';
 import type { ProColumns,ActionType } from '@ant-design/pro-table';
@@ -24,28 +26,20 @@ export default () => {
     const [dataList,setDataList]=useState()
     const [rent,setRent]=useState()
     const [rentDetail,setRentDetail]=useState<rentDetailItem>()
+    const [scanDetail,setScanDetail]=useState<rentDetailItem>()
     const formRef=useRef<ProFormInstance>()
     const [form] = Form.useForm()
     const [visible, setVisible] = useState(false);
     const [paramsType,setParamsType]=useState<paramsTypeItem>()
     useEffect(()=>{
-      getQyzBuyConfig({}).then(res=>{
+      buyPersonDivide({}).then(res=>{
         if(res.code==0){
-          const data=[
-            {id:0,commission:'供应商',describe:'帅博公司',DividedAmount:res.data?.retailSupplyPrice,IntoThat:'通道手续费 0.65%' },
-            {id:1,commission:'直推人',describe:'直接推荐人，以约购社区推荐关系计算，社区店主才有',DividedAmount:res.data?.suggestCommission,IntoThat:'提现时扣 7% 提现手续费' },
-            {id:2,commission:'运营中心',describe:'平台运营中心，以区/县为单位',DividedAmount:res.data?.agentCompanyCommission,IntoThat:'线上对公结算'  },
-            {id:3,commission:'汇能健康事业部（平台代收）',describe:'以省为单位的实体',DividedAmount:res.data?.businessDeptCommission,IntoThat:'线下结算时扣除 7% 手续费'  },
-            {id:4,commission:'汇智能通省加盟商（平台代收）',describe:'简称 ‘省代’',DividedAmount:res.data?.provinceAgentCommission,IntoThat:'线下结算'  },
-            {id:5,commission:'汇智能通市加盟商（平台代收）',describe:'简称 ‘市代’',DividedAmount:res.data?.cityAgentCommission,IntoThat:'线下结算'  },
-            {id:6,commission:'平台',describe:' ',DividedAmount:res.data?.platformCommission,IntoThat:'其他对象分成后余下部分'  },
-          ]
-          setDataDetail(data)
-          setDetail(res.data)
+          setDataDetail(JSON.parse(res.data?.value).records)
+          setDetail(JSON.parse(res.data?.value).rent)
         }
       })
 
-      personDivide({}).then(res=>{
+      rentPersonDivide({}).then(res=>{
         if(res.code==0){
           setDataList(JSON.parse(res.data?.value).records)
           setRent(JSON.parse(res.data?.value).rent)
@@ -55,6 +49,12 @@ export default () => {
       aboutMachine({}).then(res=>{
         if(res.code==0){
           setRentDetail(JSON.parse(res.data?.value))
+        }
+      })
+
+      scanMachine({}).then(res=>{
+        if(res.code==0){
+          setScanDetail(JSON.parse(res.data?.value))
         }
       })
 
@@ -75,50 +75,14 @@ export default () => {
     const columns:ProColumns<activityItem>[]= [
       {
         title: '序号',
-        dataIndex:'id',
-        valueType: 'borderIndex',
-        hideInSearch: true,
-        valueType: 'indexBorder'
-      },
-      {
-        title: '提成对象',
-        dataIndex: 'commission',
-        valueType: 'text',
-      },
-      {
-        title: '描述',
-        dataIndex: 'describe',
-        valueType: 'text',
-        hideInSearch: true,
-      },
-      {
-        title: '分成金额（元）',
-        dataIndex: 'DividedAmount',
-        valueType: 'text',
-        hideInSearch: true,
-        render:(_)=>{
-          return <p>{amountTransform(_,'/').toFixed(2)}</p>
-        }
-      },
-      {
-        title: '分成说明',
-        dataIndex: 'IntoThat',
-        valueType: 'text',
-        hideInSearch: true,
-      }
-    ];
-
-    const columns2:ProColumns<activityItem>[]= [
-      {
-        title: '序号',
         dataIndex:'code',
         valueType: 'borderIndex',
         hideInSearch: true,
         valueType: 'indexBorder'
       },
       {
-        title: '提成对象',
-        dataIndex: 'dividePerson',
+        title: '提成对象和对应分成项名称',
+        dataIndex: 'item',
         valueType: 'text',
       },
       {
@@ -137,6 +101,54 @@ export default () => {
         }
       },
       {
+        title: '分成比例（%）',
+        dataIndex: 'percent',
+        valueType: 'text',
+        hideInSearch: true,
+      },
+      {
+        title: '分成说明',
+        dataIndex: 'divideExplain',
+        valueType: 'text',
+        hideInSearch: true,
+      }
+    ];
+
+    const columns2:ProColumns<activityItem>[]= [
+      {
+        title: '序号',
+        dataIndex:'code',
+        valueType: 'borderIndex',
+        hideInSearch: true,
+        valueType: 'indexBorder'
+      },
+      {
+        title: '提成对象',
+        dataIndex: 'item',
+        valueType: 'text',
+      },
+      {
+        title: '描述',
+        dataIndex: 'describe',
+        valueType: 'text',
+        hideInSearch: true,
+      },
+      {
+        title: '分成金额（元）',
+        dataIndex: 'divideMoney',
+        valueType: 'text',
+        hideInSearch: true,
+        render:(_)=>{
+          return <p>{amountTransform(_,'/').toFixed(2)}</p>
+        }
+      },
+      {
+        title: '分成比例（%）',
+        dataIndex: 'percent',
+        valueType: 'text',
+        hideInSearch: true,
+      },
+      {
         title: '分成说明',
         dataIndex: 'divideExplain',
         valueType: 'text',
@@ -151,7 +163,7 @@ export default () => {
           options={false}
           headerTitle="购买_氢原子交易款的各个角色分成"
           toolBarRender={()=>[
-            <p key='money'>交易款金额：{amountTransform(detail?.salePrice,'/').toFixed(2)}元</p>
+            <p key='money'>交易款金额：{amountTransform(detail,'/').toFixed(2)}元</p>
           ]}
           search={false}
           columns={columns}
@@ -201,7 +213,13 @@ export default () => {
                 }}
               />
               天
-              <p style={{color:'#FBB336'}}>（从机器租约到期日的次日算起（除首次缴租外,指定续租可缴租时段即为可逾期天数：每月1日-3日））</p>
+              <p style={{color:'#FBB336'}}>（从机器租约到期日的次日算起（除首次缴租外,指定续租可缴租时段即为可逾期天数：每月1日-5日））</p>
+            </Descriptions.Item>
+            <Descriptions.Item  label="对于租赁的氢原子">
+              普通用户 可扫机器 {scanDetail?.member?.count} 次 / 天，每次间隔 {scanDetail?.member?.minute} 分钟
+            </Descriptions.Item>
+            <Descriptions.Item label="对于租赁的氢原子">
+              绑定的店主 可扫机器 {scanDetail?.store?.count} 次 / 天，每次间隔 {scanDetail?.store?.minute} 分钟
             </Descriptions.Item>
         </Descriptions>
 
@@ -313,6 +331,7 @@ export default () => {
                 })
               ]}
               extra={<span style={{color:'#FBB336'}}>此部分不参与分成</span>}
+              initialValue={0}
             />
             <p>额外管理费</p>
           </ProForm.Group>
@@ -362,6 +381,7 @@ export default () => {
                   },
                 })
               ]}
+              initialValue={0}
               extra={<span style={{color:'#FBB336'}}>此部分不参与分成</span>}
             />
             <p>额外管理费</p>

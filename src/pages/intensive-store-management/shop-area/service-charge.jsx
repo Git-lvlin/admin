@@ -172,6 +172,9 @@ export default  () => {
     {
       title: '平台服务费（元）',
       dataIndex: 'money',
+      render:(_)=>{
+        return <p>{_}元</p>
+      }
     },
     {
       title: '收费优惠条件',
@@ -193,18 +196,30 @@ export default  () => {
     {
       title: '平台服务费（元）',
       dataIndex: 'money',
+      render:(_)=>{
+        return <p>{_}元</p>
+      }
     },
     {
       title: '直推人（元）',
       dataIndex: 'profitDirect',
+      render:(_)=>{
+        return <p>{_}元</p>
+      }
     },
     {
       title: '约购运营中心（元）',
       dataIndex: 'profitSupplier',
+      render:(_)=>{
+        return <p>{_}元</p>
+      }
     },
     {
-      title: '健康事业部（元）',
+      title: '店铺所属的事业部（元）',
       dataIndex: 'profitHealth',
+      render:(_)=>{
+        return <p>{_}元</p>
+      }
     },
   ];
 
@@ -232,7 +247,7 @@ export default  () => {
         }
         }
       >
-        <p style={{fontWeight:'bold'}}>{formDatil?.settingDescribe}{formDatil?.settingValues?.basePoint?.money}元 /{formDatil?.settingValues?.basePoint?.unit}</p>
+        <p style={{fontWeight:'bold'}}>{formDatil?.settingDescribe}{formDatil?.settingValues?.basePoint?.money}元 /{formDatil?.settingValues?.basePoint?.circleNum}{formDatil?.settingValues?.basePoint?.unit}</p>
 
         <ProFormRadio.Group
                 name="currentType"

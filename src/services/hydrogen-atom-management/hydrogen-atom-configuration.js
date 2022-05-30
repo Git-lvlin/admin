@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
 // 购买_氢原子交易款的各个角色分成
-export const getQyzBuyConfig = async (params = {}, options = {}) => {
+export const buyPersonDivide = async (params = {}, options = {}) => {
   const { ...rest } = params
-  const res = await request('/auth/goods/product/getQyzBuyConfig', {
+  const res = await request('/auth/java-admin/bizConfig/findByCode/BUY_PERSON_DIVIDE', {
     method: 'POST',
     data: {
       ...rest
@@ -19,9 +19,9 @@ export const getQyzBuyConfig = async (params = {}, options = {}) => {
 
 
 //租赁_氢原子租金款的各个角色提成比例
-export const personDivide = async (params = {}, options = {}) => {
+export const rentPersonDivide = async (params = {}, options = {}) => {
   const { ...rest } = params
-  const res = await request('/auth/java-admin/bizConfig/findByCode/PERSON_DIVIDE', {
+  const res = await request('/auth/java-admin/bizConfig/findByCode/RENT_PERSON_DIVIDE', {
     method: 'POST',
     data: {
       ...rest
@@ -72,10 +72,28 @@ export const againRentChange = async (params = {}, options = {}) => {
   }
 }
 
+
 //修改续租租金变动配置接口
 export const updateByCode = async (params = {}, options = {}) => {
   const { ...rest } = params
   const res = await request('/auth/java-admin/bizConfig/updateByCode', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}
+
+//查看机器扫描的次数和时间
+export const scanMachine = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/bizConfig/findByCode/SCAN_MACHINE', {
     method: 'POST',
     data: {
       ...rest
