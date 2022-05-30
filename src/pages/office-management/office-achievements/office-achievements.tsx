@@ -131,7 +131,8 @@ export default function TransactionData () {
                 <p>{data?.totalCount}台（销售{data?.totalSaleCount}台 + 租赁{data?.totalRentCount}台）</p>
                </>
       },
-      hideInSearch: true
+      hideInSearch: true,
+      sorter:(a, b) =>a.totalOrderAmount - b.totalOrderAmount
     },
   ]
 
