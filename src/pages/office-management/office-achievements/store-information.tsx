@@ -35,13 +35,13 @@ export default (props) => {
   const divide=(item)=>{
     switch (type) {
       case 1:
-        return item?.totalCommission
+        return amountTransform(item?.totalCommission,'/').toFixed(2)
       case 2:
-        return item?.totalSaleCommission
+        return amountTransform(item?.totalSaleCommission,'/').toFixed(2)
       case 3:
-        return item?.totalRentCommission
+        return amountTransform(item?.totalRentCommission,'/').toFixed(2)
       case 4:
-        return item?.totalOrderAmount
+        return amountTransform(item?.totalOrderAmount,'/').toFixed(2)
       default:
         return ''
     }
@@ -86,7 +86,7 @@ export default (props) => {
       {...formItemLayout}
     >
       {
-        type==4&&<><p>总业绩：{msgDetail?.totalOrderAmount}元，总机器：{msgDetail?.totalCount}台（销售{msgDetail?.totalSaleCount}台，租赁{msgDetail?.totalRentCount}台）</p><Divider /></>
+        type==4&&<><p>总业绩：{amountTransform(msgDetail?.totalOrderAmount,'/').toFixed(2)}元，总机器：{msgDetail?.totalCount}台（销售{msgDetail?.totalSaleCount}台，租赁{msgDetail?.totalRentCount}台）</p><Divider /></>
       }
        <List
         itemLayout="horizontal"

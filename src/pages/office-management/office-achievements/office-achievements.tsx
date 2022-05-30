@@ -86,7 +86,7 @@ export default function TransactionData () {
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(1)}}>{_}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return _
         }
@@ -99,8 +99,8 @@ export default function TransactionData () {
       dataIndex: 'totalSaleCommission',
       align: 'center',
       render: (_,data)=>{
-        if(parseInt(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{_}</a>
+        if(parseFloat(_)){
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return _
         }
@@ -112,8 +112,8 @@ export default function TransactionData () {
       dataIndex: 'totalRentCommission',
       align: 'center',
       render: (_,data)=>{
-        if(parseInt(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{_}</a>
+        if(parseFloat(_)){
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return _
         }
@@ -127,7 +127,7 @@ export default function TransactionData () {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(4)}}>{_}</a>
+                <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(4)}}>{amountTransform(_,'/').toFixed(2)}</a>
                 <p>{data?.totalCount}台（销售{data?.totalSaleCount}台 + 租赁{data?.totalRentCount}台）</p>
                </>
       },
