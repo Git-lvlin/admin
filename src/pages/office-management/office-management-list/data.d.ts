@@ -1,20 +1,8 @@
 export type DescriptionsProps = {
-  doneLeaseImeiSum?: number;
-  leaseAmountSum?: number;
-  leaseDaySum?: number;
-  leaseImeiScale?: string;
-  leaseImeiSum?: number;
-  leaseImeiUserScale?: string;
-  leaseImeiUserSum?: number;
-  leaseOrderAmount?: string;
-  leasePaySum?: number;
-  payImeiSum?: number;
-  payImeiUserSum?: number;
-  payOrderAmount?: string;
-  scanAmountSum?: string;
-  scanTimeSum?: string;
-  startImeiSum?: number;
-  startSum?: number;
+  agencyTotalNum: string;
+  agencyLoginNum: string;
+  vipStoreNum: string;
+  commonStoreNum: number;
 }
 
 export type TableProps = {

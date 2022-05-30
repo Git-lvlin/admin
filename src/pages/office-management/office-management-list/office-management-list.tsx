@@ -17,7 +17,6 @@ export default function TransactionData () {
   const [storeVisible, setStoreVisible] = useState<boolean>(false)
   const [type, setType] = useState<number>(0)
   const [msgDetail, setMsgDetail] = useState<string>()
-  const [memberPhone, setMemberPhone] = useState<string>()
   const form = useRef<ActionType>()
   const descriptionsColumns: ProDescriptionsItemProps<DescriptionsProps>[] = [
     {
@@ -75,7 +74,11 @@ export default function TransactionData () {
       dataIndex: 'vipStoreNums',
       align: 'center',
       render: (_,data)=>{
-        return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data)}}>{_}</a>
+        if(_){
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(1)}}>{_}</a>
+        }else{
+          return _
+        }
       }
     },
     {
@@ -84,7 +87,12 @@ export default function TransactionData () {
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
-        return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data)}}>{_}</a>
+        if(_){
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
+        }else{
+          return _
+        }
+
       }
     },
     {
@@ -148,6 +156,7 @@ export default function TransactionData () {
           msgDetail={msgDetail}
           callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
           onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          type={type}
         />
       }
     </PageContainer>
