@@ -78,6 +78,7 @@ export default {
   'menu.setting.password': '修改密码',
   'menu.setting.shipments-area-configuration': '待发货区域配置',
   'menu.setting.switch-setting': '阶梯优惠参数开关',
+  'menu.setting.contract-management': '合同管理',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
@@ -390,5 +391,8 @@ export default {
   'menu.office-management': '办事处管理',
   'menu.office-management.office-management-list': '办事处管理列表',
   'menu.office-management.office-achievements': '办事处业绩',
+  
+  'menu.buried-point': '埋点数据看板',
+  'menu.buried-point.incident-analysts': '事件分析',
 
 };
