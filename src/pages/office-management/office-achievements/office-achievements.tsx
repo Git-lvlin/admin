@@ -59,6 +59,9 @@ export default function TransactionData () {
       dataIndex: 'businessDeptId',
       align: 'center',
       hideInTable: true,
+      fieldProps:{
+        placeholder:'请输入办事处ID'
+      },
       order: 3
     },
     {
@@ -77,7 +80,10 @@ export default function TransactionData () {
       title: '办事处名称',
       dataIndex: 'businessDeptName',
       align: 'center',
-      order: 4
+      order: 4,
+      fieldProps:{
+        placeholder:'请输入办事处名称'
+      },
     },
     {
       title: '累计分成(元)',
