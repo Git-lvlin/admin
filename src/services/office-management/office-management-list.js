@@ -29,7 +29,8 @@ export const userLists = async (params = {}, options = {}) => {
     return {
       data: res.data.records,
       success: true,
-      total: res.data.total
+      total: res.data.total,
+      code: res.code
     }
   }
 
@@ -76,6 +77,20 @@ export const accountResetPwd = async (params = {}, options = {}) => {
 }
 
 export const accountCheckAccount = async (params = {}, options = {}) => {
+    const res = await request('/auth/agency/account/checkAccount', {
+        method: 'POST',
+        data:params,
+        ...options
+    });
+
+    return {
+        data: res.data,
+        success: true,
+        code: res.code
+    }
+}
+
+export const checkAccount = async (params = {}, options = {}) => {
     const res = await request('/auth/agency/account/checkAccount', {
         method: 'POST',
         data:params,
