@@ -105,9 +105,6 @@ export default () => {
         dataIndex: 'percent',
         valueType: 'text',
         hideInSearch: true,
-        render:(_)=>{
-          return <p>{amountTransform(_,'/').toFixed(2)}</p>
-        }
       },
       {
         title: '分成说明',
@@ -150,9 +147,6 @@ export default () => {
         dataIndex: 'percent',
         valueType: 'text',
         hideInSearch: true,
-        render:(_)=>{
-          return <p>{amountTransform(_,'/').toFixed(2)}</p>
-        }
       },
       {
         title: '分成说明',
