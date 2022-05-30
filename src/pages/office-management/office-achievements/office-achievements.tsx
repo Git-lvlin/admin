@@ -2,8 +2,7 @@ import { useState, useRef } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProDescriptions from "@ant-design/pro-descriptions"
 import ProTable from "@ant-design/pro-table"
-import { Image } from "antd"
-
+import moment from 'moment';
 import type { ProColumns } from "@ant-design/pro-table"
 import type { ProDescriptionsItemProps } from "@ant-design/pro-descriptions"
 import type { FormInstance } from "@ant-design/pro-form"
@@ -14,18 +13,21 @@ import { getPageQuery } from "@/utils/utils"
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import { amountTransform } from '@/utils/utils'
+import StoreInformation from './store-information'
 
 export default function TransactionData () {
-  const [devicesVisible, setDevicesVisible] = useState<boolean>(false)
   const [type, setType] = useState<number>(0)
-  const [memberId, setMemberId] = useState<string>()
-  const [memberPhone, setMemberPhone] = useState<string>()
+  const [storeVisible, setStoreVisible] = useState<boolean>(false)
+  const [msgDetail, setMsgDetail] = useState<string>()
   const [visit, setVisit] = useState<boolean>(false)
   const form = useRef<FormInstance>()
 
-  const getFieldValue = () => {
+  const getFieldValue = (searchConfig) => {
+    const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      ...form.current?.getFieldsValue()
+      begin:dateRange&&moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+      end:dateRange&&moment(dateRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+      ...rest,
     }
   }
 
@@ -67,29 +69,10 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      dataIndex: 'memberId',
+      dataIndex: 'dateRange',
       align: 'center',
-      valueType: 'select',
+      valueType: 'dateRange',
       hideInTable: true,
-      valueEnum:{
-        2020: '2020',
-        2021: '2021',
-        2022: '2022'
-      }
-    },
-    {
-      dataIndex: 'memberId',
-      valueType: 'select',
-      hideInTable: true,
-      valueEnum:{
-        1: '1月',
-        2: '2月',
-        3: '3月',
-        4: '4月',
-        5: '5月',
-        6: '第一季度',
-        7: '第二季度',
-      }
     },
     {
       title: '办事处名称',
@@ -101,8 +84,13 @@ export default function TransactionData () {
       title: '累计分成(元)',
       dataIndex: 'totalCommission',
       align: 'center',
-      render: (_)=>{
-        return <a onClick={()=>{}}>{_}</a>
+      render: (_,data)=>{
+        if(parseFloat(_)){
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
+        }else{
+          return _
+        }
+
       },
       hideInSearch: true
     },
@@ -110,8 +98,12 @@ export default function TransactionData () {
       title: '销售分成(元)',
       dataIndex: 'totalSaleCommission',
       align: 'center',
-      render: (_)=>{
-        return <a onClick={()=>{}}>{_}</a>
+      render: (_,data)=>{
+        if(parseFloat(_)){
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
+        }else{
+          return _
+        }
       },
       hideInSearch: true
     },
@@ -119,8 +111,13 @@ export default function TransactionData () {
       title: '管理费分成(元)',
       dataIndex: 'totalRentCommission',
       align: 'center',
-      render: (_)=>{
-        return <a onClick={()=>{}}>{_}</a>
+      render: (_,data)=>{
+        if(parseFloat(_)){
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
+        }else{
+          return _
+        }
+
       },
       hideInSearch: true
     },
@@ -130,7 +127,7 @@ export default function TransactionData () {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <a onClick={()=>{}}>{_}</a>
+                <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(4)}}>{amountTransform(_,'/').toFixed(2)}</a>
                 <p>{data?.totalCount}台（销售{data?.totalSaleCount}台 + 租赁{data?.totalRentCount}台）</p>
                </>
       },
@@ -152,33 +149,35 @@ export default function TransactionData () {
         columns={tableColumns}
         request={findPage}
         columnEmptyText={false}
-        formRef={form}
+        actionRef={form}
         pagination={{
           pageSize: 10
         }}
         options={false}
         search={{
-          optionRender: (searchConfig, props, dom)=> [
+          optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-            <Export
-              key="1"
-              type='financial-businessDept-commission-page'
-              conditions={getFieldValue}
-            />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'financial-businessDept-commission-page'}/>,
-          ]
+              <Export
+                 key='export'
+                 change={(e) => { setVisit(e) }}
+                 type={'financial-businessDept-commission-page'}
+                 conditions={()=>{return getFieldValue(searchConfig)}}
+               />,
+               <ExportHistory key='task' show={visit} setShow={setVisit} type={'financial-businessDept-commission-page'}/>
+          ],
         }}
       />
-      {/* {
-        devicesVisible&&
-        <DevicesDetail
-          visible={devicesVisible}
-          setVisible={setDevicesVisible}
+       {
+        storeVisible&&
+        <StoreInformation
+          visible={storeVisible}
+          setVisible={setStoreVisible}
+          msgDetail={msgDetail}
+          callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
           type={type}
-          memberId={memberId}
-          memberPhone={memberPhone}
         />
-      } */}
+      }
     </PageContainer>
   )
 }
