@@ -103,11 +103,8 @@ const config = {
             ActivityManagement,
             GroupActivitiesManagement,
             HydrogenAtomManagement,
-<<<<<<< HEAD
             OfficeManagement,
-=======
             BuriedPoint,
->>>>>>> coderby
             {
               component: '404',
             },
