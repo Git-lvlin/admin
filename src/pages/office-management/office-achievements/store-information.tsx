@@ -24,7 +24,7 @@ export default (props) => {
   const [form] = Form.useForm();
   const [detailList,setDetailList]=useState()
   useEffect(()=>{
-    findItemPage({businessDeptId:msgDetail?.businessDeptId,userName:msgDetail?.userName}).then(res=>{
+    findItemPage({businessDeptId:msgDetail?.businessDeptId,userName:msgDetail?.userName,type:type}).then(res=>{
       if(res.code==0){
         setDetailList(res.data)
       }
@@ -34,13 +34,13 @@ export default (props) => {
 
   const divide=(item)=>{
     switch (type) {
-      case 1:
+      case 0:
         return amountTransform(item?.totalCommission,'/').toFixed(2)
-      case 2:
+      case 1:
         return amountTransform(item?.totalSaleCommission,'/').toFixed(2)
-      case 3:
+      case 2:
         return amountTransform(item?.totalRentCommission,'/').toFixed(2)
-      case 4:
+      case 3:
         return amountTransform(item?.totalOrderAmount,'/').toFixed(2)
       default:
         return ''
@@ -49,13 +49,13 @@ export default (props) => {
 
   const divideName=()=>{
     switch (type) {
-      case 1:
+      case 0:
         return '累计分成'
-      case 2:
+      case 1:
         return '销售分成'
-      case 3:
+      case 2:
         return '管理费分成'
-      case 4:
+      case 3:
         return '累计业绩'
       default:
         return ''
@@ -86,7 +86,7 @@ export default (props) => {
       {...formItemLayout}
     >
       {
-        type==4&&<><p>总业绩：{amountTransform(msgDetail?.totalOrderAmount,'/').toFixed(2)}元，总机器：{msgDetail?.totalCount}台（销售{msgDetail?.totalSaleCount}台，租赁{msgDetail?.totalRentCount}台）</p><Divider /></>
+        type==3&&<><p>总业绩：{amountTransform(msgDetail?.totalOrderAmount,'/').toFixed(2)}元，总机器：{msgDetail?.totalCount}台（销售{msgDetail?.totalSaleCount}台，租赁{msgDetail?.totalRentCount}台）</p><Divider /></>
       }
        <List
         itemLayout="horizontal"
@@ -95,11 +95,11 @@ export default (props) => {
         <List.Item>
             <List.Item.Meta
             title={<p>{item?.date}</p>}
-            description={type==4&&<p>{item?.totalCount}台(销售{item?.totalCount}台，租赁{item?.totalRentCount}台)</p>}
+            description={type==3&&<p>{item?.totalCount}台(销售{item?.totalCount}台，租赁{item?.totalRentCount}台)</p>}
             />
             <div>
               <p>{divide(item)}元</p>
-              <p style={{color:'#999999'}}>{type==4?'订单数量':'业绩金额'}：{type==4?`${item?.orderCount}笔`:`${amountTransform(item?.totalOrderAmount,'/').toFixed(2)}元`}</p>
+              <p style={{color:'#999999'}}>{type==3?'订单数量':'业绩金额'}：{type==3?`${item?.orderCount}笔`:`${amountTransform(item?.totalOrderAmount,'/').toFixed(2)}元`}</p>
             </div>
         </List.Item>
         )}
