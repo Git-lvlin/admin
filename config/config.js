@@ -103,11 +103,8 @@ const config = {
             ActivityManagement,
             GroupActivitiesManagement,
             HydrogenAtomManagement,
-<<<<<<< HEAD
             BuriedPoint,
-=======
             OfficeManagement,
->>>>>>> setup_ts
             {
               component: '404',
             },
