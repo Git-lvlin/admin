@@ -9,7 +9,6 @@ import type { FormInstance } from "@ant-design/pro-form"
 import type { DescriptionsProps, TableProps } from "./data"
 
 import { findPage,businessDeptSum } from "@/services/office-management/office-achievements"
-import { getPageQuery } from "@/utils/utils"
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import { amountTransform } from '@/utils/utils'
@@ -86,7 +85,7 @@ export default function TransactionData () {
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return _
         }
@@ -100,7 +99,7 @@ export default function TransactionData () {
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return _
         }
@@ -113,7 +112,7 @@ export default function TransactionData () {
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return _
         }
@@ -127,12 +126,12 @@ export default function TransactionData () {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(4)}}>{amountTransform(_,'/').toFixed(2)}</a>
+                <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
                 <p>{data?.totalCount}台（销售{data?.totalSaleCount}台 + 租赁{data?.totalRentCount}台）</p>
                </>
       },
       hideInSearch: true,
-      sorter:(a, b) =>a.totalOrderAmount - b.totalOrderAmount
+      sorter:(a, b) =>a?.totalOrderAmount - b?.totalOrderAmount
     },
   ]
 
