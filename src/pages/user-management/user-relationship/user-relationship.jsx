@@ -17,6 +17,7 @@ const { Search } = Input;
 const UserRelationship = () => {
   const actionRef = useRef();
   const [phoneNumber, setPhoneNumber] = useState();
+  const [phoneNumber2, setPhoneNumber2] = useState();
   const [indexData, setIndexData] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -98,7 +99,7 @@ const UserRelationship = () => {
       dataIndex: 'phoneNumber',
       valueType: 'text',
       search: false,
-      render: (_) => <a onClick={() => { setPhoneNumber(_) }}>{_}</a>
+      render: (_) => <a onClick={() => { setPhoneNumber(_); setPhoneNumber2(_) }}>{_}</a>
     },
     {
       title: '用户手机号',
@@ -107,6 +108,9 @@ const UserRelationship = () => {
       hideInTable: true,
       fieldProps: {
         controls: false,
+      },
+      render: (_, data) => {
+        return <p>{_}</p>
       }
     },
     {
@@ -158,7 +162,7 @@ const UserRelationship = () => {
               :
               <>
                 <div>{new Big(records.buyAmount).plus(records.rentAmount).div(100).toFixed(2)}元</div>
-                <div>(销售{amountTransform(records.buyAmount)}元+管理费{amountTransform(records.rentAmount)}元)</div>
+                <div>(销售{amountTransform(records.buyAmount, '/')}元+管理费{amountTransform(records.rentAmount, '/')}元)</div>
               </>
             }
           </>
@@ -181,6 +185,11 @@ const UserRelationship = () => {
         8: '每日红包活动',
         9: '秒杀活动',
         10: '推荐有礼',
+        11: '年货节活动',
+        12: '春节盖楼活动',
+        13: '特价活动',
+        14: '一分钱活动',
+        15: '店主招募活动',
       }
     },
     {
@@ -286,7 +295,8 @@ const UserRelationship = () => {
               setPhoneNumber(Number(value))
               setIndexData('');
             }}
-            value={phoneNumber}
+            onChange={(e) => { setPhoneNumber2(e.target.value) }}
+            value={phoneNumber2}
             enterButton={'查询'} />
         </ProForm.Group>
         <ProForm.Group>
