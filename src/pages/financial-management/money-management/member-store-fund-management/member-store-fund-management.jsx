@@ -118,6 +118,15 @@ const MemberStoreFundManagement = () => {
       dataIndex: 'accountId'
     },
     {
+      title: '账号类型',
+      dataIndex: 'accountType',
+      valueType: 'select',
+      valueEnum: {
+        'member': '会员',
+        'store': '店主'
+      }
+    },
+    {
       title: '虚拟子账户',
       dataIndex: 'sn'
     },
@@ -242,10 +251,10 @@ const MemberStoreFundManagement = () => {
             return e
           }
         }
-        rowKey='accountId'
+        rowKey='sn'
         toolBarRender={false}
         columns={columns}
-        params={{accountType: 'store'}}
+        params={{accountTypes: ['store', 'member']}}
         request={platforms}
         search={{
           optionRender: ({searchText, resetText}, {form}) => [
