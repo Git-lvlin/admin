@@ -29,12 +29,12 @@ function ReferralCommission () {
       },
       {
         title: '佣金类型',
-        dataIndex: 'commissionType',
+        dataIndex: 'inviteType',
         align: 'center',
         valueType: 'select',
         valueEnum: {
-          1: '购买收益',
-          2: '租金收益'
+          0: '管理佣金',
+          1: '服务佣金'
         }
       },
       {
