@@ -5,6 +5,7 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import { accountDetail,accountEdit,checkAccount } from "@/services/office-management/office-management-list"
+import md5 from 'blueimp-md5';
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -63,6 +64,16 @@ export default (props) => {
   
     })
   }
+
+  const checkConfirm3 = (rule, value, callback) => {
+    return new Promise(async (resolve, reject) => {
+      if (value && value.length<6) {
+        await reject('不少于6个字符')
+      }else {
+        await resolve()
+      }
+    })
+  }
   return (
     <DrawerForm
       title='基本信息'
@@ -84,7 +95,11 @@ export default (props) => {
         }
       }}
       onFinish={async (values) => {
-        accountEdit(values).then(res=>{
+        const params={
+          ...values,
+          password:values?.password&&md5(values?.password)
+        }
+        accountEdit(params).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)
@@ -121,17 +136,15 @@ export default (props) => {
           maxLength:18
         }}
       />
-      {/* <ProFormDependency name={['userName']}>
-                {({ userName }) => { 
-                    return  
-              }}
-      </ProFormDependency> */}
-      <ProFormText
+      <ProFormText.Password
         width={250}
         label="办事处登录密码"
         name="password"
         placeholder='请输入登录密码'
-        rules={[{ required: true, message: '请输入办事处登录密码' }]}
+        rules={[
+          // { required: true, message: '请输入办事处登录密码' },
+          {validator: checkConfirm3}
+        ]}
         fieldProps={{
           maxLength:18,
           minLength:6,

@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
 import { Form,List,Divider } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
+import ProList from '@ant-design/pro-list';
 import { findItemPage } from "@/services/office-management/office-achievements"
 import { amountTransform } from '@/utils/utils'
+import type { GithubIssueItem } from "./data"
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -20,18 +21,8 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible, callback,msgDetail,onClose,type} = props;
+  const { visible, setVisible,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
-  const [detailList,setDetailList]=useState()
-  useEffect(()=>{
-    findItemPage({businessDeptId:msgDetail?.businessDeptId,userName:msgDetail?.userName,type:type}).then(res=>{
-      if(res.code==0){
-        setDetailList(res.data)
-      }
-    })
-
-  },[])
-
   const divide=(item)=>{
     switch (type) {
       case 0:
@@ -79,31 +70,50 @@ export default (props) => {
             return []
         }
       }}
-      onFinish={async (values) => {
-        setVisible(false)
-        callback(true)
+      onFinish={()=>{
+        return false
       }}
       {...formItemLayout}
     >
       {
         type==3&&<><p>总业绩：{amountTransform(msgDetail?.totalOrderAmount,'/').toFixed(2)}元，总机器：{msgDetail?.totalCount}台（销售{msgDetail?.totalSaleCount}台，租赁{msgDetail?.totalRentCount}台）</p><Divider /></>
       }
-       <List
-        itemLayout="horizontal"
-        dataSource={detailList}
-        renderItem={item => (
-        <List.Item>
-            <List.Item.Meta
-            title={<p>{item?.date}</p>}
-            description={type==3&&<p>{item?.totalCount}台(销售{item?.totalCount}台，租赁{item?.totalRentCount}台)</p>}
-            />
+      <ProList<GithubIssueItem>
+        search={false}
+        rowKey="name"
+        request={findItemPage}
+        params={{
+          businessDeptId:msgDetail?.businessDeptId,
+          userName:msgDetail?.userName,
+          type:type
+        }}
+        pagination={{
+          pageSize: 5,
+          showQuickJumper: true,
+        }}
+        split={true}
+        metas={{
+          title: {
+            dataIndex: 'date',
+          },
+          description: {
+            dataIndex: 'totalCount',
+            render:(_,data)=>{
+              if(type==3){
+                return <p>{data?.totalCount}台(销售{data?.totalCount}台，租赁{data?.totalRentCount}台)</p>
+              }
+            }
+          },
+          actions:{
+            render:(text, row)=>(
             <div>
-              <p>{divide(item)}元</p>
-              <p style={{color:'#999999'}}>{type==3?'订单数量':'业绩金额'}：{type==3?`${item?.orderCount}笔`:`${amountTransform(item?.totalOrderAmount,'/').toFixed(2)}元`}</p>
-            </div>
-        </List.Item>
-        )}
-       />
+              <p style={{float:'right',color:'#262626'}}>{divide(row)}元</p><br/>
+              <p style={{color:'#999999',float:'right'}}>{type==3?'订单数量':'业绩金额'}：{type==3?`${row?.orderCount}笔`:`${amountTransform(row?.totalOrderAmount,'/').toFixed(2)}元`}</p>
+            </div> 
+            )
+          }
+        }}
+      />
     </DrawerForm >
   );
 };

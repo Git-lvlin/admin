@@ -580,7 +580,7 @@ const StoreList = (props) => {
       },
     },
     {
-      title: 'VI有效期至',
+      title: 'VIP有效期至',
       dataIndex: 'vipExpireTime',
       valueType: 'text',
       hideInSearch: true,
@@ -643,7 +643,7 @@ const StoreList = (props) => {
               <a onClick={() => { setVisible(true); setAttachmentImage(data?.cancelInfo?.attachList) }}>附件（点击查看）</a>
               <p>注销时还剩余额：{data?.cancelInfo?.balance}元</p>
               <pre className={styles.line_feed}>理由：{data?.cancelInfo?.reason}</pre>
-              <p>（{data?.cancelInfo?.cancleTime}）</p>
+              <p>（{data?.cancleTime}）</p>
             </>
           )
         } else {
@@ -777,7 +777,7 @@ const StoreList = (props) => {
             ...dom.reverse(),
             <div key="export">
               {
-                storeType != 'freshStores' &&
+                storeType != 'freshStores'&& storeType != 'vip' &&
                 <>
                   <Button
                     key="new"
