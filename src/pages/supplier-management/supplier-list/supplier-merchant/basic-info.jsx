@@ -169,6 +169,10 @@ export default (props) => {
         params.password = md5(password)
       }
 
+      if (detailData) {
+        params.contractId = detailData.contractId
+      }
+
       apiMethod(params, { showSuccess: true, showError: true, noFilterParams: true, paramsUndefinedToEmpty: true }).then(res => {
         if (res.code === 0) {
           resolve();
@@ -265,7 +269,7 @@ export default (props) => {
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1 }}>
           {!detailData&&<ProFormSelect
-            name="gasaga"
+            name="contractId"
             label="签电子合同供应商"
             fieldProps={{
               allowClear: false,
