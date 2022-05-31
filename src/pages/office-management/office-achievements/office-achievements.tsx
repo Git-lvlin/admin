@@ -176,7 +176,6 @@ export default function TransactionData () {
           visible={storeVisible}
           setVisible={setStoreVisible}
           msgDetail={msgDetail}
-          callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
           onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
           type={type}
         />
