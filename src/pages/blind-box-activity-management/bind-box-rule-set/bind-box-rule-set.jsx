@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Form, Divider, message, Button,List, Space,Avatar } from 'antd';
-import { FormattedMessage, formatMessage,history } from 'umi';
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import { Form, message, Button,List, Space,Avatar } from 'antd';
+import { formatMessage } from 'umi';
+import { PlusOutlined } from '@ant-design/icons';
 import GainType from './gain-type/gain-type'
 import PeriodValidity from './period-validity/period-validity'
 import PrizeSet from './prize-set/prize-set'
 import Upload from '@/components/upload';
 import { saveActiveConfig } from '@/services/blind-box-activity-management/blindbox-save-active-config';
 import { getActiveConfigById } from '@/services/blind-box-activity-management/blindbox-get-active-config-list';
-import ProForm, { ProFormText, ProFormRadio,ProFormDateRangePicker,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect,DrawerForm,ProFormDigit } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,DrawerForm } from '@ant-design/pro-form';
 import moment from 'moment';
 import styles from './style.less'
-import { PageContainer } from '@/components/PageContainer';
 import { amountTransform } from '@/utils/utils'
 
 

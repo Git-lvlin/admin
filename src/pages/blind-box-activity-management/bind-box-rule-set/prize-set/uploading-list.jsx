@@ -4,7 +4,6 @@ import { message,Form,List,Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { checkUserExist } from '@/services/activity-management/spring-festival-build-building-activity';
 import { useEffect } from 'react';
-import { P } from '@antv/g2plot';
 
 export default props=>{
     const {endId,visible,setVisible,callback,phones,falg,dataSource,designateId}=props

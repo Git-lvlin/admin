@@ -94,8 +94,7 @@
     "react-to-print": "^2.14.4",
     "rsuite": "^4.10.2",
     "umi": "3.5.13",
-    "umi-request": "^1.0.8",
-    "xlsx": "^0.16.9"
+    "umi-request": "^1.0.8"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^1.0.28",
