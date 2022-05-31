@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { Button, message, Input } from 'antd';
 import ProTable from '@ant-design/pro-table';
@@ -8,10 +7,16 @@ import { PageContainer } from '@/components/PageContainer';
 import { userRelationShip, generateUpdata, getGenerteUrl } from '@/services/cms/member/member';
 import Export from './export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import Big from 'big.js'
+import { amountTransform } from '@/utils/utils'
+
+Big.RM = 0;
+
 const { Search } = Input;
 const UserRelationship = () => {
   const actionRef = useRef();
   const [phoneNumber, setPhoneNumber] = useState();
+  const [phoneNumber2, setPhoneNumber2] = useState();
   const [indexData, setIndexData] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -93,6 +98,7 @@ const UserRelationship = () => {
       dataIndex: 'phoneNumber',
       valueType: 'text',
       search: false,
+      render: (_) => <a onClick={() => { setPhoneNumber(_); setPhoneNumber2(_) }}>{_}</a>
     },
     {
       title: '用户手机号',
@@ -102,7 +108,7 @@ const UserRelationship = () => {
       fieldProps: {
         controls: false,
       },
-      render:(_,data)=>{
+      render: (_, data) => {
         return <p>{_}</p>
       }
     },
@@ -144,6 +150,25 @@ const UserRelationship = () => {
       }
     },
     {
+      title: '氢原子交易业绩',
+      dataIndex: '',
+      search: false,
+      render: (_, records) => {
+        return (
+          <>
+            {records.buyAmount == 0 && records.rentAmount == 0
+              ? '0元'
+              :
+              <>
+                <div>{new Big(records.buyAmount).plus(records.rentAmount).div(100).toFixed(2)}元</div>
+                <div>(销售{amountTransform(records.buyAmount, '/')}元+管理费{amountTransform(records.rentAmount, '/')}元)</div>
+              </>
+            }
+          </>
+        )
+      }
+    },
+    {
       title: '渠道',
       dataIndex: 'sourceType',
       search: false,
@@ -159,6 +184,12 @@ const UserRelationship = () => {
         8: '每日红包活动',
         9: '秒杀活动',
         10: '推荐有礼',
+        11: '年货节活动',
+        12: '春节盖楼活动（玩前）',
+        13: '春节盖楼活动（玩后）',
+        14: '特价活动',
+        15: '一分钱活动',
+        16: '店主招募活动',
       }
     },
     {
@@ -195,6 +226,16 @@ const UserRelationship = () => {
       }
     },
     {
+      title: 'VIP社区店主',
+      dataIndex: 'vipStore',
+      valueType: 'text',
+      search: false,
+      valueEnum: {
+        0: '不是',
+        1: '是',
+      }
+    },
+    {
       title: '是否为生鲜店主',
       dataIndex: 'memberShopType',
       valueType: 'text',
@@ -211,6 +252,12 @@ const UserRelationship = () => {
       search: false,
     },
     {
+      title: '邀请好友(位)',
+      dataIndex: 'inviteNum',
+      valueType: 'text',
+      search: false,
+    },
+    {
       title: '注册时间',
       dataIndex: 'regTime',
       valueType: 'text',
@@ -221,6 +268,12 @@ const UserRelationship = () => {
       dataIndex: 'regTime',
       valueType: 'text',
       search: false,
+    },
+    {
+      title: '邀请注册时间',
+      dataIndex: 'regTm',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
     },
   ];
 
@@ -242,6 +295,8 @@ const UserRelationship = () => {
               setPhoneNumber(Number(value))
               setIndexData('');
             }}
+            onChange={(e) => { setPhoneNumber2(e.target.value) }}
+            value={phoneNumber2}
             enterButton={'查询'} />
         </ProForm.Group>
         <ProForm.Group>
@@ -267,7 +322,7 @@ const UserRelationship = () => {
           labelWidth: 'auto',
         }}
         pagination={{
-          pageSize: 5,
+          showSizeChanger: true,
         }}
         toolBarRender={(_, record) => [
           // <Button key="button" type="primary" onClick={() => { getEXT() }}>
