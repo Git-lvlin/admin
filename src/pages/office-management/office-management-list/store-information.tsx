@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Form,List } from 'antd';
+import { Form } from 'antd';
 import {
   DrawerForm,
 } from '@ant-design/pro-form';
-// import ProList from '@ant-design/pro-list';
+import ProList from '@ant-design/pro-list';
 import { getStoreList } from '@/services/intensive-store-management/store-list';
 import type { GithubIssueItem } from "./data"
 
@@ -21,15 +21,8 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible, callback,msgDetail,onClose,type} = props;
+  const { visible, setVisible,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
-  const [detailList,setDetailList]=useState()
-  useEffect(()=>{
-    getStoreList({agencyId:msgDetail?.agencyId,vip:type,size:type==1?msgDetail?.vipStoreNums:msgDetail?.commonStoreNums}).then(res=>{
-        setDetailList(res.data)
-    })
-
-  },[])
   return (
     <DrawerForm
       title={`${type==1?'VIP社区店':'普通社区店'}（ID:${msgDetail?.agencyId}）`}
@@ -42,62 +35,53 @@ export default (props) => {
         destroyOnClose: true,
         onClose: () => {
           onClose();
-        }
+        },
+        keyboard:false
       }}
       submitter={{
         render:()=>{
             return []
         }
       }}
-      onFinish={async (values) => {
-        setVisible(false)
-        callback(true)
+      onFinish={()=>{
+        return false
       }}
       {...formItemLayout}
     >
-      {/* <ProList<GithubIssueItem>
-        search={{}}
+      <ProList<GithubIssueItem>
+        search={false}
         rowKey="name"
-        headerTitle="基础列表"
         request={getStoreList}
+        params={{
+          agencyId:msgDetail?.agencyId,
+          vip:type
+        }}
         pagination={{
           pageSize: 5,
+          showQuickJumper: true,
         }}
-        showActions="hover"
+        split={true}
+        postData={(data)=>{
+          const arr=data.map(ele=>({...ele,desc:ele?.status?.desc}))
+          return arr
+        }}
         metas={{
           title: {
             dataIndex: 'storeName',
-            title: '用户',
-          },
-          avatar: {
-            dataIndex: 'avatar',
-            search: false,
           },
           description: {
-            dataIndex: 'title',
-            search: false,
+            dataIndex: 'desc',
           },
-        }}
-      /> */}
-      <List
-        itemLayout="horizontal"
-        dataSource={detailList}
-        pagination={{
-          pageSize: 5,
-        }}
-        renderItem={item => (
-        <List.Item>
-            <List.Item.Meta
-            title={<p>{item?.storeName}</p>}
-            description={<p>{item?.status?.desc}</p>}
-            />
+          actions:{
+            render:(text, row)=>(
             <div>
-              <p style={{float:'right'}}>{item?.auditTime} <span>审核通过</span></p><br/>
-              <p style={{color:'#999999',float:'right'}}>{item?.areaInfo['1964']} {item?.areaInfo['1988']} {item?.areaInfo['1992']} {item?.address}</p>
-            </div>
-        </List.Item>
-        )}
-       />
+              <p style={{float:'right',color:'#262626'}}>{row?.auditTime} <span>审核通过</span></p><br/>
+              <p style={{color:'#999999',float:'right'}}>{row?.areaInfo['1964']} {row?.areaInfo['1988']} {row?.areaInfo['1992']} {row?.address}</p>
+            </div> 
+            )
+          }
+        }}
+      />
     </DrawerForm >
   );
 };
