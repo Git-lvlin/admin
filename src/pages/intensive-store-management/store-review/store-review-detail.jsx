@@ -70,7 +70,7 @@ const ImageInfo = ({ value, onChange }) => {
       <Space>
         <Upload code={305} value={idCardFrontImg} text="上传身份证姓名面照片" maxCount={1} accept="image/*" size={1024 * 1} onChange={idCardFrontImgChange} />
         <Upload code={305} value={idCardBackImg} text="上传身份证国徽面照片" maxCount={1} accept="image/*" size={1024 * 1} onChange={idCardBackImgChange} />
-        <Upload code={305} value={idHandheld} text="上传手持身份证照片" maxCount={1} accept="image/*" size={1024 * 1} onChange={idHandheldChange} />
+        {/* <Upload code={305} value={idHandheld} text="上传手持身份证照片" maxCount={1} accept="image/*" size={1024 * 1} onChange={idHandheldChange} /> */}
       </Space>
     </div>
 
@@ -113,7 +113,7 @@ const Detail = (props) => {
         // idNumber: detailData.details.idNumber,
         idFront: imageInfo.idCardFrontImg,
         idBack: imageInfo.idCardBackImg,
-        idHandheld: imageInfo.idHandheld,
+        // idHandheld: imageInfo.idHandheld,
         memberId: detailData.memberId,
         verifyStatus: detailData.verifyStatus.code,
         deposit: detailData.deposit.length === 0 ? amountTransform(values.depositValue) : 0,
@@ -388,9 +388,9 @@ const Detail = (props) => {
                 if (!idCardBackImg) {
                   return Promise.reject(new Error('请上传身份证背面照片'));
                 }
-                if (!idHandheld) {
-                  return Promise.reject(new Error('请上传手持身份证照片'));
-                }
+                // if (!idHandheld) {
+                //   return Promise.reject(new Error('请上传手持身份证照片'));
+                // }
                 return Promise.resolve();
               },
             })
