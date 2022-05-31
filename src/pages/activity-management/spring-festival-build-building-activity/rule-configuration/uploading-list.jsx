@@ -15,7 +15,7 @@ export default props=>{
             await resolve()
           }
         })
-      }
+    }
     useEffect(()=>{
       if(endId){
         const prizeNotice=phones.split(',')

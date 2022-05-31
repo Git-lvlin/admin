@@ -172,13 +172,16 @@ export default  () => {
     {
       title: '平台服务费（元）',
       dataIndex: 'money',
+      render:(_)=>{
+        return <p>{_}元</p>
+      }
     },
     {
       title: '收费优惠条件',
       dataIndex: 'min',
       render:(_,data)=>{
-        if(data?.id==3){
-         return <p>{_}名及以后</p>
+        if(data?.id==2){
+         return <p>{_}名及以上</p>
         }
          return <p>{_}-{data?.max}名</p>
       }
@@ -193,18 +196,30 @@ export default  () => {
     {
       title: '平台服务费（元）',
       dataIndex: 'money',
+      render:(_)=>{
+        return <p>{_}元</p>
+      }
     },
     {
       title: '直推人（元）',
       dataIndex: 'profitDirect',
+      render:(_)=>{
+        return <p>{_}元</p>
+      }
     },
     {
       title: '约购运营中心（元）',
       dataIndex: 'profitSupplier',
+      render:(_)=>{
+        return <p>{_}元</p>
+      }
     },
     {
-      title: '健康事业部（元）',
+      title: '店铺所属的事业部（元）',
       dataIndex: 'profitHealth',
+      render:(_)=>{
+        return <p>{_}元</p>
+      }
     },
   ];
 
