@@ -293,7 +293,7 @@ const UserRelationship = () => {
             placeholder="请输入用户手机号码"
             onSearch={(value) => {
               setPhoneNumber(Number(value))
-              setIndexData('');
+              // setIndexData('');
             }}
             onChange={(e) => { setPhoneNumber2(e.target.value) }}
             value={phoneNumber2}
