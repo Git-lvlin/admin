@@ -219,7 +219,7 @@ export default () => {
               普通用户 可扫机器 {scanDetail?.member?.count} 次 / 天，每次间隔 {scanDetail?.member?.minute} 分钟
             </Descriptions.Item>
             <Descriptions.Item label="对于租赁的氢原子">
-              绑定的店主 可扫机器 {scanDetail?.store?.count} 次 / 天，每次间隔 {scanDetail?.store?.minute} 分钟
+              绑定的店主 可扫机器 {scanDetail?.store?.count} 次 / 天{scanDetail?.store?.minute&&<p>，每次间隔 {scanDetail?.store?.minute} 分钟</p>}
             </Descriptions.Item>
         </Descriptions>
 
