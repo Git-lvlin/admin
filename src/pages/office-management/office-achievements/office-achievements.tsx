@@ -1,12 +1,11 @@
-import { useState, useRef } from "react"
+import { useState, useRef,useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
-import ProDescriptions from "@ant-design/pro-descriptions"
 import ProTable from "@ant-design/pro-table"
 import moment from 'moment';
 import type { ProColumns } from "@ant-design/pro-table"
-import type { ProDescriptionsItemProps } from "@ant-design/pro-descriptions"
 import type { FormInstance } from "@ant-design/pro-form"
 import type { DescriptionsProps, TableProps } from "./data"
+import { Descriptions } from 'antd';
 
 import { findPage,businessDeptSum } from "@/services/office-management/office-achievements"
 import Export from '@/pages/export-excel/export'
@@ -19,6 +18,8 @@ export default function TransactionData () {
   const [storeVisible, setStoreVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<string>()
   const [visit, setVisit] = useState<boolean>(false)
+  const [detailList,setDetailList]=useState<DescriptionsProps>()
+  const [time,setTime]=useState()
   const form = useRef<FormInstance>()
 
   const getFieldValue = (searchConfig) => {
@@ -30,28 +31,20 @@ export default function TransactionData () {
     }
   }
 
-  const descriptionsColumns: ProDescriptionsItemProps<DescriptionsProps>[] = [
-    {
-      title: '办事处总分成(元)',
-      dataIndex: 'totalCommission',
-      render: (_) => amountTransform(_,'/').toFixed(2)
-    },
-    {
-      title: '办事处总销售分成(元)',
-      dataIndex: 'totalSaleCommission',
-      render: (_) => amountTransform(_,'/').toFixed(2)
-    },
-    {
-      title: '办事处总管理费分成(元)',
-      dataIndex: 'totalRentCommission',
-      render: (_) => amountTransform(_,'/').toFixed(2)
-    },
-    {
-      title: '办事处总业绩(元)',
-      dataIndex: 'totalOrderAmount',
-      render: (_) => amountTransform(_,'/').toFixed(2)
-    },
-  ]
+  useEffect(() => {
+    const params={
+      businessDeptName:time?.businessDeptName,
+      businessDeptId:time?.businessDeptId,
+      begin:time?.dateRange&&time?.dateRange[0],
+      end:time?.dateRange&&time?.dateRange[1]
+    }
+    businessDeptSum(params).then(res=>{
+      if(res.code==0){
+        setDetailList(res.data)
+      }
+    })
+
+  }, [time])
 
   const tableColumns: ProColumns<TableProps>[] = [
     {
@@ -143,19 +136,23 @@ export default function TransactionData () {
 
   return (
     <PageContainer title={false}>
-      <ProDescriptions<DescriptionsProps>
-        column={8}
-        bordered
-        layout='vertical'
-        columns={descriptionsColumns}
-        request={businessDeptSum}
-      />
       <ProTable<TableProps>
         rowKey="memberId"
         columns={tableColumns}
         request={findPage}
         columnEmptyText={false}
         actionRef={form}
+        tableExtraRender={(_, data) => (
+          <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
+            <Descriptions.Item  label="办事处总分成(元)">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
+            <Descriptions.Item  label="办事处总销售分成(元)">{amountTransform(detailList?.totalSaleCommission,'/').toFixed(2)}  </Descriptions.Item>
+            <Descriptions.Item  label="办事处总管理费分成(元)">{amountTransform(detailList?.totalRentCommission,'/').toFixed(2)}  </Descriptions.Item>
+            <Descriptions.Item  label="办事处总业绩(元)">{amountTransform(detailList?.totalOrderAmount,'/').toFixed(2)}  </Descriptions.Item>
+          </Descriptions>
+        )}
+        onSubmit={(val)=>{
+          setTime(val)
+        }}
         pagination={{
           pageSize: 10
         }}

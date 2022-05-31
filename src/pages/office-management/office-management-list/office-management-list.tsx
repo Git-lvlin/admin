@@ -1,13 +1,12 @@
 import { useState, useRef, useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from "@ant-design/pro-table"
-import ProDescriptions from "@ant-design/pro-descriptions"
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
-import type { DescriptionsProps, TableProps } from "./data"
+import type { TableProps,DescriptionsProps } from "./data"
 import EditInformation from './edit-information'
 import ResetPasswords from './reset-passwords'
 import StoreInformation from './store-information'
-import type { ProDescriptionsItemProps } from "@ant-design/pro-descriptions"
+import { Descriptions } from 'antd';
 
 import { userLists,userCount } from "@/services/office-management/office-management-list"
 
@@ -15,31 +14,10 @@ export default function TransactionData () {
   const [visible, setVisible] = useState<boolean>(false)
   const [resetVisible, setResetVisible] = useState<boolean>(false)
   const [storeVisible, setStoreVisible] = useState<boolean>(false)
+  const [detailList,setDetailList]=useState<DescriptionsProps>()
   const [type, setType] = useState<number>(0)
   const [msgDetail, setMsgDetail] = useState<string>()
   const form = useRef<ActionType>()
-  const descriptionsColumns: ProDescriptionsItemProps<DescriptionsProps>[] = [
-    {
-      title: '办事处总数量',
-      dataIndex: 'agencyTotalNum',
-      render: (_) => _
-    },
-    {
-      title: '有登录记录办事处数',
-      dataIndex: 'agencyLoginNum',
-      render: (_) => _
-    },
-    {
-      title: 'VIP社区店总数(家)',
-      dataIndex: 'vipStoreNum',
-      render: (_) => _
-    },
-    {
-      title: '普通社区店总数(家)',
-      dataIndex: 'commonStoreNum',
-      render: (_) => _
-    },
-  ]
   const tableColumns: ProColumns<TableProps>[] = [
     {
       title: 'ID',
@@ -106,16 +84,22 @@ export default function TransactionData () {
       ])
     },
   ]
+  useEffect(() => {
+    userCount({}).then(res=>{
+      if(res.code==0){
+        setDetailList(res.data)
+      }
+    })
 
+  }, [])
   return (
     <PageContainer title={false}>
-      <ProDescriptions<DescriptionsProps>
-        column={8}
-        bordered
-        layout='vertical'
-        columns={descriptionsColumns}
-        request={userCount}
-      />
+      <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff',marginBottom:'20px'}} column={9} layout="vertical" bordered>
+        <Descriptions.Item  label="办事处总数量">{detailList?.agencyTotalNum}  </Descriptions.Item>
+        <Descriptions.Item  label="有登录记录办事处数">{detailList?.agencyLoginNum}  </Descriptions.Item>
+        <Descriptions.Item  label="VIP社区店总数(家)">{detailList?.vipStoreNum}  </Descriptions.Item>
+        <Descriptions.Item  label="普通社区店总数(家)">{detailList?.commonStoreNum}  </Descriptions.Item>
+      </Descriptions>
       <ProTable<TableProps>
         rowKey="memberId"
         columns={tableColumns}

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Form,List } from 'antd';
 import {
-  DrawerForm
+  DrawerForm,
 } from '@ant-design/pro-form';
+// import ProList from '@ant-design/pro-list';
 import { getStoreList } from '@/services/intensive-store-management/store-list';
+import type { GithubIssueItem } from "./data"
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -23,7 +25,7 @@ export default (props) => {
   const [form] = Form.useForm();
   const [detailList,setDetailList]=useState()
   useEffect(()=>{
-    getStoreList({agencyId:msgDetail?.agencyId,vip:type}).then(res=>{
+    getStoreList({agencyId:msgDetail?.agencyId,vip:type,size:type==1?msgDetail?.vipStoreNums:msgDetail?.commonStoreNums}).then(res=>{
         setDetailList(res.data)
     })
 
@@ -53,9 +55,36 @@ export default (props) => {
       }}
       {...formItemLayout}
     >
+      {/* <ProList<GithubIssueItem>
+        search={{}}
+        rowKey="name"
+        headerTitle="基础列表"
+        request={getStoreList}
+        pagination={{
+          pageSize: 5,
+        }}
+        showActions="hover"
+        metas={{
+          title: {
+            dataIndex: 'storeName',
+            title: '用户',
+          },
+          avatar: {
+            dataIndex: 'avatar',
+            search: false,
+          },
+          description: {
+            dataIndex: 'title',
+            search: false,
+          },
+        }}
+      /> */}
       <List
         itemLayout="horizontal"
         dataSource={detailList}
+        pagination={{
+          pageSize: 5,
+        }}
         renderItem={item => (
         <List.Item>
             <List.Item.Meta
