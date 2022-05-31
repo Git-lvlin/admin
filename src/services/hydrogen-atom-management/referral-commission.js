@@ -2,9 +2,14 @@ import request from '@/utils/request'
 
 // 分成关系列表
 export const queryStatisticsCommissionList = async (params = {}, options = {}) => {
+  const { current=1, pageSize=10, ...rest } = params
   const res = await request('/auth/java-admin/iot/deviceCommission/queryStatisticsCommissionList', {
     method: 'POST',
-    data: params,
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
     ...options
   })
   return {
