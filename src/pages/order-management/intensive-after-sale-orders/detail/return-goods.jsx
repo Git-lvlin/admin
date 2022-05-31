@@ -29,19 +29,18 @@ const tableRow = props => {
         <div className={styles.summary}>
           <div className={styles.summaryItem}>
             售后原因：
-            <span className={styles.summaryItemText}>商家库存不足</span>
           </div>
           <div className={styles.summaryItem}>
             售后描述：
-            <span className={styles.summaryItemText}>{props[0]?.description}</span>
+            <span className={styles.summaryItemText}>商家库存不足</span>
           </div>
           <div className={styles.summaryImg}>
             <div className={styles.summaryItemTxt}>售后凭证：</div>
-            <div className={styles.summaryItemPic}>
+            {/* <div className={styles.summaryItemPic}>
               <Image.PreviewGroup>
                 { imageArr() }  
               </Image.PreviewGroup>
-            </div>
+            </div> */}
           </div>
         </div>
       </ProTable.Summary.Cell>
