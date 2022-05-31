@@ -6,7 +6,7 @@
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
     "build": "cross-env cross-env UMI_ENV=dev umi build",
-    "build:dev": "cross-env UMI_ENV=dev umi build node --max_old_space_size=4096",
+    "build:dev": "cross-env NODE_OPTIONS=--max-old-space-size=4096 UMI_ENV=dev umi build",
     "build:uat": "cross-env UMI_ENV=uat umi build",
     "build:fat": "cross-env UMI_ENV=fat umi build",
     "build:pro": "cross-env UMI_ENV=prod umi build",
