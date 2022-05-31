@@ -7,6 +7,7 @@ import EditInformation from './edit-information'
 import ResetPasswords from './reset-passwords'
 import StoreInformation from './store-information'
 import { Descriptions } from 'antd';
+import moment from 'moment'
 
 import { userLists,userCount } from "@/services/office-management/office-management-list"
 
@@ -69,6 +70,19 @@ export default function TransactionData () {
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
         }else{
           return _
+        }
+
+      }
+    },
+    {
+      title: '最近登录时间',
+      dataIndex: 'lastLoginTime',
+      align: 'center',
+      render:(_)=>{
+        if(_){
+          return moment(_*1000).format('YYYY-MM-DD HH:mm:ss')
+        }else{
+          return '-'
         }
 
       }
