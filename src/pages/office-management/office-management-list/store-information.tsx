@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Form } from 'antd';
 import {
   DrawerForm,
@@ -35,8 +34,7 @@ export default (props) => {
         destroyOnClose: true,
         onClose: () => {
           onClose();
-        },
-        keyboard:false
+        }
       }}
       submitter={{
         render:()=>{

@@ -580,7 +580,7 @@ const StoreList = (props) => {
       },
     },
     {
-      title: 'VI有效期至',
+      title: 'VIP有效期至',
       dataIndex: 'vipExpireTime',
       valueType: 'text',
       hideInSearch: true,
