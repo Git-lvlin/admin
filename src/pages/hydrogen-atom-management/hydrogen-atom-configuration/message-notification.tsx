@@ -238,13 +238,13 @@ export default () => {
               name='cron'
               hidden
             />
-            <Form.Item>
+            {/* <Form.Item>
               <Button type="primary" style={{ marginLeft:'480px' }} onClick={()=>{
                 formRef2?.current.submit()
               }}>
                 确定
               </Button>
-            </Form.Item>
+            </Form.Item> */}
           </ProForm.Group>
         </ProForm>
         <Divider style={{ margin: '0 0 20px 0' }} />
