@@ -137,7 +137,7 @@ export default function TransactionData () {
   return (
     <PageContainer title={false}>
       <ProTable<TableProps>
-        rowKey="memberId"
+        rowKey="businessDeptId"
         columns={tableColumns}
         request={findPage}
         columnEmptyText={false}

@@ -101,7 +101,7 @@ export default function TransactionData () {
         <Descriptions.Item  label="普通社区店总数(家)">{detailList?.commonStoreNum}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
-        rowKey="memberId"
+        rowKey="agencyId"
         columns={tableColumns}
         request={userLists}
         columnEmptyText={false}
