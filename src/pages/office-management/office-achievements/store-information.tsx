@@ -100,7 +100,7 @@ export default (props) => {
             dataIndex: 'totalCount',
             render:(_,data)=>{
               if(type==3){
-                return <p>{data?.totalCount}台(销售{data?.totalCount}台，租赁{data?.totalRentCount}台)</p>
+                return <p>{data?.totalCount}台(销售{data?.totalSaleCount}台，租赁{data?.totalRentCount}台)</p>
               }
             }
           },
