@@ -6,6 +6,7 @@ export type PropsDevices = {
   memberPhone?: string
   showTitle?: boolean
   imei?: string
+  inviteType?: number
 }
 
 export type PropsData = {

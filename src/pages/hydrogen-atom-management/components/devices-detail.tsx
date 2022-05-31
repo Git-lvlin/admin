@@ -39,7 +39,7 @@ const OrderRecord:FC<StartUpTimeProps> = ({imei, memberId, memberPhone}) => {
 }
 
 const DevicesDetail: FC<PropsDevices> = (props) => {
-  const {visible, setVisible, type, memberId, memberPhone, showTitle, imei} = props
+  const {visible, setVisible, type, memberId, memberPhone, showTitle, imei, inviteType} = props
 
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number | undefined>(10)
@@ -81,7 +81,8 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
       deviceImei: imei
     },
     5: {
-      buyId: memberId
+      buyId: memberId,
+      inviteType
     },
     6: {
       imei: memberId

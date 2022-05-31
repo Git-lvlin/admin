@@ -11,6 +11,7 @@ export interface PropsExpand {
   memberShop: boolean;
   storeName: string;
   storeNo: string;
+  inviteType: number;
 }
 
 export type PropsTable = {

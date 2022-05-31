@@ -297,7 +297,7 @@ export default {
   'menu.financial-management.money-management.supplier-fund-management':'供应商家资金管理',
   'menu.financial-management.money-management.member-store-fund-management':'社区店资金管理',
   'menu.financial-management.money-management.issuing-store-fund-management':'内部店资金管理',
-  'menu.financial-management.money-management.operator-fund-management':'运营商资金管理',
+  'menu.financial-management.money-management.operator-fund-management':'运营中心资金管理',
   'menu.financial-management.money-management.payment-details':'收支明细',
   'menu.financial-management.money-management.details':'详情',
   'menu.financial-management.transaction-detail-management':'交易明细管理',
