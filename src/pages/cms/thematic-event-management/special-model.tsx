@@ -138,18 +138,18 @@ export default props=>{
               </div>
             </div>
             <div className={styles?.border_box}>
-              <Title style={{ marginBottom: 10 }} level={5}>头图</Title>
+              <Title style={{ marginBottom: 10 }} level={5}>{{1:'头图',2:'倒计时控件',3:'副标题',4:'价格标签1',5:'商品卡片'}[picture]}</Title>
                 <Form.Item
                   label="选择图片"
                   name="bannerImage1"
                   style={{display:picture==1?'block':'none'}}
                 >
                     <FromWrap
-                      content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024}   maxCount={1} accept="image/*" />}
+                      content={(value, onChange) => <Upload multiple value={value} proportion={{ width:750 }}  onChange={onChange} size={2 * 1024}   maxCount={1} accept="image/*" />}
                       right={(value) => {
                         return (
                           <dl>
-                            <dd>支持jpg/png，2M以内</dd>
+                            <dd>支持jpg/png，2M以内，宽度750</dd>
                           </dl>
                         )
                       }}
