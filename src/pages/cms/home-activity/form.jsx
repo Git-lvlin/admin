@@ -9,8 +9,7 @@ import ProForm, {
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import CheckBox from '@/components/checkbox';
-import { homeActivityUpdata } from '@/services/cms/member/member';
-import { selAllVersion } from '@/services/user-management/user-feedback';
+import { homeActivityUpdata, selAllVersion } from '@/services/cms/member/member';
 
 export default (props) => {
   const { detailData, setVisible, onClose, visible, useType } = props;
