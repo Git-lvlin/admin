@@ -64,6 +64,16 @@ export default (props) => {
   
     })
   }
+
+  const checkConfirm3 = (rule, value, callback) => {
+    return new Promise(async (resolve, reject) => {
+      if (value && value.length<6) {
+        await reject('不少于6个字符')
+      }else {
+        await resolve()
+      }
+    })
+  }
   return (
     <DrawerForm
       title='基本信息'
@@ -131,7 +141,10 @@ export default (props) => {
         label="办事处登录密码"
         name="password"
         placeholder='请输入登录密码'
-        rules={[{ required: true, message: '请输入办事处登录密码' }]}
+        rules={[
+          // { required: true, message: '请输入办事处登录密码' },
+          {validator: checkConfirm3}
+        ]}
         fieldProps={{
           maxLength:18,
           minLength:6,
