@@ -72,6 +72,7 @@ const RegionalOrderAnalysis = () => {
         style={{ 
           backgroundColor: '#fff', 
           padding: 10,
+          marginTop: '20px'
         }}
         submitter={{
           render: ({ form }) => {
@@ -113,7 +114,7 @@ const RegionalOrderAnalysis = () => {
           name="area"
           label="地区范围"
         >
-          <AddressCascader areaData={window.yeahgo_area.filter(item=>item.deep !== 3)}/>
+          <AddressCascader areaData={window.yeahgo_area.filter(item=>item.deep !== 3)} changeOnSelect/>
         </ProForm.Item>
       </ProForm>
       <div className={styles.radioArea}>
