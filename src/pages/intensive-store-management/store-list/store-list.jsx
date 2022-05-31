@@ -777,7 +777,7 @@ const StoreList = (props) => {
             ...dom.reverse(),
             <div key="export">
               {
-                storeType != 'freshStores' &&
+                storeType != 'freshStores'&& storeType != 'vip' &&
                 <>
                   <Button
                     key="new"
