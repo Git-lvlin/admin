@@ -91,6 +91,9 @@ export default (props) => {
        <List
         itemLayout="horizontal"
         dataSource={detailList}
+        pagination={{
+          pageSize: 5
+        }}
         renderItem={item => (
         <List.Item>
             <List.Item.Meta
