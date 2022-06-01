@@ -50,7 +50,10 @@ export default () => {
       valueType: 'text',
       order:4,
       render:(_)=>{
-          return <a onClick={()=>{setDetailVisible(true)}}>{_}</a>
+          return <>
+                  <p>https://publicmobile-uat.yeahgo.com/web/exclu...</p>
+                  <a onClick={()=>{setDetailVisible(true)}}>复制</a>
+                 </>
       },
       hideInSearch: true
     },
