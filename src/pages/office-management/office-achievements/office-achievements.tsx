@@ -64,6 +64,7 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
+      title: '业绩时段',
       dataIndex: 'dateRange',
       align: 'center',
       valueType: 'dateRange',
