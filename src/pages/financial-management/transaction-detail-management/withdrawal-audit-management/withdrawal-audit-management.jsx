@@ -60,12 +60,12 @@ const WithdrawalAuditManagement = () => {
       }
     },
     {
-      title: '提现类型',
+      title: '提现渠道',
       dataIndex: 'withdrawType',
       valueType: 'select',
       valueEnum: {
-        'goodsAmount': '货款提现',
-        'commission': '收益提现'
+        'goodsAmount': '汇付',
+        'commission': '薪宝'
       }
     },
     {

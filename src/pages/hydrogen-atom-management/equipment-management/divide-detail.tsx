@@ -31,7 +31,7 @@ const DivideDetail: FC<PropsDivide> = (props) => {
       valueType: 'indexBorder'
     },
     {
-      title: '提成对象',
+      title: '提成对象和对应分成项名称',
       dataIndex: 'objectName',
       align: 'center'
     },

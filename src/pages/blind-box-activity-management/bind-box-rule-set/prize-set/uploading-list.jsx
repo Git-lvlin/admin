@@ -43,7 +43,7 @@ export default props=>{
           submitter={{
           render: (props, defaultDoms) => {
             return [
-            <p style={{color:'#DD9616',margin:'1px 220px 0 0',}}>从给的手机号中随机选1名中奖，已经中过此奖的不会重复中此奖</p>,
+            <p style={{color:'#DD9616',margin:'1px 220px 0 0',}}>多个中奖人时，中奖人先到先得</p>,
             ...defaultDoms
             ];
           },

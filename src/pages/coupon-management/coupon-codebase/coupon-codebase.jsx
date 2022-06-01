@@ -72,6 +72,13 @@ export default props => {
       title: '发行量',
       dataIndex: 'issueQuantity',
       valueType: 'text',
+      render:(_)=>{
+        if(_==-1){
+          return <p>不限量</p>
+        }else{
+          return _
+        }
+      }
     },
     {
       title: '已领取',
@@ -82,6 +89,13 @@ export default props => {
       title: '待领取',
       dataIndex: 'unLqCouponQuantity',
       valueType: 'text',
+      render:(_)=>{
+        if(parseInt(_)<0){
+          return <p>不限量</p>
+        }else{
+          return _
+        }
+      }
     },
     {
       title: '已使用',

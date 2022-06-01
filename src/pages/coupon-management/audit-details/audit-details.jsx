@@ -377,7 +377,7 @@ export default props => {
                   visible={visible}
                   setVisible={setVisible}
                   id={id}
-                  boxref={ref}
+                  callback={()=>{setAuditVisible(false);callback(true)}}
                   status={statusType}
                 />
               }
