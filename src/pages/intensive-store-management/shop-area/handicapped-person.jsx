@@ -140,8 +140,8 @@ export default  () => {
                 { validator: checkConfirm }
             ]}
             fieldProps={{
-                addonAfter:"元/3年"
-            }}
+              addonAfter: `元/${formDatil?.settingValues?.unit}`
+          }}
             labelCol={2}
         />
       </ProForm >
