@@ -134,7 +134,7 @@ export default props=>{
                         <p>商品名称商品名称<br/>商品名称...</p>
                     </div>
                     </article>
-                 </aside>
+                 </aside> 
               </div>
             </div>
             <div className={styles?.border_box}>
@@ -157,9 +157,41 @@ export default props=>{
                 </Form.Item>
                 <div style={{display:picture==2?'block':'none'}}>
                   <ProFormSwitch name="switch1" label="开关控制" />
-                  <ProForm.Group label='控件位置'>
-
-                  </ProForm.Group>
+                  <ProFormRadio.Group
+                    name="radio-vertical"
+                    label="控件位置"
+                    options={[
+                      {
+                        label: '左',
+                        value: 1,
+                      },
+                      {
+                        label: '中',
+                        value: 2,
+                      },
+                      {
+                        label: '右',
+                        value: 3,
+                      }
+                    ]}
+                  />
+                  <ProFormRadio.Group
+                    name="radio-vertical"
+                    options={[
+                      {
+                        label: '上',
+                        value: 1,
+                      },
+                      {
+                        label: '中',
+                        value: 2,
+                      },
+                      {
+                        label: '下',
+                        value: 3,
+                      }
+                    ]}
+                  />
                 </div>
                 <div style={{display:picture==3?'block':'none'}}>
                   <ProFormSwitch name="switch2" label="开关控制" />
