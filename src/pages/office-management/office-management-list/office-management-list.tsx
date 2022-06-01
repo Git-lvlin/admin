@@ -75,6 +75,18 @@ export default function TransactionData () {
       }
     },
     {
+      title: '销售氢原子（台）',
+      dataIndex: 'sellMachineNum',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '租赁氢原子（台）',
+      dataIndex: 'rentMachineNum',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
       title: '最近登录时间',
       dataIndex: 'lastLoginTime',
       align: 'center',
@@ -113,6 +125,8 @@ export default function TransactionData () {
         <Descriptions.Item  label="有登录记录办事处数">{detailList?.agencyLoginNum}  </Descriptions.Item>
         <Descriptions.Item  label="VIP社区店总数(家)">{detailList?.vipStoreNum}  </Descriptions.Item>
         <Descriptions.Item  label="普通社区店总数(家)">{detailList?.commonStoreNum}  </Descriptions.Item>
+        <Descriptions.Item  label="销售氢原子(台)">{detailList?.sellMachineNum}  </Descriptions.Item>
+        <Descriptions.Item  label="租赁氢原子(台)">{detailList?.rentMachineNum}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
         rowKey="agencyId"
