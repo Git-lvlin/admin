@@ -4,7 +4,7 @@ import type { ProColumns } from '@ant-design/pro-table';
 import { consumerOrderPage } from '@/services/hydrogen-atom-management/hydrogen-atom-start-recording'
 import moment from 'moment'
 import { formatMessage } from 'umi';
-import { Button, Space, Typography,Image,Skeleton,Form } from 'antd'
+import { Button, Space, Typography,Image,Skeleton,Form,Row,Col,Radio } from 'antd'
 import { amountTransform } from '@/utils/utils'
 import { PageContainer } from '@ant-design/pro-layout';
 import { useLocation } from 'umi';
@@ -21,6 +21,7 @@ import ProForm, {
 import styles from './style.less'
 import Associated0Goods from './associated0-goods'
 import Upload from '@/components/upload';
+import ReactColor from '@/components/react-color'
 const { Title } = Typography;
 
 const FromWrap = ({ value, onChange, content, right }) => (
@@ -157,41 +158,33 @@ export default props=>{
                 </Form.Item>
                 <div style={{display:picture==2?'block':'none'}}>
                   <ProFormSwitch name="switch1" label="开关控制" />
-                  <ProFormRadio.Group
-                    name="radio-vertical"
-                    label="控件位置"
-                    options={[
-                      {
-                        label: '左',
-                        value: 1,
-                      },
-                      {
-                        label: '中',
-                        value: 2,
-                      },
-                      {
-                        label: '右',
-                        value: 3,
-                      }
-                    ]}
-                  />
-                  <ProFormRadio.Group
-                    name="radio-vertical"
-                    options={[
-                      {
-                        label: '上',
-                        value: 1,
-                      },
-                      {
-                        label: '中',
-                        value: 2,
-                      },
-                      {
-                        label: '下',
-                        value: 3,
-                      }
-                    ]}
-                  />
+                  <Form.Item name="radio-group" label="控件位置">
+                    <Radio.Group>
+                      <Row>
+                        <Col span={8}>
+                          <Radio value="1">左</Radio>
+                        </Col>
+                        <Col span={8}>
+                          <Radio value="2">中</Radio>
+                        </Col>
+                        <Col span={8}>
+                          <Radio value="3">右</Radio>
+                        </Col>
+                        <Col span={8}>
+                          <Radio value="4">上</Radio>
+                        </Col>
+                        <Col span={8}>
+                          <Radio value="5">中</Radio>
+                        </Col>
+                        <Col span={8}>
+                          <Radio value="6">下</Radio>
+                        </Col>
+                      </Row>
+                    </Radio.Group>
+                  </Form.Item>
+                  <Form.Item label='透明遮罩'>
+                    <ReactColor onChange={(val)=>{console.log('val',val)}}/>
+                  </Form.Item>
                 </div>
                 <div style={{display:picture==3?'block':'none'}}>
                   <ProFormSwitch name="switch2" label="开关控制" />
@@ -252,7 +245,15 @@ export default props=>{
                       }
                     ]}
                   />
-                  <SketchPicker />
+                 <Form.Item label='卡片背景'>
+                    <ReactColor onChange={(val)=>{console.log('val',val)}}/>
+                  </Form.Item>
+                  <Form.Item label='文字样式'>
+                    <ReactColor onChange={(val)=>{console.log('val',val)}}/>
+                  </Form.Item>
+                  <Form.Item label='商品边框'>
+                    <ReactColor onChange={(val)=>{console.log('val',val)}}/>
+                  </Form.Item>
               </div>
             </div>
           </div>
