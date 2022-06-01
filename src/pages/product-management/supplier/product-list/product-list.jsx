@@ -419,6 +419,9 @@ const TableList = () => {
       dataIndex: 'goodsKeywords',
       valueType: 'text',
       hideInTable: true,
+      fieldProps: {
+        maxLength: 125
+      },
     },
     {
       title: '商品分类',
