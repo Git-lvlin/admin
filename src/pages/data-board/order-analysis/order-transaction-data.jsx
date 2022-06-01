@@ -54,7 +54,7 @@ const OrderTransactionData = ({timeSelect, time, status}) => {
           </Tooltip>
         </Space>
       ),
-      dataIndex: 'totalPay',
+      dataIndex: 'totalAmount',
       align: 'center'
     },
     {
@@ -66,7 +66,7 @@ const OrderTransactionData = ({timeSelect, time, status}) => {
           </Tooltip>
         </Space>
       ),
-      dataIndex: 'totalAmount',
+      dataIndex: 'totalPay',
       align: 'center'
     },
     {
