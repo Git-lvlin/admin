@@ -17,6 +17,7 @@ function ReferralCommission () {
   const [type, setType] = useState<number>(0)
   const [memberId, setMemberId] = useState<string>()
   const [memberPhone, setMemberPhone] = useState<string>()
+  const [inviteType, setInviteType] = useState<number>()
   const  form = useRef<FormInstance>()
 
   const Expandable: FC<PropsExpandTable> = ({data}) => {
@@ -28,11 +29,11 @@ function ReferralCommission () {
         align: 'center'
       },
       {
-        title: '店主id',
+        title: 'buyId',
         dataIndex: 'buyId',
         align: 'center',
-        hideInSearch: true,
-        hideInTable: true
+        hideInTable: true,
+        hideInSearch: true
       },
       {
         title: '佣金类型',
@@ -81,7 +82,7 @@ function ReferralCommission () {
         align: 'center',
         render: (_, r) => {
           if(r.driverCount >0) {
-            return <a onClick={()=>{ setDevicesVisible(true); setType(5); setMemberId(r.buyId); setMemberPhone(r.buyMobile) }}>{_}</a>
+            return <a onClick={()=>{ setDevicesVisible(true); setType(5); setMemberId(r.buyId); setMemberPhone(r.buyMobile); setInviteType(r.inviteType) }}>{_}</a>
           } else {
             return _
           }
@@ -220,6 +221,7 @@ function ReferralCommission () {
           type={type}
           memberId={memberId}
           memberPhone={memberPhone}
+          inviteType={inviteType}
         />
       }
     </PageContainer>
