@@ -65,7 +65,7 @@ const Detail = ({ storeNo, visible, setVisible }) => {
             <Space>
               <Image width={100} src={detailData?.memberShop?.applyRow?.idFront} />
               <Image width={100} src={detailData?.memberShop?.applyRow?.idBack} />
-              <Image width={100} src={detailData?.memberShop?.applyRow?.idHandheld} />
+              {/* <Image width={100} src={detailData?.memberShop?.applyRow?.idHandheld} /> */}
             </Space>
           </Form.Item>
           <Form.Item
