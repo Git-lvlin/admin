@@ -3,7 +3,7 @@ import { Button,Tabs} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm,ProFormRadio} from '@ant-design/pro-form';
 import { PageContainer } from '@/components/PageContainer';
-import XLSX from 'xlsx'
+// import XLSX from 'xlsx'
 import { couponList } from '@/services/coupon-management/coupon-list';
 import { couponDelSub,couponStatusSub } from '@/services/coupon-management/coupon-delsub';
 import DeleteModal from '@/components/DeleteModal'

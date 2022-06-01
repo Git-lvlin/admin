@@ -1,5 +1,5 @@
 import React from 'react';
-import ProForm,{ ProFormText,ProFormDateTimeRangePicker,ProFormDependency,ProFormRadio} from '@ant-design/pro-form';
+import ProForm,{ ProFormText,ProFormDependency,ProFormRadio} from '@ant-design/pro-form';
 import styles from '../style.less'
 
 export default (props)=>{

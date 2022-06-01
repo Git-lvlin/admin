@@ -5,46 +5,46 @@ import { Button } from 'antd';
 
 export default props => {
 //导出
-const exportExcel = (form) => {
-    couponList({
-      ...form.getFieldsValue(),
-    }).then(res => {
-        const data = res.data.map(item => {
-          const { ...rest } = item;
-          return {
-            ...rest,
+// const exportExcel = (form) => {
+//     couponList({
+//       ...form.getFieldsValue(),
+//     }).then(res => {
+//         const data = res.data.map(item => {
+//           const { ...rest } = item;
+//           return {
+//             ...rest,
   
-          }
-        });
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet([
-          {
-            couponName: '会员ID',
-            couponType: '用户名',
-            useType: '发言时间',
-            issueQuantity: '发言记录',
-          },
-          ...data
-        ], {
-          header: [
-            'couponName',
-            'couponType',
-            'useType',
-            'issueQuantity',
-            'issueQuantity',
-            'lqCouponQuantity',
-            'useCouponQuantity',
-            'activityTimeDisplay',
-            'createTime',
-            'adminName',
-            'couponStatus',
-          ],
-          skipHeader: true
-        });
-        XLSX.utils.book_append_sheet(wb, ws, "file");
-        XLSX.writeFile(wb, `${+new Date()}.xlsx`)
-    })
-  }
+//           }
+//         });
+//         const wb = XLSX.utils.book_new();
+//         const ws = XLSX.utils.json_to_sheet([
+//           {
+//             couponName: '会员ID',
+//             couponType: '用户名',
+//             useType: '发言时间',
+//             issueQuantity: '发言记录',
+//           },
+//           ...data
+//         ], {
+//           header: [
+//             'couponName',
+//             'couponType',
+//             'useType',
+//             'issueQuantity',
+//             'issueQuantity',
+//             'lqCouponQuantity',
+//             'useCouponQuantity',
+//             'activityTimeDisplay',
+//             'createTime',
+//             'adminName',
+//             'couponStatus',
+//           ],
+//           skipHeader: true
+//         });
+//         XLSX.utils.book_append_sheet(wb, ws, "file");
+//         XLSX.writeFile(wb, `${+new Date()}.xlsx`)
+//     })
+//   }
     const columns = [
         {
             title: '会员ID：',
@@ -129,9 +129,9 @@ const exportExcel = (form) => {
                     >
                     {resetText}
                 </Button>,
-                <Button onClick={()=>{exportExcel(form)}} key="out">
-                    导出数据
-                </Button>
+                // <Button onClick={()=>{exportExcel(form)}} key="out">
+                //     导出数据
+                // </Button>
             ],
         }}
         columns={columns}
