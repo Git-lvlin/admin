@@ -29,6 +29,13 @@ function ReferralCommission () {
         align: 'center'
       },
       {
+        title: 'buyId',
+        dataIndex: 'buyId',
+        align: 'center',
+        hideInTable: true,
+        hideInSearch: true
+      },
+      {
         title: '佣金类型',
         dataIndex: 'inviteType',
         align: 'center',
@@ -85,7 +92,7 @@ function ReferralCommission () {
 
     return (
       <ProTable
-        rowKey='storeId'
+        rowKey='buyId'
         columns={expandColumns}
         dataSource={data}
         pagination={false}
