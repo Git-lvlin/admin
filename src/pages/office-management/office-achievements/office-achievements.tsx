@@ -127,7 +127,7 @@ export default function TransactionData () {
       render: (_,data)=>{
         return <>
                 <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
-                <p>{data?.totalCount}台（销售{data?.totalSaleCount}台 + 租赁{data?.totalRentCount}台）</p>
+                <p>{data?.totalCount}单（销售{data?.totalSaleCount}单 + 管理费{data?.totalRentCount}单）</p>
                </>
       },
       hideInSearch: true,
