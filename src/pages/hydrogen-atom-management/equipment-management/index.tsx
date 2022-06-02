@@ -170,6 +170,12 @@ export default function EquipmentManagement() {
       hideInSearch: true
     },
     {
+      title: '租约到期时间',
+      dataIndex: 'leaseDeadline',
+      valueType: 'dateTimeRange',
+      hideInTable: true
+    },
+    {
       title: '订单状态',
       dataIndex: 'occupationMode',
       align: 'center',
