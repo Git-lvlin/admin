@@ -16,12 +16,14 @@ export type TableProps = {
   orderNo: string;
   operateName: string;
   operateTime: number;
+  payStatus: number;
 }
 
 export type AddContractProps = {
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   callback: ()=> void
+  data?: ModalFormProps
 }
 
 export type SupplierListProps = {

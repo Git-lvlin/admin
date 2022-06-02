@@ -51,7 +51,7 @@ const HydrogenLeaseContract: FC = () => {
   return (
     <>
       <ProTable<TableProps>
-        rowKey='storeNo'
+        rowKey='orderSn'
         columns={columns}
         params={{}}
         request={deviceContract}

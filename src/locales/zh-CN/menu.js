@@ -388,11 +388,11 @@ export default {
   'menu.hydrogen-atom-management.referral-commission': '推荐提成',
   'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
 
+  'menu.buried-point': '埋点数据看板',
+  'menu.buried-point.incident-analysts': '事件分析',
+  
   'menu.office-management': '办事处管理',
   'menu.office-management.office-management-list': '办事处管理',
   'menu.office-management.office-achievements': '办事处业绩',
-  
-  'menu.buried-point': '埋点数据看板',
-  'menu.buried-point.incident-analysts': '事件分析',
 
 };
