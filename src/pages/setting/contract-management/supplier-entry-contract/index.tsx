@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react"
 import ProTable from "@ant-design/pro-table"
-import { Button, Space, Image, Modal } from "antd"
+import { Button, Image, Modal, Space } from "antd"
 import moment from "moment"
 import ProForm, {
   ModalForm, 
@@ -24,7 +24,14 @@ import type {
 } from "../data"
 import type { FormInstance } from "antd"
 
-import { getList, getPactNo, getSupplierList, settled, getMiniQr } from "@/services/setting/contract-management"
+import { 
+  getList, 
+  getPactNo, 
+  getSupplierList, 
+  settled, 
+  getMiniQr,
+  getDetail
+} from "@/services/setting/contract-management"
 import { amountTransform } from "@/utils/utils"
 import Upload from "@/components/upload"
 import styles from "../styles.less"
@@ -34,27 +41,34 @@ const SupplierEntryContract: FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
   const [imageUrl, setImageUrl] = useState()
   const [fileUrl, setFileUrl] = useState<string>()
+  const [data, setData] = useState<ModalFormProps | undefined>()
   const actRef = useRef<ActionType>()
 
   const openMiniQr = (e: number) => {
     getMiniQr({contractId: e}).then(res => {
-      setImageUrl(res.data.records.url)
+      setImageUrl(res.data.records?.url)
       setVisible(true)
     })
   }
 
+  const openDetail = (id: number) => {
+    getDetail({contractId: id}).then(res => {
+      setData(res.data.records)
+    })
+    setShowAdd(true)
+  }
+
   const columns: ProColumns<TableProps>[] = [
+    {
+      title: 'id',
+      dataIndex: 'id',
+      hideInTable: true,
+      hideInSearch: true
+    },
     {
       title: '编号',
       dataIndex: 'pactNo',
-      align: 'center',
-      render: (_, r) => {
-        if(r.type === 2 && r.signStatus === 1) {
-          return <a href={r.checkUrl} target='blank'>{_}</a>
-        } else {
-          return <span>{_}</span>
-        }
-      }
+      align: 'center'
     },
     {
       title: '供应商手机',
@@ -75,7 +89,10 @@ const SupplierEntryContract: FC = () => {
       render: (_, record)=> (
         <>
           <div>{_}</div>
-          <div>{moment(record.operateTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
+          {
+            record.operateTime > 0 &&
+            <div>{moment(record.operateTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
+          }
         </>
       )
     },
@@ -109,7 +126,10 @@ const SupplierEntryContract: FC = () => {
       hideInSearch: true,
       render: (_, r)=> (
         <>
-          <div>{amountTransform(r.payAmount, '/')}元</div>
+          {
+            r.payAmount > 0 &&
+            <div>{amountTransform(r.payAmount, '/')}元</div>
+          }
           <div>{r.payTypeDesc}</div>
         </>
       )
@@ -154,19 +174,20 @@ const SupplierEntryContract: FC = () => {
       valueType: 'option',
       align: 'center',
       render: (_, r) => (
-        <>
+        <Space size="small">
           {
-            r.signStatus === 2&&
-            <Space size='small'>
-              <a onClick={()=> {openMiniQr(r.id); setFileUrl(r.pactUrl)}}>查看签合同入口码</a>
-              <a onClick={()=> {openMiniQr(r.id); setFileUrl(r.pactUrl)}}>修改</a>
-            </Space>
+            (r.signStatus === 2 && r.type === 1)&&
+            <a onClick={()=> {openMiniQr(r.id); setFileUrl(r.pactUrl)}}>查看签合同入口码</a>
           }
           {
-            r.signStatus === 1&&
+            (r.type === 1 && r.signStatus === 1)&&
             <a onClick={() => history.push('/supplier-management/supplier-list')}>创建供应商</a>
           }
-        </>
+          {
+            (r.payStatus === 1 && r.thirdContractId !== '')&&
+            <a onClick={()=> openDetail(r.id)}>修改</a>
+          }
+        </Space>
       )
     },
   ]
@@ -174,7 +195,7 @@ const SupplierEntryContract: FC = () => {
   return (
     <>
       <ProTable<TableProps>
-        rowKey='pactNo'
+        rowKey='id'
         columns={columns}
         params={{}}
         request={getList}
@@ -187,7 +208,7 @@ const SupplierEntryContract: FC = () => {
         search={{
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
-            <Button key='add' onClick={()=>{setShowAdd(true)}}>新建</Button>
+            <Button key='add' onClick={()=>{setShowAdd(true); setData(undefined)}}>新建</Button>
           ]
         }}
       />
@@ -197,6 +218,7 @@ const SupplierEntryContract: FC = () => {
           visible={showAdd}
           setVisible={setShowAdd}
           callback={()=> actRef.current?.reload()}
+          data={data}
         />
       }
       {
@@ -212,7 +234,7 @@ const SupplierEntryContract: FC = () => {
   )
 }
 
-const AddContract: FC<AddContractProps> = ({visible, setVisible, callback}) => {
+const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}) => {
   const [type, setType] = useState<number>(1)
   const [pactNo, setPactNo] = useState()
   const [supplierList, setSupplierList] = useState<SupplierSelectProps[]>()
@@ -251,6 +273,20 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback}) => {
     setPhone(supplierList?.find(item=> item.value === e)?.phone)
   }
 
+  useEffect(()=> {
+    if(data) {
+      formRef.current?.setFieldsValue({
+        pactNo: data.pactNo,
+        phone: data.phone,
+        type: data.type,
+        signStatus: data.signStatus,
+        supplierId: data.supplierId,
+        name: data.name,
+        pactUrl: data.pactUrl
+      })
+    }
+  },[data, pactNo, type, phone])
+
   const submit = (e: ModalFormProps) => {
     new Promise((resolve, reject)=>{
       settled(e).then(res => {
@@ -266,7 +302,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback}) => {
 
   return (
     <ModalForm<ModalFormProps>
-      title='新建供应商入驻合同'
+      title={`${data? '编辑': '新建'}供应商入驻合同`}
       visible={visible}
       onVisibleChange={setVisible}
       width={500}
@@ -289,6 +325,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback}) => {
         fieldProps={{
           onChange: (e) => setType(e.target.value)
         }}
+        disabled={data && true}
         options={[
           {
             value: 1,
@@ -374,7 +411,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback}) => {
         label='协议编号'
         name='pactNo'
         width='sm'
-        readonly
+        readonly={data && true}
       />
       {
         type === 2 &&

@@ -88,6 +88,28 @@ const SupplierData = () => {
       hideInTable: true
     },
     {
+      title: ()=>(
+        <div>
+          <span>动销率</span>
+          <span>（SKU级）</span>
+        </div>
+      ),
+      dataIndex: '',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: ()=>(
+        <div>
+          <span>滞销率</span>
+          <span>（SKU级）</span>
+        </div>
+      ),
+      dataIndex: '',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
       title: '已审核通过SPU数量',
       dataIndex: 'approvedSpuNum',
       align: 'center',
