@@ -37,6 +37,7 @@ const ProductData = () => {
   const [goodsTotal, setGoodsTotal] = useState(0)
   const [unsalableTotal, setUnsalableTotal] = useState(0)
   const form = useRef()
+  const unsalableform = useRef()
 
   const type = form.current?.getFieldsValue().orderType === '15'?'data-board-goods-detail-bc-export': 'data-board-goods-detail-c-export'
 
@@ -242,6 +243,19 @@ const ProductData = () => {
     {
       title: ()=>(
         <Space>
+          <span>单品动销率</span>
+          <Tooltip title="商品累计销售数量÷商品库存数量*100%">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'rate',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: ()=>(
+        <Space>
           <span>复购率（重复购买的用户数占总购买人数）</span>
           <Tooltip title="当前商品有没有人重复购买复购率=重复下单的人数/下单的总人数">
             <QuestionCircleOutlined/>
@@ -416,7 +430,8 @@ const ProductData = () => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
-      align: 'center'
+      align: 'center',
+      width: '25%'
     }
   ]
 
@@ -429,10 +444,6 @@ const ProductData = () => {
       gcId2: gcId?.[1],
       ...rest
     }
-  }
-
-  const getUnsalableValue = () => {
-    
   }
 
   const change = (e) => {
@@ -530,7 +541,7 @@ const ProductData = () => {
         <ProTable
           rowKey="spu"
           columns={Unsalable}
-          formRef={form}
+          formRef={unsalableform}
           params={{}}
           request={unsalableGoodsList}
           pagination={{
@@ -544,13 +555,13 @@ const ProductData = () => {
               <Export
                 change={(e)=> {setVisit(e)}}
                 key="export" 
-                type=""
-                conditions={getUnsalableValue}
+                type="unsalableGoodsList"
+                conditions={{...unsalableform.current?.getFieldsValue()}}
               />,
               <ExportHistory 
                 key="export-history" 
                 show={visit} setShow={setVisit}
-                type=""
+                type="unsalableGoodsList"
               />
             ]
           }}
