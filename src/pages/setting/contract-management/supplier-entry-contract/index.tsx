@@ -289,7 +289,10 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
 
   const submit = (e: ModalFormProps) => {
     new Promise((resolve, reject)=>{
-      settled(e).then(res => {
+      settled({
+        ...e,
+        signTime: moment(e.signTime).unix()
+      }).then(res => {
         if(res.code === 0) {
           resolve('')
           callback()

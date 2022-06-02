@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 // 设备列表
 export const findDevicePage = async (params = {}, options = {}) => {
-  const { current = 1, pageSize = 10, createTime, ...rest } = params
+  const { current = 1, pageSize = 10, createTime, leaseDeadline, ...rest } = params
   const res = await request('/auth/java-admin/iot/memberDevice/findDevicePage', {
     method: 'POST',
     data: {
