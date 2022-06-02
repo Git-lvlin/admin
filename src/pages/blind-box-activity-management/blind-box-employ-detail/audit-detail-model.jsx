@@ -1,7 +1,6 @@
 import React, { useState} from 'react';
-import { ModalForm,ProFormTextArea} from '@ant-design/pro-form';
-import { Button,message } from 'antd';
-import { history } from 'umi';
+import { ModalForm} from '@ant-design/pro-form';
+import { Button } from 'antd';
 
 export default props=>{
     const {data,title}=props

@@ -3,6 +3,8 @@ export type DescriptionsProps = {
   agencyLoginNum: string;
   vipStoreNum: string;
   commonStoreNum: number;
+  rentMachineNum: number;
+  sellMachineNum: number;
 }
 
 export type TableProps = {
@@ -14,6 +16,8 @@ export type TableProps = {
   accountId: number;
   vipStoreNums: number;
   commonStoreNums: number;
+  rentMachineNum: number;
+  sellMachineNum: number;
 }
 
 export type GithubIssueItem = {

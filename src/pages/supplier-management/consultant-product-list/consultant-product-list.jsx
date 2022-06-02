@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Table, Spin } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import XLSX from 'xlsx'
+// import XLSX from 'xlsx'
 import { PageContainer } from '@/components/PageContainer';
 import * as api from '@/services/product-management/product-list';
 import GcCascader from '@/components/gc-cascader'
@@ -191,66 +191,66 @@ const TableList = () => {
     },
   ];
 
-  const exportExcel = (form) => {
-    api.listExport({
-      ...form.getFieldsValue(),
-    }).then(res => {
-      if (res.code === 0) {
-        const data = res.data.map(item => {
-          const { goodsState, goodsFromType, goodsVerifyState, ...rest } = item;
-          return {
-            ...rest,
-            retailSupplyPrice: amountTransform(rest.retailSupplyPrice, '/'),
-            suggestedRetailPrice: amountTransform(rest.suggestedRetailPrice, '/'),
-            wholesalePrice: amountTransform(rest.wholesalePrice, '/'),
-          }
-        });
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet([
-          {
-            spuId: 'spuId',
-            goodsName: '商品名称',
-            skuId: 'skuId',
-            skuSpec: '规格组合',
-            goodsFromTypeDisplay: '供货类型',
-            retailSupplyPrice: '零售价',
-            suggestedRetailPrice: '建议零售价',
-            wholesalePrice: '批发价',
-            stockNum: '可用库存',
-            // activityNum: '活动库存',
-            isFreeFreightDisplay: '是否包邮',
-            supportNoReasonReturn: '七天无理由退货',
-            goodsVerifyStateDisplay: '审核状态',
-            goodsStateDisplay: '上架状态',
-            createTime: '创建时间',
-          },
-          ...data
-        ], {
-          header: [
-            'spuId',
-            'goodsName',
-            'skuId',
-            'skuSpec',
-            'goodsFromTypeDisplay',
-            'retailSupplyPrice',
-            'suggestedRetailPrice',
-            'wholesalePrice',
-            'stockNum',
-            // 'activityNum',
-            'isFreeFreightDisplay',
-            'supportNoReasonReturn',
-            'goodsVerifyStateDisplay',
-            'goodsStateDisplay',
-            'createTime',
-          ],
-          skipHeader: true
-        });
-        XLSX.utils.book_append_sheet(wb, ws, "file");
-        XLSX.writeFile(wb, `${+new Date()}.xlsx`)
+  // const exportExcel = (form) => {
+  //   api.listExport({
+  //     ...form.getFieldsValue(),
+  //   }).then(res => {
+  //     if (res.code === 0) {
+  //       const data = res.data.map(item => {
+  //         const { goodsState, goodsFromType, goodsVerifyState, ...rest } = item;
+  //         return {
+  //           ...rest,
+  //           retailSupplyPrice: amountTransform(rest.retailSupplyPrice, '/'),
+  //           suggestedRetailPrice: amountTransform(rest.suggestedRetailPrice, '/'),
+  //           wholesalePrice: amountTransform(rest.wholesalePrice, '/'),
+  //         }
+  //       });
+  //       const wb = XLSX.utils.book_new();
+  //       const ws = XLSX.utils.json_to_sheet([
+  //         {
+  //           spuId: 'spuId',
+  //           goodsName: '商品名称',
+  //           skuId: 'skuId',
+  //           skuSpec: '规格组合',
+  //           goodsFromTypeDisplay: '供货类型',
+  //           retailSupplyPrice: '零售价',
+  //           suggestedRetailPrice: '建议零售价',
+  //           wholesalePrice: '批发价',
+  //           stockNum: '可用库存',
+  //           // activityNum: '活动库存',
+  //           isFreeFreightDisplay: '是否包邮',
+  //           supportNoReasonReturn: '七天无理由退货',
+  //           goodsVerifyStateDisplay: '审核状态',
+  //           goodsStateDisplay: '上架状态',
+  //           createTime: '创建时间',
+  //         },
+  //         ...data
+  //       ], {
+  //         header: [
+  //           'spuId',
+  //           'goodsName',
+  //           'skuId',
+  //           'skuSpec',
+  //           'goodsFromTypeDisplay',
+  //           'retailSupplyPrice',
+  //           'suggestedRetailPrice',
+  //           'wholesalePrice',
+  //           'stockNum',
+  //           // 'activityNum',
+  //           'isFreeFreightDisplay',
+  //           'supportNoReasonReturn',
+  //           'goodsVerifyStateDisplay',
+  //           'goodsStateDisplay',
+  //           'createTime',
+  //         ],
+  //         skipHeader: true
+  //       });
+  //       XLSX.utils.book_append_sheet(wb, ws, "file");
+  //       XLSX.writeFile(wb, `${+new Date()}.xlsx`)
 
-      }
-    })
-  }
+  //     }
+  //   })
+  // }
 
   useEffect(() => {
     api.getConfig()
@@ -291,7 +291,7 @@ const TableList = () => {
             >
               {resetText}
             </Button>,
-            <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
+            // <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
           ],
         }}
         columns={columns}
