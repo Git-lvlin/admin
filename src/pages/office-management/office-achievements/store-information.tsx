@@ -76,7 +76,7 @@ export default (props) => {
       {...formItemLayout}
     >
       {
-        type==3&&<><p>总业绩：{amountTransform(msgDetail?.totalOrderAmount,'/').toFixed(2)}元，总机器：{msgDetail?.totalCount}单（销售{msgDetail?.totalSaleCount}单，交管理费{msgDetail?.totalRentCount}单）</p><Divider /></>
+        type==3&&<><p>总业绩：{amountTransform(msgDetail?.totalOrderAmount,'/').toFixed(2)}元，总缴费：{msgDetail?.totalCount}单（销售{msgDetail?.totalSaleCount}单，交管理费{msgDetail?.totalRentCount}单）</p><Divider /></>
       }
       <ProList<GithubIssueItem>
         search={false}
@@ -108,7 +108,7 @@ export default (props) => {
             render:(text, row)=>(
             <div>
               <p style={{float:'right',color:'#262626'}}>{divide(row)}元</p><br/>
-              <p style={{color:'#999999',float:'right'}}>{type==3?`${row?.totalCount}单（其中管理费${row?.orderCount}单）`:`业绩金额：${amountTransform(row?.totalOrderAmount,'/').toFixed(2)}元`}</p>
+              <p style={{color:'#999999',float:'right'}}>{type==3?`${row?.totalCount}单（其中管理费${row?.totalRentCount}单）`:`业绩金额：${amountTransform(row?.totalOrderAmount,'/').toFixed(2)}元`}</p>
             </div> 
             )
           }
