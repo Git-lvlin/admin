@@ -3,7 +3,7 @@ import ProTable from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
 import { consumerOrderPage } from '@/services/hydrogen-atom-management/hydrogen-atom-start-recording'
 import moment from 'moment'
-import { Button } from 'antd'
+import { Button,message } from 'antd'
 import { amountTransform } from '@/utils/utils'
 import { PageContainer } from '@ant-design/pro-layout';
 import { useLocation } from 'umi';
@@ -29,7 +29,7 @@ type ThematicEventItem={
 }
 
 export default () => {
-  const [detailId, setDetailId] = useState(null)
+  const [detailId, setDetailId] = useState<string>()
   const [visible, setVisible] = useState(false)
   const isPurchase = useLocation().pathname.includes('purchase')
   const [detailVisible, setDetailVisible] = useState(false);
@@ -51,8 +51,11 @@ export default () => {
       order:4,
       render:(_)=>{
           return <>
-                  <p>https://publicmobile-uat.yeahgo.com/web/exclu...</p>
-                  <a onClick={()=>{setDetailVisible(true)}}>复制</a>
+                  <span style={{display:'inline-block',marginRight:'10px'}}>https://publicmobile-uat.yeahgo.com/web/exclu...</span>
+                  <a onClick={()=>{
+                   message.success('复制成功')
+                   navigator.clipboard.writeText('https://publicmobile-uat.yeahgo.com/web/exclu...')
+                  }}>复制</a>
                  </>
       },
       hideInSearch: true
