@@ -46,7 +46,7 @@ const SupplierEntryContract: FC = () => {
 
   const openMiniQr = (e: number) => {
     getMiniQr({contractId: e}).then(res => {
-      setImageUrl(res.data.records?.url)
+      setImageUrl(res.data?.records?.url)
       setVisible(true)
     })
   }
@@ -190,7 +190,7 @@ const SupplierEntryContract: FC = () => {
             <a onClick={() => history.push('/supplier-management/supplier-list')}>创建供应商</a>
           }
           {
-            (r.payStatus === 1 && r.thirdContractId !== '')&&
+            (r.payStatus <= 1 && r.thirdContractId !== '')&&
             <a onClick={()=> openDetail(r.id)}>修改</a>
           }
         </Space>
