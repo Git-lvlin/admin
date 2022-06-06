@@ -18,6 +18,7 @@ export type TableProps = {
   operateTime: number;
   payStatus: number;
   supplierId: string;
+  contractUrl: string;
 }
 
 export type AddContractProps = {
