@@ -79,7 +79,13 @@ const SupplierEntryContract: FC = () => {
       title: '供应商名称',
       dataIndex: 'name',
       align: 'center',
-      render: (_)=> <a onClick={() => history.push(`/supplier-management/supplier-list?companyName=${_}`)}>{_}</a>
+      render: (_, r)=> {
+        if(r.supplierId) {
+          return <a onClick={() => history.push(`/supplier-management/supplier-list?companyName=${_}`)}>{_}</a>
+        } else {
+          return <span>{_}</span>
+        }
+      }
     },
     {
       title: '最近编辑信息',

@@ -132,6 +132,7 @@ export default {
   'menu.operation-management.operation-detail': '运营商详情',
   'menu.operation-management.operation-account-info': '运营商资金账户信息',
   'menu.operation-management.bind-audit-list': '运营商绑定审核',
+  'menu.operation-management.performance-report': '运营商氢原子业绩表',
 
   'menu.asset-management': '资产管理',
   'menu.asset-management.settlement-profit-list': '结算分润列表',
