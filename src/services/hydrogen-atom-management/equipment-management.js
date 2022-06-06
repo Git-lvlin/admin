@@ -10,6 +10,8 @@ export const findDevicePage = async (params = {}, options = {}) => {
       size: pageSize,
       tradeStartTime: createTime?.[0],
       tradeEndTime: createTime?.[1],
+      leaseStartTime: leaseDeadline?.[0],
+      leaseEndTime: leaseDeadline?.[1],
       ...rest
     },
     ...options

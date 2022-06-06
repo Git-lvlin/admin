@@ -46,7 +46,7 @@ const SupplierEntryContract: FC = () => {
 
   const openMiniQr = (e: number) => {
     getMiniQr({contractId: e}).then(res => {
-      setImageUrl(res.data.records?.url)
+      setImageUrl(res.data?.records?.url)
       setVisible(true)
     })
   }
@@ -79,7 +79,13 @@ const SupplierEntryContract: FC = () => {
       title: '供应商名称',
       dataIndex: 'name',
       align: 'center',
-      render: (_)=> <a onClick={() => history.push(`/supplier-management/supplier-list?companyName=${_}`)}>{_}</a>
+      render: (_, r)=> {
+        if(r.supplierId) {
+          return <a onClick={() => history.push(`/supplier-management/supplier-list?companyName=${_}`)}>{_}</a>
+        } else {
+          return <span>{_}</span>
+        }
+      }
     },
     {
       title: '最近编辑信息',
@@ -184,7 +190,7 @@ const SupplierEntryContract: FC = () => {
             <a onClick={() => history.push('/supplier-management/supplier-list')}>创建供应商</a>
           }
           {
-            (r.payStatus === 1 && r.thirdContractId !== '')&&
+            (r.payStatus <= 1 && r.thirdContractId !== '')&&
             <a onClick={()=> openDetail(r.id)}>修改</a>
           }
         </Space>
