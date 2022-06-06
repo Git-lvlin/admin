@@ -190,7 +190,7 @@ const SupplierEntryContract: FC = () => {
             <a onClick={() => history.push('/supplier-management/supplier-list')}>创建供应商</a>
           }
           {
-            (r.payStatus <= 1 && r.thirdContractId !== '')&&
+            (r.payStatus <= 1 && r.thirdContractId === '')&&
             <a onClick={()=> openDetail(r.id)}>修改</a>
           }
         </Space>
