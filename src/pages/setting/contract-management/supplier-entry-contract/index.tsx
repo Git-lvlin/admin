@@ -72,7 +72,7 @@ const SupplierEntryContract: FC = () => {
       align: 'center',
       render: (_, r) => {
         if(r.type === 2 && r.signStatus === 1) {
-          return <a href={r.checkUrl} target='blank'>{_}</a>
+          return <a href={r.pactUrl} target='blank'>{_}</a>
         } else {
           return <span>{_}</span>
         }
@@ -289,7 +289,11 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
 
   useEffect(()=> {
     if(data) {
-      setType(2)
+      if(data.type === 2) {
+        setType(2)
+      } else {
+        setType(1)
+      }
       formRef.current?.setFieldsValue({
         pactNo: data.pactNo,
         phone: data.phone,
