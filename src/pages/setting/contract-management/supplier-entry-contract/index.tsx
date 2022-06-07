@@ -30,7 +30,8 @@ import {
   getSupplierList, 
   settled, 
   getMiniQr,
-  getDetail
+  getDetail,
+  edit
 } from "@/services/setting/contract-management"
 import { amountTransform } from "@/utils/utils"
 import Upload from "@/components/upload"
@@ -68,7 +69,14 @@ const SupplierEntryContract: FC = () => {
     {
       title: '编号',
       dataIndex: 'pactNo',
-      align: 'center'
+      align: 'center',
+      render: (_, r) => {
+        if(r.type === 2 && r.signStatus === 1) {
+          return <a href={r.checkUrl} target='blank'>{_}</a>
+        } else {
+          return <span>{_}</span>
+        }
+      }
     },
     {
       title: '供应商手机',
@@ -281,6 +289,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
 
   useEffect(()=> {
     if(data) {
+      setType(2)
       formRef.current?.setFieldsValue({
         pactNo: data.pactNo,
         phone: data.phone,
@@ -288,24 +297,40 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
         signStatus: data.signStatus,
         supplierId: data.supplierId,
         name: data.name,
-        pactUrl: data.pactUrl
+        pactUrl: data.pactUrl,
+        signTime: moment(data.signTime * 1000).format("YYYY-MM-DD HH:mm:ss")
       })
     }
   },[data, pactNo, type, phone])
 
   const submit = (e: ModalFormProps) => {
     new Promise((resolve, reject)=>{
-      settled({
-        ...e,
-        signTime: moment(e.signTime).unix()
-      }).then(res => {
-        if(res.code === 0) {
-          resolve('')
-          callback()
-        } else {
-          reject()
-        }
-      })
+      if(!data) {
+        settled({
+          ...e,
+          signTime: moment(e.signTime).unix()
+        }).then(res => {
+          if(res.code === 0) {
+            resolve('')
+            callback()
+          } else {
+            reject()
+          }
+        })
+      } else {
+        edit({
+          ...e,
+          id: data.id,
+          signTime: moment(e.signTime).unix()
+        }).then(res => {
+          if(res.code === 0) {
+            resolve('')
+            callback()
+          } else {
+            reject()
+          }
+        })
+      }
     })
   }
 
@@ -431,6 +456,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           rules={[{
             required: true
           }]}
+          readonly={data && true}
         />
       }
     </ModalForm>
