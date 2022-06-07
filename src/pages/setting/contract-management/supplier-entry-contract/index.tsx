@@ -283,10 +283,6 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
     })
   }, [pactNo, type, phone])
 
-  const selectSupplier = (e: number) => {
-    setPhone(supplierList?.find(item=> item.value === e)?.phone)
-  }
-
   useEffect(()=> {
     if(data) {
       if(data.type === 2) {
@@ -305,7 +301,11 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
         signTime: moment(data.signTime * 1000).format("YYYY-MM-DD HH:mm:ss")
       })
     }
-  },[data, pactNo, type, phone])
+  },[data, pactNo, type])
+
+  const selectSupplier = (e: number) => {
+    setPhone(supplierList?.find(item=> item.value === e)?.phone)
+  }
 
   const submit = (e: ModalFormProps) => {
     new Promise((resolve, reject)=>{
