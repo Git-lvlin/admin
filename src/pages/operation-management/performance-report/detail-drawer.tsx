@@ -1,15 +1,27 @@
+import { useRef } from "react"
 import { Drawer } from "antd"
 import moment from "moment"
 import ProTable from "@ant-design/pro-table"
 
 import type{ DetailDrawerProps } from "./data"
 import type{ ProColumns } from "@ant-design/pro-table"
+import type{ FormInstance } from "antd"
 
 import { operationsCommissionItemPage } from "@/services/operation-management/performance-report"
 import { amountTransform } from "@/utils/utils"
+import Export from "@/components/export"
 
 const DetailDrawer = (props: DetailDrawerProps) => {
   const { visible, setVisible, type, id } = props
+  const form = useRef<FormInstance>()
+
+  const getFieldsValue = () => {
+    return {
+      begin: moment().startOf('month').format("YYYY-MM-DD"),
+      end: moment().endOf('month').format("YYYY-MM-DD"),
+      ...form.current?.getFieldsValue()
+    }
+  }
 
   const columns: ProColumns[] = [
     {
@@ -56,14 +68,22 @@ const DetailDrawer = (props: DetailDrawerProps) => {
       <ProTable
         rowKey='orderNo'
         columns={columns}
-        search={false}
         request={operationsCommissionItemPage}
         params={{type, operationId: id}}
+        formRef={form}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
         }}
         options={false}
+        search={false}
+        toolBarRender={() => [
+          <Export 
+            key='export' 
+            type='financial-hydrogen-operationsCommissionItem'
+            conditions={getFieldsValue}
+          />
+        ]}
       />
     </Drawer>
   )
