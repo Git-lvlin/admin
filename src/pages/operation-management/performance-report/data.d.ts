@@ -11,4 +11,5 @@ export type DetailDrawerProps = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   type: number;
   id?: string;
+  time: string;
 }

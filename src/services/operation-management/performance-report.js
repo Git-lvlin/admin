@@ -30,8 +30,6 @@ export const operationsCommissionItemPage = async (params = {}, options = {}) =>
     data: {
       page: current,
       size: pageSize,
-      begin: moment().startOf('month').format("YYYY-MM-DD"),
-      end: moment().endOf('month').format("YYYY-MM-DD"),
       ...rest
     },
     ...options

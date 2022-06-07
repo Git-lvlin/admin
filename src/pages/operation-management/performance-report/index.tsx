@@ -22,8 +22,8 @@ function PerformanceReport () {
   const getFieldsValue = () => {
     const {time, ...rest} = form.current?.getFieldsValue()
     return {
-      begin: moment(time?.[0]).format("YYYY-MM-DD HH:mm:ss"),
-      end: moment(time?.[1]).format("YYYY-MM-DD HH:mm:ss"),
+      begin: time && moment(time?.[0]).format("YYYY-MM-DD HH:mm:ss"),
+      end: time && moment(time?.[1]).format("YYYY-MM-DD HH:mm:ss"),
       ...rest
     }
   }
@@ -111,6 +111,7 @@ function PerformanceReport () {
           setVisible={setDetailVisible}
           type={type}
           id={id}
+          time={form.current?.getFieldsValue().time}
         />
       }
     </PageContainer>
