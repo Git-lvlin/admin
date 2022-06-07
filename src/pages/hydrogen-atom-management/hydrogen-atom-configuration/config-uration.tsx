@@ -221,6 +221,12 @@ export default () => {
             <Descriptions.Item label="对于租赁的氢原子">
               绑定的店主 可扫机器 {scanDetail?.store?.count} 次 / 天{parseInt(scanDetail?.store?.minute)?<p>，每次间隔 {scanDetail?.store?.minute} 分钟</p>:null}
             </Descriptions.Item>
+            <Descriptions.Item label="达到限制次数弹窗文案">
+              您今日已启用 {scanDetail?.store?.count} 次，暂时无法启用！
+            </Descriptions.Item>
+            <Descriptions.Item label="达到限制间隔弹窗文案">
+              距离最近启用时间小于 {scanDetail?.store?.count} 分钟，暂时无法启用！
+            </Descriptions.Item>
         </Descriptions>
 
         <Divider style={{ margin: '10px 0' }} />
