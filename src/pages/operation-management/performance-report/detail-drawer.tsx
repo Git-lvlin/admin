@@ -12,13 +12,13 @@ import { amountTransform } from "@/utils/utils"
 import Export from "@/components/export"
 
 const DetailDrawer = (props: DetailDrawerProps) => {
-  const { visible, setVisible, type, id } = props
+  const { visible, setVisible, type, id, time } = props
   const form = useRef<FormInstance>()
 
   const getFieldsValue = () => {
     return {
-      begin: moment().startOf('month').format("YYYY-MM-DD"),
-      end: moment().endOf('month').format("YYYY-MM-DD"),
+      begin: moment(time?.[0]).format("YYYY-MM-DD"),
+      end: moment(time?.[1]).format("YYYY-MM-DD"),
       ...form.current?.getFieldsValue()
     }
   }
@@ -58,8 +58,8 @@ const DetailDrawer = (props: DetailDrawerProps) => {
   return (
     <Drawer
       title={
-        type === 1 ? `设备销售收益明细  ${moment().startOf('month').format("YYYY-MM-DD")}~${moment().endOf('month').format("YYYY-MM-DD")}` :
-        `设备租金收益明细  ${moment().startOf('month').format("YYYY-MM-DD")}~${moment().endOf('month').format("YYYY-MM-DD")}` 
+        type === 1 ? `设备销售收益明细  ${time ? moment(time?.[0]).format("YYYY-MM-DD") : ''} ${time ? '~' : ''} ${ time ? moment(time?.[1]).format("YYYY-MM-DD") : ''}` :
+        `设备租金收益明细  ${time ? moment(time?.[0]).format("YYYY-MM-DD") : ''} ${time ? '~' : ''} ${ time ? moment(time?.[1]).format("YYYY-MM-DD") : ''}` 
       }
       width={800}
       visible={visible}
@@ -69,7 +69,12 @@ const DetailDrawer = (props: DetailDrawerProps) => {
         rowKey='orderNo'
         columns={columns}
         request={operationsCommissionItemPage}
-        params={{type, operationId: id}}
+        params={{
+          type,
+          operationId: id,
+          begin: time && moment(time?.[0]).format("YYYY-MM-DD"),
+          end: time && moment(time?.[1]).format("YYYY-MM-DD"),
+        }}
         formRef={form}
         pagination={{
           showQuickJumper: true,
