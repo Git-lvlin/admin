@@ -268,7 +268,7 @@ export default (props) => {
       <Divider />
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1 }}>
-          {!detailData&&<ProFormSelect
+          {!detailData && <ProFormSelect
             name="contractId"
             label="签电子合同供应商"
             fieldProps={{
@@ -522,6 +522,11 @@ export default (props) => {
               ]}
             />
           </div>
+          {detailData?.contract?.url && <Form.Item
+            label="入驻合同"
+          >
+            <a style={{textDecoration: 'underline'}} href={detailData?.contract?.url} target="_blank">查看合同</a>
+          </Form.Item>}
 
         </div>
       </div>
