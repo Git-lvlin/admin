@@ -16,12 +16,16 @@ export type TableProps = {
   orderNo: string;
   operateName: string;
   operateTime: number;
+  payStatus: number;
+  supplierId: string;
+  contractUrl: string;
 }
 
 export type AddContractProps = {
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   callback: ()=> void
+  data?: ModalFormProps
 }
 
 export type SupplierListProps = {
@@ -43,7 +47,8 @@ export type ModalFormProps = {
   phone: string
   pactUrl: string
   pactNo: string
-  signTime: string
+  signTime: number
+  id: number
 }
 
 export type MiniQrProps = {

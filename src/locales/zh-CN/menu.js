@@ -134,6 +134,7 @@ export default {
   'menu.operation-management.operation-detail': '运营商详情',
   'menu.operation-management.operation-account-info': '运营商资金账户信息',
   'menu.operation-management.bind-audit-list': '运营商绑定审核',
+  'menu.operation-management.performance-report': '运营商氢原子业绩表',
 
   'menu.asset-management': '资产管理',
   'menu.asset-management.settlement-profit-list': '结算分润列表',
@@ -388,11 +389,11 @@ export default {
   'menu.hydrogen-atom-management.referral-commission': '推荐提成',
   'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
 
+  'menu.buried-point': '埋点数据看板',
+  'menu.buried-point.incident-analysts': '事件分析',
+  
   'menu.office-management': '办事处管理',
   'menu.office-management.office-management-list': '办事处管理',
   'menu.office-management.office-achievements': '办事处业绩',
-  
-  'menu.buried-point': '埋点数据看板',
-  'menu.buried-point.incident-analysts': '事件分析',
 
 };

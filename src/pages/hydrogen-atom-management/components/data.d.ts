@@ -37,6 +37,8 @@ export type PropsData = {
   deadlineDate: string
   nowUseTime: string
   updUseTime: string
+  memberPhone: string
+  isShopkeeper: boolean
 }
 
 export type PropsStatistics = {

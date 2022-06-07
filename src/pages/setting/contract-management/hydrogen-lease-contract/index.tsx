@@ -44,14 +44,21 @@ const HydrogenLeaseContract: FC = () => {
     {
       title: '合同ID',
       dataIndex: 'contractId',
-      align: 'center'
+      align: 'center',
+      render: (_, r)=> {
+        if(r.contractUrl !== '') {
+          return <a target="blank" href={`${r.contractUrl}`}>{_}</a>
+        } else {
+          return <span>{_}</span>
+        }
+      }
     }
   ]
 
   return (
     <>
       <ProTable<TableProps>
-        rowKey='storeNo'
+        rowKey='orderSn'
         columns={columns}
         params={{}}
         request={deviceContract}
