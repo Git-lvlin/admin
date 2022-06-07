@@ -18,6 +18,7 @@ export type TableProps = {
   operateTime: number;
   payStatus: number;
   supplierId: string;
+  contractUrl: string;
 }
 
 export type AddContractProps = {
@@ -46,7 +47,8 @@ export type ModalFormProps = {
   phone: string
   pactUrl: string
   pactNo: string
-  signTime: string
+  signTime: number
+  id: number
 }
 
 export type MiniQrProps = {

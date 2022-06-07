@@ -82,3 +82,12 @@ export const deviceContract = async (params, options = {}) => {
     total: res.data?.total
   }
 }
+
+// 合同编辑
+export const edit = async (params, options = {}) => {
+  return await request('/auth/supplier/contract/edit', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}

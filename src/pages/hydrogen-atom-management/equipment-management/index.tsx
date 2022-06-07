@@ -242,6 +242,7 @@ export default function EquipmentManagement() {
                 setMemberId(r?.id)
                 setMemberPhone(r?.memberPhone)
                 setShowTitle(true)
+                setImei(r?.imei)
               }
             }>
               {amountTransform(_, '/')}
