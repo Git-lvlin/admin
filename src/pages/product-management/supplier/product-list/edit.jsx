@@ -109,6 +109,7 @@ export default (props) => {
       sampleSupplyPrice,
       operateType,
       profit,
+      goodsName,
       ...rest } = values;
     const { specValues1, specValues2 } = form.getFieldsValue(['specValues1', 'specValues2']);
     const specName = {};
@@ -223,6 +224,7 @@ export default (props) => {
         goodsSaleType: goods.goodsSaleType,
         skuName: goods.skuName,
         operateType,
+        goodsName: goodsName.replace(/\s+/, ' '),
       },
       isLossMoney: isLossMoney.current ? 1 : 0,
       primaryImages: urlsTransform(primaryImages),
