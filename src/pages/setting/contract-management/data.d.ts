@@ -47,7 +47,8 @@ export type ModalFormProps = {
   phone: string
   pactUrl: string
   pactNo: string
-  signTime: string
+  signTime: number
+  id: number
 }
 
 export type MiniQrProps = {
