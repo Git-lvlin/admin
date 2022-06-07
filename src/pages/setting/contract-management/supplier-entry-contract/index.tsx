@@ -72,7 +72,7 @@ const SupplierEntryContract: FC = () => {
       align: 'center',
       render: (_, r) => {
         if(r.type === 2 && r.signStatus === 1) {
-          return <a href={r.checkUrl} target='blank'>{_}</a>
+          return <a href={r.pactUrl} target='blank'>{_}</a>
         } else {
           return <span>{_}</span>
         }
@@ -283,13 +283,13 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
     })
   }, [pactNo, type, phone])
 
-  const selectSupplier = (e: number) => {
-    setPhone(supplierList?.find(item=> item.value === e)?.phone)
-  }
-
   useEffect(()=> {
     if(data) {
-      setType(2)
+      if(data.type === 2) {
+        setType(2)
+      } else {
+        setType(1)
+      }
       formRef.current?.setFieldsValue({
         pactNo: data.pactNo,
         phone: data.phone,
@@ -301,7 +301,11 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
         signTime: moment(data.signTime * 1000).format("YYYY-MM-DD HH:mm:ss")
       })
     }
-  },[data, pactNo, type, phone])
+  },[data, pactNo, type])
+
+  const selectSupplier = (e: number) => {
+    setPhone(supplierList?.find(item=> item.value === e)?.phone)
+  }
 
   const submit = (e: ModalFormProps) => {
     new Promise((resolve, reject)=>{
