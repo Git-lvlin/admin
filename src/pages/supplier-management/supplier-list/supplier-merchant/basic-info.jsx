@@ -272,7 +272,6 @@ export default (props) => {
             name="contractId"
             label="签电子合同供应商"
             fieldProps={{
-              allowClear: false,
               showSearch: true,
               optionFilterProp: 'label',
               placeholder: '请输入已签电子合同的供应商名称或名称给关键字'
