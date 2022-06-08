@@ -42,7 +42,7 @@ function PerformanceReport () {
     {
       title: '统计时间',
       dataIndex: 'time',
-      valueType: 'dateTimeRange',
+      valueType: 'dateRange',
       hideInTable: true
     },
     {
