@@ -72,7 +72,7 @@ function PerformanceReport () {
       hideInSearch: true,
       render: (_, r) => {
         if(r.totalRentCommission > 0) {
-          return <a onClick={()=>{setDetailVisible(true); setType(2);}}>{amountTransform(_, '/')}</a>
+          return <a onClick={()=>{setDetailVisible(true); setType(2); setId(r.operationId)}}>{amountTransform(_, '/')}</a>
         } else {
           return <span>{_}</span>
         }

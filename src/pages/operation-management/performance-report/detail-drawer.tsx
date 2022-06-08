@@ -1,11 +1,9 @@
-import { useRef } from "react"
 import { Drawer } from "antd"
 import moment from "moment"
 import ProTable from "@ant-design/pro-table"
 
 import type{ DetailDrawerProps } from "./data"
 import type{ ProColumns } from "@ant-design/pro-table"
-import type{ FormInstance } from "antd"
 
 import { operationsCommissionItemPage } from "@/services/operation-management/performance-report"
 import { amountTransform } from "@/utils/utils"
@@ -13,13 +11,13 @@ import Export from "@/components/export"
 
 const DetailDrawer = (props: DetailDrawerProps) => {
   const { visible, setVisible, type, id, time } = props
-  const form = useRef<FormInstance>()
 
   const getFieldsValue = () => {
     return {
-      begin: moment(time?.[0]).format("YYYY-MM-DD"),
-      end: moment(time?.[1]).format("YYYY-MM-DD"),
-      ...form.current?.getFieldsValue()
+      begin: time && moment(time?.[0]).format("YYYY-MM-DD"),
+      end: time && moment(time?.[1]).format("YYYY-MM-DD"),
+      type,
+      operationId: id
     }
   }
 
@@ -75,7 +73,6 @@ const DetailDrawer = (props: DetailDrawerProps) => {
           begin: time && moment(time?.[0]).format("YYYY-MM-DD"),
           end: time && moment(time?.[1]).format("YYYY-MM-DD"),
         }}
-        formRef={form}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
