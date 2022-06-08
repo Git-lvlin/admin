@@ -687,14 +687,14 @@ const StoreList = (props) => {
       hideInTable: storeType === 'freshStores'||storeType == 'vip'
     },
     {
-      title: '申请审核通过时间',
+      title: '申请入驻审核通过时间',
       dataIndex: 'auditTime',
       valueType: 'dateTimeRange',
       hideInTable: true,
       hideInSearch: storeType === 'freshStores'||storeType == 'vip'
     },
     {
-      title: '申请审核通过时间',
+      title: '申请入驻审核通过时间',
       dataIndex: 'auditTime',
       valueType: 'text',
       hideInSearch: true,
