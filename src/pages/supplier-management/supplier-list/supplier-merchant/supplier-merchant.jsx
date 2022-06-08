@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button, Space, Modal, Menu, Dropdown } from 'antd';
 import { getCommonList, statusSwitch, detailExt, delSupplier, resetPwd } from '@/services/supplier-management/supplier-list'
@@ -150,6 +150,7 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入供应商家ID'
       },
+      initialValue: location?.query?.supplierId,
       hideInTable: true,
     },
     {
@@ -297,6 +298,13 @@ const TableList = () => {
     }
     return {}
   }
+
+  // useEffect(()=>{
+  //   formRef.current.setFieldsValue({
+  //     companyName: '',
+  //     supplierId: '',
+  //   })
+  // },[])
 
   return (
     <>
