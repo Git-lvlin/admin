@@ -118,7 +118,7 @@ const TableList = () => {
         submitter={{
           render: ({ form }, doms) => {
             return (
-              <div style={{marginBottom: 20}}>
+              <div style={{ marginBottom: 20 }}>
                 <Space>
                   <Button
                     type="primary"
@@ -432,7 +432,7 @@ const TableList = () => {
                   <div>
                     <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
                       <Descriptions.Item label="商品总金额">{amountTransform(item.goodsTotalAmount, '/')}元</Descriptions.Item>
-                      <Descriptions.Item label="运费">+{amountTransform(item.shippingFeeAmount, '/')}元</Descriptions.Item>
+                      <Descriptions.Item label="运费">{item.shippingType ? `+${amountTransform(item.shippingFeeAmount, '/')}元` : '收货时付运费'}</Descriptions.Item>
                       <Descriptions.Item label="红包">
                         {
                           item?.orderType === 17
@@ -451,8 +451,8 @@ const TableList = () => {
                   </div>
                   <div style={{ textAlign: 'center' }}>
                     {
-                      item.subType?<Tag style={{ borderRadius: 10,marginTop:'10px' }} color="#f59a23">{({ 4:'氢原子购买',3:'氢原子押金',2:'氢原子启动',5:'分享' }[item.subType])}订单</Tag>
-                      : <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '拼团', 4: '团约', 11: '1688', 17: '盲盒活动', 18: '签到活动',666:'氢原子购买订单',888:'氢原子押金订单',999:'氢原子启动订单'}[item.orderType] || '秒约')}订单</Tag>
+                      item.subType ? <Tag style={{ borderRadius: 10, marginTop: '10px' }} color="#f59a23">{({ 4: '氢原子购买', 3: '氢原子押金', 2: '氢原子启动', 5: '分享' }[item.subType])}订单</Tag>
+                        : <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '拼团', 4: '团约', 11: '1688', 17: '盲盒活动', 18: '签到活动', 666: '氢原子购买订单', 888: '氢原子押金订单', 999: '氢原子启动订单' }[item.orderType] || '秒约')}订单</Tag>
                     }
                     {
                       item.relevant1688OrderId && <div>关联1688单号：{item.relevant1688OrderId}</div>
@@ -470,12 +470,12 @@ const TableList = () => {
                     <span>电话：{item.phone}</span>
                     <span>地址：{item.address}</span>
                     {
-                      (orderType === 1 || orderType === 2)&&
-                      <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true)}}>修改地址</Button>
+                      (orderType === 1 || orderType === 2) &&
+                      <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true) }}>修改地址</Button>
                     }
                     {
-                      orderType === 2&&
-                      <Button onClick={() =>{ setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
+                      orderType === 2 &&
+                      <Button onClick={() => { setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
                     }
                   </Space>
                 </div>
