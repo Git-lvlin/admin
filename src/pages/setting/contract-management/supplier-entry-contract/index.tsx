@@ -89,7 +89,7 @@ const SupplierEntryContract: FC = () => {
       align: 'center',
       render: (_, r)=> {
         if(r.supplierId) {
-          return <a onClick={() => history.push(`/supplier-management/supplier-list?companyName=${_}`)}>{_}</a>
+          return <a onClick={() => history.push(`/supplier-management/supplier-list?supplierId=${r.supplierId}`)}>{_}</a>
         } else {
           return <span>{_}</span>
         }
@@ -194,7 +194,7 @@ const SupplierEntryContract: FC = () => {
             <a onClick={()=> {openMiniQr(r.id); setFileUrl(r.pactUrl)}}>查看签合同入口码</a>
           }
           {
-            (r.type === 1 && r.signStatus === 1)&&
+            (r.type === 1 && r.signStatus === 1 && r.supplierId !== '')&&
             <a onClick={() => history.push('/supplier-management/supplier-list')}>创建供应商</a>
           }
           {
