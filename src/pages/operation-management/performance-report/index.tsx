@@ -1,18 +1,32 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from "@ant-design/pro-table"
+import moment from "moment"
 
 import type { ProColumns } from "@ant-design/pro-table"
-import { TableProps } from "./data"
+import type{ FormInstance } from "antd"
+import type{ TableProps } from "./data"
 
 import { operationsCommissionPage } from "@/services/operation-management/performance-report"
 import { amountTransform } from "@/utils/utils"
 import DetailDrawer from "./detail-drawer"
+import Export from "@/components/export"
+
 
 function PerformanceReport () {
   const [ detailVisible, setDetailVisible ] = useState<boolean>(false)
   const [ type, setType ] = useState<number>(1)
   const [ id, setId ] = useState<string>()
+  const form = useRef<FormInstance>()
+
+  const getFieldsValue = () => {
+    const {time, ...rest} = form.current?.getFieldsValue()
+    return {
+      begin: time && moment(time?.[0]).format("YYYY-MM-DD HH:mm:ss"),
+      end: time && moment(time?.[1]).format("YYYY-MM-DD HH:mm:ss"),
+      ...rest
+    }
+  }
 
   const columns: ProColumns<TableProps>[] = [
     {
@@ -77,10 +91,16 @@ function PerformanceReport () {
           pageSize: 10,
           showQuickJumper: true
         }}
+        formRef={form}
         options={false}
         search={{
           optionRender: (searchConfig, props, dom) => [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export 
+              key='export' 
+              type='financial-hydrogen-operationsCommission'
+              conditions={getFieldsValue}
+            />
           ]
         }}
       />
@@ -91,6 +111,7 @@ function PerformanceReport () {
           setVisible={setDetailVisible}
           type={type}
           id={id}
+          time={form.current?.getFieldsValue().time}
         />
       }
     </PageContainer>
