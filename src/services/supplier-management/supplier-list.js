@@ -207,3 +207,11 @@ export const getContractList = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const getOnlineList = (params = {}, options = {}) => {
+  return request('/auth/supplier/contract/getOnlineList', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
