@@ -7,7 +7,7 @@ import {
   ProFormSelect,
   ProFormDigit,
 } from '@ant-design/pro-form';
-import { supplierAdd, supplierEdit, categoryAll, searchUniName, getContractList } from '@/services/supplier-management/supplier-list';
+import { supplierAdd, supplierEdit, categoryAll, searchUniName, getOnlineList } from '@/services/supplier-management/supplier-list';
 import md5 from 'blueimp-md5';
 import { arrayToTree } from '@/utils/utils'
 import FormModal from './form';
@@ -206,13 +206,13 @@ export default (props) => {
       })
       setSelectKeys(ids)
     } else {
-      getContractList({
+      getOnlineList({
         page: 1,
         size: 9999
       })
         .then(res => {
           if (res.code === 0) {
-            setContractList(res.data.records.map(item => ({ label: item.name, value: item.id })))
+            setContractList(res.data.records.map(item => ({ label: item.name, value: item.contractId })))
           }
         })
     }
