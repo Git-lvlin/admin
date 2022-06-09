@@ -106,12 +106,6 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
-      name: 'cancel-reason',
-      path: '/intensive-store-management/cancel-reason',
-      component: './intensive-store-management/cancel-reason',
-      wrappers: [RouteWatcher],
-    },
-    {
       name: 'cancel-aduit',
       path: '/intensive-store-management/cancel-aduit',
       component: './intensive-store-management/cancel-aduit',

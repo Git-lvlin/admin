@@ -6,7 +6,7 @@ import ProForm, {
   ModalForm,
   ProFormText
 } from '@ant-design/pro-form';
-import { cancelReasonSave,cancelReasonUpdate} from '@/services/intensive-store-management/cancel-reason';
+import { cancelReasonSave,cancelReasonUpdate,addCancelMessage,setCancelMessage} from '@/services/setting/cancel-reason';
 
 
 const formItemLayout = {
@@ -23,7 +23,7 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible, callback,onClose,formDetail} = props;
+  const { visible, setVisible, callback,onClose,formDetail,storeTyp} = props;
   const [form] = Form.useForm()
   useEffect(() => {
     if(formDetail?.id){
@@ -67,6 +67,15 @@ export default (props) => {
         }}
         onFinish={async (values) => {
           if(formDetail?.id){
+            storeTyp=='1'?
+            setCancelMessage(values).then(res=>{
+              if(res.code==0){
+                message.success('编辑成功')
+                setVisible(false)
+                callback(true)
+              }
+            })
+            :
             cancelReasonUpdate(values).then(res=>{
               if(res.code==0){
                 message.success('编辑成功')
@@ -75,6 +84,15 @@ export default (props) => {
               }
             })
           }else{
+            storeTyp=='1'?
+            addCancelMessage(values).then(res=>{
+              if(res.code==0){
+                message.success('添加成功')
+                setVisible(false)
+                callback(true)
+              }
+            })
+            :
             cancelReasonSave(values).then(res=>{
               if(res.code==0){
                 message.success('添加成功')
@@ -87,7 +105,7 @@ export default (props) => {
         }}
       {...formItemLayout}
     >
-      <ProFormRadio.Group
+      {/* <ProFormRadio.Group
         name="status"
         label='注销对象'
         rules={[{ required: true, message: '请选择注销对象' }]}
@@ -101,10 +119,10 @@ export default (props) => {
                 value: 2,
             },
         ]}
-      />
+      /> */}
       <ProFormTextArea
         label='注销原因'
-        name="reason"
+        name={storeTyp=='1'?'message':"reason"}
         style={{ minHeight: 32, marginTop: 15 }}
         placeholder='请输入3-30个汉字、字母、数字或字符'
         rules={[
@@ -127,7 +145,7 @@ export default (props) => {
             },
             {
                 label: '禁用',
-                value: 2,
+                value: storeTyp=='1'?0:2,
             },
         ]}
       />
