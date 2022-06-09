@@ -78,7 +78,8 @@ export default function EditTable(props) {
         hideInTable: isSample !== 1,
         fieldProps: {
           addonAfter: `元/${unit}`
-        }
+        },
+        editable: false,
       },
       {
         title: `样品价`,
