@@ -22,7 +22,7 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible, callback,onClose,formDetail} = props;
+  const { visible, setVisible, callback,onClose,formDetail,storeType} = props;
   const [form] = Form.useForm()
   useEffect(() => {
     if(formDetail?.id){

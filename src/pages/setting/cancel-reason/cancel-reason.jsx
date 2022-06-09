@@ -2,13 +2,14 @@ import React, { useRef, useState } from 'react';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
-import { pageForAdmin,cancelReasonUpdate} from '@/services/setting/cancel-reason';
+import { pageForAdmin,cancelReasonUpdate,getCancelMessage} from '@/services/setting/cancel-reason';
 import { PageContainer } from '@/components/PageContainer';
 import CancelModel from './cancel-model'
 import StopModel from './stop-model'
 import { useEffect } from 'react';
 
-const CancelReason=()=> {
+const CancelReason=(props)=> {
+  const { storeType }=props
   const actionRef = useRef();
   const [visible, setVisible] = useState(false);
   const [formDetail , setFormDetail ] = useState()
@@ -23,7 +24,7 @@ const CancelReason=()=> {
     },
     {
       title: '注销原因',
-      dataIndex: 'reason',
+      dataIndex: storeType == '1'?'message':'reason',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -69,7 +70,7 @@ const CancelReason=()=> {
         options={false}
         columns={columns}
         actionRef={actionRef}
-        request={pageForAdmin}
+        request={ storeType == '1'?getCancelMessage:pageForAdmin}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
             defaultCollapsed: true,
@@ -89,6 +90,7 @@ const CancelReason=()=> {
         visible={visible}
         setVisible={setVisible}
         formDetail={formDetail}
+        storeType={storeType}
         callback={()=>{ actionRef.current.reload(); setFormDetail(null)}}
         onClose={() => { actionRef.current.reload(); setFormDetail(null) }}
       />}
@@ -96,6 +98,7 @@ const CancelReason=()=> {
         visible={stopVisible}
         setVisible={setStopVisible}
         formDetail={formDetail}
+        storeType={storeType}
         callback={()=>{ actionRef.current.reload(); setFormDetail(null)}}
         onClose={() => { actionRef.current.reload(); setFormDetail(null) }}
       />}
@@ -105,7 +108,7 @@ const CancelReason=()=> {
 
 
 export default () => {
-  const [activeKey, setActiveKey] = useState('normal')
+  const [activeKey, setActiveKey] = useState('1')
 
   return (
     <PageContainer>
@@ -116,14 +119,14 @@ export default () => {
           onChange: setActiveKey
         }}
       >
-        <ProCard.TabPane key="normal" tab="社区店注销原因">
+        <ProCard.TabPane key='1' tab="社区店注销原因">
           {
-            activeKey == 'normal' && <CancelReason storeType={activeKey} />
+            activeKey == '1' && <CancelReason storeType={activeKey} />
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="cancelled" tab="用户注销原因">
+        <ProCard.TabPane key='2' tab="用户注销原因">
           {
-            activeKey == 'cancelled' && <CancelReason storeType={activeKey} />
+            activeKey == '2' && <CancelReason storeType={activeKey} />
           }
         </ProCard.TabPane>
       </ProCard>
