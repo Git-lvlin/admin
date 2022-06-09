@@ -4,7 +4,7 @@ import ProForm, {
   ModalForm,
   ProFormText
 } from '@ant-design/pro-form';
-import { cancelReasonUpdate} from '@/services/intensive-store-management/cancel-reason';
+import { cancelReasonUpdate} from '@/services/setting/cancel-reason';
 import { ExclamationCircleOutlined,QuestionCircleOutlined} from '@ant-design/icons';
 
 
@@ -22,7 +22,7 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible, callback,onClose,formDetail} = props;
+  const { visible, setVisible, callback,onClose,formDetail,storeType} = props;
   const [form] = Form.useForm()
   useEffect(() => {
     if(formDetail?.id){
