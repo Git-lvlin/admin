@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ProTable from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
-import { consumerOrderPage } from '@/services/hydrogen-atom-management/hydrogen-atom-start-recording'
+import { getActiveConfigList } from '@/services/cms/member/thematic-event-management'
 import moment from 'moment'
 import { Button,message } from 'antd'
 import { amountTransform } from '@/utils/utils'
@@ -37,7 +37,7 @@ export default () => {
   const columns:ProColumns<ThematicEventItem>[]= [
     {
       title: '专题名称',
-      dataIndex: 'deviceImei',
+      dataIndex: 'name',
       valueType: 'text',
       fieldProps:{
         placeholder:'请输入内容'
@@ -68,29 +68,27 @@ export default () => {
     },
     {
       title: '活动时间',
-      dataIndex: 'memberPhone',
+      dataIndex: 'startTime',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{moment(data?.startTime*1000).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(data?.endTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
+      }
     },
     {
       title: '状态',
-      dataIndex: 'isShopkeeper',
+      dataIndex: 'statusDisplay',
       valueType: 'select',
       hideInSearch: true,
-      valueEnum:{
-        "": "未开始",
-        false: "进行中",
-        true: '已结束'
-      },
     },
     {
-      title: '注销申请状态',
+      title: '操作',
       dataIndex: 'orderAmount',
       valueType: 'option',
       hideInSearch: true,
       render:(text, record, _, action)=>[
         <a key='edit' onClick={()=>{setVisible(true);setDetailId(record.id)}}>编辑</a>,
-        <a key='detele' onClick={()=>{setVisible(true);setDetailId(record.id)}}>删除</a>
+        <a key='detele' onClick={()=>{setVisible(true);setDetailId(record.id)}}>终止</a>
     ],
     }
   ];
@@ -100,7 +98,7 @@ export default () => {
           actionRef={ref}
           rowKey="id"
           options={false}
-          request={consumerOrderPage}
+          request={getActiveConfigList}
           search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -118,10 +116,11 @@ export default () => {
         {
         visible &&
         <SpecialModel
-        //   id={selectItem?.id}
+          id={detailId}
           visible={visible}
           setVisible={setVisible}
-          onClose={()=>{}}
+          onClose={()=>{setDetailId(null);ref?.current?.reload()}}
+          callback={()=>{setDetailId(null);ref?.current?.reload()}}
         />
       }
   </PageContainer>

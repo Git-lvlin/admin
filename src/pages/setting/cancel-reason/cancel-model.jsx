@@ -6,7 +6,7 @@ import ProForm, {
   ModalForm,
   ProFormText
 } from '@ant-design/pro-form';
-import { cancelReasonSave,cancelReasonUpdate} from '@/services/intensive-store-management/cancel-reason';
+import { cancelReasonSave,cancelReasonUpdate} from '@/services/setting/cancel-reason';
 
 
 const formItemLayout = {

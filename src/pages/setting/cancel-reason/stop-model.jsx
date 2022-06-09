@@ -4,7 +4,7 @@ import ProForm, {
   ModalForm,
   ProFormText
 } from '@ant-design/pro-form';
-import { cancelReasonUpdate} from '@/services/intensive-store-management/cancel-reason';
+import { cancelReasonUpdate} from '@/services/setting/cancel-reason';
 import { ExclamationCircleOutlined,QuestionCircleOutlined} from '@ant-design/icons';
 
 

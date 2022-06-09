@@ -16,7 +16,7 @@ export default ({onChange})=>{
 
   const handleChange = (color) => {
     setColor(color.rgb)
-    onChange(color.rgb)
+    onChange(color.hex)
   };
     const styles = reactCSS({
       'default': {

@@ -1,21 +1,18 @@
 import { useState, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
-import BrandSelect from '@/components/brand-select'
-import GcCascader from '@/components/gc-cascader'
 import { ModalForm } from '@ant-design/pro-form';
 import _ from 'lodash'
+import { amountTransform } from '@/utils/utils'
 
 export default (props) => {
-    const { visible, setVisible, callback,hideAll, title = '选择活动商品',goodsSaleType, apolloConfig,keyId,detailList} = props;
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [selectItems, setSelectItems] = useState([]);
+    const { visible, setVisible, callback, title = '选择活动商品',goodsSaleType, apolloConfig,keyId,detailList} = props;
     const [keys,setKeys]=useState()
-    const [goosList,setGoosList]=useState()
+    const [goosList,setGoosList]=useState([])
     const [dataList,setDataList]=useState([])
   
     const formItemLayout = {
-      labelCol: { span: 6 },
+      labelCol: { span: 2 },
       wrapperCol: { span: 14 },
       layout: {
         labelCol: {
@@ -29,14 +26,6 @@ export default (props) => {
   
   
     const columns = [
-      {
-        title: 'spuID',
-        dataIndex: 'spuId',
-        valueType: 'text',
-        fieldProps: {
-          placeholder: '请输入spuID'
-        }
-      },
       {
         title: 'skuID',
         dataIndex: 'skuId',
@@ -52,53 +41,36 @@ export default (props) => {
         fieldProps: {
           placeholder: '请输入商品名称'
         },
-        render: (_, records) => (
-          <div style={{ display: 'flex' }}>
-            <img width="50" height="50" src={records.imageUrl} />
-            <div style={{ marginLeft: 10, wordBreak: 'break-all' }}>{_}</div>
-          </div>
-        )
       },
       {
-        title: '供应商家ID',
-        dataIndex: 'supplierId',
+        title: '市场价',
+        dataIndex: 'marketPrice',
         valueType: 'text',
-        hideInTable: true,
-      },
-      {
-        title: '结算模式',
-        dataIndex: 'settleType',
-        valueType: 'select',
-        hideInTable: true,
-        valueEnum: {
-          1: '佣金模式',
-          2: '底价模式',
+        editable:false,
+        render:(_)=>{
+          return amountTransform(_,'/')
         },
-      },
-      {
-        title: '商品分类',
-        dataIndex: 'gcId',
-        renderFormItem: () => (<GcCascader />),
-        hideInTable: true,
-      },
-      {
-        title: '商品品牌',
-        dataIndex: 'brandId',
-        renderFormItem: () => (<BrandSelect />),
-        hideInTable: true,
-      },
-      {
-        title: '供货价(元)',
-        dataIndex: 'retailSupplyPriceDisplay',
-        valueType: 'text',
         hideInSearch: true,
       },
       {
-        title: '秒约价(元)',
-        dataIndex: 'salePriceDisplay',
+        title: '销售价',
+        dataIndex: 'salePrice',
         valueType: 'text',
+        editable:false,
+        render:(_)=>{
+          return amountTransform(_,'/')
+        },
         hideInSearch: true,
-  
+      },
+      {
+        title: '平台亏盈',
+        dataIndex: 'actPriceProfitLoss',
+        valueType: 'text',
+        editable:false,
+        render:(_)=>{
+          return amountTransform(_,'/')
+        },
+        hideInSearch: true,
       },
       {
         title: '可用库存',
@@ -108,21 +80,21 @@ export default (props) => {
       },
     ];
   
-    const onsubmit = (values) => {
-      if(goosList){
-        callback(goosList)
-      }
-      setVisible(false)
+    const onsubmit = () => {
+        if(goosList){
+          callback(goosList)
+        }
+        setVisible(false)
     };
     useEffect(()=>{
-    //   const arr=[]
-    //   keyId.map(ele=>{
-    //     if(ele.skuId){
-    //       arr.push(ele.skuId)
-    //     }
-    //   })
-    //   setKeys(arr)
-    },[])
+      const arr=[]
+      keyId?.map(ele=>{
+        if(ele.skuId){
+          arr.push(ele.skuId)
+        }
+      })
+      setKeys(arr)
+    },[keyId])
     const postData=(data)=>{
       dataList.push(...data)
       setDataList(dataList)
@@ -137,8 +109,8 @@ export default (props) => {
         onVisibleChange={setVisible}
         visible={visible}
         width={1200}
-        onFinish={async (values) => {
-          await onsubmit(values);
+        onFinish={async () => {
+          await onsubmit();
         }}
         labelAlign="right"
         {...formItemLayout}
@@ -153,7 +125,8 @@ export default (props) => {
             goodsVerifyState: 1,
             hasStock: 1,
             goodsSaleType:goodsSaleType?2:'',
-            apolloConfig:apolloConfig?apolloConfig:''
+            apolloConfig:apolloConfig?apolloConfig:'',
+            NSubject:1
           }}
           postData={postData}
           search={{

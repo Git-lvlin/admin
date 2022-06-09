@@ -78,6 +78,7 @@ export default {
   'menu.setting.password': '修改密码',
   'menu.setting.shipments-area-configuration': '待发货区域配置',
   'menu.setting.switch-setting': '阶梯优惠参数开关',
+  'menu.setting.cancel-reason': '注销原因',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
@@ -155,7 +156,6 @@ export default {
   'menu.intensive-store-management.shop-area': '开店区域和缴费',
   'menu.intensive-store-management.community-store-setting': '社区店设置',
   'menu.intensive-store-management.data-excel': '数据导出',
-  'menu.intensive-store-management.cancel-reason': '注销原因',
   'menu.intensive-store-management.fresh-store-review': '生鲜店铺申请审核',
   'menu.intensive-store-management.fresh-shop-configuration': '生鲜店铺配置',
   'menu.intensive-store-management.cancel-aduit': '注销审核',

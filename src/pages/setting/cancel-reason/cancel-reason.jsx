@@ -1,14 +1,14 @@
-
 import React, { useRef, useState } from 'react';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { pageForAdmin,cancelReasonUpdate} from '@/services/intensive-store-management/cancel-reason';
+import ProCard from '@ant-design/pro-card';
+import { pageForAdmin,cancelReasonUpdate} from '@/services/setting/cancel-reason';
 import { PageContainer } from '@/components/PageContainer';
 import CancelModel from './cancel-model'
 import StopModel from './stop-model'
 import { useEffect } from 'react';
 
-export default () => {
+const CancelReason=()=> {
   const actionRef = useRef();
   const [visible, setVisible] = useState(false);
   const [formDetail , setFormDetail ] = useState()
@@ -63,7 +63,7 @@ export default () => {
   ];
 
   return (
-    <PageContainer>
+    <>
       <ProTable
         rowKey="id"
         options={false}
@@ -99,6 +99,34 @@ export default () => {
         callback={()=>{ actionRef.current.reload(); setFormDetail(null)}}
         onClose={() => { actionRef.current.reload(); setFormDetail(null) }}
       />}
-    </PageContainer>
+    </>
   );
 };
+
+
+export default () => {
+  const [activeKey, setActiveKey] = useState('normal')
+
+  return (
+    <PageContainer>
+      <ProCard
+        tabs={{
+          type: 'card',
+          activeKey,
+          onChange: setActiveKey
+        }}
+      >
+        <ProCard.TabPane key="normal" tab="社区店注销原因">
+          {
+            activeKey == 'normal' && <CancelReason storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="cancelled" tab="用户注销原因">
+          {
+            activeKey == 'cancelled' && <CancelReason storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+      </ProCard>
+    </PageContainer>
+  )
+}

@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import moment from 'moment'
 import { formatMessage } from 'umi';
-import { Button, Space, Typography,Skeleton, Form, InputNumber } from 'antd'
+import { Button, Space, Typography,Skeleton, Form, InputNumber,message } from 'antd'
 import ProForm, {
   DrawerForm,
   ProFormText,
@@ -13,6 +13,7 @@ import styles from './style.less'
 import Associated0Goods from './associated0-goods'
 import Upload from '@/components/upload';
 import ReactColor from '@/components/react-color'
+import {saveSubjectActiveConfig,getActiveConfigById} from '@/services/cms/member/thematic-event-management'
 const { Title } = Typography;
 
 const FromWrap = ({ value, onChange, content, right }) => (
@@ -39,9 +40,104 @@ export default props => {
   const { visible, setVisible, callback, id, onClose } = props;
   const [form] = Form.useForm();
   const [picture, setPicture] = useState<number>()
+  const [detailList,setDetailList]=useState<[]>()
   const onSubmit = (values) => {
-    console.log('values', values)
+    const params={
+      status:1,
+      id:values?.id,
+      name:values?.name,
+      startTime:moment(values.dateRange[0]).valueOf(),
+      endTime:moment(values.dateRange[1]).valueOf(),
+      bannerImgUrl:values.bannerImgUrl,
+      bannerTime:{
+        switch:values.switch1,
+        XL:values.XL,
+        YL:values.YL,
+        edgeDistance:{
+          L:values?.L,
+          T:values?.T,
+          R:values?.R,
+          B:values?.B
+        },
+        alphaMasked:values?.alphaMasked
+      },
+      subImage:{
+        switch:values?.switch2,
+        imgUrl:values?.imgUrl1
+      },
+      goodsCards:{
+        showType:values?.showType,
+        border:{
+          color:values?.color1,
+          lineWidth:values?.lineWidth1
+        },
+        background:{
+          color:values?.color2,
+          imgUrl:values?.imgUrl2
+        },
+        radius:values?.radius,
+        textStyle:{
+          color:values?.color3,
+          fontSize:values?.fontSize
+        },
+        priceStyle:values?.priceStyle,
+        goodsBorder:{
+          color:values?.color4,
+          lineWidth:values?.lineWidth2
+        },
+        goodsRadius:values?.goodsRadius
+      },
+      goods:detailList.map(ele=>({spuId:ele?.spuId,sort:ele?.sort,actPrice:ele?.actPrice,skuId:ele?.skuId,id:ele.id==ele.skuId?0:ele.id}))
+    }
+    saveSubjectActiveConfig(params).then(res=>{
+      if(res.code==0){
+        setVisible(false)
+        callback()
+        if(id){
+          message.success('编辑成功')
+        }else{
+          message.success('新增成功')
+        }
+      }
+    })
   }
+  useEffect(()=>{
+    if(id){
+      getActiveConfigById({id}).then(res=>{
+        if(res.code==0){
+          console.log('res.data?.content?.goods',res.data?.content?.goods)
+          setDetailList(res.data?.content?.goods)
+          form.setFieldsValue({
+            dateRange:[res.data?.startTime*1000,res.data?.endTime*1000],
+            bannerImgUrl:res.data?.content?.bannerImgUrl,
+            switch1:res.data?.content?.bannerTime?.switch,
+            XL:res.data?.content?.bannerTime?.XL,
+            YL:res.data?.content?.bannerTime?.YL,
+            L:res.data?.content?.bannerTime?.edgeDistance?.L,
+            T:res.data?.content?.bannerTime?.edgeDistance?.T,
+            R:res.data?.content?.bannerTime?.edgeDistance?.R,
+            B:res.data?.content?.bannerTime?.edgeDistance?.B,
+            alphaMasked:res.data?.content?.bannerTime?.alphaMasked,
+            switch2:res.data?.content?.subImage?.switch,
+            imgUrl1:res.data?.content?.subImage?.imgUrl,
+            showType:res.data?.content?.goodsCards?.showType,
+            color1:res.data?.content?.goodsCards?.border?.color,
+            lineWidth1:res.data?.content?.goodsCards?.border?.lineWidth,
+            color2:res.data?.content?.goodsCards?.background?.color,
+            imgUrl2:res.data?.content?.goodsCards?.background?.imgUrl,
+            radius:res.data?.content?.goodsCards?.radius,
+            color3:res.data?.content?.goodsCards?.textStyle?.color,
+            fontSize:res.data?.content?.goodsCards?.textStyle?.fontSize,
+            priceStyle:res.data?.content?.goodsCards?.priceStyle,
+            color4:res.data?.content?.goodsCards?.goodsBorder?.color,
+            lineWidth2:res.data?.content?.goodsCards?.goodsBorder?.lineWidth,
+            goodsRadius:res.data?.content?.goodsCards?.goodsRadius,
+            ...res.data
+          })
+        }
+      })
+    }
+  },[id])
   const disabledDate = (current) => {
     return current && current < moment().startOf('day');
   }
@@ -78,6 +174,24 @@ export default props => {
       <div className={styles?.three_column_layout}>
         <div className={styles?.border_box}>
           <Title style={{ marginBottom: 10 }} level={5}>基础设置</Title>
+          <ProFormRadio.Group
+              name="status"
+              hidden
+              options={[
+                {
+                  label: '开启',
+                  value: 1,
+                },
+                {
+                  label: '禁止',
+                  value: 0,
+                }
+              ]}
+            />
+          <ProFormText
+            name="id"
+            hidden
+          />
           <ProFormText
             label="专题标题"
             name="name"
@@ -136,11 +250,11 @@ export default props => {
           <Title style={{ marginBottom: 10 }} level={5}>{{ 1: '头图', 2: '倒计时控件', 3: '副标题', 4: '价格标签1', 5: '商品卡片' }[picture]}</Title>
           <Form.Item
             label="选择图片"
-            name="bannerImage1"
+            name="bannerImgUrl"
             style={{ display: picture == 1 ? 'block' : 'none' }}
           >
             <FromWrap
-              content={(value, onChange) => <Upload multiple value={value} proportion={{ width: 750 }} onChange={onChange} size={2 * 1024} maxCount={1} accept="image/*" />}
+              content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} maxCount={1} accept="image/png" />}
               right={(value) => {
                 return (
                   <dl>
@@ -158,38 +272,38 @@ export default props => {
               fieldProps={{
                 value: <>
                   <ProFormRadio.Group
-                    name="radio-vertical1"
+                    name="XL"
                     label="X轴"
                     options={[
                       {
                         label: '左',
-                        value: 1,
+                        value: 'L',
                       },
                       {
                         label: '中',
-                        value: 2,
+                        value: 'M',
                       },
                       {
                         label: '右',
-                        value: 3,
+                        value: 'R',
                       }
                     ]}
                   />
                   <ProFormRadio.Group
-                    name="radio-vertical"
+                    name="YL"
                     label="Y轴"
                     options={[
                       {
                         label: '上',
-                        value: 1,
+                        value: 'T',
                       },
                       {
                         label: '中',
-                        value: 2,
+                        value: 'M',
                       },
                       {
                         label: '下',
-                        value: 3,
+                        value: 'B',
                       }
                     ]}
                   />
@@ -203,7 +317,7 @@ export default props => {
                 value: <Space>
                   <div className={styles.measure}>
                     <Form.Item
-                      name="tierEnd1"
+                      name="L"
                     >
                       <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
                     </Form.Item>
@@ -211,7 +325,7 @@ export default props => {
                   </div>
                   <div className={styles.measure}>
                     <Form.Item
-                      name="tierEnd2"
+                      name="T"
                     >
                       <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
                     </Form.Item>
@@ -219,7 +333,7 @@ export default props => {
                   </div>
                   <div className={styles.measure}>
                     <Form.Item
-                      name="tierEnd3"
+                      name="R"
                     >
                       <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
                     </Form.Item>
@@ -227,7 +341,7 @@ export default props => {
                   </div>
                   <div className={styles.measure}>
                     <Form.Item
-                      name="tierEnd4"
+                      name="B"
                     >
                       <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
                     </Form.Item>
@@ -236,18 +350,18 @@ export default props => {
                 </Space>
               }}
             />
-            <Form.Item label='透明遮罩' name='color'>
-              <ReactColor onChange={(val) => { console.log('val', val) }} />
+            <Form.Item label='透明遮罩' name='alphaMasked'>
+              <ReactColor onChange={(val) => { console.log('val', val) }}/>
             </Form.Item>
           </div>
           <div style={{ display: picture == 3 ? 'block' : 'none' }}>
             <ProFormSwitch name="switch2" label="开关控制" />
             <Form.Item
               label="选择图片"
-              name="bannerImage2"
+              name="imgUrl1"
             >
               <FromWrap
-                content={(value, onChange) => <Upload multiple value={value} onChange={onChange} size={2 * 1024} maxCount={1} accept="image/*" />}
+                content={(value, onChange) => <Upload multiple value={value} onChange={onChange} size={2 * 1024} maxCount={1} accept="image/png" />}
                 right={(value) => {
                   return (
                     <dl>
@@ -260,7 +374,7 @@ export default props => {
           </div>
           <div style={{ display: picture == 4 ? 'block' : 'none' }}>
             <ProFormRadio.Group
-              name="radio-vertical"
+              name="priceStyle"
               layout="vertical"
               label="标签样式"
               options={[
@@ -285,7 +399,7 @@ export default props => {
           </div>
           <div style={{ display: picture == 5 ? 'block' : 'none' }}>
             <ProFormRadio.Group
-              name="radio-vertical"
+              name="showType"
               layout="horizontal"
               label="展示形式"
               options={[
@@ -305,14 +419,14 @@ export default props => {
               fieldProps={{
                 value: <Space>
                   <div className={styles.measure}>
-                    <Form.Item>
+                    <Form.Item name='color1'>
                       <ReactColor onChange={(val) => { console.log('val', val) }} />
                     </Form.Item>
                     <p>颜色</p>
                   </div>
                   <div className={styles.measure}>
                     <Form.Item
-                      name="tierEnd2"
+                      name="lineWidth1"
                     >
                       <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
                     </Form.Item>
@@ -327,24 +441,24 @@ export default props => {
               fieldProps={{
                 value: <Space>
                   <div className={styles.measure}>
-                    <Form.Item>
+                    <Form.Item name='color2'>
                       <ReactColor onChange={(val) => { console.log('val', val) }} />
                     </Form.Item>
                     <p>颜色</p>
                   </div>
                   <div className={styles.measure}>
                     <Form.Item
-                      name="bannerImage1"
+                      name="imgUrl2"
                     >
-                      <Upload multiple proportion={{ width: 750 }} size={2 * 1024} maxCount={1} accept="image/*" />
+                      <Upload multiple  size={2 * 1024} maxCount={1} accept="image/png" />
                     </Form.Item>
-                    <p>图片</p>
+                    {/* <p>图片</p> */}
                   </div>
                 </Space>
               }}
             />
             <Form.Item
-              name="tierEnd2"
+              name="radius"
               label='卡片圆角'
             >
               <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
@@ -355,14 +469,14 @@ export default props => {
               fieldProps={{
                 value: <Space>
                   <div className={styles.measure}>
-                    <Form.Item>
+                    <Form.Item name='color3'>
                       <ReactColor onChange={(val) => { console.log('val', val) }} />
                     </Form.Item>
                     <p>颜色</p>
                   </div>
                   <div className={styles.measure}>
                     <Form.Item
-                      name="tierEnd2"
+                      name="fontSize"
                     >
                       <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
                     </Form.Item>
@@ -377,14 +491,14 @@ export default props => {
               fieldProps={{
                 value: <Space>
                   <div className={styles.measure}>
-                    <Form.Item>
+                    <Form.Item name='color4'>
                       <ReactColor onChange={(val) => { console.log('val', val) }} />
                     </Form.Item>
                     <p>颜色</p>
                   </div>
                   <div className={styles.measure}>
                     <Form.Item
-                      name="tierEnd2"
+                      name="lineWidth2"
                     >
                       <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
                     </Form.Item>
@@ -394,7 +508,7 @@ export default props => {
               }}
             />
             <Form.Item
-              name="tierEnd2"
+              name="goodsRadius"
               label='商品圆角'
             >
               <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
@@ -402,7 +516,10 @@ export default props => {
           </div>
         </div>
       </div>
-      <Associated0Goods />
+      <Associated0Goods detailList={detailList} id={id} callback={(data)=>{
+        console.log('data',data)
+            setDetailList(data)
+          }}/>
     </DrawerForm>
   )
 }
