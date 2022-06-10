@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{ useEffect } from 'react'
 import ProForm, {
   ModalForm,
   ProFormText,
@@ -25,31 +25,38 @@ const EditAddress = ({
   change
 }) => {
 
-  const submitAddress = (v) => {
-    return new Promise((resolve, reject)=>{
-      modifyAddress(
-        {
-          orderId:subOrderId,
-          receiptUser: v.receiptUser,
-          receiptPhone: v.receiptPhone,
-          receiptAddress: `${v.area?.[0].label} ${v.area?.[1].label} ${v.area?.[2].label} ${v.receiptAddress}`,
-          provinceId: v.area?.[0].value,
-          cityId: v.area?.[1].value,
-          areaId: v.area?.[2].value
-        },
-        {
-          showSuccess: true,
-          showError: true
-        }).then(res => {
-          if(res.success) {
-            setChange(change+1)
-            resolve()
-          } else {
-            reject()
-          }
-      })
+const submitAddress = (v) => {
+  return new Promise((resolve, reject)=>{
+    modifyAddress(
+      {
+        orderId:subOrderId,
+        receiptUser: v.receiptUser,
+        receiptPhone: v.receiptPhone,
+        receiptAddress: `${v.area?.[0].label} ${v.area?.[1].label} ${v.area?.[2].label} ${v.receiptAddress}`,
+        provinceId: v.area?.[0].value,
+        cityId: v.area?.[1].value,
+        areaId: v.area?.[2].value
+      },
+      {
+        showSuccess: true,
+        showError: true
+      }).then(res => {
+        if(res.success) {
+          setChange(change+1)
+          resolve()
+        } else {
+          reject()
+        }
     })
-  }
+  })
+}
+
+  useEffect(()=>{
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [])
 
   return (
     <ModalForm
