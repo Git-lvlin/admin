@@ -32,7 +32,7 @@ const EditAddress = ({
           orderId:subOrderId,
           receiptUser: v.receiptUser,
           receiptPhone: v.receiptPhone,
-          receiptAddress: `${v.area?.[0].label}${v.area?.[1].label}${v.area?.[2].label}${v.receiptAddress}`,
+          receiptAddress: `${v.area?.[0].label} ${v.area?.[1].label} ${v.area?.[2].label} ${v.receiptAddress}`,
           provinceId: v.area?.[0].value,
           cityId: v.area?.[1].value,
           areaId: v.area?.[2].value

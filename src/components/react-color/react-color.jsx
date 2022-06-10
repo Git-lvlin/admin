@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import reactCSS from 'reactcss'
 import { SketchPicker } from 'react-color'
 
-export default ({onChange})=>{
+export default (props)=>{
+  const { onChange,value }=props
   const [displayColorPicker,setDisplayColorPicker]=useState(false)
   const [color,setColor]=useState()
-
+  useEffect(()=>{
+    console.log('value',value)
+    setColor(`#${value}`)
+  },[value])
   const handleClick = () => {
     setDisplayColorPicker(true)
   };
@@ -15,7 +19,7 @@ export default ({onChange})=>{
   };
 
   const handleChange = (color) => {
-    setColor(color.rgb)
+    setColor(color.hex)
     onChange(color.hex)
   };
     const styles = reactCSS({
@@ -24,7 +28,7 @@ export default ({onChange})=>{
           width: '36px',
           height: '14px',
           borderRadius: '2px',
-          background: `rgba(${color?.r }, ${ color?.g }, ${ color?.b }, ${ color?.a })`,
+          background: `${color}`,
         },
         swatch: {
           padding: '5px',

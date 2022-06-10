@@ -14,6 +14,8 @@ import Associated0Goods from './associated0-goods'
 import Upload from '@/components/upload';
 import ReactColor from '@/components/react-color'
 import {saveSubjectActiveConfig,getActiveConfigById} from '@/services/cms/member/thematic-event-management'
+import { amountTransform } from '@/utils/utils'
+import type { DetailListItem,PropsItem } from './data'
 const { Title } = Typography;
 
 const FromWrap = ({ value, onChange, content, right }) => (
@@ -36,11 +38,11 @@ const formItemLayout = {
   }
 };
 
-export default props => {
+export default (props:PropsItem) => {
   const { visible, setVisible, callback, id, onClose } = props;
   const [form] = Form.useForm();
   const [picture, setPicture] = useState<number>()
-  const [detailList,setDetailList]=useState<[]>()
+  const [detailList,setDetailList]=useState<DetailListItem>()
   const onSubmit = (values) => {
     const params={
       status:1,
@@ -87,7 +89,13 @@ export default props => {
         },
         goodsRadius:values?.goodsRadius
       },
-      goods:detailList.map(ele=>({spuId:ele?.spuId,sort:ele?.sort,actPrice:ele?.actPrice,skuId:ele?.skuId,id:ele.id==ele.skuId?0:ele.id}))
+      goods:detailList?.map((ele:DetailListItem)=>({
+        spuId:ele?.spuId,
+        sort:ele?.sort,
+        actPrice:amountTransform(ele?.actPrice,'*'),
+        skuId:ele?.skuId,
+        id:ele.id==ele.skuId?0:ele.id
+      }))
     }
     saveSubjectActiveConfig(params).then(res=>{
       if(res.code==0){
@@ -105,7 +113,6 @@ export default props => {
     if(id){
       getActiveConfigById({id}).then(res=>{
         if(res.code==0){
-          console.log('res.data?.content?.goods',res.data?.content?.goods)
           setDetailList(res.data?.content?.goods)
           form.setFieldsValue({
             dateRange:[res.data?.startTime*1000,res.data?.endTime*1000],
@@ -518,8 +525,8 @@ export default props => {
       </div>
       <Associated0Goods detailList={detailList} id={id} callback={(data)=>{
         console.log('data',data)
-            setDetailList(data)
-          }}/>
+        setDetailList(data)
+      }}/>
     </DrawerForm>
   )
 }
