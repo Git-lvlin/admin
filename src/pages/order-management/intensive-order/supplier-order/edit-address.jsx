@@ -51,12 +51,12 @@ const submitAddress = (v) => {
   })
 }
 
-  useEffect(()=>{
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = 'auto'
-    }
-  }, [])
+useEffect(()=>{
+  document.body.style.overflow = 'hidden'
+  return () => {
+    document.body.style.overflow = 'auto'
+  }
+}, [])
 
   return (
     <ModalForm

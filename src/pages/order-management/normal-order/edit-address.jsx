@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{ useEffect } from 'react'
 import ProForm, {
   ModalForm,
   ProFormText,
@@ -52,6 +52,13 @@ const EditAddress = ({
       })
     })
   }
+
+  useEffect(()=>{
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [])
 
   return (
     <ModalForm
