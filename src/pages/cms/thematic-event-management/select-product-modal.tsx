@@ -6,7 +6,7 @@ import _ from 'lodash'
 import { amountTransform } from '@/utils/utils'
 
 export default (props) => {
-    const { visible, setVisible, callback, title = '选择活动商品',goodsSaleType, apolloConfig,keyId,detailList} = props;
+    const { visible, setVisible, callback, title = '选择活动商品',goodsSaleType,keyId,detailList} = props;
     const [keys,setKeys]=useState()
     const [goosList,setGoosList]=useState([])
     const [dataList,setDataList]=useState([])
@@ -125,7 +125,6 @@ export default (props) => {
             goodsVerifyState: 1,
             hasStock: 1,
             goodsSaleType:goodsSaleType?2:'',
-            apolloConfig:apolloConfig?apolloConfig:'',
             NSubject:1
           }}
           postData={postData}
