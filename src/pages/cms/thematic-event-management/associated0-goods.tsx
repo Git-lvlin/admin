@@ -164,7 +164,6 @@ export default (props) => {
         visible={visible} 
         setVisible={setVisible}
         goodsSaleType={2} 
-        apolloConfig={'MHSupplierId'}
         keyId={dataSource}
         detailList={dataSource||[]}
         callback={(data)=>{
