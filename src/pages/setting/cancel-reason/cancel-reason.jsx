@@ -119,12 +119,12 @@ export default () => {
           onChange: setActiveKey
         }}
       >
-        <ProCard.TabPane key='2' tab="用户注销原因">
+        <ProCard.TabPane key='2' tab="社区店注销原因">
           {
             activeKey == '2' && <CancelReason storeType={activeKey} />
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key='1' tab="社区店注销原因">
+        <ProCard.TabPane key='1' tab="用户注销原因">
           {
             activeKey == '1' && <CancelReason storeType={activeKey} />
           }
