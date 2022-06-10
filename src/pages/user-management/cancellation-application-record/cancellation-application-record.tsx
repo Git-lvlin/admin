@@ -144,6 +144,9 @@ export default () => {
           rowKey="id"
           options={false}
           request={cancelList}
+          params={{
+            type:3
+          }}
           search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -160,7 +163,7 @@ export default () => {
         {
         detailVisible &&
         <Detail
-          id={selectItem?.id}
+          id={selectItem?.memberId}
           visible={detailVisible}
           setVisible={setDetailVisible}
         />

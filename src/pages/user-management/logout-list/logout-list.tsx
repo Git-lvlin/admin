@@ -119,7 +119,7 @@ export default () => {
        {
         detailVisible &&
         <Detail
-          id={selectItem?.id}
+          id={selectItem?.memberId}
           visible={detailVisible}
           setVisible={setDetailVisible}
         />
