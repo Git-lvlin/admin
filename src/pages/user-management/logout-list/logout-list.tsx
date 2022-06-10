@@ -4,7 +4,7 @@ import type { ProColumns } from '@ant-design/pro-table';
 import { cancelList } from '@/services/user-management/logout-list'
 import { PageContainer } from '@ant-design/pro-layout';
 import Detail from '@/pages/user-management/user-list/detail';
-
+import { Image } from 'antd'
 
 type CancelListItem={
   createTime: any;
@@ -38,7 +38,13 @@ export default () => {
       title: '用户昵称',
       dataIndex: 'nickName',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      render:(_,data)=>{
+        return <div style={{display:'flex',alignItems:'center'}}>
+                <Image src={data?.icon} width={50} height={50}/>
+                <p>{_}</p>
+               </div>
+      }
     },
     {
       title: '手机',
