@@ -34,7 +34,7 @@ const CancelReason=(props)=> {
       valueType: 'text',
       hideInSearch: true,
       render:(_,data)=>{
-        return {1:'已启用',2:'已禁用'}[_.code]
+        return storeType == '1'?{1:'已启用',0:'已禁用'}[_]:{1:'已启用',2:'已禁用'}[_.code]
       }
     },
     {
@@ -57,7 +57,7 @@ const CancelReason=(props)=> {
           setStopVisible(true)
           setFormDetail(record)
         }}>
-          {record?.status?.code==1?'禁用':'启用'}
+          {storeType == '1'?record?.status==1?'禁用':'启用':record?.status?.code==1?'禁用':'启用'}
         </a>
       ]
     },
