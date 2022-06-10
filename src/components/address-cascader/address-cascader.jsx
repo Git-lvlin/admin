@@ -7,14 +7,12 @@ const GcCascader = ({ value = [], onChange, fieldProps,areaData, ...rest }) => {
 
   const changeHandle = (v, selectedOptions = []) => {
     onChange(selectedOptions.map(item => ({ label: item.label, value: item.value })))
-    console.log('ewrw',werwe)
   }
 
   useEffect(() => {
     const arr = arrayToTree(areaData || window.yeahgo_area)
     let str = JSON.stringify(arr)
     str = str.replace(/name/g, 'label').replace(/id/g, 'value')
-    console.log('str',str)
     setData(JSON.parse(str))
   }, [])
   return (
