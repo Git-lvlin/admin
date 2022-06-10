@@ -7,7 +7,7 @@ import ProForm, {
   ProFormRadio, 
   ProFormSelect, 
   ProFormText,
-  ProFormDateTimePicker
+  ProFormDatePicker
 } from "@ant-design/pro-form"
 import { history } from "umi"
 import { CheckCircleOutlined } from "@ant-design/icons"
@@ -117,7 +117,7 @@ const SupplierEntryContract: FC = () => {
       hideInSearch: true,
       render: (_, r) => {
         if(r.signTime > 0) {
-          return moment(r.signTime * 1000).format('YYYY-MM-DD HH:mm:ss')
+          return moment(r.signTime * 1000).format('YYYY-MM-DD')
         } else {
           return null
         }
@@ -295,7 +295,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
         phone: data.phone,
         type: data.type,
         signStatus: data.signStatus,
-        supplierId: data.supplierId,
+        supplierId: data.name,
         name: data.name,
         pactUrl: data.pactUrl,
         signTime: moment(data.signTime * 1000).format("YYYY-MM-DD HH:mm:ss")
@@ -325,6 +325,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
         edit({
           ...e,
           id: data.id,
+          supplierId: data.supplierId,
           signTime: moment(e.signTime).unix()
         }).then(res => {
           if(res.code === 0) {
@@ -449,18 +450,16 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
         label='协议编号'
         name='pactNo'
         width='sm'
-        readonly={data && true}
       />
       {
         type === 2 &&
-        <ProFormDateTimePicker 
+        <ProFormDatePicker 
           name="signTime" 
           label="签订日期" 
           width='sm'
           rules={[{
             required: true
           }]}
-          readonly={data && true}
         />
       }
     </ModalForm>
