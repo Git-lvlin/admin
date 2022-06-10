@@ -274,7 +274,12 @@ export default (props) => {
             fieldProps={{
               showSearch: true,
               optionFilterProp: 'label',
-              placeholder: '请输入已签电子合同的供应商名称或名称给关键字'
+              placeholder: '请输入已签电子合同的供应商名称或名称给关键字',
+              onChange: (e) => {
+                form.setFieldsValue({
+                  companyName: contractList.find(item => item.value === e).label,
+                })
+              }
             }}
             options={contractList}
           />}
@@ -524,7 +529,12 @@ export default (props) => {
           {detailData?.contract?.url && <Form.Item
             label="入驻合同"
           >
-            <a style={{textDecoration: 'underline'}} href={detailData?.contract?.url} target="_blank">查看合同</a>
+            <a style={{ textDecoration: 'underline' }} href={detailData?.contract?.url} target="_blank">查看合同</a>
+          </Form.Item>}
+          {!detailData?.contract?.url && <Form.Item
+            label="入驻合同"
+          >
+            <a href="/setting/contract-management" target="_blank">去创建</a>
           </Form.Item>}
 
         </div>
