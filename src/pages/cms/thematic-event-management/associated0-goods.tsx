@@ -171,6 +171,7 @@ export default (props) => {
           data.forEach(item => {
             arr.push({
               actPrice: 0,
+              sort:9999,
               ...item
             })
           })
