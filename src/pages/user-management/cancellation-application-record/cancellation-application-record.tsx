@@ -139,7 +139,7 @@ export default () => {
     },
     {
       title: '注销时间',
-      dataIndex: 'createTime',
+      dataIndex: 'finishTime',
       valueType: 'text',
       hideInSearch: true
     }
