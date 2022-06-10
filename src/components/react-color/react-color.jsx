@@ -8,7 +8,7 @@ export default (props)=>{
   const [color,setColor]=useState()
   useEffect(()=>{
     console.log('value',value)
-    setColor(`#${value}`)
+    setColor(value)
   },[value])
   const handleClick = () => {
     setDisplayColorPicker(true)
