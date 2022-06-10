@@ -23,7 +23,7 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible, callback,onClose,formDetail,storeTyp} = props;
+  const { visible, setVisible, callback,onClose,formDetail,storeType} = props;
   const [form] = Form.useForm()
   useEffect(() => {
     if(formDetail?.id){
@@ -31,7 +31,12 @@ export default (props) => {
         ...formDetail,
         status:formDetail.status?.code
       })
+    }else if(formDetail?.message){
+      form.setFieldsValue({
+        ...formDetail,
+      })
     }
+    console.log('storeType',storeType)
   }, [])
   const checkConfirm = (rule, value, callback) => {
     return new Promise(async (resolve, reject) => {
@@ -66,8 +71,8 @@ export default (props) => {
         },
         }}
         onFinish={async (values) => {
-          if(formDetail?.id){
-            storeTyp=='1'?
+          if(formDetail?.id||formDetail?.message){
+            storeType=='1'?
             setCancelMessage(values).then(res=>{
               if(res.code==0){
                 message.success('编辑成功')
@@ -84,7 +89,7 @@ export default (props) => {
               }
             })
           }else{
-            storeTyp=='1'?
+            storeType=='1'?
             addCancelMessage(values).then(res=>{
               if(res.code==0){
                 message.success('添加成功')
@@ -122,7 +127,7 @@ export default (props) => {
       /> */}
       <ProFormTextArea
         label='注销原因'
-        name={storeTyp=='1'?'message':"reason"}
+        name={storeType=='1'?'message':"reason"}
         style={{ minHeight: 32, marginTop: 15 }}
         placeholder='请输入3-30个汉字、字母、数字或字符'
         rules={[
@@ -145,16 +150,21 @@ export default (props) => {
             },
             {
                 label: '禁用',
-                value: storeTyp=='1'?0:2,
+                value: storeType=='1'?0:2,
             },
         ]}
       />
       <ProFormText 
         width="md"
         name="id"
-        label="id"
         hidden
       />
+
+      <ProFormText 
+        width="md"
+        name="code"
+        hidden
+      /> 
     </ModalForm >
   );
 };
