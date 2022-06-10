@@ -144,9 +144,6 @@ export default () => {
           rowKey="id"
           options={false}
           request={cancelList}
-          params={{
-            type:3
-          }}
           search={{
           defaultCollapsed: false,
           labelWidth: 100,
