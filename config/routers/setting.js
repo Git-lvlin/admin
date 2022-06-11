@@ -41,5 +41,11 @@ export default {
       component: './setting/switch-setting',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'cancel-reason',
+      path: '/setting/cancel-reason',
+      component: './setting/cancel-reason',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

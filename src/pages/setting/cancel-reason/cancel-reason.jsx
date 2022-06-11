@@ -1,14 +1,15 @@
-
 import React, { useRef, useState } from 'react';
 import { Button, Space, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { pageForAdmin,cancelReasonUpdate} from '@/services/intensive-store-management/cancel-reason';
+import ProCard from '@ant-design/pro-card';
+import { pageForAdmin,cancelReasonUpdate,getCancelMessage} from '@/services/setting/cancel-reason';
 import { PageContainer } from '@/components/PageContainer';
 import CancelModel from './cancel-model'
 import StopModel from './stop-model'
 import { useEffect } from 'react';
 
-export default () => {
+const CancelReason=(props)=> {
+  const { storeType }=props
   const actionRef = useRef();
   const [visible, setVisible] = useState(false);
   const [formDetail , setFormDetail ] = useState()
@@ -23,7 +24,7 @@ export default () => {
     },
     {
       title: '注销原因',
-      dataIndex: 'reason',
+      dataIndex: storeType == '1'?'message':'reason',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -33,7 +34,7 @@ export default () => {
       valueType: 'text',
       hideInSearch: true,
       render:(_,data)=>{
-        return {1:'已启用',2:'已禁用'}[_.code]
+        return storeType == '1'?{1:'已启用',0:'已禁用'}[_]:{1:'已启用',2:'已禁用'}[_.code]
       }
     },
     {
@@ -56,20 +57,20 @@ export default () => {
           setStopVisible(true)
           setFormDetail(record)
         }}>
-          {record?.status?.code==1?'禁用':'启用'}
+          {storeType == '1'?record?.status==1?'禁用':'启用':record?.status?.code==1?'禁用':'启用'}
         </a>
       ]
     },
   ];
 
   return (
-    <PageContainer>
+    <>
       <ProTable
         rowKey="id"
         options={false}
         columns={columns}
         actionRef={actionRef}
-        request={pageForAdmin}
+        request={ storeType == '1'?getCancelMessage:pageForAdmin}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
             defaultCollapsed: true,
@@ -89,6 +90,7 @@ export default () => {
         visible={visible}
         setVisible={setVisible}
         formDetail={formDetail}
+        storeType={storeType}
         callback={()=>{ actionRef.current.reload(); setFormDetail(null)}}
         onClose={() => { actionRef.current.reload(); setFormDetail(null) }}
       />}
@@ -96,9 +98,38 @@ export default () => {
         visible={stopVisible}
         setVisible={setStopVisible}
         formDetail={formDetail}
+        storeType={storeType}
         callback={()=>{ actionRef.current.reload(); setFormDetail(null)}}
         onClose={() => { actionRef.current.reload(); setFormDetail(null) }}
       />}
-    </PageContainer>
+    </>
   );
 };
+
+
+export default () => {
+  const [activeKey, setActiveKey] = useState('2')
+
+  return (
+    <PageContainer>
+      <ProCard
+        tabs={{
+          type: 'card',
+          activeKey,
+          onChange: setActiveKey
+        }}
+      >
+        <ProCard.TabPane key='2' tab="社区店注销原因">
+          {
+            activeKey == '2' && <CancelReason storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key='1' tab="用户注销原因">
+          {
+            activeKey == '1' && <CancelReason storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+      </ProCard>
+    </PageContainer>
+  )
+}

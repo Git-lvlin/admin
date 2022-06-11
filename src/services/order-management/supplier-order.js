@@ -46,3 +46,11 @@ export const refundOrder = async (params = {}, options = {}) => {
   });
 }
 
+
+export const modifyAddress = async (params = {}, options = {}) => {
+  return request('/auth/wholesale/storeOrder/modifyAddress', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
