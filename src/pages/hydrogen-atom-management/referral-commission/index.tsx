@@ -96,16 +96,6 @@ function ReferralCommission () {
       hideInSearch: true
     },
     {
-      title: '机器ID',
-      dataIndex: 'imei',
-      hideInTable: true
-    },
-    {
-      title: '被推荐人手机',
-      dataIndex: 'buyMobile',
-      hideInTable: true
-    },
-    {
       title: '提成金额',
       dataIndex: 'limitAmount',
       hideInTable: true,
