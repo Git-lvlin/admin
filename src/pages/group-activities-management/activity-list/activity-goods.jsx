@@ -1,10 +1,13 @@
 import React, { useState, useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { PageContainer } from '@ant-design/pro-layout'
-import { ruleGoodsList, ruleStatInfo, ruleGoodsSortTop } from '@/services/single-contract-activity-management/activity-product'
-import { Drawer, Space } from 'antd'
+import { Button, Drawer, Space } from 'antd'
+import { ModalForm } from '@ant-design/pro-form'
+import { ExclamationCircleOutlined } from "@ant-design/icons"
+
 import { dateFormat, amountTransform } from '@/utils/utils'
 import ProductDetailDrawer from '@/components/product-detail-drawer'
+import { ruleGoodsList, ruleStatInfo, ruleGoodsSortTop, ruleGoodsStateSub } from '@/services/single-contract-activity-management/activity-product'
 import EditStock from './edit-stock'
 import GroupDetail from './group-detail'
 
@@ -17,6 +20,8 @@ const TableList = ({onClose, visible, id}) => {
   const [stockData, setStockData] = useState(null)
   const [groupDetailVisible, setGroupDetailVisible] = useState(false)
   const [groupState, setGroupState] = useState(1)
+  const [formVisible, setFormVisible] = useState(false)
+  const [putawaySoldOut, setPutawaySoldOut] = useState(false)
 
   const actionRef = useRef() 
   
@@ -30,9 +35,10 @@ const TableList = ({onClose, visible, id}) => {
 
   const statInfo = [
     {
-      title: '活动商品SKU',
-      dataIndex: 'activitySkuNum',
-      align: 'center'
+      title: '活动商品SPU&SKU',
+      dataIndex: 'activitySpuNum',
+      align: 'center',
+      render: (_, r) => <span>{`${_}&${r.activitySkuNum}`}</span>
     },
     {
       title: '活动商品总库存',
@@ -40,9 +46,10 @@ const TableList = ({onClose, visible, id}) => {
       align: 'center'
     },
     {
-      title: '已拼商品SKU',
-      dataIndex: 'activitySkuSuc',
-      align: 'center'
+      title: '已拼商品SPU&SKU',
+      dataIndex: 'activitySpuSuc',
+      align: 'center',
+      render: (_, r) => <span>{`${_}&${r.activitySkuSuc}`}</span>
     },
     {
       title: '已拼商品件数',
@@ -83,14 +90,6 @@ const TableList = ({onClose, visible, id}) => {
       }
     },
     {
-      title: 'skuID',
-      dataIndex: 'skuId',
-      valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入skuID'
-      }
-    },
-    {
       title: '商品名称',
       dataIndex: 'goodsName',
       valueType: 'text',
@@ -98,10 +97,15 @@ const TableList = ({onClose, visible, id}) => {
       render: (_, r)=> <a onClick={()=> {setProductDetailDrawerVisible(true); setSpuId(r.spuId)}}>{_}</a>
     },
     {
-      title: '规格',
-      dataIndex: 'skuName',
-      valueType: 'text',
+      title: '在架状态',
+      dataIndex: 'goodsState',
+      valueType: 'select',
+      valueEnum: {
+        0: '下架',
+        1: '上架'
+      },
       hideInSearch: true,
+      hideInTable: info.activityStatus === 3 || info.activityStatus === 4
     },
     {
       title: '供应商ID',
@@ -110,32 +114,12 @@ const TableList = ({onClose, visible, id}) => {
       hideInSearch: true,
     },
     {
-      title: '秒约价（元）',
-      dataIndex: 'salePrice',
-      valueType: 'text',
-      hideInSearch: true,
-      render: (_) => amountTransform(_, '/')
-    },
-    {
-      title: '拼团价（元）',
-      dataIndex: 'activityPrice',
-      valueType: 'text',
-      hideInSearch: true,
-      render: (_) => amountTransform(_, '/')
-    },
-    {
       title: '成团人数',
       dataIndex: 'defaultGroupNum',
       hideInSearch: true,
     },
     {
-      title: '拼团库存',
-      dataIndex: 'activityStockNum',
-      valueType: 'text',
-      hideInSearch: true,
-    },
-    {
-      title: '已拼数量',
+      title: '已拼数量(件)',
       dataIndex: 'skuGroupNum',
       valueType: 'text',
       hideInSearch: true
@@ -182,10 +166,13 @@ const TableList = ({onClose, visible, id}) => {
     {
       title: '操作',
       valueType: 'option',
-      render: (_, record)=> [
-        <a key="1" onClick={()=> {toTop(record.ruleGoodsId, actionRef)}}>置顶</a>,
-        <a key="2" onClick={() => {setEditStockVisible(true); setStockData(record)}}>编辑库存</a>
-      ],
+      render: (_, record)=> (
+        <Space size="middle">
+          <a onClick={()=> {toTop(record.ruleGoodsId, actionRef)}}>置顶</a>
+          <a onClick={() => {setEditStockVisible(true); setStockData(record)}}>编辑库存</a>
+          <a onClick={() => {setStockData(record); setPutawaySoldOut(true) }}>{`从活动${record.goodsState === 1 ? '下' : '上'}架`}</a>
+        </Space>
+      ),
       fixed: 'right',
       hideInTable: info.activityStatus === 3 || info.activityStatus === 4
     }
@@ -224,7 +211,7 @@ const TableList = ({onClose, visible, id}) => {
         actionRef={actionRef}
       />
       <ProTable
-        rowKey="skuId"
+        rowKey="spuId"
         options={false}
         params={{ id }}
         postData={(data) => {
@@ -243,8 +230,8 @@ const TableList = ({onClose, visible, id}) => {
           defaultCollapsed: false,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
-          ],
+            ...dom.reverse()
+          ]
         }}
         actionRef={actionRef}
         columns={columns}
@@ -282,9 +269,45 @@ const TableList = ({onClose, visible, id}) => {
           info={info}
         />
       }
+      {
+        putawaySoldOut&&
+        <PutawaySoldOut
+          visible={putawaySoldOut} 
+          setVisible={setPutawaySoldOut} 
+          data={stockData}
+          callback={() => { actionRef.current?.reload() }}
+        />
+      }
     </Drawer>
 
   );
 };
+
+const PutawaySoldOut = ({visible, setVisible, data, callback}) => {
+  const submit = () => {
+    const res = data.goodsState === 0 ? 1 : 0
+    ruleGoodsStateSub({
+      ruleGoodsId: data.ruleGoodsId,
+      goodsState: res
+    }).then(res => {
+      if(res.code === 0) {
+        callback()
+      }
+    })
+  }
+
+  return (
+    <ModalForm
+      title={<p><ExclamationCircleOutlined style={{color: '#1890FF'}}/> 确认要下架活动中的商品？</p>}
+      visible={visible}
+      onVisibleChange={setVisible}
+      onFinish={()=>{
+        submit()
+        return true
+      }}
+      width={300}
+    />
+  )
+}
 
 export default TableList

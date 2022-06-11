@@ -4,14 +4,21 @@ import ProTable from '@ant-design/pro-table'
 import ProCard from '@ant-design/pro-card'
 import moment from 'moment'
 import { QuestionCircleOutlined } from '@ant-design/icons'
-import { Space, Tooltip } from 'antd'
+import { Space, Tooltip, Image } from 'antd'
 
 import PieChart from './pie-chart'
 import TableSearch from './table-search'
 import { getTimeDistance } from '@/utils/utils'
 import styles from './styles.less'
 import GcCascader from '@/components/gc-cascader'
-import { timeGoodType, goodDetail, goodsRateData, bJoinRate } from '@/services/data-board/product-data'
+import { 
+  timeGoodType, 
+  goodDetail, 
+  goodsRateData, 
+  bJoinRate, 
+  unsalableGoodsList, 
+  unsalableGoodsNums 
+} from '@/services/data-board/product-data'
 import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -28,7 +35,9 @@ const ProductData = () => {
   const [shopkeeper, setShopkeeper] = useState(0)
   const [ratio, setRatio] = useState('0')
   const [goodsTotal, setGoodsTotal] = useState(0)
+  const [unsalableTotal, setUnsalableTotal] = useState(0)
   const form = useRef()
+  const unsalableform = useRef()
 
   const type = form.current?.getFieldsValue().orderType === '15'?'data-board-goods-detail-bc-export': 'data-board-goods-detail-c-export'
 
@@ -100,6 +109,12 @@ const ProductData = () => {
 
     return ''
   }
+
+  useEffect(()=> {
+    unsalableGoodsNums().then(res => {
+      setUnsalableTotal(res.data.unsalableGoodsNums)
+    })
+  },[])
 
   const handleRangePickerChange = (value) => {
     setRangePickerValue(value)
@@ -224,6 +239,19 @@ const ProductData = () => {
       dataIndex: 'goodsName',
       align: 'center',
       width: '15%'
+    },
+    {
+      title: ()=>(
+        <Space>
+          <span>单品动销率</span>
+          <Tooltip title="商品累计销售数量÷商品库存数量*100%">
+            <QuestionCircleOutlined/>
+          </Tooltip>
+        </Space>
+      ),
+      dataIndex: 'rate',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: ()=>(
@@ -375,6 +403,38 @@ const ProductData = () => {
     }
   ]
 
+  const Unsalable = [
+    {
+      title: '商品SPU',
+      dataIndex: 'spu',
+      align: 'center'
+    },
+    {
+      title: '供应商ID',
+      dataIndex: 'supplierId',
+      align: 'center'
+    },
+    {
+      title: '商品图片',
+      dataIndex: 'url',
+      align: 'center',
+      hideInSearch: true,
+      render: (_)=> (
+        <Image
+          width={80}
+          height={80}
+          src={_}
+        />
+      )
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      align: 'center',
+      width: '25%'
+    }
+  ]
+
   const getFieldValue = () => {
     const { date, gcId, ...rest } = form.current.getFieldsValue()
     return {
@@ -473,6 +533,52 @@ const ProductData = () => {
                   <div>集约总参与率为<span>{ratio}</span></div>
                 </div>
               }
+            </>
+          }}
+        />
+      </div>
+      <div className={styles.goodsTable}>
+        <ProTable
+          rowKey="spu"
+          columns={Unsalable}
+          formRef={unsalableform}
+          params={{}}
+          request={unsalableGoodsList}
+          pagination={{
+            showQuickJumper: true,
+            pageSize: 10
+          }}
+          search={{
+            labelWidth: 120,
+            optionRender: (searchConfig, formProps, dom) => [
+              ...dom.reverse(),
+              <Export
+                change={(e)=> {setVisit(e)}}
+                key="export" 
+                type="unsalableGoodsList"
+                conditions={{...unsalableform.current?.getFieldsValue()}}
+              />,
+              <ExportHistory 
+                key="export-history" 
+                show={visit} setShow={setVisit}
+                type="unsalableGoodsList"
+              />
+            ]
+          }}
+          headerTitle="滞销商品列表（自当前时间起，30天内无浏览量或无交易额，则为滞销商品）"
+          toolbar={{
+            settings: false
+          }}
+          tableRender={(_, dom) => {
+            return <>
+              { dom }
+              <div className={styles.summary}>
+                <div>
+                  滞销商品合计：
+                  <span>{unsalableTotal}</span>
+                  个
+                </div>
+              </div>
             </>
           }}
         />

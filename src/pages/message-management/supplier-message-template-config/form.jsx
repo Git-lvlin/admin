@@ -135,13 +135,6 @@ export default (props) => {
         }}
         readonly
       />
-      <ProFormSelect
-        name="popupConfigId"
-        label="弹窗模板"
-        width="md"
-        valueType="select"
-        options={popupSelect}
-      />
     </ModalForm>
   )
 }

@@ -12,7 +12,7 @@ const SubTable = (props) => {
     { 
       title: '序号', 
       dataIndex: 'index', 
-      render: (_, $, index) => data.length - index
+      render: (_, r, index) => data.length - index
     },
     { 
       title: '参团用户手机号',
@@ -23,6 +23,14 @@ const SubTable = (props) => {
       title: '参团时间',
       dataIndex: 'createTime' 
     },
+    {
+      title: 'skuID',
+      dataIndex: 'skuId'
+    },
+    {
+      title: '规格',
+      dataIndex: 'skuName'
+    },
     { 
       title: '支付状态',
       dataIndex: 'payStatus'
@@ -31,7 +39,18 @@ const SubTable = (props) => {
       title: '拼团商品数量', 
       dataIndex: 'goodsNum' 
     },
-  ];
+    {
+      title: '限新人参团',
+      dataIndex: 'memberType',
+      render: (_) => {
+        if(_ == 1) {
+          return '是'
+        } else {
+          return '否'
+        }
+      }
+    }
+  ]
 
   useEffect(() => {
     setLoading(true);
@@ -67,6 +86,16 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
       dataIndex: 'groupMemberPhone',
       valueType: 'text',
       hideInTable: true
+    },
+    {
+      title: '虚拟开团',
+      dataIndex: 'virtualOpenGroup',
+      valueType: 'select',
+      valueEnum: {
+        1: '否',
+        2: '是'
+      },
+      hideInSearch: true
     },
     {
       title: '开团时间',
@@ -132,9 +161,9 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
       width={1200}
     >
       <div style={{ marginBottom: 10, padding: 10 }}>
-        <Space size="middle">
+        <Space size="middle" align="start">
           <span style={{maxWidth: "260px", display: "inline-block"}}>{data.goodsName}</span>
-          <span>skuID:{data.skuId}</span>
+          <span>spuID:{data.spuId}</span>
           <span>({info.activityName}</span>
           <span>{info.activityStartTime}~{info.activityEndTime}</span>
           {info.virtualType === 2 && <span>虚拟成团)</span>}
@@ -164,12 +193,12 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
           defaultCollapsed: false,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
-          ],
+            ...dom.reverse()
+          ]
         }}
         columns={columns}
         pagination={{
-          pageSize: 10,
+          pageSize: 10
         }}
       />
     </Drawer>
