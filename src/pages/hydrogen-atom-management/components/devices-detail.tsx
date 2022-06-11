@@ -280,8 +280,11 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
             <div>时间：{item.payTime}</div>
           </div>
           <div className={styles.cardListContent}>
-            <div>机器ID：{item.imei}</div>
-            <div>支付编号：{item.id}</div>
+            {
+              !showTitle&&
+              <div>机器ID：{item.imei}</div>
+            }
+            <div>支付编号：{item.orderSn}</div>
           </div>
           <Divider style={{margin: '10px 0 24px 0'}}/>
         </div>
@@ -299,7 +302,11 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
             <div>时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</div>
           </div>
           <div className={styles.cardListContent}>
-            <div>机器ID：{item.deviceImei}</div>
+            {
+              !showTitle ?
+              <div>机器ID：{item.deviceImei}</div>:
+              <div>启用人：{item.memberPhone}{item.isShopkeeper &&'（店主）'}</div>
+            }
             <div>支付编号：{item.orderSn}</div>
           </div>
           <Divider style={{margin: '10px 0 24px 0'}}/>

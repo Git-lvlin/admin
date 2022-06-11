@@ -156,8 +156,8 @@ const QueryPaidOrderDetails = () => {
   const getFieldsValue = () => {
     const {orderPaytime, ...rest} = formRef.current?.getFieldsValue()
     return {
-      startTime: orderPaytime?.[0],
-      endTime: orderPaytime?.[1],
+      startTime: orderPaytime?.[0].format("YYYY-MM-DD HH:mm:ss"),
+      endTime: orderPaytime?.[1].format("YYYY-MM-DD HH:mm:ss"),
       ...rest
     }
   }

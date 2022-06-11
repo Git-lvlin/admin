@@ -58,3 +58,31 @@ export const bJoinRate = async (params = {}, options = {}) => {
     ...options
   })
 }
+
+// 滞销商品列表
+export const unsalableGoodsList = async (params = {}, options = {}) => {
+  const { current=1, pageSize=10, ...rest } = params
+  const res = await request('/auth/java-admin/report/config/unsalableGoodsList', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data.records,
+    success: res.success,
+    total: res.data.total
+  }
+}
+
+// 滞销商品合计
+export const unsalableGoodsNums = async (params = {}, options = {}) => {
+  return await request('/auth/java-admin/report/config/unsalableGoodsNums', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}

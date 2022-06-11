@@ -15,6 +15,7 @@ import SelectDate from '../components/SelectDate'
 import { getTimeDistance } from '@/utils/utils'
 import BarChart from './bar-chart'
 import SupplierDataOverview from './supplier-data-overview'
+import { amountTransform } from "@/utils/utils"
 
 const SupplierData = () => {
   const [amount, setAmount] = useState(0)
@@ -30,7 +31,7 @@ const SupplierData = () => {
       endTime: rangePickerValue?.[1].format('YYYY-MM-DD'),
       type: value
     }).then(res=> {
-      setData(res.data.map(res => ({...res, supplierId: `供应商ID：${res.supplierId}`, 金额: res.amount})))
+      setData(res.data?.map(res => ({...res, supplierId: `供应商ID：${res.supplierId}`, 金额: res.amount})))
     })
     return () => {
       setData([])
@@ -86,6 +87,30 @@ const SupplierData = () => {
       dataIndex: 'time',
       valueType: 'dateRange',
       hideInTable: true
+    },
+    {
+      title: ()=>(
+        <div>
+          <span>动销率</span>
+          <span>（SKU级）</span>
+        </div>
+      ),
+      dataIndex: 'saleRate',
+      hideInSearch: true,
+      align: 'center',
+      render: (_) => `${amountTransform(_, '*')}%`
+    },
+    {
+      title: ()=>(
+        <div>
+          <span>滞销率</span>
+          <span>（SKU级）</span>
+        </div>
+      ),
+      dataIndex: 'notSaleRate',
+      hideInSearch: true,
+      align: 'center',
+      render: (_) => `${amountTransform(_, '*')}%`
     },
     {
       title: '已审核通过SPU数量',
