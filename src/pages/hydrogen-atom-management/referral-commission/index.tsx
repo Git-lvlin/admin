@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from "@ant-design/pro-table"
+import { Input, InputNumber } from "antd"
 
 import type { ProColumns } from "@ant-design/pro-table"
 import type { PropsTable } from "./data"
@@ -14,6 +15,10 @@ import Detail from "./detail"
 function ReferralCommission () {
   const [detailVisible, setDetailVisible] = useState<boolean>(false)
   const [data, setData] = useState<PropsTable>()
+  const [lowLimitAmount, setLowLimitAmount] = useState<number>()
+  const [highLimitAmount, setHighLimitAmount] = useState<number>()
+  const [lowNum, setLowNum] = useState<number>()
+  const [highNum, setHighNum] = useState<number>()
 
   const  form = useRef<FormInstance>()
 
@@ -88,6 +93,46 @@ function ReferralCommission () {
       hideInTable: true
     },
     {
+      title: '提成金额',
+      dataIndex: 'limitAmount',
+      hideInTable: true,
+      renderFormItem: ()=> (
+        <Input.Group compact>
+          <InputNumber  
+            style={{ 
+              width: 100,
+              textAlign: 'center',
+              borderRight: 0
+            }}
+            min={0}
+            onChange={(v: number)=> setLowLimitAmount(v)}
+            placeholder="最低金额" 
+          />
+          <Input
+            style={{
+              width: 30,
+              borderLeft: 0,
+              borderRight: 0,
+              pointerEvents: 'none',
+              background: 'transparent'
+            }}
+            placeholder="~"
+            disabled
+          />
+          <InputNumber 
+            style={{
+              width: 100,
+              textAlign: 'center',
+              borderLeft: 0
+            }}
+            min={0}
+            onChange={(v: number)=> setHighLimitAmount(v)}
+            placeholder="最高金额"
+          />
+        </Input.Group>
+      )
+    },
+    {
       title: '操作',
       valueType: 'option',
       align: 'center',
@@ -102,7 +147,13 @@ function ReferralCommission () {
       <ProTable<PropsTable>
         rowKey='pMobile'
         columns={columns}
+        params={{
+          lowLimitAmount: lowNum ?? lowNum,
+          highLimitAmount: highNum ?? highNum,
+        }}
+        onSubmit={()=> { setLowNum(lowLimitAmount); setHighNum(highLimitAmount) }}
         request={queryStatisticsCommissionList}
+        onReset={()=> {setLowNum(undefined); setHighNum(undefined)}}
         options={false}
         formRef={form}
         pagination={{
