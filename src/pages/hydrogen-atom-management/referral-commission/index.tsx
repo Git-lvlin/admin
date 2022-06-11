@@ -24,6 +24,12 @@ function ReferralCommission () {
 
   const columns: ProColumns<PropsTable>[] = [
     {
+      title: 'pMemId',
+      dataIndex: 'pMemId',
+      hideInTable: true,
+      hideInSearch: true
+    },
+    {
       title: '邀请人社区店ID',
       dataIndex: 'storeId',
       hideInTable: true
@@ -42,6 +48,13 @@ function ReferralCommission () {
     {
       title: '总提成金额(元)',
       dataIndex: 'totalAccount',
+      align: 'center',
+      hideInSearch: true,
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '总业绩金额(元)',
+      dataIndex: 'orderAmountTotal',
       align: 'center',
       hideInSearch: true,
       render: (_) => amountTransform(_, '/')
@@ -81,16 +94,6 @@ function ReferralCommission () {
       dataIndex: 'storeStatus',
       align: 'center',
       hideInSearch: true
-    },
-    {
-      title: '机器ID',
-      dataIndex: 'imei',
-      hideInTable: true
-    },
-    {
-      title: '被推荐人手机',
-      dataIndex: 'buyMobile',
-      hideInTable: true
     },
     {
       title: '提成金额',
@@ -145,11 +148,11 @@ function ReferralCommission () {
   return (
     <PageContainer title={false}>
       <ProTable<PropsTable>
-        rowKey='pMobile'
+        rowKey='pMemId'
         columns={columns}
         params={{
-          lowLimitAmount: lowNum ?? amountTransform(lowNum, '*'),
-          highLimitAmount: highNum ?? amountTransform(highNum, '*')
+          lowLimitAmount: lowNum && amountTransform(lowNum, '*'),
+          highLimitAmount: highNum && amountTransform(highNum, '*')
         }}
         onSubmit={()=> { setLowNum(lowLimitAmount); setHighNum(highLimitAmount) }}
         request={queryStatisticsCommissionList}
