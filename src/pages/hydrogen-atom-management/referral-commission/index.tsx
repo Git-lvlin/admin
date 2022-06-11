@@ -148,8 +148,8 @@ function ReferralCommission () {
         rowKey='pMobile'
         columns={columns}
         params={{
-          lowLimitAmount: lowNum ?? lowNum,
-          highLimitAmount: highNum ?? highNum,
+          lowLimitAmount: lowNum ?? amountTransform(lowNum, '*'),
+          highLimitAmount: highNum ?? amountTransform(highNum, '*')
         }}
         onSubmit={()=> { setLowNum(lowLimitAmount); setHighNum(highLimitAmount) }}
         request={queryStatisticsCommissionList}
