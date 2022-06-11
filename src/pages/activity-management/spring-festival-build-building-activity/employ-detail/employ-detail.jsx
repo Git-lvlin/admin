@@ -226,7 +226,6 @@ export default (props) =>{
     return (
         <PageContainer title='查看用户明细'>
           <Tabs
-            centered
             defaultActiveKey="1"
             style={{backgroundColor:"#fff",padding:'25px'}}
             onChange={(val)=>{

@@ -15,7 +15,6 @@ export default (props) =>{
           <p>* 平台总额外奖励占商品盈利比例：90%</p>
         </div>
         <Tabs
-          centered
           defaultActiveKey="1"
           style={{backgroundColor:"#fff",padding:'25px'}}
           onChange={(val)=>{

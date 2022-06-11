@@ -30,7 +30,7 @@ export default  () => {
         setFormDatil(res.data)
         form.setFieldsValue({
           depositAmount:res.data?.settingValues?.depositAmount,
-          serviceAmount:res.data?.settingValues?.serviceAmount
+          serviceAmount:res.data?.settingValues?.serviceAmount,
         })
       }
     })
