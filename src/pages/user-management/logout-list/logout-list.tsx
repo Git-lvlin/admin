@@ -1,96 +1,87 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ProTable from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
-import { consumerOrderPage } from '@/services/hydrogen-atom-management/hydrogen-atom-start-recording'
-import moment from 'moment'
-import { amountTransform } from '@/utils/utils'
+import { cancelList } from '@/services/user-management/logout-list'
 import { PageContainer } from '@ant-design/pro-layout';
-import { useLocation } from 'umi';
 import Detail from '@/pages/user-management/user-list/detail';
+import { Image } from 'antd'
 
-
-type ConsumerOrderPage={
-    deviceImei: string;
-    id: string;
-    occupantId: string;
-    orderAmount: string;
-    orderSn: string;
-    payType: string;
-    deviceUseTime: number;
-    createTime: string;
-    payTypeStr: string;
-    storeNo: string;
-    storeName: string;
-    memberPhone: string;
-    occupationMode: number;
-    isShopkeeper: boolean;
-    occupationModeStr: string;
+type CancelListItem={
+  createTime: any;
+  id: number;
+  loginTime: any;
+  memberId: any;
+  phoneNumber: string;
+  reason: string;
+  regTime: any;
+  sourceTypeDesc: string;
+  type: number;
+  userType: number;
 }
 
 export default () => {
-  const [visit, setVisit] = useState<boolean>(false)
-  const [subOrderId, setSubOrderId] = useState(null)
-  const [orderVisible, setOrderVisible] = useState(false)
-  const isPurchase = useLocation().pathname.includes('purchase')
+  const [selectItem, setSelectItem] = useState({});
   const [detailVisible, setDetailVisible] = useState(false);
   const ref=useRef()
-  const columns:ProColumns<ConsumerOrderPage>[]= [
+  const columns:ProColumns<CancelListItem>[]= [
     {
-      title: '用户昵称',
-      dataIndex: 'deviceImei',
+      title: '昵称',
+      dataIndex: 'nickName',
       valueType: 'text',
       fieldProps:{
         placeholder:'请输入用户昵称'
       },
-      order:5
+      order:1,
+      hideInTable: true
+    },
+    {
+      title: '用户昵称',
+      dataIndex: 'nickName',
+      valueType: 'text',
+      hideInSearch: true,
+      render:(_,data)=>{
+        return <div style={{display:'flex',alignItems:'center'}}>
+                <Image src={data?.icon} width={50} height={50}/>
+                <p>{_}</p>
+               </div>
+      }
+    },
+    {
+      title: '手机',
+      dataIndex: 'phoneNumber',
+      valueType: 'text',
+      order:2,
+      fieldProps:{
+        placeholder:'请输入用户手机号'
+      },
+      hideInTable: true
     },
     {
       title: '用户手机',
-      dataIndex: 'occupationMode',
+      dataIndex: 'phoneNumber',
       valueType: 'text',
-      order:4,
-      render:(_)=>{
-        return <a onClick={()=>{setDetailVisible(true)}}>{_}</a>
-    }
+      render:(_,data)=>{
+        return <a onClick={()=>{setDetailVisible(true);setSelectItem(data);}}>{_}</a>
+      },
+      hideInSearch:true
     },
     {
       title: '注册时间',
-      dataIndex: 'occupationMode',
+      dataIndex: 'regTime',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '注册来源',
-      dataIndex: 'memberPhone',
+      dataIndex: 'sourceTypeDesc',
       valueType: 'text',
+      hideInSearch: true,
     },
     {
       title: '上次访问时间',
-      dataIndex: 'createTime',
+      dataIndex: 'loginTime',
       valueType: 'text',
       hideInSearch: true
-    },
-    {
-      title: '是否开店',
-      dataIndex: 'isShopkeeper',
-      valueType: 'select',
-      hideInTable: true,
-      valueEnum:{
-        "": "全部",
-        false: "否",
-        true: '是'
-      },
-      order:1
-    },
-    {
-      title: '是否开店',
-      dataIndex: 'isShopkeeper',
-      valueType: 'select',
-      hideInSearch: true,
-      valueEnum:{
-        false: "否",
-        true: '是'
-      }
     },
     {
       title: '注销申请时间',
@@ -100,32 +91,27 @@ export default () => {
     },
     {
       title: '注销原因',
-      dataIndex: 'deviceUseTime',
+      dataIndex: 'reason',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '注销时间',
-      dataIndex: 'createTime',
+      dataIndex: 'finishTime',
       valueType: 'text',
       hideInSearch: true
     }
   ];
-  const getFieldValue = (searchConfig) => {
-    const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
-    return {
-      startTime:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
-      endTime:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
-      ...rest,
-    }
-  }
   return (
     <PageContainer>
-        <ProTable<ConsumerOrderPage>
+        <ProTable<CancelListItem>
           actionRef={ref}
           rowKey="id"
           options={false}
-          request={consumerOrderPage}
+          request={cancelList}
+          params={{
+            type:3
+          }}
           search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -142,7 +128,7 @@ export default () => {
        {
         detailVisible &&
         <Detail
-        //   id={selectItem?.id}
+          id={selectItem?.memberId}
           visible={detailVisible}
           setVisible={setDetailVisible}
         />

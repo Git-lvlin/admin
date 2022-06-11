@@ -7,13 +7,14 @@ import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import ContentVersionTab from '@/components/content-version-tab';
-import { homeBannerList, homeBannerDel, bannerSortTop } from '@/services/cms/member/member';
+import { homeBannerList, homeBannerDel, bannerSortTop, contentVersionList } from '@/services/cms/member/member';
 
 const BannerAdmin = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [verifyVersionId, setVerifyVersionId] = useState(1);
+  const [versionList, setVersionList] = useState([]);
   const getDetail = (data) => {
     if (data) {
       setDetailData(data);
@@ -59,6 +60,13 @@ const BannerAdmin = () => {
       actionRef.current.reset();
     }
   }, [formVisible])
+
+  useEffect(()=>{
+    contentVersionList()
+      .then(res => {
+        setVersionList(res.data)
+      })
+  }, [])
 
   const columns = [
     {
@@ -231,6 +239,7 @@ const BannerAdmin = () => {
     {formVisible && <Edit
       visible={formVisible}
       setVisible={setFormVisible}
+      title={versionList?.[verifyVersionId-1]?.title}
       verifyVersionId={verifyVersionId}
       detailData={detailData}
       callback={() => { actionRef.current.reload(); setDetailData(null) }}

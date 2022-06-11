@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ProTable from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
-import { consumerOrderPage } from '@/services/hydrogen-atom-management/hydrogen-atom-start-recording'
+import { getActiveConfigList } from '@/services/cms/member/thematic-event-management'
 import moment from 'moment'
-import { Button } from 'antd'
+import { Button,message } from 'antd'
 import { amountTransform } from '@/utils/utils'
 import { PageContainer } from '@ant-design/pro-layout';
 import { useLocation } from 'umi';
@@ -29,7 +29,7 @@ type ThematicEventItem={
 }
 
 export default () => {
-  const [detailId, setDetailId] = useState(null)
+  const [detailId, setDetailId] = useState<string>()
   const [visible, setVisible] = useState(false)
   const isPurchase = useLocation().pathname.includes('purchase')
   const [detailVisible, setDetailVisible] = useState(false);
@@ -37,7 +37,7 @@ export default () => {
   const columns:ProColumns<ThematicEventItem>[]= [
     {
       title: '专题名称',
-      dataIndex: 'deviceImei',
+      dataIndex: 'name',
       valueType: 'text',
       fieldProps:{
         placeholder:'请输入内容'
@@ -50,7 +50,13 @@ export default () => {
       valueType: 'text',
       order:4,
       render:(_)=>{
-          return <a onClick={()=>{setDetailVisible(true)}}>{_}</a>
+          return <>
+                  <span style={{display:'inline-block',marginRight:'10px'}}>https://publicmobile-uat.yeahgo.com/web/exclu...</span>
+                  <a onClick={()=>{
+                   message.success('复制成功')
+                   navigator.clipboard.writeText('https://publicmobile-uat.yeahgo.com/web/exclu...')
+                  }}>复制</a>
+                 </>
       },
       hideInSearch: true
     },
@@ -62,29 +68,27 @@ export default () => {
     },
     {
       title: '活动时间',
-      dataIndex: 'memberPhone',
+      dataIndex: 'startTime',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      render:(_,data)=>{
+        return <p>{moment(data?.startTime*1000).format('YYYY-MM-DD HH:mm:ss')} 至 {moment(data?.endTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
+      }
     },
     {
       title: '状态',
-      dataIndex: 'isShopkeeper',
+      dataIndex: 'statusDisplay',
       valueType: 'select',
       hideInSearch: true,
-      valueEnum:{
-        "": "未开始",
-        false: "进行中",
-        true: '已结束'
-      },
     },
     {
-      title: '注销申请状态',
+      title: '操作',
       dataIndex: 'orderAmount',
       valueType: 'option',
       hideInSearch: true,
       render:(text, record, _, action)=>[
         <a key='edit' onClick={()=>{setVisible(true);setDetailId(record.id)}}>编辑</a>,
-        <a key='detele' onClick={()=>{setVisible(true);setDetailId(record.id)}}>删除</a>
+        <a key='detele' onClick={()=>{setVisible(true);setDetailId(record.id)}}>终止</a>
     ],
     }
   ];
@@ -94,7 +98,7 @@ export default () => {
           actionRef={ref}
           rowKey="id"
           options={false}
-          request={consumerOrderPage}
+          request={getActiveConfigList}
           search={{
           defaultCollapsed: false,
           labelWidth: 100,
@@ -112,10 +116,11 @@ export default () => {
         {
         visible &&
         <SpecialModel
-        //   id={selectItem?.id}
+          id={detailId}
           visible={visible}
           setVisible={setVisible}
-          onClose={()=>{}}
+          onClose={()=>{setDetailId(null);ref?.current?.reload()}}
+          callback={()=>{setDetailId(null);ref?.current?.reload()}}
         />
       }
   </PageContainer>
