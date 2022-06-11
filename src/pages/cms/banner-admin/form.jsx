@@ -12,7 +12,7 @@ import CheckBox from '@/components/checkbox';
 import { bannerAdd, selAllVersion } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible, verifyVersionId } = props;
+  const { detailData, setVisible, onClose, visible, verifyVersionId, title } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
   const [nowIndex, setNowIndex] = useState(0);
@@ -225,13 +225,13 @@ export default (props) => {
             }]
           }
         >
-          <Upload multiple maxCount={1} code={201} accept="image/*" proportion={picSize[nowIndex] || 'banner'} />
+          <Upload multiple maxCount={1} code={201} accept="image/*" />
         </Form.Item>
         <div>
           <dl>
             <dt>图片要求</dt>
             <dd>首页banner-350*150</dd>
-            <dd>集约页面banner-375*160</dd>
+            <dd>集约页面banner-{title.includes('小程序')?'702*240':'375*160'}</dd>
             <dd>个人中心banner-351*65</dd>
             <dd>社区店专享banner-375*150</dd>
             <dd>秒约爆品banner-375*160</dd>
