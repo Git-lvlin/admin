@@ -185,7 +185,7 @@ const Detail = (props: DetailProps) => {
       onClose={()=> setVisible(false)}
     >
       <ProTable
-        rowKey=''
+        rowKey='pMobile'
         columns={totalColumns}
         dataSource={[data]}
         pagination={false}
@@ -194,7 +194,7 @@ const Detail = (props: DetailProps) => {
         scroll={{x: 'max-content'}}
       />
       <ProTable
-        rowKey=''
+        rowKey='storeId'
         columns={columns}
         params={{pMemId: data?.pMemId}}
         request={queryStatisticsCommissionListSub}
