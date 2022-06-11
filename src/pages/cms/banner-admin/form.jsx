@@ -9,13 +9,14 @@ import ProForm, {
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import CheckBox from '@/components/checkbox';
-import { bannerAdd } from '@/services/cms/member/member';
+import { bannerAdd, selAllVersion } from '@/services/cms/member/member';
 
 export default (props) => {
-  const { detailData, setVisible, onClose, visible, verifyVersionId } = props;
+  const { detailData, setVisible, onClose, visible, verifyVersionId, title } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
   const [nowIndex, setNowIndex] = useState(0);
+  const [versions, setVersions] = useState([]);
   const [href, setHref] = useState('');
   const [showType, setShowType] = useState(false);
   const urlArr = [
@@ -85,8 +86,9 @@ export default (props) => {
   ]
 
   const waitTime = (values) => {
-    const { id, ...rest } = values
+    const { id, channelType, ...rest } = values
     const param = {
+      channelType: channelType.length === 4 ? [0] : channelType,
       ...rest
     }
     if (id) {
@@ -140,12 +142,21 @@ export default (props) => {
         7: '周末狂欢',
         9: '拼团',
       }[detailData.location]
-      const { ...rest } = detailData;
+      const { channelType, ...rest } = detailData;
       console.log('detailData', detailData)
       form.setFieldsValue({
+        channelType: channelType[0] === 0 ? [1, 2, 5, 6] : channelType,
         ...rest
       })
     }
+    const arr = [{ label: '全部版本', value: '0.0.0' }]
+    setVersions(arr)
+    selAllVersion()
+      .then(res => {
+        if (res.code === 0) {
+          setVersions([...arr, ...res.data.map(item => ({ label: `V${item.name}及后续版本`, value: item.name }))])
+        }
+      })
   }, [form, detailData])
 
   return (
@@ -166,6 +177,10 @@ export default (props) => {
         await waitTime(values);
         message.success('提交成功');
         return true;
+      }}
+      initialValues={{
+        version: '0.0.0',
+        channelType: [1, 2, 5, 6],
       }}
     >
       <ProForm.Group>
@@ -210,13 +225,13 @@ export default (props) => {
             }]
           }
         >
-          <Upload multiple maxCount={1} code={201} accept="image/*" proportion={picSize[nowIndex] || 'banner'} />
+          <Upload multiple maxCount={1} code={201} accept="image/*" />
         </Form.Item>
         <div>
           <dl>
             <dt>图片要求</dt>
             <dd>首页banner-350*150</dd>
-            <dd>集约页面banner-375*160</dd>
+            <dd>集约页面banner-{title.includes('小程序')?'702*240':'375*160'}</dd>
             <dd>个人中心banner-351*65</dd>
             <dd>社区店专享banner-375*150</dd>
             <dd>秒约爆品banner-375*160</dd>
@@ -357,19 +372,39 @@ export default (props) => {
         rules={[{ required: true, message: '请选择展示类型!' }]}
         options={showType ? select1 : select2}
       />
-      {/* <Form.Item
-        name="test"
+      <Form.Item
+        name="channelType"
+        label="应用平台"
+        rules={[{ required: true, message: '请选择应用平台!' }]}
       >
         <CheckBox
-          options={[{
-            label: '安卓',
-            value: '1',
-          }, {
-            label: '苹果',
-            value: '2',
-          }]}
+          checkAllText="全部平台"
+          options={[
+            {
+              label: '安卓',
+              value: 2,
+            },
+            {
+              label: '苹果',
+              value: 1,
+            },
+            {
+              label: '小程序',
+              value: 5,
+            },
+            {
+              label: 'h5',
+              value: 6,
+            },
+          ]}
         />
-      </Form.Item> */}
+      </Form.Item>
+      <ProFormRadio.Group
+        name="version"
+        label="应用版本"
+        options={versions}
+        rules={[{ required: true, message: '请选择应用版本!' }]}
+      />
       <ProFormRadio.Group
         name="state"
         label="上线/下架"

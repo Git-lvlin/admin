@@ -141,6 +141,7 @@ const BasicLayout = (props) => {
           {...props}
           {...settings}
           onCollapse={handleMenuCollapse}
+          collapsedButtonRender={null}
           onMenuHeaderClick={() => history.push('/')}
           menuItemRender={(menuItemProps, defaultDom) => {
             if (
