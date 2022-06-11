@@ -216,7 +216,7 @@ const Detail = (props: DetailProps) => {
             <Export
               key='export'
               type="queryMyCommissionSubListExport"
-              conditions={{...form.current?.getFieldsValue()}}
+              conditions={{pMemId: data?.pMemId, ...form.current?.getFieldsValue()}}
             />
           ]
         }}
