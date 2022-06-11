@@ -47,5 +47,17 @@ export default {
     //   component: './user-management/new-poster-new',
     //   wrappers: [RouteWatcher],
     // },
+    {
+      name: 'cancellation-application-record',
+      path: '/user-management/cancellation-application-record',
+      component: './user-management/cancellation-application-record',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'logout-list',
+      path: '/user-management/logout-list',
+      component: './user-management/logout-list',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

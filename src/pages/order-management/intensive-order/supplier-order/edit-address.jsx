@@ -4,7 +4,7 @@ import ProForm, {
   ProFormText,
 } from '@ant-design/pro-form'
 
-import { updateDeliveryInfo } from '@/services/order-management/normal-order'
+import { modifyAddress } from '@/services/order-management/supplier-order';
 import AddressCascader from '@/components/address-cascader'
 
 const checkConfirm = (rule, value, callback) => {
@@ -25,40 +25,38 @@ const EditAddress = ({
   change
 }) => {
 
-  const submitAddress = (v) => {
-    return new Promise((resolve, reject)=>{
-      updateDeliveryInfo(
-        {
-          subOrderId,
-          consignee: v.consignee,
-          phone: v.phone,
-          address: v.address,
-          provinceId: v.area?.[0].value,
-          provinceName: v.area?.[0].label,
-          cityId: v.area?.[1].value,
-          cityName: v.area?.[1].label,
-          districtName: v.area?.[2].label
-        },
-        {
-          showSuccess: true,
-          showError: true
-        }).then(res => {
-          if(res.success) {
-            setChange(change+1)
-            resolve()
-          } else {
-            reject()
-          }
-      })
+const submitAddress = (v) => {
+  return new Promise((resolve, reject)=>{
+    modifyAddress(
+      {
+        orderId:subOrderId,
+        receiptUser: v.receiptUser,
+        receiptPhone: v.receiptPhone,
+        receiptAddress: `${v.area?.[0].label} ${v.area?.[1].label} ${v.area?.[2].label} ${v.receiptAddress}`,
+        provinceId: v.area?.[0].value,
+        cityId: v.area?.[1].value,
+        areaId: v.area?.[2].value
+      },
+      {
+        showSuccess: true,
+        showError: true
+      }).then(res => {
+        if(res.success) {
+          setChange(change+1)
+          resolve()
+        } else {
+          reject()
+        }
     })
-  }
+  })
+}
 
-  useEffect(()=>{
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = 'auto'
-    }
-  }, [])
+useEffect(()=>{
+  document.body.style.overflow = 'hidden'
+  return () => {
+    document.body.style.overflow = 'auto'
+  }
+}, [])
 
   return (
     <ModalForm
@@ -76,12 +74,12 @@ const EditAddress = ({
       layout='horizontal'
     >
       <ProFormText
-        name='consignee'
+        name='receiptUser'
         label='收货人'
         rules={[{required: true, message: '请输入收货人'}]}
       />
       <ProFormText
-        name='phone'
+        name='receiptPhone'
         label='电话'
         rules={[
           {required: true, message: '请输入电话'},
@@ -96,7 +94,7 @@ const EditAddress = ({
         <AddressCascader/>
       </ProForm.Item>
       <ProFormText
-        name='address'
+        name='receiptAddress'
         label='详细地址'
         rules={[{required: true, message: '请输入详细地址'}]}
       />
