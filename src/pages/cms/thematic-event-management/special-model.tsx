@@ -53,13 +53,13 @@ export default (props:PropsItem) => {
       bannerImgUrl:values.bannerImgUrl,
       bannerTime:{
         switch:values.switch1,
-        XL:values.XL,
-        YL:values.YL,
+        xL:values.xL,
+        yL:values.yL,
         edgeDistance:{
-          L:values?.L,
-          T:values?.T,
-          R:values?.R,
-          B:values?.B
+          l:values?.l,
+          t:values?.t,
+          r:values?.r,
+          b:values?.b
         },
         alphaMasked:values?.alphaMasked
       },
@@ -118,12 +118,12 @@ export default (props:PropsItem) => {
             dateRange:[res.data?.startTime*1000,res.data?.endTime*1000],
             bannerImgUrl:res.data?.content?.bannerImgUrl,
             switch1:res.data?.content?.bannerTime?.switch,
-            XL:res.data?.content?.bannerTime?.XL,
-            YL:res.data?.content?.bannerTime?.YL,
-            L:res.data?.content?.bannerTime?.edgeDistance?.L,
-            T:res.data?.content?.bannerTime?.edgeDistance?.T,
-            R:res.data?.content?.bannerTime?.edgeDistance?.R,
-            B:res.data?.content?.bannerTime?.edgeDistance?.B,
+            xL:res.data?.content?.bannerTime?.xL,
+            yL:res.data?.content?.bannerTime?.yL,
+            l:res.data?.content?.bannerTime?.edgeDistance?.l,
+            t:res.data?.content?.bannerTime?.edgeDistance?.t,
+            r:res.data?.content?.bannerTime?.edgeDistance?.r,
+            b:res.data?.content?.bannerTime?.edgeDistance?.b,
             alphaMasked:res.data?.content?.bannerTime?.alphaMasked,
             switch2:res.data?.content?.subImage?.switch,
             imgUrl1:res.data?.content?.subImage?.imgUrl,
@@ -279,7 +279,7 @@ export default (props:PropsItem) => {
               fieldProps={{
                 value: <>
                   <ProFormRadio.Group
-                    name="XL"
+                    name="xL"
                     label="X轴"
                     options={[
                       {
@@ -297,7 +297,7 @@ export default (props:PropsItem) => {
                     ]}
                   />
                   <ProFormRadio.Group
-                    name="YL"
+                    name="yL"
                     label="Y轴"
                     options={[
                       {
@@ -324,7 +324,7 @@ export default (props:PropsItem) => {
                 value: <Space>
                   <div className={styles.measure}>
                     <Form.Item
-                      name="L"
+                      name="l"
                     >
                       <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
                     </Form.Item>
@@ -332,7 +332,7 @@ export default (props:PropsItem) => {
                   </div>
                   <div className={styles.measure}>
                     <Form.Item
-                      name="T"
+                      name="t"
                     >
                       <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
                     </Form.Item>
@@ -340,7 +340,7 @@ export default (props:PropsItem) => {
                   </div>
                   <div className={styles.measure}>
                     <Form.Item
-                      name="R"
+                      name="r"
                     >
                       <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
                     </Form.Item>
@@ -348,7 +348,7 @@ export default (props:PropsItem) => {
                   </div>
                   <div className={styles.measure}>
                     <Form.Item
-                      name="B"
+                      name="b"
                     >
                       <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
                     </Form.Item>

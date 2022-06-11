@@ -24,32 +24,38 @@ const Detail = (props: DetailProps) => {
     {
       title: '总提成(元)',
       dataIndex: 'totalAccount',
-      align: 'center'
+      align: 'center',
+      render: (_) => amountTransform(_, '/'),
     },
     {
       title: '直购提成(元)',
       dataIndex: 'buyAmount',
-      align: 'center'
+      align: 'center',
+      render: (_) => amountTransform(_, '/'),
     },
     {
       title: '管理费提成(元)',
       dataIndex: 'rentAmount',
-      align: 'center'
+      align: 'center',
+      render: (_) => amountTransform(_, '/'),
     },
     {
       title: '总业绩(元)',
       dataIndex: 'orderAmountTotal',
-      align: 'center'
+      align: 'center',
+      render: (_) => amountTransform(_, '/'),
     },
     {
       title: '直购业绩(元)',
       dataIndex: 'rentOrderAmount',
-      align: 'center'
+      align: 'center',
+      render: (_) => amountTransform(_, '/'),
     },
     {
       title: '管理费业绩(元)',
       dataIndex: 'buyOrderAmount',
-      align: 'center'
+      align: 'center',
+      render: (_) => amountTransform(_, '/'),
     },
     {
       title: '总提成人数',
@@ -113,6 +119,7 @@ const Detail = (props: DetailProps) => {
       title: '订单业绩金额(元)',
       dataIndex: 'oderAmount',
       align: 'center',
+      render: (_) => amountTransform(_, '/'),
       hideInSearch: true,
     },
     {
@@ -180,7 +187,7 @@ const Detail = (props: DetailProps) => {
   return (
     <Drawer
       title='详情'
-      width={900}
+      width={1200}
       visible={visible}
       onClose={()=> setVisible(false)}
     >
@@ -191,7 +198,6 @@ const Detail = (props: DetailProps) => {
         pagination={false}
         search={false}
         options={false}
-        scroll={{x: 'max-content'}}
       />
       <ProTable
         rowKey='storeId'
@@ -215,7 +221,6 @@ const Detail = (props: DetailProps) => {
           ]
         }}
         options={false}
-        scroll={{x: 'max-content'}}
       />
     </Drawer>
   )
