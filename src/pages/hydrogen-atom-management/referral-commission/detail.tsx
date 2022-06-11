@@ -124,12 +124,12 @@ const Detail = (props: DetailProps) => {
     },
     {
       title: '交易类型',
-      dataIndex: 'type',
+      dataIndex: 'commissionType',
       align: 'center',
       valueType: 'select',
       valueEnum: {
-        1: '购买收益',
-        2: '租金收益'
+        1: '销售',
+        2: '管理费'
       }
     },{
       title: '支付编号',
