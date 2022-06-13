@@ -269,9 +269,10 @@ const Export: FC<ExprotProps> = ({ type, conditions, text='导出', slot, slotHi
       }))
     }
 
+    const name = fileName ? fileName + '.xlsx' : type + +new Date() + '.xlsx'
     createExportTask({
       code: type,
-      fileName: fileName + '.xlsx' || type + +new Date() + '.xlsx',
+      fileName: name,
       queryParamStr: data
     }).then(res => {
       if (res?.success) {
