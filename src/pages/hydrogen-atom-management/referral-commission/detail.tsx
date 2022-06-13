@@ -76,6 +76,12 @@ const Detail = (props: DetailProps) => {
 
   const columns: ProColumns[] = [
     {
+      title: 'id',
+      dataIndex: 'id',
+      hideInSearch: true,
+      hideInTable: true
+    },
+    {
       title: '被推荐人信息',
       dataIndex: 'info',
       align: 'center',
@@ -117,23 +123,24 @@ const Detail = (props: DetailProps) => {
     },
     {
       title: '订单业绩金额(元)',
-      dataIndex: 'oderAmount',
+      dataIndex: 'orderAmount',
       align: 'center',
       render: (_) => amountTransform(_, '/'),
       hideInSearch: true,
     },
     {
       title: '交易类型',
-      dataIndex: 'type',
+      dataIndex: 'commissionType',
       align: 'center',
       valueType: 'select',
       valueEnum: {
-        1: '购买收益',
-        2: '租金收益'
+        1: '销售',
+        2: '管理费'
       }
-    },{
+    },
+    {
       title: '支付编号',
-      dataIndex: 'oderNo',
+      dataIndex: 'orderNo',
       align: 'center',
       hideInSearch: true,
     },
@@ -200,13 +207,19 @@ const Detail = (props: DetailProps) => {
         options={false}
       />
       <ProTable
-        rowKey='storeId'
+        rowKey='id'
         columns={columns}
         params={{pMemId: data?.pMemId}}
         request={queryStatisticsCommissionListSub}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
+        }}
+        postData={(v)=> {
+          return v.map((res, idx)=> ({
+            ...res,
+            id: idx
+          }))
         }}
         formRef={form}
         search={{
