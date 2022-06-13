@@ -47,13 +47,13 @@ const Detail = (props: DetailProps) => {
     },
     {
       title: '直购业绩(元)',
-      dataIndex: 'rentOrderAmount',
+      dataIndex: 'buyOrderAmount',
       align: 'center',
       render: (_) => amountTransform(_, '/'),
     },
     {
       title: '管理费业绩(元)',
-      dataIndex: 'buyOrderAmount',
+      dataIndex: 'rentOrderAmount',
       align: 'center',
       render: (_) => amountTransform(_, '/'),
     },
