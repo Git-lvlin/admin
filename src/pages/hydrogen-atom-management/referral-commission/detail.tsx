@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { Drawer, Image, Space } from "antd"
+import { Drawer } from "antd"
 import ProTable from "@ant-design/pro-table"
 
 import type { DetailProps } from "./data"
@@ -47,13 +47,13 @@ const Detail = (props: DetailProps) => {
     },
     {
       title: '直购业绩(元)',
-      dataIndex: 'rentOrderAmount',
+      dataIndex: 'buyOrderAmount',
       align: 'center',
       render: (_) => amountTransform(_, '/'),
     },
     {
       title: '管理费业绩(元)',
-      dataIndex: 'buyOrderAmount',
+      dataIndex: 'rentOrderAmount',
       align: 'center',
       render: (_) => amountTransform(_, '/'),
     },
@@ -76,22 +76,10 @@ const Detail = (props: DetailProps) => {
 
   const columns: ProColumns[] = [
     {
-      title: '被推荐人信息',
-      dataIndex: 'info',
-      align: 'center',
+      title: 'id',
+      dataIndex: 'id',
       hideInSearch: true,
-      render: (_, r) => (
-        <Space size='middle'>
-          <Image 
-            src={r.icon} 
-            preview={false} 
-            width={50} 
-            height={50}
-            style={{borderRadius: '50%'}}
-          />
-          <div>{r.nickeName}</div>
-        </Space>
-      )
+      hideInTable: true
     },
     {
       title: '被推荐人手机',
@@ -117,7 +105,7 @@ const Detail = (props: DetailProps) => {
     },
     {
       title: '订单业绩金额(元)',
-      dataIndex: 'oderAmount',
+      dataIndex: 'orderAmount',
       align: 'center',
       render: (_) => amountTransform(_, '/'),
       hideInSearch: true,
@@ -131,9 +119,10 @@ const Detail = (props: DetailProps) => {
         1: '销售',
         2: '管理费'
       }
-    },{
+    },
+    {
       title: '支付编号',
-      dataIndex: 'oderNo',
+      dataIndex: 'orderNo',
       align: 'center',
       hideInSearch: true,
     },
@@ -200,13 +189,19 @@ const Detail = (props: DetailProps) => {
         options={false}
       />
       <ProTable
-        rowKey='storeId'
+        rowKey='id'
         columns={columns}
         params={{pMemId: data?.pMemId}}
         request={queryStatisticsCommissionListSub}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
+        }}
+        postData={(v)=> {
+          return v.map((res, idx)=> ({
+            ...res,
+            id: idx
+          }))
         }}
         formRef={form}
         search={{
