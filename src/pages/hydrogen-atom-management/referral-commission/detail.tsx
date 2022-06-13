@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { Drawer, Image, Space } from "antd"
+import { Drawer } from "antd"
 import ProTable from "@ant-design/pro-table"
 
 import type { DetailProps } from "./data"
@@ -80,24 +80,6 @@ const Detail = (props: DetailProps) => {
       dataIndex: 'id',
       hideInSearch: true,
       hideInTable: true
-    },
-    {
-      title: '被推荐人信息',
-      dataIndex: 'info',
-      align: 'center',
-      hideInSearch: true,
-      render: (_, r) => (
-        <Space size='middle'>
-          <Image 
-            src={r.icon} 
-            preview={false} 
-            width={50} 
-            height={50}
-            style={{borderRadius: '50%'}}
-          />
-          <div>{r.nickeName}</div>
-        </Space>
-      )
     },
     {
       title: '被推荐人手机',
