@@ -561,6 +561,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
+        revalidateOnFocus={false}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
           labelWidth: 140,
