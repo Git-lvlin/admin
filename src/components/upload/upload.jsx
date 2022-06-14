@@ -36,9 +36,9 @@ const Upload = (props) => {
         return false;
       }
 
-      if (typeof dimension === 'object' && (width !== dimension.width || height !== dimension.height)) {
-        message.error('上传图片的尺寸不符合要求')
-        return false;
+      if (typeof dimension === 'object' && (width !== dimension.width||height !== dimension.height&&dimension.height!=='*')) {
+          message.error('上传图片的尺寸不符合要求')
+          return false;
       }
     }
     return true;
