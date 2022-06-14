@@ -66,7 +66,7 @@ export default {
   'menu.product-management.supplier.product-review': '商品审核',
   'menu.product-management.supplier.set-goods-list': '商品运营配置',
   'menu.product-management.public.product-category': '商品分类',
-  'menu.product-management.supplier.overrule-list': '驳回商品',
+  'menu.product-management.supplier.overrule-list': '采购驳回商品',
   'menu.product-management.supplier.product-evaluate': '商品评价',
   'menu.product-management.public.product-unit': '商品单位',
 
