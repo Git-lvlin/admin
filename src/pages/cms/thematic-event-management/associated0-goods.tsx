@@ -42,7 +42,13 @@ export default (props) => {
     const loadData = (value) => {
       const { recordList, record } = value;
       const getList = (list, salePriceProfitLoss) => {
-        const arr = list.map(ele=>({...ele,actPriceProfitLoss:salePriceProfitLoss}))
+        const arr = list.map(ele=>{
+          if(ele?.skuId==record?.skuId){
+            return {...ele,actPriceProfitLoss:salePriceProfitLoss}
+          }else{
+            return {...ele}
+          }
+        })
         return arr;
       }
 
