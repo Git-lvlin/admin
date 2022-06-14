@@ -85,6 +85,14 @@ export default props=>{
         />
         <ProFormText
             width={100}
+            label="SkUID"
+            readonly
+            fieldProps={{
+                value:data?.skuId
+            }}
+        />
+        <ProFormText
+            width={100}
             label="商品名称"
             readonly
             fieldProps={{
@@ -132,7 +140,7 @@ export default props=>{
             />
             <span>元，（必须大于0，最多支持1位小数）</span>
         </ProForm.Group>
-        <p>最大不超过{data?.goodsSalePrice/100}</p>
+        <p>红包金额需小于 {data?.goodsSalePrice/100} 元</p>
         
     </ModalForm>
     )
