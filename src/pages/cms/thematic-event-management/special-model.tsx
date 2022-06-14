@@ -261,7 +261,7 @@ export default (props:PropsItem) => {
             style={{ display: picture == 1 ? 'block' : 'none' }}
           >
             <FromWrap
-              content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} maxCount={1} accept="image/png" />}
+              content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 ,height:'*'}} maxCount={1} accept="image/png" />}
               right={(value) => {
                 return (
                   <dl>
