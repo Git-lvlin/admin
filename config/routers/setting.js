@@ -41,5 +41,16 @@ export default {
       component: './setting/switch-setting',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'contract-management',
+      path: '/setting/contract-management',
+      component: './setting/contract-management',
+    },
+    {
+      name: 'cancel-reason',
+      path: '/setting/cancel-reason',
+      component: './setting/cancel-reason',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

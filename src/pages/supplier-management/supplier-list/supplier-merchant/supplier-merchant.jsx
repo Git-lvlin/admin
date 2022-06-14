@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { Button, Space, Modal, Menu, Dropdown } from 'antd';
 import { getCommonList, statusSwitch, detailExt, delSupplier, resetPwd } from '@/services/supplier-management/supplier-list'
 import { history } from 'umi';
+import { useLocation } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -22,6 +23,7 @@ const TableList = () => {
   const [detailData, setDetailData] = useState(null);
   const [disableModalVisible, setDisableModalVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
+  const location = useLocation();
   const actionRef = useRef();
   const formRef = useRef();
 
@@ -137,8 +139,9 @@ const TableList = () => {
       dataIndex: 'companyName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入供应商家名称'
+        placeholder: '请输入供应商家名称',
       },
+      initialValue: location?.query?.companyName
     },
     {
       title: '供应商家ID',
@@ -147,6 +150,7 @@ const TableList = () => {
       fieldProps: {
         placeholder: '请输入供应商家ID'
       },
+      initialValue: location?.query?.supplierId,
       hideInTable: true,
     },
     {
@@ -294,6 +298,13 @@ const TableList = () => {
     }
     return {}
   }
+
+  // useEffect(()=>{
+  //   formRef.current.setFieldsValue({
+  //     companyName: '',
+  //     supplierId: '',
+  //   })
+  // },[])
 
   return (
     <>

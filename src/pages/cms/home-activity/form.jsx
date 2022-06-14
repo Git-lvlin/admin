@@ -8,13 +8,15 @@ import ProForm, {
   ProFormTextArea,
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
-import { homeActivityUpdata } from '@/services/cms/member/member';
+import CheckBox from '@/components/checkbox';
+import { homeActivityUpdata, selAllVersion } from '@/services/cms/member/member';
 
 export default (props) => {
   const { detailData, setVisible, onClose, visible, useType } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
   const [href, setHref] = useState('');
+  const [versions, setVersions] = useState([]);
   const [showType, setShowType] = useState(false);
   const urlArr = [
     '',
@@ -44,10 +46,11 @@ export default (props) => {
     }
   ]
   const waitTime = (values) => {
-    const { id, ...rest } = values
+    const { id, channelType, ...rest } = values
     const param = {
+      channelType: channelType.length === 4 ? [0] : channelType,
+      useType,
       ...rest,
-      useType: useType
     }
     if (id) {
       param.id = id
@@ -67,12 +70,21 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
-      const { actionUrl, ...rest } = detailData;
+      const { actionUrl, channelType, ...rest } = detailData;
       setHref(actionUrl)
       form.setFieldsValue({
+        channelType: channelType[0] === 0 ? [1, 2, 5, 6] : channelType,
         ...rest
       })
     }
+    const arr = [{ label: '全部版本', value: '0.0.0' }]
+    setVersions(arr)
+    selAllVersion()
+      .then(res => {
+        if (res.code === 0) {
+          setVersions([...arr, ...res.data.map(item => ({ label: `V${item.name}及后续版本`, value: item.name }))])
+        }
+      })
   }, [form, detailData])
 
   return (
@@ -94,6 +106,10 @@ export default (props) => {
         message.success('提交成功');
         // 不返回不会关闭弹框
         return true;
+      }}
+      initialValues={{
+        version: '0.0.0',
+        channelType: [1, 2, 5, 6],
       }}
     >
       <ProForm.Group>
@@ -251,6 +267,40 @@ export default (props) => {
           ]}
         />
       </ProForm.Group>
+
+      <Form.Item
+        name="channelType"
+        label="应用平台"
+        rules={[{ required: true, message: '请选择应用平台!' }]}
+      >
+        <CheckBox
+          checkAllText="全部平台"
+          options={[
+            {
+              label: '安卓',
+              value: 2,
+            },
+            {
+              label: '苹果',
+              value: 1,
+            },
+            {
+              label: '小程序',
+              value: 5,
+            },
+            {
+              label: 'h5',
+              value: 6,
+            },
+          ]}
+        />
+      </Form.Item>
+      <ProFormRadio.Group
+        name="version"
+        label="应用版本"
+        options={versions}
+        rules={[{ required: true, message: '请选择应用版本!' }]}
+      />
 
       <ProFormRadio.Group
         name="state"

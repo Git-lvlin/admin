@@ -20,6 +20,8 @@ export default {
   'menu.user-management.user-feedback': '用户反馈',
   'menu.user-management.new-poster': '海报管理',
   'menu.user-management.new-poster-new': '(新)海报管理',
+  'menu.user-management.cancellation-application-record': '注销申请记录',
+  'menu.user-management.logout-list': '注销列表',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
@@ -76,6 +78,8 @@ export default {
   'menu.setting.password': '修改密码',
   'menu.setting.shipments-area-configuration': '待发货区域配置',
   'menu.setting.switch-setting': '阶梯优惠参数开关',
+  'menu.setting.contract-management': '合同管理',
+  'menu.setting.cancel-reason': '注销原因',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
@@ -131,6 +135,7 @@ export default {
   'menu.operation-management.operation-detail': '运营商详情',
   'menu.operation-management.operation-account-info': '运营商资金账户信息',
   'menu.operation-management.bind-audit-list': '运营商绑定审核',
+  'menu.operation-management.performance-report': '运营商氢原子业绩表',
 
   'menu.asset-management': '资产管理',
   'menu.asset-management.settlement-profit-list': '结算分润列表',
@@ -153,7 +158,6 @@ export default {
   'menu.intensive-store-management.shop-area': '开店区域和缴费',
   'menu.intensive-store-management.community-store-setting': '社区店设置',
   'menu.intensive-store-management.data-excel': '数据导出',
-  'menu.intensive-store-management.cancel-reason': '注销原因',
   'menu.intensive-store-management.fresh-store-review': '生鲜店铺申请审核',
   'menu.intensive-store-management.fresh-shop-configuration': '生鲜店铺配置',
   'menu.intensive-store-management.cancel-aduit': '注销审核',
@@ -176,6 +180,7 @@ export default {
 
   'menu.cms': 'CMS',
   'menu.cms.banner-admin': 'banner管理',
+  'menu.cms.thematic-event-management': '专题活动管理',
   'menu.cms.goos-reg': '商品区域',
   'menu.cms.goos-reg.member': '秒约和店主模块',
   'menu.cms.goos-reg.hot-goos': '热销好货',
@@ -385,6 +390,9 @@ export default {
   'menu.hydrogen-atom-management.referral-commission': '推荐提成',
   'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
 
+  'menu.buried-point': '埋点数据看板',
+  'menu.buried-point.incident-analysts': '事件分析',
+  
   'menu.office-management': '办事处管理',
   'menu.office-management.office-management-list': '办事处管理',
   'menu.office-management.office-achievements': '办事处业绩',

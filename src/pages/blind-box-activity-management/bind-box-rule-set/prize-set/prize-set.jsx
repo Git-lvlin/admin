@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select,Switch, Input,InputNumber,message} from 'antd';
+import { Button,Switch,InputNumber,message} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
@@ -8,7 +8,6 @@ import { productList } from '@/services/intensive-activity-management/intensive-
 import BrandSelect from '@/components/brand-select'
 import GcCascader from '@/components/gc-cascader'
 import { ModalForm } from '@ant-design/pro-form';
-import _ from 'lodash'
 import UploadingList from './uploading-list'
 import AddCashModel from './add-cash-model'
 import AssignModel from './assign-model'

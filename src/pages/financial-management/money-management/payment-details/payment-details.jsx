@@ -16,7 +16,6 @@ const PaymentDetails = ({query, visible, setVisible}) => {
   const [id, setId] = useState()
 
   const skipToOrder = (id, type)=> {
-    console.log(type)
     if(type) {
       setId(id)
       setShopkeeperOrderVisible(true)

@@ -132,7 +132,7 @@ const Detail = (props) => {
                 </div>
                 <div className={styles.box}>
                   <div>运费</div>
-                  <div>+{amountTransform(detailData?.shippingFeeAmount, '/')}元</div>
+                  <div>{detailData.shippingType ? `+${amountTransform(detailData.shippingFeeAmount, '/')}元` : '收货时付运费'}</div>
                 </div>
                 <div className={styles.box}>
                   <div>红包</div>
