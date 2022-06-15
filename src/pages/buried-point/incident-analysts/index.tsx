@@ -1,61 +1,15 @@
 import { PageContainer } from "@ant-design/pro-layout"
-import ProTable, { ProColumns } from "@ant-design/pro-table"
-import { Cascader  } from 'antd'
+import ProTable from "@ant-design/pro-table"
 
-import { ProTableProps } from "../data"
+import type { FC } from "react"
+import type { ProColumns } from "@ant-design/pro-table"
+import type { ProTableProps } from "../data"
 
-const IncidentAnalysts = () => {
+import SearchModal from "./search-modal"
 
-  interface Option {
-    value: string;
-    label: string;
-    children?: Option[];
-  }
-  
-  const options: Option[] = [
-    {
-      value: 'zhejiang',
-      label: 'Zhejiang',
-      children: [
-        {
-          value: 'hangzhou',
-          label: 'Hangzhou'
-        },
-      ],
-    },
-    {
-      value: 'jiangsu',
-      label: 'Jiangsu',
-      children: [
-        {
-          value: 'nanjing',
-          label: 'Nanjing'
-        },
-      ],
-    },
-  ]; 
+const IncidentAnalysts: FC = () => {
 
   const columns: ProColumns<ProTableProps>[] = [
-    {
-      title: '已有事件',
-      dataIndex: 'test',
-      align: 'center',
-      hideInTable: true,
-      renderFormItem: ()=> {
-        return (
-          <>
-            <Cascader 
-              options={options} 
-              displayRender={(label) =>{
-                return <span>{label[label.length - 1]}</span>
-                
-              }}
-              showSearch
-            />
-          </>
-        )
-      }
-    },
     // {
     //   title: '',
     //   dataIndex: '',
@@ -85,6 +39,7 @@ const IncidentAnalysts = () => {
 
   return (
     <PageContainer title={false}>
+      <SearchModal/>
       <ProTable
         rowKey=''
         columns={columns}
@@ -94,9 +49,7 @@ const IncidentAnalysts = () => {
           pageSize: 10
         }}
         options={false}
-        search={{
-          
-        }}
+        search={false}
       />
     </PageContainer>
   )
