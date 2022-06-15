@@ -29,3 +29,11 @@ export type endItem={
   endId: string;
   callback: function;
 }
+
+export type previewItem={
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  link: string;
+  callback: function;
+  onClose: function
+}
