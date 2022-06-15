@@ -138,7 +138,7 @@ const Detail = (props: DetailProps) => {
       align: 'center'
     },
     {
-      title: '是否店主',
+      title: '是否店主（推荐人）',
       dataIndex: 'userType',
       align: 'center',
       hideInSearch: true,
@@ -149,7 +149,7 @@ const Detail = (props: DetailProps) => {
       },
     },
     {
-      title: '是否vip',
+      title: '是否vip（推荐人）',
       dataIndex: 'vip',
       align: 'center',
       valueType: 'select',
@@ -160,13 +160,13 @@ const Detail = (props: DetailProps) => {
       hideInSearch: true,
     },
     {
-      title: '店铺名称',
+      title: '店铺名称（推荐人）',
       dataIndex: 'storeName',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '社区店ID',
+      title: '社区店ID（推荐人）',
       dataIndex: 'storeId',
       align: 'center',
       hideInSearch: true
