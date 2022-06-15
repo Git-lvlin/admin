@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef,useMemo } from 'react'
 import { EditableProTable } from '@ant-design/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
-import { Button } from 'antd'
-import { useLocation } from 'umi';
 import SelectProductModal from './select-product-modal'
 import { amountTransform } from '@/utils/utils'
+import { subAccountCheck } from '@/services/product-management/product-list'
+import { Button,InputNumber,message,Input} from 'antd';
+import debounce from 'lodash/debounce';
 
 
 type ThematicEventItem={
@@ -28,10 +29,7 @@ type ThematicEventItem={
 export default (props) => {
   const { id,detailList,callback }=props
   const [dataSource, setDataSource] = useState([]);
-  const [detailId, setDetailId] = useState(null)
   const [visible, setVisible] = useState(false)
-  const isPurchase = useLocation().pathname.includes('purchase')
-  const [detailVisible, setDetailVisible] = useState(false);
   const [editableKeys, setEditableKeys] = useState([])
   const ref=useRef()
   useEffect(()=>{
@@ -40,6 +38,35 @@ export default (props) => {
       setEditableKeys(detailList?.map(item => item.id))
     }
   },[detailList])
+  const debounceFetcher = useMemo(() => {
+    const loadData = (value) => {
+      const { recordList, record } = value;
+      const getList = (list, salePriceProfitLoss) => {
+        const arr = list.map(ele=>{
+          if(ele?.skuId==record?.skuId){
+            return {...ele,actPriceProfitLoss:salePriceProfitLoss}
+          }else{
+            return {...ele}
+          }
+        })
+        return arr;
+      }
+
+      const params={
+        operateType:1,
+        skuId:record?.skuId,
+        retailSupplyPrice:record?.retailSupplyPrice,
+        wholesaleTaxRate:record?.wholesaleTaxRate,
+        salePrice:amountTransform(record?.actPrice,'*')
+      }
+      subAccountCheck(params).then(res => {
+        const salePriceProfitLoss = res?.data[0]?.salePriceProfitLoss;
+        setDataSource(getList(recordList, salePriceProfitLoss))
+      })
+    };
+
+    return debounce(loadData, 10);
+  }, [dataSource]);
   const columns:ProColumns<ThematicEventItem>[]= [
     {
       title: 'spuid',
@@ -81,24 +108,38 @@ export default (props) => {
       title: '活动价',
       dataIndex: 'actPrice',
       valueType: 'text',
+      renderFormItem: (_, { record }) => {
+        return  <Input onBlur={() => { debounceFetcher({ record, recordList: dataSource })}} />
+      },
+    },
+    {
+      title: '发票税率',
+      dataIndex: 'wholesaleTaxRate',
+      valueType: 'text',
+      editable:false,
+      hideInTable: true,
       render:(_)=>{
-        return amountTransform(_,'/')
-      }
+        return _
+      },
     },
     {
       title: '平台亏盈',
       dataIndex: 'actPriceProfitLoss',
       valueType: 'text',
       editable:false,
-      render:(_)=>{
+      render:(_,data)=>{
         return amountTransform(_,'/')
       }
     },
     {
       title: '商品状态',
-      dataIndex: 'goodsState',
+      dataIndex: 'status',
       valueType: 'text',
       editable:false,
+      valueEnum:{
+        1: '上架中',
+        0: '已下架'
+      }
     },
     {
       title: '可用库存',
@@ -167,10 +208,10 @@ export default (props) => {
         keyId={dataSource}
         detailList={dataSource||[]}
         callback={(data)=>{
-          const arr = dataSource?.length>0?dataSource:[];
+          const arr = [];
           data.forEach(item => {
             arr.push({
-              actPrice: 0,
+              actPrice: item?.salePrice,
               sort:9999,
               ...item
             })

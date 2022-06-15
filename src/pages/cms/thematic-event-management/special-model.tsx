@@ -48,8 +48,8 @@ export default (props:PropsItem) => {
       status:1,
       id:values?.id,
       name:values?.name,
-      startTime:moment(values.dateRange[0]).valueOf(),
-      endTime:moment(values.dateRange[1]).valueOf(),
+      startTime:moment(values.dateRange[0]).valueOf()/1000,
+      endTime:moment(values.dateRange[1]).valueOf()/1000,
       bannerImgUrl:values.bannerImgUrl,
       bannerTime:{
         switch:values.switch1,
@@ -175,7 +175,7 @@ export default (props:PropsItem) => {
       onFinish={async (values) => {
         await onSubmit(values)
       }}
-      className={styles?.thematic_event_management}
+      className={styles?.special_model}
       {...formItemLayout}
     >
       <div className={styles?.three_column_layout}>
@@ -261,7 +261,7 @@ export default (props:PropsItem) => {
             style={{ display: picture == 1 ? 'block' : 'none' }}
           >
             <FromWrap
-              content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} maxCount={1} accept="image/png" />}
+              content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 ,height:'*'}} maxCount={1} accept="image/png" />}
               right={(value) => {
                 return (
                   <dl>
@@ -524,7 +524,6 @@ export default (props:PropsItem) => {
         </div>
       </div>
       <Associated0Goods detailList={detailList} id={id} callback={(data)=>{
-        console.log('data',data)
         setDetailList(data)
       }}/>
     </DrawerForm>
