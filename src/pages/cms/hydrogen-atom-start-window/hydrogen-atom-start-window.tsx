@@ -29,7 +29,7 @@ export default (props) =>{
     findPop({}).then(res=>{
       if(res.code==0){
         form.setFieldsValue({
-          dateRange:[res.data?.popStartTime,res.data?.popEndTime],
+          dateRange:[parseInt(res.data?.popStartTime),parseInt(res.data?.popEndTime)],
           ...res.data
         })
       }
@@ -37,7 +37,7 @@ export default (props) =>{
   }, [])
   const onsubmit=values=>{
      const params={
-
+       ...values
      }
     saveOrUpdate(params).then(res=>{
       if(res.code==0){
@@ -72,7 +72,7 @@ export default (props) =>{
       >
        <ProCard split="vertical">
         <ProCard colSpan="384px">
-          <Form.Item extra="图片上传要求：2MB以内；格式png/jpg/gif" name="logo">
+          <Form.Item extra="图片上传要求：2MB以内；格式png/jpg/gif" name="image">
             <Upload multiple maxCount={1} accept="image/*" size={2 * 1024} />
           </Form.Item>
         </ProCard>
@@ -148,7 +148,7 @@ export default (props) =>{
                     if(actionType==7){
                         return <div style={{marginLeft:'150px'}}>
                                 <ProFormText
-                                  name="dayGainMax"
+                                  name="actionUrl"
                                   fieldProps={{
                                     maxLength: 80
                                   }}
@@ -169,6 +169,10 @@ export default (props) =>{
                 label='显示状态' 
                 name="open" 
                 extra='开启后弹窗才会显示'
+            />
+            <ProFormText
+              name="actionUrl"
+              hidden
             />
           </ProCard>
         </ProCard>
