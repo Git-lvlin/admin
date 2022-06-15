@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Form, message,Button} from 'antd';
-import { setMemberShopDeliveryCoverage } from '@/services/intensive-store-management/community-store-setting';
+import { findPop,saveOrUpdate } from '@/services/cms/member/hydrogen-atom-start-window';
 import ProForm, { ProFormSwitch,ProFormDependency,ProFormRadio,ProFormDateTimeRangePicker,ProFormText } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
 import { PageContainer } from '@/components/PageContainer';
@@ -26,13 +26,20 @@ const formItemLayout = {
 export default (props) =>{
   const [form] = Form.useForm();
   useEffect(() => {
-
+    findPop({}).then(res=>{
+      if(res.code==0){
+        form.setFieldsValue({
+          dateRange:[res.data?.popStartTime,res.data?.popEndTime],
+          ...res.data
+        })
+      }
+    })
   }, [])
   const onsubmit=values=>{
      const params={
 
      }
-    setMemberShopDeliveryCoverage(params).then(res=>{
+    saveOrUpdate(params).then(res=>{
       if(res.code==0){
         message.success('保存成功')
       }
@@ -71,7 +78,7 @@ export default (props) =>{
         </ProCard>
         <ProCard>
           <ProFormRadio.Group
-            name="switch1"
+            name="timeType"
             label='弹窗时段'
             options={[
                 {
@@ -85,10 +92,10 @@ export default (props) =>{
             ]}
             rules={[{ required: true, message: '请设置弹窗时段' }]}
           />
-          <ProFormDependency name={['switch1']}>
-            {({ switch1 }) => { 
-                if(switch1==1){return null }
-                if(switch1==2){
+          <ProFormDependency name={['timeType']}>
+            {({ timeType }) => { 
+                if(timeType==1){return null }
+                if(timeType==2){
                     return <div style={{marginLeft:'150px'}}>
                             <ProFormDateTimeRangePicker
                                 name="dateRange"
@@ -102,7 +109,7 @@ export default (props) =>{
             }}
           </ProFormDependency>
           <ProFormRadio.Group
-            name="switch2"
+            name="actionType"
             label='点击弹窗图片跳转目标'
             options={[
                 {
@@ -135,10 +142,10 @@ export default (props) =>{
                 }
             ]}
             />
-            <ProFormDependency name={['switch2']}>
-                {({ switch2 }) => { 
-                    if(switch2!==7) return null
-                    if(switch2==7){
+            <ProFormDependency name={['actionType']}>
+                {({ actionType }) => { 
+                    if(actionType!==7) return null
+                    if(actionType==7){
                         return <div style={{marginLeft:'150px'}}>
                                 <ProFormText
                                   name="dayGainMax"
@@ -154,13 +161,13 @@ export default (props) =>{
             <ProFormSwitch  
                 rules={[{ required: true, message: '请设置' }]} 
                 label='是否开启在弹窗上显示关闭按钮' 
-                name="outOffForbidden" 
+                name="closeBtn" 
                 extra='开启后弹窗上会显示关闭弹窗按钮'
             />
             <ProFormSwitch  
                 rules={[{ required: true, message: '请设置' }]} 
                 label='显示状态' 
-                name="switch" 
+                name="open" 
                 extra='开启后弹窗才会显示'
             />
           </ProCard>
