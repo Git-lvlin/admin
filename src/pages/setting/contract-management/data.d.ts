@@ -56,4 +56,5 @@ export type MiniQrProps = {
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   fileUrl?: string
+  storeName?: string
 }
