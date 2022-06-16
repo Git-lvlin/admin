@@ -43,6 +43,7 @@ const SupplierEntryContract: FC = () => {
   const [imageUrl, setImageUrl] = useState()
   const [fileUrl, setFileUrl] = useState<string>()
   const [data, setData] = useState<ModalFormProps | undefined>()
+  const [storeName, setStoreName] = useState<string>()
   const actRef = useRef<ActionType>()
 
   const openMiniQr = (e: number) => {
@@ -191,7 +192,7 @@ const SupplierEntryContract: FC = () => {
         <Space size="small">
           {
             (r.signStatus === 2 && r.type === 1)&&
-            <a onClick={()=> {openMiniQr(r.id); setFileUrl(r.pactUrl)}}>查看签合同入口码</a>
+            <a onClick={()=> {openMiniQr(r.id); setFileUrl(r.pactUrl); setStoreName(r.name)}}>查看签合同入口码</a>
           }
           {
             (r.type === 1 && r.signStatus === 1 && r.supplierId === 0)&&
@@ -242,6 +243,7 @@ const SupplierEntryContract: FC = () => {
           visible={visible} 
           setVisible={setVisible}
           fileUrl={fileUrl}
+          storeName={storeName}
         />
       }
     </>
@@ -466,7 +468,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
   )
 }
 
-const MiniQr: FC<MiniQrProps> = ({imgUrl, visible, setVisible, fileUrl}) => {
+const MiniQr: FC<MiniQrProps> = ({imgUrl, visible, setVisible, fileUrl, storeName}) => {
   return (
     <Modal
       title={
@@ -496,7 +498,7 @@ const MiniQr: FC<MiniQrProps> = ({imgUrl, visible, setVisible, fileUrl}) => {
           preview={false}
         />
         <div className={styles.file}>
-          <a href={fileUrl} target="blank">约购供应商合作协议.pdf</a>
+          <a href={fileUrl} target="blank" style={{fontSize: '16px', fontWeight: 'bold'}}>{storeName}</a>
         </div>
         <div className={styles.content}>供应商入驻合同签写入口码</div>
         <div className={styles.footer}>请复制入口码图片，发给供应商确认合同并签署合同</div>
