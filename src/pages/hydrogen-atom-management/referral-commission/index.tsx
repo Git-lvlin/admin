@@ -156,7 +156,12 @@ function ReferralCommission () {
         }}
         onSubmit={()=> { setLowNum(lowLimitAmount); setHighNum(highLimitAmount) }}
         request={queryStatisticsCommissionList}
-        onReset={()=> {setLowNum(undefined); setHighNum(undefined)}}
+        onReset={()=> {
+          setLowNum(undefined)
+          setHighNum(undefined)
+          setLowLimitAmount(undefined)
+          setHighLimitAmount(undefined)
+        }}
         options={false}
         formRef={form}
         pagination={{
