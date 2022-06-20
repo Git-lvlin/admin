@@ -22,7 +22,7 @@ const TableList = () => {
   const [visit, setVisit] = useState(false)
   const [pageSize, setPageSize] = useState(10)
   const [pageTotal, setPageTotal] = useState(0)
-  const [orderType, setOrderType] = useState(0)
+  const [orderType, setOrderType] = useState(location?.query.orderTypes || 0)
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState(0)
   // const [deliveryVisible, setDeliveryVisible] = useState(false)
@@ -32,7 +32,7 @@ const TableList = () => {
   const [selectItem, setSelectItem] = useState({});
   const location = useLocation();
   const [orderStatusType, setOrderStatusType] = useState()
-  const [orderTypes, setOrderTypes] = useState(0)
+  const [orderTypes, setOrderTypes] = useState(location?.query.orderTypes || 0)
   const [addressVisible, setAddressVisible] = useState(false)
   const [subOrderId, setSubOrderId] = useState(null)
   const [orderVisible, setOrderVisible] = useState(false)
@@ -408,6 +408,14 @@ const TableList = () => {
                     <span>订单号：{item.orderSn}</span>
                     <span>下单用户：{item.buyerNickname}</span>
                     <span>用户手机号：{item.buyerPhone}</span>
+                    {
+                      item.subType === 2
+                      &&
+                      <>
+                        <span>启动机器ID：{item.orderItem[0].deviceId}</span>
+                        <span>机器所属店主手机号：{item.storePhone}</span>
+                      </>
+                    }
                   </Space>
                 </div>
 

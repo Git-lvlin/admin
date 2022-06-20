@@ -26,6 +26,8 @@ import { useLocation } from 'umi';
 import { preAccountCheck, preAccountShow } from '@/services/product-management/product-list';
 import ProfitTable from './profit-table';
 import Big from 'big.js';
+import Overrule from '../product-review/overrule';
+
 
 Big.RM = 2;
 
@@ -42,7 +44,7 @@ const FromWrap = ({ value, onChange, content, right }) => (
 const PlatformScale = 0.005
 
 export default (props) => {
-  const { visible, setVisible, detailData, callback, onClose } = props;
+  const { visible, setVisible, detailData, callback, onClose, overrule } = props;
   const [formModalVisible, setFormModalVisible] = useState(false);
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
@@ -54,6 +56,7 @@ export default (props) => {
   const [preferential, setPreferential] = useState(0);
   const [lookVisible, setLookVisible] = useState(false);
   const [lookData, setLookData] = useState(false);
+  const [overruleVisible, setOverruleVisible] = useState(false);
   const [form] = Form.useForm()
   const isPurchase = useLocation().pathname.includes('purchase')
   const api = isPurchase ? api2 : api1
@@ -82,6 +85,21 @@ export default (props) => {
         imageSort: index,
       }
     })
+  }
+
+  const productCheck = (text) => {
+    api.productCheck({
+      checkType:2,
+      spuId:detailData.spuId,
+      goodsVerifyRemark: text
+    })
+      .then(res => {
+        if (res.code === 0) {
+          callback();
+          setOverruleVisible(false);
+          setVisible(false);
+        }
+      })
   }
 
   const submit = (values) => {
@@ -844,6 +862,7 @@ export default (props) => {
       submitter={{
         render: (props, defaultDoms) => {
           return [
+            overrule && <Button type="primary" danger onClick={() => { setOverruleVisible(true) }}>驳回给采购</Button>,
             defaultDoms[0],
             detailData?.alarmMsg ? null : defaultDoms[1],
             <Button
@@ -900,6 +919,13 @@ export default (props) => {
             getData={createEditTableData}
           />
         }
+        {overruleVisible && <Overrule
+          visible={overruleVisible}
+          setVisible={setOverruleVisible}
+          callback={(text) => { productCheck(text) }}
+          goodsName={detailData.goods.goodsName}
+          spuId={detailData.spuId}
+        />}
       </div>
       <ProFormDependency name={['goodsName']}>
         {({ goodsName }) => {
