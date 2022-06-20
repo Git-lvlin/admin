@@ -38,6 +38,7 @@ const TableList = () => {
   const [orderStatusType,setOrderStatusType]=useState()
   const [subOrderId, setSubOrderId] = useState(null)
   const [addressVisible, setAddressVisible] = useState(false)
+  const [primaryAddress,setPrimaryAddress] = useState({})
 
   const pageChange = (a, b) => {
     setPage(a)
@@ -530,7 +531,7 @@ const TableList = () => {
                     <span>地址：{item.receivingInfo.receiptAddress}</span>
                     {
                       (orderType === 1 || orderType === 2)&&
-                      <Button onClick={() => { setSubOrderId(item.orderId); setAddressVisible(true)}}>修改地址</Button>
+                      <Button onClick={() => { setSubOrderId(item.orderId); setAddressVisible(true);setPrimaryAddress(item)}}>修改地址</Button>
                     }
                   </Space>
                 </div>
@@ -554,6 +555,7 @@ const TableList = () => {
         addressVisible &&
         <EditAddress
           subOrderId={subOrderId}
+          primaryAddress={primaryAddress}
           setVisible={setAddressVisible}
           visible={addressVisible}
           setChange={setSearch}

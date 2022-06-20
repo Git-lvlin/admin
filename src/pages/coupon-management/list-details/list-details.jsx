@@ -30,6 +30,7 @@ export default props => {
   const [form] = Form.useForm()
   const [detailData, setDetailData] = useState([])
   const [loading, setLoading] = useState(false);
+  const [dataSource, setDataSource] =useState([])
   const columns = [
     {
       title: '群体名称',
@@ -71,6 +72,14 @@ export default props => {
       title: '可用库存',
       dataIndex: 'stockNum',
     },
+    {
+      title: '操作',
+      valueType: 'text',
+      editable:false,
+      render:(text, record, _, action)=>[
+        <a key='detele' onClick={()=>{delGoods(record.skuId)}}>删除</a>
+    ],
+    },
   ];
   const columns3 = [
     {
@@ -107,10 +116,19 @@ export default props => {
     setLoading(true);
     couponDetail({ id }).then(res => {
       setDetailData(res.data)
+      setDataSource(res.data?.spuInfo)
     }).finally(() => {
       setLoading(false);
     })
   }, [])
+
+  // 删除商品
+  const  delGoods=val=>{
+    const arr=dataSource.filter(ele=>(
+          ele.skuId!=val
+    ))
+    setDataSource(arr) 
+  }
 
   return (
     <>
@@ -305,12 +323,12 @@ export default props => {
                   {
                     detailData.goodsType == 2 ?
                     <>
-                      <p key='assign' className={styles.mark}>已选中<span>{detailData.spuInfo?.length}个</span>指定商品</p>
+                      <p key='assign' className={styles.mark}>已选中<span>{dataSource?.length}个</span>指定商品</p>
                       <ProTable
                         actionRef={ref}
                         rowKey="spuId"
                         options={false}
-                        dataSource={detailData.spuInfo}
+                        dataSource={dataSource}
                         search={false}
                         columns={columns2}
                       />
