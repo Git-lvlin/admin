@@ -26,7 +26,7 @@ const formItemLayout = {
 };
 
 export default (props) => {
-  const { detailData, setVisible, setFlag, visible,callBack,onClose } = props;
+  const { detailData, setVisible, setFlag, visible,callBack,onClose,id } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
   const [detailList,setDetailList]=useState()
