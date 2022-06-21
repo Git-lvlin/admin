@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { couponDetail } from '@/services/coupon-management/coupon-detail';
+import { couponDetail,couponGoodsEdit } from '@/services/coupon-management/coupon-detail';
 import SubTable from '@/pages/coupon-management/coupon-construction/coupon-subtable'
 import { Divider, Form, Spin, Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
@@ -31,6 +31,7 @@ export default props => {
   const [detailData, setDetailData] = useState([])
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] =useState([])
+  const [spuIdArr, setSpuIdArr] = useState([])
   const columns = [
     {
       title: '群体名称',
@@ -127,6 +128,7 @@ export default props => {
     const arr=dataSource.filter(ele=>(
           ele.skuId!=val
     ))
+    setSpuIdArr(arr.map(ele=>ele?.spuId))
     setDataSource(arr) 
   }
 
@@ -163,8 +165,19 @@ export default props => {
           }
         }
         onFinish={async (values) => {
-          onClose()
-          setDetailVisible(false)
+          const params={
+            id:id,
+            useTypeInfoM:{
+              goodsType:detailData.goodsType,
+              spuIds:spuIdArr.toString()
+            }
+          }
+          await couponGoodsEdit(params).then(res=>{
+            if(res.code==0){
+              callback()
+              setDetailVisible(false)
+            }
+          }) 
         }
         }
         className={styles.list_details}
