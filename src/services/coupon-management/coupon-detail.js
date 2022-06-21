@@ -16,3 +16,21 @@ export const couponDetail= async (params = {}, options = {}) => {
     success: res.success,
   }
 }
+
+
+export const couponGoodsEdit= async (params = {}, options = {}) => {
+  const { ...rest } = params;
+  const res = await request('/auth/activity/Coupon/couponGoodsEdit', {
+    method: 'POST',
+    data: {
+     ...rest
+    },
+    ...options
+  });
+
+  return {
+    code:res.code,
+    data: res.data,
+    success: res.success,
+  }
+}
