@@ -310,6 +310,13 @@ const ProductData = () => {
       hideInSearch: true
     },
     {
+      title: '退款订单数',
+      dataIndex: '',
+      align: 'center',
+      hideInTable: form.current?.getFieldsValue().orderType === "15",
+      hideInSearch: true
+    },
+    {
       title: 'b端集采下单人数',
       dataIndex: 'bPayMemberNum',
       align: 'center',
