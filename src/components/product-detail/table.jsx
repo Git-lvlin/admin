@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
 import Big from 'big.js';
+import { Image } from 'antd'
 
 Big.RM = 2;
 export default function EditTable(props) {
@@ -27,7 +28,7 @@ export default function EditTable(props) {
         title: '规格图片',
         dataIndex: 'imageUrl',
         editable: false,
-        render: (_) => <img src={_} width="50" height="50" />,
+        render: (_) => <Image src={_} width={60} height={60} />,
         width: 100,
         // renderFormItem: () => <Upload disable maxCount={1} className={styles.upload} accept="image/*" />,
         // formItemProps: {

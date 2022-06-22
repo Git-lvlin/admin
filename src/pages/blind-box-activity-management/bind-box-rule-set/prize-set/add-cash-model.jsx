@@ -1,11 +1,7 @@
-import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select,Switch, Input,InputNumber,message} from 'antd';
-import { EditableProTable } from '@ant-design/pro-table';
-import { PlusOutlined } from '@ant-design/icons';
+import React from 'react';
+import { Form,message} from 'antd';
 import { amountTransform } from '@/utils/utils'
-import ProTable from '@ant-design/pro-table';
-import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
-import ProForm, { ModalForm,ProFormText,ProFormDigit } from '@ant-design/pro-form';
+import { ModalForm,ProFormText,ProFormDigit } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import Big from 'big.js'
 
