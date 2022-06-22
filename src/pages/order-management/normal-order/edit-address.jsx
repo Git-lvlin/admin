@@ -6,6 +6,8 @@ import ProForm, {
 
 import { updateDeliveryInfo } from '@/services/order-management/normal-order'
 import AddressCascader from '@/components/address-cascader'
+import { Form, Typography } from 'antd'
+const { Title } = Typography;
 
 const checkConfirm = (rule, value, callback) => {
   return new Promise(async (resolve, reject) => {
@@ -19,12 +21,14 @@ const checkConfirm = (rule, value, callback) => {
 
 const EditAddress = ({
   subOrderId,
+  primaryAddress,
   visible,
   setVisible,
   setChange,
   change
 }) => {
 
+  const [form] = Form.useForm();
   const submitAddress = (v) => {
     return new Promise((resolve, reject)=>{
       updateDeliveryInfo(
@@ -54,6 +58,11 @@ const EditAddress = ({
   }
 
   useEffect(()=>{
+    form.setFieldsValue({
+      rawAddress:primaryAddress?.address,
+      rawPhone:primaryAddress?.phone,
+      rawConsignee:primaryAddress?.consignee
+    })
     document.body.style.overflow = 'hidden'
     return () => {
       document.body.style.overflow = 'auto'
@@ -74,7 +83,25 @@ const EditAddress = ({
         return true
       }}
       layout='horizontal'
+      form={form}
     >
+      <Title level={5}>原收货信息</Title>
+      <ProFormText
+        name='rawConsignee'
+        label='收货人'
+        readonly
+      />
+      <ProFormText
+        name='rawPhone'
+        label='电话'
+        readonly
+      />
+      <ProFormText
+        name='rawAddress'
+        label='地址'
+        readonly
+      />
+
       <ProFormText
         name='consignee'
         label='收货人'
