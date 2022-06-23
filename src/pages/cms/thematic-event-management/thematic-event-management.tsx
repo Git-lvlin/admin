@@ -98,6 +98,9 @@ export default () => {
           rowKey="id"
           options={false}
           request={getActiveConfigList}
+          params={{
+            actCode:"subJectActiveCode"
+          }}
           search={{
           defaultCollapsed: false,
           labelWidth: 100,
