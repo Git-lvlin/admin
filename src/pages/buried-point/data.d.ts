@@ -1,5 +1,8 @@
 type ProTableProps = {
-  
+  dates: string
+  totalNum: number
+  userNum: number
+  average: number
 }
 
 type RulesListProps = {
