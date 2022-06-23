@@ -14,6 +14,7 @@ const SelectDate: FC<SelectDateProps> = (props) => {
     <RangePicker
       format="YYYY-MM-DD"
       onChange={(e)=>setRangePickerValue(e)}
+      allowClear={false}
     />
   )
 }
