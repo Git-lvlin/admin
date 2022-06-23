@@ -21,21 +21,30 @@ const formItemLayout = {
   }
 };
 
- 
-
 export default (props) =>{
   const [form] = Form.useForm();
-  const [href, setHref] = useState('');
   useEffect(() => {
     findPop({}).then(res=>{
       if(res.code==0){
         form.setFieldsValue({
-          dateRange:[parseInt(res.data?.popStartTime),parseInt(res.data?.popEndTime)],
-          ...res.data
+          dateRange:res.data?.popStartTime&&[parseInt(res.data?.popStartTime),parseInt(res.data?.popEndTime)],
+          ...res.data,
+          actionUrl:res.data?.actionType==7?res.data?.actionUrl:urlArr[res.data?.actionType]
         })
       }
     })
   }, [])
+
+  const urlArr = [
+    '',
+    '',
+    `${APP_URL}/tab/index?index=2`,
+    `${MARKET_URL}/web/atom`,
+    `${MARKET_URL}/web/user-appointment`,
+    `${APP_URL}/tab/index?index=1`,
+    `${APP_URL}/flutter/mine/sign_in/detail`,
+  ];
+
   const onsubmit=values=>{
      const params={
        ...values
@@ -114,15 +123,12 @@ export default (props) =>{
             label='点击弹窗图片跳转目标'
             fieldProps={{
               onChange: ({ target }) => {
-                console.log(target.value)
-                setHref(target.value)
+                form?.setFieldsValue({
+                  actionUrl:urlArr[target.value]
+                })
               }
             }}
             options={[
-                // {
-                // label:'社区店',
-                // value: 1,
-                // },
                 {
                 label: '集约',
                 value: 2,
@@ -149,22 +155,15 @@ export default (props) =>{
                 }
             ]}
             />
-            <ProFormDependency name={['actionType']}>
-                {({ actionType }) => { 
-                    if(actionType!==7) return null
-                    if(actionType==7){
-                        return <div style={{marginLeft:'150px'}}>
-                                <ProFormText
-                                  name="actionUrl"
-                                  fieldProps={{
-                                    maxLength: 80
-                                  }}
-                                  placeholder='请输入点击弹窗跳转的链接地址，不超过80个字符'
-                                />
-                               </div>
-                    } 
+            <div style={{marginLeft:'150px'}}>
+              <ProFormText
+                name="actionUrl"
+                fieldProps={{
+                  maxLength: 80
                 }}
-            </ProFormDependency>
+                placeholder='请输入点击弹窗跳转的链接地址，不超过80个字符'
+              />
+            </div>
             <ProFormSwitch  
                 rules={[{ required: true, message: '请设置' }]} 
                 label='是否开启在弹窗上显示关闭按钮' 

@@ -211,6 +211,8 @@ export default (props) => {
             const arr = [];
             data.forEach(item => {
               arr.push({
+                goodsState: 1,
+                actPriceProfitLoss: item?.salePriceProfitLoss,
                 activityPrice: item?.salePrice,
                 sort:9999,
                 ...item
