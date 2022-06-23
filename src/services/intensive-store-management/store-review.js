@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 export const getStoreList = async (params = {}, options = {}) => {
-  const { current, pageSize, area = [], provideTime = [], ...rest } = params;
+  const { current, pageSize, area = [], provideTime = [], deposit, serviceFee, ...rest } = params;
   const res = await request('/auth/store/memberShopApply/page', {
     method: 'GET',
     params: {
@@ -12,6 +12,10 @@ export const getStoreList = async (params = {}, options = {}) => {
       regionId: area[2]?.value,
       provideTimeStart: provideTime[0],
       provideTimeEnd: provideTime[1],
+      depositStart: deposit?.min ? amountTransform(deposit.min) : '',
+      depositEnd: deposit?.max ? amountTransform(deposit.max) : '',
+      serviceFeeStart: serviceFee?.min ? amountTransform(serviceFee.min) : '',
+      serviceFeeEnd: serviceFee?.max ? amountTransform(serviceFee.max) : '',
       ...rest
     },
     ...options

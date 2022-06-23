@@ -390,7 +390,7 @@ const IntensiveActivityCreate = () => {
               <ProFormDependency name={['isEditSubsidy']}>
                 {({ isEditSubsidy }) => (
                   <EditTable
-                    radioSelect={(v)=>{
+                    radioSelect={(v) => {
                       if (v?.[0]?.fresh === 0) {
                         formRef.current.setFieldsValue({
                           preSale: 1
@@ -444,19 +444,46 @@ const IntensiveActivityCreate = () => {
                 }
               }}
             />
-            <ProFormDateTimePicker
-              name="endTimeAdvancePayment"
-              label="店主采购单下单截至时间"
-              width="lg"
-              rules={[{ required: true, message: '请选择店主采购单下单截至时间' }]}
-              fieldProps={{
-                // disabledDate: (currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() },
-                // disabledTime: disabledRangeTime,
-                showTime: {
-                  defaultValue: moment('00:59:59', 'HH:mm:ss')
-                }
-              }}
-            />
+            {
+              selectItem?.[0]?.wholesaleFlowType === 2
+                ?
+                <ProFormText
+                  name="deliveryCycle"
+                  label="采购单推送周期"
+                  width="lg"
+                  placeholder="请输入店主采购单推送周期,可输入1-240"
+                  validateFirst
+                  rules={[
+                    { required: true, message: '请输入采购单推送周期' },
+                    () => ({
+                      validator(_, value) {
+                        if (+value < 1 || +value > 240 || !(/\d+/g).test(value)) {
+                          return Promise.reject(new Error('请输入1-240之间的正整数'));
+                        }
+                        return Promise.resolve();
+                      },
+                    })
+                  ]}
+                  fieldProps={{
+                    addonAfter: '小时 推送1次采购单'
+                  }}
+                />
+                :
+                <ProFormDateTimePicker
+                  name="endTimeAdvancePayment"
+                  label="店主采购单下单截至时间"
+                  width="lg"
+                  rules={[{ required: true, message: '请选择店主采购单下单截至时间' }]}
+                  fieldProps={{
+                    // disabledDate: (currentDate) => { return +currentDate < +new Date() || new Date(+currentDate).getDate() === new Date().getDate() },
+                    // disabledTime: disabledRangeTime,
+                    showTime: {
+                      defaultValue: moment('00:59:59', 'HH:mm:ss')
+                    }
+                  }}
+                />
+            }
+
             <ProFormRadio.Group
               label="仅参与1分钱活动"
               name="activityShowType"

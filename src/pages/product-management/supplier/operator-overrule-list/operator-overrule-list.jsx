@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Tooltip, Spin } from 'antd';
+import { Button, Table, Spin, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
-import * as api from '@/services/product-management/product-review'
-import { setGoodsList } from '@/services/product-management/set-goods-list'
+import * as api from '@/services/product-management/product-list-purchase';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
-import { typeTransform, amountTransform } from '@/utils/utils'
-import Edit from '../product-list/edit'
 import ProductDetailDrawer from '@/components/product-detail-drawer'
-import Export from '@/pages/export-excel/export'
-import ExportHistory from '@/pages/export-excel/export-history'
-import moment from 'moment';
+import { amountTransform, typeTransform } from '@/utils/utils'
+import Overrule from '../product-review/overrule';
+import { purchaseAuditRefuse, purchaseAuditPass } from '@/services/product-management/product-review'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -21,18 +20,16 @@ const SubTable = (props) => {
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
     { title: '零售供货价', dataIndex: 'retailSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
-    { title: '批发供货价', dataIndex: 'wholesalePrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
+    { title: '批发供货价', dataIndex: 'wholesaleSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
     { title: '批发起购量', dataIndex: 'wholesaleMinNum' },
-    // { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
     { title: '商品价格', dataIndex: 'salePriceDisplay' },
     { title: '可用库存', dataIndex: 'stockNum' },
-    // { title: '活动库存', dataIndex: 'activityStockNum' },
   ];
 
   useEffect(() => {
     setLoading(true);
-    setGoodsList({
+    api.productList({
       selectType: 2,
       spuId: props.data.spuId
     }).then(res => {
@@ -50,28 +47,29 @@ const SubTable = (props) => {
 };
 
 const TableList = () => {
-  const [config, setConfig] = useState({});
-  const [detailData, setDetailData] = useState(null);
-  const [selectItem, setSelectItem] = useState(null);
-  const actionRef = useRef();
-  const [formVisible, setFormVisible] = useState(false);
   const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
-  const [visit, setVisit] = useState(false)
-
+  const [config, setConfig] = useState({});
+  const [selectItem, setSelectItem] = useState(null);
+  const [overruleVisible, setOverruleVisible] = useState(false);
+  const actionRef = useRef();
   const formRef = useRef();
 
-  const getDetail = (record) => {
-    api.getDetail({
-      spuId: record.id
-    }).then(res => {
-      if (res.code === 0) {
-        setDetailData({
-          ...res.data,
-          settleType: 2,
-        });
-        setFormVisible(true);
+  const pass = (spuId) => {
+    Modal.confirm({
+      title: '确认再次提交给运营进行商品配置',
+      icon: <ExclamationCircleOutlined />,
+      content: <><span style={{ color: 'red' }}>运营已经驳回过</span>，确认要再次提交吗？</>,
+      okText: '继续提交',
+      cancelText: '暂不提交',
+      onOk: () => {
+        purchaseAuditPass({ spuId })
+          .then(r => {
+            if (r.code === 0) {
+              actionRef.current.reload()
+            }
+          })
       }
-    })
+    });
   }
 
   const columns = [
@@ -119,33 +117,11 @@ const TableList = () => {
       }
     },
     {
-      title: '生鲜类型',
-      dataIndex: 'fresh',
-      valueType: 'text',
-      hideInTable: true,
-      valueEnum: {
-        0: '非生鲜',
-        1: '精装生鲜',
-        2: '散装生鲜',
-      }
-    },
-    {
-      title: '生鲜类型',
-      dataIndex: 'fresh',
-      valueType: 'text',
-      hideInSearch: true,
-      render: (_) => ({
-        0: '非生鲜',
-        1: '精装生鲜',
-        2: '散装生鲜',
-      }[_]),
-    },
-    {
       title: '供应商家ID',
       dataIndex: 'supplierId',
       valueType: 'text',
       hideInSearch: true,
-      width: 120,
+      width: 100,
     },
     {
       title: '供应商家ID',
@@ -172,23 +148,30 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
+      title: '批发样品',
+      dataIndex: 'isSample',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_) => _ === 1 ? '支持' : '不支持'
+    },
+    {
       title: '批发供货价(元)',
       dataIndex: 'wholesaleSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => data.goodsSaleType === 2 ? '-' : _,
       width: 120,
+      render: (_, data) => data.goodsSaleType === 2 ? '-' : _
     },
     {
       title: '零售供货价(元)',
       dataIndex: 'retailSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => data.goodsSaleType === 1 ? '-' : _,
       width: 120,
+      render: (_, data) => data.goodsSaleType === 1 ? '-' : _
     },
     {
-      title: '秒约价(元)',
+      title: '销售价',
       dataIndex: 'name',
       valueType: 'text',
       hideInSearch: true,
@@ -199,8 +182,7 @@ const TableList = () => {
         }
 
         return `${amountTransform(goodsSaleMinPrice, '/')}~${amountTransform(goodsSaleMaxPrice, '/')}`
-      },
-      width: 120,
+      }
     },
     {
       title: '可用库存',
@@ -214,30 +196,12 @@ const TableList = () => {
     //   valueType: 'text',
     //   hideInSearch: true,
     // },
-    // {
-    //   title: '审核状态',
-    //   dataIndex: 'goodsVerifyState',
-    //   onFilter: true,
-    //   valueType: 'select',
-    //   valueEnum: typeTransform(config.goodsVerifyState),
-    //   hideInTable: true,
-
-    // },
-    // {
-    //   title: '审核状态',
-    //   dataIndex: 'goodsVerifyStateDisplay',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    //   render: (_, record) => {
-    //     const { goodsVerifyRemark, goodsVerifyState } = record;
-    //     return (
-    //       <>
-    //         {_}&nbsp;
-    //         {(goodsVerifyRemark && goodsVerifyState === 2) && <Tooltip title={goodsVerifyRemark}><QuestionCircleOutlined /></Tooltip>}
-    //       </>
-    //     )
-    //   },
-    // },
+    {
+      title: '销量',
+      dataIndex: 'goodsSaleNum',
+      valueType: 'text',
+      hideInSearch: true,
+    },
     {
       title: '上架状态',
       dataIndex: 'goodsState',
@@ -246,27 +210,12 @@ const TableList = () => {
       valueEnum: typeTransform(config.goodsState),
       hideInTable: true,
     },
-    // {
-    //   title: '审核类型',
-    //   dataIndex: 'firstAuditDisplay',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    // },
-    // {
-    //   title: '上架状态',
-    //   dataIndex: 'goodsStateDisplay',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    //   render: (_, record) => {
-    //     const { goodsStateRemark, goodsState } = record;
-    //     return (
-    //       <>
-    //         {_}&nbsp;
-    //         {(goodsStateRemark && goodsState === 0) && <Tooltip title={goodsStateRemark}><QuestionCircleOutlined /></Tooltip>}
-    //       </>
-    //     )
-    //   },
-    // },
+    {
+      title: '商品关键词',
+      dataIndex: 'goodsKeywords',
+      valueType: 'text',
+      hideInTable: true,
+    },
     {
       title: '商品分类',
       dataIndex: 'gcId',
@@ -280,59 +229,54 @@ const TableList = () => {
       hideInTable: true,
     },
     {
-      title: '上架状态',
-      dataIndex: 'goodsStateDisplay',
-      valueType: 'text',
+      title: '商品来源',
+      dataIndex: 'goodsFromType',
+      onFilter: true,
+      valueType: 'select',
+      valueEnum: typeTransform(config.operateRole),
+      hideInTable: true,
+    },
+    // {
+    //   title: '创建时间',
+    //   dataIndex: 'createTime',
+    //   valueType: 'dateTimeRange',
+    //   hideInTable: true,
+    // },
+    // {
+    //   title: '审核时间',
+    //   dataIndex: 'auditTime',
+    //   valueType: 'dateTimeRange',
+    //   hideInTable: true,
+    // },
+    {
+      title: '驳回原因',
+      dataIndex: 'goodsVerifyRemark',
       hideInSearch: true,
     },
     {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      valueType: 'dateTimeRange',
-      hideInTable: true,
-    },
-    {
-      title: '审核时间',
-      dataIndex: 'auditTime',
-      valueType: 'dateTimeRange',
-      hideInTable: true,
-    },
-    {
       title: '操作',
-      dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => (
-        <>
-          <a onClick={() => { getDetail(record) }}>设置</a>
-        </>
-      ),
+      dataIndex: 'option',
+      render: (text, record) => {
+        return (
+          <>
+            <div><a onClick={() => { setSelectItem(record); setOverruleVisible(true) }}>驳回给供应商</a></div>
+            <div><a onClick={() => { pass(record.spuId) }}>提交运营配置</a></div>
+          </>
+        )
+      },
+      width: 100,
+      fixed: 'right'
     },
   ];
 
-  const getFieldValue = () => {
-    if (formRef?.current?.getFieldsValue) {
-      const { current, pageSize, gcId = [], createTime, auditTime, ...rest } = formRef?.current?.getFieldsValue?.();
-      const obj = {};
-
-      if (createTime) {
-        obj.createTimeStart = moment(createTime[0]).unix();
-        obj.createTimeEnd = moment(createTime[1]).unix();
-      }
-
-      if (auditTime) {
-        obj.auditTimeStart = moment(auditTime[0]).unix();
-        obj.auditTimeEnd = moment(auditTime[1]).unix();
-      }
-
-      return {
-        ...obj,
-        selectType: 1,
-        gcId1: gcId[0],
-        gcId2: gcId[1],
-        ...rest
-      }
-    }
-    return {}
+  const overrule = (goodsVerifyRemark) => {
+    purchaseAuditRefuse({ spuIds: selectItem?.spuId, goodsVerifyRemark })
+      .then(res => {
+        if (res.code === 0) {
+          actionRef.current.reload();
+        }
+      })
   }
 
   useEffect(() => {
@@ -344,59 +288,63 @@ const TableList = () => {
 
   return (
     <PageContainer>
-      {/* <Card>
-        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-          <Button key="out" type="primary" icon={<PlusOutlined />}>新建</Button>
-        </div>
-      </Card> */}
       <ProTable
         rowKey="id"
         options={false}
-        actionRef={actionRef}
-        formRef={formRef}
         params={{
           selectType: 1,
+          goodsVerifyState: 3,
         }}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
-        request={setGoodsList}
+        actionRef={actionRef}
+        formRef={formRef}
+        request={api.productList}
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
-        search={{
-          labelWidth: 120,
-          defaultCollapsed: true,
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
-            <Export
-              key="4"
-              change={(e) => { setVisit(e) }}
-              type="goods-operate-export"
-              conditions={()=>{return getFieldValue(searchConfig)}}
-            />,
-            <ExportHistory key="5" show={visit} setShow={setVisit} type="goods-operate-export" />,
-          ],
-        }}
-        columns={columns}
         pagination={{
           pageSize: 10,
         }}
+        search={{
+          labelWidth: 140,
+          defaultCollapsed: true,
+          optionRender: ({ searchText, resetText }, { form }) => [
+            <Button
+              key="search"
+              type="primary"
+              onClick={() => {
+                form?.submit();
+              }}
+            >
+              {searchText}
+            </Button>,
+            <Button
+              key="rest"
+              onClick={() => {
+                form?.resetFields();
+              }}
+            >
+              {resetText}
+            </Button>,
+          ],
+        }}
+        columns={columns}
       />
-      {formVisible && <Edit
-        visible={formVisible}
-        setVisible={setFormVisible}
-        detailData={detailData}
-        callback={() => { actionRef.current.reload(); setDetailData(null) }}
-        onClose={() => { setDetailData(null) }}
-        overrule
+      {overruleVisible && <Overrule
+        visible={overruleVisible}
+        setVisible={setOverruleVisible}
+        callback={(text) => { overrule(text) }}
+        goodsName={selectItem.goodsName}
+        spuId={selectItem.spuId}
       />}
       {
         productDetailDrawerVisible &&
         <ProductDetailDrawer
           visible={productDetailDrawerVisible}
           setVisible={setProductDetailDrawerVisible}
-          spuId={selectItem.spuId}
+          spuId={selectItem?.spuId}
         />
       }
-    </PageContainer>
 
+    </PageContainer>
   );
 };
 
