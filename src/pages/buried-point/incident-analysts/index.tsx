@@ -35,7 +35,8 @@ const IncidentAnalysts: FC = () => {
     {
       title: `${title}平均次数`,
       dataIndex: 'average',
-      align: 'center'
+      align: 'center',
+      render: (_, r)=> Number(r.average).toFixed(1)
     }
   ]
 
