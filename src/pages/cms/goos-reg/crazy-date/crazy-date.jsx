@@ -16,6 +16,7 @@ const CrazyDate = ( props ) => {
   const [detailData, setDetailData] = useState(false);
   const [visible, setVisible] = useState(false);
   const [goDetail, setGoDetail] = useState(false)
+  const [copy, setCopy] = useState(false)
 
   const columns = [
     {
@@ -82,8 +83,15 @@ const CrazyDate = ( props ) => {
       render: (text, record, _,) => {
         return [
             <a key="editable" onClick={() => {setFormVisible(true);setGoDetail(record)}}>编辑</a>,
-            <a key="copy" onClick={() => {}}>复制</a>,
-            <a key="stop" onClick={() => {setVisible(true);setGoDetail(record)}}>终止</a>
+            <a key="copy" onClick={() => { setFormVisible(true);setGoDetail(record);setCopy('copy') }}>复制</a>,
+            <>
+              {
+                record.status==3||record?.status==4?
+                null
+                :
+                <a key="stop" onClick={() => {setVisible(true);setGoDetail(record)}}>终止</a>
+              }
+            </>
         ]
       }
     },
@@ -96,7 +104,7 @@ const CrazyDate = ( props ) => {
         params={{
           status
         }}
-        options={false}
+        options={false} 
         columns={columns}
         actionRef={actionRef}
         request={seckillingClassList}
@@ -115,8 +123,9 @@ const CrazyDate = ( props ) => {
         visible={formVisible}
         setVisible={setFormVisible}
         id={goDetail?.id}
-        callBack={()=>{actionRef.current.reset();setGoDetail(null)}}
-        onClose={()=>{actionRef.current.reset();setGoDetail(null)}}
+        copy={copy}
+        callBack={()=>{actionRef.current.reset();setGoDetail(null);setCopy(null)}}
+        onClose={()=>{actionRef.current.reset();setGoDetail(null);setCopy(null)}}
       />}
 
       {visible && <EndModel
