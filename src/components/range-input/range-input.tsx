@@ -3,10 +3,14 @@ import { Input } from 'antd';
 
 type RangeInputProps = {
   onChange?: (v: { min: number | string, max: number | string }) => void,
+  beforePlaceholder?: string,
+  afterPlaceholder?: string
 }
 
 const RangeInput: React.FC<RangeInputProps> = ({
   onChange = () => { },
+  beforePlaceholder = '请输入最低金额',
+  afterPlaceholder = '最高金额'
 }) => {
 
   const min = useRef('');
@@ -15,7 +19,7 @@ const RangeInput: React.FC<RangeInputProps> = ({
   return (
     <div className='ant-input-affix-wrapper' style={{ display: 'flex' }}>
       <Input
-        placeholder='请输入最低金额'
+        placeholder={beforePlaceholder}
         bordered={false}
         onChange={(e) => {
           const { value } = e.target;
@@ -25,7 +29,7 @@ const RangeInput: React.FC<RangeInputProps> = ({
       ~
       <Input
         style={{ paddingLeft: 20 }}
-        placeholder='最高金额'
+        placeholder={afterPlaceholder}
         bordered={false}
         onChange={(e) => {
           const { value } = e.target;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Table, Spin } from 'antd';
+import { Button, Table, Spin, Modal } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import * as api from '@/services/product-management/product-list-purchase';
@@ -7,6 +7,10 @@ import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import ProductDetailDrawer from '@/components/product-detail-drawer'
 import { amountTransform, typeTransform } from '@/utils/utils'
+import Overrule from '../product-review/overrule';
+import { purchaseAuditRefuse, purchaseAuditPass } from '@/services/product-management/product-review'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -45,9 +49,28 @@ const SubTable = (props) => {
 const TableList = () => {
   const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
   const [config, setConfig] = useState({});
-  const [selectItemId, setSelectItemId] = useState(null);
+  const [selectItem, setSelectItem] = useState(null);
+  const [overruleVisible, setOverruleVisible] = useState(false);
   const actionRef = useRef();
   const formRef = useRef();
+
+  const pass = (spuId) => {
+    Modal.confirm({
+      title: '确认再次提交给运营进行商品配置',
+      icon: <ExclamationCircleOutlined />,
+      content: <><span style={{ color: 'red' }}>运营已经驳回过</span>，确认要再次提交吗？</>,
+      okText: '继续提交',
+      cancelText: '暂不提交',
+      onOk: () => {
+        purchaseAuditPass({ spuId })
+          .then(r => {
+            if (r.code === 0) {
+              actionRef.current.reload()
+            }
+          })
+      }
+    });
+  }
 
   const columns = [
     {
@@ -90,7 +113,7 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, record) => {
-        return <a onClick={() => { setSelectItemId(record.spuId); setProductDetailDrawerVisible(true); }}>{_}</a>
+        return <a onClick={() => { setSelectItem(record); setProductDetailDrawerVisible(true); }}>{_}</a>
       }
     },
     {
@@ -230,7 +253,31 @@ const TableList = () => {
       dataIndex: 'goodsVerifyRemark',
       hideInSearch: true,
     },
+    {
+      title: '操作',
+      valueType: 'option',
+      dataIndex: 'option',
+      render: (text, record) => {
+        return (
+          <>
+            <div><a onClick={() => { setSelectItem(record); setOverruleVisible(true) }}>驳回给供应商</a></div>
+            <div><a onClick={() => { pass(record.spuId) }}>提交运营配置</a></div>
+          </>
+        )
+      },
+      width: 100,
+      fixed: 'right'
+    },
   ];
+
+  const overrule = (goodsVerifyRemark) => {
+    purchaseAuditRefuse({ spuIds: selectItem?.spuId, goodsVerifyRemark })
+      .then(res => {
+        if (res.code === 0) {
+          actionRef.current.reload();
+        }
+      })
+  }
 
   useEffect(() => {
     api.getConfig()
@@ -281,12 +328,19 @@ const TableList = () => {
         }}
         columns={columns}
       />
+      {overruleVisible && <Overrule
+        visible={overruleVisible}
+        setVisible={setOverruleVisible}
+        callback={(text) => { overrule(text) }}
+        goodsName={selectItem.goodsName}
+        spuId={selectItem.spuId}
+      />}
       {
         productDetailDrawerVisible &&
         <ProductDetailDrawer
           visible={productDetailDrawerVisible}
           setVisible={setProductDetailDrawerVisible}
-          spuId={selectItemId}
+          spuId={selectItem?.spuId}
         />
       }
 

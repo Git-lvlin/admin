@@ -97,13 +97,6 @@ const StoreList = (props) => {
 
   const columns = [
     {
-      title: '交保证金金额',
-      dataIndex: 'test',
-      valueType: 'text',
-      renderFormItem: () => <RangeInput />,
-      hideInTable: true,
-    },
-    {
       title: '店铺ID',
       dataIndex: 'id',
       valueType: 'text',
@@ -222,6 +215,22 @@ const StoreList = (props) => {
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'vip',
+    },
+    {
+      title: '交保证金(元)',
+      dataIndex: 'deposit',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType == 'vip',
+      render: (_) => _/100
+    },
+    {
+      title: '交服务费(元)',
+      dataIndex: 'serviceFee',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType == 'vip',
+      render: (_) => _ / 100
     },
     {
       title: '生鲜柜',
@@ -714,6 +723,22 @@ const StoreList = (props) => {
       valueType: 'dateTimeRange',
       hideInTable: true,
       hideInSearch: storeType !== 'cancelled'
+    },
+    {
+      title: '交保证金金额',
+      dataIndex: 'deposit',
+      valueType: 'text',
+      renderFormItem: () => <RangeInput />,
+      hideInSearch: storeType == 'vip',
+      hideInTable: true,
+    },
+    {
+      title: '交服务费金额',
+      dataIndex: 'serviceFee',
+      valueType: 'text',
+      renderFormItem: () => <RangeInput />,
+      hideInSearch: storeType == 'vip',
+      hideInTable: true,
     },
     {
       title: '操作',
