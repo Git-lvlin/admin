@@ -64,7 +64,7 @@ export default (props) => {
       },
       {
         title: '平台亏盈',
-        dataIndex: 'actPriceProfitLoss',
+        dataIndex: 'salePriceProfitLoss',
         valueType: 'text',
         editable:false,
         render:(_)=>{
