@@ -2,7 +2,7 @@ import React, { useState} from 'react';
 import ProForm,{ ModalForm,ProFormTextArea,ProFormText} from '@ant-design/pro-form';
 import { Button,message } from 'antd';
 import { history } from 'umi';
-
+import { amountTransform } from '@/utils/utils'
 
 
 const formItemLayout = {
@@ -101,10 +101,18 @@ export default props=>{
         />
         <ProFormText
             width={100}
+            label="运营类型"
+            readonly
+            fieldProps={{
+                value:data?.operateType==1?'秒约':'分享补贴'
+            }}
+        />
+        <ProFormText
+            width={100}
             label="零售供货价"
             readonly
             fieldProps={{
-                value:`￥${data?.retailSupplyPrice/100}`
+                value:`￥${amountTransform(data?.retailSupplyPrice,'/')}`
             }}
         />
         <ProFormText
@@ -112,7 +120,15 @@ export default props=>{
             label="销售价"
             readonly
             fieldProps={{
-                value:`￥${data?.goodsSalePrice/100}`
+                value:`￥${amountTransform(data?.goodsSalePrice,'/')}`
+            }}
+        />
+        <ProFormText
+            width={100}
+            label="秒约平台利润"
+            readonly
+            fieldProps={{
+                value:`￥${amountTransform(data?.platformProfit,'/')}`
             }}
         />
         <ProForm.Group>

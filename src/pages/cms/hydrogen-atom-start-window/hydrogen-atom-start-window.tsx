@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, message,Button} from 'antd';
 import { findPop,saveOrUpdate } from '@/services/cms/member/hydrogen-atom-start-window';
 import ProForm, { ProFormSwitch,ProFormDependency,ProFormRadio,ProFormDateTimeRangePicker,ProFormText } from '@ant-design/pro-form';
@@ -25,6 +25,7 @@ const formItemLayout = {
 
 export default (props) =>{
   const [form] = Form.useForm();
+  const [href, setHref] = useState('');
   useEffect(() => {
     findPop({}).then(res=>{
       if(res.code==0){
@@ -111,11 +112,17 @@ export default (props) =>{
           <ProFormRadio.Group
             name="actionType"
             label='点击弹窗图片跳转目标'
+            fieldProps={{
+              onChange: ({ target }) => {
+                console.log(target.value)
+                setHref(target.value)
+              }
+            }}
             options={[
-                {
-                label:'社区店',
-                value: 1,
-                },
+                // {
+                // label:'社区店',
+                // value: 1,
+                // },
                 {
                 label: '集约',
                 value: 2,
