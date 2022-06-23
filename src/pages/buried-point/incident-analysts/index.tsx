@@ -42,7 +42,10 @@ const IncidentAnalysts: FC = () => {
 
   return (
     <PageContainer title={false}>
-      <SearchModal setFormData={setFormData} setTitle={setTitle}/>
+      <SearchModal 
+        setFormData={setFormData} 
+        setTitle={setTitle}
+      />
       <ProTable
         rowKey='dates'
         columns={columns}
