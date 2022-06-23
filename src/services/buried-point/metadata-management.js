@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-// 原事件
+// 元事件
 export const metadataEvent = async (params = {}, options = {}) => {
   const { current = 1, pageSize = 10, ...rest } = params;
   const res = await request('/auth/java-admin/report/config/metadataEvent', {
