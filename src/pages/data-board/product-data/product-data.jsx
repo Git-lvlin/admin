@@ -311,7 +311,7 @@ const ProductData = () => {
     },
     {
       title: '退款订单数',
-      dataIndex: '',
+      dataIndex: 'refundNum',
       align: 'center',
       hideInTable: form.current?.getFieldsValue().orderType === "15",
       hideInSearch: true
