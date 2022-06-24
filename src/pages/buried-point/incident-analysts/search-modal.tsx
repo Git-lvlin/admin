@@ -110,7 +110,7 @@ const SearchModal: FC<SearchModalProps> = ({setFormData, setTitle}) => {
                 }
                 style={{width: 200}}
                 value={eventAnalys}
-                onChange={(v, { children })=> {
+                onChange={(v, { children }: any)=> {
                   setTitle(children)
                   setEventAnalys(v)
                   setAttrOptions([])
