@@ -401,7 +401,7 @@ const TableList = () => {
           },
           {
             label: '已付款',
-            value: 1
+            value: 2
           },
           // {
           //   label: '已付尾款',
