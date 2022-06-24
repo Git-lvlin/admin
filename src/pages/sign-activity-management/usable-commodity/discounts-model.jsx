@@ -41,8 +41,10 @@ export default props=>{
             await reject('必须大于0')
         }else if(value&&!/^[0-9]+(.[0-9]{0,1})?$/.test(value)){
             await reject('只能输入数字，最多输入一位小数')
-        }else if(value&&value>data.goodsSalePrice/100){
+        }else if(value&&value>amountTransform(data?.goodsSalePrice,'/')){
             await reject('可用红包不可大于销售价')
+        }else if(value&&value>amountTransform(data?.platformProfit,'/')){
+            await reject('可用红包不可大于平台利润')
         }else {
             await resolve()
         }
@@ -125,7 +127,7 @@ export default props=>{
         />
         <ProFormText
             width={100}
-            label="秒约平台利润"
+            label="平台利润"
             readonly
             fieldProps={{
                 value:`￥${amountTransform(data?.platformProfit,'/')}`
