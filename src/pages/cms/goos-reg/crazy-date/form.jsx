@@ -26,7 +26,7 @@ const formItemLayout = {
 };
 
 export default (props) => {
-  const { detailData, setVisible, setFlag, visible,callBack,onClose,id } = props;
+  const { detailData, setVisible, setFlag, visible,callBack,onClose,id,copy } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
   const [detailList,setDetailList]=useState()
@@ -35,13 +35,13 @@ export default (props) => {
     const { ...rest } = values
     const param = {
       goodsInfo:detailList.map(ele=>{
-        return {spuId:ele?.spuId,skuId:ele?.skuId,activityPrice:amountTransform(ele?.activityPrice,'*'),sort:ele?.sort}
+        return {spuId:ele?.spuId,skuId:ele?.skuId,activityPrice:ele?.activityPrice,sort:ele?.sort}
       }),
       ...rest
     }
-    if(id){
+    if(id&&!copy){
       return new Promise((resolve, reject) => {
-        seckillingClassEdit(param).then((res) => {
+        seckillingClassEdit({...param,id:id}).then((res) => {
           if (res.code === 0) {
             callBack()
             resolve(true);
@@ -86,7 +86,7 @@ export default (props) => {
     <DrawerForm
       key="add"
       width={1400}
-      title={`${id ? '编辑活动' : '新建活动'}`}
+      title={`${id && !copy ? '编辑活动' : copy ? '复制活动' : '新建活动'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -100,7 +100,7 @@ export default (props) => {
       }}
       submitter={{
         searchConfig:{
-          submitText:'确认新建',
+          submitText:id && !copy? '确认编辑' : copy ? '确认复制' : '确认新建',
           resetText:'返回'
         }
       }}
@@ -160,11 +160,6 @@ export default (props) => {
       <Associated0Goods detailList={detailList}  callback={(data)=>{
         setDetailList(data)
       }}/>
-      <ProFormText
-          name="id"
-          label="id"
-          hidden
-        />
     </DrawerForm>
   );
 };
