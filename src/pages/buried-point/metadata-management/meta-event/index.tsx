@@ -58,7 +58,7 @@ function MetaEvent () {
         <Detail
           visible={detailVisible}
           setVisible={setDetailVisible}
-          enventType={event}
+          enventType={'dwd_' + event}
         />
       }
     </PageContainer>
