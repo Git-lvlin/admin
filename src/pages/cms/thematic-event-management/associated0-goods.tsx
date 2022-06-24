@@ -167,7 +167,7 @@ export default (props) => {
           ele.id!=val
     ))
     setDataSource(arr) 
-    callback(arr)
+    callback(arr.map(ele=>({...ele,actPrice:amountTransform(ele?.actPrice,'*')})))
   }
   return (
     <>
@@ -187,7 +187,7 @@ export default (props) => {
                 return [defaultDoms.delete];
             },
             onValuesChange: (record, recordList) => {
-              callback(recordList)
+              callback(recordList.map(ele=>({...ele,actPrice:amountTransform(ele?.actPrice,'*')})))
             },
           }}
           toolBarRender={()=>[
@@ -219,7 +219,7 @@ export default (props) => {
             })
           })
           setDataSource(arr)
-          callback(arr)
+          callback(arr.map(ele=>({...ele,actPrice:amountTransform(ele?.actPrice,'*')})))
           setEditableKeys(arr.map(item => item.id))
         }}
       />
