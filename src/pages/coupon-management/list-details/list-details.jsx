@@ -41,8 +41,8 @@ export default props => {
   ];
   const columns2 = [
     {
-      title: 'skuID',
-      dataIndex: 'skuId',
+      title: 'spuID',
+      dataIndex: 'spuId',
       valueType: 'text',
     },
     {
