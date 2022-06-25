@@ -332,8 +332,8 @@ const TableList = () => {
         visible={overruleVisible}
         setVisible={setOverruleVisible}
         callback={(text) => { overrule(text) }}
-        goodsName={selectItem.goodsName}
-        spuId={selectItem.spuId}
+        goodsName={selectItem?.goodsName}
+        spuId={selectItem?.spuId}
       />}
       {
         productDetailDrawerVisible &&

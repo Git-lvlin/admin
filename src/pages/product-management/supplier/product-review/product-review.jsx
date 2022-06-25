@@ -431,8 +431,8 @@ const TableList = () => {
         detailData={detailData}
         check={purchaseAuditPass}
         overrule={overrule}
-        goodsName={selectItem.goodsName}
-        spuId={selectItem.spuId}
+        goodsName={selectItem?.goodsName}
+        spuId={selectItem?.spuId}
       />}
       {secondReviewVisible && <SecondReview
         visible={secondReviewVisible}
@@ -441,8 +441,8 @@ const TableList = () => {
         overrule={overrule}
         record={selectItem}
         operateRole={typeTransform(config.operateRole)}
-        goodsName={selectItem.goodsName}
-        spuId={selectItem.spuId}
+        goodsName={selectItem?.goodsName}
+        spuId={selectItem?.spuId}
       />}
       {overruleVisible && <Overrule
         visible={overruleVisible}
