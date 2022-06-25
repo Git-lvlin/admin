@@ -1745,7 +1745,7 @@ export default (props) => {
       <ProFormTextArea
         name="goodsRemark"
         label="特殊说明"
-        disabled
+        // disabled
         fieldProps={{
           placeholder: ''
         }}
