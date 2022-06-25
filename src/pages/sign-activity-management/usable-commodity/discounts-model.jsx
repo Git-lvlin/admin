@@ -106,7 +106,7 @@ export default props=>{
             label="运营类型"
             readonly
             fieldProps={{
-                value:data?.operateType==1?'秒约':'分享补贴'
+                value:data?.operateType==1?'秒约':data?.operateType==2?'分享补贴':'未定'
             }}
         />
         <ProFormText
