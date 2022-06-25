@@ -202,14 +202,14 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
     },
-    {
-      title: '上架状态',
-      dataIndex: 'goodsState',
-      onFilter: true,
-      valueType: 'select',
-      valueEnum: typeTransform(config.goodsState),
-      hideInTable: true,
-    },
+    // {
+    //   title: '上架状态',
+    //   dataIndex: 'goodsState',
+    //   onFilter: true,
+    //   valueType: 'select',
+    //   valueEnum: typeTransform(config.goodsState),
+    //   hideInTable: true,
+    // },
     {
       title: '商品关键词',
       dataIndex: 'goodsKeywords',
