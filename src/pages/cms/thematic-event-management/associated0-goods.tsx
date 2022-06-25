@@ -69,8 +69,8 @@ export default (props) => {
   }, [dataSource]);
   const columns:ProColumns<ThematicEventItem>[]= [
     {
-      title: 'spuid',
-      dataIndex: 'spuId',
+      title: 'skuid',
+      dataIndex: 'skuId',
       valueType: 'text',
       editable:false,
     },
