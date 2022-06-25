@@ -584,7 +584,7 @@ const EditTable = ({ onSelect, sku, wholesale, radioSelect }, ref) => {
             debounceFetcher({ record, recordList })
           }
 
-          if (findItem.wholesaleFlowType !== record.wholesaleFlowType) {
+          if (findItem.wholesaleFlowType !== record.wholesaleFlowType && record.skuId === selectedRowKeys[0]) {
             onSelect([record])
             setSelectData([record])
             setDataSource(recordList)
