@@ -426,8 +426,9 @@ export default (props) => {
         const supplierScale = +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(+e.target.value).times(100).toFixed(2);
         form.setFieldsValue({
           profit: [{
-            tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
-            tPlatformScale: 5,
+            // tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
+            tStoreScale: '',
+            tPlatformScale: '',
             tOperateScale: amountTransform(PlatformScale),
             tSupplierScale: supplierScale,
             e: 100,
@@ -506,8 +507,9 @@ export default (props) => {
           const supplierScale = +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(amountTransform(data.salePrice, '/')).times(100).toFixed(2);
           form.setFieldsValue({
             profit: [{
-              tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
-              tPlatformScale: 5,
+              // tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
+              tStoreScale: '',
+              tPlatformScale: '',
               tOperateScale: amountTransform(PlatformScale),
               tSupplierScale: supplierScale,
               e: 100,
@@ -1144,8 +1146,9 @@ export default (props) => {
                       const supplierScale = +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(salePrice || 0).times(100).toFixed(2)
                       form.setFieldsValue({
                         profit: [{
-                          tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
-                          tPlatformScale: 5,
+                          // tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
+                          tStoreScale: '',
+                          tPlatformScale: '',
                           tOperateScale: amountTransform(PlatformScale),
                           tSupplierScale: supplierScale,
                           e: 100,
@@ -1160,8 +1163,9 @@ export default (props) => {
                           const supplierScale = +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2);
                           return {
                             ...item,
-                            tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
-                            tPlatformScale: 5,
+                            // tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
+                            tStoreScale: '',
+                            tPlatformScale: '',
                             tOperateScale: amountTransform(PlatformScale),
                             tSupplierScale: supplierScale,
                           }

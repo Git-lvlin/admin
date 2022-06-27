@@ -300,8 +300,9 @@ export default function EditTable(props) {
               const supplierScale = +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2);
               return {
                 ...item,
-                tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
-                tPlatformScale: 5,
+                // tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
+                tStoreScale: '',
+                tPlatformScale: '',
                 tSupplierScale: supplierScale
               }
             }
@@ -376,8 +377,9 @@ export default function EditTable(props) {
                   const supplierScale = +new Big(data.retailSupplyPrice).div(data.salePrice).times(100).toFixed(2);
                   data = {
                     ...data,
-                    tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
-                    tPlatformScale: 5,
+                    // tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
+                    tStoreScale: '',
+                    tPlatformScale: '',
                     tSupplierScale: supplierScale
                   }
                 }

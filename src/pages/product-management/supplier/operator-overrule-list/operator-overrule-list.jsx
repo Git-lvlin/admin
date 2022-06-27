@@ -170,20 +170,20 @@ const TableList = () => {
       width: 120,
       render: (_, data) => data.goodsSaleType === 1 ? '-' : _
     },
-    {
-      title: '销售价',
-      dataIndex: 'name',
-      valueType: 'text',
-      hideInSearch: true,
-      render: (_, data) => {
-        const { goodsSaleMinPrice, goodsSaleMaxPrice } = data;
-        if (goodsSaleMinPrice === goodsSaleMaxPrice) {
-          return amountTransform(goodsSaleMinPrice, '/');
-        }
+    // {
+    //   title: '销售价',
+    //   dataIndex: 'name',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   render: (_, data) => {
+    //     const { goodsSaleMinPrice, goodsSaleMaxPrice } = data;
+    //     if (goodsSaleMinPrice === goodsSaleMaxPrice) {
+    //       return amountTransform(goodsSaleMinPrice, '/');
+    //     }
 
-        return `${amountTransform(goodsSaleMinPrice, '/')}~${amountTransform(goodsSaleMaxPrice, '/')}`
-      }
-    },
+    //     return `${amountTransform(goodsSaleMinPrice, '/')}~${amountTransform(goodsSaleMaxPrice, '/')}`
+    //   }
+    // },
     {
       title: '可用库存',
       dataIndex: 'stockNum',
