@@ -8,6 +8,7 @@ import { seckillingClassList } from '@/services/cms/member/goos-reg';
 import { ACTION_TYPE } from '@/utils/text';
 import ProCard from '@ant-design/pro-card';
 import EndModel from './end-model'
+import styles from './style.less'
 
 const CrazyDate = ( props ) => {
   const { status } = props
@@ -118,6 +119,7 @@ const CrazyDate = ( props ) => {
             新建活动
           </Button>,
         ]}
+        className={styles.crazy_date}
       />
       {formVisible && <Edit
         visible={formVisible}
