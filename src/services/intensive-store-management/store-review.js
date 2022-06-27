@@ -1,4 +1,6 @@
 import request from '@/utils/request';
+import { amountTransform } from '@/utils/utils'
+
 
 export const getStoreList = async (params = {}, options = {}) => {
   const { current, pageSize, area = [], provideTime = [], deposit, serviceFee, ...rest } = params;

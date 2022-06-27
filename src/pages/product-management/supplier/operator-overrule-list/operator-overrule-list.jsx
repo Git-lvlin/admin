@@ -170,20 +170,20 @@ const TableList = () => {
       width: 120,
       render: (_, data) => data.goodsSaleType === 1 ? '-' : _
     },
-    {
-      title: '销售价',
-      dataIndex: 'name',
-      valueType: 'text',
-      hideInSearch: true,
-      render: (_, data) => {
-        const { goodsSaleMinPrice, goodsSaleMaxPrice } = data;
-        if (goodsSaleMinPrice === goodsSaleMaxPrice) {
-          return amountTransform(goodsSaleMinPrice, '/');
-        }
+    // {
+    //   title: '销售价',
+    //   dataIndex: 'name',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   render: (_, data) => {
+    //     const { goodsSaleMinPrice, goodsSaleMaxPrice } = data;
+    //     if (goodsSaleMinPrice === goodsSaleMaxPrice) {
+    //       return amountTransform(goodsSaleMinPrice, '/');
+    //     }
 
-        return `${amountTransform(goodsSaleMinPrice, '/')}~${amountTransform(goodsSaleMaxPrice, '/')}`
-      }
-    },
+    //     return `${amountTransform(goodsSaleMinPrice, '/')}~${amountTransform(goodsSaleMaxPrice, '/')}`
+    //   }
+    // },
     {
       title: '可用库存',
       dataIndex: 'stockNum',
@@ -202,14 +202,14 @@ const TableList = () => {
       valueType: 'text',
       hideInSearch: true,
     },
-    {
-      title: '上架状态',
-      dataIndex: 'goodsState',
-      onFilter: true,
-      valueType: 'select',
-      valueEnum: typeTransform(config.goodsState),
-      hideInTable: true,
-    },
+    // {
+    //   title: '上架状态',
+    //   dataIndex: 'goodsState',
+    //   onFilter: true,
+    //   valueType: 'select',
+    //   valueEnum: typeTransform(config.goodsState),
+    //   hideInTable: true,
+    // },
     {
       title: '商品关键词',
       dataIndex: 'goodsKeywords',
@@ -332,8 +332,8 @@ const TableList = () => {
         visible={overruleVisible}
         setVisible={setOverruleVisible}
         callback={(text) => { overrule(text) }}
-        goodsName={selectItem.goodsName}
-        spuId={selectItem.spuId}
+        goodsName={selectItem?.goodsName}
+        spuId={selectItem?.spuId}
       />}
       {
         productDetailDrawerVisible &&

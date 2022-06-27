@@ -35,7 +35,7 @@ export default (props) => {
     const { ...rest } = values
     const param = {
       goodsInfo:detailList.map(ele=>{
-        return {spuId:ele?.spuId,skuId:ele?.skuId,activityPrice:ele?.activityPrice,sort:ele?.sort}
+        return {spuId:ele?.spuId,skuId:ele?.skuId,activityPrice:amountTransform(ele?.activityPrice,'*'),sort:ele?.sort}
       }),
       ...rest
     }
@@ -69,7 +69,7 @@ export default (props) => {
     if (id) {
       seckillingClassDetail({id}).then(res=>{
         if(res.code==0){
-          setDetailList(res.data?.skuList?.records)
+          setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
           form.setFieldsValue({
             ...res.data
           })

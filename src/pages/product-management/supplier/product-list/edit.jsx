@@ -89,8 +89,8 @@ export default (props) => {
 
   const productCheck = (text) => {
     api.productCheck({
-      checkType:2,
-      spuId:detailData.spuId,
+      checkType: 2,
+      spuId: detailData.spuId,
       goodsVerifyRemark: text
     })
       .then(res => {
@@ -423,12 +423,14 @@ export default (props) => {
       }
 
       if (operateType === 2 && !profit) {
+        const supplierScale = +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(+e.target.value).times(100).toFixed(2);
         form.setFieldsValue({
           profit: [{
+            // tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
             tStoreScale: '',
             tPlatformScale: '',
             tOperateScale: amountTransform(PlatformScale),
-            tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(+e.target.value).times(100).toFixed(2),
+            tSupplierScale: supplierScale,
             e: 100,
             key: 1,
           }]
@@ -502,12 +504,14 @@ export default (props) => {
         setStoreGain(amountTransform(data.tStoreGain, '/'))
         setOperateGain(amountTransform(data.tOperateGain, '/'))
         if (operateType === 2 && !profit) {
+          const supplierScale = +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(amountTransform(data.salePrice, '/')).times(100).toFixed(2);
           form.setFieldsValue({
             profit: [{
+              // tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
               tStoreScale: '',
               tPlatformScale: '',
               tOperateScale: amountTransform(PlatformScale),
-              tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(amountTransform(data.salePrice, '/')).times(100).toFixed(2),
+              tSupplierScale: supplierScale,
               e: 100,
               key: 1,
             }]
@@ -832,6 +836,7 @@ export default (props) => {
           salePriceFloat: goods.salePriceFloat,
           retailSupplyPrice: goods.retailSupplyPrice,
           wholesaleTaxRate: goods.wholesaleTaxRate,
+          operateType: goods.operateType,
           cb: (d) => {
             setSalePriceFloat(d.salePriceFloat)
             setPreferential(d.preferential)
@@ -1138,12 +1143,14 @@ export default (props) => {
                 onChange: (e) => {
                   if (e.target.value === 2) {
                     if (isMultiSpec === 0 && salePrice !== 0) {
+                      const supplierScale = +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(salePrice || 0).times(100).toFixed(2)
                       form.setFieldsValue({
                         profit: [{
+                          // tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
                           tStoreScale: '',
                           tPlatformScale: '',
                           tOperateScale: amountTransform(PlatformScale),
-                          tSupplierScale: +new Big(amountTransform(goods.retailSupplyPrice, '/')).div(salePrice || 0).times(100).toFixed(2),
+                          tSupplierScale: supplierScale,
                           e: 100,
                           key: 1,
                         }]
@@ -1153,12 +1160,14 @@ export default (props) => {
                     if (isMultiSpec === 1) {
                       setTableData(tableData.map(item => {
                         if (item.salePrice) {
+                          const supplierScale = +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2);
                           return {
                             ...item,
+                            // tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
                             tStoreScale: '',
                             tPlatformScale: '',
                             tOperateScale: amountTransform(PlatformScale),
-                            tSupplierScale: +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2),
+                            tSupplierScale: supplierScale,
                           }
                         }
                         return item
@@ -1740,7 +1749,7 @@ export default (props) => {
       <ProFormTextArea
         name="goodsRemark"
         label="特殊说明"
-        disabled
+        // disabled
         fieldProps={{
           placeholder: ''
         }}

@@ -167,7 +167,7 @@ export default (props) => {
           ele.id!=val
     ))
     setDataSource(arr) 
-    callback(arr.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'*')})))
+    callback(arr)
   }
   return (
     <>
@@ -176,7 +176,7 @@ export default (props) => {
           headerTitle="商品列表"
           rowKey="id"
           options={false}
-          value={dataSource&&dataSource.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')}))}
+          value={dataSource}
           recordCreatorProps={false}
           search={false}
           columns={columns}
@@ -187,7 +187,7 @@ export default (props) => {
                 return [defaultDoms.delete];
             },
             onValuesChange: (record, recordList) => {
-              callback(recordList.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'*')})))
+              callback(recordList)
             },
           }}
           toolBarRender={()=>[
@@ -213,13 +213,13 @@ export default (props) => {
               arr.push({
                 goodsState: 1,
                 actPriceProfitLoss: item?.salePriceProfitLoss,
-                activityPrice: item?.salePrice,
+                activityPrice: amountTransform(item?.salePrice,'/'),
                 sort:9999,
                 ...item
               })
             })
             setDataSource(arr)
-            callback(arr.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'*')})))
+            callback(arr)
             setEditableKeys(arr.map(item => item.id))
           }}
       />

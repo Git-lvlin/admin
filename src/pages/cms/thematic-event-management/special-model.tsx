@@ -15,6 +15,7 @@ import Upload from '@/components/upload';
 import ReactColor from '@/components/react-color'
 import {saveSubjectActiveConfig,getActiveConfigById} from '@/services/cms/member/thematic-event-management'
 import type { DetailListItem,PropsItem } from './data'
+import { amountTransform } from '@/utils/utils'
 const { Title } = Typography;
 
 const FromWrap = ({ value, onChange, content, right }) => (
@@ -91,7 +92,7 @@ export default (props:PropsItem) => {
       goods:detailList?.map((ele:DetailListItem)=>({
         spuId:ele?.spuId,
         sort:ele?.sort,
-        actPrice:ele?.actPrice,
+        actPrice:amountTransform(ele?.actPrice,'*'),
         skuId:ele?.skuId,
         id:ele.id==ele.skuId?0:ele.id
       }))
@@ -112,7 +113,7 @@ export default (props:PropsItem) => {
     if(id){
       getActiveConfigById({id}).then(res=>{
         if(res.code==0){
-          setDetailList(res.data?.content?.goods)
+          setDetailList(res.data?.content?.goods.map(ele=>({...ele,actPrice:amountTransform(ele?.actPrice,'/')})))
           form.setFieldsValue({
             dateRange:[res.data?.startTime*1000,res.data?.endTime*1000],
             bannerImgUrl:res.data?.content?.bannerImgUrl,

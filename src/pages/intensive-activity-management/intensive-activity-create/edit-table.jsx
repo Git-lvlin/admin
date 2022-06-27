@@ -585,7 +585,9 @@ const EditTable = ({ onSelect, sku, wholesale, radioSelect }, ref) => {
           }
 
           if (findItem.wholesaleFlowType !== record.wholesaleFlowType) {
-            onSelect([record])
+            if (record.skuId === selectedRowKeys[0]) {
+              onSelect([record])
+            }
             setSelectData([record])
             setDataSource(recordList)
           }
