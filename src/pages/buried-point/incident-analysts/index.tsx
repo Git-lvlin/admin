@@ -15,6 +15,7 @@ const IncidentAnalysts: FC = () => {
   const [ formData, setFormData ] = useState({})
   const [ title, setTitle ] = useState<string>('')
   const [ rangePicker, setRangePicker ] = useState<moment.Moment[]>([])
+  const [ change, setChange] = useState<number>(0)
 
   const columns: ProColumns<ProTableProps>[] = [
     {
@@ -45,6 +46,8 @@ const IncidentAnalysts: FC = () => {
       <SearchModal 
         setFormData={setFormData} 
         setTitle={setTitle}
+        setChange={setChange}
+        change={change}
       />
       <ProTable
         rowKey='dates'
@@ -53,7 +56,8 @@ const IncidentAnalysts: FC = () => {
         params={{
           ...formData, 
           startTime: rangePicker[0]?.format('YYYY-MM-DD'),
-          endTime: rangePicker[1]?.format('YYYY-MM-DD')
+          endTime: rangePicker[1]?.format('YYYY-MM-DD'),
+          change
         }}
         pagination={{
           showQuickJumper: true,

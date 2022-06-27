@@ -37,6 +37,8 @@ type AttrProps = {
 type SearchModalProps = {
   setFormData: React.Dispatch<React.SetStateAction>
   setTitle: React.Dispatch<React.SetStateAction<string>>
+  setChange: React.Dispatch<React.SetStateAction<number>>
+  change: number
 }
 
 type SelectDateProps = {
