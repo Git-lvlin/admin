@@ -23,7 +23,7 @@ import { metadataEventAnalysis, flindEventProperties } from "@/services/buried-p
 
 const { Option } = Select
 
-const SearchModal: FC<SearchModalProps> = ({setFormData, setTitle}) => {
+const SearchModal: FC<SearchModalProps> = ({setFormData, setTitle, setChange, change}) => {
   const [rulesList, setRulesList] = useState([{key:0, innerList: []}])
   const [options, setOptions] = useState<OptionsProps[]>([])
   const [eventAnalys, setEventAnalys] = useState<string>()
@@ -62,29 +62,27 @@ const SearchModal: FC<SearchModalProps> = ({setFormData, setTitle}) => {
   }, [eventAnalys])
 
   const getAttrOption = () => {
-    if(eventAnalys && attrOptions.length === 0) {
-      flindEventProperties({
-        table: eventAnalys
-      }).then(res=> {
-        setAttrOptions(res.data.map((item: AttrProps)=> ({
-          label: item.comment,
-          value: item.columnName,
-          key: ++form.current
-        })))
-      })
-    }
+    flindEventProperties({
+      table: eventAnalys
+    }).then(res=> {
+      setAttrOptions(res.data.map((item: AttrProps)=> ({
+        label: item.comment,
+        value: item.columnName,
+        key: ++form.current
+      })))
+    })
   }
   
   const onReset = () => {
     form.current = 0
     setRulesList([{key:0, innerList: []}])
-    setEventAnalys('')
-    setAttrOptions([])
+    setEventAnalys(options[0]?.value)
     setAttr([])
     setAttrIpt([])
   }
 
   const submit = () => {
+    setChange(++change)
     const obj = {}
     attr.map((res, idx) => (
       obj[res] = attrIpt[idx]
@@ -147,6 +145,7 @@ const SearchModal: FC<SearchModalProps> = ({setFormData, setTitle}) => {
                     if(!arr[index].innerList) arr[index].innerList = [] 
                     arr[index].innerList.push({key: ++form.current})
                     setRulesList(arr)
+                    getAttrOption()
                   }}
                 >
                   筛选
@@ -169,7 +168,6 @@ const SearchModal: FC<SearchModalProps> = ({setFormData, setTitle}) => {
                         arr[idx] = v
                         setAttr(arr)
                       }}
-                      onFocus={()=> getAttrOption()}
                     >
                       {
                         attrOptions.map(item => (
