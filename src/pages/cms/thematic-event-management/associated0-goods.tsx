@@ -176,7 +176,7 @@ export default (props) => {
           headerTitle="关联商品"
           rowKey="id"
           options={false}
-          value={dataSource&&dataSource.map(ele=>({...ele,actPrice:amountTransform(ele?.actPrice,'/')}))}
+          value={dataSource}
           recordCreatorProps={false}
           search={false}
           columns={columns}
@@ -212,7 +212,7 @@ export default (props) => {
           data.forEach(item => {
             arr.push({
               status:1,
-              actPrice: item?.salePrice,
+              actPrice: amountTransform(item?.salePrice,'/'),
               actPriceProfitLoss:item?.salePriceProfitLoss,
               sort:9999,
               ...item
