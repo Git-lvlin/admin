@@ -35,7 +35,7 @@ const CrazyDate = ( props ) => {
     {
       title: '活动开始时间',
       dataIndex: 'activityStartTime',
-      valueType: 'dateTime',
+      valueType: 'date',
       hideInTable: true
     },
     {
