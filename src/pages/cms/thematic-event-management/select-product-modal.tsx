@@ -28,6 +28,12 @@ export default (props) => {
   
     const columns = [
       {
+        title: 'spuid',
+        dataIndex: 'spuId',
+        valueType: 'text',
+        hiddInSearch: true
+      },
+      {
         title: 'skuID',
         dataIndex: 'skuId',
         valueType: 'text',
