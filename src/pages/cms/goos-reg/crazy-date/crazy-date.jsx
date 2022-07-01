@@ -83,16 +83,23 @@ const CrazyDate = ( props ) => {
       dataIndex: 'option',
       render: (text, record, _,) => {
         return [
-            <a key="editable" onClick={() => {setFormVisible(true);setGoDetail(record)}}>编辑</a>,
-            <a key="copy" onClick={() => { setFormVisible(true);setGoDetail(record);setCopy('copy') }}>复制</a>,
-            <>
+            <div key="editable">
               {
                 record.status==3||record?.status==4?
                 null
                 :
-                <a key="stop" onClick={() => {setVisible(true);setGoDetail(record)}}>终止</a>
+                <a onClick={() => {setFormVisible(true);setGoDetail(record)}}>编辑</a>
               }
-            </>
+            </div>,
+            <a key="copy" onClick={() => { setFormVisible(true);setGoDetail(record);setCopy('copy') }}>复制</a>,
+            <div key="stop">
+              {
+                record.status==3||record?.status==4?
+                null
+                :
+                <a onClick={() => {setVisible(true);setGoDetail(record)}}>终止</a>
+              }
+            </div>
         ]
       }
     },
