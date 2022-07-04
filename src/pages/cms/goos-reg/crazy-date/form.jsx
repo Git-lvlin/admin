@@ -26,10 +26,11 @@ const formItemLayout = {
 };
 
 export default (props) => {
-  const { detailData, setVisible, setFlag, visible,callBack,onClose,id,copy } = props;
+  const { setVisible, setFlag, visible,callBack,onClose,id,copy } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
   const [detailList,setDetailList]=useState()
+  const [detailData,setDetailData]=useState()
 
   const waitTime = (values) => {
     const { ...rest } = values
@@ -70,6 +71,7 @@ export default (props) => {
       seckillingClassDetail({id}).then(res=>{
         if(res.code==0){
           setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
+          setDetailData(res.data)
           form.setFieldsValue({
             ...res.data
           })
@@ -128,6 +130,7 @@ export default (props) => {
             disabledDate:(current)=>disabledDate(current),
             format:"YYYY-MM-DD HH:mm:ss"
         }}
+        disabled={detailData?.status==2&&!copy}
       />
       <ProFormDateTimePicker
         label='结束时间'
@@ -138,6 +141,7 @@ export default (props) => {
             disabledDate:(current)=>disabledDate(current),
             format:"YYYY-MM-DD HH:mm:ss"
         }}
+        disabled={detailData?.status==2&&!copy}
       />
       <ProFormRadio.Group
           name="limitBuyType"
