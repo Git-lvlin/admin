@@ -30,7 +30,7 @@ export default  () => {
         setFormDatil(res.data)
         form.setFieldsValue({
           depositAmount:res.data?.settingValues?.depositAmount,
-          serviceAmount:res.data?.settingValues?.serviceAmount
+          serviceAmount:res.data?.settingValues?.serviceAmount,
         })
       }
     })
@@ -140,8 +140,8 @@ export default  () => {
                 { validator: checkConfirm }
             ]}
             fieldProps={{
-                addonAfter:"元/3年"
-            }}
+              addonAfter: `元/${formDatil?.settingValues?.unit}`
+          }}
             labelCol={2}
         />
       </ProForm >

@@ -102,7 +102,7 @@ const ExportHistory: FC<ExportHistoryProps> = ({ show, setShow, type, slot }) =>
       )
     } else if(state === 3) {
       return (
-        <Tooltip key="history" title={desc}>
+        <Tooltip title={desc} zIndex={999999999}>
           <div className={styles.fail} onMouseEnter={()=>clearInterval(timer.current)}>
             导出失败
           </div>
@@ -269,9 +269,10 @@ const Export: FC<ExprotProps> = ({ type, conditions, text='导出', slot, slotHi
       }))
     }
 
+    const name = fileName ? fileName + '.xlsx' : type + +new Date() + '.xlsx'
     createExportTask({
       code: type,
-      fileName: fileName + '.xlsx' || type + +new Date() + '.xlsx',
+      fileName: name,
       queryParamStr: data
     }).then(res => {
       if (res?.success) {

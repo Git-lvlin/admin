@@ -28,6 +28,11 @@
   padding: 20px 40px;
 }
 
+.chartArea {
+  background: #fff;
+  padding: 20px 40px;
+}
+
 .title {
   font-size: 16px;
   margin-right: 120px;
@@ -50,4 +55,20 @@
     }
   }
   pointer-events:none
+}
+
+.pieTitle {
+  text-align: center;
+  font-size: 16px;
+}
+
+.tabBar {
+  height: 46px;
+  margin-left: 10px;
+  font-size: 20px;
+  :global {
+    .ant-tabs-tab + .ant-tabs-tab {
+      margin: 0;
+    }
+  }
 }

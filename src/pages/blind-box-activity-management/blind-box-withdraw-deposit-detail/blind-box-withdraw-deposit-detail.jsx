@@ -1,14 +1,17 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { withdrawPage } from '@/services/activity-management/spring-festival-build-building-activity';
 import { PageContainer } from '@/components/PageContainer';
 import { amountTransform } from '@/utils/utils'
-
+import AuditModel from './audit-model'
+import { accountActivityAudit } from '@/services/blind-box-activity-management/blind-box-withdraw-deposit-detail';
 
 
 export default (props) => {
     const ref=useRef()
     let sn = props.location.query.sn
+    const [snId,setSnId]=useState()
+    const [visible,setVisible]=useState()
     const columns= [
       {
         title: '序号',
@@ -134,7 +137,17 @@ export default (props) => {
         dataIndex: 'notifyTime',
         valueType: 'text',
         hideInSearch:true   
-      }
+      },
+      {
+        title: '提现审核确认',
+        key: 'option',
+        valueType: 'option',
+        render:(text, record, _, action)=>{
+          if(record.status=='auditing'){
+            return <a key='detail' onClick={()=>{setVisible(true);setSnId(record.sn)}}>审核</a>
+          }
+        }
+      },
     ];
     return (
       <PageContainer>
@@ -161,6 +174,42 @@ export default (props) => {
             showQuickJumper: true,
           }}
         />
+        {
+          visible&&<AuditModel
+          visible={visible}
+          setVisible={setVisible}
+          callback={()=>{
+            const params={
+              isSuccess:0,
+              reason:'',
+              sn:snId
+            }
+            accountActivityAudit(params).then(res=>{
+              if(res.code==0){
+                setVisible(false)
+                ref.current.reload()
+                setSnId(null)
+              }
+            })
+
+          }}
+          onClose={()=>{
+            const params={
+              isSuccess:1,
+              reason:'',
+              sn:snId
+            }
+            accountActivityAudit(params).then(res=>{
+              if(res.code==0){
+                setVisible(false)
+                ref.current.reload()
+                setSnId(null)
+              }
+            })
+          }}
+          // sn={snId}
+          />
+        }
         </PageContainer>
     );
   };

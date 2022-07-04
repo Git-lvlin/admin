@@ -1,9 +1,8 @@
-import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
+import React, { useState, useRef } from 'react';
 import ProTable from '@ant-design/pro-table';
 import { getBlindboxIncomeList } from '@/services/blind-box-activity-management/blindbox-blindbox-get-lncome';
 import { PageContainer } from '@/components/PageContainer';
-import { history,connect } from 'umi';
+import { history } from 'umi';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 

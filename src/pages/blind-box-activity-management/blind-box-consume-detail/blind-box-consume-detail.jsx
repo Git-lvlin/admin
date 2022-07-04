@@ -1,9 +1,9 @@
-import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
+import React, { useState, useRef } from 'react';
+import { Button,Image,Descriptions} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { getBlindboxUseList } from '@/services/blind-box-activity-management/blindbox-get-use-list';
-import { history, connect } from 'umi';
+import { history } from 'umi';
 import AuditModel from '../blind-box-employ-detail/audit-detail-model'
 import Detail from '@/pages/order-management/normal-order/detail';
 import Export from '@/pages/export-excel/export'

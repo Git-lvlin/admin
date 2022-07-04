@@ -8,10 +8,16 @@ import { PageContainer } from '@/components/PageContainer';
 import { userRelationShip, generateUpdata, getGenerteUrl } from '@/services/cms/member/member';
 import Export from './export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import Big from 'big.js'
+import { amountTransform } from '@/utils/utils'
+
+Big.RM = 0;
+
 const { Search } = Input;
 const UserRelationship = () => {
   const actionRef = useRef();
   const [phoneNumber, setPhoneNumber] = useState();
+  const [phoneNumber2, setPhoneNumber2] = useState();
   const [indexData, setIndexData] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -93,6 +99,7 @@ const UserRelationship = () => {
       dataIndex: 'phoneNumber',
       valueType: 'text',
       search: false,
+      render: (_) => <a onClick={() => { setPhoneNumber(_); setPhoneNumber2(_) }}>{_}</a>
     },
     {
       title: '用户手机号',
@@ -101,6 +108,9 @@ const UserRelationship = () => {
       hideInTable: true,
       fieldProps: {
         controls: false,
+      },
+      render: (_, data) => {
+        return <p>{_}</p>
       }
     },
     {
@@ -141,6 +151,25 @@ const UserRelationship = () => {
       }
     },
     {
+      title: '氢原子交易业绩',
+      dataIndex: '',
+      search: false,
+      render: (_, records) => {
+        return (
+          <>
+            {records.buyAmount == 0 && records.rentAmount == 0
+              ? '0元'
+              :
+              <>
+                <div>{new Big(records.buyAmount).plus(records.rentAmount).div(100).toFixed(2)}元</div>
+                <div>(销售{amountTransform(records.buyAmount, '/')}元+管理费{amountTransform(records.rentAmount, '/')}元)</div>
+              </>
+            }
+          </>
+        )
+      }
+    },
+    {
       title: '渠道',
       dataIndex: 'sourceType',
       search: false,
@@ -156,6 +185,12 @@ const UserRelationship = () => {
         8: '每日红包活动',
         9: '秒杀活动',
         10: '推荐有礼',
+        11: '年货节活动',
+        12: '春节盖楼活动（玩前）',
+        13: '春节盖楼活动（玩后）',
+        14: '特价活动',
+        15: '一分钱活动',
+        16: '店主招募活动',
       }
     },
     {
@@ -192,6 +227,16 @@ const UserRelationship = () => {
       }
     },
     {
+      title: 'VIP社区店主',
+      dataIndex: 'vipStore',
+      valueType: 'text',
+      search: false,
+      valueEnum: {
+        0: '不是',
+        1: '是',
+      }
+    },
+    {
       title: '是否为生鲜店主',
       dataIndex: 'memberShopType',
       valueType: 'text',
@@ -208,6 +253,12 @@ const UserRelationship = () => {
       search: false,
     },
     {
+      title: '邀请好友(位)',
+      dataIndex: 'inviteNum',
+      valueType: 'text',
+      search: false,
+    },
+    {
       title: '注册时间',
       dataIndex: 'regTime',
       valueType: 'text',
@@ -218,6 +269,12 @@ const UserRelationship = () => {
       dataIndex: 'regTime',
       valueType: 'text',
       search: false,
+    },
+    {
+      title: '邀请注册时间',
+      dataIndex: 'regTm',
+      valueType: 'dateTimeRange',
+      hideInTable: true,
     },
   ];
 
@@ -237,15 +294,17 @@ const UserRelationship = () => {
             placeholder="请输入用户手机号码"
             onSearch={(value) => {
               setPhoneNumber(Number(value))
-              setIndexData('');
+              // setIndexData('');
             }}
+            onChange={(e) => { setPhoneNumber2(e.target.value) }}
+            value={phoneNumber2}
             enterButton={'查询'} />
         </ProForm.Group>
         <ProForm.Group>
           &nbsp;&nbsp;手机号码：{indexData?.phoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人手机号：{indexData?.invitePhoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;是否为生鲜店主：{indexData?.memberShopType ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;是否为社区店主：{indexData?.userType ? '是' : '不是'}
         </ProForm.Group>
         <ProForm.Group>
-          &nbsp;&nbsp;用户昵称：{indexData?.nickName}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人昵称：{indexData?.inviteNickName}&nbsp;&nbsp;&nbsp;&nbsp;邀请成功的好友数量（位）：{indexData?.inviteCount}
+          &nbsp;&nbsp;用户昵称：{indexData?.nickName}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人昵称：{indexData?.inviteNickName}&nbsp;&nbsp;&nbsp;&nbsp;邀请成功的好友数量（位）：{indexData?.inviteCount}&nbsp;&nbsp;&nbsp;&nbsp;是否VIP社区店店主：{indexData?.vipStore ? '是' : '不是'}
         </ProForm.Group>
       </ProCard>
 
@@ -264,7 +323,7 @@ const UserRelationship = () => {
           labelWidth: 'auto',
         }}
         pagination={{
-          pageSize: 5,
+          showSizeChanger: true,
         }}
         toolBarRender={(_, record) => [
           // <Button key="button" type="primary" onClick={() => { getEXT() }}>

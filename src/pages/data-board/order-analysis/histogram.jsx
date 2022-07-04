@@ -45,7 +45,7 @@ const Histogram = ({data, unit}) => {
           />
           <Interval
             adjust={[
-            {
+              {
                 type: 'dodge',
                 marginRatio: 0,
               },

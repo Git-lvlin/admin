@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Form, Button, Space, message } from 'antd'
+import { Form, Button, Space, message, InputNumber, Popover } from 'antd'
 import { EditableProTable } from '@ant-design/pro-table'
 import moment from 'moment'
 import {
@@ -14,9 +14,71 @@ import {
 } from '@ant-design/pro-form'
 
 import { amountTransform } from '@/utils/utils'
-import { ruleSub, ruleEdit } from '@/services/single-contract-activity-management/activity-list'
+import { ruleSub, ruleEdit, ruleGoodsEdit } from '@/services/single-contract-activity-management/activity-list'
 import SelectProductModal from './select-product-modal'
 import Upload from '@/components/upload'
+
+const reg = /^[1-9]\d*$/
+
+const LimitNumInput = ({value, onChange, data}) => {
+  const [change, setChange] = useState(0)
+  const [state, setState] = useState('')
+  return (
+    <>
+      {
+        (!reg.test(value) && change > 0)&&
+        <div style={{color: 'red'}}>请输入正整数</div>
+      }
+      <InputNumber
+        min={1} 
+        max={data?.buyMaxNum}
+        setp={1}
+        value={value}
+        onChange={(e)=>{
+          onChange(e)
+          setChange(change + 1)
+          if(reg.test(e)){
+            setState('')
+          } else {
+            setState('error')
+          }
+        }}
+        status={state}
+      />
+      <div>起售量：{data?.buyMinNum}</div>
+      <div>运营单次限量：{data?.buyMaxNum}</div>
+    </>
+  )
+}
+
+const StockNumEditInput = ({value, onChange, data}) => {
+  const [change, setChange] = useState(0)
+  const [state, setState] = useState('')
+  return (
+    <>
+      <InputNumber
+        min={1} 
+        max={data.stockNum}
+        setp={1}
+        value={value}
+        onChange={(e)=>{
+          onChange(e)
+          setChange(change + 1)
+          if(reg.test(e)){
+            setState('')
+          } else {
+            setState('error')
+          }
+        }}
+        status={state}
+      />
+      {
+        (!reg.test(value) && change > 0)&&
+        <div style={{color: 'red'}}>请输入正整数</div>
+      }
+    </>
+  )
+}
 
 export default (props) => {
   const { visible, setVisible, detailData, callback, onClose = () => { } } = props
@@ -25,8 +87,11 @@ export default (props) => {
   const [tableData, setTableData] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [defaultGroupNum, setDefaultGroupNum] = useState()
+  const [groupNum, setGroupNum] = useState({})
+  const [num, setNum] = useState()
+  const [form] = Form.useForm()
 
-  const [formRef] = Form.useForm()
+  const flag = detailData?.activityStatus === 2
 
   const GroupNumEnum = {
     2: 2,
@@ -50,11 +115,18 @@ export default (props) => {
 
   const columns = [
     {
+      title: 'spuID',
+      dataIndex: 'spuId',
+      valueType: 'text',
+      editable: false,
+      fixed: 'left',
+      width: 'md'
+    },
+    {
       title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'text',
       editable: false,
-      fixed: 'left',
       width: 'md'
     },
     {
@@ -104,28 +176,24 @@ export default (props) => {
       editable: (_, data) => {
         return data.settleType !== 1
       },
-      render: (_) => _ > 0 ? amountTransform(_, '/') : 0
+      render: (_, r) => r.activityPrice > 0 ? r.activityPrice : 0
     },
     {
       title: '拼团库存',
       dataIndex: 'activityStockNumEdit',
-      valueType: 'digit',
-      formItemProps: {
-        rules: [
-          {
-            pattern: /^((0)|([1-9][0-9]*))$/,
-            message: '拼团库存只能输入正整数'
-          }
-        ]
-      }
+      renderFormItem: (_, r) => <StockNumEditInput data={r.record}/>
     },
     {
       title: '成团人数',
       dataIndex: 'defaultGroupNum',
       valueType: 'select',
       valueEnum: GroupNumEnum,
-      fieldProps: {
-        defaultValue: defaultGroupNum
+      fieldProps: (_, r)=>{
+        return {
+          allowClear: false,
+          defaultValue: defaultGroupNum,
+          onChange: (e) => groupNum[r.entry.spuId] = e
+        }
       }
     },
     {
@@ -134,16 +202,36 @@ export default (props) => {
       valueType: 'switch'
     },
     {
+      title: '每人限量',
+      dataIndex: 'limitNum',
+      renderFormItem: (_, r) => <LimitNumInput data={r.record}/>
+    },
+    {
+      dataIndex: 'buyMinNum',
+      hideInTable: true,
+      hideInSearch: true
+    },
+    {
       title: '操作',
       valueType: 'options',
-      render: (_, data) => <a onClick={() => { cancel(data.id) }}>取消参加</a>,
       editable: false,
       fixed: 'right',
-      width: 'md'
+      width: 'md',
+      render: (_, data) => {
+        const bool = detailData?.goodsList.find(res => res.id === data.id)
+        if(flag) {
+          if(!bool) {
+            return <a onClick={() => { cancel(data.id) }}>取消参加</a>
+          } else {
+            return false
+          }
+        } else {
+          return <a onClick={() => { cancel(data.id) }}>取消参加</a>
+        }
+      }
     },
-  ];
+  ]
 
-  const [form] = Form.useForm()
   const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 20 },
@@ -155,16 +243,20 @@ export default (props) => {
         span: 14,
       },
     }
-  };
-
+  }
 
   const submit = (values) => {
     const { activityTime, checkbox, ...rest } = values
     return new Promise((resolve, reject) => {
-      const apiMethod = detailData ? ruleEdit : ruleSub
+      const apiMethod = !detailData ? ruleSub : flag ? ruleGoodsEdit : ruleEdit
       for (let i = 0; i < tableData.length; i++) {
         const reg = /^((0)|([1-9][0-9]*))$/
-        if (tableData[i].activityStockNumEdit === '') {
+        if (tableData[i].activityPrice === undefined) {
+          message.error(`请输入（skuId:${tableData[i].skuId}）拼团价`)
+          reject()
+          return
+        }
+        if (tableData[i].activityStockNumEdit === undefined) {
           message.error(`请输入（skuId:${tableData[i].skuId}）拼团库存`)
           reject()
           return
@@ -174,16 +266,26 @@ export default (props) => {
           reject()
           return
         }
+        if (amountTransform(tableData[i].activityPrice, '*') < tableData[i].retailSupplyPrice) {
+          message.error(`skuId:${tableData[i].skuId}拼团价必须要大于零售供货价`)
+          reject()
+          return
+        }
         if (!detailData && tableData[i].activityStockNumEdit > (parseFloat(tableData[i].stockNum / 2))) {
           message.error(`skuId:${tableData[i].skuId}拼团库存需要小于商品库存50%`)
+          reject()
+          return
+        }
+        if (!reg.test(tableData[i].limitNum)) {
+          message.error(`skuId:${tableData[i].skuId}每人限量只能输入正整数`)
           reject()
           return
         }
       }
       apiMethod({
         id: detailData?.id,
-        activityStartTime: moment(activityTime[0]).unix(),
-        activityEndTime: moment(activityTime[1]).unix(),
+        activityStartTime: !flag && moment(activityTime[0]).unix(),
+        activityEndTime: !flag && moment(activityTime[1]).unix(),
         activityType: 3,
         goodsInfo: tableData.map(item => {
           const memberType = item.memberType ? '1' : '0'
@@ -198,7 +300,9 @@ export default (props) => {
             defaultGroupNum: +item.defaultGroupNum || +defaultGroupNum,
             memberType,
             salePrice: item.salePrice,
-            marketPrice: item.marketPrice
+            marketPrice: item.marketPrice,
+            limitNum: item.limitNum,
+            buyMinNum: item.buyMinNum
           }
         }),
         ...rest,
@@ -227,7 +331,7 @@ export default (props) => {
         activityPrice: amountTransform(item.activityPrice, '/')
       })))
     }
-  }, [form, detailData]);
+  }, [form, detailData])
 
   return (
     <DrawerForm
@@ -238,22 +342,19 @@ export default (props) => {
         destroyOnClose: true,
         width: 1200,
         onClose: () => {
-          onClose();
+          onClose()
         }
       }}
       form={form}
       onFinish={async (values) => {
-        try {
-          await submit(values);
-          return true;
-        } catch (error) {
-          console.log(error)
-        }
+        await submit(values)
+        return true
       }}
       visible={visible}
       initialValues={{
         checkbox: [1],
         virtualType: 2,
+        virtualOpenGroup: 2
       }}
       {...formItemLayout}
     >
@@ -265,6 +366,7 @@ export default (props) => {
         fieldProps={{
           maxLength: 30,
         }}
+        disabled={flag}
         width="md"
       />
       <ProFormDateTimeRangePicker
@@ -272,12 +374,14 @@ export default (props) => {
         label="活动时间"
         rules={[{ required: true, message: '请选择活动时间' }]}
         width="md"
+        disabled={flag}
       />
 
       <ProFormSelect
         placeholder="请选择拼团人数"
         label="成团人数"
         name="defaultGroupNum"
+        disabled={flag}
         valueEnum={ GroupNumEnum }
         rules={[
           { required: true, message: '请选择成团人数' },
@@ -306,6 +410,7 @@ export default (props) => {
         placeholder="请输入1-96之间的整数"
         label="拼团时长"
         name="groupTime"
+        disabled={flag}
         min={1}
         max={96}
         step
@@ -323,10 +428,10 @@ export default (props) => {
         extra={<><span style={{ position: 'absolute', left: 270, top: 5 }}>小时</span></>}
         width="md"
       />
-
       <ProFormRadio.Group
         name="virtualType"
         label="虚拟成团状态"
+        disabled={flag}
         rules={[{ required: true }]}
         options={[
           {
@@ -345,7 +450,25 @@ export default (props) => {
           </>
         }
       />
-
+      <ProFormRadio.Group
+        name="virtualOpenGroup"
+        label="虚拟开团状态"
+        rules={[{ required: true }]}
+        disabled={flag}
+        options={[
+          {
+            label: '开启',
+            value: 2
+          },
+          {
+            label: '不开启',
+            value: 1
+          },
+        ]}
+        extra={
+          <div style={{ color: 'rgb(234, 154, 0)' }}>开启后，活动开始时系统默认将每个商品都开启1个虚拟团，当活动商品没有进行中的拼团时系统将会再次开启1个虚拟团</div>
+        }
+      />
       <Form.Item
         label="活动商品"
       >
@@ -365,22 +488,60 @@ export default (props) => {
               scroll={{ x: 'max-content' }}
               rowKey="id"
               rowSelection={{
+                getCheckboxProps: r =>{
+                  return {
+                    disabled: flag ? detailData.goodsList.find(item => item.id === r.id) : false
+                  }
+                },
                 selectedRowKeys,
                 onChange: (_) => {
                   setSelectedRowKeys(_);
                 }
               }}
+              controlled
               editable={{
-                editableKeys: tableData.map(item => item.id),
+                editableKeys: flag ? tableData.filter(item => {
+                  const res = detailData.goodsList.find(res => res.id === item.id)
+                  return res ? false : true
+                }).map(r => r.id): 
+                tableData.map(item => item.id),
                 onValuesChange: (record, recordList) => {
-                  setTableData(recordList);
-                },
+                  if(!flag) {
+                    setTableData(tableData.map(res => {
+                      const arrObj = recordList.find(item => res.id === item.id)
+                      if(res.spuId === record.spuId) {
+                        return {
+                          ...res,
+                          ...arrObj,
+                          defaultGroupNum: groupNum[record.spuId] ? groupNum[record.spuId] : groupNum[record.spuId]=res.defaultGroupNum
+                        }
+                      } else {
+                        return {...res, ...arrObj}
+                      }
+                    }))
+                  } else {
+                    setTableData(tableData.map(res => {
+                      const result = detailData.goodsList.find(item => res.id === item.id)
+                      const arrObj = recordList.find(item => res.id === item.id)
+                      if(result) {
+                        return {...res, ...arrObj}
+                      } else if(res.spuId === record.spuId) {
+                        return {
+                          ...res, 
+                          ...arrObj, 
+                          defaultGroupNum: groupNum[record.spuId] ? groupNum[record.spuId] : groupNum[record.spuId]=res.defaultGroupNum
+                        }
+                      } else {
+                        return {...res, ...arrObj}
+                      }
+                    }))
+                  }
+                }
               }}
               recordCreatorProps={false}
               tableAlertRender={false}
             />
           </>
-
         }
       </Form.Item>
       <ProFormTextArea
@@ -388,6 +549,7 @@ export default (props) => {
         label="活动规则"
         placeholder="请输入活动规则"
         width={500}
+        disabled={flag}
         fieldProps={{
           showCount: true,
           maxLength: 2000
@@ -403,7 +565,6 @@ export default (props) => {
           })
         ]}
       />
-
       {
         formVisible &&
         <SelectProductModal
@@ -415,6 +576,8 @@ export default (props) => {
             }))
           }}
           skuData={tableData}
+          detailData={detailData}
+          flag={flag}
         />
       }
     </DrawerForm>

@@ -6,6 +6,7 @@ export type PropsDevices = {
   memberPhone?: string
   showTitle?: boolean
   imei?: string
+  inviteType?: number
 }
 
 export type PropsData = {
@@ -36,6 +37,8 @@ export type PropsData = {
   deadlineDate: string
   nowUseTime: string
   updUseTime: string
+  memberPhone: string
+  isShopkeeper: boolean
 }
 
 export type PropsStatistics = {

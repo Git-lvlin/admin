@@ -3,7 +3,7 @@ import { Button,Tabs} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm,ProFormRadio} from '@ant-design/pro-form';
 import { PageContainer } from '@/components/PageContainer';
-import XLSX from 'xlsx'
+// import XLSX from 'xlsx'
 import { couponList } from '@/services/coupon-management/coupon-list';
 import { couponDelSub,couponStatusSub } from '@/services/coupon-management/coupon-delsub';
 import DeleteModal from '@/components/DeleteModal'
@@ -91,7 +91,11 @@ const Message = (props) => {
       dataIndex: 'dateRange',
       valueType: 'text',
       render:(_, data)=>{
-        return <p>{data.limitStartTime} 至 {data.limitEndTime}</p>
+        if(data.limitStartTime){
+          return <p>{data.limitStartTime} 至 {data.limitEndTime}</p>
+        }else{
+          return '-'
+        }
       },
       hideInSearch: true,
       ellipsis:true
@@ -346,7 +350,6 @@ const TableList= (props) =>{
   return (
       <PageContainer>
         <Tabs
-          centered
           defaultActiveKey="1"
           className={styles.cuoponTabs}
           onChange={(val)=>{

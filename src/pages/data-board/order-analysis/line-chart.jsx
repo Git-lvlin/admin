@@ -1,18 +1,15 @@
-import React from 'react'
-import { 
-  Chart, 
-  Line, 
-  Point, 
-  Tooltip, 
-  Legend,
-  Axis
-} from 'bizcharts'
-import { Empty } from 'antd'
+import { Chart, Line, Point, Tooltip, Legend, Axis } from 'bizcharts'
 
-const LineChart = ({
-  data,
-  scale
-}) => {
+const LineChart = ({data, type, unit}) => {
+  const scale = {
+    value: { 
+      min: 0,
+      alias: unit
+    },
+    dateTime: {
+      mask: type === 2 ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss'
+    }
+  }
 
   const chartUnit = {
     style: {
@@ -20,53 +17,29 @@ const LineChart = ({
       textAlign: 'center',
       fill: '#E66101'
     },
-    position: 'end',
+    position: 'start',
     rotate: 0,
-		offset: 80
+		offset: 50
   }
 
   return (
-    <>
-      {
-        data?.[0]?
-        <Chart
-          scale={scale}
-          autoFit
-          height={440}
-          data={data}
-          interactions={['element-active']}
-          forceUpdate
-        >
-          <Axis
-            name='value'
-            title={chartUnit}
-          />
-          <Point
-            position="dateTime*value"
-            color="reportName"
-            shape='circle' 
-          />
-          <Line 
-            shape="line"
-            position="dateTime*value"
-            color="reportName"
-          />
-          <Tooltip
-            shared
-            showCrosshairs
-          />
-          <Legend
-            position="top-right"
-            itemName={{
-              style: {
-                fontSize: 16
-              }
-            }}
-          />
-        </Chart>:
-        <Empty/>
-      }
-    </>
+    <Chart
+      scale={scale} 
+      padding={[40, 25, 20, 90]} 
+      autoFit 
+      height={320} 
+      data={data}
+      interactions={['element-active']}
+      filter={{
+        reportName: v => (v === 'B端普适品' || v === 'B端精品生鲜' || v === 'B端散装生鲜' || v === '秒约订单')
+      }}
+    >
+      <Point position="dateTime*value" color="reportName" shape="circle"/>
+      <Axis name="value" title={chartUnit}/>
+      <Line shape="line" position="dateTime*value" color="reportName"/>
+      <Tooltip shared showCrosshairs/>
+      <Legend name="reportName" position="top"/>
+    </Chart>
   )
 }
 

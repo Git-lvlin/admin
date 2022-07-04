@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { EditableProTable } from '@ant-design/pro-table';
-import { Form } from 'antd';
-import Upload from '@/components/upload';
-import styles from './edit-table.less';
+import { Form, Image } from 'antd';
 import debounce from 'lodash/debounce';
 import * as api from '@/services/product-management/product-list';
 import { amountTransform } from '@/utils/utils'
@@ -34,7 +32,7 @@ export default function EditTable(props) {
         title: '规格图片',
         dataIndex: 'imageUrl',
         editable: false,
-        render: (_) => <img src={_} width="50" height="50" />,
+        render: (_) => <Image src={_} width={60} height={60} />,
         width: 100,
         // renderFormItem: () => <Upload disable maxCount={1} className={styles.upload} accept="image/*" />,
         // formItemProps: {
@@ -80,7 +78,8 @@ export default function EditTable(props) {
         hideInTable: isSample !== 1,
         fieldProps: {
           addonAfter: `元/${unit}`
-        }
+        },
+        editable: false,
       },
       {
         title: `样品价`,
@@ -129,6 +128,9 @@ export default function EditTable(props) {
         title: `${operateType === 2 ? '分享补贴价上浮比例' : '秒约价上浮比例'}`,
         dataIndex: 'salePriceFloat',
         hideInTable: goodsSaleType === 1,
+        fieldProps: {
+          addonAfter: '%',
+        },
       },
       {
         title: `${operateType === 2 ? '分享补贴价平台盈亏' : '秒约价实际盈亏'}`,
@@ -365,6 +367,8 @@ export default function EditTable(props) {
                   salePrice: amountTransform(skuData.salePrice, '/'),
                   salePriceProfitLoss: amountTransform(skuData.salePriceProfitLoss, '/'),
                   salePriceFloat: amountTransform(skuData.salePriceFloat),
+                  tPlatformGain: amountTransform(skuData.tPlatformGain, '/'),
+                  operateGain: amountTransform(skuData.operateGain, '/'),
                 }
 
                 if (findItem.salePriceFloat !== record.salePriceFloat) {
@@ -372,7 +376,7 @@ export default function EditTable(props) {
                     ...data,
                     tStoreScale: '',
                     tPlatformScale: '',
-                    tSupplierScale: +new Big(amountTransform(data.retailSupplyPrice, '/')).div(data.salePrice).times(100).toFixed(2)
+                    tSupplierScale: +new Big(data.retailSupplyPrice).div(data.salePrice).times(100).toFixed(2)
                   }
                 }
                 return data

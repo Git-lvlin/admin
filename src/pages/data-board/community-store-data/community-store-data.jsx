@@ -22,6 +22,7 @@ const CommunityStoreData = () => {
   const [data, setData] = useState([])
   const [visit, setVisit] = useState(false)
   const [unit, setUnit] = useState('单位： 单')
+  const [type, setType] = useState('采购订单总量')
   const form = useRef()
 
   useEffect(() => {
@@ -42,8 +43,10 @@ const CommunityStoreData = () => {
   const onChange = e => {
     setValue(e.target.value)
     if(e.target.value === 1) {
+      setType('采购订单总量')
       setUnit('单位：单')
     } else {
+      setType('采购金额')
       setUnit('单位：元')
     }
   }
@@ -236,7 +239,7 @@ const CommunityStoreData = () => {
           <Radio value={1}>采购订单总量</Radio>
           <Radio value={2}>采购金额</Radio>
         </Radio.Group>
-        <BarChart data={data} unit={unit}/>
+        <BarChart data={data} unit={unit} type={type}/>
       </div>
       <CommunityStoreDataOverview/>
       <div className={styles.table}>

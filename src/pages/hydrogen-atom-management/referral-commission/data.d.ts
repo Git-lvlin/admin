@@ -1,8 +1,8 @@
-export type PropsExpandTable = {
+type PropsExpandTable = {
   data: PropsExpand[]
 }
 
-export interface PropsExpand {
+interface PropsExpand {
   amount: number;
   buyId: string;
   buyMobile: string;
@@ -11,9 +11,10 @@ export interface PropsExpand {
   memberShop: boolean;
   storeName: string;
   storeNo: string;
+  inviteType: number;
 }
 
-export type PropsTable = {
+type PropsTable = {
   address: string;
   createTime: number;
   pMemId: string;
@@ -27,4 +28,10 @@ export type PropsTable = {
   totalUser: number;
 }
 
+type DetailProps = {
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  data?: PropsTable
+}
 
+export const PropsTable, PropsExpand, PropsExpandTable, DetailProps

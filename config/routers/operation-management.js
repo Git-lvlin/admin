@@ -65,5 +65,11 @@ export default {
       component: './operation-management/bind-audit-list',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'performance-report',
+      path: '/operation-management/performance-report',
+      component: './operation-management/performance-report',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

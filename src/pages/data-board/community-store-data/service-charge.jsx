@@ -145,9 +145,9 @@ const ServiceCharge = () => {
           {
             totalPay !==0  &&
             <div className={styles.summary}>
-            <span>缴费总数（个）：<Yuan>{totalPay}</Yuan></span>
-            <span>缴费总金额（元）：<Yuan>{totalAmount}</Yuan></span>
-          </div>
+              <span>缴费总数（个）：<Yuan>{totalPay}</Yuan></span>
+              <span>缴费总金额（元）：<Yuan>{totalAmount}</Yuan></span>
+            </div>
           }
         </>
       )}

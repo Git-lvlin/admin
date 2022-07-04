@@ -200,7 +200,7 @@ export const expressNewsUpdate = (params = {}, options = {}) => {
   if (id) {
     param.id = id
   }
-  const url = id?'/auth/java-admin/cms/notice/update':'/auth/java-admin/cms/notice/add';
+  const url = id ? '/auth/java-admin/cms/notice/update' : '/auth/java-admin/cms/notice/add';
   return request(url, {
     method: 'POST',
     data: param,
@@ -289,7 +289,7 @@ export const articleList = async (params = {}, options = {}) => {
 
 export const crazyDateList = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
-  
+
   const data = {
     page: current,
     size: pageSize,
@@ -636,7 +636,7 @@ export const hotSearchEdit = (params = {}, options = {}) => {
 export const hotSearchDel = (params = {}, options = {}) => {
   return request(`/auth/search/HotKeyword/updateHotKeyword/id/${params.id}`, {
     method: 'POST',
-    data: {isDel: 1},
+    data: { isDel: 1 },
     ...options
   });
 }
@@ -693,7 +693,7 @@ export const expressNewsDel = (params = {}, options = {}) => {
 }
 
 export const expressNewsDown = (params = {}, options = {}) => {
-  return request('/auth/java-admin/cms/notice/updateState',{
+  return request('/auth/java-admin/cms/notice/updateState', {
     method: 'POST',
     data: params,
     ...options,
@@ -701,7 +701,7 @@ export const expressNewsDown = (params = {}, options = {}) => {
 }
 
 export const expressNewsTop = (params = {}, options = {}) => {
-  return request('/auth/java-admin/cms/notice/updateTop',{
+  return request('/auth/java-admin/cms/notice/updateTop', {
     method: 'POST',
     data: params,
     ...options,
@@ -709,7 +709,7 @@ export const expressNewsTop = (params = {}, options = {}) => {
 }
 
 export const kingKongTop = (params = {}, options = {}) => {
-  return request('/auth/java-admin/cms/goodsType/updateTop',{
+  return request('/auth/java-admin/cms/goodsType/updateTop', {
     method: 'POST',
     data: params,
     ...options,
@@ -1036,10 +1036,12 @@ export const homeClassificationList = async (params = {}, options = {}) => {
 }
 
 export const userRelationShip = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current, pageSize, regTm = [], ...rest } = params;
   const data = {
     page: current,
     size: pageSize,
+    startRegTm: regTm[0],
+    endTRegTm: regTm[1],
     ...rest
   }
   const res = await request('/auth/java-admin/memberInfo/getInviteList', {
@@ -1167,7 +1169,7 @@ export const couponList = async (params = {}, options = {}) => {
     ...rest
   }
   if (freeAmount) {
-    data.freeAmount = freeAmount*100
+    data.freeAmount = freeAmount * 100
   }
   const res = await request('/auth/activity/Coupon/couponCmsList', {
     method: 'POST',
@@ -1241,7 +1243,7 @@ export const expressNewsList = async (params = {}, options = {}) => {
   if (state) {
     data.state = Number(state);
   }
-  
+
   const res = await request('/auth/java-admin/cms/notice/selectByWays', {
     method: 'POST',
     data,
@@ -1513,6 +1515,14 @@ export const tagSortSub = (params = {}, options = {}) => {
 // 标签-排序信息
 export const tagSortInfo = (params = {}, options = {}) => {
   return request(`/auth/activity/Goods/tagSortInfo`, {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
+
+export const selAllVersion = (params = {}, options = {}) => {
+  return request(`/auth/java-admin/cms/appversion/selectAppVersion`, {
     method: 'POST',
     data: params,
     ...options

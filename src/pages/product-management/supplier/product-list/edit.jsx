@@ -109,6 +109,7 @@ export default (props) => {
       sampleSupplyPrice,
       operateType,
       profit,
+      goodsName,
       ...rest } = values;
     const { specValues1, specValues2 } = form.getFieldsValue(['specValues1', 'specValues2']);
     const specName = {};
@@ -223,6 +224,7 @@ export default (props) => {
         goodsSaleType: goods.goodsSaleType,
         skuName: goods.skuName,
         operateType,
+        goodsName: goodsName.replace(/\s+/, ' '),
       },
       isLossMoney: isLossMoney.current ? 1 : 0,
       primaryImages: urlsTransform(primaryImages),
@@ -842,7 +844,8 @@ export default (props) => {
       submitter={{
         render: (props, defaultDoms) => {
           return [
-            ...defaultDoms,
+            defaultDoms[0],
+            detailData?.alarmMsg ? null : defaultDoms[1],
             <Button
               key="look"
               onClick={(_) => {
@@ -1711,7 +1714,7 @@ export default (props) => {
       <ProFormTextArea
         name="goodsRemark"
         label="特殊说明"
-        disabled
+        // disabled
         fieldProps={{
           placeholder: ''
         }}
