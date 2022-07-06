@@ -108,3 +108,35 @@ export const giftOrder = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const getAllAction = (params = {}, options = {}) => {
+  return request('/auth/store/Subscribe/getAllAction', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const openSubscribe = (params = {}, options = {}) => {
+  return request('/auth/store/Subscribe/openSubscribe', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const closeSubscribe = (params = {}, options = {}) => {
+  return request('/auth/store/Subscribe/closeSubscribe', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const getSubscribeList = (params = {}, options = {}) => {
+  return request('/auth/store/Subscribe/getSubscribeList', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
