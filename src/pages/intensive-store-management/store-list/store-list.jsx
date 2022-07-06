@@ -21,6 +21,7 @@ import AuditInfo from './audit-info';
 import OrderDetail from '@/pages/order-management/normal-order/detail';
 import styles from './style.less'
 import ContentModel from './content-model';
+import CreatePc from './create-pc';
 
 const StoreList = (props) => {
   const { storeType,type } = props
@@ -37,6 +38,7 @@ const StoreList = (props) => {
   const [auditInfoVisible, setAuditInfoVisible] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [gradeChangeVisible, setGradeChangeVisible] = useState(false);
+  const [createPcVisible, setCreatePcVisible] = useState(false);
   const [attachmentImage, setAttachmentImage] = useState()
   const actionRef = useRef();
   const formRef = useRef();
@@ -75,6 +77,10 @@ const StoreList = (props) => {
       setSelectItem(data)
       setGradeChangeVisible(true)
     }
+    if (key === '8') {
+      setSelectItem(data)
+      setCreatePcVisible(true)
+    }
 
   }
 
@@ -90,6 +96,7 @@ const StoreList = (props) => {
         {getAuth('store/member_shop/grade') && <Menu.Item key="7">
           店铺等级调整
         </Menu.Item>}
+        <Menu.Item key="8">操作PC后台</Menu.Item>
       </Menu>
     )
   }
@@ -817,6 +824,14 @@ const StoreList = (props) => {
         }}
         className={styles.store_list}
       />
+      {
+        createPcVisible &&
+        <CreatePc
+          storeNo={selectItem?.storeNo}
+          visible={createPcVisible}
+          setVisible={setCreatePcVisible}
+        />
+      }
       {
         auditInfoVisible &&
         <AuditInfo
