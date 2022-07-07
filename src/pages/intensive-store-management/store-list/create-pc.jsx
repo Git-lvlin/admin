@@ -189,6 +189,17 @@ export default (props) => {
                                 placeholder: '请输入开通费用,可输0.00至999999.99',
                                 addonAfter: '元'
                               }}
+                              rules={[
+                                () => ({
+                                  required: false,
+                                  validator(_, v) {
+                                    if (`${v}`?.split?.('.')?.[1]?.length > 2 && v !== '' && v !== undefined) {
+                                      return Promise.reject(new Error('只能保留两位小数'));
+                                    }
+                                    return Promise.resolve();
+                                  },
+                                })
+                              ]}
                             />}
                           </div>
                         )
@@ -205,6 +216,9 @@ export default (props) => {
                     placeholder: '请输入店主PC端后台的登录账号',
                     autoComplete: 'new-password'
                   }}
+                  rules={[
+                    { required: false, message: '登录账号应不少于5个字符，不超过20个字符', min: 5, max: 20 }
+                  ]}
                 />
                 <ProFormText.Password
                   name="password"
@@ -213,6 +227,9 @@ export default (props) => {
                     placeholder: '请输入店主PC端后台的登录密码',
                     autoComplete: 'new-password'
                   }}
+                  rules={[
+                    { required: false, message: '密码应不少于8个字符，不超过20个字符', min: 8, max: 20 }
+                  ]}
                 />
                 {/* <ProFormRadio.Group
                   name="statusSystem"
