@@ -183,7 +183,7 @@ const StoreList = (props) => {
       hideInSearch: true,
       render: (_) => {
         return _.map(item => (
-          <div>{`${item.name}(至${moment(item.usefulEnd*1000).format('YYYY-MM-DD')})`}</div>
+          <div key={item.id}>{`${item.name}(至${moment(item.usefulEnd*1000).format('YYYY-MM-DD')})`}</div>
         ))
       }
     },
@@ -531,7 +531,7 @@ const StoreList = (props) => {
           <>
             <div>{_}</div>
             {depositRefendList && depositRefendList.map(ele => {
-              return <div>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</div>
+              return <div key={ele.id}>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</div>
             })}
           </>
         )

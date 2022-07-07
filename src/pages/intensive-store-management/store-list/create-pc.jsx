@@ -203,6 +203,7 @@ export default (props) => {
                   name="account"
                   fieldProps={{
                     placeholder: '请输入店主PC端后台的登录账号',
+                    autoComplete: 'new-password'
                   }}
                 />
                 <ProFormText.Password
@@ -210,6 +211,7 @@ export default (props) => {
                   label="登录密码"
                   fieldProps={{
                     placeholder: '请输入店主PC端后台的登录密码',
+                    autoComplete: 'new-password'
                   }}
                 />
                 {/* <ProFormRadio.Group
