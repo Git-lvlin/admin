@@ -7,7 +7,6 @@ import {
   ProFormDependency,
   ProFormText,
   ProFormCheckbox,
-  ProFormDatePicker,
   ProFormDateRangePicker
 } from '@ant-design/pro-form';
 import { openSubscribe, closeSubscribe, getSubscribeList } from '@/services/intensive-store-management/store-list';
@@ -55,7 +54,7 @@ export default (props) => {
                   actionId: 10002,
                   name: '健康档案',
                   useful: d2 ? [d2?.usefulStart * 1000, d2?.usefulEnd * 1000] : '',
-                  payment: d3 ? amountTransform(d1.payment, '/') : '',
+                  payment: d2 ? amountTransform(d1.payment, '/') : '',
                 },
                 {
                   checked: d3,
@@ -94,8 +93,6 @@ export default (props) => {
       })
     });
   }
-
-
 
   return (
     <ModalForm
@@ -172,7 +169,15 @@ export default (props) => {
                         return (
                           <div>
                             <ProFormCheckbox name={[name, 'checked']}>{codeName[name]}</ProFormCheckbox>
-                            <ProFormDateRangePicker disabled={statusAction === 2} name={[name, 'useful']} label="开通时段" width="100%" />
+                            <ProFormDateRangePicker
+                              disabled={statusAction === 2}
+                              name={[name, 'useful']}
+                              label="开通时段"
+                              width="100%"
+                              fieldProps={{
+                                disabledDate: (currentDate) => { return +currentDate < +new Date() && new Date(+currentDate).getDate() !== new Date().getDate() },
+                              }}
+                            />
                             <ProFormText
                               name={[name, 'actionId']}
                               hidden
@@ -233,9 +238,9 @@ export default (props) => {
         name="explain"
         label="操作说明"
         placeholder="请输入至少5至30个字符"
-        rules={[
-          { required: true, message: '请输入操作说明' },
-        ]}
+        // rules={[
+        //   { required: true, message: '请输入操作说明' },
+        // ]}
         fieldProps={{
           maxLength: 30,
         }}
