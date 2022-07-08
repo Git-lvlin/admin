@@ -17,7 +17,7 @@ import moment from 'moment'
 const codeName = ['预约系统', '健康档案', '充值系统']
 export default (props) => {
   const { visible, setVisible, callback, data } = props;
-  // const [actionOptions, setActionOptions] = useState([]);
+  const [hasAccount, setHasAccount] = useState(false);
   const [form] = Form.useForm();
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -37,10 +37,12 @@ export default (props) => {
       .then(res => {
         if (res.code === 0) {
           if (res.data.length) {
+            setHasAccount(true)
             const d1 = res.data.find(item => item.actionId === 10001);
             const d2 = res.data.find(item => item.actionId === 10002);
             const d3 = res.data.find(item => item.actionId === 10003);
             form.setFieldsValue({
+              account: res.data[0].account,
               subscribeList: [
                 {
                   checked: d1,
@@ -71,7 +73,7 @@ export default (props) => {
   }, [])
 
   const submit = (values) => {
-    const { subscribeList, password, statusAction, ...rest } = values;
+    const { subscribeList, password, statusAction, aaa, ...rest } = values;
     const obj = {}
     if (password) {
       obj.password = md5(password)
@@ -118,6 +120,7 @@ export default (props) => {
         }
       }}
       initialValues={{
+        aaa: 1,
         statusAction: 1,
         statusSystem: 1,
         subscribeList: [
@@ -155,12 +158,14 @@ export default (props) => {
           }
         ]}
       />
-      <ProFormDependency name={['statusAction']}>
-        {({ statusAction }) => {
+      <ProFormDependency name={['statusAction', 'subscribeList']}>
+        {({ statusAction, subscribeList }) => {
           return (
             <>
               <Form.Item
                 label="操作对象"
+                rules={[{ required: true }]}
+                name="aaa"
               >
                 <Form.List name="subscribeList">
                   {(fields) => (
@@ -177,6 +182,7 @@ export default (props) => {
                               fieldProps={{
                                 disabledDate: (currentDate) => { return +currentDate < +new Date() && new Date(+currentDate).getDate() !== new Date().getDate() },
                               }}
+                              rules={[{ required: subscribeList[name].checked, message: '请选择开通时段' }]}
                             />
                             <ProFormText
                               name={[name, 'actionId']}
@@ -190,8 +196,9 @@ export default (props) => {
                                 addonAfter: '元'
                               }}
                               rules={[
+                                { required: subscribeList[name].checked, message: '请输入开通费用' },
                                 () => ({
-                                  required: false,
+                                  required: subscribeList[name].checked,
                                   validator(_, v) {
                                     if (`${v}`?.split?.('.')?.[1]?.length > 2 && v !== '' && v !== undefined) {
                                       return Promise.reject(new Error('只能保留两位小数'));
@@ -217,7 +224,7 @@ export default (props) => {
                     autoComplete: 'new-password'
                   }}
                   rules={[
-                    { required: false, message: '登录账号应不少于5个字符，不超过20个字符', min: 5, max: 20 }
+                    { required: true, message: '登录账号应不少于5个字符，不超过20个字符', min: 5, max: 20 }
                   ]}
                 />
                 <ProFormText.Password
@@ -228,7 +235,7 @@ export default (props) => {
                     autoComplete: 'new-password'
                   }}
                   rules={[
-                    { required: false, message: '密码应不少于8个字符，不超过20个字符', min: 8, max: 20 }
+                    { required: !hasAccount, message: '密码应不少于8个字符，不超过20个字符', min: 8, max: 20 }
                   ]}
                 />
                 {/* <ProFormRadio.Group
