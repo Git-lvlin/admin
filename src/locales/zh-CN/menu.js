@@ -212,6 +212,7 @@ export default {
   'menu.cms.goods-sort': '集约商品展示配置',
   'menu.cms.goods-class': '集约商品运营类目',
   'menu.cms.story': '店主故事',
+  'menu.cms.hydrogen-atom-start-window': '氢原子启动弹窗',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
@@ -392,6 +393,8 @@ export default {
 
   'menu.buried-point': '埋点数据看板',
   'menu.buried-point.incident-analysts': '事件分析',
+  'menu.buried-point.metadata-management': '元数据管理',
+  'menu.buried-point.metadata-management.meta-event': '元事件',
   
   'menu.office-management': '办事处管理',
   'menu.office-management.office-management-list': '办事处管理',

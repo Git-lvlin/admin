@@ -14,8 +14,8 @@ import Associated0Goods from './associated0-goods'
 import Upload from '@/components/upload';
 import ReactColor from '@/components/react-color'
 import {saveSubjectActiveConfig,getActiveConfigById} from '@/services/cms/member/thematic-event-management'
-import { amountTransform } from '@/utils/utils'
 import type { DetailListItem,PropsItem } from './data'
+import { amountTransform } from '@/utils/utils'
 const { Title } = Typography;
 
 const FromWrap = ({ value, onChange, content, right }) => (
@@ -113,7 +113,7 @@ export default (props:PropsItem) => {
     if(id){
       getActiveConfigById({id}).then(res=>{
         if(res.code==0){
-          setDetailList(res.data?.content?.goods)
+          setDetailList(res.data?.content?.goods.map(ele=>({...ele,actPrice:amountTransform(ele?.actPrice,'/')})))
           form.setFieldsValue({
             dateRange:[res.data?.startTime*1000,res.data?.endTime*1000],
             bannerImgUrl:res.data?.content?.bannerImgUrl,
@@ -358,7 +358,7 @@ export default (props:PropsItem) => {
               }}
             />
             <Form.Item label='透明遮罩' name='alphaMasked'>
-              <ReactColor onChange={(val) => { console.log('val', val) }}/>
+              <ReactColor/>
             </Form.Item>
           </div>
           <div style={{ display: picture == 3 ? 'block' : 'none' }}>
@@ -427,7 +427,7 @@ export default (props:PropsItem) => {
                 value: <Space>
                   <div className={styles.measure}>
                     <Form.Item name='color1'>
-                      <ReactColor onChange={(val) => { console.log('val', val) }} />
+                      <ReactColor/>
                     </Form.Item>
                     <p>颜色</p>
                   </div>
@@ -449,7 +449,7 @@ export default (props:PropsItem) => {
                 value: <Space>
                   <div className={styles.measure}>
                     <Form.Item name='color2'>
-                      <ReactColor onChange={(val) => { console.log('val', val) }} />
+                      <ReactColor/>
                     </Form.Item>
                     <p>颜色</p>
                   </div>
@@ -477,7 +477,7 @@ export default (props:PropsItem) => {
                 value: <Space>
                   <div className={styles.measure}>
                     <Form.Item name='color3'>
-                      <ReactColor onChange={(val) => { console.log('val', val) }} />
+                      <ReactColor/>
                     </Form.Item>
                     <p>颜色</p>
                   </div>
@@ -499,7 +499,7 @@ export default (props:PropsItem) => {
                 value: <Space>
                   <div className={styles.measure}>
                     <Form.Item name='color4'>
-                      <ReactColor onChange={(val) => { console.log('val', val) }} />
+                      <ReactColor/>
                     </Form.Item>
                     <p>颜色</p>
                   </div>
