@@ -159,35 +159,37 @@ export default (props) => {
         ]}
         fieldProps={{
           onChange: (e) => {
-            const { value } = e.target
-            const d1 = hasAccount.find(item => item.actionId === 10001);
-            const d2 = hasAccount.find(item => item.actionId === 10002);
-            const d3 = hasAccount.find(item => item.actionId === 10003);
-            form.setFieldsValue({
-              subscribeList: [
-                {
-                  checked: d1.statusAccount === value,
-                  actionId: 10001,
-                  name: '预约系统',
-                  useful: d1 ? [d1.usefulStart * 1000, d1.usefulEnd * 1000] : '',
-                  payment: d1 ? amountTransform(d1.payment, '/') : '',
-                },
-                {
-                  checked: d2.statusAccount === value,
-                  actionId: 10002,
-                  name: '健康档案',
-                  useful: d2 ? [d2?.usefulStart * 1000, d2?.usefulEnd * 1000] : '',
-                  payment: d2 ? amountTransform(d2.payment, '/') : '',
-                },
-                {
-                  checked: d3.statusAccount === value,
-                  actionId: 10003,
-                  name: '充值系统',
-                  useful: d3 ? [d3?.usefulStart * 1000, d3?.usefulEnd * 1000] : '',
-                  payment: d3 ? amountTransform(d3.payment, '/') : '',
-                }
-              ]
-            })
+            if (hasAccount) {
+              const { value } = e.target
+              const d1 = hasAccount.find(item => item.actionId === 10001);
+              const d2 = hasAccount.find(item => item.actionId === 10002);
+              const d3 = hasAccount.find(item => item.actionId === 10003);
+              form.setFieldsValue({
+                subscribeList: [
+                  {
+                    checked: d1.statusAccount === value,
+                    actionId: 10001,
+                    name: '预约系统',
+                    useful: d1 ? [d1.usefulStart * 1000, d1.usefulEnd * 1000] : '',
+                    payment: d1 ? amountTransform(d1.payment, '/') : '',
+                  },
+                  {
+                    checked: d2.statusAccount === value,
+                    actionId: 10002,
+                    name: '健康档案',
+                    useful: d2 ? [d2?.usefulStart * 1000, d2?.usefulEnd * 1000] : '',
+                    payment: d2 ? amountTransform(d2.payment, '/') : '',
+                  },
+                  {
+                    checked: d3.statusAccount === value,
+                    actionId: 10003,
+                    name: '充值系统',
+                    useful: d3 ? [d3?.usefulStart * 1000, d3?.usefulEnd * 1000] : '',
+                    payment: d3 ? amountTransform(d3.payment, '/') : '',
+                  }
+                ]
+              })
+            }
           }
         }}
       />
