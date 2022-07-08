@@ -170,9 +170,9 @@ const StoreList = (props) => {
       hideInTable: storeType !== 'normal',
       hideInSearch: true,
       valueEnum: {
-        1: '开通',
-        0: ' ',
-        2: ' '
+        1: '已开通',
+        0: '未开通',
+        2: '已注销'
       }
     },
     {
@@ -746,8 +746,9 @@ const StoreList = (props) => {
       hideInTable: true,
       hideInSearch: storeType !== 'normal',
       valueEnum: {
+        1: '已开通',
         0: '未开通',
-        1: '已开通'
+        2: '已注销'
       }
     },
     {
