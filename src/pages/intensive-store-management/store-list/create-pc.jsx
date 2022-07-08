@@ -37,7 +37,7 @@ export default (props) => {
       .then(res => {
         if (res.code === 0) {
           if (res.data.length) {
-            setHasAccount(true)
+            setHasAccount(res.data)
             const d1 = res.data.find(item => item.actionId === 10001);
             const d2 = res.data.find(item => item.actionId === 10002);
             const d3 = res.data.find(item => item.actionId === 10003);
@@ -45,21 +45,21 @@ export default (props) => {
               account: res.data[0].account,
               subscribeList: [
                 {
-                  checked: d1,
+                  checked: d1.statusAccount === 1,
                   actionId: 10001,
                   name: '预约系统',
                   useful: d1 ? [d1.usefulStart * 1000, d1.usefulEnd * 1000] : '',
                   payment: d1 ? amountTransform(d1.payment, '/') : '',
                 },
                 {
-                  checked: d2,
+                  checked: d2.statusAccount === 1,
                   actionId: 10002,
                   name: '健康档案',
                   useful: d2 ? [d2?.usefulStart * 1000, d2?.usefulEnd * 1000] : '',
                   payment: d2 ? amountTransform(d2.payment, '/') : '',
                 },
                 {
-                  checked: d3,
+                  checked: d3.statusAccount === 1,
                   actionId: 10003,
                   name: '充值系统',
                   useful: d3 ? [d3?.usefulStart * 1000, d3?.usefulEnd * 1000] : '',
@@ -157,6 +157,39 @@ export default (props) => {
             value: 2,
           }
         ]}
+        fieldProps={{
+          onChange: (e) => {
+            const { value } = e.target
+            const d1 = hasAccount.find(item => item.actionId === 10001);
+            const d2 = hasAccount.find(item => item.actionId === 10002);
+            const d3 = hasAccount.find(item => item.actionId === 10003);
+            form.setFieldsValue({
+              subscribeList: [
+                {
+                  checked: d1.statusAccount === value,
+                  actionId: 10001,
+                  name: '预约系统',
+                  useful: d1 ? [d1.usefulStart * 1000, d1.usefulEnd * 1000] : '',
+                  payment: d1 ? amountTransform(d1.payment, '/') : '',
+                },
+                {
+                  checked: d2.statusAccount === value,
+                  actionId: 10002,
+                  name: '健康档案',
+                  useful: d2 ? [d2?.usefulStart * 1000, d2?.usefulEnd * 1000] : '',
+                  payment: d2 ? amountTransform(d2.payment, '/') : '',
+                },
+                {
+                  checked: d3.statusAccount === value,
+                  actionId: 10003,
+                  name: '充值系统',
+                  useful: d3 ? [d3?.usefulStart * 1000, d3?.usefulEnd * 1000] : '',
+                  payment: d3 ? amountTransform(d3.payment, '/') : '',
+                }
+              ]
+            })
+          }
+        }}
       />
       <ProFormDependency name={['statusAction', 'subscribeList']}>
         {({ statusAction, subscribeList }) => {
