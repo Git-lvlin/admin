@@ -21,6 +21,8 @@ import AuditInfo from './audit-info';
 import OrderDetail from '@/pages/order-management/normal-order/detail';
 import styles from './style.less'
 import ContentModel from './content-model';
+import CreatePc from './create-pc';
+import moment from 'moment';
 import RangeInput from '@/components/range-input';
 
 const StoreList = (props) => {
@@ -38,6 +40,7 @@ const StoreList = (props) => {
   const [auditInfoVisible, setAuditInfoVisible] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [gradeChangeVisible, setGradeChangeVisible] = useState(false);
+  const [createPcVisible, setCreatePcVisible] = useState(false);
   const [attachmentImage, setAttachmentImage] = useState()
   const actionRef = useRef();
   const formRef = useRef();
@@ -76,6 +79,10 @@ const StoreList = (props) => {
       setSelectItem(data)
       setGradeChangeVisible(true)
     }
+    if (key === '8') {
+      setSelectItem(data)
+      setCreatePcVisible(true)
+    }
 
   }
 
@@ -91,6 +98,7 @@ const StoreList = (props) => {
         {getAuth('store/member_shop/grade') && <Menu.Item key="7">
           店铺等级调整
         </Menu.Item>}
+        <Menu.Item key="8">操作PC后台</Menu.Item>
       </Menu>
     )
   }
@@ -155,6 +163,30 @@ const StoreList = (props) => {
         placeholder: '请输入店铺名称'
       },
       hideInSearch: storeType == 'vip',
+    },
+    {
+      title: 'PC开通状态',
+      dataIndex: 'statusAction',
+      valueType: 'text',
+      hideInTable: storeType !== 'normal',
+      hideInSearch: true,
+      valueEnum: {
+        1: '已开通',
+        0: '未开通',
+        2: '已注销'
+      }
+    },
+    {
+      title: 'PC系统',
+      dataIndex: 'productList',
+      valueType: 'text',
+      hideInTable: storeType !== 'normal',
+      hideInSearch: true,
+      render: (_) => {
+        return _.map(item => (
+          <div key={item.id}>{`${item.name}(至${moment(item.usefulEnd*1000).format('YYYY-MM-DD')})`}</div>
+        ))
+      }
     },
     {
       title: '类型',
@@ -516,7 +548,7 @@ const StoreList = (props) => {
           <>
             <div>{_}</div>
             {depositRefendList && depositRefendList.map(ele => {
-              return <div>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</div>
+              return <div key={ele.id}>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</div>
             })}
           </>
         )
@@ -725,6 +757,30 @@ const StoreList = (props) => {
       hideInSearch: storeType !== 'cancelled'
     },
     {
+      title: 'PC开通状态',
+      dataIndex: 'actionStatus',
+      valueType: 'select',
+      hideInTable: true,
+      hideInSearch: storeType !== 'normal',
+      valueEnum: {
+        1: '已开通',
+        0: '未开通',
+        2: '已注销'
+      }
+    },
+    {
+      title: 'PC系统',
+      dataIndex: 'actionId',
+      valueType: 'select',
+      hideInTable: true,
+      hideInSearch: storeType !== 'normal',
+      valueEnum: {
+        10001: '预约系统',
+        10002: '健康档案',
+        10003: '充值系统',
+      }
+    },
+    {
       title: '交保证金金额',
       dataIndex: 'deposit',
       valueType: 'text',
@@ -850,6 +906,16 @@ const StoreList = (props) => {
         }}
         className={styles.store_list}
       />
+      {
+        createPcVisible &&
+        <CreatePc
+          data={selectItem}
+          storeNo={selectItem?.storeNo}
+          visible={createPcVisible}
+          setVisible={setCreatePcVisible}
+          callback={() => { setCreatePcVisible(false); actionRef.current.reload() }}
+        />
+      }
       {
         auditInfoVisible &&
         <AuditInfo
