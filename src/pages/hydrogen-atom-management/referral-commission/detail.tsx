@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { Drawer, Image, Space } from "antd"
+import { Drawer } from "antd"
 import ProTable from "@ant-design/pro-table"
 
 import type { DetailProps } from "./data"
@@ -24,32 +24,38 @@ const Detail = (props: DetailProps) => {
     {
       title: '总提成(元)',
       dataIndex: 'totalAccount',
-      align: 'center'
+      align: 'center',
+      render: (_) => amountTransform(_, '/'),
     },
     {
       title: '直购提成(元)',
       dataIndex: 'buyAmount',
-      align: 'center'
+      align: 'center',
+      render: (_) => amountTransform(_, '/'),
     },
     {
       title: '管理费提成(元)',
       dataIndex: 'rentAmount',
-      align: 'center'
+      align: 'center',
+      render: (_) => amountTransform(_, '/'),
     },
     {
       title: '总业绩(元)',
       dataIndex: 'orderAmountTotal',
-      align: 'center'
+      align: 'center',
+      render: (_) => amountTransform(_, '/'),
     },
     {
       title: '直购业绩(元)',
-      dataIndex: 'rentOrderAmount',
-      align: 'center'
+      dataIndex: 'buyOrderAmount',
+      align: 'center',
+      render: (_) => amountTransform(_, '/'),
     },
     {
       title: '管理费业绩(元)',
-      dataIndex: 'buyOrderAmount',
-      align: 'center'
+      dataIndex: 'rentOrderAmount',
+      align: 'center',
+      render: (_) => amountTransform(_, '/'),
     },
     {
       title: '总提成人数',
@@ -70,22 +76,10 @@ const Detail = (props: DetailProps) => {
 
   const columns: ProColumns[] = [
     {
-      title: '被推荐人信息',
-      dataIndex: 'info',
-      align: 'center',
+      title: 'id',
+      dataIndex: 'id',
       hideInSearch: true,
-      render: (_, r) => (
-        <Space size='middle'>
-          <Image 
-            src={r.icon} 
-            preview={false} 
-            width={50} 
-            height={50}
-            style={{borderRadius: '50%'}}
-          />
-          <div>{r.nickeName}</div>
-        </Space>
-      )
+      hideInTable: true
     },
     {
       title: '被推荐人手机',
@@ -111,22 +105,24 @@ const Detail = (props: DetailProps) => {
     },
     {
       title: '订单业绩金额(元)',
-      dataIndex: 'oderAmount',
+      dataIndex: 'orderAmount',
       align: 'center',
+      render: (_) => amountTransform(_, '/'),
       hideInSearch: true,
     },
     {
       title: '交易类型',
-      dataIndex: 'type',
+      dataIndex: 'commissionType',
       align: 'center',
       valueType: 'select',
       valueEnum: {
-        1: '购买收益',
-        2: '租金收益'
+        1: '销售',
+        2: '管理费'
       }
-    },{
+    },
+    {
       title: '支付编号',
-      dataIndex: 'oderNo',
+      dataIndex: 'orderNo',
       align: 'center',
       hideInSearch: true,
     },
@@ -180,7 +176,7 @@ const Detail = (props: DetailProps) => {
   return (
     <Drawer
       title='详情'
-      width={900}
+      width={1200}
       visible={visible}
       onClose={()=> setVisible(false)}
     >
@@ -191,16 +187,21 @@ const Detail = (props: DetailProps) => {
         pagination={false}
         search={false}
         options={false}
-        scroll={{x: 'max-content'}}
       />
       <ProTable
-        rowKey='storeId'
+        rowKey='id'
         columns={columns}
         params={{pMemId: data?.pMemId}}
         request={queryStatisticsCommissionListSub}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
+        }}
+        postData={(v)=> {
+          return v.map((res, idx)=> ({
+            ...res,
+            id: idx
+          }))
         }}
         formRef={form}
         search={{
@@ -210,12 +211,11 @@ const Detail = (props: DetailProps) => {
             <Export
               key='export'
               type="queryMyCommissionSubListExport"
-              conditions={{...form.current?.getFieldsValue()}}
+              conditions={{pMemId: data?.pMemId, ...form.current?.getFieldsValue()}}
             />
           ]
         }}
         options={false}
-        scroll={{x: 'max-content'}}
       />
     </Drawer>
   )
