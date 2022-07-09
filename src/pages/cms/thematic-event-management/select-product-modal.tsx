@@ -4,6 +4,7 @@ import { productList } from '@/services/intensive-activity-management/intensive-
 import { ModalForm } from '@ant-design/pro-form';
 import _ from 'lodash'
 import { amountTransform } from '@/utils/utils'
+import { Space } from 'antd'
 
 export default (props) => {
     const { visible, setVisible, callback, title = '选择活动商品',goodsSaleType,keyId,detailList} = props;
@@ -26,6 +27,12 @@ export default (props) => {
   
   
     const columns = [
+      {
+        title: 'spuid',
+        dataIndex: 'spuId',
+        valueType: 'text',
+        hiddInSearch: true
+      },
       {
         title: 'skuID',
         dataIndex: 'skuId',
@@ -64,7 +71,7 @@ export default (props) => {
       },
       {
         title: '平台亏盈',
-        dataIndex: 'actPriceProfitLoss',
+        dataIndex: 'salePriceProfitLoss',
         valueType: 'text',
         editable:false,
         render:(_)=>{
@@ -117,6 +124,7 @@ export default (props) => {
       >
         <ProTable
           columns={columns}
+          headerTitle="请选择商品"
           rowKey="skuId"
           options={false}
           request={productList}
@@ -156,6 +164,19 @@ export default (props) => {
             },
             selectedRowKeys:keys
         }}
+        // tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
+        //   <>
+        //       <p>已选择 ({selectedRowKeys.length})</p>
+        //       {
+        //         selectedRows?.map(ele=>{
+        //           return <p>{ele?.goodsName}</p>
+        //         })
+        //       }
+        //       {/* <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
+        //         取消选择
+        //       </a> */}
+        //   </>
+        // )}
         />
       </ModalForm>
     );

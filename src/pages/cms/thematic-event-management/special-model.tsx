@@ -14,8 +14,8 @@ import Associated0Goods from './associated0-goods'
 import Upload from '@/components/upload';
 import ReactColor from '@/components/react-color'
 import {saveSubjectActiveConfig,getActiveConfigById} from '@/services/cms/member/thematic-event-management'
-import { amountTransform } from '@/utils/utils'
 import type { DetailListItem,PropsItem } from './data'
+import { amountTransform } from '@/utils/utils'
 const { Title } = Typography;
 
 const FromWrap = ({ value, onChange, content, right }) => (
@@ -48,8 +48,8 @@ export default (props:PropsItem) => {
       status:1,
       id:values?.id,
       name:values?.name,
-      startTime:moment(values.dateRange[0]).valueOf(),
-      endTime:moment(values.dateRange[1]).valueOf(),
+      startTime:moment(values.dateRange[0]).valueOf()/1000,
+      endTime:moment(values.dateRange[1]).valueOf()/1000,
       bannerImgUrl:values.bannerImgUrl,
       bannerTime:{
         switch:values.switch1,
@@ -113,7 +113,7 @@ export default (props:PropsItem) => {
     if(id){
       getActiveConfigById({id}).then(res=>{
         if(res.code==0){
-          setDetailList(res.data?.content?.goods)
+          setDetailList(res.data?.content?.goods.map(ele=>({...ele,actPrice:amountTransform(ele?.actPrice,'/')})))
           form.setFieldsValue({
             dateRange:[res.data?.startTime*1000,res.data?.endTime*1000],
             bannerImgUrl:res.data?.content?.bannerImgUrl,
@@ -175,7 +175,7 @@ export default (props:PropsItem) => {
       onFinish={async (values) => {
         await onSubmit(values)
       }}
-      className={styles?.thematic_event_management}
+      className={styles?.special_model}
       {...formItemLayout}
     >
       <div className={styles?.three_column_layout}>
@@ -261,7 +261,7 @@ export default (props:PropsItem) => {
             style={{ display: picture == 1 ? 'block' : 'none' }}
           >
             <FromWrap
-              content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} maxCount={1} accept="image/png" />}
+              content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 ,height:'*'}} maxCount={1} accept="image/png" />}
               right={(value) => {
                 return (
                   <dl>
@@ -358,7 +358,7 @@ export default (props:PropsItem) => {
               }}
             />
             <Form.Item label='透明遮罩' name='alphaMasked'>
-              <ReactColor onChange={(val) => { console.log('val', val) }}/>
+              <ReactColor/>
             </Form.Item>
           </div>
           <div style={{ display: picture == 3 ? 'block' : 'none' }}>
@@ -427,7 +427,7 @@ export default (props:PropsItem) => {
                 value: <Space>
                   <div className={styles.measure}>
                     <Form.Item name='color1'>
-                      <ReactColor onChange={(val) => { console.log('val', val) }} />
+                      <ReactColor/>
                     </Form.Item>
                     <p>颜色</p>
                   </div>
@@ -449,7 +449,7 @@ export default (props:PropsItem) => {
                 value: <Space>
                   <div className={styles.measure}>
                     <Form.Item name='color2'>
-                      <ReactColor onChange={(val) => { console.log('val', val) }} />
+                      <ReactColor/>
                     </Form.Item>
                     <p>颜色</p>
                   </div>
@@ -477,7 +477,7 @@ export default (props:PropsItem) => {
                 value: <Space>
                   <div className={styles.measure}>
                     <Form.Item name='color3'>
-                      <ReactColor onChange={(val) => { console.log('val', val) }} />
+                      <ReactColor/>
                     </Form.Item>
                     <p>颜色</p>
                   </div>
@@ -499,7 +499,7 @@ export default (props:PropsItem) => {
                 value: <Space>
                   <div className={styles.measure}>
                     <Form.Item name='color4'>
-                      <ReactColor onChange={(val) => { console.log('val', val) }} />
+                      <ReactColor/>
                     </Form.Item>
                     <p>颜色</p>
                   </div>
@@ -524,7 +524,6 @@ export default (props:PropsItem) => {
         </div>
       </div>
       <Associated0Goods detailList={detailList} id={id} callback={(data)=>{
-        console.log('data',data)
         setDetailList(data)
       }}/>
     </DrawerForm>
