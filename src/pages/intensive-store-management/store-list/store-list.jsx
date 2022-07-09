@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Space, Tooltip, Image, Menu, Dropdown } from 'antd';
+import { Button, Space, Tooltip, Image, Menu, Dropdown, Input } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
@@ -23,6 +23,7 @@ import styles from './style.less'
 import ContentModel from './content-model';
 import CreatePc from './create-pc';
 import moment from 'moment';
+import RangeInput from '@/components/range-input';
 
 const StoreList = (props) => {
   const { storeType, type } = props
@@ -170,9 +171,9 @@ const StoreList = (props) => {
       hideInTable: storeType !== 'normal',
       hideInSearch: true,
       valueEnum: {
-        1: '开通',
-        0: ' ',
-        2: ' '
+        1: '已开通',
+        0: '未开通',
+        2: '已注销'
       }
     },
     {
@@ -246,6 +247,22 @@ const StoreList = (props) => {
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'vip',
+    },
+    {
+      title: '交保证金(元)',
+      dataIndex: 'deposit',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType == 'vip',
+      render: (_) => _/100
+    },
+    {
+      title: '交服务费(元)',
+      dataIndex: 'serviceFee',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType == 'vip',
+      render: (_) => _ / 100
     },
     {
       title: '生鲜柜',
@@ -746,8 +763,9 @@ const StoreList = (props) => {
       hideInTable: true,
       hideInSearch: storeType !== 'normal',
       valueEnum: {
+        1: '已开通',
         0: '未开通',
-        1: '已开通'
+        2: '已注销'
       }
     },
     {
@@ -761,6 +779,22 @@ const StoreList = (props) => {
         10002: '健康档案',
         10003: '充值系统',
       }
+    },
+    {
+      title: '交保证金金额',
+      dataIndex: 'deposit',
+      valueType: 'text',
+      renderFormItem: () => <RangeInput />,
+      hideInSearch: storeType == 'vip',
+      hideInTable: true,
+    },
+    {
+      title: '交服务费金额',
+      dataIndex: 'serviceFee',
+      valueType: 'text',
+      renderFormItem: () => <RangeInput />,
+      hideInSearch: storeType == 'vip',
+      hideInTable: true,
     },
     {
       title: '操作',

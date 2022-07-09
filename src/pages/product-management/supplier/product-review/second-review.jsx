@@ -10,7 +10,7 @@ import ProductDetailDrawer from '@/components/product-detail-drawer'
 
 
 const UserDetail = (props) => {
-  const { visible, setVisible, record, operateRole, overrule, check } = props;
+  const { visible, setVisible, record, operateRole, overrule, check, goodsName, spuId } = props;
   const [overruleVisible, setOverruleVisible] = useState(false);
   const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
 
@@ -210,6 +210,8 @@ const UserDetail = (props) => {
         visible={overruleVisible}
         setVisible={setOverruleVisible}
         callback={(text) => { overrule([record.spuId].join(','), text) }}
+        goodsName={goodsName}
+        spuId={spuId}
       />}
       {
         productDetailDrawerVisible &&

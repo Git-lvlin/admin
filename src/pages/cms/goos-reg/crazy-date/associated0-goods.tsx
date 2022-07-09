@@ -208,19 +208,21 @@ export default (props) => {
           keyId={dataSource}
           detailList={dataSource||[]}
           callback={(data)=>{
-            const arr = [];
-            data.forEach(item => {
-              arr.push({
-                goodsState: 1,
-                actPriceProfitLoss: item?.salePriceProfitLoss,
-                activityPrice: amountTransform(item?.salePrice,'/'),
-                sort:9999,
-                ...item
-              })
-            })
-            setDataSource(arr)
-            callback(arr)
-            setEditableKeys(arr.map(item => item.id))
+            setDataSource(data.map(item=>({
+              goodsState: 1,
+              actPriceProfitLoss: item?.salePriceProfitLoss,
+              activityPrice: amountTransform(item?.salePrice,'/'),
+              sort:9999,
+              ...item
+            })))
+            callback(data.map(item=>({
+              goodsState: 1,
+              actPriceProfitLoss: item?.salePriceProfitLoss,
+              activityPrice: amountTransform(item?.salePrice,'/'),
+              sort:9999,
+              ...item
+            })))
+            setEditableKeys(data.map(item => item.id))
           }}
       />
       }

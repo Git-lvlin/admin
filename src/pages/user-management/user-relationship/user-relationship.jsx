@@ -150,6 +150,19 @@ const UserRelationship = () => {
       }
     },
     {
+      title: '氢原子订单数',
+      dataIndex: '',
+      search: false,
+      render: (_, records) => {
+        return (
+          <>
+            <div><a href={`/order-management/normal-order?orderType=666&orderTypes=666&buyerId=${records?.id}`} target='_blank'>购买{records.deviceBuyNum}</a></div>
+            <div><a href={`/order-management/normal-order?orderType=888&orderTypes=888&buyerId=${records?.id}`} target='_blank'>租赁{records.deviceLeaseNum}</a></div>
+          </>
+        )
+      }
+    },
+    {
       title: '氢原子交易业绩',
       dataIndex: '',
       search: false,
@@ -318,6 +331,7 @@ const UserRelationship = () => {
           setInitialData(data.list.records)
           return data.list.records
         }}
+        scroll={{ x: 'max-content' }}
         search={{
           labelWidth: 'auto',
         }}
