@@ -22,7 +22,7 @@ const TableList = () => {
   const [visit, setVisit] = useState(false)
   const [pageSize, setPageSize] = useState(10)
   const [pageTotal, setPageTotal] = useState(0)
-  const [orderType, setOrderType] = useState(0)
+  const [orderType, setOrderType] = useState(location?.query.orderTypes || 0)
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState(0)
   // const [deliveryVisible, setDeliveryVisible] = useState(false)
@@ -32,7 +32,7 @@ const TableList = () => {
   const [selectItem, setSelectItem] = useState({});
   const location = useLocation();
   const [orderStatusType, setOrderStatusType] = useState()
-  const [orderTypes, setOrderTypes] = useState(0)
+  const [orderTypes, setOrderTypes] = useState(location?.query.orderTypes || 0)
   const [addressVisible, setAddressVisible] = useState(false)
   const [subOrderId, setSubOrderId] = useState(null)
   const [orderVisible, setOrderVisible] = useState(false)
@@ -408,6 +408,14 @@ const TableList = () => {
                     <span>订单号：{item.orderSn}</span>
                     <span>下单用户：{item.buyerNickname}</span>
                     <span>用户手机号：{item.buyerPhone}</span>
+                    {
+                      (item.subType === 2 || item.subType === 21)
+                      &&
+                      <>
+                        <span>启动机器ID：{item.orderItem[0].deviceId}</span>
+                        <span>机器所属店主手机号：{item.storePhone}</span>
+                      </>
+                    }
                   </Space>
                 </div>
 
@@ -451,7 +459,7 @@ const TableList = () => {
                   </div>
                   <div style={{ textAlign: 'center' }}>
                     {
-                      item.subType ? <Tag style={{ borderRadius: 10, marginTop: '10px' }} color="#f59a23">{({ 4: '氢原子购买', 3: '氢原子押金', 2: '氢原子启动', 5: '分享' }[item.subType])}订单</Tag>
+                      item.subType ? <Tag style={{ borderRadius: 10, marginTop: '10px' }} color="#f59a23">{({ 4: '氢原子购买', 3: '氢原子押金', 2: '氢原子启动', 5: '分享', 21: '氢原子启动' }[item.subType])}订单</Tag>
                         : <Tag style={{ borderRadius: 10 }} color="#f59a23">{({ 2: '秒约', 3: '拼团', 4: '团约', 11: '1688', 17: '盲盒活动', 18: '签到活动', 666: '氢原子购买订单', 888: '氢原子押金订单', 999: '氢原子启动订单' }[item.orderType] || '秒约')}订单</Tag>
                     }
                     {

@@ -34,6 +34,12 @@ export default {
           wrappers: [RouteWatcher],
         },
         {
+          name: 'operator-overrule-list',
+          path: '/product-management/supplier/operator-overrule-list',
+          component: './product-management/supplier/operator-overrule-list',
+          wrappers: [RouteWatcher],
+        },
+        {
           name: 'set-goods-list',
           path: '/product-management/supplier/set-goods-list',
           component: './product-management/supplier/set-goods-list',

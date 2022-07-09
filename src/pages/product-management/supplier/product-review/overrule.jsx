@@ -6,7 +6,7 @@ import {
 } from '@ant-design/pro-form';
 
 export default (props) => {
-  const { visible, setVisible, callback } = props;
+  const { visible, setVisible, callback, goodsName, spuId } = props;
   const [form] = Form.useForm();
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -37,6 +37,11 @@ export default (props) => {
       }}
       {...formItemLayout}
     >
+      {goodsName && <Form.Item
+        label="商品名称"
+      >
+        {goodsName}（SPUID：{spuId}）
+      </Form.Item>}
       <ProFormTextArea
         label="驳回理由"
         width="md"

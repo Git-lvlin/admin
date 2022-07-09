@@ -13,7 +13,7 @@ import Look from './look';
 import ProductDetail from '@/components/product-detail'
 
 export default (props) => {
-  const { visible, setVisible, detailData, check, overrule } = props;
+  const { visible, setVisible, detailData, check, overrule, goodsName, spuId } = props;
   const [overruleVisible, setOverruleVisible] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [tableHead, setTableHead] = useState([]);
@@ -130,6 +130,8 @@ export default (props) => {
         visible={overruleVisible}
         setVisible={setOverruleVisible}
         callback={(text) => { overrule([detailData.spuId].join(','), text) }}
+        goodsName={goodsName}
+        spuId={spuId}
       />}
       {lookVisible && <Look
         visible={lookVisible}

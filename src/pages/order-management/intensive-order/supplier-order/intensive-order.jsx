@@ -399,13 +399,13 @@ const TableList = () => {
             value: 0
           },
           {
-            label: '已付订金',
-            value: 1
-          },
-          {
-            label: '已付尾款',
+            label: '已付款',
             value: 2
           },
+          // {
+          //   label: '已付尾款',
+          //   value: 2
+          // },
           {
             label: '待收货',
             value: 3
