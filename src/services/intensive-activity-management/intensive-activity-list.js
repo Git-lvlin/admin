@@ -101,3 +101,17 @@ export const wholesaleEdit = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const deliveryLog = async (params = {}, options = {}) => {
+  const res = await request('/auth/wholesale/purchaseOrder/deliveryLog', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
+  }
+}

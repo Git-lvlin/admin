@@ -8,6 +8,7 @@ import { getWholesaleDetail } from '@/services/intensive-activity-management/int
 import LadderDataEdit from '../intensive-activity-create/ladder-data-edit'
 import PriceExplanation from '../intensive-activity-create/price-explanation'
 import FreshIncome from '../intensive-activity-create/fresh-income'
+import DeliveryLog from './delivery-log'
 
 
 const { Title } = Typography;
@@ -15,6 +16,7 @@ const { Title } = Typography;
 const Detail = () => {
   const [detailData, setDetailData] = useState({})
   const [loading, setLoading] = useState(false)
+  const [deliveryLogVisible, setDeliveryLogVisible] = useState(false)
   const params = useParams();
 
   const getDetail = (wholesaleId) => {
@@ -219,6 +221,10 @@ const Detail = () => {
       <Spin
         spinning={loading}
       >
+        {deliveryLogVisible && <DeliveryLog
+          id={params?.id}
+          setVisible={setDeliveryLogVisible}
+        />}
         <div style={{ backgroundColor: '#fff', padding: 20, paddingBottom: 100 }}>
           <Row>
             <Title style={{ marginBottom: -10 }} level={5}>活动商品</Title>
@@ -361,6 +367,12 @@ const Detail = () => {
                   平台额外奖励占比审核状态: <span style={{ color: { 1: 'green', 2: 'red' }[detailData.percentAuditStatus] }}>{detailData?.percentAuditStatusDesc}</span>
                 </div>
               </div>}
+              {!!detailData?.wholesale?.deliveryCycle &&
+                <>
+                  <div>采购单推送周期：每{detailData?.wholesale?.deliveryCycle}小时推送1次采购单</div>
+                  <div>已推送期数和时间：<a onClick={() => { setDeliveryLogVisible(true) }}>共{detailData?.wholesale?.deliveryCount}期</a></div>
+                </>
+              }
             </div>
           </Row>
 
