@@ -36,7 +36,7 @@ const TableList = () => {
   const [addressVisible, setAddressVisible] = useState(false)
   const [subOrderId, setSubOrderId] = useState(null)
   const [orderVisible, setOrderVisible] = useState(false)
-
+  const [primaryAddress,setPrimaryAddress] = useState({})
 
 
   const [form] = Form.useForm()
@@ -479,7 +479,7 @@ const TableList = () => {
                     <span>地址：{item.address}</span>
                     {
                       (orderType === 1 || orderType === 2) &&
-                      <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true) }}>修改地址</Button>
+                      <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true); setPrimaryAddress(item) }}>修改地址</Button>
                     }
                     {
                       orderType === 2 &&
@@ -505,6 +505,7 @@ const TableList = () => {
         addressVisible &&
         <EditAddress
           subOrderId={subOrderId}
+          primaryAddress={primaryAddress}
           setVisible={setAddressVisible}
           visible={addressVisible}
           setChange={setSearch}

@@ -208,5 +208,11 @@ export default {
     //   component: './cms/poster',
     //   wrappers: [RouteWatcher],
     // },
+    {
+      name: 'hydrogen-atom-start-window',
+      path: '/cms/hydrogen-atom-start-window',
+      component: './cms/hydrogen-atom-start-window',
+      wrappers: [RouteWatcher],
+    },
   ]
 }
