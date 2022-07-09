@@ -21,9 +21,15 @@ import AuditInfo from './audit-info';
 import OrderDetail from '@/pages/order-management/normal-order/detail';
 import styles from './style.less'
 import ContentModel from './content-model';
+<<<<<<< HEAD
 import RangeInput from '@/components/range-input';
 import CreatePc from './create-pc';
 import moment from 'moment';
+=======
+import CreatePc from './create-pc';
+import moment from 'moment';
+import RangeInput from '@/components/range-input';
+>>>>>>> setup
 
 const StoreList = (props) => {
   const { storeType, type } = props
@@ -757,22 +763,6 @@ const StoreList = (props) => {
       hideInSearch: storeType !== 'cancelled'
     },
     {
-      title: '交保证金金额',
-      dataIndex: 'deposit',
-      valueType: 'text',
-      renderFormItem: () => <RangeInput />,
-      hideInSearch: storeType == 'vip',
-      hideInTable: true,
-    },
-    {
-      title: '交服务费金额',
-      dataIndex: 'serviceFee',
-      valueType: 'text',
-      renderFormItem: () => <RangeInput />,
-      hideInSearch: storeType == 'vip',
-      hideInTable: true,
-    },
-    {
       title: 'PC开通状态',
       dataIndex: 'actionStatus',
       valueType: 'select',
@@ -795,6 +785,22 @@ const StoreList = (props) => {
         10002: '健康档案',
         10003: '充值系统',
       }
+    },
+    {
+      title: '交保证金金额',
+      dataIndex: 'deposit',
+      valueType: 'text',
+      renderFormItem: () => <RangeInput />,
+      hideInSearch: storeType == 'vip',
+      hideInTable: true,
+    },
+    {
+      title: '交服务费金额',
+      dataIndex: 'serviceFee',
+      valueType: 'text',
+      renderFormItem: () => <RangeInput />,
+      hideInSearch: storeType == 'vip',
+      hideInTable: true,
     },
     {
       title: '操作',
