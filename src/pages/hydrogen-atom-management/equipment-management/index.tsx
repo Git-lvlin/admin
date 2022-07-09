@@ -117,10 +117,12 @@ export default function EquipmentManagement() {
   }
 
   const getFieldsValue = () => {
-    const { createTime, ...rest } = form.current?.getFieldsValue()
+    const { createTime, leaseDeadline, ...rest } = form.current?.getFieldsValue()
     return {
       tradeStartTime: createTime?.[0].format('YYYY-MM-DD HH:mm:ss'),
       tradeEndTime: createTime?.[1].format('YYYY-MM-DD HH:mm:ss'),
+      leaseStartTime: leaseDeadline?.[0].format('YYYY-MM-DD HH:mm:ss'),
+      leaseEndTime: leaseDeadline?.[1].format('YYYY-MM-DD HH:mm:ss'),
       ...rest
     }
   }
@@ -168,6 +170,12 @@ export default function EquipmentManagement() {
       dataIndex: 'leaseDeadline',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '租约到期时间',
+      dataIndex: 'leaseDeadline',
+      valueType: 'dateTimeRange',
+      hideInTable: true
     },
     {
       title: '订单状态',
@@ -234,6 +242,7 @@ export default function EquipmentManagement() {
                 setMemberId(r?.id)
                 setMemberPhone(r?.memberPhone)
                 setShowTitle(true)
+                setImei(r?.imei)
               }
             }>
               {amountTransform(_, '/')}

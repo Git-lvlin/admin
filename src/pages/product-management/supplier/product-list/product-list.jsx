@@ -419,6 +419,9 @@ const TableList = () => {
       dataIndex: 'goodsKeywords',
       valueType: 'text',
       hideInTable: true,
+      fieldProps: {
+        maxLength: 125
+      },
     },
     {
       title: '商品分类',
@@ -558,6 +561,7 @@ const TableList = () => {
         pagination={{
           pageSize: 10,
         }}
+        revalidateOnFocus={false}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
           labelWidth: 140,

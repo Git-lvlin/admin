@@ -3,7 +3,7 @@ import { Button} from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { couponCcodebase,couponCodebaseEnd } from '@/services/coupon-management/coupon-codebase';
 import { DrawerForm} from '@ant-design/pro-form';
-import XLSX from 'xlsx'
+// import XLSX from 'xlsx'
 
 const formItemLayout = {
   labelCol: { span: 2 },

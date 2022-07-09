@@ -1,9 +1,8 @@
-import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Space} from 'antd';
+import React, { useState, useRef } from 'react';
+import { Button,Tabs,Image} from 'antd';
 import ProTable from '@ant-design/pro-table';
-import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@/components/PageContainer';
-import { history,connect } from 'umi';
+import { history } from 'umi';
 import { getBlindboxUseDetail } from '@/services/blind-box-activity-management/blindbox-get-use-list';
 import { getBlindboxIncomeDetail,getBlindboxIncomeReclaim } from '@/services/blind-box-activity-management/blindbox-blindbox-get-lncome';
 import AuditDetailModel from './audit-detail-model'

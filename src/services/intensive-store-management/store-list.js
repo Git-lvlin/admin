@@ -1,7 +1,8 @@
 import request from '@/utils/request';
+import { amountTransform } from '@/utils/utils'
 
 export const getStoreList = async (params = {}, options = {}) => {
-  const { current, pageSize, area = [], provideTime = [], auditTime = [], cancleTime=[], ...rest } = params;
+  const { current, pageSize, area = [], provideTime = [], auditTime = [], cancleTime = [], deposit, serviceFee, ...rest } = params;
   const res = await request('/auth/store/memberShop/page', {
     method: 'GET',
     params: {
@@ -16,6 +17,10 @@ export const getStoreList = async (params = {}, options = {}) => {
       auditTimeEnd: auditTime[1],
       cancleTimeStart: cancleTime[0],
       cancleTimeEnd: cancleTime[1],
+      depositStart: deposit?.min ? amountTransform(deposit.min) : '',
+      depositEnd: deposit?.max ? amountTransform(deposit.max) : '',
+      serviceFeeStart: serviceFee?.min ? amountTransform(serviceFee.min) : '',
+      serviceFeeEnd: serviceFee?.max ? amountTransform(serviceFee.max) : '',
       ...rest
     },
     ...options
@@ -103,6 +108,38 @@ export const gradeChange = (params = {}, options = {}) => {
 
 export const giftOrder = (params = {}, options = {}) => {
   return request('/auth/store/memberShopApply/giftOrder', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const getAllAction = (params = {}, options = {}) => {
+  return request('/auth/store/Subscribe/getAllAction', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const openSubscribe = (params = {}, options = {}) => {
+  return request('/auth/store/Subscribe/openSubscribe', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const closeSubscribe = (params = {}, options = {}) => {
+  return request('/auth/store/Subscribe/closeSubscribe', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const getSubscribeList = (params = {}, options = {}) => {
+  return request('/auth/store/Subscribe/getSubscribeList', {
     method: 'POST',
     data: params,
     ...options

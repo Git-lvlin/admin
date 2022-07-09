@@ -66,7 +66,8 @@ export default {
   'menu.product-management.supplier.product-review': '商品审核',
   'menu.product-management.supplier.set-goods-list': '商品运营配置',
   'menu.product-management.public.product-category': '商品分类',
-  'menu.product-management.supplier.overrule-list': '驳回商品',
+  'menu.product-management.supplier.overrule-list': '采购驳回商品',
+  'menu.product-management.supplier.operator-overrule-list': '运营驳回商品',
   'menu.product-management.supplier.product-evaluate': '商品评价',
   'menu.product-management.public.product-unit': '商品单位',
 
@@ -78,6 +79,7 @@ export default {
   'menu.setting.password': '修改密码',
   'menu.setting.shipments-area-configuration': '待发货区域配置',
   'menu.setting.switch-setting': '阶梯优惠参数开关',
+  'menu.setting.contract-management': '合同管理',
   'menu.setting.cancel-reason': '注销原因',
 
   'menu.intensive-activity-management': '集约活动管理',
@@ -134,6 +136,7 @@ export default {
   'menu.operation-management.operation-detail': '运营商详情',
   'menu.operation-management.operation-account-info': '运营商资金账户信息',
   'menu.operation-management.bind-audit-list': '运营商绑定审核',
+  'menu.operation-management.performance-report': '运营商氢原子业绩表',
 
   'menu.asset-management': '资产管理',
   'menu.asset-management.settlement-profit-list': '结算分润列表',
@@ -210,6 +213,7 @@ export default {
   'menu.cms.goods-sort': '集约商品展示配置',
   'menu.cms.goods-class': '集约商品运营类目',
   'menu.cms.story': '店主故事',
+  'menu.cms.enjoy-earning': '享赚区商品排序',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
@@ -388,6 +392,9 @@ export default {
   'menu.hydrogen-atom-management.referral-commission': '推荐提成',
   'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
 
+  'menu.buried-point': '埋点数据看板',
+  'menu.buried-point.incident-analysts': '事件分析',
+  
   'menu.office-management': '办事处管理',
   'menu.office-management.office-management-list': '办事处管理',
   'menu.office-management.office-achievements': '办事处业绩',

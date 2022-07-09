@@ -4,11 +4,12 @@ import {
 	Coordinate,
 	Interval,
   Interaction,
-  Axis
+  Axis,
+  Tooltip
 } from "bizcharts"
 import { Empty } from 'antd'
 
-const BarChart = ({data, unit}) => {
+const BarChart = ({data, unit, type}) => {
   data.sort((a, b) => a.value - b.value)
 
   const chartUnit = {
@@ -25,7 +26,6 @@ const BarChart = ({data, unit}) => {
   const scale = {
     value: { 
       alias: unit,
-      // tickInterval: data.every(v => v.value === 1) ? 1 : ''
       tickInterval: ' '
     }
   }
@@ -56,6 +56,17 @@ const BarChart = ({data, unit}) => {
         ]}
       />
       <Interaction type="active-region" />
+      <Tooltip>
+        {(title,items) => {
+          const color = items[0].color;
+          return (
+            <div style={{padding: '10px 0'}}>
+              <div style={{marginBottom: '15px'}}>{title}</div>
+              <div>{type}：{items[0].value}</div>
+            </div>
+          )
+        }}
+      </Tooltip>
     </Chart>:
     <Empty/>
   )

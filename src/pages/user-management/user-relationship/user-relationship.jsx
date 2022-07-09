@@ -151,6 +151,19 @@ const UserRelationship = () => {
       }
     },
     {
+      title: '氢原子订单数',
+      dataIndex: '',
+      search: false,
+      render: (_, records) => {
+        return (
+          <>
+            <div><a href={`/order-management/normal-order?orderType=666&orderTypes=666&buyerId=${records?.id}`} target='_blank'>购买{records.deviceBuyNum}</a></div>
+            <div><a href={`/order-management/normal-order?orderType=888&orderTypes=888&buyerId=${records?.id}`} target='_blank'>租赁{records.deviceLeaseNum}</a></div>
+          </>
+        )
+      }
+    },
+    {
       title: '氢原子交易业绩',
       dataIndex: '',
       search: false,
@@ -304,7 +317,7 @@ const UserRelationship = () => {
           &nbsp;&nbsp;手机号码：{indexData?.phoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人手机号：{indexData?.invitePhoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;是否为生鲜店主：{indexData?.memberShopType ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;是否为社区店主：{indexData?.userType ? '是' : '不是'}
         </ProForm.Group>
         <ProForm.Group>
-          &nbsp;&nbsp;用户昵称：{indexData?.nickName}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人昵称：{indexData?.inviteNickName}&nbsp;&nbsp;&nbsp;&nbsp;邀请成功的好友数量（位）：{indexData?.inviteCount}
+          &nbsp;&nbsp;用户昵称：{indexData?.nickName}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人昵称：{indexData?.inviteNickName}&nbsp;&nbsp;&nbsp;&nbsp;邀请成功的好友数量（位）：{indexData?.inviteCount}&nbsp;&nbsp;&nbsp;&nbsp;是否VIP社区店店主：{indexData?.vipStore ? '是' : '不是'}
         </ProForm.Group>
       </ProCard>
 
@@ -319,6 +332,7 @@ const UserRelationship = () => {
           setInitialData(data.list.records)
           return data.list.records
         }}
+        scroll={{ x: 'max-content' }}
         search={{
           labelWidth: 'auto',
         }}

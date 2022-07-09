@@ -1,12 +1,10 @@
-import React, { useState, useRef,useEffect } from 'react';
-import { Button,Tabs,Image,Form,Modal,Select} from 'antd';
+import React, { useState, useRef } from 'react';
+import { Button } from 'antd';
 import ProTable from '@ant-design/pro-table';
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import { getActiveConfigList } from '@/services/blind-box-activity-management/blindbox-get-active-config-list';
-import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@/components/PageContainer';
 import moment from 'moment';
-import { history,connect } from 'umi';
 import BindBoxSet from '../bind-box-rule-set'
 
 

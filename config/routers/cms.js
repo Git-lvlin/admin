@@ -166,6 +166,12 @@ export default {
       component: './cms/express-news',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'enjoy-earning',
+      path: '/cms/enjoy-earning',
+      component: './cms/enjoy-earning',
+      wrappers: [RouteWatcher],
+    },
     // {
     //   name: 'king-kong-district',
     //   path: '/cms/king-kong-district',
