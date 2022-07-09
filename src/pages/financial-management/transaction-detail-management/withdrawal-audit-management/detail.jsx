@@ -282,8 +282,8 @@ const Detail = () => {
       dataIndex: 'voucher'
     },
     {
-      title: '',
-      dataIndex: ''
+      title: '备注',
+      dataIndex: 'memo'
     }
   ]
   return (
