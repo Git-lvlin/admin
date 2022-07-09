@@ -297,11 +297,13 @@ export default function EditTable(props) {
         if (findItem.salePrice !== record.salePrice) {
           recordList = recordList.map(item => {
             if (item.skuId === findItem.skuId) {
+              const supplierScale = +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2);
               return {
                 ...item,
+                // tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
                 tStoreScale: '',
                 tPlatformScale: '',
-                tSupplierScale: +new Big(item.retailSupplyPrice).div(item.salePrice).times(100).toFixed(2)
+                tSupplierScale: supplierScale
               }
             }
             return item;
@@ -372,11 +374,13 @@ export default function EditTable(props) {
                 }
 
                 if (findItem.salePriceFloat !== record.salePriceFloat) {
+                  const supplierScale = +new Big(data.retailSupplyPrice).div(data.salePrice).times(100).toFixed(2);
                   data = {
                     ...data,
+                    // tStoreScale: +new Big(100).minus(supplierScale).minus(5).minus(0.5).toFixed(2),
                     tStoreScale: '',
                     tPlatformScale: '',
-                    tSupplierScale: +new Big(data.retailSupplyPrice).div(data.salePrice).times(100).toFixed(2)
+                    tSupplierScale: supplierScale
                   }
                 }
                 return data

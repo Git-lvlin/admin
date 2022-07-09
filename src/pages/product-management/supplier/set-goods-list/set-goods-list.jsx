@@ -385,6 +385,7 @@ const TableList = () => {
         detailData={detailData}
         callback={() => { actionRef.current.reload(); setDetailData(null) }}
         onClose={() => { setDetailData(null) }}
+        overrule
       />}
       {
         productDetailDrawerVisible &&

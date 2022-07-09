@@ -421,6 +421,11 @@ const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
                   平台额外奖励占比审核状态: <span style={{ color: { 1: 'green', 2: 'red' }[detailData.percentAuditStatus] }}>{detailData?.percentAuditStatusDesc}</span>
                 </div>
               </div>}
+              {!!detailData?.wholesale?.deliveryCycle &&
+                <>
+                  <div>采购单推送周期：每{detailData?.wholesale?.deliveryCycle}小时推送1次采购单</div>
+                </>
+              }
             </div>
           </Row>
           <div style={{ marginTop: 40, display: 'flex', justifyContent: 'center' }}>

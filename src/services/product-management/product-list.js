@@ -173,3 +173,11 @@ export const getTemplateList = async (params = {}, options = {}) => {
     total: res?.data?.total
   }
 }
+
+export const productCheck = (params = {}, options = {}) => {
+  return request('/auth/goods/product/check', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

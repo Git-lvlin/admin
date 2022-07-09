@@ -7,6 +7,7 @@ import AddressCascader from '@/components/address-cascader';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import Form from './form';
 import Drawer from './store-review-detail';
+import RangeInput from '@/components/range-input';
 
 const StoreReview = () => {
   const [formVisible, setFormVisible] = useState(false);
@@ -63,6 +64,20 @@ const StoreReview = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, { details }) => details?.address
+    },
+    {
+      title: '交保证金(元)',
+      dataIndex: 'deposit',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_) => _ / 100
+    },
+    {
+      title: '交服务费(元)',
+      dataIndex: 'serviceFee',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_) => _ / 100
     },
     {
       title: '提货点门牌号',
@@ -184,6 +199,20 @@ const StoreReview = () => {
       dataIndex: 'provideTime',
       valueType: 'text',
       hideInSearch: true,
+    },
+    {
+      title: '交保证金金额',
+      dataIndex: 'deposit',
+      valueType: 'text',
+      renderFormItem: () => <RangeInput />,
+      hideInTable: true,
+    },
+    {
+      title: '交服务费金额',
+      dataIndex: 'serviceFee',
+      valueType: 'text',
+      renderFormItem: () => <RangeInput />,
+      hideInTable: true,
     },
     {
       title: '操作',
