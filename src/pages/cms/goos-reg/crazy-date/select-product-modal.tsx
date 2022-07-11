@@ -81,7 +81,7 @@ export default (props) => {
     ];
   
     const onsubmit = () => {
-        if(goosList){
+        if(goosList.length>1){
           callback(goosList)
         }
         setVisible(false)
