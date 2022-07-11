@@ -21,15 +21,9 @@ import AuditInfo from './audit-info';
 import OrderDetail from '@/pages/order-management/normal-order/detail';
 import styles from './style.less'
 import ContentModel from './content-model';
-<<<<<<< HEAD
 import RangeInput from '@/components/range-input';
 import CreatePc from './create-pc';
 import moment from 'moment';
-=======
-import CreatePc from './create-pc';
-import moment from 'moment';
-import RangeInput from '@/components/range-input';
->>>>>>> setup
 
 const StoreList = (props) => {
   const { storeType, type } = props
