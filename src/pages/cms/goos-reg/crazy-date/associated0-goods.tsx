@@ -208,7 +208,6 @@ export default (props) => {
           keyId={dataSource}
           detailList={dataSource||[]}
           callback={(data)=>{
-            console.log('data',data)
             const arr = [];
             data.forEach(item => {
               arr.push({

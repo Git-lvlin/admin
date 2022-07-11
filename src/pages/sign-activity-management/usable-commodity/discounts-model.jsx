@@ -127,7 +127,7 @@ export default props=>{
         />
         <ProFormText
             width={100}
-            label="秒约平台利润"
+            label={data?.operateType==1?"秒约平台利润":"平台利润"}
             readonly
             fieldProps={{
                 value:`￥${amountTransform(data?.platformProfit,'/')}`
