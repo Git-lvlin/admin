@@ -8,7 +8,7 @@ import { amountTransform } from '@/utils/utils'
 export default (props) => {
     const { visible, setVisible, callback, title = '选择活动商品',goodsSaleType,keyId,detailList} = props;
     const [keys,setKeys]=useState()
-    const [goosList,setGoosList]=useState([])
+    const [goosList,setGoosList]=useState()
     const [dataList,setDataList]=useState([])
   
     const formItemLayout = {
@@ -81,7 +81,7 @@ export default (props) => {
     ];
   
     const onsubmit = () => {
-        if(goosList.length>1){
+        if(goosList){
           callback(goosList)
         }
         setVisible(false)
