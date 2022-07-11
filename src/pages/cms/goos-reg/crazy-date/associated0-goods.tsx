@@ -206,7 +206,7 @@ export default (props) => {
           setVisible={setVisible}
           goodsSaleType={2} 
           keyId={dataSource}
-          detailList={dataSource||[]}
+          detailList={detailList||[]}
           callback={(data)=>{
             const arr = [];
             data.forEach(item => {
