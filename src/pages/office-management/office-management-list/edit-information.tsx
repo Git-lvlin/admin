@@ -151,6 +151,7 @@ export default (props) => {
           visibilityToggle: false,
           autoComplete: 'new-password'
         }}
+        extra={<p style={{color:'#FFB45D'}}>未填写时保持已有的密码</p>}
       />
       <ProFormText
         width={250}

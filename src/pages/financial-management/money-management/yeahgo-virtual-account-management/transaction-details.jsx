@@ -1,10 +1,11 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table'
 import { useLocation, history } from "umi"
 import { Button, Drawer } from 'antd'
 
 import { logPage } from '@/services/financial-management/yeahgo-virtual-account-management'
+import { orderTypes } from '@/services/financial-management/common'
 import { amountTransform } from '@/utils/utils'
 import { Export,ExportHistory } from '@/pages/export-excel'
 import { tradeType } from '../../common-enum'
@@ -23,9 +24,19 @@ const TransactionDetails = ({
   const [shopkeeperOrderVisible, setShopkeeperOrderVisible] = useState(false)
   const [id, setId] = useState()
   const [visit, setVisit] = useState(false)
+  const [orderType, setOrderType] = useState()
   const actionform = useRef()
 
   const isPurchase = useLocation().pathname.includes('purchase')
+
+  useEffect(() => {
+    orderTypes({}).then(res=>{
+      setOrderType(res.data)
+    })
+    return () => {
+      setOrderType()
+    }
+  }, [])
 
   const skipToOrder = (id, type)=> {
     if(type) {
@@ -79,20 +90,6 @@ const TransactionDetails = ({
     }
   }
 
-  const orderType = () => {
-    if(query.accountId==='platform') {
-      return {
-        'second': '秒约订单',
-        'commandSalesOrder': '集约批发订单',
-        'dropShipping1688': '1688代发订单',
-        'commandCollect': '集约零售订单',
-        'blindBox': '盲盒订单',
-        'signIn': '签到订单',
-        'settleChargeFee': '入驻服务费订单'
-      }
-    }
-  }
-
   const getValues = (form) => {
     return {
       accountId: query.accountId,
@@ -129,7 +126,7 @@ const TransactionDetails = ({
       title: '订单类型',
       dataIndex:'orderType',
       valueType: 'select',
-      valueEnum: orderType(),
+      valueEnum: orderType,
       hideInSearch: query.accountId==='platform' ? false : true,
       hideInTable: true
     },

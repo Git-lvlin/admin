@@ -1,102 +1,71 @@
+import { useState } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
-import ProTable, { ProColumns } from "@ant-design/pro-table"
-import { Cascader  } from 'antd'
+import ProTable from "@ant-design/pro-table"
+import moment from "moment"
 
-import { ProTableProps } from "../data"
+import type { FC } from "react"
+import type { ProColumns } from "@ant-design/pro-table"
+import type { ProTableProps } from "../data"
 
-const IncidentAnalysts = () => {
+import SearchModal from "./search-modal"
+import { indexDetail } from "@/services/buried-point/incident-analysts"
+import SelectDate from "./select-date"
 
-  interface Option {
-    value: string;
-    label: string;
-    children?: Option[];
-  }
-  
-  const options: Option[] = [
-    {
-      value: 'zhejiang',
-      label: 'Zhejiang',
-      children: [
-        {
-          value: 'hangzhou',
-          label: 'Hangzhou'
-        },
-      ],
-    },
-    {
-      value: 'jiangsu',
-      label: 'Jiangsu',
-      children: [
-        {
-          value: 'nanjing',
-          label: 'Nanjing'
-        },
-      ],
-    },
-  ]; 
+const IncidentAnalysts: FC = () => {
+  const [ formData, setFormData ] = useState({})
+  const [ title, setTitle ] = useState<string>('')
+  const [ rangePicker, setRangePicker ] = useState<moment.Moment[]>([])
+  const [ change, setChange] = useState<number>(0)
 
   const columns: ProColumns<ProTableProps>[] = [
     {
-      title: '已有事件',
-      dataIndex: 'test',
-      align: 'center',
-      hideInTable: true,
-      renderFormItem: ()=> {
-        return (
-          <>
-            <Cascader 
-              options={options} 
-              displayRender={(label) =>{
-                return <span>{label[label.length - 1]}</span>
-                
-              }}
-              showSearch
-            />
-          </>
-        )
-      }
+      title: '日期',
+      dataIndex: 'dates',
+      align: 'center'
     },
-    // {
-    //   title: '',
-    //   dataIndex: '',
-    //   align: 'center'
-    // },
-    // {
-    //   title: '',
-    //   dataIndex: '',
-    //   align: 'center'
-    // },
-    // {
-    //   title: '',
-    //   dataIndex: '',
-    //   align: 'center'
-    // },
-    // {
-    //   title: '',
-    //   dataIndex: '',
-    //   align: 'center'
-    // },
-    // {
-    //   title: '',
-    //   dataIndex: '',
-    //   align: 'center'
-    // }
+    {
+      title: `${title}总次数`,
+      dataIndex: 'totalNum',
+      align: 'center'
+    },
+    {
+      title: `${title}总人数`,
+      dataIndex: 'userNum',
+      align: 'center'
+    },
+    {
+      title: `${title}平均次数`,
+      dataIndex: 'average',
+      align: 'center',
+      render: (_, r)=> Number(r.average).toFixed(1)
+    }
   ]
 
   return (
     <PageContainer title={false}>
+      <SearchModal 
+        setFormData={setFormData} 
+        setTitle={setTitle}
+        setChange={setChange}
+        change={change}
+      />
       <ProTable
-        rowKey=''
+        rowKey='dates'
         columns={columns}
-        params={{}}
+        request={indexDetail}
+        params={{
+          ...formData, 
+          startTime: rangePicker[0]?.format('YYYY-MM-DD'),
+          endTime: rangePicker[1]?.format('YYYY-MM-DD'),
+          change
+        }}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
         }}
+        headerTitle={<SelectDate setRangePickerValue={setRangePicker}/>}
         options={false}
-        search={{
-          
-        }}
+        search={false}
       />
     </PageContainer>
   )

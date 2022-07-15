@@ -15,14 +15,25 @@ export type DetailListItem={
     skuId: number;
 }
 
-export type ValueItem={
-
-}
-
 export type PropsItem={
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   id: string;
   callback: function;
-  onClose: function;
+  onClose: function
+}
+
+export type endItem={
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  endId: string;
+  callback: function;
+}
+
+export type previewItem={
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  link: string;
+  callback: function;
+  onClose: function
 }
