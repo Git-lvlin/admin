@@ -120,11 +120,11 @@ const StoreList = (props) => {
     //   render: (_) => <img src={_} width="50" height="50" />
     // },
     {
-      title: '生鲜店铺编号',
+      title: '店铺编号',
       dataIndex: 'shopMemberAccount',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入生鲜店铺编号'
+        placeholder: '请输入店铺编号'
       },
       hideInTable: storeType == 'freshStores' || storeType == 'vip',
       hideInSearch: storeType == 'freshStores' || storeType == 'vip',
