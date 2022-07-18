@@ -13,7 +13,7 @@ import { history } from 'umi'
 
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
-import { platforms, platformWithdraw, supplyChainWithdraw } from '@/services/financial-management/yeahgo-virtual-account-management'
+import { platforms, platformWithdraw, supplyChainWithdraw, apply } from '@/services/financial-management/yeahgo-virtual-account-management'
 import Detail from './transaction-details'
 import PopModal from './popup-modal'
 
@@ -31,6 +31,15 @@ const WithdrawalModal = ({ val, change, update, type }) => {
       })
     } else if(type === 'supplyChain') {
       supplyChainWithdraw({
+        amount: money
+      }).then(res => {
+        if (res?.success) {
+          update(change + 1)
+          message.success('提现成功')
+        }
+      })
+    } else if(type === 'operation') {
+      apply({
         amount: money
       }).then(res => {
         if (res?.success) {
@@ -276,7 +285,12 @@ const YeahgoVirtualAccountManagement = () => {
                 </Button>
                 {
                   account?.operation?.bindCard?.cardNo&&
-                  <Button type='primary'>提现</Button>
+                  <WithdrawalModal
+                    val={account?.operation?.bindCard}
+                    update={setChange}
+                    change={change}
+                    type="operation"
+                  />
                 }
               </Space>
               <Space size='middle'>
