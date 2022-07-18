@@ -9,7 +9,7 @@ import moment from 'moment';
 import styles from './style.less'
 
 const formItemLayout = {
-  labelCol: { span: 4},
+  labelCol: { span: 5},
   wrapperCol: { span: 14 },
   layout: {
     labelCol: {
@@ -169,6 +169,7 @@ export default (props) =>{
                 label='是否开启在弹窗上显示关闭按钮' 
                 name="closeBtn" 
                 extra='开启后弹窗上会显示关闭弹窗按钮'
+                // labelCol={4}
             />
             <ProFormSwitch  
                 rules={[{ required: true, message: '请设置' }]} 
