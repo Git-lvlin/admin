@@ -67,3 +67,48 @@ export const supplyChainWithdraw = async (params, options = {}) => {
     success: res?.success
   }
 }
+
+// 提现申请
+export const apply = async (params, options = {}) => {
+  return await request('/auth/java-admin/financial/withdraw/apply', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+}
+
+// 提现绑卡
+export const bind = async (params, options = {}) => {
+  return await request('/auth/java-admin/financial/withdraw/bind', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+}
+
+// 提现解绑
+export const unbind = async (params, options = {}) => {
+  return await request('/auth/java-admin/financial/withdraw/unbind', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
+
+// 获取银行信息
+export const findAllBanks = async (params= {}, options= {}) => {
+  const res = await request('/auth/java-admin/cms/banks/findAllBanks', {
+    method: 'POST',
+    params: params,
+    ...options
+  })
+
+  return {
+    data: res?.data,
+    success: res?.success
+  }
+}
