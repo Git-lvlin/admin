@@ -117,7 +117,7 @@ const PopModal = ({val, change, num})=> {
 
   const submitCode = (v)=> {
     return new Promise((resolve, reject) => {
-      if(val?.operation?.bindCard.cardNo) {
+      if(v?.operation?.bindCard.cardNo) {
         unbind({
           id: val?.operation?.bindCard?.id,
           accountType: val?.operation?.bindCard?.accountType,
@@ -135,6 +135,8 @@ const PopModal = ({val, change, num})=> {
         const bankObj = bankList.filter(item=> item.bankCode === v.bankName)[0]
         bind({
           ...v,
+          accountType: val?.operation?.accountType,
+          accountId: val?.operation?.accountId,
           bankCode: bankObj.bankCode,
           bankName: bankObj.bankName
         }).then(res=> {
