@@ -147,8 +147,8 @@ export default () => {
             copy={copy}
             visible={visible}
             setVisible={setVisible}
-            onClose={()=>{setDetailId(null);ref?.current?.reload()}}
-            callback={()=>{setDetailId(null);ref?.current?.reload()}}
+            onClose={()=>{setDetailId(null);setCopy(null);ref?.current?.reload()}}
+            callback={()=>{setDetailId(null);setCopy(null);ref?.current?.reload()}}
           />
         }
         {
