@@ -333,6 +333,10 @@ export default (props) => {
                 value: 4,
                 label: '自营店',
             },
+            {
+                value: 5,
+                label: '供应商',
+            },
           ]}
           placeholder="请选择可展示的店铺"
           rules={[{ required: true, message: '请选择店铺!' }]}

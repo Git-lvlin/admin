@@ -31,6 +31,7 @@ export default () => {
   const [endVisible, setEndVisible] = useState<boolean>(false)
   const [previewVisible, setPreviewVisible] = useState<boolean>(false)
   const [total, setTotal]= useState<number>()
+  const [copy, setCopy] = useState<string>(false)
   const ref=useRef()
   const columns:ProColumns<ThematicEventItem>[]= [
     {
@@ -75,6 +76,18 @@ export default () => {
     },
     {
       title: '状态',
+      dataIndex: 'status',
+      valueType: 'select',
+      hideInTable: true,
+      valueEnum:{
+        0: '全部',
+        1: '未开始',
+        2: '进行中',
+        3: '已结束'
+      }
+    },
+    {
+      title: '状态',
       dataIndex: 'statusDisplay',
       valueType: 'select',
       hideInSearch: true,
@@ -87,7 +100,8 @@ export default () => {
       render:(text, record, _, action)=>[
         <a key='preview' onClick={()=>{setPreviewVisible(true);setDetailId(record)}}>预览</a>,
         <a key='edit' onClick={()=>{setVisible(true);setDetailId(record.id)}}>编辑</a>,
-        <a key='detele' onClick={()=>{setEndVisible(true);setDetailId(record.id)}}>{record?.status?'终止':null}</a>
+        <a key='detele' onClick={()=>{setEndVisible(true);setDetailId(record.id)}}>{record?.status?'终止':null}</a>,
+        <a key='copy' onClick={()=>{setVisible(true);setDetailId(record.id);setCopy('copy')}}>复制</a>
     ],
     }
   ];
@@ -130,6 +144,7 @@ export default () => {
           visible &&
           <SpecialModel
             id={detailId}
+            copy={copy}
             visible={visible}
             setVisible={setVisible}
             onClose={()=>{setDetailId(null);ref?.current?.reload()}}
