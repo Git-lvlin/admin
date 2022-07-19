@@ -39,7 +39,7 @@ const formItemLayout = {
 };
 
 export default (props:PropsItem) => {
-  const { visible, setVisible, callback, id, onClose } = props;
+  const { visible, setVisible, callback, id, onClose,copy } = props;
   const [form] = Form.useForm();
   const [picture, setPicture] = useState<number>()
   const [detailList,setDetailList]=useState<DetailListItem>()
@@ -101,8 +101,10 @@ export default (props:PropsItem) => {
       if(res.code==0){
         setVisible(false)
         callback()
-        if(id){
+        if(id&&!copy){
           message.success('编辑成功')
+        }else if(copy){
+          message.success('复制成功')
         }else{
           message.success('新增成功')
         }
@@ -195,10 +197,13 @@ export default (props:PropsItem) => {
                 }
               ]}
             />
-          <ProFormText
+          {
+            id&&!copy&&<ProFormText
             name="id"
             hidden
           />
+          }
+
           <ProFormText
             label="专题标题"
             name="name"
