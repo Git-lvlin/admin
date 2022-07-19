@@ -268,6 +268,7 @@ export default (props) => {
                   return arr.indexOf(v) === arr.lastIndexOf(v);
           });
           setSelectedRowKeys([])
+          setDeleteGoos([])
           setDataSource(arr) 
           callback(arr)
         }}
