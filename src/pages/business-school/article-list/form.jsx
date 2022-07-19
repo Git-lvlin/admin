@@ -334,7 +334,7 @@ export default (props) => {
                 label: '自营店',
             },
             {
-                value: 5,
+                value: 10,
                 label: '供应商',
             },
           ]}
