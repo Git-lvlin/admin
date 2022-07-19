@@ -1,11 +1,10 @@
-import { useRef } from "react"
+import { useRef,useEffect, useState } from "react"
 import { Form,List,Divider } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
-import ProList from '@ant-design/pro-list';
 import ProTable from "@ant-design/pro-table"
-import { findItemPage } from "@/services/office-management/office-achievements"
+import { findItemOrderPage,itemOrderSum } from "@/services/office-management/office-achievements"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
@@ -27,7 +26,9 @@ const formItemLayout = {
 export default (props) => {
   const { visible, setVisible,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
-  const ref = useRef<FormInstance>()
+  const [orderSum,setOrderSum]=useState()
+  const [time,setTime]=useState({})
+  const ref = useRef()
   const divide=(item)=>{
     switch (type) {
       case 0:
@@ -73,28 +74,31 @@ export default (props) => {
     },
     {
       title: '订单号',
-      dataIndex: 'businessDeptId',
+      dataIndex: 'orderNo',
       align: 'center',
     },
     {
       title: '订单类型',
-      dataIndex: 'dateRange',
+      dataIndex: 'orderType',
       align: 'center',
       valueType: 'select',
       valueEnum:{
-        1: '氢原子组金'
+        0: '总分成',
+        1: '销售分成',
+        2: '管理分成',
+        3: '累计业绩'
       },
       hideInTable: true,
     },
     {
       title: '订单类型',
-      dataIndex: 'dateRange',
+      dataIndex: 'orderTypeDesc',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '订单金额',
-      dataIndex: 'businessDeptName',
+      dataIndex: 'orderAmount',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
@@ -107,18 +111,31 @@ export default (props) => {
     },
     {
       title: '收益',
-      dataIndex: 'totalCommission',
+      dataIndex: 'commissionDesc',
       align: 'center',
-      render: (_,data)=>{
-        if(parseFloat(_)){
-          return <p>{divideName()}：￥{amountTransform(_,'/').toFixed(2)}</p>
-        }else{
-          return _
-        }
-      },
       hideInSearch: true
     }
   ]
+  // const OrderSum=async ()=>{
+  //  let sum=await itemOrderSum({})
+  //  console.log('sum',sum)
+  //  return sum?.data?.total
+  // }
+  useEffect(()=>{
+    const params={
+      type:type,
+      businessDeptId:msgDetail?.businessDeptId,
+      orderType:time?.orderType,
+      orderNo:time?.orderNo,
+      begin:time?.dateRange?.[0]||msgDetail?.begin,
+      end:time?.dateRange?.[1]||msgDetail?.end
+    }
+    itemOrderSum(params).then(res=>{
+      if(res.code==0){
+        setOrderSum(res?.data?.total)
+      }
+    })
+  },[time])
   return (
     <DrawerForm
       title={`${msgDetail?.businessDeptName} ${divideName()} （ID:${msgDetail?.businessDeptId}）`}
@@ -150,12 +167,21 @@ export default (props) => {
        <ProTable<GithubIssueItem>
         rowKey="date"
         columns={Columns}
-        request={findItemPage}
+        request={findItemOrderPage}
         columnEmptyText={false}
         actionRef={ref}
+        params={{
+          type:type,
+          businessDeptId:msgDetail?.businessDeptId,
+          begin:msgDetail?.begin,
+          end:msgDetail?.end
+        }}
         pagination={{
           pageSize: 10,
           showQuickJumper: true,
+        }}
+        onSubmit={(val)=>{
+          setTime(val)
         }}
         options={false}
         tableRender={(_, dom) => {
@@ -164,48 +190,12 @@ export default (props) => {
             <div className={styles.summary}>
               <div>
                 累计：
-                <span>￥280958.05</span>
+                <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
               </div>
             </div>
           </>
         }}
       />
-      {/* <ProList<GithubIssueItem>
-        search={false}
-        rowKey="name"
-        request={findItemPage}
-        params={{
-          businessDeptId:msgDetail?.businessDeptId,
-          userName:msgDetail?.userName,
-          type:type
-        }}
-        pagination={{
-          pageSize: 5,
-          showQuickJumper: true,
-        }}
-        split={true}
-        metas={{
-          title: {
-            dataIndex: 'date',
-          },
-          // description: {
-          //   dataIndex: 'totalCount',
-          //   render:(_,data)=>{
-          //     if(type==3){
-          //       return <p>{data?.totalCount}台(销售{data?.totalSaleCount}台，租赁{data?.totalRentCount}台)</p>
-          //     }
-          //   }
-          // },
-          actions:{
-            render:(text, row)=>(
-            <div>
-              <p style={{float:'right',color:'#262626'}}>{divide(row)}元</p><br/>
-              <p style={{color:'#999999',float:'right'}}>{type==3?`${row?.totalCount}单（其中管理费${row?.totalRentCount}单）`:`业绩金额：${amountTransform(row?.totalOrderAmount,'/').toFixed(2)}元`}</p>
-            </div> 
-            )
-          }
-        }}
-      /> */}
     </DrawerForm >
   );
 };
