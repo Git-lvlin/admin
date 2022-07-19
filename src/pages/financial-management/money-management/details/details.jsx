@@ -8,12 +8,18 @@ import { detail } from '@/services/financial-management/supplier-fund-management
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
 import PaymentDetails from '../payment-details'
+import QrCodeModal from "../../components/qrcode-modal"
+import PayModal from '../../components/pay-modal'
 
 const Details = ({visible, setVisible, query}) => {
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(false)
   const [paymentVisible, setPaymentVisible] = useState(false)
   const [paymentQuery, setPaymentQuery] = useState(null)
+  const [payVisible, setPayVisible] = useState(false)
+  const [qrCodeVisible, setQrCodeVisible] = useState(false)
+  const [payInfo, setPayInfo] = useState()
+  const [change, setChange] = useState(1)
 
   useEffect(()=>{
     setLoading(true)
@@ -27,7 +33,7 @@ const Details = ({visible, setVisible, query}) => {
     return ()=>{
       setData({})
     }
-  }, [])
+  }, [change])
 
   const card = () => {
     if(query.accountType==='supplier'){
@@ -89,7 +95,13 @@ const Details = ({visible, setVisible, query}) => {
         >
            <div className={styles.platform}>
             <div>账户号码： </div>
-            <div><span className={styles.sn}>{data?.sn}</span></div>
+            <div className={styles.balance}>
+              <span className={styles.sn}>{data?.sn}</span>
+              {
+                data?.sn&&
+                <Button onClick={()=> {setPayVisible(true)}}>充值</Button>
+              }
+            </div>
             <div className={styles.balance}>
               <div>
                 交易总额： 
@@ -155,6 +167,28 @@ const Details = ({visible, setVisible, query}) => {
           query={paymentQuery}
           visible={paymentVisible}
           setVisible={setPaymentVisible}
+        />
+      }
+       {
+        payVisible&&
+        <PayModal
+          visible={payVisible}
+          setVisible={setPayVisible}
+          callback={()=>{setPayVisible(false); setQrCodeVisible(true)}}
+          data={data}
+          setPayInfo={setPayInfo}
+        />
+      }
+      {
+        qrCodeVisible&&
+        <QrCodeModal
+          visible={qrCodeVisible}
+          setVisible={setQrCodeVisible}
+          callback={()=>{setQrCodeVisible(false); message.success('充值成功')}}
+          data={data}
+          payInfo={payInfo}
+          setChange={setChange}
+          change={change}
         />
       }
     </Drawer>

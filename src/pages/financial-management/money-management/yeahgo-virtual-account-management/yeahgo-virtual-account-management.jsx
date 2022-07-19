@@ -1,14 +1,30 @@
-import React, { useState, useEffect } from 'react'
-import { PageContainer } from '@/components/PageContainer';
-import { Button, Space, message } from 'antd'
-import { ModalForm, ProFormText, ProFormDigit } from '@ant-design/pro-form'
+import React, { useState, useEffect, useRef } from 'react'
+import { PageContainer } from '@/components/PageContainer'
+import { 
+  Button, 
+  Space, 
+  message
+} from 'antd'
+import { 
+  ModalForm, 
+  ProFormText, 
+  ProFormDigit
+} from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 import { history } from 'umi'
 
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
-import { platforms, platformWithdraw, supplyChainWithdraw } from '@/services/financial-management/yeahgo-virtual-account-management'
+import { 
+  platforms, 
+  platformWithdraw, 
+  supplyChainWithdraw, 
+  apply
+} from '@/services/financial-management/yeahgo-virtual-account-management'
 import Detail from './transaction-details'
+import PopModal from './popup-modal'
+import QrCodeModal from "../../components/qrcode-modal"
+import PayModal from '../../components/pay-modal'
 
 const WithdrawalModal = ({ val, change, update, type }) => {
   const withdrawal = (v) => {
@@ -24,6 +40,17 @@ const WithdrawalModal = ({ val, change, update, type }) => {
       })
     } else if(type === 'supplyChain') {
       supplyChainWithdraw({
+        amount: money
+      }).then(res => {
+        if (res?.success) {
+          update(change + 1)
+          message.success('提现成功')
+        }
+      })
+    } else if(type === 'operation') {
+      apply({
+        accountType: val.accountType,
+        accountId: val.accountId,
         amount: money
       }).then(res => {
         if (res?.success) {
@@ -87,11 +114,14 @@ const WithdrawalModal = ({ val, change, update, type }) => {
 }
 
 const YeahgoVirtualAccountManagement = () => {
-  const [account, setAccount] = useState({})
+  const [account, setAccount] = useState(null)
   const [loading, setLoading] = useState(false)
   const [visable, setVisable] = useState(false)
   const [change, setChange] = useState(1)
   const [query, setQuery] = useState(null)
+  const [payVisible, setPayVisible] = useState(false)
+  const [qrCodeVisible, setQrCodeVisible] = useState(false)
+  const [payInfo, setPayInfo] = useState()
 
   useEffect(() => {
     setLoading(true)
@@ -102,7 +132,7 @@ const YeahgoVirtualAccountManagement = () => {
     }).finally(() => {
       setLoading(false)
     })
-  }, [])
+  }, [change])
 
   const skipToDetail = ({ accountType, accountId, amountType }) => {
     setQuery({accountType, accountId, amountType})
@@ -145,7 +175,13 @@ const YeahgoVirtualAccountManagement = () => {
           </div>
           <div className={styles.platform}>
             <div>账户号码： </div>
-            <div><span className={styles.sn}>{account?.platform?.sn}</span></div>
+            <div className={styles.balance}>
+              <span className={styles.sn}>{account?.platform?.sn}</span>
+              {
+                account?.platform?.sn&&
+                <Button onClick={()=>{ setPayVisible(true) }}>充值</Button>
+              }
+            </div>
             <div className={styles.balance}>
               <div>
                 <span>总余额：{`${amountTransform(account?.platform?.balance, '/')}元`}</span>
@@ -233,8 +269,63 @@ const YeahgoVirtualAccountManagement = () => {
         </ProCard>
         <ProCard
           colSpan={{ xs: 24, sm: 12, md: 12, lg: 12, xl: 12 }}
-          title={false}
-        />
+          bordered
+          title='平台运营中心0'
+        >
+          <div className={styles.operation}>
+            <div>账户名称：{account?.operation?.bindCard?.realname}</div>
+            <div className={styles.balance}>
+              <Space size={40}>
+                <span>账户号码：{account?.operation?.bindCard?.cardNo}</span>
+                <span>开户行：{account?.operation?.bindCard?.bankName}</span>
+              </Space>
+              <div>
+                <PopModal val={account} change={setChange} num={change} />
+              </div>
+            </div>
+            <div className={styles.balance}>
+              <div>总余额：{`${amountTransform(account?.operation?.balance, '/')}元`}</div>
+              <Button
+                 onClick={() => {
+                  skipToDetail({ accountId: account?.operation?.accountId, accountType: account?.operation?.accountType})
+                }}
+              >
+                交易明细
+              </Button>
+            </div>
+            <div className={styles.balance}>
+              <Space size='middle'>
+                <div>可提现余额：{`${amountTransform(account?.operation?.balanceAvailable, '/')}元`}</div>
+                <Button
+                   onClick={() => {
+                    skipToDetail({ accountId: account?.operation?.accountId, accountType: account?.operation?.accountType, amountType: 'available'})
+                  }}
+                >
+                  交易明细
+                </Button>
+                {
+                  account?.operation?.bindCard?.cardNo&&
+                  <WithdrawalModal
+                    val={account?.operation?.bindCard}
+                    update={setChange}
+                    change={change}
+                    type="operation"
+                  />
+                }
+              </Space>
+              <Space size='middle'>
+                <div>冻结余额：{`${amountTransform(account?.operation?.balanceFreeze, '/')}元`}</div>
+                <Button
+                   onClick={() => {
+                    skipToDetail({ accountId: account?.operation?.accountId, accountType: account?.operation?.accountType, amountType: 'freeze'})
+                  }}
+                >
+                  交易明细
+                </Button>
+              </Space>
+            </div>
+          </div>
+        </ProCard>
         <ProCard
           colSpan={{ xs: 24, sm: 12, md: 12, lg: 12, xl: 12 }}
           bordered
@@ -301,6 +392,28 @@ const YeahgoVirtualAccountManagement = () => {
           visible={visable}
           setVisible={setVisable}
           query={query}
+        />
+      }
+      {
+        payVisible&&
+        <PayModal
+          visible={payVisible}
+          setVisible={setPayVisible}
+          callback={()=>{setPayVisible(false); setQrCodeVisible(true)}}
+          data={account?.platform}
+          setPayInfo={setPayInfo}
+        />
+      }
+      {
+        qrCodeVisible&&
+        <QrCodeModal
+          visible={qrCodeVisible}
+          setVisible={setQrCodeVisible}
+          callback={()=>{setQrCodeVisible(false); message.success('充值成功')}}
+          data={account?.platform}
+          payInfo={payInfo}
+          setChange={setChange}
+          change={change}
         />
       }
     </PageContainer>
