@@ -112,3 +112,21 @@ export const findAllBanks = async (params= {}, options= {}) => {
     success: res?.success
   }
 }
+
+// 充值申请
+export const rechargeApply = async (params, options = {}) => {
+  return await request('/auth/java-admin/financial/recharge/apply', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
+
+// 充值详情
+export const rechargeDetail = async (params, options = {}) => {
+  return await request('/auth/java-admin/financial/recharge/detail', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
