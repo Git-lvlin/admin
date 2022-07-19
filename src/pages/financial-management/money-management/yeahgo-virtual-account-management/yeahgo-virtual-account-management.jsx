@@ -3,19 +3,15 @@ import { PageContainer } from '@/components/PageContainer'
 import { 
   Button, 
   Space, 
-  message,
-  Col,
-  Row 
+  message
 } from 'antd'
 import { 
   ModalForm, 
   ProFormText, 
-  ProFormDigit,
-  ProFormTextArea 
+  ProFormDigit
 } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 import { history } from 'umi'
-import {QRCodeCanvas} from 'qrcode.react'
 
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
@@ -23,12 +19,12 @@ import {
   platforms, 
   platformWithdraw, 
   supplyChainWithdraw, 
-  apply,
-  rechargeApply,
-  rechargeDetail 
+  apply
 } from '@/services/financial-management/yeahgo-virtual-account-management'
 import Detail from './transaction-details'
 import PopModal from './popup-modal'
+import QrCodeModal from "../../components/qrcode-modal"
+import PayModal from '../../components/pay-modal'
 
 const WithdrawalModal = ({ val, change, update, type }) => {
   const withdrawal = (v) => {
@@ -53,6 +49,8 @@ const WithdrawalModal = ({ val, change, update, type }) => {
       })
     } else if(type === 'operation') {
       apply({
+        accountType: val.accountType,
+        accountId: val.accountId,
         amount: money
       }).then(res => {
         if (res?.success) {
@@ -134,7 +132,7 @@ const YeahgoVirtualAccountManagement = () => {
     }).finally(() => {
       setLoading(false)
     })
-  }, [])
+  }, [change])
 
   const skipToDetail = ({ accountType, accountId, amountType }) => {
     setQuery({accountType, accountId, amountType})
@@ -416,162 +414,6 @@ const YeahgoVirtualAccountManagement = () => {
         />
       }
     </PageContainer>
-  )
-}
-
-const PayModal = ({visible, setVisible, callback, data, setPayInfo}) => {
-  const [num, setNum] = useState()
-
-  const submit = (value) => {
-    return new Promise((resolve, reject) => {
-      rechargeApply({
-        ...value,
-        amount: amountTransform(value.amount, '*')
-      }).then(res => {
-        if(res.code === 0) {
-          setPayInfo(res?.data)
-          callback()
-          resolve()
-        } else {
-          reject()
-        }
-      })
-    })
-  }
-
-  return (
-    <ModalForm
-      title="账户充值"
-      visible={visible}
-      onVisibleChange={setVisible}
-      modalProps={{
-        destroyOnClose: true
-      }}
-      layout='horizontal'
-      width={500}
-      submitter={{
-        searchConfig: {
-          submitText: '立即充值'
-        },
-        resetButtonProps: {
-          style: {
-            display: 'none'
-          }
-        }
-      }}
-      onFinish={async (values) => {
-        await submit(values)
-      }}
-    >
-      <ProFormText
-        label='充值账户'
-        name='accountSn'
-        initialValue={data?.platform?.sn}
-        readonly
-      />
-      <div style={{margin: '20px 0'}}>现有余额：￥{amountTransform(data?.platform?.balance, '/')}</div>
-      <ProFormDigit
-        label='充值金额'
-        name='amount'
-        rules={[{required: true}]}
-        fieldProps={{
-          addonAfter: '元',
-          value: num,
-          onChange: (v) => {
-            const val = v.toFixed(2)
-            setNum(val)
-          }
-        }}
-      />
-      <ProFormTextArea
-        label='充值描述'
-        name='description'
-        rules={[{required: true}]}
-      />
-      <div style={{marginTop: 20}}>支付方式：支付宝</div>
-    </ModalForm>
-  )
-}
-
-const QrCodeModal = (props) => {
-  const {visible, setVisible, callback, data, payInfo, setChange, change} = props
-  const timer = useRef()
-
-  console.log(payInfo?.order_no);
-
-  useEffect(() => {
-    timer.current = setInterval(()=>{
-      getStatus()
-    }, 3000)
-    return ()=> {
-      clearInterval(timer.current)
-    }
-  }, [visible])
-
-  const getStatus = () => {
-    return new Promise((resolve, reject) => {
-      rechargeDetail({
-        rechargeNo: payInfo?.orderNo
-      }).then(res => {
-        if(res.data.paymentStatus === 'success') {
-          clearInterval(timer.current)
-          setChange(change + 1)
-          callback()
-          resolve()
-        } else {
-          reject('')
-        }
-      })
-    })
-  }
-
-  return (
-    <ModalForm
-      title='账户充值'
-      visible={visible}
-      onVisibleChange={setVisible}
-      modalProps={{
-        destroyOnClose: true
-      }}
-      layout='horizontal'
-      width={500}
-      submitter={{
-        searchConfig: {
-          submitText: '我已付款'
-        },
-        resetButtonProps: {
-          style: {
-            display: 'none'
-          }
-        }
-      }}
-      onFinish={async () => {
-        message.error('请付款')
-        await getStatus()
-      }}
-    >
-      <div>充值账户：{data?.platform?.accountName}</div>
-      <div style={{marginTop: 20}}>账户号码：{data?.platform?.sn}</div>
-      <div style={{margin: '20px 0'}}>现有余额：￥{amountTransform(data?.platform?.balance, '/')}</div>
-      <div style={{marginBottom: 20}}>支付方式：支付宝</div>
-      <div>
-        请使用支付宝扫码付款充值
-        <QRCodeCanvas
-          value={payInfo?.expend?.payInfo}
-          size={128}
-          bgColor={"#ffffff"}
-          fgColor={"#000000"}
-          level={"Q"}
-          includeMargin={false}
-          imageSettings={{
-            src: "https://pro-yeahgo-oss.yeahgo.com/publicMobile/files/zfb_logo.png",
-            height: 30,
-            width: 30,
-            excavate: true,
-          }}
-        />
-      </div>
-    </ModalForm>
   )
 }
 

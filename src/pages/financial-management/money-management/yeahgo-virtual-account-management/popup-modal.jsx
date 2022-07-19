@@ -117,7 +117,7 @@ const PopModal = ({val, change, num})=> {
 
   const submitCode = (v)=> {
     return new Promise((resolve, reject) => {
-      if(v?.operation?.bindCard.cardNo) {
+      if(val?.operation?.bindCard?.cardNo) {
         unbind({
           id: val?.operation?.bindCard?.id,
           accountType: val?.operation?.bindCard?.accountType,
@@ -128,7 +128,7 @@ const PopModal = ({val, change, num})=> {
             message.success('提交成功')
             resolve()
           } else {
-            reject()
+            reject('')
           }
         })
       } else {
@@ -145,7 +145,7 @@ const PopModal = ({val, change, num})=> {
             message.success('提交成功')
             resolve()
           } else {
-            reject()
+            reject('')
           }
         })
       }
