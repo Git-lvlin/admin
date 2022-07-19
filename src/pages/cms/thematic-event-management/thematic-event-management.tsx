@@ -76,13 +76,12 @@ export default () => {
     },
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'actStatus',
       valueType: 'select',
       hideInTable: true,
       valueEnum:{
-        0: '全部',
-        1: '未开始',
-        2: '进行中',
+        2: '未开始',
+        1: '进行中',
         3: '已结束'
       }
     },
