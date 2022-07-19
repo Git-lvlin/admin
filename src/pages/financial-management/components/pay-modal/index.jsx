@@ -51,10 +51,10 @@ const PayModal = ({visible, setVisible, callback, data, setPayInfo}) => {
       <ProFormText
         label='充值账户'
         name='accountSn'
-        initialValue={data?.platform?.sn}
+        initialValue={data?.sn}
         readonly
       />
-      <div style={{margin: '20px 0'}}>现有余额：￥{amountTransform(data?.platform?.balance, '/')}</div>
+      <div style={{margin: '20px 0'}}>现有余额：￥{amountTransform(data?.balance, '/')}</div>
       <ProFormDigit
         label='充值金额'
         name='amount'

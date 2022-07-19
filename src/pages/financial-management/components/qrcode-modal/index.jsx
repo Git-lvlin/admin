@@ -61,9 +61,9 @@ const QrCodeModal = (props) => {
         await getStatus()
       }}
     >
-      <div>充值账户：{data?.platform?.accountName}</div>
-      <div style={{marginTop: 20}}>账户号码：{data?.platform?.sn}</div>
-      <div style={{margin: '20px 0'}}>现有余额：￥{amountTransform(data?.platform?.balance, '/')}</div>
+      <div>充值账户：{data?.accountName}</div>
+      <div style={{marginTop: 20}}>账户号码：{data?.sn}</div>
+      <div style={{margin: '20px 0'}}>现有余额：￥{amountTransform(data?.balance, '/')}</div>
       <div style={{marginBottom: 20}}>支付方式：支付宝</div>
       <div>
         请使用支付宝扫码付款充值
