@@ -177,7 +177,10 @@ const YeahgoVirtualAccountManagement = () => {
             <div>账户号码： </div>
             <div className={styles.balance}>
               <span className={styles.sn}>{account?.platform?.sn}</span>
-              <Button onClick={()=>{ setPayVisible(true) }}>充值</Button>
+              {
+                account?.platform?.sn&&
+                <Button onClick={()=>{ setPayVisible(true) }}>充值</Button>
+              }
             </div>
             <div className={styles.balance}>
               <div>
@@ -397,7 +400,7 @@ const YeahgoVirtualAccountManagement = () => {
           visible={payVisible}
           setVisible={setPayVisible}
           callback={()=>{setPayVisible(false); setQrCodeVisible(true)}}
-          data={account}
+          data={account?.platform}
           setPayInfo={setPayInfo}
         />
       }
@@ -407,7 +410,7 @@ const YeahgoVirtualAccountManagement = () => {
           visible={qrCodeVisible}
           setVisible={setQrCodeVisible}
           callback={()=>{setQrCodeVisible(false); message.success('充值成功')}}
-          data={account}
+          data={account?.platform}
           payInfo={payInfo}
           setChange={setChange}
           change={change}
