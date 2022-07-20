@@ -52,14 +52,14 @@ export default (props) => {
                   payment: d1 ? amountTransform(d1.payment, '/') : '',
                 },
                 {
-                  checked: d2.statusAccount === 1,
+                  checked: d2?.statusAccount === 1,
                   actionId: 10002,
                   name: '健康档案',
                   useful: d2 ? [d2?.usefulStart * 1000, d2?.usefulEnd * 1000] : '',
                   payment: d2 ? amountTransform(d2.payment, '/') : '',
                 },
                 {
-                  checked: d3.statusAccount === 1,
+                  checked: d3?.statusAccount === 1,
                   actionId: 10003,
                   name: '充值系统',
                   useful: d3 ? [d3?.usefulStart * 1000, d3?.usefulEnd * 1000] : '',
