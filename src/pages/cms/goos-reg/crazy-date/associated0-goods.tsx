@@ -4,8 +4,9 @@ import type { ProColumns } from '@ant-design/pro-table';
 import SelectProductModal from './select-product-modal'
 import { amountTransform } from '@/utils/utils'
 import { subAccountCheck } from '@/services/product-management/product-list'
-import { Button,InputNumber,message,Input} from 'antd';
+import { Button,Input} from 'antd';
 import debounce from 'lodash/debounce';
+import DeleteModel from './delete-model'
 
 
 type ThematicEventItem={
@@ -30,7 +31,10 @@ export default (props) => {
   const { id,detailList,callback }=props
   const [dataSource, setDataSource] = useState([]);
   const [visible, setVisible] = useState(false)
+  const [delectVisible, setDelectVisible] = useState(false)
   const [editableKeys, setEditableKeys] = useState([])
+  const [deleteGoos, setDeleteGoos] = useState([])
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const ref=useRef()
   useEffect(()=>{
     setDataSource(detailList)
@@ -85,6 +89,26 @@ export default (props) => {
       dataIndex: 'goodsName',
       valueType: 'text',
       editable:false,
+    },
+    {
+      title: '批发供货价',
+      dataIndex: 'wholesaleSupplyPrice',
+      valueType: 'text',
+      editable:false,
+      render:(_)=>{
+        return amountTransform(_,'/')
+      },
+      hideInSearch: true,
+    },
+    {
+      title: '零售供货价',
+      dataIndex: 'retailSupplyPrice',
+      valueType: 'text',
+      editable:false,
+      render:(_)=>{
+        return amountTransform(_,'/')
+      },
+      hideInSearch: true,
     },
     {
       title: '市场价',
@@ -191,12 +215,22 @@ export default (props) => {
             },
           }}
           toolBarRender={()=>[
-            <Button onClick={()=>{setVisible(true)}}>选择商品</Button>
+            <Button key='allDele' type='primary' disabled={!deleteGoos.length} onClick={()=>{setDelectVisible(true);}}>批量删除</Button>,
+            <Button key='select' onClick={()=>{setVisible(true)}}>选择商品</Button>
           ]}
           pagination={{
             pageSize: 10,
             showQuickJumper: true,
           }}
+          rowSelection={{
+            preserveSelectedRowKeys: true,
+            onChange:(_,val)=>{
+              setDeleteGoos(val)
+              setSelectedRowKeys(_)
+            },
+            selectedRowKeys
+          }}
+          tableAlertRender={false}
         />
         {
         visible &&
@@ -224,6 +258,22 @@ export default (props) => {
           }}
       />
       }
+      {delectVisible && <DeleteModel
+        visible={delectVisible}
+        setVisible={setDelectVisible}
+        record={deleteGoos}
+        callBack={()=>{
+          ref?.current?.reload();
+          const arr=dataSource.concat(deleteGoos).filter(function(v, i, arr) {
+                  return arr.indexOf(v) === arr.lastIndexOf(v);
+          });
+          setSelectedRowKeys([])
+          setDeleteGoos([])
+          setDataSource(arr) 
+          callback(arr)
+        }}
+        onClose={()=>{ref?.current?.reload();}}
+      />}
   </>
   )
 }

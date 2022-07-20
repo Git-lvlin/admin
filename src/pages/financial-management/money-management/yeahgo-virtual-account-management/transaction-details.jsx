@@ -87,6 +87,13 @@ const TransactionDetails = ({
         'goodsAmount': '货款',
         'goodsAmountReturn': '货款回退'
       }
+    } else if(query.accountId==='0') {
+      return {
+        'withdraw': '提现',
+        'unfreeze': '解冻',
+        'agentCompanyCommission': '运营中心收益',
+        'chargeFeeCommission': '服务费收益'
+      }
     }
   }
 

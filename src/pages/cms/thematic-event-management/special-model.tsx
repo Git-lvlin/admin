@@ -39,7 +39,7 @@ const formItemLayout = {
 };
 
 export default (props:PropsItem) => {
-  const { visible, setVisible, callback, id, onClose } = props;
+  const { visible, setVisible, callback, id, onClose,copy } = props;
   const [form] = Form.useForm();
   const [picture, setPicture] = useState<number>()
   const [detailList,setDetailList]=useState<DetailListItem>()
@@ -94,15 +94,17 @@ export default (props:PropsItem) => {
         sort:ele?.sort,
         actPrice:amountTransform(ele?.actPrice,'*'),
         skuId:ele?.skuId,
-        id:ele.id==ele.skuId?0:ele.id
+        id:ele.id==ele.skuId||copy?0:ele.id
       }))
     }
     saveSubjectActiveConfig(params).then(res=>{
       if(res.code==0){
         setVisible(false)
         callback()
-        if(id){
+        if(id&&!copy){
           message.success('编辑成功')
+        }else if(copy){
+          message.success('复制成功')
         }else{
           message.success('新增成功')
         }
@@ -154,7 +156,7 @@ export default (props:PropsItem) => {
   return (
     <DrawerForm
       onVisibleChange={setVisible}
-      title='活动详情'
+      title={!id?'新建活动':copy?'复制活动':'活动详情'}
       visible={visible}
       width={1500}
       form={form}
@@ -195,10 +197,13 @@ export default (props:PropsItem) => {
                 }
               ]}
             />
-          <ProFormText
+          {
+            id&&!copy&&<ProFormText
             name="id"
             hidden
           />
+          }
+
           <ProFormText
             label="专题标题"
             name="name"

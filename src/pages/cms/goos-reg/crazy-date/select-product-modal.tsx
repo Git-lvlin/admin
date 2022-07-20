@@ -43,6 +43,26 @@ export default (props) => {
         },
       },
       {
+        title: '批发供货价',
+        dataIndex: 'wholesaleSupplyPrice',
+        valueType: 'text',
+        editable:false,
+        render:(_)=>{
+          return amountTransform(_,'/')
+        },
+        hideInSearch: true,
+      },
+      {
+        title: '零售供货价',
+        dataIndex: 'retailSupplyPrice',
+        valueType: 'text',
+        editable:false,
+        render:(_)=>{
+          return amountTransform(_,'/')
+        },
+        hideInSearch: true,
+      },
+      {
         title: '市场价',
         dataIndex: 'marketPrice',
         valueType: 'text',
