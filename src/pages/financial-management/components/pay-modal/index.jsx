@@ -63,7 +63,7 @@ const PayModal = ({visible, setVisible, callback, data, setPayInfo}) => {
           addonAfter: '元',
           value: num,
           onChange: (v) => {
-            const val = v.toFixed(2)
+            const val = v?.toFixed(2)
             setNum(val)
           }
         }}

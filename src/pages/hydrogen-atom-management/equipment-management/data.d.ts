@@ -69,3 +69,17 @@ export type InfoProps = {
 	remark?: string
 	packageType?: number
 }
+
+export type OptionImeiProps = {
+	visible: boolean
+	setVisible: React.Dispatch<React.SetStateAction<boolean>>
+	data?: EquipmentItem
+	callback: () => void
+}
+
+export type OptModalProps = {
+	phone: string
+	imei: string
+	newImei: string
+	remark: string
+}

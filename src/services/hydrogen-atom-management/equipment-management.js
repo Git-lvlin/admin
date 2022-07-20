@@ -113,3 +113,12 @@ export const findUseTime = async (params = {}, options = {}) => {
     success: res.success
   }
 }
+
+// 变更设备IMEI
+export const memberDeviceImei = async (params = {}, options = {}) => {
+  return await request('/auth/java-admin/iot/memberDevice/imei', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
