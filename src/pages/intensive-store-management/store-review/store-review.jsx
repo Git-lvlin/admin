@@ -52,6 +52,14 @@ const StoreReview = () => {
       render: (_, { details }) => details?.storeName
     },
     {
+      title: '店主姓名',
+      dataIndex: 'realname',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入店主姓名'
+      },
+    },
+    {
       title: '提货点所在地区',
       dataIndex: '',
       valueType: 'text',
