@@ -165,6 +165,14 @@ const StoreList = (props) => {
       hideInSearch: storeType == 'vip',
     },
     {
+      title: '店主姓名',
+      dataIndex: 'realname',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入店主姓名'
+      },
+    },
+    {
       title: 'PC开通状态',
       dataIndex: 'statusAction',
       valueType: 'text',

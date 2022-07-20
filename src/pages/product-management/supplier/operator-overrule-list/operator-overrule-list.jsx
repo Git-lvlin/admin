@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Table, Spin, Modal } from 'antd';
+import { Button, Table, Spin, Modal, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import * as api from '@/services/product-management/product-list-purchase';
@@ -51,6 +51,7 @@ const TableList = () => {
   const [config, setConfig] = useState({});
   const [selectItem, setSelectItem] = useState(null);
   const [overruleVisible, setOverruleVisible] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const actionRef = useRef();
   const formRef = useRef();
 
@@ -271,10 +272,12 @@ const TableList = () => {
   ];
 
   const overrule = (goodsVerifyRemark) => {
-    purchaseAuditRefuse({ spuIds: selectItem?.spuId, goodsVerifyRemark })
+    purchaseAuditRefuse({ spuIds: selectItem ? selectItem.spuId : selectedRowKeys.join(','), goodsVerifyRemark })
       .then(res => {
         if (res.code === 0) {
-          actionRef.current.reload();
+          actionRef.current.reload()
+          setSelectedRowKeys([])
+          setSelectItem(null)
         }
       })
   }
@@ -302,6 +305,16 @@ const TableList = () => {
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         pagination={{
           pageSize: 10,
+          onChange: () => {
+            setSelectedRowKeys([])
+          }
+        }}
+        // alwayShowAlert={false}
+        rowSelection={{
+          selectedRowKeys,
+          onChange: (_) => {
+            setSelectedRowKeys(_);
+          },
         }}
         search={{
           labelWidth: 140,
@@ -324,6 +337,18 @@ const TableList = () => {
             >
               {resetText}
             </Button>,
+            <Button
+              key="3"
+              type="primary"
+              onClick={() => {
+                if (!selectedRowKeys.length) {
+                  message.error('请先选中要驳回的商品')
+                  return;
+                }
+                setOverruleVisible(true)
+              }}>
+              批量驳回
+            </Button>
           ],
         }}
         columns={columns}
@@ -334,6 +359,8 @@ const TableList = () => {
         callback={(text) => { overrule(text) }}
         goodsName={selectItem?.goodsName}
         spuId={selectItem?.spuId}
+        overruleText={selectItem?.goodsVerifyRemark?.replace?.('运营驳回: ', '')}
+        onClose={() => { setSelectItem(null) }}
       />}
       {
         productDetailDrawerVisible &&

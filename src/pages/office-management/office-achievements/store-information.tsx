@@ -161,9 +161,6 @@ export default (props) => {
       {...formItemLayout}
       className={styles.store_information}
     >
-      {
-        type==3&&<><p>总业绩：{amountTransform(msgDetail?.totalOrderAmount,'/').toFixed(2)}元，总缴费：{msgDetail?.totalCount}单（销售{msgDetail?.totalSaleCount}单，交管理费{msgDetail?.totalRentCount}单）</p><Divider /></>
-      }
        <ProTable<GithubIssueItem>
         rowKey="date"
         columns={Columns}

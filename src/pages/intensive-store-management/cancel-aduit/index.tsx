@@ -71,6 +71,15 @@ const CancelAduit: FC = () => {
       align: 'center',
     },
     {
+      title: '店主姓名',
+      dataIndex: 'realname',
+      align: 'center',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入店主姓名'
+      },
+    },
+    {
       title: '提货点所在地区',
       align: 'center',
       hideInSearch: true,
