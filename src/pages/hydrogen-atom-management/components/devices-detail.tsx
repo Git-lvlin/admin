@@ -85,7 +85,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
       inviteType
     },
     6: {
-      imei: memberId
+      memberDeviceId: memberId
     }
   }
 
@@ -96,7 +96,8 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
     4: '启动',
     5: '禁用',
     6: '开启缴费入口',
-    7: '修改使用时长'
+    7: '修改使用时长',
+    8: '更改机器ID'
   }
 
   const androidStatus = {
@@ -173,6 +174,13 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
           <div className={styles.cardListContent}>
             <div>当前单次使用时长：{data?.nowUseTime}</div>
             <div>更新后单次使用时长：{data?.updUseTime}</div>
+          </div>
+        )
+      case 8:
+        return (
+          <div className={styles.cardListContent}>
+            <div>新机器ID：{data?.newImei}</div>
+            <div>原机器ID：{data?.oldImei}</div>
           </div>
         )
       default:
