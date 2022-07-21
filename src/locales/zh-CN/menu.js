@@ -70,6 +70,8 @@ export default {
   'menu.product-management.supplier.operator-overrule-list': '运营驳回商品',
   'menu.product-management.supplier.product-evaluate': '商品评价',
   'menu.product-management.public.product-unit': '商品单位',
+  'menu.product-management.designated-commodity-settlement': '指定商品结算',
+
 
 
   'menu.setting': '设置',

@@ -95,6 +95,12 @@ export default {
       component: './product-management/daifa-product',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'designated-commodity-settlement',
+      path: '/product-management/designated-commodity-settlement',
+      component: './product-management/designated-commodity-settlement',
+      wrappers: [RouteWatcher],
+    },
     
     // {
     //   name: 'freight-template',
