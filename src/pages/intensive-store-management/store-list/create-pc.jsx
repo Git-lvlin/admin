@@ -45,7 +45,7 @@ export default (props) => {
               account: res.data[0].account,
               subscribeList: [
                 {
-                  checked: d1.statusAccount === 1,
+                  checked: d1?.statusAccount === 1,
                   actionId: 10001,
                   name: '预约系统',
                   useful: d1 ? [d1.usefulStart * 1000, d1.usefulEnd * 1000] : '',
