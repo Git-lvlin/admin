@@ -18,7 +18,7 @@ const BlockUp: FC<ModalFormProps> = (props) => {
 
   useEffect(()=> {
     findStartPage({
-      imei: id
+      id
     }).then(res => {
       setInfo(res.data)
     })
@@ -30,7 +30,7 @@ const BlockUp: FC<ModalFormProps> = (props) => {
   const submit = (v: OptProps) => {
     new Promise((resolve, reject) => {
       opt({
-        imei: id,
+        id,
         type,
         phone,
         remark: v.remark

@@ -70,7 +70,9 @@ const TransactionDetails = ({
         'deposit': '保证金',
         'depositReturn': '保证金回退',
         'chargeFeeCommission': '服务费收益',
-        'chargeFeeCommissionReturn': '服务费收益回退'
+        'chargeFeeCommissionReturn': '服务费收益回退',
+        'recharge': '充值',
+        'rechargeReturn': '充值回退'
       }
     }else if(query.accountId==='platformFee'){
       return {
@@ -92,7 +94,9 @@ const TransactionDetails = ({
         'withdraw': '提现',
         'unfreeze': '解冻',
         'agentCompanyCommission': '运营中心收益',
-        'chargeFeeCommission': '服务费收益'
+        'chargeFeeCommission': '服务费收益',
+        'recharge': '充值',
+        'rechargeReturn': '充值回退'
       }
     }
   }
