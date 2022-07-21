@@ -71,6 +71,16 @@ const CancelAduit: FC = () => {
       align: 'center',
     },
     {
+      title: 'VIP店铺',
+      dataIndex: 'vip',
+      valueType: 'text',
+      valueEnum: {
+        0: '否',
+        1: '是'
+      },
+      hideInSearch: true,
+    },
+    {
       title: '店主姓名',
       dataIndex: 'realname',
       align: 'center',
@@ -191,6 +201,16 @@ const CancelAduit: FC = () => {
           }
         </>
       )
+    },
+    {
+      title: 'VIP店铺',
+      dataIndex: 'vip',
+      valueType: 'select',
+      valueEnum: {
+        0: '非VIP店铺',
+        1: 'VIP店铺'
+      },
+      hideInTable: true,
     },
     {
       title: '操作',

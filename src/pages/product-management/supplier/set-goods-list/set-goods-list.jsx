@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Tooltip, Spin } from 'antd';
+import { Table, Button, Spin, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import * as api from '@/services/product-management/product-review'
@@ -12,6 +12,8 @@ import ProductDetailDrawer from '@/components/product-detail-drawer'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import moment from 'moment';
+import Overrule from '../product-review/overrule';
+import { productCheck } from '@/services/product-management/product-list';
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -57,7 +59,8 @@ const TableList = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
   const [visit, setVisit] = useState(false)
-
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [overruleVisible, setOverruleVisible] = useState(false);
   const formRef = useRef();
 
   const getDetail = (record) => {
@@ -335,6 +338,20 @@ const TableList = () => {
     return {}
   }
 
+  const overrule = (text) => {
+    productCheck({
+      checkType: 2,
+      spuIds: selectedRowKeys.join(','),
+      goodsVerifyRemark: text
+    })
+      .then(res => {
+        if (res.code === 0) {
+          actionRef.current.reload()
+          setSelectedRowKeys([])
+        }
+      })
+  }
+
   useEffect(() => {
     api.getConfig()
       .then(res => {
@@ -365,6 +382,18 @@ const TableList = () => {
           defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
+            <Button
+              key="3"
+              type="primary"
+              onClick={() => {
+                if (!selectedRowKeys.length) {
+                  message.error('请先选中要驳回的商品')
+                  return;
+                }
+                setOverruleVisible(true)
+              }}>
+              批量驳回
+            </Button>,
             <Export
               key="4"
               change={(e) => { setVisit(e) }}
@@ -375,10 +404,21 @@ const TableList = () => {
           ],
         }}
         columns={columns}
+        rowSelection={{
+          selectedRowKeys,
+          onChange: (_) => {
+            setSelectedRowKeys(_);
+          },
+        }}
         pagination={{
           pageSize: 10,
         }}
       />
+      {overruleVisible && <Overrule
+        visible={overruleVisible}
+        setVisible={setOverruleVisible}
+        callback={overrule}
+      />}
       {formVisible && <Edit
         visible={formVisible}
         setVisible={setFormVisible}
