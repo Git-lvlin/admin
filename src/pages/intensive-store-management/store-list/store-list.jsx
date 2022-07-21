@@ -25,6 +25,12 @@ import RangeInput from '@/components/range-input';
 import CreatePc from './create-pc';
 import moment from 'moment';
 
+const exportType = {
+  normal: 'community-shopkeeper-export',
+  cancelled: 'community-shopkeeper-cancelled-export',
+  vip: 'store-export-vip-membershop',
+}
+
 const StoreList = (props) => {
   const { storeType, type } = props
   const [visible, setVisible] = useState(false);
@@ -165,6 +171,17 @@ const StoreList = (props) => {
       hideInSearch: storeType == 'vip',
     },
     {
+      title: 'VIP店铺',
+      dataIndex: 'vip',
+      valueType: 'text',
+      valueEnum: {
+        0: '否',
+        1: '是'
+      },
+      hideInSearch: true,
+      hideInTable: storeType === 'vip' || storeType === 'cancelled',
+    },
+    {
       title: '店主姓名',
       dataIndex: 'realname',
       valueType: 'text',
@@ -192,7 +209,7 @@ const StoreList = (props) => {
       hideInSearch: true,
       render: (_) => {
         return _.map(item => (
-          <div key={item.id}>{`${item.name}(至${moment(item.usefulEnd*1000).format('YYYY-MM-DD')})`}</div>
+          <div key={item.id}>{`${item.name}(至${moment(item.usefulEnd * 1000).format('YYYY-MM-DD')})`}</div>
         ))
       }
     },
@@ -262,7 +279,7 @@ const StoreList = (props) => {
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'vip',
-      render: (_) => _/100
+      render: (_) => _ / 100
     },
     {
       title: '交服务费(元)',
@@ -805,6 +822,17 @@ const StoreList = (props) => {
       hideInTable: true,
     },
     {
+      title: 'VIP店铺',
+      dataIndex: 'vip',
+      valueType: 'select',
+      valueEnum: {
+        0: '非VIP店铺',
+        1: 'VIP店铺'
+      },
+      hideInSearch: storeType === 'vip' || storeType === 'cancelled',
+      hideInTable: true,
+    },
+    {
       title: '操作',
       dataIndex: '',
       valueType: 'option',
@@ -813,22 +841,6 @@ const StoreList = (props) => {
       render: (_, data) => (
         <Space>
           <Dropdown.Button onClick={() => { setSelectItem(data); setDetailVisible(true) }} overlay={() => { return menu(data) }}>详情</Dropdown.Button>
-          {/* <a onClick={() => { setSelectItem(data); setDetailVisible(true) }}>详情</a> */}
-          {/* {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 1 }); setReturnVisible(true) }}>线下退保证金登记</a>} */}
-          {/* {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 2 }); setReturnVisible(true) }}>线上原路退回保证金</a>} */}
-          {/* {data.status.code === 1 && <a onClick={() => { setSelectItem({ ...data, toStatus: 3 }); setFormVisible(true) }}>关闭</a>} */}
-          {/* {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 1 }); setFormVisible(true) }}>开启</a>} */}
-          {/* {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 2 }); setFormVisible(true) }}>注销</a>} */}
-          {/* <a onClick={() => { setSelectItem(data); setAuditInfoVisible(true) }}>审核资料</a> */}
-          {/* <Auth
-            name="store/member_shop/grade"
-          >
-            <GradeChange
-              callback={() => { actionRef.current.reload() }}
-              storeNo={data.storeNo}
-            />
-          </Auth> */}
-
         </Space>
       ),
       hideInTable: storeType == 'freshStores' || storeType == 'vip'
@@ -872,40 +884,25 @@ const StoreList = (props) => {
           defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-            <div key="export">
-              {
-                storeType != 'freshStores' && storeType != 'vip' &&
-                <>
-                  <Button
-                    key="new"
-                    onClick={() => {
-                      setCreateVisible(true);
-                    }}
-                  >
-                    新建
-                  </Button>
-                  &nbsp;&nbsp;
-                  <Export
-                    change={(e) => { setVisit(e) }}
-                    key="export"
-                    type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"}
-                    conditions={() => { return getFieldValue(searchConfig) }}
-                  />
-                  &nbsp;&nbsp;
-                  <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"} />
-                </>
-              }
-            </div>,
-
-            // <Button
-            //   key="new2"
-            //   onClick={() => {
-            //     setExcelVisible(true);
-            //   }}
-            // >
-            //   批量新建
-            // </Button>,
-            // <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
+            storeType === 'normal' &&
+            <Button
+              key="new"
+              onClick={() => {
+                setCreateVisible(true);
+              }}
+            >
+              新建
+            </Button>,
+            storeType != 'freshStores' &&
+            <>
+              <Export
+                change={(e) => { setVisit(e) }}
+                key="export"
+                type={exportType[storeType]}
+                conditions={() => { return getFieldValue(searchConfig) }}
+              />
+              <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={exportType[storeType]} />
+            </>
           ],
         }}
         columns={columns}

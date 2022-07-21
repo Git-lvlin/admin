@@ -78,7 +78,7 @@ export default (props) => {
     if (password) {
       obj.password = md5(password)
     }
-    obj.subscribeList = subscribeList.map(item => ({ ...item, usefulStart: moment(item?.useful?.[0]).format('YYYY-MM-DD'), usefulEnd: moment(item?.useful?.[1]).format('YYYY-MM-DD'), payment: amountTransform(item.payment) })).filter(item => item.checked)
+    obj.subscribeList = subscribeList.map(item => ({ ...item, usefulStart: moment(item?.useful?.[0]).format('YYYY-MM-DD HH:mm:ss'), usefulEnd: moment(item?.useful?.[1]).set({ hour: 23, minute: 59, second: 59 }).format('YYYY-MM-DD HH:mm:ss'), payment: amountTransform(item.payment) })).filter(item => item.checked)
     return new Promise((resolve, reject) => {
       const apiMethod = statusAction === 1 ? openSubscribe : closeSubscribe
       apiMethod({
@@ -167,21 +167,21 @@ export default (props) => {
               form.setFieldsValue({
                 subscribeList: [
                   {
-                    checked: d1.statusAccount === value,
+                    checked: d1?.statusAccount === value,
                     actionId: 10001,
                     name: '预约系统',
                     useful: d1 ? [d1.usefulStart * 1000, d1.usefulEnd * 1000] : '',
                     payment: d1 ? amountTransform(d1.payment, '/') : '',
                   },
                   {
-                    checked: d2.statusAccount === value,
+                    checked: d2?.statusAccount === value,
                     actionId: 10002,
                     name: '健康档案',
                     useful: d2 ? [d2?.usefulStart * 1000, d2?.usefulEnd * 1000] : '',
                     payment: d2 ? amountTransform(d2.payment, '/') : '',
                   },
                   {
-                    checked: d3.statusAccount === value,
+                    checked: d3?.statusAccount === value,
                     actionId: 10003,
                     name: '充值系统',
                     useful: d3 ? [d3?.usefulStart * 1000, d3?.usefulEnd * 1000] : '',
