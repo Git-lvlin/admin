@@ -83,7 +83,7 @@ export default function EquipmentManagement() {
             key="4"
             onClick={()=> {
               setBlockUpVisible(true)
-              setImei(data?.imei)
+              setImei(data?.id)
               setType(3)
               setUser(data?.memberPhone)
             }}
@@ -95,7 +95,7 @@ export default function EquipmentManagement() {
           key="5"
           onClick={()=> {
             setModificationVisible(true)
-            setImei(data?.imei)
+            setMemberId(data?.id)
             setMemberPhone(data?.memberPhone)
           }}
         >
@@ -107,7 +107,7 @@ export default function EquipmentManagement() {
             key="6"
             onClick={()=> {
               setPayFeeVisible(true)
-              setImei(data?.imei)
+              setImei(data?.id)
               setExpire(data?.leaseDeadline)
               setMemberPhone(data?.memberPhone)
             }}
@@ -328,8 +328,8 @@ export default function EquipmentManagement() {
               r?.status !== 2&&
               <Button
                 onClick={()=>{ 
-                  setBlockUpVisible(true);
-                  setImei(r?.imei) 
+                  setBlockUpVisible(true)
+                  setImei(r?.id) 
                   setType(2)
                   setMemberPhone(r?.memberPhone)
                   setStatus(r?.leaseStatus)
@@ -343,7 +343,7 @@ export default function EquipmentManagement() {
               <Button 
                 onClick={()=>{ 
                   setBlockUpVisible(true) 
-                  setImei(r?.imei) 
+                  setImei(r?.id) 
                   setType(1)
                   setMemberPhone(r?.memberPhone)
                   setStatus(r?.leaseStatus)
@@ -438,7 +438,7 @@ export default function EquipmentManagement() {
         <Modification
           visible={modificationVisible}
           setVisible={setModificationVisible}
-          imei={imei}
+          imei={memberId}
           phone={memberPhone}
         />
       }
