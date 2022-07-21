@@ -16,6 +16,7 @@ import DevicesDetail from "../components/devices-detail"
 import PayFee from "./pay-fee"
 import Modification from "./modification"
 import Export from "@/components/export"
+import OptionImei from "./option-imei"
 
 export default function EquipmentManagement() {
   const [blockUpVisible, setBlockUpVisible] = useState<boolean>(false)
@@ -32,6 +33,8 @@ export default function EquipmentManagement() {
   const [showTitle, setShowTitle] = useState<boolean>()
   const [status, setStatus] = useState<number>()
   const [expire, setExpire] = useState<string>()
+  const [changeImei, setChangeImei] = useState<boolean>(false)
+  const [data, setData] = useState<EquipmentItem>()
   const actRef = useRef<ActionType>()
   const form = useRef<FormInstance>()
 
@@ -68,7 +71,7 @@ export default function EquipmentManagement() {
           onClick={()=>{
             setDevicesVisible(true)
             setType(6)
-            setMemberId(data?.imei)
+            setMemberId(data?.id)
             setShowTitle(true)
           }}
         >
@@ -80,7 +83,7 @@ export default function EquipmentManagement() {
             key="4"
             onClick={()=> {
               setBlockUpVisible(true)
-              setImei(data?.imei)
+              setImei(data?.id)
               setType(3)
               setUser(data?.memberPhone)
             }}
@@ -92,7 +95,7 @@ export default function EquipmentManagement() {
           key="5"
           onClick={()=> {
             setModificationVisible(true)
-            setImei(data?.imei)
+            setMemberId(data?.id)
             setMemberPhone(data?.memberPhone)
           }}
         >
@@ -104,12 +107,24 @@ export default function EquipmentManagement() {
             key="6"
             onClick={()=> {
               setPayFeeVisible(true)
-              setImei(data?.imei)
+              setImei(data?.id)
               setExpire(data?.leaseDeadline)
               setMemberPhone(data?.memberPhone)
             }}
           >
             开启缴费入口
+          </Menu.Item>
+        }
+        {
+          data?.imei &&
+          <Menu.Item
+            key="7"
+            onClick={()=> {
+              setChangeImei(true)
+              setData(data)
+            }}
+          >
+            更改机器ID
           </Menu.Item>
         }
       </Menu>
@@ -313,8 +328,8 @@ export default function EquipmentManagement() {
               r?.status !== 2&&
               <Button
                 onClick={()=>{ 
-                  setBlockUpVisible(true);
-                  setImei(r?.imei) 
+                  setBlockUpVisible(true)
+                  setImei(r?.id) 
                   setType(2)
                   setMemberPhone(r?.memberPhone)
                   setStatus(r?.leaseStatus)
@@ -328,7 +343,7 @@ export default function EquipmentManagement() {
               <Button 
                 onClick={()=>{ 
                   setBlockUpVisible(true) 
-                  setImei(r?.imei) 
+                  setImei(r?.id) 
                   setType(1)
                   setMemberPhone(r?.memberPhone)
                   setStatus(r?.leaseStatus)
@@ -423,8 +438,17 @@ export default function EquipmentManagement() {
         <Modification
           visible={modificationVisible}
           setVisible={setModificationVisible}
-          imei={imei}
+          imei={memberId}
           phone={memberPhone}
+        />
+      }
+      {
+        changeImei&&
+        <OptionImei
+          visible={changeImei}
+          setVisible={setChangeImei}
+          data={data}
+          callback={()=>{actRef.current?.reload()}}
         />
       }
     </PageContainer>
