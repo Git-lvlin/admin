@@ -11,6 +11,8 @@ import { memberShopCancel } from '@/services/intensive-store-management/cancel-a
 import Detail from '../store-list/detail'
 import Aduit from './aduit'
 import AddressCascader from '@/components/address-cascader'
+import Export from '@/components/export'
+// import ExportHistory from '@/pages/export-excel/export-history'
 
 const CancelAduit: FC = () => {
 
@@ -18,6 +20,7 @@ const CancelAduit: FC = () => {
   const [detailVisible, setDetailVisible] = useState<boolean>(false)
   const [aduitVisible, setAduitVisible] = useState<boolean>(false)
   const [data, setData] = useState<TableListItem>({})
+  const formRef = useRef();
 
   const actionRef = useRef<ActionType>()
 
@@ -25,7 +28,7 @@ const CancelAduit: FC = () => {
     {
       title: '申请ID',
       dataIndex: 'applyId',
-      align: 'center', 
+      align: 'center',
       hideInSearch: true
     },
     {
@@ -47,8 +50,8 @@ const CancelAduit: FC = () => {
       title: '是否生鲜店铺',
       dataIndex: 'memberShopType',
       valueType: 'select',
-      hideInTable:true,
-      valueEnum:{
+      hideInTable: true,
+      valueEnum: {
         0: '全部',
         20: '生鲜店铺',
         10: '非生鲜店铺'
@@ -99,7 +102,7 @@ const CancelAduit: FC = () => {
       title: '所在地区',
       dataIndex: 'area',
       hideInTable: true,
-      renderFormItem: () => (<AddressCascader changeOnSelect/>)
+      renderFormItem: () => (<AddressCascader changeOnSelect />)
     },
     {
       title: '提货点详细地址',
@@ -194,7 +197,7 @@ const CancelAduit: FC = () => {
         <>
           <div>{_}</div>
           {
-            r.verifyStatus === 2&&
+            r.verifyStatus === 2 &&
             <Tooltip title={r.auditMsg}>
               <a>查看拒绝原因</a>
             </Tooltip>
@@ -218,19 +221,19 @@ const CancelAduit: FC = () => {
       align: 'center',
       fixed: 'right',
       width: '100px',
-      render: (_, data)=> (
+      render: (_, data) => (
         <Space size='small'>
-          <a onClick={()=> {setSelectItem(data.storeNo); setDetailVisible(true)}}>详情</a>
+          <a onClick={() => { setSelectItem(data.storeNo); setDetailVisible(true) }}>详情</a>
           {
             data.verifyStatus === 6 &&
-            <a onClick={()=> {setData(data); setAduitVisible(true)}}>审核</a>
+            <a onClick={() => { setData(data); setAduitVisible(true) }}>审核</a>
           }
         </Space>
       )
     }
   ]
 
-  const postData=(data: TableListItem[])=>{
+  const postData = (data: TableListItem[]) => {
     return data.map(ele => {
       return (
         {
@@ -246,6 +249,10 @@ const CancelAduit: FC = () => {
     })
   }
 
+  const getFieldValue = () => {
+    return formRef?.current?.getFieldsValue?.()
+  }
+
   return (
     <PageContainer title={false}>
       <ProTable
@@ -257,14 +264,20 @@ const CancelAduit: FC = () => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        formRef={formRef}
         actionRef={actionRef}
         toolBarRender={false}
-        scroll={{x: 'max-content'}}
+        scroll={{ x: 'max-content' }}
         search={{
           labelWidth: 120,
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export
+              key="export"
+              type="store-export-membershop-cancel"
+              conditions={getFieldValue}
+            />,
           ]
         }}
         postData={postData}
@@ -278,7 +291,7 @@ const CancelAduit: FC = () => {
         />
       }
       {
-        aduitVisible&&
+        aduitVisible &&
         <Aduit
           visible={aduitVisible}
           setVisible={setAduitVisible}
