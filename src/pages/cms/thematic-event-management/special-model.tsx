@@ -44,6 +44,7 @@ export default (props:PropsItem) => {
   const [picture, setPicture] = useState<number>()
   const [detailList,setDetailList]=useState<DetailListItem>()
   const onSubmit = (values) => {
+    if(detailList?.length==0) return message.error('请选择商品')
     const params={
       status:1,
       id:values?.id,
