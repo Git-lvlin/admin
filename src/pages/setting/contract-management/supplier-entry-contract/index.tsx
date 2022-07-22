@@ -2,13 +2,14 @@ import { useEffect, useState, useRef } from "react"
 import ProTable from "@ant-design/pro-table"
 import { Button, Image, Modal } from "antd"
 import moment from "moment"
-import {
+import ProForm,{
   ModalForm, 
   ProFormRadio, 
   ProFormSelect, 
   ProFormText,
   ProFormDatePicker,
-  ProFormDigit
+  ProFormDigit,
+  ProFormDependency
 } from "@ant-design/pro-form"
 import { history } from "umi"
 import { CheckCircleOutlined } from "@ant-design/icons"
@@ -39,6 +40,7 @@ import { getAuth } from "@/components/auth"
 import styles from "../styles.less"
 import OperationLog from "./operation-log"
 import EditContract from "./edit-contract"
+import Upload from "@/components/upload"
 
 const SupplierEntryContract: FC = () => {
   const [showAdd, setShowAdd] = useState<boolean>(false)
@@ -197,10 +199,11 @@ const SupplierEntryContract: FC = () => {
       dataIndex: 'remainLong',
       valueType: 'select',
       valueEnum: {
-        1: '1年及1年以内',
-        2: '1年以上至2年（含2年）',
-        3: '2年以上至3年（含3年）',
-        4: '3年以上'
+        1: '1个月及1个月以内',
+        2: '1个月以上至2个月（含2个月）',
+        3: '2个月以上至3个月（含3个月）',
+        4: '3个月以上至6个月（含6个月）',
+        5: '6个月以上'
       },
       hideInTable: true
     },
@@ -249,7 +252,7 @@ const SupplierEntryContract: FC = () => {
       render: (_, r) => (
         <>
           {
-            (r.signStatus === 2 && r.type === 1)&&
+            ((r.signStatus >=4 || r.signStatus === 1) && r.type === 1)&&
             <div>
               <a onClick={()=> {openMiniQr(r.id); setFileUrl(r.pactUrl); setStoreName(r.name)}}>查看签合同入口码</a>
             </div>
@@ -399,7 +402,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
         supplierId: data.name,
         name: data.name,
         pactUrl: data.pactUrl,
-        signTime: moment(data.signTime * 1000).format("YYYY-MM-DD HH:mm:ss")
+        signTime: moment(data.signDte * 1000).format("YYYY-MM-DD HH:mm:ss")
       })
     }
   },[data, pactNo, type])
@@ -413,7 +416,8 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
       if(!data) {
         settled({
           ...e,
-          signTime: moment(e.signTime).unix()
+          signStatus: 2,
+          signDte: moment(e.signTime).unix()
         }).then(res => {
           if(res.code === 0) {
             resolve('')
@@ -427,7 +431,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           ...e,
           id: data.id,
           supplierId: data.supplierId,
-          signTime: moment(e.signTime).unix()
+          signDte: moment(e.signTime).unix()
         }).then(res => {
           if(res.code === 0) {
             resolve('')
@@ -477,7 +481,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           }
         ]}
       />
-      <ProFormRadio.Group
+      {/* <ProFormRadio.Group
         name='signStatus'
         label='签订状态'
         width='sm'
@@ -492,7 +496,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           }
         ]}
         disabled={true}
-      />
+      /> */}
       {
         type === 2&&
         <ProFormSelect
@@ -532,51 +536,73 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           required: true
         }]}
       />
-      {/* <ProForm.Item
-        label='上传入驻合同文件'
-        name='pactUrl'
-        extra={<div>请上传pdf格式文件，不超过800KB</div>}
-        rules={[{
-          required: true
-        }]}
-      >
-        <Upload 
-          size={1024 * 0.8} 
-          accept='.pdf' 
-          code={307}
-          isPDF={true}
-        />
-      </ProForm.Item>
-      <ProFormText
-        label='协议编号'
-        name='pactNo'
-        width='sm'
-      /> */}
-      {
-        type === 2 &&
-        <ProFormDatePicker 
-          name="signTime" 
-          label="签订日期" 
-          width='sm'
-          rules={[{
-            required: true
-          }]}
-        />
-      }
-      {
-        type === 2 &&
-        <ProFormDigit
-          name="signLong" 
-          label="合作期限" 
-          width='sm'
-          rules={[{
-            required: true
-          }]}
-          fieldProps={{
-            addonAfter: '个月'
-          }}
-        />
-      }
+      <ProFormDependency name={['type']}>
+        {({type})=>{
+          if(type === 2) {
+            return (
+              <>
+                <ProForm.Item
+                  label='上传入驻合同文件'
+                  name='pactUrl'
+                  extra={<div>请上传pdf格式文件，不超过800KB</div>}
+                  rules={[{
+                    required: true
+                  }]}
+                >
+                  <Upload 
+                    size={1024 * 0.8} 
+                    accept='.pdf' 
+                    code={307}
+                    isPDF={true}
+                  />
+                </ProForm.Item>
+                <ProFormText
+                  label='协议编号'
+                  name='pactNo'
+                  width='sm'
+                />
+                <ProFormDatePicker 
+                  name="signTime" 
+                  label="签订日期" 
+                  width='sm'
+                  rules={[{
+                    required: true
+                  }]}
+                />
+                <ProFormDigit
+                  name="signLong" 
+                  label="合作期限" 
+                  width='sm'
+                  rules={[{
+                    required: true
+                  }]}
+                  fieldProps={{
+                    addonAfter: '个月'
+                  }}
+                />
+                <ProFormDependency name={['signTime', 'signLong']}>
+                  {({ signTime, signLong}) => {
+                    if(signTime && signLong) {
+                      return (
+                        <ProForm.Item
+                          label='到期时间'
+                          name='expireTime'
+                        >
+                          <div>{moment(signTime).add(signLong, 'month').subtract(1, 'day').format('YYYY-MM-DD')}</div>
+                        </ProForm.Item>
+                      )
+                    } else {
+                      return null
+                    }
+                  }}
+                </ProFormDependency>
+              </>
+            )
+          } else {
+            return null
+          }
+        }}
+      </ProFormDependency>
     </ModalForm>
   )
 }
