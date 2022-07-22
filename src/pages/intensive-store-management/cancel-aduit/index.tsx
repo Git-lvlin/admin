@@ -12,7 +12,6 @@ import Detail from '../store-list/detail'
 import Aduit from './aduit'
 import AddressCascader from '@/components/address-cascader'
 import Export from '@/components/export'
-// import ExportHistory from '@/pages/export-excel/export-history'
 
 const CancelAduit: FC = () => {
 
