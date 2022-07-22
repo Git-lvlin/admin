@@ -250,7 +250,7 @@ const SupplierEntryContract: FC = () => {
       render: (_, r) => (
         <>
           {
-            (r.signStatus === 1 && r.type === 1)&&
+            ((r.signStatus >=4 || r.signStatus === 1) && r.type === 1)&&
             <div>
               <a onClick={()=> {openMiniQr(r.id); setFileUrl(r.pactUrl); setStoreName(r.name)}}>查看签合同入口码</a>
             </div>
