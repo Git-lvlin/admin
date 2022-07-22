@@ -402,7 +402,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
         supplierId: data.name,
         name: data.name,
         pactUrl: data.pactUrl,
-        signTime: moment(data.signTime * 1000).format("YYYY-MM-DD HH:mm:ss")
+        signTime: moment(data.signDte * 1000).format("YYYY-MM-DD HH:mm:ss")
       })
     }
   },[data, pactNo, type])
@@ -417,7 +417,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
         settled({
           ...e,
           signStatus: 2,
-          signTime: moment(e.signTime).unix()
+          signDte: moment(e.signTime).unix()
         }).then(res => {
           if(res.code === 0) {
             resolve('')
@@ -431,7 +431,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           ...e,
           id: data.id,
           supplierId: data.supplierId,
-          signTime: moment(e.signTime).unix()
+          signDte: moment(e.signTime).unix()
         }).then(res => {
           if(res.code === 0) {
             resolve('')
