@@ -197,10 +197,11 @@ const SupplierEntryContract: FC = () => {
       dataIndex: 'remainLong',
       valueType: 'select',
       valueEnum: {
-        1: '1年及1年以内',
-        2: '1年以上至2年（含2年）',
-        3: '2年以上至3年（含3年）',
-        4: '3年以上'
+        1: '1个月及1个月以内',
+        2: '1个月以上至2个月（含2个月）',
+        3: '2个月以上至3个月（含3个月）',
+        4: '3个月以上至6个月（含6个月）',
+        5: '6个月以上'
       },
       hideInTable: true
     },
