@@ -12,7 +12,6 @@ import Detail from '../store-list/detail'
 import Aduit from './aduit'
 import AddressCascader from '@/components/address-cascader'
 import Export from '@/components/export'
-// import ExportHistory from '@/pages/export-excel/export-history'
 
 const CancelAduit: FC = () => {
 
@@ -74,6 +73,15 @@ const CancelAduit: FC = () => {
       align: 'center',
     },
     {
+      title: '店主姓名',
+      dataIndex: 'realname',
+      align: 'center',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入店主姓名'
+      },
+    },
+    {
       title: 'VIP店铺',
       dataIndex: 'vip',
       valueType: 'text',
@@ -82,15 +90,6 @@ const CancelAduit: FC = () => {
         1: '是'
       },
       hideInSearch: true,
-    },
-    {
-      title: '店主姓名',
-      dataIndex: 'realname',
-      align: 'center',
-      valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入店主姓名'
-      },
     },
     {
       title: '提货点所在地区',
