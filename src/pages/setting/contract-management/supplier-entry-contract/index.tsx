@@ -417,6 +417,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
         settled({
           ...e,
           signStatus: 2,
+          signLong: e.signLong,
           signDte: moment(e.signTime).unix()
         }).then(res => {
           if(res.code === 0) {
@@ -431,6 +432,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           ...e,
           id: data.id,
           supplierId: data.supplierId,
+          signLong: e.signLong,
           signDte: moment(e.signTime).unix()
         }).then(res => {
           if(res.code === 0) {
