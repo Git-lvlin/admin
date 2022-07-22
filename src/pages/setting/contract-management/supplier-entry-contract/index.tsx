@@ -250,7 +250,7 @@ const SupplierEntryContract: FC = () => {
       render: (_, r) => (
         <>
           {
-            (r.signStatus === 2 && r.type === 1)&&
+            (r.signStatus === 1 && r.type === 1)&&
             <div>
               <a onClick={()=> {openMiniQr(r.id); setFileUrl(r.pactUrl); setStoreName(r.name)}}>查看签合同入口码</a>
             </div>
@@ -414,6 +414,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
       if(!data) {
         settled({
           ...e,
+          signStatus: 2,
           signTime: moment(e.signTime).unix()
         }).then(res => {
           if(res.code === 0) {
@@ -478,7 +479,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           }
         ]}
       />
-      <ProFormRadio.Group
+      {/* <ProFormRadio.Group
         name='signStatus'
         label='签订状态'
         width='sm'
@@ -493,7 +494,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           }
         ]}
         disabled={true}
-      />
+      /> */}
       {
         type === 2&&
         <ProFormSelect

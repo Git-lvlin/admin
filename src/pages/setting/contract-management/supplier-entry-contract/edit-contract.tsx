@@ -175,7 +175,7 @@ const EditContract = (props: EditContractProps) => {
                   label='到期时间'
                   name='expireTime'
                 >
-                  <div>{moment(signTime).add(signLong, 'month').format('YYYY-MM-DD')}</div>
+                  <div>{moment(signTime).add(signLong, 'month').subtract(1, 'day').format('YYYY-MM-DD')}</div>
                 </ProForm.Item>
               )
             } else {
