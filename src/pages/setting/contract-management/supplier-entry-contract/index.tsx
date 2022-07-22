@@ -2,13 +2,14 @@ import { useEffect, useState, useRef } from "react"
 import ProTable from "@ant-design/pro-table"
 import { Button, Image, Modal } from "antd"
 import moment from "moment"
-import {
+import ProForm,{
   ModalForm, 
   ProFormRadio, 
   ProFormSelect, 
   ProFormText,
   ProFormDatePicker,
-  ProFormDigit
+  ProFormDigit,
+  ProFormDependency
 } from "@ant-design/pro-form"
 import { history } from "umi"
 import { CheckCircleOutlined } from "@ant-design/icons"
@@ -39,6 +40,7 @@ import { getAuth } from "@/components/auth"
 import styles from "../styles.less"
 import OperationLog from "./operation-log"
 import EditContract from "./edit-contract"
+import Upload from "@/components/upload"
 
 const SupplierEntryContract: FC = () => {
   const [showAdd, setShowAdd] = useState<boolean>(false)
@@ -534,51 +536,73 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           required: true
         }]}
       />
-      {/* <ProForm.Item
-        label='上传入驻合同文件'
-        name='pactUrl'
-        extra={<div>请上传pdf格式文件，不超过800KB</div>}
-        rules={[{
-          required: true
-        }]}
-      >
-        <Upload 
-          size={1024 * 0.8} 
-          accept='.pdf' 
-          code={307}
-          isPDF={true}
-        />
-      </ProForm.Item>
-      <ProFormText
-        label='协议编号'
-        name='pactNo'
-        width='sm'
-      /> */}
-      {
-        type === 2 &&
-        <ProFormDatePicker 
-          name="signTime" 
-          label="签订日期" 
-          width='sm'
-          rules={[{
-            required: true
-          }]}
-        />
-      }
-      {
-        type === 2 &&
-        <ProFormDigit
-          name="signLong" 
-          label="合作期限" 
-          width='sm'
-          rules={[{
-            required: true
-          }]}
-          fieldProps={{
-            addonAfter: '个月'
-          }}
-        />
-      }
+      <ProFormDependency name={['type']}>
+        {({type})=>{
+          if(type === 2) {
+            return (
+              <>
+                <ProForm.Item
+                  label='上传入驻合同文件'
+                  name='pactUrl'
+                  extra={<div>请上传pdf格式文件，不超过800KB</div>}
+                  rules={[{
+                    required: true
+                  }]}
+                >
+                  <Upload 
+                    size={1024 * 0.8} 
+                    accept='.pdf' 
+                    code={307}
+                    isPDF={true}
+                  />
+                </ProForm.Item>
+                <ProFormText
+                  label='协议编号'
+                  name='pactNo'
+                  width='sm'
+                />
+                <ProFormDatePicker 
+                  name="signTime" 
+                  label="签订日期" 
+                  width='sm'
+                  rules={[{
+                    required: true
+                  }]}
+                />
+                <ProFormDigit
+                  name="signLong" 
+                  label="合作期限" 
+                  width='sm'
+                  rules={[{
+                    required: true
+                  }]}
+                  fieldProps={{
+                    addonAfter: '个月'
+                  }}
+                />
+                <ProFormDependency name={['signTime', 'signLong']}>
+                  {({ signTime, signLong}) => {
+                    if(signTime && signLong) {
+                      return (
+                        <ProForm.Item
+                          label='到期时间'
+                          name='expireTime'
+                        >
+                          <div>{moment(signTime).add(signLong, 'month').subtract(1, 'day').format('YYYY-MM-DD')}</div>
+                        </ProForm.Item>
+                      )
+                    } else {
+                      return null
+                    }
+                  }}
+                </ProFormDependency>
+              </>
+            )
+          } else {
+            return null
+          }
+        }}
+      </ProFormDependency>
     </ModalForm>
   )
 }
