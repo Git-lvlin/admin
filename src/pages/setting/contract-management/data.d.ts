@@ -51,6 +51,9 @@ export type ModalFormProps = {
   id: number
   operateName: string
   createTime: number
+  signDte: number
+  signLong: number
+  mode: number
 }
 
 export type MiniQrProps = {
