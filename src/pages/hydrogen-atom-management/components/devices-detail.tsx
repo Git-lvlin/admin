@@ -121,7 +121,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
   }
 
   const ExtraRecords: FC<ExtraRecordsProps> = ({type, item}) => {
-    const data = JSON.parse(item.extraRecord) 
+    const data = item.extraRecord && JSON.parse(item.extraRecord) 
     switch(type) {
       case 2:
         return (
@@ -213,7 +213,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
     3: !showTitle ? `缴租明细（用户:${memberPhone}）`: <OrderRecord imei={imei} memberId={memberId} memberPhone={memberPhone}/>,
     4: !showTitle ? `启动明细（用户:${memberPhone}）`: <StartUpTime imei={imei} pageTotal={pageTotal} memberId={memberId}/>,
     5: `提成明细（用户:${memberPhone}）`,
-    6: `操作日志 （机器ID：${memberId}操作：${pageTotal}次）`
+    6: `操作日志 （机器ID：${imei}操作：${pageTotal}次）`
   }
 
   const cardTitle = {

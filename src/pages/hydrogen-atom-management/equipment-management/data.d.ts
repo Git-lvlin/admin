@@ -34,6 +34,7 @@ export type ModalFormProps = {
 	phone?: string
 	status?: number
 	expire?: string
+	imei?: string
 }
 
 export type PropsDivide = {
