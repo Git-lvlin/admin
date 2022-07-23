@@ -82,17 +82,17 @@ const OptionImei = (props: OptionImeiProps) => {
           () => ({
             validator(_, value) {
               if (value.length < 5) {
-                return Promise.reject(new Error('请输入至少5个字符'))
+                return Promise.reject(new Error('请输入5-50个字符'))
               }
               return Promise.resolve()
             }
           }),
           {required: true}
         ]}
-        placeholder='请输入至少5个字符'
+        placeholder='请输入5-50个字符'
         fieldProps={{
           showCount: true,
-          minLength: 5,
+          maxLength: 50,
         }}
         validateFirst
         width='md'
