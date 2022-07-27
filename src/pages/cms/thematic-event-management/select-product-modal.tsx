@@ -9,7 +9,7 @@ import { Space } from 'antd'
 export default (props) => {
     const { visible, setVisible, callback, title = '选择活动商品',goodsSaleType,keyId,detailList} = props;
     const [keys,setKeys]=useState()
-    const [goosList,setGoosList]=useState([])
+    const [goosList,setGoosList]=useState()
     const [dataList,setDataList]=useState([])
   
     const formItemLayout = {
