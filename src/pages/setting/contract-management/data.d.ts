@@ -88,3 +88,7 @@ export type EditContractProps = {
   data?: ModalFormProps
   callback: ()=> void
 }
+
+export type LeaseContractProps = {
+  type: number
+}
