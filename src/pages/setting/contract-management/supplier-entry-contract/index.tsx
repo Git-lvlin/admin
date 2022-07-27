@@ -402,7 +402,8 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
         supplierId: data.name,
         name: data.name,
         pactUrl: data.pactUrl,
-        signTime: moment(data.signDte * 1000).format("YYYY-MM-DD HH:mm:ss")
+        signTime: moment(data.signDte * 1000).format("YYYY-MM-DD HH:mm:ss"),
+        signLong: data.signLong
       })
     }
   },[data, pactNo, type])

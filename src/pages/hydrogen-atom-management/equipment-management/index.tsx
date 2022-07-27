@@ -73,6 +73,7 @@ export default function EquipmentManagement() {
             setType(6)
             setMemberId(data?.id)
             setShowTitle(true)
+            setImei(data?.imei)
           }}
         >
           操作日志
@@ -83,7 +84,8 @@ export default function EquipmentManagement() {
             key="4"
             onClick={()=> {
               setBlockUpVisible(true)
-              setImei(data?.id)
+              setImei(data?.imei)
+              setMemberId(data?.id)
               setType(3)
               setUser(data?.memberPhone)
             }}
@@ -329,11 +331,12 @@ export default function EquipmentManagement() {
               <Button
                 onClick={()=>{ 
                   setBlockUpVisible(true)
-                  setImei(r?.id) 
+                  setImei(r?.imei) 
                   setType(2)
                   setMemberPhone(r?.memberPhone)
                   setStatus(r?.leaseStatus)
                   setExpire(r?.leaseDeadline)
+                  setMemberId(r?.id)
                 }}
                 disabled={ !r?.status || r?.status === 0 || r?.status === 1}
               >
@@ -343,7 +346,8 @@ export default function EquipmentManagement() {
               <Button 
                 onClick={()=>{ 
                   setBlockUpVisible(true) 
-                  setImei(r?.id) 
+                  setImei(r?.imei)
+                  setMemberId(r?.id) 
                   setType(1)
                   setMemberPhone(r?.memberPhone)
                   setStatus(r?.leaseStatus)
@@ -390,13 +394,14 @@ export default function EquipmentManagement() {
         <BlockUp
           visible={blockUpVisible}
           setVisible={setBlockUpVisible}
-          id={imei}
+          id={memberId}
           type={type}
           refs={actRef}
           user={user}
           phone={memberPhone}
           status={status}
           expire={expire}
+          imei={imei}
         />
       }
       {

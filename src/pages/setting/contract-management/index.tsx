@@ -16,8 +16,14 @@ import HydrogenLeaseContract from "./hydrogen-lease-contract"
           <SupplierEntryContract/>
         </ProCard.TabPane>
         <ProCard.TabPane key="tab2" tab="氢原子租赁合同">
-          <HydrogenLeaseContract/>
+          <HydrogenLeaseContract type={1}/>
         </ProCard.TabPane>
+        <ProCard.TabPane key="tab3" tab="氢原子托管合同">
+          <HydrogenLeaseContract type={3}/>
+        </ProCard.TabPane>
+        {/* <ProCard.TabPane key="tab4" tab="氢原子代运营合同">
+          <HydrogenLeaseContract type={2}/> 
+        </ProCard.TabPane> */}
       </ProCard>
     </PageContainer>
   )
