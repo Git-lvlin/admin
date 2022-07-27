@@ -71,6 +71,7 @@ export default {
   'menu.product-management.supplier.product-evaluate': '商品评价',
   'menu.product-management.public.product-unit': '商品单位',
   'menu.product-management.designated-commodity-settlement': '指定商品结算',
+  'menu.product-management.merchandise-settlement-record': '商品结算记录',
 
 
 
