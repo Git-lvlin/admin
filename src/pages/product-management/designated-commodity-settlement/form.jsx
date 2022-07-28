@@ -105,6 +105,7 @@ export default (props) => {
         {
           title: '序号',
           dataIndex:'id',
+          width:50,
           align: 'center',
           editable:false,
         },
@@ -131,11 +132,10 @@ export default (props) => {
       children: [
         {
           title:  <ProFormText
-                    width="md"
+                    width={500}
                     name="dateRange"
                     placeholder='输入商品名称或skuID搜索'
                     />,
-          align: 'center',
           dataIndex: 'price',
           renderFormItem: (_,r) => {
             if(_?.entry?.id==6){
@@ -149,7 +149,7 @@ export default (props) => {
                        <p style={{color:'#F88000'}}>= 售价  -  前10项之和（随前10项数据即时更新）</p>
                      </>
             }
-            return  <Input addonAfter='元' placeholder='请输此行角色的结算金额，0.00至售价。总结算金额<售价'/>
+            return  <Input style={{width:'450px'}} addonAfter='元' placeholder='请输此行角色的结算金额，0.00至售价。总结算金额<售价'/>
             },
         }
       ]
