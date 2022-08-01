@@ -80,7 +80,7 @@ export default function TransactionData () {
       },
     },
     {
-      title: '累计分成（元）',
+      title: '累计分成(元)',
       dataIndex: 'totalCommission',
       align: 'center',
       render: (_,data)=>{
@@ -94,7 +94,7 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '销售分成（元）',
+      title: '销售分成(元)',
       dataIndex: 'totalSaleCommission',
       align: 'center',
       render: (_,data)=>{
@@ -107,7 +107,7 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '管理费分成（元）',
+      title: '管理费分成(元)',
       dataIndex: 'totalRentCommission',
       align: 'center',
       render: (_,data)=>{
@@ -121,27 +121,13 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '启动费分成（元）',
-      dataIndex: 'totalBootCommission',
-      align: 'center',
-      render: (_,data)=>{
-        if(parseFloat(_)){
-          return <p>{amountTransform(_,'/').toFixed(2)}</p>
-        }else{
-          return _
-        }
-
-      },
-      hideInSearch: true
-    },
-    {
-      title: '累计业绩（元）',
+      title: '累计业绩(元)',
       dataIndex: 'totalOrderAmount',
       align: 'center',
       render: (_,data)=>{
         return <>
                 <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
-                <p>{data?.totalCount}单（销售{data?.totalSaleCount}单 + 管理费{data?.totalRentCount}单+启动费{data?.totalBootCount}单）</p>
+                <p>{data?.totalCount}单（销售{data?.totalSaleCount}单 + 管理费{data?.totalRentCount}单）</p>
                </>
       },
       hideInSearch: true,
@@ -163,7 +149,6 @@ export default function TransactionData () {
             <Descriptions.Item  label="办事处总销售分成(元)">{amountTransform(detailList?.totalSaleCommission,'/').toFixed(2)}  </Descriptions.Item>
             <Descriptions.Item  label="办事处总管理费分成(元)">{amountTransform(detailList?.totalRentCommission,'/').toFixed(2)}  </Descriptions.Item>
             <Descriptions.Item  label="办事处总业绩(元)">{amountTransform(detailList?.totalOrderAmount,'/').toFixed(2)}  </Descriptions.Item>
-            <Descriptions.Item  label="办事处启动费分成(元)">{amountTransform(detailList?.totalBootCommission,'/').toFixed(2)}  </Descriptions.Item>
           </Descriptions>
         )}
         onSubmit={(val)=>{
