@@ -25,7 +25,7 @@ const PayFee: FC<ModalFormProps> = (props) => {
 
   useEffect(()=> {
     findMachinePay({
-      imei: id
+      id
     }).then(res => {
       setInfo(res.data)
     })
@@ -43,7 +43,7 @@ const PayFee: FC<ModalFormProps> = (props) => {
   const submit = (v: OptProps) => {
     new Promise((resolve, reject) => {
       afterPaymentSetting({
-        imei: id,
+        id,
         remark: v.remark,
         type: v.type,
         amount: amountTransform(v.amount, '*'),

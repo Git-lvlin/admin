@@ -1,5 +1,5 @@
 export type TableProps = {
-  id: number;
+  id: string;
   name: string;
   phone: string;
   type: number;
@@ -49,6 +49,11 @@ export type ModalFormProps = {
   pactNo: string
   signTime: number
   id: number
+  operateName: string
+  createTime: number
+  signDte: number
+  signLong: number
+  mode: number
 }
 
 export type MiniQrProps = {
@@ -57,4 +62,33 @@ export type MiniQrProps = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   fileUrl?: string
   storeName?: string
+}
+
+export type OperationLogProps = {
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  id?: string
+}
+
+export type OptLogTableProps = {
+  id: number
+  contractId: string
+  optRole: string
+  optName: string
+  optItem: number
+  optContent: string
+  createTime: number
+  optItemDesc: string
+}
+
+export type EditContractProps = {
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  id?: string
+  data?: ModalFormProps
+  callback: ()=> void
+}
+
+export type LeaseContractProps = {
+  type: number
 }

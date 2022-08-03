@@ -34,6 +34,7 @@ export type ModalFormProps = {
 	phone?: string
 	status?: number
 	expire?: string
+	imei?: string
 }
 
 export type PropsDivide = {
@@ -68,4 +69,18 @@ export type InfoProps = {
 	sumDay?: number
 	remark?: string
 	packageType?: number
+}
+
+export type OptionImeiProps = {
+	visible: boolean
+	setVisible: React.Dispatch<React.SetStateAction<boolean>>
+	data?: EquipmentItem
+	callback: () => void
+}
+
+export type OptModalProps = {
+	phone: string
+	imei: string
+	newImei: string
+	remark: string
 }

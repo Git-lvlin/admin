@@ -91,3 +91,31 @@ export const edit = async (params, options = {}) => {
     ...options
   })
 }
+
+// 操作日志
+export const getLogList = async (params, options = {}) => {
+  const { pageSize=10, current=1, ...rest } = params
+  const res = await request('/auth/supplier/contract/getLogList', {
+    method: 'POST',
+    data:  {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data?.records,
+    success: res.success,
+    total: res.data?.total
+  }
+}
+
+// 总经办编辑
+export const editDetailInfo = async (params, options = {}) => {
+  return await request('/auth/supplier/contract/editDetailInfo', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}

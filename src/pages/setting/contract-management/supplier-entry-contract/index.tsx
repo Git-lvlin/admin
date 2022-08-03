@@ -1,13 +1,15 @@
 import { useEffect, useState, useRef } from "react"
 import ProTable from "@ant-design/pro-table"
-import { Button, Image, Modal, Space } from "antd"
+import { Button, Image, Modal } from "antd"
 import moment from "moment"
-import ProForm, {
+import ProForm,{
   ModalForm, 
   ProFormRadio, 
   ProFormSelect, 
   ProFormText,
-  ProFormDatePicker
+  ProFormDatePicker,
+  ProFormDigit,
+  ProFormDependency
 } from "@ant-design/pro-form"
 import { history } from "umi"
 import { CheckCircleOutlined } from "@ant-design/icons"
@@ -34,8 +36,11 @@ import {
   edit
 } from "@/services/setting/contract-management"
 import { amountTransform } from "@/utils/utils"
-import Upload from "@/components/upload"
+import { getAuth } from "@/components/auth"
 import styles from "../styles.less"
+import OperationLog from "./operation-log"
+import EditContract from "./edit-contract"
+import Upload from "@/components/upload"
 
 const SupplierEntryContract: FC = () => {
   const [showAdd, setShowAdd] = useState<boolean>(false)
@@ -44,20 +49,30 @@ const SupplierEntryContract: FC = () => {
   const [fileUrl, setFileUrl] = useState<string>()
   const [data, setData] = useState<ModalFormProps | undefined>()
   const [storeName, setStoreName] = useState<string>()
+  const [optLog, setOptLog] = useState<boolean>(false)
+  const [contractId, setContractId] = useState<string>()
+  const [editVisible, setEditVisible] = useState<boolean>(false)
   const actRef = useRef<ActionType>()
 
-  const openMiniQr = (e: number) => {
+  const openMiniQr = (e: string) => {
     getMiniQr({contractId: e}).then(res => {
       setImageUrl(res.data?.records?.url)
       setVisible(true)
     })
   }
 
-  const openDetail = (id: number) => {
+  const openDetail = (id: string) => {
     getDetail({contractId: id}).then(res => {
       setData(res.data.records)
     })
     setShowAdd(true)
+  }
+
+  const editDetail = (id: string) => {
+    getDetail({contractId: id}).then(res => {
+      setData(res.data.records)
+    })
+    setEditVisible(true)
   }
 
   const columns: ProColumns<TableProps>[] = [
@@ -97,6 +112,25 @@ const SupplierEntryContract: FC = () => {
       }
     },
     {
+      title: '合作期限',
+      dataIndex: 'signLong',
+      align: 'center',
+      hideInSearch: true,
+      render: (_) => `${_}个月`
+    },
+    {
+      title: '合作期限',
+      dataIndex: 'signLong',
+      valueType: 'select',
+      valueEnum: {
+        1: '1年及1年以内',
+        2: '1年以上至2年（含2年）',
+        3: '2年以上至3年（含3年）',
+        4: '3年以上'
+      },
+      hideInTable: true
+    },
+    {
       title: '最近编辑信息',
       dataIndex: 'operateName',
       align: 'center',
@@ -112,17 +146,22 @@ const SupplierEntryContract: FC = () => {
       )
     },
     {
-      title: '签订时间',
-      dataIndex: 'signTime',
+      title: '到期时间',
+      dataIndex: 'expireDteDesc',
       align: 'center',
-      hideInSearch: true,
-      render: (_, r) => {
-        if(r.signTime > 0) {
-          return moment(r.signTime * 1000).format('YYYY-MM-DD')
-        } else {
-          return null
-        }
-      }
+      hideInSearch: true
+    },
+    {
+      title: '签订日期',
+      dataIndex: 'signDteDesc',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '签订日期',
+      dataIndex: 'signDate',
+      valueType: 'dateRange',
+      hideInTable: true
     },
     {
       title: '合同类型',
@@ -133,6 +172,12 @@ const SupplierEntryContract: FC = () => {
         1: '线上电子合同',
         2: '线下纸质合同'
       }
+    },
+    {
+      title: '合同模式',
+      dataIndex: 'modeDesc',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '签合同支付信息',
@@ -148,6 +193,19 @@ const SupplierEntryContract: FC = () => {
           <div>{r.payTypeDesc}</div>
         </>
       )
+    },
+    {
+      title: '剩余到期时长',
+      dataIndex: 'remainLong',
+      valueType: 'select',
+      valueEnum: {
+        1: '1个月及1个月以内',
+        2: '1个月以上至2个月（含2个月）',
+        3: '2个月以上至3个月（含3个月）',
+        4: '3个月以上至6个月（含6个月）',
+        5: '6个月以上'
+      },
+      hideInTable: true
     },
     {
       title: '签合同支付单号',
@@ -181,7 +239,10 @@ const SupplierEntryContract: FC = () => {
       valueType: 'select',
       valueEnum: {
         1: '已签订',
-        2: '待签订'
+        2: '未签订',
+        3: '待上传',
+        4: '待支付',
+        5: '待签订'
       }
     },
     {
@@ -189,20 +250,42 @@ const SupplierEntryContract: FC = () => {
       valueType: 'option',
       align: 'center',
       render: (_, r) => (
-        <Space size="small">
+        <>
           {
-            (r.signStatus === 2 && r.type === 1)&&
-            <a onClick={()=> {openMiniQr(r.id); setFileUrl(r.pactUrl); setStoreName(r.name)}}>查看签合同入口码</a>
+            ((r.signStatus >=4 || r.signStatus === 1) && r.type === 1)&&
+            <div>
+              <a onClick={()=> {openMiniQr(r.id); setFileUrl(r.pactUrl); setStoreName(r.name)}}>查看签合同入口码</a>
+            </div>
           }
           {
             (r.type === 1 && r.signStatus === 1 && r.supplierId === 0)&&
-            <a onClick={() => history.push('/supplier-management/supplier-list')}>创建供应商</a>
+            <div>
+              <a onClick={() => history.push('/supplier-management/supplier-list')}>创建供应商</a>
+            </div>
           }
           {
             (r.payStatus <= 1 && r.thirdContractId === '')&&
-            <a onClick={()=> openDetail(r.id)}>修改</a>
+            <div>
+              <a onClick={()=> openDetail(r.id)}>修改</a>
+            </div>
           }
-        </Space>
+          {
+            (getAuth('setting/contract-management/edit-contract') && r.signStatus > 1 && r.signStatus <= 4) &&
+            <div>
+              <a 
+                onClick={()=> {
+                  setContractId(r?.id)
+                  editDetail(r?.id)
+                }}
+              >
+                编辑入驻合同文件
+              </a>
+            </div>
+          }
+          <div>
+            <a onClick={()=>{setOptLog(true); setContractId(r?.id)}}>操作日志</a>
+          </div>
+        </>
       )
     },
   ]
@@ -221,6 +304,7 @@ const SupplierEntryContract: FC = () => {
         actionRef={actRef}
         options={false}
         search={{
+          labelWidth: 100,
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
             <Button key='add' onClick={()=>{setShowAdd(true); setData(undefined)}}>新建</Button>
@@ -244,6 +328,24 @@ const SupplierEntryContract: FC = () => {
           setVisible={setVisible}
           fileUrl={fileUrl}
           storeName={storeName}
+        />
+      }
+      {
+        optLog&&
+        <OperationLog
+          visible={optLog}
+          setVisible={setOptLog}
+          id={contractId}
+        />
+      }
+      {
+        editVisible&&
+        <EditContract
+          visible={editVisible}
+          setVisible={setEditVisible}
+          id={contractId}
+          data={data}
+          callback={()=> actRef.current?.reload()}
         />
       }
     </>
@@ -300,7 +402,8 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
         supplierId: data.name,
         name: data.name,
         pactUrl: data.pactUrl,
-        signTime: moment(data.signTime * 1000).format("YYYY-MM-DD HH:mm:ss")
+        signTime: moment(data.signDte * 1000).format("YYYY-MM-DD HH:mm:ss"),
+        signLong: data.signLong
       })
     }
   },[data, pactNo, type])
@@ -314,7 +417,9 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
       if(!data) {
         settled({
           ...e,
-          signTime: moment(e.signTime).unix()
+          signStatus: 2,
+          signLong: e.signLong,
+          signDte: moment(e.signTime).unix()
         }).then(res => {
           if(res.code === 0) {
             resolve('')
@@ -328,7 +433,8 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           ...e,
           id: data.id,
           supplierId: data.supplierId,
-          signTime: moment(e.signTime).unix()
+          signLong: e.signLong,
+          signDte: moment(e.signTime).unix()
         }).then(res => {
           if(res.code === 0) {
             resolve('')
@@ -378,7 +484,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           }
         ]}
       />
-      <ProFormRadio.Group
+      {/* <ProFormRadio.Group
         name='signStatus'
         label='签订状态'
         width='sm'
@@ -393,7 +499,7 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           }
         ]}
         disabled={true}
-      />
+      /> */}
       {
         type === 2&&
         <ProFormSelect
@@ -433,37 +539,73 @@ const AddContract: FC<AddContractProps> = ({visible, setVisible, callback, data}
           required: true
         }]}
       />
-      <ProForm.Item
-        label='上传入驻合同文件'
-        name='pactUrl'
-        extra={<div>请上传pdf格式文件，不超过800KB</div>}
-        rules={[{
-          required: true
-        }]}
-      >
-        <Upload 
-          size={1024 * 0.8} 
-          accept='.pdf' 
-          code={307}
-          isPDF={true}
-        />
-      </ProForm.Item>
-      <ProFormText
-        label='协议编号'
-        name='pactNo'
-        width='sm'
-      />
-      {
-        type === 2 &&
-        <ProFormDatePicker 
-          name="signTime" 
-          label="签订日期" 
-          width='sm'
-          rules={[{
-            required: true
-          }]}
-        />
-      }
+      <ProFormDependency name={['type']}>
+        {({type})=>{
+          if(type === 2) {
+            return (
+              <>
+                <ProForm.Item
+                  label='上传入驻合同文件'
+                  name='pactUrl'
+                  extra={<div>请上传pdf格式文件，不超过800KB</div>}
+                  rules={[{
+                    required: true
+                  }]}
+                >
+                  <Upload 
+                    size={1024 * 0.8} 
+                    accept='.pdf' 
+                    code={307}
+                    isPDF={true}
+                  />
+                </ProForm.Item>
+                <ProFormText
+                  label='协议编号'
+                  name='pactNo'
+                  width='sm'
+                />
+                <ProFormDatePicker 
+                  name="signTime" 
+                  label="签订日期" 
+                  width='sm'
+                  rules={[{
+                    required: true
+                  }]}
+                />
+                <ProFormDigit
+                  name="signLong" 
+                  label="合作期限" 
+                  width='sm'
+                  rules={[{
+                    required: true
+                  }]}
+                  fieldProps={{
+                    addonAfter: '个月'
+                  }}
+                />
+                <ProFormDependency name={['signTime', 'signLong']}>
+                  {({ signTime, signLong}) => {
+                    if(signTime && signLong) {
+                      return (
+                        <ProForm.Item
+                          label='到期时间'
+                          name='expireTime'
+                        >
+                          <div>{moment(signTime).add(signLong, 'month').subtract(1, 'day').format('YYYY-MM-DD')}</div>
+                        </ProForm.Item>
+                      )
+                    } else {
+                      return null
+                    }
+                  }}
+                </ProFormDependency>
+              </>
+            )
+          } else {
+            return null
+          }
+        }}
+      </ProFormDependency>
     </ModalForm>
   )
 }

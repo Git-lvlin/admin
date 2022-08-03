@@ -3,16 +3,27 @@ import moment from "moment"
 
 import type { FC } from "react"
 import type { ProColumns } from '@ant-design/pro-table'
-import type { TableProps } from "../data"
+import type { TableProps, LeaseContractProps } from "../data"
 
 import { deviceContract } from "@/services/setting/contract-management"
 
-const HydrogenLeaseContract: FC = () => {
+const HydrogenLeaseContract: FC<LeaseContractProps> = (props: LeaseContractProps) => {
+  const { type } = props
+
+  const tableHeader = {
+    1: '租赁订单号',
+    3: '托管订单号'
+  }
 
   const columns: ProColumns<TableProps>[] = [
     {
       title: '序号',
       valueType: 'indexBorder'
+    },
+    {
+      dataIndex: 'id',
+      hideInTable: true,
+      hideInSearch: true
     },
     {
       title: '店主手机',
@@ -37,9 +48,9 @@ const HydrogenLeaseContract: FC = () => {
       align: 'center'
     },
     {
-      title: '租赁订单号',
+      title: tableHeader[type],
       dataIndex: 'orderSn',
-      align: 'center'
+      align: 'center',
     },
     {
       title: '合同ID',
@@ -58,9 +69,9 @@ const HydrogenLeaseContract: FC = () => {
   return (
     <>
       <ProTable<TableProps>
-        rowKey='orderSn'
+        rowKey='id'
         columns={columns}
-        params={{}}
+        params={{occupationMode: type}}
         request={deviceContract}
         pagination={{
           pageSize: 10,
