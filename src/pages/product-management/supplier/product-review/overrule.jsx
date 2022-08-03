@@ -6,7 +6,7 @@ import {
 } from '@ant-design/pro-form';
 
 export default (props) => {
-  const { visible, setVisible, callback, goodsName, spuId } = props;
+  const { visible, setVisible, callback, goodsName, spuId, overruleText = '', onClose = () => { } } = props;
   const [form] = Form.useForm();
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -25,7 +25,7 @@ export default (props) => {
     <ModalForm
       title="驳回"
       modalProps={{
-        onCancel: () => form.resetFields(),
+        onCancel: () => { form.resetFields(); onClose() },
       }}
       onVisibleChange={setVisible}
       visible={visible}
@@ -41,6 +41,11 @@ export default (props) => {
         label="商品名称"
       >
         {goodsName}（SPUID：{spuId}）
+      </Form.Item>}
+      {overruleText && <Form.Item
+        label="运营驳回理由"
+      >
+        {overruleText}
       </Form.Item>}
       <ProFormTextArea
         label="驳回理由"
