@@ -16,7 +16,7 @@ const Modification: FC<ModificationProps> = (props) => {
   const [info, setInfo] = useState<InfoProps>()
 
   useEffect(()=> {
-    findUseTime({imei}).then(res => {
+    findUseTime({id: imei}).then(res => {
       setInfo(res.data)
     })
   }, [])
@@ -24,7 +24,7 @@ const Modification: FC<ModificationProps> = (props) => {
   const submit = (v: OptProps) => {
     new Promise((resolve, reject) => {
       updateUseTime({
-        imei,
+        id: imei,
         useTime: v.useTime,
         nowUseTime: info?.useTime,
         phone
