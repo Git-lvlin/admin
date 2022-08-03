@@ -1,11 +1,14 @@
+import { useRef,useEffect, useState } from "react"
 import { Form,List,Divider } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
-import ProList from '@ant-design/pro-list';
-import { findItemPage } from "@/services/office-management/office-achievements"
+import ProTable from "@ant-design/pro-table"
+import { findItemOrderPage,itemOrderSum } from "@/services/office-management/office-achievements"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem } from "./data"
+import type { ProColumns } from "@ant-design/pro-table"
+import styles from './styles.less'
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -23,6 +26,9 @@ const formItemLayout = {
 export default (props) => {
   const { visible, setVisible,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
+  const [orderSum,setOrderSum]=useState()
+  const [time,setTime]=useState({})
+  const ref = useRef()
   const divide=(item)=>{
     switch (type) {
       case 0:
@@ -52,12 +58,91 @@ export default (props) => {
         return ''
     }
   }
+  const Columns: ProColumns<GithubIssueItem>[] = [
+    {
+      title: '订单日期',
+      dataIndex: 'date',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '订单日期',
+      dataIndex: 'dateRange',
+      valueType: 'dateRange',
+      align: 'center',
+      hideInTable: true,
+    },
+    {
+      title: '订单号',
+      dataIndex: 'orderNo',
+      align: 'center',
+    },
+    {
+      title: '订单类型',
+      dataIndex: 'orderType',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        0: '总分成',
+        1: '销售分成',
+        2: '管理分成',
+        3: '累计业绩'
+      },
+      hideInTable: true,
+    },
+    {
+      title: '订单类型',
+      dataIndex: 'orderTypeDesc',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '订单金额',
+      dataIndex: 'orderAmount',
+      align: 'center',
+      render: (_,data)=>{
+        if(parseFloat(_)){
+          return <p>￥{amountTransform(_,'/').toFixed(2)}</p>
+        }else{
+          return _
+        }
+      },
+      hideInSearch: true,
+    },
+    {
+      title: '收益',
+      dataIndex: 'commissionDesc',
+      align: 'center',
+      hideInSearch: true
+    }
+  ]
+  // const OrderSum=async ()=>{
+  //  let sum=await itemOrderSum({})
+  //  console.log('sum',sum)
+  //  return sum?.data?.total
+  // }
+  useEffect(()=>{
+    const params={
+      type:type,
+      businessDeptId:msgDetail?.businessDeptId,
+      orderType:time?.orderType,
+      orderNo:time?.orderNo,
+      begin:time?.dateRange?.[0]||msgDetail?.begin,
+      end:time?.dateRange?.[1]||msgDetail?.end
+    }
+    itemOrderSum(params).then(res=>{
+      if(res.code==0){
+        setOrderSum(res?.data?.total)
+      }
+    })
+  },[time])
   return (
     <DrawerForm
       title={`${msgDetail?.businessDeptName} ${divideName()} （ID:${msgDetail?.businessDeptId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
+      width={1300}
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
@@ -74,44 +159,38 @@ export default (props) => {
         return false
       }}
       {...formItemLayout}
+      className={styles.store_information}
     >
-      {
-        type==3&&<><p>总业绩：{amountTransform(msgDetail?.totalOrderAmount,'/').toFixed(2)}元，总缴费：{msgDetail?.totalCount}单（销售{msgDetail?.totalSaleCount}单，交管理费{msgDetail?.totalRentCount}单）</p><Divider /></>
-      }
-      <ProList<GithubIssueItem>
-        search={false}
-        rowKey="name"
-        request={findItemPage}
+       <ProTable<GithubIssueItem>
+        rowKey="date"
+        columns={Columns}
+        request={findItemOrderPage}
+        columnEmptyText={false}
+        actionRef={ref}
         params={{
+          type:type,
           businessDeptId:msgDetail?.businessDeptId,
-          userName:msgDetail?.userName,
-          type:type
+          begin:msgDetail?.begin,
+          end:msgDetail?.end
         }}
         pagination={{
-          pageSize: 5,
+          pageSize: 10,
           showQuickJumper: true,
         }}
-        split={true}
-        metas={{
-          title: {
-            dataIndex: 'date',
-          },
-          // description: {
-          //   dataIndex: 'totalCount',
-          //   render:(_,data)=>{
-          //     if(type==3){
-          //       return <p>{data?.totalCount}台(销售{data?.totalSaleCount}台，租赁{data?.totalRentCount}台)</p>
-          //     }
-          //   }
-          // },
-          actions:{
-            render:(text, row)=>(
-            <div>
-              <p style={{float:'right',color:'#262626'}}>{divide(row)}元</p><br/>
-              <p style={{color:'#999999',float:'right'}}>{type==3?`${row?.totalCount}单（其中管理费${row?.totalRentCount}单）`:`业绩金额：${amountTransform(row?.totalOrderAmount,'/').toFixed(2)}元`}</p>
-            </div> 
-            )
-          }
+        onSubmit={(val)=>{
+          setTime(val)
+        }}
+        options={false}
+        tableRender={(_, dom) => {
+          return <>
+            { dom }
+            <div className={styles.summary}>
+              <div>
+                累计：
+                <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
+              </div>
+            </div>
+          </>
         }}
       />
     </DrawerForm >
