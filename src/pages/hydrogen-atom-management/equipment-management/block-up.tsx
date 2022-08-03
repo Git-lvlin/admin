@@ -13,12 +13,12 @@ import styles from './styles.less'
 import { opt, findStartPage } from '@/services/hydrogen-atom-management/equipment-management'
 
 const BlockUp: FC<ModalFormProps> = (props) => {
-  const { visible, setVisible, id, type, refs, user, phone, status, expire } = props
+  const { visible, setVisible, id, type, refs, user, phone, status, expire, imei } = props
   const [info, setInfo] = useState<InfoProps>()
 
   useEffect(()=> {
     findStartPage({
-      imei: id
+      id
     }).then(res => {
       setInfo(res.data)
     })
@@ -30,7 +30,7 @@ const BlockUp: FC<ModalFormProps> = (props) => {
   const submit = (v: OptProps) => {
     new Promise((resolve, reject) => {
       opt({
-        imei: id,
+        id,
         type,
         phone,
         remark: v.remark
@@ -145,7 +145,7 @@ const BlockUp: FC<ModalFormProps> = (props) => {
         <>
           <div className={styles.tip}>
             <ExclamationCircleOutlined/>
-            是否确定解除绑定用户{user}机器ID({id})
+            是否确定解除绑定用户{user}机器ID({imei})
           </div>
           <div className={styles.text}>解除绑定后将无法管理机器！！！</div>
           <ProFormTextArea

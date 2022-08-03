@@ -85,7 +85,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
       inviteType
     },
     6: {
-      imei: memberId
+      memberDeviceId: memberId
     }
   }
 
@@ -96,7 +96,8 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
     4: '启动',
     5: '禁用',
     6: '开启缴费入口',
-    7: '修改使用时长'
+    7: '修改使用时长',
+    8: '更改机器ID'
   }
 
   const androidStatus = {
@@ -120,7 +121,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
   }
 
   const ExtraRecords: FC<ExtraRecordsProps> = ({type, item}) => {
-    const data = JSON.parse(item.extraRecord) 
+    const data = item.extraRecord && JSON.parse(item.extraRecord) 
     switch(type) {
       case 2:
         return (
@@ -175,6 +176,13 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
             <div>更新后单次使用时长：{data?.updUseTime}</div>
           </div>
         )
+      case 8:
+        return (
+          <div className={styles.cardListContent}>
+            <div>新机器ID：{data?.newImei}</div>
+            <div>原机器ID：{data?.oldImei}</div>
+          </div>
+        )
       default:
         return null
     }
@@ -205,7 +213,7 @@ const DevicesDetail: FC<PropsDevices> = (props) => {
     3: !showTitle ? `缴租明细（用户:${memberPhone}）`: <OrderRecord imei={imei} memberId={memberId} memberPhone={memberPhone}/>,
     4: !showTitle ? `启动明细（用户:${memberPhone}）`: <StartUpTime imei={imei} pageTotal={pageTotal} memberId={memberId}/>,
     5: `提成明细（用户:${memberPhone}）`,
-    6: `操作日志 （机器ID：${memberId}操作：${pageTotal}次）`
+    6: `操作日志 （机器ID：${imei}操作：${pageTotal}次）`
   }
 
   const cardTitle = {
