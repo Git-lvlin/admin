@@ -11,6 +11,7 @@ import ProductDetailDrawer from '@/components/product-detail-drawer'
 // import SupplierSelect from '@/components/supplier-select'
 import Edit from './edit';
 import OffShelf from './off-shelf';
+import Putaway from './putaway'
 import { amountTransform, typeTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -62,6 +63,7 @@ const TableList = () => {
   const [detailData, setDetailData] = useState(null);
   const [config, setConfig] = useState({});
   const [offShelfVisible, setOffShelfVisible] = useState(false);
+  const [putawayVisible, setPutawayVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
   const [alarmMsg, setAlarmMsg] = useState('');
   const actionRef = useRef();
@@ -149,6 +151,8 @@ const TableList = () => {
 
     if (key === '4') {
       onShelf({ spuId: record.spuId, type: 1 })
+      // setDetailData({ ...record, type: 2 })
+      // setPutawayVisible(true)
     }
 
     if (key === '5') {
@@ -626,7 +630,15 @@ const TableList = () => {
           spuId={selectItem?.spuId}
         />
       }
-
+       {putawayVisible &&
+        <Putaway
+          visible={putawayVisible}
+          setVisible={setPutawayVisible}
+          detailData={detailData}
+          callback={() => { actionRef.current.reload(); setDetailData(null) }}
+          onClose={() => { setDetailData(null) }}
+        />
+      }
     </PageContainer>
   );
 };
