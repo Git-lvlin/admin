@@ -3,9 +3,10 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { Button, Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { postageList, postageDetail } from '@/services/product-management/freight-template';
+import { getCommissionList } from '@/services/product-management/designated-commodity-settlement';
 import Form from './form';
 import DeleteModel from './delete-model'
+import { amountTransform } from '@/utils/utils'
 
 export default () => {
   const [formVisible, setFormVisible] = useState(false);
@@ -27,97 +28,133 @@ export default () => {
     },
     {
       title: 'skuID',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'skuId',
       align: 'center',
     },
     {
       title: '金额',
       dataIndex: 'storeCancelNumNotAudit',
       align: 'center',
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '省办事处-管理奖',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'provinceManageFee',
       align: 'center',
-      tip:'销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）'
-      // children: [
-      //   {
-      //     title: '销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）',
-      //     align: 'center',
-      //   }
-      // ]
+      tip:'销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）',
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '社区店主-服务佣金(直)',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'shopperChargeFee',
       align: 'center',
       tip:<><p>无相关角色，分成归属平台</p><p>提现时扣除7%手续费和2元/笔，不承担通道费</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '用户-服务佣金(直)',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'userChargeFee',
       align: 'center',
       tip: <><p>无相关角色，分成归属平台</p><p>提现时扣除7%手续费和2元/笔，不承担通道费</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '社区店主-管理佣金(间)',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'shopperManageFee',
       align: 'center',
       tip: <><p>无相关角色，分成归属平台</p><p>提现时扣除7%手续费和2元/笔，不承担通道费</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '用户-管理佣金(间)',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'userManageFee',
       align: 'center',
       tip: <><p>无相关角色，分成归属平台</p><p>提现时扣除7%手续费和2元/笔，不承担通道费</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: 'VIP店主-服务佣金(直)',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'shoppervipChargeFee',
       align: 'center',
       tip: <><p>无相关角色，分成归属平台</p><p>提现时扣除7%手续费和2元/笔，不承担通道费</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: 'VIP店主-管理佣金(间)',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'shoppervipManageFee',
       align: 'center',
       tip: <><p>无相关角色，分成归属平台</p><p>提现时扣除7%手续费和2元/笔，不承担通道费</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '供应商-货款',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'retailSupplyPrice',
       align: 'center',
       tip: '销售订单承担通道费',
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '运营中心',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'companyAgent',
       align: 'center',
       tip: <><p>线上记账线下结算,不承担通道费</p><p>销售订单：下单人为普通用户，则运营中心无收益，如下单人为店主，则业绩归属于下单店主绑定的运营中心</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '省代',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'provinceAgent',
       align: 'center',
       tip: <><p>线下结算</p><p>销售订单按订单收货地址判断业绩归属</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '市代',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'cityAgent',
       align: 'center',
       tip: <><p>线下结算</p><p>销售订单按订单收货地址判断业绩归属</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '全国分红奖',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'dividends',
       align: 'center',
       tip: <><p>线下结算</p><p>每月统计全国各省市的总共业绩（含租赁+销售）前三名</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '汇能科技',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'company',
       align: 'center',
       tip: '没有对应角色的分成归此处,线下结算的角色资金先分账到平台',
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '操作',
@@ -142,7 +179,7 @@ export default () => {
         bordered
         options={false}
         // scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
-        request={postageList}
+        request={getCommissionList}
         search={false}
         columns={columns}
         actionRef={actionRef}
