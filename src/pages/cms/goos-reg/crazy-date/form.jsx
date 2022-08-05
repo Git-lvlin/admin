@@ -68,7 +68,7 @@ export default (props) => {
 
   useEffect(() => {
     if (id) {
-      seckillingClassDetail({id}).then(res=>{
+      seckillingClassDetail({id:id,size:9999}).then(res=>{
         if(res.code==0){
           setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
           setDetailData(res.data)
@@ -161,7 +161,7 @@ export default (props) => {
             },
           ]}
         />
-      <Associated0Goods detailList={detailList}  callback={(data)=>{
+      <Associated0Goods detailList={detailList} detailData={detailData}  callback={(data)=>{
         setDetailList(data)
       }}/>
     </DrawerForm>

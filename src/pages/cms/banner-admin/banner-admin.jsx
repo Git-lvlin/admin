@@ -90,8 +90,8 @@ const BannerAdmin = () => {
       dataIndex: 'actionUrl',
       valueType: 'text',
       search: false,
-      width: 500,
-      ellipsis: true,
+      width: 100,
+      // ellipsis: true,
     },
     {
       title: '添加时间',
