@@ -23,20 +23,20 @@ export default () => {
     },
     {
       title: '商品名称',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'goodsName',
       align: 'center',
     },
     {
       title: 'skuID',
-      dataIndex: 'skuId',
+      dataIndex: 'skuName',
       align: 'center',
     },
     {
-      title: '金额',
-      dataIndex: 'storeCancelNumNotAudit',
+      title: '售价',
+      dataIndex: 'salePrice',
       align: 'center',
       render: (_)=>{
-        return amountTransform(_,'/').toFixed(2)
+        return <p style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</p>
       }
     },
     {

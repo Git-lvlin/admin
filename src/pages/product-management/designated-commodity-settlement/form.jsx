@@ -10,7 +10,7 @@ import {
   ProFormRadio,
   ProFormDependency,
 } from '@ant-design/pro-form';
-import { findAllProvinces, postageSave } from '@/services/product-management/freight-template'
+import { saveCommissionConfig } from '@/services/product-management/designated-commodity-settlement';
 import { PlusOutlined } from '@ant-design/icons';
 import AddRoleModal from './add-role-modal'
 
@@ -94,7 +94,15 @@ export default (props) => {
   const [sum, setSum] = useState(11)
   const actionRef = useRef();
   const submit = (values) => {
-
+    const params={
+      ...values
+    }
+    saveCommissionConfig(params).then(res=>{
+      if(res.code==0){
+        setVisible(false)
+        callback()
+      }
+    })
    }
   const columns = [
     {
