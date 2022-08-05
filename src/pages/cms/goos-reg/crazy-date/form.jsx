@@ -68,10 +68,11 @@ export default (props) => {
 
   useEffect(() => {
     if (id) {
-      seckillingClassDetail({id:id,pageSize:9999}).then(res=>{
+      seckillingClassDetail({id:id,pageSize:10}).then(res=>{
         if(res.code==0){
           setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
           setDetailData(res.data)
+          pageSum({page:res.data?.skuList?.totalPage,total:res.data?.skuList?.total})
           form.setFieldsValue({
             ...res.data
           })
@@ -79,6 +80,22 @@ export default (props) => {
       })
     }
   }, [])
+
+  const pageSum=(data)=>{
+    const arr=[]
+    for (let index = 1; index <= data?.page; index++) {
+      seckillingClassDetail({id:id,pageSize:10,page:index}).then(res=>{
+        if(res.code==0){
+          arr.push(...res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
+          if(arr.length==data?.total){
+            setDetailList(arr)
+          }
+        }
+      })
+    }
+
+  
+  }
   
   const disabledDate=(current)=>{
     return current && current < moment().startOf('day');
@@ -161,7 +178,7 @@ export default (props) => {
             },
           ]}
         />
-      <Associated0Goods detailList={detailList} detailData={detailData}  callback={(data)=>{
+      <Associated0Goods detailList={detailList} detailData={detailData} id={id}  callback={(data)=>{
         setDetailList(data)
       }}/>
     </DrawerForm>
