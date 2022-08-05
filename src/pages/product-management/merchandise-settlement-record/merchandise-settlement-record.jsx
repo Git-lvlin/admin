@@ -44,7 +44,7 @@ export default () => {
     },
     {
       title: '售价',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'salePrice',
       align: 'center',
       hideInSearch: true,
       render: (_)=>{
@@ -53,7 +53,7 @@ export default () => {
     },
     {
       title: '商品名称',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'goodsName',
       align: 'center',
       hideInSearch: true,
     },

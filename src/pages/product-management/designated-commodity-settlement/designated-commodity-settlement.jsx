@@ -28,7 +28,7 @@ export default () => {
     },
     {
       title: 'skuID',
-      dataIndex: 'skuName',
+      dataIndex: 'skuId',
       align: 'center',
     },
     {
