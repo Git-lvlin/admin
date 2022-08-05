@@ -68,7 +68,7 @@ export default (props) => {
 
   useEffect(() => {
     if (id) {
-      seckillingClassDetail({id:id,size:9999}).then(res=>{
+      seckillingClassDetail({id:id,pageSize:9999}).then(res=>{
         if(res.code==0){
           setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
           setDetailData(res.data)
