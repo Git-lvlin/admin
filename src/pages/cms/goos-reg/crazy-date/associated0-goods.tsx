@@ -207,6 +207,9 @@ export default (props) => {
           rowKey="id"
           options={false}
           value={dataSource}
+          params={{
+            id:id
+          }}
           recordCreatorProps={false}
           search={false}
           columns={columns}
