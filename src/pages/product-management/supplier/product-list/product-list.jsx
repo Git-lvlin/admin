@@ -150,9 +150,9 @@ const TableList = () => {
     }
 
     if (key === '4') {
-      onShelf({ spuId: record.spuId, type: 1 })
-      // setDetailData({ ...record, type: 2 })
-      // setPutawayVisible(true)
+      // onShelf({ spuId: record.spuId, type: 1 })
+      setDetailData({ ...record })
+      setPutawayVisible(true)
     }
 
     if (key === '5') {
