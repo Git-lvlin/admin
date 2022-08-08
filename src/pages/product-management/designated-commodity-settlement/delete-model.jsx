@@ -1,6 +1,6 @@
 import { ModalForm} from '@ant-design/pro-form';
 import { message } from 'antd';
-import { changeStatus } from '@/services/cms/member/thematic-event-management'
+import { deleteCommissionById } from '@/services/product-management/designated-commodity-settlement';
 import { ExclamationCircleFilled} from '@ant-design/icons';
 
 export default (props)=>{
@@ -18,7 +18,7 @@ export default (props)=>{
           },
           }}
           onFinish={async (values) => {
-            changeStatus({id:detailData.id}).then(res=>{
+            deleteCommissionById({id:detailData.id}).then(res=>{
             if(res.code==0){
               setVisible(false) 
               callback() 
