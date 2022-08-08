@@ -382,18 +382,18 @@ const TableList = () => {
           defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-            <Button
-              key="3"
-              type="primary"
-              onClick={() => {
-                if (!selectedRowKeys.length) {
-                  message.error('请先选中要驳回的商品')
-                  return;
-                }
-                setOverruleVisible(true)
-              }}>
-              批量驳回
-            </Button>,
+            // <Button
+            //   key="3"
+            //   type="primary"
+            //   onClick={() => {
+            //     if (!selectedRowKeys.length) {
+            //       message.error('请先选中要驳回的商品')
+            //       return;
+            //     }
+            //     setOverruleVisible(true)
+            //   }}>
+            //   批量驳回
+            // </Button>,
             <Export
               key="4"
               change={(e) => { setVisit(e) }}
@@ -404,12 +404,12 @@ const TableList = () => {
           ],
         }}
         columns={columns}
-        rowSelection={{
-          selectedRowKeys,
-          onChange: (_) => {
-            setSelectedRowKeys(_);
-          },
-        }}
+        // rowSelection={{
+        //   selectedRowKeys,
+        //   onChange: (_) => {
+        //     setSelectedRowKeys(_);
+        //   },
+        // }}
         pagination={{
           pageSize: 10,
         }}

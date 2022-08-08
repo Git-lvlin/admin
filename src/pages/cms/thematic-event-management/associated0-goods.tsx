@@ -207,26 +207,26 @@ export default (props) => {
         {
         visible &&
         <SelectProductModal
-        title={'选择商品'}  
-        visible={visible} 
-        setVisible={setVisible}
-        goodsSaleType={2} 
-        keyId={dataSource}
-        detailList={dataSource||[]}
-        callback={(data)=>{
-          const arr = [];
-          data.forEach(item => {
-            arr.push({
-              status:1,
-              actPrice: amountTransform(item?.salePrice,'/'),
-              actPriceProfitLoss:item?.salePriceProfitLoss,
-              sort:9999,
-              ...item
+          title={'选择商品'}  
+          visible={visible} 
+          setVisible={setVisible}
+          goodsSaleType={2} 
+          keyId={dataSource}
+          detailList={dataSource||[]}
+          callback={(data)=>{
+            const arr = [];
+            data.forEach(item => {
+              arr.push({
+                status:1,
+                actPrice: amountTransform(item?.salePrice,'/'),
+                actPriceProfitLoss:item?.salePriceProfitLoss,
+                sort:9999,
+                ...item
+              })
             })
-          })
-          setDataSource(arr)
-          callback(arr)
-          setEditableKeys(arr.map(item => item.id))
+            setDataSource(arr)
+            callback(arr)
+            setEditableKeys(arr.map(item => item.id))
         }}
       />
       }

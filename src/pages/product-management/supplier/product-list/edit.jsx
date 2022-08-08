@@ -90,7 +90,7 @@ export default (props) => {
   const productCheck = (text) => {
     api.productCheck({
       checkType: 2,
-      spuIds: detailData.spuId,
+      spuId: detailData.spuId,
       goodsVerifyRemark: text
     })
       .then(res => {
