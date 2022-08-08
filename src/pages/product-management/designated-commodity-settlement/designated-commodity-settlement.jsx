@@ -36,7 +36,7 @@ export default () => {
       dataIndex: 'salePrice',
       align: 'center',
       render: (_)=>{
-        return <p style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</p>
+        return <span style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</span>
       }
     },
     {
@@ -162,8 +162,9 @@ export default () => {
       valueType: 'option',
       render: (_, record) => [
         <a key='edit' onClick={() => { setDetailData(record);setFormVisible(true) }}>修改</a>,
-        <a key='delete' onClick={() => { setDetailData(record.id);setVisible(true) }}>删除</a>
+        <a key='delete' onClick={() => { setDetailData(record);setVisible(true) }}>删除</a>
       ],
+      fixed: 'right'
     },
   ];
 
@@ -178,25 +179,28 @@ export default () => {
         rowKey="id"
         bordered
         options={false}
-        // scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         request={getCommissionList}
         search={false}
         columns={columns}
         actionRef={actionRef}
+        pagination={{
+          pageSize:10
+        }}
       />
       {formVisible && <Form
         visible={formVisible}
         setVisible={setFormVisible}
         onClose={() => { setFormVisible(false); setDetailData(null) }}
         detailData={detailData}
-        callback={() => { actionRef.current.reload() }}
+        callback={() => { actionRef.current.reload();setDetailData(null) }}
       />}
       {visible && <DeleteModel
         visible={visible}
         setVisible={setVisible}
         onClose={() => { setVisible(false); setDetailData(null) }}
         detailData={detailData}
-        callback={() => { actionRef.current.reload() }}
+        callback={() => { actionRef.current.reload(); setDetailData(null) }}
       />}
     </PageContainer>
   );

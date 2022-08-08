@@ -34,7 +34,7 @@ export const getCommissionConfigBySpuId = async (params, options = {}) => {
   });
 
   return {
-    data: res.data.records,
+    data: res.data,
     success: true,
     total: res.data.total
   }
@@ -66,4 +66,12 @@ return {
     success: true,
     total: res.data.total
 }
+}
+
+export const deleteCommissionById = (params = {}, options = {}) => {
+  return request('/auth/goods/product/deleteCommissionById', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
 }

@@ -16,6 +16,7 @@ import Edit from '@/pages/product-management/designated-commodity-settlement/for
 import { useLocation } from 'umi';
 import * as api1 from '@/services/product-management/product-list';
 import * as api2 from '@/services/product-management/product-list-purchase';
+import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -36,14 +37,17 @@ export default (props) => {
   const [editableKeys, setEditableRowKeys] = useState();
   const [dataSource, setDataSource] = useState();
   const [formVisible, setFormVisible] = useState(false);
+  const [configUser,setConfigUser] = useState()
+  const [recordList, setRecordList] = useState([])
   const [sum, setSum] = useState(11)
+  const [rowKeys,setRowKeys]=useState()
   const actionRef = useRef();
   const isPurchase = useLocation().pathname.includes('purchase')
   const api = isPurchase ? api2 : api1
   const submit = (values) => {
-    const apiMethod = type === 2 ? changeStoreState : api.onShelf
     const params={
-      spuId: detailData?.spuId
+      spuId: detailData?.spuId,
+      configUser:configUser
     }
     api.onShelf(params, { showSuccess: true }).then(res => {
       if (res.code === 0) {
@@ -62,7 +66,7 @@ export default (props) => {
     },
     {
       title: '商品名称',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'goodsName',
       align: 'center',
     },
     {
@@ -71,11 +75,11 @@ export default (props) => {
       align: 'center',
     },
     {
-      title: '金额',
-      dataIndex: 'storeCancelNumNotAudit',
+      title: '售价',
+      dataIndex: 'salePrice',
       align: 'center',
       render: (_)=>{
-        return amountTransform(_,'/').toFixed(2)
+        return <p style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</p>
       }
     },
     {
@@ -215,6 +219,7 @@ export default (props) => {
             <Button
               onClick={() => {
                 form?.submit()
+                setConfigUser(0)
               }}
               key='direct'
             >
@@ -224,6 +229,7 @@ export default (props) => {
             type='primary'
             onClick={() => {
               form?.submit()
+              setConfigUser(1)
             }}
             key='adhibition'
           >
@@ -235,34 +241,54 @@ export default (props) => {
       form={form}
       onFinish={async (values) => {
         await submit(values);
-        callback();
-        return true;
       }}
       visible={visible}
       {...formItemLayout}
     >
+     <p style={{paddingLeft:'20px'}}>[spuID:{detailData?.spuId}] {detailData?.goodsName}</p>
      <ProTable
         rowKey="id"
         dataSource={dataSource}
         actionRef={actionRef}
         request={getCommissionConfigBySpuId}
-        bordered
         search={false}
         columns={columns}
         toolbar={{
             settings: false
         }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
+        postData={(data)=>{
+          setRecordList(data)
+          setRowKeys(data[0]?.id)
+          return data
+        }}
         params={{
           spuId: detailData?.spuId
         }}
         pagination={false}
+        rowSelection={{
+          renderCell:()=>{
+            return null
+          },
+          type:'radio',
+          selectedRowKeys:[rowKeys],
+          
+        }}
+        tableAlertRender={false}
+        onRow={(record) => {
+          return {  
+            onClick: async () => {
+              setRowKeys(record.id)
+            },
+          };
+        }}
         />
         <a style={{float:'right'}} onClick={()=>{setFormVisible(true)}}>修改结算配置</a>
         {formVisible && <Edit
           visible={formVisible}
           setVisible={setFormVisible}
           onClose={() => { setFormVisible(false)}}
-          // detailData={detailData}
+          detailData={recordList.find(ele=>ele.id==rowKeys)}
           callback={() => { actionRef.current.reload() }}
         />}
     </DrawerForm>

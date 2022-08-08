@@ -18,22 +18,22 @@ export default () => {
     },
     {
       title: '操作类型',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'remark',
       align: 'center',
       hideInSearch: true,
     },
      {
       title: '操作时间',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'updateTime',
       align: 'center',
       hideInSearch: true,
     },
     {
-      dataIndex: 'skuId',
+      dataIndex: 'spuId',
       align: 'center',
       hideInTable: true,
       fieldProps:{
-        placeholder:'请输入spuID或商品名称'
+        placeholder:'请输入spuID'
       },
     },
     {
@@ -58,7 +58,7 @@ export default () => {
       hideInSearch: true,
     },
     {
-      title: '供应商-货款',
+      title: '供应商（货款）',
       dataIndex: 'retailSupplyPrice',
       align: 'center',
       hideInSearch: true,
@@ -112,7 +112,7 @@ export default () => {
       }
     },
     {
-      title: '用户-直推',
+      title: '用户直推',
       dataIndex: 'userChargeFee',
       align: 'center',
       hideInSearch: true,
@@ -122,7 +122,7 @@ export default () => {
     },
 
     {
-      title: '用户-间推',
+      title: '用户间推',
       dataIndex: 'userManageFee',
       align: 'center',
       hideInSearch: true,
@@ -177,7 +177,7 @@ export default () => {
     },
     {
       title: '操作人',
-      dataIndex: 'name',
+      dataIndex: 'lastEditor',
       hideInSearch: true,
     },
   ];
@@ -192,7 +192,7 @@ export default () => {
         columns={columns}
         actionRef={actionRef}
         pagination={{
-            pageSize:10
+          pageSize:10
         }}
       />
     </PageContainer>
