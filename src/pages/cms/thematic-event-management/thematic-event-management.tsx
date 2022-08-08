@@ -4,35 +4,34 @@ import type { ProColumns } from '@ant-design/pro-table';
 import { getActiveConfigList } from '@/services/cms/member/thematic-event-management'
 import moment from 'moment'
 import { Button,message } from 'antd'
-import { amountTransform } from '@/utils/utils'
 import { PageContainer } from '@ant-design/pro-layout';
-import { useLocation } from 'umi';
 import SpecialModel from './special-model'
+import EndModel from './end-model'
+import styles from './style.less'
+import PreviewModel from './preview-model'
 
 
 type ThematicEventItem={
-    deviceImei: string;
-    id: string;
-    occupantId: string;
-    orderAmount: string;
-    orderSn: string;
-    payType: string;
-    deviceUseTime: number;
-    createTime: string;
-    payTypeStr: string;
-    storeNo: string;
-    storeName: string;
-    memberPhone: string;
-    occupationMode: number;
-    isShopkeeper: boolean;
-    occupationModeStr: string;
+  id: number;
+  type: number;
+  status: number;
+  name: string;
+  startTime: number;
+  endTime: number;
+  updateTime: number;
+  statusDisplay: string;
+  actionType: number;
+  goodsCount: number;
+  copyUrl: string;
 }
 
 export default () => {
-  const [detailId, setDetailId] = useState<string>()
-  const [visible, setVisible] = useState(false)
-  const isPurchase = useLocation().pathname.includes('purchase')
-  const [detailVisible, setDetailVisible] = useState(false);
+  const [detailId, setDetailId] = useState<string | {}>()
+  const [visible, setVisible] = useState<boolean>(false)
+  const [endVisible, setEndVisible] = useState<boolean>(false)
+  const [previewVisible, setPreviewVisible] = useState<boolean>(false)
+  const [total, setTotal]= useState<number>()
+  const [copy, setCopy] = useState<string>(false)
   const ref=useRef()
   const columns:ProColumns<ThematicEventItem>[]= [
     {
@@ -46,15 +45,15 @@ export default () => {
     },
     {
       title: '链接地址',
-      dataIndex: 'occupationMode',
+      dataIndex: 'copyUrl',
       valueType: 'text',
       order:4,
       render:(_)=>{
           return <>
-                  <span style={{display:'inline-block',marginRight:'10px'}}>https://publicmobile-uat.yeahgo.com/web/exclu...</span>
+                  <span style={{display:'inline-block',marginRight:'10px'}}>{_}</span>
                   <a onClick={()=>{
                    message.success('复制成功')
-                   navigator.clipboard.writeText('https://publicmobile-uat.yeahgo.com/web/exclu...')
+                   navigator.clipboard.writeText(_)
                   }}>复制</a>
                  </>
       },
@@ -62,7 +61,7 @@ export default () => {
     },
     {
       title: '相关单品',
-      dataIndex: 'occupationMode',
+      dataIndex: 'goodsCount',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -77,6 +76,17 @@ export default () => {
     },
     {
       title: '状态',
+      dataIndex: 'actStatus',
+      valueType: 'select',
+      hideInTable: true,
+      valueEnum:{
+        2: '未开始',
+        1: '进行中',
+        3: '已结束'
+      }
+    },
+    {
+      title: '状态',
       dataIndex: 'statusDisplay',
       valueType: 'select',
       hideInSearch: true,
@@ -87,8 +97,10 @@ export default () => {
       valueType: 'option',
       hideInSearch: true,
       render:(text, record, _, action)=>[
+        <a key='preview' onClick={()=>{setPreviewVisible(true);setDetailId(record)}}>预览</a>,
         <a key='edit' onClick={()=>{setVisible(true);setDetailId(record.id)}}>编辑</a>,
-        <a key='detele' onClick={()=>{setVisible(true);setDetailId(record.id)}}>终止</a>
+        <a key='detele' onClick={()=>{setEndVisible(true);setDetailId(record.id)}}>{record?.status?'终止':null}</a>,
+        <a key='copy' onClick={()=>{setVisible(true);setDetailId(record.id);setCopy('copy')}}>复制</a>
     ],
     }
   ];
@@ -99,30 +111,63 @@ export default () => {
           rowKey="id"
           options={false}
           request={getActiveConfigList}
+          params={{
+            actCode:"subJectActiveCode"
+          }}
           search={{
           defaultCollapsed: false,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-            <Button style={{color:'red',border:'1px solid red'}} onClick={()=>{setVisible(true)}}>新建专题</Button>
+            <Button key='add' style={{color:'red',border:'1px solid red'}} onClick={()=>{setVisible(true)}}>新建专题</Button>
           ],
+          }}
+          postData={(data)=>{
+            setTotal(data?.total)
+            return data?.records
           }}
           columns={columns}
           pagination={{
             pageSize: 10,
             showQuickJumper: true,
           }}
+          tableRender={(_, dom) => (
+            <>
+            {dom}
+            <p className={styles?.summary}>当前条件共检索到 <span>{total}</span> 条相关信息</p>
+            </>
+          )}
+          className={styles?.thematic_event_management}
         />
         {
-        visible &&
-        <SpecialModel
-          id={detailId}
-          visible={visible}
-          setVisible={setVisible}
+          visible &&
+          <SpecialModel
+            id={detailId}
+            copy={copy}
+            visible={visible}
+            setVisible={setVisible}
+            onClose={()=>{setDetailId(null);setCopy(null);ref?.current?.reload()}}
+            callback={()=>{setDetailId(null);setCopy(null);ref?.current?.reload()}}
+          />
+        }
+        {
+          endVisible&&<EndModel 
+          visible={endVisible} 
+          setVisible={setEndVisible}  
+          endId={detailId}
           onClose={()=>{setDetailId(null);ref?.current?.reload()}}
           callback={()=>{setDetailId(null);ref?.current?.reload()}}
-        />
-      }
+          />
+        }
+        {
+          previewVisible&&<PreviewModel 
+          visible={previewVisible} 
+          setVisible={setPreviewVisible}  
+          link={detailId?.copyUrl}
+          onClose={()=>{setDetailId(null);ref?.current?.reload()}}
+          callback={()=>{setDetailId(null);ref?.current?.reload()}}
+          />
+        }
   </PageContainer>
   )
 }

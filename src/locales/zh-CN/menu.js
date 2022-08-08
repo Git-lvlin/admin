@@ -66,9 +66,13 @@ export default {
   'menu.product-management.supplier.product-review': '商品审核',
   'menu.product-management.supplier.set-goods-list': '商品运营配置',
   'menu.product-management.public.product-category': '商品分类',
-  'menu.product-management.supplier.overrule-list': '驳回商品',
+  'menu.product-management.supplier.overrule-list': '采购驳回商品',
+  'menu.product-management.supplier.operator-overrule-list': '运营驳回商品',
   'menu.product-management.supplier.product-evaluate': '商品评价',
   'menu.product-management.public.product-unit': '商品单位',
+  'menu.product-management.designated-commodity-settlement': '指定商品结算',
+  'menu.product-management.merchandise-settlement-record': '商品结算记录',
+
 
 
   'menu.setting': '设置',
@@ -212,6 +216,8 @@ export default {
   'menu.cms.goods-sort': '集约商品展示配置',
   'menu.cms.goods-class': '集约商品运营类目',
   'menu.cms.story': '店主故事',
+  'menu.cms.hydrogen-atom-start-window': '氢原子启动弹窗',
+  'menu.cms.enjoy-earning': '享赚区商品排序',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
@@ -389,6 +395,11 @@ export default {
   'menu.hydrogen-atom-management.transaction-data': '交易数据',
   'menu.hydrogen-atom-management.referral-commission': '推荐提成',
   'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
+
+  'menu.hydrogen-atom-trusteeship': '氢原子托管',
+  'menu.hydrogen-atom-trusteeship.hydrogen-atom-start-record': '启动记录',
+  'menu.hydrogen-atom-trusteeship.health-card-management': '健康卡管理',
+  'menu.hydrogen-atom-trusteeship.hydrogen-referral-commission': '推荐提成',
 
   'menu.buried-point': '埋点数据看板',
   'menu.buried-point.incident-analysts': '事件分析',

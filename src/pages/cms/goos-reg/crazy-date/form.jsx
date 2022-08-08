@@ -1,52 +1,111 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
-  ModalForm,
   ProFormText,
   ProFormRadio,
+  DrawerForm,
+  ProFormDateTimePicker
 } from '@ant-design/pro-form';
 import CrazyAddActivityReg from '@/components/crazy-add-activity-reg';
-import { crazyActivityAdd } from '@/services/cms/member/member';
+import { seckillingClassSub, seckillingClassDetail, seckillingClassEdit } from '@/services/cms/member/goos-reg';
+import Associated0Goods from './associated0-goods'
+import moment from 'moment';
+import { amountTransform } from '@/utils/utils'
+
+const formItemLayout = {
+  labelCol: { span: 4 },
+  wrapperCol: { span: 14 },
+  layout: {
+    labelCol: {
+      span: 10,
+    },
+    wrapperCol: {
+      span: 14,
+    },
+  }
+};
 
 export default (props) => {
-  const { detailData, setVisible, setFlag, visible } = props;
+  const { setVisible, setFlag, visible,callBack,onClose,id,copy } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
+  const [detailList,setDetailList]=useState()
+  const [detailData,setDetailData]=useState()
 
   const waitTime = (values) => {
     const { ...rest } = values
     const param = {
+      goodsInfo:detailList.map(ele=>{
+        return {spuId:ele?.spuId,skuId:ele?.skuId,activityPrice:amountTransform(ele?.activityPrice,'*'),sort:ele?.sort}
+      }),
       ...rest
     }
-    return new Promise((resolve, reject) => {
-      crazyActivityAdd(param).then((res) => {
-        if (res.code === 0) {
-          setFlag(true);
-          resolve(true);
-        } else {
-          reject(false);
-        }
-      })
-    });
+    if(id&&!copy){
+      return new Promise((resolve, reject) => {
+        seckillingClassEdit({...param,id:id}).then((res) => {
+          if (res.code === 0) {
+            callBack()
+            resolve(true);
+          } else {
+            reject(false);
+          }
+        })
+      });
+    }else{
+      return new Promise((resolve, reject) => {
+        seckillingClassSub(param).then((res) => {
+          if (res.code === 0) {
+            callBack()
+            resolve(true);
+          } else {
+            reject(false);
+          }
+        })
+      });
+    }
+
   };
 
   useEffect(() => {
-    if (detailData?.id) {
-      const { subtitle ,...rest } = detailData;
-      if (rest.title.includes('(')) {
-        rest.title = rest.title.split('(')[0]
-      }
-      form.setFieldsValue({
-        ...rest
+    if (id) {
+      seckillingClassDetail({id:id,pageSize:10}).then(res=>{
+        if(res.code==0){
+          setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
+          setDetailData(res.data)
+          pageSum({page:res.data?.skuList?.totalPage,total:res.data?.skuList?.total})
+          form.setFieldsValue({
+            ...res.data
+          })
+        }
       })
     }
   }, [])
 
+  const pageSum=(data)=>{
+    const arr=[]
+    for (let index = 1; index <= data?.page; index++) {
+      seckillingClassDetail({id:id,pageSize:10,page:index}).then(res=>{
+        if(res.code==0){
+          arr.push(...res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
+          if(arr.length==data?.total){
+            setDetailList(arr)
+          }
+        }
+      })
+    }
+
+  
+  }
+  
+  const disabledDate=(current)=>{
+    return current && current < moment().startOf('day');
+  }
+
   return (
-    <ModalForm
+    <DrawerForm
       key="add"
-      width={600}
-      title={`${detailData ? '编辑活动' : '新增活动'}`}
+      width={1400}
+      title={`${id && !copy ? '编辑活动' : copy ? '复制活动' : '新建活动'}`}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}
@@ -54,51 +113,74 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
+        onClose:()=>{
+          onClose()
+        }
+      }}
+      submitter={{
+        searchConfig:{
+          submitText:id && !copy? '确认编辑' : copy ? '确认复制' : '确认新建',
+          resetText:'返回'
+        }
       }}
       onFinish={async (values) => {
         await waitTime(values);
-        message.success('提交成功');
+        message.success(id?'编辑成功':'提交成功');
         // 不返回不会关闭弹框
         return true;
       }}
+      {...formItemLayout}
     >
-      <ProForm.Group>
-        <ProFormText
-          name="title"
-          label="活动标题"
-          placeholder="请输入活动标题"
-          rules={[{ required: true, message: '请输入活动标题' }]}
-        />
-      </ProForm.Group>
+      <ProFormText
+        name="activityName"
+        width='md'
+        label="活动名称"
+        placeholder="请输入活动名称"
+        rules={[{ required: true, message: '请输入活动名称' }]}
+      />
+      <ProFormDateTimePicker
+        label='开始时间'
+        width='md'
+        rules={[{ required: true, message: '请选择开始时间' }]}
+        name="activityStartTime"
+        fieldProps={{
+            disabledDate:(current)=>disabledDate(current),
+            format:"YYYY-MM-DD HH:mm:ss"
+        }}
+        disabled={detailData?.status==2&&!copy}
+      />
+      <ProFormDateTimePicker
+        label='结束时间'
+        width='md'
+        rules={[{ required: true, message: '请选择结束时间' }]}
+        name="activityEndTime"
+        fieldProps={{
+            disabledDate:(current)=>disabledDate(current),
+            format:"YYYY-MM-DD HH:mm:ss"
+        }}
+        disabled={detailData?.status==2&&!copy}
+      />
       <ProFormRadio.Group
-          name="status"
-          label="上线/下架"
+          name="limitBuyType"
+          label="限购"
           required
+          fieldProps={{
+            direction:"vertical"
+          }}
           options={[
             {
-              label: '上线',
-              value: 2,
+              label: '不限购',
+              value: 1,
             },
             {
-              label: '下架',
-              value: 1,
+              label: <ProForm.Group>每人每种商品限购 <ProFormText name="limitBuyNum" width={100} initialValue={0}/>件</ProForm.Group>,
+              value: 2,
             },
           ]}
         />
-      <ProForm.Group>
-        <Form.Item
-          name="cmsClassId"
-          label="位置"
-          rules={[{ required: true, message: '请选择位置' }]}
-        >
-          <CrazyAddActivityReg />
-        </Form.Item>
-      </ProForm.Group>
-      <ProFormText
-          name="id"
-          label="id"
-          hidden
-        />
-    </ModalForm>
+      <Associated0Goods detailList={detailList} detailData={detailData} id={id}  callback={(data)=>{
+        setDetailList(data)
+      }}/>
+    </DrawerForm>
   );
 };

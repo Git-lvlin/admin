@@ -8,7 +8,7 @@ import { amountTransform } from '@/utils/utils'
 export default (props) => {
     const { visible, setVisible, callback, title = '选择活动商品',goodsSaleType,keyId,detailList} = props;
     const [keys,setKeys]=useState()
-    const [goosList,setGoosList]=useState([])
+    const [goosList,setGoosList]=useState()
     const [dataList,setDataList]=useState([])
   
     const formItemLayout = {
@@ -26,6 +26,12 @@ export default (props) => {
   
   
     const columns = [
+      {
+        title: 'spuid',
+        dataIndex: 'spuId',
+        valueType: 'text',
+        hiddInSearch: true
+      },
       {
         title: 'skuID',
         dataIndex: 'skuId',
@@ -64,7 +70,7 @@ export default (props) => {
       },
       {
         title: '平台亏盈',
-        dataIndex: 'actPriceProfitLoss',
+        dataIndex: 'salePriceProfitLoss',
         valueType: 'text',
         editable:false,
         render:(_)=>{
@@ -117,6 +123,7 @@ export default (props) => {
       >
         <ProTable
           columns={columns}
+          headerTitle="请选择商品"
           rowKey="skuId"
           options={false}
           request={productList}

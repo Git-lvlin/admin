@@ -2,7 +2,7 @@ import React, { useState} from 'react';
 import ProForm,{ ModalForm,ProFormTextArea,ProFormText} from '@ant-design/pro-form';
 import { Button,message } from 'antd';
 import { history } from 'umi';
-
+import { amountTransform } from '@/utils/utils'
 
 
 const formItemLayout = {
@@ -39,10 +39,12 @@ export default props=>{
         return new Promise(async (resolve, reject) => {
         if (value&&value<=0) {
             await reject('必须大于0')
-        }else if(value&&!/^[0-9]+(.[0-9]{0,1})?$/.test(value)){
-            await reject('只能输入数字，最多输入一位小数')
-        }else if(value&&value>data.goodsSalePrice/100){
+        }else if(value&&!/^[0-9]+(.[0-9]{0,2})?$/.test(value)){
+            await reject('只能输入数字，最多输入二位小数')
+        }else if(value&&value>amountTransform(data?.goodsSalePrice,'/')){
             await reject('可用红包不可大于销售价')
+        }else if(value&&value>=amountTransform(data?.platformProfit,'/')){
+            await reject('可用红包必须小于平台利润')
         }else {
             await resolve()
         }
@@ -85,6 +87,14 @@ export default props=>{
         />
         <ProFormText
             width={100}
+            label="SkUID"
+            readonly
+            fieldProps={{
+                value:data?.skuId
+            }}
+        />
+        <ProFormText
+            width={100}
             label="商品名称"
             readonly
             fieldProps={{
@@ -93,10 +103,18 @@ export default props=>{
         />
         <ProFormText
             width={100}
+            label="运营类型"
+            readonly
+            fieldProps={{
+                value:data?.operateType==1?'秒约':data?.operateType==2?'分享补贴':'未定'
+            }}
+        />
+        <ProFormText
+            width={100}
             label="零售供货价"
             readonly
             fieldProps={{
-                value:`￥${data?.retailSupplyPrice/100}`
+                value:`￥${amountTransform(data?.retailSupplyPrice,'/')}`
             }}
         />
         <ProFormText
@@ -104,7 +122,15 @@ export default props=>{
             label="销售价"
             readonly
             fieldProps={{
-                value:`￥${data?.goodsSalePrice/100}`
+                value:`￥${amountTransform(data?.goodsSalePrice,'/')}`
+            }}
+        />
+        <ProFormText
+            width={100}
+            label={data?.operateType==1?"秒约平台利润":"平台利润"}
+            readonly
+            fieldProps={{
+                value:`￥${amountTransform(data?.platformProfit,'/')}`
             }}
         />
         <ProForm.Group>
@@ -130,9 +156,9 @@ export default props=>{
                     {validator: checkConfirm2}
                 ]} 
             />
-            <span>元，（必须大于0，最多支持1位小数）</span>
+            <span>元，（必须大于0，最多支持2位小数）</span>
         </ProForm.Group>
-        <p>最大不超过{data?.goodsSalePrice/100}</p>
+        <p>红包金额需小于 {amountTransform(data?.platformProfit,'/')} 元</p>
         
     </ModalForm>
     )

@@ -68,45 +68,45 @@ const Message = (props) => {
         4: '邀请好友红包'
       },
     },
-    {
-      title: '发行总金额（元）',
-      dataIndex: 'issueAmount',
-      valueType:'text',
-      hideInSearch: true,
-      render:(_,data)=>{
-        return <p>{!isNaN(_)?Number(_).toFixed(2):_}</p>
-      }
-    },
-    {
-      title: '发行总数量（张）',
-      dataIndex: 'issueQuantity',
-      valueType: 'text',
-      hideInSearch: true,
-      render:(_, data)=>{
-        return <p>{data.issueQuantity==-1?'不限量':data.issueQuantity}</p>
-      }
-    },
-    {
-      title: '可领取时间',
-      dataIndex: 'dateRange',
-      valueType: 'text',
-      render:(_, data)=>{
-        if(data.limitStartTime){
-          return <p>{data.limitStartTime} 至 {data.limitEndTime}</p>
-        }else{
-          return '-'
-        }
-      },
-      hideInSearch: true,
-      ellipsis:true
-    },
-    {
-      title: '有效期',
-      dataIndex: 'activityTimeDisplay',
-      valueType: 'text',
-      hideInSearch: true,
-      ellipsis:true
-    },
+    // {
+    //   title: '发行总金额（元）',
+    //   dataIndex: 'issueAmount',
+    //   valueType:'text',
+    //   hideInSearch: true,
+    //   render:(_,data)=>{
+    //     return <p>{!isNaN(_)?Number(_).toFixed(2):_}</p>
+    //   }
+    // },
+    // {
+    //   title: '发行总数量（张）',
+    //   dataIndex: 'issueQuantity',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   render:(_, data)=>{
+    //     return <p>{data.issueQuantity==-1?'不限量':data.issueQuantity}</p>
+    //   }
+    // },
+    // {
+    //   title: '可领取时间',
+    //   dataIndex: 'dateRange',
+    //   valueType: 'text',
+    //   render:(_, data)=>{
+    //     if(data.limitStartTime){
+    //       return <p>{data.limitStartTime} 至 {data.limitEndTime}</p>
+    //     }else{
+    //       return '-'
+    //     }
+    //   },
+    //   hideInSearch: true,
+    //   ellipsis:true
+    // },
+    // {
+    //   title: '有效期',
+    //   dataIndex: 'activityTimeDisplay',
+    //   valueType: 'text',
+    //   hideInSearch: true,
+    //   ellipsis:true
+    // },
     {
       title: '审核状态',
       dataIndex: 'couponVerifyStatus',
@@ -308,6 +308,9 @@ return(
         />,
         <ExportHistory key='task' show={visit} setShow={setVisit} type='red-packet-list-export'/>,
         ],
+      }}
+      pagination={{
+        pageSize:10
       }}
       columns={columns}
     />

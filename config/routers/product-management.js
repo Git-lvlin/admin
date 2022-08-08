@@ -34,6 +34,12 @@ export default {
           wrappers: [RouteWatcher],
         },
         {
+          name: 'operator-overrule-list',
+          path: '/product-management/supplier/operator-overrule-list',
+          component: './product-management/supplier/operator-overrule-list',
+          wrappers: [RouteWatcher],
+        },
+        {
           name: 'set-goods-list',
           path: '/product-management/supplier/set-goods-list',
           component: './product-management/supplier/set-goods-list',
@@ -87,6 +93,18 @@ export default {
       name: 'daifa-product',
       path: '/product-management/daifa-product',
       component: './product-management/daifa-product',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'designated-commodity-settlement',
+      path: '/product-management/designated-commodity-settlement',
+      component: './product-management/designated-commodity-settlement',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'merchandise-settlement-record',
+      path: '/product-management/merchandise-settlement-record',
+      component: './product-management/merchandise-settlement-record',
       wrappers: [RouteWatcher],
     },
     

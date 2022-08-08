@@ -166,6 +166,12 @@ export default {
       component: './cms/express-news',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'enjoy-earning',
+      path: '/cms/enjoy-earning',
+      component: './cms/enjoy-earning',
+      wrappers: [RouteWatcher],
+    },
     // {
     //   name: 'king-kong-district',
     //   path: '/cms/king-kong-district',
@@ -202,5 +208,11 @@ export default {
     //   component: './cms/poster',
     //   wrappers: [RouteWatcher],
     // },
+    {
+      name: 'hydrogen-atom-start-window',
+      path: '/cms/hydrogen-atom-start-window',
+      component: './cms/hydrogen-atom-start-window',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Space, Tooltip, Image, Menu, Dropdown } from 'antd';
+import { Button, Space, Tooltip, Image, Menu, Dropdown, Input } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
@@ -21,9 +21,18 @@ import AuditInfo from './audit-info';
 import OrderDetail from '@/pages/order-management/normal-order/detail';
 import styles from './style.less'
 import ContentModel from './content-model';
+import CreatePc from './create-pc';
+import moment from 'moment';
+import RangeInput from '@/components/range-input';
+
+const exportType = {
+  normal: 'community-shopkeeper-export',
+  cancelled: 'community-shopkeeper-cancelled-export',
+  vip: 'store-export-vip-membershop',
+}
 
 const StoreList = (props) => {
-  const { storeType,type } = props
+  const { storeType, type } = props
   const [visible, setVisible] = useState(false);
   const [formVisible, setFormVisible] = useState(false);
   const [createVisible, setCreateVisible] = useState(false);
@@ -37,6 +46,7 @@ const StoreList = (props) => {
   const [auditInfoVisible, setAuditInfoVisible] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [gradeChangeVisible, setGradeChangeVisible] = useState(false);
+  const [createPcVisible, setCreatePcVisible] = useState(false);
   const [attachmentImage, setAttachmentImage] = useState()
   const actionRef = useRef();
   const formRef = useRef();
@@ -75,6 +85,10 @@ const StoreList = (props) => {
       setSelectItem(data)
       setGradeChangeVisible(true)
     }
+    if (key === '8') {
+      setSelectItem(data)
+      setCreatePcVisible(true)
+    }
 
   }
 
@@ -90,6 +104,7 @@ const StoreList = (props) => {
         {getAuth('store/member_shop/grade') && <Menu.Item key="7">
           店铺等级调整
         </Menu.Item>}
+        <Menu.Item key="8">操作PC后台</Menu.Item>
       </Menu>
     )
   }
@@ -111,14 +126,14 @@ const StoreList = (props) => {
     //   render: (_) => <img src={_} width="50" height="50" />
     // },
     {
-      title: '生鲜店铺编号',
+      title: '店铺编号',
       dataIndex: 'shopMemberAccount',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入生鲜店铺编号'
+        placeholder: '请输入店铺编号'
       },
-      hideInTable: storeType == 'freshStores'||storeType == 'vip',
-      hideInSearch: storeType == 'freshStores'||storeType == 'vip',
+      hideInTable: storeType == 'freshStores' || storeType == 'vip',
+      hideInSearch: storeType == 'freshStores' || storeType == 'vip',
     },
     {
       title: '店主手机号',
@@ -144,7 +159,7 @@ const StoreList = (props) => {
       render: (_, data) => {
         return <div>{_.desc}</div>
       },
-      hideInTable: storeType == 'freshStores'||storeType == 'vip',
+      hideInTable: storeType == 'freshStores' || storeType == 'vip',
     },
     {
       title: '店铺名称',
@@ -154,6 +169,49 @@ const StoreList = (props) => {
         placeholder: '请输入店铺名称'
       },
       hideInSearch: storeType == 'vip',
+    },
+    {
+      title: '店主姓名',
+      dataIndex: 'realname',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入店主姓名'
+      },
+    },
+    {
+      title: 'VIP店铺',
+      dataIndex: 'vip',
+      valueType: 'text',
+      valueEnum: {
+        0: '否',
+        1: '是'
+      },
+      hideInSearch: true,
+      hideInTable: storeType === 'vip' || storeType === 'cancelled',
+    },
+    {
+      title: 'PC开通状态',
+      dataIndex: 'statusAction',
+      valueType: 'text',
+      hideInTable: storeType !== 'normal',
+      hideInSearch: true,
+      valueEnum: {
+        1: '已开通',
+        0: '未开通',
+        2: '已注销'
+      }
+    },
+    {
+      title: 'PC系统',
+      dataIndex: 'productList',
+      valueType: 'text',
+      hideInTable: storeType !== 'normal',
+      hideInSearch: true,
+      render: (_) => {
+        return _.map(item => (
+          <div key={item.id}>{`${item.name}(至${moment(item.usefulEnd * 1000).format('YYYY-MM-DD')})`}</div>
+        ))
+      }
     },
     {
       title: '类型',
@@ -216,6 +274,22 @@ const StoreList = (props) => {
       hideInTable: storeType == 'vip',
     },
     {
+      title: '交保证金(元)',
+      dataIndex: 'deposit',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType == 'vip',
+      render: (_) => _ / 100
+    },
+    {
+      title: '交服务费(元)',
+      dataIndex: 'serviceFee',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType == 'vip',
+      render: (_) => _ / 100
+    },
+    {
       title: '生鲜柜',
       dataIndex: 'isOrdered',
       valueType: 'select',
@@ -262,7 +336,7 @@ const StoreList = (props) => {
       dataIndex: 'memberShopType',
       valueType: 'select',
       hideInTable: true,
-      hideInSearch: storeType == 'freshStores'||storeType == 'vip',
+      hideInSearch: storeType == 'freshStores' || storeType == 'vip',
       valueEnum: {
         0: '全部',
         20: '生鲜店铺',
@@ -274,7 +348,7 @@ const StoreList = (props) => {
       dataIndex: 'verifyStatus',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'freshStores'||storeType == 'vip',
+      hideInTable: storeType == 'freshStores' || storeType == 'vip',
       valueEnum: {
         "0": '没有申请过',
         "1": '审核通过',
@@ -288,7 +362,7 @@ const StoreList = (props) => {
       dataIndex: 'operationCompanyName',
       valueType: 'text',
       hideInTable: true,
-      hideInSearch: storeType == 'freshStores'||storeType == 'vip',
+      hideInSearch: storeType == 'freshStores' || storeType == 'vip',
       fieldProps: {
         placeholder: '请输入运营中心名称'
       },
@@ -298,7 +372,7 @@ const StoreList = (props) => {
       dataIndex: 'operationId',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'freshStores'||storeType == 'vip',
+      hideInTable: storeType == 'freshStores' || storeType == 'vip',
       render: (_, data) => {
         return <div>{_ == 0 ? '-' : _}</div>
       }
@@ -308,7 +382,7 @@ const StoreList = (props) => {
       dataIndex: 'operationCompanyName',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'freshStores'||storeType == 'vip',
+      hideInTable: storeType == 'freshStores' || storeType == 'vip',
     },
     {
       title: '申请类型',
@@ -319,7 +393,7 @@ const StoreList = (props) => {
         20: '绿色通道申请',
       },
       hideInTable: true,
-      hideInSearch: storeType == 'freshStores'||storeType == 'vip',
+      hideInSearch: storeType == 'freshStores' || storeType == 'vip',
     },
     {
       title: '申请类型',
@@ -327,7 +401,7 @@ const StoreList = (props) => {
       valueType: 'text',
       render: (_) => _ === 10 ? '正常申请' : '绿色通道申请',
       hideInSearch: true,
-      hideInTable: storeType == 'freshStores'||storeType == 'vip',
+      hideInTable: storeType == 'freshStores' || storeType == 'vip',
     },
     {
       title: '店主收件号',
@@ -335,8 +409,8 @@ const StoreList = (props) => {
       fieldProps: {
         placeholder: '请输入店主收件手机号'
       },
-      hideInTable: storeType == 'freshStores'||storeType == 'vip',
-      hideInSearch:storeType == 'freshStores'||storeType == 'vip'
+      hideInTable: storeType == 'freshStores' || storeType == 'vip',
+      hideInSearch: storeType == 'freshStores' || storeType == 'vip'
     },
     {
       title: '集约任务',
@@ -362,7 +436,7 @@ const StoreList = (props) => {
           </a>
           : _
       },
-      hideInTable: storeType == 'freshStores'||storeType == 'vip'
+      hideInTable: storeType == 'freshStores' || storeType == 'vip'
     },
     {
       title: '店内订单',
@@ -387,7 +461,7 @@ const StoreList = (props) => {
           :
           _
       },
-      hideInTable: storeType == 'freshStores'||storeType == 'vip'
+      hideInTable: storeType == 'freshStores' || storeType == 'vip'
     },
     {
       title: '商品',
@@ -410,7 +484,7 @@ const StoreList = (props) => {
           :
           _
       },
-      hideInTable: storeType == 'freshStores'||storeType == 'vip'
+      hideInTable: storeType == 'freshStores' || storeType == 'vip'
     },
     {
       title: '订单用户',
@@ -433,7 +507,7 @@ const StoreList = (props) => {
           :
           _
       },
-      hideInTable: storeType == 'freshStores'||storeType == 'vip'
+      hideInTable: storeType == 'freshStores' || storeType == 'vip'
     },
     {
       title: '直推用户',
@@ -457,7 +531,7 @@ const StoreList = (props) => {
           :
           _
       },
-      hideInTable: storeType == 'freshStores'||storeType == 'vip'
+      hideInTable: storeType == 'freshStores' || storeType == 'vip'
     },
     {
       title: '所在地区',
@@ -499,7 +573,7 @@ const StoreList = (props) => {
           <>
             <div>{_}</div>
             {depositRefendList && depositRefendList.map(ele => {
-              return <div>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</div>
+              return <div key={ele.id}>{amountTransform(Number(ele.refendAmount), '/')}元（{ele.optAdminName}/{ele.refendTime}）</div>
             })}
           </>
         )
@@ -670,35 +744,35 @@ const StoreList = (props) => {
         1: '有改价记录',
       },
       hideInTable: true,
-      hideInSearch: storeType == 'freshStores'||storeType == 'vip',
+      hideInSearch: storeType == 'freshStores' || storeType == 'vip',
     },
     {
       title: '提交认证时间',
       dataIndex: 'provideTime',
       valueType: 'dateTimeRange',
       hideInTable: true,
-      hideInSearch: storeType === 'freshStores'||storeType == 'vip'
+      hideInSearch: storeType === 'freshStores' || storeType == 'vip'
     },
     {
       title: '提交认证时间',
       dataIndex: 'provideTime',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType === 'freshStores'||storeType == 'vip'
+      hideInTable: storeType === 'freshStores' || storeType == 'vip'
     },
     {
       title: '申请入驻审核通过时间',
       dataIndex: 'auditTime',
       valueType: 'dateTimeRange',
       hideInTable: true,
-      hideInSearch: storeType === 'freshStores'||storeType == 'vip'
+      hideInSearch: storeType === 'freshStores' || storeType == 'vip'
     },
     {
       title: '申请入驻审核通过时间',
       dataIndex: 'auditTime',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType === 'freshStores'||storeType == 'vip'
+      hideInTable: storeType === 'freshStores' || storeType == 'vip'
     },
     {
       title: '注销时间',
@@ -706,6 +780,57 @@ const StoreList = (props) => {
       valueType: 'dateTimeRange',
       hideInTable: true,
       hideInSearch: storeType !== 'cancelled'
+    },
+    {
+      title: 'PC开通状态',
+      dataIndex: 'actionStatus',
+      valueType: 'select',
+      hideInTable: true,
+      hideInSearch: storeType !== 'normal',
+      valueEnum: {
+        1: '已开通',
+        0: '未开通',
+        2: '已注销'
+      }
+    },
+    {
+      title: 'PC系统',
+      dataIndex: 'actionId',
+      valueType: 'select',
+      hideInTable: true,
+      hideInSearch: storeType !== 'normal',
+      valueEnum: {
+        10001: '预约系统',
+        10002: '健康档案',
+        10003: '充值系统',
+      }
+    },
+    {
+      title: '交保证金金额',
+      dataIndex: 'deposit',
+      valueType: 'text',
+      renderFormItem: () => <RangeInput />,
+      hideInSearch: storeType == 'vip',
+      hideInTable: true,
+    },
+    {
+      title: '交服务费金额',
+      dataIndex: 'serviceFee',
+      valueType: 'text',
+      renderFormItem: () => <RangeInput />,
+      hideInSearch: storeType == 'vip',
+      hideInTable: true,
+    },
+    {
+      title: 'VIP店铺',
+      dataIndex: 'vip',
+      valueType: 'select',
+      valueEnum: {
+        0: '非VIP店铺',
+        1: 'VIP店铺'
+      },
+      hideInSearch: storeType === 'vip' || storeType === 'cancelled',
+      hideInTable: true,
     },
     {
       title: '操作',
@@ -716,25 +841,9 @@ const StoreList = (props) => {
       render: (_, data) => (
         <Space>
           <Dropdown.Button onClick={() => { setSelectItem(data); setDetailVisible(true) }} overlay={() => { return menu(data) }}>详情</Dropdown.Button>
-          {/* <a onClick={() => { setSelectItem(data); setDetailVisible(true) }}>详情</a> */}
-          {/* {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 1 }); setReturnVisible(true) }}>线下退保证金登记</a>} */}
-          {/* {data.status.code === 2 && <a onClick={() => { setSelectItem({ ...data, type: 2 }); setReturnVisible(true) }}>线上原路退回保证金</a>} */}
-          {/* {data.status.code === 1 && <a onClick={() => { setSelectItem({ ...data, toStatus: 3 }); setFormVisible(true) }}>关闭</a>} */}
-          {/* {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 1 }); setFormVisible(true) }}>开启</a>} */}
-          {/* {data.status.code === 3 && <a onClick={() => { setSelectItem({ ...data, toStatus: 2 }); setFormVisible(true) }}>注销</a>} */}
-          {/* <a onClick={() => { setSelectItem(data); setAuditInfoVisible(true) }}>审核资料</a> */}
-          {/* <Auth
-            name="store/member_shop/grade"
-          >
-            <GradeChange
-              callback={() => { actionRef.current.reload() }}
-              storeNo={data.storeNo}
-            />
-          </Auth> */}
-
         </Space>
       ),
-      hideInTable: storeType == 'freshStores'||storeType == 'vip'
+      hideInTable: storeType == 'freshStores' || storeType == 'vip'
     },
   ];
 
@@ -775,40 +884,25 @@ const StoreList = (props) => {
           defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-            <div key="export">
-              {
-                storeType != 'freshStores'&& storeType != 'vip' &&
-                <>
-                  <Button
-                    key="new"
-                    onClick={() => {
-                      setCreateVisible(true);
-                    }}
-                  >
-                    新建
-                  </Button>
-                  &nbsp;&nbsp;
-                  <Export
-                    change={(e) => { setVisit(e) }}
-                    key="export"
-                    type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"}
-                    conditions={() => { return getFieldValue(searchConfig) }}
-                  />
-                  &nbsp;&nbsp;
-                  <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={storeType == 'normal' ? "community-shopkeeper-export" : "community-shopkeeper-cancelled-export"} />
-                </>
-              }
-            </div>,
-
-            // <Button
-            //   key="new2"
-            //   onClick={() => {
-            //     setExcelVisible(true);
-            //   }}
-            // >
-            //   批量新建
-            // </Button>,
-            // <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
+            storeType === 'normal' &&
+            <Button
+              key="new"
+              onClick={() => {
+                setCreateVisible(true);
+              }}
+            >
+              新建
+            </Button>,
+            storeType != 'freshStores' &&
+            <>
+              <Export
+                change={(e) => { setVisit(e) }}
+                key="export"
+                type={exportType[storeType]}
+                conditions={() => { return getFieldValue(searchConfig) }}
+              />
+              <ExportHistory key="exportHistory" show={visit} setShow={setVisit} type={exportType[storeType]} />
+            </>
           ],
         }}
         columns={columns}
@@ -817,6 +911,16 @@ const StoreList = (props) => {
         }}
         className={styles.store_list}
       />
+      {
+        createPcVisible &&
+        <CreatePc
+          data={selectItem}
+          storeNo={selectItem?.storeNo}
+          visible={createPcVisible}
+          setVisible={setCreatePcVisible}
+          callback={() => { setCreatePcVisible(false); actionRef.current.reload() }}
+        />
+      }
       {
         auditInfoVisible &&
         <AuditInfo
@@ -895,22 +999,22 @@ const OverallStore = () => {
       >
         <ProCard.TabPane key="normal" tab="正常店铺">
           {
-            activeKey == 'normal' && <StoreList storeType={activeKey}/>
+            activeKey == 'normal' && <StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
         <ProCard.TabPane key="cancelled" tab="已注销店铺">
           {
-            activeKey == 'cancelled' && <StoreList storeType={activeKey}/>
+            activeKey == 'cancelled' && <StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
         <ProCard.TabPane key="freshStores" tab="已买生鲜柜或开店礼包店铺">
           {
-            activeKey == 'freshStores' && <StoreList storeType={activeKey}/>
+            activeKey == 'freshStores' && <StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
         <ProCard.TabPane key="vip" tab="VIP社区店">
           {
-            activeKey == 'vip' && <StoreList storeType={activeKey}/>
+            activeKey == 'vip' && <StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
       </ProCard>

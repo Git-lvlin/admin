@@ -3,6 +3,7 @@ export type DescriptionsProps = {
   totalSaleCommission: string;
   totalRentCommission: string;
   totalOrderAmount: string;
+  totalBootCommission: string;
 }
 
 export type TableProps = {
@@ -15,6 +16,7 @@ export type TableProps = {
   totalCount: string;
   totalSaleCount: string;
   totalRentCount: string;
+  totalBootCount: string;
 }
 
 

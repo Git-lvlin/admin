@@ -53,6 +53,11 @@ const Detail = ({ storeNo, visible, setVisible }) => {
             {detailData?.storeName}
           </Form.Item>
           <Form.Item
+            label="姓名"
+          >
+            {detailData?.memberShop?.realname}
+          </Form.Item>
+          <Form.Item
             label="身份证号码"
             required
           >

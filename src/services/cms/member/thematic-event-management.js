@@ -15,7 +15,7 @@ export const getActiveConfigList = async (params = {}, options = {}) => {
     });
   
     return {
-      data: res.data.records,
+      data: res.data,
       success: true,
       total: res.data.total
     }
@@ -41,6 +41,23 @@ export const saveSubjectActiveConfig = async (params = {}, options = {}) => {
 export const getActiveConfigById = async (params = {}, options = {}) => {
 const { ...rest } = params;
 const res = await request('/auth/activity/subject/getActiveConfigById', {
+    method: 'POST',
+    data: {
+    ...rest
+    },
+    ...options
+});
+
+return {
+    data: res.data,
+    success: true,
+    code: res.code
+}
+} 
+
+export const changeStatus = async (params = {}, options = {}) => {
+const { ...rest } = params;
+const res = await request('/auth/activity/subject/changeStatus', {
     method: 'POST',
     data: {
     ...rest

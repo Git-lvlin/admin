@@ -4,28 +4,28 @@ import ProForm, {
   ModalForm,
   ProFormText,
 } from '@ant-design/pro-form';
-import { crazyTagSort } from '@/services/cms/member/member';
+import { sortOperateType } from '@/services/cms/enjoy-earning';
 
 export default (props) => {
-  const { detailData, setVisible, setFlag, visible } = props;
+  const { detailData, setVisible, visible, callback = () => { } } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
   const waitTime = (values) => {
     const { id, sort } = values
     const param = {
-      sortInfo:[
+      sortData: [
         {
-          id:id,
-          sort: sort
+          spuId: id,
+          sort
         }
       ]
     }
     return new Promise((resolve, reject) => {
-      crazyTagSort(param).then((res) => {
+      sortOperateType(param).then((res) => {
         if (res.code === 0) {
-          setFlag(true)
           resolve(true);
+          callback();
         } else {
           reject(false);
         }
@@ -35,18 +35,18 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
-      const { id, sort } = detailData
+      const { spuId, optype2Sort } = detailData
       form.setFieldsValue({
-        id,
-        sort
+        id: spuId,
+        sort: optype2Sort,
       })
     }
   }, [form, detailData])
 
   return (
     <ModalForm
-      key="sort"
-      width={600}
+      key='sort'
+      width={400}
       title={'排序'}
       onVisibleChange={setVisible}
       formRef={formRef}
@@ -68,20 +68,20 @@ export default (props) => {
           width="sm"
           name="sort"
           label="排序"
-          rules={[{ 
+          rules={[{
             required: true,
             message: '请输入排序序号(整数)',
             pattern: /^\+?[1-9][0-9]*$/
-        
-        }]}  
+
+          }]}
         />
 
       </ProForm.Group>
-        <ProFormText
-          name="id"
-          label="id"
-          hidden
-        />
+      <ProFormText
+        name="id"
+        label="id"
+        hidden
+      />
     </ModalForm>
   );
 };
