@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { ModalForm } from '@ant-design/pro-form'
 import { createExportTask } from '@/services/export-excel/export-template'
 import { 
   Button, 
@@ -11,29 +10,35 @@ import {
   Empty,
   Progress,
   Drawer,
-  message
+  message,
 } from 'antd'
-import ProForm, { ProFormDateTimeRangePicker } from '@ant-design/pro-form'
+import ProForm, { ModalForm, ProFormDateTimeRangePicker } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 
 import type { FC } from "react"
-import type { ExprotProps, ExportHistoryProps, ExprotStateProps } from "./data"
+import type { FormInstance } from "antd"
+import type { 
+  ExprotProps,
+  ExportHistoryProps, 
+  ExprotStateProps,
+  DataProps 
+} from "./data"
 
 import { findByWays, cancelTask } from '@/services/export-excel/export-template'
 import moment from 'moment'
 import styles from './styles.less'
 import { paramsEmptyFilter } from '@/utils/utils'
 
-const ExportHistory: FC<ExportHistoryProps> = ({ show, setShow, type, slot }) => {
+const ExportHistory: FC<ExportHistoryProps> = ({ show, setShow, type, slot, placement }) => {
   const [form] = Form.useForm()
   const [load, setLoad] = useState(false)
   const [pageTotal, setPageTotal] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const [page, setPage] = useState(1)
-  const [data, setData] = useState([])
+  const [data, setData] = useState<DataProps[]>([])
   const [query, setQuery] = useState(0)
-  const timer = useRef()
-  const timeOut = useRef()
+  const timer = useRef<number>()
+  const timeOut = useRef<number>()
   const awaitTime = 3 * 60 * 1000   //TimeOut await times
 
   const pageChange = (a: number, b: number) => {
@@ -73,9 +78,14 @@ const ExportHistory: FC<ExportHistoryProps> = ({ show, setShow, type, slot }) =>
   useEffect(()=> {
     clearInterval(timer.current)
     if(show) {
-      timer.current = setInterval(()=>{
+      timer.current = window.setInterval(()=>{
         getData()
       }, 3000)
+      return ()=> {
+        clearInterval(timer.current)
+        setData([])
+      }
+    } else {
       return ()=> {
         clearInterval(timer.current)
         setData([])
@@ -83,7 +93,7 @@ const ExportHistory: FC<ExportHistoryProps> = ({ show, setShow, type, slot }) =>
     }
   }, [page, show])
   useEffect(()=> {
-    timeOut.current = setTimeout(()=> {
+    timeOut.current = window.setTimeout(()=> {
       clearInterval(timer.current)
     }, awaitTime)
     return ()=> {
@@ -113,7 +123,7 @@ const ExportHistory: FC<ExportHistoryProps> = ({ show, setShow, type, slot }) =>
         <div className={styles.fail}>导出取消</div>
       )
     } else {
-      return ''
+      return null
     }
   }
 const cancelTaskCanbak=(id: number)=>{
@@ -126,7 +136,7 @@ const cancelTaskCanbak=(id: number)=>{
 }
   return (
     <>
-      <Tooltip key="history" title="查看历史导出任务">
+      <Tooltip placement={placement} key="history" title="查看历史导出任务">
         {
           slot ?
           slot(()=>{setShow(true)}):
@@ -151,12 +161,13 @@ const cancelTaskCanbak=(id: number)=>{
         destroyOnClose={true}
         zIndex={99999}
       >
-        <ProForm
+        <ProForm<FormInstance>
           layout="inline"
           form={form}
-          onFinish={() => {
+          onFinish={async () => {
             setPage(1)
             setQuery(query + 1)
+            return true
           }}
           submitter={{
             render: ({ form }) => {
@@ -246,7 +257,7 @@ const cancelTaskCanbak=(id: number)=>{
   )
 }
 
-const Export: FC<ExprotProps> = ({ type, conditions, text='导出', slot, slotHistory, fileName }) => {
+const Export: FC<ExprotProps> = ({ type, conditions, text='导出', slot, slotHistory, fileName, placement }) => {
   const [visible, setVisible] = useState(false)
 
   const downExcel = () => {
@@ -303,7 +314,7 @@ const Export: FC<ExprotProps> = ({ type, conditions, text='导出', slot, slotHi
           zIndex: 99999
         }}
         onFinish={async () => {
-          await downExcel()
+          downExcel()
           return true
         }}
       >
@@ -318,6 +329,7 @@ const Export: FC<ExprotProps> = ({ type, conditions, text='导出', slot, slotHi
         setShow={setVisible}
         type={type}
         slot={slotHistory}
+        placement={placement}
       />
     </Space>
   )
