@@ -13,8 +13,32 @@ export default {
       {
         name: 'health-card-management',
         path: '/hydrogen-atom-trusteeship/health-card-management',
-        component: './hydrogen-atom-trusteeship/health-card-management',
-        wrappers: [RouteWatcher],
+        routes: [
+          {
+            name: 'add-commodity-card',
+            path: '/hydrogen-atom-trusteeship/health-card-management/add-commodity-card',
+            component: './hydrogen-atom-trusteeship/health-card-management/add-commodity-card',
+            wrappers: [RouteWatcher],
+          },
+          {
+            name: 'platform-present-card',
+            path: '/hydrogen-atom-trusteeship/health-card-management/platform-present-card',
+            component: './hydrogen-atom-trusteeship/health-card-management/platform-present-card',
+            wrappers: [RouteWatcher],
+          },
+          {
+            name: 'record-card-acquisition',
+            path: '/hydrogen-atom-trusteeship/health-card-management/record-card-acquisition',
+            component: './hydrogen-atom-trusteeship/health-card-management/record-card-acquisition',
+            wrappers: [RouteWatcher],
+          },
+          {
+            name: 'card-usage-record',
+            path: '/hydrogen-atom-trusteeship/health-card-management/card-usage-record',
+            component: './hydrogen-atom-trusteeship/health-card-management/card-usage-record',
+            wrappers: [RouteWatcher],
+          }
+        ]
       },
       {
         name: 'hydrogen-referral-commission',
