@@ -396,6 +396,15 @@ export default {
   'menu.hydrogen-atom-management.referral-commission': '推荐提成',
   'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
 
+  'menu.hydrogen-atom-trusteeship': '氢原子托管',
+  'menu.hydrogen-atom-trusteeship.hydrogen-atom-start-record': '启动记录',
+  'menu.hydrogen-atom-trusteeship.health-card-management': '健康卡管理',
+  'menu.hydrogen-atom-trusteeship.health-card-management.add-commodity-card': '添加商品卡',
+  'menu.hydrogen-atom-trusteeship.health-card-management.platform-present-card': '平台赠卡',
+  'menu.hydrogen-atom-trusteeship.health-card-management.record-card-acquisition': '卡的获得记录',
+  'menu.hydrogen-atom-trusteeship.health-card-management.card-usage-record': '卡的使用记录',
+  'menu.hydrogen-atom-trusteeship.hydrogen-referral-commission': '推荐提成',
+
   'menu.buried-point': '埋点数据看板',
   'menu.buried-point.incident-analysts': '事件分析',
   'menu.buried-point.metadata-management': '元数据管理',
