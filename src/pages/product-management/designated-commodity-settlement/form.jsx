@@ -255,6 +255,9 @@ export default (props) => {
   }, [recordId])
 
   const submit = (values) => {
+    if(compute()<0){
+      return message.error('平台金额为负！')
+    }
     const params = {
       id: recordList?.id ? recordList?.id : 0,
       spuId: recordList?.id ? recordList?.spuId : recordId?.spuId,
