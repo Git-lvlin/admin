@@ -17,3 +17,37 @@ export type TableProps = {
   createTime: string;
   validTimeStr: string;
 }
+
+
+export type SubmitItem={
+  cardName: string;
+  subTitle: string;
+  cardImage: string;
+  marketPrice: number;
+  salePrice: number;
+  cardType: number;
+  equipmentType: number;
+  num: number;
+  cardRule: string;
+  id: number;
+  cardTimeType: number;
+  hotType: number;
+  usefulDay: number;
+  cartEndTime: string;
+}
+
+export type PropsDevices = {
+  visible: boolean;
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  type: number;
+  detailData: {
+    id: number;
+    cartEndTime: number;
+    salePrice: number;
+    marketPrice: number;
+    hotType: number;
+    sort: number
+  }
+  onClose: function
+  callback: function
+}

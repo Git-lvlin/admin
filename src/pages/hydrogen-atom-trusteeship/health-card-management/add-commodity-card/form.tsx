@@ -12,6 +12,7 @@ import Upload from '@/components/upload';
 import { cardSub, cardEdit } from "@/services/hydrogen-atom-trusteeship/health-card-management"
 import moment from 'moment';
 import { amountTransform } from '@/utils/utils'
+import type { SubmitItem, PropsDevices } from "./data"
 
 
 
@@ -29,7 +30,7 @@ const formItemLayout = {
 };
 
 
-export default (props) => {
+export default (props:PropsDevices) => {
   const { detailData, setVisible, onClose, visible,callback } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
@@ -40,10 +41,14 @@ export default (props) => {
     </div>
   )
 
-  const onsubmit =async (values) => {
+  const onsubmit =async (values:SubmitItem) => {
+    const { hotType,cardTimeType,usefulDay,cartEndTime,...res } = values
     const params={
-      ...values,
-      hotType:values?.hotType[0],
+      ...res,
+      cardTimeType,
+      hotType:hotType[0],
+      usefulDay:cardTimeType==2?usefulDay:0,
+      cartEndTime:cardTimeType==3?cartEndTime:null
     }
     const sub=detailData?.id?cardEdit:cardSub
     sub(params).then(res=>{
@@ -56,14 +61,14 @@ export default (props) => {
   };
 
   useEffect(() => {
-    console.log('detailData',detailData)
     if(detailData){
+      const { cartEndTime,salePrice,marketPrice,hotType,...res } = detailData
       form.setFieldsValue({
-        ...detailData,
-        cartEndTime:detailData?.cartEndTime&&detailData?.cartEndTime*1000,
-        salePrice:amountTransform(detailData?.salePrice,'/'),
-        marketPrice:amountTransform(detailData?.marketPrice,'/'),
-        hotType:[detailData?.hotType]
+        ...res,
+        cartEndTime:cartEndTime?moment(cartEndTime*1000).format('YYYY-MM-DD HH:mm:ss'):null,
+        salePrice:amountTransform(salePrice,'/'),
+        marketPrice:amountTransform(marketPrice,'/'),
+        hotType:[hotType]
       })
     }
   }, [])
@@ -123,7 +128,7 @@ export default (props) => {
           }
         }
       }
-      onFinish={async (values) => {
+      onFinish={async (values:SubmitItem) => {
         try {
           await onsubmit(values);
         } catch (error) {
