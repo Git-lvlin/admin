@@ -430,7 +430,7 @@ export default (props) => {
         }}
         recordCreatorProps={false}
       />
-      <Button
+      {/* <Button
         onClick={() => {
           setRoleVisible(true)
           setSum(sum + 1)
@@ -439,7 +439,7 @@ export default (props) => {
         icon={<PlusOutlined />}
       >
         添加
-      </Button>
+      </Button> */}
       {roleVisible &&
         <AddRoleModal
           visible={roleVisible}
