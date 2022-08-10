@@ -10,9 +10,13 @@ import {
   ProFormRadio,
   ProFormDependency,
 } from '@ant-design/pro-form';
-import { findAllProvinces, postageSave } from '@/services/product-management/freight-template'
+import { getCommissionConfigBySpuId } from '@/services/product-management/designated-commodity-settlement';
 import { PlusOutlined } from '@ant-design/icons';
 import Edit from '@/pages/product-management/designated-commodity-settlement/form'
+import { useLocation } from 'umi';
+import * as api1 from '@/services/product-management/product-list';
+import * as api2 from '@/services/product-management/product-list-purchase';
+import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -27,113 +31,175 @@ const formItemLayout = {
   }
 };
 
-const bloodData = [
-    {
-      id: 1,
-      name: '省办事处-管理奖',
-      tip: '销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）'
-    },
-    {
-      id: 2,
-      name: '社区店主-服务佣金(直)',
-      tip: '无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费'
-    },
-    {
-      id: 3,
-      name: '用户-服务佣金(直)',
-      tip: '无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费'
-    },
-    {
-      id: 4,
-      name: '社区店主-管理佣金(直)',
-      tip: '无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费'
-    },
-    {
-      id: 5,
-      name: '用户-管理佣金(直)',
-      tip: '无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费'
-    },
-    {
-      id: 6,
-      name: 'VIP店主-服务佣金(直)',
-      tip: '无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费'
-    },
-    {
-      id: 7,
-      name: 'VIP店主-管理佣金(间)',
-      tip: '无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费'
-    },
-    {
-      id: 8,
-      name: '供应商-货款',
-      tip: '销售订单承担通道费'
-    },
-    {
-      id: 9,
-      name: '运营中心',
-      tip: '线上记账线下结算,不承担通道费 销售订单：下单人为普通用户，则运营中心无收益，如下单人为店主，则业绩归属于下单店主绑定的运营中心'
-    },
-    {
-      id: 10,
-      name: '省代',
-      tip: '线下结算 销售订单按订单收货地址判断业绩归属'
-    },
-    {
-      id: 11,
-      name: '市代',
-      tip: '线下结算 销售订单按订单收货地址判断业绩归属'
-    },
-    {
-      id: 12,
-      name: '全国分红奖',
-      tip: '线下结算 每月统计全国各省市的总共业绩（含租赁+销售）前三名'
-    },
-    {
-      id: 13,
-      name: '汇能科技',
-      tip: '没有对应角色的分成归此处,线下结算的角色资金先分账到平台'
-    }
-  ]
-
 export default (props) => {
   const { onClose, visible, setVisible, detailData, callback } = props;
   const [form] = Form.useForm();
-  const [editableKeys, setEditableRowKeys] = useState(bloodData?.map(item => item.id));
-  const [dataSource, setDataSource] = useState(() => bloodData);
+  const [editableKeys, setEditableRowKeys] = useState();
+  const [dataSource, setDataSource] = useState();
   const [formVisible, setFormVisible] = useState(false);
+  const [configUser,setConfigUser] = useState()
+  const [recordList, setRecordList] = useState([])
   const [sum, setSum] = useState(11)
+  const [rowKeys,setRowKeys]=useState()
   const actionRef = useRef();
+  const isPurchase = useLocation().pathname.includes('purchase')
+  const api = isPurchase ? api2 : api1
   const submit = (values) => {
-
+    const params={
+      spuId: detailData?.spuId,
+      configUser:configUser
+    }
+    api.onShelf(params, { showSuccess: true }).then(res => {
+      if (res.code === 0) {
+        setVisible(false)
+        callback()
+      }
+    })
    }
-  const columns = [
+   const columns = [
     {
       title: '序号',
       dataIndex:'id',
-      align: 'center',
-      editable:false,
+      valueType: 'borderIndex',
+      hideInSearch: true,
+      valueType: 'indexBorder'
     },
     {
-      title: '对象和对应结算项名称',
-      dataIndex: 'name',
+      title: '商品名称',
+      dataIndex: 'goodsName',
       align: 'center',
-      editable:false,
-      render:(_,data)=>{
-        return  <p>
-        {_}
-        <Tooltip placement="top" title={data?.tip}>
-          <QuestionCircleOutlined style={{ marginLeft: 4 }} />
-        </Tooltip>
-      </p>
+    },
+    {
+      title: 'skuID',
+      dataIndex: 'skuId',
+      align: 'center',
+    },
+    {
+      title: '售价',
+      dataIndex: 'salePrice',
+      align: 'center',
+      render: (_)=>{
+        return <p style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</p>
       }
     },
     {
-      title: '风凉茶',
+      title: '省办事处-管理奖',
+      dataIndex: 'provinceManageFee',
       align: 'center',
-      dataIndex: 'price',
-    }
-   
-  ]
+      tip:'销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）',
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+    {
+      title: '社区店主-服务佣金(直)',
+      dataIndex: 'shopperChargeFee',
+      align: 'center',
+      tip:<><p>无相关角色，分成归属平台</p><p>提现时扣除7%手续费和2元/笔，不承担通道费</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+    {
+      title: '用户-服务佣金(直)',
+      dataIndex: 'userChargeFee',
+      align: 'center',
+      tip: <><p>无相关角色，分成归属平台</p><p>提现时扣除7%手续费和2元/笔，不承担通道费</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+    {
+      title: '社区店主-管理佣金(间)',
+      dataIndex: 'shopperManageFee',
+      align: 'center',
+      tip: <><p>无相关角色，分成归属平台</p><p>提现时扣除7%手续费和2元/笔，不承担通道费</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+    {
+      title: '用户-管理佣金(间)',
+      dataIndex: 'userManageFee',
+      align: 'center',
+      tip: <><p>无相关角色，分成归属平台</p><p>提现时扣除7%手续费和2元/笔，不承担通道费</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+    {
+      title: 'VIP店主-服务佣金(直)',
+      dataIndex: 'shoppervipChargeFee',
+      align: 'center',
+      tip: <><p>无相关角色，分成归属平台</p><p>提现时扣除7%手续费和2元/笔，不承担通道费</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+    {
+      title: 'VIP店主-管理佣金(间)',
+      dataIndex: 'shoppervipManageFee',
+      align: 'center',
+      tip: <><p>无相关角色，分成归属平台</p><p>提现时扣除7%手续费和2元/笔，不承担通道费</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+    {
+      title: '供应商-货款',
+      dataIndex: 'retailSupplyPrice',
+      align: 'center',
+      tip: '销售订单承担通道费',
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+    {
+      title: '运营中心',
+      dataIndex: 'companyAgent',
+      align: 'center',
+      tip: <><p>线上记账线下结算,不承担通道费</p><p>销售订单：下单人为普通用户，则运营中心无收益，如下单人为店主，则业绩归属于下单店主绑定的运营中心</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+    {
+      title: '省代',
+      dataIndex: 'provinceAgent',
+      align: 'center',
+      tip: <><p>线下结算</p><p>销售订单按订单收货地址判断业绩归属</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+    {
+      title: '市代',
+      dataIndex: 'cityAgent',
+      align: 'center',
+      tip: <><p>线下结算</p><p>销售订单按订单收货地址判断业绩归属</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+    {
+      title: '全国分红奖',
+      dataIndex: 'dividends',
+      align: 'center',
+      tip: <><p>线下结算</p><p>每月统计全国各省市的总共业绩（含租赁+销售）前三名</p></>,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+    {
+      title: '汇能科技',
+      dataIndex: 'company',
+      align: 'center',
+      tip: '没有对应角色的分成归此处,线下结算的角色资金先分账到平台',
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+  ];
 
   return (
     <DrawerForm
@@ -153,6 +219,7 @@ export default (props) => {
             <Button
               onClick={() => {
                 form?.submit()
+                setConfigUser(0)
               }}
               key='direct'
             >
@@ -162,6 +229,7 @@ export default (props) => {
             type='primary'
             onClick={() => {
               form?.submit()
+              setConfigUser(1)
             }}
             key='adhibition'
           >
@@ -173,30 +241,54 @@ export default (props) => {
       form={form}
       onFinish={async (values) => {
         await submit(values);
-        callback();
-        return true;
       }}
       visible={visible}
       {...formItemLayout}
     >
+     <p style={{paddingLeft:'20px'}}>[spuID:{detailData?.spuId}] {detailData?.goodsName}</p>
      <ProTable
         rowKey="id"
         dataSource={dataSource}
         actionRef={actionRef}
-        bordered
+        request={getCommissionConfigBySpuId}
         search={false}
         columns={columns}
         toolbar={{
             settings: false
         }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
+        postData={(data)=>{
+          setRecordList(data)
+          setRowKeys(data[0]?.id)
+          return data
+        }}
+        params={{
+          spuId: detailData?.spuId
+        }}
         pagination={false}
+        rowSelection={{
+          renderCell:()=>{
+            return null
+          },
+          type:'radio',
+          selectedRowKeys:[rowKeys],
+          
+        }}
+        tableAlertRender={false}
+        onRow={(record) => {
+          return {  
+            onClick: async () => {
+              setRowKeys(record.id)
+            },
+          };
+        }}
         />
         <a style={{float:'right'}} onClick={()=>{setFormVisible(true)}}>修改结算配置</a>
         {formVisible && <Edit
           visible={formVisible}
           setVisible={setFormVisible}
           onClose={() => { setFormVisible(false)}}
-          // detailData={detailData}
+          detailData={recordList.find(ele=>ele.id==rowKeys)}
           callback={() => { actionRef.current.reload() }}
         />}
     </DrawerForm>
