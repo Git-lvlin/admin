@@ -30,6 +30,7 @@ import GroupActivitiesManagement from './routers/group-activities-management'
 import HydrogenAtomManagement from './routers/hydrogen-atom-management'
 import BuriedPoint from "./routers/buried-point"
 import OfficeManagement from './routers/office-management'
+import HydrogenAtomTrusteeship from './routers/hydrogen-atom-trusteeship'
 
 const { REACT_APP_ENV } = process.env;
 
@@ -103,6 +104,7 @@ const config = {
             ActivityManagement,
             GroupActivitiesManagement,
             HydrogenAtomManagement,
+            HydrogenAtomTrusteeship,
             OfficeManagement,
             BuriedPoint,
             {
