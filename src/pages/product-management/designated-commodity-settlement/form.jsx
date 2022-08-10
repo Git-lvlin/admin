@@ -370,7 +370,9 @@ export default (props) => {
             return <InputNumber  
                       min="0"
                       max={amountTransform(recordList?.salePrice,'/')||amountTransform(recordId?.salePrice,'/')}
-                      stringMode style={{ width: '450px' }} 
+                      style={{ width: '450px' }} 
+                      precision='2'
+                      stringMode
                       addonAfter='元' 
                       placeholder='请输此行角色的结算金额，0.00至售价。总结算金额<售价' 
                       />
