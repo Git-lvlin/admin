@@ -19,11 +19,11 @@ export default function TransactionData () {
   const [detailData, setDetailData] = useState<string>()
   const ref = useRef<FormInstance>()
 
-  const onFF=(bol,data)=>{
+  const onFF=(bol:boolean,data:{id:string})=>{
     cardStatusSub({id:data.id,status:bol?1:0}).then(res=>{
     if(res.code==0){
         message.success('设置成功');
-        ref.current.reload()
+        ref?.current?.reload()
     }
     })
   }

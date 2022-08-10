@@ -1,18 +1,19 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { message, Form } from 'antd';
 import ProForm, {
   ModalForm,
   ProFormText,
 } from '@ant-design/pro-form';
 import { cardSortSub } from "@/services/hydrogen-atom-trusteeship/health-card-management"
+import type { PropsDevices } from "./data"
 
 
-export default (props) => {
+export default (props:PropsDevices) => {
   const { detailData, setVisible, visible, callback = () => { } } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
-  const waitTime = (values) => {
+  const waitTime = (values:{id:number,sort:number}) => {
     return new Promise((resolve, reject) => {
       cardSortSub(values).then((res) => {
         if (res.code === 0) {

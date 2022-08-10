@@ -11,7 +11,7 @@ import { platformCardEdit } from "@/services/hydrogen-atom-trusteeship/health-ca
 import { EditableProTable } from '@ant-design/pro-table';
 import { amountTransform } from '@/utils/utils'
 import type { ProColumns } from "@ant-design/pro-table"
-import type { TableItem } from "./data"
+import type { TableItem, SubmitItem, PropsDevices } from "./data"
 
 
 
@@ -50,11 +50,11 @@ const checkConfirm2=(rule, value, callback)=>{
 }
 
 
-export default (props) => {
+export default (props:PropsDevices) => {
   const { detailData, setVisible, onClose, visible,callback } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
-  const [dataSource,setDataSource] = useState()
+  const [dataSource,setDataSource] = useState<TableItem>()
   const [editableKeys,setEditableKeys] = useState()
   const FromWrap = ({ value, onChange, content, right }) => (
     <div style={{ display: 'flex' }}>
@@ -63,13 +63,16 @@ export default (props) => {
     </div>
   )
 
-  const onsubmit =async (values) => {
+  const onsubmit =async (values:SubmitItem) => {
+    const { cardTimeType,usefulDay, ...res } = values
     const params={
       firstMonthCard:dataSource&&dataSource[0]?.MonthCard,
       firstMonthNum:dataSource&&dataSource[0]?.MonthNum,
       nextMonthCard:dataSource&&dataSource[1]?.MonthCard,
       nextMonthNum:dataSource&&dataSource[1]?.MonthNum,
-      ...values
+      cardTimeType,
+      usefulDay:cardTimeType==2?parseInt(usefulDay):0,
+      ...res
     }
     platformCardEdit(params).then(res=>{
       if(res.code==0){
@@ -81,7 +84,6 @@ export default (props) => {
   };
 
   useEffect(() => {
-    console.log('detailData',detailData)
     if(detailData){
       form.setFieldsValue({
         ...detailData,
@@ -142,7 +144,7 @@ export default (props) => {
       formRef={formRef}
       visible={visible}
       form={form}
-      width={1200}
+      width={1000}
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
