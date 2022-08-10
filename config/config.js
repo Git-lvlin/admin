@@ -105,8 +105,8 @@ const config = {
             GroupActivitiesManagement,
             HydrogenAtomManagement,
             HydrogenAtomTrusteeship,
-            OfficeManagement,
             BuriedPoint,
+            OfficeManagement,
             {
               component: '404',
             },
