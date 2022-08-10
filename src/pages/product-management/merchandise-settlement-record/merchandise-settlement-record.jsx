@@ -33,8 +33,14 @@ export default () => {
       align: 'center',
       hideInTable: true,
       fieldProps:{
-        placeholder:'请输入spuID'
+        placeholder:'请输入spuID查询'
       },
+    },
+    {
+      title: 'spuID',
+      dataIndex: 'spuId',
+      align: 'center',
+      hideInSearch: true,
     },
     {
       title: 'skuID',
