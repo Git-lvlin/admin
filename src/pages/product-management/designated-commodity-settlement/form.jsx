@@ -146,8 +146,8 @@ const CusAutoComplete = ({ value, onChange, onChange2,setUserList, userList, opt
 export default (props) => {
   const { onClose, visible, setVisible, detailData, callback } = props;
   const [form] = Form.useForm();
-  const [editableKeys, setEditableRowKeys] = useState();
-  const [dataSource, setDataSource] = useState();
+  const [editableKeys, setEditableRowKeys] = useState(()=>bloodData?.map(item => item.id));
+  const [dataSource, setDataSource] = useState(()=>bloodData);
   const [roleVisible, setRoleVisible] = useState();
   const [sum, setSum] = useState(11)
   const [userList, setUserList] = useState([])
@@ -246,11 +246,7 @@ export default (props) => {
           setEditableRowKeys(data?.map(item => item.id))
           setDataSource(data)
         }
-
       })
-    } else {
-      setDataSource(bloodData)
-      setEditableRowKeys(bloodData?.map(item => item.id))
     }
   }, [recordId])
 
@@ -348,6 +344,7 @@ export default (props) => {
                 onChange2={(v) => {
                   setRecordId(v)
                   compute()
+                  setDataSource(bloodData.map(ele=>({...ele,price:null})))
                 }}
                 userList={userList}
                 setUserList={setUserList}
