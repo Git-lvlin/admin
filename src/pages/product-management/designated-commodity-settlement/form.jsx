@@ -71,28 +71,28 @@ const bloodData = [
     name: '供应商-货款',
     tip: '销售订单承担通道费',
   },
+  // {
+  //   id: 9,
+  //   name: '运营中心',
+  //   tip: '线上记账线下结算,不承担通道费 销售订单：下单人为普通用户，则运营中心无收益，如下单人为店主，则业绩归属于下单店主绑定的运营中心',
+  // },
   {
     id: 9,
-    name: '运营中心',
-    tip: '线上记账线下结算,不承担通道费 销售订单：下单人为普通用户，则运营中心无收益，如下单人为店主，则业绩归属于下单店主绑定的运营中心',
-  },
-  {
-    id: 10,
     name: '省代',
     tip: '线下结算 销售订单按订单收货地址判断业绩归属',
   },
   {
-    id: 11,
+    id: 10,
     name: '市代',
     tip: '线下结算 销售订单按订单收货地址判断业绩归属',
   },
   {
-    id: 12,
+    id: 11,
     name: '全国分红奖',
     tip: '线下结算 每月统计全国各省市的总共业绩（含租赁+销售）前三名',
   },
   {
-    id: 13,
+    id: 12,
     name: '汇能科技',
     tip: '没有对应角色的分成归此处,线下结算的角色资金先分账到平台',
   }
@@ -212,32 +212,32 @@ export default (props) => {
               name: '供应商-货款',
               tip: '销售订单承担通道费',
             },
+            // {
+            //   id: 9,
+            //   name: '运营中心',
+            //   tip: '线上记账线下结算,不承担通道费 销售订单：下单人为普通用户，则运营中心无收益，如下单人为店主，则业绩归属于下单店主绑定的运营中心',
+            //   price: amountTransform(findItem?.companyAgent, '/')
+            // },
             {
               id: 9,
-              name: '运营中心',
-              tip: '线上记账线下结算,不承担通道费 销售订单：下单人为普通用户，则运营中心无收益，如下单人为店主，则业绩归属于下单店主绑定的运营中心',
-              price: amountTransform(findItem?.companyAgent, '/')
-            },
-            {
-              id: 10,
               name: '省代',
               tip: '线下结算 销售订单按订单收货地址判断业绩归属',
               price: amountTransform(findItem?.provinceAgent, '/')
             },
             {
-              id: 11,
+              id: 10,
               name: '市代',
               tip: '线下结算 销售订单按订单收货地址判断业绩归属',
               price: amountTransform(findItem?.cityAgent, '/')
             },
             {
-              id: 12,
+              id: 11,
               name: '全国分红奖',
               tip: '线下结算 每月统计全国各省市的总共业绩（含租赁+销售）前三名',
               price: amountTransform(findItem?.dividends, '/')
             },
             {
-              id: 13,
+              id: 12,
               name: '汇能科技',
               tip: '没有对应角色的分成归此处,线下结算的角色资金先分账到平台',
             },
@@ -265,12 +265,13 @@ export default (props) => {
       userManageFee: amountTransform(dataSource[4].price, '*'),
       shoppervipChargeFee: amountTransform(dataSource[5].price, '*'),
       shoppervipManageFee: amountTransform(dataSource[6].price, '*'),
-      companyAgent: amountTransform(dataSource[8].price, '*'),
-      provinceAgent: amountTransform(dataSource[9].price, '*'),
-      cityAgent: amountTransform(dataSource[10].price, '*'),
-      dividends: amountTransform(dataSource[11].price, '*'),
+      // companyAgent: amountTransform(dataSource[8].price, '*'),
+      companyAgent: 0,
+      provinceAgent: amountTransform(dataSource[8].price, '*'),
+      cityAgent: amountTransform(dataSource[9].price, '*'),
+      dividends: amountTransform(dataSource[10].price, '*'),
       company: amountTransform(compute(), '*'),
-      extData: dataSource.filter(ele => ele.id > 13).map(ele => ({ code: ele.id, name: ele.name, commission: amountTransform(ele.price, '*') }))
+      extData: dataSource.filter(ele => ele.id > 12).map(ele => ({ code: ele.id, name: ele.name, commission: amountTransform(ele.price, '*') }))
     }
     saveCommissionConfig(params).then(res => {
       if (res.code == 0) {
@@ -288,7 +289,7 @@ export default (props) => {
   const compute = () => {
     let sum = 0
     for (let index = 0; index < dataSource?.length; index++) {
-      if (dataSource[index]?.price && dataSource?.length <= 13) {
+      if (dataSource[index]?.price && dataSource?.length <= 12) {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
     }
@@ -358,10 +359,10 @@ export default (props) => {
                 <p>{recordId?amountTransform(recordId?.retailSupplyPrice, '/').toFixed(2):amountTransform(recordList?.retailSupplyPrice, '/').toFixed(2)}元</p>
                 <p style={{ color: '#F88000' }}>（取供应商提供的零售供货价）</p>
               </>
-            } else if (_?.entry?.id == 13) {
+            } else if (_?.entry?.id == 12) {
               return <>
                 <p>{compute()}元</p>
-                <p style={{ color: '#F88000' }}>= 售价  -  前12项之和（随前12项数据即时更新）</p>
+                <p style={{ color: '#F88000' }}>= 售价  -  前11项之和（随前11项数据即时更新）</p>
               </>
             }
             return <InputNumber  
