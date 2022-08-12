@@ -136,15 +136,15 @@ export default () => {
         return amountTransform(_,'/').toFixed(2)
       }
     },
-    {
-      title: '运营中心',
-      dataIndex: 'companyAgent',
-      align: 'center',
-      hideInSearch: true,
-      render: (_)=>{
-        return amountTransform(_,'/').toFixed(2)
-      }
-    },
+    // {
+    //   title: '运营中心',
+    //   dataIndex: 'companyAgent',
+    //   align: 'center',
+    //   hideInSearch: true,
+    //   render: (_)=>{
+    //     return amountTransform(_,'/').toFixed(2)
+    //   }
+    // },
     {
       title: '省代',
       dataIndex: 'provinceAgent',
