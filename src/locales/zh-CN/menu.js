@@ -404,6 +404,8 @@ export default {
   'menu.hydrogen-atom-trusteeship.health-card-management.record-card-acquisition': '卡的获得记录',
   'menu.hydrogen-atom-trusteeship.health-card-management.card-usage-record': '卡的使用记录',
   'menu.hydrogen-atom-trusteeship.hydrogen-referral-commission': '推荐提成',
+  'menu.hydrogen-atom-trusteeship.equipment-management': '设备管理',
+  'menu.hydrogen-atom-trusteeship.managed-transaction-data': '托管交易数据',
 
   'menu.buried-point': '埋点数据看板',
   'menu.buried-point.incident-analysts': '事件分析',
