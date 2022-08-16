@@ -26,6 +26,11 @@ const ManagedBuy:FC = () => {
       hideInTable: true
     },
     {
+      dataIndex: 'orderId',
+      hideInTable: true,
+      hideInSearch: true
+    },
+    {
       title: '手机号码',
       dataIndex: 'hostingMemberPhone',
       align: 'center',
@@ -232,7 +237,7 @@ const ManagedBuy:FC = () => {
   return (
     <>
       <ProTable
-        rowKey=''
+        rowKey='orderId'
         columns={columns}
         params={{}}
         request={deviceTransList}

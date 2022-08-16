@@ -25,7 +25,7 @@ const Operator = () => {
       hideInTable: true
     },
     {
-      dataIndex: 'id',
+      dataIndex: 'memberId',
       hideInTable: true,
       hideInSearch: true
     },
@@ -158,7 +158,7 @@ const Operator = () => {
               onClick={()=>{
                 setVisible(true)
                 setStoreNo(r.storeNo)
-                setDeviceNum(r.deviceTotal)
+                setDeviceNum(r.availableTotal)
                 setType(4)
                 setUser(r.memberPhone)
                 setAmount(r.deviceTotalPay)
@@ -177,7 +177,7 @@ const Operator = () => {
   return (
     <>
       <ProTable
-        rowKey='id'
+        rowKey='memberId'
         columns={columns}
         options={false}
         pagination={{
