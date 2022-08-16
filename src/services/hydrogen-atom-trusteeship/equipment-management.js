@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import moment from 'moment'
 
 // 待投放列表
 export const waitPutList = async (params, options = {}) => {
@@ -8,8 +9,8 @@ export const waitPutList = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      hostingPayStartTime: hostingPayTime?.[0],
-      hostingPayEndTime: hostingPayTime?.[1],
+      hostingPayStartTime: moment(hostingPayTime?.[0]).unix(),
+      hostingPayEndTime: moment(hostingPayTime?.[1]).unix(),
       ...rest
     },
     ...options
@@ -42,10 +43,18 @@ export const waitOperateList = async (params, options = {}) => {
 
 // 停止运营列表
 export const stopOperateList = async (params, options = {}) => {
-  const { current = 1, pageSize = 10, ...rest } = params
+  const { current = 1, pageSize = 10, activationTime, stopOperateTime, ...rest } = params
   const res = await request('/auth/healthy/deviceManage/stopOperateList', {
     method: 'POST',
     data: {
+      stopOperateTime: stopOperateTime && {
+        start: moment(stopOperateTime?.[0]).unix(),
+        end: moment(stopOperateTime?.[1]).unix()
+      },
+      activationTime: activationTime && {
+        start: moment(activationTime?.[0]).unix(),
+        end: moment(activationTime?.[1]).unix()
+      },
       page: current,
       size: pageSize,
       ...rest
@@ -80,10 +89,18 @@ export const ingOperateList = async (params, options = {}) => {
 
 // 停止托管设备列表
 export const stopHostingList = async (params, options = {}) => {
-  const { current = 1, pageSize = 10, ...rest } = params
+  const { current = 1, pageSize = 10, hostingPayTime, stopHostingTime, ...rest } = params
   const res = await request('/auth/healthy/deviceManage/stopHostingList', {
     method: 'POST',
     data: {
+      stopHostingTime: stopHostingTime && {
+        start: moment(stopHostingTime?.[0]).unix(),
+        end: moment(stopHostingTime?.[1]).unix()
+      },
+      hostingPayTime: hostingPayTime && {
+        start: moment(hostingPayTime?.[0]).unix(),
+        end: moment(hostingPayTime?.[1]).unix()
+      },
       page: current,
       size: pageSize,
       ...rest
