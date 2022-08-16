@@ -8,6 +8,11 @@ const StopHosting = () => {
 
   const columns: ProColumns[] = [
     {
+      dataIndex: 'id',
+      hideInSearch: true,
+      hideInTable: true
+    },
+    {
       title: '托管购买订单号',
       dataIndex: 'hostingOrderId',
       align: 'center'
@@ -77,7 +82,7 @@ const StopHosting = () => {
   ]
   return (
     <ProTable
-      rowKey='hostingOrderId'
+      rowKey='id'
       columns={columns}
       params={{}}
       request={stopHostingList}

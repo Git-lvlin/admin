@@ -18,6 +18,11 @@ const StopOperate: FC = () => {
 
   const columns: ProColumns[] = [
     {
+      dataIndex: 'id',
+      hideInSearch: true,
+      hideInTable: true
+    },
+    {
       title: '运营订单号',
       dataIndex: 'orderId',
       align: 'center'
@@ -113,7 +118,7 @@ const StopOperate: FC = () => {
   return (
     <>
       <ProTable
-        rowKey='orderId'
+        rowKey='id'
         columns={columns}
         params={{}}
         request={stopOperateList}

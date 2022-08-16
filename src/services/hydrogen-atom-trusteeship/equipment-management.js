@@ -47,14 +47,10 @@ export const stopOperateList = async (params, options = {}) => {
   const res = await request('/auth/healthy/deviceManage/stopOperateList', {
     method: 'POST',
     data: {
-      stopOperateTime: stopOperateTime && {
-        start: moment(stopOperateTime?.[0]).unix(),
-        end: moment(stopOperateTime?.[1]).unix()
-      },
-      activationTime: activationTime && {
-        start: moment(activationTime?.[0]).unix(),
-        end: moment(activationTime?.[1]).unix()
-      },
+      stopOperateStartTime: stopOperateTime && moment(stopOperateTime?.[0]).unix(),
+      stopOperateEndTime: stopOperateTime && moment(stopOperateTime?.[1]).unix(),
+      activationStartTime: activationTime && moment(activationTime?.[0]).unix(),
+      activationEndTime: activationTime && moment(activationTime?.[1]).unix(),
       page: current,
       size: pageSize,
       ...rest
@@ -93,14 +89,10 @@ export const stopHostingList = async (params, options = {}) => {
   const res = await request('/auth/healthy/deviceManage/stopHostingList', {
     method: 'POST',
     data: {
-      stopHostingTime: stopHostingTime && {
-        start: moment(stopHostingTime?.[0]).unix(),
-        end: moment(stopHostingTime?.[1]).unix()
-      },
-      hostingPayTime: hostingPayTime && {
-        start: moment(hostingPayTime?.[0]).unix(),
-        end: moment(hostingPayTime?.[1]).unix()
-      },
+      stopHostingStartTime: stopHostingTime && moment(stopHostingTime?.[0]).unix(),
+      stopHostingEndTime: stopHostingTime && moment(stopHostingTime?.[1]).unix(),
+      hostingPayStartTime: hostingPayTime && moment(hostingPayTime?.[0]).unix(),
+      hostingPayEndTime: hostingPayTime && moment(hostingPayTime?.[1]).unix(),
       page: current,
       size: pageSize,
       ...rest

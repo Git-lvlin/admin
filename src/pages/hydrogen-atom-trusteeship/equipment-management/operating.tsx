@@ -129,6 +129,11 @@ const Operating: FC = () => {
 
   const columns: ProColumns<OperatingProps>[] = [
     {
+      dataIndex: 'id',
+      hideInSearch: true,
+      hideInTable: true
+    },
+    {
       title: '机器ID',
       dataIndex: 'imei',
       align: 'center'
@@ -200,7 +205,7 @@ const Operating: FC = () => {
   return (
     <>
       <ProTable<OperatingProps>
-        rowKey='imei'
+        rowKey='id'
         columns={columns}
         params={{}}
         request={ingOperateList}
