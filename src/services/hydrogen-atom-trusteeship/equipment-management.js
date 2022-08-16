@@ -9,8 +9,8 @@ export const waitPutList = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      hostingPayStartTime: moment(hostingPayTime?.[0]).unix(),
-      hostingPayEndTime: moment(hostingPayTime?.[1]).unix(),
+      hostingPayStartTime: hostingPayTime && moment(hostingPayTime?.[0]).unix(),
+      hostingPayEndTime: hostingPayTime && moment(hostingPayTime?.[1]).unix(),
       ...rest
     },
     ...options
