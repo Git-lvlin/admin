@@ -119,3 +119,22 @@ export const editDetailInfo = async (params, options = {}) => {
     ...options
   })
 }
+
+// 代运营合同分页列表
+export const contractPage = async (params, options = {}) => {
+  const { pageSize=10, current=1, ...rest } = params
+  const res = await request('/auth/store/MemberShopOperator/contractPage', {
+    method: 'GET',
+    params:  {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data?.records,
+    success: res.success,
+    total: res.data?.total
+  }
+}

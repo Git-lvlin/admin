@@ -8,8 +8,13 @@ const StayOperation = () => {
 
   const columns: ProColumns[] = [
     {
+      dataIndex: 'id',
+      hideInSearch: true,
+      hideInTable: true
+    },
+    {
       title: '订单号',
-      dataIndex: 'hostingOrderId',
+      dataIndex: 'orderId',
       align: 'center'
     },
     {
@@ -73,7 +78,7 @@ const StayOperation = () => {
 
   return (
     <ProTable
-      rowKey='hostingOrderId'
+      rowKey='id'
       columns={columns}
       params={{}}
       request={waitOperateList}

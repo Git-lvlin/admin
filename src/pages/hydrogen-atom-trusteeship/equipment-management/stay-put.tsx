@@ -21,6 +21,11 @@ const StayPut: FC = () => {
 
   const columns: ProColumns<StayPutProps>[] = [
     {
+      dataIndex: 'id',
+      hideInSearch: true,
+      hideInTable: true
+    },
+    {
       title: '订单号',
       dataIndex: 'hostingOrderId',
       align: 'center',
@@ -143,7 +148,7 @@ const StayPut: FC = () => {
   return (
     <>
       <ProTable<StayPutProps>
-        rowKey='hostingOrderId'
+        rowKey='id'
         columns={columns}
         params={{}}
         pagination={{
