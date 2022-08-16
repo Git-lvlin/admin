@@ -48,7 +48,7 @@ const StopOperate: FC = () => {
     {
       title: '激活时间',
       dataIndex: 'activationTime',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       hideInTable: true
     },
     {
@@ -60,7 +60,7 @@ const StopOperate: FC = () => {
     {
       title: '停止运营时间',
       dataIndex: 'stopOperateTime',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       hideInTable: true
     },
     {

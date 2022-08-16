@@ -49,7 +49,7 @@ const StopHosting = () => {
     },
     {
       title: '终止托管时间',
-      dataIndex: 'stopHostingTime ',
+      dataIndex: 'stopHostingTime',
       valueType: 'dateRange',
       hideInTable: true
     },
@@ -87,7 +87,7 @@ const StopHosting = () => {
       }}
       options={false}
       search={{
-        labelWidth: 120,
+        labelWidth: 150,
         optionRender: (searchConfig, props, dom)=> [
           ...dom.reverse()
         ]
