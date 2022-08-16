@@ -163,6 +163,17 @@ export const stopResetHosting = async (params, options = {}) => {
   })
 }
 
+// 停止运营托管
+export const stopOperateHosting = async (params, options = {}) => {
+  return await request('/auth/healthy/deviceManage/stopOperateHosting', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+}
+
 // 停止托管
 export const stopHosting = async (params, options = {}) => {
   return await request('/auth/healthy/deviceManage/stopHosting', {
@@ -198,11 +209,57 @@ export const modifyImeiTime = async (params, options = {}) => {
 
 // 获取操作日志
 export const getOptLog = async (params, options = {}) => {
-  return await request('/auth/healthy/deviceManage/getOptLog', {
+  const res = await request('/auth/healthy/deviceManage/getOptLog', {
     method: 'POST',
     data: {
       ...params
     },
     ...options
   })
+  return {
+    data: res.data.records,
+    total: res.data.total,
+    success: res.success
+  }
+}
+
+// 可绑定的社区店资质
+export const bindable = async (data, options = {}) => {
+  return await request('/auth/store/MemberShopOperator/bindable', {
+    method: 'GET',
+    params: data,
+    ...options
+  })
+}
+
+// 营收概况
+export const getCardAndStartUpDetail = async (params, options = {}) => {
+  const res = await request('/auth/healthy/deviceManage/getCardAndStartUpDetail', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    total: res.data.total,
+    success: res.success
+  }
+}
+
+// 快递列表
+export const getExpressList = async (params, options = {}) => {
+  const res = await request('/auth/healthy/operateOrder/getExpressList', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    total: res.data.total,
+    success: res.success
+  }
 }

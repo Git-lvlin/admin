@@ -1,10 +1,20 @@
+import { useState, useRef } from "react"
 import ProTable from '@ant-design/pro-table'
+import { Space } from "antd"
 
-import type { ProColumns } from "@ant-design/pro-table"
+import type { FC } from "react"
+import type { ProColumns, ActionType } from "@ant-design/pro-table"
 
 import { stopOperateList } from "@/services/hydrogen-atom-trusteeship/equipment-management"
+import LaunchEquipment from "./launch-equipment"
+import TerminateManaged from "./terminate-managed"
 
-const StopOperate = () => {
+const StopOperate: FC = () => {
+  const [visible, setVisible] = useState<boolean>(false)
+  const [show, setShow] = useState<boolean>(false)
+  const [orderId, setOrderId] = useState<string>()
+  const [data, setData] = useState()
+  const actRef = useRef<ActionType>()
 
   const columns: ProColumns[] = [
     {
@@ -78,27 +88,70 @@ const StopOperate = () => {
       title: '操作',
       valueType: 'option',
       align: 'center',
-      render: (_, r) => <a>重新投放</a>
+      render: (_, r) => (
+        <Space size={10}>
+          <a 
+            onClick={()=>{
+              setVisible(true)
+              setOrderId(r?.orderId)
+            }}
+          >
+            重新投放
+          </a>
+          <a 
+            onClick={()=>{
+              setShow(true)
+              setData(r)
+            }}
+          >
+            终止托管
+          </a>
+        </Space>
+      )
     }
   ]
   return (
-    <ProTable
-      rowKey='orderId'
-      columns={columns}
-      params={{}}
-      request={stopOperateList}
-      pagination={{
-        showQuickJumper: true,
-        pageSize: 10
-      }}
-      options={false}
-      search={{
-        labelWidth: 100,
-        optionRender: (searchConfig, props, dom)=> [
-          ...dom.reverse()
-        ]
-      }}
-    />
+    <>
+      <ProTable
+        rowKey='orderId'
+        columns={columns}
+        params={{}}
+        request={stopOperateList}
+        pagination={{
+          showQuickJumper: true,
+          pageSize: 10
+        }}
+        actionRef={actRef}
+        options={false}
+        search={{
+          labelWidth: 100,
+          optionRender: (searchConfig, props, dom)=> [
+            ...dom.reverse()
+          ]
+        }}
+      />
+      {
+        visible&&
+        <LaunchEquipment
+          visible={visible}
+          setVisible={setVisible}
+          callback={() => actRef.current?.reload()}
+          orderId={orderId}
+          type={3}
+        />
+      }
+      {
+        show&&
+        <TerminateManaged
+          visible={show}
+          setVisible={setShow}
+          callback={()=>actRef.current?.reload()}
+          title='终止托管设备'
+          type={2}
+          data={data}
+        />
+      }
+    </>
   )
 }
 

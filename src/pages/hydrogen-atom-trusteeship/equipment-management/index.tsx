@@ -9,7 +9,7 @@ import StopHosting from "./stop-hosting"
 
 function EquipmentManagement () {
   return (
-    <PageContainer>
+    <PageContainer title={false}>
        <ProCard
         tabs={{
           type: 'card'

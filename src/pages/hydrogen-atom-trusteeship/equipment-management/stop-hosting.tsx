@@ -87,7 +87,7 @@ const StopHosting = () => {
       }}
       options={false}
       search={{
-        labelWidth: 100,
+        labelWidth: 120,
         optionRender: (searchConfig, props, dom)=> [
           ...dom.reverse()
         ]

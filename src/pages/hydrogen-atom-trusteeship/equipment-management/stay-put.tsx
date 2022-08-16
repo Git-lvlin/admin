@@ -1,18 +1,25 @@
 import { useState, useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
+import moment from 'moment'
 
 import type { ProColumns, ActionType } from "@ant-design/pro-table"
+import type { FC } from "react"
+import { StayPutProps } from "./data"
 
 import LaunchEquipment from "./launch-equipment"
+import Delivery from "./delivery"
 import { waitPutList } from "@/services/hydrogen-atom-trusteeship/equipment-management"
 
-const StayPut = () => {
+const StayPut: FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
-  const [title, setTitle] = useState<string>()
+  const [show, setShow] = useState<boolean>(false)
+  const [orderId, setOrderId] = useState<string>()
+  const [data, setData] = useState<StayPutProps>()
+  const [type, setType] = useState<number>(0)
 
   const actRef = useRef<ActionType>()
 
-  const columns: ProColumns[] = [
+  const columns: ProColumns<StayPutProps>[] = [
     {
       title: '订单号',
       dataIndex: 'hostingOrderId',
@@ -39,7 +46,8 @@ const StayPut = () => {
       title: '支付时间',
       dataIndex: 'hostingPayTime',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => moment(r?.hostingPayTime * 1000).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       title: '支付时间',
@@ -55,6 +63,12 @@ const StayPut = () => {
         1: '失败',
         2: '成功'
       },
+      hideInTable: true
+    },
+    {
+      title: '自动投放状态',
+      dataIndex: 'status',
+      hideInSearch: true,
       align: 'center'
     },
     {
@@ -85,17 +99,50 @@ const StayPut = () => {
       title: '操作',
       valueType: 'option',
       align: 'center',
-      render: ()=> (
-        <>
-          <a onClick={()=> {setVisible(true); setTitle('指定社区店收货')}}>手工投放</a>
-        </>
-      )
+      render: (_, r)=> {
+        if(r.status === "失败") {
+          return (
+            <a onClick={()=> {
+                setVisible(true)
+                setOrderId(r.orderId)
+                setType(1)
+              }}
+            >
+              手工投放
+            </a>
+          )
+        } else {
+          return (
+            <>
+              <div>
+                <a onClick={()=> {
+                    setShow(true)
+                    setData(r)
+                  }}
+                >
+                  确认投放
+                </a>
+              </div>
+              <div>
+                <a onClick={()=> {
+                    setVisible(true)
+                    setOrderId(r.orderId)
+                    setType(2)
+                  }}
+                >
+                  重新投放
+                </a>
+              </div>
+            </>
+          )
+        }
+      }
     }
   ]
 
   return (
     <>
-      <ProTable
+      <ProTable<StayPutProps>
         rowKey='hostingOrderId'
         columns={columns}
         params={{}}
@@ -103,7 +150,7 @@ const StayPut = () => {
           showQuickJumper: true,
           pageSize: 10
         }}
-        // request={waitPutList}
+        request={waitPutList}
         options={false}
         actionRef={actRef}
         search={{
@@ -112,15 +159,24 @@ const StayPut = () => {
             ...dom.reverse()
           ]
         }}
-        dataSource={[{hostingOrderId: 1}]}
       />
       {
         visible&&
         <LaunchEquipment
           visible={visible}
           setVisible={setVisible}
-          title={title}
-          callback={actRef.current?.reload()}
+          callback={() => actRef.current?.reload()}
+          orderId={orderId}
+          type={type}
+        />
+      }
+      {
+        show&&
+        <Delivery
+          visible={show}
+          setVisible={setShow}
+          callback={() => actRef.current?.reload()}
+          data={data}
         />
       }
     </>
