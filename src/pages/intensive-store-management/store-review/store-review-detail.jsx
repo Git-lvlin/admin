@@ -330,12 +330,17 @@ const Detail = (props) => {
           label="必备礼包订单号"
         >
           {
-            detailData?.details?.giftOrder?.isGiftOrdered === 0 && <span style={{ color: 'red' }}>没有购买记录</span>
+            detailData?.details?.giftOrder?.isGiftOrdered === 0 && <span>没有购买记录</span>
           }
           {
             detailData?.details?.giftOrder?.isGiftOrdered === 1
             && <a onClick={() => { setSelectItem({ id: detailData?.details?.giftOrder?.id }); setOrderDetailVisible(true) }}>{detailData?.details?.giftOrder?.orderSn}【{orderStatus[detailData?.details?.giftOrder?.status]}】 </a>
           }
+        </Form.Item>
+        <Form.Item
+          label="最近氢原子托管购买订单号"
+        >
+          {detailData.investmentRecords.length === 0 ? <span>没有购买记录</span> : detailData.investmentRecords.map(item => (<div><a onClick={() => { setSelectItem({ id: item.orderSn }); setOrderDetailVisible(true) }}>{item.orderSn}</a></div>))}
         </Form.Item>
         <Form.Item
           label="申请类型"
