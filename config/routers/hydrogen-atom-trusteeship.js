@@ -63,6 +63,12 @@ export default {
         path: '/hydrogen-atom-trusteeship/direcffons',
         component: './hydrogen-atom-trusteeship/direcffons',
         wrappers: [RouteWatcher],
+      },
+      {
+        name: 'order-management',
+        path: '/hydrogen-atom-trusteeship/order-management',
+        component: './hydrogen-atom-trusteeship/order-management',
+        wrappers: [RouteWatcher],
       }
     ]
   }

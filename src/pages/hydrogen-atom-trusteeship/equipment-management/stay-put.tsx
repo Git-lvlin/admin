@@ -4,11 +4,13 @@ import moment from 'moment'
 
 import type { ProColumns, ActionType } from "@ant-design/pro-table"
 import type { FC } from "react"
+import type { FormInstance } from 'antd'
 import { StayPutProps } from "./data"
 
 import LaunchEquipment from "./launch-equipment"
 import Delivery from "./delivery"
 import { waitPutList } from "@/services/hydrogen-atom-trusteeship/equipment-management"
+import Export from "@/components/export"
 
 const StayPut: FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
@@ -18,6 +20,16 @@ const StayPut: FC = () => {
   const [type, setType] = useState<number>(0)
 
   const actRef = useRef<ActionType>()
+  const formRef = useRef<FormInstance>()
+
+  const getFieldsValue = () => {
+    const { hostingPayTime, ...rest } = formRef.current?.getFieldsValue()
+    return {
+      hostingPayStartTime: hostingPayTime && moment(hostingPayTime?.[0]).unix(),
+      hostingPayEndTime: hostingPayTime && moment(hostingPayTime?.[1]).unix(),
+      ...rest
+    }
+  }
 
   const columns: ProColumns<StayPutProps>[] = [
     {
@@ -90,7 +102,7 @@ const StayPut: FC = () => {
     },
     {
       title: '被投放店铺编号',
-      dataIndex: 'hostingHouseNumber',
+      dataIndex: 'storeHouseNumber',
       align: 'center',
       hideInSearch: true
     },
@@ -158,10 +170,12 @@ const StayPut: FC = () => {
         request={waitPutList}
         options={false}
         actionRef={actRef}
+        formRef={formRef}
         search={{
           labelWidth: 100,
           optionRender: (searchConfig, props, dom)=> [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export type='healthyDeviceWaitPut' conditions={getFieldsValue}/>
           ]
         }}
       />

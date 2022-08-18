@@ -1,13 +1,16 @@
 import { useState, useRef } from "react"
 import ProTable from '@ant-design/pro-table'
 import { Space } from "antd"
+import moment from "moment"
 
 import type { FC } from "react"
+import type { FormInstance } from "antd"
 import type { ProColumns, ActionType } from "@ant-design/pro-table"
 
 import { stopOperateList } from "@/services/hydrogen-atom-trusteeship/equipment-management"
 import LaunchEquipment from "./launch-equipment"
 import TerminateManaged from "./terminate-managed"
+import Export from "@/components/export"
 
 const StopOperate: FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
@@ -15,6 +18,7 @@ const StopOperate: FC = () => {
   const [orderId, setOrderId] = useState<string>()
   const [data, setData] = useState()
   const actRef = useRef<ActionType>()
+  const form = useRef<FormInstance>()
 
   const columns: ProColumns[] = [
     {
@@ -115,6 +119,18 @@ const StopOperate: FC = () => {
       )
     }
   ]
+
+  const getFieldsValue = () => {
+    const { activationTime, stopOperateTime, ...rest } = form.current?.getFieldsValue()
+    return {
+      stopOperateStartTime: stopOperateTime && moment(stopOperateTime?.[0]).unix(),
+      stopOperateEndTime: stopOperateTime && moment(stopOperateTime?.[1]).unix(),
+      activationStartTime: activationTime && moment(activationTime?.[0]).unix(),
+      activationEndTime: activationTime && moment(activationTime?.[1]).unix(),
+      ...rest
+    }
+  }
+
   return (
     <>
       <ProTable
@@ -127,11 +143,13 @@ const StopOperate: FC = () => {
           pageSize: 10
         }}
         actionRef={actRef}
+        formRef={form}
         options={false}
         search={{
           labelWidth: 100,
           optionRender: (searchConfig, props, dom)=> [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export type='healthyDeviceStopOperate' conditions={getFieldsValue}/>
           ]
         }}
       />
