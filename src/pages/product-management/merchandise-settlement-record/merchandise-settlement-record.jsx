@@ -200,6 +200,13 @@ export default () => {
         pagination={{
           pageSize:10
         }}
+        search={{
+          defaultCollapsed: true,
+          labelWidth: 100,
+          optionRender: (searchConfig, formProps, dom) => [
+             ...dom.reverse(),
+          ],
+        }}
       />
     </PageContainer>
   );
