@@ -133,16 +133,16 @@ const CrazyDate = ( props ) => {
         setVisible={setFormVisible}
         id={goDetail?.id}
         copy={copy}
-        callBack={()=>{actionRef.current.reset();setGoDetail(null);setCopy(null)}}
-        onClose={()=>{actionRef.current.reset();setGoDetail(null);setCopy(null)}}
+        callBack={()=>{actionRef.current.reload();setGoDetail(null);setCopy(null)}}
+        onClose={()=>{actionRef.current.reload();setGoDetail(null);setCopy(null)}}
       />}
 
       {visible && <EndModel
         visible={visible}
         setVisible={setVisible}
         id={goDetail?.id}
-        callBack={()=>{actionRef.current.reset();setGoDetail(null)}}
-        onClose={()=>{actionRef.current.reset();setGoDetail(null)}}
+        callBack={()=>{actionRef.current.reload();setGoDetail(null)}}
+        onClose={()=>{actionRef.current.reload();setGoDetail(null)}}
       />}
     </>
   );

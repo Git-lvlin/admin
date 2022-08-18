@@ -20,14 +20,14 @@ const ContentVersion = () => {
     cententVersionStatus({id: id, status: open}).then((res) => {
       if (res.code === 0) {
         message.success(`操作成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
 
   useEffect(() => {
     if (!formVisible) {
-      actionRef.current.reset();
+      actionRef.current.reload();
     }
   }, [formVisible])
 
