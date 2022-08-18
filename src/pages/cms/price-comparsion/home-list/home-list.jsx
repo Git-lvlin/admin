@@ -23,7 +23,7 @@ const HomeList = () => {
         setLoading(true)
         setTimeout(() => {
           message.success(`删除成功`);
-          actionRef.current.reset();
+          actionRef.current.reload();
           setLoading(false)
         }, 0)
       }
@@ -35,7 +35,7 @@ const HomeList = () => {
     if (flag) {
       setLoading(true)
       setTimeout(() => {
-        actionRef.current.reset()
+        actionRef.current.reload()
         setLoading(false)
         setFlag(false)
       }, 0)

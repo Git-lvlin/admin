@@ -28,14 +28,14 @@ const HomeActivity = () => {
     homeActivitySortTop({id: data}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
 
   useEffect(() => {
     if (!formVisible) {
-      actionRef.current.reset();
+      actionRef.current.reload();
     }
   }, [formVisible])
 

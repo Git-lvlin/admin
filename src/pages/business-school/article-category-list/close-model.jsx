@@ -32,7 +32,7 @@ export default props=>{
                     saveOrUpdateArticleType({id: formControl.id, isShow: !formControl.isShow}).then((res) => {
                         if (res.code === 0) {
                           message.success(`操作成功`);
-                          boxref.current.reset();
+                          boxref.current.reload();
                           setVisible(false)
                         }
                       })
@@ -40,7 +40,7 @@ export default props=>{
                   articleTypeAdd({ id: formControl.id,isTop: !formControl.isTop}).then((res) => {
                         if (res.code === 0) {
                           message.success(`操作成功`);
-                          boxref.current.reset();
+                          boxref.current.reload();
                           setVisible(false)
                         }
                       })
