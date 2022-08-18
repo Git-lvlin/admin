@@ -86,6 +86,19 @@ const EscrowPurchaseOrder = () => {
       title: '支付方式',
       dataIndex: 'payType',
       align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        0: '模拟支付',
+        1: '支付宝',
+        2: '微信',
+        3: '小程序',
+        4: '银联',
+        5: '钱包支付',
+        6: '支付宝',
+        7: '微信',
+        8: '银联',
+        9: '快捷支付'
+      },
       hideInSearch: true
     },
     {
