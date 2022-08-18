@@ -14,7 +14,7 @@ export default (props) => {
   const [flag, setFlag] = useState(false);
 
   useEffect(() => {
-    flag&&actionRef.current.reset()
+    flag&&actionRef.current.reload()
   }, [flag])
 
   const getDetail = (data) => {
@@ -26,7 +26,7 @@ export default (props) => {
     marketItemDel({itemId: itemId,id:id}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }

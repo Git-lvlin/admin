@@ -30,7 +30,7 @@ export default props=>{
                       articleTop({id: showHideTop.id,isShow: !showHideTop.isShow}).then((res) => {
                         if (res.code === 0) {
                           message.success(`操作成功`);
-                          boxref.current.reset();
+                          boxref.current.reload();
                           setVisible(false)
                         }
                       })
@@ -38,7 +38,7 @@ export default props=>{
                       articleTop({ id: showHideTop.id,isTop: !showHideTop.isTop}).then((res) => {
                         if (res.code === 0) {
                           message.success(`操作成功`);
-                          boxref.current.reset();
+                          boxref.current.reload();
                           setVisible(false)
                         }
                       })

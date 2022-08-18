@@ -53,7 +53,7 @@ export default props=>{
             feedbackReply({feedBackId:detailId,...values}).then(res=>{
             if(res.code==0){
               setReplySuc(1)
-              formRef?.current.resetFields()
+              formRef?.current.reloadFields()
               message.success('操作成功')
               return true;
             }

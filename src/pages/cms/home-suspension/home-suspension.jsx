@@ -25,14 +25,14 @@ const HomeSuspension = () => {
     homeSuspensionDel({id: data}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
 
   useEffect(() => {
     if (flag) {
-      actionRef.current.reset();
+      actionRef.current.reload();
       setFlag(false)
     }
   }, [flag])
