@@ -401,6 +401,8 @@ export default {
   'menu.hydrogen-atom-trusteeship.hydrogen-referral-commission': '推荐提成',
   'menu.hydrogen-atom-trusteeship.equipment-management': '设备管理',
   'menu.hydrogen-atom-trusteeship.managed-transaction-data': '托管交易数据',
+  'menu.hydrogen-atom-trusteeship.direcffons': '使用明细',
+  'menu.hydrogen-atom-trusteeship.order-management': '订单管理',
 
   'menu.buried-point': '埋点数据看板',
   'menu.buried-point.incident-analysts': '事件分析',

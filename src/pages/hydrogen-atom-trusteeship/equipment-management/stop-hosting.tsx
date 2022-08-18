@@ -1,12 +1,24 @@
+import { useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
+import moment from "moment"
 
 import type { ProColumns } from "@ant-design/pro-table"
+import type { FC } from 'react'
+import type { FormInstance } from "antd"
 
 import { stopHostingList } from "@/services/hydrogen-atom-trusteeship/equipment-management"
+import Export from "@/components/export"
 
-const StopHosting = () => {
+const StopHosting: FC = () => {
+
+  const form = useRef<FormInstance>()
 
   const columns: ProColumns[] = [
+    {
+      dataIndex: 'id',
+      hideInSearch: true,
+      hideInTable: true
+    },
     {
       title: '托管购买订单号',
       dataIndex: 'hostingOrderId',
@@ -49,7 +61,7 @@ const StopHosting = () => {
     },
     {
       title: '终止托管时间',
-      dataIndex: 'stopHostingTime ',
+      dataIndex: 'stopHostingTime',
       valueType: 'dateRange',
       hideInTable: true
     },
@@ -75,21 +87,35 @@ const StopHosting = () => {
       hideInSearch: true
     }
   ]
+
+  const getFieldsValue = () => {
+    const {hostingPayTime, stopHostingTime, ...rest} = form.current?.getFieldsValue()
+    return {
+      stopHostingStartTime: stopHostingTime && moment(stopHostingTime?.[0]).unix(),
+      stopHostingEndTime: stopHostingTime && moment(stopHostingTime?.[1]).unix(),
+      hostingPayStartTime: hostingPayTime && moment(hostingPayTime?.[0]).unix(),
+      hostingPayEndTime: hostingPayTime && moment(hostingPayTime?.[1]).unix(),
+      ...rest
+    }
+  }
+
   return (
     <ProTable
-      rowKey='hostingOrderId'
+      rowKey='id'
       columns={columns}
       params={{}}
       request={stopHostingList}
+      formRef={form}
       pagination={{
         showQuickJumper: true,
         pageSize: 10
       }}
       options={false}
       search={{
-        labelWidth: 100,
+        labelWidth: 150,
         optionRender: (searchConfig, props, dom)=> [
-          ...dom.reverse()
+          ...dom.reverse(),
+          <Export type='healthyDeviceStopHosting' conditions={getFieldsValue}/>
         ]
       }}
     />
