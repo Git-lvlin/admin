@@ -2,7 +2,6 @@ declare type TooltipPlacement = 'top' | 'left' | 'right' | 'bottom' | 'topLeft' 
 
 export type ExprotProps = {
   type: string
-  change?: React.Dispatch<React.SetStateAction<boolean>>
   conditions?: object | [ () => void ]
   text?: string
   slot?: JSX.Element
