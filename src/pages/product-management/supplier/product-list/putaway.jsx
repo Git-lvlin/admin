@@ -154,15 +154,15 @@ export default (props) => {
         return amountTransform(_,'/').toFixed(2)
       }
     },
-    {
-      title: '运营中心',
-      dataIndex: 'companyAgent',
-      align: 'center',
-      tip: <><p>线上记账线下结算,不承担通道费</p><p>销售订单：下单人为普通用户，则运营中心无收益，如下单人为店主，则业绩归属于下单店主绑定的运营中心</p></>,
-      render: (_)=>{
-        return amountTransform(_,'/').toFixed(2)
-      }
-    },
+    // {
+    //   title: '运营中心',
+    //   dataIndex: 'companyAgent',
+    //   align: 'center',
+    //   tip: <><p>线上记账线下结算,不承担通道费</p><p>销售订单：下单人为普通用户，则运营中心无收益，如下单人为店主，则业绩归属于下单店主绑定的运营中心</p></>,
+    //   render: (_)=>{
+    //     return amountTransform(_,'/').toFixed(2)
+    //   }
+    // },
     {
       title: '省代',
       dataIndex: 'provinceAgent',

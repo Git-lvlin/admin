@@ -101,7 +101,7 @@ export default () => {
     },
     {
       title: '普通店主-直推',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'shopperChargeFee',
       align: 'center',
       hideInSearch: true,
       render: (_)=>{
@@ -110,7 +110,7 @@ export default () => {
     },
     {
       title: '普通店主-间推',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'shopperManageFee',
       align: 'center',
       hideInSearch: true,
       render: (_)=>{
