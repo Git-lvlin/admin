@@ -2,8 +2,9 @@ import { Form } from 'antd';
 import {
   DrawerForm,
 } from '@ant-design/pro-form';
-import ProList from '@ant-design/pro-list';
+import ProTable from "@ant-design/pro-table"
 import { getStoreList } from '@/services/intensive-store-management/store-list';
+import type { ProColumns } from "@ant-design/pro-table"
 import type { GithubIssueItem } from "./data"
 
 const formItemLayout = {
@@ -22,12 +23,62 @@ const formItemLayout = {
 export default (props) => {
   const { visible, setVisible,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
+  const Columns: ProColumns<GithubIssueItem>[] = [
+    {
+      title: '店铺名称',
+      dataIndex: 'date',
+      align: 'center',
+    },
+    {
+      title: '状态',
+      dataIndex: 'orderType',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        0: '总分成',
+        1: '销售分成',
+        2: '管理分成',
+        3: '累计业绩'
+      },
+      hideInSearch: true,
+    },
+    {
+      title: '审核状态',
+      dataIndex: 'orderType',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        0: '总分成',
+        1: '销售分成',
+        2: '管理分成',
+        3: '累计业绩'
+      },
+      hideInSearch: true,
+    },
+    {
+      title: '店铺编号',
+      dataIndex: 'orderNo',
+      align: 'center',
+    },
+    {
+      title: '店主手机',
+      dataIndex: 'orderTypeDesc',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '店铺地址',
+      dataIndex: 'orderAmount',
+      align: 'center',
+      hideInSearch: true,
+    }
+  ]
   return (
     <DrawerForm
-      title={`${type==1?'VIP社区店':'普通社区店'}（ID:${msgDetail?.agencyId}）`}
+      title={`${msgDetail?.name}  ${msgDetail?.commonStoreNums}`}
       onVisibleChange={setVisible}
       visible={visible}
-      width={1000}
+      width={1300}
       form={form}
       drawerProps={{
         forceRender: true,
@@ -46,39 +97,22 @@ export default (props) => {
       }}
       {...formItemLayout}
     >
-      <ProList<GithubIssueItem>
-        search={false}
-        rowKey="name"
+      <ProTable<GithubIssueItem>
+        rowKey="date"
+        columns={Columns}
         request={getStoreList}
+        columnEmptyText={false}
         params={{
-          agencyId:msgDetail?.agencyId,
-          vip:type
+          type:type,
+          businessDeptId:msgDetail?.businessDeptId,
+          begin:msgDetail?.begin,
+          end:msgDetail?.end
         }}
         pagination={{
-          pageSize: 5,
+          pageSize: 10,
           showQuickJumper: true,
         }}
-        split={true}
-        postData={(data)=>{
-          const arr=data.map(ele=>({...ele,desc:ele?.status?.desc}))
-          return arr
-        }}
-        metas={{
-          title: {
-            dataIndex: 'storeName',
-          },
-          description: {
-            dataIndex: 'desc',
-          },
-          actions:{
-            render:(text, row)=>(
-            <div>
-              <p style={{float:'right',color:'#262626'}}>{row?.auditTime} <span>审核通过</span></p><br/>
-              <p style={{color:'#999999',float:'right'}}>{row?.areaInfo['1964']} {row?.areaInfo['1988']} {row?.areaInfo['1992']} {row?.address}</p>
-            </div> 
-            )
-          }
-        }}
+        options={false}
       />
     </DrawerForm >
   );
