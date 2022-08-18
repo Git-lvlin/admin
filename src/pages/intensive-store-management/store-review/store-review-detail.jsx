@@ -340,7 +340,7 @@ const Detail = (props) => {
         <Form.Item
           label="最近氢原子托管购买订单号"
         >
-          {detailData.investmentRecords.length === 0 ? <span>没有购买记录</span> : detailData.investmentRecords.map(item => (<div><a onClick={() => { setSelectItem({ id: item.orderSn }); setOrderDetailVisible(true) }}>{item.orderSn}</a></div>))}
+          {detailData?.investmentRecords?.length===0 ? <span>没有购买记录</span> : detailData?.investmentRecords?.map(item => (<div><a onClick={() => { setSelectItem({ id: item.orderSn }); setOrderDetailVisible(true) }}>{item.orderSn}</a></div>))}
         </Form.Item>
         <Form.Item
           label="申请类型"
