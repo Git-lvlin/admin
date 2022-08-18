@@ -9,6 +9,8 @@ import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
 import styles from './styles.less'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -29,20 +31,7 @@ export default (props) => {
   const [orderSum,setOrderSum]=useState()
   const [time,setTime]=useState({})
   const ref = useRef()
-  const divide=(item)=>{
-    switch (type) {
-      case 0:
-        return amountTransform(item?.totalCommission,'/').toFixed(2)
-      case 1:
-        return amountTransform(item?.totalSaleCommission,'/').toFixed(2)
-      case 2:
-        return amountTransform(item?.totalRentCommission,'/').toFixed(2)
-      case 3:
-        return amountTransform(item?.totalOrderAmount,'/').toFixed(2)
-      default:
-        return ''
-    }
-  }
+  const [visit, setVisit] = useState<boolean>(false)
 
   const divideName=()=>{
     switch (type) {
@@ -88,12 +77,6 @@ export default (props) => {
         2: '管理分成',
         3: '累计业绩'
       },
-      hideInTable: true,
-    },
-    {
-      title: '订单类型',
-      dataIndex: 'orderTypeDesc',
-      align: 'center',
       hideInSearch: true,
     },
     {
@@ -136,6 +119,13 @@ export default (props) => {
       }
     })
   },[time])
+
+  const getFieldValue = (searchConfig) => {
+    const {...rest}=searchConfig.form.getFieldsValue()
+    return {
+      ...rest,
+    }
+  }
   return (
     <DrawerForm
       title={`${msgDetail?.businessDeptName} ${divideName()} （ID:${msgDetail?.businessDeptId}）`}
@@ -181,12 +171,24 @@ export default (props) => {
           setTime(val)
         }}
         options={false}
+        search={{
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+            <Export
+              key='export'
+              change={(e) => { setVisit(e) }}
+              type={'financial-businessDept-commission-page'}
+              conditions={()=>{return getFieldValue(searchConfig)}}
+            />,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'financial-businessDept-commission-page'}/>
+          ],
+        }}
         tableRender={(_, dom) => {
           return <>
             { dom }
             <div className={styles.summary}>
               <div>
-                累计：
+                累计收益：
                 <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
               </div>
             </div>

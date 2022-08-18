@@ -8,8 +8,6 @@ import type { DescriptionsProps, TableProps } from "./data"
 import { Descriptions } from 'antd';
 
 import { findPage,businessDeptSum } from "@/services/office-management/office-achievements"
-import Export from '@/pages/export-excel/export'
-import ExportHistory from '@/pages/export-excel/export-history'
 import { amountTransform } from '@/utils/utils'
 import StoreInformation from './store-information'
 
@@ -17,19 +15,9 @@ export default function TransactionData () {
   const [type, setType] = useState<number>(0)
   const [storeVisible, setStoreVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<string>()
-  const [visit, setVisit] = useState<boolean>(false)
   const [detailList,setDetailList]=useState<DescriptionsProps>()
   const [time,setTime]=useState()
   const form = useRef<FormInstance>()
-
-  const getFieldValue = (searchConfig) => {
-    const {dateRange,...rest}=searchConfig.form.getFieldsValue()
-    return {
-      begin:dateRange&&moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
-      end:dateRange&&moment(dateRange[1]).format('YYYY-MM-DD HH:mm:ss'),
-      ...rest,
-    }
-  }
 
   useEffect(() => {
     const params={
@@ -199,14 +187,7 @@ export default function TransactionData () {
         options={false}
         search={{
           optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
-              <Export
-                 key='export'
-                 change={(e) => { setVisit(e) }}
-                 type={'financial-businessDept-commission-page'}
-                 conditions={()=>{return getFieldValue(searchConfig)}}
-               />,
-               <ExportHistory key='task' show={visit} setShow={setVisit} type={'financial-businessDept-commission-page'}/>
+            ...dom.reverse()
           ],
         }}
       />

@@ -23,12 +23,12 @@ export default function TransactionData () {
       title: 'ID',
       dataIndex: 'agencyId',
       align: 'center',
+      hideInSearch: true,
     },
     {
       title: '办事处名称',
       dataIndex: 'name',
       align: 'center',
-      hideInSearch: true
     },
     {
       title: '登录账号',
@@ -45,7 +45,8 @@ export default function TransactionData () {
     {
       title: '负责人手机',
       dataIndex: 'managerPhone',
-      align: 'center'
+      align: 'center',
+      hideInSearch: true,
     },
     {
       title: 'VIP店主数',
@@ -57,7 +58,8 @@ export default function TransactionData () {
         }else{
           return _
         }
-      }
+      },
+      hideInSearch: true,
     },
     {
       title: '普通店主数',
@@ -66,7 +68,7 @@ export default function TransactionData () {
       hideInSearch: true,
       render: (_,data)=>{
         if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{_}</a>
         }else{
           return _
         }
@@ -79,7 +81,7 @@ export default function TransactionData () {
       hideInSearch: true,
       render: (_,data)=>{
         if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{_}</a>
         }else{
           return _
         }
@@ -92,7 +94,7 @@ export default function TransactionData () {
       hideInSearch: true,
       render: (_,data)=>{
         if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(4)}}>{_}</a>
         }else{
           return _
         }
@@ -105,7 +107,7 @@ export default function TransactionData () {
       hideInSearch: true,
       render: (_,data)=>{
         if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(5)}}>{_}</a>
         }else{
           return _
         }
@@ -118,7 +120,7 @@ export default function TransactionData () {
       hideInSearch: true,
       render: (_,data)=>{
         if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(6)}}>{_}</a>
         }else{
           return _
         }
@@ -131,7 +133,7 @@ export default function TransactionData () {
       hideInSearch: true,
       render: (_,data)=>{
         if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(7)}}>{_}</a>
         }else{
           return _
         }
@@ -144,7 +146,7 @@ export default function TransactionData () {
       hideInSearch: true,
       render: (_,data)=>{
         if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(8)}}>{_}</a>
         }else{
           return _
         }
@@ -184,6 +186,7 @@ export default function TransactionData () {
         <Descriptions.Item  label="运营商总人数">{detailList?.rentMachineNum}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
+        headerTitle='列表'
         rowKey="agencyId"
         columns={tableColumns}
         request={userLists}
@@ -193,7 +196,13 @@ export default function TransactionData () {
           pageSize: 10
         }}
         options={false}
-        search={false}
+        search={{
+          defaultCollapsed: true,
+          labelWidth: 100,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+          ],
+        }}
       />
       {
         visible&&
