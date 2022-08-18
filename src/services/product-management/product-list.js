@@ -181,3 +181,11 @@ export const productCheck = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const getCommissionConfigBySpuId = (params = {}, options = {}) => {
+  return request('/auth/goods/product/getCommissionConfigBySpuId', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
