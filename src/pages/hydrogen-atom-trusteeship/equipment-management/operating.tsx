@@ -4,6 +4,7 @@ import { Dropdown, Button, Menu, Tooltip, Space } from "antd"
 import { EllipsisOutlined, ExclamationCircleOutlined } from "@ant-design/icons"
 
 import type { FC } from "react"
+import type { FormInstance } from "antd"
 import type { ProColumns, ActionType } from "@ant-design/pro-table"
 import { OperatingProps } from "./data"
 
@@ -14,6 +15,7 @@ import Modification from "./modification"
 import OptionImei from "./option-imei"
 import StopOperation from "./stop-operation"
 import TerminateManaged from "./terminate-managed"
+import Export from "@/components/export"
 
 const Operating: FC = () => {
   const [blockUpVisible, setBlockUpVisible] = useState<boolean>(false)
@@ -29,6 +31,7 @@ const Operating: FC = () => {
   const [terminateManagedVisible, setTerminateManagedVisible] = useState<boolean>(false)
 
   const actRef = useRef<ActionType>()
+  const form = useRef<FormInstance>()
 
   const menu = (e: OperatingProps) => {
     return (
@@ -214,11 +217,13 @@ const Operating: FC = () => {
           pageSize: 10
         }}
         actionRef={actRef}
+        formRef={form}
         options={false}
         search={{
           labelWidth: 120,
           optionRender: (searchConfig, props, dom)=> [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export type='healthyDeviceIngOperate' conditions={{...form.current?.getFieldsValue()}}/>
           ]
         }}
       />

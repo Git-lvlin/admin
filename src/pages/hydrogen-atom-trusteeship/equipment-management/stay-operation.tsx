@@ -1,10 +1,16 @@
+import { useRef } from "react"
 import ProTable from '@ant-design/pro-table'
 
 import type { ProColumns } from "@ant-design/pro-table"
+import type { FC } from "react"
+import type { FormInstance } from "antd"
 
 import { waitOperateList } from "@/services/hydrogen-atom-trusteeship/equipment-management"
+import Export from "@/components/export"
 
-const StayOperation = () => {
+const StayOperation: FC = () => {
+
+  const form = useRef<FormInstance>()
 
   const columns: ProColumns[] = [
     {
@@ -86,11 +92,13 @@ const StayOperation = () => {
         showQuickJumper: true,
         pageSize: 10
       }}
+      formRef={form}
       options={false}
       search={{
         labelWidth: 100,
         optionRender: (searchConfig, props, dom)=> [
-          ...dom.reverse()
+          ...dom.reverse(),
+          <Export type='healthyDeviceWaitOperate' conditions={{...form.current?.getFieldsValue()}}/>
         ]
       }}
     />
