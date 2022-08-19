@@ -113,6 +113,12 @@ const StayPut: FC = () => {
       hideInSearch: true
     },
     {
+      title: '距可取回天数',
+      dataIndex: '',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '操作',
       valueType: 'option',
       align: 'center',
