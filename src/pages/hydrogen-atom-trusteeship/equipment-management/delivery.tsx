@@ -62,7 +62,7 @@ const Delivery: FC<DeliveryProps> = (props: DeliveryProps) => {
       <ProForm.Item
         label='被投放运营商店主手机号'
       >
-        {data?.hostingMemberPhone}
+        {data?.storePhone}
       </ProForm.Item>
       <ProForm.Item
         label='被投放运营商店铺名称'

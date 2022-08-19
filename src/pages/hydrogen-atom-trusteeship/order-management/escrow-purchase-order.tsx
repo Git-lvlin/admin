@@ -3,6 +3,7 @@ import ProTable from "@ant-design/pro-table"
 import type { ProColumns } from "@ant-design/pro-table"
 
 import { agentOrderPage } from "@/services/hydrogen-atom-trusteeship/order-management"
+import { amountTransform } from "@/utils/utils"
 
 const EscrowPurchaseOrder = () => {
 
@@ -21,7 +22,24 @@ const EscrowPurchaseOrder = () => {
       title: '已签托管合同',
       dataIndex: 'signed',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_) => {
+        if(_) {
+          return '是'
+        } else {
+          return '否'
+        }
+      }
+    },
+    {
+      title: '合同签订状态',
+      dataIndex: 'signed',
+      valueType: 'select',
+      hideInTable: true,
+      valueEnum: {
+        true: '是',
+        false: '否'
+      }
     },
     {
       title: '下单人手机',
@@ -34,8 +52,8 @@ const EscrowPurchaseOrder = () => {
       align: 'center',
       valueType: 'select',
       valueEnum: {
-        0: '否',
-        1: '是'
+        false: '否',
+        true: '是'
       },
       hideInSearch: true
     },
@@ -47,7 +65,7 @@ const EscrowPurchaseOrder = () => {
     },
     {
       title: '下单时间',
-      dataIndex: 'createTime',
+      dataIndex: 'orderTime',
       align: 'center',
       hideInSearch: true
     },
@@ -61,13 +79,26 @@ const EscrowPurchaseOrder = () => {
       title: '支付时间',
       dataIndex: 'payTime',
       align: 'center',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       hideInTable: true
     },
     {
       title: '支付方式',
       dataIndex: 'payType',
       align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        0: '模拟支付',
+        1: '支付宝',
+        2: '微信',
+        3: '小程序',
+        4: '银联',
+        5: '钱包支付',
+        6: '支付宝',
+        7: '微信',
+        8: '银联',
+        9: '快捷支付'
+      },
       hideInSearch: true
     },
     {
@@ -75,6 +106,7 @@ const EscrowPurchaseOrder = () => {
       dataIndex: 'orderAmount',
       align: 'center',
       hideInSearch: true,
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '支付单号',
@@ -102,16 +134,6 @@ const EscrowPurchaseOrder = () => {
           }
         </>
       )
-    },
-    {
-      title: '合同签订状态',
-      dataIndex: 'status',
-      valueType: 'select',
-      valueEnum: {
-
-      },
-      align: 'center',
-      hideInTable: true
     }
   ]
 
