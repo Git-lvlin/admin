@@ -35,14 +35,20 @@ export default (props) => {
 
   const divideName=()=>{
     switch (type) {
-      case 0:
-        return '累计分成'
       case 1:
-        return '销售分成'
-      case 2:
-        return '管理费分成'
-      case 3:
         return '累计业绩'
+      case 2:
+        return '销售提成'
+      case 3:
+        return '管理费提成'
+      case 4:
+        return '托管推广提成'
+      case 5:
+        return '运营推广提成'
+      case 6:
+        return '启动费提成'
+      case 7:
+        return '门店营业额提成'
       default:
         return ''
     }
@@ -77,7 +83,7 @@ export default (props) => {
         2: '管理分成',
         3: '累计业绩'
       },
-      hideInSearch: true,
+      hideInSearch: type!=1,
     },
     {
       title: '订单金额',
@@ -91,6 +97,12 @@ export default (props) => {
         }
       },
       hideInSearch: true,
+    },
+    {
+      title: '佣金比例',
+      dataIndex: 'commissionDesc',
+      align: 'center',
+      hideInTable: type!=7
     },
     {
       title: '收益',
@@ -188,7 +200,7 @@ export default (props) => {
             { dom }
             <div className={styles.summary}>
               <div>
-                累计收益：
+                累计{type==1?'金额':'收益'}：
                 <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
               </div>
             </div>
