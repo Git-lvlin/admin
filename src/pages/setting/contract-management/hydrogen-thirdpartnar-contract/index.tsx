@@ -40,8 +40,8 @@ const HydrogenThirdpartnarContract: FC = () => {
       align: 'center'
     },
     {
-      title: '代运营订单号',
-      dataIndex: 'operatorOrderSn',
+      title: '开通资质交易单号',
+      dataIndex: 'payOrderNo',
       align: 'center',
     },
     {
