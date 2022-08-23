@@ -28,7 +28,7 @@ type ThematicEventItem={
 }
 
 export default (props) => {
-  const { id,detailList,callback }=props
+  const { id,detailList,callback,detailData }=props
   const [dataSource, setDataSource] = useState([]);
   const [visible, setVisible] = useState(false)
   const [delectVisible, setDelectVisible] = useState(false)
@@ -75,6 +75,12 @@ export default (props) => {
     {
       title: 'spuid',
       dataIndex: 'spuId',
+      valueType: 'text',
+      editable:false,
+    },
+    {
+      title: 'skuid',
+      dataIndex: 'skuId',
       valueType: 'text',
       editable:false,
     },
@@ -201,6 +207,9 @@ export default (props) => {
           rowKey="id"
           options={false}
           value={dataSource}
+          params={{
+            id:id
+          }}
           recordCreatorProps={false}
           search={false}
           columns={columns}
