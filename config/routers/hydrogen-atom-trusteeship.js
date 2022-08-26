@@ -51,6 +51,12 @@ export default {
         path: '/hydrogen-atom-trusteeship/divided-configuration',
         component: './hydrogen-atom-trusteeship/divided-configuration',
         wrappers: [RouteWatcher],
+      },
+      {
+        name: 'management-fee-configuration',
+        path: '/hydrogen-atom-trusteeship/management-fee-configuration',
+        component: './hydrogen-atom-trusteeship/management-fee-configuration',
+        wrappers: [RouteWatcher],
       }
     ]
   }

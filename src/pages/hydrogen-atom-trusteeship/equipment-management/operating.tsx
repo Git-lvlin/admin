@@ -198,7 +198,7 @@ const Operating: FC = () => {
     },
     {
       title: '最近启动时间',
-      dataIndex: 'lastStartUp',
+      dataIndex: 'lastStartUpTime',
       align: 'center',
       hideInSearch: true
     },
