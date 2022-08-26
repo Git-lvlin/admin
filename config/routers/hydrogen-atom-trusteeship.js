@@ -45,6 +45,12 @@ export default {
         path: '/hydrogen-atom-trusteeship/order-management',
         component: './hydrogen-atom-trusteeship/order-management',
         wrappers: [RouteWatcher],
+      },
+      {
+        name: 'divided-configuration',
+        path: '/hydrogen-atom-trusteeship/divided-configuration',
+        component: './hydrogen-atom-trusteeship/divided-configuration',
+        wrappers: [RouteWatcher],
       }
     ]
   }

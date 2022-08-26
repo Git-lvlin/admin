@@ -49,4 +49,10 @@ export type DataProps = {
   optRole: string
   name: string
   val: string
+  packageName: string
+  leaseEnd: string
+  payAmount: number
+  payTime: string
+  payTypeDesc: string
+  payOrderSn: string
 }

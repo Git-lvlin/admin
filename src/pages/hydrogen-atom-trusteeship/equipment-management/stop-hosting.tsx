@@ -115,7 +115,11 @@ const StopHosting: FC = () => {
         labelWidth: 150,
         optionRender: (searchConfig, props, dom)=> [
           ...dom.reverse(),
-          <Export type='healthyDeviceStopHosting' conditions={getFieldsValue}/>
+          <Export 
+            type='healthyDeviceStopHosting' 
+            conditions={getFieldsValue}
+            key='export'
+          />
         ]
       }}
     />

@@ -1,13 +1,15 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { Image } from 'antd'
 
 import type { FC } from 'react'
 import type { ProColumns } from '@ant-design/pro-table'
+import type { FormInstance } from "antd"
 
 import { deviceTransList } from '@/services/hydrogen-atom-trusteeship/managed-transaction-data'
 import { amountTransform } from '@/utils/utils'
 import DevicesDetail from '../components/devices-detail'
+import Export from "@/components/export"
 
 const ManagedBuy:FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
@@ -16,6 +18,7 @@ const ManagedBuy:FC = () => {
   const [user, setUser] = useState<string>()
   const [deviceNum, setDeviceNum] = useState<number>()
   const [amount, setAmount] = useState<number>()
+  const form = useRef<FormInstance>()
 
   const columns: ProColumns[] = [
     {
@@ -245,10 +248,16 @@ const ManagedBuy:FC = () => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        formRef={form}
         options={false}
         search={{
           optionRender: (searchConfig, props, dom)=> [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export 
+              key='exprot'
+              type='healthyDeviceTransList'
+              conditions={{...form.current?.getFieldsValue()}}
+            />
           ]
         }}
       />

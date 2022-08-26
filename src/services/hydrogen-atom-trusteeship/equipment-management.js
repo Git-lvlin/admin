@@ -241,9 +241,9 @@ export const bindable = async (data, options = {}) => {
   })
 }
 
-// 营收概况
-export const getCardAndStartUpDetail = async (params, options = {}) => {
-  const res = await request('/auth/healthy/deviceManage/getCardAndStartUpDetail', {
+// 缴租明细
+export const leaseList = async (params, options = {}) => {
+  const res = await request('/auth/healthy/deviceManage/leaseList', {
     method: 'POST',
     data: {
       ...params
@@ -251,7 +251,7 @@ export const getCardAndStartUpDetail = async (params, options = {}) => {
     ...options
   })
   return {
-    data: res.data,
+    data: res.data.records,
     total: res.data.total,
     success: res.success
   }
@@ -271,4 +271,68 @@ export const getExpressList = async (params, options = {}) => {
     total: res.data.total,
     success: res.success
   }
+}
+
+// 分成 托管交易款&培训服务费
+export const tranAndService = async (params, options = {}) => {
+  const { current = 1, pageSize = 10, ...rest } = params
+  const res = await request('/auth/healthy/deviceManage/tranAndService', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...params
+    },
+    ...options
+  })
+  return {
+    data: Object.keys(res.data).length !== 0 ? res.data : [] 
+  }
+}
+
+// 分成 管理费&启动费
+export const manageAndStartUp = async (params, options = {}) => {
+  const { current = 1, pageSize = 10, ...rest } = params
+  const res = await request('/auth/healthy/deviceManage/manageAndStartUp', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...params
+    },
+    ...options
+  })
+  return {
+    data: Object.keys(res.data).length !== 0 ? res.data : [] 
+  }
+}
+
+// 设备分成-获取历史运营商列表
+export const getHistoryDeviceShop = async (params, options = {}) => {
+  const res = await request('/auth/healthy/deviceManage/getHistoryDeviceShop', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data
+  }
+}
+
+// 托管租赁 开启续费窗口 提示信息
+export const oepnRenewWindowTips = async (data, options = {}) => {
+  return await request('/auth/store/hostingLease/oepnRenewWindowTips', {
+    method: 'GET',
+    params: data,
+    ...options
+  })
+}
+
+// 托管租赁 开启续费窗口
+export const oepnRenewWindow = async (params, options = {}) => {
+  return await request('/auth/store/hostingLease/oepnRenewWindow', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
 }
