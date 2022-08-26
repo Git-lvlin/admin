@@ -28,7 +28,7 @@ const Divide: FC<DivideProps> = ({visible, setVisible, data}) => {
             <div className={styles.btn}>
               <a
                 key="1"
-                onClick={() => {setVisible(false); history.push('')}}
+                onClick={() => {setVisible(false); history.push('/hydrogen-atom-trusteeship/divided-configuration')}}
               >
                 查看分成配置
               </a>

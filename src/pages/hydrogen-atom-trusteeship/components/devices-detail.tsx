@@ -344,7 +344,7 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
         <div key={idx}>
           <div className={styles.cardList}>
             <div>操作动作：{item.optItem}</div>
-            <div>操作人：{item.optRole}</div>
+            <div>操作人：{item.optName}（{item.optRole}）</div>
           </div>
           <div className={styles.cardListContent}>
             <div>{item.optContent}</div>
