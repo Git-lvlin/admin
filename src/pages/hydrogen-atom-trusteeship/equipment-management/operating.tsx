@@ -16,6 +16,8 @@ import OptionImei from "./option-imei"
 import StopOperation from "./stop-operation"
 import TerminateManaged from "./terminate-managed"
 import Export from "@/components/export"
+import CaptureExpendsEntrance from "./capture-expends-entrance"
+import Divide from "./divide"
 
 const Operating: FC = () => {
   const [blockUpVisible, setBlockUpVisible] = useState<boolean>(false)
@@ -29,6 +31,9 @@ const Operating: FC = () => {
   const [data, setData] = useState<OperatingProps>()
   const [stopOperationVisivle, setStopOperationVisivle] = useState<boolean>(false)
   const [terminateManagedVisible, setTerminateManagedVisible] = useState<boolean>(false)
+  const [user, setUser] = useState<string>()
+  const [captureExpendsEntranceVisible, setCaptureExpendsEntranceVisible] = useState<boolean>(false)
+  const [divideVisible, setDivideVisible] = useState<boolean>(false)
 
   const actRef = useRef<ActionType>()
   const form = useRef<FormInstance>()
@@ -39,6 +44,8 @@ const Operating: FC = () => {
         <Menu.Item
           key="1"
           onClick={()=>{ 
+            setDivideVisible(true)
+            setData(e)
           }}
         >
           分成
@@ -122,10 +129,23 @@ const Operating: FC = () => {
             setType(11)
             setOrderId(e.orderId)
             setImei(e.imei)
+            setUser(e.storePhone)
           }}
         >
-          营收概述
+          缴租明细
         </Menu.Item>
+        {
+          e.isShowLeaseBtn === 1&&
+          <Menu.Item
+            key="8"
+            onClick={()=> {
+              setCaptureExpendsEntranceVisible(true)
+              setData(e)
+            }}
+          >
+            开启缴费入口
+          </Menu.Item>
+        }
       </Menu>
     )
   }
@@ -155,6 +175,26 @@ const Operating: FC = () => {
       title: '运营商店铺编号',
       dataIndex: 'storeHouseNumber',
       align: 'center'
+    },
+    {
+      title: '租期状态',
+      dataIndex: 'leaseStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        1:'免租期',
+        2:'租期中',
+        3:'已逾期'
+      }
+    },
+    {
+      title: '缴租时间',
+      dataIndex: 'deadlineDay',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r) => (
+        <div dangerouslySetInnerHTML={{__html: r.deadlineDay}}/>
+      )
     },
     {
       title: '最近启动时间',
@@ -223,7 +263,11 @@ const Operating: FC = () => {
           labelWidth: 120,
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
-            <Export type='healthyDeviceIngOperate' conditions={{...form.current?.getFieldsValue()}}/>
+            <Export 
+              type='healthyDeviceIngOperate' 
+              conditions={{...form.current?.getFieldsValue()}}
+              key='export'
+            />
           ]
         }}
       />
@@ -246,6 +290,7 @@ const Operating: FC = () => {
           storeNo={orderId}
           showTitle
           imei={imei}
+          user={user}
         />
       }
       {
@@ -282,6 +327,23 @@ const Operating: FC = () => {
           visible={terminateManagedVisible}
           setVisible={setTerminateManagedVisible}
           callback={()=>actRef.current?.reload()}
+          data={data}
+        />
+      }
+      {
+        captureExpendsEntranceVisible &&
+        <CaptureExpendsEntrance
+          visible={captureExpendsEntranceVisible}
+          setVisible={setCaptureExpendsEntranceVisible}
+          data={data}
+          callback={()=>actRef.current?.reload()}
+        />
+      }
+      {
+        divideVisible &&
+        <Divide
+          visible={divideVisible}
+          setVisible={setDivideVisible}
           data={data}
         />
       }

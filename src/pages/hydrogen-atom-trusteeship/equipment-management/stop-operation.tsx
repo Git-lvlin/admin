@@ -1,4 +1,4 @@
-import { ModalForm, ProFormRadio, ProFormText, ProFormTextArea } from '@ant-design/pro-form'
+import { ModalForm, ProFormRadio, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import type { FC } from 'react'
@@ -62,6 +62,23 @@ const StopOperation: FC<StopOperationProps> = ({visible, setVisible, data, callb
         initialValue={data?.storePhone}
         readonly
       />
+      <ProFormSelect
+        name='leaseStatus'
+        label='当前租期状态'
+        initialValue={data?.leaseStatus}
+        valueEnum={{
+          1:'免租期',
+          2:'租期中',
+          3:'已逾期'
+        }}
+        readonly
+      />
+      <ProFormText
+        name='leaseDeadline'
+        label='当前租期截止日'
+        initialValue={data?.leaseDeadline}
+        readonly
+      />
       <ProFormRadio.Group
         name='optType'
         label="运营资质操作"
@@ -105,12 +122,8 @@ const StopOperation: FC<StopOperationProps> = ({visible, setVisible, data, callb
         rules={[{required: true}]}
         options={[
           {
-            label: '立即停止(不考核本月业绩)',
+            label: '立即停止',
             value: 1
-          },
-          {
-            label: '立即停止(考核本月业绩)',
-            value: 2
           },
           {
             label: '本月底24点停止(考核本月业绩)',

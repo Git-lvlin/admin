@@ -74,6 +74,23 @@ const TerminateManaged: FC<TerminateManagedProps> = (props) => {
         initialValue={data?.storePhone}
         readonly
       />
+      <ProFormSelect
+        name='leaseStatus'
+        label='当前租期状态'
+        initialValue={data?.leaseStatus}
+        valueEnum={{
+          1:'免租期',
+          2:'租期中',
+          3:'已逾期'
+        }}
+        readonly
+      />
+      <ProFormText
+        name='leaseDeadline'
+        label='当前租期截止日'
+        initialValue={data?.leaseDeadline}
+        readonly
+      />
       {
         type === 1 &&
         <>
@@ -120,12 +137,8 @@ const TerminateManaged: FC<TerminateManagedProps> = (props) => {
             rules={[{required: true}]}
             options={[
               {
-                label: '立即停止(不考核本月业绩)',
+                label: '立即停止',
                 value: 1
-              },
-              {
-                label: '立即停止(考核本月业绩)',
-                value: 2
               },
               {
                 label: '本月底24点停止(考核本月业绩)',

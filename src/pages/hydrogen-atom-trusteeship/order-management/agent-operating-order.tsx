@@ -1,11 +1,16 @@
+import { useRef } from "react"
 import ProTable from "@ant-design/pro-table"
-
-import type { ProColumns } from "@ant-design/pro-table"
-
-import { adminOrderList } from "@/services/hydrogen-atom-trusteeship/order-management"
 import moment from "moment"
 
+import type { ProColumns } from "@ant-design/pro-table"
+import type { FormInstance } from "antd"
+
+import { adminOrderList } from "@/services/hydrogen-atom-trusteeship/order-management"
+import Export from "@/components/export"
+
+
 const AgentOperatingOrder = () => {
+  const form = useRef<FormInstance>()
 
   const columns: ProColumns[] = [
     {
@@ -90,10 +95,16 @@ const AgentOperatingOrder = () => {
       rowKey='orderId'
       columns={columns}
       options={false}
+      formRef={form}
       search={{
         labelWidth: 120,
         optionRender: (searchConfig, props, dom) => [
-          ...dom.reverse()
+          ...dom.reverse(),
+          <Export
+            key='1'
+            type='healthyAdminOperate'
+            conditions={{...form.current?.getFieldsValue()}}
+          />
         ]
       }}
       pagination={{

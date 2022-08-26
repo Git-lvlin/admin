@@ -63,6 +63,13 @@ export type OperatingProps = {
   examReason: string
   useTime: string
   stopOperateType: string
+  isShowLeaseBtn: number
+  leaseStatus: number
+  leaseDeadline: string
+  deadlineDay: string
+  hostingPayAmount: string
+  payDeadline: string
+  storeQualificationId: string
 }
 
 export type ModificationProps = {
@@ -70,6 +77,7 @@ export type ModificationProps = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   orderId?: string
   useTime?: string
+  data?: OperatingProps
   callback: () => void
 }
 
@@ -102,6 +110,30 @@ export type TerminateManagedProps = {
   type?: number
 }
 
-export type TerminateManagedFormProps = {
+export type DivideProps ={
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  data?: OperatingProps
+}
 
+export type DealAmountProps = {
+  data?: OperatingProps
+  type: number
+}
+
+export type listDataProps = {
+  orderId?: string
+  agentDeviceId?: string
+  hostingOrderId?: string
+  storeName?: string
+  storePhone?: string
+  qualificationId?: string
+  activationTime?: string
+  stopOperateTime?: string
+  hostingOrderSn?: string
+}
+
+export type InfoProps = {
+  amountTips: string[]
+  endTips: string
 }

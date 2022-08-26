@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react"
-import { Drawer, Pagination, Spin, Empty, Divider, Space } from "antd"
+import { 
+  Drawer, 
+  Pagination, 
+  Spin, 
+  Empty, 
+  Divider, 
+  Space,
+  Typography 
+} from "antd"
+import moment from "moment"
 
 import type { FC } from "react"
 import type { DevicesProps, DataProps } from "./data"
@@ -13,11 +22,12 @@ import {
   getHostingIngNum,
   getHostingStopNum
 } from "@/services/hydrogen-atom-trusteeship/managed-transaction-data"
-import { getOptLog, getCardAndStartUpDetail } from "@/services/hydrogen-atom-trusteeship/equipment-management"
+import { getOptLog, leaseList } from "@/services/hydrogen-atom-trusteeship/equipment-management"
 import styles from "./styles.less"
 import { amountTransform } from "@/utils/utils"
-import moment from "moment"
+import Export from "@/components/export"
 
+const { Title } = Typography
 
 const DevicesDetail: FC<DevicesProps> = (props) => {
   const {
@@ -37,6 +47,7 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
   const [pageTotal, setPageTotal] = useState<number>(0)
   const [load, setLoad] = useState<boolean>(false)
   const [data, setData] = useState<DataProps[]>([])
+  const [curData, setCurData] = useState<DataProps[]>([])
   
   const api = {
     1: devicePage,
@@ -49,7 +60,7 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     8: getHostingIngNum,
     9: getHostingStopNum, 
     10: getOptLog,
-    11: getCardAndStartUpDetail
+    11: leaseList
   }[type]
 
   const params = {
@@ -87,7 +98,8 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
       orderId: storeNo
     },
     11: {
-      orderId: storeNo
+      orderId: storeNo,
+      type: 'list'
     }
   }
 
@@ -103,6 +115,15 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     })
    
   }, [pageSize, page])
+
+  useEffect(()=> {
+    leaseList({
+      orderId: storeNo,
+      type: 'currDetail'
+    }).then(res => {
+      setCurData(res.data)
+    })
+  }, [storeNo])
 
   const pageChange = (a: number, b?: number) => {
     setPage(a)
@@ -120,7 +141,18 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     8: `运营中设备（用户:${user}）`,
     9: `终止托管设备（用户:${user}）`,
     10: `操作日志（机器ID：${imei} 操作:${pageTotal}次）`,
-    11: `营收概况（机器ID:${imei} ）`
+    11: (
+      <Space>
+        <div>缴租明细（用户：{user} 机器ID:{imei} ）</div>
+        <Export 
+          type='healthyDeviceLease' 
+          conditions={{orderId: storeNo}}
+          slot={<a>导出</a>}
+          slotHistory={(e)=><a onClick={e}>···</a>}
+          placement='bottom'
+        />
+      </Space>
+    )
   }
 
   const cardTitle = {
@@ -142,7 +174,7 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     6: `待投放设备数：${deviceNum}台`,
     7: `待运营设备数：${deviceNum}台`,
     8: `运营中托管设备数：${deviceNum}台`,
-    9: `总终止托管设备数：${deviceNum}台`
+    9: `总终止托管设备数：${deviceNum}台`,
   }
 
   const orderPay = {
@@ -323,15 +355,44 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
       )) 
     ),
     11: (
-      data?.map((item, idx) => (
-        <div key={idx}>
-          <div className={styles.cardList}>
-            <div>{item.name}</div>
-            <div>{item.val}</div>
-          </div>
-          <Divider style={{margin: '10px 0 24px 0'}}/>
+      <>
+        <Title level={5}>当前设备管理费信息：</Title>
+        <Divider style={{margin: '-5px 0 10px 0'}}/>
+        <div className={styles.cardList}>
+          <div>{curData?.[0]?.packageName}</div>
+          <div>租期截至时间：{curData?.[0]?.leaseEnd}</div>
         </div>
-      )) 
+        <div className={styles.cardListContent}>
+          <div>金额：{amountTransform(curData?.[0]?.payAmount, '/')}</div>
+          <div>支付时间：{curData?.[0]?.payTime}</div>
+        </div>
+        <div className={styles.cardListContent}>
+          <div>支付方式：{curData?.[0]?.payTypeDesc}</div>
+          <div>支付单号：{curData?.[0]?.payOrderSn}</div>
+        </div>
+        <Divider style={{margin: '10px 0 24px 0'}}/>
+        <Title level={5}>历史管理费信息：</Title>
+        <Divider style={{margin: '-5px 0 10px 0'}}/>
+        {
+          data?.map((item, idx) => (
+            <div key={idx}>
+              <div className={styles.cardList}>
+              <div>{item.packageName}</div>
+              <div>租期截至时间：{item.leaseEnd}</div>
+            </div>
+            <div className={styles.cardListContent}>
+              <div>金额：{amountTransform(item.payAmount, '/')}</div>
+              <div>支付时间：{item.payTime}</div>
+            </div>
+            <div className={styles.cardListContent}>
+              <div>支付方式：{item.payTypeDesc}</div>
+              <div>支付单号：{item.payOrderSn}</div>
+            </div>
+              <Divider style={{margin: '10px 0 24px 0'}}/>
+            </div>
+          )) 
+        }
+      </>
     )
   }
 

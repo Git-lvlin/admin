@@ -114,7 +114,7 @@ const StayPut: FC = () => {
     },
     {
       title: '距可取回天数',
-      dataIndex: '',
+      dataIndex: 'deadlineDay',
       align: 'center',
       hideInSearch: true
     },
@@ -181,7 +181,11 @@ const StayPut: FC = () => {
           labelWidth: 100,
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
-            <Export type='healthyDeviceWaitPut' conditions={getFieldsValue}/>
+            <Export 
+              type='healthyDeviceWaitPut' 
+              conditions={getFieldsValue}
+              key='export'
+            />
           ]
         }}
       />

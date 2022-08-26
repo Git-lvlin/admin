@@ -8,18 +8,19 @@ const Direcffons = () => {
  
   return (
     <PageContainer title={false}>
-       <ProCard
+      {/* <ProCard
         tabs={{
           type: 'card'
         }}
       >
-        {/* <ProCard.TabPane key="1" tab="卡核销明细">
+        <ProCard.TabPane key="1" tab="卡核销明细">
           <CardVerificationDetails/>
-        </ProCard.TabPane> */}
+        </ProCard.TabPane>
         <ProCard.TabPane key="2" tab="免卡启动明细">
           <NotCardStartDetails/>
         </ProCard.TabPane>
-      </ProCard>
+      </ProCard> */}
+      <NotCardStartDetails/>
     </PageContainer>
   )
 }

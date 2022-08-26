@@ -149,7 +149,11 @@ const StopOperate: FC = () => {
           labelWidth: 100,
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
-            <Export type='healthyDeviceStopOperate' conditions={getFieldsValue}/>
+            <Export 
+              key='export'
+              type='healthyDeviceStopOperate' 
+              conditions={getFieldsValue}
+            />
           ]
         }}
       />
