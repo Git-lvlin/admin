@@ -115,6 +115,13 @@ const StopOperate: FC = () => {
           >
             终止托管
           </a>
+          <a 
+            onClick={()=>{
+              
+            }}
+          >
+            操作日志
+          </a>
         </Space>
       )
     }

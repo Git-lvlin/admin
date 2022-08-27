@@ -13,6 +13,12 @@ export type ListProps = {
   fullAddress: string
   storeNo: string
   storeName: string
+  shopMemberAccount: string
+  provinceName: string
+  cityName: string
+  regionName: string
+  address: string
+  houseNumber: string
 }
 
 export interface StayPutProps {
@@ -57,7 +63,8 @@ export type OperatingProps = {
   storePhone: string;
   hostingMemberPhone: string
   storeHouseNumber: string
-  useStatus: string
+  useStatus: number
+  useStatusDesc: string
   lastStartUpTime: string
   examType: number
   examReason: string
@@ -70,6 +77,8 @@ export type OperatingProps = {
   hostingPayAmount: string
   payDeadline: string
   storeQualificationId: string
+  packageName: string
+  leaseTimeTip: string
 }
 
 export type ModificationProps = {

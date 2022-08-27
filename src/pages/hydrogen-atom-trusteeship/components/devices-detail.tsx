@@ -77,7 +77,7 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
       status: 'terminated'
     },
     4: {
-      storeNo
+      memberId: storeNo
     },
     5: {
       hostingMemberId: storeNo
@@ -117,12 +117,14 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
   }, [pageSize, page])
 
   useEffect(()=> {
-    leaseList({
-      orderId: storeNo,
-      type: 'currDetail'
-    }).then(res => {
-      setCurData(res.data)
-    })
+    if(type === 11) {
+      leaseList({
+        orderId: storeNo,
+        type: 'currDetail'
+      }).then(res => {
+        setCurData(res.data)
+      })
+    }
   }, [storeNo])
 
   const pageChange = (a: number, b?: number) => {
@@ -356,23 +358,28 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     ),
     11: (
       <>
-        <Title level={5}>当前设备管理费信息：</Title>
-        <Divider style={{margin: '-5px 0 10px 0'}}/>
-        <div className={styles.cardList}>
-          <div>{curData?.[0]?.packageName}</div>
-          <div>租期截至时间：{curData?.[0]?.leaseEnd}</div>
-        </div>
-        <div className={styles.cardListContent}>
-          <div>金额：{amountTransform(curData?.[0]?.payAmount, '/')}</div>
-          <div>支付时间：{curData?.[0]?.payTime}</div>
-        </div>
-        <div className={styles.cardListContent}>
-          <div>支付方式：{curData?.[0]?.payTypeDesc}</div>
-          <div>支付单号：{curData?.[0]?.payOrderSn}</div>
-        </div>
-        <Divider style={{margin: '10px 0 24px 0'}}/>
-        <Title level={5}>历史管理费信息：</Title>
-        <Divider style={{margin: '-5px 0 10px 0'}}/>
+        {
+          data?.length !== 0 &&
+          <>
+            <Title level={5}>当前设备管理费信息：</Title>
+            <Divider style={{margin: '-5px 0 10px 0'}}/>
+            <div className={styles.cardList}>
+              <div>{curData?.[0]?.packageName}</div>
+              <div>租期截至时间：{curData?.[0]?.leaseEnd}</div>
+            </div>
+            <div className={styles.cardListContent}>
+              <div>金额：{amountTransform(curData?.[0]?.payAmount, '/')}</div>
+              <div>支付时间：{curData?.[0]?.payTime}</div>
+            </div>
+            <div className={styles.cardListContent}>
+              <div>支付方式：{curData?.[0]?.payTypeDesc}</div>
+              <div>支付单号：{curData?.[0]?.payOrderSn}</div>
+            </div>
+            <Divider style={{margin: '10px 0 24px 0'}}/>
+            <Title level={5}>历史管理费信息：</Title>
+            <Divider style={{margin: '-5px 0 10px 0'}}/>
+          </>
+        }
         {
           data?.map((item, idx) => (
             <div key={idx}>

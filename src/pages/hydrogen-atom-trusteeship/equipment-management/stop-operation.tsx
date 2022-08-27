@@ -67,9 +67,9 @@ const StopOperation: FC<StopOperationProps> = ({visible, setVisible, data, callb
         label='当前租期状态'
         initialValue={data?.leaseStatus}
         valueEnum={{
-          1:'免租期',
-          2:'租期中',
-          3:'已逾期'
+          1:`免租期（${data?.packageName}）`,
+          2:`租期中（${data?.packageName}）`,
+          3:`已逾期（${data?.packageName}）`
         }}
         readonly
       />
