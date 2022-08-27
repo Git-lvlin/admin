@@ -91,7 +91,7 @@ const Operating: FC = () => {
           <Space size={5}>
             停止运营
             {
-              e?.stopOperateType === 'operate' &&
+              (e?.stopOperateType === 'operate' && e.examType === 3) &&
               <Tooltip title={e.examReason}>
                 <ExclamationCircleOutlined />
               </Tooltip>
@@ -104,18 +104,12 @@ const Operating: FC = () => {
             setTerminateManagedVisible(true)
             setData(e)
           }}
-          disabled={e?.examType === 3 || e?.useStatus === '正常'}
+          disabled={e?.examType === 3}
         >
           <Space size={5}>
             终止托管
             {
-              (e?.useStatus === '正常' && e?.stopOperateType !== 'operateHosting') &&
-              <Tooltip title='设备停止运营后方可终止托管'>
-                <ExclamationCircleOutlined />
-              </Tooltip>
-            }
-            {
-              e?.stopOperateType === 'operateHosting' &&
+              (e?.stopOperateType === 'operateHosting' && e.examType === 3) &&
               <Tooltip title={e.examReason}>
                 <ExclamationCircleOutlined />
               </Tooltip>
@@ -144,6 +138,14 @@ const Operating: FC = () => {
             }}
           >
             开启缴费入口
+          </Menu.Item>
+        }
+        {
+          e.leaseTimeTip &&
+          <Menu.Item
+            key="9"
+          >
+            {e.leaseTimeTip}
           </Menu.Item>
         }
       </Menu>
@@ -204,9 +206,22 @@ const Operating: FC = () => {
     },
     {
       title: '使用状态',
-      dataIndex: 'useStatus',
+      dataIndex: 'useStatusDesc',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '使用状态',
+      dataIndex: 'useStatus',
+      valueType: 'select',
+      valueEnum: {
+        0: "待绑定",
+        1: "待激活",
+        2: "正常",
+        3: "已停用",
+        4: "已解绑"
+      },
+      hideInTable: true
     },
     {
       title: '操作',
@@ -217,7 +232,7 @@ const Operating: FC = () => {
           overlay={() => menu(r)}
           buttonsRender={()=> [
             ( 
-              r?.useStatus !== '正常'&&
+              r?.useStatus !== 2&&
               <Button
                 onClick={()=>{ 
                   setType(2)
@@ -227,7 +242,7 @@ const Operating: FC = () => {
               >
                 启用
               </Button> ||
-              r?.useStatus === '正常'&&
+              r?.useStatus === 2&&
               <Button 
                 onClick={()=>{ 
                   setType(1)

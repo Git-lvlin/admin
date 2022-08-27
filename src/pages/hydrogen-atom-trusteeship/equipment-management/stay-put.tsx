@@ -49,13 +49,7 @@ const StayPut: FC = () => {
       align: 'center'
     },
     {
-      title: '下单店区域',
-      dataIndex: 'hostingArea',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '店铺编号',
+      title: '下单人店铺编号',
       dataIndex: 'hostingHouseNumber',
       align: 'center'
     },
@@ -97,18 +91,16 @@ const StayPut: FC = () => {
     {
       title: '被投放店主手机号',
       dataIndex: 'storePhone',
-      align: 'center',
-      hideInSearch: true
+      align: 'center'
     },
     {
       title: '被投放店铺编号',
       dataIndex: 'storeHouseNumber',
-      align: 'center',
-      hideInSearch: true
+      align: 'center'
     },
     {
-      title: '被投放店铺区域',
-      dataIndex: 'storeArea',
+      title: '被投放店铺名称',
+      dataIndex: 'storeName',
       align: 'center',
       hideInSearch: true
     },
@@ -178,7 +170,7 @@ const StayPut: FC = () => {
         actionRef={actRef}
         formRef={formRef}
         search={{
-          labelWidth: 100,
+          labelWidth: 120,
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
             <Export 

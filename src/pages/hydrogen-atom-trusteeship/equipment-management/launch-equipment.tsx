@@ -19,6 +19,7 @@ import {
   stopResetHosting,
   getExpressList 
 } from "@/services/hydrogen-atom-trusteeship/equipment-management"
+import styles from "./styles.less"
 
 const { Option } = AutoComplete
 const { Title, Paragraph } = Typography
@@ -73,7 +74,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
     arr.forEach(item=>{
       formRef.current?.setFieldsValue({
         storeNo: item.id,
-        storeName: item.storeName,
+        storeName: `【${item.shopMemberAccount}】${item.storeName}`,
         realname: item.realname,
         memberPhone: item.memberPhone,
         fullAddress: item.fullAddress,
@@ -143,9 +144,17 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
                   width: 20
                 }}
               >
+                <Descriptions.Item label="店铺">
+                  <div className={styles.address}>
+                    【{value.shopMemberAccount}】{value.storeName}
+                  </div>
+                </Descriptions.Item>
                 <Descriptions.Item label="店主">{value.realname}</Descriptions.Item>
                 <Descriptions.Item label="手机">{value.memberPhone}</Descriptions.Item>
-                <Descriptions.Item label="地址">{value.fullAddress}</Descriptions.Item>
+                <Descriptions.Item label="地址">
+                  <div className={styles.address}>{value.provinceName}{value.cityName}{value.regionName}</div>
+                  <div className={styles.address}>{value.address}{value.houseNumber}</div>
+                </Descriptions.Item>
               </Descriptions>
             </Option>
           ))}
@@ -188,15 +197,15 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
             onChange: (e)=> setNum(e)
           }}
           options={[
-            {label: '线下取货', value: 1},
-            {label: '快递配送', value: 2}
+            {label: '线下取货', value: 2},
+            {label: '快递配送', value: 1}
           ]}
         />
       }
       <ProFormDependency name={['expressType']}>
         {
           ({expressType})=> {
-            if(expressType === 1) {
+            if(expressType === 2) {
               return (
                 <ProFormText
                   label='线下取货联系手机号'
@@ -204,7 +213,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
                   rules={[{required: true}]}
                 />
               )
-            } else if(expressType === 2){
+            } else if(expressType === 1){
               return (
                 <>
                   <ProFormSelect

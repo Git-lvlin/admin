@@ -111,7 +111,7 @@ const PackageManagementFee = () => {
         pagination={false}
         search={false}
         headerTitle='运营商套餐费_氢原子设备租赁套餐管理费对各个角色分成'
-        params={{}}
+        params={{type: 'manageFee'}}
         request={getCommissionConfig}
         postData={(v: any)=>{
           setLeaseEndDay(v.leaseEndDay)
