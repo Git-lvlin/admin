@@ -132,6 +132,7 @@ export default function TransactionData () {
         request={cardList}
         columnEmptyText={false}
         actionRef={ref}
+        headerTitle='数据列表'
         pagination={{
           pageSize: 10
         }}
