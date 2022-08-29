@@ -147,7 +147,7 @@ const Operator = () => {
       }
     },
     {
-      title: '运营服务费金额',
+      title: '服务费金额',
       dataIndex: 'deviceTotalPay',
       align: 'center',
       hideInSearch: true,
@@ -162,6 +162,32 @@ const Operator = () => {
                 setType(4)
                 setUser(r.memberPhone)
                 setAmount(r.deviceTotalPay)
+              }}
+            >
+              {amountTransform(_, '/')}元
+            </a>
+          )
+        } else {
+          return <span>{amountTransform(_, '/')}元</span>
+        }
+      }
+    },
+    { 
+      title: '托管管理费金额',
+      dataIndex: 'paidRental',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.paidRental > 0) {
+          return (
+            <a
+              onClick={()=>{
+                setVisible(true)
+                setStoreNo(r.memberId)
+                setDeviceNum(r.availableTotal)
+                setType(12)
+                setUser(r.memberPhone)
+                setAmount(r.paidRental)
               }}
             >
               {amountTransform(_, '/')}元

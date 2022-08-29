@@ -39,7 +39,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
   }[type]
 
   useEffect(()=>{
-    if(num === 2) {
+    if(num === 1) {
       getExpressList({}).then(res => {
         const arr = res.data.map((item: {expressName: string}) => ({ 
           label: item.expressName,

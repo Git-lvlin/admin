@@ -11,12 +11,19 @@ import { stopOperateList } from "@/services/hydrogen-atom-trusteeship/equipment-
 import LaunchEquipment from "./launch-equipment"
 import TerminateManaged from "./terminate-managed"
 import Export from "@/components/export"
+import DevicesDetail from "../components/devices-detail"
+import Divide from "./divide"
 
 const StopOperate: FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
+  const [devicesDetailVisible, setDevicesDetailVisible] = useState<boolean>(false)
   const [show, setShow] = useState<boolean>(false)
   const [orderId, setOrderId] = useState<string>()
   const [data, setData] = useState()
+  const [imei, setImei] = useState<string>()
+  const [type, setType] = useState<number>(0)
+  const [user, setUser] = useState<string>()
+  const [divideVisible, setDivideVisible] = useState<boolean>(false)
   const actRef = useRef<ActionType>()
   const form = useRef<FormInstance>()
 
@@ -29,7 +36,8 @@ const StopOperate: FC = () => {
     {
       title: '运营订单号',
       dataIndex: 'orderId',
-      align: 'center'
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '设备ID',
@@ -38,9 +46,21 @@ const StopOperate: FC = () => {
       hideInSearch: true
     },
     {
-      title: '投资人手机号',
+      title: '机器ID',
+      dataIndex: 'imei',
+      hideInTable: true
+    },
+    {
+      title: '运营商手机号',
       dataIndex: 'hostingMemberPhone',
-      align: 'center'
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '原店主手机',
+      dataIndex: 'hostingMemberPhone',
+      align: 'center',
+      hideInTable: true
     },
     {
       title: '原店铺编号',
@@ -80,14 +100,14 @@ const StopOperate: FC = () => {
       hideInSearch: true
     },
     {
-      title: '停止类型',
+      title: '停止运营操作',
       dataIndex: 'type',
       align: 'center',
       render: (_, r)=> `${r.operateLog.type}`,
       hideInSearch: true
     },
     {
-      title: '停止原因',
+      title: '停止运营原因',
       dataIndex: 'reason',
       align: 'center',
       render: (_, r)=> `${r.operateLog.reason}`,
@@ -97,8 +117,9 @@ const StopOperate: FC = () => {
       title: '操作',
       valueType: 'option',
       align: 'center',
+      width: '220px',
       render: (_, r) => (
-        <Space size={10}>
+        <Space size={10} style={{width: 220, flexWrap: 'wrap'}}>
           <a 
             onClick={()=>{
               setVisible(true)
@@ -117,10 +138,32 @@ const StopOperate: FC = () => {
           </a>
           <a 
             onClick={()=>{
-              
+              setDevicesDetailVisible(true)
+              setOrderId(r.orderId)
+              setImei(r.imei)
+              setType(10)
             }}
           >
             操作日志
+          </a>
+          <a 
+            onClick={()=>{
+              setDivideVisible(true)
+              setData(r)
+            }}
+          >
+            分成明细
+          </a>
+          <a 
+            onClick={()=>{
+              setDevicesDetailVisible(true)
+              setType(11)
+              setOrderId(r.orderId)
+              setImei(r.imei)
+              setUser(r.storePhone)
+            }}
+          >
+            缴租明细
           </a>
         </Space>
       )
@@ -182,6 +225,26 @@ const StopOperate: FC = () => {
           callback={()=>actRef.current?.reload()}
           title='终止托管设备'
           type={2}
+          data={data}
+        />
+      }
+      {
+        devicesDetailVisible &&
+        <DevicesDetail
+          visible={devicesDetailVisible}
+          setVisible={setDevicesDetailVisible}
+          type={type}
+          storeNo={orderId}
+          showTitle
+          imei={imei}
+          user={user}
+        />
+      }
+      {
+        divideVisible &&
+        <Divide
+          visible={divideVisible}
+          setVisible={setDivideVisible}
           data={data}
         />
       }

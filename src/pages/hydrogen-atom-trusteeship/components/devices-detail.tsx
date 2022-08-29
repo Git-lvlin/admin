@@ -20,7 +20,8 @@ import {
   getHostingPendingPut,
   getHostingPendingNum,
   getHostingIngNum,
-  getHostingStopNum
+  getHostingStopNum,
+  hostingLease
 } from "@/services/hydrogen-atom-trusteeship/managed-transaction-data"
 import { getOptLog, leaseList } from "@/services/hydrogen-atom-trusteeship/equipment-management"
 import styles from "./styles.less"
@@ -48,6 +49,7 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
   const [load, setLoad] = useState<boolean>(false)
   const [data, setData] = useState<DataProps[]>([])
   const [curData, setCurData] = useState<DataProps[]>([])
+  const [month, setMonth] = useState<string>()
   
   const api = {
     1: devicePage,
@@ -60,7 +62,8 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     8: getHostingIngNum,
     9: getHostingStopNum, 
     10: getOptLog,
-    11: leaseList
+    11: leaseList,
+    12: hostingLease
   }[type]
 
   const params = {
@@ -100,6 +103,9 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     11: {
       orderId: storeNo,
       type: 'list'
+    },
+    12: {
+      memberId: storeNo
     }
   }
 
@@ -108,10 +114,11 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
       ...params[type],
       page,
       size: pageSize
-    }).then(res => {
+    }).then((res: any) => {
       setLoad(false)
       setData(res.data)
       setPageTotal(res.total)
+      setMonth(res?.monthSum)
     })
    
   }, [pageSize, page])
@@ -154,7 +161,8 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
           placement='bottom'
         />
       </Space>
-    )
+    ),
+    12: `托管管理费（用户:${user}）`
   }
 
   const cardTitle = {
@@ -177,6 +185,12 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     7: `待运营设备数：${deviceNum}台`,
     8: `运营中托管设备数：${deviceNum}台`,
     9: `总终止托管设备数：${deviceNum}台`,
+    12: (
+      <Space size={20}>
+        <div>总金额：{amountTransform(amount, '/')}元</div>
+        <div>总租期：{month}个月</div>
+      </Space>
+    )
   }
 
   const orderPay = {
@@ -400,6 +414,25 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
           )) 
         }
       </>
+    ),
+    12: (
+      data?.map((item, idx) => (
+        <div key={idx}>
+          <div className={styles.cardList}>
+            <div>{`${amountTransform(item.payAmount, '/')}元`}</div>
+            <div>套餐类型：{item.leaseTitle}</div>
+          </div>
+          <div className={styles.cardListContent}>
+            <div>{item.payTime}</div>
+            <div>支付方式：{orderPay[item.payType]}</div>
+          </div>
+          <div className={styles.cardListContent}>
+            <div>租期天数：{item.leasePeriodDay}</div>
+            <div>支付编号：{item.payOrderSn}</div>
+          </div>
+          <Divider style={{margin: '10px 0 24px 0'}}/>
+        </div>
+      ))
     )
   }
 
