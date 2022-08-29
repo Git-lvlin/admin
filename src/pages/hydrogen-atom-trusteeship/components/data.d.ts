@@ -55,4 +55,6 @@ export type DataProps = {
   payTime: string
   payTypeDesc: string
   payOrderSn: string
+  leaseTitle: string
+  leasePeriodDay: string
 }
