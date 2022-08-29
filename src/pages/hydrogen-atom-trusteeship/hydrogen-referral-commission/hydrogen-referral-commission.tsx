@@ -4,69 +4,66 @@ import ProTable from "@ant-design/pro-table"
 
 import type { ProColumns } from "@ant-design/pro-table"
 import type { FormInstance } from "@ant-design/pro-form"
-import type { DescriptionsProps, TableProps } from "./data"
+import type { TableProps } from "./data"
 
-import { findMemberDeviceTotal, findMemberDevicePage } from "@/services/hydrogen-atom-management/transaction-data"
+import { queryMemberPromotionPage } from "@/services/hydrogen-atom-trusteeship/hydrogen-referral-commission"
 import Detail from './detail';
 import { amountTransform } from "@/utils/utils"
 
 export default function TransactionData () {
   const [detailVisible, setDetailVisible] = useState<boolean>(false);
-  const [type, setType] = useState<number>(0)
-  const [memberId, setMemberId] = useState<string>()
-  const [memberPhone, setMemberPhone] = useState<string>()
+  const [phoneId, setPhoneId] = useState<string>()
   const ref = useRef<FormInstance>()
 
   const columns: ProColumns<TableProps>[] = [
     {
       title: '推荐人手机',
-      dataIndex: 'memberId',
+      dataIndex: 'phoneNumber',
       align: 'center',
     },
     {
       title: '总提成金额（元）',
-      dataIndex: 'icon',
+      dataIndex: 'commissionAmount',
       align: 'center',
       hideInSearch: true,
       render: (_, r) => amountTransform(_,'/')
     },
     {
       title: '总业绩金额（元）',
-      dataIndex: 'icon',
+      dataIndex: 'achievementAmount',
       align: 'center',
       hideInSearch: true,
       render: (_, r) => amountTransform(_,'/')
     },
     {
       title: '推荐人是否店主',
-      dataIndex: 'nickName',
+      dataIndex: 'store',
       align: 'center',
       valueEnum: {
-        0: '否',
-        1: '是'
+        false: '否',
+        true: '是'
       },
       hideInSearch: true,
     },
     {
       title: '推荐人是否VIP',
-      dataIndex: 'userType',
+      dataIndex: 'vipStore',
       align: 'center',
-      hideInSearch: true,
       valueEnum: {
-        0: '否',
-        1: '是'
+        false: '否',
+        true: '是'
       },
       hideInSearch: true,
     },
     {
       title: '推荐人店铺名称',
-      dataIndex: 'memberId',
+      dataIndex: 'storeName',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '推荐人社区店ID',
-      dataIndex: 'memberId',
+      dataIndex: 'storeNo',
       align: 'center',
       hideInSearch: true,
     },
@@ -74,7 +71,7 @@ export default function TransactionData () {
       title: '操作',
       align: 'center',
       render: (_, r)=> {
-        return <a onClick={()=>{ setDetailVisible(true); setMemberId(r.memberId);}}>查看明细</a>
+        return <a onClick={()=>{ setDetailVisible(true); setPhoneId(r.phoneNumber);}}>查看明细</a>
       },
       hideInSearch: true,
     },
@@ -85,7 +82,7 @@ export default function TransactionData () {
       <ProTable<TableProps>
         rowKey="memberId"
         columns={columns}
-        request={findMemberDevicePage}
+        request={queryMemberPromotionPage}
         columnEmptyText={false}
         actionRef={ref}
         pagination={{
@@ -101,10 +98,10 @@ export default function TransactionData () {
       {
         detailVisible &&
         <Detail
-          id={memberId}
+          phone={phoneId}
           visible={detailVisible}
           setVisible={setDetailVisible}
-          onClose={()=>{ref.current?.reload();setMemberId(null)}}
+          onClose={()=>{ref.current?.reload();setPhoneId(null)}}
         />
       }
     </PageContainer>
