@@ -1,23 +1,28 @@
 export type DescriptionsProps = {
-  agencyTotalNum: string;
-  agencyLoginNum: string;
+  totalNum: string;
   vipStoreNum: string;
   commonStoreNum: number;
-  rentMachineNum: number;
-  sellMachineNum: number;
+  allDeviceNum: number;
+  hostingDeviceNum: number;
+  operateNum: string;
+  hostingUserNum: string;
+  operateUserNum: string;
 }
 
 export type TableProps = {
   manager: string;
   name: string;
   managerPhone: string;
-  agencyId: number;
+  vipStoreNums: number;
+  hostingDeviceNum: number;
   userName: string;
   accountId: number;
-  vipStoreNums: number;
+  agencyId: number;
   commonStoreNums: number;
-  rentMachineNum: number;
-  sellMachineNum: number;
+  allDeviceNum: number;
+  operateDeviceNum: string;
+  hosingUserNum: string;
+  operateUserNum: string;
 }
 
 export type GithubIssueItem = {

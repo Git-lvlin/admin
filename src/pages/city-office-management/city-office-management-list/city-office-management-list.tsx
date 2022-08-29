@@ -8,7 +8,7 @@ import ResetPasswords from './reset-passwords'
 import StoreInformation from './store-information'
 import { Descriptions } from 'antd';
 
-import { userLists,userCount } from "@/services/office-management/office-management-list"
+import { userCityLists,userCityCount } from "@/services/city-office-management/city-office-management-list"
 
 export default function TransactionData () {
   const [visible, setVisible] = useState<boolean>(false)
@@ -164,7 +164,7 @@ export default function TransactionData () {
     },
   ]
   useEffect(() => {
-    userCount({}).then(res=>{
+    userCityCount({}).then(res=>{
       if(res.code==0){
         setDetailList(res.data)
       }
@@ -174,22 +174,20 @@ export default function TransactionData () {
   return (
     <PageContainer title={false}>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff',marginBottom:'20px'}} column={9} layout="vertical" bordered>
-        <Descriptions.Item  label="市办事处总数量">{detailList?.agencyTotalNum}  </Descriptions.Item>
-        {/* <Descriptions.Item  label="有登录记录办事处数">{detailList?.agencyLoginNum}  </Descriptions.Item> */}
+        <Descriptions.Item  label="市办事处总数量">{detailList?.totalNum}  </Descriptions.Item>
         <Descriptions.Item  label="VIP店主数（家）">{detailList?.vipStoreNum}  </Descriptions.Item>
         <Descriptions.Item  label="普通店主数（家）">{detailList?.commonStoreNum}  </Descriptions.Item>
-        <Descriptions.Item  label="销售氢原子（台）">{detailList?.sellMachineNum}  </Descriptions.Item>
-        <Descriptions.Item  label="租赁氢原子（台）">{detailList?.rentMachineNum}  </Descriptions.Item>
-        <Descriptions.Item  label="托管氢原子（台）">{detailList?.rentMachineNum}  </Descriptions.Item>
-        <Descriptions.Item  label="运营氢原子（台）">{detailList?.rentMachineNum}  </Descriptions.Item>
-        <Descriptions.Item  label="投资商总人数">{detailList?.rentMachineNum}  </Descriptions.Item>
-        <Descriptions.Item  label="运营商总人数">{detailList?.rentMachineNum}  </Descriptions.Item>
+        <Descriptions.Item  label="销售氢原子（台）">{detailList?.allDeviceNum}  </Descriptions.Item>
+        <Descriptions.Item  label="托管氢原子（台）">{detailList?.hostingDeviceNum}  </Descriptions.Item>
+        <Descriptions.Item  label="运营氢原子（台）">{detailList?.operateNum}  </Descriptions.Item>
+        <Descriptions.Item  label="投资商总人数">{detailList?.hostingUserNum}  </Descriptions.Item>
+        <Descriptions.Item  label="运营商总人数">{detailList?.operateUserNum}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
         headerTitle='列表'
         rowKey="agencyId"
         columns={tableColumns}
-        request={userLists}
+        request={userCityLists}
         columnEmptyText={false}
         actionRef={form}
         pagination={{
