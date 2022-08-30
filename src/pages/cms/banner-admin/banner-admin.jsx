@@ -28,7 +28,7 @@ const BannerAdmin = () => {
     bannerSortTop({id: data}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -50,14 +50,14 @@ const BannerAdmin = () => {
     homeBannerDel({ids: ids}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
 
   useEffect(() => {
     if (!formVisible) {
-      actionRef.current.reset();
+      actionRef.current.reload();
     }
   }, [formVisible])
 
@@ -90,8 +90,8 @@ const BannerAdmin = () => {
       dataIndex: 'actionUrl',
       valueType: 'text',
       search: false,
-      width: 500,
-      ellipsis: true,
+      width: 100,
+      // ellipsis: true,
     },
     {
       title: '添加时间',

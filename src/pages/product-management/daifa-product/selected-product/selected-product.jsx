@@ -194,7 +194,7 @@ export default function EditTable() {
   }
 
   useEffect(() => {
-    hasData&&actionRef.current.reset();
+    hasData&&actionRef.current.reload();
   }, [hasData])
 
   const getGoodsList = () => {
