@@ -51,7 +51,7 @@ const Hosting = () => {
       request={getCommissionConfig}
       postData={(v: any)=>{
         setLeaseEndDay(v.totalAmount)
-        return v.map((item: any, idx: number)=>({
+        return v.records.map((item: any, idx: number)=>({
           id: idx + 1,
           ...item
         }))
