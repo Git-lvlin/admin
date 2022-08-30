@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import ProTable from '@ant-design/pro-table'
-import { Empty, Select, Spin } from "antd"
+import { Empty, Select } from "antd"
 
 import type { ProColumns } from '@ant-design/pro-table'
 import type { FC } from "react"
@@ -16,18 +16,16 @@ const DealAmount: FC<DealAmountProps> = ({data, type}) => {
   const [ eventAnalys, setEventAnalys ] = useState<string>()
   const [ paramData, setParamData ] = useState<listDataProps>()
   const [ params, setParams ] = useState({})
-  const [ flag, setFlag ] = useState<boolean>(false)
   const [ paramsSource, setParamsSource ] = useState({})
 
   useEffect(()=> {
-    setFlag(true)
-    getHistoryDeviceShop({
-      imei: data?.imei
-    }).then(res => {
-      setListData(res.data)
-    }).finally(()=> {
-      setFlag(flag)
-    })
+    if(type === 3 || type === 4) {
+      getHistoryDeviceShop({
+        imei: data?.imei
+      }).then(res => {
+        setListData(res.data)
+      })
+    }
   }, [data])
 
   useEffect(()=> { 
@@ -47,15 +45,13 @@ const DealAmount: FC<DealAmountProps> = ({data, type}) => {
   }, [eventAnalys])
 
   useEffect(()=> {  
-    if(paramData) {  
-      const res = JSON.parse(JSON.stringify(paramData))   
-      setParams({
-        1: { orderId: data?.orderId, type: 'hostingOrder' },
-        2: { orderId: data?.orderId, type: 'serviceFee' },
-        3: { ...res, type: 'managementFee' },
-        4: { ...res, type: 'startUp' }
-      })
-    }
+    const res = paramData && JSON.parse(JSON.stringify(paramData))   
+    setParams({
+      1: { orderId: data?.orderId, type: 'hostingOrder' },
+      2: { orderId: data?.orderId, type: 'serviceFee' },
+      3: { ...res, type: 'managementFee' },
+      4: { ...res, type: 'startUp' }
+    })
   }, [paramData])
 
   useEffect(()=> {
@@ -137,7 +133,7 @@ const DealAmount: FC<DealAmountProps> = ({data, type}) => {
   ]
 
   return (
-    <Spin spinning={flag}>
+    <>
       {
         Object.keys(params).length !== 0 ?
         <ProTable
@@ -154,7 +150,7 @@ const DealAmount: FC<DealAmountProps> = ({data, type}) => {
         />:
         <Empty/>
       }
-    </Spin>
+    </>
   )
 }
 
