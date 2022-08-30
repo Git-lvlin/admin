@@ -82,6 +82,14 @@ export default () => {
       }
     },
     {
+      title: '市办事处',
+      dataIndex: 'cityManageFee',
+      align: 'center',
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
+    },
+    {
       title: 'VIP店主-直推',
       dataIndex: 'shoppervipChargeFee',
       align: 'center',
