@@ -36,6 +36,7 @@ export interface StayPutProps {
   storeHouseNumber: string
   storeUserName: string
   storeAddress: string
+  deadlineDay: string
 }
 
 export type DeliveryProps = {
