@@ -82,7 +82,7 @@ const Operator = () => {
             <a 
               onClick={()=> {
                 setVisible(true)
-                setStoreNo(r.memberId)
+                setStoreNo(r.storeNo)
                 setType(1)
                 setDeviceNum(r.pendingNum)
                 setUser(r.memberPhone)
@@ -107,7 +107,7 @@ const Operator = () => {
             <a 
               onClick={()=> {
                 setVisible(true)
-                setStoreNo(r.memberId)
+                setStoreNo(r.storeNo)
                 setType(2)
                 setDeviceNum(r.ingNum)
                 setUser(r.memberPhone)
@@ -132,7 +132,7 @@ const Operator = () => {
             <a 
               onClick={()=> {
                 setVisible(true)
-                setStoreNo(r.memberId)
+                setStoreNo(r.storeNo)
                 setType(3)
                 setDeviceNum(r.stopNum)
                 setUser(r.memberPhone)

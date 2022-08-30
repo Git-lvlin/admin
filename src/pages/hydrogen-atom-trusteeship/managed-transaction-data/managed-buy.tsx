@@ -171,7 +171,7 @@ const ManagedBuy:FC = () => {
               onClick={()=> {
                 setVisible(true)
                 setType(8)
-                setStoreNo(r.houseNumber)
+                setStoreNo(r.hostingMemberId)
                 setUser(r.nickname)
                 setDeviceNum(r.ingOperateNum)
               }}
