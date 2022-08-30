@@ -108,7 +108,10 @@ const StayPut: FC = () => {
       title: '距可取回天数',
       dataIndex: 'deadlineDay',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        return <div dangerouslySetInnerHTML={{__html: r.deadlineDay}}/>
+      }
     },
     {
       title: '操作',
